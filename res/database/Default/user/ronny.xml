@@ -492,7 +492,7 @@ Illustrious guests and music by [3|Nick].</en>
 			<data genre="3" flags="273" happen_time="0" />
 		</news>
 </ignore>
-		<news id="ronny-news-spitzel-01" type="0" creator="5578" created_by="Ronny">
+		<news id="ronny-news-spitzel-01" type="0" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre</de>
 				<en>Snooping scandal</en>
@@ -509,7 +509,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="0" price="1.0" quality="48" />
 		</news>
-		<news id="ronny-news-spitzel-02a" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-spitzel-02a" type="2" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre - Zensur herausgefiltert</de>
 				<en>Snooping scandal - censorship filtered out</en>
@@ -520,7 +520,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</description>
 			<data genre="0" price="1.0" quality="44" />
 		</news>
-		<news id="ronny-news-spitzel-02b" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-spitzel-02b" type="2" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre - Experten uneinig</de>
 				<en>Snooping scandal - experts discordant</en>
@@ -542,7 +542,7 @@ Illustrious guests and music by [3|Nick].</en>
 			 |         /
 			 |_ Ep3 __/
 		-->
-		<news id="ronny-news-drucktaste-01" type="0" creator="5578" created_by="Ronny">
+		<news id="ronny-news-drucktaste-01" type="0" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>"DRUCK"-Taste: Abgaben geplant</de>
 				<en>"PRINT"-Key: planned duties</en>
@@ -559,7 +559,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="3" price="1" quality="38" />
 		</news>
-		<news id="ronny-news-drucktaste-02a" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-drucktaste-02a" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>"DRUCK"-Taste: Plombe spart Abgaben</de>
 				<en>"PRINT"-Key: Seal saves compensation</en>
@@ -574,7 +574,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="3" price="1.0" quality="35" />
 		</news>
-		<news id="ronny-news-drucktaste-02b" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-drucktaste-02b" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>"DRUCK"-Taste: Vereine demonstrieren</de>
 				<en>"PRINT"-Key: Associations demonstrating</en>
@@ -588,7 +588,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 		</news>
-		<news id="ronny-news-drucktaste-02b1" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-drucktaste-02b1" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>"DRUCK"-Taste: Für private Haushalte kostenlos</de>
 				<en>"PRINT"-Key: Free for private households</en>
@@ -603,7 +603,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="3" price="1.0" quality="35" />
 		</news>
-		<news id="ronny-news-drucktaste-03" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-drucktaste-03" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>"DRUCK"-Taste: Keine Abgaben mehr</de>
 				<en>"PRINT"-Key: No more compensation</en>
@@ -635,10 +635,10 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>At the International Exhibition for Computer Accessories (ECA), the USB-Rat was presented. Unlike mice, USB-Rats are suitable for real men hands.</en>
 			</description>
 			<data genre="3" price="1.0" quality="32" />
-			<conditions year_range_from="1996" year_range_to="-1" />
+			<availability year_range_from="1996" year_range_to="-1" />
 		</news>
 
-		<news id="ronny-news-sandsturm-01" type="0" creator="5578" created_by="Ronny">
+		<news id="ronny-news-sandsturm-01" type="0" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sandsturm am nördlichen Polarkreis</de>
 				<en>Sandstorm near the Arctic Circle</en>
@@ -653,7 +653,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="4" price="1.0" quality="48" />
 		</news>
-		<news id="ronny-news-sandsturm-02" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-sandsturm-02" type="2" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sandsturm war nicht echt</de>
 				<en>Sandstorm was not real</en>
@@ -675,7 +675,7 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 
 
-		<news id="ronny-news-katschminski-01" type="0" creator="5578" created_by="Ronny">
+		<news id="ronny-news-katschminski-01" type="0" thread_id="ronny-news-katschminski" creator="5578" created_by="Ronny">
 			<title>
 				<de>Leser lesen wieder, dank Katschminski</de>
 				<en>Readers read again. Thanks to Katschinski</en>
@@ -690,7 +690,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="5" price="1.0" quality="38" />
 		</news>
-		<news id="ronny-news-katschminski-02" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-katschminski-02" type="2" thread_id="ronny-news-katschminski" creator="5578" created_by="Ronny">
 			<title>
 				<de>Ansturm auf neues Buch</de>
 				<en>Rush for new book</en>
@@ -705,7 +705,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="5" price="1.0" quality="34" />
 		</news>
-		<news id="ronny-news-katschminski-03" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-katschminski-03" type="2" thread_id="ronny-news-katschminski" creator="5578" created_by="Ronny">
 			<title>
 				<de>Katschminski veröffentlicht neues Buch</de>
 				<en>Katschinski releases new book</en>
@@ -727,7 +727,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</description>
 			<data genre="1" price="1.0" quality="32" />
 		</news>
-		<news id="ronny-news-karldingensbummens-01" type="0" creator="5578" created_by="Ronny">
+		<news id="ronny-news-karldingensbummens-01" type="0" thread_id="ronny-news-karldingensbummens" creator="5578" created_by="Ronny">
 			<title>
 				<de>Plastik „Karl Dingensbummens“ gestohlen</de>
 				<en>Plastic "Joe Thingamabob" stolen</en>
@@ -742,7 +742,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="5" price="1.0" quality="22" />
 		</news>
-		<news id="ronny-news-karldingensbummens-02" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-karldingensbummens-02" type="2" thread_id="ronny-news-karldingensbummens" creator="5578" created_by="Ronny">
 			<title>
 				<de>„Karl Dingensbummens“ wieder da</de>
 				<en>"Joe Thingamabob" is back</en>
@@ -755,7 +755,7 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 
 
-		<news id="ronny-news-frauenbart-01" type="0" creator="5578" created_by="Ronny">
+		<news id="ronny-news-frauenbart-01" type="0" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Ausstellung zum Thema Frauenbärte</de>
 				<en>Exhibition on Women's Beards</en>
@@ -774,7 +774,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</effects>
 			<data genre="5" price="1.0" quality="15" />
 		</news>
-		<news id="ronny-news-frauenbart-02a" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-frauenbart-02a" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Ausstellung "Frauenbärte %WORLDTIME:YEAR%" lockt Betrüger</de>
 				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures cheats</en>
@@ -785,7 +785,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</description>
 			<data genre="5" price="1.0" quality="17" />
 		</news>
-		<news id="ronny-news-frauenbart-02b" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-frauenbart-02b" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Frauenbärte: Frauen schwören auf Koteletten</de>
 				<en>Women's Beards: Women now like sideburns</en>
@@ -796,7 +796,7 @@ Illustrious guests and music by [3|Nick].</en>
 			</description>
 			<data genre="5" price="1.0" quality="18" />
 		</news>
-		<news id="ronny-news-frauenbart-02c" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-frauenbart-02c" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Frauenbärte: Aus und Vorbei</de>
 				<en>Women's Beards: It's all over</en>

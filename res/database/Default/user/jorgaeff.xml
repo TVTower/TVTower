@@ -4,7 +4,7 @@
 	<allnews>
 
 	<!-- "POLITIK + WIRTSCHAFT" -->
-		<news id="news-jorgaeff-dumb-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-01" type="0" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb wird Präsident der VR Duban</de>
 			</title>
@@ -18,7 +18,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dumb-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-02" type="2" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb provoziert Freie Republik Duban</de>
 			</title>
@@ -32,7 +32,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dumb-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-03" type="2" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb möchte Mauer bauen</de>
 			</title>
@@ -46,7 +46,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dumb-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-04" thread_id="news-jorgaeff-dumb" type="2" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb vermisst Quietsche-Entchen</de>
 			</title>
@@ -57,7 +57,7 @@
 		</news>
 
 		<news id="news-jorgaeff-1987-0-01" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_WEEKDAY=0 &amp;&amp; TIME_HOUR=>12" />
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_WEEKDAY=0 &amp;&amp; TIME_HOUR>=12" />
 			<title>
 				<de>Schwerer Börsen-Crash</de>
 			</title>
@@ -78,7 +78,7 @@
 			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1985-0-BRD-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1985-0-BRD-01" type="0" thread_id="news-jorgaeff-1985-0-BRD" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>APD mit historischem Wahlergebnis</de>
@@ -93,7 +93,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1985-0-BRD-02" type="1" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1985-0-BRD-02" type="2" thread_id="news-jorgaeff-1985-0-BRD" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>APD nominiert Hannes Reif</de>
@@ -170,7 +170,7 @@
 			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1988-0-DDR-01a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-0-DDR-01a" type="0" thread_id="news-jorgaeff-1988-0-DDR" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Grotesko trifft Hoecker</de>
@@ -185,7 +185,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1988-0-DDR-01b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-0-DDR-01b" type="2" thread_id="news-jorgaeff-1988-0-DDR" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Hoeckers Abrüstungspläne</de>
@@ -218,6 +218,7 @@
 			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
+		<!-- triggers other thread...-->
 		<news id="news-jorgaeff-1986-0-UdSSR-02a" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
@@ -233,7 +234,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1987-0-UdSSR-01b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1987-0-UdSSR-01b" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Michailow entlässt Minister</de>
@@ -248,7 +249,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1987-0-UdSSR-01c" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1987-0-UdSSR-01c" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Weitere Entlassungen in Moskau</de>
@@ -281,7 +282,7 @@
 			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1988-0-USA-01a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-0-USA-01a" type="0" thread_id="news-jorgaeff-1988-0-USA-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>US-Präsidentschaftswahlen</de>
@@ -296,7 +297,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1988-0-USA-01b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-0-USA-01b" type="2" thread_id="news-jorgaeff-1988-0-USA-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Cush wird US-Präsident</de>
@@ -321,7 +322,7 @@
 			<data genre="1" price="0.45" quality="45" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-chorris-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-chorris-01" type="0" thread_id="news-jorgaeff-chorris" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Nuck Chorris schlägt Zeit tot</de>
 			</title>
@@ -335,7 +336,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-chorris-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-chorris-02" type="2" thread_id="news-jorgaeff-chorris" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Nuck Chorris zählt bis zur Unendlichkeit</de>
 			</title>
@@ -345,7 +346,7 @@
 			<data genre="1" price="0.3" quality="30" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-drops-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-01" type="0" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Jonnie Drops bei Dreharbeiten schwer verletzt</de>
 			</title>
@@ -359,7 +360,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-02" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>"Mein Grog - dein Grog": Dreh geht weiter</de>
 			</title>
@@ -373,7 +374,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-03" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Neuer Drops-Film kommt in die Kinos</de>
 			</title>
@@ -387,7 +388,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-04" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Goldene Brombeere für Jonnie Drops</de>
 			</title>
@@ -401,7 +402,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-05" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-05" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Patty Glansen gesteht Affaire</de>
 			</title>
@@ -416,7 +417,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-06" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-06" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Benny Jameson klaut Filmpreis</de>
 			</title>
@@ -431,7 +432,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-07" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-07" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Benny Jameson zu Gefängnisstrafe verurteilt</de>
 			</title>
@@ -446,7 +447,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-08" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-08" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Benny Jameson aus dem Gefängnis entlassen</de>
 			</title>
@@ -461,7 +462,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-drops-09" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-drops-09" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Benny Jameson erhält Filmpreis</de>
 			</title>
@@ -631,7 +632,7 @@
 			<data genre="2" price="0.35" quality="40" fictional="False" />
 		</news>
 
-		<news id="news-jorgaeff-abstieg-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-01" type="0" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Bundesliga-Relegation: Wer steigt auf, wer ab?</de>
 			</title>
@@ -645,7 +646,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-abstieg-02a" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-02a" type="2"thread_id="news-jorgaeff-abstieg"  creator="8936" created_by="jorgaeff">
 			<title>
 				<de>SV Hamburg steigt erstmalig ab</de>
 			</title>
@@ -659,7 +660,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-abstieg-02b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-02b" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Glubb verpasst Aufstieg</de>
 			</title>
@@ -673,7 +674,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-abstieg-03a" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-03a" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>SV Hamburg trennt sich von Trainer</de>
 			</title>
@@ -683,7 +684,7 @@
 			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-abstieg-03b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-03b" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>SV Hamburg hält am Trainer fest</de>
 			</title>
@@ -693,7 +694,7 @@
 			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-abstieg-03c" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-03c" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Muss der Glubb Insolvenz anmelden?</de>
 			</title>
@@ -703,7 +704,7 @@
 			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-abstieg-03d" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-abstieg-03d" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Der Glubb ist wieder schuldenfrei</de>
 			</title>
@@ -713,7 +714,7 @@
 			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-racing-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-racing-01" type="0" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Formel X: Wer holt sich die Fahrer-WM?</de>
 			</title>
@@ -728,7 +729,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-racing-02a" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-racing-02a" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Luis Pamelton ist Weltmeister</de>
 			</title>
@@ -738,7 +739,7 @@
 			<data genre="2" price="0.5" quality="50" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-racing-02b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-racing-02b" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Bastian Kettel ist Weltmeister</de>
 			</title>
@@ -748,7 +749,7 @@
 			<data genre="2" price="0.5" quality="50" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-racing-02c" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-racing-02c" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Ferdinando Alfonso ist Weltmeister</de>
 			</title>
@@ -758,7 +759,7 @@
 			<data genre="2" price="0.5" quality="50" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-racing-02d" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-racing-02d" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Sensation: Erstmalig drei Weltmeister</de>
 			</title>
@@ -768,7 +769,7 @@
 			<data genre="2" price="0.6" quality="60" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-nachtrennen-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-nachtrennen-01" type="0" thread_id="news-jorgaeff-nachtrennen" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Erstes Nachtrennen der Formel Öko</de>
 			</title>
@@ -779,11 +780,11 @@
 			<effects>
 				<!-- "möglicher Effekt: Live-Übertragung" -->
 				<!-- "in 1 Tagen 0-23 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,0,23" news="news-jorgaeff-nachtrennen-01" />
+				<effect trigger="happen" type="triggernews" time="2,1,1,0,23" news="news-jorgaeff-nachtrennen-02" />
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-nachtrennen-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-nachtrennen-02" type="2" thread_id="news-jorgaeff-nachtrennen" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Nachtrennen der Formel Öko abgebrochen</de>
 			</title>
@@ -803,7 +804,7 @@
 			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-dyson-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-01" type="0" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 				<!-- "Beginnt an einem Sonntag" -->
 			<availability script="TIME_WEEKDAY=6" />
 			<title>
@@ -819,7 +820,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-02" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Klatschkowski möchte Titel verteidigen</de>
 			</title>
@@ -833,7 +834,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-03" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson nimmt Herausforderung an</de>
 			</title>
@@ -847,7 +848,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-04" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson trainiert für Comeback</de>
 			</title>
@@ -861,7 +862,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-05" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-05" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Dyson vs. Klatschkowski: Tumulte vor Boxkampf</de>
 			</title>
@@ -875,7 +876,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-06" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-06" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Heute Abend: Dyson vs. Klatschkowski</de>
 			</title>
@@ -890,7 +891,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-06a" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-06a" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson neuer Box-Weltmeister</de>
 			</title>
@@ -904,7 +905,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-06b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-06b" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Klatschkowski bleibt Box-Weltmeister</de>
 			</title>
@@ -918,7 +919,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-dyson-07a" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-07a" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson: Mit Yoga habe ich es geschafft</de>
 			</title>
@@ -928,7 +929,7 @@
 			<data genre="2" price="0.55" quality="55" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-dyson-07b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dyson-07b" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Klatschkowski tritt zurück</de>
 			</title>
@@ -1041,7 +1042,7 @@
 			<data genre="2" price="0.25" quality="25" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1985-2-02a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1985-2-02a" type="0" thread_id="news-jorgaeff-1985-2-02" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Weltmeisterschaft im Show-Catchen</de>
@@ -1056,7 +1057,7 @@
 			<data genre="2" price="0.3" quality="3" fictional="False" />
 		</news>
 
-		<news id="news-jorgaeff-1985-2-02b" type="1" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1985-2-02b" type= "2" thread_id="news-jorgaeff-1985-2-02" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Mr. Y entscheidet Catchkampf</de>
@@ -1144,7 +1145,7 @@
 			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1987-2-02a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1987-2-02a" type="0" thread_id="news-jorgaeff-1987-2-02" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_SEASON=2" />
 			<title>
 				<de>Betty Lord gewinnt in Paris</de>
@@ -1159,7 +1160,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1987-2-02b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1987-2-02b" type="2" thread_id="news-jorgaeff-1987-2-02" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Betty Lord Weltranglistenerste</de>
 			</title>
@@ -1214,7 +1215,7 @@
 			<data genre="3" price="0.45" quality="45" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-orange-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-orange-01" type="0" thread_id="news-jorgaeff-orange" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint 2007" -->
 			<availability script="TIME_YEAR=2007" />
 			<title>
@@ -1230,7 +1231,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-orange-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-orange-02" type="2" thread_id="news-jorgaeff-orange" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Neues my-phone bereits ausverkauft</de>
 			</title>
@@ -1250,7 +1251,7 @@
 			<data genre="3" price="0.15" quality="15" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-space-1985-3-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1985-3-01" type="0" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>NASE startet Space-Shuttle-Programm</de>
@@ -1265,7 +1266,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-space-1985-3-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1985-3-02" type="2" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Kolumbus soll Erdumlaufbahn erkunden</de>
@@ -1281,7 +1282,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-space-1985-3-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1985-3-03" type="2" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Kolumbus erfolgreich gestartet</de>
@@ -1296,7 +1297,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-space-1985-3-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1985-3-04" type="2" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Kolumbus erfolgreich gelandet</de>
@@ -1307,7 +1308,7 @@
 			<data genre="3" price="0.65" quality="65" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-space-1986-3-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1986-3-01" type="0" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
 				<de>Wieder Shuttle-Start geplant</de>
@@ -1322,7 +1323,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-space-1986-3-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1986-3-02" type="2" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
 				<de>Raumfähre bei Start explodiert</de>
@@ -1337,7 +1338,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-space-1986-3-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1986-3-03" type="2" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
 				<de>Shuttle-Explosion: Unglücksursache geklärt</de>
@@ -1352,7 +1353,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-space-1986-3-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-space-1986-3-04" type="2" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
 				<de>NASE legt Raumfahrtprogramm auf Eis</de>
@@ -1363,9 +1364,9 @@
 			<data genre="3" price="0.75" quality="75" fictional="False" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-c256-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-01" type="0" thread_id="news-jorgaeff-space-c256a" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 1989-90" -->
-			<conditions year_range_from="1989" year_range_to="1990" />
+			<availability year_range_from="1989" year_range_to="1990" />
 			<title>
 				<de>Cormoran veröffentlicht C256</de>
 			</title>
@@ -1379,7 +1380,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-c256-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-02" type="2" thread_id="news-jorgaeff-space-c256a" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>C256 entwickelt sich zum Verkaufsschlager</de>
 			</title>
@@ -1389,9 +1390,9 @@
 			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-c256-03" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-03" type="0" thread_id="news-jorgaeff-space-c256b" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 1994-95" -->
-			<conditions year_range_from="1994" year_range_to="1995" />
+			<availability year_range_from="1994" year_range_to="1995" />
 			<title>
 				<de>Cormoran veröffentlicht C512</de>
 			</title>
@@ -1405,7 +1406,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-c256-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-04" type="2" thread_id="news-jorgaeff-space-c256b" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>C512 übertrifft alle Erwartungen</de>
 			</title>
@@ -1415,9 +1416,9 @@
 			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-c256-05" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-05" type="0" thread_id="news-jorgaeff-space-c256c" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 1999-00" -->
-			<conditions year_range_from="1999" year_range_to="2000" />
+			<availability year_range_from="1999" year_range_to="2000" />
 			<title>
 				<de>Cormoran veröffentlicht C1k024</de>
 			</title>
@@ -1431,7 +1432,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-c256-06" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-06" type="2" thread_id="news-jorgaeff-space-c256c" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>C1k024 - der meistverkaufte aller Zeiten</de>
 			</title>
@@ -1441,9 +1442,9 @@
 			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-c256-07" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-07" type="0" thread_id="news-jorgaeff-space-c256d" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 2004-05" -->
-			<conditions year_range_from="2004" year_range_to="2005" />
+			<availability year_range_from="2004" year_range_to="2005" />
 			<title>
 				<de>Cormoran veröffentlicht C2k048</de>
 			</title>
@@ -1457,7 +1458,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-c256-08" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-c256-08" type="2" thread_id="news-jorgaeff-space-c256d" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>C2k048 - ein Verkaufsflop</de>
 			</title>
@@ -1469,7 +1470,7 @@
 
 		<news id="news-jorgaeff-btx-01" type="0" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 2000-01" -->
-			<conditions year_range_from="2000" year_range_to="2001" />
+			<availability year_range_from="2000" year_range_to="2001" />
 			<title>
 				<de>Bildschirmtext wird abgeschaltet</de>
 			</title>
@@ -1481,7 +1482,7 @@
 
 		<news id="news-jorgaeff-dvd-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint 1997" -->
-			<conditions year_range_from="1997" year_range_to="1997" />
+			<availability year_range_from="1997" year_range_to="1997" />
 			<title>
 				<de>DVD löst VHS-Kassette &amp; Co. ab</de>
 			</title>
@@ -1493,7 +1494,7 @@
 
 		<news id="news-jorgaeff-dvd-02" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint 2009" -->
-			<conditions year_range_from="2009" year_range_to="2009" />
+			<availability year_range_from="2009" year_range_to="2009" />
 			<title>
 				<de>Blu-Ray löst DVD ab</de>
 			</title>
@@ -1570,7 +1571,7 @@
 			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1988-3-01a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-3-01a" type="0" thread_id="news-jorgaeff-1988-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Bleihaltiges Benzin verboten</de>
@@ -1585,7 +1586,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1988-3-01b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-3-01b" type="2" thread_id="news-jorgaeff-1988-3" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Bleifreier Ladenhüter</de>
@@ -1622,7 +1623,7 @@
 
 
 	<!-- "TAGESGESCHEHEN" -->
-		<news id="news-jorgaeff-hyperraum-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-hyperraum-01" type="0" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Hyperraum-Umgehungsstraße geplant</de>
 			</title>
@@ -1636,7 +1637,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-hyperraum-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-hyperraum-02" type="2" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Wird die Menschheit umgesiedelt?</de>
 			</title>
@@ -1650,7 +1651,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-hyperraum-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-hyperraum-03" type="2" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Suche nach Ersatzplaneten gescheitert</de>
 			</title>
@@ -2141,7 +2142,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1986-4-UdSSR-02b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1986-4-UdSSR-02b" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Atomkraftwerk in Russland explodiert</de>
 			</title>
@@ -2155,7 +2156,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1986-4-UdSSR-02c" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1986-4-UdSSR-02c" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Atomare Wolke breitet sich aus</de>
 			</title>
@@ -2170,7 +2171,7 @@
 				<!-- Menschen bleiben zu Hause und sehen mehr fern / Interesse an Nachrichten(-sendungen) steigt -->
 		</news>
 
-		<news id="news-jorgaeff-1986-4-UdSSR-02d" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1986-4-UdSSR-02d" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02"  creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Atomreaktor bekommt Sarkophag</de>
 			</title>
@@ -2184,7 +2185,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1986-4-UdSSR-02e" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1986-4-UdSSR-02e" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Atomenergie wird weiter ausgebaut</de>
 			</title>
@@ -2205,6 +2206,7 @@
 			<data genre="4" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
+		<!-- triggers other thread...-->
 		<news id="news-jorgaeff-1987-4-UdSSR-01a" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1987" />
 			<title>
@@ -2220,7 +2222,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1988-4-01a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-4-01a" type="0" thread_id="news-jorgaeff-1988-4-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Sonnenfinsternis im West-Pazifik</de>
@@ -2235,7 +2237,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1988-4-01b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-4-01b" type="2" thread_id="news-jorgaeff-1988-4-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Verkehrschaos blieb aus</de>
@@ -2250,7 +2252,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1988-4-01c" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-4-01c" type="2" thread_id="news-jorgaeff-1988-4-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Nächste Sonnenfinsternis in Kürze</de>
@@ -2278,7 +2280,7 @@
 
 
 	<!-- "KULTUR" -->
-		<news id="news-jorgaeff-klinski-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-klinski-01" type="0" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Kaugummi-Klumpen-Sammlung versteigert</de>
 			</title>
@@ -2292,7 +2294,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-klinski-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-klinski-02" type="2" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Dieb klaut Kaugummi-Klumpen-Sammlung</de>
 			</title>
@@ -2306,7 +2308,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-klinski-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-klinski-03" type="2" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Polizei fängt Kaugummi-Klumpen-Klauer</de>
 			</title>
@@ -2337,7 +2339,7 @@
 			<data genre="5" price="0.35" quality="35" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-fanta-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-fanta-01" type="0" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Heribert Fanta erhält Literaturpreis</de>
 			</title>
@@ -2351,7 +2353,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-fanta-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-fanta-02" type="2" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Heribert Fanta ist Easiophobiker</de>
 			</title>
@@ -2365,7 +2367,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-fanta-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-fanta-03" type="2" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Neue Dokomentation von Heribert Fanta</de>
 			</title>
@@ -2379,7 +2381,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-fanta-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-fanta-04" type="2" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Heribert Fanta überwindet Schreibangst</de>
 			</title>
@@ -2399,7 +2401,7 @@
 			<data genre="5" price="0.3" quality="30" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-grafitti-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-grafitti-01" type="0" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Bahn beklagt Millionenschaden durch Grafittis</de>
 			</title>
@@ -2413,7 +2415,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-grafitti-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-grafitti-02" type="2" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Grafitti entwickelt sich zur Kunstform</de>
 			</title>
@@ -2427,7 +2429,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-grafitti-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-grafitti-03" type="2" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Bahn verkauft Grafitti-Waggons</de>
 			</title>
@@ -2441,7 +2443,7 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-grafitti-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-grafitti-04" type="2" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>DASF entwickelt unübersprühbare Farbe</de>
 			</title>
@@ -2484,7 +2486,7 @@
 			<data genre="5" price="0.35" quality="35" fictional="True" />
 		</news>
 
-		<news id="news-jorgaeff-1985-5-04a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1985-5-04a" type="0" thread_id="news-jorgaeff-1985-5-04" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Ulm-Oper ungekürzt aufgeführt</de>
@@ -2494,12 +2496,12 @@
 			</description>
 			<effects>
 				<!-- "morgen, 12 bis 18.00 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="news-jorgaeff-chorris-02" />
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="news-jorgaeff-1985-5-04b" />
 			</effects>
 			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1985-5-04b" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1985-5-04b" type="2" thread_id="news-jorgaeff-1985-5-04" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Ulm-Oper erhält wenig Beifall</de>
