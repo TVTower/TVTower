@@ -106,7 +106,7 @@ Type TBetty
 			Local today:int = GetWorldTime().GetDaysRun(time)
 			For Local list:TList = EachIn GetBetty().presentHistory
 				For Local p:TBettyPresentGivingAction = EachIn list
-					If present = p.present And today = GetWorldTime().GetDaysRun(p.time)
+					If present.isSame(p.present) And today = GetWorldTime().GetDaysRun(p.time)
 						'if dinner was given today - reject
 						If present.index = TBettyPresent.PRESENT_DINNER then return TBettyPresent.REJECT_ONE_PER_DAY
 						'if book was given by the same player - reject
@@ -125,7 +125,7 @@ Type TBetty
 			Local hist:TList = GetBetty().getPresentHistory(playerID)
 			For Local p:TBettyPresentGivingAction = EachIn hist.reversed()
 				If p.present.bettyValue < 0 Then return count
-				If present = p.present Then count:+ 1
+				If present.isSame(p.present) Then count:+ 1
 			Next
 			return count
 		End Function
@@ -146,7 +146,7 @@ Type TBetty
 		Local count:int=0
 		For Local list:TList = EachIn presentHistory
 			For Local p:TBettyPresentGivingAction = EachIn list
-				If present = p.present Then count:+ 1
+				If present.isSame(p.present) Then count:+ 1
 			Next
 		Next
 		Return count
@@ -422,6 +422,10 @@ Type TBettyPresent
 		return self
 	End Method
 
+	Method IsSame:Int(other:TBettyPresent)
+		If Not Other Then Return False
+		return self.index = other.index
+	End Method
 
 	Method GetName:string()
 		return GetLocale("BETTY_PRESENT_"+index)
