@@ -2131,7 +2131,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'Ron: disabled for now - as too many messages do not fit into the
 		'     datasheet. Also I am not sure if the information is to
 		'     display at all
-		if GetData().productionID and IsLive() and not GameRules.payLiveProductionInAdvance and extraData Then showMsgLiveProductionCost = True
+		'if GetData().productionID and IsLive() and not GameRules.payLiveProductionInAdvance and extraData Then showMsgLiveProductionCost = True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
