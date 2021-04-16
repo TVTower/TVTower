@@ -3677,6 +3677,7 @@ Type GameEvents
 
 		'listen to custom programme events to send out toastmessages
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Production_Finalize, Production_OnFinalize) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Production_FinishPreProduction, Production_OnFinishPreProduction) ]
 
 		'reset room signs when a bomb explosion in a room happened
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnBombExplosion, Room_OnBombExplosion) ]
@@ -4839,6 +4840,13 @@ Type GameEvents
 		Local production:TProduction = TProduction(triggerEvent.GetSender())
 		If Not production Then Return False
 
+		'skip adding the toast message at all when already paid and just
+		'finishing the live broadcast of it now
+		'just comment out this portion to create a toastmessage for it too
+		If GameRules.payLiveProductionInAdvance and production.productionConcept.script.IsLive()
+			Return False
+		EndIf
+
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4854,8 +4862,14 @@ Type GameEvents
 		toast.SetMessageType(2) 'positive
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		If production.productionConcept.script.IsLive()
-			toast.SetCaption(GetLocale("PREPRODUCTION_FINISHED"))
-			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
+			'maybe have a different caption too?
+			'toast.SetCaption(GetLocale("LIVE_SHOOTING_FINISHED"))
+			toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
+			If GameRules.payLiveProductionInAdvance
+				toast.SetText(GetLocale("THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED").Replace("%TITLE%", "|b|"+title+"|/b|"))
+			Else
+				toast.SetText((GetLocale("THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + GetLocale("CURRENCY") + "|/b|" ))
+			EndIf
 		Else
 			toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
 			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + GetLocale("CURRENCY") + "|/b|" ))
@@ -4874,6 +4888,45 @@ Type GameEvents
 		EndIf
 	End Function
 
+
+	Function Production_OnFinishPreProduction:Int(triggerEvent:TEventBase)
+		'only interested in auctions the player won
+		Local production:TProduction = TProduction(triggerEvent.GetSender())
+		If Not production Then Return False
+
+
+		'send out a toast message
+		Local toast:TGameToastMessage = New TGameToastMessage
+		Local title:String = production.productionConcept.GetTitle()
+		If production.productionConcept.script.GetEpisodeNumber() > 0
+			title = production.productionConcept.script.GetParentScript().GetTitle() + ": "
+			title :+ production.productionConcept.script.GetEpisodeNumber() + "/" + production.productionConcept.script.GetParentScript().GetSubScriptCount()+" "
+			title :+ production.productionConcept.GetTitle()
+		EndIf
+
+		'show it for some seconds
+		toast.SetLifeTime(8)
+		toast.SetMessageType(2) 'positive
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
+		toast.SetCaption(GetLocale("PREPRODUCTION_FINISHED"))
+		If GameRules.payLiveProductionInAdvance
+			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + GetLocale("CURRENCY") + "|/b|" ))
+		Else
+			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
+		EndIf
+
+		toast.GetData().AddNumber("playerID", production.owner)
+
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If production.owner = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		EndIf
+	End Function
 
 	Function Game_OnSetPlayerBankruptLevel:Int(triggerEvent:TEventBase)
 		'only interested in levels of the player
@@ -5444,6 +5497,25 @@ Type GameEvents
 				players[a] = players[b]
 				players[b] = p
 			Next
+			
+			
+			'check if an unproduced live programme is to get aired
+			'(live shooting)
+			If minute = 5
+				For Local player:TPlayer = EachIn players
+					Local programme:TProgramme = TProgramme(player.GetProgrammePlan().GetProgramme(day, hour))
+					'If player.GetProgrammePlan().GetProgrammeBlock(day, hour) = 1
+					If programme and programme.data.IsLive() and programme.programmedHour <= hour 'block 1
+						'try to find an still to shoot production
+						local production:TProduction = GetProductionManager().GetLiveProductionByProgrammeLicenceID(programme.licence.GetID())
+						'preproduction is done else it would not be "programmeable"
+						'so simply check if production is finished
+						if production and not production.IsProduced()
+							production.BeginShooting()
+						EndIf
+					EndIf
+				Next
+			EndIf
 
 
 			For Local player:TPlayer = EachIn players

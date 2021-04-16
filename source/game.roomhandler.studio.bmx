@@ -675,8 +675,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 		
 			'try to fill in our list
 			For Local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
-				'skip produced ones
-				If pc.IsProduced() Then Continue
+				'skip ones that are already started (and possibly even finished)
+				If pc.IsProductionStarted() Then Continue
 
 				'show episodes
 				If studioScript.IsSeries()
@@ -708,8 +708,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 					EndIf
 					'remove from player's collection and also from global
 					'conception list
-					programmeCollection.DestroyProductionConcept(pc)
-
 					programmeCollection.DestroyProductionConcept(pc)
 				EndIf
 			Next

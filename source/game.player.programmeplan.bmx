@@ -743,18 +743,28 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		obj.setUsedAsType(slotType)
 
 
+		Local programme:TProgramme = TProgramme(obj)
+		Local advertisement:TAdvertisement = TAdvertisement(obj)
+
 		'special for programmelicences: set a maximum planned time
 		'setting does not require special calculations
-		If TProgramme(obj)
-			TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
+		If programme
+			'updated "latest planned hour"
+			programme.licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
 			'ProgrammeLicences: recalculate the latest planned hour
-			RecalculatePlannedProgramme(TProgramme(obj))
+			RecalculatePlannedProgramme(programme)
+		EndIf
+		
+		'Advertisements: adjust planned (when placing in contract-slot
+		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and advertisement
+			advertisement.contract.SetSpotsPlanned( GetAdvertisementsPlanned(advertisement.contract, advertisement.contract.daySigned, 0, -1, -1) )
 		EndIf
 
-		'Advertisements: adjust planned (when placing in contract-slot
-		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and TAdvertisement(obj)
-			local ad:TAdvertisement = TAdvertisement(obj)
-			ad.contract.SetSpotsPlanned( GetAdvertisementsPlanned(ad.contract, ad.contract.daySigned, 0, -1, -1) )
+
+		If programme
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).AddInt("programmeLicenceID", programme.licence.GetID()).AddInt("slotType", slotType).AddInt("day", day).AddNumber("hour", hour), Self)
+		ElseIf advertisement
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).AddInt("adContractID", advertisement.contract.GetID()).AddInt("slotType", slotType).AddInt("day", day).AddNumber("hour", hour), Self)
 		Endif
 
 		'if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -823,13 +833,26 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'null the corresponding array index
 			SetObjectArrayEntry(Null, slotType, GetArrayIndex(programmedDay*24 + programmedHour))
 
+
+			Local programme:TProgramme = TProgramme(obj)
+			Local advertisement:TAdvertisement = TAdvertisement(obj)
+
+
 			'ProgrammeLicences: recalculate the latest planned hour
-			If TProgramme(obj) Then RecalculatePlannedProgramme(TProgramme(obj))
-			'Advertisements: adjust planned amount
-			If TAdvertisement(obj)
-				local ad:TAdvertisement = TAdvertisement(obj)
-				ad.contract.SetSpotsPlanned( GetAdvertisementsPlanned(ad.contract, ad.contract.daySigned, 0, -1, -1) )
+			If programme
+				RecalculatePlannedProgramme(programme)
 			EndIf
+			
+			'Advertisements: adjust planned amount
+			If advertisement
+				advertisement.contract.SetSpotsPlanned( GetAdvertisementsPlanned(advertisement.contract, advertisement.contract.daySigned, 0, -1, -1) )
+			EndIf
+
+			If programme
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).AddInt("programmeLicenceID", programme.licence.GetID()).AddInt("slotType", slotType).AddInt("day", programmedDay).AddNumber("hour", programmedHour), Self)
+			ElseIf advertisement
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).AddInt("adContractID", advertisement.contract.GetID()).AddInt("slotType", slotType).AddInt("day", programmedDay).AddNumber("hour", programmedHour), Self)
+			Endif
 
 			rem
 			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT

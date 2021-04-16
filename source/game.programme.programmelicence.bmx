@@ -2063,6 +2063,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
 		Local showMsgBroadcastTimeSlot:Int = False
+		Local showMsgLiveProductionCost:Int = False
 
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
@@ -2124,8 +2125,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 		EndRem
 		endif
-		If HasBroadcastLimit() then showMsgBroadcastLimit= True
-		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot= True
+		If HasBroadcastLimit() then showMsgBroadcastLimit = True
+		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot = True
+
+		'Ron: disabled for now - as too many messages do not fit into the
+		'     datasheet. Also I am not sure if the information is to
+		'     display at all
+		if GetData().productionID and IsLive() and not GameRules.payLiveProductionInAdvance and extraData Then showMsgLiveProductionCost = True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -2148,6 +2154,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If showMsgLiveInfo then msgAreaH :+ msgH
 		If showMsgBroadcastLimit then msgAreaH :+ msgH
 		If showMsgBroadcastTimeSlot then msgAreaH :+ msgH
+		If showMsgLiveProductionCost then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -2345,6 +2352,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
+
+		if showMsgLiveProductionCost
+			Local productionCostsLeftValue:int
+			if extraData then productionCostsLeftValue = extraData.GetInt("productionCostsLeft")
+			local productionCostsLeft:string = MathHelper.DottedValue(productionCostsLeftValue)+CURRENCYSIGN
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("LIVE_PRODUCTION_FINISH_WILL_COST_X").Replace("%X%", productionCostsLeft) , "money", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
 
 		if showMsgPlannedWarning
 			if not isProgrammePlanned()

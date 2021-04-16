@@ -309,7 +309,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				'check script for some last live time - and use that as minimum
 				earliestBroadcastTime = Max(script.lastLivetime, GetWorldTime().GetTimeGone())
 
-				If not IsProduced() and script.productionTime > 0
+				If not IsProductionFinished() and script.productionTime > 0
 					earliestBroadcastTime :+ script.productionTime * script.productionTimeMod
 				EndIf
 			EndIf
@@ -1099,8 +1099,13 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method IsProduced:int()
-		return hasFlag(TVTProductionConceptFlag.PRODUCED)<>0
+	Method IsProductionFinished:int()
+		return hasFlag(TVTProductionConceptFlag.PRODUCTION_FINISHED)<>0
+	End Method
+
+
+	Method IsProductionStarted:int()
+		return hasFlag(TVTProductionConceptFlag.PRODUCTION_STARTED)<>0
 	End Method
 
 
@@ -1137,8 +1142,9 @@ Type TProductionConcept Extends TOwnedGameObject
 		If not IsPlanned() then return False
 		'ready to get produced
 		if not IsDepositPaid() then return False
-		'already produced
-		if IsProduced() then return False
+		'already started producing?
+		if IsProductionStarted() then return False
+		'if IsProductionFinished() then return False
 
 		return True
 	End Method

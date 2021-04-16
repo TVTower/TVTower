@@ -871,9 +871,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		productionConcepts.Sort(True)
 
 		For Local productionConcept:TProductionConcept = EachIn productionConcepts
-
-			'skip produced concepts
-			If productionConcept.IsProduced() Then Continue
+			'skip concepts already getting produced
+			If productionConcept.IsProductionStarted() Then Continue
 
 			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D.Init(150,40), "concept")
 			item.SetMode( TGuiProductionConceptSelectListItem.MODE_SUPERMARKET ) 

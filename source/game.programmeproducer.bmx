@@ -114,9 +114,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local production:TProduction = New TProduction
 			production.SetProductionConcept(productionConcept)
 			production.SetStudio("")
-			production.PayProduction()
+			'production.PayProduction()
 			production.Start()
 			production.Finalize() 'skip waiting
+			production.AddProgrammeLicence() 'make licence available
 
 			result = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
 			If result
