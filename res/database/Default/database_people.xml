@@ -19,8 +19,7 @@
 			<first_name>Patty</first_name>
 			<last_name>Glansen</last_name>
 			<nick_name></nick_name>
-			<images face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
-			<details job="2" gender="2" birthday="1961" deathday="" country="D" fictional="1" />
+			<details job="2" gender="2" birthday="1961" deathday="" country="D" fictional="1" face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
 			<data popularity="20" affinity="50" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -167,8 +166,8 @@
 			<first_name>Betty</first_name>
 			<last_name>Botterblom</last_name>
 			<nick_name></nick_name>
-			<details job="136" gender="2" birthday="" deathday="" country="USA" fictional="1" />
-			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
+			<details job="136" gender="2" birthday="" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
+			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
 		</person>
 		<person id="79c081cb-755e-41b8-bd50-11f00e6b1382" tmdb_id="0" imdb_id="nm0108523" creator="">
 			<first_name>Pierre</first_name>
@@ -1286,7 +1285,6 @@
             <nick_name></nick_name>
             <first_name_original>Jeff</first_name_original>
             <last_name_original>Daniels</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1955-02-19" deathday="" country="US" />
         </person>
 
@@ -1314,7 +1312,6 @@
             <nick_name></nick_name>
             <first_name_original>Charlize</first_name_original>
             <last_name_original>Theron</last_name_original>
-            <images />
             <details job="2" gender="2" birthday="1977-08-07" deathday="" country="ZA" />
         </person>
         <person id="DF-Celebreties-Emilia_Clarke" tmdb_id="" imdb_id="nm3592338" creator="8782" created_by="DerFronck">
@@ -1323,7 +1320,6 @@
             <nick_name></nick_name>
             <first_name_original>Emilia</first_name_original>
             <last_name_original>Clarke</last_name_original>
-            <images />
             <details job="2" gender="2" birthday="1986-10-23" deathday="" country="UK" />
         </person>
         <person id="DF-Celebreties-Katie_Holmes" tmdb_id="" imdb_id="nm0005017" creator="8782" created_by="DerFronck">
@@ -1332,7 +1328,6 @@
             <nick_name></nick_name>
             <first_name_original>Katie</first_name_original>
             <last_name_original>Holmes</last_name_original>
-            <images />
             <details job="2" gender="2" birthday="1974-01-30" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-Jessica_Chastain" tmdb_id="" imdb_id="nm1567113" creator="8782" created_by="DerFronck">
@@ -1341,7 +1336,6 @@
             <nick_name></nick_name>
             <first_name_original>Jessica</first_name_original>
             <last_name_original>Chastain</last_name_original>
-            <images />
             <details job="2" gender="2" birthday="1977-03-24" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-Lena_Headey" tmdb_id="" imdb_id="nm0372176" creator="8782" created_by="DerFronck">
@@ -1350,7 +1344,6 @@
             <nick_name></nick_name>
             <first_name_original>Lena</first_name_original>
             <last_name_original>Headey</last_name_original>
-            <images />
             <details job="2" gender="2" birthday="1973-10-03" deathday="" country="BM" />
         </person>
         <person id="DF-Celebreties-Sophie_Turner" tmdb_id="" imdb_id="nm3849842" creator="8782" created_by="DerFronck">
@@ -1359,7 +1352,6 @@
             <nick_name></nick_name>
             <first_name_original>Sophie</first_name_original>
             <last_name_original>Turner</last_name_original>
-            <images />
             <details job="2" gender="2" birthday="1996-02-21" deathday="" country="UK" />
         </person>
         <person id="DF-Celebreties-Peter_Dinklage" tmdb_id="" imdb_id="nm0227759" creator="8782" created_by="DerFronck">
@@ -1368,7 +1360,6 @@
             <nick_name></nick_name>
             <first_name_original>Peter</first_name_original>
             <last_name_original>Dinklage</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1969-06-11" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-Kit_Harrington" tmdb_id="" imdb_id="nm3229685" creator="8782" created_by="DerFronck">
@@ -1377,7 +1368,6 @@
             <nick_name></nick_name>
             <first_name_original>Kit</first_name_original>
             <last_name_original>Harington</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1986-12-26" deathday="" country="UK" />
         </person>
         <person id="DF-Celebreties-Nikolaj_Coster-Waldau" tmdb_id="" imdb_id="nm0182666" creator="8782" created_by="DerFronck">
@@ -1386,7 +1376,6 @@
             <nick_name></nick_name>
             <first_name_original>Nikolaj</first_name_original>
             <last_name_original>Coster-Waldau</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1970-07-27" deathday="" country="DK" />
         </person>
         <person id="DF-Celebreties-Sean_Bean" tmdb_id="" imdb_id="nm0000293" creator="8782" created_by="DerFronck">
@@ -1395,7 +1384,6 @@
             <nick_name></nick_name>
             <first_name_original>Sean</first_name_original>
             <last_name_original>Bean</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1959-04-17" deathday="" country="UK" />
         </person>
         <person id="DF-Celebreties-Aiden_Gillen" tmdb_id="" imdb_id="nm0318821" creator="8782" created_by="DerFronck">
@@ -1404,7 +1392,6 @@
             <nick_name></nick_name>
             <first_name_original>Aidan</first_name_original>
             <last_name_original>Gillen</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1968-04-24" deathday="" country="IE" />
         </person>
         <person id="DF-Celebreties-Iain_Glenn" tmdb_id="" imdb_id="nm0322513" creator="8782" created_by="DerFronck">
@@ -1413,7 +1400,6 @@
             <nick_name></nick_name>
             <first_name_original>Iain</first_name_original>
             <last_name_original>Glenn</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1968-04-24" deathday="" country="UK" />
         </person>
         <person id="DF-Celebreties-Michael_Fassbender" tmdb_id="" imdb_id="nm1055413" creator="8782" created_by="DerFronck">
@@ -1422,7 +1408,6 @@
             <nick_name></nick_name>
             <first_name_original>Michael</first_name_original>
             <last_name_original>Fassbender</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1970-04-02" deathday="" country="DE" />
         </person>
         <person id="DF-Celebreties-Idris_Elba" tmdb_id="" imdb_id="nm0252961" creator="8782" created_by="DerFronck">
@@ -1431,7 +1416,6 @@
             <nick_name></nick_name>
             <first_name_original>Idris</first_name_original>
             <last_name_original>Elba</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1972-09-06" deathday="" country="UK" />
         </person>
         <person id="DF-Celebreties-Christian_Bale" tmdb_id="" imdb_id="nm0000288" creator="8782" created_by="DerFronck">
@@ -1440,7 +1424,6 @@
             <nick_name></nick_name>
             <first_name_original>Christian</first_name_original>
             <last_name_original>Bale</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1974-01-30" deathday="" country="UK" />
             <data popularity="10" affinity="0" fame="0" scandalizing="10" price_mod="1" power="25" humor="0" charisma="21" appearance="21" topgenre="0" />
         </person>
@@ -1450,7 +1433,6 @@
             <nick_name></nick_name>
             <first_name_original>Matt</first_name_original>
             <last_name_original>Damon</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1970-10-08" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-Wil_Wheaton" tmdb_id="" imdb_id="nm0000696" creator="8782" created_by="DerFronck">
@@ -1459,7 +1441,6 @@
             <nick_name></nick_name>
             <first_name_original>Wil</first_name_original>
             <last_name_original>Wheaton</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1972-07-29" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-Corey_Feldman" tmdb_id="" imdb_id="nm0000397" creator="8782" created_by="DerFronck">
@@ -1468,7 +1449,6 @@
             <nick_name></nick_name>
             <first_name_original>Corey</first_name_original>
             <last_name_original>Feldman</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1971-07-16" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-Jerry_O'Connell" tmdb_id="" imdb_id="nm0005278" creator="8782" created_by="DerFronck">
@@ -1477,7 +1457,6 @@
             <nick_name></nick_name>
             <first_name_original>Jerry</first_name_original>
             <last_name_original>O'Connell</last_name_original>
-            <images />
             <details job="2" gender="1" birthday="1974-02-17" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-David_Benioff" tmdb_id="" imdb_id="nm1125275" creator="8782" created_by="DerFronck">
@@ -1486,7 +1465,6 @@
             <nick_name></nick_name>
             <first_name_original>David</first_name_original>
             <last_name_original>Benioff</last_name_original>
-            <images />
             <details job="1" gender="1" birthday="1970-09-25" deathday="" country="US" />
         </person>
         <person id="DF-Celebreties-D.B._Weiss" tmdb_id="" imdb_id="nm1888967" creator="8782" created_by="DerFronck">
@@ -1495,7 +1473,6 @@
             <nick_name></nick_name>
             <first_name_original>D.B.</first_name_original>
             <last_name_original>Weiss</last_name_original>
-            <images />
             <details job="1" gender="1" birthday="1971-04-23" deathday="" country="US" />
         </person>
 

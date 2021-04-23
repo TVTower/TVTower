@@ -182,7 +182,7 @@
 				<job index="3" function="32" required="0" />
 			</jobs>
 			<!-- mandatory: /  |  optional: xrated, bmovie, trash -->
-			<data flags="0" optional_flags="112" />
+			<data flags="0" flags_optional="112" />
 			<genres main_genre="1" />
 			<blocks min="2" max="3" slope="25" />
 			<price min="8000" max="12000" slope="40" />
@@ -269,7 +269,7 @@
 			</jobs>
 
 			<!-- mandatory: xrated  |  optional: bmovie, trash -->
-			<data flags="64" optional_flags="48"/>
+			<data flags="64" flags_optional="48"/>
 			<studio_size min="1" max="2" slope="20" /> 
 			<genres maingenre="8" subgenres="15"/>
 			<blocks min="2" max="3" slope="20" />
@@ -336,7 +336,7 @@
 			</jobs>
 
 			<!-- optional: xrated | cult -->
-			<data optional_flags="72" />
+			<data flags_optional="72" />
 			<genres maingenre="12" subgenres="14"/>
 			<blocks min="2" max="3" slope="20" />
 			<price min="9500" max="30000" slope="50" />
@@ -404,7 +404,7 @@
 			</jobs>
 
 			<!-- mandatory: xrated  |  optional: cult -->
-			<data optional_flags="8" />
+			<data flags_optional="8" />
 			<genres maingenre="7" subgenres="9"/>
 			<blocks min="2" max="3" slope="20" />
 			<price min="7500" max="25000" slope="40" />
