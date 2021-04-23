@@ -1052,7 +1052,7 @@
 			</description>
 			<effects>
 				<!-- "morgen 3-7 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,3,7" news="news-jorgaeff-1985-2-02b" flags="2" />
+				<effect trigger="happen" type="triggernews" time="2,1,1,3,7" news="news-jorgaeff-1985-2-02b" />
 			</effects>
 			<data genre="2" price="0.3" quality="3" fictional="False" />
 		</news>

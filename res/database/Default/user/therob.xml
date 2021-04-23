@@ -2161,7 +2161,6 @@
 			<first_name>Vera</first_name>
 			<last_name>Zottorova</last_name>
 			<nick_name></nick_name>
-			<images />
 			<details gender="2" fictional="1" birthday="" deathday="" country="" />
 			<data popularity="5" affinity="60" fame="60" scandalizing="20" price_mod="1" power="60" humor="24" charisma="78" appearance="88" topgenre="0" />
 		</person>
@@ -2170,7 +2169,6 @@
 			<first_name>Moris</first_name>
 			<last_name>Weverkov</last_name>
 			<nick_name></nick_name>
-			<images />
 			<details gender="1" fictional="1" birthday="" deathday="" country="" />
 			<data popularity="60" affinity="30" fame="40" scandalizing="80" price_mod="1" power="50" humor="40" charisma="90" appearance="40" topgenre="0" />
 		</person>
@@ -2330,7 +2328,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="1" gender="1" />
 			</jobs>
-			<data flags="64" optional_flags="16" />
+			<data flags="64" flags_optional="16" />
 			<genres maingenre="12" subgenres="14" />
 			<blocks min="1" max="4" slope="25" />
 			<price min="1000" max="19500" slope="20" />
@@ -2424,7 +2422,7 @@
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="16" optional_flags="96" />
+			<data flags="16" flags_optional="96" />
 			<genres maingenre="4" subgenres="0" />
 			<blocks min="2" max="2" slope="25" />
 			<price min="30000" max="60000" slope="50" />
@@ -2448,7 +2446,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="1" />
 			</jobs>
-			<data optional_flags="42" />
+			<data flags_optional="42" />
 			<genres maingenre="16" subgenres="5" />
 			<blocks min="2" max="4" slope="40" />
 			<price min="35000" max="69500" slope="60" />
@@ -2477,7 +2475,7 @@
 				<job index="1" function="8" required="0" gender="1" />
 				<job index="2" function="8" required="1" gender="2" />
 			</jobs>
-			<data flags="4" optional_flags="2" />
+			<data flags="4" flags_optional="2" />
 			<genres maingenre="6" subgenres="0" />
 			<blocks min="2" max="4" slope="70" />
 			<price min="7000" max="17500" slope="20" />
@@ -2507,7 +2505,7 @@
 				<job index="1" function="8" required="0" gender="1" />
 				<job index="2" function="8" required="1" gender="2" />
 			</jobs>
-			<data flags="4" optional_flags="2" />
+			<data flags="4" flags_optional="2" />
 			<genres maingenre="6" subgenres="0" />
 			<blocks min="2" max="4" slope="70" />
 			<price min="7000" max="17500" slope="20" />
@@ -2635,7 +2633,7 @@
 				<job index="7" function="32" required="0" />
 				<job index="8" function="32" required="0" />
 			</jobs>
-			<data flags="8" optional_flags="50" />
+			<data flags="8" flags_optional="50" />
 			<genres maingenre="7" subgenres="9" />
 			<episodes min="9" max="12" />
 			<blocks value="1" />
@@ -2690,7 +2688,7 @@
 			<jobs>
 				<job index="0" function="1" required="1"  />
 			</jobs>
-			<data flags="114" optional_flags="8" />
+			<data flags="114" flags_optional="8" />
 			<genres maingenre="3" subgenres="8" />
 			<episodes min="3" max="5" />
 			<blocks value="1" />
@@ -2745,7 +2743,7 @@
 			<jobs>
 				<job index="0" function="1" required="1"  />
 			</jobs>
-			<data flags="48" optional_flags="12" />
+			<data flags="48" flags_optional="12" />
 			<genres maingenre="102" subgenres="9" />
 			<episodes min="3" max="5" />
 			<blocks value="1" />
@@ -2829,7 +2827,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data optional_flags="18" />
+			<data flags_optional="18" />
 			<genres maingenre="4" subgenres="2" />
 			<episodes min="4" max="7" />
 			<blocks min="1" max="2" slope="25" />
@@ -2860,7 +2858,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="8" optional_flags="66" />
+			<data flags="8" flags_optional="66" />
 			<groups target_groups="68" />
 			<genres maingenre="13" subgenres="15" />
 			<blocks min="3" max="5" slope="45" />
@@ -2895,7 +2893,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data optional_flags="34" />
+			<data flags_optional="34" />
 			<groups target_groups="3" />
 			<genres maingenre="10" subgenres="1" />
 			<blocks min="1" max="2" slope="75" />
@@ -2926,8 +2924,8 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="0" gender="1" />
 			</jobs>
-			<data flags="2" optional_flags="16" />
-			<groups target_groups="3" optional_target_groups="4" />
+			<data flags="2" flags_optional="16" />
+			<groups target_groups="3" target_groups_optional="4" />
 			<genres maingenre="3" subgenres="5" />
 			<blocks min="1" max="2" slope="55" />
 			<price min="15000" max="39500" slope="50" />
@@ -2958,7 +2956,7 @@
 				<job index="3" function="32" required="1" gender="1" />
 				<job index="4" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="4" optional_flags="10" />
+			<data flags="4" flags_optional="10" />
 			<genres maingenre="11" subgenres="6" />
 			<blocks min="1" max="2" slope="65" />
 			<price min="20000" max="49500" slope="40" />
@@ -2986,7 +2984,7 @@
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />
 			</jobs>
-			<data optional_flags="64" />
+			<data flags_optional="64" />
 			<genres maingenre="1" subgenres="13" />
 			<blocks min="2" max="4" slope="30" />
 			<price min="15000" max="49500" slope="20" />
@@ -3021,7 +3019,7 @@
 				<job index="3" function="2" required="1" gender="2" />
 				<job index="4" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="8" optional_flags="66" />
+			<data flags="8" flags_optional="66" />
 			<groups target_groups="256" />
 			<genres maingenre="18" subgenres="7" />
 			<blocks min="2" max="3" slope="25" />
@@ -3101,7 +3099,7 @@
 				<job index="2" function="32" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="144" optional_flags="67" />
+			<data flags="144" flags_optional="67" />
 			<groups target_groups="16" />
 			<genres maingenre="0" />
 			<episodes min="2" max="7" />
