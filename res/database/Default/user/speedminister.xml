@@ -20,9 +20,9 @@
         <person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id032" first_name="Hans" last_name="Prielmann" real_first_name="Heinz" real_last_name="Sielmann" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" real_first_name="Dennis" real_last_name="Jacobsen" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id038" first_name="Lianda" last_name="Mahoud" real_first_name="Randa" real_last_name="Chahoud" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id032" first_name="Hans" last_name="Prielmann" first_name_original="Heinz" last_name_original="Sielmann" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" first_name_original="Dennis" last_name_original="Jacobsen" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id038" first_name="Lianda" last_name="Mahoud" first_name_original="Randa" last_name_original="Chahoud" creator="8605" created_by="speedminister" />
         <!-- Österreich -->
         <person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" />
@@ -38,52 +38,43 @@
         <!-- USA -->
         <person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id033" first_name="Steven" last_name="Kessel" real_first_name="Steve" real_last_name="Ressel" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id034" first_name="Johan" last_name="Richcorner" real_first_name="Jordan" real_last_name="Reichek" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id035" first_name="Robby" last_name="Bumblebee" real_first_name="Rob" real_last_name="Hummel" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id036" first_name="J. Honey" last_name="Busquez" real_first_name="Jhonen" real_last_name="Vasquez" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id033" first_name="Steven" last_name="Kessel" first_name_original="Steve" last_name_original="Ressel" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id034" first_name="Johan" last_name="Richcorner" first_name_original="Jordan" last_name_original="Reichek" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id035" first_name="Robby" last_name="Bumblebee" first_name_original="Rob" last_name_original="Hummel" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id036" first_name="J. Honey" last_name="Busquez" first_name_original="Jhonen" last_name_original="Vasquez" creator="8605" created_by="speedminister" />
         <!-- Frankreich -->
-        <person id="SpeedMinister-person-id028" first_name="Manuel" last_name="Goldstein" real_first_name="Emmanuel" real_last_name="Gorinstein" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id029" first_name="Alex" last_name="de la Palletière" real_first_name="Alexandre" real_last_name="de La Patellière" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id030" first_name="Matthias" last_name="Pförtner" real_first_name="Mathieu" real_last_name="Delaporte" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id028" first_name="Manuel" last_name="Goldstein" first_name_original="Emmanuel" last_name_original="Gorinstein" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id029" first_name="Alex" last_name="de la Palletière" first_name_original="Alexandre" last_name_original="de La Patellière" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id030" first_name="Matthias" last_name="Pförtner" first_name_original="Mathieu" last_name_original="Delaporte" creator="8605" created_by="speedminister" />
         <!-- Belgien -->
-        <person id="SpeedMinister-person-id031" first_name="Rondo" last_name="van Lenk" real_first_name="Romain" real_last_name="van Liemt" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id031" first_name="Rondo" last_name="van Lenk" first_name_original="Romain" last_name_original="van Liemt" creator="8605" created_by="speedminister" />
         <!-- England -->
-        <person id="SpeedMinister-person-id039" first_name="Ilan J.W." last_name="Bubble Cap" real_first_name="Alan J.W." real_last_name="Bell" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id040" first_name="Douggy" last_name="Eves" real_first_name="Douglas" real_last_name="Adams" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id041" first_name="Joe" last_name="Nedlloyd" real_first_name="John" real_last_name="Lloyd" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id039" first_name="Ilan J.W." last_name="Bubble Cap" first_name_original="Alan J.W." last_name_original="Bell" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id040" first_name="Douggy" last_name="Eves" first_name_original="Douglas" last_name_original="Adams" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id041" first_name="Joe" last_name="Nedlloyd" first_name_original="John" last_name_original="Lloyd" creator="8605" created_by="speedminister" />
     </insignificantpeople>
 
     <celebritypeople>
         <person id="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
             <first_name>Karlheinz</first_name>
             <last_name>Dorfmichel</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1941" deathday="" country="D" />
+            <details job="2" gender="1"  birthday="1941" deathday="" country="D" />
             <data popularity="7" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
         <person id="SpeedMinister-celebritypeople-OttokarKahn" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
             <first_name>Ottokar</first_name>
             <last_name>Kahn</last_name>
-            <real_first_name>Oliver</real_first_name>
-            <real_last_name>Jahn</real_last_name>
-            <functions>
-                <function>1,2</function>
-            </functions>
-            <details gender="1"  birthday="1969" deathday="" country="D" />
+            <first_name_original>Oliver</first_name_original>
+            <last_name_original>Jahn</last_name_original>
+            <details job="3" gender="1"  birthday="1969" deathday="" country="D" />
             <data popularity="7" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
         <person id="SpeedMinister-celebritypeople-CoraSchirmer" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
             <first_name>Cora</first_name>
             <last_name>Schirmer</last_name>
-            <real_first_name>Nora</real_first_name>
-            <real_last_name>Tschirner</real_last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1981" deathday="" country="D" />
+            <first_name_original>Nora</first_name_original>
+            <last_name_original>Tschirner</last_name_original>
+            <details job="2" gender="1"  birthday="1981" deathday="" country="D" />
             <data popularity="25" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
     </celebritypeople>

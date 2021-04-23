@@ -50,7 +50,8 @@
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
 			<groups target_groups="64" />
-			<data country="D" year="0" year_relative="-4" year_relative_min="1975" year_relative_max="1990" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
+			<data country="D" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
+			<releaseTime year_relative="-4" year_relative_min="1975" year_relative_max="1990" />
 			<ratings critics="45" speed="20" outcome="24" />
 		</programme>
 		<programme id="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -67,7 +68,8 @@
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
 			<groups target_groups="64" />
-			<data country="D" year="0" year_relative="-3" year_relative_min="1976" year_relative_max="1991" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
+			<data country="D" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
+			<releaseTime year_relative="-3" year_relative_min="1976" year_relative_max="1991" />
 			<ratings critics="38" speed="28" outcome="27" />
 		</programme>
 		<programme id="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -84,7 +86,8 @@
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
 			<groups target_groups="64" />
-			<data country="D" year="0" year_relative="+2" year_relative_min="1979" year_relative_max="1993" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
+			<data country="D" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
+			<releaseTime year_relative="+2" year_relative_min="1979" year_relative_max="1993" />
 			<ratings critics="49" speed="30" outcome="20" />
 		</programme>
 		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -101,7 +104,8 @@
 				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
 			</staff>
 			<groups target_groups="256" />
-			<data country="D" year="0" year_relative="-4" year_relative_min="1981" year_relative_max="1983" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
+			<data country="D" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
+			<releaseTime year_relative="-4" year_relative_min="1981" year_relative_max="1983" />
 			<ratings critics="55" speed="15" outcome="25" />
 		</programme>
 		<programme id="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -190,7 +194,8 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 			</staff>
 			<groups target_groups="23" />
-			<data country="D" year="0" year_relative="-2" year_relative_min="1980" year_relative_max="2000" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
+			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="2000" />
 			<ratings critics="18" speed="25" />
 		</programme>
 		<programme id="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -206,7 +211,8 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="0" year_relative="-8" year_relative_min="1976" year_relative_max="1990" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
+			<releaseTime year_relative="-8" year_relative_min="1976" year_relative_max="1990" />
 			<ratings critics="35" speed="15" />
 		</programme>
 		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -326,7 +332,8 @@ The report accompanies two families for a summer in West Berlin.</en>
 			</staff>
 			<!-- men / male teenagers -->
 			<targetgroupattractivity men="1.05" teenagers_male="1.2" />
-			<data country="D" year="0" year_relative="-1" year_relative_min="1985" year_relative_max="1988" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
+			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1988" />
 			<ratings critics="25" speed="20" />
 		</programme>
 
@@ -347,7 +354,8 @@ Test winner: The "Little Twiddle".</en>
 			</staff>
 			<!-- men / male teenagers -->
 			<targetgroupattractivity men="1.2" teenagers_male="1.4" />
-			<data country="D" year="0" year_relative="+2" year_relative_min="1993" year_relative_max="2000" distribution="2" maingenre="300" subgenre="8" flags="64" blocks="1" />
+			<data country="D" distribution="2" maingenre="300" subgenre="8" flags="64" blocks="1" />
+			<releaseTime year_relative="+2" year_relative_min="1993" year_relative_max="2000" />
 			<ratings critics="15" speed="30" />
 		</programme>
 
@@ -368,7 +376,8 @@ Hold ready some handkerchiefs.</en>
 			</staff>
 			<!-- women / female teenagers -->
 			<targetgroupattractivity women="1.20" teenagers_female="1.25" />
-			<data country="D" year="0" year_relative="+2" year_relative_min="1995" year_relative_max="2005" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<releaseTime year_relative="+2" year_relative_min="1995" year_relative_max="2005" />
 			<ratings critics="10" speed="30" />
 		</programme>
 
@@ -389,7 +398,8 @@ The hoped-for scandal helf off.</en>
 			</staff>
 			<!-- pensioners -->
 			<targetgroupattractivity pensioners="1.10" />
-			<data country="D" year="0" year_relative="+2" year_relative_min="1985" year_relative_max="2010" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<releaseTime year_relative="+2" year_relative_min="1985" year_relative_max="2010" />
 			<ratings critics="11" speed="18" />
 		</programme>
 
@@ -414,7 +424,8 @@ Illustrious guests and music by [3|Nick].</en>
 				<!-- the programme ages faster than average -->
 				<modifier name="topicality::age" value="1.2" />
 			</modifiers>
-			<data country="D" year="0" year_relative="-1" year_relative_min="1986" year_relative_max="1992" distribution="2" maingenre="100" subgenre="5" blocks="3" />
+			<data country="D" distribution="2" maingenre="100" subgenre="5" blocks="3" />
+			<releaseTime year_relative="-1" year_relative_min="1986" year_relative_max="1992" />
 			<ratings critics="18" speed="35" />
 		</programme>
 
@@ -437,7 +448,8 @@ Illustrious guests and music by [3|Nick].</en>
 				<!-- the programme ages slower than average -->
 				<modifier name="topicality::age" value="0.75" />
 			</modifiers>
-			<data country="D" year="0" year_relative="-5" year_relative_min="1980" year_relative_max="1995" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="1995" />
 			<ratings critics="25" speed="20" />
 		</programme>
 	</allprogrammes>
@@ -479,19 +491,6 @@ Illustrious guests and music by [3|Nick].</en>
 				Folgenachricht und ihre Wahrscheinlichkeit im Falle einer
 				"oder"-Verknuepfung
 		-->
-<ignore>
-		<news id="ronny-news-newskickersample-01" type="0" creator="5578" created_by="Ronny">
-			<!-- kicker sample - no texts needed -->
-
-			<effects>
-				<!-- triggers itself again each 7 days (at 0:00) -->
-				<effect trigger="happen" type="triggernews" time="2,7,7,0,0" news="ronny-news-newskickersample-01" />
-				<!-- (maybe) trigger other news on each of that 7 days -->
-				<effect trigger="happen" type="triggernews" time="1,1,2" news="ronny-news-spitzel-01" />
-			</effects>
-			<data genre="3" flags="273" happen_time="0" />
-		</news>
-</ignore>
 		<news id="ronny-news-spitzel-01" type="0" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre</de>

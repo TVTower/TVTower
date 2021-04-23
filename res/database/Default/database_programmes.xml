@@ -7224,7 +7224,8 @@ Tragische Liebesgeschichte</de>
 				<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
 			</staff>
 			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year_relative="-1" year_relative_min="1985" year_relative_max="1990" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.85" />
+			<data country="D" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.85" />
+			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1990" />
 			<ratings critics="20" speed="42" outcome="35" />
 			<children>
 				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
@@ -7510,7 +7511,8 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<member index="1" function="2">396f8bfa-a414-4a25-85c7-4e05c687f6a0</member>
 			</staff>
 			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="AUT" year_relative="-1" year_relative_min="2006" year_relative_max="2008" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.85" />
+			<data country="AUT" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.85" />
+			<releaseTime year_relative="-1" year_relative_min="2006" year_relative_max="2008" />
 			<ratings critics="35" speed="7" outcome="0" />
 			<children>
 				<programme id="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
@@ -10749,7 +10751,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="4" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1931" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="1" time="0" price_mod="1" />
+			<data country="USA" year="1931" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="1" price_mod="1" />
 			<ratings critics="37" speed="53" outcome="53" />
 		</programme>
 
@@ -10774,7 +10776,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-WaltherRunman</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1935" distribution="0" maingenre="1" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1935" distribution="0" maingenre="1" subgenre="7" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="48" speed="62" outcome="67" />
 		</programme>
 
@@ -10799,7 +10801,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-PeteWore</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1953" distribution="0" maingenre="2" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1953" distribution="0" maingenre="2" subgenre="5" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="68" speed="62" outcome="59" />
 		</programme>
 
@@ -10825,7 +10827,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="4" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1949" distribution="0" maingenre="202" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1949" distribution="0" maingenre="202" subgenre="5" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="61" speed="46" outcome="53" />
 		</programme>
 
@@ -10850,7 +10852,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">c299b440-3684-48fa-bc21-85a76ae2c253</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1973" distribution="0" maingenre="14" subgenre="16" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1973" distribution="0" maingenre="14" subgenre="16" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="81" speed="69" outcome="74" />
 		</programme>
 
@@ -10875,7 +10877,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">41946f51-d770-40f4-807a-fd74b85c97b8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1968" distribution="0" maingenre="9" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1968" distribution="0" maingenre="9" subgenre="5" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="47" speed="62" outcome="51" />
 		</programme>
 
@@ -10900,7 +10902,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="IT" year="1967" distribution="0" maingenre="5" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="IT" year="1967" distribution="0" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="47" speed="59" outcome="41" />
 		</programme>
 
@@ -10925,7 +10927,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1956" distribution="0" maingenre="13" subgenre="11" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<data country="USA" year="1956" distribution="0" maingenre="13" subgenre="11" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="87" speed="61" outcome="81" />
 		</programme>
 
@@ -10950,7 +10952,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1970" distribution="0" maingenre="11" subgenre="202" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1970" distribution="0" maingenre="11" subgenre="202" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="57" speed="9" outcome="12" />
 		</programme>
 
@@ -10974,7 +10976,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-GaryRavenport</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="11" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="11" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="91" speed="26" outcome="72" />
 		</programme>
 
@@ -10998,7 +11000,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-RonnyMcdawoll</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1948" distribution="0" maingenre="7" subgenre="11" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1948" distribution="0" maingenre="7" subgenre="11" flags="0" blocks="2"  price_mod="1.00" />
 			<ratings critics="83" speed="27" outcome="71" />
 		</programme>
 
@@ -11022,7 +11024,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-MikeMcPiamoir</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1952" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1952" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="93" speed="29" outcome="76" />
 		</programme>
 
@@ -11046,7 +11048,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">1355577f-9afa-4240-9add-e043b1c03797</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1959" distribution="0" maingenre="11" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1959" distribution="0" maingenre="11" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="81" speed="41" outcome="71" />
 		</programme>
 
@@ -11071,7 +11073,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1956" distribution="0" maingenre="1" subgenre="7" flags="12" blocks="3" time="0" price_mod="1.00" />
+			<data country="USA" year="1956" distribution="0" maingenre="1" subgenre="7" flags="12" blocks="3" price_mod="1.00" />
 			<ratings critics="71" speed="67" outcome="74" />
 		</programme>
 
@@ -11097,7 +11099,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="4" function="2">788fa2a0-7908-4e96-b3c0-51ff9386a16e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1964" distribution="0" maingenre="7" subgenre="11" flags="8" blocks="3" time="0" price_mod="1.00" />
+			<data country="USA" year="1964" distribution="0" maingenre="7" subgenre="11" flags="8" blocks="3" price_mod="1.00" />
 			<ratings critics="71" speed="67" outcome="74" />
 		</programme>
 
@@ -11122,7 +11124,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">7af27da0-4abf-482c-b8a3-00612c1e4d53</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1969" distribution="0" maingenre="2" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1969" distribution="0" maingenre="2" subgenre="7" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="51" speed="71" outcome="66" />
 		</programme>
 
@@ -11148,7 +11150,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="4" function="2">TheRob-TowerTV-Bobmailour</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1961" distribution="0" maingenre="1" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1961" distribution="0" maingenre="1" subgenre="5" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="12" speed="31" outcome="14" />
 		</programme>
 
@@ -11174,7 +11176,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="4" function="2">fd49c0ab-3619-4f7a-80cf-82488f5256bc</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1969" distribution="0" maingenre="1" subgenre="15" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<data country="USA" year="1969" distribution="0" maingenre="1" subgenre="15" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="62" speed="72" outcome="61" />
 		</programme>
 
@@ -11199,7 +11201,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-CharlieWalden</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1962" distribution="0" maingenre="11" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<data country="USA" year="1962" distribution="0" maingenre="11" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="87" speed="52" outcome="81" />
 		</programme>
 
@@ -11223,7 +11225,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-JellyWinter</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1961" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1961" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="47" speed="76" outcome="71" />
 		</programme>
 
@@ -11247,7 +11249,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1948" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1948" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="79" speed="48" outcome="71" />
 		</programme>
 
@@ -11271,7 +11273,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-GoddessBardo</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="F" year="1958" distribution="0" maingenre="15" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="F" year="1958" distribution="0" maingenre="15" subgenre="7" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="69" speed="53" outcome="71" />
 		</programme>
 
@@ -11296,7 +11298,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-RennyDiary</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="F" year="1954" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="F" year="1954" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="79" speed="91" outcome="76" />
 		</programme>
 
@@ -11321,7 +11323,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-ReanWarin</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="F" year="1955" distribution="0" maingenre="13" subgenre="11" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<data country="F" year="1955" distribution="0" maingenre="13" subgenre="11" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="69" speed="31" outcome="67" />
 		</programme>
 
@@ -11346,7 +11348,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-MichelleMorsand</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="F" year="1941" distribution="0" maingenre="2" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="F" year="1941" distribution="0" maingenre="2" subgenre="7" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="59" speed="67" outcome="76" />
 		</programme>
 
@@ -11371,7 +11373,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">ca53b0fc-53cb-443f-aba8-408d8b0bbdd8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1983" distribution="0" maingenre="4" subgenre="7" flags="8" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1983" distribution="0" maingenre="4" subgenre="7" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="95" speed="80" outcome="85" />
 			<children>
 				<programme id="TheRob-serie-DelanoandChefs-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -11430,7 +11432,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">47d20e57-dff8-4120-8450-49119e6e0aae</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1981" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<data country="USA" year="1981" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="92" speed="57" outcome="65" />
 			<children>
 				<programme id="TheRob-serie-HinterEden-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -11486,9 +11488,10 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="0" function="1">TheRob-TowerTV-MikaelCinamon</member>
 				<member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
 				<member index="2" function="2">770dc8b2-a364-4cdf-99a3-6b8157c5cf92</member>
-				<member index="3" function="2">58cb1013-fa4c-42a8-9467-c931925109b6</member>                                                                                             			</staff>
+				<member index="3" function="2">58cb1013-fa4c-42a8-9467-c931925109b6</member>
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1978" distribution="0" maingenre="7" subgenre="2" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<data country="USA" year="1978" distribution="0" maingenre="7" subgenre="2" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="88" speed="82" outcome="94" />
 		</programme>
 
@@ -11510,9 +11513,10 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="0" function="1">TheRob-TowerTV-MikaelCinamon</member>
 				<member index="1" function="2">TheRob-TowerTV-ChristianLampnerd</member>
 				<member index="2" function="2">TheRob-TowerTV-LawrenceStempel</member>
-				<member index="3" function="2">e8d8fc33-b2ad-4998-8516-52182ef3911d</member>                                                                                             			</staff>
+				<member index="3" function="2">e8d8fc33-b2ad-4998-8516-52182ef3911d</member>
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1987" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1987" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="53" speed="82" outcome="47" />
 		</programme>
 
@@ -11536,7 +11540,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">e0807a2d-e04d-4abf-9422-afa44b202438</member>
 				</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1986" distribution="0" maingenre="1" subgenre="10" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1986" distribution="0" maingenre="1" subgenre="10" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="48" speed="62" outcome="34" />
 		</programme>
 
@@ -11834,7 +11838,8 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
 			</staff>
 			<groups target_groups="256" />
-			<data country="USA" year="0" year_relative="-5" year_relative_min="1978" year_relative_max="1984" distribution="2" maingenre="0" subgenre="9" flags="0" blocks="1" price_mod="0.95" />
+			<data country="USA" distribution="2" maingenre="0" subgenre="9" flags="0" blocks="1" price_mod="0.95" />
+			<releaseTime year_relative="-5" year_relative_min="1978" year_relative_max="1984" />
 			<ratings critics="20" speed="30" outcome="0" />
 			<!-- Episodes -->
 			<children>
@@ -11905,7 +11910,8 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="64" generator="es,0"></member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="0" year_relative="-2" year_relative_min="1984" year_relative_max="1989" distribution="2" maingenre="0" blocks="1" tags="cooking,80s" />
+			<data country="D" distribution="2" maingenre="0" blocks="1" />
+			<releaseTime year_relative="-2" year_relative_min="1984" year_relative_max="1989" />
 			<modifiers>
 				<!-- the programme ages faster than average -->
 				<modifier name="topicality::age" value="1.5" />
@@ -11977,7 +11983,8 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="2">common-amateur-actors</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="0" year_relative="-3" year_relative_min="1977" year_relative_max="1988" distribution="2" maingenre="0" blocks="1" />
+			<data country="D" distribution="2" maingenre="0" blocks="1" />
+			<releaseTime year_relative="-3" year_relative_min="1977" year_relative_max="1988" />
 			<ratings critics="44" speed="20" />
 			<!-- Episodes -->
 			<children>
@@ -12145,7 +12152,8 @@ Instructive stories convey current findings of recognized child and youth psycho
 				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D/F" year="0" year_relative="-2" year_relative_min="1980" year_relative_max="1990" distribution="2" maingenre="15" blocks="2" />
+			<data country="D/F" distribution="2" maingenre="15" blocks="2" />
+			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="1990" />
 			<ratings critics="31" speed="30" />
 			<!-- Episodes -->
 			<children>
