@@ -720,11 +720,11 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Function onClickStartProduction(data:TData)
 		If Not TFigure(GetPlayerBase().GetFigure()).inRoom Then Return
 
-		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		Local roomID:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.GetID()
 		Local script:TScript = TScript(data.Get("script"))
 		If Not script Then Return
 
-		Local count:Int = GetProductionManager().StartProductionInStudio(roomGUID, script)
+		Local count:Int = GetProductionManager().StartProductionInStudio(roomID, script)
 'print "added "+count+" productions to shoot"
 
 		'leave room now, remove dialogue before

@@ -113,7 +113,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		For local productionConcept:TProductionConcept = EachIn productionConcepts
 			Local production:TProduction = New TProduction
 			production.SetProductionConcept(productionConcept)
-			production.SetStudio("")
+			production.SetStudio(0)
 			'production.PayProduction()
 			production.Start()
 			production.Finalize() 'skip waiting

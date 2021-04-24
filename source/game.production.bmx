@@ -8,9 +8,9 @@ Import "game.stationmap.bmx"
 Import "game.room.base.bmx"
 Import "game.popularity.person.bmx"
 
-
+rem
 Type TProductionCollection Extends TGameObjectCollection
-	Field latestProductionByRoom:TMap = CreateMap()
+	Field latestProductionByRoomID:TIntMap = new TIntMap
 	Global _instance:TProductionCollection
 
 	'override
@@ -25,13 +25,12 @@ Type TProductionCollection Extends TGameObjectCollection
 	Method Add:Int(obj:TGameObject)
 		Local p:TProduction = TProduction(obj)
 		If p
-			Local roomGUID:String = p.studioRoomGUID
-			If roomGUID <> ""
+			If p.studioRoomID
 				'if the production is newer than a potential previous
 				'production, replace the previous with the new one
-				Local previousP:TProduction = GetProductionByRoom(roomGUID)
+				Local previousP:TProduction = GetProductionCollection().GetProductionByRoomID(p.studioRoomID)
 				If previousP And previousP.startTime < p.startTime
-					latestProductionByRoom.Insert(roomGUID, p)
+					latestProductionByRoomID.Insert(p.studioRoomID, p)
 				EndIf
 			EndIf
 		EndIf
@@ -40,8 +39,8 @@ Type TProductionCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetProductionByRoom:TProduction(roomGUID:String)
-		Local p:TProduction = TProduction(latestProductionByRoom.ValueForKey(roomGUID))
+	Method GetProductionByRoomID:TProduction(roomID:Int)
+		Local p:TProduction = TProduction(latestProductionByRoomID.ValueForKey(roomID))
 	End Method
 
 
@@ -59,7 +58,7 @@ End Type
 Function GetProductionCollection:TProductionCollection()
 	Return TProductionCollection.GetInstance()
 End Function
-
+endrem
 
 
 
@@ -69,13 +68,17 @@ Type TProduction Extends TOwnedGameObject
 	'use negative numbers for custom producers, and positive
 	'for players
 	Field producerID:Int
+	'DEPRECATED: SAVEGAME - remove in > 0.7.1 
+	Field studioRoomGUID:String
 	'in which room was/is this production recorded (might no longer
 	'be a studio!)
-	Field studioRoomGUID:String
+	Field studioRoomID:Int
 	'TVTProductionStep (in_preproduction, finished, ...)
 	Field productionStep:Int = 0
 	'if > 0 this is the time until which the production is paused/interrupted
-	Field pauseEndTime:Long = 0
+	Field pauseStartTime:Long = 0
+	Field pauseDuration:Long = 0
+	Field paused:Int = False
 	'start of shooting / preproduction
 	Field startTime:Long
 	'end of shooting / preproduction
@@ -145,6 +148,13 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
+	Method IsShooting:Int()
+		If productionStep = TVTProductionStep.SHOOTING Then Return True
+		
+		Return False
+	End Method
+
+
 	Method IsInProduction:Int()
 		If productionStep = TVTProductionStep.PREPRODUCTION Then Return True
 		If productionStep = TVTProductionStep.PREPRODUCTION_DONE Then Return True
@@ -164,8 +174,29 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
-	Method SetStudio:Int(studioGUID:String)
-		studioRoomGUID = studioGUID
+	Method IsPaused:Int()
+		Return paused = True
+	End Method
+
+
+	Method SetPaused:Int(paused:Int = True, pauseDuration:Long)
+		self.paused = paused
+		self.pauseStartTime = GetWorldTime().GetTimeGone()
+		self.pauseDuration = pauseDuration
+	End Method
+
+
+	Method ExtendPause:Int(pauseExtension:Long)
+		If not IsPaused()
+			SetPaused(True, pauseExtension)
+		Else
+			self.pauseDuration :+ pauseDuration
+		EndIf
+	End Method
+
+
+	Method SetStudio:Int(studioID:Int)
+		studioRoomID = studioID
 		Return True
 	End Method
 
@@ -240,8 +271,38 @@ Type TProduction Extends TOwnedGameObject
 
 		Return False
 	End Method
+	
+	
+	Method BlockStudio(bool:Int = True)
+		Local room:TRoomBase = GetRoomBase(studioRoomID) 
+		if room
+			If bool
+				'time in milliseconds
+				'use max of now and startTime - just in case production
+				'is continued
+				Local productionTime:Long = (endTime - Max(startTime, GetWorldTime().GetTimeGone()))
+				If productionTime > 0
+					'also add 5 minutes to avoid people coming into the studio
+					'in the break between two productions
+					productionTime :+ 5 * TWorldTime.MINUTELENGTH
 
+					productionTime :* GetProductionTimeMod()
 
+					If productionConcept.script.IsLive() and not IsPreProductionDone()
+						room.SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_PREPRODUCTION, False)
+					Else
+						room.SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING, False)
+					EndIf
+					room.blockedText = productionConcept.GetTitle()
+				EndIf
+			Else
+				'remove block
+				room.SetBlocked(0, TRoomBase.BLOCKEDSTATE_NONE, False)
+			EndIf
+		EndIf
+	End Method
+
+	
 	Method Start:TProduction(reduceProductionTimeFactor:Int = 0)
 		If productionStep <> TVTProductionStep.NOT_STARTED 
 			TLogger.Log("TProduction.Start", "Starting production failed: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
@@ -266,7 +327,7 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 
 
-		'=== 1. PRODUCTION TIMES ===
+		'calculate production times
 		'when producing several episodes in a row setting up and cleaning
 		'the studio can be done faster; the factor is expected to be 0, 1 or 2
 		Local productionTime:Long = productionConcept.GetBaseProductionTime()
@@ -285,30 +346,7 @@ Type TProduction Extends TOwnedGameObject
 		endTime = startTime + productionTime
 		
 
-		'=== 2. PRODUCTION EFFECTS ===
-		'modify production time (longer by random chance?)
-
-
-		'=== 3. BLOCK STUDIO ===
-		'set studio blocked
-		If studioRoomGUID And GetRoomBaseByGUID(studioRoomGUID)
-			'time in milliseconds
-			Local productionTime:Long = (endTime - startTime)
-			If productionTime > 0
-				'also add 5 minutes to avoid people coming into the studio
-				'in the break between two productions
-				productionTime :+ 300 * TWorldTime.SECONDLENGTH
-
-				productionTime :* GetProductionTimeMod()
-
-				If productionConcept.script.IsLive()
-					GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_PREPRODUCTION)
-				Else
-					GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
-				EndIf
-				GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
-			EndIf
-		EndIf
+		'TODO: modify production time (longer by random chance?)
 
 
 		'calculate costs
@@ -335,6 +373,10 @@ Type TProduction Extends TOwnedGameObject
 	
 	Method BeginPreProduction:Int()
 		If productionStep <> TVTProductionStep.NOT_STARTED Then Return False
+
+		'set studio blocked / update block state
+		BlockStudio(True)
+
 		productionStep = TVTProductionStep.PREPRODUCTION
 
 		TLogger.Log("TProduction.BeginPreProduction()", "Beginning preproduction: ~q" + productionConcept.GetTitle() +"~q", LOG_DEBUG)
@@ -370,6 +412,19 @@ Type TProduction Extends TOwnedGameObject
 	
 	Method BeginShooting:Int()
 		If productionStep <> TVTProductionStep.NOT_STARTED and productionStep <> TVTProductionStep.PREPRODUCTION_DONE Then Return False
+
+		'now live programme knows when it actually ends...
+		If _designatedProgrammeLicence.IsLive()
+			startTime = GetWorldTime().GetTimeGone()
+			'production starting 20:05
+			'1 block : ends at 20:55
+			'2 blocks: ends at 21:55
+			endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
+		EndIf
+
+		'set studio blocked / update block state
+		BlockStudio(True)
+
 		productionStep = TVTProductionStep.SHOOTING
 
 		'calculate mods and values used right when doing the actual
@@ -380,15 +435,6 @@ Type TProduction Extends TOwnedGameObject
 		'define speed, critics ... based on current cast values, script ...
 		FixProgrammeDataValues()
 		
-		
-		'now live programme knows when it actually ends...
-		startTime = GetWorldTime().GetTimeGone()
-		'production starting 20:05
-		'1 block : ends at 20:55
-		'2 blocks: ends at 21:55
-		endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
-
-
 		TLogger.Log("TProduction.BeginShooting()", "Beginning shooting: ~q" + productionConcept.GetTitle() +"~q. Production: "+ GetWorldTime().GetFormattedDate(startTime) + "  -  " + GetWorldTime().GetFormattedDate(endTime), LOG_DEBUG)
 		Return True
 	End Method
@@ -974,6 +1020,18 @@ Type TProduction Extends TOwnedGameObject
 
 
 	Method UpdateProductionStep:Int()
+		'check in UpdateProductionStep() as below might alter pause state
+		'but is calling UpdateProductionStep() recursively if needed
+		If IsPaused()
+			If pauseDuration = 0 or pauseStartTime + pauseDuration < GetWorldTime().GetTimeGone()
+				SetPaused(False, 0)
+				'when no longer paused - refresh blocking information
+				BlockStudio()
+			EndIf
+		EndIf
+		If IsPaused() then Return False
+
+		
 		Select productionStep
 			Case TVTProductionStep.NOT_STARTED
 				Return False
@@ -985,7 +1043,7 @@ Type TProduction Extends TOwnedGameObject
 
 			Case TVTProductionStep.PREPRODUCTION
 				'finished preproduction?
-				If GetWorldTime().GetTimeGone() >= endTime
+				If GetWorldTime().GetTimeGone() >= endTime + pauseDuration
 					FinishPreProduction()
 
 					'maybe next step is also fulfilled
@@ -1008,7 +1066,10 @@ Type TProduction Extends TOwnedGameObject
 
 			'in production
 			Case TVTProductionStep.SHOOTING
-				If GetWorldTime().GetTimeGone() >= endTime
+				local finalEndTime:Long = endTime
+				If not productionConcept.script.IsLive() then finalEndTime :+ pauseDuration
+
+				If GetWorldTime().GetTimeGone() >= finalEndTime
 					FinishShooting()
 
 					'maybe next step is also fulfilled

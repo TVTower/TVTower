@@ -2,6 +2,7 @@ SuperStrict
 Import "game.production.productionconcept.bmx"
 Import "game.production.productioncompany.bmx"
 Import "game.production.bmx"
+Import "game.room.bmx"
 
 
 Type TProductionManager
@@ -129,9 +130,9 @@ Type TProductionManager
 
 
 	'returns first found production in the given room/studio
-	Method GetProductionInStudio:TProduction(roomGUID:string)
+	Method GetProductionInStudio:TProduction(roomID:Int)
 		For local production:TProduction = EachIn productionsToProduce
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			return production
 		Next
@@ -147,11 +148,48 @@ Type TProductionManager
 		endif
 	End Method
 	
+	
+	Method StartLiveProductionInStudio:Int(productionID:Int)
+		'any live production can only happen if the studio it is to
+		'be shot in - is available (rented). Other productions in there
+		'will be "paused" for the time of the shooting
+
+		Local production:TProduction = GetLiveProduction(productionID)
+		If not production then Return False
+		If not production.productionConcept.script.IsLive() Then Return False
+
+		'if information is missing (eg old savegame) assign first 
+		'possible studio
+		if production.studioRoomID = 0 and production.owner > 0
+			local firstStudio:TRoomBase = GetRoomCollection().GetFirstByDetails("", "studio", production.owner)
+			if firstStudio
+				production.studioRoomID = firstStudio.GetID()
+			endif
+		endif
+
+		
+		local otherProduction:TProduction = GetProductionInStudio(production.studioRoomID)
+		If otherProduction and otherProduction <> production
+			'no need to calculate "real" time here - add some minutes
+			'local t:Long = production.productionConcept.script.GetBlocks() * TWorldTime.HOURLENGTH)
+			'or exacly continue our broadcast finishes?
+			local t:Long = (production.productionConcept.script.GetBlocks()-1) * TWorldTime.HOURLENGTH + 55 * TWorldTime.MINUTELENGTH
+			TLogger.Log("TProductionManager.StartLiveProductionInStudio()", "Pausing current production ~q"+otherProduction.productionConcept.GetTitle()+"~q for live shooting of ~q" + production.productionConcept.GetTitle() +"~q.", LOG_DEBUG)
+			otherProduction.SetPaused(True, t)
+		EndIf
+
+		'start live shooting
+		production.BeginShooting()
+		
+	End Method
+	
 
 	'start the production in the given studio
 	'returns amount of productions in that studio
-	Method StartProductionInStudio:int(roomGUID:string, script:TScript)
-		if not roomGUID then return False
+	Method StartProductionInStudio:int(roomID:Int, script:TScript)
+		if not roomID then return False
+
+'print "StartProductionInStudio " + script.Gettitle()
 
 		'- abort productions (stop shooting in this room)
 		'- cleanup (remove potentially existing previous productions
@@ -160,10 +198,9 @@ Type TProductionManager
 		'- create productions of all concepts "ready to produce"
 		'- start shooting of first production
 
-
 		'abort current production
 		For local production:TProduction = EachIn productionsToProduce
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			if production.IsInProduction()
 				production.Abort()
@@ -173,7 +210,7 @@ Type TProductionManager
 
 
 		'update list of to produce productions in that studio
-		Local productionCount:Int = RefreshProductionsToProduceInStudio(roomGUID, script)
+		Local productionCount:Int = RefreshProductionsToProduceInStudio(roomID, script)
 
 
 		'actually start the production
@@ -182,7 +219,7 @@ Type TProductionManager
 		'- other productions are produced once the first one is finished
 		For local production:TProduction = EachIn productionsToProduce
 			'skip productions of other studios
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			'series? skip if not an episode of this serie
 			if production.productionConcept.script.GetParentScript().IsSeries()
@@ -201,11 +238,11 @@ Type TProductionManager
 	End Method
 
 
-	Method GetProductionsToProduceInStudioCount:Int(roomGUID:string)
+	Method GetProductionsToProduceInStudioCount:Int(roomID:Int)
 		Local productionCount:int = 0
 		For local production:TProduction = EachIn productionsToProduce
 			'skip productions of other studios
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			productionCount :+ 1
 		Next
@@ -260,7 +297,7 @@ Type TProductionManager
 	End Method
 
 
-	Method RefreshProductionsToProduceInStudio:Int(roomGUID:string, script:TScript)
+	Method RefreshProductionsToProduceInStudio:Int(roomID:Int, script:TScript)
 		'amount of productions in this studio
 		Local productionCount:int = 0
 
@@ -293,7 +330,7 @@ Type TProductionManager
 
 			local production:TProduction = new TProduction
 			production.SetProductionConcept(productionConcept)
-			production.SetStudio(roomGUID)
+			production.SetStudio(roomID)
 
 			productionsToProduce.AddLast(production)
 			productionCount :+ 1
@@ -373,7 +410,7 @@ Type TProductionManager
 			'fetch next production of that script and start its shooting
 			local nextProduction:TProduction
 			For local p:TProduction = EachIn productionsToProduce
-				if p.studioRoomGUID <> production.studioRoomGUID then continue
+				if p.studioRoomID <> production.studioRoomID then continue
 				If p.IsProduced() or production.IsInPreProduction() then continue
 
 				nextProduction = p

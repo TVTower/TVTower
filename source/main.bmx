@@ -5510,8 +5510,11 @@ Type GameEvents
 						local production:TProduction = GetProductionManager().GetLiveProductionByProgrammeLicenceID(programme.licence.GetID())
 						'preproduction is done else it would not be "programmeable"
 						'so simply check if production is finished
-						if production and not production.IsProduced()
-							production.BeginShooting()
+						if production and not production.IsProduced() 
+							'only start it once
+							if not production.IsShooting()
+								GetProductionManager().StartLiveProductionInStudio(production.GetID())
+							EndIf
 						EndIf
 					EndIf
 				Next
