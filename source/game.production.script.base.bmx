@@ -13,10 +13,9 @@ Type TScriptBase Extends TNamedGameObject
 	Field scriptProductType:Int = 0
 	Field mainGenre:Int
 	Field subGenres:Int[]
+	Field targetGroup:Int = -1
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
-	'flags which _might_ be enabled during production
-	Field flagsOptional:int = 0
 	'remove tradeability on sell, refill limits, ...
 	Field scriptFlags:Int = 0
 	'is the live time fixed?

@@ -1710,6 +1710,7 @@ Type TDatabaseLoader
 			"scriptflags", "flags", "flags_optional", "keywords", "studio_size", ..
 			"production_broadcast_flags", "production_licence_flags", "production_broadcast_limit", ..
 			"live_date", "live_time", ..
+			"target_group", "target_group_optional", ..
 			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
 			"production_limit", "production_time", "production_time_min", "production_time_max", "production_time_slope", "production_time_mod" ..
 		])
@@ -1721,6 +1722,9 @@ Type TDatabaseLoader
 		scriptTemplate.liveTime = data.GetInt("live_time", scriptTemplate.liveTime)
 		scriptTemplate.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", scriptTemplate.broadcastTimeSlotStart)
 		scriptTemplate.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", scriptTemplate.broadcastTimeSlotEnd)
+		
+		scriptTemplate.targetGroup = data.GetInt("target_group", scriptTemplate.targetGroup)
+		scriptTemplate.targetGroupOptional = data.GetInt("target_group_optional", scriptTemplate.targetGroupOptional)
 		
 		If data.Has("studio_size")
 			scriptTemplate.studioSizeMin = data.GetInt("studio_size")

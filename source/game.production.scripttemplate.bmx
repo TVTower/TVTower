@@ -132,7 +132,10 @@ Type TScriptTemplate Extends TScriptBase
 	Field coulisseType2:Int	= -1
 	Field coulisseType3:Int = -1
 
-	Field targetGroup:Int = -1
+	'targetgroups which _might_ be enabled during production
+	Field targetGroupOptional:Int = -1
+	'flags which _might_ be enabled during production
+	Field flagsOptional:int = 0
 
 	'stores all TScripts using this base template
 	Field usedForScripts:Int[]
@@ -568,6 +571,41 @@ Type TScriptTemplate Extends TScriptBase
 
 	Method GetStudioSize:Int()
 		return BiasedRandRange(studioSizeMin, studioSizeMax, studioSizeSlope)
+	End Method
+	
+	
+	Method GetFinalTargetGroup:Int()
+		local result:Int = targetGroup
+		if result < 0 then result = 0
+
+		'randomly enable optional flags
+		If targetGroupOptional > 0
+			For Local i:Int = 1 Until TVTTargetGroup.count
+				Local optionalGroup:Int = TVTTargetGroup.GetAtIndex(i)
+				If targetGroupOptional & optionalGroup > 0
+					'25% chance to enable this group
+					If RandRange(0, 100) < 25 Then result :| optionalGroup
+				EndIf
+			Next
+		EndIf
+		if result = 0 then Return -1
+		Return result
+	End Method
+	
+	
+	Method GetFinalFlags:Int()
+		local result:Int = flags
+		'randomly enable optional flags
+		If flagsOptional > 0
+			For Local i:Int = 1 Until TVTProgrammeDataFlag.count
+				Local optionalFlag:Int = TVTProgrammeDataFlag.GetAtIndex(i)
+				If flagsOptional & optionalFlag > 0
+					'25% chance to enable this flag
+					If RandRange(0, 100) < 25 Then result :| optionalFlag
+				EndIf
+			Next
+		EndIf
+		Return result
 	End Method
 
 

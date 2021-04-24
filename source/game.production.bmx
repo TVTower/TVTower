@@ -419,22 +419,20 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 		'enable mandatory flags
 		programmeData.SetFlag(productionConcept.script.flags, True)
-		'randomly enable optional flags
-		If productionConcept.script.flagsOptional > 0
-			For Local i:Int = 1 Until TVTProgrammeDataFlag.count
-				Local optionalFlag:Int = TVTProgrammeDataFlag.GetAtIndex(i)
-				If productionConcept.script.flagsOptional & optionalFlag > 0
-					'do not enable X-Rated for live productions when
-					'live time is not in the night
-					If optionalFlag = TVTProgrammeDataFlag.XRATED
-						If productionConcept.script.liveTime <= 22 And productionConcept.script.liveTime >= 6
-							programmeData.SetFlag(optionalFlag, True)
-						EndIf
-					Else
-						programmeData.SetFlag(optionalFlag, True)
-					EndIf
-				EndIf
-			Next
+
+		'check is done here again (and also in GetFinalFlags()) as
+		'the script might have changed "liveTime" - so we check it again
+		'here
+		'do not enable X-Rated for live productions when
+		'live time is not in the night
+		if productionConcept.script.flags & TVTProgrammeDataFlag.XRATED
+			If productionConcept.script.liveTime <= 22 And productionConcept.script.liveTime >= 6
+				programmeData.SetFlag(TVTProgrammeDataFlag.XRATED, False)
+			EndIf
+		Endif
+
+		If productionConcept.script.targetGroup > 0
+			programmeData.SetTargetGroup(productionConcept.script.targetGroup, True)
 		EndIf
 
 

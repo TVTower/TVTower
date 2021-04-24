@@ -336,8 +336,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'more expensive
 	Field requireAudience:Int = 0
 
-	Field targetGroup:Int = -1
-
 	Field price:Int	= 0
 	Field blocks:Int = 0
 
@@ -411,9 +409,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.blocks = template.GetBlocks()
 		script.price = template.GetPrice()
 
-		script.flags = template.flags
+		script.flags = template.GetFinalFlags()
+		'do not enable X-Rated for live productions when
+		'live time is not in the night
+		if script.flags & TVTProgrammeDataFlag.XRATED
+			If script.liveTime <= 22 And script.liveTime >= 6
+				script.SetFlag(TVTProgrammeDataFlag.XRATED, False)
+			EndIf
+		Endif
 
-		script.flagsOptional = template.flagsOptional
+		script.targetGroup = template.GetFinalTargetGroup()
+
 		script.productionBroadcastFlags = template.productionBroadcastFlags
 		script.productionLicenceFlags = template.productionLicenceFlags
 
@@ -948,6 +954,16 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					RandomizeBaseAttributes(template)
 					blocks = template.GetBlocks()
 					price = template.GetPrice()
+					flags = template.GetFinalFlags()
+					'do not enable X-Rated for live productions when
+					'live time is not in the night
+					if flags & TVTProgrammeDataFlag.XRATED
+						If liveTime <= 22 And liveTime >= 6
+							SetFlag(TVTProgrammeDataFlag.XRATED, False)
+						EndIf
+					Endif
+
+					targetGroup = template.GetFinalTargetGroup()
 				EndIf
 			EndIf
 		EndIf
