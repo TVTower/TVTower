@@ -9,7 +9,7 @@ Import "game.programme.programmelicence.bmx"
 Import "game.stationmap.bmx"
 
 'register self to producer collection
-'GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
+GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
 
 
 
@@ -20,15 +20,6 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 	Global _instance:TProgrammeProducerSport
 	
 	
-	Method New()
-		'our sport producers produce locally :)
-		countryCode = GetStationMapCollection().config.GetString("nameShort", "Unk").ToUpper()
-		'this would be useful if persons need to be generated with the
-		'person generator, or a host is required
-		'countryCode = GetStationMapCollection().GetMapISO3166Code().ToUpper()
-	End Method
-
-
 	Method Remove() override
 		'remove instance specific event listeners...
 	End Method
@@ -46,6 +37,12 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 
 
 	Method New()
+		'our sport producers produce locally :)
+		countryCode = GetStationMapCollection().config.GetString("nameShort", "Unk").ToUpper()
+		'this would be useful if persons need to be generated with the
+		'person generator, or a host is required
+		'countryCode = GetStationMapCollection().GetMapISO3166Code().ToUpper()
+
 		If Not _eventsRegistered
 			'=== remove all registered event listeners
 			EventManager.UnregisterListenersArray(_eventListeners)
@@ -63,15 +60,18 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		Local league:TNewsEventSportLeague = TNewsEventSportLeague(triggerEvent.GetSender())
 		If Not league Then Return False
 
+		'Notify "onSportLeagueStartSeason  league.GetDoneMatchesCount()="+league.GetDoneMatchesCount() + "  league.GetNextMatchTime()="+league.GetNextMatchTime() + "  now="+GetWorldTime().GetTimeGone()
+
+
 		'ignore seasons if the first match already happened ?
 		If league.GetDoneMatchesCount() = 0 And league.GetNextMatchTime() > GetWorldTime().GetTimeGone()
-'			print "==========================="
-			Print "New league season started: " + league.name + "  " + GetWorldTime().GetFormattedGameDate()
+			TLogger.Log("TProgrammeProducerSport", "New league season started: " + league.name + "  " + GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 
 			Local licence:TProgrammeLicence = GetInstance().CreateLeagueMatchesCollectionProgrammeLicence(league)
 			If licence
-'print "  -> licence: "+ licence.GetGUID() +"  release: " + GetWorldTime().GetFormattedGameDate( licence.data.GetReleaseTime() )
-'GameConfig.devGUID = licence.GetGUID()
+				'print "  -> licence: "+ licence.GetGUID() +"  release: " + GetWorldTime().GetFormattedGameDate( licence.data.GetReleaseTime() )
+				'GameConfig.devGUID = licence.GetGUID()
+				
 				'add children
 				For Local sub:TProgrammeLicence = EachIn licence.subLicences
 					GetProgrammeDataCollection().Add(sub.GetData())

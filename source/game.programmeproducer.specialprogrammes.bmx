@@ -2,7 +2,7 @@ SuperStrict
 Import "game.programmeproducer.bmx"
 
 'register self to producer collection
-'GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance() )
+GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance() )
 
 
 
