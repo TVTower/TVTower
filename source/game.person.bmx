@@ -42,17 +42,22 @@ Function onPersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 	local p:TPersonBase = TPersonBase(triggerEvent.GetSender())
 	if not p then return false
 
+	UpgradeInsignificantToCelebrity(p, False)
+End Function
+
+
+Function UpgradeInsignificantToCelebrity:Int(p:TPersonBase var, ignoreProductionJobs:Int = True)
 	'already done?
-	if p.IsCelebrity() Then Return False
+	If p.IsCelebrity() Then Return False
 
 	'we cannot convert a non-fictional "insignificant" as we cannot
 	'create random birthday dates for a real person...
-	if not p.IsFictional() then return False
+	If Not p.IsFictional() Then Return False
 
-	if not p.CanLevelUp() then return false
+	If Not p.CanLevelUp() Then Return False
 
 	'make sure the person can store at least basic production data from now on
-	If not p.GetProductionData()
+	If Not p.GetProductionData()
 		p.SetProductionData(new TPersonProductionBaseData)
 	EndIf
 
@@ -61,7 +66,9 @@ Function onPersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 
 	'jobsDone is increased _after_ finishing the production,
 	'so "jobsDone <= 2" will be true until the 3rd production is finishing
-	If p.GetTotalProductionJobsDone() <= 2 then return False
+	If Not ignoreProductionJobs
+		If p.GetTotalProductionJobsDone() <= 2 Then Return False
+	EndIf
 
 	'remove from previous prefiltered lists
 	GetPersonBaseCollection().Remove(p)
@@ -71,8 +78,9 @@ Function onPersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 
 	'add to now suiting lists
 	GetPersonBaseCollection().Add(p)
+	
+	Return True
 End Function
-
 
 
 'when upgrading a "insignificant to a celebrity"
@@ -93,6 +101,75 @@ Function UpgradePersonBaseData:TPersonBase(p:TPersonBase)
 	EndIf
 	
 	Return p
+End Function
+
+
+
+Function EnsureEnoughCastableCelebritiesPerJob:Int(amount:int, baseCountryCode:String)
+	baseCountryCode = baseCountryCode.ToUpper()
+	
+	Local hasBaseCountryCode:Int = GetPersonGenerator().HasProvider(baseCountryCode)
+
+	'fetch all fictional and bookable celebs
+	'onlyFictional, onlyBookable, job, gender, alive, countryCode, forbiddenGUIDs, forbiddenIDs
+	local celebrities:TPersonBase[] = GetPersonBaseCollection().GetFilteredCelebritiesArray(True, True, 0, -1, True, "", Null, Null)
+	Local castJobIDs:Int[] = TVTPersonJob.GetCastJobs()
+	local addedCelebs:TPersonBase[]
+
+	For local jobID:Int = EachIn castJobIDs
+		For local genderID:int = EachIn [TVTPersonGender.MALE, TVTPersonGender.FEMALE]
+			Local personsFound:Int
+			
+			For local p:TPersonBase = EachIn celebrities
+				if not p.HasJob(jobID) then continue
+				if p.gender <> genderID then continue
+				
+				personsFound :+ 1
+				'already found enough?
+				if personsFound >= amount Then exit
+			Next
+
+			if personsFound < amount
+				'also include the newly added ones (might have multiple jobs)
+				For local p:TPersonBase = EachIn addedCelebs
+					if not p.HasJob(jobID) then continue
+					if p.gender <> genderID then continue
+					
+					personsFound :+ 1
+					'already found enough?
+					if personsFound >= amount Then exit
+				Next
+			endif	
+			
+			if amount - personsFound > 0
+				'print "need to create " + (amount - personsFound) + " persons for job " + jobID +" and gender " + genderID
+
+				For local i:int = 0 until (amount - personsFound)
+					Local p:TPersonBase
+
+					'90% chance to use baseCountryCode as origin
+					if hasBaseCountryCode and RandRange(0, 100) <= 90
+						p = GetPersonBaseCollection().CreateRandom(baseCountryCode, genderID)
+					else
+						p = GetPersonBaseCollection().CreateRandom(GetPersonGenerator().GetRandomCountryCode(), genderID)
+					endif
+					UpgradeInsignificantToCelebrity(p, True)
+
+					'assign the required job
+					p.SetJob(jobID, True)
+					'this might set an already enabled job again, so not
+					'guaranteed to result in an additional set job
+					If RandRange(0, 100) <= 30 then p.SetJob( castJobIDs[RandRange(0, castJobIDs.length - 1)], True)
+					If RandRange(0, 100) <= 10 then p.SetJob( castJobIDs[RandRange(0, castJobIDs.length - 1)], True)
+
+					addedCelebs :+ [p]
+				Next
+			endif
+		Next
+	Next
+
+	'print "EnsureEnoughCastableCelebritiesPerJob: added " + addedCelebs.length +" new celebs"
+	Return addedCelebs.length
 End Function
 
 

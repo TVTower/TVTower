@@ -220,7 +220,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)
 			GetNewsEventSportCollection().CreateAllLeagues()
 			GetNewsEventSportCollection().StartAll( Long(GetWorldTime().MakeRealTime(GetWorldTime().GetYear()-1,0,0,0,0)) )
-
+			
 
 			'refresh states of old programme productions (now we now
 			'the start year and are therefore able to refresh who has
@@ -1185,6 +1185,17 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'load the used map
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
 '		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
+
+
+		'=== CUSTOM PRODUCTION ===
+		'ensure we have at least 3 persons per job available,
+		'and when creating some, prefer the current country
+		local addedCelebs:Int = EnsureEnoughCastableCelebritiesPerJob(3, GetStationMapCollection().GetMapISO3166Code())
+		if addedCelebs
+			TLogger.Log("Game.PrepareNewGame()", "Added " + addedCelebs + " additional celebrity persons for custom production.", LOG_DEBUG)
+		else
+			TLogger.Log("Game.PrepareNewGame()", "No need to add additional celebrity persons for custom production. Found enough.", LOG_DEBUG)
+		endif
 
 
 		'=== MOVIE AGENCY ===
