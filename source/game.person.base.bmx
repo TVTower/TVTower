@@ -67,7 +67,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	Method GetByID:TPersonBase(ID:Int)
 		Return TPersonBase( Super.GetByID(ID) )
 	End Method
-
+	
 
 	Method CreateRandom:TPersonBase(countryCode:String, gender:Int=0)
 		Local pg:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
@@ -81,6 +81,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		person.SetFlag(TVTPersonFlag.BOOKABLE, True)
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, True)
+		person.gender = gender
 
 		'avoid others of same name
 		GetPersonGenerator().ProtectDataset(pg)
