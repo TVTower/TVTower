@@ -762,6 +762,9 @@ Type TProduction Extends TOwnedGameObject
 		If productionPriceMod <> 1.0
 			pd.SetModifier("price", productionPriceMod)
 		EndIf
+		
+		'fix release time now
+		pd.releaseTime = GetWorldTime().GetTimeGone()
 
 
 		'=== 3.2 PROGRAMME PRODUCTION PROPERTIES ===

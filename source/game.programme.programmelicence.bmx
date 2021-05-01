@@ -930,6 +930,30 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 	End Method
 
+	'returns whether a single licences or AT LEAST ONE
+	'sublicences contains an unknown price (eg. was not aired yet)
+	Method ContainsUnknownPrice:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			'if bought then we know the price...for sure
+			If buyPrice >= 0 then Return False
+			'if broadcasted we know the price too
+			if GetData().GetTimesBroadcasted() > 0 Then Return False
+
+			'custom live productions need to be started to know the price
+			If GetData().IsCustomProduction() and IsLive()
+				if GetData().releaseTime < GetWorldTime().GetTimeGone() Then Return False
+			EndIf
+
+			Return True
+		else
+			For local licence:TProgrammeLicence = eachin subLicences
+				if licence.ContainsUnknownPrice() then return True
+			Next
+
+			return False
+		endif
+	End Method
+
 
 	'override
 	Method GetBroadcastTimeSlotStart:int()
@@ -2397,7 +2421,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'price
 		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
 		'- hide for custom productions until aired (series: if all episoded aired)
-		if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsCustomProduction() then showPrice = False
+		if showPrice and owner > 0 and ContainsUnknownPrice() then showPrice = False
+		'if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsCustomProduction() then showPrice = False
+	
 		'- hide unowned and not tradeable ones
 		'-> disabled because of "Opener show"
 		'if showPrice not IsOwned() and not IsTradeable() then showPrice = False
