@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
     <version value="3" comment="SpeedMinisters Programme" />
     <insignificantpeople>
         <!-- Deutschland -->
@@ -429,8 +429,8 @@
                         <en>Inauguration ceremony and acclimatization of two black bears. Animal keepers and bears build a relationship of trust. Then there's explosions in the city.</en>
                     </description>
                     <staff>
-                        <member index="2" function="2">SpeedMinister-person-id021</member>
-                        <member index="2" function="2">SpeedMinister-person-id022</member>
+                        <member index="0" function="2">SpeedMinister-person-id021</member>
+                        <member index="1" function="2">SpeedMinister-person-id022</member>
                     </staff>
                     <ratings critics="36" speed="35" />
                 </programme>
@@ -444,8 +444,8 @@
                         <en>The Chinese ambassador hands over a bronze-coloured lion statue to the Kabul Zoo, which is unveiled in the central square of the zoo. In addition, 2 lions donated by China are released into the outside enclosure.</en>
                     </description>
                     <staff>
-                        <member index="2" function="2">SpeedMinister-person-id021</member>
-                        <member index="2" function="2">SpeedMinister-person-id023</member>
+                        <member index="0" function="2">SpeedMinister-person-id021</member>
+                        <member index="1" function="2">SpeedMinister-person-id023</member>
                         <member index="2" function="2">SpeedMinister-person-id024</member>
                     </staff>
                     <ratings critics="29" speed="24" />
@@ -488,8 +488,8 @@
                         <en>It's dwindling among guenons. They share an outside enclosure with the lions and meerkats. The males disappear in their caves, the guenons on the climbing trees. These are apparently not high enough.</en>
                     </description>
                     <staff>
-                        <member index="2" function="2">SpeedMinister-person-id021</member>
-                        <member index="2" function="2">SpeedMinister-person-id022</member>
+                        <member index="0" function="2">SpeedMinister-person-id021</member>
+                        <member index="1" function="2">SpeedMinister-person-id022</member>
                     </staff>
                     <ratings critics="40" speed="40" />
                 </programme>
@@ -503,8 +503,8 @@
                         <en>After the crisis in the lion enclosure, an outdoor enclosure is being renovated for the guenons in a lightning operation. Cement bags disappear from various construction sites in the city. A 20-foot standard container must be used as an animal house.</en>
                     </description>
                     <staff>
-                        <member index="2" function="2">SpeedMinister-person-id021</member>
-                        <member index="2" function="2">SpeedMinister-person-id022</member>
+                        <member index="0" function="2">SpeedMinister-person-id021</member>
+                        <member index="1" function="2">SpeedMinister-person-id022</member>
                     </staff>
                     <ratings critics="40" speed="40" />
                 </programme>
@@ -518,8 +518,8 @@
                         <en>At the opening of the snow leopard enclosure, the zoo management organizes a small party for the employees. The entrance of Afghanistan's landmark is celebrated with dancing and singing.</en>
                     </description>
                     <staff>
-                        <member index="2" function="2">SpeedMinister-person-id021</member>
-                        <member index="2" function="2">SpeedMinister-person-id022</member>
+                        <member index="0" function="2">SpeedMinister-person-id021</member>
+                        <member index="1" function="2">SpeedMinister-person-id022</member>
                     </staff>
                     <ratings critics="30" speed="30" />
                 </programme>
@@ -706,4 +706,4 @@
             <data genre="2" price="1.0" quality="32" />
         </news>
     </allnews>
-</tvgdb>
+</tvtdb>

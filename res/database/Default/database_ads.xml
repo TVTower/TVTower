@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" />
 	<allads>
 		<ad id="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4">
@@ -197,7 +197,8 @@ You will really have to chew.</en>
 				<en>Action game figures of your favorite politicians. For a short time Birne and Genschman for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="1982" year_range_to="1989"/>
+			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<availability year_range_from="1982" year_range_to="1989" />
 		</ad>
 		<ad id="PoliPlayw02">
 			<title>
@@ -208,7 +209,8 @@ You will really have to chew.</en>
 				<en>Action game figures of your favorite politicians. For a short time "Blooming landscapes"-Helmut and "Red Socks"-Gregor for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="1990" year_range_to="1997"/>
+			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<availability year_range_from="1990" year_range_to="1997" />
 		</ad>
 		<ad id="PoliPlayw03">
 			<title>
@@ -219,7 +221,8 @@ You will really have to chew.</en>
 				<en>Action game figures of your favorite politicians. For a short time "Get me a bottle of beer" -Gerhard and "Cleaning Squad"-Joschka for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="1998" year_range_to="2004"/>
+			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<availability year_range_from="1998" year_range_to="2004" />
 		</ad>
 		<ad id="42b4aa37-1274-4da2-9d72-4e203720eeb6">
 			<title>
@@ -230,7 +233,8 @@ You will really have to chew.</en>
 				<en>Action game figures of your favorite politician. For short time Action-Murkel and Chaoz-Ruszler for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="2005" year_range_to="2017"/>
+			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<availability year_range_from="2005" year_range_to="2017" />
 		</ad>
 		<ad id="44af9e71-7c61-4531-b125-181948cd791a">
 			<title>
@@ -560,7 +564,8 @@ But only with Relocation Rudolph!</en>
 				<en>Surfing the web in the garden! WiFi cable up to 200m.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="2" duration="2" profit="407" penalty="625" year_range_from="1998" year_range_to="0" infomercial_profit="41" fix_infomercial_profit="1"/>
+			<data quality="10" repetitions="2" duration="2" profit="407" penalty="625" infomercial_profit="41" fix_infomercial_profit="1"/>
+			<availability year_range_from="1998" />
 		</ad>
 		<ad id="a401f20f-8832-45df-a274-2599fd8d0afb">
 			<title>
@@ -899,7 +904,8 @@ Special week: no bottle deposit.</en>
 				<en>Computer scrap beginning at 50 pfennig per kilo. Now also offering modern B/W monitors.</en>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="7" duration="3" profit="581" penalty="746" year_range_from="0" year_range_to="2002" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="7" duration="3" profit="581" penalty="746" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<availability year_range_to="2002" />
 		</ad>
 		<ad id="d8ee3597-56e1-4117-909a-bde9da3f9f9e">
 			<title>
@@ -910,7 +916,8 @@ Special week: no bottle deposit.</en>
 				<en>Computer scrap beginning at 50 eurocent per kilo. Now also offering modern CRT screens.</en>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="14" repetitions="7" duration="3" profit="581" penalty="746" year_range_from="2003" year_range_to="0" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<data quality="14" repetitions="7" duration="3" profit="581" penalty="746"infomercial_profit="40" fix_infomercial_profit="1"/>
+			<availability year_range_from="2003" />
 		</ad>
 		<ad id="da699c1f-4117-4fc6-b365-a3a7608105ab">
 			<title>
@@ -1109,7 +1116,8 @@ I feel good with Lemur</en>
 				<en>Get our  jazzy covers for your mobile phone. Well and truly over for drunken grayish blue. Now also available for all models of Sumens.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="900" penalty="1274" year_range_from="1998" year_range_to="2003" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="900" penalty="1274" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<availability year_range_from="1998" year_range_to="2003" />
 		</ad>
 		<ad id="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
 			<title>
@@ -1145,7 +1153,8 @@ I feel good with Lemur</en>
 				<en>Crazy beats by Israelic superstar DJ Meshugge. All 3 hits on one Album.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="900" penalty="1474" year_range_from="1992" year_range_to="1995" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="900" penalty="1474" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<availability year_range_from="1992" year_range_to="1995" />
 		</ad>
 		<ad id="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
 			<title>
@@ -1181,7 +1190,8 @@ I feel good with Lemur</en>
 				<en>We sell nothing but nodding dogs. But this at competitive prices. New in the stores: the dwarf dachshund in the scale 1:1.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="19" repetitions="4" duration="3" profit="475" penalty="669" year_range_from="1973" year_range_to="1988" infomercial_profit="55" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="19" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="55" fix_infomercial_profit="1"/>
+			<availability year_range_from="1973" year_range_to="1988" />
 		</ad>
 		<ad id="ronny-ad-Wackeldackel">
 			<title>
@@ -1193,7 +1203,8 @@ I feel good with Lemur</en>
 				<en>We, again, sell nothing but nodding dogs. But this at competitive prices. New in the stores: the dwarf dachshund in the scale 1:1.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" year_range_from="1997" year_range_to="2008" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<availability year_range_from="1997" year_range_to="2008" />
 		</ad>
 		<ad id="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1205,7 +1216,8 @@ I feel good with Lemur</en>
 				<en>Your music sampler! All hits of the last 3 days on one brimful filled 90 minutes audio cassette. In stereo!</en>
 			</description>
 			<conditions min_audience="2.08" min_image="12" target_group="2"/>
-			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="815" penalty="1220" year_range_from="1985" year_range_to="1986" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="815" penalty="1220" fix_infomercial_profit="1"/>
+			<availability year_range_from="1985" year_range_to="1986" />
 		</ad>
 		<ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
 			<title>
@@ -1217,7 +1229,8 @@ I feel good with Lemur</en>
 				<en>"All Hits 2" is back again!! 40 mega hits on one double MC. Only now with poster ready to get painted!</en>
 			</description>
 			<conditions min_audience="2.083" min_image="4" target_group="3"/>
-			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="815" penalty="1150" year_range_from="1987" year_range_to="1988" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="815" penalty="1150" fix_infomercial_profit="1"/>
+			<availability year_range_from="1987" year_range_to="1988" />
 		</ad>
 		<ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
 			<title>
@@ -1229,7 +1242,8 @@ I feel good with Lemur</en>
 				<en>Not one cassette, not two or three! Unbelieveable 4 music cassettes got filled with hits of the last 5 years. Your walkman never will play other music!</en>
 			</description>
 			<conditions min_audience="2.083" min_image="7" target_group="2"/>
-			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="815" penalty="1100" year_range_from="1988" year_range_to="1990" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="815" penalty="1100" fix_infomercial_profit="1"/>
+			<availability year_range_from="1988" year_range_to="1990" />
 		</ad>
 		<ad id="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1314,7 +1328,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>The hit chewy candy from Hawaii. Never before sugar tasted that tro-tro-tropical.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="18" target_group="1"/>
-			<data quality="15" repetitions="4" duration="2" profit="770" penalty="1167" fix_infomercial_profit="1" year_range_to="1999"/>
+			<data quality="15" repetitions="4" duration="2" profit="770" penalty="1167" fix_infomercial_profit="1" />
+			<availability year_range_to="1999" />
 		</ad>
 		<ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
 			<title>
@@ -1325,7 +1340,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>The Hawaiian chewy candy now with a brand new and trendy taste. Candied chicken claws create this fascinating seasoning.</en>
 			</description>
 			<conditions min_audience="2.6041" min_image="18" target_group="1"/>
-			<data quality="20" repetitions="4" duration="2" profit="770" penalty="1082" fix_infomercial_profit="1" year_range_from="2000"/>
+			<data quality="20" repetitions="4" duration="2" profit="770" penalty="1082" fix_infomercial_profit="1" />
+			<availability year_range_from="2000" />
 		</ad>
 		<ad id="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1395,7 +1411,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>Eastern Germanys hop, and the bottles from Western Germany created this fascinating beer. Tasty beer for fathers of all countries.</en>
 			</description>
 			<conditions min_audience="9.3772" min_image="12" target_group="256"/>
-			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="377" penalty="500" year_range_from="1990" year_range_to="1993" infomercial_profit="85" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="377" penalty="500" infomercial_profit="85" fix_infomercial_profit="1"/>
+			<availability year_range_from="1990" year_range_to="1993" />
 		</ad>
 		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1467,7 +1484,8 @@ Available in any well-stocked drugstore.</en>
 				<en>We are looking for a new earth. Take care and thanks for the fish. Your dolphins.</en>
 			</description>
 			<conditions min_audience="46.89" min_image="0" target_group="0" allowed_programme_type="0" prohibited_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" year_range_from="1999" year_range_to="2000" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<availability year_range_from="1999" year_range_to="2000" />
 		</ad>
 		<ad id="sjaele-ad-Bio-Tube" creator="7430" created_by="Sjaele">
 			<title>
@@ -1478,7 +1496,7 @@ Available in any well-stocked drugstore.</en>
 				<en>A tube full to the brim with organic whool-food. Tastes like mom's food, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
 			</description>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1132" penalty="1900" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1132" penalty="1900" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
 			<title>
@@ -1490,7 +1508,8 @@ Available in any well-stocked drugstore.</en>
 				<en>The big excuse book. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="20" repetitions="7" duration="4" profit="718" penalty="1277" year_range_from="0" year_range_to="1998" infomercial_profit="105" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="105" fix_infomercial_profit="1"/>
+			<availability year_range_to="1998" />
 		</ad>
 		<ad id="sjaele-ad-Macht-nischt2" creator="7430" created_by="Sjaele">
 			<title>
@@ -1502,7 +1521,8 @@ Available in any well-stocked drugstore.</en>
 				<en>The online shop. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="25" repetitions="7" duration="4" profit="718" penalty="1277" year_range_from="1999" year_range_to="0" infomercial_profit="100" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="100" fix_infomercial_profit="1"/>
+			<availability year_range_from="1999" />
 		</ad>
 		<ad id="sjaele-ad-Ratz-Fatz" creator="7430" created_by="Sjaele">
 			<title>
@@ -1514,7 +1534,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Your missus is no longer worth a straw? Call the Hassle Frazzle divorce hotline. We provide reasons, occasions, attorneys and guarantee for not-guilty verdicts!</en>
 			</description>
 			<conditions min_audience="11.4612" min_image="4" target_group="128" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="322" penalty="504" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="322" penalty="504" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="sjaele-ad-Umrechner02" creator="7430" created_by="Sjaele">
 			<title>
@@ -1526,7 +1546,8 @@ Available in any well-stocked drugstore.</en>
 				<en>The manual for converting East German mark (DDM) to Deutsche Mark (DEM)! For those who want to know exactly. Because everything used to be better. And cheaper?</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" year_range_from="1990" year_range_to="2002" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<availability year_range_from="1990" year_range_to="2002" />
 		</ad>
 		<ad id="sjaele-ad-Umrechner" creator="7430" created_by="Sjaele">
 			<title>
@@ -1538,7 +1559,8 @@ Available in any well-stocked drugstore.</en>
 				<en>The website for converting Euro (EUR) to Deutsche Mark (DEM). For those who want tok know exactly. Because everything used to be better.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" year_range_from="2003" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<availability year_range_from="2003" />
 		</ad>
 		<ad id="speedminister-ad-Beisele" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1667,7 +1689,8 @@ Available in any well-stocked drugstore.</en>
 				<en>A touch of genious: our double bock beer is now also free of alcohol! Oans, zwoa, droa, g'suffa!</en>
 			</description>
 			<conditions min_audience="4.1617" min_image="40" target_group="0"/>
-			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" year_range_from="2006"/>
+			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" />
+			<availability year_range_from="2006" />
 		</ad>
 		<ad id="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1679,7 +1702,8 @@ Available in any well-stocked drugstore.</en>
 				<en>Genuine: Pilsner, export and wheat bear now also available as suppository! Handy in a 40s party pack! That drags! Oans, zwoa, droa, ziags!</en>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" year_range_to="2005"/>
+			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" />
+			<availability year_range_to="2005" />
 		</ad>
 		<ad id="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2141,7 +2165,8 @@ Available in any well-stocked drugstore.</en>
 				<en>Wedding? Company event? Family celebration? Car breakdown! Removal! Donkeys to rent and to buy! Donkey24!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="0"/>
-			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" year_range_to="1999" />
+			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" />
+			<availability year_range_to="1999" />
 		</ad>
 		<ad id="speedminister-ad-esel24-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2153,7 +2178,8 @@ Available in any well-stocked drugstore.</en>
 				<en>Wedding? Company event? Family celebration? Car breakdown! Removal! Donkeys to rent and to buy! Donkey24.come!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="0"/>
-			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" year_range_from="2000"/>
+			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" />
+			<availability year_range_from="2000" />
 		</ad>
 		<ad id="speedminister-ad-four4down-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2461,7 +2487,8 @@ Available in any well-stocked drugstore.</en>
 				<en>Valvoa the truck for the woman. 460 PS only 350.000 Euro, on request also in pink.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" year_range_from="2002" year_range_to="-1"/>
+			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" />
+			<availability year_range_from="2002" />
 		</ad>
 		<ad id="speedminister-ad-valvoa-02" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2472,7 +2499,8 @@ Available in any well-stocked drugstore.</en>
 				<en>Valvoa the truck for the woman. 460 PS only 700.000 DEM, on request also in pink.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" year_range_from="-1" year_range_to="2001"/>
+			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" />
+			<availability year_range_to="2001" />
 		</ad>
 
 
@@ -2511,4 +2539,4 @@ Available in any well-stocked drugstore.</en>
 			<data quality="45" repetitions="3" duration="0" profit="2500" penalty="790" infomercial_profit="300" fix_infomercial_profit="1" available="0" type="1" />
 		</ad>
 	</allads>
-</tvgdb>
+</tvtdb>

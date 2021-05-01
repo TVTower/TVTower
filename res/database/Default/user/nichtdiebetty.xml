@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" comment="Daten von Nicht_die_Betty" />
 	<!--
 		Personen die nur mal in einer Serie auftauchen und keine anderen
@@ -67,4 +67,4 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 	</allprogrammes>
 
 
-	</tvgdb>
+	</tvtdb>
