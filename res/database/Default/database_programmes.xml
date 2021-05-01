@@ -7633,7 +7633,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</programme>
 
 		<!-- programmes from "therob.xml" -->
-		<programme id="TheRob-mov-dram-NurmitdieserbestimmtenFrau" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029650" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-dram-NurmitdieserbestimmtenFrau" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029650" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Diese bestimmte Frau, Drama, Sub Romance -->
 				<de>Nur mit dieser bestimmen Frau</de>
@@ -7650,13 +7650,14 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-EdmundGulden</member>
 				<member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
-				<member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>                                                                                             			</staff>
+				<member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1937" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="69" speed="37" outcome="52" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-JazzeineboeseDame" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0030287" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-dram-JazzeineboeseDame" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0030287" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Jezebel - Die boshafte Lady, Drama, Sub Romance -->
 				<de>Jazz - eine böse Dame</de>
@@ -7673,13 +7674,14 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<staff>
 				<member index="0" function="1">c6431bc0-a0c6-4638-ab30-573066975d0f</member>
 				<member index="1" function="2">b82a17d5-e597-4900-8808-5dd8f195995a</member>
-				<member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>                                                                                          			</staff>
+				<member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1938" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="78" speed="52" outcome="67" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-PfadindieBerge" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0028401" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-dram-PfadindieBerge" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0028401" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kampf in den Bergen, Drama, Sub Romance -->
 				<de>Pfad in die Berge</de>
@@ -7697,13 +7699,14 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<member index="0" function="1">TheRob-TowerTV-HenryHastAway</member>
 				<member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>
 				<member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
-				<member index="3" function="2">3288623a-bed4-4c85-8670-47c991164df4</member>                                                                                               			</staff>
+				<member index="3" function="2">3288623a-bed4-4c85-8670-47c991164df4</member>
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1936" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="58" speed="62" outcome="57" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-TrommelnamFluss" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0031252" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-dram-TrommelnamFluss" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0031252" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Trommeln am Mohawk, Drama, Sub Romance -->
 				<de>Trommeln am Fluß</de>
@@ -9051,7 +9054,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-b0db-dok-ZugnachBombay" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="tt0320653" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-dok-ZugnachBombay" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0320653" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Train arriving at bombay station Dokumantation -->
 				<de>Zug nach Bombay</de>
@@ -10466,7 +10469,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			</children>
 		</programme>
 
-		<programme id="TheRob-mov-west-BaldipuhdasGespenst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0063674" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-west-BaldipuhdasGespenst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0063674" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Rache für Jesse James, western -->
 				<de>Baldipuh - das Gespenst</de>
@@ -10730,7 +10733,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="18" speed="32" outcome="14" />
 		</programme>
 
-		<programme id="TheRob-81d9-com-StandOlgestohleneJuwelen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022402" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-81d9-com-StandOlgestohleneJuwelen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022402" creator="8751" created_by="TheRob">
 			<title>
 				<de>[1|Last] &amp; [2|Last] - Gestohlene Juwelen</de>
 				<en>[1|Last] &amp; [2|Last] - Stolen Gems</en>
@@ -11470,7 +11473,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="TheRob-mov-dram-Hoellewirsindda" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077416" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-dram-Hoellewirsindda" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077416" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die durch die Hölle gehen, Drama, Sub Action -->
 				<de>Hölle, wir sind da!</de>
@@ -11495,7 +11498,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="88" speed="82" outcome="94" />
 		</programme>
 
-		<programme id="TheRob-mov-act-DervonSizilien" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093966" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-act-DervonSizilien" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093966" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Sizilianer, Action, Sub Crime -->
 				<de>Der von Sizilien</de>
@@ -11520,7 +11523,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="53" speed="82" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-nurEinerbehaeltdenkopf" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091203" rt_id="8751" creator="TheRob">
+		<programme id="TheRob-mov-dram-nurEinerbehaeltdenkopf" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091203" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Highlander, Adventure, Sub Fantasy -->
 				<de>Nur einer behält den Kopf</de>
