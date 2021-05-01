@@ -173,7 +173,7 @@ Type TProductionManager
 			'no need to calculate "real" time here - add some minutes
 			'local t:Long = production.productionConcept.script.GetBlocks() * TWorldTime.HOURLENGTH)
 			'or exacly continue our broadcast finishes?
-			local t:Long = (production.productionConcept.script.GetBlocks()-1) * TWorldTime.HOURLENGTH + 55 * TWorldTime.MINUTELENGTH
+			local t:Long = (production.productionConcept.script.GetBlocks()-1) * TWorldTime.HOURLENGTH + 50 * TWorldTime.MINUTELENGTH
 			TLogger.Log("TProductionManager.StartLiveProductionInStudio()", "Pausing current production ~q"+otherProduction.productionConcept.GetTitle()+"~q for live shooting of ~q" + production.productionConcept.GetTitle() +"~q.", LOG_DEBUG)
 			otherProduction.SetPaused(True, t)
 		EndIf
