@@ -46,8 +46,8 @@ Type TProductionManager
 			'_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Broadcasting_BeforeStartAllProgrammeBlockBroadcasts, onStartProgrammeBlockBroadcasts) ]
 			'xx:54 - AFTER broadcasts have run
 			'_eventListeners :+ [ EventManager.registerListenerFunction( Broadcasting_AfterFinishAllProgrammeBlockBroadcasts, onFinishProgrammeBlockBroadcasts) ]
-			'xx:yy - to check weather there has to be an special event
-			'        during running productions
+			'xx:yy - to check if there has to be an special event during
+			'        running productions
 			_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Game_onMinute, onGameMinute) ]
 			
 			'no need to react to bankruptcy / changed players 
@@ -211,7 +211,6 @@ Type TProductionManager
 
 		'update list of to produce productions in that studio
 		Local productionCount:Int = RefreshProductionsToProduceInStudio(roomID, script)
-
 
 		'actually start the production
 		'- first hit production (with that script) is the one we should
@@ -424,6 +423,8 @@ Type TProductionManager
 				startedProductions :+ 1
 			endif
 		Next
+		
+		
 
 		return startedProductions
 	End Method
