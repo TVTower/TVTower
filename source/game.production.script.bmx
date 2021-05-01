@@ -592,7 +592,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						replacement = GetMainGenreString()
 						replaced = True
 					Case "EPISODES"
-						replacement = GetMainGenreString()
+						replacement = GetEpisodes()
 						replaced = True
 
 					Default
