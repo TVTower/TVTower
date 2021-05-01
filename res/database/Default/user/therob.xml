@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 <version value="3" comment="Programme von TheRob" />
 	<allprogrammes>
-		<programme id="TheRob-serie-KomissarWirsch" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-KomissarWirsch" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Komissar Wirsch -->
 				<de>Kommissar Wirsch</de>
@@ -21,7 +21,7 @@
 			<data country="D" year="1951" distribution="2" maingenre="4" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="30" speed="49" outcome="" />
 			<children>
-				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Tante Emma Laden</de>
 						<en>Wirschi and the small shop at the corner</en>
@@ -32,7 +32,7 @@
 					</description>
 					<ratings critics="29" speed="48" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der vermisste Bürgermeister</de>
 						<en>Wirschi and the missing major</en>
@@ -43,7 +43,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und das versteckte Gemälde</de>
 						<en>Wirschi an the hidden painting</en>
@@ -54,7 +54,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Fotograf</de>
 						<en>Wirschi and the photographer</en>
@@ -65,7 +65,7 @@
 					</description>
 					<ratings critics="32" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Grenzstein</de>
 						<en>Wirschi and the border stone</en>
@@ -76,7 +76,7 @@
 					</description>
 					<ratings critics="12" speed="8" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Assistentin wird Sängerin</de>
 						<en>The Assistant becomes a singstar</en>
@@ -90,7 +90,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Meins Alles Meins -->
 				<de>Meins! Alles MEINS!</de>
@@ -111,7 +111,7 @@
 			<ratings critics="27" speed="63" outcome="36" />
 		</programme>
 
-		<programme id="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Zielgruppe Kinder -->
 				<de>Ich reiste mit dem Sandmännchen</de>
@@ -132,7 +132,7 @@
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Als Mysterie Test mit Subgenre Horror -->
 				<de>Ich verschwand mit dem Sandmännchen</de>
@@ -153,7 +153,7 @@
 			<ratings critics="73" speed="58" outcome="76" />
 		</programme>
 
-		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Der Bau von Neuschwanstein</de>
 				<en>The construction of Neuschwanstein</en>
@@ -172,7 +172,7 @@
 			<ratings critics="65" speed="36" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-dda6-ero-WuzzGeiersDamen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-dda6-ero-WuzzGeiersDamen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Wuzz Geiers Damen</de>
 				<en>The girls of Wuzz Geier</en>
@@ -192,7 +192,7 @@
 			<ratings critics="12" speed="49" outcome="69" />
 		</programme>
 
-		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Wesensreiter</de>
 				<en>Creature Rider</en>
@@ -212,7 +212,7 @@
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Bullshit Bingo</de>
 				<en>Bullshit bingo</en>
@@ -230,7 +230,7 @@
 			<ratings critics="29" speed="27" outcome="10" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Sonstiges - das Thema</de>
 				<en>Various - the toppic</en>
@@ -251,7 +251,7 @@
 			<ratings critics="99" speed="47" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Editor und KI</de>
 				<en>Editor and KI</en>
@@ -269,7 +269,7 @@
 			<ratings critics="92" speed="27" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>TVGigant - der Anfang</de>
 				<en>TVGigant - the beginning</en>
@@ -288,7 +288,7 @@
 			<ratings critics="92" speed="27" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-RatTV" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-RatTV" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Geschichte über MadTV und Rainbow Arts -->
 				<de>RatTV - Quo Vadis</de>
@@ -309,7 +309,7 @@
 			<ratings critics="88" speed="51" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Goaaaaal</de>
 				<en>Goaaaaal</en>
@@ -329,7 +329,7 @@
 			<ratings critics="22" speed="95" outcome="0" />
 		</programme>
 
-		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Iris entdeckt die Alm</de>
 				<en>Iris explores the alp</en>
@@ -348,7 +348,7 @@
 			<ratings critics="9" speed="19" outcome="29" />
 		</programme>
 
-		<programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Weib, Wein und Gesang</de>
 				<en>Girls, wine and singing</en>
@@ -369,7 +369,7 @@
 			<ratings critics="32" speed="49" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-916a-47bf-infinityjest" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="tt0089092" rt_id="0" creator="">
+		<programme id="TheRob-916a-47bf-infinityjest" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="tt0089092" creator="">
 			<title>
 				<!-- Idee basiert auf Unendlicher Spaß, Das Buch musste umgesetzt werden -->
 				<de>Der perfekte, unendlich spaßige Film</de>
@@ -384,7 +384,7 @@
 				<member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
 				<member index="2" function="2">TheRob-celebritypeople-GaryGrunt</member>
 				<member index="3" function="2">af6a5525-6858-42b2-b313-6ca3e26d3b90</member>
-				<member index="3" function="2">TheRob-celebritypeople-LarryMoldman</member>
+				<member index="4" function="2">TheRob-celebritypeople-LarryMoldman</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1985" distribution="1" maingenre="14" subgenre="" flags="0" blocks="3" price_mod="1.5" />
@@ -397,7 +397,7 @@
 			</modifiers>
 		</programme>
 
-		<programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Jo Mei, ei schei Jodeler</de>
 				<en>Jo Mei, a fu'ing yodeler</en>
@@ -418,7 +418,7 @@
 			<ratings critics="32" speed="9" outcome="0" />
 		</programme>
 
-		<programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Jag den Meringo</de>
 				<en>Chasing Meringo</en>
@@ -439,7 +439,7 @@
 			<ratings critics="67" speed="66" outcome="65" />
 		</programme>
 
-		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Elefantengedächtnis</de>
 				<en>An elephant memory</en>
@@ -456,7 +456,7 @@
 			<data country="D" year="1975" distribution="2" maingenre="9" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="67" speed="25" outcome="0" />
 			<children>
-				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Zahnpasta</de>
 						<en>Toothpaste</en>
@@ -467,7 +467,7 @@
 					</description>
 					<ratings critics="73" speed="24" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Limonade</de>
 						<en>Lemonade</en>
@@ -478,7 +478,7 @@
 					</description>
 					<ratings critics="65" speed="26" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Bleistifte</de>
 						<en>pencil</en>
@@ -489,7 +489,7 @@
 					</description>
 					<ratings critics="66" speed="25" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Moderator ohne Kontrolle</de>
 						<en>Moderator without control</en>
@@ -500,7 +500,7 @@
 					</description>
 					<ratings critics="74" speed="49" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Namentanzen</de>
 						<en>Dancing names</en>
@@ -514,7 +514,7 @@
 			</children>
 		</programme>
 
-		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Die Tempelritter</de>
 				<en>The Templars</en>
@@ -534,7 +534,7 @@
 			<ratings critics="75" speed="31" outcome="0" />
 		</programme>
 
-		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
 				<de>Baba der Trabbi</de>
@@ -555,7 +555,7 @@
 			<ratings critics="27" speed="34" outcome="46" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 				<de>Wilhelm Tell</de>
@@ -576,7 +576,7 @@
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
 				<de>Janosik</de>
@@ -597,7 +597,7 @@
 			<ratings critics="56" speed="42" outcome="41" />
 		</programme>
 
-		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Skandale</de>
 				<en>Scandals</en>
@@ -614,7 +614,7 @@
 			<data country="D" year="1979" distribution="2" maingenre="11" subgenre="6" flags="92" blocks="2" price_mod="1.00" />
 			<ratings critics="65" speed="35" outcome="60" />
 			<children>
-				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>[1|Full] qualmt die Bude zu</de>
 						<en>[1|Full] smokes the place down</en>
@@ -625,7 +625,7 @@
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
-				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>[1|Full] beleidigt die Interviewerin</de>
 						<en>[1|Full] insults the interviewer</en>
@@ -636,7 +636,7 @@
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
-				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>[1|Full] im Dschungel</de>
 						<en>[1|Full] in the jungle</en>
@@ -650,7 +650,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Abteuerserie  -->
 			<title>
 				<de>Sinbads Reisen</de>
@@ -669,7 +669,7 @@
 			<data country="JPN" year="1978" distribution="2" maingenre="1" subgenre="2" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="38" speed="43" outcome="0" />
 			<children>
-				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Sinbad und die Insel</de>
 						<en>Sinbad and the isle</en>
@@ -680,7 +680,7 @@
 					</description>
 					<ratings critics="34" speed="41" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-adv-sinbadsreisen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sinbad und das Diamantental</de>
 						<en>Sinbad and the diamant valley</en>
@@ -691,7 +691,7 @@
 					</description>
 					<ratings critics="34" speed="42" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sinbad und der Riese</de>
 						<en>Sinbad and the giant</en>
@@ -702,7 +702,7 @@
 					</description>
 					<ratings critics="37" speed="47" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep104" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-adv-sinbadsreisen-ep104" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sinbad heiratet</de>
 						<en>The marriage of Sinbad</en>
@@ -713,7 +713,7 @@
 					</description>
 					<ratings critics="35" speed="29" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadreisen-ep105" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-adv-sinbadreisen-ep105" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sinbad und der Riesenvogel</de>
 						<en>Sinbad and the giant bird</en>
@@ -724,7 +724,7 @@
 					</description>
 					<ratings critics="33" speed="51" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadreisen-ep106" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-adv-sinbadreisen-ep106" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sinbad und das karge Land</de>
 						<en>Sinbad and the desert land</en>
@@ -735,7 +735,7 @@
 					</description>
 					<ratings critics="42" speed="39" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep107" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-adv-sinbadsreisen-ep107" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sinbad geht in Rente</de>
 						<en>Sinbads retires</en>
@@ -750,7 +750,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Manager, geflagt als Kultur -->
 			<title>
 				<de>Firmengründungen</de>
@@ -768,7 +768,7 @@
 			<data country="D" year="1984" distribution="2" maingenre="300" subgenre="4" flags="4" blocks="2" price_mod="1.00" />
 			<ratings critics="45" speed="23" outcome="0" />
 			<children>
-				<programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Firmenstudio in Nollywood</de>
 						<en>Movie studio in Nollywood</en>
@@ -779,7 +779,7 @@
 					</description>
 					<ratings critics="43" speed="22" />
 				</programme>
-				<programme id="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Erotikshop im Jemen</de>
 						<en>Erotic shop in Yemen</en>
@@ -790,7 +790,7 @@
 					</description>
 					<ratings critics="48" speed="27" />
 				</programme>
-				<programme id="therob-programme-mng-firmengruendungen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-mng-firmengruendungen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kühlschrankfachladen in Grönland</de>
 						<en>Refrigerators in Iceland</en>
@@ -804,7 +804,7 @@
 			</children>
 		</programme>
 
-		<programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Schach gegen den Meister</de>
 				<en>Chess against the masters</en>
@@ -825,7 +825,7 @@
 				<modifier name="price" value="1.2" />
 			</modifiers>
 			<children>
-				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>2 Türme, 3 Bauern</de>
 						<en>2 rooks, 3 pawns</en>
@@ -836,7 +836,7 @@
 					</description>
 					<ratings critics="30" speed="4" />
 				</programme>
-				<programme id="a2ac67b0-6689-4c50-9489-TheRobCallInTestEp102" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="a2ac67b0-6689-4c50-9489-TheRobCallInTestEp102" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Springer und Pferde</de>
 						<en>Knights and bishops</en>
@@ -847,7 +847,7 @@
 					</description>
 					<ratings critics="32" speed="4" />
 				</programme>
-				<programme id="82a377c0-4950-40cb-9813-TheRobCallInTestEp103" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="82a377c0-4950-40cb-9813-TheRobCallInTestEp103" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Nur noch Bauern</de>
 						<en>Only pawns left</en>
@@ -858,7 +858,7 @@
 					</description>
 					<ratings critics="24" speed="4" />
 				</programme>
-				<programme id="81800e30-c387-4a29-9c21-TheRobCallInTestEp104" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="81800e30-c387-4a29-9c21-TheRobCallInTestEp104" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Damen</de>
 						<en>Queens</en>
@@ -872,7 +872,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Rentner -->
 			<title>
 				<de>Der Osten - der wahre Horror</de>
@@ -891,7 +891,7 @@
 			<ratings critics="25" speed="40" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Rentner -->
 			<title>
 				<de>Der Westen - der wahre Horror</de>
@@ -910,7 +910,7 @@
 			<ratings critics="25" speed="40" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Kurven der Welt - Erkenne sie alle</de>
 				<en>curves of the world - guess them all</en>
@@ -921,7 +921,7 @@
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_42</member>
-				<member index="0" function="2">Per_custom_Freddy_45</member>
+				<member index="1" function="2">Per_custom_Freddy_45</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="SWE" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
@@ -933,7 +933,7 @@
 				<modifier name="price" value="0.4" />
 			</modifiers>
 			<children>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Jamaika</de>
 						<en>Jamaica</en>
@@ -944,7 +944,7 @@
 					</description>
 					<ratings critics="20" speed="38" />
 				</programme>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kambodscha</de>
 						<en>Cambodia</en>
@@ -955,7 +955,7 @@
 					</description>
 					<ratings critics="29" speed="33" />
 				</programme>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Bulgarien</de>
 						<en>Bulgaria</en>
@@ -966,7 +966,7 @@
 					</description>
 					<ratings critics="21" speed="43" />
 				</programme>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<!-- Zielgruppe Damen -->
 						<de>Tunesien</de>
@@ -982,7 +982,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
 				<de>Kampf der Planeten - die wahre Geschichte</de>
@@ -1002,7 +1002,7 @@
 			<ratings critics="79" speed="45" outcome="0" />
 		</programme>
 
-		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Zielgruppe Hausfrauen -->
 				<de>Marmeladen selber machen</de>
@@ -1020,7 +1020,7 @@
 			<data country="Aut" year="1951" distribution="2" maingenre="9" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="35" speed="9" outcome="0" />
 			<children>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Erdbeermarmelade</de>
 						<en>Strawberry jelly</en>
@@ -1031,7 +1031,7 @@
 					</description>
 					<ratings critics="34" speed="10" />
 				</programme>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Pflaumenmarmelade</de>
 						<en>Plum jelly</en>
@@ -1042,7 +1042,7 @@
 					</description>
 					<ratings critics="35" speed="9" />
 				</programme>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kirschmarmelade</de>
 						<en>Cherry jelly</en>
@@ -1056,7 +1056,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- War das wahr? Fictional, Mystery -->
 				<de>War das wahr?</de>
@@ -1076,7 +1076,7 @@
 			<ratings critics="49" speed="37" outcome="12" />
 		</programme>
 
-		<programme id="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Schwarzmarkt, Fictional, Krimi -->
 				<de>Der Schwarzmarkt</de>
@@ -1096,7 +1096,7 @@
 			<ratings critics="46" speed="43" outcome="21" />
 		</programme>
 
-		<programme id="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wer war es?, Fictional, Krimi -->
 				<de>Wer war es?</de>
@@ -1116,7 +1116,7 @@
 			<ratings critics="6" speed="32" outcome="7" />
 		</programme>
 
-		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Überleben wir die LAF?, Fictional, Dokumentation -->
 				<de>Überleben wir die L.A.F.?</de>
@@ -1129,14 +1129,14 @@
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
 				<member index="1" function="8">Per_custom_Freddy_631</member>
-				<member index="1" function="128">Per_custom_Freddy_404</member>
+				<member index="2" function="128">Per_custom_Freddy_404</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1971" distribution="2" maingenre="6" subgenre="300" flags="16" blocks="1" price_mod="1.00" />
 			<ratings critics="7" speed="16" outcome="0" />
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Gemüse</de>
@@ -1155,7 +1155,7 @@
 			<data country="F" year="1971" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="54" speed="34" outcome="0" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spargel</de>
 						<en>Count Ruccola meets asparagus</en>
@@ -1166,7 +1166,7 @@
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spinat</de>
 						<en>Count Ruccola meets spinach</en>
@@ -1177,7 +1177,7 @@
 					</description>
 					<ratings critics="54" speed="35" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Blumenkohl</de>
 						<en>Count Ruccola meets cauliflower</en>
@@ -1188,7 +1188,7 @@
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Rosenkohl</de>
 						<en>Count Ruccola meets Brussels sprouts</en>
@@ -1199,7 +1199,7 @@
 					</description>
 					<ratings critics="49" speed="34" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Bohnen</de>
 						<en>Count Ruccola meets beans</en>
@@ -1213,7 +1213,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Obst</de>
@@ -1232,7 +1232,7 @@
 			<data country="F" year="1989" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="42" outcome="0" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Kirschen</de>
 						<en>Count Ruccola meets cherries</en>
@@ -1243,7 +1243,7 @@
 					</description>
 					<ratings critics="49" speed="45" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Birnen</de>
 						<en>Count Ruccola meets pears</en>
@@ -1254,7 +1254,7 @@
 					</description>
 					<ratings critics="45" speed="40" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Erdbeeren</de>
 						<en>Count Ruccola meets strawberries</en>
@@ -1265,7 +1265,7 @@
 					</description>
 					<ratings critics="46" speed="37" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Äpfel</de>
 						<en>Count Ruccola meets apples</en>
@@ -1276,7 +1276,7 @@
 					</description>
 					<ratings critics="47" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Orangen</de>
 						<en>Count Ruccola meets oranges</en>
@@ -1287,7 +1287,7 @@
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
-				 <programme id="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				 <programme id="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Himbeeren</de>
 						<en>Count Ruccola meets raspberries</en>
@@ -1298,7 +1298,7 @@
 					</description>
 					<ratings critics="42" speed="44" />
 				</programme>
-				 <programme id="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				 <programme id="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Trauben</de>
 						<en>Count Ruccola meets grapes</en>
@@ -1309,7 +1309,7 @@
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Brombeeren</de>
 						<en>Count Ruccola meets blackberries</en>
@@ -1320,7 +1320,7 @@
 					</description>
 					<ratings critics="50" speed="45" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Bananen</de>
 						<en>Count Ruccola meets bananas</en>
@@ -1334,7 +1334,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Serie für Jugendliche, geflagt als Animation -->
 				<de>Graf Ruccola und die Nachtschattengewächse</de>
@@ -1353,7 +1353,7 @@
 			<data country="F" year="2001" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="56" speed="38" outcome="0" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Tomate</de>
 						<en>Count Ruccola and the tomato</en>
@@ -1364,7 +1364,7 @@
 					</description>
 					<ratings critics="59" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Kartoffel</de>
 						<en>Count Ruccola and the potato</en>
@@ -1375,7 +1375,7 @@
 					</description>
 					<ratings critics="56" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Aubergine</de>
 						<en>Count Ruccola and the aubergine</en>
@@ -1386,7 +1386,7 @@
 					</description>
 					<ratings critics="52" speed="34" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola und die Paprika</de>
 						<en>Count Ruccola and the bell peppers</en>
@@ -1397,7 +1397,7 @@
 					</description>
 					<ratings critics="51" speed="38" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola und der Stechapfel</de>
 						<en>Count Ruccola and the jimsonweed</en>
@@ -1411,7 +1411,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-crime-DieZwillinge" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-crime-DieZwillinge" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Zwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
 				<de>Die Zwillinge</de>
@@ -1430,7 +1430,7 @@
 			<data country="DDR" year="1980" distribution="2" maingenre="4" subgenre="14" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="40" speed="40" outcome="" />
 			<children>
-				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rolle jagt den Ladendieb</de>
 						<en>Rolle chases the shoplifter</en>
@@ -1441,7 +1441,7 @@
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ralle wird die Ware nicht los</de>
 						<en>Ralle could not sell the hot stuff</en>
@@ -1452,7 +1452,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rolle schöpft Verdacht</de>
 						<en>Rolle got a suspicion</en>
@@ -1463,7 +1463,7 @@
 					</description>
 					<ratings critics="42" speed="38" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ralle schöpft Verdacht</de>
 						<en>Ralle got a suspicion</en>
@@ -1474,7 +1474,7 @@
 					</description>
 					<ratings critics="38" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das große Kennenlernen</de>
 						<en>The big get to know each other</en>
@@ -1489,7 +1489,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-myst-DasUnbekannte" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-myst-DasUnbekannte" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
 				<de>Das Unbekannte</de>
@@ -1508,7 +1508,7 @@
 			<data country="USA" year="1940" distribution="2" maingenre="14" subgenre="12" flags="64" blocks="1" price_mod="1.00" />
 			<ratings critics="65" speed="40" outcome="" />
 			<children>
-				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ich klopfe, wenn Du schläfst!</de>
 						<en>I will knock, when you sleep!</en>
@@ -1519,7 +1519,7 @@
 					</description>
 					<ratings critics="67" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der See</de>
 						<en>The Lake</en>
@@ -1530,7 +1530,7 @@
 					</description>
 					<ratings critics="65" speed="38" />
 				</programme>
-				<programme id="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der fremde Planet</de>
 						<en>Unknown planet</en>
@@ -1541,7 +1541,7 @@
 					</description>
 					<ratings critics="61" speed="44" />
 				</programme>
-				<programme id="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die unsichtbare Bedrohung</de>
 						<en>The unvisible threat</en>
@@ -1555,7 +1555,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 				<!-- Musik der Berge, Musikshow 102, Zielgruppe Kinder -->
 			<title>
 				<de>Musik der Berge</de>
@@ -1576,7 +1576,7 @@
 			<ratings critics="25" speed="12" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-1756-Polit-Show-WasistSache" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="TheRob-1756-Polit-Show-WasistSache" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Was ist Sache, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Was ist Sache</de>
@@ -1596,7 +1596,7 @@
 			<ratings critics="35" speed="21" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
 			<title>
 				<de>Das Leben der [2|Full]</de>
@@ -1616,7 +1616,7 @@
 			<ratings critics="35" speed="31" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-1756-polit-event-AnalysederReden" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="TheRob-1756-polit-event-AnalysederReden" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
 			<title>
 				<de>Analyse der Reden</de>
@@ -1637,7 +1637,7 @@
 			<ratings critics="65" speed="21" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
@@ -1655,7 +1655,7 @@
 			<data country="D" year="1952" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="28" speed="44" outcome="" />
 			<children>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Urangrill</de>
 						<en>Uranium barbecue</en>
@@ -1666,7 +1666,7 @@
 					</description>
 					<ratings critics="29" speed="43" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>0 auf 1000 kmh in 3 Sekunden</de>
 						<en>0 on 764 mph in 3 seconds</en>
@@ -1677,7 +1677,7 @@
 					</description>
 					<ratings critics="26" speed="43" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Kellerbunker</de>
 						<en>Cellar shelter</en>
@@ -1688,7 +1688,7 @@
 					</description>
 					<ratings critics="29" speed="46" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Frittenbike</de>
 						<en>French fries bike</en>
@@ -1702,7 +1702,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 				<!-- Serie Horror-->
 			<title>
 				<de>Die Rückkehr von Ronny und das Byte</de>
@@ -1721,7 +1721,7 @@
 			<data country="SCO" year="1979" distribution="2" maingenre="12" subgenre="" flags="64" blocks="2" price_mod="1.00" />
 			<ratings critics="17" speed="55" outcome="0" />
 			<children>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das Byte beißt den Wärter</de>
 						<en>The Byte bites the guardian</en>
@@ -1732,7 +1732,7 @@
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ronny sucht das Fliwatüt</de>
 						<en>Ronny searches the Fliwatuet</en>
@@ -1743,7 +1743,7 @@
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Bank</de>
 						<en>The bank</en>
@@ -1754,7 +1754,7 @@
 					</description>
 					<ratings critics="17" speed="47" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Vernichte das Bit</de>
 						<en>Destroy the Bit</en>
@@ -1765,7 +1765,7 @@
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep05" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep05" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Der Anfang</de>
 						<en>The Beginning</en>
@@ -1779,7 +1779,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Moumental-BestofTVTower" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Moumental-BestofTVTower" product="5" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
 				<de>Best of TVTower</de>
@@ -1797,7 +1797,7 @@
 			<data country="D" year="1980" distribution="2" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 			<ratings critics="89" speed="38" outcome="" />
 			<children>
-				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Tiefsee Dinoschrecken, Banzai</de>
 						<en>Dino deep sea terror, banzai</en>
@@ -1815,7 +1815,7 @@
 					<groups target_groups="0" />
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.0" />
 				</programme>
-				<programme id="TheRob-serie-BestofTVTower-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-BestofTVTower-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der Osten - der Westen</de>
 						<en>The east - the west</en>
@@ -1833,7 +1833,7 @@
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 				</programme>
-				<programme id="TheRob-serie-BestofTVTower-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-BestofTVTower-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Iris entdeckt die Alm</de>
 						<en>Iris explores the alp</en>
@@ -1851,7 +1851,7 @@
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 				</programme>
-				<programme id="TheRob-serie-BestofTVTower-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="TheRob-serie-BestofTVTower-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt0072443" creator="Sjaele/TheRob">
 					<title>
 						<de>Picknick am Wegesrand</de>
 						<en>Picknick on a sidewalk</en>
@@ -1877,7 +1877,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-dda6-mov-ero-LolitasimHeu" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-dda6-mov-ero-LolitasimHeu" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Lolitas im Heu</de>
 				<en>Lolitas in the hay</en>
@@ -1896,7 +1896,7 @@
 			<ratings critics="29" speed="49" outcome="89" />
 		</programme>
 
-		<programme id="TheRob-serie-DieStraendederWelt" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-DieStraendederWelt" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
 				<de>Die Strände der Welt</de>
@@ -1914,7 +1914,7 @@
 			<data country="CSSR" year="1980" distribution="2" maingenre="6" subgenre="8" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="29" speed="59" outcome="" />
 			<children>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Walvis Bucht</de>
 						<en>Walvis Bay</en>
@@ -1924,7 +1924,7 @@
 						<en>Namibia. Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Oak Beach</de>
 						<en>Oak beach</en>
@@ -1934,7 +1934,7 @@
 						<en>Australia with direct view on the Great Barrier Reef. Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vallvik</de>
 						<en>Vallvik</en>
@@ -1944,7 +1944,7 @@
 						<en>Sweden. Should anybody tell the moderater, that everybody sees clearly, she is freezing? Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Playa Corcovado</de>
 						<en>Playa Corcovador</en>
@@ -1954,7 +1954,7 @@
 						<en>Costa Rica. Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Koh Thas</de>
 						<en>Koh Thas</en>
@@ -1964,7 +1964,7 @@
 						<en>Cambodia. Who's holding coconuts? Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vyshka</de>
 						<en>Vyshka</en>
@@ -1977,7 +1977,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Wirstellenvor" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Wirstellenvor" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wir stellen vor, Music show -->
 				<de>Wir stellen vor</de>
@@ -1995,7 +1995,7 @@
 			<data country="I" year="1959" distribution="2" maingenre="102" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="30" speed="59" outcome="" />
 			<children>
-				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Buddy Holly</de>
 						<en>Buddy Holly</en>
@@ -2006,7 +2006,7 @@
 					</description>
 					<ratings critics="41" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ritchie Valens</de>
 						<en>Ritchie Valens</en>
@@ -2017,7 +2017,7 @@
 					</description>
 					<ratings critics="28" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Monotones</de>
 						<en>Monotones</en>
@@ -2028,7 +2028,7 @@
 					</description>
 					<ratings critics="28" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Little Richard</de>
 						<en>Little Richard</en>
@@ -2039,7 +2039,7 @@
 					</description>
 					<ratings critics="30" speed="58" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Eddie Cochran</de>
 						<en>Eddie Cochran</en>
@@ -2050,7 +2050,7 @@
 					</description>
 					<ratings critics="27" speed="60" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Chuck Berry</de>
 						<en>Chuck Berry</en>
@@ -2061,7 +2061,7 @@
 					</description>
 					<ratings critics="32" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Elvis Presley</de>
 						<en>Elvis Presley</en>
@@ -2075,7 +2075,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Die Wikinger</de>
 				<en>The Vikings</en>
@@ -2096,7 +2096,7 @@
 		</programme>
 
 		<!--
-		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Ein Monumentaler Versuch</de>
 				<en>A monumental Try</en>
@@ -2118,7 +2118,7 @@
 		</programme>
 		-->
 
-		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Und Jetzt?</de>
@@ -3111,4 +3111,4 @@
 			<speed min="5" max="20" slope="12" />
 		</scripttemplate>
 	</scripttemplates>
-</tvgdb>
+</tvtdb>

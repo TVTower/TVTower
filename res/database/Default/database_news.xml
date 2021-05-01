@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" />
 	<allnews>
 		<news id="6b1065dd-36d5-4b4b-9904-1a8b7fd1d9c1" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="0" creator="">
@@ -2848,4 +2848,4 @@ Demonstrations are expected again this year.</en>
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 	</allnews>
-</tvgdb>
+</tvtdb>

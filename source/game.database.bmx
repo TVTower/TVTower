@@ -463,15 +463,6 @@ Type TDatabaseLoader
 				person.SetPersonalityData( new TPersonPersonalityData.CopyFromBase( person.GetPersonalityData() ) )
 				pd = TPersonPersonalityData(person.GetPersonalityData())
 			EndIf
-		
-			'=== IMAGES ===
-			Local nodeImages:TxmlNode = xml.FindChild(node, "images")
-			data = New TData
-			'contains custom fictional overriding the base one
-			xml.LoadValuesToData(nodeImages, data, [..
-				"face_code" ..
-			])
-			person.faceCode = data.GetString("face_code", person.faceCode)
 
 
 			'=== DETAILS ===
@@ -686,15 +677,6 @@ Type TDatabaseLoader
 		EndIf
 
 
-
-		'=== CONDITIONS ===
-		Local nodeConditions:TxmlNode = xml.FindChild(node, "conditions")
-		data = New TData
-		xml.LoadValuesToData(nodeConditions, data, [..
-			"year_range_from", "year_range_to" ..
-		])
-		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
-		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
 
 		'=== AVAILABILITY ===
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
@@ -1244,7 +1226,7 @@ Type TDatabaseLoader
 		Local timeFields:String[] = [..
 			"year", "year_relative", "year_relative_min", "year_relative_max", ..
 			"day", "day_random_min", "day_random_max", "day_random_slope", ..
-			"hour", "hour_random_min", "hour_random_max", "day_random_slope" ..
+			"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
 		]
 		'try to load it from the "<data>" block
 		'(this is done to allow the old v3-"year" definition)

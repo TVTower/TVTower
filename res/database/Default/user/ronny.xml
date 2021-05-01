@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" comment="Ronnys Programme" />
 	<insignificantpeople>
 		<person id="ronny-people-generated-01" generator="de,2" last_name="Mueller" />
@@ -894,4 +894,4 @@ Illustrious guests and music by [3|Nick].</en>
 		</scripttemplate>
 
 	</scripttemplates>
-</tvgdb>
+</tvtdb>

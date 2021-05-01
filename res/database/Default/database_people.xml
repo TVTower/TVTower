@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3"  />
 	<celebritypeople>
 		<person id="88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -3001,4 +3001,4 @@
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
-</tvgdb>
+</tvtdb>
