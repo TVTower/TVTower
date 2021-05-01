@@ -282,11 +282,15 @@ Type TProduction Extends TOwnedGameObject
 				'is continued
 				Local productionTime:Long = (endTime - Max(startTime, GetWorldTime().GetTimeGone()))
 				If productionTime > 0
-					'also add 5 minutes to avoid people coming into the studio
-					'in the break between two productions
-					productionTime :+ 5 * TWorldTime.MINUTELENGTH
-
-					productionTime :* GetProductionTimeMod()
+					'round production time so block is till next xx:x5
+					'to avoid people entering the studio before next 
+					'production starts (production manager checks in 5
+					'minute interval)
+					local effectiveEndTime:Long = GetWorldTime().GetTimeGone() + productionTime
+					Local minutesTillNextUpdate:Int = 5 - (GetWorldTime().GetDayMinute(effectiveEndTime) mod 5)
+					if minutesTillNextUpdate <> 5
+						productionTime :+ minutesTillNextUpdate * TWorldTime.MINUTELENGTH
+					endif
 
 					If productionConcept.script.IsLive() and not IsPreProductionDone()
 						room.SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_PREPRODUCTION, False)
@@ -343,10 +347,17 @@ Type TProduction Extends TOwnedGameObject
 		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
 
 		startTime = GetWorldTime().GetTimeGone()
-		endTime = startTime + productionTime
-		
+		'modify production time by mod (TODO: add random plus minus?)
+		endTime = startTime + productionTime * GetProductionTimeMod()
 
-		'TODO: modify production time (longer by random chance?)
+		'round end time to next xx:x5 to avoid people entering
+		'the studio before next production starts (production
+		'manager checks in 5 minute interval)
+		Local minutesTillNextUpdate:Int = 5 - (GetWorldTime().GetDayMinute(endTime) mod 5)
+		if minutesTillNextUpdate <> 5
+			endTime :+ minutesTillNextUpdate * TWorldTime.MINUTELENGTH
+		endif
+					
 
 
 		'calculate costs
@@ -419,6 +430,8 @@ Type TProduction Extends TOwnedGameObject
 			'production starting 20:05
 			'1 block : ends at 20:55
 			'2 blocks: ends at 21:55
+			'ATTENTION: ensure it ends at xx:x5 (as the production 
+			'           manager updates in 5 minute intervals)
 			endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
 		EndIf
 
@@ -1023,7 +1036,9 @@ Type TProduction Extends TOwnedGameObject
 		'check in UpdateProductionStep() as below might alter pause state
 		'but is calling UpdateProductionStep() recursively if needed
 		If IsPaused()
-			If pauseDuration = 0 or pauseStartTime + pauseDuration < GetWorldTime().GetTimeGone()
+				'ignore milliseconds/seconds difference
+			If pauseDuration = 0 or (pauseStartTime + pauseDuration)/TWorldTime.MINUTELENGTH <= GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH
+'			If pauseDuration = 0 or pauseStartTime + pauseDuration <= GetWorldTime().GetTimeGone()
 				SetPaused(False, 0)
 				'when no longer paused - refresh blocking information
 				BlockStudio()
@@ -1043,7 +1058,9 @@ Type TProduction Extends TOwnedGameObject
 
 			Case TVTProductionStep.PREPRODUCTION
 				'finished preproduction?
-				If GetWorldTime().GetTimeGone() >= endTime + pauseDuration
+				'ignore milliseconds/seconds difference
+				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= (endTime + pauseDuration)/TWorldTime.MINUTELENGTH
+				'If GetWorldTime().GetTimeGone() >= endTime + pauseDuration
 					FinishPreProduction()
 
 					'maybe next step is also fulfilled
@@ -1055,7 +1072,8 @@ Type TProduction Extends TOwnedGameObject
 			Case TVTProductionStep.PREPRODUCTION_DONE
 				'with fix livetime being "past" current time we should
 				'begin with shooting as fast as possible
-				If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone() >= productionConcept.script.liveTime
+				If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= productionConcept.script.liveTime/TWorldTime.MINUTELENGTH
+				'If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone() >= productionConcept.script.liveTime
 					BeginShooting()
 					
 					'maybe next step is also fulfilled
@@ -1069,7 +1087,9 @@ Type TProduction Extends TOwnedGameObject
 				local finalEndTime:Long = endTime
 				If not productionConcept.script.IsLive() then finalEndTime :+ pauseDuration
 
-				If GetWorldTime().GetTimeGone() >= finalEndTime
+				'ignore milliseconds/seconds difference
+				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= finalEndTime/TWorldTime.MINUTELENGTH
+				'If GetWorldTime().GetTimeGone() >= finalEndTime
 					FinishShooting()
 
 					'maybe next step is also fulfilled

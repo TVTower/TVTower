@@ -5313,7 +5313,7 @@ Type GameEvents
 
 		'=== UPDATE STUDIOS ===
 		'check if new productions finished (0:00, 0:05, ...)
-		If (minute + 5) Mod 5 = 0
+		If minute Mod 5 = 0
 			GetProductionManager().Update()
 		EndIf
 
