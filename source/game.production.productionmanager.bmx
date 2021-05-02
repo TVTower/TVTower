@@ -38,9 +38,8 @@ Type TProductionManager
 			'=== REGISTER EVENTS ===
 			EventManager.UnregisterListenersArray(_eventListeners)
 			_eventListeners = new TEventListenerBase[0]
-
 			'resize news genres when loading an older savegame
-			_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSavegameLoad) ]
 			'update manager at certain times:
 			'xx:05 - BEFORE broadcasts are logged in (and used in audience calculations)
 			'_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Broadcasting_BeforeStartAllProgrammeBlockBroadcasts, onStartProgrammeBlockBroadcasts) ]
@@ -63,6 +62,36 @@ Type TProductionManager
 	Function onSavegameLoad:int(triggerEvent:TEventBase)
 		if GetProductionCompanyBaseCollection().GetCount() = 0
 			CreateProductionCompanies()
+		endif
+
+		'repair old savegames (<= v0.7)
+		local savedSaveGameVersion:Int = triggerEvent.GetData().GetInt("saved_savegame_version")
+		local currentSaveGameVersion:Int = triggerEvent.GetData().GetInt("current_savegame_version")
+		if savedSaveGameVersion = 13
+			'all production steps need to be fixed
+			For Local p:TProduction = EachIn GetInstance().productionsToProduce
+				Select p.productionStep
+					'case 0
+					'	'the same TVTProductionStep.NOT_STARTED
+					case 1
+						p.productionStep = TVTProductionStep.SHOOTING
+						if not p._designatedProgrammeLicence
+							p._designatedProgrammeLicence = p.GetProducedLicence()
+							if p._designatedProgrammeLicence
+								TLogger.Log("Savegae", "TProductionManager.onSavegameLoad reassigned _designatedProgrammeLicence for ~q"+p.productionConcept.GetTitle()+"~q.", LOG_DEBUG)
+							endif
+						endif
+						if not p._designatedProgrammeLicence
+							p._designatedProgrammeLicence = p.GenerateProgrammeLicence()
+							p.producedLicenceID = p._designatedProgrammeLicence.GetID()
+							TLogger.Log("Savegae", "TProductionManager.onSavegameLoad recreated _designatedProgrammeLicence for ~q"+p.productionConcept.GetTitle()+"~q.", LOG_DEBUG)
+						endif
+					case 2
+						p.productionStep = TVTProductionStep.FINISHED
+					case 3
+						p.productionStep = TVTProductionStep.ABORTED
+				End Select
+			Next
 		endif
 	End Function
 

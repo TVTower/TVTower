@@ -2223,7 +2223,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 13
+	Const SAVEGAME_VERSION:int = 14
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2619,11 +2619,15 @@ Type TSaveGame Extends TGameState
 		'reset game data before loading savegame data
 		New TGameState.Initialize()
 
+		Local savegameEventData:TData = new TData
+		savegameEventData.AddString("saveName", saveName) 
+		savegameEventData.AddInt("saved_savegame_version", savegameSummary.GetInt("savegame_version")) 
+		savegameEventData.AddInt("current_savegame_version", TSaveGame.SAVEGAME_VERSION) 
 
 		'=== LOAD SAVED GAME ===
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
-		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginLoad, New TData.addString("saveName", saveName))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginLoad, savegameEventData)
 		'load savegame data into game object
 		saveGame.RestoreGameData()
 
@@ -2644,7 +2648,7 @@ Type TSaveGame Extends TGameState
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
-		TriggerBaseEvent(GameEventKeys.SaveGame_OnLoad, New TData.addString("saveName", saveName).add("saveGame", saveGame))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnLoad, savegameEventData)
 
 		If not GetGame().GetObservedFigure() or GetGame().GetObservedFigure() = GetPlayer().GetFigure()
 			'only set the screen if the figure is in this room ... this
@@ -2789,6 +2793,16 @@ End Type
 
 Type TSavegameConverter
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
+		'v0.7 -> v0.7.1
+		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
+			case "TProduction:startDate".ToLower()
+				Return "startTime"
+			case "TProduction:endDate".ToLower()
+				Return "endTime"
+			case "TProduction:status".ToLower()
+				Return "productionStep"
+		End Select
+
 		Rem
 		'example
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
@@ -2822,6 +2836,7 @@ Type TSavegameConverter
 		Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
+rem
 			'v0.6.2 -> BroadcastStatistics from TMap to TIntMap
 			Case "TMap>TIntMap".ToLower()
 				Local old:TMap = TMap(obj)
@@ -2841,6 +2856,7 @@ Type TSavegameConverter
 					Next
 					Return res
 				EndIf
+endrem
 			Rem
 			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
 				Local old:TIntervalTimer = TIntervalTimer(obj)
