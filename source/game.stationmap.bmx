@@ -1971,17 +1971,21 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'returns best suiting station
+	'returns best suiting station (x,y must be station position or "in range")
 	Method GetStationByXY:TStationBase(x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
 		Local best:TStationBase
 		Local bestDistance:Float = -1
 		Local pos:TVec2D = New TVec2D.Init(x, y)
+		
+		'For antenna stations it chooses the one containing the given
+		'coordinate in its "circle" and being the nearest position wise
+		
 		For Local station:TStationBase = EachIn stations
-			If exactPosition 
-				If station.pos.isSame(pos) Then return station
-			Else
-				'no antenna -> must be exact
-				If not TStationAntenna(station) and station.pos.isSame(pos) Then return station
+			'exact hit ?
+			If station.pos.isSame(pos) Then return station
+
+			'antenna stations can be found via "non exact" too
+			If not exactPosition and TStationAntenna(station)
 				'or x,y outside of station-circle?
 				local distance:Float = Sqr((x - station.pos.x)^2 + (y - station.pos.y)^2)
 				If TStationAntenna(station).radius < distance Then Continue
