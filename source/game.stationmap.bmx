@@ -1952,47 +1952,43 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'return a station at the given coordinates (eg. used by network)
-	Method GetStationsByXY:TStationBase[](x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
-		Local res:TStationBase[]
+	'return all antenna stations covering the given coordinates
+	Method GetAntennasByXY:TStationAntenna[](x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
+		Local res:TStationAntenna[]
 		Local pos:TVec2D = New TVec2D.Init(x, y)
-		For Local station:TStationBase = EachIn stations
+		For Local antenna:TStationAntenna = EachIn stations
 			If exactPosition 
-				If Not station.pos.isSame(pos) Then Continue
+				If Not antenna.pos.isSame(pos) Then Continue
 			Else
-				'no antenna -> must be exact
-				If not TStationAntenna(station) and Not station.pos.isSame(pos) Then Continue
-				'or x,y outside of station-circle?
-				If TStationAntenna(station).radius < Sqr((x - station.pos.x)^2 + (y - station.pos.y)^2) Then Continue
+				'x,y outside of station-circle?
+				If antenna.radius < Sqr((x - antenna.pos.x)^2 + (y - antenna.pos.y)^2) Then Continue
 			EndIf
-			res :+ [station]
+			res :+ [antenna]
 		Next
 		Return res
 	End Method
 
 
-	'returns best suiting station (x,y must be station position or "in range")
-	Method GetStationByXY:TStationBase(x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
-		Local best:TStationBase
+	'returns best suiting antenna (x,y must be station position or "in range")
+	Method GetAntennaByXY:TStationAntenna(x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
+		Local best:TStationAntenna
 		Local bestDistance:Float = -1
 		Local pos:TVec2D = New TVec2D.Init(x, y)
 		
 		'For antenna stations it chooses the one containing the given
 		'coordinate in its "circle" and being the nearest position wise
 		
-		For Local station:TStationBase = EachIn stations
-			'exact hit ?
-			If station.pos.isSame(pos) Then return station
-
-			'antenna stations can be found via "non exact" too
-			If not exactPosition and TStationAntenna(station)
+		For Local antenna:TStationAntenna = EachIn stations
+			If exactPosition
+				If antenna.pos.isSame(pos) Then return antenna
+			Else
 				'or x,y outside of station-circle?
-				local distance:Float = Sqr((x - station.pos.x)^2 + (y - station.pos.y)^2)
-				If TStationAntenna(station).radius < distance Then Continue
+				local distance:Float = Sqr((x - antenna.pos.x)^2 + (y - antenna.pos.y)^2)
+				If antenna.radius < distance Then Continue
 				
 				if distance < bestDistance or bestDistance = -1
 					bestDistance = distance
-					best = station
+					best = antenna
 				endif
 			EndIf
 		Next

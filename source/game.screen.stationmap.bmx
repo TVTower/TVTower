@@ -3012,15 +3012,15 @@ endrem
 		'select an antenna by mouse?
 		If actionMode = 0 or actionMode = MODE_SELL_ANTENNA
 			If MouseManager.IsClicked(1)
-				local station:TStationBase = GetStationMap(room.owner).GetStationByXY(int(MouseManager.GetClickPosition(1).x), int(MouseManager.GetClickPosition(1).y), False)
-				if TStationAntenna(station)
+				local antenna:TStationAntenna = GetStationMap(room.owner).GetAntennaByXY(int(MouseManager.GetClickPosition(1).x), int(MouseManager.GetClickPosition(1).y), False)
+				if antenna
 					'make sure antenna panel is open
 					antennaPanel.Open()
 					guiAccordeon.UpdateLayout()
 					antennaPanel.UpdateLayout()
 
-					antennaPanel.SetSelectedStation(station)
-					selectAndReveal(station)
+					antennaPanel.SetSelectedStation(antenna)
+					selectAndReveal(antenna)
 
 					MouseManager.SetClickHandled(1)
 				endif
