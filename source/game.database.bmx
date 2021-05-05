@@ -477,7 +477,7 @@ Type TDatabaseLoader
 			person.countryCode = data.GetString("country", person.countryCode).ToUpper()
 			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
 			pd.SetDayOfDeath( data.GetString("deathday", pd.dayOfDeath) )
-			person.SetJob( data.GetInt("job") )
+			person.SetJob( data.GetInt("job", person.GetJobs()) )
 			'can be defined in "details" or as "<name>" tag
 			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt("fictional", person.IsFictional()) )
 			person.faceCode = data.GetString("face_code", person.faceCode)
