@@ -1611,6 +1611,20 @@ Type TDatabaseLoader
 			)
 		EndIf
 
+		'=== DATA: PRODUCTION TIME ===
+		nodeData = xml.FindChild(node, "production_time")
+		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
+		If data.GetInt("value", -1) >= 0
+			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("value", scriptTemplate.productionTime / TWorldTime.MINUTELENGTH)
+		Else
+			'we cannot simply place the min/max as default as "-1 / TWorldTime.MINUTELENGTH" results in 0 ...
+			local pTMin:Int = data.GetInt("min", -1)
+			local pTMax:Int = data.GetInt("max", -1)
+			if pTMin >= 0 Then scriptTemplate.productionTimeMin = TWorldTime.MINUTELENGTH * pTMin
+			if pTMax >= 0 Then scriptTemplate.productionTimeMax = TWorldTime.MINUTELENGTH * pTMax
+			scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat("slope", 100 * scriptTemplate.productionTimeSlope)
+		EndIf
+
 		'=== DATA: JOBS ===
 		nodeData = xml.FindChild(node, "jobs")
 		For Local nodeJob:TxmlNode = EachIn xml.GetNodeChildElements(nodeData)
@@ -1693,7 +1707,7 @@ Type TDatabaseLoader
 			"production_broadcast_flags", "production_licence_flags", "production_broadcast_limit", ..
 			"live_date", "live_time", ..
 			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-			"production_limit", "production_time", "production_time_min", "production_time_max", "production_time_slope", "production_time_mod" ..
+			"production_limit", "production_time_mod" ..
 		])
 		scriptTemplate.scriptFlags = data.GetInt("scriptflags", scriptTemplate.scriptFlags)
 
@@ -1718,14 +1732,6 @@ Type TDatabaseLoader
 		scriptTemplate.productionBroadcastFlags = data.GetInt("production_broadcast_flags", scriptTemplate.productionBroadcastFlags)
 		scriptTemplate.productionLicenceFlags = data.GetInt("production_licence_flags", scriptTemplate.productionLicenceFlags)
 		scriptTemplate.SetProductionBroadcastLimit( data.GetInt("production_broadcast_limit", scriptTemplate.GetProductionBroadcastLimit()) )
-
-		scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("production_time", scriptTemplate.productionTime / TWorldTime.MINUTELENGTH)
-		'we cannot simply place the min/max as default as "-1 / TWorldTime.MINUTELENGTH" results in 0 ...
-		local pTMin:Int = data.GetInt("production_time_min", -1)
-		local pTMax:Int = data.GetInt("production_time_max", -1)
-		if pTMin >= 0 Then scriptTemplate.productionTimeMin = TWorldTime.MINUTELENGTH * pTMin
-		if pTMax >= 0 Then scriptTemplate.productionTimeMax = TWorldTime.MINUTELENGTH * pTMax
-		scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat("production_time_slope", 100 * scriptTemplate.productionTimeSlope)
 
 		scriptTemplate.productionTimeMod = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeMod)
 
