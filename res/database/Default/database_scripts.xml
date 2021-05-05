@@ -399,8 +399,8 @@
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />
-				<job index="2" function="6" required="0" gender="2" />
-				<job index="3" function="6" required="0" />
+				<job index="2" function="32" required="0" gender="2" />
+				<job index="3" function="32" required="0" />
 			</jobs>
 
 			<!-- mandatory: xrated  |  optional: cult -->
@@ -564,31 +564,31 @@
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
+				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
 					<title>
 						<de>%TITLEEPISODE2%</de>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
+				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
 					<title>
 						<de>%TITLEEPISODE3%</de>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
+				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
 					<title>
 						<de>%TITLEEPISODE4%</de>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
+				<scripttemplate index="4" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
 					<title>
 						<de>%TITLEEPISODE5%</de>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
+				<scripttemplate index="5" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
 					<title>
 						<de>%TITLEEPISODE6%</de>
 					</title>
@@ -693,13 +693,13 @@
 		<programmerole guid="script-roles-sco-002" first_name="Harry" last_name="Wallace" title="Dr." gender="1" country="SCO" />
 		<programmerole guid="script-roles-sco-003" first_name="Charlie" last_name="McCallum" title="" gender="1" country="SCO" />
 
-		<programmerole guid="script-roles-swe-001" first_name="Liam" last_name="Bengtsson" title="" gender="1" country="SWE" />
-		<programmerole guid="script-roles-swe-002" first_name="Alva" last_name="Lindberg" title="Prof." gender="1" country="SWE" />
-		<programmerole guid="script-roles-swe-003" first_name="Filip" last_name="Jönsson" title="" gender="1" country="SWE" />
+		<programmerole guid="script-roles-swe-001" first_name="Liam" last_name="Bengtsson" title="" gender="1" country="S" />
+		<programmerole guid="script-roles-swe-002" first_name="Alva" last_name="Lindberg" title="Prof." gender="1" country="S" />
+		<programmerole guid="script-roles-swe-003" first_name="Filip" last_name="Jönsson" title="" gender="1" country="S" />
 
-		<programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="UK" />
-		<programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="UK" />
-		<programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="UK" />
+		<programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="GB" />
+		<programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="GB" />
+		<programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="GB" />
 
 		<programmerole guid="script-roles-ger-001" first_name="Vincent" last_name="Graf" gender="1" country="D" />
 		<programmerole guid="script-roles-ger-002" first_name="Emelie" last_name="Schulte" gender="2" country="D" />
