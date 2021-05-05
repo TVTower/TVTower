@@ -205,7 +205,7 @@
 						<de>Erhöhe das Sendegebiet auf über 5 Millionen Einwohner.</de>
 						<en>Increase the broadcast area to more than 5 million inhabitants.</en>
 					</text>
-					<data type="reachBroadcastArea" minReachAbsolute="5000000" checkMinute="5" />
+					<data type="reachBroadcastArea" minReachAbsolute="5000000" />
 				</task>
 			</tasks>
 			<rewards>

@@ -2,7 +2,7 @@
 <tvtdb>
 <version value="3" comment="Programme von TheRob" />
 	<allprogrammes>
-		<programme id="TheRob-serie-KomissarWirsch" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-KomissarWirsch" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Komissar Wirsch -->
 				<de>Kommissar Wirsch</de>
@@ -572,7 +572,7 @@
 				<member index="3" function="2">Per_custom_Freddy_655</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SUI" year="1961" distribution="1" maingenre="1" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<data country="CH" year="1961" distribution="1" maingenre="1" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
@@ -593,7 +593,7 @@
 				<member index="3" function="2">Per_custom_Freddy_567</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CSSR" year="1984" distribution="1" maingenre="1" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<data country="CS" year="1984" distribution="1" maingenre="1" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="56" speed="42" outcome="41" />
 		</programme>
 
@@ -666,7 +666,7 @@
 				<member index="2" function="2">Per_custom_Freddy_330</member>
 			</staff>
 			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="JPN" year="1978" distribution="2" maingenre="1" subgenre="2" flags="0" blocks="1" price_mod="1.00" />
+			<data country="J" year="1978" distribution="2" maingenre="1" subgenre="2" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="38" speed="43" outcome="0" />
 			<children>
 				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -906,7 +906,7 @@
 				<member index="1" function="2">Per_custom_Freddy_429</member>
 			</staff>
 			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UDSSR" year="1964" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<data country="SU" year="1964" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="25" speed="40" outcome="0" />
 		</programme>
 
@@ -924,7 +924,7 @@
 				<member index="1" function="2">Per_custom_Freddy_45</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SWE" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
+			<data country="S" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
 			<ratings critics="24" speed="42" outcome="0" />
 			<modifiers>
 				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
@@ -1017,7 +1017,7 @@
 				<member index="1" function="128">Per_custom_Freddy_624</member>
 			</staff>
 			<groups target_groups="4" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="Aut" year="1951" distribution="2" maingenre="9" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<data country="A" year="1951" distribution="2" maingenre="9" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="35" speed="9" outcome="0" />
 			<children>
 				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -1411,7 +1411,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-crime-DieZwillinge" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-crime-DieZwillinge" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Zwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
 				<de>Die Zwillinge</de>
@@ -1489,7 +1489,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-myst-DasUnbekannte" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-myst-DasUnbekannte" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
 				<de>Das Unbekannte</de>
@@ -1612,7 +1612,7 @@
 				<member index="2" function="2">283bdb7a-ea1f-4d33-8e72-a618515f4e40</member>
 			</staff>
 			<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="FR" year="1983" distribution="2" maingenre="301" subgenre="" flags="0" blocks="4" price_mod="1.00" />
+			<data country="F" year="1983" distribution="2" maingenre="301" subgenre="" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="35" speed="31" outcome="0" />
 		</programme>
 
@@ -1633,11 +1633,11 @@
 				<member index="3" function="2">TheRob-TowerTV-NikitaSergejewitschChruschtschow</member>
 			</staff>
 			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SUI" year="1964" distribution="2" maingenre="201" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<data country="CH" year="1964" distribution="2" maingenre="201" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="65" speed="21" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
@@ -1779,7 +1779,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Moumental-BestofTVTower" product="5" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Moumental-BestofTVTower" product="7" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
 				<de>Best of TVTower</de>
@@ -1872,7 +1872,7 @@
 						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 					</staff>
 					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-					<data country="UdSSR" year="1980" distribution="0" maingenre="204" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+					<data country="SU" year="1980" distribution="0" maingenre="204" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 				</programme>
 			</children>
 		</programme>
@@ -1896,7 +1896,7 @@
 			<ratings critics="29" speed="49" outcome="89" />
 		</programme>
 
-		<programme id="TheRob-serie-DieStraendederWelt" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-DieStraendederWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
 				<de>Die Strände der Welt</de>
@@ -1911,7 +1911,7 @@
 				<member index="1" function="8">TheRob-TowerTV-VeraZottova</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CSSR" year="1980" distribution="2" maingenre="6" subgenre="8" flags="0" blocks="1" price_mod="1.00" />
+			<data country="CS" year="1980" distribution="2" maingenre="6" subgenre="8" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="29" speed="59" outcome="" />
 			<children>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -1977,7 +1977,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Wirstellenvor" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Wirstellenvor" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wir stellen vor, Music show -->
 				<de>Wir stellen vor</de>
@@ -2625,9 +2625,9 @@
 			<jobs>
 				<job index="0" function="1" required="1"  />
 				<job index="1" function="2" required="1" gender="2" />
-				<job index="3" function="2" required="1" gender="2" />
-				<job index="2" function="2" required="1" gender="1" />
-				<job index="2" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="1" />
 				<job index="5" function="32" required="0" />
 				<job index="6" function="32" required="0" />
 				<job index="7" function="32" required="0" />
@@ -3029,7 +3029,7 @@
 			<review min="55" max="100" slope="50" />
 			<speed min="65" max="100" slope="50" />
 		</scripttemplate>
-		<scripttemplate product="7" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
+		<scripttemplate product="3" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
 			<title>
 				<de>TVTs: %TITLE1%</de>
 				<en>TVTs: %TITLE1%</en>
@@ -3040,43 +3040,43 @@
 			</description>
 
 			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
+				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
 						<de>Orte</de>
 						<en>Places</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep2">
+				<scripttemplate index="1" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep2">
 					<title>
 						<de>Länder</de>
 						<en>Countries</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep3">
+				<scripttemplate index="2" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep3">
 					<title>
 						<de>Unterwäsche</de>
 						<en>Underwear</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep4">
+				<scripttemplate index="3" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep4">
 					<title>
 						<de>Parfum</de>
 						<en>Parfume</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep5">
+				<scripttemplate index="4" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep5">
 					<title>
 						<de>Filme</de>
 						<en>Movies</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep6">
+				<scripttemplate index="5" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep6">
 					<title>
 						<de>Keine Wörter diesmal</de>
 						<en>No Words This Time</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep7">
+				<scripttemplate index="6" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep7">
 					<title>
 						<de>Künstler</de>
 						<en>Artists</en>
@@ -3089,8 +3089,8 @@
 					<en>Dancing Queen|Searching Wors|Winning Guaranteed|Screwed Up|Wunderfull Views</en>
 				</title1>
 				<name1>
-					<de>Jimmy|Bobby|Danny|Manni||Donny|Johny</de>
-					<en>Jimmy|Bobby|Danny|Manni||Donny|Johny</en>
+					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
+					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
 				</name1>
 			</variables>
 			<jobs>

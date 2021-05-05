@@ -251,7 +251,7 @@
 			<nick_name></nick_name>
             <first_name_original>Tom</first_name_original>
             <last_name_original>Cruise</last_name_original>
-            <details job="2" gender="1" birthday="1962-07-03" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1962-07-03" deathday="" country="USA" />
 		</person>
 		<person id="6b53e3ec-0d66-4131-84ec-a48b9bbe3b77" tmdb_id="0" imdb_id="nm0000361" creator="">
 			<first_name>Brain</first_name>
@@ -325,7 +325,7 @@
 			<nick_name></nick_name>
             <first_name_original>River</first_name_original>
             <last_name_original>Phoenix</last_name_original>
-            <details job="2" gender="1" birthday="1970-08-23" deathday="1993-10-31" country="US" />
+            <details job="2" gender="1" birthday="1970-08-23" deathday="1993-10-31" country="USA" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a80152d6-43dc-4f9c-a562-a5dbf821bc1f" tmdb_id="0" imdb_id="nm0000020" creator="">
@@ -802,7 +802,7 @@
 			<nick_name></nick_name>
             <first_name_original>Liam</first_name_original>
             <last_name_original>Neeson</last_name_original>
-            <details job="2" gender="1" birthday="1952-06-07" deathday="" country="IE" />
+            <details job="2" gender="1" birthday="1952-06-07" deathday="" country="IRL" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="61b52966-3363-4fb3-a8d1-61a5555a0961" tmdb_id="0" imdb_id="nm0000559" creator="">
@@ -1277,7 +1277,7 @@
             <nick_name></nick_name>
             <first_name_original>Michael</first_name_original>
             <last_name_original>Caine</last_name_original>
-            <details job="2" gender="1" birthday="1933-03-14" deathday="" country="UK" />
+            <details job="2" gender="1" birthday="1933-03-14" deathday="" country="GB" />
         </person>
         <person id="0bc5cf6c-b76f-4feb-bfda-ae838f61b317" tmdb_id="" imdb_id="nm0001099" creator="8782" created_by="DerFronck">
             <first_name>Jay</first_name>
@@ -1285,7 +1285,7 @@
             <nick_name></nick_name>
             <first_name_original>Jeff</first_name_original>
             <last_name_original>Daniels</last_name_original>
-            <details job="2" gender="1" birthday="1955-02-19" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1955-02-19" deathday="" country="USA" />
         </person>
 
 
@@ -1296,7 +1296,7 @@
             <nick_name></nick_name>
             <first_name_original>Noomi</first_name_original>
             <last_name_original>Rapace</last_name_original>
-            <details job="2" gender="2" birthday="1979-12-28" deathday="" country="SE" />
+            <details job="2" gender="2" birthday="1979-12-28" deathday="" country="S" />
         </person>
         <person id="DF-Celebreties-Kristin_Wiig" tmdb_id="" imdb_id="nm1325419" creator="8782" created_by="DerFronck">
             <first_name>Kirsten</first_name>
@@ -1304,7 +1304,7 @@
             <nick_name></nick_name>
             <first_name_original>Kristin</first_name_original>
             <last_name_original>Wiig</last_name_original>
-            <details job="2" gender="2" birthday="1973-08-22" deathday="" country="US" />
+            <details job="2" gender="2" birthday="1973-08-22" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Charlize_Theron" tmdb_id="" imdb_id="nm0000234" creator="8782" created_by="DerFronck">
             <first_name>Karli</first_name>
@@ -1320,7 +1320,7 @@
             <nick_name></nick_name>
             <first_name_original>Emilia</first_name_original>
             <last_name_original>Clarke</last_name_original>
-            <details job="2" gender="2" birthday="1986-10-23" deathday="" country="UK" />
+            <details job="2" gender="2" birthday="1986-10-23" deathday="" country="GB" />
         </person>
         <person id="DF-Celebreties-Katie_Holmes" tmdb_id="" imdb_id="nm0005017" creator="8782" created_by="DerFronck">
             <first_name>Cathy</first_name>
@@ -1328,7 +1328,7 @@
             <nick_name></nick_name>
             <first_name_original>Katie</first_name_original>
             <last_name_original>Holmes</last_name_original>
-            <details job="2" gender="2" birthday="1974-01-30" deathday="" country="US" />
+            <details job="2" gender="2" birthday="1974-01-30" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Jessica_Chastain" tmdb_id="" imdb_id="nm1567113" creator="8782" created_by="DerFronck">
             <first_name>Jessica</first_name>
@@ -1336,7 +1336,7 @@
             <nick_name></nick_name>
             <first_name_original>Jessica</first_name_original>
             <last_name_original>Chastain</last_name_original>
-            <details job="2" gender="2" birthday="1977-03-24" deathday="" country="US" />
+            <details job="2" gender="2" birthday="1977-03-24" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Lena_Headey" tmdb_id="" imdb_id="nm0372176" creator="8782" created_by="DerFronck">
             <first_name>Lenora</first_name>
@@ -1352,7 +1352,7 @@
             <nick_name></nick_name>
             <first_name_original>Sophie</first_name_original>
             <last_name_original>Turner</last_name_original>
-            <details job="2" gender="2" birthday="1996-02-21" deathday="" country="UK" />
+            <details job="2" gender="2" birthday="1996-02-21" deathday="" country="GB" />
         </person>
         <person id="DF-Celebreties-Peter_Dinklage" tmdb_id="" imdb_id="nm0227759" creator="8782" created_by="DerFronck">
             <first_name>Petr</first_name>
@@ -1360,7 +1360,7 @@
             <nick_name></nick_name>
             <first_name_original>Peter</first_name_original>
             <last_name_original>Dinklage</last_name_original>
-            <details job="2" gender="1" birthday="1969-06-11" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1969-06-11" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Kit_Harrington" tmdb_id="" imdb_id="nm3229685" creator="8782" created_by="DerFronck">
             <first_name>Kitt</first_name>
@@ -1368,7 +1368,7 @@
             <nick_name></nick_name>
             <first_name_original>Kit</first_name_original>
             <last_name_original>Harington</last_name_original>
-            <details job="2" gender="1" birthday="1986-12-26" deathday="" country="UK" />
+            <details job="2" gender="1" birthday="1986-12-26" deathday="" country="GB" />
         </person>
         <person id="DF-Celebreties-Nikolaj_Coster-Waldau" tmdb_id="" imdb_id="nm0182666" creator="8782" created_by="DerFronck">
             <first_name>Nikolaus</first_name>
@@ -1384,7 +1384,7 @@
             <nick_name></nick_name>
             <first_name_original>Sean</first_name_original>
             <last_name_original>Bean</last_name_original>
-            <details job="2" gender="1" birthday="1959-04-17" deathday="" country="UK" />
+            <details job="2" gender="1" birthday="1959-04-17" deathday="" country="GB" />
         </person>
         <person id="DF-Celebreties-Aiden_Gillen" tmdb_id="" imdb_id="nm0318821" creator="8782" created_by="DerFronck">
             <first_name>Ey'Dan</first_name>
@@ -1392,7 +1392,7 @@
             <nick_name></nick_name>
             <first_name_original>Aidan</first_name_original>
             <last_name_original>Gillen</last_name_original>
-            <details job="2" gender="1" birthday="1968-04-24" deathday="" country="IE" />
+            <details job="2" gender="1" birthday="1968-04-24" deathday="" country="IRL" />
         </person>
         <person id="DF-Celebreties-Iain_Glenn" tmdb_id="" imdb_id="nm0322513" creator="8782" created_by="DerFronck">
             <first_name>Jearn</first_name>
@@ -1400,7 +1400,7 @@
             <nick_name></nick_name>
             <first_name_original>Iain</first_name_original>
             <last_name_original>Glenn</last_name_original>
-            <details job="2" gender="1" birthday="1968-04-24" deathday="" country="UK" />
+            <details job="2" gender="1" birthday="1968-04-24" deathday="" country="GB" />
         </person>
         <person id="DF-Celebreties-Michael_Fassbender" tmdb_id="" imdb_id="nm1055413" creator="8782" created_by="DerFronck">
             <first_name>Mike</first_name>
@@ -1408,7 +1408,7 @@
             <nick_name></nick_name>
             <first_name_original>Michael</first_name_original>
             <last_name_original>Fassbender</last_name_original>
-            <details job="2" gender="1" birthday="1970-04-02" deathday="" country="DE" />
+            <details job="2" gender="1" birthday="1970-04-02" deathday="" country="D" />
         </person>
         <person id="DF-Celebreties-Idris_Elba" tmdb_id="" imdb_id="nm0252961" creator="8782" created_by="DerFronck">
             <first_name>Eidris</first_name>
@@ -1416,7 +1416,7 @@
             <nick_name></nick_name>
             <first_name_original>Idris</first_name_original>
             <last_name_original>Elba</last_name_original>
-            <details job="2" gender="1" birthday="1972-09-06" deathday="" country="UK" />
+            <details job="2" gender="1" birthday="1972-09-06" deathday="" country="GB" />
         </person>
         <person id="DF-Celebreties-Christian_Bale" tmdb_id="" imdb_id="nm0000288" creator="8782" created_by="DerFronck">
             <first_name>Christian</first_name>
@@ -1424,7 +1424,7 @@
             <nick_name></nick_name>
             <first_name_original>Christian</first_name_original>
             <last_name_original>Bale</last_name_original>
-            <details job="2" gender="1" birthday="1974-01-30" deathday="" country="UK" />
+            <details job="2" gender="1" birthday="1974-01-30" deathday="" country="GB" />
             <data popularity="10" affinity="0" fame="0" scandalizing="10" price_mod="1" power="25" humor="0" charisma="21" appearance="21" topgenre="0" />
         </person>
         <person id="DF-Celebreties-Matt_Damon" tmdb_id="" imdb_id="nm0000354" creator="8782" created_by="DerFronck">
@@ -1433,7 +1433,7 @@
             <nick_name></nick_name>
             <first_name_original>Matt</first_name_original>
             <last_name_original>Damon</last_name_original>
-            <details job="2" gender="1" birthday="1970-10-08" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1970-10-08" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Wil_Wheaton" tmdb_id="" imdb_id="nm0000696" creator="8782" created_by="DerFronck">
             <first_name>Will</first_name>
@@ -1441,7 +1441,7 @@
             <nick_name></nick_name>
             <first_name_original>Wil</first_name_original>
             <last_name_original>Wheaton</last_name_original>
-            <details job="2" gender="1" birthday="1972-07-29" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1972-07-29" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Corey_Feldman" tmdb_id="" imdb_id="nm0000397" creator="8782" created_by="DerFronck">
             <first_name>Corey</first_name>
@@ -1449,7 +1449,7 @@
             <nick_name></nick_name>
             <first_name_original>Corey</first_name_original>
             <last_name_original>Feldman</last_name_original>
-            <details job="2" gender="1" birthday="1971-07-16" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1971-07-16" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-Jerry_O'Connell" tmdb_id="" imdb_id="nm0005278" creator="8782" created_by="DerFronck">
             <first_name>Cherry</first_name>
@@ -1457,7 +1457,7 @@
             <nick_name></nick_name>
             <first_name_original>Jerry</first_name_original>
             <last_name_original>O'Connell</last_name_original>
-            <details job="2" gender="1" birthday="1974-02-17" deathday="" country="US" />
+            <details job="2" gender="1" birthday="1974-02-17" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-David_Benioff" tmdb_id="" imdb_id="nm1125275" creator="8782" created_by="DerFronck">
             <first_name>Dave</first_name>
@@ -1465,7 +1465,7 @@
             <nick_name></nick_name>
             <first_name_original>David</first_name_original>
             <last_name_original>Benioff</last_name_original>
-            <details job="1" gender="1" birthday="1970-09-25" deathday="" country="US" />
+            <details job="1" gender="1" birthday="1970-09-25" deathday="" country="USA" />
         </person>
         <person id="DF-Celebreties-D.B._Weiss" tmdb_id="" imdb_id="nm1888967" creator="8782" created_by="DerFronck">
             <first_name>Dee Bee</first_name>
@@ -1473,7 +1473,7 @@
             <nick_name></nick_name>
             <first_name_original>D.B.</first_name_original>
             <last_name_original>Weiss</last_name_original>
-            <details job="1" gender="1" birthday="1971-04-23" deathday="" country="US" />
+            <details job="1" gender="1" birthday="1971-04-23" deathday="" country="USA" />
         </person>
 
 
@@ -1484,7 +1484,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Andrew</first_name_original>
 			<last_name_original>Lincoln</last_name_original>
-			<details job="2" gender="1" birthday="1973-09-14" deathday="" country="UK" />
+			<details job="2" gender="1" birthday="1973-09-14" deathday="" country="GB" />
 		</person>
 
 		<person id="DF-Celebreties-Norman_Reedus" tmdb_id="" imdb_id="nm0005342" creator="8782" created_by="DerFronck">
@@ -1493,7 +1493,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Norman</first_name_original>
 			<last_name_original>Reedus</last_name_original>
-			<details job="2" gender="1" birthday="1969-01-06" deathday="" country="US" />
+			<details job="2" gender="1" birthday="1969-01-06" deathday="" country="USA" />
 		</person>
 
 		<person id="DF-Celebreties-Steven_Yeun" tmdb_id="" imdb_id="nm3081796" creator="8782" created_by="DerFronck">
@@ -1502,7 +1502,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Steven</first_name_original>
 			<last_name_original>Yeun</last_name_original>
-			<details job="2" gender="1" birthday="1983-12-21" deathday="" country="KR" />
+			<details job="2" gender="1" birthday="1983-12-21" deathday="" country="ROK" />
 		</person>
 
 		<person id="DF-Celebreties-Chandler_Riggs" tmdb_id="" imdb_id="nm3385128" creator="8782" created_by="DerFronck">
@@ -1511,7 +1511,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Chandler</first_name_original>
 			<last_name_original>Riggs</last_name_original>
-			<details job="2" gender="1" birthday="1999-06-27" deathday="" country="US" />
+			<details job="2" gender="1" birthday="1999-06-27" deathday="" country="USA" />
 		</person>
 
 
@@ -1521,7 +1521,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Lauren</first_name_original>
 			<last_name_original>Cohan</last_name_original>
-			<details job="2" gender="2" birthday="1982-01-07" deathday="" country="US" />
+			<details job="2" gender="2" birthday="1982-01-07" deathday="" country="USA" />
 		</person>
 
 		<person id="DF-Celebreties-Melissa_McBride" tmdb_id="" imdb_id="nm0564350" creator="8782" created_by="DerFronck">
@@ -1530,7 +1530,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Melissa</first_name_original>
 			<last_name_original>McBride</last_name_original>
-			<details job="2" gender="2" birthday="1965-05-23" deathday="" country="US" />
+			<details job="2" gender="2" birthday="1965-05-23" deathday="" country="USA" />
 			<data popularity="10" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 
@@ -1540,7 +1540,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Frank</first_name_original>
 			<last_name_original>Darabont</last_name_original>
-			<details job="1" gender="1" birthday="1959-01-28" deathday="" country="FR" />
+			<details job="1" gender="1" birthday="1959-01-28" deathday="" country="F" />
 		</person>
 
 
@@ -1767,7 +1767,7 @@
 			<last_name>Moldman</last_name>
 			<first_name_original>Gary</first_name_original>
 			<last_name_original>Oldman</last_name_original>
-			<details job="2" gender="1"  birthday="1958-03-21" deathday="" country="UK" />
+			<details job="2" gender="1"  birthday="1958-03-21" deathday="" country="GB" />
 			<data popularity="30" affinity="50" fame="40" scandalizing="10" price_mod="0" power="25" humor="9" charisma="45" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WimBlurry" tmdb_id="0" imdb_id="nm0000347" creator="8751" created_by="TheRob">
@@ -1776,7 +1776,7 @@
 			<last_name>Blurry</last_name>
 			<first_name_original>Tim</first_name_original>
 			<last_name_original>Curry</last_name_original>
-			<details job="2" gender="1"  birthday="1946-04-19" deathday="" country="UK" />
+			<details job="2" gender="1"  birthday="1946-04-19" deathday="" country="GB" />
 			<data popularity="30" affinity="40" fame="30" scandalizing="25" price_mod="0" power="0" humor="9" charisma="21" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeatLove" tmdb_id="0" imdb_id="nm0001533" creator="8751" created_by="TheRob">
@@ -1821,7 +1821,7 @@
 			<last_name>Barloff</last_name>
 			<first_name_original>Boris</first_name_original>
 			<last_name_original>Karloff</last_name_original>
-			<details job="2" gender="1"  birthday="1887-11-23" deathday="1969-02-02" country="UK" />
+			<details job="2" gender="1"  birthday="1887-11-23" deathday="1969-02-02" country="GB" />
 			<data popularity="40" affinity="40" fame="50" scandalizing="0" price_mod="0" power="25" humor="23" charisma="53" appearance="52" topgenre="12" />
 		</person>
 	  	<person id="TheRob-celebritypeople-WalterRattnau" tmdb_id="0" imdb_id="nm0000527" creator="8751" created_by="TheRob">
@@ -1857,7 +1857,7 @@
 			<last_name>Charkowski</last_name>
 			<first_name_original>Andrei</first_name_original>
 			<last_name_original>Tarkovsky</last_name_original>
-			<details job="2" gender="1"  birthday="1932-04-04" deathday="1986-12-29" country="UdSSR" />
+			<details job="2" gender="1"  birthday="1932-04-04" deathday="1986-12-29" country="SU" />
 			<data popularity="20" affinity="40" fame="20" scandalizing="0" price_mod="0" power="42" humor="0" charisma="34" appearance="42" topgenre="7" />
 		</person>
 	 	<person id="TheRob-celebritypeople-SilvyMelbourne" tmdb_id="0" imdb_id="nm0796662" creator="8751" created_by="TheRob">
@@ -1888,7 +1888,7 @@
 			<last_name>Hencs</last_name>
 			<first_name_original>Tom</first_name_original>
 			<last_name_original>Hanks</last_name_original>
-			<details job="2" gender="1" birthday="1956-07-09" deathday="" country="US" />
+			<details job="2" gender="1" birthday="1956-07-09" deathday="" country="USA" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<!-- Thomas Oberlies Regie und Schauspieler von Kurzfilmen (und Dr. der Mathematik) kenn ich noch aus meinem Studium -->
@@ -1906,7 +1906,7 @@
 			<last_name>Norrisshey</last_name>
 			<first_name_original>Neil</first_name_original>
 			<last_name_original>Morrissey</last_name_original>
-			<details job="2" gender="1"  birthday="1962-07-04" deathday="" country="UK" />
+			<details job="2" gender="1"  birthday="1962-07-04" deathday="" country="GB" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 
@@ -1958,7 +1958,7 @@
 		<person id="ronny-programmeperson-bennyjameson" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Benny</first_name>
 			<last_name>Jameson</last_name>
-			<details job="12" gender="1"  birthday="1962" deathday="2040" country="CA" />
+			<details job="12" gender="1"  birthday="1962" deathday="2040" country="CDN" />
 			<data popularity="10" affinity="40" fame="0" scandalizing="0" price_mod="1" power="30" humor="48" charisma="20" appearance="90" topgenre="9" />
 		</person>
 		<person id="ronny-programmeperson-freddyjbush" fictional="1" creator="5578" created_by="Ronny">
@@ -1971,7 +1971,7 @@
 			<first_name>Pipé-Laho</first_name>
 			<last_name>Rashin</last_name>
 			<nick_name>Pipé-Laho</nick_name>
-			<details job="16" gender="2" birthday="" deathday="" country="CAN/RI" fictional="1" />
+			<details job="16" gender="2" birthday="" deathday="" country="CDN" fictional="1" />
 			<data popularity="60" affinity="40" fame="40" scandalizing="40" price_mod="1.1" power="15" humor="25" charisma="30" appearance="80" topgenre="102" />
 		</person>
 	</celebritypeople>

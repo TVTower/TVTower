@@ -331,7 +331,7 @@
 				<en>The author Gunther Raffwall worked under Turkish identity in Germany. Dreadful experiences in the German job landscape in the recently published book.</en>
 			</description>
 			<data genre="5" price="0.7" quality="55" />
-			<availability script="TIME_DAYOFYEAR=10" year_range_from="1985" year_range_to="1985" />
+			<availability script="TIME_MONTH=10" year_range_from="1985" year_range_to="1985" />
 		</news>
 
 		<news id="Sjaele-news-schach-abgebrochen" type="0" creator="7430" created_by="Sjaele">
@@ -358,7 +358,7 @@
 				<en>The American computer manufacturer Kormoran presents its home computer "Eterna". Its graphics performance is simply breathtaking.</en>
 			</description>
 			<data genre="3" price="1.0" quality="45" />
-			<availability script="TIME_DAYOFYEAR=7" year_range_from="1985" year_range_to="1985" />
+			<availability script="TIME_MONTH=7" year_range_from="1985" year_range_to="1985" />
 		</news>
 
 		<news id="Sjaele-news-Begehbarer-Hügel" type="0" creator="7430" created_by="Sjaele">
@@ -437,8 +437,8 @@
 				<de>Der fast 300 Meter hohe Rundfunk-Sendemast auf dem Bielstein stürzte aufgrund starker Vereisung und Bruch einer Pardune um. In der Folge kam es zu Sendeausfällen.</de>
 				<en>The almost 300 meter high broadcasting tower on the Bielstein collapsed due to heavy icing and a breaking guy wire. As a result, there were transmission failures.</en>
 			</description>
-			<data genre="3" price="1.0" quality="65" />
-			<availability script="TIME_DAYOFYEAR=1" year_range_from="1985" year_range_to="1985" />
+			<data genre="3" flags="2" price="1.0" quality="65" />
+			<availability script="TIME_SEASON=4" />
 		</news>
 
 		<news id="Sjaele-news-Computerspieler-Chirurgen" type="0" creator="7430" created_by="Sjaele">
@@ -491,22 +491,20 @@
 				<de>Der Energie-Konzern Wassenstieg sponsert die 20. Auflage der Berliner Märchentage parallel zu den Gesprächen um den Ausstieg aus der Braunkohleverstromung.</de>
 				<en>The energy company Wassenstieg is sponsoring the 20th edition of the Berlin Fairy Tale Days in parallel to the talks about phasing out lignite-fired power generation.</en>
 			</description>
-			<data genre="5" price="0.7" quality="25" />
-			<availability script="TIME_DAYOFYEAR=11" year_range_from="2010" year_range_to="2010" />
+			<data genre="5" flags="2" price="0.7" quality="25" happen_time="4,2010,11,1" />
 		</news>
 
 		<news id="Sjaele-news-Märchentage-gegründet" type="0" creator="7430" created_by="Sjaele">
 <!-- deutschbezogen -->
 			<title>
-				<de>Berliner Märchentage  gegründet</de>
+				<de>Berliner Märchentage gegründet</de>
 				<en>Berlin Fairy Tale Days founded</en>
 			</title>
 			<description>
 				<de>Am 2. April  dem Geburtstag von Hans Christian Andersen wurden vom Märchenlandverein die Berliner Märchentage gegründet. Sie sollen jährlich im November stattfinden.</de>
 				<en>The Berlin Fairytale Days were founded by the Fairytale Land Association on April 2nd, Hans Christian Andersen's birthday. They are to take place annually in November...</en>
 			</description>
-			<data genre="5" price="0.7" quality="25" />
-			<availability script="TIME_DAYOFYEAR=4" year_range_from="1990" year_range_to="1990" />
+			<data genre="5" flags="6" price="0.7" quality="25" happen_time="4,1990,4,3" />
 		</news>
 
 		<news id="Sjaele-news-Märchentage-begonnen" type="0" creator="7430" created_by="Sjaele">
@@ -520,7 +518,7 @@
 				<en>17 days in November are full of fairy tales. Supporters are also the Lottery company and the Federal Political Education Centre.</en>
 			</description>
 			<data genre="5" price="0.7" quality="25" />
-			<availability script="TIME_DAYOFYEAR=11" year_range_from="1990" year_range_to="" />
+			<availability script="TIME_MONTH=10" year_range_from="1990" year_range_to="" />
 		</news>
 
 		<news id="Sjaele-news-Crash-Kurse" type="0" creator="7430" created_by="Sjaele">
@@ -598,7 +596,7 @@
 				<en>This year's sale starts with an average discount of 600%. Dealers ask for suitable change.</en>
 			</description>
 			<data genre="4" price="0.7" quality="21" />
-			<availability script="TIME_DAYOFYEAR=1 || TIME_DAYOFYEAR=7" year_range_from="" year_range_to="" />
+			<availability script="TIME_MONTH=1 || TIME_MONTH=7" year_range_from="" year_range_to="" />
 		</news>
 
 		<news id="Sjaele-news-Spanner-Spanner" type="0" creator="7430" created_by="Sjaele">
@@ -772,7 +770,7 @@
 				<en>You're just a regular soccer team. The same name as the lemonade manufacturer is coincidental.</en>
 			</description>
 			<data genre="2" price="0.7" quality="11" />
-			<availability script="TIME_DAYOFYEAR=1,7" year_range_from="2010" year_range_to="" />
+			<availability script="TIME_MONTH=1 || TIME_MONTH=7" year_range_from="2010" year_range_to="" />
 		</news>
 
 		<news id="Sjaele-news-Fußballbund-vermutet" type="0" creator="7430" created_by="Sjaele">
@@ -784,8 +782,8 @@
 				<de>Das 75:1 im entscheidenden Aufstiegsspiel zur Verbandsliga West-Nord rief die Betrugsexperten des Fußballbundes auf den Plan.</de>
 				<en>The 75:1 in the decisive promotion match to the club league West-Nord catched attention of the fraud experts of the soccer federation.</en>
 			</description>
-			<data genre="2" price="1.0" quality="29" />
-			<availability script="TIME_DAYOFYEAR=6" year_range_from="1985" year_range_to="1985" />
+			<data genre="2" flags="2" price="1.0" quality="29" />
+			<availability script="TIME_MONTH=6" />
 		</news>
 
 		<news id="Sjaele-news-Aktena-8" type="0" creator="7430" created_by="Sjaele">
@@ -798,8 +796,7 @@
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
 				<en>The world's largest art exhibition opens its doors on June 12. It is dedicated to the artistic confrontation with war and violence, with utopias and loss of utopia.</en>
 			</description>
-			<data genre="5" price="0.7" quality="41" />
-			<availability script="TIME_DAYOFYEAR=5" year_range_from="1987" year_range_to="1987" />
+			<data genre="5" flags="6" price="0.7" quality="41" happen_time="4,1987,5,1" />
 		</news>
 
 		<news id="Sjaele-news-Aktena-8-eröffnet" type="0" creator="7430" created_by="Sjaele">
@@ -812,8 +809,7 @@
 				<de>Die Kunstschau mit über 400 austellenden Künstlern widmet sich erstmals verstärkt der Videokunst und breitet sich über das gesamte Stadtgebiet von Kassel aus.</de>
 				<en>The art show with over 400 exhibiting artists is increasingly dedicated to video art and spreads over the entire city of Kassel.</en>
 			</description>
-			<data genre="5" price="0.7" quality="41" />
-			<availability script="TIME_DAYOFYEAR=6" year_range_from="1987" year_range_to="1987" />
+			<data genre="5" flags="6" price="0.7" quality="41" happen_time="4,1987,6,12" />
 		</news>
 
 		<news id="Sjaele-news-Aktena-8-beendet" type="0" creator="7430" created_by="Sjaele">
@@ -826,8 +822,7 @@
 				<de>Nach 100 Tagen wurde die Weltkunstausstellung in Kassel mit fast einer halben Millionen Zuschauern beendet. Besucherrekord trotz beliebiger Kritiken aus Kritikerkreisen.</de>
 				<en>After 100 days, the world art exhibition in Kassel ended with almost half a million spectators. Record attendance despite criticism from critics.</en>
 			</description>
-			<data genre="5" price="0.7" quality="41" />
-			<availability script="TIME_DAYOFYEAR=10" year_range_from="1987" year_range_to="1987" />
+			<data genre="5" flags="6" price="0.7" quality="41" happen_time="4,1987,10,20" />
 		</news>
 
 		<news id="Sjaele-news-Festival-lebenden" type="0" creator="7430" created_by="Sjaele">
@@ -840,7 +835,7 @@
 				<en>For technical reasons, this year's festival of living images will take place in Sternheilig, as last year, and not on the Externsteine as planned.</en>
 			</description>
 			<data genre="5" price="0.7" quality="41" />
-			<availability script="TIME_DAYOFYEAR=11" year_range_from="2003" year_range_to="2003" />
+			<availability script="TIME_MONTH=11" year_range_from="2003" year_range_to="2003" />
 		</news>
 
 		<news id="Sjaele-news-Serienkanal-startet" type="0" creator="7430" created_by="Sjaele">
@@ -853,7 +848,7 @@
 				<en></en>
 			</description>
 			<data genre="5" price="0.7" quality="31" />
-			<availability script="TIME_DAYOFYEAR=5" year_range_from="1996" year_range_to="1996" />
+			<availability script="TIME_MONTH=5" year_range_from="1996" year_range_to="1996" />
 		</news>
 
 		<news id="Sjaele-news-Wintereinbruch-Engpässen" type="0" creator="7430" created_by="Sjaele">

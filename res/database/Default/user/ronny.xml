@@ -862,8 +862,10 @@ Illustrious guests and music by [3|Nick].</en>
 			<outcome min="30" max="45" slope="40" />
 			<review min="40" max="60" slope="40" />
 			<speed min="45" max="70" slope="50" />
-			<!-- live on next work day 20:00, production time is in minutes! -->
-			<data flags="1" live_date="8,1,20,20" production_time="120" />
+			<!-- production time is in minutes! -->
+			<production_time value="120" />
+			<!-- live on next work day 20:00 -->
+			<data flags="1" live_date="8,1,20,20" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
@@ -888,9 +890,10 @@ Illustrious guests and music by [3|Nick].</en>
 			<outcome min="30" max="50" slope="40" />
 			<review min="40" max="50" slope="40" />
 			<speed min="45" max="60" slope="50" />
+			<production_time value="60" />
 			<!-- live on next work day 5 - 10:00 - so 5,6,7 as start possible -->
 			<!-- licence flags: 4 + 32 (REMOVE_ON_REACHING_BROADCASTLIMIT + LICENCEPOOL_REMOVES_TRADEABILITY) -->
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" live_date="8,1,5,5" production_time="60" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" live_date="8,1,5,5" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="" production_licence_flags="36" />
 		</scripttemplate>
 
 	</scripttemplates>

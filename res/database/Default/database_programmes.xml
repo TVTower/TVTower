@@ -441,7 +441,7 @@ Klassiker mit [1|Full].</de>
 				<member index="3" function="2">0c774ab3-9301-4759-a3e1-40520dc9e7b9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="B" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<data country="BE" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
 			<ratings critics="9" speed="4" outcome="0" />
 		</programme>
 		<programme id="eed42954-967a-4150-bb4c-ebc6392e2f99" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0120601" creator="">
@@ -1150,7 +1150,7 @@ Horror vom Feinsten</de>
 				<en></en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BEL" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
+			<data country="BE" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
 			<ratings critics="7" speed="10" outcome="0" />
 		</programme>
 		<programme id="d9bd6851-b70d-4130-8f79-230e2df0a910" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104779" creator="">
@@ -2113,7 +2113,7 @@ Packender und bis in die Nebenrollen gut besetzter Militärthriller</de>
 				<en></en>
 			</description>
 			<staff>
-				<member index="1" function="2">common-amateur-actors</member>
+				<member index="0" function="2">common-amateur-actors</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="GB" year="1995" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
@@ -2910,7 +2910,7 @@ Hervorragend inszenierter Gangster-Film</de>
 				<member index="4" function="2">42b56d65-244f-4a70-bc35-22e1fd7709f0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="VRC" year="2003" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="CN" year="2003" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="56" speed="32" outcome="47" />
 		</programme>
 		<programme id="487e524e-09d2-4294-b552-4f361cd26651" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0212985" creator="">
@@ -3284,7 +3284,7 @@ Monumentaler Meilenstein</de>
 				<member index="0" function="1">fa5cf4fe-7704-4eab-808b-5ea8f3935c6d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="POL" year="2001" distribution="1" maingenre="0" subgenre="" flags="16" blocks="3" price_mod="0.50" />
+			<data country="PL" year="2001" distribution="1" maingenre="0" subgenre="" flags="16" blocks="3" price_mod="0.50" />
 			<ratings critics="5" speed="2" outcome="8" />
 		</programme>
 		<programme id="8fb1588d-27c3-4daf-9bf9-9fd338e08010" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104431" creator="">
@@ -3724,7 +3724,7 @@ Nach dem Roman von Agatha Kissme.</de>
 				<member index="2" function="2">c3494dd5-506b-46d1-97bd-12182ffa88da</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="US" year="2006" distribution="1" maingenre="17" subgenre="" flags="16" blocks="3" price_mod="1.7" />
+			<data country="USA" year="2006" distribution="1" maingenre="17" subgenre="" flags="16" blocks="3" price_mod="1.7" />
 			<ratings critics="94" speed="80" outcome="89" />
 		</programme>
 		<programme id="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
@@ -4787,7 +4787,7 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<member index="2" function="2">edb89eb9-1592-41cb-83b6-81eeecfacfd3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="MO" year="2000" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<data country="RM" year="2000" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
 			<ratings critics="47" speed="9" outcome="4" />
 		</programme>
 		<programme id="74b34ac0-150b-494a-aaa8-285f42bad55a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093894" creator="">
@@ -6096,7 +6096,7 @@ Von den Kritikern lange Zeit verkannt</de>
 				<member index="1" function="2">bedfa8be-aaff-457d-b549-893c3a784c9b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="AT" year="2001" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.90" />
+			<data country="A" year="2001" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.90" />
 			<ratings critics="52" speed="1" outcome="0" />
 		</programme>
 		<programme id="855fdb66-87d3-4fb6-8be0-56517c969d32" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048802" creator="">
@@ -6859,7 +6859,7 @@ Tragische Liebesgeschichte</de>
 				<member index="5" function="2">92513641-1a42-4313-931b-26561ca3fab7</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CAN" year="1994" distribution="2" maingenre="16" subgenre="2" flags="0" blocks="1" price_mod="0.67" />
+			<data country="CDN" year="1994" distribution="2" maingenre="16" subgenre="2" flags="0" blocks="1" price_mod="0.67" />
 			<ratings critics="4" speed="70" outcome="28" />
 			<children>
 				<programme id="10700e05-245c-49fe-a317-ba9ff97c83f3" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="">
@@ -7511,7 +7511,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<member index="1" function="2">396f8bfa-a414-4a25-85c7-4e05c687f6a0</member>
 			</staff>
 			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="AUT" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.85" />
+			<data country="A" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.85" />
 			<releaseTime year_relative="-1" year_relative_min="2006" year_relative_max="2008" />
 			<ratings critics="35" speed="7" outcome="0" />
 			<children>
@@ -8361,7 +8361,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<member index="0" function="1">Ronny-person-director-TomasPetran</member>
 			</staff>
 			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CSSR" year="1973" distribution="2" maingenre="9" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
+			<data country="CS" year="1973" distribution="2" maingenre="9" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="29" outcome="0" />
 			<children>
 				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -8710,7 +8710,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 				<member index="4" function="2">TheRob-TowerTV-ArchieRemedy</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UK" year="1962" distribution="1" maingenre="1" subgenre="" flags="0" blocks="4" price_mod="1.00" />
+			<data country="GB" year="1962" distribution="1" maingenre="1" subgenre="" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="86" speed="53" outcome="53" />
 		</programme>
 
@@ -8905,7 +8905,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<member index="0" function="1">TheRob-TowerTV-JosefVolkk</member>
 			</staff>
 			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="HUN" year="1969" distribution="2" maingenre="3" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<data country="H" year="1969" distribution="2" maingenre="3" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
 				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
@@ -9752,7 +9752,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-BallerinaRatyavina</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UdSSR" year="1962" distribution="1" maingenre="7" subgenre="2" flags="0" blocks="2" price_mod="1.00" />
+			<data country="SU" year="1962" distribution="1" maingenre="7" subgenre="2" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 
@@ -9777,7 +9777,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-SerenaParkawskiya</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UdSSR" year="1966" distribution="1" maingenre="11" subgenre="7" flags="0" blocks="4" price_mod="1.00" />
+			<data country="SU" year="1966" distribution="1" maingenre="11" subgenre="7" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>
 
@@ -9801,7 +9801,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-IlljitschSafrauski</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UdSSR" year="1961" distribution="1" maingenre="7" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<data country="SU" year="1961" distribution="1" maingenre="7" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="93" speed="26" outcome="22" />
 		</programme>
 
@@ -9826,7 +9826,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UdSSR" year="1972" distribution="1" maingenre="16" subgenre="14" flags="0" blocks="3" price_mod="1.00" />
+			<data country="SU" year="1972" distribution="1" maingenre="16" subgenre="14" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="84" speed="36" outcome="83" />
 		</programme>
 
@@ -9851,7 +9851,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UdSSR" year="1975" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<data country="SU" year="1975" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="73" speed="36" outcome="43" />
 		</programme>
 
@@ -9900,7 +9900,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-ErlandoJoschkason</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SUE" year="1986" distribution="1" maingenre="16" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
+			<data country="CH" year="1986" distribution="1" maingenre="16" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="86" speed="26" outcome="71" />
 		</programme>
 
@@ -9949,7 +9949,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">1c0582ef-99fd-4403-b743-a767a8f44bf5</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UK" year="1958" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="3" price_mod="1.00" />
+			<data country="GB" year="1958" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="47" speed="36" outcome="49" />
 		</programme>
 
@@ -9974,7 +9974,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">1c0582ef-99fd-4403-b743-a767a8f44bf5</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UK" year="1954" distribution="1" maingenre="15" subgenre="5" flags="0" blocks="2" price_mod="1.00" />
+			<data country="GB" year="1954" distribution="1" maingenre="15" subgenre="5" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="77" speed="58" outcome="72" />
 		</programme>
 
@@ -10489,7 +10489,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="2" function="2">TheRob-TowerTV-LouDerFume</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="FR" year="1968" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<data country="F" year="1968" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="53" speed="58" outcome="51" />
 		</programme>
 
@@ -10905,7 +10905,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="IT" year="1967" distribution="0" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
+			<data country="I" year="1967" distribution="0" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="47" speed="59" outcome="41" />
 		</programme>
 

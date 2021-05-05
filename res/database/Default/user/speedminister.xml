@@ -81,7 +81,7 @@
 
     <allprogrammes>
         <!-- ***** Serie: Die Stars der volksirrtümlichen Hitparade (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="2" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="3" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Die Stars der volksirrtümlichen Hitparade</de>
                 <en>The stars of the tradidiotionally hit parade</en>
@@ -95,11 +95,11 @@
                 <member index="1" function="2">SpeedMinister-person-id002</member>
             </staff>
             <groups target_groups="0" />
-            <data country="D, A, CH" year="2005" distribution="2" maingenre="102" blocks="2" />
+            <data country="D/A/CH" year="2005" distribution="2" maingenre="102" blocks="2" />
             <ratings critics="55" speed="60" />
             <!-- Episodes -->
             <children>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Die Debreciner Kuhfladen Schnüffler</de>
                         <en>The Debrecen Cowpat Snoopers</en>
@@ -110,7 +110,7 @@
                     </description>
                     <ratings critics="59" speed="70" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Tuba Tinnitus</de>
                         <en>Tuba Tinnitus</en>
@@ -121,7 +121,7 @@
                     </description>
                     <ratings critics="40" speed="50" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Karl Maische</de>
                         <en></en>
@@ -132,7 +132,7 @@
                     </description>
                     <ratings critics="49" speed="51" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Frantius F. Freudius</de>
                         <en></en>
@@ -143,7 +143,7 @@
                     </description>
                     <ratings critics="62" speed="65" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Bingo Bumerang</de>
                         <en>Bingo Boomerang</en>
@@ -154,7 +154,7 @@
                     </description>
                     <ratings critics="42" speed="70" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Fette Fritten</de>
                         <en>Fat Fries</en>
@@ -165,7 +165,7 @@
                     </description>
                     <ratings critics="60" speed="68" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Edmondia und die Schwanenhalsdreher</de>
                         <en>Edmondia and the gooseneck turners</en>
@@ -176,7 +176,7 @@
                     </description>
                     <ratings critics="45" speed="60" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Finale</de>
                         <en>Final</en>
@@ -193,7 +193,7 @@
             </children>
         </programme>
         <!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="2" licence_type="3" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Andauernd Käse</de>
                 <en>Cheese all around</en>
@@ -387,7 +387,7 @@
             </children>
         </programme>
         <!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="2" licence_type="3" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Soldaten, Paviane und Co.</de>
                 <en>Soldiers, baboons, etc.</en>
@@ -401,7 +401,7 @@
                 <member index="1" function="2">SpeedMinister-person-id020</member>
             </staff>
             <!-- Link: http://de.wikipedia.org/wiki/Kabuler_Zoo -->
-            <data country="D, AFG" year="2012" distribution="0" maingenre="300" blocks="1" />
+            <data country="D/AFG" year="2012" distribution="0" maingenre="300" blocks="1" />
             <ratings critics="29" speed="35" />
             <!-- Episodes -->
             <children>
@@ -527,7 +527,7 @@
         </programme>
 
         <!-- ***** Serie: Expeditionen ins Tierreich, Dokumentation (Originaltitel der Episoden nicht mehr verfügbar) (real) ***** -->
-        <programme id="SpeedMinister-Serie-Expeditionen-01" product="2" licence_type="3" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Ausflüge ins Tierreich</de>
                 <en>Excursions into the animal kingdom</en>

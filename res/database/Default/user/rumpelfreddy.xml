@@ -35,18 +35,18 @@
 		<person id="Per_custom_Freddy_52" first_name="Charlie" last_name="Jonsson" nick_name="" gender="1" country="S" fictional="1" />
 		<person id="Per_custom_Freddy_53" first_name="Alicia" last_name="Hansson" nick_name="" gender="2" country="S" fictional="1" />
 		<!-- Polnisch -->
-		<person id="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" gender="2" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_58" first_name="Jakub" last_name="Wójcik" nick_name="" gender="1" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_59" first_name="Julia" last_name="Kowalczyk" nick_name="" gender="2" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_60" first_name="Kacper" last_name="Wozniak" nick_name="" gender="1" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_61" first_name="Zusanna" last_name="Kowalska" nick_name="" gender="2" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_62" first_name="Filip" last_name="Mazur" nick_name="" gender="1" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_63" first_name="Zofia" last_name="Kaczmarek" nick_name="" gender="2" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_64" first_name="Szymon" last_name="Wisniewski" nick_name="" gender="1" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_65" first_name="Hanna" last_name="Zajac" nick_name="" gender="2" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_66" first_name="Antoni" last_name="Król" nick_name="" gender="1" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_67" first_name="Wiktoria" last_name="Wisniewska" nick_name="" gender="2" country="POL" fictional="1" />
-		<person id="Per_custom_Freddy_68" first_name="Wojciech" last_name="Wieczorek" nick_name="" gender="1" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" gender="2" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_58" first_name="Jakub" last_name="Wójcik" nick_name="" gender="1" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_59" first_name="Julia" last_name="Kowalczyk" nick_name="" gender="2" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_60" first_name="Kacper" last_name="Wozniak" nick_name="" gender="1" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_61" first_name="Zusanna" last_name="Kowalska" nick_name="" gender="2" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_62" first_name="Filip" last_name="Mazur" nick_name="" gender="1" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_63" first_name="Zofia" last_name="Kaczmarek" nick_name="" gender="2" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_64" first_name="Szymon" last_name="Wisniewski" nick_name="" gender="1" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_65" first_name="Hanna" last_name="Zajac" nick_name="" gender="2" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_66" first_name="Antoni" last_name="Król" nick_name="" gender="1" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_67" first_name="Wiktoria" last_name="Wisniewska" nick_name="" gender="2" country="PL" fictional="1" />
+		<person id="Per_custom_Freddy_68" first_name="Wojciech" last_name="Wieczorek" nick_name="" gender="1" country="PL" fictional="1" />
 		<!-- Dänisch -->
 		<person id="Per_custom_Freddy_69" first_name="Ida" last_name="Andersen" nick_name="" gender="2" country="DK" fictional="1" />
 		<person id="Per_custom_Freddy_70" first_name="Noah" last_name="Jensen" nick_name="" gender="1" country="DK" fictional="1" />
@@ -715,7 +715,7 @@
 		 <!-- Julia in der Feenwelt(1) -->
             <first_name>Hannah</first_name>
             <last_name>Hobkinns</last_name>
-            <details job="1" gender="2"  birthday="1984" deathday="" country="UK" />
+            <details job="1" gender="2"  birthday="1984" deathday="" country="GB" />
             <data popularity="14" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="60" topgenre="0" />
         </person>
 		<person id="Rumpelfreddy-fictionalperson-LenaLauterberg" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -736,7 +736,7 @@
 		<!--  -->
             <first_name>Blondie</first_name>
             <last_name>Prall</last_name>
-            <details job="1" gender="2"  birthday="1976" deathday="" country="AUT" />
+            <details job="1" gender="2"  birthday="1976" deathday="" country="A" />
             <data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_6" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -921,7 +921,7 @@
 				<member index="2" function="2">Freddy-realperson-mariacornight</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="1957" distribution="0" maingenre="12" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
+            <data country="USA" year="1957" distribution="0" maingenre="12" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
             <ratings critics="8" speed="38" outcome="16" />
         </programme>
 		
@@ -941,7 +941,7 @@
 				<member index="2" function="2">Freddy-realperson-bedorahloonies</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="1970" distribution="0" maingenre="10" subgenre="1" flags="32" blocks="2" price_mod="1.0" />
+            <data country="USA" year="1970" distribution="0" maingenre="10" subgenre="1" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="6" speed="42" outcome="19" />
         </programme>
 		
@@ -960,7 +960,7 @@
 				<member index="1" function="2">Freddy-realperson-NailNorrissey</member>
             </staff>
             <groups target_groups="0" />
-            <data country="UK" year="1990" distribution="0" maingenre="5" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
+            <data country="GB" year="1990" distribution="0" maingenre="5" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="14" speed="53" outcome="14" />
         </programme>
 		
@@ -979,7 +979,7 @@
 				<member index="1" function="2">Freddy-realperson-TomHencs</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="1982" distribution="0" maingenre="17" subgenre="7" flags="32" blocks="2" price_mod="1.0" />
+            <data country="USA" year="1982" distribution="0" maingenre="17" subgenre="7" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="21" speed="31" outcome="25" />
         </programme>
 		
@@ -1019,7 +1019,7 @@
                 <member index="4" function="2">Per_custom_Freddy_361</member>
             </staff>
             <groups target_groups="0" />
-            <data country="CAN" year="1988" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+            <data country="CDN" year="1988" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="11" speed="43" outcome="14" />
         </programme>
         
@@ -1040,7 +1040,7 @@
                 <member index="4" function="2">Per_custom_Freddy_362</member>
             </staff>
             <groups target_groups="0" />
-            <data country="CAN" year="1991" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+            <data country="CDN" year="1991" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="10" speed="38" outcome="15" />
         </programme>
         
@@ -1061,7 +1061,7 @@
                 <member index="4" function="2">Per_custom_Freddy_363</member>            
             </staff>
             <groups target_groups="0" />
-            <data country="CAN" year="1994" distribution="0" maingenre="1" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
+            <data country="CDN" year="1994" distribution="0" maingenre="1" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="7" speed="39" outcome="18" />
         </programme>
         
@@ -1079,7 +1079,7 @@
                 <member index="1" function="2">Per_custom_Freddy_46</member>
             </staff>
             <groups target_groups="0" />
-            <data country="SWE" year="1952" distribution="0" maingenre="1" subgenre="7" flags="32" blocks="3" price_mod="1.0" />
+            <data country="S" year="1952" distribution="0" maingenre="1" subgenre="7" flags="32" blocks="3" price_mod="1.0" />
             <ratings critics="19" speed="12" outcome="9" />
         </programme>
         
@@ -1098,7 +1098,7 @@
                 <member index="2" function="2">Per_custom_Freddy_50</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="2002" distribution="0" maingenre="1" subgenre="15" flags="32" blocks="3" price_mod="1.0" />
+            <data country="USA" year="2002" distribution="0" maingenre="1" subgenre="15" flags="32" blocks="3" price_mod="1.0" />
             <ratings critics="8" speed="16" outcome="9" />
         </programme>
         
@@ -1158,7 +1158,7 @@
                 <member index="3" function="2">Per_custom_Freddy_168</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="1982" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
+            <data country="USA" year="1982" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="11" speed="43" outcome="19" />
         </programme>
         
@@ -1217,7 +1217,7 @@
                 <member index="3" function="2">Per_custom_Freddy_588</member>
             </staff>
             <groups target_groups="0" />
-            <data country="U" year="1989" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+            <data country="USA" year="1989" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="13" speed="42" outcome="16" />
         </programme>
         
@@ -1235,7 +1235,7 @@
                 <member index="1" function="2">Per_custom_Freddy_219</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="1991" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
+            <data country="USA" year="1991" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="9" speed="47" outcome="10" />
         </programme>
         
@@ -1273,7 +1273,7 @@
                 <member index="3" function="2">Per_custom_Freddy_33</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="1959" distribution="0" maingenre="2" subgenre="9" flags="32" blocks="3" price_mod="1.0" />
+            <data country="USA" year="1959" distribution="0" maingenre="2" subgenre="9" flags="32" blocks="3" price_mod="1.0" />
             <ratings critics="7" speed="18" outcome="22" />
         </programme>
         
@@ -1307,7 +1307,7 @@
                 <member index="0" function="1">Per_custom_Freddy_117</member>
             </staff>
             <groups target_groups="0" />
-            <data country="US" year="2006" distribution="0" maingenre="3" subgenre="16" flags="32" blocks="2" price_mod="1.0" />
+            <data country="USA" year="2006" distribution="0" maingenre="3" subgenre="16" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="5" speed="41" outcome="16" />
         </programme>
     </allprogrammes>
