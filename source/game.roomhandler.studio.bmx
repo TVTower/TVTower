@@ -675,8 +675,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 		
 			'try to fill in our list
 			For Local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
-				'skip produced ones
-				If pc.IsProduced() Then Continue
+				'skip ones that are already started (and possibly even finished)
+				If pc.IsProductionStarted() Then Continue
 
 				'show episodes
 				If studioScript.IsSeries()
@@ -709,8 +709,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 					'remove from player's collection and also from global
 					'conception list
 					programmeCollection.DestroyProductionConcept(pc)
-
-					programmeCollection.DestroyProductionConcept(pc)
 				EndIf
 			Next
 		EndIf
@@ -722,11 +720,11 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Function onClickStartProduction(data:TData)
 		If Not TFigure(GetPlayerBase().GetFigure()).inRoom Then Return
 
-		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		Local roomID:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.GetID()
 		Local script:TScript = TScript(data.Get("script"))
 		If Not script Then Return
 
-		Local count:Int = GetProductionManager().StartProductionInStudio(roomGUID, script)
+		Local count:Int = GetProductionManager().StartProductionInStudio(roomID, script)
 'print "added "+count+" productions to shoot"
 
 		'leave room now, remove dialogue before

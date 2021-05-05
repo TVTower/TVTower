@@ -8,9 +8,9 @@ Import "game.stationmap.bmx"
 Import "game.room.base.bmx"
 Import "game.popularity.person.bmx"
 
-
+rem
 Type TProductionCollection Extends TGameObjectCollection
-	Field latestProductionByRoom:TMap = CreateMap()
+	Field latestProductionByRoomID:TIntMap = new TIntMap
 	Global _instance:TProductionCollection
 
 	'override
@@ -25,13 +25,12 @@ Type TProductionCollection Extends TGameObjectCollection
 	Method Add:Int(obj:TGameObject)
 		Local p:TProduction = TProduction(obj)
 		If p
-			Local roomGUID:String = p.studioRoomGUID
-			If roomGUID <> ""
+			If p.studioRoomID
 				'if the production is newer than a potential previous
 				'production, replace the previous with the new one
-				Local previousP:TProduction = GetProductionByRoom(roomGUID)
-				If previousP And previousP.startDate < p.startDate
-					latestProductionByRoom.Insert(roomGUID, p)
+				Local previousP:TProduction = GetProductionCollection().GetProductionByRoomID(p.studioRoomID)
+				If previousP And previousP.startTime < p.startTime
+					latestProductionByRoomID.Insert(p.studioRoomID, p)
 				EndIf
 			EndIf
 		EndIf
@@ -40,8 +39,16 @@ Type TProductionCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetProductionByRoom:TProduction(roomGUID:String)
-		Local p:TProduction = TProduction(latestProductionByRoom.ValueForKey(roomGUID))
+	Method GetProductionByRoomID:TProduction(roomID:Int)
+		Local p:TProduction = TProduction(latestProductionByRoomID.ValueForKey(roomID))
+	End Method
+
+
+	Method GetProductionByProducedProgrammeLicenceID:TProduction(programmeLicenceID:Int)
+		For local p:TProduction = EachIn entries.Values()
+			if p.producedLicenceID = programmeLicenceID Then return p
+		Next
+		Return Null
 	End Method
 End Type
 
@@ -51,7 +58,7 @@ End Type
 Function GetProductionCollection:TProductionCollection()
 	Return TProductionCollection.GetInstance()
 End Function
-
+endrem
 
 
 
@@ -61,15 +68,21 @@ Type TProduction Extends TOwnedGameObject
 	'use negative numbers for custom producers, and positive
 	'for players
 	Field producerID:Int
+	'DEPRECATED: SAVEGAME - remove in > 0.7.1 
+	Field studioRoomGUID:String
 	'in which room was/is this production recorded (might no longer
 	'be a studio!)
-	Field studioRoomGUID:String
-	'0 = waiting, 1 = running, 2 = finished, 3 = aborted/paused
-	Field status:Int = 0
-	'start of shooting
-	Field startDate:Long
-	'end of shooting
-	Field endDate:Long
+	Field studioRoomID:Int
+	'TVTProductionStep (in_preproduction, finished, ...)
+	Field productionStep:Int = 0
+	'if > 0 this is the time until which the production is paused/interrupted
+	Field pauseStartTime:Long = 0
+	Field pauseDuration:Long = 0
+	Field paused:Int = False
+	'start of shooting / preproduction
+	Field startTime:Long
+	'end of shooting / preproduction
+	Field endTime:Long
 
 	Field scriptGenreFit:Float = -1.0
 	Field productionCompanyQuality:Float = 0.0
@@ -84,7 +97,14 @@ Type TProduction Extends TOwnedGameObject
 	Field productionTimeMod:Float = 1.0
 	Field productionPriceMod:Float = 1.0
 
+
+	'todo: DEPRECATED, remove GUID variable after 0.7.1 release
 	Field producedLicenceGUID:String
+	Field producedLicenceID:Int
+	'the programme licence once the production is finished
+	'this is cleared after finalizing the production
+	'so ensure to add it to the corresponding collections
+	Field _designatedProgrammeLicence:TProgrammeLicence
 
 	Global DEV_luckEnabled:Int = True
 	Global DEV_InformPerson:Int = True
@@ -114,18 +134,69 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
+	Method IsInPreProduction:Int()
+		If productionStep = TVTProductionStep.PREPRODUCTION Then Return True
+		
+		Return False
+	End Method
+
+
+	Method IsPreProductionDone:Int()
+		If productionStep = TVTProductionStep.PREPRODUCTION_DONE Then Return True
+		
+		Return False
+	End Method
+
+
+	Method IsShooting:Int()
+		If productionStep = TVTProductionStep.SHOOTING Then Return True
+		
+		Return False
+	End Method
+
+
 	Method IsInProduction:Int()
-		Return status = 1
+		If productionStep = TVTProductionStep.PREPRODUCTION Then Return True
+		If productionStep = TVTProductionStep.PREPRODUCTION_DONE Then Return True
+		If productionStep = TVTProductionStep.SHOOTING Then Return True
+		
+		Return False
+	End Method
+
+
+	Method IsAborted:Int()
+		Return productionStep = TVTProductionStep.ABORTED
 	End Method
 
 
 	Method IsProduced:Int()
-		Return status = 2
+		Return productionStep = TVTProductionStep.FINISHED
 	End Method
 
 
-	Method SetStudio:Int(studioGUID:String)
-		studioRoomGUID = studioGUID
+	Method IsPaused:Int()
+		Return paused = True
+	End Method
+
+
+	Method SetPaused:Int(paused:Int = True, pauseDuration:Long)
+		self.paused = paused
+		self.pauseStartTime = GetWorldTime().GetTimeGone()
+		self.pauseDuration = pauseDuration
+	End Method
+
+
+	Method ExtendPause:Int(pauseExtension:Long)
+		If not IsPaused()
+			SetPaused(True, pauseExtension)
+		Else
+			self.pauseDuration :+ pauseDuration
+		EndIf
+	End Method
+
+
+	Method SetStudio:Int(studioID:Int)
+		studioRoomID = studioID
 		Return True
 	End Method
 
@@ -180,7 +251,7 @@ Type TProduction Extends TOwnedGameObject
 		'already paid rest?
 		If productionConcept.IsBalancePaid() Then Return True
 		'something missing?
-		If Not productionConcept.IsProduceable() Then Return False
+		If Not productionConcept.IsProduceable() and not IsProduced() Then Return False
 
 
 		'if invalid owner or finance not existing, skip payment and
@@ -200,9 +271,67 @@ Type TProduction Extends TOwnedGameObject
 
 		Return False
 	End Method
+	
+	
+	Method BlockStudio(bool:Int = True)
+		Local room:TRoomBase = GetRoomBase(studioRoomID) 
+		if room
+			If bool
+				'time in milliseconds
+				'use max of now and startTime - just in case production
+				'is continued
+				Local productionTime:Long = (endTime - Max(startTime, GetWorldTime().GetTimeGone()))
+				If productionTime > 0
+					'round production time so block is till next xx:x5
+					'to avoid people entering the studio before next 
+					'production starts (production manager checks in 5
+					'minute interval)
+					local effectiveEndTime:Long = GetWorldTime().GetTimeGone() + productionTime
+					Local minutesTillNextUpdate:Int = 5 - (GetWorldTime().GetDayMinute(effectiveEndTime) mod 5)
+					if minutesTillNextUpdate <> 5
+						productionTime :+ minutesTillNextUpdate * TWorldTime.MINUTELENGTH
+					endif
 
+					If productionConcept.script.IsLive() and not IsPreProductionDone()
+						room.SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_PREPRODUCTION, False)
+					Else
+						room.SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING, False)
+					EndIf
+					room.blockedText = productionConcept.GetTitle()
+				EndIf
+			Else
+				'remove block
+				room.SetBlocked(0, TRoomBase.BLOCKEDSTATE_NONE, False)
+			EndIf
+		EndIf
+	End Method
 
+	
 	Method Start:TProduction(reduceProductionTimeFactor:Int = 0)
+		If productionStep <> TVTProductionStep.NOT_STARTED 
+			TLogger.Log("TProduction.Start", "Starting production failed: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
+			Return Null
+		Else
+			TLogger.Log("TProduction.Start", "Starting production: ~q" + productionConcept.GetTitle() +"~q.", LOG_DEBUG)
+		EndIf
+
+		If Not productionConcept.productionCompany
+			TLogger.Log("TProduction.Start", "Cannot Start production. productionConcept.productionCompany NULL !!!!!", LOG_ERROR)
+			Return Null
+		EndIf
+
+
+		productionConcept.SetFlag(TVTProductionConceptFlag.PRODUCTION_STARTED, True)
+
+
+		Local isLiveProduction:Int = productionConcept.script.IsLive()
+		If isLiveProduction
+			productionConcept.SetLiveTime( productionConcept.GetPlannedLiveTime() )
+			'print "Starte Preproduktion: Livezeit = " + production.productionConcept.GetLiveTimeText()
+		EndIf
+
+
+		'calculate production times
 		'when producing several episodes in a row setting up and cleaning
 		'the studio can be done faster; the factor is expected to be 0, 1 or 2
 		Local productionTime:Long = productionConcept.GetBaseProductionTime()
@@ -217,94 +346,217 @@ Type TProduction Extends TOwnedGameObject
 		End if
 		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
 
-		startDate = GetWorldTime().GetTimeGone()
-		endDate = startDate + productionTime
-		TLogger.Log("TProduction.Start", "Starting production ~q"+productionConcept.GetTitle()+"~q. Production: "+ GetWorldTime().GetFormattedDate(startDate) + "  -  " + GetWorldTime().GetFormattedDate(endDate), LOG_DEBUG)
+		startTime = GetWorldTime().GetTimeGone()
+		'modify production time by mod (TODO: add random plus minus?)
+		endTime = startTime + productionTime * GetProductionTimeMod()
 
-		status = 1
+		'round end time to next xx:x5 to avoid people entering
+		'the studio before next production starts (production
+		'manager checks in 5 minute interval)
+		Local minutesTillNextUpdate:Int = 5 - (GetWorldTime().GetDayMinute(endTime) mod 5)
+		if minutesTillNextUpdate <> 5
+			endTime :+ minutesTillNextUpdate * TWorldTime.MINUTELENGTH
+		endif
+					
+
 
 		'calculate costs
 		productionConcept.CalculateCosts()
 		TLogger.Log("TProduction.Start", "Costs calculated", LOG_DEBUG)
 
+		_designatedProgrammeLicence = GenerateProgrammeLicence()
+		producedLicenceID = _designatedProgrammeLicence.GetID()
+		TLogger.Log("TProduction.Start", "Prepared programme licence", LOG_DEBUG)
 
-		'=== 1. CALCULATE BASE PRODUCTION VALUES ===
+		'emit an event so eg. network can recognize the change
+		TriggerBaseEvent(GameEventKeys.Production_Start, Null, Self)
 
-		'=== 1.1 CALCULATE FITS ===
 
-		'=== 1.1.1 GENRE ===
-		'Compare genre definition with script values (expected vs real)
-		scriptGenreFit = productionConcept.CalculateScriptGenreFit(True)
-
-		'=== 1.1.2 CAST ===
-		'Calculate how the selected cast fits to their assigned jobs
-		castFit = productionConcept.CalculateCastFit(True)
-		castComplexity = productionConcept.CalculateCastComplexity(True)
-
-		'=== 1.1.3 PRODUCTIONCOMPANY ===
-		'Calculate how the selected company does its job at all
-		If Not productionConcept.productionCompany
-			TLogger.Log("TProduction.Start", "productionConcept.productionCompany NULL !!!!!", LOG_DEBUG)
+		if isLiveProduction
+			BeginPreProduction()
+		else
+			BeginShooting()
 		EndIf
-		productionCompanyQuality = productionConcept.productionCompany.GetQuality()
+
+		Return Self
+	End Method
+	
+	
+	Method BeginPreProduction:Int()
+		If productionStep <> TVTProductionStep.NOT_STARTED Then Return False
+
+		'set studio blocked / update block state
+		BlockStudio(True)
+
+		productionStep = TVTProductionStep.PREPRODUCTION
+
+		TLogger.Log("TProduction.BeginPreProduction()", "Beginning preproduction: ~q" + productionConcept.GetTitle() +"~q", LOG_DEBUG)
+		Return True
+	End Method
 
 
-		'=== 1.2 INDIVIDUAL IMPROVEMENTS ===
-
-		'=== 1.2.1 CAST SYMPATHY ===
-		'improve cast job by "sympathy" (they like your channel, so they
-		'do a slightly better job)
-		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy(True)
-
-		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
-		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
-		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
-
-		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
-		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)
-		TLogger.Log("TProduction.Start()", "castComplexity:           " + castComplexity, LOG_DEBUG)
-		TLogger.Log("TProduction.Start()", "castSympathyMod:          " + castSympathyMod, LOG_DEBUG)
-		TLogger.Log("TProduction.Start()", "effectiveFocusPoints:     " + effectiveFocusPoints, LOG_DEBUG)
-		TLogger.Log("TProduction.Start()", "effectiveFocusPointsMod:  " + effectiveFocusPointsMod, LOG_DEBUG)
-		TLogger.Log("TProduction.Start()", "productionCompanyQuality: " + productionCompanyQuality, LOG_DEBUG)
+	Method FinishPreProduction:Int()
+		If productionStep <> TVTProductionStep.PREPRODUCTION Then Return False
+		productionStep = TVTProductionStep.PREPRODUCTION_DONE
 
 
+		'pay for the production (balance cost)
+		If GameRules.payLiveProductionInAdvance
+			PayProduction()
+		EndIf
 
-		'=== 2. PRODUCTION EFFECTS ===
-		'modify production time (longer by random chance?)
 
-
-		'=== 3. BLOCK STUDIO ===
-		'set studio blocked
-		If studioRoomGUID And GetRoomBaseByGUID(studioRoomGUID)
-			'time in milliseconds
-			Local productionTime:Long = (endDate - startDate)
-			If productionTime > 0
-				'also add 5 minutes to avoid people coming into the studio
-				'in the break between two productions
-				productionTime :+ 300 * TWorldTime.SECONDLENGTH
-
-				productionTime :* GetProductionTimeMod()
-
-				If productionConcept.script.IsLive()
-					GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_PREPRODUCTION)
-				Else
-					GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
-				EndIf
-				GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
-			EndIf
+		'make a "placeable" licence (so live pogramme can be planned)
+		if productionConcept.script.IsLive()
+			AddProgrammeLicence()
 		EndIf
 
 
 		'emit an event so eg. network can recognize the change
-		TriggerBaseEvent(GameEventKeys.Production_Start, Null, Self)
+		'or game can display an ingame toast message
+		TriggerBaseEvent(GameEventKeys.Production_FinishPreproduction, New TData.Add("programmelicence", _designatedProgrammeLicence), Self)
+
+		TLogger.Log("TProduction.FinishPreProduction()", "Finishing preproduction: ~q" + productionConcept.GetTitle() +"~q", LOG_DEBUG)
+		Return True
+	End Method
+	
+	
+	Method BeginShooting:Int()
+		If productionStep <> TVTProductionStep.NOT_STARTED and productionStep <> TVTProductionStep.PREPRODUCTION_DONE Then Return False
+
+		'now live programme knows when it actually ends...
+		If _designatedProgrammeLicence.IsLive()
+			startTime = GetWorldTime().GetTimeGone()
+			'production starting 20:05
+			'1 block : ends at 20:55
+			'2 blocks: ends at 21:55
+			'ATTENTION: ensure it ends at xx:x5 (as the production 
+			'           manager updates in 5 minute intervals)
+			endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
+		EndIf
+
+		'set studio blocked / update block state
+		BlockStudio(True)
+
+		productionStep = TVTProductionStep.SHOOTING
+
+		'calculate mods and values used right when doing the actual
+		'production (so not during a possibly 24h earlier done preproduction)
+		FixProductionMods()
+		FixProductionValues()
+
+		'define speed, critics ... based on current cast values, script ...
+		FixProgrammeDataValues()
+		
+		TLogger.Log("TProduction.BeginShooting()", "Beginning shooting: ~q" + productionConcept.GetTitle() +"~q. Production: "+ GetWorldTime().GetFormattedDate(startTime) + "  -  " + GetWorldTime().GetFormattedDate(endTime), LOG_DEBUG)
+		Return True
+	End Method
+	
+	
+	Method FinishShooting:Int()
+		If productionStep <> TVTProductionStep.SHOOTING Then Return False
+		productionStep = TVTProductionStep.SHOOTING_DONE
+
+		TLogger.Log("TProduction.FinishShooting()", "Finishing shooting: ~q" + productionConcept.GetTitle() +"~q", LOG_DEBUG)
+		Return True
+	End Method
+	
+
+	Method Finalize:TProduction()
+		'already finalized before
+		If productionStep <> TVTProductionStep.SHOOTING_DONE Then Return Self
+
+		'adjust status
+		productionStep = TVTProductionStep.FINISHED
+		productionConcept.SetFlag(TVTProductionConceptFlag.PRODUCTION_FINISHED, True)
+
+
+		'pay for the production (balance cost)
+		If not GameRules.payLiveProductionInAdvance or not productionConcept.IsBalancePaid()
+			PayProduction()
+		EndIf
+
+
+		'inform cast
+		For Local castIndex:Int = 0 Until Min(productionConcept.cast.length, productionConcept.script.jobs.length)
+			Local p:TPersonBase = productionConcept.cast[castIndex]
+			Local job:TPersonProductionJob = productionConcept.script.jobs[castIndex]
+			If Not p Or Not job Then Continue
+
+			If DEV_InformPerson
+				'person is now capable of doing this job
+				p.SetJob(job.job)
+
+				'inform person and adjust its popularity (if it has some)
+				Local popularity:TPersonPopularity = TPersonPopularity(p.GetPopularity())
+				If popularity
+					Local params:TData = New TData
+					params.AddNumber("time", GetWorldTime().GetTimeGone())
+					params.AddNumber("quality", _designatedProgrammeLicence.data.GetQualityRaw())
+					params.AddNumber("job", job.job)
+
+					popularity.FinishProgrammeProduction(params)
+				EndIf
+			EndIf
+		Next
+
+
+		'non-live gets added after finishing the production
+		if not productionConcept.script.IsLive()
+			AddProgrammeLicence()
+		endif
+
+
+		'update programme data so it releases to cinema etc
+		_designatedProgrammeLicence.data.Update()
+
+
+		'=== 3. INFORM / REMOVE SCRIPT ===
+		'inform production company
+		productionConcept.productionCompany.FinishProduction(_designatedProgrammeLicence.data.GetID())
+
+		'inform script about a done production based on the script
+		'(parental script is already informed on creation of its licence)
+		productionConcept.script.FinishProduction(_designatedProgrammeLicence.GetID())
+
+		If owner And GetPlayerProgrammeCollection(owner)
+			'if the script does not allow further productions, it is finished
+			'and should be removed from the player
+
+			'series: remove parent if it is finished now
+			If productionConcept.script.HasParentScript()
+				Local parentScript:TScript = productionConcept.script.GetParentScript()
+				If parentScript.IsProduced()
+					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
+				EndIf
+			EndIf
+			'single scripts? done all allowed?
+			If Not productionConcept.script.CanGetProducedCount()
+				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
+			EndIf
+		EndIf
+
+
+		'=== 3. REMOVE PRODUCTION CONCEPT ===
+		'now only the production itself knows about the concept
+		If owner And GetPlayerProgrammeCollection(owner)
+			GetPlayerProgrammeCollection(owner).RemoveProductionConcept(productionConcept)
+		EndIf
+		GetProductionConceptCollection().Remove(productionConcept)
+
+
+		'emit an event so eg. network can recognize the change
+		TriggerBaseEvent(GameEventKeys.Production_Finalize, New TData.Add("programmelicence", _designatedProgrammeLicence), Self)
+
+		'do not keep it referenced in TProduction afterwards
+		_designatedProgrammeLicence = Null
 
 		Return Self
 	End Method
 
 
 	Method Abort:TProduction()
-		status = 3
+		productionStep = TVTProductionStep.ABORTED
 
 		TLogger.Log("TProduction.Abort()", "Aborted shooting.", LOG_DEBUG)
 
@@ -315,18 +567,214 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
-	Method Finalize:TProduction()
-		'already finalized before
-		If status = 2 Then Return Self
 
-		status = 2
-
-		TLogger.Log("TProduction.Finalize()", "Finished shooting.", LOG_DEBUG)
-
-		'pay for the production (balance cost)
-		PayProduction()
+	'Generates programmedata without individual review, speed, ... values
+	Method GenerateProgrammeData:TProgrammeData()
+		'TLogger.Log("TProduction.GenerateProgrammeData()", "Generating programme data.", LOG_DEBUG)
 
 
+		'=== 1. PROGRAMME CREATION ===
+		Local programmeData:TProgrammeData = New TProgrammeData
+
+		If producerName
+			If Not programmeData.extra Then programmeData.extra = New TData
+			programmeData.extra.AddString("producerName", producerName)
+		EndIf
+
+		If producerID <> 0
+			If Not programmeData.extra Then programmeData.extra = New TData
+			programmeData.extra.AddInt("producerID", producerID)
+		EndIf
+
+
+		'=== 2. PROGRAMME BASE PROPERTIES ===
+		FillProgrammeData(programmeData, productionConcept)
+		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
+		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
+		programmeData.releaseTime = GetWorldTime().GetTimeGone()
+		If productionConcept.script.IsLive()
+			'programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
+
+			programmeData.releaseTime = productionConcept.GetLiveTime()
+			'inform script about the latest live time used
+			productionConcept.script.lastLiveTime = programmeData.releaseTime
+		EndIf
+		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
+		programmeData.productionID = self.GetID()
+		programmeData.dataType = productionConcept.script.scriptLicenceType
+
+		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
+		'enable mandatory flags
+		programmeData.SetFlag(productionConcept.script.flags, True)
+
+		'check is done here again (and also in GetFinalFlags()) as
+		'the script might have changed "liveTime" - so we check it again
+		'here
+		'do not enable X-Rated for live productions when
+		'live time is not in the night
+		if productionConcept.script.flags & TVTProgrammeDataFlag.XRATED
+			If productionConcept.script.liveTime <= 22 And productionConcept.script.liveTime >= 6
+				programmeData.SetFlag(TVTProgrammeDataFlag.XRATED, False)
+			EndIf
+		Endif
+
+		If productionConcept.script.targetGroup > 0
+			programmeData.SetTargetGroup(productionConcept.script.targetGroup, True)
+		EndIf
+
+
+		programmeData.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
+		programmeData.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
+
+
+		'add flags given in script
+		For Local i:Int = 1 To TVTBroadcastMaterialSourceFlag.count
+			Local flag:Int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
+			If productionConcept.script.productionBroadcastFlags & flag
+				programmeData.broadcastFlags :| flag
+			EndIf
+		Next
+
+		'add broadcast limits
+		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
+
+		If producerName
+			If Not programmeData.extra Then programmeData.extra = New TData
+			programmeData.extra.AddString("producerName", producerName)
+		EndIf
+
+
+		'=== 3. PROGRAMME CAST ===
+		For Local castIndex:Int = 0 Until Min(productionConcept.cast.length, productionConcept.script.jobs.length)
+			Local p:TPersonBase = productionConcept.cast[castIndex]
+			Local job:TPersonProductionJob = productionConcept.script.jobs[castIndex]
+			If Not p Or Not job Then Continue
+
+			programmeData.AddCast(New TPersonProductionJob.Init(p.GetID(), job.job))
+		Next
+
+		'update programme data so releases to cinema etc (if needed)
+		programmeData.Update()
+		
+		Return programmeData
+	End Method
+
+
+	'Generate a licence 
+	'also generate the licence's programmedata without individual review, speed, ... values
+	'(fill these in on "BeginShooting()")
+	Method GenerateProgrammeLicence:TProgrammeLicence()
+		'TLogger.Log("TProduction.GenerateProgrammeLicence()", "Generating programme licence.", LOG_DEBUG)
+
+		Local programmeGUID:String = "customProduction-"+"-"+productionConcept.script.GetGUID()+"-"+GetGUID()
+
+		Local programmeData:TProgrammeData = GenerateProgrammeData()
+		programmeData.SetGUID("data-"+programmeGUID)
+
+		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence
+		programmeLicence.SetGUID(programmeGUID)
+		programmeLicence.SetData(programmeData)
+		programmeLicence.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
+		programmeLicence.licenceType = productionConcept.script.scriptLicenceType
+
+		'add flags given in script
+		For Local i:Int = 1 To TVTProgrammeLicenceFlag.count
+			Local flag:Int = TVTProgrammeLicenceFlag.GetAtIndex(i)
+			If productionConcept.script.productionLicenceFlags & flag
+				programmeLicence.licenceFlags :| flag
+			EndIf
+		Next
+
+		Return programmeLicence
+	End Method
+	
+	
+	Method AddProgrammeLicence()
+		'add licence (and its header-licence)
+		'for collections and episodes this is the "header", for single
+		'elements this is "self"
+		Local parentLicence:TProgrammeLicence = _designatedProgrammeLicence
+		Local programmeLicence:TProgrammeLicence = _designatedProgrammeLicence
+		If programmeLicence.IsEpisode()
+			'set episode according to script-episode-index
+			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
+
+			parentLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
+			'add the episode
+			If parentLicence
+				'add licence at the position of the defined episode no.
+				parentLicence.AddSubLicence(programmeLicence, programmeLicence.episodeNumber - 1)
+
+				'fill that licence with episode specific data
+				'(averages, cast, country of production)
+				FillParentalLicence(parentLicence)
+
+				GetProgrammeDataCollection().Add(parentLicence.data)
+				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
+			Else
+				DebugStop
+				Throw "Failed to create parentLicence"
+			EndIf
+		EndIf
+		GetProgrammeDataCollection().Add(programmeLicence.data)
+		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
+
+
+		'set owner of licence (and sublicences)
+		If owner
+			'ignore current level (else you can start production and
+			'increase reach until production finish)
+			parentLicence.SetLicencedAudienceReachLevel(1)
+			parentLicence.SetOwner(owner)
+		EndIf
+
+
+		If owner And GetPlayerProgrammeCollection(owner)
+			if parentLicence <> programmeLicence
+				'only adds if not already added
+				GetPlayerProgrammeCollection(owner).AddProgrammeLicence(parentLicence, False)
+			endif
+			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(programmeLicence, False)
+		EndIf
+	End Method
+
+
+	
+	Method GetProducedLicence:TProgrammeLicence()
+		If _designatedProgrammeLicence
+			Return _designatedProgrammeLicence
+		ElseIf producedLicenceID
+			Return GetProgrammeLicenceCollection().Get(producedLicenceID)
+		elseif producedLicenceGUID
+			Return GetProgrammeLicenceCollection().GetByGUID(producedLicenceGUID)
+		endif
+		Return Null
+	End Method
+
+
+	Method FixProgrammeDataValues:Int()
+		if not _designatedProgrammeLicence then Return False
+		
+		Local pd:TProgrammeData = _designatedProgrammeLicence.data
+		
+		If productionPriceMod <> 1.0
+			pd.SetModifier("price", productionPriceMod)
+		EndIf
+		
+		'fix release time now
+		pd.releaseTime = GetWorldTime().GetTimeGone()
+
+
+		'=== 3.2 PROGRAMME PRODUCTION PROPERTIES ===
+		pd.review = MathHelper.Clamp(productionValueMod * productionConcept.script.review *scriptPotentialMod, 0, 1.0)
+		pd.speed = MathHelper.Clamp(productionValueMod * productionConcept.script.speed *scriptPotentialMod, 0, 1.0)
+		pd.outcome = MathHelper.Clamp(productionValueMod * productionConcept.script.outcome *scriptPotentialMod, 0, 1.0)
+		'modify outcome by castFameMod ("attractors/startpower")
+		pd.outcome = MathHelper.Clamp(pd.outcome * castFameMod, 0, 1.0)
+	End Method
+	
+	
+	Method FixProductionMods()
 		'=== 1. PRODUCTION EFFECTS ===
 		'- modify production values (random..)
 		'- cast:
@@ -334,7 +782,7 @@ Type TProduction Extends TOwnedGameObject
 		'- - adding the job (if not done automatically) so it becomes
 		'    specialized for this kind of production somewhen
 
-		'=== 1.1 PRODUCTION VALUES ===
+		'=== 1. PRODUCTION VALUES ===
 		productionValueMod = GetProductionValueMod()
 		productionPriceMod = 1.0
 
@@ -374,248 +822,50 @@ Type TProduction Extends TOwnedGameObject
 		scriptPotentialMod = productionConcept.CalculateScriptPotentialMod()
 
 
-		TLogger.Log("TProduction.Finalize()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
-		TLogger.Log("TProduction.Finalize()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
-		TLogger.Log("TProduction.Finalize()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
-		TLogger.Log("TProduction.Finalize()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
+	End Method
+	
+	
+	Method FixProductionValues()
+		'=== 1. CALCULATE BASE PRODUCTION VALUES ===
+
+		'=== 1.1 CALCULATE FITS ===
+
+		'=== 1.1.1 GENRE ===
+		'Compare genre definition with script values (expected vs real)
+		scriptGenreFit = productionConcept.CalculateScriptGenreFit(True)
+
+		'=== 1.1.2 CAST ===
+		'Calculate how the selected cast fits to their assigned jobs
+		castFit = productionConcept.CalculateCastFit(True)
+		castComplexity = productionConcept.CalculateCastComplexity(True)
+
+		'=== 1.1.3 PRODUCTIONCOMPANY ===
+		'Calculate how the selected company does its job at all
+		productionCompanyQuality = productionConcept.productionCompany.GetQuality()
 
 
-		'=== 1.2 CAST ===
-		'change skills of the actors / director / ...
+		'=== 1.2 INDIVIDUAL IMPROVEMENTS ===
 
+		'=== 1.2.1 CAST SYMPATHY ===
+		'improve cast job by "sympathy" (they like your channel, so they
+		'do a slightly better job)
+		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy(True)
 
+		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
+		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
+		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
 
-		'=== 2. PROGRAMME CREATION ===
-		Local programmeData:TProgrammeData = New TProgrammeData
-		Local programmeGUID:String = "customProduction-"+"-"+productionConcept.script.GetGUID()+"-"+GetGUID()
-		programmeData.SetGUID("data-"+programmeGUID)
-
-		If producerName
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddString("producerName", producerName)
-		EndIf
-
-		If producerID <> 0
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddInt("producerID", producerID)
-		EndIf
-
-		'=== 2.1 PROGRAMME BASE PROPERTIES ===
-		FillProgrammeData(programmeData, productionConcept)
-		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
-		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
-		programmeData.releaseTime = GetWorldTime().GetTimeGone()
-		If productionConcept.script.IsLive()
-			'programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
-
-			programmeData.releaseTime = productionConcept.GetLiveTime()
-			'inform script about the latest live time used
-			productionConcept.script.lastLiveTime = programmeData.releaseTime
-		EndIf
-		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
-		programmeData.producedByPlayerID = owner
-		programmeData.dataType = productionConcept.script.scriptLicenceType
-
-		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
-		'enable mandatory flags
-		programmeData.SetFlag(productionConcept.script.flags, True)
-
-		'check is done here again (and also in GetFinalFlags()) as
-		'the script might have changed "liveTime" - so we check it again
-		'here
-		'do not enable X-Rated for live productions when
-		'live time is not in the night
-		if productionConcept.script.flags & TVTProgrammeDataFlag.XRATED
-			If productionConcept.script.liveTime <= 22 And productionConcept.script.liveTime >= 6
-				programmeData.SetFlag(TVTProgrammeDataFlag.XRATED, False)
-			EndIf
-		Endif
-
-		If productionConcept.script.targetGroup > 0
-			programmeData.SetTargetGroup(productionConcept.script.targetGroup, True)
-		EndIf
-
-
-		programmeData.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
-		programmeData.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
-
-
-		'add flags given in script
-		For Local i:Int = 1 To TVTBroadcastMaterialSourceFlag.count
-			Local flag:Int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
-			If productionConcept.script.productionBroadcastFlags & flag
-				programmeData.broadcastFlags :| flag
-			EndIf
-		Next
-
-		'add broadcast limits
-		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
-
-		If productionPriceMod <> 1.0
-			programmeData.SetModifier("price", productionPriceMod)
-		EndIf
-
-
-		'=== 2.2 PROGRAMME PRODUCTION PROPERTIES ===
-		programmeData.review = MathHelper.Clamp(productionValueMod * productionConcept.script.review *scriptPotentialMod, 0, 1.0)
-		programmeData.speed = MathHelper.Clamp(productionValueMod * productionConcept.script.speed *scriptPotentialMod, 0, 1.0)
-		programmeData.outcome = MathHelper.Clamp(productionValueMod * productionConcept.script.outcome *scriptPotentialMod, 0, 1.0)
-		'modify outcome by castFameMod ("attractors/startpower")
-		programmeData.outcome = MathHelper.Clamp(programmeData.outcome * castFameMod, 0, 1.0)
-
-		If producerName
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddString("producerName", producerName)
-		EndIf
-
-
-		'=== 2.3 PROGRAMME CAST ===
-		For Local castIndex:Int = 0 Until Min(productionConcept.cast.length, productionConcept.script.jobs.length)
-			Local p:TPersonBase = productionConcept.cast[castIndex]
-			Local job:TPersonProductionJob = productionConcept.script.jobs[castIndex]
-			If Not p Or Not job Then Continue
-
-
-			If DEV_InformPerson
-				'person is now capable of doing this job
-				p.SetJob(job.job)
-			EndIf
-			programmeData.AddCast(New TPersonProductionJob.Init(p.GetID(), job.job))
-
-			If DEV_InformPerson
-				'inform person and adjust its popularity (if it has some)
-				Local popularity:TPersonPopularity = TPersonPopularity(p.GetPopularity())
-				If popularity
-					Local params:TData = New TData
-					params.AddNumber("time", GetWorldTime().GetTimeGone())
-					params.AddNumber("quality", programmeData.GetQualityRaw())
-					params.AddNumber("job", job.job)
-
-					popularity.FinishProgrammeProduction(params)
-				EndIf
-			EndIf
-		Next
-
-
-		'=== 2.4 PROGRAMME LICENCE ===
-		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence
-		programmeLicence.SetGUID(programmeGUID)
-		programmeLicence.SetData(programmeData)
-		programmeLicence.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
-		programmeLicence.licenceType = productionConcept.script.scriptLicenceType
-
-		'add flags given in script
-		For Local i:Int = 1 To TVTProgrammeLicenceFlag.count
-			Local flag:Int = TVTProgrammeLicenceFlag.GetAtIndex(i)
-			If productionConcept.script.productionLicenceFlags & flag
-				programmeLicence.licenceFlags :| flag
-			EndIf
-		Next
-
-
-		'for collections and episodes this is the "header", for single
-		'elements this is "self"
-		Local parentLicence:TProgrammeLicence = programmeLicence
-		If programmeLicence.IsEpisode()
-			'set episode according to script-episode-index
-			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
-
-			parentLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
-			'add the episode
-			If parentLicence
-				'add licence at the position of the defined episode no.
-				parentLicence.AddSubLicence(programmeLicence, programmeLicence.episodeNumber - 1)
-
-				'fill that licence with episode specific data
-				'(averages, cast, country of production)
-				FillParentalLicence(parentLicence)
-
-				GetProgrammeDataCollection().Add(parentLicence.data)
-				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
-			Else
-				DebugStop
-				Throw "Failed to create parentLicence"
-			EndIf
-		EndIf
-		GetProgrammeDataCollection().Add(programmeLicence.data)
-		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
-
-		'set owner of licence (and sublicences)
-		If owner
-			'ignore current level (else you can start production and
-			'increase reach until production finish)
-			parentLicence.SetLicencedAudienceReachLevel(1)
-			parentLicence.SetOwner(owner)
-		EndIf
-
-		'update programme data so it informs cast, releases to cinema etc
-		programmeData.Update()
-
-Rem
-print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice(1)+")"
-if programmeLicence.IsEpisode()
-	print "Serie besteht nun aus den Folgen:"
-	For local epIndex:int = 0 until parentLicence.subLicences.length
-		if parentLicence.subLicences[epIndex]
-			print "- subLicences["+epIndex+"] = " + parentLicence.subLicences[epIndex].episodeNumber+" | " + parentLicence.subLicences[epIndex].GetTitle()
-		else
-			print "- subLicences["+epIndex+"] = /"
-		endif
-	Next
-endif
-endrem
-
-		'=== 3. INFORM / REMOVE SCRIPT ===
-		'inform production company
-		productionConcept.productionCompany.FinishProduction(programmeData.GetID())
-
-		'inform script about a done production based on the script
-		'(parental script is already informed on creation of its licence)
-		productionConcept.script.FinishProduction(programmeLicence.GetID())
-
-		If owner And GetPlayerProgrammeCollection(owner)
-			'if the script does not allow further productions, it is finished
-			'and should be removed from the player
-
-			'series: remove parent if it is finished now
-			If productionConcept.script.HasParentScript()
-				Local parentScript:TScript = productionConcept.script.GetParentScript()
-				If parentScript.IsProduced()
-					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
-				EndIf
-			EndIf
-			'single scripts? done all allowed?
-			If Not productionConcept.script.CanGetProducedCount()
-				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
-			EndIf
-		EndIf
-
-		'=== 4. ADD TO PLAYER ===
-		'add licence (and its header-licence)
-
-		If owner And GetPlayerProgrammeCollection(owner)
-			if parentLicence <> programmeLicence
-				'only adds if not already added
-				GetPlayerProgrammeCollection(owner).AddProgrammeLicence(parentLicence, False)
-			endif
-			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(programmeLicence, False)
-		EndIf
-
-
-		'=== 5. REMOVE PRODUCTION CONCEPT ===
-		'now only the production itself knows about the concept
-		If owner And GetPlayerProgrammeCollection(owner)
-			GetPlayerProgrammeCollection(owner).RemoveProductionConcept(productionConcept)
-		EndIf
-		GetProductionConceptCollection().Remove(productionConcept)
-
-		'store resulting licence
-		producedLicenceGUID = programmeLicence.GetGUID()
-
-		'emit an event so eg. network can recognize the change
-		TriggerBaseEvent(GameEventKeys.Production_Finalize, New TData.Add("programmelicence", programmeLicence), Self)
-
-		Return Self
+		TLogger.Log("TProduction.FixProductionValues()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "castFit:                  " + castFit, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "castComplexity:           " + castComplexity, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "castSympathyMod:          " + castSympathyMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "effectiveFocusPoints:     " + effectiveFocusPoints, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "effectiveFocusPointsMod:  " + effectiveFocusPointsMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionValues()", "productionCompanyQuality: " + productionCompanyQuality, LOG_DEBUG)
 	End Method
 
 
@@ -642,7 +892,14 @@ endrem
 			'some basic data for the header of series/collections
 			parentLicence.GetData().distributionChannel = TVTProgrammeDistributionChannel.TV
 			parentLicence.GetData().setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
-			parentLicence.GetData().producedByPlayerID = programmeLicence.GetData().producedByPlayerID
+			'first "episode" is defining "who" did the custom production
+			'(if mixed producers happen, a "getProducerPlayerIDs()" must
+			' be created which then iterates over all child elements)
+			parentLicence.GetData().productionID = programmeLicence.GetData().productionID
+			'store first produced child negatively (maybe useful information) ?
+			'for now parents do not get a production ID (as there is no 
+			'production done - but for the child elements)
+			'parentLicence.GetData().productionID = - self.GetID() 
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 
 			'fill with basic data (title, description, ...)
@@ -655,7 +912,7 @@ endrem
 				parentLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
 				parentLicence.data.dataType = TVTProgrammeDataType.COLLECTION
 			Else
-				Print "UNKNOWN LICENCE TYPE GIVEN: "+parentLicenceType+". Fail back to series"
+				'unknown licence type. Fall back to series
 				parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
 				parentLicence.data.dataType = TVTProgrammeDataType.SERIES
 			EndIf
@@ -775,25 +1032,86 @@ endrem
 	End Function
 
 
-	Method Update:Int()
-		Select status
-			'already finished
-			Case 2
+
+	Method UpdateProductionStep:Int()
+		'check in UpdateProductionStep() as below might alter pause state
+		'but is calling UpdateProductionStep() recursively if needed
+		If IsPaused()
+				'ignore milliseconds/seconds difference
+			If pauseDuration = 0 or (pauseStartTime + pauseDuration)/TWorldTime.MINUTELENGTH <= GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH
+'			If pauseDuration = 0 or pauseStartTime + pauseDuration <= GetWorldTime().GetTimeGone()
+				SetPaused(False, 0)
+				'when no longer paused - refresh blocking information
+				BlockStudio()
+			EndIf
+		EndIf
+		If IsPaused() then Return False
+
+		
+		Select productionStep
+			Case TVTProductionStep.NOT_STARTED
 				Return False
-			'aborted / paused
-			Case 3
+			Case TVTProductionStep.ABORTED
 				Return False
-			'not yet started
-			Case 0
+			Case TVTProductionStep.FINISHED
 				Return False
-			'in production
-			Case 1
-				If GetWorldTime().GetTimeGone() >= endDate
-					Finalize()
-					Return True
+
+
+			Case TVTProductionStep.PREPRODUCTION
+				'finished preproduction?
+				'ignore milliseconds/seconds difference
+				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= (endTime + pauseDuration)/TWorldTime.MINUTELENGTH
+				'If GetWorldTime().GetTimeGone() >= endTime + pauseDuration
+					FinishPreProduction()
+
+					'maybe next step is also fulfilled
+					Return UpdateProductionStep()
 				EndIf
+				Return False
+
+
+			Case TVTProductionStep.PREPRODUCTION_DONE
+				'with fix livetime being "past" current time we should
+				'begin with shooting as fast as possible
+				If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= productionConcept.script.liveTime/TWorldTime.MINUTELENGTH
+				'If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone() >= productionConcept.script.liveTime
+					BeginShooting()
+					
+					'maybe next step is also fulfilled
+					Return UpdateProductionStep()
+				EndIf
+				Return False
+
+
+			'in production
+			Case TVTProductionStep.SHOOTING
+				local finalEndTime:Long = endTime
+				If not productionConcept.script.IsLive() then finalEndTime :+ pauseDuration
+
+				'ignore milliseconds/seconds difference
+				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= finalEndTime/TWorldTime.MINUTELENGTH
+				'If GetWorldTime().GetTimeGone() >= finalEndTime
+					FinishShooting()
+
+					'maybe next step is also fulfilled
+					Return UpdateProductionStep()
+				EndIf
+				Return False
+				
+			
+			Case TVTProductionStep.SHOOTING_DONE
+				Finalize()
+
+				Return True
 		End Select
 
 		Return False
+	End Method
+	
+
+	Method Update:Int()
+		local result:Int = UpdateProductionStep()
+
+		Return result
 	End Method
 End Type

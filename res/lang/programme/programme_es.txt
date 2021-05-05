@@ -114,6 +114,7 @@ PROGRAMME_IN_PROGRAMME_PLAN             = Programa en el plan del programa!
 #ONLY_X_BROADCASTS_POSSIBLE              = 
 #NO_MORE_BROADCASTS_ALLOWED              = 
 #BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y      = 
+#LIVE_PRODUCTION_FINISH_WILL_COST_X      =
 
 OPENINGSHOW_TITLE       = Gran lanzamiento de "%CHANNELNAME%"
 OPENINGSHOW_DESCRIPTION = Vamos a estallar los corchos. %CHANNELNAME% está lanzando hoy.

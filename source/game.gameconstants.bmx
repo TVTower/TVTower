@@ -1416,6 +1416,43 @@ End Type
 
 
 
+
+
+Type TVTProductionStep {_exposeToLua}
+	Const NOT_STARTED:Int = 0
+	Const PREPRODUCTION:int = 1
+	Const PREPRODUCTION_DONE:int = 2
+	Const SHOOTING:int = 3
+	Const SHOOTING_DONE:int = 4
+	Const FINISHED:Int = 5
+	Const ABORTED:Int = 6
+
+	Const count:Int = 7
+
+
+	Function GetAtIndex:Int(index:Int = 0)
+		If index <= 0 Then Return 0
+		Return index
+	End Function
+
+
+	Function GetAsString:String(key:Int = 0)
+		Select key
+			Case NOT_STARTED        Return "not_started"
+			Case PREPRODUCTION      Return "preproduction"
+			Case PREPRODUCTION_DONE Return "preproduction_done"
+			Case SHOOTING           Return "shooting"
+			Case SHOOTING_DONE      Return "shooting_done"
+			Case FINISHED           Return "finished"
+			Case ABORTED            Return "aborted"
+			Default                 Return "unknown_step"
+		End Select
+	End Function
+End Type
+
+
+
+
 Type TVTProductionConceptFlag {_exposeToLua}
 	'live = more risk, more expensive, more speed
 	Const LIVE:Int = 1
@@ -1426,9 +1463,11 @@ Type TVTProductionConceptFlag {_exposeToLua}
 	'rest of total payment paid?
 	Const BALANCE_PAID:Int = 8
 	'finished shooting of this production?
-	Const PRODUCED:Int = 16
+	Const PRODUCTION_FINISHED:Int = 16
+	'started production (or preproduction)?
+	Const PRODUCTION_STARTED:Int = 32
 
-	Const count:Int = 4
+	Const count:Int = 6
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -1439,11 +1478,12 @@ Type TVTProductionConceptFlag {_exposeToLua}
 
 	Function GetAsString:String(key:Int = 0)
 		Select key
-			Case LIVE               Return "live"
-			Case CALLIN_COMPETITION Return "callincompetition"
-			Case DEPOSIT_PAID       Return "depositpaid"
-			Case BALANCE_PAID       Return "balancepaid"
-			Case PRODUCED           Return "produced"
+			Case LIVE                 Return "live"
+			Case CALLIN_COMPETITION   Return "callincompetition"
+			Case DEPOSIT_PAID         Return "depositpaid"
+			Case BALANCE_PAID         Return "balancepaid"
+			Case PRODUCTION_FINISHED  Return "production_finished"
+			Case PRODUCTION_STARTED   Return "production_started"
 			Default
 				'loop through all flag-entries and add them if contained
 				Local result:String

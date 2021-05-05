@@ -113,16 +113,26 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		For local productionConcept:TProductionConcept = EachIn productionConcepts
 			Local production:TProduction = New TProduction
 			production.SetProductionConcept(productionConcept)
-			production.SetStudio("")
-			production.PayProduction()
+			production.SetStudio(0)
+			'production.PayProduction()
 			production.Start()
 			production.Finalize() 'skip waiting
+			production.AddProgrammeLicence() 'make licence available
 
-			result = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
-			If result
-				If Not result.data.extra Then result.data.extra = New TData
-				result.data.extra.AddString("producerName", _producerName)
+			If production.producedLicenceID
+				result = GetProgrammeLicenceCollection().Get(production.producedLicenceID )
+			'TODO: DEPRECATED - can be removed after v0.7.1
+			ElseIf production.producedLicenceGUID
+				result = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
+			Endif
+			If Not result
+				TLogger.Log("TProgrammeProducer.CreateProgrammeLicence()", "Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")", LOG_ERROR)
+				Throw "TProgrammeProducer.CreateProgrammeLicence() : Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")"
 			EndIf
+			
+			If Not result.data.extra Then result.data.extra = New TData
+			result.data.extra.AddString("producerName", _producerName)
+
 
 			budget :- production.productionConcept.GetTotalCost()
 			'TODO: cinema simulation?

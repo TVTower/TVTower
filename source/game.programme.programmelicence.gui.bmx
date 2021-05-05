@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.gfx.gui.list.base.bmx"
 Import "common.misc.gamegui.bmx"
 Import "game.programme.programmelicence.bmx"
+Import "game.production.productionmanager.bmx"
 
 
 Type TGUIProgrammeLicenceSlotList Extends TGUISlotList
@@ -158,7 +159,23 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 		local forPlayerID:int = licence.owner
 		if forPlayerID <= 0 then forPlayerID = GetObservedPlayerID()
-		Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)
+		
+		if Self.licence.GetData().productionID and Self.licence.IsLive() and not GameRules.payLiveProductionInAdvance
+			'for live the production is also in the live list of the manager...
+			'so we could skip a more intense search in the ProductionCollection
+			Local production:TProduction = GetProductionManager().GetLiveProduction(Self.licence.GetData().productionID)
+			if production
+				local toPay:int = production.productionConcept.GetTotalCost() - production.productionConcept.GetDepositCost()
+				local extraData:TData = new TData
+				extraData.AddInt("productionCostsLeft", toPay)
+				Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID, extraData)
+			else
+				Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)
+			endif
+		Else
+			Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)
+		EndIf
+			
 	End Method
 
 

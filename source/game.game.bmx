@@ -585,6 +585,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For Local p:TProduction = EachIn GetProductionManager().productionsToProduce
 			If p.owner = playerID Then productions :+ [p]
 		Next
+		For Local p:TProduction = EachIn GetProductionManager().liveProductions
+			If p.owner = playerID Then productions :+ [p]
+		Next
 		For Local p:TProduction = EachIn productions
 			GetProductionManager().AbortProduction(p)
 			'delete corresponding concept too
@@ -1569,7 +1572,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local orphans:TProductionConcept[]
 		For local pc:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
 			'keep produced concepts for later lookups
-			if pc.IsProduced() continue
+			if pc.IsProductionFinished() continue
 			
 			local isOrphan:Int = True
 			For local obj:TPlayerProgrammeCollection = eachin GetPlayerProgrammeCollectionCollection().plans

@@ -2,12 +2,14 @@ SuperStrict
 Import "game.production.productionconcept.bmx"
 Import "game.production.productioncompany.bmx"
 Import "game.production.bmx"
+Import "game.room.bmx"
 
 
 Type TProductionManager
 	'contains all production concepts with state "production ready"
 	'once one starts productions in a studio
 	Field productionsToProduce:TList = CreateList()
+	Field liveProductions:TList = CreateList()
 
 	Global _instance:TProductionManager
 	Global _eventListeners:TEventListenerBase[]
@@ -22,6 +24,7 @@ Type TProductionManager
 
 	Method Initialize()
 		productionsToProduce.Clear()
+		liveProductions.Clear()
 
 		'create on initialization rather than in "new()" as new is only
 		'called once per "application run" (compared to "every game")
@@ -35,9 +38,21 @@ Type TProductionManager
 			'=== REGISTER EVENTS ===
 			EventManager.UnregisterListenersArray(_eventListeners)
 			_eventListeners = new TEventListenerBase[0]
-
 			'resize news genres when loading an older savegame
-			_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSavegameLoad) ]
+			'update manager at certain times:
+			'xx:05 - BEFORE broadcasts are logged in (and used in audience calculations)
+			'_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Broadcasting_BeforeStartAllProgrammeBlockBroadcasts, onStartProgrammeBlockBroadcasts) ]
+			'xx:54 - AFTER broadcasts have run
+			'_eventListeners :+ [ EventManager.registerListenerFunction( Broadcasting_AfterFinishAllProgrammeBlockBroadcasts, onFinishProgrammeBlockBroadcasts) ]
+			'xx:yy - to check if there has to be an special event during
+			'        running productions
+			_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Game_onMinute, onGameMinute) ]
+			
+			'no need to react to bankruptcy / changed players 
+			'(to abort running productions)
+			'as this should be done by the player TGame.ResetPlayer() 
+			'_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Game_SetPlayerBankruptBegin, onSetPlayerBankruptBegin) ]
 
 			createdEnvironment = true
 		endif
@@ -48,6 +63,41 @@ Type TProductionManager
 		if GetProductionCompanyBaseCollection().GetCount() = 0
 			CreateProductionCompanies()
 		endif
+
+		'repair old savegames (<= v0.7)
+		local savedSaveGameVersion:Int = triggerEvent.GetData().GetInt("saved_savegame_version")
+		local currentSaveGameVersion:Int = triggerEvent.GetData().GetInt("current_savegame_version")
+		if savedSaveGameVersion = 13
+			'all production steps need to be fixed
+			For Local p:TProduction = EachIn GetInstance().productionsToProduce
+				Select p.productionStep
+					'case 0
+					'	'the same TVTProductionStep.NOT_STARTED
+					case 1
+						p.productionStep = TVTProductionStep.SHOOTING
+						if not p._designatedProgrammeLicence
+							p._designatedProgrammeLicence = p.GetProducedLicence()
+							if p._designatedProgrammeLicence
+								TLogger.Log("Savegae", "TProductionManager.onSavegameLoad reassigned _designatedProgrammeLicence for ~q"+p.productionConcept.GetTitle()+"~q.", LOG_DEBUG)
+							endif
+						endif
+						if not p._designatedProgrammeLicence
+							p._designatedProgrammeLicence = p.GenerateProgrammeLicence()
+							p.producedLicenceID = p._designatedProgrammeLicence.GetID()
+							TLogger.Log("Savegae", "TProductionManager.onSavegameLoad recreated _designatedProgrammeLicence for ~q"+p.productionConcept.GetTitle()+"~q.", LOG_DEBUG)
+						endif
+					case 2
+						p.productionStep = TVTProductionStep.FINISHED
+					case 3
+						p.productionStep = TVTProductionStep.ABORTED
+				End Select
+			Next
+		endif
+	End Function
+
+
+	Function onGameMinute:Int(triggerEvent:TEventBase)
+		'TODO: (selten und) zufaellig laufende Produktionen unterbrechen ?
 	End Function
 
 
@@ -89,6 +139,7 @@ Type TProductionManager
 
 
 	Method Update:int()
+		UpdateLiveProductions()
 		UpdateProductions()
 	End Method
 
@@ -108,9 +159,9 @@ Type TProductionManager
 
 
 	'returns first found production in the given room/studio
-	Method GetProductionInStudio:TProduction(roomGUID:string)
+	Method GetProductionInStudio:TProduction(roomID:Int)
 		For local production:TProduction = EachIn productionsToProduce
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			return production
 		Next
@@ -119,16 +170,55 @@ Type TProductionManager
 
 
 	Method AbortProduction:int(production:TProduction)
+		liveProductions.Remove(production)
+
 		if production.Abort()
 			return productionsToProduce.Remove(production)
 		endif
 	End Method
+	
+	
+	Method StartLiveProductionInStudio:Int(productionID:Int)
+		'any live production can only happen if the studio it is to
+		'be shot in - is available (rented). Other productions in there
+		'will be "paused" for the time of the shooting
 
+		Local production:TProduction = GetLiveProduction(productionID)
+		If not production then Return False
+		If not production.productionConcept.script.IsLive() Then Return False
+
+		'if information is missing (eg old savegame) assign first 
+		'possible studio
+		if production.studioRoomID = 0 and production.owner > 0
+			local firstStudio:TRoomBase = GetRoomCollection().GetFirstByDetails("", "studio", production.owner)
+			if firstStudio
+				production.studioRoomID = firstStudio.GetID()
+			endif
+		endif
+
+		
+		local otherProduction:TProduction = GetProductionInStudio(production.studioRoomID)
+		If otherProduction and otherProduction <> production
+			'no need to calculate "real" time here - add some minutes
+			'local t:Long = production.productionConcept.script.GetBlocks() * TWorldTime.HOURLENGTH)
+			'or exacly continue our broadcast finishes?
+			local t:Long = (production.productionConcept.script.GetBlocks()-1) * TWorldTime.HOURLENGTH + 50 * TWorldTime.MINUTELENGTH
+			TLogger.Log("TProductionManager.StartLiveProductionInStudio()", "Pausing current production ~q"+otherProduction.productionConcept.GetTitle()+"~q for live shooting of ~q" + production.productionConcept.GetTitle() +"~q.", LOG_DEBUG)
+			otherProduction.SetPaused(True, t)
+		EndIf
+
+		'start live shooting
+		production.BeginShooting()
+		
+	End Method
+	
 
 	'start the production in the given studio
 	'returns amount of productions in that studio
-	Method StartProductionInStudio:int(roomGUID:string, script:TScript)
-		if not roomGUID then return False
+	Method StartProductionInStudio:int(roomID:Int, script:TScript)
+		if not roomID then return False
+
+'print "StartProductionInStudio " + script.Gettitle()
 
 		'- abort productions (stop shooting in this room)
 		'- cleanup (remove potentially existing previous productions
@@ -137,10 +227,9 @@ Type TProductionManager
 		'- create productions of all concepts "ready to produce"
 		'- start shooting of first production
 
-
 		'abort current production
 		For local production:TProduction = EachIn productionsToProduce
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			if production.IsInProduction()
 				production.Abort()
@@ -150,8 +239,7 @@ Type TProductionManager
 
 
 		'update list of to produce productions in that studio
-		Local productionCount:Int = RefreshProductionsToProduceInStudio(roomGUID, script)
-
+		Local productionCount:Int = RefreshProductionsToProduceInStudio(roomID, script)
 
 		'actually start the production
 		'- first hit production (with that script) is the one we should
@@ -159,7 +247,7 @@ Type TProductionManager
 		'- other productions are produced once the first one is finished
 		For local production:TProduction = EachIn productionsToProduce
 			'skip productions of other studios
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			'series? skip if not an episode of this serie
 			if production.productionConcept.script.GetParentScript().IsSeries()
@@ -169,10 +257,6 @@ Type TProductionManager
 			endif
 
 			production.Start()
-			If production.productionConcept.script.IsLive()
-				production.productionConcept.SetLiveTime( production.productionConcept.GetPlannedLiveTime() )
-				'print "Starte Preproduktion: Livezeit = " + production.productionConcept.GetLiveTimeText()
-			EndIf
 
 			'start the FIRST production only!
 			return productionCount
@@ -182,11 +266,11 @@ Type TProductionManager
 	End Method
 
 
-	Method GetProductionsToProduceInStudioCount:Int(roomGUID:string)
+	Method GetProductionsToProduceInStudioCount:Int(roomID:Int)
 		Local productionCount:int = 0
 		For local production:TProduction = EachIn productionsToProduce
 			'skip productions of other studios
-			if production.studioRoomGUID <> roomGUID then continue
+			if production.studioRoomID <> roomID then continue
 
 			productionCount :+ 1
 		Next
@@ -195,7 +279,53 @@ Type TProductionManager
 	End Method
 
 
-	Method RefreshProductionsToProduceInStudio:Int(roomGUID:string, script:TScript)
+	rem
+	Method GetQueuedProductionByProductionConceptID:TProduction(productionConceptID:int)
+		For local production:TProduction = EachIn productionsToProduce
+			if production.productionConcept.GetID() = productionConceptID Then return production
+		Next
+		Return Null
+	End Method
+
+
+	Method GetLiveProductionByProductionConceptID:TProduction(productionConceptID:int)
+		For local production:TProduction = EachIn liveProductions
+			if production.productionConcept.GetID() = productionConceptID Then return production
+		Next
+		Return Null
+	End Method
+	
+	
+	Method GetManagedProductionByProductionConceptID:TProduction(productionConceptID:int)
+		For local production:TProduction = EachIn productionsToProduce
+			if production.productionConcept.GetID() = productionConceptID Then return production
+		Next
+		For local production:TProduction = EachIn liveProductions
+			if production.productionConcept.GetID() = productionConceptID Then return production
+		Next
+		Return Null
+	End Method
+	endrem
+	
+	
+	Method GetLiveProductionByProgrammeLicenceID:TProduction(programmeLicenceID:Int)
+		For Local production:TProduction = EachIn liveProductions
+			If Not production._designatedProgrammeLicence Then Continue
+			If production.producedLicenceID = programmeLicenceID Then Return production
+		Next
+		Return Null
+	End Method
+
+
+	Method GetLiveProduction:TProduction(productionID:Int)
+		For Local production:TProduction = EachIn liveProductions
+			If production.GetID() = productionID Then Return production
+		Next
+		Return Null
+	End Method
+
+
+	Method RefreshProductionsToProduceInStudio:Int(roomID:Int, script:TScript)
 		'amount of productions in this studio
 		Local productionCount:int = 0
 
@@ -221,14 +351,14 @@ Type TProductionManager
 
 
 		For local productionConcept:TProductionConcept = EachIn productionConcepts
-			'skip produced concepts
-			if productionConcept.IsProduced() then continue
+			'skip already started concepts
+			if productionConcept.IsProductionStarted() then continue
 			'skip not-produceable concepts
 			if not productionConcept.IsProduceable() then continue
 
 			local production:TProduction = new TProduction
 			production.SetProductionConcept(productionConcept)
-			production.SetStudio(roomGUID)
+			production.SetStudio(roomID)
 
 			productionsToProduce.AddLast(production)
 			productionCount :+ 1
@@ -260,14 +390,44 @@ Type TProductionManager
 	End Function
 
 
+	Method UpdateLiveProductions:Int()
+		local removeProductions:TProduction[]
+
+		'check if one of the productions is in live production now
+		For local production:TProduction = EachIn liveProductions
+			production.Update()
+			if production.IsProduced() or production.IsAborted()
+				removeProductions :+ [production]
+			endif
+		Next
+		'remove all productions which finished
+		For local production:TProduction = EachIn removeProductions
+			liveProductions.Remove(production)
+		Next
+	End Method
+
+	
 	Method UpdateProductions:int()
 		local finishedProductions:TProduction[]
-		'check if one of the productions is finished now
+
+		'check if one of the (pre)productions is finished now
 		For local production:TProduction = EachIn productionsToProduce
 			production.Update()
+			
+			If production.IsProduced()
+				finishedProductions :+ [production]
 
-			if production.IsProduced() then finishedProductions :+ [production]
+			'normally preproductions are only for live, but that might
+			'change so better check for it too
+			ElseIf production.IsPreProductionDone() and production.productionConcept.script.IsLive()
+				finishedProductions :+ [production]
+
+				If Not liveProductions.Contains(production)
+					liveProductions.AddLast(production)
+				EndIf
+			EndIf
 		Next
+
 
 		'remove finished ones and start follow ups of the used studio
 		'(extra step to avoid concurrent list modification)
@@ -278,7 +438,8 @@ Type TProductionManager
 			'fetch next production of that script and start its shooting
 			local nextProduction:TProduction
 			For local p:TProduction = EachIn productionsToProduce
-				if p.studioRoomGUID <> production.studioRoomGUID then continue
+				if p.studioRoomID <> production.studioRoomID then continue
+				If p.IsProduced() or production.IsInPreProduction() then continue
 
 				nextProduction = p
 				exit
@@ -287,9 +448,12 @@ Type TProductionManager
 				Local reduceProductionTimeFactor:Int = 2
 				If productionsToProduce.count = 1 Then reduceProductionTimeFactor = 1
 				nextProduction.Start(reduceProductionTimeFactor)
+				
 				startedProductions :+ 1
 			endif
 		Next
+		
+		
 
 		return startedProductions
 	End Method

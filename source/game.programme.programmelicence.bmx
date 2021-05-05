@@ -930,6 +930,30 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 	End Method
 
+	'returns whether a single licences or AT LEAST ONE
+	'sublicences contains an unknown price (eg. was not aired yet)
+	Method ContainsUnknownPrice:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			'if bought then we know the price...for sure
+			If buyPrice >= 0 then Return False
+			'if broadcasted we know the price too
+			if GetData().GetTimesBroadcasted() > 0 Then Return False
+
+			'custom live productions need to be started to know the price
+			If GetData().IsCustomProduction() and IsLive()
+				if GetData().releaseTime < GetWorldTime().GetTimeGone() Then Return False
+			EndIf
+
+			Return True
+		else
+			For local licence:TProgrammeLicence = eachin subLicences
+				if licence.ContainsUnknownPrice() then return True
+			Next
+
+			return False
+		endif
+	End Method
+
 
 	'override
 	Method GetBroadcastTimeSlotStart:int()
@@ -2063,6 +2087,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
 		Local showMsgBroadcastTimeSlot:Int = False
+		Local showMsgLiveProductionCost:Int = False
 
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
@@ -2124,8 +2149,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 		EndRem
 		endif
-		If HasBroadcastLimit() then showMsgBroadcastLimit= True
-		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot= True
+		If HasBroadcastLimit() then showMsgBroadcastLimit = True
+		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot = True
+
+		'Ron: disabled for now - as too many messages do not fit into the
+		'     datasheet. Also I am not sure if the information is to
+		'     display at all
+		'if GetData().productionID and IsLive() and not GameRules.payLiveProductionInAdvance and extraData Then showMsgLiveProductionCost = True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -2148,6 +2178,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If showMsgLiveInfo then msgAreaH :+ msgH
 		If showMsgBroadcastLimit then msgAreaH :+ msgH
 		If showMsgBroadcastTimeSlot then msgAreaH :+ msgH
+		If showMsgLiveProductionCost then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -2346,6 +2377,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ msgH
 		EndIf
 
+		if showMsgLiveProductionCost
+			Local productionCostsLeftValue:int
+			if extraData then productionCostsLeftValue = extraData.GetInt("productionCostsLeft")
+			local productionCostsLeft:string = MathHelper.DottedValue(productionCostsLeftValue)+CURRENCYSIGN
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("LIVE_PRODUCTION_FINISH_WILL_COST_X").Replace("%X%", productionCostsLeft) , "money", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
+
 		if showMsgPlannedWarning
 			if not isProgrammePlanned()
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
@@ -2382,7 +2421,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'price
 		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
 		'- hide for custom productions until aired (series: if all episoded aired)
-		if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsCustomProduction() then showPrice = False
+		if showPrice and owner > 0 and ContainsUnknownPrice() then showPrice = False
+		'if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsCustomProduction() then showPrice = False
+	
 		'- hide unowned and not tradeable ones
 		'-> disabled because of "Opener show"
 		'if showPrice not IsOwned() and not IsTradeable() then showPrice = False

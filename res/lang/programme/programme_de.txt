@@ -114,6 +114,7 @@ ONLY_1_BROADCAST_POSSIBLE               = Nur 1 Ausstrahlung möglich!
 ONLY_X_BROADCASTS_POSSIBLE              = Nur %X% Ausstrahlungen möglich!
 NO_MORE_BROADCASTS_ALLOWED              = Keine weiteren Ausstrahlungen möglich!
 BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y      = Nur zwischen %X% bis %Y% Uhr ausstrahlbar!
+LIVE_PRODUCTION_FINISH_WILL_COST_X      = Abschluss der Liveproduktion kostet %X%!
 
 OPENINGSHOW_TITLE       = Eröffnungsshow „%CHANNELNAME%“
 OPENINGSHOW_DESCRIPTION = Lasst die Korken knallen. %CHANNELNAME% geht an den Start.

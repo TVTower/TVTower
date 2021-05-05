@@ -68,6 +68,10 @@ Type TGameRules {_exposeToLua}
 	'also at later times (eg. 2 hours later)
 	Field onlyExactLiveProgrammeTimeAllowedInProgrammePlan:int = False
 
+	'pay live productions already on finish of preproduction (True)
+	'or on finish of actual shooting (False)
+	Field payLiveProductionInAdvance:Int = False
+
 	'percentage of the gametime when in a room (default = 100%)
 	'use a lower value, to slow down the game then (movement + time)
 	Field InRoomTimeSlowDownMod:Float = 1.0
