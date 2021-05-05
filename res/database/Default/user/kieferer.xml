@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" comment="Kieferers Daten" />
 	<scripttemplates>
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mysteriousisland">
@@ -221,4 +221,4 @@ All means are right for them.</en>
 			<data genre="0" flags="145" happen_time="8,1,9,11" quality_min="30" quality_max="40" quality_slope="50" price="0.9" />
 		</news>
 	</allnews>
-</tvgdb>
+</tvtdb>

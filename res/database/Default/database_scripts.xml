@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" comment="script data" />
 	<!--
 		title, description, variables, roles and quality are FIXED parts
@@ -725,4 +725,4 @@
 
 
 	</programmeroles>
-</tvgdb>
+</tvtdb>

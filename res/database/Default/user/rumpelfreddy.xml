@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
     <version value="3" comment="Freddys_Krempel" />
     <insignificantpeople>
 		<!-- Schottisch -->
@@ -1154,8 +1154,8 @@
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_37</member>
                 <member index="1" function="2">Per_custom_Freddy_109</member>
-                <member index="1" function="2">Per_custom_Freddy_150</member>
-                <member index="1" function="2">Per_custom_Freddy_168</member>
+                <member index="2" function="2">Per_custom_Freddy_150</member>
+                <member index="3" function="2">Per_custom_Freddy_168</member>
             </staff>
             <groups target_groups="0" />
             <data country="US" year="1982" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
@@ -1193,8 +1193,8 @@
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_37</member>
                 <member index="1" function="2">Per_custom_Freddy_219</member>
-                <member index="1" function="2">Per_custom_Freddy_243</member>
-                <member index="1" function="2">Per_custom_Freddy_223</member>
+                <member index="2" function="2">Per_custom_Freddy_243</member>
+                <member index="3" function="2">Per_custom_Freddy_223</member>
             </staff>
             <groups target_groups="0" />
             <data country="D" year="2001" distribution="0" maingenre="2" subgenre="16" flags="96" blocks="2" price_mod="1.0" />
@@ -1269,8 +1269,8 @@
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_167</member>
                 <member index="1" function="2">Per_custom_Freddy_142</member>
-                <member index="1" function="2">Per_custom_Freddy_27</member>
-                <member index="1" function="2">Per_custom_Freddy_33</member>
+                <member index="2" function="2">Per_custom_Freddy_27</member>
+                <member index="3" function="2">Per_custom_Freddy_33</member>
             </staff>
             <groups target_groups="0" />
             <data country="US" year="1959" distribution="0" maingenre="2" subgenre="9" flags="32" blocks="3" price_mod="1.0" />
@@ -1311,4 +1311,4 @@
             <ratings critics="5" speed="41" outcome="16" />
         </programme>
     </allprogrammes>
-</tvgdb>
+</tvtdb>

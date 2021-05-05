@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 <version value="3" comment="Programme von TheRob" />
 	<allprogrammes>
 		<programme id="TheRob-serie-KomissarWirsch" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -384,7 +384,7 @@
 				<member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
 				<member index="2" function="2">TheRob-celebritypeople-GaryGrunt</member>
 				<member index="3" function="2">af6a5525-6858-42b2-b313-6ca3e26d3b90</member>
-				<member index="3" function="2">TheRob-celebritypeople-LarryMoldman</member>
+				<member index="4" function="2">TheRob-celebritypeople-LarryMoldman</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1985" distribution="1" maingenre="14" subgenre="" flags="0" blocks="3" price_mod="1.5" />
@@ -921,7 +921,7 @@
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_42</member>
-				<member index="0" function="2">Per_custom_Freddy_45</member>
+				<member index="1" function="2">Per_custom_Freddy_45</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="SWE" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
@@ -1129,7 +1129,7 @@
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
 				<member index="1" function="8">Per_custom_Freddy_631</member>
-				<member index="1" function="128">Per_custom_Freddy_404</member>
+				<member index="2" function="128">Per_custom_Freddy_404</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1971" distribution="2" maingenre="6" subgenre="300" flags="16" blocks="1" price_mod="1.00" />
@@ -3111,4 +3111,4 @@
 			<speed min="5" max="20" slope="12" />
 		</scripttemplate>
 	</scripttemplates>
-</tvgdb>
+</tvtdb>

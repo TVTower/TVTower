@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tvgdb>
+<tvtdb>
 	<version value="3" />
 	<allprogrammes>
 		<programme id="3bd76bd9-3cb7-4a9d-8e57-815b1ea7c2f0" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048545" creator="">
@@ -6052,7 +6052,7 @@ Von den Kritikern lange Zeit verkannt</de>
 			<staff>
 				<member index="0" function="1">f14d6ba0-0db5-4a76-a4d3-daba1603e4f6</member>
 				<member index="1" function="2">1994aa3a-23c3-48ce-b20a-d1f021df8c63</member>
-				<member index="1" function="2">2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64</member>
+				<member index="2" function="2">2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2004" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
@@ -7774,7 +7774,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<member index="1" function="2">TheRob-celebritypeople-WalfredWederSabel</member>
 				<member index="2" function="2">TheRob-celebritypeople-PipernetteSelm</member>
 				<member index="3" function="2">TheRob-celebritypeople-MustafLustig</member>
-				<member index="1" function="2">TheRob-TowerTV-RudolfKleineWeize</member>
+				<member index="4" function="2">TheRob-TowerTV-RudolfKleineWeize</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1927" distribution="1" maingenre="13" subgenre="7" flags="8" blocks="5" price_mod="1.00" />
@@ -8707,7 +8707,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 				<member index="1" function="2">TheRob-TowerTV-PetrORuler</member>
 				<member index="2" function="2">becc2ecd-d309-46a1-b9c2-30253915af0c</member>
 				<member index="3" function="2">5e971716-fbd8-403f-a0df-9aae68c04d85</member>
-				<member index="2" function="2">TheRob-TowerTV-ArchieRemedy</member>
+				<member index="4" function="2">TheRob-TowerTV-ArchieRemedy</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UK" year="1962" distribution="1" maingenre="1" subgenre="" flags="0" blocks="4" price_mod="1.00" />
@@ -8829,8 +8829,8 @@ Dreh- und Angelpunkt sind die Versuche, Vati Neu zu verheiraten.</de>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-PaulBentris</member>
 				<member index="1" function="2">TheRob-TowerTV-AlvinTWein</member>
-				<member index="1" function="2">TheRob-TowerTV-RolleWenke</member>
-				<member index="1" function="2">TheRob-TowerTV-RalleWenke</member>
+				<member index="2" function="2">TheRob-TowerTV-RolleWenke</member>
+				<member index="3" function="2">TheRob-TowerTV-RalleWenke</member>
 			</staff>
 			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="DDR" year="1979" distribution="2" maingenre="9" subgenre="5" flags="8" blocks="2" price_mod="1.00" />
@@ -9374,7 +9374,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<member index="0" function="1">ccf79c86-dd25-49bc-91fa-536de8e4267b</member>
 				<member index="1" function="2">070bd0dd-1a11-4b2b-80b7-922dae98c3ca</member>
 				<member index="2" function="2">TheRob-TowerTV-BethBurgley</member>
-				<member index="2" function="2">00dad245-0097-4bae-84bd-d4ae6d5a1172</member>
+				<member index="3" function="2">00dad245-0097-4bae-84bd-d4ae6d5a1172</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1988" distribution="1" maingenre="4" subgenre="17" flags="0" blocks="2" price_mod="1.00" />
@@ -9673,7 +9673,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
 				<member index="1" function="2">TheRob-TowerTV-RudolfKleineWeize</member>
 				<member index="2" function="2">TheRob-TowerTV-OttoPernickel</member>
-				<member index="2" function="2">a0111f16-cb88-41c9-a44e-b508cbeb35f6</member>
+				<member index="3" function="2">a0111f16-cb88-41c9-a44e-b508cbeb35f6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1933" distribution="1" maingenre="4" subgenre="" flags="0" blocks="3" price_mod="1.00" />
@@ -10315,8 +10315,8 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="0" function="1">TheRob-TowerTV-JerryHeathrow</member>
 				<member index="1" function="2">TheRob-TowerTV-RicardoKammerlein</member>
 				<member index="2" function="2">TheRob-TowerTV-ToshinoSisune</member>
-				<member index="2" function="2">TheRob-TowerTV-YokoDiewada</member>
-				<member index="2" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="3" function="2">TheRob-TowerTV-YokoDiewada</member>
+				<member index="4" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1980" distribution="1" maingenre="1" subgenre="11" flags="0" blocks="2" price_mod="1.00" />
@@ -10398,7 +10398,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="0" function="1">TheRob-TowerTV-SergeWolltihnka</member>
 				<member index="1" function="2">TheRob-TowerTV-KabiraWedira</member>
 				<member index="2" function="2">TheRob-TowerTV-RolfoBella</member>
-				<member index="2" function="2">TheRob-TowerTV-PhilliGemoy</member>
+				<member index="3" function="2">TheRob-TowerTV-PhilliGemoy</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="" flags="0" blocks="1" price_mod="1.00" />
@@ -11910,7 +11910,7 @@ Educational precious and absolutly ecological.</en>
 				     gender = 0 [random]  1 [male]  2 [female]
 				     levelup = 0 [no levelup]  1 [levelup]
 				-->
-				<member index="1" function="64" generator="es,0"></member>
+				<member index="2" function="64" generator="es,0"></member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" distribution="2" maingenre="0" blocks="1" />
@@ -12226,4 +12226,4 @@ Terrific final.</en>
 		</programme>
 	</allprogrammes>
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
-</tvgdb>
+</tvtdb>
