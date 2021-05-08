@@ -15,6 +15,7 @@ GetGameScriptExpression().RegisterHandler("TIME_DAYSPLAYED", GameScriptExpressio
 GetGameScriptExpression().RegisterHandler("TIME_YEARSPLAYED", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_DAYOFMONTH", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_DAYOFYEAR", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_MONTH", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_ISNIGHT", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_ISDAWN", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_ISDAY", GameScriptExpression_Handle_Time)
@@ -61,6 +62,8 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 			return string( GetWorldTime().GetDayOfMonth() )
 		case "time_dayofyear"
 			return string( GetWorldTime().GetDayOfYear() )
+		case "time_month"
+			return string( GetWorldTime().GetMonth() )
 		case "time_isnight"
 			return string( GetWorldTime().IsNight() )
 		case "time_isdawn"
