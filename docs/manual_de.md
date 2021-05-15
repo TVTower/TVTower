@@ -312,10 +312,12 @@ Raeume
 * C: Chef
 * N: Nachrichtenstudio
 * R: Raumvermietung / Makler
+* P: Roomboard / Raumplan
 * Strg + R: Roomboard / Raumplan
-* L: Supermark / Laden
 * S: Studio (erstes gefundenes)
+* L: Supermarkt / Laden
 * Strg Links + S: Supermarkt
+* D: Drehbuchagentur
 * Strg Rechts + S: Drehbuchagentur (Scripts)
 * E: Credits (employees :-))
 
