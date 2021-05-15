@@ -1238,6 +1238,9 @@ endrem
 				If KeyManager.IsHit(KEY_D) 'German "Drehbuchagentur"
 					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
 				EndIf
+				If KeyManager.IsHit(KEY_L)
+					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
+				EndIf
 
 				'e wie "employees" :D
 				If KeyManager.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
@@ -1248,6 +1251,9 @@ endrem
 					Else
 						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
 					EndIf
+				EndIf
+				If KeyManager.IsHit(KEY_P)
+					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
 				EndIf
 			EndIf
 		EndIf
