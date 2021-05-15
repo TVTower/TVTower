@@ -403,22 +403,25 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		'only draw custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
-		if room.owner <> GetPlayerBaseCollection().playerID then return FALSE
+		local playerIsOwner:Int = room.owner = GetPlayerBaseCollection().playerID
+		if NOT playerIsOwner AND NOT GetCurrentPlayer().HasMasterKey() then return FALSE
 
 		programmeList.owner = room.owner
 		programmeList.Draw(TgfxProgrammelist.MODE_ARCHIVE)
-
-		'draw suitcase - make suitcase/vendor glow if needed
-		spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
-		If draggedGuiProgrammeLicence
-			Local oldColA:Float = GetAlpha()
-			SetBlend LightBlend
-			SetAlpha oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
-
+		
+		If playerIsOwner
+			'draw suitcase - make suitcase/vendor glow if needed
 			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
-
-			SetAlpha(oldColA)
-			SetBlend AlphaBlend
+			If draggedGuiProgrammeLicence
+				Local oldColA:Float = GetAlpha()
+				SetBlend LightBlend
+				SetAlpha oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+	
+				spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+	
+				SetAlpha(oldColA)
+				SetBlend AlphaBlend
+			EndIf
 		EndIf
 
 		GUIManager.Draw( LS_archive )
@@ -453,7 +456,8 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		'only handle custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
-		if room.owner <> GetPlayerBaseCollection().playerID then return FALSE
+		local playerIsOwner:Int = room.owner = GetPlayerBaseCollection().playerID
+		if NOT playerIsOwner AND NOT GetCurrentPlayer().HasMasterKey() then return FALSE
 
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
@@ -486,11 +490,13 @@ Type RoomHandler_Archive extends TRoomHandler
 		If openCollectionTooltip Then openCollectionTooltip.Update()
 
 
-		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollection( GetPlayerBase().playerID ).suitcaseProgrammeLicences
-			if guiListSuitcase.ContainsLicence(licence) then continue
-			guiListSuitcase.addItem( new TGuiProgrammeLicence.CreateWithLicence(licence),"-1" )
-		Next
+		If playerIsOwner
+			'create missing gui elements for the current suitcase
+			For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollection( GetPlayerBase().playerID ).suitcaseProgrammeLicences
+				if guiListSuitcase.ContainsLicence(licence) then continue
+				guiListSuitcase.addItem( new TGuiProgrammeLicence.CreateWithLicence(licence),"-1" )
+			Next
+		EndIf
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then RefreshGUIElements()

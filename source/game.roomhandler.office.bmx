@@ -193,7 +193,7 @@ Type RoomHandler_Office extends TRoomHandler
 			ElseIf THelper.MouseIn(395,210,195,65)
 				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 			'stationmap
-			ElseIf THelper.MouseIn(732,45,160,170)
+			ElseIf THelper.MouseIn(732,45,160,170) AND IsPlayersRoom(room)
 				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 			EndIf
 		EndIf
@@ -275,7 +275,7 @@ Type RoomHandler_Office extends TRoomHandler
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
 
-					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom() AND IsPlayersRoom(room)
 						'handled click
 						MouseManager.SetClickHandled(1)
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")

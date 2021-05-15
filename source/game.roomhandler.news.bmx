@@ -313,14 +313,14 @@ Type RoomHandler_News extends TRoomHandler
 		GUIManager.Draw( LS_newsroom )
 
 		'no further interaction for other players newsrooms
-		'local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		'if not IsPlayersRoom(room) then return False
 
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
 
 		'pinwall
-		If THelper.MouseIn(167,60,240,160)
+		If THelper.MouseIn(167,60,240,160) AND IsPlayersRoom(room)
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 		EndIf
 
@@ -510,7 +510,7 @@ Type RoomHandler_News extends TRoomHandler
 
 
 		For local i:int = 0 until NewsGenreButtons.length
-			If NewsGenreButtons[i].IsHovered()
+			If NewsGenreButtons[i].IsHovered() AND IsPlayersRoom(room)
 				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 				exit
 			EndIf
