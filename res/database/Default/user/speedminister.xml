@@ -95,7 +95,7 @@
                 <member index="1" function="2">SpeedMinister-person-id002</member>
             </staff>
             <groups target_groups="0" />
-            <data country="D, A, CH" year="2005" distribution="2" maingenre="102" blocks="2" />
+            <data country="D/A/CH" year="2005" distribution="2" maingenre="102" blocks="2" />
             <ratings critics="55" speed="60" />
             <!-- Episodes -->
             <children>
@@ -401,7 +401,7 @@
                 <member index="1" function="2">SpeedMinister-person-id020</member>
             </staff>
             <!-- Link: http://de.wikipedia.org/wiki/Kabuler_Zoo -->
-            <data country="D, AFG" year="2012" distribution="0" maingenre="300" blocks="1" />
+            <data country="D/AFG" year="2012" distribution="0" maingenre="300" blocks="1" />
             <ratings critics="29" speed="35" />
             <!-- Episodes -->
             <children>
