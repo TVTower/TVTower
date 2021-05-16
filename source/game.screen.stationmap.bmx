@@ -334,6 +334,16 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 			UpdateActionButton()
 
+			'disable buttons when in different room
+			If not TRoomHandler.IsPlayersRoom(TScreenHandler_StationMap.currentSubRoom)
+			'If TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID 
+				cancelButton.disable()
+				actionButton.disable()
+				renewButton.disable()
+				autoRenewCheckbox.disable()
+				renewInfoButton.disable()
+			EndIf
+
 
 			if renewButton.IsVisible()
 				if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
@@ -386,8 +396,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 	Method UpdateActionButton:Int()
-		'ignore clicks if not in the own office
-		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+		'disable buttons when in different room
+		If Not TScreenHandler_StationMap.currentSubRoom Then Return False
 
 		If TScreenHandler_StationMap.IsInBuyActionMode()
 			If Not TScreenHandler_StationMap.selectedStation
@@ -849,8 +859,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 	'override
 	Method UpdateActionButton:int()
-		'ignore clicks if not in the own office
-		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+		If Not TScreenHandler_StationMap.currentSubRoom Then Return False
 
 		Super.UpdateActionButton()
 
@@ -1194,8 +1203,7 @@ endrem
 
 	'override
 	Method UpdateActionButton:int()
-		'ignore clicks if not in the own office
-		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+		If Not TScreenHandler_StationMap.currentSubRoom Then Return False
 
 		Super.UpdateActionButton()
 

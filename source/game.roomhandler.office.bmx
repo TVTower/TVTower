@@ -275,7 +275,7 @@ Type RoomHandler_Office extends TRoomHandler
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
 
-					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom() AND IsPlayersRoom(room)
+					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom() ' AND IsPlayersRoom(room)
 						'handled click
 						MouseManager.SetClickHandled(1)
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")
