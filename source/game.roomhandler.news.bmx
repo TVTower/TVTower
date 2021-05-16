@@ -319,8 +319,9 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
 
-		'pinwall
-		If THelper.MouseIn(167,60,240,160) AND IsPlayersRoom(room)
+		'pinwall - allowed for all players (with key) as it is a 
+		'"watch only" for others
+		If THelper.MouseIn(167,60,240,160) 'AND IsPlayersRoom(room)
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 		EndIf
 
@@ -373,6 +374,17 @@ Type RoomHandler_News extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+
+		If not IsPlayersRoom(room)
+			For local n:TGUIButton = EachIn NewsGenreButtons
+				n.SetOption(GUI_OBJECT_CLICKABLE, False)
+			Next
+		Else
+			For local n:TGUIButton = EachIn NewsGenreButtons
+				n.SetOption(GUI_OBJECT_CLICKABLE, True)
+			Next
+		EndIf
+	
 		'store current room for later access (in guiobjects)
 		currentRoom = room
 
@@ -380,10 +392,6 @@ Type RoomHandler_News extends TRoomHandler
 
 		If PlannerToolTip Then PlannerToolTip.Update()
 		If NewsGenreTooltip Then NewsGenreTooltip.Update()
-
-
-		'no further interaction for other players newsrooms
-		if not IsPlayersRoom(room) then return False
 
 		'pinwall
 		If THelper.MouseIn(167,60,240,160)
@@ -397,6 +405,11 @@ Type RoomHandler_News extends TRoomHandler
 				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
+
+		'no further interaction for other players newsrooms
+		if not IsPlayersRoom(room) then return False
+
+		'...
 	End Function
 
 
@@ -406,8 +419,9 @@ Type RoomHandler_News extends TRoomHandler
 		local button:TGUIButton = TGUIButton(triggerEvent._sender)
 		local room:TRoom = currentRoom
 		if not button or not room then return 0
-
-
+		
+		Local playersRoom:Int = IsPlayersRoom(room)
+		
 		'how much levels do we have?
 		local level:int = 0
 		local genre:int = -1
@@ -430,22 +444,32 @@ Type RoomHandler_News extends TRoomHandler
 
 		If level = 0
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
-			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
+			if not playersRoom
+				NewsGenreTooltip.content = ""
+			else
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
+			endif
 		Else
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
-			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level))+getLocale("CURRENCY")+"/"+getLocale("DAY")+"~n"
-			if level = GameRules.maxAbonnementLevel
-				NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")
-			Else
-				NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
-			EndIf
+			if not playersRoom
+				NewsGenreTooltip.content = ""
+			else
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level))+getLocale("CURRENCY")+"/"+getLocale("DAY")+"~n"
+				if level = GameRules.maxAbonnementLevel
+					NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")
+				Else
+					NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
+				EndIf
+			endif
 		EndIf
-		if GetPlayerBase().GetNewsAbonnementDaysMax(genre) > level
-			NewsGenreTooltip.content :+ "~n~n"
-			local tip:String = getLocale("NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY")
-			tip = tip.Replace("%MAXLEVEL%", GetPlayerBase().GetNewsAbonnementDaysMax(genre))
-			tip = tip.Replace("%TOPAY%", MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, GetPlayerBase().GetNewsAbonnementDaysMax(genre))) + getLocale("CURRENCY"))
-			NewsGenreTooltip.content :+ getLocale("HINT")+": " + tip
+		if playersRoom
+			if GetPlayerBase().GetNewsAbonnementDaysMax(genre) > level
+				NewsGenreTooltip.content :+ "~n~n"
+				local tip:String = getLocale("NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY")
+				tip = tip.Replace("%MAXLEVEL%", GetPlayerBase().GetNewsAbonnementDaysMax(genre))
+				tip = tip.Replace("%TOPAY%", MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, GetPlayerBase().GetNewsAbonnementDaysMax(genre))) + getLocale("CURRENCY"))
+				NewsGenreTooltip.content :+ getLocale("HINT")+": " + tip
+			endif
 		endif
 	End Function
 
@@ -582,12 +606,12 @@ Type RoomHandler_News extends TRoomHandler
 		hoveredGuiNews = null
 		draggedGuiNews = null
 
-
-		'no GUI-interaction for other players rooms
-		if not IsPlayersRoom(room) then return False
-
 		'general newsplanner elements
 		GUIManager.Update( LS_newsplanner )
+
+		'no GUI-interaction for other players rooms
+		'if not IsPlayersRoom(room) then return False
+
 	End Function
 
 
@@ -804,6 +828,17 @@ Type RoomHandler_News extends TRoomHandler
 			endif
 		Next
 
+
+		'add/remove ability for interaction 
+		local canInteract:Int = (GetPlayerBaseCollection().playerID = currentRoom.owner)
+		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
+			guiNews.SetOption(GUI_OBJECT_CLICKABLE, canInteract)
+		Next
+		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
+			guiNews.SetOption(GUI_OBJECT_CLICKABLE, canInteract)
+		Next
+
+		
 		haveToRefreshGuiElements = FALSE
 	End Function
 
@@ -1004,6 +1039,7 @@ Type TGUINews Extends TGUIGameListItem
 	Field news:TNews = Null
 	Field imageBaseName:String = "gfx_news_sheet"
 	Field cacheTextOverlay:TImage
+	
 	Global sortMode:int
 	Global sortModeOrder:int = 0
 	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
@@ -1075,7 +1111,7 @@ Type TGUINews Extends TGUIGameListItem
 			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 		'set mouse to "hover"
 		ElseIf isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerBaseCollection().playerID))
-			If news.IsControllable()
+			If news.IsControllable() and IsClickable()
 				if news.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(news.GetPrice( GetPlayerBase().playerID ))
 					GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
 				else

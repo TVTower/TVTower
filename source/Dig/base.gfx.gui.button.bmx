@@ -11,7 +11,6 @@ Import "base.util.registry.spriteloader.bmx"
 
 
 Type TGUIButton Extends TGUIobject
-	Field manualState:Int = 0
 	Field spriteName:String = "gfx_gui_button.default"
 	Field _sprite:TSprite 'private
 	Field caption:TGUILabel	= Null
