@@ -230,6 +230,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			'not controllable?
 			if canPick and not broadcastMaterial.IsControllable() Then canPick = False
+			'element not clickable (eg GUI widget in other player's rooms)
+			if not IsClickable() then canPick = False
 			
 			if canPick
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)

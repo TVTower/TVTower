@@ -204,7 +204,7 @@ Type TgfxContractlist Extends TPlannerList
 			EndIf
 
 			'we add 1 pixel to height (aka not subtracting -1) - to hover between tapes too
-			If contract
+			If contract and clicksAllowed
 				If THelper.MouseIn(currX, currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 					GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
 				EndIf
