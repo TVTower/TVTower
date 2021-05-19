@@ -409,9 +409,10 @@ Type RoomHandler_Archive extends TRoomHandler
 		programmeList.owner = room.owner
 		programmeList.Draw(TgfxProgrammelist.MODE_ARCHIVE)
 		
+		'draw suitcase - make suitcase/vendor glow if needed
+		spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
 		If playerIsOwner
-			'draw suitcase - make suitcase/vendor glow if needed
-			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 			If draggedGuiProgrammeLicence
 				Local oldColA:Float = GetAlpha()
 				SetBlend LightBlend
@@ -458,6 +459,17 @@ Type RoomHandler_Archive extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		local playerIsOwner:Int = room.owner = GetPlayerBaseCollection().playerID
 		if NOT playerIsOwner AND NOT GetCurrentPlayer().HasMasterKey() then return FALSE
+
+		If TRoomHandler.IsPlayersRoom(room)
+			'enable List interaction
+			programmeList.clicksAllowed = True
+			GuiListSuitcase.setOption(GUI_OBJECT_CLICKABLE, True)
+			'enable List interaction
+		Else
+			programmeList.clicksAllowed = False
+			GuiListSuitcase.setOption(GUI_OBJECT_CLICKABLE, False)
+		EndIf
+
 
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
