@@ -409,10 +409,10 @@ Type RoomHandler_Archive extends TRoomHandler
 		programmeList.owner = room.owner
 		programmeList.Draw(TgfxProgrammelist.MODE_ARCHIVE)
 		
-		'draw suitcase - make suitcase/vendor glow if needed
-		spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
-
 		If playerIsOwner
+			'draw suitcase - make suitcase/vendor glow if needed
+			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
 			If draggedGuiProgrammeLicence
 				Local oldColA:Float = GetAlpha()
 				SetBlend LightBlend
@@ -423,9 +423,9 @@ Type RoomHandler_Archive extends TRoomHandler
 				SetAlpha(oldColA)
 				SetBlend AlphaBlend
 			EndIf
-		EndIf
 
-		GUIManager.Draw( LS_archive )
+			GUIManager.Draw( LS_archive )
+		EndIf
 
 		'draw dude tooltip
 		If openCollectionTooltip Then openCollectionTooltip.Render()
