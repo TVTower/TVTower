@@ -1154,48 +1154,44 @@ Type TDebugScreen
 
 
 		local upcomingCount:int[TVTNewsGenre.count+1]
-		local upcomingEvents:TNewsEvent[][]
 		local upcomingCountTotal:int = 0
 
-		upcomingEvents = upcomingEvents[.. TVTNewsGenre.count+1]
-		For local i:int = 0 until TVTNewsGenre.count
-			upcomingEvents[i] = new TNewsEvent[0]
-		Next
+		local upcomingSorted:TList = GetNewsEventCollection().GetUpcomingNewsList().Copy()
+		upcomingSorted.sort(True, TNewsEventCollection.SortByHappenedTime)
 
-		For local n:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
-			local g:int = n.GetGenre()
+		For local n:TNewsEvent = EachIn upcomingSorted
 			upcomingCountTotal :+ 1
 			upcomingCount[n.GetGenre()] :+ 1
-			if not upcomingEvents[g]
-				upcomingEvents[g] = [n]
-'			elseif upcomingEvent[g].happenedTime > n.happenedTime 'new one is earlier
-'				upcomingEvent[g] = n
-			else
-				upcomingEvents[g] :+ [n]
-			endif
 		Next
 
 
+		textFont.DrawSimple(GetLocale("Genre"), textX, textY)
+		textFont.DrawSimple("Next", textX + 100, textY)
+		textFont.DrawSimple("Upcoming", textX + 200, textY)
+		textY :+ 12+3
 		For local i:int = 0 until TVTNewsGenre.count
 			textFont.DrawSimple(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i)), textX, textY)
-			textFont.DrawSimple("Next"+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]) +"  "+upcomingCount[i]+" upcoming.", textX + 100, textY)
+			textFont.DrawSimple(GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), textX + 100, textY)
+			textFont.DrawSimple(upcomingCount[i]+"x", textX + 200, textY)
 			textY :+ 12
-
-			if upcomingEvents[i].length = 0
-				textFont.Draw("--", textX , textY)
-				textY :+ 12
-			else
-				For local eventIndex:int = 0 until Min(3, upcomingEvents[i].length)
-					textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(upcomingEvents[i][eventIndex].happenedTime), textX, textY)
-					textFont.DrawBox(upcomingEvents[i][eventIndex].GetTitle(), textX + 100, textY, 200, 17, sALIGN_LEFT_TOP, SColor8.White)
-					textY :+ 12
-				Next
-				'empty lines for not-set upcoming events in that genre
-				textY :+ Max(0, 3 - upcomingEvents[i].length) * 12
-			endif
-
-			textY :+ 5
 		Next
+		textY :+ 12
+
+		textFont.DrawSimple("Queue", textX, textY)
+		textY :+ 12+3
+		if upcomingCountTotal = 0
+			textFont.DrawSimple("--", textX, textY)
+		else
+			local nCount:Int
+			For local n:TNewsEvent = EachIn upcomingSorted
+				textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(n.happenedTime), textX, textY)
+				textFont.DrawSimple(n.GetTitle() + "  ("+GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre()))+")", textX + 100, textY)
+				textY :+ 12
+				nCount :+ 1
+				if nCount > 15 then exit
+			Next
+		endif
+
 	End Method
 
 
