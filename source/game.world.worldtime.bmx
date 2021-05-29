@@ -1025,7 +1025,8 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	Method CalcTime_HoursFromNow:Long(nowTime:Long=-1, hoursMin:int, hoursMax:int = -1)
-		if nowTime = -1 then nowTime = GetTimeGone()
+		If nowTime = -1 Then nowTime = _timeGone
+
 		if hoursMax = -1
 			return nowTime + hoursMin * HOURLENGTH
 		else
@@ -1035,6 +1036,8 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	Method CalcTime_DaysFromNowAtHour:Long(nowTime:Long=-1, daysBegin:int, daysEnd:int = -1, atHourMin:int, atHourMax:int = -1)
+		If nowTime = -1 Then nowTime = _timeGone
+
 		local result:Long
 		if daysEnd = -1
 			result = MakeTime(0, GetDay(nowTime) + daysBegin, 0, 0)
@@ -1055,7 +1058,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	Method CalcTime_WeekdayAtHour:Long(nowTime:Long=-1, weekday:int, atHourMin:int, atHourMax:int = -1)
-		If nowTime = -1 Then nowTime = GetTimeGone()
+		If nowTime = -1 Then nowTime = _timeGone
 
 		local daysTillWeekday:int = (7 - GetWeekDay(nowTime) + weekday) mod 7
 		if GetWeekDay(nowTime) = weekday then daysTillWeekday = 7
@@ -1074,7 +1077,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int, yearMax:int=-1000000, monthMin:int=-1000000, monthMax:int=-1000000, dayMin:int=-1000000, dayMax:int=-1000000, hourMin:int=-1000000, hourMax:int=-1000000, minuteMin:int=-1000000, minuteMax:int=-1000000)
+	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int=0, yearMax:int=-1000000, monthMin:int=0, monthMax:int=-1000000, dayMin:int=0, dayMax:int=-1000000, hourMin:int=0, hourMax:int=-1000000, minuteMin:int=0, minuteMax:int=-1000000)
+		If nowTime = -1 Then nowTime = _timeGone
+
 		'print "IN nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax+"  hourMin="+hourMin+"  hourMax="+hourMax+"  minuteMin="+minuteMin+"  minuteMax="+minuteMax
 		'use the "min"-values to store the final values for calculation
 		'to save some variables
@@ -1106,7 +1111,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'use "-1000000" as default to allow relative values - which often include "-1"
-	Method CalcTime_ExactGameDate:Long(nowTime:Long=-1, yearMin:int, yearMax:int=-1000000, gameDayMin:int=-1000000, gameDayMax:int=-1000000, hourMin:int=-1000000, hourMax:int=-1000000, minuteMin:int=-1000000, minuteMax:int=-1000000)
+	Method CalcTime_ExactGameDate:Long(nowTime:Long=-1, yearMin:int, yearMax:int=-1000000, gameDayMin:int=0, gameDayMax:int=-1000000, hourMin:int=0, hourMax:int=-1000000, minuteMin:int=0 , minuteMax:int=-1000000)
+		If nowTime = -1 Then nowTime = _timeGone
+
 		'use the "min"-values to store the final values for calculation
 		'to save some variables
 		if yearMax <> yearMin and yearMax >= 0 then yearMin = RandRange(yearMin, yearMax)
@@ -1128,12 +1135,13 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Method CalcTime_Auto:long(nowTime:Long=-1, timeType:int, timeValues:int[])
 		if not timeValues or timeValues.length < 1 then return -1
 
+		If nowTime = -1 Then nowTime = _timeGone
+
 		'what kind of happen time data do we have?
 		Select timeType
 			'now
 			case 0
-				If nowTime <> -1 Then Return nowTime
-				Return GetWorldTime().GetTimeGone()
+				Return nowTime
 
 			'1 = "A"-"B" hours from now
 			case 1
