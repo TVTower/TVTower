@@ -1029,7 +1029,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			If selectedStation
 				Local subscriptionText:String
 				Local provider:TStationMap_BroadcastProvider = selectedStation.GetProvider()
-				local duration:int
+				local duration:long
 				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and provider
 					duration = provider.GetDefaultSubscribedChannelDuration()
 				Else
@@ -1464,7 +1464,7 @@ endrem
 				Local subscriptionText:String
 				Local provider:TStationMap_BroadcastProvider = selectedStation.GetProvider()
 				if not provider then provider = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
-				local duration:int
+				local duration:Long
 				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and provider
 					duration = provider.GetDefaultSubscribedChannelDuration()
 				Else
