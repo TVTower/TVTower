@@ -443,7 +443,7 @@
 			<effects>
 				<!-- "übermorgen 10-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,10,16" news="news-jorgaeff-drops-08" />
-				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="ronny-programmeperson-bennyjameson" valueMin="-0.03" valueMax="-0.07" />
+				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="ronny-programmeperson-bennyjameson" valueMin="-0.07" valueMax="-0.03" />
 			</effects>
 		</news>
 
