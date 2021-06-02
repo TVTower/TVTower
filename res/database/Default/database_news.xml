@@ -1689,7 +1689,7 @@ Demonstrations are expected again this year.</en>
 				<en>Our scientists are puzzling. The prognosis: tonight a great darkness overshadows our country. The problem: It is unclear if it will ever be light again.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="920616c0-05b7-4078-a253-d070e58b7b98" time="2,1,1,7-9" />
+				<effect trigger="happen" type="triggernews" news="920616c0-05b7-4078-a253-d070e58b7b98" time="2,1,1,7,9" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -2310,7 +2310,7 @@ Demonstrations are expected again this year.</en>
 				<en>Soccer star Bollock is tired of Bavarian veal sausage and beer. Manager Hochness says: "Michel can leave if the transfer fee is right".</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" time="2,1,1,7-15" />
+				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" time="2,1,1,7,15" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
