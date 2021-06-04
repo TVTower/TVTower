@@ -104,6 +104,8 @@ Type TNewsEventCollection
 
 
 	Method Add:Int(obj:TNewsEvent)
+		If Not obj Then Return False
+
 		'add to common maps
 		'special lists get filled when using their Getters
 		newsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
@@ -119,6 +121,8 @@ Type TNewsEventCollection
 
 
 	Method AddOneTimeEvent:Int(obj:TNewsEvent)
+		If Not obj Then Return False
+
 		obj.Setflag(TVTNewsFlag.UNIQUE_EVENT, True)
 		obj.Setflag(TVTNewsFlag.UNSKIPPABLE, True)
 		Add(obj)
@@ -126,6 +130,8 @@ Type TNewsEventCollection
 
 
 	Method AddHappenedEvent:Int(obj:TNewsEvent)
+		If Not obj Then Return False
+
 		'max 100 entries
 		If newsEventsHistory.length > 100
 			newsEventsHistory = newsEventsHistory[50 ..]
@@ -144,6 +150,8 @@ Type TNewsEventCollection
 
 	'remove from "upcoming/alive" news - but keep the "all"
 	Method RemoveActive:Int(obj:TNewsEvent)
+		If Not obj Then Return False
+
 		newsEventsGUID.Remove(obj.GetGUID().ToLower())
 		newsEvents.Remove(obj.GetID())
 
@@ -156,6 +164,8 @@ Type TNewsEventCollection
 	'remove from "all" - make sure it is not referenced by ID/GUID
 	'from any active object
 	Method Remove:Int(obj:TNewsEvent)
+		If Not obj Then Return False
+
 		RemoveActive(obj)
 
 		allNewsEventsGUID.Remove(obj.GetGUID().ToLower())
@@ -488,11 +498,14 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Self.newsType = template.newsType
 		
 '		Self.genre = template.genre
-
 		Self.flags = template.flags
 
 		Self.modifiers = template.CopyModifiers()
 		Self.effects = template.CopyEffects()
+		
+		'set availability according to current template availability
+		Self.broadcastFlags = template.broadcastFlags
+		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not template.IsAvailable())
 
 		Return Self
 	End Method
@@ -544,11 +557,6 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method IsAvailable:Int()
-		If templateID
-			Local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
-			If t And Not t.IsAvailable() Then Return False
-		EndIf
-
 		'field "available" = false ?
 		If Not Super.IsAvailable() Then Return False
 
@@ -1017,6 +1025,7 @@ End Type
 
 
 Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
+	'actually this is "newsEventTemplateGUID"
 	Field newsGUID:String
 	Field enableBackup:Int = True
 	Field enable:Int = True
@@ -1047,47 +1056,108 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 	End Method
 
 
+	Method GetNewsEvent:TNewsEvent()
+		Return TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
+	End Method
+
+
+	Method GetNewsEventTemplate:TNewsEventTemplate()
+		Return TNewsEventTemplate(GetNewsEventTemplateCollection().GetByGUID( newsGUID ))
+	End Method
+
+
 	'override
 	Method UndoFunc:Int(params:TData)
-		Local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
-		If Not newsEvent
-			Print "TGameModifierNews_ModifyAvailability: Undo failed, newsEvent ~q"+newsGUID+"~q not found."
+		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
+		If newsEventTemplate 
+			'reset to backup value
+'			newsEventTemplate.available = enableBackup
+
+			'also modify "not yet happened" but existing news 
+			For Local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+				If newsEvent.templateID = newsEventTemplate.GetID()
+					newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, enableBackup)
+					'refresh caches
+					GetNewsEventCollection()._InvalidateCaches()
+				EndIf
+			Next
+			
+			Return True
+		Else
+			Local newsEvent:TNewsEvent = GetNewsEvent()
+			If newsEvent
+				newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, enableBackup)
+				'refresh caches
+				GetNewsEventCollection()._InvalidateCaches()
+				Return True
+			EndIf
 		EndIf
 
-		If enableBackup Then newsEvent.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
+		Print "TGameModifierNews_ModifyAvailability.Undo: Failed to find newsEventTemplate or newsEvent with GUID ~q"+newsGUID+"~q."
+		Return False
 	End Method
 
 
 	'override to trigger a specific news
 	Method RunFunc:Int(params:TData)
-		Local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
-		If Not newsEvent
-			Print "TGameModifierNews_ModifyAvailability: Run failed, newsEvent ~q"+newsGUID+"~q not found."
+		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
+		If newsEventTemplate 
+			'backup old value
+			enableBackup = newsEventTemplate.available
+
+			'set new value (negated, as flag is NOT_AVAILABLE)
+			newsEventTemplate.available = enable
+
+		
+			'also modify "not yet happened" but existing news 
+			'ATTENTION: this does not backup potentially "differing" news
+			'           availabilities. An individually made available
+			'           newsevent would get their availability overridden!
+			For Local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+				If newsEvent.templateID = newsEventTemplate.GetID()
+					newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+					'refresh caches
+					GetNewsEventCollection()._InvalidateCaches()
+				EndIf
+			Next
+			
+			Return True
+		Else
+			Local newsEvent:TNewsEvent = GetNewsEvent()
+			If newsEvent
+
+				'backup old value
+				enableBackup = newsEvent.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+
+				newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+				'refresh caches
+				GetNewsEventCollection()._InvalidateCaches()
+
+				Return True
+			EndIf
 		EndIf
 
-		'available?
-		enableBackup = Not newsEvent.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
-
-		newsEvent.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+		Print "TGameModifierNews_ModifyAvailability.Run: Failed to find newsEventTemplate or newsEvent with GUID ~q"+newsGUID+"~q."
+		Return False
 	End Method
 End Type
 
 
 
-Type TGameModifierNews_Attribute Extends TGameModifierBase
+Type TGameModifierNews_ModifyAttribute Extends TGameModifierBase
 	Field newsGUID:String
 	Field attribute:String
 	Field value:String
 	Field valueBackup:String = ""
 
 
-	Function CreateNewInstance:TGameModifierNews_Attribute()
-		Return New TGameModifierNews_Attribute
+	Function CreateNewInstance:TGameModifierNews_ModifyAttribute()
+		Return New TGameModifierNews_ModifyAttribute
 	End Function
 
 
-	Method Copy:TGameModifierNews_Attribute()
-		Local clone:TGameModifierNews_Attribute = New TGameModifierNews_Attribute
+	Method Copy:TGameModifierNews_ModifyAttribute()
+		Local clone:TGameModifierNews_ModifyAttribute = New TGameModifierNews_ModifyAttribute
 		clone.CopyBaseFrom(Self)
 		clone.newsGUID = Self.newsGUID
 		clone.attribute = Self.attribute
@@ -1097,7 +1167,7 @@ Type TGameModifierNews_Attribute Extends TGameModifierBase
 	End Method
 
 
-	Method Init:TGameModifierNews_Attribute(data:TData, extra:TData=Null)
+	Method Init:TGameModifierNews_ModifyAttribute(data:TData, extra:TData=Null)
 		If Not data Then Return Null
 
 		newsGUID = data.GetString("news", "")
@@ -1108,8 +1178,8 @@ Type TGameModifierNews_Attribute Extends TGameModifierBase
 	End Method
 
 
-	Method ReadNewsEventValue:String()
-		Local newsEvent:TNewsEvent = GetNewsEvent()
+	Method ReadNewsEventValue:String(newsEvent:TNewsEvent = Null)
+		If Not newsEvent Then newsEvent = GetNewsEvent()
 		If Not newsEvent Then Return False
 
 		Select attribute
@@ -1124,8 +1194,8 @@ Type TGameModifierNews_Attribute Extends TGameModifierBase
 	End Method
 
 
-	Method WriteNewsEventValue:Int(v:String)
-		Local newsEvent:TNewsEvent = GetNewsEvent()
+	Method WriteNewsEventValue:Int(v:String, newsEvent:TNewsEvent = Null)
+		If Not newsEvent Then newsEvent = GetNewsEvent()
 		If Not newsEvent Then Return False
 
 		Select attribute
@@ -1143,34 +1213,69 @@ Type TGameModifierNews_Attribute Extends TGameModifierBase
 
 
 	Method GetNewsEvent:TNewsEvent()
-		Local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
-		If Not newsEvent
-			Print "TGameModifierNews_Attribute: Failed to find newsEvent ~q"+newsGUID+"~q."
-		EndIf
-		Return newsEvent
+		Return TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
+	End Method
+	
+
+	Method GetNewsEventTemplate:TNewsEventTemplate()
+		Return TNewsEventTemplate(GetNewsEventTemplateCollection().GetByGUID( newsGUID ))
 	End Method
 
 
 	'override
 	Method UndoFunc:Int(params:TData)
-		Local newsEvent:TNewsEvent = GetNewsEvent()
-		If Not newsEvent Then Return False
+		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
 
-		WriteNewsEventValue(valueBackup)
+		If newsEventTemplate
+			'modify value for all upcoming news based on this template
+			For Local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+				If newsEvent.templateID = newsEventTemplate.GetID()
+					WriteNewsEventValue(valueBackup, newsEvent)
+				EndIf
+			Next
+			
+			Return True
+		Else
+			Local newsEvent:TNewsEvent = GetNewsEvent()
+			If newsEvent
+				WriteNewsEventValue(valueBackup, newsEvent)
+			
+				Return True
+			EndIf
+		EndIf
 
-		Return True
+		Print "TGameModifierNews_ModifyAttribute.Undo: Failed to find newsEventTemplate or newsEvent with GUID ~q"+newsGUID+"~q."
+		Return False
 	End Method
 
 
 	'override to trigger a specific news
 	Method RunFunc:Int(params:TData)
-		Local newsEvent:TNewsEvent = GetNewsEvent()
-		If Not newsEvent Then Return False
+		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
 
-		valueBackup = ReadNewsEventValue()
-		WriteNewsEventValue(value)
+		If newsEventTemplate
+			'modify value for all upcoming news based on this template
+			For Local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+				If newsEvent.templateID = newsEventTemplate.GetID()
+					valueBackup = ReadNewsEventValue(newsEvent)
 
-		Return True
+					WriteNewsEventValue(value, newsEvent)
+				EndIf
+			Next
+			
+			Return True
+		Else
+			Local newsEvent:TNewsEvent = GetNewsEvent()
+			If newsEvent 
+				valueBackup = ReadNewsEventValue(newsEvent)
+				WriteNewsEventValue(value, newsEvent)
+				
+				Return True
+			EndIf
+		EndIf
+
+		Print "TGameModifierNews_ModifyAttribute.Run: Failed to find newsEventTemplate or newsEvent with GUID ~q"+newsGUID+"~q."
+		Return False
 	End Method
 End Type
 
@@ -1178,3 +1283,4 @@ End Type
 GetGameModifierManager().RegisterCreateFunction("TriggerNews", TGameModifierNews_TriggerNews.CreateNewInstance)
 GetGameModifierManager().RegisterCreateFunction("TriggerNewsChoice", TGameModifierNews_TriggerNewsChoice.CreateNewInstance)
 GetGameModifierManager().RegisterCreateFunction("ModifyNewsAvailability", TGameModifierNews_ModifyAvailability.CreateNewInstance)
+GetGameModifierManager().RegisterCreateFunction("ModifyNewsAttribute", TGameModifierNews_ModifyAttribute.CreateNewInstance)
