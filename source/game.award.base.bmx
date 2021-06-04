@@ -229,7 +229,7 @@ Type TAward Extends TGameObject
 	Field awardType:Int = 0
 	Field startTime:Long = -1
 	Field endTime:Long = -1
-	Field duration:Int = -1
+	Field duration:Long = -1
 	'basic prices all awards offer
 	Field priceMoney:Int = 50000
 	Field priceImage:Float = 2.5
@@ -347,12 +347,12 @@ Type TAward Extends TGameObject
 	End Method
 
 
-	Method SetDuration(duration:Int)
+	Method SetDuration(duration:Long)
 		Self.duration = duration
 	End Method
 
 
-	Method GetDuration:Int()
+	Method GetDuration:Long()
 		If duration = -1
 			'1 day
 			duration = GetWorldTime().MakeTime(0, 1, 0, 0) 

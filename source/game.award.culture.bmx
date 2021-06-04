@@ -78,8 +78,8 @@ Type TAwardCulture extends TAward
 
 			'activate for 1 day
 			local mTimeCondition:TGameModifierCondition_TimeLimit = new TGameModifierCondition_TimeLimit
-			mTimeCondition.SetTimeBegin( Long(GetWorldTime().GetTimeGone()) )
-			mTimeCondition.SetTimeEnd( Long(GetWorldTime().GetTimeGone() + 1 * TWorldTime.DAYLENGTH) )
+			mTimeCondition.SetTimeBegin( GetWorldTime().GetTimeGone() )
+			mTimeCondition.SetTimeEnd( GetWorldTime().GetTimeGone() + 1 * TWorldTime.DAYLENGTH )
 
 			modifier.Init(mConfig)
 			modifier.AddCondition(mTimeCondition)

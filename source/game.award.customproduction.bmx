@@ -42,7 +42,7 @@ Type TAwardCustomProduction extends TAward
 	End Method
 
 
-	Method GetDuration:int()
+	Method GetDuration:Long() override
 		if duration = -1
 			'2days
 			duration = GetWorldTime().MakeTime(0, 2, 0, 0)
