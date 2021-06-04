@@ -466,27 +466,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'mark the template (and increase usage count)
 		template.SetUsed(Self.GetGUID())
 
-
-		'copy text if we intend to replace content
-		'(for now only check main language)
-		If template.title.Get().Find("%") >= 0
-			If template.templateVariables
-				Self.title = _ReplacePlaceholders( template.templateVariables.ReplacePlaceholders(template.title) )
-			Else
-				Self.title = _ReplacePlaceholders(template.title)
-			EndIf
-		Else
-			Self.title = template.title
-		EndIf
-		If template.description.Get().Find("%") >= 0
-			If template.templateVariables
-				Self.description = _ReplacePlaceholders( template.templateVariables.ReplacePlaceholders(template.description) )
-			Else
-				Self.description = _ReplacePlaceholders(template.description)
-			EndIf
-		Else
-			Self.description = template.description
-		EndIf
+		ReplacePlaceholdersFromTemplate(template, 0)
 
 		Self.happenedTime = template.happenTime
 		If template.targetGroupAttractivityMod
@@ -508,6 +488,36 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not template.IsAvailable())
 
 		Return Self
+	End Method
+	
+	
+	Method ReplacePlaceholdersFromTemplate:Int(template:TNewsEventTemplate = Null, time:Long = 0)
+		If not template and not self.templateID Then Return False
+		If not template
+			template = GetNewsEventTemplateCollection().GetByID(self.templateID)
+			If not template Then Return False
+		EndIf
+
+		'copy text if we intend to replace content
+		'(for now only check main language)
+		If template.title.Get().Find("%") >= 0
+			If template.templateVariables
+				Self.title = _ReplacePlaceholders(template.templateVariables.ReplacePlaceholders(template.title), time)
+			Else
+				Self.title = _ReplacePlaceholders(template.title, time)
+			EndIf
+		Else
+			Self.title = template.title
+		EndIf
+		If template.description.Get().Find("%") >= 0
+			If template.templateVariables
+				Self.description = _ReplacePlaceholders(template.templateVariables.ReplacePlaceholders(template.description), time)
+			Else
+				Self.description = _ReplacePlaceholders(template.description, time)
+			EndIf
+		Else
+			Self.description = template.description
+		EndIf
 	End Method
 
 
@@ -653,10 +663,16 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'ATTENTION:
 	'to emit an artificial news, use GetNewsAgency().announceNewsEvent()
 	Method doHappen(time:Long = 0)
+		if time = 0 then time = GetWorldTime().GetTimeGone()
+		
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(Self, time)
 
-		If time = 0 Or time <= GetWorldTime().GetTimeGone()
+		If time <= GetWorldTime().GetTimeGone()
+			'replace placeholders with CURRENT information (on creation
+			'of the news event the time could differ, or the weather
+			'is not so shiny...)
+			ReplacePlaceholdersFromTemplate(null, time)
 
 			'set topicality to 100%
 			topicality = 1.0

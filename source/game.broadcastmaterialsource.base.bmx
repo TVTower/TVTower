@@ -192,8 +192,10 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
+	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
+		if useTime = 0 then useTime = GetWorldTime().GetTimeGone()
+
 		'print "_ReplacePlaceholders: " + text.Get()
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
@@ -206,7 +208,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 			For Local placeHolder:String = EachIn placeHolders
 				Local replacement:String = ""
 				Local replaced:Int = False
-				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in
 				If replaced Then value = value.Replace("%"+placeHolder+"%", replacement)

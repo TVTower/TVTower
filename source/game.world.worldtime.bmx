@@ -639,9 +639,20 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetFormattedDayByTime:String(useTime:Long) {_exposeToLua}
+		Return GetDay(useTime) + "." + GetLocale("DAY") + " (" + GetLocale("WEEK_SHORT_" + GetDayName(GetWeekday(useTime))) + ")"
+	End Method
+
+
 	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
 		Return GetLocale("WEEK_LONG_" + GetDayName(GetWeekdayByDay(_day)))
 	End Method
+
+
+	Method GetFormattedDayLongByTime:String(useTime:Long) {_exposeToLua}
+		Return GetLocale("WEEK_LONG_" + GetDayName(GetWeekday(useTime)))
+	End Method
+
 
 
 	'Summary: returns formatted value of actual worldtime

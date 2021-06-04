@@ -68,7 +68,7 @@ Type TTemplateVariables
 	End Method
 
 
-	Method GetVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True)
+	Method GetVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True, useTime:Long = 0)
 		key = key.toLower()
 
 		local result:TLocalizedString
@@ -109,7 +109,7 @@ Type TTemplateVariables
 			for local placeHolder:string = EachIn placeHolders
 				local replacement:string = ""
 				local replaced:int = False
-				if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+				if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 				if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in
 				'if replaced then print "replacement " + replacement+"   result: "+ externalResult +"  =>  " + externalResult.replace("%"+placeHolder+"%", replacement)
@@ -168,7 +168,7 @@ Type TTemplateVariables
 	End Method
 
 
-	Method ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
+	Method ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		local result:TLocalizedString = text.copy()
 'print "ReplacePlaceholders: "+ text.Get()
 		'for each defined language we check for existent placeholders
@@ -234,7 +234,7 @@ Type TTemplateVariables
 			local value:string = result.Get(langID)
 			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			for local placeHolder:string = EachIn placeHolders
-				local replacement:string = string(GetGameInformation(placeHolder.toLower(), ""))
+				local replacement:string = string(GetGameInformation(placeHolder.toLower(), "", null, useTime))
 				if replacement <> "UNKNOWN_INFORMATION"
 					value = value.replace("%"+placeHolder+"%", replacement)
 				endif
