@@ -523,7 +523,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
+	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
 
 		'for each defined language we check for existent placeholders
@@ -596,7 +596,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						replaced = True
 
 					Default
-						If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+						If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 						If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				End Select
 

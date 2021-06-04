@@ -228,7 +228,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 
 
 
-	Method Get:object(key:string, params:object)
+	Method Get:object(key:string, params:object, useTime:Long = 0)
 		Select int(key)
 			Case FIRST_TRAILER_AIRED
 				return string( GetFirstTrailerAired() )
@@ -322,36 +322,36 @@ Type TWorldTimeInformationProviderBase extends TGameInformationProvider
 	End Method
 
 
-	Method Get:object(key:string, params:object)
+	Method Get:object(key:string, params:object, useTime:Long = 0)
 		Select key.ToLower()
 			Case "year", "gameyear"
-				return string( GetWorldTime().GetYear() )
+				return string( GetWorldTime().GetYear(useTime) )
 			Case "gameday"
-				return string( GetWorldTime().GetDaysRun() + 1 )
+				return string( GetWorldTime().GetDaysRun(useTime) + 1 )
 			Case "day"
-				return string( GetWorldTime().GetOnDay() )
+				return string( GetWorldTime().GetOnDay(useTime) )
 			Case "daylong"
 				'already localized to current lang!
-				return GetWorldTime().GetFormattedDayLong()
+				return GetWorldTime().GetFormattedDayLongByTime(useTime)
 			Case "weekday"
-				return string( GetWorldTime().GetWeekDay() )
+				return string( GetWorldTime().GetWeekDay(useTime) )
 			Case "hour"
-				return string( GetWorldTime().GetDayHour() )
+				return string( GetWorldTime().GetDayHour(useTime) )
 			Case "season"
-				return string( GetWorldTime().GetSeason() )
+				return string( GetWorldTime().GetSeason(useTime) )
 
 			'Germany has a time dependend capital and currency
 			Case "germancurrency"
-				if GetWorldTime().GetYear() >= 2002
+				if GetWorldTime().GetYear(useTime) >= 2002
 					return "Euro"
-				elseif GetWorldTime().GetYear() >= 1990
+				elseif GetWorldTime().GetYear(useTime) >= 1990
 					return "DM"
 				else
 					return "Mark"
 				endif
 
 			Case "germancapital"
-				if GetWorldTime().GetYear() >= 1990
+				if GetWorldTime().GetYear(useTime) >= 1990
 					return "Berlin"
 				else
 					return "Bonn"
@@ -403,7 +403,7 @@ Type TStationMapInformationProviderBase extends TGameInformationProvider
 	End Method
 
 
-	Method Get:object(key:string, params:object)
+	Method Get:object(key:string, params:object, useTime:Long = 0)
 		Select key.ToLower()
 			Case "countryname"
 				return GetLocale("COUNTRYNAME_" + GetStationMapCollection().config.GetString("name", "Unknownia"))

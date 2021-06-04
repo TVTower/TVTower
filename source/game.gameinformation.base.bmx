@@ -28,7 +28,7 @@ Type TGameInformationCollection
 	End Method
 
 
-	Method Get:object(providerKey:string, key:string, params:TData=null)
+	Method Get:object(providerKey:string, key:string, params:TData=null, useTime:Long = 0)
 		if key="" and providerKey.Find(":") >= 0
 			local p:string[] = providerKey.split(":")
 			providerKey = p[0]
@@ -45,7 +45,7 @@ Type TGameInformationCollection
 			endif
 		endif
 		local provider:TGameInformationProvider = GetProvider(providerKey)
-		if provider then return provider.Get(key, params)
+		if provider then return provider.Get(key, params, useTime)
 		return "UNKNOWN_INFORMATION"
 	End Method
 
@@ -66,15 +66,15 @@ Function GetGameInformationCollection:TGameInformationCollection()
 	Return TGameInformationCollection.GetInstance()
 End Function
 
-Function GetGameInformation:object(providerKey:string, key:string, params:TData=null)
-	Return TGameInformationCollection.GetInstance().Get(providerKey, key, params)
+Function GetGameInformation:object(providerKey:string, key:string, params:TData=null, useTime:Long=0)
+	Return TGameInformationCollection.GetInstance().Get(providerKey, key, params, useTime)
 End Function
 
 
 
 
-Function ReplaceTextWithGameInformation:int(text:string, replacement:string var)
-	local gameinformationResult:string = string(GetGameInformation(text, ""))
+Function ReplaceTextWithGameInformation:int(text:string, replacement:string var, useTime:Long)
+	local gameinformationResult:string = string(GetGameInformation(text, "", null, useTime))
 
 	'found something valid?
 	if gameinformationResult <> "UNKNOWN_INFORMATION"
@@ -94,7 +94,7 @@ End Function
 Type TGameInformationProvider
 	Method Set(key:string, obj:object) abstract
 
-	Method Get:object(key:string, params:object = null) abstract
+	Method Get:object(key:string, params:object = null, useTime:Long = 0) abstract
 
 	Method GetString:string(key:string, params:object = null)
 		return string(Get(key, params))
