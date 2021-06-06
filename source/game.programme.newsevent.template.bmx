@@ -352,7 +352,6 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Field qualityMax:Float = -1.0
 	Field qualitySlope:Float = 0.5
 	Field keywords:string = ""
-	Field available:int = True
 	Field templateVariables:TTemplateVariables = null
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
@@ -379,8 +378,8 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-newseventtemplate-"+id
 	End Method
-
-
+	
+	
 	Method Init:TNewsEventTemplate(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, modifiers:TData=null, newsType:int=0)
 		self.SetGUID(GUID)
 		self.title       = title
@@ -459,8 +458,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 
 
 	Method IsAvailable:int()
-		'field "available" = false ?
-		if not available then return False
+		if hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE) then return False
 
 		if availableYearRangeFrom > 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
 		if availableYearRangeTo > 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False

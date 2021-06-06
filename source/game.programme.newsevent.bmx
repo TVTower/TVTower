@@ -1103,10 +1103,10 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
 		If newsEventTemplate 
 			'backup old value
-			enableBackup = newsEventTemplate.available
+			enableBackup = newsEventTemplate.HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
 
 			'set new value (negated, as flag is NOT_AVAILABLE)
-			newsEventTemplate.available = enable
+			newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
 
 		
 			'also modify "not yet happened" but existing news 
