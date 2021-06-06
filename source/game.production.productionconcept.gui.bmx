@@ -327,7 +327,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			'bars have a top-padding
 			contentY :+ barAreaPaddingY
 			'production potential
-			skin.RenderBar(contentX + 5, contentY, 200, 12, 1.0)
+			skin.RenderBar(contentX + 5, contentY, 200, 12, productionConcept.script.getPotential())
 			skin.fontSmallCaption.DrawSimple(GetLocale("PRODUCTION_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 		endif
