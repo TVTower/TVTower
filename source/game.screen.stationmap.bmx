@@ -434,7 +434,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			'different owner or not paid or not sellable
 			If TScreenHandler_StationMap.selectedStation
 				If TScreenHandler_StationMap.selectedStation.owner <> GetPlayerBase().playerID
-					actionButton.SetValue(GetLocale("WRONG_PLAYER"))
+					actionButton.SetValue("")
 					actionButton.disable()
 				ElseIf Not TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.SELLABLE)
 					actionButton.SetValue(GetLocale("UNSELLABLE"))
@@ -2760,9 +2760,9 @@ Type TScreenHandler_StationMap
 			lastSubRoom = currentSubRoom
 
 			'if we changed the room meanwhile - we have to rebuild the stationList
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList()
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList()
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList(currentSubRoom.owner)
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList(currentSubRoom.owner)
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList(currentSubRoom.owner)
 		EndIf
 
 		currentSubRoom = room
@@ -3240,9 +3240,9 @@ endrem
 
 		'rebuild the stationLists
 		if guiAccordeon.GetPanelAtIndex(0)
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList()
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList()
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList(owner)
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList(owner)
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList(owner)
 		endif
 		if TScreenHandler_StationMap.mapInformationFrame
 			TScreenHandler_StationMap.mapInformationFrame.RefreshSectionList()
@@ -3254,8 +3254,7 @@ endrem
 		Local button:TGUICheckBox = TGUICheckBox(triggerEvent._sender)
 		If Not button Then Return False
 
-		'ignore clicks if not in the own office
-		If Not currentSubRoom Or currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+		If Not currentSubRoom or not GetPlayerBaseCollection().IsPlayer(currentSubRoom.owner) Then Return False
 
 		'player filter
 		Local player:Int = button.data.GetInt("playerNumber", -1)
@@ -3263,9 +3262,9 @@ endrem
 			If Not GetPlayerCollection().IsPlayer(player) Then Return False
 
 			'only set if not done already
-			If GetStationMap(GetPlayerBase().playerID).GetShowStation(player) <> button.isChecked()
-				TLogger.Log("StationMap", "Stationmap #"+GetPlayerBase().playerID+" show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
-				GetStationMap(GetPlayerBase().playerID).SetShowStation(player, button.isChecked())
+			If GetStationMap(currentSubRoom.owner).GetShowStation(player) <> button.isChecked()
+				TLogger.Log("StationMap", "Stationmap #"+currentSubRoom.owner+" show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
+				GetStationMap(currentSubRoom.owner).SetShowStation(player, button.isChecked())
 			EndIf
 		EndIf
 
@@ -3273,9 +3272,9 @@ endrem
 		Local stationType:Int = button.data.GetInt("stationType", -1)
 		If stationType >= 0
 			'only set if not done already
-			If GetStationMap(GetPlayerBase().playerID).GetShowStationType(stationType) <> button.isChecked()
-				TLogger.Log("StationMap", "Stationmap #"+GetPlayerBase().playerID+" show station type "+stationType+": "+button.isChecked(), LOG_DEBUG)
-				GetStationMap(GetPlayerBase().playerID).SetShowStationType(stationType, button.isChecked())
+			If GetStationMap(currentSubRoom.owner).GetShowStationType(stationType) <> button.isChecked()
+				TLogger.Log("StationMap", "Stationmap #"+currentSubRoom.owner+" show station type "+stationType+": "+button.isChecked(), LOG_DEBUG)
+				GetStationMap(currentSubRoom.owner).SetShowStationType(stationType, button.isChecked())
 			EndIf
 		EndIf
 	End Function
