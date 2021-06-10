@@ -126,11 +126,6 @@ Type TNewsEventTemplateCollection
 		obj.timesUsed :+ 1
 		obj.SetLastUsedTime( Long(GetWorldTime().GetTimeGone()) )
 
-		'this allows a previously "fixed" template to happen again later
-		if obj.HasFlag(TVTNewsFlag.RESET_HAPPEN_TIME)
-			obj.happenTime = -1
-		endif
-
 		unusedTemplates.Remove(obj.GetID())
 		if obj.IsReuseable()
 			reuseableTemplates.insert(obj.GetID(), obj)
@@ -308,6 +303,7 @@ Type TNewsEventTemplateCollection
 			_unusedAvailableInitialTemplates[genreIndex] = new TNewsEventTemplate[ _unusedAvailableInitialTemplatesCount[genreIndex] ]
 
 			_unusedAvailableInitialTemplatesCount[genreIndex] = 0
+			
 			For local t:TNewsEventTemplate = EachIn initialEventsArr
 				'no further filters required as we already use the
 				'prefiltered array
@@ -456,13 +452,35 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		return "newsEventTemplate: title=" + GetTitle() + "  quality=" + GetQuality() + "  priceMod=" + GetModifier("price")
 	End Method
 
+	
+	Method OnHappen:Int()
+		'this allows a previously "fixed" template to happen again later
+		if HasFlag(TVTNewsFlag.RESET_HAPPEN_TIME)
+			happenTime = -1
+		endif
+	End Method
+
 
 	Method IsAvailable:int()
+		Return IsAvailableatTime(GetWorldTime().GetTimeGone())
+	End Method
+	
+	
+	Method IsAvailableAtHappenTime:int()
+		If happenTime >= 0
+			Return IsAvailableAtTime(happenTime)
+		Else
+			Return IsAvailableAtTime(GetWorldTime().GetTimeGone())
+		EndIf
+	End Method
+
+
+	Method IsAvailableAtTime:int(t:Long)
 		if hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE) then return False
 
-		if availableYearRangeFrom > 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
-		if availableYearRangeTo > 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False
-
+		if availableYearRangeFrom > 0 and GetWorldTime().GetYear(t) < availableYearRangeFrom then return False
+		if availableYearRangeTo > 0 and GetWorldTime().GetYear(t) > availableYearRangeTo then return False
+		
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
 		if availableScript and not GetScriptExpression().Eval(availableScript)

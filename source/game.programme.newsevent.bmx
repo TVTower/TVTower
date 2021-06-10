@@ -47,8 +47,6 @@ Type TNewsEventCollection
 
 	'holding news coming in a defined future
 	Field _upcomingNewsEvents:TList[] {nosave}
-	'holding all (initial) news events available to "happen"
-	Field _availableNewsEvents:TList[] {nosave}
 	Field _followingNewsEvents:TList[] {nosave}
 	Global _instance:TNewsEventCollection
 
@@ -83,13 +81,7 @@ Type TNewsEventCollection
 
 	Method _InvalidateCaches()
 		_InvalidateUpcomingNewsEvents()
-		_InvalidateAvailableNewsEvents()
 		_InvalidateFollowingNewsEvents()
-	End Method
-
-
-	Method _InvalidateAvailableNewsEvents()
-		_availableNewsEvents = New TList[TVTNewsGenre.count + 1]
 	End Method
 
 
@@ -341,7 +333,6 @@ Type TNewsEventCollection
 		'reset only specific caches, so news gets in the correct list
 		'- no need to invalidate newstype-specific caches
 		_InvalidateUpcomingNewsEvents()
-		_InvalidateAvailableNewsEvents()
 	End Method
 
 
@@ -426,11 +417,6 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Field newsType:Int = -1
 	Field minSubscriptionLevel:Int = -1
 	Field keywords:String = ""
-	Field availableYearRangeFrom:Int = -1
-	Field availableYearRangeTo:Int = -1
-	'special expression defining whether a contract is available for
-	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
-	Field availableScript:String = ""
 
 
 	Field _genreDefinitionCache:TNewsGenreDefinition {nosave}
@@ -565,24 +551,6 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-
-	Method IsAvailable:Int()
-		'field "available" = false ?
-		If Not Super.IsAvailable() Then Return False
-
-		If availableYearRangeFrom > 0 And GetWorldTime().GetYear() < availableYearRangeFrom Then Return False
-		If availableYearRangeTo > 0 And GetWorldTime().GetYear() > availableYearRangeTo Then Return False
-
-		'a special script expression defines custom rules for adcontracts
-		'to be available or not
-		If availableScript And Not GetScriptExpression().Eval(availableScript)
-			Return False
-		EndIf
-
-		Return True
-	End Method
-
-
 	Method SetQualityRaw:Int(quality:Float)
 		'clamp between 0-1.0
 		Self.qualityRaw = MathHelper.Clamp(quality, 0.0, 1.0)
@@ -669,6 +637,14 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		GetNewsEventCollection().setNewsHappened(Self, time)
 
 		If time <= GetWorldTime().GetTimeGone()
+			'inform a template that it just happens
+			If templateID > 0
+				local newsTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+				if newsTemplate
+					newsTemplate.OnHappen()
+				EndIf
+			Endif
+
 			'replace placeholders with CURRENT information (on creation
 			'of the news event the time could differ, or the weather
 			'is not so shiny...)
@@ -813,7 +789,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If qualityRaw >= 0 Then Return qualityRaw
 
 		'create a random quality
-		qualityRaw = (Float(RandRange(1, 100)) / 100.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
+		qualityRaw = (Float(RandRange(1, 100)) / 100.0) '1%-Punkte bis 3%-Punkte Basis-Qualitï¿½t
 
 		Return qualityRaw
 	End Method
