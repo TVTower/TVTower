@@ -1239,11 +1239,11 @@ Type TNewsEventSportLeague Extends TGameObject
 				'next match starts in february
 				'take time of 2 months later (either february or march - so
 				'guaranteed to be the "next" year - when still in december)
-				t = matchTime + GetWorldTime().MakeRealTime(0, 2, 0, 0, 0)
+				t = matchTime + GetWorldTime().MakeRealTime(0, 2, 1)
 				'set time to "next year" begin of february - use "MakeRealTime"
 				'to get the time of the ingame "5th february" (or the next
 				'possible day)
-				t = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(t), 2, 5, 0, 0)
+				t = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(t), 2, 5)
 				'calculate next possible match time (after winter break)
 				matchTime = GetNextMatchStartTime(t)
 'If name = "Regionalliga" Then Print "   -> winterbreak delay"
