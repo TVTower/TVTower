@@ -1214,6 +1214,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== NEWS AGENCY ===
 		TLogger.Log("Game.PrepareNewGame()", "initializing news agency", LOG_DEBUG)
+		
+		GetNewsEventCollection().ScheduleTimedInitialNews()
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players

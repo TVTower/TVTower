@@ -197,6 +197,22 @@ Type TNewsEventCollection
 
 		Return Null
 	End Method
+	
+	
+	Method ScheduleTimedInitialNews()
+		Local scheduledCount:int = 0
+		For local n:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().GetUnusedInitialTemplates()
+			If n.happenTime >= 0 and n.IsAvailableAtHappenTime()
+				local news:TNewsEvent = New TNewsEvent.InitFromTemplate(n)
+				If news
+					scheduledCount :+ 1
+					Add(news)
+				EndIf
+			EndIf
+		Next
+
+		TLogger.Log("ScheduleTimedInitialNews()", "Pre-Created " + scheduledCount + " news happening at fixed time in the future.", LOG_DEBUG)
+	End Method
 
 
 	Method RemoveOutdatedNewsEvents(minAgeInDays:Int=5, genre:Int=-1)

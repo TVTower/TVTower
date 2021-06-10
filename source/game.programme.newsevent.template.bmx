@@ -310,6 +310,12 @@ Type TNewsEventTemplateCollection
 				'exception: availability
 				if not t.IsAvailable() then continue
 
+				'planned time for this news in the future
+				'(use flag TVTNewsFlag.RESET_HAPPEN_TIME to remove the time 
+				' restriction for repetitions of this news(template) )
+				if t.happenTime > 0 then continue
+
+
 				'resize if needed
 				'number of "+20" is artificial and depends on how likely
 				'more than 20 new events get added in average
