@@ -121,6 +121,13 @@ Type TGUICheckBox Extends TGUIButton
 	End Function
 
 
+	Method SetCaption:Int(text:String, setValueChecked:Int, setValueUnchecked:Int, color:TColor=Null)
+		If setValueChecked then valueChecked = ""
+		If setValueUnChecked then valueUnChecked = ""
+		Return SetCaption(text, color)
+	End Method
+
+
 	'override for a differing alignment
 	Method SetCaption:Int(text:String, color:TColor=Null)
 		Super.SetCaption(text, color)

@@ -525,9 +525,9 @@ endrem
 		guiStartYearLabel.SetValue(GetLocale("START_YEAR")+":")
 		guiGameSeedLabel.SetValue(GetLocale("GAME")+" #:")
 
-		gui24HoursDay.SetValue(GetLocale("24_HOURS_GAMEDAY"))
-		guiSpecialFormats.SetValue(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"))
-		guiFilterUnreleased.SetValue(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"))
+		gui24HoursDay.SetCaption(GetLocale("24_HOURS_GAMEDAY"), True, True)
+		guiSpecialFormats.SetCaption(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), True, True)
+		guiFilterUnreleased.SetCaption(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), True, True)
 
 		guiAnnounce.SetValue("Nach weiteren Spielern suchen")
 
