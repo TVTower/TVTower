@@ -133,6 +133,11 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	Method onGamePause:int() override
+		GetSoundSource().Stop("steps")
+	End Method
+
+
 	'override to add room-support
 	Method onLoad:int()
 		Super.onLoad()
@@ -347,10 +352,14 @@ Type TFigure extends TFigureBase
 
 
 		'decide if we have to play sound
-		if GetVelocity().getX() <> 0 and not IsInElevator() and not GetBuildingTime().TooFastForSound()
-			GetSoundSource().PlayOrContinueRandomSFX("steps")
-		else
+		if GetGameBase().gamestate <> TGameBase.STATE_RUNNING
 			GetSoundSource().Stop("steps")
+		Else
+			if GetVelocity().getX() <> 0 and not IsInElevator() and not GetBuildingTime().TooFastForSound() 
+				GetSoundSource().PlayOrContinueRandomSFX("steps")
+			else
+				GetSoundSource().Stop("steps")
+			EndIf
 		EndIf
 
 

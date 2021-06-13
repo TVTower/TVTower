@@ -159,6 +159,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'start playing the menu music again
 			GetSoundManagerBase().PlayMusicPlaylist("menu")
 		EndIf
+		
+		GetSoundManagerBase().StopSFX()
 
 		'reset speeds (so janitor in main menu moves "normal" again)
 		SetGameSpeedPreset(1)
@@ -1632,12 +1634,23 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method SetPaused(bool:Int=False)
+		local changed:int = bool <> GetWorldTime().IsPaused()
+		
 		GetWorldTime().SetPaused(bool)
 		GetBuildingTime().SetPaused(bool)
+		
+		if changed
+			if bool
+				TriggerBaseEvent(GameEventKeys.Game_OnPause)
+			else
+				TriggerBaseEvent(GameEventKeys.Game_OnResume)
+			endif
+		EndIf
+			
 	End Method
 
 
-	Method IsPaused:Int()
+	Method IsPaused:Int() override
 		Return GetWorldTime().IsPaused()
 	End Method
 

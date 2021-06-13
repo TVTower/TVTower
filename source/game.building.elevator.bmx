@@ -164,6 +164,8 @@ Type TElevator Extends TEntity
 		If Not _initDone
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
+			EventManager.registerListenerFunction(GameEventKeys.Game_OnPause, onGamePause)
+			EventManager.registerListenerFunction(GameEventKeys.Game_OnResume, onGameResume)
 			_initDone = True
 		EndIf
 
@@ -178,6 +180,18 @@ Type TElevator Extends TEntity
 		GetInstance().InitSprites()
 	End Function
 
+
+	Function onGamePause:int(triggerEvent:TEventBase)
+		GetInstance().GetSoundSource().Stop("elevator_engine")
+	End Function
+
+
+	Function onGameResume:int(triggerEvent:TEventBase)
+		If GetInstance().ElevatorStatus = ELEVATOR_MOVING
+			GetInstance().GetSoundSource().PlayOrContinueRandomSFX("elevator_engine")
+		EndIf
+	End Function
+	
 
 	'should get run as soon as sprites might be invalid (loading, graphics reset)
 	Method InitSprites()

@@ -23,6 +23,8 @@ Type TFigureBaseCollection extends TEntityCollection
 			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
 			'handle begin of a game (fix borked savegame information)
 			EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart)
+			EventManager.registerListenerFunction(GameEventKeys.Game_OnPause, onGamePause)
+			EventManager.registerListenerFunction(GameEventKeys.Game_OnResume, onGameResume)
 
 			_eventsRegistered = TRUE
 		Endif
@@ -137,6 +139,23 @@ Type TFigureBaseCollection extends TEntityCollection
 			figure.onGameStart()
 		Next
 	End Function
+
+
+	'run when a game gets paused (eg ESC menu)
+	Function onGamePause:int(triggerEvent:TEventBase)
+		For local figure:TFigureBase = eachin _instance.entries.Values()
+			figure.onGamePause()
+		Next
+	End Function
+
+
+	'run when a game gets resumed (from pause)
+	Function onGameResume:int(triggerEvent:TEventBase)
+		For local figure:TFigureBase = eachin _instance.entries.Values()
+			figure.onGameResume()
+		Next
+	End Function
+
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -257,6 +276,16 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method onGameStart:int()
+		'
+	End Method
+
+
+	Method onGamePause:int()
+		'
+	End Method
+
+
+	Method onGameResume:int()
 		'
 	End Method
 

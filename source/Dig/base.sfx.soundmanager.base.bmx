@@ -331,6 +331,9 @@ Type TSoundManager
 	Method RemoveSoundSource:int(soundSource:TSoundSourceElement)
 		If Not soundSource then Return False
 		If Not soundSources.ValueForKey(soundSource.GetID()) then Return False
+		
+		'stop playing all sfx - else "looped" continue playing
+		soundSource.StopAll()
 
 		soundSources.Remove(soundSource.GetID())
 		Return True
@@ -355,6 +358,15 @@ Type TSoundManager
 		Return activeMusicChannel.Playing()
 	End Method
 
+
+	Method StopSFX:Int()
+		'stop playing all sfx - else "looped" continue playing
+		For local soundSource:TSoundSourceElement = EachIn soundSources.Values()
+			soundSource.StopAll()
+		Next
+		soundSources.Clear()
+	End Method
+	
 
 	Method Mute:Int(bool:Int=True)
 		If bool
@@ -1300,6 +1312,13 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 		If Not channel.IsActive() then PlaySfxOrPlaylist(name, sfxSettings, playlistMode)
 	End Method
+	
+	
+	Method StopAll()
+		For local channel:TSfxChannel = Eachin sfxChannels.Values()
+			channel.Stop()
+		Next
+	End Method
 
 
 	Method Stop(sfx:String)
@@ -1310,10 +1329,22 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	End Method
 
 
+	Method Mute:Int(sfx:String, bool:Int=True)
+		Local channel:TSfxChannel = GetChannelForSfx(sfx)
+		if not channel then return False
+
+		channel.Mute(bool)
+		
+		Return True
+	End Method
+
+
 	Method Mute:Int(bool:Int=True)
 		For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
 			sfxChannel.Mute(bool)
 		Next
+		
+		Return True
 	End Method
 
 

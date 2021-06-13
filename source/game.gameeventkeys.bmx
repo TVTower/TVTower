@@ -60,6 +60,8 @@ Type TGameEventKeys
 	Field Game_OnRealTimeSecond:TEventKey = GetEventKey("Game.OnRealTimeSecond", True)
 	Field Game_OnStart:TEventKey = GetEventKey("Game.onStart", True)
 	Field Game_OnBegin:TEventKey = GetEventKey("Game.onBegin", True)
+	Field Game_OnPause:TEventKey = GetEventKey("Game.onPause", True)
+	Field Game_OnResume:TEventKey = GetEventKey("Game.onResume", True)
 	Field Game_SetPlayerBankruptLevel:TEventKey = GetEventKey("Game.SetPlayerBankruptLevel", True)
 	Field Game_SetPlayerBankruptBegin:TEventKey = GetEventKey("Game.SetPlayerBankruptBegin", True)
 	Field Game_SetPlayerBankruptFinish:TEventKey = GetEventKey("Game.SetPlayerBankruptFinish", True)
