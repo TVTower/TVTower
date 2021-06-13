@@ -216,6 +216,10 @@ Type TGUIDropDown Extends TGUIInput
 	
 
 	Method SetSelectedEntry(item:TGUIObject)
+		If selectedEntry <> item
+			if selectedEntry then selectedEntry.SetSelected(False)
+			if item then item.SetSelected(True)
+		EndIf
 		selectedEntry = item
 		
 		RefreshValue()
