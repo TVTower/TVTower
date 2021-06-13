@@ -439,7 +439,7 @@ Type TSoundManager
 
 
 	Method UpdateSFX()
-		If sfxOn Then Return
+		If not sfxOn Then Return
 
 		For Local element:TSoundSourceElement = EachIn soundSources.Values()
 			element.Update()
