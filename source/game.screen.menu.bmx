@@ -16,6 +16,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field gui24HoursDay:TGUICheckBox
 	Field guiSpecialFormats:TGUICheckBox
 	Field guiFilterUnreleased:TGUICheckBox
+	Field guiStartWithCredit:TGUICheckBox
 	Field guiGameTitleLabel:TGuiLabel
 	Field guiGameTitle:TGuiInput
 	Field guiStartYearLabel:TGuiLabel
@@ -68,7 +69,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 
 		guiAllPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, Int(playerBoxDimension.GetY() + 2 * panelGap))
-		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
+		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 130)
 
 		Local col:SColor8 = New SColor8(90, 90, 90)
 		Local labelH:Int = GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT).GetHeight("Title")
@@ -99,6 +100,10 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiFilterUnreleased.SetChecked(False, False)
 		checkboxHeight :+ guiFilterUnreleased.GetScreenRect().GetH()
 
+		guiStartWithCredit = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
+		guiStartWithCredit.SetChecked(GameRules.startGameWithCredit, False)
+		checkboxHeight :+ guiStartWithCredit.GetScreenRect().GetH()
+
 		guiAnnounce = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
 		guiAnnounce.SetChecked(True, False)
 
@@ -113,6 +118,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsPanel.AddChild(gui24HoursDay)
 		guiSettingsPanel.AddChild(guiSpecialFormats)
 		guiSettingsPanel.AddChild(guiFilterUnreleased)
+		guiSettingsPanel.AddChild(guiStartWithCredit)
 
 
 		Local guiButtonsWindow:TGUIGameWindow
@@ -218,6 +224,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiWidgets.AddLast(gui24HoursDay)
 		guiWidgets.AddLast(guiSpecialFormats)
 		guiWidgets.AddLast(guiFilterUnreleased)
+		guiWidgets.AddLast(guiStartWithCredit)
 		'guiWidgets.AddLast(guiGameTitleLabel)
 		guiWidgets.AddLast(guiGameTitle)
 		'guiWidgets.AddLast(guiStartYearLabel)
@@ -444,6 +451,8 @@ Type TScreen_GameSettings Extends TGameScreen
 			Case guiFilterUnreleased
 					'ATTENTION: use "not" as checked means "not ignore"
 					TProgrammeData.setIgnoreUnreleasedProgrammes( Not sender.isChecked() )
+			Case guiStartWithCredit
+					GameRules.startGameWithCredit = sender.isChecked()
 		End Select
 
 		'only inform when in settings menu
@@ -528,6 +537,7 @@ endrem
 		gui24HoursDay.SetCaption(GetLocale("24_HOURS_GAMEDAY"), True, True)
 		guiSpecialFormats.SetCaption(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), True, True)
 		guiFilterUnreleased.SetCaption(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), True, True)
+		guiStartWithCredit.SetCaption(GetLocale("START_GAME_WITH_CREDIT"), True, True)
 
 		guiAnnounce.SetValue("Nach weiteren Spielern suchen")
 
@@ -547,6 +557,9 @@ endrem
 		y :+ guiSpecialFormats.GetScreenRect().GetH()
 
 		guiFilterUnreleased.rect.position.SetY(y)
+		y :+ guiFilterUnreleased.GetScreenRect().GetH()
+
+		guiStartWithCredit.rect.position.SetY(y)
 	End Method
 
 

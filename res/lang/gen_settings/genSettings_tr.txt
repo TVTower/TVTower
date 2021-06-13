@@ -26,6 +26,7 @@ EXIT_TO_MAINMENU                           = Ana Menüye Çıkış
 24_HOURS_GAMEDAY                                              = 24 saatlik Oyun Günü
 ALLOW_TRAILERS_AND_INFOMERCIALS                               = Fragman ve Ödemeli Programlar Açık
 ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Oyun yılından sonra üretilmiş filmlere İzin ver.
+#START_GAME_WITH_CREDIT                                        = 
 OPTION_ON                                                     = Seçenek AÇIK
 OPTION_OFF                                                    = Seçenek KAPALI
 AVAILABLE_GAMES                                               = Mevcut Oyunlar
