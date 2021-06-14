@@ -1024,7 +1024,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Local scrollPosition:Float = productionConceptList.GetScrollPercentageY()
 			productionConceptList.SetPosition(contentX + 5, contentY + 3)
 			productionConceptList.SetSize(contentW - 10, listH - 6)
-			If Not currentProductionConcept Then productionConceptList.SetScrollPercentageY(scrollPosition)
+			'if for the enlarged list the scrollbar is still visible restore the scroll position
+			If Not currentProductionConcept And productionConceptList.guiScrollerV And productionConceptList.guiScrollerV.isVisible() Then productionConceptList.SetScrollPercentageY(scrollPosition-0.001)
 		EndIf
 		contentY :+ listH
 
