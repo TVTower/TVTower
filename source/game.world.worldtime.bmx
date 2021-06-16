@@ -80,9 +80,12 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'create a time in seconds
-	'attention: month and day use real world values (12m and 365d)
-	Method MakeRealTime:Long(year:int, month:int, day:int, hour:Long, minute:Long, second:Long = 0, millisecond:Long = 0) {_exposeToLua}
-		Return (((((Long(30 * month + day) * GetDaysPerYear()) / 360 + year * GetDaysPerYear()) * 24 + hour) * 60 + minute) * 60 + second) * SECONDLENGTH + millisecond
+	'attention: month and day use real world values (12m and 365d), i.e. parameters represent a real date
+	Method MakeRealTime:Long(year:int, month:int, day:int) {_exposeToLua}
+		if day > 30 then day = 30
+		local result:long = year * GetYearLength() + ((Long(30 * (month-1) + (day-1)) * GetDaysPerYear() * DAYLENGTH ) / 360)
+		'print "TIME:" +year+"-"+month+"-"+day +"   "+ result +"   "+ GetFormattedGameDate(result)
+		return result 
 	End Method
 
 
@@ -1088,7 +1091,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int=0, yearMax:int=-1000000, monthMin:int=0, monthMax:int=-1000000, dayMin:int=0, dayMax:int=-1000000, hourMin:int=0, hourMax:int=-1000000, minuteMin:int=0, minuteMax:int=-1000000)
+	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int=0, yearMax:int=-1000000, monthMin:int=0, monthMax:int=-1000000, dayMin:int=0, dayMax:int=-1000000)
 		If nowTime = -1 Then nowTime = _timeGone
 
 		'print "IN nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax+"  hourMin="+hourMin+"  hourMax="+hourMax+"  minuteMin="+minuteMin+"  minuteMax="+minuteMax
@@ -1102,21 +1105,14 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if dayMin = -1 then dayMin = RandRange(1, 30) 'Sorry february!
 		if dayMax <> dayMin and dayMax > -1000000 then dayMin = RandRange(dayMin, dayMax)
 
-		if hourMin = -1 then hourMin = RandRange(0, 23)
-		if hourMax <> hourMin and hourMax > -1000000 then hourMin = RandRange(hourMin, hourMax)
-
-		if minuteMin = -1 then minuteMin = RandRange(0, 59)
-		if minuteMax <> minuteMin and minuteMax > -1000000 then minuteMin = RandRange(minuteMin, minuteMax)
-
-
 		'relative mode, there wont be an time entry before 1000 AD.
 		if yearMin < 1000
 			'print "nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax+"  hourMin="+hourMin+"  hourMax="+hourMax+"  minuteMin="+minuteMin+"  minuteMax="+minuteMax
 			'print "time = " + GetFormattedGameDate(MakeRealTime(GetYear(nowTime) + yearMin, monthMin, dayMin, hourMin, minuteMin))
 			'print "now year = " + GetYear(nowTime)
-			return MakeRealTime(GetYear(nowTime) + yearMin, monthMin, dayMin, hourMin, minuteMin)
+			return MakeRealTime(GetYear(nowTime) + yearMin, monthMin, dayMin)
 		else
-			return MakeRealTime(yearMin, monthMin, dayMin, hourMin, minuteMin)
+			return MakeRealTime(yearMin, monthMin, dayMin)
 		endif
 	End Method
 
@@ -1139,7 +1135,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if minuteMax <> minuteMin and minuteMax > -1000000 then minuteMin = RandRange(minuteMin, minuteMax)
 
 
-		return MakeTime(yearMin, gameDayMin, hourMin, minuteMin)
+		return MakeTime(yearMin, gameDayMin -1, hourMin, minuteMin)
 	End Method
 
 
@@ -1181,7 +1177,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 				elseif timeValues.length >= 3
 					return CalcTime_WeekdayAtHour(nowTime, timeValues[0], timeValues[1], timeValues[2])
 				endif
-			'4 = next year Y, month M, day D, hour H, minute I
+			'4 = next year Y, month M, day D
 			case 4
 				if timeValues.length < 1
 					return -1
@@ -1189,12 +1185,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					Select timeValues.length
 						Case 1   return CalcTime_ExactDate(nowTime, timeValues[0])
 						Case 2   return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1])
-						Case 3   return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2])
-						Case 4   return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3])
-						Default  return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3], , timeValues[4])
+						Default  return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2])
 					End Select
 				endif
-			'5 = next year Y-Y2, month M-M2, day D-D2, hour H-H2, minute I-I2
+			'5 = next year Y-Y2, month M-M2, day D-D2
 			case 5
 				if timeValues.length < 1
 					return -1
@@ -1205,11 +1199,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 						Case 3   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[2])
 						Case 4   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3])
 						Case 5   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[4])
-						Case 6   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5])
-						Case 7   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[6])
-						Case 8   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7])
-						Case 9   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7], timeValues[8], timeValues[8])
-						Default  return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7], timeValues[8], timeValues[9])
+						Default  return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5])
 					End Select
 				endif
 			'6 = next year Y, gameday GD, hour H, minute I

@@ -221,7 +221,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'=== CREATE / INIT SPORTS ("life outside")===
 			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)
 			GetNewsEventSportCollection().CreateAllLeagues()
-			GetNewsEventSportCollection().StartAll( Long(GetWorldTime().MakeRealTime(GetWorldTime().GetYear()-1,0,0,0,0)) )
+			GetNewsEventSportCollection().StartAll( Long(GetWorldTime().MakeRealTime(GetWorldTime().GetYear()-1,1,1)) )
 			
 
 			'refresh states of old programme productions (now we now
