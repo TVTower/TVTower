@@ -1135,7 +1135,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if minuteMax <> minuteMin and minuteMax > -1000000 then minuteMin = RandRange(minuteMin, minuteMax)
 
 
-		return MakeTime(yearMin, gameDayMin, hourMin, minuteMin)
+		return MakeTime(yearMin, gameDayMin -1, hourMin, minuteMin)
 	End Method
 
 
