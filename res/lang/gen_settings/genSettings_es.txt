@@ -26,6 +26,7 @@ EXIT_TO_MAINMENU                           = Salir al menú principal
 24_HOURS_GAMEDAY                                              = 24 horas gameday
 ALLOW_TRAILERS_AND_INFOMERCIALS                               = Permitir trailers/infomerciaales
 ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Permitir las películas con año de fabricación > game year
+#START_GAME_WITH_CREDIT                                        = 
 OPTION_ON                                                     = Option selecionada
 OPTION_OFF                                                    = Option deseleccionada
 AVAILABLE_GAMES                                               = Juegos disponibles

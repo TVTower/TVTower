@@ -922,7 +922,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		If addMoney > 0 Then GetPlayerFinance(playerID).EarnGrantedBenefits( addMoney )
-		If difficulty.startCredit > 0
+		If (GameRules.startGameWithCredit Or GetPlayer(playerID).IsLocalAI()) And difficulty.startCredit > 0
 			GetPlayerFinance(playerID).TakeCredit( difficulty.startCredit )
 		EndIf
 	End Method

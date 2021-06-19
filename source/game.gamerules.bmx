@@ -9,6 +9,8 @@ Type TGameRules {_exposeToLua}
 	Field startSeriesAmount:Int = 1
 	'how many contracts a player gets on a new game
 	Field startAdAmount:Int = 3
+	'should a game start with a credit already given
+	Field startGameWithCredit:Int = True
 
 	'if a player goes bankrupt does the restarting one get stations
 	'and money according to the average of other players?
