@@ -603,9 +603,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 			'adjust list limit
 			Local minConceptLimit:Int = 1
 			If studioScript.GetSubScriptCount() > 0
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - studioScript.GetProductionsCount())
+				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - getProductionCount(studioScript))
 			Else
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.CanGetProducedCount())
+				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetProductionLimitMax() - getProductionCount(studioScript))
 			EndIf
 
 			guiListDeskProductionConcepts.SetItemLimit( minConceptLimit )
@@ -802,6 +802,104 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Return pcA.GetGUID() < pcB.GetGUID()
 	End Function
 
+	Method getDraggedGuiProductionConceptDialogueText:String()
+		Local pc:TProductionConcept = draggedGuiProductionConcept.productionConcept
+		Local text:String = GetRandomLocale("DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT")
+
+		If Not draggedGuiProductionConcept
+			text = "Report to developer: DialogueType 1 while no production concept was dragged on the vendor"
+		Else
+			if not pc.IsPlanned()
+				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
+			else
+				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
+
+				'instead of returning the actual values we cluster them to only hand out
+				'raw "estimations"
+				Local scriptGenreFit:Float = pc.CalculateScriptGenreFit(True)
+				'"Nice cast you got there!"
+				Local castFit:Float = pc.CalculateCastFit(True)
+				'"You know the cast does not like you?!"
+				'values from -1 to 1
+				Local castSympathy:Float = pc.CalculateCastSympathy(True)
+
+				'"what a bad production company!"
+				Local productionCompanyQuality:Float = 0
+				If pc.productionCompany Then productionCompanyQuality = pc.productionCompany.GetQuality()
+				Local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+				Local effectiveFocusPointsRatio:Float = pc.GetEffectiveFocusPointsRatio()
+
+				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
+
+
+				If scriptGenreFit < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD")
+				ElseIf scriptGenreFit > 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD")
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE")
+				EndIf
+				text :+ "~n"
+
+
+				Local castSympathyKey:String
+				If castSympathy < - 0.10
+					castSympathyKey = "_CASTSYMPATHY_BAD"
+				ElseIf castSympathy > 0.50
+					castSympathyKey = "_CASTSYMPATHY_GOOD"
+				Else
+					castSympathyKey = "_CASTSYMPATHY_AVERAGE"
+				EndIf
+
+				If castFit < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_BAD" + castSympathyKey)
+				ElseIf castFit > 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_GOOD" + castSympathyKey)
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE" + castSympathyKey)
+				EndIf
+				text :+ "~n"
+
+
+				If pc.productionCompany
+					If productionCompanyQuality < 0.30
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD")
+					ElseIf productionCompanyQuality > 0.70
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD")
+					Else
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE")
+					EndIf
+					text :+ " "
+				EndIf
+
+
+				If effectiveFocusPointsRatio < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
+				ElseIf effectiveFocusPointsRatio> 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
+				EndIf
+
+				'local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+			endif
+		EndIf
+		Return text
+	End Method
+
+	'get number of (pre)productions for a script for determining the number of possible concepts
+	Function getProductionCount:Int(script:TScript)
+		'finished productions
+		Local producedConceptCount:Int = script.GetProductionsCount()
+		Local productionConcepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(script, True)
+		'add preproductions
+		For Local concept:TProductionConcept = EachIn productionConcepts
+			If concept.IsProductionStarted()
+				producedConceptCount :+ 1
+			EndIF
+		Next
+		return producedConceptCount
+	EndFunction
 
 	Method GenerateStudioManagerDialogue(dialogueType:Int = 0)
 		If Not TFigure(GetPlayerBase().GetFigure()).inRoom Then Return
@@ -816,20 +914,22 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'call the productionconcept collection instead of the player's
 		'programmecollection
 		Local productionConcepts:TProductionConcept[]
-		Local conceptCount:Int = 0
-		'how many productions were conceptioned with the script?
-		'for series this equals to "episodes of this 'season' produced"
-		Local producedConceptCount:Int = 0
-		'how many concepts could be created based on the script
-		'(for series this means "not yet concepted/produced episodes")
-		Local conceptCountMax:Int = 0
-		Local produceableConceptCount:Int = 0
-		Local produceableConcepts:String = ""
+		'current number of concepts
+		Local plannedCount:Int = 0
+		'maximal number concepts
+		Local plannableCount:Int = 0
+		'number of finished (pre)productions
+		Local producedCount:Int = 0
+		'number of concepts ready for starting production
+		Local produceableCount:Int = 0
+		'total number of productions possible with this script
+		Local totalCount:Int = 0
+		Local produceableConceptsText:String = ""
 
 
 		If script
 			'=== PRODUCED CONCEPT COUNT ===
-			producedConceptCount = script.GetProductionsCount()
+			producedCount = getProductionCount(script)
 
 			'=== COLLECT PRODUCEABLE CONCEPTS ===
 			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script, True)
@@ -842,30 +942,33 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Next
 
 			For Local pc:TProductionConcept = EachIn productionConcepts
+				If Not pc.isProductionStarted() And Not pc.isProductionFinished() then plannedCount :+ 1
 				If pc.IsProduceable()
-					If produceableConcepts <> "" Then produceableConcepts :+ ", "
-					produceableConceptCount :+ 1
+					produceableCount :+ 1
 					If pc.script.GetEpisodeNumber() > 0
-						produceableConcepts :+ String(pc.script.GetEpisodeNumber())
+						If produceableConceptsText <> "" Then produceableConceptsText :+ ", "
+						produceableConceptsText :+ String(pc.script.GetEpisodeNumber())
 					Else
-						produceableConcepts :+ String(pc.studioSlot)
+'						produceableConceptsText :+ String(pc.studioSlot)
 					EndIf
 					If Not firstProducibleScript Then firstProducibleScript = pc.script
 				EndIf
 			Next
 
-			'prepend "episodes" to episodes-string
-			If script.IsSeries() Then produceableConcepts = GetLocale("MOVIE_EPISODES")+" "+produceableConcepts
-
-			conceptCount = productionConcepts.length
-
-			'series?
-			If script.GetSubScriptCount() > 0
-				conceptCountMax = script.GetSubScriptCount() - producedConceptCount
-				'print "conceptCountMax = " + conceptCountMax  +"  script.GetSubScriptCount()=" + script.GetSubScriptCount() + "  producedConceptCount="+producedConceptCount
+			If script.IsSeries()
+				'prepend "episodes" to episodes-string
+				produceableConceptsText = GetLocale("MOVIE_EPISODES")+" "+produceableConceptsText
 			Else
-				conceptCountMax = script.CanGetProducedCount()
-				'print "conceptCountMax = " + conceptCountMax  +"  productionLimit=" + script.productionLimit + "  usedInProductionsCount="+script.usedInProductionsCount
+				'or simply show the number of concepts to be produced
+				produceableConceptsText = produceableCount
+			EndIf
+
+			If script.GetSubScriptCount() > 0
+				totalCount = script.GetSubScriptCount()
+				plannableCount = script.GetSubScriptCount() - producedCount
+			Else
+				totalCount = script.GetProductionLimitMax()
+				plannableCount = script.GetProductionLimitMax() - producedCount
 			EndIf
 		EndIf
 
@@ -876,136 +979,36 @@ Type RoomHandler_Studio Extends TRoomHandler
 			text = GetRandomLocale("DIALOGUE_STUDIO_SCRIPT_HINT")
 		'=== PRODUCTION CONCEPT HINT ===
 		ElseIf dialogueType = 1
-			text = GetRandomLocale("DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT")
-
-			If Not draggedGuiProductionConcept
-				text = "Report to developer: DialogueType 1 while no production concept was dragged on the vendor"
-			Else
-				Local pc:TProductionConcept = draggedGuiProductionConcept.productionConcept
-
-				if not pc.IsPlanned()
-					text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
-				else
-					text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
-
-					'instead of returning the actual values we cluster them to only hand out
-					'raw "estimations"
-					Local scriptGenreFit:Float = pc.CalculateScriptGenreFit(True)
-					'"Nice cast you got there!"
-					Local castFit:Float = pc.CalculateCastFit(True)
-					'"You know the cast does not like you?!"
-					'values from -1 to 1
-					Local castSympathy:Float = pc.CalculateCastSympathy(True)
-
-					'"what a bad production company!"
-					Local productionCompanyQuality:Float = 0
-					If pc.productionCompany Then productionCompanyQuality = pc.productionCompany.GetQuality()
-					Local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
-					Local effectiveFocusPointsRatio:Float = pc.GetEffectiveFocusPointsRatio()
-
-					text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
-
-
-					If scriptGenreFit < 0.30
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD")
-					ElseIf scriptGenreFit > 0.70
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD")
-					Else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE")
-					EndIf
-					text :+ "~n"
-
-
-					Local castSympathyKey:String
-					If castSympathy < - 0.10
-						castSympathyKey = "_CASTSYMPATHY_BAD"
-					ElseIf castSympathy > 0.50
-						castSympathyKey = "_CASTSYMPATHY_GOOD"
-					Else
-						castSympathyKey = "_CASTSYMPATHY_AVERAGE"
-					EndIf
-
-					If castFit < 0.30
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_BAD" + castSympathyKey)
-					ElseIf castFit > 0.70
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_GOOD" + castSympathyKey)
-					Else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE" + castSympathyKey)
-					EndIf
-					text :+ "~n"
-
-
-					If pc.productionCompany
-						If productionCompanyQuality < 0.30
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD")
-						ElseIf productionCompanyQuality > 0.70
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD")
-						Else
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE")
-						EndIf
-						text :+ " "
-					EndIf
-
-
-					If effectiveFocusPointsRatio < 0.30
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
-					ElseIf effectiveFocusPointsRatio> 0.70
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
-					Else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
-					EndIf
-
-					'local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
-				endif
-			EndIf
-
+			text = getDraggedGuiProductionConceptDialogueText()
 		'=== INFORMATION ABOUT CURRENT PRODUCTION ===
 		Else
 			If script
 				text = GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION")
 				text :+"~n~n"
 
-				Local countText:String = conceptCount
-				If conceptCountMax > 0 And conceptCountMax < 1000 Then countText = conceptCount + "/" + conceptCountMax
+				Local countText:String = plannedCount
+				If totalCount > 0 And totalCount < 1000 Then countText = plannedCount + "/" + plannableCount
 
-				If conceptCount = 1 And conceptCountMax = 1
-					If producedConceptCount = 0
-						If script.IsLive()
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_PLANNED")
-						Else
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED")
-						EndIf
-					Else
-						If script.IsLive()
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_DONE")
-						Else
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE")
-						EndIf
+				If totalCount = 1
+					If plannedCount = 1
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED")
+					Else 
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED").Replace("%X%", plannedCount)
 					EndIf
 				Else
-					Local producedCountText:String = producedConceptCount
-					If conceptCountMax > 0 Then producedCountText = producedConceptCount + "/" + conceptCountMax
-					If script.GetSubScriptCount() > 0 Then producedCountText = producedConceptCount + "/"+script.GetSubScriptCount()
-
-					If script.IsLive()
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED_AND_Y_PREPRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
-					Else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
-					EndIf
+					Local producedCountText:String = producedCount
+					If totalCount > 0 Then producedCountText = producedCount + "/" + totalCount
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
 				EndIf
 
-				If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script) AND conceptCountMax > GameRules.maxProductionConceptsPerScript
+				If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script) AND plannedCount >= GameRules.maxProductionConceptsPerScript
 					text :+"~n~n"
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED")
 				EndIf
 
-				If produceableConceptCount = 0 And conceptCount > 0
+				If produceableCount = 0 And plannedCount > 0
 					text :+ "~n"
-					If script.IsLive()
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PREPRODUCTION_PLANNING")
-					Else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING")
-					EndIf
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING")
 				EndIf
 				
 				local title:String
@@ -1028,21 +1031,14 @@ Type RoomHandler_Studio Extends TRoomHandler
 		texts[0] = TDialogueTexts.Create(text)
 
 		If script
-			If (dialogueType = 0 or dialogueType = 1)  And produceableConceptCount > 0
+			If (dialogueType = 0 or dialogueType = 1)  And produceableCount > 0
 				Local answerText:String
-				If produceableConceptCount = 1
-					If script.IsLive()
-						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PREPRODUCTION")
-					Else
-						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PRODUCTION")
-					EndIf
+				If produceableCount = 1
+					answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PRODUCTION")
 				Else
-					If script.IsLive()
-						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS").Replace("%X%", produceableConceptCount)
-					Else
-						texts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_STUDIO_START_NEXT_EPISODE"), -2, Null, onClickStartProduction, New TData.Add("script", firstProducibleScript)))
-						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConcepts)
-					EndIf
+					'currently not possible to start only the next production if not a series but production limit > 1
+					If script.subScripts Then texts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_STUDIO_START_NEXT_EPISODE"), -2, Null, onClickStartProduction, New TData.Add("script", firstProducibleScript)))
+					answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConceptsText)
 				EndIf
 				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -2, Null, onClickStartProduction, New TData.Add("script", script)))
 			EndIf
@@ -1050,7 +1046,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 			If GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
 				Local answerText:String
-				If conceptCount > 0
+				If plannedCount > 0
 					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST")
 				Else
 					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST")

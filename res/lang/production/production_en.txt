@@ -57,9 +57,8 @@ CAST_GENRE_EXPERIENCE = Genre experience
 
 DIALOGUE_STUDIO_BRING_SOME_SCRIPT                         = Hi %PLAYERNAME%,\n\nBring a script and we might be able to produce something nice.
 DIALOGUE_STUDIO_SCRIPT_HINT                               = Hmmm, I cannot tell you details about this script. Maybe I am allowed to tell more in a later version of the game. This depends on the developers *shrug*.
-DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = By the way: There is no more space left for further shopping lists. I cannot give you another one until you remove one first (pick up a shopping list and deleted it with right button click).
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = There is no more space left for further shopping lists. I cannot give you another one until you start a production or remove a shopping list (pick one up and deleted it with right button click).
 DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING    = To be able to start the production you first of all have to finish the production planning in the supermarket.
-DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PREPRODUCTION_PLANNING = To be able to start the preproduction you first of all have to finish the preproduction planning in the supermarket.
 
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION                                                    = So you want to produce |b|%SCRIPTTITLE%|/b|?
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = So far |b|1 production|/b| of this script is planned.
@@ -67,17 +66,10 @@ DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED             
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Up to now |b|1 production|/b| of this script was done.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Up to now |b|%X% productions|/b| of this script were done.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = To date |b|%X% productions|/b| of this script are planned and |b|%Y%|/b| are done.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_PLANNED                            = So far |b|1 preproduction|/b| of this script is planned.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED                           = So far |b|%X% preproductions|/b| of this script are planned.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_DONE                               = Up to now |b|1 preproduction|/b| of this script was done.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_DONE                              = Up to now |b|%X% preproductions|/b| of this script were done.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED_AND_Y_PREPRODUCTIONS_DONE = To date |b|%X% preproductions|/b| of this script are planned and |b|%Y%|/b| are done.
 
 DIALOGUE_STUDIO_START_PRODUCTION                    = Start production
-DIALOGUE_STUDIO_START_PREPRODUCTION                 = Start preproduction
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Start all possible productions (%X%).
 DIALOGUE_STUDIO_START_NEXT_EPISODE                  = Start producing next possible episode.
-DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS = Start all possible preproductions (%X%).
 DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST        = I need another shopping list for this script.
 DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST              = I need a shopping list for this script.
 DIALOGUE_STUDIO_GOODBYE1                            = Bye.
