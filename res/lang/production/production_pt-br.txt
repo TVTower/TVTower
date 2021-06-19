@@ -59,7 +59,6 @@ DIALOGUE_STUDIO_BRING_SOME_SCRIPT                         = Oi, %PLAYERNAME%,\n\
 DIALOGUE_STUDIO_SCRIPT_HINT                               = Hmmm, não posso te dizer os detalhes do roteiro. Talvez eu poderei dizer mais em uma versão futura do jogo. Isso depende dos desenvolvedores. *suspiro*.
 DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = Por falar nisso: Não há mais espaço sobrando para outras listas de compras. Eu não posso te dar outra até que você remova uma primeiro (selecione uma lista de compras e delete ela apertando o botão direito do mouse).
 DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING    = Para começar a produção, você primeiro precisa terminar o planejamento da produção no supermercado.
-#DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PREPRODUCTION_PLANNING = 
 
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION                                                    = Então você quer produzir |b|%SCRIPTTITLE%|/b|?
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = Até então, |b|1 produção|/b| desse roteiro está planejada.
@@ -67,17 +66,10 @@ DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED             
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Até agora, |b|1 produção|/b| desse roteiro foi feita.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Até agora, |b|%X% produções|/b| desse roteiro foram feitas.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Até então, |b|%X% produções|/b| desse roteiro estão planejada e |b|%Y%|/b| foram feitas.
-#DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_PLANNED                            = 
-#DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED                           = 
-#DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_DONE                               = 
-#DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_DONE                              = 
-#DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED_AND_Y_PREPRODUCTIONS_DONE = 
 
 DIALOGUE_STUDIO_START_PRODUCTION                    = Começar produção
-#DIALOGUE_STUDIO_START_PREPRODUCTION                 = 
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Começar todas as produções possíveis (%X%).
 #DIALOGUE_STUDIO_START_NEXT_EPISODE                  = 
-#DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS = 
 DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST        = Preciso de outra lista de compras para esse roteiro.
 DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST              = Preciso de uma lista de compras para esse roteiro.
 DIALOGUE_STUDIO_GOODBYE1                            = Tchau.
