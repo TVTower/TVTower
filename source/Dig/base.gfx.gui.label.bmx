@@ -117,7 +117,8 @@ Type TGUILabel Extends TGUIobject
 		If GetValue() <> value
 			Super.SetValue(value)
 
-	'_valueDimensionCache = Null
+			_valueDimensionCache = Null
+			
 			If textCache Then textCache.Invalidate()
 			InvalidateScreenRect()
 

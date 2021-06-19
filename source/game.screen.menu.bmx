@@ -546,10 +546,6 @@ endrem
 
 		guiChatWindow.SetCaption(GetLocale("CHAT"))
 
-	End Method
-
-
-	Method Draw:Int(tweenValue:Float)
 		're-align the checkboxes as localization might have changed
 		'label dimensions
 		Local y:Int = 0
@@ -558,11 +554,14 @@ endrem
 
 		guiSpecialFormats.rect.position.SetY(y)
 		y :+ guiSpecialFormats.GetScreenRect().GetH()
-
 		guiFilterUnreleased.rect.position.SetY(y)
 		y :+ guiFilterUnreleased.GetScreenRect().GetH()
 
 		guiStartWithCredit.rect.position.SetY(y)
+	End Method
+
+
+	Method Draw:Int(tweenValue:Float)
 
 		DrawMenuBackground(True)
 

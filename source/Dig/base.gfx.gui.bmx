@@ -1137,7 +1137,10 @@ Type TGUIobject
 
 
 	Method SetValue(value:String)
-		Self.value = value
+		if self.value <> value
+			Self.value = value
+			InvalidateScreenRect()
+		EndIf
 	End Method
 
 

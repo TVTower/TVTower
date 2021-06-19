@@ -145,6 +145,8 @@ Type TGUICheckBox Extends TGUIButton
 			caption.SetValueEffect(3, 0.2)
 			caption.SetValueColor(TColor.CreateGrey(100))
 		endif
+
+		InvalidateScreenRect()
 	End Method
 
 
