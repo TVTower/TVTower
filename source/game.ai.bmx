@@ -791,14 +791,14 @@ endrem
 		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInPlayerSections()
 	End Method
 
-	Method of_GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[])
+	Method of_GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[], allowSectionCrossing:Int = True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSections(sectionNames)
+		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSections(sectionNames, allowSectionCrossing)
 	End Method
 
-	Method of_GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string)
+	Method of_GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string, allowSectionCrossing:Int = True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSection(sectionName)
+		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing)
 	End Method
 
 	Method of_GetRandomAntennaCoordinateOnMap:TVec2D(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)

@@ -2148,16 +2148,20 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[])
+	'allowSectionCrossing: sections might have pixels they share... this
+	'                      allows these positions to be used
+	Method GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[], allowSectionCrossing:Int = True)
 		if sectionNames.length = 0 Then return Null
 
 		local sectionName:String = sectionNames[ Rand(0, sectionNames.length-1) ]
-		Return GetRandomAntennaCoordinateInSection(sectionName)
+		Return GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing)
 	End Method
 
 
 	'specific section
-	Method GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string)
+	'allowSectionCrossing: sections might have pixels they share... this
+	'                      allows these positions to be used
+	Method GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string, allowSectionCrossing:Int = True)
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( sectionName)
 		If not section then return Null 
 			
@@ -2166,10 +2170,27 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		Local y:Int = 0
 		Local tries:int = 0
 		Repeat
+			'find random spot on "map"
 			x = rand(section.rect.GetIntX(), section.rect.GetIntX2())
 			y = rand(section.rect.GetIntY(), section.rect.GetIntY2())
-			If section.GetShapeSprite().PixelIsOpaque(Int(x-section.rect.GetX()), Int(y-section.rect.GetY())) > 0
+
+			'check if spot in local space is on an opaque/colliding pixel
+			If section.GetShapeSprite().PixelIsOpaque(x - section.rect.GetIntX(), y - section.rect.GetIntY()) > 0
 				found = True
+				'check if other map sections have an opacque pixel there too (ambiguity!)
+				If not allowSectionCrossing
+					For local otherSection:TStationMapSection = EachIn GetStationMapCollection().sections
+						if section = otherSection then continue
+						Local otherX:Int = Int(x - otherSection.rect.GetX())
+						Local otherY:Int = Int(y - otherSection.rect.GetY())
+						if otherX >= 0 and otherY >= 0 and otherX < otherSection.rect.GetIntW() and otherY < otherSection.rect.GetIntH()
+							If otherSection.GetShapeSprite().PixelIsOpaque(otherX, otherY) > 0
+								found = False
+								'print "try # " + tries + "  " + section.name +": other section " + otherSection.name + " is opaque too!!   xy="+(x - section.rect.GetIntX())+", "+(y - section.rect.GetIntY()) + "   otherXY="+otherX+", "+otherY
+							EndIf
+						EndIf
+					Next
+				EndIf
 			EndIf
 			tries :+ 1
 		Until found or tries > 1000
