@@ -2895,14 +2895,8 @@ endrem
 								exit
 							endif
 						Next
-						if not mouseoverstation
+						if not mouseoverStation
 							mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
-							mouseoverStation.refreshData()
-							'refresh state information
-							'DO NOT TRUST: Brandenburg's center is berlin - leading
-							'              to sectionname = berlin
-							mouseOverStation.SetSectionName( mouseoverSection.name )
-							'mouseoverStation.GetSectionName(true)
 						endif
 					'remove cache
 					Else
@@ -2929,11 +2923,6 @@ endrem
 					If cableNetwork And cableNetwork.IsLaunched()
 						selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
 						If selectedStation
-							selectedStation.refreshData()
-							'refresh state information
-							selectedStation.SetSectionName( hoveredMapSection.name )
-							'selectedStation.GetSectionName(true)
-
 							'handled left click
 							MouseManager.SetClickHandled(1)
 						EndIf

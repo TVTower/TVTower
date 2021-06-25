@@ -1950,7 +1950,12 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
 		if not mapSection then return Null
 
-		Return station.Init(New TVec2D.Init(mapSection.rect.GetXCenter(), mapSection.rect.GetYCenter()),-1, owner)
+		station.Init(New TVec2D.Init(mapSection.rect.GetXCenter(), mapSection.rect.GetYCenter()),-1, owner)
+		station.SetSectionName(mapSection.name)
+		'now we know how to calculate population
+		station.RefreshData()
+		
+		Return station
 	End Method
 
 
@@ -3763,24 +3768,28 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	'override
-	Method SetSectionName:int(sectionName:string)
-		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+	Method CalculatePosition()
+		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(_sectionName)
 		if mapSection and mapSection.GetShapeSprite()
+			'try center of section first
 			local x:int = mapSection.rect.GetXCenter() - mapSection.rect.GetX()
 			local y:int = mapSection.rect.GetYCenter() - mapSection.rect.GetY()
+			'find a valid spot if that failed
 			While not mapSection.GetShapeSprite().PixelIsOpaque(x, y)
 				x = RandRange(0, mapSection.GetShapeSprite().GetWidth()-1)
 				y = RandRange(0, mapSection.GetShapeSprite().GetHeight()-1)
 			Wend
 			self.pos.SetXY(mapSection.rect.GetX() + x, mapSection.rect.GetY() + y)
 		endif
+	End Method
 
+
+	'override
+	Method SetSectionName:int(sectionName:string)
+		'assigns _sectionName
 		local result:int = Super.SetSectionName(sectionName)
-'
-		'now we know how to calculate population
-		'-> could get disabled as it is done during getpopulation-checks already
-		self.RefreshData()
+
+		CalculatePosition()
 
 		return result
 	End Method

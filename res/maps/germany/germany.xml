@@ -6,22 +6,22 @@
 			<type>SpritePack</type>
  			<url>res/maps/germany/germany_collision.png</url>
 			<children>
-				<child name="map_berlin"				x="799"	y="450"	w="33"	h="20" />
-				<child name="map_hamburg"				x="566"	y="337"	w="38"	h="19" />
-				<child name="map_bremen"				x="521"	y="416"	w="26"	h="17" />
-				<child name="map_sachsen"				x="139"	y="351"	w="179"	h="74" />
-				<child name="map_niedersachsen"			x="423"	y="0"	w="264"	h="128" />
-				<child name="map_schleswigholstein"		x="423"	y="337"	w="143"	h="79" />
-				<child name="map_meckpom"				x="139"	y="267"	w="202"	h="84" />
-				<child name="map_nrw"					x="139"	y="161"	w="200"	h="106" />
-				<child name="map_brandenburg"			x="687"	y="0"	w="191"	h="107" />
-				<child name="map_sachsenanhalt"			x="604"	y="128"	w="146"	h="102"/>
-				<child name="map_hessen"				x="878"	y="0"	w="142"	h="109" />
-				<child name="map_thueringen"			x="139"	y="425"	w="155"	h="72" />
-				<child name="map_rheinlandpfalz"		x="423"	y="239"	w="137"	h="98" />
-				<child name="map_saarland"				x="318"	y="464"	w="62"	h="29" />
-				<child name="map_bayern"				x="139"	y="0"	w="284"	h="161" />
-				<child name="map_bawue"					x="423"	y="128"	w="181"	h="111" />
+				<child name="map_berlin"				x="800"	y="451"	w="31"	h="19" />
+				<child name="map_hamburg"				x="567"	y="338"	w="36"	h="18" />
+				<child name="map_bremen"				x="522"	y="416"	w="25"	h="17" />
+				<child name="map_sachsen"				x="140"	y="352"	w="177"	h="72" />
+				<child name="map_niedersachsen"			x="424"	y="0"	w="262"	h="127" />
+				<child name="map_schleswigholstein"		x="427"	y="340"	w="135"	h="73" />
+				<child name="map_meckpom"				x="140"	y="268"	w="201"	h="82" />
+				<child name="map_nrw"					x="140"	y="161"	w="198"	h="106" />
+				<child name="map_brandenburg"			x="688"	y="0"	w="189"	h="107" />
+				<child name="map_sachsenanhalt"			x="602"	y="129"	w="144"	h="101"/>
+				<child name="map_hessen"				x="879"	y="1"	w="140"	h="107" />
+				<child name="map_thueringen"			x="140"	y="425"	w="153"	h="72" />
+				<child name="map_rheinlandpfalz"		x="423"	y="240"	w="136"	h="97" />
+				<child name="map_saarland"				x="318"	y="464"	w="60"	h="29" />
+				<child name="map_bayern"				x="140"	y="0"	w="283"	h="161" />
+				<child name="map_bawue"					x="423"	y="129"	w="180"	h="110" />
 			</children>
 		</resource>
 
@@ -71,22 +71,22 @@
 			<densitymap type="pixmap" url="res/maps/germany/germany_densitymap.png" />
 			<surface type="sprite" url="res/maps/germany/germany_surface.png" />
 			<states>
-				<state name="bremen"			x="187" y="81"	sprite="map_bremen" />
-				<state name="berlin"			x="432" y="108"	sprite="map_berlin" />
-				<state name="hamburg"			x="250" y="59"	sprite="map_hamburg" />
-				<state name="bawue"				x="109" y="248"	sprite="map_bawue" />
-				<state name="bayern"			x="203" y="211"	sprite="map_bayern" />
+				<state name="bremen"			x="188" y="81"	sprite="map_bremen" />
+				<state name="berlin"			x="433" y="108"	sprite="map_berlin" />
+				<state name="hamburg"			x="251" y="60"	sprite="map_hamburg" />
+				<state name="bawue"				x="109" y="249"	sprite="map_bawue" />
+				<state name="bayern"			x="204" y="211"	sprite="map_bayern" />
 				<state name="saarland"			x="49"  y="253"	sprite="map_saarland" />
-				<state name="rheinlandpfalz"	x="39"  y="193" sprite="map_rheinlandpfalz" />
-				<state name="hessen"			x="135" y="159"	sprite="map_hessen" />
-				<state name="thueringen"		x="256" y="159"	sprite="map_thueringen" />
-				<state name="sachsen"			x="368" y="157"	sprite="map_sachsen" />
-				<state name="sachsenanhalt"		x="294" y="93"  sprite="map_sachsenanhalt" />
-				<state name="niedersachsen"		x="84" y="51"	sprite="map_niedersachsen" />
-				<state name="schleswigholstein"	x="193" y="2"	sprite="map_schleswigholstein" />
-				<state name="brandenburg"		x="339" y="68"	sprite="map_brandenburg" />
-				<state name="nrw"				x="35"  y="117"	sprite="map_nrw" />
-				<state name="meckpom"			x="298" y="11"	sprite="map_meckpom" />
+				<state name="rheinlandpfalz"	x="39"  y="194" sprite="map_rheinlandpfalz" />
+				<state name="hessen"			x="136" y="160"	sprite="map_hessen" />
+				<state name="thueringen"		x="257" y="159"	sprite="map_thueringen" />
+				<state name="sachsen"			x="369" y="158"	sprite="map_sachsen" />
+				<state name="sachsenanhalt"		x="292" y="94"  sprite="map_sachsenanhalt" />
+				<state name="niedersachsen"		x="85" y="51"	sprite="map_niedersachsen" />
+				<state name="schleswigholstein"	x="197" y="5"	sprite="map_schleswigholstein" />
+				<state name="brandenburg"		x="340" y="68"	sprite="map_brandenburg" />
+				<state name="nrw"				x="36"  y="117"	sprite="map_nrw" />
+				<state name="meckpom"			x="299" y="12"	sprite="map_meckpom" />
 			</states>
 		</stationmapdata>
 	</resources>
