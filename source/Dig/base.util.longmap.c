@@ -53,7 +53,7 @@ int bmx_map_longmap_contains(BBLONG key, struct avl_root ** root) {
 	struct longmap_node node;
 	node.key = key;
 	
-	struct longmap_node * found = (struct longmap_node *)tree_search(&node, compare_longmap_nodes, *root);
+	struct longmap_node * found = (struct longmap_node *)TREE_SEARCH(&node, compare_longmap_nodes, *root);
 	if (found) {
 		return 1;
 	} else {
@@ -65,7 +65,7 @@ BBObject * bmx_map_longmap_valueforkey(BBLONG key, struct avl_root ** root) {
 	struct longmap_node node;
 	node.key = key;
 	
-	struct longmap_node * found = (struct longmap_node *)tree_search(&node, compare_longmap_nodes, *root);
+	struct longmap_node * found = (struct longmap_node *)TREE_SEARCH(&node, compare_longmap_nodes, *root);
 	
 	if (found) {
 		return found->value;
@@ -78,7 +78,7 @@ int bmx_map_longmap_remove(BBLONG key, struct avl_root ** root) {
 	struct longmap_node node;
 	node.key = key;
 	
-	struct longmap_node * found = (struct longmap_node *)tree_search(&node, compare_longmap_nodes, *root);
+	struct longmap_node * found = (struct longmap_node *)TREE_SEARCH(&node, compare_longmap_nodes, *root);
 	
 	if (found) {
 		avl_del(&found->link, root);
@@ -90,11 +90,11 @@ int bmx_map_longmap_remove(BBLONG key, struct avl_root ** root) {
 }
 
 struct longmap_node * bmx_map_longmap_nextnode(struct longmap_node * node) {
-	return tree_successor(node);
+	return (struct longmap_node *)TREE_SUCCESSOR(node);
 }
 
 struct longmap_node * bmx_map_longmap_firstnode(struct avl_root * root) {
-	return tree_min(root);
+	return (struct longmap_node *)TREE_MIN(root);
 }
 
 BBLONG bmx_map_longmap_key(struct longmap_node * node) {
@@ -114,7 +114,7 @@ int bmx_map_longmap_hasnext(struct longmap_node * node, struct avl_root * root) 
 		return 1;
 	}
 	
-	return (tree_successor(node) != 0) ? 1 : 0;
+	return (TREE_SUCCESSOR(node) != 0) ? 1 : 0;
 }
 
 void bmx_map_longmap_copy(struct avl_root ** dst_root, struct avl_root * src_root) {
