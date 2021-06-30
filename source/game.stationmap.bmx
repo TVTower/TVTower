@@ -571,6 +571,51 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetRandomAntennaCoordinateInSection:TVec2D(section:TStationMapSection, allowSectionCrossing:Int = True)
+		If not section then return Null 
+
+		Local found:Int = False
+		Local mapX:Int = 0
+		Local mapY:Int = 0
+		Local tries:int = 0
+		Repeat
+			'find random spot on "map"
+			mapX = RandRange(section.rect.GetIntX(), section.rect.GetIntX2())
+			mapY = RandRange(section.rect.GetIntY(), section.rect.GetIntY2())
+
+			'check if spot in local space is on an opaque/colliding pixel
+			If section.GetShapeSprite().PixelIsOpaque(mapX - section.rect.GetIntX(), mapY - section.rect.GetIntY()) > 0
+				found = True
+				'check if other map sections have an opacque pixel there too (ambiguity!)
+				If not allowSectionCrossing
+					For local otherSection:TStationMapSection = EachIn sections
+						if section = otherSection then continue
+						Local otherLocalX:Int = Int(mapX - otherSection.rect.GetX())
+						Local otherLocalY:Int = Int(mapY - otherSection.rect.GetY())
+						if otherLocalX >= 0 and otherLocalY >= 0 and otherLocalX < otherSection.rect.GetIntW() and otherLocalY < otherSection.rect.GetIntH()
+							If otherSection.GetShapeSprite().PixelIsOpaque(otherLocalX, otherLocalY) > 0
+								found = False
+								'print "try # " + tries + "  " + section.name +": other section " + otherSection.name + " is opaque too!!   xy="+(x - section.rect.GetIntX())+", "+(y - section.rect.GetIntY()) + "   otherXY="+otherX+", "+otherY
+							EndIf
+						EndIf
+					Next
+				EndIf
+			EndIf
+			tries :+ 1
+		Until found or tries > 1000
+
+		If tries > 1000 
+			print "Failed to find a valid random section point in < 1000 tries."
+			Return Null
+		EndIf
+		
+		If found
+			Return new TVec2D.Init(mapX, mapY)
+		EndIf
+		
+		Return Null
+	End Method
+
 	'override
 	Method GetSprite:TSprite()
 		if not populationImageOriginalSprite then populationImageOriginalSprite = new TSprite.InitFromImage(populationImageOriginal, "populationImageOriginalSprite")
@@ -838,10 +883,11 @@ Type TStationMapCollection
 				Local pos:TVec2D	= New TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 
 				Local pressureGroups:int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
-				Local sectionConfig:TData = new TData
+				Local sectionConfig:TData
 				local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
 				if sectionConfigNode
-					TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
+					sectionConfig = new TData
+ 					TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
 				endif
 				'override config if pressureGroups are defined already
 				if pressureGroups >= 0 then sectionConfig.AddInt("pressureGroups", pressureGroups)
@@ -850,6 +896,19 @@ Type TStationMapCollection
 				If name<>"" And sprite<>""
 					_instance.AddSection( New TStationMapSection.Create(pos, name, sprite, sectionConfig) )
 				EndIf
+			Next
+			
+			'calculate positions (now all sprites are loaded)
+			For local s:TStationMapSection = EachIn _instance.sections
+				'validate if defined via XML
+				if s.uplinkPos 
+					if not s.IsValidUplinkPos(s.uplinkPos.GetIntX(), s.uplinkPos.GetIntY())
+						TLogger.Log("TStationMapCollection.onLoadStationMapData()", "Invalid / Ambiguous uplink position for state ~q" + s.name+"~q.", LOG_DEBUG)
+						s.uplinkPos = Null
+					EndIf
+				EndIf
+					
+				s.GetLocalUplinkPos()
 			Next
 		endif
 
@@ -1950,7 +2009,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
 		if not mapSection then return Null
 
-		station.Init(New TVec2D.Init(mapSection.rect.GetXCenter(), mapSection.rect.GetYCenter()),-1, owner)
+		local stationPos:TVec2D = mapSection.rect.position.Copy().AddVec( mapSection.GetLocalUplinkPos() )
+		station.Init(stationPos, -1, owner)
 		station.SetSectionName(mapSection.name)
 		'now we know how to calculate population
 		station.RefreshData()
@@ -2167,49 +2227,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'allowSectionCrossing: sections might have pixels they share... this
 	'                      allows these positions to be used
 	Method GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string, allowSectionCrossing:Int = True)
-		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( sectionName)
-		If not section then return Null 
-			
-		Local found:Int = False
-		Local x:Int = 0
-		Local y:Int = 0
-		Local tries:int = 0
-		Repeat
-			'find random spot on "map"
-			x = rand(section.rect.GetIntX(), section.rect.GetIntX2())
-			y = rand(section.rect.GetIntY(), section.rect.GetIntY2())
-
-			'check if spot in local space is on an opaque/colliding pixel
-			If section.GetShapeSprite().PixelIsOpaque(x - section.rect.GetIntX(), y - section.rect.GetIntY()) > 0
-				found = True
-				'check if other map sections have an opacque pixel there too (ambiguity!)
-				If not allowSectionCrossing
-					For local otherSection:TStationMapSection = EachIn GetStationMapCollection().sections
-						if section = otherSection then continue
-						Local otherX:Int = Int(x - otherSection.rect.GetX())
-						Local otherY:Int = Int(y - otherSection.rect.GetY())
-						if otherX >= 0 and otherY >= 0 and otherX < otherSection.rect.GetIntW() and otherY < otherSection.rect.GetIntH()
-							If otherSection.GetShapeSprite().PixelIsOpaque(otherX, otherY) > 0
-								found = False
-								'print "try # " + tries + "  " + section.name +": other section " + otherSection.name + " is opaque too!!   xy="+(x - section.rect.GetIntX())+", "+(y - section.rect.GetIntY()) + "   otherXY="+otherX+", "+otherY
-							EndIf
-						EndIf
-					Next
-				EndIf
-			EndIf
-			tries :+ 1
-		Until found or tries > 1000
-
-		If tries > 1000 
-			print "Failed to find a valid random section point in < 1000 tries."
-			Return Null
-		EndIf
-		
-		If found
-			Return new TVec2D.Init(x,y)
-		EndIf
-		
-		Return Null
+		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+		Return GetStationMapCollection().GetRandomAntennaCoordinateInSection(section, allowSectionCrossing)
 	End Method
 
 
@@ -3768,33 +3787,6 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalculatePosition()
-		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(_sectionName)
-		if mapSection and mapSection.GetShapeSprite()
-			'try center of section first
-			local x:int = mapSection.rect.GetXCenter() - mapSection.rect.GetX()
-			local y:int = mapSection.rect.GetYCenter() - mapSection.rect.GetY()
-			'find a valid spot if that failed
-			While not mapSection.GetShapeSprite().PixelIsOpaque(x, y)
-				x = RandRange(0, mapSection.GetShapeSprite().GetWidth()-1)
-				y = RandRange(0, mapSection.GetShapeSprite().GetHeight()-1)
-			Wend
-			self.pos.SetXY(mapSection.rect.GetX() + x, mapSection.rect.GetY() + y)
-		endif
-	End Method
-
-
-	'override
-	Method SetSectionName:int(sectionName:string)
-		'assigns _sectionName
-		local result:int = Super.SetSectionName(sectionName)
-
-		CalculatePosition()
-
-		return result
-	End Method
-
-
 	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
 		if reachMax <= 0 or refresh
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
@@ -4285,7 +4277,10 @@ Type TStationMapSection
 
 	'sympathy of the section's government for the individual channels
 	Field channelSympathy:Float[]
-
+	
+	'(local) position inside the section
+	Field uplinkPos:TVec2D
+	
 	Field name:String
 	Field populationImage:TImage {nosave}
 	Field populationMap:int[,] {nosave}
@@ -4313,9 +4308,19 @@ Type TStationMapSection
 		LoadShapeSprite()
 
 		if config
-			pressureGroups = config.GetInt("pressureGroups", 0)
-			broadcastPermissionPrice = config.GetInt("broadcastPermissionPrice", -1)
-			broadcastPermissionMinimumChannelImage = config.GetFloat("broadcastPermissionMinimumChannelImage", 0)
+			If config.Has("pressureGroups") 
+				pressureGroups = config.GetInt("pressureGroups")
+			EndIf
+			If config.Has("broadcastPermissionPrice") 
+				broadcastPermissionPrice = config.GetInt("broadcastPermissionPrice")
+			EndIf
+			If config.Has("broadcastPermissionMinimumChannelImage") 
+				broadcastPermissionMinimumChannelImage = config.GetFloat("broadcastPermissionMinimumChannelImage")
+			EndIf
+
+			If config.Has("uplinkX") and config.Has("uplinkY")
+				uplinkPos = new TVec2D.Init(config.GetInt("uplinkX"), config.GetInt("uplinkY"))
+			EndIf
 		endif
 
 		Return Self
@@ -4390,6 +4395,48 @@ Type TStationMapSection
 			enabledOverlay = LoadImage( pix )
 		endif
 		return enabledOverlay
+	End Method
+	
+	
+	Method IsValidUplinkPos:Int(localX:int, localY:int)
+		local mapX:int = rect.GetX() + localX 
+		local mapY:int = rect.GetY() + localY
+		Local isValid:Int = False
+		'check if that spot collides with another state
+		If GetShapeSprite().PixelIsOpaque(localX, localy)
+			isValid = True
+
+			For local otherSection:TStationMapSection = EachIn GetStationMapCollection().sections
+				if self = otherSection then continue
+
+				Local otherLocalX:Int = mapX - otherSection.rect.GetX()
+				Local otherLocalY:Int = mapY - otherSection.rect.GetY()
+				if otherLocalX >= 0 and otherLocalY >= 0 and otherLocalX < otherSection.rect.GetIntW() and otherLocalY < otherSection.rect.GetIntH()
+					If otherSection.GetShapeSprite().PixelIsOpaque(otherLocalX, otherLocalY) > 0
+						isValid = False
+					EndIf
+				EndIf
+			Next
+		EndIf
+		Return isValid
+	End Method
+	
+	
+	Method GetLocalUplinkPos:TVec2D()
+		if not uplinkPos
+			'try center of section first
+			local localX:int = rect.GetXCenter() - rect.GetX()
+			local localY:int = rect.GetYCenter() - rect.GetY()
+			'check if that spot collides with another state
+			If not IsValidUplinkPos(localX, localY)
+				Local mapPos:TVec2D = GetStationMapCollection().GetRandomAntennaCoordinateInSection(self, False)
+				'make local position
+				uplinkPos = mapPos.AddXY(-rect.position.GetIntX(), -rect.position.GetIntY())
+			Else
+				uplinkPos = new TVec2D.Init(localX, localY)
+			EndIf
+		endif
+		return uplinkPos
 	End Method
 
 
