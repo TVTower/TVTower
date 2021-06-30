@@ -1501,7 +1501,7 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "genres")
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
-		scriptTemplate.mainGenre = data.GetInt("mainGenre", 0)
+		scriptTemplate.mainGenre = data.GetInt("mainGenre", scriptTemplate.mainGenre)
 		For Local sg:String = EachIn data.GetString("subGenres", "").split(",")
 			'skip empty or "undefined" genres
 			If Int(sg) = 0 Then Continue
