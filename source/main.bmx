@@ -6549,18 +6549,12 @@ Function InitializeHelp()
 
 
 	'generic ingame-help (available via "F1")
-	Local manualContent:String = LoadText("docs/manual_de.md").Replace("~r~n", "~n").Replace("~r", "~n")
-	TLocalization.GetLanguage("de").map.insert("manual_content", manualContent)
-	'fallback as long as there is no English manual
-	TLocalization.GetLanguage("en").map.insert("manual_content", manualContent)
-Rem 'prepare for game manual in several languages
 	Local files:TList=TLocalization.GetLanguageFiles("docs/manual*.md");
 	For Local file:String = EachIn files
 		Local manualContent:String = LoadText(file).Replace("~r~n", "~n").Replace("~r", "~n")
 		Local languageCode:String=TLocalization.GetLanguageCodeFromFilename(file)
 		TLocalization.GetLanguage(languageCode).map.insert("manual_content", manualContent)
 	Next
-End Rem
 
 	Local manualWindow:TIngameHelpWindow = New TIngameHelpWindow.Init("MANUAL", "manual_content", "GameManual")
 	manualWindow.EnableHideOption(False)
