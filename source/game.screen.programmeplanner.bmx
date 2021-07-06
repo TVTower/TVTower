@@ -1339,7 +1339,8 @@ endrem
 							'ex. 02:00 - 11:00
 							If programme.data.broadcastTimeSlotStart <= programme.data.broadcastTimeSlotEnd
 								local earliestSlot:int = programme.data.broadcastTimeSlotStart
-								local latestSlot:int = programme.data.broadcastTimeSlotEnd
+								'subtract 1 as the programme has to end BEFORE
+								local latestSlot:int = programme.data.broadcastTimeSlotEnd -1
 								'starting today?
 								if blockStartDay = planningDay
 									earliestSlot = Max(earliestSlot, blockStartHour)
@@ -1367,7 +1368,8 @@ endrem
 
 								'0:00 - 2:00
 								earliestSlot = 0
-								latestSlot = programme.data.broadcastTimeSlotEnd
+								'subtract 1 as the programme has to end BEFORE
+								latestSlot = programme.data.broadcastTimeSlotEnd -1
 								'starting today?
 								if blockStartDay = planningDay
 									earliestSlot = Max(earliestSlot, blockStartHour)

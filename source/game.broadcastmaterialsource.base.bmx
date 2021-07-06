@@ -305,7 +305,10 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 				'begin is outside
 				if isInside and hour < startSlot Then isInside = False
 				'outside "right"
-				if isInside and (hour + GetBlocks(broadcastType)-1) > endSlot Then isInside = False
+				'alternatively subtract 1 to include "slotEnd" as allowed
+				'hour to broadcast a programme in (22-23 would allow a 2 block programme)
+				'if isInside and (hour + GetBlocks(broadcastType)-1) > endSlot Then isInside = False
+				if isInside and (hour + GetBlocks(broadcastType)) > endSlot Then isInside = False
 
 				if isInside <> checkForInside then Return False
 			endif
