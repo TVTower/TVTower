@@ -301,23 +301,13 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method GetPlannedLiveTime:Long(earliestBroadcastTime:Long = -1)
 		If Not script Then Return -1
 
-		'without given time use the (pre-)production end time
-		If earliestBroadcastTime = -1
-			earliestBroadcastTime = liveTime
-
-			If earliestBroadcastTime = - 1
-				'check script for some last live time - and use that as minimum
-				earliestBroadcastTime = Max(script.lastLivetime, GetWorldTime().GetTimeGone())
-
-				If not IsProductionFinished() and script.productionTime > 0
-					earliestBroadcastTime :+ script.productionTime * script.productionTimeMod
-				EndIf
-			EndIf
-		EndIf
-
 		'calculate live broadcast time depending on the "time code" in
 		'the script
-		Return script.GetLiveTime(earliestBroadcastTime, 0)
+		If IsProductionFinished()
+			Return script.GetLiveTime(earliestBroadcastTime, 0)
+		Else
+			Return script.GetLiveTime(earliestBroadcastTime, -1)
+		EndIf
 	End Method
 
 
@@ -339,31 +329,10 @@ Type TProductionConcept Extends TOwnedGameObject
 				liveBroadcastTime = GetPlannedLiveTime( liveBroadcastTime )
 			EndIf
 		EndIf
-
-		Local plannedLiveTime:Long = script.GetLiveTime( liveBroadcastTime )
-		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
-
-		Local liveDay:Int = GetWorldTime().GetDay( plannedLiveTime )
-		Local nowDay:Int = GetWorldTime().GetDay()
-
-		If script.HasBroadcastTimeSlot()
-			If liveDay = nowDay
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			ElseIf liveDay = nowDay + 1
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			Else
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
-			EndIf
-		Else
-			If liveDay = nowDay
-				Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			ElseIf liveDay = nowDay + 1
-				Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			Else
-				Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
-			EndIf
-		EndIf
-		Return ""
+		local now:Long = GetWorldTime().GetTimeGone()
+	
+		'pass time difference as production time so text knows "current time"
+		Return script.GetLiveTimeText(now, int(liveBroadcastTime - now)) 
 	End Method
 
 
@@ -1009,22 +978,12 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method GetBaseProductionTime:Long()
-		local base:Long = 9 * TWorldTime.HOURLENGTH
+		local base:Long = GameRules.baseProductionTimeHours * TWorldTime.HOURLENGTH
 
 		local typeTimeMod:Float = 1.0
 		local speedPointTimeMod:Float = 1.0
 		local teamPointTimeMod:Float = 1.0
 		local blockMinimumMod:Float = 1.0
-
-		'live productions are done a bit faster
-		if script.IsLive() then typeTimeMod :* 0.9
-		'trash makes production way easier
-		if script.IsTrash() then typeTimeMod :* 0.8
-		'bmovies are done cheaper too
-		if script.IsBMovie() then typeTimeMod :* 0.9
-		'non-fiction-stuff (documentaries, sport shows...) are less advanced
-		if not script.IsFictional() then typeTimeMod :* 0.9
-
 
 		if productionFocus
 			local speedPoints:int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
@@ -1072,16 +1031,19 @@ Type TProductionConcept Extends TOwnedGameObject
 		'then use this. 
 		'Result is rounded to "minutes"!
 		if script.productionTime > 0
+			'this also ignores potential "flag" benefits (trash is produced
+			'faster etc - as a predefined production time has to take
+			'this already into consideratio)
 			base = script.productionTime
 
 			base :* speedPointTimeMod
 			base :* teamPointTimeMod
-			base :* script.productionTimeMod
 		else
+			base :* script.GetProductionTimeMod()
 			base :* typeTimeMod
+
 			base :* speedPointTimeMod
 			base :* teamPointTimeMod
-			base :* script.productionTimeMod
 
 			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod) * TWorldTime.HOURLENGTH)
 		endif

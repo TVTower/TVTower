@@ -339,10 +339,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field price:Int	= 0
 	Field blocks:Int = 0
 
-	'scripts allowing multiple productions of the same script
-	'
-	Field lastLiveTime:Long = -1
-
 	'template this script is based on (this allows to avoid that too
 	'many scripts are based on the same script template on the same time)
 	Field basedOnScriptTemplateID:Int = 0
@@ -413,7 +409,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'do not enable X-Rated for live productions when
 		'live time is not in the night
 		if script.flags & TVTProgrammeDataFlag.XRATED
-			If script.liveTime <= 22 And script.liveTime >= 6
+			If not script.CanBeXRated()
 				script.SetFlag(TVTProgrammeDataFlag.XRATED, False)
 			EndIf
 		Endif
@@ -423,7 +419,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.productionBroadcastFlags = template.productionBroadcastFlags
 		script.productionLicenceFlags = template.productionLicenceFlags
 
-		script.liveTime = template.liveTime
+		script.liveTimeSlot = template.liveTimeSlot
 		script.liveDateCode = template.liveDateCode
 
 		script.broadcastTimeSlotStart = template.broadcastTimeSlotStart
@@ -433,7 +429,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.SetProductionBroadcastLimit( template.GetProductionBroadcastLimit() )
 
 		script.productionTime = template.GetProductionTime()
-		script.productionTimeMod = template.productionTimeMod
+		script.productionTimeModBase = template.productionTimeModBase
 
 		script.scriptFlags = template.scriptFlags
 		'mark tradeable
@@ -740,7 +736,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetBlocks:Int() {_exposeToLua}
+	Method GetBlocks:Int() override {_exposeToLua}
 		Return blocks
 	End Method
 
@@ -781,6 +777,28 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		value = Int(Floor(value / 100) * 100)
 
 		Return value
+	End Method
+
+
+	Method CanBeXRated:Int()
+		If liveTimeSlot <= 22 And liveTimeSlot >= 6
+			Return False
+		ElseIf HasBroadcastTimeSlot() and liveTimeSlot = -1
+			'if script.broadcastTimeSlotStart >= 6 and script.broadcastTimeSlotStart + script.GetBlocks() <= 22 and ..
+			'eg. 5-22, 5-5, ...
+			if broadcastTimeSlotStart <= broadcastTimeSlotEnd 
+				If broadcastTimeSlotStart + GetBlocks() >= 6 and broadcastTimeSlotStart <= 22
+					Return False
+				EndIf
+			'eg. 20 - 5
+			Else
+				If broadcastTimeSlotStart + GetBlocks() <= 22 or broadcastTimeSlotEnd >= 6
+					Return False
+				EndIf
+			EndIf
+		EndIf
+		
+		Return True
 	End Method
 
 	'mixes main and subgenre criterias
@@ -958,7 +976,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					'do not enable X-Rated for live productions when
 					'live time is not in the night
 					if flags & TVTProgrammeDataFlag.XRATED
-						If liveTime <= 22 And liveTime >= 6
+						If not CanBeXRated()
 							SetFlag(TVTProgrammeDataFlag.XRATED, False)
 						EndIf
 					Endif
@@ -1259,7 +1277,7 @@ endrem
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(-1, -1), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 
 			If showMsgTimeSlotLimit
@@ -1307,14 +1325,11 @@ endrem
 			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
 		Endif
 		If IsLive()
-			local effectiveProductionTime:Long = productionTime * productionTimeMod
-			'(pre-)production time
-'			if productionTime = 0
-'				skin.RenderBox(contentX + 5 + 2*59, contentY, 65, -1, "0" + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
-'			else
-'				skin.RenderBox(contentX + 5 + 2*59, contentY, 65, -1, "~~" + (productionTime/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
-'			endif
-			skin.RenderBox(contentX + 5 + 2*59 - 5, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(effectiveProductionTime*2 - TWorldTime.MINUTELENGTH, 4), "runningTime", "neutral", skin.fontBold)
+			'estimated (no clue about efficiency mods through better
+			'production team etc)
+			local effectiveProductionDuration:Long = GetBaseProductionDuration()
+
+			skin.RenderBox(contentX + 5 + 2*59 - 5, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(effectiveProductionDuration, 4), "runningTime", "neutral", skin.fontBold)
 		EndIf
 		'price
 		If canAfford

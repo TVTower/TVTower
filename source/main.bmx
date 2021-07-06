@@ -2807,6 +2807,12 @@ Type TSavegameConverter
 				Return "endTime"
 			case "TProduction:status".ToLower()
 				Return "productionStep"
+			case "TScriptBase:liveTime".ToLower()
+				Return "liveTimeSlot"
+			case "TScriptTemplate:liveTime".ToLower()
+				Return "liveTimeSlot"
+			case "TScript:liveTime".ToLower()
+				Return "liveTimeSlot"
 		End Select
 
 		Rem

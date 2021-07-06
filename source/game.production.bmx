@@ -349,7 +349,7 @@ Type TProduction Extends TOwnedGameObject
 		startTime = GetWorldTime().GetTimeGone()
 		'modify production time by mod (TODO: add random plus minus?)
 		endTime = startTime + productionTime * GetProductionTimeMod()
-
+print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 		'round end time to next xx:x5 to avoid people entering
 		'the studio before next production starts (production
 		'manager checks in 5 minute interval)
@@ -433,6 +433,13 @@ Type TProduction Extends TOwnedGameObject
 			'ATTENTION: ensure it ends at xx:x5 (as the production 
 			'           manager updates in 5 minute intervals)
 			endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
+
+
+			'_designatedProgrammeLicence.programmeData.releaseTime = productionConcept.GetLiveTime()
+			'inform script about the latest live time used (so others
+			'yet-to-start productions can estimate better, what the 
+			'earliest possible broadcast time might be)
+			productionConcept.script.lastLiveTime = endTime
 		EndIf
 
 		'set studio blocked / update block state
@@ -593,11 +600,7 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		If productionConcept.script.IsLive()
-			'programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
-
 			programmeData.releaseTime = productionConcept.GetLiveTime()
-			'inform script about the latest live time used
-			productionConcept.script.lastLiveTime = programmeData.releaseTime
 		EndIf
 		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 		programmeData.productionID = self.GetID()
@@ -613,7 +616,7 @@ Type TProduction Extends TOwnedGameObject
 		'do not enable X-Rated for live productions when
 		'live time is not in the night
 		if productionConcept.script.flags & TVTProgrammeDataFlag.XRATED
-			If productionConcept.script.liveTime <= 22 And productionConcept.script.liveTime >= 6
+			If not productionConcept.script.CanBeXRated()
 				programmeData.SetFlag(TVTProgrammeDataFlag.XRATED, False)
 			EndIf
 		Endif
@@ -1071,10 +1074,9 @@ Type TProduction Extends TOwnedGameObject
 
 
 			Case TVTProductionStep.PREPRODUCTION_DONE
-				'with fix livetime being "past" current time we should
+				'with fix livetime slots being "past" current time we should
 				'begin with shooting as fast as possible
-				If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= productionConcept.script.liveTime/TWorldTime.MINUTELENGTH
-				'If productionConcept.script.liveTime >= 0 and GetWorldTime().GetTimeGone() >= productionConcept.script.liveTime
+				If productionConcept.script.liveTimeSlot >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= productionConcept.script.liveTimeSlot/TWorldTime.MINUTELENGTH
 					BeginShooting()
 					
 					'maybe next step is also fulfilled

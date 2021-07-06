@@ -1715,7 +1715,7 @@ Type TDatabaseLoader
 		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
 		scriptTemplate.liveDateCode = data.GetString("live_date", scriptTemplate.liveDateCode)
-		scriptTemplate.liveTime = data.GetInt("live_time", scriptTemplate.liveTime)
+		scriptTemplate.liveTimeSlot = data.GetInt("live_time", scriptTemplate.liveTimeSlot)
 		scriptTemplate.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", scriptTemplate.broadcastTimeSlotStart)
 		scriptTemplate.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", scriptTemplate.broadcastTimeSlotEnd)
 		
@@ -1737,7 +1737,7 @@ Type TDatabaseLoader
 		scriptTemplate.productionLicenceFlags = data.GetInt("production_licence_flags", scriptTemplate.productionLicenceFlags)
 		scriptTemplate.SetProductionBroadcastLimit( data.GetInt("production_broadcast_limit", scriptTemplate.GetProductionBroadcastLimit()) )
 
-		scriptTemplate.productionTimeMod = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeMod)
+		scriptTemplate.productionTimeModBase = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeModBase)
 
 		'=== AVAILABILITY ===
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
