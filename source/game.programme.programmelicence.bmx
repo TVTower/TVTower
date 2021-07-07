@@ -514,15 +514,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
 		If Not p2 Then Return 1
 		If Not p1 Then Return -1
-		if p1.GetTitle() = p2.GetTitle()
-			return p1.GetGUID() > p2.GetGUID()
+		
+		'remove "ToLower" for case sensitive comparison
+		Local t1:String = p1.GetTitle().ToLower()
+		Local t2:String = p2.GetTitle().ToLower()
+		
+		If t1 = t2
+			Return p1.GetGUID() > p2.GetGUID()
+        ElseIf t1 > t2
+			Return 1
+        ElseIf t1 < t2
+			Return -1
 		endif
-        If p1.GetTitle().ToLower() > p2.GetTitle().ToLower()
-			return 1
-        elseif p1.GetTitle().ToLower() < p2.GetTitle().ToLower()
-			return -1
-		endif
-		return 0
+		Return 0
 	End Function
 
 

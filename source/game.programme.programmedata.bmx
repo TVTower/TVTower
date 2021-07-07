@@ -445,9 +445,36 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		Local p1:TProgrammeData = TProgrammeData(o1)
 		Local p2:TProgrammeData = TProgrammeData(o2)
 		If Not p2 Then Return 1
-        Return p1.releaseTime - p2.releaseTime
+	
+        If p1.releaseTime > p2.releaseTime
+			Return 1
+        ElseIf p1.releaseTime < p2.releaseTime
+			Return -1
+		Else
+			Return _SortByName(o1, o2)
+		EndIf
 	End Function
 
+
+	Function _SortByName:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeData = TProgrammeData(o1)
+		Local p2:TProgrammeData = TProgrammeData(o2)
+		If Not p2 Then Return 1
+		If Not p1 Then Return -1
+
+		'remove "ToLower" for case sensitive comparison
+		Local t1:String = p1.GetTitle().ToLower()
+		Local t2:String = p2.GetTitle().ToLower()
+		
+		If t1 = t2
+			Return p1.GetGUID() > p2.GetGUID()
+        ElseIf t1 > t2
+			Return 1
+        ElseIf t1 < t2
+			Return -1
+		endif
+		return 0
+	End Function
 
 	'=== EVENT HANDLERS ===
 	Rem
@@ -1142,32 +1169,30 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	'whether it got broadcasted or not
 	Method UpdateLive:Int()
 		If Not IsLive() Then Return False
-
-		If HasFixedLiveTime()
-			'finished live air?
-			If GetWorldTime().GetTimeGone() >= GetWorldTime().GetHour(releaseTime) * TWorldTime.HOURLENGTH  + (blocks*60 - 5) * TWorldTime.MINUTELENGTH
-				If GetTimesBroadcasted() <= 1
-					onFinishProductionForCast()
-				EndIf
-			EndIf
-		EndIf
-
 		'cannot update as long somebody is broadcasting that programme
 		If playersLiveBroadcasting > 0 Then Return False
+
+		'programmes begin at xx:05 - but their live events will end xx:55
+		'releaseTime is not guaranteed to be "xx:00" so, we use GetHours()
+		Local finishedLiveBroadcast:Int = GetWorldTime().GetTimeGone() >= GetWorldTime().GetHour(releaseTime) * TWorldTime.HOURLENGTH  + (blocks*60 - 5) * TWorldTime.MINUTELENGTH
+
+		'finish production on first broadcast (an always-live will
+		'only finish once this way)
+		If finishedLiveBroadcast and GetTimesBroadcasted() <= 1
+			onFinishProductionForCast()
+		EndIf
 
 		'stay "LIVE" forever
 		If hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
 			Return False
 		EndIf
-
-		'programmes begin at xx:05 - but their live events will end xx:55
-		'releaseTime is not guaranteed to be "xx:00" so, we use GetHours()
-		If HasFixedLiveTime()
-			If GetWorldTime().GetTimeGone() >= GetWorldTime().GetHour(releaseTime) * TWorldTime.HOURLENGTH + (blocks*60 - 5) * TWorldTime.MINUTELENGTH
-				SetFlag(TVTProgrammeDataFlag.LIVE, False)
-				SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
-				Return True
-			EndIf
+		
+		'or transform into "live on tape"
+		'also remove broadcast restrictions
+		If finishedLiveBroadcast
+			SetFlag(TVTProgrammeDataFlag.LIVE, False)
+			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
+			Return True
 		EndIf
 
 		Return False
@@ -1992,7 +2017,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			If broadcastLimit > 0 Then broadcastLimit :- 1
 		EndIf
-
+		
 
 		'=== EFFECTS ===
 		'trigger broadcastEffects
@@ -2080,6 +2105,15 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 				If IsLive() And GetWorldTime().GetDayHour() = GetWorldTime().GetDayHour( releaseTime )
 					SetPlayerIsLiveBroadcasting(playerID, True)
 				EndIf
+			EndIf
+		EndIf
+
+
+		'=== UPDATE BROADCAST RESTRICTIONS ===
+		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			If HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST)
+				broadcastTimeSlotStart = -1
+				broadcastTimeSlotEnd = -1
 			EndIf
 		EndIf
 

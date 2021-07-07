@@ -1221,10 +1221,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (60 + RandRange(0,60)) * TWorldTime.MINUTELENGTH, True, False, False)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(0,60)) * TWorldTime.MINUTELENGTH), True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH), True, False, False)
 		'this is added to the "left side" (> 2,5h)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH), True, False, False)
 		'create a random for each news
 		'for local i:int = 0 until TVTNewsGenre.count
 		'	GetNewsAgency().AnnounceNewNewsEvent(i, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
@@ -1246,7 +1246,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'adjust next ticker times to something right after game start
 		'(or a bit before)
 		For Local i:Int = 0 Until TVTNewsGenre.count
-			GetNewsAgency().SetNextEventTime(i, Long(GetWorldTime().GetTimeGone() + RandRange(5, 90) * TWorldTime.MINUTELENGTH))
+			GetNewsAgency().SetNextEventTime(i, GetWorldTime().GetTimeGone() + RandRange(5, 90) * TWorldTime.MINUTELENGTH)
 		Next
 
 

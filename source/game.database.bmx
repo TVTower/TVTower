@@ -1615,7 +1615,7 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "production_time")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
-			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("value", scriptTemplate.productionTime / TWorldTime.MINUTELENGTH)
+			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("value", int(scriptTemplate.productionTime / TWorldTime.MINUTELENGTH))
 		Else
 			'we cannot simply place the min/max as default as "-1 / TWorldTime.MINUTELENGTH" results in 0 ...
 			local pTMin:Int = data.GetInt("min", -1)

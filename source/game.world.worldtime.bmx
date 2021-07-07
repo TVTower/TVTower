@@ -21,10 +21,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Global _instance:TWorldTime
 
-	Const DAYLENGTH:int      = 86400 * 1000
-	Const HOURLENGTH:int     = 3600 * 1000
-	Const MINUTELENGTH:int   = 60 * 1000
-	Const SECONDLENGTH:int   = 1000
+	Const DAYLENGTH:Long      = 86400 * 1000
+	Const HOURLENGTH:Long     = 3600 * 1000
+	Const MINUTELENGTH:Long   = 60 * 1000
+	Const SECONDLENGTH:Long   = 1000
 	Const DAYPHASE_DAWN:int	 = 0
 	Const DAYPHASE_DAY:int	 = 1
 	Const DAYPHASE_DUSK:int	 = 2

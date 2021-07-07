@@ -502,7 +502,12 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Const EXCLUSIVE_TO_ONE_OWNER:Int = 8192
 
 	'used for live programme with varying broadcast slots
+	'this flag is set once a programme is planned and so its 
+	'live time ("for now") has settled
 	Const LIVE_TIME_FIXED:Int = 16384
+
+	'keep broadcast time restriction on begin of first broadcast?
+	Const KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST:Int = 32768
 
 	Const count:Int = 14
 
