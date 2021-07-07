@@ -222,16 +222,18 @@ Type TArchivedMessage extends TOwnedGameObject
 		Local a2:TArchivedMessage = TArchivedMessage(o2)
 		If Not a2 Then Return 1
 		If Not a1 Then Return -1
-		if a1.GetGUID() = a2.GetGUID()
-			'shouldnt happen at all
-			return 0
-		endif
-        If a1.GetGUID() > a2.GetGUID()
-			return 1
-        elseif a1.GetGUID() < a2.GetGUID()
-			return -1
-		endif
-		return 0
+		
+		Local g1:String = a1.GetGUID()
+		Local g2:String = a2.GetGUID()
+		
+		If g1 > g2
+			Return 1
+		ElseIf g1 < g2
+			Return -1
+		'shouldnt happen at all
+		Else
+			Return 0
+		EndIf
 	End Function
 
 
@@ -252,13 +254,16 @@ Type TArchivedMessage extends TOwnedGameObject
 	Function SortByName:Int(o1:Object, o2:Object)
 		Local a1:TArchivedMessage = TArchivedMessage(o1)
 		Local a2:TArchivedMessage = TArchivedMessage(o2)
-		if a1 and a2
-			If a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
-				return 1
-			elseif a1.GetTitle().ToLower() < a2.GetTitle().ToLower()
-				return -1
-			endif
-		endif
+		If a1 and a2
+			'case insensitive comparison
+			local t1:String = a1.GetTitle().ToLower()
+			local t2:String = a2.GetTitle().ToLower()
+			If t1 > 2
+				Return 1
+			ElseIf t1 < t2
+				Return -1
+			EndIf
+		EndIf
 		return SortByTime(o1,o2)
 	End Function
 

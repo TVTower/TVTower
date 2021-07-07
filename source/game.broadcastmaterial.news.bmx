@@ -520,26 +520,43 @@ endrem
 	Method CompareByName:int(other:object)
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
+		
+		'case insensitive comparison
+		Local t1:String = GetTitle().ToLower()
+		Local t2:String = n2.GetTitle().ToLower()
 
-		if GetTitle().ToLower() = n2.GetTitle().ToLower()
-			'publishtime is NOT happened time
-			return GetPublishTime() > n2.GetPublishTime()
-		elseif GetTitle().ToLower() > n2.GetTitle().ToLower()
-			return 1
-		endif
-		return -1
+		If t1 > t2
+			Return 1
+		Elseif t1 < t2
+			Return -1
+		Else
+			Local pt1:Long = GetPublishTime()
+			Local pt2:Long = n2.GetPublishTime()
+			If pt1 > pt2
+				Return 1
+			ElseIf pt1 < pt2
+				Return -1
+			Else
+				Return 0
+			EndIf
+		EndIf
 	End Method
 
 
 	Method CompareByPrice:int(other:object)
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
-
-		if GetPrice(owner) = n2.GetPrice(n2.owner)
-			'publishtime is NOT happened time
-			return GetPublishTime() > n2.GetPublishTime()
-		endif
-        Return GetPrice(owner) - n2.GetPrice(n2.owner)
+		
+		Local p1:Int = GetPrice(owner)
+		Local p2:Int = n2.GetPrice(owner)
+		
+		If p1 > p2
+			Return 1
+		ElseIf p1 < p2
+			Return -1
+		Else
+			Return CompareByPublishedDate(other)
+		EndIf
 	End Method
 
 
@@ -547,16 +564,26 @@ endrem
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if GetPublishTime() = n2.GetPublishTime()
-			if GetTitle().ToLower() > n2.GetTitle().ToLower()
-				return 1
-			elseif GetTitle().ToLower() < n2.GetTitle().ToLower()
-				return -1
-			else
-				return 0
-			endif
-		endif
-        Return GetPublishTime() - n2.GetPublishTime()
+		'avoid simply returning "long - long" as the result can be
+		'bigger than an "int" and so roll-overs will happen
+        'Return GetPublishTime() - n2.GetPublishTime()
+	
+		Local pt1:Long = GetPublishTime()
+		Local pt2:Long = n2.GetPublishTime()
+
+		If pt1 > pt2
+			Return 1
+		ElseIf pt1 < pt2
+			Return -1
+		Else
+			If GetTitle().ToLower() > n2.GetTitle().ToLower()
+				Return 1
+			ElseIf GetTitle().ToLower() < n2.GetTitle().ToLower()
+				Return -1
+			Else
+				Return 0
+			EndIf
+		EndIf
 	End Method
 
 
@@ -564,11 +591,16 @@ endrem
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if IsPaid() = n2.IsPaid()
-			'publishtime is NOT happened time
-			return GetPublishTime() > n2.GetPublishTime()
-		endif
-        Return IsPaid() - n2.IsPaid()
+		Local p1:Int = IsPaid()
+		Local p2:Int = n2.IsPaid()
+		
+		If p1 > p2
+			Return 1
+		ElseIf p1 < p2
+			Return -1
+		Else
+			Return CompareByPublishedDate(other)
+		EndIf
 	End Method
 
 
@@ -576,17 +608,16 @@ endrem
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if GetNewsEvent().GetTopicality() = n2.GetNewsEvent().GetTopicality()
-			'publishtime is NOT happened time
-			return GetPublishTime() > n2.GetPublishTime()
-		endif
-		if GetNewsEvent().GetTopicality() > n2.GetNewsEvent().GetTopicality()
-			return 1
-		elseif GetNewsEvent().GetTopicality() < n2.GetNewsEvent().GetTopicality()
-			return -1
-		else
-			return 0
-		endif
+		Local t1:Int = GetNewsEvent().GetTopicality()
+		Local t2:Int = n2.GetNewsEvent().GetTopicality()
+		
+		If t1 > t2
+			Return 1
+		ElseIf t1 < t2
+			Return -1
+		Else
+			Return CompareByPublishedDate(other)
+		EndIf
 	End Method
 
 
