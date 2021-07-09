@@ -76,15 +76,21 @@
 				<state name="hamburg"			x="251" y="60"	sprite="map_hamburg" />
 				<state name="bawue"				x="109" y="249"	sprite="map_bawue" />
 				<state name="bayern"			x="204" y="211"	sprite="map_bayern" />
-				<state name="saarland"			x="49"  y="253"	sprite="map_saarland" />
+				<state name="saarland"			x="49"  y="253"	sprite="map_saarland">
+					<config uplinkX="37" uplinkY="8" />
+				</state>
 				<state name="rheinlandpfalz"	x="39"  y="194" sprite="map_rheinlandpfalz" />
 				<state name="hessen"			x="136" y="160"	sprite="map_hessen" />
 				<state name="thueringen"		x="257" y="159"	sprite="map_thueringen" />
-				<state name="sachsen"			x="369" y="158"	sprite="map_sachsen" />
+				<state name="sachsen"			x="369" y="158"	sprite="map_sachsen">
+					<config uplinkX="80" uplinkY="25" />
+				</state>
 				<state name="sachsenanhalt"		x="292" y="94"  sprite="map_sachsenanhalt" />
 				<state name="niedersachsen"		x="85" y="51"	sprite="map_niedersachsen" />
 				<state name="schleswigholstein"	x="197" y="5"	sprite="map_schleswigholstein" />
-				<state name="brandenburg"		x="340" y="68"	sprite="map_brandenburg" />
+				<state name="brandenburg"		x="340" y="68"	sprite="map_brandenburg">
+					<config uplinkX="75" uplinkY="54" />
+				</state>
 				<state name="nrw"				x="36"  y="117"	sprite="map_nrw" />
 				<state name="meckpom"			x="299" y="12"	sprite="map_meckpom" />
 			</states>
