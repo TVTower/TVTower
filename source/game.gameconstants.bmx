@@ -509,7 +509,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'keep broadcast time restriction on begin of first broadcast?
 	Const KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST:Int = 32768
 
-	Const count:Int = 14
+	Const count:Int = 16
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -520,20 +520,22 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 
 	Function GetIndex:Int(key:Int)
 		Select key
-			Case    1	Return 1
-			Case    2	Return 2
-			Case    4	Return 3
-			Case    8	Return 4
-			Case   16	Return 5
-			Case   32	Return 6
-			Case   64	Return 7
-			Case  128	Return 8
-			Case  256	Return 9
-			Case  512	Return 10
-			Case 1024	Return 11
-			Case 2048	Return 12
-			Case 4096	Return 13
-			Case 8192	Return 14
+			Case     1	Return 1
+			Case     2	Return 2
+			Case     4	Return 3
+			Case     8	Return 4
+			Case    16	Return 5
+			Case    32	Return 6
+			Case    64	Return 7
+			Case   128	Return 8
+			Case   256	Return 9
+			Case   512	Return 10
+			Case  1024	Return 11
+			Case  2048	Return 12
+			Case  4096	Return 13
+			Case  8192	Return 14
+			Case 16384	Return 15
+			Case 32768	Return 16
 		End Select
 		Return 0
 	End Function
