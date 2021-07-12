@@ -1191,14 +1191,14 @@ Type TDatabaseLoader
 		EndIf
 
 		'both get the same limit (except individually configured)
-		programmeData.SetBroadcastLimit( data.GetInt("data_broadcast_limit", data.GetInt("broadcast_imit", programmeData.broadcastLimit)) )
+		programmeData.SetBroadcastLimit( data.GetInt("data_broadcast_limit", data.GetInt("broadcast_limit", programmeData.broadcastLimit)) )
 		programmeLicence.SetBroadcastLimit( data.GetInt("licence_broadcast_limit", data.GetInt("broadcast_limit", programmeLicence.broadcastLimit)) )
 
 		'both get the same flags (except individually configured)
-		programmeData.broadcastFlags = data.GetInt("data_broadcast_flags", data.GetInt("broadcast_flags", programmeData.broadcastFlags))
-		programmeLicence.broadcastFlags = data.GetInt("licence_broadcast_flags", data.GetInt("broadcast_flags", programmeLicence.broadcastFlags))
+		programmeData.SetBroadcastFlag(data.GetInt("data_broadcast_flags", data.GetInt("broadcast_flags", 0)))
+		programmeLicence.SetBroadcastFlag(data.GetInt("licence_broadcast_flags", data.GetInt("broadcast_flags", 0)))
 
-		programmeLicence.licenceFlags = data.GetInt("licence_flags", programmeLicence.licenceFlags)
+		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
 
 		Local available:Int = data.GetBool("available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
@@ -1208,7 +1208,7 @@ Type TDatabaseLoader
 		'override with "modifiers"-data
 		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
 
-		programmeData.flags = data.GetInt("flags", programmeData.flags)
+		programmeData.SetFlag(data.GetInt("flags", 0))
 
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
 		For Local sg:String = EachIn data.GetString("subgenre", "").split(",")
