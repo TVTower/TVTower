@@ -342,7 +342,11 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.GetLiveTimeText(), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 			If showMsgTimeSlotLimit
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				if productionConcept.script.productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST > 0
+					skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				else
+					skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				endif
 				contentY :+ msgH
 			EndIf
 		EndIf

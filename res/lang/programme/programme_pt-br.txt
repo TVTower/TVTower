@@ -18,7 +18,7 @@ MOVIE_BOXOFFICE  = Bilheteria
 MOVIE_TVAUDIENCE = Audiência TV
 MOVIE_TOPICALITY = Atualidade
 MOVIE_BLOCKS     = bloco
-MOVIE_XRATED     = Pornô
+MOVIE_XRATED     = como adulto
 MOVIE_EPISODES   = episódios
 MOVIE_CAST       = Elenco
 
@@ -32,7 +32,7 @@ SERIES_SINGULAR = Série
 SPECIAL_BIN     = Especiais
 AUCTION         = Leilão
 TRAILER         = Trailer
-X_RATED         = Pornô
+X_RATED         = Como adulto
 
 MOVIES_AND_SERIES_AUCTION                = Leilão de filmes e séries
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Clique no filme ou série para dar um lance.
@@ -107,13 +107,14 @@ PROGRAMME_PRODUCT_INFOMERCIAL = Infomercial
 PROGRAMME_PRODUCT_EVENT       = Evento
 PROGRAMME_PRODUCT_MISC        = Diversos
 
-PROGRAMME_IN_PROGRAMME_PLAN             = Programa na grade de programação!
-TRAILER_IN_PROGRAMME_PLAN               = Trailer na grade de programação!
-PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN = Programa e trailer na grade de programação!
-ONLY_1_BROADCAST_POSSIBLE               = Apenas 1 transmissão possível!
-ONLY_X_BROADCASTS_POSSIBLE              = Apenas %X% transmissões são possíveis!
-NO_MORE_BROADCASTS_ALLOWED              = Sem mais transmissões permitidas!
-BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y      = Transmissão permitida apenas das %X%:00 às %Y%:00!
+PROGRAMME_IN_PROGRAMME_PLAN              = Programa na grade de programação!
+TRAILER_IN_PROGRAMME_PLAN                = Trailer na grade de programação!
+PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programa e trailer na grade de programação!
+ONLY_1_BROADCAST_POSSIBLE                = Apenas 1 transmissão possível!
+ONLY_X_BROADCASTS_POSSIBLE               = Apenas %X% transmissões são possíveis!
+NO_MORE_BROADCASTS_ALLOWED               = Sem mais transmissões permitidas!
+BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Transmissão permitida apenas das %X%:00 às %Y%:00!
+FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Primeira transmissão permitida apenas das %X%:00 às %Y%:00!
 #LIVE_PRODUCTION_FINISH_WILL_COST_X      =
 
 OPENINGSHOW_TITLE       = Grande lançamento de "%CHANNELNAME%
