@@ -152,7 +152,7 @@
 			<speed slope="50" max="65" min="35" />
 		</scripttemplate>
 
-		<!--Besetzung Musiker, Ausstrahlungszeit, nur eine Ausstrahlung, kein optionaler Kult-->
+		<!--Besetzung Musiker, Livedatum, nur eine Ausstrahlung, kein optionaler Kult-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-LiveKonzert">
 			<title>
 				<de>Das Livekonzert von %Name1% %Name2%</de>
@@ -176,7 +176,7 @@
 				<job function="1" index="0" required="1" />
 				<job function="16" index="1" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="16" flags="1" production_licence_flags="4" production_broadcast_limit="1" broadcast_time_slot_start="19" broadcast_time_slot_end="23"/>
+			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="4" production_broadcast_limit="1" />
 			<genres maingenre="202" />
 			<blocks slope="40" max="4" min="2" />
 			<price slope="25" max="19500" min="15000" />
@@ -499,7 +499,7 @@
 				<job function="16" index="3" gender="0" required="1" />
 				<job function="64" index="4" gender="0" required="1" />
 			</jobs>
-			<data flags_optional="16" flags="1" broadcast_time_slot_start="19" broadcast_time_slot_end="23" production_broadcast_limit="2" />
+			<data flags_optional="16" flags="1" live_date="2,1,1,19,19" broadcast_time_slot_start="19" broadcast_time_slot_end="23" production_licence_flags="4" production_broadcast_limit="2" production_broadcast_flags="65536"/>
 			<genres maingenre="204" subgenres="0" />
 			<blocks slope="40" max="4" min="2" />
 			<price slope="25" max="59500" min="45000" />
@@ -1559,7 +1559,7 @@
 			<speed slope="50" max="90" min="53" />
 		</scripttemplate>
 
-		<!--Produkt Show statt Serie, Cast Host+Gäste statt Darseller, eine Ausstrahlung, Ausstrahlungszeit, kein optionaler Kult-->
+		<!--Produkt Show statt Serie, Cast Host+Gäste statt Darseller, eine Ausstrahlung, Ausstrahlungszeit, kein optionaler Kult, Preis gesenkt-->
 		<scripttemplate licence_type="3" product="3" guid="Kasi-script-UnterhaltungNachts">
 			<title>
 				<de>Die Nacht%name%</de>
@@ -1704,10 +1704,10 @@
 				<job function="64" index="3" gender="1" required="1" />
 				<job function="64" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="16" production_broadcast_limit="1" broadcast_time_slot_start="0" broadcast_time_slot_end="8"/>
+			<data flags="16" production_licence_flags="4" production_broadcast_limit="1" broadcast_time_slot_start="0" broadcast_time_slot_end="8" production_broadcast_flags="65536"/>
 			<genres maingenre="100" subgenres="7" />
 			<blocks value="7" />
-			<price max="150000" min="70000" />
+			<price max="20000" min="10000" />
 			<potential slope="45" max="71" min="22" />
 			<outcome slope="40" max="32" min="25" />
 			<review slope="40" max="54" min="17" />
