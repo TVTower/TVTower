@@ -1173,8 +1173,8 @@ Type TDatabaseLoader
 			"maingenre", "subgenre", "price_mod", ..
 			"available", "flags", "licence_flags", ..
 			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-			"broadcast_limit", "data_broadcast_limit", "licence_broadcast_limit", ..
-			"broadcast_flags", "data_broadcast_flags", "licence_broadcast_flags" ..
+			"broadcast_limit", "licence_broadcast_limit", ..
+			"broadcast_flags", "licence_broadcast_flags" ..
 		]) 'also allow a "<live>" block
 		'], ["live"]) 'also allow a "<live>" block
 
@@ -1189,14 +1189,23 @@ Type TDatabaseLoader
 			programmeData.broadcastTimeSlotStart = -1
 			programmeData.broadcastTimeSlotEnd = -1
 		EndIf
+		'define same for licence (override later if needed)
+		programmeLicence.broadcastTimeSlotStart = programmeData.broadcastTimeSlotStart
+		programmeLicence.broadcastTimeSlotEnd = programmeData.broadcastTimeSlotEnd
 
-		'both get the same limit (except individually configured)
-		programmeData.SetBroadcastLimit( data.GetInt("data_broadcast_limit", data.GetInt("broadcast_limit", programmeData.broadcastLimit)) )
-		programmeLicence.SetBroadcastLimit( data.GetInt("licence_broadcast_limit", data.GetInt("broadcast_limit", programmeLicence.broadcastLimit)) )
 
-		'both get the same flags (except individually configured)
-		programmeData.SetBroadcastFlag(data.GetInt("data_broadcast_flags", data.GetInt("broadcast_flags", 0)))
-		programmeLicence.SetBroadcastFlag(data.GetInt("licence_broadcast_flags", data.GetInt("broadcast_flags", 0)))
+		programmeData.SetBroadcastLimit(data.GetInt("broadcast_limit", programmeData.broadcastLimit))
+		'if not given - disable and fallback to programmeData limit then
+		programmeLicence.SetBroadcastLimit(data.GetInt("licence_broadcast_limit", -1))
+
+
+		programmeData.SetBroadcastFlag(data.GetInt("broadcast_flags", 0))
+		'if defined, it overrides (replaces) the data defined broadcast flags 
+		'so not just enabling new flags but setting it "raw"
+		if data.GetInt("licence_broadcast_flags", -1) >= 0 
+			programmeLicence.broadcastFlags = data.GetInt("licence_broadcast_flags")
+		endif
+
 
 		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
 

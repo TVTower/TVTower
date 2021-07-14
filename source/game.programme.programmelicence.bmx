@@ -1578,7 +1578,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'returns the flags as a mix of all licences
 	Method GetBroadcastFlags:int() {_exposeToLua}
 		'single-licence
-		if GetSubLicenceCount() = 0 and GetData() then return broadcastFlags
+		if GetSubLicenceCount() = 0 and GetData() 
+			'if licence did not define any, use the ones of programmeData
+			'so as soon ONE flag is set, the data ones are INGORED!
+			'ensure to "take over" all flags from data if needed
+			if broadcastFlags < 0
+				Return GetData().broadcastFlags
+			else
+				Return broadcastFlags
+			endif
+		endif
 
 		local allBroadcastFlags:int
 		For local licence:TProgrammeLicence = eachin subLicences
@@ -2019,6 +2028,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 	End Method
 
+
+	'called as soon as the programme licence is broadcasted
+	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0) override
+		'=== UPDATE BROADCAST RESTRICTIONS ===
+		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			If HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST)
+				broadcastTimeSlotStart = -1
+				broadcastTimeSlotEnd = -1
+			EndIf
+		EndIf
+	End Method
+	
 
 	Method ShowSheet:Int(x:Int,y:Int, align:Float=0.5, showMode:int=0, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner

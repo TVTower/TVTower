@@ -165,7 +165,8 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method BeginBroadcasting:Int(day:Int, hour:Int, minute:Int, audienceData:Object)
 		Super.BeginBroadcasting:Int(day, hour, minute, audienceData)
 
-		'inform data that it gets broadcasted by a player
+		'inform licence and data that it gets broadcasted by a player
+		licence.doBeginBroadcast(owner, usedAsType)
 		data.doBeginBroadcast(owner, usedAsType)
 
 		'reset stat
