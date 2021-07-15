@@ -724,118 +724,140 @@ Type TPersist
 					If fieldObj.MetaData("nosave") And Not fieldObj.MetaData("doload") Then Continue
 
 					Local fieldType:String = fieldNode.getAttribute("type")
+
+
+					'ronny: delegate "primitive to object" conversions
+					local isStoredPrimitive:Int = False
+					local isFieldPrimitive:Int = False
 					Select fieldType
-						Case "byte", "short", "int"
-							fieldObj.SetInt(obj, fieldNode.GetContent().toInt())
-						Case "long"
-							fieldObj.SetLong(obj, fieldNode.GetContent().toLong())
-						Case "float"
-							fieldObj.SetFloat(obj, fieldNode.GetContent().toFloat())
-						Case "double"
-							fieldObj.SetDouble(obj, fieldNode.GetContent().toDouble())
-						Default
-							If fieldType.StartsWith("array:") Then
-
-								Local arrayType:TTypeId = fieldObj.TypeId()
-								Local arrayElementType:TTypeId = arrayType.ElementType()
-
-								Local scalesi:Int[]
-								Local scales:String[] = fieldNode.getAttribute("scales").split(",")
-								If scales.length > 1 Then
-									scalesi = New Int[scales.length]
-									For Local i:Int = 0 Until scales.length
-										scalesi[i] = Int(scales[i])
-									Next
-								End If
-
-								Select arrayElementType
-									Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId
-
-										Local arrayList:String[]
-										Local content:String = fieldNode.GetContent().Trim()
-
-										If content Then
-											arrayList = content.Split(" ")
-										Else
-											arrayList = New String[0]
-										End If
-
-										Local arrayObj:Object = arrayType.NewArray(arrayList.length, scalesi)
-										fieldObj.Set(obj, arrayObj)
-
-										For Local i:Int = 0 Until arrayList.length
-											arrayType.SetArrayElement(arrayObj, i, arrayList[i])
-										Next
-
-									Default
-										Local arrayList:TList = fieldNode.getChildren()
-
-										If arrayList ' Birdie
-											Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
-											fieldObj.Set(obj, arrayObj)
-
-											Local i:Int
-											For Local arrayNode:TxmlNode = EachIn arrayList
-
-												Select arrayElementType
-													Case StringTypeId
-														arrayType.SetArrayElement(arrayObj, i, arrayNode.GetContent())
-													Default
-														' file version 5 ... array cells can contain references
-														' is this a reference?
-														Local ref:String = arrayNode.getAttribute("ref")
-														If ref Then
-															Local objRef:Object = objectMap.ValueForKey(ref)
-															If objRef Then
-																arrayType.SetArrayElement(arrayObj, i, objRef)
-															Else
-																Throw "[Array] Reference not mapped yet : " + ref
-															End If
-														Else
-															arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode))
-														End If
-												End Select
-
-												i:+ 1
-											Next
-										EndIf
-								End Select
-							Else
-								If fieldType = "string" And fileVersion < 8 Then
-									fieldObj.SetString(obj, fieldNode.GetContent())
-								Else
-									' is this a reference?
-									Local ref:String = fieldNode.getAttribute("ref")
-									If ref Then
-										Local objRef:Object = objectMap.ValueForKey(ref)
-										If objRef Then
-											fieldObj.Set(obj, objRef)
-										'empty string - fileVersion >= 8 uses "String", not "string" ?
-										'ElseIf fieldType = "String" and objectMap.Contains(ref)
-										ElseIf fieldType.ToLower() = "string" and objectMap.Contains(ref)
-											fieldObj.Set(obj, "")
-										Else
-											Throw "[Field] Reference not mapped yet : " + ref
-										End If
-									Else
-										'Ronny
-										'check if the current programme knows the stored data structure / type
-										local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
-										if not storedFieldTypeID
-											fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
-										'or if it differs
-										elseif storedFieldTypeID <> fieldObj.TypeId()
-											fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), DeSerializeObject("", fieldNode)) )
-										else
-											fieldObj.Set(obj, DeSerializeObject("", fieldNode))
-										endif
-
-'										fieldObj.Set(obj, DeSerializeObject("", fieldNode))
-									End If
-								End If
-							End If
+						Case "byte", "short", "int", "long", "float", "double"
+							isStoredPrimitive = True
+					End Select
+					Select fieldObj.TypeID().name().ToLower()
+						Case "byte", "short", "int", "long", "float", "double"
+							isFieldPrimitive = True
 					End Select
 
+					'primitives can be kind of "casted" (albeit with loss)
+					if isStoredPrimitive and isFieldPrimitive
+						Select fieldType
+							Case "byte", "short", "int"
+								fieldObj.SetInt(obj, fieldNode.GetContent().toInt())
+							Case "long"
+								fieldObj.SetLong(obj, fieldNode.GetContent().toLong())
+							Case "float"
+								fieldObj.SetFloat(obj, fieldNode.GetContent().toFloat())
+							Case "double"
+								fieldObj.SetDouble(obj, fieldNode.GetContent().toDouble())
+						End Select
+					Else
+						Select fieldType
+							Case "byte", "short", "int", "long", "float", "double"
+								fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
+
+							Default
+								If fieldType.StartsWith("array:") Then
+
+									Local arrayType:TTypeId = fieldObj.TypeId()
+									Local arrayElementType:TTypeId = arrayType.ElementType()
+
+									Local scalesi:Int[]
+									Local scales:String[] = fieldNode.getAttribute("scales").split(",")
+									If scales.length > 1 Then
+										scalesi = New Int[scales.length]
+										For Local i:Int = 0 Until scales.length
+											scalesi[i] = Int(scales[i])
+										Next
+									End If
+
+									Select arrayElementType
+										Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId
+
+											Local arrayList:String[]
+											Local content:String = fieldNode.GetContent().Trim()
+
+											If content Then
+												arrayList = content.Split(" ")
+											Else
+												arrayList = New String[0]
+											End If
+
+											Local arrayObj:Object = arrayType.NewArray(arrayList.length, scalesi)
+											fieldObj.Set(obj, arrayObj)
+
+											For Local i:Int = 0 Until arrayList.length
+												arrayType.SetArrayElement(arrayObj, i, arrayList[i])
+											Next
+
+										Default
+											Local arrayList:TList = fieldNode.getChildren()
+
+											If arrayList ' Birdie
+												Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												Local i:Int
+												For Local arrayNode:TxmlNode = EachIn arrayList
+
+													Select arrayElementType
+														Case StringTypeId
+															arrayType.SetArrayElement(arrayObj, i, arrayNode.GetContent())
+														Default
+															' file version 5 ... array cells can contain references
+															' is this a reference?
+															Local ref:String = arrayNode.getAttribute("ref")
+															If ref Then
+																Local objRef:Object = objectMap.ValueForKey(ref)
+																If objRef Then
+																	arrayType.SetArrayElement(arrayObj, i, objRef)
+																Else
+																	Throw "[Array] Reference not mapped yet : " + ref
+																End If
+															Else
+																arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode))
+															End If
+													End Select
+
+													i:+ 1
+												Next
+											EndIf
+									End Select
+								Else
+									If fieldType = "string" And fileVersion < 8 Then
+										fieldObj.SetString(obj, fieldNode.GetContent())
+									Else
+										' is this a reference?
+										Local ref:String = fieldNode.getAttribute("ref")
+										If ref Then
+											Local objRef:Object = objectMap.ValueForKey(ref)
+											If objRef Then
+												fieldObj.Set(obj, objRef)
+											'empty string - fileVersion >= 8 uses "String", not "string" ?
+											'ElseIf fieldType = "String" and objectMap.Contains(ref)
+											ElseIf fieldType.ToLower() = "string" and objectMap.Contains(ref)
+												fieldObj.Set(obj, "")
+											Else
+												Throw "[Field] Reference not mapped yet : " + ref
+											End If
+										Else
+											'Ronny
+											'check if the current programme knows the stored data structure / type
+											local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
+											if not storedFieldTypeID
+												fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
+											'or if it differs
+											elseif storedFieldTypeID <> fieldObj.TypeId()
+												fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), DeSerializeObject("", fieldNode)) )
+											else
+												fieldObj.Set(obj, DeSerializeObject("", fieldNode))
+											endif
+
+	'										fieldObj.Set(obj, DeSerializeObject("", fieldNode))
+										End If
+									End If
+								End If
+						End Select
+					EndIf
 				End If
 			Next
 		End If
