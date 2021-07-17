@@ -1201,11 +1201,15 @@ Type TDatabaseLoader
 
 		programmeData.SetBroadcastFlag(data.GetInt("broadcast_flags", 0))
 		'if defined, it overrides (replaces) the data defined broadcast flags 
-		'so not just enabling new flags but setting it "raw"
+		'so not just enabling new flags but setting it "anew"
 		if data.GetInt("licence_broadcast_flags", -1) >= 0 
-			programmeLicence.broadcastFlags = data.GetInt("licence_broadcast_flags")
+			If not programmeLicence.broadcastFlags 
+				programmeLicence.broadcastFlags = new TTriStateIntBitmask
+			Else
+				programmeLicence.broadcastFlags.Reset()
+			EndIf
+			programmeLicence.broadcastFlags.Set( data.GetInt("licence_broadcast_flags"), True)
 		endif
-
 
 		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
 

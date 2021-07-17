@@ -2845,9 +2845,15 @@ Type TSavegameConverter
 	
 	
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
-		Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
+		'Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
+			'v0.7.0 -> "Int to TTriStateIntBitmask"
+			Case "Int>TTriStateIntBitmask".ToLower()
+				local mask:TTriStateIntBitmask = new TTriStateIntBitmask
+				mask.mask = Int(String(obj))
+				'mask.SetAllModified()
+				Return mask
 rem
 			'v0.6.2 -> BroadcastStatistics from TMap to TIntMap
 			Case "TMap>TIntMap".ToLower()

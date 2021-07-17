@@ -634,7 +634,8 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 		For Local i:Int = 1 To TVTBroadcastMaterialSourceFlag.count
 			Local flag:Int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
 			If productionConcept.script.productionBroadcastFlags & flag
-				programmeData.broadcastFlags :| flag
+				'setBroadcastFlag creates "broadcastFlags" if required
+				programmeData.SetBroadcastFlag(flag)
 			EndIf
 		Next
 

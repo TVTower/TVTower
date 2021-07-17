@@ -6,6 +6,7 @@ Import "game.modifier.base.bmx"
 Import "game.gameinformation.base.bmx"
 Import "Dig/base.util.scriptexpression.bmx"
 Import "Dig/base.util.string.bmx"
+Import "Dig/base.util.bitmask.bmx"
 
 
 'could be done as "interface"
@@ -19,7 +20,7 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 
 	Field topicality:Float = 1.0
 	Field flags:Int = 0
-	Field broadcastFlags:Int = 0
+	Field broadcastFlags:TTriStateIntBitmask
 
 	Method GenerateGUID:String()
 		Return "broadcastmaterialsource-base-"+id
@@ -38,7 +39,9 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 		effects = base.CopyEffects()
 		topicality = base.topicality
 		flags = base.flags
-		broadcastFlags = base.broadcastFlags
+		If base.broadcastFlags
+			broadcastFlags = base.broadcastFlags.Copy()
+		EndIf
 
 		Return Self
 	End Method
@@ -104,12 +107,12 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 
 
 
-	Method hasFlag:Int(flag:Int) {_exposeToLua}
+	Method HasFlag:Int(flag:Int) {_exposeToLua}
 		Return (flags & flag) > 0
 	End Method
 
 
-	Method setFlag(flag:Int, enable:Int=True)
+	Method SetFlag(flag:Int, enable:Int=True)
 		If enable
 			flags :| flag
 		Else
@@ -118,17 +121,23 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
-	Method hasBroadcastFlag:Int(flag:Int) {_exposeToLua}
-		Return (broadcastFlags & flag) > 0
+	Method HasBroadcastFlag:Int(flag:Int) {_exposeToLua}
+		If not broadcastFlags then Return False
+		Return broadcastFlags.Has(flag)
+'		Return (broadcastFlags & flag) > 0
 	End Method
 
 
 	Method SetBroadcastFlag(flag:Int, enable:Int=True)
+		If not broadcastFlags then broadcastFlags = new TTriStateIntBitmask
+		broadcastFlags.Set(flag, enable)
+rem
 		If enable
 			broadcastFlags :| flag
 		Else
 			broadcastFlags :& ~flag
 		EndIf
+endrem
 	End Method
 
 
@@ -420,12 +429,12 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 
 
 	Method IsAvailable:Int()
-		Return Not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+		Return Not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
 	End Method
 
 
 	Method IsControllable:Int()
-		Return Not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+		Return Not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
 	End Method
 
 

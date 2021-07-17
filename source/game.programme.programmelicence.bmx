@@ -1579,14 +1579,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method GetBroadcastFlags:int() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() 
-			'if licence did not define any, use the ones of programmeData
-			'so as soon ONE flag is set, the data ones are INGORED!
-			'ensure to "take over" all flags from data if needed
-			if broadcastFlags < 0
-				Return GetData().broadcastFlags
-			else
-				Return broadcastFlags
-			endif
+			'data did not define one but licence? 
+			If not GetData().broadcastFlags 
+				If broadcastFlags
+					Return broadcastFlags.GetMask()
+				Else
+					Return 0
+				EndIf
+			Else
+				Return GetData().broadcastFlags.GetMixMask(broadcastFlags)
+			EndIf
 		endif
 
 		local allBroadcastFlags:int
