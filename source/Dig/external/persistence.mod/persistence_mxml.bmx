@@ -753,7 +753,7 @@ Type TPersist
 					Else
 						Select fieldType
 							Case "byte", "short", "int", "long", "float", "double"
-								fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
+								fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), fieldNode.GetContent()) )
 
 							Default
 								If fieldType.StartsWith("array:") Then
