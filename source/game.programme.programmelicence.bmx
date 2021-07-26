@@ -934,30 +934,38 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	'override
-	Method GetBroadcastTimeSlotStart:int()
-		local result:int = Super.GetBroadcastTimeSlotStart()
-		if result = -1 and data then return data.GetBroadcastTimeSlotStart()
-
-		return result
+	Method GetBroadcastTimeSlotStart:int() override
+		Local result:int = Super.GetBroadcastTimeSlotStart()
+		If result = -1 And HasBroadcastTimeSlot()
+			If data Then Return data.GetBroadcastTimeSlotStart()
+		EndIf
+		Return result
 	End Method
 
 
-	'override
-	Method GetBroadcastTimeSlotEnd:int()
-		local result:int = Super.GetBroadcastTimeSlotEnd()
-		if result = -1 and GetData() Then return GetData().GetBroadcastTimeSlotEnd()
-
-		return result
+	Method GetBroadcastTimeSlotEnd:int() override
+		Local result:int = Super.GetBroadcastTimeSlotEnd()
+		If result = -1 And HasBroadcastTimeSlot()
+			If data Then Return data.GetBroadcastTimeSlotEnd()
+		EndIf
+		Return result
 	End Method
 
 
 	'override
 	Method HasBroadcastTimeSlot:int()
 		if GetSubLicenceCount() = 0 and GetData()
-			if GetData().HasBroadcastTimeSlot() then return True
-
-			return Super.HasBroadcastTimeSlot()
+			If Super.HasBroadcastTimeSlotEnabled() 
+				'if one of the flags is set to "use data's slots" it
+				'depends on data's slot enabled state
+				if broadcastTimeSlotStart=-1 or broadcastTimeSlotEnd=-1
+					Return GetData().HasBroadcastTimeSlot()
+				Else
+					Return True
+				EndIf
+			Else
+				Return False
+			EndIf
 		else
 			'it is enough if one licence has a time slot
 			For local licence:TProgrammeLicence = eachin subLicences
@@ -971,9 +979,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	'returns maximum maxLimit found in licence or sublicences
 	Method GetBroadcastLimitMax:int() override {_exposeToLua}
-		local result:int = Super.GetBroadcastLimitMax()
-		If GetData() And GetData().HasBroadcastLimit() 
-			result = Min(GetData().GetBroadcastLimitMax(), result)
+		local result:int
+		
+		If HasBroadcastLimitDefined() and HasBroadcastLimitEnabled()
+			result = Super.GetBroadcastLimitMax()
+		ElseIf GetData() And GetData().HasBroadcastLimit() 
+			result = GetData().GetBroadcastLimitMax()
 		EndIf
 
 		For local licence:TProgrammeLicence = eachin subLicences
@@ -1013,22 +1024,20 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	'override
 	Method GetBroadcastLimit:int() override {_exposeToLua}
+		local result:int
+		
 		if GetSubLicenceCount() = 0
-			If GetData() and GetData().HasBroadcastLimit()
-				If HasBroadcastLimit()
-					Return Min(self.broadcastLimit, data.GetBroadcastLimit())
-				Else
-					Return data.GetBroadcastLimit()
-				EndIf
-			Else
-				Return self.broadcastLimit
+			If HasBroadcastLimitDefined() and HasBroadcastLimitEnabled()
+				Return Super.GetBroadcastLimit()
+			ElseIf GetData() and GetData().HasBroadcastLimit()
+				Return GetData().GetBroadcastLimit()
 			EndIf
+			Return -1
 		else
 			local maxLimit:int = 0
 			local foundLimit:int = 0
-			'find smalles limit
+			'find biggest limit
 			For local licence:TProgrammeLicence = eachin subLicences
 				if not foundLimit
 					maxLimit = licence.GetBroadcastLimit()
@@ -1043,11 +1052,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	'only returns a LICENCES limit, ignoring TProgrammeData!
 	Method HasBroadcastLimit:int() override {_exposeToLua}
-		'If GetData() and GetData().HasBroadcastLimit() then Return True
-		
-		if GetSubLicenceCount() = 0 then Return Super.HasBroadcastLimit()
+		If GetSubLicenceCount() = 0
+			If Super.HasBroadcastLimit()
+				Return True
+			ElseIf GetData() and GetData().HasBroadcastLimit() 
+				Return True
+			Else
+				Return False
+			EndIf
+		EndIf
 
 		For local licence:TProgrammeLicence = eachin subLicences
 			if licence.HasBroadcastLimit() then return True
@@ -1070,13 +1084,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	'return true if all (sub-)licences are exceeding its limits
 	Method IsExceedingBroadcastLimit:int() override {_exposeToLua}
-		if GetSubLicenceCount() = 0 
-			If GetData() and GetData().HasBroadcastLimit()
-				if GetData().GetBroadcastLimit() <= 0 Then Return True
-			EndIf
-
-			Return GetBroadcastLimit() <= 0 And HasBroadcastLimit()
-		else
+		If GetSubLicenceCount() = 0 
+			Return (HasBroadcastLimit() and GetBroadcastLimit() <= 0)
+		Else
 			'all licences need to exceed the limit
 			'return GetSublicenceExceedingBroadcastLimitCount() = GetSubLicenceCount()
 
@@ -2035,7 +2045,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0) override
 		'=== UPDATE BROADCAST RESTRICTIONS ===
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			If HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST)
+			If HasBroadcastTimeSlotEnabled() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
+				SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, False)
 				broadcastTimeSlotStart = -1
 				broadcastTimeSlotEnd = -1
 			EndIf
@@ -2187,7 +2198,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 		EndRem
 		endif
-		If HasBroadcastLimit() or (GetData() and GetData().HasBroadcastLimit()) then showMsgBroadcastLimit = True
+		If HasBroadcastLimit() then showMsgBroadcastLimit = True
 		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot = True
 
 		'Ron: disabled for now - as too many messages do not fit into the
@@ -2402,7 +2413,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 
 		if showMsgBroadcastTimeSlot
-			If HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST)
+			If HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
@@ -2543,9 +2554,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				titleDim = skin.fontNormal.DrawSimple("TrailerMod:", contentX + 5, contentY)
 				skin.fontNormal.DrawBox(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleDim.x + 5, contentY, contentW - titleDim.x - 5 - 5, 60, sALIGN_LEFT_TOP, SColor8.White)
 				'2 lines of output...
-				contentY :+ 12
+				contentY :+ 12 + 4
 			endif
-
+			
 			if TSportsProgrammeData(data)
 				local sportsData:TSportsProgrammeData = TSportsProgrammeData(data)
 				contentY :+ 12

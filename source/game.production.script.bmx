@@ -1281,7 +1281,7 @@ endrem
 			contentY :+ msgH
 
 			If showMsgTimeSlotLimit
-				if productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST > 0
+				if productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST > 0
 					skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 				Else
 					skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)

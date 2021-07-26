@@ -2111,9 +2111,10 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'=== UPDATE BROADCAST RESTRICTIONS ===
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			If HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST)
-				broadcastTimeSlotStart = -1
-				broadcastTimeSlotEnd = -1
+			If HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
+				SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, False)
+				'broadcastTimeSlotStart = -1
+				'broadcastTimeSlotEnd = -1
 			EndIf
 		EndIf
 

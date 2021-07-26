@@ -5514,7 +5514,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="6" broadcast_time_slot_end="11" broadcast_flags="32768" price_mod="1.0" />
+			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="6" broadcast_time_slot_end="11" broadcast_flags="98304" price_mod="1.0" />
 			<ratings critics="25" speed="10" outcome="15" />
 		</programme>
 		<programme id="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -5530,7 +5530,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="17" broadcast_time_slot_end="22" broadcast_flags="32768" price_mod="1.0" />
+			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="17" broadcast_time_slot_end="22" broadcast_flags="98304" price_mod="1.0" />
 			<ratings critics="25" speed="10" outcome="15" />
 		</programme>
 		<programme id="3a0c9fba-3b1e-49e1-afdf-340e4aa1f913" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093409" creator="">

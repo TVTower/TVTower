@@ -2229,7 +2229,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 14
+	Const SAVEGAME_VERSION:int = 15
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2486,7 +2486,23 @@ Type TSaveGame Extends TGameState
 
 
 	Global _nilNode:TNode = New TNode._parent
-	Function RepairData()
+	Function RepairData(savegameVersion:Int)
+		if savegameVersion < 15
+			'set "has broadcast slot flag"
+			For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
+				If licence.data and licence.data.broadcastTimeSlotStart >= 0 and licence.data.broadcastTimeSlotEnd >= 0
+					licence.data.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
+					licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
+					print "RepairData: programme data " + RSet(licence.GetTitle(), 20) +" defined slots - Set flag HAS_BROADCAST_TIME_SLOT"
+				ElseIf licence.broadcastTimeSlotStart >= 0 and licence.broadcastTimeSlotEnd >= 0
+					licence.data.broadcastTimeSlotStart = licence.broadcastTimeSlotStart
+					licence.data.broadcastTimeSlotEnd = licence.broadcastTimeSlotEnd
+					licence.data.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
+					licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
+					print "RepairData: licence " + RSet(licence.GetTitle(), 20) +" defined slots  - Set flag HAS_BROADCAST_TIME_SLOT"
+				EndIf
+			Next
+		endif
 		Rem
 			would "break" unfinished series productions with re-ordered
 			production orders (1,3,2) and missing episodes ([1,null,3])
@@ -2688,7 +2704,7 @@ endrem
 		CleanUpData()
 
 
-		RepairData()
+		RepairData(savegameSummary.GetInt("savegame_version"))
 
 		'close message window
 		If messageWindow Then messageWindow.Close()

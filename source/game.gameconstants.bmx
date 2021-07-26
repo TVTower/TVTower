@@ -489,7 +489,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'expose price of the material - eg. not-yet-aired custom productions
 	Const HIDE_PRICE:Int = 128
 
-	Const HAS_BROADCAST_LIMIT:Int = 256
+	Const BROADCAST_LIMIT_ENABLED:Int = 256
 
 	'material never changes from LIVE To LIVEONTAPE
 	Const ALWAYS_LIVE:Int = 512
@@ -507,9 +507,12 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Const LIVE_TIME_FIXED:Int = 16384
 
 	'keep broadcast time restriction on begin of first broadcast?
-	Const KEEP_TIMESLOT_RESTRICTONS_ON_BROADCAST:Int = 32768
+	Const KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST:Int = 32768
 
-	Const count:Int = 16
+	'indicator if broadcastTimeSlotBegin and *End need to be considered
+	Const BROADCAST_TIME_SLOT_ENABLED:Int = 65536
+
+	Const count:Int = 17
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -536,6 +539,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 			Case  8192	Return 14
 			Case 16384	Return 15
 			Case 32768	Return 16
+			Case 65536	Return 17
 		End Select
 		Return 0
 	End Function

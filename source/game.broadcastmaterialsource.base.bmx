@@ -175,7 +175,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	'the maximum _current_ amount of broadcasts possible for this licence
 	Field broadcastLimit:Int = 0
 	'the maximum amount of broadcasts possible for this licence after reset
-	Field broadcastLimitMax:Int = 0
+	Field broadcastLimitMax:Int = -1
 
 	'from when to when you are allowed to broadcast this material
 	Field broadcastTimeSlotStart:Int = -1
@@ -280,7 +280,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 
 
 	Method SetBroadcastLimit:Int(broadcastLimit:Int = -1)
-		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT, broadcastLimit > 0)
+		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_LIMIT_ENABLED, broadcastLimit > 0)
 
 		Self.broadcastLimitMax = broadcastLimit
 		Self.broadcastLimit = broadcastLimit
@@ -337,13 +337,23 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
+	Method HasBroadcastLimitEnabled:Int() Final {_exposeToLua}
+		Return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_LIMIT_ENABLED)
+	End Method
+
+
+	Method HasBroadcastLimitDefined:Int() Final {_exposeToLua}
+		Return Self.broadcastLimitMax >= 0
+	End Method
+
+
 	Method HasBroadcastLimit:Int() {_exposeToLua}
-		Return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT)
+		Return HasBroadcastLimitDefined() and HasBroadcastLimitEnabled()
 	End Method
 
 
 	Method isExceedingBroadcastLimit:Int() {_exposeToLua}
-		Return GetBroadcastLimit() <= 0 And HasBroadcastLimit()
+		Return GetBroadcastLimit() <= 0 and GetBroadcastLimitMax() >= 0 And HasBroadcastLimit()
 	End Method
 
 
@@ -357,9 +367,18 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
+	Method HasBroadcastTimeSlotEnabled:Int()
+		Return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED)
+	End Method
+
+
+	Method HasBroadcastTimeSlotDefined:Int()
+		Return self.broadcastTimeSlotEnd >= 0 and self.broadcastTimeSlotStart >= 0
+	End Method
+
+
 	Method HasBroadcastTimeSlot:Int()
-		'both need to be set!
-		Return broadcastTimeSlotStart >= 0 And broadcastTimeSlotEnd >= 0
+		Return HasBroadcastTimeSlotDefined() and HasBroadcastTimeSlotEnabled()
 	End Method
 
 
