@@ -95,16 +95,16 @@ End Function
 Type TScriptTemplate Extends TScriptBase
 	'for random generation we split into "min, max" and weighting/slope
 	'ratings
-	Field outcomeMin:Float, outcomeMax:Float, outcomeSlope:Float
-	Field reviewMin:Float, reviewMax:Float, reviewSlope:Float
-	Field speedMin:Float, speedMax:Float, speedSlope:Float
-	Field potentialMin:Float, potentialMax:Float, potentialSlope:Float
+	Field outcomeMin:Float, outcomeMax:Float, outcomeSlope:Float=0.5
+	Field reviewMin:Float, reviewMax:Float, reviewSlope:Float=0.5
+	Field speedMin:Float, speedMax:Float, speedSlope:Float=0.5
+	Field potentialMin:Float, potentialMax:Float, potentialSlope:Float=0.5
 
-	Field priceMin:int, priceMax:int, priceSlope:Float
-	Field blocksMin:int, blocksMax:int, blocksSlope:Float
+	Field priceMin:int, priceMax:int, priceSlope:Float=0.5
+	Field blocksMin:int, blocksMax:int, blocksSlope:Float=0.5
 	'this values define how much of potentially available episodes will
 	'get generated for a resulting TScript
-	Field episodesMin:int, episodesMax:int, episodesSlope:Float
+	Field episodesMin:int, episodesMax:int, episodesSlope:Float=0.5
 
 	'defines if the script is only available from/to/in a specific date
 	Field available:int = True
@@ -128,9 +128,6 @@ Type TScriptTemplate Extends TScriptBase
 	Field studioSizeSlope:Float=0.5
 
 	Field requireAudience:Int = 0
-	Field coulisseType1:Int	= -1
-	Field coulisseType2:Int	= -1
-	Field coulisseType3:Int = -1
 
 	'targetgroups which _might_ be enabled during production
 	Field targetGroupOptional:Int = -1
