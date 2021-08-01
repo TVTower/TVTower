@@ -1308,27 +1308,30 @@ endrem
 				Local programmeEndDay:Int = GetWorldTime().GetDay(programme.data.releaseTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)
 
 				'if it has a given time slot, mark these
-				If programme.data.HasBroadcastTimeSlot()
+				If programme.licence.HasBroadcastTimeSlot()
 					'mark all red (and mark "allowed" individually)
 					EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, 2)
+					
+					Local slotStart:Int = programme.licence.GetBroadcastTimeSlotStart()
+					Local slotEnd:Int = programme.licence.GetBroadcastTimeSlotEnd()
 
 					local allowedSlotCount:int
 					'01:00 - 11:00
-					if programme.data.broadcastTimeSlotStart < programme.data.broadcastTimeSlotEnd
-						allowedSlotCount = programme.data.broadcastTimeSlotEnd - programme.data.broadcastTimeSlotStart
+					if slotStart < slotEnd
+						allowedSlotCount = slotEnd - slotStart
 					'11:00 - 01:00
-					ElseIf programme.data.broadcastTimeSlotStart > programme.data.broadcastTimeSlotEnd
-						allowedSlotCount = 24 - (programme.data.broadcastTimeSlotEnd - programme.data.broadcastTimeSlotStart)
+					ElseIf slotStart > slotEnd
+						allowedSlotCount = 24 - (slotEnd - slotStart)
 					'01:00 - 01:00
 					Else
 						allowedSlotCount = 1
 					EndIf
 
 
-					If not programme.data.IsLive()
+					If not programme.licence.IsLive()
 						'mark allowed slots of whole day
 						For Local i:Int = 0 Until allowedSlotCount
-							EnableSlotOverlay((programme.data.broadcastTimeSlotStart + i mod 24), TVTBroadcastMaterialType.PROGRAMME, 1)
+							EnableSlotOverlay((slotStart + i mod 24), TVTBroadcastMaterialType.PROGRAMME, 1)
 						Next
 					Else
 						'mark allowed slots since earliest start hour
@@ -1337,10 +1340,10 @@ endrem
 						Local blockStartHour:Int = GetWorldTime().GetDayHour(blockTime)
 						if blockStartDay <= planningDay
 							'ex. 02:00 - 11:00
-							If programme.data.broadcastTimeSlotStart <= programme.data.broadcastTimeSlotEnd
-								local earliestSlot:int = programme.data.broadcastTimeSlotStart
+							If slotStart <= slotEnd
+								local earliestSlot:int = slotStart
 								'subtract 1 as the programme has to end BEFORE
-								local latestSlot:int = programme.data.broadcastTimeSlotEnd -1
+								local latestSlot:int = slotEnd -1
 								'starting today?
 								if blockStartDay = planningDay
 									earliestSlot = Max(earliestSlot, blockStartHour)
@@ -1352,9 +1355,9 @@ endrem
 								Next
 
 							'ex. 11:00 - 02:00
-							ElseIf programme.data.broadcastTimeSlotStart > programme.data.broadcastTimeSlotEnd
+							ElseIf slotStart > slotEnd
 								'11:00 - 0:00
-								local earliestSlot:int = programme.data.broadcastTimeSlotStart
+								local earliestSlot:int = slotStart
 								local latestSlot:int = 23
 								'starting today?
 								if blockStartDay = planningDay
@@ -1369,7 +1372,7 @@ endrem
 								'0:00 - 2:00
 								earliestSlot = 0
 								'subtract 1 as the programme has to end BEFORE
-								latestSlot = programme.data.broadcastTimeSlotEnd -1
+								latestSlot = slotEnd -1
 								'starting today?
 								if blockStartDay = planningDay
 									earliestSlot = Max(earliestSlot, blockStartHour)
@@ -1384,7 +1387,7 @@ endrem
 					EndIf
 
 				'starting later than the planning day (no slot affected) ?
-				Elseif programme.data.IsLive() and planningDay < programmeStartDay
+				Elseif programme.licence.IsLive() and planningDay < programmeStartDay
 					'mark all others red
 					EnableAllSlotOverlays(-1, TVTBroadcastMaterialType.PROGRAMME)
 
@@ -1392,7 +1395,7 @@ endrem
 				'else mark the exact live time (releasetime + blocks) slots
 				'(if planning day not in the past)
 	'				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay
-				ElseIf programme.data.IsLive() and (planningDay = programmeStartDay or planningDay = programmeEndDay) 
+				ElseIf programme.licence.IsLive() and (planningDay = programmeStartDay or planningDay = programmeEndDay) 
 					'mark all others red
 					EnableAllSlotOverlays(-1, TVTBroadcastMaterialType.PROGRAMME)
 
@@ -1418,7 +1421,7 @@ endrem
 						'EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
 					Else
 						'mark all forbidden slots
-						Local startDay:Int = GetWorldtime().GetDay(blockTime)
+						Local startDay:Int = GetWorldTime().GetDay(blockTime)
 						Local endDay:Int = GetWorldTime().GetDay(blockTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)
 
 						'future day - mark ALL blocks of today
