@@ -2487,6 +2487,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local overlayIntensity:Float = 0.35	
 		Local name:String = displayName
 		local nameHint:String 
+		
+		'update isAmateur state?
+		if isAmateur and person.IsCelebrity() then isAmateur = False
 
 		If isAmateur And Not isDragged()
 			If GetDisplayJobID() > 0 and TVTPersonJob.IsCastJob( GetDisplayJobID() )
