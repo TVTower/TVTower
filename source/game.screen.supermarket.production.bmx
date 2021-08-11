@@ -2738,12 +2738,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local boxAreaPaddingY:Int = 4, barAreaPaddingY:Int = 4
 
 		If showAmateurInformation
-			jobDescriptionH = 0
+'			jobDescriptionH = 0
 			lifeDataH = 0
-			lastProductionsH = 0
-
-			'bereich fuer hinweis einfuehren -- dass  es sich um einen
-			'non-celeb handelt der "Erfahrung" sammelt
+'			lastProductionsH = 0
 		EndIf
 
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
@@ -2754,6 +2751,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'also contains 8 bars
 		If person.IsCelebrity() And Not showAmateurInformation
 			barAreaH = 2 * barAreaPaddingY + 7 * (barH + 2)
+		else
+			'"profession"
+			barAreaH = 1 * barAreaPaddingY + 1 * (barH + 2)
 		EndIf
 
 		'box area
@@ -2769,9 +2769,10 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			Local title:String = person.GetFullName()
-			If showAmateurInformation
-				title = GetLocale("JOB_AMATEUR")
-			EndIf
+			'If showAmateurInformation
+				'title = GetLocale("JOB_AMATEUR")
+				'title = person.GetFullName() + " ("+GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(jobID)) + ")"
+			'EndIf
 
 			If titleH <= 18
 				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
@@ -2781,12 +2782,13 @@ Type TGUICastListItem Extends TGUISelectListItem
 		contentY :+ titleH
 
 
-		If Not showAmateurInformation
-			'=== JOB DESCRIPTION AREA ===
-			If jobDescriptionH > 0
-				skin.RenderContent(contentX, contentY, contentW, jobDescriptionH, "1")
+		'=== JOB DESCRIPTION AREA ===
+		If jobDescriptionH > 0
+			skin.RenderContent(contentX, contentY, contentW, jobDescriptionH, "1")
 
-				Local firstJobID:Int = -1
+			Local firstJobID:Int = -1
+			Local genreText:String = ""
+			If not showAmateurInformation
 				For Local jobIndex:Int = 1 To TVTPersonJob.Count
 					Local jobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
 					If Not person.HasJob(jobID) Then Continue
@@ -2800,27 +2802,28 @@ Type TGUICastListItem Extends TGUISelectListItem
 					genre = person.GetProductionData().GetTopGenre()
 				endif
 
-				Local genreText:String = ""
 				If genre >= 0 Then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
 				If genreText Then genreText = "~q" + genreText+"~q-"
-
-				If firstJobID >= 0
-					'add genre if you know the job
-					skin.fontNormal.DrawBox(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-				Else
-					'use the given jobID but declare as amateur
-					If jobID > 0
-						skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-					Else
-						skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-					EndIf
-				EndIf
-
-				contentY :+ jobDescriptionH
 			EndIf
 
+			If firstJobID >= 0
+				'add genre if you know the job
+				skin.fontNormal.DrawBox(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			Else
+				'use the given jobID but declare as amateur
+				If jobID > 0
+					skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				Else
+					skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				EndIf
+			EndIf
 
-			'=== LIFE DATA AREA ===
+			contentY :+ jobDescriptionH
+		EndIf
+
+
+		'=== LIFE DATA AREA ===
+		If lifeDataH > 0
 			skin.RenderContent(contentX, contentY, contentW, lifeDataH, "1")
 			'splitter
 			GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 165, contentY, 2, jobDescriptionH)
@@ -2835,15 +2838,17 @@ Type TGUICastListItem Extends TGUISelectListItem
 				skin.fontNormal.DrawSimple(person.GetCountryCode(), contentX + 170 + 5, contentY, skin.textColorNeutral)
 			EndIf
 			contentY :+ lifeDataH
+		EndIf
 
 
-			'=== LAST PRODUCTIONS AREA ===
+		'=== LAST PRODUCTIONS AREA ===
+		if lastProductionsH > 0
 			skin.RenderContent(contentX, contentY, contentW, lastProductionsH, "2")
-
-			If person.IsCelebrity() and person.GetProductionData()
+			'If person.IsCelebrity() and person.GetProductionData()
+			'If person.GetTotalProductionJobsDone() > 0 and 
+			If person.GetProductionData()
 				'last productions
 				Local productionIDs:Int[] = person.GetProductionData().GetProducedProgrammeIDs()
-
 				If productionIDs and productionIDs.length > 0
 					Local i:Int = 0
 					Local entryNum:Int = 0
@@ -2865,6 +2870,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			EndIf
 			contentY :+ lastProductionsH
 		EndIf
+
 
 		'=== BARS / BOXES AREA ===
 		'background for bars + boxes
@@ -2960,6 +2966,16 @@ Type TGUICastListItem Extends TGUISelectListItem
 				End Select
 				contentY :+ barH + 2
 			Next
+		Else
+			'bars have a top-padding
+			contentY :+ barAreaPaddingY
+
+			Local percentageUntilUpgrade:Float = person.GetProductionJobsDone(jobID) / float(GameRules.UpgradeInsignificantOnProductionJobsCount)
+
+			skin.RenderBar(contentX + 5, contentY, 100, 12, percentageUntilUpgrade)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_TRAINING"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			contentY :+ barH + 2
+
 		EndIf
 	'hidden?
 	Rem

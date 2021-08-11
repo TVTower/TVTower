@@ -43,6 +43,7 @@ JOB_MUSICIANS        = Musiciens
 
 #JOB_POSITION_UNASSIGNED = 
 
+#CAST_TRAINING         =
 #CAST_EXPERIENCE       = 
 #CAST_FAME             = 
 #CAST_AFFINITY         = 

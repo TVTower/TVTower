@@ -43,6 +43,7 @@ JOB_AMATEUR_MUSICIANS        = Músicos amadores
 
 JOB_POSITION_UNASSIGNED = Não atribuído
 
+#CAST_TRAINING         =
 CAST_EXPERIENCE       = Experiência
 CAST_FAME             = Fama
 #CAST_AFFINITY         = 

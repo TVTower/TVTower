@@ -1771,6 +1771,8 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 	Field jobsDone:Int[]
 	'is the person currently filming something?
 	Field producingIDs:Int[]
+	'array containing IDs of all produced programmes
+	Field producedProgrammeIDs:Int[]
 
 	'price manipulation. varying price but constant "quality"
 	Field priceModifier:Float = 1.0
@@ -1813,19 +1815,24 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 	End Method
 
 
-	Method GetProductionJobsDone:Int(job:Int)
+	Method GetProductionJobsDone:Int(jobID:Int)
 		'total count?
-		If job <= 0
+		If jobID <= 0
 			Return Self.jobsDone[0]
 		Else
-			Local jobIndex:Int = TVTPersonJob.GetIndex(job)
-			If jobIndex = 0 And job <> 0
+			Local jobIndex:Int = TVTPersonJob.GetIndex(jobID)
+			If jobIndex = 0 And jobID <> 0
 				TLogger.Log("GetProductionJobsDone()", "unsupported job-param.", LOG_ERROR)
 				Return 0
 			EndIf
 
 			Return Self.jobsDone[jobIndex]
 		EndIf
+	End Method
+
+
+	Method GetProducedProgrammeIDs:Int[]()
+		Return producedProgrammeIDs
 	End Method
 
 
@@ -1869,11 +1876,6 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 	End Method
 
 
-	Method GetProducedProgrammeIDs:Int[]()
-		Return New Int[0]
-	End Method
-
-
 	Method IsProducing:Int(programmeDataID:Int)
 		For Local ID:Int = EachIn producingIDs
 			If ID = programmeDataID Then Return True
@@ -1890,6 +1892,9 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 
 
 	Method FinishProduction:Int(programmeDataID:Int, job:Int)
+		If producedProgrammeIDs and MathHelper.InIntArray(programmeDataID, producedProgrammeIDs) Then Return False
+
+		'add newly done jobs
 		jobsDone[0] :+ 1
 		For Local jobIndex:Int = 1 To TVTPersonJob.count
 			If (job & TVTPersonJob.GetAtIndex(jobIndex)) > 0
@@ -1897,12 +1902,15 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 			EndIf
 		Next
 
+		'remove programme from currently in production/filmed elements
 		Local newProducingIDs:Int[]
 		For Local ID:Int = EachIn producingIDs
 			If ID = programmeDataID Then Continue
 			newProducingIDs :+ [ID]
 		Next
 		producingIDs = newProducingIDs
+
+		producedProgrammeIDs :+ [programmeDataID]
 	End Method	
 End Type
 
