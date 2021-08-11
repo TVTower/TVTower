@@ -1595,61 +1595,20 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		castSelectList.EmptyList()
 
 		'add all castable celebrities to that list
-		Local personsList:TObjectList = GetPersonBaseCollection().GetCastableCelebritiesList()
-		Local persons:TPersonBase[]
-		For Local person:TPersonBase = EachIn personsList
-			If filterToGenderID > 0 And person.gender <> filterToGenderID Then Continue
-
-			If filterToJobID = 0 Or person.HasJob(filterToJobID)
-				persons :+ [person]
-			EndIf
-		Next
-
-		'add an amateur/layman at the top (hidden behind is a random
-		'normal person)
-		Local amateur:TPersonBase
-		Repeat
-			'only bookable amateurs
-			amateur = GetPersonBaseCollection().GetRandomInsignificant(Null, True, True, 0, filterToGenderID)
-
-			If Not amateur
-				Local countryCode:String = GetStationMapCollection().config.GetString("nameShort", "Unk")
-				'try to use "map specific names"
-				If RandRange(0,100) < 25 Or Not GetPersonGenerator().HasProvider(countryCode)
-					countryCode = GetPersonGenerator().GetRandomCountryCode()
-				EndIf
-
-				amateur = GetPersonBaseCollection().CreateRandom(countryCode, Max(0, filterToGenderID))
-			EndIf
-
-			'print "check " + amateur.GetFullName() + "  " + amateur.GetAge() +"  fictional:"+amateur.fictional
-			'if not amateur.IsAlive() then print "skip: dead "+amateur.GetFullName()
-			'if not (amateur.GetAge() >= 10) then print "skip: too young "+amateur.GetFullName()
-			'if not amateur.fictional then print "skip: real "+amateur.GetFullName()
-		Until amateur.IsAlive() And amateur.IsFictional() And amateur.IsBookable()
-
-		persons = [amateur] + persons
-
+		'also prepend 5 amateurs (at least 1 of them "not yet interested"
+		'in the job)
+		Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, 10, 5, 1, True)
 		'disable list-sort
 		castSelectList.SetAutosortItems(False)
 
 		For Local p:TPersonBase = EachIn persons
-			'custom production not possible with real persons...
-			If Not p.IsFictional() Then Continue
-			'also the person must be bookable for productions (maybe retired?)
-			If Not p.IsBookable() Then Continue
-			If Not p.IsAlive() Then Continue
-
-			'we also want to avoid "children"
-			If p.IsCelebrity() And p.GetAge() < 10 And p.GetAge() <> -1 Then Continue
-
 			'base items do not have a size - so we have to give a manual one
 			Local item:TGUICastListItem = New TGUICastListItem.CreateSimple( p, selectJobID )
-			If p = amateur
+			If not p.IsCelebrity()
 				If selectJobID > 0
-					item.displayName = GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(selectJobID))
+					item.displayName = p.GetFullName() + " ("+GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(selectJobID)) + ")"
 				Else
-					item.displayName = GetLocale("JOB_AMATEUR")
+					item.displayName = p.GetFullName() + " ("+GetLocale("JOB_AMATEUR") + ")"
 				EndIf
 				item.isAmateur = True
 			EndIf
@@ -2527,12 +2486,18 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local gender:Int = person.gender
 		Local overlayIntensity:Float = 0.35	
 		Local name:String = displayName
+		local nameHint:String 
+
 		If isAmateur And Not isDragged()
 			If GetDisplayJobID() > 0 and TVTPersonJob.IsCastJob( GetDisplayJobID() )
-				name = GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() ))
+				nameHint = "(" + GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() ))  + ")"
+'				name = person.GetFullName() + " ("+GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() )) + ")"
 			Else
-				name = GetLocale("JOB_AMATEUR")
+				nameHint = "(" + GetLocale("JOB_AMATEUR") + ")"
+'				name = person.GetFullName() + " ("+GetLocale("JOB_AMATEUR") + ")"
 			EndIf
+			name = person.GetFullName()
+
 			displayName = name
 		EndIf
 
@@ -2585,14 +2550,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 			xpPercentage = 0
 			sympathyPercentage = 0
 		EndIf
-		
-		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
+	
+	
+		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, nameHint, face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, 0, 1, gender, overlayIntensity)
+			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, nameHint, face, xpPercentage, 0, 1, gender, overlayIntensity)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()

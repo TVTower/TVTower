@@ -81,6 +81,9 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		person.SetFlag(TVTPersonFlag.BOOKABLE, True)
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, True)
+		If gender <= 0
+			gender = GetPersonGenerator().GetRandomGender()
+		EndIf
 		person.gender = gender
 
 		'avoid others of same name
@@ -329,12 +332,53 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	
 	'=== Random retrievers ===
 	'retrieve a person by filterIndex, list or map + additional filters
+
+	Method GetRandomsByFilter:TPersonBase[](filterIndex:Int, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Local list:TObjectList = GetFilteredList(filterIndex)
+		If Not list Then Return Null
+		
+		Return GetRandomsFromList(list, filterIndex, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	End Method 
+
 	
 	Method GetRandomByFilter:TPersonBase(filterIndex:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		Local list:TObjectList = GetFilteredList(filterIndex)
 		If Not list Then Return Null
 		
 		Return GetRandomFromList(list, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	End Method 
+
+
+	Method GetRandomsFromList:TPersonBase[](list:TObjectList, filterIndex:Int = -1, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		If Not list Then Return Null
+		
+		'unfiltered - use raw list to save additional computation/memory ?
+		If filterIndex = -1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And alive = -1 And countryCode = "" And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
+			amount = Min(amount, list.count())
+
+			Local persons:TPersonBase[] = new TPersonBase[amount]
+			'RandRange - so it is the same over network
+			Local indices:Int[] = RandRangeArray(0, list.count()-1, amount)
+			For local i:int = 0 until amount
+				persons[i] = TPersonBase(list.ValueAtIndex( indices[i] ))
+			Next
+			
+			Return persons
+		Else
+			Local effectiveArray:TPersonBase[] = _FilterList(list, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+			If effectiveArray.length = 0 Then Return Null
+
+			amount = Min(amount, effectiveArray.length)
+
+			Local persons:TPersonBase[] = new TPersonBase[amount]
+			'RandRange - so it is the same over network
+			Local indices:Int[] = RandRangeArray(0, effectiveArray.length-1, amount)
+			For local i:int = 0 until amount
+				persons[i] = effectiveArray[ indices[i] ]
+			Next
+
+			Return persons
+		EndIf
 	End Method 
 
 	
@@ -352,23 +396,62 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 			Return effectiveArray[(RandRange(0, effectiveArray.length-1))]
 		EndIf
 	End Method 
-	
+
+
+	Method GetRandomsFromArray:TPersonBase[](array:TPersonBase[], filterIndex:Int = -1, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		If Not array Or array.length = 0 Then Return Null
+		
+		Local useArray:TPersonBase[]
+
+		'unfiltered - use raw list to save additional computation/memory ?
+		If filterIndex =-1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And alive = -1 And countryCode = "" And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
+			useArray = array
+		Else
+			useArray = _FilterArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+			If useArray.length = 0 Then Return Null
+		EndIf
+
+		amount = Min(amount, useArray.length)
+
+		Local persons:TPersonBase[] = new TPersonBase[amount]
+		'RandRange - so it is the same over network
+		Local indices:Int[] = RandRangeArray(0, useArray.length-1, amount)
+		For local i:int = 0 until amount
+			persons[i] = useArray[ indices[i] ]
+		Next
+
+		Return persons
+	End Method
+
 
 	Method GetRandomFromArray:TPersonBase(array:TPersonBase[], filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not array Or array.length = 0 Then Return Null
 
+		Local useArray:TPersonBase[]
+
 		'unfiltered - use raw list to save additional computation/memory ?
 		If filterIndex =-1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And alive = -1 And countryCode = "" And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
-			Return array[ RandRange(0, array.length-1) ]
+			useArray = array
 		Else
-			Local effectiveArray:TPersonBase[] = _FilterArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
-			If effectiveArray.length = 0 Then Return Null
+			useArray = _FilterArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+			If useArray.length = 0 Then Return Null
+		EndIf
 
-			'RandRange - so it is the same over network
-			Return effectiveArray[(RandRange(0, effectiveArray.length-1))]
+		'RandRange - so it is the same over network
+		Return useArray[(RandRange(0, useArray.length-1))]
+	End Method
+
+
+	Method GetRandomsFromArrayOrFilter:TPersonBase[](array:TPersonBase[] = Null, filterIndex:Int=-1, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		If Not array
+			Return GetRandomsByFilter(filterIndex, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+		ElseIf array.length = 0
+			Return Null
+		Else
+			Return GetRandomsFromArray(array, filterIndex, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 		EndIf
 	End Method
-	
+
 	
 	Method GetRandomFromArrayOrFilter:TPersonBase(array:TPersonBase[] = Null, filterIndex:Int=-1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not array
@@ -382,8 +465,18 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	
 
 	'useful to fetch a random "amateur" (aka "layman")
+	Method GetRandomInsignificants:TPersonBase[](array:TPersonBase[] = Null, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomsFromArrayOrFilter(array, FILTER_INSIGNIFICANT, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	End Method
+
+
 	Method GetRandomInsignificant:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		Return GetRandomFromArrayOrFilter(array, FILTER_INSIGNIFICANT, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	End Method
+
+
+	Method GetRandomCelebrities:TPersonBase[](array:TPersonBase[] = Null, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomsFromArrayOrFilter(array, FILTER_CELEBRITY, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
@@ -504,6 +597,9 @@ Type TPersonBase Extends TGameObject
 	Field _flags:Int
 	'bitmask containing current job(s)
 	Field _jobs:Int
+	'bitmask containing jobs people are "interested" in (eg when
+	'applying as amateur)
+	Field _preferredJobs:Int
 
 	'storage of celebrity, production, ... data sets
 	Field data:TMap
@@ -711,6 +807,32 @@ Type TPersonBase Extends TGameObject
 
 	Method HasJob:Int(job:Int)
 		Return (_jobs & job) > 0
+	End Method
+
+
+	Method GetJobCount:Int()
+		If _jobs = 0 then Return 0
+		
+		local c:int = 0
+		For local jobIndex:Int = 0 until TVTPersonJob.count
+			If HasJob( 1 Shl (jobIndex-1) ) then c :+ 1
+		Next
+		
+		Return c
+	End Method
+
+
+	Method SetPreferredJob(job:Int, enable:Int = True)
+		If enable
+			_preferredJobs :| job
+		Else
+			_preferredJobs :& ~job
+		EndIf
+	End Method
+
+
+	Method HasPreferredJob:Int(job:Int)
+		Return (_preferredJobs & job) > 0
 	End Method
 
 
