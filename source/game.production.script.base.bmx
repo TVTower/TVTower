@@ -28,6 +28,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field liveDateCode:String
 	'when was it broadcasted the last time
 	Field lastLiveTime:Long = -1
+	'if the live time was calculated once, it should not be changed again
+	Field persistedLiveTime:Long = -1
 
 	'is the script title/description editable?
 	Field textsEditable:int = False
@@ -332,6 +334,7 @@ Type TScriptBase Extends TNamedGameObject
 
 	Method GetLiveTime:Long(nowTime:Long=-1, useProductionTime:Int = -1)
 		If not IsLive() then return -1
+		If persistedLiveTime >= 0 then return persistedLiveTime
 
 		'load in defaults
 		If nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
@@ -433,6 +436,7 @@ Type TScriptBase Extends TNamedGameObject
 				EndIf
 			EndIf
 		EndIf
+		persistedLiveTime = liveTime
 		Return liveTime
 	End Method
 
