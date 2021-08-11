@@ -103,7 +103,8 @@ Type TProductionManager
 		'TODO: (selten und) zufaellig laufende Produktionen unterbrechen ?
 
 		'update every 4 hours at x:10
-		If triggerEvent.GetData().GetInt("minute") = 10 and triggerEvent.GetData().GetInt("hour") mod 4 = 0
+		Local time:Long = triggerEvent.GetData().GetLong("time")
+		If GetWorldTime().GetDayMinute(time) = 10 and GetWorldTime().GetDayHour(time) mod 4 = 0
 			GetInstance().UpdateCurrentlyAvailableAmateurs()
 		EndIf
 	End Function
