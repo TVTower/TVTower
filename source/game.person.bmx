@@ -67,7 +67,7 @@ Function UpgradeInsignificantToCelebrity:Int(p:TPersonBase var, ignoreProduction
 	'jobsDone is increased _after_ finishing the production,
 	'so "jobsDone <= 2" will be true until the 3rd production is finishing
 	If Not ignoreProductionJobs
-		If p.GetTotalProductionJobsDone() <= 2 Then Return False
+		If p.GetTotalProductionJobsDone() <= GameRules.UpgradeInsignificantOnProductionJobsCount Then Return False
 	EndIf
 
 	'remove from previous prefiltered lists

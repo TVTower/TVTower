@@ -922,6 +922,14 @@ Type TPersonBase Extends TGameObject
 
 
 	Method FinishProduction:Int(programmeDataID:Int, job:Int)
+		'make sure the person can store at least basic production data from now on
+		'(this else is only ensured on "UpgradeInsignificantToCelebrity"
+		If Not GetProductionData()
+			If IsFictional() and CanLevelUp() 
+				SetProductionData(new TPersonProductionBaseData)
+			EndIf
+		EndIf
+
 		If GetProductionData()
 			_productionData.FinishProduction(programmeDataID, job)
 		EndIf

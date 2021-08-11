@@ -81,6 +81,10 @@ Type TGameRules {_exposeToLua}
 	Field InRoomTimeSlowDownMod:Float = 1.0
 
 	Field startProgrammeAmount:int = 0
+	
+	'how many productions (jobs, so theoretically less productions)
+	'are required to make a person a celebrity
+	Field UpgradeInsignificantOnProductionJobsCount:Int = 3
 
 	'penalty to pay if a player sends an xrated movie at the wrong time
 	Field sentXRatedPenalty:int = 25000
