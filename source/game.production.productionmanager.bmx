@@ -641,7 +641,7 @@ Type TProductionManager
 		Local countryCode:String = GetStationMapCollection().config.GetString("nameShort", "Unk")
 		Local newAmateurs:TPersonBase[10]
 		Local newAmateursIndex:Int = 0
-		If GetPersonGenerator().HasProvider(countryCode)
+		If not GetPersonGenerator().HasProvider(countryCode)
 			countryCode = GetPersonGenerator().GetRandomCountryCode()
 		EndIf
 		rem
@@ -684,7 +684,7 @@ Type TProductionManager
 							useCountryCode = GetPersonGenerator().GetRandomCountryCode()
 						EndIf
 
-						local amateur:TPersonBase = GetPersonBaseCollection().CreateRandom(countryCode, TVTPersonGender.GetAtIndex(genderIndex))
+						local amateur:TPersonBase = GetPersonBaseCollection().CreateRandom(useCountryCode, TVTPersonGender.GetAtIndex(genderIndex))
 						Local jobID:int = TVTPersonJob.CAST_IDs[jobIndex]
 						amateur.SetPreferredJob(jobID, True)
 						'enable 1-2 other (or the same again) randomly
@@ -699,7 +699,6 @@ Type TProductionManager
 				EndIf
 			Next
 		Next
-
 		'add new amateurs to the existing ones
 		'no "+ 1" as newAmateursIndex is "nextAmateursIndex" already 
 		'currentAvailableAmateurs :+ newAmateurs[.. newAmateursIndex + 1]
