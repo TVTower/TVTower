@@ -264,7 +264,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
-		If currentProductionConcept
+		'only take over if not already "finished planning"
+		If currentProductionConcept and not currentProductionConcept.IsProduceable()
 			'=== CAST ===
 			'loop over all jobs and try to take over as much of them as
 			'possible.
