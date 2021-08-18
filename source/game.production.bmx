@@ -512,14 +512,16 @@ Type TProduction Extends TOwnedGameObject
 			EndIf
 		Next
 
+		'fix release time (non live) now
+		'fix BEFORE AddProgrammeLicence() so that series headers can
+		'adjust their releaseTime accordingly
+		if not productionConcept.script.IsLive()
+			_designatedProgrammeLicence.data.releaseTime = GetWorldTime().GetTimeGone()
+		endif
+
 		'non-live gets added after finishing the production
 		if not productionConcept.script.IsLive()
 			AddProgrammeLicence()
-		endif
-
-		'fix release time (non live) now
-		if not productionConcept.script.IsLive()
-			_designatedProgrammeLicence.data.releaseTime = GetWorldTime().GetTimeGone()
 		endif
 
 		'update programme data so it releases to cinema etc (if needed)
