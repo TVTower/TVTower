@@ -4241,6 +4241,18 @@ Type GameEvents
 				RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(script, player.playerID, True)
 				GetGame().SendSystemMessage("added script: "+script.GetTitle()+" ["+script.GetScriptTemplate().GetGUID()+"]")
 
+			Case "exec"
+				Local fileToLoad:String = payload.Trim()
+				If FileType(fileToLoad) = FILETYPE_FILE
+					Local content:string = LoadText(fileToLoad)
+					For Local line:String = EachIn content.Split(chr(10))
+						If line.startsWith("/dev")
+							Local event:TEventBase=TEventBase.create("execScript", new TData().add("text", line))
+							onChatAddEntry(event)
+						End If
+					Next
+				End If
+
 			Case "help"
 				SendHelp()
 
@@ -4270,6 +4282,7 @@ Type GameEvents
 			GetGame().SendSystemMessage("|b|playerai|/b| [player#] [on=1, off=0]")
 			GetGame().SendSystemMessage("|b|loaddb|/b| (dbname)")
 			GetGame().SendSystemMessage("|b|reloaddev|/b|")
+			GetGame().SendSystemMessage("|b|exec|/b| (scriptPath)")
 		End Function
 
 		'internal helper function
