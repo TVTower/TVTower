@@ -1947,8 +1947,9 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByName:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
+		'sort amateurs "on top"
+		If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return -1
+		If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return 1
 
 		If a1.person.GetLastName().ToLower() = a2.person.GetLastName().ToLower()
 			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
@@ -1962,11 +1963,20 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByJobXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
-
-		Local xp1:float=a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
-		Local xp2:float=a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
+		'sort amateurs "on top"
+		If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return -1
+		If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return 1
+		
+		Local xp1:float
+		Local xp2:float
+		'for amateurs we order by production job count (when to "upgrade")
+		If a1 And a1.isAmateur And a2 And a2.isAmateur
+			xp1 = a1.person.GetProductionJobsDone(a1.selectJobID)
+			xp2 = a2.person.GetProductionJobsDone(a2.selectJobID)
+		Else
+			xp1 = a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
+			xp2 = a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
+		EndIf
 
 		If xp1 = xp2 Then Return SortCastByName(o1, o2)
 		Return xp1 < xp2
@@ -1975,13 +1985,24 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByGenreXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
+		'sort amateurs "on top"
+		If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return -1
+		If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return 1
 
 		Local genre:Int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.mainGenre
 
-		Local xp1:float=TPersonProductionData(a1.person.getProductionData()).GetEffectiveGenreExperiencePercentage(genre)
-		Local xp2:float=TPersonProductionData(a2.person.getProductionData()).GetEffectiveGenreExperiencePercentage(genre)
+		Local xp1:float
+		Local xp2:float
+		'for amateurs we order by production job count (when to "upgrade")
+		If a1 And a1.isAmateur And a2 And a2.isAmateur
+			xp1 = a1.person.GetProductionJobsDone(a1.selectJobID)
+			xp2 = a2.person.GetProductionJobsDone(a2.selectJobID)
+		Else
+			Local pd1:TPersonProductionData = TPersonProductionData(a1.person.getProductionData())
+			Local pd2:TPersonProductionData = TPersonProductionData(a2.person.getProductionData())
+			If pd1 Then xp1 = pd1.GetEffectiveGenreExperiencePercentage(genre)
+			If pd2 Then xp2 = pd2.GetEffectiveGenreExperiencePercentage(genre)
+		EndIf
 
 		If xp1 = xp2 Then Return SortCastByName(o1, o2)
 		Return xp1 < xp2
@@ -1990,8 +2011,9 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByFee:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
+		'sort amateurs "on top"
+		If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return -1
+		If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return 1
 
 		local playerID:Int = 0
 		local blocks:Int = 1
@@ -2685,12 +2707,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'maybe "TPersonBase.GetFace()" ?
 		If TSprite(face)
 			TSprite(face).Draw(x+5, y+3)
-		Else
-			If TImage(face)
-				DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
-				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenRect().GetX(), GetScreenRect().GetY())
-			EndIf
+		ElseIf TImage(face)
+			DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
+			'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenRect().GetX(), GetScreenRect().GetY())
 		EndIf
+
 
 		If name Or nameHint
 			Local border:SRect = nameSprite.GetNinePatchInformation().contentBorder
