@@ -327,7 +327,7 @@ Type TSprite
 		Self.area = new TRectangle.Init(area.x, area.y, area.w, area.h)
 		Self.id = id
 		parent = spritepack
-		If offset Then Self.offset = offset
+		Self.offset = offset
 		frameW = area.w
 		frameH = area.h
 		Self.frames = frames

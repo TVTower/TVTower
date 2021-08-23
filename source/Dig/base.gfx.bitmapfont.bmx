@@ -40,7 +40,7 @@ Import BRL.Map
 Import BRL.Vector
 'to load from truetype
 Import brl.FreeTypeFont
-Import "base.util.srectangle.bmx"
+'Import "base.util.srectangle.bmx"
 Import "base.gfx.sprite.bmx"
 Import "base.gfx.spriteatlas.bmx"
 
@@ -261,11 +261,16 @@ Type TBitmapFontChar
 	Field pos:SVec2I
 	Field dim:SVec2I
 	Field charWidth:Float
-	Field img:TImage
+	Field pixmap:TPixmap
 
 
 	Method Init:TBitmapFontChar(img:TImage, x:Int,y:Int,w:Int, h:Int, charWidth:Float)
-		Self.img = img
+		if img
+			Self.pixmap = LockImage(img)
+			UnlockImage(img)
+		else
+			Self.pixmap = null
+		endif
 		Self.pos = New SVec2I(x,y)
 		Self.dim = New SVec2I(w,h)
 		Self.charWidth = charWidth
@@ -619,21 +624,14 @@ endrem
 			If (atlasRect.id < 0 Or atlasRect.id > chars.length) Or (Not chars[atlasRect.id]) Then Continue
 			
 			Local bm:TBitmapFontChar = chars[atlasRect.id]
-			If Not bm.img Then Continue
+			If Not bm.pixmap Then Continue
 
 			'draw char image on charmap
-			'local charPix:TPixmap = LockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
-			Local charPix:TPixmap = LockImage(bm.img)
-			'make sure the pixmaps are 8bit alpha-format
-'			If charPix.format <> 2 Then charPix.convert(PF_A8)
-			DrawImageOnImage(charPix, pix, atlasRect.rect.x, atlasRect.rect.y)
-			'UnlockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
-			UnlockImage(bm.img)
-			' es fehlt noch charWidth - extraTyp?
+			DrawImageOnImage(bm.pixmap, pix, atlasRect.x, atlasRect.y)
 
 			resizeCharsSprites(atlasRect.id)
 			
-			charsSprites[atlasRect.id] = New TSprite.Init(spriteSet, String(atlasRect.id), atlasRect.rect, Null, 0)
+			charsSprites[atlasRect.id] = New TSprite.Init(spriteSet, String(atlasRect.id), New SRectI(atlasRect.x, atlasRect.y, atlasRect.w, atlasRect.h), Null, 0)
 		Next
 
 		'set image to sprite pack

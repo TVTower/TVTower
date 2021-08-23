@@ -1,8 +1,6 @@
 SuperStrict
-Import BRL.Max2d 'to debug draw the sprite atlas
+'Import BRL.Max2d 'to debug draw the sprite atlas
 Import BRL.Map
-Import "base.util.rectangle.bmx"
-Import "base.util.srectangle.bmx"
 
 
 'TEST
@@ -21,11 +19,17 @@ endrem
 
 Struct SSpriteAtlasRect
 	Field id:Int 'eg. charCode
-	Field rect:SRectI
+	Field x:int
+	Field y:int
+	Field w:int
+	Field h:int
 	
 	Method New(id:Int, x:Int, y:Int, w:Int, h:Int)
 		Self.id = id
-		Self.rect = New SRectI(x,y,w,h)
+		Self.x = x
+		Self.y = y
+		Self.w = w
+		Self.h = h
 	End Method
 End Struct
 
@@ -83,21 +87,23 @@ Type TSpriteAtlas
 
 		For Local atlasRect:SSpriteAtlasRect = EachIn previousElements
 			If atlasRect.id <> 0
-				AddElement(atlasRect.id, atlasRect.rect.w, atlasRect.rect.h)
+				AddElement(atlasRect.id, atlasRect.w, atlasRect.h)
 			EndIf
 		Next
 	End Method
 
 
 	Method Draw(x:Int=0, y:Int=0)
+rem
 		SetColor 255,100,100
 		DrawRect(x, y, w, h)
 		SetColor 50,100,200
 
 		For Local i:Int = 0 Until elementsIndex
 			Local atlasRect:SSpriteAtlasRect = elements[i]
-			DrawRect(atlasRect.rect.x + 1, atlasRect.rect.y + 1, atlasRect.rect.w - 2, atlasRect.rect.h - 2)
+			DrawRect(atlasRect.x + 1, atlasRect.y + 1, atlasRect.w - 2, atlasRect.h - 2)
 		Next
+endrem
 	End Method
 
 
@@ -133,7 +139,10 @@ Type TSpritePacker
 	Field childNode1:TSpritePacker
 	Field childNode2:TSpritePacker
 
-	Field x:Int,y:Int,w:Int,h:Int
+	Field x:Int
+	Field y:Int
+	Field w:Int
+	Field h:Int
 	Field occupied:Int = False
 
 
