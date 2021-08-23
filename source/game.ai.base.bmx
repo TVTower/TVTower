@@ -199,9 +199,7 @@ endrem
 
 
 	Method Start()
-		TLogger.Log("TAiBase", "Starting AI " + playerID, LOG_DEBUG)
-
-		scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
+		TLogger.Log("TAiBase", "Starting AI " + playerID + " using script " + scriptFileName, LOG_DEBUG)
 
 		'load lua file
 		LoadScript(scriptFileName)
