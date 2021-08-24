@@ -229,6 +229,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'done which programme yet)
 			TLogger.Log("TGame", "Refreshing production/cinema states of programmes (refreshing cast-information)", LOG_DEBUG)
 			GetProgrammeDataCollection().UpdateAll()
+			
+			TLogger.Log("TGame", "Ensure enough castable amateurs exist.", LOG_DEBUG)
+			GetProductionManager().UpdateCurrentlyAvailableAmateurs()
+
 
 			'Begin Game - fire Events
 			'so we start at day "1"
@@ -236,6 +240,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'time after day
 			TriggerBaseEvent(GameEventKeys.Game_OnMinute, timeData)
 			TriggerBaseEvent(GameEventKeys.Game_OnHour, timeData) 
+		Else
+			if not GetProductionManager().currentAvailableAmateurs or GetProductionManager().currentAvailableAmateurs.length = 0
+				TLogger.Log("TGame", "Ensure enough castable amateurs exist (old savegame).", LOG_DEBUG)
+				GetProductionManager().UpdateCurrentlyAvailableAmateurs()
+			endif
 		EndIf
 
 		'so we could add news etc.

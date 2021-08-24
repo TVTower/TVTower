@@ -1179,7 +1179,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		'finish production on first broadcast (an always-live will
 		'only finish once this way)
 		If finishedLiveBroadcast and GetTimesBroadcasted() <= 1
-			onFinishProductionForCast()
+			onFinishProduction()
 		EndIf
 
 		'stay "LIVE" forever
@@ -1827,7 +1827,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		If Not ignoreUnreleasedProgrammes Then Return True
 
-		Return GetWorldTime().GetTimeGone() >= releaseTime
+		Return releaseTime >= 0 and GetWorldTime().GetTimeGone() >= releaseTime
 	End Method
 
 
@@ -1839,7 +1839,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		' without stored outcome, the movie wont run in the cinemas
 		If outcome <= 0 Then Return False
 
-		Return GetCinemaReleaseTime() <= GetWorldTime().GetTimeGone()
+		Return releaseTime >= 0 and GetCinemaReleaseTime() <= GetWorldTime().GetTimeGone()
 	End Method
 
 
@@ -1849,7 +1849,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		If isReleased() Then Return False
 
-		Return GetProductionStartTime() <= GetWorldTime().GetTimeGone() And GetCinemaReleaseTime() > GetWorldTime().GetTimeGone()
+		Return releaseTime >= 0 and GetProductionStartTime() <= GetWorldTime().GetTimeGone() And GetCinemaReleaseTime() > GetWorldTime().GetTimeGone()
 	End Method
 
 
@@ -1935,7 +1935,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		If IsLive() Then Return False
 
 		If Not isHeader()
-			onFinishProductionForCast()
+			onFinishProduction()
 		EndIf
 
 		Return True
@@ -1943,12 +1943,17 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method onRelease:Int(time:Long = 0)
+		'if not done already via onCinemaRelase ...
+		If Not isHeader()
+			onFinishProduction()
+		EndIf
+
 		Return True
 	End Method
 
 
 	'inform each person in the cast that the production finished
-	Method onFinishProductionForCast:Int(time:Long = 0)
+	Method onFinishProduction:Int(time:Long = 0)
 		'already done
 		If finishedProductionForCast Then Return False
 
@@ -1964,28 +1969,46 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method Update:Int()
+		?debug
+		print self.GetTitle() + "  Update(). State="+state + " (" + TVTProgrammeState.GetAsString(state) +")"
+		?
 		Select state
 			Case TVTProgrammeState.NONE
 				'repair old programme (finished before game start year)
 				'and loop through all states (prod - cinema - release)
 				If isReleased()
+					?debug
+					print "  from NONE. isReleased. production -> cinema -> released"
+					?
 					SetState(TVTProgrammeState.IN_PRODUCTION)
 					SetState(TVTProgrammeState.IN_CINEMA)
 					SetState(TVTProgrammeState.RELEASED)
 				ElseIf isInCinema()
+					?debug
+					print "  from NONE. isInCinema. production -> cinema"
+					?
 					SetState(TVTProgrammeState.IN_PRODUCTION)
 					SetState(TVTProgrammeState.IN_CINEMA)
 				ElseIf isInProduction()
+					?debug
+					print "  from NONE. isInProduction. production"
+					?
 					SetState(TVTProgrammeState.IN_PRODUCTION)
 				EndIf
 			Case TVTProgrammeState.IN_PRODUCTION
 				If isInCinema()
+					?debug
+					print "  from PRODUCTION. isInCinema -> cinema"
+					?
 					SetState(TVTProgrammeState.IN_CINEMA)
 				'some programme do not run in cinema
 				ElseIf isReleased()
+					?debug
+					print "  from PRODUCTION. isInCinema -> released"
+					?
 					SetState(TVTProgrammeState.RELEASED)
 				EndIf
-			Case TVTProgrammeState.IN_PRODUCTION
+			Case TVTProgrammeState.IN_CINEMA
 				If isReleased() Then SetState(TVTProgrammeState.RELEASED)
 		End Select
 	End Method

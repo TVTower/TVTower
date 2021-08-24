@@ -349,7 +349,7 @@ Type TProduction Extends TOwnedGameObject
 		startTime = GetWorldTime().GetTimeGone()
 		'modify production time by mod (TODO: add random plus minus?)
 		endTime = startTime + productionTime * GetProductionTimeMod()
-print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
+		'print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 		'round end time to next xx:x5 to avoid people entering
 		'the studio before next production starts (production
 		'manager checks in 5 minute interval)
@@ -371,7 +371,6 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 		'emit an event so eg. network can recognize the change
 		TriggerBaseEvent(GameEventKeys.Production_Start, Null, Self)
 
-
 		if isLiveProduction
 			BeginPreProduction()
 		else
@@ -389,6 +388,9 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 		BlockStudio(True)
 
 		productionStep = TVTProductionStep.PREPRODUCTION
+		
+		_designatedProgrammeLicence.data.SetState(TVTProgrammeState.IN_PRODUCTION)
+		_designatedProgrammeLicence.data.Update()
 
 		TLogger.Log("TProduction.BeginPreProduction()", "Beginning preproduction: ~q" + productionConcept.GetTitle() +"~q", LOG_DEBUG)
 		Return True
@@ -442,6 +444,9 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 			productionConcept.script.lastLiveTime = endTime
 		EndIf
 
+		_designatedProgrammeLicence.data.SetState(TVTProgrammeState.IN_PRODUCTION)
+		_designatedProgrammeLicence.data.Update()
+
 		'set studio blocked / update block state
 		BlockStudio(True)
 
@@ -454,7 +459,7 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 
 		'define speed, critics ... based on current cast values, script ...
 		FixProgrammeDataValues()
-		
+
 		TLogger.Log("TProduction.BeginShooting()", "Beginning shooting: ~q" + productionConcept.GetTitle() +"~q. Production: "+ GetWorldTime().GetFormattedDate(startTime) + "  -  " + GetWorldTime().GetFormattedDate(endTime), LOG_DEBUG)
 		Return True
 	End Method
@@ -507,14 +512,19 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 			EndIf
 		Next
 
+		'fix release time (non live) now
+		'fix BEFORE AddProgrammeLicence() so that series headers can
+		'adjust their releaseTime accordingly
+		if not productionConcept.script.IsLive()
+			_designatedProgrammeLicence.data.releaseTime = GetWorldTime().GetTimeGone()
+		endif
 
 		'non-live gets added after finishing the production
 		if not productionConcept.script.IsLive()
 			AddProgrammeLicence()
 		endif
 
-
-		'update programme data so it releases to cinema etc
+		'update programme data so it releases to cinema etc (if needed)
 		_designatedProgrammeLicence.data.Update()
 
 
@@ -598,7 +608,7 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 		FillProgrammeData(programmeData, productionConcept)
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
-		programmeData.releaseTime = GetWorldTime().GetTimeGone()
+		programmeData.releaseTime = -1 'release time is on "finish"
 		If productionConcept.script.IsLive()
 			programmeData.releaseTime = productionConcept.GetLiveTime()
 		EndIf
@@ -657,9 +667,6 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 			programmeData.AddCast(New TPersonProductionJob.Init(p.GetID(), job.job))
 		Next
 
-		'update programme data so releases to cinema etc (if needed)
-		programmeData.Update()
-		
 		Return programmeData
 	End Method
 
@@ -765,10 +772,6 @@ print "Produktionszeit = " + productionTime+" * "+GetProductionTimeMod()
 			pd.SetModifier("price", productionPriceMod)
 		EndIf
 		
-		'fix release time now
-		pd.releaseTime = GetWorldTime().GetTimeGone()
-
-
 		'=== 3.2 PROGRAMME PRODUCTION PROPERTIES ===
 		pd.review = MathHelper.Clamp(productionValueMod * productionConcept.script.review *scriptPotentialMod, 0, 1.0)
 		pd.speed = MathHelper.Clamp(productionValueMod * productionConcept.script.speed *scriptPotentialMod, 0, 1.0)

@@ -67,7 +67,18 @@ Function UpgradeInsignificantToCelebrity:Int(p:TPersonBase var, ignoreProduction
 	'jobsDone is increased _after_ finishing the production,
 	'so "jobsDone <= 2" will be true until the 3rd production is finishing
 	If Not ignoreProductionJobs
-		If p.GetTotalProductionJobsDone() <= 2 Then Return False
+		'check if one job reached the limit ?
+		'if total is already below then we can skip the detailed check
+		If p.GetTotalProductionJobsDone() < GameRules.UpgradeInsignificantOnProductionJobsCount Then Return False
+
+		local doUpgrade:Int = False
+		For local jobID:int = EachIn TVTPersonJob.CAST_IDs
+			If p.GetProductionJobsDone(jobID) >= GameRules.UpgradeInsignificantOnProductionJobsCount
+				doUpgrade = True
+				exit
+			EndIf
+		Next
+		if not doUpgrade Then Return False
 	EndIf
 
 	'remove from previous prefiltered lists
@@ -317,8 +328,6 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	Field calculatedTopGenreCache:Int = 0 {nosave}
 	'array containing GUIDs of all produced programmes
 	Field producedProgrammes:String[] {nosave}
-	'array containing IDs of all produced programmes
-	Field producedProgrammeIDs:Int[] {nosave}
 	Field producedProgrammesCached:Int = False {nosave}
 
 	Global PersonsGainExperienceForProgrammes:Int = True
@@ -331,6 +340,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		self._person = base._person
 
 		self.jobsDone = base.jobsDone[ .. ]
+		self.producedProgrammeIDs = base.producedProgrammeIDs[ .. ]
 		self.producingIDs = base.producingIDs[ .. ]
 		self.priceModifier = base.priceModifier
 
@@ -604,7 +614,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 
 	'refresh cache (for newly converted "insignifants" or after a savegame)
-	Method GetProducedProgrammeIDs:Int[]()
+	Method GetProducedProgrammeIDs:Int[]() override
 		If Not producedProgrammesCached
 			_GenerateProducedProgrammesCache()
 		EndIf

@@ -264,7 +264,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
-		If currentProductionConcept
+		'only take over if not already "finished planning"
+		If currentProductionConcept and not currentProductionConcept.IsProduceable()
 			'=== CAST ===
 			'loop over all jobs and try to take over as much of them as
 			'possible.
@@ -1595,61 +1596,20 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		castSelectList.EmptyList()
 
 		'add all castable celebrities to that list
-		Local personsList:TObjectList = GetPersonBaseCollection().GetCastableCelebritiesList()
-		Local persons:TPersonBase[]
-		For Local person:TPersonBase = EachIn personsList
-			If filterToGenderID > 0 And person.gender <> filterToGenderID Then Continue
-
-			If filterToJobID = 0 Or person.HasJob(filterToJobID)
-				persons :+ [person]
-			EndIf
-		Next
-
-		'add an amateur/layman at the top (hidden behind is a random
-		'normal person)
-		Local amateur:TPersonBase
-		Repeat
-			'only bookable amateurs
-			amateur = GetPersonBaseCollection().GetRandomInsignificant(Null, True, True, 0, filterToGenderID)
-
-			If Not amateur
-				Local countryCode:String = GetStationMapCollection().config.GetString("nameShort", "Unk")
-				'try to use "map specific names"
-				If RandRange(0,100) < 25 Or Not GetPersonGenerator().HasProvider(countryCode)
-					countryCode = GetPersonGenerator().GetRandomCountryCode()
-				EndIf
-
-				amateur = GetPersonBaseCollection().CreateRandom(countryCode, Max(0, filterToGenderID))
-			EndIf
-
-			'print "check " + amateur.GetFullName() + "  " + amateur.GetAge() +"  fictional:"+amateur.fictional
-			'if not amateur.IsAlive() then print "skip: dead "+amateur.GetFullName()
-			'if not (amateur.GetAge() >= 10) then print "skip: too young "+amateur.GetFullName()
-			'if not amateur.fictional then print "skip: real "+amateur.GetFullName()
-		Until amateur.IsAlive() And amateur.IsFictional() And amateur.IsBookable()
-
-		persons = [amateur] + persons
-
+		'also prepend 5 amateurs (at least 1 of them "not yet interested"
+		'in the job)
+		Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, 10, 5, 1, True)
 		'disable list-sort
 		castSelectList.SetAutosortItems(False)
 
 		For Local p:TPersonBase = EachIn persons
-			'custom production not possible with real persons...
-			If Not p.IsFictional() Then Continue
-			'also the person must be bookable for productions (maybe retired?)
-			If Not p.IsBookable() Then Continue
-			If Not p.IsAlive() Then Continue
-
-			'we also want to avoid "children"
-			If p.IsCelebrity() And p.GetAge() < 10 And p.GetAge() <> -1 Then Continue
-
 			'base items do not have a size - so we have to give a manual one
 			Local item:TGUICastListItem = New TGUICastListItem.CreateSimple( p, selectJobID )
-			If p = amateur
+			If not p.IsCelebrity()
 				If selectJobID > 0
-					item.displayName = GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(selectJobID))
+					item.displayName = p.GetFullName() + " ("+GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(selectJobID)) + ")"
 				Else
-					item.displayName = GetLocale("JOB_AMATEUR")
+					item.displayName = p.GetFullName() + " ("+GetLocale("JOB_AMATEUR") + ")"
 				EndIf
 				item.isAmateur = True
 			EndIf
@@ -1987,8 +1947,9 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByName:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
+		'sort amateurs "at bottom"
+		'If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return 1
+		'If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return -1
 
 		If a1.person.GetLastName().ToLower() = a2.person.GetLastName().ToLower()
 			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
@@ -2002,11 +1963,20 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByJobXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
-
-		Local xp1:float=a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
-		Local xp2:float=a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
+		'sort amateurs "at bottom"
+		If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return 1
+		If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return -1
+		
+		Local xp1:float
+		Local xp2:float
+		'for amateurs we order by production job count (when to "upgrade")
+		If a1 And a1.isAmateur And a2 And a2.isAmateur
+			xp1 = a1.person.GetProductionJobsDone(a1.selectJobID)
+			xp2 = a2.person.GetProductionJobsDone(a2.selectJobID)
+		Else
+			xp1 = a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
+			xp2 = a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
+		EndIf
 
 		If xp1 = xp2 Then Return SortCastByName(o1, o2)
 		Return xp1 < xp2
@@ -2015,13 +1985,24 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByGenreXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
+		'sort amateurs "at bottom"
+		If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return 1
+		If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return -1
 
 		Local genre:Int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.mainGenre
 
-		Local xp1:float=TPersonProductionData(a1.person.getProductionData()).GetEffectiveGenreExperiencePercentage(genre)
-		Local xp2:float=TPersonProductionData(a2.person.getProductionData()).GetEffectiveGenreExperiencePercentage(genre)
+		Local xp1:float
+		Local xp2:float
+		'for amateurs we order by production job count (when to "upgrade")
+		If a1 And a1.isAmateur And a2 And a2.isAmateur
+			xp1 = a1.person.GetProductionJobsDone(a1.selectJobID)
+			xp2 = a2.person.GetProductionJobsDone(a2.selectJobID)
+		Else
+			Local pd1:TPersonProductionData = TPersonProductionData(a1.person.getProductionData())
+			Local pd2:TPersonProductionData = TPersonProductionData(a2.person.getProductionData())
+			If pd1 Then xp1 = pd1.GetEffectiveGenreExperiencePercentage(genre)
+			If pd2 Then xp2 = pd2.GetEffectiveGenreExperiencePercentage(genre)
+		EndIf
 
 		If xp1 = xp2 Then Return SortCastByName(o1, o2)
 		Return xp1 < xp2
@@ -2030,8 +2011,9 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByFee:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return -1
-		If Not a2 or a2.isAmateur Then Return 1
+		'sort amateurs "at bottom"
+		'If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return 1
+		'If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return -1
 
 		local playerID:Int = 0
 		local blocks:Int = 1
@@ -2527,12 +2509,21 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local gender:Int = person.gender
 		Local overlayIntensity:Float = 0.35	
 		Local name:String = displayName
+		local nameHint:String 
+		
+		'update isAmateur state?
+		if isAmateur and person.IsCelebrity() then isAmateur = False
+
 		If isAmateur And Not isDragged()
 			If GetDisplayJobID() > 0 and TVTPersonJob.IsCastJob( GetDisplayJobID() )
-				name = GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() ))
+				nameHint = "(" + GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() ))  + ")"
+'				name = person.GetFullName() + " ("+GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() )) + ")"
 			Else
-				name = GetLocale("JOB_AMATEUR")
+				nameHint = "(" + GetLocale("JOB_AMATEUR") + ")"
+'				name = person.GetFullName() + " ("+GetLocale("JOB_AMATEUR") + ")"
 			EndIf
+			name = person.GetFullName()
+
 			displayName = name
 		EndIf
 
@@ -2585,14 +2576,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 			xpPercentage = 0
 			sympathyPercentage = 0
 		EndIf
-		
-		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
+	
+	
+		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, nameHint, face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, 0, 1, gender, overlayIntensity)
+			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, nameHint, face, xpPercentage, 0, 1, gender, overlayIntensity)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -2715,12 +2707,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'maybe "TPersonBase.GetFace()" ?
 		If TSprite(face)
 			TSprite(face).Draw(x+5, y+3)
-		Else
-			If TImage(face)
-				DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
-				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenRect().GetX(), GetScreenRect().GetY())
-			EndIf
+		ElseIf TImage(face)
+			DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
+			'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenRect().GetX(), GetScreenRect().GetY())
 		EndIf
+
 
 		If name Or nameHint
 			Local border:SRect = nameSprite.GetNinePatchInformation().contentBorder
@@ -2772,12 +2763,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local boxAreaPaddingY:Int = 4, barAreaPaddingY:Int = 4
 
 		If showAmateurInformation
-			jobDescriptionH = 0
+'			jobDescriptionH = 0
 			lifeDataH = 0
-			lastProductionsH = 0
-
-			'bereich fuer hinweis einfuehren -- dass  es sich um einen
-			'non-celeb handelt der "Erfahrung" sammelt
+'			lastProductionsH = 0
 		EndIf
 
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
@@ -2788,6 +2776,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'also contains 8 bars
 		If person.IsCelebrity() And Not showAmateurInformation
 			barAreaH = 2 * barAreaPaddingY + 7 * (barH + 2)
+		else
+			'"profession"
+			barAreaH = 1 * barAreaPaddingY + 1 * (barH + 2)
 		EndIf
 
 		'box area
@@ -2803,9 +2794,10 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			Local title:String = person.GetFullName()
-			If showAmateurInformation
-				title = GetLocale("JOB_AMATEUR")
-			EndIf
+			'If showAmateurInformation
+				'title = GetLocale("JOB_AMATEUR")
+				'title = person.GetFullName() + " ("+GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(jobID)) + ")"
+			'EndIf
 
 			If titleH <= 18
 				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
@@ -2815,12 +2807,13 @@ Type TGUICastListItem Extends TGUISelectListItem
 		contentY :+ titleH
 
 
-		If Not showAmateurInformation
-			'=== JOB DESCRIPTION AREA ===
-			If jobDescriptionH > 0
-				skin.RenderContent(contentX, contentY, contentW, jobDescriptionH, "1")
+		'=== JOB DESCRIPTION AREA ===
+		If jobDescriptionH > 0
+			skin.RenderContent(contentX, contentY, contentW, jobDescriptionH, "1")
 
-				Local firstJobID:Int = -1
+			Local firstJobID:Int = -1
+			Local genreText:String = ""
+			If not showAmateurInformation
 				For Local jobIndex:Int = 1 To TVTPersonJob.Count
 					Local jobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
 					If Not person.HasJob(jobID) Then Continue
@@ -2834,27 +2827,28 @@ Type TGUICastListItem Extends TGUISelectListItem
 					genre = person.GetProductionData().GetTopGenre()
 				endif
 
-				Local genreText:String = ""
 				If genre >= 0 Then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
 				If genreText Then genreText = "~q" + genreText+"~q-"
-
-				If firstJobID >= 0
-					'add genre if you know the job
-					skin.fontNormal.DrawBox(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-				Else
-					'use the given jobID but declare as amateur
-					If jobID > 0
-						skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-					Else
-						skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-					EndIf
-				EndIf
-
-				contentY :+ jobDescriptionH
 			EndIf
 
+			If firstJobID >= 0
+				'add genre if you know the job
+				skin.fontNormal.DrawBox(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			Else
+				'use the given jobID but declare as amateur
+				If jobID > 0
+					skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				Else
+					skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				EndIf
+			EndIf
 
-			'=== LIFE DATA AREA ===
+			contentY :+ jobDescriptionH
+		EndIf
+
+
+		'=== LIFE DATA AREA ===
+		If lifeDataH > 0
 			skin.RenderContent(contentX, contentY, contentW, lifeDataH, "1")
 			'splitter
 			GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 165, contentY, 2, jobDescriptionH)
@@ -2869,15 +2863,17 @@ Type TGUICastListItem Extends TGUISelectListItem
 				skin.fontNormal.DrawSimple(person.GetCountryCode(), contentX + 170 + 5, contentY, skin.textColorNeutral)
 			EndIf
 			contentY :+ lifeDataH
+		EndIf
 
 
-			'=== LAST PRODUCTIONS AREA ===
+		'=== LAST PRODUCTIONS AREA ===
+		if lastProductionsH > 0
 			skin.RenderContent(contentX, contentY, contentW, lastProductionsH, "2")
-
-			If person.IsCelebrity() and person.GetProductionData()
+			'If person.IsCelebrity() and person.GetProductionData()
+			'If person.GetTotalProductionJobsDone() > 0 and 
+			If person.GetProductionData()
 				'last productions
 				Local productionIDs:Int[] = person.GetProductionData().GetProducedProgrammeIDs()
-
 				If productionIDs and productionIDs.length > 0
 					Local i:Int = 0
 					Local entryNum:Int = 0
@@ -2899,6 +2895,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			EndIf
 			contentY :+ lastProductionsH
 		EndIf
+
 
 		'=== BARS / BOXES AREA ===
 		'background for bars + boxes
@@ -2994,6 +2991,16 @@ Type TGUICastListItem Extends TGUISelectListItem
 				End Select
 				contentY :+ barH + 2
 			Next
+		Else
+			'bars have a top-padding
+			contentY :+ barAreaPaddingY
+
+			Local percentageUntilUpgrade:Float = person.GetProductionJobsDone(jobID) / float(GameRules.UpgradeInsignificantOnProductionJobsCount)
+
+			skin.RenderBar(contentX + 5, contentY, 100, 12, percentageUntilUpgrade)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_TRAINING"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			contentY :+ barH + 2
+
 		EndIf
 	'hidden?
 	Rem

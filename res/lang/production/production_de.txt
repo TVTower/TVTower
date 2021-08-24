@@ -43,6 +43,7 @@ JOB_AMATEUR_MUSICIANS        = Freizeitmusiker
 
 JOB_POSITION_UNASSIGNED = Unbesetzt
 
+CAST_TRAINING         = Ausbildung
 CAST_EXPERIENCE       = Erfahrung
 CAST_FAME             = Bekanntheit
 CAST_AFFINITY         = Affinität
