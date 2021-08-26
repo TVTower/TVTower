@@ -113,6 +113,7 @@ PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programa e trailer na grade de progra
 ONLY_1_BROADCAST_POSSIBLE                = Apenas 1 transmissão possível!
 ONLY_X_BROADCASTS_POSSIBLE               = Apenas %X% transmissões são possíveis!
 NO_MORE_BROADCASTS_ALLOWED               = Sem mais transmissões permitidas!
+#BROADCAST_TIME_RESTRICTED                = 
 BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Transmissão permitida apenas das %X%:00 às %Y%:00!
 FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Primeira transmissão permitida apenas das %X%:00 às %Y%:00!
 #LIVE_PRODUCTION_FINISH_WILL_COST_X       =

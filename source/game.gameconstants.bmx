@@ -501,18 +501,13 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'news could be exclusive (investigation done by one tv channel)
 	Const EXCLUSIVE_TO_ONE_OWNER:Int = 8192
 
-	'used for live programme with varying broadcast slots
-	'this flag is set once a programme is planned and so its 
-	'live time ("for now") has settled
-	Const LIVE_TIME_FIXED:Int = 16384
+	'was live_time_fixed, flag was removed
+	Const OBSOLETE_CAN_BE_REASSIGNED:Int = 16384
 
 	'keep broadcast time restriction on begin of first broadcast?
 	Const KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST:Int = 32768
 
-	'indicator if broadcastTimeSlotBegin and *End need to be considered
-	Const BROADCAST_TIME_SLOT_ENABLED:Int = 65536
-
-	Const count:Int = 17
+	Const count:Int = 16
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -539,7 +534,6 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 			Case  8192	Return 14
 			Case 16384	Return 15
 			Case 32768	Return 16
-			Case 65536	Return 17
 		End Select
 		Return 0
 	End Function

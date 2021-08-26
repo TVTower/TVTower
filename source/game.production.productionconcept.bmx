@@ -127,8 +127,6 @@ Type TProductionConcept Extends TOwnedGameObject
 	'storing the position/order in the studio saves the hassle of storing
 	'this information in a "scriptOrder"-Collection
 	Field studioSlot:int = -1
-	'designated live time of a live broadcast
-	Field liveTime:Long = -1
 
 	'each assigned person (directors, actors, ...)
 	Field cast:TPersonBase[]
@@ -294,45 +292,13 @@ Type TProductionConcept Extends TOwnedGameObject
 		EndIf
 	End Method
 
-
-	'returns the time when a production _could_ live broadcast the first
-	'time. Parameter "earliestBroadcastTime" can be used to have at least
-	'end of a live broadcasting prequel as minimum
-	Method GetPlannedLiveTime:Long(earliestBroadcastTime:Long = -1)
-		If Not script Then Return -1
-
-		'calculate live broadcast time depending on the "time code" in
-		'the script
-		If IsProductionFinished()
-			Return script.GetLiveTime(earliestBroadcastTime, 0)
-		Else
-			Return script.GetLiveTime(earliestBroadcastTime, -1)
-		EndIf
-	End Method
-
-
-	Method SetLiveTime(time:Long)
-		liveTime = time
-	End Method
-
-
 	Method GetLiveTime:Long()
-		If liveTime = -1 Then Return GetPlannedLiveTime()
-		Return liveTime
+		return script.GetLiveTime()
 	End Method
 
 
-	Method GetLiveTimeText:String(liveBroadcastTime:Long = -1)
-		If liveBroadcastTime = -1
-			liveBroadcastTime = liveTime
-			If livetime = -1
-				liveBroadcastTime = GetPlannedLiveTime( liveBroadcastTime )
-			EndIf
-		EndIf
-		local now:Long = GetWorldTime().GetTimeGone()
-	
-		'pass time difference as production time so text knows "current time"
-		Return script.GetLiveTimeText(now, int(liveBroadcastTime - now)) 
+	Method GetLiveTimeText:String()
+		Return script.GetLiveTimeText() 
 	End Method
 
 

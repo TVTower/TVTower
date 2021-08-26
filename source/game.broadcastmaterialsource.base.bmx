@@ -367,18 +367,8 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method HasBroadcastTimeSlotEnabled:Int()
-		Return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED)
-	End Method
-
-
-	Method HasBroadcastTimeSlotDefined:Int()
-		Return self.broadcastTimeSlotEnd >= 0 and self.broadcastTimeSlotStart >= 0
-	End Method
-
-
 	Method HasBroadcastTimeSlot:Int()
-		Return HasBroadcastTimeSlotDefined() and HasBroadcastTimeSlotEnabled()
+		Return self.broadcastTimeSlotEnd >= 0 and self.broadcastTimeSlotStart >= 0
 	End Method
 
 

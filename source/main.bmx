@@ -2488,19 +2488,40 @@ Type TSaveGame Extends TGameState
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
 		if savegameVersion < 15
-			'set "has broadcast slot flag"
+			'ensure consistent broadcast slots
 			For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
-				If licence.data and licence.data.broadcastTimeSlotStart >= 0 and licence.data.broadcastTimeSlotEnd >= 0
-					licence.data.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
-					licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
-					print "RepairData: programme data " + RSet(licence.GetTitle(), 20) +" defined slots - Set flag HAS_BROADCAST_TIME_SLOT"
-				ElseIf licence.broadcastTimeSlotStart >= 0 and licence.broadcastTimeSlotEnd >= 0
+				If licence.data and licence.broadcastTimeSlotStart >= 0 and licence.broadcastTimeSlotEnd >= 0
 					licence.data.broadcastTimeSlotStart = licence.broadcastTimeSlotStart
 					licence.data.broadcastTimeSlotEnd = licence.broadcastTimeSlotEnd
-					licence.data.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
-					licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, True)
-					print "RepairData: licence " + RSet(licence.GetTitle(), 20) +" defined slots  - Set flag HAS_BROADCAST_TIME_SLOT"
+					print "RepairData: licence " + RSet(licence.GetTitle(), 20) +" defined slots  - copy slots to data"
 				EndIf
+			Next
+			For local script:TScript = EachIn GetScriptCollection().entries.Values()
+				'fix potentially missing live time
+				If script.isLive() And script.fixedLiveTime < 0
+					script.SetProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE, True)
+					print "RepairData: set script to AlwaysLive "+ script.getTitle()
+				EndIf
+				If script.productionTime > 0 And script.productionTime < 200
+					script.productionTime =  TWorldTime.MINUTELENGTH * script.productionTime
+					print "RepairData: update script production time minutes "+ script.getGUID()
+				EndIF
+				'ensure live_time_fixed flag is unset, so it can later be reused
+				If script.HasProductionBroadcastFlag(16384)
+					script.SetProductionBroadcastFlag(16384, False)
+					print "RepairData: remove scripts live time fixed flag "+ script.getTitle()
+				EndIf
+			Next
+			'live date code for multiple productions would yield same live date for all
+			For local template:TScriptTemplate = EachIn GetScriptTemplateCollection().entries.Values()
+				If template.isLive() And template.productionLimit >1 And template.liveDateCode
+					template.liveDateCode=""
+					print "RepairData: set template to AlwaysLive "+ template.getGUID()
+				EndIf
+				If template.productionTime > 0 And template.productionTime < 200
+					template.productionTime =  TWorldTime.MINUTELENGTH * template.productionTime
+					print "RepairData: update template production time minutes "+ template.getGUID()
+				EndIF
 			Next
 		endif
 		Rem
@@ -2833,12 +2854,6 @@ Type TSavegameConverter
 				Return "endTime"
 			case "TProduction:status".ToLower()
 				Return "productionStep"
-			case "TScriptBase:liveTime".ToLower()
-				Return "liveTimeSlot"
-			case "TScriptTemplate:liveTime".ToLower()
-				Return "liveTimeSlot"
-			case "TScript:liveTime".ToLower()
-				Return "liveTimeSlot"
 		End Select
 
 		Rem

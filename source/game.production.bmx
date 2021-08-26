@@ -325,8 +325,9 @@ Type TProduction Extends TOwnedGameObject
 
 
 		Local isLiveProduction:Int = productionConcept.script.IsLive()
+		'TODO check what is needed for Live
 		If isLiveProduction
-			productionConcept.SetLiveTime( productionConcept.GetPlannedLiveTime() )
+'			productionConcept.SetLiveTime( productionConcept.GetPlannedLiveTime() )
 			'print "Starte Preproduktion: Livezeit = " + production.productionConcept.GetLiveTimeText()
 		EndIf
 
@@ -435,13 +436,6 @@ Type TProduction Extends TOwnedGameObject
 			'ATTENTION: ensure it ends at xx:x5 (as the production 
 			'           manager updates in 5 minute intervals)
 			endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
-
-
-			'_designatedProgrammeLicence.programmeData.releaseTime = productionConcept.GetLiveTime()
-			'inform script about the latest live time used (so others
-			'yet-to-start productions can estimate better, what the 
-			'earliest possible broadcast time might be)
-			productionConcept.script.lastLiveTime = endTime
 		EndIf
 
 		_designatedProgrammeLicence.data.SetState(TVTProgrammeState.IN_PRODUCTION)
@@ -636,19 +630,6 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 
 
-		programmeData.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
-		programmeData.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
-
-
-		'add flags given in script
-		For Local i:Int = 1 To TVTBroadcastMaterialSourceFlag.count
-			Local flag:Int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
-			If productionConcept.script.productionBroadcastFlags & flag
-				'setBroadcastFlag creates "broadcastFlags" if required
-				programmeData.SetBroadcastFlag(flag)
-			EndIf
-		Next
-
 		'add broadcast limits
 		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
 
@@ -696,6 +677,24 @@ Type TProduction Extends TOwnedGameObject
 			EndIf
 		Next
 
+		'add broadcast flags to both Licence and programme data
+		For Local i:Int = 1 To TVTBroadcastMaterialSourceFlag.count
+			Local flag:Int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
+			If productionConcept.script.productionBroadcastFlags & flag
+				'setBroadcastFlag creates "broadcastFlags" if required
+				programmeLicence.SetBroadcastFlag(flag)
+				programmeData.SetBroadcastFlag(flag)
+			EndIf
+		Next
+
+		If productionConcept.script.IsLive()
+			programmeData.releaseTime = productionConcept.script.fixedLiveTime
+		End If
+		programmeLicence.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
+		programmeLicence.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
+		programmeData.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
+		programmeData.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
+
 		Return programmeLicence
 	End Method
 	
@@ -727,6 +726,12 @@ Type TProduction Extends TOwnedGameObject
 				Throw "Failed to create parentLicence"
 			EndIf
 		EndIf
+
+		'make sure release date for live programmes (alwaysLive) is set
+		If programmeLicence.isLive() And programmeLicence.getData() and programmeLicence.getData().releaseTime < 0
+			programmeLicence.getData().releaseTime = GetWorldTime().GetTimeGone()
+		EndIf
+
 		GetProgrammeDataCollection().Add(programmeLicence.data)
 		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
 
@@ -1078,9 +1083,11 @@ Type TProduction Extends TOwnedGameObject
 
 
 			Case TVTProductionStep.PREPRODUCTION_DONE
-				'with fix livetime slots being "past" current time we should
+				'with livetime being "past" current time we should
 				'begin with shooting as fast as possible
-				If productionConcept.script.liveTimeSlot >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= productionConcept.script.liveTimeSlot/TWorldTime.MINUTELENGTH
+				'TODO eigentlich ist es jetzt schon zu spät - Livesendung gar nicht möglich, wenn die Vorproduktion noch nicht abgeschlossen ist
+				'oder aber es wird eine "schlechte Show, da man mitten in den Vorbereitungen senden musste.
+				If productionConcept.script.fixedLiveTime >= 0 and productionConcept.script.fixedLiveTime <= GetWorldTime().GetTimeGone()
 					BeginShooting()
 					
 					'maybe next step is also fulfilled

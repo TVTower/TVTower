@@ -113,6 +113,7 @@ PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programm und Trailer im Sendeplan!
 ONLY_1_BROADCAST_POSSIBLE                = Nur 1 Ausstrahlung möglich!
 ONLY_X_BROADCASTS_POSSIBLE               = Nur %X% Ausstrahlungen möglich!
 NO_MORE_BROADCASTS_ALLOWED               = Keine weiteren Ausstrahlungen möglich!
+BROADCAST_TIME_RESTRICTED                = Ausstrahlungszeit beschränkt
 BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Ausstrahlung nur von %X% bis %Y% Uhr erlaubt!
 FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Erstausstrahlung nur von %X% bis %Y% Uhr erlaubt!
 LIVE_PRODUCTION_FINISH_WILL_COST_X       = Abschluss der Liveproduktion kostet %X%!

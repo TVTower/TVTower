@@ -19,15 +19,7 @@ Type TScriptBase Extends TNamedGameObject
 	Field flags:Int = 0
 	'remove tradeability on sell, refill limits, ...
 	Field scriptFlags:Int = 0
-	'define a specific time slot ("20" for 20:05 start)
-	'(use broadcastTimeSlotStart and broadcastTimeSlotEnd to define a
-	' generic "time frame" in which you can broadcast - live and also
-	' live-on tape then!)
-	Field liveTimeSlot:int =  -1
-	'defin a exact time for the live broadcast (date, not just the hour)
-	Field liveDateCode:String
-	'when was it broadcasted the last time
-	Field lastLiveTime:Long = -1
+	Field fixedLiveTime:Long = -1
 
 	'is the script title/description editable?
 	Field textsEditable:int = False
@@ -211,6 +203,9 @@ Type TScriptBase Extends TNamedGameObject
 		return HasFlag(TVTProgrammeDataFlag.LIVE)
 	End Method
 
+	Method IsAlwaysLive:int()
+		return HasProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
+	End Method
 
 	Method IsAnimation:Int()
 		return HasFlag(TVTProgrammeDataFlag.ANIMATION)
@@ -328,141 +323,28 @@ Type TScriptBase Extends TNamedGameObject
 	Method GetBlocks:Int()
 		Return 0
 	End Method
-	
 
-	Method GetLiveTime:Long(nowTime:Long=-1, useProductionTime:Int = -1)
-		If not IsLive() then return -1
-
-		'load in defaults
-		If nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
-		If useProductionTime = -1 then useProductionTime = GetBaseProductionDuration()
-		
-		'earliest live time would be after (pre)production 
-		Local liveTime:Long = nowTime + useProductionTime
-
-		'find first "useable" time slot
-		'a defined liveTimeSlot always has higher priority than a
-		'broadcastTimeSlot (so live could take place at another time)
-		local firstTimeSlot:Int = self.liveTimeSlot
-		'how many hours from "first to last slot" ?
-		'default to block count and override if there is a time slot
-		'restriction
-		local timeSlotCount:Int = GetBlocks()
-		If firstTimeSlot < 0 and HasBroadcastTimeSlot()
-			firstTimeSlot = broadcastTimeSlotStart
-			'start=22 end=2  -> (2+24 - 22) mod 24 = 4    (22, 23, 0, 1) 
-			'start=22 end=23 -> (23+24 - 22) mod 24 = 1   (22)
-			'start=2 end=0   -> (0+24 - 2) mod 24 = 22    (2, 3, ... 23)
-			timeSlotCount = ((broadcastTimeSlotEnd+24) - broadcastTimeSlotStart) mod 24
-			
-			'add 1 to include "slotEnd" 
-			'(22-23 for a 1block programme means you can start 22:05 or 23:05)
-			'timeSlotCount :+ 1
-		EndIf
-		
-		'how many spare slots to move all blocks inside "start to end" ?
-		'(so 20-23 for a 2 block programme returns 1 -> start 20 or 21)
-		local spareBlocks:Int = timeSlotCount - GetBlocks()
-		if spareBlocks < 0 then Throw "Script " + GetGUID() + " has more blocks ("+GetBlocks()+") than the timeframe restriction ("+broadcastTimeSlotStart+" - "+broadcastTimeSlotEnd+" allows." 
-
-		
-		'check firstTimeSlot and later hours (in allowed span) until we
-		'find a valid time
-		'MakeTime() can simply use ">24" hours and automatically wraps
-		'over to the next day)
-		If firstTimeSlot >= 0
-			Local foundTimeSlot:Int = False
-			Local nowDay:int = GetWorldTime().GetDay( liveTime )
-
-			'20-23 for 2-blocks script => spareBlocks = 1
-			'checks 20 and 21
-			For local i:int = 0 to spareBlocks
-				'try to plan it for "today" 
-				'(or next if "broadcastTimeSlotEnd" is after midnight)
-				Local newLiveTime:Long = GetWorldTime().MakeTime(0, nowDay, firstTimeSlot + i, 5, 0)
-				If newLiveTime >= liveTime
-					foundTimeSlot = True
-					liveTime = newLiveTime
-					exit
-				EndIf
-			Next
-			
-			'delay for one day if that time span already has passed by
-			If not foundTimeSlot
-				liveTime = GetWorldTime().MakeTime(0, nowDay + 1, firstTimeSlot, 5, 0)
-			EndIf
-		EndIf
-
-
-		if self.liveDateCode
-			Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(self.liveDateCode, ",")
-			If liveDateCodeParams.length > 0
-				If liveDateCodeParams[0] > 0
-					Local useParams:Int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
-					For Local i:Int = 1 Until liveDateCodeParams.length
-						useParams[i-1] = liveDateCodeParams[i]
-					Next
-					local t:long = GetWorldTime().CalcTime_Auto(liveTime, liveDateCodeParams[0], useParams )
-					'fix to not use any minutes except ":05"
-					liveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(t), GetWorldTime().GetDayHour(t), 5, 0)
-
-
-					'override "hour" with a custom time ?
-					'this allows to have "liveDateCode" to define a general
-					'day - and the timeSlot/liveTime to define the exact hour that day
-					if firstTimeSlot >= 0
-						Local foundTimeSlot:Int = False
-						Local liveDay:int = GetWorldTime().GetDay( liveTime )
-
-						For local i:int = 0 to spareBlocks
-							'try to plan it for "today" 
-							'(or next if "broadcastTimeSlotEnd" is after midnight)
-							Local newLiveTime:Long = GetWorldTime().MakeTime(0, liveDay, firstTimeSlot + i, 5, 0)
-							If newLiveTime >= liveTime
-								foundTimeSlot = True
-								liveTime = newLiveTime
-								exit
-							EndIf
-						Next
-						
-						'delay for one day if that time span already has passed by
-						If not foundTimeSlot
-							liveTime = GetWorldTime().MakeTime(0, liveDay + 1, firstTimeSlot, 5, 0)
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-		Return liveTime
+	Method GetLiveTime:Long()
+		return fixedLiveTime
 	End Method
 
-
-	Method GetLiveTimeText:String(nowTime:Long = -1, useProductionTime:Int = -1)
-		if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
-
-		Local plannedLiveTime:Long = GetLiveTime(nowTime, useProductionTime)
-		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
-
-		Local liveDay:Int = GetWorldTime().GetDay(plannedLiveTime)
-		Local nowDay:Int = GetWorldTime().GetDay(nowTime)
-
-		If HasBroadcastTimeSlot()
-			If liveDay = nowDay
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			ElseIf liveDay = nowDay + 1
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			Else
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
-			EndIf
-		Else
-			If liveDay = nowDay
-				Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			ElseIf liveDay = nowDay + 1
-				Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			Else
-				Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
-			EndIf
-		EndIf
+	Method GetLiveTimeText:String(nowTime:Long = -1)
+		If IsLive()
+			If Not IsAlwaysLive()
+				if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
+				Local liveTime:Long = GetLiveTime()
+				Local liveDay:Int = GetWorldTime().GetDay(liveTime)
+				Local nowDay:Int = GetWorldTime().GetDay(nowTime)
+				If liveDay = nowDay
+					Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( liveTime ))
+				ElseIf liveDay = nowDay + 1
+					Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( liveTime ))
+				Else
+					Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( liveTime )).Replace("%Y%", (liveDay - nowDay))
+				EndIf
+			End If
+			Return GetLocale("MOVIE_LIVESHOW")
+		End If
 		Return ""
 	End Method
 

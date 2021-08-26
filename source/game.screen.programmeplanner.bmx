@@ -1328,7 +1328,7 @@ endrem
 					EndIf
 
 
-					If not programme.licence.IsLive()
+					If not programme.licence.IsLive() or programme.licence.isAlwaysLive()
 						'mark allowed slots of whole day
 						For Local i:Int = 0 Until allowedSlotCount
 							EnableSlotOverlay((slotStart + i mod 24), TVTBroadcastMaterialType.PROGRAMME, 1)
@@ -1403,12 +1403,14 @@ endrem
 					If not GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
 						'mark allowed slots
 						'mark the live-time-slot green!
-						For Local i:Int = 0 Until programme.GetBlocks()
-							If GetWorldTime().GetDay(blockTime) = planningDay
-								EnableSlotOverlay(GetWorldTime().GetDayHour(blockTime), TVTBroadcastMaterialType.PROGRAMME, 1)
-							EndIf
-							blockTime :+ 1 * TWorldTime.HOURLENGTH
-						Next
+						if not programme.licence.IsAlwaysLive()
+							For Local i:Int = 0 Until programme.GetBlocks()
+								If GetWorldTime().GetDay(blockTime) = planningDay
+									EnableSlotOverlay(GetWorldTime().GetDayHour(blockTime), TVTBroadcastMaterialType.PROGRAMME, 1)
+								EndIf
+								blockTime :+ 1 * TWorldTime.HOURLENGTH
+							Next
+						endif
 
 						'mark all future ad-slots allowed
 						Local start:Int = GetWorldTime().GetDayHour(programme.data.releaseTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)

@@ -419,11 +419,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.productionBroadcastFlags = template.productionBroadcastFlags
 		script.productionLicenceFlags = template.productionLicenceFlags
 
-		script.liveTimeSlot = template.liveTimeSlot
-		script.liveDateCode = template.liveDateCode
-
 		script.broadcastTimeSlotStart = template.broadcastTimeSlotStart
 		script.broadcastTimeSlotEnd = template.broadcastTimeSlotEnd
+		'complete partially defined slot restriction based on block length
+		If script.broadcastTimeSlotStart >= 0 and script.broadcastTimeSlotEnd < 0
+			script.broadcastTimeSlotEnd = (script.broadcastTimeSlotStart + script.blocks) mod 24
+		EndIF
+		If script.broadcastTimeSlotEnd >= 0 and script.broadcastTimeSlotStart < 0
+			script.broadcastTimeSlotStart = (script.broadcastTimeSlotEnd + 24 - script.blocks) mod 24
+		EndIF
 
 		script.SetProductionLimit( template.GetProductionLimit() )
 		script.SetProductionBroadcastLimit( template.GetProductionBroadcastLimit() )
@@ -434,6 +438,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.scriptFlags = template.scriptFlags
 		'mark tradeable
 		script.SetScriptFlag(TVTScriptFlag.TRADEABLE, True)
+
+		_calculateLiveTime(script, template)
 
 		script.scriptLicenceType = template.scriptLicenceType
 		script.scriptProductType = template.scriptProductType
@@ -480,7 +486,29 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Return script
 	End Function
 
+	Function _calculateLiveTime(script:TScript, template:TScriptTemplate)
+		If script.HasFlag(TVTProgrammeDataFlag.LIVE)
+			Local alwaysLive:int = script.HasProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
+			Local liveTime:Long = 0
+			If Not alwaysLive
+				If template And template.liveDateCode
+					Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(template.liveDateCode, ",")
+					If liveDateCodeParams.length > 0 And liveDateCodeParams[0] > 0
+						Local useParams:Int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
+						For Local i:Int = 1 Until liveDateCodeParams.length
+							useParams[i-1] = liveDateCodeParams[i]
+						Next
+						local t:long = GetWorldTime().CalcTime_Auto(GetWorldTime().GetTimeGone(), liveDateCodeParams[0], useParams)
+						'fix to not use any minutes except ":05"
+						script.fixedLiveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(t), GetWorldTime().GetDayHour(t), 5, 0)
+					End If
+				End If
 
+				'if live time not set - set alswaysLive
+				If script.fixedLiveTime < 0 Then script.SetProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE, True)
+			End IF
+		End If
+	End Function
 
 	'override
 	Method GetTitle:String()
@@ -781,9 +809,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 	Method CanBeXRated:Int()
-		If liveTimeSlot <= 22 And liveTimeSlot >= 6
-			Return False
-		ElseIf HasBroadcastTimeSlot() and liveTimeSlot = -1
+		If HasBroadcastTimeSlot()
 			'if script.broadcastTimeSlotStart >= 6 and script.broadcastTimeSlotStart + script.GetBlocks() <= 22 and ..
 			'eg. 5-22, 5-5, ...
 			if broadcastTimeSlotStart <= broadcastTimeSlotEnd 
@@ -1277,17 +1303,19 @@ endrem
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(-1, -1), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(-1), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
+		EndIf
 
-			If showMsgTimeSlotLimit
-				if productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST > 0
-					skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-				Else
-					skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-				EndIf
-				contentY :+ msgH
+		If showMsgTimeSlotLimit
+			if getEpisodes() > 0
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_TIME_RESTRICTED"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			Else if productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST > 0
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			Else
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndIf
+			contentY :+ msgH
 		EndIf
 
 		If showMsgBroadcastLimit

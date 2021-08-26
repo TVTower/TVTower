@@ -105,9 +105,6 @@ DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = und Du solltest Dei
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = und Du hast Deine Produktionsschwerpunkte mittelmäßig verteilt!
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = und Du hast Deine Produktionsschwerpunkte sehr gut verteilt!
 
-PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK     = Live-Ausstrahlung heute: ab %X% Uhr.
-PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK  = Live-Ausstrahlung morgen: ab %X% Uhr.
-PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK = Live-Ausstrahlung in %Y% Tagen: ab %X% Uhr.
 PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Live-Ausstrahlung heute: %X% Uhr.
 PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Live-Ausstrahlung morgen: %X% Uhr.
 PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Live-Ausstrahlung in %Y% Tagen: %X% Uhr.
