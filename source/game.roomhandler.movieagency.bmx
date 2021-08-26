@@ -1447,7 +1447,9 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		If Not useLicence Then useLicence = licence
 
 		'limit live programme by their airTime - 1 day
-		If useLicence And useLicence.IsLive()
+		'TODO alwaysLiveCheck may be problematic for episodes... (true if any child is live)
+		'becomes relevant only if there are live series in auctions
+		If useLicence And useLicence.IsLive() And Not useLicence.isAlwaysLive()
 			Return useLicence.data.GetReleaseTime() - 1 * TWorldTime.DAYLENGTH
 		EndIf
 

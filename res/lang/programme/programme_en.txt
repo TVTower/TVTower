@@ -113,6 +113,7 @@ PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programme and trailer in programme pl
 ONLY_1_BROADCAST_POSSIBLE                = Only 1 broadcast possible!
 ONLY_X_BROADCASTS_POSSIBLE               = Only %X% broadcast possible!
 NO_MORE_BROADCASTS_ALLOWED               = No more broadcasts allowed!
+BROADCAST_TIME_RESTRICTED                = Time of broadcast restricted
 BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Broadcast only allowed from %X%:00 to %Y%:00!
 FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = First broadcast only allowed from %X%:00 to %Y%:00!
 LIVE_PRODUCTION_FINISH_WILL_COST_X       = Live production finish will cost %X%

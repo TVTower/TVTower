@@ -541,7 +541,7 @@ endrem
 
 
 	Method UpdateLive:Int()
-		Super.UpdateLive()
+		Super.UpdateLive(False)
 
 		'refresh processedTitle (recreated on request)
 		titleProcessed = Null

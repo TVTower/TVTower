@@ -625,7 +625,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		return result
 	End Method
 
-
 	Method GetNextReleaseTime:Long() {_exposeToLua}
 		if not subLicences then return data.GetReleaseTime()
 
@@ -760,6 +759,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		return False
 	End Method
 
+	Method isAlwaysLive:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsAlwaysLive()
+		endif
+		'is alwayslive as soon as one sub-licence is live (live date cannot be shown for header)
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.isLive() then return True
+		Next
+		return False
+	End Method
 
 	Method isXRated:int() {_exposeToLua}
 		if GetSubLicenceCount() = 0 and GetData()
@@ -917,11 +926,15 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			If buyPrice >= 0 then Return False
 			'if broadcasted we know the price too
 			if GetData().GetTimesBroadcasted() > 0 Then Return False
+			'make sure the price is not hidden for a live series 
+			'defined as programme in the database
+			if not GetData().IsCustomProduction() Then Return False
 
 			'custom live productions need to be started to know the price
-			If GetData().IsCustomProduction() and IsLive()
-				if GetData().releaseTime < GetWorldTime().GetTimeGone() Then Return False
-			EndIf
+			'No! I think they know the price only after the broadcast
+			'If GetData().IsCustomProduction() and IsLive()
+			'	if GetData().releaseTime < GetWorldTime().GetTimeGone() Then Return False
+			'EndIf
 
 			Return True
 		else
@@ -955,7 +968,17 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'override
 	Method HasBroadcastTimeSlot:int()
 		if GetSubLicenceCount() = 0 and GetData()
-			If Super.HasBroadcastTimeSlotEnabled() 
+			'TODO aktuell vereinfacht, Sloteinschränkungen können nicht zurückkommen nachdem sie einmal entfallen sind
+			'Wäre nur relevant für in der Datenbank definierte Programme, die wieder in den Ausgangszustand zurückkehreb
+			'sollen. Das ist aber über Drehbücher sinnvoller abbildbar.
+			'Den Fall nur ein Slot gesetzt würde ich komplett ignorieren (Konfigurationsfehler)
+			If Super.HasBroadcastTimeSlot()
+				Return True
+			Else
+				Return GetData().HasBroadcastTimeSlot()
+			End If
+			rem
+			If Super.HasBroadcastTimeSlot()
 				'if one of the flags is set to "use data's slots" it
 				'depends on data's slot enabled state
 				if broadcastTimeSlotStart=-1 or broadcastTimeSlotEnd=-1
@@ -966,6 +989,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			Else
 				Return False
 			EndIf
+			endrem
 		else
 			'it is enough if one licence has a time slot
 			For local licence:TProgrammeLicence = eachin subLicences
@@ -1269,26 +1293,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'check live-programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			if self.IsLive()
+				'TODO check release Date?; may not be necessary due to IsAvailable
+				'currrently no bugs found with programmes 
+				if data.IsAlwaysLive() and data.isReleased() then return True
+
 				'hour or day incorrect
 				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
-					if data.HasFixedLiveTime()
-						if GetWorldTime().GetDayHour( data.GetReleaseTime() ) <> hour then return False
-						if GetWorldTime().GetDay( data.GetReleaseTime() ) <> day then return False
-					else
-						'a)
-						'23 - 02:00 => 2-23 = -21.  -21 + 24 = 3.  3 mod 24 = 3
-						'05 - 15:00 => 15-5 = 10.  10 + 24 = 34.  34 mod 24 = 10
-						'local slotCount:int = ((GetBroadcastTimeSlotEnd() - GetBroadcastTimeSlotStart()) + 24) mod 24
-						'or b)
-						local slotCount:int = GetBroadcastTimeSlotEnd() - GetBroadcastTimeSlotStart()
-						if slotCount < 0 then slotCount :+ 24
-
-						'check if earliest release time is later
-						if GetWorldTime().GetDay( data.GetReleaseTime() ) > day then return False
-						'check if latest release time is earlier
-						if GetWorldTime().GetDay( data.GetReleaseTime() + slotCount * TWorldTime.HOURLENGTH ) < day then return False
-
-					endif
+					if GetWorldTime().GetDayHour( data.GetReleaseTime() ) <> hour then return False
+					if GetWorldTime().GetDay( data.GetReleaseTime() ) <> day then return False
 				'all times after the live event are allowed too
 				else
 					'live happens on a later day
@@ -2045,8 +2057,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0) override
 		'=== UPDATE BROADCAST RESTRICTIONS ===
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			If HasBroadcastTimeSlotEnabled() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
-				SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_TIME_SLOT_ENABLED, False)
+			If HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
 				broadcastTimeSlotStart = -1
 				broadcastTimeSlotEnd = -1
 			EndIf
@@ -2154,7 +2165,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 			'release time might be in the past if the live programme is airing
 			'now (so it is "live" but start was in the past)
-			if nextReleaseTime < GetWorldTime().GetTimeGone()
+			if self.isAlwaysLive()
+				showMsgLiveInfo = True
+			else if nextReleaseTime < GetWorldTime().GetTimeGone()
 				showMsgLiveInfo = False
 			else
 				showMsgLiveInfo = True
@@ -2391,9 +2404,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				time = GetLocale("X_DAYS_AGO").Replace("%DAYS%", Abs(GetWorldTime().GetDaysRun( nextReleaseTime ) - GetWorldTime().GetDaysRun()))
 			endif
 			'programme start time
-			time :+ ", "+ GetWorldTime().GetDayHour( nextReleaseTime )+":05"
+			time :+ ", "+ GetWorldTime().GetDayHour( nextReleaseTime )+":00"
+			if self.isAlwaysLive()
+				time=""
+			else
+				time = ": "+time
+			endif
 
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW") + time, "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -2413,7 +2431,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 
 		if showMsgBroadcastTimeSlot
-			If HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
+			If GetSublicenceCountTotal() > 0
+				 skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_TIME_RESTRICTED") , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			Else If HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)

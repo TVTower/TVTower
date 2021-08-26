@@ -1733,7 +1733,6 @@ Type TDatabaseLoader
 		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
 		scriptTemplate.liveDateCode = data.GetString("live_date", scriptTemplate.liveDateCode)
-		scriptTemplate.liveTimeSlot = data.GetInt("live_time", scriptTemplate.liveTimeSlot)
 		scriptTemplate.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", scriptTemplate.broadcastTimeSlotStart)
 		scriptTemplate.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", scriptTemplate.broadcastTimeSlotEnd)
 		

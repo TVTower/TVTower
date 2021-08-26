@@ -315,7 +315,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 							If TProgramme(broadcastMaterial).licence.IsLive()
 								Local broadcastedLive:int = True
 								If not IsDragged() and TProgramme(broadcastMaterial).programmedDay >= 0
-									broadcastedLive = False
+									broadcastedLive = TProgramme(broadcastMaterial).licence.IsAlwaysLive()
 									If GetWorldTime().GetDay(TProgramme(broadcastMaterial).licence.data.GetReleaseTime()) = TProgramme(broadcastMaterial).programmedDay
 										If GetWorldTime().GetDayHour(TProgramme(broadcastMaterial).licence.data.GetReleaseTime()) = TProgramme(broadcastMaterial).programmedHour
 											broadcastedLive = True

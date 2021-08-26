@@ -105,6 +105,8 @@ Type TScriptTemplate Extends TScriptBase
 	'this values define how much of potentially available episodes will
 	'get generated for a resulting TScript
 	Field episodesMin:int, episodesMax:int, episodesSlope:Float=0.5
+	'define an exact time for the live broadcast
+	Field liveDateCode:String
 
 	'defines if the script is only available from/to/in a specific date
 	Field available:int = True
