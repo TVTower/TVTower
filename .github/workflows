@@ -1,0 +1,32 @@
+# file: .github/workflows/build.yml
+name: Build TVTower for all OS
+
+on:
+  # manual trigger
+  workflow_dispatch:
+    inputs:
+      # option for BlitzMax NG version
+      bmx-ver:
+        description: BlitzMax Version
+        default: latest
+        required: false
+        
+jobs:
+  my-linux-job:
+    name: Setup BlitzMax NG for Linux
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup latest BlitzMax NG version
+      uses: hezkore/setup-blitzmax-action@v1
+      id: bmx # set step reference ID
+      with:
+        bmx-version: ${{ github.event.inputs.bmx-ver }}
+        
+    - name: Echo BlitzMax NG root example
+      run: echo '${{ steps.bmx.outputs.bmx-root }}' # use step reference ID
+      
+    - name: Compile TVTower (from checked out repo)
+      run: bmk makeapp -r -g x64 TVTower.bmx
