@@ -41,6 +41,13 @@ Type TAwardCollection Extends TGameObjectCollection
 
 	Method Initialize:TAwardCollection()
 		Super.Initialize()
+		
+		upcomingAwards.Clear()
+		currentAward = Null
+		nextAwardTime = -1
+		timeBetweenAwards = 0
+		lastAwardWinner = 0
+		lastAwardType = 0
 
 		Return Self
 	End Method
