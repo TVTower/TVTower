@@ -1440,10 +1440,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	
 	
 	Method GenerateStartProgrammeProducers:Int()
+		'cleanup and remove old ones
+		GetProgrammeProducerCollection().GetInstance().Initialize()
+		
 		'if there is only ONE producer for special stuff - add this way
-		GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
-		TLogger.Log("PrepareNewGame()", "Generated sport programme producer.", LOG_DEBUG)
-		'GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance() )
+		GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance().Initialize() )
+		TLogger.Log("PrepareNewGame()", "Generated sport programme producer (id=" + TProgrammeProducerSport.GetInstance().id+").", LOG_DEBUG)
+		'GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance().Initialize() )
+		'TLogger.Log("PrepareNewGame()", "Generated morning show programme producer.", LOG_DEBUG)
 
 		'movie/series producers exist with different characteristics/budgets
 		For local i:int = 0 to 3
@@ -1452,7 +1456,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			p.name = GetProgrammeProducerCollection().GenerateRandomName()
 			p.RandomizeCharacteristics()
 			GetProgrammeProducerCollection().Add( p )
-			TLogger.Log("PrepareNewGame()", "Generated programme producer ~q"+p.name+"~q from ~q"+p.countryCode+"~q with budget of " + p.budget + " and an experience of " + p.experience +"/100. First production at " + GetWorldTime().GetFormattedGameDate(p.nextProductionTime)+".", LOG_DEBUG)
+			TLogger.Log("PrepareNewGame()", "Generated programme producer ~q"+p.name+"~q (id="+p.id+") from ~q"+p.countryCode+"~q with budget of " + p.budget + " and an experience of " + p.experience +"/100. First production at " + GetWorldTime().GetFormattedGameDate(p.nextProductionTime)+".", LOG_DEBUG)
 		Next
 	End Method
 

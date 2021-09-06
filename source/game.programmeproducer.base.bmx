@@ -125,6 +125,14 @@ Type TProgrammeProducerBase extends TGameObject
 	End Method
 	
 	
+	Method Initialize:TProgrammeProducerBase()
+		budget = 0
+		experience = 10
+		
+		Return self
+	End Method
+	
+	
 	Method CreateProgrammeLicence:object(params:TData) abstract
 
 

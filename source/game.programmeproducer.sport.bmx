@@ -9,7 +9,8 @@ Import "game.programme.programmelicence.bmx"
 Import "game.stationmap.bmx"
 
 'register self to producer collection
-GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
+'disabled: done in game.GenerateStartProgrammeProducers() now
+'GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
 
 
 
@@ -34,6 +35,14 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		If Not _instance Then _instance = New TProgrammeProducerSport
 		Return _instance
 	End Function
+	
+	
+	Method Initialize:TProgrammeProducerBase() override
+		'reset budget etc
+		RandomizeCharacteristics()
+
+		Return self
+	End Method
 
 
 	Method New()
