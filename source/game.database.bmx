@@ -1123,7 +1123,7 @@ Type TDatabaseLoader
 				programmeData.description = New TLocalizedString
 				programmeData.titleProcessed = Null
 				programmeData.descriptionProcessed = Null
-
+				programmeData.dataType = 0
 			Else
 				'reuse old one
 				productType = programmeData.productType
@@ -1381,8 +1381,7 @@ Type TDatabaseLoader
 			licenceType = TVTProgrammeLicenceType.EPISODE
 		EndIf
 		programmeLicence.licenceType = licenceType
-
-
+		programmeData.dataType = licenceType
 
 		'=== EPISODES ===
 		Local nodeEpisodes:TxmlNode = xml.FindChild(node, "children")
@@ -1396,6 +1395,7 @@ Type TDatabaseLoader
 			If licenceType = -1
 				Print "autocorrect: "+GUID+" to SERIES HEADER"
 				licenceType = TVTProgrammeLicenceType.SERIES
+				programmeData.dataType = TVTProgrammeDataType.SERIES
 			EndIf
 
 			'recursively load the episode - parent is the new programmeLicence
@@ -1408,13 +1408,13 @@ Type TDatabaseLoader
 
 			'only add episode if not already done
 			If programmeLicence = episodeLicence.GetParentLicence()
-				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already added to series: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q. Skipped.", LOG_XML)
+				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already added to series: ~q"+episodeLicence.GetParentLicence().GetTitle()+"~q. Skipped.", LOG_XML)
 				Continue
 			EndIf
 
 			'inform if we add an episode again
 			If episodeLicence.GetParentLicence() And episodeLicence.parentLicenceGUID
-				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q. Multi-usage intended?", LOG_XML)
+				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicence().GetTitle()+"~q. Multi-usage intended?", LOG_XML)
 			EndIf
 
 			'mark the parent licence/data to be a "header"
