@@ -3099,7 +3099,7 @@
 				<job index="2" function="32" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="144" flags_optional="67" />
+			<data flags="144" flags_optional="67" production_broadcast_flags="512" />
 			<groups target_groups="16" />
 			<genres maingenre="0" />
 			<episodes min="2" max="7" />
