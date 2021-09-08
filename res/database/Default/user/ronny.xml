@@ -891,9 +891,9 @@ Illustrious guests and music by [3|Nick].</en>
 			<review min="40" max="50" slope="40" />
 			<speed min="45" max="60" slope="50" />
 			<production_time value="60" />
-			<!-- live on next work day 5 - 10:00 - so 5,6,7 as start possible -->
+			<!-- live whenever first broadcastd -->
 			<!-- licence flags: 4 + 32 (REMOVE_ON_REACHING_BROADCASTLIMIT + LICENCEPOOL_REMOVES_TRADEABILITY) -->
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" live_date="8,1,5,5" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 		</scripttemplate>
 
 	</scripttemplates>

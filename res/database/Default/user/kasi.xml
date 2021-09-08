@@ -152,7 +152,7 @@
 			<speed slope="50" max="65" min="35" />
 		</scripttemplate>
 
-		<!--Besetzung Musiker, Livedatum, nur eine Ausstrahlung, kein optionaler Kult-->
+		<!--Besetzung Musiker, Livedatum, nur eine Ausstrahlung, Produktionszeit (Vorproduktion), kein optionaler Kult-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-LiveKonzert">
 			<title>
 				<de>Das Livekonzert von %Name1% %Name2%</de>
@@ -176,8 +176,9 @@
 				<job function="1" index="0" required="1" />
 				<job function="16" index="1" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="4" production_broadcast_limit="1" />
+			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="36" production_broadcast_limit="1" />
 			<genres maingenre="202" />
+			<production_time slope="40" max="180" min="60" />
 			<blocks slope="40" max="4" min="2" />
 			<price slope="25" max="19500" min="15000" />
 			<potential slope="30" max="100" min="30" />
@@ -476,7 +477,7 @@
 			<speed slope="50" max="55" min="35" />
 		</scripttemplate>
 
-		<!-- nicht paid, kein Kult, Ausstrahlungszeitraum+Häufigkeit, Gäste angepasst (Model aktuell nicht möglich)-->
+		<!-- nicht paid, kein Kult, Ausstrahlungszeitraum+Häufigkeit, Produktionszeit Gäste angepasst (Model aktuell nicht möglich)-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Spendengala">
 			<title>
 				<de>Die große Spendengala - Ein Herz für %Name%</de>
@@ -499,8 +500,9 @@
 				<job function="16" index="3" gender="0" required="1" />
 				<job function="64" index="4" gender="0" required="1" />
 			</jobs>
-			<data flags_optional="16" flags="1" live_date="2,1,1,19,19" broadcast_time_slot_start="19" broadcast_time_slot_end="23" production_licence_flags="4" production_broadcast_limit="2" production_broadcast_flags="65536"/>
+			<data flags_optional="16" flags="1" broadcast_time_slot_start="19" broadcast_time_slot_end="23" production_licence_flags="36" production_broadcast_limit="2" production_broadcast_flags="512"/>
 			<genres maingenre="204" subgenres="0" />
+			<production_time slope="40" max="240" min="120" />
 			<blocks slope="40" max="4" min="2" />
 			<price slope="25" max="59500" min="45000" />
 			<potential slope="30" max="50" min="20" />
@@ -1319,7 +1321,7 @@
 			<speed slope="50" max="90" min="53" />
 		</scripttemplate>
 
-		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, kein optionaler Kult, TODO Host passt nicht wirklich zum Namen-->
+		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, Produktionszeit kein optionaler Kult, TODO Host passt nicht wirklich zum Namen-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Imschlafreich">
 			<title>
 				<de>%Name1% %Name2%s Schlaf dich reich</de>
@@ -1347,8 +1349,9 @@
 				<job function="64" index="4" gender="1" required="1" />
 				<job function="64" index="5" gender="2" required="1" />
 			</jobs>
-			<data flags="17" production_limit="5" production_broadcast_limit="1" production_licence_flags="4"/>
+			<data flags="17" production_limit="5" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36"/>
 			<genres maingenre="104" subgenres="0" />
+			<production_time slope="70" max="120" min="60" />
 			<blocks slope="40" max="2" min="1" />
 			<price slope="25" max="19500" min="15000" />
 			<potential slope="30" max="50" min="30" />
@@ -1704,7 +1707,7 @@
 				<job function="64" index="3" gender="1" required="1" />
 				<job function="64" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="16" production_licence_flags="4" production_broadcast_limit="1" broadcast_time_slot_start="0" broadcast_time_slot_end="8" production_broadcast_flags="65536"/>
+			<data flags="16" production_licence_flags="36" production_broadcast_limit="1" broadcast_time_slot_start="0" broadcast_time_slot_end="8" production_broadcast_flags=""/>
 			<genres maingenre="100" subgenres="7" />
 			<blocks value="7" />
 			<price max="20000" min="10000" />
