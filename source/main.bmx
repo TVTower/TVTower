@@ -2572,6 +2572,8 @@ Type TSaveGame Extends TGameState
 		ShowMessage(True)
 
 		Local savegameSummary:TData = GetGameSummary(savename)
+		Local loadedSaveGameVersion:Int = savegameSummary.GetInt("savegame_version")
+
 		local fileState:Int = TSaveGame.CheckFileState(saveName, savegameSummary, True)
 		if skipCompatibilityCheck and fileState = -3 then fileState = 1
 
@@ -2612,8 +2614,16 @@ Type TSaveGame Extends TGameState
 			TLogger.Log("Savegame.Load()", "Savegame was created with an older TVTower-build. Enabling basic compatibility mode.", LOG_SAVELOAD | LOG_DEBUG)
 			persist.strictMode = False
 			persist.converterTypeID = TTypeId.ForObject( New TSavegameConverter )
-		EndIf
 
+			'when loading other versions make a copy of the original
+			If loadedSaveGameVersion <> SAVEGAME_VERSION
+				Local backupFile:String = saveName+"_v"+loadedSaveGameVersion
+				If FileType(backupFile) = 0
+					TLogger.Log("Savegame.Load()", "Create backup of ~q"+saveName+"~q because it was saved with another save game version.", LOG_SAVELOAD | LOG_INFO)
+					CopyFile(saveName, saveName+"_v"+loadedSaveGameVersion)
+				EndIf
+			EndIF
+		EndIf
 
 		Local loadingStart:Int = MilliSecs()
 
@@ -2642,9 +2652,9 @@ Type TSaveGame Extends TGameState
 		New TGameState.Initialize()
 
 		Local savegameEventData:TData = new TData
-		savegameEventData.AddString("saveName", saveName) 
-		savegameEventData.AddInt("saved_savegame_version", savegameSummary.GetInt("savegame_version")) 
-		savegameEventData.AddInt("current_savegame_version", TSaveGame.SAVEGAME_VERSION) 
+		savegameEventData.AddString("saveName", saveName)
+		savegameEventData.AddInt("saved_savegame_version", loadedSaveGameVersion)
+		savegameEventData.AddInt("current_savegame_version", TSaveGame.SAVEGAME_VERSION)
 
 		'=== LOAD SAVED GAME ===
 		'tell everybody we start loading (eg. for unregistering objects before)
@@ -2704,7 +2714,7 @@ endrem
 		CleanUpData()
 
 
-		RepairData(savegameSummary.GetInt("savegame_version"))
+		RepairData(loadedSaveGameVersion)
 
 		'close message window
 		If messageWindow Then messageWindow.Close()
