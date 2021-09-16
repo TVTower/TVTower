@@ -718,10 +718,27 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 
 		'refill broadcast limits - or disable tradeability
+		'for a series all episode limits are refilled or none - the refill is done if at least one episode has reached its limit
 		if GetBroadcastLimitMax() > 0 and (isExceedingBroadcastLimit() or GetSublicenceExceedingBroadcastLimitCount() > 0 )
 			if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_BROADCASTLIMITS)
-				SetBroadcastLimit(broadcastLimitMax)
-			else
+				'self.getBroadcastLimitMax() cannot be used because it includes the max limit of episodes
+				Local myMax:Int = -1
+				If HasBroadcastLimitDefined() and HasBroadcastLimitEnabled()
+					myMax = Super.GetBroadcastLimitMax()
+				ElseIf GetData() And GetData().HasBroadcastLimit() 
+					myMax = GetData().GetBroadcastLimitMax()
+				EndIf
+
+				ResetBroadCastLimits(self, myMax)
+				'maybe handle collections/franchise differently
+				if isSeries() And GetSubLicenceCount() > 0
+					For Local l:TProgrammeLicence = eachin subLicences
+						ResetBroadCastLimits(l, broadcastLimitMax)
+					Next
+				endif
+			else if isExceedingBroadcastLimit() and not HasParentLicence()
+				'remove tradeable only if ALL limits are exceeded and do not remove tradeability for sub licences
+				'which may lead to inconsisten behaviour
 				SetLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
 			endif
 		endif
@@ -740,6 +757,15 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		TriggerBaseEvent(GameEventKeys.ProgrammeLicence_OnGiveBackToLicencePool, null, self)
 
 		return True
+
+		'reset each licence to its own limit; parent limit as fallback
+		Function ResetBroadCastLimits(licence:TProgrammeLicence, defaultLimit:Int = -1)
+			Local max:Int=licence.broadCastLimitMax
+			'use own limit if present, default limit otherwise
+			If max < 0 And licence.GetData() Then max = licence.GetData().broadCastLimitMax
+			If max < 0 Then max = defaultLimit
+			licence.SetBroadCastLimit(max)
+		EndFunction
 	End Method
 
 
@@ -903,6 +929,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 	End Method
 
+	Method IsUnfinishedCustomProduction:int()
+		If not IsCustomProduction() return False
+		'cannot use isTradeable() because all episodes could be finished but not broadcasted...
+		If IsSeries() return Not hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE)
+		'other cases are considered finished for now
+		Return False
+	End Method
 
 	'returns whether a single licences tv outcome or AT LEAST ONE
 	'sublicences contains unknown TV outcome (eg. was not aired yet)
@@ -1108,7 +1141,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	'return true if all (sub-)licences are exceeding its limits
 	Method IsExceedingBroadcastLimit:int() override {_exposeToLua}
-		If GetSubLicenceCount() = 0 
+		If GetSubLicenceCount() = 0
+			'why not super isExceeding? only difference is missing check of broadcastLimitMax
 			Return (HasBroadcastLimit() and GetBroadcastLimit() <= 0)
 		Else
 			'all licences need to exceed the limit
@@ -1137,9 +1171,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 	Method IsTradeable:int()
-		if GetSubLicenceCount() = 0 and GetData()
-			if not hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE) then return False
+		'series is not tradeable if the header is not tradeable, either
+		if not hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE) then return False
 
+		if GetSubLicenceCount() = 0 and GetData()
 			'disallow selling a custom production until it was
 			'broadcasted at least once
 			if GetData().GetTimesBroadcasted() <= 0 and GetData().IsCustomProduction()
@@ -2148,6 +2183,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Local showMsgBroadcastLimit:Int = False
 		Local showMsgBroadcastTimeSlot:Int = False
 		Local showMsgLiveProductionCost:Int = False
+		Local showMsgInProduction:Int = False
 
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
@@ -2213,6 +2249,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 		If HasBroadcastLimit() then showMsgBroadcastLimit = True
 		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot = True
+		If IsSeries() And IsUnfinishedCustomProduction()
+			showMsgInProduction = True
+			showMsgPlannedWarning = False
+		EndIF
 
 		'Ron: disabled for now - as too many messages do not fit into the
 		'     datasheet. Also I am not sure if the information is to
@@ -2241,6 +2281,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If showMsgBroadcastLimit then msgAreaH :+ msgH
 		If showMsgBroadcastTimeSlot then msgAreaH :+ msgH
 		If showMsgLiveProductionCost then msgAreaH :+ msgH
+		IF showMsgInProduction then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -2466,6 +2507,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			else
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			endif
+			contentY :+ msgH
+		endif
+		
+		if showMsgInProduction
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("IN_PRODUCTION"), "warning", "neutral", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 

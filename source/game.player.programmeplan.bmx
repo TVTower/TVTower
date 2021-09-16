@@ -1892,14 +1892,36 @@ endrem
 							local licence:TProgrammeLicence = TProgramme(obj).licence
 							if licence.isExceedingBroadcastLimit()
 
-								if licence.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT)
-									GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licence, True)
-								elseif licence.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT)
-									GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licence, False)
-								else
-									'just keep the now exceeded licence
-									'(maybe it gets extended somehow)
-								endif
+								Local licenceToRemove:TProgrammeLicence
+								Local remove:Int = False
+								Local sell:Int = False
+								If licence.IsEpisode()
+									'check if whole series needs removing
+									licenceToRemove = licence.getParentLicence()
+									If Not licenceToRemove Or Not licenceToRemove.isExceedingBroadcastLimit()
+										'nothing to remove
+										licenceToRemove = Null
+									Else
+										'for series - flag value is true if any of the episodes or the head has the flag
+										For Local l:TProgrammeLicence = eachin licenceToRemove.subLicences
+											If l.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT) Then remove = True
+											If l.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT) Then sell = True
+										Next
+									EndIf
+								ElseIf licence.GetSublicenceCount() = 0
+									'TODO maybe handle franchise/collection differently
+									licenceToRemove = licence
+								EndIf
+
+								If licenceToRemove and licenceToRemove.isTradeable()
+									If licenceToRemove.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT) Then remove = True
+									If licenceToRemove.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT) Then sell = True
+									If remove
+										GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licenceToRemove, False)
+									ElseIf sell
+										GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licenceToRemove, True)
+									EndIf
+								EndIf
 
 								'remove _upcoming_ planned programmes with that licence
 								RemoveProgrammeInstancesByLicence(licence, False)
