@@ -538,6 +538,13 @@ Type TProduction Extends TOwnedGameObject
 			If productionConcept.script.HasParentScript()
 				Local parentScript:TScript = productionConcept.script.GetParentScript()
 				If parentScript.IsProduced()
+					If parentScript.isSeries()
+						'make the programme tradeable as well
+						local licence:TProgrammeLicence = GetPlayerProgrammeCollection(owner).GetProgrammeLicence(parentScript.usedInProgrammeID)
+						if licence
+							licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
+						end if
+					EndIf
 					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
 				EndIf
 			EndIf
@@ -914,6 +921,10 @@ Type TProduction Extends TOwnedGameObject
 			'parentLicence.GetData().productionID = - self.GetID() 
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 
+			'if the template header does not define all licence flags, the ones
+			'set for the header heavily depend on the production order of episodes!
+			parentLicence.licenceFlags = programmeLicence.licenceFlags
+
 			'fill with basic data (title, description, ...)
 			FillProgrammeData(parentLicence.GetData(), productionConcept, productionConcept.script.GetParentScript(), True)
 
@@ -928,6 +939,8 @@ Type TProduction Extends TOwnedGameObject
 				parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
 				parentLicence.data.dataType = TVTProgrammeDataType.SERIES
 			EndIf
+			'a series is not tradeable until shooting is finished
+			if parentLicence.isSeries() Then parentLicence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
 		Else
 			'we already created the parental licence before
 
