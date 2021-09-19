@@ -3,41 +3,41 @@
     <version value="3" comment="SpeedMinisters Programme" />
     <insignificantpeople>
         <!-- Deutschland -->
-        <person id="SpeedMinister-person-id001" first_name="Freiherr von" last_name="Zaster" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id001" first_name="Freiherr von" last_name="Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+        <person id="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+        <person id="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+        <person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+        <person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
         <person id="SpeedMinister-person-id032" first_name="Hans" last_name="Prielmann" first_name_original="Heinz" last_name_original="Sielmann" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" first_name_original="Dennis" last_name_original="Jacobsen" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id038" first_name="Lianda" last_name="Mahoud" first_name_original="Randa" last_name_original="Chahoud" creator="8605" created_by="speedminister" />
         <!-- Österreich -->
-        <person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
+        <person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
         <!-- Schweden -->
-        <person id="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
         <!-- Afghanistan -->
-        <person id="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" /> <!-- Rolle: Tierpfleger -->
-        <person id="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" /> <!-- Rolle: Direktor Zoo Kabul -->
-        <person id="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" /> <!-- Rolle: Tierpfleger -->
+        <person id="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
+        <person id="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
         <!-- China -->
-        <person id="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CN" />
+        <person id="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CN" />
         <!-- USA -->
-        <person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
+        <person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
         <person id="SpeedMinister-person-id033" first_name="Steven" last_name="Kessel" first_name_original="Steve" last_name_original="Ressel" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id034" first_name="Johan" last_name="Richcorner" first_name_original="Jordan" last_name_original="Reichek" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id035" first_name="Robby" last_name="Bumblebee" first_name_original="Rob" last_name_original="Hummel" creator="8605" created_by="speedminister" />
