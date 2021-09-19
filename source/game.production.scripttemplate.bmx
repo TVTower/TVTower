@@ -104,7 +104,7 @@ Type TScriptTemplate Extends TScriptBase
 	Field blocksMin:int, blocksMax:int, blocksSlope:Float=0.5
 	'this values define how much of potentially available episodes will
 	'get generated for a resulting TScript
-	Field episodesMin:int, episodesMax:int, episodesSlope:Float=0.5
+	Field episodesMin:int = -1, episodesMax:int = -1, episodesSlope:Float=0.5
 	'define an exact time for the live broadcast
 	Field liveDateCode:String
 
@@ -514,9 +514,12 @@ Type TScriptTemplate Extends TScriptBase
 
 
 	Method SetEpisodesRange(minValue:Int, maxValue:Int=-1.0, slope:Float=0.5)
+		'field initialized with -1 indicating that no value was set
+		'when loading database - fall back to default 1 episode
+		if minValue = -1 then minValue = 1
 		if maxValue = -1 then maxValue = minValue
 		MathHelper.SortIntValues(minValue, maxValue)
-		minValue = max(1, minValue)
+		minValue = max(0, minValue)
 		maxValue = max(1, maxValue)
 
 		episodesMin = minValue
@@ -567,6 +570,17 @@ Type TScriptTemplate Extends TScriptBase
 		return BiasedRandRange(episodesMin, episodesMax, episodesSlope)
 	End Method
 
+	Method GetSubTemplateSubset:TScriptTemplate[](count:int)
+		count = Min(count, subScripts.length)
+		Local result:TScriptTemplate[] = new TScriptTemplate[count]
+		Local keep:Int[] = [0]
+		If count > 1 Then keep :+ RandRangeArray(1, subScripts.length-1, count-1)
+		keep.Sort()
+		For local i:Int = 0 until keep.length
+			result[i] = TScriptTemplate(subScripts[keep[i]])
+		Next
+		return result
+	End Method
 
 	Method GetStudioSize:Int()
 		return BiasedRandRange(studioSizeMin, studioSizeMax, studioSizeSlope)

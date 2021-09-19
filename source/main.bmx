@@ -2522,6 +2522,11 @@ Type TSaveGame Extends TGameState
 					template.productionTime =  TWorldTime.MINUTELENGTH * template.productionTime
 					print "RepairData: update template production time minutes "+ template.getGUID()
 				EndIF
+				For local sub:TScriptTemplate = EachIn template.subScripts
+					'because we support 0 episodes, the old default value has to be changed
+					If sub.episodesMin <= 0 Then sub.episodesMin = 1
+					If sub.episodesMax <= 0 Then sub.episodesMax = 1
+				Next
 			Next
 		endif
 		Rem

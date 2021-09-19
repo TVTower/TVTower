@@ -811,7 +811,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		DestroyProductionConceptsByScript(script)
 
 		'a series becomes tradeable only if it is completely produced (or the script is thrown away)
-		if script.isSeries()
+		if script.isSeries() And script.usedInProgrammeID
 			local licence:TProgrammeLicence = GetPlayerProgrammeCollection(script.owner).GetProgrammeLicence(script.usedInProgrammeID)
 			if licence and not licence.hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE)
 				licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)

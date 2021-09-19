@@ -2665,20 +2665,9 @@
 						<de>Was?</de>
 						<en>WTF?</en>
 					</title>
+					<episodes min="1" max="3" />
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep3">
-					<title>
-						<de>Was??</de>
-						<en>WTF??</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep4">
-					<title>
-						<de>Was???</de>
-						<en>WTF???</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep5">
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep5">
 					<title>
 						<de>Nicht im Ernst???</de>
 						<en>Really???</en>
@@ -2690,7 +2679,6 @@
 			</jobs>
 			<data flags="114" flags_optional="8" />
 			<genres maingenre="3" subgenres="8" />
-			<episodes min="3" max="5" />
 			<blocks value="1" />
 			<price min="100" max="999" />
 			<potential min="2" max="14" slope="45" />
@@ -2720,20 +2708,9 @@
 						<de>Was?</de>
 						<en>WTF?</en>
 					</title>
+					<episodes min="1" max="3" />
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep3">
-					<title>
-						<de>Was??</de>
-						<en>WTF??</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep4">
-					<title>
-						<de>Was???</de>
-						<en>WTF???</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep5">
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep5">
 					<title>
 						<de>Nicht im Ernst???</de>
 						<en>Really???</en>
@@ -2745,7 +2722,6 @@
 			</jobs>
 			<data flags="48" flags_optional="12" />
 			<genres maingenre="102" subgenres="9" />
-			<episodes min="3" max="5" />
 			<blocks value="1" />
 			<price min="100" max="999" />
 			<potential min="8" max="19" slope="45" />
@@ -2781,6 +2757,7 @@
 						<de>Entführt</de>
 						<en>Kidnapped</en>
 					</title>
+					<episodes min="0" max="1" />
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep4">
 					<title>
@@ -2799,12 +2776,14 @@
 						<de>Falschgeld</de>
 						<en>Fake Money</en>
 					</title>
+					<episodes min="0" max="1" />
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep7">
 					<title>
 						<de>Alternative Fakten</de>
 						<en>Alternative Facts</en>
 					</title>
+					<episodes min="0" max="1" />
 				</scripttemplate>
 			</children>
 			<variables>
@@ -2829,7 +2808,6 @@
 			</jobs>
 			<data flags_optional="18" />
 			<genres maingenre="4" subgenres="2" />
-			<episodes min="4" max="7" />
 			<blocks min="1" max="2" slope="25" />
 			<price min="10000" max="29999" />
 			<potential min="12" max="49" slope="45" />
@@ -3042,45 +3020,16 @@
 			<children>
 				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
-						<de>Orte</de>
-						<en>Places</en>
+						<de>%EPISODE%</de>
+						<en>%EPISODE%</en>
 					</title>
-				</scripttemplate>
-				<scripttemplate index="1" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep2">
-					<title>
-						<de>Länder</de>
-						<en>Countries</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="2" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep3">
-					<title>
-						<de>Unterwäsche</de>
-						<en>Underwear</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="3" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep4">
-					<title>
-						<de>Parfum</de>
-						<en>Parfume</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="4" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep5">
-					<title>
-						<de>Filme</de>
-						<en>Movies</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="5" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep6">
-					<title>
-						<de>Keine Wörter diesmal</de>
-						<en>No Words This Time</en>
-					</title>
-				</scripttemplate>
-				<scripttemplate index="6" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep7">
-					<title>
-						<de>Künstler</de>
-						<en>Artists</en>
-					</title>
+					<variables>
+						<episode>
+							<de>Orte|Länder|Unterwäsche|Parfum|Filme|Keine Wörter diesmal|Künstler|Hauptstädte|Flüsse|Gebirge|Politiker</de>
+							<en>Places|Countries|Underwear|Perfume|Movies|No Words This Time|Artists|Capitals|Rivers|Mountains|Politicians</en>
+						</episode>
+					</variables>
+					<episodes min="2" max="7" />
 				</scripttemplate>
 			</children>
 			<variables>
@@ -3102,7 +3051,6 @@
 			<data flags="144" flags_optional="67" production_broadcast_flags="512" />
 			<groups target_groups="16" />
 			<genres maingenre="0" />
-			<episodes min="2" max="7" />
 			<blocks min="1" max="2" slope="5" />
 			<price min="80000" max="99999" slope="85" />
 			<potential min="2" max="9" slope="30" />

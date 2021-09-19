@@ -630,7 +630,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		local result:Long = -1
 		For local i:int = 0 until subLicences.length
-			local subReleaseTime:Long = subLicences[i].GetNextReleaseTime()
+			local subReleaseTime:Long = -1
+			if subLicences[i] then subReleaseTime = subLicences[i].GetNextReleaseTime()
 			'fetch earliest "still to come" release time
 			if subReleaseTime > GetWorldTime().GetTimeGone()
 				if result = -1 then result = subReleaseTime
@@ -2167,7 +2168,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local nextReleaseTime:Long
 		If self.IsLive()
 			nextReleaseTime = GetNextReleaseTime()
-			if nextReleaseTime = -1 then nextReleaseTime = data.GetReleaseTime()
+			if nextReleaseTime = -1 and data then nextReleaseTime = data.GetReleaseTime()
 
 			'release time might be in the past if the live programme is airing
 			'now (so it is "live" but start was in the past)
