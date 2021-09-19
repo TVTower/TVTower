@@ -1800,6 +1800,22 @@ Type TDatabaseLoader
 		Next
 
 
+		'=== DATA: EPISODES ===
+		'load episode data only after creating the children as these values must
+		'not be propagated to the children
+		nodeData = xml.FindChild(node, "episodes")
+		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
+		If data.GetInt("value", -1) >= 0
+			Local value:Int = data.GetInt("value", scriptTemplate.episodesMin)
+			scriptTemplate.SetEpisodesRange(value, value, 0.5)
+		Else
+			scriptTemplate.SetEpisodesRange( ..
+				data.GetInt("min", scriptTemplate.episodesMin), ..
+				data.GetInt("max", scriptTemplate.episodesMax), ..
+				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.episodesSlope)) ..
+			)
+		EndIf
+
 		'=== ADD TO COLLECTION ===
 		GetScriptTemplateCollection().Add(scriptTemplate)
 

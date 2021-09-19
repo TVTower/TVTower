@@ -330,7 +330,7 @@ Type TScriptBase Extends TNamedGameObject
 
 	Method GetLiveTimeText:String(nowTime:Long = -1)
 		If IsLive()
-			If Not IsAlwaysLive()
+			If Not IsSeries() And Not IsAlwaysLive()
 				if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
 				Local liveTime:Long = GetLiveTime()
 				Local liveDay:Int = GetWorldTime().GetDay(liveTime)

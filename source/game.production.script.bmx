@@ -109,7 +109,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			If Not template Then Return Null
 		EndIf
 
-		Local script:TScript = TScript.CreateFromTemplate(template)
+		Local script:TScript = TScript.CreateFromTemplate(template, True)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
 		Return script
@@ -145,7 +145,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			EndIf
 		EndIf
 
-		Local script:TScript = TScript.CreateFromTemplate(template)
+		Local script:TScript = TScript.CreateFromTemplate(template,True)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
 
@@ -351,7 +351,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Function CreateFromTemplate:TScript(template:TScriptTemplate)
+	Function CreateFromTemplate:TScript(template:TScriptTemplate, includingEpisodes:Int)
 		Local script:TScript = New TScript
 		script.title = template.GenerateFinalTitle()
 		If GetScriptCollection().IsTitleProtected(script.title)
@@ -456,12 +456,53 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.title = script._ReplacePlaceholders(script.title)
 		script.description = script._ReplacePlaceholders(script.description)
 
-
 		'add children
-		For Local subTemplate:TScriptTemplate = EachIn template.subScripts
-			Local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
-			If subScript Then script.AddSubScript(subScript)
-		Next
+		If includingEpisodes
+			Local mainTemplateEpisodeCount:Int = template.getEpisodes()
+			If mainTemplateEpisodeCount > 1 and mainTemplateEpisodeCount < template.subScripts.length
+				'if parent restricts the number of episodes - get a subset of templates
+				For Local subTemplate:TScriptTemplate = EachIn template.GetSubTemplateSubset(mainTemplateEpisodeCount)
+					Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
+					If subScript Then script.AddSubScript(subScript)
+				Next
+			Else
+				Local episodeTitles:TList=new TList()
+				'disregard parent episode definition; add number of episodes defined by the child script
+				For Local subTemplate:TScriptTemplate = EachIn template.subScripts
+					Local episodesCount:Int = subTemplate.getEpisodes()
+					If episodesCount > 0 '0 episodes are supported - do not always include every episode
+						For Local i:Int = 0 until episodesCount
+							Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
+							If subScript Then script.AddSubScript(subScript)
+							'try to ensure unique episode names
+							Local title:TLocalizedString = subScript.title
+							Local description:TLocalizedString = subScript.description
+							For Local j:Int = 0 until 10
+								If episodeTitles.contains(title.get())
+									subTemplate.reset()
+									title = subTemplate.GenerateFinalTitle()
+									description = subTemplate.GenerateFinalDescription()
+								Else
+									Exit
+								EndIf
+							Next
+							subScript.title = title
+							subScript.description = description
+							episodeTitles.addLast(title.get())
+						Next
+					EndIf
+				Next
+			EndIf
+			'#424 script with children is live (only) if any of the children is live
+			If script.subScripts
+				script.SetFlag(TVTProgrammeDataFlag.LIVE, False)
+				For Local subScript:TScript = EachIn script.subScripts
+					If subScript.isLive()
+						script.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+					EndIF
+				Next
+			EndIf
+		EndIf
 
 		'this would GENERATE a new block of jobs (including RANDOM ones)
 		'- for single scripts we could use that jobs

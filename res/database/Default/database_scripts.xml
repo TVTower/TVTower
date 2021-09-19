@@ -489,12 +489,34 @@
 						<de>%SUBJECT1A% im %SUBJECT1B%</de>
 						<en>%SUBJECT1A% in the %SUBJECT1B%</en>
 					</title>
+					<episodes min="1" max="3" />
+					<variables>
+						<subject1a>
+							<de>Ärger|Panik|Pechsträhne|Fette Beute</de>
+							<en>Trouble|Panic|Streak of bad luck|Big booty</en>
+						</subject1a>
+						<subject1b>
+							<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
+							<en>paradise|inn|backyard|police station|supermarket</en>
+						</subject1b>
+					</variables>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
 					<title>
 						<de>%SUBJECT2A% im %SUBJECT1B%</de>
 						<en>%SUBJECT2A% in the %SUBJECT1B%</en>
 					</title>
+					<episodes min="1" max="3" />
+					<variables>
+						<subject2a>
+							<de>Treffen|Krawall|Klamauk|Überraschungsfeier</de>
+							<en>Meeting|Riot|Fuss|Surprise party</en>
+						</subject2a>
+						<subject1b>
+							<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
+							<en>paradise|inn|backyard|police station|supermarket</en>
+						</subject1b>
+					</variables>
 				</scripttemplate>
 			</children>
 
@@ -511,18 +533,6 @@
 					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||</de>
 					<en>Gags every minute.|Not one failing punch line|Pure entertainment.||</en>
 				</jokes>
-				<subject1a>
-					<de>Ärger|Panik|Pechsträhne|Fette Beute</de>
-					<en>Trouble|Panic|Streak of bad luck|Big booty</en>
-				</subject1a>
-				<subject1b>
-					<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
-					<en>paradise|inn|backyard|police station|supermarket</en>
-				</subject1b>
-				<subject2a>
-					<de>Treffen|Krawall|Klamauk|Überraschungsfeier</de>
-					<en>Meeting|Riot|Fuss|Surprise party</en>
-				</subject2a>
 			</variables>
 
 			<jobs>
@@ -535,7 +545,6 @@
 			</jobs>
 
 			<genres maingenre="0" />
-			<episodes min="4" max="6" />
 			<blocks value="1" />
 			<price min="15000" max="26000" />
 			<potential min="50" max="70" slope="45" />
