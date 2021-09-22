@@ -20,7 +20,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Global studioScriptLimit:Int = 1
 
 	Global deskGuiListPos:TVec2D = New TVec2D.Init(330,335)
-	Global suitcasePos:TVec2D = New TVec2D.Init(520,70)
+	Global suitcasePos:TVec2D = New TVec2D.Init(550,70)
 	Global trashBinPos:TVec2D = New TVec2D.Init(148,327)
 	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(16,22)
 
