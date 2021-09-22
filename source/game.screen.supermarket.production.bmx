@@ -1479,26 +1479,31 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	Method onClickSortCastButton:Int(triggerEvent:TEventBase )
 		sortType = sortType + 1
 		If sortType > 3 Then sortType = 0
-		If sortType = 0
+		SortCastList(sortType)
+		Return True
+	End Method
+
+	Method SortCastList(sortBy:Int = -1)
+		If sortBy < 0 Then sortBy = sortType
+		If sortBy = 0
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
 			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("NAME")) )
-		Else If SortType = 1
+		Else If sortBy = 1
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByJobXP)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_quality")
 			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("CAST_JOB_EXPERIENCE")) )
-		Else If SortType = 2
+		Else If sortBy = 2
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByGenreXP)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_genreXP")
 			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("CAST_GENRE_EXPERIENCE")) )
-		Else If SortType = 3
+		Else If sortBy = 3
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByFee)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_money")
 			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("CAST_FEE")) )
 		End If
 		castSelectList.Update()
 		castSelectList.UpdateLayout()
-		Return True
 	End Method
 
 	'GUI -> GUI
@@ -1524,6 +1529,8 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 			genderID = TVTPersonGender.GetAtIndex( genderFilterSelect.GetSelectedEntry().data.GetInt("genderIndex") )
 		EndIf
 		LoadPersons(jobID, genderID)
+		'sort again
+		SortCastList()
 	End Method
 
 
@@ -1597,8 +1604,20 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		'add all castable celebrities to that list
 		'also prepend 5 amateurs (at least 1 of them "not yet interested"
-		'in the job)
-		Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, 10, 5, 1, True)
+		'in the job) - for "all jobs" do not show amateurs
+		Local amateurCount:Int = 5
+		If filterToJobID = 0 Then amateurCount = 0
+		Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, 10, amateurCount, 1, True)
+
+		Rem
+			'Variant for "all jobs": no filter for celebrities but keep use job filter for amateurs
+			Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, 10, 0, 1, True)
+			Local amateurJobID:Int = filterToJobID
+			If filterToJobID = 0 then amateurJobID = selectJobID
+			Local amateurs:TPersonBase[] = GetProductionManager().GetCurrentAvailableAmateurs(amateurJobID, filterToGenderID, 10, 5, 0)
+			persons = amateurs + persons
+		EndRem
+
 		'disable list-sort
 		castSelectList.SetAutosortItems(False)
 
