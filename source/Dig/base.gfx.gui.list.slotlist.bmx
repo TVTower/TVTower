@@ -412,6 +412,7 @@ Type TGUISlotList Extends TGUIListBase
 	Method CanDropOnCoord:Int(dropCoord:TVec2D)
 		If dropCoord
 			local addToSlot:Int = Self.GetSlotByCoord(dropCoord)
+			If GetUnusedSlotAmount() > 0 Then Return True
 			If addToSlot >= 0 and CanDropOnSlot(addToSlot)
 				Return True
 			EndIf

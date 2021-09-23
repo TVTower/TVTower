@@ -85,7 +85,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListStudio.SetSlotMinDimension(90, 80)
 			guiListStudio.SetAcceptDrop("TGUIStudioScript")
 
-			guiListSuitcase	= New TGUIScriptSlotlist.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(200,80), "studio")
+			guiListSuitcase	= New TGUIScriptSlotlist.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(155,80), "studio")
 			guiListSuitcase.SetAutofillSlots(True)
 			guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
