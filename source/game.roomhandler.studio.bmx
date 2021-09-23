@@ -89,6 +89,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListSuitcase.SetAutofillSlots(True)
 			guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
+			guiListSuitcase.SetSlotMinDimension(spriteSuitcase.area.GetW(), spriteSuitcase.area.GetH())
 			guiListSuitcase.SetEntryDisplacement( 0, 0 )
 			guiListSuitcase.SetAcceptDrop("TGUIStudioScript")
 
