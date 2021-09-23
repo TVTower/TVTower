@@ -360,7 +360,7 @@
 				<title>
 					<!-- twice ... to select it more often -->
 					<de>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% und ich|Ich bin %NAME%</de>
-					<en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%|I'm %NAME%</en>
+					<en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%</en>
 				</title>
 				<name>
 					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(aut,1)%</de>
