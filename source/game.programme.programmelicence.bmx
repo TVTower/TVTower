@@ -3081,7 +3081,12 @@ Type TProgrammeLicenceFilter
 	Method DoesFilter:Int(licence:TProgrammeLicence)
 		if not licence then return False
 
-		if checkAvailability and not licence.isAvailable() then return False
+		'if a licence is exceeding the broadcast limit it is not available
+		'in the movie agency it will have lost tradeability, 
+		'if owned by a player it should be visible in the archive for potential selling
+		if not licence.isExceedingBroadCastLimit()
+			if checkAvailability and not licence.isAvailable() then return False
+		endif
 		if checkTradeability and not licence.isTradeable() then return False
 		if checkVisibility and not licence.isVisible() then return False
 
