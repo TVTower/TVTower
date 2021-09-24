@@ -391,8 +391,8 @@
 					<en>support him|help him|leave no stone unturned|assist him</en>
 				</environmentaction>
 				<feeling>
-					<de>~nGefühle hautnah!|~nGefühlskino!|||~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
-					<en>~nFeelings up close!|||~nFeeling cinema!||~nEveryone feels it!||~nFinally told without clichés!</en>
+					<de>|||~nGefühle hautnah!|~nGefühlskino!|~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
+					<en>|||~nFeelings up close!|~nFeeling cinema!|~nEveryone feels it!|~nFinally told without clichés!</en>
 				</feeling>
 			</variables>
 
@@ -501,7 +501,7 @@
 			<variables>
 				<attribute>
 					<de>Ein Haufen|Die Hillbillie-|Verrückte|Die Wahnsinns-|Bayrische|Tugendhafte|Durchgedrehte|Fromme|Zankende</de>
-					<en>A bunch of|The hillbillie-|Crazy|The frenzy|Bavarian|Virtuous|Pious|Brawly</en>
+					<en>A bunch of|The hillbillie-|Crazy|The frenzy|Bavarian|Virtuous|Nutty|Pious|Brawly</en>
 				</attribute>
 				<object>
 					<de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten|Rettungsschwimmer|Clowns|Krankenpfleger|Stripper|Feuerwehrmänner|Nonnen</de>
