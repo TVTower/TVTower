@@ -1559,7 +1559,7 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<member index="5" function="2">1df80fd1-2c56-473b-8687-19a6183b66e8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1981" distribution="1" maingenre="15" subgenre="" flags="0" blocks="3" price_mod="0.67" />
+			<data country="USA" year="1981" distribution="1" maingenre="2" subgenre="7" flags="0" blocks="3" price_mod="0.67" />
 			<ratings critics="61" speed="56" outcome="18" />
 		</programme>
 		<programme id="a11e062a-10ce-4005-b8d5-5c6a23ef8ccc" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0106918" creator="">
