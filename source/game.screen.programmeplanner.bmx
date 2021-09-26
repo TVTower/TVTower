@@ -1389,7 +1389,7 @@ endrem
 				'starting later than the planning day (no slot affected) ?
 				Elseif programme.licence.IsLive() and planningDay < programmeStartDay
 					'mark all others red
-					EnableAllSlotOverlays(-1, TVTBroadcastMaterialType.PROGRAMME)
+					EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, -1)
 
 
 				'else mark the exact live time (releasetime + blocks) slots
@@ -1397,7 +1397,7 @@ endrem
 	'				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay
 				ElseIf programme.licence.IsLive() and (planningDay = programmeStartDay or planningDay = programmeEndDay) 
 					'mark all others red
-					EnableAllSlotOverlays(-1, TVTBroadcastMaterialType.PROGRAMME)
+					EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, -1)
 
 					Local blockTime:Long = programme.data.releaseTime
 					If not GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
