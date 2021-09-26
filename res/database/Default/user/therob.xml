@@ -2893,7 +2893,7 @@
 			<variables>
 				<gegenstand>
 					<de>Die sprechende Lokomotive|Das sprechende Auto|Das sprechende Haus|Der sprechende Baum|Die sprechende Wolke|Die sprechende Spatzenschleuder|Das sprechende Gänseblümchen|Die sprechende Trompete|Die sprechende Kartoffelkanone</de>
-					<en>Locomotive|Car|House|Tree|Cloud|Sparrow Spin|Potato Gun|Daisy|Trumpet</en>
+					<en>Locomotive|Car|House|Tree|Cloud|Sparrow Spin|Daisy|Trumpet|Potato Gun</en>
 				</gegenstand>
 			</variables>
 			<jobs>
