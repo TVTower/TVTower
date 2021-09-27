@@ -1321,17 +1321,16 @@ endrem
 						allowedSlotCount = slotEnd - slotStart
 					'11:00 - 01:00
 					ElseIf slotStart > slotEnd
-						allowedSlotCount = 24 - (slotEnd - slotStart)
+						allowedSlotCount = 24 - (slotStart - slotEnd)
 					'01:00 - 01:00
 					Else
 						allowedSlotCount = 1
 					EndIf
 
-
 					If not programme.licence.IsLive() or programme.licence.isAlwaysLive()
 						'mark allowed slots of whole day
 						For Local i:Int = 0 Until allowedSlotCount
-							EnableSlotOverlay((slotStart + i mod 24), TVTBroadcastMaterialType.PROGRAMME, 1)
+							EnableSlotOverlay((slotStart + i) mod 24, TVTBroadcastMaterialType.PROGRAMME, 1)
 						Next
 					Else
 						'mark allowed slots since earliest start hour
