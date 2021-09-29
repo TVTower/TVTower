@@ -949,8 +949,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		FixDayHour(day, hour)
 
-		'check live programme
-		if not obj.GetSource().CanBroadcastAtTime(slotType, day, hour)
+		'check live programme or potential time slot limits
+		if not obj.GetSource().CanStartBroadcastAtTime(slotType, day, hour)
 			return -1
 		endif
 

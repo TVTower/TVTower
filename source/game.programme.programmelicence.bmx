@@ -1286,9 +1286,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 
-	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
+	Method CanStartBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
 		'check timeslot limits (ignoring days!)
-		If not CanBroadcastAtTimeSlot(broadcastType, hour) then Return False
+		If not CanStartBroadcastAtTimeSlot(broadcastType, day, hour) then Return False
 
 		'check live-programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -1314,7 +1314,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 		endif
 
-		return Super.CanBroadcastAtTime(broadcastType, day, hour)
+		return Super.CanStartBroadcastAtTime(broadcastType, day, hour)
 	End Method
 
 

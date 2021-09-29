@@ -287,39 +287,42 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
+	Method CanStartBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
 		Return True
 	End Method
 
 
-	Method CanBroadcastAtTimeSlot:Int(broadcastType:Int, hour:Int) {_exposeToLua}
+	Method CanStartBroadcastAtTimeSlot:Int(broadcastType:Int, day:int, hour:Int) {_exposeToLua}
 		'check timeslot limits
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			if HasBroadcastTimeSlot()
+				Local slotStart:Int = GetBroadcastTimeSlotStart()
+				Local slotEnd:Int = GetBroadcastTimeSlotEnd()
+				'in case of over night (11:00 - 01:00)
+				'convert end time to "absolute" (1:00 becomes 25:00)
+				If slotStart > slotEnd Then slotEnd :+ 24
+				'hour might be "of next day" (even if only 1 hour before start)
+				If hour <  slotStart Then hour :+ 24
+				
 
-				'check if hour is inside of the timespan?
-				'check for inside when :  2:00 to 11:00
-				'check for outside when: 11:00 to  2:00
-				local checkForInside:int = GetBroadcastTimeSlotStart() < GetBroadcastTimeSlotEnd()
-				local startSlot:int, endslot:int
-				If checkForInside
-					startSlot = GetBroadcastTimeSlotStart()
-					endSlot = GetBroadcastTimeSlotEnd()
-				Else
-					startSlot = GetBroadcastTimeSlotEnd()
-					endSlot = GetBroadcastTimeSlotStart()
-				EndIf
-
-				local isInside:Int = True
-				'begin is outside
-				if isInside and hour < startSlot Then isInside = False
-				'outside "right"
-				'alternatively subtract 1 to include "slotEnd" as allowed
-				'hour to broadcast a programme in (22-23 would allow a 2 block programme)
-				'if isInside and (hour + GetBlocks(broadcastType)-1) > endSlot Then isInside = False
-				if isInside and (hour + GetBlocks(broadcastType)) > endSlot Then isInside = False
-
-				if isInside <> checkForInside then Return False
+				'subtract 1 as this is the hour in which the programme will end
+				'2 blocks movie at 20:00 will end 21:55
+				'and broadcastSlotEnd is "exclusive" not "inclusive"
+				'ex: 
+				'1 - 0, begin 23, blocks 1:   (23 >= 1 and (23 + 1 - 1) < 0+24 -> True
+				'6 - 10, begin 5, blocks 3:   (5+24 >= 6 and (5+24 + 3 - 1) < 10 -> False
+				'6 - 10, begin 6, blocks 3:   (6 >= 6 and (6 + 3 - 1) < 10 -> True
+				'6 - 10, begin 7, blocks 3:   (7 >= 6 and (7 + 3 - 1) < 10 -> True
+				'6 - 10, begin 8, blocks 3:   (8 >= 6 and (8 + 3 - 1) < 10 -> False
+				'21 - 1, begin 20, blocks 3:   (20+24 >= 21 and (20+24 + 3 - 1) < 1+24 -> False
+				'21 - 1, begin 21, blocks 3:   (21 >= 21 and (21 + 3 - 1) < 1+24 -> True
+				'21 - 1, begin 22, blocks 3:   (22 >= 21 and (22 + 3 - 1) < 1+24 -> True
+				'21 - 1, begin 23, blocks 3:   (23 >= 21 and (23 + 3 - 1) < 1+24 -> False
+				'22 - 4, begin 0, blocks 3 :   (0+24 >= 22 and (0+24 + 3 - 1) < 4+24 -> True
+				'22 - 4, begin 1, blocks 3 :   (1+24 >= 22 and (1+24 + 3 - 1) < 4+24 -> True
+				'22 - 4, begin 2, blocks 3 :   (2+24 >= 22 and (2+24 + 3 - 1) < 4+24 -> False
+				
+				Return hour >= slotStart and (hour + GetBlocks(broadcastType) - 1) < slotEnd
 			endif
 		endif
 
