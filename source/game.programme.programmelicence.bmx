@@ -1051,36 +1051,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method GetSublicenceBroadcastLimitMin:int() {_exposeToLua}
-		if GetSubLicenceCount() = 0 then Return GetBroadcastLimit()
-
-		local result:int = -1
-		For local licence:TProgrammeLicence = eachin subLicences
-			if result = -1
-				result = licence.GetSublicenceBroadcastLimitMin()
-			else
-				result = min(result, licence.GetSublicenceBroadcastLimitMin())
-			endif
-		Next
-		return result
-	End Method
-
-
-	Method GetSublicenceBroadcastLimitMax:int() {_exposeToLua}
-		if GetSubLicenceCount() = 0 then Return GetBroadcastLimit()
-
-		local result:int = -1
-		For local licence:TProgrammeLicence = eachin subLicences
-			if result = -1
-				result = licence.GetSublicenceBroadcastLimitMax()
-			else
-				result = max(result, licence.GetSublicenceBroadcastLimitMax())
-			endif
-		Next
-		return result
-	End Method
-
-
 	Method GetBroadcastLimit:int() override {_exposeToLua}
 		local result:int
 		
@@ -2457,17 +2427,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		EndIf
 
 		if showMsgBroadcastLimit
-			local broadcastsLeftMin:int = GetSublicenceBroadcastLimitMin()
-			local broadcastsLeftMax:int = GetSublicenceBroadcastLimitMax()
-			if broadcastsLeftMax <= 0
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("NO_MORE_BROADCASTS_ALLOWED"), "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
-			elseif broadcastsLeftMin = 1 and broadcastsLeftMax = 1
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-			elseif broadcastsLeftMin <> broadcastsLeftMax
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin+"-"+broadcastsLeftMax), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-			else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-			endif
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getBroadCastLimitDatasheetText(self), "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
@@ -2637,6 +2597,38 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If IsXRated()
 			GetSpriteFromRegistry("gfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
 		Endif
+
+		Function getBroadCastLimitDatasheetText:String(l:TProgrammeLicence)
+			local limitMin:int = 1000
+			local limitMax:int = -1
+			local suffix:String = ""
+			local childCount:int = l.getSubLicenceCount()
+			if childCount > 0
+				local limitCount:int = 0
+				For local c:TProgrammeLicence = eachin l.subLicences
+					local childLimit:int=c.GetBroadCastLimit()
+					if childLimit >= 0
+						limitMin = min(limitMin, childLimit)
+						limitMax = max(limitMax, childLimit)
+						limitCount :+ 1
+					endif
+				Next
+				if limitCount < childCount then suffix = " ("+limitCount+"/"+childCount+")"
+			else
+				limitMin = l.GetBroadCastLimit()
+				limitMax = limitMin
+			endif
+
+			if limitMax <= 0
+				return getLocale("NO_MORE_BROADCASTS_ALLOWED") + suffix
+			elseif limitMin = 1 and limitMax = 1
+				return getLocale("ONLY_1_BROADCAST_POSSIBLE") + suffix
+			elseif limitMin <> limitMax
+				return getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", limitMin+"-"+limitMax) + suffix
+			else
+				return getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", limitMin) + suffix
+			endif
+		End Function
 	End Method
 
 

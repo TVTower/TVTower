@@ -1054,13 +1054,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		Local showMsgEarnInfo:Int = False
 		Local showMsgLiveInfo:Int = False
-		Local showMsgBroadcastLimit:Int = False
+		Local msgBroadcastLimit:String = getBroadCastLimitDatasheetText(self)
 		Local showMsgTimeSlotLimit:Int = False
 		'Local showMsgStudioTooSmall:Int = False
 
 		If IsPaid() Then showMsgEarnInfo = True
 		If IsLive() Then showMsgLiveInfo = True
-		If GetProductionBroadcastLimit() > 0 Then showMsgBroadcastLimit= True
 		If HasBroadcastTimeSlot() Then showMsgTimeSlotLimit = True
 		'If studioSize > 0 and studioSize < self.requiredStudioSize then showMsgStudioTooSmall = True
 
@@ -1104,7 +1103,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'message area
 		If showMsgEarnInfo Then msgAreaH :+ msgH
 		If showMsgLiveInfo Then msgAreaH :+ msgH
-		If showMsgBroadcastLimit Then msgAreaH :+ msgH
+		If msgBroadcastLimit Then msgAreaH :+ msgH
 		'suits into the live-block
 'If showMsgTimeSlotLimit and not showMsgLiveInfo Then msgAreaH :+ msgH
 		If showMsgTimeSlotLimit Then msgAreaH :+ msgH
@@ -1318,12 +1317,8 @@ endrem
 			contentY :+ msgH
 		EndIf
 
-		If showMsgBroadcastLimit
-			If GetProductionBroadcastLimit() = 1
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-			EndIf
+		If msgBroadcastLimit
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, msgBroadcastLimit, "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -1410,5 +1405,38 @@ endrem
 		If IsXRated()
 			GetSpriteFromRegistry(spriteNameOverlayXRatedLS).Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
 		EndIf
+
+		Function getBroadCastLimitDatasheetText:String(s:TScript)
+			local limitMin:int = 1000
+			local limitMax:int = -1
+			local suffix:String = ""
+			local childCount:int = s.getSubScriptCount()
+			if childCount > 0
+				local limitCount:int = 0
+				For local c:TScript = eachin s.subSCripts
+					local childLimit:int=c.GetProductionBroadcastLimit()
+					if childLimit > 0 'limit 0 for script does not make sense
+						limitMin = min(limitMin, childLimit)
+						limitMax = max(limitMax, childLimit)
+						limitCount :+ 1
+					endif
+				Next
+				if limitCount < childCount then suffix = " ("+limitCount+"/"+childCount+")"
+			else
+				limitMin = s.GetProductionBroadcastLimit()
+				limitMax = limitMin
+			endif
+
+			if limitMax <= 0
+				'for scripts limit 0 indicates no limit
+				return ""
+			elseif limitMin = 1 and limitMax = 1
+				return getLocale("ONLY_1_BROADCAST_POSSIBLE") + suffix
+			elseif limitMin <> limitMax
+				return getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", limitMin+"-"+limitMax) + suffix
+			else
+				return getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", limitMin) + suffix
+			endif
+		End Function
 	End Method
 End Type
