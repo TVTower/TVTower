@@ -1241,8 +1241,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'create 3 starting news with random genre (for starting news show)
 		For Local i:Int = 0 Until 3
-			'genre = -1 to use a random genre
-			Local newsEvent:TNewsEvent = GetNewsAgency().GenerateNewNewsEvent(-1)
+			Local genre:int = -1 'genre = -1 to use a random genre
+			If i = 2 Then genre = TVTNewsGenre.POLITICS_ECONOMY 'not quite random to prevent news achievement
+			Local newsEvent:TNewsEvent = GetNewsAgency().GenerateNewNewsEvent(genre)
 			If newsEvent
 				'time must be lower than for the "current affairs" news
 				'so they are recognizeable as the latest ones
