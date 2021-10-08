@@ -71,15 +71,15 @@ Function BiasedRandRangeOld:Int(lo:int, hi:int, bias:Float)
 
 		local r:Float = mt_RandRange(0, 1000000) / 1000000.0
 		r = r ^ bias
-		return hi - (hi - lo) * r
+		return hi - (hi - lo) * r + 0.5
 	ElseIf bias > 0.501
 		bias = 2 * (1 - bias)
 
 		local r:Float = mt_RandRange(0, 1000000) / 1000000.0
 		r = r ^ bias
-		return (hi - lo) * r
+		return (hi - lo) * r + 0.5
 	Else
-		Return hi - (hi - lo) * mt_RandRange(0, 1000000) / 1000000.0
+		Return hi - (hi - lo) * mt_RandRange(0, 1000000) / 1000000.0 + 0.5
 	EndIf
 
 End Function
@@ -89,9 +89,11 @@ Function BiasedRandRange:Int(lo:int, hi:int, bias:Float)
     local r:Float = mt_RandRange(0, 1000000) / 1000000.0
 
     If bias < 0.5
-        return hi - r^(bias*2) * (hi-lo)
+		'round mathematically via int(x+0.5)
+        Return hi - r^((bias*2)^0.5) * (hi-lo) + 0.5
     Else
-        return lo + r^(2 - bias*2) * (hi-lo)
+		'round mathematically via int(x+0.5)
+		Return (lo + r^((2 - bias*2)^0.5) * (hi-lo)) + 0.5
     EndIf
 
 End Function
