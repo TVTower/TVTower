@@ -57,6 +57,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
 			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
+			GuiListSuitcase.SetAutofillSlots(True)
 			GuiListSuitcase.SetSlotMinDimension(baseSprite.area.GetW(), baseSprite.area.GetH())
 			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
