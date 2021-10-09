@@ -42,6 +42,7 @@ Function RandMax:int(hi:int)
 End Function
 
 Function RandRange:int(lo:int, hi:int)
+	If lo = hi Then Return lo
 	'order min/max
 	if hi < lo
 		local tmp:int = hi
@@ -63,6 +64,7 @@ End Function
 'returns a "biased" random number
 'bias of 1.0 means "mostly maximum", a bias of 0.1 means "mostly minimum"
 Function BiasedRandRangeOld:Int(lo:int, hi:int, bias:Float)
+	If lo = hi Then Return lo
 	'higher bias values lead to more results near "hi"
 	'lower bias values lead to more results near "lo"
 
@@ -86,6 +88,7 @@ End Function
 
 
 Function BiasedRandRange:Int(lo:int, hi:int, bias:Float)
+	If lo = hi Then Return lo
     local r:Float = mt_RandRange(0, 1000000) / 1000000.0
 
     If bias < 0.5
@@ -129,6 +132,7 @@ End Function
 '     WeightedRange(0, 100, 0.6) will most probably return values of 20-100
 'But all of them (except 0.0 and 1.0) might return values between 0-100
 Function WeightedRandRange:Int(lo:int, hi:int, weight:Float = 0.5, strength:Float = 1.0)
+	If lo = hi Then Return lo
 	'order min/max
 	if hi < lo
 		local tmp:int = hi
