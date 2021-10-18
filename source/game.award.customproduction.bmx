@@ -93,7 +93,10 @@ Type TAwardCustomProduction extends TAward
 	Function CalculateProgrammeLicenceScore:int(licence:TProgrammeLicence)
 		if not licence or licence.owner < 0 then return 0
 		'not of interest for us?
-		if not licence.data.isCustomProduction() then return 0
+		if not licence.data.isAPlayersCustomProduction() then return 0
+		'only check for custom production if winner could be
+		'one of the generic programme producers too
+		'if not licence.data.isCustomProduction() then return 0
 
 		'calculate score:
 		'a perfect production would give 100 points (plus personal

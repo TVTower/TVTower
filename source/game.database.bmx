@@ -1365,7 +1365,7 @@ Type TDatabaseLoader
 
 		'auto repair outcome for non-custom productions
 		'(eg. predefined ones from the DB)
-		If Not programmeData.IsCustomProduction() Then programmeData.FixOutcome()
+		If Not programmeData.IsAPlayersCustomProduction() Then programmeData.FixOutcome()
 
 
 

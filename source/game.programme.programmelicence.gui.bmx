@@ -160,10 +160,10 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		local forPlayerID:int = licence.owner
 		if forPlayerID <= 0 then forPlayerID = GetObservedPlayerID()
 		
-		if Self.licence.GetData().productionID and Self.licence.IsLive() and not GameRules.payLiveProductionInAdvance
+		if Self.licence.GetData().IsCustomProduction() and Self.licence.IsLive() and not GameRules.payLiveProductionInAdvance
 			'for live the production is also in the live list of the manager...
 			'so we could skip a more intense search in the ProductionCollection
-			Local production:TProduction = GetProductionManager().GetLiveProduction(Self.licence.GetData().productionID)
+			Local production:TProduction = GetProductionManager().GetLiveProduction(Self.licence.GetData().GetProductionID())
 			if production
 				local toPay:int = production.productionConcept.GetTotalCost() - production.productionConcept.GetDepositCost()
 				local extraData:TData = new TData
@@ -194,8 +194,6 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		if licence.owner = GetPlayerBaseCollection().playerID and not licence.IsTradeable()
 			markFaded = True
 		endif
-
-
 		if markFaded then SetAlpha oldA * 0.75
 
 		Super.Draw()

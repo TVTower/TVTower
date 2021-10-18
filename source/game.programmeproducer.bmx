@@ -153,8 +153,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			local oldExperience:Int = experience
 			GainExperienceForProgrammeLicence(result)
 
-			print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience)
-
+			print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience) + "   GUID: " + result.GetGUID()
 			productionsRunning = Max(0, productionsRunning - 1)
 			
 			producedProgrammeIDs = [production.producedLicenceID] + producedProgrammeIDs

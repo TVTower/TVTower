@@ -539,8 +539,6 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 	'which kind of distribution was used? Cinema, Custom production ...
 	Field distributionChannel:Int = 0
-	'created in a custom production?
-	Field productionID:Int = 0
 	'ID according to TVTProgrammeProductType
 	Field productType:Int = 1
 	'at which day was the programme released?
@@ -1861,7 +1859,12 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method isCustomProduction:Int() {_exposeToLua}
-		Return productionID > 0
+		Return HasFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION)
+	End Method
+	
+	
+	Method IsAPlayersCustomProduction:Int() {_exposeToLua}
+		Return isCustomProduction() and (extra and extra.GetInt("producerID") > 0)
 	End Method
 
 
@@ -1870,6 +1873,18 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		'return (productType & typeID)
 
 		Return productType = typeID
+	End Method
+	
+	
+	Method GetProductionID:Int()
+		If not IsCustomProduction() or not extra then Return 0
+		Return extra.GetInt("productionID")
+	End Method
+
+
+	Method GetProducerID:Int()
+		If not IsCustomProduction() or not extra then Return 0
+		Return extra.GetInt("producerID")
 	End Method
 
 

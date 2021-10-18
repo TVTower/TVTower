@@ -594,15 +594,11 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1. PROGRAMME CREATION ===
 		Local programmeData:TProgrammeData = New TProgrammeData
 
-		If producerName
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddString("producerName", producerName)
-		EndIf
+		If Not programmeData.extra Then programmeData.extra = New TData
+		programmeData.extra.AddInt("productionID", self.GetID())
 
-		If producerID <> 0
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddInt("producerID", producerID)
-		EndIf
+		If producerName Then programmeData.extra.AddString("producerName", producerName)
+		If producerID <> 0 Then programmeData.extra.AddInt("producerID", producerID)
 
 
 		'=== 2. PROGRAMME BASE PROPERTIES ===
@@ -614,7 +610,6 @@ Type TProduction Extends TOwnedGameObject
 			programmeData.releaseTime = productionConcept.GetLiveTime()
 		EndIf
 		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
-		programmeData.productionID = self.GetID()
 		programmeData.dataType = productionConcept.script.scriptLicenceType
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
@@ -639,12 +634,6 @@ Type TProduction Extends TOwnedGameObject
 
 		'add broadcast limits
 		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
-
-		If producerName
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddString("producerName", producerName)
-		EndIf
-
 
 		'=== 3. PROGRAMME CAST ===
 		For Local castIndex:Int = 0 Until Min(productionConcept.cast.length, productionConcept.script.jobs.length)
@@ -914,7 +903,18 @@ Type TProduction Extends TOwnedGameObject
 			'first "episode" is defining "who" did the custom production
 			'(if mixed producers happen, a "getProducerPlayerIDs()" must
 			' be created which then iterates over all child elements)
-			parentLicence.GetData().productionID = programmeLicence.GetData().productionID
+			if programmeLicence.GetData().extra
+				if not parentLicence.GetData().extra then parentLicence.GetData().extra = new TData
+				if programmeLicence.GetData().extra.Has("producerID")
+					parentLicence.GetData().extra.AddInt("producerID", programmeLicence.GetData().extra.GetInt("producerID"))
+				endif
+				if programmeLicence.GetData().extra.Has("producerName")
+					parentLicence.GetData().extra.AddString("producerName", programmeLicence.GetData().extra.GetString("producerName"))
+				endif
+				if programmeLicence.GetData().extra.Has("productionID")
+					parentLicence.GetData().extra.AddInt("productionID", programmeLicence.GetData().extra.GetInt("productionID"))
+				endif
+			endif
 			'store first produced child negatively (maybe useful information) ?
 			'for now parents do not get a production ID (as there is no 
 			'production done - but for the child elements)
