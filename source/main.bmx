@@ -866,7 +866,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
-				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
+				DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
 				For local pID:Int = 1 to 4
@@ -1859,7 +1859,7 @@ Type TGameState
 	Field _Betty:TBetty = Null
 	Field _AwardCollection:TAwardCollection = Null
 	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
-
+	
 	Field _GameModifierManager:TGameModifierManager = Null
 	Field _GameInformationCollection:TGameInformationCollection = Null
 	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
@@ -1877,6 +1877,7 @@ Type TGameState
 	Field _ProgrammePersonBaseCollection:TPersonBaseCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
+	Field _ProgrammeProducerCollection:TProgrammeProducerCollection = Null
 
 	Field _NewsEventTemplateCollection:TNewsEventTemplateCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
@@ -1962,12 +1963,13 @@ Type TGameState
 		GetProductionManager().Initialize()
 		GetProgrammeRoleCollection().Initialize()
 		GetPersonGenerator().Initialize()
-		GeTPersonBaseCollection().Initialize()
+		GetPersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
 		TAuctionProgrammeBlocks.Initialize()
 		GetNewsEventTemplateCollection().Initialize()
 		GetNewsEventCollection().Initialize()
+		GetProgrammeProducerCollection().Initialize()
 
 		GetDailyBroadcastStatisticCollection().Initialize()
 		GetFigureCollection().Initialize()
@@ -2048,6 +2050,7 @@ Type TGameState
 		_Assign(_ProgrammePersonBaseCollection, TPersonBaseCollection._instance, "ProgrammePersonBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_ProgrammeLicenceCollection, TProgrammeLicenceCollection._instance, "ProgrammeLicenceCollection", MODE_LOAD)
+		_Assign(_ProgrammeProducerCollection, TProgrammeProducerCollection._instance, "ProgrammeProducerCollection", MODE_LOAD)
 
 		_Assign(_PlayerCollection, TPlayerCollection._instance, "PlayerCollection", MODE_LOAD)
 		_Assign(_PlayerDifficultyCollection, TPlayerDifficultyCollection._instance, "PlayerDifficultyCollection", MODE_LOAD)
@@ -2156,6 +2159,8 @@ Type TGameState
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
 
+		_Assign(TProgrammeProducerCollection._instance, _ProgrammeProducerCollection, "ProgrammeProducerCollection", MODE_SAVE)
+
 		_Assign(TPlayerColor.List, _PlayerColorList, "PlayerColorList", MODE_SAVE)
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
 		_Assign(IngameHelpWindowCollection, _IngameHelpWindowCollection, "IngameHelp", MODE_SAVE)
@@ -2233,7 +2238,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 15
+	Const SAVEGAME_VERSION:int = 16
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2491,6 +2496,13 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
+		If savegameVersion < 16
+			'programme producers were not persisted before v16
+			If GetProgrammeProducerCollection().GetCount() < 1
+				print "RepairData: Create (new) programme producers (savegame did not contain them)"
+				GetGame().GenerateStartProgrammeProducers()
+			EndIf
+		EndIf
 		if savegameVersion < 15
 			'ensure consistent broadcast slots
 			For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
