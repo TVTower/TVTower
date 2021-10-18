@@ -38,6 +38,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 	
 	
 	Method Initialize:TProgrammeProducerBase() override
+		name = "Generic Sport Producer"
 		'reset budget etc
 		RandomizeCharacteristics()
 

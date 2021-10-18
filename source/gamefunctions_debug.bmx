@@ -20,6 +20,8 @@ Type TDebugScreen
 	Field buttonsRoomAgency:TDebugControlsButton[]
 	Field buttonsScriptAgency:TDebugControlsButton[]
 	Field buttonsPolitics:TDebugControlsButton[]
+	Field buttonsProducers:TDebugControlsButton[]
+	Field buttonsSports:TDebugControlsButton[]
 	Field buttonsMisc:TDebugControlsButton[]
 	Field buttonsModifiers:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
@@ -30,11 +32,19 @@ Type TDebugScreen
 	Global textFont:TBitmapFont
 	Global textFontBold:TBitmapFont
 
+	Field FastForward_Active:Int = False
+	Field FastForward_SwitchedPlayerToAI:Int = 0
+	Field FastForward_TargetTime:Long = -1
+	Field FastForward_SpeedFactorBackup:Float = 0.0
+	Field FastForward_TimeFactorBackup:Float = 0.0
+	Field FastForward_BuildingTimeSpeedFactorBackup:Float = 0.0
+
+
 	Method New()
 		Local button:TDebugControlsButton
 
 
-		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Modifiers", "Misc"]
+		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Producers", "Sports Sim", "Modifiers", "Misc"]
 		Local mode:int = 0
 		For Local i:Int = 0 Until texts.length
 			if texts[i] = "-" then continue 'spacer
@@ -62,6 +72,8 @@ Type TDebugScreen
 		InitMode_ScriptAgency()
 		InitMode_RoomAgency()
 		InitMode_Politics()
+		InitMode_Producers()
+		InitMode_Sports()
 		InitMode_Modifiers()
 		InitMode_Misc()
 	End Method
@@ -79,6 +91,16 @@ Type TDebugScreen
 		EndIf
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 		Return playerID
+	End Method
+	
+	
+	'called no matter if debug screen is shown or not - use this for
+	'stuff needing regular updates anyways (eg to reset values)
+	Method UpdateSystem()
+	
+		If FastForward_Active and FastForward_TargetTime < GetWorldTime().GetTimeGone()
+			Dev_StopFastForwardToTime()
+		EndIf
 	End Method
 
 
@@ -104,8 +126,10 @@ Type TDebugScreen
 			Case 7	UpdateMode_ScriptAgency()
 			Case 8	UpdateMode_RoomAgency()
 			Case 9	UpdateMode_Politics()
-			Case 10	UpdateMode_Modifiers()
-			Case 11	UpdateMode_Misc()
+			Case 10	UpdateMode_Producers()
+			Case 11	UpdateMode_Sports()
+			Case 12	UpdateMode_Modifiers()
+			Case 13	UpdateMode_Misc()
 		End Select
 	End Method
 
@@ -148,8 +172,10 @@ Type TDebugScreen
 			Case 7	RenderMode_ScriptAgency()
 			Case 8	RenderMode_RoomAgency()
 			Case 9	RenderMode_Politics()
-			Case 10	RenderMode_Modifiers()
-			Case 11	RenderMode_Misc()
+			Case 10	RenderMode_Producers()
+			Case 11	RenderMode_Sports()
+			Case 12	RenderMode_Modifiers()
+			Case 13	RenderMode_Misc()
 		End Select
 	End Method
 
@@ -792,6 +818,191 @@ Type TDebugScreen
 
 		RenderActionButtons(buttonsPolitics)
 	End Method
+	
+	
+
+	'=== Producers screen ===
+
+	Method InitMode_Producers()
+		Local texts:String[] = ["Produce Next"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = CreateActionButton(i, texts[i])
+			button._onClickHandler = OnButtonClickHandler_Producers
+
+			buttonsProducers :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_Producers(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+'
+			case 1
+'
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_Producers()
+		For Local b:TDebugControlsButton = EachIn buttonsProducers
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_Producers()
+		RenderProducersList(sideButtonPanelWidth + 5, 13)
+
+		RenderActionButtons(buttonsProducers)
+	End Method
+	
+	
+	Method RenderProducersList(x:Int, y:Int, w:Int=280, h:Int=300)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		Local mouseOverProducer:TProgrammeProducer
+
+		titleFont.DrawSimple("Programme Producers: ", textX, textY)
+		textY :+ 12 + 8
+
+		For Local producer:TProgrammeProducerBase = EachIn GetProgrammeProducerCollection()
+			textFont.DrawBox(producer.name + "  ("+producer.countryCode+")", textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textY :+ 12
+			textFont.DrawBox("Type: " + TTypeID.ForObject(producer).name, textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textFont.DrawBox("XP: " + producer.experience, textX + 150, textY, 35, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textFont.DrawBox("Budget: " + MathHelper.DottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textY :+ 12 + 4
+			
+		Next
+	End Method
+
+
+	'=== Sports Sim screen ===
+
+	Method InitMode_Sports()
+		Local texts:String[] = ["Reset"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = CreateActionButton(i, texts[i])
+			button._onClickHandler = OnButtonClickHandler_Sports
+
+			buttonsProducers :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_Sports(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+'
+			case 1
+'
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_Sports()
+		For Local b:TDebugControlsButton = EachIn buttonsSports
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_Sports()
+		'RenderActionButtons(buttonsSports)
+		
+		RenderSportsBlock(sideButtonPanelWidth + 5, 13)
+	End Method
+	
+	
+	Method RenderSportsBlock(x:Int, y:Int, w:Int=325, h:Int=300)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		
+		
+		Local mouseOverLeague:TNewsEventSportLeague
+
+		titleFont.DrawSimple("Sport Leagues: ", textX, textY)
+		textY :+ 12 + 8
+
+		For Local sport:TNewsEventSport = EachIn GetNewsEventSportCollection()
+			textFont.DrawBox(sport.name, textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textY :+ 12
+
+			local seasonInfo:String
+			if sport.IsSeasonStarted() then seasonInfo :+ "Started  "
+			if sport.IsSeasonFinished() then seasonInfo :+ "Finished  "
+			if sport.ReadyForNextSeason() then seasonInfo :+ "ReadyForNextSeason  "
+			if sport.ArePlayoffsRunning() then seasonInfo :+ "Playoffs running  "
+			if sport.ArePlayoffsFinished() then seasonInfo :+ "Playoffs finished  "
+			textFont.DrawBox("  Season: " + seasonInfo, textX, textY, w, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textY :+ 12
+			
+			For local league:TNewsEventSportLeague = EachIn sport.leagues
+				local col:SColor8 = SColor8.White
+
+				if THelper.MouseIn(textX, textY, w, 12)
+					mouseOverLeague = league 
+					col = SColor8.Yellow
+				endif
+			
+				textFont.DrawBox("  L: " + league.name, textX, textY, w, 15, sALIGN_LEFT_TOP, col)
+
+				Local matchInfo:String
+				matchInfo :+ "Matches " + GetWorldTime().GetFormattedDate(league.GetFirstMatchTime(), "g/h:i")
+				matchInfo :+ " to " + GetWorldTime().GetFormattedDate(league.GetLastMatchTime(), "g/h:i")
+				matchInfo :+ "   Next " + GetWorldTime().GetFormattedDate(league.GetNextMatchTime(), "g/h:i")
+				textFont.DrawBox(matchInfo, textX + 115, textY, w - 100, 15, sALIGN_LEFT_TOP, col)
+				If league.IsSeasonFinished() 
+					textFont.DrawBox("FIN", textX + w - 35, textY, 25, 15, sALIGN_RIGHT_TOP, col)
+				Else
+					textFont.DrawBox(league.GetDoneMatchesCount() + "/" + league.GetMatchCount(), textX + w - 35, textY, 25, 15, sALIGN_RIGHT_TOP, col)
+				EndIf
+
+				textY :+ 12
+			Next
+
+			textY :+ 6
+		Next
+		
+		
+		if mouseOverLeague
+			RenderSportsLeagueBlock(mouseOverLeague, x + w + 5, y)
+		endif
+	End Method
+
+
+	Method RenderSportsLeagueBlock(league:TNewsEventSportLeague, x:Int, y:Int, w:Int=170, h:Int=300)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		
+		titleFont.DrawSimple("Leaderboard", textX, textY)
+		textY :+ 12 + 8
+		
+		For local rank:TNewsEventSportLeagueRank = EachIn league.GetLeaderboard()
+			textFont.DrawBox(rank.team.GetTeamName(), textX, textY, w - 25, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textFont.DrawBox(rank.score, textX + w - 20, textY, 20, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textY :+ 12
+			textFont.DrawBox("Attr: " + MathHelper.NumberToString(rank.team.GetAttractivity()*100,0) + "  Pwr: " + MathHelper.NumberToString(rank.team.GetPower()*100,0) + "  Skill: " + MathHelper.NumberToString(rank.Team.GetSkill()*100,0), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textY :+ 12 + 4 
+		Next		
+		
+	End Method
+
 	
 	
 	'=== MODIFIERS screen ===
@@ -1724,6 +1935,47 @@ endrem
 
 		oldCol.SetRGBA()
 	End Function
+
+
+	Method Dev_StopFastForwardToTime()
+		If FastForward_Active
+			FastForward_Active = False
+			
+			If FastForward_SwitchedPlayerToAI > 0 
+				DebugScreen.Dev_SetPlayerAI(FastForward_SwitchedPlayerToAI, False)
+				FastForward_SwitchedPlayerToAI = 0
+			EndIf
+
+			TEntity.globalWorldSpeedFactor = FastForward_SpeedFactorBackup
+			GetWorldTime().SetTimeFactor(FastForward_TimeFactorBackup)
+			GetBuildingTime().SetTimeFactor(FastForward_BuildingTimeSpeedFactorBackup)
+		EndIf
+	End Method
+	
+
+	Method Dev_FastForwardToTime(time:Long, switchPlayerToAI:Int=0)
+		'just update time? / avoid backupping the modified speeds
+		If FastForward_Active
+			FastForward_TargetTime = time
+		Else
+			FastForward_Active = True
+			
+			FastForward_TargetTime = time
+
+			If switchPlayerToAI > 0 and GetPlayer(switchPlayerToAI).IsLocalHuman()
+				FastForward_SwitchedPlayerToAI = switchPlayerToAI
+				DebugScreen.Dev_SetPlayerAI(switchPlayerToAI, True)
+			EndIf
+
+			FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
+			FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
+			FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
+
+			TEntity.globalWorldSpeedFactor = 500/4
+			GetWorldTime().SetTimeFactor(16000/4 + 60)
+			GetBuildingTime().SetTimeFactor(400/4 + 60)
+		EndIf
+	End Method
 
 
 	Function Dev_MaxAudience(playerID:Int)

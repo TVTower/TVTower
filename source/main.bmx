@@ -866,6 +866,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
 				For local pID:Int = 1 to 4
@@ -1440,6 +1441,9 @@ endrem
 		GameConfig.mouseHandlingDisabled = False
 
 		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
+
+		'update regardless of enabled or not
+		DebugScreen.UpdateSystem()
 
 		If DebugScreen.enabled
 			GameConfig.mouseHandlingDisabled = True
