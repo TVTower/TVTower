@@ -131,7 +131,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			EndIf
 			
 			If Not result.data.extra Then result.data.extra = New TData
-			result.data.extra.AddString("producerName", _producerName)
+			result.data.extra.AddInt("producerID", - GetID()) 'negative!
 
 
 			budget :- production.productionConcept.GetTotalCost()

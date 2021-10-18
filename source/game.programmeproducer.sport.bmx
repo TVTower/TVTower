@@ -117,8 +117,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeLicence.SetData(programmeData)
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
 		programmeLicence.extra = New TData
-		programmeLicence.extra.AddString("producerName", _producerName)
-		programmeLicence.extra.AddString("producerID", id)
+		programmeLicence.extra.AddInt("producerID", - GetID()) 'negative!
 
 		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
 		programmeData.dataType = TVTProgrammeDataType.COLLECTION
@@ -250,7 +249,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 
 		If Not programmeData.extra Then programmeData.extra = New TData
-		programmeData.extra.AddString("producerName", _producerName)
+		programmeData.extra.AddInt("producerID", - GetID()) 'negative!
 
 		programmeData.review = 0.6 'maximum possible
 		programmeData.speed = 0.75 'maximum possible

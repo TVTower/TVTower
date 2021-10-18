@@ -64,7 +64,6 @@ endrem
 
 Type TProduction Extends TOwnedGameObject
 	Field productionConcept:TProductionConcept
-	Field producerName:String
 	'use negative numbers for custom producers, and positive
 	'for players
 	Field producerID:Int
@@ -597,7 +596,6 @@ Type TProduction Extends TOwnedGameObject
 		If Not programmeData.extra Then programmeData.extra = New TData
 		programmeData.extra.AddInt("productionID", self.GetID())
 
-		If producerName Then programmeData.extra.AddString("producerName", producerName)
 		If producerID <> 0 Then programmeData.extra.AddInt("producerID", producerID)
 
 
@@ -907,9 +905,6 @@ Type TProduction Extends TOwnedGameObject
 				if not parentLicence.GetData().extra then parentLicence.GetData().extra = new TData
 				if programmeLicence.GetData().extra.Has("producerID")
 					parentLicence.GetData().extra.AddInt("producerID", programmeLicence.GetData().extra.GetInt("producerID"))
-				endif
-				if programmeLicence.GetData().extra.Has("producerName")
-					parentLicence.GetData().extra.AddString("producerName", programmeLicence.GetData().extra.GetString("producerName"))
 				endif
 				if programmeLicence.GetData().extra.Has("productionID")
 					parentLicence.GetData().extra.AddInt("productionID", programmeLicence.GetData().extra.GetInt("productionID"))
