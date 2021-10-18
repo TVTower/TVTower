@@ -56,7 +56,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	Field nextProductionTime:Long
 	Field updateCycle:int = 0
 	Field budgetIncrease:Int = 1000
-
+	Field producedProgrammeIDs:Int[]
 
 	Method New()
 		_producerName:String = "PP_Programmes"
@@ -156,6 +156,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience)
 
 			productionsRunning = Max(0, productionsRunning - 1)
+			
+			producedProgrammeIDs = [production.producedLicenceID] + producedProgrammeIDs
 		Next
 		
 		'if it was a series episode, return licence of complete series 

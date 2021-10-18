@@ -879,8 +879,18 @@ Type TDebugScreen
 			textFont.DrawBox("Type: " + TTypeID.ForObject(producer).name, textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("XP: " + producer.experience, textX + 150, textY, 35, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("Budget: " + MathHelper.DottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
-			textY :+ 12 + 4
-			
+			textY :+ 12
+			if TProgrammeProducer(producer) and TProgrammeProducer(producer).producedProgrammeIDs.length > 0
+				For local i:int = 0 until Min(3, TProgrammeProducer(producer).producedProgrammeIDs.length)
+					local l:TProgrammeLicence = GetProgrammeLicenceCollection().Get(TProgrammeProducer(producer).producedProgrammeIDs[i])
+					if l
+						textFont.DrawBox("  Lic: " + l.GetTitle(), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+						textY :+ 12
+					endif
+				Next
+			endif
+			textY :+ 4
+					
 		Next
 	End Method
 
