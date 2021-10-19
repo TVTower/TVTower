@@ -83,7 +83,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		
 		updateCycle :+ 1
 
-		If productionsRunning = 0 and nextProductionTime < GetWorldTime().GetTimeGone()
+		If productionsRunning < 5 and nextProductionTime < GetWorldTime().GetTimeGone()
 			CreateProgrammeLicence(Null)
 
 			nextProductionTime = GetWorldTime().GetTimeGone() + TWorldTime.HOURLENGTH * RandRange(32, 72)
@@ -115,9 +115,9 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			production.SetProductionConcept(productionConcept)
 			production.SetStudio(0)
 			'production.PayProduction()
-			production.Start()
-			production.Finalize() 'skip waiting
-			production.AddProgrammeLicence() 'make licence available
+			production.Start(0, GetWorldTime().GetTimeGone())
+			'production.Finalize() 'skip waiting
+			'production.AddProgrammeLicence() 'make licence available
 
 			If production.producedLicenceID
 				result = GetProgrammeLicenceCollection().Get(production.producedLicenceID )
@@ -132,7 +132,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			
 			If Not result.data.extra Then result.data.extra = New TData
 			result.data.extra.AddInt("producerID", - GetID()) 'negative!
-
+			if result.IsEpisode()
+				if not result.GetParentLicence().data.extra then result.GetParentLicence().data.extra = new TData
+				result.GetParentLicence().data.extra.AddInt("producerID", - GetID()) 'negative!
+			endif
 
 			budget :- production.productionConcept.GetTotalCost()
 			'TODO: cinema simulation?
@@ -155,8 +158,14 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 			print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience) + "   GUID: " + result.GetGUID()
 			productionsRunning = Max(0, productionsRunning - 1)
-			
+		
 			producedProgrammeIDs = [production.producedLicenceID] + producedProgrammeIDs
+			'add series header - on first ep or only on last?
+			If result.IsEpisode()
+				If not MathHelper.InIntArray(result.GetParentLicence().GetID(), producedProgrammeIDs)
+					producedProgrammeIDs = [result.GetParentLicence().GetID()] + producedProgrammeIDs
+				EndIf
+			EndIf
 		Next
 		
 		'if it was a series episode, return licence of complete series 

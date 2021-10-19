@@ -306,7 +306,7 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 	
-	Method Start:TProduction(reduceProductionTimeFactor:Int = 0)
+	Method Start:TProduction(reduceProductionTimeFactor:Int = 0, overrideEndTime:Long = -1)
 		If productionStep <> TVTProductionStep.NOT_STARTED 
 			TLogger.Log("TProduction.Start", "Starting production failed: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
 			Return Null
@@ -357,24 +357,31 @@ Type TProduction Extends TOwnedGameObject
 		if minutesTillNextUpdate <> 5
 			endTime :+ minutesTillNextUpdate * TWorldTime.MINUTELENGTH
 		endif
-					
+
+
+		'if a manual endTime is defined, adjust production time accordingly
+		'just in case a later code line utilizes this information
+		If overrideEndTime >= 0
+			endTime = overrideEndTime
+			productionTime = Max(0, endTime - startTime)
+		EndIf 
 
 
 		'calculate costs
 		productionConcept.CalculateCosts()
-		TLogger.Log("TProduction.Start", "Costs calculated", LOG_DEBUG)
 
 		_designatedProgrammeLicence = GenerateProgrammeLicence()
 		producedLicenceID = _designatedProgrammeLicence.GetID()
-		TLogger.Log("TProduction.Start", "Prepared programme licence", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
 		TriggerBaseEvent(GameEventKeys.Production_Start, Null, Self)
 
 		if isLiveProduction
 			BeginPreProduction()
+			UpdateProductionStep()
 		else
 			BeginShooting()
+			UpdateProductionStep()
 		EndIf
 
 		Return Self
