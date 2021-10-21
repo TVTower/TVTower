@@ -118,8 +118,6 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				If HandleFinishedProduction(p) Then remove :+ [p]
 			ElseIf p.IsProduced()
 				If HandleFinishedProduction(p) Then remove :+ [p]
-			ElseIf p.IsProduced()
-				If HandleFinishedProduction(p) Then remove :+ [p]
 			EndIf
 		Next
 

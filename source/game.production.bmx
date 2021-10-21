@@ -732,20 +732,8 @@ Type TProduction Extends TOwnedGameObject
 		If programmeLicence.IsEpisode()
 			Local parentScript:TScript = productionConcept.script.GetParentScript()
 			if not parentScript
-				print "parent not found"
-				print "parent script ID: " +productionConcept.script.parentScriptID
-
-				local p:TScript = GetScriptCollection().GetByID(productionConcept.script.parentScriptID)
-				if not p then Throw "not in collection"
-'				print "CreateScript(): " + script.GetTitle() + "  with ID="+script.GetID()
-'		If not GetScriptCollection().GetByID(script.GetID()) then throw "not added!!"
-
-				
-				print "known scripts:" 
-				For local s:TScript = EachIn GetScriptCollection()
-					print " - " + s.GetID() + "  " + s.GetTitle()
-				Next
-				debugstop
+				TLogger.Log("AddProgrammeLicence()", "parentScript not existing!", LOG_ERROR)
+				Throw("AddProgrammeLicence(): parentScript not existing!")
 			endif
 			'set episode according to script-episode-index
 			programmeLicence.episodeNumber = parentScript.GetSubScriptPosition(productionConcept.script) + 1
@@ -763,7 +751,7 @@ Type TProduction Extends TOwnedGameObject
 				GetProgrammeDataCollection().Add(parentLicence.data)
 				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
 			Else
-				DebugStop
+				TLogger.Log("AddProgrammeLicence()", "Failed to create parentLicence!", LOG_ERROR)
 				Throw "Failed to create parentLicence"
 			EndIf
 		EndIf
