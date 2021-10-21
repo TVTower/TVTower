@@ -203,13 +203,13 @@ Type TProduction Extends TOwnedGameObject
 		'=== BASE ===s
 		'if perfectly matching "expectations", we would have a mod of 1.0
 
-		'add script genre fits (up to 20%)
-		value :+ 0.2 * scriptGenreFit
+		'add script genre fits (up to 25%)
+		value :+ 0.25 * scriptGenreFit
 
 		'basic cast fit
-		'we assume an average of "10" to result in "no modification"
-		'-> value added: -0.02 - 0.18
-		value :+ 0.2 * (castFit - 0.1)
+		'we assume an average of "10%" to result in "no modification"
+		'-> value added: -0.025 - 0.225
+		value :+ 0.25 * (castFit - 0.1)
 		'the more complex a cast is (more people = more complex)
 		'the more it adds
 		'-> value added: 0 - 0.2
@@ -218,13 +218,13 @@ Type TProduction Extends TOwnedGameObject
 		'production company quality decides about result too
 		'quality:  0.0 to 1.0 (fully experienced)
 		'          but might be a bit higher (qualityMod)
-		'we assume an average of "40" to result in "no modification"
-		'-> value added: -0.12 - 0.18
-		value :+ 0.3 * (productionCompanyQuality - 0.4)
+		'we assume an average of "20%" to result in "no modification"
+		'-> value added: -0.06 - 0.24
+		value :+ 0.3 * (productionCompanyQuality - 0.2)
 
 		value = Max(0, value)
 
-		'value now: about 0 - 1.24
+		'value now: about 0 - 0.915
 
 		'=== MODIFIERS ===
 		'sympathy of the cast influences result a bit

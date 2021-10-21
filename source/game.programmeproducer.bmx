@@ -358,12 +358,13 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		'to understand the script potential, experience is valuable
 		Local estimatedPotential:Int = (100 * script.potential + 0.5)
 		'the less experience, the more blurry the potential is
-		estimatedPotential = Min(100, Max(0, estimatedPotential + RandRange(-(100 - experience)/2, +(100 - experience)/2) ))
-		
-		If script.potential > 0.3 Then requiredFocusPoints :+ 2 
-		If script.potential > 0.5 Then requiredFocusPoints :+ 3 
-		If script.potential > 0.7 Then requiredFocusPoints :+ 5 
-		If script.potential > 0.9 Then requiredFocusPoints :+ 7 
+		estimatedPotential = Min(100, Max(0,  estimatedPotential + estimatedPotential * RandRange(-(100 - experience)/2, +(100 - experience)/2) / 100 ))
+
+		If estimatedPotential > 10 Then requiredFocusPoints :+ 1 
+		If estimatedPotential > 30 Then requiredFocusPoints :+ 4 
+		If estimatedPotential > 50 Then requiredFocusPoints :+ 5 
+		If estimatedPotential > 70 Then requiredFocusPoints :+ 7 
+		If estimatedPotential > 90 Then requiredFocusPoints :+ 9 
 		If script.requiredStudioSize > 1 Then requiredFocusPoints :+ 2 
 		If script.requiredStudioSize > 2 Then requiredFocusPoints :+ 5 
 		'budget
@@ -371,8 +372,6 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		If budget > 2500000 Then requiredFocusPoints :+ 5
 		If budget > 5000000 Then requiredFocusPoints :+ 8
 		If budget >10000000 Then requiredFocusPoints :+ 10
-		
-		'print "ChooseProductionCompany: requiredFocusPoints="+requiredFocusPoints + "  script.potential="+script.potential
 
 		If requiredFocusPoints > 5
 			'print "looking for non amateur production company with focuspoints >= "+requiredFocusPoints
@@ -380,26 +379,37 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local bestFee:Int
 			Local bestCompany:TProductionCompanyBase = Null
 			For Local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.Values()
-				'find a one with enough focus points
-				If p.GetFocusPoints() < requiredFocusPoints Then Continue
+				'better than what we found ?
+				if bestCompany
+					If p.GetFocusPoints() > bestFocusPoints
+						'if company is more far from requirements than 
+						'current and also more expensive!
+						If abs(p.GetFocusPoints() - requiredFocusPoints) > abs(bestFocusPoints - requiredFocusPoints) and p.GetFee() > bestFee Then Continue
+						'alternative: if more than required, then only if cheaper
+						'this wont choose a "bigger" company if it is more expensive
+						'than the cheaper one which does not offer the required focus
+						'points
+						'If p.GetFocusPoints() > requiredFocusPoints and p.GetFee() > bestFee Then Continue
 
-				'ignore more expensive ones (all of them fulfill 
-				'requirements already)
-				'This does NOT find the "best bet for the price"! 
-				If bestCompany And p.GetFee() > bestFee Then Continue
-
-				bestCompany = p
-				bestFocusPoints = p.GetFocusPoints()
-				bestFee = p.GetFee()
+						bestCompany = p
+						bestFocusPoints = p.GetFocusPoints()
+						bestFee = p.GetFee()
+					Endif
+				Else
+					bestCompany = p
+					bestFocusPoints = p.GetFocusPoints()
+					bestFee = p.GetFee()
+				EndIf
 			Next
 			
 			If bestCompany Then productionCompany = bestCompany
 		EndIf
 		If Not productionCompany Then Throw "No ProductionCompany"
 
+		'print "ChooseProductionCompany: requiredFocusPoints="+requiredFocusPoints + "  script.potential="+script.potential + "  estimatedPotential="+estimatedPotential + "  companyFocusPoints=" + productionCompany.GetFocusPoints()
+
 		productionConcept.SetProductionCompany(productionCompany)
 	End Method
-
 
 
 	Method ChooseFocusPoints(productionConcept:TProductionConcept, script:TScript)
