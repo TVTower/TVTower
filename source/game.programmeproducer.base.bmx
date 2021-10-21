@@ -99,7 +99,7 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 		If Not licence Then Return False
 
 		Local producerID:Int
-		If licence.data.extra Then producerID = licence.data.extra.GetInt("producerID")
+		If licence.data.extra Then producerID = licence.data.GetProducerID()
 		
 		'producerID is negative for producer companies
 		If producerID < 0

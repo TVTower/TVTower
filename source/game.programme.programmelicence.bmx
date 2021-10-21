@@ -2612,6 +2612,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				contentY :+ 12
 				skin.fontNormal.DrawSimple("IsMatchFinished: " + sportsData.IsMatchFinished() + "   Matchtime: " + GetWorldTime().GetFormattedGameDate(sportsData.GetMatchEndTime()), contentX + 5, contentY)
 			endif
+			contentY :+ 12
+			skin.fontNormal.DrawSimple("IsCustomProduction: " + IsCustomProduction() + "  IsAPlayersCustomProduction: " + IsAPlayersCustomProduction(), contentX + 5, contentY)
+			
 		endif
 
 		'=== OVERLAY / BORDER ===

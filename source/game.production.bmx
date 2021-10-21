@@ -64,9 +64,6 @@ endrem
 
 Type TProduction Extends TOwnedGameObject
 	Field productionConcept:TProductionConcept
-	'use negative numbers for custom producers, and positive
-	'for players
-	Field producerID:Int
 	'DEPRECATED: SAVEGAME - remove in > 0.7.1 
 	Field studioRoomGUID:String
 	'in which room was/is this production recorded (might no longer
@@ -626,8 +623,7 @@ Type TProduction Extends TOwnedGameObject
 		If Not programmeData.extra Then programmeData.extra = New TData
 		programmeData.extra.AddInt("productionID", self.GetID())
 
-		If producerID <> 0 Then programmeData.extra.AddInt("producerID", producerID)
-
+		If owner <> 0 Then programmeData.extra.AddInt("producerID", owner)
 
 		'=== 2. PROGRAMME BASE PROPERTIES ===
 		FillProgrammeData(programmeData, productionConcept)
