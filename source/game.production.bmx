@@ -474,8 +474,10 @@ Type TProduction Extends TOwnedGameObject
 
 		'calculate mods and values used right when doing the actual
 		'production (so not during a possibly 24h earlier done preproduction)
-		FixProductionMods()
 		FixProductionValues()
+		'productionValueMod depends on production value which depends on
+		'scriptGenreFit - which is calculated in FixProductionValues()
+		FixProductionMods()
 
 		'define speed, critics ... based on current cast values, script ...
 		FixProgrammeDataValues()
@@ -859,10 +861,10 @@ Type TProduction Extends TOwnedGameObject
 		scriptPotentialMod = productionConcept.CalculateScriptPotentialMod()
 
 
-		TLogger.Log("TProduction.FixProductionValues()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
-		TLogger.Log("TProduction.FixProductionValues()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
-		TLogger.Log("TProduction.FixProductionValues()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
-		TLogger.Log("TProduction.FixProductionValues()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionMods()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
+		'TLogger.Log("TProduction.FixProductionMods()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionMods()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionMods()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
 	End Method
 	
 	
