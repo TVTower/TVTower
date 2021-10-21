@@ -2502,6 +2502,13 @@ Type TSaveGame Extends TGameState
 				print "RepairData: Create (new) programme producers (savegame did not contain them)"
 				GetGame().GenerateStartProgrammeProducers()
 			EndIf
+			For Local person:TPersonBase = EachIn GetPersonBaseCollection().GetCastablesList()
+				Local prodData:TPersonProductionBaseData = person.GetProductionData()
+				If prodData And prodData.priceModifier < 0.011
+					prodData.priceModifier = 1.0
+					print "RepairData: Fix price modifier from 1% to intended 100% for "+person.getFullName()
+				EndIF
+			Next
 		EndIf
 		if savegameVersion < 15
 			'ensure consistent broadcast slots
