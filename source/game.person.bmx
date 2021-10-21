@@ -552,9 +552,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 7000 * attributeMod
 		End Select
 
-		Local fee:Float = baseFee
-		'incorporate the dynamic fee amount
-		fee :+ dynamicFee * xpMod * sympathyMod * priceModifier
+		Local fee:Float = feeByExperience(baseFee, dynamicFee * xpMod * sympathyMod * priceModifier, GetEffectiveJobExperiencePercentage(jobID))
 		'incorporate the block amount modifier
 		fee :* blocksMod
 		'round to next "1000" block
@@ -562,6 +560,24 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		'round to "beautiful" (100, ..., 1000, 1250, 1500, ..., 2500)
 		fee = TFunctions.RoundToBeautifulValue(fee)
 		Return fee
+
+		'goal - production early in the game attractive, but later in the game not too cheap
+		'increase the fee heavily based on the experience
+		'what is the intended growth?
+		Function feeByExperience:Float(fee:Float, dynamicFee:Float, xpPercent:Float)
+			'Local factor:Float = 1.0045^(300*xpPercent + 30 ) - 1
+
+			'0-1 growing fast, slow
+			'Local factor:Float = Sin(xpPercent * 90)
+
+			'0-1 growing slow, fast, slow
+			'Local factor:Float = (Sin(xpPercent * 180 - 90) + 1) * 0.5
+
+			'0-2 growing slow, fast, slow
+			Local factor:Float = (Sin(xpPercent * 180 - 90) + 1)
+			'print xpPercent +" "+factor
+			Return fee + dynamicFee * factor
+		EndFunction
 	End Method
 	
 
