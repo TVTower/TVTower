@@ -1231,7 +1231,7 @@ see now (and also not in the commit history)
 		endif
 endrem
 		If PPprogrammeList.hoveredLicence
-			PPprogrammeList.hoveredLicence.ShowSheet(7, 20, 0)
+			PPprogrammeList.hoveredLicence.ShowSheet(7, 7, 0)
 		EndIf
 		
 
@@ -1254,7 +1254,7 @@ endrem
 				minAudienceHightlightType = -1
 			EndIf
 		
-			PPcontractList.hoveredAdContract.ShowSheet(7, 20, 0, TVTBroadcastMaterialType.ADVERTISEMENT, 0, minAudienceHightlightType)
+			PPcontractList.hoveredAdContract.ShowSheet(7, 7, 0, TVTBroadcastMaterialType.ADVERTISEMENT, 0, minAudienceHightlightType)
 		EndIf
 
 
@@ -1263,9 +1263,9 @@ endrem
 		If hoveredGuiProgrammePlanElement and MouseManager.x < 680
 			'draw the current sheet
 			If MouseManager.x < 340
-				hoveredGuiProgrammePlanElement.DrawSheet(673, 20, 1.0) ' +/-3 for dropshadow
+				hoveredGuiProgrammePlanElement.DrawSheet(673, 10, 1.0) ' +/-3 for dropshadow
 			Else
-				hoveredGuiProgrammePlanElement.DrawSheet(7, 20, 0) ' +/-3 for dropshadow
+				hoveredGuiProgrammePlanElement.DrawSheet(7, 7, 0) ' +/-3 for dropshadow
 			endif
 		EndIf
 
