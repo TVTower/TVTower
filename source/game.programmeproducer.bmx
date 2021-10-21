@@ -10,7 +10,7 @@ Import "game.gamescriptexpression.bmx"
 
 
 'register self to producer collection
-rem
+Rem
 Local p:TProgrammeProducer = new TProgrammeProducer
 p.countryCode = GetProgrammeProducerCollection().GenerateRandomCountryCode()
 p.name = GetProgrammeProducerCollection().GenerateRandomName()
@@ -52,10 +52,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	Field castFavoritesUsageCount:Int[]
 	'percentage on how often celebrities are used
 	Field preferCelebrityCastRate:Int = 100
-	Field productionsRunning:Int = 0
 	Field nextProductionTime:Long
-	Field updateCycle:int = 0
+	Field updateCycle:Int = 0
 	Field budgetIncrease:Int = 1000
+	Field activeProductions:TObjectList = New TObjectList
 	Field producedProgrammeIDs:Int[]
 
 	Method New()
@@ -63,7 +63,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	End Method
 
 
-	Method RandomizeCharacteristics:int()
+	Method RandomizeCharacteristics:Int()
 		Super.RandomizeCharacteristics()
 
 		budgetIncrease = RandRange(3, 8) * 250
@@ -73,7 +73,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	End Method
 
 
-	Method Remove() override
+	Method Remove() Override
 		'remove instance specific event listeners...
 	End Method	
 
@@ -83,97 +83,138 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		
 		updateCycle :+ 1
 
-		If productionsRunning < 5 and nextProductionTime < GetWorldTime().GetTimeGone()
-			CreateProgrammeLicence(Null)
+		If nextProductionTime < GetWorldTime().GetTimeGone()
+			ScheduleNextProduction(Null)
 
 			nextProductionTime = GetWorldTime().GetTimeGone() + TWorldTime.HOURLENGTH * RandRange(32, 72)
-		EndIf		
-
+		EndIf
+		
+		'is one of the running/scheduled productions finished now?
+		CheckActiveProductions()
 
 
 		'too many favororites? - clean up every 48*15 minutes = 12 hours
-		if updateCycle mod 48 = 0
-			while castFavorites.length > 20
-				local favoriteIndex:Int = RandRange(0, castFavorites.length - 1)
+		If updateCycle Mod 48 = 0
+			While castFavorites.length > 20
+				Local favoriteIndex:Int = RandRange(0, castFavorites.length - 1)
 				castFavorites = castFavorites[.. favoriteIndex] + castFavorites[favoriteIndex + 1 ..]
 				castFavoritesIDs = castFavoritesIDs[.. favoriteIndex] + castFavoritesIDs[favoriteIndex + 1 ..]
 				castFavoritesUsageCount = castFavoritesUsageCount[.. favoriteIndex] + castFavoritesUsageCount[favoriteIndex + 1 ..]
 			Wend
-		endif
+		EndIf
+	End Method
+	
+	
+	Method CheckActiveProductions()
+		Local remove:TProduction[]
+		
+		For Local p:TProduction = EachIn activeProductions
+			'move on to next production stage ?
+			'(yes, this does not get called each minute but for the producer
+			' 15 minute intervals are still ok)
+			p.Update()
+
+			If p.productionConcept.script.IsLive() And p.IsPreProductionDone()
+				If HandleFinishedProduction(p) Then remove :+ [p]
+			ElseIf p.IsProduced()
+				If HandleFinishedProduction(p) Then remove :+ [p]
+			EndIf
+		Next
+
+		If remove And remove.length > 0
+			For Local p:TProduction = EachIn remove
+				activeProductions.remove(p)
+			Next
+		EndIf
+	End Method
+	
+	
+	Method HandleFinishedProduction:Int(production:TProduction)
+		'production.Finalize() 'skip waiting
+		'production.AddProgrammeLicence() 'make licence available
+
+		Local result:TProgrammeLicence
+		If production.producedLicenceID
+			result = GetProgrammeLicenceCollection().Get(production.producedLicenceID )
+		'TODO: DEPRECATED - can be removed after v0.7.1
+		ElseIf production.producedLicenceGUID
+			result = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
+		EndIf
+		If Not result
+			TLogger.Log("TProgrammeProducer.CreateProgrammeLicence()", "Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")", LOG_ERROR)
+			Throw "TProgrammeProducer.CreateProgrammeLicence() : Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")"
+		EndIf
+		
+		If Not result.data.extra Then result.data.extra = New TData
+		result.data.extra.AddInt("producerID", - GetID()) 'negative!
+		If result.IsEpisode()
+			If Not result.GetParentLicence().data.extra Then result.GetParentLicence().data.extra = New TData
+			result.GetParentLicence().data.extra.AddInt("producerID", - GetID()) 'negative!
+		EndIf
+
+		budget :- production.productionConcept.GetTotalCost()
+		'TODO: cinema simulation?
+		'sell it in game country
+		Local nationalSale:Int = result.GetSellPrice(-1)
+		'sell it into some other countries
+		Local internationalSale:Int
+		If result.data.GetQualityRaw() > 0.1 Then internationalSale :+ result.GetSellPrice(-1) / 6
+		If result.data.GetQualityRaw() > 0.2 Then internationalSale :+ result.GetSellPrice(-1) / 2
+		If result.data.GetQualityRaw() > 0.3 Then internationalSale :+ result.GetSellPrice(-1)
+		If result.data.GetQualityRaw() > 0.4 Then internationalSale :+ result.GetSellPrice(-1) * 1
+		If result.data.GetQualityRaw() > 0.6 Then internationalSale :+ result.GetSellPrice(-1) * 3
+		If result.data.GetQualityRaw() > 0.8 Then internationalSale :+ result.GetSellPrice(-1) * 5
+
+		budget = Min(budget + nationalSale + internationalSale, 2000000000)
+
+
+		Local oldExperience:Int = experience
+		GainExperienceForProgrammeLicence(result)
+
+		Print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience) + "   GUID: " + result.GetGUID()
+
+		'and add to done productions
+		'add series header - on first ep or only on last?
+		If result.IsEpisode()
+			If Not MathHelper.InIntArray(result.GetParentLicence().GetID(), producedProgrammeIDs)
+				producedProgrammeIDs = [result.GetParentLicence().GetID()] + producedProgrammeIDs
+			EndIf
+		EndIf
+		producedProgrammeIDs = [result.GetID()] + producedProgrammeIDs
+		
+		
+		Return True
 	End Method
 
 
 	Method CreateProgrammeLicence:Object(params:TData)
+		'we cannot create a "instant" production
+		Return Null
+	End Method
+
+
+	'schedule/produce a new element (movie, series, ...)
+	Method ScheduleNextProduction(params:TData)
 		Local result:TProgrammeLicence 
 		
-		productionsRunning :+ 1
-
 		Local productionConcepts:TProductionConcept[] = CreateProductionConcepts()
+		Local productionTime:Long = 0
+		Local productionStartTime:Long = GetWorldTime().GetTimeGone() 
+		Local productionTimeFactorReduction:Int = 1
+		If productionConcepts.length > 1 Then productionTimeFactorReduction = 2
 
-		For local productionConcept:TProductionConcept = EachIn productionConcepts
+		For Local productionConcept:TProductionConcept = EachIn productionConcepts
 			Local production:TProduction = New TProduction
 			production.SetProductionConcept(productionConcept)
 			production.SetStudio(0)
 			'production.PayProduction()
-			production.Start(0, GetWorldTime().GetTimeGone())
-			'production.Finalize() 'skip waiting
-			'production.AddProgrammeLicence() 'make licence available
-
-			If production.producedLicenceID
-				result = GetProgrammeLicenceCollection().Get(production.producedLicenceID )
-			'TODO: DEPRECATED - can be removed after v0.7.1
-			ElseIf production.producedLicenceGUID
-				result = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
-			Endif
-			If Not result
-				TLogger.Log("TProgrammeProducer.CreateProgrammeLicence()", "Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")", LOG_ERROR)
-				Throw "TProgrammeProducer.CreateProgrammeLicence() : Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")"
-			EndIf
 			
-			If Not result.data.extra Then result.data.extra = New TData
-			result.data.extra.AddInt("producerID", - GetID()) 'negative!
-			if result.IsEpisode()
-				if not result.GetParentLicence().data.extra then result.GetParentLicence().data.extra = new TData
-				result.GetParentLicence().data.extra.AddInt("producerID", - GetID()) 'negative!
-			endif
-
-			budget :- production.productionConcept.GetTotalCost()
-			'TODO: cinema simulation?
-			'sell it in game country
-			local nationalSale:Int = result.GetSellPrice(-1)
-			'sell it into some other countries
-			local internationalSale:Int
-			if result.data.GetQualityRaw() > 0.1 Then internationalSale :+ result.GetSellPrice(-1) / 6
-			if result.data.GetQualityRaw() > 0.2 Then internationalSale :+ result.GetSellPrice(-1) / 2
-			if result.data.GetQualityRaw() > 0.3 Then internationalSale :+ result.GetSellPrice(-1)
-			if result.data.GetQualityRaw() > 0.4 Then internationalSale :+ result.GetSellPrice(-1) * 1
-			if result.data.GetQualityRaw() > 0.6 Then internationalSale :+ result.GetSellPrice(-1) * 3
-			if result.data.GetQualityRaw() > 0.8 Then internationalSale :+ result.GetSellPrice(-1) * 5
-
-			budget = Min(budget + nationalSale + internationalSale, 2000000000)
-
-
-			local oldExperience:Int = experience
-			GainExperienceForProgrammeLicence(result)
-
-			print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience) + "   GUID: " + result.GetGUID()
-			productionsRunning = Max(0, productionsRunning - 1)
+			production.ScheduleStart(productionStartTime, productionTimeFactorReduction)
+			productionStartTime :+ production.GetProductionTime(productionTimeFactorReduction)
 		
-			producedProgrammeIDs = [production.producedLicenceID] + producedProgrammeIDs
-			'add series header - on first ep or only on last?
-			If result.IsEpisode()
-				If not MathHelper.InIntArray(result.GetParentLicence().GetID(), producedProgrammeIDs)
-					producedProgrammeIDs = [result.GetParentLicence().GetID()] + producedProgrammeIDs
-				EndIf
-			EndIf
+			activeProductions.AddLast(production)
 		Next
-		
-		'if it was a series episode, return licence of complete series 
-		if result then result = result.GetParentLicence()
-
-		Return result
 	End Method
-
 
 
 	Method CreateScript:TScript()
@@ -183,9 +224,15 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Return Null
 		EndIf
 
-		'adds the script to the collection and also sets owner
+		'adds the script to the collection and also set NEW owner
+		'when NOT setting the owner, the script will be "available" for
+		'the script agency to choose it TOO!
 		Local script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
+		script.SetOwner(- self.GetID() ) 'negative ID!
 		
+		'we also pay for it!
+		budget :- script.GetPrice()
+ 		
 
 		Return script
 	End Method
@@ -205,17 +252,17 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local jobCountry:String
 			Local person:TPersonBase
 
-			if script.IsLive() and job.job & TVTPersonJob.VISIBLECAST_MASK > 0 
+			If script.IsLive() And job.job & TVTPersonJob.VISIBLECAST_MASK > 0 
 				jobCountry = GetStationMapCollection().GetMapISO3166Code().ToUpper()
-			Elseif not job.country
+			ElseIf Not job.country
 				jobCountry = ""
-			Elseif job.country = "LOCAL"
+			ElseIf job.country = "LOCAL"
 				jobCountry = GetStationMapCollection().GetMapISO3166Code().ToUpper()
 			Else
 				jobCountry = job.country
 			EndIf
 			'find best suiting country code
-			if jobCountry then jobCountry = GetProgrammeProducerCollection().GetBestFitPersonGeneratorCountryCode(jobCountry)
+			If jobCountry Then jobCountry = GetProgrammeProducerCollection().GetBestFitPersonGeneratorCountryCode(jobCountry)
 
 			'try to reuse someone
 			If castFavoritesIDs.length > 0
@@ -223,7 +270,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				'if person print "would reuse: " + person.GetFullName()
 				'slight chance to ignore the given one?
 				'and to look for a new one
-				If person and RandRange(0,100) < 10 Then person = Null
+				If person And RandRange(0,100) < 10 Then person = Null
 			EndIf
 
 
@@ -239,7 +286,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				If Not person
 					Local useRandom:Int = True
 					'ignore a requested country and use a local one? (10% chance)
-					If jobCountry and RandRange(0, 100) <= 90
+					If jobCountry And RandRange(0, 100) <= 90
 						useRandom = False
 						jobCountry = GetStationMapCollection().GetMapISO3166Code().ToUpper()
 					EndIf
@@ -247,7 +294,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 					'also return random if no or no supported country
 					'is set - else the person generator falls back to 
 					'the fallback country (here "de" for Germany) 
-					If useRandom or not GetPersonGenerator().HasProvider(jobCountry)
+					If useRandom Or Not GetPersonGenerator().HasProvider(jobCountry)
 						jobCountry = GetPersonGenerator().GetRandomCountryCode()
 					EndIf
 
@@ -296,21 +343,21 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Local requiredFocusPoints:Int = 5
 		
 		'to understand the script potential, experience is valuable
-		local estimatedPotential:Int = (100 * script.potential + 0.5)
+		Local estimatedPotential:Int = (100 * script.potential + 0.5)
 		'the less experience, the more blurry the potential is
 		estimatedPotential = Min(100, Max(0, estimatedPotential + RandRange(-(100 - experience)/2, +(100 - experience)/2) ))
 		
-		if script.potential > 0.3 then requiredFocusPoints :+ 2 
-		if script.potential > 0.5 then requiredFocusPoints :+ 3 
-		if script.potential > 0.7 then requiredFocusPoints :+ 5 
-		if script.potential > 0.9 then requiredFocusPoints :+ 7 
-		if script.requiredStudioSize > 1 then requiredFocusPoints :+ 2 
-		if script.requiredStudioSize > 2 then requiredFocusPoints :+ 5 
+		If script.potential > 0.3 Then requiredFocusPoints :+ 2 
+		If script.potential > 0.5 Then requiredFocusPoints :+ 3 
+		If script.potential > 0.7 Then requiredFocusPoints :+ 5 
+		If script.potential > 0.9 Then requiredFocusPoints :+ 7 
+		If script.requiredStudioSize > 1 Then requiredFocusPoints :+ 2 
+		If script.requiredStudioSize > 2 Then requiredFocusPoints :+ 5 
 		'budget
-		if budget > 1000000 then requiredFocusPoints :+ 2
-		if budget > 2500000 then requiredFocusPoints :+ 5
-		if budget > 5000000 then requiredFocusPoints :+ 8
-		if budget >10000000 then requiredFocusPoints :+ 10
+		If budget > 1000000 Then requiredFocusPoints :+ 2
+		If budget > 2500000 Then requiredFocusPoints :+ 5
+		If budget > 5000000 Then requiredFocusPoints :+ 8
+		If budget >10000000 Then requiredFocusPoints :+ 10
 		
 		'print "ChooseProductionCompany: requiredFocusPoints="+requiredFocusPoints + "  script.potential="+script.potential
 
@@ -321,19 +368,19 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local bestCompany:TProductionCompanyBase = Null
 			For Local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.Values()
 				'find a one with enough focus points
-				If p.GetFocusPoints() < requiredFocusPoints Then continue
+				If p.GetFocusPoints() < requiredFocusPoints Then Continue
 
 				'ignore more expensive ones (all of them fulfill 
 				'requirements already)
 				'This does NOT find the "best bet for the price"! 
-				If bestCompany and p.GetFee() > bestFee Then continue
+				If bestCompany And p.GetFee() > bestFee Then Continue
 
 				bestCompany = p
 				bestFocusPoints = p.GetFocusPoints()
 				bestFee = p.GetFee()
 			Next
 			
-			if bestCompany then productionCompany = bestCompany
+			If bestCompany Then productionCompany = bestCompany
 		EndIf
 		If Not productionCompany Then Throw "No ProductionCompany"
 
@@ -365,22 +412,22 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		'Print "CreateProductionConcept():"
 
 		Local scripts:TScriptBase[] = [script]
-		if script.IsSeries()
+		If script.IsSeries()
 			scripts = script.subScripts
-		endif
+		EndIf
 		
 		Local chosenProductionCompany:TProductionCompanyBase
-		For local s:TScript = EachIn scripts
+		For Local s:TScript = EachIn scripts
 			'Print "  script: " + s.GetTitle()
 			Local pc:TProductionConcept = New TProductionConcept.Initialize(-1, s)
 
 			'multiple steps to fulfill:
 			'1) Production company (use the same for all episodes)
-			if not chosenProductionCompany
+			If Not chosenProductionCompany
 				ChooseProductionCompany(pc, s)
-			else
+			Else
 				pc.SetProductionCompany(chosenProductionCompany)
-			endif
+			EndIf
 			'Print "  production company: " + pc.productionCompany.name +"   focusPoints=" + pc.productionCompany.GetFocusPoints()
 
 			'2) Cast

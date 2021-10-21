@@ -56,6 +56,9 @@ Type TScriptCollection Extends TGameObjectCollection
 		Local script:TScript = TScript(obj)
 		If Not script Then Return False
 
+'ddd
+print "ADD: " + script.GetTitle() +" has ID " + script.GetID()
+
 		_InvalidateCaches()
 		'add child scripts too
 		For Local subScript:TScript = EachIn script.subScripts
@@ -473,22 +476,24 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					If episodesCount > 0 '0 episodes are supported - do not always include every episode
 						For Local i:Int = 0 until episodesCount
 							Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
-							If subScript Then script.AddSubScript(subScript)
-							'try to ensure unique episode names
-							Local title:TLocalizedString = subScript.title
-							Local description:TLocalizedString = subScript.description
-							For Local j:Int = 0 until 10
-								If episodeTitles.contains(title.get())
-									subTemplate.reset()
-									title = subTemplate.GenerateFinalTitle()
-									description = subTemplate.GenerateFinalDescription()
-								Else
-									Exit
-								EndIf
-							Next
-							subScript.title = title
-							subScript.description = description
-							episodeTitles.addLast(title.get())
+							If subScript 
+								script.AddSubScript(subScript)
+								'try to ensure unique episode names
+								Local title:TLocalizedString = subScript.title
+								Local description:TLocalizedString = subScript.description
+								For Local j:Int = 0 until 10
+									If episodeTitles.contains(title.get())
+										subTemplate.reset()
+										title = subTemplate.GenerateFinalTitle()
+										description = subTemplate.GenerateFinalDescription()
+									Else
+										Exit
+									EndIf
+								Next
+								subScript.title = title
+								subScript.description = description
+								episodeTitles.addLast(title.get())
+							EndIf
 						Next
 					EndIf
 				Next

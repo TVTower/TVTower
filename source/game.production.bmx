@@ -79,9 +79,9 @@ Type TProduction Extends TOwnedGameObject
 	Field pauseDuration:Long = 0
 	Field paused:Int = False
 	'start of shooting / preproduction
-	Field startTime:Long
+	Field startTime:Long = -1
 	'end of shooting / preproduction
-	Field endTime:Long
+	Field endTime:Long = -1
 
 	Field scriptGenreFit:Float = -1.0
 	Field productionCompanyQuality:Float = 0.0
@@ -304,8 +304,45 @@ Type TProduction Extends TOwnedGameObject
 			EndIf
 		EndIf
 	End Method
-
 	
+	
+	Method GetProductionTime:Long(reduceProductionTimeFactor:Int = 0)
+		'calculate production times
+		'when producing several episodes in a row setting up and cleaning
+		'the studio can be done faster; the factor is expected to be 0, 1 or 2
+		Local productionTime:Long = productionConcept.GetBaseProductionTime()
+		If productionTime > 24 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor :* 3
+		Else If productionTime > 12 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor :* 2
+		Else If productionTime < 2 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor = 0
+		Else If productionTime < 3 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor = Min(1, reduceProductionTimeFactor)
+		End if
+		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
+		
+		Return productionTime
+	End Method
+
+
+	Method ScheduleStart:TProduction(scheduledStartTime:Long, reduceProductionTimeFactor:Int = 0, overrideEndTime:Long = -1)
+		If productionStep <> TVTProductionStep.NOT_STARTED 
+			TLogger.Log("TProduction.ScheduleStart", "Cannot schedule production start: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
+			Return Null
+		EndIf
+
+		TLogger.Log("TProduction.ScheduleStart", "Scheduling production start: ~q" + productionConcept.GetTitle() +"~q. Start at " + GetWorldTime().GetFormattedGameDate(scheduledStartTime)+".", LOG_DEBUG)
+		startTime = scheduledStartTime
+		endTime = overrideEndTime
+
+		'maybe this means we already begin shooting ?
+		UpdateProductionStep()
+		
+		Return self
+	End Method
+	
+
 	Method Start:TProduction(reduceProductionTimeFactor:Int = 0, overrideEndTime:Long = -1)
 		If productionStep <> TVTProductionStep.NOT_STARTED 
 			TLogger.Log("TProduction.Start", "Starting production failed: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
@@ -331,21 +368,7 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 
 
-		'calculate production times
-		'when producing several episodes in a row setting up and cleaning
-		'the studio can be done faster; the factor is expected to be 0, 1 or 2
-		Local productionTime:Long = productionConcept.GetBaseProductionTime()
-		If productionTime > 24 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor :* 3
-		Else If productionTime > 12 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor :* 2
-		Else If productionTime < 2 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor = 0
-		Else If productionTime < 3 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor = Min(1, reduceProductionTimeFactor)
-		End if
-		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
-
+		Local productionTime:Long = GetProductionTime(reduceProductionTimeFactor)
 		startTime = GetWorldTime().GetTimeGone()
 		'modify production time by mod (TODO: add random plus minus?)
 		endTime = startTime + productionTime * GetProductionTimeMod()
@@ -707,8 +730,25 @@ Type TProduction Extends TOwnedGameObject
 		Local parentLicence:TProgrammeLicence = _designatedProgrammeLicence
 		Local programmeLicence:TProgrammeLicence = _designatedProgrammeLicence
 		If programmeLicence.IsEpisode()
+			Local parentScript:TScript = productionConcept.script.GetParentScript()
+			if not parentScript
+				print "parent not found"
+				print "parent script ID: " +productionConcept.script.parentScriptID
+
+				local p:TScript = GetScriptCollection().GetByID(productionConcept.script.parentScriptID)
+				if not p then Throw "not in collection"
+'				print "CreateScript(): " + script.GetTitle() + "  with ID="+script.GetID()
+'		If not GetScriptCollection().GetByID(script.GetID()) then throw "not added!!"
+
+				
+				print "known scripts:" 
+				For local s:TScript = EachIn GetScriptCollection()
+					print " - " + s.GetID() + "  " + s.GetTitle()
+				Next
+				debugstop
+			endif
 			'set episode according to script-episode-index
-			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
+			programmeLicence.episodeNumber = parentScript.GetSubScriptPosition(productionConcept.script) + 1
 
 			parentLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
 			'add the episode
@@ -1077,6 +1117,13 @@ Type TProduction Extends TOwnedGameObject
 		
 		Select productionStep
 			Case TVTProductionStep.NOT_STARTED
+				If startTime >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= startTime/TWorldTime.MINUTELENGTH
+					'pass "endTime" as it might already be set to 
+					'a value <> -1 on a ScheduleStart() call
+					Start(0, endTime)
+
+					Return UpdateProductionStep()
+				EndIf
 				Return False
 			Case TVTProductionStep.ABORTED
 				Return False
