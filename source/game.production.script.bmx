@@ -56,9 +56,6 @@ Type TScriptCollection Extends TGameObjectCollection
 		Local script:TScript = TScript(obj)
 		If Not script Then Return False
 
-'ddd
-print "ADD: " + script.GetTitle() +" has ID " + script.GetID()
-
 		_InvalidateCaches()
 		'add child scripts too
 		For Local subScript:TScript = EachIn script.subScripts

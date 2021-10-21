@@ -118,6 +118,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				If HandleFinishedProduction(p) Then remove :+ [p]
 			ElseIf p.IsProduced()
 				If HandleFinishedProduction(p) Then remove :+ [p]
+			ElseIf p.IsProduced()
+				If HandleFinishedProduction(p) Then remove :+ [p]
 			EndIf
 		Next
 
@@ -171,7 +173,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Local oldExperience:Int = experience
 		GainExperienceForProgrammeLicence(result)
 
-		Print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience) + "   GUID: " + result.GetGUID()
+		Print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience)
 
 		'and add to done productions
 		'add series header - on first ep or only on last?
@@ -181,6 +183,19 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			EndIf
 		EndIf
 		producedProgrammeIDs = [result.GetID()] + producedProgrammeIDs
+		
+		
+		
+		'make it available?
+		if Not result.IsEpisode()
+		'	print "FINISHED SINGLE: " + result.GetParentLicence().GetTitle()
+			result.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+		elseif result.GetParentLicence().GetSubLicenceCount() = production.productionConcept.script.GetParentScript().GetSubScriptCount()
+			'print "FINISHED SERIES: " + result.GetParentLicence().GetTitle() + " ("+result.GetParentLicence().GetSubLicenceCount()+" Ep.)"
+			result.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+		'elseif result.GetParentLicence().GetSubLicenceCount()
+		'	notify "FINISHED EP: " + result.GetParentLicence().GetTitle() + " ("+result.GetParentLicence().GetSubLicenceCount()+"/" + production.productionConcept.script.GetParentScript().GetSubScriptCount()+" Ep.)"
+		endif
 		
 		
 		Return True
