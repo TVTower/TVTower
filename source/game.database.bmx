@@ -503,7 +503,7 @@ Type TDatabaseLoader
 			
 			'0 would mean: cuts price to 0
 			If person.GetProductionData().priceModifier = 0 Then person.GetProductionData().priceModifier = 1.0
-			person.GetProductionData().priceModifier = 0.01 * data.GetFloat("price_mod", 100*person.GetProductionData().priceModifier)
+			person.GetProductionData().priceModifier = data.GetFloat("price_mod", person.GetProductionData().priceModifier)
 
 			if TPersonProductionData(person.GetProductionData())
 				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
