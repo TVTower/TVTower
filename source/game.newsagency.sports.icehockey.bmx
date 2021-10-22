@@ -252,7 +252,12 @@ Type TNewsEventSportLeague_IceHockey extends TNewsEventSportLeague
 		'take year of the given time and use the defined months for a
 		'hockey season
 		'match time: 16. 9. - 26.2. (1. Liga)
-		Return GetWorldTime().MakeRealTime(GetWorldTime().GetYear(time), seasonStartMonth, seasonStartDay)
+		Local thisYear:Long = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(time), seasonStartMonth, seasonStartDay)
+		If thisYear < time 
+			Return thisYear + GetWorldTime().GetYearLength()
+		Else
+			Return thisYear
+		EndIf
 	End Method
 
 
