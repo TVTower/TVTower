@@ -64,10 +64,6 @@ endrem
 
 Type TProduction Extends TOwnedGameObject
 	Field productionConcept:TProductionConcept
-	Field producerName:String
-	'use negative numbers for custom producers, and positive
-	'for players
-	Field producerID:Int
 	'DEPRECATED: SAVEGAME - remove in > 0.7.1 
 	Field studioRoomGUID:String
 	'in which room was/is this production recorded (might no longer
@@ -80,9 +76,9 @@ Type TProduction Extends TOwnedGameObject
 	Field pauseDuration:Long = 0
 	Field paused:Int = False
 	'start of shooting / preproduction
-	Field startTime:Long
+	Field startTime:Long = -1
 	'end of shooting / preproduction
-	Field endTime:Long
+	Field endTime:Long = -1
 
 	Field scriptGenreFit:Float = -1.0
 	Field productionCompanyQuality:Float = 0.0
@@ -305,9 +301,46 @@ Type TProduction Extends TOwnedGameObject
 			EndIf
 		EndIf
 	End Method
-
 	
-	Method Start:TProduction(reduceProductionTimeFactor:Int = 0)
+	
+	Method GetProductionTime:Long(reduceProductionTimeFactor:Int = 0)
+		'calculate production times
+		'when producing several episodes in a row setting up and cleaning
+		'the studio can be done faster; the factor is expected to be 0, 1 or 2
+		Local productionTime:Long = productionConcept.GetBaseProductionTime()
+		If productionTime > 24 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor :* 3
+		Else If productionTime > 12 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor :* 2
+		Else If productionTime < 2 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor = 0
+		Else If productionTime < 3 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor = Min(1, reduceProductionTimeFactor)
+		End if
+		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
+		
+		Return productionTime
+	End Method
+
+
+	Method ScheduleStart:TProduction(scheduledStartTime:Long, reduceProductionTimeFactor:Int = 0, overrideEndTime:Long = -1)
+		If productionStep <> TVTProductionStep.NOT_STARTED 
+			TLogger.Log("TProduction.ScheduleStart", "Cannot schedule production start: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
+			Return Null
+		EndIf
+
+		TLogger.Log("TProduction.ScheduleStart", "Scheduling production start: ~q" + productionConcept.GetTitle() +"~q. Start at " + GetWorldTime().GetFormattedGameDate(scheduledStartTime)+".", LOG_DEBUG)
+		startTime = scheduledStartTime
+		endTime = overrideEndTime
+
+		'maybe this means we already begin shooting ?
+		UpdateProductionStep()
+		
+		Return self
+	End Method
+	
+
+	Method Start:TProduction(reduceProductionTimeFactor:Int = 0, overrideEndTime:Long = -1)
 		If productionStep <> TVTProductionStep.NOT_STARTED 
 			TLogger.Log("TProduction.Start", "Starting production failed: ~q" + productionConcept.GetTitle() +"~q. Already started.", LOG_ERROR)
 			Return Null
@@ -332,21 +365,7 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 
 
-		'calculate production times
-		'when producing several episodes in a row setting up and cleaning
-		'the studio can be done faster; the factor is expected to be 0, 1 or 2
-		Local productionTime:Long = productionConcept.GetBaseProductionTime()
-		If productionTime > 24 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor :* 3
-		Else If productionTime > 12 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor :* 2
-		Else If productionTime < 2 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor = 0
-		Else If productionTime < 3 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor = Min(1, reduceProductionTimeFactor)
-		End if
-		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
-
+		Local productionTime:Long = GetProductionTime(reduceProductionTimeFactor)
 		startTime = GetWorldTime().GetTimeGone()
 		'modify production time by mod (TODO: add random plus minus?)
 		endTime = startTime + productionTime * GetProductionTimeMod()
@@ -358,24 +377,31 @@ Type TProduction Extends TOwnedGameObject
 		if minutesTillNextUpdate <> 5
 			endTime :+ minutesTillNextUpdate * TWorldTime.MINUTELENGTH
 		endif
-					
+
+
+		'if a manual endTime is defined, adjust production time accordingly
+		'just in case a later code line utilizes this information
+		If overrideEndTime >= 0
+			endTime = overrideEndTime
+			productionTime = Max(0, endTime - startTime)
+		EndIf 
 
 
 		'calculate costs
 		productionConcept.CalculateCosts()
-		TLogger.Log("TProduction.Start", "Costs calculated", LOG_DEBUG)
 
 		_designatedProgrammeLicence = GenerateProgrammeLicence()
 		producedLicenceID = _designatedProgrammeLicence.GetID()
-		TLogger.Log("TProduction.Start", "Prepared programme licence", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
 		TriggerBaseEvent(GameEventKeys.Production_Start, Null, Self)
 
 		if isLiveProduction
 			BeginPreProduction()
+			UpdateProductionStep()
 		else
 			BeginShooting()
+			UpdateProductionStep()
 		EndIf
 
 		Return Self
@@ -448,8 +474,10 @@ Type TProduction Extends TOwnedGameObject
 
 		'calculate mods and values used right when doing the actual
 		'production (so not during a possibly 24h earlier done preproduction)
-		FixProductionMods()
 		FixProductionValues()
+		'productionValueMod depends on production value which depends on
+		'scriptGenreFit - which is calculated in FixProductionValues()
+		FixProductionMods()
 
 		'define speed, critics ... based on current cast values, script ...
 		FixProgrammeDataValues()
@@ -530,27 +558,33 @@ Type TProduction Extends TOwnedGameObject
 		'(parental script is already informed on creation of its licence)
 		productionConcept.script.FinishProduction(_designatedProgrammeLicence.GetID())
 
-		If owner And GetPlayerProgrammeCollection(owner)
-			'if the script does not allow further productions, it is finished
-			'and should be removed from the player
 
+		'if the script does not allow further productions, it is finished
+		'and should be removed from the player
+		If owner And GetPlayerProgrammeCollection(owner)
 			'series: remove parent if it is finished now
 			If productionConcept.script.HasParentScript()
 				Local parentScript:TScript = productionConcept.script.GetParentScript()
 				If parentScript.IsProduced()
-					If parentScript.isSeries()
-						'make the programme tradeable as well
-						local licence:TProgrammeLicence = GetPlayerProgrammeCollection(owner).GetProgrammeLicence(parentScript.usedInProgrammeID)
-						if licence
-							licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
-						end if
-					EndIf
 					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
 				EndIf
 			EndIf
 			'single scripts? done all allowed?
 			If Not productionConcept.script.CanGetProducedCount()
 				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
+			EndIf
+		EndIf
+		
+
+		'set a finished series licence tradeable
+		'(regardless of owner - might be a non-player)
+		If productionConcept.script.HasParentScript()
+			Local parentScript:TScript = productionConcept.script.GetParentScript()
+			If parentScript and parentScript.IsProduced() and parentScript.isSeries()
+				local licence:TProgrammeLicence = GetProgrammeLicenceCollection().Get(parentScript.usedInProgrammeID)
+				If licence
+					licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
+				EndIf
 			EndIf
 		EndIf
 
@@ -594,16 +628,10 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1. PROGRAMME CREATION ===
 		Local programmeData:TProgrammeData = New TProgrammeData
 
-		If producerName
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddString("producerName", producerName)
-		EndIf
+		If Not programmeData.extra Then programmeData.extra = New TData
+		programmeData.extra.AddInt("productionID", self.GetID())
 
-		If producerID <> 0
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddInt("producerID", producerID)
-		EndIf
-
+		If owner <> 0 Then programmeData.extra.AddInt("producerID", owner)
 
 		'=== 2. PROGRAMME BASE PROPERTIES ===
 		FillProgrammeData(programmeData, productionConcept)
@@ -614,7 +642,6 @@ Type TProduction Extends TOwnedGameObject
 			programmeData.releaseTime = productionConcept.GetLiveTime()
 		EndIf
 		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
-		programmeData.productionID = self.GetID()
 		programmeData.dataType = productionConcept.script.scriptLicenceType
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
@@ -639,12 +666,6 @@ Type TProduction Extends TOwnedGameObject
 
 		'add broadcast limits
 		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
-
-		If producerName
-			If Not programmeData.extra Then programmeData.extra = New TData
-			programmeData.extra.AddString("producerName", producerName)
-		EndIf
-
 
 		'=== 3. PROGRAMME CAST ===
 		For Local castIndex:Int = 0 Until Min(productionConcept.cast.length, productionConcept.script.jobs.length)
@@ -713,8 +734,13 @@ Type TProduction Extends TOwnedGameObject
 		Local parentLicence:TProgrammeLicence = _designatedProgrammeLicence
 		Local programmeLicence:TProgrammeLicence = _designatedProgrammeLicence
 		If programmeLicence.IsEpisode()
+			Local parentScript:TScript = productionConcept.script.GetParentScript()
+			if not parentScript
+				TLogger.Log("AddProgrammeLicence()", "parentScript not existing!", LOG_ERROR)
+				Throw("AddProgrammeLicence(): parentScript not existing!")
+			endif
 			'set episode according to script-episode-index
-			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
+			programmeLicence.episodeNumber = parentScript.GetSubScriptPosition(productionConcept.script) + 1
 
 			parentLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
 			'add the episode
@@ -729,7 +755,7 @@ Type TProduction Extends TOwnedGameObject
 				GetProgrammeDataCollection().Add(parentLicence.data)
 				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
 			Else
-				DebugStop
+				TLogger.Log("AddProgrammeLicence()", "Failed to create parentLicence!", LOG_ERROR)
 				Throw "Failed to create parentLicence"
 			EndIf
 		EndIf
@@ -841,10 +867,10 @@ Type TProduction Extends TOwnedGameObject
 		scriptPotentialMod = productionConcept.CalculateScriptPotentialMod()
 
 
-		TLogger.Log("TProduction.FixProductionValues()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
-		TLogger.Log("TProduction.FixProductionValues()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
-		TLogger.Log("TProduction.FixProductionValues()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
-		TLogger.Log("TProduction.FixProductionValues()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionMods()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
+		'TLogger.Log("TProduction.FixProductionMods()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionMods()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
+		TLogger.Log("TProduction.FixProductionMods()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
 	End Method
 	
 	
@@ -914,7 +940,15 @@ Type TProduction Extends TOwnedGameObject
 			'first "episode" is defining "who" did the custom production
 			'(if mixed producers happen, a "getProducerPlayerIDs()" must
 			' be created which then iterates over all child elements)
-			parentLicence.GetData().productionID = programmeLicence.GetData().productionID
+			if programmeLicence.GetData().extra
+				if not parentLicence.GetData().extra then parentLicence.GetData().extra = new TData
+				if programmeLicence.GetData().extra.Has("producerID")
+					parentLicence.GetData().extra.AddInt("producerID", programmeLicence.GetData().extra.GetInt("producerID"))
+				endif
+				if programmeLicence.GetData().extra.Has("productionID")
+					parentLicence.GetData().extra.AddInt("productionID", programmeLicence.GetData().extra.GetInt("productionID"))
+				endif
+			endif
 			'store first produced child negatively (maybe useful information) ?
 			'for now parents do not get a production ID (as there is no 
 			'production done - but for the child elements)
@@ -1075,6 +1109,13 @@ Type TProduction Extends TOwnedGameObject
 		
 		Select productionStep
 			Case TVTProductionStep.NOT_STARTED
+				If startTime >= 0 and GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= startTime/TWorldTime.MINUTELENGTH
+					'pass "endTime" as it might already be set to 
+					'a value <> -1 on a ScheduleStart() call
+					Start(0, endTime)
+
+					Return UpdateProductionStep()
+				EndIf
 				Return False
 			Case TVTProductionStep.ABORTED
 				Return False

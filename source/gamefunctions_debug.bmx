@@ -863,7 +863,7 @@ Type TDebugScreen
 	End Method
 	
 	
-	Method RenderProducersList(x:Int, y:Int, w:Int=280, h:Int=300)
+	Method RenderProducersList(x:Int, y:Int, w:Int=280, h:Int=363)
 		DrawOutlineRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
@@ -875,23 +875,57 @@ Type TDebugScreen
 
 		For Local producer:TProgrammeProducerBase = EachIn GetProgrammeProducerCollection()
 			textFont.DrawBox(producer.name + "  ("+producer.countryCode+")", textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
-			textY :+ 12
-			textFont.DrawBox("Type: " + TTypeID.ForObject(producer).name, textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textY :+ 10
+			textFont.DrawBox("  " + TTypeID.ForObject(producer).name, textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("XP: " + producer.experience, textX + 150, textY, 35, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("Budget: " + MathHelper.DottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textY :+ 12
-			if TProgrammeProducer(producer) and TProgrammeProducer(producer).producedProgrammeIDs.length > 0
-				local listedLicences:int = 0
-				local maxLicences:Int = Min(3, TProgrammeProducer(producer).producedProgrammeIDs.length)
-				For local licenceID:Int = EachIn TProgrammeProducer(producer).producedProgrammeIDs
-					local l:TProgrammeLicence = GetProgrammeLicenceCollection().Get(licenceID)
-					if l and not l.IsEpisode()
-						textFont.DrawBox("  Lic: " + l.GetTitle(), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
-						textY :+ 12
-						listedLicences :+ 1
-					endif
-					if listedLicences = maxLicences then exit
-				Next
+			if TProgrammeProducer(producer) 
+				textY :- 2
+				Local pp:TProgrammeProducer = TProgrammeProducer(producer)
+				
+				textFont.DrawBox("  Productions    Next: " + GetWorldTime().GetFormattedDate(pp.nextProductionTime, "g/h:i") , textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+				textFont.DrawBox("  Active: " + pp.activeProductions.Count() , textX + 130, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+				textFont.DrawBox("  Done: " + pp.producedProgrammeIDs.length, textX + 180, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+				textY :+ 10
+
+				If pp.activeProductions.Count() > 0
+					local listedProduction:int = 0
+					local maxProductions:Int = Min(2, pp.activeProductions.Count())
+					For local production:TProduction = EachIn pp.activeProductions
+						if production and production.productionconcept.script.HasParentScript()
+							textFont.DrawBox("  Prod: " + production.productionConcept.GetTitle() + " (Ep.)", textX, textY, w - 70, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+						Else
+							textFont.DrawBox("  Prod: " + production.productionConcept.GetTitle(), textX, textY, w - 70, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+						EndIf
+						if production.IsInProduction()
+							textFont.DrawBox("End: " + GetWorldTime().GetFormattedDate(production.endTime, "g/h:i"), textX + w - 70, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+						else
+							textFont.DrawBox("Start: " + GetWorldTime().GetFormattedDate(production.startTime, "g/h:i"), textX + w - 70, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+						endif
+
+						textY :+ 10
+						listedProduction :+ 1
+						if listedProduction = maxProductions then exit
+					Next
+				EndIf
+				If pp.producedProgrammeIDs.length > 0
+					local listedLicences:int = 0
+					local maxLicences:Int = Min(2, pp.producedProgrammeIDs.length)
+					For local licenceID:Int = EachIn pp.producedProgrammeIDs
+						local l:TProgrammeLicence = GetProgrammeLicenceCollection().Get(licenceID)
+						if l and not l.IsEpisode()
+							If l.IsSeries()
+								textFont.DrawBox("  Lic: " + l.GetTitle() +" (Series, " + l.GetEpisodeCount() + " Ep.)", textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+							Else
+								textFont.DrawBox("  Lic: " + l.GetTitle(), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
+							EndIf
+							textY :+ 10
+							listedLicences :+ 1
+						endif
+						if listedLicences = maxLicences then exit
+					Next
+				EndIf
 			endif
 			textY :+ 4
 					

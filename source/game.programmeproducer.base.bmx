@@ -42,6 +42,11 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GetByID:TProgrammeProducerBase(id:Int)
+		return TProgrammeProducerBase( Super.GetByID(id) )
+	End Method
+
+
 	Method GetByGUID:TProgrammeProducerBase(GUID:String)
 		Return TProgrammeProducerBase( Super.GetByGUID(GUID) )
 	End Method
@@ -93,12 +98,14 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 		Local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetSender())
 		If Not licence Then Return False
 
-		For local producer:TProgrammeProducerBase = EachIn GetProgrammeProducerCollection()
-			If licence.data.extra And licence.data.extra.GetString("producerName") = producer._producerName
-				producer.onGiveBackLicenceToPool(licence)
-			EndIf
-		Next
-
+		Local producerID:Int
+		If licence.data.extra Then producerID = licence.data.GetProducerID()
+		
+		'producerID is negative for producer companies
+		If producerID < 0
+			Local producer:TProgrammeProducerBase = GetProgrammeProducerCollection().GetByID( abs(producerID) )
+			If producer Then producer.onGiveBackLicenceToPool(licence)
+		EndIf
 	End Function
 End Type
 

@@ -914,6 +914,29 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 	end Method
 
+	'returns whether the licence - or AT LEAST ONE sublicence is a
+	'custom production of a player
+	Method IsAPlayersCustomProduction:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsAPlayersCustomProduction()
+		else
+			local foundValue:int = False
+			For local licence:TProgrammeLicence = eachin subLicences
+				if not licence.IsAPlayersCustomProduction() then return False
+				foundValue = True
+			Next
+			return foundValue
+		endif
+	End Method
+
+	Method IsAPlayersUnfinishedCustomProduction:int()
+		If not IsAPlayersCustomProduction() return False
+		'cannot use isTradeable() because all episodes could be finished but not broadcasted...
+		If IsSeries() return Not hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE)
+		'other cases are considered finished for now
+		Return False
+	End Method
+
 
 	'returns whether the licence - or AT LEAST ONE sublicence is a
 	'custom production
@@ -962,11 +985,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			if GetData().GetTimesBroadcasted() > 0 Then Return False
 			'make sure the price is not hidden for a live series 
 			'defined as programme in the database
-			if not GetData().IsCustomProduction() Then Return False
+			if not GetData().IsAPlayersCustomProduction() Then Return False
 
 			'custom live productions need to be started to know the price
 			'No! I think they know the price only after the broadcast
-			'If GetData().IsCustomProduction() and IsLive()
+			'If GetData().IsAPlayersCustomProduction() and IsLive()
 			'	if GetData().releaseTime < GetWorldTime().GetTimeGone() Then Return False
 			'EndIf
 
@@ -1148,7 +1171,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if GetSubLicenceCount() = 0 and GetData()
 			'disallow selling a custom production until it was
 			'broadcasted at least once
-			if GetData().GetTimesBroadcasted() <= 0 and GetData().IsCustomProduction()
+			if GetData().GetTimesBroadcasted() <= 0 and GetData().IsAPlayersCustomProduction()
 			'using this would also disable selling live programme
 			'if IsTVDistribution() and ContainsUnknownTVOutcome()
 				return False
@@ -2502,7 +2525,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
 		'- hide for custom productions until aired (series: if all episoded aired)
 		if showPrice and owner > 0 and ContainsUnknownPrice() then showPrice = False
-		'if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsCustomProduction() then showPrice = False
+		'if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsAPlayersCustomProduction() then showPrice = False
 	
 		'- hide unowned and not tradeable ones
 		'-> disabled because of "Opener show"
@@ -2589,6 +2612,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				contentY :+ 12
 				skin.fontNormal.DrawSimple("IsMatchFinished: " + sportsData.IsMatchFinished() + "   Matchtime: " + GetWorldTime().GetFormattedGameDate(sportsData.GetMatchEndTime()), contentX + 5, contentY)
 			endif
+			contentY :+ 12
+			skin.fontNormal.DrawSimple("IsCustomProduction: " + IsCustomProduction() + "  IsAPlayersCustomProduction: " + IsAPlayersCustomProduction(), contentX + 5, contentY)
+			
 		endif
 
 		'=== OVERLAY / BORDER ===

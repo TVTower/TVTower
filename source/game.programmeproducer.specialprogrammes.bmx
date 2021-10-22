@@ -43,7 +43,7 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducer
 	Method Update:Int()
 		'hier eventuell auf "Typ" limitieren aber mehrfache Simultanproduktion
 		'ermoeglichen
-		If productionsRunning = 0
+		If activeProductions.Count() = 0
 '			CreateProgrammeLicence(Null)
 		EndIf
 	End Method
