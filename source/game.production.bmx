@@ -558,27 +558,33 @@ Type TProduction Extends TOwnedGameObject
 		'(parental script is already informed on creation of its licence)
 		productionConcept.script.FinishProduction(_designatedProgrammeLicence.GetID())
 
-		If owner And GetPlayerProgrammeCollection(owner)
-			'if the script does not allow further productions, it is finished
-			'and should be removed from the player
 
+		'if the script does not allow further productions, it is finished
+		'and should be removed from the player
+		If owner And GetPlayerProgrammeCollection(owner)
 			'series: remove parent if it is finished now
 			If productionConcept.script.HasParentScript()
 				Local parentScript:TScript = productionConcept.script.GetParentScript()
 				If parentScript.IsProduced()
-					If parentScript.isSeries()
-						'make the programme tradeable as well
-						local licence:TProgrammeLicence = GetPlayerProgrammeCollection(owner).GetProgrammeLicence(parentScript.usedInProgrammeID)
-						if licence
-							licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
-						end if
-					EndIf
 					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
 				EndIf
 			EndIf
 			'single scripts? done all allowed?
 			If Not productionConcept.script.CanGetProducedCount()
 				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
+			EndIf
+		EndIf
+		
+
+		'set a finished series licence tradeable
+		'(regardless of owner - might be a non-player)
+		If productionConcept.script.HasParentScript()
+			Local parentScript:TScript = productionConcept.script.GetParentScript()
+			If parentScript and parentScript.IsProduced() and parentScript.isSeries()
+				local licence:TProgrammeLicence = GetProgrammeLicenceCollection().Get(parentScript.usedInProgrammeID)
+				If licence
+					licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
+				EndIf
 			EndIf
 		EndIf
 

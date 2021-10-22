@@ -191,6 +191,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		elseif result.GetParentLicence().GetSubLicenceCount() = production.productionConcept.script.GetParentScript().GetSubScriptCount()
 			'print "FINISHED SERIES: " + result.GetParentLicence().GetTitle() + " ("+result.GetParentLicence().GetSubLicenceCount()+" Ep.)"
 			result.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+			result.GetParentLicence().SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		'elseif result.GetParentLicence().GetSubLicenceCount()
 		'	notify "FINISHED EP: " + result.GetParentLicence().GetTitle() + " ("+result.GetParentLicence().GetSubLicenceCount()+"/" + production.productionConcept.script.GetParentScript().GetSubScriptCount()+" Ep.)"
 		endif
