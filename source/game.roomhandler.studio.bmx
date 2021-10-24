@@ -674,7 +674,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 			endif
 
 		
-			'try to fill in our list
+			'try to fill in our list (keeping possible manual order)
+			Local toReAddConcepts:TList = new TList
+			'only re-add concepts suiting to the script and not started
 			For Local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
 				'skip ones that are already started (and possibly even finished)
 				If pc.IsProductionStarted() Then Continue
@@ -688,18 +690,17 @@ Type RoomHandler_Studio Extends TRoomHandler
 				EndIf
 
 				If guiListDeskProductionConcepts.ContainsProductionConcept(pc) Then Continue
-
-				If guiListDeskProductionConcepts.getFreeSlot() >= 0
-
-					'try to place it at the slot we defined before
-					Local block:TGuiProductionConceptListItem = New TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
-					guiListDeskProductionConcepts.addItem(block, String(pc.studioSlot))
-
-					'we deleted the dragged concept before - now drag
-					'the new instances again -> so they keep their "ghost
-					'information"
-					If draggedProductionConcepts.contains(pc) Then block.Drag()
-				Else
+				
+				toReAddConcepts.AddLast(pc)
+			Next
+			
+			'sort them to take care of "desired studio slots"
+			'so slot order defines list order
+			toReAddConcepts.Sort(true, TProductionConceptCollection.SortProductionConceptsByStudioSlot)
+			
+			'insert them again (in the numeric order of their original slots)
+			For local pc:TProductionConcept = EachIn toReAddConcepts
+				If guiListDeskProductionConcepts.getFreeSlot() < 0 
 					'we also pay back potentially paid deposits
 					If pc.IsDepositPaid()
 						GetPlayerFinance(pc.owner).SellMisc(pc.GetDepositCost())
@@ -710,7 +711,18 @@ Type RoomHandler_Studio Extends TRoomHandler
 					'remove from player's collection and also from global
 					'conception list
 					programmeCollection.DestroyProductionConcept(pc)
+					
+					continue
 				EndIf
+
+				Local block:TGuiProductionConceptListItem = New TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
+				'guiListDeskProductionConcepts.addItem(block, String(pc.studioSlot))
+				guiListDeskProductionConcepts.addItem(block, "-1")
+
+				'we deleted the dragged concept before - now drag
+				'the new instances again -> so they keep their "ghost
+				'information"
+				If draggedProductionConcepts.contains(pc) Then block.Drag()
 			Next
 		EndIf
 
