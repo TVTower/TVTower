@@ -106,23 +106,6 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 			Return script.CanGetProducedCount()
 		endIf
 	End Method
-
-
-	Function SortProductionConceptsByStudioSlot:Int(o1:Object, o2:Object)
-		Local p1:TProductionConcept = TProductionConcept(o1)
-		Local p2:TProductionConcept = TProductionConcept(o2)
-		If Not p2 Then Return 1
-		If Not p1 Then Return -1
-		
-		If p1.studioSlot = p2.studioSlot
-			Return p1.script.GetEpisodeNumber() > p2.script.GetEpisodeNumber()
-		ElseIf p1.studioSlot > p2.studioSlot
-			Return 1
-		ElseIf p1.studioSlot < p2.studioSlot
-			Return -1
-		EndIf
-		Return 0
-	End Function
 End Type
 
 
