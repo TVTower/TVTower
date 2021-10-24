@@ -816,6 +816,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			if licence and not licence.hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE)
 				licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
 			end if
+			
+			'correct episode numbers and total episode count
+			'(they might just have produced 1,3 and 4 of 6 episodes)
+			licence.CompactSubLicences()
 		endif
 
 		scripts.remove(script)
