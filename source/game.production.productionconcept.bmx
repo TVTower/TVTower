@@ -7,15 +7,35 @@ Import "game.person.bmx"
 Type TProductionConceptCollection Extends TGameObjectCollection
 	Global _instance:TProductionConceptCollection
 
-	'override
+
 	Function GetInstance:TProductionConceptCollection()
 		if not _instance then _instance = new TProductionConceptCollection
 		return _instance
 	End Function
 
 
-	'override
-	Method GetRandom:TProductionConcept()
+	'doing a shift right on "remove" would shift production concepts
+	'even if the production concept on "slot 1" is dragged and
+	'removed manually by the user (so not just "on finish" of a 
+	'production)
+	Rem
+	Method Remove:int(obj:TGameObject) override
+		If Not Super.Remove(obj) Then Return False
+
+
+		'also compact studio slots if a concept is gone
+		Local pc:TProductionConcept = TProductionConcept(obj)
+		If Not pc or not pc.script Then Return False
+
+		'find out where to compact on our own ?
+		'CompactProductionConceptSlotsByScript( pc.script )
+		'or move all "afterwards" to the left
+		ShiftProductionConceptSlotsByScript(pc.script, -1, pc.studioSlot)
+	End Method
+	EndRem
+
+
+	Method GetRandom:TProductionConcept() override
 		return TProductionConcept( Super.GetRandom() )
 	End Method
 
@@ -31,6 +51,136 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		if array.length = 1 then return array[0]
 
 		Return array[(randRange(0, array.length-1))]
+	End Method
+
+
+	'move all production concepts within "startSlot" and "endSlot" to 
+	'left or right (shiftBy = 1 for right, shiftBy = -1 for left etc.)
+	Method ShiftProductionConceptSlotsByScript:Int(script:TScript, shiftBy:Int, startSlot:Int = -1, endSlot:Int = -1)
+		If not script then Return 0
+
+		'if an episode was passed, we ask the parent / series header for
+		'existing production concepts of the series at all
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+
+		Local movedSomething:Int = False
+		Local concepts:TProductionConcept[] = GetProductionConceptsByScript(script, True)
+		
+		For local pc:TProductionConcept = EachIn concepts
+			if pc.studioSlot < 0 then continue
+			
+			'ignore if out of the given limits
+			If startSlot >= 0 And pc.studioSlot < startSlot Then Continue 
+			If endSlot >= 0 And pc.studioSlot > endSlot Then Continue
+
+			pc.studioSlot :+ shiftBy
+			movedSomething = True
+		Next
+
+		Return movedSomething
+	End Method
+
+
+	'compact production concepts (shift leftwards) once production limits
+	'decreased (could be of use when productions finish).
+	'Repeats shifting until concepts fit into allowed slot limit again.
+	'It searches for empty spots on its own.
+	'returns count of "shifts"
+	Rem
+	Method CompactProductionConceptSlotsByScript:Int(script:TScript)
+		If not script then Return 0
+		
+		'for this we check if one of the concepts uses a slot which
+		'is no longer available (eg the gone concept was produced
+		'and thus the limits decreased by 1)
+	
+		Local concepts:TProductionConcept[]
+		Local slotCount:Int = GetProductionConceptSlotCountByScript(script, concepts)
+		'repeat until no compact is needed (all concepts fit into a slot again)
+		'find first free slot and shift all following to the left
+		Local compactNeeded:Int = False
+		Local compactCount:Int = 0
+		Repeat
+			compactNeeded = False
+			For local otherPC:TProductionConcept = EachIn concepts
+				If otherPC.studioSlot >= slotCount
+					'print "need to compact :" + script.GetTitle()
+					'print "  exceeding: " + otherPC.script.GetTitle() + "  slotIndex: " + otherPC.studioSlot +"  available slots: " + slotCount
+					compactNeeded = True
+					Exit
+				EndIf
+			Next
+
+			If compactNeeded
+
+				Local conceptSlotsInUse:int[] = new Int[slotCount] 
+				Local shiftedSomething:Int = False
+				For Local existingPC:TProductionConcept = EachIn concepts
+					If existingPC.studioSlot >= 0 And existingPC.studioSlot < conceptSlotsInUse.length
+						conceptSlotsInUse[existingPC.studioSlot] = 1
+					EndIf
+				Next
+				'print "  inuse: " + StringHelper.JoinIntArray(", " , conceptSlotsInUse)
+				
+				For Local i:int = 0 Until conceptSlotsInUse.length
+					'found first free slot
+					If conceptSlotsInUse[i] = 0
+						'print "  found free slot :" + i
+						'move all elements to the left
+						For Local existingPC:TProductionConcept = EachIn concepts
+							'print "      existing slots: " + existingPC.studioSlot
+							If existingPC.studioSlot > i 
+								existingPC.studioSlot :- 1
+								shiftedSomething = True
+							EndIf
+						Next
+					EndIf
+					If shiftedSomething Then compactCount :+ 1
+					'only shift one slot per repeat-loop
+					If shiftedSomething Then Exit
+				Next
+				If Not shiftedSomething Then Throw "Failed to compact production concept studio slots. Report to devs."
+			EndIf
+		Until Not compactNeeded
+		
+		Return compactCount
+	End Method
+	EndRem
+
+
+	'return minimum amount for production concepts to fit in all
+	'but not exceeing the rules-defined maximum (so it fits below
+	'the studio's desk)
+	Method GetProductionConceptsMinSlotCountByScript:Int(script:TScript)
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+		If script.GetSubScriptCount() > 0
+			Return Min(GameRules.maxProductionConceptsPerScript, script.GetSubScriptCount() - getProductionsIncludingPreproductionsCount(script))
+		Else
+			Return Min(GameRules.maxProductionConceptsPerScript, script.GetProductionLimitMax() - getProductionsIncludingPreproductionsCount(script))
+		EndIf
+	End Method
+
+
+	'return amount of "slots" for production concepts
+	Method GetProductionConceptSlotCountByScript:Int(script:TScript)
+		Local concepts:TProductionConcept[]
+		Return GetProductionConceptSlotCountByScript(script, concepts)
+	End Method
+
+
+	'return amount of "slots" for production concepts
+	Method GetProductionConceptSlotCountByScript:Int(script:TScript, concepts:TProductionConcept[] var)
+		If Not script Then Return 0
+		
+		'if an episode was passed, we ask the parent / series header for
+		'existing production concepts of the series at all
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+
+		concepts = GetProductionConceptsByScript(script, true)
+		Local conceptSlotCount:Int = GetProductionConceptsMinSlotCountByScript(script)
+		conceptSlotCount = Max(conceptSlotCount, concepts.length)
+		
+		Return conceptSlotCount
 	End Method
 
 
@@ -78,6 +228,37 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		Next
 		return result
 	End Method
+	
+	
+	Method GetNextStudioSlotByScript:Int(script:TScript)
+		If not script then return -1
+		'if an episode was passed, we ask the parent / series header for
+		'existing production concepts of the series at all
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+
+
+		'for this we fetch current concepts and mark "used slots"
+		'and then assign the first free slot we find
+		Local concepts:TProductionConcept[] = GetProductionConceptsByScript(script, true)
+		Local conceptSlotCount:Int = GetProductionConceptsMinSlotCountByScript(script)
+		conceptSlotCount = Max(conceptSlotCount, concepts.length)
+
+		local conceptSlotsInUse:int[] = new Int[conceptSlotCount] 
+		For Local existingPC:TProductionConcept = EachIn concepts
+			if existingPC.studioSlot >= 0 and existingPC.studioSlot < conceptSlotsInUse.length
+				conceptSlotsInUse[existingPC.studioSlot] = 1
+			endif
+		Next
+		
+		'assign next free slot to this concept
+		For local i:int = 0 until conceptSlotsInUse.length
+			if conceptSlotsInUse[i] = 0
+				Return i
+			endif
+		Next
+		
+		Return -1
+	End MEthod
 
 
 	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
@@ -107,7 +288,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		endIf
 	End Method
 
-
+	
 	Method getProductionsIncludingPreProductionsCount:Int(script:TScript)
 		'finished productions
 		Local producedConceptCount:Int = script.GetProductionsCount()
@@ -120,6 +301,22 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		Next
 		return producedConceptCount
 	EndMethod
+
+	Function SortProductionConceptsByStudioSlot:Int(o1:Object, o2:Object)
+		Local p1:TProductionConcept = TProductionConcept(o1)
+		Local p2:TProductionConcept = TProductionConcept(o2)
+		If Not p2 Then Return 1
+		If Not p1 Then Return -1
+		
+		If p1.studioSlot = p2.studioSlot
+			Return p1.script.GetEpisodeNumber() > p2.script.GetEpisodeNumber()
+		ElseIf p1.studioSlot > p2.studioSlot
+			Return 1
+		ElseIf p1.studioSlot < p2.studioSlot
+			Return -1
+		EndIf
+		Return 0
+	End Function
 End Type
 
 

@@ -402,14 +402,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'only interested in drops to the list
 		If Not receiverList Then Return False
 
-
-		'save order of concepts
-		For Local i:Int = 0 Until guiListDeskProductionConcepts._slots.length
-			guiBlock = TGuiProductionConceptListItem(guiListDeskProductionConcepts.GetItemBySlot(i))
-			If Not guiBlock Then Continue
-
-			guiBlock.productionConcept.studioSlot = i
-		Next
+		GetInstance().SaveProductionConceptOrder()
 
 		Return True
 	End Function
@@ -431,7 +424,19 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		Return True
 	End Method
+	
+	
+	Method SaveProductionConceptOrder()
+		'save order of concepts
+		Local guiBlock:TGuiProductionConceptListItem
+		For Local i:Int = 0 Until guiListDeskProductionConcepts._slots.length
+			guiBlock = TGuiProductionConceptListItem(guiListDeskProductionConcepts.GetItemBySlot(i))
+			If Not guiBlock Then Continue
 
+			guiBlock.productionConcept.studioSlot = i
+		Next
+	End Method
+	
 
 	Method SetCurrentStudioScript:Int(script:TScript, roomGUID:String, ignoreRoomSize:Int = False)
 		If Not script Or Not roomGUID Then Return False
@@ -601,13 +606,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local studioScript:TScript = GetCurrentStudioScript(roomGUID)
 		If studioScript
 			'adjust list limit
-			Local minConceptLimit:Int = 1
-			If studioScript.GetSubScriptCount() > 0
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(studioScript))
-			Else
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetProductionLimitMax() - GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(studioScript))
-			EndIf
-
+			Local minConceptLimit:Int = GetProductionConceptCollection().GetProductionConceptsMinSlotCountByScript(studioScript)
 			guiListDeskProductionConcepts.SetItemLimit( minConceptLimit )
 		Else
 			guiListDeskProductionConcepts.SetItemLimit( 0 )
@@ -674,7 +673,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 			endif
 
 		
-			'try to fill in our list
+			'try to fill in our list (keeping possible manual order)
+			Local toReAddConcepts:TList = new TList
+			'only re-add concepts suiting to the script and not started
 			For Local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
 				'skip ones that are already started (and possibly even finished)
 				If pc.IsProductionStarted() Then Continue
@@ -688,18 +689,17 @@ Type RoomHandler_Studio Extends TRoomHandler
 				EndIf
 
 				If guiListDeskProductionConcepts.ContainsProductionConcept(pc) Then Continue
-
-				If guiListDeskProductionConcepts.getFreeSlot() >= 0
-
-					'try to place it at the slot we defined before
-					Local block:TGuiProductionConceptListItem = New TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
-					guiListDeskProductionConcepts.addItem(block, String(pc.studioSlot))
-
-					'we deleted the dragged concept before - now drag
-					'the new instances again -> so they keep their "ghost
-					'information"
-					If draggedProductionConcepts.contains(pc) Then block.Drag()
-				Else
+				
+				toReAddConcepts.AddLast(pc)
+			Next
+			
+			'sort them to take care of "desired studio slots"
+			'so slot order defines list order
+			toReAddConcepts.Sort(true, SortProductionConceptsBySlotAndEpisode)
+			
+			'insert them again (in the numeric order of their original slots)
+			For local pc:TProductionConcept = EachIn toReAddConcepts
+				If guiListDeskProductionConcepts.getFreeSlot() < 0 
 					'we also pay back potentially paid deposits
 					If pc.IsDepositPaid()
 						GetPlayerFinance(pc.owner).SellMisc(pc.GetDepositCost())
@@ -710,9 +710,21 @@ Type RoomHandler_Studio Extends TRoomHandler
 					'remove from player's collection and also from global
 					'conception list
 					programmeCollection.DestroyProductionConcept(pc)
+					
+					continue
 				EndIf
+
+				Local block:TGuiProductionConceptListItem = New TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
+				guiListDeskProductionConcepts.addItem(block, String(pc.studioSlot))
+				'guiListDeskProductionConcepts.addItem(block, "-1")
+
+				'we deleted the dragged concept before - now drag
+				'the new instances again -> so they keep their "ghost
+				'information"
+				If draggedProductionConcepts.contains(pc) Then block.Drag()
 			Next
 		EndIf
+		SaveProductionConceptOrder()
 
 		haveToRefreshGuiElements = False
 	End Method
@@ -767,8 +779,19 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 			If useScript.IsSeries() Then Return False
 		EndIf
+
+		'fetch next free studio slot (for series header or single element)
+		Local nextSlot:Int = GetProductionConceptCollection().GetNextStudioSlotByScript(useScript)
+		if nextSlot < 0 
+			Throw("No free slot")
+			Return False
+		endif
+		
+		
 		'print "CreateProductionConcept : create... " + useScript.GetTitle()
 		local pc:TProductionConcept = GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
+		'print "created concept for slot " + nextSlot
+		pc.studioSlot = nextSlot
 
 		'if this not the first concept of a non-series script then append a number
 		'to distinguish them
@@ -780,7 +803,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				pc.SetCustomDescription (pc.script.GetDescription())
 			EndIf
 		EndIf
-
+		
 		Return True
 	End Function
 
@@ -795,6 +818,11 @@ Type RoomHandler_Studio Extends TRoomHandler
 		If pcA.studioSlot = -1 And pcB.studioSlot = -1
 			'sort by their position in the parent script / episode number
 			Return pcA.script.GetEpisodeNumber() - pcB.script.GetEpisodeNumber()
+		'sort "without slot" _after_ 
+		ElseIf pcA.studioSlot = -1
+			Return 1
+		ElseIf pcB.studioSlot = -1
+			Return -1
 		Else
 			Return pcA.studioSlot - pcB.studioSlot
 		EndIf

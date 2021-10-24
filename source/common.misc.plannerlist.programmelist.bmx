@@ -717,9 +717,12 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence, mode:Int)
 		If Not parentLicence Then Return False
 
-		RecalculateMaxLicenceCount(parentLicence.GetSubLicenceSlots())
+		'retrieve only existing sub licences (ignore empty/reserved slots)
+		Local subLicences:TProgrammeLicence[] = parentLicence.GetSubLicences()
 
-		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceSlots() / Float(maxLicencesPerPage))) )
+		RecalculateMaxLicenceCount(subLicences.length)
+
+		SetSubEntriesPages( int(ceil(subLicences.length / Float(maxLicencesPerPage))) )
 
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 
@@ -737,11 +740,11 @@ Type TgfxProgrammelist Extends TPlannerList
 		'(to have consistent button coordinates we show empty slots on
 		' subsequent pages)
 		if subEntriesPage = 1
-			endIndex = Min(parentLicence.GetSubLicenceSlots()-1, endIndex)
+			endIndex = Min(subLicences.length-1, endIndex)
 		endif
 
 		For Local i:Int = startIndex to endIndex
-			Local licence:TProgrammeLicence = parentLicence.GetSubLicenceAtIndex(i)
+			Local licence:TProgrammeLicence = subLicences[i]
 
 			Local entryPositionType:String = "entry"
 			If i = startIndex Then entryPositionType = "first"
@@ -801,7 +804,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.DrawBox("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
+				font.DrawBox("(" + licence.GetEpisodeNumber() + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
 				SetColor(oldCol)
 				SetAlpha(oldColA)
@@ -911,9 +914,12 @@ Type TgfxProgrammelist Extends TPlannerList
 			return False
 		endif
 
-		RecalculateMaxLicenceCount(parentLicence.GetSubLicenceSlots())
+		'retrieve only existing sub licences (ignore empty/reserved slots)
+		Local subLicences:TProgrammeLicence[] = parentLicence.GetSubLicences()
 
-		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceSlots() / Float(maxLicencesPerPage))) )
+		RecalculateMaxLicenceCount(subLicences.length)
+
+		SetSubEntriesPages( int(ceil(subLicences.length / Float(maxLicencesPerPage))) )
 
 
 		'handle page buttons (before other click handling here)
@@ -960,9 +966,9 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currY:Int = GetSubEntriesRect().GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
 		local startIndex:int = (subEntriesPage-1)*maxLicencesPerPage
-		local endIndex:int = Min(parentLicence.GetSubLicenceSlots()-1, subEntriesPage*maxLicencesPerPage -1)
+		local endIndex:int = Min(subLicences.length-1, subEntriesPage*maxLicencesPerPage -1)
 		For Local i:Int = startIndex to endIndex
-			Local licence:TProgrammeLicence = parentLicence.GetSubLicenceAtIndex(i)
+			Local licence:TProgrammeLicence = subLicences[i]
 
 			If i = startIndex
 				Local currSprite:TSprite

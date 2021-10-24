@@ -589,6 +589,34 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			return GetParentLicence().GetTargetGroupAttractivityMod()
 		endif
 	End Method
+	
+	
+	'remove empty slots in the sub licences array
+	'and also correct episodes
+	Method CompactSubLicences:int()
+		Local existingCount:Int = 0
+		For local i:int = 0 until subLicences.length
+			if subLicences[i] then existingCount :+ 1
+		Next		
+		If subLicences.length > existingCount
+			local newSubLicences:TProgrammeLicence[] = new TProgrammeLicence[existingCount]
+			local newIndex:Int
+			For local i:int = 0 until subLicences.length
+				If subLicences[i] 
+					newSubLicences[newIndex] = subLicences[i]
+					newIndex :+ 1
+				EndIf
+			Next
+			subLicences = newSubLicences		
+		EndIf
+		
+		'repair episodes
+		For local i:int = 0 until subLicences.length
+			if subLicences[i].episodeNumber >= 0
+				subLicences[i].episodeNumber = i + 1
+			endif
+		Next
+	End Method
 
 
 	'returns how many slots for sublicences are reserved yet
