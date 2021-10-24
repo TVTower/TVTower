@@ -696,7 +696,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			
 			'sort them to take care of "desired studio slots"
 			'so slot order defines list order
-			toReAddConcepts.Sort(true, TProductionConceptCollection.SortProductionConceptsByStudioSlot)
+			toReAddConcepts.Sort(true, SortProductionConceptsBySlotAndEpisode)
 			
 			'insert them again (in the numeric order of their original slots)
 			For local pc:TProductionConcept = EachIn toReAddConcepts
