@@ -603,9 +603,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 			'adjust list limit
 			Local minConceptLimit:Int = 1
 			If studioScript.GetSubScriptCount() > 0
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - getProductionCount(studioScript))
+				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(studioScript))
 			Else
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetProductionLimitMax() - getProductionCount(studioScript))
+				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetProductionLimitMax() - GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(studioScript))
 			EndIf
 
 			guiListDeskProductionConcepts.SetItemLimit( minConceptLimit )
@@ -899,19 +899,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Return text
 	End Method
 
-	'get number of (pre)productions for a script for determining the number of possible concepts
-	Function getProductionCount:Int(script:TScript)
-		'finished productions
-		Local producedConceptCount:Int = script.GetProductionsCount()
-		Local productionConcepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(script, True)
-		'add preproductions
-		For Local concept:TProductionConcept = EachIn productionConcepts
-			If concept.IsProductionStarted()
-				producedConceptCount :+ 1
-			EndIF
-		Next
-		return producedConceptCount
-	EndFunction
 
 	Method GenerateStudioManagerDialogue(dialogueType:Int = 0)
 		If Not TFigure(GetPlayerBase().GetFigure()).inRoom Then Return
@@ -941,7 +928,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		If script
 			'=== PRODUCED CONCEPT COUNT ===
-			producedCount = getProductionCount(script)
+			producedCount = GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(script)
 
 			'=== COLLECT PRODUCEABLE CONCEPTS ===
 			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script, True)
