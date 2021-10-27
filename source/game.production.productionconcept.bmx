@@ -106,6 +106,20 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 			Return script.CanGetProducedCount()
 		endIf
 	End Method
+
+
+	Method getProductionsIncludingPreProductionsCount:Int(script:TScript)
+		'finished productions
+		Local producedConceptCount:Int = script.GetProductionsCount()
+		Local productionConcepts:TProductionConcept[] = GetProductionConceptsByScript(script, True)
+		'add preproductions
+		For Local concept:TProductionConcept = EachIn productionConcepts
+			If concept.IsProductionStarted()
+				producedConceptCount :+ 1
+			EndIF
+		Next
+		return producedConceptCount
+	EndMethod
 End Type
 
 

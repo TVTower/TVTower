@@ -374,12 +374,15 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		return TRUE
 	End Method
 
+	Method CanBuyScriptFromPlayer:Int(script:TScript)
+		Return GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(script) <= 0
+	EndMethod
 
 	Method BuyScriptFromPlayer:int(script:TScript)
 		'remove from player (lists and suitcase) - and give him money
 		if GetPlayerBaseCollection().IsPlayer(script.owner)
 			'TODO remove when implementing Dialogue for scripts
-			If script.getProductionsCount() > 0 Then Return False
+			If Not CanBuyScriptFromPlayer(script) Then Return False
 			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(script.owner)
 			'try to remove it from the suitcase
 			if pc.RemoveScriptFromSuitcase(script)
@@ -883,6 +886,12 @@ endrem
 				Return FALSE
 			EndIf
 		EndIf
+
+		If guiScript.script.owner > 0 And Not GetInstance().CanBuyScriptFromPlayer(guiScript.script)
+			triggerEvent.SetVeto(True)
+			Return FALSE
+		EndIf
+
 		Return True
 	End Function
 	
@@ -996,7 +1005,7 @@ endrem
 			if hoveredGuiScript.IsDragged()
 				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 '			elseif hoveredGuiScript.script.owner = GetPlayerBase().playerID or (GetPlayerBase().GetFinance().canAfford(hoveredGuiScript.script.GetPrice()) and GetPlayerProgrammeCollection(GetPlayerBase().playerID).CanMoveScriptToSuitcase())
-			elseif hoveredGuiScript.IsDragable()
+			elseif hoveredGuiScript.IsDragable() And CanBuyScriptFromPlayer(hoveredGuiScript.script)
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
 			else
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)
