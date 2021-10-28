@@ -231,8 +231,28 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	End Method
 
 
+	Method GetTemplate:TScriptTemplate()
+		Local scriptTemplate:TScriptTemplate
+		For Local i:Int = 0 Until 30
+			scriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+			Local rnd:Int = RandRange(0, 100)
+			'print "contemplating "+ scriptTemplate.getTitle() +" with random "+ rnd
+			If scriptTemplate.IsLive() 
+				If rnd > 95 Then Return scriptTemplate
+			ElseIf scriptTemplate.IsSeries() 
+				If rnd > 90 Then Return scriptTemplate
+			ElseIf scriptTemplate.productionLimit = 1
+				'it is not the outcome that will be used for the production, but it is an indicator
+				Local outcome:Int = 100 * scriptTemplate.Getoutcome()
+				If rnd > outcome Then Return scriptTemplate
+			EndIf
+		Next
+		Return scriptTemplate
+	EndMethod
+
+
 	Method CreateScript:TScript()
-		Local scriptTemplate:TScriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+		Local scriptTemplate:TScriptTemplate = GetTemplate()
 		If Not scriptTemplate 
 			Throw "CreateScript(): Failed to fetch a random script template. All reached their limits?"
 			Return Null
