@@ -92,4 +92,4 @@ FINANCES_HISTORY_OF_CREDITINTEREST        = credit interest
 FINANCES_HISTORY_OF_DRAWINGCREDITINTEREST = drawing credit interest
 FINANCES_HISTORY_OF_BALANCEINTEREST       = balance interest
 FINANCES_HISTORY_FOR_SOMETHING            = for something
-FINANCES_HISTORY_BY_CHEAT                 = by cheat
+FINANCES_HISTORY_BY_CHEAT                 = by cheating

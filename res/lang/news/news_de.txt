@@ -49,7 +49,7 @@ BOMB_DETONATION_IN_TVTOWER                   = Anschlag im TVTower
 BOMB_DETONATION_IN_TVTOWER_TEXT              = Eine Detonation erschütterte die Menschen im bekannten TVTower. Die Bombe beschädigte den Raum "%ROOM%". Die Ermittlungen laufen.
 TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = Ein Bombenanschlag beschädigte den Raum %ROOM%.
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Anschlag auf TVTower: Keine Spuren
-BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = Nach dem Anschlag im bekannten TVTower ermittelten die Behörden. Leider konnten keine verwertbaren Spuren gesichert werden
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = Nach dem Anschlag im bekannten TVTower ermittelten die Behörden. Leider konnten keine verwertbaren Spuren gesichert werden.
 BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES       = Anschlag auf TVTower: Spuren gefunden
 BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = Nach dem Anschlag im bekannten TVTower ermittelten die Behörden - mit Erfolg! Scheinbar haben ansässige Sender (%CHANNELS%) mit ihren Schilder-Tausch-Spielen zum Unglück beigetragen.
 
@@ -110,7 +110,7 @@ SCORE_POINTS = Punkte
 SPORT_ICEHOCKEY = Eishockey
 SPORT_SOCCER    = Fussball
 
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = und Stürmer %TEAM1STAR% gewinnen %MATCHKIND% gegen
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = und Stürmer %TEAM1STAR% gewinnt %MATCHKIND% gegen
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = und Stürmer %TEAM1STAR% gewinnen %MATCHKIND% gegen
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = schlägt dank verwandelter Ecke durch %TEAM1STARSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = schlagen dank verwandelter Ecke durch %TEAM1STARSHORT% %MATCHKIND%

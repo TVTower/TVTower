@@ -1,4 +1,4 @@
-PLANNER_UNKNOWN      = comes soon
+PLANNER_UNKNOWN      = Coming soon
 PLANNER_PROGRAMME    = Programme
 PLANNER_ADS          = Ads
 PLANNER_FINANCES     = Finances

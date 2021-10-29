@@ -24,7 +24,7 @@ MOVIE_CAST       = Besetzung
 
 MOVIE_LIVESHOW   = Live-Ausstrahlung
 MOVIE_CALLINSHOW = Du verdienst %PROFIT% je 1.000 Zuschauer.
-MOVIE_TRAILER    = Das Ausstrahlen einer Programmvorschau kann das Interesse an folgenden Ausstrahlungen des beworbenen Programmes erhöhen.
+MOVIE_TRAILER    = Das Ausstrahlen einer Programmvorschau kann das Interesse an folgenden Ausstrahlungen des beworbenen Programms erhöhen.
 
 MOVIES          = Filme
 SERIES          = Serien
