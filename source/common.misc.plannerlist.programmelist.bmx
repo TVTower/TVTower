@@ -804,7 +804,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.DrawBox("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
+				font.DrawBox("(" + licence.GetEpisodeNumber() + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
 				SetColor(oldCol)
 				SetAlpha(oldColA)
