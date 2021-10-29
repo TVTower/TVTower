@@ -71,7 +71,7 @@ CLICK_AGAIN_TO_RENT         = Zum Mieten erneut anklicken
 CLICK_AGAIN_TO_CANCEL_RENT  = Zum Kündigen erneut anklicken
 CONFIRM                     = Bestätigen
 
-ROOMAGENCY_SIZE_TEXT1                              = Wohl dimensionierter Raum der Größe %SIZE%.
+ROOMAGENCY_SIZE_TEXT1                              = Wohldimensionierter Raum der Größe %SIZE%.
 ROOMAGENCY_SIZE_TEXT2                              = Raum in der praktischen %SIZE%er Größe.
 ROOMAGENCY_ROOM_X_IN_RANGE_TEXT1                   = Günstig nahe %X% gelegen.
 ROOMAGENCY_ROOM_SUPERMARKET_IN_RANGE_TEXT1         = Praktisch, gleich um die Ecke ist der %X%.
@@ -100,7 +100,7 @@ DIALOGUE_SUPERMARKET_GOODBYE3          = Ich mach mich mal auf die Socken. Bis s
 
 
 ARCHIVED_MESSAGES                   = Archivierte Nachrichten
-READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lies Nachrichten die Du vielleicht verpasst hast.
+READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lies Nachrichten, die Du vielleicht verpasst hast.
 MESSAGECATEGORY_CATEGORIES          = Kategorien
 MESSAGECATEGORY_ALL                 = Alle Kategorien
 MESSAGECATEGORY_MONEY               = Geld / Finanzen

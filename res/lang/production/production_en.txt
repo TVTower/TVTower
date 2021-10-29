@@ -61,11 +61,11 @@ DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = There is no more spa
 DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING    = To be able to start the production you first of all have to finish the production planning in the supermarket.
 
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION                                                    = So you want to produce |b|%SCRIPTTITLE%|/b|?
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = So far |b|1 production|/b| of this script is planned.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED                              = So far |b|%X% productions|/b| of this script are planned.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Up to now |b|1 production|/b| of this script was done.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Up to now |b|%X% productions|/b| of this script were done.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = To date |b|%X% productions|/b| of this script are planned and |b|%Y%|/b| are done.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = So far, |b|1 production|/b| of this script is planned.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED                              = So far, |b|%X% productions|/b| of this script are planned.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = So far, |b|1 production|/b| of this script was done.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = So far, |b|%X% productions|/b| of this script were done.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = So far, |b|%X% productions|/b| of this script are planned and |b|%Y%|/b| are done.
 
 DIALOGUE_STUDIO_START_PRODUCTION                    = Start production
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Start all possible productions (%X%).
@@ -86,10 +86,10 @@ DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_AVERAGE1     = You have chosen a p
 DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1        = You have chosen a pretty bad cast. But at least they seem to like you.
 DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1     = You have chosen an average cast and they don't like you!
 DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_AVERAGE1 = You have chosen an average cast.
-DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1    = You have chosen an average cast who appear to like you.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1    = You have chosen an average cast and they appear to like you.
 DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1        = You have chosen suitable cast, but they do not like you!
 DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1    = You have chosen a suitable cast.
-DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = You have chosen a suitable cast that even appear to like you.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = You have chosen a suitable cast and they even appear to like you.
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = The production company is fairly sub par
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = The production company is average
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = The production company is one of the better in the business
@@ -97,9 +97,9 @@ DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = and you should dist
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = and you distributed your production focus points reasonably well!
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = and you distributed your production focus points excellently!
 
-#PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = 
-#PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = 
-#PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = 
+PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Live broadcast today at %X% o'clock.
+PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Live broadcast tomorrow at %X% o'clock.
+PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Live broadcast in  %X% at %Y% o'clock.
 
 CLICK_TO_SELECT_PERSON = Click to select Person
 TOUCH_TO_SELECT_PERSON = Touch to select Person
@@ -123,7 +123,7 @@ IN_PRODUCTION      = In production
 
 POINTSSET_OF_POINTSMAX_POINTS_SET                           = %POINTSSET%/%POINTSMAX% points set
 PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY                  = Production focus points not set completely
-NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = At least one point has to be spent on focus points
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = At least one focus point has to be set
 NO_PRODUCTION_COMPANY_SELECTED                              = No production company selected
 PRODUCTION_SETUP_NOT_DONE                                   = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE                                 = Production setup incomplete

@@ -88,7 +88,7 @@ DIALOGUE_SUPERMARKET_TITLE1 = Hey Dude !
 DIALOGUE_SUPERMARKET_TITLE2 = Hi %PLAYERNAME% !
 DIALOGUE_SUPERMARKET_TITLE3 = Howdy, %PLAYERNAME% !
 DIALOGUE_SUPERMARKET_TEXT1  = What do you want to do today?
-DIALOGUE_SUPERMARKET_TEXT2  = What can I do for you today??
+DIALOGUE_SUPERMARKET_TEXT2  = What can I do for you today?
 DIALOGUE_SUPERMARKET_TEXT3  = Are you able to do a good job on your own? I am going to have a joi... I am going to get some fresh air.
 DIALOGUE_SUPERMARKET_TEXT4  = Just do it, I still have a throbbing head ... that ...party yesterday...
 

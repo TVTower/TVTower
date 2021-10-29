@@ -26,13 +26,13 @@ AD_SEND_TILL_MIDNIGHT = send till midnight !!
 AD_SEND_TILL_TOMORROW = send till tomorrow!
 AD_STILL_X_DAYS       = still %1 days
 
-AD_CHANNEL_IMAGE_TOO_LOW = Channel image to low. %CHANNELIMAGE%% < %IMAGE%%.
+AD_CHANNEL_IMAGE_TOO_LOW = Channel image too low. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = Please genre %GENRE%
 AD_PLEASE_FLAG           = Please %FLAG%
 
 INFOMERCIAL                  = Infomercial
 AD_INFOMERCIAL               = You get paid for airing infomercials. Income depends on audience.
-AD_INFOMERCIAL_NOT_AVAILABLE = There is no infomercial possible for this advertisement.
+AD_INFOMERCIAL_NOT_AVAILABLE = An infomercial is not possible for this advertisement.
 AD_INFOMERCIAL_PROFIT        = Income: %PROFIT% per 1000 people watching
 
 ADCONTRACT_FINISHED                = Advertisement contract finished
