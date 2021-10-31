@@ -78,6 +78,42 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		Next
 		return result
 	End Method
+	
+	
+	Method GetNextStudioSlotByScript:Int(script:TScript)
+		If not script then return -1
+		'if an episode was passed, we ask the parent / series header for
+		'existing production concepts of the series at all
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+
+
+		'for this we fetch current concepts and mark "used slots"
+		'and then assign the first free slot we find
+		Local concepts:TProductionConcept[] = GetProductionConceptsByScript(script, true)
+		Local conceptSlotCount:Int = 1
+		If script.GetSubScriptCount() > 0
+			conceptSlotCount = Min(GameRules.maxProductionConceptsPerScript, script.GetSubScriptCount() - getProductionsIncludingPreproductionsCount(script))
+		Else
+			conceptSlotCount = Min(GameRules.maxProductionConceptsPerScript, script.GetProductionLimitMax() - getProductionsIncludingPreproductionsCount(script))
+		EndIf
+		conceptSlotCount = Max(conceptSlotCount, concepts.length)
+
+		local conceptSlotsInUse:int[] = new Int[conceptSlotCount] 
+		For Local existingPC:TProductionConcept = EachIn concepts
+			if existingPC.studioSlot >= 0 and existingPC.studioSlot < conceptSlotsInUse.length
+				conceptSlotsInUse[existingPC.studioSlot] = 1
+			endif
+		Next
+		
+		'assign next free slot to this concept
+		For local i:int = 0 until conceptSlotsInUse.length
+			if conceptSlotsInUse[i] = 0
+				Return i
+			endif
+		Next
+		
+		Return -1
+	End MEthod
 
 
 	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
