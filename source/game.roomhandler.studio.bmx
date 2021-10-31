@@ -402,14 +402,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'only interested in drops to the list
 		If Not receiverList Then Return False
 
-
-		'save order of concepts
-		For Local i:Int = 0 Until guiListDeskProductionConcepts._slots.length
-			guiBlock = TGuiProductionConceptListItem(guiListDeskProductionConcepts.GetItemBySlot(i))
-			If Not guiBlock Then Continue
-
-			guiBlock.productionConcept.studioSlot = i
-		Next
+		GetInstance().SaveProductionConceptOrder()
 
 		Return True
 	End Function
@@ -431,7 +424,19 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		Return True
 	End Method
+	
+	
+	Method SaveProductionConceptOrder()
+		'save order of concepts
+		Local guiBlock:TGuiProductionConceptListItem
+		For Local i:Int = 0 Until guiListDeskProductionConcepts._slots.length
+			guiBlock = TGuiProductionConceptListItem(guiListDeskProductionConcepts.GetItemBySlot(i))
+			If Not guiBlock Then Continue
 
+			guiBlock.productionConcept.studioSlot = i
+		Next
+	End Method
+	
 
 	Method SetCurrentStudioScript:Int(script:TScript, roomGUID:String, ignoreRoomSize:Int = False)
 		If Not script Or Not roomGUID Then Return False
@@ -716,8 +721,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 				EndIf
 
 				Local block:TGuiProductionConceptListItem = New TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
-				'guiListDeskProductionConcepts.addItem(block, String(pc.studioSlot))
-				guiListDeskProductionConcepts.addItem(block, "-1")
+				guiListDeskProductionConcepts.addItem(block, String(pc.studioSlot))
+				'guiListDeskProductionConcepts.addItem(block, "-1")
 
 				'we deleted the dragged concept before - now drag
 				'the new instances again -> so they keep their "ghost
@@ -725,6 +730,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				If draggedProductionConcepts.contains(pc) Then block.Drag()
 			Next
 		EndIf
+		SaveProductionConceptOrder()
 
 		haveToRefreshGuiElements = False
 	End Method
@@ -779,8 +785,19 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 			If useScript.IsSeries() Then Return False
 		EndIf
+
+		'fetch next free studio slot (for series header or single element)
+		Local nextSlot:Int = GetProductionConceptCollection().GetNextStudioSlotByScript(useScript)
+		if nextSlot < 0 
+			Throw("No free slot")
+			Return False
+		endif
+		
+		
 		'print "CreateProductionConcept : create... " + useScript.GetTitle()
 		local pc:TProductionConcept = GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
+print "created concept for slot " + nextSlot
+		pc.studioSlot = nextSlot
 
 		'if this not the first concept of a non-series script then append a number
 		'to distinguish them
@@ -792,7 +809,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				pc.SetCustomDescription (pc.script.GetDescription())
 			EndIf
 		EndIf
-
+		
 		Return True
 	End Function
 
@@ -807,6 +824,11 @@ Type RoomHandler_Studio Extends TRoomHandler
 		If pcA.studioSlot = -1 And pcB.studioSlot = -1
 			'sort by their position in the parent script / episode number
 			Return pcA.script.GetEpisodeNumber() - pcB.script.GetEpisodeNumber()
+		'sort "without slot" _after_ 
+		ElseIf pcA.studioSlot = -1
+			Return 1
+		ElseIf pcB.studioSlot = -1
+			Return -1
 		Else
 			Return pcA.studioSlot - pcB.studioSlot
 		EndIf
