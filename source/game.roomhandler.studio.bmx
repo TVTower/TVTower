@@ -771,12 +771,24 @@ Type RoomHandler_Studio Extends TRoomHandler
 		local pc:TProductionConcept = GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
 
 		'if this not the first concept of a non-series script then append a number
-		'to distinguish them
-		If script.GetEpisodes() = 0 and not pc.HasCustomTitle()
-			Local conceptCount:int = GetProductionConceptCollection().GetProductionConceptCountByScript(script)
-			If conceptCount > 1
+		'to distinguish them; already produced programmes must be considered as well
+		If script.GetEpisodes() = 0 and not pc.HasCustomTitle() and script.GetProductionLimitMax() > 1
+			Local conceptTitles:TList = new TList()
+			Local concepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(script)
+			For Local c:TProductionConcept = EachIn concepts
+				If c <> pc then conceptTitles.addLast(c.getTitle().toLower())
+			Next
+			For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
+				conceptTitles.addLast(p.getTitle().toLower())
+			Next
+			If conceptTitles.contains(pc.getTitle().toLower())
+				Local newTitle:String
+				For Local i:Int = 2 Until 50
+					newTitle = pc.script.GetTitle()+  " - #" + i
+					If Not conceptTitles.contains(newTitle.toLower()) Then Exit
+				Next
 				'use title of the script to avoid reading in the custom title
-				pc.SetCustomTitle( pc.script.GetTitle() + " - #" + conceptCount)
+				pc.SetCustomTitle(newTitle)
 				pc.SetCustomDescription (pc.script.GetDescription())
 			EndIf
 		EndIf
