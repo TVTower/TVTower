@@ -796,7 +796,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		
 		'print "CreateProductionConcept : create... " + useScript.GetTitle()
 		local pc:TProductionConcept = GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
-print "created concept for slot " + nextSlot
+		'print "created concept for slot " + nextSlot
 		pc.studioSlot = nextSlot
 
 		'if this not the first concept of a non-series script then append a number
