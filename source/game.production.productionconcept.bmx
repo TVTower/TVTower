@@ -86,6 +86,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	'Repeats shifting until concepts fit into allowed slot limit again.
 	'It searches for empty spots on its own.
 	'returns count of "shifts"
+	Rem
 	Method CompactProductionConceptSlotsByScript:Int(script:TScript)
 		If not script then Return 0
 		
@@ -144,6 +145,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		
 		Return compactCount
 	End Method
+	EndRem
 
 
 	'return minimum amount for production concepts to fit in all
