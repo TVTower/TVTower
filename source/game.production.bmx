@@ -596,6 +596,9 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 		GetProductionConceptCollection().Remove(productionConcept)
 
+		'move upcoming production concepts to the left by one slot
+		GetProductionConceptCollection().ShiftProductionConceptSlotsByScript(productionConcept.script, -1, productionConcept.studioSlot)
+
 
 		'emit an event so eg. network can recognize the change
 		TriggerBaseEvent(GameEventKeys.Production_Finalize, New TData.Add("programmelicence", _designatedProgrammeLicence), Self)
