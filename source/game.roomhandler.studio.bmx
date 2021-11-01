@@ -606,13 +606,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local studioScript:TScript = GetCurrentStudioScript(roomGUID)
 		If studioScript
 			'adjust list limit
-			Local minConceptLimit:Int = 1
-			If studioScript.GetSubScriptCount() > 0
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(studioScript))
-			Else
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetProductionLimitMax() - GetProductionConceptCollection().getProductionsIncludingPreproductionsCount(studioScript))
-			EndIf
-
+			Local minConceptLimit:Int = GetProductionConceptCollection().GetProductionConceptsMinSlotCountByScript(studioScript)
 			guiListDeskProductionConcepts.SetItemLimit( minConceptLimit )
 		Else
 			guiListDeskProductionConcepts.SetItemLimit( 0 )
