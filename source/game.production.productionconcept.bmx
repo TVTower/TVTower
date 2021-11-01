@@ -17,11 +17,21 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	Method Remove:int(obj:TGameObject) override
 		If Not Super.Remove(obj) Then Return False
 
+		'doing a shift right on "remove" would shift production concepts
+		'even if the production concept on "slot 1" is dragged and
+		'removed manually by the user (so not just "on finish" of a 
+		'production)
+
 		'also compact studio slots if a concept is gone
+		rem
 		Local pc:TProductionConcept = TProductionConcept(obj)
 		If Not pc or not pc.script Then Return False
 
-		CompactProductionConceptSlotsByScript( pc.script )
+		'find out where to compact on our own ?
+		'CompactProductionConceptSlotsByScript( pc.script )
+		'or move all "afterwards" to the left
+		ShiftProductionConceptSlotsByScript(pc.script, -1, pc.studioSlot)
+		endrem
 	End Method
 
 
@@ -44,8 +54,37 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	End Method
 
 
+	'move all production concepts within "startSlot" and "endSlot" to 
+	'left or right (shiftBy = 1 for right, shiftBy = -1 for left etc.)
+	Method ShiftProductionConceptSlotsByScript:Int(script:TScript, shiftBy:Int, startSlot:Int = -1, endSlot:Int = -1)
+		If not script then Return 0
+
+		'if an episode was passed, we ask the parent / series header for
+		'existing production concepts of the series at all
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+
+		Local movedSomething:Int = False
+		Local concepts:TProductionConcept[] = GetProductionConceptsByScript(script, True)
+		
+		For local pc:TProductionConcept = EachIn concepts
+			if pc.studioSlot < 0 then continue
+			
+			'ignore if out of the given limits
+			If startSlot >= 0 And pc.studioSlot < startSlot Then Continue 
+			If endSlot >= 0 And pc.studioSlot > endSlot Then Continue
+
+			pc.studioSlot :+ shiftBy
+			movedSomething = True
+		Next
+
+		Return movedSomething
+	End Method
+
+
 	'compact production concepts (shift leftwards) once production limits
-	'decreased (productions finished)
+	'decreased (productions finished).
+	'Repeats shifting until concepts fit into allowed slot limit again.
+	'It searches for empty spots on its own.
 	'returns count of "shifts"
 	Method CompactProductionConceptSlotsByScript:Int(script:TScript)
 		If not script then Return 0
