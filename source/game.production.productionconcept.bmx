@@ -82,7 +82,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 
 
 	'compact production concepts (shift leftwards) once production limits
-	'decreased (productions finished).
+	'decreased (could be of use when productions finish).
 	'Repeats shifting until concepts fit into allowed slot limit again.
 	'It searches for empty spots on its own.
 	'returns count of "shifts"
