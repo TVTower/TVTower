@@ -14,16 +14,16 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	End Function
 
 
+	'doing a shift right on "remove" would shift production concepts
+	'even if the production concept on "slot 1" is dragged and
+	'removed manually by the user (so not just "on finish" of a 
+	'production)
+	Rem
 	Method Remove:int(obj:TGameObject) override
 		If Not Super.Remove(obj) Then Return False
 
-		'doing a shift right on "remove" would shift production concepts
-		'even if the production concept on "slot 1" is dragged and
-		'removed manually by the user (so not just "on finish" of a 
-		'production)
 
 		'also compact studio slots if a concept is gone
-		rem
 		Local pc:TProductionConcept = TProductionConcept(obj)
 		If Not pc or not pc.script Then Return False
 
@@ -31,8 +31,8 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		'CompactProductionConceptSlotsByScript( pc.script )
 		'or move all "afterwards" to the left
 		ShiftProductionConceptSlotsByScript(pc.script, -1, pc.studioSlot)
-		endrem
 	End Method
+	EndRem
 
 
 	Method GetRandom:TProductionConcept() override
@@ -146,6 +146,19 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	End Method
 
 
+	'return minimum amount for production concepts to fit in all
+	'but not exceeing the rules-defined maximum (so it fits below
+	'the studio's desk)
+	Method GetProductionConceptsMinSlotCountByScript:Int(script:TScript)
+		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
+		If script.GetSubScriptCount() > 0
+			Return Min(GameRules.maxProductionConceptsPerScript, script.GetSubScriptCount() - getProductionsIncludingPreproductionsCount(script))
+		Else
+			Return Min(GameRules.maxProductionConceptsPerScript, script.GetProductionLimitMax() - getProductionsIncludingPreproductionsCount(script))
+		EndIf
+	End Method
+
+
 	'return amount of "slots" for production concepts
 	Method GetProductionConceptSlotCountByScript:Int(script:TScript)
 		Local concepts:TProductionConcept[]
@@ -161,15 +174,8 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		'existing production concepts of the series at all
 		If script.IsEpisode() and script.HasParentScript() Then script = script.GetParentScript()
 
-		'for this we fetch current concepts and mark "used slots"
-		'and then assign the first free slot we find
 		concepts = GetProductionConceptsByScript(script, true)
-		Local conceptSlotCount:Int = 1
-		If script.GetSubScriptCount() > 0
-			conceptSlotCount = Min(GameRules.maxProductionConceptsPerScript, script.GetSubScriptCount() - getProductionsIncludingPreproductionsCount(script))
-		Else
-			conceptSlotCount = Min(GameRules.maxProductionConceptsPerScript, script.GetProductionLimitMax() - getProductionsIncludingPreproductionsCount(script))
-		EndIf
+		Local conceptSlotCount:Int = GetProductionConceptsMinSlotCountByScript(script)
 		conceptSlotCount = Max(conceptSlotCount, concepts.length)
 		
 		Return conceptSlotCount
@@ -232,12 +238,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		'for this we fetch current concepts and mark "used slots"
 		'and then assign the first free slot we find
 		Local concepts:TProductionConcept[] = GetProductionConceptsByScript(script, true)
-		Local conceptSlotCount:Int = 1
-		If script.GetSubScriptCount() > 0
-			conceptSlotCount = Min(GameRules.maxProductionConceptsPerScript, script.GetSubScriptCount() - getProductionsIncludingPreproductionsCount(script))
-		Else
-			conceptSlotCount = Min(GameRules.maxProductionConceptsPerScript, script.GetProductionLimitMax() - getProductionsIncludingPreproductionsCount(script))
-		EndIf
+		Local conceptSlotCount:Int = GetProductionConceptsMinSlotCountByScript(script)
 		conceptSlotCount = Max(conceptSlotCount, concepts.length)
 
 		local conceptSlotsInUse:int[] = new Int[conceptSlotCount] 
@@ -285,7 +286,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		endIf
 	End Method
 
-
+	
 	Method getProductionsIncludingPreProductionsCount:Int(script:TScript)
 		'finished productions
 		Local producedConceptCount:Int = script.GetProductionsCount()
