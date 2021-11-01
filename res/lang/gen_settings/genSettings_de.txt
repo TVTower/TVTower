@@ -55,7 +55,7 @@ LONGCLICK_TIME              = Zeit bis "langer Klick"
 WINDOW_MODE_RESOLUTION      = Auflösung im Fenstermodus
 INPUT                       = Eingabe
 USE_TOUCH_INPUT             = Nutze Touchscreen-Eingabe
-USE_TOUCH_INPUT_EXPLANATION = Der erste Klick setzt den Mauscursor, fortfolgende zählen als Klick. Erneute Cursorpositionierung bei zu großem Abstand zwischen den Klickpositionen.
+USE_TOUCH_INPUT_EXPLANATION = Der erste Klick setzt den Mauscursor, folgende zählen als Klick. Erneute Cursorpositionierung bei zu großem Abstand zwischen den Klickpositionen.
 MOVE_INSTEAD_CLICK_RADIUS   = Radius "Bewegen statt Klick"
 MULTIPLAYER                 = Mehrspieler
 SINGLEPLAYER                = Einzelspieler
@@ -168,9 +168,9 @@ DO_NOT_SHOW_ANY_TIPS     = Keine weiteren Tipps anzeigen
 SHOW_INTRODUCTORY_GUIDES = Einführungs-Hilfetexte anzeigen
 
 ERROR_NOT_POSSIBLE                  = Nicht möglich!
-ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Es ist nicht möglich den letzten verbliebenen Sendemast zu verkaufen.
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Es ist nicht möglich, den letzten verbliebenen Sendemast zu verkaufen.
 ERROR_NOT_ENOUGH_MONEY              = Nicht genügend Geld!
-ERROR_NOT_ENOUGH_MONEY_TEXT         = Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen.
+ERROR_NOT_ENOUGH_MONEY_TEXT         = Du besitzt nicht genügend finanzielle Mittel, um diese Aktion durchzuführen.
 
 NEWGAMESETTINGS_CHANNELNAME_DETAIL = Der Name des TV-Senders dieses Spielers
 NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Der Name dieses Spielers
@@ -191,8 +191,8 @@ HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT: tauscht Datenblatt | STRG+Klick: P
 HINT                                   = Hinweis
 
 STARTHINT_TITLE1 = Programmplaner
-STARTHINT_TEXT1  = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
+STARTHINT_TEXT1  = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung, die darauffolgende Episode bereitzustellen.
 STARTHINT_TITLE2 = Programmplanung
-STARTHINT_TEXT2  = Der Erfolg einer Ausstrahlung hängt maßgeblich von der Qualität/Wertung des Programmes ab. Ebenso entscheidend ist die Sendezeit und die Beliebtheit des Genres, der Zuschauerfluss aufeinanderfolgender Programme (die möglichst ähnlich sind), sowie die Anzahl der gesendeten Trailer, die Qualität der Nachrichtensendung und weiterer Faktoren.\n\nProgramme mancher Genre, wie z.B. Komödien, können zudem häufiger gesendet werden, als andere.
+STARTHINT_TEXT2  = Der Erfolg einer Ausstrahlung hängt maßgeblich von der Qualität/Wertung des Programmes ab. Ebenso entscheidend sind die Sendezeit und die Beliebtheit des Genres, der Zuschauerfluss aufeinanderfolgender Programme (die möglichst ähnlich sind), sowie die Anzahl der gesendeten Trailer, die Qualität der Nachrichtensendung und weitere Faktoren.\n\nProgramme mancher Genre, wie z.B. Komödien, können zudem häufiger gesendet werden, als andere.
 STARTHINT_TITLE3 = Werbeverträge
-STARTHINT_TEXT3  = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Prämien/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
+STARTHINT_TEXT3  = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Prämien/Strafen, sind gekoppelt an die Reichweite, die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
