@@ -1484,6 +1484,8 @@ Type TDatabaseLoader
 			'try to clone the parent, if that fails, create a new instance
 			If parentScriptTemplate
 				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
+				'#440 optional flags are not propagated to episode templates
+				scriptTemplate.flagsOptional = 0
 			EndIf
 			If Not scriptTemplate
 				scriptTemplate = New TScriptTemplate

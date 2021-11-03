@@ -406,14 +406,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.price = template.GetPrice()
 
 		script.flags = template.GetFinalFlags()
-		'do not enable X-Rated for live productions when
-		'live time is not in the night
-		if script.flags & TVTProgrammeDataFlag.XRATED
-			If not script.CanBeXRated()
-				script.SetFlag(TVTProgrammeDataFlag.XRATED, False)
-			EndIf
-		Endif
-
 		script.targetGroup = template.GetFinalTargetGroup()
 
 		script.productionBroadcastFlags = template.productionBroadcastFlags
@@ -438,8 +430,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.scriptFlags = template.scriptFlags
 		'mark tradeable
 		script.SetScriptFlag(TVTScriptFlag.TRADEABLE, True)
-
-		_calculateLiveTime(script, template)
 
 		script.scriptLicenceType = template.scriptLicenceType
 		script.scriptProductType = template.scriptProductType
@@ -495,14 +485,31 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					EndIf
 				Next
 			EndIf
-			'#424 script with children is live (only) if any of the children is live
+
 			If script.subScripts
+				'#440 propagate final optional header flags to episodes
+				For Local subScript:TScript = EachIn script.subScripts
+					subScript.flags :| script.flags
+				Next
+
+				'#424 script with children is live (only) if any of the children is live
+				'live flag could be optional for a single episode
 				script.SetFlag(TVTProgrammeDataFlag.LIVE, False)
 				For Local subScript:TScript = EachIn script.subScripts
 					If subScript.isLive()
 						script.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 					EndIF
+
+					_calculateLiveTime(subScript, template)
+					If not subScript.CanBeXRated()
+						subScript.SetFlag(TVTProgrammeDataFlag.XRATED, False)
+					EndIf
 				Next
+			Else
+				If not script.CanBeXRated()
+					script.SetFlag(TVTProgrammeDataFlag.XRATED, False)
+				EndIf
+				_calculateLiveTime(script, template)
 			EndIf
 		EndIf
 
