@@ -180,6 +180,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropNews, "TGUINews") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropNews, "TGUINews") ]
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNews, "TGUINews") ]
@@ -930,6 +931,26 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
+	Function onTryDropNews:int(triggerEvent:TEventBase)
+		local guiNews:TGUINews = TGUINews( triggerEvent._sender )
+
+		if guiNews and GetPlayerBase().getPlayerId() <> guiNews.news.owner
+			triggerEvent.setVeto(true)
+		endIf
+
+		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
+		if not guiNews or not receiverList then return FALSE
+
+		if not GetPlayerBaseCollection().IsPlayer(guiNews.news.owner) return False
+		'prevent using news that cannot be afforded
+		if receiverList = guiNewsListUsed
+			if Not guiNews.news.paid and Not GetPlayerBase().getFinance().canAfford(guiNews.news.GetPrice( GetPlayerBase().playerID ))
+				triggerEvent.setVeto(true)
+			endIf
+		endif
+	End Function
+
+
 	Function onDropNews:int(triggerEvent:TEventBase)
 		local guiNews:TGUINews = TGUINews( triggerEvent._sender )
 		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
@@ -1107,16 +1128,16 @@ Type TGUINews Extends TGUIGameListItem
 		Super.Draw()
 
 		'set mouse to "dragged"
-		If isDragged() 
-			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		If isDragged()
+			if not news.paid and not GetPlayerBase().getFinance().canAfford(news.GetPrice( GetPlayerBase().playerID )) and RoomHandler_News.getInstance().guiNewsListUsed.containsXY(MouseManager.x, MouseManager.y)
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+			else
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			endif
 		'set mouse to "hover"
 		ElseIf isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerBaseCollection().playerID))
 			If news.IsControllable() and IsClickable()
-				if news.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(news.GetPrice( GetPlayerBase().playerID ))
-					GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
-				else
-					GetGameBase().SetCursor(TGameBase.CURSOR_PICK, TGameBase.CURSOR_EXTRA_FORBIDDEN)
-				endif
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
 			EndIf
 		EndIf
 	End Method
