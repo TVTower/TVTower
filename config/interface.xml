@@ -33,7 +33,8 @@
 				<child name="gfx_interface_audience_teen"		x="343"	y="151"	w="60"	h="150" />
 				<child name="gfx_interface_audience_unemployed"	x="404"	y="151"	w="80"	h="150" />
 				<child name="gfx_interface_audience_unemployed.bored"	x="485"	y="151"	w="80"	h="150" />
-				<child name="gfx_interface_audience_mother"	    x="566"	y="151"	w="80"	h="150" />
+				<child name="gfx_interface_audience_mother"	    x="566"	y="151"	w="66"	h="150" />
+				<child name="gfx_interface_audience_manager"	x="633"	y="151"	w="80"	h="150" offsetLeft="5" />
 
 
 				<!-- interface buttons -->
