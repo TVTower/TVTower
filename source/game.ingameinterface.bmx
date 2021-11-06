@@ -44,11 +44,14 @@ Type TInGameInterface
 	Field spriteInterfaceBottom:TSprite
 	Field spriteInterfaceAudienceBG:TSprite
 	Field spriteInterfaceAudienceOverlay:TSprite
-	Field spriteInterfaceButtonSpeed1:TSprite
-	Field spriteInterfaceButtonSpeed2:TSprite
-	Field spriteInterfaceButtonSpeed3:TSprite
-	Field spriteInterfaceButtonHelp:TSprite
-	Field spriteInterfaceButtonSettings:TSprite
+	Field spriteInterfaceButtonSpeed1_active:TSprite
+	Field spriteInterfaceButtonSpeed2_active:TSprite
+	Field spriteInterfaceButtonSpeed3_active:TSprite
+	Field spriteInterfaceButtonSpeed1_hover:TSprite
+	Field spriteInterfaceButtonSpeed2_hover:TSprite
+	Field spriteInterfaceButtonSpeed3_hover:TSprite
+	Field spriteInterfaceButtonHelp_hover:TSprite
+	Field spriteInterfaceButtonSettings_hover:TSprite
 	Field _interfaceFont:TBitmapFont
 	Field _interfaceBigFont:TBitmapFont
 	Field moneyColor:SColor8
@@ -147,11 +150,14 @@ Type TInGameInterface
 		spriteProgrammeInfomercialOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
 
 		spriteInterfaceBottom = GetSpriteFromRegistry("gfx_interface_bottom")
-		spriteInterfaceButtonSpeed1 = GetSpriteFromRegistry("gfx_interface_button_speed1")
-		spriteInterfaceButtonSpeed2 = GetSpriteFromRegistry("gfx_interface_button_speed2")
-		spriteInterfaceButtonSpeed3 = GetSpriteFromRegistry("gfx_interface_button_speed3")
-		spriteInterfaceButtonHelp = GetSpriteFromRegistry("gfx_interface_button_help")
-		spriteInterfaceButtonSettings = GetSpriteFromRegistry("gfx_interface_button_settings")
+		spriteInterfaceButtonSpeed1_hover = GetSpriteFromRegistry("gfx_interface_button_speed1.hover")
+		spriteInterfaceButtonSpeed2_hover = GetSpriteFromRegistry("gfx_interface_button_speed2.hover")
+		spriteInterfaceButtonSpeed3_hover = GetSpriteFromRegistry("gfx_interface_button_speed3.hover")
+		spriteInterfaceButtonHelp_hover = GetSpriteFromRegistry("gfx_interface_button_help.hover")
+		spriteInterfaceButtonSettings_hover = GetSpriteFromRegistry("gfx_interface_button_settings.hover")
+		spriteInterfaceButtonSpeed1_active = GetSpriteFromRegistry("gfx_interface_button_speed1.active")
+		spriteInterfaceButtonSpeed2_active = GetSpriteFromRegistry("gfx_interface_button_speed2.active")
+		spriteInterfaceButtonSpeed3_active = GetSpriteFromRegistry("gfx_interface_button_speed3.active")
 		spriteInterfaceAudienceBG = GetSpriteFromRegistry("gfx_interface_audience_bg")
 		spriteInterfaceAudienceOverlay = GetSpriteFromRegistry("gfx_interface_audience_overlay")
 
@@ -543,7 +549,7 @@ Type TInGameInterface
 			EndIf
 			If THelper.MouseIn(309,577,45,23)
 				hoveredMenuButton = 1
-				hoveredMenuButtonPos.SetXY(309,578)
+				hoveredMenuButtonPos.SetXY(309,577)
 
 				MenuToolTip.area.position.SetX(364)
 				MenuToolTip.SetTitle(getLocale("MENU"))
@@ -559,7 +565,7 @@ Type TInGameInterface
 
 			ElseIf THelper.MouseIn(357,577,43,23)
 				hoveredMenuButton = 2
-				hoveredMenuButtonPos.SetXY(357,578)
+				hoveredMenuButtonPos.SetXY(357,577)
 
 				MenuToolTip.area.position.SetX(410)
 				MenuToolTip.SetTitle(getLocale("HELP"))
@@ -576,7 +582,7 @@ Type TInGameInterface
 
 			ElseIf THelper.MouseIn(400,577,29,23)
 				hoveredMenuButton = 3
-				hoveredMenuButtonPos.SetXY(400,578)
+				hoveredMenuButtonPos.SetXY(400,577)
 
 				MenuToolTip.area.position.SetX(439)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
@@ -592,7 +598,7 @@ Type TInGameInterface
 
 			ElseIf THelper.MouseIn(429,577,30,23)
 				hoveredMenuButton = 4
-				hoveredMenuButtonPos.SetXY(429,578)
+				hoveredMenuButtonPos.SetXY(429,577)
 
 				MenuToolTip.area.position.SetX(469)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
@@ -608,7 +614,7 @@ Type TInGameInterface
 
 			ElseIf THelper.MouseIn(457,577,30,23)
 				hoveredMenuButton = 5
-				hoveredMenuButtonPos.SetXY(457,578)
+				hoveredMenuButtonPos.SetXY(457,577)
 
 				MenuToolTip.area.position.SetX(497)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
@@ -961,30 +967,30 @@ Type TInGameInterface
 
 		'=== DRAW HIGHLIGHTED CURRENT SPEED ===
 		if GameRules.worldTimeSpeedPresets[0] = int(GetWorldTime().GetRawTimeFactor())
-			spriteInterfaceButtonSpeed1.Draw(400,577)
+			spriteInterfaceButtonSpeed1_active.Draw(400,577)
 		elseif GameRules.worldTimeSpeedPresets[1] = int(GetWorldTime().GetRawTimeFactor())
-			spriteInterfaceButtonSpeed2.Draw(429,577)
+			spriteInterfaceButtonSpeed2_active.Draw(429,577)
 		elseif GameRules.worldTimeSpeedPresets[2] = int(GetWorldTime().GetRawTimeFactor())
-			spriteInterfaceButtonSpeed3.Draw(457,577)
+			spriteInterfaceButtonSpeed3_active.Draw(457,577)
 		endif
 
 
 		'=== DRAW MENU BUTTON OVERLAYS ===
 		if hoveredMenuButton > 0
 			SetBlend LightBLEND
-			SetAlpha 0.5
+			SetAlpha 0.3
 
 			Select hoveredMenuButton
 				case 1
-					spriteInterfaceButtonSettings.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+					spriteInterfaceButtonSettings_hover.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
 				case 2
-					spriteInterfaceButtonHelp.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+					spriteInterfaceButtonHelp_hover.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
 				case 3
-					spriteInterfaceButtonSpeed1.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+					spriteInterfaceButtonSpeed1_hover.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
 				case 4
-					spriteInterfaceButtonSpeed2.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+					spriteInterfaceButtonSpeed2_hover.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
 				case 5
-					spriteInterfaceButtonSpeed3.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+					spriteInterfaceButtonSpeed3_hover.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
 			End Select
 
 			SetBlend ALPHABLEND

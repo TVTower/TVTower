@@ -37,11 +37,14 @@
 
 
 				<!-- interface buttons -->
-				<child name="gfx_interface_button_settings"     x="252"	y="402"	w="45"	h="23" />
-				<child name="gfx_interface_button_help"         x="300"	y="402"	w="42"	h="23" />
-				<child name="gfx_interface_button_speed1"		x="343"	y="402"	w="29"	h="23" />
-				<child name="gfx_interface_button_speed2"		x="372"	y="402"	w="30"	h="23" />
-				<child name="gfx_interface_button_speed3"		x="400"	y="402"	w="30"	h="23" />
+				<child name="gfx_interface_button_settings.hover"      x="252"	y="402"	w="45"	h="23" />
+				<child name="gfx_interface_button_help.hover"          x="300"	y="402"	w="42"	h="23" />
+				<child name="gfx_interface_button_speed1.hover"        x="343"	y="402"	w="29"	h="23" />
+				<child name="gfx_interface_button_speed2.hover"        x="372"	y="402"	w="30"	h="23" />
+				<child name="gfx_interface_button_speed3.hover"        x="400"	y="402"	w="30"	h="23" />
+				<child name="gfx_interface_button_speed1.active"       x="343"	y="426"	w="29"	h="23" />
+				<child name="gfx_interface_button_speed2.active"       x="372"	y="426"	w="30"	h="23" />
+				<child name="gfx_interface_button_speed3.active"       x="400"	y="426"	w="30"	h="23" />
 
 				<!-- target group icons -->
 				<child name="gfx_targetGroup_children"   x="253" y="387" w="13" h="13" />
