@@ -768,6 +768,8 @@ Type TInGameInterface
 			endif
 		endif
 
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Manager) > 0) then result :+ ["manager"]
+
 		return result
 	End Function
 
