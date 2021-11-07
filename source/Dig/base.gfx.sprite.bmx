@@ -548,15 +548,15 @@ Type TSprite
 	Method GetImageCopy:TImage(loadAnimated:Int = 1)
 		SetMaskColor(255,0,255)
 		If Self.frames >1 And loadAnimated
-			Return LoadAnimImage(GetPixmap().copy(), frameW, frameH, 0, frames)
+			Return LoadAnimImage(GetPixmap().copy(), frameW, frameH, 0, frames, parent.GetImage().flags)
 		Else
-			Return LoadImage(GetPixmap().copy())
+			Return LoadImage(GetPixmap().copy(), parent.GetImage().flags)
 		EndIf
 	End Method
 
 
 	Method GetColorizedImage:TImage(color:TColor, frame:Int=-1, colorizeMode:Int=0)
-		Return ColorizeImageCopy(GetImage(frame), color, 0,0,0, 1,0, colorizeMode)
+		Return ColorizeImageCopy(GetImage(frame), color, 0,0,0, 1, -1, colorizeMode)
 	End Method
 
 

@@ -252,7 +252,7 @@ Function ConvertToSingleColor:TImage(image:TImage, targetColor:int, backgroundCo
 		Next
 	Next
 
-	return LoadImage(targetPix)
+	return LoadImage(targetPix, image.flags)
 End Function
 
 
@@ -323,7 +323,7 @@ Function ConvertToOutLine:TImage(image:TImage, lineThickness:int=1, alphaTreshol
 		Next
 	Next
 
-	return LoadImage(targetPix)
+	return LoadImage(targetPix, image.flags)
 End Function
 
 
@@ -397,17 +397,23 @@ Const COLORIZEMODE_NEGATIVEMULTIPLY:int = 1
 Const COLORIZEMODE_OVERLAY:int = 2
 
 'colorizes an TImage (may be an AnimImage when given cell_width and height)
-Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, flag:Int=0, colorizationMode:int = 0)
+Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, imageFlags:Int=-1, colorizationMode:int = 0)
 	local pixmap:TPixmap
 	if TPixmap(imageOrPixmap) then pixmap = TPixmap(imageOrPixmap)
 	if TImage(imageOrPixmap) then pixmap = LockImage(TImage(imageOrPixmap))
 	If not pixmap then return Null
+	
+	If imageFlags = -1 and TImage(imageOrPixmap) 
+		imageFlags = TImage(imageOrPixmap).flags
+	Else
+		imageFlags = 0
+	EndIf
 
 	'load
 	If cellW > 0 And cellCount > 0
-		Return LoadAnimImage( ColorizePixmapCopy(pixmap, color, colorizationMode), cellW, cellH, cellFirst, cellCount, flag)
+		Return LoadAnimImage( ColorizePixmapCopy(pixmap, color, colorizationMode), cellW, cellH, cellFirst, cellCount, imageFlags)
 	else
-		Return LoadImage( ColorizePixmapCopy(pixmap, color, colorizationMode) )
+		Return LoadImage( ColorizePixmapCopy(pixmap, color, colorizationMode), imageFlags)
 	endif
 End Function
 
