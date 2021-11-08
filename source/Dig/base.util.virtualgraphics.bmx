@@ -38,8 +38,6 @@ Type TVirtualGfx
 	Field vxoff:Int
 	Field vyoff:Int
 
-	Field vscale:Float
-
 	Method Create:TVirtualGfx (width:Int, height:Int)
 		instance = self
 		self.vwidth = width
@@ -115,50 +113,29 @@ Type TVirtualGfx
 			gheight = DTH
 		EndIf
 
-		' Width/height ratios...
-		Local graphicsratio:Float = Float(gwidth) / Float(gheight)
-		Local virtualratio:Float = Float(GetInstance().vwidth) / Float(GetInstance().vheight)
-
-		' Ratio-to-ratio. Don't even know what you'd call this, but hours of trial and error
-		' provided the right numbers in the end...
-		Local gtovratio:Float = graphicsratio / virtualratio
-		Local vtogratio:Float = virtualratio / graphicsratio
-
 		' Compare ratios...
-		If graphicsratio => virtualratio
-			' Graphics ratio wider than (or same as) virtual graphics ratio...
-			GetInstance().vscale = Float(gheight) / Float(GetInstance().vheight)
+		'If gwidth/float(gheight) => GetInstance().vwidth/float(GetInstance().vheight)
+		'but we avoid divisions to skip floating point issues
+		If gwidth * GetInstance().vheight => GetInstance().vwidth * gheight
+			Local vscale:Double = gheight / Double(GetInstance().vheight)
 
-			' Now go crazy with trial-and-error... ooh, it works! This tiny bit of code took FOREVER.
-			'Local pixels:Float = Float (GetInstance().vwidth) / (1.0 / GetInstance().vscale) ' Width after scaling
-			'Local half_scale:Float = (1.0 / GetInstance().vscale) / 2.0
-			'SetVirtualResolution( GetInstance().vwidth * gtovratio, GetInstance().vheight )
-			'GetInstance().vxoff = (gwidth - pixels) * half_scale
-			'GetInstance().vyoff = 0
-
-			local pixels:int = Int(GetInstance().vwidth * GetInstance().vscale) ' Width after scaling
-			local half_scale:float = 0.5 / GetInstance().vscale
-
-			GetInstance().effectiveVWidth = floor(GetInstance().vwidth * gtovratio)
-			GetInstance().effectiveVHeight = floor(GetInstance().vheight)
+			GetInstance().effectiveVWidth = Int(gwidth / vscale + 0.5)
+			GetInstance().effectiveVHeight = GetInstance().vheight
 
 			' Offset into 'real' display area...
 			'move vxoff accordingly. Add 0.5 to round properly (1.49 to 1.0, 1.5 to 2)
-			GetInstance().vxoff = floor( (gwidth - pixels) * half_scale + 0.5 )
+			GetInstance().vxoff = Int( (gwidth - GetInstance().vwidth * vscale) * vscale/2 + 0.5 )
 			GetInstance().vyoff = 0
 
 		Else
 			' Graphics ratio narrower...
-			GetInstance().vscale = Float (gwidth) / Float (GetInstance().vwidth)
+			Local vscale:Double = gwidth / Double(GetInstance().vwidth)
 
-			Local pixels:int = int(GetInstance().vheight * GetInstance().vscale) ' Height after scaling
-			Local half_scale:Float = (0.5 / GetInstance().vscale)
-
-			GetInstance().effectiveVWidth = floor(GetInstance().vwidth)
-			GetInstance().effectiveVHeight = floor(GetInstance().vheight * vtogratio)
+			GetInstance().effectiveVWidth = GetInstance().vwidth
+			GetInstance().effectiveVHeight = Int(gheight / vscale + 0.5)
 
 			GetInstance().vxoff = 0
-			GetInstance().vyoff = floor( (gheight - pixels) * half_scale + 0.5 )
+			GetInstance().vyoff = Int((gheight - GetInstance().vheight * vscale) * vscale/2 + 0.5)
 		EndIf
 
 		' Set up virtual graphics area...
@@ -177,7 +154,7 @@ Type TVirtualGfx
 	Function SetupVirtualGraphicsArea()
 		'print "SetViewport( "+GetInstance().vxoff+", "+GetInstance().vyoff+", "+GetInstance().vwidth+", "+GetInstance().vheight+" )"
 		'print "SetOrigin( "+GetInstance().vxoff+", "+GetInstance().vyoff+" )"
-		'print "NEW SetVirtualResolution( "+effectiveVWidth+", "+effectiveVHeight+" )"
+		'print "NEW SetVirtualResolution( "+GetInstance().effectiveVWidth+", "+GetInstance().effectiveVHeight+" )"
 		SetVirtualResolution( GetInstance().effectiveVWidth, GetInstance().effectiveVHeight )
 		SetViewport( GetInstance().vxoff, GetInstance().vyoff, GetInstance().vwidth, GetInstance().vheight )
 		SetOrigin( GetInstance().vxoff, GetInstance().vyoff )
