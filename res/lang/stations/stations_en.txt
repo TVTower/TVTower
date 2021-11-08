@@ -1,7 +1,7 @@
 INCREASE          = Increase
 RUNNING_COSTS     = Running Costs
 BROADCASTING_AREA = Broadcasting area
-OF_THE_MAP        = of the map
+OF_THE_MAP        = of map
 
 COUNTRYNAME_ISO3166_DE        = Germany
 COUNTRYNAME_ISO3166_DE_SHORT  = D

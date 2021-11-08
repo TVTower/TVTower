@@ -1103,9 +1103,14 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentInnerWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" )
+			Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
+			Local totalReach:Int = GetStationMapCollection().population
+
+			Return Max(5 + Self.useFont.GetWidth(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"), ..
+                       Self.useFont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE_NUMBER")) + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" ) )
 		Else
-			Return Self.Usefont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": 100 (100%)")
+			Return Max(Self.Usefont.GetWidth(GetLocale("BROADCASTING_AREA") + ": 100 (100%)"), ..
+			           Self.Usefont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE_NUMBER")) + ": 100 (100%)"))
 		EndIf
 	End Method
 
@@ -1192,7 +1197,7 @@ Type TTooltipAudience Extends TTooltip
 		lineY :+ Self.Usefont.GetHeight(lineText)
 
 		'draw overview text
-		lineText = GetLocale("POTENTIAL_AUDIENCE") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
+		lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
 		Self.Usefont.DrawSimple(lineText, lineX, lineY, col1)
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 
