@@ -124,7 +124,7 @@ Type TVirtualGfx
 
 			' Offset into 'real' display area...
 			'move vxoff accordingly. Add 0.5 to round properly (1.49 to 1.0, 1.5 to 2)
-			GetInstance().vxoff = Int( (gwidth - GetInstance().vwidth * vscale) * vscale/2 + 0.5 )
+			GetInstance().vxoff = Int( (GetInstance().effectiveVWidth - GetInstance().vwidth) /2 + 0.5 )
 			GetInstance().vyoff = 0
 
 		Else
@@ -135,7 +135,7 @@ Type TVirtualGfx
 			GetInstance().effectiveVHeight = Int(gheight / vscale + 0.5)
 
 			GetInstance().vxoff = 0
-			GetInstance().vyoff = Int((gheight - GetInstance().vheight * vscale) * vscale/2 + 0.5)
+			GetInstance().vyoff = Int((GetInstance().effectiveVHeight - GetInstance().vheight) /2 + 0.5)
 		EndIf
 
 		' Set up virtual graphics area...
