@@ -257,8 +257,12 @@ Type TApp
 			GetDeltaTimer()._funcRender = render
 
 			GetGraphicsManager().SetVsync(obj.config.GetBool("vsync", vsync))
-			GetGraphicsManager().SetResolution(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
 			'GetGraphicsManager().SetResolution(1024,768)
+			If GetGraphicsManager().GetFullscreen()
+				GetGraphicsManager().SetResolution(800, 600)
+			Else
+				GetGraphicsManager().SetResolution(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
+			EndIf
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
 
@@ -473,6 +477,9 @@ Type TApp
 			?Not bmxng
 			adjusted = True
 			?
+		EndIf
+		If GetGraphicsManager().GetFullscreen()
+			GetGraphicsManager().SetResolution(800, 600)
 		EndIf
 		If adjusted And doInitGraphics Then GetGraphicsManager().InitGraphics()
 
