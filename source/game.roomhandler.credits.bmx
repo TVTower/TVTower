@@ -38,7 +38,7 @@ Type RoomHandler_Credits extends TRoomHandler
 
 		role = CreateRole("Programmierung", new SColor8(200,200,0))
 		role.addCast("Ronny Otto~n(Engine, Spielmechanik)")
-		role.addCast("Alexander Nittka~n(Fixes, Balancing, ...)~n(2020 -)")
+		role.addCast("Alexander Nittka~n(Fixes, Balancing, GUI/Interaktionen ...)~n(2020 -)")
 		role.addCast("Manuel Vögele~n(Quotenberechnung, Sendermarkt)~n(bis 2015)")
 		role.addCast("Bruce A. Henderson~n(BlitzMax-NG + Code-Module)~n(2013 -)")
 
@@ -51,6 +51,7 @@ Type RoomHandler_Credits extends TRoomHandler
 
 		role = CreateRole("Handbuch", new SColor8(170,210,250))
 		role.addCast("Själe")
+		role.addCast("Matthew Forrester~n(English translation)")
 
 		role = CreateRole("Datenbank-Team", new SColor8(210,120,250))
 		role.addCast("Martin Rackow~n(bis 2007)")
@@ -60,6 +61,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("TheRob") 'begin 2015
 		role.addCast("Rumpelfreddy~n(2014)")
 		role.addCast("DerFronck~n(2017 - 2019)") 'begin 2017
+		role.addCast("Kasi~n(2019)")
 		role.addCast("u.a. Freiwillige")
 
 		role = CreateRole("Tester", new SColor8(160,180,250))
@@ -68,7 +70,6 @@ Type RoomHandler_Credits extends TRoomHandler
 		'role.addCast("Ceddy")
 		'role.addCast("djmetzger")
 
-		role.addCast("Basti")
 		role.addCast("Dalli")
 		role.addCast("DannyF")
 		role.addCast("DerFronck")
@@ -77,6 +78,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("Helmut")
 		role.addCast("Kurt TV")
 		role.addCast("Ratz")
+		role.addCast("RCBishop")
 		role.addCast("red")
 		role.addCast("Själe")
 		role.addCast("SushiTV")
