@@ -38,7 +38,8 @@ function TaskArchive:GetNextJobInTargetRoom()
 	end
 
 	self.emergencySale = false
-	self:SetWait()
+	--self:SetWait()
+	self:SetDone()
 end
 
 
@@ -103,7 +104,7 @@ function JobSellMovies:Tick()
 	do
 		m = TVT.convertToProgrammeLicence(TVT.ar_GetProgrammeLicence(i).data)
 		--ignore episodes/collection-elements
-		if m ~= nil and m.HasParentLicence()==0 then
+		if m ~= nil and m.HasParentLicence()==0 and m.isAvailable() then
 			vm = newarchivedMovie(m)
 			debugMsg("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..",  TopicalityLoss="..string.format("%.4f", vm.TopicalityLoss*100).."% (Max="..string.format("%.2f", vm.MaxTopicalityLoss*100).."%), planned: "..tostring(vm.planned))
 			table.insert(movies,vm)
@@ -142,7 +143,7 @@ function JobSellMovies:Tick()
 	-- move licences to suitcase
 	for i=1, #case do
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
-		if ec == 1 then
+		if ec == TVT.RESULT_OK then
 			debugMsg("# put "..case[i].Title.." in suitcase, OK")
 
 			self.Task.Player.programmeLicencesInArchiveCount = math.max(0, self.Task.Player.programmeLicencesInArchiveCount - 1)

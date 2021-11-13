@@ -241,7 +241,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== FOR ALL PLAYERS ===
 		'
-		print "room owner forcefully leaves archive: roomID="+TRoom(triggerEvent.GetReceiver()).id+"  figure="+figure.name
+		'print "room owner forcefully leaves archive: roomID="+TRoom(triggerEvent.GetReceiver()).id+"  figure="+figure.name
 
 		'instead of leaving the room and accidentially removing programmes
 		'from the plan we readd all licences from the suitcase back to

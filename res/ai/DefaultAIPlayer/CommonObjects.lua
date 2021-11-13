@@ -193,12 +193,14 @@ function SpotSlotRequisition:CheckActuality()
 	if (self.Done) then return false end
 	-- a requisition gets invalid as soon as the corresponding broadcast-
 	-- material changed (eg. licence vanished somehow)
-	if self.broadcastMaterialGUID ~= nil and self.broadcastMaterialGUID ~= "" then
-		if TVT.IsBroadcastMaterialInProgrammePlan(self.broadcastMaterialGUID, self.Day, self.Hour) == 0 then
-			self:Complete()
-			return false
-		end
-	end
+	--TODO this code needs to refactored; requisitions are modified while scheduling; they are not really bound to a single programme slot
+	--after lua engine refactoring, all requisitions were cancelled by this snippet
+	--	if self.broadcastMaterialGUID ~= nil and self.broadcastMaterialGUID ~= "" then
+	--		if TVT.IsBroadcastMaterialInProgrammePlan(self.broadcastMaterialGUID, self.Day, self.Hour) == 0 then
+	--			self:Complete()
+	--			return false
+	--		end
+	--	end
 
 	-- spot slot requisitions get outdated 2 hours after their "planned" time
 	if (self.Day >= TVT.GetDay() or ( self.Day == TVT.GetDay() and self.Hour + 2 > TVT.GetDayHour())) then

@@ -104,8 +104,11 @@ function DefaultAIPlayer:initParameters()
 	end
 	if (self.BrainSpeed == nil or self.BrainSpeed <= 0) then
 		--Handlungsgeschwindigkeit
-		self.BrainSpeed = math.random(2,4)
-		--self.BrainSpeed = 1000
+		self.BrainSpeed = math.random(5,7)
+	end
+	--eagerness to start the next task
+	if (self.startTaskAtPriority == nil or self.startTaskAtPriority <= 0) then
+		self.startTaskAtPriority = math.random(17,25)
 	end
 
 	--for checking that the same parameters are still used after loading a saved game
@@ -126,8 +129,10 @@ function DefaultAIPlayer:initializePlayer()
 	--strategy of the player
 	self.Strategy = DefaultStrategy()
 
+	--TODO if saving is too low, boss credit will not be repaid (budget for boss task?
+	--if it is too big, not enough money is available for movies (investment savings?) 
 	-- budget saving from 10-30%
-	self.Budget.SavingParts = 0.2 + 0.05 * math.random(0,4)
+	self.Budget.SavingParts = 0.1 + 0.05 * math.random(0,4)
 	-- extra safety add-to-fixed-costs from 40-70%
 	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
 
@@ -188,6 +193,16 @@ end
 function DefaultAIPlayer:OnGameBegins()
 	self.Strategy:Start(self)
 
+	--LOAD COMPATIBILITY
+	if (self.Stats.SpotProfit == nil) then
+		--spot statistics were renamed - prevent NPE
+		self.Stats.SpotProfit = StatisticEvaluator()
+		self.Stats.SpotProfitPerSpot = StatisticEvaluator()
+		self.Stats.SpotPenalty = StatisticEvaluator()
+		self.Stats.SpotPenaltyPerSpot = StatisticEvaluator()
+	end
+	--END LOAD COMPATIBILITY
+	
 --[[
 	local se = StatisticEvaluator()
 	for j = 0, 3 do
@@ -382,12 +397,10 @@ _G["BusinessStats"] = class(SLFDataObject, function(c)
 	SLFDataObject.init(c)	-- must init base!
 	c.Audience = nil;
 	c.BroadcastStatistics = nil;
-	c.SpotProfitCPM = nil;
-	c.SpotProfitCPMPerSpot = nil;
-	c.SpotProfitCPMPerSpotAcceptable = nil;
-	c.SpotPenaltyCPM = nil;
-	c.SpotPenaltyCPMPerSpot = nil;
-	c.SpotPenaltyCPMPerSpotAcceptable = nil;
+	c.SpotProfit = nil;
+	c.SpotProfitPerSpot = nil;
+	c.SpotPenalty = nil;
+	c.SpotPenaltyPerSpot = nil;
 	c.MoviePricePerBlockAcceptable = nil;
 	c.SeriesPricePerBlockAcceptable = nil;
 	c.MovieQualityAcceptable = nil;
@@ -411,12 +424,10 @@ end
 function BusinessStats:Initialize()
 	self.Audience = StatisticEvaluator()
 	self.BroadcastStatistics = BroadcastStatistics()
-	self.SpotProfitCPM = StatisticEvaluator()
-	self.SpotProfitCPMPerSpot = StatisticEvaluator()
-	self.SpotProfitCPMPerSpotAcceptable = StatisticEvaluator()
-	self.SpotPenaltyCPM = StatisticEvaluator()
-	self.SpotPenaltyCPMPerSpot = StatisticEvaluator()
-	self.SpotPenaltyCPMPerSpotAcceptable = StatisticEvaluator()
+	self.SpotProfit = StatisticEvaluator()
+	self.SpotProfitPerSpot = StatisticEvaluator()
+	self.SpotPenalty = StatisticEvaluator()
+	self.SpotPenaltyPerSpot = StatisticEvaluator()
 	self.MoviePricePerBlockAcceptable = StatisticEvaluator()
 	self.SeriesPricePerBlockAcceptable = StatisticEvaluator()
 	self.MovieQualityAcceptable = StatisticEvaluator()
@@ -433,12 +444,10 @@ end
 
 function BusinessStats:OnDayBegins()
 	self.Audience:Adjust()
-	self.SpotProfitCPM:Adjust()
-	self.SpotProfitCPMPerSpot:Adjust()
-	self.SpotProfitCPMPerSpotAcceptable:Adjust()
-	self.SpotPenaltyCPM:Adjust()
-	self.SpotPenaltyCPMPerSpot:Adjust()
-	self.SpotPenaltyCPMPerSpotAcceptable:Adjust()
+	self.SpotProfit:Adjust()
+	self.SpotProfitPerSpot:Adjust()
+	self.SpotPenalty:Adjust()
+	self.SpotPenaltyPerSpot:Adjust()
 	self.MoviePricePerBlockAcceptable:Adjust()
 	self.SeriesPricePerBlockAcceptable:Adjust()
 	self.MovieQualityAcceptable:Adjust()
@@ -489,21 +498,14 @@ end
 
 
 function BusinessStats:AddSpot(spot)
-	local profitCPM = 1000 * spot.GetProfit(TVT.ME) / spot.GetMinAudience(TVT.ME)
-	local penaltyCPM = 1000 * spot.GetPenalty(TVT.ME) / spot.GetMinAudience(TVT.ME)
+	local profit = spot.GetProfit(TVT.ME)
+	local penalty = spot.GetPenalty(TVT.ME)
 
-	self.SpotProfitCPM:AddValue(profitCPM)
-	self.SpotProfitCPMPerSpot:AddValue(profitCPM / spot.GetSpotCount())
+	self.SpotProfit:AddValue(profit)
+	self.SpotProfitPerSpot:AddValue(profit / spot.GetSpotCount())
 
-	-- only add simple spots for now (without target groups / limits)
-	if (spot.GetLimitedToTargetGroup() <= 0) and (spot.GetLimitedToProgrammeGenre() <= 0) and (spot.GetLimitedToProgrammeFlag() <= 0) then
-		if (spot.GetMinAudience(TVT.ME) < globalPlayer.Stats.Audience.MaxValue) then
-			self.SpotProfitCPMPerSpotAcceptable:AddValue(profitCPM / spot.GetSpotCount())
-			self.SpotPenaltyCPMPerSpotAcceptable:AddValue(penaltyCPM / spot.GetSpotCount())
-		end
-	end
-	self.SpotPenaltyCPM:AddValue(penaltyCPM)
-	self.SpotPenaltyCPMPerSpot:AddValue(penaltyCPM / spot.GetSpotCount())
+	self.SpotPenalty:AddValue(penalty)
+	self.SpotPenaltyPerSpot:AddValue(penalty / spot.GetSpotCount())
 end
 
 

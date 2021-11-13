@@ -19,9 +19,12 @@ function TaskStationMap:ResetDefaults()
 	self.NeededInvestmentBudget = 280000
 	self.InvestmentPriority = 8
 
+	if(self.FixedCosts == nil) then self.FixedCosts = 0 end
+
 	self.knownAntennaPositions = {}
 	self.knownSatelliteUplinks = {}
 	self.knownCableNetworkUplinks = {}
+	self.maxAllowedCredit = 200000
 end
 
 
@@ -45,18 +48,32 @@ function TaskStationMap:GetNextJobInTargetRoom()
 	end
 
 	if (self.BuyStationJob.Status ~= JOB_STATUS_DONE) then
-		return self.BuyStationJob
+		--buy only if there is no credit
+		if (MY.GetCredit(-1) <= self.maxAllowedCredit) then
+			debugMsg("considering station buy")
+			return self.BuyStationJob
+		else
+			self.BuyStationJob.Status = JOB_STATUS_DONE
+		end
 	elseif (self.AdjustStationInvestmentJob.Status ~= JOB_STATUS_DONE) then
 		return self.AdjustStationInvestmentJob
 	end
 
 --	self:SetWait()
+
+	--is successful only when in the room!
+	self:CalculateFixedCosts()
 	self:SetDone()
 end
 
 
 function TaskStationMap:BeforeBudgetSetup()
-	self:CalculateFixedCosts()
+	--TODO do not buy stations when you have a credit
+	if (MY.GetCredit(-1) > self.maxAllowedCredit) then
+		self.InvestmentPriority = 0
+	else
+		self.InvestmentPriority = 8
+	end
 end
 
 
@@ -69,19 +86,21 @@ end
 
 
 function TaskStationMap:OnMoneyChanged(value, reason, reference)
+	--ensure fixed costs are recalculated
 	reason = tonumber(reason)
 	if (reason == TVT.Constants.PlayerFinanceEntryType.PAY_STATION) then
 		self:PayFromBudget(value)
-		self:CalculateFixedCosts()
+		self.SituationPriority = 50
 	elseif (reason == TVT.Constants.PlayerFinanceEntryType.SELL_STATION) then
 		self:PayFromBudget(value)
-		self:CalculateFixedCosts()
+		self.SituationPriority = 50
 	end
 end
 
 
 function TaskStationMap:CalculateFixedCosts()
-	self.FixedCosts = TVT.of_GetStationCosts()
+	local tmp = TVT.of_GetStationCosts()
+	if tmp >= 0 then self.FixedCosts = tmp end
 end
 
 

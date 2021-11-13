@@ -46,6 +46,9 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.ScheduleTaskStartTime = 0
 	c.JobStartTime = 0
 
+	--we run more than one AdScheduleJob
+	c.adScheduleJobIndex = 0
+
 	-- basic audience statistics
 	-- this value can then be adjusted for each hour in a long term
     c.guessedAudienceAccuracyTotal = 0.25
@@ -82,7 +85,7 @@ function TaskSchedule:InitializeMaxTicks()
 	--AnalyzeSchedule
 	ticksRequired = ticksRequired + 5
 
-	local slotsToCheck = 18
+	local slotsToCheck = 16
 	local slotsPerTick = 3
 
 	--programme
@@ -134,15 +137,24 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		return self.PreAnalyzeScheduleJob
 	elseif (self.FulfillRequisitionJob.Status ~= JOB_STATUS_DONE) then
 		return self.FulfillRequisitionJob
-	elseif (self.ProgrammeScheduleJob.Status ~= JOB_STATUS_DONE) then
-		return self.ProgrammeScheduleJob
 	elseif (self.AdScheduleJob.Status ~= JOB_STATUS_DONE) then
+		--set number of hours to Plan based on index
+		self.AdScheduleJob.hoursToPlan = 3
+		if (self.adScheduleJobIndex == 1) then self.AdScheduleJob.hoursToPlan = 16 end
 		return self.AdScheduleJob
+	elseif (self.ProgrammeScheduleJob.Status ~= JOB_STATUS_DONE) then
+		--activate regular ad schedule run
+		self.AdScheduleJob.Status = JOB_STATUS_NEW
+		self.adScheduleJobIndex = 1
+		return self.ProgrammeScheduleJob
 	elseif (self.PostAnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.PostAnalyzeScheduleJob
 	elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
 		return self.IdleJob
 	end
+
+	--TODO maybe run another ad schedule job after waiting if minute is between 55 and 6
+	--ensure that the next hour's ad is optimal as well
 
 	debugMsg("####TIME############ done scheduler task in " .. (os.clock() - self.ActivationTime) .."s.", true)
 	self.ActivationTime = os.clock()
@@ -1126,8 +1138,10 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 			if v.GuessedAudience.GetTotalSum() > guessedAudience.GetTotalSum() then
 				v.GuessedAudience = guessedAudience
 			end
-
-			v.Count = v.Count + 1
+			--many requests only for better ads
+			if (level > 2 or (level > 1 and v.Count < 2)) then
+				v.Count = v.Count + 1
+			end
 			if (v.Priority < 5) then v.Priority = v.Priority + 1 end
 
 			debugMsg("Raise demand on spots of level " .. level .. " (Audience: " .. math.floor(guessedAudience.GetTotalSum()) .. "). Time: " .. day .. "/" .. string.format("%02d", hour) .. ":55  / Spot requisition: count="..v.Count.."  priority="..v.Priority)
@@ -1535,6 +1549,7 @@ _G["JobAdSchedule"] = class(AIJob, function(c)
 	--how many times should we retry to optimize and fill empty slots
 	c.planRunsLeft = 5
 	c.planRuns = 5
+	c.hoursToPlan = 0 -- must be set when initialized
 end)
 
 
@@ -1599,8 +1614,8 @@ function JobAdSchedule:Tick()
 	local currentDay = TVT.GetDay()
 	local currentHour = TVT.GetDayHour()
 	local planSlots = 2
-	local planHours = 16
-
+	local planHours = self.hoursToPlan
+--TODO plan advertisement less far
 --	if self.planRunsLeft > 0 then
 		-- Add planRunsLeft checks
 
@@ -1699,7 +1714,8 @@ function JobAdSchedule:CheckSlot(day, hour, guessedAudience)
 
 				-- only add a requisition if we do not have some older
 				-- but "lower" ads available
-				if table.count(filteredContracts) > 3 then
+				--TODO was 3; do not count contracts but slots...
+				if table.count(filteredContracts) > 1 then
 					addRequisition = false
 				end
 			end
@@ -2207,7 +2223,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	local chosenBroadcastMaterial = nil
 	local chosenBroadcastLog = ""
 
-	local infomercialAllowed = true
+	local infomercialAllowed = false
 	local programmeAllowed = true
 
 	local currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
@@ -2267,7 +2283,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	-- avoid running the same programme too often a day
 	elseif currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
 		local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(currentBroadcastMaterial.GetReferenceID(), fixedDay, 1, 1, 0)
-		if sentAndPlannedToday >= 3 and TVT.of_getProgrammeLicenceCount() >= 4 then
+		if sentAndPlannedToday >= 1 and TVT.of_getProgrammeLicenceCount() >= 4 then
 			replaceCurrentBroadcast = true
 			chosenBroadcastLog = "Run too often (" .. sentAndPlannedToday .. "x)."
 

@@ -60,8 +60,8 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 	end
 	if (self.NewsAgencyJob.Status ~= JOB_STATUS_DONE) then
 		return self.NewsAgencyJob
-	elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
-		return self.IdleJob
+	--elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
+	--	return self.IdleJob
 	end
 
 	self:SetDone()

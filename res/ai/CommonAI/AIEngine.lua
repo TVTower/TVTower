@@ -224,10 +224,10 @@ function AIPlayer:TickProcessTask()
 		self:BeginNewTask()
 	else
 		if self.CurrentTask.Status == TASK_STATUS_DONE or self.CurrentTask.Status == TASK_STATUS_CANCEL then
-			-- wait until the NEXT task has a priority > 35 (idle a bit)
+			-- wait until the NEXT task has a certain priority (idle a bit)
 			local tasksPrioOrdered = SortTasksByPrio(self.TaskList)
 			local nextTask = tasksPrioOrdered[1] -- 0 = current, 1 = next
-			if nextTask ~= nil and nextTask.CurrentPriority > 35 then
+			if nextTask ~= nil and nextTask.CurrentPriority >= self.startTaskAtPriority then
 				self:BeginNewTask()
 			end
 		else
@@ -613,7 +613,11 @@ function AITask:SetDone()
 	self.LastDone = TVT.GetTimeGoneInMinutes()
 	self.LastDoneWorldTicks = self:getWorldTicks()
 
-	TVT.doLeaveRoom()
+
+	if(TVT.doLeaveRoom(false) == TVT.RESULT_FAILED) then
+		debugMsg("Failed leaving room normally. Forcefully leaving the room now!")
+		TVT.doLeaveRoom(true)
+	end
 
 	-- reset back
 	self.assignmentType = 0

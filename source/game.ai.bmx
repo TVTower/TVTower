@@ -453,9 +453,25 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method doLeaveRoom:Int()
-		TFigure(GetPlayerBase(Self.ME).GetFigure()).leaveRoom(True)
-		Return Self.RESULT_OK
+	'set forceLeave to "True" to forcefully leave the room
+	Method doLeaveRoom:Int(forceLeave:Int)
+		If TFigure(GetPlayerBase(Self.ME).GetFigure()).LeaveRoom(forceLeave)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_FAILED
+		EndIf
+	End Method
+
+
+	Method canLeaveRoom:Int()
+		Local f:TFigure = TFigure(GetPlayerBase(Self.ME).GetFigure())
+		If f.inRoom = Null Then Return Self.RESULT_WRONGROOM
+		
+		If f.CanLeaveRoom(f.inRoom)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_NOTALLOWED
+		EndIf
 	End Method
 
 
@@ -733,6 +749,12 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 	Method GetProgrammeLicenceCount:Int()
 		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
+	End Method
+
+
+	Method GetProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=-1)
+		Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
+		If obj Then Return obj Else Return Null
 	End Method
 
 
@@ -1154,8 +1176,7 @@ endrem
 	Method of_getProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
-		Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
-		If obj Then Return obj Else Return Null
+		Return GetProgrammeLicenceAtIndex(arrayIndex)
 	End Method
 
 
@@ -1833,7 +1854,11 @@ endrem
 		'Skip series episodes or collection elements
 		If licence.HasParentLicence() Then Return Self.RESULT_NOTALLOWED
 
-		Return GetPlayerProgrammeCollection(Self.ME).AddProgrammeLicenceToSuitcase(licence)
+		If GetPlayerProgrammeCollection(Self.ME).AddProgrammeLicenceToSuitcase(licence)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_FAILED
+		EndIf
 	End Method
 
 
@@ -1846,7 +1871,11 @@ endrem
 		'Skip series episodes or collection elements
 		If licence.HasParentLicence() Then Return Self.RESULT_NOTALLOWED
 
-		Return GetPlayerProgrammeCollection(Self.ME).AddProgrammeLicenceToSuitcase(licence)
+		If GetPlayerProgrammeCollection(Self.ME).AddProgrammeLicenceToSuitcase(licence)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_FAILED
+		EndIf
 	End Method
 
 
@@ -1877,7 +1906,7 @@ endrem
 	Method ar_GetProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("archive") Then Return Self.RESULT_WRONGROOM
 
-		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
+		Return GetProgrammeLicenceCount()
 	End Method
 
 
@@ -1885,7 +1914,7 @@ endrem
 	Method ar_GetProgrammeLicence:TLuaFunctionResult(position:Int = -1)
 		If Not _PlayerInRoom("archive") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local licence:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(position)
+		Local licence:TProgrammeLicence = GetProgrammeLicenceAtIndex(position)
 		If licence
 			Return TLuaFunctionResult.Create(Self.RESULT_OK, licence)
 		Else

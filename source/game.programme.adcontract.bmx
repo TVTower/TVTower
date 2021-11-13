@@ -2020,13 +2020,27 @@ price :* Max(1, minAudience/1000)
 		'no "acuteness" for obsolete contracts
 		If Self.getDaysLeft() < 0 Then Return 0
 
-		'multiply by spot count (the more to send in total, the more acute)
-'		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * GetTimeGonePercentage()^2
-		'0 days = 1
-		'1 day  = 0.25
-		'2      = 0.125
-		'3      = 0.0725
-		Return Self.GetSpotsToSend() * GetSpotsToSendPercentage() * (0.25 ^ GetDaysLeft())
+		'base value is audience which typically corrensponds to profit
+		Local result:Float = getMinAudiencePercentage() * 100
+		'min audience for target groups needs to be scaled 
+		If IsLimitedToTargetGroup(TVTTargetGroup.CHILDREN) Then result:* 6
+		If IsLimitedToTargetGroup(TVTTargetGroup.TEENAGERS) Then result:* 5
+		If IsLimitedToTargetGroup(TVTTargetGroup.HOUSEWIVES) Then result:* 4
+		If IsLimitedToTargetGroup(TVTTargetGroup.EMPLOYEES) Then result:* 4
+		If IsLimitedToTargetGroup(TVTTargetGroup.UNEMPLOYED) Then result:* 3
+		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGER) Then result:* 7
+		If IsLimitedToTargetGroup(TVTTargetGroup.PENSIONERS) Then result:* 4
+		If IsLimitedToTargetGroup(TVTTargetGroup.WOMEN) Then result:* 2
+		If IsLimitedToTargetGroup(TVTTargetGroup.MEN) Then result:* 2
+		'aim at one spot per day left
+		If Self.getDaysLeft() < Self.getSpotsToSend() Then result:* 2
+		'big effort on last day
+		If Self.getDaysLeft() = 0 And GetWorldTime().getHour() > 5 Then result:* 4
+		'the more spots sent the worse failing will be (other spots wasted)
+		If GetSpotsToSendPercentage() < 1 Then result:/ (1-GetSpotsToSendPercentage())
+		'TODO consider profit/penalty more directly?
+		'TODO acuteness really as bmx function or rather part of player strategy (fast money vs best audience)
+		Return result
 	End Method
 
 

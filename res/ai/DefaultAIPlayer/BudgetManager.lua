@@ -1,21 +1,12 @@
 -- File: BudgetManager
-TIME_TODAY		= "T"
-TIME_OLDDAY_1	= "1"
-TIME_OLDDAY_2	= "2"
-TIME_OLDDAY_3	= "3"
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
-	-- previous days budgets
-	c.BudgetHistory = {}
-	-- previous days account balances
-	c.AccountBalanceHistory = {}
 	-- money to save for investments
 	c.InvestmentSavings = 0
 	-- budget at the time of last call to "UpdateBudget"
 	c.BudgetOnLastUpdateBudget = 0
-
 
 	c:ResetDefaults()
 end)
@@ -27,44 +18,15 @@ end
 
 
 function BudgetManager:ResetDefaults()
-	-- Minimum value of the budgets
-	self.BudgetMinimum = 0
-	-- Maximum value of the budget
-	self.BudgetMaximum = 0
 	-- Percentage of the budget to save for investments
 	self.SavingParts = 0.3
 	-- Percentage to add on fixed costs "to make sure it is enough"
-	self.ExtraFixedCostsSavingsPercentage = 0.5
+	self.ExtraFixedCostsSavingsPercentage = 0
 end
 
 
 function BudgetManager:Initialize()
-	-- Right at start there are no empirical values for required budgets
-	-- so assume the same for all of them. Budget equals to XX% of
-	-- capital at begin of the game
 	local playerMoney = TVT.GetMoney()
-	local startBudget = math.round(playerMoney * 0.90)
-
-
-	-- initialize budget history
-	self.BudgetHistory = {}
-	self.BudgetHistory[TIME_OLDDAY_3] = startBudget
-	self.BudgetHistory[TIME_OLDDAY_2] = startBudget
-	self.BudgetHistory[TIME_OLDDAY_1] = startBudget
-	self.BudgetHistory[TIME_TODAY] = startBudget
-
-
-	-- initialize account history
-	self.AccountBalanceHistory = {}
-	self.AccountBalanceHistory[TIME_OLDDAY_3] = playerMoney
-	self.AccountBalanceHistory[TIME_OLDDAY_2] = playerMoney
-	self.AccountBalanceHistory[TIME_OLDDAY_1] = playerMoney
-	self.AccountBalanceHistory[TIME_TODAY] = playerMoney
-
-
-	-- define minimal and maximal budget
-	self.BudgetMinimum = math.round(playerMoney * 0.4)
-	self.BudgetMaximum = math.round(playerMoney * 0.8)
 end
 
 
@@ -73,33 +35,7 @@ function BudgetManager:CalculateNewDayBudget()
 	debugMsg("=== Budget day " .. TVT.GetDaysRun() .. " ===")
 	debugMsg(string.left("Account balance:", 25, true) .. string.right(TVT.GetMoney(), 10, true))
 
-	-- postpone empirical budget values one day backwards (new one incoming)
-	self.BudgetHistory[TIME_OLDDAY_3] = self.BudgetHistory[TIME_OLDDAY_2]
-	self.BudgetHistory[TIME_OLDDAY_2] = self.BudgetHistory[TIME_OLDDAY_1]
-	self.BudgetHistory[TIME_OLDDAY_1] = self.BudgetHistory[TIME_TODAY]
-
-	-- postpone account values one day backwards (new one incoming)
-	self.AccountBalanceHistory[TIME_OLDDAY_3] = self.AccountBalanceHistory[TIME_OLDDAY_2]
-	self.AccountBalanceHistory[TIME_OLDDAY_2] = self.AccountBalanceHistory[TIME_OLDDAY_1]
-	self.AccountBalanceHistory[TIME_OLDDAY_1] = self.AccountBalanceHistory[TIME_TODAY]
-
-	-- update current values
-	self.AccountBalanceHistory[TIME_TODAY] = TVT.GetMoney()
-	self.BudgetMinimum = self.BudgetMinimum * 1.01
-	self.BudgetMaximum = self.AccountBalanceHistory[TIME_TODAY] * 0.95
-
-
-	-- yesterdays turnover
-	-- TODO: instead of self.BudgetHistory[TIME_OLDDAY_1] one could use the real
-	--       expenses of yesterday.
-	local YesterdayTurnOver = self.AccountBalanceHistory[TIME_TODAY] - (self.AccountBalanceHistory[TIME_OLDDAY_1] - self.BudgetHistory[TIME_OLDDAY_1])
-
-
-	-- find new budget for today (based on experience/history)
-	self.BudgetHistory[TIME_TODAY] = self:CalculateAverageBudget(self.AccountBalanceHistory[TIME_TODAY], YesterdayTurnOver)
-	self.BudgetHistory[TIME_TODAY] = math.clamp(self.BudgetHistory[TIME_TODAY], self.BudgetMinimum, self.BudgetMaximum)
-
-	self:UpdateBudget(self.BudgetHistory[TIME_TODAY])
+	self:UpdateBudget(TVT.GetMoney())
 	debugMsg("======")
 end
 
@@ -111,7 +47,7 @@ function BudgetManager:UpdateBudget(pBudget)
 	if bossTask ~= nil and bossTask.GuessCreditAvailable > 0 then
 		if TVT.GetMoney() < 100000 then
 			bossTask.SituationPriority = 5
-		elseif TVT.GetMoney() < 0 then
+		elseif TVT.GetMoney() <= 0 then
 			bossTask.SituationPriority = 15
 		end
 	end
@@ -125,7 +61,7 @@ function BudgetManager:UpdateBudget(pBudget)
 	self.BudgetOnLastUpdateBudget = pBudget
 end
 
-
+--TODO sollte man das wirklich immer machen? Am Tagesanfang steht oft wenig Geld zur Verfügung
 function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	local player = _G["globalPlayer"]
 
@@ -142,21 +78,6 @@ function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	end
 
 	return savings
-end
-
-
-function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
-	--debugMsg("A1.1: " .. pTurnOver); debugMsg("AX.1: " .. self.BudgetHistory[TIME_OLDDAY_1]); debugMsg("AX.2: " .. self.BudgetHistory[TIME_OLDDAY_2]); debugMsg("AX.3: " .. self.BudgetHistory[TIME_OLDDAY_3])
-
-	-- sum all experiences/history values, weight by a factor and divide by 10. (4 + 3 + 2 + 1) / 10
-	local TempSum = ((pTurnOver * 4) + (self.BudgetHistory[TIME_OLDDAY_1] * 3) + (self.BudgetHistory[TIME_OLDDAY_2] * 2) + (self.BudgetHistory[TIME_OLDDAY_3] * 1)) / 10
-	-- is current account balance big enough to finance the calculated budget?
-	if pCurrentAccountBalance > (TempSum / 2) then
-		-- increase budget by 0-9%
-		-- TODO: adjust random value by "level" and riskyness (individual character)
-		TempSum = TempSum + (pCurrentAccountBalance * ((math.random(10)-1)/100))
-	end
-	return math.round(TempSum, -3)
 end
 
 
@@ -183,7 +104,12 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	debugMsg(string.left("Fixed costs:", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 	--TODO: character riskyness defines how much to save "extra"
 	allFixedCostsSavings = allFixedCostsSavings * (1 + self.ExtraFixedCostsSavingsPercentage)
-	debugMsg(string.left("Fixed costs + reserve:", 25, true) .. string.right(allFixedCostsSavings, 10, true))
+
+	--TODO not all fixed costs savings at the beginning of the day, we also expect income
+--	local hour = TVT:GetDayHour()
+--	allFixedCostsSavings = allFixedCostsSavings * (math.max(24, 4 + hour)/24)
+
+	debugMsg(string.left("F.C.+reserve (for hour):", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 
 
 	-- Increase savings and define real budget to spend.
@@ -200,6 +126,10 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	-- assign budgets to tasks
 	local budgetUnitValue = realBudget / budgetUnits
 	for k,v in pairs(player.TaskList) do
+		--TODO subtract from budget what was already used up today
+		--however this leaves unassigned money...
+		--local alreadyUsed = v.BudgetWholeDay - v.CurrentBudget
+
 		v.CurrentBudget = math.round(v.BudgetWeight * budgetUnitValue)
 		if v.BudgetMaximum() >= 0 then
 			v.CurrentBudget = math.min(v.CurrentBudget, v.BudgetMaximum())
@@ -302,16 +232,11 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 
 
 	if renewBudget == true then
-		-- do not allow a negative profit
-		local todaysProfit = math.max(0, MY.GetFinance(-1).GetCurrentProfit())
-		local budgetNow = self:CalculateAverageBudget(TVT.GetMoney(), todaysProfit)
+		local budgetNow = TVT.GetMoney()
 
 		--update budget when at least 15.000 Euro difference since last
 		--adjustment
 		if math.abs(self.BudgetOnLastUpdateBudget - budgetNow) > 15000 then
-			--debugMsg("Profit today: " .. todaysProfit)
-			--debugMsg("Budget now: " .. budgetNow)
-			--self:UpdateBudget(todaysProfit)
 			self:UpdateBudget(budgetNow)
 
 			self.BudgetOnLastUpdateBudget = budgetNow
