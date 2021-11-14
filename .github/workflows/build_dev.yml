@@ -316,6 +316,14 @@ jobs:
       run: |
         bmk makeapp -r -g x64 -t gui TVTower.bmx
 
+
+    # artifact upload would else only upload content of TVTower.app
+    - name: Prepare artifact upload
+      run: |
+        mkdir TVTower.app2
+        mv TVTower.app TVTower.app2/
+        mv TVTower.app2 TVTower.app
+
     
     - name: Archive production artifacts (bin only)
       uses: actions/upload-artifact@v2
@@ -382,6 +390,11 @@ jobs:
         name: TVTower_Win64.exe
 
         
+    - name: Fix file permissions
+      run: |
+        chmod 0755 TVTower_Linux32
+        chmod 0755 TVTower_Linux64
+
     - name: Fix file permissions
       run: |
         chmod 0755 TVTower_Linux32
