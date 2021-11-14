@@ -401,15 +401,20 @@ jobs:
         chmod 0755 TVTower_Linux64
 
 
+    - name: "Set an output parameter"
+      id: set_today
+      run: |
+        echo "::set-output name=today::$(date -I)"
+
     - name: Zip game
       run: |
-        zip -9 -r TVTower.Nightly.zip *
+        zip -9 -r TVTower.Nightly.${{ github.ref_name }}.${{steps.set_today.outputs.today}}.zip *
 
     - name: Upload nightly artifact
       uses: actions/upload-artifact@v2
       with:
-        name: TVTower.Nightly
-        path: TVTower.Nightly.zip
+        name: TVTower.Nightly.${{ github.ref_name }}.${{steps.set_today.outputs.today}}.artifact
+        path: TVTower.Nightly.${{ github.ref_name }}.${{steps.set_today.outputs.today}}.zip
 
 
     - name: "Delete unused artifacts"
