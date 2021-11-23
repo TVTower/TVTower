@@ -364,6 +364,7 @@ Type TDebugScreen
 			EndIf
 
 		EndIf
+		sender.selected = False
 	End Function
 
 
@@ -373,6 +374,7 @@ Type TDebugScreen
 
 		Local playerID:Int = DebugScreen.GetShownPlayerID()
 		Local player:TPlayer = GetPlayer(playerID)
+		Local newButtonState:Int = False
 
 		Local taskName:String =""
 		Select sender.dataInt
@@ -381,6 +383,7 @@ Type TDebugScreen
 					Dev_SetPlayerAI(playerID, not player.IsLocalAI())
 					if player.IsLocalAI()
 						DebugScreen.playerCommandAIButtons[0].text = "Disable AI"
+						newButtonState = True
 					else
 						DebugScreen.playerCommandAIButtons[0].text = "Enable AI"
 					endif
@@ -388,6 +391,7 @@ Type TDebugScreen
 			Case 1 
 				If GetPlayer(playerID).isLocalAI() Then GetPlayer(playerID).PlayerAI.reloadScript()
 		End Select
+		sender.selected = newButtonState
 	End Function
 
 
@@ -612,7 +616,7 @@ Type TDebugScreen
 	'=== NEWS AGENCY ===
 
 	Method InitMode_NewsAgency()
-		Local texts:String[] = ["Announce News"]
+		Local texts:String[] = ["Announce News (no impl)"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i])
@@ -720,7 +724,7 @@ Type TDebugScreen
 	'=== Room AGENCY ===
 
 	Method InitMode_RoomAgency()
-		Local texts:String[] = ["Re-Rent", "Kick Renter"]
+		Local texts:String[] = ["Re-Rent (no impl)", "Kick Renter (no impl)"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i])
@@ -765,7 +769,7 @@ Type TDebugScreen
 	'=== Politics screen ===
 
 	Method InitMode_Politics()
-		Local texts:String[] = ["Send Terrorist", "Reset Terror Levels"]
+		Local texts:String[] = ["Send Terrorist FR", "Send Terrorist VR", "Reset Terror Levels"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i])
@@ -779,24 +783,19 @@ Type TDebugScreen
 	Function OnButtonClickHandler_Politics(sender:TDebugControlsButton)
 		Select sender.dataInt
 			case 0
-				'send terrorist to a random room
 				If Not GetGame().networkGame
-					Global whichTerrorist:Int = 1
-					whichTerrorist = 1 - whichTerrorist
-
-					Local targetRoom:TRoom
-					Repeat
-						targetRoom = GetRoomCollection().GetRandom()
-					Until targetRoom.GetName() <> "building"
-					'Print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.GetName() + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
-					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
+					TFigureTerrorist(GetGame().terrorists[0]).SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("", "vrduban") )
 				EndIf
-				
-'
 			case 1
-'					if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
-'				GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
+				If Not GetGame().networkGame
+					TFigureTerrorist(GetGame().terrorists[1]).SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("", "frduban") )
+				EndIf
+			case 2
+				GetNewsAgency().SetTerroristAggressionLevel(0,0)
+				GetNewsAgency().SetTerroristAggressionLevel(1,-1)
 		End Select
+'				if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
+'				GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
 
 		'handled
 		sender.clicked = False
@@ -824,7 +823,7 @@ Type TDebugScreen
 	'=== Producers screen ===
 
 	Method InitMode_Producers()
-		Local texts:String[] = ["Produce Next"]
+		Local texts:String[] = ["Produce Next (no impl)"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i])
@@ -936,13 +935,13 @@ Type TDebugScreen
 	'=== Sports Sim screen ===
 
 	Method InitMode_Sports()
-		Local texts:String[] = ["Reset"]
+		Local texts:String[] = ["Reset (no impl)"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_Sports
 
-			buttonsProducers :+ [button]
+			buttonsSports :+ [button]
 		Next
 	End Method
 
@@ -969,7 +968,7 @@ Type TDebugScreen
 
 
 	Method RenderMode_Sports()
-		'RenderActionButtons(buttonsSports)
+		RenderActionButtons(buttonsSports)
 		
 		RenderSportsBlock(sideButtonPanelWidth + 5, 13)
 	End Method
