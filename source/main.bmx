@@ -4853,7 +4853,7 @@ Type GameEvents
 			If room.owner > 0
 				Local player:TPlayer = GetPlayer(room.owner)
 				Local col:TColor = player.color
-				text = text.Replace("%ROOM%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+room.GetDescription(1, True)+"|/b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|")
+				text = text.Replace("%ROOM%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+room.GetDescription(1, False)+"|/b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|")
 			Else
 				text = text.Replace("%ROOM%", "|b|"+room.GetDescription(1, True)+"|/b|")
 			EndIf
