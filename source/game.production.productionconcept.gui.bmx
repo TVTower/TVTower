@@ -822,7 +822,7 @@ endrem
 		local bgColor:TColor
 
 		'ready for production
-		if productionConcept.IsProduceable()
+		if productionConcept.IsProduceable() or productionConcept.IsProductionStarted() or productionConcept.IsProductionFinished()
 			bgColor = colorProduceableBG
 		'planned but not paid
 		elseif productionConcept.isPlanned()
@@ -892,7 +892,7 @@ endrem
 		GetAsset().draw(Self.GetScreenRect().GetX(), Self.GetScreenRect().GetY(), -1, null, scaleAsset)
 
 		'ready for production
-		if productionConcept.IsProduceable()
+		if productionConcept.IsProduceable() or productionConcept.isProductionStarted() or productionConcept.isProductionFinished
 			GetSpriteFromRegistry("gfx_datasheet_icon_ok").Draw(Self.GetScreenRect().GetX()-2, Self.GetScreenRect().GetY() + GetAsset().GetHeight() * scaleAsset -1)
 		'finished planning
 		elseif productionConcept.IsPlanned()
@@ -927,7 +927,7 @@ endrem
 
 
 		'finished
-		if productionConcept.IsProduceable()
+		if productionConcept.IsProduceable() or productionConcept.IsProductionStarted() or productionConcept.IsProductionFinished()
 			titleColor = colorProduceable
 			genreColor = colorHint
 		'all slots filled, just not paid
