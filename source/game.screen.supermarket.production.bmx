@@ -176,6 +176,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Return
 		EndIf
 
+		'remove current concept if its produciton has started
+		If currentProductionConcept.isProductionStarted() or currentProductionConcept.isProductionFinished()
+			SetCurrentProductionConcept (Null, Null)
+			GetInstance().ReloadProductionConceptContent()
+			Return
+		EndIf
+
 		editTextsButton.Enable()
 		If currentProductionConcept.IsProduceable()
 			editTextsButton.Disable()
