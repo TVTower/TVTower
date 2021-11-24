@@ -305,6 +305,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
 		'drop on vendor - sell things
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onDropOnTarget, onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
+		'return to original position on right click
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickLicence, "TGUIProgrammeLicence") ]
 
 		'reset auction block caches
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]
@@ -1141,6 +1143,28 @@ endrem
 		EndIf
 
 		Return True
+	End Function
+
+	'in case of right mouse button click a dragged licence is
+	'placed at its original spot again
+	Function onClickLicence:Int(triggerEvent:TEventBase)
+		'only react if the click came from the right mouse button
+		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
+
+		Local guiLicence:TGUIProgrammeLicence= TGUIProgrammeLicence(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		If Not guiLicence Or Not guiLicence.isDragged() Then Return False
+
+		'remove gui object
+		guiLicence.remove()
+		guiLicence = Null
+
+		'rebuild at correct spot
+		haveToRefreshGuiElements = True
+
+		'avoid clicks
+		'remove right click - to avoid leaving the room
+		MouseManager.SetClickHandled(2)
 	End Function
 
 
