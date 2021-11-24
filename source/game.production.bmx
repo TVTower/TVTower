@@ -435,9 +435,11 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 
 
-		'make a "placeable" licence (so live pogramme can be planned)
 		if productionConcept.script.IsLive()
+			'make a "placeable" licence (so live pogramme can be planned)
 			AddProgrammeLicence()
+			'move upcoming production concepts to the left by one slot
+			GetProductionConceptCollection().ShiftProductionConceptSlotsByScript(productionConcept.script, -1, productionConcept.studioSlot)
 		EndIf
 
 
@@ -596,8 +598,10 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 		GetProductionConceptCollection().Remove(productionConcept)
 
-		'move upcoming production concepts to the left by one slot
-		GetProductionConceptCollection().ShiftProductionConceptSlotsByScript(productionConcept.script, -1, productionConcept.studioSlot)
+		'move upcoming production concepts to the left by one slot (for live productions this is done after preproduction)
+		If not productionConcept.script.IsLive()
+			GetProductionConceptCollection().ShiftProductionConceptSlotsByScript(productionConcept.script, -1, productionConcept.studioSlot)
+		Endif
 
 
 		'emit an event so eg. network can recognize the change
