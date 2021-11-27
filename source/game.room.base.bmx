@@ -537,6 +537,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetBlockedUntilTime:Long()
+		if not IsBlocked() then return -1
+		return blockedUntil
+	End Method
+
+
 	Method SetUsableAsStudio:int(bool:int = True)
 		SetFlag(TVTRoomFlag.USABLE_AS_STUDIO, bool)
 	End Method
@@ -575,7 +581,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'- already rented rooms
 		'- freehold rooms (like boss rooms, player offices...)
 		'- fake rooms (porter, room plan, ...)
-		return not IsRented() and not IsFreehold() and not IsFake()
+		return not IsRented() and IsRentableIfNotRented() 'and not IsFreehold() and not IsFake()
+	End Method
+	
+	
+	Method IsRentableIfNotRented:Int()
+		Return not IsFreehold() and not IsFake()
 	End Method
 
 

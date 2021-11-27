@@ -25,6 +25,8 @@ Type TDebugScreen
 	Field buttonsMisc:TDebugControlsButton[]
 	Field buttonsModifiers:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
+	Field roomHighlight:TRoomBase
+	Field roomHovered:TRoomBase
 	Field scriptAgencyOfferHightlight:TScript
 	Field adAgencyOfferHightlight:TAdContract
 	Field movieVendorOfferHightlight:TProgrammeLicence
@@ -415,7 +417,7 @@ Type TDebugScreen
 
 		Local oldCol:SColor8; GetColor(oldCol)
 		SetColor 0,0,0
-		DrawOutlineRect(sideButtonPanelWidth, 10, 130, 170, true, true, true, false, 0,0,0, 0.25)
+		DrawOutlineRect(sideButtonPanelWidth, 10, 130, 170, true, true, true, false, 0,0,0, 0.25, 0.25)
 		SetColor 255,255,255
 
 		If player.playerAI
@@ -724,24 +726,52 @@ Type TDebugScreen
 	'=== Room AGENCY ===
 
 	Method InitMode_RoomAgency()
-		Local texts:String[] = ["Re-Rent (no impl)", "Kick Renter (no impl)"]
+		Local texts:String[] = ["Rent for player X", "Kick Renter", "Re-Rent", "Block for 1 Hour", "Remove Block"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_RoomAgency
+			button.visible = False
 
 			buttonsRoomAgency :+ [button]
 		Next
+		
+		local slot1:Int = buttonsRoomAgency[0].y
+		local slot2:Int = buttonsRoomAgency[1].y
+		local slot3:Int = buttonsRoomAgency[2].y
+		
+		'move them together by "group"
+		buttonsRoomAgency[1].y = slot2
+		buttonsRoomAgency[2].y = slot2
+		buttonsRoomAgency[3].y = slot3
+		buttonsRoomAgency[4].y = slot3
 	End Method
 
 
 	Function OnButtonClickHandler_RoomAgency(sender:TDebugControlsButton)
+		Local room:TRoomBase = DebugScreen.roomHighlight
+		if not room Then print "click no room"; Return
+
 		Select sender.dataInt
 			case 0
-'
+				If room.IsRented() Then GetRoomAgency().CancelRoomRental(room, -1)
+				GetRoomAgency().BeginRoomRental(room, DebugScreen.GetShownPlayerID())
+				room.SetUsedAsStudio(True)
+
 			case 1
-'					if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
-'				GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
+				GetRoomAgency().CancelRoomRental(room, -1)
+				room.SetUsedAsStudio(False)
+
+			case 2
+				room.BeginRental(room.originalOwner, room.GetRent())
+
+			case 3
+				'room.SetBlocked(TWorldTime.HOURLENGTH, TRoomBase.BLOCKEDSTATE_RENOVATION, False)
+				'we want to see a "sign", so use a bomb :D
+				room.SetBlocked(TWorldTime.HOURLENGTH, TRoomBase.BLOCKEDSTATE_BOMB, False)
+
+			case 4
+				room.SetUnblocked()
 		End Select
 
 		'handled
@@ -753,6 +783,16 @@ Type TDebugScreen
 	Method UpdateMode_RoomAgency()
 		Local playerID:Int = GetShownPlayerID()
 
+		If roomHovered
+			UpdateRoomAgencyRoomDetails(roomHovered, sideButtonPanelWidth + 510, 200)
+		ElseIf roomHighlight
+			UpdateRoomAgencyRoomDetails(roomHighlight, sideButtonPanelWidth + 510, 200)
+		else
+			UpdateRoomAgencyRoomDetails(Null, sideButtonPanelWidth + 510, 200)
+		EndIf
+		
+		UpdateRoomAgencyRoomList(sideButtonPanelWidth + 5, 13)
+
 		For Local b:TDebugControlsButton = EachIn buttonsRoomAgency
 			b.Update()
 		Next
@@ -762,9 +802,208 @@ Type TDebugScreen
 	Method RenderMode_RoomAgency()
 		Local playerID:Int = GetShownPlayerID()
 
+		RenderRoomAgencyRoomList(sideButtonPanelWidth + 5, 13)
+		If roomHovered
+			RenderRoomAgencyRoomDetails(roomHovered, sideButtonPanelWidth + 510, 200)
+		ElseIf roomHighlight
+			RenderRoomAgencyRoomDetails(roomHighlight, sideButtonPanelWidth + 510, 200)
+		EndIf
+
 		RenderActionButtons(buttonsRoomAgency)
 	End Method
+	
 
+	Method UpdateRoomAgencyRoomDetails(room:TRoomBase, x:Int, y:Int, width:Int = 500, height:Int = 80)
+		For Local button:TDebugControlsButton = EachIn buttonsRoomAgency
+			button.visible = False
+		Next
+
+		if room
+			buttonsRoomAgency[0].text  ="Rent for Player #" + GetShownPlayerID()
+
+			If room.IsFreehold() or room.IsFake()
+				buttonsRoomAgency[0].visible = False
+				buttonsRoomAgency[1].visible = False
+				buttonsRoomAgency[2].visible = False
+			ElseIf room.IsRented() 
+				buttonsRoomAgency[0].visible = False
+				buttonsRoomAgency[1].visible = True
+				buttonsRoomAgency[2].visible = False
+			Else
+				buttonsRoomAgency[0].visible = True
+				buttonsRoomAgency[1].visible = False
+				buttonsRoomAgency[2].visible = True
+			EndIf
+			
+			If Not room.IsBlocked()
+				buttonsRoomAgency[3].visible = True
+				buttonsRoomAgency[4].visible = False
+			Else
+				buttonsRoomAgency[3].visible = False
+				buttonsRoomAgency[4].visible = True
+			EndIf
+		EndIf
+	End Method
+
+
+	Method RenderRoomAgencyRoomDetails(room:TRoomBase, x:Int, y:Int, width:Int = 500, height:Int = 80)
+		DrawOutlineRect(x, y, width, height)
+		'offset content
+		x:+ 5
+		y:+ 5
+		
+		local textPosX:Int = x
+		local textPosY:Int = y
+		
+		textFont.DrawSimple("Name: ", textPosX, textPosY)
+		textFont.DrawSimple(room.GetDescription(1), textPosX + 50, textPosY)
+
+		textPosY :+ 12
+		textFont.DrawSimple("Size: ", textPosX, textPosY)
+		textFont.DrawSimple(room.GetSize(), textPosX + 50, textPosY)
+	
+		textPosY :+ 12
+		textFont.DrawSimple("Rentable: ", textPosX, textPosY)
+		If room.IsRentable()
+			textFont.DrawSimple("Yes", textPosX + 50, textPosY)
+		ElseIf room.IsRentableIfNotRented()
+			textFont.DrawSimple("If free", textPosX + 50, textPosY)
+		Else
+			textFont.DrawSimple("Never", textPosX + 50, textPosY)
+		EndIf
+
+		textPosY :+ 12
+		textFont.DrawSimple("Blocked: ", textPosX, textPosY)
+		If room.IsBlocked()
+			textFont.DrawSimple("Yes", textPosX + 50, textPosY)
+			textPosY :+ 12
+			textFont.DrawSimple("till " + GetWorldTime().GetFormattedGameDate(room.GetBlockedUntilTime()), textPosX + 50, textPosY)
+		Else
+			textFont.DrawSimple("No", textPosX + 50, textPosY)
+		EndIf
+	End Method
+	
+
+	Method UpdateRoomAgencyRoomList(x:Int, y:Int)
+		Local slotW:int = 118
+		Local slotH:int = 16
+		Local slotStepX:Int = 4
+		Local slotCenterStepX:Int = 10
+		Local slotStepY:Int = 4
+
+		'offset content
+		x:+ 5
+		y:+ 5
+
+		roomHovered = Null
+		
+		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
+			local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
+			if not room then continue
+
+			local slotX:int = x + (sign.GetOriginalSlot()-1) * (slotW + slotStepX)
+			local slotY:int = y + (13 - sign.GetOriginalFloor()) * (slotH + slotStepY)
+			if sign.GetOriginalSlot() > 2 then slotX :+ slotCenterStepX
+			
+			If THelper.MouseIn(slotX, slotY, slotW, slotH)
+				roomHovered = room
+				If MouseManager.IsClicked(1)
+					roomHighlight = room
+					'handle clicked
+					MouseManager.SetClickHandled(1)
+
+					exit
+				EndIf
+			EndIf
+		Next		
+	End Method
+	
+	
+	Method RenderRoomAgencyRoomList(x:Int, y:Int)
+		'- raeume
+		'- selektierten "kick/block/rent" (aktueller Spieler)
+
+
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+		Local slotW:int = 118
+		Local slotH:int = 16
+		Local slotStepX:Int = 4
+		Local slotCenterStepX:Int = 10
+		Local slotStepY:Int = 4
+		Local playerColors:TColor[4]
+		For local i:int = 1 to 4
+			playerColors[i-1] = TPlayerColor.getByOwner(i).copy().AdjustSaturation(-0.5)
+		Next
+
+		DrawOutlineRect(x, y, 4*slotW + (4-1)*slotStepX + slotCenterStepX + 10, 14 * slotH + (14-1) * slotStepY + 10)
+		'offset content
+		x:+ 5
+		y:+ 5
+
+
+		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
+			local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
+			if not room then continue
+
+			local slotX:int = x + (sign.GetOriginalSlot()-1) * (slotW + slotStepX)
+			local slotY:int = y + (13 - sign.GetOriginalFloor()) * (slotH + slotStepY)
+			if sign.GetOriginalSlot() > 2 then slotX :+ slotCenterStepX
+			
+			'ignore never-rentable rooms
+			if room.IsFake() or room.IsFreeHold() 
+				DrawOutlineRect(slotX, slotY, slotW, slotH, true, true, true, true, 0,0,0, 0.5, 0.0)
+				SetAlpha oldColA * 0.45
+			elseif room.GetOwner() <= 0 and not room.IsRentable()
+				DrawOutlineRect(slotX, slotY, slotW, slotH, true, true, true, true, 50,0,0, 0.8, 0.0)
+				SetAlpha oldColA * 0.80
+			endif
+
+
+			Select room.GetOwner()
+				case 1,2,3,4
+					If room.IsBlocked()
+						playerColors[room.GetOwner() -1].Copy().AdjustBrightness(-0.2).SetRGBA()
+					Else
+						playerColors[room.GetOwner() -1].SetRGBA()
+					EndIf
+				default
+					If room.IsBlocked()
+						SetColor 50,50,50
+					ElseIf room.IsFake() or room.IsFreeHold()
+						SetColor 80,80,80
+					Else
+						SetColor 150,150,150
+					EndIf
+			End Select
+				
+
+			DrawRect(slotX + 1, slotY + 1, slotW - 2, slotH - 2) 
+			SetAlpha oldColA
+			textFont.DrawBox(sign.GetOwnerName(), slotX + 2, slotY + 2, slotW - 4, slotH - 2, SColor8.White)
+
+			SetColor(oldCol)
+
+
+			if room = roomHighlight
+				SetBlend LIGHTBLEND
+				SetAlpha 0.15
+				SetColor 255,210,190
+				DrawRect(slotX + 1, slotY + 1, slotW - 2, slotH - 2) 
+				SetBlend ALPHABLEND
+			endif
+			if room = roomHovered
+				SetBlend LIGHTBLEND
+				SetAlpha 0.10
+				DrawRect(slotX + 1, slotY + 1, slotW - 2, slotH - 2) 
+				SetBlend ALPHABLEND
+			endif
+
+			SetColor(oldCol)
+			SetAlpha(oldColA)
+		Next		
+	End Method
+	
 
 	'=== Politics screen ===
 
@@ -1968,19 +2207,22 @@ endrem
 
 
 
-	Function DrawOutlineRect(x:int, y:int, w:int, h:int, borderTop:int = True, borderRight:int = True, borderBottom:int = True, borderLeft:Int = True, r:int = 0, g:int = 0, b:int = 0, alpha:Float = 0.5)
-		local oldCol:TColor = new TColor.get()
-		SetColor r,g,b
-		SetAlpha alpha * oldCol.a
+	Function DrawOutlineRect(x:int, y:int, w:int, h:int, borderTop:int = True, borderRight:int = True, borderBottom:int = True, borderLeft:Int = True, r:int = 0, g:int = 0, b:int = 0, borderAlpha:Float = 0.5, bgAlpha:Float = 0.5)
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+		SetColor(r, g, b)
 
-		DrawRect(x, y, w, h)
-		SetAlpha oldCol.a
+		SetAlpha(bgAlpha * oldColA)
+		DrawRect(x+2, y+2, w-4, h-4)
+
+		SetAlpha(borderAlpha * oldColA)
 		if borderTop then DrawRect(x, y, w, 2)
 		if borderRight then DrawRect(x + w - 2, y, 2, h)
 		if borderBottom then DrawRect(x, y + h - 2, w, 2)
 		if borderLeft then DrawRect(x, y, 2, h)
 
-		oldCol.SetRGBA()
+		SetAlpha(oldColA)
+		SetColor(oldCol)
 	End Function
 
 
@@ -3133,10 +3375,14 @@ Type TDebugControlsButton
 	Field h:Int = 16
 	Field selected:Int = False
 	Field clicked:Int = False
+	Field enabled:Int = True
+	Field visible:Int = True
 	Field _onClickHandler(sender:TDebugControlsButton)
 
 
 	Method Update:Int(offsetX:Int=0, offsetY:Int=0)
+		If Not visible Or Not Enabled Then Return False
+
 		If THelper.MouseIn(offsetX + x,offsetY + y,w,h)
 			If MouseManager.IsClicked(1)
 				onClick()
@@ -3149,6 +3395,11 @@ Type TDebugControlsButton
 
 
 	Method Render:Int(offsetX:Int=0, offsetY:Int=0)
+		If Not visible Then Return False
+
+		Local oldColA:Float = GetAlpha()
+		If Not enabled Then SetAlpha oldColA * 0.5 
+
 		SetColor 150,150,150
 		DrawRect(offsetX + x,offsetY + y,w,h)
 		If selected
@@ -3166,6 +3417,8 @@ Type TDebugControlsButton
 		DrawRect(offsetX + x+1,offsetY + y+1,w-2,h-2)
 		SetColor 255,255,255
 		GetBitmapFont("default", 11).DrawBox(text, offsetX + x,offsetY + y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
+		
+		SetAlpha(oldColA)
 	End Method
 
 
