@@ -2292,9 +2292,7 @@ endrem
 			FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 			FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
-			TEntity.globalWorldSpeedFactor = 500/4
-			GetWorldTime().SetTimeFactor(16000/4 + 60)
-			GetBuildingTime().SetTimeFactor(400/4 + 60)
+			GetGame().SetGameSpeed( 150 * 60 )
 		EndIf
 	End Method
 
