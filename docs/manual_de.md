@@ -54,7 +54,7 @@ Desweiteren gibt es die Möglichkeit zum Schnellspeichern bzw. -laden. Dazu einf
 Spielgeschwindigkeit
 ====================
 
-Ihr könnt die Spielgeschwindigkeit mit den Pfeiltasten „hoch“ und „runter“ verändern. Es gibt auch noch voreingestellte Geschwindigkeiten. Dazu siehe am Ende die „Tastenkürzel der Enwicklerversion“. Über die Pfeiltasten „links“ und „rechts“ ändert Ihr die Spielgeschwindigkeit und die Bewegungsgeschwindigkeit der Spielfiguren.
+Es gibt drei voreingestellte Geschwindigkeiten, die über Knöpfe unter der Uhrzeit ausgewählt werden können. Möglichkeiten zum schnellen Vorspulen können dem Abschitt „Tastenkürzel der Enwicklerversion“ entnommen werden..
 
 
 Bewegung der Spielfigur
@@ -283,15 +283,15 @@ Tastenkürzel für die Entwicklerversion
 
 Spielgeschwindigkeit
 --------------------
-* Cursor Hoch/Runter : Spielgeschwindigkeit +/-
-* Cursor Links/Rechts : Laufgeschwindigkeit und Spielgeschwindigkeit +/-
+* Cursor Links/Rechts : Spielgeschwindigkeit -/+
 * Strg Links + Cursor Rechts: Schnellvorlauf Stufe 1
 * Strg Rechts + Cursor Rechts: Schnellvorlauf Stufe 2
-* 5 : Spielgeschwindigkeit 60 Spielminuten/s
-* 6 : Spielgeschwindigkeit 120 Spielminuten/s
-* 7 : Spielgeschwindigkeit 180 Spielminuten/s
+* 5 : Spielgeschwindigkeit 30 Spielminuten/s
+* 6 : Spielgeschwindigkeit 60 Spielminuten/s
+* 7 : Spielgeschwindigkeit 120 Spielminuten/s
 * 8 : Spielgeschwindigkeit 240 Spielminuten/s
-* 9 : Spielgeschwindigkeit 1 Spielminute/s (Standard)
+* 9 : Spielgeschwindigkeit 0,5 Spielminuten/s (Standard)
+* 0 : Spielgeschwindigkeit 0 ("Pause")
 
 Raeume
 ------

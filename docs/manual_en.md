@@ -57,7 +57,7 @@ On the other hand, there's also the possibility of quick-saving and -loading. Si
 Game Speed
 ==========
 
-You can change the game's speed with the "up" and "down" arrow keys. There are also preset speeds. For this, see the end of the "Keyboard Shortcuts for the Developer Version". The "left" and "right" arrow keys alter the game speed and the movement speed of the in-game characters.
+There are three preset speeds that can be selected via the buttons below the clock. The section "Keyboard Shortcuts for the Developer Version" contains further options for fast-forwarding.
 
 Movement of In-Game Characters
 ==============================
@@ -285,15 +285,15 @@ Keyboard Shortcuts for the Developer Version
 
 Game Speed
 ----------
-* Up/down arrow keys : Game speed +/-
-* Left/right arrow keys : Running speed and game speed +/-
+* Left/right arrow keys : game speed -/+
 * Left-Ctrl + right arrow key : Fast forward level 1
 * Right-Ctrl + right arrow key: Fast forward level 2
-* 5 : Speed 60 game minutes/s
-* 6 : Speed 120 game minutes/s
-* 7 : Speed 180 game minutes/s
+* 5 : Speed 30 game minutes/s
+* 6 : Speed 60 game minutes/s
+* 7 : Speed 120 game minutes/s
 * 8 : Speed 240 game minutes/s
-* 9 : Speed 1 game minute/s (standard)
+* 9 : Speed 0.5 game minutes/s (standard)
+* 0 : Speed 0 ("pause")
 
 Rooms
 -----

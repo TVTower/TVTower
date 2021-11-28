@@ -826,15 +826,13 @@ Type TApp
 		'in game and not gameover
 		If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
 			If not TGUIListBase(GUIManager.GetFocus()) or not TGUIListBase(GUIManager.GetFocus()).IsHandlingKeyBoardScrolling() 
-				If KeyManager.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
-				If KeyManager.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
+				'If KeyManager.IsDown(KEY_UP) Then 
+				'If KeyManager.IsDown(KEY_DOWN) Then 
 			EndIf
 
 			If KeyManager.IsDown(KEY_RIGHT)
 				If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
-					TEntity.globalWorldSpeedFactor :+ 0.05
-					GetWorldTime().AdjustTimeFactor(+10)
-					GetBuildingTime().AdjustTimeFactor(+0.05)
+					GetGame().SetGameSpeed( Int(GetWorldTime().getTimeFactor) + 10 )
 				Else
 					'fast forward
 					If Not DEV_FastForward
@@ -843,14 +841,14 @@ Type TApp
 						DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 						DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
+						'set fixed speed instead of adding to the current
 						If KeyManager.IsDown(KEY_RCONTROL)
-							TEntity.globalWorldSpeedFactor :+ 200
-							GetWorldTime().AdjustTimeFactor(+8000)
-							GetBuildingTime().AdjustTimeFactor(+200)
+							GetGame().SetGameSpeed( 150 * 60 )
+'							TEntity.globalWorldSpeedFactor :+ 200
+'							GetWorldTime().AdjustTimeFactor(+8000)
+'							GetBuildingTime().AdjustTimeFactor(+200)
 						ElseIf KeyManager.IsDown(KEY_LCONTROL)
-							TEntity.globalWorldSpeedFactor :+ 50
-							GetWorldTime().AdjustTimeFactor(+2000)
-							GetBuildingTime().AdjustTimeFactor(+50)
+							GetGame().SetGameSpeed( 60 * 60 )
 						EndIf
 					EndIf
 				EndIf
@@ -866,9 +864,7 @@ Type TApp
 
 
 			If KeyManager.IsDown(KEY_LEFT) Then
-				TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
-				GetWorldTime().AdjustTimeFactor(-10)
-				GetBuildingTime().AdjustTimeFactor(-0.05)
+				GetGame().SetGameSpeed( Max(Int(GetWorldTime().getTimeFactor) - 10, 0) )
 			EndIf
 
 
@@ -1265,11 +1261,12 @@ endrem
 				EndIf
 			EndIf
 		EndIf
-		If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
-		If KeyManager.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120*15 ) '120 minutes per second
-		If KeyManager.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180*15 ) '180 minutes per second
-		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
-		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
+		If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 30 * 60 ) '30 game minutes per realtime second
+		If KeyManager.IsHit(KEY_6) Then GetGame().SetGameSpeed( 60 * 60 ) '60 game minutes per realtime second
+		If KeyManager.IsHit(KEY_7) Then GetGame().SetGameSpeed( 120 * 60 )
+		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 * 60 )
+		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeedPreset( 1 )
+		If KeyManager.IsHit(KEY_0) Then GetGame().SetGameSpeed( 0 ) 'pause
 		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
 
 		If KeyManager.IsHit(KEY_TAB)
@@ -1363,9 +1360,7 @@ endrem
 				DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 				DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
-				TEntity.globalWorldSpeedFactor :+ 25
-				GetWorldTime().AdjustTimeFactor(+1000)
-				GetBuildingTime().AdjustTimeFactor(+25)
+				GetGame().SetGameSpeed( 30 * 60 )
 			EndIf
 		Else
 			'stop fast forward
@@ -4343,6 +4338,7 @@ Type GameEvents
 			GetGame().SendSystemMessage("|b|loaddb|/b| (dbname)")
 			GetGame().SendSystemMessage("|b|reloaddev|/b|")
 			GetGame().SendSystemMessage("|b|exec|/b| (scriptPath)")
+			GetGame().SendSystemMessage("|b|devkeys|/b| [enable 0 or 1]")
 		End Function
 
 		'internal helper function

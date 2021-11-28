@@ -113,23 +113,26 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	Method SetGameSpeedPreset(preset:Int)
 		preset = Max(Min(GameRules.worldTimeSpeedPresets.length-1, preset), 0)
-		SetGameSpeed(GameRules.worldTimeSpeedPresets[preset])
+		SetGameSpeed(GameRules.worldTimeSpeedPresets[preset], True)
 	End Method
 
-
-	Method SetGameSpeed(timeFactor:Int = 15)
-		Local modifier:Float = Float(timeFactor) / GameRules.worldTimeSpeedPresets[0]
-
+	Method SetGameSpeed(timeFactor:Int = 15, reducedBuildingTimeFactor:Int = False)
 		GetWorldTime().SetTimeFactor( timeFactor ) 'same as "modifier * GameRules.worldTimeSpeedPresets[0]"
-'15 30 180 600
-'1 2 12 40
-		TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
-		'also move slightly faster with higher speed...
-		'speed preset 1 (modifier = 2) is default
-		'normally a "modifier" as factor would be a direct translation
-		'but this does not look nice for the normal presets where you do
-		'not expect "speed 3" to look so "fast forward"
-		GetBuildingTime().SetTimeFactor( 0.75 + 0.5 * (modifier-1) )
+		'15 30 180 600
+		'1  2  12  40
+		Local modifier:Float = Float(timeFactor) / GameRules.worldTimeSpeedPresets[0]
+		If reducedBuildingTimeFactor Then
+			TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
+			'also move slightly faster with higher speed...
+			'speed preset 1 (modifier = 2) is default
+			'normally a "modifier" as factor would be a direct translation
+			'but this does not look nice for the normal presets where you do
+			'not expect "speed 3" to look so "fast forward"
+			GetBuildingTime().SetTimeFactor( 0.75 + 0.5 * (modifier-1) )
+		Else
+			GetBuildingTime().SetTimeFactor( modifier )
+			TEntity.globalWorldSpeedFactor = modifier
+		EndIf
 
 '		TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
 		'move as fast as on level 2 (to avoid odd looking figures)
