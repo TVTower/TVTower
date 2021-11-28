@@ -71,7 +71,7 @@ end
 -- Method is run at the begin of each day
 function BudgetManager:CalculateNewDayBudget()
 	debugMsg("=== Budget day " .. TVT.GetDaysRun() .. " ===")
-	debugMsg(string.left("Account balance:", 20, true) .. string.right(MY.GetMoney(), 10, true))
+	debugMsg(string.left("Account balance:", 25, true) .. string.right(MY.GetMoney(), 10, true))
 
 	-- postpone empirical budget values one day backwards (new one incoming)
 	self.BudgetHistory[TIME_OLDDAY_3] = self.BudgetHistory[TIME_OLDDAY_2]
@@ -174,7 +174,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local allFixedCostsSavings = 0
 	for k,v in pairs(player.TaskList) do
 		budgetUnits = budgetUnits + v:getBudgetUnits()
-		debugMsg(v:typename() .. "  fixed costs = " .. v:GetFixedCosts())
+		debugMsg(string.left(v:typename() .. " fix", 25, true) .. string.right(v:GetFixedCosts(), 10, true))
 		allFixedCostsSavings = allFixedCostsSavings + v:GetFixedCosts()
 	end
 	if budgetUnits == 0 then budgetUnits = 1 end
