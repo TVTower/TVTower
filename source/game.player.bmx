@@ -366,7 +366,7 @@ endrem
 	Method GetTotalNewsAbonnementFees:int()
 		Local newsagencyfees:Int =0
 		For Local i:Int = 0 until TVTNewsGenre.count
-			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice(playerID, TVTNewsGenre.GetAtIndex(i), GetNewsAbonnementDaysMax(i) )
+			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice(playerID, TVTNewsGenre.GetAtIndex(i), GetNewsAbonnementDaysMax(i))
 		Next
 		return newsagencyfees
 	end Method
