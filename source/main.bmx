@@ -869,7 +869,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
-				DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
+				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
 				For local pID:Int = 1 to 4
@@ -1398,7 +1398,7 @@ endrem
 		SetColor(oldCol)
 		SetAlpha(oldA)
 
-		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0).x)
+		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetTimeFactor()), textX , 0).x)
 		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
 		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
 	'ron|gc

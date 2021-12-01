@@ -36,8 +36,10 @@ Type TDebugScreen
 	Global textFontBold:TBitmapFont
 
 	Field FastForward_Active:Int = False
+	Global FastForward_Continuous_Active:Int = False
+	Global FastForwardSpeed:Int = 500
 	Field FastForward_SwitchedPlayerToAI:Int = 0
-	Field FastForward_TargetTime:Long = -1
+	Global FastForward_TargetTime:Long = -1
 	Field FastForward_SpeedFactorBackup:Float = 0.0
 	Field FastForward_TimeFactorBackup:Float = 0.0
 	Field FastForward_BuildingTimeSpeedFactorBackup:Float = 0.0
@@ -103,6 +105,14 @@ Type TDebugScreen
 	
 		If FastForward_Active and FastForward_TargetTime < GetWorldTime().GetTimeGone()
 			Dev_StopFastForwardToTime()
+		EndIf
+		'continuous fast forward: save game and go to the end of the next day
+		If FastForward_Continuous_Active and FastForward_TargetTime < GetWorldTime().GetTimeGone()
+			GetGame().SetGameSpeed(0)
+			Local savegameName:String = "savegames/AI-day-" + StringHelper.RSetChar((GetWorldTime().GetDaysRun() + 1),2,"0")+ ".xml"
+			TSaveGame.Save(savegameName)
+			FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,1,1,23,23) + 56*TWorldTime.MINUTELENGTH
+			GetGame().SetGameSpeed(FastForwardSpeed)
 		EndIf
 	End Method
 
@@ -1365,7 +1375,7 @@ Type TDebugScreen
 	'=== MISC screen ===
 
 	Method InitMode_Misc()
-		Local texts:String[] = ["Print Ad Stats", "Print Players Today Finance Overview", "Print All Players Finance Overview", "Print Players Today Broadcast Stats", "Print Total Broadcast Stats", "Print Performance Stats"]
+		Local texts:String[] = ["Print Ad Stats", "Print Player's Today Finance Overview", "Print All Players' Finance Overview", "Print Player's Today Broadcast Stats", "Print Total Broadcast Stats", "Print Performance Stats", "Print Player's Programme Plan", "AI Game", "Fast Forward One Day"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
@@ -1489,6 +1499,21 @@ Type TDebugScreen
 				
 			case 6
 				GetPlayer().GetProgrammePlan().printOverview()
+			case 7
+				'continuous fast forward: save game at the end of every day
+				If FastForward_Continuous_Active then
+					FastForward_Continuous_Active = False
+					FastForward_TargetTime = -1
+					GetGame().SetGameSpeedPreset(1)
+					DebugScreen.buttonsMisc[7].text = "AI Game"
+				Else
+					FastForward_Continuous_Active = True
+					FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,0,0,23,23) + 56*TWorldTime.MINUTELENGTH
+					GetGame().SetGameSpeed(FastForwardSpeed)
+					DebugScreen.buttonsMisc[7].text = "Stop AI Game"
+				EndIf
+			case 8
+				DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 		End Select
 
 		'handled
