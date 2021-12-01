@@ -655,8 +655,9 @@ Type TDebugScreen
 	Method RenderMode_NewsAgency()
 		Local playerID:Int = GetShownPlayerID()
 
-		RenderNewsAgencyQueue(playerID, sideButtonPanelWidth + 5, 13, 410, 340)
-		RenderNewsAgencyInformation(playerID, sideButtonPanelWidth + 5 + 250 + 250 + 5, 13)
+		RenderNewsAgencyQueue(playerID, sideButtonPanelWidth + 5, 13, 495, 190)
+		RenderNewsAgencyGenreSchedule(playerID, sideButtonPanelWidth + 5, 13 + 190 + 10, 200, 140)
+		RenderNewsAgencyInformation(playerID, sideButtonPanelWidth + 5 + 200 + 10, 13 + 190 + 10, 285, 140)
 
 		RenderActionButtons(buttonsNewsAgency)
 		For Local b:TDebugControlsButton = EachIn buttonsNewsAgency
@@ -1631,10 +1632,59 @@ Type TDebugScreen
 
 
 	Method RenderNewsAgencyInformation(playerID:int, x:int, y:int, w:int = 180, h:int = 150)
-'		DrawOutlineRect(x, y, w, h)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		textFont.DrawSimple("Player News Subscriptions", textX, textY)
+		textY :+ 12 + 3
+
+		Local playerIndex:Int = 0
+		Local textYBackup:Int = textY
+		For local player:TPlayerBase = EachIn GetPlayerBaseCollection().players
+			textFont.DrawSimple(player.name, textX + playerIndex * 65, textY, player.color.Copy().AdjustBrightness(0.5).ToSColor8())
+			textY :+ 12 + 3
+			For local genre:Int = 0 until player.newsabonnements.length
+				if player.GetNewsAbonnement(genre) <> player.GetNewsAbonnementDaysMax(genre)
+					textFont.DrawSimple(player.GetNewsAbonnement(genre) + " (max. "+player.GetNewsAbonnementDaysMax(genre)+")", textX + playerIndex * 65, textY, SColor8.white)
+				else
+					textFont.DrawSimple(player.GetNewsAbonnement(genre), textX + playerIndex * 65, textY, SColor8.white)
+				endif
+				textY :+ 12
+			Next
+
+			textY = textYBackup
+			playerIndex :+ 1
+		Next
 	End Method
 
 
+
+	Method RenderNewsAgencyGenreSchedule(playerID:int, x:int, y:int, w:int = 200, h:int = 100)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		local upcomingCount:int[TVTNewsGenre.count+1]
+		For local n:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+			upcomingCount[n.GetGenre()] :+ 1
+		Next
+
+		textFont.DrawSimple("Scheduled News", textX, textY)
+		textY :+ 12 + 3
+		textFont.DrawSimple("Genre", textX, textY)
+		textFont.DrawSimple("Next", textX + 100, textY)
+		textFont.DrawSimple("Upcoming", textX + 140, textY)
+		textY :+ 12 + 3
+		For local i:int = 0 until TVTNewsGenre.count
+			textFont.DrawSimple(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i)), textX, textY)
+			textFont.DrawSimple(GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), textX + 100, textY)
+			textFont.DrawSimple(upcomingCount[i]+"x", textX + 140, textY)
+			textY :+ 12
+		Next
+	End Method
+	
+	
 
 	Method UpdateNewsAgencyQueue(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
 		'reset
@@ -1646,49 +1696,26 @@ Type TDebugScreen
 		DrawOutlineRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
-
-		textY :+ 12 + 10 + 5
-
-
-		local upcomingCount:int[TVTNewsGenre.count+1]
-		local upcomingCountTotal:int = 0
-
-		local upcomingSorted:TList = GetNewsEventCollection().GetUpcomingNewsList().Copy()
-		upcomingSorted.sort(True, TNewsEventCollection.SortByHappenedTime)
-
-		For local n:TNewsEvent = EachIn upcomingSorted
-			upcomingCountTotal :+ 1
-			upcomingCount[n.GetGenre()] :+ 1
-		Next
-
-
-		textFont.DrawSimple(GetLocale("Genre"), textX, textY)
-		textFont.DrawSimple("Next", textX + 100, textY)
-		textFont.DrawSimple("Upcoming", textX + 200, textY)
-		textY :+ 12+3
-		For local i:int = 0 until TVTNewsGenre.count
-			textFont.DrawSimple(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i)), textX, textY)
-			textFont.DrawSimple(GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), textX + 100, textY)
-			textFont.DrawSimple(upcomingCount[i]+"x", textX + 200, textY)
-			textY :+ 12
-		Next
-		textY :+ 12
+		
+		Local upcoming:TList = GetNewsEventCollection().GetUpcomingNewsList()
 
 		textFont.DrawSimple("Queue", textX, textY)
 		textY :+ 12+3
-		if upcomingCountTotal = 0
+		if upcoming.Count() = 0
 			textFont.DrawSimple("--", textX, textY)
 		else
+			Local upcomingSorted:TList = upcoming.Copy()
+			upcomingSorted.sort(True, TNewsEventCollection.SortByHappenedTime)
+
 			local nCount:Int
 			For local n:TNewsEvent = EachIn upcomingSorted
 				textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(n.happenedTime), textX, textY)
 				textFont.DrawSimple(n.GetTitle() + "  ("+GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre()))+")", textX + 100, textY)
 				textY :+ 12
 				nCount :+ 1
-				if nCount > 15 then exit
+				if nCount > 12 then exit
 			Next
 		endif
-
 	End Method
 
 
