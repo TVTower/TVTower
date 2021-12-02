@@ -40,6 +40,9 @@ Type TGameRules {_exposeToLua}
 	'how many production concepts could be "planned" at the same time
 	'(per script - for series and shows ...)
 	Field maxProductionConceptsPerScript:int = 8
+	
+	'(game)time until a news genre subscription increase gets "fixed"
+	Field newsSubscriptionIncreaseFixTime:Int = 30 * 60 * 1000 '30 Minutes
 
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...

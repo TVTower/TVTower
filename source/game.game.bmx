@@ -634,10 +634,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== RESET NEWS ABONNEMENTS ===
 		'reset so next player wont start with a higher level for this day
-		For Local i:Int = 0 Until TVTNewsGenre.count
-			player.SetNewsAbonnementDaysMax(i, 0)
-			player.SetNewsAbonnement(i, 0)
-		Next
+		player.ResetNewsAbonnements()
 		TLogger.Log("ResetPlayer()", "Reset news abonnements", LOG_DEBUG)
 
 

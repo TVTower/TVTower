@@ -176,11 +176,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Method Initialize:int()
 		emptyProgrammeSuitcase = False
 		emptyProgrammeSuitcaseTime = 0
-		for local i:int = 0 until newsabonnements.length
-			newsabonnements[i] = 0
-			newsabonnementsDayMax[i] = -1
-			newsabonnementsSetTime[i] = 0
-		next
+		
+		ResetNewsAbonnements()
 	End Method
 
 
@@ -247,13 +244,27 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method ResetNewsAbonnements()
+		For Local i:int = 0 Until newsabonnements.length
+			newsabonnements[i] = 0
+			newsabonnementsDayMax[i] = -1
+			newsabonnementsSetTime[i] = 0
+		Next
+	End Method
+
+
 	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre < 0 or genre > 5 Then Return 0 'max 6 categories 0-5
-		'for NOW culture is current affair (until there are enough news
-		'for it)
-		'if genre = TVTNewsGenre.CULTURE then genre = TVTNewsGenre.CURRENTAFFAIRS
+
 		Return Self.newsabonnements[genre]
+	End Method
+
+
+	Method HasNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
+		If genre >= TVTNewsGenre.count or genre < 0 Then Return 0
+
+		Return (GetNewsAbonnementDaysMax(genre) > -1)
 	End Method
 
 
@@ -262,32 +273,26 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'if the last time a abonnement level was set was before today
 	'use the current level value
 	Method GetNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
-		If genre >= TVTNewsGenre.count or genre < 0 Then Return 0
+		If genre >= TVTNewsGenre.count or genre < 0 Then Return -1
 
 		local abonnementLevel:int = GetNewsAbonnement(genre)
 
-		'not set yet - use the current abonnement
-		if newsabonnementsDayMax[genre] = -1
-			SetNewsAbonnementDaysMax(genre, abonnementLevel)
-		endif
-
 		'if level of genre changed - adjust maximum
 		if newsabonnementsDayMax[genre] <> abonnementLevel
+
 			'if the "set time" is not the current day, we assume
 			'the current abonnement level as maxium
 			'eg.: genre set 23:50 - not catched by the "30 min check"
 			'also a day change sets maximum even if level is lower than
 			'maximum (which is not allowed during day to pay for the best
 			'level you had this day)
-			if GetWorldTime().GetDay(newsabonnementsSetTime[genre]) < GetWorldTime().GetDay()
+			if GetWorldTime().GetDay(newsAbonnementsSetTime[genre]) < GetWorldTime().GetDay()
 				'NOT 0:00 (the time daily costs are computed)
 				if GetWorldTime().GetDayMinute() > 0
 					SetNewsAbonnementDaysMax(genre, abonnementLevel)
 				EndIf
-			EndIf
-
 			'more than 30 mins gone since last "abonnement set"
-			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30 * TWorldTime.MINUTELENGTH
+			ElseIf GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > GameRules.newsSubscriptionIncreaseFixTime
 				'only set maximum if the new level is higher than the
 				'current days maxmimum.
 				if newsabonnementsDayMax[genre] < abonnementLevel
@@ -296,7 +301,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		return newsabonnementsDayMax[genre]
+		Return newsabonnementsDayMax[genre]
 	End Method
 
 
@@ -317,6 +322,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 		If genre > 5 Then Return False 'max 6 categories 0-5
 		If newsabonnements[genre] <> level
 			newsabonnements[genre] = level
+	
 			'set at which time we did this
 			newsabonnementsSetTime[genre] = GetWorldTime().GetTimeGone()
 

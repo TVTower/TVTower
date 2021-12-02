@@ -1642,13 +1642,18 @@ Type TDebugScreen
 		Local playerIndex:Int = 0
 		Local textYBackup:Int = textY
 		For local player:TPlayerBase = EachIn GetPlayerBaseCollection().players
-			textFont.DrawSimple(player.name, textX + playerIndex * 65, textY, player.color.Copy().AdjustBrightness(0.5).ToSColor8())
+			textFont.DrawSimple(player.name, textX + playerIndex * 70, textY, player.color.Copy().AdjustBrightness(0.5).ToSColor8())
 			textY :+ 12 + 3
 			For local genre:Int = 0 until player.newsabonnements.length
-				if player.GetNewsAbonnement(genre) <> player.GetNewsAbonnementDaysMax(genre)
-					textFont.DrawSimple(player.GetNewsAbonnement(genre) + " (max. "+player.GetNewsAbonnementDaysMax(genre)+")", textX + playerIndex * 65, textY, SColor8.white)
-				else
-					textFont.DrawSimple(player.GetNewsAbonnement(genre), textX + playerIndex * 65, textY, SColor8.white)
+				Local currLevel:Int = player.GetNewsAbonnement(genre)
+				Local maxLevel:Int = max(0, player.GetNewsAbonnementDaysMax(genre))
+				if currLevel < maxLevel
+					textFont.DrawSimple(currLevel + " / " + maxLevel + " @ " + GetWorldTime().GetFormattedDate(player.newsabonnementsSetTime[genre], "h:i"), textX + playerIndex * 70, textY, SColor8.white)
+				ElseIf currLevel > maxLevel
+					'add time until "fixation" (so "end time")
+					textFont.DrawSimple(currLevel + " @ " + GetWorldTime().GetFormattedDate(player.newsabonnementsSetTime[genre] + GameRules.newsSubscriptionIncreaseFixTime, "h:i") + " / " + maxLevel, textX + playerIndex * 70, textY, SColor8.white)
+				Else
+					textFont.DrawSimple(currLevel + " / " + maxLevel, textX + playerIndex * 70, textY, SColor8.white)
 				endif
 				textY :+ 12
 			Next
