@@ -17,6 +17,9 @@ Type TTemplateVariables
 	'Variables are used to replace certain %KEYWORDS% in title or
 	'description. They are stored as "%KEYWORD%"=>TLocalizedString
 	Field variables:TMap
+	'no need for a special "isValid" variable as we must have at least
+	'a single language id (so length>0)
+	Field variablesLanguagesIDs:Int[]
 	'placeHolderVariables contain TLocalizedString-objects which are used
 	'to replace a specific palceholder. This allows to reuse the exact same
 	'random variable for descendants (episodes refering to the same
@@ -64,6 +67,7 @@ Type TTemplateVariables
 	Method AddVariable(key:string, obj:object)
 		key = key.toLower()
 		if not variables then variables = CreateMap()
+		variablesLanguagesIDs = Null
 		variables.insert(key, obj)
 	End Method
 
@@ -166,25 +170,87 @@ Type TTemplateVariables
 
 		return result
 	End Method
+	
+	
+	Method GetVariablesLanguageIDs:int[]()
+		If not variables then Return Null
+		
+		if not variablesLanguagesIDs or variablesLanguagesIDs.length = 0
+			Local result:Int[] = new Int[10]
+			Local count:Int = 0
+			For local variableValue:TLocalizedString = EachIn variables.values()
+				For local langID:Int = EachIn variableValue.GetLanguageIDs()
+					If not MathHelper.InIntArray(langID, result)
+						count :+ 1
+						if result.length <= count then result = result[.. result.length + 5]
+						result[count-1] = langID
+					EndIf
+				Next
+			Next
+			if result.length > count then result = result[.. count]
+			
+			variablesLanguagesIDs = result
+		endif
+		return variablesLanguagesIDs
+	End Method
 
 
+	'global debugReplace:int = False
 	Method ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		local result:TLocalizedString = text.copy()
-'print "ReplacePlaceholders: "+ text.Get()
+
+		'step 1: - collect all used language IDs
+		'          - variant 1:
+		'            - from templateVariable instance 
+		'            - and from passed "text" TLocalizedString
+		'              (so languages need to define the variables but not eg. "<title>")
+		'          - variant 2:
+		'            - only from passed "text" TLocalizedString
+		'              (so languages need to define eg "<title>" but not the variables)
+		'step 2: - for all these language IDs the placeholder replacement is done
+
+
+		'step 1
+		Local languageIDs:Int[]
+		'variant 1
+		If variables
+			languageIDs = GetVariablesLanguageIDs()
+			For local textLanguageID:Int = EachIn text.GetLanguageIDs()
+				If not MathHelper.InIntArray(textLanguageID, languageIDs)
+					languageIDs :+ [textLanguageID]
+				EndIf
+			Next
+		Else
+			languageIDs = text.GetLanguageIDs()
+		EndIf
+		'variant 2
+		'languageIDs = text.GetLanguageIDs()
+
+
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-		For local langID:int = eachIn text.GetLanguageIDs()
-			'do it 4 times, this allows for placeholder definitions within
-			'placeholders (at least some of them)!
-			local replacedPlaceholders:int = 0
-			for local i:int = 0 to 20 'depth of 20 should do
+'if debugReplace Then print "ReplacePlaceHolders()"
+'if debugReplace 
+'	if variables 
+'		 print "  variable locales: " + GetVariablesLanguageIDs().length
+'	else
+'		 print "  variable locales: -"
+'	endif
+
+		'do it 20 times, this allows for placeholder definitions within
+		'placeholders (at least some of them)!
+		For local i:int = 0 until 20
+'if debugReplace Then print "  loop "+Rset(i,2)
+			local replacedPlaceholdersAllLang:int = 0
+			For local langID:int = eachIn languageIDs 'text.GetLanguageIDs()
+				local replacedPlaceholdersThisLang:int = 0
 				'use result already (to allow recursive-replacement)
 				local value:string = result.Get(langID)
 				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+'if debugReplace Then print "    langID=" + langID + "  value=" + LSet(value, 15) + "  placeholders="+placeHolders.length
+
 				if placeHolders.length > 0
-'if lang="de" then print "  "+lang+"  run "+i
-'if lang="de" then print "   -> value = " + value
 					local replacement:TLocalizedString
 					for local placeHolder:string = EachIn placeHolders
 						'check if there is already a placeholder variable stored
@@ -196,7 +262,7 @@ Type TTemplateVariables
 						'only use ONE option out of the group ("option1|option2|option3")
 						if replacement
 							replacement = GetRandomFromLocalizedString( replacement )
-
+'if debugReplace Then print "      replacement: "+replacement.ToString().Replace("~n", "~~n")
 							'if the parent stores this variable (too) then save
 							'the placeholder there instead of the children
 							'so other children could use the same placeholders
@@ -211,20 +277,18 @@ Type TTemplateVariables
 							'store the replacement in the value
 							value = value.replace(placeHolder, replacement.Get(langID))
 'if lang="de" then print "        replace: "+placeHolder+" => " + replacement.Get(lang)
-							replacedPlaceHolders :+ 1
+							replacedPlaceholdersThisLang :+ 1
 						endif
 					Next
 				endif
-
 				result.Set(value, langID)
-'if placeHolders.length > 0
-'	if lang="de" then print "   <- value = " + value
-'endif
-				'skip further checks (0 placeholders or all possible replaced)
-				if placeHolders.length = 0 or (placeHolders.length > 0 and replacedPlaceHolders = 0)
-					exit
-				endif
+				'save maximum of replaced placeholders amongst all languages
+				replacedPlaceholdersAllLang = Max(replacedPlaceholdersAllLang, replacedPlaceholdersThisLang)
+'if debugReplace Then print "      result: " + result.ToString().Replace("~n", "~~n    ")
 			Next
+
+			'skip further checks (nothing was replaced this loop)
+			if replacedPlaceholdersAllLang = 0 then exit
 		Next
 
 
@@ -242,7 +306,7 @@ Type TTemplateVariables
 
 			result.Set(value, langID)
 		Next
-
+'if debugReplace then print result.ToString().Replace("~n", "~~n")
 		return result
 	End Method
 End Type
