@@ -99,8 +99,10 @@
 End Rem
 SuperStrict
 Import Brl.Retro
+?bmxng
+Import Brl.StringBuilder
+?
 Import "base.util.math.bmx"
-
 Import "external/string_comp.bmx"
 
 Type StringHelper
@@ -272,14 +274,25 @@ Type StringHelper
 	End Function
 
 
+	?bmxng
+	Function JoinIntArray:String(glue:String, intArray:Int[])
+		Local sb:TStringBuilder = New TStringBuilder()
+		For Local i:Int = 0 Until intArray.Length
+			If sb.Length > 0 Then sb.Append(glue)
+			sb.Append(intArray[i])
+		Next
+		Return sb.ToString()
+	End Function
+	?not bmxng
 	Function JoinIntArray:String(glue:String, intArray:Int[])
 		Local result:String = ""
 		For Local i:Int = 0 Until intArray.length
-			If result <> "" Then result :+ glue
+			If result.length > 0 Then result :+ glue
 			result :+ intArray[i]
 		Next
 		Return result
 	End Function
+	?
 
 
 	Function RemoveArrayIndex:Int(index:Int, arr:String[] Var)
