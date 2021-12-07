@@ -63,7 +63,6 @@ Type TAwardCollection Extends TGameObjectCollection
 		
 		if self.currentAward <> award
 			Self.currentAward = award
-			TLogger.Log("TAwardCollection.UpdateAwards()", "Set current award: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(currentAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 			Self.currentAward.Start()
 		EndIf
 	End Method
@@ -109,7 +108,6 @@ Type TAwardCollection Extends TGameObjectCollection
 	Method FinishCurrentAward()
 		'announce the winner and set time for next start
 		If currentAward
-			TLogger.Log("TAwardCollection.FinishCurrentAward()", "Finish current award: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(currentAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 			currentAward.Finish()
 
 			if not lastAwards then lastAwards = new TList
@@ -303,21 +301,21 @@ Type TAward Extends TGameObject
 	
 	
 	Method Start:Int()
-		TLogger.Log("TAward.Start", "Starting award", LOG_DEBUG)
-
 		SetStartTime( GetWorldTime().GetTimeGone() )
 		SetEndTime( CalculateEndTime(startTime) )
+
+		TLogger.Log("TAward.Start()", "Started award: type="+TVTAwardType.GetAsString(awardType)+" ["+awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 	End Method
 
 
 	Method Finish:Int()
-		TLogger.Log("TAward.Finish", "Finishing award", LOG_DEBUG)
-
 		'end time might differ (earlier finish)
 		SetEndTime( GetWorldTime().GetTimeGone() )
-
 		'store winner
 		winningPlayerID = GetCurrentWinner()
+
+		TLogger.Log("TAward.Finish()", "Finishing award. winner="+winningPlayerID, LOG_DEBUG)
+
 		TriggerBaseEvent(GameEventKeys.Award_OnFinish, New TData.AddInt("winningPlayerID", winningPlayerID), Self)
 
 		If winningPlayerID > 0
