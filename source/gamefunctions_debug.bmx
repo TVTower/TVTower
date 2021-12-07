@@ -25,6 +25,7 @@ Type TDebugScreen
 	Field buttonsSports:TDebugControlsButton[]
 	Field buttonsMisc:TDebugControlsButton[]
 	Field buttonsModifiers:TDebugControlsButton[]
+	Field buttonsAwardControls:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
 	Field roomHighlight:TRoomBase
 	Field roomHovered:TRoomBase
@@ -1389,6 +1390,8 @@ Type TDebugScreen
 
 			buttonsMisc :+ [button]
 		Next
+
+		InitAwardStatusButtons()
 	End Method
 
 
@@ -1528,6 +1531,8 @@ Type TDebugScreen
 		For Local b:TDebugControlsButton = EachIn buttonsMisc
 			b.Update()
 		Next
+		
+		UpdateAwardStatus(sideButtonPanelWidth + 5 + 190, 13)
 	End Method
 
 
@@ -1537,12 +1542,168 @@ Type TDebugScreen
 		For Local b:TDebugControlsButton = EachIn buttonsMisc
 			b.Render()
 		Next
+		
+		RenderAwardStatus(sideButtonPanelWidth + 5 + 190, 13)
 	End Method
 
 
 
 
 	'=== BLOCKS ===
+	Method InitAwardStatusButtons()
+		Local texts:String[] = ["Finish", "Finish (P1 wins)", "Finish (P2 wins)", "Finish (P3 wins)", "Finish (P4 wins)", "Start Next", "Add New Award"]
+		Local mode:int = 0
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			if texts[i] = "-" then continue 'spacer
+			button = New TDebugControlsButton
+			button.w = 145
+			button.h = 15
+			button.x = 5
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = mode
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_AwardStatusButtons
+			
+			mode :+ 1
+
+			buttonsAwardControls :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_AwardStatusButtons(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				'finish
+				GetAwardCollection().FinishCurrentAward()
+			case 1
+				'finish P1
+			case 2
+				'finish P2
+			case 3
+				'finish P3
+			case 4
+				'finish P4
+			case 5
+				'start next (stop current first - if needed)
+				if GetAwardCollection().GetCurrentAward()
+					GetAwardCollection().FinishCurrentAward()
+				Endif
+				GetAwardCollection().SetCurrentAward( GetAwardCollection().PopNextAward() )
+			case 6
+				'generate additional/upcoming
+				GetAwardCollection().GenerateUpcomingAward(-1, Null)
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateAwardStatus(x:int, y:int, w:int = 200, h:int = 200)
+		if buttonsAwardControls.length >= 6
+			For local i:int = 0 until buttonsAwardControls.length
+				buttonsAwardControls[i].x = x + 195
+				buttonsAwardControls[i].y = y + i * 18 + 5
+			Next
+			buttonsAwardControls[6].y = buttonsAwardControls[5].y
+			buttonsAwardControls[5].y = buttonsAwardControls[0].y
+
+			if not GetAwardCollection().GetCurrentAward()
+				buttonsAwardControls[0].visible = False
+				buttonsAwardControls[1].visible = False
+				buttonsAwardControls[2].visible = False
+				buttonsAwardControls[3].visible = False
+				buttonsAwardControls[4].visible = False
+				buttonsAwardControls[5].visible = true
+			else
+				buttonsAwardControls[0].visible = True
+				buttonsAwardControls[1].visible = True
+				buttonsAwardControls[2].visible = True
+				buttonsAwardControls[3].visible = True
+				buttonsAwardControls[4].visible = True
+				buttonsAwardControls[5].visible = False
+			endif
+			
+			if not GetAwardCollection().GetCurrentAward() and not GetAwardCollection().GetNextAward()
+				buttonsAwardControls[0].visible = False
+				buttonsAwardControls[5].visible = False
+			endif
+		endif
+
+
+		For Local b:TDebugControlsButton = EachIn buttonsAwardControls
+			b.Update()
+		Next
+	End Method
+	
+	
+	Method RenderAwardStatus(x:int, y:int, w:int = 350, h:int = 200)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		
+		titleFont.DrawSimple("Award: ", textX, textY)
+		textY :+ 12 + 3
+		
+		local currentAward:TAward = GetAwardCollection().GetCurrentAward()
+		local nextAward:TAward = GetAwardCollection().GetNextAward()
+		local nextAwardTime:Long = GetAwardCollection().GetNextAwardTime()
+
+		textFont.DrawSimple("Current: ", textX, textY)
+		If currentAward 
+			textFont.DrawSimple(currentAward.GetTitle(), textX + 40, textY)
+			textY :+ 12
+
+			local rewards:String = currentAward.GetRewardText()
+			if rewards.length > 0
+				textY :+ textFont.DrawBox(rewards, textX + 40, textY, w - 150 - 40 - 10, 100, sALIGN_LEFT_TOP, SColor8.White, new SVec2F(0,0), EDrawTextOption.IgnoreColor).y
+			Endif
+			textFont.DrawSimple("Ends " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()), textX + 40, textY)
+			textY :+ 12
+		Else
+			textFont.DrawSimple("--", textX + 40, textY)
+			textY :+ 12
+		endif
+		textY :+ 3
+
+		local nextCount:int = 0
+		if GetAwardCollection().upcomingAwards.Count() = 0
+			textFont.DrawSimple("Next:", textX, textY)
+			textFont.DrawSimple("--", textX + 40, textY)
+				textY :+ 12
+		Else
+			For local nextAward:TAward = EachIn GetAwardCollection().upcomingAwards
+				textFont.DrawSimple("Next:", textX, textY)
+				if nextAward
+					textFont.DrawSimple(nextAward.GetTitle(), textX + 40, textY)
+					textY :+ 12
+
+					local rewards:String = nextAward.GetRewardText()
+					if rewards.length > 0
+						textY :+ textFont.DrawBox(rewards, textX + 40, textY, w - 150 - 40 - 10, 100, sALIGN_LEFT_TOP, SColor8.white, New SVec2F(0,0), EDrawTextOption.IgnoreColor).y
+					Endif
+					textFont.DrawSimple("Begins " + GetWorldTime().GetFormattedGameDate(nextAward.GetStartTime()), textX + 40, textY)
+					textY :+ 12
+				Else
+					textFont.DrawSimple("--", textX + 40, textY)
+					textY :+ 12
+				EndIf
+				
+				nextCount :+ 1
+				'do not show more than 3
+				if nextCount > 3 then exit
+			Next
+		EndIf
+
+		For Local b:TDebugControlsButton = EachIn buttonsAwardControls
+			b.Render()
+		Next
+	End Method
+	
+
 	Method RenderGameModifierList(playerID:int, x:int, y:int, w:int = 300, h:int = 300)
 		DrawOutlineRect(x, y, w, h)
 		Local textX:Int = x + 5
