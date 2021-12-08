@@ -1115,7 +1115,7 @@ Type TDebugScreen
 		For Local producer:TProgrammeProducerBase = EachIn GetProgrammeProducerCollection()
 			textFont.DrawBox(producer.name + "  ("+producer.countryCode+")", textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
 			textY :+ 10
-			textFont.DrawBox("  " + TTypeID.ForObject(producer).name, textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textFont.DrawBox("  " + TTypeID.ForObject(producer).name(), textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("XP: " + producer.experience, textX + 150, textY, 35, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("Budget: " + MathHelper.DottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textY :+ 12

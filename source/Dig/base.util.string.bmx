@@ -278,7 +278,7 @@ Type StringHelper
 	Function JoinIntArray:String(glue:String, intArray:Int[])
 		Local sb:TStringBuilder = New TStringBuilder()
 		For Local i:Int = 0 Until intArray.Length
-			If sb.Length > 0 Then sb.Append(glue)
+			If sb.Length() > 0 Then sb.Append(glue)
 			sb.Append(intArray[i])
 		Next
 		Return sb.ToString()

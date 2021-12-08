@@ -195,7 +195,7 @@ Type TNetworkClient extends TNetworkConnection
 
 					if not enet_host_service(self.enethost,ev,100) then Exit
 
-					Select ev.event
+					Select ev.event()
 						Case ENET_EVENT_TYPE_RECEIVE
 							If ev.packet
 								Local packet:TNetworkPacket
@@ -1822,7 +1822,7 @@ Type TNetworkConnection
 		Repeat
 			If not enet_host_service(Self.enethost, ev, 0) then exit
 
-			Select ev.event
+			Select ev.event()
 				Case ENET_EVENT_TYPE_CONNECT
 					id=NET_CONNECT
 				Case ENET_EVENT_TYPE_DISCONNECT
@@ -1863,7 +1863,7 @@ Type TNetworkConnection
 
 
 	Function ConvertEvent:Int(ev:EnetEvent,packet:TNetworkPacket)
-		Select ev.event
+		Select ev.event()
 			Case ENET_EVENT_TYPE_CONNECT
 				Return NET_CONNECT
 			Case ENET_EVENT_TYPE_DISCONNECT
