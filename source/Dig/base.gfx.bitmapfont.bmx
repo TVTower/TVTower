@@ -1281,21 +1281,32 @@ endrem
 
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, effect:SDrawTextEffect)
-		Return DrawBox(txt, x, y, w, h, alignment, color, effect.Mode, effect.value)
-	End Method
-
-	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
-'		DrawBox(txt, x, y, w, h, alignment, color, new SVec2F(0,0), effectMode, effectValue)
-
+		'Return DrawBox(txt, x, y, w, h, alignment, color, effect.Mode, effect.value)
 		LockMutex(globalBoxParseInfoMutex)
 		globalBoxParseInfo.calculated = False
-		Local effect:SDrawTextEffect
-		effect.Mode = effectMode
-		effect.value = effectValue
 		DrawBox(txt, x, y, w, h, alignment, color, New SVec2F(0,0), globalBoxParseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
 		Local dim:SVec2I = GetBoxDimension(globalBoxParseInfo, effect, defaultDrawSettings)
 		UnlockMutex(globalBoxParseInfoMutex)
 		
+		Return dim
+	End Method
+
+
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
+'		DrawBox(txt, x, y, w, h, alignment, color, new SVec2F(0,0), effectMode, effectValue)
+		Local effect:SDrawTextEffect
+		effect.Mode = effectMode
+		effect.value = effectValue
+		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, effect)
+
+		rem
+		LockMutex(globalBoxParseInfoMutex)
+		globalBoxParseInfo.calculated = False
+		DrawBox(txt, x, y, w, h, alignment, color, New SVec2F(0,0), globalBoxParseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
+		Local dim:SVec2I = GetBoxDimension(globalBoxParseInfo, effect, defaultDrawSettings)
+		UnlockMutex(globalBoxParseInfoMutex)
+		EndRem
+
 		Return dim
 	End Method
 
