@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-2021 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -403,7 +403,8 @@ Type TLuaEngine
 
 
 	'===== CODE FROM MAXLUA ====
-	'but added _private / _expose ... checks
+	'but added _private / _expose ... checks, also added method/function
+	'identification with parameter offset handling and other things
 
 	Method getObjMetaTable:Int()
 		If Not _initDone
@@ -745,64 +746,150 @@ Type TLuaEngine
 	Method _Invoke:Int()
 		Local obj:Object = lua_unboxobject(getLuaState(), LUA_GLOBALSINDEX - 1)
 		Local funcOrMeth:TMember = TMember(lua_tolightobject(getLuaState(), LUA_GLOBALSINDEX - 2))
-		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) Then Throw "LuaEngine._Invoke() failed. No function/method given."
-		If Not obj Then Print "LuaEngine._Invoke() failed to run ~q"+funcOrMeth.name()+"~q. Invalid parent given."
+		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) 
+			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling failed. No function/method given.", LOG_ERROR)
+			Return False
+		EndIf
+		If Not obj 
+			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + funcOrMeth.name() + "()~q failed. No or invalid parent given.", LOG_ERROR)
+			Return False
+		EndIf
 		Local func:TFunction = TFunction(funcOrMeth)
 		Local mth:TMethod = TMethod(funcOrMeth)
-		Local tys:TTypeId[]
+		Local argTypes:TTypeId[]
+		If func Then argTypes = func.ArgTypes()
+		If mth Then argTypes = mth.ArgTypes()
+		Local args:Object[argTypes.length]
+		Local objType:TTypeID = TTypeID.ForObject(obj)
 
-		If func Then tys = func.ArgTypes()
-		If mth Then tys = mth.ArgTypes()
-		Local args:Object[tys.length]
+		'Reflection cannot handle "defaults", so all Lua calls need pass
+		'all arguments defined in the function or method
+		'ex. Function X:Int(a:int = 1, b:int = 2) still requires 2 passed
+		'    arguments 
+		'+1 arguments passed:  it might be a lua  method call
+		'                      (with the first argument being the 
+		'                       instance -> "obj").
+		'exact argument count: might still be a lua method call with one
+		'                      argument missing!
+		'less arguments or more than +2: incorrect usage
+		Local passedArgumentCount:Int = lua_gettop(getLuaState())
 
+		'Called as method or function?
+		'-----------------------------
+		'ignore first parameter?
+		'(in case of calling from Lua as "method": TVT:GetXYZ() the first
+		' parameter will be the "TVT" instance)
+		Local isLuaMethodCall:Int = False
+		if passedArgumentCount > 0
+			local paramObj:object
+			if lua_isnil(getLuaState(), 1)
+				paramObj = null
+			elseif lua_isuserdata(getLuaState(), 1)
+				paramObj = lua_unboxobject(getLuaState(), 1)
+			EndIf
+		
+			'first passed parameter is the same as the parent of the called
+			'method/function? Might be a lua method call
+			if paramObj = obj
+				if passedArgumentCount = args.length + 1
+					isLuaMethodCall = True
+				EndIf
+				'Maybe first param was forgotten but has to be of same
+				'type as instance?
+				'BlitzMax: Type TTest; Method MyMethod(t:TTest)
+				'Lua: TVT:MyMethod()  -> blitzmax sees "TVT" as first arg
+				'                        and could think it was called as
+				'                        function with "TVT" as argument
+				'Lua: TVT.MyMethod()  -> blitzmax sees no argument
+				'                        it could correctly fail (wrong arg amount)
+				If passedArgumentCount = args.length and argTypes[0] = objType
+					isLuaMethodCall = False
+					TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
+				EndIf
+			endif
+		Endif
+		if isLuaMethodCall then passedArgumentCount :- 1
+		
+
+		If passedArgumentCount <> args.length
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + args.length+" argument(s) required.", LOG_ERROR)
+			Return False
+		EndIf
+
+
+'debug information
+rem				
+	Local objName:String = "~qunknown type~q"
+	if objType Then objName = objType.Name()
+	
+	if isLuaMethodCall
+		print "_Invoke() Meth: " + objName + "."+funcOrMeth.name()
+	else
+		print "_Invoke() Func: " + objName + "."+funcOrMeth.name()
+	endif
+endrem
+
+		'ignore first param for lua method calls
+		Local luaArgsOffset:Int = 0
+		if isLuaMethodCall then luaArgsOffset = 1
+
+		Local invalidArgs:Int = 0
 		For Local i:Int = 0 Until args.length
-			Select tys[i]
+			Select argTypes[i]
 				Case IntTypeId, ShortTypeId, ByteTypeId
-					?ptr64
-						args[i] = String.FromLong(lua_tointeger(getLuaState(), i + 1))
-					?Not ptr64
-						args[i] = String.FromInt(int(lua_tointeger(getLuaState(), i + 1)))
-					?
+					if lua_isboolean(getLuaState(), i + luaArgsOffset + 1)
+						args[i] = String.FromInt(int(lua_toboolean(getLuaState(), i + luaArgsOffset + 1)))
+					else
+						?ptr64
+							args[i] = String.FromLong(lua_tointeger(getLuaState(), i + luaArgsOffset + 1))
+						?Not ptr64
+							args[i] = String.FromInt(int(lua_tointeger(getLuaState(), i + luaArgsOffset + 1)))
+						?
+					endif
 				Case LongTypeId
 ?not ptr64
 Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
 ?
-					args[i] = String.FromLong(Long(lua_tonumber(getLuaState(), i + 1)))
+					if lua_isboolean(getLuaState(), i + luaArgsOffset + 1)
+						args[i] = String.FromInt(int(lua_toboolean(getLuaState(), i + luaArgsOffset + 1)))
+					else
+						args[i] = String.FromLong(Long(lua_tonumber(getLuaState(), i + luaArgsOffset + 1)))
+					endif
 				Case FloatTypeId
-					args[i] = String.FromFloat(Float(lua_tonumber(getLuaState(), i + 1)))
+					args[i] = String.FromFloat(Float(lua_tonumber(getLuaState(), i + luaArgsOffset + 1)))
 				Case DoubleTypeId
 ?not ptr64
 Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
 ?
-					args[i] = String.FromDouble(lua_tonumber(getLuaState(), i + 1))
+					args[i] = String.FromDouble(lua_tonumber(getLuaState(), i + luaArgsOffset + 1))
 				Case StringTypeId
-					args[i] = lua_tostring(getLuaState(), i + 1)
+					args[i] = lua_tostring(getLuaState(), i + luaArgsOffset + 1)
 				Default
-					If lua_isnil(getLuaState(), i + 1)
-						args[i] = Null
-					Else
-						args[i] = lua_unboxobject(getLuaState(), i + 1)
-					EndIf
-Rem
-					if lua_isnil(getLuaState(), i + 1)
-						'print "LUA: "+funcOrMeth.name()+"() got null param #"+i+"."
-						args[i] = null
-					elseif lua_isuserdata(getLuaState(), i + 1)
-						local obj:object = lua_unboxobject(getLuaState(), i + 1)
-						'given param derives from requested param type
-						if TTypeID.ForObject(obj).ExtendsType(tys[i])
-							args[i] = obj
-						else
-							TLogger.Log("TLuaEngine", "[Engine " + id + "] LuaEngine._Invoke() - "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q, got ~q"+TTypeID.ForObject(obj).name()+"~q). Falling back to ~qNull~q.", LOG_DEBUG)
-							args[i] = null
+					local paramObj:object
+					if lua_isnil(getLuaState(), i + luaArgsOffset + 1)
+						paramObj = null
+					elseif lua_isuserdata(getLuaState(), i + luaArgsOffset + 1)
+						paramObj = lua_unboxobject(getLuaState(), i + luaArgsOffset + 1)
+						Local paramObjType:TTypeID = TTypeID.ForObject(paramObj)
+						'given param does not derive from requested param type (so incompatible)
+						if not paramObjType or not paramObjType.ExtendsType(argTypes[i])
+							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
+							invalidArgs :+ 1
+							paramObj = Null
 						endif
 					else
-						TLogger.Log("TLuaEngine", "[Engine " + id + "] LuaEngine._Invoke() - "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q. Falling back to ~qNull~q.", LOG_DEBUG)
-						args[i] = null
+						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
+						invalidArgs :+ 1
+						paramObj = null
 					endif
-endrem
+					args[i] = paramObj
 			End Select
 		Next
+		'stop execution if an argument did not fit
+		if invalidArgs > 0
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + funcOrMeth.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
+			Return False
+		EndIf
 
 		Local t:Object
 		?Not bmxng

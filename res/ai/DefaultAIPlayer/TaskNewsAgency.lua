@@ -144,7 +144,7 @@ end
 
 
 function TaskNewsAgency:BudgetMaximum()
-	local money = MY.GetMoney(-1)
+	local money = TVT.GetMoney()
 	if money <= 500000 then
 		return math.max(50000, math.floor(money / 10))
 	elseif money < 1000000 then

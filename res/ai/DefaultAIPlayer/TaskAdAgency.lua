@@ -107,7 +107,7 @@ function TaskAdAgency.SortAdContractsByAttraction(list)
 		-- precache complex weight calculation
 		local weights = {}
 		for k,v in pairs(list) do
-			weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfitCPM() * (0.8 + 0.2 * 1.0/v.GetPenaltyCPM())
+			weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfitCPM(TVT.ME) * (0.8 + 0.2 * 1.0/v.GetPenaltyCPM(TVT.ME))
 		end
 
 		-- sort
@@ -372,7 +372,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 --[[
 debugMsg("sort contractlist for " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()) .. "  entries=" .. table.count(filteredList))
 for key, adContract in pairs(filteredList) do
-	debugMsg(" - " .. adContract.GetTitle() .. "   minAudience=" .. adContract.GetMinAudience() .. "  spots=" .. adContract.GetSpotCount() .. "  profit=" .. adContract.GetProfit(TVT.ME))
+	debugMsg(" - " .. adContract.GetTitle() .. "   minAudience=" .. adContract.GetMinAudience(TVT.ME) .. "  spots=" .. adContract.GetSpotCount() .. "  profit=" .. adContract.GetProfit(TVT.ME))
 end
 --]]
 	for key, adContract in pairs(filteredList) do
@@ -490,9 +490,9 @@ function SignContracts:Tick()
 				openSpots = openSpots - contract.GetSpotCount()
 				contractsAllowed = contractsAllowed - 1
 
-				debugMsg("Signed an \"low audience\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience())
+				debugMsg("Signed an \"low audience\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience(TVT.ME))
 			else
-				debugMsg("FAILED signing an \"low audience\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience() .. ". Failure code: " .. result)
+				debugMsg("FAILED signing an \"low audience\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience(TVT.ME) .. ". Failure code: " .. result)
 			end
 
 
@@ -522,11 +522,11 @@ function SignContracts:Tick()
 				openSpots = openSpots - contract.GetSpotCount()
 				contractsAllowed = contractsAllowed - 1
 
-				debugMsg("Signed a \"good\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience())
+				debugMsg("Signed a \"good\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience(TVT.ME))
 
 				if openSpots <= 0 or contractsAllowed <= 0 then break end
 			else
-				debugMsg("FAILED signing a \"good\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience() .. ". Failure code: " .. result)
+				debugMsg("FAILED signing a \"good\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience(TVT.ME) .. ". Failure code: " .. result)
 			end
 		end
 	end

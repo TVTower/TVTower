@@ -519,7 +519,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable
 		else
-			debugMsg("CheckMovieBuyConditions (single licence) not met.  price: " .. licence.GetPrice() .. " > " .. self.MovieMaxPrice .."   quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", self.DayMovieMinQuality) )
+			debugMsg("CheckMovieBuyConditions (single licence) not met.  price: " .. licence.GetPrice(TVT.ME) .. " > " .. self.MovieMaxPrice .."   quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", self.DayMovieMinQuality) )
 			debugMsgDepth(-1)
 			return
 		end
@@ -528,7 +528,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 			pricePerBlockStats = stats.SeriesPricePerBlockAcceptable
 			qualityStats = stats.SeriesQualityAcceptable
 		else
-			debugMsg("CheckMovieBuyConditions (series) not met.  price: " .. licence.GetPrice() .. " > " .. self.SeriesMaxPrice .."   quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", self.DaySeriesMinQuality) )
+			debugMsg("CheckMovieBuyConditions (series) not met.  price: " .. licence.GetPrice(TVT.ME) .. " > " .. self.SeriesMaxPrice .."   quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", self.DaySeriesMinQuality) )
 
 			debugMsgDepth(-1)
 			return

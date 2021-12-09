@@ -489,15 +489,15 @@ end
 
 
 function BusinessStats:AddSpot(spot)
-	local profitCPM = 1000 * spot.GetProfit() / spot.GetMinAudience()
-	local penaltyCPM = 1000 * spot.GetPenalty() / spot.GetMinAudience()
+	local profitCPM = 1000 * spot.GetProfit(TVT.ME) / spot.GetMinAudience(TVT.ME)
+	local penaltyCPM = 1000 * spot.GetPenalty(TVT.ME) / spot.GetMinAudience(TVT.ME)
 
 	self.SpotProfitCPM:AddValue(profitCPM)
 	self.SpotProfitCPMPerSpot:AddValue(profitCPM / spot.GetSpotCount())
 
 	-- only add simple spots for now (without target groups / limits)
 	if (spot.GetLimitedToTargetGroup() <= 0) and (spot.GetLimitedToProgrammeGenre() <= 0) and (spot.GetLimitedToProgrammeFlag() <= 0) then
-		if (spot.GetMinAudience() < globalPlayer.Stats.Audience.MaxValue) then
+		if (spot.GetMinAudience(TVT.ME) < globalPlayer.Stats.Audience.MaxValue) then
 			self.SpotProfitCPMPerSpotAcceptable:AddValue(profitCPM / spot.GetSpotCount())
 			self.SpotPenaltyCPMPerSpotAcceptable:AddValue(penaltyCPM / spot.GetSpotCount())
 		end

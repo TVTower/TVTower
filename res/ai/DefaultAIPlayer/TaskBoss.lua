@@ -40,8 +40,8 @@ end
 function TaskBoss:BeforeBudgetSetup()
 	self:CalculateFixedCosts()
 
-	local money = MY.GetMoney()
-	local credit = MY.GetCredit()
+	local money = TVT.GetMoney()
+	local credit = MY.GetCredit(-1)
 	if (money - credit) > 350000 then
 		if credit > 100000 then
 			self.NeededInvestmentBudget = 100000
@@ -93,15 +93,15 @@ end
 
 
 function JobCheckCredit:Prepare(pParams)
-	if MY.GetMoney() < 0 then
+	if TVT.GetMoney() < 0 then
 		-- ATTENTION: money might change until "tick()", we could handle
 		-- it but this behaviour seems more "natural" (to not see the
 		-- money change in time)
 		-- try to at least become "positive" again
-		self.Task.TryToGetCredit = math.min( math.abs(MY.GetMoney()), TVT.bo_getCreditAvailable() )
+		self.Task.TryToGetCredit = math.min( math.abs(TVT.GetMoney()), TVT.bo_getCreditAvailable() )
 	end
 	if self.Task.NeededInvestmentBudget > 0 then
-		self.Task.TryToRepayCredit = math.max(0, math.min(MY.GetMoney(), self.Task.NeededInvestmentBudget))
+		self.Task.TryToRepayCredit = math.max(0, math.min(TVT.GetMoney(), self.Task.NeededInvestmentBudget))
 	end
 
 
@@ -118,8 +118,8 @@ function JobCheckCredit:Tick()
 	-- REPAY credit
 	if self.Task.TryToRepayCredit > 0 then
 		local repay = self.Task.TryToRepayCredit
-		if repay > MY.GetCredit() then
-			repay = MY.GetCredit()
+		if repay > MY.GetCredit(-1) then
+			repay = MY.GetCredit(-1)
 		end
 
 		if TVT.bo_doRepayCredit(repay) == TVT.RESULT_OK then

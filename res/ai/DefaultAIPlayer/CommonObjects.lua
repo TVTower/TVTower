@@ -3,7 +3,7 @@
 -- Movie ist jetzt nur noch ein Wrapper
 
 function CheckMovieBuyConditions(licence, maxPrice, minQuality)
-	if maxPrice ~= nil and (licence.GetPrice() > maxPrice) then return false; end
+	if maxPrice ~= nil and (licence.GetPrice(-1) > maxPrice) then return false; end
 	if (minQuality ~= nil) and (licence.GetQuality() < minQuality) then return false; end
 	return true
 end
@@ -54,11 +54,11 @@ function FilterAdContractsByMinAudience(contractList, minAudienceMin, minAudienc
 
 			-- adjust guessed audience if only specific target groups count
 			if (v.GetLimitedToTargetGroup() > 0) then
-				if addIt and v.GetMinAudience() < minAudienceMin.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
-				if addIt and v.GetMinAudience() > minAudienceMax.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
+				if addIt and v.GetMinAudience(TVT.ME) < minAudienceMin.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
+				if addIt and v.GetMinAudience(TVT.ME) > minAudienceMax.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
 			else
---debugMsg("  - " .. v.GetTitle() .. ": " .. v.GetMinAudience() .. " < " .. minAudienceMinSum .." or " .. v.GetMinAudience() .." > " .. minAudienceMaxSum .. "   ?")
-				if addIt and v.GetMinAudience() < minAudienceMinSum or v.GetMinAudience() > minAudienceMaxSum then addIt = false end
+--debugMsg("  - " .. v.GetTitle() .. ": " .. v.GetMinAudience(TVT.ME) .. " < " .. minAudienceMinSum .." or " .. v.GetMinAudience() .." > " .. minAudienceMaxSum .. "   ?")
+				if addIt and v.GetMinAudience(TVT.ME) < minAudienceMinSum or v.GetMinAudience(TVT.ME) > minAudienceMaxSum then addIt = false end
 			end
 
 			if addIt and table.contains(forbiddenIDs, v.GetID()) then addIt = false end

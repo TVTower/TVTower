@@ -97,8 +97,8 @@ function TaskStationMap:GetAverageStationRunningCostPerPerson()
 			local station = TVT.of_getStationAtIndex(i, stationIndex)
 			if station ~= nil then
 				totalCost = totalCost + station.GetRunningCosts()
-				totalReach = totalReach + station.GetExclusiveReach()
-				--totalReach = totalReach + station.GetReach()
+				totalReach = totalReach + station.GetExclusiveReach(false)
+				--totalReach = totalReach + station.GetReach(false)
 			end
 		end
 	end
@@ -221,8 +221,8 @@ function JobBuyStation:Prepare(pParams)
 	local player = _G["globalPlayer"]
 	local ignoreBudgetChance = 100 - (8-player.ExpansionPriority)*math.min(TVT.of_getStationCount(TVT.ME)-1,10)
 	debugMsg("  ignoreBudgetChance: " ..ignoreBudgetChance)
-	if MY.GetMoney() > 1000000 and math.random(0,100) < ignoreBudgetChance then
-		self.Task.CurrentBudget = (0.35 + 0.06*player.ExpansionPriority) * MY.GetMoney()
+	if TVT.GetMoney() > 1000000 and math.random(0,100) < ignoreBudgetChance then
+		self.Task.CurrentBudget = (0.35 + 0.06*player.ExpansionPriority) * TVT.GetMoney()
 		debugMsg("  raised current budget to " .. self.Task.CurrentBudget .." to buy a station because 'we want it'.")
 	end
 
@@ -256,7 +256,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(i)
 				if tempStation then
 					local price = tempStation.GetTotalBuyPrice()
-					local pricePerViewer = tempStation.GetExclusiveReach() / price
+					local pricePerViewer = tempStation.GetExclusiveReach(false) / price
 					local priceDiff = self.Task.CurrentBudget - price
 					--little influence by the amount of how well the budget is "used"
 					--to avoid buying too many stations (upkeep!)
@@ -271,7 +271,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 		end
 	end
 	if bestOffer then
-		debugMsg(" - best cable network " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+		debugMsg(" - best cable network " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach(false) .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach(false) / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
 	else
 		debugMsg(" -> no best cable network found")
 	end
@@ -296,7 +296,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 				local tempStation = TVT.of_GetTemporarySatelliteUplinkStation(i)
 				if tempStation then
 					local price = tempStation.GetTotalBuyPrice()
-					local pricePerViewer = tempStation.GetExclusiveReach() / price
+					local pricePerViewer = tempStation.GetExclusiveReach(false) / price
 					local priceDiff = self.Task.CurrentBudget - price
 					--little influence by the amount of how well the budget is "used"
 					--to avoid buying too many stations (upkeep!)
@@ -306,7 +306,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 						bestOffer = tempStation
 						bestAttraction = attraction
 
-						debugMsg(" - new best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+						debugMsg(" - new best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach(false) .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach(false) / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
 						debugMsg("   -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
 					end
 				end
@@ -314,7 +314,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 		end
 	end
 	if bestOffer ~= nil then
-		debugMsg(" -> best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+		debugMsg(" -> best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach(false) .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach(false) / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
 	else
 		debugMsg(" -> no best satellite found")
 	end
@@ -389,30 +389,30 @@ function JobBuyStation:GetBestAntennaOffer()
 
 		--1) outside
 		elseif tempStation.GetPrice() < 0 then
---			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> outside of map!")
+--			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach(false) .. "  exclusive/increase: " .. tempStation.GetExclusiveReach(false) .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach(false) / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> outside of map!")
 			tempStation = nil
 
 		--2) price to high
 		elseif tempStation.GetPrice() > self.Task.CurrentBudget then
-			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> too expensive!")
+			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach(false) .. "  exclusive/increase: " .. tempStation.GetExclusiveReach(false) .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach(false) / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> too expensive!")
 			tempStation = nil
 
 		--3) relative increase to low (at least 35% required)
-		elseif tempStation.GetRelativeExclusiveReach() < 0.35 then
-			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "(" .. tempStation.GetRelativeExclusiveReach()..")" .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> not enough reach increase!")
+		elseif tempStation.GetRelativeExclusiveReach(false) < 0.35 then
+			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach(false) .. "  exclusive/increase: " .. tempStation.GetExclusiveReach(false) .. "(" .. tempStation.GetRelativeExclusiveReach(false)..")" .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach(false) / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> not enough reach increase!")
 			tempStation = nil
 
 		--4) absolute increase too low
-		--elseif tempStation.GetExclusiveReach() < 1500 then
+		--elseif tempStation.GetExclusiveReach(false) < 1500 then
 		--	tempStation = nil
 
 		--5)  reach to low (at least 75.000 required)
-		elseif tempStation.GetReach() < 75000 then
-			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> not enough absolute reach!")
+		elseif tempStation.GetReach(false) < 75000 then
+			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach(false) .. "  exclusive/increase: " .. tempStation.GetExclusiveReach(false) .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach(false) / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> not enough absolute reach!")
 			tempStation = nil
 
 		else
-			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> OK!")
+			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach(false) .. "  exclusive/increase: " .. tempStation.GetExclusiveReach(false) .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach(false) / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() .. " -> OK!")
 		end
 
 
@@ -421,7 +421,7 @@ function JobBuyStation:GetBestAntennaOffer()
 			-- GetTotalBuyPrice() includes potential fees for a required
 			-- permission.
 			local price = tempStation.GetTotalBuyPrice()
-			local pricePerViewer = tempStation.GetExclusiveReach() / price
+			local pricePerViewer = tempStation.GetExclusiveReach(false) / price
 			local priceDiff = self.Task.CurrentBudget - price
 			--little influence by the amount of how well the budget is "used"
 			--to avoid buying too many stations (upkeep!)
@@ -462,13 +462,13 @@ function JobBuyStation:Tick()
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
 		if bestOffer == bestAntennaOffer then
-			debugMsg(" Buying antenna station in " .. bestOffer.GetSectionName() .. " at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
+			debugMsg(" Buying antenna station in " .. bestOffer.GetSectionName(false) .. " at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
 			TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		elseif bestOffer == bestSatelliteOffer then
-			debugMsg(" Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
+			debugMsg(" Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
 			--TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		elseif bestOffer == bestCableNetworkOffer then
-			debugMsg(" Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
+			debugMsg(" Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
 			--TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		end
 

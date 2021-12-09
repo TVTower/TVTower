@@ -42,7 +42,7 @@ function BudgetManager:Initialize()
 	-- Right at start there are no empirical values for required budgets
 	-- so assume the same for all of them. Budget equals to XX% of
 	-- capital at begin of the game
-	local playerMoney = MY.GetMoney()
+	local playerMoney = TVT.GetMoney()
 	local startBudget = math.round(playerMoney * 0.90)
 
 
@@ -71,7 +71,7 @@ end
 -- Method is run at the begin of each day
 function BudgetManager:CalculateNewDayBudget()
 	debugMsg("=== Budget day " .. TVT.GetDaysRun() .. " ===")
-	debugMsg(string.left("Account balance:", 25, true) .. string.right(MY.GetMoney(), 10, true))
+	debugMsg(string.left("Account balance:", 25, true) .. string.right(TVT.GetMoney(), 10, true))
 
 	-- postpone empirical budget values one day backwards (new one incoming)
 	self.BudgetHistory[TIME_OLDDAY_3] = self.BudgetHistory[TIME_OLDDAY_2]
@@ -84,7 +84,7 @@ function BudgetManager:CalculateNewDayBudget()
 	self.AccountBalanceHistory[TIME_OLDDAY_1] = self.AccountBalanceHistory[TIME_TODAY]
 
 	-- update current values
-	self.AccountBalanceHistory[TIME_TODAY] = MY.GetMoney()
+	self.AccountBalanceHistory[TIME_TODAY] = TVT.GetMoney()
 	self.BudgetMinimum = self.BudgetMinimum * 1.01
 	self.BudgetMaximum = self.AccountBalanceHistory[TIME_TODAY] * 0.95
 
@@ -109,9 +109,9 @@ function BudgetManager:UpdateBudget(pBudget)
 	local player = _G["globalPlayer"]
 	local bossTask = player.TaskList[TASK_BOSS]
 	if bossTask ~= nil and bossTask.GuessCreditAvailable > 0 then
-		if MY.GetMoney() < 100000 then
+		if TVT.GetMoney() < 100000 then
 			bossTask.SituationPriority = 5
-		elseif MY.GetMoney() < 0 then
+		elseif TVT.GetMoney() < 0 then
 			bossTask.SituationPriority = 15
 		end
 	end
@@ -304,7 +304,7 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 	if renewBudget == true then
 		-- do not allow a negative profit
 		local todaysProfit = math.max(0, MY.GetFinance(-1).GetCurrentProfit())
-		local budgetNow = self:CalculateAverageBudget(MY.GetMoney(), todaysProfit)
+		local budgetNow = self:CalculateAverageBudget(TVT.GetMoney(), todaysProfit)
 
 		--update budget when at least 15.000 Euro difference since last
 		--adjustment
