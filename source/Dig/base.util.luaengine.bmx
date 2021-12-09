@@ -403,7 +403,8 @@ Type TLuaEngine
 
 
 	'===== CODE FROM MAXLUA ====
-	'but added _private / _expose ... checks
+	'but added _private / _expose ... checks, also added method/function
+	'identification with parameter offset handling and other things
 
 	Method getObjMetaTable:Int()
 		If Not _initDone
@@ -759,6 +760,7 @@ Type TLuaEngine
 		If func Then argTypes = func.ArgTypes()
 		If mth Then argTypes = mth.ArgTypes()
 		Local args:Object[argTypes.length]
+		Local objType:TTypeID = TTypeID.ForObject(obj)
 
 		'Reflection cannot handle "defaults", so all Lua calls need pass
 		'all arguments defined in the function or method
@@ -800,9 +802,9 @@ Type TLuaEngine
 				'                        function with "TVT" as argument
 				'Lua: TVT.MyMethod()  -> blitzmax sees no argument
 				'                        it could correctly fail (wrong arg amount)
-				If passedArgumentCount = args.length
+				If passedArgumentCount = args.length and argTypes[0] = objType
 					isLuaMethodCall = False
-					TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + TTypeID.ForObject(obj).name() + "." + funcOrMeth.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
+					TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
 				EndIf
 			endif
 		Endif
@@ -810,7 +812,7 @@ Type TLuaEngine
 		
 
 		If passedArgumentCount <> args.length
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + TTypeID.ForObject(obj).name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + args.length+" argument(s) required.", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + args.length+" argument(s) required.", LOG_ERROR)
 			Return False
 		EndIf
 
@@ -818,8 +820,7 @@ Type TLuaEngine
 'debug information
 rem				
 	Local objName:String = "~qunknown type~q"
-	local objT:TTypeID = TTypeID.ForObject(obj)
-	if objT Then objName = objT.Name()
+	if objType Then objName = objType.Name()
 	
 	if isLuaMethodCall
 		print "_Invoke() Meth: " + objName + "."+funcOrMeth.name()
@@ -865,12 +866,12 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 						Local paramObjType:TTypeID = TTypeID.ForObject(paramObj)
 						'given param does not derive from requested param type (so incompatible)
 						if not paramObjType or not paramObjType.ExtendsType(argTypes[i])
-							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + TTypeID.ForObject(obj).name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
+							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
 							invalidArgs :+ 1
 							paramObj = Null
 						endif
 					else
-						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + TTypeID.ForObject(obj).name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
+						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
 						invalidArgs :+ 1
 						paramObj = null
 					endif
@@ -879,7 +880,7 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 		Next
 		'stop execution if an argument did not fit
 		if invalidArgs > 0
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + TTypeID.ForObject(obj).name() + "." + funcOrMeth.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + funcOrMeth.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
 			Return False
 		EndIf
 
