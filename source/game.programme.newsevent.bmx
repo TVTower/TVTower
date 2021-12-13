@@ -201,17 +201,27 @@ Type TNewsEventCollection
 	
 	Method ScheduleTimedInitialNews()
 		Local scheduledCount:int = 0
+		Local happenOnStartNews:TNewsEvent[]
 		For local n:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().GetUnusedInitialTemplates()
 			If n.happenTime >= 0 and n.IsAvailableAtHappenTime()
 				local news:TNewsEvent = New TNewsEvent.InitFromTemplate(n)
 				If news
 					scheduledCount :+ 1
 					Add(news)
+
+					if n.happenTime = 0 'planned to execute right on start
+						scheduledCount :- 1
+						happenOnStartNews :+ [news]
+					EndIf
 				EndIf
 			EndIf
 		Next
 
-		TLogger.Log("ScheduleTimedInitialNews()", "Pre-Created " + scheduledCount + " news happening at fixed time in the future.", LOG_DEBUG)
+		For local n:TNewsEvent = EachIn happenOnStartNews
+			n.doHappen(GetWorldTime().GetTimeGone())
+		Next
+
+		TLogger.Log("ScheduleTimedInitialNews()", "Pre-Created " + scheduledCount + " news happening at fixed time in the future and " + happenOnStartNews.length + " happening right now.", LOG_DEBUG)
 	End Method
 
 
