@@ -3229,33 +3229,34 @@ Type TDebugProgrammePlanInfos
 
 			'indicate reached / required audience
 			If hour < currHour And TAdvertisement(advertisement) And audienceResult
-				Local reachedAudience:Int = audienceResult.audience.GetTotalSum()
+				Local reachedAudience:Int = audienceResult.audience.GetTotalValue(TAdvertisement(advertisement).contract.GetLimitedToTargetGroup())
 				Local adMinAudience:Int = TAdvertisement(advertisement).contract.GetMinAudience()
-				If reachedAudience < adMinAudience
-					SetColor 255,160,160
-					SetAlpha 0.75 * oldAlpha
-					DrawRect(adSlotX, y + hour * lineHeight + lineHeight - 4, adSlotWidth * Min(1.0,  reachedAudience / Float(adMinAudience)), 2)
-				ElseIf reachedAudience > adMinAudience
-					SetColor 160,160,255
-					SetAlpha 0.75 * oldAlpha
-					DrawRect(adSlotX, y + hour * lineHeight + lineHeight - 4, adSlotWidth * Min(1.0,  Float(adMinAudience) / reachedAudience), 2)
-				Else
-					SetColor 180,255,160
-					SetAlpha 0.75 * oldAlpha
-					DrawRect(adSlotX, y + hour * lineHeight + lineHeight - 4, adSlotWidth, 2)
-				EndIf
+				local passingRequirements:String = TAdvertisement(advertisement).isPassingRequirements(TAudienceResult(audienceResult))
+				local ratio:Float = Float(adMinAudience) / reachedAudience
+				if adMinAudience > reachedAudience then ratio = reachedAudience / Float(adMinAudience)
+				Select passingRequirements
+					case "OK"
+						SetColor 160,160,255
+					default
+						SetColor 255,160,160
+				End Select
+				SetAlpha 0.75 * oldAlpha
+				DrawRect(adSlotX, y + hour * lineHeight + lineHeight - 4, adSlotWidth * Min(1.0,  ratio), 2)
 			EndIf
 
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
 			font.Draw( RSet(hour,2).Replace(" ", "0"), x + 2, y + hour*lineHeight + lineTextDY)
+			Local fontColor:SColor8
 			If programme Then SetStateColor(programme)
-			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 60, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
-			font.DrawBox( progString2, programmeSlotX, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
+			GetColor(fontColor)
+			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 60, lineTextHeight, sALIGN_LEFT_TOP, fontColor)
+			font.DrawBox( progString2, programmeSlotX, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, fontColor)
 			If advertisement Then SetStateColor(advertisement)
-			font.DrawBox( adString, adSlotX + 2, y + hour*lineHeight + lineTextDY, adSlotWidth - 30, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
-			font.DrawBox( adString2, adSlotX, y + hour*lineHeight + lineTextDY, adSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
+			GetColor(fontColor)
+			font.DrawBox( adString, adSlotX + 2, y + hour*lineHeight + lineTextDY, adSlotWidth - 30, lineTextHeight, sALIGN_LEFT_TOP, fontColor)
+			font.DrawBox( adString2, adSlotX, y + hour*lineHeight + lineTextDY, adSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, fontColor)
 			SetColor 255,255,255
 		Next
 
