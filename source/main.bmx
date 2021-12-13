@@ -1193,10 +1193,10 @@ Type TApp
 					If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
 					If KeyManager.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
 				Else
-					If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
-					If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
-					If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
-					If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+					If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1); TInGameInterface.GetInstance().showChannel=1
+					If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2); TInGameInterface.GetInstance().showChannel=2
+					If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3); TInGameInterface.GetInstance().showChannel=3
+					If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4); TInGameInterface.GetInstance().showChannel=4
 				EndIf
 
 

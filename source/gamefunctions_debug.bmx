@@ -14,6 +14,7 @@ Type TDebugScreen
 	Field playerCommandTaskButtons:TDebugControlsButton[]
 	Field playerCommandAIButtons:TDebugControlsButton[]
 	Field buttonsPlayerFinancials:TDebugControlsButton[]
+	Field buttonsBroadCast:TDebugControlsButton[]
 	Field buttonsAdAgency:TDebugControlsButton[]
 	Field buttonsMovieVendor:TDebugControlsButton[]
 	Field buttonsNewsAgency:TDebugControlsButton[]
@@ -445,6 +446,16 @@ Type TDebugScreen
 	'=== PLAYER BROADCASTS ===
 
 	Method InitMode_PlayerBroadcasts()
+		Local texts:String[] = ["< Day", "Today", "Day >"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = CreateActionButton(i, texts[i])
+			button._onClickHandler = debugProgrammePlanInfos.OnButtonClickHandler_Broadcast
+			button.x = 145 + 110*i
+			button.y = 364
+			button.w = 100
+			buttonsBroadcast :+ [button]
+		Next
 	End Method
 
 
@@ -453,6 +464,9 @@ Type TDebugScreen
 
 		debugProgrammePlanInfos.Update(playerID, sideButtonPanelWidth + 5, 13)
 		debugProgrammeCollectionInfos.Update(playerID, sideButtonPanelWidth + 5 + 350, 13)
+		For Local b:TDebugControlsButton = EachIn buttonsBroadCast
+			b.Update()
+		Next
 	End Method
 
 
@@ -461,6 +475,9 @@ Type TDebugScreen
 
 		debugProgrammePlanInfos.Draw(playerID, sideButtonPanelWidth + 5, 13)
 		debugProgrammeCollectionInfos.Draw(playerID, sideButtonPanelWidth + 5 + 350, 13)
+		For Local b:TDebugControlsButton = EachIn buttonsBroadCast
+			b.Render()
+		Next
 	End Method
 
 	Method CreateActionButton:TDebugControlsButton(index:int, text:String)
@@ -2814,13 +2831,14 @@ Type TDebugProgrammeCollectionInfos
 		If Not initialized Then Initialize()
 
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
-		Local lineHeight:Int = 12
+		Local lineHeight:Int = 11
 		Local lineTextDY:Int = -3
 		Local lineTextHeight:Int = 15
 		Local lineWidth:Int = 160
 		Local adLineWidth:Int = 145
 		Local adLeftX:Int = 165
 		Local font:TBitmapFont = GetBitmapFont("default", 10)
+		Local initialY:Int = y
 
 		'clean up if needed
 		If oldestEntryTime >= 0 And oldestEntryTime + 3000 < Time.GetTimeGone() Then RemoveOutdated()
@@ -2830,56 +2848,7 @@ Type TDebugProgrammeCollectionInfos
 
 		Local entryPos:Int = 0
 		Local oldAlpha:Float = GetAlpha()
-		For Local l:TProgrammeLicence = EachIn availableProgrammeLicences.Values() 'collection.GetProgrammeLicences()
-			If l.owner <> playerID Then Continue
-			'skip starting programme
-			If Not l.isControllable() Then Continue
 
-			Local oldAlpha:Float = GetAlpha()
-			If entryPos Mod 2 = 0
-				SetColor 0,0,0
-			Else
-				SetColor 60,60,60
-			EndIf
-			SetAlpha 0.75 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
-
-			Local changedTime:Int = GetChangedTime(l.GetGUID(), TVTBroadcastMaterialType.PROGRAMME)
-			If changedTime <> 0
-				SetColor 255,235,20
-				Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
-				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
-				SetBlend LIGHTBLEND
-				DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
-				SetBlend ALPHABLEND
-			EndIf
-
-			'draw in topicality
-			SetColor 200,50,50
-			SetAlpha 0.65 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetMaxTopicality(), 2)
-			SetColor 240,80,80
-			SetAlpha 0.85 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetTopicality(), 2)
-
-			SetAlpha oldalpha
-			SetColor 255,255,255
-
-			Local progString:String = l.GetTitle()
-			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
-
-			Local attString:String = ""
-'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetGUID()))
-			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
-			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
-
-			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
-
-			entryPos :+ 1
-		Next
-
-		lineHeight = 11
-		entryPos = 0
 		For Local a:TAdContract = EachIn availableAdContracts.Values() 'collection.GetAdContracts()
 			If a.owner <> playerID Then Continue
 
@@ -2937,6 +2906,65 @@ Type TDebugProgrammeCollectionInfos
 
 			entryPos :+ 1
 		Next
+
+		Local countractCount:Int = entryPos
+		entryPos = 0
+		lineHeight = 12
+
+		For Local l:TProgrammeLicence = EachIn availableProgrammeLicences.Values() 'collection.GetProgrammeLicences()
+			If l.owner <> playerID Then Continue
+			'skip starting programme
+			If Not l.isControllable() Then Continue
+			'skip individual episodes
+			If l.isEpisode Then Continue
+
+			Local oldAlpha:Float = GetAlpha()
+			If entryPos Mod 2 = 0
+				SetColor 0,0,0
+			Else
+				SetColor 60,60,60
+			EndIf
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
+
+			Local changedTime:Int = GetChangedTime(l.GetGUID(), TVTBroadcastMaterialType.PROGRAMME)
+			If changedTime <> 0
+				SetColor 255,235,20
+				Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
+				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
+				SetBlend LIGHTBLEND
+				DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
+				SetBlend ALPHABLEND
+			EndIf
+
+			'draw in topicality
+			SetColor 200,50,50
+			SetAlpha 0.65 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetMaxTopicality(), 2)
+			SetColor 240,80,80
+			SetAlpha 0.85 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetTopicality(), 2)
+
+			SetAlpha oldalpha
+			SetColor 255,255,255
+
+			Local progString:String = l.GetTitle()
+			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
+
+			Local attString:String = ""
+'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetGUID()))
+			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
+			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
+
+			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
+
+			entryPos :+ 1
+			If entryPos = 31
+				x:+adLeftX
+				y = initialY - 9 * lineHeight - ( 11 - countractCount) * 2 * lineHeight
+			EndIf
+		Next
+
 		SetAlpha oldAlpha
 		SetColor 255,255,255
 	End Method
@@ -2959,6 +2987,8 @@ Type TDebugProgrammePlanInfos
 	Global programmeSlotWidth:Int = 200
 	Global clockSlotWidth:Int = 15
 	Global slotPadding:Int = 3
+	Global dayShown:Int = -1
+	Global showCurrent:Int = 1
 
 	Method New()
 		EventManager.UnregisterListenersArray(_eventListeners)
@@ -3059,10 +3089,10 @@ Type TDebugProgrammePlanInfos
 
 	Function Draw(playerID:Int, x:Int, y:Int)
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
-		Local currDay:Int = GetWorldTime().GetDay()
+		Local currentDay:Int = GetWorldTime().GetDay()
 		Local currHour:Int = GetWorldTime().GetDayHour()
-		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
-		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
+		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(dayShown, 0, dayShown, 23)
+		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(dayShown, 0, dayShown, 23)
 		Local lineHeight:Int = 12
 		Local lineTextHeight:Int = 15
 		Local lineTextDY:Int = -1
@@ -3071,8 +3101,8 @@ Type TDebugProgrammePlanInfos
 
 		Local font:TBitmapFont = GetBitmapFont("default", 10)
 
-		'statistic for today
-		Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(currDay, True)
+		'statistic for the shown day
+		Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(dayShown, True)
 
 		'clean up if needed
 		If oldestEntryTime >= 0 And oldestEntryTime + 10000 < Time.GetTimeGone() Then RemoveOutdated()
@@ -3095,7 +3125,8 @@ Type TDebugProgrammePlanInfos
 
 		For Local hour:Int = 0 Until daysProgramme.length
 			Local audienceResult:TAudienceResultBase
-			If hour <= currHour
+			If dayShown < currentDay or dayShown = currentDay and hour <= currHour
+'			If hour <= currHour
 				audienceResult = dailyBroadcastStatistic.GetAudienceResult(playerID, hour)
 			EndIf
 
@@ -3135,19 +3166,19 @@ Type TDebugProgrammePlanInfos
 				progString = programme.GetTitle()
 				If TAdvertisement(programme) Then progString = "I: "+progString
 
-				progString2 = (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME)
+				progString2 = ((hour - programme.programmedHour + 25) Mod 24) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME)
 '				if currHour < hour
 					'uncached
 					If Not predictionCacheProgAudience[hour]
 						For Local i:Int = 1 To 4
-							Local prog:TBroadcastMaterial = GetPlayerProgrammePlan(i).GetProgramme(currDay, hour)
+							Local prog:TBroadcastMaterial = GetPlayerProgrammePlan(i).GetProgramme(dayShown, hour)
 							If prog
-								Local progBlock:Int = GetPlayerProgrammePlan(i).GetProgrammeBlock(currDay, hour)
-								Local prevProg:TBroadcastMaterial = GetPlayerProgrammePlan(i).GetProgramme(currDay, hour-1)
+								Local progBlock:Int = GetPlayerProgrammePlan(i).GetProgrammeBlock(dayShown, hour)
+								Local prevProg:TBroadcastMaterial = GetPlayerProgrammePlan(i).GetProgramme(dayShown, hour-1)
 								Local newsAttr:TAudienceAttraction = Null
 								Local prevAttr:TAudienceAttraction = Null
-								If prevProg And currDay
-									Local prevProgBlock:Int = GetPlayerProgrammePlan(i).GetProgrammeBlock(currDay, (hour-1 + 24) Mod 24)
+								If prevProg And dayShown
+									Local prevProgBlock:Int = GetPlayerProgrammePlan(i).GetProgrammeBlock(dayShown, (hour-1 + 24) Mod 24)
 									If prevProgBlock > 0
 										prevAttr = prevProg.GetAudienceAttraction((hour-1 + 24) Mod 24, prevProgBlock, Null, Null, True, True)
 									EndIf
@@ -3155,7 +3186,7 @@ Type TDebugProgrammePlanInfos
 								Local newsAge:Int = 0
 								Local newsshow:TBroadcastMaterial
 								For Local hoursAgo:Int = 0 To 6
-									newsshow = GetPlayerProgrammePlan(i).GetNewsShow(currDay, hour - hoursAgo)
+									newsshow = GetPlayerProgrammePlan(i).GetNewsShow(dayShown, hour - hoursAgo)
 									If newsshow Then Exit
 									newsAge = hoursAgo
 								Next
@@ -3169,16 +3200,19 @@ Type TDebugProgrammePlanInfos
 								predictor.SetAverageValueAttraction(i, 0)
 							EndIf
 						Next
-						predictor.RunPrediction(currDay, hour)
+						predictor.RunPrediction(dayShown, hour)
 						predictionCacheProgAudience[hour] = predictor.GetAudience(playerID)
 					EndIf
-
+				'show predictions only for the current day
+				if dayShown = currentDay
 					progString2 :+ " |color=200,255,200|"+Int(predictionCacheProgAudience[hour].GetTotalSum()/1000)+"k|/color|"
-'				endif
+				else
+					progString2 :+ " |color=200,200,255|??|/color|"
+				endif
 
 				Local player:TPlayer = GetPlayer(playerID)
 				Local guessedAudience:TAudience
-				If player Then guessedAudience = TAudience(player.aiData.Get("guessedaudience_"+currDay+"_"+hour, Null))
+				If player Then guessedAudience = TAudience(player.aiData.Get("guessedaudience_"+dayShown+"_"+hour, Null))
 				If guessedAudience
 					progString2 :+ " / |color=200,200,255|"+Int(guessedAudience.GetTotalSum()/1000)+"k|/color|"
 				Else
@@ -3192,8 +3226,8 @@ Type TDebugProgrammePlanInfos
 				EndIf
 			EndIf
 
-			If progString = "" And GetWorldTime().GetDayHour() > hour Then progString = "PROGRAMME OUTAGE"
-			If adString = "" And GetWorldTime().GetDayHour() > hour Then adString = "AD OUTAGE"
+			If progString = "" And GetWorldTime().GetDayHour() > hour And dayShown <= currentDay Then progString = "PROGRAMME OUTAGE"
+			If adString = "" And GetWorldTime().GetDayHour() > hour And dayShown <= currentDay Then adString = "AD OUTAGE"
 
 			Local oldAlpha:Float = GetAlpha()
 			If hour Mod 2 = 0
@@ -3228,7 +3262,8 @@ Type TDebugProgrammePlanInfos
 			EndIf
 
 			'indicate reached / required audience
-			If hour < currHour And TAdvertisement(advertisement) And audienceResult
+			'indicator for previous days (not essential) causes segmentation fault
+			If dayShown = currentDay and hour < currHour And TAdvertisement(advertisement) And audienceResult
 				Local reachedAudience:Int = audienceResult.audience.GetTotalValue(TAdvertisement(advertisement).contract.GetLimitedToTargetGroup())
 				Local adMinAudience:Int = TAdvertisement(advertisement).contract.GetMinAudience()
 				local passingRequirements:String = TAdvertisement(advertisement).isPassingRequirements(TAudienceResult(audienceResult))
@@ -3251,9 +3286,9 @@ Type TDebugProgrammePlanInfos
 			Local fontColor:SColor8
 			If programme Then SetStateColor(programme)
 			GetColor(fontColor)
-			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 60, lineTextHeight, sALIGN_LEFT_TOP, fontColor)
+			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 70, lineTextHeight, sALIGN_LEFT_TOP, fontColor)
 			font.DrawBox( progString2, programmeSlotX, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, fontColor)
-			If advertisement Then SetStateColor(advertisement)
+			If advertisement Then SetStateColor(advertisement, True)
 			GetColor(fontColor)
 			font.DrawBox( adString, adSlotX + 2, y + hour*lineHeight + lineTextDY, adSlotWidth - 30, lineTextHeight, sALIGN_LEFT_TOP, fontColor)
 			font.DrawBox( adString2, adSlotX, y + hour*lineHeight + lineTextDY, adSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, fontColor)
@@ -3262,50 +3297,70 @@ Type TDebugProgrammePlanInfos
 
 		'a bit space between programme plan and news show plan
 		Local newsY:Int = y + daysProgramme.length * lineHeight + lineHeight
-		For Local newsSlot:Int = 0 To 2
-			Local news:TBroadcastMaterial = GetPlayerProgrammePlan( playerID ).GetNewsAtIndex(newsSlot)
-			Local oldAlpha:Float = GetAlpha()
-			If newsSlot Mod 2 = 0
-				SetColor 0,0,40
-			Else
-				SetColor 50,50,90
-			EndIf
-			SetAlpha 0.85 * oldAlpha
-			DrawRect(x, newsY + newsSlot * lineHeight, clockSlotWidth, lineHeight-1)
-			DrawRect(programmeSlotX, newsY + newsSlot * lineHeight, programmeSlotWidth, lineHeight-1)
-
-
-			If TNews(news)
-				Local newsTime:Long = GetAddedTime(news.GetGUID(), TVTBroadcastMaterialType.NEWS)
-				If newsTime <> 0
-					Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - newsTime) / 5000.0))
-					SetColor 255,255,255
-					SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
-					SetBlend LIGHTBLEND
-					DrawRect(programmeSlotX, newsY + newsSlot * lineHeight, programmeSlotWidth, lineHeight-1)
-					SetBlend ALPHABLEND
+		If dayShown = currentDay
+			For Local newsSlot:Int = 0 To 2
+				Local news:TBroadcastMaterial = GetPlayerProgrammePlan( playerID ).GetNewsAtIndex(newsSlot)
+				Local oldAlpha:Float = GetAlpha()
+				If newsSlot Mod 2 = 0
+					SetColor 0,0,40
+				Else
+					SetColor 50,50,90
 				EndIf
-
-				SetColor 220,110,110
-				SetAlpha 0.50 * oldAlpha
-				DrawRect(programmeSlotX, newsY + newsSlot * lineHeight + lineHeight-3, programmeSlotWidth * TNews(news).GetNewsEvent().GetTopicality(), 2)
-			EndIf
-
-			SetColor 255,255,255
+				SetAlpha 0.85 * oldAlpha
+				DrawRect(x, newsY + newsSlot * lineHeight, clockSlotWidth, lineHeight-1)
+				DrawRect(programmeSlotX, newsY + newsSlot * lineHeight, programmeSlotWidth, lineHeight-1)
+	
+	
+				If TNews(news)
+					Local newsTime:Long = GetAddedTime(news.GetGUID(), TVTBroadcastMaterialType.NEWS)
+					If newsTime <> 0
+						Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - newsTime) / 5000.0))
+						SetColor 255,255,255
+						SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
+						SetBlend LIGHTBLEND
+						DrawRect(programmeSlotX, newsY + newsSlot * lineHeight, programmeSlotWidth, lineHeight-1)
+						SetBlend ALPHABLEND
+					EndIf
+	
+					SetColor 220,110,110
+					SetAlpha 0.50 * oldAlpha
+					DrawRect(programmeSlotX, newsY + newsSlot * lineHeight + lineHeight-3, programmeSlotWidth * TNews(news).GetNewsEvent().GetTopicality(), 2)
+				EndIf
+	
+				SetColor 255,255,255
+				SetAlpha oldAlpha
+	
+				font.DrawBox( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight + lineTextDY, clockSlotWidth-2, lineTextHeight, sALIGN_CENTER_TOP, SColor8.White)
+				If news
+					font.DrawBox(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
+				Else
+					font.DrawBox("NEWS OUTAGE", programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.Red)
+				EndIf
+			Next
+		Else
+			SetColor 0,0,40
+			Local oldAlpha:Float = GetAlpha()
+			SetAlpha 0.85 * oldAlpha
+			DrawRect(programmeSlotX, newsY , programmeSlotWidth, lineHeight-1)
 			SetAlpha oldAlpha
-
-			font.DrawBox( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight + lineTextDY, clockSlotWidth-2, lineTextHeight, sALIGN_CENTER_TOP, SColor8.White)
-			If news
-				font.DrawBox(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
-			Else
-				font.DrawBox("NEWS OUTAGE", programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.Red)
-			EndIf
-		Next
+			Local text:String = "Showing programme of day "
+			text:+ (dayShown - GetWorldTime().GetStartDay() + 1)+ "  ("
+			Local diff:Int = dayShown-currentDay
+			Local suffix:String = " days)"
+			If Abs(diff) = 1 Then suffix = " day)"
+			If diff > 0 Then text:+ "+"
+			text:+ diff + suffix
+			font.DrawBox(text, programmeSlotX + 2, newsY + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
+		EndIf
 	End Function
 
 
-	Function SetStateColor(material:TBroadcastMaterial)
+	Function SetStateColor(material:TBroadcastMaterial, adSlot:Int=False)
 		If Not material
+			SetColor 255,255,255
+			Return
+		ElseIf adSlot And TProgramme(material) And material.state <> TBroadcastMaterial.STATE_RUNNING
+			'make trailer easily recognizable
 			SetColor 255,255,255
 			Return
 		EndIf
@@ -3320,6 +3375,25 @@ Type TDebugProgrammePlanInfos
 			Default
 				SetColor 255,255,255
 		End Select
+	End Function
+
+
+	Function OnButtonClickHandler_Broadcast(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				dayShown:-1
+			case 1
+				dayShown = GetWorldTime().GetDay()
+			case 2
+				dayShown:+1
+		End Select
+		showCurrent = (dayShown = GetWorldTime().GetDay())
+		Local today:Int = GetWorldTime().GetDay()
+		If showCurrent > 0 and today <> dayShown Then dayShown = today
+		dayShown = Max(dayShown, GetWorldTime().GetStartDay())
+		'handled
+		sender.clicked = False
+		sender.selected = False
 	End Function
 End Type
 
