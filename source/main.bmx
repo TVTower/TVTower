@@ -832,7 +832,7 @@ Type TApp
 
 			If KeyManager.IsDown(KEY_RIGHT)
 				If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
-					GetGame().SetGameSpeed( Int(GetWorldTime().getTimeFactor()) + 10 )
+					GetGame().SetGameSpeed( Int(GetWorldTime().GetTimeFactor()) + 10 )
 				Else
 					'fast forward
 					If Not DEV_FastForward
@@ -864,7 +864,7 @@ Type TApp
 
 
 			If KeyManager.IsDown(KEY_LEFT) Then
-				GetGame().SetGameSpeed( Max(Int(GetWorldTime().getTimeFactor()) - 10, 0) )
+				GetGame().SetGameSpeed( Max(Int(GetWorldTime().GetTimeFactor()) - 10, 0) )
 			EndIf
 
 

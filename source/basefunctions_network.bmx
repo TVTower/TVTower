@@ -184,7 +184,7 @@ Type TNetworkClient extends TNetworkConnection
 				?bmxng
 				enet_peer_disconnect(server.enetpeer, 0)
 				?not bmxng
-				enet_peer_reset(Server.enetpeer)
+				enet_peer_reset(server.enetpeer)
 				?
 			Else
 				SendEvent(NET_LEAVEGAMEREQUEST,NET_PACKET_RELIABLE)
@@ -197,22 +197,22 @@ Type TNetworkClient extends TNetworkConnection
 
 					Select ev.event()
 						Case ENET_EVENT_TYPE_RECEIVE
-							If ev.packet
+							If ev.packet()
 								Local packet:TNetworkPacket
 								?bmxng
-								Local size:Int=bmx_enet_packet_size(ev.packet)
+								Local size:Int=bmx_enet_packet_size(ev.packet())
 								?not bmxng
-								Local size:Int=enet_packet_size(ev.packet)
+								Local size:Int=enet_packet_size(ev.packet())
 								?
 								Local data:Byte[size]
 								If size
 									packet=New TNetworkPacket
 									?bmxng
 									packet._bank.resize(Size_T(size))
-									MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet),Size_T(size))
+									MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet()),Size_T(size))
 									?not bmxng
 									packet._bank.resize(size)
-									MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
+									MemCopy(packet._bank.buf(),enet_packet_data(ev.packet()),size)
 									?
 								EndIf
 								local obj:TNetworkObject = TNetworkObject.FromPacket(packet)
@@ -1830,21 +1830,19 @@ Type TNetworkConnection
 				Case ENET_EVENT_TYPE_RECEIVE
 					local obj:TNetworkObject
 					?bmxng
-					Local size:Int=bmx_enet_packet_size(ev.packet)
+					Local size:size_t=bmx_enet_packet_size(ev.packet())
 					?not bmxng
-					Local size:Int=enet_packet_size(ev.packet)
+					Local size:Int=enet_packet_size(ev.packet())
 					?
 					Local data:Byte[size]
 					If size
 						packet=New TNetworkPacket
-						?bmxng
-						packet._bank.resize(Size_T(size))
-						MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet),Size_T(size))
-						?not bmxng
 						packet._bank.resize(size)
-						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
+						?bmxng
+						MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet()),size)
+						?not bmxng
+						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet()),size)
 						?
-
 						obj = TNetworkObject.FromPacket(packet)
 						id = obj.evType
 					EndIf
@@ -1853,7 +1851,7 @@ Type TNetworkConnection
 					Continue
 
 			EndSelect
-			EvaluateEvent(id,packet,ev.peer)
+			EvaluateEvent(id,packet,ev.peer())
 
 			'this is not the same!!!
 			'If not self.enethost then Exit
@@ -1869,22 +1867,21 @@ Type TNetworkConnection
 			Case ENET_EVENT_TYPE_DISCONNECT
 				Return NET_DISCONNECT
 			Case ENET_EVENT_TYPE_RECEIVE
-				If ev.packet
+				If ev.packet()
 					?bmxng
-					Local size:Int=bmx_enet_packet_size(ev.packet)
+					Local size:size_t=bmx_enet_packet_size(ev.packet())
 					?not bmxng
-					Local size:Int=enet_packet_size(ev.packet)
+					Local size:Int=enet_packet_size(ev.packet())
 					?
 					If size
-						?bmxng
-						packet._bank.resize(Size_T(size))
-						MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet),Size_T(size))
-						?not bmxng
 						packet._bank.resize(size)
-						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
+						?bmxng
+						MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet()),size)
+						?not bmxng
+						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet()),size)
 						?
 					EndIf
-					enet_packet_destroy(ev.packet)
+					enet_packet_destroy(ev.packet())
 					local obj:TNetworkObject = TNetworkObject.FromPacket(packet)
 					return obj.evType
 					'Return id
