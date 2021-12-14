@@ -892,7 +892,7 @@ endrem
 		GetAsset().draw(Self.GetScreenRect().GetX(), Self.GetScreenRect().GetY(), -1, null, scaleAsset)
 
 		'ready for production
-		if productionConcept.IsProduceable() or productionConcept.isProductionStarted() or productionConcept.isProductionFinished
+		if productionConcept.IsProduceable() or productionConcept.isProductionStarted() or productionConcept.isProductionFinished()
 			GetSpriteFromRegistry("gfx_datasheet_icon_ok").Draw(Self.GetScreenRect().GetX()-2, Self.GetScreenRect().GetY() + GetAsset().GetHeight() * scaleAsset -1)
 		'finished planning
 		elseif productionConcept.IsPlanned()

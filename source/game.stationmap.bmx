@@ -3099,7 +3099,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		'add up reach of all stations about to be built
 		Local estimatedReachIncrease:Int = newStationReach
 		For local station:TStationBase = EachIn GetStationMap(owner).stations
-			If Not station.isActive And station.GetActivationTime() > currTime
+			If Not station.isActive() And station.GetActivationTime() > currTime
 				estimatedReachIncrease :+ station.getExclusiveReach()
 			EndIf
 		Next
