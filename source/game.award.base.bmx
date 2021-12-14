@@ -308,11 +308,15 @@ Type TAward Extends TGameObject
 	End Method
 
 
-	Method Finish:Int()
+	Method Finish:Int(overrideWinnerID:Int = -1)
 		'end time might differ (earlier finish)
 		SetEndTime( GetWorldTime().GetTimeGone() )
 		'store winner
-		winningPlayerID = GetCurrentWinner()
+		If overrideWinnerID > -1
+			winningPlayerID = overrideWinnerID
+		Else
+			winningPlayerID = GetCurrentWinner()
+		EndIf
 
 		TLogger.Log("TAward.Finish()", "Finishing award. winner="+winningPlayerID, LOG_DEBUG)
 

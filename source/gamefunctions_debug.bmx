@@ -1551,7 +1551,7 @@ Type TDebugScreen
 
 	'=== BLOCKS ===
 	Method InitAwardStatusButtons()
-		Local texts:String[] = ["Finish", "Finish (P1 wins)", "Finish (P2 wins)", "Finish (P3 wins)", "Finish (P4 wins)", "Start Next", "Add New Award"]
+		Local texts:String[] = ["Finish", "P1", "P2", "P3", "P4", "Start Next", "Add New Award"]
 		Local mode:int = 0
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
@@ -1604,13 +1604,14 @@ Type TDebugScreen
 
 	Method UpdateAwardStatus(x:int, y:int, w:int = 200, h:int = 200)
 		if buttonsAwardControls.length >= 6
-			For local i:int = 0 until buttonsAwardControls.length
-				buttonsAwardControls[i].x = x + 195
-				buttonsAwardControls[i].y = y + i * 18 + 5
-			Next
-			buttonsAwardControls[6].y = buttonsAwardControls[5].y
-			buttonsAwardControls[5].y = buttonsAwardControls[0].y
-
+			buttonsAwardControls[0].SetXY(x + 195              , y + 0 * 18 + 5).SetWH( 55, 15)
+			buttonsAwardControls[1].SetXY(x + 195 + 59 + 0 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[2].SetXY(x + 195 + 59 + 1 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[3].SetXY(x + 195 + 59 + 2 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[4].SetXY(x + 195 + 59 + 3 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[5].SetXY(x + 195              , y + 0 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[6].SetXY(x + 195              , y + 1 * 18 + 5).SetWH(145, 15)
+		
 			if not GetAwardCollection().GetCurrentAward()
 				buttonsAwardControls[0].visible = False
 				buttonsAwardControls[1].visible = False
@@ -3670,6 +3671,17 @@ Type TDebugControlsButton
 	Field visible:Int = True
 	Field _onClickHandler(sender:TDebugControlsButton)
 
+	Method SetXY:TDebugControlsButton(x:Int, y:Int)
+		self.x = x
+		self.y = y
+		Return self
+	End Method
+
+	Method SetWH:TDebugControlsButton(w:Int, h:Int)
+		self.w = w
+		self.h = h
+		Return self
+	End Method
 
 	Method Update:Int(offsetX:Int=0, offsetY:Int=0)
 		If Not visible Or Not Enabled Then Return False
