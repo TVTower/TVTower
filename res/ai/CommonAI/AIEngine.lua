@@ -613,6 +613,8 @@ function AITask:SetDone()
 	self.LastDone = TVT.GetTimeGoneInMinutes()
 	self.LastDoneWorldTicks = self:getWorldTicks()
 
+	TVT.doLeaveRoom()
+
 	-- reset back
 	self.assignmentType = 0
 end
@@ -870,7 +872,8 @@ end
 
 
 function AIIdleJob:Tick()
-	local finishedIdling = false
+	--TODO set false again if AI is more competitive
+	local finishedIdling = true
 	if (self.IdleTill == -1) and (self.IdleTillWorldTicks == -1) then
 		finishedIdling = true
 	elseif (self.IdleTill ~= -1) and ((self.IdleTill - TVT.GetTimeGoneInMinutes()) <= 0) then

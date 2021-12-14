@@ -449,6 +449,12 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method doLeaveRoom:Int()
+		TFigure(GetPlayerBase(Self.ME).GetFigure()).leaveRoom(True)
+		Return Self.RESULT_OK
+	End Method
+
+
 	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstuetzt. Negativ: Nach links; Positiv: nach rechts
 		TFigure(GetPlayerBase(Self.ME).GetFigure()).GoToCoordinatesRelative(relX, relYFloor)
 		Return Self.RESULT_OK
