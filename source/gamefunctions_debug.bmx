@@ -1551,7 +1551,7 @@ Type TDebugScreen
 
 	'=== BLOCKS ===
 	Method InitAwardStatusButtons()
-		Local texts:String[] = ["Finish", "P1", "P2", "P3", "P4", "Start Next", "Add New Award"]
+		Local texts:String[] = ["Finish", "P1", "P2", "P3", "P4", "Start Next", "Random", "Audience", "Culture" ,"Custom Production", "News"]
 		Local mode:int = 0
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
@@ -1579,12 +1579,16 @@ Type TDebugScreen
 				GetAwardCollection().FinishCurrentAward()
 			case 1
 				'finish P1
+				GetAwardCollection().FinishCurrentAward(1)
 			case 2
 				'finish P2
+				GetAwardCollection().FinishCurrentAward(2)
 			case 3
 				'finish P3
+				GetAwardCollection().FinishCurrentAward(3)
 			case 4
 				'finish P4
+				GetAwardCollection().FinishCurrentAward(4)
 			case 5
 				'start next (stop current first - if needed)
 				if GetAwardCollection().GetCurrentAward()
@@ -1592,8 +1596,20 @@ Type TDebugScreen
 				Endif
 				GetAwardCollection().SetCurrentAward( GetAwardCollection().PopNextAward() )
 			case 6
-				'generate additional/upcoming
+				'generate additional/upcoming (random)
 				GetAwardCollection().GenerateUpcomingAward(-1, Null)
+			case 7
+				'generate additional/upcoming (random)
+				GetAwardCollection().GenerateUpcomingAward(TVTAwardType.AUDIENCE, Null)
+			case 8
+				'generate additional/upcoming (random)
+				GetAwardCollection().GenerateUpcomingAward(TVTAwardType.CULTURE, Null)
+			case 9
+				'generate additional/upcoming (random)
+				GetAwardCollection().GenerateUpcomingAward(TVTAwardType.CUSTOMPRODUCTION, Null)
+			case 10
+				'generate additional/upcoming (random)
+				GetAwardCollection().GenerateUpcomingAward(TVTAwardType.NEWS, Null)
 		End Select
 
 		'handled
@@ -1604,13 +1620,18 @@ Type TDebugScreen
 
 	Method UpdateAwardStatus(x:int, y:int, w:int = 200, h:int = 200)
 		if buttonsAwardControls.length >= 6
-			buttonsAwardControls[0].SetXY(x + 195              , y + 0 * 18 + 5).SetWH( 55, 15)
-			buttonsAwardControls[1].SetXY(x + 195 + 59 + 0 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[2].SetXY(x + 195 + 59 + 1 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[3].SetXY(x + 195 + 59 + 2 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[4].SetXY(x + 195 + 59 + 3 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[5].SetXY(x + 195              , y + 0 * 18 + 5).SetWH(145, 15)
-			buttonsAwardControls[6].SetXY(x + 195              , y + 1 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[ 0].SetXY(x + 200              , y + 0 * 18 + 5).SetWH( 50, 15)
+			buttonsAwardControls[ 1].SetXY(x + 200 + 54 + 0 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[ 2].SetXY(x + 200 + 54 + 1 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[ 3].SetXY(x + 200 + 54 + 2 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[ 4].SetXY(x + 200 + 54 + 3 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
+			buttonsAwardControls[ 5].SetXY(x + 200              , y + 0 * 18 + 5).SetWH(145, 15)
+			'add award - genres
+			buttonsAwardControls[ 6].SetXY(x + 200              , y + 2 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[ 7].SetXY(x + 200              , y + 3 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[ 8].SetXY(x + 200              , y + 4 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[ 9].SetXY(x + 200              , y + 5 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[10].SetXY(x + 200              , y + 6 * 18 + 5).SetWH(145, 15)
 		
 			if not GetAwardCollection().GetCurrentAward()
 				buttonsAwardControls[0].visible = False
@@ -1664,6 +1685,19 @@ Type TDebugScreen
 			Endif
 			textFont.DrawSimple("Ends " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()), textX + 40, textY)
 			textY :+ 12
+			
+			'ranking
+			For Local i:Int = 1 To 4
+				local myX:Int = textX + 40
+				local myY:Int = textY
+				if i = 2 or i = 4 then myX :+ 80
+				if i = 3 or i = 4 then myY :+ 12
+				textFont.DrawSimple("P"+i, myX, myY)
+				textFont.DrawBox(currentAward.GetScore(i) +" (", myX, myY, 40, 100, sALIGN_RIGHT_TOP, SColor8.WHITE)
+				textFont.DrawBox(int(currentAward.GetScoreShare(i)*100 + 0.5)+"%)", myX + 35, myY, 30, 100, sALIGN_RIGHT_TOP, SColor8.WHITE)
+			Next
+			textY :+ 2*12
+			
 		Else
 			textFont.DrawSimple("--", textX + 40, textY)
 			textY :+ 12
@@ -1682,10 +1716,13 @@ Type TDebugScreen
 					textFont.DrawSimple(nextAward.GetTitle(), textX + 40, textY)
 					textY :+ 12
 
-					local rewards:String = nextAward.GetRewardText()
-					if rewards.length > 0
-						textY :+ textFont.DrawBox(rewards, textX + 40, textY, w - 150 - 40 - 10, 100, sALIGN_LEFT_TOP, SColor8.white, New SVec2F(0,0), EDrawTextOption.IgnoreColor).y
-					Endif
+					'only render details for very next
+					if nextCount = 0
+						local rewards:String = nextAward.GetRewardText()
+						if rewards.length > 0
+							textY :+ textFont.DrawBox(rewards, textX + 40, textY, w - 150 - 40 - 10, 100, sALIGN_LEFT_TOP, SColor8.white, New SVec2F(0,0), EDrawTextOption.IgnoreColor).y
+						Endif
+					endif
 					textFont.DrawSimple("Begins " + GetWorldTime().GetFormattedGameDate(nextAward.GetStartTime()), textX + 40, textY)
 					textY :+ 12
 				Else
@@ -1699,6 +1736,8 @@ Type TDebugScreen
 			Next
 		EndIf
 
+
+		textFont.DrawSimple("Add new award: ", buttonsAwardControls[6].x, buttonsAwardControls[6].y - 12)
 		For Local b:TDebugControlsButton = EachIn buttonsAwardControls
 			b.Render()
 		Next

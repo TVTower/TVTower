@@ -105,10 +105,10 @@ Type TAwardCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method FinishCurrentAward()
+	Method FinishCurrentAward(overrideWinnerID:Int = -1)
 		'announce the winner and set time for next start
 		If currentAward
-			currentAward.Finish()
+			currentAward.Finish(overrideWinnerID)
 
 			if not lastAwards then lastAwards = new TList
 			lastAwards.AddLast(currentAward)
