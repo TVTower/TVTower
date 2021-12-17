@@ -4293,6 +4293,8 @@ Type TStationMapSection
 	'Field antennaShareMapImage:TImage {nosave}
 	Field shareCache:TStringMap = new TStringMap {nosave}
 	Field calculationMutex:TMutex = CreateMutex() {nosave}
+	Field shareCacheMutex:TMutex = CreateMutex() {nosave}
+	Field antennaShareMutex:TMutex = CreateMutex() {nosave}
 
 
 	Method New()
@@ -4328,8 +4330,12 @@ Type TStationMapSection
 
 
 	Method InvalidateData()
-		shareCache = New TStringMap
-		antennaShareMap = Null
+		LockMutex(shareCacheMutex)
+			shareCache = New TStringMap
+		UnlockMutex(shareCacheMutex)
+		LockMutex(antennaShareMutex)
+			antennaShareMap = Null
+		UnlockMutex(antennaShareMutex)
 	End Method
 
 
@@ -4688,87 +4694,6 @@ Type TStationMapSection
 	End Method
 
 
-	Method _FillAntennaShareMap:Int(stationMap:TStationMap, stations:TList)
-'		If not TryLockMutex(calculationMutex)
-'			Notify "_FillAntennaShareMap: concurrent access found!"
-			LockMutex(calculationMutex)
-'		EndIf
-		
-		
-		'define locals outside of that for loops...
-		Local posX:Int		= 0
-		Local posY:Int		= 0
-		Local stationX:Int	= 0
-		Local stationY:Int	= 0
-		Local shareKey:Long
-		Local shareMask:TStationMapShareMask
-		Local circleRect:TRectangle = New TRectangle.Init(0,0,0,0)
-		local antennaStationRadius:int = GetStationMapCollection().antennaStationRadius
-
-
-		if stationmap.cheatedMaxReach
-			'insert the players bitmask-number into the field
-			'and if there is already one ... add the number
-			Local shapeSprite:TSprite = GetShapeSprite()
-			For posX = 0 To populationImage.height-1
-				For posY = 0 To populationImage.width-1
-					'left the topographic borders ?
-					If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
-
-					shareKey = GeneratePositionKey(posX, posY)
-					shareMask = new TStationMapShareMask(posX, posY, GetMaskIndex(stationmap.owner) )
-					Local shareMapMask:TStationMapShareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
-					If shareMapMask
-						shareMask.mask :| shareMapMask.mask
-					EndIf
-					antennaShareMap.Insert(shareKey, shareMask)
-				Next
-			Next
-		else
-			'only handle antennas, no cable network/satellite!
-			'For Local station:TStationBase = EachIn stationmap.stations
-			For Local station:TStationAntenna = EachIn stations
-				'skip inactive or shutdown stations
-				If Not station.CanBroadcast() Then Continue
-
-				'mark the area within the stations circle
-
-				'local coordinate (within section)
-				stationX = station.pos.x - rect.GetX()
-				stationY = station.pos.y - rect.GetY()
-				'stay within the section
-				circleRect.position.SetXY( Max(0, stationX - antennaStationRadius), Max(0, stationY - antennaStationRadius) )
-				circleRect.dimension.SetXY( Min(stationX + antennaStationRadius, rect.GetW()-1), Min(stationY + antennaStationRadius, rect.GetH()-1) )
-
-				posX = 0
-				posY = 0
-				Local shapeSprite:TSprite = GetShapeSprite()
-				For posX = circleRect.getX() To circleRect.getW()
-					For posY = circleRect.getY() To circleRect.getH()
-						'left the circle?
-						If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
-						'left the topographic borders ?
-						If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
-
-
-						'insert the players bitmask-number into the field
-						'and if there is already one ... add the number
-						shareKey = GeneratePositionKey(posX, posY)
-						shareMask = New TStationMapShareMask(posX, posY, GetMaskIndex(station.owner) )
-						Local shareMapMask:TStationMapShareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
-						If shareMapMask
-							shareMask.mask :| shareMapMask.mask
-						EndIf
-						antennaShareMap.Insert(shareKey, shareMask)
-					Next
-				Next
-			Next
-		endif
-		
-		UnlockMutex(calculationMutex)
-	End Method
-	
-	
 	private
 	Function GeneratePositionKey:Long(x:Int, y:Int)
 		Return Long(x) Shl 32 | Long(y)
@@ -4832,15 +4757,81 @@ Type TStationMapSection
 	End Method
 
 
-
 	Method GetAntennaShareMap:TLongMap()
 		if not antennaShareMap
+			LockMutex(antennaShareMutex)
+
 			antennaShareMap = New TLongMap
 
-			local stations:TStationBase[][]
+			Local antennaStationRadius:int = GetStationMapCollection().antennaStationRadius
+			Local shapeSprite:TSprite = GetShapeSprite()
+			Local circleRect:TRectangle = New TRectangle.Init(0,0,0,0)
+			Local shareMask:TStationMapShareMask
+			Local posX:Int = 0
+			Local posY:Int = 0
+			Local stationX:Int = 0
+			Local stationY:Int = 0
+			Local shareKey:Long
 			For local map:TStationMap = EachIn GetStationMapCollection().stationMaps
-				_FillAntennaShareMap(map, map.stations)
+				if map.cheatedMaxReach
+					'insert the players bitmask-number into the field
+					'and if there is already one ... add the number
+					For posX = 0 To populationImage.height-1
+						For posY = 0 To populationImage.width-1
+							'left the topographic borders ?
+							If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
+
+							shareKey = GeneratePositionKey(posX, posY)
+							shareMask = new TStationMapShareMask(posX, posY, GetMaskIndex(map.owner) )
+							Local shareMapMask:TStationMapShareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
+							If shareMapMask
+								shareMask.mask :| shareMapMask.mask
+							EndIf
+							antennaShareMap.Insert(shareKey, shareMask)
+						Next
+					Next
+				else
+					'only handle antennas, no cable network/satellite!
+					'For Local station:TStationBase = EachIn stationmap.stations
+					For Local station:TStationAntenna = EachIn map.stations
+						'skip inactive or shutdown stations
+						If Not station.CanBroadcast() Then Continue
+
+						'mark the area within the stations circle
+
+						'local coordinate (within section)
+						stationX = station.pos.x - rect.GetX()
+						stationY = station.pos.y - rect.GetY()
+						'stay within the section
+						circleRect.position.SetXY( Max(0, stationX - antennaStationRadius), Max(0, stationY - antennaStationRadius) )
+						circleRect.dimension.SetXY( Min(stationX + antennaStationRadius, rect.GetW()-1), Min(stationY + antennaStationRadius, rect.GetH()-1) )
+
+						posX = 0
+						posY = 0
+						For posX = circleRect.getX() To circleRect.getW()
+							For posY = circleRect.getY() To circleRect.getH()
+								'left the circle?
+								If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
+								'left the topographic borders ?
+								If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
+
+
+								'insert the players bitmask-number into the field
+								'and if there is already one ... add the number
+								shareKey = GeneratePositionKey(posX, posY)
+								shareMask = New TStationMapShareMask(posX, posY, GetMaskIndex(station.owner) )
+								Local shareMapMask:TStationMapShareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
+								If shareMapMask
+									shareMask.mask :| shareMapMask.mask
+								EndIf
+								antennaShareMap.Insert(shareKey, shareMask)
+							Next
+						Next
+					Next
+				endif
 			Next
+
+			UnLockMutex(antennaShareMutex)
 		endif
 		return antennaShareMap
 	End Method
@@ -4909,7 +4900,9 @@ Type TStationMapSection
 
 		'== LOAD CACHE ==
 		If shareCache
+			LockMutex(shareCacheMutex)
 			result = TStationMapPopulationShare(shareCache.ValueForKey(cacheKey))
+			UnlockMutex(shareCacheMutex)
 		EndIf
 
 
@@ -4955,7 +4948,11 @@ Type TStationMapSection
 			endif
 
 			'store new cached data
-			If shareCache Then shareCache.insert(cacheKey, result )
+			If shareCache 
+				LockMutex(shareCacheMutex)
+				shareCache.insert(cacheKey, result )
+				UnlockMutex(shareCacheMutex)
+			EndIf
 
 			'print "CABLE uncached: "+cacheKey
 			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
@@ -4997,7 +4994,9 @@ Type TStationMapSection
 
 		'== LOAD CACHE ==
 		If shareCache
+			LockMutex(shareCacheMutex)
 			result = TStationMapPopulationShare(shareCache.ValueForKey(cacheKey))
+			UnlockMutex(shareCacheMutex)
 		EndIf
 
 
@@ -5006,6 +5005,7 @@ Type TStationMapSection
 			result = New TStationMapPopulationShare
 
 			Local shareMap:TLongMap = GetAntennaShareMap()
+			LockMutex(antennaShareMutex) 'to savely iterate over values()
 			For Local mapMask:TStationMapShareMask = EachIn shareMap.Values()
 				'skip if none of our interested is here
 				If includeChannelMask.HasNone(mapMask.mask) Then Continue
@@ -5022,9 +5022,14 @@ Type TStationMapSection
 					result.shared :+ populationmap[mapMask.x, mapMask.y]
 				EndIf
 			Next
+			UnlockMutex(antennaShareMutex)
 
 			'store new cached data
-			If shareCache Then shareCache.insert(cacheKey, result )
+			If shareCache
+				LockMutex(shareCacheMutex)
+				shareCache.insert(cacheKey, result )
+				UnlockMutex(shareCacheMutex)
+			EndIf
 
 			'print "ANTENNA uncached: "+cacheKey
 			'print "ANTENNA share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
