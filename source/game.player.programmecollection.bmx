@@ -250,6 +250,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetSuitcaseProgrammeLicences:TList()
+		Return suitcaseProgrammeLicences
+	End Method
+
+
 	Method GetSuitcaseProgrammeLicenceCount:int() {_exposeToLua}
 		return suitcaseProgrammeLicences.count()
 	End Method

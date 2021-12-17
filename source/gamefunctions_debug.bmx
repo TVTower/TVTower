@@ -2895,12 +2895,13 @@ End Type
 
 Type TDebugProgrammeCollectionInfos
 	Field initialized:Int = False
-	Global addedProgrammeLicences:TMap = CreateMap()
-	Global removedProgrammeLicences:TMap = CreateMap()
-	Global availableProgrammeLicences:TMap = CreateMap()
-	Global addedAdContracts:TMap = CreateMap()
-	Global removedAdContracts:TMap = CreateMap()
-	Global availableAdContracts:TMap = CreateMap()
+	Global addedProgrammeLicences:TIntMap = new TIntMap
+	Global removedProgrammeLicences:TIntMap = new TIntMap
+	Global availableProgrammeLicences:TIntMap = new TIntMap
+	'Global suitcaseProgrammeLicences:TIntMap = new TIntMap
+	Global addedAdContracts:TIntMap = new TIntMap
+	Global removedAdContracts:TIntMap = new TIntMap
+	Global availableAdContracts:TIntMap = new TIntMap
 	Global oldestEntryTime:Long
 	Global _eventListeners:TEventListenerBase[]
 
@@ -2913,8 +2914,8 @@ Type TDebugProgrammeCollectionInfos
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, onChangeProgrammeCollection) ]
 		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase, onChangeProgrammeCollection) ]
 		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase, onChangeProgrammeCollection) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart) ]
@@ -2941,55 +2942,55 @@ Type TDebugProgrammeCollectionInfos
 		If Not broadcastSource Then Print "TDebugProgrammeCollectionInfos.onChangeProgrammeCollection: invalid broadcastSourceMaterial."
 
 
-		Local map:TMap = Null
+		Local map:TIntMap = Null
 		Select triggerEvent.GetEventKey()
 			Case GameEventKeys.ProgrammeCollection_RemoveAdContract
 				map = removedAdContracts
 				'remove on outdated
-				'availableAdContracts.Remove(broadcastSource.GetGUID())
+				'availableAdContracts.Remove(broadcastSource.GetID())
 			Case GameEventKeys.ProgrammeCollection_AddAdContract
 				map = addedAdContracts
-				availableAdContracts.Insert(broadcastSource.GetGUID(), broadcastSource)
+				availableAdContracts.Insert(broadcastSource.GetID(), broadcastSource)
 	'		Case GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase
 	'			map = addedAdContracts
 	'		Case GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase
 	'			map = addedAdContracts
 	'		Case GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase
-	'			map = addedAdContracts
+	'			map = suitcaseProgrammeLicences
 	'		Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase
-	'			map = addedAdContracts
+	'			map = suitcaseProgrammeLicences
 			Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
 				map = removedProgrammeLicences
 				'remove on outdated
-				'availableProgrammeLicences.Remove(broadcastSource.GetGUID())
+				'availableProgrammeLicences.Remove(broadcastSource.GetID())
 			Case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
 				map = addedProgrammeLicences
-				availableProgrammeLicences.Insert(broadcastSource.GetGUID(), broadcastSource)
+				availableProgrammeLicences.Insert(broadcastSource.GetID(), broadcastSource)
 		End Select
 		If Not map Then Return False
 
-		map.Insert(broadcastSource.GetGUID(), String(Time.GetTimeGone()) )
+		map.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
 
 		RemoveOutdated()
 	End Function
 
 
 	Function RemoveOutdated()
-		Local maps:TMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
+		Local maps:TIntMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
 
 		oldestEntryTime = -1
 
 		'remove outdated ones (older than 30 seconds))
-		For Local map:TMap = EachIn maps
-			Local remove:String[]
-			For Local guid:String = EachIn map.Keys()
-				Local changeTime:Long = Long( String(map.ValueForKey(guid)) )
+		For Local map:TIntMap = EachIn maps
+			Local remove:Int[]
+			For Local idKey:TIntKey = EachIn map.Keys()
+				Local changeTime:Long = Long( String(map.ValueForKey(idKey.value)) )
 
 				If changeTime + 3000 < Time.GetTimeGone()
-					remove :+ [guid]
+					remove :+ [idKey.value]
 
-					If map = removedProgrammeLicences Then availableProgrammeLicences.Remove(guid)
-					If map = removedAdContracts Then availableAdContracts.Remove(guid)
+					If map = removedProgrammeLicences Then availableProgrammeLicences.Remove(idKey.value)
+					If map = removedAdContracts Then availableAdContracts.Remove(idKey.value)
 					Continue
 				EndIf
 
@@ -2997,35 +2998,35 @@ Type TDebugProgrammeCollectionInfos
 				oldestEntryTime = Min(oldestEntryTime, changeTime)
 			Next
 
-			For Local guid:String = EachIn remove
-				map.Remove(guid)
+			For Local id:Int = EachIn remove
+				map.Remove(id)
 			Next
 		Next
 	End Function
 
 
 
-	Function GetAddedTime:Long(guid:String, materialType:Int=0)
+	Function GetAddedTime:Long(id:Int, materialType:Int=0)
 		If materialType = TVTBroadcastMaterialType.PROGRAMME
-			Return Int( String(addedProgrammeLicences.ValueForKey(guid)) )
+			Return Long( String(addedProgrammeLicences.ValueForKey(id)) )
 		Else
-			Return Int( String(addedAdContracts.ValueForKey(guid)) )
+			Return Long( String(addedAdContracts.ValueForKey(id)) )
 		EndIf
 	End Function
 
 
-	Function GetRemovedTime:Long(guid:String, materialType:Int=0)
+	Function GetRemovedTime:Long(id:Int, materialType:Int=0)
 		If materialType = TVTBroadcastMaterialType.PROGRAMME
-			Return Int( String(removedProgrammeLicences.ValueForKey(guid)) )
+			Return Long( String(removedProgrammeLicences.ValueForKey(id)) )
 		Else
-			Return Int( String(removedAdContracts.ValueForKey(guid)) )
+			Return Long( String(removedAdContracts.ValueForKey(id)) )
 		EndIf
 	End Function
 
 
-	Function GetChangedTime:Long(guid:String, materialType:Int=0)
-		Local addedTime:Long = GetAddedTime(guid, materialType)
-		Local removedTime:Long = GetRemovedTime(guid, materialType)
+	Function GetChangedTime:Long(id:Int, materialType:Int=0)
+		Local addedTime:Long = GetAddedTime(id, materialType)
+		Local removedTime:Long = GetRemovedTime(id, materialType)
 		If addedTime <> 0 Then Return addedTime
 		Return removedTime
 	End Function
@@ -3033,15 +3034,19 @@ Type TDebugProgrammeCollectionInfos
 
 	Method Initialize:Int()
 		availableProgrammeLicences.Clear()
+		'suitcaseProgrammeLicences.Clear()
 		availableAdContracts.Clear()
 		'on savegame loads, the maps would be empty without
 		For Local i:Int = 1 To 4
 			Local coll:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
 			For Local l:TProgrammeLicence = EachIn coll.GetProgrammeLicences()
-				availableProgrammeLicences.insert(l.GetGUID(), l)
+				availableProgrammeLicences.insert(l.GetID(), l)
 			Next
+			'For Local l:TProgrammeLicence = EachIn coll.GetSuitcaseProgrammeLicences()
+			'	suitcaseProgrammeLicences.insert(l.GetID(), l)
+			'Next
 			For Local a:TAdContract = EachIn coll.GetAdContracts()
-				availableAdContracts.insert(a.GetGUID(), a)
+				availableAdContracts.insert(a.GetID(), a)
 			Next
 		Next
 
@@ -3086,14 +3091,14 @@ Type TDebugProgrammeCollectionInfos
 			SetAlpha 0.85 * oldAlpha
 			DrawRect(x + adLeftX, y + entryPos * lineHeight*2, adLineWidth, lineHeight*2-1)
 
-			Local changedTime:Int = GetChangedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT)
+			Local changedTime:Int = GetChangedTime(a.GetID(), TVTBroadcastMaterialType.ADVERTISEMENT)
 			If changedTime <> 0
 				Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
 				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
 				SetBlend LIGHTBLEND
 
 				SetColor 255,235,20
-				If GetRemovedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT) <> 0
+				If GetRemovedTime(a.GetID(), TVTBroadcastMaterialType.ADVERTISEMENT) <> 0
 					If a.state = a.STATE_FAILED
 						SetColor 255,0,0
 					ElseIf a.state = a.STATE_OK
@@ -3153,7 +3158,7 @@ Type TDebugProgrammeCollectionInfos
 			SetAlpha 0.75 * oldAlpha
 			DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
 
-			Local changedTime:Int = GetChangedTime(l.GetGUID(), TVTBroadcastMaterialType.PROGRAMME)
+			Local changedTime:Int = GetChangedTime(l.GetID(), TVTBroadcastMaterialType.PROGRAMME)
 			If changedTime <> 0
 				SetColor 255,235,20
 				Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
@@ -3178,7 +3183,7 @@ Type TDebugProgrammeCollectionInfos
 			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
 
 			Local attString:String = ""
-'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetGUID()))
+'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
 			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
@@ -3191,6 +3196,47 @@ Type TDebugProgrammeCollectionInfos
 			EndIf
 		Next
 
+
+		y = initialY + entryPos*lineHeight
+		y :+ 20
+		font.DrawSimple("Suitcase: " + collection.GetSuitcaseProgrammeLicenceCount() +" licences", x, y, SColor8.White)
+		y :+ 12
+		entryPos = 0
+		For Local l:TProgrammeLicence = EachIn collection.GetSuitcaseProgrammeLicences()
+			Local oldAlpha:Float = GetAlpha()
+			If entryPos Mod 2 = 0
+				SetColor 0,0,0
+			Else
+				SetColor 60,60,60
+			EndIf
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
+
+			'draw in topicality
+			SetColor 200,50,50
+			SetAlpha 0.65 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetMaxTopicality(), 2)
+			SetColor 240,80,80
+			SetAlpha 0.85 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetTopicality(), 2)
+
+			SetAlpha oldalpha
+			SetColor 255,255,255
+
+			Local progString:String = l.GetTitle()
+			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
+
+			Local attString:String = ""
+'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
+			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
+			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
+
+			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
+
+			entryPos :+ 1
+		Next
+		
+
 		SetAlpha oldAlpha
 		SetColor 255,255,255
 	End Method
@@ -3199,9 +3245,9 @@ End Type
 
 
 Type TDebugProgrammePlanInfos
-	Global programmeBroadcasts:TMap = CreateMap()
-	Global adBroadcasts:TMap = CreateMap()
-	Global newsInShow:TMap = CreateMap()
+	Global programmeBroadcasts:TIntMap = new TIntMap
+	Global adBroadcasts:TIntMap = new TIntMap
+	Global newsInShow:TIntMap = new TIntMap
 	Global oldestEntryTime:Long
 	Global _eventListeners:TEventListenerBase[]
 	Global predictor:TBroadcastAudiencePrediction = New TBroadcastAudiencePrediction
@@ -3230,7 +3276,7 @@ Type TDebugProgrammePlanInfos
 		Local slot:Int = triggerEvent.GetData().GetInt("slot", -1)
 		If Not broadcast Or slot < 0 Then Return False
 
-		newsInShow.Insert(broadcast.GetGUID(), String(Time.GetTimeGone()) )
+		newsInShow.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 
 		RemoveOutdated()
 	End Function
@@ -3242,9 +3288,9 @@ Type TDebugProgrammePlanInfos
 		If Not broadcast Or slotType <= 0 Then Return False
 
 		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-			adBroadcasts.Insert(broadcast.GetGUID(), String(Time.GetTimeGone()) )
+			adBroadcasts.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		Else
-			programmeBroadcasts.Insert(broadcast.GetGUID(), String(Time.GetTimeGone()) )
+			programmeBroadcasts.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		EndIf
 
 		RemoveOutdated()
@@ -3252,18 +3298,18 @@ Type TDebugProgrammePlanInfos
 
 
 	Function RemoveOutdated()
-		Local maps:TMap[] = [programmeBroadcasts, adBroadcasts, newsInShow]
+		Local maps:TIntMap[] = [programmeBroadcasts, adBroadcasts, newsInShow]
 
 		oldestEntryTime = -1
 
 		'remove outdated ones (older than 30 seconds))
-		For Local map:TMap = EachIn maps
-			Local remove:String[]
-			For Local guid:String = EachIn map.Keys()
-				Local broadcastTime:Long = Long( String(map.ValueForKey(guid)) )
+		For Local map:TIntMap = EachIn maps
+			Local remove:Int[]
+			For Local idKey:TIntKey = EachIn map.Keys()
+				Local broadcastTime:Long = Long( String(map.ValueForKey(idKey.value)) )
 				'old or not happened yet ?
 				If broadcastTime + 8000 < Time.GetTimeGone() ' or broadcastTime > Time.GetTimeGone()
-					remove :+ [guid]
+					remove :+ [idKey.value]
 					Continue
 				EndIf
 
@@ -3271,8 +3317,8 @@ Type TDebugProgrammePlanInfos
 				oldestEntryTime = Min(oldestEntryTime, broadcastTime)
 			Next
 
-			For Local guid:String = EachIn remove
-				map.Remove(guid)
+			For Local id:Int = EachIn remove
+				map.Remove(id)
 			Next
 		Next
 
@@ -3296,14 +3342,14 @@ Type TDebugProgrammePlanInfos
 	End Function
 
 
-	Function GetAddedTime:Long(guid:String, slotType:Int=0)
+	Function GetAddedTime:Long(id:Int, slotType:Int=0)
 		Select slotType
 			Case TVTBroadcastMaterialType.PROGRAMME
-				Return Int( String(programmeBroadcasts.ValueForKey(guid)) )
+				Return Long( String(programmeBroadcasts.ValueForKey(id)) )
 			Case TVTBroadcastMaterialType.ADVERTISEMENT
-				Return Int( String(adBroadcasts.ValueForKey(guid)) )
+				Return Long( String(adBroadcasts.ValueForKey(id)) )
 			Case TVTBroadcastMaterialType.NEWS
-				Return Int( String(newsInShow.ValueForKey(guid)) )
+				Return Long( String(newsInShow.ValueForKey(id)) )
 		End Select
 		Return 0
 	End Function
@@ -3468,8 +3514,8 @@ Type TDebugProgrammePlanInfos
 
 
 			Local progTime:Long = 0, adTime:Long = 0
-			If advertisement Then adTime = GetAddedTime(advertisement.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT)
-			If programme Then progTime = GetAddedTime(programme.GetGUID(), TVTBroadcastMaterialType.PROGRAMME)
+			If advertisement Then adTime = GetAddedTime(advertisement.GetID(), TVTBroadcastMaterialType.ADVERTISEMENT)
+			If programme Then progTime = GetAddedTime(programme.GetID(), TVTBroadcastMaterialType.PROGRAMME)
 
 			SetColor 255,235,20
 			If progTime <> 0
@@ -3538,7 +3584,7 @@ Type TDebugProgrammePlanInfos
 	
 	
 				If TNews(news)
-					Local newsTime:Long = GetAddedTime(news.GetGUID(), TVTBroadcastMaterialType.NEWS)
+					Local newsTime:Long = GetAddedTime(news.GetID(), TVTBroadcastMaterialType.NEWS)
 					If newsTime <> 0
 						Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - newsTime) / 5000.0))
 						SetColor 255,255,255
