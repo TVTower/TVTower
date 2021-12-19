@@ -450,4 +450,66 @@ Type TAIEvent {_exposeTolua}
 		data :+ o
 		return self
 	End Method
+	
+	
+	Method GetName:String()
+		Select id
+			Case OnLoadState
+				Return "OnLoadState"
+			Case OnSaveState
+				Return "OnSaveState"
+			Case OnLoad
+				Return "OnLoad"
+			Case OnSave
+				Return "OnSave"
+			Case OnRealtimeSecond
+				Return "OnRealtimeSecond"
+			Case OnMinute
+				Return "OnMinute"
+			Case OnChat
+				Return "OnChat"
+			Case OnProgrammeLicenceAuctionGetOutbid
+				Return "OnProgrammeLicenceAuctionGetOutbid"
+			Case OnProgrammeLicenceAuctionWin
+				Return "OnProgrammeLicenceAuctionWin"
+			Case OnBossCalls
+				Return "OnBossCalls"
+			Case OnBossCallsForced
+				Return "OnBossCallsForced"
+			Case OnPublicAuthoritiesStopXRatedBroadcast
+				Return "OnPublicAuthoritiesStopXRatedBroadcast"
+			Case OnPublicAuthoritiesConfiscateProgrammeLicence
+				Return "OnPublicAuthoritiesConfiscateProgrammeLicence"
+			Case OnAchievementCompleted
+				Return "OnAchievementCompleted"
+			Case OnWonAward
+				Return "OnWonAward"
+			Case OnLeaveRoom
+				Return "OnLeaveRoom"
+			Case OnReachTarget
+				Return "OnReachTarget"
+			Case OnReachRoom
+				Return "OnReachRoom"
+			Case OnBeginEnterRoom
+				Return "OnBeginEnterRoom"
+			Case OnEnterRoom
+				Return "OnEnterRoom"
+			Case OnDayBegins
+				Return "OnDayBegins"
+			Case OnGameBegins
+				Return "OnGameBegins"
+			Case OnInit
+				Return "OnInit"
+			Case OnMoneyChanged
+				Return "OnMoneyChanged"
+			Case OnMalfunction
+				Return "OnMalfunction"
+			Case OnPlayerGoesBankrupt
+				Return "OnPlayerGoesBankrupt"
+			Case OnConditionalCallOnTick
+				Return "OnConditionalCallOnTick"
+			Default
+				Return "Unknown event"
+		End Select
+	End Method
 End Type

@@ -5,6 +5,7 @@ Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = New TDebu
 Global debugPlayerControls :TDebugPlayerControls = New TDebugPlayerControls
 Global debugFinancialInfos :TDebugFinancialInfos = New TDebugFinancialInfos
 
+Global debugProfiler:TDebugProfiler = new TDebugProfiler
 
 
 Type TDebugScreen
@@ -234,7 +235,7 @@ Type TDebugScreen
 
 			if GetPlayer(i+1).IsLocalAI()
 				DrawOutlineRect(x + 140 + 150 + 2, 10 + i*75 + 33, sideInfoW, 37)
-				DrawProfilerCallHistory(TProfiler.GetCall(TApp._profilerKey_AI_MINUTE[i]), x + 140 + 150 + 5, 10 + i*75 + 33 + 5, sideInfoW - 2*4, 28, "AI " + (i+1))
+				DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[i]), x + 140 + 150 + 5, 10 + i*75 + 33 + 5, sideInfoW - 2*4, 28, "AI " + (i+1))
 			endif
 
 		next
@@ -2360,15 +2361,24 @@ endrem
 
 		If player.playerAI
 			SetColor 40,40,40
-			DrawRect(x, y, 185, Max(100, player.playerAI.eventQueue.length * 10 + 6))
+			DrawRect(x, y, 185, 10 * 10 + 25)
 			SetColor 255,255,255
 
 			Local textX:Int = x + 3
 			Local textY:Int = y + 3 - 1
+			
+			textFont.Draw("Event Queue: " + player.playerAI.eventQueue.length + " event(s).", textX, textY)
+			textY :+ 12
 
+			local eventNumber:Int = 0
 			For local aievent:TAIEvent = EachIn player.playerAI.eventQueue
-				textFont.Draw("event:   " + aievent.ID, textX, textY)
+				textFont.DrawBox(aievent.ID, textX, textY, 15, 13, sALIGN_RIGHT_TOP, SColor8.white)
+				textFont.DrawBox(aievent.GetName(), textX + 18, textY, 179 - 18, 13, SColor8.white)
 				textY :+ 10
+				eventNumber :+ 1
+				
+				'only print up to 20 events ...
+				if eventNumber > 10 then exit
 			Next
 		EndIf
 	End Method
@@ -3851,5 +3861,48 @@ Type TDebugFinancialInfos
 		font.Draw("~tLic:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_programmeLicences), textX, textY)
 		textY :+ 9
 		font.Draw("~tAd:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_penalty), textX, textY)
+	End Method
+End Type
+
+
+
+Type TDebugProfiler
+	Field active:Int = False
+	Field callNames:object[]
+	
+	Method ObserveCall(callName:Object)
+		callNames :+ [callName]
+	End Method
+	
+	
+	Method Update(x:Int, y:Int)
+	End Method
+
+	Method Draw(x:Int, y:Int)
+		If not active then Return
+		
+		Local textX:Int = x
+		Local textY:Int = y
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float; oldColA = GetAlpha()
+		Local font:TBitmapfont = GetBitmapFont("default", 10)
+
+		SetColor 0,0,0
+		SetAlpha 0.75*oldColA
+		DrawRect(x, y, 220, 100)
+		
+		SetColor(255,255,255)
+		font.Draw("Profiler", textX, textY)
+		textY :+ 12
+		For Local callName:object = EachIn callNames
+			Local c:TProfilerCall = TProfiler.GetCall(callName)
+			if c
+				font.Draw(c.name.ToString() + "  " + c.calls + " calls, " + StringHelper.printf("%5.2f", [string(float(c.timeTotal) / c.calls)])+"ms avg.", textX, textY)
+				textY :+ 12
+			endif
+		Next
+
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 End Type
