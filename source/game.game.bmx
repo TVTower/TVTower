@@ -426,10 +426,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 			'p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
 			p.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPlayerGoesBankrupt).AddInt(playerID))
-
-			'stop playerAI
-			p.StopAI()
 		Next
+		
+		
+		'stop playerAI
+		'this will also be done by "ResetPlayer()"
+		if player.IsLocalAI() Then player.StopAI()
+
 
 		Local figure:TFigure = player.GetFigure()
 		If figure
@@ -451,9 +454,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				Local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
 				If newColor
 					'set color free to use again
-					Player.color.SetOwner(0)
-					Player.color = newcolor.SetOwner(playerID).AddToList()
-					Player.RecolorFigure(Player.color)
+					player.color.SetOwner(0)
+					player.color = newcolor.SetOwner(playerID).AddToList()
+					player.RecolorFigure(player.color)
 				EndIf
 				'choose a random one
 				If player.figurebase <= 5

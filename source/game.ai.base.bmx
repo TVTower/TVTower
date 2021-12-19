@@ -90,7 +90,7 @@ Type TAiBase
 			case TAIEvent.OnSave
 				CallOnSave()
 			case TAIEvent.OnSaveState
-				CallOnSaveState
+				CallOnSaveState()
 			case TAIEvent.OnLoadState
 				CallOnLoadState()
 			case TAIEvent.OnChat
@@ -197,6 +197,10 @@ rem
 	End Method
 endrem
 
+	Method IsStarted:Int()
+		return started
+	End Method
+
 
 	Method Start()
 		TLogger.Log("TAiBase", "Starting AI " + playerID + " using script " + scriptFileName, LOG_DEBUG)
@@ -233,6 +237,17 @@ endrem
 			_updateThreadExit = False
 			DetachThread(_updateThread)
 			_updateThread = Null
+			
+			If not TryLockMutex(_callLuaFunctionMutex)
+				TLogger.Log("TAiBase", "#  Mutex _callLuaFunctionMutex still locked!", LOG_DEBUG)
+				UnlockMutex(_callLuaFunctionMutex)
+				TLogger.Log("TAiBase", "#  Mutex _callLuaFunctionMutex now unlocked!", LOG_DEBUG)
+			EndIf
+			If not TryLockMutex(_eventQueueMutex)
+				TLogger.Log("TAiBase", "#  Mutex _eventQueueMutex still locked!", LOG_DEBUG)
+				UnlockMutex(_eventQueueMutex)
+				TLogger.Log("TAiBase", "#  Mutex _eventQueueMutex now unlocked!", LOG_DEBUG)
+			EndIf
 
 			TLogger.Log("TAiBase", "Removed AI " + playerID + " Update Thread", LOG_DEBUG)
 		EndIf

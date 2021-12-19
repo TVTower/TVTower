@@ -470,7 +470,7 @@ endrem
 
 
 	Method StopAI()
-		if PlayerAI then PlayerAI.Stop()
+		if PlayerAI and PlayerAI.IsStarted() then PlayerAI.Stop()
 	End Method
 
 
