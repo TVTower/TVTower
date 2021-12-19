@@ -419,6 +419,19 @@ Type TDebugScreen
 		For Local b:TDebugControlsButton = EachIn playerCommandAIButtons
 			b.Update(sideButtonPanelWidth + 5 + 1*(120 + 10), 30)
 		Next
+		
+		'switch off unavailable commands
+		Local playerID:Int = GetShownPlayerID()
+		If GetPlayer(playerID).isLocalHuman() or GetPlayer(playerID).isLocalAI()
+			playerCommandAIButtons[0].visible = True
+		Else
+			playerCommandAIButtons[0].visible = False
+		EndIf
+		If GetPlayer(playerID).isLocalAI()
+			playerCommandAIButtons[1].visible = True
+		Else
+			playerCommandAIButtons[1].visible = False
+		EndIf
 	End Method
 
 

@@ -255,6 +255,7 @@ endrem
 		else
 			AddLog("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		endif
+		Return True
 	End Method
 
 
