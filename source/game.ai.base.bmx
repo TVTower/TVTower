@@ -149,6 +149,18 @@ Type TAiBase
 
 
 	Method AddEventObj(aiEvent:TAIEvent, handleNow:Int = False)
+		'if not running, nothing can be added
+		If not started then Return
+
+		'potentially skip "unimportant events" for paused AIs (eg. ticks)
+		Select aiEvent.id
+			case TAIEvent.OnMinute, ..
+			     TAIEvent.OnConditionalCallOnTick, ..
+			     TAIEvent.OnRealtimeSecond
+				If Not IsActive() Then Return
+		End Select
+
+
 		'non threaded AI just handles the event now
 		if THREADED_AI_DISABLED or handleNow
 			HandleAIEvent(aiEvent)
