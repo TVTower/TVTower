@@ -570,11 +570,6 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method AreEqual:Int(o1:Object, o2:Object)
-		Return o1 = o2
-	End Method
-
-
 	Method getPotentialAudiencePercentage:Float(day:Int = - 1, hour:Int = -1)
 		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().GetDayHour()
