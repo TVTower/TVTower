@@ -316,8 +316,8 @@ Type TDebugScreen
 		Next
 
 
-		IDs   = [0,           1]
-		texts = ["Enable AI", "Reload AI"]
+		IDs   = [0,           1,           2]
+		texts = ["Enable AI", "Reload AI", "Pause AI"]
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
 			button.w = 120
@@ -405,6 +405,8 @@ Type TDebugScreen
 				endif
 			Case 1 
 				If GetPlayer(playerID).isLocalAI() Then GetPlayer(playerID).PlayerAI.reloadScript()
+			Case 2 
+				If GetPlayer(playerID).isLocalAI() Then GetPlayer(playerID).PlayerAI.paused = 1 - GetPlayer(playerID).PlayerAI.paused 
 		End Select
 		sender.selected = newButtonState
 	End Function
@@ -431,6 +433,16 @@ Type TDebugScreen
 			playerCommandAIButtons[1].visible = True
 		Else
 			playerCommandAIButtons[1].visible = False
+		EndIf
+		If GetPlayer(playerID).isLocalAI()
+			playerCommandAIButtons[2].visible = True
+			If GetPlayer(playerID).PlayerAI.paused
+				playerCommandAIButtons[2].text = "Resume AI"
+			Else
+				playerCommandAIButtons[2].text = "Pause AI"
+			EndIf
+		Else
+			playerCommandAIButtons[2].visible = False
 		EndIf
 	End Method
 
