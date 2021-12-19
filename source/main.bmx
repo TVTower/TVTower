@@ -159,6 +159,22 @@ Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
 Global collectDebugStats:Int = False
 
+Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
+Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
+Global _profilerKey_RessourceLoader:TLowerString = New TLowerString.Create("RessourceLoader")
+Global _profilerKey_AI_MINUTE:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_MINUTE"), New TLowerString.Create("PLAYER_AI2_MINUTE"), New TLowerString.Create("PLAYER_AI3_MINUTE"), New TLowerString.Create("PLAYER_AI4_MINUTE")]
+Global _profilerKey_AI_SECOND:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_SECOND"), New TLowerString.Create("PLAYER_AI2_SECOND"), New TLowerString.Create("PLAYER_AI3_SECOND"), New TLowerString.Create("PLAYER_AI4_SECOND")]
+
+DebugProfiler.active = False 'True
+DebugProfiler.ObserveCall(_profilerKey_Update)
+DebugProfiler.ObserveCall(_profilerKey_Draw)
+DebugProfiler.ObserveCall("GameLoop::Draw")
+DebugProfiler.ObserveCall("GameLoop::Update")
+DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[0])
+DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[1])
+DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[2])
+DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[3])
+
 
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString + " Build ~q" + VersionDate+"~q"
@@ -617,11 +633,6 @@ Type TApp
 	End Method
 
 
-	Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
-	Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
-	Global _profilerKey_RessourceLoader:TLowerString = New TLowerString.Create("RessourceLoader")
-	Global _profilerKey_AI_MINUTE:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_MINUTE"), New TLowerString.Create("PLAYER_AI2_MINUTE"), New TLowerString.Create("PLAYER_AI3_MINUTE"), New TLowerString.Create("PLAYER_AI4_MINUTE")]
-	Global _profilerKey_AI_SECOND:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_SECOND"), New TLowerString.Create("PLAYER_AI2_SECOND"), New TLowerString.Create("PLAYER_AI3_SECOND"), New TLowerString.Create("PLAYER_AI4_SECOND")]
 	Global keyLS_DevOSD:TLowerString = New TLowerString.Create("DEV_OSD")
 	Global keyLS_DevKeys:TLowerString = New TLowerString.Create("DEV_KEYS")
 	Function Update:Int()
@@ -832,7 +843,7 @@ Type TApp
 
 			If KeyManager.IsDown(KEY_RIGHT)
 				If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
-					GetGame().SetGameSpeed( Int(GetWorldTime().GetTimeFactor()) + 10 )
+					GetGame().SetGameSpeed( Int(GetWorldTime().GetTimeFactor()) + 5 )
 				Else
 					'fast forward
 					If Not DEV_FastForward
@@ -864,7 +875,7 @@ Type TApp
 
 
 			If KeyManager.IsDown(KEY_LEFT) Then
-				GetGame().SetGameSpeed( Max(Int(GetWorldTime().GetTimeFactor()) - 10, 0) )
+				GetGame().SetGameSpeed( Max(Int(GetWorldTime().GetTimeFactor()) - 5, 0) )
 			EndIf
 
 
@@ -1660,6 +1671,8 @@ Rem
 			GetBitmapFont("Default", 16).Draw("kein EscapeMenue vorhanden", 20, 570)
 		endif
 endrem
+
+		debugProfiler.Draw(10, 20)
 
 		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
@@ -4364,12 +4377,12 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
-				TProfiler.Enter(TApp._profilerKey_AI_SECOND[player.playerID-1], False)
+				TProfiler.Enter(_profilerKey_AI_SECOND[player.playerID-1], False)
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddInt(timeGone))
 				'player.PlayerAI.ConditionalCallOnTick()
 				'player.PlayerAI.CallOnRealtimeSecond(timeGone)
-				TProfiler.Leave(TApp._profilerKey_AI_SECOND[player.playerID-1], 100, False)
+				TProfiler.Leave(_profilerKey_AI_SECOND[player.playerID-1], 100, False)
 			EndIf
 		Next
 		Return True
@@ -4403,12 +4416,12 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
-				TProfiler.Enter(TApp._profilerKey_AI_MINUTE[player.playerID-1], False)
+				TProfiler.Enter(_profilerKey_AI_MINUTE[player.playerID-1], False)
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).AddInt(minute))
 				'player.PlayerAI.ConditionalCallOnTick()
 				'player.PlayerAI.CallOnMinute(minute)
-				TProfiler.Leave(TApp._profilerKey_AI_MINUTE[player.playerID-1], 100, False)
+				TProfiler.Leave(_profilerKey_AI_MINUTE[player.playerID-1], 100, False)
 			EndIf
 		Next
 		Return True
