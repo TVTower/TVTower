@@ -3379,6 +3379,7 @@ Type TDebugProgrammePlanInfos
 
 
 	Method Update(playerID:Int, x:Int, y:Int)
+		If showCurrent > 0 Then dayShown = GetWorldTime().GetDay()
 	End Method
 
 
