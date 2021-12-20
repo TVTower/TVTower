@@ -100,30 +100,27 @@ Type TAi Extends TAiBase
 	'or
 	'- another InGameMinute passed since last tick
 	Method ConditionalCallOnTick()
-		'time between two ticks = time between two GameMinutes or maximum
-		'1 second (eg. if speed is 0)
-		Local tickInterval:Long = 1000
-		'if GetWorldTime().GetVirtualMinutesPerSecond() > 0
-		'	tickInterval = Min(1000.0 , 1000.0 / GetWorldTime().GetVirtualMinutesPerSecond())
-		'endif
-
-		'more time gone than the set interval?
-		If Abs(Time.GetTimeGone() - LastTickTime) > tickInterval Or LastTickMinute <> GetWorldTime().GetDayMinute()
-			'store time/minute of this tick so waiting-period starts
-			'all over
-			LastTickTime = Time.GetTimeGone()
-			LastTickMinute = GetWorldTime().GetDayMinute()
-
-			Ticks :+ 1
-
-			If Not AiRunning Then Return
-
-			Local args:Object[2]
-			args[0] = String(LastTickTime)
-			args[1] = String(Ticks)
-
-			CallLuaFunction("OnTick", args)
+		If Time.GetTimeGone() > NextTickTime Or LastTickMinute <> GetWorldTime().GetDayMinute()
+			CallOnTick()
 		EndIf
+	End Method
+
+
+	Method CallOnTick()
+		'update next tick time and store minute of this tick so 
+		'waiting-period starts all over
+		NextTickTime = Time.GetTimeGone() + 1000
+		LastTickMinute = GetWorldTime().GetDayMinute()
+
+		Ticks :+ 1
+
+		If Not AiRunning Then Return
+
+		Local args:Object[2]
+		args[0] = String(Time.GetTimeGone())
+		args[1] = String(Ticks)
+
+		CallLuaFunction("OnTick", args)
 	End Method
 
 
@@ -323,6 +320,13 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 	Method GetNextEventCount:Int()
 		Return GetPlayerBase(Self.ME).PlayerAI.GetNextEventCount()
+	End Method
+	
+
+	Method ScheduleNextOnTick()
+		'add conditional tick event
+		GetPlayerBase(Self.ME).PlayerAI.SetNextOnTickTime( Time.GetTimeGone() - 1000 )
+		GetPlayerBase(Self.ME).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
 	End Method
 
 

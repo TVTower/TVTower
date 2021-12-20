@@ -14,11 +14,11 @@ Type TAiBase
 	Field scriptFileName:String
 	'contains the code used to reinitialize the AI
 	Field scriptSaveState:string
-	'time in milliseconds of the last "onTick"-call
-	Field LastTickTime:Long
-	'game minute of the last "onTick"-call
-	Field LastTickMinute:int
-	Field Ticks:Long
+	'time in milliseconds for the next "onTick"-call
+	Field nextTickTime:Long
+	'game game minute of the last "onTick"-call
+	Field lastTickMinute:int
+	Field ticks:Long
 	'stores blitzmax objects used in the LUA scripts to ease serialisation
 	'when saving a gamestate
 	Field objectsUsedInLua:object[]
@@ -81,6 +81,8 @@ Type TAiBase
 		Select event.id
 			case TAIEvent.OnMinute
 				CallLuaFunction("OnMinute", event.data)
+			case TAIEvent.OnTick
+				CallOnTick()
 			case TAIEvent.OnConditionalCallOnTick
 				ConditionalCallOnTick()
 			case TAIEvent.OnRealTimeSecond
@@ -155,6 +157,7 @@ Type TAiBase
 		'potentially skip "unimportant events" for paused AIs (eg. ticks)
 		Select aiEvent.id
 			case TAIEvent.OnMinute, ..
+			     TAIEvent.OnTick, ..
 			     TAIEvent.OnConditionalCallOnTick, ..
 			     TAIEvent.OnRealtimeSecond
 				If Not IsActive() Then Return
@@ -196,6 +199,11 @@ Type TAiBase
 	Method GetNextEventCount:Int()
 		if THREADED_AI_DISABLED then return 0
 		return eventQueue.length
+	End Method
+
+	
+	Method SetNextOnTickTime(time:Long)
+		nextTickTime = time
 	End Method
 
 
@@ -383,6 +391,7 @@ endrem
 	Method CallUpdate() abstract
 
 	Method ConditionalCallOnTick() abstract
+	Method CallOnTick() abstract
 	Method CallOnLoadState() abstract
 	Method CallOnSaveState() abstract
 	Method CallOnLoad() abstract
@@ -436,6 +445,7 @@ Type TAIEvent {_exposeTolua}
 	Const OnMalfunction:Int = 25
 	Const OnPlayerGoesBankrupt:Int = 26
 	Const OnConditionalCallOnTick:Int = 27
+	Const OnTick:Int = 28
 
 
 	Method SetID:TAIEvent(evID:int)
@@ -536,6 +546,8 @@ Type TAIEvent {_exposeTolua}
 				Return "OnPlayerGoesBankrupt"
 			Case OnConditionalCallOnTick
 				Return "OnConditionalCallOnTick"
+			Case OnTick
+				Return "OnTick"
 			Default
 				Return "Unknown event"
 		End Select

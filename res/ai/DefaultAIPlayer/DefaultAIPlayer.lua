@@ -728,6 +728,14 @@ function OnEnterRoom(roomId)
 			getAIPlayer().nextAwardEndTime = tonumber(TVT.bo_GetNextAwardEndTimeString())
 		end
 	end
+	
+	-- prepone next "onTick" as we are ready to do something now
+	TVT.ScheduleNextOnTick()
+	-- alternative: 
+	-- already start with the current task (run 1 TickProcessTask()
+	--if (aiIsActive) then
+	--	getAIPlayer():Tick()
+	--end
 end
 
 -- figure is now at the desired target
