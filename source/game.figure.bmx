@@ -81,6 +81,11 @@ Type TFigure extends TFigureBase
 	Field fromRoom:TRoomBase = Null
 	'going to room
 	Field inRoom:TRoomBase = Null
+	
+	Field beginLeaveRoomTime:Long
+	Field finishLeaveRoomTime:Long
+	Field beginEnterRoomTime:Long
+	Field finishEnterRoomTime:Long
 
 	'network sync position timer
 	Field SyncTimer:TIntervalTimer = TIntervalTimer.Create(2500)
@@ -642,7 +647,7 @@ Type TFigure extends TFigureBase
 		if room.isOccupant(self) or inRoom = room then return TRUE
 
 		'=== INFORM OTHERS ===
-		'inform that figure now begins entering the room
+		'inform that figure now starts the "entering the room" process
 		'(eg. for players informing the ai)
 		TriggerBaseEvent(GameEventKeys.Figure_OnEnterRoom, new TData.Add("room", room).Add("door", door) , self, room)
 
@@ -734,6 +739,12 @@ Type TFigure extends TFigureBase
 			next
 		EndIf
 
+		self.beginEnterRoomTime = Time.GetTimeGone()
+		self.finishEnterRoomTime = -1
+		self.beginLeaveRoomTime = -1
+		self.finishLeaveRoomTime = -1
+
+
 		'set figure already "inRoom" in that moment
 		'(room adds occupant too on "BeginEnter")
 		'print self.name+" SET IN ROOM  (" + Time.GetSystemTime("%H:%I:%S") +")"
@@ -789,6 +800,10 @@ Type TFigure extends TFigureBase
 		'finish reaching-target-steps (and remove current target)
 		'also this might add a new target (eg. via AI)
 		ReachTargetStep2()
+
+		self.finishEnterRoomTime = Time.GetTimeGone()
+		self.beginLeaveRoomTime = -1
+		self.finishLeaveRoomTime = -1
 
 		'inform room
 		if room then room.FinishEnter(self)
@@ -917,6 +932,8 @@ Type TFigure extends TFigureBase
 		'	print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 		'endif
 
+		self.beginLeaveRoomTime = Time.GetTimeGone()
+
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
@@ -951,6 +968,8 @@ Type TFigure extends TFigureBase
 
 		'activate timer to wait a bit after leaving a room
 		WaitLeavingTimer = GetBuildingTime().GetTimeGone() + WaitEnterLeavingTime
+
+		self.finishLeaveRoomTime = Time.GetTimeGone()
 
 		inRoomBackup.FinishLeave(self)
 
