@@ -736,9 +736,16 @@ Type TLuaEngine
 		Return engine.CompareObjectsObject(fromLuaState)
 	End Function
 
+	'mutex blocking multiple lua engines from simultaneously invoking
+	'functions or methods
+	global invokeMutex:TMutex = CreateMutex()
 	Function Invoke:Int(fromLuaState:Byte Ptr)
+		LockMutex(invokeMutex)
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-		Return engine._Invoke()
+		Local result:Int = engine._Invoke()
+		UnlockMutex(invokeMutex)
+		
+		Return result
 	End Function
 	'====================================
 
@@ -891,6 +898,11 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 			Return False
 		EndIf
 
+'Ronny: added to see if Lua calls methods which are (for now) not marked
+'as threadsafe
+If not funcOrMeth.HasMetaData("THREADSAFE") 
+	TLogger.Log("THREADSAFE", "Calling method or function ~q" + TTypeID.ForObject(obj).name() +"."+ funcOrMeth.name()+ "~q not marked {THREADSAFE} yet.", LOG_DEBUG)
+EndIf
 		Local t:Object
 		?Not bmxng
 		If func Then t = func.Invoke(obj, args)
