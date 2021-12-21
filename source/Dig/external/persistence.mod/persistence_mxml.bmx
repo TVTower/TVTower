@@ -1183,7 +1183,7 @@ endrem
 	Function Base36:String( val:Int )
 		Const size:Int = 6
 ?
-		Local vLong:Long = $FFFFFFFFFFFFFFFF & Long(Byte Ptr(val))
+		Local vLong:Long = $FFFFFFFFFFFFFFFF:Long & Long(Byte Ptr(val))
 		Local buf:Short[size]
 		For Local k:Int=(size-1) To 0 Step -1
 			Local n:Int=(vLong Mod 36) + 48
