@@ -125,10 +125,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
 			'also move slightly faster with higher speed...
 			'speed preset 1 (modifier = 2) is default
-			'normally a "modifier" as factor would be a direct translation
-			'but this does not look nice for the normal presets where you do
-			'not expect "speed 3" to look so "fast forward"
-			GetBuildingTime().SetTimeFactor( 0.75 + 0.5 * (modifier-1) )
+			'"modifier" alone as factor does not look nice (fast forward)
+			'exponent has impact only for preset 3!
+			GetBuildingTime().SetTimeFactor(float( 0.75 + 0.5 * (modifier-1) ^ 0.6))
 		Else
 			GetBuildingTime().SetTimeFactor( modifier )
 			TEntity.globalWorldSpeedFactor = modifier
