@@ -105,8 +105,15 @@ Type TEventManager
 	'storing TEventKey by "text" (TLowerstring) for fast lookup
 	Field eventKeyTextMap:TMap = new TMap
 	
-	Field _changeMutex:TMutex = CreateMutex()
+	Field _changeMutex:TMutex {nosave}
+	Field _handleEventMutex:TMutex {nosave}
 
+
+	Method New()
+		_changeMutex = CreateMutex()
+		_handleEventMutex = CreateMutex()
+	End Method
+	
 
 	'returns how many update ticks are gone since start
 	Method getTicks:Int()
@@ -421,10 +428,12 @@ Type TEventManager
 		EndIf
 
 		'run individual event method
+		LockMutex(_handleEventMutex) 
 		If Not triggeredByEvent.IsVeto()
 			eventsTriggered :+ 1
 			triggeredByEvent.onEvent()
 		EndIf
+		UnlockMutex(_handleEventMutex)
 
 		If listeners
 			Return listeners.count()
@@ -569,10 +578,18 @@ End Type
 Type TEventListenerBase
 	Field _limitToSender:Object
 	Field _limitToReceiver:Object
-
+	'for now global creation is not guaranteed in order, so we
+	'need to create it in New()
+	'Global _onEventMutex:TMutex = CreateMutex()
+	Global _onEventMutex:TMutex 
 
 	'what to do if the event happens
 	Method OnEvent:Int(triggeredByEvent:TEventBase) Abstract
+
+	
+	Method New()
+		if not _onEventMutex Then _onEventMutex = CreateMutex()
+	End Method
 
 
 	'returns whether to ignore the incoming event (eg. limits...)
@@ -635,7 +652,11 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 			EndIf
 
 			If _method
+				'avoid multiple events from different threads invoking
+				'methods simultaneously
+				LockMutex(_onEventMutex)
 				_method.Invoke(_objectInstance ,[triggerEvent])
+				UnlockMutex(_onEventMutex)
 				Return True
 			Else
 				TLogger.Log("TEventListener.OnEvent", "Tried to call non-existing method ~q"+_methodName+"~q.", LOG_WARNING | LOG_DEBUG)
@@ -666,8 +687,13 @@ Type TEventListenerRunFunction Extends TEventListenerBase
 	Method OnEvent:Int(triggerEvent:TEventBase)
 		If triggerEvent = Null Then Return 0
 
-		If Not ignoreEvent(triggerEvent) Then Return _function(triggerEvent)
-
+		If Not ignoreEvent(triggerEvent) 
+			'avoid multiple events from different threads invoking
+			'functions simultaneously
+			LockMutex(_onEventMutex)
+			Local result:Int = _function(triggerEvent)
+			UnlockMutex(_onEventMutex)
+		EndIf
 		Return True
 	End Method
 End Type
