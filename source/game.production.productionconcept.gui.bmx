@@ -410,7 +410,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 		'=== DEBUG ===
 rem
-		If TVTDebugInfos
+		If TVTDebugInfo
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 			local oldAlpha:Float = GetAlpha()

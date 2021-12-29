@@ -1,16 +1,18 @@
 
-Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
-Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = New TDebugProgrammePlanInfos
-Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = New TDebugProgrammeCollectionInfos
+Global debugAudienceInfo:TDebugAudienceInfo = New TDebugAudienceInfo
+Global debugProgrammePlanInfo :TDebugProgrammePlanInfo = New TDebugProgrammePlanInfo
 Global debugPlayerControls :TDebugPlayerControls = New TDebugPlayerControls
-Global debugFinancialInfos :TDebugFinancialInfos = New TDebugFinancialInfos
 
 Global debugProfiler:TDebugProfiler = new TDebugProfiler
 
 
 Type TDebugScreen
-	Field enabled:Int
-	Field mode:Int = 0
+	Field _enabled:Int
+	Field _lastEnabled:Int
+	Field _mode:Int = 0
+	Field _lastMode:Int
+	Field currentPage:TDebugScreenPage
+	
 	Field sideButtons:TDebugControlsButton[]
 	Field playerCommandTaskButtons:TDebugControlsButton[]
 	Field playerCommandAIButtons:TDebugControlsButton[]
@@ -33,6 +35,11 @@ Type TDebugScreen
 	Field scriptAgencyOfferHightlight:TScript
 	Field adAgencyOfferHightlight:TAdContract
 	Field movieVendorOfferHightlight:TProgrammeLicence
+	
+	
+	Field pagePlayerFinancials:TDebugScreenPage_PlayerFinancials
+	Field pagePlayerBroadcasts:TDebugScreenPage_PlayerBroadcasts
+	
 	Global titleFont:TBitmapFont
 	Global textFont:TBitmapFont
 	Global textFontBold:TBitmapFont
@@ -68,11 +75,17 @@ Type TDebugScreen
 
 			sideButtons :+ [button]
 		Next
+		
+		pagePlayerFinancials = new TDebugScreenPage_PlayerFinancials.Init()
+		pagePlayerFinancials.SetPosition(sideButtonPanelWidth, 20)
+
+		pagePlayerBroadcasts = new TDebugScreenPage_PlayerBroadcasts.Init()
+		pagePlayerBroadcasts.SetPosition(sideButtonPanelWidth, 20)
 
 		InitMode_Overview()
 		InitMode_PlayerCommands()
-		InitMode_PlayerFinancials()
-		InitMode_PlayerBroadcasts()
+'		InitMode_PlayerFinancials()
+'		InitMode_PlayerBroadcasts()
 		InitMode_AdAgency()
 		InitMode_MovieVendor()
 		InitMode_NewsAgency()
@@ -86,8 +99,39 @@ Type TDebugScreen
 	End Method
 
 
+	Method SetMode(newMode:Int)
+		If newMode <> _mode
+			_mode = newMode
+
+			local newPage:TDebugScreenPage
+			Select _mode
+				Case 0	newPage = Null
+				Case 1	newPage = Null
+				Case 2	newPage = pagePlayerFinancials
+				'Case 3	UpdateMode_PlayerBroadcasts()
+				'Case 4	UpdateMode_AdAgency()
+				'Case 5	UpdateMode_MovieVendor()
+				'Case 6	UpdateMode_NewsAgency()
+				'Case 7	UpdateMode_ScriptAgency()
+				'Case 8	UpdateMode_RoomAgency()
+				'Case 9	UpdateMode_Politics()
+				'Case 10	UpdateMode_Producers()
+				'Case 11	UpdateMode_Sports()
+				'Case 12	UpdateMode_Modifiers()
+				'Case 13	UpdateMode_Misc()
+				default newPage = Null
+			End Select
+			
+			if newPage <> currentPage
+				if currentPage then currentPage.Deactivate()
+				if newPage then newPage.Activate()
+				currentPage = newPage
+			endif
+		EndIf
+	End Method
+
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
-		DebugScreen.mode = sender.dataInt
+		DebugScreen.SetMode(sender.dataInt)
 	End Function
 
 
@@ -99,7 +143,7 @@ Type TDebugScreen
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 		Return playerID
 	End Method
-	
+
 	
 	'called no matter if debug screen is shown or not - use this for
 	'stuff needing regular updates anyways (eg to reset values)
@@ -116,6 +160,19 @@ Type TDebugScreen
 			FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,1,1,23,23) + 56*TWorldTime.MINUTELENGTH
 			GetGame().SetGameSpeed(FastForwardSpeed)
 		EndIf
+		
+		
+		If _enabled <> _lastEnabled
+			if currentPage 
+				If _enabled
+					currentPage.Activate()
+				Else
+					currentPage.Deactivate()
+				EndIf
+			endif
+
+			_lastEnabled = _enabled
+		EndIf
 	End Method
 
 
@@ -123,18 +180,19 @@ Type TDebugScreen
 		For Local b:TDebugControlsButton = EachIn sideButtons
 			b.Update()
 
-			If mode = b.dataInt
+			If _mode = b.dataInt
 				b.selected = True
 			Else
 				b.selected = False
 			EndIf
 		Next
 
-		Select mode
+		Select _mode
 			Case 0	UpdateMode_Overview()
 			Case 1	UpdateMode_PlayerCommands()
-			Case 2	UpdateMode_PlayerFinancials()
-			Case 3	UpdateMode_PlayerBroadcasts()
+			'Case 2	UpdateMode_PlayerFinancials()
+			Case 2	pagePlayerFinancials.Update()
+			Case 3	pagePlayerBroadcasts.Update()
 			Case 4	UpdateMode_AdAgency()
 			Case 5	UpdateMode_MovieVendor()
 			Case 6	UpdateMode_NewsAgency()
@@ -154,6 +212,10 @@ Type TDebugScreen
 			titleFont = GetBitmapFont("default", 12, BOLDFONT)
 			textFontBold = GetBitmapFont("default", 10, BOLDFONT)
 			textFont = GetBitmapFont("default", 10)
+			
+			TDebugScreenPage.titleFont = titleFont
+			TDebugScreenPage.textFontBold = textFontBold
+			TDebugScreenPage.textFont = textFont
 		endif
 
 		Local oldCol:SColor8; GetColor(oldCol)
@@ -176,11 +238,11 @@ Type TDebugScreen
 		SetColor(oldCol)
 		SetAlpha(oldColA)
 		
-		Select mode
+		Select _mode
 			Case 0	RenderMode_Overview()
 			Case 1	RenderMode_PlayerCommands()
-			Case 2	RenderMode_PlayerFinancials()
-			Case 3	RenderMode_PlayerBroadcasts()
+			Case 2	pagePlayerFinancials.Render()
+			Case 3	pagePlayerBroadcasts.Render()
 			Case 4	RenderMode_AdAgency()
 			Case 5	RenderMode_MovieVendor()
 			Case 6	RenderMode_NewsAgency()
@@ -243,57 +305,6 @@ Type TDebugScreen
 		GetWorld().RenderDebug(x + 5 + 500, 20, 140, 180)
 	End Method
 
-
-
-	'=== PLAYER FINANCIALS ===
-	Method InitMode_PlayerFinancials()
-		Local texts:String[] = ["Set Player 1 Bankrupt", "Set Player 2 Bankrupt", "Set Player 3 Bankrupt", "Set Player 4 Bankrupt"]
-		Local button:TDebugControlsButton
-		For Local i:Int = 0 Until texts.length
-			button = CreateActionButton(i, texts[i])
-			button._onClickHandler = OnButtonClickHandler_PlayerFinancials
-
-			buttonsPlayerFinancials :+ [button]
-		Next
-	End Method
-
-
-	Function OnButtonClickHandler_PlayerFinancials(sender:TDebugControlsButton)
-		Select sender.dataInt
-			case 0
-				GetGame().SetPlayerBankrupt(1)
-			case 1
-				GetGame().SetPlayerBankrupt(2)
-			case 2
-				GetGame().SetPlayerBankrupt(3)
-			case 3
-				GetGame().SetPlayerBankrupt(4)
-		End Select
-
-		'handled
-		sender.clicked = False
-		sender.selected = False
-	End Function
-
-
-	Method UpdateMode_PlayerFinancials()
-		Local playerID:Int = GetShownPlayerID()
-
-		For Local b:TDebugControlsButton = EachIn buttonsPlayerFinancials
-			b.Update()
-		Next
-	End Method
-
-
-	Method RenderMode_PlayerFinancials()
-		Local playerID:Int = GetShownPlayerID()
-
-		RenderActionButtons(buttonsPlayerFinancials)
-
-		debugFinancialInfos.Draw(-1, sideButtonPanelWidth + 5, 20)
-
-		RenderPlayerBudgets(playerID, sideButtonPanelWidth + 5, 150)
-	End Method
 
 
 
@@ -479,43 +490,6 @@ Type TDebugScreen
 	End Method
 
 
-
-	'=== PLAYER BROADCASTS ===
-
-	Method InitMode_PlayerBroadcasts()
-		Local texts:String[] = ["< Day", "Today", "Day >"]
-		Local button:TDebugControlsButton
-		For Local i:Int = 0 Until texts.length
-			button = CreateActionButton(i, texts[i])
-			button._onClickHandler = debugProgrammePlanInfos.OnButtonClickHandler_Broadcast
-			button.x = 145 + 110*i
-			button.y = 364
-			button.w = 100
-			buttonsBroadcast :+ [button]
-		Next
-	End Method
-
-
-	Method UpdateMode_PlayerBroadcasts()
-		Local playerID:Int = GetShownPlayerID()
-
-		debugProgrammePlanInfos.Update(playerID, sideButtonPanelWidth + 5, 13)
-		debugProgrammeCollectionInfos.Update(playerID, sideButtonPanelWidth + 5 + 350, 13)
-		For Local b:TDebugControlsButton = EachIn buttonsBroadCast
-			b.Update()
-		Next
-	End Method
-
-
-	Method RenderMode_PlayerBroadcasts()
-		Local playerID:Int = GetShownPlayerID()
-
-		debugProgrammePlanInfos.Draw(playerID, sideButtonPanelWidth + 5, 13)
-		debugProgrammeCollectionInfos.Draw(playerID, sideButtonPanelWidth + 5 + 350, 13)
-		For Local b:TDebugControlsButton = EachIn buttonsBroadCast
-			b.Render()
-		Next
-	End Method
 
 	Method CreateActionButton:TDebugControlsButton(index:int, text:String)
 		Local button:TDebugControlsButton = New TDebugControlsButton
@@ -2473,49 +2447,6 @@ endrem
 	End Method
 
 
-	Method RenderPlayerBudgets(playerID:Int, x:Int, y:Int)
-		Local player:TPlayer = GetPlayer(playerID)
-
-		If player.playerAI
-			Local colWidth:Int = 45
-			Local labelWidth:Int = 80
-			Local padding:Int = 15
-			Local boxWidth:Int = labelWidth + padding + colWidth*3 + 2 '2 is border*2
-
-			SetColor 40,40,40
-			DrawRect(x, y, boxWidth, 140)
-			SetColor 50,50,40
-			DrawRect(x+1, y+1, boxWidth-2, 140)
-			SetColor 255,255,255
-
-			Local textX:Int = x + 3
-			Local textY:Int = y + 3 - 1
-
-			textFont.Draw("Investment Savings: " + MathHelper.DottedValue(player.aiData.GetInt("budget_investmentsavings")), textX, textY)
-			textY :+ 10
-			textFont.Draw("Savings Part: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", textX, textY)
-			textY :+ 10
-			textFont.Draw("Extra fixed costs savings percentage: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", textX, textY)
-			textY :+ 10
-
-			textFontBold.Draw("Budget List: ", textX, textY)
-			textFontBold.Draw("Current", textX + labelWidth + padding + colWidth*0, textY)
-			textFontBold.Draw("Max", textX + labelWidth + padding + colWidth*1, textY)
-			textFontBold.Draw("Day", textX + labelWidth + padding + colWidth*2, textY)
-			textY :+ 10 + 2
-
-			For Local taskNumber:Int = 1 To player.aiData.GetInt("budget_task_count", 1)
-				textFont.Draw(player.aiData.GetString("budget_task_name"+taskNumber).Replace("Task", ""), textX, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), textX + labelWidth + padding + colWidth*0, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), textX + labelWidth + padding + colWidth*1, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), textX + labelWidth + padding + colWidth*2, textY)
-				textY :+ 10
-			Next
-		EndIf
-	End Method
-
-
-
 
 	Function DrawOutlineRect(x:int, y:int, w:int, h:int, borderTop:int = True, borderRight:int = True, borderBottom:int = True, borderLeft:Int = True, r:int = 0, g:int = 0, b:int = 0, borderAlpha:Float = 0.5, bgAlpha:Float = 0.5)
 		Local oldCol:SColor8; GetColor(oldCol)
@@ -2928,358 +2859,9 @@ End Type
 
 
 
-Type TDebugProgrammeCollectionInfos
-	Field initialized:Int = False
-	Global addedProgrammeLicences:TIntMap = new TIntMap
-	Global removedProgrammeLicences:TIntMap = new TIntMap
-	Global availableProgrammeLicences:TIntMap = new TIntMap
-	'Global suitcaseProgrammeLicences:TIntMap = new TIntMap
-	Global addedAdContracts:TIntMap = new TIntMap
-	Global removedAdContracts:TIntMap = new TIntMap
-	Global availableAdContracts:TIntMap = new TIntMap
-	Global oldestEntryTime:Long
-	Global _eventListeners:TEventListenerBase[]
 
 
-	Method New()
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
-
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, onChangeProgrammeCollection) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase, onChangeProgrammeCollection) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_PreparePlayer, onPreparePlayer) ]
-	End Method
-
-
-	Function onGameStart:Int(triggerEvent:TEventBase)
-		debugProgrammeCollectionInfos.Initialize()
-	End Function
-
-	'called if a player restarts
-	Function onPreparePlayer:Int(triggerEvent:TEventBase)
-		debugProgrammeCollectionInfos.Initialize()
-	End Function
-
-
-	Function onChangeProgrammeCollection:Int(triggerEvent:TEventBase)
-		Local prog:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))
-		Local contract:TAdContract = TAdContract(triggerEvent.GetData().Get("adcontract"))
-		Local broadcastSource:TBroadcastMaterialSource = prog
-		If Not broadcastSource Then broadcastSource = contract
-
-		If Not broadcastSource Then Print "TDebugProgrammeCollectionInfos.onChangeProgrammeCollection: invalid broadcastSourceMaterial."
-
-
-		Local map:TIntMap = Null
-		Select triggerEvent.GetEventKey()
-			Case GameEventKeys.ProgrammeCollection_RemoveAdContract
-				map = removedAdContracts
-				'remove on outdated
-				'availableAdContracts.Remove(broadcastSource.GetID())
-			Case GameEventKeys.ProgrammeCollection_AddAdContract
-				map = addedAdContracts
-				availableAdContracts.Insert(broadcastSource.GetID(), broadcastSource)
-	'		Case GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase
-	'			map = addedAdContracts
-	'		Case GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase
-	'			map = addedAdContracts
-	'		Case GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase
-	'			map = suitcaseProgrammeLicences
-	'		Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase
-	'			map = suitcaseProgrammeLicences
-			Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
-				map = removedProgrammeLicences
-				'remove on outdated
-				'availableProgrammeLicences.Remove(broadcastSource.GetID())
-			Case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
-				map = addedProgrammeLicences
-				availableProgrammeLicences.Insert(broadcastSource.GetID(), broadcastSource)
-		End Select
-		If Not map Then Return False
-
-		map.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
-
-		RemoveOutdated()
-	End Function
-
-
-	Function RemoveOutdated()
-		Local maps:TIntMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
-
-		oldestEntryTime = -1
-
-		'remove outdated ones (older than 30 seconds))
-		For Local map:TIntMap = EachIn maps
-			Local remove:Int[]
-			For Local idKey:TIntKey = EachIn map.Keys()
-				Local changeTime:Long = Long( String(map.ValueForKey(idKey.value)) )
-
-				If changeTime + 3000 < Time.GetTimeGone()
-					remove :+ [idKey.value]
-
-					If map = removedProgrammeLicences Then availableProgrammeLicences.Remove(idKey.value)
-					If map = removedAdContracts Then availableAdContracts.Remove(idKey.value)
-					Continue
-				EndIf
-
-				If oldestEntryTime = -1 Then oldestEntryTime = changeTime
-				oldestEntryTime = Min(oldestEntryTime, changeTime)
-			Next
-
-			For Local id:Int = EachIn remove
-				map.Remove(id)
-			Next
-		Next
-	End Function
-
-
-
-	Function GetAddedTime:Long(id:Int, materialType:Int=0)
-		If materialType = TVTBroadcastMaterialType.PROGRAMME
-			Return Long( String(addedProgrammeLicences.ValueForKey(id)) )
-		Else
-			Return Long( String(addedAdContracts.ValueForKey(id)) )
-		EndIf
-	End Function
-
-
-	Function GetRemovedTime:Long(id:Int, materialType:Int=0)
-		If materialType = TVTBroadcastMaterialType.PROGRAMME
-			Return Long( String(removedProgrammeLicences.ValueForKey(id)) )
-		Else
-			Return Long( String(removedAdContracts.ValueForKey(id)) )
-		EndIf
-	End Function
-
-
-	Function GetChangedTime:Long(id:Int, materialType:Int=0)
-		Local addedTime:Long = GetAddedTime(id, materialType)
-		Local removedTime:Long = GetRemovedTime(id, materialType)
-		If addedTime <> 0 Then Return addedTime
-		Return removedTime
-	End Function
-
-
-	Method Initialize:Int()
-		availableProgrammeLicences.Clear()
-		'suitcaseProgrammeLicences.Clear()
-		availableAdContracts.Clear()
-		'on savegame loads, the maps would be empty without
-		For Local i:Int = 1 To 4
-			Local coll:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
-			For Local l:TProgrammeLicence = EachIn coll.GetProgrammeLicences()
-				availableProgrammeLicences.insert(l.GetID(), l)
-			Next
-			'For Local l:TProgrammeLicence = EachIn coll.GetSuitcaseProgrammeLicences()
-			'	suitcaseProgrammeLicences.insert(l.GetID(), l)
-			'Next
-			For Local a:TAdContract = EachIn coll.GetAdContracts()
-				availableAdContracts.insert(a.GetID(), a)
-			Next
-		Next
-
-		initialized = True
-	End Method
-
-
-	Method Update(playerID:Int, x:Int, y:Int)
-	End Method
-
-
-	Method Draw(playerID:Int, x:Int, y:Int)
-		If Not initialized Then Initialize()
-
-		If playerID <= 0 Then playerID = GetPlayerBase().playerID
-		Local lineHeight:Int = 11
-		Local lineTextDY:Int = -3
-		Local lineTextHeight:Int = 15
-		Local lineWidth:Int = 160
-		Local adLineWidth:Int = 145
-		Local adLeftX:Int = 165
-		Local font:TBitmapFont = GetBitmapFont("default", 10)
-		Local initialY:Int = y
-
-		'clean up if needed
-		If oldestEntryTime >= 0 And oldestEntryTime + 3000 < Time.GetTimeGone() Then RemoveOutdated()
-
-		Local collection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
-		Local secondLineCol:SColor8 = new SColor8(220, 220,220)
-
-		Local entryPos:Int = 0
-		Local oldAlpha:Float = GetAlpha()
-
-		For Local a:TAdContract = EachIn availableAdContracts.Values() 'collection.GetAdContracts()
-			If a.owner <> playerID Then Continue
-
-			If entryPos Mod 2 = 0
-				SetColor 0,0,0
-			Else
-				SetColor 50,50,50
-			EndIf
-			SetAlpha 0.85 * oldAlpha
-			DrawRect(x + adLeftX, y + entryPos * lineHeight*2, adLineWidth, lineHeight*2-1)
-
-			Local changedTime:Int = GetChangedTime(a.GetID(), TVTBroadcastMaterialType.ADVERTISEMENT)
-			If changedTime <> 0
-				Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
-				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
-				SetBlend LIGHTBLEND
-
-				SetColor 255,235,20
-				If GetRemovedTime(a.GetID(), TVTBroadcastMaterialType.ADVERTISEMENT) <> 0
-					If a.state = a.STATE_FAILED
-						SetColor 255,0,0
-					ElseIf a.state = a.STATE_OK
-						SetColor 0,255,0
-					EndIf
-				EndIf
-
-				DrawRect(x + adLeftX, y + entryPos * lineHeight*2, adLineWidth, lineHeight*2-1)
-				SetBlend ALPHABLEND
-			EndIf
-			SetAlpha oldalpha
-			SetColor 255,255,255
-
-			Local adString1a:String = a.GetTitle()
-			Local adString1b:String = "R: "+(a.GetDaysLeft())+"D"
-			If a.GetDaysLeft() = 1
-				adString1b = "|color=220,180,50|"+adString1b+"|/color|"
-			ElseIf a.GetDaysLeft() = 0
-				adString1b = "|color=220,80,80|"+adString1b+"|/color|"
-			EndIf
-			Local adString2a:String = "Min: " +MathHelper.DottedValue(a.GetMinAudience())
-			If a.GetLimitedToTargetGroup() > 0 Or a.GetLimitedToProgrammeGenre() > 0  Or a.GetLimitedToProgrammeFlag() > 0
-				adString2a = "**" + adString2a
-				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToProgrammeGenre()+","+a.GetLimitedToProgrammeFlag()
-			EndIf
-			adString1b :+ " Bl/D: "+a.SendMinimalBlocksToday()
-
-			Local adString2b:String = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
-			Local adString2c:String = a.GetSpotsSent() + "/" + a.GetSpotCount()
-			font.DrawBox( adString1a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*0 + lineTextDY, adLeftX - 40, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
-			font.DrawBox( adString1b, x + adLeftX + 2 + adLineWidth-60-2, y+1 + entryPos*lineHeight*2 + lineHeight*0 + lineTextDY, 60, lineTextHeight, sALIGN_RIGHT_CENTER, secondLineCol)
-
-			font.DrawBox( adString2a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 60, lineTextHeight, sALIGN_LEFT_CENTER, secondLineCol)
-			font.DrawBox( adString2b, x + adLeftX + 2 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 55, lineTextHeight, sALIGN_CENTER_CENTER, secondLineCol)
-			font.DrawBox( adString2c, x + adLeftX + 2 + adLineWidth-55-2, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 55, lineTextHeight, sALIGN_RIGHT_CENTER, secondLineCol)
-
-			entryPos :+ 1
-		Next
-
-		Local countractCount:Int = entryPos
-		entryPos = 0
-		lineHeight = 12
-
-		For Local l:TProgrammeLicence = EachIn availableProgrammeLicences.Values() 'collection.GetProgrammeLicences()
-			If l.owner <> playerID Then Continue
-			'skip starting programme
-			If Not l.isControllable() Then Continue
-			'skip individual episodes
-			If l.isEpisode() Then Continue
-
-			Local oldAlpha:Float = GetAlpha()
-			If entryPos Mod 2 = 0
-				SetColor 0,0,0
-			Else
-				SetColor 60,60,60
-			EndIf
-			SetAlpha 0.75 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
-
-			Local changedTime:Int = GetChangedTime(l.GetID(), TVTBroadcastMaterialType.PROGRAMME)
-			If changedTime <> 0
-				SetColor 255,235,20
-				Local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
-				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
-				SetBlend LIGHTBLEND
-				DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
-				SetBlend ALPHABLEND
-			EndIf
-
-			'draw in topicality
-			SetColor 200,50,50
-			SetAlpha 0.65 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetMaxTopicality(), 2)
-			SetColor 240,80,80
-			SetAlpha 0.85 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetTopicality(), 2)
-
-			SetAlpha oldalpha
-			SetColor 255,255,255
-
-			Local progString:String = l.GetTitle()
-			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
-
-			Local attString:String = ""
-'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
-			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
-			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
-
-			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
-
-			entryPos :+ 1
-			If entryPos = 31
-				x:+adLeftX
-				y = initialY - 9 * lineHeight - ( 11 - countractCount) * 2 * lineHeight
-			EndIf
-		Next
-
-
-		y = initialY + entryPos*lineHeight
-		y :+ 20
-		font.DrawSimple("Suitcase: " + collection.GetSuitcaseProgrammeLicenceCount() +" licences", x, y, SColor8.White)
-		y :+ 12
-		entryPos = 0
-		For Local l:TProgrammeLicence = EachIn collection.GetSuitcaseProgrammeLicences()
-			Local oldAlpha:Float = GetAlpha()
-			If entryPos Mod 2 = 0
-				SetColor 0,0,0
-			Else
-				SetColor 60,60,60
-			EndIf
-			SetAlpha 0.75 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight, lineWidth, lineHeight-1)
-
-			'draw in topicality
-			SetColor 200,50,50
-			SetAlpha 0.65 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetMaxTopicality(), 2)
-			SetColor 240,80,80
-			SetAlpha 0.85 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetTopicality(), 2)
-
-			SetAlpha oldalpha
-			SetColor 255,255,255
-
-			Local progString:String = l.GetTitle()
-			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
-
-			Local attString:String = ""
-'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
-			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
-			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
-
-			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
-
-			entryPos :+ 1
-		Next
-		
-
-		SetAlpha oldAlpha
-		SetColor 255,255,255
-	End Method
-End Type
-
-
-
-Type TDebugProgrammePlanInfos
+Type TDebugProgrammePlanInfo
 	Global programmeBroadcasts:TIntMap = new TIntMap
 	Global adBroadcasts:TIntMap = new TIntMap
 	Global newsInShow:TIntMap = new TIntMap
@@ -3297,6 +2879,8 @@ Type TDebugProgrammePlanInfos
 	Global slotPadding:Int = 3
 	Global dayShown:Int = -1
 	Global showCurrent:Int = 1
+	Global haveToRemoveOutdated:Int = 0
+	Global haveToRemoveOutdatedCount:Int = 0
 
 	Method New()
 		EventManager.UnregisterListenersArray(_eventListeners)
@@ -3331,7 +2915,8 @@ Type TDebugProgrammePlanInfos
 
 		newsInShow.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 
-		RemoveOutdated()
+		haveToRemoveOutdated = True
+		haveToRemoveOutdatedCount :+ 1
 	End Function
 
 
@@ -3346,7 +2931,8 @@ Type TDebugProgrammePlanInfos
 			programmeBroadcasts.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		EndIf
 
-		RemoveOutdated()
+		haveToRemoveOutdated = True
+		haveToRemoveOutdatedCount :+ 1
 	End Function
 
 

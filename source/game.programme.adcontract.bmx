@@ -1638,7 +1638,7 @@ price :* Max(1, minAudience/1000)
 		'if msgAreaH > 0 then contentY :+ msgAreaPaddingY
 
 
-		If TVTDebugInfos
+		If TVTDebugInfo
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 
@@ -1842,7 +1842,7 @@ price :* Max(1, minAudience/1000)
 
 
 		'=== DEBUG ===
-		If TVTDebugInfos
+		If TVTDebugInfo
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 			Local oldAlpha:Float = GetAlpha()

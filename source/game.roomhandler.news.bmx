@@ -326,7 +326,7 @@ Type RoomHandler_News extends TRoomHandler
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 		EndIf
 
-		if TVTDebugInfos
+		if TVTDebugInfo
 			SetColor 0,0,0
 			SetAlpha 0.6
 			DrawRect(15,35, 380, 220)
@@ -1247,7 +1247,7 @@ Type TGUINews Extends TGUIGameListItem
 			SetAlpha oldAlpha
 		EndIf
 
-		If TVTDebugInfos
+		If TVTDebugInfo
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0

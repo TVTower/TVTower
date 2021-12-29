@@ -1251,7 +1251,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		endif
 
 
-		If TVTDebugInfos
+		If TVTDebugInfo
 			DrawDebug(TRoom(triggerEvent.GetSender()))
 			guiListDeskProductionConcepts.DrawDebug()
 		EndIf

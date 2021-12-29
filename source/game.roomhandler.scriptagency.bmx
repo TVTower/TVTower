@@ -1015,7 +1015,7 @@ endrem
 			hoveredGuiScript.DrawSheet(30, 30, -2)
 		endif
 
-		if TVTDebugInfos
+		if TVTDebugInfo
 			Local oldCol:SColor8; GetColor(oldCol)
 			Local oldColA:Float = GetAlpha()
 

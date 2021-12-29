@@ -1418,7 +1418,7 @@ endrem
 
 
 		'=== DEBUG ===
-		If TVTDebugInfos
+		If TVTDebugInfo
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 			Local oldAlpha:Float = GetAlpha()

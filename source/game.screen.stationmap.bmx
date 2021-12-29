@@ -2729,7 +2729,7 @@ Type TScreenHandler_StationMap
 '		endif
 
 
-		if TVTDebugInfos
+		if TVTDebugInfo
 			SetAlpha 0.5
 			SetColor 0,0,0
 			DrawRect(0,25, 200, 55)

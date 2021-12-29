@@ -2578,7 +2578,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 		'=== DEBUG ===
-		If TVTDebugInfos
+		If TVTDebugInfo
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 			local oldAlpha:Float = GetAlpha()
@@ -2773,7 +2773,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 
 
-		If TVTDebugInfos
+		If TVTDebugInfo
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 

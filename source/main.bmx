@@ -106,6 +106,9 @@ Import "game.gamescriptexpression.bmx"
 
 Import "game.screen.menu.bmx"
 
+Import "game.debug.screen.page.playerfinancials.bmx"
+Import "game.debug.screen.page.playerbroadcasts.bmx"
+
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"
 ?bmxng
@@ -880,6 +883,83 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				'read what values to expect
+				'TODO ...
+				Local mainPredictor:TBroadcastAudiencePrediction = new TBroadcastAudiencePrediction
+				Local audiences:String[4]
+				SetupPredictor(mainPredictor)
+				mainPredictor.RefreshMarkets()
+				mainPredictor.RunPrediction(1, 1)
+				For local i:int = 1 to 4
+					audiences[i-1] = mainPredictor.GetAudience(i).ToString()
+					print "predicted #1: " + audiences[i-1]
+				Next
+				
+'				erweitern ... prevProgrammeAttraction usw. nutzen
+'				schauen ob irgendwas "null" sein koennte und dann drauf
+'				zugegriffen wird...
+				
+				Function SetupPredictor(p:TBroadcastAudiencePrediction)
+					'Local prevProgrammeAttraction:TAudienceAttraction = new TAudienceAttraction.InitValue(0.20, 0.10)
+					'Local prevNewsAttraction:TAudienceAttraction = new TAudienceAttraction.InitValue(0.4, 0.2)
+					p.SetAverageValueAttraction(1, 0.5)
+					p.SetAverageValueAttraction(2, 0.5)
+					p.SetAverageValueAttraction(3, 0.5)
+					p.SetAverageValueAttraction(4, 0.5)
+					'local broadcastAttraction = broadcast.GetAudienceAttraction(hour, block, previousBroadcastAttraction, previousNewsBroadcastAttraction, False, False)
+					'p.SetAttraction(1, broadcastAttraction)
+				End Function
+			
+
+				Function threadFunc:Object( data:Object )
+					Local start:Int = Millisecs()
+					Local dataArr:String[] = string[](data)
+					Local playerID:Int = int(dataArr[0])
+					Local mainPrediction:String = dataArr[playerID]
+					Local myPrediction:String
+					Local runCount:Int
+					Local failCount:Int
+					Local predictor:TBroadcastAudiencePrediction = new TBroadcastAudiencePrediction
+					SetupPredictor(predictor)
+
+					'aiThread: run for 5 seconds
+					Repeat
+						runCount :+ 1
+						predictor.RefreshMarkets()
+						predictor.RunPrediction(1, 1)
+						myPrediction = predictor.GetAudience(playerID).ToString()
+						if myPrediction <> mainPrediction
+							failCount :+ 1
+						EndIf
+					Until Millisecs() - start > 5000
+					
+					Return "Thread #" + playerID + " finished. runCount="+runCount+"  failCount="+failCount+". myPrediction="+myPrediction
+				End Function
+
+				'create the threads and run them
+				Local threads:TThread[] = new TThread[4]
+				For Local i:int = 0 until threads.length
+					threads[i] = CreateThread(threadFunc, [string(i+1), audiences[0], audiences[1], audiences[2], audiences[3]] 	)
+				Next
+
+				'MainThread: do our stuff for 5 seconds too
+				Local loopStart:Int = Millisecs()
+				Local runCount:Int
+				Repeat
+					GetStationMapCollection().DoCensus()
+					runCount :+ 1
+				Until Millisecs() - loopStart > 5000
+				Print "Updated station map: " + runCount +"x."
+
+				'wait for the threads
+				For local t:TThread = EachIn threads
+					print WaitThread(t).ToString()
+				Next
+		end
+				
+				
+			
+			
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
@@ -1278,13 +1358,13 @@ endrem
 		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 * 60 )
 		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeedPreset( 1 )
 		If KeyManager.IsHit(KEY_0) Then GetGame().SetGameSpeed( 0 ) 'pause
-		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
+		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfo = 1 - TVTDebugQuoteInfo
 
 		If KeyManager.IsHit(KEY_TAB)
 			If Not KeyManager.IsDown(KEY_LCONTROL)
-				DebugScreen.enabled = 1 - DebugScreen.enabled
+				DebugScreen._enabled = 1 - DebugScreen._enabled
 			Else
-				TVTDebugInfos = 1 - TVTDebugInfos
+				TVTDebugInfo = 1 - TVTDebugInfo
 			EndIf
 		EndIf
 
@@ -1458,7 +1538,7 @@ endrem
 		'update regardless of enabled or not
 		DebugScreen.UpdateSystem()
 
-		If DebugScreen.enabled
+		If DebugScreen._enabled
 			GameConfig.mouseHandlingDisabled = True
 			DebugScreen.Update()
 		EndIf
@@ -1469,14 +1549,14 @@ endrem
 		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
 
-		If DebugScreen.enabled Then DebugScreen.Render()
+		If DebugScreen._enabled Then DebugScreen.Render()
 
 
-		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+		If TVTDebugInfo And Not GetPlayer().GetFigure().inRoom
 		'show quotes even without "DEV_OSD = true"
 
-		ElseIf TVTDebugQuoteInfos
-			debugAudienceInfos.Draw()
+		ElseIf TVTDebugQuoteInfo
+			debugAudienceInfo.Draw()
 		EndIf
 	End Function
 
