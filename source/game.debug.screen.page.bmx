@@ -18,7 +18,17 @@ Type TDebugScreenPage
 	Method Activate() abstract
 	Method Update() abstract
 	Method Render() abstract
-	Method SetPosition(x:Int, y:Int) abstract
+
+	Method MoveBy(dx:Int, dy:Int)
+	End Method
+
+	
+	Method SetPosition(x:Int, y:Int) 
+		local move:SVec2I = new SVec2I(x - position.x, y - position.y)
+		position = new SVec2I(x, y)
+		
+		MoveBy(move.x, move.y)
+	End Method
 
 
 	Method GetShownPlayerID:Int()

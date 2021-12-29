@@ -64,17 +64,12 @@ Type TDebugScreenPage_PlayerBroadcasts extends TDebugScreenPage
 	End Function
 	
 	
-	Method SetPosition(x:Int, y:Int)
-		local move:SVec2I = new SVec2I(x - position.x, y - position.y)
-
-		position = new SVec2I(x, y)
-		
+	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
 		For local b:TDebugControlsButton = EachIn buttons
-			b.x :+ move.x
-			b.y :+ move.y
+			b.x :+ dx
+			b.y :+ dy
 		Next
-
 	End Method
 	
 	
