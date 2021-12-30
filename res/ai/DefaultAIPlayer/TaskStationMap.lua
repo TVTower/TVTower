@@ -271,7 +271,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 
 			-- ignore if we already are clients of this provider
 			-- ignore non-launched and not available for player
-			if cableNetwork.IsSubscribedChannel(TVT.ME) == 0 and cableNetwork.IsLaunched() == 1 and cableNetwork.IsActive() == 1 then
+			if cableNetwork~=nil and cableNetwork.IsSubscribedChannel(TVT.ME) == 0 and cableNetwork.IsLaunched() == 1 and cableNetwork.IsActive() == 1 then
 				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(i)
 				if tempStation then
 					local price = tempStation.GetTotalBuyPrice()

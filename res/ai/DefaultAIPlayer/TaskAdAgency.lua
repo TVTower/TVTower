@@ -372,7 +372,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	local neededSpotCount = requisition.Count
 
 	if (neededSpotCount <= 0) then
-		errorMsg("AI ERROR: SignMatchingContracts() with requisition.Count=0.", true)
+		debugMsg("AI ERROR: SignMatchingContracts() with requisition.Count=0.", true)
 		return 0
 	end
 
@@ -631,7 +631,7 @@ function SignContracts:GetUnsentSpotCount()
 
 	for i = 0, MY.GetProgrammeCollection().GetAdContractCount() - 1 do
 		local contract = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
-		if (contract.IsCompleted() ~= 1) then
+		if (contract~=nil and contract.IsCompleted() ~= 1) then
 			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end
 	end

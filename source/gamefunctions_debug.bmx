@@ -3511,9 +3511,10 @@ Type TDebugProgrammePlanInfos
 						predictor.RunPrediction(dayShown, hour)
 						predictionCacheProgAudience[hour] = predictor.GetAudience(playerID)
 					EndIf
+				local predictedAudience:TAudience = predictionCacheProgAudience[hour]
 				'show predictions only for the current day
-				if dayShown = currentDay
-					progString2 :+ " |color=200,255,200|"+Int(predictionCacheProgAudience[hour].GetTotalSum()/1000)+"k|/color|"
+				if dayShown = currentDay and predictedAudience
+					progString2 :+ " |color=200,255,200|"+Int(predictedAudience.GetTotalSum()/1000)+"k|/color|"
 				else
 					progString2 :+ " |color=200,200,255|??|/color|"
 				endif

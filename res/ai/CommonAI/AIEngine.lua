@@ -411,7 +411,7 @@ function AITask:resume()
 	-- its external objects in "TVT.*"
 	if self.InvalidDataObject then
 		if self.Status == TASK_STATUS_PREPARE or self.Status == TASK_STATUS_RUN then
-			infoMsg(type(self) .. ": InvalidDataObject resume => TASK_STATUS_OPEN")
+			debugMsg(type(self) .. ": InvalidDataObject resume => TASK_STATUS_OPEN")
 			self.Status = TASK_STATUS_OPEN
 		end
 		self.InvalidDataObject = false
@@ -713,7 +713,7 @@ end
 function AIJob:resume()
 	if self.InvalidDataObject then
 		if self.Status == JOB_STATUS_REDO or self.Status == JOB_STATUS_RUN then
-			infoMsg(self:typename() .. ": InvalidDataObject resume => JOB_STATUS_NEW")
+			debugMsg(self:typename() .. ": InvalidDataObject resume => JOB_STATUS_NEW")
 			self.Status = JOB_STATUS_NEW
 		end
 		self.InvalidDataObject = false
@@ -1290,7 +1290,7 @@ end
 
 
 
-
+--[[
 function kiMsg(pMessage, allPlayers)
 	if allPlayers ~= nil then
 		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
@@ -1299,7 +1299,7 @@ function kiMsg(pMessage, allPlayers)
 	end
 	TVT.addToLog(pMessage)
 end
-
+--]]
 
 function debugMsgDepth(change)
 	currentDebugMsgDepth = math.max(0, currentDebugMsgDepth + change)
@@ -1317,20 +1317,21 @@ function debugMsg(pMessage, allPlayers)
 		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
 	elseif TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		--TVT.PrintOutDebug(pMessage)
-		TVT.PrintOut(pMessage)
+		--TVT.PrintOut(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
 	TVT.addToLog(pMessage)
 end
 
 
+--[[
 function infoMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
-		TVT.PrintOut(pMessage)
+		--TVT.PrintOut(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
 end
-
+--]]
 
 function devMsg(pMessage)
 	TVT.PrintOut("== DEV == : " .. pMessage)

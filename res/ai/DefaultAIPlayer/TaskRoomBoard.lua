@@ -69,7 +69,7 @@ function JobChangeRoomSigns:typename()
 end
 
 function JobChangeRoomSigns:Prepare(pParams)
-	--kiMsg("Starte JobChangeRoomSigns")
+	--debugMsg("Starte JobChangeRoomSigns")
 end
 
 function JobChangeRoomSigns:Tick()
@@ -80,7 +80,7 @@ function JobChangeRoomSigns:Tick()
 			if (sign ~= nil and sign.GetOwner() == TVT.ME) then
 				--Noch am richtigen Platz?
 				if sign.IsAtOriginalPosition() == 0 then
-					kiMsg("Haenge Raumschild (" .. sign.GetOwnerName() .. ") wieder an den richtigen Platz: " .. sign.GetSlot() .. "/" .. sign.GetFloor() .. " -> " .. sign.GetOriginalSlot() .. "/" .. sign.GetOriginalFloor())
+					debugMsg("Haenge Raumschild (" .. sign.GetOwnerName() .. ") wieder an den richtigen Platz: " .. sign.GetSlot() .. "/" .. sign.GetFloor() .. " -> " .. sign.GetOriginalSlot() .. "/" .. sign.GetOriginalFloor())
 					--wieder alles in Ordnung bringen
 					TVT.rb_SwitchSignPositions(sign.GetSlot(), sign.GetFloor(), sign.GetOriginalSlot(), sign.GetOriginalFloor())
 				end
@@ -99,7 +99,7 @@ function JobChangeRoomSigns:Tick()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
-		kiMsg("Verschiebe FRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
+		debugMsg("Verschiebe FRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
 	end
 
 	if self.Task.VRDubanTerrorLevel >= 2 then
@@ -108,7 +108,7 @@ function JobChangeRoomSigns:Tick()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
-		kiMsg("Verschiebe  VRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
+		debugMsg("Verschiebe  VRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
 	end
 
 	-- handled the situation "for now"
