@@ -1293,7 +1293,7 @@ function JobAnalyzeEnvironment:Tick()
 		end
 
 		if okTopicalityCount < 3 then
-			devMsg("LOW on good topicality licences ... ordering new ones")
+			debugMsg("LOW on good topicality licences ... ordering new ones")
 
 			-- we need money - if needed, use all we have (only keep some money
 			-- for news

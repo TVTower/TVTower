@@ -586,7 +586,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		'text = StringHelper.UTF8toISO8859(text)
 
 		'print "AILog "+Self.ME+": "+text
-		Return AiLog[Self.ME-1].AddLog(text, True)
+		Return AiLog[Self.ME-1].AddLog(GetWorldTime().GetFormattedTime()+" - "+text, True)
 	End Method
 
 

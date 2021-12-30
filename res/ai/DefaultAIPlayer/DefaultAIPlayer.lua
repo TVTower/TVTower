@@ -155,7 +155,7 @@ function DefaultAIPlayer:resume()
 	_G["globalPlayer"] = self
 
 	if (self.Strategy == nil) then
-		infoMsg(self:typename() .. ": Resume Strategy")
+		debugMsg(self:typename() .. ": Resume Strategy")
 		self.Strategy = DefaultStrategy()
 	end
 
@@ -374,20 +374,20 @@ function DefaultAIPlayer:GetNextEnemyId()
 end
 
 function DefaultAIPlayer:CleanUp()
-	infoMsg(self:typename() .. ": CleanUp")
+	debugMsg(self:typename() .. ": CleanUp")
 
-	infoMsg("Requisitions (before): " .. table.count(self.Requisitions))
+	--debugMsg("Requisitions (before): " .. table.count(self.Requisitions))
 
 	local tempList = table.copy(self.Requisitions)
 
 	for k,v in pairs(tempList) do
 		if (not v:CheckActuality()) then
 			table.remove(self.Requisitions, index)
-			infoMsg("Requisition removed")
+			--debugMsg("Requisition removed")
 		end
 	end
 
-	infoMsg("Requisitions (after): " .. table.count(self.Requisitions))
+	--debugMsg("Requisitions (after): " .. table.count(self.Requisitions))
 end
 
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -565,11 +565,11 @@ end
 -- ##### EVENTS #####
 
 function OnBossCalls(latestTimeString)
-	infoMsg("Boss calls me! " .. latestTimeString)
+	--debugMsg("Boss calls me! " .. latestTimeString)
 end
 
 function OnBossCallsForced()
-	infoMsg("Boss calls me NOW!")
+	--debugMsg("Boss calls me NOW!")
 end
 
 function OnPlayerGoesBankrupt(playerID)
@@ -592,10 +592,10 @@ function OnChat(fromID, message, chatType)
 		debugMsg("got a message: " .. message)
 		if (message == "stop") then
 			aiIsActive = false
-			infoMsg("AI stopped!")
+			--debugMsg("AI stopped!")
 		elseif (message == "start") then
 			aiIsActive = true
-			infoMsg("AI started!")
+			--debugMsg("AI started!")
 		end
 	end
 end
@@ -624,7 +624,7 @@ function OnCommand(command)
 		TVT.DoGoToRoom(TVT.ROOM_BOSS_PLAYER_ME)
 	elseif (message == "start") then
 		aiIsActive = true
-		infoMsg("AI started!")
+		--debugMsg("AI started!")
 	end
 end
 
@@ -771,10 +771,10 @@ end
 function OnLoadState(data)
 	SLFManager:load(data)
 	if SLFManager.LoadedData.Player:typename() == "DefaultAIPlayer" then
-		infoMsg("Successfully restored AI state!")
+		debugMsg("Successfully restored AI state!")
 		_G["globalPlayer"] = SLFManager.LoadedData.Player
 	else
-		infoMsg("Restoring AI state failed!")
+		debugMsg("Restoring AI state failed!")
 	end
 end
 
@@ -915,7 +915,7 @@ function OnMinute(number)
 end
 
 function OnMalfunction()
-	infoMsg("OnMalfunction")
+	debugMsg("OnMalfunction")
 	local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 	task.SituationPriority = 10
 end
