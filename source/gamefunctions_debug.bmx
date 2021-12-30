@@ -17,7 +17,6 @@ Type TDebugScreen
 	Field playerCommandAIButtons:TDebugControlsButton[]
 	Field buttonsPlayerFinancials:TDebugControlsButton[]
 	Field buttonsBroadCast:TDebugControlsButton[]
-	Field buttonsMovieVendor:TDebugControlsButton[]
 	Field buttonsNewsAgency:TDebugControlsButton[]
 	Field buttonsRoomAgency:TDebugControlsButton[]
 	Field buttonsScriptAgency:TDebugControlsButton[]
@@ -31,12 +30,12 @@ Type TDebugScreen
 	Field roomHighlight:TRoomBase
 	Field roomHovered:TRoomBase
 	Field scriptAgencyOfferHightlight:TScript
-	Field movieVendorOfferHightlight:TProgrammeLicence
 	
 	
 	Field pagePlayerFinancials:TDebugScreenPage_PlayerFinancials
 	Field pagePlayerBroadcasts:TDebugScreenPage_PlayerBroadcasts
 	Field pageAdAgency:TDebugScreenPage_AdAgency
+	Field pageMovieAgency:TDebugScreenPage_MovieAgency
 	
 	Global titleFont:TBitmapFont
 	Global textFont:TBitmapFont
@@ -83,10 +82,12 @@ Type TDebugScreen
 		pageAdAgency = TDebugScreenPage_AdAgency.GetInstance().Init()
 		pageAdAgency.SetPosition(sideButtonPanelWidth, 20)
 
+		pageMovieAgency = TDebugScreenPage_MovieAgency.GetInstance().Init()
+		pageMovieAgency.SetPosition(sideButtonPanelWidth, 20)
+
 		InitMode_Overview()
 		InitMode_PlayerCommands()
 
-		InitMode_MovieVendor()
 		InitMode_NewsAgency()
 		InitMode_ScriptAgency()
 		InitMode_RoomAgency()
@@ -109,8 +110,8 @@ Type TDebugScreen
 				Case 2	newPage = pagePlayerFinancials
 				Case 3	newPage = pagePlayerBroadcasts
 				Case 4	newPage = pageAdAgency
+				Case 5	newPage = pageMovieAgency
 
-				'Case 5	UpdateMode_MovieVendor()
 				'Case 6	UpdateMode_NewsAgency()
 				'Case 7	UpdateMode_ScriptAgency()
 				'Case 8	UpdateMode_RoomAgency()
@@ -191,7 +192,6 @@ Type TDebugScreen
 			Case 0	UpdateMode_Overview()
 			Case 1	UpdateMode_PlayerCommands()
 
-			Case 5	UpdateMode_MovieVendor()
 			Case 6	UpdateMode_NewsAgency()
 			Case 7	UpdateMode_ScriptAgency()
 			Case 8	UpdateMode_RoomAgency()
@@ -241,7 +241,6 @@ Type TDebugScreen
 			Case 0	RenderMode_Overview()
 			Case 1	RenderMode_PlayerCommands()
 
-			Case 5	RenderMode_MovieVendor()
 			Case 6	RenderMode_NewsAgency()
 			Case 7	RenderMode_ScriptAgency()
 			Case 8	RenderMode_RoomAgency()
@@ -499,69 +498,6 @@ Type TDebugScreen
 		button.dataInt = index
 		button.text = text
 		return button
-	End Method
-
-
-
-	'=== MOVIE VENDOR ===
-
-	Method InitMode_MovieVendor()
-		Local texts:String[] = ["Refill Offers", "Replace Offers", "End Auctions"]
-		Local button:TDebugControlsButton
-		For Local i:Int = 0 Until texts.length
-			button = CreateActionButton(i, texts[i])
-			button._onClickHandler = OnButtonClickHandler_MovieVendor
-
-			buttonsMovieVendor :+ [button]
-		Next
-
-	End Method
-
-
-	Function OnButtonClickHandler_MovieVendor(sender:TDebugControlsButton)
-		Select sender.dataInt
-			case 0
-				RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
-			case 1
-				RoomHandler_MovieAgency.GetInstance().ReFillBlocks(True, 1.0)
-			case 2
-				TAuctionProgrammeBlocks.EndAllAuctions()
-		End Select
-
-		'handled
-		sender.clicked = False
-		sender.selected = False
-	End Function
-
-
-	Method UpdateMode_MovieVendor()
-		Local playerID:Int = GetShownPlayerID()
-
-		'initial refill?
-		'if RoomHandler_AdAgency.listNormal.length = 0 then ReFillBlocks()
-
-		UpdateMovieVendorOffers(playerID, sideButtonPanelWidth + 5, 13, 410, 230)
-
-		For Local b:TDebugControlsButton = EachIn buttonsMovieVendor
-			b.Update()
-		Next
-
-	End Method
-
-
-	Method RenderMode_MovieVendor()
-		Local playerID:Int = GetShownPlayerID()
-
-		RenderMovieVendorOffers(playerID, sideButtonPanelWidth + 5, 13, 430, 330)
-'		RenderMovieVendorInformation(playerID, sideButtonPanelWidth + 5 + 250 + 250 + 5, 13)
-
-		RenderMovieVendorNoLongerAvailable(playerID, sideButtonPanelWidth + 5 + 250 + 5 + 250, 13 + 150)
-
-		RenderActionButtons(buttonsMovieVendor)
-
-		if movieVendorOfferHightlight
-			movieVendorOfferHightlight.ShowSheet(sideButtonPanelWidth + 5 + 250, 13, 0, TVTBroadcastMaterialType.PROGRAMME, playerID)
-		endif
 	End Method
 
 
@@ -1888,146 +1824,6 @@ Type TDebugScreen
 				if nCount > 12 then exit
 			Next
 		endif
-	End Method
-
-
-	'stuff filtered out
-	Method RenderMovieVendorNoLongerAvailable(playerID:Int, x:int, y:int, w:int = 200, h:int = 300)
-		DrawOutlineRect(x, y, w, h)
-
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
-		titleFont.Draw("Crap-filtered", textX, textY)
-		textY :+ 12
-
-		local movieVendor:RoomHandler_MovieAgency = RoomHandler_MovieAgency.GetInstance()
-
-		For local pl:TProgrammeLicence = EachIn GetProgrammeLicenceCollection()._GetParentLicences().values()
-			if not pl.IsReleased() then continue
-'			if pl.GetMaxTopicality() > 0.15 then continue
-'			if not (movieVendor.filterMoviesCheap.DoesFilter(pl) or movieVendor.filterMoviesGood.DoesFilter(pl) or movieVendor.filterSeries.DoesFilter(pl)) then continue
-			if not movieVendor.filterCrap.DoesFilter(pl) then continue
-
-			textFont.DrawBox(pl.GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
-			textFont.DrawSimple(pl.GetPriceForPlayer(playerID), textX + 15 + 120, textY - 1)
-			textFont.DrawBox(MathHelper.NumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 15 + 130, textY - 1, 45, 15, sALIGN_RIGHT_TOP, SColor8.White)
-			textY :+ 10
-		Next
-'		filterMoviesGood
-	End Method
-
-
-	Method RenderMovieVendorInformation(playerID:int, x:int, y:int, w:int = 180, h:int = 150)
-'		DrawOutlineRect(x, y, w, h)
-	End Method
-
-
-
-	Method UpdateMovieVendorOffers(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
-		'reset
-		movieVendorOfferHightlight = null
-
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-		local barWidth:int = 200
-
-		local movieVendor:RoomHandler_MovieAgency = RoomHandler_MovieAgency.GetInstance()
-		textY :+ 12 + 10 + 5
-
-		local textYStart:int = textY
-
-		local licenceLists:TProgrammeLicence[][] = [movieVendor.listMoviesGood, movieVendor.listMoviesCheap, movieVendor.listSeries]
-		local entryPos:int = 0
-		For local listNumber:int = 0 until licenceLists.length
-			if listNumber = 2
-				textY = textYStart
-				textX :+ barWidth + 10
-			endif
-
-
-			local licences:TProgrammeLicence[] = licenceLists[listNumber]
-			textY :+ 10
-			For local i:int = 0 until licences.length
-				if THelper.MouseIn(textX, textY, barWidth, 10)
-					movieVendorOfferHightlight = licences[i]
-					exit
-				endif
-
-				textY :+ 10
-				entryPos :+ 1
-			Next
-			if movieVendorOfferHightlight then exit
-
-			textY :+ 5
-		Next
-	End Method
-
-
-	Method RenderMovieVendorOffers(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
-		DrawOutlineRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-		local barWidth:int = 200
-		local movieVendor:RoomHandler_MovieAgency = RoomHandler_MovieAgency.GetInstance()
-
-		titleFont.draw("MovieAgency", textX, textY)
-		textY :+ 12
-		textFont.Draw("Refilled on figure visit.", textX, textY)
-		textY :+ 10
-		textY :+ 5
-
-		local textYStart:int = textY
-
-		local licenceListsTitle:String[] = ["Good", "Cheap", "Series"]
-		local licenceLists:TProgrammeLicence[][] = [movieVendor.listMoviesGood, movieVendor.listMoviesCheap, movieVendor.listSeries]
-		local entryPos:int = 0
-		local oldAlpha:Float = GetAlpha()
-		For local listNumber:int = 0 until licenceLists.length
-			if listNumber = 2
-				textY = textYStart
-				textX :+ barWidth + 10
-			endif
-
-
-			local licences:TProgrammeLicence[] = licenceLists[listNumber]
-
-			textFontBold.Draw(licenceListsTitle[listNumber] + ":", textX, textY)
-			textY :+ 10
-			For local i:int = 0 until licences.length
-				If entryPos Mod 2 = 0
-					SetColor 0,0,0
-				Else
-					SetColor 60,60,60
-				EndIf
-				SetAlpha 0.75 * oldAlpha
-				DrawRect(textX, textY, barWidth, 10)
-
-				SetColor 255,255,255
-				SetAlpha oldAlpha
-
-				if licences[i] and licences[i] = movieVendorOfferHightlight
-					SetAlpha 0.25 * oldAlpha
-					SetBlend LIGHTBLEND
-					DrawRect(textX, textY, barWidth, 10)
-					SetAlpha oldAlpha
-					SetBlend ALPHABLEND
-				endif
-
-				textFont.Draw(RSet(i, 2).Replace(" ", "0"), textX, textY)
-				if licences[i]
-					textFont.DrawBox(": " + licences[i].GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
-					textFont.DrawSimple(MathHelper.DottedValue(licences[i].GetPriceForPlayer(playerID)), textX + 15 + 120, textY - 1)
-					textFont.DrawBox(licences[i].data.GetYear(), textX + 15 + 120, textY - 1, barWidth - (15 + 120 + 5), 15, sALIGN_RIGHT_TOP, SColor8.White)
-				else
-					textFont.DrawSimple(": -", textX + 15, textY - 1)
-				endif
-				textY :+ 10
-
-				entryPos :+ 1
-			Next
-			textY :+ 5
-		Next
 	End Method
 
 
