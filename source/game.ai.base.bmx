@@ -28,6 +28,7 @@ Type TAiBase
 
 	Field _luaEngine:TLuaEngine {nosave}
 	?threaded
+	Field _objectsUsedInLuaMutex:TMutex = CreateMutex() {nosave}
 	Field _callLuaFunctionMutex:TMutex = CreateMutex() {nosave}
 	Field _eventQueueMutex:TMutex = CreateMutex() {nosave}
 	Field _updateThread:TThread {nosave}
@@ -59,7 +60,7 @@ Type TAiBase
 		return _luaEngine
 	End Method
 
-
+rem
 	'handle all currently queued Events
 	Method HandleQueuedEvents()
 		?threaded
@@ -75,7 +76,7 @@ Type TAiBase
 			UnlockMutex(_eventQueueMutex)
 		?
 	End Method
-
+endrem
 
 	Method HandleAIEvent(event:TAIEvent)
 		Select event.id
@@ -251,13 +252,27 @@ endrem
 ?threaded
 		If not THREADED_AI_DISABLED and _updateThread
 			_updateThreadExit = True
-			WaitThread(_updateThread)
-
-			'reset
-			_updateThreadExit = False
-			DetachThread(_updateThread)
-			_updateThread = Null
 			
+			Local startStop:Long = Time.GetTimeGone()
+			Repeat
+				If _updateThread and ThreadRunning(_updateThread)
+					If Time.GetTimeGone() - startStop > 500
+						TLogger.Log("TAiBase", "#  AI thread did not stop within 500ms. Detaching thread!", LOG_DEBUG)
+						
+						'reset
+						_updateThreadExit = False
+						DetachThread(_updateThread)
+						_updateThread = Null
+					Else
+						Delay(5)
+					EndIf
+				Else
+					exit
+				EndIf
+			Forever
+			
+local prepend:String; for local i:int = 0 until playerID; prepend :+ "    ";Next
+print prepend + "AI"+playerID+" ai.STOP() - TryLock Mutex"
 			If not TryLockMutex(_callLuaFunctionMutex)
 				TLogger.Log("TAiBase", "#  Mutex _callLuaFunctionMutex still locked!", LOG_DEBUG)
 				UnlockMutex(_callLuaFunctionMutex)
@@ -333,20 +348,32 @@ endrem
 	'there is no "RemoveObjectUsedInLua" as on Savegame creation things
 	'get added and on loading they get retrieved (and then deleted again)
 	Method AddObjectUsedInLua:int(o:object)
+		LockMutex(_objectsUsedInLuaMutex)
+
 		objectsUsedInLuaCount :+ 1
 
 		if objectsUsedInLua.length < objectsUsedInLuaCount
 			objectsUsedInLua = objectsUsedInLua[.. objectsUsedInLua.length + 10]
 		endif
 		objectsUsedInLua[ objectsUsedInLuaCount-1] = o
+
+		UnLockMutex(_objectsUsedInLuaMutex)
 		return objectsUsedInLuaCount-1
 	End Method
 
 
 	Method GetObjectUsedInLua:object(index:int)
-		if index < 0 or index >= objectsUsedInLua.length then return null
+		if index < 0 then return null
 
-		return objectsUsedInLua[index]
+		LockMutex(_objectsUsedInLuaMutex)
+
+		Local result:object
+		If index < objectsUsedInLua.length
+			result = objectsUsedInLua[index]
+		EndIf
+
+		UnlockMutex(_objectsUsedInLuaMutex)
+		Return result
 	End Method
 
 
@@ -370,12 +397,16 @@ endrem
 	End Method
 
 
-	Method CallLuaFunction:object(name:string, args:object[])
+	Method CallLuaFunction:object(name:string, args:object[], resetObjectsInUse:Int = False)
 		?threaded
 			LockMutex(_callLuaFunctionMutex)
-			local result:object = GetLuaEngine().CallLuaFunction(name, args)
-			UnLockMutex(_callLuaFunctionMutex)
 
+			'reset
+			if resetObjectsInUse then ResetObjectsUsedInLua()
+
+			local result:object = GetLuaEngine().CallLuaFunction(name, args)
+
+			UnLockMutex(_callLuaFunctionMutex)
 			return result
 		?not threaded
 '	    Try
