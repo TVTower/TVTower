@@ -48,6 +48,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
 
 	--we run more than one AdScheduleJob
 	c.adScheduleJobIndex = 0
+	c.lastScheduleHour = -1
 
 	-- basic audience statistics
 	-- this value can then be adjusted for each hour in a long term
@@ -140,10 +141,26 @@ function TaskSchedule:GetNextJobInTargetRoom()
 	elseif (self.AdScheduleJob.Status ~= JOB_STATUS_DONE) then
 		--set number of hours to Plan based on index
 		self.AdScheduleJob.hoursToPlan = 3
-		if (self.adScheduleJobIndex == 1) then self.AdScheduleJob.hoursToPlan = 16 end
+		self.ProgrammeScheduleJob.hoursToPlan = 16
+		--debugMsg("last full scheduling: "..self.lastScheduleHour)
+		if (self.adScheduleJobIndex == 1) then
+			if (self.lastScheduleHour == TVT.GetDayHour()) then
+				--TODO optimize
+				--full planning need not be done multiple times per hour
+				--programme optimization for upcoming programme and ad is OK
+				--debugMsg("!skipping full scheduling, already done this hour")
+				self.ProgrammeScheduleJob.hoursToPlan = 5
+				--or do no planning at all
+				--self:SetDone()
+				--return
+			else
+				self.AdScheduleJob.hoursToPlan = 16
+			end
+		end
 		return self.AdScheduleJob
 	elseif (self.ProgrammeScheduleJob.Status ~= JOB_STATUS_DONE) then
 		--activate regular ad schedule run
+		self.lastScheduleHour = TVT.GetDayHour()
 		self.AdScheduleJob.Status = JOB_STATUS_NEW
 		self.adScheduleJobIndex = 1
 		return self.ProgrammeScheduleJob
@@ -1138,10 +1155,7 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 			if v.GuessedAudience.GetTotalSum() > guessedAudience.GetTotalSum() then
 				v.GuessedAudience = guessedAudience
 			end
-			--many requests only for better ads
-			if (level > 2 or (level > 1 and v.Count < 2)) then
-				v.Count = v.Count + 1
-			end
+			v.Count = v.Count + 1
 			if (v.Priority < 5) then v.Priority = v.Priority + 1 end
 
 			debugMsg("Raise demand on spots of level " .. level .. " (Audience: " .. math.floor(guessedAudience.GetTotalSum()) .. "). Time: " .. day .. "/" .. string.format("%02d", hour) .. ":55  / Spot requisition: count="..v.Count.."  priority="..v.Priority)
@@ -2026,6 +2040,7 @@ _G["JobProgrammeSchedule"] = class(AIJob, function(c)
 	--how many times should we retry to optimize and fill empty slots
 	c.planRunsLeft = 5
 	c.planRuns = 5
+	c.hoursToPlan = 0 -- must be set when initialized
 end)
 
 
@@ -2098,7 +2113,7 @@ function JobProgrammeSchedule:Tick()
 	local currentHour = TVT.GetDayHour()
 
 	local planSlots = 2
-	local planHours = 16
+	local planHours = self.hoursToPlan
 
 	--programmes
 	--==========

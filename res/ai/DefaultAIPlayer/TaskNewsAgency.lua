@@ -36,6 +36,8 @@ end
 
 
 function TaskNewsAgency:Activate()
+	self.hour = TVT.GetDayHour()
+
 	-- sub tasks => jobs
 	self.CheckEventNewsJob = JobCheckEventNews()
 	self.CheckEventNewsJob.Task = self
@@ -205,7 +207,7 @@ function JobCheckEventNews:Tick()
 		end
 
 		-- mark the situation of a soon happening attack
-		if terrorLevel >= 1 then
+		if terrorLevel > 2 then
 			roomBoardTask.RecognizedTerrorLevel = true
 		end
 
@@ -281,13 +283,33 @@ function JobNewsAgencyAbonnements:Tick()
 		end
 	end
 
+	local preventDowngrade = false
+	local player = _G["globalPlayer"]
+	if player.Budget.CurrentFixedCosts > 300000 or oldFees < 40000 then
+		--debugMsg(" preventing downgrade") 
+		preventDowngrade = true
+	end
+	local preventUpgrade = false
 
 	-- finally adjust levels
 	for genreIndex, genreID in ipairs(self.Task.newsGenrePriority) do
 		local oldLevel = TVT.ne_getNewsAbonnement(genreID)
 		local newFee = TVT.GetNewsAbonnementFee(genreID, newSubscriptionLevels[i])
-		if oldLevel ~= newSubscriptionLevels[genreID] then
+		local newLevel = newSubscriptionLevels[genreID]
+		if oldLevel > newLevel and (self.Task.hour < 21 or preventDowngrade) then
+			--TODO subscriptions must be optimized anyway - permanent changes make no sense
+			--once the fixed costs reach a certain level, unsubscribing does not save much
+			--debugMsg("no cancelling of subscription before 22 o'clock") 
+		elseif oldLevel < newLevel and (self.Task.hour > 7 or self.Task.hour == 0 or preventUpgrade) then
+			--TODO exclude 0 to prevent expensive early subscription after game start
+			--debugMsg("no subscription upgrade after 8 o'clock") 
+		elseif oldLevel ~= newLevel then
 			TVT.ne_setNewsAbonnement(genreID, newSubscriptionLevels[genreID])
+			if(oldLevel < newLevel) then 
+				preventUpgrade = true
+			else 
+				preventDowngrade = true
+			end
 			debugMsg("Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID] .. " (new level=" .. TVT.ne_getNewsAbonnement(genreID) .. ")")
 		else
 			--debugMsg("Keeping genre " ..genreID.. " abonnement level at " .. oldLevel)
@@ -301,7 +323,7 @@ function JobNewsAgencyAbonnements:Tick()
 	-- subract new expenses
 	local newFees = self.Task.newsAbonnementTotalFees
 	if newFees ~= oldFees then
-		debugMsg("Adjusted news budget by " .. (newFees - oldFees) .. ". CurrentBudget=" .. self.Task.CurrentBudget)
+		--debugMsg("Adjusted news budget by " .. (newFees - oldFees) .. ". CurrentBudget=" .. self.Task.CurrentBudget)
 		self.Task.CurrentBudget = self.Task.CurrentBudget - (newFees - oldFees)
 	else
 		--debugMsg("News budget stays the same. CurrentBudget=" .. self.Task.CurrentBudget)
@@ -338,6 +360,15 @@ function JobNewsAgency:Tick()
 	-- and modified by a bonus for already paid news (so a news
 	-- is preferred if just a bit less good but already paid)
 	local newsList = self.GetNewsList(0.2)
+
+	if self.Task.CurrentBudget < 0 then
+		local player = _G["globalPlayer"]
+		if player.Budget.CurrentFixedCosts > 120000 and TVT.GetMoney() > 150000 then
+			--TODO with high fixed costs often there is a negative budget although there is money
+			--debugMsg("  raised news budget because there is money")
+			self.Task.CurrentBudget = 50000
+		end
+	end
 
 	-- loop over all 3 slots
 	for slot=1,3 do

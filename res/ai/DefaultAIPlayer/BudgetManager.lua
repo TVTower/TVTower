@@ -7,6 +7,7 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	c.InvestmentSavings = 0
 	-- budget at the time of last call to "UpdateBudget"
 	c.BudgetOnLastUpdateBudget = 0
+	c.CurrentFixedCosts = 0
 
 	c:ResetDefaults()
 end)
@@ -72,7 +73,7 @@ function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	end
 
 	-- saved too much? Use savings or take credit
-	if (pBudget * 0.6) < self.InvestmentSavings then
+	if (pBudget * 0.6) < self.InvestmentSavings or self.InvestmentSavings < 0 then
 		debugMsg("Totally get rid of investment savings. Savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ".")
 		self.InvestmentSavings = 0
 	end
@@ -100,24 +101,28 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	end
 	if budgetUnits == 0 then budgetUnits = 1 end
 
+	self.CurrentFixedCosts = allFixedCostsSavings
 
 	debugMsg(string.left("Fixed costs:", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 	--TODO: character riskyness defines how much to save "extra"
 	allFixedCostsSavings = allFixedCostsSavings * (1 + self.ExtraFixedCostsSavingsPercentage)
 
 	--TODO not all fixed costs savings at the beginning of the day, we also expect income
---	local hour = TVT:GetDayHour()
---	allFixedCostsSavings = allFixedCostsSavings * (math.max(24, 4 + hour)/24)
+	local hour = TVT:GetDayHour()
+	local hourPart = (math.min(24, 4 + hour)/24) 
+	allFixedCostsSavings = allFixedCostsSavings * hourPart
+	local thisHourSavings = self.InvestmentSavings * hourPart
 
 	debugMsg(string.left("F.C.+reserve (for hour):", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 
-
 	-- Increase savings and define real budget to spend.
-	local tempBudget = pBudget - self.InvestmentSavings - allFixedCostsSavings
+	local tempBudget = pBudget - thisHourSavings - allFixedCostsSavings
 	-- Save a bit
-	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget * self.SavingParts)
+	if tempBudget > 0 then
+		self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget * self.SavingParts)
+	end
 	-- define final budget
-	local realBudget = pBudget - self.InvestmentSavings - allFixedCostsSavings
+	local realBudget = pBudget - thisHourSavings - allFixedCostsSavings
 	debugMsg(string.left("Savings:", 25, true) .. string.right(self.InvestmentSavings, 10, true))
 	debugMsg(string.left("Final budget:", 25, true) .. string.right(realBudget, 10, true))
 	debugMsg(string.right("=======", 35, true))

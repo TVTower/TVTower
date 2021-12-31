@@ -50,7 +50,7 @@ function TaskStationMap:GetNextJobInTargetRoom()
 	if (self.BuyStationJob.Status ~= JOB_STATUS_DONE) then
 		--buy only if there is no credit
 		if (MY.GetCredit(-1) <= self.maxAllowedCredit) then
-			debugMsg("considering station buy")
+			--debugMsg("considering station buy")
 			return self.BuyStationJob
 		else
 			self.BuyStationJob.Status = JOB_STATUS_DONE
@@ -71,6 +71,8 @@ function TaskStationMap:BeforeBudgetSetup()
 	--TODO do not buy stations when you have a credit
 	if (MY.GetCredit(-1) > self.maxAllowedCredit) then
 		self.InvestmentPriority = 0
+	elseif (TVT.GetProgrammeLicenceCount() < 30) then
+		self.InvestmentPriority = 4
 	else
 		self.InvestmentPriority = 8
 	end
@@ -234,19 +236,28 @@ function JobBuyStation:typename()
 end
 
 function JobBuyStation:Prepare(pParams)
-	debugMsg("JobBuyStation: Prepare checking stations! current budget:" .. self.Task.CurrentBudget)
+	--debugMsg("JobBuyStation: Prepare checking stations! current budget:" .. self.Task.CurrentBudget)
 	-- ignore budgets and just buy a station if there is some need
 	-- the more stations we have, the less likely this is called
 	local player = _G["globalPlayer"]
 	local ignoreBudgetChance = 100 - (8-player.ExpansionPriority)*math.min(TVT.of_getStationCount(TVT.ME)-1,10)
-	debugMsg("  ignoreBudgetChance: " ..ignoreBudgetChance)
-	if TVT.GetMoney() > 1000000 and math.random(0,100) < ignoreBudgetChance then
-		self.Task.CurrentBudget = (0.35 + 0.06*player.ExpansionPriority) * TVT.GetMoney()
-		debugMsg("  raised current budget to " .. self.Task.CurrentBudget .." to buy a station because 'we want it'.")
+	--debugMsg("  ignoreBudgetChance: " ..ignoreBudgetChance)
+
+	local moneyExcludingFixedCosts = TVT.GetMoney() - player.Budget.CurrentFixedCosts
+	--TODO make constant player character dependent
+	if moneyExcludingFixedCosts > 800000 and math.random(0,100) < ignoreBudgetChance then
+		self.Task.CurrentBudget = (0.4 + 0.06*player.ExpansionPriority) * moneyExcludingFixedCosts
+		--debugMsg("  raised current budget to " .. self.Task.CurrentBudget .." to buy a station because 'we want it'.")
 	end
 
 	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
-		debugMsg(" Cancel ... budget lower than needed investment budget")
+		--debugMsg(" Cancel ... budget lower than needed investment budget")
+		self:SetCancel()
+	end
+
+	local hour= TVT.GetDayHour()
+	if (hour > 14 and hour < 23) then
+		--debugMsg(" Cancel ... no buying if too little of the day is left: ".. hour)
 		self:SetCancel()
 	end
 end

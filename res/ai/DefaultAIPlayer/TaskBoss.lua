@@ -101,8 +101,9 @@ function JobCheckCredit:Prepare(pParams)
 		-- ATTENTION: money might change until "tick()", we could handle
 		-- it but this behaviour seems more "natural" (to not see the
 		-- money change in time)
-		-- try to at least become "positive" again
-		self.Task.TryToGetCredit = math.min( math.abs(TVT.GetMoney()), TVT.bo_getCreditAvailable() )
+		-- negative balance typically when the day begins (fixed costs, failed contracts);
+		-- try to achieve positive balance with minimal budget for buying news items
+		self.Task.TryToGetCredit = math.min( math.abs(TVT.GetMoney()) + 100000, TVT.bo_getCreditAvailable() )
 	end
 	if self.Task.NeededInvestmentBudget > 0 then
 		self.Task.TryToRepayCredit = math.max(0, math.min(TVT.GetMoney(), self.Task.NeededInvestmentBudget))

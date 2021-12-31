@@ -15,6 +15,7 @@ _G["TaskRoomBoard"] = class(AITask, function(c)
 	c.RecognizedTerrorLevel = false
 	c.FRDubanTerrorLevel = 0 --FR Duban Terroristen
 	c.VRDubanTerrorLevel = 0 --VR Duban Terroristen
+	c.lastTaskHour = -1
 end)
 
 function TaskRoomBoard:typename()
@@ -28,6 +29,7 @@ function TaskRoomBoard:Activate()
 end
 
 function TaskRoomBoard:GetNextJobInTargetRoom()
+	self.lastTaskHour = TVT.GetDayHour()
 	if (self.ChangeRoomSignsJob.Status ~= JOB_STATUS_DONE) then
 		return self.ChangeRoomSignsJob
 	end
@@ -51,6 +53,17 @@ function TaskRoomBoard:getSituationPriority()
 	local maxTerrorLevel = math.max(self.FRDubanTerrorLevel, self.VRDubanTerrorLevel)
 	if maxTerrorLevel >= 3 then
 		self.SituationPriority = math.max(self.SituationPriority, maxTerrorLevel * 8)
+	end
+
+	--TODO do not permanently go to the room board
+	--TODO call getDayHour less often
+	--TODO modify strategic priority insead?
+	local now = TVT.GetDayHour()
+	if now > 17 or now < 2 then
+		return 0
+	end
+	if self.lastTaskHour >= 0 and math.abs((now - self.lastTaskHour)% 24)<3 then
+		return 0
 	end
 
 	return self.SituationPriority
