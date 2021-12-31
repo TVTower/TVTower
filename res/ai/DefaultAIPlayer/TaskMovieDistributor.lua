@@ -9,6 +9,8 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.MoviesAtDistributor = nil
 	c.MoviesAtAuctioneer = nil
 	c.NiveauChecked = false
+	--TODO temporary cache for counting parent licences
+	--should be refactored to make it globally available and update it regularly
 	c.MovieCount = 0
 	c.CheckMode = 0
 	c.MovieList = nil
@@ -49,7 +51,7 @@ function TaskMovieDistributor:Activate()
 
 	-- Was getan werden soll:
 	local player = _G["globalPlayer"]
-	local startMovies = player.Strategy.startProgrammeAmount - TVT.GetProgrammeLicenceCount()
+	local startMovies = player.Strategy.startProgrammeAmount - self.MovieCount --TVT.GetProgrammeLicenceCount()
 	self.BuyStartProgrammeJob = JobBuyStartProgramme()
 	self.BuyStartProgrammeJob.MovieDistributorTask = self
 	if startMovies <= 0 then
@@ -142,15 +144,27 @@ function TaskMovieDistributor:BudgetSetup()
 	-- Tagesbudget für gute Angebote ohne konkreten Bedarf
 	--TODO was self.BudgetWholeDay / 2, preventing buying good movies; problem to solve is recalculation of budget...
 	self.CurrentBargainBudget = self.BudgetWholeDay
+	--TODO lower budget once a maximal number of movies is reached
+	local player = _G["globalPlayer"]
+	--if player.programmeLicencesInArchiveCount >= 35 then
+	if self.MovieCount >= 20 then
+		self.BudgetWeight = 6
+	elseif self.MovieCount >= 35 then
+		self.BudgetWeight = 2
+	else
+		self.BudgetWeight = 8
+	end
 end
 
 
 function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
 	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_PROGRAMMELICENCE)) then
+		self.MovieCount = self.MovieCount + 1
 		--self:PayFromBudget(value)
 		--self.CurrentBargainBudget = self.CurrentBargainBudget - value
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.SELL_PROGRAMMELICENCE)) then
 		--Wird im Budgetmanager neu verteilt
+		self.MovieCount = self.MovieCount - 1
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_AUCTIONBID)) then
 		--self:PayFromBudget(value)	Wird unten gemacht, damit der Kontostand gleich aktuell ist. Muss man mal Debuggen
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAYBACK_AUCTIONBID)) then
@@ -186,7 +200,7 @@ function JobBuyStartProgramme:Tick()
 
 	self.MovieDistributorTask.ActivationTime = os.clock()
 
-	local moviesNeeded = player.Strategy.startProgrammeAmount - TVT.GetProgrammeLicenceCount()
+	local moviesNeeded = player.Strategy.startProgrammeAmount - self.MovieDistributorTask.MovieCount --TVT.GetProgrammeLicenceCount()
 	if moviesNeeded <= 0 then
 		self.Status = JOB_STATUS_DONE
 		return True
@@ -243,7 +257,7 @@ function JobBuyStartProgramme:Tick()
 		--only buy whole start programme set if possible with budget
 		--else each one should be cheaper than the single licence limit
 		if (table.count(buyStartMovies) >= moviesNeeded or v:GetPrice(TVT.ME) < startMovieBudget) then
-			debugMsg("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v))
+			--debugMsg("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v))
 			TVT.md_doBuyProgrammeLicence(v:GetId())
 
 			--attention: we subtract from the overall "buying programme"
@@ -482,14 +496,23 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	local stats = player.Stats
 	local movieBudget = self.MovieDistributorTask.BudgetWholeDay
 
+	if self.MovieDistributorTask.MovieCount > 30 then
+		movieBudget = movieBudget * 0.7
+	end
+
 	local maxQualityMovies = stats.MovieQualityAcceptable.MaxValue
 	local minQualityMovies = stats.MovieQualityAcceptable.MinValue
 	local maxQualitySeries = stats.SeriesQualityAcceptable.MaxValue
 	local minQualitySeries = stats.SeriesQualityAcceptable.MinValue
 
 	--TODO check - price restriction lowers quality
-	self.MovieMaxPrice = movieBudget	-- * 0.75
-	self.SeriesMaxPrice = movieBudget	-- * 0.9
+	if self.MovieDistributorTask.MovieCount > 25 then
+		self.MovieMaxPrice = movieBudget * 0.75
+		self.SeriesMaxPrice = movieBudget * 0.9
+	else
+		self.MovieMaxPrice = movieBudget
+		self.SeriesMaxPrice = movieBudget
+	end
 
 	local ScopeMovies = maxQualityMovies - minQualityMovies
 	self.PrimetimeMovieMinQuality = math.max(0, math.round(minQualityMovies + (ScopeMovies * 0.75)))
@@ -541,9 +564,15 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	-- gets updated accordingly
 	licence.SetAttractiveness(0)
 
+	local qualityGate = myMoviesQuality.AverageValue
+	-- raise quality gate once a certail level is reached
+	if self.MovieDistributorTask.MovieCount > 20 then
+		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
+	end
+
 	-- satisfied basic requirements?
 	if (licence.IsSingle() == 1) then
-		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, myMoviesQuality.AverageValue)) then
+		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, qualityGate)) then
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable
 		else
@@ -552,7 +581,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 			return
 		end
 	else
-		if (CheckMovieBuyConditions(licence, self.SeriesMaxPrice, myMoviesQuality.AverageValue)) then
+		if (CheckMovieBuyConditions(licence, self.SeriesMaxPrice, qualityGate)) then
 			pricePerBlockStats = stats.SeriesPricePerBlockAcceptable
 			qualityStats = stats.SeriesQualityAcceptable
 		else

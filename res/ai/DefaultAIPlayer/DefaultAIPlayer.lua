@@ -853,11 +853,11 @@ end
 
 function OnMinute(number)
 	--param "number" is passed as string
-	number = tonumber(number)
+	local minute = tonumber(number)
 
 	-- on xx:06 check if there is an unsatisfiable ad planned for this
 	-- hour
-	if number == 6 then
+	if minute == 6 then
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 		if task then
 			local broadcast = TVT.GetCurrentAdvertisement()
@@ -865,16 +865,12 @@ function OnMinute(number)
 				-- only for ads
 				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1 then
 					local audience = TVT.GetCurrentProgrammeAudience()
+					--TODO IsPassingRequirements not exposend and incompatible types, guessAudience from Schedule line 1818??
+					--if broadcast:IsPassingRequirements(audience, nil) ~= "OK" then
 					if audience.GetTotalSum() < TVT.GetCurrentAdvertisementMinAudience() then
-						-- we can only fix if we have licences for trailers
-						-- or adcontracts for ad spots (and this means 1
-						-- contract MORE than just the unsatisfying one)
-						-- -> FixAdvertisement takes care of that
-						if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0)  then
-							task:FixAdvertisement(TVT.GetDay(), TVT.GetDayHour())
-						else
-							debugMsg("ProgrammeBegin: FixAdvertisement " .. TVT.GetDay() .. "/" .. TVT.GetDayHour() .. ":55 - NOT POSSIBLE, not enough adcontracts (>1) or licences.")
-						end
+						--TODO test for target groups probably fails!
+						--debugMsg("# increasing SituationPriority for Scheduling - fail advertisement")
+						task.SituationPriority = 200
 					end
 				end
 			-- outage? want to get this fixed too
@@ -882,33 +878,8 @@ function OnMinute(number)
 				-- we can only fix if we have licences for programmes
 				-- or adcontracts for infomercials
 				-- -> FixImminentAdOutage takes care of that
-				task:FixImminentAdOutage(TVT.GetDay(), TVT.GetDayHour())
-			end
-		end
-	end
-
-	-- check next 2 hours if there will be an imminent outage
-	if (number == 6) then
-		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
-		local fixedDay, fixedHour = FixDayAndHour(TVT.GetDay(), TVT.GetDayHour() + 1)
-
-		for i=0,1 do
-			local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour + i)
-			if (programme == nil) then
-
-				local fixProbability = 100
-				-- the later, the less probable the fix will be tried
-				if i == 1 then fixProbability = 65; end
-
-				if math.random(0,100) < fixProbability then
-					--make sure we have enough programme to fix it
-					if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0) then
-						debugMsg("ProgrammeBegin: Avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55")
-						task:FixImminentProgrammeOutage(fixedDay, fixedHour)
-					else
-						debugMsg("ProgrammeBegin: Cannot avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55 - not enough programme licences and adcontracts.")
-					end
-				end
+				--debugMsg("# increasing SituationPriority for Scheduling (missing ad)")
+				task.SituationPriority = 200
 			end
 		end
 	end

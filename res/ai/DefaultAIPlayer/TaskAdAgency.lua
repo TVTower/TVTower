@@ -339,13 +339,18 @@ function SignRequisitedContracts:Tick()
 	for k,requisition in pairs(self.SpotRequisitions) do
 		local neededSpotCount = requisition.Count
 		local guessedAudience = requisition.GuessedAudience
+		--TODO optimize factors for guessed audience especially for prime time programme
+		if requisition.Level == 5 then
+			guessedAudience = self:GetMinGuessedAudience(guessedAudience, 0.85)
+		end
 
 		debugMsg(" AdAgencyTick - requisition:  neededSpots="..neededSpotCount .."  guessedAudience="..math.floor(guessedAudience.GetTotalSum()))
-		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.9))
+		-- 0.9 and 0.7 may be too strict for finding contracts
+		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8), false)
 --TODO prevent signing rubbish contract
 --		if (signedContracts == 0 and tonumber(guessedAudience.GetTotalSum()) > 5000) then
 		if (signedContracts == 0) then
-			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.7))
+			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6), true)
 		end
 	end
 	self.Status = JOB_STATUS_DONE
@@ -366,7 +371,7 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 end
 
 
-function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minGuessedAudience)
+function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minGuessedAudience, isFallback)
 	local signed = 0
 	local boughtContracts = {}
 	local neededSpotCount = requisition.Count
@@ -397,7 +402,12 @@ end
 		-- the more we need, the more likely we could finish even more
 		local maxSurplusSpots = math.floor(0.5 * requisition.Count)
 		if requisition.Level == 5 then
-			maxSurplusSpots = math.max( maxSurplusSpots, math.random(0,1))
+			--TODO optimize - for prime programmes, surplus count depends on guessed audience!
+			if isFallback then
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(0,1))
+			else
+				maxSurplusSpots = math.random(0,1)
+			end
 		elseif requisition.Level == 4 then
 			maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,2))
 		else
@@ -490,10 +500,10 @@ function SignContracts:newOwnedContract (c)
 		spots = 0;
 	}
 	t.title = c.GetTitle()
-	debugMsg("  creating entry for ".. t.title)
+	--debugMsg("  creating entry for ".. t.title)
 	t.minAudience = c.GetMinAudience(TVT.ME)
 	t.spots = c.getSpotsToSend()
-	debugMsg("  done creating entry for ".. t.title)
+	--debugMsg("  done creating entry for ".. t.title)
 	return t;
 end
 
@@ -612,7 +622,7 @@ function SignContracts:ShouldSignContract(contract)
 	--similar contract already exists
 	local contractMin = contract.GetMinAudience(TVT.ME)
 	for k, owned in pairs (self.ownedContracts) do
-		debugMsg("  checking owned contract " .. owned.title.." "..owned.spots.." "..owned.minAudience )
+		--debugMsg("  checking owned contract " .. owned.title.." "..owned.spots.." "..owned.minAudience )
 		if owned.spots > 2 then
 			if owned.minAudience <= contractMin and owned.minAudience >= contractMin * 0.7 then
 				return 0
