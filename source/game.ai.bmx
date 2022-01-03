@@ -139,15 +139,13 @@ Type TAi Extends TAiBase
 		'load/save regardless of running-state
 		'if not AiRunning then return
 
-		'reset
-		ResetObjectsUsedInLua()
 		'reset (potential old) save state
 		scriptSaveState = ""
 
 		Local args:Object[1]
 		args[0] = String(GetWorldTime().GetTimeGone())
 
-		scriptSaveState = String(CallLuaFunction("OnSaveState", args))
+		scriptSaveState = String(CallLuaFunction("OnSaveState", args, true))
 	End Method
 
 
@@ -167,15 +165,13 @@ Type TAi Extends TAiBase
 		'load/save regardless of running-state
 		'if not AiRunning then return
 
-		'reset
-		ResetObjectsUsedInLua()
 		'reset (potential old) save state
 		scriptSaveState = ""
 
 		Local args:Object[1]
 		args[0] = String(GetWorldTime().GetTimeGone())
 
-		scriptSaveState = String(CallLuaFunction("OnSave", args))
+		scriptSaveState = String(CallLuaFunction("OnSave", args, true))
 	End Method
 
 
@@ -267,7 +263,12 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method _PlayerOwnsRoom:Int() {_private}
-		Return Self.ME = TFigure(GetPlayerBase(Self.ME).GetFigure()).inRoom.owner
+		Local figure:TFigure = TFigure(GetPlayerBase(Self.ME).GetFigure())
+		If figure and figure.inRoom and figure.inRoom.owner = Self.ME
+			Return True
+		Else
+			Return False
+		EndIF
 	End Method
 
 
@@ -523,17 +524,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetDaysRun:Int()	
+	Method GetDaysRun:Int()
 		Return GetWorldTime().GetDaysRun()
 	End Method
 
 
-	Method GetDay:Int()	
+	Method GetDay:Int()
 		Return GetWorldTime().GetDay()
 	End Method
 
 
-	Method GetDayHour:Int()	
+	Method GetDayHour:Int()
 		Return GetWorldTime().GetDayHour()
 	End Method
 

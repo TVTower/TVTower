@@ -4,7 +4,6 @@ Import Brl.Threads
 ?
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.luaengine.bmx"
-Import "Dig/base.util.luaengine.bmx"
 
 Const THREADED_AI_DISABLED:int = False
 
@@ -271,8 +270,6 @@ endrem
 				EndIf
 			Forever
 			
-local prepend:String; for local i:int = 0 until playerID; prepend :+ "    ";Next
-print prepend + "AI"+playerID+" ai.STOP() - TryLock Mutex"
 			If not TryLockMutex(_callLuaFunctionMutex)
 				TLogger.Log("TAiBase", "#  Mutex _callLuaFunctionMutex still locked!", LOG_DEBUG)
 				UnlockMutex(_callLuaFunctionMutex)
@@ -378,6 +375,8 @@ print prepend + "AI"+playerID+" ai.STOP() - TryLock Mutex"
 
 
 	Method ResetObjectsUsedInLua()
+		'no mutex required as we simply assign a new array
+		'(so stuff working on the old array can continue doing so ...)
 		objectsUsedInLuaCount = 0
 		objectsUsedInLua = new object[0]
 	End Method
@@ -401,7 +400,10 @@ print prepend + "AI"+playerID+" ai.STOP() - TryLock Mutex"
 		?threaded
 			LockMutex(_callLuaFunctionMutex)
 
-			'reset
+			'reset inside the mutex protected function call
+			'so it resets only right before calling the function
+			'not while a second and parallel lua call is resetting while
+			'the first call is actually using it
 			if resetObjectsInUse then ResetObjectsUsedInLua()
 
 			local result:object = GetLuaEngine().CallLuaFunction(name, args)
