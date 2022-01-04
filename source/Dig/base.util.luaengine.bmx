@@ -87,8 +87,13 @@ Global LuaEngineSuperDummy:TLuaEngineSuperDummy = new TLuaEngineSuperDummy
 
 
 Type TLuaEngine
+	Global dieOnError:Int = False
+	Global notifyOnError:Int = True
+	Global debugCalls:Int = True
+
 	Global list:TList = CreateList()
 	Global lastID:Int = 0
+	Global _listMutex:TMutex = CreateMutex()
 	Field id:Int = 0
 
 	'Pointer to current lua environment
@@ -126,7 +131,9 @@ Type TLuaEngine
 		Local obj:TLuaEngine = New TLuaEngine.SetSource(source)
 		obj._uri = uri
 		'add here so during "RegisterToLua" code could run already
+		LockMutex(_listMutex)
 		list.addLast(obj)
+		UnLockMutex(_listMutex)
 
 		'init fenv and register self
 		obj.RegisterToLua()
@@ -163,17 +170,26 @@ Type TLuaEngine
 
 
 	Function RemoveEngine(engine:TLuaEngine)
+		LockMutex(_listMutex)
 		list.Remove(engine)
+		UnlockMutex(_listMutex)
 		TLogger.Log("TLuaEngine", "RemoveEngine(): engine removed.", LOG_DEBUG)
 	End Function
 
 
 	Function FindEngine:TLuaEngine(LuaState:Byte Ptr)
+		LockMutex(_listMutex)
+		Local result:TLuaEngine
 		For Local engine:TLuaEngine = EachIn TLuaEngine.list
-			If engine._luaState = LuaState Then Return engine
+			If engine._luaState = LuaState 
+				result = engine
+				exit
+			EndIf
 		Next
-		TLogger.Log("TLuaEngine", "FindEngine(): engine not found.", LOG_ERROR)
-		Return Null
+		UnLockMutex(_listMutex)
+
+		if not result Then TLogger.Log("TLuaEngine", "FindEngine(): engine not found.", LOG_ERROR)
+		Return result
 	End Function
 
 
@@ -283,7 +299,7 @@ Type TLuaEngine
 
 		'ready!
 		lua_setfenv(getLuaState(), -2)
-		If lua_pcall(getLuaState(), 0, 0, 0 ) Then DumpError()
+		If lua_pcall(getLuaState(), 0, 0, 0 ) <> 0 Then DumpError("Initialization Error")
 	End Method
 
 
@@ -293,37 +309,34 @@ Type TLuaEngine
 			lua_setglobal(getLuaState(), entry)
 		Next
 	EndMethod
-
-
-	Method DumpError()
-		TLogger.Log("TLuaEngine", "#### ERROR #######################", LOG_ERROR)
-		TLogger.Log("TLuaEngine", "Engine: " + id, LOG_ERROR)
-		Tlogger.Log("TLuaEngine", lua_tostring( getLuaState(), -1 ), LOG_ERROR)
-
-		lua_getfield(getLuaState(), LUA_GLOBALSINDEX, "debug") ' get global "debug"
-		lua_getfield(getLuaState(), -1, "traceback")           ' get "debug.traceback"
-		lua_remove (getLuaState(), -2)                         ' remove "debug" table from stack
-
-'		lua_pushvalue(getLuaState(), 1)
-'		lua_pushinteger(getLuaState(), 2)
-'		lua_call(getLuaState(), 2, 1)
-
-		local result:Int = lua_pcall(getLuaState(), 1, -1, -1) ' use "debug.traceback" as err.hdlr
-		Tlogger.Log("TLuaEngine", lua_tostring( getLuaState(), -1 ), LOG_ERROR)
-		If result <> 0 Then
-			' ERROR
-			lua_close(getLuaState())
-			End
-		End if
+	
+	
+	Method DumpError(errorType:String = "Error")
+		Local error:String = lua_tostring( getLuaState(), -1 )
+		lua_pop(GetLuaState(), 1) 'remove error from stack
+		Local split:String[] = error.split("~nstack traceback:~n")
+		Local errorMessage:String = split[0]
+		Local errorBacktraceLines:String[]
+		if split.length > 1 then errorBacktraceLines = split[1].split("~n")
+		
+		TLogger.Log("TLuaEngine", "#### " + errorType + " (Engine " + id +") #######################", LOG_ERROR)
+		TLogger.Log("TLuaEngine", "Error: " + errorMessage, LOG_ERROR)
+		if errorBacktraceLines.length > 0
+			TLogger.Log("TLuaEngine", "Backtrace: ", LOG_ERROR)
+			For local line:String = EachIn errorBacktraceLines
+				Tlogger.Log("TLuaEngine", "    " + line.trim(), LOG_ERROR)
+			Next
+		EndIf
+		
+		if notifyOnError then notify("TLuaEngine: " + errorType +" (Engine " + id +")~nError:" + errorMessage)
+		if dieOnError then Throw("TLuaEngine: " + errorType + " (Engine " + id +"):" + errorMessage)
 	End Method
 
 
 	Method lua_pushChunk:Int()
 		If Not _chunk
 			If luaL_loadstring(getLuaState(), _source)
-				DumpError()
-				lua_pop(getLuaState(), 1)
-
+				DumpError("Syntax Error")
 				Return False
 			EndIf
 			_chunk=luaL_ref(getLuaState(), LUA_REGISTRYINDEX)
@@ -732,13 +745,14 @@ Type TLuaEngine
 	End Function
 
 	Function CompareObjectsSelf:Int(fromLuaState:Byte Ptr)
-		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-		Return engine.CompareObjectsObject(fromLuaState)
+		Return TLuaEngine.CompareObjectsObject(fromLuaState)
 	End Function
 
 	Function Invoke:Int(fromLuaState:Byte Ptr)
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-		Return engine._Invoke()
+		if not engine then return False
+		Local result:Int = engine._Invoke()
+		Return result
 	End Function
 	'====================================
 
@@ -818,15 +832,15 @@ Type TLuaEngine
 
 
 'debug information
-rem				
-	Local objName:String = "~qunknown type~q"
-	if objType Then objName = objType.Name()
-	
-	if isLuaMethodCall
-		print "_Invoke() Meth: " + objName + "."+funcOrMeth.name()
-	else
-		print "_Invoke() Func: " + objName + "."+funcOrMeth.name()
-	endif
+rem
+Local objName:String = "~qunknown type~q"
+if objType Then objName = objType.Name()
+
+if isLuaMethodCall
+	print "[Engine " + id + "] _Invoke() Meth: " + objName + "."+funcOrMeth.name()
+else
+	print "[Engine " + id + "] _Invoke() Func: " + objName + "."+funcOrMeth.name()
+endif
 endrem
 
 		'ignore first param for lua method calls
@@ -930,64 +944,6 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 
 	'===== END CODE FROM MAXLUA ====
 
-	'object must be a global - eg "_G[objectName] = object" in Lua
-	Method CallLuaMethod:Object(objectName:String, methodName:String, args:Object[] = Null)
-		lua_getglobal(getLuaState(), objectName)
-		lua_getfield(getLuaState(), -1, methodName)
-
-
-		Local argCount:Int = 0
-		If args
-			argCount = args.length
-
-			For Local i:Int = 0 Until args.length
-				Local typeId:TTypeId = TTypeId.ForObject(args[i])
-				Select typeId
-					Case IntTypeId, ShortTypeId, ByteTypeId
-						lua_pushinteger(getLuaState(), args[i].ToString().ToInt())
-					Case LongTypeId
-						lua_pushnumber(getLuaState(), args[i].ToString().ToLong())
-					Case FloatTypeId
-						lua_pushnumber(getLuaState(), args[i].ToString().ToFloat())
-					Case DoubleTypeId
-						lua_pushnumber(getLuaState(), args[i].ToString().ToDouble())
-					Case StringTypeId
-						Local s:String = args[i].ToString()
-						lua_pushlstring(getLuaState(), s, s.length)
-					Case ArrayTypeId
-						Self.lua_pushArray(args[i])
-					Default
-						If typeId And typeId.ExtendsType(ArrayTypeId)
-							Self.lua_pushArray(args[i])
-						Else
-							Self.lua_pushObject(args[i])
-						EndIf
-				End Select
-			Next
-		EndIf
-
-		Local ret:Object
-
-		'(try to) call the function
-		If lua_pcall(getLuaState(), argCount, 1, 0) <> 0
-			DumpError()
-			lua_pop(getLuaState(), 1)
-		Else
-			'fetch the results
-			If Not lua_isnil(getLuaState(), -1)
-				ret = lua_tostring(getLuaState(), -1)
-			EndIf
-
-			'pop the returned result
-			lua_pop(getLuaState(), 1)
-		EndIf
-
-
-		'pop the _functionEnvironmentRef ?
-		lua_pop(getLuaState(), 1)
-		Return ret
-	End Method
-
 
 	Method CallLuaFunction:Object(name:String, args:Object[] = Null)
 		'push fenv
@@ -1036,10 +992,31 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 		Local ret:Object
 
 		'(try to) call the function
-		If lua_pcall(getLuaState(), argCount, 1, 0) <> 0
-			DumpError()
-			lua_pop(getLuaState(), 1)
+		Local callResult:Int
+		if debugCalls
+			'stack pos for message handler
+			Local stackPos:Int = lua_gettop(GetLuaState() ) - argCount
+			'assign debug.traceback as error handler for the protected call
+			lua_getglobal(GetLuaState(), "debug")
+			lua_getfield(GetLuaState(), -1, "traceback")
+			'remove "debug" table from stack
+			lua_remove(GetLuaState(), -2)
+			'move "traceback" before function and arguments
+			lua_insert(GetLuaState(), stackPos)
+			'call lua_pcall function with custom error/traceback handler
+			callResult = lua_pcall(GetLuaState(), argCount, 1, stackPos)
+			'remove custom error message/backtrace handler from stack
+			lua_remove( GetLuaState(), stackPos )
+
+			if callResult <> 0 Then DumpError("Runtime Error")
 		Else
+			'protected call?
+			callResult = lua_pcall(getLuaState(), argCount, 1, 0) 
+			'or unprotected call
+			'lua_call(GetLuaState(), argCount, 1)
+		EndIf
+
+		If callResult = 0
 			'fetch the results
 			If Not lua_isnil(getLuaState(), -1)
 				ret = lua_tostring(getLuaState(), -1)
