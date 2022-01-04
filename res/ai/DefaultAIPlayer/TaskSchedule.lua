@@ -246,7 +246,7 @@ function TaskSchedule:OnChangeAdSlot(broadcastMaterial, day, hour)
 							debugMsg("Removed excess ad from slot: " .. planHour .."   " .. result.data.GetTitle())
 							self.adSlotsState[planHour] = bitmaskSetBit(self.adSlotsState[planHour], ADSLOTSTATE_SPOTMAX_REACHED)
 						else
-							debugMsg("FAILED to remove excess ad from slot: " .. planHour ..". Error code: " .. response.result)
+							debugMsg("FAILED to remove excess ad from slot: " .. planHour ..". Error code: " .. response)
 						end
 					end
 				end
