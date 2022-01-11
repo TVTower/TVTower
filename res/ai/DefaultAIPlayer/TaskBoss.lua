@@ -25,6 +25,7 @@ function TaskBoss:Activate()
 	-- Was getan werden soll:
 	self.CheckCreditJob = JobCheckCredit()
 	self.CheckCreditJob.Task = self
+	--self.LogLevel = LOG_TRACE
 end
 
 
@@ -131,9 +132,9 @@ function JobCheckCredit:Tick()
 			self.Task.TryToRepayCredit = self.Task.TryToRepayCredit - repay
 			-- adjust budget
 			self.Task.NeededInvestmentBudget = self.Task.NeededInvestmentBudget - repay
---			debugMsg("Repaid " .. repay .. " from credit to boss.")
+			self:LogDebug("Repaid " .. repay .. " from credit to boss.")
 		else
-			debugMsg("FAILED to repay " .. repay .. " from credit to boss.")
+			self:LogInfo("FAILED to repay " .. repay .. " from credit to boss.")
 		end
 
 	-- TAKE credit
@@ -145,9 +146,9 @@ function JobCheckCredit:Tick()
 
 		if credit > 0 then
 			if TVT.bo_doTakeCredit(credit) == TVT.RESULT_OK then
---				debugMsg("Took a credit of " .. credit .." from boss.")
+				self:LogInfo("Took a credit of " .. credit .." from boss.")
 			else
-				debugMsg("FAILED to get credit of " .. credit .." from boss.")
+				self:LogInfo("FAILED to get credit of " .. credit .." from boss.")
 			end
 
 			self.Task.TryToGetCredit = math.max(0, self.Task.TryToGetCredit - credit)

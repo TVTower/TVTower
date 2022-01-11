@@ -12,6 +12,9 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	c:ResetDefaults()
 end)
 
+function BudgetManager:Log(message)
+	--debugMsg(message)
+end
 
 function BudgetManager:typename()
 	return "BudgetManager"
@@ -33,11 +36,11 @@ end
 
 -- Method is run at the begin of each day
 function BudgetManager:CalculateNewDayBudget()
-	debugMsg("=== Budget day " .. TVT.GetDaysRun() .. " ===")
-	debugMsg(string.left("Account balance:", 25, true) .. string.right(TVT.GetMoney(), 10, true))
+	self:Log("=== Budget day " .. TVT.GetDaysRun() .. " ===")
+	self:Log(string.left("Account balance:", 25, true) .. string.right(TVT.GetMoney(), 10, true))
 
 	self:UpdateBudget(TVT.GetMoney())
-	debugMsg("======")
+	self:Log("======")
 end
 
 
@@ -53,7 +56,7 @@ function BudgetManager:UpdateBudget(pBudget)
 		end
 	end
 
-	debugMsg(string.left("Planned budget:", 25, true) .. string.right(pBudget, 10, true))
+	self:Log(string.left("Planned budget:", 25, true) .. string.right(pBudget, 10, true))
 	self:CutInvestmentSavingIfNeeded(pBudget)
 
 	-- split budget across the different tasks
@@ -68,13 +71,13 @@ function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 
 	-- saved too much? Use savings or take credit
 	if (pBudget * 0.8) < self.InvestmentSavings then
-		debugMsg("Cutting investment savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ". Savings getting halved." )
+		debugMsg("    $$Cutting investment savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ". Savings getting halved." )
 		self.InvestmentSavings = self.InvestmentSavings / 2
 	end
 
 	-- saved too much? Use savings or take credit
 	if (pBudget * 0.6) < self.InvestmentSavings or self.InvestmentSavings < 0 then
-		debugMsg("Totally get rid of investment savings. Savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ".")
+		debugMsg("    $$Totally get rid of investment savings. Savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ".")
 		self.InvestmentSavings = 0
 	end
 
@@ -96,14 +99,14 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local allFixedCostsSavings = 0
 	for k,v in pairs(player.TaskList) do
 		budgetUnits = budgetUnits + v:getBudgetUnits()
-		debugMsg(string.left(v:typename() .. " fix", 25, true) .. string.right(v:GetFixedCosts(), 10, true))
+		self:Log(string.left(v:typename() .. " fix", 25, true) .. string.right(v:GetFixedCosts(), 10, true))
 		allFixedCostsSavings = allFixedCostsSavings + v:GetFixedCosts()
 	end
 	if budgetUnits == 0 then budgetUnits = 1 end
 
 	self.CurrentFixedCosts = allFixedCostsSavings
 
-	debugMsg(string.left("Fixed costs:", 25, true) .. string.right(allFixedCostsSavings, 10, true))
+	self:Log(string.left("Fixed costs:", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 	--TODO: character riskyness defines how much to save "extra"
 	allFixedCostsSavings = allFixedCostsSavings * (1 + self.ExtraFixedCostsSavingsPercentage)
 
@@ -113,7 +116,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	allFixedCostsSavings = allFixedCostsSavings * hourPart
 	local thisHourSavings = self.InvestmentSavings * hourPart
 
-	debugMsg(string.left("F.C.+reserve (for hour):", 25, true) .. string.right(allFixedCostsSavings, 10, true))
+	self:Log(string.left("F.C.+reserve (for hour):", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 
 	-- Increase savings and define real budget to spend.
 	local tempBudget = pBudget - thisHourSavings - allFixedCostsSavings
@@ -123,9 +126,9 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	end
 	-- define final budget
 	local realBudget = pBudget - thisHourSavings - allFixedCostsSavings
-	debugMsg(string.left("Savings:", 25, true) .. string.right(self.InvestmentSavings, 10, true))
-	debugMsg(string.left("Final budget:", 25, true) .. string.right(realBudget, 10, true))
-	debugMsg(string.right("=======", 35, true))
+	self:Log(string.left("Savings:", 25, true) .. string.right(self.InvestmentSavings, 10, true))
+	self:Log(string.left("Final budget:", 25, true) .. string.right(realBudget, 10, true))
+	self:Log(string.right("=======", 35, true))
 
 
 	-- assign budgets to tasks
@@ -146,19 +149,19 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	-- check for investments
 	local investTask = self:GetTaskForInvestment(player.TaskList)
 	if (investTask ~= nil) then
---		debugMsg(investTask:typename() .. "- Use Investment: " .. self.InvestmentSavings)
+		self:Log(investTask:typename() .. "- Use Investment: " .. self.InvestmentSavings)
 		investTask.CurrentBudget = investTask.CurrentBudget + self.InvestmentSavings
 		investTask.UseInvestment = true
 		investTask.CurrentInvestmentPriority = 0
 	end
 
 	-- inform tasks for final budgets
-	debugMsg("Budget split:")
+	self:Log("Budget split:")
 	for k,v in pairs(player.TaskList) do
 		v.BudgetWholeDay = v.CurrentBudget
 		v:BudgetSetup()
 		if v.RequiresBudgetHandling == nil or v.RequiresBudgetHandling then
-			debugMsg(string.left(v:typename(), 25, true) .. string.right(v.BudgetWholeDay, 10, true))
+			self:Log(string.left(v:typename(), 25, true) .. string.right(v.BudgetWholeDay, 10, true))
 		end
 	end
 end
@@ -221,9 +224,9 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 	value = tonumber(value)
 
 	if (reference ~= nil) then
-		debugMsg("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")
+		--self:Log("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")
 	else
-		debugMsg("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value)
+		--self:Log("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value)
 	end
 
 

@@ -90,6 +90,14 @@ function DefaultAIPlayer:typename()
 	return "DefaultAIPlayer"
 end
 
+function DefaultAIPlayer:LogInfo(message)
+	debugMsg(message)
+end
+
+function DefaultAIPlayer:LogDebug(message)
+	--debugMsg(message)
+end
+
 function DefaultAIPlayer:initParameters()
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
 		--Waghalsigkeit 3-8
@@ -112,11 +120,11 @@ function DefaultAIPlayer:initParameters()
 	end
 
 	--for checking that the same parameters are still used after loading a saved game
-	--debugMsg("initializing ".. self.Ventruesome.. " ".. self.NewsPriority .." ".. self.ExpansionPriority .." " .. self.BrainSpeed)
+	self:LogDebug("initializing ".. self.Ventruesome.. " ".. self.NewsPriority .." ".. self.ExpansionPriority .." " .. self.BrainSpeed)
 end
 
 function DefaultAIPlayer:initializePlayer()
-	debugMsg("Initialisiere DefaultAIPlayer-KI ...")
+	self:LogInfo("Initialisiere DefaultAIPlayer-KI ...")
 	self.Stats = BusinessStats()
 	self.Stats:Initialize()
 	self.Budget = BudgetManager()
@@ -155,7 +163,7 @@ function DefaultAIPlayer:resume()
 	_G["globalPlayer"] = self
 
 	if (self.Strategy == nil) then
-		debugMsg(self:typename() .. ": Resume Strategy")
+		self:LogInfo(self:typename() .. ": Resume Strategy")
 		self.Strategy = DefaultStrategy()
 	end
 
@@ -202,33 +210,33 @@ function DefaultAIPlayer:OnGameBegins()
 		self.Stats.SpotPenaltyPerSpot = StatisticEvaluator()
 	end
 	--END LOAD COMPATIBILITY
+
+	if 1 == 2 then
+		local se = StatisticEvaluator()
+		for j = 0, 3 do
+			self:LogInfo("run " .. j)
+			for i = 0, 2 do
+				se:AddValue(1 + i*2)
+				self:LogInfo("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+			end
+			se:Adjust()
+			self:LogInfo("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+		end
 	
---[[
-	local se = StatisticEvaluator()
-	for j = 0, 3 do
-		debugMsg("run " .. j)
-		for i = 0, 2 do
-			se:AddValue(1 + i*2)
-			debugMsg("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+		self:LogInfo("--------------------")
+		self:LogInfo("--------------------")
+	
+		se = StatisticEvaluatorOld()
+		for j = 0, 3 do
+			debugMsg("run " .. j)
+			for i = 0, 2 do
+				se:AddValue(1 + i*2)
+				self:LogInfo("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+			end
+			se:Adjust()
+			self:LogInfo("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
 		end
-		se:Adjust()
-		debugMsg("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
 	end
-
-	debugMsg("--------------------")
-	debugMsg("--------------------")
-
-	se = StatisticEvaluatorOld()
-	for j = 0, 3 do
-		debugMsg("run " .. j)
-		for i = 0, 2 do
-			se:AddValue(1 + i*2)
-			debugMsg("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
-		end
-		se:Adjust()
-		debugMsg("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
-	end
-]]
 end
 
 
@@ -374,20 +382,20 @@ function DefaultAIPlayer:GetNextEnemyId()
 end
 
 function DefaultAIPlayer:CleanUp()
-	debugMsg(self:typename() .. ": CleanUp")
+	self:LogInfo(self:typename() .. ": CleanUp")
 
-	--debugMsg("Requisitions (before): " .. table.count(self.Requisitions))
+	self:LogDebug("Requisitions (before): " .. table.count(self.Requisitions))
 
 	local tempList = table.copy(self.Requisitions)
 
 	for k,v in pairs(tempList) do
 		if (not v:CheckActuality()) then
 			table.remove(self.Requisitions, index)
-			--debugMsg("Requisition removed")
+			self:LogDebug("Requisition removed")
 		end
 	end
 
-	--debugMsg("Requisitions (after): " .. table.count(self.Requisitions))
+	self:LogDebug("Requisitions (after): " .. table.count(self.Requisitions))
 end
 
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -719,7 +727,7 @@ function OnEnterRoom(roomId)
 
 		-- when visiting the boss or betty, update sammy information
 		if roomId == TVT.ROOM_BOSS_PLAYER_ME then
-			debugMsg("Visiting my boss", true)
+			--debugMsg("Visiting my boss", true)
 
 			getAIPlayer().currentAwardType = TVT.bo_GetCurrentAwardType()
 			getAIPlayer().currentAwardStartTime = tonumber(TVT.bo_GetCurrentAwardStartTimeString())
