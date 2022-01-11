@@ -557,9 +557,12 @@ Type TEventManager
 					Local callSource:TFunction
 					For local t:TTypeID = EachIn TTypeId.EnumTypes()
 						For local f:TFunction = EachIn t.EnumFunctions()
-							if f._ref = Byte Ptr (elbf._function)
-								if callSource Then callName :+ "~n"
-								callName :+ t.name() + "." + f.name()
+							If f._ref = Byte Ptr (elbf._function)
+								If callSource 
+									callName :+ "~n" + t.name() + "." + f.name() + "  [Override]"
+								Else
+									callName :+ t.name() + "." + f.name()
+								EndIf
 
 								callSource = f
 							endif
@@ -575,11 +578,11 @@ Type TEventManager
 				
 				If TEventListenerRunFunction(elb)
 					For local s:String = Eachin callName.split("~n")
-						Print "  listener function: " + callName
+						Print "  listener function: " + s
 					Next
 				ElseIf TEventListenerRunMethod(elb)
 					For local s:String = Eachin callName.split("~n")
-						Print "  listener method: " + callName
+						Print "  listener method: " + s
 					Next
 				Else
 					Print "  listener " + TTypeId.ForObject(elb).name()
