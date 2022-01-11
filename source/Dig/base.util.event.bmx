@@ -542,22 +542,47 @@ Type TEventManager
 		Next
 		Print "Event Listeners: " + listeners
 
-		For Local intKey:TIntKey = EachIn EventManager._listeners.Keys()
-			local eventKey:TEventKey = GetEventKey(intKey.value)
-			if not eventKey then Throw "EventManager._listeners contain obsolete eventKeys for ID="+intKey.value
-			
+		For Local longKey:TLongKey = EachIn EventManager._listeners.Keys()
+			local eventKey:TEventKey = GetEventKey(longKey.value)
+			if not eventKey then Throw "EventManager._listeners contain obsolete eventKeys for ID="+longKey.value
+
+			'skip GUI for now
+			If eventKey.text.Find("gui") = 0 then continue
+			print "- " + eventKey.text.ToString() ' + "    [ID:"+eventKey.id+"]"
+
 			For Local elb:TEventListenerBase = EachIn TObjectList( _listeners.ValueForKey(eventKey.id) )
+				Local callName:String
 				If TEventListenerRunFunction(elb)
-					Print "KEY="+eventKey.text.ToString()+"  :: run function"
+					Local elbF:TEventListenerRunFunction = TEventListenerRunFunction(elb)
+					Local callSource:TFunction
+					For local t:TTypeID = EachIn TTypeId.EnumTypes()
+						For local f:TFunction = EachIn t.EnumFunctions()
+							if f._ref = Byte Ptr (elbf._function)
+								if callSource Then callName :+ "~n"
+								callName :+ t.name() + "." + f.name()
+
+								callSource = f
+							endif
+						Next
+					Next
 				ElseIf TEventListenerRunMethod(elb)
-					Local tyd:TTypeId = TTypeId.ForObject(TEventListenerRunMethod(elb)._objectInstance)
-					If tyd
-						Print "KEY="+eventKey.text.ToString()+"  :: run method. instance "+ tyd.name()
-					Else
-						Print "KEY="+eventKey.text.ToString()+"  :: run method. instance UNKNOWN"
-					EndIf
+					Local elbM:TEventListenerRunMethod = TEventListenerRunMethod(elb)
+					if TTypeID.ForObject(elbM._objectInstance)
+						callName = TTypeID.ForObject(elbM._objectInstance).name() + "." + elbM._methodName+"()"
+					Endif
+				EndIf
+					
+				
+				If TEventListenerRunFunction(elb)
+					For local s:String = Eachin callName.split("~n")
+						Print "  listener function: " + callName
+					Next
+				ElseIf TEventListenerRunMethod(elb)
+					For local s:String = Eachin callName.split("~n")
+						Print "  listener method: " + callName
+					Next
 				Else
-					Print "KEY="+eventKey.text.ToString()+"  :: run " + TTypeId.ForObject(elb).name()
+					Print "  listener " + TTypeId.ForObject(elb).name()
 				EndIf
 			Next
 		Next
