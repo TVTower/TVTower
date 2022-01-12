@@ -5565,8 +5565,8 @@ Type GameEvents
 
 					'pay penalty
 					player.GetFinance().PayMisc(GameRules.sentXRatedPenalty)
-					'remove programme from plan
-					player.GetProgrammePlan().ForceRemoveProgramme(currentProgramme, day, hour)
+					'(forceful) remove programme from plan
+					player.GetProgrammePlan().RemoveProgramme(currentProgramme, True)
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
@@ -5812,9 +5812,9 @@ Type GameEvents
 				'no need to copy the array because it has a fixed length
 				For Local news:TNews = EachIn p.GetProgrammePlan().news
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
-						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+						p.GetProgrammePlan().RemoveNewsByID(news.GetID(), False)
 					'elseif news.newsevent.GetTopicality() < minTopicalityToKeep
-					'	p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+					'	p.GetProgrammePlan().RemoveNewsByID(news.GetID(), False)
 					EndIf
 				Next
 			Next

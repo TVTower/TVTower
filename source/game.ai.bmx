@@ -1012,10 +1012,12 @@ endrem
 	End Method
 
 
-	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True, requireSameType:Int=False)
+	'negate "includeStartingEarlierObject" to "excludeStartingEarlierObject"
+	'for default
+	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int, dayStart:Int, hourStart:Int, dayEnd:Int, hourEnd:Int, excludeStartingEarlierObject:Int, requireSameType:Int)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(Self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, requireSameType)
+		Local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(Self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, not excludeStartingEarlierObject, requireSameType)
 		Return TLuaFunctionResult.Create(Self.RESULT_OK, bm)
 	End Method
 
@@ -1076,15 +1078,32 @@ endrem
 	End Method
 
 
-	'Set content of a programme slot
+	'Clear content of a advertisement slot
 	'=====
-	'materialSource might be "null" to clear a time slot
-	'or of types: "TProgrammeLicence" or "TAdContract"
-	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
-	Method of_setAdvertisementSlot:Int(materialSource:Object, day:Int=-1, hour:Int=-1)
-'		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+	Method of_ClearAdvertisementSlot:Int(day:Int, hour:Int)
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
-'		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
+		If Not _PlayerOwnsRoom() Then Return Self.RESULT_WRONGROOM
+
+		If GetPlayerProgrammePlan(Self.ME).RemoveAdvertisement(day, hour)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_FAILED
+		EndIf
+	End Method
+
+
+	'Set content of a advertisement slot
+	'=====
+	'materialSource might of types: "TProgrammeLicence" or "TAdContract"
+	'materialSource might be "null" to clear a time slot
+	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_FAILED
+	Method of_SetAdvertisementSlot:Int(materialSource:Object, day:Int, hour:Int)
+		If Not materialSource Then Return of_ClearAdvertisementSlot(day, hour)
+
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		'even if player has access to room, only owner can manage things here
+		If Not _PlayerOwnsRoom() Then Return Self.RESULT_WRONGROOM
 
 		Local broadcastMaterial:TBroadcastMaterial
 		'create a broadcast material out of the given source
@@ -1095,22 +1114,19 @@ endrem
 
 		'skip setting the slot if already done
 		Local existingMaterial:TBroadcastMaterial = GetPlayerProgrammePlan(Self.ME).GetAdvertisement(day, hour)
-		If existingMaterial And broadcastMaterial
-			If broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() And broadcastMaterial.materialType = existingMaterial.materialType
-				Return Self.RESULT_SKIPPED
-			EndIf
-		Else
-			'both empty
-			If Not existingMaterial And Not broadcastMaterial
-				Return Self.RESULT_SKIPPED
+		If existingMaterial
+			If broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID()
+				If existingMaterial.BeginsAt(day, hour)
+					Return Self.RESULT_SKIPPED
+				EndIf
 			EndIf
 		EndIf
 
 
-		If GetPlayerProgrammePlan(Self.ME).SetAdvertisementSlot(broadcastMaterial, day, hour)
+		If GetPlayerProgrammePlan(Self.ME).AddAdvertisement(broadcastMaterial, day, hour)
 			Return Self.RESULT_OK
 		Else
-			Return Self.RESULT_NOTALLOWED
+			Return Self.RESULT_FAILED
 		EndIf
 	End Method
 
@@ -1128,12 +1144,30 @@ endrem
 	End Method
 
 
+	'Clear content of a programme slot
+	'=====
+	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_FAILED
+	Method of_ClearProgrammeSlot:Int(day:Int, hour:Int)
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		'even if player has access to room, only owner can manage things here
+		If Not _PlayerOwnsRoom() Then Return Self.RESULT_WRONGROOM
+
+		If GetPlayerProgrammePlan(Self.ME).RemoveProgramme(day, hour)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_FAILED
+		EndIf
+	End Method
+
+
 	'Set content of a programme slot
 	'=====
+	'materialSource might of types: "TProgrammeLicence" or "TAdContract"
 	'materialSource might be "null" to clear a time slot
-	'or of types: "TProgrammeLicence" or "TAdContract"
 	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
-	Method of_SetProgrammeSlot:Int(materialSource:Object, day:Int=-1, hour:Int=-1)
+	Method of_SetProgrammeSlot:Int(materialSource:Object, day:Int, hour:Int)
+		If Not materialSource Then Return of_ClearProgrammeSlot(day, hour)
+
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
 		If Not _PlayerOwnsRoom() Then Return Self.RESULT_WRONGROOM
@@ -1147,20 +1181,18 @@ endrem
 
 		'skip setting the slot if already done
 		Local existingMaterial:TBroadcastMaterial = GetPlayerProgrammePlan(Self.ME).GetProgramme(day, hour)
-		If existingMaterial and broadcastMaterial
-			If broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() And broadcastMaterial.materialType = existingMaterial.materialType
-				TPlayerProgrammePlan.FixDayHour(day, hour)
-				If existingMaterial.programmedDay = day and existingMaterial.programmedHour = hour
+		If existingMaterial
+			If broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID()
+				If existingMaterial.BeginsAt(day, hour)
 					Return Self.RESULT_SKIPPED
 				EndIf
 			EndIf
 		EndIf
-
-
-		If GetPlayerProgrammePlan(Self.ME).SetProgrammeSlot(broadcastMaterial, day, hour)
+		
+		If GetPlayerProgrammePlan(Self.ME).AddProgramme(broadcastMaterial, day, hour)
 			Return Self.RESULT_OK
 		Else
-			Return Self.RESULT_NOTALLOWED
+			Return Self.RESULT_FAILED
 		EndIf
 	End Method
 
@@ -1262,7 +1294,7 @@ endrem
 	Method ne_getAllBroadcastedNews:TLuaFunctionResult()
 		If Not (_PlayerInRoom("newsroom") Or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local broadcastedNews:TNews[] = TNews[](GetPlayerProgrammePlan(Self.ME).GetNewsArray())
+		Local broadcastedNews:TNews[] = TNews[](GetPlayerProgrammePlan(Self.ME).GetNewsArrayCopy())
 		If broadcastedNews
 			Return TLuaFunctionResult.Create(Self.RESULT_OK, broadcastedNews)
 		Else
@@ -1283,7 +1315,7 @@ endrem
 	End Method
 
 
-	Method ne_doRemoveNewsFromPlan:Int(slot:Int = 0, objectGUID:String = "")
+	Method ne_doRemoveNewsFromPlan:Int(slot:Int, objectID:Int)
 		If Not (_PlayerInRoom("newsroom") Or _PlayerInRoom("news")) Then Return Self.RESULT_WRONGROOM
 
 		Local player:TPlayerBase = GetPlayerBase(Self.ME)
@@ -1294,9 +1326,9 @@ endrem
 
 
 		Local newsObject:TNews
-		If objectGUID
+		If objectID > 0
 			'news has to be in plan, not collection
-			newsObject = TNews(GetPlayerProgrammePlan(Self.ME).GetNews(objectGUID))
+			newsObject = TNews(GetPlayerProgrammePlan(Self.ME).GetNews(objectID))
 		ElseIf slot >= 0
 			newsObject = TNews(GetPlayerProgrammePlan(Self.ME).GetNewsAtIndex(slot))
 		EndIf
@@ -1310,7 +1342,7 @@ endrem
 	End Method
 
 
-	Method ne_doNewsInPlan:Int(slot:Int = 0, objectGUID:String = "")
+	Method ne_doNewsInPlan:Int(slot:Int, objectID:Int)
 		If Not (_PlayerInRoom("newsroom") Or _PlayerInRoom("news")) Then Return Self.RESULT_WRONGROOM
 
 		Local player:TPlayerBase = GetPlayerBase(Self.ME)
@@ -1321,10 +1353,10 @@ endrem
 
 
 		'news has to be in collection, not plan
-		Local news:TNews = TNews(GetPlayerProgrammeCollection(Self.ME).GetNews(objectGUID))
+		Local news:TNews = TNews(GetPlayerProgrammeCollection(Self.ME).GetNews(objectID))
 		If Not news
 			'if not found, someone is switching from plan slot x to slot y?
-			news = TNews(GetPlayerProgrammePlan(Self.ME).GetNews(objectGUID))
+			news = TNews(GetPlayerProgrammePlan(Self.ME).GetNews(objectID))
 			If Not news Then Return Self.RESULT_NOTFOUND
 		EndIf
 

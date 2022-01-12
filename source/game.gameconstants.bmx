@@ -547,6 +547,16 @@ Type TVTBroadcastMaterialType {_exposeToLua}
 	Const ADVERTISEMENT:Int= 4
 	Const NEWS:Int         = 8
 	Const NEWSSHOW:Int     = 16
+
+	Function GetAsString:String(key:Int = 0)
+		Select key
+			Case PROGRAMME      Return "programme"
+			Case ADVERTISEMENT  Return "advertisement"
+			Case NEWS           Return "news"
+			Case NEWSSHOW       Return "newsshow"
+			Default             Return "unknown"
+		End Select
+	End Function
 End Type
 
 
