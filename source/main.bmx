@@ -4410,7 +4410,7 @@ Type GameEvents
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
 		If Not GetGame().isGameLeader() Then Return False
 
-		Local time:Long = triggerEvent.GetData().getInt("time",-1)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local minute:Int = GetWorldTime().GetDayMinute(time)
 		If minute < 0 Then Return False
 
@@ -4431,7 +4431,7 @@ Type GameEvents
 	Function PlayersOnDay:Int(triggerEvent:TEventBase)
 		If Not GetGame().isGameLeader() Then Return False
 
-		Local time:Long = triggerEvent.GetData().getInt("time",-1)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local minute:Int = GetWorldTime().GetDayMinute(time)
 		If minute < 0 Then Return False
 
