@@ -2088,7 +2088,7 @@ Type TTextParseInfo
 End Type
 
 
-Type STextParseInfo
+Struct STextParseInfo
 	'storage of current font styles
 	Field stylesB:Int
 	Field stylesI:Int
@@ -3346,7 +3346,7 @@ Next
 end
 endrem
 	End Method
-End Type
+End Struct
 
 
 

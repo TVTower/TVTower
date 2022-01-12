@@ -89,12 +89,20 @@ Global LuaEngineSuperDummy:TLuaEngineSuperDummy = new TLuaEngineSuperDummy
 Type TLuaEngine
 	Global dieOnError:Int = False
 	Global notifyOnError:Int = True
+	'-1 to deactivate limit, > 0 to deactivate notification once it reaches 0
+	Global notifyOnErrorLimit:Int = 1
 	Global debugCalls:Int = True
 
 	Global list:TList = CreateList()
 	Global lastID:Int = 0
 	Global _listMutex:TMutex = CreateMutex()
 	Field id:Int = 0
+
+	'-1 to deactivate limit, > 0 to deactivate notification once it reaches 0
+	'this is done on a "per engine" base to be able to
+	'spot different errors
+	Field individualNotifyOnErrorLimit:Int
+
 
 	'Pointer to current lua environment
 	Field _luaState:Byte Ptr
@@ -134,6 +142,9 @@ Type TLuaEngine
 		LockMutex(_listMutex)
 		list.addLast(obj)
 		UnLockMutex(_listMutex)
+		
+		
+		obj.individualNotifyOnErrorLimit = TLuaEngine.notifyOnErrorLimit
 
 		'init fenv and register self
 		obj.RegisterToLua()
@@ -328,7 +339,12 @@ Type TLuaEngine
 			Next
 		EndIf
 		
-		if notifyOnError then notify("TLuaEngine: " + errorType +" (Engine " + id +")~nError:" + errorMessage)
+		If notifyOnError And individualNotifyOnErrorLimit <> 0
+			notify("TLuaEngine: " + errorType +" (Engine " + id +")~nError:" + errorMessage)
+			If individualNotifyOnErrorLimit > 0
+				individualNotifyOnErrorLimit :- 1
+			EndIf
+		EndIf
 		if dieOnError then Throw("TLuaEngine: " + errorType + " (Engine " + id +"):" + errorMessage)
 	End Method
 
