@@ -81,7 +81,7 @@ Type TScreenCollection
 		if currentScreen = screen then return TRUE
 
 		'trigger event so others can attach
-		TriggerBaseEvent(GameEventKeys.Screen_OnLeave, new TData.Add("toScreen", screen), currentScreen)
+		TriggerIntentionEvent(GameEventKeys.Screen_OnLeave, new TData.Add("toScreen", screen), currentScreen)
 
 		'if on a screen, try to leave first
 		if currentScreen and not currentScreen.TryLeave(screen)
@@ -90,13 +90,9 @@ Type TScreenCollection
 		endif
 
 		'if entering a screen, try to enter
-		if screen
-			local event:TEventBase = TEventBase.Create(GameEventKeys.Screen_OnTryEnter, new TData.Add("fromScreen", currentScreen), screen)
-			event.Trigger()
-			if event.IsVeto()
-				print "screen.onTryEnter forbidden"
-				if not force then return False
-			endif
+		if screen and not screen.TryEnter(currentScreen)
+			print "screen.onTryEnter forbidden"
+			if not force then return False
 		endif
 
 		TriggerBaseEvent(GameEventKeys.Screen_OnBeginLeave, new TData.Add("toScreen", screen), currentScreen)
@@ -434,6 +430,14 @@ Type TScreen
 
 	Method FinishLeave:int(toScreen:TScreen=null)
 		state = TScreen.STATE_NONE
+	End Method
+
+
+	Method TryEnter:int(fromScreen:TScreen=null)
+		local event:TIntentionEvent = new TIntentionEvent(GameEventKeys.Screen_OnTryEnter, new TData.Add("fromScreen", fromScreen), self)
+		event.Trigger()
+		if event.isVeto() then return False
+		return True
 	End Method
 
 

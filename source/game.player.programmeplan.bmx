@@ -162,7 +162,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method getSkipHoursFromIndex:Int()
+	Method GetSkipHoursFromIndex:Int()
 		Return (GetWorldTime().GetStartDay()-1)*24
 	End Method
 
@@ -181,29 +181,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'eg. for debugging
 	Method printOverview()
-		Rem
-		print "=== AD/PROGRAMME COLLECTION PLAYER "+parent.playerID+" ==="
-		print "Programme allg.:"
-		For local licence:TProgrammeLicence = eachin parent.ProgrammeCollection.programmeLicences
-			if licence.isSeries()
-				print "  Serie: "+licence.GetTitle()+" | Episoden: "+licence.GetSubLicenceCount()
-			elseif licence.isEpisode()
-				print "  Einzelepisode: "+licence.GetTitle()
-			elseif licence.isMovie()
-				print "  Film: "+licence.GetTitle()
-			endif
-		Next
-		print "Serien:"
-		For local licence:TProgrammeLicence = eachin parent.ProgrammeCollection.seriesLicences
-			print "  "+licence.GetTitle()+" | Episoden: "+licence.GetSubLicenceCount()
-		Next
-		print "Filme:"
-		For local licence:TProgrammeLicence = eachin parent.ProgrammeCollection.movieLicences
-			print "  "+licence.GetTitle()
-		Next
-		endrem
-
-
 		Print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For Local i:Int = 0 To Max(programmes.length - 1, advertisements.length - 1)
 			Local currentHour:Int = GetHourFromArrayIndex(i) 'hours since start
@@ -227,8 +204,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			'only show if ONE is set
 			If adString <> "" Or progString <> ""
-				If progString = "" Then progString = "SENDEAUSFALL"
-				If adString = "" Then adString = " -> WERBEAUSFALL"
+				If progString = "" Then progString = "OUTAGE"
+				If adString = "" Then adString = " -> AD OUTAGE"
 				Print "[" + GetArrayIndex(int(time / TWorldTime.HOURLENGTH)) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
 			EndIf
 		Next
@@ -236,6 +213,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	'adjusts given day and hour if eg. hour is negative or bigger than 23
+	'eg. day=0 and hour=25 become day=1 and hour=1
 	Function FixDayHour(day:int var, hour:int var, disableAutoValue:int = False)
 		If day < 0 Then day = GetWorldTime().GetDay()
 		If hour = -1 and not disableAutoValue
@@ -253,21 +232,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		hour = hour mod 24
 	End Function
 
+
 	'===== common function for managed objects =====
-
-
-	'sets the given array to the one requested through slotType
-	Method GetObjectArray:TBroadcastMaterial[](slotType:Int=0)
-		Select slotType
-			case TVTBroadcastMaterialType.PROGRAMME      Return programmes
-			case TVTBroadcastMaterialType.ADVERTISEMENT  Return advertisements
-			case TVTBroadcastMaterialType.NEWSSHOW       Return newsShow
-			case TVTBroadcastMaterialType.NEWS           Return news
-			Default 
-				TLogger.Log("TPlayerProgrammePlan", "GetObjectArray() request with unknown slotType "+slotType+".", LOG_DEBUG)
-				Return New TBroadcastMaterial[0]
-		End Select
-	End Method
 
 
 	Method LockMutexObjectArray:TBroadcastMaterial[](slotType:Int=0)
@@ -294,7 +260,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	'sets the given array to the one requested through objectType
+	'Get the array of the requested slotType
+	Method GetObjectArray:TBroadcastMaterial[](slotType:Int=0)
+		Select slotType
+			case TVTBroadcastMaterialType.PROGRAMME      Return programmes
+			case TVTBroadcastMaterialType.ADVERTISEMENT  Return advertisements
+			case TVTBroadcastMaterialType.NEWSSHOW       Return newsShow
+			case TVTBroadcastMaterialType.NEWS           Return news
+			Default 
+				TLogger.Log("TPlayerProgrammePlan", "GetObjectArray() request with unknown slotType "+slotType+".", LOG_DEBUG)
+				Return New TBroadcastMaterial[0]
+		End Select
+	End Method
+
+
+	'sets the entry to the suiting array requested through slotType
 	'this is needed as assigning to "getObjectArray"-arrays is not possible for now
 	Method SetObjectArrayEntry:Int(obj:TBroadcastMaterial, slotType:Int=0, arrayIndex:Int)
 		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
@@ -353,7 +333,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	'Set a time slot locked
-	'each lock is identifyable by "typeID_timeHours"
+	'each lock is identifyable by "hours"
 	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
 		FixDayHour(day, hour)
 
@@ -411,6 +391,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method IsLockedSlot:int(slotType:Int = 0, day:Int=-1, hour:Int=-1)
+		FixDayHour(day, hour)
+
 		If useMutexes Then LockMutex(_slotLockMutex)
 		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(day*24 + hour))
 		If useMutexes Then UnlockMutex(_slotLockMutex)
@@ -430,6 +412,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
 	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		FixDayHour(day, hour)
+
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		local hours:int = day*24 + hour
 		if obj
@@ -449,6 +433,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
 	Method BelongsToModifiyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		FixDayHour(day, hour)
+
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		local hours:int = day*24 + hour
 		if obj
@@ -590,7 +576,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		If startHour >= 0
 			result = GetObjectAtIndex(slotType, GetArrayIndex(startHour))
 		EndIf
-		If useMutexes Then If useMutexes Then UnlockMutexObjectArray(slotType)
+		If useMutexes Then UnlockMutexObjectArray(slotType)
 		Return result
 	End Method
 
@@ -599,7 +585,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetObjectBlock:Int(objectType:Int=0, day:Int=-1, hour:Int=-1) {_exposeToLua}
 		FixDayHour(day, hour)
 		Local startHour:Int = GetObjectStartHour(objectType, day, hour)
-
 		If startHour < 0 Then Return -1
 
 		Return 1 + (day * 24 + hour) - startHour
@@ -639,8 +624,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'skip wrong type
 			If requireSameType And material.materialType <> objectType Then Continue
 
-			result = result[..result.length+1]
-			result[result.length-1] = material
+			result :+ [material]
 		Next
 
 		If useMutexes Then UnlockMutexObjectArray(objectType)
@@ -648,21 +632,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	'returns an array of broadcastmaterials (or NULLs) for each slot
+	'in the given timespan
 	Method GetObjectSlotsInTimeSpan:TBroadcastMaterial[](objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
 
-		Local material:TBroadcastMaterial = Null
-		Local result:TBroadcastMaterial[]
-
 		'avoid others manipulating the collection meanwhile
 		If useMutexes Then LockMutexObjectArray(objectType)
+
 		'loop through the given range
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
-		if maxIndex - minIndex < 0 then return result
+		if maxIndex - minIndex < 0 then return Null
 
-		result = new TBroadcastMaterial[ maxIndex-minIndex +1 ]
+		Local result:TBroadcastMaterial[] = new TBroadcastMaterial[ maxIndex-minIndex +1 ]
 		For Local i:Int = minIndex To maxIndex
 			result[i-minIndex] = GetObject(objectType, 0, GetHourFromArrayIndex(i))
 		Next
@@ -693,10 +677,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'loop through the given range
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
-		Local plannedMaterial:TBroadcastMaterial
 
-'materials might differ from each other
-'instead of comparing objects we compare their content
+		'materials might differ from each other
+		'instead of comparing objects we compare their content
 		Local result:TBroadcastMaterial
 		If not startAtLatestTime
 			For Local i:Int = minIndex To maxIndex
@@ -723,13 +706,26 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetObjectLatestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1) {_exposeToLua}
+	'return the lastest hour (since game start) a given broadcast material
+	'so TProgrammelicence, TAdContract, ...) is scheduled to start (block 1!)
+	Method GetObjectLatestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1)
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
 
-		'check ad usage - but only for ads!
 		local latestInstance:TBroadcastMaterial = ObjectPlannedInTimeSpan(material, slotType, dayStart, hourStart, dayEnd, hourEnd, True)
 		If latestInstance Then return latestInstance.programmedDay*24 + latestInstance.programmedHour
+		return -1
+	End Method
+
+
+	'return the earliest hour (since game start) a given broadcast material
+	'so TProgrammelicence, TAdContract, ...) is scheduled to start (block 1!)
+	Method GetObjectEarliestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1)
+		FixDayHour(dayStart, hourStart)
+		FixDayHour(dayEnd, hourEnd)
+
+		local firstInstance:TBroadcastMaterial = ObjectPlannedInTimeSpan(material, slotType, dayStart, hourStart, dayEnd, hourEnd, False)
+		If firstInstance Then return firstInstance.programmedDay*24 + latestInstance.programmedHour
 		return -1
 	End Method
 
@@ -760,7 +756,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'materials might differ from each other
 		'instead of comparing objects we compare their content
 		For Local i:Int = minIndex To maxIndex
-			Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
+			Local obj:TBroadcastMaterial = GetObjectAtIndex(slotType, i)
 			If Not obj Then Continue
 			If materialSource = obj.GetSource() Then result :+ 1
 		Next
@@ -811,6 +807,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+hier weiter... aufraeumen
+... und schauen, welche Events wirklich gebraucht werden,
+und inwieweit "erstmal" sowas wie "TriggerNetworkEvent" ("stub"-Funktion mit Gameevent...)
+hinzugefuegt werden sollte - das wuerde dann spaeter bei "commands" ja eh wegfallen...
+
+
 	'add an object / set a slot occupied
 	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
 		FixDayHour(day, hour)
@@ -827,11 +829,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'avoid others manipulating the collection meanwhile
 		If useMutexes Then LockMutexObjectArray(slotType)
+
 		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
 
 		'the same object is at the exact same slot - skip actions/events
 		If obj <> GetObjectAtIndex(slotType, arrayIndex)
-
 			'check all affected slots whether they allow modification
 			'do not allow adding in the past
 			'do not allow adding to a locked slot
@@ -894,10 +896,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'invalidate cache
 			_daysPlanned = -1
 
-			'emit an event
-			If fireEvents 
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self)
-			EndIf
+			SendNotificationEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).addInt("slotType", slotType).addInt("day", day).addInt("hour", hour), Self)
 		EndIf
 
 		If useMutexes Then UnlockMutexObjectArray(slotType)

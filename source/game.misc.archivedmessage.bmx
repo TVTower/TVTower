@@ -69,14 +69,14 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 
 
 		local result:int = Super.Add(obj)
-		TriggerBaseEvent(GameEventKeys.ArchivedMessageCollection_OnAdd, null, Self, obj)
+		RegisterNotificationEvent(GameEventKeys.ArchivedMessageCollection_OnAdd, null, Self, obj)
 		return result
 	End Method
 
 
 	Method Remove:int(obj:TGameObject)
 		local result:int = Super.Remove(obj)
-		TriggerBaseEvent(GameEventKeys.ArchivedMessageCollection_OnRemove, null, Self, obj)
+		RegisterNotificationEvent(GameEventKeys.ArchivedMessageCollection_OnRemove, null, Self, obj)
 		return result
 	End Method
 

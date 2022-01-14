@@ -57,21 +57,45 @@ Import Brl.ObjectList
 
 Global EventManager:TEventManager = New TEventManager
 
-Function TriggerBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventBase.Create(trigger, data, sender, receiver, channel))
+Function TriggerIntentionEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.TriggerEvent(new TIntentionEvent(trigger, data, sender, receiver, channel))
 End Function
 
-Function TriggerBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel))
+Function TriggerIntentionEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.TriggerEvent(new TIntentionEvent(eventKey, data, sender, receiver, channel))
 End Function
 
-Function TriggerBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel))
+Function TriggerIntentionEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.TriggerEvent(new TIntentionEvent(eventKeyID, data, sender, receiver, channel))
 End Function
 
-Function TriggerBaseEvent(event:TEventBase)
-	EventManager.triggerEvent(event)
+Function TriggerIntentionEvent(event:TIntentionEvent)
+	EventManager.TriggerEvent(event)
 End Function
+
+
+Function TriggerNotificationEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	print "Remove me: TriggerNotificationEvent"  'replace with SendNotificationEvent
+	EventManager.TriggerNotificationEvent(new TNotificationEvent(eventKey, data, sender, receiver, channel))
+End Function
+
+
+Function RegisterNotificationEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.RegisterEvent(new TNotificationEvent(trigger, data, sender, receiver, channel))
+End Function
+
+Function RegisterNotificationEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.RegisterEvent(new TNotificationEvent(eventKey, data, sender, receiver, channel))
+End Function
+
+Function RegisterNotificationEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.RegisterEvent(new TNotificationEvent(eventKeyID, data, sender, receiver, channel))
+End Function
+
+Function RegisterNotificationEvent(event:TNotificationEvent)
+	EventManager.RegisterEvent(event)
+End Function
+
 
 Function GetEventKey:TEventKey(text:String, createIfMissing:Int)
 	Return EventManager.GetEventKey(text, createIfMissing)
@@ -89,7 +113,7 @@ End Function
 
 
 Type TEventManager
-	'holding events
+	'holding events (notifications, not intention events)
 	Field _events:TList = New TList
 	'current time
 	Field _ticks:Int = -1
@@ -409,35 +433,41 @@ Type TEventManager
 	
 
 	'add a new event to the list
-	Method RegisterEvent(event:TEventBase)
+	Method RegisterEvent(event:TNotificationEvent)
 		LockMutex(_eventsMutex)
 		_events.AddLast(event)
 		UnlockMutex(_eventsMutex)
 	End Method
 
 
+	'remove me!
+	Method TriggerNotificationEvent:Int(event:TNotificationEvent)
+		_ExecuteEvent(event)
+	End Method
+
+
+	Method TriggerEvent:Int(event:TIntentionEvent)
+		_ExecuteEvent(event)
+	End Method
+
+
 'global debugLastListenedEventKey:TEventKey
 'global debugLastEventKey:TEventKey
 	'runs all listeners NOW ...returns amount of listeners
-	Method TriggerEvent:Int(triggeredByEvent:TEventBase)
-		If Not triggeredByEvent Then Return 0
+	Method _ExecuteEvent:Int(event:TEventBase)
+		If Not event Then Return 0
 
-		?Threaded
 		'if we have systemonly-event we cannot do it in a subthread
 		'instead we just add that event to the upcoming events list
-		If triggeredByEvent._channel = 1
+		If event._channel = 1
 			If CurrentThread()<>MainThread()
-				RegisterEvent(triggeredByEvent)
+				print "system only event called from subthread"
 				Return False
 			EndIf
 		EndIf
-		?
 
-		?debug
-		if not triggeredByEvent.GetEventKey() then Throw "triggering event without key"
-		?
-
-		Local listeners:TObjectList = GetListeners(triggeredByEvent.GetEventKeyID())
+		Local eventHasVeto:Int
+		Local listeners:TObjectList = GetListeners(event.GetEventKeyID())
 		If listeners
 			'If not TryLockMutex(_listenersMutex)
 			'	print "TryLockMutex(_listenersMutex) failed"
@@ -457,17 +487,21 @@ Type TEventManager
 				'	if debugLastEventKey then print "debugLastEventKey = " + debugLastEventKey.text.ToString()
 				'	LockMutex(_onEventMutex)
 				'EndIf
-				listener.onEvent(triggeredByEvent)
+				listener.onEvent(event)
 				'debugLastListenedEventKey = triggeredByEvent._eventKey
 				'UnlockMutex(_onEventMutex)
+
 				'stop triggering the event if ONE of them vetos
-				If triggeredByEvent.isVeto() Then Exit
+				If TIntentionEvent(event) And TIntentionEvent(event).isVeto() 
+					eventHasVeto = True
+					Exit
+				EndIf
 			Next
 			'UnlockMutex(_onEventMutex)
 		EndIf
 
 		'run individual event method
-		If Not triggeredByEvent.IsVeto()
+		If not eventHasVeto
 			eventsTriggered :+ 1
 			'If not TryLockMutex(_onEventMutex)
 			'	Print "TryLockMutex(_onEventMutex) failed in triggeredByEvent.onEvent ... "
@@ -475,8 +509,8 @@ Type TEventManager
 			'	if debugLastEventKey then print "debugLastEventKey = " + debugLastEventKey.text.ToString()
 			'	LockMutex(_onEventMutex)
 			'EndIf
-			triggeredByEvent.onEvent()
-			'debugLastEventKey = triggeredByEvent._eventKey 
+			event.onEvent()
+			'debugLastEventKey = event._eventKey 
 			'UnlockMutex(_onEventMutex)
 		EndIf
 
@@ -502,7 +536,7 @@ Type TEventManager
 		If Not _events.IsEmpty()
 			' get the next event
 			'LockMutex(_eventsMutex) 'First only "reads", no mutex needed)
-			Local event:TEventBase = TEventBase(_events.First())
+			Local event:TNotificationEvent = TNotificationEvent(_events.First())
 			'UnlockMutex(_eventsMutex)
 
 			If event <> Null
@@ -517,7 +551,7 @@ Type TEventManager
 
 				' is it time for this event?
 				If event.getStartTime() <= _ticks
-					triggerEvent( event )
+					_ExecuteEvent( event )
 
 					' remove from list
 					LockMutex(_eventsMutex)
@@ -757,81 +791,120 @@ End Type
 
 
 
-Type TEventBase
-private
-	Field _eventKey:TEventKey
-	Field _data:Object
-public
+'an event which does not expect a response/reply
+Type TNotificationEvent extends TEventBase
 	Field _startTime:Int
-	Field _sender:Object = Null
-	Field _receiver:Object = Null
-	Field _status:Int = 0
-	Field _channel:Int = 0		'no special channel
-	
-	Global stubData:TData = new TData
 
-	Const STATUS_VETO:Int = 1
-	Const STATUS_ACCEPTED:Int = 2
-
-	Function Create:TEventBase(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-		Local obj:TEventBase = New TEventBase
-		obj._eventKey = eventKey
-		obj._data = data
-		obj._sender = sender
-		obj._receiver = receiver
-		obj._channel = channel
-		obj.SetStartTime( EventManager.getTicks() )
-		Return obj
-	End Function
+	Method New(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Init(eventKey, data, sender, receiver, channel)
+	End Method
 
 
-	Function Create:TEventBase(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	Method New(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
 		Local eventKey:TEventKey = EventManager.GetEventKey(trigger, True)
-		Return Create(eventKey, data, sender, receiver, channel)
-	End Function
+
+		Init(eventKey, data, sender, receiver, channel)
+	End Method
 
 
-	Function Create:TEventBase(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	Method New(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
 		Local eventKey:TEventKey = EventManager.GetEventKey(eventKeyID)
 		if not eventKey Then Throw "No eventKey found for ID="+eventKeyID
 
-		Return Create(eventKey, data, sender, receiver, channel)
-	End Function
-
-
-	Method GetEventKeyID:Long()
-		if _eventKey Then Return _eventKey.id
-		Return 0
+		Init(eventKey, data, sender, receiver, channel)
 	End Method
 	
 	
-	Method SetEventKey(eventKey:TEventKey)
-		_eventKey = eventKey
+	Method Init(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		self._eventKey = eventKey
+		self._data = data
+		self._sender = sender
+		self._receiver = receiver
+		self._channel = channel
+
+		SetStartTime( EventManager.getTicks() )
 	End Method
-
-
-	Method GetEventKey:TEventKey()
-		Return _eventKey
-	End Method
-
 
 	Method GetStartTime:Int()
 		Return _startTime
 	End Method
 
 
-	Method SetStartTime:TEventBase(newStartTime:Int=0)
+	Method SetStartTime:TNotificationEvent(newStartTime:Int=0)
 		_startTime = newStartTime
 		Return Self
 	End Method
 
 
-	Method DelayStart:TEventBase(delayMilliseconds:Int=0)
+	Method DelayStart:TNotificationEvent(delayMilliseconds:Int=0)
 		_startTime :+ delayMilliseconds
 
 		Return Self
 	End Method
 
+
+	Method Register:TNotificationEvent()
+		EventManager.registerEvent(Self)
+		Return Self
+	End Method
+
+
+	' to sort the event queue by time
+	Method Compare:Int(other:Object)
+		Local event:TNotificationEvent = TNotificationEvent(other)
+		If event
+			' i'm newer
+			If getStartTime() > event.getStartTime() Then Return 1
+			' they're newer
+			If getStartTime() < event.getStartTime() Then Return -1
+		EndIf
+
+		' let the basic object decide
+		Return Super.Compare(other)
+	End Method
+End Type
+
+
+
+
+'an event which does expects an immediate response/reply
+'so acting like a "list of optional function callbacks" 
+Type TIntentionEvent extends TEventBase
+	Field _status:Int = 0
+	Const STATUS_VETO:Int = 1
+	Const STATUS_ACCEPTED:Int = 2
+
+
+	Method New(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Init(eventKey, data, sender, receiver, channel)
+	End Method
+
+
+	Method New(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Local eventKey:TEventKey = EventManager.GetEventKey(trigger, True)
+
+		Init(eventKey, data, sender, receiver, channel)
+	End Method
+
+
+	Method New(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Local eventKey:TEventKey = EventManager.GetEventKey(eventKeyID)
+		if not eventKey Then Throw "No eventKey found for ID="+eventKeyID
+
+		Init(eventKey, data, sender, receiver, channel)
+	End Method
+	
+	
+	Method Init(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		self._eventKey = eventKey
+		self._data = data
+		self._sender = sender
+		self._receiver = receiver
+		self._channel = channel
+
+		self._status = 0
+	End Method
+	
 
 	Method SetStatus(status:Int, enable:Int=True)
 		If enable
@@ -859,6 +932,43 @@ public
 
 	Method IsAccepted:Int()
 		Return (_status & STATUS_ACCEPTED) > 0
+	End Method
+
+
+	Method Trigger:TEventBase()
+		EventManager.triggerEvent(Self)
+		Return Self
+	End Method
+End Type
+
+
+
+
+Type TEventBase
+private
+	Field _eventKey:TEventKey
+	Field _data:Object
+public
+	Field _sender:Object = Null
+	Field _receiver:Object = Null
+	Field _channel:Int = 0		'no special channel
+	
+	Global stubData:TData = new TData
+	
+	
+	Method GetEventKeyID:Long()
+		if _eventKey Then Return _eventKey.id
+		Return 0
+	End Method
+	
+	
+	Method SetEventKey(eventKey:TEventKey)
+		_eventKey = eventKey
+	End Method
+
+
+	Method GetEventKey:TEventKey()
+		Return _eventKey
 	End Method
 
 
@@ -902,33 +1012,6 @@ public
 	'returns wether trigger is the same
 	Method IsTrigger:Int(trigger:String)
 		Return _eventKey.text.Compare(trigger) = 0
-	End Method
-
-
-	Method Trigger:TEventBase()
-		EventManager.triggerEvent(Self)
-		Return Self
-	End Method
-
-
-	Method Register:TEventBase()
-		EventManager.registerEvent(Self)
-		Return Self
-	End Method
-
-
-	' to sort the event queue by time
-	Method Compare:Int(other:Object)
-		Local event:TEventBase = TEventBase(other)
-		If event
-			' i'm newer
-			If getStartTime() > event.getStartTime() Then Return 1
-			' they're newer
-			If getStartTime() < event.getStartTime() Then Return -1
-		EndIf
-
-		' let the basic object decide
-		Return Super.Compare(other)
 	End Method
 End Type
 

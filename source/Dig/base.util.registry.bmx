@@ -188,8 +188,8 @@ Type TRegistryLoader
 	Global _defaultsCreated:Int = False
 	Global eventKey_onLoadResourceFromXML:TEventKey = EventManager.GetEventKey("RegistryLoader.onLoadResourceFromXML", True)
 	Global eventKey_onLoadXmlFromFinished:TEventKey = EventManager.GetEventKey("RegistryLoader.onLoadXmlFromFinished", True)
-	Global eventKey_onBeginLoadResource:TEventKey = GetEventKey("RegistryLoader.onBeginLoadResource", True)
 	Global eventKey_onLoadresource:TEventKey = GetEventKey("RegistryLoader.onLoadResource", True)
+	Global eventKey_onLoadResourceFailed:TEventKey = GetEventKey("RegistryLoader.onLoadResourceFailed", True)
 
 
 	Method New()
@@ -273,7 +273,7 @@ Type TRegistryLoader
 		EndIf
 
 
-		TriggerBaseEvent(eventKey_onLoadXmlFromFinished, New TData.AddString("uri", file) )
+		RegisterNotificationEvent(eventKey_onLoadXmlFromFinished, New TData.AddString("uri", file) )
 		Return True
 	End Method
 
@@ -336,7 +336,7 @@ Type TRegistryLoader
 		'sender: self (the loader)
 		'target: resourceName in uppercases ("SPRITE") -> so listeners can filter on it
 		'print "RegistryLoader.onLoadResourceFromXML: self + "+ resourceName.ToUpper()
-		TriggerBaseEvent(eventKey_onLoadResourceFromXML, New TData.AddString("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper())
+		TriggerNotificationEvent(eventKey_onLoadResourceFromXML, New TData.AddString("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper())
 	End Method
 
 
@@ -566,18 +566,17 @@ Type TRegistryUnloadedResource
 
 
 	Method Load:Int()
-		TriggerBaseEvent(TRegistryLoader.eventKey_onBeginLoadresource, New TData.AddString("name", name).AddString("resourceName", resourceName))
-
 		'try to find a loader for the objects resource type
 		Local loader:TRegistryBaseLoader = TRegistryLoader.GetResourceLoader(resourceName)
-		If Not loader Then Return False
 
 		'try to load an object with the given config and resourceType-name
-		If loader.LoadFromConfig(config, resourceName)
+		If loader and loader.LoadFromConfig(config, resourceName)
 			'inform others: we loaded something
-			TriggerBaseEvent(TRegistryLoader.eventKey_onLoadResource, New TData.AddString("name", name).AddString("resourceName", resourceName))
+			RegisterNotificationEvent(TRegistryLoader.eventKey_onLoadResource, New TData.AddString("name", name).AddString("resourceName", resourceName))
 			Return True
 		Else
+			'inform others: we failed loaded something
+			RegisterNotificationEvent(TRegistryLoader.eventKey_onLoadResourceFailed, New TData.AddString("name", name).AddString("resourceName", resourceName))
 			Return False
 		EndIf
 	End Method
