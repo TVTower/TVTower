@@ -4508,29 +4508,34 @@ Type GameEvents
 
 	Function PlayerFinanceOnChangeMoney:Int(triggerEvent:TEventBase)
 		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
+		If playerID = 0 Then Return False
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
-		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
+		If Not player Then Return False
+		Local value:Long = triggerEvent.GetData().GetLong("value", 0)
 		Local reason:Int = triggerEvent.GetData().GetInt("reason", 0)
 		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", Null))
-		If playerID = -1 Or Not player Then Return False
 
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMoneyChanged).AddInt(value).AddInt(reason).AddData(reference))
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMoneyChanged).AddLong(value).AddInt(reason).AddData(reference))
 			'player.playerAI.CallOnMoneyChanged(value, reason, reference)
 		EndIf
 		If player.isActivePlayer() Then GetInGameInterface().ValuesChanged = True
+		
+		Return True
 	End Function
 
 
 	'show an error if a transaction was not possible
 	Function PlayerFinanceOnTransactionFailed:Int(triggerEvent:TEventBase)
 		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
+		If playerID = 0 Then Return False
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
-		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
-		If playerID = -1 Or Not player Then Return False
+		If Not player Then Return False
 
 		'create an visual error
 		If player.isActivePlayer() And Not player.IsLocalAI() Then TError.CreateNotEnoughMoneyError()
+
+		Return True
 	End Function
 
 
