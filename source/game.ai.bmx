@@ -1139,14 +1139,20 @@ endrem
 		If Not _PlayerOwnsRoom() Then Return Self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		Local broadcastMaterial:TBroadcastMaterial = GetPlayerProgrammeCollection(Self.ME).GetBroadcastMaterial(materialSource)
-		If Not broadcastMaterial Then Return Self.RESULT_FAILED
+		Local broadcastMaterial:TBroadcastMaterial
+		If materialSource
+			broadcastMaterial = GetPlayerProgrammeCollection(Self.ME).GetBroadcastMaterial(materialSource)
+			If Not broadcastMaterial Then Return Self.RESULT_FAILED
+		EndIf
 
 		'skip setting the slot if already done
 		Local existingMaterial:TBroadcastMaterial = GetPlayerProgrammePlan(Self.ME).GetProgramme(day, hour)
-		If existingMaterial
+		If existingMaterial and broadcastMaterial
 			If broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() And broadcastMaterial.materialType = existingMaterial.materialType
-				Return Self.RESULT_SKIPPED
+				TPlayerProgrammePlan.FixDayHour(day, hour)
+				If existingMaterial.programmedDay = day and existingMaterial.programmedHour = hour
+					Return Self.RESULT_SKIPPED
+				EndIf
 			EndIf
 		EndIf
 
