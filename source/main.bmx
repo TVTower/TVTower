@@ -4798,53 +4798,56 @@ Type GameEvents
 		Local award:TAward = TAward(triggerEvent.GetSender())
 		If Not award Then Return False
 
-		Local playerID:Int = triggerEvent.GetData().GetInt("winningPlayerID", 0)
-		If Not GetPlayerCollection().IsPlayer(playerID) Then Return False
+		Local winningPlayerID:Int = triggerEvent.GetData().GetInt("winningPlayerID", 0)
+		If Not GetPlayerCollection().IsPlayer(winningPlayerID) Then Return False
 
-		Local player:TPlayer = GetPlayer(playerID)
-		If Not player Then Return False
+		Local winningPlayer:TPlayer = GetPlayer(winningPlayerID)
+		If Not winningPlayer Then Return False
 
 
 		'inform ai
-		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnWonAward).AddData(award))
-			'player.playerAI.CallOnWonAward(award)
+		If winningPlayer.isLocalAI()
+			winningPlayer.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnWonAward).AddData(award))
+			'winningPlayer.playerAI.CallOnWonAward(award)
 		EndIf
 
 
-		Rem
-			TODO: Bilder fuer toastmessages (+ Preis)
-			 _________
-			|[ ] text |
-			|    text |
-			'---------'
-		endrem
-		Local text:String = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
 		Local rewardText:String = award.GetRewardText()
-		If rewardText
-			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
-		EndIf
+		Local winnerName:String = winningPlayer.name
+
+		'inform all players about a won award (even if another player was the winner)
+		For Local i:Int = 1 To 4
+			Local text:String
+			'current player won and it is his loop cycle?
+			If i = winningPlayerID and i = GetPlayer().playerID
+				text = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
+			Else
+				text = GetLocale("PLAYERNAME_WON_THE_AWARDNAME").Replace("%PLAYERNAME%", "|b|"+winnerName+"|/b|").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
+			EndIf
+
+			If rewardText
+				text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
+			EndIf
+
+			Local toast:TGameToastMessage = New TGameToastMessage
+			'show it for some seconds
+			toast.SetLifeTime(15)
+			toast.SetMessageType(2) 'positive
+			toast.SetCaption(GetLocale("AWARD_WON"))
+			toast.SetMessageCategory(TVTMessageCategory.AWARDS)
+			toast.SetText( text )
+
+			toast.GetData().AddInt("playerID", i)
 
 
-		Local toast:TGameToastMessage = New TGameToastMessage
-		'show it for some seconds
-		toast.SetLifeTime(15)
-		toast.SetMessageType(2) 'positive
-		toast.SetCaption(GetLocale("AWARD_WON"))
-		toast.SetMessageCategory(TVTMessageCategory.AWARDS)
-		toast.SetText( text )
+			'archive it for all players
+			GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
 
-		toast.GetData().AddNumber("playerID", player.playerID)
+			If i = GetPlayer().playerID
+				GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+			EndIf
+		Next
 
-
-		'archive it for all players
-		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
-
-
-		'only interest in active players contracts
-		If player = GetPlayer()
-			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		EndIf
 	End Function
 
 

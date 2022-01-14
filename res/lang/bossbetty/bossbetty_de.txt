@@ -78,16 +78,17 @@ BETTY_PRESENT_9            = Ring
 BETTY_PRESENT_10           = Jacht
 
 
-AWARDNAME_CULTURE          = Kultur-Sammy
-AWARDNAME_NEWS             = News-Sammy
-AWARDNAME_AUDIENCE         = Zuschauer-Sammy
-AWARDNAME_CUSTOMPRODUCTION = Eigenproduktions-Sammy
-AWARD_WON                  = Preis gewonnen
-YOU_WON_THE_AWARDNAME      = Du hast den %AWARDNAME% gewonnen.
-CHANNEL_IMAGE              = Senderimage
-FOR_X_HOURS                = für %X% Stunden
-FOR_X_HOUR                 = für %X% Stunde
-ATTRACTIVITY               = Attraktivität
+AWARDNAME_CULTURE            = Kultur-Sammy
+AWARDNAME_NEWS               = News-Sammy
+AWARDNAME_AUDIENCE           = Zuschauer-Sammy
+AWARDNAME_CUSTOMPRODUCTION   = Eigenproduktions-Sammy
+AWARD_WON                    = Preis gewonnen
+YOU_WON_THE_AWARDNAME        = Du hast den %AWARDNAME% gewonnen.
+PLAYERNAME_WON_THE_AWARDNAME = %PLAYERNAME% hat den %AWARDNAME% gewonnen.
+CHANNEL_IMAGE                = Senderimage
+FOR_X_HOURS                  = für %X% Stunden
+FOR_X_HOUR                   = für %X% Stunde
+ATTRACTIVITY                 = Attraktivität
 
 
 DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1                = Was ist %PLAYERNAME%?!
