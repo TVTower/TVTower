@@ -398,7 +398,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		if broadcastMaterial.programmedDay = -1 then return False
 
 		for local block:int = 0 until broadcastMaterial.GetBlocks()
-			if IsLockedSlot(broadcastMaterial.usedAsType, broadcastMaterial.programmedDay, broadcastMaterial.programmedHour)
+			if IsLockedSlot(broadcastMaterial.usedAsType, broadcastMaterial.programmedDay, broadcastMaterial.programmedHour + block)
 				return True
 			endif
 		Next
