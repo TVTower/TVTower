@@ -239,6 +239,7 @@ Type TAward Extends TGameObject
 	'basic prices all awards offer
 	Field priceMoney:Int = 50000
 	Field priceImage:Float = 2.5
+	Field priceBettyLove:Int = 200 'for now this is 200/10000 so 2%
 
 	Field _scoreSum:Int = -1 {nosave}
 	Field scoringMode:Int = 1
@@ -282,11 +283,18 @@ Type TAward Extends TGameObject
 			If priceImage < 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
 		EndIf
 
+		If priceBettyLove <> 0
+			If result <> "" Then result :+ "~n"
+			If priceBettyLove > 0 Then result :+ Chr(9654) + " Betty: |color=0,125,0|+" + priceBettyLove + "|/color|"
+			If priceBettyLove < 0 Then result :+ Chr(9654) + " Betty: |color=125,0,0|" + priceBettyLove + "|/color|"
+		EndIf
+
 		If priceMoney <> 0
 			If result <> "" Then result :+ "~n"
 			If priceMoney > 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=0,125,0|+" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
 			If priceMoney < 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=125,0,0|" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
 		EndIf
+
 		Return result
 	End Method
 
@@ -329,7 +337,7 @@ Type TAward Extends TGameObject
 			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
 
 			'increase money
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.AddInt("value", priceMoney))
+			modifier = GetGameModifierManager().CreateAndInit("ModifyBettyLove", New TData.AddInt("value", priceBettyLove))
 			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
 
 			'alternatively:

@@ -510,3 +510,68 @@ Type TGUIBettyPresent extends TGuiObject
 		'TriggerBaseEvent(GUIEventKeys.GUIObject_OnClick, Null, Self, triggerEvent.GetReceiver())
 	End Method
 End Type
+
+
+
+
+Type TGameModifier_BettyLove extends TGameModifierBase
+	Function CreateNewInstance:TGameModifier_BettyLove()
+		Return new TGameModifier_BettyLove
+	End Function
+
+
+	Method Init:TGameModifier_BettyLove(data:TData, extra:TData=null)
+		if not super.Init(data, extra) then return null
+		
+		if data then self.data = data.copy()
+		
+		return self
+	End Method
+
+
+	Method ToString:string()
+		return "TGameModifier_BettyLove ("+GetName()+")"
+	End Method
+
+
+	Method UndoFunc:int(params:TData)
+		local playerID:int = GetData().GetInt("playerID", 0)
+		if not playerID then return False
+		
+		local valueChange:Int = GetData().GetInt("value.change", 0)
+		if valueChange = 0 then return False
+
+		TBetty.GetInstance().AdjustLove(playerID, valueChange, False, False)
+
+		return True
+	End Method
+	
+
+	'override
+	Method RunFunc:int(params:TData)
+		local playerID:int
+		if params
+			playerID = params.GetInt("playerID", GetData().GetInt("playerID", 0))
+		else
+			playerID = GetData().GetInt("playerID", 0)
+		endif
+		if not playerID then return False
+
+		local value:Int = GetData().GetDouble("value", 0.0)
+		if value = 0 then return False
+
+		local valueBackup:Int = TBetty.GetInstance().GetInLove(playerID)
+
+		TBetty.GetInstance().AdjustLove(playerID, value, False, False)
+
+		local valueNew:Int = TBetty.GetInstance().GetInLove(playerID)
+
+		GetData().AddInt("value.change", (valueNew - valueBackup))
+		GetData().AddNumber("playerID", playerID)
+
+		return True
+	End Method
+End Type
+
+
+GetGameModifierManager().RegisterCreateFunction("ModifyBettyLove", TGameModifier_BettyLove.CreateNewInstance)
