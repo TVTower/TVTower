@@ -61,6 +61,11 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	End Function
 	
 
+	Method Reset()
+		offerHightlight = Null
+	End Method
+	
+	
 	Method Activate()
 	End Method
 

@@ -6,7 +6,7 @@ Import "game.roomhandler.adagency.bmx"
 
 Type TDebugScreenPage_Adagency extends TDebugScreenPage
 	Field buttons:TDebugControlsButton[]
-	Field adAgencyOfferHightlight:TAdContract
+	Field offerHightlight:TAdContract
 
 	Global _instance:TDebugScreenPage_Adagency
 	
@@ -67,6 +67,10 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 	End Function
 	
 
+	Method Reset()
+	End Method
+	
+	
 	Method Activate()
 	End Method
 
@@ -108,8 +112,8 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 			buttons[i].Render()
 		Next
 
-		if adAgencyOfferHightlight
-			adAgencyOfferHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID)
+		if offerHightlight
+			offerHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID)
 		endif
 	End Method
 
@@ -148,7 +152,7 @@ endrem
 
 	Method UpdateBlock_AdAgencyOffers(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
 		'reset
-		adAgencyOfferHightlight = null
+		offerHightlight = null
 
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
@@ -162,14 +166,14 @@ endrem
 			textY :+ 10
 			For local i:int = 0 until ads.length
 				if THelper.MouseIn(textX, textY, 240, 10)
-					adAgencyOfferHightlight = ads[i]
+					offerHightlight = ads[i]
 					exit
 				endif
 
 				textY :+ 10
 				entryPos :+ 1
 			Next
-			if adAgencyOfferHightlight then exit
+			if offerHightlight then exit
 		Next
 	End Method
 
@@ -207,7 +211,7 @@ endrem
 				SetColor 255,255,255
 				SetAlpha oldAlpha
 
-				if ads[i] and ads[i] = adAgencyOfferHightlight
+				if ads[i] and ads[i] = offerHightlight
 					SetAlpha 0.25 * oldAlpha
 					SetBlend LIGHTBLEND
 					DrawRect(textX, textY, 240, 10)

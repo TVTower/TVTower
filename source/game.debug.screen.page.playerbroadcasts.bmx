@@ -73,6 +73,10 @@ Type TDebugScreenPage_PlayerBroadcasts extends TDebugScreenPage
 	End Method
 	
 	
+	Method Reset()
+	End Method
+	
+	
 	Method Activate()
 	End Method
 
@@ -791,7 +795,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 			'skip starting programme
 			If Not l.isControllable() Then Continue
 			'skip individual episodes
-			If l.isEpisode Then Continue
+			If l.isEpisode() Then Continue
 
 			Local oldAlpha:Float = GetAlpha()
 			If entryPos Mod 2 = 0

@@ -33,6 +33,10 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 	End Method
 	
 	
+	Method Reset()
+	End Method
+	
+	
 	Method Activate()
 	End Method
 

@@ -49,6 +49,7 @@ Type TDebugScreen
 	Field FastForward_SpeedFactorBackup:Float = 0.0
 	Field FastForward_TimeFactorBackup:Float = 0.0
 	Field FastForward_BuildingTimeSpeedFactorBackup:Float = 0.0
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Method New()
@@ -96,7 +97,36 @@ Type TDebugScreen
 		InitMode_Sports()
 		InitMode_Modifiers()
 		InitMode_Misc()
+
+
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onStartGame) ]
 	End Method
+	
+	
+	Method Reset()
+		If pagePlayerFinancials Then pagePlayerFinancials.Reset()
+		If pagePlayerBroadcasts Then TDebugScreenPage_PlayerBroadcasts.GetInstance().Reset()
+		If pageAdAgency Then TDebugScreenPage_AdAgency.GetInstance().Reset()
+		If pageMovieAgency Then TDebugScreenPage_MovieAgency.GetInstance().Reset()
+
+		ResetMode_Overview()
+		ResetMode_PlayerCommands()
+
+		ResetMode_NewsAgency()
+		ResetMode_ScriptAgency()
+		ResetMode_RoomAgency()
+		ResetMode_Politics()
+		ResetMode_Producers()
+		ResetMode_Sports()
+		ResetMode_Modifiers()
+		ResetMode_Misc()
+	End Method
+	
+	
+	'Call reset on new game / loaded game
+	Function onStartGame:Int(triggerEvent:TEventBase)
+		DebugScreen.Reset()
+	End Function
 
 
 	Method SetMode(newMode:Int)
@@ -267,6 +297,10 @@ Type TDebugScreen
 	End Method
 
 
+	Method ResetMode_Overview()
+	End Method
+
+
 	Method UpdateMode_Overview()
 		Local playerID:Int = GetShownPlayerID()
 	End Method
@@ -342,6 +376,10 @@ Type TDebugScreen
 	End Method
 
 
+	Method ResetMode_PlayerCommands()
+	End Method
+
+
 	Function OnPlayerCommandTaskButtonClickHandler(sender:TDebugControlsButton)
 '		print "clicked " + sender.dataInt
 
@@ -406,10 +444,7 @@ Type TDebugScreen
 				if player.IsLocalHuman() or player.IsLocalAI()
 					Dev_SetPlayerAI(playerID, not player.IsLocalAI())
 					if player.IsLocalAI()
-						DebugScreen.playerCommandAIButtons[0].text = "Disable AI"
 						newButtonState = True
-					else
-						DebugScreen.playerCommandAIButtons[0].text = "Enable AI"
 					endif
 				endif
 			Case 1 
@@ -431,27 +466,36 @@ Type TDebugScreen
 			b.Update(sideButtonPanelWidth + 5 + 1*(120 + 10), 30)
 		Next
 		
-		'switch off unavailable commands
+		'switch off unavailable commands and update labels
 		Local playerID:Int = GetShownPlayerID()
-		If GetPlayer(playerID).isLocalHuman() or GetPlayer(playerID).isLocalAI()
+		Local player:TPlayer = GetPlayer(playerID)
+
+		If player.isLocalHuman() or player.isLocalAI()
 			playerCommandAIButtons[0].visible = True
 		Else
 			playerCommandAIButtons[0].visible = False
 		EndIf
-		If GetPlayer(playerID).isLocalAI()
+		If player.isLocalAI()
 			playerCommandAIButtons[1].visible = True
 		Else
 			playerCommandAIButtons[1].visible = False
 		EndIf
-		If GetPlayer(playerID).isLocalAI()
+		If player.isLocalAI()
 			playerCommandAIButtons[2].visible = True
-			If GetPlayer(playerID).PlayerAI.paused
+			If player.PlayerAI.paused
 				playerCommandAIButtons[2].text = "Resume AI"
 			Else
 				playerCommandAIButtons[2].text = "Pause AI"
 			EndIf
 		Else
 			playerCommandAIButtons[2].visible = False
+		EndIf
+		If player.IsLocalHuman() or player.IsLocalAI()
+			If player.IsLocalAI()
+				playerCommandAIButtons[0].text = "Disable AI"
+			Else
+				playerCommandAIButtons[0].text = "Enable AI"
+			EndIf
 		EndIf
 	End Method
 
@@ -460,7 +504,6 @@ Type TDebugScreen
 		'local playerID:int = GetShownPlayerID()
 		Local playerID:Int = DebugScreen.GetShownPlayerID()
 		Local player:TPlayer = GetPlayer(playerID)
-
 
 		Local oldCol:SColor8; GetColor(oldCol)
 		SetColor 0,0,0
@@ -517,6 +560,10 @@ Type TDebugScreen
 	End Method
 
 
+	Method ResetMode_NewsAgency()
+	End Method
+
+
 	Function OnButtonClickHandler_NewsAgency(sender:TDebugControlsButton)
 		Select sender.dataInt
 			case 0
@@ -569,6 +616,10 @@ Type TDebugScreen
 
 			buttonsScriptAgency :+ [button]
 		Next
+	End Method
+
+
+	Method ResetMode_ScriptAgency()
 	End Method
 
 
@@ -634,6 +685,11 @@ Type TDebugScreen
 		buttonsRoomAgency[2].y = slot2
 		buttonsRoomAgency[3].y = slot3
 		buttonsRoomAgency[4].y = slot3
+	End Method
+
+
+	Method ResetMode_RoomAgency()
+		roomHovered = Null
 	End Method
 
 
@@ -908,6 +964,10 @@ Type TDebugScreen
 	End Method
 
 
+	Method ResetMode_Politics()
+	End Method
+
+	
 	Function OnButtonClickHandler_Politics(sender:TDebugControlsButton)
 		Select sender.dataInt
 			case 0
@@ -959,6 +1019,10 @@ Type TDebugScreen
 
 			buttonsProducers :+ [button]
 		Next
+	End Method
+
+
+	Method ResetMode_Producers()
 	End Method
 
 
@@ -1071,6 +1135,10 @@ Type TDebugScreen
 
 			buttonsSports :+ [button]
 		Next
+	End Method
+
+
+	Method ResetMode_Sports()
 	End Method
 
 
@@ -1203,6 +1271,10 @@ Type TDebugScreen
 	End Method
 
 
+	Method ResetMode_Modifiers()
+	End Method
+
+
 	Function OnButtonClickHandler_Modifiers(sender:TDebugControlsButton)
 		Select sender.dataInt
 			case 0
@@ -1252,6 +1324,18 @@ Type TDebugScreen
 		Next
 
 		InitAwardStatusButtons()
+	End Method
+
+
+	Method ResetMode_Misc()
+		FastForward_Continuous_Active = False
+		FastForward_Active = False
+		FastForwardSpeed = 500
+		FastForward_SwitchedPlayerToAI = 0
+		FastForward_TargetTime = -1
+		FastForward_SpeedFactorBackup = 0.0
+		FastForward_TimeFactorBackup = 0.0
+		FastForward_BuildingTimeSpeedFactorBackup = 0.0
 	End Method
 
 
@@ -1368,12 +1452,10 @@ Type TDebugScreen
 					FastForward_Continuous_Active = False
 					FastForward_TargetTime = -1
 					GetGame().SetGameSpeedPreset(1)
-					DebugScreen.buttonsMisc[7].text = "AI Game"
 				Else
 					FastForward_Continuous_Active = True
 					FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,0,0,23,23) + 56*TWorldTime.MINUTELENGTH
 					GetGame().SetGameSpeed(FastForwardSpeed)
-					DebugScreen.buttonsMisc[7].text = "Stop AI Game"
 				EndIf
 			case 8
 				DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
@@ -1387,6 +1469,12 @@ Type TDebugScreen
 
 	Method UpdateMode_Misc()
 		Local playerID:Int = GetShownPlayerID()
+
+		If FastForward_Continuous_Active then
+			DebugScreen.buttonsMisc[7].text = "Stop AI Game"
+		Else
+			DebugScreen.buttonsMisc[7].text = "AI Game"
+		EndIf
 
 		For Local b:TDebugControlsButton = EachIn buttonsMisc
 			b.Update()
@@ -2149,6 +2237,12 @@ Global DebugScreen:TDebugScreen = New TDebugScreen
 Type TDebugAudienceInfos
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
+	
+	
+	Method Reset()
+		currentStatement = Null
+		lastCheckedMinute = 0
+	End Method
 
 
 	Method Update(playerID:Int, x:Int, y:Int)
@@ -2537,6 +2631,7 @@ Type TDebugProfiler
 	
 	Method Update(x:Int, y:Int)
 	End Method
+
 
 	Method Draw(x:Int, y:Int)
 		If not active then Return

@@ -16,11 +16,13 @@ Type TDebugScreenPage
 	Method Deactivate() abstract
 	'what to do on activation (begin showing it)
 	Method Activate() abstract
+	Method Reset() abstract
 	Method Update() abstract
 	Method Render() abstract
 
 	Method MoveBy(dx:Int, dy:Int)
 	End Method
+	
 
 	
 	Method SetPosition(x:Int, y:Int) 
