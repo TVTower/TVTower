@@ -26,6 +26,9 @@ Type TAwardCulture extends TAward
 
 		priceMoney = 40000
 		priceImage = 2.5
+		'for now this is 200/10000 so 2% but this is an absolute value 
+		priceBettyLove = 200
+
 
 		'=== REGISTER EVENTS ===
 		EventManager.UnregisterListenersArray(_eventListeners)

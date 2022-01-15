@@ -239,7 +239,7 @@ Type TAward Extends TGameObject
 	'basic prices all awards offer
 	Field priceMoney:Int = 50000
 	Field priceImage:Float = 2.5
-	Field priceBettyLove:Int = 200 'for now this is 200/10000 so 2%
+	Field priceBettyLove:Int = 0
 
 	Field _scoreSum:Int = -1 {nosave}
 	Field scoringMode:Int = 1
