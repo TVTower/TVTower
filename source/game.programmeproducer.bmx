@@ -252,21 +252,28 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 
 	Method CreateScript:TScript()
-		Local scriptTemplate:TScriptTemplate = GetTemplate()
-		If Not scriptTemplate 
-			Throw "CreateScript(): Failed to fetch a random script template. All reached their limits?"
-			Return Null
-		EndIf
+		Local script:TScript
+		For Local i:Int = 0 Until 10
+			Local scriptTemplate:TScriptTemplate = GetTemplate()
+			If Not scriptTemplate
+				Throw "CreateScript(): Failed to fetch a random script template. All reached their limits?"
+			EndIf
 
+			script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
+			If script.getTitle().contains("#") and i < 10
+				'print "Script name contained counter"
+				GetScriptCollection().Remove(script)
+			Else
+				Exit
+			Endif
+		Next
 		'adds the script to the collection and also set NEW owner
 		'when NOT setting the owner, the script will be "available" for
 		'the script agency to choose it TOO!
-		Local script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
 		script.SetOwner(- self.GetID() ) 'negative ID!
-		
+
 		'we also pay for it!
 		budget :- script.GetPrice()
- 		
 
 		Return script
 	End Method
