@@ -51,6 +51,7 @@ Type TBetty
 
 
 	Method ResetLove(playerID:int)
+		if playerID < 1 or playerID > inLove.length Then Return
 		inLove[playerID-1] = 0
 
 		_inLoveSum = -1
@@ -162,6 +163,8 @@ Type TBetty
 
 
 	Method AdjustLove(PlayerID:Int, amount:Int, ignorePublicImage:int = False, adjustOthersLove:int = True)
+		if playerID < 1 or playerID > inLove.length Then Return
+
 		'you cannot subtract more than what is there
 		if amount < 0 then amount = - Min(abs(amount), abs(Self.InLove[PlayerID-1]))
 		'you cannot add more than what is left to the maximum
@@ -204,6 +207,8 @@ Type TBetty
 
 
 	Method GetInLove:Int(PlayerID:Int)
+		if playerID < 1 or playerID > inLove.length Then Return 0
+
 		Return InLove[PlayerID -1]
 	End Method
 
@@ -221,6 +226,8 @@ Type TBetty
 
 	'returns "love progress"
 	Method GetInLovePercentage:Float(PlayerID:Int)
+		if playerID < 1 or playerID > inLove.length Then Return 0
+
 		Return InLove[PlayerID -1] / Float(LOVE_MAXIMUM)
 	End Method
 
@@ -228,6 +235,7 @@ Type TBetty
 	'returns a value how love is shared between players
 	Method GetInLoveShare:Float(PlayerID:Int)
 		If GetInLoveSum() > 0
+			if playerID < 1 or playerID > inLove.length Then Return 0
 			Return Max(0.0, Min(1.0, Self.InLove[PlayerID -1] / Float( GetInLoveSum() )))
 		Else
 			Return 1.0 / Self.inLove.length

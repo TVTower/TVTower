@@ -26,8 +26,8 @@ Type TAwardCulture extends TAward
 
 		priceMoney = 40000
 		priceImage = 2.5
-		'for now this is 200/10000 so 2% but this is an absolute value 
-		priceBettyLove = 200
+		'for now this is 50/10000 so 0.5% but this is an absolute value 
+		priceBettyLove = 50
 
 
 		'=== REGISTER EVENTS ===
@@ -67,6 +67,12 @@ Type TAwardCulture extends TAward
 	'override
 	'add temporary culture-boost
 	Method Finish:int()
+		'If desired the winner value could be adjusted by the love betty
+		'already feels for that player (diminishing returns ...)
+		'if winningPlayerID > 0
+		'	priceBettyLove = Ceil((1.0 - GetBetty().GetInLovePercentage(winningPlayerID)) * priceBettyLove) 
+		'endif
+	
 		if not Super.Finish() then return False
 
 

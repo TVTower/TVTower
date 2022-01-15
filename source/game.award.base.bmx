@@ -283,11 +283,14 @@ Type TAward Extends TGameObject
 			If priceImage < 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
 		EndIf
 
+		rem
+		'deactivated - do not directly mention a betty-love-gain
 		If priceBettyLove <> 0
 			If result <> "" Then result :+ "~n"
 			If priceBettyLove > 0 Then result :+ Chr(9654) + " Betty: |color=0,125,0|+" + priceBettyLove + "|/color|"
 			If priceBettyLove < 0 Then result :+ Chr(9654) + " Betty: |color=125,0,0|" + priceBettyLove + "|/color|"
 		EndIf
+		endrem
 
 		If priceMoney <> 0
 			If result <> "" Then result :+ "~n"
