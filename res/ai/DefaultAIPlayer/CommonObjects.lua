@@ -372,7 +372,7 @@ function AIToolsClass:GetAverageBroadcastQualityByLevel(level)
 	return 0.00
 end
 
-
+--TODO Problem der Überlappung der MinAudience bei Level 4 und 5 (z.T. gleiche Anforderungen - doppelte Verträge)
 function AIToolsClass:GetAudienceQualityLevel(day, hour)
 	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
 	if (maxAudience <= 0.04) then
@@ -397,6 +397,7 @@ end
 
 function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
 	if broadcastMaterial == nil then return 0 end
+	--TODO raw-QualityLevel!! also consider number of licences und average quality!!
 	local quality = broadcastMaterial:GetQuality() * 100
 
 	if quality > 20 then
@@ -466,7 +467,16 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	-- "GetQuality()" already contains topicality-influence for infomercials
 	-- and programmes
 	-- return playerMod * timeMod * audienceMod * (broadcastMaterialSource.GetQuality() * broadcastMaterialSource.GetProgrammeTopicality())
-	return playerMod * timeMod * audienceMod * broadcastMaterialSource.GetQuality()
+	local result = playerMod * timeMod * audienceMod * broadcastMaterialSource.GetQuality()
+
+	--TODO Anzahl Lizenzen und Durchschnittsqualität berücksichtigen
+
+	local relTop = broadcastMaterialSource:GetRelativeTopicality()
+	result = result * relTop
+	if hour < 2 or hour > 16 then
+		result = result * relTop
+	end
+	return result
 end
 
 --[[

@@ -52,6 +52,8 @@ if (unitTestMode) then
 end
 --]]
 
+--TODO log levels for "global" functions in this file, replace debugMsg
+
 -- ##### GLOBALS #####
 aiIsActive = true
 

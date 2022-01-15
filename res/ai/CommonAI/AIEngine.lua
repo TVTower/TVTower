@@ -256,7 +256,7 @@ function AIPlayer:BeginNewTask()
 	--TODO: Warte-Task einfügen, wenn sich ein Task wiederholt
 	self.CurrentTask = self:SelectTask()
 	if self.CurrentTask == nil then
-		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
+		logWithLevel(LOG_ERROR, LOG_ERROR, "AIPlayer:BeginNewTask - task is nil... " )
 	else
 		self.CurrentTask:CallActivate()
 		self.CurrentTask:StartNextJob()
@@ -1184,6 +1184,7 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 end
 
 
+--TODO is it really the type that is interesting for the attraction, genre instead? ??
 function BroadcastStatistics:GetAttraction(day, hour, broadcastType)
 	local currentI = tostring(day) .. string.format("%02d", hour)
 	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
@@ -1408,12 +1409,10 @@ function logWithLevel(currentLogLevel, messageLogLevel, message)
 				end
 			end
 		else
-			debugMsg("Error: message log level not defined")
-			print(debug.traceback())
+			debugMsg("Error: message log level not defined " .. debug.traceback())
 		end
 	else
-		debugMsg("Error: current log level not defined")
-		print(debug.traceback())
+		debugMsg("Error: current log level not defined " .. debug.traceback())
 	end
 end
 
