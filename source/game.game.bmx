@@ -1617,42 +1617,44 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 
 		'wait for all AIs to have finished with their events
-		local allDone:Int
-		Local t:Int = Millisecs()
-		Repeat
-			allDone = True
-			For Local player:TPlayer = EachIn GetPlayerCollection().players
-				'TODO: still enqueued events for paused AIs ... what to do with them?
-				'for now we ignore queued events if ais is paused ..
-				If player.isLocalAI() and TAIBase.airunning
-					if player.PlayerAI.GetNextEventCount() > 0
-						print "waiting for player: " + player.playerID +"  events:"  + player.PlayerAI.GetNextEventCount() + "   " + GetWorldTime().GetFormattedGameDate()
-						'LockMutex(player.PlayerAI._eventQueueMutex)
-						'for local ev:TAIEvent = EachIn player.PlayerAI.eventQueue
-						'	print " - event.id="+ev.id + "  " + ev.GetName()
-						'Next
-						'UnlockMutex(player.PlayerAI._eventQueueMutex)
-
-						allDone = False
-					endif
-				EndIf
-			Next
-			if Millisecs() - t > 1000
+		'TODO: still enqueued events for paused AIs ... what to do with them?
+		'for now we ignore queued events if ais is paused ..
+		If not GetGame().IsPaused() and TAIBase.airunning
+			local allDone:Int
+			Local t:Int = Millisecs()
+			Repeat
+				allDone = True
 				For Local player:TPlayer = EachIn GetPlayerCollection().players
-					If player.isLocalAI() 
+					If player.isLocalAI()
 						if player.PlayerAI.GetNextEventCount() > 0
-							print "AI " + player.playerID + " stalled."
-							print "--------------------------------------------"
-							DebugStop
+							print "waiting for player: " + player.playerID +"  events:"  + player.PlayerAI.GetNextEventCount() + "   " + GetWorldTime().GetFormattedGameDate()
+							'LockMutex(player.PlayerAI._eventQueueMutex)
+							'for local ev:TAIEvent = EachIn player.PlayerAI.eventQueue
+							'	print " - event.id="+ev.id + "  " + ev.GetName()
+							'Next
+							'UnlockMutex(player.PlayerAI._eventQueueMutex)
+
+							allDone = False
 						endif
-					endif
+					EndIf
 				Next
-				'end application for now
-				Notify("AI stalled ... something is wrong! Exiting application.")
-				end
-			endif
-			If not allDone then delay(100)
-		Until allDone
+				if Millisecs() - t > 1000
+					For Local player:TPlayer = EachIn GetPlayerCollection().players
+						If player.isLocalAI() 
+							if player.PlayerAI.GetNextEventCount() > 0
+								print "AI " + player.playerID + " stalled."
+								print "--------------------------------------------"
+								DebugStop
+							endif
+						endif
+					Next
+					'end application for now
+					Notify("AI stalled ... something is wrong! Exiting application.")
+					end
+				endif
+				If not allDone then delay(100)
+			Until allDone
+		EndIf
 		
 		'inform player AI that we are saving now
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
