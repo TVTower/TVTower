@@ -353,7 +353,7 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	'you pay the interest for the biggest credit value you had on this
 	'day
 	Method GetCreditInterest:Long()
-		return GetCreditMaxYesterday() * TPlayerFinance.creditInterestRate
+		Return GetCreditMaxYesterday() * TPlayerFinance.creditInterestRate
 	End Method	
 
 
@@ -362,15 +362,14 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		money			:+ value
 		revenue_after	:+ value
 		
-		'emit event to inform others
-		TriggerBaseEvent(GameEventKeys.PlayerFinance_OnChangeMoney, new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference), self) 
+		RegisterNotificationEvent(GameEventKeys.PlayerFinance_OnChangeMoney, new TData.AddLong("value", value).AddLong("money", money).AddInt("playerID", playerID).AddInt("reason", reason).Add("reference", reference), self) 
 	End Method
 
 
 	Method TransactionFailed:int(value:Long, reason:int, reference:TNamedGameObject=null)
-		'emit event to inform others
-		TriggerBaseEvent(GameEventKeys.PlayerFinance_OnTransactionFailed, new TData.AddNumber("value", value).AddNumber("playerID", playerID), self)
-		return False
+		RegisterNotificationEvent(GameEventKeys.PlayerFinance_OnTransactionFailed, new TData.AddLong("value", value).AddInt("playerID", playerID), self)
+
+		Return False
 	End Method
 
 

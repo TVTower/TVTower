@@ -256,10 +256,16 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'returns whether the programme is programmed at all
-	Method IsProgrammed:int(day:int=-1)
+	Method IsProgrammed:int()
 		if programmedDay = -1 then return FALSE
 		if programmedHour = -1 then return FALSE
 		return TRUE
+	End Method
+
+
+	Method BeginsAt:int(day:Int, hour:Int)
+		If Not IsProgrammed() Then Return False
+		Return day = programmedDay and hour = programmedHour
 	End Method
 
 

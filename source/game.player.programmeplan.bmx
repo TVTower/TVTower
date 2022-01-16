@@ -97,6 +97,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field owner:Int
 
 	Field _daysPlanned:int = -1 {nosave}
+	Field _programmesMutex:TMutex
+	Field _newsMutex:TMutex
+	Field _newsShowMutex:TMutex
+	Field _advertisementsMutex:TMutex
+	Field _slotLockMutex:TMutex
 
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
@@ -108,8 +113,18 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Const LOCK_TYPE_THIRDPARTY:int = 2
 	Const LOCK_TYPE_BOSS:int = 4
 	Const LOCK_TYPE_GOVERNMENT:int = 8
+	
+	Global useMutexes:Int = False
 
 	'===== COMMON FUNCTIONS =====
+	
+	Method New()
+		_programmesMutex = CreateMutex()
+		_newsMutex = CreateMutex()
+		_newsShowMutex = CreateMutex()
+		_advertisementsMutex = CreateMutex()
+		_slotLockMutex = CreateMutex()
+	End Method
 
 
 	Method Create:TPlayerProgrammePlan(playerID:Int)
@@ -120,10 +135,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method Reset()
+		If useMutexes Then LockMutex(_programmesMutex)
 		programmes = programmes[..0]
+		If useMutexes Then UnlockMutex(_programmesMutex)
+
+		If useMutexes Then LockMutex(_newsMutex)
 		news = New TBroadcastMaterial[3]
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		If useMutexes Then LockMutex(_newsShowMutex)
 		newsShow = newsShow[..0]
+		If useMutexes Then UnlockMutex(_newsShowMutex)
+		
+		If useMutexes Then LockMutex(_advertisementsMutex)
 		advertisements = advertisements[..0]
+		If useMutexes Then UnlockMutex(_advertisementsMutex)
 
 		'unregister events if any
 	End Method
@@ -136,7 +162,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method getSkipHoursFromIndex:Int()
+	Method GetSkipHoursFromIndex:Int()
 		Return (GetWorldTime().GetStartDay()-1)*24
 	End Method
 
@@ -155,29 +181,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'eg. for debugging
 	Method printOverview()
-		Rem
-		print "=== AD/PROGRAMME COLLECTION PLAYER "+parent.playerID+" ==="
-		print "Programme allg.:"
-		For local licence:TProgrammeLicence = eachin parent.ProgrammeCollection.programmeLicences
-			if licence.isSeries()
-				print "  Serie: "+licence.GetTitle()+" | Episoden: "+licence.GetSubLicenceCount()
-			elseif licence.isEpisode()
-				print "  Einzelepisode: "+licence.GetTitle()
-			elseif licence.isMovie()
-				print "  Film: "+licence.GetTitle()
-			endif
-		Next
-		print "Serien:"
-		For local licence:TProgrammeLicence = eachin parent.ProgrammeCollection.seriesLicences
-			print "  "+licence.GetTitle()+" | Episoden: "+licence.GetSubLicenceCount()
-		Next
-		print "Filme:"
-		For local licence:TProgrammeLicence = eachin parent.ProgrammeCollection.movieLicences
-			print "  "+licence.GetTitle()
-		Next
-		endrem
-
-
 		Print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For Local i:Int = 0 To Max(programmes.length - 1, advertisements.length - 1)
 			Local currentHour:Int = GetHourFromArrayIndex(i) 'hours since start
@@ -201,8 +204,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			'only show if ONE is set
 			If adString <> "" Or progString <> ""
-				If progString = "" Then progString = "SENDEAUSFALL"
-				If adString = "" Then adString = " -> WERBEAUSFALL"
+				If progString = "" Then progString = "OUTAGE"
+				If adString = "" Then adString = " -> AD OUTAGE"
 				Print "[" + GetArrayIndex(int(time / TWorldTime.HOURLENGTH)) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
 			EndIf
 		Next
@@ -210,6 +213,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	'adjusts given day and hour if eg. hour is negative or bigger than 23
+	'eg. day=0 and hour=25 become day=1 and hour=1
 	Function FixDayHour(day:int var, hour:int var, disableAutoValue:int = False)
 		If day < 0 Then day = GetWorldTime().GetDay()
 		If hour = -1 and not disableAutoValue
@@ -227,69 +232,117 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		hour = hour mod 24
 	End Function
 
+
 	'===== common function for managed objects =====
 
 
-	'sets the given array to the one requested through slotType
-	Method GetObjectArray:TBroadcastMaterial[](slotType:Int=0)
-		If slotType = TVTBroadcastMaterialType.PROGRAMME Then Return programmes
-		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then Return advertisements
-		If slotType = TVTBroadcastMaterialType.NEWSSHOW Then Return newsShow
-
-		Return New TBroadcastMaterial[0]
+	Method LockMutexObjectArray:TBroadcastMaterial[](slotType:Int=0)
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME      If useMutexes Then LockMutex(_programmesMutex)
+			Case TVTBroadcastMaterialType.ADVERTISEMENT  If useMutexes Then LockMutex(_advertisementsMutex)
+			Case TVTBroadcastMaterialType.NEWS           If useMutexes Then LockMutex(_newsMutex)
+			Case TVTBroadcastMaterialType.NEWSSHOW       If useMutexes Then LockMutex(_newsShowMutex)
+			Default
+				TLogger.Log("TPlayerProgrammePlan", "If useMutexes Then LockMutexObjectArray() request with unknown slotType "+slotType+".", LOG_DEBUG)
+		End Select
 	End Method
 
 
-	'sets the given array to the one requested through objectType
+	Method UnlockMutexObjectArray:TBroadcastMaterial[](slotType:Int=0)
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME      If useMutexes Then UnlockMutex(_programmesMutex)
+			Case TVTBroadcastMaterialType.ADVERTISEMENT  If useMutexes Then UnlockMutex(_advertisementsMutex)
+			Case TVTBroadcastMaterialType.NEWS           If useMutexes Then UnlockMutex(_newsMutex)
+			Case TVTBroadcastMaterialType.NEWSSHOW       If useMutexes Then UnlockMutex(_newsShowMutex)
+			Default
+				TLogger.Log("TPlayerProgrammePlan", "UnlockMutexObjectArray() request with unknown slotType "+slotType+".", LOG_DEBUG)
+		End Select
+	End Method
+
+
+	'Get the array of the requested slotType
+	Method GetObjectArray:TBroadcastMaterial[](slotType:Int=0)
+		Select slotType
+			case TVTBroadcastMaterialType.PROGRAMME      Return programmes
+			case TVTBroadcastMaterialType.ADVERTISEMENT  Return advertisements
+			case TVTBroadcastMaterialType.NEWSSHOW       Return newsShow
+			case TVTBroadcastMaterialType.NEWS           Return news
+			Default 
+				TLogger.Log("TPlayerProgrammePlan", "GetObjectArray() request with unknown slotType "+slotType+".", LOG_DEBUG)
+				Return New TBroadcastMaterial[0]
+		End Select
+	End Method
+
+
+	'sets the entry to the suiting array requested through slotType
 	'this is needed as assigning to "getObjectArray"-arrays is not possible for now
 	Method SetObjectArrayEntry:Int(obj:TBroadcastMaterial, slotType:Int=0, arrayIndex:Int)
+		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
+		
+		Local arr:TBroadcastMaterial[]
+
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME
+				If useMutexes Then LockMutex(_programmesMutex)
+				arr = programmes
+			Case TVTBroadcastMaterialType.NEWS
+				If useMutexes Then LockMutex(_newsMutex)
+				arr = news
+			Case TVTBroadcastMaterialType.NEWSSHOW
+				If useMutexes Then LockMutex(_newsShowMutex)
+				arr = newsShow
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
+				If useMutexes Then LockMutex(_advertisementsMutex)
+				arr = advertisements
+			Default
+				Throw "TPlayerProgrammePlan.SetObjectArrayEntry() with unhandled slotType "+slotType+"."
+		End Select
+
 		'resize array if needed
-		If arrayIndex >= GetObjectArray(slotType).length
-			If obj
-				ResizeObjectArray(slotType, arrayIndex + 1 + obj.GetBlocks() - 1)
-			'null is used to unset an objectarray
-			Else
-				ResizeObjectArray(slotType, arrayIndex + 1)
+		If arrayIndex >= arr.length
+			'if obj is null, then we want to unset the entry
+			'if the arrayIndex was never used before (in the future) we can
+			'skip doing something if no obj was passed... 
+			if obj
+				'increase by "10" (or more if needed) to save some resizes
+				Local newSize:Int = arrayIndex + 1 + Max(10, obj.GetBlocks() - 1)
+				arr = arr[..newSize]
 			EndIf
 		EndIf
-		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
 
-		If slotType = TVTBroadcastMaterialType.PROGRAMME Then programmes[arrayIndex] = obj
-		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then advertisements[arrayIndex] = obj
-		If slotType = TVTBroadcastMaterialType.NEWSSHOW Then newsShow[arrayIndex] = obj
+		'actually assign now
+		arr[arrayIndex] = obj
 
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME
+				programmes = arr
+				If useMutexes Then UnlockMutex(_programmesMutex)
+			Case TVTBroadcastMaterialType.NEWS
+				news = arr
+				If useMutexes Then UnlockMutex(_newsMutex)
+			Case TVTBroadcastMaterialType.NEWSSHOW
+				newsShow = arr
+				If useMutexes Then UnlockMutex(_newsShowMutex)
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
+				advertisements = arr
+				If useMutexes Then UnlockMutex(_advertisementsMutex)
+		End Select
+		
 		Return True
 	End Method
 
 
-	'make the resizing more generic so the functions do not have to know the
-	'underlying array
-	Method ResizeObjectArray:Int(objectType:Int=0, newSize:Int=0)
-		Select objectType
-			Case TVTBroadcastMaterialType.PROGRAMME
-				programmes = programmes[..newSize]
-				Return True
-			Case TVTBroadcastMaterialType.ADVERTISEMENT
-				advertisements = advertisements[..newSize]
-				Return True
-			Case TVTBroadcastMaterialType.NEWSSHOW
-				newsShow = newsShow[..newSize]
-				Return True
-		End Select
-
-		Return False
-	End Method
-
-
 	'Set a time slot locked
-	'each lock is identifyable by "typeID_timeHours"
+	'each lock is identifyable by "hours"
 	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
 		FixDayHour(day, hour)
 
 		Local key:Int = day*24 + hour
 		Local createdNew:int
 		'null if unset
+		If useMutexes Then LockMutex(_slotLockMutex)
 		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
+		If useMutexes Then UnlockMutex(_slotLockMutex)
 		If Not currentLock
 			currentLock = New TSlotLockInfo
 			createdNew = True
@@ -307,7 +360,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		End Select
 
 		If createdNew
+			If useMutexes Then LockMutex(_slotLockMutex)
 			slotLocks.Insert(key, currentLock)
+			If useMutexes Then UnlockMutex(_slotLockMutex)
 		EndIf
 	End Method
 
@@ -317,7 +372,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		Local key:Int = day*24 + hour
 		'null if unset
+		If useMutexes Then LockMutex(_slotLockMutex)
 		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
+		If useMutexes Then UnlockMutex(_slotLockMutex)
 		if not currentLock then Return False
 
 		'remove lockTypeFlags
@@ -334,7 +391,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method IsLockedSlot:int(slotType:Int = 0, day:Int=-1, hour:Int=-1)
+		FixDayHour(day, hour)
+
+		If useMutexes Then LockMutex(_slotLockMutex)
 		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(day*24 + hour))
+		If useMutexes Then UnlockMutex(_slotLockMutex)
 		if not currentLock then Return False
 
 		Select slotType
@@ -351,6 +412,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
 	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		FixDayHour(day, hour)
+
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		local hours:int = day*24 + hour
 		if obj
@@ -370,6 +433,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
 	Method BelongsToModifiyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		FixDayHour(day, hour)
+
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		local hours:int = day*24 + hour
 		if obj
@@ -396,7 +461,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'skip material not programmed yet
 		if broadcastMaterial.programmedDay = -1 then return False
-
 		for local block:int = 0 until broadcastMaterial.GetBlocks()
 			if IsLockedSlot(broadcastMaterial.usedAsType, broadcastMaterial.programmedDay, broadcastMaterial.programmedHour + block)
 				return True
@@ -410,15 +474,23 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method RemoveObsoleteSlotLocks:int()
 		local time:Long = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
 
+		If useMutexes Then LockMutex(_slotLockMutex)
+		Local toRemove:int[]
 		For local k:TIntKey = EachIn slotLocks.Keys()
 			if k.value < time
-				slotLocks.Remove(k.value)
+				toRemove :+ [k.value]
 			else
 				'as the keys are sorted by time we could skip all others
 				'once we reached a lock of the present/future
-				return False
+				exit
 			endif
 		Next
+
+		For local key:Int = EachIn toRemove
+			slotLocks.Remove(key)
+		Next
+		If useMutexes Then UnlockMutex(_slotLockMutex)
+
 		return True
 	End Method
 
@@ -465,7 +537,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'if the hour is in the future, the slot MUST be useable
 		If slotHour > currentHour Then Return True
-		'if the hour is in the past, the slot MUST be useable
+		'if the hour is in the past, the slot MUST be NOT useable
 		If slotHour < currentHour Then Return False
 
 		Select slotType
@@ -485,19 +557,27 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns a programme (or null) for the given array index
 	Method GetObjectAtIndex:TBroadcastMaterial(objectType:Int=0, arrayIndex:Int)
+		Local result:TBroadcastMaterial
+
+		If useMutexes Then LockMutexObjectArray(objectType)
 		Local array:TBroadcastMaterial[] = GetObjectArray(objectType)
 		If arrayIndex > 0 And array.length > arrayIndex
-			Return array[arrayIndex]
-		Else
-			Return Null
+			result = array[arrayIndex]
 		EndIf
+		If useMutexes Then UnlockMutexObjectArray(objectType)
+		Return result
 	End Method
 
 
 	Method GetObject:TBroadcastMaterial(slotType:Int=0, day:Int=-1, hour:Int=-1)
+		If useMutexes Then LockMutexObjectArray(slotType)
 		Local startHour:Int = GetObjectStartHour(slotType, day, hour)
-		If startHour < 0 Then Return Null
-		Return GetObjectAtIndex(slotType, GetArrayIndex(startHour))
+		Local result:TBroadcastMaterial
+		If startHour >= 0
+			result = GetObjectAtIndex(slotType, GetArrayIndex(startHour))
+		EndIf
+		If useMutexes Then UnlockMutexObjectArray(slotType)
+		Return result
 	End Method
 
 
@@ -505,7 +585,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetObjectBlock:Int(objectType:Int=0, day:Int=-1, hour:Int=-1) {_exposeToLua}
 		FixDayHour(day, hour)
 		Local startHour:Int = GetObjectStartHour(objectType, day, hour)
-
 		If startHour < 0 Then Return -1
 
 		Return 1 + (day * 24 + hour) - startHour
@@ -520,6 +599,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		Local material:TBroadcastMaterial = Null
 		Local result:TBroadcastMaterial[]
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(objectType)
 
 		'check if the starting time includes a block of a programme starting earlier
 		'if so: adjust starting time
@@ -543,31 +624,34 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'skip wrong type
 			If requireSameType And material.materialType <> objectType Then Continue
 
-			result = result[..result.length+1]
-			result[result.length-1] = material
+			result :+ [material]
 		Next
 
+		If useMutexes Then UnlockMutexObjectArray(objectType)
 		Return result
 	End Method
 
 
+	'returns an array of broadcastmaterials (or NULLs) for each slot
+	'in the given timespan
 	Method GetObjectSlotsInTimeSpan:TBroadcastMaterial[](objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
 
-		Local material:TBroadcastMaterial = Null
-		Local result:TBroadcastMaterial[]
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(objectType)
 
 		'loop through the given range
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
-		if maxIndex - minIndex < 0 then return result
+		if maxIndex - minIndex < 0 then return Null
 
-		result = new TBroadcastMaterial[ maxIndex-minIndex +1 ]
+		Local result:TBroadcastMaterial[] = new TBroadcastMaterial[ maxIndex-minIndex +1 ]
 		For Local i:Int = minIndex To maxIndex
 			result[i-minIndex] = GetObject(objectType, 0, GetHourFromArrayIndex(i))
 		Next
 
+		If useMutexes Then UnlockMutexObjectArray(objectType)
 		Return result
 	End Method
 
@@ -577,6 +661,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method ObjectPlannedInTimeSpan:TBroadcastMaterial(material:TBroadcastMaterial, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, startAtLatestTime:Int=False) {_exposeToLua}
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
+
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
 
 		'check if the starting time includes a block of a programme starting earlier
 		'if so: adjust starting time
@@ -590,35 +677,55 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'loop through the given range
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
-		Local plannedMaterial:TBroadcastMaterial
 
-'materials might differ from each other
-'instead of comparing objects we compare their content
+		'materials might differ from each other
+		'instead of comparing objects we compare their content
+		Local result:TBroadcastMaterial
 		If not startAtLatestTime
 			For Local i:Int = minIndex To maxIndex
 				Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
 				If Not obj Then Continue
-				If material.GetReferenceID() = obj.GetReferenceID() Then Return obj
+				If material.GetReferenceID() = obj.GetReferenceID() 
+					result = obj
+					exit
+				EndIf
 			Next
 		Else
 			For Local i:Int = maxIndex To minIndex Step -1
 				Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
 				If Not obj Then Continue
-				If material.GetReferenceID() = obj.GetReferenceID() Then Return obj
+				If material.GetReferenceID() = obj.GetReferenceID() 
+					result = obj
+					exit
+				EndIf
 			Next
 		EndIf
 
-		Return Null
+		If useMutexes Then UnlockMutexObjectArray(slotType)
+		Return result
 	End Method
 
 
-	Method GetObjectLatestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1) {_exposeToLua}
+	'return the lastest hour (since game start) a given broadcast material
+	'so TProgrammelicence, TAdContract, ...) is scheduled to start (block 1!)
+	Method GetObjectLatestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1)
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
 
-		'check ad usage - but only for ads!
 		local latestInstance:TBroadcastMaterial = ObjectPlannedInTimeSpan(material, slotType, dayStart, hourStart, dayEnd, hourEnd, True)
 		If latestInstance Then return latestInstance.programmedDay*24 + latestInstance.programmedHour
+		return -1
+	End Method
+
+
+	'return the earliest hour (since game start) a given broadcast material
+	'so TProgrammelicence, TAdContract, ...) is scheduled to start (block 1!)
+	Method GetObjectEarliestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1)
+		FixDayHour(dayStart, hourStart)
+		FixDayHour(dayEnd, hourEnd)
+
+		local firstInstance:TBroadcastMaterial = ObjectPlannedInTimeSpan(material, slotType, dayStart, hourStart, dayEnd, hourEnd, False)
+		If firstInstance Then return firstInstance.programmedDay*24 + latestInstance.programmedHour
 		return -1
 	End Method
 
@@ -627,6 +734,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetBroadcastMaterialSourceProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSource, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
+
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
 
 		'check if the starting time includes a block of a programme starting earlier
 		'if so: adjust starting time
@@ -646,11 +756,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'materials might differ from each other
 		'instead of comparing objects we compare their content
 		For Local i:Int = minIndex To maxIndex
-			Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
+			Local obj:TBroadcastMaterial = GetObjectAtIndex(slotType, i)
 			If Not obj Then Continue
 			If materialSource = obj.GetSource() Then result :+ 1
 		Next
 
+		If useMutexes Then UnlockMutexObjectArray(slotType)
 		Return result
 	End Method
 
@@ -661,222 +772,225 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetObjectStartHour:Int(objectType:Int=0, day:Int=-1, hour:Int=-1) {_exposeToLua}
 		FixDayHour(day, hour)
 		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
-
 		'out of bounds?
 		If arrayIndex < 0 Then Return -1
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(objectType)
+
 		Local array:TBroadcastMaterial[] = GetObjectArray(objectType)
+		Local result:Int = -1
 
 		'check if the current hour is the start of an object
 		'-> saves further requests (like GetBlocks() )
-		If arrayIndex < array.length And array[arrayIndex] Then Return GetHourFromArrayIndex(arrayIndex)
-
-		'search the past for the previous programme
-		'then check if start+blocks is still our time
-		Local searchIndex:Int = arrayIndex
-		While searchIndex >= 0
-			If searchIndex < array.length And array[searchIndex]
-				If searchIndex + TBroadcastMaterial(array[searchIndex]).GetBlocks() - 1 >= arrayIndex
-					Return GetHourFromArrayIndex(searchIndex)
-				Else
-					Return -1
+		If arrayIndex < array.length And array[arrayIndex] 
+			result = GetHourFromArrayIndex(arrayIndex)
+		Else
+			'search the past for the previous programme
+			'then check if start+blocks is still our time
+			Local searchIndex:Int = arrayIndex
+			While searchIndex >= 0
+				If searchIndex < array.length And array[searchIndex]
+					If searchIndex + TBroadcastMaterial(array[searchIndex]).GetBlocks() - 1 >= arrayIndex
+						result = GetHourFromArrayIndex(searchIndex)
+					Else
+						result = -1
+					EndIf
+					exit
 				EndIf
-			EndIf
-			searchIndex:-1
-		Wend
-		Return -1
+				searchIndex:-1
+			Wend
+		EndIf
+
+		If useMutexes Then UnlockMutexObjectArray(objectType)
+		Return result
 	End Method
+
+
+hier weiter... aufraeumen
+... und schauen, welche Events wirklich gebraucht werden,
+und inwieweit "erstmal" sowas wie "TriggerNetworkEvent" ("stub"-Funktion mit Gameevent...)
+hinzugefuegt werden sollte - das wuerde dann spaeter bei "commands" ja eh wegfallen...
 
 
 	'add an object / set a slot occupied
 	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
 		FixDayHour(day, hour)
-		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
-
+		If Not obj Then Return False
 		'do not allow adding objects we do not own
 		If obj.GetOwner() <> owner Then Return False
-
 		'do not allow adding objects we cannot control
 		If not obj.IsControllable() then Return False
-
 		'do not allow adding objects which are not available now
 		'(eg. exceeded broadcast limit)
 		If obj.GetSource()
 			if not obj.GetSource().IsAvailable() then Return False
 		EndIf
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
+
+		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
+
 		'the same object is at the exact same slot - skip actions/events
-		If obj = GetObjectAtIndex(slotType, arrayIndex) Then Return True
-
-
-		'check all affected slots whether they allow modification
-		'do not allow adding in the past
-		'do not allow adding to a locked slot
-		If checkModifyableSlot
-			if not BelongsToModifiyableSlot(slotType, day, hour)
-				'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
-				return False
-			endif
-
-			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-				if Not IsModifyableSlot(slotType, day, hour + i)
-					'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
-					Return False
-				endif
-			Next
-		EndIf
-
-
-		'clear all potential overlapping objects
-		Local removedObjects:Object[]
-		Local removedObject:Object
-		For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-			removedObject = RemoveObject(Null, slotType, day, hour+i, checkModifyableSlot)
-			If removedObject then removedObjects :+ [removedObject]
-		Next
-
-		'add the object to the corresponding array
-		SetObjectArrayEntry(obj, slotType, arrayIndex)
-		obj.programmedDay = day
-		obj.programmedHour = hour
-		'assign "used as type"
-		obj.setUsedAsType(slotType)
-
-
-		Local programme:TProgramme = TProgramme(obj)
-		Local advertisement:TAdvertisement = TAdvertisement(obj)
-
-		'special for programmelicences: set a maximum planned time
-		'setting does not require special calculations
-		If programme
-			'updated "latest planned hour"
-			programme.licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
-			'ProgrammeLicences: recalculate the latest planned hour
-			RecalculatePlannedProgramme(programme)
-		EndIf
-		
-		'Advertisements: adjust planned (when placing in contract-slot
-		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and advertisement
-			advertisement.contract.SetSpotsPlanned( GetAdvertisementsPlanned(advertisement.contract, advertisement.contract.daySigned, 0, -1, -1) )
-		EndIf
-
-
-		If programme
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).AddInt("programmeLicenceID", programme.licence.GetID()).AddInt("slotType", slotType).AddInt("day", day).AddNumber("hour", hour), Self)
-		ElseIf advertisement
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).AddInt("adContractID", advertisement.contract.GetID()).AddInt("slotType", slotType).AddInt("day", day).AddNumber("hour", hour), Self)
-		Endif
-
-		'if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-			'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to ADVERTISEMENTS, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
-		'else
-			'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to PROGRAMMES, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
-		'endif
-
-		'invalidate cache
-		_daysPlanned = -1
-
-		'emit an event
-		If fireEvents 
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self)
-		EndIf
-
-		Return True
-	End Method
-
-
-	'remove object from slot / clear a slot
-	'if no obj is given it is tried to get one by day/hour
-	'returns the deleted object if one is found
-	Method RemoveObject:Object(obj:TBroadcastMaterial=Null, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:int=True)
-		If Not obj Then obj = GetObject(slotType, day, hour)
-		If Not obj Then Return Null
-
-		'do not allow removing objects we cannot control
-		'(to forcefully remove the, unset that flag before!
-		If not obj.IsControllable() then Return Null
-
-		'if not programmed, skip deletion and events
-		If obj.isProgrammed()
-			'backup programmed date for event
-			Local programmedDay:Int = obj.programmedDay
-			Local programmedHour:Int = obj.programmedHour
-
-			'nothing to remove - or wrong one
-			if obj <> GetObject(slotType, programmedDay, programmedHour)
-				'obj = GetObject(slotType, day, hour)
-				'if not obj
-					TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed with programmedDay and programmedHour being invalid.", LOG_ERROR)
-					return Null
-				'endif
-				'programmedDay = obj.programmedDay
-				'programmedHour = obj.programmedHour
-				'TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Using alternative GetObject.", LOG_DEBUG)
-				'?debug
-				'DebugStop
-				'?
-			endif
-
+		If obj <> GetObjectAtIndex(slotType, arrayIndex)
+			'check all affected slots whether they allow modification
+			'do not allow adding in the past
+			'do not allow adding to a locked slot
 			If checkModifyableSlot
+				if not BelongsToModifiyableSlot(slotType, day, hour)
+					'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
+					If useMutexes Then UnlockMutexObjectArray(slotType)
+					return False
+				endif
+
 				For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-					if Not IsModifyableSlot(slotType, programmedDay, programmedHour + i)
-						TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked", LOG_INFO)
-						Return Null
+					if Not IsModifyableSlot(slotType, day, hour + i)
+						'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
+						If useMutexes Then UnlockMutexObjectArray(slotType)
+						Return False
 					endif
 				Next
 			EndIf
 
-			'reset programmed date
-			obj.programmedDay = -1
-			obj.programmedHour = -1
 
-			'null the corresponding array index
-			SetObjectArrayEntry(Null, slotType, GetArrayIndex(programmedDay*24 + programmedHour))
+			'clear all potential overlapping objects
+			Local removedObjects:Object[]
+			Local removedObject:Object
+			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
+				removedObject = RemoveObject(slotType, day, hour+i, checkModifyableSlot)
+				If removedObject then removedObjects :+ [removedObject]
+			Next
+
+			'add the object to the corresponding array
+			SetObjectArrayEntry(obj, slotType, arrayIndex)
+			obj.programmedDay = day
+			obj.programmedHour = hour
+			'assign "used as type"
+			obj.setUsedAsType(slotType)
 
 
 			Local programme:TProgramme = TProgramme(obj)
 			Local advertisement:TAdvertisement = TAdvertisement(obj)
 
-
-			'ProgrammeLicences: recalculate the latest planned hour
+			'special for programmelicences: set a maximum planned time
+			'setting does not require special calculations
 			If programme
+				'updated "latest planned hour"
+				programme.licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
+				'ProgrammeLicences: recalculate the latest planned hour
 				RecalculatePlannedProgramme(programme)
 			EndIf
 			
-			'Advertisements: adjust planned amount
-			If advertisement
+			'Advertisements: adjust planned (when placing in contract-slot
+			If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and advertisement
 				advertisement.contract.SetSpotsPlanned( GetAdvertisementsPlanned(advertisement.contract, advertisement.contract.daySigned, 0, -1, -1) )
 			EndIf
 
-			If programme
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).AddInt("programmeLicenceID", programme.licence.GetID()).AddInt("slotType", slotType).AddInt("day", programmedDay).AddNumber("hour", programmedHour), Self)
-			ElseIf advertisement
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).AddInt("adContractID", advertisement.contract.GetID()).AddInt("slotType", slotType).AddInt("day", programmedDay).AddNumber("hour", programmedHour), Self)
-			Endif
-
-			rem
-			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
-			else
-				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
-			endif
-			endrem
+			'if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to ADVERTISEMENTS, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
+			'else
+				'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to PROGRAMMES, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
+			'endif
 
 			'invalidate cache
 			_daysPlanned = -1
 
-			'inform others
-			If fireEvents
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObject, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self)
-			Endif
-		else
-			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" SKIPPED removal of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS - not programmed.", LOG_DEBUG)
-			else
-				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" SKIPPED removal of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES - not programmed.", LOG_DEBUG)
-			endif
+			SendNotificationEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).addInt("slotType", slotType).addInt("day", day).addInt("hour", hour), Self)
 		EndIf
 
+		If useMutexes Then UnlockMutexObjectArray(slotType)
+		Return True
+	End Method
+
+
+
+
+	Method RemoveObject:Object(slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:int=True)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
+
+		Local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
+		Local removedObject:Object = RemoveObject(slotType, obj, checkModifyableSlot)
+
+		If useMutexes Then UnlockMutexObjectArray(slotType)
+		Return removedObject
+	End Method
+
+
+	'remove object from slot / clear a slot
+	'returns the deleted object if one is found
+	Method RemoveObject:Object(slotType:Int=0, obj:TBroadcastMaterial, checkModifyableSlot:int=True)
+		If Not obj Then Return Null
+		
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
+
+		'do not allow removing objects we cannot control
+		'(to forcefully remove it, unset that flag before!)
+		If Not obj.IsControllable() 
+			If useMutexes Then UnlockMutexObjectArray(slotType)
+			Return Null
+		EndIf
+
+		'if not programmed, skip deletion and events
+		If Not obj.IsProgrammed() 
+			TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" SKIPPED removal of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from " + TVTBroadcastMaterialType.GetAsString(slotType).ToUpper() + " - not programmed.", LOG_DEBUG)
+			If useMutexes Then UnlockMutexObjectArray(slotType)
+			Return obj
+		EndIf
+
+
+		'backup programmed date for event
+		Local programmedDay:Int = obj.programmedDay
+		Local programmedHour:Int = obj.programmedHour
+
+		If checkModifyableSlot
+			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
+				if Not IsModifyableSlot(slotType, programmedDay, programmedHour + i)
+					Local nowDay:Int = programmedDay
+					Local nowHour:Int = programmedHour + i
+					FixDayHour(nowDay, nowHour)
+					TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+nowDay+", hour="+nowHour+", block="+i+" cannot get modified - is in the past or locked", LOG_INFO)
+					If useMutexes Then UnlockMutexObjectArray(slotType)
+					Return Null
+				endif
+			Next
+		EndIf
+
+		'reset programmed date
+		obj.programmedDay = -1
+		obj.programmedHour = -1
+
+		'null the corresponding array index
+		SetObjectArrayEntry(Null, slotType, GetArrayIndex(programmedDay*24 + programmedHour))
+
+		'ProgrammeLicences: recalculate the latest planned hour
+		If TProgramme(obj)
+			RecalculatePlannedProgramme(TProgramme(obj))
+		'Advertisements: adjust planned amount
+		ElseIf TAdvertisement(obj)
+			Local advertisement:TAdvertisement = TAdvertisement(obj)
+			advertisement.contract.SetSpotsPlanned( GetAdvertisementsPlanned(advertisement.contract, advertisement.contract.daySigned, 0, -1, -1) )
+		EndIf
+
+		rem
+		if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+			TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
+		else
+			TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
+		endif
+		endrem
+
+		'invalidate cache
+		_daysPlanned = -1
+
+		'inform others
+		If fireEvents
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObject, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self)
+		Endif
+
+		If useMutexes Then UnlockMutexObjectArray(slotType)
 		Return obj
 	End Method
 
@@ -893,14 +1007,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			if GetWorldTime().GetDayMinute(time) >= 55 then currentHour :+ 1
 		endif
 
-		rem
-		if slotType = TVTBroadcastMaterialType.PROGRAMME
-			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES.", LOG_DEBUG)
-		else
-			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS.", LOG_DEBUG)
-		endif
-		endrem
+		'TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from " + TVTBroadcastMaterialType.GetAsString(slotType).ToUpper() + ".", LOG_DEBUG)
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
 
 		Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
 		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - obj.GetBlocks()))
@@ -919,7 +1029,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If i + removeCurrentRunning * obj.GetBlocks() > currentIndex
 				For Local j:Int = 0 To obj.GetBlocks()-1
 					'method a) removeObject - emits events for each removed item
-					RemoveObject(Null, slotType, 0, GetHourFromArrayIndex(i+j), not removeCurrentRunning)
+					RemoveObject(slotType, 0, GetHourFromArrayIndex(i+j), not removeCurrentRunning)
 					'method b) just clear the array at the given index
 					'SetObjectArrayEntry(null, slotType, GetHourFromArrayIndex(i+j))
 				Next
@@ -927,14 +1037,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 		Next
 
-		If foundAnInstance
-			If fireEvents 
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObjectInstances, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), Self)
-			Endif
-			Return True
-		Else
-			Return False
-		EndIf
+		If foundAnInstance and fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObjectInstances, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), Self)
+		Endif
+
+		If useMutexes Then UnlockMutexObjectArray(slotType)
+		Return foundAnInstance
 	End Method
 
 
@@ -954,12 +1062,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			return -1
 		endif
 
-		'check all slots the obj will occupy...
+		
+		'check all slots the obj will occupy if there is something else
+		'is there already
+		Local existingAtBlock:Int = - 1
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
 		For Local i:Int = 0 To obj.GetBlocks() - 1
-			'... and if there is already an object, return the information
-			If GetObject(slotType, day, hour + i) Then Return -2
+			If GetObject(slotType, day, hour + i) 
+				existingAtBlock = i
+				exit
+			Endif
 		Next
+		If useMutexes Then UnlockMutexObjectArray(slotType)
 
+		if existingAtBlock >= 0 Then Return -2
 		Return 1
 	End Method
 
@@ -1020,7 +1137,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				RemoveAdvertisement(b)
 				TLogger.Log("PlayerProgrammePlan", "RemoveBrokenObjects() had to remove BROKEN ad ~q" + b.GetTitle()+"~q from day="+GetWorldTime().GetDay(t)+" hour="+GetWorldTime().GetDayHour(t)+":55.", LOG_ERROR)
 			elseif TProgramme(b)
-				RemoveProgramme(b)
+				RemoveProgramme(b.programmedDay, b.programmedHour)
 				TLogger.Log("PlayerProgrammePlan", "RemoveBrokenObjects() had to remove BROKEN programme ~q" + b.GetTitle()+"~q from day="+GetWorldTime().GetDay(t)+" hour="+GetWorldTime().GetDayHour(t)+":00.", LOG_ERROR)
 			endif
 			fixed :+ 1
@@ -1074,45 +1191,18 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	'clear a slot so others can get placed without trouble
-	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
-		return _RemoveProgramme(obj, day, hour)
-	End Method
-
-
-	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
-		return _RemoveProgramme(obj, day, hour, True)
-	End Method
-
-
-	'clear a slot so others can get placed without trouble
-	Method _RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1, forceRemove:int=False)
-		'if no obj was provided, use the day/time to fetch an object
-		If Not obj Then obj = GetObject(TVTBroadcastMaterialType.PROGRAMME, day, hour)
-		if not obj then return False
-		'if alread not set for that time, just return success
-		If Not obj.isProgrammed() Then Return True
-
-		'print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
-
-		'backup programmed date
-		Local programmedDay:Int = obj.programmedDay
-		Local programmedHour:Int = obj.programmedHour
-
-		'try to remove the object from the array
-		Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour, not forceRemove))
-	End Method
-
-
 	'Removes all not-yet-run users of the given programme licence from the
 	'plan's list.
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveProgrammeInstancesByLicence:Int(licence:TProgrammeLicence, removeCurrentRunning:Int=False)
 		'Maybe we got a collection/series - so revoke all sublicences
 		If licence.GetSubLicenceSlots() > 0
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_programmesMutex)
 			For Local subLicence:TProgrammeLicence = EachIn licence.subLicences
 				RemoveProgrammeInstancesByLicence(subLicence, removeCurrentRunning)
 			Next
+			If useMutexes Then UnlockMutex(_programmesMutex)
 			Return True
 		EndIf
 
@@ -1124,6 +1214,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local programme:TBroadcastMaterial
 		Local currentHour:Int = GetWorldTime().GetHour()
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_programmesMutex)
 		For local slotType:int = EachIn slotTypes
 			Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
 			Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - licence.GetBlocks(slotType)))
@@ -1145,10 +1237,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If programme Then exit
 		Next
 
-		'no instance found - no need to call the programmeRemover
-		If Not programme Then Return True
+		Local result:Int = True
+		If programme Then result = RemoveProgrammeInstances(programme, removeCurrentRunning)
 
-		Return RemoveProgrammeInstances(programme, removeCurrentRunning)
+		If useMutexes Then UnlockMutex(_programmesMutex)
+		Return result
 	End Method
 
 
@@ -1158,10 +1251,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method RemoveProgrammeInstances:Int(obj:TBroadcastMaterial, removeCurrentRunning:Int=False)
 		Local doneSomething:Int=False
 		Local programme:TBroadcastMaterial
+
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_programmesMutex)
+
 		If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
 			programme = GetProgramme()
 		EndIf
-
 		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.PROGRAMME, -1, removeCurrentRunning)
 			'if the object is the current broadcasted thing, reset audience
 			If programme And obj = programme
@@ -1171,10 +1267,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 			doneSomething = True
 		EndIf
+		If useMutexes Then UnlockMutex(_programmesMutex)
+
+
 		'also remove from advertisement slots (Trailers)
 		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.ADVERTISEMENT, -1, removeCurrentRunning)
 			doneSomething = True
-		EndIF
+		EndIf
+
 		Return doneSomething
 	End Method
 
@@ -1213,6 +1313,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			programme.licence.SetPlanned(latestHour)
 			programme.licence.SetTrailerPlanned(latestAdHour)
 		EndIf
+
 		Return True
 	End Method
 
@@ -1260,17 +1361,46 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	'reset that programmed programme
+	Method RemoveProgramme:Int(obj:TBroadcastMaterial, checkModifyableSlot:Int=True)
+		'try to remove the object from the array
+		Local result:Object = RemoveObject(TVTBroadcastMaterialType.PROGRAMME, obj, checkModifyableSlot)
+		If result then 
+			Return True
+		Else
+			Return False
+		EndIf
+	End Method
+
+	'reset that slot
+	Method RemoveProgramme:Int(day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
+		'try to remove the object from the array
+		Local result:Object = RemoveObject(TVTBroadcastMaterialType.PROGRAMME, day, hour, checkModifyableSlot)
+		If result
+			Return True
+		Else
+			Return False
+		EndIf
+	End Method
+	
+
 	'Add a used-as-programme to the player's programme plan
-	Method SetProgrammeSlot:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
-		'if nothing is given, we have to reset that slot
-		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.PROGRAMME, day, hour))
+	Method AddProgramme:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_programmesMutex)
 
 		'check if we are allowed to place it there
 		'for now, only skip if failing live programme or time slot fails (-1)
 		'- if also interested in "other programme on slots", this is -2
-		if ProgrammePlaceable(obj, day, hour) = -1 then return False
+		If ProgrammePlaceable(obj, day, hour) = -1 
+			If useMutexes Then UnlockMutex(_programmesMutex)
+			Return False
+		EndIf
 
-		Return AddObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
+		Local result:Int = AddObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
+
+		If useMutexes Then UnlockMutex(_programmesMutex)
+		Return result
 	End Method
 
 
@@ -1299,15 +1429,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'debug
 		'print "HowOftenProgrammeLicenceInPlan: day="+day+" GameDay="+GetWorldTime().getDay()+" minHour="+minHour+" maxHour="+maxHour + " includeYesterday="+includeStartedYesterday
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutexObjectArray(slotType)
+
 		'only programmes with more than 1 block can start the day before
 		'and still run the next day - so we have to check that too
 		If includeStartedYesterday
 			'we just compare the programme started 23:00 or earlier the day before
-			if slotType = TVTBroadcastMaterialType.PROGRAMME
-				material = GetProgramme(day - 1, 23)
-			elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-				material = GetAdvertisement(day - 1, 23)
-			endif
+			material = GetObject(slotType, day - 1, 23)
 			If material And material.GetReferenceID() = referenceID And material.GetBlocks(slotType) > 1
 				count:+1
 				'add the hours the programme "takes over" to the next day
@@ -1322,6 +1451,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'is stored in the array
 			If material And material.GetReferenceID() = referenceID Then count:+1
 		Next
+		If useMutexes Then UnlockMutexObjectArray(slotType)
 
 		Return count
 	End Method
@@ -1352,13 +1482,22 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			maxIndex = GetArrayIndex(dayEnd*24 + hourEnd)
 		endif
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_advertisementsMutex)
+
+		Local result:Int = -1
 		'loop through the given range
 		For Local i:Int = maxIndex To minIndex Step -1
 			Local obj:TAdvertisement = TAdvertisement(GetObjectAtIndex(TVTBroadcastMaterialType.ADVERTISEMENT, i))
 			If Not obj Then Continue
-			If obj.contract = contract Then Return obj.programmedDay*24 + obj.programmedHour
+			If obj.contract = contract 
+				result = obj.programmedDay*24 + obj.programmedHour
+				exit
+			EndIf
 		Next
-		return -1
+		If useMutexes Then UnlockMutex(_advertisementsMutex)
+		
+		return result
 	End Method
 
 
@@ -1386,6 +1525,9 @@ endrem
 
 	'dayEnd=-1 and dayHour=-1 means "total"
 	Method GetAdvertisementsPlanned:Int(contract:TAdContract, dayStart:Int, hourStart:Int, dayEnd:Int=1, hourEnd:Int=-1, includeSuccessful:Int=True) {_exposeToLua}
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_advertisementsMutex)
+
 		Local minIndex:Int = 0
 		Local maxIndex:Int = advertisements.length - 1
 
@@ -1398,7 +1540,10 @@ endrem
 		endif
 
 		'somehow we have a timeframe ending earlier than starting
-		If maxIndex < minIndex Then Return 0
+		If maxIndex < minIndex 
+			If useMutexes Then UnlockMutex(_advertisementsMutex)
+			Return 0
+		EndIf
 
 		Local count:Int	= 0
 		For Local i:Int = minIndex To maxIndex
@@ -1412,6 +1557,7 @@ endrem
 
 			count:+1
 		Next
+		If useMutexes Then UnlockMutex(_advertisementsMutex)
 		Return count
 	End Method
 
@@ -1421,6 +1567,9 @@ endrem
 	'
 	'start day = -1 then use contract sign day
 	Method GetAdvertisementsCount:Int(contract:TAdContract, dayStart:Int, hourStart:Int, dayEnd:Int, hourEnd:Int, onlySuccessful:Int=True, includePlanned:Int=False)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_advertisementsMutex)
+
 		WrapDayHour(dayStart, hourStart)
 		WrapDayHour(dayEnd, hourEnd)
 
@@ -1428,7 +1577,10 @@ endrem
 		'end with latest planned element
 		Local endIndex:Int = Min(advertisements.length-1, GetArrayIndex(dayEnd*24 + hourEnd))
 		'somehow we have a timeframe ending earlier than starting
-		If endIndex < startIndex Then Return 0
+		If endIndex < startIndex
+			If useMutexes Then UnlockMutex(_advertisementsMutex)
+			Return 0
+		EndIf
 
 		Local count:Int	= 0
 		For Local i:Int = startIndex To endIndex
@@ -1441,6 +1593,7 @@ endrem
 
 			count:+1
 		Next
+		If useMutexes Then UnlockMutex(_advertisementsMutex)
 
 		Return count
 	End Method
@@ -1448,16 +1601,22 @@ endrem
 
 	'clear a slot so others can get placed without trouble
 	Method RemoveAdvertisement:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_advertisementsMutex)
+		Local result:Object
+
 		If Not obj Then obj = GetObject(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 		If obj
-			'backup programmed date
-			Local programmedDay:Int = obj.programmedDay
-			Local programmedHour:Int = obj.programmedHour
-
 			'try to remove the object from the array
-			Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
+			result = RemoveObject(TVTBroadcastMaterialType.ADVERTISEMENT, obj)
 		EndIf
-		Return False
+		If useMutexes Then UnlockMutex(_advertisementsMutex)
+		
+		If result
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
@@ -1520,18 +1679,47 @@ endrem
 	End Method
 
 
-	'Fill/Clear the given advertisement slot with the given broadcast material
-	Method SetAdvertisementSlot:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
-		'if nothing is given, we have to reset that slot
-		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
 
+	'reset that programmed advertisement
+	Method RemoveAdvertisement:Int(obj:TBroadcastMaterial, checkModifyableSlot:Int=True)
+		'try to remove the object from the array
+		Local result:Object = RemoveObject(TVTBroadcastMaterialType.ADVERTISEMENT, obj, checkModifyableSlot)
+		If result then 
+			Return True
+		Else
+			Return False
+		EndIf
+	End Method
+
+	'reset that slot
+	Method RemoveAdvertisement:Int(day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
+		'try to remove the object from the array
+		Local result:Object = RemoveObject(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour, checkModifyableSlot)
+		If result
+			Return True
+		Else
+			Return False
+		EndIf
+	End Method
+	
+
+	'Fill/Clear the given advertisement slot with the given broadcast material
+	Method AddAdvertisement:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_advertisementsMutex)
 		'check if we are allowed to place it there
 		'ATTENTION: check for -1 as "-2" means there is another
 		'           broadcastmaterial at the desired slot
-		if AdvertisementPlaceable(obj, day, hour) = -1 then return False
+		If AdvertisementPlaceable(obj, day, hour) = -1 
+			If useMutexes Then UnlockMutex(_advertisementsMutex)
+			Return False
+		EndIf
 
 		'add it
-		Return AddObject(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
+		Local result:Int = AddObject(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
+
+		If useMutexes Then UnlockMutex(_advertisementsMutex)
+		Return result
 	End Method
 
 
@@ -1557,14 +1745,22 @@ endrem
 
 	'===== NEWS FUNCTIONS =====
 
-    Method SetNewsByGUID:Int(newsGUID:string, slot:Int) {_exposeToLua}
+    Method SetNewsByGUID:Int(newsGUID:string, slot:Int)
 		'use RemoveNews() to unset a news
 		If not newsGUID then return False
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_advertisementsMutex)
 		local news:TNews = GetPlayerProgrammeCollection(owner).GetNews(newsGUID)
-		if not news then return False
+		Local result:Int
+		if not news
+			result = False
+		Else
+			result = SetNews(news, slot)
+		EndIf
+		If useMutexes Then UnlockMutex(_newsMutex)
 
-		return SetNews(news, slot)
+		Return result
 	End Method
 
 
@@ -1574,14 +1770,26 @@ endrem
 		'use RemoveNews() to unset a news
 		If not newsObject then return False
 
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
 		'out of bounds check
-		If slot < 0 Or slot >= news.length Then Return False
+		If slot < 0 Or slot >= news.length
+			If useMutexes Then UnlockMutex(_newsMutex)
+			Return False
+		EndIf
 
 		'do not continue if pay not possible but needed
-		If Not newsObject.Pay() Then Return False
+		If Not newsObject.Pay() 
+			If useMutexes Then UnlockMutex(_newsMutex)
+			Return False
+		EndIf
 
 		'if just dropping on the own slot ...do nothing
-		If news[slot] = newsObject Then Return True
+		If news[slot] = newsObject 
+			If useMutexes Then UnlockMutex(_newsMutex)
+			Return True
+		EndIf
 
 		'remove this news from slots if it occupies some of them
 		'do not add it back to the collection
@@ -1606,7 +1814,8 @@ endrem
 		If fireEvents 
 			TriggerBaseEvent(GameEventKeys.ProgrammePlan_SetNews, New TData.Add("news",newsObject).AddNumber("slot", slot), self)
 		EndIf
-
+		
+		If useMutexes Then UnlockMutex(_newsMutex)
 		Return True
     End Method
 
@@ -1616,15 +1825,21 @@ endrem
 	End Method
 
 
-	Method RemoveNewsByGUID:Int(newsGUID:string="", addToCollection:Int=True) {_exposeToLua}
+	Method RemoveNewsByID:Int(newsID:Int, addToCollection:Int=True)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
+		Local result:Int
 		For Local i:Int = 0 To news.length-1
-			local news:TNews = TNews(GetNewsAtIndex(i))
-			If not news or news.GetGUID() <> newsGUID Then continue
-
-			return RemoveNews(news, i, addToCollection)
+			If not TNews(news[i]) Then Continue
+			If not news[i].GetID() = newsID
+				result = RemoveNews(TNews(news[i]), i, addToCollection)
+				exit
+			EndIf
 		Next
-
-		Return False
+		
+		If useMutexes Then UnlockMutex(_newsMutex)
+		Return result
 	End Method
 
 
@@ -1632,98 +1847,186 @@ endrem
 	'by default the news gets added back to the collection, this can
 	'be controlled with the third param "addToCollection"
 	Method RemoveNews:Int(newsObject:TNews=null, slot:Int=-1, addToCollection:Int=True) {_exposeToLua}
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
 		Local newsSlot:Int = slot
 		'try to find the slot occupied by the news
 		If newsObject and slot < 0
 			For Local i:Int = 0 To news.length-1
 				local news:TBroadcastMaterial = GetNewsAtIndex(i)
-				If news = newsObject Then newsSlot = i;Exit
+				If news = newsObject 
+					newsSlot = i
+					Exit
+				EndIf
 			Next
 		EndIf
 
 		'was the news planned (-> in a slot) ?
-		If GetNewsAtIndex(newsSlot)
-			Local deletedNews:TBroadcastMaterial = news[newsSlot]
-
+		Local result:Int
+		Local plannedNews:TBroadcastMaterial = GetNewsAtIndex(newsSlot)
+		if plannedNews
 			'add that news back to the collection ?
-			If addToCollection And TNews(deletedNews)
-				GetPlayerProgrammeCollection(owner).AddNews(TNews(deletedNews))
+			If addToCollection and TNews(plannedNews)
+				GetPlayerProgrammeCollection(owner).AddNews(TNews(plannedNews))
 			EndIf
 
 			'empty the slot
 			news[newsSlot] = Null
 
 			If fireEvents 
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveNews, New TData.Add("news", deletedNews).AddNumber("slot", newsSlot), self)
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveNews, New TData.Add("news", plannedNews).AddNumber("slot", newsSlot), self)
 			Endif
-			Return True
+
+			result = True
+		Else
+			result = False
 		EndIf
-		Return False
+
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		Return result
 	End Method
 
 
-	Method HasNewsEvent:Int(newsEventObjectOrGUID:object) {_exposeToLua}
-		local guid:string = ""
-		if TBroadcastMaterialSource(newsEventObjectOrGUID)
-			guid = TBroadcastMaterialSource(newsEventObjectOrGUID).GetGUID()
-		else
-			guid = string(newsEventObjectOrGUID)
-		endif
+	Method HasNewsEvent:Int(newsEvent:TNewsEvent)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
 
+		Local result:Int
 		For local newsEntry:TNews = EachIn news
-			if newsEntry.GetNewsEvent().GetGUID() = guid then Return True
+			If newsEntry.GetNewsEvent() = newsEvent 
+				result = True
+				exit
+			EndIf
 		Next
-		Return False
+
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		Return result
 	End Method
 
 
-	Method HasNews:Int(newsObjectOrGUID:object) {_exposeToLua}
-		local guid:string = ""
-		if TBroadcastMaterial(newsObjectOrGUID)
-			guid = TBroadcastMaterial(newsObjectOrGUID).GetGUID()
-		else
-			guid = string(newsObjectOrGUID)
-		endif
+	Method HasNewsEventID:Int(newsEventID:Int)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
 
+		Local result:Int
+		For local newsEntry:TNews = EachIn news
+			If newsEntry.GetNewsEvent().GetID() = newsEventID 
+				result = True
+				exit
+			EndIf
+		Next
+
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		Return result
+	End Method
+
+
+	Method HasNews:Int(news:TBroadcastMaterial)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
+		Local result:Int
+		For local newsEntry:TBroadcastMaterial = EachIn self.news
+			If newsEntry = news 
+				result = True
+				exit
+			EndIf
+		Next
+
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		Return result
+	End Method
+
+
+	Method HasNews:Int(newsID:Int)
+		Return GetNews(newsID) <> Null
+	End Method
+
+
+
+	Method GetNews:TBroadcastMaterial(newsID:Int)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
+		Local result:TBroadcastMaterial
 		For local newsEntry:TBroadcastMaterial = EachIn news
-			if newsEntry.GetGUID() = guid then Return True
+			If newsEntry.GetID() = newsID 
+				result = newsEntry
+				exit
+			EndIf
 		Next
-		Return False
+		
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		Return result
 	End Method
 
 
-	Method GetNews:TBroadcastMaterial(GUID:string) {_exposeToLua}
+	Method GetNewsByGUID:TBroadcastMaterial(newsGUID:String)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
+		Local result:TBroadcastMaterial
 		For local newsEntry:TBroadcastMaterial = EachIn news
-			if newsEntry.GetGUID() = GUID then Return newsEntry
+			If newsEntry.GetGUID() = newsGUID 
+				result = newsEntry
+				exit
+			EndIf
 		Next
-		Return Null
+		
+		If useMutexes Then UnlockMutex(_newsMutex)
+
+		Return result
 	End Method
 
 
-	Method GetNewsArray:TBroadcastMaterial[]() {_exposeToLua}
-		Return news
+	'use this when passing all entries to LUA (copy to avoid modification)
+	Method GetNewsArrayCopy:TBroadcastMaterial[]()
+		Return news[ .. ]
 	End Method
 
 
-	Method GetNewsAtIndex:TBroadcastMaterial(index:Int) {_exposeToLua}
-		'out of bounds check
-		If index < 0 Or index >= news.length Then Return Null
+	Method GetNewsAtIndex:TBroadcastMaterial(index:Int)
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
 
-		Return news[index]
+		Local result:TBroadcastMaterial
+		If index >= 0 and index < news.length 
+			result = news[index]
+		EndIf
+		
+		If useMutexes Then UnlockMutex(_newsMutex)
+		
+		Return result
 	End Method
 
 
 	Method ProduceNewsShow:TBroadcastMaterial()
-		Local show:TNewsShow = TNewsShow.Create("News show " + GetWorldTime().GetFormattedTime(), owner, GetNewsAtIndex(0),GetNewsAtIndex(1),GetNewsAtIndex(2))
-		'if
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsMutex)
+
+		Local news1:TBroadcastMaterial = GetNewsAtIndex(0)
+		Local news2:TBroadcastMaterial = GetNewsAtIndex(1)
+		Local news3:TBroadcastMaterial = GetNewsAtIndex(2)
+		Local show:TNewsShow = TNewsShow.Create("News show " + GetWorldTime().GetFormattedTime(), owner, news1, news2, news3)
+
+		If useMutexes Then UnlockMutex(_newsMutex)
+
 		AddObject(show, TVTBroadcastMaterialType.NEWSSHOW,-1,-1, False)
-			'print "Production of news show for player "+owner + " OK."
-		'endif
+
 		Return show
 	End Method
 
 
 	Method GetNewsShow:TBroadcastMaterial(day:Int=-1, hour:Int=-1) {_exposeToLua}
+		'avoid others manipulating the collection meanwhile
+		If useMutexes Then LockMutex(_newsShowMutex)
+
 		'if no news placed there already, just produce one live
 		Local show:TBroadcastMaterial = GetObject(TVTBroadcastMaterialType.NEWSSHOW, day, hour)
 		If Not show
@@ -1734,6 +2037,9 @@ endrem
 				endif
 			endif
 		endif
+
+		If useMutexes Then UnlockMutex(_newsShowMutex)
+
 		Return show
 	End Method
 
@@ -1763,16 +2069,24 @@ endrem
 
 		'=== BEGIN OF NEWSSHOW ===
 		If minute = 0
-			obj = GetNewsShow()
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_newsShowMutex)
+
+			obj = GetNewsShow(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.NEWSSHOW)
 
 			'adjust currently broadcasted block
 			If obj then obj.currentBlockBroadcasting = GetObjectBlock(TVTBroadcastMaterialType.NEWSSHOW, day, hour)
+			
+			If useMutexes Then UnlockMutex(_newsShowMutex)
 
 			return obj
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_programmesMutex)
+			
 			obj = GetProgramme(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.PROGRAMME)
@@ -1780,9 +2094,14 @@ endrem
 			'adjust currently broadcasted block
 			If obj then obj.currentBlockBroadcasting = GetObjectBlock(TVTBroadcastMaterialType.PROGRAMME, day, hour)
 
+			If useMutexes Then UnlockMutex(_programmesMutex)
+
 			return obj
 		'=== BEGIN OF ADVERTISEMENT ===
 		ElseIf minute = 55
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_advertisementsMutex)
+
 			obj = GetAdvertisement(day, hour)
 
 			'log in current broadcast
@@ -1790,6 +2109,8 @@ endrem
 
 			'adjust currently broadcasted block
 			If obj then obj.currentBlockBroadcasting = GetObjectBlock(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
+
+			If useMutexes Then UnlockMutex(_advertisementsMutex)
 
 			return obj
 		EndIf
@@ -1853,6 +2174,9 @@ endrem
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_programmesMutex)
+
 			obj = GetProgramme(day, hour)
 			local eventKey:TEventKey = GameEventKeys.Broadcast_common_BeginBroadcasting
 
@@ -1866,6 +2190,8 @@ endrem
 					eventKey = GameEventKeys.Broadcast_common_ContinueBroadcasting
 				EndIf
 			EndIf
+			If useMutexes Then UnlockMutex(_programmesMutex)
+
 			'store audience/broadcast for daily stats (also for outage!)
 			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
 
@@ -1875,6 +2201,9 @@ endrem
 		'=== END/BREAK OF PROGRAMME ===
 		'call-in shows/quiz - generate income
 		ElseIf minute = 54
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_programmesMutex)
+
 			obj = GetProgramme(day, hour)
 			local eventKey:TEventKey = GameEventKeys.Broadcast_common_FinishBroadcasting
 
@@ -1936,11 +2265,17 @@ endrem
 					eventKey = GameEventKeys.Broadcast_common_BreakBroadcasting
 				EndIf
 			EndIf
+			
+			If useMutexes Then UnlockMutex(_programmesMutex)
+
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_advertisementsMutex)
+
 			obj = GetAdvertisement(day, hour)
 			local eventKey:TEventKey = GameEventKeys.Broadcast_common_BeginBroadcasting
 
@@ -1994,6 +2329,9 @@ endrem
 					eventKey = GameEventKeys.Broadcast_common_ContinueBroadcasting
 				EndIf
 			EndIf
+			
+			If useMutexes Then UnlockMutex(_advertisementsMutex)
+			
 			'store audience/broadcast for daily stats (also for outage!)
 			GetDailyBroadcastStatistic( day, true ).SetAdBroadcastResult(obj, owner, hour, audienceResult)
 
@@ -2003,6 +2341,9 @@ endrem
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
 		ElseIf minute = 59
+			'avoid others manipulating the collection meanwhile
+			If useMutexes Then LockMutex(_advertisementsMutex)
+
 			obj = GetAdvertisement(day, hour)
 			local eventKey:TEventKey = GameEventKeys.Broadcast_common_FinishBroadcasting
 
@@ -2017,6 +2358,8 @@ endrem
 					eventKey = GameEventKeys.Broadcast_common_BreakBroadcasting
 				EndIf
 			EndIf
+			
+			If useMutexes Then UnlockMutex(_advertisementsMutex)
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 		EndIf

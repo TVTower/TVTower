@@ -392,7 +392,7 @@ function JobNewsAgency:Tick()
 						else
 							debugMsg("- filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
 						end
-						TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
+						TVT.ne_doNewsInPlan(slot-1, news.GetID())
 						--self.Task:PayFromBudget(price)
 					end
 

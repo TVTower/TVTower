@@ -981,7 +981,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local ppp:TPlayerProgrammePlan = GetPlayerProgrammePlan(senderPlayerID)
 		if not ppp then return
 
-		local news:TBroadcastMaterial = ppp.GetNews(newsGUID)
+		local news:TBroadcastMaterial = ppp.GetNewsByGUID(newsGUID)
 		if not news then return
 	
 		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_SETNEWS )

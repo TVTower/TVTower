@@ -914,7 +914,7 @@ Type RoomHandler_News extends TRoomHandler
 		'remove from plan (with addBackToCollection=FALSE) and collection
 		if GetPlayerBaseCollection().IsPlayer(guiNews.news.owner)
 			'avoid calling this for old savegames (guid-duplication bug)
-			'GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), FALSE)
+			'GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByID(guiNews.news.GetID(), FALSE)
 			'and meanwhile check "objects"
 			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNews(guiNews.news,-1, FALSE)
 
@@ -959,7 +959,7 @@ Type RoomHandler_News extends TRoomHandler
 		if not GetPlayerBaseCollection().IsPlayer(guiNews.news.owner) return False
 
 		if receiverList = guiNewsListAvailable
-			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), TRUE)
+			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByID(guiNews.news.GetID(), TRUE)
 		elseif receiverList = guiNewsListUsed
 			local slot:int = -1
 			'check drop position

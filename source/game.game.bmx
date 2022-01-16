@@ -1074,7 +1074,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'adjust opener live-time
 			programmeData.releaseTime = GetWorldTime().MakeTime(0, startDay, startHour, 5)
 			Local broadcast:TProgramme = TProgramme.Create(currentLicence)
-			playerPlan.SetProgrammeSlot(broadcast, startDay, startHour )
+			playerPlan.AddProgramme(broadcast, startDay, startHour )
 			'disable control of that programme
 			broadcast.licence.SetControllable(False)
 			If broadcast.isControllable() Then Throw "controllable!"
@@ -1088,7 +1088,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'add the last ad as infomercial (all others should be finished
 			'then)
 'debugstop
-			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetAdContractAtIndex(2)), startDay, startHour + currentHour )
+			playerPlan.AddProgramme(New TAdvertisement.Create(playerCollection.GetAdContractAtIndex(2)), startDay, startHour + currentHour )
 
 			'place ads for all broadcasted hours
 			Local currentAdIndex:Int = 0
@@ -1098,7 +1098,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				For Local spotIndex:Int = 1 To adContract.GetSpotCount()
 					Local ad:TAdvertisement = New TAdvertisement.Create(adContract)
 					If Not ad.GetSource().IsAvailable() Then DebugStop
-					playerPlan.SetAdvertisementSlot(ad, startDay, currentAdHour )
+					playerPlan.AddAdvertisement(ad, startDay, currentAdHour)
 					currentAdHour :+ 1
 				Next
 			Next
@@ -1660,19 +1660,24 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI() Then player.PlayerAI.CallOnSave()
 		Next
+'TLuaEngine.debugInvoke = False
 	End Function
 
 	'run when financial balance of a player changes
 	Function onPlayerChangeMoney:Int(triggerEvent:TEventBase)
-		Local finance:TPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
-		If Not finance Then Return False
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID")
+		if not GetPlayer(playerID) then Return False
+		'money at time of the event/notification might be different to
+		'money now (eg. delayed notification)
+		Local moneyThatTime:Long = triggerEvent.GetData().GetLong("money")
 
-		Local playerID:Int = finance.playerID
-		If finance.GetMoney() < 0 And GetGame().GetPlayerBankruptLevel(playerID) = 0
+		If moneyThatTime < 0 And GetGame().GetPlayerBankruptLevel(playerID) = 0
 			GetGame().SetPlayerBankruptLevel(playerID, 1, -1)
-		ElseIf finance.GetMoney() >= 0 And GetGame().GetPlayerBankruptLevel(playerID) <> 0
+		ElseIf moneyThatTime >= 0 And GetGame().GetPlayerBankruptLevel(playerID) <> 0
 			GetGame().SetPlayerBankruptLevel(playerID, 0, -1)
 		EndIf
+		
+		Return True
 	End Function
 
 

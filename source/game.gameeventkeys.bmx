@@ -189,10 +189,6 @@ Type TGameEventKeys
 	Field ProgrammePlan_RemoveObjectInstances:TEventKey = GetEventKey("ProgrammePlan.RemoveObjectInstances", True)
 	Field ProgrammePlan_SetNews:TEventKey = GetEventKey("ProgrammePlan.SetNews", True)
 	Field ProgrammePlan_RemoveNews:TEventKey = GetEventKey("ProgrammePlan.RemoveNews", True)
-	Field ProgrammePlan_AddProgramme:TEventKey = GetEventKey("ProgrammePlan.AddProgramme", True)
-	Field ProgrammePlan_RemoveProgramme:TEventKey = GetEventKey("ProgrammePlan.RemoveProgramme", True)
-	Field ProgrammePlan_AddAdvertisement:TEventKey = GetEventKey("ProgrammePlan.AddAdvertisement", True)
-	Field ProgrammePlan_RemoveAdvertisement:TEventKey = GetEventKey("ProgrammePlan.RemoveAdvertisement", True)
 
 	Field Broadcast_common_BeginBroadcasting:TEventKey = GetEventKey("Broadcast.common.BeginBroadcasting", True)
 	Field Broadcast_common_ContinueBroadcasting:TEventKey = GetEventKey("Broadcast.common.ContinueBroadcasting", True)

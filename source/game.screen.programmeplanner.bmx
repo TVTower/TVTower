@@ -1012,12 +1012,12 @@ Type TScreenHandler_ProgrammePlanner
 				EndIf
 			EndIf
 
-			If Not GetPlayerProgrammePlan(currentRoom.owner).SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
+			If Not GetPlayerProgrammePlan(currentRoom.owner).AddProgramme(item.broadcastMaterial, planningDay, slot)
 				TLogger.Log("onAddItemToSlotList()", "Dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
 				Return False
 			EndIf
 		ElseIf list = GuiListAdvertisements
-			If Not GetPlayerProgrammePlan(currentRoom.owner).SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
+			If Not GetPlayerProgrammePlan(currentRoom.owner).AddAdvertisement(item.broadcastMaterial, planningDay, slot)
 				TLogger.Log("onAddItemToSlotList()", "Dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED", LOG_ERROR)
 				Return False
 			EndIf

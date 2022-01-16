@@ -479,6 +479,11 @@ Type TAIEvent {_exposeTolua}
 	Const OnPlayerGoesBankrupt:Int = 26
 	Const OnConditionalCallOnTick:Int = 27
 	Const OnTick:Int = 28
+	
+	
+	Method New(evID:Int)
+		SetID(evID)
+	End Method
 
 
 	Method SetID:TAIEvent(evID:int)

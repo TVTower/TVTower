@@ -821,7 +821,7 @@ Type TDigNetwork
 					evData.AddString("hostName", obj.getString(5))
 					evData.AddString("gameTitle", obj.getString(6))
 
-					TEventBase.Create(eventKey_onReceiveAnnounceGame, evData).trigger()
+					RegisterNotificationEvent(eventKey_onReceiveAnnounceGame, evData)
 
 					'print "...announce from: "+ GetDottedIP(obj.getInt(3))
 				endif
@@ -841,12 +841,12 @@ Type TDigNetwork
 		if server
 			self.isServer = true
 			self.server.callback = self.callbackServer
-			TEventBase.Create(eventKey_onCreateServer, new TData.AddNumber("successful", true)).trigger()
+			RegisterNotificationEvent(eventKey_onCreateServer, new TData.AddNumber("successful", true))
 
 			TLogger.Log("Network.StartServer()", "created server : "+GetDottedIP(GetMyIP())+":"+server.port, LOG_DEBUG | LOG_NETWORK)
 			return true
 		else
-			TEventBase.Create(eventKey_onCreateServer, new TData.AddNumber("successful", false)).trigger()
+			RegisterNotificationEvent(eventKey_onCreateServer, new TData.AddNumber("successful", false))
 
 			return false
 		endif
@@ -860,7 +860,7 @@ Type TDigNetwork
 		self.server = null
 		self.client = null
 
-		TEventBase.Create(eventKey_onStopServer, null).trigger()
+		RegisterNotificationEvent(eventKey_onStopServer, null)
 	End Method
 
 
@@ -892,8 +892,7 @@ Type TDigNetwork
 		self.client.callback = self.callbackClient
 		self.isConnected = client.Connect(ip, port)
 
-		TEventBase.Create(eventKey_onConnectToServer, new TData.AddNumber("successful", isConnected)).trigger()
-
+		RegisterNotificationEvent(eventKey_onConnectToServer, new TData.AddNumber("successful", isConnected))
 		TLogger.Log("Network.ConnectToServer()", "connect to "+GetDottedIP(ip)+":"+port, LOG_DEBUG | LOG_NETWORK)
 		return self.isConnected
 	End Method

@@ -259,8 +259,8 @@ Type TApp
 
 			?debug
 			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadResource, TApp.onLoadResource )
-			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnBeginLoadResource, TApp.onBeginLoadResource )
 			?
+			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnnLoadResourceFailed, TApp.onLoadResourceFailed )
 
 			obj.LoadSettings()
 			'override default settings with app arguments (params when executing)
@@ -337,19 +337,19 @@ Type TApp
 	End Method
 
 
-	Function onBeginLoadResource:Int( triggerEvent:TEventBase )
+	Function onLoadResourceFailed:Int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		Local name:String = triggerEvent.GetData().GetString("name")
-		TLogger.Log("App.onLoadResource", "Loading ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
+		TLogger.Log("App.onLoadResource", "Loading ~q"+name+"~q ["+resourceName+"] failed.", LOG_LOADING)
 	End Function
 
-
+	?debug
 	Function onLoadResource:Int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		Local name:String = triggerEvent.GetData().GetString("name")
 		TLogger.Log("App.onLoadResource", "Loaded ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
 	End Function
-
+	?
 
 
 	'if no startup-music was defined, try to play menu music if some
@@ -4511,12 +4511,14 @@ Type GameEvents
 		If playerID = 0 Then Return False
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
 		If Not player Then Return False
+		'amount of money a time of event not used for now
+		'Local money:Long = triggerEvent.GetData().GetLong("money", 0)
 		Local value:Long = triggerEvent.GetData().GetLong("value", 0)
 		Local reason:Int = triggerEvent.GetData().GetInt("reason", 0)
 		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", Null))
 
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMoneyChanged).AddLong(value).AddInt(reason).AddData(reference))
+			player.PlayerAI.AddEventObj(New TAIEvent(TAIEvent.OnMoneyChanged).AddLong(value).AddInt(reason).AddData(reference))
 			'player.playerAI.CallOnMoneyChanged(value, reason, reference)
 		EndIf
 		If player.isActivePlayer() Then GetInGameInterface().ValuesChanged = True
@@ -5565,8 +5567,8 @@ Type GameEvents
 
 					'pay penalty
 					player.GetFinance().PayMisc(GameRules.sentXRatedPenalty)
-					'remove programme from plan
-					player.GetProgrammePlan().ForceRemoveProgramme(currentProgramme, day, hour)
+					'(forceful) remove programme from plan
+					player.GetProgrammePlan().RemoveProgramme(currentProgramme, True)
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
@@ -5812,9 +5814,9 @@ Type GameEvents
 				'no need to copy the array because it has a fixed length
 				For Local news:TNews = EachIn p.GetProgrammePlan().news
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
-						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+						p.GetProgrammePlan().RemoveNewsByID(news.GetID(), False)
 					'elseif news.newsevent.GetTopicality() < minTopicalityToKeep
-					'	p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+					'	p.GetProgrammePlan().RemoveNewsByID(news.GetID(), False)
 					EndIf
 				Next
 			Next
