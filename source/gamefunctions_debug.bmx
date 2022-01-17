@@ -3289,6 +3289,7 @@ Type TDebugProgrammePlanInfos
 	Global predictionCacheProgAudience:TAudience[24]
 	Global predictionCacheProg:TAudienceAttraction[24]
 	Global predictionCacheNews:TAudienceAttraction[24]
+	Global predictionRefreshMarketsNeeded:int = True
 	Global currentPlayer:Int = 0
 	Global adSlotWidth:Int = 120
 	Global programmeSlotWidth:Int = 200
@@ -3303,8 +3304,25 @@ Type TDebugProgrammePlanInfos
 
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onChangeProgrammePlan) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onChangeNewsShow) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_OnRecalculateAudienceSum, onChangeAudienceSum) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onStartGame) ]
 	End Method
 
+
+	Function onStartGame:Int(triggerEvent:TEventBase)
+		predictionRefreshMarketsNeeded = True
+	End Function
+
+
+	Function onChangeAudienceSum:Int(triggerEvent:TEventBase)
+		Local reachBefore:Int = triggerEvent.GetData().GetInt("reachBefore")
+		Local reach:Int = triggerEvent.GetData().GetInt("reach")
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID")
+		if playerID = currentPlayer and reach <> reachBefore
+			predictionRefreshMarketsNeeded = True
+		EndIf
+	End Function
+	
 
 	Function onChangeNewsShow:Int(triggerEvent:TEventBase)
 		Local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("news"))
@@ -3415,15 +3433,19 @@ Type TDebugProgrammePlanInfos
 		'clean up if needed
 		If oldestEntryTime >= 0 And oldestEntryTime + 10000 < Time.GetTimeGone() Then RemoveOutdated()
 
-
 		If currentPlayer <> playerID
 			currentPlayer = playerID
 			ResetPredictionCache(0) 'predict all again
-			predictor.RefreshMarkets() 'in case nobody did yet
+			
+			predictionRefreshMarketsNeeded = True
 		EndIf
 
-		If GetWorldTime().GetTimeGone() Mod 5 = 0
+
+		'refresh markets? maybe stations were built / audience reach
+		'changed
+		If predictionRefreshMarketsNeeded
 			predictor.RefreshMarkets()
+			predictionRefreshMarketsNeeded = False
 		EndIf
 
 
