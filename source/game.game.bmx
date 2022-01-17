@@ -1056,6 +1056,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local lastblocks:Int=0
 		Local playerCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
 		Local playerPlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(playerID)
+		Local startDay:int
+		Local startHour:int
 
 '		SortList(playerCollection.adContracts)
 		Local currentLicence:TProgrammeLicence = playerCollection.GetSingleLicenceAtIndex(0)
@@ -1093,13 +1095,18 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'place ads for all broadcasted hours
 			Local currentAdIndex:Int = 0
 			Local currentAdSpotIndex:Int = 0
-			Local currentAdHour:Int = 0
+			Local currentAdDay:Int = startDay
+			Local currentAdHour:Int = startHour
 			For Local adContract:TAdContract = EachIn playerCollection.GetAdContracts()
 				For Local spotIndex:Int = 1 To adContract.GetSpotCount()
 					Local ad:TAdvertisement = New TAdvertisement.Create(adContract)
 					If Not ad.GetSource().IsAvailable() Then DebugStop
-					playerPlan.SetAdvertisementSlot(ad, startDay, currentAdHour )
+					playerPlan.SetAdvertisementSlot(ad, currentAdDay, currentAdHour )
 					currentAdHour :+ 1
+					If currentAdHour > 23
+						currentAdHour :- 24
+						currentAdHour :+ 1
+					EndIf
 				Next
 			Next
 		EndIf
