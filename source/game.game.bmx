@@ -486,6 +486,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			PreparePlayerStep2(playerID)
 
 			StartPlayer(playerID)
+			
+			'refresh current broadcast information (not broadcasting 
+			'something now)
+			GetBroadcastManager().ResetCurrentPlayerBroadcast(playerID)
 		EndIf
 
 

@@ -191,7 +191,22 @@ Type TBroadcastManager
 			GetCurrentBroadcast().SetAudienceResult(playerID, result)
 		EndIf
 	End Method
-
+	
+	
+	'removes the currently "running" broadcast
+	'(eg when restarting a player while others still broadcast stuff)
+	Method ResetCurrentPlayerBroadcast(playerID:Int)
+		'also inform others about the currently happening malfunction
+		Local minute:int = GetWorldTime().GetDayMinute()
+		if minute >= 5 and minute <= 54
+			SetBroadcastMalfunction(playerID, TVTBroadcastMaterialType.PROGRAMME)
+		Elseif minute >= 55 and minute <= 59
+			SetBroadcastMalfunction(playerID, TVTBroadcastMaterialType.ADVERTISEMENT)
+		Else
+			SetBroadcastMalfunction(playerID, TVTBroadcastMaterialType.NEWSSHOW)
+		EndIf
+	End Method
+	
 
 	'recalculates the audience of the given player
 	'other players DO NOT get adjusted (audience is "lost", not transferred)
