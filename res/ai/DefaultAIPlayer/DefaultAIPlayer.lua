@@ -84,6 +84,7 @@ _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	--c.Requisitions = nil  --darf nicht überschrieben werden
 
 	c.LastStationMapMarketAnalysis = 0
+	c.LogLevel = LOG_INFO
 end)
 
 function DefaultAIPlayer:typename()
@@ -91,11 +92,11 @@ function DefaultAIPlayer:typename()
 end
 
 function DefaultAIPlayer:LogInfo(message)
-	debugMsg(message)
+	logWithLevel(self.LogLevel, LOG_INFO, message)
 end
 
 function DefaultAIPlayer:LogDebug(message)
-	--debugMsg(message)
+	logWithLevel(self.LogLevel, LOG_DEBUG, message)
 end
 
 function DefaultAIPlayer:initParameters()
@@ -211,31 +212,19 @@ function DefaultAIPlayer:OnGameBegins()
 	end
 	--END LOAD COMPATIBILITY
 
-	if 1 == 2 then
+	if self.LogLevel >= LOG_DEBUG then
+		self:LogDebug("--------------------")
 		local se = StatisticEvaluator()
 		for j = 0, 3 do
 			self:LogInfo("run " .. j)
 			for i = 0, 2 do
 				se:AddValue(1 + i*2)
-				self:LogInfo("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+				self:LogDebug("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
 			end
 			se:Adjust()
-			self:LogInfo("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+			self:LogDebug("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
 		end
-	
-		self:LogInfo("--------------------")
-		self:LogInfo("--------------------")
-	
-		se = StatisticEvaluatorOld()
-		for j = 0, 3 do
-			debugMsg("run " .. j)
-			for i = 0, 2 do
-				se:AddValue(1 + i*2)
-				self:LogInfo("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
-			end
-			se:Adjust()
-			self:LogInfo("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
-		end
+		self:LogDebug("--------------------")
 	end
 end
 
@@ -382,7 +371,7 @@ function DefaultAIPlayer:GetNextEnemyId()
 end
 
 function DefaultAIPlayer:CleanUp()
-	self:LogInfo(self:typename() .. ": CleanUp")
+	self:LogDebug(self:typename() .. ": CleanUp")
 
 	self:LogDebug("Requisitions (before): " .. table.count(self.Requisitions))
 
@@ -750,11 +739,6 @@ end
 
 -- figure is now at the desired target
 function OnReachTarget(target, targetText)
-	--if target ~= nil then
-	--	devMsg("OnReachTarget: " .. targetText)
-	--else
-	--	devMsg("OnReachTarget: unknown")
-	--end
 	--debugMsg("OnReachTarget")
 	if (aiIsActive) then
 		getAIPlayer():OnReachTarget()

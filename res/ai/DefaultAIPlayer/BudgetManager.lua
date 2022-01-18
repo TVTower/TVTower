@@ -13,7 +13,7 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 end)
 
 function BudgetManager:Log(message)
-	--debugMsg(message)
+	logWithLevel(LOG_INFO, self.CurrentLogLevel, message)
 end
 
 function BudgetManager:typename()
@@ -26,6 +26,7 @@ function BudgetManager:ResetDefaults()
 	self.SavingParts = 0.3
 	-- Percentage to add on fixed costs "to make sure it is enough"
 	self.ExtraFixedCostsSavingsPercentage = 0
+	self.IgnoreMoneyChange = false
 end
 
 
@@ -36,11 +37,14 @@ end
 
 -- Method is run at the begin of each day
 function BudgetManager:CalculateNewDayBudget()
-	self:Log("=== Budget day " .. TVT.GetDaysRun() .. " ===")
+	self.IgnoreMoneyChange = true
+	self.CurrentLogLevel = LOG_INFO
+	self:Log("=== Budget day " .. (TVT.GetDaysRun() + 1) .. " ===")
 	self:Log(string.left("Account balance:", 25, true) .. string.right(TVT.GetMoney(), 10, true))
 
 	self:UpdateBudget(TVT.GetMoney())
 	self:Log("======")
+	self.IgnoreMoneyChange = false
 end
 
 
@@ -71,13 +75,13 @@ function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 
 	-- saved too much? Use savings or take credit
 	if (pBudget * 0.8) < self.InvestmentSavings then
-		debugMsg("    $$Cutting investment savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ". Savings getting halved." )
+		self:Log("$$Cutting investment savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ". Savings getting halved." )
 		self.InvestmentSavings = self.InvestmentSavings / 2
 	end
 
 	-- saved too much? Use savings or take credit
 	if (pBudget * 0.6) < self.InvestmentSavings or self.InvestmentSavings < 0 then
-		debugMsg("    $$Totally get rid of investment savings. Savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ".")
+		self:Log("$$Totally get rid of investment savings. Savings: " .. self.InvestmentSavings .. ". Budget only at " .. pBudget .. ".")
 		self.InvestmentSavings = 0
 	end
 
@@ -220,13 +224,16 @@ end
 
 
 function BudgetManager:OnMoneyChanged(value, reason, reference)
+	if self.IgnoreMoneyChange == true then return end
+
 	reason = tonumber(reason)
 	value = tonumber(value)
+	self.CurrentLogLevel=LOG_DEBUG
 
 	if (reference ~= nil) then
-		--self:Log("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")
+		self:Log("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")
 	else
-		--self:Log("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value)
+		self:Log("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value)
 	end
 
 

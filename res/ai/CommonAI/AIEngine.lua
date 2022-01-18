@@ -592,8 +592,8 @@ function AITask:RecalcPriority()
 		end
 	end
 
-	--debugMsg("Task: " .. self:typename() .. " - BasePriority: " .. self.BasePriority .." - SituationPriority: " .. self:getSituationPriority() .. " - Ran1 : " .. Ran1 .. "  RequisitionPriority: " .. requisitionPriority)
-	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
+	--self:LogTrace("Task: " .. self:typename() .. " - BasePriority: " .. self.BasePriority .." - SituationPriority: " .. self:getSituationPriority() .. " - Ran1 : " .. Ran1 .. "  RequisitionPriority: " .. requisitionPriority)
+	--self:LogTrace("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
 end
 
 
@@ -712,14 +712,8 @@ function AITask:LogTrace(message)
 	self:Log(LOG_TRACE, message)
 end
 
---main log method - write message if given level should be logged
 function AITask:Log(level, message)
-	if level == nil then
-		debugMsg("Log level not defined for "..self:typename())
-		print(debug.traceback())
-	elseif level > LOG_OFF and level <= self.LogLevel then
-		debugMsg(message)
-	end
+	logWithLevel(self.LogLevel, level, message)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -813,10 +807,11 @@ end
 
 function AIJob:ReDoCheck(minutesWait, ticksWait)
 	local timeGone = TVT.GetTimeGoneInMinutes()
-	if ((self.LastCheckWorldTicks + ticksWait) < self:getWorldTicks() or (self.LastCheck + minutesWait) < timeGone) then
-		self:LogDebug("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. timeGone .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. self:getWorldTicks())
+	local ticks = self:getWorldTicks()
+	if ((self.LastCheckWorldTicks + ticksWait) < ticks or (self.LastCheck + minutesWait) < timeGone) then
+		self:LogDebug("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. timeGone .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. ticks)
 		self.Status = JOB_STATUS_REDO
-		self.LastCheckWorldTicks = self:getWorldTicks()
+		self.LastCheckWorldTicks = ticks
 		self.LastCheck = timeGone
 		self:Prepare(self.StartParams)
 	end
@@ -886,14 +881,8 @@ function AIJob:LogTrace(message)
 	self:Log(LOG_TRACE, message)
 end
 
---main log method - write message if given level should be logged
 function AIJob:Log(level, message)
-	if level == nil then
-		debugMsg("Log level not defined for "..self:typename())
-		print(debug.traceback())
-	elseif level > LOG_OFF and level <= self:GetLogLevel() then
-		debugMsg(message)
-	end
+	logWithLevel(self:GetLogLevel(), level, message)
 end
 
 --calculate inherited log level from task if job log level is not explicitly defined
@@ -902,7 +891,7 @@ function AIJob:GetLogLevel()
 		if self.Task ~= nil and self.Task.LogLevel ~=nil then
 			self.LogLevel = self.Task.LogLevel
 		else
-			debugMsg(self:typename().." log level undefined")
+			logWithLevel(LOG_ERROR, LOG_ERROR, self:typename().." log level undefined")
 			self.LogLevel = LOG_OFF
 		end
 	end
@@ -1191,7 +1180,7 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 		self.hourlyProgrammeAudience[currentI] = audience
 		return true
 	end
-	debugMsg("   -> ADDING FAILED at " .. currentI .. "  unknown broadcastTypeID " .. broadcastTypeID)
+	logWithLevel(LOG_ERROR, LOG_ERROR, "   -> ADDING FAILED at " .. currentI .. "  unknown broadcastTypeID " .. broadcastTypeID)
 end
 
 
@@ -1200,8 +1189,8 @@ function BroadcastStatistics:GetAttraction(day, hour, broadcastType)
 	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
 		return self.hourlyNewsAttraction[currentI]
 	elseif broadcastType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
---debugMsg("   -> GET PROG at " .. currentI)
-	--	for k,v in pairs(self.hourlyProgrammeAttraction) do
+		--debugMsg("   -> GET PROG at " .. currentI)
+		--for k,v in pairs(self.hourlyProgrammeAttraction) do
 		--	debugMsg("      existing: " .. k)
 		--end
 		return self.hourlyProgrammeAttraction[currentI]
@@ -1267,7 +1256,7 @@ end
 
 function StatisticEvaluator:AddValue(value)
 	if value == nil then
-		debugMsg("########## StatisticEvaluator:AddValue - NIL VALUE #############")
+		logWithLevel(LOG_ERROR, LOG_ERROR, "########## StatisticEvaluator:AddValue - NIL VALUE #############")
 		return
 	end
 
@@ -1377,6 +1366,13 @@ function kiMsg(pMessage, allPlayers)
 	end
 	TVT.addToLog(pMessage)
 end
+
+function infoMsg(pMessage)
+	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+		--TVT.PrintOut(pMessage)
+		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+	end
+end
 --]]
 
 function debugMsgDepth(change)
@@ -1401,15 +1397,25 @@ function debugMsg(pMessage, allPlayers)
 	TVT.addToLog(pMessage)
 end
 
-
---[[
-function infoMsg(pMessage)
-	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
-		--TVT.PrintOut(pMessage)
-		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+--main log method - write message if given level should be logged
+function logWithLevel(currentLogLevel, messageLogLevel, message)
+	if currentLogLevel ~= nil then
+		if messageLogLevel ~= nil then
+			if message~=nil then
+				if messageLogLevel == LOG_ERROR then message = "ERROR: " .. message end
+				if messageLogLevel > LOG_OFF and messageLogLevel <= currentLogLevel then
+					debugMsg(message)
+				end
+			end
+		else
+			debugMsg("Error: message log level not defined")
+			print(debug.traceback())
+		end
+	else
+		debugMsg("Error: current log level not defined")
+		print(debug.traceback())
 	end
 end
---]]
 
 function devMsg(pMessage)
 	TVT.PrintOut("== DEV == : " .. pMessage)

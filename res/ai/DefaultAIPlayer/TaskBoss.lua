@@ -134,7 +134,7 @@ function JobCheckCredit:Tick()
 			self.Task.NeededInvestmentBudget = self.Task.NeededInvestmentBudget - repay
 			self:LogDebug("Repaid " .. repay .. " from credit to boss.")
 		else
-			self:LogInfo("FAILED to repay " .. repay .. " from credit to boss.")
+			self:LogError("FAILED to repay " .. repay .. " from credit to boss.")
 		end
 
 	-- TAKE credit
@@ -148,7 +148,7 @@ function JobCheckCredit:Tick()
 			if TVT.bo_doTakeCredit(credit) == TVT.RESULT_OK then
 				self:LogInfo("Took a credit of " .. credit .." from boss.")
 			else
-				self:LogInfo("FAILED to get credit of " .. credit .." from boss.")
+				self:LogError("FAILED to get credit of " .. credit .." from boss.")
 			end
 
 			self.Task.TryToGetCredit = math.max(0, self.Task.TryToGetCredit - credit)

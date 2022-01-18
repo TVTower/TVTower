@@ -266,7 +266,7 @@ function BuyProgrammeLicencesRequisition:CheckActuality()
 	end
 	self.Count = table.count(self.licenceReqs)
 	if oldCount == self.Count and table.count(removeList) > 0 then
-		devMsg("!!!! FAILED to remove from self.licenceReqs")
+		logWithLevel(LOG_ERROR, LOG_ERROR, "!!!! FAILED to remove from self.licenceReqs")
 	end
 
 	if (self.Count > 0) then

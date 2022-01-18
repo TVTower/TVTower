@@ -147,7 +147,7 @@ function JobSellMovies:Tick()
 			self.Task.Player.programmeLicencesInArchiveCount = math.max(0, self.Task.Player.programmeLicencesInArchiveCount - 1)
 			self.Task.Player.programmeLicencesInSuitcaseCount = self.Task.Player.programmeLicencesInSuitcaseCount + 1
 		else
-			self:LogInfo("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
+			self:LogError("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
 		end
 	end
 
