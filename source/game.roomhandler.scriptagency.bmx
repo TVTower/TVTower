@@ -126,15 +126,15 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection ) ]
 
 		'check if dropping is possible (affordable price for a script dragged when dropping on a one)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropScript, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropScript, "TGUIScriptAgencyScript") ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTarget, onDropScript, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScript, "TGUIScriptAgencyScript") ]
 		'stop dragging vendor elements if suitcase is full
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, OnTryDragScript, "TGUIScriptAgencyScript") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScriptOnVendor, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScriptOnVendor, "TGUIScriptAgencyScript") ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGUIScriptAgencyScript" ) ]
 		'this lists want to delete the item if a right mouse click happens...
@@ -822,7 +822,7 @@ endrem
 	End Function
 
 
-	'handle cover block drops on the vendor ... only sell if from the player
+	'handle book/cover block drops on the vendor ... only sell if from the player
 	Function onDropScriptOnVendor:int( triggerEvent:TEventBase )
 		'only allow interaction if we observe our player and are there
 		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE

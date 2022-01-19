@@ -111,7 +111,6 @@ Type TGUIListBase Extends TGUIobject
 		'redirect the scroll event of the panel 
 		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseScrollwheel, onPanelMouseScrollWheel, guiEntriespanel ))
 
-
 		'is something dropping - check if it this list
 		SetAcceptDrop("TGUIListItem")
 
@@ -660,14 +659,6 @@ Type TGUIListBase Extends TGUIobject
 	End Function
 
 
-	'override default
-	Method onDrop:Int(triggerEvent:TEventBase) override
-		'we could check for dragged element here
-		triggerEvent.setAccepted(True)
-		Return True
-	End Method
-
-
 	'default handler for the case of an item being dropped back to its
 	'parent list
 	'by default it does not handly anything, so returns FALSE
@@ -676,17 +667,17 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method onTryDropOnTarget:Int( triggerEvent:TEventBase ) override
-		If not AcceptsDropObject(triggerEvent.GetSender())
+	Method onTryReceiveDrop:Int( triggerEvent:TEventBase ) override
+		If not AcceptsDrop(TGUIObject(triggerEvent.GetSender()), null)
 			triggerEvent.SetVeto()
 			Return False
 		endif
 		
-		Return Super.onTryDropOnTarget(triggerEvent)
+		Return Super.onTryReceiveDrop(triggerEvent)
 	End Method
 
 
-	Method onDropOnTarget:Int( triggerEvent:TEventBase ) override
+	Method OnBeginReceiveDrop:Int( triggerEvent:TEventBase ) override
 		Local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		If item = Null Then Return False
 		'ATTENTION:

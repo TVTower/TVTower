@@ -394,7 +394,7 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
-	Method OnTryDropOnTarget:Int(triggerEvent:TEventBase) override
+	Method OnTryReceiveDrop:Int(triggerEvent:TEventBase) override
 		'only allow dropping of "new" items if there is a free slot
 		'or if there is something which could be dragged instead
 		if not HasItem(TGUIObject(triggerEvent.GetSender())) and GetUnusedSlotAmount() <= 0
