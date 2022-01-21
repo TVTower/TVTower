@@ -466,8 +466,8 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GetTotalShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		local result:TStationMapPopulationShare = new TStationMapPopulationShare
+	Method GetTotalShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		local result:SStationMapPopulationShare
 
 		If populationReceiverMode = RECEIVERMODE_SHARED
 			Throw "GetTotalShare: Todo"
@@ -477,34 +477,34 @@ Type TStationMapCollection
 			'either
 			'ATTENTION: contains only cable and antenna
 			For local section:TStationMapSection = EachIn sections
-				result.Add( section.GetReceiverShare(includeChannelMask, excludeChannelMask) )
+				result :+ section.GetReceiverShare(includeChannelMask, excludeChannelMask)
 			Next
 			'or:
-			'result.Add( GetTotalAntennaShare(channelNumbers, withoutChannelNumbers) )
-			'result.Add( GetTotalCableNetworkShare(channelNumbers, withoutChannelNumbers) )
+			'result :+ GetTotalAntennaShare(channelNumbers, withoutChannelNumbers)
+			'result :+ GetTotalCableNetworkShare(channelNumbers, withoutChannelNumbers)
 
 			'add Satellite shares
-			result.Add( GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask) )
+			result :+ GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask)
 		EndIf
 
 		return result
 	End Method
 
 
-	Method GetTotalAntennaReceiverShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		local result:TStationMapPopulationShare = new TStationMapPopulationShare
+	Method GetTotalAntennaReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		local result:SStationMapPopulationShare
 		For local section:TStationMapSection = EachIn sections
-			result.Add( section.GetAntennaReceiverShare(includeChannelMask, excludeChannelMask) )
+			result :+ section.GetAntennaReceiverShare(includeChannelMask, excludeChannelMask)
 		Next
 
 		return result
 	End Method
 
 
-	Method GetTotalCableNetworkReceiverShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		local result:TStationMapPopulationShare = new TStationMapPopulationShare
+	Method GetTotalCableNetworkReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		local result:SStationMapPopulationShare
 		For local section:TStationMapSection = EachIn sections
-			result.Add( section.GetCableNetworkReceiverShare(includeChannelMask, excludeChannelMask) )
+			result :+ section.GetCableNetworkReceiverShare(includeChannelMask, excludeChannelMask)
 		Next
 
 		return result
@@ -513,13 +513,13 @@ Type TStationMapCollection
 
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetTotalSatelliteReceiverShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		local result:TStationMapPopulationShare = new TStationMapPopulationShare
+	Method GetTotalSatelliteReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		local result:SStationMapPopulationShare
 		'no channel requested?
 		if includeChannelMask.value = 0 then Return result
 		
 		For local satellite:TStationMap_Satellite = EachIn satellites
-			local satResult:TStationMapPopulationShare = new TStationMapPopulationShare
+			local satResult:SStationMapPopulationShare
 			Local channelsUsingThisSatellite:Int = 0
 			Local allUseThisSatellite:Int = True
 			'amount of non-ignored channels
@@ -4881,26 +4881,26 @@ Type TStationMapSection
 	'Ex. include=(1)   and exclude=(0    ) to get total reach for player 1
 	'Ex. include=(1)   and exclude=(2+4+8) to getexclusive reach for player 1
 	'Ex. include=(1+2) and exclude=(0    ) to get reach player 1 and 2 have together
-	Method GetReceiverShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		local result:TStationMapPopulationShare = new TStationMapPopulationShare
+	Method GetReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		local result:SStationMapPopulationShare
 
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			Throw "GetShare: TODO"
 			'result.Add( GetMixedShare(channelMask) )
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			result.Add( GetAntennaReceiverShare(includeChannelMask, excludeChannelMask) )
-			result.Add( GetCableNetworkReceiverShare(includeChannelMask, excludeChannelMask) )
+			result :+ GetAntennaReceiverShare(includeChannelMask, excludeChannelMask)
+			result :+ GetCableNetworkReceiverShare(includeChannelMask, excludeChannelMask)
 		EndIf
 		return result
 	End Method
 
 
-	Method GetCableNetworkReceiverShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+	Method GetCableNetworkReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationCableShareRatio())
 	End Method
 
 
-	Method GetAntennaReceiverShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+	Method GetAntennaReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationAntennaShareRatio())
 	End Method
 
@@ -4917,10 +4917,8 @@ Type TStationMapSection
 	'Ex. include=(1)   and exclude=(0    ) to get total reach for player 1
 	'Ex. include=(1)   and exclude=(2+4+8) to getexclusive reach for player 1
 	'Ex. include=(1+2) and exclude=(0    ) to get reach player 1 and 2 have together
-	Method GetCableNetworkPopulationShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		If includeChannelMask.value = 0 Then Return New TStationMapPopulationShare
-
-		Local result:TStationMapPopulationShare
+	Method GetCableNetworkPopulationShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		If includeChannelMask.value = 0 Then Return New SStationMapPopulationShare
 
 		'=== CHECK CACHE ===
 		'if already cached, save time...
@@ -4929,6 +4927,8 @@ Type TStationMapSection
 		Local cacheKey:String = "cablenetwork"
 		cacheKey :+ "_"+includeChannelMask.value
 		cacheKey :+ "_"+excludeChannelMask.value
+		
+		Local result:TStationMapPopulationShare
 
 		'== LOAD CACHE ==
 		If shareCache
@@ -4965,27 +4965,27 @@ Type TStationMapSection
 			result = new TStationMapPopulationShare
 			if channelsWithCableNetwork > 0
 				'total - if there is at least _one_ channel uses a cable network here
-				result.total = population
+				result.value.total = population
 
 				'share is only available if we checked some channels
 				if interestingChannelsCount > 0
 					'share - if _all_ channels use a cable network here
 					if allHaveCableNetwork
-						result.shared = population
+						result.value.shared = population
 					endif
 
 					'share percentage
-					result.populationShareRatio =  channelsWithCableNetwork / Float(interestingChannelsCount)
+					result.value.populationShareRatio =  channelsWithCableNetwork / Float(interestingChannelsCount)
 				endif
 			endif
 
 			'store new cached data
 			If shareCache 
 				LockMutex(shareCacheMutex)
-				shareCache.insert(cacheKey, result )
+				shareCache.insert(cacheKey, result)
 				UnlockMutex(shareCacheMutex)
 			EndIf
-
+			
 			'print "CABLE uncached: "+cacheKey
 			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		else
@@ -4995,7 +4995,7 @@ Type TStationMapSection
 
 		'disabled: GetCableNetworkAudienceSum() already contains the share multiplication)
 		'Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationCableShare()) )
-		Return result
+		Return result.value
 	End Method
 
 
@@ -5011,8 +5011,8 @@ Type TStationMapSection
 	'Ex. include=(1)   and exclude=(0    ) to get total reach for player 1
 	'Ex. include=(1)   and exclude=(2+4+8) to get exclusive reach for player 1
 	'Ex. include=(1+2) and exclude=(0    ) to get reach player 1 and 2 have together
-	Method GetAntennaPopulationShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		If includeChannelMask.value = 0 Then Return New TStationMapPopulationShare
+	Method GetAntennaPopulationShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		If includeChannelMask.value = 0 Then Return New SStationMapPopulationShare
 
 		Local result:TStationMapPopulationShare
 
@@ -5047,11 +5047,11 @@ Type TStationMapSection
 				'someone has a station there
 				'-> check already done in the skip above
 				'If ((mapMask.mask & includeChannelMask) <> 0)
-					result.total :+ populationmap[mapMask.x, mapMask.y]
+					result.value.total :+ populationmap[mapMask.x, mapMask.y]
 				'EndIf
 				'all searched have a station there
 				If (mapMask.mask & includeChannelMask.value) = includeChannelMask.value
-					result.shared :+ populationmap[mapMask.x, mapMask.y]
+					result.value.shared :+ populationmap[mapMask.x, mapMask.y]
 				EndIf
 			Next
 			UnlockMutex(antennaShareMutex)
@@ -5070,7 +5070,7 @@ Type TStationMapSection
 			'print "ANTENNA share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		EndIf
 
-		Return result
+		Return result.value
 	End Method
 
 
@@ -5297,7 +5297,15 @@ End Type
 
 
 
+
 Type TStationMapPopulationShare
+	Field value:SStationMapPopulationShare
+End Type
+
+
+
+
+Struct SStationMapPopulationShare
 	Field shared:Int 'in people
 	Field total:Int 'in people
 	Field populationShareRatio:Float 'ratio of total population
@@ -5308,8 +5316,8 @@ Type TStationMapPopulationShare
 	End Method
 	
 	
-	Method Copy:TStationMapPopulationShare()
-		local c:TStationMapPopulationShare = new TStationMapPopulationShare
+	Method Copy:SStationMapPopulationShare()
+		local c:SStationMapPopulationShare
 		c.shared = self.shared
 		c.total = self.total
 		c.populationShareRatio = self.populationShareRatio
@@ -5317,21 +5325,27 @@ Type TStationMapPopulationShare
 	End Method
 	
 	
-	Method Add:TStationMapPopulationShare(other:TStationMapPopulationShare)
+	Method Add:SStationMapPopulationShare(other:SStationMapPopulationShare)
 		self.shared :+ other.shared
 		self.total :+ other.total
 		self.populationShareRatio :+ other.populationShareRatio
 	End Method
 	
-	
-	
-	Method MultiplyFactor:TStationMapPopulationShare(factor:Float)
+
+	Method MultiplyFactor:SStationMapPopulationShare(factor:Float)
 		self.shared :* factor
 		self.total :* factor
 		self.populationShareRatio :* factor
 		Return self
 	End Method
-End Type
+
+
+    Method Operator :+(other:SStationMapPopulationShare)
+		self.shared :+ other.shared
+		self.total :+ other.total
+		self.populationShareRatio :+ other.populationShareRatio
+    End Method
+End Struct
 
 
 
