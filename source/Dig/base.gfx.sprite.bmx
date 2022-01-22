@@ -629,13 +629,13 @@ Type TSprite
 	End Method
 
 
-	Method GetFramePos:TVec2D(frame:Int=-1)
-		If frame < 0 Then Return New TVec2D.Init(0,0)
+	Method GetFramePos:SVec2I(frame:Int=-1)
+		If frame < 0 Then Return New SVec2I(0,0)
 
 		Local MaxFramesInCol:Int = Ceil(area.GetW() / framew)
 		Local framerow:Int = Ceil(frame / Max(1,MaxFramesInCol))
 		Local framecol:Int = frame - (framerow * MaxFramesInCol)
-		Return New TVec2D.Init(framecol * frameW, framerow * frameH)
+		Return New SVec2I(framecol * frameW, framerow * frameH)
 	End Method
 
 
@@ -652,7 +652,7 @@ Type TSprite
 
 
 	Method PixelIsOpaque:Int(x:Int, y:Int)
-		If x < 0 Or y < 0 Or x > frameW Or y > frameH
+		If x < 0 Or y < 0 Or x >= frameW Or y >= frameH
 			Print "out of bounds: "+x+", "+y
 			Return False
 		EndIf
@@ -661,8 +661,17 @@ Type TSprite
 			_pix = LockImage(GetImage())
 			'UnlockImage(parent.image) 'unlockimage does nothing in blitzmax (1.48)
 		EndIf
-
-		Return ARGB_Alpha(ReadPixel(_pix, x,y))
+		
+		If _pix.format = PF_RGBA8888
+			Local pixelPtr:Byte Ptr = _pix.pixels + (y * _pix.pitch + x * 4)
+			'(pixelPtr[0] & 255) 'r
+			'(pixelPtr[1] & 255) 'g
+			'(pixelPtr[2] & 255) 'b
+			'(pixelPtr[3]) 'a
+			Return pixelPtr[3] > 0
+		Else
+			Return ARGB_Alpha(ReadPixel(_pix, x,y))
+		EndIf
 	End Method
 
 
@@ -989,7 +998,7 @@ Type TSprite
 		If frames <= 0 Then theframe = -1
 		Local widthLeft:Float = w
 		Local currentX:Float = x
-		Local framePos:TVec2D = getFramePos(theframe)
+		Local framePos:SVec2I = GetFramePos(theframe)
 
 		Local alignX:Float = 0.0
 		Local alignY:Float = 0.0
