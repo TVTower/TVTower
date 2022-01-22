@@ -4796,8 +4796,9 @@ Type TStationMapSection
 			antennaShareMap = New TLongMap
 
 			Local antennaStationRadius:int = GetStationMapCollection().antennaStationRadius
+			Local antennaStationRadiusSquared:int = antennaStationRadius * antennaStationRadius
 			Local shapeSprite:TSprite = GetShapeSprite()
-			Local circleRect:TRectangle = New TRectangle.Init(0,0,0,0)
+			Local circleRectX:Int, circleRectY:Int, circleRectW:Int, circleRectH:int
 			Local shareMask:TStationMapShareMask
 			Local posX:Int = 0
 			Local posY:Int = 0
@@ -4836,15 +4837,18 @@ Type TStationMapSection
 						stationX = station.pos.x - rect.GetX()
 						stationY = station.pos.y - rect.GetY()
 						'stay within the section
-						circleRect.position.SetXY( Max(0, stationX - antennaStationRadius), Max(0, stationY - antennaStationRadius) )
-						circleRect.dimension.SetXY( Min(stationX + antennaStationRadius, rect.GetW()-1), Min(stationY + antennaStationRadius, rect.GetH()-1) )
+						circleRectX = Max(0, stationX - antennaStationRadius)
+						circleRectY = Max(0, stationY - antennaStationRadius)
+						circleRectW = Min(stationX + antennaStationRadius, rect.GetW()-1)
+						circleRectH = Min(stationY + antennaStationRadius, rect.GetH()-1)
 
 						posX = 0
 						posY = 0
-						For posX = circleRect.getX() To circleRect.getW()
-							For posY = circleRect.getY() To circleRect.getH()
+						For posX = circleRectX To circleRectW
+							For posY = circleRectY To circleRectH
 								'left the circle?
-								If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
+								'If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
+								If Self.CalculateDistanceSquared( posX - stationX, posY - stationY ) > antennaStationRadiusSquared Then Continue
 								'left the topographic borders ?
 								If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
 
@@ -5093,10 +5097,12 @@ Type TStationMapSection
 		stationY :- rect.GetY()
 
 		Local result:Int = 0
+		Local radiusSquared:int = radius * radius
 		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()-1
 			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()-1
 				'left the circle?
-				If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
+				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
+				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
 				'left the topographic borders ?
 				If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
 
@@ -5133,10 +5139,12 @@ endrem
 
 		' calc sum for current coord
 		Local result:Int = 0
+		local radiusSquared:Int = radius * radius
 		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()-1
 			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()-1
 				'left the circle?
-				If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
+				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
+				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
 				'left the topographic borders ?
 				If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
 				result :+ populationmap[posX, posY]
@@ -5262,8 +5270,14 @@ endrem
 
 
 	'summary: returns calculated distance between 2 points
-	Function calculateDistance:Double(x1:Int, x2:Int)
+	Function CalculateDistance:Double(x1:Int, x2:Int)
 		Return Sqr((x1*x1) + (x2*x2))
+	End Function
+
+	'when just comparing lengths ... we could also skip doing the
+	'square root calculation
+	Function CalculateDistanceSquared:Long(x1:Int, x2:Int)
+		Return (x1*x1) + (x2*x2)
 	End Function
 End Type
 
