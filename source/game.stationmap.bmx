@@ -4814,12 +4814,13 @@ Type TStationMapSection
 							If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
 
 							shareKey = GeneratePositionKey(posX, posY)
-							shareMask = new TStationMapShareMask(posX, posY, GetMaskIndex(map.owner) )
-							Local shareMapMask:TStationMapShareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
-							If shareMapMask
-								shareMask.mask :| shareMapMask.mask
+							shareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
+							If not shareMask
+								shareMask = new TStationMapShareMask(posX, posY, GetMaskIndex(map.owner) )
+								antennaShareMap.Insert(shareKey, shareMask)
+							Else
+								shareMask.mask :| GetMaskIndex(map.owner)
 							EndIf
-							antennaShareMap.Insert(shareKey, shareMask)
 						Next
 					Next
 				else
@@ -4851,12 +4852,13 @@ Type TStationMapSection
 								'insert the players bitmask-number into the field
 								'and if there is already one ... add the number
 								shareKey = GeneratePositionKey(posX, posY)
-								shareMask = New TStationMapShareMask(posX, posY, GetMaskIndex(station.owner) )
-								Local shareMapMask:TStationMapShareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
-								If shareMapMask
-									shareMask.mask :| shareMapMask.mask
+								shareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
+								If not shareMask
+									shareMask = New TStationMapShareMask(posX, posY, GetMaskIndex(station.owner) )
+									antennaShareMap.Insert(shareKey, shareMask)
+								Else
+									shareMask.mask :| GetMaskIndex(station.owner)
 								EndIf
-								antennaShareMap.Insert(shareKey, shareMask)
 							Next
 						Next
 					Next
