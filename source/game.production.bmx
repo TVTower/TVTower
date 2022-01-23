@@ -1106,9 +1106,10 @@ Type TProduction Extends TOwnedGameObject
 				'ignore milliseconds/seconds difference
 			If pauseDuration = 0 or (pauseStartTime + pauseDuration)/TWorldTime.MINUTELENGTH <= GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH
 '			If pauseDuration = 0 or pauseStartTime + pauseDuration <= GetWorldTime().GetTimeGone()
-				SetPaused(False, 0)
-				'when no longer paused - refresh blocking information
+				'when no longer paused - refresh blocking information with new end time
+				endTime = endTime + pauseDuration
 				BlockStudio()
+				SetPaused(False, 0)
 			EndIf
 		EndIf
 		If IsPaused() then Return False
@@ -1159,11 +1160,8 @@ Type TProduction Extends TOwnedGameObject
 
 			'in production
 			Case TVTProductionStep.SHOOTING
-				local finalEndTime:Long = endTime
-				If not productionConcept.script.IsLive() then finalEndTime :+ pauseDuration
-
 				'ignore milliseconds/seconds difference
-				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= finalEndTime/TWorldTime.MINUTELENGTH
+				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= endTime/TWorldTime.MINUTELENGTH
 				'If GetWorldTime().GetTimeGone() >= finalEndTime
 					FinishShooting()
 
