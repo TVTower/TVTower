@@ -1,4 +1,4 @@
-﻿SuperStrict
+﻿﻿﻿SuperStrict
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
@@ -472,13 +472,14 @@ endrem
 
 	Method GetNewsEvent:TNewsEvent() {_exposeToLua}
 		if newsEventID = 0 and newsEvent then return newsEvent
-		if not GetNewsEventCollection().GetByID(newsEventID)
+		Local result:TNewsEvent = GetNewsEventCollection().GetByID(newsEventID)
+		if not result
 			for local ik:TIntKey = EachIn GetNewsEventCollection().allNewsEvents.Keys()
 				print "known: " + ik.value + "   " + GetNewsEventCollection().GetByID(ik.value).GetTitle()
 			Next
-			end
+			Throw "Unknown Event id "+ newsEventID
 		endif
-		return GetNewsEventCollection().GetByID(newsEventID)
+		return result
 	End Method
 
 
