@@ -121,10 +121,18 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Method AbortScreenActions:Int()
+		Local result:Int = False
 		If castSlotList.SelectCastWindowIsOpen()
 			castSlotList.selectCastWindow.Close(2)
+			result = True
+		EndIf
+		
+		if currentProductionConcept
+			result = True
 		EndIf
 		SetCurrentProductionConcept(Null)
+
+		Return result
 	End Method
 
 
