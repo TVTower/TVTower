@@ -657,7 +657,7 @@ Type TBroadcast
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
 			'outage
-			GetAudienceResult(playerId).Title = "Malfunction!"
+			GetAudienceResult(playerId).Title =  GetLocale("BROADCASTING_OUTAGE")
 			GetAudienceResult(playerId).broadcastOutage = True
 			attraction = CalculateMalfunction(lastProgrammeAttraction)
 		End If
