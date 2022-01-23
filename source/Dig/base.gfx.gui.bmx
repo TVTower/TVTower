@@ -1439,6 +1439,7 @@ Type TGUIobject
 		If Not isDragable() Or isDragged() Then Return False
 
 		data.Add("dragPosition", New TVec2D.Init( GetScreenRect().GetX(), GetScreenRect().GetY() ))
+		data.Add("dragState", GUIManager.currentState )
 
 		Local evData:TData = new TData.Add("coord", coord)
 		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnTryDrag, evData, Self)
@@ -1483,27 +1484,80 @@ Type TGUIobject
 
 	'forcefully drops an item back to the position when dragged
 	Method DropBackToOrigin:Int()
+		If not IsDragged() Then Return False
+
 		Local dragPosition:TVec2D = TVec2D(data.Get("dragPosition"))
+		Local dragState:TLowerString = TLowerString(data.Get("dragState"))
 		If Not dragPosition Then Return False
 
-		Drop(dragPosition, True)
+		'no state stored?
+		if not dragState then dragState = GUIManager.currentState
+
+		'drop forcefully and without requiring a widget below the drop
+		'spot
+		return Drop(dragPosition, dragState, True, True)
+		
+		rem
+		'debug
+		'print TTypeID.ForObject(self).name() + " / " + GetClassName()+".DropBackToOrigin()"
+
+		'find out if a list or some other would accept the dropping widget
+		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(dragPosition, dragState, True, GUI_OBJECT_ACCEPTS_DROP)
+		Local dropTarget:TGUIObject
+		For Local potentialDropTarget:TGUIobject = EachIn potentialDropTargets
+			If potentialDropTarget.AcceptsDrop(self, dragPosition)
+				dropTarget = potentialDropTarget
+				Exit
+			EndIf
+		Next
+		if not dropTarget Then dropTarget = _parent
+		
+		'if there is no dropTarget this can mean that we simply ... "un-drag"
+		'an item ... so back to its start position
+
+		'drop back to origins cannot be vetoed - so not checking any 
+		'isVeto()
+		'inform dropping object, target and listeners 
+		Local evData:TData = new TData.Add("coord", dragPosition).Add("target", dropTarget)
+		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnBeginDrop, evData, Self, dropTarget)
+		self.OnBeginDrop(event)
+		if dropTarget Then dropTarget.OnBeginReceiveDrop(event)
+		event.Trigger()
+		
+
+		If not dropTarget
+			self.SetPosition(dragPosition.x, dragPosition.y)
+		EndIf
+
+		'drop it
+		GUIManager.RemoveDragged(Self)
+		GuiManager._listsSorted = False
+
+		'inform dropping object, target and listeners 
+		event = TEventBase.Create(GUIEventKeys.GUIObject_OnFinishDrop, evData, Self, dropTarget)
+		Self.onFinishDrop(event)
+		if dropTarget Then dropTarget.onFinishReceiveDrop(event)
+		event.Trigger()
+		endrem
 		Return True
 	End Method
 
 
-	Method Drop:Int(coord:TVec2D=Null, force:Int=False)
+	'when using "allowDropToNonGUIObject = true" a widget drops 
+	'everywhere and does not require a gui object below the drop position
+	Method Drop:Int(coord:TVec2D=Null, limitState:TLowerString = Null, allowDropToNonGUIObject:Int = False, force:Int = False)
 		If Not isDragged() Then Return False
 		If coord And coord.getX()=-1 Then coord = New TVec2D.Init(MouseManager.x, MouseManager.y)
 
+		if not limitState then limitState = GUIManager.currentState
 		'debug
 		'print TTypeID.ForObject(self).name() + " / " + GetClassName()+".Drop()"
 
 
 		'find out if a list or some other would accept the dropping
 		'widget
-		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord, GUIManager.currentState, True, GUI_OBJECT_ACCEPTS_DROP)
+		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord, limitState, True, GUI_OBJECT_ACCEPTS_DROP)
 		Local dropTarget:TGUIObject
-		'Local source:TGuiObject = self._parent
 
 		For Local potentialDropTarget:TGUIobject = EachIn potentialDropTargets
 			'ask if it would theoretically handle the drop
@@ -1516,11 +1570,9 @@ Type TGUIobject
 				Exit
 			EndIf
 		Next
-
 		
-		'cannot drop without a valid target
-		'-> we could chime in via an event (invisible target?)
-		if not dropTarget Then Return False
+		'Normally we cannot drop without a valid target
+		If Not dropTarget And Not allowDropToNonGUIObject Then Return False
 
 
 		'ask if someone does not want the drop to happen
@@ -1531,32 +1583,35 @@ Type TGUIobject
 		'ask if widget is OK to drop and drop target NOW accepts the
 		'drop (might be "full")
 		self.OnTryDrop(event)	
-		dropTarget.OnTryReceiveDrop(event)
+		If dropTarget And (force or Not event.IsVeto()) Then dropTarget.OnTryReceiveDrop(event)
 		'inform all others (+ they might be against it)
-		If Not event.IsVeto() Then event.Trigger()
-
+		If (force or Not event.IsVeto()) Then event.Trigger()
 
 		'if there is no problem ...just start dropping
-		If not event.IsVeto()
+		If (force or Not event.IsVeto())
 			'fire an event - if the event has a veto afterwards, do not drop!
 			'exception is, if the action is forced
 			event = TEventBase.Create(GUIEventKeys.GUIObject_OnBeginDrop, evData, Self, dropTarget)
 			'inform dropping object and drop target
 			self.OnBeginDrop(event)
-			dropTarget.OnBeginReceiveDrop(event)
+			If dropTarget And (force or Not event.IsVeto()) Then dropTarget.OnBeginReceiveDrop(event)
 			'inform all others
-			if not event.IsVeto() then event.Trigger()
+			if (force or Not event.IsVeto()) then event.Trigger()
 
-			If not event.isVeto() or force
+			If (force or Not event.IsVeto())
 				'nobody said "no" to drop, so drop it
 				GUIManager.RemoveDragged(Self)
 				GuiManager._listsSorted = False
 				'GuiManager.SortLists()
 
+				If not dropTarget and allowDropToNonGUIObject
+					self.SetPosition(coord.x, coord.y)
+				EndIf
+
 				'inform others - item finished dropping / dropped
 				event = TEventBase.Create(GUIEventKeys.GUIObject_OnFinishDrop, evData, Self, dropTarget)
 				Self.onFinishDrop(event)
-				Self.onFinishReceiveDrop(event)
+				If dropTarget Then dropTarget.onFinishReceiveDrop(event)
 				event.Trigger()
 
 				Return True
