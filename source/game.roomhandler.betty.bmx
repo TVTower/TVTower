@@ -395,6 +395,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			ElseIf button = 1
 				If THelper.MouseInSRect(suitcaseArea)
 					presentItem.dropBackToOrigin()
+					MouseManager.SetClickHandled(1)
 					Return True
 				EndIf
 			EndIf
