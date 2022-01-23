@@ -53,27 +53,28 @@ function TaskMovieDistributor:Activate()
 	local player = _G["globalPlayer"]
 	local startMovies = player.Strategy.startProgrammeAmount - self.MovieCount --TVT.GetProgrammeLicenceCount()
 	self.BuyStartProgrammeJob = JobBuyStartProgramme()
-	self.BuyStartProgrammeJob.MovieDistributorTask = self
+	self.BuyStartProgrammeJob.Task = self
 	if startMovies <= 0 then
 		self.BuyStartProgrammeJob.Status = JOB_STATUS_DONE
 	end
 
 	self.BuyRequisitedLicencesJob = JobBuyRequisitedLicences()
-	self.BuyRequisitedLicencesJob.MovieDistributorTask = self
+	self.BuyRequisitedLicencesJob.Task = self
 
 	self.CheckMoviesJob = JobCheckMovies()
-	self.CheckMoviesJob.MovieDistributorTask = self
+	self.CheckMoviesJob.Task = self
 
 	self.AppraiseMovies = JobAppraiseMovies()
-	self.AppraiseMovies.MovieDistributorTask = self
+	self.AppraiseMovies.Task = self
 
 	self.BuyMovies = JobBuyMovies()
-	self.BuyMovies.MovieDistributorTask = self
+	self.BuyMovies.Task = self
 
 	self.BidAuctions = JobBidAuctions()
-	self.BidAuctions.MovieDistributorTask = self
+	self.BidAuctions.Task = self
 
 	self.IdleJob = AIIdleJob()
+	self.IdleJob.Task = self
 	self.IdleJob:SetIdleTicks( math.random(5,15) )
 
 	self.MoviesAtDistributor = {}
@@ -85,7 +86,8 @@ function TaskMovieDistributor:Activate()
 
 	--added entry for movie selling
 	self.SellSuitcaseLicences = JobSellSuitcaseLicences()
-	self.SellSuitcaseLicences.MovieDistributorTask = self
+	self.SellSuitcaseLicences.Task = self
+	--self.LogLevel = LOG_TRACE
 end
 
 
@@ -114,7 +116,7 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.IdleJob
 	end
 
-	debugMsg("####TIME############ done moviedealer task in " .. (os.clock() - self.ActivationTime) .."s.", true)
+	--debugMsg("####TIME############ done moviedealer task in " .. (os.clock() - self.ActivationTime) .."s.", true)
 	self.ActivationTime = os.clock()
 
 	--self:SetWait()
@@ -180,7 +182,7 @@ end
 _G["JobBuyStartProgramme"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentMovieIndex = 0
-	c.MovieDistributorTask = nil
+	c.Task = nil
 	c.AllMoviesChecked = false
 end)
 
@@ -198,9 +200,9 @@ end
 function JobBuyStartProgramme:Tick()
 	local player = _G["globalPlayer"]
 
-	self.MovieDistributorTask.ActivationTime = os.clock()
+	self.Task.ActivationTime = os.clock()
 
-	local moviesNeeded = player.Strategy.startProgrammeAmount - self.MovieDistributorTask.MovieCount --TVT.GetProgrammeLicenceCount()
+	local moviesNeeded = player.Strategy.startProgrammeAmount - self.Task.MovieCount --TVT.GetProgrammeLicenceCount()
 	if moviesNeeded <= 0 then
 		self.Status = JOB_STATUS_DONE
 		return True
@@ -258,12 +260,13 @@ function JobBuyStartProgramme:Tick()
 		--else each one should be cheaper than the single licence limit
 		if (table.count(buyStartMovies) >= moviesNeeded or v:GetPrice(TVT.ME) < startMovieBudget) then
 			--debugMsg("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v))
+			debugMsg("Buying start programme licence: " .. v:GetTitle() .. " price=" .. v:GetPrice(TVT.ME))
 			TVT.md_doBuyProgrammeLicence(v:GetId())
 
 			--attention: we subtract from the overall "buying programme"
 			--           budget!
-			self.MovieDistributorTask:PayFromBudget(v:GetPrice(TVT.ME))
-			self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice(TVT.ME)
+			self.Task:PayFromBudget(v:GetPrice(TVT.ME))
+			self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - v:GetPrice(TVT.ME)
 		end
 	end
 
@@ -278,7 +281,7 @@ end
 _G["JobBuyRequisitedLicences"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.Id = c.typename()
-	c.MovieDistributorTask = nil
+	c.Task = nil
 end)
 
 function JobBuyRequisitedLicences:typename()
@@ -291,7 +294,7 @@ end
 
 function JobBuyRequisitedLicences:Tick()
 	local player = _G["globalPlayer"]
-	local qualityStats = self.MovieDistributorTask.MovieQuality
+	local qualityStats = self.Task.MovieQuality
 	local qualityGate = (2 * qualityStats.AverageValue + qualityStats.MinValue) / 3
 
 	-- try to fulfill the requisitions
@@ -349,7 +352,7 @@ function JobBuyRequisitedLicences:Tick()
 					local licence = table.first(relevantLicences)
 					if licence ~= nil then
 						if TVT.md_doBuyProgrammeLicence(licence:GetId()) == TVT.RESULT_OK then
-							debugMsg("Bought requisition programme licence: " .. licence:GetTitle() .. " (" .. licence:GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
+							--debugMsg("Bought requisition programme licence: " .. licence:GetTitle() .. " (" .. licence:GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
 							buySingleLicenceReq:Complete()
 						else
 							debugMsg("Buying requisition programme licence FAILED: " .. licence:GetTitle() .. " (" .. licence:GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
@@ -378,7 +381,7 @@ _G["JobCheckMovies"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentMovieIndex = 0
 	c.CurrentAuctionIndex = 0
-	c.MovieDistributorTask = nil
+	c.Task = nil
 	c.AllMoviesChecked = false
 	c.AllAuctionsChecked = false
 end)
@@ -391,7 +394,7 @@ function JobCheckMovies:Prepare(pParams)
 	--debugMsg("Schaue Filmangebot an")
 	self.CurrentMovieIndex = 0
 	--calculate quality gate based on owned licences
-	local qualityStats = self.MovieDistributorTask.MovieQuality
+	local qualityStats = self.Task.MovieQuality
 	for i=0, (TVT.GetProgrammeLicenceCount()-1)
 	do
 		local movie = TVT.GetProgrammeLicenceAtIndex(i)
@@ -421,7 +424,7 @@ function JobCheckMovies:CheckMovie()
 	end
 
 	local licence = TVT.convertToProgrammeLicence(response.data)
-	self.MovieDistributorTask.MoviesAtDistributor[self.CurrentMovieIndex] = licence
+	self.Task.MoviesAtDistributor[self.CurrentMovieIndex] = licence
 
 	local player = _G["globalPlayer"]
 	player.Stats:AddMovie(licence)
@@ -437,7 +440,7 @@ function JobCheckMovies:CheckAuction()
 	end
 
 	local licence = TVT.convertToProgrammeLicence(response.data)
-	self.MovieDistributorTask.MoviesAtAuctioneer[self.CurrentAuctionIndex] = licence
+	self.Task.MoviesAtAuctioneer[self.CurrentAuctionIndex] = licence
 	self.CurrentAuctionIndex = self.CurrentAuctionIndex + 1
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -448,7 +451,7 @@ _G["JobAppraiseMovies"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentMovieIndex = 0
 	c.CurrentAuctionIndex = 0
-	c.MovieDistributorTask = nil
+	c.Task = nil
 
 	c.MovieMaxPrice = -1
 	c.PrimetimeMovieMinQuality = -1
@@ -473,7 +476,7 @@ function JobAppraiseMovies:Prepare(pParams)
 	self:AdjustMovieNiveau()
 
 	--skip checking
-	if self.MovieDistributorTask.CurrentBudget <= 0 and self.MovieDistributorTask.CurrentBargainBudget <= 0 then
+	if self.Task.CurrentBudget <= 0 and self.Task.CurrentBargainBudget <= 0 then
 		self.Status = JOB_STATUS_DONE
 	end
 end
@@ -494,9 +497,9 @@ end
 function JobAppraiseMovies:AdjustMovieNiveau()
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
-	local movieBudget = self.MovieDistributorTask.BudgetWholeDay
+	local movieBudget = self.Task.BudgetWholeDay
 
-	if self.MovieDistributorTask.MovieCount > 30 then
+	if self.Task.MovieCount > 30 then
 		movieBudget = movieBudget * 0.7
 	end
 
@@ -506,7 +509,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	local minQualitySeries = stats.SeriesQualityAcceptable.MinValue
 
 	--TODO check - price restriction lowers quality
-	if self.MovieDistributorTask.MovieCount > 25 then
+	if self.Task.MovieCount > 25 then
 		self.MovieMaxPrice = movieBudget * 0.75
 		self.SeriesMaxPrice = movieBudget * 0.9
 	else
@@ -522,14 +525,14 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	self.PrimetimeSeriesMinQuality = math.max(0, math.round(minQualitySeries + (ScopeSeries * 0.75)))
 	self.DaySeriesMinQuality = math.max(0, math.round(minQualitySeries + (ScopeSeries * 0.4)))
 
-	debugMsg("Adjusted movies niveau:  MovieMaxPrice=" .. math.floor(self.MovieMaxPrice) .."  PrimetimeMovieMinQuality=" .. self.PrimetimeMovieMinQuality .. "  DayMovieMinQuality=" .. self.DayMovieMinQuality)
-	debugMsg("         series niveau:  SeriesMaxPrice=" .. math.floor(self.SeriesMaxPrice) .."  PrimetimeSeriesMinQuality=" .. self.PrimetimeSeriesMinQuality .. "  DaySeriesMinQuality=" .. self.DaySeriesMinQuality)
+	--debugMsg("Adjusted movies niveau:  MovieMaxPrice=" .. math.floor(self.MovieMaxPrice) .."  PrimetimeMovieMinQuality=" .. self.PrimetimeMovieMinQuality .. "  DayMovieMinQuality=" .. self.DayMovieMinQuality)
+	--debugMsg("         series niveau:  SeriesMaxPrice=" .. math.floor(self.SeriesMaxPrice) .."  PrimetimeSeriesMinQuality=" .. self.PrimetimeSeriesMinQuality .. "  DaySeriesMinQuality=" .. self.DaySeriesMinQuality)
 end
 
 
 function JobAppraiseMovies:AppraiseCurrentMovie()
 	--debugMsg("AppraiseCurrentMovie #" .. self.CurrentMovieIndex)
-	local movie = self.MovieDistributorTask.MoviesAtDistributor[self.CurrentMovieIndex]
+	local movie = self.Task.MoviesAtDistributor[self.CurrentMovieIndex]
 	if (movie ~= nil) then
 		self:AppraiseMovie(movie)
 		self.CurrentMovieIndex = self.CurrentMovieIndex + 1
@@ -540,7 +543,7 @@ end
 
 
 function JobAppraiseMovies:AppraiseCurrentAuction()
-	local movie = self.MovieDistributorTask.MoviesAtAuctioneer[self.CurrentAuctionIndex]
+	local movie = self.Task.MoviesAtAuctioneer[self.CurrentAuctionIndex]
 	if (movie ~= nil) then
 		self:AppraiseMovie(movie)
 		self.CurrentAuctionIndex = self.CurrentAuctionIndex + 1
@@ -558,7 +561,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	local stats = player.Stats
 	local pricePerBlockStats = nil
 	local qualityStats = nil
-	local myMoviesQuality = self.MovieDistributorTask.MovieQuality
+	local myMoviesQuality = self.Task.MovieQuality
 
 	-- reset attractiveness, if it fits to the CURRENT conditions, it
 	-- gets updated accordingly
@@ -566,7 +569,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
-	if self.MovieDistributorTask.MovieCount > 20 then
+	if self.Task.MovieCount > 20 then
 		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
 	end
 
@@ -611,7 +614,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	end
 
 
-	debugMsg("licence '"..licence.getTitle().."': pricePerBlock=" .. licence:GetPricePerBlock(TVT.ME) .." (".. licence:GetPricePerBlock(1) .."  avg=" .. string.format("%.4f", pricePerBlockStats.AverageValue) ..")  quality=" .. string.format("%.4f", licence:GetQuality()) .. " (avg=" .. string.format("%.4f", qualityStats.AverageValue) ..")  qualityFactor=" .. string.format("%.4f", qualityFactor) .. "  financeFactor=" .. string.format("%.4f", financeFactor)  .."  => attractiveness=" .. string.format("%.4f", licence:GetAttractiveness()))
+	--debugMsg("licence '"..licence.getTitle().."': pricePerBlock=" .. licence:GetPricePerBlock(TVT.ME) .." (".. licence:GetPricePerBlock(1) .."  avg=" .. string.format("%.4f", pricePerBlockStats.AverageValue) ..")  quality=" .. string.format("%.4f", licence:GetQuality()) .. " (avg=" .. string.format("%.4f", qualityStats.AverageValue) ..")  qualityFactor=" .. string.format("%.4f", qualityFactor) .. "  financeFactor=" .. string.format("%.4f", financeFactor)  .."  => attractiveness=" .. string.format("%.4f", licence:GetAttractiveness()))
 	debugMsgDepth(-1)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -620,7 +623,7 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobBuyMovies"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
-	c.MovieDistributorTask = nil
+	c.Task = nil
 end)
 
 function JobBuyMovies:typename()
@@ -628,53 +631,53 @@ function JobBuyMovies:typename()
 end
 
 function JobBuyMovies:Prepare(pParams)
-	debugMsg("Checking programme licences (shelf).  CurrentBudget=" .. self.MovieDistributorTask.CurrentBudget .. "  CurrentBargainBudget=" .. self.MovieDistributorTask.CurrentBargainBudget)
+	--debugMsg("Checking programme licences (shelf).  CurrentBudget=" .. self.Task.CurrentBudget .. "  CurrentBargainBudget=" .. self.Task.CurrentBargainBudget)
 
 	--TODO nicht zufällig, sondern nach bestimmtem Kriterium?
-	if (self.MovieDistributorTask.MoviesAtDistributor ~= nil) then
+	if (self.Task.MoviesAtDistributor ~= nil) then
 		local sortFunction
 		local sortMethod = math.random(0,2)
 		if sortMethod == 0 then
-			debugMsg("quality")
+			--debugMsg("quality")
 			sortFunction = function(a, b)
 				return a:GetQuality() > b:GetQuality()
 			end
 		elseif sortMethod == 1 then 
-			debugMsg("price per block")
+			--debugMsg("price per block")
 			sortFunction = function(a, b)
 				return a:GetPricePerBlock(TVT.ME) > b:GetPricePerBlock(TVT.ME)
 			end
 		else
-			debugMsg("attractiveness")
+			--debugMsg("attractiveness")
 			sortFunction = function(a, b)
 				return a:getAttractiveness() > b:getAttractiveness()
 			end
 		end
-		table.sort(self.MovieDistributorTask.MoviesAtDistributor, sortFunction)
+		table.sort(self.Task.MoviesAtDistributor, sortFunction)
 	end
 end
 
 function JobBuyMovies:Tick()
 	-- skip checks without money
-	if (self.MovieDistributorTask.CurrentBudget < 0) then
+	if (self.Task.CurrentBudget < 0) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
 
-	local movies = self.MovieDistributorTask.MoviesAtDistributor
+	local movies = self.Task.MoviesAtDistributor
 
 	if (movies ~= nil) then
 		for k,v in pairs(movies) do
 			local priceToPay = v:GetPrice(TVT.ME)
-			if (priceToPay <= self.MovieDistributorTask.CurrentBudget) then
+			if (priceToPay <= self.Task.CurrentBudget) then
 				-- daily budget for good offers without direct need
-				if priceToPay <= self.MovieDistributorTask.CurrentBargainBudget then
+				if priceToPay <= self.Task.CurrentBargainBudget then
 					if (v:GetAttractiveness() > 1) then
 						debugMsg("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay)
 						TVT.md_doBuyProgrammeLicence(v:GetId())
 
-						self.MovieDistributorTask:PayFromBudget(priceToPay)
-						self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - priceToPay
+						self.Task:PayFromBudget(priceToPay)
+						self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - priceToPay
 					end
 				end
 			end
@@ -682,7 +685,6 @@ function JobBuyMovies:Tick()
 	else
 		TVT.addToLog("Movieagency does not offer any licences.")
 	end
-
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -693,7 +695,7 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobBidAuctions"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
-	c.MovieDistributorTask = nil
+	c.Task = nil
 end)
 
 
@@ -703,23 +705,23 @@ end
 
 
 function JobBidAuctions:Prepare(pParams)
-	debugMsg("Checking programme licences (auction).  CurrentBudget=" .. self.MovieDistributorTask.CurrentBudget .. "  CurrentBargainBudget=" .. self.MovieDistributorTask.CurrentBargainBudget)
+	--debugMsg("Checking programme licences (auction).  CurrentBudget=" .. self.Task.CurrentBudget .. "  CurrentBargainBudget=" .. self.Task.CurrentBargainBudget)
 
 	local sortMethod = function(a, b)
 		return a:GetAttractiveness() > b:GetAttractiveness()
 	end
-	table.sort(self.MovieDistributorTask.MoviesAtAuctioneer, sortMethod)
+	table.sort(self.Task.MoviesAtAuctioneer, sortMethod)
 end
 
 
 function JobBidAuctions:Tick()
 	-- skip checks without money
-	if (self.MovieDistributorTask.CurrentBudget < 0) then
+	if (self.Task.CurrentBudget < 0) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
 
-	local movies = self.MovieDistributorTask.MoviesAtAuctioneer
+	local movies = self.Task.MoviesAtAuctioneer
 
 	--TODO: Check how many licences we need
 
@@ -733,15 +735,15 @@ function JobBidAuctions:Tick()
 
 			if currentBidder ~= TVT.ME then
 
-				if (price <= self.MovieDistributorTask.CurrentBudget) then
+				if (price <= self.Task.CurrentBudget) then
 					-- daily budget for good offers without direct need
-					if (price <= self.MovieDistributorTask.CurrentBargainBudget) then
+					if (price <= self.Task.CurrentBargainBudget) then
 						if (v:GetAttractiveness() > 1) then
 							debugMsg("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v)..")")
 							TVT.md_doBidAuctionProgrammeLicence(v:GetId())
 
-							self.MovieDistributorTask:PayFromBudget(v:GetPrice(TVT.ME))
-							self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice(TVT.ME)
+							self.Task:PayFromBudget(v:GetPrice(TVT.ME))
+							self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - v:GetPrice(TVT.ME)
 						else
 							debugMsg("[Licence auction] too low attractivity: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. v:GetPrice(TVT.ME) .." - Attractivity: " .. v:GetAttractiveness())
 						end
@@ -760,7 +762,7 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobSellSuitcaseLicences"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
-	c.MovieDistributorTask = nil
+	c.Task = nil
 end)
 
 
@@ -776,11 +778,11 @@ end
 
 function JobSellSuitcaseLicences:Tick()
 	--sell content of suitcase
-	debugMsg("JobSellLicences Tick")
+	--debugMsg("JobSellLicences Tick")
 	local myPC = MY:GetProgrammeCollection()
 	local nCase = myPC:GetSuitcaseProgrammeLicenceCount()
 	local case = myPC:GetSuitcaseProgrammeLicencesArray()
-	debugMsg("md case has: "..#case)
+	--debugMsg("md case has: "..#case)
 
 	--for i=1, #case do debugMsg("md case "..i.." : "..tostring(case[i])) end
 	if case ~= nil and #case > 0 then
@@ -801,7 +803,9 @@ function JobSellSuitcaseLicences:Tick()
 				player.programmeLicencesInSuitcaseCount = math.max(0, player.programmeLicencesInSuitcaseCount - 1)
 			else debugMsg("md sale: nil value")	end
 		end
-	else debugMsg ("md: empty suitcase") end
+	else 
+		--debugMsg ("md: empty suitcase") 
+	end
 
 	self.Status = JOB_STATUS_DONE
 end

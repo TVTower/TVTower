@@ -49,7 +49,9 @@ function TaskNewsAgency:Activate()
 	self.NewsAgencyJob.Task = self
 
 	self.IdleJob = AIIdleJob()
+	self.IdleJob.Task = self
 	self.IdleJob:SetIdleTicks( math.random(5,15) )
+	--self.LogLevel = LOG_TRACE
 end
 
 
@@ -141,7 +143,7 @@ function TaskNewsAgency:BudgetSetup()
 	local tempAbonnementBudget = math.max(baseFee, self.BudgetWholeDay * 0.45)
 	self.AbonnementBudget = tempAbonnementBudget
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
---	debugMsg("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
+	self:LogTrace("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
 end
 
 
@@ -191,7 +193,7 @@ function JobCheckEventNews:typename()
 end
 
 function JobCheckEventNews:Prepare(pParams)
-	debugMsg("Looking for news about special events")
+
 end
 
 function JobCheckEventNews:Tick()
@@ -235,16 +237,8 @@ end
 
 
 function JobNewsAgencyAbonnements:Prepare(pParams)
-	debugMsg("Adjusting news abonnements")
-	debugMsgDepth(1)
-
 	-- update current fees
 	self.Task:UpdateNewsAbonnementFees()
-end
-
-
-function JobNewsAgencyAbonnements:Stop(pParams)
-	debugMsgDepth(-1)
 end
 
 
@@ -286,7 +280,7 @@ function JobNewsAgencyAbonnements:Tick()
 	local preventDowngrade = false
 	local player = _G["globalPlayer"]
 	if player.Budget.CurrentFixedCosts > 300000 or oldFees < 40000 then
-		--debugMsg(" preventing downgrade") 
+		self:LogDebug(" preventing downgrade") 
 		preventDowngrade = true
 	end
 	local preventUpgrade = false
@@ -299,10 +293,10 @@ function JobNewsAgencyAbonnements:Tick()
 		if oldLevel > newLevel and (self.Task.hour < 21 or preventDowngrade) then
 			--TODO subscriptions must be optimized anyway - permanent changes make no sense
 			--once the fixed costs reach a certain level, unsubscribing does not save much
-			--debugMsg("no cancelling of subscription before 22 o'clock") 
+			self:LogDebug("no cancelling of subscription before 22 o'clock") 
 		elseif oldLevel < newLevel and (self.Task.hour > 7 or self.Task.hour == 0 or preventUpgrade) then
 			--TODO exclude 0 to prevent expensive early subscription after game start
-			--debugMsg("no subscription upgrade after 8 o'clock") 
+			self:LogDebug("no subscription upgrade after 8 o'clock") 
 		elseif oldLevel ~= newLevel then
 			TVT.ne_setNewsAbonnement(genreID, newSubscriptionLevels[genreID])
 			if(oldLevel < newLevel) then 
@@ -310,9 +304,9 @@ function JobNewsAgencyAbonnements:Tick()
 			else 
 				preventDowngrade = true
 			end
-			debugMsg("Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID] .. " (new level=" .. TVT.ne_getNewsAbonnement(genreID) .. ")")
+			self:LogInfo("Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID] .. " (new level=" .. TVT.ne_getNewsAbonnement(genreID) .. ")")
 		else
-			--debugMsg("Keeping genre " ..genreID.. " abonnement level at " .. oldLevel)
+			self:LogTrace("Keeping genre " ..genreID.. " abonnement level at " .. oldLevel)
 		end
 	end
 
@@ -323,10 +317,10 @@ function JobNewsAgencyAbonnements:Tick()
 	-- subract new expenses
 	local newFees = self.Task.newsAbonnementTotalFees
 	if newFees ~= oldFees then
-		--debugMsg("Adjusted news budget by " .. (newFees - oldFees) .. ". CurrentBudget=" .. self.Task.CurrentBudget)
+		self:LogDebug("Adjusted news budget by " .. (newFees - oldFees) .. ". CurrentBudget=" .. self.Task.CurrentBudget)
 		self.Task.CurrentBudget = self.Task.CurrentBudget - (newFees - oldFees)
 	else
-		--debugMsg("News budget stays the same. CurrentBudget=" .. self.Task.CurrentBudget)
+		self:LogTrace("News budget stays the same. CurrentBudget=" .. self.Task.CurrentBudget)
 	end
 
 	self.Status = JOB_STATUS_DONE
@@ -349,7 +343,6 @@ end
 
 
 function JobNewsAgency:Prepare(pParams)
-	debugMsg("Search best news for news show")
 end
 
 
@@ -365,7 +358,7 @@ function JobNewsAgency:Tick()
 		local player = _G["globalPlayer"]
 		if player.Budget.CurrentFixedCosts > 120000 and TVT.GetMoney() > 150000 then
 			--TODO with high fixed costs often there is a negative budget although there is money
-			--debugMsg("  raised news budget because there is money")
+			self:LogDebug("raised news budget because there is money")
 			self.Task.CurrentBudget = 50000
 		end
 	end
@@ -385,12 +378,12 @@ function JobNewsAgency:Tick()
 					-- we cannot compare objects generally, as their
 					-- memory adress is different
 					if existingNews == news then
-						--debugMsg("- SKIP filling slot "..slot..". Already set there.")
+						self:LogTrace("- SKIP filling slot "..slot..". Already set there.")
 					else
 						if (news.IsPaid() == 1) then
-							debugMsg("- filling slot "..slot..". Re-use news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ")")
+							self:LogTrace("- filling slot "..slot..". Re-use news: '" .. news.GetTitle() .. "'.")
 						else
-							debugMsg("- filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
+							self:LogTrace("- filling slot "..slot..". Buying news: '" .. news.GetTitle() .. "' - Price: " .. price)
 						end
 						TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
 						--self.Task:PayFromBudget(price)
@@ -405,7 +398,7 @@ function JobNewsAgency:Tick()
 				if selectedNews ~= nil then break end
 			end
 		else
-			debugMsg("- filling slot "..slot..". No news available, skipping slot.")
+			self:LogTrace("- filling slot "..slot..". No news available, skipping slot.")
 		end
 	end
 

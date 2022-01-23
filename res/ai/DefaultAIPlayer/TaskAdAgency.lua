@@ -27,18 +27,19 @@ end
 function TaskAdAgency:Activate()
 	-- Was getan werden soll:
 	self.CheckSpots = JobCheckSpots()
-	self.CheckSpots.AdAgencyTask = self
+	self.CheckSpots.Task = self
 
 	self.AppraiseSpots = AppraiseSpots()
-	self.AppraiseSpots.AdAgencyTask = self
+	self.AppraiseSpots.Task = self
 
 	self.SignRequisitedContracts = SignRequisitedContracts()
-	self.SignRequisitedContracts.AdAgencyTask = self
+	self.SignRequisitedContracts.Task = self
 
 	self.SignContracts = SignContracts()
-	self.SignContracts.AdAgencyTask = self
+	self.SignContracts.Task = self
 
 	self.IdleJob = AIIdleJob()
+	self.IdleJob.Task = self
 	self.IdleJob:SetIdleTicks( math.random(5,15) )
 
 	self.SpotsInAgency = {}
@@ -138,7 +139,7 @@ end
 _G["JobCheckSpots"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentSpotIndex = 0
-	c.AdAgencyTask = nil
+	c.Task = nil
 end)
 
 function JobCheckSpots:typename()
@@ -173,7 +174,7 @@ function JobCheckSpots:CheckSpot()
 		local adContract = response.data
 		if (adContract.IsAvailableToSign(TVT.ME) == 1) then
 			local player = _G["globalPlayer"]
-			self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = adContract
+			self.Task.SpotsInAgency[self.CurrentSpotIndex] = adContract
 			player.Stats:AddSpot(adContract)
 		end
 	end
@@ -189,7 +190,7 @@ end
 _G["AppraiseSpots"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentSpotIndex = 0;
-	c.AdAgencyTask = nil
+	c.Task = nil
 end)
 
 function AppraiseSpots:typename()
@@ -208,7 +209,7 @@ function AppraiseSpots:Tick()
 end
 
 function AppraiseSpots:AppraiseCurrentSpot()
-	local spot = self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex]
+	local spot = self.Task.SpotsInAgency[self.CurrentSpotIndex]
 	if (spot ~= nil) then
 		self:AppraiseSpot(spot)
 		self.CurrentSpotIndex = self.CurrentSpotIndex + 1
@@ -302,7 +303,7 @@ end
 _G["SignRequisitedContracts"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentSpotIndex = 0
-	c.AdAgencyTask = nil
+	c.Task = nil
 end)
 
 function SignRequisitedContracts:typename()
@@ -320,20 +321,20 @@ end
 function SignRequisitedContracts:Tick()
 	--debugMsg("SignRequisitedContracts")
 
-	if (self.AdAgencyTask.SpotsInAgency ~= nil) then
+	if (self.Task.SpotsInAgency ~= nil) then
 		--sort
 		local sortMethod = function(a, b)
 			return a.GetAttractiveness() > b.GetAttractiveness()
 		end
 
 		-- loop over all contracts and remove the ones no longer available
-		for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
-			if self.AdAgencyTask.SpotsInAgency[i] == nil then
-				table.remove(self.AdAgencyTask.SpotsInAgency, i)
+		for i=#self.Task.SpotsInAgency,1,-1 do
+			if self.Task.SpotsInAgency[i] == nil then
+				table.remove(self.Task.SpotsInAgency, i)
 			end
 		end
 
-		table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
+		table.sort(self.Task.SpotsInAgency, sortMethod)
 	end
 
 	for k,requisition in pairs(self.SpotRequisitions) do
@@ -382,7 +383,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	end
 
 
-	local availableList = self.AdAgencyTask.SpotsInAgency
+	local availableList = self.Task.SpotsInAgency
 	local filteredList = {}
 	if table.count(availableList) > 0 then
 		filteredList = FilterAdContractsByMinAudience(availableList, minGuessedAudience, guessedAudience)
@@ -451,7 +452,7 @@ end
 
 	if (table.count(boughtContracts) > 0) then
 		--debugMsg("  -> Remove " .. table.count(boughtContracts) .. " signed contracts from the agency-contract-list.")
-		table.removeCollection(self.AdAgencyTask.SpotsInAgency, boughtContracts)
+		table.removeCollection(self.Task.SpotsInAgency, boughtContracts)
 	end
 
 	return signed
@@ -465,7 +466,7 @@ end
 _G["SignContracts"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.CurrentSpotIndex = 0
-	c.AdAgencyTask = nil
+	c.Task = nil
 	c.ownedContracts = nil
 end)
 
@@ -510,7 +511,7 @@ end
 -- sign "good contracts"
 -- so contracts next to required ones
 function SignContracts:Tick()
-	if (self.AdAgencyTask.SpotsInAgency == nil) then return 0 end
+	if (self.Task.SpotsInAgency == nil) then return 0 end
 
 	-- only sign contracts if we haven't enough unsent ad-spots
 	local openSpots = self:GetUnsentSpotCount()
@@ -538,7 +539,7 @@ function SignContracts:Tick()
 	-- as infomercial if we do not have enough programme licences (or
 	-- money to buy some)	-- try to find a contract with not too much spots / requirements
 	if (not haveLow or openSpots < 4) and contractsAllowed > 0 then
-		local availableList = table.copy(self.AdAgencyTask.SpotsInAgency)
+		local availableList = table.copy(self.Task.SpotsInAgency)
 		availableList = TaskAdAgency.SortAdContractsByAttraction(availableList)
 
 		local filteredList = FilterAdContractsByMinAudience(availableList, self.lowAudienceFactor * MY.GetMaxAudience() / 2.5, self.lowAudienceFactor * MY.GetMaxAudience(), forbiddenIDs)
@@ -557,9 +558,9 @@ function SignContracts:Tick()
 
 
 			-- loop over all contracts and remove the ones no longer available
-			for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
-				if self.AdAgencyTask.SpotsInAgency[i] == nil then
-					table.remove(self.AdAgencyTask.SpotsInAgency, i)
+			for i=#self.Task.SpotsInAgency,1,-1 do
+				if self.Task.SpotsInAgency[i] == nil then
+					table.remove(self.Task.SpotsInAgency, i)
 				end
 			end
 		end
@@ -569,7 +570,7 @@ function SignContracts:Tick()
 
 	if openSpots < 8 and contractsAllowed > 0 then
 		-- do not be too risky and avoid a non achieveable audience requirement
-		local filteredList = FilterAdContractsByMinAudience(self.AdAgencyTask.SpotsInAgency, nil, 0.15 * MY.GetMaxAudience(), forbiddenIDs)
+		local filteredList = FilterAdContractsByMinAudience(self.Task.SpotsInAgency, nil, 0.15 * MY.GetMaxAudience(), forbiddenIDs)
 		-- sort it
 		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
 
@@ -596,9 +597,9 @@ function SignContracts:Tick()
 	end
 
 	-- loop over all contracts and remove the ones no longer available
-	for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
-		if self.AdAgencyTask.SpotsInAgency[i] == nil then
-			table.remove(self.AdAgencyTask.SpotsInAgency, i)
+	for i=#self.Task.SpotsInAgency,1,-1 do
+		if self.Task.SpotsInAgency[i] == nil then
+			table.remove(self.Task.SpotsInAgency, i)
 		end
 	end
 

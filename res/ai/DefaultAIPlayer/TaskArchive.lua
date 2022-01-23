@@ -25,15 +25,14 @@ function TaskArchive:Activate()
 
 	self.SellMoviesJob = JobSellMovies()
 	self.SellMoviesJob.Task = self
+	--self.LogLevel = LOG_TRACE
 end
 
 function TaskArchive:GetNextJobInTargetRoom()
 	--nur einmal am Tag verkaufen, ausser im Notfall
-	if self.latestSaleOnDay >= TVT.GetDay() and not self.emergencySale
-	then
-		debugMsg(timetostring().." archive Task, been here done that")
+	if self.latestSaleOnDay >= TVT.GetDay() and not self.emergencySale then
+		self:LogDebug("was here today, already")
 	elseif (self.SellMoviesJob.Status ~= JOB_STATUS_DONE) then
-		debugMsg("return SellMoviesJob")
 		return self.SellMoviesJob
 	end
 
@@ -90,7 +89,6 @@ function JobSellMovies:Tick()
 		return t;
 	end
 
-	debugMsg("archive: Sell movies job started")
 	--ins archiv wenn nach mitternacht (oben)
 
 	self.Task.latestSaleOnDay = TVT.GetDay()
@@ -98,7 +96,7 @@ function JobSellMovies:Tick()
 
 	--fetch licences
 	local nArchive = TVT.ar_GetProgrammeLicenceCount()
-	debugMsg ("# archived licences: "..nArchive)
+	self:LogDebug("# archived licences: "..nArchive)
 	local movies = {};
 	for i=0, (nArchive-1)
 	do
@@ -106,14 +104,14 @@ function JobSellMovies:Tick()
 		--ignore episodes/collection-elements
 		if m ~= nil and m.HasParentLicence()==0 and m.isAvailable() then
 			vm = newarchivedMovie(m)
-			debugMsg("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..",  TopicalityLoss="..string.format("%.4f", vm.TopicalityLoss*100).."% (Max="..string.format("%.2f", vm.MaxTopicalityLoss*100).."%), planned: "..tostring(vm.planned))
+			self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..",  TopicalityLoss="..string.format("%.4f", vm.TopicalityLoss*100).."% (Max="..string.format("%.2f", vm.MaxTopicalityLoss*100).."%), planned: "..tostring(vm.planned))
 			table.insert(movies,vm)
 		end
 	end
 
 
 	-- check licences
-	debugMsg("# checking single/series licences: "..#movies)
+	self:LogDebug("# checking single/series licences: "..#movies)
 	-- filter by topicality, ignore planned
 	-- in emergency raise bar to keep programme
 	-- keep expensive ones (except their maximum topicality is too low)
@@ -121,7 +119,7 @@ function JobSellMovies:Tick()
 	if self.Task.emergencySale then useMaxTopicalityLossTreshold = self.emergencyMaxTopicalityLossTreshold end
 	local case = {}
 	for k,v in pairs (movies) do
-		if v == nil then debugMsg("# ERROR: movie #" .. k.." is nil") end
+		if v == nil then self:LogError("# ERROR: movie #" .. k.." is nil") end
 		local sellIt = false
 		-- sell when topicality will never raise enough again ("burned")
 		if v.MaxTopicalityLoss > useMaxTopicalityLossTreshold then sellIt = true end
@@ -133,23 +131,23 @@ function JobSellMovies:Tick()
 		if sellIt and v.planned > 0 then sellIt = false end
 
 		if sellIt then
-			debugMsg("# mark for suitcase: "..v.Title)
+			self:LogInfo("mark for suitcase (selling): "..v.Title)
 			table.insert(case,v)
 		end
 	end
 
 
-	debugMsg("# selected for suitcase: "..#case)
+	self:LogDebug("# selected for suitcase: "..#case)
 	-- move licences to suitcase
 	for i=1, #case do
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
 		if ec == TVT.RESULT_OK then
-			debugMsg("# put "..case[i].Title.." in suitcase, OK")
+			self:LogDebug("  put "..case[i].Title.." in suitcase, OK")
 
 			self.Task.Player.programmeLicencesInArchiveCount = math.max(0, self.Task.Player.programmeLicencesInArchiveCount - 1)
 			self.Task.Player.programmeLicencesInSuitcaseCount = self.Task.Player.programmeLicencesInSuitcaseCount + 1
 		else
-			debugMsg("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
+			self:LogError("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
 		end
 	end
 
@@ -160,12 +158,11 @@ function JobSellMovies:Tick()
 		if self.Task.Player ~= nil then
 			local t = self.Task.Player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
 			if t ~= nil then
-				debugMsg("# increasing SituationPriority for movie distributor task")
+				self:LogDebug("# increasing SituationPriority for movie distributor task")
 				t.SituationPriority = 150 --arbitrary value, maybe needs higher one
 			end
 		end
 	end
-	debugMsg("archive: Sell movies job done")
 end
 
 function timetostring()

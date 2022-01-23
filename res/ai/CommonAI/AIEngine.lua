@@ -37,6 +37,14 @@ JOB_STATUS_RUN		= "J_run"
 JOB_STATUS_DONE		= "J_done"
 JOB_STATUS_CANCEL	= "J_cancel"
 
+LOG_OFF				= 0
+LOG_ERROR			= 1
+LOG_INFO			= 2
+LOG_DEBUG			= 3
+LOG_TRACE			= 4
+LOG_TASK_DEF_LEVEL	= LOG_INFO
+LOG_JOB_START_LEVEL = LOG_DEBUG
+
 -- ##### CLASSES #####
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["KIObjekt"] = class(SLFObject, function(c)		-- Erbt aus dem Basic-Objekt des Frameworks
@@ -100,9 +108,9 @@ function AIPlayer:ForceTask(taskID, priority)
 	if task ~= nil then
 		if self.CurrentTask ~= nil and self.CurrentTask.SituationPriority > priority then
 			priority = self.CurrentTask.SituationPriority + 10
-			debugMsg("ForceTask: " .. taskID .. " with adjusted priority " .. priority)
+			self:LogInfo("ForceTask: " .. taskID .. " with adjusted priority " .. priority)
 		else
-			debugMsg("ForceTask: " .. taskID .. " with priority " .. priority)
+			self:LogInfo("ForceTask: " .. taskID .. " with priority " .. priority)
 		end
 		task.SituationPriority = priority
 		player:ForceNextTask()
@@ -112,7 +120,7 @@ end
 
 --stop a current task and start the next one
 function AIPlayer:ForceNextTask()
-	debugMsg("ForceNextTask")
+	self:LogDebug("ForceNextTask")
 	if self.CurrentTask ~= nil then
 		local nextTask = self:SelectTask()
 		local nextTaskName = ""
@@ -142,7 +150,7 @@ function AIPlayer:ForceNextTask()
 			end
 			-- cancel old one
 			if cancelTask then
-				debugMsg("ForceNextTask: Cancel current task...")
+				self:LogDebug("ForceNextTask: Cancel current task...")
 				self.CurrentTask:SetAbort()
 			end
 
@@ -153,7 +161,7 @@ function AIPlayer:ForceNextTask()
 			--start the next job of the new task
 			self.CurrentTask:StartNextJob()
 		else
-			debugMsg("ForceNextTask() failed: no follow up task found...")
+			self:LogInfo("ForceNextTask() failed: no follow up task found...")
 		end
 	end
 end
@@ -352,6 +360,8 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.assignmentType = 0
 
 	c.FixedCosts = nil
+
+	c.LogLevel = LOG_TASK_DEF_LEVEL
 end)
 
 
@@ -383,7 +393,7 @@ end
 function AITask:getWorldTicks()
 	local player = _G["globalPlayer"]
 	if player == nil then
-		debugMsg("_G[\"globalPlayer\"] is NIL!")
+		self:LogError("_G[\"globalPlayer\"] is NIL!")
 		return 0
 	end
 	return player.WorldTicks
@@ -411,7 +421,7 @@ function AITask:resume()
 	-- its external objects in "TVT.*"
 	if self.InvalidDataObject then
 		if self.Status == TASK_STATUS_PREPARE or self.Status == TASK_STATUS_RUN then
-			debugMsg(type(self) .. ": InvalidDataObject resume => TASK_STATUS_OPEN")
+			self:LogError(type(self) .. ": InvalidDataObject resume => TASK_STATUS_OPEN")
 			self.Status = TASK_STATUS_OPEN
 		end
 		self.InvalidDataObject = false
@@ -424,7 +434,9 @@ function AITask:CallActivate()
 	self.TickCounter = 0
 	self.TicksTotalTime = 0
 	self:InitializeMaxTicks()
-	debugMsg("### Starting task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
+	debugMsgDepth(-10)
+	self:LogInfo("### Starting task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
+	debugMsgDepth(1)
 	self:Activate()
 end
 
@@ -436,7 +448,7 @@ end
 
 
 function AITask:Activate()
-	debugMsg("Please implement me... " .. type(self))
+	self:LogError("Please implement me... " .. type(self))
 end
 
 
@@ -452,10 +464,10 @@ end
 
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgewaehlt wurde (NICHT UEBERSCHREIBEN!)
 function AITask:StartNextJob()
-	--debugMsg("StartNextJob")
+	self:LogTrace("StartNextJob")
 
 	--local roomNumber = TVT.GetPlayerRoom()
-	--debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
+	--self:LogTrace("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
 	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
 		self.CurrentJob = self:getGotoJob()
@@ -486,15 +498,14 @@ function AITask:Tick()
 	--sometimes a figure is stuck in the adagency... we cancel jobs in
 	--that case
 	if (self.Status == TASK_STATUS_OPEN) then
-		debugMsg("Status OPEN! Darf nicht sein!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-		debugMsg(self:typename())
+		self:LogError(self:typename()..": Status OPEN! Darf nicht sein!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		self:SetDone()
 	end
 
 	-- have to idle?
 	if (self.Status == TASK_STATUS_IDLE) then
 		self.idleTicks = self.idleTicks - 1
-		debugMsg("idling ... " .. self.idleTicks)
+		self:LogTrace("idling ... " .. self.idleTicks)
 		if (self.idleTicks < 0) then
 			self.idleTicks = 0
 			self.Status = TASK_STATUS_RUN
@@ -503,15 +514,15 @@ function AITask:Tick()
 
 	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_WAIT)) then
 		self.TickCounter = self.TickCounter + 1
-		--debugMsg("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)
 		if (self.TickCounter > self.MaxTicks) then
+			self:LogTrace("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)
 			self:TooMuchTicks()
 		end
 	end
 
 	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_PREPARE)) then
 		if (self.CurrentJob == nil) then
-			--debugMsg("----- Kein Job da - Neuen Starten")
+			self:LogTrace("----- Kein Job da - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
 		else
 			if self.CurrentJob.Status == JOB_STATUS_CANCEL then
@@ -524,10 +535,9 @@ function AITask:Tick()
 				self.CurrentJob:OnDone()
 				self.CurrentJob:Stop()
 				self.CurrentJob = nil
-				--debugMsg("----- Alter Job ist fertig - Neuen Starten")
+				self:LogTrace("----- Alter Job ist fertig - Neuen Starten")
 				self:StartNextJob() --Von vorne anfangen
 			else
-				--debugMsg("----- Job-Tick")
 				self.CurrentJob:CallTick() --Fortsetzen
 			end
 		end
@@ -574,39 +584,41 @@ function AITask:RecalcPriority()
 	--  40 minutes or more being 80%
 	if self.TargetRoom > 0 then
 		local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(self.TargetRoom) )
-		--debugMsg("PRIO: Target room ".. self.TargetRoom ..". blockedMinutes " .. blockedMinutes))
+		--TODO once the log level is changed for a task, these log messages would constantly appear
+		--self:LogTrace("PRIO: Target room ".. self.TargetRoom ..". blockedMinutes " .. blockedMinutes)
 		if blockedMinutes >= 1 then
-			--debugMsg("PRIO: Target room is blocked too long, reducing priority. " .. math.max(0.2, 1.0 - 0.02*blockedMinutes))
+			--self:LogDebug("PRIO: Target room is blocked too long, reducing priority. " .. math.max(0.2, 1.0 - 0.02*blockedMinutes))
 			self.CurrentPriority = math.max(0.2, 1.0 - 0.02*blockedMinutes)
 		end
 	end
 
-	--debugMsg("Task: " .. self:typename() .. " - BasePriority: " .. self.BasePriority .." - SituationPriority: " .. self:getSituationPriority() .. " - Ran1 : " .. Ran1 .. "  RequisitionPriority: " .. requisitionPriority)
-	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
+	--self:LogTrace("Task: " .. self:typename() .. " - BasePriority: " .. self.BasePriority .." - SituationPriority: " .. self:getSituationPriority() .. " - Ran1 : " .. Ran1 .. "  RequisitionPriority: " .. requisitionPriority)
+	--self:LogTrace("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
 end
 
 
 function AITask:TooMuchTicks()
-	debugMsg("... waited long enough.")
+	self:LogInfo("... waited long enough.")
 	self:SetDone()
 end
 
 
 function AITask:SetWait()
-	debugMsg("Waiting...")
+	self:LogDebug("Waiting...")
 	self.Status = TASK_STATUS_WAIT
 end
 
 
 function AITask:SetIdle(idleTicks)
 	idleTicks = idleTicks or 10 --default is 10 ticks
-	debugMsg("idling for " .. idleTicks .. " ticks")
+	self:LogDebug("idling for " .. idleTicks .. " ticks")
 	self.Status = TASK_STATUS_IDLE
 end
 
 
 function AITask:SetDone()
-	debugMsg("### Task finished!")
+	debugMsgDepth(-10)
+	self:LogInfo("### Task finished!")
 	local player = _G["globalPlayer"]
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
@@ -615,7 +627,7 @@ function AITask:SetDone()
 
 
 	if(TVT.doLeaveRoom(false) == TVT.RESULT_FAILED) then
-		debugMsg("Failed leaving room normally. Forcefully leaving the room now!")
+		self:LogDebug("Failed leaving room normally. Forcefully leaving the room now!")
 		TVT.doLeaveRoom(true)
 	end
 
@@ -625,7 +637,8 @@ end
 
 --no priority modification
 function AITask:SetAbort()
-	debugMsg("<<< Task aborted!")
+	debugMsgDepth(-10)
+	self:LogInfo("<<< Task aborted!")
 	self.Status = TASK_STATUS_CANCEL
 
 	-- reset back
@@ -634,7 +647,8 @@ end
 
 --with priority modification
 function AITask:SetCancel()
-	debugMsg("<<< Task cancelled!")
+	debugMsgDepth(-10)
+	self:LogInfo("<<< Task cancelled!")
 	self.Status = TASK_STATUS_CANCEL
 	self.SituationPriority = self.SituationPriority / 2
 
@@ -681,6 +695,26 @@ function AITask:OnMoneyChanged(value, reason, reference)
 	--Zum überschreiben
 end
 
+--convenience log methods for tasks
+function AITask:LogError(message)
+	self:Log(LOG_ERROR, message)
+end
+
+function AITask:LogInfo(message)
+	self:Log(LOG_INFO, message)
+end
+
+function AITask:LogDebug(message)
+	self:Log(LOG_DEBUG, message)
+end
+
+function AITask:LogTrace(message)
+	self:Log(LOG_TRACE, message)
+end
+
+function AITask:Log(level, message)
+	logWithLevel(self.LogLevel, level, message)
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -697,6 +731,9 @@ _G["AIJob"] = class(KIDataObjekt, function(c)
 	c.TickMaxTime = 0
 	c.StartParams = nil
 	c.jobStartTime = 0
+	c.LogStartLevel = LOG_JOB_START_LEVEL
+	c.LogDoneLevel = LOG_OFF -- actually also remove comment where used - too many calculations
+	c.LogLevel = nil
 end)
 
 function AIJob:typename()
@@ -713,7 +750,7 @@ end
 function AIJob:resume()
 	if self.InvalidDataObject then
 		if self.Status == JOB_STATUS_REDO or self.Status == JOB_STATUS_RUN then
-			debugMsg(self:typename() .. ": InvalidDataObject resume => JOB_STATUS_NEW")
+			self:LogError(self:typename() .. ": InvalidDataObject resume => JOB_STATUS_NEW")
 			self.Status = JOB_STATUS_NEW
 		end
 		self.InvalidDataObject = false
@@ -723,6 +760,8 @@ end
 
 
 function AIJob:Start(pParams)
+	self:Log(self.LogStartLevel, "Job " .. self:typename() .. " started.")
+	debugMsgDepth(1)
 	self:OnStart()
 
 	self.jobStartTime = os.clock()
@@ -745,7 +784,7 @@ end
 
 
 function AIJob:Prepare(pParams)
-	debugMsg("Implementiere mich: " .. type(self))
+	self:LogError("Implementiere mich: " .. type(self))
 end
 
 
@@ -767,11 +806,13 @@ end
 
 
 function AIJob:ReDoCheck(minutesWait, ticksWait)
-	if ((self.LastCheckWorldTicks + ticksWait) < self:getWorldTicks() or (self.LastCheck + minutesWait) < TVT.GetTimeGoneInMinutes()) then
-		--debugMsg("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. TVT.GetTimeGoneInMinutes() .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. self:getWorldTicks())
+	local timeGone = TVT.GetTimeGoneInMinutes()
+	local ticks = self:getWorldTicks()
+	if ((self.LastCheckWorldTicks + ticksWait) < ticks or (self.LastCheck + minutesWait) < timeGone) then
+		self:LogDebug("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. timeGone .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. ticks)
 		self.Status = JOB_STATUS_REDO
-		self.LastCheckWorldTicks = self:getWorldTicks()
-		self.LastCheck = TVT.GetTimeGoneInMinutes()
+		self.LastCheckWorldTicks = ticks
+		self.LastCheck = timeGone
 		self:Prepare(self.StartParams)
 	end
 end
@@ -788,12 +829,14 @@ end
 
 
 function AIJob:OnDone()
-	debugMsg("Job " .. self:typename() .. " done. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
+	debugMsgDepth(-1)
+	--self:Log(self.LogDoneLevel, "Job " .. self:typename() .. " done. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
 end
 
 
 function AIJob:OnCancel()
-	debugMsg("Job " .. self:typename() .. " cancelled. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
+	debugMsgDepth(-1)
+	self:LogInfo("Job " .. self:typename() .. " cancelled. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
 end
 
 
@@ -818,7 +861,41 @@ end
 
 
 function AIJob:SetCancel()
-	debugMsg("SetCancel(): Implementiere mich: " .. type(self))
+	self:LogError("SetCancel(): Implementiere mich: " .. type(self))
+end
+
+--convenience log methods for jobs
+function AIJob:LogError(message)
+	self:Log(LOG_ERROR, message)
+end
+
+function AIJob:LogInfo(message)
+	self:Log(LOG_INFO, message)
+end
+
+function AIJob:LogDebug(message)
+	self:Log(LOG_DEBUG, message)
+end
+
+function AIJob:LogTrace(message)
+	self:Log(LOG_TRACE, message)
+end
+
+function AIJob:Log(level, message)
+	logWithLevel(self:GetLogLevel(), level, message)
+end
+
+--calculate inherited log level from task if job log level is not explicitly defined
+function AIJob:GetLogLevel()
+	if self.LogLevel == nil then
+		if self.Task ~= nil and self.Task.LogLevel ~=nil then
+			self.LogLevel = self.Task.LogLevel
+		else
+			logWithLevel(LOG_ERROR, LOG_ERROR, self:typename().." log level undefined")
+			self.LogLevel = LOG_OFF
+		end
+	end
+	return self.LogLevel
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -853,11 +930,11 @@ end
 function AIIdleJob:Start(pParams)
 	if (self.IdleTime ~= 0) then
 		self.IdleTill = TVT.GetTimeGoneInMinutes() + self.IdleTime
-		--debugMsg("Set self.IdleTill = " .. self.IdleTill)
+		self:LogDebug("Set self.IdleTill = " .. self.IdleTill)
 	end
 	if (self.IdleTicks ~= 0) then
 		self.IdleTillWorldTicks = self:getWorldTicks() + self.IdleTicks
-		--debugMsg("Set self.IdleTillWorldTicks = " .. self.IdleTillWorldTicks)
+		self:LogDebug("Set self.IdleTillWorldTicks = " .. self.IdleTillWorldTicks)
 	end
 end
 
@@ -887,18 +964,14 @@ function AIIdleJob:Tick()
 	end
 
 	if finishedIdling == true then
-		--debugMsg("Finished idling ...")
+		self:LogDebug("Finished idling ...")
 		self.Status = JOB_STATUS_DONE
 		return
 	else
-		--debugMsg("Idling ...")
+		self:LogTrace("Idling ...")
 	end
 end
 
---override to disable debugmsg
-function AIIdleJob:OnDone()
--- debugMsg("Job " .. self:typename() .. " done in " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
-end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -914,6 +987,7 @@ _G["AIJobGoToRoom"] = class(AIJob, function(c)
 	c.WaitSinceWorldTicks = -1
 	c.WaitTill = -1
 	c.WaitTillWorldTicks = -1
+	c.LogStartLevel = LOG_OFF
 end)
 
 function AIJobGoToRoom:typename()
@@ -925,7 +999,7 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	local resultId = tonumber(result)
 	if (resultId == TVT.RESULT_INUSE) then
 		if (self.IsWaiting) then
-			-- debugMsg( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
+			self:LogDebug( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		elseif (self:ShouldIWait()) then
 			self.IsWaiting = true
 			self.WaitSince = TVT.GetTimeGoneInMinutes()
@@ -938,9 +1012,9 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 			if ((self.WaitTillWorldTicks - self.WaitSinceWorldTicks) > 20) then
 				self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 20
 			end
-			debugMsg("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
+			self:LogDebug("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		else
-			debugMsg("BeginEnterRoom: Room occupied! Won't wait this time.")
+			self:LogInfo("BeginEnterRoom: Room occupied! Won't wait this time.")
 			self.Status = JOB_STATUS_CANCEL
 			self.Task:SetCancel()
 		end
@@ -948,25 +1022,24 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 		local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(roomId) )
 		--if blocked shorter than 10 minutes, we will wait
 		if TVT.IsRoomBlocked(roomId) == 1 and blockedMinutes <= 10 then
-			debugMsg("BeginEnterRoom: Room blocked short enough! ... waiting a bit. Blocked for " .. blockedMinutes .. " minute(s).")
+			self:LogInfo("BeginEnterRoom: Room blocked short enough! ... waiting a bit. Blocked for " .. blockedMinutes .. " minute(s).")
 		else
-			debugMsg("BeginEnterRoom: Room enter forbidden or room blocked and waiting time too long: " .. blockedMinutes .. " minute(s).")
+			self:LogInfo("BeginEnterRoom: Room enter forbidden or room blocked and waiting time too long: " .. blockedMinutes .. " minute(s).")
 			self.Status = JOB_STATUS_CANCEL
 			self.Task:SetCancel()
 		end
 	elseif(resultId == TVT.RESULT_NOKEY) then
-		debugMsg("BeginEnterRoom: Room locked! Need a key to enter. Cancelled task.")
+		self:LogInfo("BeginEnterRoom: Room locked! Need a key to enter. Cancelled task.")
 		self.Status = JOB_STATUS_CANCEL
 		self.Task:SetCancel()
 	elseif(resultId == TVT.RESULT_OK) then
-		--debugMsg("BeginEnterRoom: Entering allowed. roomId: " .. roomId)
+		self:LogDebug("BeginEnterRoom: Entering allowed. roomId: " .. roomId)
 	end
 end
 
 
 function AIJobGoToRoom:OnEnterRoom(roomId)
-	--debugMsg("EnterRoom: Entering roomId: " .. roomId)
-	--debugMsg("AIJobGoToRoom DONE!")
+	self:LogInfo("AIJobGoToRoom: Entering roomId: " .. roomId)
 	self.Status = JOB_STATUS_DONE
 end
 
@@ -994,9 +1067,9 @@ function AIJobGoToRoom:OnReachTarget()
 	-- room as it was occupied
 	if (self.Status == JOB_STATUS_REDO) or (self.Status == JOB_STATUS_RUN) then
 		if TVT.isRoomUnused(self.TargetRoom) == TVT.RESULT_INUSE then
-			--debugMsg("OnReachTarget - Skip going in, still used")
+			self:LogTrace("OnReachTarget - Skip going in, still used")
 		else
-			--debugMsg("OnReachTarget - GoToRoom again")
+			self:LogTrace("OnReachTarget - GoToRoom again")
 			TVT.DoGoToRoom(self.TargetRoom)
 		end
 	end
@@ -1005,9 +1078,9 @@ end
 
 function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
-		--debugMsg("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
+		self:LogTrace("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
 		if TVT.DoGoToRoom(self.TargetRoom) <= 0 then
-			--debugMsg("DoGoToRoom: failed, eg. not allowed to do so.")
+			self:LogTrace("DoGoToRoom: failed, eg. not allowed to do so.")
 		else
 			self.Status = JOB_STATUS_RUN
 		end
@@ -1017,27 +1090,27 @@ end
 
 function AIJobGoToRoom:Tick()
 	if (self.IsWaiting) then
-		--debugMsg("AIJobGoToRoom:Tick ... waiting")
+		self:LogTrace("AIJobGoToRoom:Tick ... waiting")
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
-			--debugMsg("Room is unused now")
+			self:LogTrace("Room is unused now")
 			self.IsWaiting = false
 			TVT.DoGoToRoom(self.TargetRoom)
 		elseif ((self.WaitTill - TVT.GetTimeGoneInMinutes()) <= 0 or (self.WaitTillWorldTicks - self:getWorldTicks()) <= 0) then
-			debugMsg("Room is still used. I do not want to wait anylonger.")
+			self:LogInfo("Room is still used. I do not want to wait any longer.")
 			self.IsWaiting = false
 			self.Status = JOB_STATUS_CANCEL
 		else
-			--debugMsg("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
+			self:LogTrace("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
 		end
 	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then
 		-- check if room is blocked - if so, abort task
 		if (self.TargetRoom >= 0) and TVT.IsRoomBlocked(self.TargetRoom) == 1 then
 			local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(self.TargetRoom) )
-			if blockedMinutes <=  10 then
-				debugMsg("Target room is blocked but soon reopening.")
+			if blockedMinutes <= 10 then
+				self:LogInfo("Target room is blocked but soon reopening.")
 			else
-				debugMsg("Target room is blocked ... cancelling task.")
+				self:LogInfo("Target room is blocked ... cancelling task.")
 				self.Status = JOB_STATUS_CANCEL
 				self.Task:SetCancel()
 			end
@@ -1045,12 +1118,6 @@ function AIJobGoToRoom:Tick()
 
 		self:ReDoCheck(10, 10)
 	end
-end
-
-
---override to disable debugmsg
-function AIJobGoToRoom:OnDone()
--- debugMsg("Job " .. self:typename() .. " done in " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -1113,7 +1180,7 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 		self.hourlyProgrammeAudience[currentI] = audience
 		return true
 	end
-	debugMsg("   -> ADDING FAILED at " .. currentI .. "  unknown broadcastTypeID " .. broadcastTypeID)
+	logWithLevel(LOG_ERROR, LOG_ERROR, "   -> ADDING FAILED at " .. currentI .. "  unknown broadcastTypeID " .. broadcastTypeID)
 end
 
 
@@ -1122,8 +1189,8 @@ function BroadcastStatistics:GetAttraction(day, hour, broadcastType)
 	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
 		return self.hourlyNewsAttraction[currentI]
 	elseif broadcastType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
---debugMsg("   -> GET PROG at " .. currentI)
-	--	for k,v in pairs(self.hourlyProgrammeAttraction) do
+		--debugMsg("   -> GET PROG at " .. currentI)
+		--for k,v in pairs(self.hourlyProgrammeAttraction) do
 		--	debugMsg("      existing: " .. k)
 		--end
 		return self.hourlyProgrammeAttraction[currentI]
@@ -1189,7 +1256,7 @@ end
 
 function StatisticEvaluator:AddValue(value)
 	if value == nil then
-		debugMsg("########## StatisticEvaluator:AddValue - NIL VALUE #############")
+		logWithLevel(LOG_ERROR, LOG_ERROR, "########## StatisticEvaluator:AddValue - NIL VALUE #############")
 		return
 	end
 
@@ -1299,6 +1366,13 @@ function kiMsg(pMessage, allPlayers)
 	end
 	TVT.addToLog(pMessage)
 end
+
+function infoMsg(pMessage)
+	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+		--TVT.PrintOut(pMessage)
+		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+	end
+end
 --]]
 
 function debugMsgDepth(change)
@@ -1323,15 +1397,25 @@ function debugMsg(pMessage, allPlayers)
 	TVT.addToLog(pMessage)
 end
 
-
---[[
-function infoMsg(pMessage)
-	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
-		--TVT.PrintOut(pMessage)
-		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+--main log method - write message if given level should be logged
+function logWithLevel(currentLogLevel, messageLogLevel, message)
+	if currentLogLevel ~= nil then
+		if messageLogLevel ~= nil then
+			if message~=nil then
+				if messageLogLevel == LOG_ERROR then message = "ERROR: " .. message end
+				if messageLogLevel > LOG_OFF and messageLogLevel <= currentLogLevel then
+					debugMsg(message)
+				end
+			end
+		else
+			debugMsg("Error: message log level not defined")
+			print(debug.traceback())
+		end
+	else
+		debugMsg("Error: current log level not defined")
+		print(debug.traceback())
 	end
 end
---]]
 
 function devMsg(pMessage)
 	TVT.PrintOut("== DEV == : " .. pMessage)
