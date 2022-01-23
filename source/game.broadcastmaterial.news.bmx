@@ -1,4 +1,4 @@
-﻿﻿﻿SuperStrict
+﻿SuperStrict
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
