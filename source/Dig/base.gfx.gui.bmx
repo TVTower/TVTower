@@ -1483,6 +1483,7 @@ Type TGUIobject
 
 
 	'forcefully drops an item back to the position when dragged
+	'if a "drop accepting" widget is below ... this is asked to handle it! 
 	Method DropBackToOrigin:Int()
 		If not IsDragged() Then Return False
 
@@ -1545,6 +1546,7 @@ Type TGUIobject
 
 	'when using "allowDropToNonGUIObject = true" a widget drops 
 	'everywhere and does not require a gui object below the drop position
+	'use "force = True" to ignore potential Veto's of events/callbacks
 	Method Drop:Int(coord:TVec2D=Null, limitState:TLowerString = Null, allowDropToNonGUIObject:Int = False, force:Int = False)
 		If Not isDragged() Then Return False
 		If coord And coord.getX()=-1 Then coord = New TVec2D.Init(MouseManager.x, MouseManager.y)
