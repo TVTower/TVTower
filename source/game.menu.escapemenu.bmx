@@ -282,7 +282,6 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
-		'_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onclick", onClickLoadSavegame, dialogueButtons[0]) ]
 		_eventListeners :+ [ EventManager.RegisterListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onClickLoadSavegame") ]
 		_eventListeners :+ [ EventManager.RegisterListenerMethod(GameEventKeys.SaveGame_OnLoad, Self, "onLoadSavegame") ]
 

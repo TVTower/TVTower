@@ -128,9 +128,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProductionConcept, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProductionConcept, onChangeProgrammeCollection) ]
-		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
-		'is only emitted if the drop is successful (so it "visually" happened)
-		'drop ... to studio manager or suitcase
+
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScript, "TGUIStudioScript") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceGUIScripts, "TGUIScriptSlotList") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProductionConcept, "TGuiProductionConceptListItem") ]
@@ -1288,6 +1286,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 						Else
 							GenerateStudioManagerDialogue(0)
 						EndIf
+						MouseManager.SetClickHandled(1)
 					EndIf
 
 					'show tooltip of studio manager

@@ -18,7 +18,7 @@ Type TGUIProgrammeLicenceSlotList Extends TGUISlotList
 		'we want to intercept too -- to stop dropping if not
 		'enough money is available
 		'---alternatively we could intercept programmeblocks-drag-event
-		'EventManager.registerListenerFunction( "guiobject.onDropOnTarget", self.onDropOnTarget, accept, self)
+		'EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnTryDrop, self.onTryDrop, accept, self)
 
 		Return Self
 	End Method

@@ -20,7 +20,7 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 
 		'disabled: now done manually
 		'scan for newly added toast messages
-		'_eventListeners :+ [ EventManager.registerListenerFunction( "ToastMessageCollection.onAddMessage", onAddToastMessage) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction( TToastMessageCollection.eventKey_ToastMessageCollection_onAddMessage, onAddToastMessage) ]
 	End Method
 
 

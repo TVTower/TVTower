@@ -1466,7 +1466,7 @@ Type TGUIListItem Extends TGUIobject
 		'inform others that a selectlistitem was clicked
 		'this makes the "listitem-clicked"-event filterable even
 		'if the itemclass gets extended (compared to the general approach
-		'of "guiobject.onclick")
+		'of "GUIobject_onclick")
 		TriggerBaseEvent(GUIEventKeys.GUIListItem_OnClick, new TData.AddInt("button", 1), Self, triggerEvent.GetReceiver())
 		
 		Return True

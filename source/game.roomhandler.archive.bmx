@@ -79,13 +79,13 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== register event listeners
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence" ) ]
 		'drop programme ... so sell/buy the thing
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
 		'drop programme on dude - add back to player's collection
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" ) ]
 		'check right clicks on a gui block
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", onClickProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick, onClickProgrammeLicence, "TGUIProgrammeLicence" ) ]
 
 		'(re-)localize content
 		SetLanguage()

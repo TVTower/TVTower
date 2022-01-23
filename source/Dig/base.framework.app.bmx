@@ -51,6 +51,7 @@ Type TApp
 	Global eventKey_App_OnUpdate:TEventKey = GetEventKey("App.onUpdate", True)
 	Global eventKey_App_OnDraw:TEventKey = GetEventKey("App.onDraw", True)
 	Global eventKey_App_OnStart:TEventKey = GetEventKey("App.onStart", True)
+	Global eventKey_App_OnSetLanguage:TEventKey = GetEventKey("App.onSetLanguage", True)
 	Global eventKey_App_OnLowPriorityUpdate:TEventKey = GetEventKey("App.OnLowPriorityUpdate", True)
 
 
@@ -79,6 +80,12 @@ Type TApp
 
 	Method SetTitle:Int(title:String)
 		AppTitle = title
+	End Method
+
+
+	Method SetLanguage:Int(languageCode:String="de")
+		'inform others - so eg. buttons can re-localize
+		TriggerBaseEvent(eventKey_App_OnSetLanguage, New TData.Add("languageCode", languageCode), Self)
 	End Method
 
 
