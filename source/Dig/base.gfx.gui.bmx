@@ -2134,7 +2134,7 @@ Type TGUIobject
 		
 
 		' check clicked
-		For local button:int = 1 To GUIManager.UpdateState_mouseButtonDown.length
+		For local button:int = 1 To GUIManager.UpdateState_mouseButtonDown.length - 1
 			If MouseManager.IsClicked(button)
 				'only handle click if the "button release" happens
 				'over the widget (so not "down" over button but "up" 
