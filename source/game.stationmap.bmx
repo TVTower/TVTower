@@ -1063,7 +1063,7 @@ Type TStationMapCollection
 		for local section:TStationMapSection = EachIn sections
 			section.InvalidateData()
 			'pre-create data already
-			section.GetAntennaShareMap()
+			section.GetAntennaShareGrid()
 		next
 
 		Return True
@@ -4320,8 +4320,11 @@ Type TStationMapSection
 	Field populationCableShare:Float = -1
 	Field populationSatelliteShare:Float = -1
 	Field populationAntennaShare:Float = -1
-	'map containing bitmask-coded information for "used" pixels
-	Field antennaShareMap:TLongMap = Null {nosave}
+	'grid/array/mapmap containing bitmask-coded information for "used" pixels
+	Field antennaShareGrid:Byte[] = Null {nosave}
+	Field antennaShareGridValid:Int = False {nosave}
+	Field antennaShareGridWidth:int {nosave}
+	Field antennaShareGridHeight:int {nosave}
 	'Field antennaShareMapImage:TImage {nosave}
 	Field shareCache:TStringMap = new TStringMap {nosave}
 	Field calculationMutex:TMutex = CreateMutex() {nosave}
@@ -4365,10 +4368,18 @@ Type TStationMapSection
 		LockMutex(shareCacheMutex)
 			shareCache = New TStringMap
 		UnlockMutex(shareCacheMutex)
+		
 		LockMutex(antennaShareMutex)
-			antennaShareMap = Null
+			'we could simply assign a new grid - or iterate over all
+			'fields and set them to 0
+			'For local i:int = 0 until (antennaShareGridWidth * antennaShareGridHeight)
+			'	antennaShareGrid[i] = 0
+			'Next
+			'antennaShareGrid = new Byte[antennaShareGrid.length]
+			antennaShareGridValid = False
 		UnlockMutex(antennaShareMutex)
 	End Method
+	
 
 
 	Method LoadShapeSprite()
@@ -4789,11 +4800,13 @@ Type TStationMapSection
 	End Method
 
 
-	Method GetAntennaShareMap:TLongMap()
-		if not antennaShareMap
+	Method GetAntennaShareGrid:Byte[]()
+		if not antennaShareGridValid or not antennaShareGrid or antennaShareGrid.length = 0
 			LockMutex(antennaShareMutex)
 
-			antennaShareMap = New TLongMap
+			antennaShareGrid = new Byte[populationImage.width * populationImage.height]
+			antennaShareGridWidth = populationImage.width
+			antennaShareGridHeight = populationImage.height
 
 			Local antennaStationRadius:int = GetStationMapCollection().antennaStationRadius
 			Local antennaStationRadiusSquared:int = antennaStationRadius * antennaStationRadius
@@ -4809,19 +4822,14 @@ Type TStationMapSection
 				if map.cheatedMaxReach
 					'insert the players bitmask-number into the field
 					'and if there is already one ... add the number
-					For posX = 0 To populationImage.height-1
-						For posY = 0 To populationImage.width-1
+					For posX = 0 To populationImage.width-1
+						For posY = 0 To populationImage.height-1
 							'left the topographic borders ?
 							If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
 
-							shareKey = GeneratePositionKey(posX, posY)
-							shareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
-							If not shareMask
-								shareMask = new TStationMapShareMask(posX, posY, GetMaskIndex(map.owner) )
-								antennaShareMap.Insert(shareKey, shareMask)
-							Else
-								shareMask.mask :| GetMaskIndex(map.owner)
-							EndIf
+							Local index:Int = posY * antennaShareGridWidth + posX
+							'adjust mask
+							antennaShareGrid[index] :| GetMaskIndex(map.owner)
 						Next
 					Next
 				else
@@ -4852,26 +4860,19 @@ Type TStationMapSection
 								'left the topographic borders ?
 								If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
 
-
-								'insert the players bitmask-number into the field
-								'and if there is already one ... add the number
-								shareKey = GeneratePositionKey(posX, posY)
-								shareMask = TStationMapShareMask(antennaShareMap.ValueForKey(shareKey))
-								If not shareMask
-									shareMask = New TStationMapShareMask(posX, posY, GetMaskIndex(station.owner) )
-									antennaShareMap.Insert(shareKey, shareMask)
-								Else
-									shareMask.mask :| GetMaskIndex(station.owner)
-								EndIf
+								Local index:Int = posY * antennaShareGridWidth + posX
+								'adjust mask
+								antennaShareGrid[index] :| GetMaskIndex(station.owner)
 							Next
 						Next
 					Next
 				endif
 			Next
 
+			antennaShareGridValid = True
 			UnLockMutex(antennaShareMutex)
 		endif
-		return antennaShareMap
+		return antennaShareGrid
 	End Method
 
 
@@ -5042,23 +5043,27 @@ Type TStationMapSection
 		If Not result
 			result = New TStationMapPopulationShare
 
-			Local shareMap:TLongMap = GetAntennaShareMap()
+			Local shareGrid:Byte[] = GetAntennaShareGrid()
 			LockMutex(antennaShareMutex) 'to savely iterate over values()
-			For Local mapMask:TStationMapShareMask = EachIn shareMap.Values()
-				'skip if none of our interested is here
-				If includeChannelMask.HasNone(mapMask.mask) Then Continue
-				'skip if one of the to exclude is here
-				If not excludeChannelMask.HasNone(mapMask.mask) Then Continue
+			For Local mapX:Int = 0 until antennaShareGridWidth 
+				For Local mapY:Int = 0 until antennaShareGridHeight
+					Local index:Int = mapY * antennaShareGridWidth + mapX
+					Local mask:Byte = shareGrid[index]
+					'skip if none of our interested is here
+					If includeChannelMask.HasNone(mask) Then Continue
+					'skip if one of the to exclude is here
+					If not excludeChannelMask.HasNone(mask) Then Continue
 
-				'someone has a station there
-				'-> check already done in the skip above
-				'If ((mapMask.mask & includeChannelMask) <> 0)
-					result.value.total :+ populationmap[mapMask.x, mapMask.y]
-				'EndIf
-				'all searched have a station there
-				If (mapMask.mask & includeChannelMask.value) = includeChannelMask.value
-					result.value.shared :+ populationmap[mapMask.x, mapMask.y]
-				EndIf
+					'someone has a station there
+					'-> check already done in the skip above
+					'If ((mapMask.mask & includeChannelMask) <> 0)
+						result.value.total :+ populationmap[mapX, mapY]
+					'EndIf
+					'all searched have a station there
+					If (mask & includeChannelMask.value) = includeChannelMask.value
+						result.value.shared :+ populationmap[mapX, mapY]
+					EndIf
+				Next
 			Next
 			UnlockMutex(antennaShareMutex)
 
@@ -5257,7 +5262,7 @@ endrem
 	End Function
 
 
-	Function getMaskIndex:Int(number:Int)
+	Function GetMaskIndex:Int(number:Int)
 		Return 1 shl (number-1)
 		rem
 		Local t:Int = 1

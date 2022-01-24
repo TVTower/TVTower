@@ -652,10 +652,7 @@ Type TSprite
 
 
 	Method PixelIsOpaque:Int(x:Int, y:Int)
-		If x < 0 Or y < 0 Or x >= frameW Or y >= frameH
-			Print "out of bounds: "+x+", "+y
-			Return False
-		EndIf
+		If x < 0 Or y < 0 Or x >= frameW Or y >= frameH Then Return False
 
 		If Not _pix
 			_pix = LockImage(GetImage())
