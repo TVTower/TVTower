@@ -880,130 +880,6 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
-				local start:Int = Millisecs()
-				local b:TBroadcast = new TBroadcast
-				for local i:int = 0 until 1000
-					b.AscertainPlayerMarkets()
-				Next
-				'release: 200ms
-				'debug:   750ms
-				'new SChannelMask().Set()...Set()'s entfernt/vereinfacht:
-				'release: 198ms
-				'		100000 * GetTotalAntennaReceiverShare took: 610ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 638ms.
-				'debug:   735ms
-				'		100000 * GetTotalAntennaReceiverShare took: 2222ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 2260ms.
-				print "1000 * AscertainPlayerMarkets took: " + (Millisecs() - start) +"ms."
-				'TStationMapPopulationShare mit SStationMapPopulationShare ersetzt:
-				'release: 178ms
-				'		100000 * GetTotalAntennaReceiverShare took: 560ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 579ms.
-				'		100000 * GetTotalAntennaReceiverShare took: 576ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 602ms.
-				'		1000 * sections.GetAntennaShareMap()() took: 780ms.
-				'debug:   691ms
-				'		100000 * GetTotalAntennaReceiverShare took: 2129ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 2152ms.
-				'		1000 * sections.GetAntennaShareMap()() took: 4981ms.
-				'		1000 * GetTotalAntennaReceiverShare() CLEAN took: 5845ms.
-
-				'release mit 18 Antennen
-				'1000 * sections.GetAntennaShareMap()() took: 6567ms.
-				'1000 * GetTotalAntennaReceiverShare() CLEAN took: 8171ms.
-				'ohne getter / sharemaskmap
-				'1000 * sections.GetAntennaShareMap()() took: 5350ms.
-				'1000 * GetTotalAntennaReceiverShare() CLEAN took: 7074ms.
-				
-				'5028 new masks bzw bei 18 Antennen 27156 new masks
-				'masks nur noch eintragen, wenn neu:
-				'1257 new masks bzw bei 18 Antennen 20218 new masks
-				'release:
-				'		1000 * AscertainPlayerMarkets took: 185ms.
-				'		1000 * sections.GetAntennaShareMap()() took: 433ms. newMasks=1257
-				'		1000 * GetTotalAntennaReceiverShare() CLEAN took: 513ms.
-				'		100000 * GetTotalAntennaReceiverShare took: 633ms.
-				'		100000 * GetTotalSatelliteReceiverShare took: 8ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 578ms.
-				'release mit 18 antennen:
-				'		1000 * AscertainPlayerMarkets took: 171ms.
-				'		1000 * sections.GetAntennaShareMap()() took: 5890ms. newMasks=20218
-				'		1000 * GetTotalAntennaReceiverShare() CLEAN took: 7599ms.
-				'mit "verbessertem" PixelIsOpaque
-				'release mit 1 Antenne:
-				'		1000 * AscertainPlayerMarkets took: 191ms.
-				'		1000 * sections.GetAntennaShareMap()() took: 417ms. newMasks=0
-				'		1000 * GetTotalAntennaReceiverShare() CLEAN took: 491ms.
-				'		100000 * GetTotalAntennaReceiverShare took: 618ms.
-				'		100000 * GetTotalSatelliteReceiverShare took: 6ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 546ms.
-				'release mit 18 Antennen:
-				'		1000 * AscertainPlayerMarkets took: 179ms.
-				'		1000 * sections.GetAntennaShareMap()() took: 5752ms. newMasks=0
-				'		1000 * GetTotalAntennaReceiverShare() CLEAN took: 7348ms.
-				'		100000 * GetTotalAntennaReceiverShare took: 725ms.
-				'		100000 * GetTotalSatelliteReceiverShare took: 7ms.
-				'		100000 * GetTotalCableNetworkReceiverShare took: 542ms.
-
-				rem
-				start = Millisecs()
-				For local i:int = 0 until 10000000
-					for local section:TStationMapSection = EachIn GetStationMapCollection().sections
-						section.GetShapeSprite().PixelIsOpaque(5, 5)
-					next
-				Next
-				print "10000000 * PixelIsOpaque: " + (Millisecs() - start) +"ms."
-				endrem
-
-				start = Millisecs()
-				For local i:int = 0 until 500
-					for local section:TStationMapSection = EachIn GetStationMapCollection().sections
-						section.InvalidateData()
-						'pre-create data already
-						section.GetAntennaShareGrid()
-					next
-				Next
-				print "500 * sections.GetAntennaShareGrid()() took: " + (Millisecs() - start) +"ms."
-
-				start = Millisecs()
-				For local i:int = 0 until 500
-					Local includeChannelMask:SChannelMask = new SChannelMask(1 + 2 + 4 + 8)
-					Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
-
-					for local section:TStationMapSection = EachIn GetStationMapCollection().sections
-						section.InvalidateData()
-						'pre-create data already
-'						section.GetAntennaShareMap()
-					next
-
-					Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(includeChannelMask, excludeChannelMask).shared
-				Next
-				print "500 * GetTotalAntennaReceiverShare() (invalidated data) took: " + (Millisecs() - start) +"ms."
-
-				start = Millisecs()
-				For local i:int = 0 until 100000
-					Local includeChannelMask:SChannelMask = new SChannelMask(1 + 2 + 4 + 8)
-					Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
-					Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(includeChannelMask, excludeChannelMask).shared
-				Next
-				print "100000 * GetTotalAntennaReceiverShare took: " + (Millisecs() - start) +"ms."
-
-				start = Millisecs()
-				For local i:int = 0 until 100000
-					Local includeChannelMask:SChannelMask = new SChannelMask(1 + 2 + 4 + 8)
-					Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
-					Local audienceAntenna:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask).shared
-				Next
-				print "100000 * GetTotalSatelliteReceiverShare took: " + (Millisecs() - start) +"ms."
-
-				start = Millisecs()
-				For local i:int = 0 until 100000
-					Local includeChannelMask:SChannelMask = new SChannelMask(1 + 2 + 4 + 8)
-					Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
-					Local audienceAntenna:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(includeChannelMask, excludeChannelMask).shared
-				Next
-				print "100000 * GetTotalCableNetworkReceiverShare took: " + (Millisecs() - start) +"ms."
-
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
@@ -3081,7 +2957,6 @@ Type TSavegameConverter
 		'Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
-			'v0.7.2 -> "TStationMapCollection.sections:TList to :TIntMap"
 			'v0.7.2 -> "TStationMapSection.uplinkPos:TVec2D to :TVec2I
 			case "TVec2D>TVec2I".ToLower()
 				'room(base)collection?
