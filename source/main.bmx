@@ -3050,12 +3050,55 @@ Type TSavegameConverter
 				Return typeName
 		End Select
 	End Method
+
+
+	'handling fields no longer existing a type (obj.pos:TVec2D -> obj.x, obj.y)
+	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
+		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
+		Select handle
+			'v0.7.2 -> "TStation***.pos:TVec2D" became "TStation***.x and .y"
+			case "TStation.pos:TVec2D".ToLower(), ..
+			     "TStationAntenna.pos:TVec2D".ToLower(), ..
+			     "TStationBase.pos:TVec2D".ToLower(), ..
+			     "TStationCableNetworkUplink.pos:TVec2D".ToLower(), ..
+			     "TStationSatelliteUplink.pos:TVec2D".ToLower(), ..
+			
+				TStation(parent).x = TVec2D(fieldObject).x
+				TStation(parent).y = TVec2D(fieldObject).y
+				'Print "[INFORMATION] Handled missing field: " + parentTypeName+"."+fieldName+":"+fieldTypeName+"."
+				Return parent
+			
+			default
+				print "NOT handling ... " + handle
+		End Select
+		
+		Return Null
+	End Method
 	
 	
+	'handling stuff like different types used in a field ("list:TList -> list:TMap")
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
 		'Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
+			'v0.7.2 -> "TStationMapCollection.sections:TList to :TIntMap"
+			'v0.7.2 -> "TStationMapSection.uplinkPos:TVec2D to :TVec2I
+			case "TVec2D>TVec2I".ToLower()
+				'room(base)collection?
+				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TStationMapSection".ToLower()
+					local old:TVec2D = TVec2D(obj)
+					return new TVec2I(int(old.x + 0.5), int(old.y + 0.5))
+				EndIf
+
+			'v0.7.2 -> "TStationMapSection.uplinkPos:TVec2D to :TVec2I
+			case "TVec2D>TVec2I".ToLower()
+				'room(base)collection?
+				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TStationMapSection".ToLower()
+					local old:TVec2D = TVec2D(obj)
+					print "old: " + old.ToString()
+					return new TVec2I(int(old.x + 0.5), int(old.y + 0.5))
+				EndIf
+
 			'v0.7.1 -> 0.7.2: "TStationMapcollection.sections - TList to TStationMapSection[]"
 			Case "TList>TStationMapSection[]".ToLower()
 				Local list:TList = TList(obj)
@@ -6084,13 +6127,13 @@ Type AppEvents
 	Function Init:Int()
 		If InitDone Then Return True
 
-		EventManager.registerListenerFunction("guiModalWindow.onClose", onGuiModalWindowClose)
-		EventManager.registerListenerFunction("guiModalWindowChain.onClose", onGuiModalWindowClose)
-		EventManager.registerListenerFunction("guiModalWindow.onOpen", onGuiModalWindowCreate)
-		EventManager.registerListenerFunction("guiModalWindowChain.onOpen", onGuiModalWindowCreate)
-		EventManager.registerListenerFunction("ToastMessageCollection.onAddMessage", onToastMessageCollectionAddMessage)
-		EventManager.registerListenerFunction("app.onStart", onAppStart)
-'		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverGUIObject)
+		EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, onGuiModalWindowClose)
+		EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindowChain_OnClose, onGuiModalWindowClose)
+		EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnOpen, onGuiModalWindowCreate)
+		EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindowChain_OnOpen, onGuiModalWindowCreate)
+		EventManager.registerListenerFunction(TToastMessageCollection.eventKey_ToastMessageCollection_onAddMessage, onToastMessageCollectionAddMessage)
+		EventManager.registerListenerFunction(GameEventKeys.App_OnStart, onAppStart)
+'		EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverGUIObject)
 
 	End Function
 rem

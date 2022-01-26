@@ -2842,21 +2842,22 @@ endrem
 			Local mousePos:TVec2D = New TVec2D.Init( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
-			If Not mouseoverStation.pos.isSame( mousePos )
-				mouseoverStation.pos.CopyFrom(mousePos)
+			If Not mousePos.EqualsXY(mouseoverStation.x, mouseoverStation.y, True)
+				mouseoverStation.x = int(mousePos.x)
+				mouseoverStation.y = int(mousePos.y)
 				mouseoverStation.refreshData()
 				'refresh state information
 				mouseoverStation.GetSectionName(True)
 			EndIf
 
 			Local hoveredMapSection:TStationMapSection
-			If mouseoverStation Then hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStation.pos.x), Int(mouseoverStation.pos.y))
+			If mouseoverStation Then hoveredMapSection = GetStationMapCollection().GetSection(mouseoverStation.x, mouseoverStation.y)
 
 			'if mouse gets clicked, we store that position in a separate station
 			If MOUSEMANAGER.isClicked(1) OR KEYMANAGER.IsHit(KEY_SPACE)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReach() > 0
-					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.pos.GetIntX(), mouseoverStation.pos.GetIntY() )
+					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.X, mouseoverStation.y )
 
 					'handled left click
 					MouseManager.SetClickHandled(1)
@@ -2871,7 +2872,7 @@ endrem
 			EndIf
 
 			If selectedStation
-				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
+				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(selectedStation.x, selectedStation.y)
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf
@@ -2879,7 +2880,7 @@ endrem
 		ElseIf actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
 			'if the mouse has moved or nothing was created yet
 			'refresh the station data and move station
-			If Not mouseoverStation Or Not mouseoverStationPosition Or Not mouseoverStationPosition.isSame( MouseManager.GetPosition() )
+			If Not mouseoverStation Or Not mouseoverStationPosition Or Not (MouseManager.GetPosition().EqualsXY(mouseoverStationPosition.x, mouseoverStationPosition.y) )
 				mouseoverSection = GetStationMapCollection().GetSection( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
 				If mouseoverSection
 					Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySectionName(mouseoverSection.name)
@@ -2938,7 +2939,7 @@ endrem
 			EndIf
 
 			If selectedStation
-				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
+				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(selectedStation.x, selectedStation.y)
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf

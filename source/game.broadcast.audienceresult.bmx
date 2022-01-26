@@ -125,11 +125,17 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 	'potentially reachable audience (in front of TV at that moment)
 	Method GetAudienceQuotePercentage:Float(gender:int=-1) {_exposeToLua}
 		if gender = -1
+			Local sum1:Float = Audience.GetTotalSum()
+			Local sum2:Float = GetPotentialMaxAudience().GetTotalSum()
+			if sum1 = 0 or sum2 = 0 then Return 0
 			'more exact until we use some "math library" for floats
-			return Audience.GetTotalSum() / GetPotentialMaxAudience().GetTotalSum()
+			return sum1 / sum2
 			'return GetAudienceQuote().GetWeightedAverage()
 		else
-			return Audience.GetGenderSum(gender) / GetPotentialMaxAudience().GetGenderSum(gender)
+			Local sum1:Float = Audience.GetGenderSum(gender)
+			Local sum2:Float = GetPotentialMaxAudience().GetGenderSum(gender)
+			if sum1 = 0 or sum2 = 0 then Return 0
+			return sum1 / sum2
 		endif
 	End Method
 
