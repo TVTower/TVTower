@@ -639,7 +639,7 @@ Type TPersist
 	'tries to deserialize elements in the field so that potentially
 	'stored objects can be referenced properly from other stored
 	'objects (in other fields etc.)
-	Method HandleMissingField:TTypeID(fieldNode:TxmlNode)
+	Method HandleMissingField:TTypeID(fieldNode:TxmlNode, fieldName:String, parent:object, parentType:TTypeId)
 		'Local fieldNodeAttribute:String = fieldNode.getAttribute("type")
 			
 		'for now brl.reflection has a bug - until our fix
@@ -676,9 +676,15 @@ Type TPersist
 
 		If Not strictMode And serializedFieldTypeID
 			'deserialize it, so that its reference exists
-			DeSerializeObject("", fieldNode)
+			Local deserializedObject:object = DeSerializeObject("", fieldNode)
 
-			Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
+			Local parentTypeName:String
+			if parentType then parentTypeName = parentType.name()
+			If not DelegateHandleMissingField:Int(parent, parentTypeName, fieldName, fieldTypeName, deserializedObject)
+				Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
+			Else
+				Print "[INFORMATION] TPersistence: Handled missing field: " + parentTypeName+"."+fieldName+":"+fieldTypeName+"."
+			EndIf
 		Else
 			Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available."
 		EndIf
@@ -714,7 +720,7 @@ Type TPersist
 						EndIf
 						
 						if not fieldObj
-							HandleMissingField(fieldNode)
+							HandleMissingField(fieldNode, fieldName, obj, objType)
 							Continue
 						endif
 						'else we just process the new "field" now...
@@ -959,6 +965,40 @@ Type TPersist
 
   		return res
  	End Method
+
+
+	'ronny
+	Method DelegateHandleMissingField:Int(parent:object, parentTypeName:string, fieldName:string, fieldTypeName:string, fieldObject:object)
+ 		Local typeID:TTypeID = TTypeID.ForObject(parent)
+ 		Local handleName:string = "HandleMissingField"
+ 		Local handleFunction:TMethod
+ 		Local functionContainer:object = parent
+ 		if typeID then handleFunction = typeID.FindMethod(handleName)
+
+		'ask the generic converter
+ 		if not handlefunction
+			if converterTypeID
+				handleFunction = converterTypeID.FindMethod(handleName)
+
+				if handleFunction
+					if not converterType then converterType = converterTypeID.NewObject()
+					functionContainer = converterType
+				endif
+			endif
+
+  			if not handleFunction
+				Return False
+ 			endif
+ 		endif
+
+  		local res:object = handleFunction.Invoke(functionContainer, [object(parentTypeName), object(fieldName), object(fieldTypeName), parent, fieldObject])
+ 		if not res
+			Return False
+ 		endif
+
+  		Return True
+ 	End Method
+
 
 	'Ronny:
 	'deserializes objects defined in "node" into "obj"
