@@ -4,9 +4,15 @@
 	<scripttemplates>
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mysteriousisland">
 			<title>
-				<de>Mysteriöse Insel</de>
-				<en>Mysterious Island</en>
+				<de>%ADJECTIVE% Insel</de>
+				<en>%ADJECTIVE% Island</en>
 			</title>
+			<variables>
+				<adjective>
+					<de>Mysteriöse|Gefährliche|Unheimliche|Abgelegene|Ferne</de>
+					<en>Mysterious|Dangerous|Uncanny|Secluded|Remote</en>
+				</adjective>
+			</variables>
 			<description>
 				<de>Nach einem Bootsunfall stranden Jill und Frank auf einer Insel, die doch nicht so einsam
 ist wie gedacht. Bald kämpfen sie um Leben und Tod.</de>
@@ -31,14 +37,31 @@ ist wie gedacht. Bald kämpfen sie um Leben und Tod.</de>
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mummyattack">
 			<title>
-				<de>Mumien greifen an</de>
-				<en>Mummy Attack</en>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
 			</title>
 			<description>
 				<de>Ein ganz normaler Teenagerausflug endet in einem Besäufnis und einem Wald voller Untoter.</de>
 				<en>A normal teenage trip ends in drunkenness and a forest full of undead.</en>
 			</description>
-
+			<variables>
+				<title>
+					<de>%WHO% greifen an|Angriff der %WHO%|Rache der %WHO%|Umzingelt von %WHOD%|Wald der %WHO%</de>
+					<en>%WHO% Attack|Assault of the %WHO%|Revenge of the %WHO%|Surrounded by %WHOD%|Forest of the %WHO%</en>
+				</title>
+				<whoi>
+					<de>Mumien|Zombies</de>
+					<en>Mummies|Zombies</en>
+				</whoi>
+				<who>
+					<de>%WHOI%|Vampire|Geister|Monster|Werwölfe</de>
+					<en>%WHOI%|Vampires|Ghosts|Monsters|Werewolves</en>
+				</who>
+				<whod>
+					<de>%WHOI%|Vampiren|Geistern|Monstern|Werwölfen</de>
+					<en>%WHOI%|Vampires|Ghosts|Monsters|Werewolves</en>
+				</whod>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />
@@ -59,8 +82,8 @@ ist wie gedacht. Bald kämpfen sie um Leben und Tod.</de>
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-daytrip">
 			<title>
-				<de>Kaffeefahrt</de>
-				<en>Day Trip</en>
+				<de>Kaffeefahrt%MODIFIER%</de>
+				<en>Day Trip%MODIFIER%</en>
 			</title>
 			<description>
 				<de>Eine Rentnergruppe probt den Aufstand. Sie wollen eine Kaffeefahrt ohne Heizdecken.
@@ -68,6 +91,16 @@ Doch der Reiseveranstalter trickst sie aus.</de>
 				<en>A group of pensioners is rehearsing the uprising. They want a day trip without buying electric blankets.
 But the tour operator tricks them.</en>
 			</description>
+			<variables>
+				<modifier>
+					<de>| nach %RANDOMCITY%</de>
+					<en>| to %RANDOMCITY%</en>
+				</modifier>
+				<randomcity>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+					<en>%STATIONMAP:RANDOMCITY%</en>
+				</randomcity>
+			</variables>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -86,16 +119,25 @@ But the tour operator tricks them.</en>
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-goldrush">
 			<title>
-				<de>Goldrausch</de>
-				<en>Gold Rush</en>
+				<de>Goldrausch%MODIFIER%</de>
+				<en>Gold Rush%MODIFIER%</en>
 			</title>
 			<description>
-				<de>Rivalisierende Goldschürfer wetteifern in Prosperous Creek um die größten Goldfunde.
+				<de>Rivalisierende Goldschürfer wetteifern in %RANDOMCITY% um die größten Goldfunde.
 Dabei sind ihnen alle Mittel recht.</de>
-				<en>Rival gold prospectors compete for the largest gold finds in Prosperous Creek.
+				<en>Rival gold prospectors compete for the largest gold finds in %RANDOMCITY%.
 All means are right for them.</en>
 			</description>
-
+			<variables>
+				<modifier>
+					<de>| in %RANDOMCITY%</de>
+					<en>| in %RANDOMCITY%</en>
+				</modifier>
+				<randomcity>
+					<de>%STATIONMAP:RANDOMCITY%|Prosperous Creek</de>
+					<en>%STATIONMAP:RANDOMCITY%|Prosperous Creek</en>
+				</randomcity>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />
