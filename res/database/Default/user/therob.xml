@@ -2177,13 +2177,24 @@
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
-				<de>Drehbücher für Anfänger</de>
-				<en>Moviescripts fo beginners</en>
+				<de>%WHAT% für %WHO%</de>
+				<en>%WHAT% for %WHO%</en>
 			</title>
 			<description>
-				<de>Wie schreibe ich Drehbücher für TowerTV? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
-				<en>How do I write TowerTV scripts? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
+				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
+				<en>How do I write %WHAT% for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
 			</description>
+			<variables>
+				<what>
+					<de>Drehbücher|Nachrichten|Serien|Filme</de>
+					<en>Movie scripts|News|Series|Movies</en>
+				</what>
+				<who>
+					<de>Anfänger|Neulinge|Fortgeschrittene|Profis|Neugierige</de>
+					<en>beginners|newcomers|the advanced|professionals|the curious</en>
+				</who>
+			</variables>
+			
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="128" required="1" gender="2" />
@@ -2202,12 +2213,23 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
-				<de>Reportagen aus dem Sendegebiet</de>
-				<en>Local report</en>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
 			</title>
+			<variables>
+				<title>
+					<de>Reportagen aus dem Sendegebiet|Neues aus %RANDOMCITY%|Reportagen aus %RANDOMCITY%|Was ist los in %RANDOMCITY%?</de>
+					<en>Local report|News from %RANDOMCITY%|Report from  %RANDOMCITY%|What's up in %RANDOMCITY%?</en>
+				</title>
+				<randomcity>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+					<en>%STATIONMAP:RANDOMCITY%</en>
+				</randomcity>
+			</variables>
+			
 			<description>
-				<de>Reporter durchreisen das Sendegebiet um ausführlich über lokale Sendegebietsereignisse zu berichten. Die neueste Ausstellung, ein Jubiläum? Alles wird entdeckt.</de>
-				<en>Reporters travel through the broadcast area to report in detail on local broadcast area events. The latest exhibition, an anniversary? Everything will be discovered.</en>
+				<de>Reporter durchreisen das Sendegebiet um ausführlich über lokale Ereignisse zu berichten. Die neueste Ausstellung, ein Jubiläum? Alles wird entdeckt.</de>
+				<en>Reporters travel through the broadcast area to report in detail on local events. The latest exhibition, an anniversary? Everything will be discovered.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2226,12 +2248,31 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
-				<de>Die neusten Filme</de>
+				<de>%TITLE%</de>
 				<en>Upcoming movies</en>
 			</title>
+			<variables>
+				<title>
+					<de>%ADJECTIVE% %SUBJECT%%MODIFIER%</de>
+					<en>%ADJECTIVE% %SUBJECT%%MODIFIER%</en>
+				</title>
+				<subject>
+					<de>Filme|Serien|Shows|Produktionen</de>
+					<en>movies|series|shows|productions</en>
+				</subject>
+				<adjective>
+					<de>Die neusten|Herausragende|Die spannendsten</de>
+					<en>Upcoming|Outstanding|Exciting</en>
+				</adjective>
+				<modifier>
+					<de>|| %WORLDTIME:YEAR%</de>
+					<en>|| %WORLDTIME:YEAR%</en>
+				</modifier>
+			</variables>
+			
 			<description>
-				<de>Talkrunde in der die Filme des nächsten Jahres besprochen werden. Was muss man sehen, was kann man sich sparen?</de>
-				<en>A Review about the upcoming movies with guests. What should you see, what could you miss?</en>
+				<de>Besprechung der Neuerscheinungen. Was muss man sehen, was kann man sich sparen?</de>
+				<en>Review of new releases. What should you see, what could you miss?</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2339,13 +2380,23 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
 			<title>
-				<de>Engel oder Bengel</de>
-				<en>Our Son Is No Angel</en>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
 			</title>
 			<description>
 				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
 				<en>Familycomedy about the life with a cheeky son. The script is written by the starwriter Don Ron.</en>
 			</description>
+			<variables>
+				<title>
+					<de>Engel oder Bengel|%NAME% dreht durch|%NAME% außer Rand und Band</de>
+					<en>Our Son Is No Angel|%NAME% goes berserk|%NAME% goes haywire</en>
+				</title>
+				<name>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
+				</name>
+			</variables>
+			
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />

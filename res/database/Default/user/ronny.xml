@@ -841,12 +841,19 @@ Illustrious guests and music by [3|Nick].</en>
 		<!-- product="3" => "Show" -->
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
 			<title>
-				<de>Musiksterne am Abend</de>
+				<de>%WHAT% %WHEN%</de>
 			</title>
 			<description>
-				<de>Fetzige Popmusik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
+				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
 			</description>
-
+			<variables>
+				<what>
+					<de>Musiksterne|Talente|Pop|Unterhaltung|Musikgenuss|Klassik|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</de>
+				</what>
+				<when>
+					<de>am Abend|zur besten Sendezeit|in der Dämmerung|im Mondschein|unterm Sternenzelt|zur guten Nacht|zum Sonnenuntergang</de>
+				</when>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" gender="2" />
@@ -870,11 +877,17 @@ Illustrious guests and music by [3|Nick].</en>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
 			<title>
-				<de>Goldene Morgenstunden</de>
+				<de>%SHOWNAME%</de>
 			</title>
 			<description>
 				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>
 			</description>
+
+			<variables>
+				<showname>
+					<de>Goldene Morgenstunden|Guten Morgen %STATIONMAP:RANDOMCITY%|Die Frühaufsteher|Start in den Tag</de>
+				</showname>
+			</variables>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
