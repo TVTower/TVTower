@@ -2937,10 +2937,11 @@ Type TSavegameConverter
 			     "TStationAntenna.pos:TVec2D".ToLower(), ..
 			     "TStationBase.pos:TVec2D".ToLower(), ..
 			     "TStationCableNetworkUplink.pos:TVec2D".ToLower(), ..
-			     "TStationSatelliteUplink.pos:TVec2D".ToLower(), ..
+			     "TStationSatelliteUplink.pos:TVec2D".ToLower()
 			
-				TStation(parent).x = TVec2D(fieldObject).x
-				TStation(parent).y = TVec2D(fieldObject).y
+			
+				TStationBase(parent).x = TVec2D(fieldObject).x
+				TStationBase(parent).y = TVec2D(fieldObject).y
 				'Print "[INFORMATION] Handled missing field: " + parentTypeName+"."+fieldName+":"+fieldTypeName+"."
 				Return parent
 			
