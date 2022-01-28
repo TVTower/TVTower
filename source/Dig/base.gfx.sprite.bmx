@@ -649,28 +649,7 @@ Type TSprite
 		'draw now colorized image on the parent image
 		DrawImageOnImage(newImg, parent.GetImage(), Int(area.GetX()), Int(area.GetY()))
 	End Method
-
-
-	Method PixelIsOpaque:Int(x:Int, y:Int)
-		If x < 0 Or y < 0 Or x >= frameW Or y >= frameH Then Return False
-
-		If Not _pix
-			_pix = LockImage(GetImage())
-			'UnlockImage(parent.image) 'unlockimage does nothing in blitzmax (1.48)
-		EndIf
-		
-		If _pix.format = PF_RGBA8888
-			Local pixelPtr:Byte Ptr = _pix.pixels + (y * _pix.pitch + x * 4)
-			'(pixelPtr[0] & 255) 'r
-			'(pixelPtr[1] & 255) 'g
-			'(pixelPtr[2] & 255) 'b
-			'(pixelPtr[3]) 'a
-			Return pixelPtr[3] > 0
-		Else
-			Return ARGB_Alpha(ReadPixel(_pix, x,y))
-		EndIf
-	End Method
-
+	
 
 	'draw the sprite onto a given image or pixmap
 	Method DrawOnImage(imageOrPixmap:Object, x:Int, y:Int, frame:Int = -1, alignment:TVec2D=Null, modifyColor:TColor=Null)

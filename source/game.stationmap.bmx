@@ -598,13 +598,19 @@ Type TStationMapCollection
 		Local mapX:Int = 0
 		Local mapY:Int = 0
 		Local tries:int = 0
+
+		Local sectionPix:TPixmap
+		Local sprite:TSprite = section.GetShapeSprite()
+		If not sprite Then return new SVec2I(-1, -1)
+		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
+
 		Repeat
 			'find random spot on "map"
 			mapX = RandRange(section.rect.GetIntX(), section.rect.GetIntX2())
 			mapY = RandRange(section.rect.GetIntY(), section.rect.GetIntY2())
 
 			'check if spot in local space is on an opaque/colliding pixel
-			If section.GetShapeSprite().PixelIsOpaque(mapX - section.rect.GetIntX(), mapY - section.rect.GetIntY()) > 0
+			If PixelIsOpaque(sprite._pix, mapX - section.rect.GetIntX(), mapY - section.rect.GetIntY()) > 0
 				found = True
 				'check if other map sections have an opacque pixel there too (ambiguity!)
 				If not allowSectionCrossing
@@ -612,10 +618,15 @@ Type TStationMapCollection
 						if section = otherSection then continue
 						Local otherLocalX:Int = Int(mapX - otherSection.rect.GetX())
 						Local otherLocalY:Int = Int(mapY - otherSection.rect.GetY())
-						if otherLocalX >= 0 and otherLocalY >= 0 and otherLocalX < otherSection.rect.GetIntW() and otherLocalY < otherSection.rect.GetIntH()
-							If otherSection.GetShapeSprite().PixelIsOpaque(otherLocalX, otherLocalY) > 0
-								found = False
-								'print "try # " + tries + "  " + section.name +": other section " + otherSection.name + " is opaque too!!   xy="+(x - section.rect.GetIntX())+", "+(y - section.rect.GetIntY()) + "   otherXY="+otherX+", "+otherY
+						Local otherSprite:TSprite = otherSection.GetShapeSprite()
+						If otherSprite 
+							If not otherSprite._pix Then otherSprite._pix = otherSprite.GetPixmap()
+
+							if otherLocalX >= 0 and otherLocalY >= 0 and otherLocalX < otherSection.rect.GetIntW() and otherLocalY < otherSection.rect.GetIntH()
+								If PixelIsOpaque(otherSprite._pix, otherLocalX, otherLocalY) > 0
+									found = False
+									'print "try # " + tries + "  " + section.name +": other section " + otherSection.name + " is opaque too!!   xy="+(x - section.rect.GetIntX())+", "+(y - section.rect.GetIntY()) + "   otherXY="+otherX+", "+otherY
+								EndIf
 							EndIf
 						EndIf
 					Next
@@ -1712,10 +1723,12 @@ endrem
 
 	Method GetSection:TStationMapSection(x:Int,y:Int)
 		For Local section:TStationMapSection = EachIn sections
-			If Not section.GetShapeSprite() Then Continue
+			Local sprite:TSprite = section.GetShapeSprite()
+			If not sprite Then Continue
 
 			If section.rect.containsXY(x,y)
-				If section.GetShapeSprite().PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
+				If not sprite._pix Then sprite._pix = sprite.GetPixmap()
+				If PixelIsOpaque(sprite._pix, Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
 					Return section
 				EndIf
 			EndIf
@@ -1853,11 +1866,14 @@ endrem
 		local pix:TPixmap = LockImage(populationImageSections)
 		local emptyCol:int = ARGB_Color(0, 0,0,0)
 
-		if not section.GetShapeSprite() then return False
+		Local sectionPix:TPixmap
+		Local sprite:TSprite = section.GetShapeSprite()
+		If not sprite Then return False
+		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
 
 		For local x:int = startX until endX
 			For local y:int = startY until endY
-				If section.GetShapeSprite().PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
+				If PixelIsOpaque(sprite._pix, Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
 					pix.WritePixel(x,y, emptyCol)
 				endif
 			Next
@@ -3377,7 +3393,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachMax:Int(refresh:Int=False) override {_exposeToLua}
 		'not cached?
 		If reachMax < 0 or refresh
 			reachMax = GetStationMapCollection().CalculateTotalAntennaStationReach(x, y, radius)
@@ -3387,7 +3403,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 
 	'reachable with current stationtype share
-	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int(refresh:Int=False) override {_exposeToLua}
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			return GetReachMax(refresh)
 
@@ -3409,7 +3425,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 
 	'reached audience not shared with another stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetExclusiveReach:Int(refresh:Int=False) override {_exposeToLua}
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			'as stations might broadcast to other sections too (crossing
 			'borders) you cannot ignore stations in sections which are
@@ -3813,7 +3829,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachMax:Int(refresh:Int=False) override {_exposeToLua}
 		if reachMax <= 0 or refresh
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 			if section then reachMax = section.GetPopulation()
@@ -3823,7 +3839,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int(refresh:Int=False) override {_exposeToLua}
 		'always return the satellite's reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs"
 		'If reach >= 0 And Not refresh Then Return reach
@@ -4234,8 +4250,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	'override
-	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachMax:Int(refresh:Int=False) override {_exposeToLua}
 		if reachMax < 0 or refresh
 			reachMax = GetStationMapCollection().GetPopulation()
 		endif
@@ -4244,7 +4259,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int(refresh:Int=False) override {_exposeToLua}
 		'always return the satellite's reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs"
 		'If reach >= 0 And Not refresh Then Return reach
@@ -4257,7 +4272,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'reached audience not shared with other stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetExclusiveReach:Int(refresh:Int=False) override {_exposeToLua}
 		'not cached yet?
 		if reachExclusiveMax < 0 or refresh
 			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
@@ -4444,8 +4459,13 @@ Type TStationMapSection
 		local mapX:int = rect.GetX() + localX 
 		local mapY:int = rect.GetY() + localY
 		Local isValid:Int = False
+
+		Local sprite:TSprite = GetShapeSprite()
+		If not sprite Then return False
+		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
+
 		'check if that spot collides with another state
-		If GetShapeSprite().PixelIsOpaque(localX, localy)
+		If PixelIsOpaque(sprite._pix, localX, localy)
 			isValid = True
 
 			For local otherSection:TStationMapSection = EachIn GetStationMapCollection().sections
@@ -4453,9 +4473,14 @@ Type TStationMapSection
 
 				Local otherLocalX:Int = mapX - otherSection.rect.GetX()
 				Local otherLocalY:Int = mapY - otherSection.rect.GetY()
-				if otherLocalX >= 0 and otherLocalY >= 0 and otherLocalX < otherSection.rect.GetIntW() and otherLocalY < otherSection.rect.GetIntH()
-					If otherSection.GetShapeSprite().PixelIsOpaque(otherLocalX, otherLocalY) > 0
-						isValid = False
+				Local otherSprite:TSprite = otherSection.GetShapeSprite()
+				If otherSprite 
+					If not otherSprite._pix Then otherSprite._pix = otherSprite.GetPixmap()
+
+					if otherLocalX >= 0 and otherLocalY >= 0 and otherLocalX < otherSection.rect.GetIntW() and otherLocalY < otherSection.rect.GetIntH()
+						If PixelIsOpaque(otherSprite._pix, otherLocalX, otherLocalY) > 0
+							isValid = False
+						EndIf
 					EndIf
 				EndIf
 			Next
@@ -4682,10 +4707,14 @@ Type TStationMapSection
 		Local pix:TPixmap = LockImage(populationImage)
 		pix.ClearPixels(0)
 
+		Local sectionPix:TPixmap
+		Local sprite:TSprite = GetShapeSprite()
+		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
+
 		'copy whats left on the sections image
 		For local x:int = startX until endX
 			For local y:int = startY until endY
-				If GetShapeSprite().PixelIsOpaque(Int(x-rect.getX()), Int(y-rect.getY())) > 0
+				If PixelIsOpaque(sprite._pix, Int(x-rect.getX()), Int(y-rect.getY())) > 0
 					pix.WritePixel(int(x-rect.getX()), int(y-rect.getY()), sourcePix.ReadPixel(x, y) )
 				endif
 			Next
@@ -4804,6 +4833,7 @@ Type TStationMapSection
 			Local antennaStationRadius:int = GetStationMapCollection().antennaStationRadius
 			Local antennaStationRadiusSquared:int = antennaStationRadius * antennaStationRadius
 			Local shapeSprite:TSprite = GetShapeSprite()
+			If not shapeSprite._pix Then shapeSprite._pix = shapeSprite.GetPixmap()
 			Local circleRectX:Int, circleRectY:Int, circleRectX2:Int, circleRectY2:int
 			Local shareMask:TStationMapShareMask
 			Local posX:Int = 0
@@ -4812,20 +4842,24 @@ Type TStationMapSection
 			Local stationY:Int = 0
 			Local shareKey:Long
 			For local map:TStationMap = EachIn GetStationMapCollection().stationMaps
+				'Local ownerMask:Byte = GetMaskIndex(map.owner)
+				Local ownerMask:Byte = (1 shl (map.owner-1))
+
 				if map.cheatedMaxReach
 					'insert the players bitmask-number into the field
 					'and if there is already one ... add the number
 					For posX = 0 To populationImage.width-1
 						For posY = 0 To populationImage.height-1
 							'left the topographic borders ?
-							If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
+							If not PixelIsOpaque(shapeSprite._pix, posX, posY) > 0 then continue
 
 							Local index:Int = posY * antennaShareGridWidth + posX
 							'adjust mask
-							antennaShareGrid[index] :| GetMaskIndex(map.owner)
+							antennaShareGrid[index] :| ownerMask
 						Next
 					Next
 				else
+
 					'only handle antennas, no cable network/satellite!
 					'For Local station:TStationBase = EachIn stationmap.stations
 					For Local station:TStationAntenna = EachIn map.stations
@@ -4850,19 +4884,17 @@ Type TStationMapSection
 						circleRectX2 = Min(stationX + antennaStationRadius, rect.GetW()-1)
 						circleRectY2 = Min(stationY + antennaStationRadius, rect.GetH()-1)
 
-						posX = 0
-						posY = 0
 						For posX = circleRectX To circleRectX2
 							For posY = circleRectY To circleRectY2
 								'left the circle?
-								'If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
-								If Self.CalculateDistanceSquared( posX - stationX, posY - stationY ) > antennaStationRadiusSquared Then Continue
+								If CalculateDistanceSquared( posX - stationX, posY - stationY ) > antennaStationRadiusSquared Then Continue
+								'If ((posX - stationX)*(posX - stationX) + (posY - stationY)*(posY - stationY)) > antennaStationRadiusSquared Then Continue
 								'left the topographic borders ?
-								If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
+								
+								If not PixelIsOpaque(shapeSprite._pix, posX, posY) > 0 then continue
 
 								Local index:Int = posY * antennaShareGridWidth + posX
-								'adjust mask
-								antennaShareGrid[index] :| GetMaskIndex(station.owner)
+								antennaShareGrid[index] :| ownerMask
 							Next
 						Next
 					Next
@@ -5103,13 +5135,17 @@ Type TStationMapSection
 
 		Local result:Int = 0
 		Local radiusSquared:int = radius * radius
+		Local sprite:TSprite = GetShapeSprite()
+		If not sprite Then Return
+		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
+
 		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()-1
 			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()-1
 				'left the circle?
 				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
 				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
 				'left the topographic borders ?
-				If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
+				If not PixelIsOpaque(sprite._pix, posX, posY) > 0 then continue
 
 				map.Insert(GeneratePositionKey(posX, posY), New TStationMapAntennaPoint(posX , posY, color))
 			Next
@@ -5145,13 +5181,18 @@ endrem
 		' calc sum for current coord
 		Local result:Int = 0
 		local radiusSquared:Int = radius * radius
+		Local sprite:TSprite = GetShapeSprite()
+		If not sprite Then Return 0
+		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
+
+
 		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()-1
 			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()-1
 				'left the circle?
 				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
 				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
 				'left the topographic borders ?
-				If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
+				If Not PixelIsOpaque(sprite._pix, posX, posY) > 0 then continue
 				result :+ populationmap[posX, posY]
 			Next
 		Next
@@ -5262,29 +5303,24 @@ endrem
 	End Function
 
 
-	Function GetMaskIndex:Int(number:Int)
-		Return 1 shl (number-1)
-		rem
-		Local t:Int = 1
-		For Local i:Int = 1 To number-1
-			t:*2
-		Next
-		Return t
-		endrem
-	End Function
-
-
-	'summary: returns calculated distance between 2 points
-	Function CalculateDistance:Double(x1:Int, x2:Int)
-		Return Sqr((x1*x1) + (x2*x2))
-	End Function
-
-	'when just comparing lengths ... we could also skip doing the
-	'square root calculation
-	Function CalculateDistanceSquared:Long(x1:Int, x2:Int)
-		Return (x1*x1) + (x2*x2)
-	End Function
+	'Function GetMaskIndex:Int(number:Int)
+	'	Return 1 shl (number-1)
+	'End Function
 End Type
+
+
+'when just comparing lengths ... we could also skip doing the
+'square root calculation
+'marking it "inline" speeds up calculation A LOT (when called very often)
+Function CalculateDistanceSquared:Long(x1:Int, x2:Int) Inline
+	Return (x1*x1) + (x2*x2)
+End Function
+
+'summary: returns calculated distance between 2 points
+'marking it "inline" speeds up calculation A LOT (when called very often)
+Function CalculateDistance:Double(x1:Int, x2:Int) Inline
+	Return Sqr((x1*x1) + (x2*x2))
+End Function
 
 
 
