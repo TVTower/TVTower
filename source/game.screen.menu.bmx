@@ -17,6 +17,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiSpecialFormats:TGUICheckBox
 	Field guiFilterUnreleased:TGUICheckBox
 	Field guiStartWithCredit:TGUICheckBox
+	Field guiRandomizeLicence:TGUICheckBox
 	Field guiGameTitleLabel:TGuiLabel
 	Field guiGameTitle:TGuiInput
 	Field guiStartYearLabel:TGuiLabel
@@ -74,39 +75,47 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local col:SColor8 = New SColor8(90, 90, 90)
 		Local labelH:Int = GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT).GetHeight("Title")
 		guiGameTitleLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", col, name)
-		guiGameTitle = New TGUIinput.Create(New TVec2D.Init(0, labelH), New TVec2D.Init(250, -1), "", 32, name)
-		guiStartYearLabel = New TGUILabel.Create(New TVec2D.Init(255, 0), "", col, name)
-		guiStartYear = New TGUIinput.Create(New TVec2D.Init(255, labelH), New TVec2D.Init(70, -1), "", 4, name)
-		guiGameSeedLabel = New TGUILabel.Create(New TVec2D.Init(330, 0), "", col, name)
-		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(330, labelH), New TVec2D.Init(75, -1), "", 9, name)
+		guiGameTitle = New TGUIinput.Create(New TVec2D.Init(0, labelH), New TVec2D.Init(150, -1), "", 32, name)
+		guiStartYearLabel = New TGUILabel.Create(New TVec2D.Init(0, 50), "", col, name)
+		guiStartYear = New TGUIinput.Create(New TVec2D.Init(0, 50 + labelH), New TVec2D.Init(60, -1), "", 4, name)
+		guiGameSeedLabel = New TGUILabel.Create(New TVec2D.Init(75, 50), "", col, name)
+		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(75, 50 +labelH), New TVec2D.Init(75, -1), "", 9, name)
 
-		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
-		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
-		guiGameSeedLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
+		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 13, BOLDFONT) )
+		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 13, BOLDFONT) )
+		guiGameSeedLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 13, BOLDFONT) )
+		guiGameSeedLabel.SetContentAlignment(ALIGN_RIGHT, ALIGN_CENTER)
+		guiGameSeedLabel.SetSize(75, -1)
 
-
+		Local xCol1:Int = 160
 		Local checkboxHeight:Int = 0
-		gui24HoursDay = New TGUICheckBox.Create(New TVec2D.Init(430, 0), New TVec2D.Init(300), "", name)
+		gui24HoursDay = New TGUICheckBox.Create(New TVec2D.Init(xCol1, 0), New TVec2D.Init(280), "", name)
 		gui24HoursDay.SetChecked(True, False)
 		gui24HoursDay.disable() 'option not implemented
 		checkboxHeight :+ gui24HoursDay.GetScreenRect().GetH()
 
-		guiSpecialFormats = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
+		guiSpecialFormats = New TGUICheckBox.Create(New TVec2D.Init(xCol1, 0 + checkboxHeight), New TVec2D.Init(280), "", name)
 		guiSpecialFormats.SetChecked(True, False)
 		guiSpecialFormats.disable() 'option not implemented
 		checkboxHeight :+ guiSpecialFormats.GetScreenRect().GetH()
 
-		guiFilterUnreleased = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
+		guiFilterUnreleased = New TGUICheckBox.Create(New TVec2D.Init(xCol1, 0 + checkboxHeight), New TVec2D.Init(280), "", name)
 		guiFilterUnreleased.SetChecked(False, False)
 		checkboxHeight :+ guiFilterUnreleased.GetScreenRect().GetH()
 
-		guiStartWithCredit = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
+		guiStartWithCredit = New TGUICheckBox.Create(New TVec2D.Init(xCol1, 0 + checkboxHeight), New TVec2D.Init(280), "", name)
 		guiStartWithCredit.SetChecked(GameRules.startGameWithCredit, False)
 		checkboxHeight :+ guiStartWithCredit.GetScreenRect().GetH()
 
-		guiAnnounce = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
+		guiAnnounce = New TGUICheckBox.Create(New TVec2D.Init(xCol1, 0 + checkboxHeight), New TVec2D.Init(280), "", name)
 		guiAnnounce.SetChecked(True, False)
 
+		Local xCol2:Int = 445
+		checkboxHeight:Int = 0
+
+		guiRandomizeLicence = New TGUICheckBox.Create(New TVec2D.Init(xCol2, 0 + checkboxHeight), New TVec2D.Init(285), "", name)
+		guiRandomizeLicence.SetChecked(GameRules.randomizeLicenceAttributes, False)
+		checkboxHeight :+ guiRandomizeLicence.GetScreenRect().GetH()
 
 		guiSettingsPanel.AddChild(guiGameTitleLabel)
 		guiSettingsPanel.AddChild(guiGameTitle)
@@ -119,6 +128,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsPanel.AddChild(guiSpecialFormats)
 		guiSettingsPanel.AddChild(guiFilterUnreleased)
 		guiSettingsPanel.AddChild(guiStartWithCredit)
+		guiSettingsPanel.AddChild(guiRandomizeLicence)
 
 
 		Local guiButtonsWindow:TGUIGameWindow
@@ -225,6 +235,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiWidgets.AddLast(guiSpecialFormats)
 		guiWidgets.AddLast(guiFilterUnreleased)
 		guiWidgets.AddLast(guiStartWithCredit)
+		guiWidgets.AddLast(guiRandomizeLicence)
 		'guiWidgets.AddLast(guiGameTitleLabel)
 		guiWidgets.AddLast(guiGameTitle)
 		'guiWidgets.AddLast(guiStartYearLabel)
@@ -453,6 +464,8 @@ Type TScreen_GameSettings Extends TGameScreen
 					TProgrammeData.setIgnoreUnreleasedProgrammes( Not sender.isChecked() )
 			Case guiStartWithCredit
 					GameRules.startGameWithCredit = sender.isChecked()
+			Case guiRandomizeLicence
+					GameRules.randomizeLicenceAttributes = sender.isChecked()
 		End Select
 
 		'only inform when in settings menu
@@ -530,14 +543,15 @@ Rem
 			endif
 		Next
 endrem
-		guiGameTitleLabel.SetValue(GetLocale("GAME_TITLE")+":")
-		guiStartYearLabel.SetValue(GetLocale("START_YEAR")+":")
-		guiGameSeedLabel.SetValue(GetLocale("GAME")+" #:")
+		guiGameTitleLabel.SetValue(GetLocale("GAME_TITLE"))
+		guiStartYearLabel.SetValue(GetLocale("START_YEAR"))
+		guiGameSeedLabel.SetValue(GetLocale("GAME")+" #")
 
 		gui24HoursDay.SetCaption(GetLocale("24_HOURS_GAMEDAY"), True, True)
 		guiSpecialFormats.SetCaption(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), True, True)
 		guiFilterUnreleased.SetCaption(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), True, True)
 		guiStartWithCredit.SetCaption(GetLocale("START_GAME_WITH_CREDIT"), True, True)
+		guiRandomizeLicence.SetCaption(GetLocale("START_GAME_RANDOMIZE_PROGRAMME"), True, True)
 
 		guiAnnounce.SetValue("Nach weiteren Spielern suchen")
 

@@ -172,6 +172,14 @@
 			<!-- maximum total percentage of fixed running costs added -->
 			<!-- <DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX value="0.30" /> -->
 
+			<!-- parameters for randomizing licence attributes from the database
+			     when starting a new game: 
+			     +/- x% (max deviation - getting smaller when approaching extreme values; except for price)
+			     0 = no randomization -->
+			<DEV_DATABASE_LICENCE_RANDOM_REVIEW value="20" />
+			<DEV_DATABASE_LICENCE_RANDOM_SPEED value="20" />
+			<DEV_DATABASE_LICENCE_RANDOM_OUTCOME value="20" />
+			<DEV_DATABASE_LICENCE_RANDOM_PRICE value="20" />
 
 			<!-- example:
 				"LOAD"-values:

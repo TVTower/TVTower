@@ -11,6 +11,8 @@ Type TGameRules {_exposeToLua}
 	Field startAdAmount:Int = 3
 	'should a game start with a credit already given
 	Field startGameWithCredit:Int = True
+	'should licence attributes from the database be randomized
+	Field randomizeLicenceAttributes:Int = False
 
 	'if a player goes bankrupt does the restarting one get stations
 	'and money according to the average of other players?
