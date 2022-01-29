@@ -27,6 +27,7 @@ EXIT_TO_MAINMENU                           = Exit to main menu
 ALLOW_TRAILERS_AND_INFOMERCIALS                               = Allow trailers/infomercials
 ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Allow movies with year of production > game year
 START_GAME_WITH_CREDIT                                        = Start with credit
+START_GAME_RANDOMIZE_PROGRAMME                                = Modify movie attributes a bit when starting
 OPTION_ON                                                     = Option on
 OPTION_OFF                                                    = Option off
 AVAILABLE_GAMES                                               = Available games

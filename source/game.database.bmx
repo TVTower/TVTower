@@ -1458,9 +1458,55 @@ Type TDatabaseLoader
 			programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		EndIf
 
+		If GameRules.randomizeLicenceAttributes
+			RandomizeLicenceData(programmeLicence)
+		EndIf
 		Return programmeLicence
 	End Method
 
+	Method RandomizeLicenceData:Int(licence:TProgrammeLicence)
+		If licence and licence.GetSubLicenceCount() = 0
+			local data:TProgrammeData = licence.GetData()
+			If data
+				local reviewOld:Float = data.review
+				local speedOld:Float = data.speed
+				local outcomeOld:Float = data.outcome
+				local priceOld:Float = data.getModifier("price")
+
+				local reviewNew:Float  = MathHelper.clamp(rndValue(reviewOld, "REVIEW"))
+				local speedNew:Float   = MathHelper.clamp(rndValue(speedOld, "SPEED"))
+				'outcome may not be defined (0) in which case it is interpreted differently
+				'hence old value or new value 0 must not lead to a change
+				local outcomeNew:Float = MathHelper.clamp(rndValue(outcomeOld, "OUTCOME", 0, False))
+				local priceNew:Float   = MathHelper.clamp(rndValue(priceOld, "PRICE", 1), 0.1, 2)
+
+				rem
+				TLogger.Log("DB","randomizing " +licence.getTitle(), LOG_DEBUG)
+				TLogger.Log("DB","  review : " + reviewOld + " -> " + reviewNew, LOG_DEBUG)
+				TLogger.Log("DB","  speed  : " + speedOld + " -> " + speedNew, LOG_DEBUG)
+				TLogger.Log("DB","  outcome: " + outcomeOld + " -> " + outcomeNew, LOG_DEBUG)
+				TLogger.Log("DB","  price: " + priceOld + " -> " + priceNew, LOG_DEBUG)
+				endrem
+
+				data.review = reviewNew
+				data.speed = speedNew
+				data.outcome = outcomeNew
+				data.setModifier("price", priceNew)
+			EndIF
+		Endif
+		Function rndValue:Float(oldValue:Float, key:String, rndType:Int = 0, zeroChangeAllowed:Int=True)
+			Local base:Int = GameRules.devConfig.GetInt("DEV_DATABASE_LICENCE_RANDOM_"+key, 0)
+			If base > 0
+				Local newValue:Float
+				If rndType = 0
+					base = (1.05 - (abs(0.5 - oldValue) / 0.5)) * base
+				EndIf
+				newValue = oldValue + (RandRange(0, base * 2) - base) * 0.01
+				If zeroChangeAllowed Or (oldValue > 0 and newValue > 0) Then return newValue
+			EndIf
+			return oldValue
+		EndFunction
+	End Method
 
 	Method LoadV3ScriptTemplateFromNode:TScriptTemplate(node:TxmlNode, xml:TXmlHelper, parentScriptTemplate:TScriptTemplate = Null)
 		Local GUID:String = TXmlHelper.FindValue(node,"guid", "")
