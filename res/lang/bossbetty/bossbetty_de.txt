@@ -85,6 +85,7 @@ AWARDNAME_CUSTOMPRODUCTION   = Eigenproduktions-Sammy
 AWARD_WON                    = Preis gewonnen
 YOU_WON_THE_AWARDNAME        = Du hast den %AWARDNAME% gewonnen.
 PLAYERNAME_WON_THE_AWARDNAME = %PLAYERNAME% hat den %AWARDNAME% gewonnen.
+NOBODY_WON_THE_AWARDNAME     = Aufgrund mangelnder Teilnahme wurde der Sammy nicht vergeben.
 CHANNEL_IMAGE                = Senderimage
 FOR_X_HOURS                  = für %X% Stunden
 FOR_X_HOUR                   = für %X% Stunde
