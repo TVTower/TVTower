@@ -85,6 +85,7 @@ THERE_IS_NO_LOVE_IN_THE_AIR_YET    = No hay amor todabia... ;D
 #AWARD_WON                    = 
 #YOU_WON_THE_AWARDNAME        = 
 #PLAYERNAME_WON_THE_AWARDNAME = 
+#NOBODY_WON_THE_AWARDNAME     = 
 #CHANNEL_IMAGE                = 
 #FOR_X_HOURS                  = 
 #FOR_X_HOUR                   = 

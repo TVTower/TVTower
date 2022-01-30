@@ -4799,46 +4799,57 @@ Type GameEvents
 		If Not award Then Return False
 
 		Local winningPlayerID:Int = triggerEvent.GetData().GetInt("winningPlayerID", 0)
-		If Not GetPlayerCollection().IsPlayer(winningPlayerID) Then Return False
+		Local rewardText:String = award.GetRewardText()
+		Local winnerName:String
+		Local winningPlayer:TPlayer
 
-		Local winningPlayer:TPlayer = GetPlayer(winningPlayerID)
-		If Not winningPlayer Then Return False
-
-
-		'inform ai
-		If winningPlayer.isLocalAI()
-			winningPlayer.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnWonAward).AddData(award))
-			'winningPlayer.playerAI.CallOnWonAward(award)
+		If winningPlayerID = 0
+			'sammy not awarded
+		ElseIf Not GetPlayerCollection().IsPlayer(winningPlayerID) 
+			Return False
+		Else
+			winningPlayer:TPlayer = GetPlayer(winningPlayerID)
 		EndIf
 
-
-		Local rewardText:String = award.GetRewardText()
-		Local winnerName:String = winningPlayer.name
+		If winningPlayer
+			winnerName:String = winningPlayer.name
+			'inform ai
+			If winningPlayer.isLocalAI()
+				winningPlayer.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnWonAward).AddData(award))
+				'winningPlayer.playerAI.CallOnWonAward(award)
+			EndIf
+		EndIf
 
 		'inform all players about a won award (even if another player was the winner)
 		For Local i:Int = 1 To 4
+			Local caption:String
 			Local text:String
-			'current player won and it is his loop cycle?
-			If i = winningPlayerID and i = GetPlayer().playerID
-				text = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
-			Else
-				text = GetLocale("PLAYERNAME_WON_THE_AWARDNAME").Replace("%PLAYERNAME%", "|b|"+winnerName+"|/b|").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
-			EndIf
+			If winningPlayer
+				caption = GetLocale("AWARD_WON")
+				'current player won and it is his loop cycle?
+				If i = winningPlayerID and i = GetPlayer().playerID
+					text = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
+				Else
+					text = GetLocale("PLAYERNAME_WON_THE_AWARDNAME").Replace("%PLAYERNAME%", "|b|"+winnerName+"|/b|").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
+				EndIf
 
-			If rewardText
-				text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
+				If rewardText
+					text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
+				EndIf
+			Else
+				caption = award.GetTitle()
+				text = GetLocale("NOBODY_WON_THE_AWARDNAME")
 			EndIf
 
 			Local toast:TGameToastMessage = New TGameToastMessage
 			'show it for some seconds
 			toast.SetLifeTime(15)
 			toast.SetMessageType(2) 'positive
-			toast.SetCaption(GetLocale("AWARD_WON"))
+			toast.SetCaption(caption)
 			toast.SetMessageCategory(TVTMessageCategory.AWARDS)
 			toast.SetText( text )
 
 			toast.GetData().AddInt("playerID", i)
-
 
 			'archive it for all players
 			GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
@@ -4847,7 +4858,6 @@ Type GameEvents
 				GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 			EndIf
 		Next
-
 	End Function
 
 

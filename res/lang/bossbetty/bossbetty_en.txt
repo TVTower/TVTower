@@ -85,6 +85,7 @@ AWARDNAME_CUSTOMPRODUCTION   = Sammy "for custom productions"
 AWARD_WON                    = Award won
 YOU_WON_THE_AWARDNAME        = You won the %AWARDNAME%.
 PLAYERNAME_WON_THE_AWARDNAME = %PLAYERNAME% won the %AWARDNAME%.
+NOBODY_WON_THE_AWARDNAME     = Due to lack of participants the Sammy was not awarded.
 CHANNEL_IMAGE                = channel image
 FOR_X_HOURS                  = for %X% hours
 FOR_X_HOUR                   = for %X% hour

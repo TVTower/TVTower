@@ -85,6 +85,7 @@ BETTY_PRESENT_10           = Iate
 #AWARD_WON                    = 
 #YOU_WON_THE_AWARDNAME        = 
 #PLAYERNAME_WON_THE_AWARDNAME = 
+#NOBODY_WON_THE_AWARDNAME     = 
 #CHANNEL_IMAGE                = 
 #FOR_X_HOURS                  = 
 #FOR_X_HOUR                   = 
