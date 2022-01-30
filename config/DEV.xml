@@ -156,6 +156,13 @@
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
 
+			<!-- number of in game producers shooting movies etc. based on script templates from database-->
+			<DEV_PRODUCERS_COUNT value="4" />
+			<!-- minimal waiting time in hours between finishing one production and starting the next one-->
+			<DEV_PRODUCERS_MIN_WAIT_HOURS value="36" />
+			<!-- maximal waiting time in hours between finishing one production and starting the next one-->
+			<DEV_PRODUCERS_MAX_WAIT_HOURS value="96" />
+
 			<!-- enable/disable station map daily running cost increase -->
 			<!-- <DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="FALSE" /> -->
 

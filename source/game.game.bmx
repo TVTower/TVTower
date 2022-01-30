@@ -1464,7 +1464,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'TLogger.Log("PrepareNewGame()", "Generated morning show programme producer.", LOG_DEBUG)
 
 		'movie/series producers exist with different characteristics/budgets
-		For local i:int = 0 to 3
+		For local i:int = 0 to (GameRules.devConfig.GetInt("DEV_PRODUCERS_COUNT", 4) - 1)
 			Local p:TProgrammeProducer = new TProgrammeProducer
 			p.countryCode = GetProgrammeProducerCollection().GenerateRandomCountryCode()
 			p.name = GetProgrammeProducerCollection().GenerateRandomName()
