@@ -67,7 +67,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Super.RandomizeCharacteristics()
 
 		budgetIncrease = RandRange(3, 8) * 250
-		nextProductionTime = GetWorldTime().GetTimeGone() + RandRange(12, 48) * TWorldTime.HOURLENGTH
+		nextProductionTime = GetWorldTime().GetTimeGone() + RandRange(12, 96) * TWorldTime.HOURLENGTH
 		
 		'TODO: greed, favorite genres...
 	End Method
@@ -77,7 +77,6 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		'remove instance specific event listeners...
 	End Method	
 
-	
 	Method Update:Int()
 		budget :+ budgetIncrease 'update every 15minutes = 96x a day ...
 		
@@ -85,8 +84,9 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 		If nextProductionTime < GetWorldTime().GetTimeGone()
 			ScheduleNextProduction(Null)
-
-			nextProductionTime = GetWorldTime().GetTimeGone() + TWorldTime.HOURLENGTH * RandRange(32, 72)
+			Local minWaitHours:Int = GameRules.devConfig.GetInt("DEV_PRODUCERS_MIN_WAIT_HOURS", 36)
+			Local maxWaitHours:Int = GameRules.devConfig.GetInt("DEV_PRODUCERS_MAX_WAIT_HOURS", 96)
+			nextProductionTime = GetWorldTime().GetTimeGone() + TWorldTime.HOURLENGTH * RandRange(minWaitHours, maxWaitHours)
 		EndIf
 		
 		'is one of the running/scheduled productions finished now?
