@@ -664,38 +664,67 @@ End Function
 '===== VARIOUS COLOR FUNCTIONS =====
 
 
-Function ARGB_Alpha:Int(ARGB:Int)
+Function ARGB_Alpha:Int(ARGB:Int) Inline
 	Return (argb Shr 24) & $ff
 EndFunction
 
-Function ARGB_Red:Int(ARGB:Int)
+Function ARGB_Red:Int(ARGB:Int) Inline
 	Return (argb Shr 16) & $ff
 EndFunction
 
-Function ARGB_Green:Int(ARGB:Int)
+Function ARGB_Green:Int(ARGB:Int) Inline
 	Return (argb Shr 8) & $ff
 EndFunction
 
-Function ARGB_Blue:Int(ARGB:Int)
+Function ARGB_Blue:Int(ARGB:Int) Inline
 	Return (argb & $ff)
 EndFunction
 
-Function ARGB_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
+Function ARGB_Color:Int(alpha:Int,red:Int,green:Int,blue:Int) Inline
 	Return (Int(alpha * $1000000) + Int(red * $10000) + Int(green * $100) + Int(blue))
 EndFunction
 
-Function RGBA_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
-'	Return (Int(alpha * $1000000) + Int(blue * $10000) + Int(green * $100) + Int(red))
-'	is the same :
-	Local argb:Int = 0
-	Local pointer:Byte Ptr = Varptr(argb)
-	pointer[0] = red
-	pointer[1] = green
-	pointer[2] = blue
-	pointer[3] = alpha
-
-	Return argb
+Function RGBA_Red:Byte(rgba:Int) Inline
+	Return (rgba Shr 24) & $ff
 EndFunction
+
+Function RGBA_Green:Byte(rgba:Int) Inline
+	Return (rgba Shr 16) & $ff
+EndFunction
+
+Function RGBA_Blue:Byte(rgba:Int) Inline
+	Return (rgba Shr 8) & $ff
+EndFunction
+
+Function RGBA_Alpha:Byte(rgba:Int) Inline
+	Return (rgba & $ff)
+EndFunction
+
+Function RGBA_Color:Int(r:Int, g:Int, b:Int, alpha:Int) Inline
+	Return (r * $1000000) + (g * $10000) + (b * $100) + alpha
+	'this would be 10% slower
+	'Return (r Shl 24) | (g Shl 16) | (b Shl 8) | alpha
+	'and is the same but 8 times slower :
+	Rem
+		Local rgba:Int = 0
+		'pointer works "first as last" (rgba -> alpha as first)
+		Local pointer:Byte Ptr = Varptr(rgba)
+		pointer[0] = alpha
+		pointer[1] = b
+		pointer[2] = g
+		pointer[3] = r
+		Return rgba
+	End Rem
+EndFunction
+
+
+Function ARGB2RGBA:Int(argb:Int) Inline
+	Return ((argb Shl 8) & $FFFFFF00) | (argb Shr 24)
+End Function
+
+Function RGBA2ARGB:Int(rgba:Int) Inline
+	Return ((rgba Shr 8) & $00FFFFFF) | (rgba Shl 24)
+End Function
 
 
 
@@ -704,11 +733,37 @@ EndFunction
 'beTolerant defines if 240,240,241 is still monochrome, this
 'is useful if you use gradients, as sometimes gradients have this
 'differing values
-Function isMonochrome:Int(argb:Int, beTolerant:Int=False, ignoreAlpha:Int=False)
+Function isMonochromeARGB:Int(argb:Int, beTolerant:Int=False, ignoreAlpha:Int=False) Inline
+	Local pointer:Byte Ptr = Varptr(argb)
+	'pointer are like "mirrored" "argb" as if "bgra"
+	'argb: [0] = blue, [1] = green, [2] = red, [3] = alpha
+
 	If beTolerant
-		If Abs(ARGB_Red(argb) - ARGB_Green(argb))<=1 And Abs(ARGB_Red(argb) - ARGB_Blue(argb))<=1 And (ARGB_Alpha(argb) <> 0 Or IgnoreAlpha) Then Return ARGB_Red(argb)
+		'If Abs(ARGB_Red(argb) - ARGB_Green(argb))<=1 And Abs(ARGB_Red(argb) - ARGB_Blue(argb))<=1 And (ARGB_Alpha(argb) <> 0 Or IgnoreAlpha) Then Return ARGB_Red(argb)
+		If Abs(pointer[2] - pointer[1]) <= 1 And Abs(pointer[2] - pointer[0]) <= 1 And (IgnoreAlpha or pointer[3] <> 0) Then Return pointer[2]
 	Else
-		If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And (ARGB_Alpha(argb) <> 0 Or IgnoreAlpha) Then Return ARGB_Red(argb)
+		'red = green and red = blue alpha <> 0 or ignoreAlpha
+		'If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And (ARGB_Alpha(argb) <> 0 Or IgnoreAlpha) Then Return ARGB_Red(argb)
+		If pointer[2] = pointer[1] and pointer[2] = pointer[0] and (IgnoreAlpha Or pointer[3] <> 0) Then Return pointer[2]
+	EndIf
+	Return -1
+End Function
+
+
+
+'returns true if the given pixel is monochrome (grey)
+'beTolerant defines if 240,240,241 is still monochrome, this
+'is useful if you use gradients, as sometimes gradients have this
+'differing values
+Function isMonochromeRGBA:Int(rgba:Int, beTolerant:Int=False, ignoreAlpha:Int=False) Inline
+	'pointer are like "mirrored" "rgba" as if "abgr"
+	'rgba: [0] = alpha, [1] = blue, [2] = green, [3] = red 
+	Local pointer:Byte Ptr = Varptr(rgba)
+
+	If beTolerant
+		If Abs(pointer[3] - pointer[2]) <= 1 And Abs(pointer[3] - pointer[1]) <= 1 And (IgnoreAlpha or pointer[0] <> 0) Then Return pointer[3]
+	Else
+		If pointer[3] = pointer[2] and pointer[3] = pointer[1] and (IgnoreAlpha or pointer[0] <> 0) Then Return pointer[3]
 	EndIf
 	Return -1
 End Function

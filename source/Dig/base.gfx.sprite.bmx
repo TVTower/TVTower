@@ -555,7 +555,7 @@ Type TSprite
 	End Method
 
 
-	Method GetColorizedImage:TImage(color:TColor, frame:Int=-1, colorizeMode:Int=0)
+	Method GetColorizedImage:TImage(color:TColor, frame:Int=-1, colorizeMode:EColorizeMode = EColorizeMode.Multiply)
 		Return ColorizeImageCopy(GetImage(frame), color, 0,0,0, 1, -1, colorizeMode)
 	End Method
 

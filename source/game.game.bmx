@@ -354,8 +354,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local gray3:TColor = TColor.Create(225, 225, 225)
 
 		GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
-		GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_0"))
-		GetRegistry().Set("gfx_roomboard_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_0"))
+		GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, EColorizeMode.Overlay), "gfx_roomboard_sign_0"))
+		GetRegistry().Set("gfx_roomboard_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(gray3,-1, EColorizeMode.Overlay), "gfx_roomboard_sign_dragged_0"))
 		GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
 		GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
 
@@ -1126,10 +1126,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetPlayer(playerID).RecolorFigure()
 		Local color:TColor = GetPlayer(playerID).color
 
-		GetRegistry().Set("stationmap_antenna"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("stationmap_antenna0").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "stationmap_antenna"+playerID))
+		GetRegistry().Set("stationmap_antenna"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("stationmap_antenna0").GetColorizedImage(color,-1, EColorizeMode.Overlay), "stationmap_antenna"+playerID))
 		GetRegistry().Set("gfx_building_sign_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+playerID))
-		GetRegistry().Set("gfx_roomboard_sign_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_"+playerID))
-		GetRegistry().Set("gfx_roomboard_sign_dragged_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(color, -1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_"+playerID))
+		GetRegistry().Set("gfx_roomboard_sign_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(color,-1, EColorizeMode.Overlay), "gfx_roomboard_sign_"+playerID))
+		GetRegistry().Set("gfx_roomboard_sign_dragged_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(color, -1, EColorizeMode.Overlay), "gfx_roomboard_sign_dragged_"+playerID))
 		GetRegistry().Set("gfx_interface_channelbuttons_off_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, playerID), "gfx_interface_channelbuttons_off_"+playerID))
 		GetRegistry().Set("gfx_interface_channelbuttons_on_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, playerID), "gfx_interface_channelbuttons_on_"+playerID))
 	End Function

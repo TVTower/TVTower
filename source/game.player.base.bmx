@@ -476,7 +476,7 @@ endrem
 		'skip if replacement sprite does not exist or default was returned
 		If not newSprite or newSprite.GetName().toLower() <>  newSpriteName then return False
 		Local oldSprite:TSprite = GetSpriteFromRegistry("Player" + Self.playerID)
-		Local newImage:TImage = ColorizeImageCopy(newSprite.GetImage(), color, 0,0,0,1, 0, COLORIZEMODE_OVERLAY)
+		Local newImage:TImage = ColorizeImageCopy(newSprite.GetImage(), color, 0,0,0,1, 0, EColorizeMode.Overlay)
 		Local figuresPack:TSpritePack = TSpritePack(GetRegistry().Get("gfx_figuresPack"))
 
 		'clear occupied area within pixmap

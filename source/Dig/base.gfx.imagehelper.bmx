@@ -299,10 +299,6 @@ Function ConvertToOutLine:TImage(image:TImage, lineThickness:int=1, alphaTreshol
 			'add all of their alphas to "sum" so we could check
 			'whether there is something needing a outline
 			sum = 0
-'			If x > 0               Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x-1, y) )
-'			If x < srcPix.width-1  Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x+1, y) )
-'			If y > 0               Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x, y-1) )
-'			If y < srcPix.height-1 Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x, y+1) )
 			If x > 0               Then sum :+ ((ReadPixel(srcPix, x-1, y) Shr 24) & $ff) > alphaTreshold
 			If x < srcPix.width-1  Then sum :+ ((ReadPixel(srcPix, x+1, y) Shr 24) & $ff) > alphaTreshold
 			If y > 0               Then sum :+ ((ReadPixel(srcPix, x, y-1) Shr 24) & $ff) > alphaTreshold
@@ -391,13 +387,15 @@ Function blurPixmap:TPixmap(pm:TPixmap, k:Float = 0.5, backgroundColor:int=0)
 End Function
 
 
+Enum EColorizeMode
+	Multiply
+	NegativeMultiply
+	Overlay
+End Enum
 
-Const COLORIZEMODE_MULTIPLY:int = 0
-Const COLORIZEMODE_NEGATIVEMULTIPLY:int = 1
-Const COLORIZEMODE_OVERLAY:int = 2
 
 'colorizes an TImage (may be an AnimImage when given cell_width and height)
-Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, imageFlags:Int=-1, colorizationMode:int = 0)
+Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, imageFlags:Int=-1, colorizationMode:EColorizeMode = EColorizeMode.Multiply)
 	local pixmap:TPixmap
 	if TPixmap(imageOrPixmap) then pixmap = TPixmap(imageOrPixmap)
 	if TImage(imageOrPixmap) then pixmap = LockImage(TImage(imageOrPixmap))
@@ -431,13 +429,14 @@ Function AdjustPixmapSaturation:TPixmap(pixmap:TPixmap, saturation:Float = 1.0)
 	
 	For Local x:Int = 0 To pixmap.width - 1
 		For Local y:Int = 0 To pixmap.height - 1
-			color.FromInt(ReadPixel(pixmap, x,y))
+			Local c:Int = ReadPixel(pixmap, x,y)
 			'skip invisible
-			if color.a = 0 then continue
+			If ARGB_alpha(c) = 0 then continue
 			'nothing to do for already gray pixels (no color information)
-			if color.isMonochrome(False) >= 0
-				WritePixel(pixmap, x,y, color.ToInt())
+			if isMonochromeARGB(c) >= 0
+				WritePixel(pixmap, x,y, c)
 			else
+				color.FromInt(c)
 				WritePixel(pixmap, x,y, color.AdjustSaturationRGB(saturation-1.0).ToInt())
 			endif
 		Next
@@ -486,12 +485,13 @@ End Function
 
 
 'creates a pixmap copy and colorizes it
-Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, colorizationMode:int = 0)
+Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, colorizationMode:EColorizeMode = EColorizeMode.Multiply)
 	'create a copy to work on
 	local colorizedPixmap:TPixmap = sourcePixmap.Copy()
 
+	'disabled: ReadPixel/WritePixel auto convert between formats (all "argb")
 	'convert format of wrong one -> make sure the pixmaps are 32 bit format
-	If colorizedPixmap.format <> PF_RGBA8888 Then colorizedPixmap.convert(PF_RGBA8888)
+	'If colorizedPixmap.format <> PF_RGBA8888 Then colorizedPixmap.convert(PF_RGBA8888)
 
 	local pixel:int
 	local colorTone:int = 0
@@ -500,14 +500,14 @@ Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, coloriza
 	'for performance reasons we have the for-loops AFTER the colorizationMode
 	'selection, so selecting the mode does not get run for each pixel
 	Select colorizationMode
-		case COLORIZEMODE_MULTIPLY
+		case EColorizeMode.Multiply
 			For Local x:Int = 0 To colorizedPixmap.width - 1
 				For Local y:Int = 0 To colorizedPixmap.height - 1
 					pixel = ReadPixel(colorizedPixmap, x,y)
 					'skip invisible
 					if ARGB_Alpha(pixel) = 0 then continue
 
-					colorTone = isMonochrome(pixel, True)
+					colorTone = isMonochromeARGB(pixel, True)
 					'disabling "and..." allows to tint pure white too
 					If colorTone > 0 'and colorTone < 255
 						WritePixel(colorizedPixmap, x,y, ARGB_Color(..
@@ -527,14 +527,14 @@ Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, coloriza
 		'to the given color, and white to white.
 		'rgb 0,0,0 -> color, rgb 128,128,18 -> 50% color + 50% white ...
 		'Formula: resultColor = 255 - (((255 - topColor)*(255 - bottomColor))/255)
-    	case COLORIZEMODE_NEGATIVEMULTIPLY
+    	case EColorizeMode.NegativeMultiply
 			For Local x:Int = 0 To colorizedPixmap.width - 1
 				For Local y:Int = 0 To colorizedPixmap.height - 1
 					pixel = ReadPixel(colorizedPixmap, x,y)
 					'skip invisible
 					if ARGB_Alpha(pixel) = 0 then continue
 
-					colorTone = isMonochrome(pixel, True)
+					colorTone = isMonochromeARGB(pixel, True)
 					If colorTone > 0 'and colorTone < 255
 						WritePixel(colorizedPixmap, x,y, ARGB_Color(..
 							ARGB_Alpha(pixel),..
@@ -555,14 +555,14 @@ Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, coloriza
 		'Formula: resultColor =
 		'				if (bottomColor < 128) then (2 * topColor * bottomColor / 255) 
 		'				else (255 - 2 * (255 - topColor) * (255 - bottomColor) / 255)
-		case COLORIZEMODE_OVERLAY
+		case EColorizeMode.Overlay
 			For Local x:Int = 0 To colorizedPixmap.width - 1
 				For Local y:Int = 0 To colorizedPixmap.height - 1
 					pixel = ReadPixel(colorizedPixmap, x,y)
 					'skip invisible
 					if ARGB_Alpha(pixel) = 0 then continue
 
-					colorTone = isMonochrome(pixel, True)
+					colorTone = isMonochromeARGB(pixel, True)
 					If colorTone > 0' and colorTone < 255
 						if colorTone < 128
 							WritePixel(colorizedPixmap, x,y, ARGB_Color(..
