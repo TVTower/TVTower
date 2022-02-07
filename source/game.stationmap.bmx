@@ -26,7 +26,7 @@ Import "game.gameeventkeys.bmx"
 
 'parent of all stationmaps
 Type TStationMapCollection
-	Field sections:TList = CreateList()
+	Field sections:TStationMapSection[]
 	'section name of all satellite uplinks
 	Field satelliteUplinkSectionName:string
 
@@ -255,7 +255,7 @@ Type TStationMapCollection
 
 
 	Method GetAveragePopulationAntennaShare:Float()
-		if not sections or sections.Count() = 0 then return 0
+		if not sections or sections.length = 0 then return 0
 
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
@@ -268,12 +268,12 @@ Type TStationMapCollection
 			endif
 			endrem
 		Next
-		return result / sections.Count()
+		return result / sections.length
 	End Method
 
 
 	Method GetAveragePopulationCableShare:Float()
-		if not sections or sections.Count() = 0 then return 0
+		if not sections or sections.length = 0 then return 0
 
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
@@ -283,12 +283,12 @@ Type TStationMapCollection
 				result :+ section.populationCableShare
 			endif
 		Next
-		return result / sections.Count()
+		return result / sections.length
 	End Method
 
 
 	Method GetAveragePopulationSatelliteShare:Float()
-		if not sections or sections.Count() = 0 then return 0
+		if not sections or sections.length = 0 then return 0
 
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
@@ -298,15 +298,15 @@ Type TStationMapCollection
 				result :+ section.populationSatelliteShare
 			endif
 		Next
-		return result / sections.Count()
+		return result / sections.length
 	End Method
 
 
 	Method GetSatelliteUplinkSectionName:string()
 		if not satelliteUplinkSectionName
-			If Not sections or sections.count() = 0 Then Return ""
+			If Not sections or sections.length = 0 Then Return ""
 
-			local randomSection:TStationMapSection = TStationMapSection(sections.ValueAtIndex(RandRange(0, sections.Count()-1)))
+			local randomSection:TStationMapSection = TStationMapSection(sections[RandRange(0, sections.length-1)])
 			if randomSection
 				satelliteUplinkSectionName = randomSection.name
 			endif
@@ -570,6 +570,28 @@ Type TStationMapCollection
 		return result
 	End Method
 
+
+	Method GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:String[], allowSectionCrossing:Int = True)
+		if sectionNames.length = 0 Then return Null
+
+		local sectionName:String = sectionNames[ Rand(0, sectionNames.length-1) ]
+		Return GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing)
+	End Method
+
+
+	Method GetRandomAntennaCoordinateInSections:TVec2D(sections:TStationMapSection[], allowSectionCrossing:Int = True)
+		if sections.length = 0 Then return Null
+
+		local section:TStationMapSection = sections[ Rand(0, sections.length-1) ]
+		Return GetRandomAntennaCoordinateInSection(section, allowSectionCrossing)
+	End Method
+	
+
+	Method GetRandomAntennaCoordinateInSection:TVec2D(sectionName:String, allowSectionCrossing:Int = True)
+		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+		Return GetRandomAntennaCoordinateInSection(section)
+	End Method
+	
 
 	Method GetRandomAntennaCoordinateInSection:TVec2D(section:TStationMapSection, allowSectionCrossing:Int = True)
 		If not section then return Null 
@@ -869,7 +891,7 @@ Type TStationMapCollection
 		'ATTENTION: overriding current sections will remove broadcast
 		'           permissions as this is called _after_ a savegame
 		'           got loaded!
-		if _instance.sections.Count() = 0
+		if _instance.sections.length = 0
 			'remove old states
 			'_instance.ResetSections()
 
@@ -1487,9 +1509,9 @@ Type TStationMapCollection
 		For local section:TStationMapSection = EachIn sections
 			local cableNetwork:TStationMap_CableNetwork = new TStationMap_CableNetwork
 			'shorter and shorter amounts
-			if cnNumber < sections.Count()/4
+			if cnNumber < sections.length/4
 				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(5,9), RandRange(1,28), 0)
-			elseif cnNumber < sections.Count()/2
+			elseif cnNumber < sections.length/2
 				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(3,6), RandRange(1,28), 0)
 			else
 				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(2,4), RandRange(1,28), 0)
@@ -1716,19 +1738,23 @@ endrem
 
 
 	Method GetSectionByListPosition:TStationMapSection(position:int)
-		return TStationMapSection(sections.ValueAtIndex(position))
+		If position >= 0 and position < sections.length
+			Return TStationMapSection(sections[position])
+		Else
+			Return Null
+		EndIf
 	End Method
 
 
 	Method GetSectionCount:int()
-		return sections.Count()
+		return sections.length
 	End Method
 
 
 	Method GetSectionNames:string[]()
-		local names:string[] = new String[ sections.Count() ]
-		For Local i:int = 0 until sections.Count()
-			names[i] = TStationMapSection(sections.ValueAtIndex(i)).name.ToLower()
+		local names:string[] = new String[ sections.length ]
+		For Local i:int = 0 until sections.length
+			names[i] = sections[i].name.ToLower()
 		Next
 
 		Return names
@@ -1736,22 +1762,21 @@ endrem
 
 
 	Method GetSectionsFiltered:TStationMapSection[](channelID:Int=-1, checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True, stationType:Int=-1)
-		Local count:int = sections.Count()
-		Local sections:TStationMapSection[] = new TStationMapSection[count]
+		Local filteredSections:TStationMapSection[] = new TStationMapSection[sections.length]
 		Local used:Int = 0
-		For Local section:TStationMapSection = EachIn sections
+		For Local section:TStationMapSection = EachIn self.sections
 			If (checkBroadcastPermission and section.NeedsBroadcastPermission(channelID, stationType))
 				If section.HasBroadcastPermission(channelID, stationType) <> requiredBroadcastPermissionState Then Continue
 			EndIf
-			sections[used] = section
+			filteredSections[used] = section
 			
 			used :+ 1
 		Next
 
-		if used <> count
-			return sections[.. used]
+		if used <> filteredSections.length
+			return filteredSections[.. used]
 		else
-			return sections
+			return filteredSections
 		endif
 	End Method
 	
@@ -1765,7 +1790,7 @@ endrem
 		if TStationAntenna(station)
 			local radius:int = TStationAntenna(station).radius
 			local stationRect:TRectangle = New TRectangle.Init(station.pos.x - radius, station.pos.y - radius, 2*radius, 2*radius)
-			local result:TStationMapSection[] = new TStationMapSection[sections.count()]
+			local result:TStationMapSection[] = new TStationMapSection[sections.length]
 			local added:int = 0
 
 			For local section:TStationMapSection = EachIn sections
@@ -1783,7 +1808,7 @@ endrem
 
 		elseif TStationSatelliteUplink(station)
 			'all
-			local result:TStationMapSection[] = new TStationMapSection[sections.Count()]
+			local result:TStationMapSection[] = new TStationMapSection[sections.length]
 			local added:int = 0
 			For local section:TStationMapSection = EachIn sections
 				result[added] = section
@@ -1811,15 +1836,14 @@ endrem
 
 
 	Method ResetSections()
-		sections = CreateList()
+		sections = new TStationMapSection[0]
 	End Method
 
 
 	Method AddSection(section:TStationMapSection)
-		If sections.addLast(section)
-			'inform others
-			TriggerBaseEvent(GameEventKeys.StationMapCollection_AddSection, New TData.Add("section", section), Self )
-		EndIf
+		sections :+ [section]
+		'inform others
+		TriggerBaseEvent(GameEventKeys.StationMapCollection_AddSection, New TData.Add("section", section), Self )
 	End Method
 
 
@@ -2206,20 +2230,21 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetRandomAntennaCoordinateInPlayerSections:TVec2D()
 		local sections:TStationMapSection[] = GetStationMapCollection().GetSectionsFiltered(owner, True, True, TVTStationType.ANTENNA)
-		if sections.length = 0 Then Return Null
+		Return GetStationMapCollection().GetRandomAntennaCoordinateInSections(sections)
+	End Method
 
-		Local sectionName:String = sections[ Rand(0, sections.length-1) ].name
-		Return GetRandomAntennaCoordinateInSection(sectionName)
+
+	'allowSectionCrossing: sections might have pixels they share... this
+	'                      allows these positions to be used
+	Method GetRandomAntennaCoordinateInSections:TVec2D(sections:TStationMapSection[], allowSectionCrossing:Int = True)
+		Return GetStationMapCollection().GetRandomAntennaCoordinateInSections(sections, allowSectionCrossing)
 	End Method
 
 
 	'allowSectionCrossing: sections might have pixels they share... this
 	'                      allows these positions to be used
 	Method GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[], allowSectionCrossing:Int = True)
-		if sectionNames.length = 0 Then return Null
-
-		local sectionName:String = sectionNames[ Rand(0, sectionNames.length-1) ]
-		Return GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing)
+		Return GetStationMapCollection().GetRandomAntennaCoordinateInSections(sectionNames, allowSectionCrossing)
 	End Method
 
 
@@ -2227,7 +2252,14 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'allowSectionCrossing: sections might have pixels they share... this
 	'                      allows these positions to be used
 	Method GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string, allowSectionCrossing:Int = True)
-		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+		Return GetStationMapCollection().GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing)
+	End Method
+
+
+	'specific section
+	'allowSectionCrossing: sections might have pixels they share... this
+	'                      allows these positions to be used
+	Method GetRandomAntennaCoordinateInSection:TVec2D(section:TStationMapSection, allowSectionCrossing:Int = True)
 		Return GetStationMapCollection().GetRandomAntennaCoordinateInSection(section, allowSectionCrossing)
 	End Method
 

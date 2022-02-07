@@ -2932,6 +2932,15 @@ Type TSavegameConverter
 		'Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
+			'v0.7.1 -> 0.7.2: "TStationMapcollection.sections - TList to TStationMapSection[]"
+			Case "TList>TStationMapSection[]".ToLower()
+				Local list:TList = TList(obj)
+				Local result:TStationMapSection[]
+				For local section:TStationMapSection = EachIn list
+					result :+ [section]
+				Next
+				Return result
+				
 			'v0.7.0 -> "Int to TTriStateIntBitmask"
 			Case "Int>TTriStateIntBitmask".ToLower()
 				local mask:TTriStateIntBitmask = new TTriStateIntBitmask
