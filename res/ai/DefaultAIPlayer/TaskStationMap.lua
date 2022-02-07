@@ -393,8 +393,10 @@ function JobBuyStation:GetBestAntennaOffer()
 	end
 
 	for i = 1, minimumRequiredRandomsWithPermission do
-		local vec = TVT.of_GetRandomAntennaCoordinateInPlayerSections()
-		if vec ~= nil then
+		local vec2i = TVT.of_GetRandomAntennaCoordinateInPlayerSections()
+		if vec2i ~= nil then
+			local x = vec2i.GetX()
+			local y = vec2i.GetY()
 			local newKey =  x .. "_" .. y
 			stationPositions[newKey] = {x, y}
 		end
