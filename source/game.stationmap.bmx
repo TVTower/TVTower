@@ -1801,7 +1801,7 @@ endrem
 		if TStationAntenna(station)
 			local radius:int = TStationAntenna(station).radius
 			local stationRect:TRectangle = New TRectangle.Init(station.x - radius, station.y - radius, 2*radius, 2*radius)
-			local result:TStationMapSection[] = new TStationMapSection[sections.count()]
+			local result:TStationMapSection[] = new TStationMapSection[sections.length]
 			local added:int = 0
 
 			For local section:TStationMapSection = EachIn sections
