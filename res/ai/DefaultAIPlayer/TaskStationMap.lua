@@ -166,8 +166,8 @@ function JobAnalyseStationMarket:Tick()
 
 						if station.IsAntenna() == 1 then
 							--store x,y and owner
-							table.insert(positions, {station.pos.GetX(), station.pos.GetY(), i})
-							self:LogTrace("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.pos.GetX() .."/".. station.pos.GetY())
+							table.insert(positions, {station.x, station.y, i})
+							self:LogTrace("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.x .."/".. station.y)
 						elseif station.IsCableNetworkUplink() == 1 then
 							table.insert(cableNetworkUplinkProviders, {station.providerGUID})
 						elseif station.IsSatelliteUplink() == 1 then
