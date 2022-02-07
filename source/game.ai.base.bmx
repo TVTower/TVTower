@@ -293,6 +293,13 @@ endrem
 		if scriptFileName = "" then return FALSE
 
 		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
+		If FileType(scriptFileName) = 1
+			'file exists
+		Else
+			TLogger.Log("LoadScript", "File ~q" + luaScriptFileName + "~q does not exist. Using default script.", LOG_ERROR)
+			scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
+		EndIf
+
 		'load content
 		GetLuaEngine().SetSource(LoadText(scriptFileName), scriptFileName)
 
