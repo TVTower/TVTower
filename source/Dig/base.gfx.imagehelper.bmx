@@ -854,6 +854,20 @@ End Function
 
 
 
+Function PixelIsOpaque:Int(pix:TPixmap, x:Int, y:Int) Inline
+	If x < 0 Or y < 0 Or x >= pix.width Or y >= pix.height Then Return False
+	If pix.format = PF_RGBA8888
+		Local pixelPtr:Byte Ptr = pix.pixels + (y * pix.pitch + x * 4)
+		If pixelPtr[3] <= 0 Then Return False
+	Else
+		If ARGB_Alpha(ReadPixel(pix, x, y)) <= 0 then Return False
+	EndIf
+	Return True
+End Function
+
+
+
+
 'Code by Oddball:
 'http://www.mojolabs.nz/codearcs.php?code=1676
 Function ODD_PointInPoly:int(pX:Float, pY:Float, polyXY:Float[] )

@@ -629,13 +629,13 @@ Type TSprite
 	End Method
 
 
-	Method GetFramePos:TVec2D(frame:Int=-1)
-		If frame < 0 Then Return New TVec2D.Init(0,0)
+	Method GetFramePos:SVec2I(frame:Int=-1)
+		If frame < 0 Then Return New SVec2I(0,0)
 
 		Local MaxFramesInCol:Int = Ceil(area.GetW() / framew)
 		Local framerow:Int = Ceil(frame / Max(1,MaxFramesInCol))
 		Local framecol:Int = frame - (framerow * MaxFramesInCol)
-		Return New TVec2D.Init(framecol * frameW, framerow * frameH)
+		Return New SVec2I(framecol * frameW, framerow * frameH)
 	End Method
 
 
@@ -649,22 +649,7 @@ Type TSprite
 		'draw now colorized image on the parent image
 		DrawImageOnImage(newImg, parent.GetImage(), Int(area.GetX()), Int(area.GetY()))
 	End Method
-
-
-	Method PixelIsOpaque:Int(x:Int, y:Int)
-		If x < 0 Or y < 0 Or x > frameW Or y > frameH
-			Print "out of bounds: "+x+", "+y
-			Return False
-		EndIf
-
-		If Not _pix
-			_pix = LockImage(GetImage())
-			'UnlockImage(parent.image) 'unlockimage does nothing in blitzmax (1.48)
-		EndIf
-
-		Return ARGB_Alpha(ReadPixel(_pix, x,y))
-	End Method
-
+	
 
 	'draw the sprite onto a given image or pixmap
 	Method DrawOnImage(imageOrPixmap:Object, x:Int, y:Int, frame:Int = -1, alignment:TVec2D=Null, modifyColor:TColor=Null)
@@ -989,7 +974,7 @@ Type TSprite
 		If frames <= 0 Then theframe = -1
 		Local widthLeft:Float = w
 		Local currentX:Float = x
-		Local framePos:TVec2D = getFramePos(theframe)
+		Local framePos:SVec2I = GetFramePos(theframe)
 
 		Local alignX:Float = 0.0
 		Local alignY:Float = 0.0

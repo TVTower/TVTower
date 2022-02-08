@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2022 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -35,6 +35,7 @@ Rem
 EndRem
 SuperStrict
 Import Brl.Math
+Import Brl.Vector
 
 Global vec2d_created:int = 0
 Type TVec2D {_exposeToLua="selected"}
@@ -302,6 +303,285 @@ Type TVec2D {_exposeToLua="selected"}
 	'(switching vec references might corrupt references in other objects)
 	Function SwitchVecs(vecA:TVec2D, vecB:TVec2D)
 		local tmpVec:TVec2D = vecA.Copy()
+		vecA.CopyFrom(vecB)
+		vecB.CopyFrom(tmpVec)
+	End Function
+End Type
+
+
+
+
+Type TVec2I {_exposeToLua="selected"}
+	Field x:Int = 0
+	Field y:Int = 0
+
+	Method New(x:Int, y:Int)
+		SetXY(x, y)
+	End Method
+	
+
+	Method New(s:SVec2I)
+		SetXY(s.x, s.y)
+	End Method
+
+
+	Method Init:TVec2I(x:Int=0, y:Int=0)
+		SetXY(x, y)
+		Return self
+	End Method
+
+
+	Method ToString:String()
+		return int(x)+", "+int(y)
+	End Method
+
+
+	Method ToVec3D:TVec3D()
+		return new TVec3D.Init(x, y, 0)
+	End Method
+
+
+	Method Copy:TVec2I()
+		return new TVec2I.Init(x, y)
+	End Method
+
+
+	Method GetX:Int() {_exposeToLua}
+		return x
+	End Method
+
+
+	Method GetY:Int() {_exposeToLua}
+		return y
+	End Method
+
+
+	Method SetX:TVec2I(x:Int)
+		self.x = x
+		return Self
+	End Method
+
+
+	Method SetY:TVec2I(y:Int)
+		self.y = y
+		return Self
+	End Method
+
+
+	Method SetXY:TVec2I(x:Float, y:Float)
+		self.x = x
+		self.y = y
+		return Self
+	End Method
+
+
+	Method CopyFrom:TVec2I(otherVec:SVec2I)
+		SetXY(otherVec.x, otherVec.y)
+		Return self
+	End Method
+
+
+	Method CopyFrom:TVec2I(otherVec:TVec2I)
+		If otherVec
+			SetXY(otherVec.x, otherVec.y)
+		EndIf
+		Return self
+	End Method
+
+
+	Method CopyFrom:TVec2I(otherVec:TVec2D, mathRound:Int = True)
+		If otherVec
+			If mathRound
+				SetXY(int(otherVec.x + 0.5), int(otherVec.y + 0.5))
+			Else
+				SetXY(int(otherVec.x), int(otherVec.y))
+			EndIf
+		EndIf
+		Return self
+	End Method
+
+
+	Method CopyFrom:TVec2I(otherVec:TVec3D, mathRound:Int = True)
+		If otherVec
+			If mathRound
+				SetXY(int(otherVec.x + 0.5), int(otherVec.y + 0.5))
+			Else
+				SetXY(int(otherVec.x), int(otherVec.y))
+			EndIf
+		EndIf
+		Return self
+	End Method
+
+
+	Method AddX:TVec2I(x:Int)
+		self.x :+ x
+		return Self
+	End Method
+
+
+	Method AddY:TVec2I(y:Int)
+		self.y :+ y
+		return Self
+	End Method
+
+
+	Method AddXY:TVec2I(x:Int, y:Int)
+		self.x :+ x
+		self.y :+ y
+		return Self
+	End Method
+
+
+	Method AddVec:TVec2I(otherVec:TVec2I)
+		self.x :+ otherVec.x
+		self.y :+ otherVec.y
+		return self
+	End Method
+
+
+	Method SubtractXY:TVec2I(x:Float, y:Float)
+		self.x :- x
+		self.y :- y
+		return Self
+	End Method
+
+
+	Method SubtractVec:TVec2I(otherVec:TVec2I)
+		self.x :- otherVec.x
+		self.y :- otherVec.y
+		return self
+	End Method
+
+
+	Method MultiplyFactor:TVec2I(factor:Float)
+		self.x = int(self.x * factor + 0.5)
+		self.y = int(self.y * factor + 0.5)
+		return self
+	End Method
+
+
+	Method MultiplyXY:TVec2I(multiplierX:Float, multiplierY:Float)
+		self.x = int(self.x * multiplierX + 0.5)
+		self.y = int(self.y * multiplierY + 0.5)
+		return self
+	End Method
+
+
+	Method MultiplyVec:TVec2I(otherVec:TVec2I)
+		self.x :* otherVec.x
+		self.y :* otherVec.y
+		return self
+	End Method
+
+
+	Method Divide:TVec2I(scalar:Float)
+		if scalar = 0 then return self
+
+		self.x = int(self.x / scalar + 0.5)
+		self.y = int(self.y / scalar + 0.5)
+		return self
+	End Method
+
+
+	Method GetDotProductXY:Int(x:Int, y:Int)
+		return self.x * x + self.y * y
+	End Method
+
+
+	Method GetDotProduct:Int(otherVec:TVec2I)
+		return self.x * otherVec.x + self.y * otherVec.y
+	End Method
+
+
+	Method GetAngle:Float()
+		Return ATan2(y, x)
+	End Method
+
+
+	Method GetMagnitude:Float()
+		Return Sqr(x * x + y * y)
+	End Method
+
+
+	Method GetAngleDifference:Float(x:Float, y:Float)
+		Return Abs(PositiveModulo(ATan2(self.y, self.x) + 180 - ATan2(y, x), 360) - 180)
+	End Method
+
+
+	Method GetAngleDifference:Float(otherVec:TVec2I)
+		Return Abs(PositiveModulo(ATan2(self.y, self.x) + 180 - ATan2(otherVec.y, otherVec.x), 360) - 180)
+	End Method
+
+
+	Method GetReflectedVec:TVec2I(otherVec:TVec2I)
+		Local result:TVec2I = copy()
+		Local normalVector:TVec2I = GetNormalizedVec()
+		Local dotProduct:Float = normalVector.GetDotProduct(result)
+		normalVector.MultiplyXY(2 * dotProduct, 2 * dotProduct)
+		result.SubtractVec(normalVector)
+
+		Return result
+	End Method
+
+
+	Method GetNormalizedVec:TVec2I()
+		return copy().Normalize()
+	End Method
+
+
+	Method Normalize:TVec2I()
+		Local magnitude:Float = GetMagnitude()
+		If magnitude <> 0
+			x = int(x / magnitude + 0.5)
+			y = int(y / magnitude + 0.5)
+		End If
+
+		return self
+	End Method
+
+
+	Method Rotate:TVec2I(angle:Float)
+		local newX:Float = Cos(angle) * x - Sin(angle) * y
+		local newY:Float = Sin(angle) * x + Cos(angle) * y
+		x = int(newX + 0.5)
+		y = int(newY + 0.5)
+
+		return self
+	End Method
+
+
+	Method RotateAroundPoint:TVec2I(point:TVec2I, angle:Float)
+		local xnew:float = (x - point.x) * cos(angle) - (y - point.y) * sin(angle) + point.x
+		local ynew:float = (x - point.x) * sin(angle) + (y - point.y) * cos(angle) + point.y
+		x = int(xnew + 0.5)
+		y = int(ynew + 0.5)
+		return self
+	End Method
+
+
+	Method isSame:int(otherVec:TVec2I) {_exposeToLua}
+		if not otherVec then return False
+
+		Return x = otherVec.x AND y = otherVec.y
+	End Method
+
+
+	Method EqualsXY:int(x:Int, y:Int) {_exposeToLua}
+		Return self.x = x AND self.y = y
+	End Method
+
+
+	Method DistanceTo:Float(otherVec:TVec2I) {_exposeToLua}
+		'a² + b² = c²... pythagoras
+		local distanceXY:Float = Sqr((x - othervec.x)^2 + (y - othervec.y)^2)
+		Return distanceXY
+	End Method
+
+
+	'switches values of given vecs
+	'(switching vec references might corrupt references in other objects)
+	Function SwitchVecs(vecA:TVec2I, vecB:TVec2I)
+		local tmpVec:TVec2I = vecA.Copy()
 		vecA.CopyFrom(vecB)
 		vecB.CopyFrom(tmpVec)
 	End Function

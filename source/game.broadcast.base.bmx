@@ -514,7 +514,30 @@ Type TBroadcast
 		else
 			AudienceMarkets = CreateList()
 		Endif
-		
+
+		'1 = player 1
+		'2 = player 2
+		'4 = player 3
+		'8 = player 4
+		AddMarket(new SChannelMask(1))				'1
+		AddMarket(new SChannelMask(2))				'2
+		AddMarket(new SChannelMask(4))				'3
+		AddMarket(new SChannelMask(8))				'4
+		AddMarket(new SChannelMask(1 + 2))			'1 & 2
+		AddMarket(new SChannelMask(1 + 4))			'1 & 3
+		AddMarket(new SChannelMask(1 + 8))			'1 & 4
+		AddMarket(new SChannelMask(2 + 4))			'2 & 3
+		AddMarket(new SChannelMask(2 + 8))			'2 & 4
+		AddMarket(new SChannelMask(4 + 8))			'3 & 4
+
+		AddMarket(new SChannelMask(1 + 2 + 4))		'1 & 2 & 3
+		AddMarket(new SChannelMask(1 + 2 + 8))		'1 & 2 & 4
+		AddMarket(new SChannelMask(1 + 4 + 8))		'1 & 3 & 4
+		AddMarket(new SChannelMask(2 + 4 + 8))		'2 & 3 & 4
+
+		AddMarket(new SChannelMask(1 + 2 + 4 + 8))	'1 & 2 & 3 & 4
+rem
+
 		AddMarket(new SChannelMask().Set(1) ) '1
 		AddMarket(new SChannelMask().Set(2) ) '2
 		AddMarket(new SChannelMask().Set(3) ) '3
@@ -532,6 +555,7 @@ Type TBroadcast
 		AddMarket(new SChannelMask().Set(2).Set(3).Set(4) ) '2 & 3 & 4
 
 		AddMarket(new SChannelMask().Set(1).Set(2).Set(3).Set(4) ) '2 & 3 & 4
+endrem
 	End Method
 
 

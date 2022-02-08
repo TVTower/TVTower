@@ -799,7 +799,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local map:TStationMap = GetStationMap(playerID, True)
 
 		'add new station
-		Local s:TStationBase = New TStationAntenna.Init( New TVec2D.Init(310, 260),-1, playerID )
+		Local s:TStationBase = New TStationAntenna.Init( 310, 260, -1, playerID )
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		'first station is not sellable (this enforces competition)
 		s.SetFlag(TVTStationFlag.SELLABLE, False)
@@ -843,7 +843,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					Local m:TStationMap = GetStationMap(i)
 					For Local s:TStation = EachIn m.stations
 						'decrease details by 10 to avoid "nearly identical"
-						allStations.Insert(Int(s.pos.x/10)*10+","+Int(s.pos.y/10)*10, s)
+						allStations.Insert((s.x/10)*10+","+(s.y/10)*10, s)
 					Next
 				Next
 
@@ -859,15 +859,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					'finished if there is nothing more to do
 					If broadcastAreaToDo < 1000 Then Exit
 
-					Local newPos:TVec2D = s.pos.Copy()
-					Local increase:Int = map.CalculateAntennaAudienceIncrease(Int(newPos.x), Int(newPos.y))
+					Local newPosX:Int = s.x
+					Local newPosY:Int = s.y
+					Local increase:Int = map.CalculateAntennaAudienceIncrease(newPosX, newPosY)
 
 					'ignore stations with too low reachincrease
 					If increase < 10000 Then Continue
 
 					'print "add station at: "+ int(newPos.x)+","+int(newPos.y)+ "  increase: "+ increase
 					'add it at the same spot (or random offset?)
-					Local antennaStation:TStationAntenna = New TStationAntenna.Init( newPos,-1, playerID )
+					Local antennaStation:TStationAntenna = New TStationAntenna.Init( newPosX, newPosY, -1, playerID )
 					antennaStation.radius = GetStationMapCollection().antennaStationRadius
 
 					'add a broadcast permission for this station section (price: 0 euro)

@@ -14,6 +14,10 @@ Type TBroadcastStatistic
 
 	Method SetAudienceResult:Int(channelNumber:int, block:int, audienceResult:TAudienceResult)
 		if channelNumber <= 0 then return False
+		if block <= 0
+			print "TBroadcastStatistic.SetAudienceResult() called with block="+block
+			debugstop
+		endif
 
 		'create/resize if not existing yet
 		GetLastAudienceResult(channelNumber, block)

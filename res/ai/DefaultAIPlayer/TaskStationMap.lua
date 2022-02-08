@@ -166,8 +166,8 @@ function JobAnalyseStationMarket:Tick()
 
 						if station.IsAntenna() == 1 then
 							--store x,y and owner
-							table.insert(positions, {station.pos.GetX(), station.pos.GetY(), i})
-							self:LogTrace("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.pos.GetX() .."/".. station.pos.GetY())
+							table.insert(positions, {station.x, station.y, i})
+							self:LogTrace("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.x .."/".. station.y)
 						elseif station.IsCableNetworkUplink() == 1 then
 							table.insert(cableNetworkUplinkProviders, {station.providerGUID})
 						elseif station.IsSatelliteUplink() == 1 then
@@ -393,8 +393,10 @@ function JobBuyStation:GetBestAntennaOffer()
 	end
 
 	for i = 1, minimumRequiredRandomsWithPermission do
-		local vec = TVT.of_GetRandomAntennaCoordinateInPlayerSections()
-		if vec ~= nil then
+		local vec2i = TVT.of_GetRandomAntennaCoordinateInPlayerSections()
+		if vec2i ~= nil then
+			local x = vec2i.GetX()
+			local y = vec2i.GetY()
 			local newKey =  x .. "_" .. y
 			stationPositions[newKey] = {x, y}
 		end
@@ -496,16 +498,16 @@ function JobBuyStation:Tick()
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
 		if bestOffer == bestAntennaOffer then
-			self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName(false) .. " at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
-			TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+			self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName(false) .. " at " .. bestOffer.x .. "," .. bestOffer.y .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
+			TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
 		elseif bestOffer == bestSatelliteOffer then
 			self:LogInfo("Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
 			--TODO Vertrag abschließen!!
-			--TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+			--TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
 		elseif bestOffer == bestCableNetworkOffer then
 			self:LogInfo("Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
 			--TODO Vertrag abschließen!!
-			--TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+			--TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
 		end
 
 		-- Wir brauchen noch ein "Fixkostenbudget" fuer Kabelnetze/Satelliten

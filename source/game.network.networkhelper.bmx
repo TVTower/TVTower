@@ -747,8 +747,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		obj.SetInt(1, playerID)
 		obj.SetInt(2, action)
 		obj.SetInt(3, station.stationType)
-		obj.SetFloat(4, station.pos.x)
-		obj.SetFloat(5, station.pos.y)
+		obj.SetInt(4, station.x)
+		obj.SetInt(5, station.y)
 		if TStationAntenna(station)
 			obj.SetInt(6, TStationAntenna(station).radius)
 		else
@@ -763,7 +763,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local playerID:int = obj.getInt(1)
 		local action:int = obj.getInt(2)
 		local stationType:int = obj.getInt(3)
-		local pos:TVec2D = new TVec2D.Init( obj.getFloat(4), obj.getFloat(5) )
+		local posX:Int = obj.getInt(4)
+		local posY:Int = obj.getInt(5)
 		local radius:int = obj.getInt(6)
 		local stationGUID:string = obj.getString(7)
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
@@ -784,7 +785,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 '							case TVTStationType.ANTENNA
 '								station = new TStation.Init(pos,-1, radius, playerID)
 '							default 'case TVTStationType.ANTENNA
-								station = new TStationAntenna.Init(pos,-1, playerID)
+								station = new TStationAntenna.Init(posX, posY, -1, playerID)
 								TStationAntenna(station).radius = radius
 '						End Select
 					endif
@@ -792,14 +793,14 @@ Type TNetworkHelper extends TNetworkHelperBase
 					station.SetGUID(stationGUID)
 
 					GetStationMap(playerID).AddStation( station, FALSE )
-					print "[NET] StationMap player "+playerID+" - add station "+station.pos.GetIntX()+","+station.pos.GetIntY()
+					print "[NET] StationMap player "+playerID+" - add station "+station.x+","+station.y
 
 					return TRUE
 			case NET_DELETE
 					if not station then return FALSE
 
 					GetStationMap(playerID).RemoveStation( station, FALSE )
-					print "[NET] StationMap player "+playerID+" - removed station "+station.pos.GetIntX()+","+station.pos.GetIntY()
+					print "[NET] StationMap player "+playerID+" - removed station "+station.x+","+station.y
 					return TRUE
 		EndSelect
 		TStationMap.fireEvents = TRUE
@@ -965,8 +966,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		obj.setInt(1, playerID)
 		obj.setInt(2, add)
 		obj.setInt(3, station.stationType)
-		obj.setFloat(4, station.Pos.x)
-		obj.setFloat(5, station.Pos.y)
+		obj.setInt(4, station.x)
+		obj.setInt(5, station.y)
 		if TStationAntenna(station)
 			obj.setInt(6, TStationAntenna(station).radius)
 		else

@@ -814,24 +814,24 @@ endrem
 	'=== OFFICE ===
 	'player's office
 
-	Method of_GetRandomAntennaCoordinateInPlayerSections:TVec2D()
+	Method of_GetRandomAntennaCoordinateInPlayerSections:TVec2I()
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInPlayerSections()
+		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInPlayerSections())
 	End Method
 
-	Method of_GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[], allowSectionCrossing:Int = True)
+	Method of_GetRandomAntennaCoordinateInSections:TVec2I(sectionNames:string[], allowSectionCrossing:Int = True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSections(sectionNames, allowSectionCrossing)
+		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSections(sectionNames, allowSectionCrossing))
 	End Method
 
-	Method of_GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string, allowSectionCrossing:Int = True)
+	Method of_GetRandomAntennaCoordinateInSection:TVec2I(sectionName:string, allowSectionCrossing:Int = True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing)
+		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing))
 	End Method
 
-	Method of_GetRandomAntennaCoordinateOnMap:TVec2D(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
+	Method of_GetRandomAntennaCoordinateOnMap:TVec2I(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState)
+		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState))
 	End Method
 
 	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkIndex:Int)
