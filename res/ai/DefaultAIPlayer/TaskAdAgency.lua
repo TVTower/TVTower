@@ -114,8 +114,11 @@ function TaskAdAgency.SortAdContractsByAttraction(list)
 		for k,v in pairs(list) do
 			--is a single number for attraction possible?
 			--profit/penalty per audience is not a good indicator!!
+			--TODO compare different weight functions
 			--weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfitCPM(TVT.ME) * (0.8 + 0.2 * 1.0/v.GetPenaltyCPM(TVT.ME))
-			weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfit(TVT.ME) * (0.8 + 0.2 * 1.0/v.GetPenalty(TVT.ME))
+			--weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfit(TVT.ME) * (0.8 + 0.2 * 1.0/v.GetPenalty(TVT.ME))
+			--ignore penalty but make spot count more important (increases risk as well)
+			weights[ v.GetID() ] = (0.5 + 0.5*(0.85^(v.GetSpotCount()-1)) * v.GetProfit(TVT.ME) / v.GetSpotCount())
 		end
 
 		-- sort
@@ -232,7 +235,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 	end
 
 	--TODO more sophisticated max audience says only so much if all programmes have low topicality
-	if (spotMinAudience > stats.Audience.MaxValue * 0.8) then
+	if (spotMinAudience > stats.Audience.MaxValue * 0.7) then
 		self:LogTrace("  too much audience! " .. spotMinAudience .. " / " .. stats.Audience.MaxValue)
 		spot.SetAttractiveness(-1)
 		return
@@ -251,6 +254,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 	-- PENALTY
 	-- 2 = low penalty, 0.2 = way too high penalty
 	local penaltyFactorRaw = 1.0 / (penaltyPerSpot / stats.SpotPenaltyPerSpot.AverageValue)
+	penaltyFactorRaw = penaltyFactorRaw / (1.05 ^ (spot.GetSpotCount() - 1))
 	local penaltyFactor = CutFactor(penaltyFactorRaw, 0.2, 2)
 
 
@@ -336,10 +340,6 @@ function SignRequisitedContracts:Tick()
 	for k,requisition in pairs(self.SpotRequisitions) do
 		local neededSpotCount = requisition.Count
 		local guessedAudience = requisition.GuessedAudience
-		--TODO optimize factors for guessed audience especially for prime time programme
-		if requisition.Level == 5 then
-			guessedAudience = self:GetMinGuessedAudience(guessedAudience, 0.85)
-		end
 
 		self:LogDebug("  process ad requisition:  neededSpots="..neededSpotCount .."  guessedAudience="..math.floor(guessedAudience.GetTotalSum()))
 		-- 0.9 and 0.7 may be too strict for finding contracts
@@ -635,6 +635,13 @@ function SignContracts:ShouldSignContract(contract)
 
 	if contractMin > self.maxAudience * 0.1 then
 		return 0
+	end
+
+	--prevent dangerous "good" contracts just before a new day (little chance of fulfilling much today)
+	if contractMin >= self.maxAudience * 0.07 and TVT.GetDayHour() > 20 then
+		if contract.GetSpotCount() > 2 or contract.GetDaysToFinish() < 4 then
+			return 0
+		end
 	end
 
 	--TODO rather count spots of all similar

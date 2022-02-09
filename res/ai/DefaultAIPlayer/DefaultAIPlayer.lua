@@ -211,6 +211,7 @@ function DefaultAIPlayer:OnGameBegins()
 		self.Stats.SpotProfitPerSpot = StatisticEvaluator()
 		self.Stats.SpotPenalty = StatisticEvaluator()
 		self.Stats.SpotPenaltyPerSpot = StatisticEvaluator()
+		self.Stats.MovieQuality = StatisticEvaluator()
 	end
 	--END LOAD COMPATIBILITY
 

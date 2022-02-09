@@ -9,8 +9,6 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.MoviesAtDistributor = nil
 	c.MoviesAtAuctioneer = nil
 	c.NiveauChecked = false
-	--TODO temporary cache for counting parent licences
-	--should be refactored to make it globally available and update it regularly
 	c.MovieCount = 0
 	c.CheckMode = 0
 	c.MovieList = nil
@@ -51,7 +49,13 @@ function TaskMovieDistributor:Activate()
 
 	-- Was getan werden soll:
 	local player = _G["globalPlayer"]
-	local startMovies = player.Strategy.startProgrammeAmount - self.MovieCount --TVT.GetProgrammeLicenceCount()
+	local stats = player.Stats.MovieQuality
+	if stats ~= nil and stats.Values > 0 then
+		self.MovieCount = stats.Values
+	else
+		self.MovieCount = TVT.GetProgrammeLicenceCount()
+	end
+	local startMovies = player.Strategy.startProgrammeAmount - self.MovieCount
 	self.BuyStartProgrammeJob = JobBuyStartProgramme()
 	self.BuyStartProgrammeJob.Task = self
 	if startMovies <= 0 then
@@ -149,11 +153,13 @@ function TaskMovieDistributor:BudgetSetup()
 	self.CurrentBargainBudget = self.BudgetWholeDay
 	--TODO lower budget once a maximal number of movies is reached
 	local player = _G["globalPlayer"]
-	--if player.programmeLicencesInArchiveCount >= 35 then
-	if self.MovieCount >= 20 then
-		self.BudgetWeight = 6
-	elseif self.MovieCount >= 35 then
+	local totalReach = player.totalReach
+	if self.MovieCount >= 35 then
 		self.BudgetWeight = 2
+	elseif self.MovieCount >= 20 and (totalReach==nil or totalReach <= 950000) then
+		self.BudgetWeight = 2
+	elseif self.MovieCount >= 20 then
+		self.BudgetWeight = 6
 	else
 		self.BudgetWeight = 8
 	end
@@ -162,12 +168,10 @@ end
 
 function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
 	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_PROGRAMMELICENCE)) then
-		self.MovieCount = self.MovieCount + 1
 		--self:PayFromBudget(value)
 		--self.CurrentBargainBudget = self.CurrentBargainBudget - value
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.SELL_PROGRAMMELICENCE)) then
 		--Wird im Budgetmanager neu verteilt
-		self.MovieCount = self.MovieCount - 1
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_AUCTIONBID)) then
 		--self:PayFromBudget(value)	Wird unten gemacht, damit der Kontostand gleich aktuell ist. Muss man mal Debuggen
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAYBACK_AUCTIONBID)) then
@@ -259,7 +263,7 @@ function JobBuyStartProgramme:Tick()
 		--only buy whole start programme set if possible with budget
 		--else each one should be cheaper than the single licence limit
 		if (table.count(buyStartMovies) >= moviesNeeded or v:GetPrice(TVT.ME) < startMovieBudget) then
-			--self:LogDebug("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v))
+			--self:LogDebug("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality())
 			self:LogInfo("Buying start programme licence: " .. v:GetTitle() .. " price=" .. v:GetPrice(TVT.ME))
 			TVT.md_doBuyProgrammeLicence(v:GetId())
 
@@ -401,6 +405,8 @@ function JobCheckMovies:Prepare(pParams)
 			qualityStats:AddValue(movie.getQualityRaw()*movie.getMaxTopicality())
 		end
 	end
+	--store quality data in player statistics
+	_G["globalPlayer"].Stats.MovieQuality = qualityStats
 end
 
 function JobCheckMovies:Tick()
@@ -668,7 +674,7 @@ function JobBuyMovies:Tick()
 			if (priceToPay <= self.Task.CurrentBudget) then
 				-- daily budget for good offers without direct need
 				if priceToPay <= self.Task.CurrentBargainBudget then
-					if (v:GetAttractiveness() > 1) then
+					if (self:shouldBuyMovie(v) == 1) then
 						self:LogInfo("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay)
 						TVT.md_doBuyProgrammeLicence(v:GetId())
 
@@ -682,6 +688,22 @@ function JobBuyMovies:Tick()
 		self:LogError("Movieagency does not offer any licences.")
 	end
 	self.Status = JOB_STATUS_DONE
+end
+
+function JobBuyMovies:shouldBuyMovie(movie)
+	--TODO more sophisticated bias for choosing movie genre
+	if movie:GetAttractiveness() > 1 then
+		local genre = movie:GetGenre()
+		if genre == TVT.Constants.ProgrammeGenre.Horror and math.random(0,100) > 25 then
+			return 0
+		end
+		if genre == TVT.Constants.ProgrammeGenre.SciFi and math.random(0,100) > 25 then
+			return 0
+		end
+		return 1
+	else
+		return 0
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -732,8 +754,9 @@ function JobBidAuctions:Tick()
 				if (price <= self.Task.CurrentBudget) then
 					-- daily budget for good offers without direct need
 					if (price <= self.Task.CurrentBargainBudget) then
+						--TODO genre bias analogous to movies
 						if (v:GetAttractiveness() > 1) then
-							self:LogInfo("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v)..")")
+							self:LogInfo("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..")")
 							TVT.md_doBidAuctionProgrammeLicence(v:GetId())
 
 							self.Task:PayFromBudget(v:GetPrice(TVT.ME))
