@@ -469,12 +469,16 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	-- return playerMod * timeMod * audienceMod * (broadcastMaterialSource.GetQuality() * broadcastMaterialSource.GetProgrammeTopicality())
 	local result = playerMod * timeMod * audienceMod * broadcastMaterialSource.GetQuality()
 
-	--TODO Anzahl Lizenzen und Durchschnittsqualität berücksichtigen
+	--TODO Anzahl Lizenzen, Durchschnittsqualität, Genre (Sendezeit) berücksichtigen
 
 	local relTop = broadcastMaterialSource:GetRelativeTopicality()
-	result = result * relTop
-	if hour < 2 or hour > 16 then
+	if relTop == 1 then
+		result = result * 3
+	else
 		result = result * relTop
+		if hour < 2 or hour > 16 then
+			result = result * relTop
+		end
 	end
 	return result
 end

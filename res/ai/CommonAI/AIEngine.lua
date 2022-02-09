@@ -1416,12 +1416,6 @@ function logWithLevel(currentLogLevel, messageLogLevel, message)
 	end
 end
 
-function devMsg(pMessage)
-	TVT.PrintOut("== DEV == : " .. pMessage)
-	--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
-	TVT.addToLog("== DEV == : " .. pMessage)
-end
-
 
 function CutFactor(factor, minValue, maxValue)
 	if (factor > maxValue) then

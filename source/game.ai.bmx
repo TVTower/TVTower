@@ -909,7 +909,7 @@ endrem
 	Method of_buyCableNetworkStation:Int(federalStateName:String)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(ME).BuyCableNetworkUplinkStationBySectionName(federalStateName)
+		If GetStationMap(ME).BuyCableNetworkUplinkStationBySectionName(federalStateName, True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -931,7 +931,7 @@ endrem
 	Method of_buySatelliteStation:Int(satelliteNumber:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(ME).BuySatelliteUplinkStation(satelliteNumber)
+		If GetStationMap(ME).BuySatelliteUplinkStation(satelliteNumber, True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED

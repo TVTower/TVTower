@@ -2376,12 +2376,14 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'buy a new cable network station at the given coordinates
-	Method BuyCableNetworkUplinkStationBySectionName:Int(sectionName:string)
+	Method BuyCableNetworkUplinkStationBySectionName:Int(sectionName:string, autoUpdateContract:Int = False)
 		'find first cable network operating in that section
 		local index:int = 0
 		for local cableNetwork:TStationMap_CableNetwork = Eachin GetStationMapCollection().cableNetworks
 			if cableNetwork.sectionName = sectionName
-				Return AddStation( GetTemporaryCableNetworkUplinkStation( index ), True )
+				local tmp:TStationBase = GetTemporaryCableNetworkUplinkStation( index )
+				tmp.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT,autoUpdateContract)
+				Return AddStation(tmp, True )
 			endif
 			index :+ 1
 		next
@@ -2396,8 +2398,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'buy a new satellite station at the given coordinates
-	Method BuySatelliteUplinkStation:Int(satelliteIndex:int)
-		Return AddStation( GetTemporarySatelliteUplinkStation( satelliteIndex ), True )
+	Method BuySatelliteUplinkStation:Int(satelliteIndex:int, autoUpdateContract:Int = False)
+		Local tmp:TStationBase = GetTemporarySatelliteUplinkStation( satelliteIndex )
+		tmp.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT,autoUpdateContract)
+		Return AddStation(tmp, True )
 	End Method
 
 
@@ -5732,7 +5736,7 @@ End Type
 'excuse naming scheme but "TCableNetwork" is ambiguous for "stationtypes"
 Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider {_exposeToLua="selected"}
 	'operators
-	Field sectionName:string
+	Field sectionName:string {_exposeToLua}
 
 
 	'override

@@ -76,6 +76,8 @@ function JobSellMovies:Tick()
 			MaxTopicalityLoss = 0;
 			planned = -1;
 			price = 0;
+			quality = 0;
+			timesRun = 0;
 			licence = nil;
 		}
 		t.Title = licence.GetTitle()
@@ -85,14 +87,11 @@ function JobSellMovies:Tick()
 		t.MaxTopicalityLoss = licence.GetRelativeMaxTopicalityLoss()
 		t.planned = licence.isPlanned()
 		t.price = licence.GetPrice(TVT.ME)
+		t.quality = licence.GetQualityRaw() * licence.GetMaxTopicality()
+		t.timesRun = licence:GetTimesBroadcasted(-1)
 		t.licence = licence
 		return t;
 	end
-
-	--ins archiv wenn nach mitternacht (oben)
-
-	self.Task.latestSaleOnDay = TVT.GetDay()
-
 
 	--fetch licences
 	local nArchive = TVT.ar_GetProgrammeLicenceCount()
@@ -109,6 +108,34 @@ function JobSellMovies:Tick()
 		end
 	end
 
+	local case = {}
+
+	--TODO sell worst movies based on current antenna reach
+	local reach = self.Task.Player.totalReach
+	local minLicenceCount = 40
+	if reach == nil then
+		-- should not happen
+	elseif reach < 2300000 then
+		minLicenceCount = 22
+	elseif reach < 4700000 then
+		minLicenceCount = 30
+	end
+
+	--check if licence with minimum quality should sold
+	if table.count(movies) > minLicenceCount then
+		local sortMethod = function(a, b)
+			return a.quality < b.quality
+		end
+		table.sort(movies, sortMethod)
+		local worstLicence= table.first(movies)
+		self:LogDebug("worst licence ".. worstLicence.Title .."; loss: "..worstLicence.TopicalityLoss .." planned "..worstLicence.planned )
+		--if worstLicence.TopicalityLoss == 0 and worstLicence.planned <=0 then
+		if worstLicence.planned <= 0 and worstLicence.timesRun >= 7 then
+			self:LogInfo("mark worst licence for suitcase (selling): "..worstLicence.Title)
+			table.insert(case, worstLicence)
+			table.removeElement(movies, worstLicence)
+		end
+	end
 
 	-- check licences
 	self:LogDebug("# checking single/series licences: "..#movies)
@@ -117,7 +144,6 @@ function JobSellMovies:Tick()
 	-- keep expensive ones (except their maximum topicality is too low)
 	local useMaxTopicalityLossTreshold = self.MaxTopicalityLossTreshold
 	if self.Task.emergencySale then useMaxTopicalityLossTreshold = self.emergencyMaxTopicalityLossTreshold end
-	local case = {}
 	for k,v in pairs (movies) do
 		if v == nil then self:LogError("# ERROR: movie #" .. k.." is nil") end
 		local sellIt = false
@@ -155,6 +181,9 @@ function JobSellMovies:Tick()
 
 	-- if there is something to sell, send figure to movie dealer now
 	if table.count(case) > 0 then
+		--set day only if something is to be sold
+		self.Task.latestSaleOnDay = TVT.GetDay()
+
 		if self.Task.Player ~= nil then
 			local t = self.Task.Player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
 			if t ~= nil then

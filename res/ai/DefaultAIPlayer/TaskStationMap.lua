@@ -24,7 +24,7 @@ function TaskStationMap:ResetDefaults()
 	self.knownAntennaPositions = {}
 	self.knownSatelliteUplinks = {}
 	self.knownCableNetworkUplinks = {}
-	self.maxAllowedCredit = 200000
+	self.maxAllowedCredit = 250000
 end
 
 
@@ -69,13 +69,35 @@ end
 
 
 function TaskStationMap:BeforeBudgetSetup()
+	local player = _G["globalPlayer"]
+	local stats = player.Stats.MovieQuality
+	local movieCount = 0
+	if stats ~= nil then
+		movieCount = stats.Values
+	end
+	local totalReach = player.totalReach
+
 	--TODO do not buy stations when you have a credit
-	if (MY.GetCredit(-1) > self.maxAllowedCredit) then
+	if (MY.GetCredit(-1) > self.maxAllowedCredit) and (totalReach == nil or totalReach > 850000) then
 		self.InvestmentPriority = 0
-	elseif (TVT.GetProgrammeLicenceCount() < 30) then
+	elseif (movieCount < 30) and (totalReach == nil or totalReach > 1300000) then
 		self.InvestmentPriority = 4
 	else
 		self.InvestmentPriority = 8
+	end
+
+	--prevent buying stations if there are not enough movies
+	if movieCount < 20 or self.InvestmentPriority == 0 then
+		self.BudgetWeight = 0
+	else
+		self.BudgetWeight = 4
+		if totalReach == nil then
+			--should not happen
+		elseif totalReach < 2000000 then
+			self.BudgetWeight = 8
+		elseif movieCount < 30 and totalReach > 4400000 and totalReach < 5000000 then
+			self.BudgetWeight = 0
+		end
 	end
 end
 
@@ -188,6 +210,19 @@ function JobAnalyseStationMarket:Tick()
 	-- complex function needing  some execution time
 	TVT.audiencePredictor.RefreshMarkets()
 	player.LastStationMapMarketAnalysis = player.WorldTicks
+	local stats = player.Stats.MovieQuality
+	local movieCount = 0
+	if stats ~= nil then
+		movieCount = stats.Values
+	end
+	player.totalReach = MY.GetMaxAudience()
+	if player.totalReach < 2500000 and movieCount < 20 then
+		self.Task.maxReachIncrease = 2400000 - player.totalReach
+	elseif player.totalReach < 5000000 and movieCount < 30 then
+		self.Task.maxReachIncrease = 4800000 - player.totalReach
+	else
+		self.Task.maxReachIncrease = 99000000
+	end
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -249,13 +284,18 @@ function JobBuyStation:Prepare(pParams)
 		self:LogDebug("  raised current budget to " .. self.Task.CurrentBudget .." to buy a station because 'we want it'.")
 	end
 
+	local totalReach = player.totalReach
+	if totalReach~=nil and totalReach < 800000 and moneyExcludingFixedCosts > 300000  then
+		self.Task.CurrentBudget = moneyExcludingFixedCosts
+	end
+
 	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
 		self:LogDebug(" Cancel ... budget lower than needed investment budget")
 		self:SetCancel()
 	end
 
-	local hour= TVT.GetDayHour()
-	if (hour > 14 and hour < 23) then
+	local hour = TVT.GetDayHour()
+	if hour > 14 then
 		self:LogDebug(" Cancel ... no buying if too little of the day is left: ".. hour)
 		self:SetCancel()
 	end
@@ -267,10 +307,27 @@ function JobBuyStation:SetCancel()
 	--AIJob.SetCancel(self)
 end
 
+function JobBuyStation:GetAttraction(tempStation)
+	local price = tempStation.GetTotalBuyPrice()
+	local exclusiveReach = tempStation.GetExclusiveReach(false)
+	local pricePerViewer = price / exclusiveReach / 5 + tempStation.GetRunningCosts() / exclusiveReach
+	local priceDiff = self.Task.CurrentBudget - price
+	--little influence by the amount of how well the budget is "used"
+	--to avoid buying too many stations (upkeep!)
+	local attraction = 1 / pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
+	--TODO do not buy if reach increase is too small
+	if exclusiveReach < 100000 then
+		attraction = 0
+	end
+	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
+	return attraction, price, exclusiveReach
+end
+
 
 function JobBuyStation:GetBestCableNetworkOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
+	local bestSectionName = ""
 	local player = _G["globalPlayer"]
 
 	local networkCount = TVT.of_getCableNetworkCount()
@@ -286,16 +343,11 @@ function JobBuyStation:GetBestCableNetworkOffer()
 			if cableNetwork~=nil and cableNetwork.IsSubscribedChannel(TVT.ME) == 0 and cableNetwork.IsLaunched() == 1 and cableNetwork.IsActive() == 1 then
 				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(i)
 				if tempStation then
-					local price = tempStation.GetTotalBuyPrice()
-					local pricePerViewer = tempStation.GetExclusiveReach(false) / price
-					local priceDiff = self.Task.CurrentBudget - price
-					--little influence by the amount of how well the budget is "used"
-					--to avoid buying too many stations (upkeep!)
-					local attraction = pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
-
-					if bestOffer == nil or attraction > bestAttraction then
+					local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
+					if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
 						bestOffer = tempStation
 						bestAttraction = attraction
+						bestSectionName = cableNetwork.sectionName
 					end
 				end
 			end
@@ -306,14 +358,14 @@ function JobBuyStation:GetBestCableNetworkOffer()
 	else
 		self:LogTrace(" - no best cable network found")
 	end
-
-	return bestOffer, bestAttraction
+	return bestOffer, bestAttraction, bestSectionName
 end
 
 
 function JobBuyStation:GetBestSatelliteOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
+	local bestIndex = -1
 	local player = _G["globalPlayer"]
 
 	local satCount = TVT.of_getSatelliteCount()
@@ -327,19 +379,12 @@ function JobBuyStation:GetBestSatelliteOffer()
 			if satellite.IsSubscribedChannel(TVT.ME) == 0 and satellite.IsLaunched() == 1 and satellite.IsActive() == 1 then
 				local tempStation = TVT.of_GetTemporarySatelliteUplinkStation(i)
 				if tempStation then
-					local price = tempStation.GetTotalBuyPrice()
-					local pricePerViewer = tempStation.GetExclusiveReach(false) / price
-					local priceDiff = self.Task.CurrentBudget - price
-					--little influence by the amount of how well the budget is "used"
-					--to avoid buying too many stations (upkeep!)
-					local attraction = pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
+					local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
 
-					if bestOffer == nil or attraction > bestAttraction then
+					if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
 						bestOffer = tempStation
 						bestAttraction = attraction
-
-						self:LogTrace(" - new best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach(false) .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach(false) / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
-						self:LogTrace("   -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
+						bestIndex = i
 					end
 				end
 			end
@@ -350,7 +395,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 	else
 		self:LogTrace(" - no best satellite found")
 	end
-	return bestOffer, bestAttraction
+	return bestOffer, bestAttraction, bestIndex
 end
 
 
@@ -456,26 +501,14 @@ function JobBuyStation:GetBestAntennaOffer()
 
 		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
 		if tempStation ~= nil then
-			-- GetTotalBuyPrice() includes potential fees for a required
-			-- permission.
-			local price = tempStation.GetTotalBuyPrice()
-			local pricePerViewer = tempStation.GetExclusiveReach(false) / price
-			local priceDiff = self.Task.CurrentBudget - price
-			--little influence by the amount of how well the budget is "used"
-			--to avoid buying too many stations (upkeep!)
-			local attraction = pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
+			local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
 
 			-- raise attraction a bit if there is somebody else already
 			if otherOwner > 0 then attraction = attraction * 1.10 end
 			-- raise attraction (even further) if AI's enemy is there
 			if otherOwner == player:GetArchEnemyId() then attraction = attraction * 1.06 end
-
-			self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
-
-			if bestOffer == nil then
+			if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
 				bestOffer = tempStation
-			end
-			if attraction > bestAttraction then
 				bestOffer = tempStation
 				bestAttraction = attraction
 			end
@@ -490,10 +523,18 @@ function JobBuyStation:Tick()
 	local player = _G["globalPlayer"]
 
 	local bestAntennaOffer, bestAntennaAttraction = self:GetBestAntennaOffer()
-	local bestCableNetworkOffer = self:GetBestCableNetworkOffer()
-	local bestSatelliteOffer = self:GetBestSatelliteOffer()
+	local bestCableNetworkOffer, bestCableAttraction, bestCableSectionName = self:GetBestCableNetworkOffer()
+	local bestSatelliteOffer, bestSatAttraction, bestSatIndex = self:GetBestSatelliteOffer()
 
 	local bestOffer = bestAntennaOffer
+	local bestAttraction = bestAntennaAttraction
+	if bestCableAttraction > bestAttraction then
+		bestOffer = bestCableNetworkOffer
+		bestAttraction = bestCableAttraction
+	end
+	if bestSatAttraction > bestAttraction then
+		bestOffer = bestSatelliteOffer
+	end
 
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
@@ -502,12 +543,10 @@ function JobBuyStation:Tick()
 			TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
 		elseif bestOffer == bestSatelliteOffer then
 			self:LogInfo("Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
-			--TODO Vertrag abschließen!!
-			--TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
+			TVT.of_buySatelliteStation(bestSatIndex)
 		elseif bestOffer == bestCableNetworkOffer then
 			self:LogInfo("Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach(false) .. "  price: " .. price)
-			--TODO Vertrag abschließen!!
-			--TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
+			TVT.of_buyCableNetworkStation(bestCableSectionName)
 		end
 
 		-- Wir brauchen noch ein "Fixkostenbudget" fuer Kabelnetze/Satelliten
