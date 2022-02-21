@@ -21,6 +21,7 @@ Import "game.pressuregroup.bmx"
 Import "basefunctions.bmx"
 Import "common.misc.numericpairinterpolator.bmx"
 Import "game.gameeventkeys.bmx"
+Import "game.world.worldtime.bmx"
 
 
 
@@ -32,7 +33,7 @@ Type TStationMapCollection
 
 	'list of stationmaps
 	Field stationMaps:TStationMap[0]
-	Field antennaStationRadius:Int = 20
+	Field antennaStationRadius:Int = ANTENNA_RADIUS_NOT_INITIALIZED
 	Field population:int = 0 'remove
 	'satellites currently in orbit
 	Field satellites:TList
@@ -77,6 +78,7 @@ Type TStationMapCollection
 	'        how many percents of the population are reachable via cable,
 	'        satellite, ...
 	Const RECEIVERMODE_EXCLUSIVE:int = 2
+	Const ANTENNA_RADIUS_NOT_INITIALIZED:int = -1
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
@@ -126,7 +128,6 @@ Type TStationMapCollection
 		'stationMaps = new TStationMap[0]
 
 
-		antennaStationRadius = 20
 		population:int = 0
 		config = New TData
 		cityNames = New TData
@@ -969,6 +970,21 @@ Type TStationMapCollection
 		'=== INIT MAP DATA ===
 		CreatePopulationMaps()
 		AssignPressureGroups()
+
+		'dynamic antenna radius depending on start year (start antenna reach)
+		Local map:TStationMap = GetStationMap(1, True)
+		'coordinates from game.game.bmx PreparePlayerStep1
+		Local station:TStationBase = map.GetTemporaryAntennaStation(310,260)
+		if station and antennaStationRadius = ANTENNA_RADIUS_NOT_INITIALIZED
+			antennaStationRadius = 80
+			For Local r:Int = 20 to 80
+				TStationAntenna(station).radius = r
+				If station.getReach(True) > GameRules.stationInitialIntendedReach
+					antennaStationRadius = r
+					exit
+				Endif
+			Next
+		endif
 
 		Return True
 	End Method
@@ -3496,14 +3512,14 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'section specific costs for bought land + bureaucracy costs
 			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
 			'section government costs, changes over time (dynamic reach)
-			buyPrice :+ 0.10 * GetReach(True)
+			buyPrice :+ 0.20 * GetReach(True)
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
 			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed construction costs
 			'building costs for "hardware" (more expensive than sat/cable)
-			buyPrice :+ 0.30 * GetReachMax()
+			buyPrice :+ 0.20 * GetStationMapCollection().CalculateTotalAntennaStationReach(x, y, 20)
 		endif
 
 
@@ -4557,6 +4573,12 @@ Type TStationMapSection
 	'returns whether a channel needs a permission for the given station type
 	'or not - regardless of whether the channel HAS one or not
 	Method NeedsBroadcastPermission:int(channelID:int, stationType:int = -1)
+		If stationType = TVTStationType.ANTENNA
+			Local startYear:Int = GetWorldTime().GetStartYear()
+			if startYear > 1996
+				return false
+			endif
+		endif
 		return True
 	End Method
 

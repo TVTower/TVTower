@@ -163,6 +163,10 @@
 			<!-- maximal waiting time in hours between finishing one production and starting the next one-->
 			<DEV_PRODUCERS_MAX_WAIT_HOURS value="96" />
 
+			<!-- intended reach of the first antenna;
+				due to min/max values for the radius the actual reach may differ -->
+			<!-- DEV_STATION_INITIAL_INTENDED_REACH value="950000" /> -->
+
 			<!-- enable/disable station map daily running cost increase -->
 			<!-- <DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="FALSE" /> -->
 

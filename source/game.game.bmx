@@ -1210,6 +1210,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'=== STATION MAP ===
+		'set marker for initializing antenna radius on new game
+		GetStationMapCollection().antennaStationRadius = TStationMapCollection.ANTENNA_RADIUS_NOT_INITIALIZED
 		'load the used map
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
 '		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")

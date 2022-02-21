@@ -117,6 +117,7 @@ Type TGameRules {_exposeToLua}
 	Field newsStudioSortNewsBy:string = "age"
 
 	'=== STATIONMAP ===
+	Field stationInitialIntendedReach:int = 950000
 	'time a station needs to get constructed
 	'value in hours
 	'set to default (0) on start (game.game.bmx prepareNewGame())
@@ -184,6 +185,7 @@ Type TGameRules {_exposeToLua}
 
 
 		'=== STATION(MAP) ===
+		stationInitialIntendedReach = data.GetInt("DEV_STATION_INITIAL_INTENDED_REACH", stationInitialIntendedReach)
 		stationConstructionTime = data.GetInt("DEV_STATION_CONSTRUCTION_TIME", 0)
 		stationIncreaseDailyMaintenanceCosts = data.GetBool("DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS", stationIncreaseDailyMaintenanceCosts)
 		stationDailyMaintenanceCostsPercentage = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE", stationDailyMaintenanceCostsPercentage)
