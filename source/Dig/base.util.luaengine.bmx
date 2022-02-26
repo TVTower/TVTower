@@ -88,7 +88,11 @@ Global LuaEngineSuperDummy:TLuaEngineSuperDummy = new TLuaEngineSuperDummy
 
 Type TLuaEngine
 	Global dieOnError:Int = False
-	Global notifyOnError:Int = True
+	?debug
+		Global notifyOnError:Int = True
+	?not debug
+		Global notifyOnError:Int = False
+	?
 	'-1 to deactivate limit, > 0 to deactivate notification once it reaches 0
 	Global notifyOnErrorLimit:Int = 1
 	Global debugCalls:Int = True
