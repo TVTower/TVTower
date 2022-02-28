@@ -1247,7 +1247,15 @@ endrem
 					ElseIf KeyManager.IsDown(KEY_RCONTROL) Or KeyManager.IsDown(KEY_LALT)
 						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
 					Else
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", "", GetPlayerCollection().playerID))
+						Local rooms:TRoomBase[] = GetRoomCollection().GetAllByDetails("studio", "", GetPlayerCollection().playerID)
+				 		If rooms and rooms.length > 0 
+							For Local r:TRoomBase = EachIn rooms
+								If not r.isBlocked()
+									DEV_switchRoom(r)
+									exit
+								EndIf
+							Next
+						EndIf
 					EndIf
 				EndIf
 				If KeyManager.IsHit(KEY_D) 'German "Drehbuchagentur"
@@ -1333,6 +1341,7 @@ endrem
 	Function __NonDevHotKeys:Int()
 		'Navigation
 		Local room:String
+		Local targetRoom:TRoom
 		If KeyManager.IsHit(KEY_A) Then room="archive"
 		If KeyManager.IsHit(KEY_B) Then room="betty"
 		If KeyManager.IsHit(KEY_C) Then room="boss" 'Chef
@@ -1343,12 +1352,21 @@ endrem
 		If KeyManager.IsHit(KEY_O) Then room="office"
 		If KeyManager.IsHit(KEY_P) Then room="roomboard" 'Panel
 		If KeyManager.IsHit(KEY_R) Then room="roomagency"
-		'Beim Studio könnte man als Erweiterung noch das erste verfügbare nehmen (aktuell kein Dreh)
-		If KeyManager.IsHit(KEY_S) Then room="studio"
+		If KeyManager.IsHit(KEY_S)
+			room="studio"
+			Local rooms:TRoomBase[] = GetRoomCollection().GetAllByDetails(room, "", GetPlayerCollection().playerID)
+	 		If rooms and rooms.length > 0 
+				For Local r:TRoomBase = EachIn rooms
+					If not r.isBlocked()
+						targetRoom = TRoom(r)
+						exit
+					EndIf
+				Next
+			EndIf
+		EndIF
 		If KeyManager.IsHit(KEY_W) Then room="adagency" 'Werbung
-
 		If room
-			Local targetRoom:TRoom = GetRoomCollection().GetFirstByDetails("", room, GetPlayerCollection().playerID)
+			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails("", room, GetPlayerCollection().playerID)
 			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails("", room)
 			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails(room, "")
 			If targetRoom
