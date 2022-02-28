@@ -775,7 +775,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		Local boss:TPlayerBoss = GetPlayerBoss(playerID)
 		boss.Initialize()
-		boss.creditMaximum = difficulty.creditMaximum
+		boss.creditMaximum = difficulty.creditAvailableOnGameStart
 
 
 		'=== FIGURE ===
@@ -843,7 +843,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'add some more stations at positions of other players stations
-		If isRestartingPlayer And GameRules.adjustRestartingPlayersToOtherPlayers
+		If isRestartingPlayer
 			'- fetch average broadcast area
 			'- add all stations to a list and merge "similar ones"
 			'- shuffle them so there is a "random list" to traverse through
@@ -855,7 +855,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 			Local broadcastAreaToDo:Int = GetStationMapCollection().GetAverageReach()
 			'adjust by quote (and difficulty)
-			broadcastAreaToDo :* GameRules.adjustRestartingPlayersToOtherPlayersQuote * difficulty.adjustRestartingPlayersToOtherPlayersMod
+			broadcastAreaToDo :* difficulty.restartingPlayerReachRatio
 
 			'subtract our newly added station
 			broadcastAreaToDo :- s.GetReach()
@@ -933,7 +933,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		If Not GetPlayerFinance(playerID) Then Print "finance "+playerID+" failed."
 
 		Local addMoney:Int = difficulty.startMoney
-		If isRestartingPlayer And GameRules.adjustRestartingPlayersToOtherPlayers
+		If isRestartingPlayer
 			Local avgMoney:Int = 0
 			For Local i:Int = 1 To 4
 				If i = playerID Then Continue
@@ -948,7 +948,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					Next
 				Next
 				'convert that value into cash (adjusted by the ratio)
-				avgMoney :+ licenceValue * GameRules.adjustRestartingPlayersToOtherPlayersPropertyCashRatio
+				avgMoney :+ licenceValue * difficulty.restartingPlayerPropertyCacheRatio
 			Next
 			avgMoney :/ 3 '3 to ignore our player
 
@@ -957,7 +957,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'because of Quote*Mod > 1.0
 			If avgMoney > addMoney
 				'adjust by quote (and difficulty)
-				avgMoney :* GameRules.adjustRestartingPlayersToOtherPlayersQuote * difficulty.adjustRestartingPlayersToOtherPlayersMod
+				avgMoney :* difficulty.restartingPlayerMoneyRatio
 				If avgMoney > addMoney Then addMoney = avgMoney
 			EndIf
 			'print "avgMoney = " + avgMoney
@@ -1796,11 +1796,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			If Not finance Then Throw "ComputeDailyIncome failed: finance = null."
 
 			If finance.money > 0
-				finance.EarnBalanceInterest( Long(finance.money * TPlayerFinance.balanceInterestRate) )
+				finance.EarnBalanceInterest( Long(finance.money * Player.getDifficulty().interestRatePositiveBalance) )
 			Else
 				'attention: multiply current money * -1 to make the
 				'negative value an "positive one" - a "positive expense"
-				finance.PayDrawingCreditInterest( Long(-1 * finance.money * TPlayerFinance.drawingCreditRate) )
+				finance.PayDrawingCreditInterest( Long(-1 * finance.money * Player.getDifficulty().interestRateNegativeBalance) )
 			EndIf
 		Next
 	End Method

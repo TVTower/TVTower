@@ -100,7 +100,7 @@ Type TRoomAgency
 	Method GetCourtageForOwner:int(room:TRoomBase, forOwner:int=0)
 		local courtage:int = GetCourtage(room)
 		'incorporate difficulty
-		 courtage :* GetPlayerDifficulty(string(forOwner)).roomRentMod
+		 courtage :* GetPlayerDifficulty(forOwner).roomRentMod
 
 		'TODO: add owner-sympathy / mood
 

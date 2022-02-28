@@ -6,6 +6,7 @@ Import "common.misc.gamegui.bmx"
 Import "game.screen.base.bmx"
 Import "game.stationmap.bmx"
 Import "game.player.bmx"
+Import "game.player.difficulty.bmx"
 Import "game.room.base.bmx"
 Import "game.roomhandler.base.bmx"
 Import "game.gameeventkeys.bmx"
@@ -637,7 +638,11 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() Then showDetails = True
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
+		Local boxCount:Int = 2
+		Local difficulty:TPlayerDifficulty = GetPlayerDifficulty(GetPlayerBase().playerID)
+		Local constructionTime:int=difficulty.antennaConstructionTime
+		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and TScreenHandler_StationMap.selectedStation and constructionTime > 0 Then boxCount = 3
+		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*boxCount) + showPermissionText * permissionTextH
 
 		If listBackgroundH <> GetBodyHeight() - detailsBackgroundH
 			listBackgroundH = GetBodyHeight() - detailsBackgroundH
@@ -733,10 +738,9 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			'=== BOX LINE 2 (optional) ===
 			tooltips[2].parentArea.SetXY(-1000,0)
 			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
-				'TODO: individual build time for stations ("GetStationConstructionTime()")?
-				If GameRules.stationConstructionTime > 0
+				If selectedStation and constructionTime > 0
 					currentY :+ boxH
-					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, selectedStation.GetConstructionTime() + " h", "runningTime", "neutral", skin.fontNormal)
 					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				EndIf
 			EndIf
@@ -917,7 +921,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		EndIf
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
+		Local boxCount:Int = 2
+		Local difficulty:TPlayerDifficulty = GetPlayerDifficulty(GetPlayerBase().playerID)
+		Local constructionTime:int=difficulty.cableNetworkConstructionTime
+		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and TScreenHandler_StationMap.selectedStation and constructionTime > 0 Then boxCount = 3
+		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*boxCount) + showPermissionText * permissionTextH
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK
 			if selectedStation
 				detailsBackgroundH :+ renewButton.GetScreenRect().GetH() + 3
@@ -1061,10 +1069,9 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			'=== BOX LINE 2 (optional) ===
 			tooltips[2].parentArea.SetXY(-1000,0)
 			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
-				'TODO: individual build time for stations ("GetStationConstructionTime()")?
-				If GameRules.stationConstructionTime > 0
+				If selectedStation and difficulty.cableNetworkConstructionTime > 0
 					currentY :+ boxH
-					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, difficulty.cableNetworkConstructionTime + " h", "runningTime", "neutral", skin.fontNormal)
 					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				EndIf
 			EndIf
@@ -1322,7 +1329,11 @@ endrem
 		Local includesHardwareTextH:int = 24
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
+		Local boxCount:Int = 2
+		Local difficulty:TPlayerDifficulty = GetPlayerDifficulty(GetPlayerBase().playerID)
+		Local constructionTime:int=difficulty.satelliteConstructionTime
+		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and selectedStation and constructionTime > 0 Then boxCount = 3
+		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*boxCount)
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_SATELLITE_UPLINK
 			if selectedStation
 				detailsBackgroundH :+ renewButton.GetScreenRect().GetH() + 3
@@ -1453,18 +1464,6 @@ endrem
 			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
-			'=== BOX LINE 2 (optional) ===
-			tooltips[2].parentArea.SetXY(-1000,0)
-
-			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
-				'TODO: individual build time for stations ("GetStationConstructionTime()")?
-				If GameRules.stationConstructionTime > 0
-					currentY :+ boxH
-					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
-					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
-				EndIf
-			EndIf
-
 			If selectedStation
 				Local subscriptionText:String
 				Local provider:TStationMap_BroadcastProvider = selectedStation.GetProvider()
@@ -1490,6 +1489,17 @@ endrem
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
 			renewContractTooltips[0].parentArea.SetXY(contentX + 5 + halfW-5 + 4, currentY).SetWH(halfW+5, boxH)
+
+			'=== BOX LINE 2 (optional) ===
+			tooltips[2].parentArea.SetXY(-1000,0)
+
+			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
+				If selectedStation and difficulty.satelliteConstructionTime > 0
+					currentY :+ boxH
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, difficulty.satelliteConstructionTime + " h", "runningTime", "neutral", skin.fontNormal)
+					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+				EndIf
+			EndIf
 
 			'=== BOX LINE 3 ===
 			currentY :+ boxH

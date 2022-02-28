@@ -3,6 +3,7 @@ Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.player.financehistory.bmx"
+Import "game.player.difficulty.bmx"
 Import "game.modifier.base.bmx"
 Import "game.gameeventkeys.bmx"
 
@@ -250,11 +251,6 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	Field playerID:int                   = 0
 	Field day:int                        = 0
 
-	Global creditInterestRate:float      = 0.05 '5% a day
-	Global balanceInterestRate:float     = 0.01 '1% a day
-	Global drawingCreditRate:float       = 0.03 '3% a day  - rate for having a negative balance
-	
-
 	Method Create:TPlayerFinance(playerID:int)
 		Reset()
 
@@ -353,8 +349,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	'you pay the interest for the biggest credit value you had on this
 	'day
 	Method GetCreditInterest:Long()
-		return GetCreditMaxYesterday() * TPlayerFinance.creditInterestRate
-	End Method	
+		return GetCreditMaxYesterday() * GetPlayerDifficulty(playerID).interestRateCredit
+	End Method
 
 
 	Method ChangeMoney(value:Long, reason:int, reference:TNamedGameObject=null)

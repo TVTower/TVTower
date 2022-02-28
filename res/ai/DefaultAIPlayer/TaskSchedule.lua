@@ -1298,7 +1298,7 @@ function JobAnalyzeEnvironment:Tick()
 	Player.programmeLicencesInArchiveCount = TVT.of_GetProgrammeLicenceCount()
 
 	local totalLicenceCount = Player.programmeLicencesInArchiveCount -- + player.programmeLicencesInSuitcaseCount
-	local moviesNeeded = Player.Strategy.startProgrammeAmount - (TVT.Rules.startProgrammeAmount + totalLicenceCount)
+	local moviesNeeded = Player.Strategy.startProgrammeAmount - totalLicenceCount
 	if moviesNeeded > 0 then
 		local mdTask = Player.TaskList[TASK_MOVIEDISTRIBUTOR]
 		mdTask.SituationPriority = 10 + moviesNeeded * 4

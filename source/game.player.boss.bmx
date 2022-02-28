@@ -324,7 +324,7 @@ Type TPlayerBoss
 		nettoWorthAtBegin = GetPlayerBase(playerID).GetNettoWorth()
 
 		local difficulty:TPlayerDifficulty = GetPlayerBase(playerID).GetDifficulty()
-		creditMaximum = difficulty.creditMaximum
+		creditMaximum = difficulty.creditAvailableOnGameStart
 	End Method
 
 
@@ -334,11 +334,11 @@ Type TPlayerBoss
 		if nettoWorthAtBegin = -1 then nettoWorthAtBegin = GetPlayerBase(playerID).GetNettoWorth()
 
 		local nettoWorthChange:int = GetPlayerBase(playerID).GetNettoWorth() - nettoWorthAtBegin
-		'25.000 bonus each 500.000 added netto worth
+		'bonus factor for each 500.000 added netto worth
 		'but no more than 5000000
-		local nettoWorthBonus:int = Max(0, Min(5000000, 25000 * (nettoWorthChange/500000)))
+		local nettoWorthBonus:int = Max(0, Min(5000000, difficulty.creditBaseValue * (nettoWorthChange/500000)))
 
-		creditMaximum = difficulty.creditMaximum + nettoWorthBonus
+		creditMaximum = difficulty.creditAvailableOnGameStart + nettoWorthBonus
 	End Method
 
 

@@ -694,7 +694,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetRentForPlayer:int(playerID:int)
 		if IsRented() then return rent
 
-		return GetRent() * GetPlayerDifficulty(string(playerID)).roomRentMod
+		return GetRent() * GetPlayerDifficulty(playerID).roomRentMod
 	End Method
 
 
