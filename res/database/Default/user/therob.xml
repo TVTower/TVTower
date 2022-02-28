@@ -393,7 +393,7 @@
 				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
 				<modifier name="price::age" value="0.1" />
 				<!-- Programm ist billiger als Normal -->
-				<modifier name="price" value="0.1" />
+				<modifier name="price" value="0.07" />
 			</modifiers>
 		</programme>
 

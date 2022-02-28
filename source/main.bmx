@@ -2530,6 +2530,24 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
+		'check difficulty object version
+		GetPlayerDifficultyCollection().InitializeDefaults()
+		For local pID:Int = 1 to 4
+			Local playerDifficulty:TPlayerDifficulty = GetPlayerDifficulty(pID)
+			If playerDifficulty
+				If playerDifficulty.difficultyVersion < 1
+					'before introduction of version - replace difficulty object completely
+					Local newDifficulty:TPlayerDifficulty = GetPlayerDifficultyCollection().getByGUID(playerDifficulty.GetGUID())
+					If not newDifficulty or newDifficulty.difficultyVersion < 1
+						throw "replacing difficulty data for player "+pID+" failed"
+					Else
+						GetPlayerDifficultyCollection().RemoveByID(playerDifficulty.GetID())
+						GetPlayerDifficultyCollection().AddToPlayer(pID, newDifficulty)
+						TLogger.Log("RepairData", "difficulty data for player " + pID+" - replace with current data for level "+playerDifficulty.GetGUID())
+					EndIf
+				EndIf
+			EndIf
+		Next
 		If savegameVersion < 18
 			TLogger.Log("RepairData", "Removing AI-Events", LOG_SAVELOAD | LOG_DEBUG)
 			For Local i:Int = 1 To 4
@@ -2538,7 +2556,7 @@ Type TSaveGame Extends TGameState
 					p.playerAI.eventQueue = new TAIEvent[0]
 				EndIf
 			Next
-		EndIF
+		EndIf
 		If savegameVersion < 16
 			'programme producers were not persisted before v16
 			If GetProgrammeProducerCollection().GetCount() < 1
@@ -4248,6 +4266,17 @@ Type GameEvents
 					GetGame().SendSystemMessage("[DEV] ~qconfig/DEV.xml~q not found.")
 				EndIf
 
+				Local dc:TPlayerDifficultyCollection = GetPlayerDifficultyCollection()
+				dc.InitializeDefaults()
+				For local pID:Int = 1 to 4
+					Local playerDifficulty:TPlayerDifficulty = GetPlayerDifficulty(pID)
+					If playerDifficulty
+						Local newDifficulty:TPlayerDifficulty = dc.getByGUID(playerDifficulty.GetGUID())
+						dc.RemoveByID(playerDifficulty.GetID())
+						dc.AddToPlayer(pID, newDifficulty)
+					EndIf
+				Next
+				GetGame().SendSystemMessage("[DEV] Reloaded difficulty values.")
 
 			Case "endauctions"
 				Local paramArray:String[]
@@ -4894,6 +4923,8 @@ endrem
 			'player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
 		EndIf
 
+		Local penalty:int = triggerEvent.getData().getInt("penalty")
+
 		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
 		toast.SetLifeTime(15)
@@ -4902,7 +4933,7 @@ endrem
 		toast.SetCaption(GetLocale("AUTHORITIES_STOPPED_BROADCAST"))
 		toast.SetText( ..
 			GetLocale("BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME").Replace("%TITLE%", "|b|"+programme.GetTitle()+"|/b|") + " " + ..
-			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(GameRules.sentXRatedPenalty)+getLocale("CURRENCY")+"|/b|") ..
+			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(penalty)+getLocale("CURRENCY")+"|/b|") ..
 		)
 		toast.GetData().AddNumber("playerID", programme.owner)
 
@@ -5795,9 +5826,9 @@ endrem
 					If Not currentProgramme Then Continue
 					'skip "normal" programme
 					If Not currentProgramme.data.IsXRated() Then Continue
-
+					Local penalty:Int = player.GetDifficulty().sentXRatedPenalty
 					'pay penalty
-					player.GetFinance().PayMisc(GameRules.sentXRatedPenalty)
+					player.GetFinance().PayMisc(penalty)
 					'remove programme from plan
 					player.GetProgrammePlan().ForceRemoveProgramme(currentProgramme, day, hour)
 					'set current broadcast to malfunction
@@ -5805,8 +5836,8 @@ endrem
 					'decrease image by 0.5%
 					player.GetPublicImage().ChangeImage(New TAudience.AddFloat(-0.5))
 
-					'chance of 25% the programme will get (tried) to get confiscated
-					Local confiscateProgramme:Int = RandRange(0,100) < 25
+					'chance that the programme will get (tried) to get confiscated
+					Local confiscateProgramme:Int = RandRange(1,100) <= player.GetDifficulty().sentXRatedConfiscateRisk
 
 					If confiscateProgramme
 						TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStartConfiscateProgramme, New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player)
@@ -5816,7 +5847,7 @@ endrem
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)
-					TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, Null, currentProgramme, player)
+					TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, New TData.AddInt("penalty", penalty), currentProgramme, player)
 				Next
 			EndIf
 		EndIf

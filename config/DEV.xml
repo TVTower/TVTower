@@ -14,14 +14,6 @@
 			<DEV_WORLD_DAYS_PER_SEASON value="3" comment="value*4 = days per year" />
 			-->
 
-			<!--
-			<DEV_STATION_CONSTRUCTION_TIME value="0" />
-			<DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="false" />
-			<DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE value="0.02" />
-			<DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX value="0.30" />
-			-->
-
-
 			<!-- milliseconds waiting on a floor (incl. animation).
 			     Default: 1500
 				<DEV_ELEVATOR_WAITTIME value="1500" />
@@ -37,25 +29,6 @@
 
 			<DEV_DAILY_BOSS_VISIT value="1" />
 
-			<!-- Which kind of contract sort is used in the adagency
-			     Options:
-			       "minaudience" - by minimum audience required
-			       "classification" - by channel-groups (worst, avg, best) and daytime/primetime
-			       "profit" - by profit of the contract
-			     Default: "minaudience"
-				<DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" />
-			-->
-
-			<!-- (base) construction time of a new bought station
-			     time in hours
-			     Default: 0 (ready on next broadcast)
-
-				<DEV_STATION_CONSTRUCTION_TIME value="0" />
-			-->
-
-
-
-
 			<!-- AD CONTRACTS -->
 			<!-- ============ -->
 
@@ -68,76 +41,9 @@
 				<DEV_ADCONTRACT_INSTANCES_MAX value="1" />
 			-->
 
-			<!-- A potential for profit/penalty values
-			     Options:
-			       0 - disable any limit
-			       x - limit in Euro per spot
-			     Default: 1000000
-				<DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" />
-			-->
-
-			<!-- a modifier cutting the used factor to calculate the
-			     revenue of a infomercial: 0.5 would cut the result to 50%
-			     Default: 1.0
-				<DEV_ADCONTRACT_INFOMERCIAL_PROFIT_MOD value="1.0" />
-			-->
-
-			<!-- a modifier to adjust the resulting profit (0.5 = 50%)
-			     Default: 1.0
-				<DEV_ADCONTRACT_PROFIT_MOD value="1.0" />
-			-->
-
-			<!-- a modifier to adjust the resulting penalty (0.5 = 50%)
-			     Default: 1.0
-				<DEV_ADCONTRACT_PENALTY_MOD value="1.0" />
-			-->
-
-			<!-- a modifier to adjust the raw quality which ignores the
-			     topicality of an infomcerial (0.5 = 50%)
-			     Default: 1.0
-				<DEV_ADCONTRACT_QUALITYRAW_MOD value="1.0" />
-			-->
-
-			<!-- a modifier to adjust the raw mininimum audience before
-			     getting rounded to "beautiful values" (0.5 = 50%)
-			     Default: 1.0
-				<DEV_ADCONTRACT_RAWMINAUDIENCE_MOD value="1.0" />
-			-->
-
-			<!-- a modifier to adjust the raw mininimum audience
-			     percentage (0.5 = 50%)
-			     Default: 1.0
-				<DEV_ADCONTRACT_MINAUDIENCEPERCENTAGE_MOD value="1.0" />
-			-->
-
-			<!-- profit/penalty get multiplied with this value if there
-			     is a limiting targetgroup.
-			     Default: 1.0
-				<DEV_ADCONTRACT_LIMITED_TARGETGROUP_MULTIPLIER value="1.0" />
-			-->
-
-			<!-- profit/penalty get multiplied with this value if there
-			     is a limiting genre defined.
-			     Default: 1.5
-				<DEV_ADCONTRACT_LIMITED_GENRE_MULTIPLIER value="1.5" />
-			-->
-
-			<!-- profit/penalty get multiplied with this value if there
-			     is a limiting flag defined (just xrated, bmovies...).
-			     Default: 1.25
-				<DEV_ADCONTRACT_LIMITED_PROGRAMME_FLAG_MULTIPLIER value="1.25" />
-			-->
-
-			<!-- limit of profit/penalty for a single spot of an advertisement -->
-			<!-- <DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" /> -->
-
-			<!-- general balancing factor for profit/penalty values -->
-			<DEV_ADCONTRACT_PRICE_MOD value="1.0" />
-
-
 			<!-- ROOM: ADAGENCY -->
 			<!-- ============== -->
-			<!-- define basic sort for adcontracts -->
+			<!-- define basic sort for adcontracts: minaudience/classification/profit -->
 			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
 
 			<!-- define refill mode when choosing new contracts -->
@@ -169,16 +75,7 @@
 
 			<!-- intended reach of the first antenna;
 				due to min/max values for the radius the actual reach may differ -->
-			<!-- DEV_STATION_INITIAL_INTENDED_REACH value="950000" /> -->
-
-			<!-- enable/disable station map daily running cost increase -->
-			<!-- <DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="FALSE" /> -->
-
-			<!-- percentage of fixed running costs added each day -->
-			<!-- <DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE value="0.02" /> -->
-
-			<!-- maximum total percentage of fixed running costs added -->
-			<!-- <DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX value="0.30" /> -->
+			<!-- DEV_STATION_INITIAL_INTENDED_REACH value="1000000" /> -->
 
 			<!-- parameters for randomizing licence attributes from the database
 			     when starting a new game: 

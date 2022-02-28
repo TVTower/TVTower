@@ -1985,7 +1985,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== DIFFICULTY ===
 		'eg. "auctions" set this flag
 		if not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY)
-			value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
+			value :* GetPlayerDifficulty(playerID).programmePriceMod
 		endif
 
 
@@ -2073,7 +2073,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== DIFFICULTY ===
 		'eg. "auctions" set this flag
 		if not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY)
-			value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
+			value :* GetPlayerDifficulty(playerID).programmePriceMod
 		endif
 
 		'=== BEAUTIFY ===

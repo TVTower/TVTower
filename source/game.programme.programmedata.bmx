@@ -1327,7 +1327,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			'A high quality programme is more expensive if very young.
 			'The older the programme gets, the less important is a high
 			'quality, they then all are relatively "equal"
-			Local highQualityIndex:Float = 0.40 * qRaw + 0.60 * qRaw ^ 4
+			'Local highQualityIndex:Float = 0.40 * qRaw + 0.60 * qRaw ^ 4
+			Local highQualityIndex:Float = 0.40 * qRaw + 0.60* (qRaw + (qRaw^0.5 * 0.3)) ^ 4
 			Local highTopicalityIndex:Float = 0.30 * maxTopicality + 0.70 * maxTopicality ^ 4
 
 			priceMod :* highTopicalityIndex * highQualityIndex
@@ -1344,10 +1345,10 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 			If isType(TVTProgrammeProductType.MOVIE)
-				value = 25000 + 3000000 * priceMod
+				value = 25000 + 2400000 * priceMod
 			 'shows, productions, series...
 			Else
-				value = 15000 + 2000000 * priceMod
+				value = 15000 + 1600000 * priceMod
 			EndIf
 
 

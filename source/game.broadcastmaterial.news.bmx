@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
@@ -406,6 +406,8 @@ endrem
 		'add modificators
 		price :+ priceModRelativeNewsAgency * price
 		price :+ priceModAbsoluteNewsAgency
+
+		price :* GetPlayerDifficulty(owner).newsItemPriceMod
 
 		'adjust by broadcast area
 		'multiply by amount of "5 million" people blocks

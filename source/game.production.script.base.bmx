@@ -6,6 +6,7 @@ Import "game.world.worldtime.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.gamerules.bmx"
+Import "game.player.difficulty.bmx"
 
 Type TScriptBase Extends TNamedGameObject
 	Field title:TLocalizedString
@@ -306,7 +307,8 @@ Type TScriptBase Extends TNamedGameObject
 		if IsBMovie() then result :* 0.9
 		'non-fiction-stuff (documentaries, sport shows...) are less advanced
 		if not IsFictional() then result :* 0.9
-		
+		result :* GetPlayerDifficulty(owner).productionTimeMod
+
 		Return result
 	End Method
 	
