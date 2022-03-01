@@ -2234,7 +2234,7 @@ Global DebugScreen:TDebugScreen = New TDebugScreen
 
 
 
-Type TDebugAudienceInfos
+Type TDebugAudienceInfo
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
 	

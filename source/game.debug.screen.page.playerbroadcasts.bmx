@@ -120,6 +120,7 @@ Type TDebugWidget_ProgrammePlanInfo
 	Field predictionCacheProgAudience:TAudience[24]
 	Field predictionCacheProg:TAudienceAttraction[24]
 	Field predictionCacheNews:TAudienceAttraction[24]
+	Field predictionRefreshMarketsNeeded:int = True
 	Field currentPlayer:Int = 0
 	Field adSlotWidth:Int = 120
 	Field programmeSlotWidth:Int = 200
@@ -138,6 +139,23 @@ Type TDebugWidget_ProgrammePlanInfo
 
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_AddObject, self, "onChangeProgrammePlan") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_SetNews, self, "onChangeNewsShow") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMap_OnRecalculateAudienceSum, self, "onChangeAudienceSum") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnStart, self, "onStartGame") ]
+	End Method
+
+
+	Method onStartGame:Int(triggerEvent:TEventBase)
+		predictionRefreshMarketsNeeded = True
+	End Method
+
+
+	Method onChangeAudienceSum:Int(triggerEvent:TEventBase)
+		Local reachBefore:Int = triggerEvent.GetData().GetInt("reachBefore")
+		Local reach:Int = triggerEvent.GetData().GetInt("reach")
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID")
+		if playerID = currentPlayer and reach <> reachBefore
+			predictionRefreshMarketsNeeded = True
+		EndIf
 	End Method
 
 
@@ -258,11 +276,15 @@ Type TDebugWidget_ProgrammePlanInfo
 		If currentPlayer <> playerID
 			currentPlayer = playerID
 			ResetPredictionCache(0) 'predict all again
-			predictor.RefreshMarkets() 'in case nobody did yet
+			
+			predictionRefreshMarketsNeeded = True
 		EndIf
 
-		If GetWorldTime().GetTimeGone() Mod 5 = 0
+		'refresh markets? maybe stations were built / audience reach
+		'changed
+		If predictionRefreshMarketsNeeded
 			predictor.RefreshMarkets()
+			predictionRefreshMarketsNeeded = False
 		EndIf
 
 
