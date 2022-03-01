@@ -8,6 +8,7 @@ Rem
 	LICENCE: zlib/libpng
 
 	Copyright (C) 2014-2015 Manuel Vögele
+	Copyright (C) 2022-now Ronny Otto
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -31,12 +32,11 @@ Rem
 EndRem
 SuperStrict
 
-Import Brl.LinkedList
-
+Import Brl.ObjectList
 
 Type TNumberSortMap
-	Field Content:TList = CreateList()
-
+	Field Content:TObjectList = new TObjectList
+	
 
 	Method Add(_key:String, _value:Float)
 		Content.AddLast(TKeyValueNumber.Create(_key, _value))
@@ -44,7 +44,7 @@ Type TNumberSortMap
 
 
 	Method Sort(ascending:Int = true)
-		SortList (Content, ascending)
+		Content.Sort(ascending)
 	End Method
 
 

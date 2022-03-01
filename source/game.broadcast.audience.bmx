@@ -462,14 +462,6 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	'for now passing floats through reflection (so...Lua) is bugged
-	'in NG.
-	'that is why this workaround is needed
-	Method MultiplyString:TAudienceBase(factor:String) {_exposeToLua}
-		Return MultiplyFloat(Float(factor))
-	End Method
-
-
 	Method MultiplyFloat:TAudienceBase(factor:Float) {_exposeToLua}
 		Children	:* factor
 		Teenagers	:* factor
@@ -1049,14 +1041,6 @@ Type TAudience {_exposeToLua="selected"}
 		GetAudienceMale().Multiply(audience.audienceMale)
 		GetAudienceFemale().Multiply(audience.audienceFemale)
 		Return Self
-	End Method
-
-
-	'for now passing floats through reflection (so...Lua) is bugged
-	'in NG.
-	'that is why this workaround is needed
-	Method MultiplyString:TAudience(factor:String) {_exposeToLua}
-		Return MultiplyFloat(Float(factor))
 	End Method
 
 
