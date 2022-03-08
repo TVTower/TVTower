@@ -569,7 +569,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	Global addedAdContracts:TIntMap = new TIntMap
 	Global removedAdContracts:TIntMap = new TIntMap
 	Global availableAdContracts:TIntMap = new TIntMap
-	Global oldestEntryTime:Long
+	Global scheduledRemoveOutdatedTimes:Long[]
 	Global haveToRemoveOutdated:Int
 	Global _eventListeners:TEventListenerBase[]
 	
@@ -592,6 +592,9 @@ Type TDebugWidget_ProgrammeCollectionInfo
 
 	Function onGameStart:Int(triggerEvent:TEventBase)
 		debugWidget_ProgrammeCollectionInfo.Initialize()
+		
+		scheduledRemoveOutdatedTimes = New Long[0]
+		haveToRemoveOutdated = True
 	End Function
 
 	'called if a player restarts
@@ -613,10 +616,15 @@ Type TDebugWidget_ProgrammeCollectionInfo
 		Select triggerEvent.GetEventKey()
 			Case GameEventKeys.ProgrammeCollection_RemoveAdContract
 				map = removedAdContracts
-				'remove on outdated
+				'schedule a cleanup
+				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
+				'directly remove on outdated? 
+				'-> would instantly remove it - without animation
 				'availableAdContracts.Remove(broadcastSource.GetID())
 			Case GameEventKeys.ProgrammeCollection_AddAdContract
 				map = addedAdContracts
+				'schedule a cleanup
+				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
 				availableAdContracts.Insert(broadcastSource.GetID(), broadcastSource)
 	'		Case GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase
 	'			map = addedAdContracts
@@ -628,11 +636,15 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	'			map = suitcaseProgrammeLicences
 			Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
 				map = removedProgrammeLicences
+				'schedule a cleanup
+				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
 				'remove on outdated
 				'availableProgrammeLicences.Remove(broadcastSource.GetID())
 			Case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
 				map = addedProgrammeLicences
 				availableProgrammeLicences.Insert(broadcastSource.GetID(), broadcastSource)
+				'schedule a cleanup
+				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
 		End Select
 		If Not map Then Return False
 
@@ -640,12 +652,80 @@ Type TDebugWidget_ProgrammeCollectionInfo
 
 		haveToRemoveOutdated = True
 	End Function
+	
+	
+	Function AddToRemoveOutdatedSchedule(scheduledTime:Long)
+		'cleanup to avoid excessive array usage (with nobody watching
+		'the debug screen)
+		If scheduledRemoveOutdatedTimes.length > 10
+			RemoveOutdatedScheduleTimes()
+		EndIf
+	
+		'round time so "almost equally timed" entries are removed at the
+		'same time, not eg 1-2 ms later ?
+		'we want this entry to be removed (rounded to 10ms steps) in about 3 seconds
+		Local t:Long = long(scheduledTime/10)*10
+		'check if already scheduled and calculate index
+		Local index:Int
+		If scheduledRemoveOutdatedTimes.length > 0
+			For Local i:Int = 0 Until scheduledRemoveOutdatedTimes.length
+				Local existingTime:Long = scheduledRemoveOutdatedTimes[index]
+				If existingTime = t
+					'already added
+					Return
+				ElseIf existingTime > t
+					index = i
+				Else
+					index = i + 1
+				EndIf
+			Next
+		EndIf
+		If index >= scheduledRemoveOutdatedTimes.length
+			scheduledRemoveOutdatedTimes :+ [t]
+		Else
+			scheduledRemoveOutdatedTimes :+ scheduledRemoveOutdatedTimes[.. index] + [t] + scheduledRemoveOutdatedTimes[index ..]
+		EndIf
+
+		'PrintOutdatedScheduleTimes()
+	End Function
 
 
+	Function RemoveOutdatedScheduleTimes()
+		If scheduledRemoveOutdatedTimes.length > 0
+			Local removeTillIndex:Int = -1
+			Local t:Long = Time.GetTimeGone()
+			For Local i:int = 0 until scheduledRemoveOutdatedTimes.length
+				If t >= scheduledRemoveOutdatedTimes[i]
+					removeTillIndex = i
+				Else
+					'skip further checks - the array is sorted
+					Exit
+				EndIf
+			Next
+			If removeTillIndex >= 0
+				scheduledRemoveOutdatedTimes = scheduledRemoveOutdatedTimes[removeTillIndex + 1..]
+				
+				'PrintOutdatedScheduleTimes()
+			EndIf
+		EndIf
+	End Function
+	
+'dev
+rem
+	Function PrintOutdatedScheduleTimes()
+		print "OutdatedScheduleTimes:"
+		for local i:int = 0 until scheduledRemoveOutdatedTimes.length
+			print scheduledRemoveOutdatedTimes[i]
+		Next
+		print "----"
+	End Function
+endrem
+	
 	Function RemoveOutdated()
 		Local maps:TIntMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
 
-		oldestEntryTime = -1
+		'pop off all "too old"
+		RemoveOutdatedScheduleTimes()
 
 		'remove outdated ones (older than 30 seconds))
 		For Local map:TIntMap = EachIn maps
@@ -660,9 +740,6 @@ Type TDebugWidget_ProgrammeCollectionInfo
 					If map = removedAdContracts Then availableAdContracts.Remove(idKey.value)
 					Continue
 				EndIf
-
-				If oldestEntryTime = -1 Then oldestEntryTime = changeTime
-				oldestEntryTime = Min(oldestEntryTime, changeTime)
 			Next
 
 			For Local id:Int = EachIn remove
@@ -739,7 +816,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 		Local initialY:Int = y
 
 		'clean up if needed
-		If oldestEntryTime >= 0 And oldestEntryTime + 3000 < Time.GetTimeGone() 
+		If scheduledRemoveOutdatedTimes.length > 0 and scheduledRemoveOutdatedTimes[0] < Time.GetTimeGone()
 			haveToRemoveOutdated = False
 			RemoveOutdated()
 		EndIf
