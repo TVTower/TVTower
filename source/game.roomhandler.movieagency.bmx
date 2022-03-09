@@ -1865,7 +1865,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			GetSpriteFromRegistry("pp_paid").Draw(a.GetX() + _imageWithText.width - 8, a.GetY() +3,  -1, ALIGN_RIGHT_TOP)
 		EndIf
 
-		If TVTDebugInfos
+		If TVTDebugInfo
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0

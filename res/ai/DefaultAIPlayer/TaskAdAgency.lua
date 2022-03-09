@@ -363,7 +363,7 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 	if (guessedAudience.GetTotalSum() < 1000) then
 		return TVT.audiencePredictor.GetEmptyAudience()
 	else
-		return guessedAudience.Copy().MultiplyString(tostring(minFactor))
+		return guessedAudience.Copy().MultiplyFloat(minFactor)
 	end
 end
 

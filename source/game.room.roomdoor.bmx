@@ -257,7 +257,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 		'==== DRAW DEBUG TEXT ====
-		if TVTDebugInfos
+		if TVTDebugInfo
 			local f:TBitmapFont = GetBitmapFont("default", 10)
 			local textY:int = GetScreenRect().GetY() - area.GetH() - 10
 			if room.hasOccupant()

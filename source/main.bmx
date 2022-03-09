@@ -106,6 +106,11 @@ Import "game.gamescriptexpression.bmx"
 
 Import "game.screen.menu.bmx"
 
+Import "game.debug.screen.page.playerfinancials.bmx"
+Import "game.debug.screen.page.playerbroadcasts.bmx"
+Import "game.debug.screen.page.adagency.bmx"
+Import "game.debug.screen.page.movieagency.bmx"
+
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"
 ?bmxng
@@ -1286,13 +1291,13 @@ endrem
 		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 * 60 )
 		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeedPreset( 1 )
 		If KeyManager.IsHit(KEY_0) Then GetGame().SetGameSpeed( 0 ) 'pause
-		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
+		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfo = 1 - TVTDebugQuoteInfo
 
 		If KeyManager.IsHit(KEY_TAB)
 			If Not KeyManager.IsDown(KEY_LCONTROL)
-				DebugScreen.enabled = 1 - DebugScreen.enabled
+				DebugScreen._enabled = 1 - DebugScreen._enabled
 			Else
-				TVTDebugInfos = 1 - TVTDebugInfos
+				TVTDebugInfo = 1 - TVTDebugInfo
 			EndIf
 		EndIf
 
@@ -1476,7 +1481,7 @@ endrem
 		'update regardless of enabled or not
 		DebugScreen.UpdateSystem()
 
-		If DebugScreen.enabled
+		If DebugScreen._enabled
 			GameConfig.mouseHandlingDisabled = True
 			DebugScreen.Update()
 		EndIf
@@ -1487,14 +1492,14 @@ endrem
 		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
 
-		If DebugScreen.enabled Then DebugScreen.Render()
+		If DebugScreen._enabled Then DebugScreen.Render()
 
 
-		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+		If TVTDebugInfo And Not GetPlayer().GetFigure().inRoom
 		'show quotes even without "DEV_OSD = true"
 
-		ElseIf TVTDebugQuoteInfos
-			debugAudienceInfos.Draw()
+		ElseIf TVTDebugQuoteInfo
+			debugAudienceInfo.Draw()
 		EndIf
 	End Function
 
