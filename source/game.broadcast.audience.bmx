@@ -7,19 +7,23 @@ Import "game.gameconstants.bmx"
 
 Type TAudienceManager
 	Field currentAudienceBreakdown:TAudienceBase = Null
-	Field currentGenderBreakdown:TAudienceBase = Null
+	Field currentGenderFemaleBreakdown:TAudienceBase = Null
+	Field currentGenderMaleBreakdown:TAudienceBase = Null
 	Field targetAudienceBreakdown:TAudienceBase = Null
 	Field targetGenderBreakdown:TAudienceBase = Null
 	Field defaultAudienceBreakdown:TAudienceBase = Null
-	Field defaultGenderBreakdown:TAudienceBase = Null
+	Field defaultGenderFemaleBreakdown:TAudienceBase = Null
+	Field defaultGenderMaleBreakdown:TAudienceBase = Null
 
 	Method Initialize:Int()
 		currentAudienceBreakdown = Null
-		currentGenderBreakdown = Null
+		currentGenderFemaleBreakdown = Null
+		currentGenderMaleBreakdown = Null
 		targetAudienceBreakdown = Null
 		targetGenderBreakdown = Null
 		defaultAudienceBreakdown = Null
-		defaultGenderBreakdown = Null
+		defaultGenderFemaleBreakdown = Null
+		defaultGenderMaleBreakdown = Null
 	End Method
 
 
@@ -53,7 +57,7 @@ endrem
 
 	'returns the female percentage by default
 	Method GetGenderBreakdown:TAudienceBase(gender:Int=-1)
-		If Not defaultGenderBreakdown
+		If Not defaultGenderFemaleBreakdown
 			'based partially on data from:
 			'http://www.bpb.de/wissen/X39RH6,0,0,Bev%F6lkerung_nach_Altersgruppen_und_Geschlecht.html
 			'(of 2010)
@@ -62,22 +66,26 @@ endrem
 			'(of 2015)
 
 			'value describes percentage of women in that group
-			defaultGenderBreakdown = New TAudienceBase
-			defaultGenderBreakdown.Children = 0.487
-			defaultGenderBreakdown.Teenagers = 0.487
-			defaultGenderBreakdown.HouseWives = 0.9
-			defaultGenderBreakdown.Employees = 0.4
-			defaultGenderBreakdown.Unemployed = 0.45
-			defaultGenderBreakdown.Manager = 0.20
-			defaultGenderBreakdown.Pensioners = 0.58 'the older the more women
+			defaultGenderFemaleBreakdown = New TAudienceBase
+			defaultGenderFemaleBreakdown.Children = 0.487
+			defaultGenderFemaleBreakdown.Teenagers = 0.487
+			defaultGenderFemaleBreakdown.HouseWives = 0.9
+			defaultGenderFemaleBreakdown.Employees = 0.4
+			defaultGenderFemaleBreakdown.Unemployed = 0.45
+			defaultGenderFemaleBreakdown.Manager = 0.20
+			defaultGenderFemaleBreakdown.Pensioners = 0.58 'the older the more women
+		EndIf
+		If Not defaultGenderMaleBreakdown
+			defaultGenderMaleBreakdown = New TAudienceBase.InitValue(1).Subtract( currentGenderFemaleBreakdown )
 		EndIf
 		'set current to default (reference!) if nothing set for now
-		If Not currentGenderBreakdown Then currentGenderBreakdown = defaultGenderBreakdown
+		If Not currentGenderFemaleBreakdown Then currentGenderFemaleBreakdown = defaultGenderFemaleBreakdown
+		If Not currentGenderMaleBreakdown Then currentGenderMaleBreakdown = defaultGenderMaleBreakdown
 
 		If gender <> TVTPersonGender.MALE
-			Return currentGenderBreakdown
+			Return currentGenderFemaleBreakdown
 		Else
-			Return New TAudienceBase.InitValue(1).Subtract( currentGenderBreakdown )
+			Return currentGenderMaleBreakdown
 		EndIf
 	End Method
 
@@ -87,13 +95,13 @@ endrem
 	End Method
 
 
-	Method GetGenderGroupPercentage:Float(gender:Int, groups:Int)
+	Method GetGenderGroupPercentage:Float(genderID:Int, targetGroupIDs:Int)
 		Local portion:Float = 0
-		Local gBreakdown:TAudienceBase = GetGenderBreakdown(gender)
+		Local gBreakdown:TAudienceBase = GetGenderBreakdown(genderID)
 		Local aBreakdown:TAudienceBase = GetAudienceBreakdown()
 		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(i)
-			If groups & targetGroupID
+			If targetGroupIDs & targetGroupID
 				portion :+ gBreakdown.GetValue(targetGroupID) * aBreakdown.GetValue(targetGroupID)
 			EndIf
 		Next
@@ -129,7 +137,7 @@ endrem
 			Return GetAudienceBreakdown().GetValue(targetGroups)
 		EndIf
 
-		Throw "unhandled GetTargetGroupAmaount: targetGroups="+targetGroups
+		Throw "unhandled GetTargetGroupAmount: targetGroups="+targetGroups
 		Return 0
 	End Method
 End Type
@@ -824,6 +832,21 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetWeightedValue:Float(targetID:Int, genderID:Int = 0) {_exposeToLua}
+		Local femaleGenderRatio:Float = AudienceManager.GetGenderBreakdown(TVTPersonGender.FEMALE).GetValue(targetID)
+		Local targetgroupRatio:Float = AudienceManager.GetAudienceBreakdown().GetValue(targetID)
+		Local result:Float
+		If genderID <> TVTPersonGender.MALE
+			result :+ GetGenderValue(targetID, TVTPersonGender.FEMALE) * targetgroupRatio * femaleGenderRatio
+		EndIf
+		If genderID <> TVTPersonGender.FEMALE
+			result :+ GetGenderValue(targetID, TVTPersonGender.MALE) * targetgroupRatio * (1 - femaleGenderRatio)
+		EndIf
+		
+		Return result
+	End Method
+
+
 	Method GetTotalValue:Float(targetID:Int) {_exposeToLua}
 		If targetID <= 0 Then Return GetTotalSum()
 
@@ -927,28 +950,32 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = Null) {_exposeToLua}
+	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = Null, audienceFemaleGenderBreakdown:TAudienceBase = Null) {_exposeToLua}
 		'fetch current breakdown if nothing was given
 		If Not audienceBreakdown Then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
+		If Not audienceFemaleGenderBreakdown Then audienceFemaleGenderBreakdown = AudienceManager.GetGenderBreakdown(TVTPersonGender.FEMALE)
+
+		'multiply the value by their share on the total amount of people
+		'so "male children", "female managers"
 
 		Local result:Float = 0
 		If audienceMale
-			result :+ audienceMale.Children * audienceBreakdown.Children
-			result :+ audienceMale.Teenagers * audienceBreakdown.Teenagers
-			result :+ audienceMale.HouseWives * audienceBreakdown.HouseWives
-			result :+ audienceMale.Employees * audienceBreakdown.Employees
-			result :+ audienceMale.Unemployed * audienceBreakdown.Unemployed
-			result :+ audienceMale.Manager * audienceBreakdown.Manager
-			result :+ audienceMale.Pensioners * audienceBreakdown.Pensioners
+			result :+ audienceMale.Children * audienceBreakdown.Children * (1 - audienceFemaleGenderBreakdown.Children)
+			result :+ audienceMale.Teenagers * audienceBreakdown.Teenagers * (1 - audienceFemaleGenderBreakdown.Teenagers)
+			result :+ audienceMale.HouseWives * audienceBreakdown.HouseWives * (1 - audienceFemaleGenderBreakdown.HouseWives)
+			result :+ audienceMale.Employees * audienceBreakdown.Employees * (1 - audienceFemaleGenderBreakdown.Employees)
+			result :+ audienceMale.Unemployed * audienceBreakdown.Unemployed * (1 - audienceFemaleGenderBreakdown.Unemployed)
+			result :+ audienceMale.Manager * audienceBreakdown.Manager * (1 - audienceFemaleGenderBreakdown.Manager)
+			result :+ audienceMale.Pensioners * audienceBreakdown.Pensioners * (1 - audienceFemaleGenderBreakdown.Pensioners)
 		EndIf
 		If audienceFemale
-			result :+ audienceFemale.Children * audienceBreakdown.Children
-			result :+ audienceFemale.Teenagers * audienceBreakdown.Teenagers
-			result :+ audienceFemale.HouseWives * audienceBreakdown.HouseWives
-			result :+ audienceFemale.Employees * audienceBreakdown.Employees
-			result :+ audienceFemale.Unemployed * audienceBreakdown.Unemployed
-			result :+ audienceFemale.Manager * audienceBreakdown.Manager
-			result :+ audienceFemale.Pensioners * audienceBreakdown.Pensioners
+			result :+ audienceFemale.Children * audienceBreakdown.Children * audienceFemaleGenderBreakdown.Children
+			result :+ audienceFemale.Teenagers * audienceBreakdown.Teenagers * audienceFemaleGenderBreakdown.Teenagers
+			result :+ audienceFemale.HouseWives * audienceBreakdown.HouseWives * audienceFemaleGenderBreakdown.HouseWives
+			result :+ audienceFemale.Employees * audienceBreakdown.Employees * audienceFemaleGenderBreakdown.Employees
+			result :+ audienceFemale.Unemployed * audienceBreakdown.Unemployed * audienceFemaleGenderBreakdown.Unemployed
+			result :+ audienceFemale.Manager * audienceBreakdown.Manager * audienceFemaleGenderBreakdown.Manager
+			result :+ audienceFemale.Pensioners * audienceBreakdown.Pensioners * audienceFemaleGenderBreakdown.Pensioners
 		EndIf
 
 		Return result
