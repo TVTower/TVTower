@@ -106,6 +106,7 @@ Import "game.gamescriptexpression.bmx"
 
 Import "game.screen.menu.bmx"
 
+Import "game.debug.screen.page.publicimages.bmx"
 Import "game.debug.screen.page.playerfinancials.bmx"
 Import "game.debug.screen.page.playerbroadcasts.bmx"
 Import "game.debug.screen.page.adagency.bmx"

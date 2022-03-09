@@ -252,6 +252,12 @@ Type TPublicImage {_exposeToLua="selected"}
 		GetPublicImageCollection().Set(playerID, obj)
 		Return obj
 	End Function
+	
+	
+	Method Reset()
+		imageValues.InitValue(0, 0)
+		time = 0
+	End Method
 
 
 	Method GetImageValues:TAudience()
@@ -285,6 +291,8 @@ Type TPublicImage {_exposeToLua="selected"}
 
 		'skip changing if there is nothing to change
 		If imageChange.GetTotalAbsSum() = 0 Then Return
+		
+		time = GetWorldTime().GetTimeGone()
 
 		ImageValues.Multiply( New TAudience.InitValue(1.0, 1.0).Add(imageChange) )
 		'avoid negative values -> cut to at least 0
@@ -303,6 +311,8 @@ Type TPublicImage {_exposeToLua="selected"}
 
 		'skip changing if there is nothing to change
 		If imageChange.GetTotalAbsSum() = 0 Then Return
+
+		time = GetWorldTime().GetTimeGone()
 
 		ImageValues.Add(imageChange)
 		'avoid negative values -> cut to at least 0
@@ -381,7 +391,9 @@ Type TPublicImage {_exposeToLua="selected"}
 			Local modifier:Float = 0.0
 			If audienceRank[i] <= modifiers.length Then modifier = modifiers[ audienceRank[i]-1 ]
 
-			If modifier <> 0.0 Then channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
+			If modifier <> 0.0 
+				channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
+			EndIf
 		Next
 	End Function
 End Type
