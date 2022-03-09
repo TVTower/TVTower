@@ -9,7 +9,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 	Field buttons:TDebugControlsButton[]
 	
 	Method Init:TDebugScreenPage_PublicImages()
-		Local texts:String[] = ["Reset", "-5%", "+5%", "Reset", "-5%", "+5%", "Reset", "-5%", "+5%", "Reset", "-5%", "+5%"]
+		Local texts:String[] = ["Reset", "-1%", "+1%", "+10%", "Reset", "-1%", "+1%", "+10%", "Reset", "-1%", "+1%", "+10%", "Reset", "-1%", "+1%", "+10%"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
@@ -51,18 +51,22 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 		'move buttons
 		if buttons.length >= 6
-			buttons[ 0].SetXY(position.x + 510 + 20, position.y + 0 * 18 + 5).SetWH( 50, 15)
-			buttons[ 1].SetXY(position.x + 510 + 20 + 54 + 0 * 34, position.y + 0 * 18 + 5).SetWH( 30, 15)
-			buttons[ 2].SetXY(position.x + 510 + 20 + 54 + 1 * 34, position.y + 0 * 18 + 5).SetWH( 30, 15)
-			buttons[ 3].SetXY(position.x + 510 + 20, position.y + 1 * 18 + 5).SetWH( 50, 15)
-			buttons[ 4].SetXY(position.x + 510 + 20 + 54 + 0 * 34, position.y + 1 * 18 + 5).SetWH( 30, 15)
-			buttons[ 5].SetXY(position.x + 510 + 20 + 54 + 1 * 34, position.y + 1 * 18 + 5).SetWH( 30, 15)
-			buttons[ 6].SetXY(position.x + 510 + 20, position.y + 2 * 18 + 5).SetWH( 50, 15)
-			buttons[ 7].SetXY(position.x + 510 + 20 + 54 + 0 * 34, position.y + 2 * 18 + 5).SetWH( 30, 15)
-			buttons[ 8].SetXY(position.x + 510 + 20 + 54 + 1 * 34, position.y + 2 * 18 + 5).SetWH( 30, 15)
-			buttons[ 9].SetXY(position.x + 510 + 20, position.y + 3 * 18 + 5).SetWH( 50, 15)
-			buttons[10].SetXY(position.x + 510 + 20 + 54 + 0 * 34, position.y + 3 * 18 + 5).SetWH( 30, 15)
-			buttons[11].SetXY(position.x + 510 + 20 + 54 + 1 * 34, position.y + 3 * 18 + 5).SetWH( 30, 15)
+			buttons[ 0].SetXY(position.x + 510 + 20, position.y + 0 * 18 + 5).SetWH( 43, 15)
+			buttons[ 1].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 0 * 18 + 5).SetWH( 26, 15)
+			buttons[ 2].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 0 * 18 + 5).SetWH( 26, 15)
+			buttons[ 3].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 0 * 18 + 5).SetWH( 30, 15)
+			buttons[ 4].SetXY(position.x + 510 + 20, position.y + 1 * 18 + 5).SetWH( 43, 15)
+			buttons[ 5].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 1 * 18 + 5).SetWH( 26, 15)
+			buttons[ 6].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 1 * 18 + 5).SetWH( 26, 15)
+			buttons[ 7].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 1 * 18 + 5).SetWH( 30, 15)
+			buttons[ 8].SetXY(position.x + 510 + 20, position.y + 2 * 18 + 5).SetWH( 43, 15)
+			buttons[ 9].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 2 * 18 + 5).SetWH( 26, 15)
+			buttons[10].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 2 * 18 + 5).SetWH( 26, 15)
+			buttons[11].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 2 * 18 + 5).SetWH( 30, 15)
+			buttons[12].SetXY(position.x + 510 + 20, position.y + 3 * 18 + 5).SetWH( 43, 15)
+			buttons[13].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 3 * 18 + 5).SetWH( 26, 15)
+			buttons[14].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 3 * 18 + 5).SetWH( 26, 15)
+			buttons[15].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 3 * 18 + 5).SetWH( 30, 15)
 		endif
 
 
@@ -113,13 +117,12 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		textY :+ 12
 
 		Local a:TAudience = p.GetImageValues()
-
 		Local targetGroupID:Int = 0
-		For Local i:Int = 1 To TVTTargetGroup.count
+		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount 'baseGroupCount = without "men/women"
 			targetGroupID = TVTTargetGroup.GetAtIndex(i)
 			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", textX, textY)
-			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTTargetGroup.Men), 3), textX + 85, textY)
-			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTTargetGroup.Women), 3), textX + 117, textY)
+			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), textX + 85, textY)
+			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), textX + 117, textY)
 			textFont.Draw("= " + MathHelper.NumberToString(a.GetTotalValue(targetGroupID), 3), textX + 160, textY)
 			textY :+ 10
 		Next
@@ -128,7 +131,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
-		Local changeValue:Float = 0.05
+		Local changeValue:Float = 0.5 '0.5% for men + 0.5% for women = 1%
 		Select sender.dataInt
 			case 0
 				GetPublicImage(1).Reset()
@@ -137,23 +140,31 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 			case 2
 				GetPublicimage(1).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
 			case 3
-				GetPublicImage(2).Reset()
+				GetPublicimage(1).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
 			case 4
-				GetPublicimage(2).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicImage(2).Reset()
 			case 5
-				GetPublicimage(2).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+				GetPublicimage(2).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
 			case 6
-				GetPublicImage(3).Reset()
+				GetPublicimage(2).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
 			case 7
-				GetPublicimage(3).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicimage(2).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
 			case 8
-				GetPublicimage(3).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+				GetPublicImage(3).Reset()
 			case 9
-				GetPublicImage(4).Reset()
+				GetPublicimage(3).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
 			case 10
-				GetPublicimage(4).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicimage(3).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
 			case 11
+				GetPublicimage(3).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
+			case 12
+				GetPublicImage(4).Reset()
+			case 13
+				GetPublicimage(4).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+			case 14
 				GetPublicimage(4).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+			case 15
+				GetPublicimage(4).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
 		End Select
 
 		'handled
