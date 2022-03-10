@@ -1335,6 +1335,14 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'remove dragged concept list
 		If draggedGuiProductionConcept And MouseManager.IsClicked(2)
+			draggedGuiProductionConcept.dropBackToOrigin()
+			'remove right click - to avoid leaving the room
+			MouseManager.SetClickHandled(2)
+
+
+'disabled: do not remove on right click, we now simply "drop back"
+'          and rely on the trash bin for removal!
+rem
 			'no need to check owner - done at begin of function already
 			'If IsPlayersRoom(TRoom(triggerEvent.GetSender())) ...
 
@@ -1350,6 +1358,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				'remove right click - to avoid leaving the room
 				MouseManager.SetClickHandled(2)
 			EndIf
+endrem
 		EndIf
 
 
