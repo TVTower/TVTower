@@ -123,7 +123,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", textX, textY)
 			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), textX + 85, textY)
 			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), textX + 117, textY)
-			textFont.Draw("= " + MathHelper.NumberToString(a.GetTotalValue(targetGroupID), 3), textX + 160, textY)
+			textFont.Draw("= " + MathHelper.NumberToString(a.GetWeightedValue(targetGroupID), 3), textX + 160, textY)
 			textY :+ 10
 		Next
 	End Method
@@ -131,7 +131,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
-		Local changeValue:Float = 0.5 '0.5% for men + 0.5% for women = 1%
+		Local changeValue:Float = 1.0 '1%
 		Select sender.dataInt
 			case 0
 				GetPublicImage(1).Reset()
