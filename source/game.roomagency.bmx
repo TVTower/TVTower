@@ -7,6 +7,16 @@ Import "game.room.base.bmx"
 Import "basefunctions.bmx"
 
 
+Enum ERoomAgencyRentalResults
+	OK = 1
+	FAIL = 0
+	FAIL_NOT_ENOUGH_MONEY = -1
+	FAIL_ROOM_NOT_RENTED = -3
+	FAIL_ROOM_ALREADY_RENTED = -4
+	FAIL_ROOM_BLOCKED = -4
+	FAIL_ROOM_IN_USE = -5
+End Enum
+	
 
 
 Type TRoomAgency
@@ -98,22 +108,32 @@ Type TRoomAgency
 	End Method
 
 
-	Method BeginRoomRental:int(room:TRoomBase, owner:int=0)
-		if room.IsRented() then return False
+	Method CanBeginRoomRental:ERoomAgencyRentalResults(room:TRoomBase, owner:Int=0)
+		If room.IsRented() Then Return ERoomAgencyRentalResults.FAIL_ROOM_ALREADY_RENTED
+		If room.IsBlocked() Then Return ERoomAgencyRentalResults.FAIL_ROOM_BLOCKED
+		'check if a room is eg. currently holding a blocking element
+		If room.IsRentalChangeBlocked() Then Return ERoomAgencyRentalResults.FAIL_ROOM_IN_USE
+
+		Return ERoomAgencyRentalResults.OK
+	End Method
+
+
+	Method BeginRoomRental:int(room:TRoomBase, owner:int=0, force:Int=False)
+		If Not force And Not CanBeginRoomRental(room, owner) Then Return False
 
 		local rent:int = room.GetRent()
 
 		'=== PAY COURTAGE ===
-		if GetPlayerBaseCollection().IsPlayer(owner)
+		If GetPlayerBaseCollection().IsPlayer(owner)
 			local courtage:int = GetCourtageForOwner(room, owner)
-			if not GetPlayerFinance(owner).CanAfford(courtage)
+			If Not force And Not GetPlayerFinance(owner).CanAfford(courtage)
 				TLogger.Log("RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Not enough money to pay courtage.", LOG_DEBUG)
-				return False
-			else
+				Return False
+			Else
 				'pay a courtage
 				GetPlayerFinance(owner).PayRent(courtage, room)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'TODO: modify rent by sympathy
 		'rent :* sympathyMod(owner)
@@ -133,8 +153,8 @@ Type TRoomAgency
 			return False
 		endif
 	End Method
-
-
+	
+	
 	Method CancelRoomRentalsOfPlayer:int(owner:int)
 		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
 			if r.GetOwner() <> owner then continue
@@ -145,9 +165,19 @@ Type TRoomAgency
 	End Method
 
 
-	Method CancelRoomRental:int(room:TRoomBase, owner:int=0)
-		if not room.IsRented() then return False
+	Method CanCancelRoomRental:ERoomAgencyRentalResults(room:TRoomBase, owner:Int=0)
+		If Not room.IsRented() Then Return ERoomAgencyRentalResults.FAIL_ROOM_NOT_RENTED
+		If room.IsBlocked() Then Return ERoomAgencyRentalResults.FAIL_ROOM_BLOCKED
+		'check if a room is eg. currently holding a blocking element
+		If room.IsRentalChangeBlocked() Then Return ERoomAgencyRentalResults.FAIL_ROOM_IN_USE
 
+		Return ERoomAgencyRentalResults.OK
+	End Method
+
+
+	Method CancelRoomRental:int(room:TRoomBase, owner:int=0, force:Int=False)
+		If not force and not CanCancelRoomRental(room, owner) Then Return False
+		
 		local roomOwner:int = room.owner
 		'fetch rent before cancelling!
 		local roomRent:int = room.GetRent()

@@ -730,7 +730,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 					return TRUE
 			case NET_SELL
 					local oldOwner:int = room.owner
-					GetRoomAgency().CancelRoomRental(room)
+					GetRoomAgency().CancelRoomRental(room, oldOwner)
 					print "[NET] RoomAgency: player "+oldOwner+" stopped renting room "+room.GetName()
 					return TRUE
 		EndSelect

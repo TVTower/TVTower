@@ -1363,6 +1363,9 @@ Type TVTRoomFlag
 	Const RESTRICT_TO_SINGLE_OCCUPANT:Int = 16
 	'is this a room or just a "plan" or "view"
 	Const FAKE_ROOM:Int = 32
+	'can the rental state of a room be changed in this moment
+	'(eg. an object in the room blocks rental cancelation)
+	Const RENTAL_CHANGE_BLOCKED:Int = 64
 End Type
 
 
