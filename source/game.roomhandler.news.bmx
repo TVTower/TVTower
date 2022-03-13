@@ -180,8 +180,8 @@ Type RoomHandler_News extends TRoomHandler
 
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropNews, "TGUINews") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropNews, "TGUINews") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropNews, "TGUINews") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropNews, "TGUINews") ]
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNews, "TGUINews") ]
 

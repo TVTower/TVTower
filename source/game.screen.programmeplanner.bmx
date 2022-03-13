@@ -141,9 +141,9 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
 
 		'savegame loaded - clear gui elements
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onLoadSavegame) ]
@@ -179,7 +179,7 @@ Type TScreenHandler_ProgrammePlanner
 		'   existing slot item. Must be done in "onTryDrop" so it is run
 		'   before the shortcut-check is done (which is in "onTryDrag")
 		'   -> so "onDrop" is not possible
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListProgrammes) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListAdvertisements) ]
@@ -194,7 +194,7 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
 		'in this case - send them to GuiManager (like freshly created to avoid a history)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDrag, onDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'we want to handle drops on the same guilist slot (might be other planning day)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onDropProgrammePlanElementBack, "TGUIProgrammePlanElement") ]
 

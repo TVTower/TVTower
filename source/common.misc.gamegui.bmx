@@ -538,7 +538,7 @@ Type TGUIGameSlotList Extends TGUISlotList
 
 
 	'override default event handler
-	Method OnDropOnTarget:int( triggerEvent:TEventBase )
+	Method OnBeginReceiveDrop:int( triggerEvent:TEventBase ) override
 		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		if item = Null then return FALSE
 

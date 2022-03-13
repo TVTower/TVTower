@@ -121,10 +121,18 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Method AbortScreenActions:Int()
+		Local result:Int = False
 		If castSlotList.SelectCastWindowIsOpen()
 			castSlotList.selectCastWindow.Close(2)
+			result = True
+		EndIf
+		
+		if currentProductionConcept
+			result = True
 		EndIf
 		SetCurrentProductionConcept(Null)
+
+		Return result
 	End Method
 
 
@@ -2325,9 +2333,9 @@ endrem
 
 
 	'override default event handler
-	Method onDropOnTarget:Int( triggerEvent:TEventBase ) override
+	Method OnBeginReceiveDrop:Int( triggerEvent:TEventBase ) override
 		'adjust cast slots...
-		If Super.onDropOnTarget( triggerEvent )
+		If Super.OnBeginReceiveDrop( triggerEvent )
 			Local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
 			If Not item Then Return False
 

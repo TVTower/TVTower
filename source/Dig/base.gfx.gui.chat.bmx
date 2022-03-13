@@ -69,9 +69,9 @@ Type TGUIChat Extends TGUIPanel
 
 		'register events
 		'- observe text changes in our input field
-		EventManager.registerListenerFunction( "guiobject.onChange", Self.onInputChange, Self.guiInput )
+		EventManager.registerListenerFunction( GUIEventKeys.GUIobject_OnChange, Self.onInputChange, Self.guiInput )
 		'- observe wishes to add a new chat entry - listen to all sources
-		EventManager.registerListenerMethod( "chat.onAddEntry", Self, "onAddEntry" )
+		EventManager.registerListenerMethod( GUIEventKeys.Chat_OnAddEntry, Self, "onAddEntry" )
 
 		GUIManager.Add( Self )
 

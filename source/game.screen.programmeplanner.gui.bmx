@@ -837,14 +837,9 @@ endrem
 	End Method
 
 
-	'override default "default accept behaviour" of onDrop
-	Method onDrop:Int(triggerEvent:TEventBase)
-		Local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
-		If Not dropCoord Then Return False
-
-		If Self.containsXY(dropCoord.x, dropCoord.y)
-			triggerEvent.setAccepted(True)
-			'print "TGUIProgrammePlanSlotList.onDrop: coord="+dropCoord.getIntX()+","+dropCoord.getIntY()
+	'override default
+	Method AcceptsDrop:Int(o:TGUIObject, coord:TVec2D, extra:object=Null) override
+		If Self.containsXY(coord.x, coord.y)
 			Return True
 		Else
 			Return False

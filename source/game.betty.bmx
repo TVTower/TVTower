@@ -496,7 +496,18 @@ Type TGUIBettyPresent extends TGuiObject
 	'Copied and adapted from TGUIListItem
 	Method OnClick:Int(triggerEvent:TEventBase)
 		'if desired, run something before this click is handled
-		if beforeOnClickCallback Then beforeOnClickCallback(triggerEvent)
+		if beforeOnClickCallback 
+			'if the callback returns true the event is handled there
+			'and we could return from there.
+			'ALTERNATIVELY: the callback could remove "button" from the
+			'               event data and so it wont continue either
+			'               or it could add some other kind of information
+			If beforeOnClickCallback(triggerEvent)
+				'we handled the click
+				triggerEvent.SetAccepted(True)
+				Return True
+			EndIf
+		EndIf
 
 		Super.OnClick(triggerEvent)
 

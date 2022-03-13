@@ -94,7 +94,11 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 
 	Method AbortScreenActions:Int()
-		undoDragPresent()
+		If draggedPresent
+			undoDragPresent()
+			Return True
+		EndIf
+		Return False
 	End Method
 
 

@@ -62,10 +62,10 @@ Type TGUIScrollerBase extends TGUIobject
 		AddChild(guiButtonPlus)
 
 		'scroller is interested in hits (not clicks) on its buttons
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScrollerBase.onButtonClick, guiButtonMinus ))
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScrollerBase.onButtonClick, guiButtonPlus ))
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScrollerBase.onButtonDown, guiButtonMinus ))
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScrollerBase.onButtonDown, guiButtonPlus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, guiButtonMinus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, guiButtonPlus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, guiButtonMinus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, guiButtonPlus ))
 
 		GUIManager.Add( Self)
 
@@ -347,7 +347,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 
 		'listen to interaction with scrollHandle elements (dragging it)
 		'or mouse scrolling over its "progress area"
-		'attention: do not listen to "guiobject.onchangevalue" as this is
+		'attention: do not listen to "GUIobject_onchangevalue" as this is
 		'           also triggered by "onScrollPositionChanged" (circlular
 		'           triggers)
 		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUISlider_SetValueByMouse, onScrollHandleChange, scrollHandle ))

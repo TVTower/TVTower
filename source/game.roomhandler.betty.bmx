@@ -62,7 +62,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnSetCurrent, onPlayerSeesBettyScreen) ]
 		'handle present
 		'_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, "TGUIBettyPresent") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropPresent, "TGUIBettyPresent") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropPresent, "TGUIBettyPresent") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, CheckOfficeHour) ]
 
 
@@ -395,6 +395,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			ElseIf button = 1
 				If THelper.MouseInSRect(suitcaseArea)
 					presentItem.dropBackToOrigin()
+					MouseManager.SetClickHandled(1)
 					Return True
 				EndIf
 			EndIf

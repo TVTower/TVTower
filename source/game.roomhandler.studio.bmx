@@ -128,12 +128,10 @@ Type RoomHandler_Studio Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProductionConcept, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProductionConcept, onChangeProgrammeCollection) ]
-		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
-		'is only emitted if the drop is successful (so it "visually" happened)
-		'drop ... to studio manager or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScript, "TGUIStudioScript") ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScript, "TGUIStudioScript") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceGUIScripts, "TGUIScriptSlotList") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onDropOnTargetAccepted, onDropProductionConcept, "TGuiProductionConceptListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProductionConcept, "TGuiProductionConceptListItem") ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGUIStudioScript") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConcept, "TGuiProductionConceptListItem") ]
@@ -1288,6 +1286,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 						Else
 							GenerateStudioManagerDialogue(0)
 						EndIf
+						MouseManager.SetClickHandled(1)
 					EndIf
 
 					'show tooltip of studio manager
@@ -1336,6 +1335,14 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'remove dragged concept list
 		If draggedGuiProductionConcept And MouseManager.IsClicked(2)
+			draggedGuiProductionConcept.dropBackToOrigin()
+			'remove right click - to avoid leaving the room
+			MouseManager.SetClickHandled(2)
+
+
+'disabled: do not remove on right click, we now simply "drop back"
+'          and rely on the trash bin for removal!
+rem
 			'no need to check owner - done at begin of function already
 			'If IsPlayersRoom(TRoom(triggerEvent.GetSender())) ...
 
@@ -1351,6 +1358,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				'remove right click - to avoid leaving the room
 				MouseManager.SetClickHandled(2)
 			EndIf
+endrem
 		EndIf
 
 

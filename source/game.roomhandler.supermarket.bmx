@@ -82,12 +82,19 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 	'override: clear the screen (remove dragged elements)
 	Method AbortScreenActions:Int()
+		'at least one handler did something?
+		Local result:int = False
+
 		'abort handling dragged elements in the production / present
 		'screens
-		TScreenHandler_SupermarketProduction.GetInstance().AbortScreenActions()
-		TScreenHandler_SupermarketPresents.GetInstance().AbortScreenActions()
+		If TScreenHandler_SupermarketProduction.GetInstance().AbortScreenActions()
+			result = True
+		EndIf
+		If TScreenHandler_SupermarketPresents.GetInstance().AbortScreenActions()
+			result = True
+		EndIf
 
-		return False
+		Return result
 	End Method
 
 
