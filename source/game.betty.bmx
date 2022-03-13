@@ -45,7 +45,7 @@ Type TBetty
 
 	Method Initialize:int()
 		inLove = new Int[4]
-
+		presentHistory = null
 		_inLoveSum = -1
 	End Method
 
