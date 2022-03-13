@@ -218,7 +218,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 	'clear the guilist for the suitcase if a player enters
-	Method onEnterRoom:Int( triggerEvent:TEventBase )
+	Method onEnterRoom:Int( triggerEvent:TEventBase ) override
 		'we are not interested in other figures than our player's
 		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		If Not GameConfig.IsObserved(figure) And GetPlayerBase().GetFigure() <> figure Then Return False
@@ -228,16 +228,47 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'remove potential old dialogues
 		studioManagerDialogue = Null
+		
+		Local room:TRoom = TRoom(triggerEvent.GetSender())
+
+		'just to ensure ... update block state
+		If room 
+			local currentScript:TScriptBase = GetCurrentStudioScript(room.GetID())
+			'either no script but blocked - or script and not blocked ?
+			If (currentScript<>Null) <> room.IsRentalChangeBlocked()
+				TLogger.Log("TRoomHandler_Studio", "Repairing broken ~qRentalChangeBlocked~q state on room leave.", LOG_DEBUG)
+				room.SetRentalChangeBlocked( currentScript<>Null )
+			EndIf
+		Endif
 
 		'enable/disable gui elements according to room owner
 		'"only our player" filter already done before
-		If IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+		If IsRoomOwner(figure, room)
 			guiListSuitcase.Enable()
 			guiListStudio.Enable()
 		Else
 			guiListSuitcase.Disable()
 			guiListStudio.Disable()
 		EndIf
+		
+		Return True
+	End Method
+
+
+	Method onLeaveRoom:int( triggerEvent:TEventBase ) override
+		Local room:TRoom = TRoom(triggerEvent.GetSender())
+
+		'just to ensure ... update block state
+		If room 
+			local currentScript:TScriptBase = GetCurrentStudioScript(room.GetID())
+			'either no script but blocked - or script and not blocked ?
+			If (currentScript<>Null) <> room.IsRentalChangeBlocked()
+				TLogger.Log("TRoomHandler_Studio", "Repairing broken ~qRentalChangeBlocked~q state on room leave.", LOG_DEBUG)
+				room.SetRentalChangeBlocked( currentScript<>Null )
+			EndIf
+		Endif
+
+		Return True
 	End Method
 
 
@@ -476,8 +507,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Method SetCurrentStudioScript:Int(script:TScript, roomID:Int, ignoreRoomSize:Int = False)
 		If Not script Or Not roomID Then Return False
 		
+		local room:TRoomBase = GetRoomBase(roomID)
+
 		If Not ignoreRoomSize
-			local room:TRoomBase = GetRoomBase(roomID)
 			if room and room.GetSize() < script.requiredStudioSize then Return False
 		EndIf
 
@@ -491,13 +523,16 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Else
 			RemoveCurrentStudioScript(roomID, False)
 		EndIf
-
+		
 		studioScriptsByRoomID.Insert(roomID, script)
 
 		'remove from suitcase list
 		If GetPlayerBaseCollection().IsPlayer(script.owner)
 			GetPlayerProgrammeCollection(script.owner).MoveScriptFromSuitcaseToStudio(script)
 		EndIf
+		
+		'mark studio to avoid cancelling the rental
+		If room Then room.SetRentalChangeBlocked(True)
 
 		Return True
 	End Method
@@ -522,7 +557,14 @@ Type RoomHandler_Studio Extends TRoomHandler
 			EndIf
 		EndIf
 
-		Return studioScriptsByRoomID.Remove(roomID)
+
+		Local result:Int = studioScriptsByRoomID.Remove(roomID)
+
+		'remove mark from studio to avoid being not able to cancel the rental
+		Local room:TRoomBase = GetRoomBase(roomID)
+		If room Then room.SetRentalChangeBlocked(False)
+		
+		Return result
 	End Method
 
 
