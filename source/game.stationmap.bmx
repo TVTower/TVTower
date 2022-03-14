@@ -3706,7 +3706,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'override to check if already subscribed
-	Method CanSignContract:int(duration:Long)
+	Method CanSignContract:int(duration:Long)  {_exposeToLua}
 		if not Super.CanSignContract(duration) then return False
 
 		if CanSubscribeToProvider(duration) <= 0 then return False
@@ -4123,7 +4123,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'override to check if already subscribed
-	Method CanSignContract:int(duration:Long)
+	Method CanSignContract:int(duration:Long) {_exposeToLua}
 		if not Super.CanSignContract(duration) then return False
 
 		if CanSubscribeToProvider(duration) <= 0 then return False

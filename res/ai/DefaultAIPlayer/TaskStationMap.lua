@@ -316,7 +316,7 @@ function JobBuyStation:GetAttraction(tempStation)
 	--to avoid buying too many stations (upkeep!)
 	local attraction = 1 / pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
 	--TODO do not buy if reach increase is too small
-	if exclusiveReach < 100000 then
+	if exclusiveReach < 100000 or tempStation:CanSignContract(-1) == 0 then
 		attraction = 0
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
