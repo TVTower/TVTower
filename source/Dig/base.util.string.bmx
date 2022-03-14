@@ -833,20 +833,28 @@ Type StringHelper
 	'convert first alpha (optional alphanumeric) character to uppercase.
 	'does _not_ work with UTF8 characters (would need some utf8-library
 	'like glib or so)
-	Function UCFirst:String(s:String, length:Int = 1, skipNumeric:Int = True)
+	Function UCFirst:String(s:String, skipNumeric:Int = True)
 		If s.length = 0 Then Return ""
 
-		For Local start:Int = 0 Until s.length
-			Local ch:Int = s[start]
-			If (ch>=Asc("a") And ch<=Asc("z")) Or (Not skipNumeric And (ch>=Asc("0") And ch<=Asc("9")))
-				Return Left(s, start) + Upper( Mid(s, start+1, length) ) + Right(s, s.length - length - start)
-			Else
-				'already uppercase, so skip one
-				length :- 1
+		'find first "to uppercase" char
+		Local offset:Int = -1
+		For Local i:Int = 0 Until s.length
+			Local ch:Int = s[i]
+			'first alpha char is already uppercase
+			If ch >= Asc("A") and ch <= Asc("Z")
+				Return s
+			ElseIf (ch >= Asc("a") And ch <= Asc("z")) Or (Not skipNumeric And (ch >= Asc("0") And ch <= Asc("9")))
+				offset = i
+				exit
 			EndIf
 		Next
-
-		Return s
+		If offset = 0
+			Return s[.. offset].ToUpper() + s[offset ..]
+		ElseIf offset = s.length - 1
+			Return s[.. s.length - 1] + Chr(s[s.length-1]).ToUpper()
+		Else
+			Return s[.. offset] + Chr(s[offset]).ToUpper() + s[offset + 1 .. ]
+		EndIf
 	End Function
 
 	'convert very first character to uppercase, skips checks
