@@ -70,6 +70,10 @@ IN_XTIME                    = In %X%
 CLICK_AGAIN_TO_RENT         = Zum Mieten erneut anklicken
 CLICK_AGAIN_TO_CANCEL_RENT  = Zum Kündigen erneut anklicken
 CONFIRM                     = Bestätigen
+RENTAL_NOT_POSSIBLE         = Mieten nicht möglich
+CANCELLATION_NOT_POSSIBLE   = Kündigen nicht möglich
+SOMETHING_BLOCKS_ACTION     = Etwas verhindert den Vorgang
+REMOVE_SCRIPT_THERE_FIRST   = Entferne dort vorher das Drehbuch.
 
 ROOMAGENCY_SIZE_TEXT1                              = Wohldimensionierter Raum der Größe %SIZE%.
 ROOMAGENCY_SIZE_TEXT2                              = Raum in der praktischen %SIZE%er Größe.

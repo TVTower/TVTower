@@ -70,6 +70,10 @@ ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Já há alguém nessa sala.
 #CLICK_AGAIN_TO_RENT         = 
 #CLICK_AGAIN_TO_CANCEL_RENT  = 
 #CONFIRM                     = 
+#RENTAL_NOT_POSSIBLE         = 
+#CANCELLATION_NOT_POSSIBLE   = 
+#SOMETHING_BLOCKS_ACTION     = 
+#REMOVE_SCRIPT_THERE_FIRST   = 
 
 #ROOMAGENCY_SIZE_TEXT1                              = 
 #ROOMAGENCY_SIZE_TEXT2                              = 

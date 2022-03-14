@@ -13,13 +13,15 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	'show room board?
 	Field mode:int = 0
 	Field selectedRoom:TRoomBase
+	Field selectedRoomState:Int = 0
 	Field hoveredRoom:TRoomBase
 	Field hoveredSign:TRoomBoardSign
 	Field roomContractTexts:TMap = new TMap
 
 	Global roomboardTooltip:TTooltip
 
-	Global _confirmActionTooltip:TTooltipBase
+	Global _actionInfoTooltip:TTooltipBase
+	Global _actionInfoTooltipUpdate:Int = False
 
 	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")
 	Global _eventListeners:TEventListenerBase[]
@@ -97,7 +99,14 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		'are in)
 		if not figure or not figure.playerID then return FALSE
 
-		GetInstance().FigureEntersRoom(figure)
+		'=== FOR WATCHED PLAYERS ===
+		If IsObservedFigure(figure)
+			_actionInfoTooltip = Null
+			_actionInfoTooltipUpdate = 0
+			selectedRoom = Null
+			hoveredRoom = Null
+			hoveredSign = Null
+		EndIf
 	End Method
 
 
@@ -114,31 +123,14 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 			'selected the room of another player
 			if i.selectedRoom.GetOwner() > 0 and i.selectedRoom.GetOwner() <> GetPlayerBase().playerID
 				i.selectedRoom = null
+				i.selectedRoomState = 0
 			'selected unrented one which cannot get rented
 			elseif not i.selectedRoom.IsRented() and not i.selectedRoom.IsRentable()
 				i.selectedRoom = null
+				i.selectedRoomState = 0
 			endif
 		endif
 	End Function
-
-
-
-	Method FigureEntersRoom:int(figure:TFigureBase)
-		'=== FOR ALL PLAYERS ===
-
-rem
-		'refill the empty blocks, also sets haveToRefreshGuiElements=true
-		'so next call the gui elements will be redone
-		ReFillBlocks()
-
-
-		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
-			'reorder AFTER refilling
-			ResetContractOrder()
-		endif
-endrem
-	End Method
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
@@ -236,80 +228,115 @@ endrem
 
 				'if room.IsRentable() or (room.IsRented() and room.GetOwner() = playerID) and MouseManager.IsClicked(1)
 				if MouseManager.IsClicked(1)
-
+					'first click
+					If selectedRoom <> hoveredRoom
+						'ensure to remove an old tooltip
+						_actionInfoTooltip = Null
+						_actionInfoTooltipUpdate = True
+					Endif
+					
 					'only select/confirm the room if it is allowed
 					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable()) or ..
 					   (hoveredRoom.GetOwner() = playerID)
 						'confirmation click
 						if selectedRoom = hoveredRoom
-							'BeginRoomRent/CancelRoomRental will set
-							'selectedRoom to null (to avoid having things
-							'selected which are no longer selectable)
-							'-> use a custom variable
-							local useRoom:TRoomBase = selectedroom
 							local doneSomething:int = False
-							'rent the room
-							if useRoom.GetOwner() <> playerID
-								if GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
-									useRoom.SetUsedAsStudio(True)
-									doneSomething = True
-								endif
+							'(try to) rent the room
+							if selectedroom.GetOwner() <> playerID
+								'check possibility first, to avoid a "failed" log entry
+								If GetRoomAgency().CanBeginRoomRental(selectedRoom, GetPlayerBase().playerID) = ERoomAgencyRentalResults.OK
+									If GetRoomAgency().BeginRoomRental(selectedroom, GetPlayerBase().playerID)
+										doneSomething = True
+									EndIf
+								EndIf
+							'(try to) cancel the rent
 							else
-								'cancel the rent
-								if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
-									useRoom.SetUsedAsStudio(False)
-									doneSomething = True
-								endif
+								'check possibility first, to avoid a "failed" log entry
+								If GetRoomAgency().CanCancelRoomRental(selectedRoom, GetPlayerBase().playerID) = ERoomAgencyRentalResults.OK
+									If GetRoomAgency().CancelRoomRental(selectedroom, GetPlayerBase().playerID)
+										doneSomething = True
+									EndIf
+								EndIf
 							endif
 
 							'handled it (might be "False" if player had
 							'not enough money)
 							if doneSomething = True
 								selectedRoom = null
+								selectedRoomState = 0
+
 								'hoveredRoom = null
 								'hoveredSign = null
-								_confirmActionTooltip = null
+								_actionInfoTooltip = null
+								_actionInfoTooltipUpdate = True
 							endif
 
 						'select click
 						else
 							selectedRoom = hoveredRoom
-
-							if not _confirmActionTooltip and selectedRoom
-								_confirmActionTooltip = new TGUITooltipBase.Initialize("Unknown mode", "", new TRectangle.Init(0,0,-1,-1))
-								_confirmActionTooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, true)
-								if not _confirmActionTooltip.parentArea then _confirmActionTooltip.parentArea = new TRectangle
-								_confirmActionTooltip.parentArea.Init(x, y, sign.imageCache.GetWidth()-3, sign.imageCache.GetHeight()-3)
-								_confirmActionTooltip.offset = new TVec2D.Init(0, 0)
-								'avoid dwelling, just show it
-								_confirmActionTooltip.SetStep(TTooltipBase.STEP_ACTIVE)
-
-								if selectedRoom.GetOwner() <> playerID
-									_confirmActionTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
-									_confirmActionTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_RENT")))
-								else
-									_confirmActionTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
-									_confirmActionTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_CANCEL_RENT")))
-								endif
-							endif
+							selectedRoomState = hoveredRoom.IsBlocked() or hoveredRoom.IsRentalChangeBlocked()
+							_actionInfoTooltipUpdate = True
 						endif
 					else
 						selectedRoom = null
-						_confirmActionTooltip = null
+						selectedRoomState = 0
+						_actionInfoTooltip = null
 					endif
 
 					'handled left click
 					MouseManager.SetClickHandled(1)
 				endif
 
+				if not _actionInfoTooltip and selectedRoom
+					_actionInfoTooltip = new TGUITooltipBase.Initialize("Unknown mode", "", new TRectangle.Init(0,0,-1,-1))
+					_actionInfoTooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, true)
+					if not _actionInfoTooltip.parentArea then _actionInfoTooltip.parentArea = new TRectangle
+					_actionInfoTooltip.parentArea.Init(x, y, sign.imageCache.GetWidth()-3, sign.imageCache.GetHeight()-3)
+					_actionInfoTooltip.offset = new TVec2D.Init(0, 0)
+					'avoid dwelling, just show it
+					_actionInfoTooltip.SetStep(TTooltipBase.STEP_ACTIVE)
+				EndIf
+
 				exit
 			endif
 		Next
 
 
+		if selectedRoom and selectedRoomState <> not (selectedRoom.IsBlocked() or selectedRoom.IsRentalChangeBlocked())
+			_actionInfoTooltipUpdate = True
+			selectedRoomState = not selectedRoomState
+		EndIf
+		
+		if _actionInfoTooltipUpdate and _actionInfoTooltip and selectedRoom
+			_actionInfoTooltipUpdate = False
+			if selectedRoom.GetOwner() <> playerID
+				If selectedRoom.IsRentalChangeBlocked()
+					_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CANCELLATION_NOT_POSSIBLE")))
+					_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("SOMETHING_BLOCKS_ACTION")))
+				Else
+					_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
+					_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_RENT")))
+				EndIf
+			else
+				If selectedRoom.IsRentalChangeBlocked()
+					_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CANCELLATION_NOT_POSSIBLE")))
+					If selectedRoom.IsUsedAsStudio()
+						_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("REMOVE_SCRIPT_THERE_FIRST")))
+					Else
+						_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("SOMETHING_BLOCKS_ACTION")))
+					EndIf
+				Else
+					_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
+					_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_CANCEL_RENT")))
+				EndIf
+			endif
+		endif
+
 		If selectedRoom and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			selectedRoom = null
-			_confirmActionTooltip = null
+			selectedRoomState = 0
+			
+			_actionInfoTooltip = null
 
 			'avoid clicks
 			'remove right click - to avoid leaving the room
@@ -318,10 +345,10 @@ endrem
 
 
 
-		if _confirmActionTooltip
+		if _actionInfoTooltip
 			'update hovered state
-			_confirmActionTooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, selectedRoom <> null)
-			_confirmActionTooltip.Update()
+			_actionInfoTooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, selectedRoom <> null)
+			_actionInfoTooltip.Update()
 		endif
 
 
@@ -390,13 +417,20 @@ endrem
 			if room.IsFake() or room.IsFreeHold() then SetAlpha oldColA * 0.25
 
 
-			if room.IsBlocked()
+			'blocked but available for rent / our own rented room
+			If room.IsRentalChangeBlocked() and ((room.IsRentable() and room.owner <> GetPlayerBase().playerID) ..
+			   or (room.IsRented() and room.owner = GetPlayerBase().playerID))
+				SetColor 255,230,240
+				sign.imageCache.Draw(x,y)
+				SetColor(oldCol)
+			'blocked for another reason?
+			ElseIf room.IsBlocked()
 				SetColor 255,240,220
 				sign.imageCache.Draw(x,y)
 				SetColor(oldCol)
-			else
+			Else
 				sign.imageCache.Draw(x,y)
-			endif
+			EndIf
 
 
 			if room = selectedRoom
@@ -417,8 +451,8 @@ endrem
 			SetAlpha(oldColA)
 		Next
 
-		if _confirmActionTooltip
-			_confirmActionTooltip.Render()
+		if _actionInfoTooltip
+			_actionInfoTooltip.Render()
 		endif
 
 		GuiManager.Draw( LS_roomagency_board )

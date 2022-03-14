@@ -192,21 +192,6 @@ Type TRoomBaseCollection
 	End Method
 
 
-	Method BeginRoomRental:int(room:TRoomBase, owner:int=0)
-		return False
-	End Method
-
-
-	Method CancelRoomRentalsOfPlayer:int(owner:int)
-		return False
-	End Method
-
-
-	Method CancelRoomRental:int(room:TRoomBase, owner:int=0)
-		return False
-	End Method
-
-
 	'=== EVENTS ===
 
 	'run when loading starts
@@ -388,11 +373,39 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetRerentalTime:Long()
 		return rentalChangeTime + GetRerentalWaitingTime()
 	End Method
+	
+	
+	Method SetRentalChangeBlocked(bool:Int = True)
+		SetFlag(TVTRoomFlag.RENTAL_CHANGE_BLOCKED, bool)
+	End Method
+	
+
+	Method IsRentalChangeBlocked:Int()
+		Return HasFlag(TVTRoomFlag.RENTAL_CHANGE_BLOCKED)
+	End Method
+
+
+	Method CanBeginRental:int(newOwner:int, rent:int)
+		If not IsRentable() Then Return False
+		If IsRentalChangeBlocked() Then Return False
+		'already rented it (and rent does not change)?
+		If IsRented() And newOwner = owner and self.rent = rent Then Return False
+
+		Return True
+	End Method
+
+
+	Method CanCancelRental:int()
+		If not IsRented() Then Return False
+		If IsRentalChangeBlocked() Then Return False
+
+		Return True
+	End Method
 
 
 	Method BeginRental:int(newOwner:int, rent:int)
-		if IsRented() and newOwner = owner and self.rent = rent then return False
-
+		If Not CanBeginRental(newOwner, rent) Then Return False
+		
 		local oldOwner:int = owner
 		ChangeOwner(newOwner)
 		SetRented(True)
@@ -407,7 +420,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method CancelRental:int()
-		if not IsRented() then throw "skip cancel rental";return False
+		If Not CanCancelRental() Then Return False
 
 		local oldOwner:int = owner
 		ChangeOwner(0)
@@ -416,7 +429,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		TriggerBaseEvent(GameEventKeys.Room_OnCancelRental, New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", owner).AddNumber("oldOwner", oldOwner), self)
 
-		return True
+		Return True
 	End Method
 
 
@@ -581,7 +594,10 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'- already rented rooms
 		'- freehold rooms (like boss rooms, player offices...)
 		'- fake rooms (porter, room plan, ...)
-		return not IsRented() and IsRentableIfNotRented() 'and not IsFreehold() and not IsFake()
+		If IsRented() Then Return False
+		If Not IsRentableIfNotRented() Then Return False 'and not IsFreehold() and not IsFake()
+
+		Return True
 	End Method
 	
 	

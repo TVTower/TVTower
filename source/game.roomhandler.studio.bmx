@@ -14,7 +14,12 @@ Import "game.gameconfig.bmx"
 '        scripts
 Type RoomHandler_Studio Extends TRoomHandler
 	'a map containing "roomGUID"=>"script" pairs
-	Field studioScriptsByRoom:TMap = CreateMap()
+	'replaced in 0.7.2 but kept for savegame compatibility
+	'(gets converted after loading)
+	'DEPRECATED from 0.7.2
+	Field studioScriptsByRoom:TMap = new TMap {nosave doload}
+	'a map containing "roomID"=>"script" pairs
+	Field studioScriptsByRoomID:TIntMap = new TIntMap
 
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:Int = 1
@@ -138,6 +143,12 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIStudioScript") ]
 
+		'DEPRECATED from 0.7.2
+		'(only needed to convert studioScriptsByRoom to studioScriptsByRoomID as
+		' as room IDs are not known in the moment of deserialization)
+		'savegame loaded - fill studioScriptsByRoomID if needed
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onLoadSavegame) ]
+
 		'(re-)localize content
 		SetLanguage()
 	End Method
@@ -146,6 +157,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		studioScriptsByRoom.Clear()
+		studioScriptsByRoomID.Clear()
 		studioManagerDialogue = Null
 		studioManagerTooltip = Null
 		placeScriptTooltip = Null
@@ -197,16 +209,16 @@ Type RoomHandler_Studio Extends TRoomHandler
 	End Method
 
 
-	Function GetStudioGUIDByScript:String(script:TScriptBase)
-		For Local roomGUID:String = EachIn GetInstance().studioScriptsByRoom.Keys()
-			If GetInstance().studioScriptsByRoom.ValueForKey(roomGUID) = script Then Return roomGUID
+	Function GetStudioIDByScript:Int(script:TScriptBase)
+		For Local intKey:TIntKey = EachIn GetInstance().studioScriptsByRoomID.Keys()
+			If GetInstance().studioScriptsByRoomID.ValueForKey(intKey.value) = script Then Return intKey.value
 		Next
-		Return ""
+		Return 0
 	End Function
 
 
 	'clear the guilist for the suitcase if a player enters
-	Method onEnterRoom:Int( triggerEvent:TEventBase )
+	Method onEnterRoom:Int( triggerEvent:TEventBase ) override
 		'we are not interested in other figures than our player's
 		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		If Not GameConfig.IsObserved(figure) And GetPlayerBase().GetFigure() <> figure Then Return False
@@ -216,26 +228,82 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'remove potential old dialogues
 		studioManagerDialogue = Null
+		
+		Local room:TRoom = TRoom(triggerEvent.GetSender())
+
+		'just to ensure ... update block state
+		If room 
+			local currentScript:TScriptBase = GetCurrentStudioScript(room.GetID())
+			'either no script but blocked - or script and not blocked ?
+			If (currentScript<>Null) <> room.IsRentalChangeBlocked()
+				TLogger.Log("TRoomHandler_Studio", "Repairing broken ~qRentalChangeBlocked~q state on room leave.", LOG_DEBUG)
+				room.SetRentalChangeBlocked( currentScript<>Null )
+			EndIf
+		Endif
 
 		'enable/disable gui elements according to room owner
 		'"only our player" filter already done before
-		If IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+		If IsRoomOwner(figure, room)
 			guiListSuitcase.Enable()
 			guiListStudio.Enable()
 		Else
 			guiListSuitcase.Disable()
 			guiListStudio.Disable()
 		EndIf
+		
+		Return True
 	End Method
+
+
+	Method onLeaveRoom:int( triggerEvent:TEventBase ) override
+		Local room:TRoom = TRoom(triggerEvent.GetSender())
+
+		'just to ensure ... update block state
+		If room 
+			local currentScript:TScriptBase = GetCurrentStudioScript(room.GetID())
+			'either no script but blocked - or script and not blocked ?
+			If (currentScript<>Null) <> room.IsRentalChangeBlocked()
+				TLogger.Log("TRoomHandler_Studio", "Repairing broken ~qRentalChangeBlocked~q state on room leave.", LOG_DEBUG)
+				room.SetRentalChangeBlocked( currentScript<>Null )
+			EndIf
+		Endif
+
+		Return True
+	End Method
+
+
+	'DEPRECATED from 0.7.2
+	Function onLoadSavegame:Int(triggerEvent:TEventBase)
+		local cGUIDs:Int
+		local cIDs:Int
+		For local s:TScript = EachIn GetInstance().studioScriptsByRoom.Values()
+			cGUIDs :+ 1
+		Next
+		For local s:TScript = EachIn GetInstance().studioScriptsByRoomID.Values()
+			cIDs :+ 1
+		Next
+		if cGUIDs > cIDs
+			TLogger.Log("Savegame.Load()", "Migrating TRoomHandler_Studio's ~qstudioScriptsByRoom~q to ~qstudioScriptsByRoomID~q", LOG_SAVELOAD)
+			GetInstance().studioScriptsByRoomID.Clear()
+			For local roomGUID:String = EachIn GetInstance().studioScriptsByRoom.Keys()
+				Local r:TRoomBase = GetRoomBaseByGUID(roomGUID)
+				If Not r
+					Notify "onLoadSavegame: room with guid ~q"+roomGUID+"~q not found."
+				Else
+					GetInstance().studioScriptsByRoomID.Insert(r.GetID(), GetInstance().studioScriptsByRoom.ValueForKey(roomGUID))
+				EndIf
+			Next
+		EndIf
+	End Function
 
 
 	Function onRemoveScriptFromProgrammeCollection:Int( triggerEvent:TEventBase )
 		Local script:TScriptBase = TScriptBase( triggerEvent.GetData().Get("script") )
 		If Not script Then Return False
 
-		Local roomGUID:String = GetStudioGUIDByScript(script)
-		If roomGUID
-			GetInstance().RemoveCurrentStudioScript(roomGUID)
+		Local roomID:Int = GetStudioIDByScript(script)
+		If roomID
+			GetInstance().RemoveCurrentStudioScript(roomID)
 
 			'refresh gui if player is in room
 			If CheckObservedFigureInRoom("studio")
@@ -333,19 +401,19 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local newItem:TGUIStudioScript = TGUIStudioScript(triggerEvent.GetData().Get("source"))
 		if not list or not newItem or not oldItem then Return False
 
-		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		Local roomID:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.GetID()
 		Local roomOwner:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.owner
 
 		'suitcase? check if new one came from studio ("is current")
-		If list = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomGUID) = newItem.script
+		If list = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomID) = newItem.script
 			'print "dropped current on suitcase, set old as current"
 			Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
-			GetInstance().SetCurrentStudioScript(oldItem.script, roomGUID)
+			GetInstance().SetCurrentStudioScript(oldItem.script, roomID)
 
 			newItem.InitAssets(newItem.getAssetName(-1, True), newItem.getAssetName(-1, True))
-		ElseIf list = guiListStudio and GetInstance().GetCurrentStudioScript(roomGUID) <> newItem.script
+		ElseIf list = guiListStudio and GetInstance().GetCurrentStudioScript(roomID) <> newItem.script
 			'print "dropped new on suitcase"
-			GetInstance().SetCurrentStudioScript(newItem.script, roomGUID)
+			GetInstance().SetCurrentStudioScript(newItem.script, roomID)
 
 			newItem.InitAssets(newItem.getAssetName(-1, False), newItem.getAssetName(-1, True))
 		EndIf
@@ -360,21 +428,21 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local receiver:TGUIObject = TGUIObject(triggerEvent._receiver)
 		If Not guiBlock Or Not receiver Then Return False
 
-		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		Local roomID:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.GetID()
 
 		If receiver = guiListStudio Or receiver = studioManagerArea
-			if GetInstance().GetCurrentStudioScript(roomGUID) <> guiBlock.script 
+			if GetInstance().GetCurrentStudioScript(roomID) <> guiBlock.script 
 				'print "   suitcase -> studio [is new]"
-				GetInstance().SetCurrentStudioScript(guiBlock.script, roomGUID)
+				GetInstance().SetCurrentStudioScript(guiBlock.script, roomID)
 
 				guiBlock.InitAssets(guiBlock.getAssetName(-1, False), guiBlock.getAssetName(-1, True))
 				'remove an old dialogue, it might be different now
 				studioManagerDialogue = Null
 			EndIf
-		ElseIf receiver = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
-			if GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script 
+		ElseIf receiver = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomID) = guiBlock.script
+			if GetInstance().GetCurrentStudioScript(roomID) = guiBlock.script 
 				'print "   studio -> suitcase  [is current]"
-				GetInstance().RemoveCurrentStudioScript(roomGUID)
+				GetInstance().RemoveCurrentStudioScript(roomID)
 
 				guiBlock.InitAssets(guiBlock.getAssetName(-1, True), guiBlock.getAssetName(-1, True))
 				'remove an old dialogue, it might be different now
@@ -436,11 +504,12 @@ Type RoomHandler_Studio Extends TRoomHandler
 	End Method
 	
 
-	Method SetCurrentStudioScript:Int(script:TScript, roomGUID:String, ignoreRoomSize:Int = False)
-		If Not script Or Not roomGUID Then Return False
+	Method SetCurrentStudioScript:Int(script:TScript, roomID:Int, ignoreRoomSize:Int = False)
+		If Not script Or Not roomID Then Return False
 		
+		local room:TRoomBase = GetRoomBase(roomID)
+
 		If Not ignoreRoomSize
-			local room:TRoomBase = GetRoomBaseByGUID(roomGUID)
 			if room and room.GetSize() < script.requiredStudioSize then Return False
 		EndIf
 
@@ -450,26 +519,29 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'just move the old one back into the suitcase even if there
 		'is not enough space (the new one will make space...)
 		If GetPlayerBaseCollection().IsPlayer(script.owner) and GetPlayerProgrammeCollection(script.owner).HasScriptInSuitcase(script)
-			RemoveCurrentStudioScript(roomGUID, True)
+			RemoveCurrentStudioScript(roomID, True)
 		Else
-			RemoveCurrentStudioScript(roomGUID, False)
+			RemoveCurrentStudioScript(roomID, False)
 		EndIf
-
-		studioScriptsByRoom.Insert(roomGUID, script)
+		
+		studioScriptsByRoomID.Insert(roomID, script)
 
 		'remove from suitcase list
 		If GetPlayerBaseCollection().IsPlayer(script.owner)
 			GetPlayerProgrammeCollection(script.owner).MoveScriptFromSuitcaseToStudio(script)
 		EndIf
+		
+		'mark studio to avoid cancelling the rental
+		If room Then room.SetRentalChangeBlocked(True)
 
 		Return True
 	End Method
 
 
-	Method RemoveCurrentStudioScript:Int(roomGUID:String, forceSuitcase:Int = False)
-		If Not roomGUID Then Return False
+	Method RemoveCurrentStudioScript:Int(roomID:Int, forceSuitcase:Int = False)
+		If Not roomID Then Return False
 
-		Local script:TScript = GetCurrentStudioScript(roomGUID)
+		Local script:TScript = GetCurrentStudioScript(roomID)
 		If Not script Then Return False
 
 
@@ -485,14 +557,21 @@ Type RoomHandler_Studio Extends TRoomHandler
 			EndIf
 		EndIf
 
-		Return studioScriptsByRoom.Remove(roomGUID)
+
+		Local result:Int = studioScriptsByRoomID.Remove(roomID)
+
+		'remove mark from studio to avoid being not able to cancel the rental
+		Local room:TRoomBase = GetRoomBase(roomID)
+		If room Then room.SetRentalChangeBlocked(False)
+		
+		Return result
 	End Method
 
 
-	Method GetCurrentStudioScript:TScript(roomGUID:String)
-		If Not roomGUID Then Return Null
+	Method GetCurrentStudioScript:TScript(roomID:Int)
+		If Not roomID Then Return Null
 
-		Return TScript(studioScriptsByRoom.ValueForKey(roomGUID))
+		Return TScript(studioScriptsByRoomID.ValueForKey(roomID))
 	End Method
 
 
@@ -537,7 +616,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local room:TRoomBase = TFigure(GetPlayerBase().GetFigure()).inRoom
 		If Not room Then Return False
 		
-		Local roomGUID:String = room.GetGUID()
+		Local roomID:Int = room.GetID()
 
 		'helper vars
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(room.owner)
@@ -566,7 +645,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'studio list
 		For Local guiScript:TGUIStudioScript = EachIn guiListStudio._slots
-			If GetCurrentStudioScript(roomGUID) <> guiScript.script
+			If GetCurrentStudioScript(roomID) <> guiScript.script
 				guiScript.remove()
 				guiScript = Null
 			EndIf
@@ -588,7 +667,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'desk production concepts
 		For Local guiProductionConcept:TGuiProductionConceptListItem = EachIn guiListDeskProductionConcepts._slots
 			'if the concept is for the current set script, skip deletion
-			If guiProductionConcept.productionConcept.script = GetCurrentStudioScript(roomGUID) Then Continue
+			If guiProductionConcept.productionConcept.script = GetCurrentStudioScript(roomID) Then Continue
 
 			guiProductionConcept.remove()
 			guiProductionConcept = Null
@@ -601,7 +680,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'=== SCRIPTS ===
 
 		'studio concept list
-		Local studioScript:TScript = GetCurrentStudioScript(roomGUID)
+		Local studioScript:TScript = GetCurrentStudioScript(roomID)
 		If studioScript
 			'adjust list limit
 			Local minConceptLimit:Int = GetProductionConceptCollection().GetProductionConceptsMinSlotCountByScript(studioScript)
@@ -626,7 +705,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				If draggedScripts.contains(studioScript) Then block.Drag()
 			Else
 				TLogger.Log("Studio.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
-				RemoveCurrentStudioScript(roomGUID)
+				RemoveCurrentStudioScript(roomID)
 			EndIf
 		EndIf
 
@@ -929,8 +1008,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Method GenerateStudioManagerDialogue(dialogueType:Int = 0)
 		If Not TFigure(GetPlayerBase().GetFigure()).inRoom Then Return
 
-		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
-		Local script:TScript = GetCurrentStudioScript(roomGUID)
+		Local roomID:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.GetID()
+		Local script:TScript = GetCurrentStudioScript(roomID)
 		'store first producible concept - it may not be the first script of a series
 		Local firstProducibleScript:TScript
 
@@ -1120,8 +1199,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Next
 		sY:+5
 		DrawText("currentStudioScript:", 10, sY);sY:+20
-		If GetCurrentStudioScript(room.GetGUID())
-			DrawText(GetCurrentStudioScript(room.GetGUID()).GetTitle(), 30, sY)
+		If GetCurrentStudioScript(room.GetID())
+			DrawText(GetCurrentStudioScript(room.GetID()).GetTitle(), 30, sY)
 		Else
 			DrawText("NONE", 30, sY)
 		EndIf
@@ -1154,7 +1233,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Method onDrawRoom:Int( triggerEvent:TEventBase )
 		Local room:TRoom = TRoom(triggerEvent.GetSender())
 		If Not room Then Return False
-		Local roomGUID:String = room.GetGUID()
+		Local roomID:Int = room.GetID()
 
 		'skip drawing the manager or other things for "empty studios"
 		If room.GetOwner() <= 0 Then Return False
@@ -1177,7 +1256,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local highlightTrashBin:Int = False
 
 		If draggedGuiScript And draggedGuiScript.isDragged()
-			If draggedGuiScript.script = GetCurrentStudioScript(roomGUID)
+			If draggedGuiScript.script = GetCurrentStudioScript(roomID)
 				highlightSuitcase = True
 			EndIf
 			highlightStudioManager = True

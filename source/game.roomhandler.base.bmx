@@ -240,10 +240,6 @@ Type TRoomHandler
 	End Function
 
 
-	Method FigureEntersRoom:int(figure:TFigureBase)
-	End Method
-
-
 	'Returns wheather we observe our player figure and if it is in the
 	'given room(name)
 	'Observing an other figure automatically leads to "false" so you
