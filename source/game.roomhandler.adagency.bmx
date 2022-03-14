@@ -281,7 +281,18 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'are in)
 		If Not figure Or Not figure.playerID Then Return False
 
-		GetInstance().FigureEntersRoom(figure)
+		'=== FOR ALL PLAYERS ===
+		'
+		'refill the empty blocks, also sets haveToRefreshGuiElements=true
+		'so next call the gui elements will be redone
+		ReFillBlocks()
+
+
+		'=== FOR WATCHED PLAYERS ===
+		If IsObservedFigure(figure)
+			'reorder AFTER refilling
+			ResetContractOrder()
+		EndIf
 	End Method
 
 
@@ -354,22 +365,6 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 	'===================================
 	'AD Agency: common TFunctions
 	'===================================
-
-	Method FigureEntersRoom:Int(figure:TFigureBase)
-		'=== FOR ALL PLAYERS ===
-		'
-		'refill the empty blocks, also sets haveToRefreshGuiElements=true
-		'so next call the gui elements will be redone
-		ReFillBlocks()
-
-
-		'=== FOR WATCHED PLAYERS ===
-		If IsObservedFigure(figure)
-			'reorder AFTER refilling
-			ResetContractOrder()
-		EndIf
-	End Method
-
 
 	Method GetContractsInStock:TList()
 		If Not listAll

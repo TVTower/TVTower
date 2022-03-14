@@ -99,7 +99,14 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		'are in)
 		if not figure or not figure.playerID then return FALSE
 
-		GetInstance().FigureEntersRoom(figure)
+		'=== FOR WATCHED PLAYERS ===
+		If IsObservedFigure(figure)
+			_actionInfoTooltip = Null
+			_actionInfoTooltipUpdate = 0
+			selectedRoom = Null
+			hoveredRoom = Null
+			hoveredSign = Null
+		EndIf
 	End Method
 
 
@@ -124,25 +131,6 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 			endif
 		endif
 	End Function
-
-
-
-	Method FigureEntersRoom:int(figure:TFigureBase)
-		'=== FOR ALL PLAYERS ===
-
-rem
-		'refill the empty blocks, also sets haveToRefreshGuiElements=true
-		'so next call the gui elements will be redone
-		ReFillBlocks()
-
-
-		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
-			'reorder AFTER refilling
-			ResetContractOrder()
-		endif
-endrem
-	End Method
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
