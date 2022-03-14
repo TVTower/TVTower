@@ -849,7 +849,7 @@ Type StringHelper
 			EndIf
 		Next
 		If offset = 0
-			Return s[.. offset].ToUpper() + s[offset ..]
+			Return s[.. offset + 1].ToUpper() + s[offset + 1 ..]
 		ElseIf offset = s.length - 1
 			Return s[.. s.length - 1] + Chr(s[s.length-1]).ToUpper()
 		Else
