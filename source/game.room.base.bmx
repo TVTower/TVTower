@@ -396,9 +396,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method CanCancelRental:int()
-		If not IsRentable() Then Return False
-		If IsRentalChangeBlocked() Then Return False
 		If not IsRented() Then Return False
+		If IsRentalChangeBlocked() Then Return False
 
 		Return True
 	End Method
@@ -430,7 +429,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		TriggerBaseEvent(GameEventKeys.Room_OnCancelRental, New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", owner).AddNumber("oldOwner", oldOwner), self)
 
-		return True
+		Return True
 	End Method
 
 
@@ -597,6 +596,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'- fake rooms (porter, room plan, ...)
 		If IsRented() Then Return False
 		If Not IsRentableIfNotRented() Then Return False 'and not IsFreehold() and not IsFake()
+
+		Return True
 	End Method
 	
 	
