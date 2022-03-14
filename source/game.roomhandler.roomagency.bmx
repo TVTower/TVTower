@@ -255,14 +255,20 @@ endrem
 							local doneSomething:int = False
 							'(try to) rent the room
 							if selectedroom.GetOwner() <> playerID
-								if GetRoomAgency().BeginRoomRental(selectedroom, GetPlayerBase().playerID)
-									doneSomething = True
-								endif
+								'check possibility first, to avoid a "failed" log entry
+								If GetRoomAgency().CanBeginRoomRental(selectedRoom, GetPlayerBase().playerID) = ERoomAgencyRentalResults.OK
+									If GetRoomAgency().BeginRoomRental(selectedroom, GetPlayerBase().playerID)
+										doneSomething = True
+									EndIf
+								EndIf
 							'(try to) cancel the rent
 							else
-								if GetRoomAgency().CancelRoomRental(selectedroom, GetPlayerBase().playerID)
-									doneSomething = True
-								endif
+								'check possibility first, to avoid a "failed" log entry
+								If GetRoomAgency().CanCancelRoomRental(selectedRoom, GetPlayerBase().playerID) = ERoomAgencyRentalResults.OK
+									If GetRoomAgency().CancelRoomRental(selectedroom, GetPlayerBase().playerID)
+										doneSomething = True
+									EndIf
+								EndIf
 							endif
 
 							'handled it (might be "False" if player had

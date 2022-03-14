@@ -11,8 +11,8 @@ Enum ERoomAgencyRentalResults
 	OK = 1
 	FAIL = 0
 	FAIL_NOT_ENOUGH_MONEY = -1
-	FAIL_ROOM_NOT_RENTED = -3
-	FAIL_ROOM_ALREADY_RENTED = -4
+	FAIL_ROOM_NOT_RENTED = -2
+	FAIL_ROOM_ALREADY_RENTED = -3
 	FAIL_ROOM_BLOCKED = -4
 	FAIL_ROOM_IN_USE = -5
 End Enum
@@ -119,7 +119,7 @@ Type TRoomAgency
 
 
 	Method BeginRoomRental:int(room:TRoomBase, owner:int=0, force:Int=False)
-		If Not force And Not CanBeginRoomRental(room, owner) Then Return False
+		If Not force And CanBeginRoomRental(room, owner) <> ERoomAgencyRentalResults.OK Then Return False
 
 		local rent:int = room.GetRent()
 
@@ -181,7 +181,7 @@ Type TRoomAgency
 
 
 	Method CancelRoomRental:int(room:TRoomBase, owner:int=0, force:Int=False)
-		If not force and not CanCancelRoomRental(room, owner) Then Return False
+		If not force and CanCancelRoomRental(room, owner) <> ERoomAgencyRentalResults.OK Then Return False
 		
 		local roomOwner:int = room.owner
 		'fetch rent before cancelling!
