@@ -70,6 +70,10 @@ IN_XTIME                    = In %X%
 CLICK_AGAIN_TO_RENT         = Click again to rent
 CLICK_AGAIN_TO_CANCEL_RENT  = Click again to cancel rent
 CONFIRM                     = confirm
+RENTAL_NOT_POSSIBLE         = Rental not possible
+CANCELLATION_NOT_POSSIBLE   = Cancellation not possible
+SOMETHING_BLOCKS_ACTION     = Something blocks action
+REMOVE_SCRIPT_THERE_FIRST   = Remove script there first.
 
 ROOMAGENCY_SIZE_TEXT1                              = Perfectly dimensioned room of the size %SIZE%.
 ROOMAGENCY_SIZE_TEXT2                              = Room in the practical size of %SIZE%.

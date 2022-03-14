@@ -135,6 +135,11 @@ Type TRoomAgency
 			EndIf
 		EndIf
 
+		'non-player room rented by player?
+		If room.originalOwner <= 0 And owner > 0
+			room.SetUsedAsStudio(True)
+		EndIf
+
 		'TODO: modify rent by sympathy
 		'rent :* sympathyMod(owner)
 
@@ -194,6 +199,12 @@ Type TRoomAgency
 			if GetPlayerBaseCollection().IsPlayer(roomOwner)
 				GetPlayerFinance(roomOwner).PayRent(toPay, room)
 			Endif
+
+
+			'non-player room rented by player was used as studio?
+			If room.originalOwner <= 0 And room.owner > 0
+				room.SetUsedAsStudio(False)
+			EndIf
 
 			rem
 			'unused for now (done already - see above)
