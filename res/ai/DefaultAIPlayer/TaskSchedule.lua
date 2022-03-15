@@ -757,14 +757,14 @@ function TaskSchedule:GetFilteredAdContractList(guessedAudience, day, hour, forB
 		local allContractsBelow = FilterAdContractsByMinAudience(filteredContracts, 0, guessedAudience)
 		local allContractsBelowCount = table.count(allContractsBelow)
 		if allContractsBelowCount > 0 then
-			filteredContracts = FilterAdContractsByMinAudience(allContractsBelow, guessedAudience.Copy().MultiplyFloat(0.8), guessedAudience)
+			filteredContracts = FilterAdContractsByMinAudience(allContractsBelow, guessedAudience.Copy().MultiplyString("0.8"), guessedAudience)
 
 			-- lower accepted minaudience
 			if table.count(filteredContracts) == 0 then
-				filteredContracts = FilterAdContractsByMinAudience(allContractsBelow, guessedAudience.Copy().MultiplyFloat(0.6), guessedAudience)
+				filteredContracts = FilterAdContractsByMinAudience(allContractsBelow, guessedAudience.Copy().MultiplyString("0.6"), guessedAudience)
 
 				if (table.count(filteredContracts) == 0) then
-					filteredContracts = FilterAdContractsByMinAudience(allContractsBelow, guessedAudience.Copy().MultiplyFloat(0.4), guessedAudience)
+					filteredContracts = FilterAdContractsByMinAudience(allContractsBelow, guessedAudience.Copy().MultiplyString("0.4"), guessedAudience)
 
 					-- fallback to all below
 					if (table.count(filteredContracts) == 0) then
@@ -1008,7 +1008,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 
 	--modify by some player specific riskyness about guessing wrong
 	--and history stats about how wrong we guessed in the past
-	guessedAudience = guessedAudience.MultiplyFloat(riskyness)
+	guessedAudience = guessedAudience.MultiplyString(tostring(riskyness))
 
 	return guessedAudience
 end
@@ -1075,7 +1075,7 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 				q = 0.7 * q + 0.3 * realQ
 				--self:LogDebug(TVT.ME..":  player #"..i.."  "..day.."/"..hour..":  q="..q.."  realQ="..realQ)
 			end
-			TVT.audiencePredictor.SetAverageValueAttraction(i, q)
+			TVT.audiencePredictor.SetAverageValueAttractionString(i, tostring(q))
 
 		end
 
@@ -1093,7 +1093,7 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 					local lastNewsDay, lastNewsHour = FixDayAndHour(previousDay, previousHour - i)
 					previousNewsBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(lastNewsDay, lastNewsHour, TVT.Constants.BroadcastMaterialType.NEWSSHOW)
 					if previousNewsBroadcastAttraction ~= nil then
-						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttraction(previousNewsBroadcastAttraction, 1.0 - i*0.1)
+						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttractionString(previousNewsBroadcastAttraction, tostring(1.0 - i*0.1))
 						break
 					end
 				end
@@ -1725,7 +1725,7 @@ function JobAdSchedule:CheckSlot(day, hour, guessedAudience)
 
 			if table.count(filteredContracts) > 0 then
 				-- keep only contracts with a minimum tolerable minaudience
-				filteredContracts = FilterAdContractsByMinAudience(filteredContracts, guessedAudience.Copy().MultiplyFloat(0.5), guessedAudience)
+				filteredContracts = FilterAdContractsByMinAudience(filteredContracts, guessedAudience.Copy().MultiplyString("0.5"), guessedAudience)
 				self:LogDebug("  all contracts between 0.5 - 1.0 *minAudience: " .. table.count(filteredContracts))
 
 				-- only add a requisition if we do not have some older

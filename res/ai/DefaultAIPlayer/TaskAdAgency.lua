@@ -230,14 +230,14 @@ function AppraiseSpots:AppraiseSpot(spot)
 	-- for now we do not modify our stats if they are special spots
 	if (spot.GetLimitedToTargetGroup() > 0) or (spot.GetLimitedToProgrammeGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) then
 		self:LogTrace("  no special spots please")
-		spot.SetAttractiveness(-1)
+		spot.SetAttractivenessString("-1")
 		return
 	end
 
 	--TODO more sophisticated max audience says only so much if all programmes have low topicality
 	if (spotMinAudience > stats.Audience.MaxValue * 0.7) then
 		self:LogTrace("  too much audience! " .. spotMinAudience .. " / " .. stats.Audience.MaxValue)
-		spot.SetAttractiveness(-1)
+		spot.SetAttractivenessString("-1")
 		return
 	end
 
@@ -279,7 +279,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 --]]
 
 	-- RESULTING ATTRACTION
-	spot.SetAttractiveness(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor)
+	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor))
 --[[
 	self:LogTrace("  Contract:  Spots=" .. spot.GetSpotsToSend() .."  days=" .. spot.GetDaysToFinish() .."  Audience=" .. spot.GetMinAudience(TVT.ME) .. "  Profit=" .. spot.GetProfit(TVT.ME) .." (per spot=" .. profitPerSpot .. ")  Penalty=" .. spot.GetPenalty(TVT.ME) .." (per spot=" .. penaltyPerSpot ..")")
 	self:LogTrace("  Stats:     Avg.PerSpot Profit=" .. stats.SpotProfitPerSpot.AverageValue .. "  Penalty=" .. stats.SpotPenaltyPerSpot.AverageValue .."  Audience(Avg)=" .. stats.Audience.AverageValue)
@@ -363,7 +363,7 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 	if (guessedAudience.GetTotalSum() < 1000) then
 		return TVT.audiencePredictor.GetEmptyAudience()
 	else
-		return guessedAudience.Copy().MultiplyFloat(minFactor)
+		return guessedAudience.Copy().MultiplyString(tostring(minFactor))
 	end
 end
 

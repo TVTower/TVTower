@@ -394,7 +394,15 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetAverageValueAttraction(playerID:Int, avgValue:Float=1.0) {_exposeToLua}
+	'required until brl.reflection correctly handles "float parameters" 
+	'in debug builds (same as "doubles" for 32 bit builds)
+	'GREP-key: "brlreflectionbug"
+	Method SetAverageValueAttractionString(playerID:Int, avgValue:String) {_exposeToLua}
+		SetAverageValueAttraction(playerID, Float(avgValue))
+	End Method
+
+	'expose commented out because of above mentioned brl.reflection bug
+	Method SetAverageValueAttraction(playerID:Int, avgValue:Float=1.0) '{_exposeToLua}
 		SetBaseAttraction(playerID, New TAudience.InitValue(avgValue, avgValue))
 	End Method
 
