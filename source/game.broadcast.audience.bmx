@@ -76,7 +76,7 @@ endrem
 			defaultGenderFemaleBreakdown.Pensioners = 0.58 'the older the more women
 		EndIf
 		If Not defaultGenderMaleBreakdown
-			defaultGenderMaleBreakdown = New TAudienceBase.InitValue(1).Subtract( currentGenderFemaleBreakdown )
+			defaultGenderMaleBreakdown = New TAudienceBase.InitValue(1).Subtract( defaultGenderFemaleBreakdown )
 		EndIf
 		'set current to default (reference!) if nothing set for now
 		If Not currentGenderFemaleBreakdown Then currentGenderFemaleBreakdown = defaultGenderFemaleBreakdown
