@@ -567,7 +567,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	-- reset attractiveness, if it fits to the CURRENT conditions, it
 	-- gets updated accordingly
-	licence.SetAttractiveness(0)
+	licence.SetAttractivenessString("0")
 
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
@@ -611,7 +611,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	if (licence.isPaid() > 0 ) then
 		-- TODO call in bad for the image; maybe later if the sender image is high enough?
 	else
-		licence.SetAttractiveness(financeFactor * qualityFactor)
+		licence.SetAttractivenessString(tostring(financeFactor * qualityFactor))
 	end
 
 

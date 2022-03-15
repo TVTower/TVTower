@@ -1985,9 +1985,16 @@ price :* Max(1, minAudience/1000)
 		Return Self.attractiveness
 	End Method
 
+	'required until brl.reflection correctly handles "float parameters" 
+	'in debug builds (same as "doubles" for 32 bit builds)
+	'GREP-key: "brlreflectionbug"
+	Method SetAttractivenessString(value:String) {_exposeToLua}
+		SetAttractiveness(Float(value))
+	End Method
 
+	'expose commented out because of above mentioned brl.reflection bug
 	'Wird bisher nur in der LUA-KI verwendet
-	Method SetAttractiveness(value:Float) {_exposeToLua}
+	Method SetAttractiveness(value:Float) '{_exposeToLua}
 		Self.attractiveness = value
 	End Method
 

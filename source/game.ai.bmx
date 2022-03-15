@@ -656,10 +656,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		Return TProgrammeLicence[](obj)
 	End Method
 
+	'required until brl.reflection correctly handles "float parameters" 
+	'in debug builds (same as "doubles" for 32 bit builds)
+	'GREP-key: "brlreflectionbug"
+	Method CopyBasicAudienceAttractionString:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactor:String)
+		Return CopyBasicAudienceAttraction(attraction, Float(multiplyFactor))
+	End Method
+
 
 	'helper to allow modification of a predicted audience attraction
 	'without affecting the original one
-	Method CopyBasicAudienceAttraction:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactor:Float = 1.0)
+	Method CopyBasicAudienceAttraction:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactor:Float)
 		If Not attraction Then Return Null
 		Local copyAttraction:TAudienceAttraction = attraction.CopyStaticBaseAttraction()
 		If multiplyFactor <> 1.0 Then copyAttraction.MultiplyAttrFactor(multiplyFactor)
