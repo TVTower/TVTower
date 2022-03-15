@@ -628,7 +628,7 @@ function SignContracts:ShouldSignContract(contract)
 	end
 
 	--not attractive
-	AppraiseSpots:AppraiseSpot(contract)
+	self.Task.AppraiseSpots:AppraiseSpot(contract)
 	if contract.getAttractiveness() < 0 then
 		return 0
 	end
