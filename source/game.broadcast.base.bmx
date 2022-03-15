@@ -396,6 +396,7 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 
 	'required until brl.reflection correctly handles "float parameters" 
 	'in debug builds (same as "doubles" for 32 bit builds)
+	'GREP-key: "brlreflectionbug"
 	Method SetAverageValueAttractionString(playerID:Int, avgValue:String) {_exposeToLua}
 		SetAverageValueAttraction(playerID, Float(avgValue))
 	End Method
