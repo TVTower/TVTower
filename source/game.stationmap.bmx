@@ -869,6 +869,21 @@ Type TStationMapCollection
 		'maybe we got a borked up savegame which skipped recalculation
 		'_instance.RecalculateMapAudienceSums(True)
 
+		local savedSaveGameVersion:Int = triggerEvent.GetData().GetInt("saved_savegame_version")
+		'pre 0.7.2
+		'contained a bug making antennas ignoring last col and last row of
+		'population pixels
+		if savedSaveGameVersion < 17
+			TLogger.Log("TStationMapCollection", "Invalidating antenna reaches for enforced recalculation", LOG_DEBUG | LOG_SAVELOAD)
+			'invalidate (cached) share data of surrounding sections
+			for local s:TStationMap = eachin _instance.stationMaps
+				For local a:TStationAntenna = EachIn s.stations
+					a.reachMax = -1
+					a.reachExclusiveMax = -1
+				next
+			next
+		endif
+
 		Return True
 	End Function
 
