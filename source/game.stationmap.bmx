@@ -58,6 +58,7 @@ Type TStationMapCollection
 	Field _currentPopulationAntennaShare:Double = -1 {nosave}
 	Field _currentPopulationCableShare:Double = -1 {nosave}
 	Field _currentPopulationSatelliteShare:Double = -1 {nosave}
+	Field _sectionNames:String[] {nosave}
 
 	'attention: the interpolation function hook is _not_ saved in the
 	'           savegame
@@ -139,6 +140,7 @@ Type TStationMapCollection
 		_currentPopulationAntennaShare = -1
 		_currentPopulationCableShare = -1
 		_currentPopulationSatelliteShare = -1
+		_sectionNames = Null
 	End Method
 
 
@@ -380,6 +382,13 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetCableNetworkUplinkAudienceSum:int(playerID:Int)
+		Local map:TStationMap = GetMap(playerID, False)
+		If not map Then Return 0
+		Return GetCableNetworkUplinkAudienceSum(map.stations)
+	End Method
+
+
 	Method GetSatelliteUplinkAudienceSum:int(stations:TList)
 		local result:int
 		for local satLink:TStationSatelliteUplink = EachIn stations
@@ -387,6 +396,13 @@ Type TStationMapCollection
 		'	result :+ satLink.GetExclusiveReach()
 		next
 		return result
+	End Method
+
+
+	Method GetSatelliteUplinkAudienceSum:int(playerID:Int)
+		Local map:TStationMap = GetMap(playerID, False)
+		If not map Then Return 0
+		Return GetSatelliteUplinkAudienceSum(map.stations)
 	End Method
 
 
@@ -852,6 +868,21 @@ Type TStationMapCollection
 		'       with a variable set to "false" on init.
 		'maybe we got a borked up savegame which skipped recalculation
 		'_instance.RecalculateMapAudienceSums(True)
+
+		local savedSaveGameVersion:Int = triggerEvent.GetData().GetInt("saved_savegame_version")
+		'pre 0.7.2
+		'contained a bug making antennas ignoring last col and last row of
+		'population pixels
+		if savedSaveGameVersion < 17
+			TLogger.Log("TStationMapCollection", "Invalidating antenna reaches for enforced recalculation", LOG_DEBUG | LOG_SAVELOAD)
+			'invalidate (cached) share data of surrounding sections
+			for local s:TStationMap = eachin _instance.stationMaps
+				For local a:TStationAntenna = EachIn s.stations
+					a.reachMax = -1
+					a.reachExclusiveMax = -1
+				next
+			next
+		endif
 
 		Return True
 	End Function
@@ -1779,12 +1810,14 @@ endrem
 
 
 	Method GetSectionNames:string[]()
-		local names:string[] = new String[ sections.length ]
-		For Local i:int = 0 until sections.length
-			names[i] = sections[i].name.ToLower()
-		Next
+		If _sectionNames = Null
+			_sectionNames = new String[ sections.length ]
+			For Local i:int = 0 until sections.length
+				_sectionNames[i] = sections[i].name.ToLower()
+			Next
+		EndIf
 
-		Return names
+		Return _sectionNames
 	End Method
 
 
@@ -5133,10 +5166,10 @@ Type TStationMapSection
 			EndIf
 
 			'print "ANTENNA uncached: "+cacheKey
-			'print "ANTENNA share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)+"  share="+(result.value.populationShareRatio*100)+"%"
 		else
 			'print "ANTENNA cached: "+cacheKey
-			'print "ANTENNA share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)+"  share="+(result.value.populationShareRatio*100)+"%"
 		EndIf
 
 		Return result.value
@@ -5165,8 +5198,8 @@ Type TStationMapSection
 		If not sprite Then Return
 		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
 
-		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()-1
-			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()-1
+		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()
+			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()
 				'left the circle?
 				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
 				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
@@ -5212,8 +5245,8 @@ endrem
 		If not sprite._pix Then sprite._pix = sprite.GetPixmap()
 
 
-		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()-1
-			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()-1
+		For local posX:int = sectionStationIntersectRect.getX() To sectionStationIntersectRect.getX2()
+			For local posY:int = sectionStationIntersectRect.getY() To sectionStationIntersectRect.getY2()
 				'left the circle?
 				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
 				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
