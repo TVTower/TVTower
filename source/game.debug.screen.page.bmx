@@ -254,29 +254,34 @@ Type TDebugControlsButton
 	Method Render:Int(offsetX:Int=0, offsetY:Int=0)
 		If Not visible Then Return False
 
+		RenderButton(offsetX + x, offsetY + y, w, h, text, enabled, selected)
+	End Method
+	
+	
+	Function RenderButton(x:Int, y:Int, w:Int, h:int, text:String, enabled:Int = True, selected:Int = False)
 		Local oldColA:Float = GetAlpha()
 		If Not enabled Then SetAlpha oldColA * 0.5 
 
 		SetColor 150,150,150
-		DrawRect(offsetX + x,offsetY + y,w,h)
+		DrawRect(x,y,w,h)
 		If selected
-			If THelper.MouseIn(offsetX + x,offsetY + y,w,h)
+			If THelper.MouseIn(x,y,w,h)
 				SetColor 120,110,100
 			Else
 				SetColor 80,70,50
 			EndIf
-		ElseIf THelper.MouseIn(offsetX + x,offsetY + y,w,h)
+		ElseIf THelper.MouseIn(x,y,w,h)
 			SetColor 50,50,50
 		Else
 			SetColor 0,0,0
 		EndIf
 
-		DrawRect(offsetX + x+1,offsetY + y+1,w-2,h-2)
+		DrawRect(x+1,y+1,w-2,h-2)
 		SetColor 255,255,255
-		GetBitmapFont("default", 11).DrawBox(text, offsetX + x,offsetY + y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
+		GetBitmapFont("default", 11).DrawBox(text, x,y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
 		
 		SetAlpha(oldColA)
-	End Method
+	End Function
 
 
 	Method onClick()
