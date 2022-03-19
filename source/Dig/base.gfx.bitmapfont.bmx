@@ -508,20 +508,20 @@ Type TBitmapFont
 		If MaxSigns <> -1 Then loadMaxGlyphs = MaxSigns
 
 		If extraChars = ""
-			extraChars :+ Chr(8364) '
-			extraChars :+ Chr(8230) '
-			extraChars :+ Chr(8220) '
-			extraChars :+ Chr(8221) '
-			extraChars :+ Chr(8222) '
-			extraChars :+ Chr(171) '
-			extraChars :+ Chr(187) '
+			extraChars :+ Chr(8364) 'euro
+			extraChars :+ Chr(8230) 'ellipsis
+			extraChars :+ Chr(8220) 'left double quotation mark
+			extraChars :+ Chr(8221) 'right double quotation mark
+			extraChars :+ Chr(8222) 'double low-9 quotation mark
+			extraChars :+ Chr(171)  'left-pointing double angle quotation mark
+			extraChars :+ Chr(187)  'right-pointing double angle quotation mark
 			'extraChars :+ chr(8227) '
 			'extraChars :+ chr(9662) '
-			extraChars :+ Chr(9650) '
-			extraChars :+ Chr(9660) '
-			extraChars :+ Chr(9664) '
-			extraChars :+ Chr(9654) '
-			extraChars :+ Chr(9632) '
+			extraChars :+ Chr(9650) 'black up-pointing triangle
+			extraChars :+ Chr(9660) 'black down-pointing triangle
+			extraChars :+ Chr(9664) 'black left-pointing triangle
+			extraChars :+ Chr(9654) 'black right-pointing triangle
+			extraChars :+ Chr(9632) 'black square
 		EndIf
 
 		Self.glyphCount = glyphCount
