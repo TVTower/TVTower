@@ -147,7 +147,7 @@ Include "game.menu.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.7.2-dev"
+VersionString = "v0.7.2"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:String = "TVTower"
@@ -1428,7 +1428,7 @@ endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			DrawRect(0,0, 800, bf.GetMaxCharHeight(true))
 		Else
-			DrawRect(0,0, 175 + 90 + 50, bf.GetMaxCharHeight(true))
+			DrawRect(0,0, 175 + 10, bf.GetMaxCharHeight(true))
 		EndIf
 		SetColor(oldCol)
 		SetAlpha(oldA)
@@ -1436,11 +1436,6 @@ endrem
 		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetTimeFactor()), textX , 0).x)
 		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
 		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
-	'ron|gc
-		textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
-		textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
-
-		'textX:+ Max(120, bf.DrawSimple("ev: " + EventManager.eventsTriggered + "listeners: " + EventManager.listenersCalled, textX,0).x)
 
 rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
@@ -2660,6 +2655,7 @@ Type TSaveGame Extends TGameState
 		ShowMessage(True)
 
 		Local savegameSummary:TData = GetGameSummary(savename)
+		if not savegameSummary then savegameSummary = new TData
 		Local loadedSaveGameVersion:Int = savegameSummary.GetInt("savegame_version")
 
 		local fileState:Int = TSaveGame.CheckFileState(saveName, savegameSummary, True)

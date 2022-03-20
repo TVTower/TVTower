@@ -841,13 +841,16 @@ Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 
 		Local defaultColor:SColor8 = New SColor8(75,75,140)
 		Local linkColor:SColor8 = New SColor8(60,60,120)
+		Local oldA:Float = GetAlpha()
 		Local offsetY:Int = 0
 		offsetY :+ GetBitmapFont("Default",13, BOLDFONT).DrawBox("Wir brauchen Deine Hilfe!", 10,460 + offsetY, 300, -1, sALIGN_LEFT_TOP, defaultColor).y
 		offsetY :+ GetBitmapFont("Default",12).DrawBox("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,460 + offsetY, 300,-1, sALIGN_LEFT_TOP, defaultColor).y
-		offsetY :+ GetBitmapFont("Default",12, BOLDFONT).DrawBox("www.gamezworld.de/phpforum", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
-		SetAlpha 0.5 * GetAlpha()
-		offsetY :+ GetBitmapFont("Default",11).DrawBox("(Keine Anmeldung notwendig)", 10,460 + offsetY, 500,20, sALIGN_LEFT_TOP, New SColor8(80,80,170)).y
-		SetAlpha 2.0 * GetAlpha()
+		local dim:SVec2I = GetBitmapFont("Default",12, BOLDFONT).DrawBox("gamezworld.de/phpforum", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor)
+		SetAlpha 0.75 * oldA
+		GetBitmapFont("Default",10).DrawBox("(ohne Anmeldung nutzbar)", 10 + dim.x + 8,460 + offsetY + 2, 500,20, sALIGN_LEFT_TOP, New SColor8(80,80,170))
+		offsetY :+ dim.y
+		SetAlpha oldA
+		offsetY :+ GetBitmapFont("Default",12, BOLDFONT).DrawBox("github.com/TVTower", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
 
 
 		Local bottomStartY:Int = GetGraphicsManager().GetHeight() - 100 - 10
