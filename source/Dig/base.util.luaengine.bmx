@@ -891,7 +891,6 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 					endif
 				Case FloatTypeId
 					args[i] = String.FromFloat(Float(lua_tonumber(getLuaState(), i + luaArgsOffset + 1)))
-					print funcOrMeth.name() + "()" + "   received float, argument #" + i + " = " + string(args[i])
 				Case DoubleTypeId
 ?not ptr64
 Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
