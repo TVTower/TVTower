@@ -24,8 +24,8 @@ runs:
         echo "#========================================="
         echo "# Adding xenial repository so libesd0 can be found (required on Ubuntu 20.04 and newer)"
         echo "# -> does not work / is not allowed"
-        wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.2_amd64.deb
-        sudo dpkg -i multiarch-support_2.27-3ubuntu1.2_amd64.deb
+        wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb
+        sudo dpkg -i multiarch-support_2.27-3ubuntu1.5_amd64.deb
         sudo apt-get install libaudiofile-dev
         wget http://ftp.br.debian.org/debian/pool/main/e/esound/esound-common_0.2.41-11_all.deb
         sudo dpkg -i esound-common_0.2.41-11_all.deb
@@ -33,6 +33,7 @@ runs:
         sudo dpkg -i libesd0_0.2.41-11_amd64.deb
         wget http://ftp.br.debian.org/debian/pool/main/e/esound/libesd0-dev_0.2.41-11_amd64.deb
         sudo dpkg -i libesd0-dev_0.2.41-11_amd64.deb
+        rm multiarch-support_2.27-3ubuntu1.5_amd64.deb
         rm esound-common_0.2.41-11_all.deb
         rm libesd0_0.2.41-11_amd64.deb
         rm libesd0-dev_0.2.41-11_amd64.deb
@@ -54,8 +55,8 @@ runs:
       if [[ "${{inputs.target-architecture}}" = "i386" ]]; then
         echo "#========================================="
         echo "# Add multiarch"
-        wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.4_amd64.deb
-        sudo dpkg -i multiarch-support_2.27-3ubuntu1.4_amd64.deb
+        wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb
+        sudo dpkg -i multiarch-support_2.27-3ubuntu1.5_amd64.deb
         sudo dpkg --add-architecture i386
         
         echo "#========================================="
@@ -81,7 +82,7 @@ runs:
         sudo dpkg -i libesd0_0.2.41-11_i386.deb
         wget https://cloudfront.debian.net/debian-archive/debian/pool/main/e/esound/libesd0-dev_0.2.41-11_i386.deb
         sudo dpkg -i libesd0-dev_0.2.41-11_i386.deb
-        rm multiarch-support_2.27-3ubuntu1.4_amd64.deb
+        rm multiarch-support_2.27-3ubuntu1.5_amd64.deb
         rm esound-common_0.2.41-11_all.deb
         rm libesd0_0.2.41-11_i386.deb
         rm libesd0-dev_0.2.41-11_i386.deb

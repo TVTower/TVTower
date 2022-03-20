@@ -159,7 +159,7 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Setup latest BlitzMax NG version
-      uses: gwron/setup-blitzmax-action@v1
+      uses: gwron/setup-blitzmax-action@master
       id: bmx # set step reference ID
       with:
         bmx-version: ${{ github.event.inputs.bmx-ver }}
@@ -219,7 +219,7 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Setup latest BlitzMax NG version
-      uses: gwron/setup-blitzmax-action@v1
+      uses: gwron/setup-blitzmax-action@master
       id: bmx # set step reference ID
       with:
         bmx-version: ${{ github.event.inputs.bmx-ver }}
