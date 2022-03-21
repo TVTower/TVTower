@@ -106,6 +106,14 @@ Type TDebugScreenPage_PlayerBroadcasts extends TDebugScreenPage
 
 		widget_playerProgrammePlanInfo.Render(playerID, position.x + 5, position.y + 3)
 		debugWidget_ProgrammeCollectionInfo.Render(playerID, position.x + 350, position.y + 3)
+		If widget_playerProgrammePlanInfo.programmeForHover
+			widget_playerProgrammePlanInfo.programmeForHover.ShowSheet(position.x + 400, position.y + 3)
+		ElseIf debugWidget_ProgrammeCollectionInfo.programmeForHover
+			debugWidget_ProgrammeCollectionInfo.programmeForHover.ShowSheet(position.x + 5, position.y + 3, 0, 0, playerID)
+		ElseIf debugWidget_ProgrammeCollectionInfo.contractForHover
+			debugWidget_ProgrammeCollectionInfo.contractForHover.ShowSheet( position.x + 170, position.y + 3, 0, 0, playerID)
+		EndIf
+
 	End Method
 End Type
 
@@ -131,6 +139,7 @@ Type TDebugWidget_ProgrammePlanInfo
 	Field haveToRemoveOutdated:Int = 0
 	Field haveToRemoveOutdatedCount:Int = 0
 	Field _eventListeners:TEventListenerBase[]
+	Field programmeForHover:TBroadcastMaterial = null
 
 
 	Method New()
@@ -261,6 +270,7 @@ Type TDebugWidget_ProgrammePlanInfo
 		Local lineTextDY:Int = -1
 		Local programmeSlotX:Int = x + clockSlotWidth + slotPadding
 		Local adSlotX:Int = programmeSlotX + programmeSlotWidth + slotPadding
+		programmeForHover = null
 
 		Local font:TBitmapFont = GetBitmapFont("default", 10)
 
@@ -333,6 +343,9 @@ Type TDebugWidget_ProgrammePlanInfo
 			Local programme:TBroadcastMaterial = daysProgramme[hour]
 			If programme
 				progString = programme.GetTitle()
+				If THelper.MouseIn(x, y + hour * lineHeight, programmeSlotWidth, lineheight)
+					programmeForHover = programme
+				EndIf
 				If TAdvertisement(programme) Then progString = "I: "+progString
 
 				progString2 = ((hour - programme.programmedHour + 25) Mod 24) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME)
@@ -572,7 +585,9 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	Global scheduledRemoveOutdatedTimes:Long[]
 	Global haveToRemoveOutdated:Int
 	Global _eventListeners:TEventListenerBase[]
-	
+	Global programmeForHover:TProgrammeLicence = null
+	Global contractForHover:TAdContract = null
+
 	Method New()
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
@@ -814,6 +829,8 @@ endrem
 		Local adLeftX:Int = 165
 		Local font:TBitmapFont = GetBitmapFont("default", 10)
 		Local initialY:Int = y
+		programmeForHover = null
+		contractForHover = null
 
 		'clean up if needed
 		If scheduledRemoveOutdatedTimes.length > 0 and scheduledRemoveOutdatedTimes[0] < Time.GetTimeGone()
@@ -882,6 +899,10 @@ endrem
 			font.DrawBox( adString2b, x + adLeftX + 2 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 55, lineTextHeight, sALIGN_CENTER_CENTER, secondLineCol)
 			font.DrawBox( adString2c, x + adLeftX + 2 + adLineWidth-55-2, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 55, lineTextHeight, sALIGN_RIGHT_CENTER, secondLineCol)
 
+			If THelper.MouseIn(x + adLeftX +2, y + entryPos * lineHeight*2, lineWidth, lineTextHeight*2)
+				contractForHover = a
+			EndIf
+
 			entryPos :+ 1
 		Next
 
@@ -936,6 +957,10 @@ endrem
 
 			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
 
+			If THelper.MouseIn(x, y + entryPos*lineHeight, lineWidth, lineTextHeight)
+				programmeForHover = l
+			EndIf
+
 			entryPos :+ 1
 			If entryPos = 31
 				x:+adLeftX
@@ -943,8 +968,11 @@ endrem
 			EndIf
 		Next
 
-
-		y = initialY + entryPos*lineHeight
+		If entryPos > 30
+			y = initialY + countractCount * 2 * lineHeight + (entryPos - 32) * lineHeight 
+		Else
+			y = initialY + entryPos*lineHeight
+		EndIf
 		y :+ 20
 		font.DrawSimple("Suitcase: " + collection.GetSuitcaseProgrammeLicenceCount() +" licences", x, y, SColor8.White)
 		y :+ 12
