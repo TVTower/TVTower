@@ -216,6 +216,9 @@ function AIPlayer:Tick()
 				MY.SetAIStringData("budget_task_currentbudget" .. taskNumber, math.round(v.CurrentBudget,1))
 				MY.SetAIStringData("budget_task_budgetmaximum" .. taskNumber, math.round(v.BudgetMaximum(),1))
 				MY.SetAIStringData("budget_task_budgetwholeday" .. taskNumber, math.round(v.BudgetWholeDay,1))
+				local fixCosts = v.FixedCosts
+				if fixCosts == nil then fixCosts = -1 end
+				MY.SetAIStringData("budget_task_fixcosts" .. taskNumber, math.round(fixCosts,1))
 			end
 		end
 		MY.SetAIStringData("budget_task_count", taskNumber)

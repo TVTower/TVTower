@@ -75,7 +75,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Local colWidth:Int = 45
 			Local labelWidth:Int = 80
 			Local padding:Int = 15
-			Local boxWidth:Int = labelWidth + padding + colWidth*3 + 2 '2 is border*2
+			Local boxWidth:Int = labelWidth + padding + colWidth*4 + 2 '2 is border*2
 
 			SetColor 40,40,40
 			DrawRect(x, y, boxWidth, 140)
@@ -97,6 +97,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			textFontBold.Draw("Current", textX + labelWidth + padding + colWidth*0, textY)
 			textFontBold.Draw("Max", textX + labelWidth + padding + colWidth*1, textY)
 			textFontBold.Draw("Day", textX + labelWidth + padding + colWidth*2, textY)
+			textFontBold.Draw("FixCosts", textX + labelWidth + padding + colWidth*3, textY)
 			textY :+ 10 + 2
 
 			For Local taskNumber:Int = 1 To player.aiData.GetInt("budget_task_count", 1)
@@ -104,6 +105,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), textX + labelWidth + padding + colWidth*0, textY)
 				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), textX + labelWidth + padding + colWidth*1, textY)
 				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), textX + labelWidth + padding + colWidth*2, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_fixcosts"+taskNumber)), textX + labelWidth + padding + colWidth*3, textY)
 				textY :+ 10
 			Next
 		EndIf
