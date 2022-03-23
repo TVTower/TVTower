@@ -6187,6 +6187,7 @@ Function GetPlayerPerformanceOverviewText:String[](day:Int)
 
 	Local adAudienceProgrammeAudienceRate:Float[4]
 	Local failedAdSpots:Int[4]
+	Local spotPenalty:String[4]
 	Local sentTrailers:Int[4]
 	Local sentInfomercials:Int[4]
 	Local sentAdvertisements:Int[4]
@@ -6237,6 +6238,14 @@ Function GetPlayerPerformanceOverviewText:String[](day:Int)
 			If adAudienceSum[player-1] > 0
 				adAudienceProgrammeAudienceRate[player-1] = Float(adAudienceSum[player-1]) / audienceSum[player-1]
 			EndIf
+
+			Local finance:TPlayerFinance = TPlayerFinanceCollection.getInstance().Get(player, day)
+			Local penalty:Long = finance.expense_penalty
+			If penalty > 0
+				spotPenalty[player-1] = ""+penalty / 1000 +"K; "
+			Else
+				spotPenalty[player-1] =""
+			EndIf
 		Next
 	EndIf
 
@@ -6246,11 +6255,11 @@ Function GetPlayerPerformanceOverviewText:String[](day:Int)
 	values3 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[2]*100,2)+"%" ]
 	values4 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[3]*100,2)+"%" ]
 
-	keys :+ [ "Failed Adspots" ]
-	values1 :+ [ String(failedAdSpots[0]) ]
-	values2 :+ [ String(failedAdSpots[1]) ]
-	values3 :+ [ String(failedAdSpots[2]) ]
-	values4 :+ [ String(failedAdSpots[3]) ]
+	keys :+ [ "Penalty; Failed Adspots" ]
+	values1 :+ [ spotPenalty[0]+String(failedAdSpots[0]) ]
+	values2 :+ [ spotPenalty[1]+String(failedAdSpots[1]) ]
+	values3 :+ [ spotPenalty[2]+String(failedAdSpots[2]) ]
+	values4 :+ [ spotPenalty[3]+String(failedAdSpots[3]) ]
 	keys :+ [ "Sent [T]railers and [I]nfomercials" ]
 	values1 :+ [ "T:"+sentTrailers[0] + " I:"+sentInfomercials[0] ]
 	values2 :+ [ "T:"+sentTrailers[1] + " I:"+sentInfomercials[1] ]
@@ -6348,7 +6357,7 @@ Function GetPlayerFinanceOverviewText:String[](playerID:Int, day:Int)
 		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_scripts), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_scripts), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_scripts), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_scripts), 11)+ " |"]
 		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_productionStuff), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_productionStuff), 11)+ " |"]
 		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_rent), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_rent), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_drawingCreditInterest), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_drawingCreditInterest + finance.expense_creditInterest), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest + financeTotal.expense_creditInterest), 11)+ " |"]
 		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_creditTaken), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_creditRepayed), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_creditTaken), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_creditRepayed), 11)+ " |"]
 		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_misc), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_misc), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_misc), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_misc), 11)+ " |"]
 		text :+ ["|--------------------------------|------------|------------|-------------|-------------|"]
@@ -6362,24 +6371,30 @@ End Function
 
 
 
-Function GetBroadcastOverviewString:String(day:Int = -1, lastHour:Int = -1)
+Function GetBroadcastOverviewText:String[](playerID:Int = -1, day:Int = -1)
 	If day = -1 Then day = GetWorldTime().GetDay()
-	If lastHour = -1 Then lastHour = GetWorldTime().GetDayHour()
+	Local lastHour:Int = GetWorldTime().GetDayHour()
 	If day < GetWorldTime().GetDay() Then lastHour = 23
 	Local time:Long = GetWorldTime().MakeTime(0, day, lastHour, 0, 0)
 
 	Local result:String = ""
-	result :+ "==== BROADCAST OVERVIEW ====" + "~n"
+	result :+ "==== BROADCAST OVERVIEW ====  "
 	result :+ GetWorldTime().GetFormattedDate(time) + "~n"
 
 	Local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
 	If Not stat
-		result :+ "no dailybroadcaststatistic for day "+day+" found." + "~n"
-		Return result
+		result :+ "  no dailybroadcaststatistic found." + "~n"
+		Return [result]
 	EndIf
 
+	Local playerMin:Int = 1
+	Local playerMax:Int	= 4
+	If playerId > 0
+		playerMin = playerID
+		playerMax = playerID
+	EndIf
 
-	For Local player:Int = 1 To 4
+	For Local player:Int = playerMin To playerMax
 		result :+ ".----------." + "~n"
 		result :+ "| PLAYER " + player + " |" + "~n"
 		result :+ ".-------.--'------.---------------------------.-----------------.----------------------.---------." + "~n"
@@ -6444,7 +6459,7 @@ Function GetBroadcastOverviewString:String(day:Int = -1, lastHour:Int = -1)
 		Next
 		result :+ "'-------'---------'---------------------------'-----------------'----------------------'---------'" + "~n"
 	Next
-	Return result
+	Return [result]
 End Function
 
 
