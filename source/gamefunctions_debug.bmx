@@ -1398,41 +1398,14 @@ Type TDebugScreen
 				Next
 
 			case 2
-				Local playerIDs:Int[] = [1,2,3,4]
-
-				Print "====== TOTAL FINANCE OVERVIEW ======" + "~n"
-				Local result:String = ""
-				For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
-					For Local playerID:Int = EachIn playerIDs
-						For Local s:String = EachIn GetPlayerFinanceOverviewText(playerID, day)
-							result :+ s+"~n"
-						Next
-					Next
-					result :+ "~n~n"
-				Next
-
-				Local logFile:TStream = WriteStream("utf8::" + "logfiles/log.financeoverview.txt")
-				logFile.WriteString(result)
-				logFile.close()
-				Print result
-				Print "===================================="
-
+				printLog("TOTAL FINANCE OVERVIEW", GetPlayerFinanceOverviewText, "financeoverview")
 			case 3
-				Print GetBroadcastOverviewString()
-
-			case 4
-				Print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
-				Local result:String = ""
-				For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
-					result :+ GetBroadcastOverviewString(day)
+				Local text:String[] = GetBroadcastOverviewText(GetPlayer().playerID)
+				For Local s:String = EachIn text
+					Print s
 				Next
-
-				Local logFile:TStream = WriteStream("utf8::" + "logfiles/log.broadcastoverview.txt")
-				logFile.WriteString(result)
-				logFile.close()
-				Print result
-				Print "======================================"
-
+			case 4
+				printLog("TOTAL BROADCAST OVERVIEW", GetBroadcastOverviewText, "broadcastoverview")
 			case 5
 				Print "====== TOTAL PLAYER PERFORMANCE OVERVIEW ======" + "~n"
 				Local result:String = ""
@@ -1470,6 +1443,31 @@ Type TDebugScreen
 		'handled
 		sender.clicked = False
 		sender.selected = False
+
+
+		Function printLog:Int(heading:String, _function:String[](playerID:Int, day:Int), logFileName:String)
+			Local playerIDs:Int[] = [1,2,3,4]
+			Local logFiles:TStream[4]
+			For Local playerID:Int = EachIn playerIDs
+				logFiles[playerID-1] =  WriteStream("utf8::" + "logfiles/log."+logFileName+"_"+playerID+".txt")
+			Next
+			Local result:String = "====== " + heading + " ======"
+			For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
+				result :+ "~n~n"
+				For Local playerID:Int = EachIn playerIDs
+					For Local s:String = EachIn _function(playerID, day)
+						result :+ s+"~n"
+						If logFiles[playerID-1] <> Null Then logFiles[playerID-1].WriteString(s+"~n")
+					Next
+				Next
+			Next
+			For Local playerID:Int = EachIn playerIDs
+				 If logFiles[playerID-1] <> Null Then logFiles[playerID-1].close()
+			Next
+
+			Print result
+			Print "==============================================="
+		EndFunction
 	End Function
 
 
