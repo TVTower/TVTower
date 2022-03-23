@@ -178,7 +178,8 @@ Type TBetty
 		if not ignorePublicImage
 			local playerImage:TPublicImage = GetPublicImage(PlayerID)
 			if playerImage
-				local maxAmountImageLimit:int = int(ceil(0.01*playerImage.GetAverageImage()  * LOVE_MAXIMUM))
+				local maxAmountImageLimit:int = int(ceil(1.5 * 0.01 * playerImage.GetAverageImage() * LOVE_MAXIMUM))
+				maxAmountImageLimit = Min(maxAmountImageLimit, LOVE_MAXIMUM)
 				If Self.InLove[PlayerID-1] + amount > maxAmountImageLimit
 					amount = Min(amount, maxAmountImageLimit - Self.InLove[PlayerID-1])
 				Endif
