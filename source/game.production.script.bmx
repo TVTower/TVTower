@@ -1213,6 +1213,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				genreString :+ " / " +GetProductionTypeString()
 			EndIf
 		EndIf
+		if IsCulture()
+			genreString :+ ", |i|" + GetLocale("PROGRAMME_FLAG_CULTURE") +"|/i|"
+		endif
 		If IsSeries()
 			genreString :+ " / " + GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount())
 		EndIf
