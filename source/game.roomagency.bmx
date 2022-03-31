@@ -52,7 +52,7 @@ Type TRoomAgency
 		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
 
 		if room.IsRented() and room.IsUsableAsStudio() and room.GetOwner() <= 0
-			GetInstance().CancelRoomRental(room)
+			GetInstance().CancelRoomRental(room, room.owner, True)
 			room.SetUsedAsStudio(False)
 		endif
 	End Function

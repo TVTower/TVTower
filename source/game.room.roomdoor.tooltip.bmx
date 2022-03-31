@@ -77,18 +77,7 @@ Type TRoomDoorTooltip extends TTooltip
 
 			if room.blockedUntilShownInTooltip
 				'add blocked message
-				local endTime:string
-				'today - only hours
-				if GetWorldTime().GetDay(room.blockedUntil) = GetWorldTime().GetDay()
-					endTime = GetWorldTime().GetFormattedTime(room.blockedUntil)
-				'tomorrow?
-				elseif GetWorldTime().GetDay(room.blockedUntil) - GetWorldTime().GetDay() = 1
-					endTime = GetLocale("TOMORROW")+" " +GetWorldTime().GetFormattedTime(room.blockedUntil)
-				'other day: show game day + hour
-				else
-					endTime = GetWorldTime().GetFormattedDate(room.blockedUntil)
-				endif
-
+				local endTime:string = room.GetBlockedUntilTimeText()
 
 				if room.blockedState & TRoomBase.BLOCKEDSTATE_SHOOTING > 0
 					newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"

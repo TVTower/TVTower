@@ -871,6 +871,21 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		return res
 	End Method
+	
+	
+	Method GetBlockedUntilTimeText:String()
+		'today - only hours
+		if GetWorldTime().GetDay(self.blockedUntil) = GetWorldTime().GetDay()
+			Return GetWorldTime().GetFormattedTime(self.blockedUntil)
+		'tomorrow?
+		elseif GetWorldTime().GetDay(self.blockedUntil) - GetWorldTime().GetDay() = 1
+			Return GetLocale("TOMORROW") + " " + GetWorldTime().GetFormattedTime(self.blockedUntil)
+		'other day: show game day + hour
+		else
+			Return GetWorldTime().GetFormattedDate(self.blockedUntil)
+		endif
+		Return ""
+	End Method
 
 
 	Method HasOccupant:int()

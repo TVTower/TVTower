@@ -314,8 +314,13 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 					_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CANCELLATION_NOT_POSSIBLE")))
 					_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("SOMETHING_BLOCKS_ACTION")))
 				Else
-					_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
-					_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_RENT")))
+					If selectedRoom.IsBlocked()
+						_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("RENTAL_NOT_POSSIBLE")))
+						_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("BLOCKED_UNTIL_TIME").Replace("%TIME%", selectedRoom.GetBlockedUntilTimeText())))
+					Else
+						_actionInfoTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
+						_actionInfoTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_RENT")))
+					EndIf
 				EndIf
 			else
 				If selectedRoom.IsRentalChangeBlocked()
