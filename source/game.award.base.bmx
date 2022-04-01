@@ -340,6 +340,10 @@ Type TAward Extends TGameObject
 			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
 
 			'increase money
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.AddInt("value", priceMoney))
+			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
+			
+			'increase betty's love to you
 			modifier = GetGameModifierManager().CreateAndInit("ModifyBettyLove", New TData.AddInt("value", priceBettyLove))
 			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
 
