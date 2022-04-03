@@ -4037,6 +4037,10 @@ Type GameEvents
 
 		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
+		'do not support cheat in prod mode
+		If Not GameRules.devConfig.GetBool(TApp.keyLS_DevKeys, False) ..
+			And StringHelper.GetArrayIndex(command, ["devkeys", "reloaddev"]) < 0 Then command = "help"
+
 		Select command.Trim().toLower()
 			Case "devkeys"
 				Local on:Int = Int(payload) = 1
@@ -4404,25 +4408,27 @@ Type GameEvents
 
 		Function SendHelp()
 			GetGame().SendSystemMessage("[DEV] available commands:")
-			GetGame().SendSystemMessage("|b|money|/b| [player#] [+- money]")
-			GetGame().SendSystemMessage("|b|bossmood|/b| [player#] [+- mood %]")
-			GetGame().SendSystemMessage("|b|image|/b| [player#] [+- image %]")
-			GetGame().SendSystemMessage("|b|endauctions|/b| [-1=all, 1-8=auction#]")
-			GetGame().SendSystemMessage("|b|setbankrupt|/b| [player#]")
-			GetGame().SendSystemMessage("|b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
-			GetGame().SendSystemMessage("|b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#] [oay=1, free=0]")
-			GetGame().SendSystemMessage("|b|givescript|/b| [player#] [GUID / GUID portion / devscript#] [pay=1, free=0]")
-			GetGame().SendSystemMessage("|b|givead|/b| [player#] [GUID / GUID portion] [checkAvailability=1]")
-			GetGame().SendSystemMessage("|b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
-			GetGame().SendSystemMessage("|b|gotoroom|/b| [roomGUID or roomID]")
-			GetGame().SendSystemMessage("|b|rentroom|/b| [roomGUID or roomID]")
-			GetGame().SendSystemMessage("|b|setmasterkey|/b| [player#]")
-			GetGame().SendSystemMessage("|b|maxaudience|/b|")
-			GetGame().SendSystemMessage("|b|commandai|/b| [cmd] [params]")
-			GetGame().SendSystemMessage("|b|playerai|/b| [player#] [on=1, off=0]")
-			GetGame().SendSystemMessage("|b|loaddb|/b| (dbname)")
+			If GameRules.devConfig.GetBool(TApp.keyLS_DevKeys, False)
+				GetGame().SendSystemMessage("|b|money|/b| [player#] [+- money]")
+				GetGame().SendSystemMessage("|b|bossmood|/b| [player#] [+- mood %]")
+				GetGame().SendSystemMessage("|b|image|/b| [player#] [+- image %]")
+				GetGame().SendSystemMessage("|b|endauctions|/b| [-1=all, 1-8=auction#]")
+				GetGame().SendSystemMessage("|b|setbankrupt|/b| [player#]")
+				GetGame().SendSystemMessage("|b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
+				GetGame().SendSystemMessage("|b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#] [oay=1, free=0]")
+				GetGame().SendSystemMessage("|b|givescript|/b| [player#] [GUID / GUID portion / devscript#] [pay=1, free=0]")
+				GetGame().SendSystemMessage("|b|givead|/b| [player#] [GUID / GUID portion] [checkAvailability=1]")
+				GetGame().SendSystemMessage("|b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
+				GetGame().SendSystemMessage("|b|gotoroom|/b| [roomGUID or roomID]")
+				GetGame().SendSystemMessage("|b|rentroom|/b| [roomGUID or roomID]")
+				GetGame().SendSystemMessage("|b|setmasterkey|/b| [player#]")
+				GetGame().SendSystemMessage("|b|maxaudience|/b|")
+				GetGame().SendSystemMessage("|b|commandai|/b| [cmd] [params]")
+				GetGame().SendSystemMessage("|b|playerai|/b| [player#] [on=1, off=0]")
+				GetGame().SendSystemMessage("|b|loaddb|/b| (dbname)")
+				GetGame().SendSystemMessage("|b|exec|/b| (scriptPath)")
+			EndIf
 			GetGame().SendSystemMessage("|b|reloaddev|/b|")
-			GetGame().SendSystemMessage("|b|exec|/b| (scriptPath)")
 			GetGame().SendSystemMessage("|b|devkeys|/b| [enable 0 or 1]")
 		End Function
 
