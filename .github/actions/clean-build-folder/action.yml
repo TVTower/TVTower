@@ -5,6 +5,7 @@ runs:
   using: "composite"
   steps:
   - run: |
+      ./prepareRelease.sh
       rm -rf $(find . -type d -name ".bmx")
       rm -rf $(find . -type d -name ".git")
       rm -rf $(find . -type d -name ".github")
@@ -39,5 +40,6 @@ runs:
       rm -f "TVTower.exe"
       rm -f "TVTower"
       rm -f "TVTower_DirectX7.bat"
+      rm -f "prepareRelease.sh"
      
     shell: bash
