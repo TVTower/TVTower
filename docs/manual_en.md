@@ -1,5 +1,5 @@
-Manual for Developer Version
-============================
+Manual
+======
 
 Author: Själe
 
@@ -7,15 +7,15 @@ Translator: Matthew Forrester [notes in square brackets]
 
 Foreword
 
-Please always have in mind that this is a developer version. It's far from perfect and many things are still missing. But we try to make sure that you always have playable software.
+Please always have in mind that the game is still under development. It's far from perfect and many things are still missing. But we try to make sure that you always have playable software.
 
 For this we depend on your help. Tell us about mistakes, make suggestions, discuss with us whether the game makes sense or not, and lend a hand, if you have the skills to contribute. It's also great to motivate ourselves by chatting in the forum:
 
 https://www.gamezworld.de/phpforum/
 
-At the moment the game is playable as an endless game. The AI works, but it's not yet in it's final state.
+At the moment TVTower is playable as an endless game. The AI works, but it's not yet in it's final state.
 
-At the end of the manual there's a list of keyboard shortcuts for this developer version.
+At the end of the manual there's a list of useful keyboard shortcuts.
 
 
 Contents
@@ -57,12 +57,12 @@ On the other hand, there's also the possibility of quick-saving and -loading. Si
 Game Speed
 ==========
 
-There are three preset speeds that can be selected via the buttons below the clock. The section "Keyboard Shortcuts for the Developer Version" contains further options for fast-forwarding.
+There are three preset speeds that can be selected via the buttons below the clock or the keys 1, 2 and 3. Pressing the right arrow key fast-forwards the game (see also section "Keyboard Shortcuts").
 
 Movement of In-Game Characters
 ==============================
 
-If possible, your avatar will go wherever you left-click with the mouse pointer. If you click on a door or another interaction object, then the in-game character will try to move there. If a room is occupied, then the avatar will stop in front of it.
+If possible, your avatar will go wherever you left-click with the mouse pointer. If you click on a door or another interaction object, then the in-game character will try to move there. If a room is occupied, then the avatar will stop in front of it. There are keyboard shortcuts for the most important rooms so you need not go to the elevator first - see section "Keyboard Shortcuts".
 
 Inside the rooms, actions are usually triggered by left-clicking. Clicking on the right mouse button leaves the current menu or the room in which you are located.
 
@@ -87,7 +87,7 @@ For those who like to read the full story, or who have used up their data allowa
 Programme Schedule
 ------------------
 
-To get to the Programme Schedule, you must first enter the player's office. Left-click on the door or select it in the elevator plan and your in-game character will move there. Left-clicking on the computer in the office will present you with the Programme Schedule.
+To get to the Programme Schedule, you must first enter the player's office. Left-click on the door or select it in the elevator plan and your in-game character will move there. Left-clicking on the computer in the office will open the Programme Schedule.
 
 You will see the first day. At the beginning of the game, the Opening Show and three advertisements are already in place. In addition, an advertisement has been scheduled as an infomercial. This is only the case at the beginning of the game and should give you enough time to explore the game in peace.
 
@@ -270,7 +270,7 @@ The right screen shows each of the target groups that will be particularly reach
 Chat and Cheating
 =================
 
-The in-game-chat is called up with the "Enter" key. In the developer version, the chat can accept various commands. The command "/dev help" lists the applicable comands. For example, "/dev money 1 1000" will credit 1000 Euros to the account of the first player.
+Pressing the "Enter" key opens the chat where you can execute commands. "/dev help" lists the available comands - there are more in development mode ("/dev devkeys 1"). For example, "/dev money 1 1000" will credit 1000 Euros to the account of the first player.
 
 Processes in the Background
 ===========================
@@ -279,9 +279,46 @@ An example of the processes in the background is the audience rating calculation
 
 And we won't explain away the inconsistencies in advance with big words.
 
-Keyboard Shortcuts for the Developer Version
-============================================
+Game internal producers use available scripts to shoot movies, series etc. which are then available in the movie agency.
 
+Keyboard Shortcuts
+==================
+
+Keyboard shortcuts are slightly different in regular and development mode (see below).
+
+Game Speed
+----------
+* 1 : preset speed 1
+* 2 : preset speed 2
+* 3 : preset speed 3
+* Right arrow key : Fast forward (as long as pressed)
+
+Rooms
+-----
+[The German names are given where these explain the shortcut]
+* A: Archive
+* B: Betty
+* C: Boss [Chef]
+* D: Script Agency [Drehbuchagentur]
+* E: Credits (employees :-))
+* F: Movie Agency [Filmagentur]
+* L: Supermarket [Laden]
+* N: News Studio
+* O: Office
+* P: Room Plan
+* R: Room Agency
+* S: Studio (the first free one found)
+* W: Ad Agency [Werbemakler]
+
+Misc
+----
+
+* F1: Display Game manual or room/screen-specific help if available
+* F5: Save game state (Quicksave)
+* F8: Load game state (Quickload)
+
+Deviating Shortcuts in Developer Mode
+=====================================
 
 Game Speed
 ----------
@@ -298,27 +335,9 @@ Game Speed
 Rooms
 -----
 [The German names are given where these explain the shortcut]
-* W: Ad Agency [Werbemakler]
-* A: Archive
-* B: Betty
-* F: Movie Agency [Filmagentur]
-* O: Office
-* C: Boss [Chef]
-* N: News Studio
-* R: Room Agency
-* P: Room Plan
 * Ctrl + R: Room Plan
-* S: Studio (the first one found)
-* L: Supermarket [Laden]
 * Left-Ctrl + S: Supermarket
-* D: Script Agency [Drehbuchagentur]
 * Right-Ctrl + S: Script Agency
-* E: Credits (employees :-))
-
-Loading/Saving
---------------
-* F5: Save game state (Quicksave)
-* F8: Load game state (Quickload)
 
 Misc
 ----
@@ -330,13 +349,7 @@ Misc
 * Left-Ctrl + TAB: Room-specific debug insights on/off
 * Q: Audience share debug screen on/off
 * K: All characters will be kicked out of the rooms
-* T: Launch the terrorist
 
-* F1: Game manual or display room/screen-specific help if available
-* F6: Play music [or new track]
+* F6: Play new track
 * F10: (De)activate all outside characters (movements)
 * F11: AI on/off
-
-* M: Music/sound output on/off
-* Shift+M: Sound effects on/off
-* Ctrl+M: Music on/off

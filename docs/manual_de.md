@@ -1,19 +1,19 @@
-Spielanleitung der Entwicklerversion
-====================================
+Spielanleitung
+==============
 
 Autor: Själe
 
 Vorbemerkung
 
-Bitte habt immer im Hinterkopf, dass dies eine Entwicklerversion ist. Es ist also noch nicht alles perfekt, manches fehlt noch. Nichtdestotrotz sind wir bemüht, dass Ihr immer eine spielbare Software runterladet.
+Bitte habt immer im Hinterkopf, dass sich das Spiel noch in der Entwicklung befindet. Es ist also noch nicht alles perfekt, manches fehlt noch. Nichtdestotrotz sind wir bemüht, dass Ihr immer eine spielbare Software runterladet.
 
 Dafür sind wir auf Eure Hilfe angewiesen. Meldet uns Fehler, bringt Ideen ein, diskutiert mit uns über Sinn und Unsinn des Spiels oder legt mit Hand an, falls Ihr eine spieldienliche Begabung habt. Schön sind auch motivierende Plaudereien im Forum:
 
 https://www.gamezworld.de/phpforum/
 
-Im Moment ist das Spiel als Endlosspiel spielbar. Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
+Im Moment ist TVTower als Endlosspiel spielbar. Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
 
-Am Ende der Anleitung gibt es eine Liste mit Tastenkürzeln für diese Entwicklerversion.
+Am Ende der Anleitung gibt es eine Liste mit nützlichen Tastenkürzeln.
 
 Inhalt
 ======
@@ -54,13 +54,12 @@ Desweiteren gibt es die Möglichkeit zum Schnellspeichern bzw. -laden. Dazu einf
 Spielgeschwindigkeit
 ====================
 
-Es gibt drei voreingestellte Geschwindigkeiten, die über Knöpfe unter der Uhrzeit ausgewählt werden können. Möglichkeiten zum schnellen Vorspulen können dem Abschitt „Tastenkürzel der Enwicklerversion“ entnommen werden..
-
+Es gibt drei voreingestellte Geschwindigkeiten, die über Knöpfe unter der Uhrzeit oder die Tasten 1, 2 und 3 ausgewählt werden können. Ein schnelles Vorspulen ist mit der Pfeiltaste nach rechts möglich (siehe auch Abschitt „Tastenkürzel“).
 
 Bewegung der Spielfigur
 =======================
 
-Grundsätzlich läuft Euer Avatar immer dahin, wo die Cursor-Fingerspitze bei Linksklick hinzeigt. Freilich, sofern dies überhaupt möglich ist. Klickt Ihr auf eine Tür oder ein anderes Interaktionsobjekt, wird sich die Spielfigur versuchen dorthin zu bewegen. Sollte ein Raum besetzt sein, wird der Avatar davor stehen bleiben.
+Grundsätzlich läuft Euer Avatar immer dahin, wo die Cursor-Fingerspitze bei Linksklick hinzeigt. Freilich, sofern dies überhaupt möglich ist. Klickt Ihr auf eine Tür oder ein anderes Interaktionsobjekt, wird sich die Spielfigur versuchen dorthin zu bewegen. Sollte ein Raum besetzt sein, wird der Avatar davor stehen bleiben. Für die wichtigsten Räume gibt es Tastenkürzel, so dass man sich den Weg zum Fahrstuhl sparen kann - siehe Abschnitt „Tastenkürzel“.
 
 In den Räumen werden die Aktionen ebenfalls mit Linksklick ausgelöst. Mit einem Klick auf die rechte Maustaste verlasst ihr das jeweils aktuelle Menü bzw. den Raum, in dem Ihr Euch befindet.
 
@@ -85,7 +84,7 @@ Für jene, die lieber lesen, es auf dem aktuellsten Stand wissen wollen oder sch
 Programmplanung
 ---------------
 
-Um in die Programmplanung zu gelangen, müsst Ihr zuvor das Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner auswählen und Eure Spielfigur wird sich dorthin bewegen. Im Büro steht ein Computer. Dieser mit links angeklickt, wird Euch den Programmplaner präsentieren.
+Um in die Programmplanung zu gelangen, müsst Ihr zuvor das Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner auswählen und Eure Spielfigur wird sich dorthin bewegen. Ein Linksklick auf den Computer im Büro öffnet den Programmplaner.
 
 Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon die Eröffnungsshow und drei Werbungen platziert. Zudem wurde eine Werbung als Dauerwerbesendung abgelegt. Diese gibt es nur zu Spielbeginn und sollen Euch Zeit einräumen, das Spiel in Ruhe zu erkunden.
 
@@ -268,7 +267,7 @@ Der rechte Bildschirm zeigt die jeweiligen Zielgruppen, die vom Programm bevorzu
 Chat und Cheaten
 ================
 
-Der InGame-Chat wird mit der „Enter“-Taste aufgerufen. Der Chat kann in der Entwicklerversion verschiedene Kommandos entgegennehmen. Der Befehl „/dev help“ listet die verfuegbaren Befehle auf. So würde zum Beispiel ein „/dev money 1 1000“ dem ersten Spieler 1000 Euro aufs Konto gutschreiben.
+Mit der „Enter“-Taste kann man die Chateingabe öffnen und dort auch Befehle ausführen. „/dev help“ listet die verfügbaren Befehle auf. Dabei stehen im Entwicklermodus („/dev devkeys 1“) mehr Befehle zur Verfügung. So würde zum Beispiel ein „/dev money 1 1000“ dem ersten Spieler 1000 Euro aufs Konto gutschreiben.
 
 Abläufe im Hintergrund
 ======================
@@ -277,9 +276,44 @@ Zu den Abläufen im Hintergrund gehört zum Beispiel die Einschaltquotenberechnu
 
 Und wir wollen die Ungereimtheiten nicht durch schlaue Wichtigkeiten schon im Vorhinein wegreden.
 
-Tastenkürzel für die Entwicklerversion
-======================================
+Es gibt spielinterne Produzenten, die aus vorhandenen Drehbüchern Filme, Serien etc. produzieren, die dann in der Filmagentur verfügbar sind.
 
+Tastenkürzel
+============
+
+Die Tastenkürzel unterscheiden sich leicht zwischen regulärem und Entwicklermodus (siehe unten).
+
+Spielgeschwindigkeit
+--------------------
+* 1 : Geschwindigkeit 1
+* 2 : Geschwindigkeit 2
+* 3 : Geschwindigkeit 3
+* Cursor Rechts : Schnellvorlauf (so lange wie gedrückt gehalten)
+
+Räume
+------
+* A: Archiv
+* B: Betty
+* C: Chef
+* D: Drehbuchagentur
+* E: Credits (employees :-))
+* F: Filmagentur
+* L: Supermarkt / Laden
+* N: Nachrichtenstudio
+* O: Büro/Office
+* P: Raumplan
+* R: Raumvermietung / Makler
+* S: Studio (erstes freies)
+* W: Werbemakler
+
+Sonstiges
+---------
+* F1: Spielanleitung oder wenn verfügbar raum-/bildschirmspezifische Hilfe anzeigen
+* F5: Spielstand speichern (Quicksave)
+* F8: Spielstand laden (Quickload)
+
+Abweichende Tastenkürzel im Entwicklermodus
+===========================================
 
 Spielgeschwindigkeit
 --------------------
@@ -293,29 +327,11 @@ Spielgeschwindigkeit
 * 9 : Spielgeschwindigkeit 0,5 Spielminuten/s (Standard)
 * 0 : Spielgeschwindigkeit 0 ("Pause")
 
-Raeume
+Räume
 ------
-* W: Werbemakler
-* A: Archiv
-* B: Betty
-* F: Filmagentur
-* O: Buero/Office
-* C: Chef
-* N: Nachrichtenstudio
-* R: Raumvermietung / Makler
-* P: Roomboard / Raumplan
 * Strg + R: Roomboard / Raumplan
-* S: Studio (erstes gefundenes)
-* L: Supermarkt / Laden
 * Strg Links + S: Supermarkt
-* D: Drehbuchagentur
 * Strg Rechts + S: Drehbuchagentur (Scripts)
-* E: Credits (employees :-))
-
-Laden/Speichern
----------------
-* F5: Spielstand speichern (Quicksave)
-* F8: Spielstand laden (Quickload)
 
 Sonstiges
 ---------
@@ -326,15 +342,8 @@ Sonstiges
 * TAB: Dev-/Debugpanel ein-/ausblenden
 * Strg Links + TAB: Raumspezifische-Debug-Ansicht an/aus
 * Q: Quoten-Debugbildschirm an/aus
-* K: ALLE Figuren werden aus den Raeumen gekickt
-* T: Terroristen losschicken
+* K: ALLE Figuren werden aus den Räumen gekickt
 
-* F1: Spielanleitung oder wenn verfügbar Raum-/Bildschirmspezifischen
-Hilfe anzeigen
-* F6: Musik spielen
+* F6: nächsten Titel spielen
 * F10: Alle Fremdfiguren de-/aktivieren (Bewegungen)
 * F11: KI an/aus
-
-* M: Musik/Soundausgabe an/aus
-* Shift+M: Soundeffekte an/aus
-* Strg+M: Musik an/aus
