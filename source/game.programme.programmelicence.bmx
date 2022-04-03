@@ -1948,7 +1948,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 	Method GetAudienceReachLevelPriceMod:Float(audienceReachLevel:int)
-		return (0.5*Max(1, audienceReachLevel))
+		'price modifier should grow slower; good movies are affordable even in higher levels
+		'0.5; 0.65; 0.85; 1.1; 
+		return (1.3 ^ Max(0, audienceReachLevel-1))/2
+
+		'0.5;    1;  1.5;   2;...
+		'return (0.5*Max(1, audienceReachLevel))
+		
 	End Method
 
 
