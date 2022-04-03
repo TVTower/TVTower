@@ -19,6 +19,7 @@ source/version.txt
 TVTowerSolution.BLIdeUS.layout
 TVTower.blpo
 /anleitung.txt
+docs/manual*.txt
 screenshot*.png
 screenshot*.jpg
 .DS_Store
