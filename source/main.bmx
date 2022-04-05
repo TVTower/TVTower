@@ -4902,7 +4902,8 @@ Type GameEvents
 				If i = winningPlayerID and i = GetPlayer().playerID
 					text = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
 				Else
-					text = GetLocale("PLAYERNAME_WON_THE_AWARDNAME").Replace("%PLAYERNAME%", "|b|"+winnerName+"|/b|").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
+					Local col:TColor = winningPlayer.color
+					text = GetLocale("PLAYERNAME_WON_THE_AWARDNAME").Replace("%PLAYERNAME%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+winnerName+"|color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color||/b|").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
 				EndIf
 
 				If rewardText
