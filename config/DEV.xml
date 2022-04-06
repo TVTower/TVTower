@@ -5,6 +5,7 @@
 			<DEV_KEYS value="TRUE" />
 			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
+			<DEV_AI_GAME_SPEED value="1000" />
 
 			<!-- 
 			<DEV_WORLD_DAYS_PER_SEASON value="3" comment="value*4 = days per year" />

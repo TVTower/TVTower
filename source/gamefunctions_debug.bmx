@@ -44,7 +44,7 @@ Type TDebugScreen
 
 	Field FastForward_Active:Int = False
 	Global FastForward_Continuous_Active:Int = False
-	Global FastForwardSpeed:Int = 500
+	Global FastForwardSpeed:Int = 0 'initialized by reset
 	Field FastForward_SwitchedPlayerToAI:Int = 0
 	Global FastForward_TargetTime:Long = -1
 	Field FastForward_SpeedFactorBackup:Float = 0.0
@@ -1336,7 +1336,7 @@ Type TDebugScreen
 	Method ResetMode_Misc()
 		FastForward_Continuous_Active = False
 		FastForward_Active = False
-		FastForwardSpeed = 500
+		FastForwardSpeed = GameRules.devConfig.GetInt(New TLowerString.Create("DEV_AI_GAME_SPEED"), 1000)
 		FastForward_SwitchedPlayerToAI = 0
 		FastForward_TargetTime = -1
 		FastForward_SpeedFactorBackup = 0.0
