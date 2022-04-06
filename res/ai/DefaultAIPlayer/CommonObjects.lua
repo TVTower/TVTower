@@ -52,14 +52,19 @@ function FilterAdContractsByMinAudience(contractList, minAudienceMin, minAudienc
 		for k,v in pairs(contractList) do
 			local addIt = true
 
+			local contractMinAudience = v.GetMinAudience(TVT.ME)
+			local reqMinAudience = minAudienceMinSum
+			local reqMaxAudience = minAudienceMaxSum
 			-- adjust guessed audience if only specific target groups count
 			if (v.GetLimitedToTargetGroup() > 0) then
-				if addIt and v.GetMinAudience(TVT.ME) < minAudienceMin.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
-				if addIt and v.GetMinAudience(TVT.ME) > minAudienceMax.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
-			else
---debugMsg("  - " .. v.GetTitle() .. ": " .. v.GetMinAudience(TVT.ME) .. " < " .. minAudienceMinSum .." or " .. v.GetMinAudience() .." > " .. minAudienceMaxSum .. "   ?")
-				if addIt and v.GetMinAudience(TVT.ME) < minAudienceMinSum or v.GetMinAudience(TVT.ME) > minAudienceMaxSum then addIt = false end
+				reqMinAudience = minAudienceMin.GetTotalValue( v.GetLimitedToTargetGroup())
+				reqMaxAudience = minAudienceMax.GetTotalValue( v.GetLimitedToTargetGroup())
 			end
+
+			if addIt and contractMinAudience < reqMinAudience then addIt = false end
+			--always add spots that could/should be finished
+			if not addIt and v.GetDaysLeft(-1) == 0 and v.GetSpotsToSend() == 1 then addIt = true end
+			if addIt and contractMinAudience > reqMaxAudience then addIt = false end
 
 			if addIt and table.contains(forbiddenIDs, v.GetID()) then addIt = false end
 
@@ -479,6 +484,17 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 		if hour < 2 or hour > 16 then
 			result = result * relTop
 		end
+	end
+	local timesShown = broadcastMaterialSource:GetTimesBroadcasted(forPlayer)
+	if timesShown >= 15 then
+		result=result * 0.3
+	elseif timesShown >= 10 then
+		result=result * 0.6
+	elseif timesShown >= 5 then
+		result=result * 0.8
+	end
+	if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
+		result = result * 0.5
 	end
 	return result
 end

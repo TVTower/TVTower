@@ -73,6 +73,9 @@ function TaskMovieDistributor:Activate()
 
 	self.BuyMovies = JobBuyMovies()
 	self.BuyMovies.Task = self
+	if startMovies > 2 then
+		self.BuyMovies.Status = JOB_STATUS_DONE
+	end
 
 	self.BidAuctions = JobBidAuctions()
 	self.BidAuctions.Task = self
@@ -237,9 +240,9 @@ function JobBuyStartProgramme:Tick()
 	for k,v in pairs(movies) do
 		--avoid the absolute trash :-)
 		if (v:GetQuality() >= 0.10 and v:GetPrice(TVT.ME) <= startMovieBudgetMax) then
-			--no call-in in start programme
-			if (v:isPaid() > 0) then
-				self:LogTrace("IGNORING PAID PROGRAMME "..v:getTitle())
+			--prevent other problematic start programmes: call-in, horror, too old
+			if (v:isPaid() > 0 or v:getTopicality() < 0.4 or v:GetGenre() == TVT.Constants.ProgrammeGenre.Horror) then
+				self:LogTrace("IGNORING PROGRAMME "..v:getTitle())
 			else
 				table.insert(goodMovies, v)
 			end
@@ -698,6 +701,9 @@ function JobBuyMovies:shouldBuyMovie(movie)
 			return 0
 		end
 		if genre == TVT.Constants.ProgrammeGenre.SciFi and math.random(0,100) > 25 then
+			return 0
+		end
+		if genre == TVT.Constants.ProgrammeGenre.Animation and math.random(0,100) > 25 then
 			return 0
 		end
 		return 1

@@ -48,7 +48,7 @@ end
 
 
 function TaskAdAgency:GetNextJobInTargetRoom()
-	if (MY.GetProgrammeCollection().GetAdContractCount() >= 8) then
+	if (MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax-1) then
 		self:SetDone()
 		return nil
 	elseif (self.CheckSpots.Status ~= JOB_STATUS_DONE) then
