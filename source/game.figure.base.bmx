@@ -376,7 +376,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method CanSeeFigure:int(figure:TFigureBase, range:int=50)
 		'being in a room (or coming out of one)
-		if not IsVisible() or not IsVisible() then return FALSE
+		if not IsVisible() or not figure.IsVisible() then return FALSE
 		'from different floors
 		If area.GetY() <> figure.area.GetY() then return FALSE
 		'and out of range
