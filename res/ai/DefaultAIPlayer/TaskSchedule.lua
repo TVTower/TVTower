@@ -326,7 +326,13 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
     c.guessedAudienceAccuracyHourly = {}
     c.guessedAudienceAccuracyHourlyCount = {}
 ]]
-	return 0.90
+	if hour > 0 and hour < 18 then
+		return 1.4
+	elseif hour > 18 then
+		return 0.90
+	else 
+		return 1.0
+	end
 end
 
 
@@ -1917,8 +1923,8 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 		-- an ad, better place a trailer
 		-- replace "minAudience=0"-spots with trailers!
 		if (newAudienceCoverage > replaceBadAdsWithTrailerRate) then
-			-- only different spots - and when audience requirement is at better
-			if (newAdContract ~= oldAdContract and audienceCoverageIncrease > 0) then
+			-- only different spots - and when audience requirement is at better or it should be finished today
+			if (newAdContract ~= oldAdContract and (audienceCoverageIncrease > 0 or newAdContract.GetDaysLeft(-1) == 0)) then
 				chosenBroadcastSource = newAdContract
 				if currentAdFails then
 					chosenBroadcastLog = "Set ad (avoid failing ad): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))

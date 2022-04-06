@@ -88,7 +88,7 @@ function JobSellMovies:Tick()
 		t.planned = licence.isPlanned()
 		t.price = licence.GetPrice(TVT.ME)
 		t.quality = licence.GetQualityRaw() * licence.GetMaxTopicality()
-		t.timesRun = licence:GetTimesBroadcasted(-1)
+		t.timesRun = licence:GetTimesBroadcasted(TVT.ME)
 		t.licence = licence
 		return t;
 	end
@@ -112,13 +112,13 @@ function JobSellMovies:Tick()
 
 	--TODO sell worst movies based on current antenna reach
 	local reach = self.Task.Player.totalReach
-	local minLicenceCount = 40
+	local minLicenceCount = 35
 	if reach == nil then
 		-- should not happen
 	elseif reach < 2300000 then
-		minLicenceCount = 22
+		minLicenceCount = 20
 	elseif reach < 4700000 then
-		minLicenceCount = 30
+		minLicenceCount = 25
 	end
 
 	--check if licence with minimum quality should sold
@@ -130,7 +130,8 @@ function JobSellMovies:Tick()
 		local worstLicence= table.first(movies)
 		self:LogDebug("worst licence ".. worstLicence.Title .."; loss: "..worstLicence.TopicalityLoss .." planned "..worstLicence.planned )
 		--if worstLicence.TopicalityLoss == 0 and worstLicence.planned <=0 then
-		if worstLicence.planned <= 0 and worstLicence.timesRun >= 7 then
+		--if worstLicence.planned <= 0 and worstLicence.timesRun >= 7 then
+		if worstLicence.timesRun >= 7 then
 			self:LogInfo("mark worst licence for suitcase (selling): "..worstLicence.Title)
 			table.insert(case, worstLicence)
 			table.removeElement(movies, worstLicence)
@@ -149,9 +150,8 @@ function JobSellMovies:Tick()
 		local sellIt = false
 		-- sell when topicality will never raise enough again ("burned")
 		if v.MaxTopicalityLoss > useMaxTopicalityLossTreshold then sellIt = true end
-		-- sell when broadcasted too much and "maxtopicalityloss" wont
-		-- change that much anymore
-		if not sellIt and v.licence.GetMaxTopicality() < 0.2 and v.licence.GetTimesBroadcasted(TVT.ME) > 15 then sellIt = true end
+		-- sell when broadcasted too often
+		if not sellIt and v.licence.GetTimesBroadcasted(TVT.ME) > 15 then sellIt = true end
 
 		-- keep when planned
 		if sellIt and v.planned > 0 then sellIt = false end
