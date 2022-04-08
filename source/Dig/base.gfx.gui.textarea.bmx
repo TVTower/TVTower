@@ -221,7 +221,7 @@ endrem
 		_textDimension = new SVec2I(0,0)
 		_textDimensionValid = False
 		_textCacheImageValid = False
-		if _textParseInfo then _textParseInfo.data.PrepareNewCalculation()
+		if _textParseInfo then _textParseInfo.data.PrepareNewCalculation(_textParseInfo.data.totalLineCount)
 		'_textParseInfo = new TTextParseInfo()
 '		_textParseInfo = Null
 	End Method
@@ -253,8 +253,6 @@ endrem
 			else
 				_textParseInfo.data.CalculateDimensions(self.value, maxWidth, -1, GetFont(), _drawTextSettings.data)
 			endif
-'print "GenerateTextCache"
-'print "  maxWidth="+maxWidth + "  parseInfo dim="+_textParseInfo.data.GetBoxWidth(0)+", " + _textParseInfo.data.GetBoxHeight(0)
 		endif
 
 		local createNew:int = False
@@ -316,7 +314,7 @@ endrem
 		local dy:int = _textCacheImageVisibleMin.y - guiTextPanel.scrollPosition.GetIntY()
 		local dx:int = _textCacheImageVisibleMin.x - guiTextPanel.scrollPosition.GetIntX()
 		_textCacheImageVisibleMin = new SVec2I( guiTextPanel.scrollPosition.GetIntX(), guiTextPanel.scrollPosition.GetIntY() )
-		
+	
 		'advance/de-advance by preload area
 		local newMaxX:Int = _textCacheImageVisibleMin.x + guiTextPanel.GetScreenRect().GetW()
 		local newMaxY:Int = _textCacheImageVisibleMin.y + guiTextPanel.GetScreenRect().GetH()

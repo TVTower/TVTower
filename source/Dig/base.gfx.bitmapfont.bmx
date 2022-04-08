@@ -1960,7 +1960,7 @@ Struct SDrawTextSettings
 	Field truncateWithEllipse:Byte = True
 	'enable linebreaks to cut words not just on "spaces" etc
 	Field lineBreakCanCutWords:Byte = False
-	'is eating à whitespace at the end of lines allowed?
+	'is eating a whitespace at the end of lines allowed?
 	Field skipOptionalElementOnEOL:Byte = True
 	'by default a text box ends when the "line box" of the 
 	'last line ends, not when the actually rendered characters end
@@ -2179,15 +2179,15 @@ Type STextParseInfo
 	End Method
 
 
-	Method PrepareNewCalculation()
+	Method PrepareNewCalculation(estimatedLineCount:Int = -1, estimatedStyleColors:Int = -1)
 		calculated = False
-		Reset()
+		Reset(estimatedLineCount, estimatedStyleColors)
 	End Method
 
 
 	Method Reset(estimatedLineCount:Int = -1, estimatedStyleColors:Int = -1)
-		Local dynamicArrayLength:Int = Max(-1, lineinfo_widths.length - estimatedLineCount)
-		Local dynamicStyleColorsLength:Int = Max(-1, stylesColors.length - estimatedStyleColors)
+		Local dynamicArrayLength:Int = Max(0, estimatedLineCount - lineinfo_widths.length)
+		Local dynamicStyleColorsLength:Int = Max(0, estimatedStyleColors - stylesColors.length)
 	
 		ResetStyle()
 
@@ -2688,7 +2688,7 @@ Type STextParseInfo
 	
 	
 	Method EnsureDynamicArraySize(size:Int)
-		If lineinfo_boxHeightsDynamic.length <= size
+		If lineinfo_boxHeightsDynamic.length < size
 			lineinfo_boxHeightsDynamic = lineinfo_boxHeightsDynamic[.. size + 10]
 			lineinfo_contentHeightsDynamic = lineinfo_contentHeightsDynamic[.. size + 10]
 			lineinfo_maxFontHeightsDynamic = lineinfo_maxFontHeightsDynamic[.. size + 10]
@@ -2711,8 +2711,8 @@ Type STextParseInfo
 		Reset()
 '		calculated = True
 
-
-		ResetStyle()
+		'done in "reset()" already
+		'ResetStyle()
 
 
 		'step 1: find line breaks / word wrapping positions
@@ -2998,9 +2998,9 @@ Type STextParseInfo
 
 			Local lineBreakOption:Int
 			If dynamicIndex >= 0
-				lineBreakOption = (lineinfo_lineBreakOptionsDynamic[dynamicIndex] <= i)
+				lineBreakOption = (lineinfo_lineBreakOptionsDynamic[dynamicIndex] > 0)
 			Else
-				lineBreakOption = (lineinfo_lineBreakOptions[currentLine - 1] <= i)
+				lineBreakOption = (lineinfo_lineBreakOptions[currentLine - 1] > 0)
 			EndIf
 
 
