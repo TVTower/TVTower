@@ -143,9 +143,11 @@ function DefaultAIPlayer:initializePlayer()
 	--TODO if saving is too low, boss credit will not be repaid (budget for boss task?
 	--if it is too big, not enough money is available for movies (investment savings?) 
 	-- budget saving from 10-30%
-	self.Budget.SavingParts = 0.1 + 0.05 * math.random(0,4)
+	--self.Budget.SavingParts = 0.1 + 0.05 * math.random(0,4)
+	self.Budget.SavingParts = 0
 	-- extra safety add-to-fixed-costs from 40-70%
-	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
+	--self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
+	self.Budget.ExtraFixedCostsSavingsPercentage = 0
 
 	self.archEnemyID = -1
 

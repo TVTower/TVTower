@@ -5,6 +5,8 @@ _G["TaskStationMap"] = class(AITask, function(c)
 	c.Id = _G["TASK_STATIONMAP"]
 	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
 	c:ResetDefaults()
+
+	c.intendedAntennaPositions = {}
 end)
 
 
@@ -16,15 +18,18 @@ end
 function TaskStationMap:ResetDefaults()
 	self.BudgetWeight = 4
 	self.BasePriority = 1
-	self.NeededInvestmentBudget = 280000
+	self.NeededInvestmentBudget = 250000
 	self.InvestmentPriority = 8
 
 	if(self.FixedCosts == nil) then self.FixedCosts = 0 end
 
-	self.knownAntennaPositions = {}
-	self.knownSatelliteUplinks = {}
-	self.knownCableNetworkUplinks = {}
-	self.maxAllowedCredit = 250000
+	--do not reset intendedPositions - calculatedOnlyOnce!
+	--self.intendedAntennaPositions = {}
+
+	--old analysis
+	--self.knownAntennaPositions = {}
+	--self.knownSatelliteUplinks = {}
+	--self.knownCableNetworkUplinks = {}
 end
 
 
@@ -49,13 +54,7 @@ function TaskStationMap:GetNextJobInTargetRoom()
 	end
 
 	if (self.BuyStationJob.Status ~= JOB_STATUS_DONE) then
-		--buy only if there is no credit
-		if (MY.GetCredit(-1) <= self.maxAllowedCredit) then
-			self:LogTrace("considering station buy")
-			return self.BuyStationJob
-		else
-			self.BuyStationJob.Status = JOB_STATUS_DONE
-		end
+		return self.BuyStationJob
 	elseif (self.AdjustStationInvestmentJob.Status ~= JOB_STATUS_DONE) then
 		return self.AdjustStationInvestmentJob
 	end
@@ -77,17 +76,16 @@ function TaskStationMap:BeforeBudgetSetup()
 	end
 	local totalReach = player.totalReach
 
-	--TODO do not buy stations when you have a credit
-	if (MY.GetCredit(-1) > self.maxAllowedCredit) and (totalReach == nil or totalReach > 850000) then
+	--TODO cleanup - no investmentPriority anymore
+	if movieCount < 12 and  (totalReach == nil or totalReach > 850000) then
 		self.InvestmentPriority = 0
-	elseif (movieCount < 30) and (totalReach == nil or totalReach > 1300000) then
+	elseif (movieCount < 24) and (totalReach == nil or totalReach > 1300000) then
 		self.InvestmentPriority = 4
 	else
 		self.InvestmentPriority = 8
 	end
 
-	--prevent buying stations if there are not enough movies
-	if movieCount < 20 or self.InvestmentPriority == 0 then
+	if self.InvestmentPriority == 0 then
 		self.BudgetWeight = 0
 	else
 		self.BudgetWeight = 4
@@ -95,8 +93,8 @@ function TaskStationMap:BeforeBudgetSetup()
 			--should not happen
 		elseif totalReach < 2000000 then
 			self.BudgetWeight = 8
-		elseif movieCount < 30 and totalReach > 4400000 and totalReach < 5000000 then
-			self.BudgetWeight = 0
+		--elseif movieCount < 30 and totalReach > 4400000 and totalReach < 5000000 then
+		--	self.BudgetWeight = 0
 		end
 	end
 end
@@ -168,11 +166,175 @@ end
 
 function JobAnalyseStationMarket:Tick()
 	local player = _G["globalPlayer"]
+	-- one could do this on each audience calculation but this is a rather
+	-- complex function needing  some execution time
 
+	--TODO refresh less often
+	TVT.audiencePredictor.RefreshMarkets()
+	player.LastStationMapMarketAnalysis = player.WorldTicks
+	local stats = player.Stats.MovieQuality
+	local movieCount = 0
+	if stats ~= nil then
+		movieCount = stats.Values
+	end
+	player.totalReach = MY.GetMaxAudience()
+	if player.totalReach < 2500000 and movieCount < 20 then
+		self.Task.maxReachIncrease = 2400000 - player.totalReach
+	elseif player.totalReach < 5000000 and movieCount < 30 then
+		self.Task.maxReachIncrease = 4800000 - player.totalReach
+	else
+		self.Task.maxReachIncrease = 99000000
+	end
+
+	if TVT.of_getStationCount(TVT.ME) < 30 and (self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0) then
+		self:determineIntendedPositions()
+	end
+
+	--try without analysing market
+	--self:determineKnownPositions()
+
+	self.Status = JOB_STATUS_DONE
+end
+
+function JobAnalyseStationMarket:determineIntendedPositions()
+	self:LogInfo("determining the positions of all antennas to be built in the future")
+	local startStation = TVT.of_getStationAtIndex(TVT.ME, 0)
+	if startStation ~= nil then
+		if startStation.IsAntenna() == 1 then
+			local radius = startStation.radius
+			--reduce radius - small overlap but decrease missed areas between 3 antennas
+			if radius < 30 then
+				radius = radius -1
+			elseif radius < 40 then
+				radius = radius -2
+			elseif radius < 50 then
+				radius = radius -3
+			elseif radius < 60 then
+				radius = radius -4
+			elseif radius < 70 then
+				radius = radius -5
+			else
+				radius = radius -6
+			end
+			local d = 2 * radius
+
+			--dx and dy are the deltas for the next antenna center in the same row
+			local dx = math.random(radius+radius/2,d)
+			local dy = math.sqrt(4 * radius ^ 2 - dx ^ 2)
+
+			--da and db are the deltas for the center of the start antenna in the next but one row
+			--(antenna centers "alternate")
+			local da = 0
+			local db = math.sqrt(3) * d
+
+			if dx < d then
+				da = math.sqrt( (3 * d ^ 2 )/( ((1.0*dx)/(1.0*dy))^2+ 1) )
+				db = ((1.0*dx)/(1.0*dy))*da
+			end
+
+			dy=math.floor(dy)
+			da=math.floor(da)
+			db=math.floor(db)
+
+			--deltaX and deltaY are the deltas for the center of the start antenna in the next row
+			--the row whose center is "off" by radius
+			local deltaX = 0
+			if dx > dy then
+				deltaX = math.floor((dx - da) / 2)
+			else
+				deltaX = math.floor((da - dx) / 2)
+			end
+			local deltaY = math.floor((db + dy) / 2 )
+
+			local positionTable = {}
+			local foundCount = 1
+			local startX = startStation.x
+			local startY = startStation.y
+			--create rows upwards
+			while foundCount > 0 do
+				foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+				startX = startX + deltaX
+				startY = startY + deltaY
+				foundCount = foundCount+ self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+				startX = startX + deltaX
+				startY = startY + deltaY
+			end
+
+			foundCount = 1
+			startX = startStation.x - deltaX
+			startY = startStation.y - deltaY
+			--create rows downwards
+			while foundCount > 0 do
+				foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+				startX = startX - deltaX
+				startY = startY - deltaY
+				foundCount = foundCount + self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+				startX = startX - deltaX
+				startY = startY - deltaY
+			end
+			self.Task.intendedAntennaPositions = positionTable
+			self:LogInfo("found ".. table.count(positionTable) .. " antennas")
+		else
+			self:LogError("start station is not an antenna")
+		end
+	else
+		self:LogError("no start station found")
+	end
+end
+
+function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDelta, yDelta, positions)
+	local foundCount = 0
+	local x = startX
+	local y = startY
+
+	while x > 0 and y > 0 do
+		if self:insertIntendedPosition(x, y, positions) == 1 then foundCount=foundCount + 1 end
+		x = x - xDelta
+		y = y - yDelta
+	end
+
+	x = startX + xDelta
+	y = startY + yDelta
+	while x < 800 and y < 800 do --TODO map size
+		if self:insertIntendedPosition(x, y, positions) == 1 then foundCount=foundCount + 1 end
+		x = x + xDelta
+		y = y + yDelta
+	end
+	return foundCount
+end
+
+function JobAnalyseStationMarket:insertIntendedPosition(x, y, positions)
+	local tempStation = TVT.of_GetTemporaryAntennaStation(x, y)
+	if tempStation ~= nil then
+		local price  = tempStation.GetPrice()
+		if price >= 0 then
+			table.insert(positions, { x = tempStation.x, y = tempStation.y })
+
+--[[
+			local reach = tempStation.GetReach(false)
+			local exclusiveReach = tempStation.GetExclusiveReach(false)
+			local relativeExclusiveReach = exclusiveReach / reach
+			stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
+			self:LogInfo(stationString)
+			--buying immediately for checking positions
+			--TVT.of_buyAntennaStation(tempStation.x, tempStation.y)
+			--TVT.sleep(40) --sleep necessary in my environment to prevent seg fault
+]]--
+			return 1
+		end
+	end
+	return 0
+end
+
+--Old function determining all players' antenna positions for determining cancidates
+--[[
+function JobAnalyseStationMarket:determineKnownPositions()
 	-- fetch positions of other players stations, cable network uplinks
 	-- and satellite uplinks
 	-- reset known
 	self.Task.knownAntennaPositions = {}
+	self.Task.knownCableNetworkUplinks = {}
+	self.Task.knownSatelliteUplinks = {}
 
 	for i = 1, 4 do
 		local positions = {}
@@ -204,28 +366,8 @@ function JobAnalyseStationMarket:Tick()
 		table.insert(self.Task.knownCableNetworkUplinks, cableNetworkUplinkProviders)
 		table.insert(self.Task.knownSatelliteUplinks, satelliteUplinkProviders)
 	end
-
-
-	-- one could do this on each audience calculation but this is a rather
-	-- complex function needing  some execution time
-	TVT.audiencePredictor.RefreshMarkets()
-	player.LastStationMapMarketAnalysis = player.WorldTicks
-	local stats = player.Stats.MovieQuality
-	local movieCount = 0
-	if stats ~= nil then
-		movieCount = stats.Values
-	end
-	player.totalReach = MY.GetMaxAudience()
-	if player.totalReach < 2500000 and movieCount < 20 then
-		self.Task.maxReachIncrease = 2400000 - player.totalReach
-	elseif player.totalReach < 5000000 and movieCount < 30 then
-		self.Task.maxReachIncrease = 4800000 - player.totalReach
-	else
-		self.Task.maxReachIncrease = 99000000
-	end
-
-	self.Status = JOB_STATUS_DONE
 end
+]]--
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -244,18 +386,6 @@ function JobAdjustStationInvestment:Prepare(pParams)
 end
 
 function JobAdjustStationInvestment:Tick()
-	self:LogTrace("  before adjust: currentBudget=" .. self.Task.CurrentBudget .. "  neededInvestmentBudget"..self.Task.NeededInvestmentBudget)
-
-	-- lower needed value each time we check
-	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
-		self.Task.NeededInvestmentBudget = math.round(self.Task.NeededInvestmentBudget * 0.85 )
-	end
-
-	-- require a minimum investment
-	self.Task.NeededInvestmentBudget = math.max(300000, self.Task.NeededInvestmentBudget)
-
-	self:LogTrace("  after adjust: currentBudget=" .. self.Task.CurrentBudget .. "  neededInvestmentBudget"..self.Task.NeededInvestmentBudget)
-
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -279,8 +409,9 @@ function JobBuyStation:Prepare(pParams)
 
 	local moneyExcludingFixedCosts = TVT.GetMoney() - player.Budget.CurrentFixedCosts
 	--TODO make constant player character dependent
-	if moneyExcludingFixedCosts > 800000 and math.random(0,100) < ignoreBudgetChance then
-		self.Task.CurrentBudget = (0.4 + 0.06*player.ExpansionPriority) * moneyExcludingFixedCosts
+	if self.Task.CurrentBudget > 0 and moneyExcludingFixedCosts > 350000 and math.random(0,100) < ignoreBudgetChance then
+		--self.Task.CurrentBudget = (0.4 + 0.06*player.ExpansionPriority) * moneyExcludingFixedCosts
+		self.Task.CurrentBudget = moneyExcludingFixedCosts
 		self:LogDebug("  raised current budget to " .. self.Task.CurrentBudget .." to buy a station because 'we want it'.")
 	end
 
@@ -289,7 +420,13 @@ function JobBuyStation:Prepare(pParams)
 		self.Task.CurrentBudget = moneyExcludingFixedCosts
 	end
 
-	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
+	--TODO not considering the investment budget has the advantage of faster purchase
+	--if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
+	local neededBudget = 250000
+	if self.Task.fixedCosts ~= nil then
+		neededBudget = neededBudget + self.Task.fixedCosts / 4
+	end
+	if (self.Task.CurrentBudget < neededBudget) then
 		self:LogDebug(" Cancel ... budget lower than needed investment budget")
 		self:SetCancel()
 	end
@@ -308,16 +445,25 @@ function JobBuyStation:SetCancel()
 end
 
 function JobBuyStation:GetAttraction(tempStation)
-	local price = tempStation.GetTotalBuyPrice()
+	--when including permission, overlapping stations in the same area are bought
+	--but when not including; stations in other states win - and budget does not suffice
+	--local price = tempStation.GetTotalBuyPrice()
+	local price = tempStation.GetBuyPrice()
 	local exclusiveReach = tempStation.GetExclusiveReach(false)
-	local pricePerViewer = price / exclusiveReach / 5 + tempStation.GetRunningCosts() / exclusiveReach
+	local pricePerViewer = (price / exclusiveReach) / 5 + tempStation.GetRunningCosts() / exclusiveReach
 	local priceDiff = self.Task.CurrentBudget - price
 	--little influence by the amount of how well the budget is "used"
 	--to avoid buying too many stations (upkeep!)
 	local attraction = 1 / pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
-	--TODO do not buy if reach increase is too small
-	if exclusiveReach < 100000 or tempStation:CanSignContract(-1) == 0 then
-		attraction = 0
+	self:LogTrace("    -> attraction before" .. attraction .." rc"..tempStation.GetRunningCosts())
+	if tempStation.GetTotalBuyPrice() > self.Task.CurrentBudget then
+		attraction = -1
+	elseif attraction < 1 then
+		attraction = -2
+	elseif exclusiveReach < 100000 then
+		attraction = attraction * 0.5
+	elseif tempStation:CanSignContract(-1) == 0 then
+		attraction = -3
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
 	return attraction, price, exclusiveReach
@@ -344,7 +490,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(i)
 				if tempStation then
 					local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
-					if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
+					if (bestOffer == nil and attraction > 0 or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
 						bestOffer = tempStation
 						bestAttraction = attraction
 						bestSectionName = cableNetwork.sectionName
@@ -404,65 +550,27 @@ function JobBuyStation:GetBestAntennaOffer()
 	local bestAttraction = 0
 	local player = _G["globalPlayer"]
 
-	-- fill a list with potential spots for an antenna
-	-- 1) start with positions at which other channels are already
-	-- 2) fill list up to X (eg. 50) with random spots
-	-- 3) add Y random spots (10) so that even with >50 existing antennas
-	--    we still try to find some random ones
-	-- 3) add Z random spots (10) in states we have broadcast permissions
-	--    so that we try to keep prices low even with high budget
-	-- 4) lookup at _similar_ positions (add some random...)
+	self:LogInfo("trying to find best of ".. table.count(self.Task.intendedAntennaPositions) .." antenna positions")
 
-	local stationPositions = {}
-	local maxToCheck = 50 -- +some random
-	local minimumRequiredRandoms = 10
-	local minimumRequiredRandomsWithPermission = 10
+	local removeFromIntendedPositions = {}
 
-	-- 1)
-	for playerKey, playerStations in pairs(self.Task.knownAntennaPositions) do
-		for key, stationPosition in pairs( self.Task.knownAntennaPositions[playerKey] ) do
-			--this might remove some duplicates
-			--(maybe even "round" values to "% 5" or so that nearly similar positions are fetched)
-			local newKey = math.floor(stationPosition[1]) .. "_" .. math.floor(stationPosition[2])
-			stationPositions[newKey] = stationPosition
-		end
-	end
-
-	-- 2) + 3)
-	local requiredRandoms = math.max(minimumRequiredRandoms, maxToCheck - table.count(stationPositions))
-	for i = 1, requiredRandoms do
-		local x = math.random(35, 560)
-		local y = math.random(1, 375)
-		local newKey =  x .. "_" .. y
-		stationPositions[newKey] = {x, y}
-	end
-
-	for i = 1, minimumRequiredRandomsWithPermission do
-		local vec2i = TVT.of_GetRandomAntennaCoordinateInPlayerSections()
-		if vec2i ~= nil then
-			local x = vec2i.GetX()
-			local y = vec2i.GetY()
-			local newKey =  x .. "_" .. y
-			stationPositions[newKey] = {x, y}
-		end
-	end
-
-
-	-- 4)
-		--for i = 1, 50 do
-		--	local tempStation = TVT.of_GetTemporaryAntennaStation(math.random(35, 560), math.random(1, 375))
-	local tablePos = 0
-	for key,value in pairs(stationPositions) do
-		tablePos = tablePos + 1
-		local x = value[1] + math.random(-5,5)
-		local y = value[2] + math.random(-5,5)
-		local otherOwner = 0
-		if table.count(value) > 2 then otherOwner = value[3] end
+	for k,pos in pairs(self.Task.intendedAntennaPositions) do
+		local x = pos.x
+		local y = pos.y
 		local tempStation = TVT.of_GetTemporaryAntennaStation(x, y)
 
 		local stationString = "tempStation is nil"
+		local reach = 0
+		local exclusiveReach = 0
+		local price = -1
+		local relativeExclusiveReach = 0
 		if tempStation ~= nil then
-			stationString = "Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach(false) .. "  exclusive/increase: " .. tempStation.GetExclusiveReach(false) .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach(false) / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice()
+			reach = tempStation.GetReach(false)
+			exclusiveReach = tempStation.GetExclusiveReach(false)
+			if exclusiveReach < 2000 then table.insert(removeFromIntendedPositions, pos) end
+			relativeExclusiveReach = exclusiveReach / reach
+			price = tempStation.GetPrice()
+			stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
 		end
 
 		--filter criterias
@@ -471,26 +579,21 @@ function JobBuyStation:GetBestAntennaOffer()
 			self:LogTrace(stationString)
 
 		--1) outside
-		elseif tempStation.GetPrice() < 0 then
+		elseif price < 0 then
 			self:LogTrace(stationString .. " -> outside of map!")
 			tempStation = nil
 
 		--2) price to high
-		elseif tempStation.GetPrice() > self.Task.CurrentBudget then
+		elseif price > self.Task.CurrentBudget then
 			self:LogTrace(stationString .. " -> too expensive!")
 			tempStation = nil
 
-		--3) relative increase to low (at least 35% required)
-		elseif tempStation.GetRelativeExclusiveReach(false) < 0.35 then
-			self:LogTrace(stationString .. " -> not enough relative reach increase!")
+		--4) absolute increase too low
+		elseif exclusiveReach < 20000 then
 			tempStation = nil
 
-		--4) absolute increase too low
-		--elseif tempStation.GetExclusiveReach(false) < 1500 then
-		--	tempStation = nil
-
 		--5)  reach to low (at least 75.000 required)
-		elseif tempStation.GetReach(false) < 75000 then
+		elseif reach < 75000 then
 			self:LogTrace(stationString .. " -> not enough absolute reach!")
 			tempStation = nil
 
@@ -503,16 +606,21 @@ function JobBuyStation:GetBestAntennaOffer()
 		if tempStation ~= nil then
 			local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
 
-			-- raise attraction a bit if there is somebody else already
-			if otherOwner > 0 then attraction = attraction * 1.10 end
-			-- raise attraction (even further) if AI's enemy is there
-			if otherOwner == player:GetArchEnemyId() then attraction = attraction * 1.06 end
 			if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
 				bestOffer = tempStation
 				bestOffer = tempStation
 				bestAttraction = attraction
 			end
 		end
+	end
+
+	if table.count(removeFromIntendedPositions) > 0 then
+		self:LogDebug("removing from intendedPositions ".. table.count(self.Task.intendedAntennaPositions))
+		for k, pos in pairs(removeFromIntendedPositions) do
+			self:LogDebug("removing  ".. pos.x .. " "..pos.y)
+			table.removeElement(self.Task.intendedAntennaPositions, pos)
+		end
+		self:LogDebug("new count ".. table.count(self.Task.intendedAntennaPositions))
 	end
 
 	return bestOffer, bestAttraction
@@ -528,11 +636,11 @@ function JobBuyStation:Tick()
 
 	local bestOffer = bestAntennaOffer
 	local bestAttraction = bestAntennaAttraction
-	if bestCableAttraction > bestAttraction then
+	if bestCableAttraction > bestAttraction and bestCableAttraction > 0 then
 		bestOffer = bestCableNetworkOffer
 		bestAttraction = bestCableAttraction
 	end
-	if bestSatAttraction > bestAttraction then
+	if bestSatAttraction > bestAttraction and bestSatAttraction > 0 then
 		bestOffer = bestSatelliteOffer
 	end
 
@@ -552,15 +660,6 @@ function JobBuyStation:Tick()
 		-- Wir brauchen noch ein "Fixkostenbudget" fuer Kabelnetze/Satelliten
 
 		self.Task:PayFromBudget(price)
-
-		--next investment sum should be a bit bigger (TODO: make dependend from budget)
-		local newBudget = math.round(((self.Task.NeededInvestmentBudget * 1.5) + (price * 2))/2)
-		if (newBudget < self.Task.NeededInvestmentBudget * 1.15) then
-			self.Task.NeededInvestmentBudget = self.Task.NeededInvestmentBudget * 1.15
-		else
-			self.Task.NeededInvestmentBudget = newBudget
-		end
-		self:LogDebug(" Next channel buy when reaching investment budget of " .. self.Task.NeededInvestmentBudget)
 	end
 
 	self.Status = JOB_STATUS_DONE

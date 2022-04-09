@@ -1,5 +1,6 @@
 -- File: BudgetManager
 
+--TODO cleanup saving and budget calculation
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
@@ -23,7 +24,7 @@ end
 
 function BudgetManager:ResetDefaults()
 	-- Percentage of the budget to save for investments
-	self.SavingParts = 0.3
+	self.SavingParts = 0.0
 	-- Percentage to add on fixed costs "to make sure it is enough"
 	self.ExtraFixedCostsSavingsPercentage = 0
 	self.IgnoreMoneyChange = false
