@@ -95,7 +95,8 @@ function BeginExpandStrategy:Start(playerAI)
 	playerAI.TaskList[TASK_MOVIEDISTRIBUTOR].InvestmentPriority = 0
 	playerAI.TaskList[TASK_STATIONMAP].BasePriority = 3
 	playerAI.TaskList[TASK_STATIONMAP].InvestmentPriority = 15
-	playerAI.Budget.SavingParts = 0.6
+	--handle differently
+	--playerAI.Budget.SavingParts = 0.6
 end
 
 

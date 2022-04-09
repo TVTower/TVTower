@@ -11,8 +11,8 @@ _G["TaskAdAgency"] = class(AITask, function(c)
 	c.BasePriority = 3
 	c.BudgetWeight = 0
 
-	--no budget to spare
-	c.RequiresBudgetHandling = false
+	--budget handling for fixedCosts
+	c.RequiresBudgetHandling = true
 
 	-- zu Senden
 	-- Strafe
@@ -529,10 +529,20 @@ function SignContracts:Tick()
 	local contractsAllowed = TVT.Rules.adContractsPerPlayerMax - MY.GetProgrammeCollection().GetAdContractCount()
 	local haveLow = false
 
+	local signedContracts = TaskAdAgency.GetAllAdContracts()
+	--count penalty for failed contracts as fixed costs
+	local fixedCosts = 0
+	if TVT:GetDayHour() > 19 then
+		for key, contract in pairs(signedContracts) do
+			if contract ~= nil then
+				if contract:GetDaysLeft(-1) == 0 then fixedCosts = fixedCosts + contract.getPenalty(TVT.ME) end
+			end
+		end
+	end
+	self.Task.FixedCosts = fixedCosts
 
 	-- check if we have a low end contract
 	if contractsAllowed > 0 then
-		local signedContracts = TaskAdAgency.GetAllAdContracts()
 		local lowAudience = self.lowAudienceFactor * self.maxAudience
 		local lowUnsent = 0
 		for key, contract in pairs(signedContracts) do

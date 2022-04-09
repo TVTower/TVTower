@@ -117,13 +117,13 @@ function TaskNewsAgency:BeforeBudgetSetup()
 	local player = _G["globalPlayer"]
 
 	if player.NewsPriority > 7 then
-		self.BudgetWeight = 5
-	elseif player.NewsPriority >= 6 then
 		self.BudgetWeight = 4
-	elseif player.NewsPriority >= 5 then
+	elseif player.NewsPriority >= 6 then
 		self.BudgetWeight = 3
-	else
+	elseif player.NewsPriority >= 5 then
 		self.BudgetWeight = 2
+	else
+		self.BudgetWeight = 1
 	end
 
 	-- MODIFIERS

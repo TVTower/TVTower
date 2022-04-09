@@ -3418,7 +3418,7 @@ End Type
 
 
 Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
-	Field radius:Int = 0
+	Field radius:Int = 0 {_exposeToLua="readonly"}
 
 
 	Method New()
