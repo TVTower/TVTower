@@ -51,8 +51,8 @@ Const GRADIENTFONT:Int = 512
 
 'set line mode, lineheight etc
 TBitmapFont.InitDefaultDrawSettings()
-TBitmapFont.globalBoxParseInfo = New STextParseInfo()
-TBitmapFont.globalParseInfo = New STextParseInfo()
+TBitmapFont.globalBoxParseInfo = New TTextParseInfo()
+TBitmapFont.globalParseInfo = New TTextParseInfo()
 
 Type TBitmapFontManager
 	Field baseFont:TBitmapFont
@@ -352,12 +352,12 @@ Type TBitmapFont
 	'and are not passing a STextParseInfo struct (so it uses the
 	'global one), the mutex blocks concurrent access
 	Global globalBoxParseInfoMutex:TMutex = CreateMutex()
-	Global globalBoxParseInfo:STextParseInfo
+	Global globalBoxParseInfo:TTextParseInfo
 	'if you use Draw() to render to a texture
 	'and are not passing a STextParseInfo struct (so it uses the
 	'global one), the mutex blocks concurrent access
 	Global globalParseInfoMutex:TMutex = CreateMutex()
-	Global globalParseInfo:STextParseInfo
+	Global globalParseInfo:TTextParseInfo
 
 	Const controlChar:Int = Asc("|")
 	Const controlCharEscape:Int = Asc("\")
@@ -835,7 +835,7 @@ endrem
 
 	Method GetDimension:SVec2I(text:String)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local result:SVec2I = GetBoxDimension(text, 100000, 100000, globalBoxParseInfo, defaultDrawSettings)
 		UnlockMutex(globalBoxParseInfoMutex)
 
@@ -908,6 +908,26 @@ endrem
 		End Select
 	End Method
 
+
+	Method GetBoxDimension:SVec2I(parseInfo:TTextParseInfo, settings:SDrawTextSettings Var )
+		Return GetBoxDimension(parseInfo, defaultDrawEffect, settings)
+	End Method
+
+
+	Method GetBoxDimension:SVec2I(parseInfo:TTextParseInfo, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var)
+		Select effect.Mode
+			Case EDrawTextEffect.Shadow 
+				Return New SVec2I(parseInfo.data.GetBoxWidth(settings.boxDimensionMode) + 1, parseInfo.data.GetBoxHeight(settings.boxDimensionMode) + 1)
+			Case EDrawTextEffect.Glow 
+				Return New SVec2I(parseInfo.data.GetBoxWidth(settings.boxDimensionMode) + 4, parseInfo.data.GetBoxHeight(settings.boxDimensionMode) + 4)
+			Case EDrawTextEffect.Emboss 
+				Return New SVec2I(parseInfo.data.GetBoxWidth(settings.boxDimensionMode), parseInfo.data.GetBoxHeight(settings.boxDimensionMode) + 1)
+			Default
+				Return New SVec2I(parseInfo.data.GetBoxWidth(settings.boxDimensionMode), parseInfo.data.GetBoxHeight(settings.boxDimensionMode))
+		End Select
+	End Method
+
+
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float)
 		Return GetBoxDimension(text, boxWidth, boxHeight, defaultDrawSettings)
 	End Method
@@ -915,7 +935,7 @@ endrem
 
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, effect:TDrawTextEffect)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local result:SVec2I = GetBoxDimension(text, boxWidth, boxHeight, globalBoxParseInfo, effect.data, defaultDrawSettings)
 		UnlockMutex(globalBoxParseInfoMutex)
 
@@ -925,7 +945,7 @@ endrem
 
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local result:SVec2I = GetBoxDimension(text, boxWidth, boxHeight, globalBoxParseInfo, effect, settings)
 		UnlockMutex(globalBoxParseInfoMutex)
 
@@ -935,7 +955,7 @@ endrem
 
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, settings:SDrawTextSettings Var)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local result:SVec2I = GetBoxDimension(text, boxWidth, boxHeight, globalBoxParseInfo, settings)
 		UnlockMutex(globalBoxParseInfoMutex)
 
@@ -944,7 +964,7 @@ endrem
 
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, settings:TDrawTextSettings)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local result:SVec2I
 		If settings
 			result = GetBoxDimension(text, boxWidth, boxHeight, globalBoxParseInfo, settings.data)
@@ -955,10 +975,24 @@ endrem
 
 		Return result
 	End Method
+
+
+	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, parseInfo:TTextParseInfo, settings:SDrawTextSettings Var)
+		Return GetBoxDimension(text, boxWidth, boxHeight, parseInfo, defaultDrawEffect, settings)
+	End Method
 	
 
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, parseInfo:STextParseInfo Var, settings:SDrawTextSettings Var)
 		Return GetBoxDimension(text, boxWidth, boxHeight, parseInfo, defaultDrawEffect, settings)
+	End Method
+
+
+	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, parseInfo:TTextParseInfo, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var)
+		'calculate line widths/heights and total text width/height
+		Local font:TBitmapFont = Self
+		If Not parseInfo.data.calculated Then parseInfo.data.CalculateDimensions(text, boxWidth, boxHeight, font, settings)
+	
+		Return GetBoxDimension(parseInfo, effect, settings)
 	End Method
 
 	
@@ -1143,14 +1177,14 @@ endrem
 		LockMutex(globalBoxParseInfoMutex)
 		local currentFont:TBitmapFont = self
 
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		if settings
-			globalBoxParseInfo.CalculateDimensions(txt, w, h, currentFont, settings.data)
+			globalBoxParseInfo.data.CalculateDimensions(txt, w, h, currentFont, settings.data)
 		else
-			globalBoxParseInfo.CalculateDimensions(txt, w, h, currentFont, defaultDrawSettings)
+			globalBoxParseInfo.data.CalculateDimensions(txt, w, h, currentFont, defaultDrawSettings)
 		endif
 
-		Local nextLineBreakIndex:Int = globalBoxParseInfo.lineinfo_lineBreakIndices[0]
+		Local nextLineBreakIndex:Int = globalBoxParseInfo.data.lineinfo_lineBreakIndices[0]
 		Local lastLineBreakIndex:Int = 0
 		Local result:String
 		Local currentIndex:Int
@@ -1162,13 +1196,13 @@ endrem
 
 			currentIndex:+ 1
 		
-			local dynamicIndex:Int = currentIndex - globalBoxParseInfo.lineinfo_boxHeights.length
+			local dynamicIndex:Int = currentIndex - globalBoxParseInfo.data.lineinfo_boxHeights.length
 			If dynamicIndex >= 0
 				lastLineBreakIndex = nextLineBreakIndex + 1
-				nextLineBreakIndex = globalBoxParseInfo.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
+				nextLineBreakIndex = globalBoxParseInfo.data.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
 			Else
 				lastLineBreakIndex = nextLineBreakIndex + 1
-				nextLineBreakIndex = globalBoxParseInfo.lineinfo_lineBreakIndices[currentIndex]
+				nextLineBreakIndex = globalBoxParseInfo.data.lineinfo_lineBreakIndices[currentIndex]
 			EndIf
 			
 		Until currentIndex > lineIndex
@@ -1198,8 +1232,8 @@ endrem
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, settings:SDrawTextSettings Var)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
-		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, Null, globalBoxParseInfo, EDrawTextOption.None, defaultDrawEffect, settings)
+		globalBoxParseInfo.data.calculated = False
+		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, Null, globalBoxParseInfo.data, EDrawTextOption.None, defaultDrawEffect, settings)
 		UnlockMutex(globalBoxParseInfoMutex)
 		
 		Return dim
@@ -1219,7 +1253,7 @@ endrem
 		effect.value = effectValue
 
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, Null, globalBoxParseInfo, EDrawTextOption.None, effect, settings)
 		UnlockMutex(globalBoxParseInfoMutex)
 		
@@ -1227,16 +1261,35 @@ endrem
 	End Method
 
 
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, parseInfo:TTextParseInfo)
+		Return DrawBox(txt, x, y, w, h, alignment, color, Null, parseInfo, EDrawTextOption.None)
+	End Method
+
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, parseInfo:STextParseInfo Var)
 		Return DrawBox(txt, x, y, w, h, alignment, color, Null, parseInfo, EDrawTextOption.None)
+	End Method
+
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8,  parseInfo:TTextParseInfo, effect:TDrawTextEffect)
+		Return DrawBox(txt, x, y, w, h, alignment, color,  parseInfo, effect.data.Mode, effect.data.value)
 	End Method
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8,  parseInfo:STextParseInfo Var, effect:TDrawTextEffect)
 		Return DrawBox(txt, x, y, w, h, alignment, color,  parseInfo, effect.data.Mode, effect.data.value)
 	End Method
 
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8,  parseInfo:TTextParseInfo, effect:SDrawTextEffect Var)
+		Return DrawBox(txt, x, y, w, h, alignment, color,  parseInfo, effect.Mode, effect.value)
+	End Method
+
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8,  parseInfo:STextParseInfo Var, effect:SDrawTextEffect Var)
 		Return DrawBox(txt, x, y, w, h, alignment, color,  parseInfo, effect.Mode, effect.value)
+	End Method
+
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8,  parseInfo:TTextParseInfo, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
+		Local effect:SDrawTextEffect
+		effect.Mode = effectMode
+		effect.value = effectValue
+		Return DrawBox(txt, x, y, w, h, alignment, color, Null, parseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
 	End Method
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8,  parseInfo:STextParseInfo Var, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
@@ -1246,6 +1299,14 @@ endrem
 		Return DrawBox(txt, x, y, w, h, alignment, color, Null, parseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
 	End Method
 
+
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, color:SColor8,  parseInfo:TTextParseInfo, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
+		Local effect:SDrawTextEffect
+		effect.Mode = effectMode
+		effect.value = effectValue
+
+		Return DrawBox(txt, x, y, w, h, New SVec2F(0.0, 0.0), color, Null, parseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
+	End Method
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, color:SColor8,  parseInfo:STextParseInfo Var, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
 		Local effect:SDrawTextEffect
@@ -1272,7 +1333,7 @@ endrem
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, options:EDrawTextOption = EDrawTextOption.None, settings:SDrawTextSettings Var)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, handle, globalBoxParseInfo, options, defaultDrawEffect, settings)
 		UnlockMutex(globalBoxParseInfoMutex)
 		
@@ -1283,9 +1344,9 @@ endrem
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, effect:SDrawTextEffect)
 		'Return DrawBox(txt, x, y, w, h, alignment, color, effect.Mode, effect.value)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		DrawBox(txt, x, y, w, h, alignment, color, New SVec2F(0,0), globalBoxParseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
-		Local dim:SVec2I = GetBoxDimension(globalBoxParseInfo, effect, defaultDrawSettings)
+		Local dim:SVec2I = GetBoxDimension(globalBoxParseInfo.data, effect, defaultDrawSettings)
 		UnlockMutex(globalBoxParseInfoMutex)
 		
 		Return dim
@@ -1301,9 +1362,9 @@ endrem
 
 		rem
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
-		DrawBox(txt, x, y, w, h, alignment, color, New SVec2F(0,0), globalBoxParseInfo, EDrawTextOption.None, effect, defaultDrawSettings)
-		Local dim:SVec2I = GetBoxDimension(globalBoxParseInfo, effect, defaultDrawSettings)
+		globalBoxParseInfo.data.calculated = False
+		DrawBox(txt, x, y, w, h, alignment, color, New SVec2F(0,0), globalBoxParseInfo.data, EDrawTextOption.None, effect, defaultDrawSettings)
+		Local dim:SVec2I = GetBoxDimension(globalBoxParseInfo.data, effect, defaultDrawSettings)
 		UnlockMutex(globalBoxParseInfoMutex)
 		EndRem
 
@@ -1313,7 +1374,7 @@ endrem
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local effect:SDrawTextEffect
 		effect.Mode = effectMode
 		effect.value = effectValue
@@ -1324,6 +1385,10 @@ endrem
 	End Method
 	
 	
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:TTextParseInfo, options:EDrawTextOption = EDrawTextOption.None)
+		Return DrawBox(txt, x,y,w,h, alignment, color, handle, parseInfo, options, defaultDrawEffect, defaultDrawSettings)
+	End Method
+
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:STextParseInfo Var, options:EDrawTextOption = EDrawTextOption.None)
 		Return DrawBox(txt, x,y,w,h, alignment, color, handle, parseInfo, options, defaultDrawEffect, defaultDrawSettings)
 	End Method
@@ -1331,7 +1396,7 @@ endrem
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, options:EDrawTextOption = EDrawTextOption.None, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var, limitFirstElement:Int = -1, limitLastElement:Int = -1)
 		LockMutex(globalBoxParseInfoMutex)
-		globalBoxParseInfo.calculated = False
+		globalBoxParseInfo.data.calculated = False
 		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, handle, globalBoxParseInfo, options, effect, settings, limitFirstElement, limitLastElement)
 		UnlockMutex(globalBoxParseInfoMutex)
 		
@@ -1352,19 +1417,19 @@ endrem
 			EndIf
 		Else
 			If Not effect And Not settings
-				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo.data, options, defaultDrawEffect, defaultDrawSettings, limitFirstElement, limitLastElement)
+				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo, options, defaultDrawEffect, defaultDrawSettings, limitFirstElement, limitLastElement)
 			ElseIf Not effect
-				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo.data, options, defaultDrawEffect, settings.data, limitFirstElement, limitLastElement)
+				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo, options, defaultDrawEffect, settings.data, limitFirstElement, limitLastElement)
 			ElseIf Not settings
-				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo.data, options, effect.data, defaultDrawSettings, limitFirstElement, limitLastElement)
+				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo, options, effect.data, defaultDrawSettings, limitFirstElement, limitLastElement)
 			Else
-				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo.data, options, effect.data, settings.data, limitFirstElement, limitLastElement)
+				Return DrawBox(txt, x, y, w, h, alignment, color, handle, parseInfo, options, effect.data, settings.data, limitFirstElement, limitLastElement)
 			EndIf
 		EndIf
 	End Method
 
-	
-	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:STextParseInfo Var, options:EDrawTextOption = EDrawTextOption.None, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var, limitFirstElement:Int = -1, limitLastElement:Int = -1)
+
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:TTextParseInfo, options:EDrawTextOption = EDrawTextOption.None, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var, limitFirstElement:Int = -1, limitLastElement:Int = -1)
 		Local effectValue:Float = effect.value
 
 		Select effect.Mode
@@ -1374,7 +1439,7 @@ endrem
 				Local shadowColor8:SColor8 = New SColor8(shadowColor.r, shadowColor.g, shadowColor.b, Int(color.a/255.0 * shadowColor.a * effectValue))
 				__DrawBox(txt, x + 1, y+1, w-1, h-1, alignment, shadowColor8, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
 				__DrawBox(txt, x, y, w-1, h-1, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
-				Return New SVec2I(parseInfo._visibleBoxWidth + 1, parseInfo._visibleBoxHeight + 1)
+				Return New SVec2I(parseInfo.data._visibleBoxWidth + 1, parseInfo.data._visibleBoxHeight + 1)
 
 
 			Case EDrawTextEffect.GLOW
@@ -1391,7 +1456,7 @@ endrem
 				__DrawBox(txt, x+3,y+3,w-4,h-4, alignment, glowColor8b, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
 				__DrawBox(txt, x+1,y+1,w-4,h-4, alignment, glowColor8b, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
 				__DrawBox(txt, x+2, y+2, w-4, h-4, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
-				Return New SVec2I(parseInfo._visibleBoxWidth + 4, parseInfo._visibleBoxHeight + 4)
+				Return New SVec2I(parseInfo.data._visibleBoxWidth + 4, parseInfo.data._visibleBoxHeight + 4)
 
 			Case EDrawTextEffect.EMBOSS
 				If effectValue = -1 Then effectValue = 0.5
@@ -1401,11 +1466,57 @@ endrem
 				Local embossColor8:SColor8 = New SColor8(embossColor.r, embossColor.g, embossColor.b, Int(color.a/255.0 * embossColor.a * effectValue))
 				__DrawBox(txt, x, y+1, w, h-1, alignment, embossColor8, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
 				__DrawBox(txt, x, y, w, h-1, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
-				Return New SVec2I(parseInfo._visibleBoxWidth, parseInfo._visibleBoxHeight + 1)
+				Return New SVec2I(parseInfo.data._visibleBoxWidth, parseInfo.data._visibleBoxHeight + 1)
 
 
 			Default
 				__DrawBox(txt, x,y,w,h, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
+				Return New SVec2I(parseInfo.data._visibleBoxWidth, parseInfo.data._visibleBoxHeight)
+
+		End Select
+	End Method	
+	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:STextParseInfo Var, options:EDrawTextOption = EDrawTextOption.None, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var, limitFirstElement:Int = -1, limitLastElement:Int = -1)
+		Local effectValue:Float = effect.value
+
+		Select effect.Mode
+			Case EDrawTextEffect.SHADOW
+				If effectValue = -1 Then effectValue = 0.6
+
+				Local shadowColor8:SColor8 = New SColor8(shadowColor.r, shadowColor.g, shadowColor.b, Int(color.a/255.0 * shadowColor.a * effectValue))
+				__DrawBox(txt, X + 1, Y+1, w-1, h-1, alignment, shadowColor8, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, x, y, w-1, h-1, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
+				Return New SVec2I(parseInfo._visibleBoxWidth + 1, parseInfo._visibleBoxHeight + 1)
+
+
+			Case EDrawTextEffect.GLOW
+				If effectValue = -1 Then effectValue = 0.5
+
+				'subtract 1 height so emboss stays in the box
+
+				Local glowColor8a:SColor8 = New SColor8(effect.color.r, effect.color.g, effect.color.b, Int(color.a/255.0 * effect.color.a * 0.5 * effectValue))
+				Local glowColor8b:SColor8 = New SColor8(effect.color.r, effect.color.g, effect.color.b, Int(color.a/255.0 * effect.color.a * 1.0 * effectValue))
+				__DrawBox(txt, X  ,Y+2,w-4,h-4, alignment, glowColor8a, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, X+4,Y+2,w-4,h-4, alignment, glowColor8a, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, X+2,Y  ,w-4,h-4, alignment, glowColor8a, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, X+2,Y+4,w-4,h-4, alignment, glowColor8a, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, X+3,Y+3,w-4,h-4, alignment, glowColor8b, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, X+1,Y+1,w-4,h-4, alignment, glowColor8b, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, X+2, Y+2, w-4, h-4, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
+				Return New SVec2I(parseInfo._visibleBoxWidth + 4, parseInfo._visibleBoxHeight + 4)
+
+			Case EDrawTextEffect.EMBOSS
+				If effectValue = -1 Then effectValue = 0.5
+
+				'subtract 1 height so emboss stays in the box
+
+				Local embossColor8:SColor8 = New SColor8(embossColor.r, embossColor.g, embossColor.b, Int(color.a/255.0 * embossColor.a * effectValue))
+				__DrawBox(txt, X, Y+1, w, h-1, alignment, embossColor8, handle, parseInfo, options | EDrawTextOption.IgnoreColor, settings, limitFirstElement, limitLastElement)
+				__DrawBox(txt, x, y, w, h-1, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
+				Return New SVec2I(parseInfo._visibleBoxWidth, parseInfo._visibleBoxHeight + 1)
+
+
+			Default
+				__DrawBox(txt, X,Y,w,h, alignment, color, handle, parseInfo, options, settings, limitFirstElement, limitLastElement)
 				Return New SVec2I(parseInfo._visibleBoxWidth, parseInfo._visibleBoxHeight)
 
 		End Select
@@ -1426,6 +1537,315 @@ endrem
 	End Method
 
 
+	Method __DrawBox(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:TTextParseInfo, options:EDrawTextOption, settings:SDrawTextSettings Var, limitFirstElement:Int = -1, limitLastElement:Int = -1)
+		Local screenColor:SColor8
+		Local screenColorA:Float
+		Local currentColor:SColor8 = color
+		GetColor(screenColor)
+		screenColorA = GetAlpha()
+		X :+ 1 * handle.X*w
+		Y :+ 1 * handle.Y*h
+
+		'currently in use font
+		Local currentFont:TBitmapFont = Self
+		
+		If Not drawToPixmap
+			parseInfo.data.baseColor = New SColor8(color.r, color.g, color.b, Int(color.a * screenColorA))
+		Else
+			parseInfo.data.baseColor = color
+		EndIf
+
+		'calculate line widths/heights and total text width/height
+		If Not parseInfo.data.calculated
+			parseInfo.data.CalculateDimensions(txt, w, h, currentFont, settings)
+			parseInfo.data.calculated = True
+		EndIf
+
+
+		' some single character (required to be displayed) was not
+		' able to get fit into the box ... abort rendering at all
+		If Not parseInfo.data.minimumTextFitsIntoBox
+			Return
+		EndIf
+
+
+		'if block width exceeds allowed width we cannot render it
+		'(this happens if box is less wide than a single char)
+		If (parseInfo.data._visibleBoxWidth > w And w > 0) Or parseInfo.data._visibleBoxWidth = -1
+			Return
+		EndIf
+
+
+		' ensure to start code commands afresh ...
+		' to avoid issues with more tags being opened than closed
+		parseInfo.data.ResetStyle()
+
+
+		' Rendering
+		Local currentLine:Int = 1
+		Local textX:Float, textY:Float, lineWidth:Float
+		Local nextLineBreakIndex:Int = parseInfo.data.lineinfo_lineBreakIndices[0]
+		
+		'if current line already does not fit
+		'TODO: Offset for "alignment" ...
+		'skip rendering if even a single line does not fit
+
+		If parseInfo.data.GetLineHeight(1, settings.boxDimensionMode) > h And h > 0 Then Return
+		If parseInfo.data.GetLineWidth(1, settings.boxDimensionMode) > w And w > 0 Then Return
+
+		Local localX:Float '= gfx.origin_x + gfx.handle_x * gfx.tform_ix + gfx.handle_y * gfx.tform_iy
+		Local localY:Float '= gfx.origin_y + gfx.handle_x * gfx.tform_jx + gfx.handle_y * gfx.tform_jy
+		localX :+ X
+		localY :+ Y
+
+
+		textX = alignment.X * (w - parseInfo.data.GetLineWidth(1, settings.boxDimensionMode))
+		textY = alignment.Y * (h - parseInfo.data.GetBoxHeight(settings.boxDimensionMode))
+		textX = Int(textX)
+		textY = Int(textY)
+
+		'avoid text starting earlier
+		If textY < 0 Then textY = 0
+
+
+		Local currentDisplaceY:Short
+		Select settings.lineHeightMode
+			Case EDrawLineHeightModes.AllLinesMax, EDrawLineHeightModes.FixedOrAllLinesMax
+				currentDisplaceY = parseInfo.data.lineFontDisplaceYMax
+			Default 'lineMax
+				currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYs[0]
+		EndSelect
+
+		Local element:STextParseElement
+		Local fontChanges:Int
+
+'		If Not(options & EDrawTextOption.IgnoreColor)
+		If Not drawToPixmap
+			SetColor(parseInfo.data.baseColor)
+			'SetAlpha(currentColor.a/255.0)
+			SetAlpha(parseInfo.data.baseColor.a / 255.0)
+		EndIf
+'		EndIf
+		Local renderedElementCount:Int = 0
+		For Local i:Int = 0 Until txt.Length
+
+			Local charCode:Int = txt[i]
+			Local escaped:Int = False
+
+			Local dynamicIndex:Int = currentLine - parseInfo.data.lineinfo_BoxHeights.Length
+
+			'only render what parseInfo was able to process
+			If i > parseInfo.data.handledCharIndex Then Exit
+			If parseInfo.data.truncateEndIndex >= 0 And i > parseInfo.data.truncateEndIndex Then Exit
+
+			' append an ellipsis / truncate here?
+			' but only if we can draw an ellipsis ..
+			If parseInfo.data.truncateEndIndex >= 0 And i >= parseInfo.data.truncateEndIndex
+				If settings.truncateWithEllipse
+					If (w < 0 Or textX + Self.GetEllipsisWidth() <= w)
+						If (limitFirstElement<=i) And (limitLastElement<0 Or limitLastElement>=i)
+							If parseInfo.data.stylesInvisible = 0
+								'draw ellipsis in current font or default font style?
+								'currentFont.__DrawEllipsis(x, y, textX, textY - currentFont.displaceY, currentColor, rotation, lineWidth, parseInfo.data.lineHeights[currentLine])
+								If Not (options & EDrawTextOption.IgnoreColor)
+									If Not drawToPixmap
+										SetColor(parseInfo.data.baseColor)
+										SetAlpha(parseInfo.data.baseColor.a  / 255.0) * (currentColor.a  / 255.0)
+									EndIf
+									__DrawEllipsis(textX - handle.X * w, textY - handle.Y*h - currentDisplaceY, localX, localY, parseInfo.data.baseColor)
+									If Not drawToPixmap
+										SetColor(currentColor)
+										SetAlpha(currentColor.a / 255.0)
+									EndIf
+								Else
+'									__DrawEllipsis(textX - handle.x * w, textY - handle.y*h - currentDisplaceY, x + localX, y + localY, parseInfo.data.baseColor)
+									__DrawEllipsis(textX - handle.X * w, textY - handle.Y*h - currentDisplaceY, localX, localY, parseInfo.data.baseColor)
+								EndIf
+							EndIf
+							
+							renderedElementCount :+ 1
+						EndIf
+					EndIf
+				EndIf
+				i = txt.Length
+				Exit
+			EndIf
+
+		
+			' escaping command or escape char?
+			If charCode = ESCAPE_CHARCODE And i < txt.Length - 2 And (txt[i+1] = COMMAND_CHARCODE Or txt[i+1] = ESCAPE_CHARCODE)
+				i :+ 1
+				charCode = txt[i]
+				escaped = True
+			EndIf
+
+
+			' reading command?
+			' for now we ignore any escape chars within an active command
+			' so no "|b \|escaped stuff|bold text|/b|" -- this would fail!
+			If charCode = COMMAND_CHARCODE And Not escaped
+				element = parseInfo.data.HandleCommand(currentFont, txt, i, Int(X + textX), Int(Y + textY))
+				fontChanges :+ element.changedFont
+
+				'handle commands only changing colors (etc) but not
+				'altering the layout
+				If drawToPixmap And (options & EDrawTextOption.IgnoreColor)
+					Local ignoreColor:SColor8
+					parseInfo.data.HandleVisibleOnlyCommands(currentFont, txt, i, ignoreColor)
+				Else
+					parseInfo.data.HandleVisibleOnlyCommands(currentFont, txt, i, currentColor)
+				EndIf
+
+				' react to font changes (if required)
+				If element.changedFont 
+					parseInfo.data.HandleFontChanges(currentFont, True)
+					
+					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+						currentDisplaceY = Max(currentDisplaceY, currentFont.displaceY)
+					EndIf
+				EndIf
+
+			' received char potentially being displayed
+			Else
+				element = parseInfo.data.HandleChar(currentFont, txt, i, textX, Null)
+
+				'disable eating of whitespace?
+				If Not settings.skipOptionalElementOnEOL Then element.skipOnLinebreak = False
+			EndIf
+			
+			If element.visible And parseInfo.data.colorChanged And Not(options & EDrawTextOption.IgnoreColor)
+				If Not drawToPixmap
+					SetColor(currentColor)
+					SetAlpha((parseInfo.data.baseColor.a / 255.0) * (currentColor.a  / 255.0))
+				EndIf
+			EndIf
+
+
+			'is this the last char on this line?
+			Local doLineBreak:Int = (i >= nextLineBreakIndex)
+
+			'no need to check further
+			If limitLastElement>=0 And renderedElementCount > limitLastElement Then Exit
+
+			'render out the char
+			If element.visible And Not (doLineBreak And element.skipOnLinebreak)
+				If (limitFirstElement<=renderedElementCount)
+					If parseInfo.data.stylesInvisible = 0
+						' actually render the glyph and advance
+						If Not BITMAPFONTBENCHMARK
+							If element.width > 0 And element.height > 0
+								'local transformedX:Float = localX + (textX - handle.x*w) * ix + (textY - handle.y*h - currentDisplaceY) * iy
+								'local transformedY:Float = localY + (textX - handle.x*w) * jx + (textY - handle.y*h - currentDisplaceY) * jy
+								Local transformedPos:SVec2F = __GetTransformedPosition(textX - handle.X*w, textY - handle.Y*h - currentDisplaceY, localX, localY)
+
+								If TBitmapFontChar(element.renderObject)
+									Local bm:TBitmapFontChar = TBitmapFontChar(element.renderObject)
+									If drawToPixmap
+										currentFont.__DrawSingleCharToPixmap(bm, charCode, X + textX, Y + textY - currentDisplaceY, currentColor)
+									Else
+										currentFont.__DrawSingleChar(bm, charCode, transformedPos.X, transformedPos.Y)
+									EndIf
+								ElseIf TSprite(element.renderObject)
+									Local ox:Float, oy:Float
+									GetScale(ox, oy)
+
+									Local s:TSprite = TSprite(element.renderObject)
+									If Self.drawToPixmap
+										ox = ox * Float(element.width)/s.GetWidth()
+										oy = oy * Float(element.height)/s.GetHeight()
+										Local alphaAdjustedColor:SColor8 = New SColor8(255,255,255, parseInfo.data.baseColor.a)
+										If ox <> 1 Or oy <> 1
+											Self.__DrawSpriteToPixmap(s, X + transformedPos.X, Y + transformedPos.Y, alphaAdjustedColor, ox, oy)
+										Else
+											Self.__DrawSpriteToPixmap(s, X + transformedPos.X, Y + transformedPos.Y, alphaAdjustedColor)
+										EndIf
+									Else
+										SetColor 255,255,255
+										SetScale(ox * element.width/Float(s.GetWidth()), oy * element.height/Float(s.GetHeight()))
+										s.Draw(transformedPos.X, transformedPos.Y) 
+										SetScale(ox, oy)
+										SetColor(currentColor)
+									EndIf
+								EndIf
+							EndIf
+						EndIf
+					EndIf
+					
+					renderedElementCount :+ 1
+
+					textX :+ element.advWidth
+					lineWidth :+ element.width
+				EndIf
+			EndIf
+
+
+			If doLineBreak 
+				Local nextLine:Int = currentLine + 1
+
+				textX = alignment.X * (w - parseInfo.data.GetLineWidth(nextLine))
+				'avoid blurred lines
+				textX = Int(textX)
+
+
+'		textY :+ parseInfo.data.GetLineHeight(currentLine, settings.boxDimensionMode )
+		Local lineIndex:Int = currentLine - 1
+		Local boxDimensionMode:Int = settings.boxDimensionMode
+		If lineIndex >= 0 And lineIndex < parseInfo.data.lineinfo_widthsDynamic.Length + parseInfo.data.lineinfo_widths.Length And lineIndex < parseInfo.data.totalLineCount
+			'ATTENTION
+			'Compare these lengths in the debug pane of MaxIDE/debugger
+			'they should all have the same length
+			Local __lineinfo_contentHeightsDynamic:Int = parseInfo.data.lineinfo_contentHeightsDynamic.Length
+			Local __lineinfo_maxFontHeightsDynamic:Int = parseInfo.data.lineinfo_maxFontHeightsDynamic.Length
+			Local __lineinfo_boxHeightsDynamic:Int = parseInfo.data.lineinfo_boxHeightsDynamic.Length
+			Local __lineinfo_lineBreakIndicesDynamic:Int = parseInfo.data.lineinfo_lineBreakIndicesDynamic.Length
+			Local __c:Int = currentLine
+			Local __b:Int = settings.boxDimensionMode
+
+			If lineIndex < parseInfo.data.lineinfo_widths.Length
+				Select boxDimensionMode
+					Case 1
+						textY :+ parseInfo.data.lineinfo_contentHeights[lineIndex]
+					Case 2
+						textY :+ parseInfo.data.lineinfo_maxFontHeights[lineIndex]
+					Default '/ case 0
+						textY :+ parseInfo.data.lineinfo_boxHeights[lineIndex]
+				End Select
+			Else
+				Select boxDimensionMode
+					Case 1
+						textY :+ parseInfo.data.lineinfo_contentHeightsDynamic[lineIndex - parseInfo.data.lineinfo_contentHeights.Length]
+					Case 2
+						textY :+ parseInfo.data.lineinfo_maxFontHeightsDynamic[lineIndex - parseInfo.data.lineinfo_maxFontHeights.Length]
+					Default '/ case 0
+						textY :+ parseInfo.data.lineinfo_boxHeightsDynamic[lineIndex - parseInfo.data.lineinfo_boxHeights.Length]
+				End Select
+			EndIf
+		EndIf
+
+'				textY :+ parseInfo.data.GetLineHeight(currentLine, settings.boxDimensionMode )
+
+				dynamicIndex = nextLine - parseInfo.data.lineinfo_boxHeights.Length - 1
+				If dynamicIndex >= 0
+					nextLineBreakIndex = parseInfo.data.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
+
+					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+						currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYsDynamic[dynamicIndex]
+					EndIf
+				Else
+					nextLineBreakIndex = parseInfo.data.lineinfo_lineBreakIndices[nextLine - 1]
+					
+					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+						currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYs[nextLine - 1]
+					EndIf
+				EndIf
+
+				lineWidth = 0
+				currentLine :+ 1
+			EndIf
+		Next
+		SetColor(screenColor)
+		SetAlpha(screenColorA)
+	End Method
 	Method __DrawBox(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, handle:SVec2F, parseInfo:STextParseInfo Var, options:EDrawTextOption, settings:SDrawTextSettings Var, limitFirstElement:Int = -1, limitLastElement:Int = -1)
 		Local screenColor:SColor8
 		Local screenColorA:Float
@@ -1709,11 +2129,15 @@ endrem
 
 	Method Draw(txt:String,x:Float,y:Float, color:SColor8)
 		LockMutex(globalParseInfoMutex)
-		globalParseInfo.calculated = False
+		globalParseInfo.data.calculated = False
 		DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, globalParseInfo)
 		UnlockMutex(globalParseInfoMutex)
 	End Method
 
+
+	Method Draw(txt:String,x:Float,y:Float, color:SColor8, parseInfo:TTextParseInfo)
+		DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, parseInfo)
+	End Method
 
 	Method Draw(txt:String,x:Float,y:Float, color:SColor8, parseInfo:STextParseInfo Var)
 		DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, parseInfo)
@@ -2088,6 +2512,8 @@ Type TTextParseInfo
 End Type
 
 
+'TODO: can be "struct" as soon as all NG releases ship with the new/fixed
+'      bcc (newer than begin of April 2022)
 Type STextParseInfo
 	'storage of current font styles
 	Field stylesB:Int
@@ -2181,6 +2607,7 @@ Type STextParseInfo
 
 	Method PrepareNewCalculation(estimatedLineCount:Int = -1, estimatedStyleColors:Int = -1)
 		calculated = False
+
 		Reset(estimatedLineCount, estimatedStyleColors)
 	End Method
 
@@ -2188,9 +2615,8 @@ Type STextParseInfo
 	Method Reset(estimatedLineCount:Int = -1, estimatedStyleColors:Int = -1)
 		Local dynamicArrayLength:Int = Max(0, estimatedLineCount - lineinfo_widths.length)
 		Local dynamicStyleColorsLength:Int = Max(0, estimatedStyleColors - stylesColors.length)
-	
-		ResetStyle()
 
+		ResetStyle()
 
 		'presize arrays
 		If dynamicStyleColorsLength >= 0 And stylesColorsDynamic.length <> dynamicStyleColorsLength
@@ -3313,6 +3739,7 @@ Type STextParseInfo
 					_visibleBoxWidth = Max(_visibleBoxWidth, lineWidth)
 	
 					If dynamicIndex >= 0
+						EnsureDynamicArraySize(dynamicIndex + 1)
 						nextLineBreakIndex = lineinfo_lineBreakIndicesDynamic[dynamicIndex]
 					Else
 						nextLineBreakIndex = lineinfo_lineBreakIndices[currentLine]
