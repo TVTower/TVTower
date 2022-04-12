@@ -211,7 +211,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EndIf
 
 
-		Local timeData:TData = New TData.AddInt("minute", GetWorldTime().GetDayMinute()).AddInt("hour", GetWorldTime().GetDayHour()).AddInt("day", GetWorldTime().GetDay())
+		Local timeData:TData = New TData.AddInt("minute", GetWorldTime().GetDayMinute()).AddInt("hour", GetWorldTime().GetDayHour()).AddInt("day", GetWorldTime().GetDay()).AddLong("time", GetWorldTime().GetTimeGone())
 
 		If startNewGame
 			'=== RESET SAVEGAME INFORMATION ===
@@ -2213,7 +2213,7 @@ endrem
 			'event passes milliseconds gone since last call
 			'so if hickups made the game stop for 4.3 seconds, this value
 			'will be about 4300. Maybe AI wants this information.
-			TriggerBaseEvent(GameEventKeys.Game_OnRealTimeSecond, New TData.AddLong("timeGoneSinceLastRTS", Time.GetTimeGone()-lastTimeRealTimeSecondGone))
+			TriggerBaseEvent(GameEventKeys.Game_OnRealTimeSecond, New TData.AddLong("timeGoneSinceLastRTS", Time.GetTimeGone()-lastTimeRealTimeSecondGone).AddLong("gameTimeGone", WorldTime.GetTimeGone()))
 			lastTimeRealTimeSecondGone = Time.GetTimeGone()
 		EndIf
 

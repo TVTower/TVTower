@@ -78,6 +78,11 @@ Type TAi Extends TAiBase
 		Super.AddLog(title, text, logLevel)
 		AiLog[Self.playerID-1].AddLog(text, True)
 	End Method
+	
+	
+	Method GetTotalTicks:Int()
+		Return ticks + realtimeSecondTicks + internalTicks
+	End Method
 
 
 	Method CallUpdate()
@@ -92,35 +97,62 @@ Type TAi Extends TAiBase
 			nextEvent = PopNextEvent()
 		Wend
 	End Method
+	
+	
+	'inform AI about a tick - could come from realtimeSecond, internal
+	'or default CallOnTick()
+	Method _CallOnTick:Int(realTimeGone:Long, gameTimeGone:Long)
+		If AiRunning
+			Local args:Object[4]
+			args[0] = String(realTimeGone)
+			args[1] = String(gameTimeGone)
+			'ticks for system
+			args[2] = String(ticks)
+			'total ticks for the AI (so including scheduled inner ticks and realtime second ticks)
+			args[3] = String(GetTotalTicks())
 
+			CallLuaFunction("OnTick", args)
 
-	'only calls the AI "onTick" if the calculated interval passed
-	'in our case this is:
-	'- more than 1 RealTime second passed since last tick
-	'or
-	'- another InGameMinute passed since last tick
-	Method ConditionalCallOnTick()
-		If Time.GetTimeGone() > NextTickTime Or LastTickMinute <> GetWorldTime().GetDayMinute()
-			CallOnTick()
+			Return True
 		EndIf
+		Return False
 	End Method
 
 
-	Method CallOnTick()
-		'update next tick time and store minute of this tick so 
-		'waiting-period starts all over
-		NextTickTime = Time.GetTimeGone() + 1000
-		LastTickMinute = GetWorldTime().GetDayMinute()
+	'only calls the AI "onTick" if the calculated interval passed
+	'- more than 1 RealTime second passed since last tick
+	Method CallOnRealtimeSecondTick(realTimeGone:Long, gameTimeGone:Long) override
+		'increase ticks count
+		realtimeSecondTicks :+ 1
 
-		Ticks :+ 1
+'print "ai"+self.playerID+": realtimesecond tick. time=" + GetWorldTime().GetFormattedTime(gameTimeGone) + "    ticks=" + ticks + "  internalTicks="+internalTicks + "  processedGameMinute="+processedGameMinute+ "  gameTime="+GetWorldTime().GetFormattedTime(gameTimeGone)
+		_CallOnTick(realTimeGone, gameTimeGone)
+	End Method
 
-		If Not AiRunning Then Return
 
-		Local args:Object[2]
-		args[0] = String(Time.GetTimeGone())
-		args[1] = String(Ticks)
+	'game minute based tick
+	Method CallOnTick(gameTimeGone:Long) override
+		'increase ticks count
+		ticks :+ 1
 
-		CallLuaFunction("OnTick", args)
+		'store minute as it might change during "lua function call"
+		local processingGameMinute:Int = GetWorldTime().GetTimeGoneAsMinute(True, gameTimeGone)
+
+'print "ai"+self.playerID+": ontick. time=" + GetWorldTime().GetFormattedTime(gameTimeGone) + "    ticks=" + Ticks + "  processedGameMinute="+processedGameMinute + "   goneTimeAsMinute="+GetWorldTime().GetTimeGoneAsMinute(True, gameTimeGone)
+		_CallOnTick(Time.GetTimeGone(), gameTimeGone)
+
+		'store processed minute of this tick now we are done with it
+		processedGameMinute = processingGameMinute
+	End Method
+
+
+	Method CallOnInternalTick(gameTimeGone:Long) override
+		'increase internal ticks count
+		internalTicks :+ 1
+
+'print "ai"+self.playerID+": internaltick. time=" + GetWorldTime().GetFormattedTime(gameTimeGone) + "    ticks=" + Ticks + "  processedGameMinute="+processedGameMinute + "   goneTimeAsMinute="+GetWorldTime().GetTimeGoneAsMinute(True, gameTimeGone)
+
+		_CallOnTick(Time.GetTimeGone(), gameTimeGone)
 	End Method
 
 
@@ -325,9 +357,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	
 
 	Method ScheduleNextOnTick()
-		'add conditional tick event
-		GetPlayerBase(Self.ME).PlayerAI.SetNextOnTickTime( Time.GetTimeGone() - 1000 )
-		GetPlayerBase(Self.ME).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
+		GetPlayerBase(Self.ME).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnInternalTick).AddLong(Time.GetTimeGone()).AddLong(GetWorldTime().GetTimeGone()))
 	End Method
 
 
@@ -514,13 +544,29 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 	
-	Method GetTimeGoneInSeconds:Int()	
+	Method GetTimeGoneInSeconds:Int()
 		Return GetWorldTime().GetTimeGone() / TWorldTime.SECONDLENGTH
 	End Method
 
+	Method GetTimeGoneInSeconds:Int(useTime:String)	'String not Long, until Long-bug is fixed	
+		If Long(useTime) <= 0
+			Return GetWorldTime().GetTimeGone() / TWorldTime.SECONDLENGTH
+		Else
+			Return Long(useTime) / TWorldTime.SECONDLENGTH
+		EndIf
+	End Method
 
-	Method GetTimeGoneInMinutes:Int()	
+
+	Method GetTimeGoneInMinutes:Int()
 		Return GetWorldTime().GetTimeGone() / TWorldTime.MINUTELENGTH
+	End Method
+
+	Method GetTimeGoneInMinutesForTime:Int(useTime:String)	'String not Long, until Long-bug is fixed	
+		If Long(useTime) <= 0
+			Return GetWorldTime().GetTimeGone() / TWorldTime.MINUTELENGTH
+		Else
+			Return Long(useTime) / TWorldTime.MINUTELENGTH
+		EndIf
 	End Method
 
 
@@ -528,9 +574,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		Return GetWorldTime().GetDaysRun()
 	End Method
 
+	Method GetDaysRunForTime:Int(useTime:String)	'String not Long, until Long-bug is fixed
+		Return GetWorldTime().GetDaysRun(Long(useTime))
+	End Method
+
 
 	Method GetDay:Int()
 		Return GetWorldTime().GetDay()
+	End Method
+
+	Method GetDayForTime:Int(useTime:String)	'String not Long, until Long-bug is fixed
+		Return GetWorldTime().GetDay(Long(useTime))
 	End Method
 
 
@@ -538,9 +592,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		Return GetWorldTime().GetDayHour()
 	End Method
 
+	Method GetDayHourForTime:Int(useTime:String)	'String not Long, until Long-bug is fixed
+		Return GetWorldTime().GetDayHour(Long(useTime))
+	End Method
 
-	Method GetDayMinute:Int()	
+
+	Method GetDayMinute:Int()
 		Return GetWorldTime().GetDayMinute()
+	End Method
+
+	Method GetDayMinuteForTime:Int(useTime:String)	'String not Long, until Long-bug is fixed
+		Return GetWorldTime().GetDayMinute(Long(useTime))
 	End Method
 
 
@@ -549,10 +611,14 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetFormattedTime:String(format:String)	
+	Method GetFormattedTime:String(format:String)
 		Return GetWorldTime().GetFormattedTime(format)
 	End Method
 
+
+	Method GetFormattedTimeForTime:String(useTime:String, format:String) 'String not Long, until Long-bug is fixed
+		Return GetWorldTime().GetFormattedTime(Long(useTime), format)
+	End Method
 
 	
 	Method TimeToSeconds:Int(time:String)

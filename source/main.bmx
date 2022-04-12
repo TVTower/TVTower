@@ -4450,18 +4450,73 @@ Type GameEvents
 		'only AI handling: only gameleader interested
 		If Not GetGame().isGameLeader() Then Return False
 
+		'wait for all to have nothing to do
+		If TAIBase.airunning and GameRules.devConfig.GetBool("DEV_SYNC_AI_ON_TIME")	
+			Local allReady:Int
+			Repeat
+				allReady = True
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					If player.isLocalAI() and player.playerAI.GetNextEventCount() > 0
+						'print "SYNCWAIT. RTSEC. P" + player.playerID +"  EventQueue: "  + player.PlayerAI.GetNextEventCount() + " (sync=" + player.playerAI.GetNextToSynchronizeEventCount() + ")   Events: last=" + player.playerAI.GetLastEventID() + "/" + TAIEvent.GetNameByID(player.playerAI.GetLastEventID())+"/"+player.playerAI.GetLastEventTime()+"ms  curr=" + player.playerAI.GetCurrentEventID() + "/" + TAIEvent.GetNameByID(player.playerAI.GetCurrentEventID())+"/"+player.playerAI.GetCurrentEventTime()+"ms" + "  next=" + player.playerAI.GetNextEventID() + "/" + TAIEvent.GetNameByID(player.playerAI.GetNextEventID()) + "   " + GetWorldTime().GetFormattedGameDate()
+
+						allReady = False
+						exit
+					EndIf
+				Next
+				'if not allReady then Delay(1)
+			Until allReady
+		EndIf
+
+		'real time when event is created
+		Local realTime:Int = Time.GetTimeGone()
 		'milliseconds passed since last RealTimeSecond-event
 		'value could fit into an integer but for now we keep it as Long
-		Local timeGoneSinceLastRTS:Long = Int(triggerEvent.GetData().GetLong("timeGoneSinceLastRTS", 0))
+		Local timeGoneSinceLastRTS:Long = triggerEvent.GetData().GetLong("timeGoneSinceLastRTS", 0)
+		'time in game now
+		Local gameTime:Long = triggerEvent.GetData().GetLong("gameTimeGone", 0)
 
+		'print "playersOnRealTimeSecond:  gameTime="+GetWorldTime().GetFormattedGameDate(gameTime) + "    " + gameTime + " =============================="
+		Local localAIPlayerCount:Int
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
+				localAIPlayerCount :+ 1
+
 				TProfiler.Enter(_profilerKey_AI_SECOND[player.playerID-1], False)
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddLong(timeGoneSinceLastRTS))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealtimeSecondTick).SetToSynchronize().AddLong(realTime).AddLong(gameTime))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddLong(realTime).AddLong(timeGoneSinceLastRTS))
+				'player.PlayerAI.ConditionalCallOnTick()
+				'player.PlayerAI.CallOnRealtimeSecond(timeGone)
 				TProfiler.Leave(_profilerKey_AI_SECOND[player.playerID-1], 100, False)
 			EndIf
 		Next
+
+		'when activating: ensure that all AI players receive hat realtimeSecondTick!
+		'if some AI takes longer than the others and so somehow extends "realtime second ticks"...
+rem		
+		If localAIPlayerCount > 0 And GameRules.devConfig.GetBool("DEV_SYNC_AI_ON_TIME")	
+			Local allReady:Int = True
+			Local highestCount:Int
+			Repeat
+				highestCount = 0
+				allReady = True
+
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					If player.isLocalAI() Then highestCount = Max(highestCount, player.PlayerAI.realTimeSecondTicks)
+				Next
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					If player.isLocalAI() 
+						if player.PlayerAI.realTimeSecondTicks < highestCount
+							'print "MIN waiting for " + player.playerID + "  realTimeSecondTicks: " + player.playerAI.realTimeSecondTicks + "/" + highestCount + "  nextEventCount: " + player.PlayerAI.GetNextEventCount()			
+							allReady = False
+						'Else
+						'	print "MIN " + player.playerID + " ready.  realTimeSecondTicks: " + player.playerAI.realTimeSecondTicks + "/" + highestCount + "  nextEventCount: " + player.PlayerAI.GetNextEventCount()			
+						EndIf
+					EndIf
+				Next
+				If not allReady Then Delay(1)
+			Until allReady
+		EndIf
+endrem		
 		Return True
 	End Function
 
@@ -4487,20 +4542,68 @@ Type GameEvents
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
 		If Not GetGame().isGameLeader() Then Return False
 
-		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
-		Local minute:Int = GetWorldTime().GetDayMinute(time)
-		If minute < 0 Then Return False
+		'wait for all to have nothing to do
+		If TAIBase.airunning and GameRules.devConfig.GetBool("DEV_SYNC_AI_ON_TIME")	
+			Local allReady:Int
+			Repeat
+				allReady = True
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					If player.isLocalAI() and player.playerAI.GetNextEventCount() > 0
+						'print "SYNCWAIT. MIN. P" + player.playerID +"  EventQueue: "  + player.PlayerAI.GetNextEventCount() + " (sync=" + player.playerAI.GetNextToSynchronizeEventCount() + ")   Events: last=" + player.playerAI.GetLastEventID() + "/" + TAIEvent.GetNameByID(player.playerAI.GetLastEventID())+"/"+player.playerAI.GetLastEventTime()+"ms  curr=" + player.playerAI.GetCurrentEventID() + "/" + TAIEvent.GetNameByID(player.playerAI.GetCurrentEventID())+"/"+player.playerAI.GetCurrentEventTime()+"ms" + "  next=" + player.playerAI.GetNextEventID() + "/" + TAIEvent.GetNameByID(player.playerAI.GetNextEventID()) + "   " + GetWorldTime().GetFormattedGameDate()
 
+						allReady = False
+						exit
+					EndIf
+				Next
+'				if not allReady then Delay(1)
+			Until allReady
+		EndIf
+
+
+		'real time when event is created
+		Local realTime:Int = Time.GetTimeGone()
+		'time in game now
+		Local gameTime:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local minuteOfHour:Int = GetWorldTime().GetDayMinute(gameTime)
+		If minuteOfHour < 0 Then Return False
+
+		'print "playersOnMinute:  gameTime="+GetWorldTime().GetFormattedGameDate(gameTime) + "    " + gameTime + " =============================="
+		Local localAIPlayerCount:Int
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
+				localAIPlayerCount :+ 1
 				TProfiler.Enter(_profilerKey_AI_MINUTE[player.playerID-1], False)
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).AddInt(minute))
-				'player.PlayerAI.ConditionalCallOnTick()
-				'player.PlayerAI.CallOnMinute(minute)
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnTick).SetToSynchronize().AddLong(realTime).AddLong(gameTime) )
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).AddInt(minuteOfHour) )
 				TProfiler.Leave(_profilerKey_AI_MINUTE[player.playerID-1], 100, False)
 			EndIf
 		Next
+
+rem
+		If localAIPlayerCount > 0 And GameRules.devConfig.GetBool("DEV_SYNC_AI_ON_TIME")	
+			Local allReady:Int = True
+			Local highestCount:Int
+			Repeat
+				highestCount = 0
+				allReady = True
+
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					If player.isLocalAI() Then highestCount = Max(highestCount, player.PlayerAI.ticks)
+				Next
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					If player.isLocalAI() 
+						If player.PlayerAI.ticks < highestCount
+							'print "MIN waiting for " + player.playerID + "  ticks: " + player.playerAI.ticks + "/" + highestCount + "  nextEventCount: " + player.PlayerAI.GetNextEventCount()			
+							allReady = False
+						'Else
+							'print "MIN " + player.playerID + " ready.  ticks: " + player.playerAI.ticks + "/" + highestCount + "  nextEventCount: " + player.PlayerAI.GetNextEventCount()			
+						EndIf
+					EndIf
+				Next
+				If not allReady Then Delay(1)
+			Until allReady
+		EndIf
+endrem
 		Return True
 	End Function
 
@@ -4508,9 +4611,10 @@ Type GameEvents
 	Function PlayersOnDay:Int(triggerEvent:TEventBase)
 		If Not GetGame().isGameLeader() Then Return False
 
-		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
-		Local minute:Int = GetWorldTime().GetDayMinute(time)
-		If minute < 0 Then Return False
+		'time in game now
+		Local gameTime:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local minuteOfHour:Int = GetWorldTime().GetDayMinute(gameTime)
+		If minuteOfHour < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
