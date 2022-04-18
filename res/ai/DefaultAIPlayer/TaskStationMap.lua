@@ -76,35 +76,23 @@ function TaskStationMap:BeforeBudgetSetup()
 	end
 	local totalReach = player.totalReach
 
-	--TODO cleanup - no investmentPriority anymore
 	if movieCount < 12 and  (totalReach == nil or totalReach > 850000) then
-		self.InvestmentPriority = 0
+		self.BudgetWeight = 0
 	elseif (movieCount < 24) and (totalReach == nil or totalReach > 1300000) then
-		self.InvestmentPriority = 4
+		self.BudgetWeight = 4
 	else
-		self.InvestmentPriority = 8
+		self.BudgetWeight = 8
 	end
 
-	if self.InvestmentPriority == 0 then
-		self.BudgetWeight = 0
-	else
-		self.BudgetWeight = 4
-		if totalReach == nil then
-			--should not happen
-		elseif totalReach < 2000000 then
+	if self.BudgetWeight > 0 and totalReach ~= nil then
+		if totalReach < 2000000 then
 			self.BudgetWeight = 8
-		--elseif movieCount < 30 and totalReach > 4400000 and totalReach < 5000000 then
-		--	self.BudgetWeight = 0
 		end
 	end
 end
 
 
 function TaskStationMap:BudgetSetup()
-	if self.UseInvestment then
-		self:LogInfo("+++ Investition in TaskStationMap!")
-		self.SituationPriority = 15
-	end
 end
 
 
