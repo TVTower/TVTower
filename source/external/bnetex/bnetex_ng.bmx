@@ -44,11 +44,13 @@ Function GetNetworkAdapter:Int(Device:Byte Ptr, MAC:Byte Ptr, ..
 End Function
 
 
-	Global selectex_:Int(ReadCount:Int, ReadSockets:Int Ptr, ..
-	                     WriteCount:Int, WriteSockets:Int Ptr, ..
-	                     ExceptCount:Int, ExceptSockets:Int Ptr, ..
-	                     Milliseconds:Int) = select_
-
+?win32 and ptr64
+	Global selectex_:Int(ReadCount:Int, ReadSockets:Long Ptr, WriteCount:Int, WriteSockets:Long Ptr, ExceptCount:Int, ExceptSockets:Long Ptr, Milliseconds:Int) = select_
+?win32 and ptr32
+	Global selectex_:Int(ReadCount:Int, ReadSockets:Int Ptr, WriteCount:Int, WriteSockets:Int Ptr, ExceptCount:Int, ExceptSockets:Int Ptr, Milliseconds:Int) = select_
+?not win32
+	Global selectex_:Int(ReadCount:Int, ReadSockets:Int Ptr, WriteCount:Int, WriteSockets:Int Ptr, ExceptCount:Int, ExceptSockets:Int Ptr, Milliseconds:Int) = select_
+?
 Public
 
 Type TAdapterInfo
