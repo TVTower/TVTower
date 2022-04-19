@@ -3131,8 +3131,10 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If HasFlag(TVTStationFlag.PAID) Then Return True
 		If Not GetPlayerFinance(playerID) Then Return False
+		Local price:Int = GetBuyPrice()
+		If price < 0 Then Return False
 
-		If GetPlayerFinance(playerID).PayStation( GetBuyPrice() )
+		If GetPlayerFinance(playerID).PayStation( price )
 			owner = playerID
 			SetFlag(TVTStationFlag.PAID, True)
 
