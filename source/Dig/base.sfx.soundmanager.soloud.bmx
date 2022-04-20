@@ -18,6 +18,12 @@ Type TSoundManager_Soloud Extends TSoundManager
 		'initialize sound system
 		If audioEngineEnabled Then manager.InitAudioEngine()
 
+		'fix concurrent max voice count
+		Local driver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
+		If driver and driver._soloud.GetMaxActiveVoiceCount() < 128
+			driver._soloud.setMaxActiveVoiceCount(128)
+		EndIf
+
 		manager.defaultSfxDynamicSettings = TSfxSettings.Create()
 
 		Return manager
