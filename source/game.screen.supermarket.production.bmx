@@ -2204,7 +2204,7 @@ Type TGUICastSlotList Extends TGUISlotList
 
 	'override
 	'react to clicks to empty slots
-	Method onClick:Int(triggerEvent:TEventBase)
+	Method onClick:Int(triggerEvent:TEventBase) override
 		'only interested in left click
 		If triggerEvent.GetData().GetInt("button") <> 1 Then Return False
 
@@ -2217,6 +2217,8 @@ Type TGUICastSlotList Extends TGUISlotList
 			Local genderID:Int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.jobs[selectCastSlot].gender
 			OpenSelectCastWindow(jobID, genderID)
 		EndIf
+		
+		Return True
 	End Method
 
 

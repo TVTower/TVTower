@@ -57,12 +57,17 @@ Type TGUIButton Extends TGUIobject
 	
 
 	'override
-	Method onClick:Int(triggerEvent:TEventBase)
+	Method onClick:Int(triggerEvent:TEventBase) override
 		Super.onClick(triggerEvent)
 		'send a more specialized event
 		If Not triggerEvent.isVeto()
 			TriggerBaseEvent(GUIEventKeys.GUIButton_OnClick, triggerEvent.GetData(), Self)
+			'button handled that click
+			Return True
 		EndIf
+		
+		'button did not handle that click
+		Return False
 	End Method
 
 

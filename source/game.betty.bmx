@@ -495,7 +495,7 @@ Type TGUIBettyPresent extends TGuiObject
 	End Method
 
 	'Copied and adapted from TGUIListItem
-	Method OnClick:Int(triggerEvent:TEventBase)
+	Method OnClick:Int(triggerEvent:TEventBase) override
 		'if desired, run something before this click is handled
 		if beforeOnClickCallback 
 			'if the callback returns true the event is handled there
@@ -528,6 +528,8 @@ Type TGUIBettyPresent extends TGuiObject
 		EndIf
 		'onclick is already emit
 		'TriggerBaseEvent(GUIEventKeys.GUIObject_OnClick, Null, Self, triggerEvent.GetReceiver())
+		
+		Return True
 	End Method
 End Type
 

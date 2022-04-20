@@ -153,7 +153,7 @@ Type TGUIAccordeonPanel Extends TGUIObject
 
 
 	'override to toggle open/close
-	Method onClick:Int(triggerEvent:TEventBase)
+	Method onClick:Int(triggerEvent:TEventBase) override
 		Local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
 		Local headerScreenRect:TRectangle = New TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetHeaderScreenHeight())
 

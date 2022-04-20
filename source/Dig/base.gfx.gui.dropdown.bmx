@@ -486,7 +486,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
 	'override onClick to close parental list
-	Method OnClick:Int(triggerEvent:TEventBase)
+	Method OnClick:Int(triggerEvent:TEventBase) override
 		Super.OnClick(triggerEvent)
 
 		Local button:Int = triggerEvent.GetData().GetInt("button")

@@ -28,13 +28,15 @@ Type TGUIToggleButton Extends TGUIButton
 
 
 	'override default to (un)check box
-	Method onClick:Int(triggerEvent:TEventBase)
+	Method onClick:Int(triggerEvent:TEventBase) override
 		Local button:Int = triggerEvent.GetData().GetInt("button", -1)
 		'only react to left mouse button
 		If button <> 1 Then Return False
 
 		'set box (un)checked
 		SetToggled(1 - Istoggled())
+		
+		Return True
 	End Method
 
 

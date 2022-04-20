@@ -32,7 +32,7 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 	End Method
 
 
-	Method onClick:int(triggerEvent:TEventBase)
+	Method onClick:int(triggerEvent:TEventBase) override
 		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
 		if not coord then return False
 

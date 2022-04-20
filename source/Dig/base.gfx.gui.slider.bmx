@@ -346,7 +346,7 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
-	Method onClick:Int(triggerEvent:TEventBase)
+	Method onClick:Int(triggerEvent:TEventBase) override
 		'only if left button was used
 		if triggerEvent.GetData().GetInt("button",0) <> 1 then return False
 

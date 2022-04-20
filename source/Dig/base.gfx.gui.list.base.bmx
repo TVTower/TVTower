@@ -1437,7 +1437,7 @@ Type TGUIListItem Extends TGUIobject
 
 
 	'override onClick to emit a special event
-	Method OnClick:Int(triggerEvent:TEventBase)
+	Method OnClick:Int(triggerEvent:TEventBase) override
 		Super.OnClick(triggerEvent)
 
 		Local data:TData = triggerEvent.GetData()
