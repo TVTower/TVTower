@@ -302,15 +302,18 @@ Räume
 * N: Nachrichtenstudio
 * O: Büro/Office
 * P: Raumplan
+* Q: Raum verlassen
 * R: Raumvermietung / Makler
 * S: Studio (erstes freies)
 * W: Werbemakler
 
 Sonstiges
 ---------
+* Esc: Menü öffnen (Pause); offenes Menü oder Dialog schließen
 * F1: Spielanleitung oder wenn verfügbar raum-/bildschirmspezifische Hilfe anzeigen
 * F5: Spielstand speichern (Quicksave)
 * F8: Spielstand laden (Quickload)
+* F12: Screenshot speichern
 
 Abweichende Tastenkürzel im Entwicklermodus
 ===========================================
@@ -325,13 +328,14 @@ Spielgeschwindigkeit
 * 7 : Spielgeschwindigkeit 120 Spielminuten/s
 * 8 : Spielgeschwindigkeit 240 Spielminuten/s
 * 9 : Spielgeschwindigkeit 0,5 Spielminuten/s (Standard)
-* 0 : Spielgeschwindigkeit 0 ("Pause")
+* 0 : Spielgeschwindigkeit 0
 
 Räume
 ------
 * Strg + R: Roomboard / Raumplan
 * Strg Links + S: Supermarkt
 * Strg Rechts + S: Drehbuchagentur (Scripts)
+* (Q anders belegt - siehe Sonstiges)
 
 Sonstiges
 ---------

@@ -306,16 +306,18 @@ Rooms
 * N: News Studio
 * O: Office
 * P: Room Plan
+* Q: Leave Room
 * R: Room Agency
 * S: Studio (the first free one found)
 * W: Ad Agency [Werbemakler]
 
 Misc
 ----
-
+* Esc: open menu (pause); close an open menu or dialog
 * F1: Display Game manual or room/screen-specific help if available
 * F5: Save game state (Quicksave)
 * F8: Load game state (Quickload)
+* F12: Save screenshot
 
 Deviating Shortcuts in Developer Mode
 =====================================
@@ -330,7 +332,7 @@ Game Speed
 * 7 : Speed 120 game minutes/s
 * 8 : Speed 240 game minutes/s
 * 9 : Speed 0.5 game minutes/s (standard)
-* 0 : Speed 0 ("pause")
+* 0 : Speed 0
 
 Rooms
 -----
@@ -338,6 +340,7 @@ Rooms
 * Ctrl + R: Room Plan
 * Left-Ctrl + S: Supermarket
 * Right-Ctrl + S: Script Agency
+* (Q with different effect - see Misc)
 
 Misc
 ----
