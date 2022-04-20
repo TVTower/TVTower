@@ -76,9 +76,9 @@ function TaskStationMap:BeforeBudgetSetup()
 	end
 	local totalReach = player.totalReach
 
-	if movieCount < 12 and  (totalReach == nil or totalReach > 850000) then
+	if movieCount < 12 and (totalReach == nil or totalReach > 850000) then
 		self.BudgetWeight = 0
-	elseif (movieCount < 24) and (totalReach == nil or totalReach > 1300000) then
+	elseif movieCount < 24 and (totalReach == nil or totalReach > 1300000) then
 		self.BudgetWeight = 4
 	else
 		self.BudgetWeight = 8
@@ -166,20 +166,24 @@ function JobAnalyseStationMarket:Tick()
 		movieCount = stats.Values
 	end
 	player.totalReach = MY.GetMaxAudience()
-	if player.totalReach < 2500000 and movieCount < 20 then
-		self.Task.maxReachIncrease = 2400000 - player.totalReach
-	elseif player.totalReach < 5000000 and movieCount < 30 then
-		self.Task.maxReachIncrease = 4800000 - player.totalReach
-	else
-		self.Task.maxReachIncrease = 99000000
+	self.Task.maxReachIncrease = 99000000
+	if movieCount < 12 then
+		if player.totalReach < 2500000 then
+			self.Task.maxReachIncrease = 2400000 - player.totalReach
+		else
+			self.Task.maxReachIncrease = 0
+		end
+	elseif movieCount < 24 then
+		if player.totalReach < 5000000 then
+			self.Task.maxReachIncrease = 4800000 - player.totalReach
+		else
+			self.Task.maxReachIncrease = 0
+		end
 	end
 
 	if player.totalReach < 60000000 and (self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0) then
 		self:determineIntendedPositions()
 	end
-
-	--try without analysing market
-	--self:determineKnownPositions()
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -438,12 +442,13 @@ function JobBuyStation:GetAttraction(tempStation)
 	--local price = tempStation.GetTotalBuyPrice()
 	local price = tempStation.GetBuyPrice()
 	local exclusiveReach = tempStation.GetExclusiveReach(false)
-	local pricePerViewer = (price / exclusiveReach) / 5 + tempStation.GetRunningCosts() / exclusiveReach
+	local runningCosts = tempStation.GetRunningCosts()
+	local pricePerViewer = (price / exclusiveReach) / 5 + runningCosts / exclusiveReach
 	local priceDiff = self.Task.CurrentBudget - price
 	--little influence by the amount of how well the budget is "used"
 	--to avoid buying too many stations (upkeep!)
 	local attraction = 1 / pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
-	self:LogTrace("    -> attraction before" .. attraction .." rc"..tempStation.GetRunningCosts())
+	self:LogTrace("    -> attraction before" .. attraction .." rc " .. runningCosts)
 	if tempStation.GetTotalBuyPrice() > self.Task.CurrentBudget then
 		attraction = -1
 	elseif attraction < 1 then
@@ -555,7 +560,7 @@ function JobBuyStation:GetBestAntennaOffer()
 		if tempStation ~= nil then
 			reach = tempStation.GetReach(false)
 			exclusiveReach = tempStation.GetExclusiveReach(false)
-			if exclusiveReach < 2000 then table.insert(removeFromIntendedPositions, pos) end
+			if exclusiveReach < 10000 then table.insert(removeFromIntendedPositions, pos) end
 			relativeExclusiveReach = exclusiveReach / reach
 			price = tempStation.GetPrice()
 			stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
