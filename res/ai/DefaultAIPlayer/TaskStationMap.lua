@@ -174,7 +174,7 @@ function JobAnalyseStationMarket:Tick()
 		self.Task.maxReachIncrease = 99000000
 	end
 
-	if TVT.of_getStationCount(TVT.ME) < 30 and (self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0) then
+	if player.totalReach < 60000000 and (self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0) then
 		self:determineIntendedPositions()
 	end
 
