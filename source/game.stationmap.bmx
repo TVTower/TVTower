@@ -1996,6 +1996,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method Initialize:Int()
 		stations.Clear()
 		reachInvalid = True
+		reach = 0
 		sectionBroadcastPermissions = New TMap
 		showStations = [1,1,1,1]
 		showStationTypes = [1,1,1]
@@ -2031,6 +2032,8 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns the maximum reach of the stations on that map
 	Method GetReach:Int() {_exposeToLua}
+		If reachInvalid Then RecalculateAudienceSum()
+
 		Return Max(0, Self.reach)
 	End Method
 
@@ -2348,7 +2351,10 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
-		Local reachBefore:Int = GetReach()
+		'cannot simply call GetReach() because it can call RecalculateAudienceSum()
+		'Local reachBefore:Int = GetReach()
+		Local reachBefore:Int = self.reach
+		if reachInvalid then reachBefore = 0
 		Local oldReachLevel:Int = GetReachLevel(reachBefore)
 
 		If cheatedMaxReach
