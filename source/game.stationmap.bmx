@@ -1968,7 +1968,11 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	'and what types we want to show
 	Field showStationTypes:Int[3]
 	'maximum audience possible
-	Field reach:Int	= 0
+	Field reach:Int = 0
+	'audience reached before last change
+	Field reachBefore:Int = 0
+	'maximum audience reached in this game for now
+	Field reachMax:Int = 0
 	Field reachInvalid:Int = True {nosave}
 	Field cheatedMaxReach:Int = False
 	'all stations of the map owner
@@ -1997,6 +2001,8 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		stations.Clear()
 		reachInvalid = True
 		reach = 0
+		reachBefore = 0
+		reachMax = 0
 		sectionBroadcastPermissions = New TMap
 		showStations = [1,1,1,1]
 		showStationTypes = [1,1,1]
@@ -2352,10 +2358,8 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
 		'cannot simply call GetReach() because it can call RecalculateAudienceSum()
-		'Local reachBefore:Int = GetReach()
-		Local reachBefore:Int = self.reach
-		if reachInvalid then reachBefore = 0
-		Local oldReachLevel:Int = GetReachLevel(reachBefore)
+		'reachBefore = GetReach()
+		reachBefore = self.reach
 
 		If cheatedMaxReach
 			reach = GetStationMapCollection().population
@@ -2369,16 +2373,23 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 				'print "RON: antenna["+owner+"]: " + GetStationMapCollection().GetAntennaAudienceSum(owner) + "   cable["+owner+"]: " + GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations) +"   satellite["+owner+"]: " + GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations) + "   recalculated: " + reach
 			EndIf
 		EndIf
+
+		reachMax = Max(reach, reachMax)
 		'current reach is updated now
 		reachInvalid = False
 
-		'inform others
-		TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", reach).AddInt("reachBefore", reachBefore).AddInt("playerID", owner), Self )
-
-		If GetReachLevel(reach) <> oldReachLevel
-			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", oldReachLevel), Self )
+		'attention: this check only works as long as reaches cannot
+		'stay the same but their "target group shares" change (so selling
+		'a station where only men reside and buying one with only female
+		'kids and seniors)
+		If reachBefore <> reach
+			'inform others about new audience reach
+			TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", reach).AddInt("reachBefore", reachBefore).AddInt("playerID", owner), Self )
+			'inform others about a change of the reach level
+			If GetReachLevel(reach) <> GetReachLevel(reachBefore)
+				TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", GetReachLevel(reachBefore)), Self )
+			EndIf
 		EndIf
-
 
 		Return reach
 	End Method
