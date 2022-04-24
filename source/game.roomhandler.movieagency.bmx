@@ -1603,6 +1603,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'modify licences new price until a new auction of this licence
 			'might reset it
 			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel))
+			licence.SetLicencedAudienceReachLevel(bestBidderLevel)
 
 			?debug
 			Print "modifier auctionPrice=" + Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel)
