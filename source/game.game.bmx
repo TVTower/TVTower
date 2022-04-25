@@ -2213,7 +2213,7 @@ endrem
 			'event passes milliseconds gone since last call
 			'so if hickups made the game stop for 4.3 seconds, this value
 			'will be about 4300. Maybe AI wants this information.
-			TriggerBaseEvent(GameEventKeys.Game_OnRealTimeSecond, New TData.AddLong("timeGone", Time.GetTimeGone()-lastTimeRealTimeSecondGone))
+			TriggerBaseEvent(GameEventKeys.Game_OnRealTimeSecond, New TData.AddLong("timeGoneSinceLastRTS", Time.GetTimeGone()-lastTimeRealTimeSecondGone))
 			lastTimeRealTimeSecondGone = Time.GetTimeGone()
 		EndIf
 
@@ -2230,7 +2230,7 @@ endrem
 		'if speed is to high - minutes might get skipped,
 		'handle this case so nothing gets lost.
 		'missedMinutes is >1 in all cases (else this part isn't run)
-		Local missedMilliseconds:Int = (worldTime.GetTimeGone() - lastTimeMinuteGone)
+		Local missedMilliseconds:Long = (worldTime.GetTimeGone() - lastTimeMinuteGone)
 		Local missedSeconds:Int = missedMilliseconds / 1000
 		Local missedMinutes:Int = missedMilliseconds / TWorldTime.MINUTELENGTH
 		Local daysMissed:Int = missedMilliseconds / TWorldTime.DAYLENGTH

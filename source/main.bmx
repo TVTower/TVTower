@@ -3583,8 +3583,8 @@ End Type
 'SCREEN: PREPARATION FOR A GAME START
 '(loading savegame, synchronising multiplayer data)
 Type TScreen_PrepareGameStart Extends TGameScreen
-	Field SendGameReadyTimer:Int = 0
-	Field StartMultiplayerSyncStarted:Int = 0
+	Field SendGameReadyTimer:Long = 0
+	Field StartMultiplayerSyncStarted:Long = 0
 	Field messageWindow:TGUIGameModalWindow
 
 	'Store call states as we try a "Non blocking" approach
@@ -3689,7 +3689,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	End Method
 
 
-	Global wait:Int = 0
+	Global wait:Long = 0
 
 	'override default update
 	Method Update:Int(deltaTime:Float)
@@ -4450,16 +4450,15 @@ Type GameEvents
 		'only AI handling: only gameleader interested
 		If Not GetGame().isGameLeader() Then Return False
 
-		'milliseconds passed since last event
-		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
+		'milliseconds passed since last RealTimeSecond-event
+		'value could fit into an integer but for now we keep it as Long
+		Local timeGoneSinceLastRTS:Long = Int(triggerEvent.GetData().GetLong("timeGoneSinceLastRTS", 0))
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
 				TProfiler.Enter(_profilerKey_AI_SECOND[player.playerID-1], False)
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddInt(timeGone))
-				'player.PlayerAI.ConditionalCallOnTick()
-				'player.PlayerAI.CallOnRealtimeSecond(timeGone)
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddLong(timeGoneSinceLastRTS))
 				TProfiler.Leave(_profilerKey_AI_SECOND[player.playerID-1], 100, False)
 			EndIf
 		Next

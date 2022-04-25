@@ -185,7 +185,7 @@ Type TWorldTimeBaseIntervalTimer
 	End Method
 
 
-	Method getTimeGoneInPercents:float()
+	Method getTimeGoneInPercents:Float()
 		local restTime:int = Max(0, getTimeUntilExpire())
 		if restTime = 0 then return 1.0
 		return 1.0 - (restTime / Float(GetInterval()))

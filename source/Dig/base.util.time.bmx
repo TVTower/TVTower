@@ -111,9 +111,9 @@ Time.appStartTime = Time.MilliSecsLong()
 
 'a simple stop watch to measure a time interval
 Type TStopWatch
-	Field startTime:int = -1
-	Field stopTime:int = -1
-	Field pausedTime:int = 0
+	Field startTime:Long = -1
+	Field stopTime:Long = -1
+	Field pausedTime:Long = 0
 
 
 	Method Init:TStopWatch()
@@ -144,7 +144,7 @@ Type TStopWatch
 	End Method
 
 
-	Method GetTime:int()
+	Method GetTime:Long()
 		if startTime = -1 then return 0
 		if stopTime >= 0 then return (stopTime - startTime) - pausedTime
 		return (Time.GetTimeGone() - startTime) - pausedTime
@@ -214,7 +214,7 @@ Type TIntervalTimer
 	'returns TRUE if interval is gone (ignores action time)
 	'action time could be eg. "show text for actiontime-seconds EVERY interval-seconds"
 	Method doAction:int()
-		local timeLeft:Double = _GetTimeGone() - (timer + GetInterval() )
+		local timeLeft:Long = _GetTimeGone() - (timer + GetInterval() )
 		return ( timeLeft > 0 AND timeLeft < actionTime )
 	End Method
 
@@ -225,7 +225,7 @@ Type TIntervalTimer
 	End Method
 
 
-	Method getTimeGoneInPercents:float()
+	Method getTimeGoneInPercents:Float()
 		local restTime:int = Max(0, getTimeUntilExpire())
 		if restTime = 0 then return 1.0
 		return 1.0 - (restTime / float(GetInterval()))
@@ -237,12 +237,12 @@ Type TIntervalTimer
 	End Method
 
 
-	Method getTimeUntilExpire:Double()
+	Method getTimeUntilExpire:Long()
 		return timer + GetInterval() + actionTime - _GetTimeGone()
 	End Method
 
 
-	Method getTimeUntilAction:Double()
+	Method getTimeUntilAction:Long()
 		return timer + GetInterval() - _GetTimeGone()
 	End Method
 
