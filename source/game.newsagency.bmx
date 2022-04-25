@@ -399,8 +399,8 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 			tempMin = Min(tempMin, weather.GetTemperature())
 			tempMax = Max(tempMax, weather.GetTemperature())
 
-			windMin = Min(windMin, Abs(weather.GetWindVelocity() * 20))
-			windMax = Max(windMax, Abs(weather.GetWindVelocity() * 20))
+			windMin = Min(windMin, weather.GetWindSpeed() * 20)
+			windMax = Max(windMax, weather.GetWindSpeed() * 20)
 
 			if weather.GetTemperature() < 0 then isBelowZero = True
 			if weather.IsRaining() and weather.GetTemperature() >= 0 then isRaining = True

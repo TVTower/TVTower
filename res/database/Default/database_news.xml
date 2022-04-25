@@ -568,7 +568,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Tourists attacked by Rhino</en>
 			</title>
 			<description>
-				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 MARK.</de>
+				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 Mark.</de>
 				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about 100,000 DEM.</en>
 			</description>
 			<effects>
@@ -1844,11 +1844,11 @@ Demonstrations are expected again this year.</en>
 		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_1" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="0" creator="">
 			<title>
 				<de>Straßenfeger findet 1.000 Mark</de>
-				<en>Street sweeper finds 1,000 marks</en>
+				<en>Street sweeper finds 1,000 DEM</en>
 			</title>
 			<description>
 				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 1.000 Mark. „Die wer'n sofort versofff'n“, so der Finder.</de>
-				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found 1,000 marks. "They will immediately be used to get drunk" said the finder.</en>
+				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found 1,000 DEM. "They will immediately be used to get drunk" said the finder.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" />
@@ -1863,7 +1863,7 @@ Demonstrations are expected again this year.</en>
 			</title>
 			<description>
 				<de>Der Finder des 1.000-Mark-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“.</de>
-				<en>The finder of the 1,000 mark bill died of alcohol poisoning. His tombstone says,"...slammed down"</en>
+				<en>The finder of the 1,000 DEM bill died of alcohol poisoning. His tombstone says,"...slammed down"</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />

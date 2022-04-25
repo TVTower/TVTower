@@ -27,27 +27,40 @@ End Type
 
 Type TSimpleSoundSource Extends TSoundSourceElement
 	Field SfxChannels:TMap = CreateMap()
+	Global channelsMutex:TMutex = CreateMutex()
 
 	Function Create:TSimpleSoundSource()
 		Return New TSimpleSoundSource
 	End Function
 
 	Method GetSfxChannelByName:TSfxChannel(name:String)
-		Return TSfxChannel(MapValueForKey(SfxChannels, name))
+		Local channel:TSfxChannel
+		LockMutex(channelsMutex)
+			channel = TSfxChannel(MapValueForKey(SfxChannels, name))
+		UnlockMutex(channelsMutex)
+		return channel
+	End Method
+	
+	
+	Method AddChannel(name:String, channel:TSfxChannel)
+		LockMutex(channelsMutex)
+			SfxChannels.insert(name, channel)
+		UnlockMutex(channelsMutex)
 	End Method
 
 	'override default behaviour
 	Method PlaySfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		TSoundManager.GetInstance().RegisterSoundSource(Self)
 
-		'add channel if not done yet
-		If Not TSfxChannel(SfxChannels.ValueForKey(name))
-			SfxChannels.insert(name, TSfxChannel.Create())
-		EndIf
-
 		Local channel:TSfxChannel = GetChannelForSfx(name)
-		'if channel getter fails, just return silently
-		if not channel then return
+		'add channel if not done yet
+		If not channel 
+			channel = TSfxChannel.Create()
+			'if channel getter and creator failed, just return silently
+			if not channel then return
+
+			AddChannel(name, TSfxChannel.Create())
+		EndIf
 
 		Local settings:TSfxSettings = sfxSettings
 		If settings = Null Then settings = GetSfxSettings(name)
