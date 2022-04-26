@@ -4468,7 +4468,7 @@ Type GameEvents
 		EndIf
 
 		'real time when event is created
-		Local realTime:Int = Time.GetTimeGone()
+		Local realTime:Long = Time.GetTimeGone()
 		'milliseconds passed since last RealTimeSecond-event
 		'value could fit into an integer but for now we keep it as Long
 		Local timeGoneSinceLastRTS:Long = triggerEvent.GetData().GetLong("timeGoneSinceLastRTS", 0)
@@ -4561,7 +4561,7 @@ endrem
 
 
 		'real time when event is created
-		Local realTime:Int = Time.GetTimeGone()
+		Local realTime:Long = Time.GetTimeGone()
 		'time in game now
 		Local gameTime:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local minuteOfHour:Int = GetWorldTime().GetDayMinute(gameTime)
