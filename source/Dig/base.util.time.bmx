@@ -21,7 +21,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2022 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -46,30 +46,20 @@ EndRem
 SuperStrict
 Import Brl.retro
 
+Import "base.util.time.c"
 
+Extern
+    Function MilliSecsLong:Long()
+End Extern
 
 Type Time
 	'=== GETTIMEGONE ===
 	Global startTime:Long = 0
 	Global appStartTime:Long = 0
 
-	'=== MILLISECSLONG
-	Global MilliSeconds:Long=0
-	Global LastMilliSeconds:Long = Time.MilliSecsLong()
-
-
 	'returns the time gone since the computer was started
 	Function MilliSecsLong:Long()
-		'code from:
-		'http://www.blitzbasic.com/Community/post.php?topic=84114&post=950107
-
-		'Convert to 32-bit unsigned
-		Local Milli:Long = Long(Millisecs()) + 2147483648:Long
-		 'Accumulate 2^32
-		If Milli < LastMilliSeconds Then MilliSeconds :+ 4294967296:long
-
-		LastMilliSeconds = Milli
-		Return MilliSeconds + Milli
+		Return .MilliSecsLong()
 	End Function
 
 
