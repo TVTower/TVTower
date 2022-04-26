@@ -15,14 +15,25 @@ Type TAiBase
 	Field scriptSaveState:string
 	'time in milliseconds for the next "onTick"-call
 	Field nextTickTime:Long
-	'game game minute of the last "onTick"-call
-	Field lastTickMinute:int
+	'last processed game minute (since start) (eg via onTick-call)
+	Field processedGameMinute:Long = -1
+	'ticks the AI received because of AI-created ticks (scheduled ticks by the AI)
+	Field internalTicks:Long
+	'ticks the AI received because of at least a second passed
+	Field realtimeSecondTicks:Long
+	'ticks the AI processed (not including the manually scheduled ticks by the AI)
 	Field ticks:Long
 	'stores blitzmax objects used in the LUA scripts to ease serialisation
 	'when saving a gamestate
 	Field objectsUsedInLua:object[]
 	Field objectsUsedInLuaCount:int
 	Field started:int = False
+	Field nextEventID:Int
+	Field lastEventID:Int
+	Field lastEventTime:Int
+	Field currentEventStart:Int
+	Field currentEventID:Int
+	Field toSynchronizeCount:Int = 0
 	Field eventQueue:TAIEvent[]
 
 	Field _luaEngine:TLuaEngine {nosave}
@@ -78,15 +89,31 @@ rem
 endrem
 
 	Method HandleAIEvent(event:TAIEvent)
+		currentEventID = event.id
+		currentEventStart = Millisecs()
+
 		Select event.id
 			case TAIEvent.OnMinute
 				CallLuaFunction("OnMinute", event.data)
 			case TAIEvent.OnTick
-				CallOnTick()
-			case TAIEvent.OnConditionalCallOnTick
-				ConditionalCallOnTick()
+				if event.data.length < 2 then Throw "TAIEvent.OnTick: Invalid AI event data"
+				Local realTime:Long = long(string(event.data[0]))
+				Local gameTime:Long = long(string(event.data[1]))
+				CallOnTick(gameTime)
+			case TAIEvent.OnInternalTick
+				if event.data.length < 2 then Throw "TAIEvent.OnInternalTick: Invalid AI event data"
+				Local realTime:Long = long(string(event.data[0]))
+				Local gameTime:Long = long(string(event.data[1]))
+				CallOnInternalTick(gameTime)
+			case TAIEvent.OnRealtimeSecondTick
+				if event.data.length < 2 then Throw "TAIEvent.OnRealtimeSecondTick: Invalid AI event data"
+				Local realTime:Long = long(string(event.data[0]))
+				Local gameTime:Long = long(string(event.data[1]))
+				CallOnRealtimeSecondTick(realTime, gameTime)
 			case TAIEvent.OnRealTimeSecond
-				CallLuaFunction("OnRealTimeSecond", event.data)
+				'[0] = realTimeGone
+				'[1] = time since last realTimeSecond
+				CallLuaFunction("OnRealTimeSecond", [event.data[1]])
 			case TAIEvent.OnLoad
 				CallOnLoad()
 			case TAIEvent.OnSave
@@ -139,6 +166,10 @@ endrem
 			default
 				print "Unhandled AIEvent: " + event.id
 		End Select
+
+		lastEventID = currentEventID
+		lastEventTime = Millisecs() - currentEventStart
+		currentEventID = 0 'indicator that we are done
 	End Method
 
 
@@ -158,7 +189,8 @@ endrem
 		Select aiEvent.id
 			case TAIEvent.OnMinute, ..
 			     TAIEvent.OnTick, ..
-			     TAIEvent.OnConditionalCallOnTick, ..
+			     TAIEvent.OnInternalTick, ..
+			     TAIEvent.OnRealtimeSecondTick, ..
 			     TAIEvent.OnRealtimeSecond
 				If Not IsActive() Then Return
 		End Select
@@ -173,10 +205,14 @@ endrem
 		?threaded
 			LockMutex(_eventQueueMutex)
 			eventQueue :+ [aiEvent]
+			nextEventID = eventQueue[0].id
 			UnlockMutex(_eventQueueMutex)
 		?not threaded
 			eventQueue :+ [aiEvent]
+			nextEventID = eventQueue[0].id
 		?
+
+		if aiEvent.synchronize then toSynchronizeCount :+ 1
 	End Method
 
 
@@ -188,10 +224,21 @@ endrem
 		?threaded
 			LockMutex(_eventQueueMutex)
 			eventQueue = eventQueue [1 ..]
+			if eventQueue.length > 0
+				nextEventID = eventQueue[0].id
+			Else
+				nextEventID = 0
+			EndIf
 			UnlockMutex(_eventQueueMutex)
 		?not threaded
 			eventQueue = eventQueue [1 ..]
+			if eventQueue.length > 0
+				nextEventID = eventQueue[0].id
+			Else
+				nextEventID = 0
+			EndIf
 		?
+		if event.synchronize then toSynchronizeCount :- 1
 		return event
 	End Method
 
@@ -199,6 +246,35 @@ endrem
 	Method GetNextEventCount:Int()
 		if THREADED_AI_DISABLED then return 0
 		return eventQueue.length
+	End Method
+
+	Method GetNextToSynchronizeEventCount:Int()
+		if THREADED_AI_DISABLED then return 0
+		return toSynchronizeCount
+	End Method
+
+	Method GetNextEventID:Int()
+		if THREADED_AI_DISABLED then return 0
+		return nextEventID
+	End Method
+
+	Method GetCurrentEventTime:Int()
+		If currentEventID > 0
+			Return Millisecs() - currentEventStart
+		EndIf
+		Return 0
+	End Method
+
+	Method GetCurrentEventID:Int()
+		Return currentEventID
+	End Method
+
+	Method GetLastEventTime:Int()
+		Return lastEventTime
+	End Method
+
+	Method GetLastEventID:Int()
+		Return lastEventID
 	End Method
 
 	
@@ -319,7 +395,10 @@ endrem
 
 		Repeat
 			aiBase.Update()
-			delay(100)
+			'wait up to 5 ms
+			if aiBase.GetNextEventCount() = 0 then Delay(1)
+			if aiBase.GetNextEventCount() = 0 then Delay(2)
+			if aiBase.GetNextEventCount() = 0 then Delay(2)
 
 			'received command to exit the thread
 			if aiBase._updateThreadExit then exit
@@ -430,8 +509,9 @@ endrem
 
 	Method CallUpdate() abstract
 
-	Method ConditionalCallOnTick() abstract
-	Method CallOnTick() abstract
+	Method CallOnRealtimeSecondTick(realTimeGone:Long, gameTimeGone:Long) abstract
+	Method CallOnInternalTick(gameTimeGone:Long) abstract
+	Method CallOnTick(gameTimeGone:Long) abstract
 	Method CallOnLoadState() abstract
 	Method CallOnSaveState() abstract
 	Method CallOnLoad() abstract
@@ -456,6 +536,7 @@ End Type
 
 Type TAIEvent {_exposeTolua}
 	Field id:int
+	Field synchronize:Int
 	Field data:object[]
 
 	Const OnLoadState:Int = 1
@@ -484,12 +565,19 @@ Type TAIEvent {_exposeTolua}
 	Const OnMoneyChanged:Int = 24
 	Const OnMalfunction:Int = 25
 	Const OnPlayerGoesBankrupt:Int = 26
-	Const OnConditionalCallOnTick:Int = 27
+	Const OnRealtimeSecondTick:Int = 27
 	Const OnTick:Int = 28
+	Const OnInternalTick:Int = 29
 
 
 	Method SetID:TAIEvent(evID:int)
 		self.id = evID
+		return self
+	End Method
+
+
+	Method SetToSynchronize:TAIEvent(bool:int = True)
+		self.synchronize = bool
 		return self
 	End Method
 
@@ -531,6 +619,10 @@ Type TAIEvent {_exposeTolua}
 	
 	
 	Method GetName:String()
+		Return GetNameByID(self.id)
+	End Method
+
+	Function GetNameByID:String(id:int)
 		Select id
 			Case OnLoadState
 				Return "OnLoadState"
@@ -584,12 +676,14 @@ Type TAIEvent {_exposeTolua}
 				Return "OnMalfunction"
 			Case OnPlayerGoesBankrupt
 				Return "OnPlayerGoesBankrupt"
-			Case OnConditionalCallOnTick
-				Return "OnConditionalCallOnTick"
+			Case OnRealtimeSecondTick
+				Return "OnRealtimeSecondTick"
 			Case OnTick
 				Return "OnTick"
+			Case OnInternalTick
+				Return "OnInternalTick"
 			Default
 				Return "Unknown event"
 		End Select
-	End Method
+	End Function
 End Type

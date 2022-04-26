@@ -82,11 +82,11 @@ Type TDeltaTimer
 	Field _funcRender:int()
 
 	'when did the current loop begin
-	Field _loopBeginTime:int
+	Field _loopBeginTime:Long
 	'realtime how long the last loop took
-	Field _lastLoopTime:int
+	Field _lastLoopTime:Long
 	'time all loops used so far
-	Field _loopTimeSum:float = 0.0
+	Field _loopTimeSum:Long = 0
 	'amount of loops done
 	Field _loopTimeCount:int = 0
 	'time accumulator to check whether a second passed
@@ -146,14 +146,14 @@ Type TDeltaTimer
 
 
 	'time the current loop needed up to now
-	Method GetCurrentLoopTime:float()
+	Method GetCurrentLoopTime:Long()
 		return Time.GetTimeGone() - _loopBeginTime
 	End Method
 
 
-	Method GetLoopTimeAverage:float()
+	Method GetLoopTimeAverage:Float()
 		if _loopTimeCount > 0
-			return _loopTimeSum / _loopTimeCount
+			return _loopTimeSum / Float(_loopTimeCount)
 		else
 			return 0
 		endif
@@ -188,7 +188,7 @@ Type TDeltaTimer
 			timesRendered = 0
 			timesUpdated = 0
 			timesSystemUpdated = 0
-			_loopTimeSum = GetLoopTimeAverage()
+			_loopTimeSum = Int(GetLoopTimeAverage() + 0.5)
 			_loopTimeCount = 1
 
 			_currentUpdateTimePerSecond = _updateTime

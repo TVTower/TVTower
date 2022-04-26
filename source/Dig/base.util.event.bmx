@@ -92,7 +92,7 @@ Type TEventManager
 	'holding events
 	Field _events:TList = New TList
 	'current time
-	Field _ticks:Int = -1
+	Field _ticks:Long = -1
 	'list of eventhandlers waiting for trigger
 	'"eventkey.id -> listener"
 	Field _listeners:TLongMap = new TLongMap
@@ -112,7 +112,7 @@ Type TEventManager
 
 
 	'returns how many update ticks are gone since start
-	Method getTicks:Int()
+	Method getTicks:Long()
 		Return _ticks
 	End Method
 
@@ -762,7 +762,7 @@ private
 	Field _eventKey:TEventKey
 	Field _data:Object
 public
-	Field _startTime:Int
+	Field _startTime:Long
 	Field _sender:Object = Null
 	Field _receiver:Object = Null
 	Field _status:Int = 0
@@ -815,12 +815,12 @@ public
 	End Method
 
 
-	Method GetStartTime:Int()
+	Method GetStartTime:Long()
 		Return _startTime
 	End Method
 
 
-	Method SetStartTime:TEventBase(newStartTime:Int=0)
+	Method SetStartTime:TEventBase(newStartTime:Long=0)
 		_startTime = newStartTime
 		Return Self
 	End Method

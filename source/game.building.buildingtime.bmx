@@ -39,7 +39,7 @@ End Function
 'for things happening every X moments
 Type TBuildingIntervalTimer Extends TWorldTimeBaseIntervalTimer
 	'override
-	Method Init:TBuildingIntervalTimer(interval:int, actionTime:int = 0, randomnessMin:int = 0, randomnessMax:int = 0)
+	Method Init:TBuildingIntervalTimer(interval:int, actionTime:int = 0, randomnessMin:int = 0, randomnessMax:int = 0) override
 		Super.Init(interval, actionTime, randomnessMin, randomnessMax)
 
 		return self
@@ -47,7 +47,7 @@ Type TBuildingIntervalTimer Extends TWorldTimeBaseIntervalTimer
 
 
 	'override to access bulding time
-	Method GetTime:TWorldTimeBase()
+	Method GetTime:TWorldTimeBase() override
 		Return GetBuildingTime()
 	End Method
 End Type

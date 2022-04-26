@@ -730,7 +730,7 @@ Type TGUIobject
 	'the font used in the last display call
 	Field _lastFont:TBitmapFont
 	'time when item got dragged
-	Field _timeDragged:Int = 0
+	Field _timeDragged:Long = 0
 	Field _parent:TGUIobject = Null
 	'only handle if this state is requested on guimanager.update / draw
 	Field _limitToState:String = ""

@@ -741,25 +741,25 @@ Type TDigNetwork
 	' title used when announcing
 	Field announceTitle:string = "unknown"
 	' Main Announcement Timer
-	Field announceTime:Int = -1
+	Field announceTime:Long = -1
 	' Main Announcement Timer time
 	Field announceTimer:Int = 750
 	Field announceToLan:int = 1
 
 	' Ping Timer
-	Field pingTime:Int = 0
+	Field pingTime:Long = 0
 	' Ping Timer
 	Field pingTimer:Int = 4000
 	' Update Timer
-	Field UpdateTime:Int
+	Field UpdateTime:Long
 	' Main Update Timer
-	Field MainSyncTime:Int
+	Field MainSyncLong:Int
 	Field LastOnlineRequestTimer:Long = 0
 	'time until next action (getlist, announce...)
 	Field LastOnlineRequestTime:Int = 10000
 	Field LastOnlineHashCode:String = ""
 	' // Networking Constants
-	Field ChatSpamTime:Int = 0
+	Field ChatSpamTime:Long = 0
 	
 	Global eventKey_OnReceiveAnnounceGame:TEventKey = EventManager.GetEventKey("network.onReceiveAnnounceGame", True)
 	Global eventKey_OnCreateServer:TEventKey = EventManager.GetEventKey("network.onCreateServer", True)

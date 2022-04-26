@@ -26,11 +26,11 @@ Type TGameBase {_exposeToLua="selected"}
 	Field playerBankruptLevelTime:Long[]
 
 	'last sync
-	Field stateSyncTime:Int	= 0
+	Field stateSyncTime:Long	= 0
 	'sync every
 	Field stateSyncTimer:Int = 2000
 	'the last moment a realtime second was gone
-	Field lastTimeRealTimeSecondGone:Int = 0
+	Field lastTimeRealTimeSecondGone:Long = 0
 	'last moment a WorlTime-"minute" was gone (for missed minutes)
 	Field lastTimeMinuteGone:Long = 0
 

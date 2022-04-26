@@ -829,9 +829,11 @@ function Update()
 end
 
 
-function OnTick(timeGone, ticksGone)
-	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone .. " gameMinute:" .. TVT.GetDayMinute())
-	getAIPlayer().WorldTicks = tonumber(ticksGone)
+function OnTick(realTimeGone, gameTimeGone, systemTicks, totalTicks)
+	--systemTicks = ticks by the system alone (here: "onMinute")
+	--totalTicks = ticks by system, "real time second" and AI-scheduled ticks
+	--debugMsg("OnTick  gameTime:" .. gameTimeGone .." realTime:" .. realTimeGone .. "  systemTicks:" .. systemTicks .. "  totalTicks:" .. totalTicks .."  gameMinute:" .. TVT.GetDayMinuteForTime(gameTimeGone) .. "  mainThread's gameMinute:" .. TVT.GetDayMinute())
+	getAIPlayer().WorldTicks = tonumber(totalTicks)
 
 
 	if (aiIsActive) then

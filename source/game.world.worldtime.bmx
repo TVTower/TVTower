@@ -289,7 +289,15 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Method GetTimeGoneAsMinute:Long(sinceStart:Int = False) {_exposeToLua}
 		Local useTime:Long = _timeGone
-		If sinceStart Then useTime = (_timeGone - _timeStart)
+		If sinceStart Then useTime :- _timeStart
+		Return useTime / Long(MINUTELENGTH)
+	End Method
+
+
+	Method GetTimeGoneAsMinute:Long(sinceStart:Int = False, useTime:Long)
+		if useTime <= 0 then useTime = _timeGone
+		
+		If sinceStart Then useTime :- _timeStart
 		Return useTime / Long(MINUTELENGTH)
 	End Method
 
