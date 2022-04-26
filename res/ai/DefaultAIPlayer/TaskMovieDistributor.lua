@@ -73,12 +73,14 @@ function TaskMovieDistributor:Activate()
 
 	self.BuyMovies = JobBuyMovies()
 	self.BuyMovies.Task = self
-	if startMovies > 2 then
-		self.BuyMovies.Status = JOB_STATUS_DONE
-	end
 
 	self.BidAuctions = JobBidAuctions()
 	self.BidAuctions.Task = self
+
+	if startMovies > 2 then
+		self.BuyMovies.Status = JOB_STATUS_DONE
+		self.BidAuctions.Status = JOB_STATUS_DONE
+	end
 
 	self.IdleJob = AIIdleJob()
 	self.IdleJob.Task = self
