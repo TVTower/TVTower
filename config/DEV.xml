@@ -8,7 +8,7 @@
 			<DEV_AI_GAME_SPEED value="1000" />
 			
 			<!-- wait for AI players so they all finished a certain game minute / tick -->
-			<DEV_SYNC_AI_ON_TIME value="TRUE" />
+			<DEV_SYNC_AI_ON_TIME value="FALSE" />
 
 			<!-- 
 			<DEV_WORLD_DAYS_PER_SEASON value="3" comment="value*4 = days per year" />
