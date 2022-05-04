@@ -476,25 +476,27 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 
 	--TODO Anzahl Lizenzen, Durchschnittsqualität, Genre (Sendezeit) berücksichtigen
 
-	local relTop = broadcastMaterialSource:GetRelativeTopicality()
-	if relTop == 1 then
-		result = result * 3
-	else
-		result = result * relTop
-		if hour < 2 or hour > 16 then
+	if broadcastMaterialSource.IsProgrammeLicence() == 1 then
+		local relTop = broadcastMaterialSource:GetRelativeTopicality()
+		if relTop == 1 then
+			result = result * 3
+		else
 			result = result * relTop
+			if hour < 2 or hour > 16 then
+				result = result * relTop
+			end
 		end
-	end
-	local timesShown = broadcastMaterialSource:GetTimesBroadcasted(forPlayer)
-	if timesShown >= 15 then
-		result=result * 0.3
-	elseif timesShown >= 10 then
-		result=result * 0.6
-	elseif timesShown >= 5 then
-		result=result * 0.8
-	end
-	if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
-		result = result * 0.5
+		local timesShown = broadcastMaterialSource:GetTimesBroadcasted(forPlayer)
+		if timesShown >= 15 then
+			result=result * 0.3
+		elseif timesShown >= 10 then
+			result=result * 0.6
+		elseif timesShown >= 5 then
+			result=result * 0.8
+		end
+		if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
+			result = result * 0.5
+		end
 	end
 	return result
 end

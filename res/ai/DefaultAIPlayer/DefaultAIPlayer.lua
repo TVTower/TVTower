@@ -102,6 +102,13 @@ function DefaultAIPlayer:LogDebug(message)
 end
 
 function DefaultAIPlayer:initParameters()
+	if self.hour == nil then
+		self.hour = TVT:GetDayHour()
+		self.minute = TVT:GetDayMinute()
+		self.gameDay = TVT:GetDaysRun() + 1
+		self.minutesGone = TVT:GetTimeGoneInMinutes()
+	end
+
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
 		--Waghalsigkeit 3-8
 		self.Ventruesome = math.random(3,8)
@@ -463,19 +470,22 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	if self.lastStatsReadMinute ~= TVT.GetDayMinute() then
+	local player = getAIPlayer()
+	local hour = player.hour
+	local minute = player.minute
+	if self.lastStatsReadMinute ~= minute then
 		-- read in new audience stats
-		if TVT.GetDayMinute() == 0 then
+		if minute == 0 then
 			local currentBroadcast = TVT.GetCurrentNewsShow()
 			local currentAudience = TVT.GetCurrentNewsAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentNewsAudienceAttraction()
-			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), TVT.GetDayHour(), TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
+			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
 		end
-		if TVT.GetDayMinute() == 5 then
+		if minute == 5 then
 			local currentBroadcast = TVT.GetCurrentProgramme()
 			local currentAudience = TVT.GetCurrentProgrammeAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
-			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), TVT.GetDayHour(), TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
+			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
 
 
 			self.Audience:AddValue(currentAudience)
@@ -483,8 +493,7 @@ function BusinessStats:ReadStats()
 
 
 			-- add current broadcast qualities to statistics
-			local hour = TVT.GetDayHour()
-			local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+			local task = player.TaskList[_G["TASK_SCHEDULE"]]
 			if task ~= nil then
 				for playerID=1, 4 do
 					local quality = TVT.GetCurrentProgrammeQuality(playerID)
@@ -494,7 +503,7 @@ function BusinessStats:ReadStats()
 			end
 		end
 
-		self.lastStatsReadMinute = TVT.GetDayMinute()
+		self.lastStatsReadMinute = minute
 	end
 end
 
@@ -734,7 +743,7 @@ function OnEnterRoom(roomId)
 	end
 	
 	-- prepone next "onTick" as we are ready to do something now
-	TVT.ScheduleNextOnTick()
+	--TVT.ScheduleNextOnTick()
 	-- alternative: 
 	-- already start with the current task (run 1 TickProcessTask()
 	--if (aiIsActive) then
@@ -773,6 +782,12 @@ function OnLoadState(data)
 	else
 		debugMsg("Restoring AI state failed!")
 	end
+	local player = _G["globalPlayer"]
+
+	player.hour = TVT:GetDayHour()
+	player.minute = TVT:GetDayMinute()
+	player.gameDay = TVT:GetDaysRun() + 1
+	player.minutesGone = TVT:GetTimeGoneInMinutes()
 end
 
 -- called when "saving" a game
@@ -852,7 +867,16 @@ end
 
 function OnMinute(number)
 	--param "number" is passed as string
+	local player = getAIPlayer()
 	local minute = tonumber(number)
+	player.minute = minute
+	player.minutesGone = player.minutesGone + 1
+	if minute == 0 then
+		player.hour = TVT:GetDayHour()
+		if player.hour == 0 then
+			player.gameDay = TVT:GetDaysRun() + 1
+		end
+	end
 
 	-- on xx:06 check if there is an unsatisfiable ad planned for this
 	-- hour

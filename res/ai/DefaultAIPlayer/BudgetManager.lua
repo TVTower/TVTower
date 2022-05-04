@@ -31,7 +31,6 @@ end
 
 
 function BudgetManager:Initialize()
-	local playerMoney = TVT.GetMoney()
 end
 
 
@@ -45,37 +44,39 @@ function BudgetManager:CalculateNewDayBudget()
 
 	self.IgnoreMoneyChange = true
 	self.CurrentLogLevel = LOG_INFO
+	local money = TVT.GetMoney()
 	self:Log("=== Budget day " .. (TVT.GetDaysRun() + 1) .. " ===")
-	self:Log(string.left("Account balance:", 25, true) .. string.right(TVT.GetMoney(), 10, true))
+	self:Log(string.left("Account balance:", 25, true) .. string.right(money, 10, true))
 
-	self:UpdateBudget(TVT.GetMoney())
+	self:UpdateBudget(money)
 	self:Log("======")
 	self.IgnoreMoneyChange = false
 end
 
 
-function BudgetManager:UpdateBudget(pBudget)
+function BudgetManager:UpdateBudget(money)
+	--TODO move to Task itself?
 	-- increase chances to go to boss for a credit
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local bossTask = player.TaskList[TASK_BOSS]
 	if bossTask ~= nil and bossTask.GuessCreditAvailable > 0 then
-		if TVT.GetMoney() < 100000 then
+		if money < 100000 then
 			bossTask.SituationPriority = 5
-		elseif TVT.GetMoney() <= 0 then
+		elseif money <= 0 then
 			bossTask.SituationPriority = 15
 		end
 	end
 
-	self:Log(string.left("Planned budget:", 25, true) .. string.right(pBudget, 10, true))
+	self:Log(string.left("Planned budget:", 25, true) .. string.right(money, 10, true))
 
 	-- split budget across the different tasks
-	self:AllocateBudgetToTasks(pBudget)
+	self:AllocateBudgetToTasks(money)
 
-	self.BudgetOnLastUpdateBudget = pBudget
+	self.BudgetOnLastUpdateBudget = money
 end
 
-function BudgetManager:AllocateBudgetToTasks(pBudget)
-	local player = _G["globalPlayer"]
+function BudgetManager:AllocateBudgetToTasks(money)
+	local player = getPlayer()
 
 	-- inform tasks about budget calculation
 	for k,v in pairs(player.TaskList) do
@@ -96,14 +97,17 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 
 	self:Log(string.left("Fixed costs:", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 
-	local hour = TVT:GetDayHour()
-	local hourPart = (math.min(24, 4 + hour)/24) 
-	allFixedCostsSavings = allFixedCostsSavings * hourPart
+	local hour = TVT:GetDayHour() -- player hour not updated yet
+	local hourPart = 0
+	if hour > 7 then
+		hourPart = math.min(24, 4 + hour)/24
+	end
+	allFixedCostsSavings = math.round(allFixedCostsSavings * hourPart)
 
 	self:Log(string.left("F.C.+reserve (for hour):", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 
 	-- define final budget
-	local realBudget = pBudget - allFixedCostsSavings
+	local realBudget = money - allFixedCostsSavings
 	self:Log(string.left("Savings:", 25, true) .. string.right(self.InvestmentSavings, 10, true))
 	self:Log(string.left("Final budget:", 25, true) .. string.right(realBudget, 10, true))
 	self:Log(string.right("=======", 35, true))

@@ -87,7 +87,7 @@ function TaskSchedule:InitializeMaxTicks()
 	ticksRequired = ticksRequired + 5
 
 	local slotsToCheck = 16
-	local slotsPerTick = 3
+	local slotsPerTick = 2
 
 	--programme
 	ticksRequired = ticksRequired +  slotsToCheck / slotsPerTick + 2
@@ -126,7 +126,7 @@ function TaskSchedule:Activate()
 	self.IdleJob.Task = self
 	self.IdleJob:SetIdleTicks( math.random(5,15) )
 
-	self.Player = _G["globalPlayer"]
+	self.Player = getPlayer()
 	self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 	--self.LogLevel = LOG_TRACE
 end
@@ -147,7 +147,7 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		--self:LogDebug("last full scheduling: "..self.lastScheduleHour)
 		if (self.adScheduleJobIndex == 1) then
 			self.AdScheduleJob.hoursToPlan = 10
-			if (self.lastScheduleHour == TVT.GetDayHour()) then
+			if (self.lastScheduleHour == self.Player.hour) then
 				--TODO optimize
 				--full planning need not be done multiple times per hour
 				--programme optimization for upcoming programme and ad is OK
@@ -161,7 +161,7 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		return self.AdScheduleJob
 	elseif (self.ProgrammeScheduleJob.Status ~= JOB_STATUS_DONE) then
 		--activate regular ad schedule run
-		self.lastScheduleHour = TVT.GetDayHour()
+		self.lastScheduleHour = self.Player.hour
 		self.AdScheduleJob.Status = JOB_STATUS_NEW
 		self.adScheduleJobIndex = 1
 		return self.ProgrammeScheduleJob
@@ -938,9 +938,9 @@ function TaskSchedule:GetUpcomingProgrammesLicenceList(startHoursBefore, endHour
 	if (endHoursAfter == nil) then endHoursAfter = 12 end
 
 	local dayBegin = TVT.GetDay()
-	local hourBegin = TVT.GetDayHour() + startHoursBefore
-	local dayEnd = TVT.GetDay()
-	local hourEnd = TVT.GetDayHour() + endHoursAfter
+	local hourBegin = getPlayer().hour + startHoursBefore
+	local dayEnd = dayBegin
+	local hourEnd = getPlayer().hour + endHoursAfter
 
 	dayBegin, hourBegin = FixDayAndHour(dayBegin, hourBegin)
 	dayEnd, hourEnd = FixDayAndHour(dayEnd, hourEnd)
@@ -986,7 +986,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	if (guessCurrentHour == nil) then guessCurrentHour = true; end
 
 	--requesting audience for the current broadcast?
-	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and TVT.GetDayHour() == fixedHour and TVT.GetDayMinute() >= 5) then
+	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and getPlayer().hour == fixedHour and getPlayer().minute >= 5) then
 		return TVT.GetCurrentProgrammeAudience()
 	end
 
@@ -1029,7 +1029,7 @@ function TaskSchedule:GuessedNewsAudienceForHour(day, hour, newsBroadcast, guess
 	if (guessCurrentHour == nil) then guessCurrentHour = true; end
 
 	--requesting audience for the current broadcast?
-	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and TVT.GetDayHour() == fixedHour and TVT.GetDayMinute() < 5) then
+	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and getPlayer().hour == fixedHour and getPlayer().minute < 5) then
 		return TVT.GetCurrentNewsAudience()
 	end
 
@@ -1190,7 +1190,7 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 	requisition.SlotReqs = {}
 	table.insert(requisition.SlotReqs, slotReq)
 	table.insert(self.SpotRequisition, requisition)
-	_G["globalPlayer"]:AddRequisition(requisition)
+	getPlayer():AddRequisition(requisition)
 
 	self:LogInfo("Create demand on spots of level " .. level .. " (Audience: " .. math.floor(guessedAudience.GetTotalSum()) .. "). Time: " .. day .. "/" .. string.format("%02d", hour) .. ":55  / Spot requisition: count="..requisition.Count.."  priority="..requisition.Priority)
 
@@ -1210,7 +1210,7 @@ function TaskSchedule:FixAdvertisement(day, hour)
 		self.SituationPriority = 75
 
 		-- assign player (if called from outside, this is not set yet)
-		self.Player = _G["globalPlayer"]
+		self.Player = getPlayer()
 		-- should start schedule then
 		self.Player:ForceNextTask()
 	end
@@ -1227,7 +1227,7 @@ function TaskSchedule:_FixImminentOutage(day, hour, minute, situationPriority)
 		self.SituationPriority = situationPriority
 
 		-- assign player (if called from outside, this is not set yet)
-		self.Player = _G["globalPlayer"]
+		self.Player = getPlayer()
 		-- should start schedule then
 		self.Player:ForceNextTask()
 	end
@@ -1236,13 +1236,13 @@ end
 
 function TaskSchedule:FixImminentAdOutage(day, hour)
 	-- the further away, the lower the priority
-	self:_FixImminentOutage(day, hour, "55", 65 - math.min(20, 5 * (hour - TVT.GetDayHour() + 1)))
+	self:_FixImminentOutage(day, hour, "55", 65 - math.min(20, 5 * (hour - getPlayer().hour + 1)))
 end
 
 
 function TaskSchedule:FixImminentProgrammeOutage(day, hour)
 	-- the further away, the lower the priority
-	self:_FixImminentOutage(day, hour, "05", 75 - math.min(20, 5 * (hour - TVT.GetDayHour() + 1)))
+	self:_FixImminentOutage(day, hour, "05", 75 - math.min(20, 5 * (hour - getPlayer().hour + 1)))
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -1279,7 +1279,7 @@ function JobAnalyzeEnvironment:Prepare(pParams)
 	end
 
 
-	self.Player = _G["globalPlayer"]
+	self.Player = getPlayer()
 	self.Task.Player.LastStationMapMarketAnalysis = self.Player.WorldTicks
 
 	self.Task.TickCount = 0
@@ -1292,7 +1292,7 @@ function JobAnalyzeEnvironment:Tick()
 
 	-- not enough programmes ?
 	-- Raise interest for movie distributor to buy start programme
-	local Player = _G["globalPlayer"]
+	local Player = getPlayer()
 
 	--refresh stats
 	Player.programmeLicencesInArchiveCount = TVT.of_GetProgrammeLicenceCount()
@@ -1487,7 +1487,7 @@ function JobFulfillRequisition:Prepare(pParams)
 	self.Task.TickTimeMax = 0
 	self.Task.TickTimeGone = 0
 
-	self.Player = _G["globalPlayer"]
+	self.Player = getPlayer()
 	self.SpotSlotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_SCHEDULE"])
 end
 
@@ -1497,8 +1497,8 @@ function JobFulfillRequisition:Tick()
 	local nowTime = os.clock()
 
 	local gameDay = TVT.GetDay()
-	local gameHour = TVT.GetDayHour()
-	local gameMinute = TVT.GetDayMinute()
+	local gameHour = getPlayer().hour
+	local gameMinute = getPlayer().minute
 	local requisitionCount = table.count(self.SpotSlotRequisitions)
 
 	if requisitionCount > 0 then
@@ -1629,11 +1629,11 @@ end
 function JobAdSchedule:Tick()
 	local nowTime = os.clock()
 
-	--self:LogDebug("JobAdSchedule:Tick()  Time: " .. TVT.GetDayHour()..":"..TVT.GetDayMinute() .. "   Tick: ".. self.Task.TickCounter .." / ".. self.Task.MaxTicks .."  TickTime: " .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms.")
+	--self:LogDebug("JobAdSchedule:Tick()  Time: " .. getPlayer().hour..":"..getPlayer().minute .. "   Tick: ".. self.Task.TickCounter .." / ".. self.Task.MaxTicks .."  TickTime: " .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms.")
 	local nowClock = os.clock()
 
 	local currentDay = TVT.GetDay()
-	local currentHour = TVT.GetDayHour()
+	local currentHour = getPlayer().hour
 	local planSlots = 2
 	local planHours = self.hoursToPlan
 --TODO plan advertisement less far
@@ -1645,7 +1645,7 @@ function JobAdSchedule:Tick()
 				local fixedDay, fixedHour = FixDayAndHour(currentDay, currentHour + self.plannedHours)
 
 				-- skip current hour if ad already started
-				if fixedHour == currentHour and TVT.GetDayMinute() >= 55 then
+				if fixedHour == currentHour and getPlayer().minute >= 55 then
 					--
 				else
 					if TVT.of_IsModifyableProgrammePlanSlot(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT, fixedDay, fixedHour) == TVT.RESULT_OK then
@@ -2112,14 +2112,14 @@ end
 function JobProgrammeSchedule:Tick()
 	local nowTime = os.clock()
 
-	--self:LogDebug("JobProgrammeSchedule:Tick()  Time: " .. TVT.GetDayHour()..":"..TVT.GetDayMinute() .. "   Tick: ".. self.Task.TickCounter .." / ".. self.Task.MaxTicks .."  TickTime: " .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms.")
+	--self:LogDebug("JobProgrammeSchedule:Tick()  Time: " .. getPlayer().hour ..":"..getPlayer().minute .. "   Tick: ".. self.Task.TickCounter .." / ".. self.Task.MaxTicks .."  TickTime: " .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms.")
 	local nowClock = os.clock()
 
 
 	--plan/optimize existing schedule
 	--==========================
 	local currentDay = TVT.GetDay()
-	local currentHour = TVT.GetDayHour()
+	local currentHour = getPlayer().hour
 
 	local planSlots = 2
 	local planHours = self.hoursToPlan
@@ -2133,7 +2133,7 @@ function JobProgrammeSchedule:Tick()
 				local fixedDay, fixedHour = FixDayAndHour(currentDay, currentHour + self.plannedHours)
 
 				-- skip current hour if already started
-				if fixedHour == currentHour and TVT.GetDayMinute() >= 5 then
+				if fixedHour == currentHour and getPlayer().minute >= 5 then
 					--
 				-- skip if we cannot change this slot
 				elseif TVT.of_IsModifyableProgrammePlanSlot(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= TVT.RESULT_OK then
@@ -2247,7 +2247,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	local chosenBroadcastMaterial = nil
 	local chosenBroadcastLog = ""
 
-	local infomercialAllowed = false
+	local infomercialAllowed = getPlayer().gameDay <= 1
 	local programmeAllowed = true
 
 	local currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)

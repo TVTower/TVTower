@@ -48,7 +48,7 @@ function TaskMovieDistributor:Activate()
 	self.MovieQuality = StatisticEvaluator()
 
 	-- Was getan werden soll:
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local stats = player.Stats.MovieQuality
 	if stats ~= nil and stats.Values > 0 then
 		self.MovieCount = stats.Values
@@ -91,7 +91,7 @@ function TaskMovieDistributor:Activate()
 
 	--self.LogLevel = LOG_TRACE
 
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	self:LogDebug("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  licencesOwned=" .. self:GetProgrammeLicencesTotalCount() .. "  startProgrammeAmount=" .. player.Strategy.startProgrammeAmount)
 
 	--added entry for movie selling
@@ -147,7 +147,7 @@ end
 --TODO maybe remove!
 -- return amount of all currently owned licences
 function TaskMovieDistributor:GetProgrammeLicencesTotalCount()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	return player.programmeLicencesInArchiveCount + player.programmeLicencesInSuitcaseCount
 end
 
@@ -157,7 +157,7 @@ function TaskMovieDistributor:BudgetSetup()
 	--TODO was self.BudgetWholeDay / 2, preventing buying good movies; problem to solve is recalculation of budget...
 	self.CurrentBargainBudget = self.BudgetWholeDay
 	--TODO lower budget once a maximal number of movies is reached
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local totalReach = player.totalReach
 	if self.MovieCount >= 35 then
 		self.BudgetWeight = 2
@@ -207,7 +207,7 @@ end
 
 
 function JobBuyStartProgramme:Tick()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	self.Task.ActivationTime = os.clock()
 
@@ -298,18 +298,17 @@ function JobBuyRequisitedLicences:typename()
 end
 
 function JobBuyRequisitedLicences:Prepare(pParams)
-	self.Player = _G["globalPlayer"]
 end
 
 function JobBuyRequisitedLicences:Tick()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local qualityStats = self.Task.MovieQuality
 	local qualityGate = (2 * qualityStats.AverageValue + qualityStats.MinValue) / 3
 
 	-- try to fulfill the requisitions
 
 	-- fetch all (also outdated) requisitions
-	local buyLicencesRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
+	local buyLicencesRequisitions = player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
 	-- fetch all available licences
 	local licencesResponse = TVT.md_getProgrammeLicences()
 	if ((licencesResponse.result == TVT.RESULT_WRONGROOM) or (licencesResponse.result == TVT.RESULT_NOTFOUND)) then
@@ -411,7 +410,7 @@ function JobCheckMovies:Prepare(pParams)
 		end
 	end
 	--store quality data in player statistics
-	_G["globalPlayer"].Stats.MovieQuality = qualityStats
+	getPlayer().Stats.MovieQuality = qualityStats
 end
 
 function JobCheckMovies:Tick()
@@ -436,7 +435,7 @@ function JobCheckMovies:CheckMovie()
 	local licence = TVT.convertToProgrammeLicence(response.data)
 	self.Task.MoviesAtDistributor[self.CurrentMovieIndex] = licence
 
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	player.Stats:AddMovie(licence)
 
 	self.CurrentMovieIndex = self.CurrentMovieIndex + 1
@@ -503,7 +502,7 @@ function JobAppraiseMovies:Tick()
 end
 
 function JobAppraiseMovies:AdjustMovieNiveau()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local stats = player.Stats
 	local movieBudget = self.Task.BudgetWholeDay
 
@@ -564,7 +563,7 @@ end
 function JobAppraiseMovies:AppraiseMovie(licence)
 	self:LogDebug("AppraiseMovie \"" .. licence:GetTitle() .. "\"")
 	debugMsgDepth(1)
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local stats = player.Stats
 	local pricePerBlockStats = nil
 	local qualityStats = nil
@@ -740,7 +739,7 @@ end
 
 function JobBidAuctions:Tick()
 	-- skip checks without money
-	if (self.Task.CurrentBudget < 0) then
+	if (self.Task.CurrentBudget < 0 or getPlayer().gameDay < 2) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
@@ -823,7 +822,7 @@ function JobSellSuitcaseLicences:Tick()
 					self:LogError("sale failed for "..v:GetTitle() .. " with error code: "..err)
 				end
 
-				local player = _G["globalPlayer"]
+				local player = getPlayer()
 				player.programmeLicencesInSuitcaseCount = math.max(0, player.programmeLicencesInSuitcaseCount - 1)
 			else
 				self:LogError("md sale: nil value")

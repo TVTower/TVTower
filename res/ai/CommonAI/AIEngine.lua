@@ -69,6 +69,7 @@ _G["AIPlayer"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
 	c.CurrentTask = nil
 	c.WorldTicks = 0
+	c.minutesGone = 0
 end)
 
 
@@ -258,6 +259,7 @@ end
 function AIPlayer:BeginNewTask()
 	--TODO: Warte-Task einfügen, wenn sich ein Task wiederholt
 	self.CurrentTask = self:SelectTask()
+	self.minutesGone = TVT:GetTimeGoneInMinutes()
 	if self.CurrentTask == nil then
 		logWithLevel(LOG_ERROR, LOG_ERROR, "AIPlayer:BeginNewTask - task is nil... " )
 	else
@@ -477,7 +479,7 @@ function AITask:StartNextJob()
 	else
 		self.Status = TASK_STATUS_RUN
 		self.StartTaskWorldTicks = self:getWorldTicks()
-		self.StartTask = TVT.GetTimeGoneInMinutes()
+		self.StartTask = getPlayer().minutesGone
 
 		local oldJob = self.CurrentJob
 		if oldJob ~= nil then
@@ -560,14 +562,18 @@ function AITask:getGotoJob()
 	return aJob
 end
 
+function AITask:getMinutesSinceLastDone()
+	return getPlayer().minutesGone - self.LastDone
+end
+
 
 function AITask:RecalcPriority()
-	if (self.LastDone == 0) then self.LastDone = TVT.GetTimeGoneInMinutes() end
+	if (self.LastDone == 0) then self.LastDone = getPlayer().minutesGone end
 	if (self.LastDoneWorldTicks == 0) then self.LastDoneWorldTicks = self:getWorldTicks() end
 
 	local player = _G["globalPlayer"]
 	local Ran1 = math.random(75, 125) / 100
-	local TimeDiff = math.round(TVT.GetTimeGoneInMinutes() - self.LastDone)
+	local TimeDiff = math.round(getPlayer().minutesGone - self.LastDone)
 	local TicksDiff = math.round(self:getWorldTicks() - self.LastDoneWorldTicks)
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
@@ -625,7 +631,7 @@ function AITask:SetDone()
 	local player = _G["globalPlayer"]
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = TVT.GetTimeGoneInMinutes()
+	self.LastDone = getPlayer().minutesGone
 	self.LastDoneWorldTicks = self:getWorldTicks()
 
 
@@ -769,8 +775,8 @@ function AIJob:Start(pParams)
 
 	self.jobStartTime = os.clock()
 	self.StartParams = pParams
-	self.StartJob = TVT.GetTimeGoneInMinutes()
-	self.LastCheck = TVT.GetTimeGoneInMinutes()
+	self.StartJob = getPlayer().minutesGone
+	self.LastCheck = self.StartJob
 	self.StartJobWorldTicks = 0
 	self.LastCheckWorldTicks = 0
 	self.TicksTotalTime = 0
@@ -809,7 +815,7 @@ end
 
 
 function AIJob:ReDoCheck(minutesWait, ticksWait)
-	local timeGone = TVT.GetTimeGoneInMinutes()
+	local timeGone = getPlayer().minutesGone
 	local ticks = self:getWorldTicks()
 	if ((self.LastCheckWorldTicks + ticksWait) < ticks or (self.LastCheck + minutesWait) < timeGone) then
 		self:LogDebug("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. timeGone .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. ticks)
@@ -932,7 +938,7 @@ end
 --override
 function AIIdleJob:Start(pParams)
 	if (self.IdleTime ~= 0) then
-		self.IdleTill = TVT.GetTimeGoneInMinutes() + self.IdleTime
+		self.IdleTill = getPlayer().minutesGone + self.IdleTime
 		self:LogDebug("Set self.IdleTill = " .. self.IdleTill)
 	end
 	if (self.IdleTicks ~= 0) then
@@ -960,7 +966,7 @@ function AIIdleJob:Tick()
 	local finishedIdling = true
 	if (self.IdleTill == -1) and (self.IdleTillWorldTicks == -1) then
 		finishedIdling = true
-	elseif (self.IdleTill ~= -1) and ((self.IdleTill - TVT.GetTimeGoneInMinutes()) <= 0) then
+	elseif (self.IdleTill ~= -1) and ((self.IdleTill - getPlayer().minutesGone) <= 0) then
 		finishedIdling = true
 	elseif (self.IdleTillWorldTicks ~= -1) and ((self.IdleTillWorldTicks - self:getWorldTicks()) <= 0) then
 		finishedIdling = true
@@ -1002,10 +1008,10 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	local resultId = tonumber(result)
 	if (resultId == TVT.RESULT_INUSE) then
 		if (self.IsWaiting) then
-			self:LogDebug( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
+			self:LogDebug( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. getPlayer().minutesGone .."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		elseif (self:ShouldIWait()) then
 			self.IsWaiting = true
-			self.WaitSince = TVT.GetTimeGoneInMinutes()
+			self.WaitSince = getPlayer().minutesGone
 			self.WaitSinceWorldTicks = self:getWorldTicks()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
 			self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 3 + (self.Task.CurrentPriority / 6)
@@ -1015,7 +1021,7 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 			if ((self.WaitTillWorldTicks - self.WaitSinceWorldTicks) > 20) then
 				self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 20
 			end
-			self:LogDebug("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
+			self:LogDebug("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. getPlayer().minutesGone .."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		else
 			self:LogInfo("BeginEnterRoom: Room occupied! Won't wait this time.")
 			self.Status = JOB_STATUS_CANCEL
@@ -1098,12 +1104,12 @@ function AIJobGoToRoom:Tick()
 			self:LogTrace("Room is unused now")
 			self.IsWaiting = false
 			TVT.DoGoToRoom(self.TargetRoom)
-		elseif ((self.WaitTill - TVT.GetTimeGoneInMinutes()) <= 0 or (self.WaitTillWorldTicks - self:getWorldTicks()) <= 0) then
+		elseif ((self.WaitTill - getPlayer().minutesGone) <= 0 or (self.WaitTillWorldTicks - self:getWorldTicks()) <= 0) then
 			self:LogInfo("Room is still used. I do not want to wait any longer.")
 			self.IsWaiting = false
 			self.Status = JOB_STATUS_CANCEL
 		else
-			self:LogTrace("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
+			self:LogTrace("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. getPlayer().minutesGone .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
 		end
 	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then
@@ -1359,7 +1365,9 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-
+function getPlayer()
+	return _G["globalPlayer"]
+end
 
 --[[
 function kiMsg(pMessage, allPlayers)

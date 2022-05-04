@@ -150,12 +150,14 @@ Type TPlayerCollection extends TPlayerBaseCollection
 			local roomID:int = 0
 			if room then roomID = room.id
 			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnLeaveRoom).AddInt(roomID))
-			
+
+			rem
 			if figure.finishEnterRoomTime > 0 and figure.beginEnterRoomTime > 0
 				TLogger.Log("TPlayer", "AI "+player.playerID +" left room ~q" + room.GetDescription() + "~q ["+room.GetGUID()+"] after " + (figure.finishLeaveRoomTime - figure.beginEnterRoomTime) +" ms (core time: " + (figure.beginLeaveRoomTime - figure.finishEnterRoomTime) +"ms)", LOG_DEBUG)
 			else
 				TLogger.Log("TPlayer", "AI "+player.playerID +" left room ~q" + room.GetDescription() + "~q ["+room.GetGUID()+"]", LOG_DEBUG)
 			endif
+			endrem
 		endif
 	End Function
 
@@ -355,7 +357,7 @@ endrem
 	End Method
 
 
-	'Damit man GetFinance nicht in Lua verfügbar machen muss
+	'Damit man GetFinance nicht in Lua verfÃ¼gbar machen muss
 	Method GetCreditInterest:int() {_exposeToLua}
 		return GetFinance().GetCreditInterest()
 	end Method

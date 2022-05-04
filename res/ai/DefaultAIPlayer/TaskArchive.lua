@@ -21,7 +21,7 @@ function TaskArchive:typename()
 end
 
 function TaskArchive:Activate()
-	self.Player = _G["globalPlayer"]
+	self.Player = getPlayer()
 
 	self.SellMoviesJob = JobSellMovies()
 	self.SellMoviesJob.Task = self
@@ -192,10 +192,4 @@ function JobSellMovies:Tick()
 			end
 		end
 	end
-end
-
-function timetostring()
-	local t = ""
-	t = "Day: "..TVT.GetDay()..", "..TVT.GetDayHour().." : "..TVT.GetDayMinute()
-	return t
 end

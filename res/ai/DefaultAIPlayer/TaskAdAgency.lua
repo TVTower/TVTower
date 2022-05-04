@@ -174,7 +174,7 @@ function JobCheckSpots:CheckSpot()
 	if (response.result == TVT.RESULT_OK) then
 		local adContract = response.data
 		if (adContract.IsAvailableToSign(TVT.ME) == 1) then
-			local player = _G["globalPlayer"]
+			local player = getPlayer()
 			self.Task.SpotsInAgency[self.CurrentSpotIndex] = adContract
 			player.Stats:AddSpot(adContract)
 		end
@@ -221,7 +221,7 @@ end
 function AppraiseSpots:AppraiseSpot(spot)
 	self:LogTrace("AppraiseSpot: " .. spot.GetTitle() )
 	self:LogTrace("===================")
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local stats = player.Stats
 	local score = -1
 	local spotMinAudience = spot.GetMinAudience(TVT.ME)
@@ -316,7 +316,7 @@ function SignRequisitedContracts:Prepare(pParams)
 	self.highAudienceFactor = 0.1
 	self.avgAudienceFactor = 0.05
 
-	self.Player = _G["globalPlayer"]
+	self.Player = getPlayer()
 	self.SpotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_ADAGENCY"])
 end
 
@@ -532,7 +532,7 @@ function SignContracts:Tick()
 	local signedContracts = TaskAdAgency.GetAllAdContracts()
 	--count penalty for failed contracts as fixed costs
 	local fixedCosts = 0
-	if TVT:GetDayHour() > 19 then
+	if getPlayer().hour > 19 then
 		for key, contract in pairs(signedContracts) do
 			if contract ~= nil then
 				if contract:GetDaysLeft(-1) == 0 then fixedCosts = fixedCosts + contract.getPenalty(TVT.ME) end
@@ -648,7 +648,7 @@ function SignContracts:ShouldSignContract(contract)
 	end
 
 	--prevent dangerous "good" contracts just before a new day (little chance of fulfilling much today)
-	if contractMin >= self.maxAudience * 0.07 and TVT.GetDayHour() > 20 then
+	if contractMin >= self.maxAudience * 0.07 and getPlayer().hour > 20 then
 		if contract.GetSpotCount() > 2 or contract.GetDaysToFinish() < 4 then
 			return 0
 		end

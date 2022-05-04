@@ -36,7 +36,7 @@ end
 
 
 function TaskNewsAgency:Activate()
-	self.hour = TVT.GetDayHour()
+	self.hour = getPlayer().hour
 
 	-- sub tasks => jobs
 	self.CheckEventNewsJob = JobCheckEventNews()
@@ -75,7 +75,7 @@ end
 --override
 function TaskNewsAgency:getStrategicPriority()
 	-- adjust priority according to player character
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local result = 0.9
 	if player.NewsPriority > 7 then
 		result = 1.25
@@ -89,7 +89,7 @@ function TaskNewsAgency:getStrategicPriority()
 
 	-- increased priority if the news-sammy is to award
 	if player.currentAwardType == TVT.Constants.AwardType.NEWS then
-		result = result * 1.25
+		result = 1.25
 	end
 
 	return result
@@ -114,7 +114,7 @@ function TaskNewsAgency:BeforeBudgetSetup()
 	self:CalculateFixedCosts()
 
 	-- adjust budget weighting according to player character
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	if player.NewsPriority > 7 then
 		self.BudgetWeight = 4
@@ -130,7 +130,7 @@ function TaskNewsAgency:BeforeBudgetSetup()
 
 	-- increased priority if the news-sammy is to award
 	if player.currentAwardType == TVT.Constants.AwardType.NEWS then
-		self.BudgetWeight = self.BudgetWeight + 1
+		self.BudgetWeight = 4
 	end
 end
 
@@ -201,7 +201,7 @@ function JobCheckEventNews:Tick()
 	local maxTerrorLevel = TVT.ne_getTerroristAggressionLevelMax()
 
 
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	if player.TaskList[TASK_ROOMBOARD] ~= nil then
 		local roomBoardTask = player.TaskList[TASK_ROOMBOARD]
 		if terrorLevel >= 2 then
@@ -278,7 +278,7 @@ function JobNewsAgencyAbonnements:Tick()
 	end
 
 	local preventDowngrade = false
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	if player.Budget.CurrentFixedCosts > 300000 or oldFees < 40000 then
 		self:LogDebug(" preventing downgrade") 
 		preventDowngrade = true
@@ -355,7 +355,7 @@ function JobNewsAgency:Tick()
 	local newsList = self.GetNewsList(0.2)
 
 	if self.Task.CurrentBudget < 0 then
-		local player = _G["globalPlayer"]
+		local player = getPlayer()
 		if player.Budget.CurrentFixedCosts > 120000 and TVT.GetMoney() > 150000 then
 			--TODO with high fixed costs often there is a negative budget although there is money
 			self:LogDebug("raised news budget because there is money")

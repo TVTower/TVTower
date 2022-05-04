@@ -27,6 +27,14 @@ function TaskRoomBoard:Activate()
 	self.ChangeRoomSignsJob = JobChangeRoomSigns()
 	self.ChangeRoomSignsJob.Task = self
 	--self.LogLevel = LOG_TRACE
+
+	--TODO abort task without going to the room
+	local minSinceLastDone = self:getMinutesSinceLastDone()
+	--self:LogInfo("roomBoard " .. minSinceLastDone)
+	if minSinceLastDone < 120 then
+	--	self:SetCancel()
+	end
+	
 end
 
 function TaskRoomBoard:GetNextJobInTargetRoom()
@@ -42,7 +50,7 @@ end
 function TaskRoomBoard:getSituationPriority()
 	-- situation is normal if we do not know about terror (needs
 	-- visit of the news agency and a higher level)
-	if (not self.RecognizedTerrorLevel) then
+	if (not self.RecognizedTerrorLevel and self.SituationPriority < 500) then
 		return 0
 	end
 
@@ -57,14 +65,10 @@ function TaskRoomBoard:getSituationPriority()
 	end
 
 	--TODO do not permanently go to the room board
-	--TODO call getDayHour less often
 	--TODO modify strategic priority insead?
-	local now = TVT.GetDayHour()
+	local now = getPlayer().hour
 	if now > 17 or now < 2 then
-		return 0
-	end
-	if self.lastTaskHour >= 0 and math.abs((now - self.lastTaskHour)% 24)<3 then
-		return 0
+		return self.SituationPriority * 0.5
 	end
 
 	return self.SituationPriority
@@ -105,7 +109,7 @@ function JobChangeRoomSigns:Tick()
 	--TODO: Gerichtsvollzieher auf den Gegner hetzen
 	--TODO: Schilder absichtlich durcheinander bringen
 
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	if self.Task.FRDubanTerrorLevel >= 2 then
 		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_FRDUBAN).data

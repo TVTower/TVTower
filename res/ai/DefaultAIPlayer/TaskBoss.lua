@@ -98,27 +98,29 @@ end
 
 
 function JobCheckCredit:Prepare(pParams)
-	if TVT.GetMoney() < 0 then
+	local money = TVT.GetMoney()
+	local creditAvailable = TVT.bo_getCreditAvailable()
+	if money < 0 then
 		-- ATTENTION: money might change until "tick()", we could handle
 		-- it but this behaviour seems more "natural" (to not see the
 		-- money change in time)
 		-- negative balance typically when the day begins (fixed costs, failed contracts);
 		-- try to achieve positive balance with minimal budget for buying news items
-		self.Task.TryToGetCredit = math.min( math.abs(TVT.GetMoney()) + 100000, TVT.bo_getCreditAvailable() )
+		self.Task.TryToGetCredit = math.min( math.abs(money) + 100000, creditAvailable)
 	end
 	if self.Task.NeededInvestmentBudget > 0 then
-		self.Task.TryToRepayCredit = math.max(0, math.min(TVT.GetMoney(), self.Task.NeededInvestmentBudget))
+		self.Task.TryToRepayCredit = math.max(0, math.min(money, self.Task.NeededInvestmentBudget))
 	end
 
 
-	self.Task.GuessCreditAvailable = TVT.bo_getCreditAvailable()
+	self.Task.GuessCreditAvailable = creditAvailable
 	self.Task.LastMoodLevel = TVT.bo_getBossMoodlevel()
 end
 
 
 function JobCheckCredit:Tick()
 	if self.Task.LastMoodLevel < 3 then
-		TVT.addToLog("TODO: Boss in bad mood: " .. self.Task.LastMoodLevel)
+		self:LogDebug("TODO: Boss in bad mood: " .. self.Task.LastMoodLevel)
 	end
 
 	-- REPAY credit

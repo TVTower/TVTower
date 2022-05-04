@@ -544,7 +544,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		Return GetWorldTime().GetTimeGone() / TWorldTime.SECONDLENGTH
 	End Method
 
-	Method GetTimeGoneInSeconds:Int(useTime:String)	'String not Long, until Long-bug is fixed	
+	Method GetTimeGoneInSecondsForTime:Int(useTime:String)	'String not Long, until Long-bug is fixed	
 		If Long(useTime) <= 0
 			Return GetWorldTime().GetTimeGone() / TWorldTime.SECONDLENGTH
 		Else

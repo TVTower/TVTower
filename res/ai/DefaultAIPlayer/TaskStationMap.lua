@@ -68,7 +68,7 @@ end
 
 
 function TaskStationMap:BeforeBudgetSetup()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local stats = player.Stats.MovieQuality
 	local movieCount = 0
 	if stats ~= nil then
@@ -153,7 +153,7 @@ function JobAnalyseStationMarket:Prepare(pParams)
 end
 
 function JobAnalyseStationMarket:Tick()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	-- one could do this on each audience calculation but this is a rather
 	-- complex function needing  some execution time
 
@@ -395,7 +395,7 @@ end
 function JobBuyStation:Prepare(pParams)
 	-- ignore budgets and just buy a station if there is some need
 	-- the more stations we have, the less likely this is called
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 	local ignoreBudgetChance = 100 - (8-player.ExpansionPriority)*math.min(TVT.of_getStationCount(TVT.ME)-1,10)
 	self:LogTrace("  ignoreBudgetChance: " ..ignoreBudgetChance)
 
@@ -423,7 +423,7 @@ function JobBuyStation:Prepare(pParams)
 		self:SetCancel()
 	end
 
-	local hour = TVT.GetDayHour()
+	local hour = player.hour
 	if hour > 14 then
 		self:LogDebug(" Cancel ... no buying if too little of the day is left: ".. hour)
 		self:SetCancel()
@@ -467,7 +467,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
 	local bestSectionName = ""
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	local networkCount = TVT.of_getCableNetworkCount()
 
@@ -505,7 +505,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
 	local bestIndex = -1
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	local satCount = TVT.of_getSatelliteCount()
 	self:LogDebug("Satellites to check: " .. satCount)
@@ -541,7 +541,7 @@ end
 function JobBuyStation:GetBestAntennaOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	self:LogInfo("trying to find best of ".. table.count(self.Task.intendedAntennaPositions) .." antenna positions")
 
@@ -621,7 +621,7 @@ end
 
 
 function JobBuyStation:Tick()
-	local player = _G["globalPlayer"]
+	local player = getPlayer()
 
 	local bestAntennaOffer, bestAntennaAttraction = self:GetBestAntennaOffer()
 	local bestCableNetworkOffer, bestCableAttraction, bestCableSectionName = self:GetBestCableNetworkOffer()
