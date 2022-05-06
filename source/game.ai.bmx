@@ -34,16 +34,14 @@ Next
 
 
 Type TAi Extends TAiBase
-	'override
-	Method Create:TAi(playerID:Int, luaScriptFileName:String)
+
+	Method Create:TAi(playerID:Int, luaScriptFileName:String) override
 		Super.Create(playerID, luaScriptFileName)
 		Return Self
 	End Method
 
 
-	Method Start()
-		Super.Start()
-
+	Method RegisterSharedObjects() override
 		'=== LINK SPECIAL OBJECTS ===
 		Local LuaEngine:TLuaEngine = GetLuaEngine()
 
@@ -58,8 +56,7 @@ Type TAi Extends TAiBase
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
 
-		'register source and available objects
-		LuaEngine.RegisterToLua()
+		super.RegisterSharedObjects()
 	End Method
 
 
@@ -73,8 +70,7 @@ Type TAi Extends TAiBase
 	End Method
 
 
-	'override
-	Method AddLog(title:String, text:String, logLevel:Int)
+	Method AddLog(title:String, text:String, logLevel:Int) override
 		Super.AddLog(title, text, logLevel)
 		AiLog[Self.playerID-1].AddLog(text, True)
 	End Method
