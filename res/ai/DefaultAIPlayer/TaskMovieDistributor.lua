@@ -757,19 +757,19 @@ function JobBidAuctions:Tick()
 			self:LogDebug("auction: " .. v:GetTitle() .."   price=" .. price .."  nextBid=" .. nextBid .. "  currentBidder=" .. currentBidder)
 
 			if currentBidder ~= TVT.ME then
-
-				if (price <= self.Task.CurrentBudget) then
+				--TODO maybe pay higher price if you really want a licence
+				if (nextBid <= self.Task.CurrentBudget and nextBid <= price) then
 					-- daily budget for good offers without direct need
-					if (price <= self.Task.CurrentBargainBudget) then
+					if (nextBid <= self.Task.CurrentBargainBudget) then
 						--TODO genre bias analogous to movies
 						if (v:GetAttractiveness() > 1) then
 							self:LogInfo("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..")")
 							TVT.md_doBidAuctionProgrammeLicence(v:GetId())
 
-							self.Task:PayFromBudget(v:GetPrice(TVT.ME))
-							self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - v:GetPrice(TVT.ME)
+							self.Task:PayFromBudget(nextBid)
+							self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - nextBid
 						else
-							self:LogDebug("[Licence auction] too low attractivity: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. v:GetPrice(TVT.ME) .." - Attractivity: " .. v:GetAttractiveness())
+							self:LogDebug("[Licence auction] too low attractivity: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. nextBid .." - Attractivity: " .. v:GetAttractiveness())
 						end
 					end
 				end
