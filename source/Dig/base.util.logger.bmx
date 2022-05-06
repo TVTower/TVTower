@@ -42,6 +42,9 @@ Import BRL.System		'for currenttime()
 'needed to be able to retrieve android's internal storage path
 Import Sdl.sdl
 ?
+?threaded
+Import Brl.Threads
+?
 Import "base.util.string.bmx"
 
 'create a basic log file
@@ -81,6 +84,9 @@ Type TLogger
 	Global lastPrintMode:Int =0
 	Global lastLoggedFunction:String=""
 	Global lastPrintFunction:String=""
+	?threaded
+	Global printMutex:TMutex = CreateMutex()
+	?
 	Const MODE_LENGTH:Int = 8
 
 
@@ -157,28 +163,28 @@ Type TLogger
 		EndIf
 
 		If doLog
-			If debugType = lastLoggedMode And functiontext = lastLoggedFunction
+			If debugType = lastLoggedMode And upper(functiontext) = lastLoggedFunction
 				showFunctionText = LSet("", Len(lastLoggedFunction))
 			Else
-				lastLoggedFunction = functiontext
+				lastLoggedFunction = upper(functiontext)
 				lastLoggedMode = debugType
-				showFunctionText = functiontext
+				showFunctionText = lastLoggedFunction
 			EndIf
 
-			AppLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
+			AppLog.AddLog("[" + CurrentTime() + "] " + debugtext + showFunctionText + ": " + message)
 			'store errors in an extra file
 			If debugType & LOG_ERROR
-				AppErrorLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
+				AppErrorLog.AddLog("[" + CurrentTime() + "] " + debugtext + showFunctionText + ": " + message)
 			EndIf
 		EndIf
 
 		If doPrint
-			If debugType = lastPrintMode And functiontext = lastPrintFunction
+			If debugType = lastPrintMode And upper(functiontext) = lastPrintFunction
 				showFunctionText = LSet("", Len(lastPrintFunction))
 			Else
-				lastPrintFunction = functiontext
+				lastPrintFunction = upper(functiontext)
 				lastPrintMode = debugType
-				showFunctionText = functiontext
+				showFunctionText = lastPrintFunction
 			EndIf
 
 			'message = StringHelper.UTF8toISO8859(message)
@@ -187,7 +193,10 @@ Type TLogger
 '			?
 			message = StringHelper.RemoveUmlauts(message)
 
-			Local text:String = "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
+			Local text:String = "[" + CurrentTime() + "] " + debugtext + showFunctionText + ": " + message
+			?threaded
+			LockMutex(printMutex)
+			?
 			?android
 				If debugType & LOG_DEBUG
 					'debug not shown in normal logcat
@@ -201,9 +210,11 @@ Type TLogger
 			?Not android
 				Print text
 			?
+			?threaded
+			UnLockMutex(printMutex)
+			?
 		EndIf
 	End Function
-
 End Type
 
 
@@ -217,6 +228,9 @@ Type TLogFile
 	Field immediateWrite:Int = True
 	Field fileObj:TStream
 	Field keepFileOpen:Int = True
+	?threaded
+	Field fileMutex:TMutex = CreateMutex()
+	?
 
 	Global logs:TList = CreateList()
 
@@ -254,12 +268,20 @@ Type TLogFile
 			'if the file is still open, close first
 			If logfile.fileObj Then CloseFile(logfile.fileObj)
 
+			?threaded
+			LockMutex(logfile.fileMutex)
+			?
 			'in all cases, just dump down the file again regardless
 			'of the mode (you might have manipulated logs meanwhile)
 			'try to create the file
 			CreateFile(logfile.filename)
 			Local file:TStream = WriteFile( logfile.filename )
-			If Not file Then Throw "Cannot open ~q" + logfile.filename + "~q to dump log to."
+			If Not file 
+				?threaded
+				UnlockMutex(logfile.fileMutex)
+				?
+				Throw "Cannot open ~q" + logfile.filename + "~q to dump log to."
+			EndIf
 
 			'header
 			WriteLine(file, logfile.title)
@@ -269,6 +291,9 @@ Type TLogFile
 			Next
 
 			CloseFile(file)
+			?threaded
+			UnlockMutex(logfile.fileMutex)
+			?
 		Next
 	End Function
 
@@ -278,10 +303,19 @@ Type TLogFile
 		Strings.AddLast(text)
 
 		If immediateWrite
+			?threaded
+			LockMutex(fileMutex)
+			?
+
 			'open to append if not done yet
 			If Not fileObj
 				fileObj = AppendStream(filename)
-				If Not fileObj Then Throw "Cannot open ~q"+filename+"~q to append log entry to."
+				If Not fileObj 
+					?threaded
+					UnlockMutex(fileMutex)
+					?
+					Throw "Cannot open ~q"+filename+"~q to append log entry to."
+				EndIf
 			EndIf
 
 			'write the header if not done yet
@@ -296,6 +330,10 @@ Type TLogFile
 
 			'close file to allow access by other processes
 			If Not keepFileOpen Then CloseFile(fileObj)
+
+			?threaded
+			UnlockMutex(fileMutex)
+			?
 		EndIf
 		Return True
 	End Method
