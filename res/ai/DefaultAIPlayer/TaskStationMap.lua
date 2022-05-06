@@ -181,7 +181,7 @@ function JobAnalyseStationMarket:Tick()
 		end
 	end
 
-	if player.totalReach < 60000000 and (self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0) then
+	if self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0 then
 		self:determineIntendedPositions()
 	end
 
@@ -560,43 +560,32 @@ function JobBuyStation:GetBestAntennaOffer()
 		if tempStation ~= nil then
 			reach = tempStation.GetReach(false)
 			exclusiveReach = tempStation.GetExclusiveReach(false)
-			if exclusiveReach < 10000 then table.insert(removeFromIntendedPositions, pos) end
 			relativeExclusiveReach = exclusiveReach / reach
 			price = tempStation.GetPrice()
 			stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
 		end
 
 		--filter criterias
-		--0) skip checks if there is no tempstation
 		if tempStation == nil then
 			self:LogTrace(stationString)
-
-		--1) outside
+			pos = nil -- prevent removing a position where a station should be
 		elseif price < 0 then
 			self:LogTrace(stationString .. " -> outside of map!")
 			tempStation = nil
-
-		--2) price to high
-		elseif price > self.Task.CurrentBudget then
-			self:LogTrace(stationString .. " -> too expensive!")
+		elseif exclusiveReach / reach < 0.7 then
+			self:LogTrace(stationString .. " -> not enough exclusive reach!")
 			tempStation = nil
-
-		--4) absolute increase too low
-		elseif exclusiveReach < 20000 then
+		elseif tempStation:GetRunningCosts() / exclusiveReach > 0.4 then
+			self:LogTrace(stationString .. " -> running costs too high!")
 			tempStation = nil
-
-		--5)  reach to low (at least 75.000 required)
-		elseif reach < 75000 then
-			self:LogTrace(stationString .. " -> not enough absolute reach!")
-			tempStation = nil
-
 		else
 			self:LogTrace(stationString .. " -> OK!")
 		end
 
-
+		if tempStation == nil then
+			table.insert(removeFromIntendedPositions, pos)
+		elseif price <= self.Task.CurrentBudget then
 		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
-		if tempStation ~= nil then
 			local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
 
 			if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
@@ -653,8 +642,11 @@ function JobBuyStation:Tick()
 		-- Wir brauchen noch ein "Fixkostenbudget" fuer Kabelnetze/Satelliten
 
 		self.Task:PayFromBudget(price)
+		self.Task.maxReachIncrease = self.Task.maxReachIncrease - bestOffer.GetExclusiveReach(false)
 	end
 
-	self.Status = JOB_STATUS_DONE
+	if bestOffer == nil or self.Task.maxReachIncrease < 1000000 or self.Task.CurrentBudget < 300000 then
+		self.Status = JOB_STATUS_DONE
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

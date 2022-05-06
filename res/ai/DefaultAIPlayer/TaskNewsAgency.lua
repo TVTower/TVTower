@@ -277,6 +277,14 @@ function JobNewsAgencyAbonnements:Tick()
 		end
 	end
 
+	local player = getPlayer()
+	--TODO raise on day before award?; randomize
+	if player.currentAwardType == TVT.Constants.AwardType.CULTURE then
+		if newSubscriptionLevels[TVT.Constants.NewsGenre.CULTURE] == 0 then
+			newSubscriptionLevels[TVT.Constants.NewsGenre.CULTURE] = 1
+		end
+	end
+
 	local preventDowngrade = false
 	local player = getPlayer()
 	if player.Budget.CurrentFixedCosts > 300000 or oldFees < 40000 then
@@ -441,12 +449,20 @@ function JobNewsAgency:GetNewsList(paidBonus)
 		table.insert(currentNewsList, news)
 	end
 
+	local cultureAward = 0
+	if getPlayer().currentAwardType == TVT.Constants.AwardType.CULTURE then
+		cultureAward = 1
+	end 
 
 	-- sort by attractivity modifed by paid-state-bonus
 	-- precache complex weight calculation
 	local weights = {}
 	for k,v in pairs(currentNewsList) do
-		weights[ v.GetID() ] = v.GetAttractiveness() * (1.0 + v.IsPaid() * paidBonus)
+		local weight = v.GetAttractiveness() * (1.0 + v.IsPaid() * paidBonus)
+		if cultureAward == 1 and v.GetGenre() == TVT.Constants.NewsGenre.CULTURE then
+			weight = weight * 3
+		end
+		weights[ v.GetID() ] = weight
 	end
 
 	-- sort

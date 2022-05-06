@@ -113,18 +113,33 @@ function BudgetManager:AllocateBudgetToTasks(money)
 	self:Log(string.right("=======", 35, true))
 
 
+	local tasksForSurplusBudget = {}
+	local surplusUnits = 0
+	local surplusBudget = 0
 	-- assign budgets to tasks
 	local budgetUnitValue = realBudget / budgetUnits
 	for k,v in pairs(player.TaskList) do
 		--TODO subtract from budget what was already used up today
 		--however this leaves unassigned money...
 		--local alreadyUsed = v.BudgetWholeDay - v.CurrentBudget
-
+		local maxBudget = v.BudgetMaximum()
 		v.CurrentBudget = math.round(v.BudgetWeight * budgetUnitValue)
-		if v.BudgetMaximum() >= 0 then
-			v.CurrentBudget = math.min(v.CurrentBudget, v.BudgetMaximum())
+		if maxBudget >= 0 and v.CurrentBudget > maxBudget then
+			surplusBudget = v.CurrentBudget - maxBudget
+			v.CurrentBudget = maxBudget
+		else 
+			surplusUnits = surplusUnits + v:getBudgetUnits()
+			table.insert(tasksForSurplusBudget, v)
 		end
 		v.BudgetWholeDay = v.CurrentBudget
+	end
+
+	if surplusBudget > 0 then
+		local budgetUnitValue = surplusBudget / surplusUnits
+		for k,v in pairs(tasksForSurplusBudget) do
+			v.CurrentBudget = v.CurrentBudget + math.round(v.BudgetWeight * budgetUnitValue)
+			v.BudgetWholeDay = v.CurrentBudget
+		end
 	end
 
 	-- inform tasks for final budgets
