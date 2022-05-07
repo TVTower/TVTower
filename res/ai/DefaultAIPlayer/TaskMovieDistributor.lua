@@ -124,7 +124,7 @@ function TaskMovieDistributor:getStrategicPriority()
 	self:LogTrace("TaskMovieDistributor:getStrategicPriority")
 
 	-- no money to buy things? skip even looking...
-	if TVT.getMoney() <= 50000 then
+	if getPlayer().money <= 50000 then
 		return 0.0
 	end
 	return 1.0
@@ -212,7 +212,7 @@ function JobBuyStartProgramme:Tick()
 		self.Status = JOB_STATUS_DONE
 		return True
 	end
-	local budget = TVT.GetMoney()
+	local budget = player.money
 
 	local movies = TVT.convertToProgrammeLicences(licencesResponse.data)
 	local goodMovies = {}

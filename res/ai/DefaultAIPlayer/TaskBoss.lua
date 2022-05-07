@@ -42,7 +42,7 @@ function TaskBoss:BeforeBudgetSetup()
 	self:CalculateFixedCosts()
 	self.InvestmentPriority = 1
 
-	local money = TVT.GetMoney()
+	local money = getPlayer().money
 	local credit = MY.GetCredit(-1)
 	self.NeededInvestmentBudget = credit
 	if credit == 0 then
@@ -98,7 +98,7 @@ end
 
 
 function JobCheckCredit:Prepare(pParams)
-	local money = TVT.GetMoney()
+	local money = getPlayer().money
 	local creditAvailable = TVT.bo_getCreditAvailable()
 	self.Task.TryToGetCredit = 0
 	if money < -30000 and getPlayer().hour > 5 then

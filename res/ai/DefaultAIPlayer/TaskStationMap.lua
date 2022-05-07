@@ -417,7 +417,7 @@ function JobBuyStation:Prepare(pParams)
 	local ignoreBudgetChance = 100 - (8-player.ExpansionPriority)*math.min(TVT.of_getStationCount(TVT.ME)-1,10)
 	self:LogTrace("  ignoreBudgetChance: " ..ignoreBudgetChance)
 
-	local moneyExcludingFixedCosts = TVT.GetMoney() - player.Budget.CurrentFixedCosts
+	local moneyExcludingFixedCosts = player.money - player.Budget.CurrentFixedCosts
 	--TODO make constant player character dependent
 	if self.Task.CurrentBudget > 0 and moneyExcludingFixedCosts > 350000 and math.random(0,100) < ignoreBudgetChance then
 		--self.Task.CurrentBudget = (0.4 + 0.06*player.ExpansionPriority) * moneyExcludingFixedCosts

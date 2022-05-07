@@ -126,7 +126,7 @@ function JobBuyScript:Prepare(pParams)
 		self.minPotential = self.minPotential - 0.1
 		self.minAttractivity = self.minAttractivity - 0.1
 	end
-	self.scriptMaxPrice =  math.min(self.scriptMaxPrice, TVT:getMoney())
+	self.scriptMaxPrice =  math.min(self.scriptMaxPrice, player.money)
 	self:LogDebug("  maxPrice  ".. self.scriptMaxPrice .. " minPotential "..self.minPotential)
 end
 

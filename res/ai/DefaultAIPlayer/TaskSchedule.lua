@@ -1258,7 +1258,7 @@ function JobAnalyzeEnvironment:Tick()
 			-- we need money - if needed, use all we have (only keep some money
 			-- for news
 			-- 0 - 400.000
-			local budget = math.min(math.max(0, TVT.getMoney() - 5000), 400000)
+			local budget = math.min(math.max(0, Player.money - 5000), 400000)
 
 			if budget > 0 then
 				-- remove old "topicality count" requisition
