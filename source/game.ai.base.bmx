@@ -1,7 +1,5 @@
 SuperStrict
-?threaded
 Import Brl.Threads
-?
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.luaengine.bmx"
 
@@ -37,13 +35,11 @@ Type TAiBase
 	Field eventQueue:TAIEvent[]
 
 	Field _luaEngine:TLuaEngine {nosave}
-	?threaded
 	Field _objectsUsedInLuaMutex:TMutex = CreateMutex() {nosave}
 	Field _callLuaFunctionMutex:TMutex = CreateMutex() {nosave}
 	Field _eventQueueMutex:TMutex = CreateMutex() {nosave}
 	Field _updateThread:TThread {nosave}
 	Field _updateThreadExit:int = False {nosave}
-	?
 	Field paused:int = False
 
 	Global AiRunning:Int = true
@@ -52,6 +48,7 @@ Type TAiBase
 	Method Create:TAiBase(playerID:Int, luaScriptFileName:String)
 		self.playerID = playerID
 		self.scriptFileName = luaScriptFileName
+
 		Return self
 	End Method
 
@@ -73,18 +70,14 @@ Type TAiBase
 rem
 	'handle all currently queued Events
 	Method HandleQueuedEvents()
-		?threaded
-			LockMutex(_eventQueueMutex)
-		?
+		LockMutex(_eventQueueMutex)
 
 		For local aiEvent:TAIEvent = EachIn eventQueue
 			HandleAIEvent(aiEvent)
 		Next
 		eventQueue = new TAIEvent[0]
 
-		?threaded
-			UnlockMutex(_eventQueueMutex)
-		?
+		UnlockMutex(_eventQueueMutex)
 	End Method
 endrem
 
@@ -202,15 +195,10 @@ endrem
 			return
 		endif
 
-		?threaded
-			LockMutex(_eventQueueMutex)
-			eventQueue :+ [aiEvent]
-			nextEventID = eventQueue[0].id
-			UnlockMutex(_eventQueueMutex)
-		?not threaded
-			eventQueue :+ [aiEvent]
-			nextEventID = eventQueue[0].id
-		?
+		LockMutex(_eventQueueMutex)
+		eventQueue :+ [aiEvent]
+		nextEventID = eventQueue[0].id
+		UnlockMutex(_eventQueueMutex)
 
 		if aiEvent.synchronize then toSynchronizeCount :+ 1
 	End Method
@@ -221,23 +209,15 @@ endrem
 
 		if not eventQueue or eventQueue.length = 0 then return Null
 		local event:TAIEvent = eventQueue[0]
-		?threaded
-			LockMutex(_eventQueueMutex)
-			eventQueue = eventQueue [1 ..]
-			if eventQueue.length > 0
-				nextEventID = eventQueue[0].id
-			Else
-				nextEventID = 0
-			EndIf
-			UnlockMutex(_eventQueueMutex)
-		?not threaded
-			eventQueue = eventQueue [1 ..]
-			if eventQueue.length > 0
-				nextEventID = eventQueue[0].id
-			Else
-				nextEventID = 0
-			EndIf
-		?
+		LockMutex(_eventQueueMutex)
+		eventQueue = eventQueue [1 ..]
+		if eventQueue.length > 0
+			nextEventID = eventQueue[0].id
+		Else
+			nextEventID = 0
+		EndIf
+		UnlockMutex(_eventQueueMutex)
+
 		if event.synchronize then toSynchronizeCount :- 1
 		return event
 	End Method
@@ -303,28 +283,24 @@ endrem
 
 		'load lua file
 		LoadScript(scriptFileName)
+		'register current script code 
+		RegisterSource()
+		'(re-)assign TVT, TIME, ... to lua
+		RegisterSharedObjects()
 
 		started = True
 
-		'register source and available objects
-		'-> done in TLuaEngine.Create()
-'		GetLuaEngine().RegisterToLua()
-'		print "Registered base objects"
-
-		'kick off new thread
-?threaded
 		If not THREADED_AI_DISABLED
 			_updateThread = CreateThread( UpdateThread, self )
 			TLogger.Log("TAiBase", "Created AI " + playerID + " Update Thread", LOG_DEBUG)
 		EndIf
-?
 	End Method
 
 
 	Method Stop()
 		TLogger.Log("TAiBase", "Stopping AI " + playerID, LOG_DEBUG)
 		started = False
-?threaded
+
 		If not THREADED_AI_DISABLED and _updateThread
 			_updateThreadExit = True
 			
@@ -359,7 +335,17 @@ endrem
 
 			TLogger.Log("TAiBase", "Removed AI " + playerID + " Update Thread", LOG_DEBUG)
 		EndIf
-?
+	End Method
+
+
+	Method RegisterSharedObjects()
+	End Method
+
+	
+	Method RegisterSource()
+		'register source and available objects
+		Local LuaEngine:TLuaEngine = GetLuaEngine()
+		LuaEngine.RegisterToLua()
 	End Method
 
 
@@ -369,27 +355,54 @@ endrem
 		if scriptFileName = "" then return FALSE
 
 		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
-		If FileType(scriptFileName) = 1
-			'file exists
-		Else
-			TLogger.Log("LoadScript", "File ~q" + luaScriptFileName + "~q does not exist. Using default script.", LOG_ERROR)
+		If FileType(scriptFileName) <> FILETYPE_FILE
+			AddLog("TAiBase", "Loading LUA for AI "+playerID+" failed. Script ~q" + luaScriptFileName + "~q does not exist. Loading default script.", LOG_ERROR)
 			scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
+
+			If FileType(scriptFileName) <> FILETYPE_FILE
+				AddLog("TAiBase", "Loading LUA for AI "+playerID+" failed. Default script ~q" + scriptFileName+"~q not found. Aborting.", LOG_ERROR)
+				Return False
+			EndIf
 		EndIf
 
-		'load content
+		'(re-)load content
 		GetLuaEngine().SetSource(LoadText(scriptFileName), scriptFileName)
 
-		'if there is content set, print it
-		If GetLuaEngine().GetSource() <> ""
-			AddLog("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
-		else
-			AddLog("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
-		endif
+		AddLog("TAiBase", "Loaded LUA for AI "+playerID+". Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG)
 		Return True
 	End Method
 
 
-?threaded
+	'loads the current file again
+	Method ReloadScript:int()
+		if scriptFileName="" then return FALSE
+
+		AddLog("TAiBase", "Reloading LUA for AI "+playerID+".", LOG_DEBUG)
+		
+'		Local wasStarted:Int = started
+
+		'stop if running
+'		if wasStarted then Stop()
+
+		'save current state
+		CallOnSaveState()
+
+		LoadScript(scriptFileName)
+		'register current script code 
+		RegisterSource()
+		'(re-)assign TVT, TIME, ... to lua
+		RegisterSharedObjects()
+
+		'restore current state
+		CallOnLoadState()
+		
+		'restart it
+'		if wasStarted then Start()
+
+		Return True
+	End Method
+
+
 	Function UpdateThread:object( data:object )
 		local aiBase:TAiBase = TAiBase(data)
 
@@ -404,7 +417,7 @@ endrem
 			if aiBase._updateThreadExit then exit
 		Forever
 	End Function
-?
+
 
 	Method Update()
 		if not IsActive() then return
@@ -468,43 +481,20 @@ endrem
 	End Method
 
 
-	'loads the current file again
-	Method ReloadScript:int()
-		if scriptFileName="" then return FALSE
-
-		'save current state
-		CallOnSaveState()
-
-		LoadScript(scriptFileName)
-
-		'restore current state
-		CallOnLoadState()
-	End Method
-
-
 	Method CallLuaFunction:object(name:string, args:object[], resetObjectsInUse:Int = False)
-		?threaded
-			LockMutex(_callLuaFunctionMutex)
+		LockMutex(_callLuaFunctionMutex)
 
-			'reset inside the mutex protected function call
-			'so it resets only right before calling the function
-			'not while a second and parallel lua call is resetting while
-			'the first call is actually using it
-			if resetObjectsInUse then ResetObjectsUsedInLua()
+		'reset inside the mutex protected function call
+		'so it resets only right before calling the function
+		'not while a second and parallel lua call is resetting while
+		'the first call is actually using it
+		if resetObjectsInUse then ResetObjectsUsedInLua()
 
-			local result:object = GetLuaEngine().CallLuaFunction(name, args)
+		local result:object = GetLuaEngine().CallLuaFunction(name, args)
 
-			UnLockMutex(_callLuaFunctionMutex)
-			return result
-		?not threaded
-'	    Try
-			return GetLuaEngine().CallLuaFunction(name, args)
-'		Catch ex:Object
-'			print "ex: "+ex.ToString()
-'			TLogger.log("Ai.CallLuaFunction", "Script "+scriptFileName+" does not contain function ~q"+name+"~q. Or the function resulted in an error.", LOG_ERROR | LOG_AI)
-'		End Try
-		?
+		UnLockMutex(_callLuaFunctionMutex)
 
+		Return result
 	End Method
 
 	Method CallUpdate() abstract

@@ -140,7 +140,7 @@ Type TLuaEngine
 
 
 	Function Create:TLuaEngine(source:String, uri:String="")
-		Local obj:TLuaEngine = New TLuaEngine.SetSource(source)
+		Local obj:TLuaEngine = New TLuaEngine
 		obj._uri = uri
 		'add here so during "RegisterToLua" code could run already
 		LockMutex(_listMutex)
@@ -150,8 +150,15 @@ Type TLuaEngine
 		
 		obj.individualNotifyOnErrorLimit = TLuaEngine.notifyOnErrorLimit
 
-		'init fenv and register self
-		obj.RegisterToLua()
+		'init fenv and register self (if some lua code was passed)
+		If not source and uri then source = LoadText(uri)
+		If source
+			'assign new lua script code
+			obj.SetSource(source)
+			'register code handlers
+			obj.RegisterToLua()
+		EndIf
+
 		obj.lastID :+1
 		obj.id = obj.lastID
 
@@ -277,7 +284,7 @@ Type TLuaEngine
 
 	'we are parent of other registered objects
 	Method RegisterToLua:Int()
-		'push class block
+		'push class block / current lua script code
 		If Not lua_pushchunk() Then Return Null
 
 		'set new environment for this lua state, so accesses
