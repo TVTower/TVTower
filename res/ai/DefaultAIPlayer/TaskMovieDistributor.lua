@@ -138,7 +138,7 @@ function TaskMovieDistributor:getStrategicPriority()
 	self:LogTrace("TaskMovieDistributor:getStrategicPriority")
 
 	-- no money to buy things? skip even looking...
-	if TVT.getMoney() <= 50000 then
+	if getPlayer().money <= 50000 then
 		return 0.0
 	end
 	return 1.0

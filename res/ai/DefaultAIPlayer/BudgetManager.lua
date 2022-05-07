@@ -44,7 +44,7 @@ function BudgetManager:CalculateNewDayBudget()
 
 	self.IgnoreMoneyChange = true
 	self.CurrentLogLevel = LOG_INFO
-	local money = TVT.GetMoney()
+	local money = getPlayer().money
 	self:Log("=== Budget day " .. (TVT.GetDaysRun() + 1) .. " ===")
 	self:Log(string.left("Account balance:", 25, true) .. string.right(money, 10, true))
 
@@ -157,7 +157,6 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 	if self.IgnoreMoneyChange == true then return end
 
 	reason = tonumber(reason)
-	value = tonumber(value)
 	self.CurrentLogLevel=LOG_DEBUG
 
 	if (reference ~= nil) then
@@ -177,7 +176,7 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 
 
 	if renewBudget == true then
-		local budgetNow = TVT.GetMoney()
+		local budgetNow = getPlayer().money
 
 		--update budget when at least 15.000 Euro difference since last
 		--adjustment

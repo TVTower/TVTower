@@ -108,6 +108,7 @@ function DefaultAIPlayer:initParameters()
 		self.gameDay = TVT:GetDaysRun() + 1
 		self.minutesGone = TVT:GetTimeGoneInMinutes()
 	end
+	self.money = TVT:GetMoney()
 
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
 		--Waghalsigkeit 3-8
@@ -250,6 +251,8 @@ end
 
 
 function DefaultAIPlayer:OnDayBegins()
+	--ensure money value is correct for all onDayBegins-calls
+	self.money = TVT:GetMoney()
 	--just in case we missed a "OnGameBegins"
 	self.Strategy:Start(self)
 
@@ -285,6 +288,15 @@ end
 
 
 function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
+	value = tonumber(value)
+	--onDayBegins synchronizes the money for all onDayBegins-Events
+	--ensure that fixed-costs events do not change the already synchronized value
+	if self.hour == 0 and self.minute < 10 then
+		self.money = TVT:GetMoney()
+	else
+		self.money = self.money + value
+	end
+	--self:LogDebug("player money changed: " ..value .. " money " .. self.money .. " TVTmoney " .. TVT:GetMoney())
 	self.Budget:OnMoneyChanged(value, reason, reference)
 	for k,v in pairs(self.TaskList) do
 		v:OnMoneyChanged(value, reason, reference)
@@ -788,6 +800,7 @@ function OnLoadState(data)
 	player.minute = TVT:GetDayMinute()
 	player.gameDay = TVT:GetDaysRun() + 1
 	player.minutesGone = TVT:GetTimeGoneInMinutes()
+	player.money = TVT:GetMoney()
 end
 
 -- called when "saving" a game
