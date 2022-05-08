@@ -2311,6 +2311,11 @@ Type TScreenHandler_StationMap
 	Global selectedStation:TStationBase
 	Global mouseoverStation:TStationBase
 	Global mouseoverStationPosition:TVec2D
+	
+	'indicator for each player (bitmask)
+	Global stationMapChanged:int
+	'mutex to protect indicator change and reaction to changes
+	Global stationMapChangedMutex:TMutex = CreateMutex()
 
 
 	Global guiShowStations:TGUICheckBox[4]
@@ -2440,7 +2445,8 @@ Type TScreenHandler_StationMap
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnOpenPanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnClosePanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
 
-		'we have to refresh the gui station list as soon as we remove or add a station
+		'mark the player's stationmap as "changed" when stations are
+		'added, removed, activated or shutdown
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
 '		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetActive, OnChangeStation) ]
@@ -2740,6 +2746,7 @@ Type TScreenHandler_StationMap
 			DrawText("now   : " + GetWorldTime().GetFormattedGameDate(), 30,60)
 		endif
 	End Function
+	
 
 	Function Navigate:Int(key:Int, xDelta:Int, yDelta:Int)
 		If KEYMANAGER.IsDown(key)
@@ -2749,6 +2756,36 @@ Type TScreenHandler_StationMap
 		EndIf
 		Return False
 	End Function
+	
+	
+	Function ReactToStationMapChanges()
+		If Not currentSubRoom Then Return
+		
+		LockMutex(stationMapChangedMutex)
+		
+		'if we do not own the selected station anymore, action mode
+		'has to be reset (so remove "selection")
+		If TScreenHandler_StationMap.selectedStation
+			If TScreenHandler_StationMap.selectedStation.owner <= 0
+				TScreenHandler_StationMap.ResetActionMode(0)
+			EndIf
+		EndIf
+
+		Local ownerFlag:Int = (1 Shl (currentSubRoom.owner-1))
+		If stationMapChanged & ownerFlag 
+			'refresh panels if player is currently looking at a changed
+			'stationmap
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList( currentSubRoom.owner )
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList( currentSubRoom.owner )
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList( currentSubRoom.owner )
+
+			'remove owner from changed state
+			stationMapChanged :& ~ ownerFlag
+		EndIf
+		
+		UnlockMutex(stationMapChangedMutex)
+	End Function
+	
 
 	Function onUpdateStationMap:Int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -2756,16 +2793,20 @@ Type TScreenHandler_StationMap
 		If Not room Then Return 0
 
 		'backup room if it changed
+		Local changedSubRoom:int
 		If currentSubRoom <> lastSubRoom
 			lastSubRoom = currentSubRoom
+			changedSubRoom = True
+		EndIf
+		currentSubRoom = room
 
-			'if we changed the room meanwhile - we have to rebuild the stationList
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList(currentSubRoom.owner)
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList(currentSubRoom.owner)
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList(currentSubRoom.owner)
+		'if stationmap changed or we changed the room meanwhile
+		'then we have to rebuild the stationList and potentially remove
+		'selections in lists
+		If changedSubRoom or stationMapChanged & currentSubRoom.owner
+			ReactToStationMapChanges()
 		EndIf
 
-		currentSubRoom = room
 
 		GetStationMap(room.owner).Update()
 
@@ -3088,20 +3129,14 @@ endrem
 	Function OnChangeStationMapStation:Int( triggerEvent:TEventBase )
 		'do nothing when not in a room
 		If Not currentSubRoom Then Return False
-
-		if TScreenHandler_StationMap.selectedStation
-			if triggerEvent.GetEventKey() = GameEventKeys.StationMap_RemoveStation
-				'reset action mode (so also "selection") if the
-				'station just got removed/sold
-				if TScreenHandler_StationMap.selectedStation = TStationBase(triggerEvent.GetData().Get("station"))
-					TScreenHandler_StationMap.ResetActionMode(0)
-				endif
-			endif
-		endif
-
-		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList( currentSubRoom.owner )
-		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList( currentSubRoom.owner )
-		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList( currentSubRoom.owner )
+	
+		Local station:TStationBase = TStationBase(triggerEvent.GetData().Get("station"))
+		If station and station.owner > 0 and GetPlayer(station.owner)
+			'mark stationmap of player/owner as changed
+			LockMutex(stationMapChangedMutex)
+			stationMapChanged :| (1 Shl (station.owner-1))
+			UnLockMutex(stationMapChangedMutex)
+		EndIf
 	End Function
 
 
@@ -3109,16 +3144,15 @@ endrem
 		'do nothing when not in a room
 		If Not currentSubRoom Then Return False
 
-		local station:TStationBase = TStationBase(triggerEvent.GetSender())
-		if not station or station.owner <> currentSubRoom.owner then return False
+		Local station:TStationBase = TStationBase(triggerEvent.GetSender())
+		If Not station Then Return False
 
-		if TStationAntenna(station)
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList( currentSubRoom.owner )
-		elseif TStationCableNetworkUplink(station)
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList( currentSubRoom.owner )
-		elseif TStationSatelliteUplink(station)
-			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList( currentSubRoom.owner )
-		endif
+		If station and station.owner > 0 and GetPlayer(station.owner)
+			'mark stationmap of player/owner as changed
+			LockMutex(stationMapChangedMutex)
+			stationMapChanged :| (1 Shl (station.owner-1))
+			UnLockMutex(stationMapChangedMutex)
+		EndIf
 	End Function
 
 
