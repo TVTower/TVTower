@@ -190,88 +190,92 @@ end
 
 function JobAnalyseStationMarket:determineIntendedPositions()
 	self:LogInfo("determining the positions of all antennas to be built in the future")
-	local startStation = TVT.of_getStationAtIndex(TVT.ME, 0)
-	if startStation ~= nil then
-		if startStation.IsAntenna() == 1 then
-			local radius = startStation.radius
-			--reduce radius - small overlap but decrease missed areas between 3 antennas
-			if radius < 30 then
-				radius = radius -1
-			elseif radius < 40 then
-				radius = radius -2
-			elseif radius < 50 then
-				radius = radius -3
-			elseif radius < 60 then
-				radius = radius -4
-			elseif radius < 70 then
-				radius = radius -5
-			else
-				radius = radius -6
-			end
-			local d = 2 * radius
+	local startStation = self:getBaseAntennaParameters()
+	local radius = startStation.radius
+	local d = 2 * radius
 
-			--dx and dy are the deltas for the next antenna center in the same row
-			local dx = math.random(radius+radius/2,d)
-			local dy = math.sqrt(4 * radius ^ 2 - dx ^ 2)
+	--dx and dy are the deltas for the next antenna center in the same row
+	local dx = math.random(radius+radius/2,d)
+	local dy = math.sqrt(4 * radius ^ 2 - dx ^ 2)
 
-			--da and db are the deltas for the center of the start antenna in the next but one row
-			--(antenna centers "alternate")
-			local da = 0
-			local db = math.sqrt(3) * d
+	--da and db are the deltas for the center of the start antenna in the next but one row
+	--(antenna centers "alternate")
+	local da = 0
+	local db = math.sqrt(3) * d
 
-			if dx < d then
-				da = math.sqrt( (3 * d ^ 2 )/( ((1.0*dx)/(1.0*dy))^2+ 1) )
-				db = ((1.0*dx)/(1.0*dy))*da
-			end
-
-			dy=math.floor(dy)
-			da=math.floor(da)
-			db=math.floor(db)
-
-			--deltaX and deltaY are the deltas for the center of the start antenna in the next row
-			--the row whose center is "off" by radius
-			local deltaX = 0
-			if dx > dy then
-				deltaX = math.floor((dx - da) / 2)
-			else
-				deltaX = math.floor((da - dx) / 2)
-			end
-			local deltaY = math.floor((db + dy) / 2 )
-
-			local positionTable = {}
-			local foundCount = 1
-			local startX = startStation.x
-			local startY = startStation.y
-			--create rows upwards
-			while foundCount > 0 do
-				foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
-				startX = startX + deltaX
-				startY = startY + deltaY
-				foundCount = foundCount+ self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
-				startX = startX + deltaX
-				startY = startY + deltaY
-			end
-
-			foundCount = 1
-			startX = startStation.x - deltaX
-			startY = startStation.y - deltaY
-			--create rows downwards
-			while foundCount > 0 do
-				foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
-				startX = startX - deltaX
-				startY = startY - deltaY
-				foundCount = foundCount + self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
-				startX = startX - deltaX
-				startY = startY - deltaY
-			end
-			self.Task.intendedAntennaPositions = positionTable
-			self:LogInfo("found ".. table.count(positionTable) .. " antennas")
-		else
-			self:LogError("start station is not an antenna")
-		end
-	else
-		self:LogError("no start station found")
+	if dx < d then
+		da = math.sqrt( (3 * d ^ 2 )/( ((1.0*dx)/(1.0*dy))^2+ 1) )
+		db = ((1.0*dx)/(1.0*dy))*da
 	end
+
+	dy=math.floor(dy)
+	da=math.floor(da)
+	db=math.floor(db)
+
+	--deltaX and deltaY are the deltas for the center of the start antenna in the next row
+	--the row whose center is "off" by radius
+	local deltaX = 0
+	if dx > dy then
+		deltaX = math.floor((dx - da) / 2)
+	else
+		deltaX = math.floor((da - dx) / 2)
+	end
+	local deltaY = math.floor((db + dy) / 2 )
+
+	local positionTable = {}
+	local foundCount = 1
+	local startX = startStation.x
+	local startY = startStation.y
+	--create rows upwards
+	while foundCount > 0 do
+		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+		startX = startX + deltaX
+		startY = startY + deltaY
+	end
+
+	foundCount = 1
+	startX = startStation.x - deltaX
+	startY = startStation.y - deltaY
+	--create rows downwards
+	while foundCount > 0 do
+		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+		startX = startX - deltaX
+		startY = startY - deltaY
+	end
+	self.Task.intendedAntennaPositions = positionTable
+	self:LogInfo("found ".. table.count(positionTable) .. " antennas")
+end
+
+function JobAnalyseStationMarket:getBaseAntennaParameters()
+	local startStation = TVT.of_getStationAtIndex(TVT.ME, 0)
+	local antennaCount = TVT.of_getStationCount(TVT.ME)
+
+	if startStation ~= nil and startStation.IsAntenna() == 1 and antennaCount < 3 then
+		self:LogDebug("using coordinates of initial antenna")
+	else
+		local x = math.random(100,300)
+		local y = math.random(100,300)
+		startStation = TVT.of_GetTemporaryAntennaStation(x,y)
+		self:LogDebug("using random coordinates "..x.." "..y)
+	end
+
+	--reduce radius - small overlap but decrease missed areas between 3 antennas
+	local radius = startStation.radius
+	if radius < 30 then
+		radius = radius -1
+	elseif radius < 40 then
+		radius = radius -2
+	elseif radius < 50 then
+		radius = radius -3
+	elseif radius < 60 then
+		radius = radius -4
+	elseif radius < 70 then
+		radius = radius -5
+	else
+		radius = radius -6
+	end
+
+	return {x=startStation.x; y=startStation.y; radius = radius}
 end
 
 function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDelta, yDelta, positions)
@@ -408,7 +412,7 @@ function JobBuyStation:Prepare(pParams)
 	end
 
 	local totalReach = player.totalReach
-	if totalReach~=nil and totalReach < 800000 and moneyExcludingFixedCosts > 300000  then
+	if totalReach~=nil and totalReach < 900000 and moneyExcludingFixedCosts > 200000  then
 		self.Task.CurrentBudget = moneyExcludingFixedCosts
 	end
 

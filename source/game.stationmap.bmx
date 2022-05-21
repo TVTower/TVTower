@@ -1015,6 +1015,10 @@ Type TStationMapCollection
 					Exit
 				EndIf
 			Next
+			If station.getReach(True) < GameRules.stationInitialIntendedReach
+				'player will get cable, reduce station radius
+				antennaStationRadius = 60
+			EndIf
 		EndIf
 
 		Return True
@@ -1598,6 +1602,8 @@ Type TStationMapCollection
 			'add federal state name for cable providers etc (else this
 			'is only appended when using GetName() instead of ".name"
 			cableNetwork.name = cableNetwork.GetName()
+			'update immediately, otherwise the network is not launched for the first player
+			cableNetwork.Update()
 		Next
 
 		Return True
@@ -5843,7 +5849,7 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 		If Not Super.Launch() Then Return False
 
 		GetStationMapCollection().OnLaunchCableNetwork(Self)
-		TLogger.Log("CableNetwork.Launch", "Launching cable network ~q"+GetName()+"~q. Reach: " + GetReach() +"  Date: " + GetWorldTime().GetFormattedGameDate(launchTime), LOG_DEBUG)
+		TLogger.Log("CableNetwork.Launch", "Launching cable network ~q"+GetName()+"~q. Date: " + GetWorldTime().GetFormattedGameDate(launchTime), LOG_DEBUG)
 
 		Return True
 	End Method
