@@ -801,6 +801,18 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'add new station
 		Local s:TStationBase = New TStationAntenna.Init( 310, 260, -1, playerID )
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
+		If s.getReach() < GameRules.stationInitialIntendedReach
+			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
+				Local cable:TStationBase = map.GetTemporaryCableNetworkUplinkStation(cableIndex)
+				If cable
+					If cable.getReach() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
+						If TStationAntenna(s) or cable.getReach() < s.getReach()
+							s = cable
+						EndIf
+					EndIf
+				EndIf
+			Next
+		EndIf
 		'first station is not sellable (this enforces competition)
 		s.SetFlag(TVTStationFlag.SELLABLE, False)
 		'mark it as being gifted (by your boss or so)
@@ -812,6 +824,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(s.GetSectionName())
 		If section Then section.SetBroadcastPermission(playerID, True, 0)
 
+		If TStationCableNetworkUplink(s)
+			s.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT,True)
+			s.GetProvider().minimumChannelImage = 0
+		EndIf
 		map.AddStation( s, False )
 
 
