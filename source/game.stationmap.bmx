@@ -541,9 +541,13 @@ Type TStationMapCollection
 			Local allUseThisSatellite:Int = True
 			'amount of non-ignored channels
 			Local interestingChannelsCount:Int
+			Local countResult:Int = True
 
 
 			For Local channelID:Int = 1 To stationMaps.Length
+				If satellite.IsSubscribedChannel(channelID)
+					If Not includeChannelMask.Has(channelID) or excludeChannelMask.Has(channelID) Then countResult = False
+				EndIf
 				'ignore unwanted
 				If Not includeChannelMask.Has(channelID) Then Continue
 				'skip if to exclude - exclusive reaches requested
@@ -560,7 +564,7 @@ Type TStationMapCollection
 
 
 			Local channelUsageRatio:Float
-			If channelsUsingThisSatellite > 0
+			If countResult and channelsUsingThisSatellite > 0
 				'print "GetTotalSatelliteShare: " + satellite.name + "   channelsUsingThisSatellite="+channelsUsingThisSatellite +"  reach="+satellite.GetReach()
 				'total - if there is at least _one_ channel uses this satellite
 				satResult.total = satellite.GetReach()
@@ -577,11 +581,12 @@ Type TStationMapCollection
 				EndIf
 			EndIf
 
-
-			result.total :+ satResult.total
-			result.shared :+ satResult.shared
-			'total share percentage depends on the reach of a satellite - or its market share
-			result.populationShareRatio :+ satellite.populationShare * (channelsUsingThisSatellite / Float(interestingChannelsCount))
+			If countResult
+				result.total :+ satResult.total
+				result.shared :+ satResult.shared
+				'total share percentage depends on the reach of a satellite - or its market share
+				result.populationShareRatio :+ satellite.populationShare * (channelsUsingThisSatellite / Float(interestingChannelsCount))
+			endIf
 		Next
 
 		Return result
@@ -5067,9 +5072,14 @@ Type TStationMapSection
 			'amount of non-ignored channels
 			Local interestingChannelsCount:Int
 			Local allHaveCableNetwork:Int = False
+			Local countResult:Int = True
 
 			allHaveCableNetwork = True
 			For Local channelID:Int = 1 To GetStationMapCollection().stationMaps.Length
+				Local subscribedCount:Int = GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name )
+				If subscribedCount > 0
+					If Not includeChannelMask.Has(channelID) or excludeChannelMask.Has(channelID) Then countResult = False
+				EndIf
 				'ignore unwanted
 				If Not includeChannelMask.Has(channelID) Then Continue
 				'skip if to exclude - exclusive reaches requested
@@ -5077,7 +5087,7 @@ Type TStationMapSection
 
 				interestingChannelsCount :+ 1
 
-				If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name ) > 0
+				If subscribedCount > 0
 					channelsWithCableNetwork :+ 1
 				Else
 					allHaveCableNetwork = False
@@ -5086,7 +5096,7 @@ Type TStationMapSection
 
 
 			result = New TStationMapPopulationShare
-			If channelsWithCableNetwork > 0
+			If countResult and channelsWithCableNetwork > 0
 				'total - if there is at least _one_ channel uses a cable network here
 				result.value.total = population
 
