@@ -327,7 +327,7 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
     c.guessedAudienceAccuracyHourlyCount = {}
 ]]
 	if hour > 0 and hour < 18 then
-		return 1.4
+		return 1.35
 	elseif hour > 18 then
 		return 0.90
 	else 
@@ -1992,7 +1992,7 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 				-- nothing found: use a random one (if possible)
 				if TVT.of_getProgrammeLicenceCount() > 0 then
 					local choosenLicence = TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) )
-					if choosenLicence.IsNewBroadcastPossible() then
+					if choosenLicence.IsNewBroadcastPossible() > 0 then
 						upcomingProgrammesLicences = { choosenLicence }
 					end
 				end
@@ -2132,8 +2132,8 @@ function JobProgrammeSchedule:Tick()
 			if self.plannedHours < planHours then
 				local fixedDay, fixedHour = FixDayAndHour(currentDay, currentHour + self.plannedHours)
 
-				-- skip current hour if already started
-				if fixedHour == currentHour and getPlayer().minute >= 5 then
+				-- skip current hour if already started or about to start
+				if fixedHour == currentHour and getPlayer().minute >= 4 then
 					--
 				-- skip if we cannot change this slot
 				elseif TVT.of_IsModifyableProgrammePlanSlot(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= TVT.RESULT_OK then
@@ -2247,7 +2247,8 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	local chosenBroadcastMaterial = nil
 	local chosenBroadcastLog = ""
 
-	local infomercialAllowed = getPlayer().gameDay <= 1
+	--TODO allow infomercials again if programme selection has been improved
+	local infomercialAllowed = false --getPlayer().gameDay <= 1
 	local programmeAllowed = true
 
 	local currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)

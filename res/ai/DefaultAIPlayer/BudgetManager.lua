@@ -62,7 +62,7 @@ function BudgetManager:UpdateBudget(money)
 	if bossTask ~= nil and bossTask.GuessCreditAvailable > 0 then
 		if money < 100000 then
 			bossTask.SituationPriority = 5
-		elseif money <= 0 then
+		elseif money <= 0 and player.hour > 5 then
 			bossTask.SituationPriority = 15
 		end
 	end
@@ -88,8 +88,11 @@ function BudgetManager:AllocateBudgetToTasks(money)
 	local allFixedCostsSavings = 0
 	for k,v in pairs(player.TaskList) do
 		budgetUnits = budgetUnits + v:getBudgetUnits()
-		self:Log(string.left(v:typename() .. " fix", 25, true) .. string.right(v:GetFixedCosts(), 10, true))
-		allFixedCostsSavings = allFixedCostsSavings + v:GetFixedCosts()
+		local taskFixCosts = v:GetFixedCosts()
+		if taskFixCosts > 0 then
+			self:Log(string.left(v:typename() .. " fix", 25, true) .. string.right(taskFixCosts, 10, true))
+		end
+		allFixedCostsSavings = allFixedCostsSavings + taskFixCosts
 	end
 	if budgetUnits == 0 then budgetUnits = 1 end
 

@@ -437,7 +437,9 @@ function JobNewsAgency:GetNewsList(paidBonus)
 	end
 	local allNews = response.DataArray()
 	for i, news in ipairs(allNews) do
-		table.insert(currentNewsList, news)
+		if news ~= nil then
+			table.insert(currentNewsList, news)
+		end
 	end
 
 	-- fetch news show news
@@ -449,7 +451,9 @@ function JobNewsAgency:GetNewsList(paidBonus)
 	-- "pairs", not "ipairs" as the result might contains empty slots
 	-- which "ipairs" does not like
 	for i, news in pairs(broadcastedNews) do
-		table.insert(currentNewsList, news)
+		if news ~= nil then
+			table.insert(currentNewsList, news)
+		end
 	end
 
 	local cultureAward = 0

@@ -101,7 +101,7 @@ function JobSellMovies:Tick()
 	do
 		m = TVT.convertToProgrammeLicence(TVT.ar_GetProgrammeLicence(i).data)
 		--ignore episodes/collection-elements
-		if m ~= nil and m.HasParentLicence()==0 and m.isAvailable() then
+		if m ~= nil and m.HasParentLicence()==0 and m.isAvailable() == 1 then
 			vm = newarchivedMovie(m)
 			self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..",  TopicalityLoss="..string.format("%.4f", vm.TopicalityLoss*100).."% (Max="..string.format("%.2f", vm.MaxTopicalityLoss*100).."%), planned: "..tostring(vm.planned))
 			table.insert(movies,vm)
@@ -136,6 +136,9 @@ function JobSellMovies:Tick()
 			table.insert(case, worstLicence)
 			table.removeElement(movies, worstLicence)
 		end
+	else
+		--do not sell anything
+		movies = {}
 	end
 
 	-- check licences
