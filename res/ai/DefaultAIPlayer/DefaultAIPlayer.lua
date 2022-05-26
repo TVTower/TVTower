@@ -532,10 +532,10 @@ function BusinessStats:AddMovie(licence)
 		if licence ~= nil then
 			if licence.IsSingle() == 1 then
 				self.MovieQualityAcceptable:AddValue( licence.GetQuality() )
-				self.MoviePricePerBlockAcceptable:AddValue(licence:GetPricePerBlock(TVT.ME))
+				self.MoviePricePerBlockAcceptable:AddValue(licence:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME))
 			else
 				self.SeriesQualityAcceptable:AddValue( licence.GetQuality() )
-				self.SeriesPricePerBlockAcceptable:AddValue(licence:GetPricePerBlock(TVT.ME))
+				self.SeriesPricePerBlockAcceptable:AddValue(licence:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME))
 			end
 		end
 	end

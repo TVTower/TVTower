@@ -76,9 +76,9 @@ function TaskStationMap:BeforeBudgetSetup()
 	end
 	local totalReach = player.totalReach
 
-	if movieCount < 12 and (totalReach == nil or totalReach > 850000) then
+	if movieCount < 12 and (totalReach == nil or totalReach > 1200000) then
 		self.BudgetWeight = 0
-	elseif movieCount < 24 and (totalReach == nil or totalReach > 1300000) then
+	elseif movieCount < 24 and (totalReach == nil or totalReach > 2000000) then
 		self.BudgetWeight = 4
 	else
 		self.BudgetWeight = 8
@@ -181,7 +181,7 @@ function JobAnalyseStationMarket:Tick()
 		end
 	end
 
-	if self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) == 0 then
+	if self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
 		self:determineIntendedPositions()
 	end
 
@@ -191,6 +191,7 @@ end
 function JobAnalyseStationMarket:determineIntendedPositions()
 	self:LogInfo("determining the positions of all antennas to be built in the future")
 	local startStation = self:getBaseAntennaParameters()
+	if startStation.radius < 0 then return end
 	local radius = startStation.radius
 	local d = 2 * radius
 
@@ -242,8 +243,12 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 		startX = startX - deltaX
 		startY = startY - deltaY
 	end
-	self.Task.intendedAntennaPositions = positionTable
-	self:LogInfo("found ".. table.count(positionTable) .. " antennas")
+
+	foundCount = table.count(positionTable)
+	if foundCount > 15 then
+		self.Task.intendedAntennaPositions = positionTable
+		self:LogInfo("found ".. foundCount .. " antennas")
+	end
 end
 
 function JobAnalyseStationMarket:getBaseAntennaParameters()
@@ -258,6 +263,8 @@ function JobAnalyseStationMarket:getBaseAntennaParameters()
 		startStation = TVT.of_GetTemporaryAntennaStation(x,y)
 		self:LogDebug("using random coordinates "..x.." "..y)
 	end
+
+	if startStation == nil then return {x=-1; y=-1; radius = -1} end
 
 	--reduce radius - small overlap but decrease missed areas between 3 antennas
 	local radius = startStation.radius
@@ -412,15 +419,16 @@ function JobBuyStation:Prepare(pParams)
 	end
 
 	local totalReach = player.totalReach
-	if totalReach~=nil and totalReach < 900000 and moneyExcludingFixedCosts > 200000  then
+	local neededBudget = 250000
+	if totalReach~=nil and totalReach < 1200000 and moneyExcludingFixedCosts > 150000  then
 		self.Task.CurrentBudget = moneyExcludingFixedCosts
+		neededBudget = 150000
 	end
 
 	--TODO not considering the investment budget has the advantage of faster purchase
 	--if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
-	local neededBudget = 250000
 	if self.Task.fixedCosts ~= nil then
-		neededBudget = neededBudget + self.Task.fixedCosts / 4
+		neededBudget = neededBudget + self.Task.fixedCosts / 8
 	end
 	if (self.Task.CurrentBudget < neededBudget) then
 		self:LogDebug(" Cancel ... budget lower than needed investment budget")
@@ -432,6 +440,7 @@ function JobBuyStation:Prepare(pParams)
 		self:LogDebug(" Cancel ... no buying if too little of the day is left: ".. hour)
 		self:SetCancel()
 	end
+	self.Task.CurrentBudget = math.min(self.Task.CurrentBudget, moneyExcludingFixedCosts)
 end
 
 function JobBuyStation:SetCancel()
@@ -463,7 +472,7 @@ function JobBuyStation:GetAttraction(tempStation)
 		attraction = -3
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
-	return attraction, price, exclusiveReach
+	return attraction, tempStation.GetTotalBuyPrice(), exclusiveReach
 end
 
 
@@ -628,7 +637,10 @@ function JobBuyStation:Tick()
 	end
 	if bestSatAttraction > bestAttraction and bestSatAttraction > 0 then
 		bestOffer = bestSatelliteOffer
+		bestAttraction = bestSatAttraction
 	end
+
+	if bestAttraction < 0 then bestOffer = nil end
 
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
