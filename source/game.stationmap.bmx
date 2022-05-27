@@ -1403,6 +1403,9 @@ Type TStationMapCollection
 
 	Method RemoveSatellite:Int(satellite:TStationMap_Satellite)
 		If satellites.Remove(satellite)
+			'inform satellite about death (to cancel contracts/uplinks)
+			s.Die()
+
 			'recalculate shared audience percentage between satellites
 			UpdateSatelliteSharesAndQuality()
 
@@ -5780,6 +5783,17 @@ endif
 			EndIf
 		EndIf
 	End Method
+	
+	
+	Method CancelSubscription:Int(channelID:Int)
+		'(indirectly) inform concerning stationlink
+		GetStationMapCollection().RemoveUplinkFromBroadcastProvider(Self, channelID)
+
+		'RON: already done via "RemoveUplinkFromBroadcastProvider" above
+		'finally unsubscripe (do _after_ uplink removal
+		'as else a uplink identification via channelID would fail)
+		'UnsubscribeChannel(channelID)
+	End Method
 
 
 	'run extra so you could update station (and its subscription) after
@@ -5789,14 +5803,7 @@ endif
 			If subscribedChannels[i] And subscribedChannelsDuration[i] >= 0
 				If subscribedChannelsStartTime[i] + subscribedChannelsDuration[i] < GetWorldTime().GetTimeGone()
 					Local channelID:Int = subscribedChannels[i]
-
-					'(indirectly) inform concerning stationlink
-					GetStationMapCollection().RemoveUplinkFromBroadcastProvider(Self, channelID)
-
-print "sollte unnoetig sein - unsubscribe channel bereits erledigt?"
-					'finally unsubscripe (do _after_ uplink removal
-					'as else a uplink identification via channelID would fail)
-					UnsubscribeChannel(channelID)
+					CancelSubscription(channelID)
 				EndIf
 			EndIf
 		Next
@@ -5999,7 +6006,19 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 
 		Return True
 	End Method
-
+	
+	
+	Method Die:Int()
+		'cancel all subscriptions / sat uplinks 
+		For Local i:Int = 0 Until subscribedChannels.Length
+			If subscribedChannels[i]
+				Local channelID:Int = subscribedChannels[i]
+				CancelSubscription(channelID)
+			EndIf
+		Next
+	
+		TLogger.Log("Satellite.Die", "Stopping satellite ~q"+name+"~q. Launch: " + GetWorldTime().GetFormattedGameDate(launchTime) +"  Death: " + GetWorldTime().GetFormattedGameDate(deathTime), LOG_DEBUG)
+	End Method
 
 
 	Method Update:Int()
