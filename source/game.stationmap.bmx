@@ -1404,7 +1404,7 @@ Type TStationMapCollection
 	Method RemoveSatellite:Int(satellite:TStationMap_Satellite)
 		If satellites.Remove(satellite)
 			'inform satellite about death (to cancel contracts/uplinks)
-			s.Die()
+			satellite.Die()
 
 			'recalculate shared audience percentage between satellites
 			UpdateSatelliteSharesAndQuality()
@@ -5114,12 +5114,10 @@ Type TStationMapSection
 			EndIf
 
 			'print "CABLE uncached: "+cacheKey
-if name="bremen"
-			local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
-	'		dbgString :+ "  channelsWithCableNetwork: " + includedChannelsWithCableNetwork + " included, " + excludedChannelsWithCableNetwork + " excluded"
-			dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)+"  populationShareRatio="+LSet(result.value.populationShareRatio*100, 7)+"%"
-			print dbgString
-endif
+			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
+			'dbgString :+ "  channelsWithCableNetwork: " + includedChannelsWithCableNetwork + " included, " + excludedChannelsWithCableNetwork + " excluded"
+			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)+"  populationShareRatio="+LSet(result.value.populationShareRatio*100, 7)+"%"
+			'print dbgString
 		Else
 			'print "CABLE cached: "+cacheKey
 			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
