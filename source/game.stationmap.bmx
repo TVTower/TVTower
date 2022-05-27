@@ -437,20 +437,24 @@ Type TStationMapCollection
 	End Method
 
 
-	Function GetSatelliteUplinksCount:Int(stations:TList)
+	Function GetSatelliteUplinksCount:Int(stations:TList, onlyActive:Int = False)
 		Local result:Int
 		For Local station:TStationSatelliteUplink = EachIn stations
+			'skip inactive?
+			if onlyActive and not station.IsActive() Then continue
 			result :+ 1
 		Next
 		Return result
 	End Function
 
 
-	Function GetCableNetworkUplinksInSectionCount:Int(stations:TList, sectionName:String)
+	Function GetCableNetworkUplinksInSectionCount:Int(stations:TList, sectionName:String, onlyActive:Int = False)
 		Local result:Int
 
 		For Local station:TStationCableNetworkUplink = EachIn stations
 			If station.GetSectionName() = sectionName
+				'skip inactive?
+				if onlyActive and not station.IsActive() Then continue
 				result :+ 1
 			EndIf
 		Next
@@ -2267,13 +2271,13 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSatelliteUplinksCount:Int()
-		Return TStationMapCollection.GetSatelliteUplinksCount(stations)
+	Method GetSatelliteUplinksCount:Int(onlyActive:Int = False)
+		Return TStationMapCollection.GetSatelliteUplinksCount(stations, onlyActive)
 	End Method
 
 
-	Method GetCableNetworkUplinksInSectionCount:Int(sectionName:String)
-		Return TStationMapCollection.GetCableNetworkUplinksInSectionCount(stations, sectionName)
+	Method GetCableNetworkUplinksInSectionCount:Int(sectionName:String, onlyActive:Int = False)
+		Return TStationMapCollection.GetCableNetworkUplinksInSectionCount(stations, sectionName, onlyActive)
 	End Method
 
 
@@ -4877,13 +4881,13 @@ Type TStationMapSection
 	End Method
 
 
-	'summary: returns maximum audience a player reach with satellites
+	'summary: returns maximum audience a player reach with all satellites
 	Method GetSatelliteAudienceSum:Int()
 		Return population * GetPopulationSatelliteShareRatio()
 	End Method
 
 
-	'summary: returns maximum audience a player reach with a cablenetwork
+	'summary: returns maximum audience a player reach with all cablenetworks
 	Method GetCableNetworkAudienceSum:Int()
 		Return population * GetPopulationCableShareRatio()
 	End Method
@@ -5038,7 +5042,7 @@ Type TStationMapSection
 	'    (but includeChannelMask would still have "3" and "4" unset, 
 	'    this is why an "excludeChannelMask" is needed 
 	'Ex. include=(1)   and exclude=(0    ) to get total reach for player 1
-	'Ex. include=(1)   and exclude=(2+4+8) to getexclusive reach for player 1
+	'Ex. include=(1)   and exclude=(2+4+8) to get exclusive reach for player 1
 	'Ex. include=(1+2) and exclude=(0    ) to get reach player 1 and 2 have together
 	Method GetCableNetworkPopulationShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		If includeChannelMask.value = 0 Then Return New SStationMapPopulationShare
@@ -5063,42 +5067,39 @@ Type TStationMapSection
 
 		'== GENERATE CACHE ==
 		If Not result
-			Local channelsWithCableNetwork:Int = 0
-			'amount of non-ignored channels
-			Local interestingChannelsCount:Int
-			Local allHaveCableNetwork:Int = False
+			Local includedChannelsWithCableNetwork:Int = 0
+			Local excludedChannelsWithCableNetwork:Int = 0
 
-			allHaveCableNetwork = True
+			'count how much of the "mentioned" channels have at least
+			'one active uplink there
 			For Local channelID:Int = 1 To GetStationMapCollection().stationMaps.Length
-				'ignore unwanted
-				If Not includeChannelMask.Has(channelID) Then Continue
-				'skip if to exclude - exclusive reaches requested
-				If excludeChannelMask.Has(channelID) Then Continue
-
-				interestingChannelsCount :+ 1
-
-				If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name ) > 0
-					channelsWithCableNetwork :+ 1
-				Else
-					allHaveCableNetwork = False
+				If includeChannelMask.Has(channelID)
+					If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name, True ) > 0
+						includedChannelsWithCableNetwork :+ 1
+					EndIf
+				ElseIf excludeChannelMask.Has(channelID)
+					If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name, True ) > 0
+						excludedChannelsWithCableNetwork :+ 1
+					Endif
 				EndIf
 			Next
 
-
 			result = New TStationMapPopulationShare
-			If channelsWithCableNetwork > 0
-				'total - if there is at least _one_ channel uses a cable network here
+			If includedChannelsWithCableNetwork > 0
+				'total - if at least _one_ channel uses a cable network
 				result.value.total = population
 
-				'share is only available if we checked some channels
-				If interestingChannelsCount > 0
-					'share - if _all_ channels use a cable network here
-					If allHaveCableNetwork
+				'all included channels neet to have an uplink ("and" instead of "or" connection)
+				If includedChannelsWithCableNetwork = includeChannelMask.GetEnabledCount()
+					'as soon as one "excluded" has an uplink there, we know
+					'the "included" won't be exclusive
+					'(with only 1 network you cannot only use 50% of it)
+					If excludedChannelsWithCableNetwork = 0
 						result.value.shared = population
+						'ratio is 100% as all channels in "include" need to
+						'have an active uplink
+						result.value.populationShareRatio = 1.0
 					EndIf
-
-					'share percentage
-					result.value.populationShareRatio =  channelsWithCableNetwork / Float(interestingChannelsCount)
 				EndIf
 			EndIf
 
@@ -5108,12 +5109,19 @@ Type TStationMapSection
 				shareCache.insert(cacheKey, result)
 				UnlockMutex(shareCacheMutex)
 			EndIf
-			
+
 			'print "CABLE uncached: "+cacheKey
-			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+if name="bremen"
+			local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
+	'		dbgString :+ "  channelsWithCableNetwork: " + includedChannelsWithCableNetwork + " included, " + excludedChannelsWithCableNetwork + " excluded"
+			dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)+"  populationShareRatio="+LSet(result.value.populationShareRatio*100, 7)+"%"
+			print dbgString
+endif
 		Else
 			'print "CABLE cached: "+cacheKey
-			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
+			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)+"  populationShareRatio="+LSet(result.value.populationShareRatio*100, 7)+"%"
+			'print dbgString
 		EndIf
 
 		'disabled: GetCableNetworkAudienceSum() already contains the share multiplication)
@@ -5661,11 +5669,17 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 		For Local i:Int = 0 Until subscribedChannels.Length
 			If subscribedChannels[i] = channelID Then index = i
 		Next
+if index = -1 
+	print "UnubscribeChannel("+channelID+"): not subscribed."
+else
+	print "UnubscribeChannel("+channelID+"): unsubscribed."
+endif
 		If index = -1 Then Return False
 
 		subscribedChannels = subscribedChannels[.. index] + subscribedChannels[index+1 ..]
 		subscribedChannelsStartTime = subscribedChannelsStartTime[.. index] + subscribedChannelsStartTime[index+1 ..]
 		subscribedChannelsDuration = subscribedChannelsDuration[.. index] + subscribedChannelsDuration[index+1 ..]
+
 
 		Return True
 	End Method
@@ -5779,6 +5793,7 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 					'(indirectly) inform concerning stationlink
 					GetStationMapCollection().RemoveUplinkFromBroadcastProvider(Self, channelID)
 
+print "sollte unnoetig sein - unsubscribe channel bereits erledigt?"
 					'finally unsubscripe (do _after_ uplink removal
 					'as else a uplink identification via channelID would fail)
 					UnsubscribeChannel(channelID)
@@ -5882,7 +5897,7 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 	Field techUpgradeSpeed:Int
 	Field deathTime:Long = -1
 	'is death decided (no further changes possible)
-	'this allows ancestores/other revisions to get launched then
+	'this allows ancestors/other revisions to get launched then
 	Field deathDecided:Int = False
 	'version of the satellite
 	Field revision:Int = 1
@@ -6092,5 +6107,21 @@ Struct SChannelMask
 		Wend
 		
 		Return count
+	End Method
+	
+
+	Method ToString:String()
+		Local res:String
+		For local i:int = 1 to 4
+			if Has(i) 
+				if res 
+					res :+ ", " + i
+				else
+					res :+ i
+				endif
+			endif
+		Next
+				
+		Return "(" + res + ")"
 	End Method
 End Struct
