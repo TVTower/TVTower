@@ -372,11 +372,11 @@ Type TStationMapCollection
 	End Method
 
 
+	'summary: returns maximum audience reached with the given uplinks
 	Method GetCableNetworkUplinkAudienceSum:Int(stations:TList)
 		Local result:Int
 		For Local station:TStationCableNetworkUplink = EachIn stations
-			Local section:TStationMapSection = GetSectionByName(station.GetSectionName())
-			If section Then result :+ section.GetCableNetworkAudienceSum()
+			result :+ station.GetReach()
 		Next
 		Return result
 	End Method
@@ -882,6 +882,13 @@ Type TStationMapCollection
 					a.reachMax = -1
 					a.reachExclusiveMax = -1
 				Next
+			Next
+		EndIf
+		'pre 0.7.3
+		If savedSaveGameVersion < 18
+			TLogger.Log("TStationMapCollection", "Ensuring initial cable network shares are set", LOG_DEBUG | LOG_SAVELOAD)
+			For Local c:TStationMap_CableNetwork = EachIn _instance.cableNetworks
+				c.populationShare = 1.0
 			Next
 		EndIf
 
@@ -1671,6 +1678,14 @@ Type TStationMapCollection
 
 	Method UpdateCableNetworkSharesAndQuality:Int()
 		If Not cableNetworks Or cableNetworks.Count() = 0 Then Return False
+
+		'for now just ensure all cable networks are set to 100%
+		'(no competition for now - only 1 network per section)
+		For Local cablenetwork:TStationMap_CableNetwork = EachIn cableNetworks
+			If Not cablenetwork.IsLaunched() Then Continue
+			
+			cablenetwork.populationShare = 1.0
+		Next
 
 'todo
 Rem
@@ -3922,7 +3937,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 
 	Method GetReach:Int(refresh:Int=False) Override {_exposeToLua}
-		'always return the satellite's reach - so it stays dynamically
+		'always return the uplinks' reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs"
 		'If reach >= 0 And Not refresh Then Return reach
 
@@ -4876,13 +4891,15 @@ Type TStationMapSection
 	End Method
 
 
-	'summary: returns maximum audience a player reach with all satellites
+	'summary: returns maximum audience a player reaches with satellites
+	'         in this section
 	Method GetSatelliteAudienceSum:Int()
 		Return population * GetPopulationSatelliteShareRatio()
 	End Method
 
 
-	'summary: returns maximum audience a player reach with all cablenetworks
+	'summary: returns maximum audience a player reaches with cable 
+	'         networks in this section
 	Method GetCableNetworkAudienceSum:Int()
 		Return population * GetPopulationCableShareRatio()
 	End Method
@@ -5118,8 +5135,6 @@ Type TStationMapSection
 			'print dbgString
 		EndIf
 
-		'disabled: GetCableNetworkAudienceSum() already contains the share multiplication)
-		'Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationCableShare()) )
 		Return result.value
 	End Method
 
@@ -5801,6 +5816,13 @@ End Type
 
 'excuse naming scheme but "TCableNetwork" is ambiguous for "stationtypes"
 Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLua="selected"}
+	'how many of the people in reach are reachable at all
+	'eg. some villages are less easy to reach with cable so this
+	'section has a lower share
+	'or competitors in the same section take away some people
+	'(cable is "exclusive")
+	Field populationShare:Float = 1.0
+
 	'operators
 	Field sectionName:String {_exposeToLua}
 
@@ -5825,24 +5847,26 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int(refresh:Int = False) {_exposeToLua}
 		Local result:Int
-
+		
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			result = GetReachMax()
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			result = GetReachMax()
 			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
 			If Not section Then Return 0
 
-			If section.populationCableShare < 0
-				result :* GetStationMapCollection().GetCurrentPopulationCableShare()
-			Else
-				result :* section.populationCableShare
-			EndIf
+			'this allows individual cablenetworkReceiveRatios for the
+			'sections (eg bad infrastructure for cables or expensive)
+			result = section.GetCableNetworkAudienceSum()
 		EndIf
-
+		
+		'multiply with the percentage of users selecting THIS network
+		'over other cable providers (eg only provider 1 offers it in the
+		'city or street)
+		result :* populationShare
+		
 		Return result
 	End Method
 
@@ -5931,10 +5955,11 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 			For Local s:TStationMapSection = EachIn GetStationMapCollection().sections
 				result :+ s.GetSatelliteAudienceSum()
 			Next
-			'result = GetStationMapCollection().GetPopulation()
-			'result :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		EndIf
 
+		'multiply with the percentage of users selecting THIS satellite
+		'over other satellites (assume all satellites cover the complete
+		'map)
 		result :* populationShare
 
 		Return result
