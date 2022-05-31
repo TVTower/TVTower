@@ -532,64 +532,84 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetSatelliteReceiverShare:SStationMapPopulationShare(satellite:TStationMap_Satellite, includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		Local result:SStationMapPopulationShare
+		Local includedChannelsUsingThisSatellite:Int = 0
+		Local excludedChannelsUsingThisSatellite:Int = 0
+
+		'count how many of the "mentioned" channels have at least
+		'one active uplink there
+		For Local channelID:Int = 1 To stationMaps.Length
+			If includeChannelMask.Has(channelID)
+				If satellite.IsSubscribedChannel(channelID)
+					includedChannelsUsingThisSatellite :+ 1
+				EndIf
+			ElseIf excludeChannelMask.Has(channelID)
+				If satellite.IsSubscribedChannel(channelID)
+					excludedChannelsUsingThisSatellite :+ 1
+				Endif
+			EndIf
+		Next
+
+
+		If includedChannelsUsingThisSatellite > 0
+			Local reach:Int = satellite.GetReach()
+			'total - if at least _one_ channel uses the satellite
+			result.total = reach
+
+			'all included channels need to have an uplink ("and" instead of "or" connection)
+			If includedChannelsUsingThisSatellite = includeChannelMask.GetEnabledCount()
+				'as soon as one "excluded" has an uplink there, we know
+				'the "included" won't be exclusive
+				'(with only 1 satellite you cannot only use 50% of it)
+				If excludedChannelsUsingThisSatellite = 0
+					result.shared = reach
+					'ratio is 100% as all channels in "include" need to
+					'have an active uplink
+					result.populationShareRatio = 1.0
+				EndIf
+			EndIf
+		EndIf
+
+		return result 
+	End Method
+
+
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetTotalSatelliteReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		Local result:SStationMapPopulationShare
 		'no channel requested?
 		If includeChannelMask.value = 0 Then Return result
-		
+
+		Local usedSatelliteCount:int
+
 		For Local satellite:TStationMap_Satellite = EachIn satellites
-			Local satResult:SStationMapPopulationShare
-			Local channelsUsingThisSatellite:Int = 0
-			Local allUseThisSatellite:Int = True
-			'amount of non-ignored channels
-			Local interestingChannelsCount:Int
+			Local satResult:SStationMapPopulationShare = GetSatelliteReceiverShare(satellite, includeChannelMask, excludeChannelMask)
 
-
-			For Local channelID:Int = 1 To stationMaps.Length
-				'ignore unwanted
-				If Not includeChannelMask.Has(channelID) Then Continue
-				'skip if to exclude - exclusive reaches requested
-				If excludeChannelMask.Has(channelID) Then Continue
-
-				interestingChannelsCount :+ 1
-	
-				If satellite.IsSubscribedChannel(channelID)
-					channelsUsingThisSatellite :+ 1
-				Else
-					allUseThisSatellite = False
-				EndIf
-			Next
-
-
-			Local channelUsageRatio:Float
-			If channelsUsingThisSatellite > 0
-				'print "GetTotalSatelliteShare: " + satellite.name + "   channelsUsingThisSatellite="+channelsUsingThisSatellite +"  reach="+satellite.GetReach()
-				'total - if there is at least _one_ channel uses this satellite
-				satResult.total = satellite.GetReach()
-
-				'share is only available if we checked some channels
-				If interestingChannelsCount > 0
-					'share - if _all_ channels use this satellite here
-					If allUseThisSatellite
-						satResult.shared = satellite.GetReach()
-					EndIf
-
-					'share percentage
-					channelUsageRatio = channelsUsingThisSatellite / Float(interestingChannelsCount)
-				EndIf
+			If satResult.total > 0
+				result.total :+ satResult.total
+				result.shared :+ satResult.shared
+				
+				usedSatelliteCount :+ 1
+				result.populationShareRatio :+ satResult.populationShareRatio
 			EndIf
 
-
-			result.total :+ satResult.total
-			result.shared :+ satResult.shared
-			'total share percentage depends on the reach of a satellite - or its market share
-			result.populationShareRatio :+ satellite.populationShare * (channelsUsingThisSatellite / Float(interestingChannelsCount))
 		Next
+
+		'total share percentage depends on the reach of a satellite - or its market share
+		If usedSatelliteCount = 0
+			result.populationShareRatio = 0
+		Else
+			result.populationShareRatio = result.populationShareRatio / usedSatelliteCount
+
+			'multiply with current satellite usage ratio
+			result.populationShareRatio :* GetCurrentPopulationSatelliteShare()
+		EndIf
 
 		Return result
 	End Method
+
 
 	Method GetRandomAntennaCoordinateInSections:SVec2I(sectionNames:String[], allowSectionCrossing:Int = True)
 		If sectionNames.Length = 0 Then Return Null
@@ -5026,12 +5046,16 @@ Type TStationMapSection
 
 
 	Method GetCableNetworkReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationCableShareRatio())
+		'no need to copy when not using a Type but a struct
+		'Return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationCableShareRatio())
+		Return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).MultiplyFactor(GetPopulationCableShareRatio())
 	End Method
 
 
 	Method GetAntennaReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationAntennaShareRatio())
+		'no need to copy when not using a Type but a struct
+		'Return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationAntennaShareRatio())
+		Return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).MultiplyFactor(GetPopulationAntennaShareRatio())
 	End Method
 
 
@@ -5073,7 +5097,7 @@ Type TStationMapSection
 			Local includedChannelsWithCableNetwork:Int = 0
 			Local excludedChannelsWithCableNetwork:Int = 0
 
-			'count how much of the "mentioned" channels have at least
+			'count how many of the "mentioned" channels have at least
 			'one active uplink there
 			For Local channelID:Int = 1 To GetStationMapCollection().stationMaps.Length
 				If includeChannelMask.Has(channelID)
@@ -5670,11 +5694,11 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 		For Local i:Int = 0 Until subscribedChannels.Length
 			If subscribedChannels[i] = channelID Then index = i
 		Next
-if index = -1 
-	print "UnubscribeChannel("+channelID+"): not subscribed."
-else
-	print "UnubscribeChannel("+channelID+"): unsubscribed."
-endif
+		'if index = -1 
+		'	print "UnubscribeChannel("+channelID+"): not subscribed."
+		'else
+		'	print "UnubscribeChannel("+channelID+"): unsubscribed."
+		'endif
 		If index = -1 Then Return False
 
 		subscribedChannels = subscribedChannels[.. index] + subscribedChannels[index+1 ..]
