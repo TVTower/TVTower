@@ -482,11 +482,6 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GetTotalSharePercentage:Float(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetTotalShare(includeChannelMask, excludeChannelMask).populationShareRatio
-	End Method
-
-
 	Method GetTotalShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		Local result:SStationMapPopulationShare
 
@@ -564,9 +559,6 @@ Type TStationMapCollection
 				'(with only 1 satellite you cannot only use 50% of it)
 				If excludedChannelsUsingThisSatellite = 0
 					result.shared = reach
-					'ratio is 100% as all channels in "include" need to
-					'have an active uplink
-					result.populationShareRatio = 1.0
 				EndIf
 			EndIf
 		EndIf
@@ -582,30 +574,15 @@ Type TStationMapCollection
 		'no channel requested?
 		If includeChannelMask.value = 0 Then Return result
 
-		Local usedSatelliteCount:int
-
 		For Local satellite:TStationMap_Satellite = EachIn satellites
 			Local satResult:SStationMapPopulationShare = GetSatelliteReceiverShare(satellite, includeChannelMask, excludeChannelMask)
 
 			If satResult.total > 0
 				result.total :+ satResult.total
 				result.shared :+ satResult.shared
-				
-				usedSatelliteCount :+ 1
-				result.populationShareRatio :+ satResult.populationShareRatio
 			EndIf
 
 		Next
-
-		'total share percentage depends on the reach of a satellite - or its market share
-		If usedSatelliteCount = 0
-			result.populationShareRatio = 0
-		Else
-			result.populationShareRatio = result.populationShareRatio / usedSatelliteCount
-
-			'multiply with current satellite usage ratio
-			result.populationShareRatio :* GetCurrentPopulationSatelliteShare()
-		EndIf
 
 		Return result
 	End Method
@@ -4883,11 +4860,6 @@ Type TStationMapSection
 	End Method
 
 
-	Method GetSharePercentage:Float(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetReceiverShare(includeChannelMask, excludeChannelMask).populationShareRatio
-	End Method
-
-
 	Method GetPopulationCableShareRatio:Float()
 		If populationCableShare < 0 Then Return GetStationMapCollection().GetCurrentPopulationCableShare()
 		Return populationCableShare
@@ -5123,9 +5095,6 @@ Type TStationMapSection
 					'(with only 1 network you cannot only use 50% of it)
 					If excludedChannelsWithCableNetwork = 0
 						result.value.shared = population
-						'ratio is 100% as all channels in "include" need to
-						'have an active uplink
-						result.value.populationShareRatio = 1.0
 					EndIf
 				EndIf
 			EndIf
@@ -5140,12 +5109,12 @@ Type TStationMapSection
 			'print "CABLE uncached: "+cacheKey
 			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
 			'dbgString :+ "  channelsWithCableNetwork: " + includedChannelsWithCableNetwork + " included, " + excludedChannelsWithCableNetwork + " excluded"
-			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)+"  populationShareRatio="+LSet(result.value.populationShareRatio*100, 7)+"%"
+			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)
 			'print dbgString
 		Else
 			'print "CABLE cached: "+cacheKey
 			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
-			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)+"  populationShareRatio="+LSet(result.value.populationShareRatio*100, 7)+"%"
+			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)
 			'print dbgString
 		EndIf
 
@@ -5224,10 +5193,10 @@ Type TStationMapSection
 			EndIf
 
 			'print "ANTENNA uncached: "+cacheKey
-			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)+"  share="+(result.value.populationShareRatio*100)+"%"
+			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)
 		Else
 			'print "ANTENNA cached: "+cacheKey
-			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)+"  share="+(result.value.populationShareRatio*100)+"%"
+			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)
 		EndIf
 
 		Return result.value
@@ -5482,7 +5451,6 @@ End Type
 Struct SStationMapPopulationShare
 	Field shared:Int 'in people
 	Field total:Int 'in people
-	Field populationShareRatio:Float 'ratio of total population
 	
 	Method GetShareRatio:Float()
 		If total = 0 Then Return 0
@@ -5494,7 +5462,6 @@ Struct SStationMapPopulationShare
 		Local c:SStationMapPopulationShare
 		c.shared = Self.shared
 		c.total = Self.total
-		c.populationShareRatio = Self.populationShareRatio
 		Return c
 	End Method
 	
@@ -5502,14 +5469,12 @@ Struct SStationMapPopulationShare
 	Method Add:SStationMapPopulationShare(other:SStationMapPopulationShare)
 		Self.shared :+ other.shared
 		Self.total :+ other.total
-		Self.populationShareRatio :+ other.populationShareRatio
 	End Method
 	
 
 	Method MultiplyFactor:SStationMapPopulationShare(factor:Float)
 		Self.shared :* factor
 		Self.total :* factor
-		Self.populationShareRatio :* factor
 		Return Self
 	End Method
 
@@ -5517,7 +5482,6 @@ Struct SStationMapPopulationShare
     Method Operator :+(other:SStationMapPopulationShare)
 		Self.shared :+ other.shared
 		Self.total :+ other.total
-		Self.populationShareRatio :+ other.populationShareRatio
     End Method
 End Struct
 
