@@ -413,6 +413,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 						'if company is more far from requirements than 
 						'current and also more expensive!
 						If abs(p.GetFocusPoints() - requiredFocusPoints) > abs(bestFocusPoints - requiredFocusPoints) and p.GetFee() > bestFee Then Continue
+						'ignore company to give others a chance
+						If RandRange(0, 100) > 75 Then Continue
 						'alternative: if more than required, then only if cheaper
 						'this wont choose a "bigger" company if it is more expensive
 						'than the cheaper one which does not offer the required focus
