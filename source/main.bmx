@@ -2530,17 +2530,26 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
+		If savegameVersion < 18
+			TLogger.Log("RepairData", "Removing AI-Events", LOG_SAVELOAD | LOG_DEBUG)
+			For Local i:Int = 1 To 4
+				Local p:TPlayer = GetPlayer(i)
+				If p and p.IsLocalAI() and p.playerAI
+					p.playerAI.eventQueue = new TAIEvent[0]
+				EndIf
+			Next
+		EndIF
 		If savegameVersion < 16
 			'programme producers were not persisted before v16
 			If GetProgrammeProducerCollection().GetCount() < 1
-				print "RepairData: Create (new) programme producers (savegame did not contain them)"
+				TLogger.Log("RepairData", "Create (new) programme producers (savegame did not contain them)", LOG_SAVELOAD | LOG_DEBUG)
 				GetGame().GenerateStartProgrammeProducers()
 			EndIf
 			For Local person:TPersonBase = EachIn GetPersonBaseCollection().GetCastablesList()
 				Local prodData:TPersonProductionBaseData = person.GetProductionData()
 				If prodData And prodData.priceModifier < 0.011
 					prodData.priceModifier = 1.0
-					print "RepairData: Fix price modifier from 1% to intended 100% for "+person.getFullName()
+					TLogger.Log("RepairData", "Fix price modifier from 1% to intended 100% for "+person.getFullName(), LOG_SAVELOAD | LOG_DEBUG)
 				EndIF
 			Next
 		EndIf
@@ -2550,34 +2559,34 @@ Type TSaveGame Extends TGameState
 				If licence.data and licence.broadcastTimeSlotStart >= 0 and licence.broadcastTimeSlotEnd >= 0
 					licence.data.broadcastTimeSlotStart = licence.broadcastTimeSlotStart
 					licence.data.broadcastTimeSlotEnd = licence.broadcastTimeSlotEnd
-					print "RepairData: licence " + RSet(licence.GetTitle(), 20) +" defined slots  - copy slots to data"
+					TLogger.Log("RepairData", "licence " + RSet(licence.GetTitle(), 20) +" defined slots  - copy slots to data", LOG_SAVELOAD | LOG_DEBUG)
 				EndIf
 			Next
 			For local script:TScript = EachIn GetScriptCollection().entries.Values()
 				'fix potentially missing live time
 				If script.isLive() And script.fixedLiveTime < 0
 					script.SetProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE, True)
-					print "RepairData: set script to AlwaysLive "+ script.getTitle()
+					TLogger.Log("RepairData", "set script to AlwaysLive "+ script.getTitle(), LOG_SAVELOAD | LOG_DEBUG)
 				EndIf
 				If script.productionTime > 0 And script.productionTime < 200
 					script.productionTime =  TWorldTime.MINUTELENGTH * script.productionTime
-					print "RepairData: update script production time minutes "+ script.getGUID()
+					TLogger.Log("RepairData", "update script production time minutes "+ script.getGUID(), LOG_SAVELOAD | LOG_DEBUG)
 				EndIF
 				'ensure live_time_fixed flag is unset, so it can later be reused
 				If script.HasProductionBroadcastFlag(16384)
 					script.SetProductionBroadcastFlag(16384, False)
-					print "RepairData: remove scripts live time fixed flag "+ script.getTitle()
+					TLogger.Log("RepairData", "remove scripts live time fixed flag "+ script.getTitle(), LOG_SAVELOAD | LOG_DEBUG)
 				EndIf
 			Next
 			'live date code for multiple productions would yield same live date for all
 			For local template:TScriptTemplate = EachIn GetScriptTemplateCollection().entries.Values()
 				If template.isLive() And template.productionLimit >1 And template.liveDateCode
 					template.liveDateCode=""
-					print "RepairData: set template to AlwaysLive "+ template.getGUID()
+					TLogger.Log("RepairData", "set template to AlwaysLive "+ template.getGUID(), LOG_SAVELOAD | LOG_DEBUG)
 				EndIf
 				If template.productionTime > 0 And template.productionTime < 200
 					template.productionTime =  TWorldTime.MINUTELENGTH * template.productionTime
-					print "RepairData: update template production time minutes "+ template.getGUID()
+					TLogger.Log("RepairData", "update template production time minutes "+ template.getGUID(), LOG_SAVELOAD | LOG_DEBUG)
 				EndIF
 				For local sub:TScriptTemplate = EachIn template.subScripts
 					'because we support 0 episodes, the old default value has to be changed
