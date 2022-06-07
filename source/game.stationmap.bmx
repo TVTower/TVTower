@@ -531,18 +531,22 @@ Type TStationMapCollection
 		Local result:SStationMapPopulationShare
 		Local includedChannelsUsingThisSatellite:Int = 0
 		Local excludedChannelsUsingThisSatellite:Int = 0
+		
+		If not satellite Then return result
 
 		'count how many of the "mentioned" channels have at least
 		'one active uplink there
 		For Local channelID:Int = 1 To stationMaps.Length
-			If includeChannelMask.Has(channelID)
-				If satellite.IsSubscribedChannel(channelID)
+			If includeChannelMask.Has(channelID) And satellite.IsSubscribedChannel(channelID)
+				Local uplink:TStationSatelliteUplink = TStationSatelliteUplink( GetStationMap(channelID).GetSatelliteUplinkBySatellite(satellite) )
+				If uplink and uplink.CanBroadcast()
 					includedChannelsUsingThisSatellite :+ 1
 				EndIf
-			ElseIf excludeChannelMask.Has(channelID)
-				If satellite.IsSubscribedChannel(channelID)
+			ElseIf excludeChannelMask.Has(channelID) And satellite.IsSubscribedChannel(channelID)
+				Local uplink:TStationSatelliteUplink = TStationSatelliteUplink( GetStationMap(channelID).GetSatelliteUplinkBySatellite(satellite) )
+				If uplink and uplink.CanBroadcast()
 					excludedChannelsUsingThisSatellite :+ 1
-				Endif
+				EndIf
 			EndIf
 		Next
 
@@ -3169,7 +3173,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime, 5, 0))
 			EndIf
 		'endif
-
+print "Bought Station - activation time: " + GetWorldTime().GetFormattedGameDate( GetActivationTime() )
 
 		If HasFlag(TVTStationFlag.PAID) Then Return True
 		If Not GetPlayerFinance(playerID) Then Return False
