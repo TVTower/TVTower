@@ -658,7 +658,7 @@ Type TStationMapCollection
 		Until found Or tries > 1000
 
 		If tries > 1000 
-			Print "Failed to find a valid random section point in < 1000 tries."
+			TLogger.Log("GetRandomAntennaCoordinateInSection()", "Failed to find a valid random section point in < 1000 tries.", LOG_ERROR)
 			Return New SVec2I(-1, -1)
 		EndIf
 		
@@ -1280,7 +1280,7 @@ Type TStationMapCollection
 	Method Update:Int()
 		'repair broken census times in DEV patch savegames
 		If nextCensusTime > 0 And nextCensusTime > GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
-			Print "repaired broken DEV Patch census time"
+			TLogger.Log("TStationMapCollection.Update()", "Repaired broken DEV Patch census time.", LOG_DEBUG)
 			nextCensusTime = GetWorldTime().Maketime(0, GetWorldTime().GetDay()+1, 0,0,0)
 		EndIf
 
@@ -3173,7 +3173,6 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime, 5, 0))
 			EndIf
 		'endif
-print "Bought Station - activation time: " + GetWorldTime().GetFormattedGameDate( GetActivationTime() )
 
 		If HasFlag(TVTStationFlag.PAID) Then Return True
 		If Not GetPlayerFinance(playerID) Then Return False
@@ -3197,7 +3196,7 @@ print "Bought Station - activation time: " + GetWorldTime().GetFormattedGameDate
 			'TODO: if wanted, check for RepairStates or such things
 			If CanActivate() And GetActivationTime() <= GetWorldTime().GetTimeGone()
 				If Not SetActive()
-					Print "failed to activate " + GetGUID()
+					TLogger.Log("TStationBase.Update()", "Failed to activate " + GetGUID(), LOG_ERROR)
 				EndIf
 			EndIf
 		EndIf
@@ -3860,7 +3859,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 		If Not section
-			Print "Cablenetwork without section."
+			TLogger.Log("TStationCableNetworkUplink.GetBuyPrice()", "Cablenetwork without section.", LOG_ERROR)
 			Return -1337
 		EndIf
 
@@ -4223,7 +4222,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 		If satellite
 			If duration < 0 Then duration = satellite.GetDefaultSubscribedChannelDuration()
 			If Not satellite.SubscribeChannel(Self.owner, duration )
-				Print "sign contract: failed to subscribe to channel"
+				TLogger.Log("TStationSatelliteUplink.SignContract()", "Failed to subscribe to channel.", LOG_ERROR)
 			EndIf
 		EndIf
 
@@ -4314,7 +4313,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( uplinkSectionName )
 		If Not section
-			Print "Satellite Uplink without assigned section."
+			TLogger.Log("TStationSatelliteUplink.GetBuyPrice()", "Satellite Uplink without assigned section.", LOG_ERROR)
 			Return -1337
 		EndIf
 
