@@ -372,11 +372,11 @@ Type TStationMapCollection
 	End Method
 
 
+	'summary: returns maximum audience reached with the given uplinks
 	Method GetCableNetworkUplinkAudienceSum:Int(stations:TList)
 		Local result:Int
 		For Local station:TStationCableNetworkUplink = EachIn stations
-			Local section:TStationMapSection = GetSectionByName(station.GetSectionName())
-			If section Then result :+ section.GetCableNetworkAudienceSum()
+			result :+ station.GetReach()
 		Next
 		Return result
 	End Method
@@ -437,20 +437,24 @@ Type TStationMapCollection
 	End Method
 
 
-	Function GetSatelliteUplinksCount:Int(stations:TList)
+	Function GetSatelliteUplinksCount:Int(stations:TList, onlyActive:Int = False)
 		Local result:Int
 		For Local station:TStationSatelliteUplink = EachIn stations
+			'skip inactive?
+			if onlyActive and not station.IsActive() Then continue
 			result :+ 1
 		Next
 		Return result
 	End Function
 
 
-	Function GetCableNetworkUplinksInSectionCount:Int(stations:TList, sectionName:String)
+	Function GetCableNetworkUplinksInSectionCount:Int(stations:TList, sectionName:String, onlyActive:Int = False)
 		Local result:Int
 
 		For Local station:TStationCableNetworkUplink = EachIn stations
 			If station.GetSectionName() = sectionName
+				'skip inactive?
+				if onlyActive and not station.IsActive() Then continue
 				result :+ 1
 			EndIf
 		Next
@@ -475,11 +479,6 @@ Type TStationMapCollection
 		'"include channels" share between each other (exclusive to the 
 		'excluded channels)
 		Return GetTotalShare(includeChannelMask, excludeChannelMask).shared
-	End Method
-
-
-	Method GetTotalSharePercentage:Float(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetTotalShare(includeChannelMask, excludeChannelMask).populationShareRatio
 	End Method
 
 
@@ -528,64 +527,70 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetSatelliteReceiverShare:SStationMapPopulationShare(satellite:TStationMap_Satellite, includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
+		Local result:SStationMapPopulationShare
+		Local includedChannelsUsingThisSatellite:Int = 0
+		Local excludedChannelsUsingThisSatellite:Int = 0
+		
+		If not satellite Then return result
+
+		'count how many of the "mentioned" channels have at least
+		'one active uplink there
+		For Local channelID:Int = 1 To stationMaps.Length
+			If includeChannelMask.Has(channelID) And satellite.IsSubscribedChannel(channelID)
+				Local uplink:TStationSatelliteUplink = TStationSatelliteUplink( GetStationMap(channelID).GetSatelliteUplinkBySatellite(satellite) )
+				If uplink and uplink.CanBroadcast()
+					includedChannelsUsingThisSatellite :+ 1
+				EndIf
+			ElseIf excludeChannelMask.Has(channelID) And satellite.IsSubscribedChannel(channelID)
+				Local uplink:TStationSatelliteUplink = TStationSatelliteUplink( GetStationMap(channelID).GetSatelliteUplinkBySatellite(satellite) )
+				If uplink and uplink.CanBroadcast()
+					excludedChannelsUsingThisSatellite :+ 1
+				EndIf
+			EndIf
+		Next
+
+
+		If includedChannelsUsingThisSatellite > 0
+			Local reach:Int = satellite.GetReach()
+			'total - if at least _one_ channel uses the satellite
+			result.total = reach
+
+			'all included channels need to have an uplink ("and" instead of "or" connection)
+			If includedChannelsUsingThisSatellite = includeChannelMask.GetEnabledCount()
+				'as soon as one "excluded" has an uplink there, we know
+				'the "included" won't be exclusive
+				'(with only 1 satellite you cannot only use 50% of it)
+				If excludedChannelsUsingThisSatellite = 0
+					result.shared = reach
+				EndIf
+			EndIf
+		EndIf
+
+		return result 
+	End Method
+
+
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetTotalSatelliteReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		Local result:SStationMapPopulationShare
 		'no channel requested?
 		If includeChannelMask.value = 0 Then Return result
-		
+
 		For Local satellite:TStationMap_Satellite = EachIn satellites
-			Local satResult:SStationMapPopulationShare
-			Local channelsUsingThisSatellite:Int = 0
-			Local allUseThisSatellite:Int = True
-			'amount of non-ignored channels
-			Local interestingChannelsCount:Int
+			Local satResult:SStationMapPopulationShare = GetSatelliteReceiverShare(satellite, includeChannelMask, excludeChannelMask)
 
-
-			For Local channelID:Int = 1 To stationMaps.Length
-				'ignore unwanted
-				If Not includeChannelMask.Has(channelID) Then Continue
-				'skip if to exclude - exclusive reaches requested
-				If excludeChannelMask.Has(channelID) Then Continue
-
-				interestingChannelsCount :+ 1
-	
-				If satellite.IsSubscribedChannel(channelID)
-					channelsUsingThisSatellite :+ 1
-				Else
-					allUseThisSatellite = False
-				EndIf
-			Next
-
-
-			Local channelUsageRatio:Float
-			If channelsUsingThisSatellite > 0
-				'print "GetTotalSatelliteShare: " + satellite.name + "   channelsUsingThisSatellite="+channelsUsingThisSatellite +"  reach="+satellite.GetReach()
-				'total - if there is at least _one_ channel uses this satellite
-				satResult.total = satellite.GetReach()
-
-				'share is only available if we checked some channels
-				If interestingChannelsCount > 0
-					'share - if _all_ channels use this satellite here
-					If allUseThisSatellite
-						satResult.shared = satellite.GetReach()
-					EndIf
-
-					'share percentage
-					channelUsageRatio = channelsUsingThisSatellite / Float(interestingChannelsCount)
-				EndIf
+			If satResult.total > 0
+				result.total :+ satResult.total
+				result.shared :+ satResult.shared
 			EndIf
 
-
-			result.total :+ satResult.total
-			result.shared :+ satResult.shared
-			'total share percentage depends on the reach of a satellite - or its market share
-			result.populationShareRatio :+ satellite.populationShare * (channelsUsingThisSatellite / Float(interestingChannelsCount))
 		Next
 
 		Return result
 	End Method
+
 
 	Method GetRandomAntennaCoordinateInSections:SVec2I(sectionNames:String[], allowSectionCrossing:Int = True)
 		If sectionNames.Length = 0 Then Return Null
@@ -653,7 +658,7 @@ Type TStationMapCollection
 		Until found Or tries > 1000
 
 		If tries > 1000 
-			Print "Failed to find a valid random section point in < 1000 tries."
+			TLogger.Log("GetRandomAntennaCoordinateInSection()", "Failed to find a valid random section point in < 1000 tries.", LOG_ERROR)
 			Return New SVec2I(-1, -1)
 		EndIf
 		
@@ -881,6 +886,13 @@ Type TStationMapCollection
 					a.reachMax = -1
 					a.reachExclusiveMax = -1
 				Next
+			Next
+		EndIf
+		'pre 0.7.3
+		If savedSaveGameVersion < 18
+			TLogger.Log("TStationMapCollection", "Ensuring initial cable network shares are set", LOG_DEBUG | LOG_SAVELOAD)
+			For Local c:TStationMap_CableNetwork = EachIn _instance.cableNetworks
+				c.populationShare = 1.0
 			Next
 		EndIf
 
@@ -1268,7 +1280,7 @@ Type TStationMapCollection
 	Method Update:Int()
 		'repair broken census times in DEV patch savegames
 		If nextCensusTime > 0 And nextCensusTime > GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
-			Print "repaired broken DEV Patch census time"
+			TLogger.Log("TStationMapCollection.Update()", "Repaired broken DEV Patch census time.", LOG_DEBUG)
 			nextCensusTime = GetWorldTime().Maketime(0, GetWorldTime().GetDay()+1, 0,0,0)
 		EndIf
 
@@ -1399,6 +1411,9 @@ Type TStationMapCollection
 
 	Method RemoveSatellite:Int(satellite:TStationMap_Satellite)
 		If satellites.Remove(satellite)
+			'inform satellite about death (to cancel contracts/uplinks)
+			satellite.Die()
+
 			'recalculate shared audience percentage between satellites
 			UpdateSatelliteSharesAndQuality()
 
@@ -1667,6 +1682,14 @@ Type TStationMapCollection
 
 	Method UpdateCableNetworkSharesAndQuality:Int()
 		If Not cableNetworks Or cableNetworks.Count() = 0 Then Return False
+
+		'for now just ensure all cable networks are set to 100%
+		'(no competition for now - only 1 network per section)
+		For Local cablenetwork:TStationMap_CableNetwork = EachIn cableNetworks
+			If Not cablenetwork.IsLaunched() Then Continue
+			
+			cablenetwork.populationShare = 1.0
+		Next
 
 'todo
 Rem
@@ -2267,13 +2290,13 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSatelliteUplinksCount:Int()
-		Return TStationMapCollection.GetSatelliteUplinksCount(stations)
+	Method GetSatelliteUplinksCount:Int(onlyActive:Int = False)
+		Return TStationMapCollection.GetSatelliteUplinksCount(stations, onlyActive)
 	End Method
 
 
-	Method GetCableNetworkUplinksInSectionCount:Int(sectionName:String)
-		Return TStationMapCollection.GetCableNetworkUplinksInSectionCount(stations, sectionName)
+	Method GetCableNetworkUplinksInSectionCount:Int(sectionName:String, onlyActive:Int = False)
+		Return TStationMapCollection.GetCableNetworkUplinksInSectionCount(stations, sectionName, onlyActive)
 	End Method
 
 
@@ -3151,7 +3174,6 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			EndIf
 		'endif
 
-
 		If HasFlag(TVTStationFlag.PAID) Then Return True
 		If Not GetPlayerFinance(playerID) Then Return False
 		Local price:Int = GetBuyPrice()
@@ -3174,7 +3196,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			'TODO: if wanted, check for RepairStates or such things
 			If CanActivate() And GetActivationTime() <= GetWorldTime().GetTimeGone()
 				If Not SetActive()
-					Print "failed to activate " + GetGUID()
+					TLogger.Log("TStationBase.Update()", "Failed to activate " + GetGUID(), LOG_ERROR)
 				EndIf
 			EndIf
 		EndIf
@@ -3837,7 +3859,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 		If Not section
-			Print "Cablenetwork without section."
+			TLogger.Log("TStationCableNetworkUplink.GetBuyPrice()", "Cablenetwork without section.", LOG_ERROR)
 			Return -1337
 		EndIf
 
@@ -3918,7 +3940,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 
 	Method GetReach:Int(refresh:Int=False) Override {_exposeToLua}
-		'always return the satellite's reach - so it stays dynamically
+		'always return the uplinks' reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs"
 		'If reach >= 0 And Not refresh Then Return reach
 
@@ -4200,7 +4222,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 		If satellite
 			If duration < 0 Then duration = satellite.GetDefaultSubscribedChannelDuration()
 			If Not satellite.SubscribeChannel(Self.owner, duration )
-				Print "sign contract: failed to subscribe to channel"
+				TLogger.Log("TStationSatelliteUplink.SignContract()", "Failed to subscribe to channel.", LOG_ERROR)
 			EndIf
 		EndIf
 
@@ -4291,7 +4313,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( uplinkSectionName )
 		If Not section
-			Print "Satellite Uplink without assigned section."
+			TLogger.Log("TStationSatelliteUplink.GetBuyPrice()", "Satellite Uplink without assigned section.", LOG_ERROR)
 			Return -1337
 		EndIf
 
@@ -4856,11 +4878,6 @@ Type TStationMapSection
 	End Method
 
 
-	Method GetSharePercentage:Float(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetReceiverShare(includeChannelMask, excludeChannelMask).populationShareRatio
-	End Method
-
-
 	Method GetPopulationCableShareRatio:Float()
 		If populationCableShare < 0 Then Return GetStationMapCollection().GetCurrentPopulationCableShare()
 		Return populationCableShare
@@ -4877,13 +4894,15 @@ Type TStationMapSection
 	End Method
 
 
-	'summary: returns maximum audience a player reach with satellites
+	'summary: returns maximum audience a player reaches with satellites
+	'         in this section
 	Method GetSatelliteAudienceSum:Int()
 		Return population * GetPopulationSatelliteShareRatio()
 	End Method
 
 
-	'summary: returns maximum audience a player reach with a cablenetwork
+	'summary: returns maximum audience a player reaches with cable 
+	'         networks in this section
 	Method GetCableNetworkAudienceSum:Int()
 		Return population * GetPopulationCableShareRatio()
 	End Method
@@ -5019,12 +5038,16 @@ Type TStationMapSection
 
 
 	Method GetCableNetworkReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationCableShareRatio())
+		'no need to copy when not using a Type but a struct
+		'Return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationCableShareRatio())
+		Return GetCableNetworkPopulationShare(includeChannelMask, excludeChannelMask).MultiplyFactor(GetPopulationCableShareRatio())
 	End Method
 
 
 	Method GetAntennaReceiverShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationAntennaShareRatio())
+		'no need to copy when not using a Type but a struct
+		'Return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).Copy().MultiplyFactor(GetPopulationAntennaShareRatio())
+		Return GetAntennaPopulationShare(includeChannelMask, excludeChannelMask).MultiplyFactor(GetPopulationAntennaShareRatio())
 	End Method
 
 
@@ -5038,7 +5061,7 @@ Type TStationMapSection
 	'    (but includeChannelMask would still have "3" and "4" unset, 
 	'    this is why an "excludeChannelMask" is needed 
 	'Ex. include=(1)   and exclude=(0    ) to get total reach for player 1
-	'Ex. include=(1)   and exclude=(2+4+8) to getexclusive reach for player 1
+	'Ex. include=(1)   and exclude=(2+4+8) to get exclusive reach for player 1
 	'Ex. include=(1+2) and exclude=(0    ) to get reach player 1 and 2 have together
 	Method GetCableNetworkPopulationShare:SStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		If includeChannelMask.value = 0 Then Return New SStationMapPopulationShare
@@ -5063,42 +5086,36 @@ Type TStationMapSection
 
 		'== GENERATE CACHE ==
 		If Not result
-			Local channelsWithCableNetwork:Int = 0
-			'amount of non-ignored channels
-			Local interestingChannelsCount:Int
-			Local allHaveCableNetwork:Int = False
+			Local includedChannelsWithCableNetwork:Int = 0
+			Local excludedChannelsWithCableNetwork:Int = 0
 
-			allHaveCableNetwork = True
+			'count how many of the "mentioned" channels have at least
+			'one active uplink there
 			For Local channelID:Int = 1 To GetStationMapCollection().stationMaps.Length
-				'ignore unwanted
-				If Not includeChannelMask.Has(channelID) Then Continue
-				'skip if to exclude - exclusive reaches requested
-				If excludeChannelMask.Has(channelID) Then Continue
-
-				interestingChannelsCount :+ 1
-
-				If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name ) > 0
-					channelsWithCableNetwork :+ 1
-				Else
-					allHaveCableNetwork = False
+				If includeChannelMask.Has(channelID)
+					If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name, True ) > 0
+						includedChannelsWithCableNetwork :+ 1
+					EndIf
+				ElseIf excludeChannelMask.Has(channelID)
+					If GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name, True ) > 0
+						excludedChannelsWithCableNetwork :+ 1
+					Endif
 				EndIf
 			Next
 
-
 			result = New TStationMapPopulationShare
-			If channelsWithCableNetwork > 0
-				'total - if there is at least _one_ channel uses a cable network here
+			If includedChannelsWithCableNetwork > 0
+				'total - if at least _one_ channel uses a cable network
 				result.value.total = population
 
-				'share is only available if we checked some channels
-				If interestingChannelsCount > 0
-					'share - if _all_ channels use a cable network here
-					If allHaveCableNetwork
+				'all included channels neet to have an uplink ("and" instead of "or" connection)
+				If includedChannelsWithCableNetwork = includeChannelMask.GetEnabledCount()
+					'as soon as one "excluded" has an uplink there, we know
+					'the "included" won't be exclusive
+					'(with only 1 network you cannot only use 50% of it)
+					If excludedChannelsWithCableNetwork = 0
 						result.value.shared = population
 					EndIf
-
-					'share percentage
-					result.value.populationShareRatio =  channelsWithCableNetwork / Float(interestingChannelsCount)
 				EndIf
 			EndIf
 
@@ -5108,16 +5125,19 @@ Type TStationMapSection
 				shareCache.insert(cacheKey, result)
 				UnlockMutex(shareCacheMutex)
 			EndIf
-			
+
 			'print "CABLE uncached: "+cacheKey
-			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
+			'dbgString :+ "  channelsWithCableNetwork: " + includedChannelsWithCableNetwork + " included, " + excludedChannelsWithCableNetwork + " excluded"
+			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)
+			'print dbgString
 		Else
 			'print "CABLE cached: "+cacheKey
-			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'local dbgString:String = "ChannelMask: incl=" + LSet(includeChannelMask.ToString(), 12) + "  excl=" + LSet(excludeChannelMask.ToString(), 12)
+			'dbgString :+ "  -> CABLE share:  total="+LSet(result.value.total, 8) + "  shared="+LSet(result.value.shared, 8)
+			'print dbgString
 		EndIf
 
-		'disabled: GetCableNetworkAudienceSum() already contains the share multiplication)
-		'Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationCableShare()) )
 		Return result.value
 	End Method
 
@@ -5191,10 +5211,10 @@ Type TStationMapSection
 			EndIf
 
 			'print "ANTENNA uncached: "+cacheKey
-			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)+"  share="+(result.value.populationShareRatio*100)+"%"
+			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)
 		Else
 			'print "ANTENNA cached: "+cacheKey
-			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)+"  share="+(result.value.populationShareRatio*100)+"%"
+			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)
 		EndIf
 
 		Return result.value
@@ -5449,7 +5469,6 @@ End Type
 Struct SStationMapPopulationShare
 	Field shared:Int 'in people
 	Field total:Int 'in people
-	Field populationShareRatio:Float 'ratio of total population
 	
 	Method GetShareRatio:Float()
 		If total = 0 Then Return 0
@@ -5461,7 +5480,6 @@ Struct SStationMapPopulationShare
 		Local c:SStationMapPopulationShare
 		c.shared = Self.shared
 		c.total = Self.total
-		c.populationShareRatio = Self.populationShareRatio
 		Return c
 	End Method
 	
@@ -5469,14 +5487,12 @@ Struct SStationMapPopulationShare
 	Method Add:SStationMapPopulationShare(other:SStationMapPopulationShare)
 		Self.shared :+ other.shared
 		Self.total :+ other.total
-		Self.populationShareRatio :+ other.populationShareRatio
 	End Method
 	
 
 	Method MultiplyFactor:SStationMapPopulationShare(factor:Float)
 		Self.shared :* factor
 		Self.total :* factor
-		Self.populationShareRatio :* factor
 		Return Self
 	End Method
 
@@ -5484,7 +5500,6 @@ Struct SStationMapPopulationShare
     Method Operator :+(other:SStationMapPopulationShare)
 		Self.shared :+ other.shared
 		Self.total :+ other.total
-		Self.populationShareRatio :+ other.populationShareRatio
     End Method
 End Struct
 
@@ -5661,11 +5676,17 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 		For Local i:Int = 0 Until subscribedChannels.Length
 			If subscribedChannels[i] = channelID Then index = i
 		Next
+		'if index = -1 
+		'	print "UnubscribeChannel("+channelID+"): not subscribed."
+		'else
+		'	print "UnubscribeChannel("+channelID+"): unsubscribed."
+		'endif
 		If index = -1 Then Return False
 
 		subscribedChannels = subscribedChannels[.. index] + subscribedChannels[index+1 ..]
 		subscribedChannelsStartTime = subscribedChannelsStartTime[.. index] + subscribedChannelsStartTime[index+1 ..]
 		subscribedChannelsDuration = subscribedChannelsDuration[.. index] + subscribedChannelsDuration[index+1 ..]
+
 
 		Return True
 	End Method
@@ -5766,6 +5787,17 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 			EndIf
 		EndIf
 	End Method
+	
+	
+	Method CancelSubscription:Int(channelID:Int)
+		'(indirectly) inform concerning stationlink
+		GetStationMapCollection().RemoveUplinkFromBroadcastProvider(Self, channelID)
+
+		'RON: already done via "RemoveUplinkFromBroadcastProvider" above
+		'finally unsubscripe (do _after_ uplink removal
+		'as else a uplink identification via channelID would fail)
+		'UnsubscribeChannel(channelID)
+	End Method
 
 
 	'run extra so you could update station (and its subscription) after
@@ -5775,13 +5807,7 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 			If subscribedChannels[i] And subscribedChannelsDuration[i] >= 0
 				If subscribedChannelsStartTime[i] + subscribedChannelsDuration[i] < GetWorldTime().GetTimeGone()
 					Local channelID:Int = subscribedChannels[i]
-
-					'(indirectly) inform concerning stationlink
-					GetStationMapCollection().RemoveUplinkFromBroadcastProvider(Self, channelID)
-
-					'finally unsubscripe (do _after_ uplink removal
-					'as else a uplink identification via channelID would fail)
-					UnsubscribeChannel(channelID)
+					CancelSubscription(channelID)
 				EndIf
 			EndIf
 		Next
@@ -5793,6 +5819,13 @@ End Type
 
 'excuse naming scheme but "TCableNetwork" is ambiguous for "stationtypes"
 Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLua="selected"}
+	'how many of the people in reach are reachable at all
+	'eg. some villages are less easy to reach with cable so this
+	'section has a lower share
+	'or competitors in the same section take away some people
+	'(cable is "exclusive")
+	Field populationShare:Float = 1.0
+
 	'operators
 	Field sectionName:String {_exposeToLua}
 
@@ -5817,24 +5850,26 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int(refresh:Int = False) {_exposeToLua}
 		Local result:Int
-
+		
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			result = GetReachMax()
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			result = GetReachMax()
 			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
 			If Not section Then Return 0
 
-			If section.populationCableShare < 0
-				result :* GetStationMapCollection().GetCurrentPopulationCableShare()
-			Else
-				result :* section.populationCableShare
-			EndIf
+			'this allows individual cablenetworkReceiveRatios for the
+			'sections (eg bad infrastructure for cables or expensive)
+			result = section.GetCableNetworkAudienceSum()
 		EndIf
-
+		
+		'multiply with the percentage of users selecting THIS network
+		'over other cable providers (eg only provider 1 offers it in the
+		'city or street)
+		result :* populationShare
+		
 		Return result
 	End Method
 
@@ -5882,7 +5917,7 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 	Field techUpgradeSpeed:Int
 	Field deathTime:Long = -1
 	'is death decided (no further changes possible)
-	'this allows ancestores/other revisions to get launched then
+	'this allows ancestors/other revisions to get launched then
 	Field deathDecided:Int = False
 	'version of the satellite
 	Field revision:Int = 1
@@ -5923,10 +5958,11 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 			For Local s:TStationMapSection = EachIn GetStationMapCollection().sections
 				result :+ s.GetSatelliteAudienceSum()
 			Next
-			'result = GetStationMapCollection().GetPopulation()
-			'result :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		EndIf
 
+		'multiply with the percentage of users selecting THIS satellite
+		'over other satellites (assume all satellites cover the complete
+		'map)
 		result :* populationShare
 
 		Return result
@@ -5984,7 +6020,19 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 
 		Return True
 	End Method
-
+	
+	
+	Method Die:Int()
+		'cancel all subscriptions / sat uplinks 
+		For Local i:Int = 0 Until subscribedChannels.Length
+			If subscribedChannels[i]
+				Local channelID:Int = subscribedChannels[i]
+				CancelSubscription(channelID)
+			EndIf
+		Next
+	
+		TLogger.Log("Satellite.Die", "Stopping satellite ~q"+name+"~q. Launch: " + GetWorldTime().GetFormattedGameDate(launchTime) +"  Death: " + GetWorldTime().GetFormattedGameDate(deathTime), LOG_DEBUG)
+	End Method
 
 
 	Method Update:Int()
@@ -6092,5 +6140,21 @@ Struct SChannelMask
 		Wend
 		
 		Return count
+	End Method
+	
+
+	Method ToString:String()
+		Local res:String
+		For local i:int = 1 to 4
+			if Has(i) 
+				if res 
+					res :+ ", " + i
+				else
+					res :+ i
+				endif
+			endif
+		Next
+				
+		Return "(" + res + ")"
 	End Method
 End Struct
