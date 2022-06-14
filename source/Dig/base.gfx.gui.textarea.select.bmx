@@ -25,10 +25,10 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 		local coordY:Int = triggerEvent.GetData().GetInt("y")
 
 		'make local
-		coordX = coordX - GetContentScreenX()
-		coordY = coordY - GetContentScreenY()
+		coordX = coordX - GetContentScreenRect().GetX()
+		coordY = coordY - GetContentScreenRect().GetY()
 		hoveredLine = 1 + int((coordX + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
-		hoveredLine = MathHelper.Clamp(hoveredLine, 0, GetValueLines().length -1)
+		hoveredLine = MathHelper.Clamp(hoveredLine, 0, GetLineCount() -1)
 	End Method
 
 
@@ -36,20 +36,29 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
 		if not coord then return False
 
-		local localCoord:TVec2D = new TVec2D.Init( coord.x - GetContentScreenX(), coord.y - GetContentScreenY())
+		local localCoord:TVec2D = new TVec2D.Init( coord.x - GetContentScreenRect().GetX(), coord.y - GetContentScreenRect().GetY())
 		selectedLine = 1 + int((localCoord.y + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
-		selectedLine = MathHelper.Clamp(selectedLine, 0, GetValueLines().length -1)
+		selectedLine = MathHelper.Clamp(selectedLine, 0, GetLineCount() -1)
 
 		return True
 	End Method
 
 
-	Method SetValue(value:string)
+	Method SetValue(value:string) override
 		Super.SetValue(value)
 		hoveredLine = -1
 		selectedLine = -1
 	End Method
+	
+	
+	Method GetLineCount:Int()
+		If not _textParseInfo or not _textParseInfo.data.calculated
+			GenerateTextCache()
+		EndIf
 
+		Return _textParseInfo.data.totalLineCount
+	End Method
+	
 
 	Method Update:Int()
 		'gets refreshed automatically
@@ -72,7 +81,7 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 				SetAlpha(oldColA * 0.25)
 				SetColor(200,200,200)
 				local lineY:int = GetLineHeight() * (selectedLine-1) + guiTextPanel.scrollPosition.GetY()
-				DrawRect(GetContentScreenX(), GetContentScreenY() + lineY -1, GetContentScreenWidth(), GetLineHeight())
+				DrawRect(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + lineY -1, GetContentScreenRect().GetW(), GetLineHeight())
 				SetBlend(AlphaBlend)
 			endif
 
@@ -81,7 +90,7 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 				SetAlpha(oldColA * 0.10)
 				SetColor(200,200,230)
 				local lineY:int = GetLineHeight() * (hoveredLine-1) + guiTextPanel.scrollPosition.GetY()
-				DrawRect(GetContentScreenX(), GetContentScreenY() + lineY -1, GetContentScreenWidth(), GetLineHeight())
+				DrawRect(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + lineY -1, GetContentScreenRect().GetW(), GetLineHeight())
 				SetBlend(AlphaBlend)
 			endif
 			

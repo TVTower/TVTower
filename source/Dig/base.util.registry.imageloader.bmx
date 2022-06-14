@@ -150,6 +150,8 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 	'creates default resources: tpixmap, timage, tsprite
 	Method CreateDefaultResource:Int()
 		if _createdDefaults then return FALSE
+		
+		If Not TGraphicsManager._g Then Throw "TRegistryImageLoader.CreateDefaultResource: Create graphics context before creating TImages"
 
 		'create a base image
 		'this contains a simple checkerboard and a border indicating
