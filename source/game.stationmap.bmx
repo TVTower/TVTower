@@ -58,8 +58,10 @@ Type TStationMapCollection
 	Field _currentPopulationAntennaShare:Double = -1 {nosave}
 	Field _currentPopulationCableShare:Double = -1 {nosave}
 	Field _currentPopulationSatelliteShare:Double = -1 {nosave}
+rem
 	Field _sectionNames:String[] {nosave}
-
+	Field _sectionISO3116Codes:String[] {nosave}
+endrem
 	'attention: the interpolation function hook is _not_ saved in the
 	'           savegame
 	'           So make sure to tackle this when saving share data!
@@ -140,7 +142,10 @@ Type TStationMapCollection
 		_currentPopulationAntennaShare = -1
 		_currentPopulationCableShare = -1
 		_currentPopulationSatelliteShare = -1
+rem
 		_sectionNames = Null
+		_sectionISO3116Codes = Null
+endrem
 	End Method
 
 
@@ -954,6 +959,7 @@ Type TStationMapCollection
 
 			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 				Local name:String	= TXmlHelper.FindValue(child, "name", "")
+				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
 				Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
 				Local pos:SVec2I	= New SVec2I( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 
@@ -969,7 +975,7 @@ Type TStationMapCollection
 
 				'add state section if data is ok
 				If name<>"" And sprite<>""
-					_instance.AddSection( New TStationMapSection.Create(pos, name, sprite, sectionConfig) )
+					_instance.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sprite, sectionConfig) )
 				EndIf
 			Next
 			
@@ -984,6 +990,23 @@ Type TStationMapCollection
 				EndIf
 					
 				s.GetLocalUplinkPos()
+			Next
+		Else
+			'at least renew / fix properties written in the potentially
+			'more current config file
+
+			'find and load states configuration
+			Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
+			If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
+
+			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
+				Local name:String	= TXmlHelper.FindValue(child, "name", "")
+				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
+
+				local existingSection:TStationMapSection = _instance.GetSectionByName(name)
+				If existingSection
+					existingsection.iso3116Code = iso3116Code
+				EndIf
 			Next
 		EndIf
 
@@ -1599,6 +1622,7 @@ Type TStationMapCollection
 			cableNetwork.dailyFeeBase = RandRange(50,75) * 1000
 			cableNetwork.setupFeeBase = RandRange(175,215) * 1000
 			cableNetwork.sectionName = section.name
+			cableNetwork.sectionISO3116Code = section.iso3116Code
 			If cnNumber = 0
 				cableNetwork.minimumChannelImage = RandRange(5,10)
 			ElseIf cnNumber <= 3
@@ -1838,6 +1862,17 @@ endrem
 	End Method
 
 
+	Method GetSectionISO3166Code:String(name:String)
+		name = name.ToLower()
+		For Local section:TStationMapSection = EachIn sections
+			If section.name.ToLower() = name 
+				Return section.iso3116Code
+			EndIf
+		Next
+
+		Return Null
+	End Method
+Rem
 	Method GetSectionNames:String[]()
 		If _sectionNames = Null
 			_sectionNames = New String[ sections.Length ]
@@ -1849,6 +1884,18 @@ endrem
 		Return _sectionNames
 	End Method
 
+
+	Method GetSectionISO3166Codes:String[]()
+		If _sectionISO3116Codes = Null
+			_sectionISO3116Codes = New String[ sections.Length ]
+			For Local i:Int = 0 Until sections.Length
+				_sectionISO3116Codes[i] = sections[i].iso3116Code.ToLower()
+			Next
+		EndIf
+
+		Return _sectionISO3116Codes
+	End Method
+EndRem
 
 	Method GetSectionsFiltered:TStationMapSection[](channelID:Int=-1, checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True, stationType:Int=-1)
 		Local filteredSections:TStationMapSection[] = New TStationMapSection[sections.Length]
@@ -2137,6 +2184,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local stationPos:TVec2I = New TVec2I.CopyFrom(mapSection.rect.position).AddVec( mapSection.GetLocalUplinkPos() )
 		station.Init(stationPos.X, stationPos.Y, -1, owner)
 		station.SetSectionName(mapSection.name)
+		station.SetSectionISO3116Code(mapSection.iso3116Code)
 		'now we know how to calculate population
 		station.RefreshData()
 		
@@ -2799,6 +2847,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field name:String = ""
 	Field stationType:Int = 0
 	Field _sectionName:String = "" {nosave}
+	Field _sectionISO3116Code:String = "" {nosave}
 	'various settings (paid, fixed price, sellable, active...)
 	Field _flags:Int = 0
 
@@ -2893,9 +2942,27 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If _sectionName <> "" And Not refresh Then Return _sectionName
 
 		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSection(X, Y)
-		If hoveredSection Then _sectionName = hoveredSection.name
+		If hoveredSection 
+			_sectionName = hoveredSection.name
+			_sectionISO3116Code = hoveredSection.iso3116Code
+		EndIf
 
 		Return _sectionName
+	End Method
+
+
+	Method GetSectionISO3166Code:String(refresh:Int=False) {_exposeToLua}
+		If _sectionISO3116Code <> "" And Not refresh Then Return _sectionISO3116Code
+'ddd
+print "GetSectionISO3166Code:"
+		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSection(X, Y)
+		If hoveredSection 
+			_sectionName = hoveredSection.name
+			_sectionISO3116Code = hoveredSection.iso3116Code
+print "   code:" + hoveredSection.iso3116Code
+		EndIf
+
+		Return _sectionISO3116Code
 	End Method
 
 
@@ -3232,6 +3299,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetSectionISO3116Code:Int(sectionISO3116Code:String)
+		Self._sectionISO3116Code = sectionISO3116Code
+	End Method
+
+
 	Method CanSubscribeToProvider:Int(duration:Long)
 		Return True
 	End Method
@@ -3317,7 +3389,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local textY:Int = tooltipY+5
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
-		fontBold.DrawSimple( getLocale("MAP_COUNTRY_"+GetSectionName()), textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
+		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+GetSectionISO3166Code()+"_LONG"), textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
 		font.Draw(GetLocale("REACH")+": ", textX, textY)
@@ -3476,15 +3548,24 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	'override
-	Method GenerateGUID:String()
+	Method GenerateGUID:String() override
 		Return "station-antenna-"+id
 	End Method
 
 
-	'override
-	Method GetTypeName:String()
+	Method GetTypeName:String() override
 		Return GetLocale("STATION")
+	End Method
+
+
+	Method GetLongName:String() override {_exposeToLua}
+		Local n:String = GetName()
+		If n 
+			n = n.replace("#", "")
+			n = "#" + RSet(n, 4).Replace(" ", "0")
+			Return n + " (" + GetLocale("MAP_COUNTRY_" + GetSectionISO3166Code() + "_SHORT") +")"
+		EndIf
+		Return GetTypeName()
 	End Method
 
 
@@ -3721,7 +3802,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 
 	Method GetLongName:String() {_exposeToLua}
-		Return GetLocale("MAP_COUNTRY_"+GetSectionName())
+		Return GetLocale("MAP_COUNTRY_"+GetSectionISO3166Code()+"_LONG")
 	End Method
 
 
@@ -4422,6 +4503,7 @@ Type TStationMapSection
 	Field uplinkPos:TVec2I
 	
 	Field name:String
+	Field iso3116code:String
 	Field populationImage:TImage {nosave}
 	Field populationMap:Int[,] {nosave}
 	Field population:Int = -1
@@ -4446,10 +4528,11 @@ Type TStationMapSection
 	End Method
 
 
-	Method Create:TStationMapSection(pos:SVec2I, name:String, shapeSpriteName:String, config:TData = Null)
+	Method Create:TStationMapSection(pos:SVec2I, name:String, iso3116code:String, shapeSpriteName:String, config:TData = Null)
 		Self.shapeSpriteName = shapeSpriteName
 		Self.rect = New TRectangle.Init(pos.X, pos.Y, 0, 0)
 		Self.name = name
+		Self.iso3116code = iso3116code
 		LoadShapeSprite()
 
 		If config
@@ -4611,6 +4694,16 @@ Type TStationMapSection
 		'refresh stats (cable, sat, antenna share, ... maybe target
 		'groups share)
 	End Method
+	
+	
+	Method GetName:String()
+		Return name
+	End Method
+
+
+	Method GetISO3166Code:String()
+		Return iso3116Code
+	End Method
 
 
 	'ID might be a combination of multiple groups
@@ -4645,7 +4738,7 @@ Type TStationMapSection
 
 		If price = -1 Then price = GetBroadcastPermissionPrice(channelID, stationType)
 		If GetPlayerFinance(channelID) And GetPlayerFinance(channelID).PayBroadcastPermission( price )
-			TLogger.Log("StationMap", "Player " + channelID + " bought broadcast permission for ~q"+GetLocale("MAP_COUNTRY_"+name)+"~q.", LOG_DEBUG)
+			TLogger.Log("StationMap", "Player " + channelID + " bought broadcast permission for ~q"+GetLocale("MAP_COUNTRY_"+GetISO3166Code()+"_LONG")+"~q.", LOG_DEBUG)
 
 			SetBroadcastPermission(channelID, True, stationType)
 			Return True
@@ -4771,7 +4864,7 @@ Type TStationMapSection
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
-		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+name), textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
+		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+GetISO3166Code()+"_LONG"), textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
 		'broadcast permission
@@ -5828,6 +5921,7 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 
 	'operators
 	Field sectionName:String {_exposeToLua}
+	Field sectionISO3116Code:String {_exposeToLua}
 
 
 	'override
@@ -5875,7 +5969,7 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 
 
 	Method GetName:String() {_exposeToLua}
-		Return name.Replace("%name%", GetLocale("MAP_COUNTRY_"+sectionName))
+		Return name.Replace("%name%", GetLocale("MAP_COUNTRY_"+sectionISO3116Code+"_LONG"))
 	End Method
 
 

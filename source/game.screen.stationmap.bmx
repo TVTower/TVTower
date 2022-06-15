@@ -597,6 +597,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
+			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -690,7 +691,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 					If selectedStation
 						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
 
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
+						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionISO3166Code()+"_LONG")
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -839,6 +840,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
+			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -989,7 +991,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					'=== BOXES ===
 					If selectedStation
 						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
+						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionISO3166Code()+"_LONG")
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -1284,6 +1286,7 @@ endrem
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
+			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -2045,7 +2048,7 @@ Type TStationMapInformationFrame
 		if TScreenHandler_StationMap.currentSubRoom then owner = TScreenHandler_StationMap.currentSubRoom.owner
 		if owner = 0 then return False
 
-		Local valueA:String = GetLocale("MAP_COUNTRY_"+item.GetValue())
+		Local valueA:String = GetLocale("MAP_COUNTRY_"+item.data.GetString("ISOCode"))
 		Local valueB:String = GetLocale("NO")
 		if section.HasBroadcastPermission(owner) then valueB = GetLocale("YES")
 		Local valueC:String = MathHelper.NumberToString(section.GetPressureGroupsChannelSympathy(owner)*100,2) +"%"
@@ -2220,7 +2223,7 @@ Type TStationMapInformationFrame
 			'col1W :- 30
 			'col2  :- 30
 			'col2W :+ 30
-			Local titleText:String = GetLocale("MAP_COUNTRY_"+ selectedSection.name)
+			Local titleText:String = GetLocale("MAP_COUNTRY_" + selectedSection.GetISO3166Code() + "_LONG")
 
 			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), 17, "1_top")
 '			currentY :+ 2
