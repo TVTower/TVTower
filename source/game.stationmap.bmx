@@ -2953,13 +2953,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetSectionISO3166Code:String(refresh:Int=False) {_exposeToLua}
 		If _sectionISO3116Code <> "" And Not refresh Then Return _sectionISO3116Code
-'ddd
-print "GetSectionISO3166Code:"
+
 		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSection(X, Y)
 		If hoveredSection 
 			_sectionName = hoveredSection.name
 			_sectionISO3116Code = hoveredSection.iso3116Code
-print "   code:" + hoveredSection.iso3116Code
 		EndIf
 
 		Return _sectionISO3116Code
