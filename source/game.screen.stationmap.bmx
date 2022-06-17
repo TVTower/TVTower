@@ -691,7 +691,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 					If selectedStation
 						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
 
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionISO3166Code()+"_LONG")
+						Local iso:String = selectedStation.GetSectionISO3166Code()
+						subHeaderText = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -991,7 +992,8 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					'=== BOXES ===
 					If selectedStation
 						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionISO3166Code()+"_LONG")
+						Local iso:String = selectedStation.GetSectionISO3166Code()
+						subHeaderText = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -2223,7 +2225,8 @@ Type TStationMapInformationFrame
 			'col1W :- 30
 			'col2  :- 30
 			'col2W :+ 30
-			Local titleText:String = GetLocale("MAP_COUNTRY_" + selectedSection.GetISO3166Code() + "_LONG")
+			Local iso:String = selectedSection.GetISO3166Code()
+			Local titleText:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), 17, "1_top")
 '			currentY :+ 2

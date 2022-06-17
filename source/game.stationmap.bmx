@@ -3343,7 +3343,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			
 
 		Local priceSplitH:Int = 8
-		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
+		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" ) - 2
 		Local tooltipW:Int = 190
 		Local tooltipH:Int = textH * 3 + 10 + 5
 
@@ -3387,7 +3387,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local textY:Int = tooltipY+5
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
-		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+GetSectionISO3166Code()+"_LONG"), textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
+		Local iso:String = GetSectionISO3166Code()
+		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")", textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
 		font.Draw(GetLocale("REACH")+": ", textX, textY)
@@ -4862,8 +4863,9 @@ Type TStationMapSection
 		Local textY:Int = tooltipY+5
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
+		Local iso:String = GetISO3166Code()
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
-		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+GetISO3166Code()+"_LONG"), textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
+		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")", textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
 		'broadcast permission
