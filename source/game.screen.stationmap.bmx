@@ -597,6 +597,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
+			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -690,7 +691,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 					If selectedStation
 						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
 
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
+						Local iso:String = selectedStation.GetSectionISO3166Code()
+						subHeaderText = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -839,6 +841,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
+			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -989,7 +992,8 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					'=== BOXES ===
 					If selectedStation
 						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
+						Local iso:String = selectedStation.GetSectionISO3166Code()
+						subHeaderText = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -1284,6 +1288,7 @@ endrem
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
+			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -2045,7 +2050,7 @@ Type TStationMapInformationFrame
 		if TScreenHandler_StationMap.currentSubRoom then owner = TScreenHandler_StationMap.currentSubRoom.owner
 		if owner = 0 then return False
 
-		Local valueA:String = GetLocale("MAP_COUNTRY_"+item.GetValue())
+		Local valueA:String = GetLocale("MAP_COUNTRY_"+section.GetISO3166Code()+"_LONG")
 		Local valueB:String = GetLocale("NO")
 		if section.HasBroadcastPermission(owner) then valueB = GetLocale("YES")
 		Local valueC:String = MathHelper.NumberToString(section.GetPressureGroupsChannelSympathy(owner)*100,2) +"%"
@@ -2157,7 +2162,7 @@ Type TStationMapInformationFrame
 		Local currentY:Int = contentArea.GetIntY()
 
 
-		Local headerText:String = GetLocale("COUNTRYNAME_ISO3166_"+GetStationMapCollection().GetMapISO3166Code())
+		Local headerText:String = GetLocale("MAP_COUNTRY_"+GetStationMapCollection().GetMapISO3166Code()+"_LONG")
 		Local titleColor:SColor8 = new SColor8(75,75,75)
 		Local subTitleColor:SColor8 = new SColor8(115,115,115)
 
@@ -2220,7 +2225,8 @@ Type TStationMapInformationFrame
 			'col1W :- 30
 			'col2  :- 30
 			'col2W :+ 30
-			Local titleText:String = GetLocale("MAP_COUNTRY_"+ selectedSection.name)
+			Local iso:String = selectedSection.GetISO3166Code()
+			Local titleText:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), 17, "1_top")
 '			currentY :+ 2
@@ -3205,6 +3211,11 @@ endrem
 		Local entryColor:SColor8
 		Local rightValueColor:SColor8
 		Local leftValue:string = item.GetValue()
+		Local midValue:String
+		If TStationAntenna(station)
+			leftValue = station.GetName() 'not LongName()!
+			midValue = "("+GetLocale("MAP_COUNTRY_" + station.GetSectionISO3166Code() + "_SHORT") + ")"
+		EndIf
 
 		'draw with different color according status
 		If station.CanBroadcast()
@@ -3240,7 +3251,10 @@ endrem
 		'draw antenna
 		sprite.Draw(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
 		Local rightValueWidth:Int = item.GetFont().GetWidth(rightValue)
-		item.GetFont().DrawBox(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_LEFT_CENTER, entryColor)
+		Local dim:SVec2I = item.GetFont().DrawBox(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_LEFT_CENTER, entryColor)
+		If midValue
+			item.GetFont().DrawBox(midValue, Int(item.GetScreenRect().GetX() + textOffsetX) + (max(30, dim.x + 5)), Int(item.GetScreenRect().GetY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_LEFT_CENTER, entryColor)
+		EndIf
 		item.GetFont().DrawBox(rightValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_RIGHT_CENTER, rightValueColor)
 	End Function
 

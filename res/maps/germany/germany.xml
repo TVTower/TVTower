@@ -71,28 +71,28 @@
 			<densitymap type="pixmap" url="res/maps/germany/germany_densitymap.png" />
 			<surface type="sprite" url="res/maps/germany/germany_surface.png" />
 			<states>
-				<state name="bremen"			x="188" y="81"	sprite="map_bremen" />
-				<state name="berlin"			x="433" y="108"	sprite="map_berlin" />
-				<state name="hamburg"			x="251" y="60"	sprite="map_hamburg" />
-				<state name="bawue"				x="109" y="249"	sprite="map_bawue" />
-				<state name="bayern"			x="204" y="211"	sprite="map_bayern" />
-				<state name="saarland"			x="49"  y="253"	sprite="map_saarland">
+				<state name="bremen"            iso3116code="DE-HB"  x="188" y="81"   sprite="map_bremen" />
+				<state name="berlin"            iso3116code="DE-BE"  x="433" y="108"  sprite="map_berlin" />
+				<state name="hamburg"           iso3116code="DE-HH"  x="251" y="60"   sprite="map_hamburg" />
+				<state name="bawue"             iso3116code="DE-BW"  x="109" y="249"  sprite="map_bawue" />
+				<state name="bayern"            iso3116code="DE-BY"  x="204" y="211"  sprite="map_bayern" />
+				<state name="saarland"          iso3116code="DE-SL"  x="49"  y="253"  sprite="map_saarland">
 					<config uplinkX="37" uplinkY="8" />
 				</state>
-				<state name="rheinlandpfalz"	x="39"  y="194" sprite="map_rheinlandpfalz" />
-				<state name="hessen"			x="136" y="160"	sprite="map_hessen" />
-				<state name="thueringen"		x="257" y="159"	sprite="map_thueringen" />
-				<state name="sachsen"			x="369" y="158"	sprite="map_sachsen">
+				<state name="rheinlandpfalz"    iso3116code="DE-RP"  x="39"  y="194"  sprite="map_rheinlandpfalz" />
+				<state name="hessen"            iso3116code="DE-HE"  x="136" y="160"  sprite="map_hessen" />
+				<state name="thueringen"        iso3116code="DE-TH"  x="257" y="159"  sprite="map_thueringen" />
+				<state name="sachsen"           iso3116code="DE-SN"  x="369" y="158"  sprite="map_sachsen">
 					<config uplinkX="80" uplinkY="25" />
 				</state>
-				<state name="sachsenanhalt"		x="292" y="94"  sprite="map_sachsenanhalt" />
-				<state name="niedersachsen"		x="85" y="51"	sprite="map_niedersachsen" />
-				<state name="schleswigholstein"	x="197" y="5"	sprite="map_schleswigholstein" />
-				<state name="brandenburg"		x="340" y="68"	sprite="map_brandenburg">
+				<state name="sachsenanhalt"     iso3116code="DE-ST"  x="292" y="94"   sprite="map_sachsenanhalt" />
+				<state name="niedersachsen"     iso3116code="DE-NI"  x="85"  y="51"   sprite="map_niedersachsen" />
+				<state name="schleswigholstein" iso3116code="DE-SH"  x="197" y="5"    sprite="map_schleswigholstein" />
+				<state name="brandenburg"       iso3116code="DE-BB"  x="340" y="68"   sprite="map_brandenburg">
 					<config uplinkX="75" uplinkY="54" />
 				</state>
-				<state name="nrw"				x="36"  y="117"	sprite="map_nrw" />
-				<state name="meckpom"			x="299" y="12"	sprite="map_meckpom" />
+				<state name="nrw"               iso3116code="DE-NW"  x="36"  y="117"  sprite="map_nrw" />
+				<state name="meckpom"           iso3116code="DE-MV"  x="299" y="12"   sprite="map_meckpom" />
 			</states>
 		</stationmapdata>
 	</resources>
