@@ -3563,7 +3563,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'n = n.replace("#", "")
 			'n = "#" + RSet(n, 4).Replace(" ", "0")
 			'Return n + " " + GetLocale("MAP_COUNTRY_" + GetSectionISO3166Code() + "_SHORT")
-			Return LSet(n,6) + " " + GetLocale("MAP_COUNTRY_" + GetSectionISO3166Code() + "_SHORT")
+			'Return LSet(n,6) + GetLocale("MAP_COUNTRY_" + GetSectionISO3166Code() + "_SHORT")
+			Return GetTypeName() + " " + n + " ("+GetLocale("MAP_COUNTRY_" + GetSectionISO3166Code() + "_SHORT")+")"
 		EndIf
 		Return GetTypeName()
 	End Method
