@@ -9,6 +9,7 @@ Import "Dig/base.gfx.gui.list.slotlist.bmx"
 Import "Dig/base.gfx.gui.accordeon.bmx"
 Import "common.misc.datasheet.bmx"
 Import "game.game.base.bmx"
+Import "game.gui.chat.bmx"
 
 
 Global headerFont:TBitmapFont
@@ -147,7 +148,8 @@ Type TGUIChatWindow Extends TGUIGameWindow
 
 		guiPanel = AddContentBox(0, 0, GetContentScreenRect().GetIntW(), -1)
 
-		guiChat = New TGUIChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
+		'guiChat = New TGUIChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
+		guiChat = New TGUIGameChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
 
 		'panel manages the chat and window manages the panel
 		guiPanel.AddChild(guiChat)

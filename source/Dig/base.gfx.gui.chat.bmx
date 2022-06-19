@@ -32,6 +32,8 @@ TGUIChatEntry.valueDrawTextEffect.data.value = 0.5
 Type TGUIChat Extends TGUIPanel
 	Field _defaultTextColor:TColor = TColor.Create(0,0,0)
 	Field _defaultHideEntryTime:Int = Null
+	Field _defaultSenderID:Int = 0
+	Field _defaultSenderName:String = "unknown"
 	'bitmask of channels the chat listens to
 	Field _channels:Int = 0
 	Field guiList:TGUIListBase = Null
@@ -117,7 +119,13 @@ Type TGUIChat Extends TGUIPanel
 
 	'implement in custom chats
 	Method GetSenderID:Int()
-		Return 0
+		Return _defaultSenderID
+	End Method
+
+
+	'implement in custom chats
+	Method GetSenderName:String()
+		Return _defaultSenderName
 	End Method
 
 
@@ -136,7 +144,7 @@ Type TGUIChat Extends TGUIPanel
 		Local sendToChannels:Int = guiChat.getChannelsFromText(guiInput.value)
 		'- step B) is emitting the event "for all"
 		'  (the listeners have to handle if they want or ignore the line
-		TriggerBaseEvent(GUIEventKeys.Chat_onAddEntry, New TData.AddNumber("senderID", guiChat.GetSenderID()).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat )
+		TriggerBaseEvent(GUIEventKeys.Chat_onAddEntry, New TData.AddNumber("senderID", guiChat.GetSenderID()).AddString("senderName", guiChat.GetSenderName()).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat )
 
 		'avoid getting the enter-key registered multiple times
 		'which leads to "flickering"

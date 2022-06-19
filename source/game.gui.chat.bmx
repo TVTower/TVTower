@@ -8,6 +8,7 @@ Type TGUIGameChat Extends TGUIChat
 		Return Self
 	End Method
 
+
 	'override
 	Method AddEntryFromData( data:TData )
 		Local senderID:Int = data.getInt("senderID", 0)
@@ -26,8 +27,18 @@ Type TGUIGameChat Extends TGUIChat
 		Super.AddEntryFromData(data)
 	End Method
 
-	'override
-	Method GetSenderID:int()
+
+	Method GetSenderID:int() override
 		return GetPlayerBaseCollection().playerID
+	End Method
+
+
+	Method GetSenderName:String() override
+		Local p:TPlayerBase = GetPlayerBase( GetPlayerBaseCollection().playerID )
+		If not p
+			Return "unknown"
+		Else
+			return p.name
+		EndIf
 	End Method
 End Type

@@ -2033,7 +2033,7 @@ endrem
 
 	Function SendSystemMessage:Int(message:String)
 		'send out to chats
-		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddInt("senderID", -1).AddInt("channels", CHAT_CHANNEL_SYSTEM).AddString("text", message) )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddInt("senderID", -1).AddInt("channels", CHAT_CHANNEL_SYSTEM).AddString("senderName", "SYSTEM").AddString("text", message) )
 		Return True
 	End Function
 
