@@ -90,6 +90,12 @@ Type TGUIChat Extends TGUIPanel
 	Method ShowChat:Int()
 		guiList.Show()
 	End Method
+	
+	
+	'remove all entries
+	Method Clear:Int()
+		guiList.EmptyList()
+	End Method
 
 
 	'returns boolean whether chat listens to a channel

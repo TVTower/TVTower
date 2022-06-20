@@ -191,9 +191,16 @@ Type TInGameInterface
 		EventManager.registerListenerFunction(GameEventKeys.Chat_onAddEntry, onIngameChatAddEntry )
 		'invalidate audience tooltip's "audienceresult" on recalculation
 		EventManager.registerListenerFunction(GameEventKeys.StationMap_OnRecalculateAudienceSum, onStationMapRecalculateAudienceSum )
+		'reset chat when loading in an other game
+		EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, OnLoadSaveGame)
 
 		Return self
 	End Method
+
+	
+	Function OnLoadSaveGame:Int( triggerEvent:TEventBase )
+		GetInstance().ClearChat()
+	End Function
 
 
 	Function onIngameChatAddEntry:Int( triggerEvent:TEventBase )
@@ -221,6 +228,22 @@ Type TInGameInterface
 			endif
 		endif
 	End Function
+	
+	
+	Method ClearChat()
+		If chat
+			'clear chat
+			chat.Clear()
+
+			'by default hide chat again (as it is empty now)
+			'(except if user did lock the current view)
+			If not ChatShowHideLocked
+				ChatShow = False
+			EndIf
+			
+			ChatContainsUnread = False
+		EndIf
+	End Method
 
 
 	Method Update(deltaTime:Float=1.0)

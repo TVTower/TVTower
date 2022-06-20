@@ -326,6 +326,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		GetPlayerBase(1).Channelname = GetGameBase().userchannelname
 
 		guiGameTitle.SetValue(GetGameBase().title)
+		
+		'clear chat
+		guiChatWindow.guiChat.Clear()		
 	End Method
 
 
