@@ -36,6 +36,7 @@ Type TGUIEventKeys
 
 	'base.gfx.gui.input.bmx
 	Field GUIInput_OnChangeValue:TEventKey = GetEventKey("GUIInput.OnChangeValue", True)	
+	Field GUIInput_OnFinishEdit:TEventKey = GetEventKey("GUIInput.OnFinishEdit", True)	
 
 	'base.gfx.gui.accordeon.bmx
 	Field GUIAccordeonPanel_OnOpen:TEventKey = GetEventKey("GUIAccordeonPanel.OnOpen", True)	

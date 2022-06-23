@@ -1144,6 +1144,8 @@ Type TGUIobject
 			Return ".active"
 		ElseIf IsHovered()
 			Return ".hover"
+		ElseIf IsSelected()
+			Return ".hover"
 		Else
 			Return ""
 		EndIf

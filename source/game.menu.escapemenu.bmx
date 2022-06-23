@@ -558,6 +558,15 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		
 		GuiManager.Update( LS_modalSaveMenu )
 
+
+		'focus save button ?
+		If not savegameName.IsActive()
+			dialogueButtons[0].SetSelected(True)
+		Else
+			dialogueButtons[0].SetSelected(False)
+		EndIf
+
+
 		'disable/enable load-button (check current value to react during
 		'typing already)
 		If savegameName.GetCurrentValue() = ""
@@ -706,7 +715,9 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 
 	Method onChangeSavegameNameInputValue:Int( triggerEvent:TEventBase )
-		Local newName:String = TGUIInput(triggerEvent._sender).GetCurrentValue()
+		Local guiInput:TGUIInput = TGUIInput(triggerEvent._sender)
+		if not guiInput then Return False
+		Local newName:String = guiInput.GetCurrentValue()
 
 		'loop through all savegames and select the one with the name
 		'(if there is none, select nothing)
@@ -747,6 +758,11 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		Local fileName:String = TSavegame.GetSavegameName( entry.GetFileInformation().GetString("fileURI") )
 
+		If savegameName.IsActive()
+			savegameName._SetActive(False)
+			GUIManager.SetActive(Null)
+			GUIManager.ResetFocus()
+		EndIf
 		savegameName.SetValue( fileName )
 	End Method
 
