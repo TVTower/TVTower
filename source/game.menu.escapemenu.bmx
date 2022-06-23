@@ -504,6 +504,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Method Activate:Int()
 		'remove previous entries
 		savegamelist.EmptyList()
+		
+		savegameName.SetValue("")
 
 		'fill existing savegames
 		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
