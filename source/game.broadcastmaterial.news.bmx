@@ -609,8 +609,8 @@ endrem
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		Local t1:Int = GetNewsEvent().GetTopicality()
-		Local t2:Int = n2.GetNewsEvent().GetTopicality()
+		Local t1:Float = GetNewsEvent().GetTopicality()
+		Local t2:Float = n2.GetNewsEvent().GetTopicality()
 		
 		If t1 > t2
 			Return 1
