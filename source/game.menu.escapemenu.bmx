@@ -558,8 +558,9 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		
 		GuiManager.Update( LS_modalSaveMenu )
 
-		'disable/enable load-button
-		If savegameName.GetValue() = ""
+		'disable/enable load-button (check current value to react during
+		'typing already)
+		If savegameName.GetCurrentValue() = ""
 			If dialogueButtons[0].isEnabled() Then dialogueButtons[0].disable()
 		Else
 			If Not dialogueButtons[0].isEnabled() Then dialogueButtons[0].enable()
