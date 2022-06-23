@@ -33,6 +33,11 @@ Type RoomHandler_News extends TRoomHandler
 	Global ListSortVisible:int = False
 	Global sortButtonPos:TVec2D = new TVec2D.Init(373,2)
 	Global newsSortKeys:int[] = [0,1,2,3]
+	'age: newest on top (biggest date number)
+	'price: cheapest on top (lowest number on top)
+	'topicality: highest value on top on top (highest number on top)
+	'paid: paid on top (paid = 1, unpaid = 0 - highest number on top)
+	Global newsSortDefaultOrder:int[] = [False, True, False, False]
 	Global newsSortKeysTooltips:TTooltipBase[4]
 	'Price, Published time, topicality, bought/not bought
 	Global newsSortSymbols:string[] = ["gfx_datasheet_icon_duration", "gfx_datasheet_icon_money", "gfx_datasheet_icon_topicality", "gfx_datasheet_icon_ok"]
@@ -270,7 +275,7 @@ Type RoomHandler_News extends TRoomHandler
 	Method SetAvailableNewsListSort(sortMode:int, sortInAscendingOrder:int = True)
 		if guiNewsListAvailable
 
-			guiNewsListAvailable._autoSortInAscendingOrder = ListSortInAscendingOrder
+			guiNewsListAvailable._autoSortInAscendingOrder = sortInAscendingOrder
 			Select sortMode
 				Case SORT_BY_AGE
 					guiNewsListAvailable._autoSortFunction = SortListItemByPublishedDate
@@ -295,7 +300,7 @@ Type RoomHandler_News extends TRoomHandler
 	End Method
 
 
-	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase ) override
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 
@@ -304,6 +309,13 @@ Type RoomHandler_News extends TRoomHandler
 
 		RemoveAllGuiElements()
 	End Method
+
+
+	Method onSaveGameLoad:int( triggerEvent:TEventBase ) override
+		'reassign sorting-function to GUI
+		SetAvailableNewsListSort(ListSortMode, ListSortInAscendingOrder)
+	End Method
+
 
 
 	'===================================
@@ -572,7 +584,7 @@ Type RoomHandler_News extends TRoomHandler
 						If THelper.MouseIn(contentX + 5 + i*32, sortButtonPos.GetIntY() + 12, 28, 27)
 							'sort now
 							if GetInstance().ListSortMode <> newsSortKeys[i]
-								GetInstance().SetAvailableNewsListSort(newsSortKeys[i], True)
+								GetInstance().SetAvailableNewsListSort(newsSortKeys[i], newsSortDefaultOrder[i])
 							else
 								'switch order
 								GetInstance().SetAvailableNewsListSort(GetInstance().ListSortMode, not GetInstance().ListSortInAscendingOrder)
