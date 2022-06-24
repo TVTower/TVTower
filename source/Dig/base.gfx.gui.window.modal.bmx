@@ -282,6 +282,41 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
+	Method GetSelectedButtonIndex:Int()
+		For Local i:Int = 0 To Self.buttons.length - 1
+			If Self.buttons[i].IsSelected() Then Return i
+		Next
+		Return -1
+	End Method
+	
+	
+	Method SelectButton:Int(index:Int)
+		if index < 0 or index >= self.buttons.length Then Return False
+
+		Local selectedSomething:Int
+		'remove selection indicator from others
+		For Local i:Int = 0 To Self.buttons.length - 1
+			If index <> i 
+				If Self.buttons[i].IsSelected()
+					Self.buttons[i].SetSelected(False)
+				EndIf
+			Else
+				Self.buttons[i].SetSelected(True)
+				selectedSomething = True
+			EndIf
+		Next
+		
+		Return selectedSomething
+	End Method
+
+
+	Method ClickButton:Int(index:Int)
+		if index < 0 or index >= self.buttons.length Then Return False
+		
+		Return buttons[index].Click(EGUIClickType.KEYBOARD, KEY_ENTER)
+	End Method
+
+
 	'override default update-method
 	Method Update:Int()
 		'maybe children intercept clicks...
@@ -293,16 +328,43 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			Recenter(0, Float(- yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 		endif
 
-		if Not GuiManager.GetKeyboardInputReceiver() and KeyManager.IsHit(KEY_ESCAPE)
-			'do not allow another ESC-press for X ms
-			KeyManager.blockKey(KEY_ESCAPE, 250)
-			self.Close()
-		endif
+		If Not IsClosing()
+			If Not GuiManager.GetKeyboardInputReceiver() 
+				'tab through buttons?
+				If KeyManager.IsHit(KEY_TAB)
+					'do not allow another Tab-press for X ms
+					KeyManager.blockKey(KEY_TAB, 250)
+
+					SelectButton( (GetSelectedButtonIndex() + 1) mod Self.buttons.length)
+
+				'abort/cancel
+				ElseIf KeyManager.IsHit(KEY_ESCAPE)
+					'do not allow another ESC-press for X ms
+					KeyManager.blockKey(KEY_ESCAPE, 250)
+
+					Close()
+
+				'click selected button
+				ElseIf KeyManager.IsHit(KEY_ENTER)
+					Local selectedButtonIndex:Int = Self.GetSelectedButtonIndex()
+					If selectedButtonIndex >= 0
+						'click on the currently selected button
+						'do not allow another ENTER-press for X ms
+						KeyManager.blockKey(KEY_ENTER, 250)
+						
+						ClickButton(selectedButtonIndex)
+
+						Close()
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+
 
 		'remove the window as soon as there is no animation active
 		'until then: play the animation
 		If IsClosed()
-			Self.remove()
+			Remove()
 			Return False
 		EndIf
 
