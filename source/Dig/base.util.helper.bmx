@@ -44,6 +44,7 @@ Import "external/reflectionExtended/reflection.bmx"
 Import BRL.Reflection
 ?
 Import BRL.Retro
+Import BRL.ObjectList
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle
 Import "base.util.mersenne.bmx"
@@ -196,7 +197,8 @@ Type THelper
 	End Rem
 
 
-	Function ShuffleList:TList(list:TList)
+	'return a NEW shuffled list
+	Function ShuffledList:TList(list:TList)
 		Local objArr:Object[] = list.ToArray()
 		Local j:Int
 		Local o:Object
@@ -208,7 +210,23 @@ Type THelper
 			objArr[i] = objArr[j]
 			objArr[j] = o
 		Next
-		return new TList.FromArray(objArr)
+		Return new TList.FromArray(objArr)
+	End Function
+
+
+	'shuffle a passed object list
+	Function ShuffleObjectList(list:TObjectList)
+		Local j:Int
+		Local o:Object
+		'loop over all indexes and switch each of them with a random
+		'target position
+		Local listLength:int = list.Count()
+		For Local i:Int = listLength-1 To 0 Step -1
+			j = RandRange(0, listLength-1)
+			o = list.data[i]
+			list.data[i] = list.data[j]
+			list.data[j] = o
+		Next
 	End Function
 
 

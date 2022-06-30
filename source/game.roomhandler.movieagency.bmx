@@ -557,6 +557,13 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 '		Print "MovieAgency: offer plan - removed " + licence.GetTitle()
 	End Method
+	
+	
+	Method OfferPlanShuffle()
+		offerPlanSingleLicences = THelper.ShuffledList(offerPlanSingleLicences)
+		offerPlanSeriesLicences = THelper.ShuffledList(offerPlanSeriesLicences)
+		offerPlanCollectionLicences = THelper.ShuffledList(offerPlanCollectionLicences)
+	End Method
 
 
 	Function ListAddAtIndex:Int(o:Object, l:TList, index:Int)
