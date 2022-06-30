@@ -34,9 +34,9 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	'(so no licences currently owned by someone)
 	'- newly added licences are added "somewhere" at the end
 	'- licences to get offered are choosen "somewhere" from the top
-	Field offerPlanSingleLicences:TList = New TList
-	Field offerPlanSeriesLicences:TList = New TList
-	Field offerPlanCollectionLicences:TList = New TList
+	Field offerPlanSingleLicences:TObjectList = New TObjectList
+	Field offerPlanSeriesLicences:TObjectList = New TObjectList
+	Field offerPlanCollectionLicences:TObjectList = New TObjectList
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:Int = True
@@ -216,9 +216,9 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		listSeries = New TProgrammeLicence[programmesPerLine]
 
 '		InitializeOfferPlanLists()
-		offerPlanSeriesLicences = New TList
-		offerPlanSingleLicences = New TList
-		offerPlanCollectionLicences = New TList
+		offerPlanSeriesLicences = New TObjectList
+		offerPlanSingleLicences = New TObjectList
+		offerPlanCollectionLicences = New TObjectList
 
 		'=== REGISTER HANDLER ===
 		RegisterHandler()
@@ -511,7 +511,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 
 	Method OfferPlanLicenceAdd:Int(licence:TProgrammeLicence)
-		Local useList:TList
+		Local useList:TObjectList
 		'ignore franchise-licences ?
 		If licence.licenceType = TVTProgrammeLicenceType.FRANCHISE
 			Return False
@@ -530,7 +530,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		'add to somewhere "at the bottom"
 		Local index:Int = BiasedRandRange(0, useList.Count(), 0.90)
 		'TODO useList.Add(licence)
-		If ListAddAtIndex(licence, useList, index)
+		If ObjectListAddAtIndex(licence, useList, index)
 	'		Print "MovieAgency: offer plan - added " + licence.GetTitle() +"    index: " + index+" of 0-" + (useList.Count())
 	'	Else
 	'		Print "MovieAgency: offer plan - Failed to add licence " + licence.GetTitle()
@@ -560,10 +560,33 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	
 	
 	Method OfferPlanShuffle()
-		offerPlanSingleLicences = THelper.ShuffledList(offerPlanSingleLicences)
-		offerPlanSeriesLicences = THelper.ShuffledList(offerPlanSeriesLicences)
-		offerPlanCollectionLicences = THelper.ShuffledList(offerPlanCollectionLicences)
+		THelper.ShuffleObjectList(offerPlanSingleLicences)
+		THelper.ShuffleObjectList(offerPlanSeriesLicences)
+		THelper.ShuffleObjectList(offerPlanCollectionLicences)
 	End Method
+
+
+	Function ObjectListAddAtIndex:Int(o:Object, l:TObjectList, index:Int)
+		l.Compact()
+
+		l._ensureCapacity(l.size + 1)
+
+		'Compact() refreshed "size" already, size = "index + 1"
+		If index > l.size
+			index = l.size
+		Else
+			'clamp index
+			If index < 0 Then index = 0
+
+			'move entries
+			ArrayCopy(l.data, index, l.data, index + 1, l.size - index)
+		EndIf
+
+		l.data[index] = o
+		l.size :+ 1
+		l.version :+ 1
+		Return True
+	End Function
 
 
 	Function ListAddAtIndex:Int(o:Object, l:TList, index:Int)
@@ -913,7 +936,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	End Method
 
 
-	Method GetNextOffers:TProgrammeLicence[](includeFilters:TProgrammeLicenceFilter[], excludeFilters:TProgrammeLicenceFilter[], amount:Int=1, list:TList=Null)
+	Method GetNextOffers:TProgrammeLicence[](includeFilters:TProgrammeLicenceFilter[], excludeFilters:TProgrammeLicenceFilter[], amount:Int=1, list:TObjectList=Null)
 		If Not list Then list = offerPlanSingleLicences
 
 		Local result:TProgrammeLicence[] = New TProgrammeLicence[amount]
