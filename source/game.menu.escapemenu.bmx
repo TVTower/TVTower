@@ -380,8 +380,8 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		Local selectedItem:TGUISaveGameListItem = TGUISaveGameListItem(savegameList.getSelectedEntry())
 		If Not selectedItem Then Return False
 
-		Local fileName:String = selectedItem.GetFileInformation().GetString("fileURI")
-		Local fileURI:String = TSavegame.GetSavegameURI(fileName)
+		Local fileURI:String = selectedItem.GetFileInformation().GetString("fileURI")
+		Local fileName:String = TSaveGame.GetSavegameName(fileURI)
 
 		if selectedItem.fileState >= 0
 			'close self
@@ -395,7 +395,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 				TGUIModalWindowChain(_parent).Close()
 			EndIf
 
-			TSaveGame.Load(fileURI, True)
+			TSaveGame.LoadName(fileName, True, True)
 
 			Return True
 		EndIf
@@ -447,7 +447,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameName:TGUIInput
 	Field savegameNameLabel:TGUILabel
 	Field _eventListeners:TEventListenerBase[]
-	Field doSetManualFocus:Int = True
+	Field doSetManualFocus:Int = False
+	Field lastSavegameName:String
 
 	Global _confirmOverwriteDialogue:TGUIModalWindow
 	Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
@@ -504,9 +505,10 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Method Activate:Int()
 		'remove previous entries
 		savegamelist.EmptyList()
-		
-		savegameName.SetValue("")
-		
+
+		'restore last name used to save a game
+		savegameName.SetValue(GameConfig.savegame_lastUsedName)
+
 		'SelectButton(-1) 'deselect buttons
 		SelectButton(1) 'select abort
 
@@ -525,7 +527,10 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			savegameList.AddItem(item)
 		Next
 
-		doSetManualFocus = True
+		'select and activate input field if NO name was entered yet!
+		If Not savegameName.GetValue()
+			doSetManualFocus = True
+		EndIf
 	End Method
 
 
@@ -646,7 +651,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			Return False
 		EndIf
 
-		TSaveGame.Save(fileURI)
+		TSaveGame.SaveName(fileName, True)
 
 		'close self
 '		Back()

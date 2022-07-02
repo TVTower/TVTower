@@ -224,6 +224,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			GameConfig.savegame_initialVersion = ""
 			GameConfig.savegame_initialSaveGameVersion = ""
 			GameConfig.savegame_saveCount = 0
+			'also reset last used save name
+			GameConfig.savegame_lastUsedName = ""
 
 			'=== CREATE / INIT SPORTS ("life outside")===
 			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)

@@ -193,7 +193,7 @@ Type TDebugScreen
 		If FastForward_Continuous_Active and FastForward_TargetTime < GetWorldTime().GetTimeGone()
 			GetGame().SetGameSpeed(0)
 			Local savegameName:String = "savegames/AI-day-" + StringHelper.RSetChar((GetWorldTime().GetDaysRun() + 1),2,"0")+ ".xml"
-			TSaveGame.Save(savegameName)
+			TSaveGame.SaveURI(savegameName)
 			FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,1,1,23,23) + 56*TWorldTime.MINUTELENGTH
 			GetGame().SetGameSpeed(FastForwardSpeed)
 		EndIf
