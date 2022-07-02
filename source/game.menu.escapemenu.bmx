@@ -316,8 +316,27 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 			
 			savegameList.AddItem(item)
 		Next
-		savegameList.SelectEntry( savegameList.GetFirstItem() )
 		
+		'try to preselect last used item
+		Local foundEntry:Int = False
+		If GameConfig.savegame_lastUsedName	
+			For Local i:TGUISavegameListItem = EachIn savegameList.entries
+				Local fileName:String = i.GetFileInformation().GetString("fileURI")
+				If TSavegame.GetSavegameName(fileName) = GameConfig.savegame_lastUsedName
+					savegameList.SelectEntry(i)
+
+					SelectButton(0)
+					
+					foundEntry = True
+					Exit
+				EndIf
+			Next
+		EndIf
+
+		If Not foundEntry
+			savegameList.SelectEntry( savegameList.GetFirstItem() )
+		EndIf
+
 		doSetManualFocus = True
 	End Method
 
