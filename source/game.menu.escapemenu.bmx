@@ -506,6 +506,9 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		savegamelist.EmptyList()
 		
 		savegameName.SetValue("")
+		
+		'SelectButton(-1) 'deselect buttons
+		SelectButton(1) 'select abort
 
 		'fill existing savegames
 		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
@@ -559,13 +562,20 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		GuiManager.Update( LS_modalSaveMenu )
 
 
-		'focus save button ?
-		If not savegameName.IsActive()
-			dialogueButtons[0].SetSelected(True)
-		Else
-			dialogueButtons[0].SetSelected(False)
+		'focus save button?
+		'only if we previously were using the savename input or the 
+		'savegame selection list!
+		'this avoids breaking the "tab through buttons" functions
+		If savegameName.IsFocused() or savegameList.IsFocused()
+			If savegameName.GetCurrentValue()
+				'only select if no other was selected already
+				If GetSelectedButtonIndex() = -1
+					SelectButton(0)
+				EndIf
+			ElseIf GetSelectedButtonIndex() = 0
+				SelectButton(1)
+			EndIf
 		EndIf
-
 
 		'disable/enable load-button (check current value to react during
 		'typing already)
@@ -579,10 +589,14 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		'handle Enter-Key
 		If KeyManager.IsHit(KEY_ENTER)
 			'avoid others getting triggered too (eg. chat)
-			KeyManager.ResetKey(KEY_ENTER)
-
-			If dialogueButtons[0].isEnabled()
+			'also avoids a popup confirm dialogue to see enter on next 
+			'update
+			KeyManager.blockKey(KEY_ENTER, 250)
+		
+			If GetSelectedButtonIndex() = 0 and dialogueButtons[0].isEnabled()
 				SaveSavegame(savegameName.GetValue())
+			ElseIf GetSelectedButtonIndex() = 1 and dialogueButtons[1].isEnabled()
+				Back()
 			EndIf
 		EndIf
 
@@ -616,6 +630,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		_confirmOverwriteDialogue.screenArea = New TRectangle.Init(0,0,800,385)
 
 		_confirmOverwriteDialogue.Open()
+		
+		_confirmOverwriteDialogue.SelectButton(0) 'preselect "yes"
 	End Method
 
 
@@ -718,6 +734,9 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		Local guiInput:TGUIInput = TGUIInput(triggerEvent._sender)
 		if not guiInput then Return False
 		Local newName:String = guiInput.GetCurrentValue()
+		
+		Local refocus:Int
+		If guiInput.IsFocused() then refocus = True
 
 		'loop through all savegames and select the one with the name
 		'(if there is none, select nothing)
@@ -730,6 +749,13 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			Local fileName:String = i.GetFileInformation().GetString("fileURI")
 			If TSavegame.GetSavegameName(fileName) = newName
 				savegameList.SelectEntry(i)
+
+				SelectButton(0)
+
+				If refocus 
+					GUIManager.SetActive(guiInput)
+					GUIManager.SetFocus(guiInput)
+				EndIf
 				Return True
 			EndIf
 		Next
