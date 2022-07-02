@@ -869,11 +869,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				Next
 
 				'- shuffle them
-				Local randomStationList:TList = New TList
+				Local randomStationList:TObjectList = New TObjectList
 				For Local s:TStation = EachIn allStations.Values()
 					randomStationList.AddLast(s)
 				Next
-				randomStationList = THelper.ShuffleList(randomStationList)
+				THelper.ShuffleObjectList(randomStationList)
 
 				'add stations until broadcast area is reached
 				For Local s:TStation = EachIn randomStationList
@@ -1251,6 +1251,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== MOVIE AGENCY ===
 		TLogger.Log("Game.PrepareNewGame()", "initializing movie agency", LOG_DEBUG)
+		'shuffle programme licences offer lists - so each game starts 
+		'with a varying set of licences
+		RoomHandler_MovieAgency.GetInstance().OfferPlanShuffle()
+		
 		'create series/movies in movie agency
 		RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
 

@@ -3019,6 +3019,18 @@ Type TSavegameConverter
 				mask.mask = Int(String(obj))
 				'mask.SetAllModified()
 				Return mask
+
+			'generic
+			Case "TList>TObjectList".ToLower()
+				Local old:TList = TList(obj)
+				If old
+					Local res:TObjectList = New TObjectList
+					For Local o:object = EachIn old
+						res.AddLast(o)
+					Next
+					Return res
+				EndIf
+
 rem
 			'v0.6.2 -> BroadcastStatistics from TMap to TIntMap
 			Case "TMap>TIntMap".ToLower()
@@ -3027,15 +3039,6 @@ rem
 					Local res:TIntMap = New TIntMap
 					For Local oldV:String = EachIn old.Keys()
 						res.Insert(Int(oldV), old.ValueForKey(oldV))
-					Next
-					Return res
-				EndIf
-			Case "TList>TObjectList".ToLower()
-				Local old:TList = TList(obj)
-				If old
-					Local res:TObjectList = New TObjectList
-					For Local o:object = EachIn old
-						res.AddLast(o)
 					Next
 					Return res
 				EndIf
