@@ -610,6 +610,9 @@ endrem
 				EndIf
 '			ElseIf GetSelectedButtonIndex() = 0
 '				SelectButton(1)
+			'select abort/cancel if save is no longer enabled
+			ElseIf not dialogueButtons[0].isEnabled() 
+				SelectButton(1)
 			EndIf
 		'deactivate buttons if the input is active (name entered now)
 		ElseIf GetSelectedButtonIndex() <> -1
