@@ -3,7 +3,8 @@ INCREASE          = Arttır
 BROADCASTING_AREA = Yayın Alanı
 #OF_THE_MAP        = 
 
-#https://www.iso.org/obp/ui/#iso:code:3166:DE
+##https://www.iso.org/obp/ui/#iso:code:3166:DE
+##SHORT can vary from code to more common abbreviations!
 #MAP_COUNTRY_DE_LONG     =
 #MAP_COUNTRY_DE_SHORT    =
 #MAP_COUNTRY_DE-HB_LONG  =
