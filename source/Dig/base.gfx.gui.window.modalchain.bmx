@@ -520,6 +520,22 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 			If KeyManager.IsHit(KEY_TAB)
 				'do not allow another Tab-press for X ms
 				KeyManager.blockKey(KEY_TAB, 250)
+				If KeyManager.IsDown(KEY_LSHIFT) or KeyManager.IsDown(KEY_RSHIFT)
+					SelectButton((GetSelectedButtonIndex() + Self.dialogueButtons.length - 1) mod Self.dialogueButtons.length)
+				Else
+					SelectButton((GetSelectedButtonIndex() + 1) mod Self.dialogueButtons.length)
+				EndIf
+			ElseIf KeyManager.IsHit(KEY_LEFT)
+				KeyManager.blockKey(KEY_LEFT, 250)
+				SelectButton( (GetSelectedButtonIndex() + Self.dialogueButtons.length - 1) mod Self.dialogueButtons.length)
+			ElseIf KeyManager.IsHit(KEY_UP)
+				KeyManager.blockKey(KEY_UP, 250)
+				SelectButton( (GetSelectedButtonIndex() + Self.dialogueButtons.length - 1) mod Self.dialogueButtons.length)
+			ElseIf KeyManager.IsHit(KEY_RIGHT)
+				KeyManager.blockKey(KEY_RIGHT, 250)
+				SelectButton( (GetSelectedButtonIndex() + 1) mod Self.dialogueButtons.length)
+			ElseIf KeyManager.IsHit(KEY_DOWN)
+				KeyManager.blockKey(KEY_DOWN, 250)
 				SelectButton( (GetSelectedButtonIndex() + 1) mod Self.dialogueButtons.length)
 			EndIf
 		EndIf

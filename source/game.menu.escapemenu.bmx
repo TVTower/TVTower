@@ -528,8 +528,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		'restore last name used to save a game
 		savegameName.SetValue(GameConfig.savegame_lastUsedName)
 
-		'SelectButton(-1) 'deselect buttons
-		SelectButton(1) 'select abort
+		SelectButton(-1) 'deselect buttons
+		'SelectButton(1) 'select abort
 
 		'fill existing savegames
 		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
@@ -590,6 +590,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		'only if we previously were using the savename input or the 
 		'savegame selection list!
 		'this avoids breaking the "tab through buttons" functions
+rem
 		If savegameName.IsFocused() or savegameList.IsFocused()
 			If savegameName.GetCurrentValue()
 				'only select if no other was selected already
@@ -599,6 +600,20 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			ElseIf GetSelectedButtonIndex() = 0
 				SelectButton(1)
 			EndIf
+		EndIf
+endrem
+		If not savegameName.IsActive()
+			If savegameName.GetValue()
+				'only select if no other was selected already
+				If GetSelectedButtonIndex() = -1
+					SelectButton(0)
+				EndIf
+'			ElseIf GetSelectedButtonIndex() = 0
+'				SelectButton(1)
+			EndIf
+		'deactivate buttons if the input is active (name entered now)
+		ElseIf GetSelectedButtonIndex() <> -1
+			SelectButton(-1)
 		EndIf
 
 		'disable/enable load-button (check current value to react during
@@ -774,7 +789,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			If TSavegame.GetSavegameName(fileName) = newName
 				savegameList.SelectEntry(i)
 
-				SelectButton(0)
+'				SelectButton(0)
 
 				If refocus 
 					GUIManager.SetActive(guiInput)
