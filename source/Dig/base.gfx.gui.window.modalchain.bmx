@@ -234,6 +234,29 @@ Type TGUIModalWindowChain Extends TGUIObject
 	End Method
 
 
+	Method IsClosing:int()
+		return closeActionStarted
+	End Method
+	
+	
+	Method HandleKeyboard() override
+		If Not IsClosing()
+			If Not GuiManager.GetKeyboardInputReceiver() 
+				'abort/cancel
+				If KeyManager.IsHit(KEY_ESCAPE)
+					'do not allow another ESC-press for X ms
+					if activeChainElement and activeChainElement.previousChainElement
+						KeyManager.blockKey(KEY_ESCAPE, 350)
+					else
+						KeyManager.blockKey(KEY_ESCAPE, 250)
+					endif
+					self.Back()
+				EndIf
+			EndIf
+		EndIf
+	End Method
+
+
 	'override default update-method
 	Method Update:Int()
 		if activeChainElement then activeChainElement.Update()
@@ -241,16 +264,6 @@ Type TGUIModalWindowChain Extends TGUIObject
 		'maybe children intercept clicks...
 		'so call Super.Update as it calls UpdateChildren already
 		Super.Update()
-
-		if Not GuiManager.GetKeyboardInputReceiver() and KeyManager.IsHit(KEY_ESCAPE)
-			'do not allow another ESC-press for X ms
-			if activeChainElement and activeChainElement.previousChainElement
-				KeyManager.blockKey(KEY_ESCAPE, 350)
-			else
-				KeyManager.blockKey(KEY_ESCAPE, 250)
-			endif
-			self.Back()
-		endif
 
 		'remove the window as soon as there is no animation active
 		'until then: play the animation
@@ -459,7 +472,75 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 			dialogueButtons[1].SetPosition(rect.GetW()/2 + 10, GetScreenRect().GetH() - 50)
 		EndIf
 	End Method
+	
 
+	Method GetSelectedButtonIndex:Int()
+		For Local i:Int = 0 To Self.dialogueButtons.length - 1
+			If Self.dialogueButtons[i].IsSelected() Then Return i
+		Next
+		Return -1
+	End Method
+	
+	
+	Method SelectButton:Int(index:Int)
+		Local selectedSomething:Int
+		'remove selection indicator from others
+		For Local i:Int = 0 To Self.dialogueButtons.length - 1
+			If index <> i 
+				If Self.dialogueButtons[i].IsSelected()
+					Self.dialogueButtons[i].SetSelected(False)
+				EndIf
+			Else
+				Self.dialogueButtons[i].SetSelected(True)
+				selectedSomething = True
+			EndIf
+		Next
+		
+		Return selectedSomething
+	End Method
+
+
+	Method ClickButton:Int(index:Int)
+		if index < 0 or index >= self.dialogueButtons.length Then Return False
+		
+		Return self.dialogueButtons[index].Click(EGUIClickType.KEYBOARD, KEY_ENTER)
+	End Method
+
+
+	Method Update:int() override
+		Super.Update()
+
+		HandleKeyboard()
+	End Method
+
+
+	Method HandleKeyboard() override
+		If Not GuiManager.GetKeyboardInputReceiver() 
+			'tab through buttons?
+			If KeyManager.IsHit(KEY_TAB)
+				'do not allow another Tab-press for X ms
+				KeyManager.blockKey(KEY_TAB, 250)
+				If KeyManager.IsDown(KEY_LSHIFT) or KeyManager.IsDown(KEY_RSHIFT)
+					SelectButton((GetSelectedButtonIndex() + Self.dialogueButtons.length - 1) mod Self.dialogueButtons.length)
+				Else
+					SelectButton((GetSelectedButtonIndex() + 1) mod Self.dialogueButtons.length)
+				EndIf
+			ElseIf KeyManager.IsHit(KEY_LEFT)
+				KeyManager.blockKey(KEY_LEFT, 250)
+				SelectButton( (GetSelectedButtonIndex() + Self.dialogueButtons.length - 1) mod Self.dialogueButtons.length)
+			ElseIf KeyManager.IsHit(KEY_UP)
+				KeyManager.blockKey(KEY_UP, 250)
+				SelectButton( (GetSelectedButtonIndex() + Self.dialogueButtons.length - 1) mod Self.dialogueButtons.length)
+			ElseIf KeyManager.IsHit(KEY_RIGHT)
+				KeyManager.blockKey(KEY_RIGHT, 250)
+				SelectButton( (GetSelectedButtonIndex() + 1) mod Self.dialogueButtons.length)
+			ElseIf KeyManager.IsHit(KEY_DOWN)
+				KeyManager.blockKey(KEY_DOWN, 250)
+				SelectButton( (GetSelectedButtonIndex() + 1) mod Self.dialogueButtons.length)
+			EndIf
+		EndIf
+	End Method
+	
 
 	'handle clicks on the various close buttons
 	Method onButtonClick:Int( triggerEvent:TEventBase )

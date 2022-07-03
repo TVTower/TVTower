@@ -20,6 +20,7 @@ Type TGameConfig {_exposeToLua}
 	Field savegame_initialVersion:String
 	Field savegame_initialSaveGameVersion:String
 	Field savegame_saveCount:Int = 0
+	Field savegame_lastUsedName:String
 
 	Global clNormal:SColor8 = SColor8.Black
 	Global clPositive:SColor8 = new SColor8(90, 110, 90)

@@ -691,6 +691,13 @@ Global GUIManager:TGUIManager = TGUIManager.GetInstance()
 
 
 
+Enum EGUIClickType
+	Pointer
+	Keyboard
+	Virtual
+End Enum
+
+
 
 Type TGUIobject
 	'There are two rectangles: the original position and size without
@@ -1143,6 +1150,8 @@ Type TGUIobject
 		If IsActive()
 			Return ".active"
 		ElseIf IsHovered()
+			Return ".hover"
+		ElseIf IsSelected()
 			Return ".hover"
 		Else
 			Return ""
@@ -1982,6 +1991,67 @@ Type TGUIobject
 	End Method
 	
 	
+	'source: EGUIClickType.Pointer, EGUIClickType.Keyboard, ...
+	'button: button or key
+	'x,y:    coordinates
+	Method Click:Int(source:EGUIClickType, button:Int, x:Int=-1, y:Int=-1)
+		Local clickPos:TVec2D = New TVec2D.Init(x, y)
+
+		'print "IS CLICKED    " + _id + "   " + GetClassName()
+		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
+		'let the object handle the click
+		Local handledClick:Int = OnClick(ev)
+		'fire onClickEvent
+		ev.Trigger()
+
+		'doing this leads to "handled click" in these cases
+		'-> if handled
+		'-> if vetoed
+		'And not handled, if "not handled" but event vetoed
+		'If Not handledClick And Not ev.IsVeto() Then handledClick = True
+
+		'store click position
+		If source = EGUIClickType.POINTER
+			'print "TODO: Remove mouseisclicked - interessierte koennen clickevent nutzen"
+			mouseIsClicked = clickPos
+		EndIf
+		
+		Return handledClick
+	End Method
+
+	Method Click:Int(source:EGUIClickType, button:Int, pos:TVec2D)
+		If pos
+			Return Click(source, button, Int(pos.x), Int(pos.y))
+		Else
+			Return Click(source, button)
+		EndIf
+	End Method
+	
+
+	'source: EGUIClickType.Pointer, EGUIClickType.Keyboard, ...
+	'button: button or key
+	'x,y:    coordinates
+	Method DoubleClick:Int(source:EGUIClickType, button:Int, x:Int=-1, y:Int=-1)
+		Local clickPos:TVec2D = New TVec2D.Init(x, y)
+
+		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
+		'let the object handle the click
+		Local handledClick:int = OnDoubleClick(ev)
+
+		ev.Trigger()
+		
+		Return handledClick
+	End Method
+
+	Method DoubleClick:Int(source:EGUIClickType, button:Int, pos:TVec2D)
+		If pos
+			Return DoubleClick(source, button, Int(pos.x), Int(pos.y))
+		Else
+			Return DoubleClick(source, button)
+		EndIf
+	End Method
+	
+	
 	'called when trying to "ctrl + v"
 	Method PasteFromClipboard:Int()
 		'read via 
@@ -1993,6 +2063,7 @@ Type TGUIobject
 		Return False
 	End Method
 	
+
 	'called when trying to "ctrl + c"
 	Method CopyToClipboard:Int()
 		'write via 
@@ -2169,22 +2240,7 @@ Type TGUIobject
 				'somewhere else)
 				Local clickPos:TVec2D = MouseManager.GetClickposition(button)
 				if ContainsXY(int(clickPos.x), int(clickPos.y))
-	'print "IS CLICKED    " + _id + "   " + GetClassName()
-					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-					'let the object handle the click
-					Local handledClick:Int = OnClick(ev)
-					'fire onClickEvent
-					ev.Trigger()
-
-					'doing this leads to "handled click" in these cases
-					'-> if handled
-					'-> if vetoed
-					'And not handled, if "not handled" but event vetoed
-					'If Not handledClick And Not ev.IsVeto() Then handledClick = True
-
-					'store click position
-					'print "TODO: Remove mouseisclicked - interessierte koennen clickevent nutzen"
-					mouseIsClicked = clickPos
+					Local handledClick:Int = Click(EGUIClickType.POINTER, button, clickPos)
 
 					'handled that click
 					If handledClick
@@ -2212,11 +2268,7 @@ Type TGUIobject
 				'somewhere else)
 				Local clickPos:TVec2D = MouseManager.GetClickposition(button)
 				If ContainsXY(int(clickPos.x), int(clickPos.y))
-					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button", button).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-					'let the object handle the click
-					Local handledClick:int = OnDoubleClick(ev)
-
-					ev.Trigger()
+					Local handledClick:Int = DoubleClick(EGUIClickType.POINTER, button, clickPos)
 
 					If handledClick
 						MouseManager.SetDoubleClickHandled(button)

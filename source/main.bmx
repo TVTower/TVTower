@@ -711,15 +711,15 @@ Type TApp
 			'hotkeys which should exist for dev and non-dev
 			'Save game only when in a game
 			If GetGame().gamestate = TGame.STATE_RUNNING
-				If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
+				If KeyManager.IsHit(KEY_F5) Then TSaveGame.SaveURI("savegames/quicksave.xml")
 			EndIf
 
 			If KeyManager.IsHit(KEY_F8)
 				'shift + F8 ignores potential compatibility issues
 				If KeyManager.IsDown(KEY_LSHIFT)
-					TSaveGame.Load("savegames/quicksave.xml", True)
+					TSaveGame.LoadURI("savegames/quicksave.xml", True)
 				Else
-					TSaveGame.Load("savegames/quicksave.xml")
+					TSaveGame.LoadURI("savegames/quicksave.xml")
 				EndIf
 			EndIf
 
@@ -2655,7 +2655,22 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function Load:Int(saveName:String="savegame.xml", skipCompatibilityCheck:Int = False)
+	Function LoadName:Int(saveName:String, setLastUsedName:Int = True, skipCompatibilityCheck:Int = False)
+		Local fileURI:String = GetSavegameURI(saveName)
+		If LoadURI(fileURI, skipCompatibilityCheck)
+			If setLastUsedName
+				'also load in last used save name
+				GameConfig.savegame_lastUsedName = saveName
+			EndIf
+			
+			Return True
+		EndIf
+		
+		Return False
+	End Function
+
+
+	Function LoadURI:Int(saveURI:String="savegame.xml", skipCompatibilityCheck:Int = False)
 		'stop ai of previous game if some was running
 		For Local i:Int = 1 To 4
 			If GetPlayer(i) Then GetPlayer(i).StopAI()
@@ -2663,24 +2678,24 @@ Type TSaveGame Extends TGameState
 
 		ShowMessage(True)
 
-		Local savegameSummary:TData = GetGameSummary(savename)
+		Local savegameSummary:TData = GetGameSummary(saveURI)
 		if not savegameSummary then savegameSummary = new TData
 		Local loadedSaveGameVersion:Int = savegameSummary.GetInt("savegame_version")
 
-		local fileState:Int = TSaveGame.CheckFileState(saveName, savegameSummary, True)
+		local fileState:Int = TSaveGame.CheckFileState(saveURI, savegameSummary, True)
 		if skipCompatibilityCheck and fileState = -3 then fileState = 1
 
 		'=== CHECK SAVEGAME ===
 		If fileState < 0
 			if fileState = -1
-				TLogger.Log("Savegame.Load()", GetLocale("FILE_NOT_FOUND") + ": ~q"+saveName+"~q.", LOG_SAVELOAD | LOG_ERROR)
-				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("FILE_NOT_FOUND") + ": ~q"+saveName+"~q.", 0, True)
+				TLogger.Log("Savegame.Load()", GetLocale("FILE_NOT_FOUND") + ": ~q"+saveURI+"~q.", LOG_SAVELOAD | LOG_ERROR)
+				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("FILE_NOT_FOUND") + ": ~q"+saveURI+"~q.", 0, True)
 			elseif fileState = -2
-				TLogger.Log("Savegame.Load()", GetLocale("INVALID_SAVEGAME") + ": ~q"+saveName+"~q.", LOG_SAVELOAD | LOG_ERROR)
-				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INVALID_SAVEGAME") + ": ~q"+saveName+"~q.", 0, True)
+				TLogger.Log("Savegame.Load()", GetLocale("INVALID_SAVEGAME") + ": ~q"+saveURI+"~q.", LOG_SAVELOAD | LOG_ERROR)
+				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INVALID_SAVEGAME") + ": ~q"+saveURI+"~q.", 0, True)
 			elseif fileState = -3
-				TLogger.Log("Savegame.Load()", GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveName+"~q.", LOG_SAVELOAD | LOG_ERROR)
-				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveName+"~q.", 0, True)
+				TLogger.Log("Savegame.Load()", GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveURI+"~q.", LOG_SAVELOAD | LOG_ERROR)
+				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveURI+"~q.", 0, True)
 			endif
 			'wait a second
 			Delay(2500)
@@ -2710,10 +2725,10 @@ Type TSaveGame Extends TGameState
 
 			'when loading other versions make a copy of the original
 			If loadedSaveGameVersion <> SAVEGAME_VERSION
-				Local backupFile:String = saveName+"_v"+loadedSaveGameVersion
+				Local backupFile:String = saveURI+"_v"+loadedSaveGameVersion
 				If FileType(backupFile) = 0
-					TLogger.Log("Savegame.Load()", "Create backup of ~q"+saveName+"~q because it was saved with another save game version.", LOG_SAVELOAD | LOG_INFO)
-					CopyFile(saveName, saveName+"_v"+loadedSaveGameVersion)
+					TLogger.Log("Savegame.Load()", "Create backup of ~q"+saveURI+"~q because it was saved with another save game version.", LOG_SAVELOAD | LOG_INFO)
+					CopyFile(saveURI, saveURI+"_v"+loadedSaveGameVersion)
 				EndIf
 			EndIF
 		EndIf
@@ -2722,20 +2737,20 @@ Type TSaveGame Extends TGameState
 
 		'this creates new TGameObjects - and therefore increases ID count!
 ?bmxng
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
+		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(saveURI))
 ?Not bmxng
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename, XML_PARSE_HUGE))
+		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(saveURI, XML_PARSE_HUGE))
 ?
 		persist.Free()
 		If Not saveGame
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveURI+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		Else
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q loaded in " + (MilliSecs() - loadingStart)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveURI+"~q loaded in " + (MilliSecs() - loadingStart)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
 		EndIf
 
 		If Not saveGame.CheckGameData()
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is in bad state.", LOG_SAVELOAD | LOG_ERROR)
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveURI+"~q is in bad state.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		EndIf
 
@@ -2745,7 +2760,7 @@ Type TSaveGame Extends TGameState
 		New TGameState.Initialize()
 
 		Local savegameEventData:TData = new TData
-		savegameEventData.AddString("saveName", saveName)
+		savegameEventData.AddString("saveName", saveURI)
 		savegameEventData.AddInt("saved_savegame_version", loadedSaveGameVersion)
 		savegameEventData.AddInt("current_savegame_version", TSaveGame.SAVEGAME_VERSION)
 
@@ -2819,11 +2834,25 @@ endrem
 	End Function
 
 
-	Function Save:Int(saveName:String="savegame.xml")
+	Function SaveName:Int(saveName:String="savegame", setLastUsedName:Int = True)
+		Local fileURI:String = GetSavegameURI(saveName)
+
+		If SaveURI(fileURI)
+			If setLastUsedName
+				GameConfig.savegame_lastUsedName = saveName
+			EndIf
+			Return True
+		Else
+			Return False
+		EndIf
+	End Function
+		
+
+	Function SaveURI:Int(saveURI:String="savegame.xml")
 		ShowMessage(False)
 
 		'check directories and create them if needed
-		Local dirs:String[] = ExtractDir(saveName.Replace("\", "/")).Split("/")
+		Local dirs:String[] = ExtractDir(saveURI.Replace("\", "/")).Split("/")
 		Local currDir:String
 		For Local dir:String = EachIn dirs
 			If currDir Then currDir :+ "/"
@@ -2835,14 +2864,14 @@ endrem
 			EndIf
 		Next
 		If FileType(currDir) <> 2
-			TLogger.Log("Savegame.Save()", "Failed to create directory ~q" + currDir + "~q for ~q"+saveName+"~q.", LOG_SAVELOAD)
+			TLogger.Log("Savegame.Save()", "Failed to create directory ~q" + currDir + "~q for ~q"+saveURI+"~q.", LOG_SAVELOAD)
 		EndIf
 
 Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
-		'payload is saveName
-		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveName))
+		'payload is saveURI
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveURI))
 
 		'assign "initial" version information
 		if not GameConfig.savegame_initialBuildDate then GameConfig.savegame_initialBuildDate = VersionDate
@@ -2869,15 +2898,15 @@ Local t:Int = MilliSecs()
 		'local p:TPersist = New TPersist
 		p.serializer = New TSavegameSerializer
 		If TPersist.compressed
-			p.SerializeToFile(saveGame, saveName+".zip")
+			p.SerializeToFile(saveGame, saveURI+".zip")
 		Else
-			p.SerializeToFile(saveGame, saveName)
+			p.SerializeToFile(saveGame, saveURI)
 		EndIf
 		p.Free()
 
 		'tell everybody we finished saving
-		'payload is saveName and saveGame-object
-		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveName).add("saveGame", saveGame))
+		'payload is saveURI and saveGame-object
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveURI).add("saveGame", saveGame))
 		Print "saving took " + (MilliSecs() - t) + "ms."
 		'close message window
 		If messageWindow Then messageWindow.Close()

@@ -51,6 +51,10 @@ Type TGUIinput Extends TGUIobject
 	Global minDimension:TVec2D = New TVec2D.Init(40,28)
 	'default name for all inputs
     Global spriteNameDefault:String	= "gfx_gui_input.default"
+    
+    Const FINISHED_WITH_OTHER:Int = 0
+    Const FINISHED_WITH_ENTERKEY:Int = 1
+    Const FINISHED_LOOSING_FOCUS:Int = 2
 
 
 	Method GetClassName:String()
@@ -228,6 +232,7 @@ Type TGUIinput Extends TGUIobject
 		Super.Update()
 
 		If Self._flags & GUI_OBJECT_ENABLED
+			Local confirmedWithEnter:Int
 			If _editable
 				'manual entering "focus" with ENTER-key is not intended,
 				'this is done by the app/game with "if enter then setFocus..."
@@ -235,12 +240,17 @@ Type TGUIinput Extends TGUIobject
 				'enter pressed means: finished editing -> loose focus too
 				If KEYMANAGER.isHit(KEY_ENTER) And IsFocused()
 					KEYMANAGER.blockKey(KEY_ENTER, 200) 'to avoid auto-enter on a chat input
+
 					GuiManager.ResetFocus()
 					If Self = GuiManager.GetKeyboardInputReceiver()
 						GuiManager.SetKeyboardInputReceiver(Null)
 					EndIf
+
 					'remove internal "active" state 
 					_SetActive(False)
+
+					'manually confirm this edit has finished
+					confirmedWithEnter = True
 				EndIf
 '				If GuiManager.GetActive() = self Then GuiManager.SetActive(Null)
 
@@ -276,9 +286,15 @@ Type TGUIinput Extends TGUIobject
 			EndIf
 
 			'if input is not the active input (enter key or clicked on another input)
-			'and the value changed, inform others with an event
-			If Self <> GuiManager.GetKeyboardInputReceiver() And _valueChanged
-				FinishEdit()
+			'inform others with events
+			'onChangedValue for changed value
+			'onFinishEdit for being done with editing now
+			If Self <> GuiManager.GetKeyboardInputReceiver() 
+				If confirmedWithEnter
+					FinishEdit(TGUIInput.FINISHED_WITH_ENTERKEY)
+				ElseIf _valueChanged
+					FinishEdit(TGUIInput.FINISHED_WITH_OTHER)
+				Endif
 			EndIf
 		EndIf
 		'set to "active" look
@@ -294,22 +310,25 @@ Type TGUIinput Extends TGUIobject
 	End Method
 	
 	
-	Method FinishEdit()
-		If Not _valueChanged Then Return
+	Method FinishEdit(finishMode:Int)
+		If _valueChanged 
+			'reset changed indicator
+			_valueChanged = False
+			'reset cursor position
+			_cursorPosition = -1
 
-		'reset changed indicator
-		_valueChanged = False
-		'reset cursor position
-		_cursorPosition = -1
+			'fire onChange-event (text changed)
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnChange, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self )
 
-		'fire onChange-event (text changed)
-		TriggerBaseEvent(GUIEventKeys.GUIObject_OnChange, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self )
-
-		'explicitely inform about a change of the displayed value
-		'only send this once
-		If _valueAtLastUpdate <> value
-			TriggerBaseEvent(GUIEventKeys.GUIInput_OnChangeValue, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self )
+			'explicitely inform about a change of the displayed value
+			'only send this once
+			If _valueAtLastUpdate <> value
+				TriggerBaseEvent(GUIEventKeys.GUIInput_OnChangeValue, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self )
+			EndIf
 		EndIf
+
+		'inform that editing was somehow finished (eg ENTER Key or lost focus)
+		TriggerBaseEvent(GUIEventKeys.GUIInput_OnFinishEdit, New TData.AddInt("FinishMode", finishMode), Self )
 	End Method
 
 
@@ -596,7 +615,8 @@ Type TGUIinput Extends TGUIobject
 
 	Method _OnRemoveFocus:Int() Override
 		Super._OnRemoveFocus()
-		FinishEdit()
+
+		FinishEdit(TGUIInput.FINISHED_LOOSING_FOCUS)
 
 		_mousePositionsCursor = False
 
