@@ -3,7 +3,8 @@ RUNNING_COSTS     = Running Costs
 BROADCASTING_AREA = Broadcasting area
 OF_THE_MAP        = of map
 
-#https://www.iso.org/obp/ui/#iso:code:3166:DE
+##https://www.iso.org/obp/ui/#iso:code:3166:DE
+##SHORT can vary from code to more common abbreviations!
 MAP_COUNTRY_DE_LONG     = Germany
 MAP_COUNTRY_DE_SHORT    = GER
 MAP_COUNTRY_DE-HB_LONG  = Bremen

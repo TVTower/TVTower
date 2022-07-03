@@ -65,7 +65,7 @@ DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED              
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED                              = Pour le moment, |b|%X% productions|/b| de ce script sont prévues.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Pour le moment, |b|1 production|/b| de ce script a été réalisée.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Pour le moment, |b|%X% productions|/b| de ce script ont été réalisées.
-DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Pour le moment, |b|%X% productions|/b| de ce script sont prévues et |b|%X%|/b| ont été réalisées.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Pour le moment, |b|%X% productions|/b| de ce script sont prévues et |b|%Y%|/b| ont été réalisées.
 
 DIALOGUE_STUDIO_START_PRODUCTION                    = Lance la production.
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Lance toutes les productions possibles (%X%).

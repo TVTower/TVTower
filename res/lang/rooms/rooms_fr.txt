@@ -55,9 +55,9 @@ SHOOTING_IN_PROGRESS                      = Tournage en cours
 SHOOTING_FINISHED                         = Tournage terminé
 PREPRODUCTION_IN_PROGRESS                 = Montage en cours
 PREPRODUCTION_FINISHED                    = Montage terminé
-BLOCKED_UNTIL_TIME                         = Bloqué jusqu'à %TIME%.
-BLOCKED_NO_OFFICE_HOUR                     = Absente en dehors des heures de bureau
-ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM  = Il y a déjà quelqu'un dans cette salle
+BLOCKED_UNTIL_TIME                        = Bloqué jusqu'à %TIME%.
+BLOCKED_NO_OFFICE_HOUR                    = Absente en dehors des heures de bureau
+ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Il y a déjà quelqu'un dans cette salle
 
 
 #ROOM_OVERVIEW               = 
