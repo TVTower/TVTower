@@ -1,7 +1,7 @@
 INCREASE          = Augmentation
-#RUNNING_COSTS     = 
+RUNNING_COSTS     = Coûts d'exploitation
 BROADCASTING_AREA = Zone de diffusion
-#OF_THE_MAP        = 
+OF_THE_MAP        = de la carte
 
 #https://www.iso.org/obp/ui/#iso:code:3166:DE
 MAP_COUNTRY_DE_LONG     = Allemagne

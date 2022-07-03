@@ -1,11 +1,11 @@
 TARGETGROUP_ALL        = Tous
 TARGETGROUP_CHILDREN   = Enfants
 TARGETGROUP_TEENAGERS  = Ados
-TARGETGROUP_HOUSEWIVES = Menageres
+TARGETGROUP_HOUSEWIVES = Menagères
 TARGETGROUP_EMPLOYEES  = Employés
-TARGETGROUP_UNEMPLOYED = Chomeurs
-TARGETGROUP_MANAGER    = Manager
-TARGETGROUP_PENSIONERS = Seniors
+TARGETGROUP_UNEMPLOYED = Chômeurs
+TARGETGROUP_MANAGER    = Cadres
+TARGETGROUP_PENSIONERS = Séniors
 TARGETGROUP_WOMEN      = Femmes
 TARGETGROUP_MEN        = Hommes
 
@@ -30,13 +30,13 @@ AD_CHANNEL_IMAGE_TOO_LOW = Image de la chaine. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = SVP genre %GENRE%
 AD_PLEASE_FLAG           = SVP %FLAG%
 
-INFOMERCIAL                  = Infomercial
-AD_INFOMERCIAL               = Vous êtes payé pour diffuser des infopublicités . Vos revenu dépend de l'audimat
-AD_INFOMERCIAL_NOT_AVAILABLE = Il n'y a pas d'information pour cette annonce. TRAD A confirmer
-AD_INFOMERCIAL_PROFIT        = Revenu: %PROFIT% par 1000 personnes à regarder
+INFOMERCIAL                  = Publireportage
+AD_INFOMERCIAL               = Vous êtes payé pour diffuser des publireportages. Vos revenus dépendent de l'audimat.
+AD_INFOMERCIAL_NOT_AVAILABLE = Il n'y a pas de publireportage pour cette publicité.
+AD_INFOMERCIAL_PROFIT        = Revenu : %PROFIT% par 1000 personnes à regarder
 
-ADCONTRACT_FINISHED                = Pub terminé
-ADCONTRACT_FAILED                  = Pub échoué
-ADCONTRACT_X_SUCCESSFULLY_FINISHED = Pub "%TITLE%" terminé avec succès.
+ADCONTRACT_FINISHED                = Contrat publicitaire terminé
+ADCONTRACT_FAILED                  = Contrat publicitaire échoué
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Le contrat publicitaire pour "%TITLE%" s'est terminé avec succès.
 PROFIT_OF_X_GOT_CREDITED           = Bénéfice de %MONEY% obtenu.
-ADCONTRACT_X_FAILED                = Publicité contrat "%TITLE%" a échoué.
+ADCONTRACT_X_FAILED                = Le contrat publicitaire pour "%TITLE%" a échoué.
