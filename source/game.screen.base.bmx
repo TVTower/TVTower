@@ -556,7 +556,10 @@ Type TInGameScreen_Room Extends TInGameScreen
 		if not IsObservedFigure(figure) Then Return False
 
 		'try to change played music when entering a room
-		TSoundManager.GetInstance().PlayMusicPlaylist(room.GetName())
+		'but only if a different playlist is played
+		If GetSoundManagerBase().GetMusicPlaylist(room.GetName()) and GetSoundManagerBase().GetCurrentPlaylist() <> room.GetName()
+			TSoundManager.GetInstance().PlayMusicPlaylist(room.GetName())
+		EndIf
 	End Function
 
 

@@ -274,21 +274,29 @@ Type TSoundManager
 
 
 	Method GetCurrentPlaylist:String()
-		Return _currentPlaylistName:String
+		Return _currentPlaylistName
 	End Method
 
 
 	Method SetCurrentPlaylist(name:String="default")
 		_currentPlaylistName = name
 	End Method
+	
+	
+	Method GetMusicPlaylist:TList(name:String)
+		Return TList(playlists.ValueForKey(PREFIX_MUSIC + name.ToLower()))
+	End Method
 
+	Method GetSFXPlaylist:TList(name:String)
+		Return TList(playlists.ValueForKey(PREFIX_SFX + name.ToLower()))
+	End Method
+	
 
 	'use this method if multiple sfx for a certain event are possible
 	'(so eg. multiple "door open/close"-sounds to make variations
 	Method GetRandomSfxFromPlaylist:TSound(playlist:String)
-		playlist = playlist.ToLower()
-		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_SFX + playlist))
-
+		Local playlistContainer:TList = GetSFXPlaylist(playlist)
+	
 		If Not playlistContainer
 			TLogger.Log("SoundManager.GetRandomSfxFromPlaylist()", "Playlist ~q"+playlist+"~q not found.", LOG_WARNING)
 			Return Null
@@ -304,8 +312,7 @@ Type TSoundManager
 
 	'if avoidMusic is set, the function tries to return another music (if possible)
 	Method GetRandomMusicFromPlaylist:TDigAudioStream(playlist:String, avoidMusic:TDigAudioStream = Null)
-		playlist = playlist.ToLower()
-		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_MUSIC + playlist))
+		Local playlistContainer:TList = GetMusicPlaylist(playlist)
 		If Not playlistContainer
 			'TLogger.Log("SoundManager.GetRandomMusicFromPlaylist()", "Playlist ~q"+playlist+"~q not found.", LOG_WARNING)
 			Return Null
@@ -526,15 +533,15 @@ Type TSoundManager
 	Method StartFadeOverToNextTitle:int(fadeTime:int = -1)
 		if not audioEngineEnabled then return False
 
-		?debug
-		print "StartFadeOverToNextTitle()"
-		?
-
 		If fadeProcess <> 0
 			?debug
-			print "StartFadeOverToNextTitle() called during other fading"
+			print "StartFadeOverToNextTitle(). Skipped, called while cross fade in progress."
 			?
 			return False
+		?debug
+		Else
+			print "StartFadeOverToNextTitle(). ForceNextMusic=" + forceNextMusic
+		?
 		EndIf
 
 
@@ -692,6 +699,10 @@ print "FadeOverToNextTitle() finished"
 			TLogger.Log("PlayMusicOrPlaylist", "Music not found. Using random from default playlist", LOG_DEBUG)
 			nextMusicStream = GetRandomMusicFromPlaylist("default")
 			nextMusicVolume = defaultMusicVolume
+			'when playing a default playlist anyways, this will skip
+			'crossfading into another "default" one if a "default"
+			'playlist is set as next then
+			SetCurrentPlaylist("default")
 		endif
 
 		forceNextMusic = True
