@@ -927,7 +927,7 @@ endrem
 	Method of_IsModifyableProgrammePlanSlot:Int(slotType:Int, day:Int, hour:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetPlayerProgrammePlan(Self.ME).IsModifyableSlot(slotType, day, hour)
+		If GetPlayerProgrammePlan(Self.ME).IsModifiableSlot(slotType, day, hour)
 			Return Self.RESULT_OK
 		EndIf
 		Return Self.RESULT_NOTALLOWED

@@ -367,25 +367,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	'returns whether a slot is locked, or belongs to an object which
-	'occupies at least 1 locked slot
-	Method BelongsToModifiyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
-		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
-		local hours:int = day*24 + hour
-		if obj
-			hours = obj.programmedDay*24 + obj.programmedHour
-			For local blockHour:int = hours until hours + obj.GetBlocks()
-				if not IsModifyableSlot(slotType, 0, blockHour)
-					return False
-				endif
-			Next
-			return True
-		else
-			return IsModifyableSlot(slotType, day, hour)
-		endif
-	End Method
-
-
 	'helper function
 	'returns whether the given material occupies a locked slot
 	Method IsLockedBroadcastMaterial:int(broadcastMaterial:TBroadcastMaterial)
@@ -441,14 +422,36 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	'returns whether a slot does not belong to a locked programme,
-	'is not in the past and is not belonging to a non-controllable element
-	Method IsModifyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
-		if not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) then return False
-		if BelongsToLockedSlot(slotType, day, hour) then return False
-		if BelongsToOccupiedSlotWithUncontrollableBroadcast(slotType, day, hour) then return False
+	'returns whether a slot does not belong to a locked or currently
+	'broadcasted programme, is not in the past and is not belonging
+	'to a non-controllable element
+	Method IsModifiableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
+		'if there is an object at this slot, also check the previous and future
+		'slots of it
+		Local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
+		If obj
+			If Not obj.IsControllable() Then Return False
 
-		return True
+			Local blockDay:Int = obj.programmedDay
+			Local blockHour:Int = obj.programmedHour
+
+			For local block:int = 0 until obj.GetBlocks()
+				if blockHour = 23
+					blockHour = 0
+					blockDay :+ 1
+				Else
+					blockHour :+ 1
+				EndIf
+				
+				If Not IsUseableTimeSlot(slotType, blockDay, blockHour, currentDay, currentHour, currentMinute) Then Return False
+				If IsLockedSlot(slotType, blockDay, blockHour) Then Return False
+			Next
+		Else
+			If Not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) Then Return False
+			If IsLockedSlot(slotType, day, hour) Then Return False
+		EndIf
+
+		Return True
 	End Method
 
 
@@ -713,17 +716,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'do not allow adding in the past
 		'do not allow adding to a locked slot
 		If checkModifyableSlot
-			if not BelongsToModifiyableSlot(slotType, day, hour)
+			If not IsModifiableSlot(slotType, day, hour)
 				'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
 				return False
 			endif
-
-			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-				if Not IsModifyableSlot(slotType, day, hour + i)
-					'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
-					Return False
-				endif
-			Next
 		EndIf
 
 
@@ -819,7 +815,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			If checkModifyableSlot
 				For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-					if Not IsModifyableSlot(slotType, programmedDay, programmedHour + i)
+					if Not IsModifiableSlot(slotType, programmedDay, programmedHour + i)
 						TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked", LOG_INFO)
 						Return Null
 					endif
