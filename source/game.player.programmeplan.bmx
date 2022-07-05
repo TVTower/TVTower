@@ -334,6 +334,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method IsLockedSlot:int(slotType:Int = 0, day:Int=-1, hour:Int=-1)
+		FixDayHour(day, hour)
+
 		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(day*24 + hour))
 		if not currentLock then Return False
 
@@ -350,20 +352,22 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
-	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
-		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
-		local hours:int = day*24 + hour
-		if obj
-			hours = obj.programmedDay*24 + obj.programmedHour
-			For local blockHour:int = hours until hours + obj.GetBlocks()
-				if IsLockedSlot(slotType, 0, blockHour)
-					return True
-				endif
+	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, obj:TBroadcastMaterial = Null)
+		If Not obj Then obj = GetObject(slotType, day, hour)
+
+		If obj
+			Local hours:Int = obj.programmedDay*24 + obj.programmedHour
+			For Local blockHour:Int = hours Until hours + obj.GetBlocks()
+				If IsLockedSlot(slotType, 0, blockHour)
+					Return True
+				EndIf
 			Next
-			return False
-		else
-			return IsLockedSlot(slotType, day, hour)
-		endif
+			Return False
+			'alternative:
+			'Return IsLockedBroadcastMaterial(obj)
+		Else
+			Return IsLockedSlot(slotType, day, hour)
+		EndIf
 	End Method
 
 
@@ -430,22 +434,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'slots of it
 		Local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		If obj
+			'uncontrollable?
 			If Not obj.IsControllable() Then Return False
-
-			Local blockDay:Int = obj.programmedDay
-			Local blockHour:Int = obj.programmedHour
-
-			For local block:int = 0 until obj.GetBlocks()
-				if blockHour = 23
-					blockHour = 0
-					blockDay :+ 1
-				Else
-					blockHour :+ 1
-				EndIf
-				
-				If Not IsUseableTimeSlot(slotType, blockDay, blockHour, currentDay, currentHour, currentMinute) Then Return False
-				If IsLockedSlot(slotType, blockDay, blockHour) Then Return False
-			Next
+			'already started programme (only need to check first block)?
+			If Not IsUseableTimeSlot(slotType, obj.programmedDay, obj.programmedHour, currentDay, currentHour, currentMinute) Then Return False
+			'a slot of the running programme is locked?
+			If IsLockedBroadcastMaterial(obj) Then Return False
 		Else
 			If Not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) Then Return False
 			If IsLockedSlot(slotType, day, hour) Then Return False
