@@ -784,7 +784,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'do not allow removing objects we cannot control
 		'(to forcefully remove the, unset that flag before!
-		If not obj.IsControllable() then Return Null
+		If Not obj.IsControllable() 
+			TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - broadcast material not controllable", LOG_INFO)
+			Return Null
+		EndIf
 
 		'if not programmed, skip deletion and events
 		If obj.isProgrammed()
@@ -810,7 +813,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If checkModifyableSlot
 				For Local i:Int = 0 To obj.GetBlocks(slotType) -1
 					if Not IsModifiableSlot(slotType, programmedDay, programmedHour + i)
-						TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked", LOG_INFO)
+						TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+"/"+obj.GetBlocks(slotType)+") cannot get modified - is in the past or locked", LOG_INFO)
 						Return Null
 					endif
 				Next
@@ -1065,12 +1068,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	'clear a slot so others can get placed without trouble
-	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1)
 		return _RemoveProgramme(obj, day, hour)
 	End Method
 
 
-	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1)
 		return _RemoveProgramme(obj, day, hour, True)
 	End Method
 
