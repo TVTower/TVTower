@@ -387,6 +387,21 @@ Type TBuilding Extends TBuildingBase
 
 		return 0
 	End Method
+	
+	
+	Method GetElevatorPlanHotspot:THotspot(forFloor:Int)
+		if not room then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+		Local planX:Int = GetElevator().GetDoorCenterX()
+		Local planY:Int = GetFloorY2(forFloor)
+		For Local hotspot:THotspot = EachIn room.hotspots
+			If hotspot.name <> "elevatorplan" Then Continue
+			If GetFloor(hotspot.area.GetY()) <> forFloor Then Continue
+
+			Return hotspot
+		Next
+		Return Null
+	End Method
 
 
 	Method ActivateSoftdrinkMachine:Int()

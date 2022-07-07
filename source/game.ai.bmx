@@ -403,12 +403,12 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int=-1000)
+	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int)
 		Return GetRoomCollection().GetFirstByDetails("", roomName, owner)
 	End Method
 
 
-	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int=-1000)
+	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int)
 		Return GetRoomCollection().GetAllByDetails("", roomName, owner)
 	End Method
 
@@ -461,6 +461,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	'returns if figure is really on a floor (not just moving "through")
+	Method isFigureOnFloor:Int()
+		Return TFigure(GetPlayerBase(Self.ME).GetFigure()).IsOnFloor()
+	End Method
+	
+	
+	Method getFigureFloor:Int()
+		Return GetPlayerBase(Self.ME).GetFigure().GetFloor()
+	End Method
+
+
 	'send figure to a specific room
 	'attention: the first found door is used
 	Method doGoToRoom:Int(roomId:Int = 0)
@@ -477,6 +488,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		EndIf
 
 		Return Self.RESULT_NOTFOUND
+	End Method
+
+
+	'send figure to elevator (plan) on the current floor
+	Method doGoToElevatorPlan:Int()
+		Local fig:TFigure = TFigure(GetPlayerBase(Self.ME).GetFigure())
+		If fig.SendToElevatorplan(-1)
+			Return Self.RESULT_OK
+		Else
+			Return Self.RESULT_NOTALLOWED
+		EndIf
 	End Method
 
 
@@ -1803,14 +1825,14 @@ endrem
 	'the plan on the basement which enables switching room signs
 
 	Method rb_GetSignCount:Int()
-		If Not _PlayerInRoom("roomboard") Then Return Self.RESULT_WRONGROOM
+		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return Self.RESULT_WRONGROOM
 
 		Return GetRoomBoard().GetSignCount()
 	End Method
 
 
 	Method rb_GetSignAtIndex:TLuaFunctionResult(arrayIndex:Int = -1)
-		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
 		If Sign
@@ -1823,7 +1845,7 @@ endrem
 
 	'returns the sign at the given position
 	Method rb_GetSignAtPosition:TLuaFunctionResult(signSlot:Int, signFloor:Int)
-		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignByCurrentPosition(signSlot, signFloor)
 		If Sign
@@ -1837,7 +1859,7 @@ endrem
 	'returns the sign which originally was at the given position
 	'(might be the same if it wasnt switched)
 	Method rb_GetOriginalSignAtPosition:TLuaFunctionResult(signSlot:Int, signFloor:Int)
-		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignByOriginalPosition(signSlot, signFloor)
 		If Sign
@@ -1850,7 +1872,7 @@ endrem
 
 	'returns the first sign leading to the given room(ID)
 	Method rb_GetFirstSignOfRoom:TLuaFunctionResult(roomID:Int)
-		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetFirstSignByRoom(roomID)
 		If Sign

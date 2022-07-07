@@ -1440,14 +1440,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					Local y:Int			= conf.GetInt("y", -1)
 					Local bottomy:Int	= conf.GetInt("bottomy", 0)
 					'the "building"-room uses floors
-					Local Floor:Int 	= conf.GetInt("floor", -1)
+					Local f:Int         = conf.GetInt("floor", -1)
 					Local width:Int 	= conf.GetInt("width", 0)
 					Local height:Int 	= conf.GetInt("height", 0)
 					Local tooltipText:String	 	= conf.GetString("tooltiptext")
 					Local tooltipDescription:String	= conf.GetString("tooltipdescription")
 
 					'align at bottom of floor
-					If Floor >= 0 Then y = TBuilding.GetFloorY2(Floor) - height
+					If f >= 0 Then y = TBuilding.GetFloorY2(f) - height
 
 					Local hotspot:THotspot = New THotspot.Create( name, x, y - bottomy, width, height)
 					hotspot.setTooltipText( GetLocale(tooltipText), GetLocale(tooltipDescription) )
