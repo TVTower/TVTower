@@ -227,21 +227,23 @@ Type TXmlHelper
 	'- in one of the children defined in "searchInChildNodeNames" (recursive!)
 	'  ["other"] or ["*"]
 	'  <obj><other><FIELDNAME>bla</FIELDNAME></other></obj>
-	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null)
+	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		If node
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 			Local fieldNames:String[] = fieldName.ToLower().Split("|")
 
 			For Local name:String = EachIn fieldNames
 				'given node has attribute (<episode number="1">)
-				If HasAttribute(node, name) Then Return GetAttribute(node, name)
+				If depth = 0 or searchInChildNodeAttributes
+					If HasAttribute(node, name) Then Return GetAttribute(node, name)
+				EndIf
 
 				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
 					If subNode.getName().ToLower() = name Then Return subNode.GetContent()
 					If dataLS.EqualsLower(subNode.getName()) And HasAttribute(subNode, name) Then Return GetAttribute(subNode, name)
 					If searchInChildNodeNames And searchInChildNodeNames.length > 0
 						If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
-							Return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames)
+							Return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth + 1)
 						EndIf
 					EndIf
 				Next
@@ -280,7 +282,7 @@ Type TXmlHelper
 
 
 	'loads values of a node into a tdata object
-	Function LoadValuesToData:TData(node:TxmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:String[] = Null, overwriteExisting:Int = True)
+	Function LoadValuesToData:TData(node:TxmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, overwriteExisting:Int = True)
 		If Not node Then Return data
 
 		For Local fieldName:String = EachIn fieldNames
@@ -293,10 +295,10 @@ Type TXmlHelper
 				Local arr:Object[] = Object[](old)
 				If Not arr Then arr = New Object[0]
 
-				arr :+ [FindValue(node, fieldName, "", "", searchInChildNodeNames)]
+				arr :+ [FindValue(node, fieldName, "", "", searchInChildNodeNames, searchInChildNodeAttributes)]
 				data.Add(names[0], arr)
 			Else
-				data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames))
+				data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames, searchInChildNodeAttributes))
 			EndIf
 		Next
 		Return data
