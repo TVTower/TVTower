@@ -334,6 +334,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method IsLockedSlot:int(slotType:Int = 0, day:Int=-1, hour:Int=-1)
+		FixDayHour(day, hour)
+
 		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(day*24 + hour))
 		if not currentLock then Return False
 
@@ -350,39 +352,22 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
-	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
-		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
-		local hours:int = day*24 + hour
-		if obj
-			hours = obj.programmedDay*24 + obj.programmedHour
-			For local blockHour:int = hours until hours + obj.GetBlocks()
-				if IsLockedSlot(slotType, 0, blockHour)
-					return True
-				endif
-			Next
-			return False
-		else
-			return IsLockedSlot(slotType, day, hour)
-		endif
-	End Method
+	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, obj:TBroadcastMaterial = Null)
+		If Not obj Then obj = GetObject(slotType, day, hour)
 
-
-	'returns whether a slot is locked, or belongs to an object which
-	'occupies at least 1 locked slot
-	Method BelongsToModifiyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
-		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
-		local hours:int = day*24 + hour
-		if obj
-			hours = obj.programmedDay*24 + obj.programmedHour
-			For local blockHour:int = hours until hours + obj.GetBlocks()
-				if not IsModifyableSlot(slotType, 0, blockHour)
-					return False
-				endif
+		If obj
+			Local hours:Int = obj.programmedDay*24 + obj.programmedHour
+			For Local blockHour:Int = hours Until hours + obj.GetBlocks()
+				If IsLockedSlot(slotType, 0, blockHour)
+					Return True
+				EndIf
 			Next
-			return True
-		else
-			return IsModifyableSlot(slotType, day, hour)
-		endif
+			Return False
+			'alternative:
+			'Return IsLockedBroadcastMaterial(obj)
+		Else
+			Return IsLockedSlot(slotType, day, hour)
+		EndIf
 	End Method
 
 
@@ -441,14 +426,26 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	'returns whether a slot does not belong to a locked programme,
-	'is not in the past and is not belonging to a non-controllable element
-	Method IsModifyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
-		if not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) then return False
-		if BelongsToLockedSlot(slotType, day, hour) then return False
-		if BelongsToOccupiedSlotWithUncontrollableBroadcast(slotType, day, hour) then return False
+	'returns whether a slot does not belong to a locked or currently
+	'broadcasted programme, is not in the past and is not belonging
+	'to a non-controllable element
+	Method IsModifiableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
+		'if there is an object at this slot, also check the previous and future
+		'slots of it
+		Local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
+		If obj
+			'uncontrollable?
+			If Not obj.IsControllable() Then Return False
+			'already started programme (only need to check first block)?
+			If Not IsUseableTimeSlot(slotType, obj.programmedDay, obj.programmedHour, currentDay, currentHour, currentMinute) Then Return False
+			'a slot of the running programme is locked?
+			If IsLockedBroadcastMaterial(obj) Then Return False
+		Else
+			If Not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) Then Return False
+			If IsLockedSlot(slotType, day, hour) Then Return False
+		EndIf
 
-		return True
+		Return True
 	End Method
 
 
@@ -713,17 +710,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'do not allow adding in the past
 		'do not allow adding to a locked slot
 		If checkModifyableSlot
-			if not BelongsToModifiyableSlot(slotType, day, hour)
+			If not IsModifiableSlot(slotType, day, hour)
 				'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
 				return False
 			endif
-
-			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-				if Not IsModifyableSlot(slotType, day, hour + i)
-					'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
-					Return False
-				endif
-			Next
 		EndIf
 
 
@@ -794,7 +784,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'do not allow removing objects we cannot control
 		'(to forcefully remove the, unset that flag before!
-		If not obj.IsControllable() then Return Null
+		If Not obj.IsControllable() 
+			TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - broadcast material not controllable", LOG_INFO)
+			Return Null
+		EndIf
 
 		'if not programmed, skip deletion and events
 		If obj.isProgrammed()
@@ -819,8 +812,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			If checkModifyableSlot
 				For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-					if Not IsModifyableSlot(slotType, programmedDay, programmedHour + i)
-						TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked", LOG_INFO)
+					if Not IsModifiableSlot(slotType, programmedDay, programmedHour + i)
+						TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+"/"+obj.GetBlocks(slotType)+") cannot get modified - is in the past or locked", LOG_INFO)
 						Return Null
 					endif
 				Next
@@ -1075,12 +1068,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	'clear a slot so others can get placed without trouble
-	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1)
 		return _RemoveProgramme(obj, day, hour)
 	End Method
 
 
-	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1)
 		return _RemoveProgramme(obj, day, hour, True)
 	End Method
 

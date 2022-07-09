@@ -854,7 +854,7 @@ Type TScreenHandler_ProgrammePlanner
 				'stop adding to a locked slots or slots occupied by a partially
 				'locked programme
 				'also stops if the slot is used by a not-controllable programme
-				If Not pp.IsModifyableSlot(receiverList.isType, planningDay, currentSlot)
+				If Not pp.IsModifiableSlot(receiverList.isType, planningDay, currentSlot)
 					triggerEvent.SetVeto()
 				EndIf
 			Next
@@ -1046,7 +1046,7 @@ Type TScreenHandler_ProgrammePlanner
 				'stop adding to a locked slots or slots occupied by a partially
 				'locked programme
 				'also stops if the slot is used by a not-controllable programme
-				If Not pp.IsModifyableSlot(list.isType, planningDay, currentSlot)
+				If Not pp.IsModifiableSlot(list.isType, planningDay, currentSlot)
 					triggerEvent.SetVeto()
 					Return False
 				EndIf
