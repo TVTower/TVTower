@@ -312,8 +312,10 @@ Type TBuilding Extends TBuildingBase
 		'add to innerBuilding, so doors can properly layout in the
 		'inner area
 		door.SetParent(Self.buildingInner)
-		'move door accordingly
-		door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
+		'move door accordingly (only if a slot is defined)
+		if door.doorSlot > 0
+			door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
+		EndIf
 		door.area.position.SetY(GetFloorY2(door.onFloor))
 	End Method
 
@@ -472,7 +474,7 @@ Type TBuilding Extends TBuildingBase
 
 
 		If roomUsedTooltip Then roomUsedTooltip.Update()
-		'Tooltips aktualisieren
+		'update room/door tooltips
 		GetRoomDoorCollection().UpdateToolTips()
 	End Method
 

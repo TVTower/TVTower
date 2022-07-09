@@ -202,7 +202,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		subNode = TXmlHelper.FindChild(node, "door")
 		If subNode
 			Local doorData:TData = New TData
-			Local doorFields:String[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doortooltip"]
+			Local doorFields:String[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doorheight", "doorstopoffset", "flags"]
 			TXmlHelper.LoadValuesToData(subNode, doorData, doorFields)
 			'add door configuration
 			data.Add("door", doorData)
@@ -222,7 +222,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		Local roomData:TData = New TData
 		Local owner:Int	= data.GetInt("owner", -1)
 		Local name:String = data.GetString("name", "unknown")
-		Local id:String	= data.GetString("id", "")
+		Local id:Int	= data.GetInt("id", -1)
 
 		roomData.AddString("name",	name + owner)
 		roomData.AddString("owner",	owner)
@@ -240,15 +240,21 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		roomData.Add("hotspots", TList(data.Get("hotspots", CreateList())))
 
 		Local doorData:TData = TData(data.Get("door"))
+		Local doorFloor:Int = -1
+		Local doorX:Int = -1000
 		If doorData
 			roomData.AddNumber("hasDoorData", True)
 			'load door settings
-			roomData.AddNumber("x", doorData.GetInt("x", -1000))
-			roomData.AddNumber("floor",	 doorData.GetInt("floor", -1))
-			roomData.AddNumber("doorslot", doorData.GetInt("doorslot", -1))
-			roomData.AddNumber("doortype", doorData.GetInt("doortype", -1))
-			roomData.AddNumber("doorwidth", doorData.GetInt("doorwidth", -1))
-			roomData.AddBoolString("doortooltip", doorData.GetBool("doortooltip", True))
+			doorFloor = doorData.GetInt("floor", -1)
+			doorX = doorData.GetInt("x", -1000)
+			roomData.AddInt("doorx", doorX)
+			roomData.AddInt("doorfloor",	 doorFloor)
+			roomData.AddInt("doorslot", doorData.GetInt("doorslot", -1))
+			roomData.AddInt("doortype", doorData.GetInt("doortype", -1))
+			roomData.AddInt("doorwidth", doorData.GetInt("doorwidth", -1))
+			roomData.AddInt("doorheight", doorData.GetInt("doorheight", -1))
+			roomData.AddInt("doorstopoffset", doorData.GetInt("doorstopoffset", 0))
+			roomData.AddInt("doorflags", doorData.GetInt("flags", 0))
 		Else
 			roomData.AddNumber("hasDoorData", False)
 		EndIf
@@ -261,9 +267,9 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		EndIf
 
 		'add the room configuration to the container
-		Local key:String = Name + owner + id
+		Local key:String = Name + "_" + owner + "_" + doorX + "_" + doorFloor + "_" + id
 		roomsMap.Insert(key, roomData)
-		'TLogger.log("XmlLoader.LoadRooms()", "inserted room: " + Name, LOG_LOADING | LOG_DEBUG, TRUE)
+		'TLogger.log("XmlLoader.LoadRooms()", "inserted room=" + Name + "  key="+key, LOG_LOADING | LOG_DEBUG, TRUE)
 
 		'indicate that the loading was successful
 		Return roomData

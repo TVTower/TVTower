@@ -152,6 +152,9 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'door 1-4 on floor (<0 is invisible, -1 is unset)
 	Field doorSlot:Int = -1
 	Field doorType:Int = -1
+	'offset from "center" of the door - which is where figures enter
+	Field stopOffset:Int = 0
+	Field doorFlags:Int
 	'who opened the door as the last one (this entity also closes the
 	'door then)
 	Field openedByEntityGUID:string
@@ -162,6 +165,20 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 		return "roomdoor-"+roomID+"-"+doorSlot+"-"+onFloor
 	End Method
 
+
+	Method hasFlag:Int(flag:Int) {_exposeToLua}
+		Return (doorFlags & flag)
+	End Method
+
+
+	Method setFlag(flag:Int, enable:Int=True)
+		If enable
+			doorFlags :| flag
+		Else
+			doorFlags :& ~flag
+		EndIf
+	End Method
+	
 
 	Method GetOnFloor:int()
 		return onFloor
@@ -211,6 +228,11 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 		If doorType < 0 OR area.GetX() <= 0 then Return FALSE
 
 		Return TRUE
+	End Method
+
+
+	Method GetRoomName:String()
+		return "unknown"
 	End Method
 
 

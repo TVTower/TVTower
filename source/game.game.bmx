@@ -797,7 +797,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
 		'forcefully send (no controlling possible until reaching the target)
 		'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-		figure.ForceChangeTarget(Int(TRoomDoor.GetByDetails("news", playerID).area.GetX()) + 60, Int(TRoomDoor.GetByDetails("news", playerID).area.GetY()))
+		Local newsDoor:TRoomDoor = TRoomDoor.GetByDetails("news", playerID)
+		If Not newsDoor
+			Throw "No 'news' room found - broken config?"
+		EndIf
+		figure.ForceChangeTarget(Int(newsDoor.area.GetX()) + 60, Int(newsDoor.area.GetY()))
 
 
 
@@ -1415,7 +1419,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				door.Init(..
 					room.id,..
 					vars.GetInt("doorslot"), ..
-					vars.GetInt("floor"), ..
+					vars.GetInt("doorfloor"), ..
 					vars.GetInt("doortype") ..
 				)
 				GetRoomDoorBaseCollection().Add( door )
@@ -1423,11 +1427,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				GetBuilding().AddDoor(door)
 
 				'override defaults
-				If Not vars.GetBool("doortooltip") Then door.showTooltip = False
 				If vars.GetInt("doorwidth") > 0 Then door.area.dimension.setX( vars.GetInt("doorwidth") )
-				If vars.GetInt("x",-1000) <> -1000 Then door.area.position.SetX(vars.GetInt("x"))
+				If vars.GetInt("doorheight") > 0 Then door.area.dimension.setY( vars.GetInt("doorheight") )
+				door.stopOffset = vars.GetInt("doorstopoffset", 0)
+				door.doorFlags = vars.GetInt("doorflags", 0)
 				'move these doors outside so they do not overlap with the "porter"
 				If vars.GetInt("doortype") = -1 Then door.area.position.SetX(-1000 - room.id*door.area.GetW())
+				'allow overriding door positions
+				If vars.GetInt("doorx",-1000) <> -1000 Then door.area.position.SetX(vars.GetInt("doorx"))
 			EndIf
 
 

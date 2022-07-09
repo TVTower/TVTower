@@ -42,6 +42,7 @@ Type TRoomBoardBase
 		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
 			If door.doorType >= 0
+				'print "door: " + door.GetOwnerName() + "   " + door.GetRoomName()
 				Local sign:TRoomBoardSign = New TRoomBoardSign.Init(door)
 				AddSign(sign)
 			EndIf
@@ -88,6 +89,7 @@ Type TRoomBoardBase
 			Case 2	Return 208
 			Case 3	Return 417
 			Case 4	Return 599
+			Case -1 Return -1000
 			Default Throw "TRoomBoard.GetSlotX(): invalid signSlot "+signSlot
 		End Select
 		Return 0

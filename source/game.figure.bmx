@@ -1142,10 +1142,11 @@ Type TFigure extends TFigureBase
 
 		'only a partial target was given
 		if x=-1 or y=-1
+			Local v:TVec2D = TVec2D(GetTargetObject())
 			'change current target
-			if TVec2D( GetTargetObject() )
-				If x<>-1 Then x = TVec2D( GetTargetObject() ).x
-				If y<>-1 Then y = TVec2D( GetTargetObject() ).y
+			if v
+				If x<>-1 Then x = v.x
+				If y<>-1 Then y = v.y
 			'create a new target
 			else
 				If x=-1 Then x = area.position.x
@@ -1163,9 +1164,13 @@ Type TFigure extends TFigureBase
 		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
-		local targetedDoor:TRoomDoorBase = TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
+		local targetedDoor:TRoomDoorBase = TRoomDoor.GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
 		if targetedDoor
-			newTarget = targetedDoor
+			'only go into the room if we were able to target it from our
+			'source position
+			If not targetedDoor.HasFlag(TVTRoomDoorFlag.ONLY_TARGETABLE_ON_SAME_FLOOR) or targetedDoor.onFloor = GetFloor()
+				newTarget = targetedDoor
+			EndIf
 			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
 		endif
 
@@ -1414,7 +1419,7 @@ Type TFigureTarget extends TFigureTargetBase
 		if TVec2D(target)
 			return TVec2D(target)
 		elseif TRoomDoorBase(target)
-			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
+			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2 + TRoomDoorBase(target).stopOffset, TRoomDoorBase(target).area.GetY())
 		elseif THotspot(target)
 			'attention: return GetY2() (bottom point) as this is used for figures too
 			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())

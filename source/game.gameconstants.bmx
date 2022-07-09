@@ -68,6 +68,9 @@ Type TVTGameConstants {_exposeToLua}
 	Field AwardType:TVTAwardType = New TVTAwardType
 
 	Field StationType:TVTStationType = New TVTStationType
+	
+	Field RoomFlag:TVTRoomFlag = new TVTRoomFlag
+	Field RoomDoorFlag:TVTRoomDoorFlag = new TVTRoomDoorFlag
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -1368,6 +1371,17 @@ Type TVTRoomFlag
 	Const RENTAL_CHANGE_BLOCKED:Int = 64
 End Type
 
+
+Type TVTRoomDoorFlag
+	Const NONE:Int = 0
+
+	'can this room door be "targeted/clicked" while on a different floor?
+	'if not, then only the "coordinates" are used instead of "entering"
+	'at the end
+	Const ONLY_TARGETABLE_ON_SAME_FLOOR:Int = 1
+	Const SHOW_TOOLTIP:Int = 2
+	Const TOOLTIP_ONLY_ON_SAME_FLOOR:Int = 4
+End Type
 
 
 Type TVTProgrammeLifecycleFlag
