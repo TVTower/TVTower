@@ -225,7 +225,7 @@
 			<door doorslot="1" x="0" floor="0" doortype="1" doorwidth="66" flags="2" />
 		</room>
 
-
+<!--
 		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
 			<tooltip text="ROOM_ELEVATORPLAN" />
 			<door doorslot="-1" x="210" floor="0" doorwidth="48" doortype="-1" flags="7" />
@@ -282,6 +282,26 @@
 			<tooltip text="ROOM_ELEVATORPLAN" />
 			<door doorslot="-1" x="210" floor="13" doorwidth="48" doortype="-1" flags="7" />
 		</room>
+-->
+
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="0" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="1" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="2" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="3" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="4" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="5" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="6" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="7" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="8" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="9" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="10" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="11" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="12" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="13" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+
 
 		<!-- "building" is a special room - and also handle if no room is given -->
 		<room name="building" owner="0" flags="32">

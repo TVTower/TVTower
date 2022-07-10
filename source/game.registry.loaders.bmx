@@ -198,16 +198,18 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		data.Add("hotspots", hotSpots)
 
 
-		'4. load door settings
-		subNode = TXmlHelper.FindChild(node, "door")
-		If subNode
+		'4. load door(s) settings
+		Local doorsList:TObjectList = New TObjectList
+		data.Add("doors", doorsList)
+		For Local subNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
+			If subNode.getName() <> "door" Then Continue
+
 			Local doorData:TData = New TData
 			Local doorFields:String[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doorheight", "doorstopoffset", "flags"]
 			TXmlHelper.LoadValuesToData(subNode, doorData, doorFields)
 			'add door configuration
-			data.Add("door", doorData)
-		EndIf
-
+			doorsList.AddLast(doorData)
+		Next
 
 		Return data
 	End Method
@@ -239,24 +241,39 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		'load hotspots
 		roomData.Add("hotspots", TList(data.Get("hotspots", CreateList())))
 
-		Local doorData:TData = TData(data.Get("door"))
 		Local doorFloor:Int = -1
 		Local doorX:Int = -1000
-		If doorData
-			roomData.AddNumber("hasDoorData", True)
-			'load door settings
-			doorFloor = doorData.GetInt("floor", -1)
-			doorX = doorData.GetInt("x", -1000)
-			roomData.AddInt("doorx", doorX)
-			roomData.AddInt("doorfloor",	 doorFloor)
-			roomData.AddInt("doorslot", doorData.GetInt("doorslot", -1))
-			roomData.AddInt("doortype", doorData.GetInt("doortype", -1))
-			roomData.AddInt("doorwidth", doorData.GetInt("doorwidth", -1))
-			roomData.AddInt("doorheight", doorData.GetInt("doorheight", -1))
-			roomData.AddInt("doorstopoffset", doorData.GetInt("doorstopoffset", 0))
-			roomData.AddInt("doorflags", doorData.GetInt("flags", 0))
-		Else
-			roomData.AddNumber("hasDoorData", False)
+		Local doorCount:Int = 0
+		Local doorsList:TObjectList = TObjectList(data.Get("doors"))
+		If doorsList
+			Local roomDataDoorsList:TObjectList
+			For local doorData:TData = EachIn doorsList
+				doorCount :+ 1
+
+				'config has at least one door 
+				If Not roomDataDoorsList
+					roomDataDoorsList = new TObjectList
+					roomData.Add("doors", roomDataDoorsList)
+				EndIf
+
+				'load door settings
+				'here you can override / boundary check values
+				'(for multiple doors the last door defines floor and x)
+				doorFloor = doorData.GetInt("floor", -1)
+				doorX = doorData.GetInt("x", -1000)
+
+				Local roomDataDoorData:TData = new TData
+				roomDataDoorData.AddInt("x", doorX)
+				roomDataDoorData.AddInt("width", doorData.GetInt("doorwidth", -1))
+				roomDataDoorData.AddInt("height", doorData.GetInt("doorheight", -1))
+				roomDataDoorData.AddInt("onFloor", doorFloor)
+				roomDataDoorData.AddInt("doorSlot", doorData.GetInt("doorslot", -1))
+				roomDataDoorData.AddInt("doorType", doorData.GetInt("doortype", -1))
+				roomDataDoorData.AddInt("stopOffset", doorData.GetInt("doorstopoffset", 0))
+				roomDataDoorData.AddInt("doorFlags", doorData.GetInt("flags", 0))
+
+				roomDataDoorsList.AddLast(roomDataDoorData)
+			Next
 		EndIf
 
 		'fetch/create the rooms config container
@@ -269,7 +286,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		'add the room configuration to the container
 		Local key:String = Name + "_" + owner + "_" + doorX + "_" + doorFloor + "_" + id
 		roomsMap.Insert(key, roomData)
-		'TLogger.log("XmlLoader.LoadRooms()", "inserted room=" + Name + "  key="+key, LOG_LOADING | LOG_DEBUG, TRUE)
+		TLogger.log("XmlLoader.LoadRooms()", "inserted room=" + Name + "  key=" + key + "  doors=" + doorCount + "." , LOG_LOADING | LOG_DEBUG, TRUE)
 
 		'indicate that the loading was successful
 		Return roomData

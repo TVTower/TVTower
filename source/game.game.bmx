@@ -1414,27 +1414,31 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'==== DOOR ====
 			'no door for the artificial room "building"
 			'if vars.GetString("roomname") <> "building"
-			If vars.GetInt("hasDoorData",-1) = 1
-				Local door:TRoomDoor = New TRoomDoor
-				door.Init(..
-					room.id,..
-					vars.GetInt("doorslot"), ..
-					vars.GetInt("doorfloor"), ..
-					vars.GetInt("doortype") ..
-				)
-				GetRoomDoorBaseCollection().Add( door )
-				'add the door to the building (sets parent etc)
-				GetBuilding().AddDoor(door)
+			Local doors:TObjectList = TObjectList(vars.Get("doors"))
+			If doors
+				For local doorConfig:TData = EachIn doors
+					Local door:TRoomDoor = New TRoomDoor
+					door.Init(..
+						room.id,..
+						doorConfig.GetInt("doorSlot"), ..
+						doorConfig.GetInt("onFloor"), ..
+						doorConfig.GetInt("doortype") ..
+					)
 
-				'override defaults
-				If vars.GetInt("doorwidth") > 0 Then door.area.dimension.setX( vars.GetInt("doorwidth") )
-				If vars.GetInt("doorheight") > 0 Then door.area.dimension.setY( vars.GetInt("doorheight") )
-				door.stopOffset = vars.GetInt("doorstopoffset", 0)
-				door.doorFlags = vars.GetInt("doorflags", 0)
-				'move these doors outside so they do not overlap with the "porter"
-				If vars.GetInt("doortype") = -1 Then door.area.position.SetX(-1000 - room.id*door.area.GetW())
-				'allow overriding door positions
-				If vars.GetInt("doorx",-1000) <> -1000 Then door.area.position.SetX(vars.GetInt("doorx"))
+					GetRoomDoorBaseCollection().Add( door )
+					'add the door to the building (sets parent etc)
+					GetBuilding().AddDoor(door)
+
+					'override defaults
+					If doorConfig.GetInt("width") > 0 Then door.area.dimension.setX( doorConfig.GetInt("width") )
+					If doorConfig.GetInt("height") > 0 Then door.area.dimension.setY( doorConfig.GetInt("height") )
+					door.stopOffset = doorConfig.GetInt("stopOffset", 0)
+					door.doorFlags = doorConfig.GetInt("doorFlags", 0)
+					'move these doors outside so they do not overlap with the "porter"
+					If doorConfig.GetInt("doorType") = -1 Then door.area.position.SetX(-1000 - room.id * door.area.GetW())
+					'allow overriding door positions
+					If doorConfig.GetInt("x",-1000) <> -1000 Then door.area.position.SetX(doorConfig.GetInt("x"))
+				Next
 			EndIf
 
 
