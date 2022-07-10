@@ -416,6 +416,15 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	Method GetRoom:TRoom(id:Int)
 		Return GetRoomCollection().Get(id)
 	End Method
+	
+	
+	'returns the id of an hotspot, door ... suiting to the given params
+	'targetOwner = -1 to not limit the owner
+	'targetFloor = -1 to not limit the floor of the target
+	'targetType  = 0 to not limit the target type, else TVT.constants.buildingTargetType.ROOM / HOTSPOT
+	Method GetTargetID:Int(targetName:String, targetOwner:Int, targetFloor:Int, targetType:Int)
+		Return GetBuildingBase().GetTargetID(targetName, targetOwner, targetFloor, targetType)
+	End Method
 
 
 	Method SendToChat:Int(ChatText:String)
@@ -469,6 +478,21 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	
 	Method getFigureFloor:Int()
 		Return GetPlayerBase(Self.ME).GetFigure().GetFloor()
+	End Method
+	
+	
+	'send figure to a specific target (room, hotspot, ...)
+	Method doGoToTarget:Int(targetID:Int = 0)
+		Local t:Object = GetBuildingBase().GetTarget(targetID)
+		if t
+			If TFigure(GetPlayerBase(Self.ME).GetFigure()).SendToTarget(t)
+				Return Self.RESULT_OK
+			Else
+				Return Self.RESULT_NOTALLOWED
+			EndIf
+		EndIf
+
+		Return Self.RESULT_NOTFOUND
 	End Method
 
 

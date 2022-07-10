@@ -71,6 +71,7 @@ Type TVTGameConstants {_exposeToLua}
 	
 	Field RoomFlag:TVTRoomFlag = new TVTRoomFlag
 	Field RoomDoorFlag:TVTRoomDoorFlag = new TVTRoomDoorFlag
+	Field BuildingTargetType:TVTBuildingTargetType = new TVTBuildingTargetType
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -1381,6 +1382,13 @@ Type TVTRoomDoorFlag
 	Const ONLY_TARGETABLE_ON_SAME_FLOOR:Int = 1
 	Const SHOW_TOOLTIP:Int = 2
 	Const TOOLTIP_ONLY_ON_SAME_FLOOR:Int = 4
+End Type
+
+
+Type TVTBuildingTargetType
+	Const NONE:Int = 0
+	Const DOOR:Int = 1
+	Const HOTSPOT:Int = 2
 End Type
 
 

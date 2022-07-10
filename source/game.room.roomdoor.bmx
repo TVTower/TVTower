@@ -299,35 +299,6 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	End Method
 
 
-	Function GetByDetails:TRoomDoor( name:String, owner:Int, onFloor:int =-1 )
-		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
-			'skip wrong floors
-			if onFloor >=0 and door.GetOnFloor() <> onFloor then continue
-
-			local room:TRoomBase = door.GetRoom()
-			if not room then continue
-			'skip wrong owners
-			if room.owner <> owner then continue
-
-			If room.GetName() = name Then Return door
-		Next
-		Return Null
-	End Function
-
-
-	'returns a door by the given (local to parent/building) coordinates
-	Function GetByCoord:TRoomDoorBase( x:Int, y:Int )
-		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
-			'also allow invisible rooms... so just check if hit the area
-			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.area.GetIntX(), int(door.area.GetY() - (door.area.GetH() -1)), int(door.area.GetW()), int(door.area.GetH()))
-				Return door
-			EndIf
-		Next
-		Return Null
-	End Function
-
-
 	'override
 	Method RemoveFromCollection:Int(collection:object = null)
 		'if collection = GetRoomDoorBaseCollection() ...

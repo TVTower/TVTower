@@ -986,7 +986,28 @@ Type TFigure extends TFigureBase
 
 		return True
 	End Method
+	
+	
+	Method SendToHotspot:Int(h:THotspot, forceSend:Int=False)
+		If Not h Then Return False
+		
+		Local target:TFigureTargetBase = new TFigureTarget.Init(h)
+		Local moveToPos:TVec2D = GetMoveToPosition( target )
+		If Not moveToPos
+			print "SendToHotspot: failed, moveToPos = null"
+			Return False
+		EndIf
 
+		If forceSend
+			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			SetTarget( target )
+		Else
+			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			SetTarget( target )
+		EndIf
+		Return True
+	End Method
+	
 
 	Method SendToElevatorplan:Int(onFloor:Int = -1, forceSend:Int=False)
 		If onFloor = -1 Then onFloor = TBuildingBase.GetFloorY2( GetFloor() )
@@ -1009,22 +1030,7 @@ Type TFigure extends TFigureBase
 		Next
 		if not useHotspot Then Return False
 		
-		Local target:TFigureTargetBase = new TFigureTarget.Init(useHotspot)
-
-		Local moveToPos:TVec2D = GetMoveToPosition( target )
-		If Not moveToPos
-			print "SendToElevatorplan: failed, moveToPos = null"
-			Return False
-		EndIf
-
-
-		If forceSend
-			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
-			SetTarget( target )
-		Else
-			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
-			SetTarget( target )
-		EndIf
+		Return SendToHotspot(useHotspot)
 	End Method
 	
 
@@ -1042,6 +1048,33 @@ Type TFigure extends TFigureBase
 		Else
 			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
 		EndIf
+		
+		Return True
+	End Method
+	
+	
+	'send to a door, hotspot... defined by the given ID
+	Method SendToTarget:Int(targetID:Int, forceSend:Int=False)
+		Local target:Object = GetBuildingBase().GetTarget(targetID)
+		If Not target Then Return False
+		
+		If TRoomDoor(target)
+			Return SendToDoor(TRoomDoor(target), forceSend)
+		ElseIf THotspot(target)
+			Return SendToHotspot(THotspot(target), forceSend)
+		EndIf
+	End Method
+
+
+	Method SendToTarget:Int(target:Object, forceSend:Int=False) override
+		If TRoomDoor(target)
+			Return SendToDoor(TRoomDoor(target), forceSend)
+		ElseIf THotspot(target)
+			Return SendToHotspot(THotspot(target), forceSend)
+		ElseIf target <> Null
+			Throw "unsupported target passed to SendToTarget(). Target type=" + TTypeID.ForObject(target).name()
+		EndIf
+		Return Null
 	End Method
 
 
@@ -1164,7 +1197,7 @@ Type TFigure extends TFigureBase
 		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
-		local targetedDoor:TRoomDoorBase = TRoomDoor.GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
+		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
 		if targetedDoor
 			'only go into the room if we were able to target it from our
 			'source position

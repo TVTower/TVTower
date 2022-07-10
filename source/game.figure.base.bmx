@@ -477,6 +477,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method SendToElevatorplan:Int(onFloor:Int = -1, forceSend:Int=False)
 		'
 	End Method
+
+
+	Method SendToTarget:Int(target:Object, forceSend:Int=False)
+		Throw "unsupported target passed to SendToTarget(). Target type=" + TTypeID.ForObject(target).name()
+	End Method
+
 	
 	'send a figure to the offscreen position
 	Method SendToOffscreen:Int(forceSend:int=False)

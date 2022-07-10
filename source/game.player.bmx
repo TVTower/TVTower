@@ -477,7 +477,7 @@ endrem
 	'remove this helper as soon as "player" class gets a single importable
 	'file
 	Method SendToBoss:Int()	{_exposeToLua}
-		GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", playerID), True )
+		GetFigure().SendToDoor( GetRoomDoorCollection().GetFirstByDetails("boss", playerID), True )
 
 		'inform the boss that the player accepted the call
 		GetPlayerBossCollection().Get(playerID).InformPlayerAcceptedCall()

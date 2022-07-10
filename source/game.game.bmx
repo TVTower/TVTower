@@ -796,8 +796,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		figure.MoveToOffscreen()
 		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
 		'forcefully send (no controlling possible until reaching the target)
-		'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-		Local newsDoor:TRoomDoor = TRoomDoor.GetByDetails("news", playerID)
+		'GetPlayer(i).GetFigure().SendToDoor( GetRoomDoorBasecollection().GetFirstByDetails("office", i), True)
+		Local newsDoor:TRoomDoorBase = GetRoomDoorBasecollection().GetFirstByDetails("news", playerID)
 		If Not newsDoor
 			Throw "No 'news' room found - broken config?"
 		EndIf
@@ -1193,19 +1193,19 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GetBuildingBase().figureOffscreenX, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
-		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
+		fig.SendToDoor(GetRoomDoorCollection().GetFirstByDetails("supermarket",-1), True)
 
 		fig = GetFigureCollection().GetByName("Bote1")
 		If Not fig Then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GetBuildingBase().figureOffscreenX - 90, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
-		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
+		fig.SendToDoor(GetRoomDoorCollection().GetFirstByDetails("boss", 1), True)
 
 		fig = GetFigureCollection().GetByName("Bote2")
 		If Not fig Then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GetBuildingBase().figureOffscreenX -60, 0, -65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
-		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
+		fig.SendToDoor(GetRoomDoorCollection().GetFirstByDetails("boss", 3), True)
 
 
 		'create 2 terrorists

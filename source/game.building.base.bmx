@@ -42,6 +42,21 @@ Type TBuildingBase Extends TRenderableEntity
 	End Function
 	
 
+	Method GetTargetID:Int(name:String, owner:Int, onFloor:Int, buildingTargetType:Int)
+		'stub - implement in TBuilding
+	End Method
+
+	
+	Method GetTarget:Object(name:String, owner:Int, onFloor:Int, buildingTargetType:Int)
+		'stub - implement in TBuilding
+	End Method
+
+
+	Method GetTarget:Object(id:Int)
+		'stub - implement in TBuilding
+	End Method
+	
+
 	Function GetDoorXFromDoorSlot:int(slot:int)
 		select slot
 			case 1	return doorSlot1

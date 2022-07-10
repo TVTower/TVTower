@@ -1,8 +1,8 @@
 SuperStrict
 Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
+Import "Dig/base.util.helper.bmx"
 Import "game.building.buildingtime.bmx"
-
 
 Type TRoomDoorBaseCollection
 	Field List:TList = CreateList()
@@ -51,6 +51,48 @@ Type TRoomDoorBaseCollection
 		return Null
 	End Method
 
+
+	Method GetFirstByDetails:TRoomDoorBase( roomName:String, roomOwner:Int =-1, onFloor:int =-1 )
+		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
+			'skip wrong floors
+			If onFloor >=0 and door.GetOnFloor() <> onFloor Then Continue
+			'skip wrong owners
+			If roomOwner >= 0 And door.GetOwner() <> roomOwner Then Continue
+			If door.GetRoomName() <> roomName Then Continue
+			
+			Return door
+		Next
+		Return Null
+	End Method
+
+
+	Method GetByDetails:TRoomDoorBase[]( roomName:String, roomOwner:Int =-1, onFloor:int =-1 )
+		Local result:TRoomDoorBase[]
+		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
+			'skip wrong floors
+			If onFloor >=0 and door.GetOnFloor() <> onFloor Then Continue
+			'skip wrong owners
+			If roomOwner >= 0 And door.GetOwner() <> roomOwner Then Continue
+			If door.GetRoomName() <> roomName Then Continue
+			
+			result :+ [door]
+		Next
+		Return result
+	End Method
+
+
+	'returns a door by the given (local to parent/building) coordinates
+	Method GetByCoord:TRoomDoorBase( x:Int, y:Int )
+		For Local door:TRoomDoorBase = EachIn list
+			'also allow invisible rooms... so just check if hit the area
+			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
+			If THelper.IsIn(x, y, door.area.GetIntX(), int(door.area.GetY() - (door.area.GetH() -1)), int(door.area.GetW()), int(door.area.GetH()))
+				Return door
+			EndIf
+		Next
+		Return Null
+	End Method
+	
 
 	Method GetFirstByRoomID:TRoomDoorBase(roomID:int)
 		For local door:TRoomDoorBase = eachin List

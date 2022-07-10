@@ -307,6 +307,50 @@ Type TBuilding Extends TBuildingBase
 	End Method
 
 
+	Method GetTargetID:Int(name:String, owner:Int, onFloor:Int, buildingTargetType:Int) override
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.DOOR
+			local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetFirstByDetails(name, owner, onFloor)
+			If door Then Return door.GetID()
+		EndIf
+		
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.HOTSPOT
+			If Not room then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+			For Local hotspot:THotspot = EachIn room.hotspots
+				If hotspot.name <> name Then Continue
+				If onFloor >= 0 and GetFloor(hotspot.area.GetY()) <> onFloor Then Continue
+				
+				Return hotspot.GetID()
+			Next
+		EndIf
+		
+		Return -1
+	End Method
+	
+	
+	Method GetTarget:Object(name:String, owner:Int, onFloor:Int, buildingTargetType:Int) override
+		Local id:Int = GetTargetID(name, owner, onFloor, buildingTargetType)
+		if id > 0 then Return GetTarget(id)
+
+		Return Null
+	End Method
+
+
+	Method GetTarget:Object(id:Int)
+		If Not room Then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+		For local h:THotspot = EachIn room.hotspots
+			if h.GetID() = id Then Return h
+		Next
+
+		For local r:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+			if r.GetID() = id Then Return r
+		Next
+		
+		Return Null
+	End Method
+
+
 	Method AddDoor:Int(door:TRoomDoorBase)
 		If Not door Then Return False
 		'add to innerBuilding, so doors can properly layout in the
