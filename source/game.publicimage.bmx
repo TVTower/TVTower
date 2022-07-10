@@ -6,9 +6,9 @@ Import "game.modifier.base.bmx"
 
 Type TPublicImageCollection
 	Field entries:TPublicImage[]
-	'these entries only contain "channel"
-	Field archivedImages:TPublicImageArchive[]
 	'these entries contain "channel" + "for all"
+	Field archivedImages:TPublicImageArchive[]
+	'these entries only contain "channel"
 	Field archivedImagesGlobal:TPublicImageArchive[]
 	Global _instance:TPublicImageCollection
 	Global archiveLimit:Int = 50
@@ -61,6 +61,7 @@ Type TPublicImageCollection
 		If archivedBefore = 0
 			selectedImageValues = GetPublicImage(forChannelID).imageValues
 		Else
+			'archivedImages is "all + 1,2,3,4"
 			If owningChannelID >= 0 And owningChannelID < archivedImages.length
 				Local archive:TPublicImageArchive = archivedImages[owningChannelID]
 				If archive
@@ -86,15 +87,15 @@ Type TPublicImageCollection
 '			Print "get current -- archivedBefore="+archivedBefore + "  object="+GetPublicImage(forChannelID).imageValues.ToString()
 			selectedImageValues = GetPublicImage(forChannelID).imageValues
 		Else
+			'archivedImagesGlobal only contains channels, not "all" on index 0
 			If owningChannelID > 0 And owningChannelID <= archivedImagesGlobal.length
-				Local archive:TPublicImageArchive = archivedImagesGlobal[owningChannelID]
+				Local archive:TPublicImageArchive = archivedImagesGlobal[owningChannelID - 1]
 				If archive
 					Local test:TAudience = GetPublicImage(forChannelID).imageValues
 					Local testarchive:TPublicImageArchiveEntry = archive.Get(archivedBefore, returnFirstPossible)
 					Local test2:TAudience = archive.Get(archivedBefore, returnFirstPossible).images[0].ImageValues
 '					Print "get archived -- archivedBefore="+archivedBefore + "  object="+archive.Get(archivedBefore, returnFirstPossible).GetImage(forChannelID).ToString()
 					selectedImageValues = archive.Get(archivedBefore, returnFirstPossible).GetImage(forChannelID)
-'DebugStop
 				EndIf
 			EndIf
 
