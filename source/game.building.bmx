@@ -136,6 +136,29 @@ Type TBuilding Extends TBuildingBase
 		TLogger.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
 		GetInstance().InitGraphics()
 
+		local savedSaveGameVersion:Int = triggerEvent.GetData().GetInt("saved_savegame_version")
+		'before version 19 rooms and doors could have same IDs
+		'as one extended from TGameObject and the other from TEntityBase
+		'with version 19 both extend from TEntityBase and this means
+		'they have unique IDs then.
+		'Here we give doors and hotspots new IDs just to avoid hickups
+		If savedSaveGameVersion < 19
+			For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+				'GUID can be kept (does not contain the ID) 
+				TRoomDoorBase.LastID :+ 1 'this is actually TEntityBase
+				door.id = LastID
+			Next
+			
+			Local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("building")
+
+			For Local hotspot:THotspot = EachIn room.hotspots
+				'GUID can be kept (does not contain the ID) 
+				THotspot.LastID :+ 1 'this is actually TEntityBase
+				hotspot.id = LastID
+				hotspot.SetGUID()
+			Next
+		EndIf
+
 		'reassign self as parent to all doors
 		'-> just re-add them
 		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List

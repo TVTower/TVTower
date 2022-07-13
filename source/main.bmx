@@ -2272,7 +2272,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 18
+	Const SAVEGAME_VERSION:int = 19
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
