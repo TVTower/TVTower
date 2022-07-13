@@ -3,6 +3,7 @@ Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.helper.bmx"
 Import "game.building.buildingtime.bmx"
+Import "game.gameconstants.bmx"
 
 Type TRoomDoorBaseCollection
 	Field List:TList = CreateList()
@@ -201,6 +202,12 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'door then)
 	Field openedByEntityGUID:string
 	Field _sprite:TSprite {nosave}
+	
+	
+	Method New()
+		'set default flags
+		SetFlag(TVTRoomDoorFlag.SHOW_TOOLTIP)
+	End Method
 
 
 	Method GenerateGUID:string()
