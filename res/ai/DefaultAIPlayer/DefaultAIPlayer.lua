@@ -46,6 +46,7 @@ dofile(scriptPath .. "TaskSchedule.lua")
 dofile(scriptPath .. "TaskStationMap.lua")
 dofile(scriptPath .. "TaskBoss.lua")
 dofile(scriptPath .. "TaskRoomBoard.lua")
+dofile(scriptPath .. "TaskCheckSigns.lua")
 dofile(scriptPath .. "TaskArchive.lua")
 if (unitTestMode) then
 	dofile(scriptPath .. "UnitTests.lua")
@@ -66,6 +67,7 @@ TASK_STATIONMAP			= "StationMap"
 TASK_BETTY				= "Betty"
 TASK_BOSS				= "Boss"
 TASK_ROOMBOARD			= "RoomBoard"
+TASK_CHECKSIGNS			= "CheckSigns"
 
 _G["TASK_MOVIEDISTRIBUTOR"] = TASK_MOVIEDISTRIBUTOR
 _G["TASK_NEWSAGENCY"] = TASK_NEWSAGENCY
@@ -76,6 +78,7 @@ _G["TASK_STATIONMAP"] = TASK_STATIONMAP
 _G["TASK_BETTY"] = TASK_BETTY
 _G["TASK_BOSS"] = TASK_BOSS
 _G["TASK_ROOMBOARD"] = TASK_ROOMBOARD
+_G["TASK_CHECKSIGNS"] = TASK_CHECKSIGNS
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
@@ -179,6 +182,10 @@ function DefaultAIPlayer:resume()
 		self.Strategy = DefaultStrategy()
 	end
 
+	if (self.TaskList[TASK_CHECKSIGNS] == nil) then
+		self.TaskList[TASK_CHECKSIGNS] = TaskCheckSigns()
+	end
+
 	self:initParameters()
 
 	self:CleanUp()
@@ -193,11 +200,9 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_STATIONMAP]			= TaskStationMap()
 	self.TaskList[TASK_BOSS]				= TaskBoss()
 	self.TaskList[TASK_ROOMBOARD]			= TaskRoomBoard()
+	self.TaskList[TASK_CHECKSIGNS]			= TaskCheckSigns()
 	self.TaskList[TASK_ARCHIVE]				= TaskArchive()
-
-
-	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
-	--self.TaskList[TASK_STATIONMAP].NeededInvestmentBudget = 10000
+	--when adding new tasks, they may have to be added in "resume" as well (save game compatibility)
 
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
 

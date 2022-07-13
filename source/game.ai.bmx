@@ -1848,6 +1848,25 @@ endrem
 		Return Self.RESULT_NOTFOUND
 	End Method
 
+	'=== ELEVATOR PLAN ===
+
+	Method ep_GetSignCount:Int()
+		If Not _PlayerInRoom("elevatorplan") Then Return Self.RESULT_WRONGROOM
+
+		Return GetRoomBoard().GetSignCount()
+	End Method
+
+
+	Method ep_GetSignAtIndex:TLuaFunctionResult(arrayIndex:Int = -1)
+		If Not _PlayerInRoom("elevatorplan") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+
+		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
+		If Sign
+			Return TLuaFunctionResult.Create(Self.RESULT_OK, Sign)
+		Else
+			Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
+		EndIf
+	End Method
 
 
 	'=== ROOM BOARD ===

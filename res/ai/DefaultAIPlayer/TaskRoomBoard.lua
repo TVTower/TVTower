@@ -13,9 +13,9 @@ _G["TaskRoomBoard"] = class(AITask, function(c)
 	c.RequiresBudgetHandling = false
 
 	c.RecognizedTerrorLevel = false
+	c.forceChangeSigns = false
 	c.FRDubanTerrorLevel = 0 --FR Duban Terroristen
 	c.VRDubanTerrorLevel = 0 --VR Duban Terroristen
-	c.lastTaskHour = -1
 end)
 
 function TaskRoomBoard:typename()
@@ -31,14 +31,13 @@ function TaskRoomBoard:Activate()
 	--TODO abort task without going to the room
 	local minSinceLastDone = self:getMinutesSinceLastDone()
 	--self:LogInfo("roomBoard " .. minSinceLastDone)
-	if minSinceLastDone < 120 then
-	--	self:SetCancel()
+	if minSinceLastDone < 120 and self.SituationPriority < 20 then
+		self:SetCancel()
 	end
 	
 end
 
 function TaskRoomBoard:GetNextJobInTargetRoom()
-	self.lastTaskHour = TVT.GetDayHour()
 	if (self.ChangeRoomSignsJob.Status ~= JOB_STATUS_DONE) then
 		return self.ChangeRoomSignsJob
 	end
@@ -48,29 +47,6 @@ function TaskRoomBoard:GetNextJobInTargetRoom()
 end
 
 function TaskRoomBoard:getSituationPriority()
-	-- situation is normal if we do not know about terror (needs
-	-- visit of the news agency and a higher level)
-	if (not self.RecognizedTerrorLevel and self.SituationPriority < 500) then
-		return 0
-	end
-
-	-- fix broken savegames (got one with values of 40.000.000)
-	-- which therefor get unbelievable high priorities
-	self.FRDubanTerrorLevel = math.clamp(self.FRDubanTerrorLevel, -10, 10)
-	self.VRDubanTerrorLevel = math.clamp(self.VRDubanTerrorLevel, -10, 10)
-
-	local maxTerrorLevel = math.max(self.FRDubanTerrorLevel, self.VRDubanTerrorLevel)
-	if maxTerrorLevel >= 3 then
-		self.SituationPriority = math.max(self.SituationPriority, maxTerrorLevel * 8)
-	end
-
-	--TODO do not permanently go to the room board
-	--TODO modify strategic priority insead?
-	local now = getPlayer().hour
-	if now > 17 or now < 2 then
-		return self.SituationPriority * 0.5
-	end
-
 	return self.SituationPriority
 end
 
@@ -91,7 +67,7 @@ function JobChangeRoomSigns:Prepare(pParams)
 end
 
 function JobChangeRoomSigns:Tick()
-    for index = 0, TVT.rb_GetSignCount() - 1, 1 do
+	for index = 0, TVT.rb_GetSignCount() - 1, 1 do
 		local response = TVT.rb_GetSignAtIndex(index)
 		if response.result == TVT.RESULT_OK then
 			local sign = response.data
@@ -104,34 +80,39 @@ function JobChangeRoomSigns:Tick()
 				end
 			end
 		end
-    end
+	end
 
 	--TODO: Gerichtsvollzieher auf den Gegner hetzen
 	--TODO: Schilder absichtlich durcheinander bringen
 
-	local player = getPlayer()
-
-	if self.Task.FRDubanTerrorLevel >= 2 then
-		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_FRDUBAN).data
-		local enemyId = player:GetNextEnemyId()
-		local roomId = self:GetEnemyRoomId(enemyId)
-		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
-		TVT.rb_SwitchSigns(sign, roomSign)
-		self:LogDebug("Verschiebe FRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
+	if self.Task.forceChangeSigns == false then
+		if self.Task.RecognizedTerrorLevel == true and math.random(0,100) > 70 then
+			self.Task.forceChangeSigns = true
+		end
 	end
 
-	if self.Task.VRDubanTerrorLevel >= 2 then
-		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_VRDUBAN).data
+	if self.Task.forceChangeSigns == true then
+		local player = getPlayer()
+		local sign
+		local name
+		if self.Task.FRDubanTerrorLevel >= 2 then
+			sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_FRDUBAN).data
+			name = "FRDuban"
+		else
+			sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_VRDUBAN).data
+			name = "VRDuban"
+		end
 		local enemyId = player:GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
-		self:LogDebug("Verschiebe  VRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
+		self:LogDebug("Verschiebe "..name.."-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
 	end
 
 	-- handled the situation "for now"
 	self.Task.SituationPriority = 0
 	self.Task.RecognizedTerrorLevel = false
+	self.Task.forceChangeSigns = false 
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -143,9 +124,9 @@ function JobChangeRoomSigns:GetEnemyRoomId(playerId)
 	elseif (random <= 75) then
 		return TVT.GetNewsAgencyIdOfPlayer(playerId)
 	elseif (random <= 90) then
-		return TVT.GetBossOfficeIdOfPlayer(playerId)
-	elseif (random <= 100) then
 		return TVT.GetArchiveIdOfPlayer(playerId)
+	elseif (random <= 100) then
+		return TVT.GetBossOfficeIdOfPlayer(playerId)
 	end
 	--TODO: Später sind vielleicht Studios noch sinnvoll.
 end
