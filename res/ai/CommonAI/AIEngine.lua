@@ -136,7 +136,7 @@ function AIPlayer:ForceNextTask()
 				-- not "already doing something" (like in between of choosing
 				-- programme licences)
 				if self.CurrentTask.Status == TASK_STATUS_PREPARE or
-				   self.CurrentTask.Status == TASK_STATUS_NEW then
+				   self.CurrentTask.Status == TASK_STATUS_OPEN then
 					cancelTask = false
 				end
 			else
@@ -144,7 +144,7 @@ function AIPlayer:ForceNextTask()
 				-- target room)
 				cancelTask = true
 				if self.CurrentTask.Status ~= TASK_STATUS_PREPARE and
-				   self.CurrentTask.Status ~= TASK_STATUS_NEW and
+				   self.CurrentTask.Status ~= TASK_STATUS_OPEN and
 				   self.CurrentTask.Status ~= TASK_STATUS_RUN then
 					cancelTask = false
 				end
@@ -157,6 +157,7 @@ function AIPlayer:ForceNextTask()
 
 			--assign next task
 			self.CurrentTask = nextTask
+			self.CurrentTask.Status = TASK_STATUS_OPEN
 			--activate it
 			self.CurrentTask:CallActivate()
 			--start the next job of the new task
@@ -259,6 +260,7 @@ end
 function AIPlayer:BeginNewTask()
 	--TODO: Warte-Task einfügen, wenn sich ein Task wiederholt
 	self.CurrentTask = self:SelectTask()
+	self.CurrentTask.Status = TASK_STATUS_OPEN
 	self.minutesGone = TVT:GetTimeGoneInMinutes()
 	if self.CurrentTask == nil then
 		logWithLevel(LOG_ERROR, LOG_ERROR, "AIPlayer:BeginNewTask - task is nil... " )
@@ -348,7 +350,8 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.TicksTotalTime = 0 -- Time the ticks needed since task start
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
 	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
-	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
+	c.TargetRoom = -1 -- Zielraumes; überschreiben wenn Task in einem Raum erledigt werden muss
+	c.TargetID = -1 -- Ziel-ID; überschreiben wenn Task an einer bestimmten Stelle (z.B. Hotspot) erledigt werden muss
 
 	c.RequiresBudgetHandling = true
 	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
@@ -473,9 +476,15 @@ function AITask:StartNextJob()
 
 	--local roomNumber = TVT.GetPlayerRoom()
 	--self:LogTrace("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
-	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
+
+	-- Do not check the player room anymore. The GoToJob already has the information if the target is reached...
+	-- only then its status is "done"
+	-- if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
+	if self.Status == TASK_STATUS_OPEN then
 		self.Status = TASK_STATUS_PREPARE
 		self.CurrentJob = self:getGotoJob()
+	elseif self.Status == TASK_STATUS_PREPARE and self.CurrentJob~=nil and self.CurrentJob.Status ~= JOB_STATUS_DONE then
+		-- go to has failed - try again?
 	else
 		self.Status = TASK_STATUS_RUN
 		self.StartTaskWorldTicks = self:getWorldTicks()
@@ -559,6 +568,7 @@ function AITask:getGotoJob()
 	local aJob = AIJobGoToRoom()
 	aJob.Task = self
 	aJob.TargetRoom = self.TargetRoom
+	aJob.TargetID = self.TargetID
 	return aJob
 end
 
@@ -990,7 +1000,8 @@ end
 _G["AIJobGoToRoom"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.Task = nil
-	c.TargetRoom = 0
+	c.TargetRoom = -1
+	c.TargetID = -1
 	c.IsWaiting = false
 	c.WaitSince = -1
 	c.WaitSinceWorldTicks = -1
@@ -1074,21 +1085,38 @@ function AIJobGoToRoom:OnReachTarget()
 	-- if we reached the target, try to go to our target room again
 	-- maybe we were on an intermediate step - or failed to enter the 
 	-- room as it was occupied
-	if (self.Status == JOB_STATUS_REDO) or (self.Status == JOB_STATUS_RUN) then
-		if TVT.isRoomUnused(self.TargetRoom) == TVT.RESULT_INUSE then
-			self:LogTrace("OnReachTarget - Skip going in, still used")
-		else
-			self:LogTrace("OnReachTarget - GoToRoom again")
-			TVT.DoGoToRoom(self.TargetRoom)
+	if self.TargetRoom > 0 then
+		if (self.Status == JOB_STATUS_REDO) or (self.Status == JOB_STATUS_RUN) then
+			if TVT.isRoomUnused(self.TargetRoom) == TVT.RESULT_INUSE then
+				self:LogTrace("OnReachTarget - Skip going in, still used")
+			else
+				self:LogTrace("OnReachTarget - GoToRoom again")
+				TVT.DoGoToRoom(self.TargetRoom)
+			end
 		end
+	else
+		self.Status = JOB_STATUS_DONE
 	end
 end
 
 
 function AIJobGoToRoom:Prepare(pParams)
-	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
-		self:LogTrace("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
-		if TVT.DoGoToRoom(self.TargetRoom) <= 0 then
+	if (self.TargetRoom > 0 and self.TargetID <= 0) then
+		local tID = TVT:GetTargetIDToRoomID(self.TargetRoom)
+		if tID ~= TVT.RESULT_NOTFOUND then
+			self.TargetID = tID
+		else
+			self:LogError("Failed fetching missing TargetID for room ".. self.TargetRoom)
+		end
+	end
+
+	if self.TargetID <= 0 then
+		--no need to go anywhere
+		self.Status = JOB_STATUS_DONE
+	elseif ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
+		self:LogTrace("DoGoToTarget: " .. self.TargetRoom .. " => " .. self.Status)
+		local goToRoomResult = TVT.DoGoToTarget(self.TargetID)
+		if goToRoomResult <= 0 then
 			self:LogTrace("DoGoToRoom: failed, eg. not allowed to do so.")
 		else
 			self.Status = JOB_STATUS_RUN
@@ -1098,7 +1126,7 @@ end
 
 
 function AIJobGoToRoom:Tick()
-	if (self.IsWaiting) then
+	if (self.IsWaiting and self.TargetRoom > 0 ) then
 		self:LogTrace("AIJobGoToRoom:Tick ... waiting")
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
 			self:LogTrace("Room is unused now")

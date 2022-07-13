@@ -199,22 +199,25 @@ end
 function JobCheckEventNews:Tick()
 	local terrorLevel = TVT.ne_getTerroristAggressionLevel(-1)
 	local maxTerrorLevel = TVT.ne_getTerroristAggressionLevelMax()
+	local levelDiff = maxTerrorLevel - terrorLevel
 
+	local vrLevel = TVT.ne_getTerroristAggressionLevel(0)
+	local frLevel = TVT.ne_getTerroristAggressionLevel(1)
 
 	local player = getPlayer()
-	if player.TaskList[TASK_ROOMBOARD] ~= nil then
-		local roomBoardTask = player.TaskList[TASK_ROOMBOARD]
-		if terrorLevel >= 2 then
-			roomBoardTask.SituationPriority = terrorLevel * terrorLevel
-		end
+	local checkSignsTask = player.TaskList[TASK_CHECKSIGNS]
+	local roomBoardTask = player.TaskList[TASK_ROOMBOARD]
 
+	if checkSignsTask ~= nil then
+		checkSignsTask.terrorLevel = terrorLevel
+	end
+	if roomBoardTask ~= nil then
 		-- mark the situation of a soon happening attack
-		if terrorLevel > 2 then
+		if levelDiff < 2 then
 			roomBoardTask.RecognizedTerrorLevel = true
 		end
-
-		roomBoardTask.FRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(0)
-		roomBoardTask.VRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(1)
+		roomBoardTask.FRDubanTerrorLevel = vrLevel
+		roomBoardTask.VRDubanTerrorLevel = frLevel
 	end
 
 	self.Status = JOB_STATUS_DONE

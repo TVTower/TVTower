@@ -347,8 +347,8 @@ Type TDebugScreen
 
 	'=== PLAYER COMMANDS ===
 	Method InitMode_PlayerCommands()
-		Local IDs:Int[]      = [0,           1,         2,      3,              4,             5,                    6,           7]
-		Local texts:String[] = ["Ad Agency", "Archive", "Boss", "Movie Agency", "News Studio", "Programme Schedule", "Roomboard", "Station Map"]
+		Local IDs:Int[]      = [0,           1,         2,      3,              4,             5,                    6,           7,           8]
+		Local texts:String[] = ["Ad Agency", "Archive", "Boss", "Movie Agency", "News Studio", "Programme Schedule", "CheckSigns","Roomboard", "Station Map"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
@@ -399,8 +399,9 @@ Type TDebugScreen
 			Case 3	taskName = "MovieDistributor"
 			Case 4	taskName = "NewsAgency"
 			Case 5	taskName = "Schedule"
-			Case 6	taskName = "RoomBoard"
-			Case 7	taskName = "StationMap"
+			Case 6	taskName = "CheckSigns"
+			Case 7	taskName = "RoomBoard"
+			Case 8	taskName = "StationMap"
 		End Select
 
 		If taskName
@@ -418,8 +419,9 @@ Type TDebugScreen
 					Case 3	 room = GetRoomCollection().GetFirstByDetails("", "movieagency")
 					Case 4	 room = GetRoomCollection().GetFirstByDetails("", "news", playerID)
 					Case 5	 room = GetRoomCollection().GetFirstByDetails("", "office", playerID)
-					Case 6	 room = GetRoomCollection().GetFirstByDetails("", "roomboard", playerID)
-					Case 7	 room = GetRoomCollection().GetFirstByDetails("", "ofice", playerID)
+					Case 6	 room = GetRoomCollection().GetFirstByDetails("", "elevatorPlan", playerID)
+					Case 7	 room = GetRoomCollection().GetFirstByDetails("", "roomboard", playerID)
+					Case 8	 room = GetRoomCollection().GetFirstByDetails("", "ofice", playerID)
 				End Select
 				If room
 					Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
