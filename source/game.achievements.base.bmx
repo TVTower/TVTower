@@ -304,8 +304,7 @@ Type TAchievement Extends TAchievementBaseType
 	End Method
 
 
-	'Override
-	Method Remove()
+	Method Remove:Int() Override
 		For local r:TAchievementReward = EachIn _rewards
 			r.Remove()
 		Next
@@ -684,8 +683,7 @@ Type TAchievementTask Extends TAchievementBaseType
 	'	RegisterEventListeners()
 	'End Method
 
-	'override
-	Method Remove()
+	Method Remove:Int() Override
 		EventManager.UnregisterListenersArray(eventListeners)
 		eventListeners = new TEventListenerBase[0]
 	End Method

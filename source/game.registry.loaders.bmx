@@ -224,7 +224,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		Local roomData:TData = New TData
 		Local owner:Int	= data.GetInt("owner", -1)
 		Local name:String = data.GetString("name", "unknown")
-		Local id:Int	= data.GetInt("id", -1)
+		Local roomUID:Int	= data.GetInt("roomUID", -1)
 
 		roomData.AddString("name",	name + owner)
 		roomData.AddString("owner",	owner)
@@ -284,7 +284,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		EndIf
 
 		'add the room configuration to the container
-		Local key:String = Name + "_" + owner + "_" + doorX + "_" + doorFloor + "_" + id
+		Local key:String = Name + "_" + owner + "_" + doorX + "_" + doorFloor + "_" + roomUID
 		roomsMap.Insert(key, roomData)
 		TLogger.log("XmlLoader.LoadRooms()", "inserted room=" + Name + "  key=" + key + "  doors=" + doorCount + "." , LOG_LOADING | LOG_DEBUG, TRUE)
 

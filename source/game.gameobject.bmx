@@ -1,6 +1,7 @@
 SuperStrict
 Import Brl.Map
 Import "Dig/base.util.mersenne.bmx"
+Import "Dig/base.framework.entity.base.bmx"
 
 Type TGameObjectCollection
 	'stores the entries referenced by ID
@@ -169,53 +170,7 @@ End Type
 
 
 
-Type TGameObject {_exposeToLua="selected"}
-	'simple numeric identifier for fast lookups
-	'IDs might differ between games
-	Field id:Int = 0
-	'complex textual identifier for complex lookups (partial searches
-	'etc)
-	'GUIDs can be made the same between games (adjust "GenerateGUID()")
-	Field GUID:String
-	Global LastID:Int = 0
-
-
-	Method New()
-		LastID:+1
-		'assign a new id
-		id = LastID
-
-		'do NOT generate the GUID here already - as this would
-		'call the "TGameObject.GenerateGUID" also for extended types
-		'-> defer it to the GetGUID()-getter
-	End Method
-
-
-	Method GenerateGUID:string()
-		return "gameobject-"+id
-	End Method
-
-
-	Method SetGUID:Int(GUID:String="")
-		if GUID="" then GUID = GenerateGUID()
-		self.GUID = GUID
-	End Method
-
-
-	Method GetID:Int() {_exposeToLua}
-		Return id
-	End Method
-
-
-	Method GetGUID:String() {_exposeToLua}
-		if GUID="" then SetGUID()
-		Return GUID
-	End Method
-
-
-	'overrideable method for cleanup actions
-	Method Remove()
-	End Method
+Type TGameObject Extends TEntityBase {_exposeToLua="selected"}
 End Type
 
 
