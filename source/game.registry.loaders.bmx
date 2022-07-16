@@ -286,7 +286,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		'add the room configuration to the container
 		Local key:String = Name + "_" + owner + "_" + doorX + "_" + doorFloor + "_" + roomUID
 		roomsMap.Insert(key, roomData)
-		TLogger.log("XmlLoader.LoadRooms()", "inserted room=" + Name + "  key=" + key + "  doors=" + doorCount + "." , LOG_LOADING | LOG_DEBUG, TRUE)
+		'TLogger.log("XmlLoader.LoadRooms()", "inserted room=" + Name + "  key=" + key + "  doors=" + doorCount + "." , LOG_LOADING | LOG_DEBUG, TRUE)
 
 		'indicate that the loading was successful
 		Return roomData
