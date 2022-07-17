@@ -1865,14 +1865,14 @@ endrem
 	'the plan on the basement which enables switching room signs
 
 	Method rb_GetSignCount:Int()
-		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return Self.RESULT_WRONGROOM
+		If Not _PlayerInRoom("roomboard") Then Return Self.RESULT_WRONGROOM
 
 		Return GetRoomBoard().GetSignCount()
 	End Method
 
 
 	Method rb_GetSignAtIndex:TLuaFunctionResult(arrayIndex:Int = -1)
-		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
 		If Sign
@@ -1885,7 +1885,7 @@ endrem
 
 	'returns the sign at the given position
 	Method rb_GetSignAtPosition:TLuaFunctionResult(signSlot:Int, signFloor:Int)
-		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignByCurrentPosition(signSlot, signFloor)
 		If Sign
@@ -1899,7 +1899,7 @@ endrem
 	'returns the sign which originally was at the given position
 	'(might be the same if it wasnt switched)
 	Method rb_GetOriginalSignAtPosition:TLuaFunctionResult(signSlot:Int, signFloor:Int)
-		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignByOriginalPosition(signSlot, signFloor)
 		If Sign
@@ -1912,7 +1912,7 @@ endrem
 
 	'returns the first sign leading to the given room(ID)
 	Method rb_GetFirstSignOfRoom:TLuaFunctionResult(roomID:Int)
-		If Not (_PlayerInRoom("roomboard") or _PlayerInRoom("elevatorplan")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local Sign:TRoomBoardSign = GetRoomBoard().GetFirstSignByRoom(roomID)
 		If Sign
