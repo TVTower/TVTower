@@ -534,10 +534,13 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	'send figure to elevator (plan) on the current floor
 	Method doGoToElevatorPlan:Int()
 		Local fig:TFigure = TFigure(GetPlayerBase(Self.ME).GetFigure())
-		If fig.SendToElevatorplan(-1)
-			Return Self.RESULT_OK
-		Else
-			Return Self.RESULT_NOTALLOWED
+		Local t:Object = GetBuildingBase().GetTarget("elevatorplan", -1, fig.GetFloor(), TVTBuildingTargetType.NONE)
+		if t
+			If TFigure(GetPlayerBase(Self.ME).GetFigure()).SendToTarget(t)
+				Return Self.RESULT_OK
+			Else
+				Return Self.RESULT_NOTALLOWED
+			EndIf
 		EndIf
 	End Method
 

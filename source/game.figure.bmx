@@ -1009,31 +1009,6 @@ Type TFigure extends TFigureBase
 	End Method
 	
 
-	Method SendToElevatorplan:Int(onFloor:Int = -1, forceSend:Int=False)
-		If onFloor = -1 Then onFloor = TBuildingBase.GetFloorY2( GetFloor() )
-
-		Local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("building")
-		Local planX:Int = GetElevator().GetDoorCenterX()
-		Local planY:Int = GetBuildingBase().GetFloorY2(onFloor)
-
-		Local useHotspot:THotspot
-		For Local hotspot:THotspot = EachIn room.hotspots
-			If Not hotspot.name = "elevatorplan" Then Continue
-
-			'hotspots start "topleft" so move the figure virtually
-'			If Not hotspot.area.containsXY(planX, planY + hotspot.area.dimension.y) Then Continue
-
-			If GetBuildingBase().GetFloor(hotspot.area.GetY()) = GetBuildingBase().GetFloor(area.GetY())
-				useHotspot = hotspot
-				exit
-			EndIf
-		Next
-		if not useHotspot Then Return False
-		
-		Return SendToHotspot(useHotspot)
-	End Method
-	
-
 	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
  		If not door then return False
 

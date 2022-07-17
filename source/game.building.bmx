@@ -352,9 +352,22 @@ Type TBuilding Extends TBuildingBase
 	
 	
 	Method GetTarget:Object(name:String, owner:Int, onFloor:Int, buildingTargetType:Int) override
-		Local id:Int = GetTargetID(name, owner, onFloor, buildingTargetType)
-		if id > 0 then Return GetTarget(id)
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.DOOR
+			local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetFirstByDetails(name, owner, onFloor)
+			If door Then Return door
+		EndIf
+		
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.HOTSPOT
+			If Not room then room = GetRoomBaseCollection().GetFirstByDetails("building")
 
+			For Local hotspot:THotspot = EachIn room.hotspots
+				If hotspot.name <> name Then Continue
+				If onFloor >= 0 and GetFloor(hotspot.area.GetY()) <> onFloor Then Continue
+				
+				Return hotspot
+			Next
+		EndIf
+		
 		Return Null
 	End Method
 
