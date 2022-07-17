@@ -796,8 +796,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		figure.MoveToOffscreen()
 		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
 		'forcefully send (no controlling possible until reaching the target)
-		'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-		figure.ForceChangeTarget(Int(TRoomDoor.GetByDetails("news", playerID).area.GetX()) + 60, Int(TRoomDoor.GetByDetails("news", playerID).area.GetY()))
+		'GetPlayer(i).GetFigure().SendToDoor( GetRoomDoorBasecollection().GetFirstByDetails("office", i), True)
+		Local newsDoor:TRoomDoorBase = GetRoomDoorBasecollection().GetFirstByDetails("news", playerID)
+		If Not newsDoor
+			Throw "No 'news' room found - broken config?"
+		EndIf
+		figure.ForceChangeTarget(Int(newsDoor.area.GetX()) + 60, Int(newsDoor.area.GetY()))
 
 
 
@@ -1189,19 +1193,19 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GetBuildingBase().figureOffscreenX, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
-		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
+		fig.SendToDoor(GetRoomDoorCollection().GetFirstByDetails("supermarket",-1), True)
 
 		fig = GetFigureCollection().GetByName("Bote1")
 		If Not fig Then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GetBuildingBase().figureOffscreenX - 90, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
-		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
+		fig.SendToDoor(GetRoomDoorCollection().GetFirstByDetails("boss", 1), True)
 
 		fig = GetFigureCollection().GetByName("Bote2")
 		If Not fig Then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GetBuildingBase().figureOffscreenX -60, 0, -65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
-		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
+		fig.SendToDoor(GetRoomDoorCollection().GetFirstByDetails("boss", 3), True)
 
 
 		'create 2 terrorists
@@ -1410,24 +1414,31 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'==== DOOR ====
 			'no door for the artificial room "building"
 			'if vars.GetString("roomname") <> "building"
-			If vars.GetInt("hasDoorData",-1) = 1
-				Local door:TRoomDoor = New TRoomDoor
-				door.Init(..
-					room.id,..
-					vars.GetInt("doorslot"), ..
-					vars.GetInt("floor"), ..
-					vars.GetInt("doortype") ..
-				)
-				GetRoomDoorBaseCollection().Add( door )
-				'add the door to the building (sets parent etc)
-				GetBuilding().AddDoor(door)
+			Local doors:TObjectList = TObjectList(vars.Get("doors"))
+			If doors
+				For local doorConfig:TData = EachIn doors
+					Local door:TRoomDoor = New TRoomDoor
+					door.Init(..
+						room.id,..
+						doorConfig.GetInt("doorSlot"), ..
+						doorConfig.GetInt("onFloor"), ..
+						doorConfig.GetInt("doortype") ..
+					)
 
-				'override defaults
-				If Not vars.GetBool("doortooltip") Then door.showTooltip = False
-				If vars.GetInt("doorwidth") > 0 Then door.area.dimension.setX( vars.GetInt("doorwidth") )
-				If vars.GetInt("x",-1000) <> -1000 Then door.area.position.SetX(vars.GetInt("x"))
-				'move these doors outside so they do not overlap with the "porter"
-				If vars.GetInt("doortype") = -1 Then door.area.position.SetX(-1000 - room.id*door.area.GetW())
+					GetRoomDoorBaseCollection().Add( door )
+					'add the door to the building (sets parent etc)
+					GetBuilding().AddDoor(door)
+
+					'override defaults
+					If doorConfig.GetInt("width") > 0 Then door.area.dimension.setX( doorConfig.GetInt("width") )
+					If doorConfig.GetInt("height") > 0 Then door.area.dimension.setY( doorConfig.GetInt("height") )
+					door.stopOffset = doorConfig.GetInt("stopOffset", 0)
+					door.doorFlags = doorConfig.GetInt("doorFlags", 0)
+					'move these doors outside so they do not overlap with the "porter"
+					If doorConfig.GetInt("doorType") = -1 Then door.area.position.SetX(-1000 - room.id * door.area.GetW())
+					'allow overriding door positions
+					If doorConfig.GetInt("x",-1000) <> -1000 Then door.area.position.SetX(doorConfig.GetInt("x"))
+				Next
 			EndIf
 
 
@@ -1440,14 +1451,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					Local y:Int			= conf.GetInt("y", -1)
 					Local bottomy:Int	= conf.GetInt("bottomy", 0)
 					'the "building"-room uses floors
-					Local Floor:Int 	= conf.GetInt("floor", -1)
+					Local f:Int         = conf.GetInt("floor", -1)
 					Local width:Int 	= conf.GetInt("width", 0)
 					Local height:Int 	= conf.GetInt("height", 0)
 					Local tooltipText:String	 	= conf.GetString("tooltiptext")
 					Local tooltipDescription:String	= conf.GetString("tooltipdescription")
 
 					'align at bottom of floor
-					If Floor >= 0 Then y = TBuilding.GetFloorY2(Floor) - height
+					If f >= 0 Then y = TBuilding.GetFloorY2(f) - height
 
 					Local hotspot:THotspot = New THotspot.Create( name, x, y - bottomy, width, height)
 					hotspot.setTooltipText( GetLocale(tooltipText), GetLocale(tooltipDescription) )

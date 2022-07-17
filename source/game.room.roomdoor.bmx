@@ -43,14 +43,14 @@ Type TRoomDoorCollection extends TRoomDoorBaseCollection
 				continue
 			Endif
 
-			if door.showTooltip then door.UpdateTooltip()
+			if door.HasFlag(TVTRoomDoorFlag.SHOW_TOOLTIP) then door.UpdateTooltip()
 		Next
 	End Method
 
 
 	Method DrawTooltips:Int()
 		For Local door:TRoomDoor = EachIn List
-			if door.showTooltip then door.DrawTooltip()
+			if door.HasFlag(TVTRoomDoorFlag.SHOW_TOOLTIP) then door.DrawTooltip()
 		Next
 	End Method
 End Type
@@ -66,7 +66,6 @@ End Function
 
 Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	'uses description
-	Field showTooltip:Int = True
 	Field tooltip:TRoomDoorTooltip = null
 	Field _soundSource:TDoorSoundSource = Null {nosave}
 	Field _lastOwner:int = 1000 {nosave}
@@ -188,14 +187,17 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		'only show tooltip if not "empty" and mouse in door-rect
 		if not GameConfig.mouseHandlingDisabled
 			If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(Int(GetScreenRect().GetX()), Int(GetScreenRect().GetY() - area.GetH()), Int(area.GetW()), Int(area.GetH()))
-				If not tooltip
-					tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
-					tooltip.SetMinTitleAndContentWidth(100, 160)
-					tooltip.AssignRoom(room.id)
-				endif
+				'require the player to be on that floor?
+				If not (HasFlag(TVTRoomDoorFlag.TOOLTIP_ONLY_ON_SAME_FLOOR) and GetPlayerBase().GetFigure().GetFloor() <> onFloor)
+					If not tooltip
+						tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
+						tooltip.SetMinTitleAndContentWidth(100, 160)
+						tooltip.AssignRoom(room.id)
+					endif
 
-				tooltip.Hover()
-				tooltip.enabled	= 1
+					tooltip.Hover()
+					tooltip.enabled	= 1
+				EndIf
 			EndIf
 		endif
 
@@ -283,40 +285,18 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 	'override to add rooms description
-	Method GetOwnerName:String()
+	Method GetOwnerName:String() override
 		local room:TRoomBase = GetRoom()
 		if room then return room.GetDescription(1)
 		return super.GetOwnerName()
 	End Method
 
 
-	Function GetByDetails:TRoomDoor( name:String, owner:Int, floor:int =-1 )
-		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
-			'skip wrong floors
-			if floor >=0 and door.GetOnFloor() <> floor then continue
-
-			local room:TRoomBase = door.GetRoom()
-			if not room then continue
-			'skip wrong owners
-			if room.owner <> owner then continue
-
-			If room.GetName() = name Then Return door
-		Next
-		Return Null
-	End Function
-
-
-	'returns a door by the given (local to parent/building) coordinates
-	Function GetByCoord:TRoomDoorBase( x:Float, y:Float )
-		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
-			'also allow invisible rooms... so just check if hit the area
-			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(int(x), int(y), int(door.area.GetX()), int(door.area.GetY() - (door.area.GetH() -1)), int(door.area.GetW()), int(door.area.GetH()))
-				Return door
-			EndIf
-		Next
-		Return Null
-	End Function
+	Method GetRoomName:String() override
+		local room:TRoomBase = GetRoom()
+		if room then return room.name
+		return super.GetRoomName
+	End Method
 
 
 	'override

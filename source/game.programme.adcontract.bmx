@@ -1062,7 +1062,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method Remove()
+	Method Remove:Int() Override
 		'set contract base unused
 		base.RemoveCurrentlyUsedByContract( GetGUID() )
 	End Method

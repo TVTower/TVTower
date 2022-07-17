@@ -371,10 +371,10 @@ Type TFigureDeliveryBoy Extends TFigure
 			If Not checkedRoomboard 'and IsIdling()
 				if enterRoomTryCount = 0
 					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
-					SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
+					SendToDoor(GetRoomDoorBasecollection().GetFirstByDetails("roomboard", 0))
 				elseif enterRoomTryTimer.isExpired() and not IsWaitingToEnter()
 					TLogger.Log("TFigureDeliveryBoy", Self.name+" is trying again to enter roomboard", LOG_DEBUG | LOG_AI, True)
-					SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
+					SendToDoor(GetRoomDoorBasecollection().GetFirstByDetails("roomboard", 0))
 					'enterRoomTryTimer.Reset()
 				endif
 			'checkedRoomboard is set when entering the first room (board)

@@ -21,7 +21,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 	Global _instance:TProgrammeProducerSport
 	
 	
-	Method Remove() override
+	Method Remove:Int() Override
 		'remove instance specific event listeners...
 	End Method
 

@@ -73,7 +73,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	End Method
 
 
-	Method Remove() Override
+	Method Remove:Int() Override
 		'remove instance specific event listeners...
 	End Method	
 

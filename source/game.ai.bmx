@@ -403,18 +403,43 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int=-1000)
+	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int)
 		Return GetRoomCollection().GetFirstByDetails("", roomName, owner)
 	End Method
 
 
-	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int=-1000)
+	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int)
 		Return GetRoomCollection().GetAllByDetails("", roomName, owner)
 	End Method
 
 
 	Method GetRoom:TRoom(id:Int)
 		Return GetRoomCollection().Get(id)
+	End Method
+
+
+	'returns the id of the (first) hotspot, door ... leading to the given room (id)
+	Method GetTargetIDToRoomID:Int(roomID:Int)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(roomID)
+		If Not room 
+			Return Self.RESULT_NOTFOUND
+		Else
+			Return GetTargetID(room.name, room.owner, -1, TVTBuildingTargetType.NONE)
+		EnDIf
+	End Method	
+
+	
+	'returns the id of an hotspot, door ... suiting to the given params
+	'targetOwner = -1 to not limit the owner
+	'targetFloor = -1 to not limit the floor of the target
+	'targetType  = 0 to not limit the target type, else TVT.constants.buildingTargetType.ROOM / HOTSPOT
+	Method GetTargetID:Int(targetName:String, targetOwner:Int, targetFloor:Int, targetType:Int)
+		Local targetID:Int = GetBuildingBase().GetTargetID(targetName, targetOwner, targetFloor, targetType)
+		If targetID = -1
+			Return Self.RESULT_NOTFOUND
+		Else
+			Return targetID
+		EndIf
 	End Method
 
 
@@ -458,6 +483,32 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 	Method isControllableFigure:Int()
 		Return GetPlayerBase(Self.ME).GetFigure().IsControllable()
+	End Method
+
+
+	'returns if figure is really on a floor (not just moving "through")
+	Method isFigureOnFloor:Int()
+		Return TFigure(GetPlayerBase(Self.ME).GetFigure()).IsOnFloor()
+	End Method
+	
+	
+	Method getFigureFloor:Int()
+		Return GetPlayerBase(Self.ME).GetFigure().GetFloor()
+	End Method
+	
+	
+	'send figure to a specific target (room, hotspot, ...)
+	Method doGoToTarget:Int(targetID:Int = 0)
+		Local t:Object = GetBuildingBase().GetTarget(targetID)
+		if t
+			If TFigure(GetPlayerBase(Self.ME).GetFigure()).SendToTarget(t)
+				Return Self.RESULT_OK
+			Else
+				Return Self.RESULT_NOTALLOWED
+			EndIf
+		EndIf
+
+		Return Self.RESULT_NOTFOUND
 	End Method
 
 

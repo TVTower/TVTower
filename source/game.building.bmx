@@ -136,6 +136,29 @@ Type TBuilding Extends TBuildingBase
 		TLogger.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
 		GetInstance().InitGraphics()
 
+		local savedSaveGameVersion:Int = triggerEvent.GetData().GetInt("saved_savegame_version")
+		'before version 19 rooms and doors could have same IDs
+		'as one extended from TGameObject and the other from TEntityBase
+		'with version 19 both extend from TEntityBase and this means
+		'they have unique IDs then.
+		'Here we give doors and hotspots new IDs just to avoid hickups
+		If savedSaveGameVersion < 19
+			For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+				'GUID can be kept (does not contain the ID) 
+				TRoomDoorBase.LastID :+ 1 'this is actually TEntityBase
+				door.id = LastID
+			Next
+			
+			Local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("building")
+
+			For Local hotspot:THotspot = EachIn room.hotspots
+				'GUID can be kept (does not contain the ID) 
+				THotspot.LastID :+ 1 'this is actually TEntityBase
+				hotspot.id = LastID
+				hotspot.SetGUID()
+			Next
+		EndIf
+
 		'reassign self as parent to all doors
 		'-> just re-add them
 		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
@@ -307,13 +330,72 @@ Type TBuilding Extends TBuildingBase
 	End Method
 
 
+	Method GetTargetID:Int(name:String, owner:Int, onFloor:Int, buildingTargetType:Int) override
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.DOOR
+			local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetFirstByDetails(name, owner, onFloor)
+			If door Then Return door.GetID()
+		EndIf
+		
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.HOTSPOT
+			If Not room then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+			For Local hotspot:THotspot = EachIn room.hotspots
+				If hotspot.name <> name Then Continue
+				If onFloor >= 0 and GetFloor(hotspot.area.GetY()) <> onFloor Then Continue
+				
+				Return hotspot.GetID()
+			Next
+		EndIf
+		
+		Return -1
+	End Method
+	
+	
+	Method GetTarget:Object(name:String, owner:Int, onFloor:Int, buildingTargetType:Int) override
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.DOOR
+			local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetFirstByDetails(name, owner, onFloor)
+			If door Then Return door
+		EndIf
+		
+		If buildingTargetType = TVTBuildingTargetType.NONE or buildingTargetType = TVTBuildingTargetType.HOTSPOT
+			If Not room then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+			For Local hotspot:THotspot = EachIn room.hotspots
+				If hotspot.name <> name Then Continue
+				If onFloor >= 0 and GetFloor(hotspot.area.GetY()) <> onFloor Then Continue
+				
+				Return hotspot
+			Next
+		EndIf
+		
+		Return Null
+	End Method
+
+
+	Method GetTarget:Object(id:Int)
+		If Not room Then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+		For local h:THotspot = EachIn room.hotspots
+			if h.GetID() = id Then Return h
+		Next
+
+		For local r:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+			if r.GetID() = id Then Return r
+		Next
+		
+		Return Null
+	End Method
+
+
 	Method AddDoor:Int(door:TRoomDoorBase)
 		If Not door Then Return False
 		'add to innerBuilding, so doors can properly layout in the
 		'inner area
 		door.SetParent(Self.buildingInner)
-		'move door accordingly
-		door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
+		'move door accordingly (only if a slot is defined)
+		if door.doorSlot > 0
+			door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
+		EndIf
 		door.area.position.SetY(GetFloorY2(door.onFloor))
 	End Method
 
@@ -387,6 +469,21 @@ Type TBuilding Extends TBuildingBase
 
 		return 0
 	End Method
+	
+	
+	Method GetElevatorPlanHotspot:THotspot(forFloor:Int)
+		if not room then room = GetRoomBaseCollection().GetFirstByDetails("building")
+
+		Local planX:Int = GetElevator().GetDoorCenterX()
+		Local planY:Int = GetFloorY2(forFloor)
+		For Local hotspot:THotspot = EachIn room.hotspots
+			If hotspot.name <> "elevatorplan" Then Continue
+			If GetFloor(hotspot.area.GetY()) <> forFloor Then Continue
+
+			Return hotspot
+		Next
+		Return Null
+	End Method
 
 
 	Method ActivateSoftdrinkMachine:Int()
@@ -457,7 +554,7 @@ Type TBuilding Extends TBuildingBase
 
 
 		If roomUsedTooltip Then roomUsedTooltip.Update()
-		'Tooltips aktualisieren
+		'update room/door tooltips
 		GetRoomDoorCollection().UpdateToolTips()
 	End Method
 

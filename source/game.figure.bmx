@@ -986,7 +986,28 @@ Type TFigure extends TFigureBase
 
 		return True
 	End Method
+	
+	
+	Method SendToHotspot:Int(h:THotspot, forceSend:Int=False)
+		If Not h Then Return False
+		
+		Local target:TFigureTargetBase = new TFigureTarget.Init(h)
+		Local moveToPos:TVec2D = GetMoveToPosition( target )
+		If Not moveToPos
+			print "SendToHotspot: failed, moveToPos = null"
+			Return False
+		EndIf
 
+		If forceSend
+			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			SetTarget( target )
+		Else
+			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			SetTarget( target )
+		EndIf
+		Return True
+	End Method
+	
 
 	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
  		If not door then return False
@@ -1002,6 +1023,33 @@ Type TFigure extends TFigureBase
 		Else
 			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
 		EndIf
+		
+		Return True
+	End Method
+	
+	
+	'send to a door, hotspot... defined by the given ID
+	Method SendToTarget:Int(targetID:Int, forceSend:Int=False)
+		Local target:Object = GetBuildingBase().GetTarget(targetID)
+		If Not target Then Return False
+		
+		If TRoomDoor(target)
+			Return SendToDoor(TRoomDoor(target), forceSend)
+		ElseIf THotspot(target)
+			Return SendToHotspot(THotspot(target), forceSend)
+		EndIf
+	End Method
+
+
+	Method SendToTarget:Int(target:Object, forceSend:Int=False) override
+		If TRoomDoor(target)
+			Return SendToDoor(TRoomDoor(target), forceSend)
+		ElseIf THotspot(target)
+			Return SendToHotspot(THotspot(target), forceSend)
+		ElseIf target <> Null
+			Throw "unsupported target passed to SendToTarget(). Target type=" + TTypeID.ForObject(target).name()
+		EndIf
+		Return Null
 	End Method
 
 
@@ -1102,10 +1150,11 @@ Type TFigure extends TFigureBase
 
 		'only a partial target was given
 		if x=-1 or y=-1
+			Local v:TVec2D = TVec2D(GetTargetObject())
 			'change current target
-			if TVec2D( GetTargetObject() )
-				If x<>-1 Then x = TVec2D( GetTargetObject() ).x
-				If y<>-1 Then y = TVec2D( GetTargetObject() ).y
+			if v
+				If x<>-1 Then x = v.x
+				If y<>-1 Then y = v.y
 			'create a new target
 			else
 				If x=-1 Then x = area.position.x
@@ -1123,9 +1172,13 @@ Type TFigure extends TFigureBase
 		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
-		local targetedDoor:TRoomDoorBase = TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
+		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
 		if targetedDoor
-			newTarget = targetedDoor
+			'only go into the room if we were able to target it from our
+			'source position
+			If not targetedDoor.HasFlag(TVTRoomDoorFlag.ONLY_TARGETABLE_ON_SAME_FLOOR) or targetedDoor.onFloor = GetFloor()
+				newTarget = targetedDoor
+			EndIf
 			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
 		endif
 
@@ -1374,7 +1427,7 @@ Type TFigureTarget extends TFigureTargetBase
 		if TVec2D(target)
 			return TVec2D(target)
 		elseif TRoomDoorBase(target)
-			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
+			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2 + TRoomDoorBase(target).stopOffset, TRoomDoorBase(target).area.GetY())
 		elseif THotspot(target)
 			'attention: return GetY2() (bottom point) as this is used for figures too
 			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
