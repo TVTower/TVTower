@@ -349,7 +349,6 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
 	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
 	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
-	c.TargetID = -1 -- Wie lautet die ID des "Ziels" (Tuer, Hotspot,...) zum Zielraum? !!! Muss überschrieben werden !!!
 
 	c.RequiresBudgetHandling = true
 	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
@@ -560,10 +559,6 @@ function AITask:getGotoJob()
 	local aJob = AIJobGoToRoom()
 	aJob.Task = self
 	aJob.TargetRoom = self.TargetRoom
-	aJob.TargetID = self.TargetID
-	-- fix missing TargetID if only TargetRoom is set
-	aJob:FixTargetID()
-
 	return aJob
 end
 
@@ -832,19 +827,6 @@ function AIJob:ReDoCheck(minutesWait, ticksWait)
 end
 
 
-function AIJob:FixTargetID()
-	if self.TargetID <= 0 and self.TargetRoom > 0 then
-		local tID = TVT:GetTargetIDToRoomID(self.TargetRoom)
-		if tID ~= TVT.RESULT_NOTFOUND then
-			self:LogDebug("FixTargetID(): Fetched missing TargetID for room.")
-			self.TargetID = tID
-		else
-			self:LogDebug("FixTargetID(): Failed fetching missing TargetID for room.")
-		end
-	end
-end
-
-
 function AIJob:OnStart()
 	--Kann ueberschrieben werden
 end
@@ -1009,7 +991,6 @@ _G["AIJobGoToRoom"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.Task = nil
 	c.TargetRoom = 0
-	c.TargetID = 0
 	c.IsWaiting = false
 	c.WaitSince = -1
 	c.WaitSinceWorldTicks = -1
@@ -1020,15 +1001,6 @@ end)
 
 function AIJobGoToRoom:typename()
 	return "AIJobGoToRoom"
-end
-
---override
-function AIJobGoToRoom:resume()
-	--call original implementation
-	AIJob:resume()
-	
-	-- fix missing TargetID if only TargetRoom is set
-	self:FixTargetID()
 end
 
 
