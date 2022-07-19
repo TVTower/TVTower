@@ -409,9 +409,15 @@ endrem
 		Repeat
 			aiBase.Update()
 			'wait up to 5 ms
-			if aiBase.GetNextEventCount() = 0 then Delay(1)
-			if aiBase.GetNextEventCount() = 0 then Delay(2)
-			if aiBase.GetNextEventCount() = 0 then Delay(2)
+			If Not aiBase.IsActive() 
+				Delay(1)
+				if not aiBase.IsActive() then Delay(2)
+				if not aiBase.IsActive() then Delay(2)
+			Else
+				if aiBase.GetNextEventCount() = 0 then Delay(1)
+				if aiBase.GetNextEventCount() = 0 then Delay(2)
+				if aiBase.GetNextEventCount() = 0 then Delay(2)
+			EndIf
 
 			'received command to exit the thread
 			if aiBase._updateThreadExit then exit
