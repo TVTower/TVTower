@@ -2552,7 +2552,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If provider
 			If provider.IsSubscribedChannel(owner) Then Return False
-			If provider.CanSubscribeChannel(owner, -1) <= 0 Then Return False
+			If provider.CanSubscribeChannel(owner) <= 0 Then Return False
 		EndIf
 
 		Return True
@@ -2642,7 +2642,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] in section ~q" + station.GetSectionName() +"~q for " + station.price + " Euro (reach +" + station.GetReach(True) + ")", LOG_DEBUG)
 
 		'sign potential contracts (= add connections)
-		station.SignContract( -1 )
+		station.SignContract()
 
 		'inform the station
 		station.OnAddToMap()
@@ -3118,20 +3118,35 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method RenewContract:Int(duration:Long)
+	Method RenewContract:Int()
+		Return RenewContractOverDuration(-1)
+	End Method
+
+
+	Method RenewContractOverDuration:Int(duration:Long)
 		'reset warning state
 		SetFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT, False)
 
 		Return True
 	End Method
 
+	
+	Method CanSignContract:Int() {_exposeToLua}
+		Return CanSignContractOverDuration(-1)
+	End Method
 
-	Method CanSignContract:Int(duration:Long) {_exposeToLua}
+
+	Method CanSignContractOverDuration:Int(duration:Long)
 		Return True
 	End Method
 
 
-	Method SignContract:Int(duration:Long)
+	Method SignContract:Int()
+		Return SignContractOverDuration(-1)
+	End Method
+
+
+	Method SignContractOverDuration:Int(duration:Long)
 		'reset warning state
 		SetFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT, False)
 
@@ -3271,7 +3286,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			'automatically refresh subscriptions?
 			If HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT)
 				If GetSubscriptionTimeLeft() <= 0 And GetProvider()
-					RenewContract( GetProvider().GetDefaultSubscribedChannelDuration() )
+					RenewContractOverDuration( GetProvider().GetDefaultSubscribedChannelDuration() )
 				EndIf
 			'inform others that contract ends soon ?
 			ElseIf Not HasFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT)
@@ -3302,7 +3317,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method CanSubscribeToProvider:Int(duration:Long)
+	Method CanSubscribeToProvider:Int() {_exposeToLua}
+		Return CanSubscribeToProviderOverDuration(-1)
+	End Method
+
+
+	Method CanSubscribeToProviderOverDuration:Int(duration:Long)
 		Return True
 	End Method
 
@@ -3331,7 +3351,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local showPriceInformation:Int = False
 
 		If Not HasFlag(TVTStationFlag.PAID)
-			cantGetProviderPermissionReason = CanSubscribeToProvider(1)
+			cantGetProviderPermissionReason = CanSubscribeToProvider()
 			isNextReachLevelProbable = NextReachLevelProbable(owner, GetExclusiveReach())
 			showPriceInformation = True
 
@@ -3825,7 +3845,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method RenewContract:Int(duration:Long)
+	Method RenewContractOverDuration:Int(duration:Long) override
 		If Not providerGUID Then Return False 'Throw "Renew CableNetworkUplink without valid cable network guid."
 
 		'inform cable network
@@ -3853,34 +3873,34 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			runningCosts = - 1
 		EndIf
 
-		Return Super.RenewContract(duration)
+		Return Super.RenewContractOverDuration(duration)
 	End Method
 
 
-	Method CanSubscribeToProvider:Int(duration:Long)
+	Method CanSubscribeToProviderOverDuration:Int(duration:Long) override
 		If Not providerGUID Then Return False
 
 		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
-		If cableNetwork Then Return cableNetwork.CanSubscribeChannel(Self.owner, duration)
+		If cableNetwork Then Return cableNetwork.CanSubscribeChannelOverDuration(Self.owner, duration)
 
 		Return True
 	End Method
 
 
 	'override to check if already subscribed
-	Method CanSignContract:Int(duration:Long)  {_exposeToLua}
-		If Not Super.CanSignContract(duration) Then Return False
+	Method CanSignContractOverDuration:Int(duration:Long) override
+		If Not Super.CanSignContractOverDuration(duration) Then Return False
 
-		If CanSubscribeToProvider(duration) <= 0 Then Return False
+		If CanSubscribeToProviderOverDuration(duration) <= 0 Then Return False
 
 		Return True
 	End Method
 
 
 	'override to add satellite connection
-	Method SignContract:Int(duration:Long)
+	Method SignContractOverDuration:Int(duration:Long) override
 		If Not providerGUID Then Throw "Sign to CableNetworkLink without valid cable network guid."
-		If Not CanSignContract(duration) Then Return False
+		If Not CanSignContractOverDuration(duration) Then Return False
 
 		'inform cable network
 		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
@@ -3891,7 +3911,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		Return Super.SignContract(duration)
+		Return Super.SignContractOverDuration(duration)
 	End Method
 
 
@@ -4244,7 +4264,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method RenewContract:Int(duration:Long)
+	Method RenewContractOverDuration:Int(duration:Long) override
 		If Not providerGUID Then Return False 'Throw "Renew a Satellitelink to map without valid satellite guid."
 
 		'inform satellite
@@ -4270,34 +4290,34 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 			runningCosts = - 1
 		EndIf
 
-		Return Super.RenewContract(duration)
+		Return Super.RenewContractOverDuration(duration)
 	End Method
 
 
-	Method CanSubscribeToProvider:Int(duration:Long)
+	Method CanSubscribeToProviderOverDuration:Int(duration:Long) override
 		If Not providerGUID Then Return False
 
 		Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
-		If satellite Then Return satellite.CanSubscribeChannel(Self.owner, duration)
+		If satellite Then Return satellite.CanSubscribeChannelOverDuration(Self.owner, duration)
 
 		Return True
 	End Method
 
 
 	'override to check if already subscribed
-	Method CanSignContract:Int(duration:Long) {_exposeToLua}
-		If Not Super.CanSignContract(duration) Then Return False
+	Method CanSignContractOverDuration:Int(duration:Long) override
+		If Not Super.CanSignContractOverDuration(duration) Then Return False
 
-		If CanSubscribeToProvider(duration) <= 0 Then Return False
+		If CanSubscribeToProviderOverDuration(duration) <= 0 Then Return False
 
 		Return True
 	End Method
 
 
 	'override to add satellite connection
-	Method SignContract:Int(duration:Long)
+	Method SignContractOverDuration:Int(duration:Long) override
 		If Not providerGUID Then Throw "Signing a Satellitelink to map without valid satellite guid."
-		If Not CanSignContract(duration) Then Return False
+		If Not CanSignContractOverDuration(duration) Then Return False
 
 		'inform satellite
 		Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
@@ -4310,7 +4330,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 
 		If IsShutDown() Then Resume()
 
-		Return Super.SignContract(duration)
+		Return Super.SignContractOverDuration(duration)
 	End Method
 
 
@@ -5738,7 +5758,12 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CanSubscribeChannel:Int(channelID:Int, duration:Long=-1) {_exposeToLua}
+	Method CanSubscribeChannel:Int(channelID:Int) {_exposeToLua}
+		Return CanSubscribeChannelOverDuration(channelID, -1)
+	End Method
+
+
+	Method CanSubscribeChannelOverDuration:Int(channelID:Int, duration:Long)
 		If minimumChannelImage > 0 And minimumChannelImage > GetPublicImage(channelID).GetAverageImage() Then Return -1
 		If channelMax >= 0 And subscribedChannels.Length >= channelMax Then Return -2
 
@@ -5747,7 +5772,9 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 
 
 	Method SubscribeChannel:Int(channelID:Int, duration:Long, force:Int=False)
-		If Not force And CanSubscribeChannel(channelID, duration) <> 1 Then Return False
+		If Not force And CanSubscribeChannelOverDuration(channelID, duration) <> 1 Then Return False
+
+		If duration < 0 Then duration = GetDefaultSubscribedChannelDuration()
 
 		If IsSubscribedChannel(channelID)
 			Local i:Int = GetSubscribedChannelIndex(channelID)

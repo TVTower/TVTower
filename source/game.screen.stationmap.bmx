@@ -224,7 +224,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
 
 		'try to renew a contract
-		if TScreenHandler_StationMap.selectedStation then TScreenHandler_StationMap.selectedStation.RenewContract(12 * TWorldTime.DAYLENGTH)
+		if TScreenHandler_StationMap.selectedStation then TScreenHandler_StationMap.selectedStation.RenewContractOverDuration(12 * TWorldTime.DAYLENGTH)
 	End Method
 
 
@@ -872,8 +872,8 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 				local provider:TStationMap_BroadcastProvider = TScreenHandler_StationMap.selectedStation.GetProvider()
 				'disable action button if subscription not possible
 				if provider
-					if provider.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or provider.IsSubscribedChannel(GetPlayerBase().playerID)
-						Select provider.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+					if provider.CanSubscribeChannel(GetPlayerBase().playerID) <= 0 or provider.IsSubscribedChannel(GetPlayerBase().playerID)
+						Select provider.CanSubscribeChannel(GetPlayerBase().playerID)
 							case -1
 								actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
 							case -2
@@ -1179,7 +1179,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 					'tmpSatLink.refreshData()
 					satLink.refreshData()
 					'sign potential contracts (= add connections)
-					satLink.SignContract( -1 )
+					satLink.SignContract()
 
 					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
 
@@ -1224,8 +1224,8 @@ endrem
 				if openFrame
 					actionButton.Enable()
 					if selectedSatellite
-						if selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or selectedSatellite.IsSubscribedChannel(GetPlayerBase().playerID)
-							Select selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+						if selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID) <= 0 or selectedSatellite.IsSubscribedChannel(GetPlayerBase().playerID)
+							Select selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID)
 								case -1
 									actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
 								case -2
