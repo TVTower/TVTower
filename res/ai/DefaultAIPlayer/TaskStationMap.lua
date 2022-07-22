@@ -459,7 +459,7 @@ function JobBuyStation:GetAttraction(tempStation)
 		attraction = -2
 	elseif exclusiveReach < 100000 then
 		attraction = attraction * 0.5
-	elseif tempStation:CanSignContract(-1) == 0 then
+	elseif tempStation:CanSignContract() == 0 then
 		attraction = -3
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
