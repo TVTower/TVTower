@@ -41,6 +41,7 @@
 			<outcome slope="30" max="100" min="20" />
 			<review slope="35" max="100" min="20" />
 			<speed slope="40" max="100" min="30" />
+			<studio_size min="1" max="3" slope="20" />
 		</scripttemplate>
 
 		<!-- kein optionaler Kult-->
@@ -186,6 +187,7 @@
 			<outcome slope="30" max="100" min="20" />
 			<review slope="35" max="100" min="20" />
 			<speed slope="40" max="100" min="30" />
+			<studio_size min="1" max="2" slope="40" />
 		</scripttemplate>
 
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-freieTiere">
@@ -251,6 +253,7 @@
 			<outcome slope="30" max="70" min="25" />
 			<review slope="35" max="70" min="25" />
 			<speed slope="40" max="80" min="35" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
 		<!-- Verfügbarkeit ergänzt, kein optionaler Kult-->
@@ -341,6 +344,7 @@
 			<outcome slope="40" max="81" min="53" />
 			<review slope="40" max="78" min="45" />
 			<speed slope="50" max="76" min="44" />
+			<studio_size min="1" max="2" slope="40" />
 		</scripttemplate>
 
 		<!-- Verfügbarkeit ergänzt, kein optionaler Kult-->
@@ -372,6 +376,7 @@
 			<outcome slope="45" max="80" min="20" />
 			<review slope="45" max="75" min="20" />
 			<speed slope="40" max="75" min="30" />
+			<studio_size min="1" max="2" slope="40" />
 		</scripttemplate>
 
 		<!--Show statt Serie, Host+Gäste statt Schauspieler, Genre angepasst; TODO Host ggf. entfernen (Sprich mit X, dann aber anderer Moderator), kein optionaler Kult-->
@@ -546,6 +551,7 @@
 			<outcome slope="30" max="100" min="20" />
 			<review slope="35" max="100" min="20" />
 			<speed slope="40" max="100" min="30" />
+			<studio_size min="2" max="3" slope="20" />
 		</scripttemplate>
 
 		<!-- Kult, Trash entfernt -->
@@ -581,6 +587,7 @@
 			<outcome slope="30" max="100" min="30" />
 			<review slope="35" max="100" min="30" />
 			<speed slope="40" max="100" min="30" />
+			<studio_size min="1" max="3" slope="30" />
 		</scripttemplate>
 
 		<!--kein optionaler Kult-->
@@ -741,6 +748,7 @@
 			<outcome slope="40" max="71" min="43" />
 			<review slope="40" max="73" min="48" />
 			<speed slope="50" max="73" min="48" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Nerdszusammen">
@@ -902,6 +910,7 @@
 			<outcome slope="40" max="85" min="57" />
 			<review slope="40" max="75" min="43" />
 			<speed slope="50" max="92" min="43" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
 		<!--Genre family ergänzt, Zufallsstadt ergänzt, kein optionaler Kult-->
@@ -1070,6 +1079,7 @@
 			<outcome slope="40" max="75" min="57" />
 			<review slope="40" max="85" min="43" />
 			<speed slope="50" max="90" min="53" />
+			<studio_size min="1" max="2" slope="40" />
 		</scripttemplate>
 
 		<!--kein optionaler Kult; Besetzung passt ggf. nicht zu Name (Comedyduo mit 5 Darstellern)?-->
@@ -1200,6 +1210,7 @@
 			<outcome slope="40" max="72" min="57" />
 			<review slope="40" max="82" min="63" />
 			<speed slope="50" max="80" min="53" />
+			<studio_size min="1" max="2" slope="60" />
 		</scripttemplate>
 
 		<!--Episoden gekürzt, kein optionaler Kult-->
@@ -1339,6 +1350,7 @@
 			<outcome slope="40" max="72" min="57" />
 			<review slope="40" max="72" min="53" />
 			<speed slope="50" max="90" min="53" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
 		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, Produktionszeit kein optionaler Kult, TODO Host passt nicht wirklich zum Namen-->
@@ -1587,6 +1599,7 @@
 			<outcome slope="40" max="82" min="57" />
 			<review slope="40" max="82" min="53" />
 			<speed slope="50" max="90" min="53" />
+			<studio_size min="1" max="2" slope="40" />
 		</scripttemplate>
 
 		<!--Produkt Show statt Serie, Cast Host+Gäste statt Darseller, eine Ausstrahlung, Ausstrahlungszeit, kein optionaler Kult, Preis gesenkt-->
@@ -1882,6 +1895,7 @@
 			<outcome slope="40" max="82" min="33" />
 			<review slope="40" max="84" min="35" />
 			<speed slope="50" max="79" min="29" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 	</scripttemplates>
 </tvtdb>

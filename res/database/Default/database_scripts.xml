@@ -130,6 +130,7 @@
 			<outcome min="25" max="35" slope="40" />
 			<review min="45" max="65" slope="40" />
 			<speed min="35" max="65" slope="50" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
 
@@ -344,6 +345,7 @@
 			<outcome min="30" max="75" slope="40" />
 			<review min="35" max="60" slope="40" />
 			<speed min="45" max="95" slope="50" />
+			<studio_size min="1" max="2" slope="40" />
 		</scripttemplate>
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-dramamovie1">
