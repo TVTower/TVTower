@@ -78,6 +78,7 @@ ist wie gedacht. Bald kämpfen sie um Leben und Tod.</de>
 			<outcome min="35" max="65" slope="40" />
 			<review min="45" max="70" slope="40" />
 			<speed min="35" max="80" slope="50" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-daytrip">

@@ -2249,7 +2249,7 @@
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
 				<de>%TITLE%</de>
-				<en>Upcoming movies</en>
+				<en>%TITLE%</en>
 			</title>
 			<variables>
 				<title>
@@ -2377,6 +2377,7 @@
 			<outcome min="1" max="100" slope="20" />
 			<review min="1" max="100" slope="35" />
 			<speed min="1" max="100" slope="25" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
 			<title>
@@ -2412,6 +2413,7 @@
 			<outcome min="55" max="100" slope="40" />
 			<review min="55" max="100" slope="40" />
 			<speed min="55" max="100" slope="10" />
+			<studio_size min="2" max="3" slope="40" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
@@ -2481,6 +2483,7 @@
 			<outcome min="50" max="70" slope="40" />
 			<review min="30" max="80" slope="50" />
 			<speed min="48" max="89" slope="28" />
+			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-SciFi-QueenundUfo">
 			<title>
@@ -2505,6 +2508,7 @@
 			<outcome min="40" max="80" slope="50" />
 			<review min="55" max="90" slope="55" />
 			<speed min="40" max="70" slope="40" />
+			<studio_size min="1" max="2" slope="25" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
 			<title>
@@ -2693,6 +2697,7 @@
 			<outcome min="75" max="95" slope="40" />
 			<review min="45" max="85" slope="55" />
 			<speed min="35" max="85" slope="50" />
+			<studio_size min="2" max="3" slope="35" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-trash-karprachd">
 			<title>
@@ -2896,6 +2901,7 @@
 			<outcome min="71" max="100" slope="50" />
 			<review min="71" max="100" slope="55" />
 			<speed min="55" max="100" slope="65" />
+			<studio_size value="3" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Fant-Wesen">
 			<title>
@@ -2962,6 +2968,7 @@
 			<outcome min="30" max="70" slope="35" />
 			<review min="30" max="70" slope="35" />
 			<speed min="30" max="70" slope="35" />
+			<studio_size min="1" max="2" slope="20" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hist-Voelker">
 			<title>
@@ -3021,6 +3028,7 @@
 			<outcome min="10" max="100" slope="20" />
 			<review min="10" max="100" slope="25" />
 			<speed min="01" max="100" slope="35" />
+			<studio_size min="1" max="2" slope="20" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-West-mitdemhelden">
 			<title>
@@ -3057,6 +3065,7 @@
 			<outcome min="75" max="100" slope="50" />
 			<review min="55" max="100" slope="50" />
 			<speed min="65" max="100" slope="50" />
+			<studio_size value="3" />
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
 			<title>
