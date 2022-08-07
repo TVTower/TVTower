@@ -347,8 +347,8 @@ Type TDebugScreen
 
 	'=== PLAYER COMMANDS ===
 	Method InitMode_PlayerCommands()
-		Local IDs:Int[]      = [0,           1,         2,      3,              4,             5,                    6,           7,           8]
-		Local texts:String[] = ["Ad Agency", "Archive", "Boss", "Movie Agency", "News Studio", "Programme Schedule", "CheckSigns","Roomboard", "Station Map"]
+		Local IDs:Int[]      = [0,           1,         2,      3,              4,             5,                    6,           7,           8,             9]
+		Local texts:String[] = ["Ad Agency", "Archive", "Boss", "Movie Agency", "News Studio", "Programme Schedule", "CheckSigns","Roomboard", "Station Map", "Scripts"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
@@ -402,6 +402,7 @@ Type TDebugScreen
 			Case 6	taskName = "CheckSigns"
 			Case 7	taskName = "RoomBoard"
 			Case 8	taskName = "StationMap"
+			Case 9	taskName = "Scripts"
 		End Select
 
 		If taskName
@@ -421,7 +422,8 @@ Type TDebugScreen
 					Case 5	 room = GetRoomCollection().GetFirstByDetails("", "office", playerID)
 					Case 6	 room = GetRoomCollection().GetFirstByDetails("", "elevatorPlan", playerID)
 					Case 7	 room = GetRoomCollection().GetFirstByDetails("", "roomboard", playerID)
-					Case 8	 room = GetRoomCollection().GetFirstByDetails("", "ofice", playerID)
+					Case 8	 room = GetRoomCollection().GetFirstByDetails("", "office", playerID)
+					Case 9	 room = GetRoomCollection().GetFirstByDetails("", "scriptagency")
 				End Select
 				If room
 					Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
@@ -2002,7 +2004,7 @@ Type TDebugScreen
 
 		If player.playerAI
 			SetColor 40,40,40
-			DrawRect(x, y, 185, 135)
+			DrawRect(x, y, 185, 155)
 			SetColor 50,50,40
 			DrawRect(x+1, y+1, 183, 23)
 			SetColor 255,255,255

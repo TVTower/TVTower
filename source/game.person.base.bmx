@@ -197,7 +197,8 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		Local found:Int = 0
 		Local insignificant:Int=-1, celebrity:Int=-1, castable:Int=-1
 		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
-		
+		'undefined job-gender 0 corrensponds to filter value -1
+		If gender = 0 then gender = -1
 		For Local p:TPersonBase = EachIn list
 			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
@@ -470,8 +471,8 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomInsignificant:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomFromArrayOrFilter(array, FILTER_INSIGNIFICANT, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	Method GetRandomCastableInsignificant:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomFromArrayOrFilter(array, FILTER_CASTABLE_INSIGNIFICANT, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
@@ -480,8 +481,8 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomCelebrity:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomFromArrayOrFilter(array, FILTER_CELEBRITY, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	Method GetRandomCastableCelebrity:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomFromArrayOrFilter(array, FILTER_CASTABLE_CELEBRITY, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 	

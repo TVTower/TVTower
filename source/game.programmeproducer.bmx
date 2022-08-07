@@ -52,6 +52,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	Field castFavoritesUsageCount:Int[]
 	'percentage on how often celebrities are used
 	Field preferCelebrityCastRate:Int = 100
+	Field preferCelebrityCastRateSupportingRole:Int = 100
 	Field nextProductionTime:Long
 	Field updateCycle:Int = 0
 	Field budgetIncrease:Int = 1000
@@ -317,10 +318,12 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 			'nobody to reuse now - fetch a new one
 			If Not person
-				If RandRange(0, 100) <= preferCelebrityCastRate
-					person = GetPersonBaseCollection().GetRandomCelebrity(Null, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
+				Local celebPrefRate:Int = preferCelebrityCastRate
+				If job.job = TVTPersonJob.SUPPORTINGACTOR then celebPrefRate=preferCelebrityCastRateSupportingRole
+				If RandRange(0, 100) <= celebPrefRate
+					person = GetPersonBaseCollection().GetRandomCastableCelebrity(Null, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
 				Else
-					person = GetPersonBaseCollection().GetRandomInsignificant(Null, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
+					person = GetPersonBaseCollection().GetRandomCastableInsignificant(Null, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
 				EndIf
 
 				'not enough insignificants available?
@@ -342,6 +345,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 					person = GetPersonBaseCollection().CreateRandom(jobCountry, Max(0, job.gender))
 				EndIf
 			EndIf
+
+			person = OptimizeCast(person, productionConcept, job, jobCountry, usedPersonIDs)
 
 			'store used cast selections so amateurs sooner become celebs
 			'with specialization
@@ -372,8 +377,70 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Next
 
 		'pc.CalculateCastFit()
-	End Method
 
+
+		'try to find a better fit: equally good but less expensive, better but only slightly more expensive
+		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[])
+			'do not replace if insignificant was chosen
+			If currentChoice.IsInsignificant() Then return currentChoice
+			'print "    trying to optimize " + job.job + " currently " + currentChoice.GetFullName()
+
+			Local result:TPersonBase = currentChoice
+			'TODO check if these calls give the same set of persons available in the supermarket
+			Local alternatives:TPersonBase[] = GetPersonBaseCollection().GetRandomCelebrities(Null, 20, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
+			If alternatives.length < 10
+				'no job restriction if there are too few alternatives
+				alternatives:+ GetPersonBaseCollection().GetRandomCelebrities(Null, 20, True, True, 0, job.gender, True, jobCountry, Null, usedPersonIDs)
+			End If
+			Local script:TScript = productionConcept.script
+			Local genreID:Int = script.mainGenre
+			Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition( genreID )
+
+			For Local i:Int = 0 Until alternatives.length
+				Local alternative:TPersonBase = alternatives[i]
+				If Not alternative Or Not alternative.IsCastable() Or Not alternative.IsBookable() Then Continue
+				If IsBetterFit(result, alternative, job.job, genreDefinition) Then result = alternative
+			Next
+
+			return result
+		End Function
+
+		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreDefinition:TMovieGenreDefinition)
+			Local xpCurrent:Float = current.GetEffectiveJobExperiencePercentage(jobId)
+			Local xpAlternative:Float = alternative.GetEffectiveJobExperiencePercentage(jobId)
+			'adapted from screen.supermarket
+			Local attributes:Int[] = [TVTPersonPersonalityAttribute.FAME, ..
+			                          TVTPersonPersonalityAttribute.POWER, ..
+			                          TVTPersonPersonalityAttribute.HUMOR, ..
+			                          TVTPersonPersonalityAttribute.CHARISMA, ..
+			                          TVTPersonPersonalityAttribute.APPEARANCE ..
+			                         ]
+			Local feeCurrent:Int = current.GetJobBaseFee(jobId, 1, -1)
+			Local feeAlternative:Int = alternative.GetJobBaseFee(jobId, 1, -1)
+			Local sumCurrent:Float = 2 * xpCurrent
+			Local sumAlternative:Float = 2 * xpAlternative
+			'TODO genre fit; reduce score if job does not fit? (due to too few alternatives)
+			For Local attributeID:Int = EachIn attributes
+				Local attributeGenre:Float = genreDefinition.GetCastAttribute(jobID, attributeID)
+				If attributeGenre > 0
+					sumCurrent:+ 4 * current.GetPersonalityData().GetAttributeValue(attributeID)
+					sumAlternative:+ 4 * alternative.GetPersonalityData().GetAttributeValue(attributeID)
+				Else
+					sumCurrent:+ current.GetPersonalityData().GetAttributeValue(attributeID)
+					sumAlternative:+ alternative.GetPersonalityData().GetAttributeValue(attributeID)
+				End If
+			Next
+			Local result:Int=False
+			'better and not too expensive
+			If sumAlternative > sumCurrent * 1.1 and feeAlternative < feeCurrent * 1.1 Then result = True
+			'not much worse but cheaper
+			If sumAlternative > sumCurrent * 0.9 and feeAlternative < feeCurrent Then result = True
+			If result = True
+				'print "  using alternative "+alternative.GetFullName() + " xp "+ xpAlternative + " fee "+ feeAlternative + " atts "+ sumAlternative
+			EndIf
+			return result
+		End Function
+	End Method
 
 
 	Method ChooseProductionCompany(productionConcept:TProductionConcept, script:TScript)
@@ -400,6 +467,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		If budget > 2500000 Then requiredFocusPoints :+ 5
 		If budget > 5000000 Then requiredFocusPoints :+ 8
 		If budget >10000000 Then requiredFocusPoints :+ 10
+		'limit price of chosen company
+		If budget < 250000 Then requiredFocusPoints = Max(requiredFocusPoints, 11)
 
 		If requiredFocusPoints > 5
 			'print "looking for non amateur production company with focuspoints >= "+requiredFocusPoints
@@ -409,7 +478,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			For Local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.Values()
 				'better than what we found ?
 				if bestCompany
-					If p.GetFocusPoints() > bestFocusPoints
+					If p.GetFocusPoints() > bestFocusPoints and p.GetFee() < budget * 0.7
 						'if company is more far from requirements than 
 						'current and also more expensive!
 						If abs(p.GetFocusPoints() - requiredFocusPoints) > abs(bestFocusPoints - requiredFocusPoints) and p.GetFee() > bestFee Then Continue
@@ -446,8 +515,9 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Local fpToSpend:Int = productionConcept.productionCompany.GetFocusPoints()
 		'the lower the experience then the more the producer might set
 		'too few or too much focus points (-25 to +25%)
-		Local fpUsed:Int = fpToSpend * Max(0, Min(100, ((100-experience) * RandRange(75, 125))/100)) / 100
-
+		'(more points than available cannot be set...
+		Local diff:Int = (100-experience)*25/100
+		Local fpUsed:Int = fpToSpend * Max(0, Min(100, RandRange(100-diff, 100+diff))) / 100
 		productionConcept.AssignEffectiveFocusPoints(fpUsed)
 	End Method
 

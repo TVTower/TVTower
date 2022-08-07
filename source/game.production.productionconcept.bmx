@@ -670,23 +670,42 @@ Type TProductionConcept Extends TOwnedGameObject
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
 
 		Local indices:Int[] = productionFocus.GetOrderedFocusIndices()
-		For local focusPointID:int = EachIn indices
-			'production speed does not add to quality
-			if focusPointID = TVTProductionFocus.PRODUCTION_SPEED then continue
+		Local priorities:Float[] = new Float[indices.length]
+		Local totalPriorities:Float = 0
 
-			local points:Int
-			if genreDefinition
-				points = ceil(pointsToSpend * genreDefinition.GetFocusPointPriority(focusPointID))
-			else
-				points = ceil(pointsToSpend * (pointsToSpend / Max(1, (indices.length-1))))
-			endif
-			points = Min(pointsToSpend, points)
-		
+		'initialize priority distribution
+		For Local i:Int = 0 To indices.length-1
+			Local focusPointID:Int = indices[i]
+			Local priority:Float = 1.0
+			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED
+				priority = 0.4
+			Else
+				If genreDefinition
+					priority = genreDefinition.GetFocusPointPriority(focusPointID)
+				EndIf
+				If (focusPointID = TVTProductionFocus.COULISSE or focusPointID = TVTProductionFocus.OUTFIT_AND_MASK) and priority >= 1
+					priority = priority + 0.3
+				ElseIf focusPointID = TVTProductionFocus.TEAM and priority <= 1
+					priority = priority - 0.3
+				EndIF
+			EndIf
+			priority = priority * priority
+			priorities[i] = priority
+			totalPriorities = totalPriorities + priority
+		Next
+
+		Local totalPointsToSpend:Int = pointsToSpend
+
+		For Local i:Int = 0 To indices.length-1
+			Local focusPointID:Int = indices[i]
+			Local priority:Float = priorities[i]
+			local points:Int = ceil(totalPointsToSpend * priority / totalPriorities)
+			points= Min(pointsToSpend, points)
+			'print "id " + focusPointID +" calculated priority "+priority +" points "+points
 			SetProductionFocus(focusPointID, points)
-			
 			pointsToSpend :- points
 		Next
-		
+
 		Return pointsToSpend
 	End Method
 

@@ -25,6 +25,9 @@ Import "game.award.base.bmx"
 
 Import "game.roomhandler.movieagency.bmx"
 Import "game.roomhandler.adagency.bmx"
+Import "game.roomhandler.scriptagency.bmx"
+Import "game.roomhandler.studio.bmx"
+Import "game.programmeproducer.bmx"
 
 
 Global AiLog:TLogFile[4]
@@ -1574,7 +1577,127 @@ endrem
 		EndIf
 	End Method
 
+	'=== SCRIPT AGENCY ===
 
+	'Get all scripts from script agency
+	'Returns: LuaFunctionResult (resultID, scripts)
+	Method da_getScripts:TLuaFunctionResult()
+		If Not _PlayerInRoom("scriptagency") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+
+		Local scripts:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
+		If scripts
+			Return TLuaFunctionResult.Create(Self.RESULT_OK, scripts)
+		Else
+			Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
+		EndIf
+	End Method
+
+	'BUY a script
+	'Returns result-ID: WRONGROOM / OK / FAILED
+	Method da_buyScript:Int(script:TScript)
+		If Not _PlayerInRoom("scriptagency") Then Return Self.RESULT_WRONGROOM
+
+		Return RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(script, Self.ME, False)
+	End Method
+
+	'Get number of jobs - may be too expensive due to big cast
+	Method da_getJobCount:Int(script:TScript)
+		If Not _PlayerInRoom("scriptagency") Then Return Self.RESULT_WRONGROOM
+
+		Return script.GetJobs().length
+	End Method
+
+	'=== STUDIO ===
+
+	'Ensure a script is placed in the studio; get all possible concepts
+	'if there is no script at all (studio or suitcase) return NOTFOUND to indicate a script must be purchased
+	Method st_dropScriptAndGetConcepts:Int()
+		If Not _PlayerInRoom("studio") Then Return Self.RESULT_WRONGROOM
+
+		local room:Int = getPlayerRoom()
+		local script:TScript = RoomHandler_Studio.GetInstance().GetCurrentStudioScript(room)
+
+		If not script
+			local scripts:TList = GetPlayerProgrammeCollection(Self.ME).suitcaseScripts
+			'TODO may be more than one - choose most suitable - consider room size and potential
+			If Not scripts.IsEmpty()
+				script:TScript = TScript(scripts.first())
+			EndIf
+		EndIf
+
+		If script
+			Local pcc:TProductionConceptCollection = TProductionConceptCollection.GetInstance()
+			Local rh:RoomHandler_Studio = RoomHandler_Studio.GetInstance()
+			rh.SetCurrentStudioScript(script, room, False)
+
+			If script.IsSeries()
+				For Local i:Int = 0 To script.GetEpisodes()-1
+					Local subScript:TScript = TScript(script.GetSubScriptAtIndex(i))
+					If pcc.CanCreateProductionConcept(subScript) then rh.CreateProductionConcept(Self.ME, subScript)
+				Next
+			Else
+				If pcc.CanCreateProductionConcept(script) then rh.CreateProductionConcept(Self.ME, script)
+			EndIf
+			Return Self.RESULT_OK
+		EndIf
+		Return Self.RESULT_NOTFOUND
+	End Method
+
+	'Start a production
+	'Returns result-ID: WRONGROOM / OK / FAILED / NOT_FOUND
+	Method st_StartProduction:Int()
+		If Not _PlayerInRoom("studio") Then Return Self.RESULT_WRONGROOM
+
+		local room:Int = getPlayerRoom()
+		local script:TScript = RoomHandler_Studio.GetInstance().GetCurrentStudioScript(room)
+		If script
+			If GetProductionManager().StartProductionInStudio(room, script) > 0
+				Return Self.RESULT_OK
+			else
+				Return Self.RESULT_FAILED
+			EndIf
+		Else
+			Return Self.RESULT_NOTFOUND
+		EndIf
+	End Method
+
+	'=== SUPERMARKET ===
+
+	'plan all potential productions; handle already planned productions gracefully
+	'Returns result-ID: WRONGROOM / OK / FAILED / NOT_FOUND
+	Method sm_PlanProduction:Int(budget:Int, oneBlockBudgetFactor:Float)
+		If Not _PlayerInRoom("supermarket") Then Return Self.RESULT_WRONGROOM
+		Local result:Int = Self.RESULT_NOTFOUND
+		Local producer:TProgrammeProducer = new TProgrammeProducer
+		For Local pc:TProductionConcept = eachin GetPlayerProgrammeCollection(Self.ME).GetProductionConcepts()
+			If pc
+				If pc.IsDepositPaid()
+					'nothing to plan
+					result = Self.RESULT_OK
+				Else
+					Local budgetToUse:Int = budget
+					result = Self.RESULT_FAILED
+					If pc.script.GetBlocks() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
+					producer.budget = budgetToUse
+					producer.experience = 50
+					If budgetToUse < 300000 then producer.preferCelebrityCastRateSupportingRole = 60
+					For Local i:Int = 1 To 15
+						producer.ChooseProductionCompany(pc, pc.script)
+						producer.ChooseCast(pc, pc.script)
+						producer.ChooseFocusPoints(pc, pc.script)
+						'in order to inspect the concept, do not pay the deposit and do not return OK
+						'then you can send the AI to the supermarket multiple times
+						If pc.GetTotalCost() <= budgetToUse and pc.PayDeposit() = True
+							result = Self.RESULT_OK
+							Exit
+						EndIf
+					Next
+				EndIf
+			EndIf
+		Next
+
+		Return result
+	End Method
 
 	'=== MOVIE AGENCY ===
 	'main screen
