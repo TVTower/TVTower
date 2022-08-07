@@ -202,7 +202,7 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
-	Method IsLive:int()
+	Method IsLive:int() {_exposeToLua}
 		return HasFlag(TVTProgrammeDataFlag.LIVE)
 	End Method
 
@@ -215,7 +215,7 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
-	Method IsCulture:Int()
+	Method IsCulture:Int() {_exposeToLua}
 		return HasFlag(TVTProgrammeDataFlag.CULTURE)
 	End Method
 
@@ -245,7 +245,7 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
-	Method isSeries:int()
+	Method isSeries:int() {_exposeToLua}
 		return scriptLicenceType = TVTProgrammeLicenceType.SERIES
 	End Method
 

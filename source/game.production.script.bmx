@@ -332,7 +332,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'See TVTPersonJob
 	Field allowedGuestTypes:Int	= 0
 
-	Field requiredStudioSize:Int = 1
+	Field requiredStudioSize:Int = 1 {_exposeToLua="readonly"}
 	'more expensive
 	Field requireAudience:Int = 0
 
@@ -568,7 +568,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Function
 
 	'override
-	Method GetTitle:String()
+	Method GetTitle:String() {_exposeToLua}
 		If customTitle Then Return customTitle
 		Return Super.GetTitle()
 	End Method
