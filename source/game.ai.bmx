@@ -1120,7 +1120,10 @@ endrem
 		Return GetStationMapCollection().GetSatelliteAtIndex(arrayIndex)
 	End Method
 
-
+	Method of_getPopulation:Int()
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		Return GetStationMapCollection().GetPopulation()
+	End Method
 
 	'== PROGRAMME PLAN ==
 

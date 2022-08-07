@@ -482,7 +482,8 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			result = result * 3
 		else
 			result = result * relTop
-			if hour < 2 or hour > 16 then
+			local stats = forPlayer.Stats.MovieQuality
+			if (stats~=nil and stats.Values > 25) or hour < 2 or hour > 16 then
 				result = result * relTop
 			end
 		end
@@ -496,6 +497,11 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 		end
 		if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 			result = result * 0.5
+		end
+		if TVT.Constants.AwardType.CULTURE == forPlayer.currentAwardType then
+			if broadcastMaterialSource.data:IsCulture() > 0 then
+				result = result * 3
+			end
 		end
 	end
 	return result

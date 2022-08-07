@@ -2016,6 +2016,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If IsLimitedToTargetGroup(TVTTargetGroup.MEN) Then result:* 2
 		'aim at one spot per day left
 		If Self.getDaysLeft() < Self.getSpotsToSend() Then result:* 2
+		If Self.getSpotsToSend() = 1 Then result:* 2
 		'big effort on last day
 		If Self.getDaysLeft() = 0 And GetWorldTime().getHour() > 5 Then result:* 4
 		'the more spots sent the worse failing will be (other spots wasted)

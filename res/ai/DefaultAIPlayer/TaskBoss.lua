@@ -40,28 +40,28 @@ end
 
 function TaskBoss:BeforeBudgetSetup()
 	self:CalculateFixedCosts()
-	self.InvestmentPriority = 0
+	self.InvestmentPriority = 1
 
 	local money = TVT.GetMoney()
 	local credit = MY.GetCredit(-1)
-	if (money - credit) > 350000 then
+	self.NeededInvestmentBudget = credit
+	if credit == 0 then
+		self.NeededInvestmentBudget = 0
+		self.CurrentInvestmentPriority = 0
+		self.InvestmentPriority = 0
+	elseif (money - credit) > 3000000 then
+		if credit > 300000 then
+			self.NeededInvestmentBudget = credit / 5
+		end
+	elseif (money - credit) > 350000 then
 		if credit > 100000 then
 			self.NeededInvestmentBudget = credit / 5
-			self.InvestmentPriority = 1
-		elseif credit > 0 then
-			self.NeededInvestmentBudget = credit
-			self.InvestmentPriority = 1
-		else
-			self.NeededInvestmentBudget = 0
-			self.CurrentInvestmentPriority = 0
 		end
 	elseif (money - credit) > 100000 then
 		self.NeededInvestmentBudget = credit / 10
-		self.InvestmentPriority = 1
-	elseif (credit > 0) then
-		self.NeededInvestmentBudget = 10000
 	else
-		self.NeededInvestmentBudget = 0
+		self.InvestmentPriority = 0
+		self.NeededInvestmentBudget = 10000
 	end
 end
 
