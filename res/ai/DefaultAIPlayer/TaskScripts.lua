@@ -35,6 +35,11 @@ function TaskScripts:Activate()
 	self.JobPlanProduction.Task = self
 	self.JobStartProduction = JobStartProduction()
 	self.JobStartProduction.Task = self
+	self.awardType = ""
+
+	if getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE then
+		self.awardType = "culture"
+	end
 
 	--depending on state: buy script/bring to studio and get list/supermarket/start production
 	if self.prodStatus == PROD_STATUS_BUY then
@@ -68,17 +73,19 @@ function TaskScripts:GetNextJobInTargetRoom()
 end
 
 function TaskScripts:getStrategicPriority()
-	if getPlayer().currentAwardType == TVT.Constants.AwardType.CUSTOMPRODUCTION then
+	if getPlayer().currentAwardType == TVT.Constants.AwardType.CUSTOMPRODUCTION or getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE then
 		if self.producedForSammy == false then
 			self.SituationPriority = SAMMY_SIT_PRIORITY
-			return 5.0
-		else
-			return 1.0
+			if self.awardType == "culture" and self.prodStatus == PROD_STATUS_BUY then
+				--no special strategic priority
+			else
+				return 5.0
+			end
 		end
 	else
 		self.producedForSammy = false
-		return 1.0
 	end
+	return 1.0
 end
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -113,6 +120,9 @@ function JobBuyScript:Prepare(pParams)
 		end
 	else
 		self.scriptMaxPrice = 0	
+	end
+	if self.Task.awardType == "culture" then
+		self.scriptMaxPrice = 300000
 	end
 	if self.Task.SituationPriority == SAMMY_SIT_PRIORITY then
 		self.minPotential = self.minPotential - 0.1
@@ -161,6 +171,8 @@ end
 
 function JobBuyScript:getAttractivity(script)
 	local potential = script:GetPotential()
+	if script.isCulture() then potential = potential * 1.5 end
+
 	if potential < self.minPotential then
 		return -1
 	else
@@ -169,6 +181,15 @@ function JobBuyScript:getAttractivity(script)
 end
 
 function JobBuyScript:canBuy(script)
+	local cultureOverride = 0
+	if self.Task.awardType == "culture" then
+		if script:IsCulture() > 0 then
+			cultureOverride = 1
+		else
+			return false
+		end
+	end
+
 	--hard restrictions
 	if script.requiredStudioSize > 1 then
 		return false
@@ -176,7 +197,7 @@ function JobBuyScript:canBuy(script)
 		return false
 	elseif script:IsLive() == 1 then
 		return false
-	elseif TVT:da_getJobCount(script) > self.maxJobCount then
+	elseif TVT:da_getJobCount(script) > self.maxJobCount and cultureOverride == 0 then
 		return false
 	elseif script:GetProductionLimit() > 1 then
 		return false

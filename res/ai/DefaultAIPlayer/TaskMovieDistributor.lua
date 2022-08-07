@@ -136,14 +136,13 @@ function TaskMovieDistributor:getStrategicPriority()
 	return 1.0
 end
 
-function TaskMovieDistributor:BudgetSetup()
-	-- Tagesbudget für gute Angebote ohne konkreten Bedarf
-	--TODO was self.BudgetWholeDay / 2, preventing buying good movies; problem to solve is recalculation of budget...
-	self.CurrentBargainBudget = self.BudgetWholeDay
+function TaskMovieDistributor:BeforeBudgetSetup()
 	--TODO lower budget once a maximal number of movies is reached
 	local player = getPlayer()
 	local totalReach = player.totalReach
-	if self.MovieCount >= 35 then
+	if self.MovieCount >= 50 then
+		self.BudgetWeight = 0
+	elseif self.MovieCount >= 35 then
 		self.BudgetWeight = 2
 	elseif self.MovieCount >= 20 and (totalReach==nil or totalReach <= 950000) then
 		self.BudgetWeight = 2
@@ -152,6 +151,12 @@ function TaskMovieDistributor:BudgetSetup()
 	else
 		self.BudgetWeight = 8
 	end
+end
+
+function TaskMovieDistributor:BudgetSetup()
+	-- Tagesbudget für gute Angebote ohne konkreten Bedarf
+	--TODO was self.BudgetWholeDay / 2, preventing buying good movies; problem to solve is recalculation of budget...
+	self.CurrentBargainBudget = self.BudgetWholeDay
 end
 
 
@@ -218,11 +223,16 @@ function JobBuyStartProgramme:Tick()
 		return a:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME) < b:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME)
 	end
 
+	local allowSeries = True
+
 	-- add "okay" movies to the list of candidates
 	for k,v in pairs(movies) do
 		--TODO improve rules for startprogramme ("bad" qualtiy OK if very new and price OK...; handle series differently?)
 		local pricePerBlock = v:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME)
-		if v:GetQuality() < 0.10 or v:GetQualityRaw() < 0.25 then
+		local isSeries = v:IsSeries()
+		if isSeries > 0 and allowSeries == False then
+			self:LogDebug("IGNORING PROGRAMME (series) "..v:getTitle())
+		elseif v:GetQuality() < 0.10 or v:GetQualityRaw() < 0.25 then
 			--avoid the absolute trash :-)
 			self:LogDebug("IGNORING PROGRAMME (quality) "..v:getTitle())
 		elseif (v:isPaid() > 0 or v:getTopicality() < 0.25 or v:GetGenre() == TVT.Constants.ProgrammeGenre.Horror) then
@@ -234,6 +244,7 @@ function JobBuyStartProgramme:Tick()
 			-- ignore randomly
 			self:LogDebug("IGNORING PROGRAMME (random) "..v:getTitle())
 		else
+			if isSeries > 0 then allowSeries = False end
 			table.insert(goodMovies, v)
 		end
 	end
@@ -607,6 +618,17 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	local qualityFactor = 1.0
 	if qualityStats.AverageValue > 0 then qualityFactor = licence:GetQuality() / qualityStats.AverageValue; end
 	qualityFactor = CutFactor(qualityFactor, 0.2, 2)
+
+	if licence.GetData().IsXRated() > 0 and qualityFactor < 1.9 then
+		qualityFactor = qualityFactor * 0.6
+	end
+	if licence.GetData().IsCulture() > 0 then
+		qualityFactor = qualityFactor * 1.3
+	end
+	if licence.isLive() > 0 then
+		--TODO do not buy live licences
+		qualityFactor = qualityFactor * 0.5
+	end
 
 	if (licence.isPaid() > 0 ) then
 		-- TODO call in bad for the image; maybe later if the sender image is high enough?

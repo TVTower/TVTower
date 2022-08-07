@@ -510,6 +510,12 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 	local resultingLicences = {}
 	for k,licence in pairs(useLicences) do
 		local qLevel = AITools:GetBroadcastQualityLevel(licence)
+		--TODO increase chance of xrated programme to be chosen at the right time
+		if fixedHour > 21 or fixedHour < 4 and licence.GetData().IsXRated() == 1 then
+			if qLevel + 1 == maxLevel or qLevel - 2 >= minLevel then
+				if math.random(0, 10) > 6 then qLevel = minLevel end
+			end
+		end
 		if (minLevel < 0 or qLevel >= minLevel) and (maxLevel < 0 or qLevel <= maxLevel) then
 			local sentAndPlannedToday = -1
 			-- only do the costly programme plan count if needed

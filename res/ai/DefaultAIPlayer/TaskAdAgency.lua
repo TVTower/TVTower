@@ -313,7 +313,7 @@ end
 function SignRequisitedContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
 	self.maxAudience = MY.GetMaxAudience()
-	self.highAudienceFactor = 0.1
+	self.highAudienceFactor = 0.09
 	self.avgAudienceFactor = 0.05
 
 	self.Player = getPlayer()
@@ -401,9 +401,14 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	local easy = false
 	local avg = false
 	local hard = false
+	local movieCount = 0
 	local audienceTotal = guessedAudience:GetTotalSum()
 	if audienceTotal > highAudience then
 		hard = true
+		local stats = self.Player.Stats.MovieQuality
+		if stats ~= nil and stats.Values > 0 then
+			movieCount = stats.Values
+		end
 	elseif audienceTotal > avgAudience then
 		avg = true
 	else
@@ -415,7 +420,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end
 
 		local doSign = false
-		local spotsLeft = adContract.GetSpotCount() - neededSpotCount
+		local spotCount = adContract.GetSpotCount()
+		local spotsLeft = spotCount - neededSpotCount
 		if spotsLeft <= 0 then
 			doSign = true
 		elseif neededSpotCount == 1 and requisition.Priority < 4 then
@@ -423,6 +429,9 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		else
 			local daysToFinish = adContract.GetDaysToFinish() - 1
 			if hard == true then
+				if movieCount < 30 then 
+					daysToFinish = daysToFinish -1
+				end
 				if spotsLeft < 3 and spotsLeft < daysToFinish then doSign = true end
 			elseif avg == true then
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
@@ -437,7 +446,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 		--TODO optimize
 		--skip manager and children target group at all - too dangerous
-		if hard == true and (adContract.GetLimitedToTargetGroup() == 1 or adContract.GetLimitedToTargetGroup() == 32) then
+		if (hard == true or avg == true and spotCount > 2) and (adContract.GetLimitedToTargetGroup() == 1 or adContract.GetLimitedToTargetGroup() == 32) then
 		-- skip if contract requires too many spots for the given level
 		elseif doSign == true then
 			local minGuessedAudienceValue = minGuessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())

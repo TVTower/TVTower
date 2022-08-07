@@ -89,6 +89,9 @@ function TaskStationMap:BeforeBudgetSetup()
 			self.BudgetWeight = 8
 		end
 	end
+	if self.maxReachIncrease ~=nil and self.maxReachIncrease < 0  then
+		self.BudgetWeight = 0
+	end
 end
 
 
@@ -181,7 +184,11 @@ function JobAnalyseStationMarket:Tick()
 		end
 	end
 
-	if self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
+	local population = TVT:of_getPopulation()
+
+	if player.totalReach > population * 0.9 then
+		self.Task.maxReachIncrease = -1
+	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
 		self:determineIntendedPositions()
 	end
 
@@ -224,12 +231,13 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 	local deltaY = math.floor((db + dy) / 2 )
 
 	local positionTable = {}
+	local sectionCount = {}
 	local foundCount = 1
 	local startX = startStation.x
 	local startY = startStation.y
 	--create rows upwards
 	while foundCount > 0 do
-		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable, sectionCount)
 		startX = startX + deltaX
 		startY = startY + deltaY
 	end
@@ -239,7 +247,7 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 	startY = startStation.y - deltaY
 	--create rows downwards
 	while foundCount > 0 do
-		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable)
+		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable, sectionCount)
 		startX = startX - deltaX
 		startY = startY - deltaY
 	end
@@ -247,6 +255,7 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 	foundCount = table.count(positionTable)
 	if foundCount > 15 then
 		self.Task.intendedAntennaPositions = positionTable
+		self.Task.antennasPerSection = sectionCount
 		self:LogInfo("found ".. foundCount .. " antennas")
 	end
 end
@@ -285,13 +294,13 @@ function JobAnalyseStationMarket:getBaseAntennaParameters()
 	return {x=startStation.x; y=startStation.y; radius = radius}
 end
 
-function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDelta, yDelta, positions)
+function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDelta, yDelta, positions, sectionCount)
 	local foundCount = 0
 	local x = startX
 	local y = startY
 
 	while x > 0 and y > 0 do
-		if self:insertIntendedPosition(x, y, positions) == 1 then foundCount=foundCount + 1 end
+		if self:insertIntendedPosition(x, y, positions, sectionCount) == 1 then foundCount=foundCount + 1 end
 		x = x - xDelta
 		y = y - yDelta
 	end
@@ -299,19 +308,26 @@ function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDel
 	x = startX + xDelta
 	y = startY + yDelta
 	while x < 800 and y < 800 do --TODO map size
-		if self:insertIntendedPosition(x, y, positions) == 1 then foundCount=foundCount + 1 end
+		if self:insertIntendedPosition(x, y, positions, sectionCount) == 1 then foundCount=foundCount + 1 end
 		x = x + xDelta
 		y = y + yDelta
 	end
 	return foundCount
 end
 
-function JobAnalyseStationMarket:insertIntendedPosition(x, y, positions)
+function JobAnalyseStationMarket:insertIntendedPosition(x, y, positions, sectionCount)
 	local tempStation = TVT.of_GetTemporaryAntennaStation(x, y)
 	if tempStation ~= nil then
 		local price  = tempStation.GetPrice()
 		if price >= 0 then
 			table.insert(positions, { x = tempStation.x, y = tempStation.y })
+			local sectionName = tempStation:GetSectionName(0)
+			local count = sectionCount[sectionName]
+			if count == nil then
+				sectionCount[sectionName] = 1
+			else
+				sectionCount[sectionName] = count + 1
+			end
 
 --[[
 			local reach = tempStation.GetReach(false)
@@ -452,8 +468,14 @@ end
 function JobBuyStation:GetAttraction(tempStation)
 	--when including permission, overlapping stations in the same area are bought
 	--but when not including; stations in other states win - and budget does not suffice
-	--local price = tempStation.GetTotalBuyPrice()
+	local totalprice = tempStation.GetTotalBuyPrice()
 	local price = tempStation.GetBuyPrice()
+	if totalprice > price and self.Task.antennasPerSection then
+		local antennaCount = self.Task.antennasPerSection[tempStation.GetSectionName(0)]
+		if antennaCount ~= nil then
+			price = price + (1.0 / antennaCount) * (totalprice - price)
+		end
+	end
 	local exclusiveReach = tempStation.GetExclusiveReach(false)
 	local runningCosts = tempStation.GetRunningCosts()
 	local pricePerViewer = (price / exclusiveReach) / 5 + runningCosts / exclusiveReach
@@ -462,7 +484,7 @@ function JobBuyStation:GetAttraction(tempStation)
 	--to avoid buying too many stations (upkeep!)
 	local attraction = 1 / pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
 	self:LogTrace("    -> attraction before" .. attraction .." rc " .. runningCosts)
-	if tempStation.GetTotalBuyPrice() > self.Task.CurrentBudget then
+	if totalprice > self.Task.CurrentBudget then
 		attraction = -1
 	elseif attraction < 1 then
 		attraction = -2
