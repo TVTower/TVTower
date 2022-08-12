@@ -166,6 +166,7 @@ function DefaultAIPlayer:initializePlayer()
 
 	self.programmeLicencesInSuitcaseCount = 0
 	self.programmeLicencesInArchiveCount = 0
+	self.licencesToSell = {}
 
 	self.currentAwardType = -1
 	self.currentAwardStartTime = -1
@@ -190,6 +191,9 @@ function DefaultAIPlayer:resume()
 	end
 	if (self.TaskList[TASK_SCRIPTS] == nil) then
 		self.TaskList[TASK_SCRIPTS] = TaskScripts()
+	end
+	if self.licencesToSell == nil then
+		self.licencesToSell = {}
 	end
 
 	self:initParameters()
