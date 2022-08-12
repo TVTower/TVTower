@@ -2267,7 +2267,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	local guessedAudience = self.Task:GuessedAudienceForHour(fixedDay, fixedHour, previousHourBroadcastMaterial, previousHourBroadcastBlock).GetTotalSum()
 
 	-- table/list of forbidden programme/adcontract IDs
-	local forbiddenIDs = {}
+	local forbiddenIDs = table.copy(getPlayer().licencesToSell)
 	local replaceCurrentBroadcast = false
 
 

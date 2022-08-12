@@ -3,7 +3,7 @@ _G["TaskArchive"] = class(AITask, function(c)
 	c.Id = _G["TASK_ARCHIVE"]
 	c.TargetRoom = TVT.ROOM_ARCHIVE_PLAYER_ME
 	c.BudgetWeight = 0
-	c.BasePriority = 2
+	c.BasePriority = 1
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0
 
@@ -13,7 +13,6 @@ _G["TaskArchive"] = class(AITask, function(c)
 	c.RequiresBudgetHandling = false
 
 	c.latestSaleOnDay = -1
-	c.emergencySale = false --todo: festlegen wann/ob der Notfall ist
 end)
 
 function TaskArchive:typename()
@@ -30,13 +29,12 @@ end
 
 function TaskArchive:GetNextJobInTargetRoom()
 	--nur einmal am Tag verkaufen, ausser im Notfall
-	if self.latestSaleOnDay >= TVT.GetDay() and not self.emergencySale then
+	if self.latestSaleOnDay >= TVT.GetDay() then
 		self:LogDebug("was here today, already")
 	elseif (self.SellMoviesJob.Status ~= JOB_STATUS_DONE) then
 		return self.SellMoviesJob
 	end
 
-	self.emergencySale = false
 	--self:SetWait()
 	self:SetDone()
 end
@@ -48,9 +46,6 @@ end
 _G["JobSellMovies"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.Task = nil
-	-- sell movies which lost max topicality (so permanent) above these values
-	c.MaxTopicalityLossTreshold = 0.75
-	c.emergencyMaxTopicalityLossTreshold = 0.4
 
 end)
 
@@ -72,22 +67,19 @@ function JobSellMovies:Tick()
 			Title = "N/A";
 			GUID = "";
 			Id = -1;
-			TopicalityLoss = 1;
-			MaxTopicalityLoss = 0;
 			planned = -1;
-			price = 0;
 			quality = 0;
 			timesRun = 0;
 			licence = nil;
 		}
 		t.Title = licence.GetTitle()
 		t.GUID = licence.GetGUID()
+		t.referenceId = licence.GetReferenceID()
 		t.Id = licence.GetID()
-		t.TopicalityLoss = 1.0 - licence.GetRelativeTopicality()
-		t.MaxTopicalityLoss = licence.GetRelativeMaxTopicalityLoss()
+		t.relativeTopicality = licence.GetRelativeTopicality()
+		t.maxTopicality = licence.GetMaxTopicality()
 		t.planned = licence.isPlanned()
-		t.price = licence.GetPrice(TVT.ME)
-		t.quality = licence.GetQualityRaw() * licence.GetMaxTopicality()
+		t.quality = licence.GetQualityRaw() * t.maxTopicality
 		t.timesRun = licence:GetTimesBroadcasted(TVT.ME)
 		t.licence = licence
 		return t;
@@ -95,22 +87,42 @@ function JobSellMovies:Tick()
 
 	--fetch licences
 	local nArchive = TVT.ar_GetProgrammeLicenceCount()
-	self:LogDebug("# archived licences: "..nArchive)
-	local movies = {};
+	local toSell = self.Task.Player.licencesToSell
+	local toSellCount = table.count(toSell)
+	self:LogDebug("# archived licences: "..nArchive.. ", marked for selling (including episodes) "..toSellCount)
+
+	local movies = {}
+	local case = {}
+	local allIds = {}
 	for i=0, (nArchive-1)
 	do
 		m = TVT.convertToProgrammeLicence(TVT.ar_GetProgrammeLicence(i).data)
-		--ignore episodes/collection-elements
-		if m ~= nil and m.HasParentLicence()==0 and m.isAvailable() == 1 then
-			vm = newarchivedMovie(m)
-			self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..",  TopicalityLoss="..string.format("%.4f", vm.TopicalityLoss*100).."% (Max="..string.format("%.2f", vm.MaxTopicalityLoss*100).."%), planned: "..tostring(vm.planned))
-			table.insert(movies,vm)
+		if m ~= nil and m.isAvailable() == 1 then
+			table.insert(allIds, m.GetReferenceID())
+			--ignore episodes/collection-elements
+			if m.HasParentLicence()==0 then
+				vm = newarchivedMovie(m)
+				self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id.."), planned: "..tostring(vm.planned))
+				if table.contains(toSell, vm.referenceId) then
+					if vm.relativeTopicality > 0.99 then
+						self:LogInfo("  placing "..vm.Title.." (max topicality "..vm.maxTopicality.. ", times run " ..vm.timesRun ..") into suitcase for selling")
+						table.insert(case, vm)
+					end
+				else
+					table.insert(movies,vm)
+				end
+			end
 		end
 	end
 
-	local case = {}
+	--remove elements already sold
+	for i=#toSell, 0, -1
+	do
+		if not table.contains(allIds, toSell[i]) then
+			table.remove(toSell, i)
+		end
+	end
 
-	--TODO sell worst movies based on current antenna reach
 	local reach = self.Task.Player.totalReach
 	local minLicenceCount = 35
 	if reach == nil then
@@ -121,52 +133,16 @@ function JobSellMovies:Tick()
 		minLicenceCount = 25
 	end
 
-	--check if licence with minimum quality should sold
-	if table.count(movies) > minLicenceCount then
-		local sortMethod = function(a, b)
-			return a.quality < b.quality
-		end
-		table.sort(movies, sortMethod)
-		local worstLicence= table.first(movies)
-		self:LogDebug("worst licence ".. worstLicence.Title .."; loss: "..worstLicence.TopicalityLoss .." planned "..worstLicence.planned )
-		--if worstLicence.TopicalityLoss == 0 and worstLicence.planned <=0 then
-		--if worstLicence.planned <= 0 and worstLicence.timesRun >= 7 then
-		if worstLicence.timesRun >= 7 then
-			self:LogInfo("mark worst licence for suitcase (selling): "..worstLicence.Title)
-			table.insert(case, worstLicence)
-			table.removeElement(movies, worstLicence)
-		end
-	else
-		--do not sell anything
-		movies = {}
-	end
-
-	-- check licences
-	self:LogDebug("# checking single/series licences: "..#movies)
-	-- filter by topicality, ignore planned
-	-- in emergency raise bar to keep programme
-	-- keep expensive ones (except their maximum topicality is too low)
-	local useMaxTopicalityLossTreshold = self.MaxTopicalityLossTreshold
-	if self.Task.emergencySale then useMaxTopicalityLossTreshold = self.emergencyMaxTopicalityLossTreshold end
-	for k,v in pairs (movies) do
-		if v == nil then self:LogError("# ERROR: movie #" .. k.." is nil") end
-		local sellIt = false
-		-- sell when topicality will never raise enough again ("burned")
-		if v.MaxTopicalityLoss > useMaxTopicalityLossTreshold then sellIt = true end
-		-- sell when broadcasted too often
-		if not sellIt and v.licence.GetTimesBroadcasted(TVT.ME) > 15 then sellIt = true end
-
-		-- keep when planned
-		if sellIt and v.planned > 0 then sellIt = false end
-
-		if sellIt then
-			self:LogInfo("mark for suitcase (selling): "..v.Title)
-			table.insert(case,v)
+	local newLicenceToSell = False
+	--check if licence should sold
+	if table.count(movies) - toSellCount > minLicenceCount then
+		local licenceToSell = self:determineLicenceToSell(movies, toSell)
+		if licenceToSell ~= nil then
+			newLicenceToSell = True
 		end
 	end
 
-
-	self:LogDebug("# selected for suitcase: "..#case)
+	self:LogDebug("# selected for suitcase: "..#case.. ", # marked for selling: " ..#toSell)
 	-- move licences to suitcase
 	for i=1, #case do
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
@@ -183,7 +159,7 @@ function JobSellMovies:Tick()
 	self.Status = JOB_STATUS_DONE
 
 	-- if there is something to sell, send figure to movie dealer now
-	if table.count(case) > 0 then
+	if table.count(case) > 0 or newLicenceToSell == True then
 		--set day only if something is to be sold
 		self.Task.latestSaleOnDay = TVT.GetDay()
 
@@ -195,4 +171,54 @@ function JobSellMovies:Tick()
 			end
 		end
 	end
+end
+
+function JobSellMovies:determineLicenceToSell(movies, toSell)
+	local licenceToSell = nil
+	local rnd = math.random(0,100)
+
+	if rnd > 90 then
+		--to nothing
+	elseif rnd > 45 then
+		local sortMethod = function(a, b)
+			return a.quality < b.quality
+		end
+		table.sort(movies, sortMethod)
+		local worstLicence = table.first(movies)
+		self:LogDebug("worst licence (quality) ".. worstLicence.Title .."; planned "..worstLicence.planned )
+	
+		if worstLicence.timesRun >= 7 then
+			licenceToSell = worstLicence
+		end
+	else
+		local sortMethod = function(a, b)
+			return a.maxTopicality < b.maxTopicality
+		end
+		table.sort(movies, sortMethod)
+		local worstLicence = table.first(movies)
+		self:LogDebug("worst licence (maxTopicality)".. worstLicence.Title .."; planned "..worstLicence.planned )
+	
+		if worstLicence.maxTopicality < 0.25 then
+			licenceToSell = worstLicence
+		end
+	end
+
+	if licenceToSell ~= nil then
+		self:LogInfo("mark worst licence for selling: "..licenceToSell.Title)
+		table.insert(toSell, licenceToSell.referenceId)
+
+		local childCount =  licenceToSell.licence:GetSubLicenceCount()
+		if childCount > 0 then
+			for i=0, (childCount-1)
+			do
+				local child = licenceToSell.licence:GetSubLicenceAtIndex(i)
+				if child ~= nil then
+					table.insert(toSell, child:GetReferenceID())
+				end
+			end
+		end
+
+		table.removeElement(movies, licenceToSell)
+	end
+	return licenceToSell
 end
