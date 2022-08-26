@@ -199,27 +199,58 @@ End Function
 
 
 'returns an array of random numbers (no repetitions, including lo and hi)
-'as the costs of the pre-filling all indices depend directly on
-'amount it is only useful for small amount values.
+'efficient only for small amount or small "range"
 Function RandRangeArray:int[](lo:int, hi:int, amount:int = 1)
-	'if lo...hi does not contain enough possible candidates 
-	if amount < 1 or lo > hi or hi - lo + 1 < amount then throw "invalid parameters to RandRangeArray; lo "+lo+", hi "+ hi+", amount "+amount
+	Local rangeSize:Int =  hi - lo + 1
+	'if lo...hi does not contain enough possible candidates
+	If amount < 1 or lo > hi or rangeSize < amount then throw "invalid parameters to RandRangeArray; lo "+lo+", hi "+ hi+", amount "+amount
 
-	Local all:int = hi - lo + 1
-	Local indexes:Int[all]
-	Local iptr:Int Ptr = indexes
-	For Local i:Int = 0 Until all
-		iptr[i] = i
-	Next
+	Local coverage:Float = Float(amount) / rangeSize
+	If coverage > 0.7
+		'prevent duplicate checks but use memory for index array
+		return _fromIndexArray(lo, hi, amount)
+	Else
+		return _iterativeWithDuplicateCheck(lo, hi, amount)
+	EndIF
 
-	Local result:int[] = new int[amount]
-	Local last:Int = all - 1
-	For Local c:Int = 0 Until amount
-		Local index:Int = RandRange(0, last)
-		result[c] = lo + iptr[index]
+	Function _iterativeWithDuplicateCheck:int[](lo:int, hi:int, amount:int)
+		local result:int[] = new int[amount]
+		local number:int
+		local numberOK:int
+	
+		For local i:int = 0 until amount
+			repeat
+				numberOK = True
+				number = RandRange(lo, hi)
+				For local d:Int = EachIn result
+					if d = number
+						numberOK = False
+						exit
+					endif
+				Next
+			until numberOK
+			result[i] = number
+		Next
+		return result
+	End Function
 
-		iptr[index] = iptr[last]
-		last :- 1
-	Next
-	return result
+	Function _fromIndexArray:int[](lo:int, hi:int, amount:int)
+		Local all:int = hi - lo + 1
+		Local indexes:Int[all]
+		Local iptr:Int Ptr = indexes
+		For Local i:Int = 0 Until all
+			iptr[i] = i
+		Next
+	
+		Local result:int[] = new int[amount]
+		Local last:Int = all - 1
+		For Local c:Int = 0 Until amount
+			Local index:Int = RandRange(0, last)
+			result[c] = lo + iptr[index]
+	
+			iptr[index] = iptr[last]
+			last :- 1
+		Next
+		return result
+	End Function
 End Function
