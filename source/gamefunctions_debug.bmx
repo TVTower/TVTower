@@ -2238,12 +2238,55 @@ End Type
 Global DebugScreen:TDebugScreen = New TDebugScreen
 
 
+Type TDebugAudienceInfoForPlayer
+	Field playerID:Int
+	Field reach:String=""
+	Field potAudience:String=""
+	Field progTitle:String=""
+	Field currentImageNews:Float
+	Field currentImageProgramme:Float
+	Field diffNews:String
+	Field colorDiffNews:SColor8
+	Field diffProgramme:String
+	Field colorDiffProgramme:SColor8
+	Field currentQuoteNews:String
+	Field currentQuoteProgramme:String
+	Field currentTitleProgramme:String
+	Field imageBeforeNews:Float
+
+	Method Update(minute:Int)
+		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
+		Local image:Float = Min(Max(GetPublicImage(playerID).GetAverageImage()/100.0, 0.0),1.0)*100
+		Local diff:Float
+		If minute = 1
+			reach = TFunctions.convertValue(audienceResult.WholeMarket.GetTotalValue(0),2)
+			currentQuoteNews = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
+			imageBeforeNews = currentImageProgramme
+			currentImageNews = image
+			diff = currentImageNews - imageBeforeNews
+			colorDiffNews = SColor8.Green
+			If diff < 0 Then colorDiffNews = SColor8.Red
+			diffNews =  MathHelper.NumberToString(diff,2)
+		ElseIf minute = 6
+			currentQuoteProgramme = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
+			imageBeforeNews = currentImageProgramme
+			currentImageProgramme = image
+			diff = currentImageProgramme - currentImageNews
+			colorDiffProgramme = SColor8.Green
+			If diff < 0 Then colorDiffProgramme = SColor8.Red
+			diffProgramme = MathHelper.NumberToString(diff,2)
+		EndIf
+		potAudience = TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),2)
+		progTitle = audienceResult.GetTitle()
+	EndMethod
+End Type
 
 Type TDebugAudienceInfo
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
-	
-	
+	Field mode:Int = 0 '0=off, 1=one player, 2=all players
+	Field playerData:TDebugAudienceInfoForPlayer[4]
+
 	Method Reset()
 		currentStatement = Null
 		lastCheckedMinute = 0
@@ -2253,12 +2296,93 @@ Type TDebugAudienceInfo
 	Method Update(playerID:Int, x:Int, y:Int)
 	End Method
 
+	Method Toggle()
+		mode = (mode + 1) mod 3
+		Reset()
+		If mode = 2
+			playerData = new TDebugAudienceInfoForPlayer[4]
+			For Local playerID:Int = 1 To 4
+				playerData[playerID-1] = New TDebugAudienceInfoForPlayer
+				playerData[playerID-1].playerID = playerID
+			Next
+		EndIf
+	End Method
+
 
 	Method Draw()
 		SetColor 0,0,0
 		DrawRect(0,0,800,385)
 		SetColor 255, 255, 255
 
+		If mode = 1
+			DrawSinglePlayer()
+		ElseIf mode = 2
+			DrawAllPlayers()
+		EndIF
+	End Method
+
+
+	Method DrawAllPlayers()
+		GetBitmapFontManager().baseFont.DrawBox("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b|, um Quotenbildschirm auszublenden.", 0, 360, GetGraphicsManager().GetWidth(), 25, sALIGN_CENTER_CENTER, SColor8.Red)
+
+		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
+		Local h:Int = 15
+		'table player info in column
+		font.DrawSimple("Spieler", 15, h, SColor8.White)
+		font.DrawSimple("Bevölkerung", 15, 2 * h, SColor8.White)
+		font.DrawSimple("pot. Zuschauer", 15, 3 * h, SColor8.White)
+		font.DrawSimple("akt. Zuschauer", 15, 6 * h, SColor8.White)
+
+		'table player info in row
+		Local rowX:Int= 80
+		font.DrawBox("ImgAlt", rowX, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("News-%", rowX + 60, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("+/-", rowX + 110, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("ImgN", rowX + 160, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Prog-%", rowX + 210, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("+/-", rowX + 260, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("ImgP", rowX + 310, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+
+		Local minute:Int = GetWorldTime().GetDayMinute()
+		If (minute = 1 and minute <> lastCheckedMinute) Or (minute = 6 and minute <> lastCheckedMinute)
+			For Local playerID:Int = 1 To 4
+				playerData[playerID-1].Update(minute)
+			Next
+			lastCheckedMinute = minute
+		EndIf
+
+		For Local playerID:Int = 1 To 4
+			'player info in colum
+			Local x:Int = 130 + (playerID-1) * 150
+			Local data:TDebugAudienceInfoForPlayer = playerData[playerID-1]
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
+			font.DrawBox(playerID, x, h, 195, 17, sALIGN_LEFT_TOP, SColor8.White)
+
+			font.DrawBox(data.reach, x, 2*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+
+			font.DrawBox(data.potAudience, x, 3*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
+			font.DrawSimple(percent, x, 4*h, SColor8.White)
+
+			font.DrawBox(data.progTitle, x, 5*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+
+			font.DrawBox(TFunctions.convertValue(audienceResult.Audience.GetTotalSum(),2), x, 6*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+
+			'player info in row
+			Local y:Int = (9+playerID) * h
+			font.DrawSimple("Spieler "+playerID+":", 15, y, SColor8.White)
+			font.DrawBox(MathHelper.NumberToString(data.imageBeforeNews,2), rowX, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(data.currentQuoteNews, rowX+60, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(data.diffNews, rowX+110, y, 55, 17, sALIGN_RIGHT_TOP, data.colorDiffNews)
+			font.DrawBox(MathHelper.NumberToString(data.currentImageNews,2), rowX+160, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(data.currentQuoteProgramme, rowX+210, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(data.diffProgramme, rowX+260, y, 55, 17, sALIGN_RIGHT_TOP, data.colorDiffProgramme)
+			font.DrawBox(MathHelper.NumberToString(data.currentImageProgramme,2), rowX+310, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		Next
+	End Method
+
+	Method DrawSinglePlayer()
+		GetBitmapFontManager().baseFont.DrawBox("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b|, um auf Übersicht für alle Spieler umzuschalten. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, sALIGN_CENTER_CENTER, SColor8.Red)
 		'GetBitmapFontManager().baseFont.Draw("Bevölkerung", 25, startY)
 
 		Local playerID:Int = TIngameInterface.GetInstance().ShowChannel
@@ -2269,7 +2393,6 @@ Type TDebugAudienceInfo
 		Local x:Int = 200
 		Local y:Int = 25
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		GetBitmapFontManager().baseFont.DrawBox("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, sALIGN_CENTER_CENTER, SColor8.Red)
 
 		font.DrawBox("Gesamt", x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 		font.DrawBox("Kinder", x + (70*1), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
