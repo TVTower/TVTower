@@ -4781,6 +4781,13 @@ Type TStationMapSection
 	Method SetBroadcastPermission(channelID:Int, bool:Int, stationType:Int = -1)
 		If channelID < 1 Or channelID > broadcastPermissionsGiven.Length Then Return
 		broadcastPermissionsGiven[channelID-1] = bool
+		If bool and broadCastPermissionMinimumChannelImage > 0
+			Local count:Int = 0
+			For Local i:Int = 0 To broadCastPermissionsGiven.length
+				If broadCastPermissionsGiven[i] = True Then count:+ 1
+			Next
+			If count >= 2 Then broadCastPermissionMinimumChannelImage = 0
+		Endif
 	End Method
 
 
@@ -5773,6 +5780,7 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 			subscribedChannelsStartTime :+ [GetWorldTime().GetTimeGone()]
 			subscribedChannelsDuration :+ [duration]
 		EndIf
+		If minimumChannelImage > 0 and GetSubscribedChannelCount() > 1 Then minimumChannelImage = 0
 
 		Return True
 	End Method
