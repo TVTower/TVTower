@@ -17,7 +17,6 @@ Global TVTPlayerCount:Int = 4
 
 
 Global TVTDebugInfo:Int = False
-Global TVTDebugQuoteInfo:Int = False
 Global TVTGhostBuildingScrollMode:Int = False
 
 

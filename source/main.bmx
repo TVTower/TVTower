@@ -1288,11 +1288,11 @@ endrem
 		EndIf
 		If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 30 * 60 ) '30 game minutes per realtime second
 		If KeyManager.IsHit(KEY_6) Then GetGame().SetGameSpeed( 60 * 60 ) '60 game minutes per realtime second
-		If KeyManager.IsHit(KEY_7) Then GetGame().SetGameSpeed( 120 * 60 )
+		If KeyManager.IsHit(KEY_7) And Not (KeyManager.IsDown(KEY_LSHIFT) OR KeyManager.IsDown(KEY_RSHIFT)) Then GetGame().SetGameSpeed( 120 * 60 )
 		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 * 60 )
 		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeedPreset( 1 )
 		If KeyManager.IsHit(KEY_0) Then GetGame().SetGameSpeed( 0 ) 'pause
-		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfo = 1 - TVTDebugQuoteInfo
+		If KeyManager.IsHit(KEY_Q) Then debugAudienceInfo.Toggle()
 
 		If KeyManager.IsHit(KEY_TAB)
 			If Not KeyManager.IsDown(KEY_LCONTROL)
@@ -1494,7 +1494,7 @@ endrem
 		If TVTDebugInfo And Not GetPlayer().GetFigure().inRoom
 		'show quotes even without "DEV_OSD = true"
 
-		ElseIf TVTDebugQuoteInfo
+		ElseIf debugAudienceInfo.mode > 0
 			debugAudienceInfo.Draw()
 		EndIf
 	End Function
