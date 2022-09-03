@@ -6,11 +6,12 @@
 		<programmePriceMod value="0.75"/>
 		<roomRentMod value="0.80"/>
 		<adcontractProfitMod value="1.25"/>
-		<antennaBuyPriceMod value="0.80"/>
+		<antennaBuyPriceMod value="0.9"/>
 		<antennaDailyCostsIncrease value="0.01"/>
 		<antennaDailyCostsIncreaseMax value="0.1"/>
 	</easy>
 	<normal>
+		<antennaBuyPriceMod value="1.3"/>
 	</normal>
 	<hard>
 		<startMoney value="0"/>
@@ -19,7 +20,7 @@
 		<roomRentMod value="1.5"/>
 		<adcontractProfitMod value="0.9"/>
 		<adcontractLimitedTargetgroupMod value="1.15"/>
-		<antennaBuyPriceMod value="1.5"/>
+		<antennaBuyPriceMod value="1.7"/>
 		<antennaDailyCostsMod value="1.25"/>
 		<antennaDailyCostsIncrease value="0.04"/>
 		<antennaDailyCostsIncreaseMax value="0.4"/>
