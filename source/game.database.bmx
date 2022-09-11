@@ -1829,6 +1829,20 @@ Type TDatabaseLoader
 		endif
 		endrem
 
+		'read modifiers
+		Local nodeModifiers:TxmlNode = xml.FindChild(node, "programme_data_modifiers")
+		For Local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
+			If nodeModifier.getName() <> "modifier" Then Continue
+
+			Local modifierData:TData = New TData
+			xml.LoadAllValuesToData(nodeModifier, modifierData)
+			'check if the modifier has all needed definitions
+			For Local f:String = EachIn ["name", "value"]
+				If Not modifierData.Has(f) Then ThrowNodeError("DB: <modifier> is missing ~q" + f+"~q.", nodeModifier)
+			Next
+			scriptTemplate.programmeDataModifiers.AddFloat(modifierData.GetString("name"), modifierData.GetFloat("value"))
+			'source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
+		Next
 
 		'=== EPISODES ===
 		'load children _after_ element is configured

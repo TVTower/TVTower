@@ -448,12 +448,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'add children
 		If includingEpisodes
+			script.programmeDataModifiers.Append(template.programmeDataModifiers)
 			Local mainTemplateEpisodeCount:Int = template.getEpisodes()
 			If mainTemplateEpisodeCount > 1 and mainTemplateEpisodeCount < template.subScripts.length
 				'if parent restricts the number of episodes - get a subset of templates
 				For Local subTemplate:TScriptTemplate = EachIn template.GetSubTemplateSubset(mainTemplateEpisodeCount)
 					Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
-					If subScript Then script.AddSubScript(subScript)
+					If subScript
+						subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
+						subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
+						script.AddSubScript(subScript)
+					EndIf
 				Next
 			Else
 				Local episodeTitles:TList=new TList()
@@ -463,7 +468,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					If episodesCount > 0 '0 episodes are supported - do not always include every episode
 						For Local i:Int = 0 until episodesCount
 							Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
-							If subScript 
+							If subScript
+								subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
+								subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
 								script.AddSubScript(subScript)
 								'try to ensure unique episode names
 								Local title:TLocalizedString = subScript.title
