@@ -1659,7 +1659,10 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local minimumAbsoluteRefresh:Float = 0.10 '10%
 
 		refreshModifier :* GetProgrammeDataCollection().refreshFactor
-		refreshModifier :* GetRefreshModifier()
+		Local modifer:Float = GetRefreshModifier()
+		If modifer <> 1.0
+			refreshModifier = 1.0 + (refreshModifier - 1.0) * modifer
+		EndIf
 		refreshModifier :* GetGenreRefreshModifier()
 		refreshModifier :* GetFlagsRefreshModifier()
 
@@ -1678,7 +1681,10 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local minimumAbsoluteRefresh:Float = 0.10 '10%
 
 		refreshModifier :* GetProgrammeDataCollection().trailerRefreshFactor
-		refreshModifier :* GetTrailerRefreshModifier()
+		Local modifer:Float = GetTrailerRefreshModifier()
+		If modifer <> 1.0
+			refreshModifier = 1.0 + (refreshModifier - 1.0) * modifer
+		EndIf
 		refreshModifier :* GetGenreRefreshModifier()
 		refreshModifier :* GetFlagsRefreshModifier()
 
