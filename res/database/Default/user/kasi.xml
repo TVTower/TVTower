@@ -192,12 +192,12 @@
 
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-freieTiere">
 			<title>
-				<de>Befreit den %Tier% Mister %Name%</de>
-				<en>Free the %Tier% Mister %Name%</en>
+				<de>Befreit den %Tier% %title%%Name%</de>
+				<en>Free the %Tier% %title%%Name%</en>
 			</title>
 			<description>
-				<de>Ein Kind verliebt sich beim Zoobesuch in den %Tier% Mister %Name%. Doch sieht dieser sehr traurig aus. So tut das Kind alles in seiner Macht stehende, um ihn zu befreien.</de>
-				<en>In the zoo, a child sees the %Tier% Mister %Name% who looks very sad. So the child does everything in its power to free the animal.</en>
+				<de>Ein Kind verliebt sich beim Zoobesuch in den %Tier% %title%%Name%. Doch sieht dieser sehr traurig aus. So tut das Kind alles in seiner Macht stehende, um ihn zu befreien.</de>
+				<en>In the zoo, a child sees the %Tier% %title%%Name% who looks very sad. So the child does everything in its power to free the animal.</en>
 			</description>
 			<variables>
 				<tier>
@@ -206,8 +206,12 @@
 				</tier>
 				<name>
 					<de>Jingels|Wollo|Hubert|Billy|Fluffy|Bobo|Flocke</de>
-					<en>Jingels|Wollo|Hubert|Billy|Fluffy|Bobo|Flocke</en>
+					<en>Jingels|Wollo|Hubert|Billy|Fluffy|Bobo|Flake</en>
 				</name>
+				<title>
+					<de>Mister |Little |Big |Mac</de>
+					<en>Mister |Little |Big |Mac</en>
+				</title>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
