@@ -20,6 +20,9 @@
 			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="1" blocks="1" price_mod="0.90" />
 			<releaseTime year="1985" day="6" hour="18" />
 			<ratings critics="45" speed="30" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>		
 		</programme>
 		<!--TODO: Sport events could be done by a generator -->
 		<programme id="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -913,5 +916,357 @@ Illustrious guests and music by [3|Nick].</en>
 			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 		</scripttemplate>
 
+
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above">
+			<title>
+				<de>${cntry} von oben</de>
+				<en>Bird's eye view of ${cntry}</en>
+			</title>
+			<description>
+				<de>Erleben Sie atemberaubende Luftaufnahmen von ${cntry}.|${cntry} wie Sie es noch nie gesehen haben.|${cntry} aus einer neuen Perspektive.</de>
+				<en>Enjoy stunning views of ${cntry}.|${cntry} as never seen before.|${cntry} from a new perspective.</en>
+			</description>
+			<children>
+				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-from-above-eps">
+					<title>
+						<de>${cntry}s ${subject}</de>
+						<en>${subject} of ${cntry}</en>
+					</title>
+					<variables>
+						<subject>
+							<de>Berge|Flüsse|Städte|Nationalparks|Wälder|Seen|Bahnhöfe|Schlösser|Parks|Inseln|Kirchen|Stadien|Ruinen|Gletscher|Wochenmärkte|Bahnstrecken</de>
+							<en>Mountains|Rivers|Cities|National Parks|Forests|Lakes|Railroad Stations|Castles|Parks|Islands|Churches|Stadiums|Ruins|Glaciers|Farmers' Markets|Railways</en>
+						</subject>
+					</variables>
+					<episodes min="3" max="5" />
+				</scripttemplate>
+			</children>
+			<variables>
+				<cntry>
+					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
+					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
+				</cntry>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1"  />
+			</jobs>
+			<genres maingenre="6" subgenres="9"/>
+			<potential min="60" max="100" slope="70" />
+			<outcome min="50" max="90" slope="50" />
+			<review min="70" max="100" slope="50" />
+			<speed min="40" max="80" slope="40" />
+			<price min="30000" max="70000" slope="50" />
+			<blocks min="1" max="2" slope="20" />
+			<production_time min="720" max="1200" />
+			<data flags="4" />
+			<programme_data_modifiers>
+				<modifier name="price" value="0.15" />
+				<modifier name="topicality::refresh" value="0.25" />
+				<modifier name="topicality::age" value="0.3" />
+				<modifier name="topicality::wearoff" value="1.5" />
+				<modifier name="topicality::firstBroadcastDone" value="0.03" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-visiting">
+			<title>
+				<de>${ttl}</de>
+				<en>${ttl}</en>
+			</title>
+			<description>
+				<!--no description at all: first episode's description is shown for series-->
+				<de></de>
+				<en></en>
+			</description>
+			<variables>
+				<ttl>
+					<de>Zu Gast in ${cntry}|Reise durch ${cntry}|Auf Achse in ${cntry}|Leben in ${cntry}|Sehenswertes ${cntry}|Faszination ${cntry}|Blickpunkt ${cntry}</de>
+					<en>Visiting ${cntry}|Travelling in ${cntry}|On the road in ${cntry}|Life in ${cntry}|Beautiful ${cntry}|Fascinating ${cntry}|Spotlight ${cntry}</en>
+				</ttl>
+				<cntry>
+					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
+					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
+				</cntry>
+			</variables>
+			<!--TODO descriptions!"-->
+			<children>
+				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-visiting-ep1">
+					<!--pilot is always present!-->
+					<title>
+						<de>${cntry} im Überblick</de>
+						<en>${cntry} in a nutshell</en>
+					</title>
+					<description>
+						<de>Geografische, historische und politische Zusammenfassung zu ${cntry}, bevor sich die Folgen einzelnen Aspekten des Landes widmen.</de>
+						<en>Geographical, historical and political summary of ${cntry}, before a specific aspect of the country is highlighted in each episode.</en>
+					</description>
+					<outcome min="30" max="60" slope="50" />
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="1" guid="scripttemplate-ron-visiting-ep2">
+					<title>
+						<de>Schlösser</de>
+						<en>Castles</en>
+					</title>
+					<groups target_groups="65" />
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="2" guid="scripttemplate-ron-visiting-ep3">
+					<title>
+						<de>Stadien</de>
+						<en>Stadiums</en>
+					</title>
+					<groups target_groups="258" />
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="3" guid="scripttemplate-ron-visiting-ep4">
+					<title>
+						<de>Seen</de>
+						<en>Lakes</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="4" guid="scripttemplate-ron-visiting-ep5">
+					<title>
+						<de>Berge</de>
+						<en>Mountains</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="5" guid="scripttemplate-ron-visiting-ep6">
+					<title>
+						<de>Arbeitgeber</de>
+						<en>Employers</en>
+					</title>
+					<groups target_groups="40" target_groups_optional="16"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="6" guid="scripttemplate-ron-visiting-ep7">
+					<title>
+						<de>Wochenmärkte</de>
+						<en>Farmers' Markets</en>
+					</title>
+					<groups target_groups="4" target_groups_optional="64"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="7" guid="scripttemplate-ron-visiting-ep8">
+					<title>
+						<de>Nationalparks</de>
+						<en>National Parks</en>
+					</title>
+					<groups target_groups="0" target_groups_optional="129"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="8" guid="scripttemplate-ron-visiting-ep9">
+					<title>
+						<de>Architektur</de>
+						<en>Architecture</en>
+					</title>
+					<groups target_groups="32" target_groups_optional="64"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="9" guid="scripttemplate-ron-visiting-ep10">
+					<title>
+						<de>Literatur</de>
+						<en>Literature</en>
+					</title>
+					<groups target_groups="128" target_groups_optional="32"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="10" guid="scripttemplate-ron-visiting-ep11">
+					<title>
+						<de>Musik</de>
+						<en>Music</en>
+					</title>
+					<groups target_groups="128" target_groups_optional="2"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="11" guid="scripttemplate-ron-visiting-ep12">
+					<title>
+						<de>Biere</de>
+						<en>Beer</en>
+					</title>
+					<groups target_groups="18" target_groups_optional="8"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="12" guid="scripttemplate-ron-visiting-ep13">
+					<title>
+						<de>Weine</de>
+						<en>Wine</en>
+					</title>
+					<groups target_groups="32" target_groups_optional="128"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="13" guid="scripttemplate-ron-visiting-ep14">
+					<title>
+						<de>Autos</de>
+						<en>Cars</en>
+					</title>
+					<groups target_groups="258" target_groups_optional="32"/>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="14" guid="scripttemplate-ron-visiting-ep15">
+					<title>
+						<de>Fotografie</de>
+						<en>Photography</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="15" guid="scripttemplate-ron-visiting-ep16">
+					<title>
+						<de>Möbel</de>
+						<en>Furniture</en>
+					</title>
+					<groups target_groups="4" />
+				</scripttemplate>
+				<scripttemplate product="2" licence_type="2" index="16" guid="scripttemplate-ron-visiting-ep17">
+					<title>
+						<de>Theater</de>
+						<en>Theatre</en>
+					</title>
+					<groups target_groups="128" />
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1"  />
+			</jobs>
+			<genres maingenre="6"/>
+			<episodes min="4" max="6" />
+			<potential min="60" max="100" slope="70" />
+			<outcome min="50" max="90" slope="50" />
+			<review min="70" max="100" slope="50" />
+			<speed min="30" max="70" slope="50" />
+			<price min="20000" max="45000" slope="50" />
+			<blocks min="1" max="2" slope="20" />
+			<production_time min="720" max="1200" />
+			<data flags="4" />
+			<programme_data_modifiers>
+				<modifier name="price" value="0.15" />
+				<modifier name="topicality::refresh" value="0.25" />
+				<modifier name="topicality::age" value="0.3" />
+				<modifier name="topicality::wearoff" value="1.5" />
+				<modifier name="topicality::firstBroadcastDone" value="0.03" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-world">
+			<title>
+				<de>${ttl}</de>
+				<en>${ttl}</en>
+			</title>
+			<description>
+				<de>Folgen Sie uns auf einer Reise um die Welt. ${subject} findet man auch in Ländern, in denen man sie nicht vermutet hätte.</de>
+				<en>Join us on a journey around the world. ${subject} may sometimes be found in countries you might not have expected.</en>
+			</description>
+			<children>
+				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-world-eps">
+					<title>
+						<de>${epttl}</de>
+						<en>${epttl}</en>
+					</title>
+					<description>
+						<de>${dsc}</de>
+						<en>${dsc}</en>
+					</description>
+					<variables>
+						<epttl>
+							<de>${subject} ${cntry}s|${adjective}${subject} ${cntry}s</de>
+							<en>${subject} of ${cntry}|${adjective}${subject} of ${cntry}</en>
+						</epttl>
+						<!--without an empty description, the series description is used again-->
+						<dsc>
+							<de> |${cntry}s ${subject} bergen so manches Geheimnis.|Fakten und Meinungen zu ${cntry}s ${subject}.|Was macht ${cntry}s ${subject} so besonders?</de>
+							<en> |Discover the secrets of the ${cntry}'s ${subject}.|Facts about and opinions on the ${subject} of ${cntry}.|Why are ${cntry}'s ${subject} so special?</en>
+						</dsc>
+						<cntry>
+							<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
+							<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
+						</cntry>
+					</variables>
+					<episodes min="4" max="6" />
+				</scripttemplate>
+			</children>
+			<variables>
+				<ttl>
+					<de>${adjective}${subject} der Welt</de>
+					<en>${adjective}${subject} of the world</en>
+				</ttl>
+				<subject>
+					<de>${sbj_${variant}}</de>
+					<en>${sbj_${variant}}</en>
+				</subject>
+				<adjective>
+					<de>|${adj_${variant}} </de>
+					<en>|${adj_${variant}} </en>
+				</adjective>
+				<variant>
+					<de>bf|best|bi|big|bigb</de>
+					<en>bf|best|bi|big|bigb</en>
+				</variant>
+				<adj_bf>
+					<de>${beautiful}</de>
+					<en>${beautiful}</en>
+				</adj_bf>
+				<sbj_bf>
+					<de>Weihnachtsbräuche|Trachten|Frisuren|Autos|Eisenbahnstrecken|Märchen</de>
+					<en>Christmas traditions|traditional costumes|hair styles|cars|railways|fairy tales</en>
+				</sbj_bf>
+				<adj_best>
+					<de>${best}</de>
+					<en>${best}</en>
+				</adj_best>
+				<sbj_best>
+					<de>Bildungssysteme|Fußballmannschaften|Schokoladen|Bands|Weine|Biere</de>
+					<en>educational systems|soccer teams|chocolates|bands|vines|beers</en>
+				</sbj_best>
+				<adj_bi>
+					<de>${best}|${important}</de>
+					<en>${best}|${important}</en>
+				</adj_bi>
+				<sbj_bi>
+					<de>Politiker|Komponisten|Modemarken|Universitäten</de>
+					<en>politicians|composers|fashion labels|universities</en>
+				</sbj_bi>
+				<adj_big>
+					<de>${big}</de>
+					<en>${big}</en>
+				</adj_big>
+				<sbj_big>
+					<de>Bauwerke|Flughäfen|Stadien|Tunnel|Berge</de>
+					<en>buildings|airports|stadiums|tunnels|mountains</en>
+				</sbj_big>
+				<adj_bigb>
+					<de>${big}|${beautiful}</de>
+					<en>${big}|${beautiful}</en>
+				</adj_bigb>
+				<sbj_bigb>
+					<de>Schlösser|Kirchen|Nationalparks|Zoos|Flüsse|Tiere|Bibliotheken|Inseln|Brücken|Vulkane|Denkmale|Städte</de>
+					<en>castles|churches|national parks|zoos|rivers|animals|libraries|islands|bridges|volcanoes|monuments|cities</en>
+				</sbj_bigb>
+				<beautiful>
+					<de>Die schönsten</de>
+					<en>The most beautiful</en>
+				</beautiful>
+				<best>
+					<de>Die besten</de>
+					<en>The best</en>
+				</best>
+				<important>
+					<de>Die bedeutendsten</de>
+					<en>The most important</en>
+				</important>
+				<big>
+					<de>Die größten|Die beeindruckendsten</de>
+					<en>The biggest|The most impressive</en>
+				</big>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1"  />
+			</jobs>
+			<genres maingenre="6"/>
+			<potential min="60" max="100" slope="70" />
+			<outcome min="50" max="90" slope="50" />
+			<review min="70" max="100" slope="50" />
+			<speed min="40" max="60" slope="50" />
+			<price min="30000" max="70000" slope="50" />
+			<blocks min="1" max="2" slope="20" />
+			<production_time min="720" max="1200" />
+			<data flags="4" />
+			<programme_data_modifiers>
+				<modifier name="price" value="0.15" />
+				<modifier name="topicality::refresh" value="0.25" />
+				<modifier name="topicality::age" value="0.3" />
+				<modifier name="topicality::wearoff" value="1.5" />
+				<modifier name="topicality::firstBroadcastDone" value="0.03" />
+			</programme_data_modifiers>
+		</scripttemplate>
 	</scripttemplates>
 </tvtdb>

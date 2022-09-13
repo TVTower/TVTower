@@ -2482,13 +2482,19 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-SciFi-QueenundUfo">
 			<title>
-				<de>Die Queen und das UFO</de>
-				<en>The Queen And The UFO</en>
+				<de>Die Queen und %what%</de>
+				<en>The Queen and %what%</en>
 			</title>
 			<description>
-				<de>Ein UFO mit Ausserirdischen landet auf der Welt. Doch statt die Queen zu schrumpfen, sind es Weltraum Groupies der Queen.</de>
+				<de>Ein UFO mit Außerirdischen landet auf der Erde. Doch statt die Queen zu schrumpfen, sind es Weltraumgroupies der Queen.</de>
 				<en>A UFO full of aliens is visiting the earth. But instead of shrinking the Queen, they are groupies of her.</en>
 			</description>
+			<variables>
+				<what>
+					<de>das Ufo|die Außerirdischen</de>
+					<en>the UFO|the aliens</en>
+				</what>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="2" />
