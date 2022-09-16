@@ -15,7 +15,7 @@ Import "game.gameinformation.base.bmx" 'to access worldtime
 'system if it is containing them already
 Type TTemplateVariables
 	'Variables are used to replace certain %KEYWORDS% in title or
-	'description. They are stored as "%KEYWORD%"=>TLocalizedString
+	'description. They are stored as "%KEYWORD%"=>TLocalizedString (or "${KEYWORD}"=>TLocalizedString)
 	Field variables:TMap
 	'no need for a special "isValid" variable as we must have at least
 	'a single language id (so length>0)
@@ -105,8 +105,8 @@ Type TTemplateVariables
 		'a random city then
 
 		'check gameinformation or script expressions
-		if result and result.Get().Find("%") >= 0
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(result.Get(), "%", True)
+		if result and (result.Get().Find("%") >= 0 or result.Get().Find("${") >= 0)
+			local placeHolders:string[] = StringHelper.ExtractPlaceholdersCombined(result.Get(), True)
 			local externalResult:string = result.Get()
 			local replaced:int = False
 			local replacedSomething:int = False
@@ -119,6 +119,7 @@ Type TTemplateVariables
 				'if replaced then print "replacement " + replacement+"   result: "+ externalResult +"  =>  " + externalResult.replace("%"+placeHolder+"%", replacement)
 				if replaced
 					externalResult = externalResult.replace("%"+placeHolder+"%", replacement)
+					externalResult = externalResult.replace("${"+placeHolder+"}", replacement)
 					replacedSomething = True
 				endif
 			Next
@@ -247,7 +248,7 @@ Type TTemplateVariables
 				local replacedPlaceholdersThisLang:int = 0
 				'use result already (to allow recursive-replacement)
 				local value:string = result.Get(langID)
-				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+				local placeHolders:string[] = StringHelper.ExtractPlaceholdersCombined(value)
 'if debugReplace Then print "    langID=" + langID + "  value=" + LSet(value, 15) + "  placeholders="+placeHolders.length
 
 				if placeHolders.length > 0
@@ -296,11 +297,11 @@ Type TTemplateVariables
 		'loop over "text", but replace in "result"
 		For local langID:int = EachIn text.GetLanguageIDs()
 			local value:string = result.Get(langID)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			local placeHolders:string[] = StringHelper.ExtractPlaceholdersCombined(value, True)
 			for local placeHolder:string = EachIn placeHolders
 				local replacement:string = string(GetGameInformation(placeHolder.toLower(), "", null, useTime))
 				if replacement <> "UNKNOWN_INFORMATION"
-					value = value.replace("%"+placeHolder+"%", replacement)
+					value = value.replace("${"+placeHolder+"}", replacement)
 				endif
 			Next
 

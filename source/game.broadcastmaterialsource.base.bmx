@@ -211,7 +211,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 		'variable with the same name
 		For Local langID:Int = EachIn text.GetLanguageIDs()
 			Local value:String = text.Get(langID)
-			Local placeHolders:String[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(value, True)
 			If placeHolders.length = 0 Then Continue
 
 			For Local placeHolder:String = EachIn placeHolders
@@ -220,7 +220,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in
-				If replaced Then value = value.Replace("%"+placeHolder+"%", replacement)
+				If replaced Then value = value.Replace("${"+placeHolder+"}", replacement)
 				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
 			Next
 

@@ -605,7 +605,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'variable with the same name
 		For Local langID:Int = EachIn text.GetLanguageIDs()
 			Local value:String = text.Get(langID)
-			Local placeHolders:String[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(value, True)
 			If placeHolders.length = 0 Then Continue
 
 			Local actorsFetched:Int = False
@@ -621,7 +621,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							actorsFetched = True
 						EndIf
 
-						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
 						Local actorNum:Int = Int(Chr(placeHolder[8]))
 						If actorNum > 0
 							If actors.length > actorNum And actors[actorNum].roleID > 0
@@ -644,7 +643,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							actorsFetched = True
 						EndIf
 
-						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
 						Local actorNum:Int = Int(Chr(placeHolder[4]))
 						If actorNum > 0
 							If actors.length > actorNum And actors[actorNum].roleID > 0
@@ -675,7 +673,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				End Select
 
 				'replace if some content was filled in
-				If replaced Then value = value.Replace("%"+placeHolder+"%", replacement)
+				If replaced Then value = value.Replace("${"+placeHolder+"}", replacement)
 			Next
 
 			result.Set(value, langID)

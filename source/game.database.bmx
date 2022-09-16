@@ -722,7 +722,8 @@ Type TDatabaseLoader
 
 			'create if missing
 			newsEventTemplate.CreateTemplateVariables()
-			newsEventTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
+			'newsEventTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
+			newsEventTemplate.templateVariables.AddVariable("${"+varName+"}", varString)
 		Next
 
 
@@ -1751,7 +1752,8 @@ Type TDatabaseLoader
 			'skip invalid
 			If Not varName Or Not varString Then Continue
 
-			scriptTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
+			'scriptTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
+			scriptTemplate.templateVariables.AddVariable("${"+varName+"}", varString)
 		Next
 
 
