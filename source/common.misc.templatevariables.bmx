@@ -301,6 +301,7 @@ Type TTemplateVariables
 			for local placeHolder:string = EachIn placeHolders
 				local replacement:string = string(GetGameInformation(placeHolder.toLower(), "", null, useTime))
 				if replacement <> "UNKNOWN_INFORMATION"
+					value = value.replace("%"+placeHolder+"%", replacement)
 					value = value.replace("${"+placeHolder+"}", replacement)
 				endif
 			Next
