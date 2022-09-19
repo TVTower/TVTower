@@ -673,7 +673,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				End Select
 
 				'replace if some content was filled in
-				If replaced Then value = value.Replace("${"+placeHolder+"}", replacement)
+				If replaced Then TTemplateVariables.ReplacePlaceholderInText(value, placeHolder, replacement)
 			Next
 
 			result.Set(value, langID)
