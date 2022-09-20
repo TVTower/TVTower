@@ -455,7 +455,7 @@ endrem
     End Method
 
 
-	Method IsReadyToPublish:Int(subscriptionDelay:Long = 0) {_exposeToLua}
+	Method IsReadyToPublish:Int(subscriptionDelay:Long = 0)
 		Return (GetPublishTime() + subscriptionDelay <= GetWorldTime().GetTimeGone())
 	End Method
 
