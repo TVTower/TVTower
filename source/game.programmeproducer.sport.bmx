@@ -265,10 +265,12 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 				programmeData.outcome = 0.75
 		End Select
 
+		'loss due to first broadcast and not being live are covered by
+		'default values of live programmes
 		'after first broadcast, sport matches loose a lot of interest
-		programmeData.SetModifier("topicality::firstBroadcastDone", 1.0)
-		'also they loose a bit when no longer live
-		programmeData.SetModifier("topicality::notLive", 0.25)
+		'programmeData.SetModifier("topicality::firstBroadcastDone", 1.0)
+		'also they lose a bit when no longer live
+		'programmeData.SetModifier("topicality::notLive", 0.25)
 
 		programmeData.releaseTime = match.matchTime '- 2*24*TWorldTime.HOURLENGTH - 24*TWorldTime.HOURLENGTH
 

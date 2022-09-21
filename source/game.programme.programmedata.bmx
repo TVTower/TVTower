@@ -1474,17 +1474,38 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			'modifiers could increase or decrease influences of age/aired/...
 			Local ageInfluence:Float = 1.5 * age * GetModifier(modKeyTopicality_AgeLS)
 			Local timesBroadcastedInfluence:Float = timesBroadcasted * GetModifier(modKeyTopicality_TimesBroadcastedLS)
-			'by default they have no influence but programmes like sport matches
-			'should loose a big bit of max topicality after the first time
-			'on TV. Also they should loose topicality as soon as they are
-			'no longer "live" (eg. send 1 hour later)
-			Local firstBroadcastInfluence:Float = 10 * (timesBroadcasted>0) * GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 0.0)
-			Local notLiveInfluence:Float = 10 * timesBroadcasted * GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 0.0)
+
+			Local firstBroadcastInfluence:Float = 10 * (timesBroadcasted>0)
+			Local notLiveInfluence:Float = 0.0
+			If IsLiveOnTape()
+				'Live programmes like sport matches should lose attractiveness after the first broadcast.
+				notLiveInfluence = 10 * GetModifier(modKeyTopicality_NotLiveLS, 1.0)
+				firstBroadcastInfluence:* GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 1.0)
+				'Also they should age much faster
+				weightAge = 1.0
+				Local daysSinceLive:Int = Max(0, GetWorldTime().GetDay() - GetWorldTime().GetDay(releaseTime))
+				Select daysSinceLive
+					Case 0
+						'notLiveInfluence unchanged
+					Case 1
+						notLiveInfluence :* 1.25
+					Case 2
+						notLiveInfluence :* 1.5
+					Case 3
+						notLiveInfluence :* 1.75
+					Default
+						notLiveInfluence :* 2
+				EndSelect
+			Else
+				'by default the first broadcast has no influence on the max topicality
+				firstBroadcastInfluence:* GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 0.0)
+			EndIf
 
 			'cult-movies are less affected by aging or broadcast amounts
 			If Self.IsCult()
 				ageInfluence :* 0.75
 				timesBroadcastedInfluence :* 0.50
+				notLiveInfluence :* 0.50
 			EndIf
 
 			Local influencePercentage:Float = 0.01 * MathHelper.Clamp(weightAge * ageInfluence + notLiveInfluence + firstBroadcastInfluence + weightTimesBroadcasted * timesBroadcastedInfluence, 0, 100)

@@ -548,32 +548,6 @@ endrem
 		descriptionProcessed = Null
 	End Method
 
-
-	'override to reduce topicality if the game is finished now
-	Method GetMaxTopicality:Float()
-		'not yet aired?
-		If IsLive() Or Not IsMatchFinished() Then Super.GetMaxTopicality()
-
-		Local endTime:Long = GetMatchEndTime()
-		If endTime = -1 Then Return Super.GetMaxTopicality()
-
-		'hours would be more suiting ("after 24hrs") but harder to remember
-		'so a "after midnight" decrease sounds more suiting
-		Local daysSinceMatch:Int = Max(0, GetWorldTime().GetDay() - GetWorldTime().GetDay(endTime))
-		'day 0 => 1  |  day 1 => 0.5  |  day 2 => 0.33  |  day 3 => 0.25
-		'return 1.0/(daysSinceMatch+1) * Super.GetMaxTopicality()
-		'Allows a more fine grained setup for this small amount of days
-		'-> reduction until day 4
-		Select daysSinceMatch
-			Case 0	Return 1.00 * Super.GetMaxTopicality()
-			Case 1	Return 0.80 * Super.GetMaxTopicality()
-			Case 2	Return 0.65 * Super.GetMaxTopicality()
-			Case 3	Return 0.55 * Super.GetMaxTopicality()
-			Default	Return 0.50 * Super.GetMaxTopicality()
-		EndSelect
-	End Method
-
-
 	'override
 	'called as soon as the last block of a programme ends
 	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
