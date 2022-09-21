@@ -35,6 +35,10 @@
 			<data country="D" distribution="2" maingenre="203" subgenre="204" flags="1" blocks="3" price_mod="1.00" />
 			<releaseTime year="1988" day="10" hour="12" />
 			<ratings critics="65" speed="40" outcome="65" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+				<modifier name="topicality::age" value="3.0" />
+			</modifiers>
 		</programme>
 		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
