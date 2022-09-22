@@ -58,8 +58,6 @@ Type TAchievementTask_FulfillAchievements extends TAchievementTask
 		Next
 		if not interested then return False
 
-print "on completing an achievement ... and interested"
-
 		For local playerID:int = 1 to 4
 			'player already completed that achievement
 			if IsCompleted(playerID, time) or IsFailed(playerID, time) then continue

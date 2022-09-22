@@ -9,22 +9,22 @@ Import "game.gameinformation.base.bmx" 'to access worldtime
 
 
 'By default templatevariables use the registered variables and placeholders
-'but also default ones via GetGameInformation(placeHolder.toLower(), "")
+'but also default ones via GetGameInformation(placeholder.toLower(), "")
 'to fill in the corresponding data.
 'so when adding new placeholder-handlers, also check the gameinformation
 'system if it is containing them already
 Type TTemplateVariables
-	'Variables are used to replace certain %KEYWORDS% in title or
-	'description. They are stored as "%KEYWORD%"=>TLocalizedString
+	'Variables are used to replace certain %KEYWORD%/${KEYWORD} in title or
+	'description. They are stored as "KEYWORD"=>TLocalizedString
 	Field variables:TMap
 	'no need for a special "isValid" variable as we must have at least
 	'a single language id (so length>0)
 	Field variablesLanguagesIDs:Int[]
-	'placeHolderVariables contain TLocalizedString-objects which are used
-	'to replace a specific palceholder. This allows to reuse the exact same
+	'placeholderVariables contain TLocalizedString-objects which are used
+	'to replace a specific placeholder. This allows to reuse the exact same
 	'random variable for descendants (episodes refering to the same
 	'keyword) instead of returning other random elements ("option1|option2")
-	Field placeHolderVariables:TMap
+	Field placeholderVariables:TMap
 
 	'override this in CUSTOM variable types to return the parental TTemplateVariables
 	Method GetParentTemplateVariables:TTemplateVariables()
@@ -33,24 +33,30 @@ Type TTemplateVariables
 
 
 	Method Reset()
-		placeHolderVariables = null
+		placeholderVariables = null
 	End Method
 
 
 	Method AddPlaceHolderVariable(key:string, obj:object)
 		key = key.toLower()
 
-		if not placeHolderVariables then placeHolderVariables = CreateMap()
-		placeHolderVariables.insert(key, obj)
+		if not placeholderVariables then placeholderVariables = CreateMap()
+		placeholderVariables.insert(key, obj)
 	End Method
 
 
+	'return a "multi language"-string for the given key/placeholder
 	Method GetPlaceHolderVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True)
 		key = key.toLower()
 
 		local result:TLocalizedString
-		if placeHolderVariables then result = TLocalizedString(placeHolderVariables.ValueForKey(key))
-
+		if placeholderVariables 
+			result = TLocalizedString(placeholderVariables.ValueForKey(key))
+			'try old version with "%VAR%" tag
+			if not result
+				result = TLocalizedString(placeholderVariables.ValueForKey("%" + key + "%"))
+			endif
+		endif
 		if not result
 			local parent:TTemplateVariables = GetParentTemplateVariables()
 			if parent then result = parent.GetPlaceholderVariableString(key, defaultValue, createDefault)
@@ -76,7 +82,13 @@ Type TTemplateVariables
 		key = key.toLower()
 
 		local result:TLocalizedString
-		if variables then result = TLocalizedString(variables.ValueForKey(key))
+		if variables 
+			result = TLocalizedString(variables.ValueForKey(key))
+			'try old version with "%VAR%" tag
+			if not result
+				result = TLocalizedString(variables.ValueForKey("%" + key + "%"))
+			endif
+		endif
 
 		'check parent
 		if not result
@@ -105,20 +117,20 @@ Type TTemplateVariables
 		'a random city then
 
 		'check gameinformation or script expressions
-		if result and result.Get().Find("%") >= 0
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(result.Get(), "%", True)
+		if result and (result.Get().Find("%") >= 0 or result.Get().Find("${") >= 0)
+			local placeholders:string[] = StringHelper.ExtractPlaceholdersCombined(result.Get(), True)
 			local externalResult:string = result.Get()
 			local replaced:int = False
 			local replacedSomething:int = False
-			for local placeHolder:string = EachIn placeHolders
+			for local placeholder:string = EachIn placeholders
 				local replacement:string = ""
 				local replaced:int = False
-				if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
-				if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
+				if not replaced then replaced = ReplaceTextWithGameInformation(placeholder, replacement, useTime)
+				if not replaced then replaced = ReplaceTextWithScriptExpression(placeholder, replacement)
 				'replace if some content was filled in
-				'if replaced then print "replacement " + replacement+"   result: "+ externalResult +"  =>  " + externalResult.replace("%"+placeHolder+"%", replacement)
+				'if replaced then print "replacement " + replacement+"   result: "+ externalResult +"  =>  " + externalResult.replace("%"+placeholder+"%", replacement)
 				if replaced
-					externalResult = externalResult.replace("%"+placeHolder+"%", replacement)
+					ReplacePlaceholderInText(externalResult, placeholder, replacement)
 					replacedSomething = True
 				endif
 			Next
@@ -195,7 +207,14 @@ Type TTemplateVariables
 	End Method
 
 
-	'global debugReplace:int = False
+	'replace "placeholder" with "replacement" in the given text/string
+	Function ReplacePlaceholderInText:String(text:String var, placeholder:String, replacement:String)
+		text = text.replace("%"+placeholder+"%", replacement)
+		text = text.replace("${"+placeholder+"}", replacement)
+	End Function
+
+
+	'replace all placeholders in the given TLocalizedString
 	Method ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		local result:TLocalizedString = text.copy()
 
@@ -230,53 +249,42 @@ Type TTemplateVariables
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-'if debugReplace Then print "ReplacePlaceHolders()"
-'if debugReplace 
-'	if variables 
-'		 print "  variable locales: " + GetVariablesLanguageIDs().length
-'	else
-'		 print "  variable locales: -"
-'	endif
 
 		'do it 20 times, this allows for placeholder definitions within
 		'placeholders (at least some of them)!
 		For local i:int = 0 until 20
-'if debugReplace Then print "  loop "+Rset(i,2)
 			local replacedPlaceholdersAllLang:int = 0
 			For local langID:int = eachIn languageIDs 'text.GetLanguageIDs()
 				local replacedPlaceholdersThisLang:int = 0
 				'use result already (to allow recursive-replacement)
 				local value:string = result.Get(langID)
-				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
-'if debugReplace Then print "    langID=" + langID + "  value=" + LSet(value, 15) + "  placeholders="+placeHolders.length
+				local placeholders:string[] = StringHelper.ExtractPlaceholdersCombined(value, True)
 
-				if placeHolders.length > 0
+				if placeholders.length > 0
 					local replacement:TLocalizedString
-					for local placeHolder:string = EachIn placeHolders
+					for local placeholder:string = EachIn placeholders
 						'check if there is already a placeholder variable stored
-						replacement = GetPlaceholderVariableString(placeHolder, "", False)
+						replacement = GetPlaceholderVariableString(placeholder, "", False)
 						'check if the variable is defined (this leaves global
 						'placeholders like %ACTOR% intact even without further
 						'variable definition)
-						if not replacement then replacement = GetVariableString(placeHolder, "", False)
+						if not replacement then replacement = GetVariableString(placeholder, "", False)
 						'only use ONE option out of the group ("option1|option2|option3")
 						if replacement
 							replacement = GetRandomFromLocalizedString( replacement )
-'if debugReplace Then print "      replacement: "+replacement.ToString().Replace("~n", "~~n")
+
 							'if the parent stores this variable (too) then save
 							'the placeholder there instead of the children
 							'so other children could use the same placeholders
 							'(if there is no parent then "self" is returned)
 							local parent:TTemplateVariables = GetParentTemplateVariables()
-							if parent and parent.GetVariableString(placeHolder, "", False)
-								parent.AddPlaceHolderVariable(placeHolder, replacement)
+							if parent and parent.GetVariableString(placeholder, "", False)
+								parent.AddPlaceHolderVariable(placeholder, replacement)
 							else
-'print "added variable: " + placeHolder + " => " + replacement.Get()
-								AddPlaceHolderVariable(placeHolder, replacement)
+								AddPlaceHolderVariable(placeholder, replacement)
 							endif
 							'store the replacement in the value
-							value = value.replace(placeHolder, replacement.Get(langID))
-'if lang="de" then print "        replace: "+placeHolder+" => " + replacement.Get(lang)
+							ReplacePlaceholderInText(value, placeholder, replacement.Get(langID))
 							replacedPlaceholdersThisLang :+ 1
 						endif
 					Next
@@ -284,7 +292,6 @@ Type TTemplateVariables
 				result.Set(value, langID)
 				'save maximum of replaced placeholders amongst all languages
 				replacedPlaceholdersAllLang = Max(replacedPlaceholdersAllLang, replacedPlaceholdersThisLang)
-'if debugReplace Then print "      result: " + result.ToString().Replace("~n", "~~n    ")
 			Next
 
 			'skip further checks (nothing was replaced this loop)
@@ -296,17 +303,17 @@ Type TTemplateVariables
 		'loop over "text", but replace in "result"
 		For local langID:int = EachIn text.GetLanguageIDs()
 			local value:string = result.Get(langID)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
-			for local placeHolder:string = EachIn placeHolders
-				local replacement:string = string(GetGameInformation(placeHolder.toLower(), "", null, useTime))
+			local placeholders:string[] = StringHelper.ExtractPlaceholdersCombined(value, True)
+			for local placeholder:string = EachIn placeholders
+				local replacement:string = string(GetGameInformation(placeholder.toLower(), "", null, useTime))
 				if replacement <> "UNKNOWN_INFORMATION"
-					value = value.replace("%"+placeHolder+"%", replacement)
+					ReplacePlaceholderInText(value, placeholder, replacement)
 				endif
 			Next
 
 			result.Set(value, langID)
 		Next
-'if debugReplace then print result.ToString().Replace("~n", "~~n")
+
 		return result
 	End Method
 End Type

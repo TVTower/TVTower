@@ -512,7 +512,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'copy text if we intend to replace content
 		'(for now only check main language)
-		If template.title.Get().Find("%") >= 0
+		If template.title.Get().Find("%") >= 0 or template.title.Get().Find("${") >= 0
 			If template.templateVariables
 				Self.title = _ReplacePlaceholders(template.templateVariables.ReplacePlaceholders(template.title), time)
 			Else
@@ -521,7 +521,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Else
 			Self.title = template.title
 		EndIf
-		If template.description.Get().Find("%") >= 0
+		If template.description.Get().Find("%") >= 0 or template.description.Get().Find("${") >= 0
 			If template.templateVariables
 				Self.description = _ReplacePlaceholders(template.templateVariables.ReplacePlaceholders(template.description), time)
 			Else

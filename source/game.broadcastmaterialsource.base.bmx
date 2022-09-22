@@ -7,6 +7,7 @@ Import "game.gameinformation.base.bmx"
 Import "Dig/base.util.scriptexpression.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.bitmask.bmx"
+Import "common.misc.templatevariables.bmx" 'for replacement function
 
 
 'could be done as "interface"
@@ -211,7 +212,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 		'variable with the same name
 		For Local langID:Int = EachIn text.GetLanguageIDs()
 			Local value:String = text.Get(langID)
-			Local placeHolders:String[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(value, True)
 			If placeHolders.length = 0 Then Continue
 
 			For Local placeHolder:String = EachIn placeHolders
@@ -220,7 +221,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in
-				If replaced Then value = value.Replace("%"+placeHolder+"%", replacement)
+				If replaced Then TTemplateVariables.ReplacePlaceholderInText(value, placeHolder, replacement)
 				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
 			Next
 

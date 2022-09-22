@@ -107,12 +107,75 @@ Import "external/string_comp.bmx"
 
 Type StringHelper
 	'extracts and returns all placeholders in a text
+	'extracts old (%var%) and new (${var}) variable form 
+	'ex.: Hi my name is %NAME% and also ${NAME} or ${NAME${SUB}} (which only sees "SUB")
+	Function ExtractPlaceholdersCombined:String[](text:String, stripPlaceHolderTag:Int = False)
+		Return ExtractPlaceholders(text, stripPlaceHolderTag) + ExtractPlaceholdersOld(text, "%", stripPlaceHolderTag)
+	End Function
+
+
+	'extracts and returns all placeholders in a text
+	'ex.: Hi my name is %NAME% and also ${NAME} or ${NAME${SUB}} (which only sees "SUB")
+	Function ExtractPlaceholders:String[](text:String, stripPlaceHolderTag:Int = False)
+		Global escapeCharCode:Int = Asc("\")
+		'since we hardcoded the tags we can simply use two variables..
+		Global placeHolderOpenTagCharCode1:Int = Asc("$")
+		Global placeHolderOpenTagCharCode2:Int = Asc("{")
+		Global placeHolderCloseTagCharCode:Int = Asc("}")
+
+		Local result:String[]
+		Local escapeCharFound:Int = False
+		Local placeHolderTagOpen:Int = False
+		Local placeHolderStartPos:Int = 0
+		Local placeHolderEndPos:Int = 0
+		local charCode:Int
+		
+		For Local i:Int = 0 Until text.length
+			charCode = text[i]
+			
+			'found the start of an escape char: "\${}"
+			If charCode = escapeCharCode And Not escapeCharFound
+				escapeCharFound = True
+				Continue
+			EndIf
+
+			'found a placeholder start ("$") but not an escaped one ("\$")
+			If charCode = placeHolderOpenTagCharCode1 And Not escapeCharFound
+				'and also found the opener ("{")
+				If i < text.length and text[i+1] = placeHolderOpenTagCharCode2
+					placeHolderTagOpen = True
+					placeHolderStartPos = i
+				EndIf
+			'closing the "inner" one? ("${hello${world}}" - close on last but one "}")
+			'-> so finds "${world}"
+			ElseIf charCode = placeHolderCloseTagCharCode 
+				'add found placeholder
+				If placeHolderTagOpen
+					placeHolderTagOpen = False
+					placeHolderEndPos = i
+
+					if stripPlaceHolderTag
+						result :+ [ text[placeHolderStartPos + 2 ..  placeHolderEndPos] ]
+					else
+						result :+ [ text[placeHolderStartPos ..  placeHolderEndPos + 1] ]
+					endif
+				EndIf
+			EndIf
+			
+			escapeCharFound = False
+		Next
+		
+		Return result
+	End Function
+
+
+	'extracts and returns all placeholders in a text
 	'ex.: Hi my name is %NAME%
-	Function ExtractPlaceholders:String[](text:String, placeHolderChar:String="%", stripPlaceHolderChar:Int = False)
+	Function ExtractPlaceholdersOld:String[](text:String, placeHolderChar:String="%", stripPlaceHolderChar:Int = False)
 		Local result:String[]
 		Local readingPlaceHolder:Int = False
 		Local currentPlaceHolder:String = ""
-		Local escapeCharCode:String = Asc("\")
+		Local escapeCharCode:Int = Asc("\")
 		Local escapeCharFound:Int = False
 		Local placeHolderCharCode:Int = Asc(placeHolderChar)
 		Local charCode:Int
@@ -150,55 +213,6 @@ Type StringHelper
 			EndIf
 
 			escapeCharFound = False
-		Next
-
-		Return result
-	End Function
-
-
-	'extracts and returns all placeholders in a text
-	'ex.: Hi my name is %NAME%
-	Function ExtractPlaceholdersOld:String[](text:String, placeHolderChar:String="%", stripPlaceHolderChar:Int = False)
-		Local result:String[]
-		Local readingPlaceHolder:Int = False
-		Local currentPlaceHolder:String = ""
-		Local char:String
-		'char for grouping placeholders: "%person:name%"
-		Local splitterChar:Int = Asc(":")
-		Local underscoreChar:Int = Asc("_")
-		For Local i:Int = 0 Until text.length
-			char = Chr(text[i])
-			'found a potential placeholder start
-			If char = placeHolderChar And Not readingPlaceHolder
-				readingPlaceHolder = True
-			EndIf
-
-			If readingPlaceHolder
-				'found end of the placeholder?
-				If char = placeHolderChar And currentPlaceHolder.find(placeHolderChar) >= 0
-					readingPlaceHolder = False
-					result :+ [currentPlaceHolder+char]
-					If stripPlaceHolderChar
-						result[result.length-1] = result[result.length-1][1 .. result[result.length-1].length-1]
-					EndIf
-					currentPlaceHolder = ""
-					'go on with next char
-					Continue
-				EndIf
-
-				'add the placeHolderChar and alphanumeric characters to
-				'the placeholder value
-				If IsAlphaNum(Asc(char)) Or char = placeHolderChar Or text[i] = splitterChar Or text[i] = underscoreChar
-					currentPlaceHolder :+ char
-				'found something different
-				'ex.: a single placeholderChar ("The % of %ALL% is %X%")
-				Else
-					currentPlaceHolder = ""
-					'go on with next char
-					Continue
-				EndIf
-
-			EndIf
 		Next
 
 		Return result

@@ -1008,23 +1008,24 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local result:String = content
 
 		'placeholders are: "%object|guid|whatinformation%"
-		Local placeHolders:String[] = StringHelper.ExtractPlaceholders(content, "%")
+		'              or: "${object|guid|whatinformation}"
+		Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(content)
 		For Local placeHolder:String = EachIn placeHolders
 			Local elements:String[] = placeHolder.split("|")
 			If elements.length < 3 Then Continue
 
 			If elements[0] = "person"
-				Local person:TPersonBase = GeTPersonBaseCollection().GetByGUID(elements[1])
+				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(elements[1])
 				If Not person
-					result = result.Replace("%person|"+elements[1]+"|Full%", "John Doe")
-					result = result.Replace("%person|"+elements[1]+"|First%", "John")
-					result = result.Replace("%person|"+elements[1]+"|Nick%", "John")
-					result = result.Replace("%person|"+elements[1]+"|Last%", "Doe")
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Full", "John Doe")
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|First", "John")
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Nick", "John")
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Last", "Doe")
 				Else
-					result = result.Replace("%person|"+elements[1]+"|Full%", person.GetFullName())
-					result = result.Replace("%person|"+elements[1]+"|First%", person.GetFirstName())
-					result = result.Replace("%person|"+elements[1]+"|Nick%", person.GetNickName())
-					result = result.Replace("%person|"+elements[1]+"|Last%", person.GetLastName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Full", person.GetFullName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|First", person.GetFirstName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Nick", person.GetNickName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Last", person.GetLastName())
 				EndIf
 			EndIf
 		Next
