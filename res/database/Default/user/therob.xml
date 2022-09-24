@@ -390,8 +390,6 @@
 			<data country="D" year="1985" distribution="1" maingenre="14" subgenre="" flags="0" blocks="3" price_mod="1.5" />
 			<ratings critics="100" speed="100" outcome="100" />
 			<modifiers>
-				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
-				<modifier name="price::age" value="0.1" />
 				<!-- Programm ist billiger als Normal -->
 				<modifier name="price" value="0.07" />
 			</modifiers>
@@ -821,7 +819,6 @@
 			<data country="D" year="1980" distribution="2" maingenre="0" subgenre="" flags="128" blocks="1" price_mod="1.00" />
 			<ratings critics="29" speed="5" outcome="0" />
 			<modifiers>
-				<modifier name="price::age" value="1.2" />
 				<modifier name="price" value="1.2" />
 			</modifiers>
 			<children>
@@ -927,8 +924,6 @@
 			<data country="S" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
 			<ratings critics="24" speed="42" outcome="0" />
 			<modifiers>
-				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
-				<modifier name="price::age" value="0.4" />
 				<!-- billiger als normal -->
 				<modifier name="price" value="0.4" />
 			</modifiers>
