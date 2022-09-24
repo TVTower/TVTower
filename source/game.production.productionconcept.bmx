@@ -1175,6 +1175,8 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method GetBaseProductionTime:Long()
 		local base:Long = GameRules.baseProductionTimeHours * TWorldTime.HOURLENGTH
+		'if a production time is defined then use this. 
+		if script.productionTime > 0 Then base = script.productionTime
 
 		local typeTimeMod:Float = 1.0
 		local speedPointTimeMod:Float = 1.0
@@ -1223,24 +1225,14 @@ Type TProductionConcept Extends TOwnedGameObject
 			endif
 		endif
 
-		'if there is something defined (eg for live preproductions)
-		'then use this. 
-		'Result is rounded to "minutes"!
-		if script.productionTime > 0
-			'this also ignores potential "flag" benefits (trash is produced
-			'faster etc - as a predefined production time has to take
-			'this already into consideratio)
-			base = script.productionTime
+		base :* speedPointTimeMod
+		base :* teamPointTimeMod
 
-			base :* speedPointTimeMod
-			base :* teamPointTimeMod
-		else
+		if script.productionTime <= 0
+			'if script does not explicitly define production time
+			'consider additional modifiers
 			base :* script.GetProductionTimeMod()
 			base :* typeTimeMod
-
-			base :* speedPointTimeMod
-			base :* teamPointTimeMod
-
 			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod) * TWorldTime.HOURLENGTH)
 		endif
 		'round to minutes (TWorldTime.MINUTELENGTH and base are LONG)
