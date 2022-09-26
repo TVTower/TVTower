@@ -1341,14 +1341,26 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	'time left for sending all contract-spots from now
-	Method GetTimeLeft:Long(now:Long = -1) {_exposeToLua}
+	Method GetTimeLeft:Long() {_exposeToLua}
+		Return GetEndTime() - GetWorldTime().GetTimeGone()
+	End Method
+
+
+	'time left for sending all contract-spots from now
+	Method GetTimeLeft:Long(now:Long) {_exposeToLua}
 		If now < 0 Then now = GetWorldTime().GetTimeGone()
 
 		Return GetEndTime() - now
 	End Method
 
 
-	Method GetTimeGonePercentage:Float(now:Long = -1) {_exposeToLua}
+	Method GetTimeGonePercentage:Float() {_exposeToLua}
+		If daySigned < 0 Then Return 0.0
+		Return 1.0 - GetTimeLeft() / Float(GetEndTime() - GetStartTime())
+	End Method
+
+
+	Method GetTimeGonePercentage:Float(now:Long)
 		If daySigned < 0 Then Return 0.0
 		Return 1.0 - GetTimeLeft(now) / Float(GetEndTime() - GetStartTime())
 	End Method

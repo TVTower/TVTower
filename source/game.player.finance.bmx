@@ -313,7 +313,15 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 
 	'returns whether the finances allow the given transaction
-	Method CanAfford:Int(price:Long=0) {_exposeToLua}
+	Method CanAfford:Int(price:Int) {_exposeToLua}
+	'long is currently not supported in BlitzMax-Reflection
+	'so we do not expose the long version but the "int" one
+		Return (money > 0 And money >= price)
+	End Method
+
+
+	'returns whether the finances allow the given transaction
+	Method CanAfford:Int(price:Long)
 		Return (money > 0 And money >= price)
 	End Method
 

@@ -368,7 +368,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'Calculated minute of the days clock (00:xx:00)
-	Method GetDayMinute:Int(useTime:Long) {_exposeToLua}
+	Method GetDayMinute:Int(useTime:Long)
 		if useTime <= 0 then useTime = _timeGone
 
 		return (useTime / MINUTELENGTH) mod 60
@@ -473,7 +473,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetOnDay:Int(useTime:Long) {_exposeToLua}
+	Method GetOnDay:Int(useTime:Long)
 		if useTime <= 0 then useTime = _timeGone
 
 		Return GetDay(useTime) + 1
@@ -650,7 +650,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFormattedDayByTime:String(useTime:Long) {_exposeToLua}
+	Method GetFormattedDayByTime:String(useTime:Long)
 		Return GetDay(useTime) + "." + GetLocale("DAY") + " (" + GetLocale("WEEK_SHORT_" + GetDayName(GetWeekday(useTime))) + ")"
 	End Method
 
@@ -660,7 +660,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFormattedDayLongByTime:String(useTime:Long) {_exposeToLua}
+	Method GetFormattedDayLongByTime:String(useTime:Long)
 		Return GetLocale("WEEK_LONG_" + GetDayName(GetWeekday(useTime)))
 	End Method
 
@@ -737,7 +737,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'returns sunrise that day - in seconds
-	Method GetSunrise:Int()
+	Method GetSunrise:Int() {_exposeToLua}
 		local month:int = GetMonth()
 		local dayOfMonth:int = (GetDayOfMonth() * GetDaysPerYear()) / 360
 		return MINUTELENGTH * (350 + 90.0 * cos( 180.0/PI * ((month-1) * 30.5 + dayOfMonth + 8) / 58.1 ))
@@ -770,7 +770,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'returns sunset that day - in seconds
-	Method GetSunset:Int(useTime:Long) {_exposeToLua}
+	Method GetSunset:Int(useTime:Long)
 		if useTime <= 0 then useTime = _timeGone
 
 		local month:int = GetMonth(useTime)
@@ -842,7 +842,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetDawnPhaseBegin:Int(useTime:Long) {_exposeToLua}
+	Method GetDawnPhaseBegin:Int(useTime:Long)
 		if useTime <= 0 then useTime = _timeGone
 
 		if _dawnTime > 0 then return _dawnTime
