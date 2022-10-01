@@ -7,6 +7,8 @@ Import "game.roomhandler.movieagency.bmx"
 Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	Field buttons:TDebugControlsButton[]
 	Field offerHightlight:TProgrammeLicence
+	Field offerHightlightOffset:Int
+	Field auctions:TProgrammeLicence[] = new TProgrammeLicence[0]
 
 	Global _instance:TDebugScreenPage_MovieAgency
 	
@@ -91,7 +93,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		RenderBlock_Offers(playerID, position.x + 5, position.y + 3, 430, 330)
+		RenderBlock_Offers(playerID, position.x + 5, position.y + 3, 460, 330)
 
 		RenderBlock_NoLongerAvailable(playerID, position.x + 5 + 250 + 5 + 250, position.y  + 3 + 55)
 
@@ -101,7 +103,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 		Next
 
 		if offerHightlight
-			offerHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.PROGRAMME, playerID)
+			offerHightlight.ShowSheet(position.x + 5 + 250 + offerHightlightOffset, position.y + 3, 0, TVTBroadcastMaterialType.PROGRAMME, playerID)
 		endif
 	End Method
 
@@ -142,6 +144,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	Method UpdateBlock_Offers(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
 		'reset
 		offerHightlight = null
+		offerHightlightOffset = 0
 
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
@@ -152,12 +155,13 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 		local textYStart:int = textY
 
-		local licenceLists:TProgrammeLicence[][] = [movieVendor.listMoviesGood, movieVendor.listMoviesCheap, movieVendor.listSeries]
+		local licenceLists:TProgrammeLicence[][] = [movieVendor.listMoviesGood, movieVendor.listMoviesCheap, movieVendor.listSeries, auctions]
 		local entryPos:int = 0
 		For local listNumber:int = 0 until licenceLists.length
 			if listNumber = 2
 				textY = textYStart
 				textX :+ barWidth + 10
+				offerHightlightOffset = -365
 			endif
 
 
@@ -194,8 +198,22 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 		local textYStart:int = textY
 
-		local licenceListsTitle:String[] = ["Good", "Cheap", "Series"]
-		local licenceLists:TProgrammeLicence[][] = [movieVendor.listMoviesGood, movieVendor.listMoviesCheap, movieVendor.listSeries]
+		local auctionList:TList = TAuctionProgrammeBlocks.List
+		auctions = new TProgrammeLicence[auctionList.Count()]
+		local nextBid:Int[] = new Int[auctionList.Count()]
+		local bidOffset:Int = movieVendor.listSeries.length * 10 + 25
+		For local index:int = 0 until auctions.length
+			local auction:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(auctionList.ValueAtIndex(index))
+			auctions[index] = auction.GetLicence()
+			nextBid[index] = auction.GetNextBid(playerID)
+			if auction.bestBid > 0
+				local bestBidder:TPlayer = GetPlayer(auction.bestBidder)
+				textFont.DrawBox(MathHelper.DottedValue(auction.bestBid), textX + 400, textY + bidOffset + index * 10, 50, 15, sALIGN_RIGHT_TOP, bestBidder.color.ToSColor8())
+			endif
+		Next
+
+		local licenceListsTitle:String[] = ["Good", "Cheap", "Series", "Auction"]
+		local licenceLists:TProgrammeLicence[][] = [movieVendor.listMoviesGood, movieVendor.listMoviesCheap, movieVendor.listSeries, auctions]
 		local entryPos:int = 0
 		local oldAlpha:Float = GetAlpha()
 		For local listNumber:int = 0 until licenceLists.length
@@ -233,7 +251,13 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 				textFont.DrawSimple(RSet(i, 2).Replace(" ", "0"), textX, textY)
 				if licences[i]
 					textFont.DrawBox(": " + licences[i].GetTitle(), textX + 10, textY, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
-					textFont.DrawBox(MathHelper.DottedValue(licences[i].GetPriceForPlayer(playerID)), textX + 10 + 110, textY, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
+					local price:Int
+					if listNumber = 3
+						price = nextBid[i]
+					else
+						price = licences[i].GetPriceForPlayer(playerID)
+					endif
+					textFont.DrawBox(MathHelper.DottedValue(price), textX + 10 + 110, textY, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
 					textFont.DrawBox(licences[i].data.GetYear(), textX + 10 + 110 + 50 - 5, textY, barWidth - (10 + 110 + 50), 15, sALIGN_RIGHT_TOP, SColor8.White)
 				else
 					textFont.DrawSimple(": -", textX + 15, textY)
