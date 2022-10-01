@@ -114,6 +114,7 @@ function DefaultAIPlayer:initParameters()
 		self.gameDay = TVT:GetDaysRun() + 1
 		self.minutesGone = TVT:GetTimeGoneInMinutes()
 	end
+	self.money = TVT:GetMoney()
 
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
 		--Waghalsigkeit 3-8
@@ -167,6 +168,8 @@ function DefaultAIPlayer:initializePlayer()
 	self.programmeLicencesInSuitcaseCount = 0
 	self.programmeLicencesInArchiveCount = 0
 	self.licencesToSell = {}
+	self.blocksCount = 0
+	self.maxTopicalityBlocksCount = 0
 
 	self.currentAwardType = -1
 	self.currentAwardStartTime = -1
@@ -194,6 +197,8 @@ function DefaultAIPlayer:resume()
 	end
 	if self.licencesToSell == nil then
 		self.licencesToSell = {}
+		self.blocksCount = 0
+		self.maxTopicalityBlocksCount = 0
 	end
 
 	self:initParameters()
@@ -266,6 +271,8 @@ end
 
 
 function DefaultAIPlayer:OnDayBegins()
+	--ensure money value is correct for all onDayBegins-calls
+	self.money = TVT:GetMoney()
 	--just in case we missed a "OnGameBegins"
 	self.Strategy:Start(self)
 
@@ -301,6 +308,10 @@ end
 
 
 function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
+	value = tonumber(value)
+	--multiple fixed-costs events trigger unnecessary calls; but modifying the current value would result
+	--in invalid value (after onDayBegins)
+	self.money = TVT:GetMoney()
 	self.Budget:OnMoneyChanged(value, reason, reference)
 	for k,v in pairs(self.TaskList) do
 		v:OnMoneyChanged(value, reason, reference)
@@ -492,13 +503,15 @@ function BusinessStats:ReadStats()
 	if self.lastStatsReadMinute ~= minute then
 		-- read in new audience stats
 		if minute == 0 then
-			local currentBroadcast = TVT.GetCurrentNewsShow()
+			--local currentBroadcast = TVT.GetCurrentNewsShow()
 			local currentAudience = TVT.GetCurrentNewsAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentNewsAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
 		end
 		if minute == 5 then
-			local currentBroadcast = TVT.GetCurrentProgramme()
+			--TODO store genre attraction based on max topicality
+			--local currentBroadcast = TVT.GetCurrentProgramme()
+			--debugMsg("top "..currentBroadcast.getSource().GetTopicality() .." "..currentBroadcast.getSource().GetMaxTopicality().." "..currentBroadcast.getSource().getGenre())
 			local currentAudience = TVT.GetCurrentProgrammeAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
@@ -742,19 +755,20 @@ function OnEnterRoom(roomId)
 	roomId = tonumber(roomId) --incoming roomId is "string"
 
 	if (aiIsActive) then
-		getAIPlayer():OnEnterRoom(roomId)
+		local player = getAIPlayer()
+		player:OnEnterRoom(roomId)
 
 		-- when visiting the boss or betty, update sammy information
 		if roomId == TVT.ROOM_BOSS_PLAYER_ME then
 			--debugMsg("Visiting my boss", true)
 
-			getAIPlayer().currentAwardType = TVT.bo_GetCurrentAwardType()
-			getAIPlayer().currentAwardStartTime = tonumber(TVT.bo_GetCurrentAwardStartTimeString())
-			getAIPlayer().currentAwardEndTime = tonumber(TVT.bo_GetCurrentAwardEndTimeString())
+			player.currentAwardType = TVT.bo_GetCurrentAwardType()
+			player.currentAwardStartTime = tonumber(TVT.bo_GetCurrentAwardStartTimeString())
+			player.currentAwardEndTime = tonumber(TVT.bo_GetCurrentAwardEndTimeString())
 
-			getAIPlayer().nextAwardType = TVT.bo_GetNextAwardType()
-			getAIPlayer().nextAwardStartTime = tonumber(TVT.bo_GetNextAwardStartTimeString())
-			getAIPlayer().nextAwardEndTime = tonumber(TVT.bo_GetNextAwardEndTimeString())
+			player.nextAwardType = TVT.bo_GetNextAwardType()
+			player.nextAwardStartTime = tonumber(TVT.bo_GetNextAwardStartTimeString())
+			player.nextAwardEndTime = tonumber(TVT.bo_GetNextAwardEndTimeString())
 		end
 	end
 	
@@ -763,7 +777,7 @@ function OnEnterRoom(roomId)
 	-- alternative: 
 	-- already start with the current task (run 1 TickProcessTask()
 	--if (aiIsActive) then
-	--	getAIPlayer():Tick()
+	--	player:Tick()
 	--end
 end
 
@@ -804,6 +818,7 @@ function OnLoadState(data)
 	player.minute = TVT:GetDayMinute()
 	player.gameDay = TVT:GetDaysRun() + 1
 	player.minutesGone = TVT:GetTimeGoneInMinutes()
+	player.money = TVT:GetMoney()
 end
 
 -- called when "saving" a game
@@ -897,7 +912,7 @@ function OnMinute(number)
 	-- on xx:06 check if there is an unsatisfiable ad planned for this
 	-- hour
 	if minute == 6 then
-		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+		local task = player.TaskList[_G["TASK_SCHEDULE"]]
 		if task then
 			local broadcast = TVT.GetCurrentAdvertisement()
 			if broadcast ~= nil then
@@ -910,13 +925,14 @@ function OnMinute(number)
 						--TODO test for target groups probably fails!
 						--debugMsg("# increasing SituationPriority for Scheduling - fail advertisement")
 						task.SituationPriority = 200
+						--forcing the next task leads to many aborts
+						--if player.CurrentTask ~= nil and player.CurrentTask.typename() ~= task.typename() then
+						--	player:ForceNextTask()
+						--end
 					end
 				end
 			-- outage? want to get this fixed too
 			else
-				-- we can only fix if we have licences for programmes
-				-- or adcontracts for infomercials
-				-- -> FixImminentAdOutage takes care of that
 				--debugMsg("# increasing SituationPriority for Scheduling (missing ad)")
 				task.SituationPriority = 200
 			end

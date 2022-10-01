@@ -69,26 +69,18 @@ end
 
 function TaskStationMap:BeforeBudgetSetup()
 	local player = getPlayer()
-	local stats = player.Stats.MovieQuality
-	local movieCount = 0
-	if stats ~= nil then
-		movieCount = stats.Values
-	end
+	local maxTopBlocks = player.maxTopicalityBlocksCount
+	local blocks = player.blocksCount
 	local totalReach = player.totalReach
 
-	if movieCount < 12 and (totalReach == nil or totalReach > 1200000) then
+	if blocks < 36 and (totalReach == nil or totalReach > 1200000) then
 		self.BudgetWeight = 0
-	elseif movieCount < 24 and (totalReach == nil or totalReach > 2000000) then
+	elseif blocks < 50 and (totalReach == nil or totalReach > 2000000) then
 		self.BudgetWeight = 4
 	else
 		self.BudgetWeight = 8
 	end
 
-	if self.BudgetWeight > 0 and totalReach ~= nil then
-		if totalReach < 2000000 then
-			self.BudgetWeight = 8
-		end
-	end
 	if self.maxReachIncrease ~=nil and self.maxReachIncrease < 0  then
 		self.BudgetWeight = 0
 	end
@@ -163,13 +155,12 @@ function JobAnalyseStationMarket:Tick()
 	--TODO refresh less often
 	TVT.audiencePredictor.RefreshMarkets()
 	player.LastStationMapMarketAnalysis = player.WorldTicks
-	local stats = player.Stats.MovieQuality
-	local movieCount = 0
-	if stats ~= nil then
-		movieCount = stats.Values
-	end
+	local blocks = player.blocksCount
 	player.totalReach = MY.GetMaxAudience()
 	self.Task.maxReachIncrease = 99000000
+
+	--movie prices do not increas so much anymore...
+	--[[
 	if movieCount < 12 then
 		if player.totalReach < 2500000 then
 			self.Task.maxReachIncrease = 2400000 - player.totalReach
@@ -183,7 +174,7 @@ function JobAnalyseStationMarket:Tick()
 			self.Task.maxReachIncrease = 0
 		end
 	end
-
+	--]]
 	local population = TVT:of_getPopulation()
 
 	if player.totalReach > population * 0.9 then
@@ -426,7 +417,7 @@ function JobBuyStation:Prepare(pParams)
 	local ignoreBudgetChance = 100 - (8-player.ExpansionPriority)*math.min(TVT.of_getStationCount(TVT.ME)-1,10)
 	self:LogTrace("  ignoreBudgetChance: " ..ignoreBudgetChance)
 
-	local moneyExcludingFixedCosts = TVT.GetMoney() - player.Budget.CurrentFixedCosts
+	local moneyExcludingFixedCosts = player.money - player.Budget.CurrentFixedCosts
 	--TODO make constant player character dependent
 	if self.Task.CurrentBudget > 0 and moneyExcludingFixedCosts > 350000 and math.random(0,100) < ignoreBudgetChance then
 		--self.Task.CurrentBudget = (0.4 + 0.06*player.ExpansionPriority) * moneyExcludingFixedCosts

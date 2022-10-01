@@ -401,14 +401,10 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	local easy = false
 	local avg = false
 	local hard = false
-	local movieCount = 0
+	local maxTopBlocks = self.Player.maxTopicalityBlocksCount
 	local audienceTotal = guessedAudience:GetTotalSum()
 	if audienceTotal > highAudience then
 		hard = true
-		local stats = self.Player.Stats.MovieQuality
-		if stats ~= nil and stats.Values > 0 then
-			movieCount = stats.Values
-		end
 	elseif audienceTotal > avgAudience then
 		avg = true
 	else
@@ -429,7 +425,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		else
 			local daysToFinish = adContract.GetDaysToFinish() - 1
 			if hard == true then
-				if movieCount < 30 then 
+				if maxTopBlocks < 12 then 
 					daysToFinish = daysToFinish -1
 				end
 				if spotsLeft < 3 and spotsLeft < daysToFinish then doSign = true end

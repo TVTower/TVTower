@@ -148,7 +148,8 @@ end
 
 
 function TaskNewsAgency:BudgetMaximum()
-	local money = TVT.GetMoney()
+	local player = getPlayer()
+	local money = player.money
 	if money <= 500000 then
 		return math.max(50000, math.floor(money / 10))
 	elseif money < 1000000 then
@@ -367,7 +368,7 @@ function JobNewsAgency:Tick()
 
 	if self.Task.CurrentBudget < 0 then
 		local player = getPlayer()
-		if player.Budget.CurrentFixedCosts > 120000 and TVT.GetMoney() > 150000 then
+		if player.Budget.CurrentFixedCosts > 120000 and player.money > 150000 then
 			--TODO with high fixed costs often there is a negative budget although there is money
 			self:LogDebug("raised news budget because there is money")
 			self.Task.CurrentBudget = 50000

@@ -133,12 +133,12 @@ function JobSellMovies:Tick()
 		minLicenceCount = 25
 	end
 
-	local newLicenceToSell = False
-	--check if licence should sold
+	local newLicenceToSell = false
+	--check if licence should be sold
 	if table.count(movies) - toSellCount > minLicenceCount then
 		local licenceToSell = self:determineLicenceToSell(movies, toSell)
 		if licenceToSell ~= nil then
-			newLicenceToSell = True
+			newLicenceToSell = true
 		end
 	end
 
@@ -159,7 +159,7 @@ function JobSellMovies:Tick()
 	self.Status = JOB_STATUS_DONE
 
 	-- if there is something to sell, send figure to movie dealer now
-	if table.count(case) > 0 or newLicenceToSell == True then
+	if table.count(case) > 0 or newLicenceToSell == true then
 		--set day only if something is to be sold
 		self.Task.latestSaleOnDay = TVT.GetDay()
 
@@ -177,9 +177,7 @@ function JobSellMovies:determineLicenceToSell(movies, toSell)
 	local licenceToSell = nil
 	local rnd = math.random(0,100)
 
-	if rnd > 90 then
-		--to nothing
-	elseif rnd > 45 then
+	if rnd > 50 then
 		local sortMethod = function(a, b)
 			return a.quality < b.quality
 		end

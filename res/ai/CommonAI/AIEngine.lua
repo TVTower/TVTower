@@ -591,8 +591,9 @@ function AITask:RecalcPriority()
 	local timeFactor = (20 + TimeDiff) / 20
 	local ticksFactor = (20 + TicksDiff) / 20
 
-	local timePriority = self:getStrategicPriority()  * calcPriority * timeFactor
-	local ticksPriority = self:getStrategicPriority()  * calcPriority * ticksFactor
+	local strategicPriority = self:getStrategicPriority()
+	local timePriority = strategicPriority  * calcPriority * timeFactor
+	local ticksPriority = strategicPriority  * calcPriority * ticksFactor
 
 	self.CurrentPriority = math.max(timePriority, ticksPriority)
 
