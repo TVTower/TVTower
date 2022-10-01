@@ -1952,6 +1952,7 @@ Type TGameState
 	Field _officeProgrammeSortDirection:Int
 	Field _officeContractSortMode:Int
 	Field _officeContractSortDirection:Int
+	Field _supermarketCastSortDirection:Int
 	Field _programmeDataIgnoreUnreleasedProgrammes:Int = False
 	Field _programmeDataFilterReleaseDateStart:Int = False
 	Field _programmeDataFilterReleaseDateEnd:Int = False
@@ -2133,6 +2134,7 @@ Type TGameState
 		TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortDirection = _officeProgrammeSortDirection
 		TScreenHandler_ProgrammePlanner.PPcontractList.ListSortMode = _officeContractSortMode
 		TScreenHandler_ProgrammePlanner.PPcontractList.ListSortDirection = _officeContractSortDirection
+		TScreenHandler_SupermarketProduction.castSortType = _supermarketCastSortDirection
 
 		TProgrammeData.ignoreUnreleasedProgrammes = _programmeDataIgnoreUnreleasedProgrammes
 		TProgrammeData._filterReleaseDateStart = _programmeDataFilterReleaseDateStart
@@ -2160,6 +2162,7 @@ Type TGameState
 		_officeProgrammeSortDirection = TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortDirection
 		_officeContractSortMode = TScreenHandler_ProgrammePlanner.PPcontractList.ListSortMode
 		_officeContractSortDirection = TScreenHandler_ProgrammePlanner.PPcontractList.ListSortDirection
+		_supermarketCastSortDirection = TScreenHandler_SupermarketProduction.castSortType
 
 		_programmeDataIgnoreUnreleasedProgrammes = TProgrammeData.ignoreUnreleasedProgrammes
 		_programmeDataFilterReleaseDateStart = TProgrammeData._filterReleaseDateStart
