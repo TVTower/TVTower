@@ -377,6 +377,26 @@ function AIToolsClass:GetAverageBroadcastQualityByLevel(level)
 	return 0.00
 end
 
+--currently hard coded by hour (see old implementation below
+--in the long run a statistic by weekday+hour for reachable audience percentage would be nice
+function AIToolsClass:GetAudienceQualityLevel(day, hour)
+	if hour > 22 or hour <=1 then
+		return 4
+	elseif hour >=20 then
+		return 5
+	elseif hour >=16 then
+		return 4
+	elseif hour >= 11 then
+		return 3
+	elseif hour >=7 then
+		return 2
+	else
+		return 1
+	end
+end
+
+--prevent many uncached calls to BMX for determining audience level
+--[[
 --TODO Problem der Überlappung der MinAudience bei Level 4 und 5 (z.T. gleiche Anforderungen - doppelte Verträge)
 function AIToolsClass:GetAudienceQualityLevel(day, hour)
 	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
@@ -398,7 +418,7 @@ function AIToolsClass:GetMaxAudiencePercentage(day, hour)
 	--debugMsg("AITools:GetMaxAudiencePercentage("..day ..", "..hour..") = " .. TVT.getPotentialAudiencePercentage(day,hour))
 	return TVT.getPotentialAudiencePercentage(day, hour)
 end
-
+--]]
 
 function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
 	if broadcastMaterial == nil then return 0 end
