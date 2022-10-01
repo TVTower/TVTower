@@ -1190,12 +1190,13 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			Return baseValue * GetSpotCount()
 		EndIf
 
-		Local population:Int = GetStationMapCollection().GetPopulation()
-		If population <= 1000
-			Print "StationMap Population too low: "+population
-			population = 1000
+		Local population:Int = 1000
+		Local minAudience:Int = GetTotalMinAudienceForPlayer(playerID)
+		Local reach:Int = population
+		If playerID > 0 
+			population = GetStationMapCollection().GetPopulation()
+			reach = GetStationMap(playerID, True).GetReach()
 		EndIf
-
 
 		'=== DYNAMIC PRICE ===
 		Local difficulty:TPlayerDifficulty = GetPlayerDifficulty(playerID)
@@ -1206,8 +1207,6 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		Local price:Float
 
-		Local minAudience:Int = GetTotalMinAudienceForPlayer(playerID)
-		Local reach:Int = GetStationMap(playerID, True).GetReach()
 
 		price = GetCPM(baseValue, Float(reach) / population)
 
