@@ -105,8 +105,12 @@ function JobChangeRoomSigns:Tick()
 		local enemyId = player:GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
-		TVT.rb_SwitchSigns(sign, roomSign)
-		self:LogDebug("Verschiebe "..name.."-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
+		if roomSign ~=nil then
+			TVT.rb_SwitchSigns(sign, roomSign)
+			self:LogDebug("Verschiebe "..name.."-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
+		else
+			self:LogError("Raumschild von enemyId "..enemyId.." nicht ermittelbar")
+		end
 	end
 
 	-- handled the situation "for now"

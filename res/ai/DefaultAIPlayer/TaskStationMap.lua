@@ -95,10 +95,10 @@ function TaskStationMap:OnMoneyChanged(value, reason, reference)
 	--ensure fixed costs are recalculated
 	reason = tonumber(reason)
 	if (reason == TVT.Constants.PlayerFinanceEntryType.PAY_STATION) then
-		self:PayFromBudget(value)
+		self:PayFromBudget(math.abs(value))
 		self.SituationPriority = 50
 	elseif (reason == TVT.Constants.PlayerFinanceEntryType.SELL_STATION) then
-		self:PayFromBudget(value)
+		self:PayFromBudget(-math.abs(value))
 		self.SituationPriority = 50
 	end
 end

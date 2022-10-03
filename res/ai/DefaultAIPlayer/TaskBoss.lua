@@ -98,10 +98,11 @@ end
 
 
 function JobCheckCredit:Prepare(pParams)
-	local money = getPlayer().money
+	local player = getPlayer()
+	local money = player.money
 	local creditAvailable = TVT.bo_getCreditAvailable()
 	self.Task.TryToGetCredit = 0
-	if money < -30000 and getPlayer().hour > 5 then
+	if money < -30000 and player.hour > 5 then
 		-- ATTENTION: money might change until "tick()", we could handle
 		-- it but this behaviour seems more "natural" (to not see the
 		-- money change in time)
@@ -111,10 +112,14 @@ function JobCheckCredit:Prepare(pParams)
 	end
 	if self.Task.NeededInvestmentBudget > 0 then
 		self.Task.TryToRepayCredit = math.max(0, math.min(money, self.Task.NeededInvestmentBudget))
-	elseif MY.GetCredit(-1) == 0 and getPlayer().hour < 6 then
-		--TODO randomize? - stop if coverage is 90%
+	elseif MY.GetCredit(-1) == 0 and player.hour < 6 then
+		local stationTask = player.TaskList[TASK_STATIONMAP]
 		--get credit and increase chance for good investment
-		self.Task.TryToGetCredit = creditAvailable
+		if stationTask ~= nil and stationTask.maxReachIncrease ~=  nil and stationTask.maxReachIncrease < 0 then
+			--no credit necessary for station purchase
+		else
+			self.Task.TryToGetCredit = creditAvailable
+		end
 	end
 
 

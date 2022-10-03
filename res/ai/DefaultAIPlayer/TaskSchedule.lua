@@ -117,6 +117,7 @@ function TaskSchedule:Activate()
 	self.Player = getPlayer()
 	self.adScheduleJobIndex = 0
 	self.availableProgrammes = nil -- cached list of licences from TVT API
+	self.useMaxTopicalityOnly = false
 	self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 	--self.LogLevel = LOG_TRACE
 end
@@ -264,7 +265,7 @@ function TaskSchedule:GetBroadcastTypeCount(slotType, broadcastType, beginDay, b
 	if hours == nil then hours = 24 end
 
 	local result = 0
-    for i=0, hours-1 do
+	for i=0, hours-1 do
 		local fixedDay, fixedHour = FixDayAndHour(beginDay, beginHour + i)
 
 		local currentBroadcastMaterial
@@ -278,9 +279,10 @@ function TaskSchedule:GetBroadcastTypeCount(slotType, broadcastType, beginDay, b
 		if (broadcastType == TVT.Constants.BroadcastMaterialType.UNKNOWN and currentBroadcastMaterial == nil) then
 			result = result + 1
 		-- requested special type
-		elseif currentBroadcastMaterial and currentBroadcastMaterial.isType(broadcastType) == 1 then
+		elseif broadcastType~=nil and currentBroadcastMaterial~=nil and currentBroadcastMaterial.isType(broadcastType) == 1 then
 			result = result + 1
-		elseif broadcastType == nil or not broadcastType then
+		-- requested no outage
+		elseif broadcastType == nil and currentBroadcastMaterial~=nil then
 			result = result + 1
 		end
 	end
@@ -309,7 +311,11 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
     c.guessedAudienceAccuracyHourlyCount = {}
 ]]
 	if hour > 0 and hour < 18 then
-		return 1.35
+		if self.useMaxTopicalityOnly == true then
+			return 1.1
+		else
+			return 1.35
+		end
 	elseif hour > 18 then
 		return 0.90
 	else 
@@ -461,15 +467,13 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		player.blocksCount = totalBlocks
 		player.maxTopicalityBlocksCount = maxTopicalityBlocks
+		if maxTopicalityBlocks > 24 then self.useMaxTopicalityOnly = true end
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
 	else
-		for i=0, #self.availableProgrammes-1 do
-			local licence = self.availableProgrammes[i]
-			if (licence ~= nil) then
-				if not table.contains(forbiddenIDs, licence.GetReferenceID()) then table.insert(allLicences, licence) end
-			end
+		for k,licence in pairs(self.availableProgrammes) do
+			if not table.contains(forbiddenIDs, licence.GetReferenceID()) then table.insert(allLicences, licence) end
 		end
 	end
 	return allLicences
@@ -514,17 +518,25 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 	for k,licence in pairs(useLicences) do
 		local qLevel = AITools:GetBroadcastQualityLevel(licence)
 		if fixedHour > 21 or fixedHour < 4 and licence.GetData().IsXRated() == 1 then
-			table.insert(resultingLicences, licence)
-		elseif (minLevel < 0 or qLevel >= minLevel) and (maxLevel < 0 or qLevel <= maxLevel) then
+			if qLevel + 1 == maxLevel or qLevel - 2 >= minLevel then
+				if math.random(0, 10) > 6 then qLevel = minLevel end
+			end
+		end
+		if (minLevel < 0 or qLevel >= minLevel) and (maxLevel < 0 or qLevel <= maxLevel) then
 			local sentAndPlannedToday = -1
-			-- only do the costly programme plan count if needed
-			--TODO count todays broadcast times for licences in Lua!!
-			sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
-			if sentAndPlannedToday <= maxRerunsToday then
-				--self:LogDebug("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
+			if maxRerunsToday < 0 then
+				--ignoring number of runs
 				table.insert(resultingLicences, licence)
 			else
-				--self:LogDebug("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed Runs " .. maxRerunsToday)
+				-- only do the costly programme plan count if needed
+				--TODO count todays broadcast times for licences in Lua!!
+				sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
+				if sentAndPlannedToday <= maxRerunsToday then
+					--self:LogDebug("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
+					table.insert(resultingLicences, licence)
+				else
+					--self:LogDebug("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed Runs " .. maxRerunsToday)
+				end
 			end
 		--else
 			--local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
@@ -536,7 +548,31 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 end
 
 
-
+function TaskSchedule:GetMaxTopicalityLicences(licencesToUse, level)
+	local weights = {}
+	for k,l in pairs(licencesToUse) do
+		weights[ l.GetID() ] = l:GetQuality()
+	end
+	local sortMethod = function(a, b)
+		return weights[ a.GetID() ] < weights[ b.GetID() ]
+	end
+	table.sort(licencesToUse, sortMethod)
+	local count=#licencesToUse
+	local allowedCount = count / 2
+	if level == 2 then 
+		allowedCount = count / 3
+	elseif level == 1 then 
+		allowedCount = count / 4
+	end
+	local result = {}
+	--self:LogInfo("maxTopLicences for level "..level .."total count ".. count .. " sublist count "..allowedCount)
+	for k,l in pairs(licencesToUse) do
+		--self:LogInfo("    "..l.getTitle() .." ".. weights[l.GetID()])
+		table.insert(result, l)
+		if #result >= allowedCount then return result end
+	end
+	return result
+end
 
 function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenIDs)
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
@@ -544,25 +580,24 @@ function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenID
 	--average quality level suitable for the given time of the day
 	if level == nil then level = AITools:GetAudienceQualityLevel(fixedDay, fixedHour) end
 	local allLicences = self:GetAllProgrammeLicences(forbiddenIDs)
+	-- filter them to only broadcastable ones
+	local filteredLicences = self:FilterProgrammeLicencesByBroadcastableState(allLicences, fixedDay, fixedHour, forbiddenIDs)
 
---TODO if there are enough licences - use only maxTopLicences
---[[
 	local player = getPlayer()
-	if player.maxTopicalityBlocksCount > 24 then
+	if self.useMaxTopicalityOnly == true then
+		--self:LogDebug("using only maxTop licences for hour "..fixedHour)
 		local maxTop = {}
-		for k,licence in pairs(allLicences) do
+		for k,licence in pairs(filteredLicences) do
 			if licence:GetRelativeTopicality() > 0.99 then
 				table.insert(maxTop, licence)
 			end
 		end
-		allLicences = maxTop
+		if level < 4 then return self:GetMaxTopicalityLicences(maxTop, level) end
+		filteredLicences = maxTop
 	end
---]]
 
 	local allLicenceCount = table.count(allLicences)
 
-	-- filter them to only broadcastable ones
-	local filteredLicences = self:FilterProgrammeLicencesByBroadcastableState(allLicences, fixedDay, fixedHour, forbiddenIDs)
 	local minLevel = level
 	local maxLevel = level
 	local maxReruns = 0
@@ -1908,6 +1943,11 @@ function JobProgrammeSchedule:Prepare(pParams)
 	self.plannedHours = 0
 	--up to 5 planning tries
 	self.planRunsLeft = self.planRuns
+	self.Task:GetAllProgrammeLicences({})
+	if getPlayer().blocksCount == 0 then
+		self.planRunsLeft = 0
+		self:LogDebug("no planning - nothing to broadcast")
+	end
 
 	-- increase max ticks
 	-- optimization takes a while ...
@@ -1949,7 +1989,8 @@ function JobProgrammeSchedule:Tick()
 	--plan/optimize existing schedule
 	--==========================
 	local currentDay = TVT.GetDay()
-	local currentHour = getPlayer().hour
+	local player = getPlayer()
+	local currentHour = player.hour
 
 	local planSlots = 2
 	local planHours = self.hoursToPlan
@@ -1963,17 +2004,21 @@ function JobProgrammeSchedule:Tick()
 				local fixedDay, fixedHour = FixDayAndHour(currentDay, currentHour + self.plannedHours)
 
 				-- skip current hour if already started or about to start
-				if fixedHour == currentHour and getPlayer().minute >= 4 then
+				if fixedHour == currentHour and player.minute >= 4 then
 					--
 				-- skip if we cannot change this slot
 				elseif TVT.of_IsModifyableProgrammePlanSlot(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= TVT.RESULT_OK then
+					--TODO do not skip blocks; the (long) programme may have started much earlier
+					--to many blocks skipped causing outage in the next block
+					--determine with MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour) ?
 					--self:LogDebug(" skip nonmodifyable: " .. fixedDay .. "/" .. fixedHour)
-
+					--[[
 					local response = TVT.of_getProgrammeSlot(fixedDay, fixedHour)
 					if (response.result == TVT.RESULT_OK) then
 						-- skip other still occupied slots
 						self.plannedHours = self.plannedHours + (response.data.GetBlocks(0)-1)
 					end
+					--]]
 				else
 					local adjustedBlocks = self:FillSlot(fixedDay, fixedHour)
 					-- skip already adjusted blocks
@@ -1987,53 +2032,32 @@ function JobProgrammeSchedule:Tick()
 			end
 		end
 
-		-- planned/optimized all - check if we need to run it again
+		-- planned/optimized all - check if we need to run it again due to outages
 		if self.plannedHours >= planHours then
 			-- still outages left? repeat process, if possible
 			if self.plannedHours > 0 then
 				local usedSlotsCount = self.Task:GetBroadcastTypeCount(TVT.Constants.BroadcastMaterialType.PROGRAMME, nil, currentDay, currentHour, planHours)
 
 				-- finished, no empty slot left
-				if usedSlotsCount == planHours then
---					self:LogDebug("JobProgrammeSchedule:Tick(): FINISHED: " .. usedSlotsCount .."/" .. planHours .. ".")
---					self.planRunsLeft = 0
-				else
-					self:LogInfo("JobProgrammeSchedule:Tick(): NOT all slots used: " .. usedSlotsCount .."/" .. planHours .. ".")
-				end
-
-				if TVT.GetAdContractCount() == 0 and TVT.GetProgrammeLicenceCount() == 0 then
-					self:LogInfo("JobProgrammeSchedule:Tick(): Cannot fill outage slots, no licences or adcontracts available.")
+				if usedSlotsCount >= planHours then
+					self:LogTrace("JobProgrammeSchedule:Tick(): FINISHED: no outage slots.")
 					self.planRunsLeft = 0
+				else
+					self:LogDebug("JobProgrammeSchedule:Tick(): NOT all slots used: " .. usedSlotsCount .."/" .. planHours .. ".")
 				end
 			end
 
-			-- start all over
+			-- start all over - do not check where the outage was, just run again
 			if self.planRunsLeft > 0 then
 				self.planRunsLeft = self.planRunsLeft - 1
-
-				-- after initial optimization skip filling all slots over and
-				-- over and just start with the first empty slot
-				if self.planRuns - self.planRunsLeft > 1 then
-					local firstOutage = -1
-					for i = 0, planHours-1 do
-						if firstOutage == -1 then
-							local planDay, planHour = FixDayAndHour(currentDay, currentHour + i)
-							local result = TVT.of_getProgrammeSlot(planDay, planHour)
-							if result.data == nil then
-								self.plannedHours = i
-							end
-						end
-					end
-				else
-					self.plannedHours = 0
-				end
-
-				--give us "planHours" more ticks
+				self.plannedHours = 0
 				self.Task.MaxTicks = self.Task.MaxTicks + planHours
 			end
 		end
-		--finished current tick
-		return
+		if self.planRunsLeft > 0 then
+			--finished current tick
+			return
+		end
 	end
 
 	--done
