@@ -117,6 +117,7 @@ function TaskSchedule:Activate()
 	self.Player = getPlayer()
 	self.adScheduleJobIndex = 0
 	self.availableProgrammes = nil -- cached list of licences from TVT API
+	self.useMaxTopicalityOnly = false
 	self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 	--self.LogLevel = LOG_TRACE
 end
@@ -309,7 +310,11 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
     c.guessedAudienceAccuracyHourlyCount = {}
 ]]
 	if hour > 0 and hour < 18 then
-		return 1.35
+		if self.useMaxTopicalityOnly == true then
+			return 1.1
+		else
+			return 1.35
+		end
 	elseif hour > 18 then
 		return 0.90
 	else 
@@ -461,6 +466,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		player.blocksCount = totalBlocks
 		player.maxTopicalityBlocksCount = maxTopicalityBlocks
+		if maxTopicalityBlocks > 24 then self.useMaxTopicalityOnly = true end
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
@@ -536,7 +542,31 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 end
 
 
-
+function TaskSchedule:GetMaxTopicalityLicences(licencesToUse, level)
+	local weights = {}
+	for k,l in pairs(licencesToUse) do
+		weights[ l.GetID() ] = l:GetQuality()
+	end
+	local sortMethod = function(a, b)
+		return weights[ a.GetID() ] < weights[ b.GetID() ]
+	end
+	table.sort(licencesToUse, sortMethod)
+	local count=#licencesToUse
+	local allowedCount = count / 2
+	if level == 2 then 
+		allowedCount = count / 3
+	elseif level == 1 then 
+		allowedCount = count / 4
+	end
+	local result = {}
+	--self:LogInfo("maxTopLicences for level "..level .."total count ".. count .. " sublist count "..allowedCount)
+	for k,l in pairs(licencesToUse) do
+		--self:LogInfo("    "..l.getTitle() .." ".. weights[l.GetID()])
+		table.insert(result, l)
+		if #result >= allowedCount then return result end
+	end
+	return result
+end
 
 function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenIDs)
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
@@ -544,25 +574,24 @@ function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenID
 	--average quality level suitable for the given time of the day
 	if level == nil then level = AITools:GetAudienceQualityLevel(fixedDay, fixedHour) end
 	local allLicences = self:GetAllProgrammeLicences(forbiddenIDs)
+	-- filter them to only broadcastable ones
+	local filteredLicences = self:FilterProgrammeLicencesByBroadcastableState(allLicences, fixedDay, fixedHour, forbiddenIDs)
 
---TODO if there are enough licences - use only maxTopLicences
---[[
 	local player = getPlayer()
-	if player.maxTopicalityBlocksCount > 24 then
+	if self.useMaxTopicalityOnly == true then
+		--self:LogDebug("using only maxTop licences for hour "..fixedHour)
 		local maxTop = {}
-		for k,licence in pairs(allLicences) do
+		for k,licence in pairs(filteredLicences) do
 			if licence:GetRelativeTopicality() > 0.99 then
 				table.insert(maxTop, licence)
 			end
 		end
-		allLicences = maxTop
+		if level < 4 then return self:GetMaxTopicalityLicences(maxTop, level) end
+		filteredLicences = maxTop
 	end
---]]
 
 	local allLicenceCount = table.count(allLicences)
 
-	-- filter them to only broadcastable ones
-	local filteredLicences = self:FilterProgrammeLicencesByBroadcastableState(allLicences, fixedDay, fixedHour, forbiddenIDs)
 	local minLevel = level
 	local maxLevel = level
 	local maxReruns = 0
