@@ -6,6 +6,77 @@ Import "base.util.math.bmx"
 
 global tcolor_created:int = 0
 
+
+Type SColor8Helper
+	Function AdjustRelative:SColor8(c:SColor8, percentage:Float=1.0)
+		Return new SColor8(Byte(Min(255, Max(0, c.r * (1.0 + percentage)))), ..
+		                   Byte(Min(255, Max(0, c.g * (1.0 + percentage)))), ..
+		                   Byte(Min(255, Max(0, c.b * (1.0 + percentage)))))
+	End Function
+
+
+	Function Mix:SColor8(c1:SColor8, c2:SColor8, mixFactor:Float = 0.5)
+		mixFactor = Min(1.0, Max(0.0, mixFactor))
+		Return new SColor8(Byte(c1.r * (1.0 - mixFactor) + c2.r * mixFactor), ..
+		                   Byte(c1.g * (1.0 - mixFactor) + c2.g * mixFactor), ..
+		                   Byte(c1.b * (1.0 - mixFactor) + c2.b * mixFactor))
+	End Function
+
+
+	Function GetBrightness:Float(c:SColor8)
+		'variant "HSP"
+		Return Sqr(0.299 * c.r^2 + 0.587 * c.g^2 + 0.114 * c.b^2)
+		'variant "Luminance"
+		'return 0.2126 * r + 0.7152 * g + 0.0722 *b
+	End Function
+
+End Type
+
+
+
+
+Struct SColorRGBA
+	Field r:Byte
+	Field g:Byte
+	Field b:Byte
+	Field a:Float
+	
+	Method New(r:Byte, g:Byte, b:Byte, a:Float)
+		self.r = r
+		self.g = g
+		self.b = b
+		self.a = a
+	End Method
+	
+	
+	'loses alpha!
+	Method ToSColor8:SColor8()
+		Return new SColor8(r,g,b)
+	End Method
+	
+	
+	Function FromSColor8:SColorRGBA(c:SColor8)
+		Return new SColorRGBA(c.r, c.g, c.b, 1.0)
+	End Function
+
+
+	Function FromTColor:SColorRGBA(c:TColor)
+		Return new SColorRGBA(Byte(c.r), Byte(c.g), Byte(c.b), c.a)
+	End Function
+	
+
+	Function FromMix:SColorRGBA(c1:TColor, c2:TColor, mixFactor:Float = 0.5)
+		mixFactor = Min(1.0, Max(0.0, mixFactor))
+		Return new SColorRGBA(Byte(c1.r * (1.0 - mixFactor) + c2.r * mixFactor), ..
+		                      Byte(c1.g * (1.0 - mixFactor) + c2.g * mixFactor), ..
+		                      Byte(c1.b * (1.0 - mixFactor) + c2.b * mixFactor), ..
+		                      c1.a * (1.0 - mixFactor) + c2.a * mixFactor)
+	End Function
+End Struct
+
+
+
+
 Type TColor
 	Field r:Int			= 0
 	Field g:Int			= 0
@@ -105,6 +176,15 @@ Type TColor
 	End Method
 
 
+	Method CopyFrom:TColor(color:SColor8)
+		Self.r = color.r
+		Self.g = color.g
+		Self.b = color.b
+		Self.a = 1.0
+		Return Self
+	End Method
+
+
 	Method AddToList:TColor()
 		'remove first and append as last color
 		list.remove(Self)
@@ -143,6 +223,17 @@ Type TColor
 		Self.g = Min(255, Max(0, Self.g * (1.0 - mixFactor) + otherColor.g * mixFactor))
 		Self.b = Min(255, Max(0, Self.b * (1.0 - mixFactor) + otherColor.b * mixFactor))
 		Self.a = Min(1.0, Max(0, Self.a * (1.0 - mixFactor) + otherColor.a * mixFactor))
+		Return Self
+	End Method
+
+
+	'mixes colors, mixFactor is percentage (0-1) of otherColors influence
+	Method Mix:TColor(otherColor:SColor8, mixFactor:Float = 0.5)
+		'clamp mixFactor to 0-1.0
+		mixFactor = Min(1.0, Max(0.0, mixFactor))
+		Self.r = Min(255, Max(0, Self.r * (1.0 - mixFactor) + otherColor.r * mixFactor))
+		Self.g = Min(255, Max(0, Self.g * (1.0 - mixFactor) + otherColor.g * mixFactor))
+		Self.b = Min(255, Max(0, Self.b * (1.0 - mixFactor) + otherColor.b * mixFactor))
 		Return Self
 	End Method
 

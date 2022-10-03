@@ -356,9 +356,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
-		Local gray:TColor = TColor.Create(200, 200, 200)
-		Local gray2:TColor = TColor.Create(100, 100, 100)
-		Local gray3:TColor = TColor.Create(225, 225, 225)
+		Local gray:TColor = TColor.CreateGrey(200)
+		Local gray2:TColor = TColor.CreateGrey(100)
+		Local gray3:TColor = TColor.CreateGrey(225)
 
 		GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
 		GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, EColorizeMode.Overlay), "gfx_roomboard_sign_0"))

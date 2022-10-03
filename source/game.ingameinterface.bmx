@@ -64,7 +64,7 @@ Type TInGameInterface
 	Field neutralProfitColor:SColor8
 	Field positiveProfitColor:SColor8
 	Field noiseAlpha:Float	= 0.95
-	Field noiseDisplace:Trectangle = new TRectangle
+	Field noiseDisplace:TRectangle = new TRectangle
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
 	Field ChatShow:int = False

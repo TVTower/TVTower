@@ -117,7 +117,8 @@ Type TGameScreen Extends TScreen
 	Method DrawBackground:Int()
 '		if not background then return FALSE
 		If Not GetBackground()
-			TColor.Create(100,0,0).SetRGBA()
+			SetColor(100, 0, 0)
+			SetAlpha(1.0)
 			DrawRect(0,0,800,600)
 		Else
 			SetBlend SOLIDBLEND
@@ -331,7 +332,6 @@ Type TInGameScreen Extends TScreen
 
 
 	Method DrawContent:Int(tweenValue:Float)
-'		SetColor(255,255,255)
 		If GetBackground()
 			If _contentArea
 				GetBackground().draw(_contentArea.GetX(), _contentArea.GetY())
@@ -339,7 +339,6 @@ Type TInGameScreen Extends TScreen
 				GetBackground().draw(0, 0)
 			EndIf
 		EndIf
-'		SetColor(255,255,255)
 	End Method
 
 

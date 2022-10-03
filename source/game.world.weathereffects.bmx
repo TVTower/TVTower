@@ -44,7 +44,7 @@ Type TWeatherEffectBase extends TEntity
 	End Method
 
 
-	Method ModifySkyColor(screenColor:TColor var)
+	Method ModifySkyColor(screenColor:SColor8 var)
 	End Method
 End Type
 
@@ -326,7 +326,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 
 
 	'override to brighten the sky with a active lightning
-	Method ModifySkyColor(screenColor:TColor var)
+	Method ModifySkyColor(screenColor:SColor8 var)
 		local maxAlpha:Float = 0.0
 		For local lightning:TData = EachIn lightnings
 			'skip calculating more if already at max
@@ -337,7 +337,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		
 		'mix a white screen into the color
 		'(max 20%, just to show the difference)
-		screenColor.Mix(TColor.CreateGrey(255), maxAlpha*0.2)
+		screenColor = SColor8Helper.Mix(screenColor, SColor8.WHITE, maxAlpha*0.2)
 	End Method
 
 
@@ -360,7 +360,8 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 			endif
 			if not sprite then continue
 			
-			local pos:TVec2D = TVec2D(lightning.Get("position", new TVec2D))
+			local pos:TVec2D = TVec2D(lightning.Get("position"))
+			if not pos then pos = new TVec2D
 			local direction:int = lightning.GetInt("direction", 0)
 
 			SetAlpha(oldA * effectAlpha * GetLightningAlpha(lightning))
@@ -508,11 +509,11 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 
 
 	'override to brighten the sky a bit
-	Method ModifySkyColor(screenColor:TColor var)
+	Method ModifySkyColor(screenColor:SColor8 var)
 		if flakes.Count() > 0
 			'mix a white screen into the color
 			'(max 20%, just to show the difference)
-			screenColor.Mix(TColor.CreateGrey(255), 0.1)
+			screenColor = SColor8Helper.Mix(screenColor, SColor8.WHITE, 0.1)
 		endif
 	End Method
 
@@ -581,8 +582,10 @@ End Type
 Type TWeatherEffectClouds extends TWeatherEffectBase
 	Field clouds:TList = CreateList()
 	Field cloudMax:int = 30
-	Field cloudColor:TColor = TColor.Create(255,255,255)
-	Field cloudColorBase:TColor = TColor.Create(255,255,255)
+	'current cloud color
+	Field cloudColor:SColor8 = SColor8.WHITE
+	'basic cloud color
+	Field cloudColorBase:SColor8 = SColor8.WHITE
 	Field cloudBrightness:int = 100
 	Field skyBrightness:Float = 1.0
 	
@@ -710,7 +713,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		if fadeState.IsFadingOff() then effectAlpha = 1.0 - effectAlpha
 
 		'darken according to lighting (up to 20%)
-		cloudColor.copy().Mix(TColor.CreateGrey(0), 0.2 - 0.2 * skyBrightness).SetRGB()
+		SetColor( SColor8Helper.Mix(cloudColor, SColor8.BLACK, 0.2 - 0.2 * skyBrightness) )
 
 		local entity:TSpriteEntity
 		local cloudNumber:int = 0

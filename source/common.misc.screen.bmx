@@ -584,7 +584,7 @@ End Type
 
 'fading from color-transparent or vice versa
 Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
-	field _color:TColor       = TColor.clBlack
+	field _color:SColor8 = SColor8.Black
 
 	Method Create:TScreenChangeEffect_SimpleFader(direction:int=0, area:TRectangle=null)
 		_direction = direction
@@ -619,7 +619,7 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		SetAlpha tweenProgress
-		_color.SetRGB()
+		SetColor(_color)
 		DrawRect(GetArea().GetX(), GetArea().GetY(), GetArea().GetW(), GetArea().GetH())
 		
 		SetColor(oldCol)
@@ -672,7 +672,7 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 		local rectsWidth:float  = tweenProgress * (GetArea().GetW() / 2)
 		local rectsHeight:float = tweenProgress * (GetArea().GetH() / 2)
 
-		_color.SetRGB()
+		SetColor(_color)
 		SetAlpha alphaProgress
 
 		DrawRect(GetArea().GetX(), GetArea().GetY(), rectsWidth, rectsHeight)

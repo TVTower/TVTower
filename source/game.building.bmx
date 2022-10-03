@@ -647,7 +647,10 @@ Type TBuilding Extends TBuildingBase
 		If area.GetY() < -500
 			'mix entrance color so it is a mixture of current sky colors
 			'brightness and full brightness (white)
-			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.7).SetRGB()
+			Local grey:Int = int(GetWorld().lighting.GetSkyBrightness() * 255)
+			Local greyColor:SColor8 = new SColor8(grey, grey, grey)
+			SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 0.7) )
+
 			'draw figures outside the wall
 			For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().entries.Values()
 				If Not Figure.alreadydrawn Then Figure.Draw()
@@ -658,7 +661,7 @@ Type TBuilding Extends TBuildingBase
 
 			gfx_buildingEntrance.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 
-			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.9).SetRGB()
+			SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 0.9) )
 			'draw wall
 			gfx_buildingEntranceWall.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 			'draw fence
@@ -717,10 +720,13 @@ Type TBuilding Extends TBuildingBase
 	Method DrawBackground(tweenValue:Float=1.0)
 		Local BuildingHeight:Int = gfx_building.area.GetH() + 56
 
-		Local skyInfluence:Float = 0
-
+		Local skyInfluence:Float
+		Local grey:Int = int(GetWorld().lighting.GetSkyBrightness() * 255)
+		Local greyColor:SColor8 = new SColor8(grey, grey, grey)
+		
 		skyInfluence = 0.7
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
+
 		SetBlend ALPHABLEND
 		'draw UFO
 		If GetWorldTime().GetDayHour() > 18 Or GetWorldTime().GetDayHour() < 7
@@ -741,17 +747,17 @@ Type TBuilding Extends TBuildingBase
 		SetBlend MASKBLEND
 
 		skyInfluence = 0.7
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
 		gfx_bgBuildings[0].Draw(GetScreenRect().GetX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
 		gfx_bgBuildings[1].Draw(GetScreenRect().GetX() + 674, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
 
 		skyInfluence = 0.5
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
 		gfx_bgBuildings[2].Draw(GetScreenRect().GetX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
 		gfx_bgBuildings[3].Draw(GetScreenRect().GetX() + 676, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
 
 		skyInfluence = 0.3
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
 		gfx_bgBuildings[4].Draw(GetScreenRect().GetX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
 		gfx_bgBuildings[5].Draw(GetScreenRect().GetX() + 674, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
 
