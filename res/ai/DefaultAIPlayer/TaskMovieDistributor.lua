@@ -9,7 +9,6 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.MoviesAtDistributor = nil
 	c.MoviesAtAuctioneer = nil
 	c.NiveauChecked = false
-	c.MovieCount = 0
 	c.CheckMode = 0
 	c.MovieList = nil
 	c.BuyStartProgrammeJob = nil
@@ -50,11 +49,7 @@ function TaskMovieDistributor:Activate()
 	--init movie count for task's decisions
 	local player = getPlayer()
 	local stats = player.Stats.MovieQuality
-	if stats ~= nil and stats.Values > 0 then
-		self.MovieCount = stats.Values
-	else
-		self.MovieCount = TVT.GetProgrammeLicenceCount()
-	end
+	self.blocksCount = player.blocksCount
 
 	-- Was getan werden soll:
 	self.BuyStartProgrammeJob = JobBuyStartProgramme()
@@ -84,8 +79,7 @@ function TaskMovieDistributor:Activate()
 
 	--self.LogLevel = LOG_TRACE
 
-	local player = getPlayer()
-	self:LogDebug("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  licencesOwned=" .. self.MovieCount .. "  startProgrammeAmount=" .. player.Strategy.startProgrammeAmount)
+	self:LogDebug("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  blocksOwned=" .. self.blocksCount .. "  startProgrammeAmount=" .. player.Strategy.startProgrammeAmount)
 
 	--added entry for movie selling
 	self.SellSuitcaseLicences = JobSellSuitcaseLicences()
@@ -137,19 +131,23 @@ function TaskMovieDistributor:getStrategicPriority()
 end
 
 function TaskMovieDistributor:BeforeBudgetSetup()
-	--TODO lower budget once a maximal number of movies is reached
 	local player = getPlayer()
 	local totalReach = player.totalReach
-	if self.MovieCount >= 50 then
+	local maxTopBlocks = player.maxTopicalityBlocksCount
+	local blocks = player.blocksCount
+
+	self.BudgetWeight = 8
+	if blocks >= 36 and (totalReach==nil or totalReach <= 950000) then
+		--reduce budget for buying antenna
+		self.BudgetWeight = 2
+	elseif maxTopBlocks < 8 then
+		--do not reduce budget
+	elseif maxTopBlocks >= 40 then
 		self.BudgetWeight = 0
-	elseif self.MovieCount >= 35 then
+	elseif blocks >= 96 then
 		self.BudgetWeight = 2
-	elseif self.MovieCount >= 20 and (totalReach==nil or totalReach <= 950000) then
-		self.BudgetWeight = 2
-	elseif self.MovieCount >= 20 then
+	elseif blocks >= 60 then
 		self.BudgetWeight = 6
-	else
-		self.BudgetWeight = 8
 	end
 end
 
@@ -201,8 +199,8 @@ function JobBuyStartProgramme:Tick()
 	self.Task.ActivationTime = os.clock()
 
 	local movieBlocksNeeded = -1
-	if self.Task.ownedBlocks ~= nil then
-		movieBlocksNeeded = player.Strategy.startProgrammeAmount * 2.5 - self.Task.ownedBlocks
+	if player.blocksCount ~= nil then
+		movieBlocksNeeded = player.Strategy.startProgrammeAmount * 2.5 - player.blocksCount
 	end
 	if movieBlocksNeeded <= 0 then
 		self.Status = JOB_STATUS_DONE
@@ -406,18 +404,15 @@ function JobCheckMovies:Prepare(pParams)
 	self.CurrentMovieIndex = 0
 	--calculate quality gate based on owned licences
 	local qualityStats = self.Task.MovieQuality
-	local ownedBlocks = 0
 	for i=0, (TVT.GetProgrammeLicenceCount()-1)
 	do
 		local movie = TVT.GetProgrammeLicenceAtIndex(i)
 		if movie.isAvailable() > 0 and movie.hasParentLicence() < 1 then
 			qualityStats:AddValue(movie.getQualityRaw()*movie.getMaxTopicality())
-			ownedBlocks = ownedBlocks + movie:GetBlocks()
 		end
 	end
 	--store quality data in player statistics
 	getPlayer().Stats.MovieQuality = qualityStats
-	self.Task.ownedBlocks = ownedBlocks
 end
 
 function JobCheckMovies:Tick()
@@ -513,7 +508,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	local stats = player.Stats
 	local movieBudget = self.Task.BudgetWholeDay
 
-	if self.Task.MovieCount > 30 then
+	if self.Task.blocksCount > 72 then
 		movieBudget = movieBudget * 0.7
 	end
 
@@ -523,7 +518,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	local minQualitySeries = stats.SeriesQualityAcceptable.MinValue
 
 	--TODO check - price restriction lowers quality
-	if self.Task.MovieCount > 25 then
+	if self.Task.blocksCount > 60 then
 		self.MovieMaxPrice = movieBudget * 0.75
 		self.SeriesMaxPrice = movieBudget * 0.9
 	else
@@ -582,7 +577,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
-	if self.Task.MovieCount > 20 then
+	if self.Task.blocksCount > 48 then
 		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
 	end
 
@@ -659,7 +654,7 @@ function JobBuyMovies:Prepare(pParams)
 		local sortFunction
 		local sortMethod = math.random(0,2)
 		--TODO solange die Auswahl noch nicht groß ist nach Preis (Qualität muss ja ohnehin hoch genug sein)
-		if self.Task.MovieCount > 0 and self.Task.MovieCount < 12 then sortMethod = 1 end
+		if self.Task.blocksCount > 0 and self.Task.blocksCount < 36 then sortMethod = 1 end
 		if sortMethod == 0 then
 			self:LogTrace("sort by quality")
 			sortFunction = function(a, b)
@@ -690,7 +685,7 @@ function JobBuyMovies:Tick()
 	local movies = self.Task.MoviesAtDistributor
 	--TODO not many licences - do not spend everything on new one
 	local maxPrice = self.Task.CurrentBargainBudget
-	if self.Task.MovieCount > 0 and self.Task.MovieCount < 17 then
+	if self.Task.blocksCount > 0 and self.Task.blocksCount < 48 then
 		if maxPrice > 250000 then
 			maxPrice = maxPrice * 0.5
 		elseif maxPrice > 150000 then

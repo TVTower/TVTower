@@ -499,11 +499,10 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	if broadcastMaterialSource.IsProgrammeLicence() == 1 then
 		local relTop = broadcastMaterialSource:GetRelativeTopicality()
 		if relTop == 1 then
-			result = result * 3
+			result = result * 1.5
 		else
 			result = result * relTop
-			local stats = forPlayer.Stats.MovieQuality
-			if (stats~=nil and stats.Values > 25) or hour < 2 or hour > 16 then
+			if (forPlayer.blocksCount > 56) or hour > 16 then
 				result = result * relTop
 			end
 		end

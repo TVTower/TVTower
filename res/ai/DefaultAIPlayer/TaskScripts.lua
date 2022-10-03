@@ -37,7 +37,7 @@ function TaskScripts:Activate()
 	self.JobStartProduction.Task = self
 	self.awardType = ""
 
-	if getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE then
+	if getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE or getPlayer().currentAwardType == TVT.Constants.AwardType.CULTURE then
 		self.awardType = "culture"
 	end
 
@@ -100,24 +100,22 @@ end
 
 function JobBuyScript:Prepare(pParams)
 	local player = getPlayer()
-	local stats = player.Stats.MovieQuality
+	local blocks = player.blocksCount
 	self.scriptMaxPrice = 30000
 	self.minPotential = 0.25
 	self.minAttractivity = 0.25
 	self.maxJobCount = 4
-	if stats ~= nil then
-		if stats.Values > 25 then
-			self.Task.BasePriority = 0.15
-			self.scriptMaxPrice = 1300000
-			self.minPotential = 0.5
-			self.minAttractivity = 0.6
-		elseif stats.Values > 15 then
-			self.maxJobCount = 6
-			self.Task.BasePriority = 0.07
-			self.scriptMaxPrice = 100000
-			self.minPotential = 0.35
-			self.minAttractivity = 0.4
-		end
+	if blocks > 64 then
+		self.Task.BasePriority = 0.15
+		self.scriptMaxPrice = 1300000
+		self.minPotential = 0.5
+		self.minAttractivity = 0.6
+	elseif blocks > 48 then
+		self.maxJobCount = 6
+		self.Task.BasePriority = 0.07
+		self.scriptMaxPrice = 100000
+		self.minPotential = 0.35
+		self.minAttractivity = 0.4
 	else
 		self.scriptMaxPrice = 0	
 	end
@@ -263,17 +261,15 @@ end
 
 function JobPlanProduction:Prepare(pParams)
 	local player = getPlayer()
-	local stats = player.Stats.MovieQuality
+	local blocks = player.blocksCount
 	self.MaxBudget = 140000
-	if stats ~= nil then
-		if stats.Values > 32 then
-			self.MaxBudget = 1500000
-		elseif stats.Values > 25 then
-			self.MaxBudget = 750000
-		elseif stats.Values > 15 then
-			self.MaxBudget = 280000
-		end
-	else
+	if blocks > 72 then
+		self.MaxBudget = 1500000
+	elseif blocks > 64 then
+		self.MaxBudget = 750000
+	elseif blocks > 48 then
+		self.MaxBudget = 280000
+	elseif self.Task.awardType ~= "culture" then
 		self.MaxBudget = 0
 	end
 end
