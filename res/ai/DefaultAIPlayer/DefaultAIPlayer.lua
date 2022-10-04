@@ -503,13 +503,15 @@ function BusinessStats:ReadStats()
 	if self.lastStatsReadMinute ~= minute then
 		-- read in new audience stats
 		if minute == 0 then
-			local currentBroadcast = TVT.GetCurrentNewsShow()
+			--local currentBroadcast = TVT.GetCurrentNewsShow()
 			local currentAudience = TVT.GetCurrentNewsAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentNewsAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
 		end
 		if minute == 5 then
-			local currentBroadcast = TVT.GetCurrentProgramme()
+			--TODO store genre attraction based on max topicality
+			--local currentBroadcast = TVT.GetCurrentProgramme()
+			--debugMsg("top "..currentBroadcast.getSource().GetTopicality() .." "..currentBroadcast.getSource().GetMaxTopicality().." "..currentBroadcast.getSource().getGenre())
 			local currentAudience = TVT.GetCurrentProgrammeAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)

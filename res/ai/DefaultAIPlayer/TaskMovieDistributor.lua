@@ -238,7 +238,7 @@ function JobBuyStartProgramme:Tick()
 			self:LogDebug("IGNORING PROGRAMME (old, genre) "..v:getTitle())
 		elseif pricePerBlock > 50000 then 
 			self:LogDebug("IGNORING PROGRAMME (price) "..v:getTitle() .. " ".. pricePerBlock)
-		elseif math.random(0,10) > 6 then
+		elseif math.random(0,10) > 8 then
 			-- ignore randomly
 			self:LogDebug("IGNORING PROGRAMME (random) "..v:getTitle())
 		else

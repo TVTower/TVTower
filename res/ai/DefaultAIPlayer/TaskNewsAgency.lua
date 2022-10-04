@@ -141,6 +141,7 @@ function TaskNewsAgency:BudgetSetup()
 	-- scribe to current affairs
 	local baseFee = TVT.GetNewsAbonnementFee(TVT.Constants.NewsGenre.CURRENTAFFAIRS, 1)
 	local tempAbonnementBudget = math.max(baseFee, self.BudgetWholeDay * 0.45)
+	--TODO ensure abonnement bugdet is not subtracted multiple times over the day
 	self.AbonnementBudget = tempAbonnementBudget
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
 	self:LogTrace("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
@@ -150,7 +151,7 @@ end
 function TaskNewsAgency:BudgetMaximum()
 	local player = getPlayer()
 	local money = player.money
-	if money <= 500000 then
+	if money <= 500000 or player.gameDay < 2 then
 		return math.max(50000, math.floor(money / 10))
 	elseif money < 1000000 then
 		return math.max(110000, math.floor(money / 10))
@@ -165,10 +166,10 @@ end
 function TaskNewsAgency:OnMoneyChanged(value, reason, reference)
 	reason = tonumber(reason)
 	if (reason == TVT.Constants.PlayerFinanceEntryType.PAY_NEWS) then
-		self:PayFromBudget(value)
+		self:PayFromBudget(math.abs(value))
 		self:CalculateFixedCosts()
 	elseif (reason == TVT.Constants.PlayerFinanceEntryType.PAY_NEWSAGENCIES) then
-		self:PayFromBudget(value)
+		self:PayFromBudget(math.abs(value))
 		self:CalculateFixedCosts()
 	end
 end

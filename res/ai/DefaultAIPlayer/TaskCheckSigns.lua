@@ -87,12 +87,15 @@ function JobCheckRoomSigns:Tick()
 	end
 
 	if scheduleRoomBoardTask == true then
-		local t = getPlayer().TaskList[_G["TASK_ROOMBOARD"]]
-		if t ~= nil then
-			t.SituationPriority = 20
-			t.forceChangeSigns = forceChangeSigns
+		local player = getPlayer()
+		local sc = player.TaskList[_G["TASK_SCHEDULE"]]
+		local rb = player.TaskList[_G["TASK_ROOMBOARD"]]
+		if sc ~= nil and rb ~= nil then
+			sc.SituationPriority = 500
+			rb.SituationPriority = 10
+			rb.forceChangeSigns = forceChangeSigns
 		else
-			self:LogError("did not find roomboard task")
+			self:LogError("did not find tasks for raising priority")
 		end
 	end
 
