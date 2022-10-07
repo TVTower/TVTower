@@ -33,6 +33,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Field refreshFinishProductionConcept:Int = True
 
 	Field currentProductionConcept:TProductionConcept
+	Global castSortType:Int = 0
 
 	Global hoveredGuiCastItem:TGUICastListItem
 	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
@@ -1495,6 +1496,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		sortType = sortType + 1
 		If sortType > 3 Then sortType = 0
 		SortCastList(sortType)
+		TScreenHandler_SupermarketProduction.castSortType = sortType
 		Return True
 	End Method
 
@@ -2188,6 +2190,7 @@ Type TGUICastSlotList Extends TGUISlotList
 		selectCastWindow.listOnlyJobID = job
 		selectCastWindow.listOnlyGenderID = gender
 		selectCastWindow.screenArea = New TRectangle.Init(0,0, 800, 383)
+		selectCastWindow.sortType = TScreenHandler_SupermarketProduction.castSortType
 		selectCastWindow.Open() 'loads the cast
 		GuiManager.Add(selectCastWindow)
 	End Method
