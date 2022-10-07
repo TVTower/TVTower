@@ -518,8 +518,11 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 	for k,licence in pairs(useLicences) do
 		local qLevel = AITools:GetBroadcastQualityLevel(licence)
 		if fixedHour > 21 or fixedHour < 4 and licence.GetData().IsXRated() == 1 then
-			table.insert(resultingLicences, licence)
-		elseif (minLevel < 0 or qLevel >= minLevel) and (maxLevel < 0 or qLevel <= maxLevel) then
+			if qLevel + 1 == maxLevel or qLevel - 2 >= minLevel then
+				if math.random(0, 10) > 6 then qLevel = minLevel end
+			end
+		end
+		if (minLevel < 0 or qLevel >= minLevel) and (maxLevel < 0 or qLevel <= maxLevel) then
 			local sentAndPlannedToday = -1
 			if maxRerunsToday < 0 then
 				--ignoring number of runs
