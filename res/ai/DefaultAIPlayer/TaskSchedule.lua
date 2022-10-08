@@ -161,7 +161,7 @@ function TaskSchedule:GetNextJobInTargetRoom()
 
 	--TODO
 	--self:SetWait()
-	--when done invalidate cache if available licences
+	--when done invalidate cache of available licences
 	self.availableProgrammes = nil
 	self:SetDone()
 end
@@ -182,8 +182,8 @@ function TaskSchedule:OnUpdateAdSlot(day, hour, newBroadcastMaterial, oldBroadca
 end
 
 
---TODO es scheint, als wird für geänderte Slots "genauer" nach neu benötigter Werbung gesucht
---ansonsten habe ich die Notwendigkeit für Backup noch nicht verstanden
+--allow reacting to programme changes, own planning but also events
+--TODO review and optimize usage later
 function TaskSchedule:BackupPlan(slotType, day)
 	local slots = {}
 	for i=0, 23 do
@@ -1493,7 +1493,6 @@ end
 
 function JobAdSchedule:OnStop(pParams)
 	-- HANDLE ALL CHANGED SLOTS
---TODO what to achieve here?
 --[[
 	local day = TVT.GetDay()
 	local newAdSlots = self.Task:BackupPlan(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT, day)
