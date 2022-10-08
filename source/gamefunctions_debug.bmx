@@ -2243,6 +2243,8 @@ Global DebugScreen:TDebugScreen = New TDebugScreen
 Type TDebugAudienceInfoForPlayer
 	Field playerID:Int
 	Field reach:String=""
+	Field money:String=""
+	Field credit:String=""
 	Field potAudience:String=""
 	Field progTitle:String=""
 	Field currentImageNews:Float
@@ -2260,7 +2262,7 @@ Type TDebugAudienceInfoForPlayer
 		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
 		Local image:Float = Min(Max(GetPublicImage(playerID).GetAverageImage()/100.0, 0.0),1.0)*100
 		Local diff:Float
-		If minute = 1
+		If minute < 6
 			reach = TFunctions.convertValue(audienceResult.WholeMarket.GetTotalValue(0),2)
 			currentQuoteNews = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 			imageBeforeNews = currentImageProgramme
@@ -2269,7 +2271,10 @@ Type TDebugAudienceInfoForPlayer
 			colorDiffNews = SColor8.Green
 			If diff < 0 Then colorDiffNews = SColor8.Red
 			diffNews =  MathHelper.NumberToString(diff,2)
-		ElseIf minute = 6
+		ElseIf minute > 5
+			Local player:TPlayer = GetPlayer(playerID)
+			money = player.GetMoneyFormatted()
+			credit = player.GetCreditFormatted()
 			currentQuoteProgramme = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 			imageBeforeNews = currentImageProgramme
 			currentImageProgramme = image
@@ -2331,22 +2336,25 @@ Type TDebugAudienceInfo
 		Local h:Int = 15
 		'table player info in column
 		font.DrawSimple("Spieler", 15, h, SColor8.White)
-		font.DrawSimple("Bevölkerung", 15, 2 * h, SColor8.White)
-		font.DrawSimple("pot. Zuschauer", 15, 3 * h, SColor8.White)
-		font.DrawSimple("akt. Zuschauer", 15, 6 * h, SColor8.White)
+		font.DrawSimple("Geld", 15, 2 * h, SColor8.White)
+		font.DrawSimple("Schulden", 15, 3 * h, SColor8.White)
+		font.DrawSimple("Bevölkerung", 15, 4 * h, SColor8.White)
+		font.DrawSimple("pot. Zuschauer", 15, 5 * h, SColor8.White)
+		font.DrawSimple("akt. Zuschauer", 15, 8 * h, SColor8.White)
 
 		'table player info in row
-		Local rowX:Int= 80
-		font.DrawBox("ImgAlt", rowX, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
-		font.DrawBox("News-%", rowX + 60, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
-		font.DrawBox("+/-", rowX + 110, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
-		font.DrawBox("ImgN", rowX + 160, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
-		font.DrawBox("Prog-%", rowX + 210, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
-		font.DrawBox("+/-", rowX + 260, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
-		font.DrawBox("ImgP", rowX + 310, 9 * h, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		Local rowX:Int = 80
+		Local rowY:Int = 11 * h
+		font.DrawBox("ImgAlt", rowX, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("News-%", rowX + 60, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("+/-", rowX + 110, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("ImgN", rowX + 160, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Prog-%", rowX + 210, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("+/-", rowX + 260, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("ImgP", rowX + 310, rowY, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 
 		Local minute:Int = GetWorldTime().GetDayMinute()
-		If (minute = 1 and minute <> lastCheckedMinute) Or (minute = 6 and minute <> lastCheckedMinute)
+		If (minute < 6 and lastCheckedMinute > 5) Or (minute > 5 and lastCheckedMinute < 6)
 			For Local playerID:Int = 1 To 4
 				playerData[playerID-1].Update(minute)
 			Next
@@ -2360,18 +2368,20 @@ Type TDebugAudienceInfo
 			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
 			font.DrawBox(playerID, x, h, 195, 17, sALIGN_LEFT_TOP, SColor8.White)
 
-			font.DrawBox(data.reach, x, 2*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox(data.money, x, 2*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox(data.credit, x, 3*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox(data.reach, x, 4*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
 
-			font.DrawBox(data.potAudience, x, 3*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox(data.potAudience, x, 5*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
 			Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
-			font.DrawSimple(percent, x, 4*h, SColor8.White)
+			font.DrawSimple(percent, x, 6*h, SColor8.White)
 
-			font.DrawBox(data.progTitle, x, 5*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox(data.progTitle, x, 7*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
 
-			font.DrawBox(TFunctions.convertValue(audienceResult.Audience.GetTotalSum(),2), x, 6*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox(TFunctions.convertValue(audienceResult.Audience.GetTotalSum(),2), x, 8*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
 
 			'player info in row
-			Local y:Int = (9+playerID) * h
+			Local y:Int = (11+playerID) * h
 			font.DrawSimple("Spieler "+playerID+":", 15, y, SColor8.White)
 			font.DrawBox(MathHelper.NumberToString(data.imageBeforeNews,2), rowX, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 			font.DrawBox(data.currentQuoteNews, rowX+60, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
