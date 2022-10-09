@@ -1747,7 +1747,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'reach level
 		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
 		Local thisBidRaw:Int = GetNextBidRaw()
-		Local thisBid:Int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+		Local thisBid:Int = TFunctions.RoundToBeautifulValue(thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel))
 
 		If player.getFinance().PayAuctionBid(thisBid, Self.GetLicence())
 			'another player was highest bidder, we pay him back the
@@ -1755,12 +1755,12 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			If bestBidder And GetPlayerBase(bestBidder)
 				'bestBid contains the best bid adjusted for this players
 				'reach level - so we need to calculate it properly
-				Local previousPaidBestBid:Int = bestBidRaw * licence.GetAudienceReachLevelPriceMod(bestBidderLevel)
+				Local previousPaidBestBid:Int = TFunctions.RoundToBeautifulValue(bestBidRaw * licence.GetAudienceReachLevelPriceMod(bestBidderLevel))
 				GetPlayerFinance(bestBidder).PayBackAuctionBid(previousPaidBestBid, Self)
 
 				'inform player AI that their bid was overbid
 				If GetPlayerBase(bestBidder).isLocalAI()
-					Local thisPaidBestBid:Int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+					Local thisPaidBestBid:Int = thisBid
 					'GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), thisPaidBestBid, playerID)
 					GetPlayerBase(bestBidder).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionGetOutbid).Add(GetLicence()).AddInt(thisPaidBestBid).AddInt(playerID))
 				EndIf
@@ -1808,7 +1808,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		If Not licence Then Return -1
 
 		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
-		Return GetNextBidRaw() * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+		Return TFunctions.RoundToBeautifulValue(GetNextBidRaw() * licence.GetAudienceReachLevelPriceMod(audienceReachLevel))
 	End Method
 
 
@@ -1819,7 +1819,6 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'no bid done yet, next bid is the licences price cut by 25%
 		If bestBid = 0
 			nextBidRaw = licence.getPriceForPlayer(0, 0) * bidSavings
-			nextBidRaw = TFunctions.RoundToBeautifulValue(nextBidRaw)
 		Else
 			nextBidRaw = bestBidRaw
 
