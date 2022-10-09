@@ -24,7 +24,6 @@ Type TDebugScreen
 	Field buttonsProducers:TDebugControlsButton[]
 	Field buttonsSports:TDebugControlsButton[]
 	Field buttonsMisc:TDebugControlsButton[]
-	Field buttonsModifiers:TDebugControlsButton[]
 	Field buttonsAwardControls:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
 	Field roomHighlight:TRoomBase
@@ -37,7 +36,8 @@ Type TDebugScreen
 	Field pagePlayerBroadcasts:TDebugScreenPage_PlayerBroadcasts
 	Field pageAdAgency:TDebugScreenPage_AdAgency
 	Field pageMovieAgency:TDebugScreenPage_MovieAgency
-	
+	Field pageModifiers:TDebugScreenPage_Modifiers
+
 	Global titleFont:TBitmapFont
 	Global textFont:TBitmapFont
 	Global textFontBold:TBitmapFont
@@ -90,6 +90,9 @@ Type TDebugScreen
 		pageMovieAgency = TDebugScreenPage_MovieAgency.GetInstance().Init()
 		pageMovieAgency.SetPosition(sideButtonPanelWidth, 20)
 
+		pageModifiers = TDebugScreenPage_Modifiers.GetInstance().Init()
+		pageModifiers.SetPosition(sideButtonPanelWidth, 20)
+
 		InitMode_Overview()
 		InitMode_PlayerCommands()
 
@@ -99,7 +102,6 @@ Type TDebugScreen
 		InitMode_Politics()
 		InitMode_Producers()
 		InitMode_Sports()
-		InitMode_Modifiers()
 		InitMode_Misc()
 
 
@@ -112,7 +114,8 @@ Type TDebugScreen
 		If pagePlayerFinancials Then pagePlayerFinancials.Reset()
 		If pagePlayerBroadcasts Then TDebugScreenPage_PlayerBroadcasts.GetInstance().Reset()
 		If pageAdAgency Then TDebugScreenPage_AdAgency.GetInstance().Reset()
-		If pageMovieAgency Then TDebugScreenPage_MovieAgency.GetInstance().Reset()
+		If pageMovieAgency Then TDebugScreenPage_MovieAgency.GetInstance().GetInstance().Reset()
+		If pageModifiers Then pageModifiers.Reset()
 
 		ResetMode_Overview()
 		ResetMode_PlayerCommands()
@@ -123,7 +126,6 @@ Type TDebugScreen
 		ResetMode_Politics()
 		ResetMode_Producers()
 		ResetMode_Sports()
-		ResetMode_Modifiers()
 		ResetMode_Misc()
 	End Method
 	
@@ -148,14 +150,14 @@ Type TDebugScreen
 				Case 5	newPage = pageAdAgency
 				Case 6	newPage = pageMovieAgency
 
-				'Case 6	UpdateMode_NewsAgency()
-				'Case 7	UpdateMode_ScriptAgency()
-				'Case 8	UpdateMode_RoomAgency()
-				'Case 9	UpdateMode_Politics()
-				'Case 10	UpdateMode_Producers()
-				'Case 11	UpdateMode_Sports()
-				'Case 12	UpdateMode_Modifiers()
-				'Case 13	UpdateMode_Misc()
+				'Case 7	UpdateMode_NewsAgency()
+				'Case 8	UpdateMode_ScriptAgency()
+				'Case 9	UpdateMode_RoomAgency()
+				'Case 10	UpdateMode_Politics()
+				'Case 11	UpdateMode_Producers()
+				'Case 12	UpdateMode_Sports()
+				Case 13	newPage = pageModifiers
+				'Case 14	UpdateMode_Misc()
 				default newPage = Null
 			End Select
 			
@@ -233,7 +235,6 @@ Type TDebugScreen
 			Case 10	UpdateMode_Politics()
 			Case 11	UpdateMode_Producers()
 			Case 12	UpdateMode_Sports()
-			Case 13	UpdateMode_Modifiers()
 			Case 14	UpdateMode_Misc()
 			default
 				if currentPage then currentPage.Update()
@@ -282,7 +283,6 @@ Type TDebugScreen
 			Case 10	RenderMode_Politics()
 			Case 11	RenderMode_Producers()
 			Case 12	RenderMode_Sports()
-			Case 13	RenderMode_Modifiers()
 			Case 14	RenderMode_Misc()
 			default
 				if currentPage then currentPage.Render()
@@ -1251,68 +1251,9 @@ Type TDebugScreen
 			textY :+ 12
 			textFont.DrawBox("Attr: " + MathHelper.NumberToString(rank.team.GetAttractivity()*100,0) + "  Pwr: " + MathHelper.NumberToString(rank.team.GetPower()*100,0) + "  Skill: " + MathHelper.NumberToString(rank.Team.GetSkill()*100,0), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textY :+ 12 + 4 
-		Next		
-		
-	End Method
-
-	
-	
-	'=== MODIFIERS screen ===
-
-	Method InitMode_Modifiers()
-		rem
-		 none for now
-		Local texts:String[] = ["Nothing"]
-		Local button:TDebugControlsButton
-		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 180
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
-			button._onClickHandler = OnButtonClickHandler_Modifiers
-
-			buttonsModifiers :+ [button]
-		Next
-		endrem
-	End Method
-
-
-	Method ResetMode_Modifiers()
-	End Method
-
-
-	Function OnButtonClickHandler_Modifiers(sender:TDebugControlsButton)
-		Select sender.dataInt
-			case 0
-				'nothing
-		End Select
-
-		'handled
-		sender.clicked = False
-		sender.selected = False
-	End Function
-
-
-	Method UpdateMode_Modifiers()
-		Local playerID:Int = GetShownPlayerID()
-
-		For Local b:TDebugControlsButton = EachIn buttonsModifiers
-			b.Update()
 		Next
 	End Method
 
-
-	Method RenderMode_Modifiers()
-		Local playerID:Int = GetShownPlayerID()
-
-		RenderActionButtons(buttonsModifiers)
-
-		RenderGameModifierList(playerID, sideButtonPanelWidth + 5, 13)
-	End Method
-	
 
 	'=== MISC screen ===
 
@@ -1696,28 +1637,6 @@ Type TDebugScreen
 		For Local b:TDebugControlsButton = EachIn buttonsAwardControls
 			b.Render()
 		Next
-	End Method
-	
-
-	Method RenderGameModifierList(playerID:int, x:int, y:int, w:int = 300, h:int = 300)
-		DrawOutlineRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
-		titleFont.DrawSimple("Game Modifiers: ", textX, textY)
-
-		textY :+ 12 
-
-		Local data:TData = GameConfig._modifiers
-		If data
-			For Local k:TLowerString = EachIn data.data.Keys()
-				If textY + 12 > y + h Then Continue
-
-				textFont.DrawBox(k.ToString(), textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
-				textFont.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, w - 10, 15, sALIGN_RIGHT_TOP, SColor8.White)
-				textY :+ 12
-			Next
-		EndIf
 	End Method
 
 
