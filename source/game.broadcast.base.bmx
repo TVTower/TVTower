@@ -308,8 +308,9 @@ Type TBroadcastManager
 
 				Local attractionList:TList = CreateList()
 				For Local i:Int = 1 To 4
+					Local r:TAudienceResult = bc.GetAudienceResult(i)
 					channelImageChanges[i-1] = New TAudience.InitValue(0, 0)
-					channelAudiences[i-1] = bc.GetAudienceResult(i).audience
+					channelAudiences[i-1] = r.audience.Copy().Divide(r.GetPotentialMaxAudience())
 					'store playerID if not done yet
 					If channelAudiences[i-1] And channelAudiences[i-1].id <= 0
 						channelAudiences[i-1].id = i
@@ -324,7 +325,7 @@ Type TBroadcastManager
 					weight = 0.5
 				EndIf
 
-				Local audience:TAudience = New TAudience 'bc.GetAudienceResult(i).audience
+				'Local audience:TAudience = New TAudience 'bc.GetAudienceResult(i).audience
 				'the list order gets modified within ChangeForTargetGroup()
 				'calls
 				Local channelAudiencesList:TList = New TList.FromArray(channelAudiences)
