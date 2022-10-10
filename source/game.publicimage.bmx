@@ -359,11 +359,11 @@ Type TPublicImage {_exposeToLua="selected"}
 		'the audience is the same as for place 1
 		'-> give points for each "PLACE" not "INDEX" of the list
 		Local differentAudienceNumbers:Int = 0
-		Local lastNumber:Int = 0
+		Local lastNumber:Float = 0
 		Local audienceIndex:Int = 0
 		Local audienceRank:Int[] = New Int[channelAudiencesList.Count()]
 		For Local a:TAudience = EachIn channelAudiencesList
-			Local currentNumber:Int = a.GetTotalValue(targetGroup)
+			Local currentNumber:Float = a.GetTotalValue(targetGroup)
 
 			'nothing set yet or worse than before, increase rank
 			If currentNumber < lastNumber Or audienceIndex = 0
