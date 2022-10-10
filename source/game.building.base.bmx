@@ -113,6 +113,25 @@ Type TBuildingBase Extends TRenderableEntity
 		Next
 		Return -1
 	End Function
+
+	'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau...
+	'also zwischen 0 und ~ 1000
+	Function getFloorByPixelExactPoint:Int(point:SVec2F)
+		For Local i:Int = 0 To 13
+			If GetFloorY2(i) < point.y Then Return i
+		Next
+		Return -1
+	End Function
+
+
+	'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau...
+	'also zwischen 0 und ~ 1000
+	Function getFloorByPixelExactPoint:Int(point:SVec3D)
+		For Local i:Int = 0 To 13
+			If GetFloorY2(i) < point.y Then Return i
+		Next
+		Return -1
+	End Function
 End Type
 
 

@@ -194,7 +194,7 @@ Type TGUISpriteButton Extends TGUIObject
 		if bs then bs.DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
 
 		'draw arrow at center of button
-		_GetSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TVec2D.Init(0.5, 0.5))
+		_GetSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, ALIGN_CENTER_CENTER)
 
 		SetColor(oldCol)
 		SetAlpha(oldColA)

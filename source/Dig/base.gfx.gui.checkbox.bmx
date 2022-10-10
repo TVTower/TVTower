@@ -319,7 +319,7 @@ Type TGUICheckBox Extends TGUIButton
 		Else
 			useCheckSprite = GetUncheckedSprite()
 		EndIf
-		If useCheckSprite Then useCheckSprite.Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TVec2D.Init(0.5, 0.5))
+		If useCheckSprite Then useCheckSprite.Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, ALIGN_CENTER_CENTER)
 
 		SetColor(oldCol)
 

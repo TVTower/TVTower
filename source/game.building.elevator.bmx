@@ -356,15 +356,14 @@ Type TElevator Extends TEntity
 	End Method
 
 
-	Method GetElevatorCenterPos:TVec3D()
+	Method GetElevatorCenterPos:SVec3D()
 		'-25 = z-Achse fuer Audio. Der Fahrstuhl liegt etwas im Hintergrund
 		If parent
-			Return New TVec3D.Init(parent.area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
+			Return New SVec3D(parent.area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 		Else
-			Return New TVec3D.Init(area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
+			Return New SVec3D(area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 		EndIf
 	End Method
-
 
 	'===== Offset-Funktionen =====
 
@@ -1291,7 +1290,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	End Method
 
 
-	Method GetCenter:TVec3D()
+	Method GetCenter:SVec3D()
 		Return GetElevator().GetElevatorCenterPos()
 	End Method
 

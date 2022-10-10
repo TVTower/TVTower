@@ -9,9 +9,11 @@ Type TPlayerSoundSourcePosition Extends TSoundSourcePosition
 	End Method
 	
 
-	Method GetCenter:TVec3D()
-		Return GetPlayer().Figure.area.GetAbsoluteCenterVec().ToVec3D()
+	Method GetCenter:SVec3D()
+		Local centerVec:SVec2D = GetPlayer().Figure.area.GetAbsoluteCenterSVec()
+		Return new SVec3D(centerVec.x, centerVec.y, 0)
 	End Method
+
 
 	Method GetIsVisible:Int()
 		Return True
@@ -100,9 +102,9 @@ Type TSimpleSoundSource Extends TSoundSourceElement
 		Return "SimpleSfx"
 	End Method
 
-	Method GetCenter:TVec3D()
+	Method GetCenter:SVec3D()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY2(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY2(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return New TVec3D.Init(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2)
+		Return New SVec3D(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2, 0)
 	End Method
 
 	Method IsMovable:Int()

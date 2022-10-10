@@ -21,12 +21,17 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 		Return "Figure" ' + figureID
 	End Method
 
-	Method GetCenter:TVec3D()
-		local f:TFigureBase = GetFigureBaseCollection().Get(figureID)
-		if f then return f.area.GetAbsoluteCenterVec().ToVec3D()
 
-		Return new TVec3D
+	Method GetCenter:SVec3D() override
+		local f:TFigureBase = GetFigureBaseCollection().Get(figureID)
+		if f
+			local centerVec:SVec2D = f.area.GetAbsoluteCenterSVec()
+			return new SVec3D(centerVec.x, centerVec.y, 0)
+		EndIf
+
+		Return new SVec3D
 	End Method
+
 
 	Method IsMovable:Int()
 		Return True

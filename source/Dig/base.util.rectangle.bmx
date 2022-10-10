@@ -500,6 +500,11 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetAbsoluteCenterSVec:SVec2D()
+		Return New SVec2D(GetX() + GetW()/2, GetY() + GetH()/2)
+	End Method
+
+
 	Method Round:TRectangle()
 		position.x = Int(position.x + 0.5)
 		position.y = Int(position.y + 0.5)

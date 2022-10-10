@@ -159,7 +159,22 @@ Type TAudienceBase {_exposeToLua="selected"}
 	Field Unemployed:Float	= 0	'Arbeitslose
 	Field Manager:Float		= 0	'Manager
 	Field Pensioners:Float	= 0	'Rentner
-
+	Global count:Int
+	Global killcount:Int
+	
+	Method New()
+		count :+ 1
+		if count mod 25 = 0
+'			print "TAudienceBase created: " + count + " (alive:" + (count - killcount)+")"
+		EndIf
+	End Method
+	
+	Method Delete()
+		killcount :+ 1
+		if killcount mod 25 = 0
+'			print "TAudienceBase deleted: " + killcount + " (alive:" + (count - killcount)+")"
+		EndIf
+	End Method
 
 	'=== CONSTRUCTORS ===
 
