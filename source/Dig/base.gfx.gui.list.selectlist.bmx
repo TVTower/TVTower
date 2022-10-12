@@ -47,7 +47,7 @@ Type TGUISelectList Extends TGUIListBase
 
 
 	Method Create:TGUISelectList(pos:SVec2I, dimension:SVec2I, limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), limitState)
+		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), limitState)
 	End Method
 
 
@@ -206,7 +206,7 @@ Type TGUISelectListItem Extends TGUIListItem
 
 
     Method Create:TGUISelectListItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension Then dimension = New TVec2D.Init(80,20)
+		If Not dimension Then dimension = New TVec2D(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")

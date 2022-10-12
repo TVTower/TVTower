@@ -58,7 +58,7 @@ Type TToastMessageCollection extends TRenderableEntity
 	Method New()
 		if not _eventsRegistered then RegisterEvents()
 		'occupy all/no space (different to 0,0 !!)
-		self.area.dimension.SetXY(-1,-1)
+		self.area.SetWH(-1,-1)
 	End Method
 
 
@@ -225,7 +225,7 @@ Type TToastMessageSpawnPoint extends TEntity
 	Field messages:TObjectList = new TObjectList
 	'=== CONFIGURATION ===
 	'vector describing spaces between two messages
-	Field spacerSize:TVec2D = New TVec2D.Init(0,5)
+	Field spacerSize:TVec2D = New TVec2D(0,5)
 	'render a background?
 	Field showBackground:Int = False
 
@@ -376,15 +376,15 @@ Type TToastMessage extends TEntity
 	'additional data
 	Field _data:TData
 	Field _onCloseFunction:int(sender:TToastMessage)
-	Global defaultDimension:TVec2D = new TVec2D.Init(200,50)
+	Global defaultDimension:TVec2D = new TVec2D(200,50)
 	Global defaultLifeTimeBarHeight:int = 10
 	Global defaultLifeTimeBarColor:TColor = TColor.clWhite
 	Global defaultLifeTimeBarBottomY:int = 15
-	Global defaultTextOffset:TVec2D = new TVec2D.Init(5,5)
+	Global defaultTextOffset:TVec2D = new TVec2D(5,5)
 
 
 	Method New()
-		area.dimension = defaultDimension.Copy()
+		area.SetWH(defaultDimension)
 		_lifeTimeBarHeight = defaultLifeTimeBarHeight
 		_lifeTimeBarColor = defaultLifeTimeBarColor.Copy()
 		_lifeTimeBarBottomY = defaultLifeTimeBarBottomY
@@ -418,7 +418,7 @@ Type TToastMessage extends TEntity
 
 
 	Method SetDimension:Int(w:int = 0, h:int = 0)
-		self.area.dimension.SetXY(w, h)
+		self.area.SetWH(w, h)
 	End Method
 
 

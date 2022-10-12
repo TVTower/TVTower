@@ -80,9 +80,9 @@ Type TWorld
 
 	Method Initialize:Int()
 		area = New TRectangle.Init(0,0,800,385)
-		centerPoint = New TVec2D.Init(400, 570 + area.GetY())
-		sunPoint = New TVec2D.Init(400, 1100 + area.GetY())
-		moonPoint =  New TVec2D.Init(400, 100 + area.GetY())
+		centerPoint = New TVec2D(400, 570 + area.GetY())
+		sunPoint = New TVec2D(400, 1100 + area.GetY())
+		moonPoint =  New TVec2D(400, 100 + area.GetY())
 
 		If Not weather Then weather = New TWorldWeather
 		If Not lighting Then lighting = New TWorldLighting
@@ -143,8 +143,8 @@ Type TWorld
 	Method InitSnowEffect:Int(startFlakes:Int = 10, sprites:TSprite[])
 		'to make effect start "offscreen" we increase size a bit
 		Local effectArea:TRectangle = area.copy()
-		effectArea.position.AddX(-50)
-		effectArea.dimension.AddX(50)
+		effectArea.MoveX(-50)
+		effectArea.MoveW(50)
 		snowEffect = New TWeatherEffectSnow.Init(effectArea, startFlakes, sprites)
 	End Method
 
@@ -152,8 +152,8 @@ Type TWorld
 	Method InitRainEffect:Int(layers:Int = 2, sprites:TSprite[])
 		'to make effect start "offscreen" we increase size a bit
 		Local effectArea:TRectangle = area.copy()
-		effectArea.position.AddX(-50)
-		effectArea.dimension.AddX(50)
+		effectArea.MoveX(-50)
+		effectArea.MoveW(50)
 		rainEffect = New TWeatherEffectRain.Init(effectArea, layers, sprites)
 	End Method
 

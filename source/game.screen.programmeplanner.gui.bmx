@@ -40,7 +40,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
     Method Create:TGUIProgrammePlanElement(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension Then dimension = New TVec2D.Init(120,20)
+		If Not dimension Then dimension = New TVec2D(120,20)
 		Super.Create(pos, dimension, value)
 		Return Self
 	End Method
@@ -73,7 +73,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			SetSize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
 
 			'set handle (center for dragged objects) to half of a 1-Block
-			Self.SetHandle(New TVec2D.Init(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
+			Self.SetHandle(New TVec2D(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
 		EndIf
 	End Method
 
@@ -155,12 +155,12 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 
 			If list
-				local posVec:TVec3D = list.GetSlotCoord(startSlot + block-1)
-				local screenPosVec:TVec2D = list.GetScreenRect().position
+				local posVec:SVec3F = list.GetSlotCoord(startSlot + block-1)
+				local screenPosVec:SVec2F = list.GetScreenRect().GetPosition()
 				Return new SVec2I(int(posVec.x + screenPosVec.x), int(posVec.y + screenPosVec.y))
 			Else
 				local assetH:int = GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()
-				local screenPosVec:TVec2D = GetScreenRect().position
+				local screenPosVec:SVec2F = GetScreenRect().GetPosition()
 				Return new SVec2I(int(screenPosVec.x), int(screenPosVec.y + assetH * (block - 1)))
 			EndIf
 		EndIf
@@ -186,11 +186,11 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 
 			If list
-				local posVec:TVec3D = list.GetSlotCoord(startSlot + block-1)
-				local screenPosVec:TVec2D = list.GetScreenRect().position
+				local posVec:SVec3F = list.GetSlotCoord(startSlot + block-1)
+				local screenPosVec:SVec2F = list.GetScreenRect().GetPosition()
 				pos = new SVec2I(int(posVec.x + screenPosVec.x), int(posVec.y + screenPosVec.y))
 			Else
-				local screenPosVec:TVec2D = GetScreenRect().position
+				local screenPosVec:SVec2F = GetScreenRect().GetPosition()
 				pos = new SVec2I(int(screenPosVec.x), int(screenPosVec.y + assetH * (block - 1)))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
 			EndIf
@@ -720,15 +720,15 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 
 
 	Method Init:Int(spriteName:String="", displaceX:Int = 0)
-		Self.zoneLeft.dimension.SetXY(GetSpriteFromRegistry(spriteName).area.GetW(), 12 * GetSpriteFromRegistry(spriteName).area.GetH())
-		Self.zoneRight.dimension.SetXY(GetSpriteFromRegistry(spriteName).area.GetW(), 12 * GetSpriteFromRegistry(spriteName).area.GetH())
+		Self.zoneLeft.SetWH(GetSpriteFromRegistry(spriteName).area.w, 12 * GetSpriteFromRegistry(spriteName).area.h)
+		Self.zoneRight.SetWH(GetSpriteFromRegistry(spriteName).area.h, 12 * GetSpriteFromRegistry(spriteName).area.h)
 
 		Self.slotBackground = GetSpriteFromRegistry(spriteName)
 
-		Self.blockDimension = New TVec2D.Init(slotBackground.area.GetW(), slotBackground.area.GetH())
+		Self.blockDimension = New TVec2D(slotBackground.area.w, slotBackground.area.h)
 		SetSlotMinDimension(blockDimension.GetIntX(), blockDimension.GetIntY())
 
-		Self.SetEntryDisplacement(slotBackground.area.GetW() + displaceX , -12 * slotBackground.area.GetH(), 12) '12 is stepping
+		Self.SetEntryDisplacement(slotBackground.area.w + displaceX , -12 * slotBackground.area.h, 12) '12 is stepping
 	End Method
 
 
@@ -787,7 +787,7 @@ endrem
 		Super.SetEntryDisplacement(x,y,stepping)
 
 		'move right zone according to setup
-		zoneRight.position.SetX(x)
+		zoneRight.SetX(x)
 	End Method
 
 
@@ -820,12 +820,12 @@ endrem
 
 		'2. set the position of that element so that the "todays blocks" are starting at
 		'   0:00
-		Local firstSlotCoord:TVec2D = GetSlotOrCoord(0).ToVec2D()
+		Local firstSlotCoord:SVec3F = GetSlotOrCoord(0)
 		Local blocksRunYesterday:Int = 24 - startHour
 		guiElement.lastSlot = - blocksRunYesterday
-		guiElement.rect.position.CopyFrom(firstSlotCoord)
+		guiElement.rect.SetXY(firstSlotCoord.x, firstSlotCoord.y)
 		'move above 0:00 (gets hidden automatically)
-		guiElement.rect.position.addXY(0, -1 * blocksRunYesterday * blockDimension.GetIntY() )
+		guiElement.rect.MoveY(-1 * blocksRunYesterday * blockDimension.GetIntY() )
 
 		dayChangeGuiProgrammePlanElement = guiElement
 
@@ -1078,8 +1078,8 @@ endrem
 
 
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenRect().position
-		Local pos:TVec3D = Null
+		Local atPoint:SVec2F = GetScreenRect().GetPosition()
+		Local pos:SVec3F = Null
 		For Local i:Int = 0 To _slotsState.length-1
 			'skip occupied slots
 			If _slots[i]
@@ -1098,7 +1098,7 @@ endrem
 			If _slotsState[i] = 2 Then SetColor 250,150,120
 
 			SetAlpha 0.35
-			SlotBackground.Draw(atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
+			SlotBackground.Draw(atPoint.x + pos.x, atPoint.y + pos.y)
 			SetAlpha 1.0
 			SetColor 255,255,255
 		Next

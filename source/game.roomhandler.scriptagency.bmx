@@ -27,8 +27,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = new TVec2D.Init(320,270)
-	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(16,22)
+	Global suitcasePos:TVec2D = new TVec2D(320,270)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D(16,22)
 	Global scriptsPerLine:int = 1
 	Global scriptsNormalAmount:int = 4
 	Global scriptsNormal2Amount:int	= 1
@@ -64,7 +64,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			for local i:int = 0 to GuiListNormal.length-1
-				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, sprite.area.GetH()), "scriptagency")
+				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D(17, sprite.area.GetH()), "scriptagency")
 				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[i].SetSize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
@@ -73,13 +73,13 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(175, spriteSuitcase.area.GetH()), "scriptagency")
+			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D(175, spriteSuitcase.area.GetH()), "scriptagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
 			'for more than 1 entry
-			'GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+			'GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D(188, 240), new TVec2D(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
 			'GuiListNormal2.setEntriesBlockDisplacement(18, 11)
-			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(206, 251), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D(206, 251), new TVec2D(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
 
 			GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -97,10 +97,10 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			GuiListSuitcase.SetAcceptDrop("TGUIScriptAgencyScript")
 
 			'default vendor dimension
-			local vendorAreaDimension:TVec2D = new TVec2D.Init(200,300)
-			local vendorAreaPosition:TVec2D = new TVec2D.Init(350,100)
-			if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
-			if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+			local vendorAreaDimension:TVec2D = new TVec2D(200,300)
+			local vendorAreaPosition:TVec2D = new TVec2D(350,100)
+			If VendorEntity Then vendorAreaDimension = New TVec2D(VendorEntity.area.w, VendorEntity.area.h)
+			If VendorEntity Then vendorAreaPosition = New TVec2D(VendorEntity.area.x, VendorEntity.area.y)
 
 			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
 			'vendor should accept drop - else no recognition
@@ -805,7 +805,7 @@ endrem
 				'check if something is underlaying and whether it is
 				'a different script
 				local underlayingItem:TGUIScriptAgencyScript = null
-				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
+				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D(-1,-1)))
 				if coord then underlayingItem = TGUIScriptAgencyScript(receiverList.GetItemByCoord(coord))
 
 				'allow drop on own place

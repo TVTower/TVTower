@@ -139,12 +139,12 @@ Type TElevator Extends TEntity
 
 		PassengerPosition  = New String[6]
 		PassengerOffset    = New TVec2D[6]
-		PassengerOffset[0] = New TVec2D.Init(0, 0)
-		PassengerOffset[1] = New TVec2D.Init(-13, 0)
-		PassengerOffset[2] = New TVec2D.Init(12, 0)
-		PassengerOffset[3] = New TVec2D.Init(-7, 0)
-		PassengerOffset[4] = New TVec2D.Init(8, 0)
-		PassengerOffset[5] = New TVec2D.Init(-3, 0)
+		PassengerOffset[0] = New TVec2D(0, 0)
+		PassengerOffset[1] = New TVec2D(-13, 0)
+		PassengerOffset[2] = New TVec2D(12, 0)
+		PassengerOffset[3] = New TVec2D(-7, 0)
+		PassengerOffset[4] = New TVec2D(8, 0)
+		PassengerOffset[5] = New TVec2D(-3, 0)
 
 		'create door
 		door = New TSpriteEntity
@@ -683,14 +683,14 @@ Type TElevator Extends TEntity
 				'Direction = 0
 			Else
 				'backup for tweening
-				oldPosition.SetXY(area.position.x, area.position.y)
+				oldPosition.SetXY(area.x, area.y)
 
 				If (CurrentFloor < TargetFloor) Then Direction = 1 Else Direction = -1
 				'set velocity according (negative) direction
 				SetVelocity(0, -Direction * Speed)
 
 				'set new position
-				area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
+				area.MoveXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 
 
 				'do not move further than the target floor
@@ -698,12 +698,12 @@ Type TElevator Extends TEntity
 
 				If (direction < 0 And area.GetY() > tmpTargetFloorY) Or ..
 				   (direction > 0 And area.GetY() < tmpTargetFloorY)
-					area.position.y = tmpTargetFloorY
+					area.SetY(tmpTargetFloorY)
 				EndIf
 
 				'move figures in elevator together with the inner part
 				For Local figure:TFigureBase = EachIn Passengers.Values()
-					figure.area.position.setY( area.GetY() + GetInnerHeight())
+					figure.area.SetY( area.y + GetInnerHeight())
 				Next
 			EndIf
 
@@ -1156,9 +1156,9 @@ Type TSmartFloorRoute Extends TFloorRoute
 
 	Method IntendedFollowingTarget:Int()
 		If who.GetTarget()
-			Return who.getFloor(who.GetTargetMoveToPosition())
+			Return who.getFloor(who.GetTargetMoveToPosition().y)
 		Else
-			Return who.getFloor(New TVec2D.Init())
+			Return who.getFloor(0)
 		EndIf
 	End Method
 

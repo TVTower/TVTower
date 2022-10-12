@@ -24,10 +24,10 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:Int = 1
 
-	Global deskGuiListPos:TVec2D = New TVec2D.Init(330,335)
-	Global suitcasePos:TVec2D = New TVec2D.Init(550,70)
-	Global trashBinPos:TVec2D = New TVec2D.Init(148,327)
-	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(16,22)
+	Global deskGuiListPos:TVec2D = New TVec2D(330,335)
+	Global suitcasePos:TVec2D = New TVec2D(550,70)
+	Global trashBinPos:TVec2D = New TVec2D(148,327)
+	Global suitcaseGuiListDisplace:TVec2D = New TVec2D(16,22)
 
 	Global studioManagerEntity:TSpriteEntity
 	Global studioManagerArea:TGUISimpleRect
@@ -78,7 +78,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Local spriteScript:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			Local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
 			Local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
-			guiListStudio = New TGUIScriptSlotList.Create(New TVec2D.Init(710, 290), New TVec2D.Init(17, 52), "studio")
+			guiListStudio = New TGUIScriptSlotList.Create(New TVec2D(710, 290), New TVec2D(17, 52), "studio")
 			'set to autofill so that "failed suitcase drops" can safely
 			'be dropped back into the studio slot
 			guiListStudio.SetAutofillSlots(True)
@@ -90,7 +90,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListStudio.SetSlotMinDimension(90, 80)
 			guiListStudio.SetAcceptDrop("TGUIStudioScript")
 
-			guiListSuitcase	= New TGUIScriptSlotlist.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(200,80), "studio")
+			guiListSuitcase	= New TGUIScriptSlotlist.Create(New TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D(200,80), "studio")
 			guiListSuitcase.SetAutofillSlots(True)
 			guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
@@ -98,7 +98,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListSuitcase.SetEntryDisplacement( 0, 0 )
 			guiListSuitcase.SetAcceptDrop("TGUIStudioScript")
 
-			guiListDeskProductionConcepts = New TGUIProductionConceptSlotList.Create(New TVec2D.Init(deskGuiListPos.GetX(), deskGuiListPos.GetY()), New TVec2D.Init(290,80), "studio")
+			guiListDeskProductionConcepts = New TGUIProductionConceptSlotList.Create(New TVec2D(deskGuiListPos.GetX(), deskGuiListPos.GetY()), New TVec2D(290,80), "studio")
 			'make the list items sortable by the player
 			guiListDeskProductionConcepts.SetAutofillSlots(False)
 			guiListDeskProductionConcepts.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -110,10 +110,10 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 			'default studioManager dimension
-			Local studioManagerAreaDimension:TVec2D = New TVec2D.Init(150,270)
-			Local studioManagerAreaPosition:TVec2D = New TVec2D.Init(0,115)
-			If studioManagerEntity Then studioManagerAreaDimension = studioManagerEntity.area.dimension.copy()
-			If studioManagerEntity Then studioManagerAreaPosition = studioManagerEntity.area.position.copy()
+			Local studioManagerAreaDimension:TVec2D = New TVec2D(150,270)
+			Local studioManagerAreaPosition:TVec2D = New TVec2D(0,115)
+			If studioManagerEntity Then studioManagerAreaDimension = New TVec2D(studioManagerEntity.area.w, studioManagerEntity.area.h)
+			If studioManagerEntity Then studioManagerAreaPosition = New TVec2D(studioManagerEntity.area.x, studioManagerEntity.area.y)
 
 			studioManagerArea = New TGUISimpleRect.Create(studioManagerAreaPosition, studioManagerAreaDimension, "studio" )
 			'studioManager should accept drop - else no recognition
@@ -1212,7 +1212,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local list:TGUIProductionConceptSlotList = TGUIProductionConceptSlotList(guiObject)
 		If Not list Then Return False
 
-		Local atPoint:TVec2D = guiObject.GetScreenRect().position
+		Local atPoint:SVec2F = guiObject.GetScreenRect().GetPosition()
 		Local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
 
 		SetAlpha 0.20
@@ -1220,11 +1220,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Local item:TGUIObject = list.GetItemBySlot(i)
 			If item Then Continue
 
-			Local pos:TVec3D = list.GetSlotCoord(i)
-			pos.AddX(list._slotMinDimension.x * 0.5)
-			pos.AddY(list._slotMinDimension.y * 0.5)
-
-			spriteProductionConcept.Draw(atPoint.x + pos.x, atPoint.y + pos.y, -1, ALIGN_CENTER_CENTER, 0.7)
+			Local pos:SVec3F = list.GetSlotCoord(i)
+			spriteProductionConcept.Draw(atPoint.x + pos.x + list._slotMinDimension.x * 0.5, atPoint.y + pos.y + list._slotMinDimension.y * 0.5, -1, ALIGN_CENTER_CENTER, 0.7)
 		Next
 		SetAlpha 1.0
 	End Function

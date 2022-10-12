@@ -41,8 +41,8 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 	Global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = New TVec2D.Init(520,100)
-	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(14,32)
+	Global suitcasePos:TVec2D = New TVec2D(520,100)
+	Global suitcaseGuiListDisplace:TVec2D = New TVec2D(14,32)
 	Global contractsPerLine:Int	= 4
 	Global contractsNormalAmount:Int = 12
 	Global contractsCheapAmount:Int	= 4
@@ -115,7 +115,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 			GuiListNormal = GuiListNormal[..3]
 			For Local i:Int = 0 To GuiListNormal.length-1
 				Local listIndex:Int = GuiListNormal.length-1 - i
-				GuiListNormal[listIndex] = New TGUIAdContractSlotList.Create(New TVec2D.Init(418 - i*80, 122 + i*36), New TVec2D.Init(200, 140), "adagency")
+				GuiListNormal[listIndex] = New TGUIAdContractSlotList.Create(New TVec2D(418 - i*80, 122 + i*36), New TVec2D(200, 140), "adagency")
 				GuiListNormal[listIndex].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[listIndex].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[listIndex].SetSize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
@@ -130,11 +130,11 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 			Next
 
-			GuiListSuitcase	= New TGUIAdContractSlotList.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(255, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
+			GuiListSuitcase	= New TGUIAdContractSlotList.Create(New TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D(255, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
 			GuiListSuitcase.SetAutofillSlots(True)
 
-			GuiListCheap = New TGUIAdContractSlotList.Create(New TVec2D.Init(70, 220), New TVec2D.Init(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
-			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			GuiListCheap = New TGUIAdContractSlotList.Create(New TVec2D(70, 220), New TVec2D(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D(70, 200), new TVec2D(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap.setEntriesBlockDisplacement(70,0)
 			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
 
@@ -160,10 +160,10 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 
 			'default vendor dimension
-			Local vendorAreaDimension:TVec2D = New TVec2D.Init(150,200)
-			Local vendorAreaPosition:TVec2D = New TVec2D.Init(241,110)
-			If VendorEntity Then vendorAreaDimension = VendorEntity.area.dimension.copy()
-			If VendorEntity Then vendorAreaPosition = VendorEntity.area.position.copy()
+			Local vendorAreaDimension:TVec2D = New TVec2D(150,200)
+			Local vendorAreaPosition:TVec2D = New TVec2D(241,110)
+			If VendorEntity Then vendorAreaDimension = New TVec2D(VendorEntity.area.w, VendorEntity.area.h)
+			If VendorEntity Then vendorAreaPosition = New TVec2D(VendorEntity.area.x, VendorEntity.area.y)
 
 			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "adagency" )
 			'vendor should accept drop - else no recognition
@@ -1592,7 +1592,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
 		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
 		                              20, 3)
-'		Local pointB:TVec2D = New TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
+'		Local pointB:TVec2D = New TVec2D(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
 		SetColor(oldCol)
 		SetAlpha oldA
 

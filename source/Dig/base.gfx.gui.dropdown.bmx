@@ -63,7 +63,7 @@ Type TGUIDropDown Extends TGUIInput
 
 
 	Method Create:TGUIDropDown(pos:SVec2I, dimension:SVec2I, value:String="", maxLength:Int=128, limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, maxLength, limitState)
+		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, maxLength, limitState)
 	End Method
 
 
@@ -86,7 +86,7 @@ Type TGUIDropDown Extends TGUIInput
 		'=== ENTRY LIST ===
 		'create and style list
 		If list Then list.Remove()
-		list = New TGUISelectList.Create(New TVec2D.Init(0, Self.rect.GetH()), New TVec2D.Init(rect.GetW(), listHeight), "")
+		list = New TGUISelectList.Create(New TVec2D(0, Self.rect.GetH()), New TVec2D(rect.GetW(), listHeight), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(False)
@@ -414,10 +414,10 @@ Type TGUIDropDown Extends TGUIInput
 		EndIf
 
 
-		Local screenPos:TVec2D = GetScreenRect().position
-		If Not lastPosition Or Not lastPosition.IsSame(GetScreenRect().position)
+		Local screenPos:SVec2F = GetScreenRect().GetPosition()
+		If Not lastPosition Or Not GetScreenRect().IsSamePosition(lastPosition)
 			If Not lastPosition Then lastPosition = New TVec2D
-			lastPosition.CopyFrom( GetScreenRect().position )
+			lastPosition.SetXY(screenPos.x, screenPos.y)
 
 			'update list position (as it is not maintained as "child")
 			MoveListIntoPosition()
@@ -445,7 +445,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
     Method Create:TGUIDropDownItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension Then dimension = New TVec2D.Init(80,20)
+		If Not dimension Then dimension = New TVec2D(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")

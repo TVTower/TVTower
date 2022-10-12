@@ -37,7 +37,7 @@ Type TGUITextArea Extends TGUIobject
 
 
 	Method Create:TGUITextArea(pos:SVec2I, dimension:SVec2I, limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), limitState)
+		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), limitState)
 	End Method
 
 
@@ -51,7 +51,7 @@ Type TGUITextArea Extends TGUIobject
 		'orientation of horizontal scroller has to get set manually
 		guiScrollerH.SetOrientation(GUI_OBJECT_ORIENTATION_HORIZONTAL)
 
-		guiTextPanel = New TGUIScrollablePanel.Create(null, new TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), limitState)
+		guiTextPanel = New TGUIScrollablePanel.Create(null, new TVec2D(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), limitState)
 
 		AddChild(guiScrollerH)
 		AddChild(guiScrollerV)

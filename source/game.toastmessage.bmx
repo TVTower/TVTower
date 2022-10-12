@@ -35,7 +35,7 @@ Type TGameToastMessage Extends TToastMessage
 
 
 	Method New()
-		area.dimension.SetXY(250,50)
+		area.SetWH(250,50)
 	End Method
 
 
@@ -162,16 +162,16 @@ Type TGameToastMessage Extends TToastMessage
 			height :+ GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
 		EndIf
 
-		area.dimension.SetY(height)
+		area.SetH(height)
 	End Method
 
 
 	Method GetContentWidth:Int()
 		If showBackgroundSprite And backgroundSprite
 			local bgBorder:SRect = backgroundSprite.GetNinePatchInformation().contentBorder
-			Return GetScreenRect().GetW() - bgBorder.GetLeft() - bgBorder.GetRight()
+			Return GetScreenRect().w - bgBorder.GetLeft() - bgBorder.GetRight()
 		Else
-			Return GetScreenRect().GetW()
+			Return GetScreenRect().w
 		EndIf
 	End Method
 

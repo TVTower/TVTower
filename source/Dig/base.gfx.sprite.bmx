@@ -59,16 +59,16 @@ Const ALIGN_TOP:Float = 0
 Const ALIGN_BOTTOM:Float = 1.0
 
 Global ALIGN_LEFT_TOP:TVec2D = New TVec2D
-Global ALIGN_CENTER_TOP:TVec2D = New TVec2D.Init(ALIGN_CENTER, ALIGN_TOP)
-Global ALIGN_RIGHT_TOP:TVec2D = New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP)
+Global ALIGN_CENTER_TOP:TVec2D = New TVec2D(ALIGN_CENTER, ALIGN_TOP)
+Global ALIGN_RIGHT_TOP:TVec2D = New TVec2D(ALIGN_RIGHT, ALIGN_TOP)
 
-Global ALIGN_LEFT_CENTER:TVec2D = New TVec2D.Init(ALIGN_LEFT, ALIGN_CENTER)
-Global ALIGN_CENTER_CENTER:TVec2D = New TVec2D.Init(ALIGN_CENTER, ALIGN_CENTER)
-Global ALIGN_RIGHT_CENTER:TVec2D = New TVec2D.Init(ALIGN_RIGHT, ALIGN_CENTER)
+Global ALIGN_LEFT_CENTER:TVec2D = New TVec2D(ALIGN_LEFT, ALIGN_CENTER)
+Global ALIGN_CENTER_CENTER:TVec2D = New TVec2D(ALIGN_CENTER, ALIGN_CENTER)
+Global ALIGN_RIGHT_CENTER:TVec2D = New TVec2D(ALIGN_RIGHT, ALIGN_CENTER)
 
-Global ALIGN_LEFT_BOTTOM:TVec2D = New TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM)
-Global ALIGN_CENTER_BOTTOM:TVec2D = New TVec2D.Init(ALIGN_CENTER, ALIGN_BOTTOM)
-Global ALIGN_RIGHT_BOTTOM:TVec2D = New TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM)
+Global ALIGN_LEFT_BOTTOM:TVec2D = New TVec2D(ALIGN_LEFT, ALIGN_BOTTOM)
+Global ALIGN_CENTER_BOTTOM:TVec2D = New TVec2D(ALIGN_CENTER, ALIGN_BOTTOM)
+Global ALIGN_RIGHT_BOTTOM:TVec2D = New TVec2D(ALIGN_RIGHT, ALIGN_BOTTOM)
 
 Global sALIGN_LEFT_TOP:SVec2F = New SVec2F
 Global sALIGN_CENTER_TOP:SVec2F = New SVec2F(ALIGN_CENTER, ALIGN_TOP)
@@ -418,7 +418,7 @@ Type TSprite
 		                                data.GetInt("h", parent.GetImage().height) ..
 		                              )
 		'intialize sprite
-		Init(parent, name, area, offset, frames, New TVec2D.Init(frameW, frameH), id)
+		Init(parent, name, area, offset, frames, New TVec2D(frameW, frameH), id)
 
 		'rotation
 		rotated = data.GetInt("rotated", 0)

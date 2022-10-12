@@ -44,7 +44,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				local presentX:int = box.getX() + 13 + (i mod 5) * (123 + 8)
 				local presentY:int = box.getY() + 13 + (i / 5) * (91 + 19)
 				local present:TBettyPresent = TBettyPresent.GetPresent(i)
-				presentButtons[i] = new TGUIButton.Create(new TVec2D.Init(presentX, presentY), new TVec2D.Init(123,91), "present "+(i+1), "supermarket_presents")
+				presentButtons[i] = new TGUIButton.Create(new TVec2D(presentX, presentY), new TVec2D(123,91), "present "+(i+1), "supermarket_presents")
 				presentButtons[i].spriteName = present.getSpriteName()
 				presentButtons[i].data.add("present", present)
 
@@ -56,7 +56,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				presentTooltips[i] = New TGUITooltipBase.Initialize(present.getName(), "", New TRectangle.Init(0,0,-1,-1))
 				presentTooltips[i].parentArea = presentButtons[i].getScreenRect()
 				presentTooltips[i].SetOrientationPreset("TOP")
-				presentTooltips[i].offset = New TVec2D.Init(0,+5)
+				presentTooltips[i].offset = New TVec2D(0,+5)
 				presentTooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 				'standard icons should need a bit longer for tooltips to show up
 				presentTooltips[i].dwellTime = 50

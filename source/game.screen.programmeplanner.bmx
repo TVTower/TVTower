@@ -72,11 +72,11 @@ Type TScreenHandler_ProgrammePlanner
 			Local gapBetweenHours:Int = 45
 			Local area:TRectangle = New TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
 
-			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
-			GuiListProgrammes.Init("pp_programmeblock1", Int(GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours))
+			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(New TVec2D(area.x, area.y), New TVec2D(area.w, area.h), "programmeplanner")
+			GuiListProgrammes.Init("pp_programmeblock1", Int(GetSpriteFromRegistry("pp_adblock1").area.w + gapBetweenHours))
 			GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
 
-			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
+			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New TVec2D(area.x + GetSpriteFromRegistry("pp_programmeblock1").area.w, area.y), New TVec2D(area.w, area.h), "programmeplanner")
 			GuiListAdvertisements.Init("pp_adblock1", Int(GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours))
 			GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
 
@@ -87,10 +87,10 @@ Type TScreenHandler_ProgrammePlanner
 
 
 			'=== create buttons
-			plannerNextDayButton = New TGUIButton.Create(New TVec2D.Init(768, 6), New TVec2D.Init(28, 28), ">", "programmeplanner_buttons")
+			plannerNextDayButton = New TGUIButton.Create(New TVec2D(768, 6), New TVec2D(28, 28), ">", "programmeplanner_buttons")
 			plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
 
-			plannerPreviousDayButton = New TGUIButton.Create(New TVec2D.Init(684, 6), New TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
+			plannerPreviousDayButton = New TGUIButton.Create(New TVec2D(684, 6), New TVec2D(28, 28), "<", "programmeplanner_buttons")
 			plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
 
 			'so we can handle clicks to the daychange-buttons while some
@@ -101,27 +101,27 @@ Type TScreenHandler_ProgrammePlanner
 			plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
 
 
-			ProgrammePlannerButtons[0] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 0*54), Null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[0] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 0*54), Null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[0].spriteInlayName = "gfx_programmeplanner_btn_ads"
 
-			ProgrammePlannerButtons[1] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 1*54), Null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[1] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 1*54), Null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[1].spriteInlayName = "gfx_programmeplanner_btn_programme"
 
-			ProgrammePlannerButtons[2] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 2*54), Null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[2] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 2*54), Null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[2].spriteInlayName = "gfx_programmeplanner_btn_financials"
 
-			ProgrammePlannerButtons[3] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[3] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[3].spriteInlayName = "gfx_programmeplanner_btn_statistics"
 
-			ProgrammePlannerButtons[4] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[4] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[4].spriteInlayName = "gfx_programmeplanner_btn_achievements"
 
-			ProgrammePlannerButtons[5] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 5*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[5].spriteInlayName = "gfx_programmeplanner_btn_unknown"
 
@@ -784,7 +784,7 @@ Type TScreenHandler_ProgrammePlanner
 		'check if that item is allowed to get dropped on such a list
 		Local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
 		If receiverList
-			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
+			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D(-1,-1)))
 			Local slot:Int = receiverList.GetSlotByCoord(coord)
 
 			'check if dropping on that slot is allowed slots
@@ -845,7 +845,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		Local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
 		If receiverList
-			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
+			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D(-1,-1)))
 			Local slot:Int = receiverList.GetSlotByCoord(coord)
 
 			'loop over all slots affected by this event
@@ -2098,7 +2098,7 @@ Type TGUIProgrammePlannerButton extends TGUIButton
 	Field spriteInlay:TSprite
 
 	Method Create:TGUIProgrammePlannerButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "") override
-		Return TGUIProgrammePlannerButton(Super.Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, State))
+		Return TGUIProgrammePlannerButton(Super.Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, State))
 	End Method
 
 
@@ -2107,7 +2107,7 @@ Type TGUIProgrammePlannerButton extends TGUIButton
 	End Method
 		
 
-	Method DrawButtonBackground:Int(position:TVec2D) override
+	Method DrawButtonBackground:Int(position:SVec2F) override
 		Super.DrawButtonBackground(position)
 		
 		If not spriteInlay and spriteInlayName
@@ -2117,9 +2117,9 @@ Type TGUIProgrammePlannerButton extends TGUIButton
 		If spriteInlay
 			'no custom ".active" - then just offset +1,+1
 			If IsActive() And (spriteInlay.name = spriteInlayName Or spriteInlay.name="defaultsprite")
-				spriteInlay.Draw(position.getX()+1, position.getY()+1)
+				spriteInlay.Draw(position.x+1, position.y+1)
 			Else
-				spriteInlay.Draw(position.getX(), position.getY())
+				spriteInlay.Draw(position.x, position.y)
 			EndIf
 		EndIf
 	End Method

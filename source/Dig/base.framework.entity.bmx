@@ -97,7 +97,7 @@ Type TRenderableEntity extends TEntityBase
 		if not childEntities then childEntities = new TRenderableEntity[0]
 		if not childOffsets then childOffsets = new TVec2D[0]
 
-		if not childOffset then childOffset = new TVec2D.Init()
+		if not childOffset then childOffset = new TVec2D()
 
 		if index < 0 then index = childEntities.length
 		if index >= childEntities.length
@@ -159,12 +159,12 @@ Type TRenderableEntity extends TEntityBase
 
 
 	Method RenderAt:Int(x:Float = 0, y:Float = 0, alignment:TVec2D = Null)
-		local oldPos:SVec2F = New SVec2F(area.position.x, area.position.y)
-		area.position.SetXY(x,y)
+		local oldPos:SVec2F = New SVec2F(area.x, area.y)
+		area.SetXY(x,y)
 
 		Render(0, 0, alignment)
 
-		area.position.SetXY(oldPos.x, oldPos.y)
+		area.SetXY(oldPos.x, oldPos.y)
 	End Method
 
 
@@ -305,8 +305,8 @@ Type TRenderableEntity extends TEntityBase
 
 
 	'get a vector describing the objects position on the screen
-	Method GetScreenPos:TVec2D()
-			Return new TVec2D.Init(GetScreenX(), GetScreenY())
+	Method GetScreenPos:SVec2F()
+			Return new SVec2F(GetScreenX(), GetScreenY())
 	End Method
 	
 
@@ -335,12 +335,12 @@ Type TRenderableEntity extends TEntityBase
 
 
 	Method SetSize(width:Float, height:Float)
-		area.dimension.SetXY(width, height)
+		area.SetWH(width, height)
 	End Method
 
 
 	Method SetPosition(x:Float, y:Float)
-		area.position.SetXY(x, y)
+		area.SetXY(x, y)
 	End Method
 
 
@@ -351,7 +351,7 @@ Type TRenderableEntity extends TEntityBase
 
 	'returns if the size of the entity was given
 	Method HasSize:int()
-		return area.GetW() > 0 and area.GetH() > 0
+		return area.w > 0 and area.h > 0
 	End Method
 
 
@@ -442,10 +442,10 @@ Type TEntity extends TRenderableEntity
 	Method Move:int()
 		'=== UPDATE MOVEMENT ===
 		'backup for tweening
-		oldPosition.SetXY(area.position.x, area.position.y)
+		oldPosition.SetXY(area.x, area.y)
 		'set new position
 		local deltaTime:Float = GetDeltaTime()
-		area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
+		area.MoveXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 	End Method
 
 

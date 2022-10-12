@@ -173,7 +173,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field name:String = "unknown"
 	'backup of self.velocity.x
 	Field initialdx:Float = 0.0
-	Field PosOffset:TVec2D = new TVec2D.Init(0,0)
+	Field PosOffset:TVec2D = new TVec2D(0,0)
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
@@ -258,7 +258,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFloor:Int(pos:TVec2D = Null) abstract
+	Method GetFloor:Int() abstract
+
+	Method GetFloor:Int(y:Float) abstract
 
 
 	Method onLoad:int()
@@ -470,7 +472,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method MoveToCurrentTarget:int()
 		if not GetTarget() then return False
 
-		area.position.CopyFrom( GetTargetMoveToPosition() )
+		area.SetXY( GetTargetMoveToPosition() )
 	End Method
 
 
@@ -552,9 +554,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsAtCurrentTarget:int()
-		local pos:TVec2D = GetTargetMoveToPosition()
-		if TVec2D(area.position).isSame(pos) then return True
-		return False
+		Return area.IsSamePosition(GetTargetMoveToPosition())
 	End Method
 
 
@@ -572,7 +572,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		'set target as current position - so we are exactly there we want to be
 		local targetPosition:TVec2D = GetTargetMoveToPosition()
-		if targetPosition then area.position.setX( targetPosition.getX() )
+		if targetPosition then area.setX( targetPosition.x )
 
 		currentReachTargetStep = 1
 		'inform target

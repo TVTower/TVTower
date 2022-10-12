@@ -103,11 +103,11 @@ Type TDatasheetSkin
 
 	Method GetBoxSize:TVec2D(w:int, h:int=-1, value:string, iconName:string="", boxType:string="neutral", font:TBitmapFont=null, valueAlign:TVec2D=null)
 		if h > 0
-			return new TVec2D.Init(w, h)
+			return new TVec2D(w, h)
 		elseif iconName
-			return new TVec2D.Init(w, max(GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).GetHeight(), GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType).GetHeight()) )
+			return new TVec2D(w, max(GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).GetHeight(), GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType).GetHeight()) )
 		else
-			return new TVec2D.Init(w, GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType).GetHeight() )
+			return new TVec2D(w, GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType).GetHeight() )
 		endif
 	End Method
 
@@ -135,11 +135,11 @@ Type TDatasheetSkin
 
 	Method GetMessageSize:TVec2D(w:int, h:int=-1, value:string, iconName:string="", msgType:string="neutral", font:TBitmapFont=null, valueAlign:TVec2D=null)
 		if h > 0
-			return new TVec2D.Init(w, h)
+			return new TVec2D(w, h)
 		elseif iconName
-			return new TVec2D.Init(w, max(GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).GetHeight(), GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetHeight()) )
+			return new TVec2D(w, max(GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).GetHeight(), GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetHeight()) )
 		else
-			return new TVec2D.Init(w, GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetHeight() )
+			return new TVec2D(w, GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetHeight() )
 		endif
 	End Method
 
@@ -173,7 +173,7 @@ Type TDatasheetSkin
 
 	Method GetBarSize:TVec2D(w:int, h:int=-1, barSkin:string="bar")
 		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").GetHeight()
-		return new TVec2D.Init(w, h)
+		return new TVec2D(w, h)
 	End Method
 
 

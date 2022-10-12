@@ -39,7 +39,7 @@ Type TGUIListBase Extends TGUIobject
 	Field guiEntriesPanel:TGUIScrollablePanel = Null
 	Field guiScrollerH:TGUIScrollerBase = Null
 	Field guiScrollerV:TGUIScrollerBase	= Null
-	Field entriesDimension:TVec2D = New TVec2D.Init(0,0)
+	Field entriesDimension:TVec2D = New TVec2D(0,0)
 
 	Field _listFlags:Int = 0
 	Field _autoSortFunction:Int(o1:Object,o2:Object)
@@ -55,7 +55,7 @@ Type TGUIListBase Extends TGUIobject
 	'displace each entry by (z-value is stepping)...
 	Field _entryDisplacement:TVec3D	= New TVec3D.Init(0, 0, 1)
 	'displace the entriesblock by x,y...
-	Field _entriesBlockDisplacement:TVec2D = New TVec2D.Init(0, 0)
+	Field _entriesBlockDisplacement:TVec2D = New TVec2D(0, 0)
 	'orientation of the list: 0 means vertical, 1 is horizontal
 	Field _orientation:Int = 0
 
@@ -86,7 +86,7 @@ Type TGUIListBase Extends TGUIobject
 		'orientation of horizontal scroller has to get set manually
 		guiScrollerH.SetOrientation(GUI_OBJECT_ORIENTATION_HORIZONTAL)
 
-		guiEntriesPanel = New TGUIScrollablePanel.Create(Null, New TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), limitState)
+		guiEntriesPanel = New TGUIScrollablePanel.Create(Null, New TVec2D(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), limitState)
 
 		'manage by our own
 		AddChild(guiEntriesPanel)
@@ -323,7 +323,7 @@ Type TGUIListBase Extends TGUIobject
 
 		'recalculate dimensions as the item now knows its parent
 		'so a normal AddItem-handler can work with calculated dimensions from now on
-		'Local dimension:TVec2D = item.getDimension()
+		'Local dimension:SVec2F = item.getDimension()
 
 		TriggerBaseEvent(GUIEventKeys.GUIList_AddItem, New TData.Add("item", item) , Self)
 
@@ -515,8 +515,8 @@ Type TGUIListBase Extends TGUIobject
 			EndIf
 
 			'==== SET POSITION ====
-			If Not entry.rect.position.IsSame(currentPos)
-				entry.rect.position.CopyFrom(currentPos)
+			If Not entry.rect.IsSamePosition(currentPos)
+				entry.rect.SetXY(currentPos)
 				entry.InvalidateScreenRect()
 			EndIf
 			entryNumber:+1
@@ -1290,7 +1290,7 @@ Type TGUIListItem Extends TGUIobject
 
     Method Create:TGUIListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		'have a basic size (specify a dimension in your custom type)
-		If Not dimension Then dimension = New TVec2D.Init(80,20)
+		If Not dimension Then dimension = New TVec2D(80,20)
 
 		'limit this items to nothing - as soon as we parent it, it will
 		'follow the parents limits
@@ -1455,11 +1455,11 @@ Type TGUIListItem Extends TGUIobject
 		If isDragged()
 			'instead of using auto-coordinates, we use the coord of the
 			'mouseposition when the "hit" started
-			'drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			'drop(new TVec2D(data.getInt("x",-1), data.getInt("y",-1)))
 			Drop(MouseManager.GetClickPosition(1))
 		Else
 			'same for dragging
-			'drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			'drag(new TVec2D(data.getInt("x",-1), data.getInt("y",-1)))
 			Drag(MouseManager.GetClickPosition(1))
 		EndIf
 

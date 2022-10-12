@@ -18,7 +18,7 @@ Type TScreenCollection
 	Field screenTransitionActive:int = False
 
 	Global instance:TScreenCollection
-	Global _screenDimension:TVec2D = new TVec2D.Init(0,0)
+	Global _screenDimension:TVec2D = new TVec2D(0,0)
 	Global useChangeEffects:int = TRUE
 	
 	Function Create:TScreenCollection(baseScreen:TScreen)
@@ -268,7 +268,7 @@ endrem
 
 	Function SetScreenDimension(width:int, height:int)
 		if not _screenDimension then _screenDimension = new TVec2D
-		_screenDimension.Init(width,height)
+		_screenDimension.SetXY(width, height)
 	End Function
 End Type
 Global ScreenCollection:TScreenCollection = TScreenCollection.Create(null)

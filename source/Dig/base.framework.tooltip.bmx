@@ -150,10 +150,10 @@ Type TTooltip Extends TEntity
 		local outOfScreenRight:int = Max(0, GetScreenX() + GetWidth() - GetGraphicsManager().GetWidth())
 		local outOfScreenTop:int = Min(0, GetScreenY())
 		local outOfScreenBottom:int = Max(0, GetScreenY() + GetHeight() - GetGraphicsManager().GetHeight())
-		if outOfScreenLeft then area.position.SetX( area.GetX() + outOfScreenLeft )
-		if outOfScreenRight then area.position.SetX( area.GetX() - outOfScreenRight )
-		if outOfScreenTop then area.position.SetY( area.GetY() + outOfScreenTop )
-		if outOfScreenBottom then area.position.SetY( area.GetY() - outOfScreenBottom )
+		if outOfScreenLeft then area.MoveX(outOfScreenLeft)
+		if outOfScreenRight then area.MoveX(-outOfScreenRight)
+		if outOfScreenTop then area.MoveY(outOfScreenTop)
+		if outOfScreenBottom then area.MoveY(-outOfScreenBottom)
 
 		Return True
 	End Method

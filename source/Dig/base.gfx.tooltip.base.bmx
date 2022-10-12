@@ -77,9 +77,9 @@ Type TTooltipBase
 	Field content:String
 	Field _titleCache:TBitmapFontText
 	Field _contentCache:TBitmapFontText
-	Field _minTitleDim:TVec2D ' = new TVec2D.Init(160,0)
+	Field _minTitleDim:TVec2D ' = new TVec2D(160,0)
 	Field _maxTitleDim:TVec2D
-	Field _minContentDim:TVec2D ' = new TVec2D.Init(160,0)
+	Field _minContentDim:TVec2D ' = new TVec2D(160,0)
 	Field _maxContentDim:TVec2D
 
 	Field titleColor:SColor8 = new SColor8(50,50,50)
@@ -183,19 +183,19 @@ Type TTooltipBase
 			Case "LEFT"
 				parentAlignment = ALIGN_LEFT_CENTER
 				alignment = ALIGN_RIGHT_CENTER
-				If distance Then offset.Init(-1 * Abs(distance), 0)
+				If distance Then offset.SetXY(-1 * Abs(distance), 0)
 			Case "RIGHT"
 				parentAlignment = ALIGN_RIGHT_CENTER
 				alignment = ALIGN_LEFT_CENTER
-				If distance Then offset.Init(+1 * Abs(distance), 0)
+				If distance Then offset.SetXY(+1 * Abs(distance), 0)
 			Case "BOTTOM"
 				parentAlignment = ALIGN_CENTER_BOTTOM
 				alignment = ALIGN_CENTER_TOP
-				If distance Then offset.Init(0, +1 * Abs(distance))
+				If distance Then offset.SetXY(0, +1 * Abs(distance))
 			Default
 				parentAlignment = ALIGN_CENTER_TOP
 				alignment = ALIGN_CENTER_BOTTOM
-				If distance Then offset.Init(0, +1 * Abs(distance))
+				If distance Then offset.SetXY(0, +1 * Abs(distance))
 		End Select
 	End Method
 

@@ -201,7 +201,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 		closeActionStarted = True
 		closeActionTime = Time.GetAppTimeGone()
-		closeActionStartPosition = rect.position.copy()
+		closeActionStartPosition = new TVec2D(rect.x, rect.y)
 
 		'fire event so others know that the window is closed
 		'and what button was used
@@ -443,15 +443,15 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 			'a default button
 			Case 1
 				dialogueButtons = dialogueButtons[..1]
-				dialogueButtons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(120, -1), GetLocale("OK"))
+				dialogueButtons[0] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(120, -1), GetLocale("OK"))
 				AddChild(dialogueButtons[0])
 				'set to ignore parental padding (so it starts at 0,0)
 				dialogueButtons[0].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 			'yes and no button
 			Case 2
 				dialogueButtons = dialogueButtons[..2]
-				dialogueButtons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("YES"))
-				dialogueButtons[1] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("NO"))
+				dialogueButtons[0] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("YES"))
+				dialogueButtons[1] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("NO"))
 				AddChild(dialogueButtons[0])
 				AddChild(dialogueButtons[1])
 				'set to ignore parental padding (so it starts at 0,0)

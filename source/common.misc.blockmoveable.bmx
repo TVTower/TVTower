@@ -24,7 +24,7 @@ Type TBlockMoveable Extends TOwnedGameObject
 
 	'switches current and startcoords of two blocks
 	Method SwitchCoords(otherObj:TBlockMoveable)
-		TVec2D.SwitchVecs(rect.position, otherObj.rect.position)
+		rect.SwitchPositions(otherObj.rect)
 		TVec2D.SwitchVecs(StartPos, otherObj.StartPos)
 		TVec2D.SwitchVecs(StartPosBackup, otherObj.StartPosBackup)
 	End Method
@@ -37,23 +37,15 @@ Type TBlockMoveable Extends TOwnedGameObject
 
 
 	Method SetCoords(x:Int=Null, y:Int=Null, startx:Int=Null, starty:Int=Null)
-      If x<>Null 		Then Self.rect.position.SetX(x)
-      If y<>Null		Then Self.rect.position.SetY(y)
-      If startx<>Null	Then Self.StartPos.setX(startx)
+      If x<>Null 		Then Self.rect.SetX(x)
+      If y<>Null		Then Self.rect.SetY(y)
+      If startx<>Null	Then Self.StartPos.SetX(startx)
       If starty<>Null	Then Self.StartPos.SetY(starty)
 	End Method
 
 
-	Method SetBasePos(pos:TVec2D = Null)
-		If pos <> Null
-			rect.position.CopyFrom(pos)
-			StartPos.CopyFrom(pos)
-		EndIf
-	End Method
-
-
 	Method IsAtStartPos:Int()
-		Return rect.position.isSame(StartPos, True)
+		Return rect.IsSamePosition(StartPos, True)
 	End Method
 
 

@@ -45,7 +45,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		'=== CREATE ELEMENTS =====
 		BettySprite = GetSpriteFromRegistry("gfx_room_betty_betty")
 		if not BettyArea
-			BettyArea = New TGUISimpleRect.Create(new TVec2D.Init(303,142), new TVec2D.Init(112,148), "betty" )
+			BettyArea = New TGUISimpleRect.Create(new TVec2D(303,142), new TVec2D(112,148), "betty" )
 			'Betty accepts presents
 			BettyArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
 		EndIf

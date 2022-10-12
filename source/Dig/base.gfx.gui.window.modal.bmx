@@ -118,7 +118,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			Case 1
 				buttons = buttons[..1]
 				buttonCallbacks = buttonCallbacks[..1]
-				buttons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(120, -1), GetLocale("OK"))
+				buttons[0] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(120, -1), GetLocale("OK"))
 				buttonCallbacks[0] = onClickCallback_Close
 				AddChild(buttons[0])
 				'set to ignore parental padding (so it starts at 0,0)
@@ -127,8 +127,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			Case 2
 				buttons = buttons[..2]
 				buttonCallbacks = buttonCallbacks[..2]
-				buttons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(90, -1), GetLocale("YES"))
-				buttons[1] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(90, -1), GetLocale("NO"))
+				buttons[0] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(90, -1), GetLocale("YES"))
+				buttons[1] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(90, -1), GetLocale("NO"))
 				buttonCallbacks[0] = onClickCallback_Close
 				buttonCallbacks[1] = onClickCallback_Close
 				AddChild(buttons[0])
@@ -235,8 +235,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		closeActionStarted = True
 		closeActionTime = Time.GetAppTimeGone()
-		closeActionStartPosition = rect.position.copy()
-
+		closeActionStartPosition = new TVec2D(rect.x, rect.y)
+		
 		'fire event so others know that the window is closed
 		'and what button was used
 		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnClose, new TData.AddNumber("closeButton", closeButton) , Self)

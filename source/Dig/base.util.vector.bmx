@@ -47,9 +47,19 @@ Type TVec2D {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TVec2D(x:Float=0.0, y:Float=0.0)
-		SetXY(x, y)
-		Return self
+	Method New(x:Float, y:Float)
+		vec2d_created :+ 1
+
+		self.x = x
+		self.y = y
+	End Method
+
+
+	Method New(p:SVec2F)
+		vec2d_created :+ 1
+
+		self.x = p.x
+		self.y = p.y
 	End Method
 
 
@@ -68,7 +78,7 @@ Type TVec2D {_exposeToLua="selected"}
 
 
 	Method Copy:TVec2D()
-		return new TVec2D.Init(x, y)
+		return new TVec2D(x, y)
 	End Method
 
 
@@ -115,6 +125,18 @@ Type TVec2D {_exposeToLua="selected"}
 		If otherVec
 			SetXY(otherVec.x, otherVec.y)
 		EndIf
+		Return self
+	End Method
+
+
+	Method CopyFrom:TVec2D(otherVec:SVec2D)
+		SetXY(Float(otherVec.x), Float(otherVec.y))
+		Return self
+	End Method
+
+
+	Method CopyFrom:TVec2D(otherVec:SVec2F)
+		SetXY(otherVec.x, otherVec.y)
 		Return self
 	End Method
 
@@ -325,12 +347,6 @@ Type TVec2I {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TVec2I(x:Int=0, y:Int=0)
-		SetXY(x, y)
-		Return self
-	End Method
-
-
 	Method ToString:String()
 		return int(x)+", "+int(y)
 	End Method
@@ -342,7 +358,7 @@ Type TVec2I {_exposeToLua="selected"}
 
 
 	Method Copy:TVec2I()
-		return new TVec2I.Init(x, y)
+		return new TVec2I(x, y)
 	End Method
 
 
@@ -612,7 +628,7 @@ Type TVec3D {_exposeToLua="selected"}
 
 
 	Method ToVec2D:TVec2D()
-		return new TVec2D.Init(x,y)
+		return new TVec2D(x,y)
 	End Method
 
 

@@ -164,12 +164,9 @@ Type TRoomBoardBase
 	Method GetSignByOriginalXY:TRoomBoardSign(x:Int, y:Int)
 		For Local sign:TRoomBoardSign = EachIn List
 			'virtual rooms
-			If sign.StartPos.GetX() < 0 Then Continue
+			If sign.StartPos.x < 0 Then Continue
 
-			Local currRect:TRectangle = sign.rect.Copy()
-			currRect.position.CopyFrom(sign.OrigPos)
-
-			If currRect.containsXY(x,y) Then Return sign
+			If new SRect(sign.OrigPos.x, sign.OrigPos.y, sign.rect.w, sign.rect.h).containsXY(x,y) Then Return sign
 		Next
 
 		Return Null
@@ -214,7 +211,7 @@ Type TRoomBoardBase
 		If signA
 			Local x:Int = GetSlotX(slotB)
 			Local y:Int = GetFloorY(floorB)
-			signA.rect.position.SetXY(x,y)
+			signA.rect.SetXY(x,y)
 			signA.StartPos.SetXY(x,y)
 			signA.StartPosBackup.SetXY(x,y)
 
@@ -224,7 +221,7 @@ Type TRoomBoardBase
 		If signB
 			Local x:Int = GetSlotX(slotA)
 			Local y:Int = GetFloorY(floorA)
-			signB.rect.position.SetXY(x,y)
+			signB.rect.SetXY(x,y)
 			signB.StartPos.SetXY(x,y)
 			signB.StartPosBackup.SetXY(x,y)
 
@@ -537,8 +534,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		Local y:Int = GetRoomBoard().GetFloorY(door.onFloor)
 		Local x:Int = GetRoomBoard().GetSlotX(door.doorSlot)
 
-		OrigPos = New TVec2D.Init(x, y)
-		StartPos = New TVec2D.Init(x, y)
+		OrigPos = New TVec2D(x, y)
+		StartPos = New TVec2D(x, y)
 		rect = New TRectangle.Init(x, y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
 
 		Return Self
@@ -628,7 +625,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 
 	Method ResetPosition()
-		rect.position.CopyFrom(OrigPos)
+		rect.SetXY(OrigPos)
 		StartPos.CopyFrom(OrigPos)
 
 		dragged	= 0

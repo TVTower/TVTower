@@ -19,13 +19,13 @@ Type TGUICheckBox Extends TGUIButton
 	Field checkboxDimensionAutocalculated:int = True
 	Field valueChecked:string = ""
 	Field valueUnchecked:string = ""
-	Field captionDisplacement:TVec2D = new TVec2D.Init(5,0)
+	Field captionDisplacement:TVec2D = new TVec2D(5,0)
 	Field uncheckedTintColor:TColor
 	Field checkedTintColor:TColor
 	Field tintColor:TColor
 	Field tintEnabled:int = True
 
-	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(20,20)
+	Global _checkboxMinDimension:TVec2D = new TVec2D(20,20)
 	Global _typeDefaultFont:TBitmapFont
 
 
@@ -35,7 +35,7 @@ Type TGUICheckBox Extends TGUIButton
 
 
 	Method Create:TGUICheckbox(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, State)
+		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, State)
 	End Method
 
 	Method Create:TGUICheckbox(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
@@ -101,7 +101,7 @@ Type TGUICheckBox Extends TGUIButton
 	Method GetCheckboxDimension:TVec2D()
 		if not checkboxDimension
 			local dim:SRect = GetSprite().GetNinePatchInformation().borderDimension
-			checkboxDimension = new TVec2D.Init(..
+			checkboxDimension = new TVec2D(..
 				Max(_checkboxMinDimension.x, dim.GetLeft() + dim.GetRight()), ..
 				Max(_checkboxMinDimension.y, dim.GetTop() + dim.GetBottom()) ..
 			)
@@ -229,7 +229,7 @@ Type TGUICheckBox Extends TGUIButton
 		Super._UpdateScreenW()
 
 		if caption and caption.IsVisible() and caption.GetValue() <> ""
-			_screenRect.SetW( GetCheckboxDimension().x + caption.rect.position.x + caption.GetValueDimension().x )
+			_screenRect.SetW( GetCheckboxDimension().x + caption.rect.x + caption.GetValueDimension().x )
 		else
 			_screenRect.SetW( GetCheckboxDimension().x )
 		endif
@@ -242,7 +242,7 @@ Type TGUICheckBox Extends TGUIButton
 		Super._UpdateScreenH()
 
 		if caption and caption.IsVisible() and caption.GetValue() <> ""
-			_screenRect.SetH( Max(GetCheckboxDimension().y, caption.rect.position.y + caption.GetValueDimension().y + 5) )
+			_screenRect.SetH( Max(GetCheckboxDimension().y, caption.rect.y + caption.GetValueDimension().y + 5) )
 		else
 			_screenRect.SetH( GetCheckboxDimension().y )
 		endif
@@ -277,17 +277,17 @@ Type TGUICheckBox Extends TGUIButton
 	Method RepositionCaption:Int()
 		if not caption then return False
 
-		caption.rect.dimension.x = rect.GetW() - GetCheckboxDimension().x - captionDisplacement.x
+		caption.rect.SetW(rect.w - GetCheckboxDimension().x - captionDisplacement.x)
 
-		caption.rect.position.x = GetCheckboxDimension().x + captionDisplacement.x
+		caption.rect.SetX(GetCheckboxDimension().x + captionDisplacement.x)
 		'center first line to checkbox center
-		caption.rect.position.y = (GetCheckboxDimension().y - GetFont().GetMaxCharHeight()) / 2 + captionDisplacement.y
+		caption.rect.SetY((GetCheckboxDimension().y - GetFont().GetMaxCharHeight()) / 2 + captionDisplacement.y)
 	End Method
 
 
 	'override default draw-method
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenRect().position
+		Local atPoint:SVec2F = GetScreenRect().GetPosition()
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
@@ -309,7 +309,7 @@ Type TGUICheckBox Extends TGUIButton
 
 		Local sprite:TSprite = GetSprite()
 		if IsActive() or IsHovered() Then sprite = GetSpriteFromRegistry(GetSpriteName() + GetStateSpriteAppendix(), sprite)
-		if sprite then sprite.DrawArea(atPoint.getX(), atPoint.getY(), GetCheckboxDimension().x, GetCheckboxDimension().y)
+		if sprite then sprite.DrawArea(atPoint.x, atPoint.y, GetCheckboxDimension().x, GetCheckboxDimension().y)
 
 
 		'draw (un)checked mark at center of button
@@ -319,7 +319,7 @@ Type TGUICheckBox Extends TGUIButton
 		Else
 			useCheckSprite = GetUncheckedSprite()
 		EndIf
-		If useCheckSprite Then useCheckSprite.Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, ALIGN_CENTER_CENTER)
+		If useCheckSprite Then useCheckSprite.Draw(atPoint.x + int(GetCheckboxDimension().x/2), atPoint.y + int(GetCheckboxDimension().y/2), -1, ALIGN_CENTER_CENTER)
 
 		SetColor(oldCol)
 

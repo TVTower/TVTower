@@ -196,14 +196,18 @@ Type TFigure extends TFigureBase
 
 	Method HasToChangeFloor:Int()
 		if not GetTarget() then return FALSE
-		Return GetFloor( GetTargetMoveToPosition() ) <> GetFloor()
+		Return GetFloor( GetTargetMoveToPosition().y ) <> GetFloor()
 	End Method
 
 
-	Method GetFloor:Int(pos:TVec2D = Null)
-		'if we have no floor set in the pos, we return the current floor
-		If not pos Then pos = area.position
-		Return GetBuildingBase().getFloor(pos.y)
+	'return the current floor
+	Method GetFloor:Int()
+		Return GetBuildingBase().getFloor(area.y)
+	End Method
+
+	'return floor of given y position
+	Method GetFloor:Int(y:Float)
+		Return GetBuildingBase().getFloor(y)
 	End Method
 
 
@@ -328,7 +332,7 @@ Type TFigure extends TFigureBase
 				else
 					'set to elevator-targetx
 					oldPosition.setX(targetX) 'set tween position too
-					area.position.setX(targetX)
+					area.SetX(targetX)
 
 					if not reachedTemporaryTarget then onReachElevator()
 				endif
@@ -370,14 +374,14 @@ Type TFigure extends TFigureBase
 
 		'adjust/limit position based on location
 		If Not IsInElevator()
-			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( TBuildingBase.GetFloorY2(GetFloor()) )
+			If Not IsOnFloor() and not useAbsolutePosition Then area.SetY( TBuildingBase.GetFloorY2(GetFloor()) )
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
 			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und f�hrt zum Ruckeln im obersten Stock
-			If area.GetY() < TBuildingBase.GetFloorY2(13) Then area.position.setY( TBuildingBase.GetFloorY2(13) )
-			If area.GetY() - sprite.area.GetH() > TBuildingBase.GetFloorY2(0) Then area.position.setY( TBuildingBase.GetFloorY2(0) )
+			If area.y < TBuildingBase.GetFloorY2(13) Then area.SetY( TBuildingBase.GetFloorY2(13) )
+			If area.y - sprite.area.h > TBuildingBase.GetFloorY2(0) Then area.SetY( TBuildingBase.GetFloorY2(0) )
 		endif
 
 		return true
@@ -1067,7 +1071,7 @@ Type TFigure extends TFigureBase
 	'override
 	'instantly move a figure to the offscreen position
 	Method MoveToOffscreen:Int()
-		area.position.SetXY(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0))
+		area.SetXY(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0))
 	End Method
 
 
@@ -1078,8 +1082,8 @@ Type TFigure extends TFigureBase
 
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
-		Local newX:Int = area.GetX() + relX
-		Local newY:Int = GetBuildingBase().area.GetY() + TBuildingBase.GetFloorY2(GetFloor() + relYFloor) - 5
+		Local newX:Int = area.x + relX
+		Local newY:Int = GetBuildingBase().area.y + TBuildingBase.GetFloorY2(GetFloor() + relYFloor) - 5
 
 		newX = MathHelper.Clamp(newX, 10, GetBuildingBase().floorWidth - 10)
 
@@ -1103,8 +1107,9 @@ Type TFigure extends TFigureBase
 
 	Method GoOnBoardAndSendElevator:Int()
 		if not GetTarget() then return FALSE
-		If GetElevator().EnterTheElevator(Self, GetFloor(GetTargetMoveToPosition()))
-			GetElevator().SendElevator(GetFloor(GetTargetMoveToPosition()), Self)
+		Local floorOfTargetY:Int = GetFloor(GetTargetMoveToPosition().y)
+		If GetElevator().EnterTheElevator(Self, floorOfTargetY)
+			GetElevator().SendElevator(floorOfTargetY, Self)
 		EndIf
 	End Method
 
@@ -1157,8 +1162,8 @@ Type TFigure extends TFigureBase
 				If y<>-1 Then y = v.y
 			'create a new target
 			else
-				If x=-1 Then x = area.position.x
-				If y=-1 Then y = area.position.y
+				If x=-1 Then x = area.x
+				If y=-1 Then y = area.y
 			endif
 		endif
 
@@ -1168,7 +1173,7 @@ Type TFigure extends TFigureBase
 		local newTargetCoord:TVec2D
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		newTargetCoord = new TVec2D.Init(x, TBuildingBase.GetFloorY2(GetBuildingBase().GetFloor(y)) )
+		newTargetCoord = new TVec2D(x, TBuildingBase.GetFloorY2(GetBuildingBase().GetFloor(y)) )
 		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
@@ -1336,7 +1341,7 @@ Type TFigure extends TFigureBase
 				EndIf
 
 				If IsInElevator() and GetElevator().ReadyForBoarding
-					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMovetoPosition()))
+					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMovetoPosition().y))
 						GetElevator().LeaveTheElevator(Self)
 					EndIf
 				EndIf
@@ -1378,8 +1383,8 @@ Type TFigure extends TFigureBase
 		endif
 
 
-		local renderPos:TVec2D = GetRenderAtPosition()
-		RenderAt(renderPos.GetIntX(), renderPos.GetIntY())
+		local renderPos:SVec2F = GetRenderAtPosition()
+		RenderAt(Int(renderPos.x), Int(renderPos.y))
 
 		SetAlpha(oldAlpha)
 
@@ -1387,27 +1392,29 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-	Method GetRenderAtPosition:TVec2D()
+	Method GetRenderAtPosition:SVec2F()
 		'avoid shaking figures when standing - only use tween
 		'position when moving
-		local tweenPos:TVec2D
+		local tweenPosX:Float
+		local tweenPosY:Float
 
 		'also do not move with WorldTime being paused
 		'alternatively (also do not move when gamespeed is "0")
 		'-> and GetWorldTime().GetTimeFactor() > 0
 		if velocity.GetIntX() <> 0 and not GetWorldTime().IsPaused()
-			tweenPos = new TVec2D.Init(..
-				MathHelper.SteadyTween(oldPosition.x, area.getX(), GetDeltaTimer().GetTween()), ..
-				MathHelper.SteadyTween(oldPosition.y, area.getY(), GetDeltaTimer().GetTween()) ..
-			)
+			Local tween:Float = GetDeltaTimer().GetTween() 
+			tweenPosX = MathHelper.SteadyTween(oldPosition.x, area.x, tween)
+			tweenPosY = MathHelper.SteadyTween(oldPosition.y, area.y, tween)
 		else
-			tweenPos = area.position.Copy()
+			tweenPosX = area.x
+			tweenPosY = area.y
 		endif
 
 		'center figure
-		tweenPos.AddXY(- Float(ceil(area.GetW()/2)) + PosOffset.getX(), - sprite.area.GetH() + PosOffset.getY())
+		tweenPosX :+ -Float(ceil(area.w/2)) + PosOffset.x
+		tweenPosY :+ -sprite.area.h + PosOffset.y
 
-		return tweenPos
+		return new SVec2F(tweenPosX, tweenPosY)
 	End Method
 End Type
 
@@ -1427,10 +1434,10 @@ Type TFigureTarget extends TFigureTargetBase
 		if TVec2D(target)
 			return TVec2D(target)
 		elseif TRoomDoorBase(target)
-			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2 + TRoomDoorBase(target).stopOffset, TRoomDoorBase(target).area.GetY())
+			return new TVec2D(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2 + TRoomDoorBase(target).stopOffset, TRoomDoorBase(target).area.GetY())
 		elseif THotspot(target)
 			'attention: return GetY2() (bottom point) as this is used for figures too
-			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
+			return new TVec2D(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
 		endif
 		return null
 	End Function

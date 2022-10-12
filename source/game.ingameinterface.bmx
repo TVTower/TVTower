@@ -71,7 +71,7 @@ Type TInGameInterface
 	Field ChatContainsUnread:int = False
 	Field ChatShowHideLocked:int = False
 	Field hoveredMenuButton:int = 0
-	Field hoveredMenuButtonPos:TVec2D = new TVec2D.Init(0,0)
+	Field hoveredMenuButtonPos:TVec2D = new TVec2D(0,0)
 	'did text values change?
 	Field valuesChanged:int = True
 
@@ -91,7 +91,7 @@ Type TInGameInterface
 	Method Init:TInGameInterface()
 		if not chat
 			'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
-			chat = New TGUIGameChat.Create(New TVec2D.Init(515, 404), New TVec2D.Init(278,180), "InGame")
+			chat = New TGUIGameChat.Create(New TVec2D(515, 404), New TVec2D(278,180), "InGame")
 			'keep the chat entries visible
 			'chat.setDefaultHideEntryTime(10000)
 			chat.setOption(GUI_OBJECT_CLICKABLE, False)
@@ -104,7 +104,7 @@ Type TInGameInterface
 			chat.guiList.SetSize(chat.guiList.rect.GetW(), chat.guiList.rect.GetH()-10)
 
 			'reposition input
-			chat.guiInput.rect.position.setXY( 515, 354 )
+			chat.guiInput.rect.SetXY( 515, 354 )
 			chat.guiInput.SetSize( 280, 30 )
 			chat.guiInput.setMaxLength(200)
 			chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
@@ -176,15 +176,15 @@ Type TInGameInterface
 
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
-		noiseDisplace.Dimension.SetX(Max(0, noiseSprite.GetWidth() - tvOverlaySprite.GetWidth()))
-		noiseDisplace.Dimension.SetY(Max(0, noiseSprite.GetHeight() - tvOverlaySprite.GetHeight()))
+		noiseDisplace.SetW(Max(0, noiseSprite.GetWidth() - tvOverlaySprite.GetWidth()))
+		noiseDisplace.SetH(Max(0, noiseSprite.GetHeight() - tvOverlaySprite.GetHeight()))
 
 
 		'=== SETUP SPAWNPOINTS FOR TOASTMESSAGES ===
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,5, 395,300), new TVec2D.Init(0,0), "TOPLEFT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,5, 395,300), new TVec2D.Init(1,0), "TOPRIGHT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,230, 395,50), new TVec2D.Init(0,1), "BOTTOMLEFT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,230, 395,50), new TVec2D.Init(1,1), "BOTTOMRIGHT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle(5,5, 395,300), new TVec2D(0, 0), "TOPLEFT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle(400,5, 395,300), new TVec2D(1, 0), "TOPRIGHT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle(5,230, 395,50), new TVec2D(0, 1), "BOTTOMLEFT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle(400,230, 395,50), new TVec2D(1, 1), "BOTTOMRIGHT" )
 
 
 		'show chat if an chat entry was added
@@ -574,7 +574,7 @@ Type TInGameInterface
 				hoveredMenuButton = 1
 				hoveredMenuButtonPos.SetXY(309,577)
 
-				MenuToolTip.area.position.SetX(364)
+				MenuToolTip.area.SetX(364)
 				MenuToolTip.SetTitle(getLocale("MENU"))
 				MenuToolTip.SetContent(getLocale("OPEN_MENU"))
 				MenuToolTip.enabled = 1
@@ -590,7 +590,7 @@ Type TInGameInterface
 				hoveredMenuButton = 2
 				hoveredMenuButtonPos.SetXY(357,577)
 
-				MenuToolTip.area.position.SetX(410)
+				MenuToolTip.area.SetX(410)
 				MenuToolTip.SetTitle(getLocale("HELP"))
 				MenuToolTip.SetContent(getLocale("SHOW_HELP"))
 				MenuToolTip.enabled = 1
@@ -607,7 +607,7 @@ Type TInGameInterface
 				hoveredMenuButton = 3
 				hoveredMenuButtonPos.SetXY(400,577)
 
-				MenuToolTip.area.position.SetX(439)
+				MenuToolTip.area.SetX(439)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
 				MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 1))
 				MenuToolTip.enabled = 1
@@ -623,7 +623,7 @@ Type TInGameInterface
 				hoveredMenuButton = 4
 				hoveredMenuButtonPos.SetXY(429,577)
 
-				MenuToolTip.area.position.SetX(469)
+				MenuToolTip.area.SetX(469)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
 				MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 2))
 				MenuToolTip.enabled = 1
@@ -639,7 +639,7 @@ Type TInGameInterface
 				hoveredMenuButton = 5
 				hoveredMenuButtonPos.SetXY(457,577)
 
-				MenuToolTip.area.position.SetX(497)
+				MenuToolTip.area.SetX(497)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
 				MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 3))
 				MenuToolTip.enabled = 1
@@ -743,7 +743,7 @@ Type TInGameInterface
 			'noise on interface-tvscreen
 			ChangeNoiseTimer :+ deltaTime
 			If ChangeNoiseTimer >= 0.20
-				noiseDisplace.position.SetXY(Rand(0, int(noiseDisplace.dimension.GetX())),Rand(0, int(noiseDisplace.dimension.GetY())))
+				noiseDisplace.SetXY(Rand(0, int(noiseDisplace.w)),Rand(0, int(noiseDisplace.h)))
 				ChangeNoiseTimer = 0.0
 				NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
 			EndIf
@@ -1148,14 +1148,14 @@ Type TTooltipAudience Extends TTooltip
 			If Not showDetails Then Self.dirtyImage = True
 			showDetails = True
 			'backup position
-			If Not originalPos Then originalPos = area.position.Copy()
+			If Not originalPos Then originalPos = new TVec2D(area.x, area.y)
 
 		Else
 			If showDetails Then Self.dirtyImage = True
 			showDetails = False
 			'restore position
 			If originalPos
-				area.position.CopyFrom(originalPos)
+				area.SetXY(originalPos)
 				originalPos = Null
 			EndIf
 		EndIf

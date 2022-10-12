@@ -60,7 +60,7 @@ Type TGUISlider extends TGUIObject
 	Field _gaugeFilledSprite:TSprite
 	Field _handleSprite:TSprite
 	Field _handleDim:TVec2D = new TVec2D
-	Field _gaugeOffset:TVec2D = new TVec2D.Init(3,3)
+	Field _gaugeOffset:TVec2D = new TVec2D(3,3)
 	Field _gaugeAlpha:Float = 1.0
 	Field _showFilledGauge:int = True
 	Const DIRECTION_RIGHT:int = 0
@@ -89,7 +89,7 @@ Type TGUISlider extends TGUIObject
 		'the scroller itself ignores focus too
 		'self.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 
-		_handleDim = new TVec2D.Init(min(rect.GetW(), rect.GetH()), min(rect.GetW(), rect.GetH()))
+		_handleDim = new TVec2D(min(rect.w, rect.h), min(rect.w, rect.h))
 
     	GUIManager.Add(Self)
 		Return Self
@@ -228,9 +228,9 @@ Type TGUISlider extends TGUIObject
 	Method SetValueByMouse()
 		'convert current mouse position to local widget coordinates
 		'-9 is "manual adjustment"
-		local mousePos:TVec2D = New TVec2D.Init(..
-									MouseManager.x - GetScreenRect().GetX() - GetGaugeOffsetX(), ..
-									MouseManager.y - GetScreenRect().GetY() - GetGaugeOffsetY() ..
+		local mousePos:TVec2D = New TVec2D(..
+									MouseManager.x - GetScreenRect().x - GetGaugeOffsetX(), ..
+									MouseManager.y - GetScreenRect().x - GetGaugeOffsetY() ..
 								)
 
 		local scale:Float = (maxValue - minValue + 1) / Float(maxValue - minValue)
@@ -407,7 +407,7 @@ Type TGUISlider extends TGUIObject
 
 
 	'draw background element
-	Method DrawGauge(position:TVec2D)
+	Method DrawGauge(position:SVec2F)
 		local switchDirection:int = 0
 
 		if (direction = DIRECTION_LEFT) ..
@@ -435,7 +435,7 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
-	Method DrawGaugeHorizontal(position:TVec2D, switchDirection:int = 0)
+	Method DrawGaugeHorizontal(position:SVec2F, switchDirection:int = 0)
 		Local gaugeSprite:TSprite = GetGaugeSprite()
 		Local gaugeFilledSprite:TSprite
 
@@ -463,33 +463,33 @@ Type TGUISlider extends TGUIObject
 			case RENDERMODE_CONTINUOUS
 				'draw full "filled"
 				if steps = 0 and GetRelativeValue() >= 1.0
-					gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW, GetGaugeH())
+					gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), filledW, GetGaugeH())
 				'draw full "unfilled"
 				elseif steps = 0 and GetRelativeValue() <= 0.0
-					gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY() , w, GetGaugeH())
+					gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY() , w, GetGaugeH())
 				else
 					'filled one
 					if filledW > 0
 						if switchDirection
-							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW, GetGaugeH(), -1, TSprite.BORDER_RIGHT)
+							gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), filledW, GetGaugeH(), -1, TSprite.BORDER_RIGHT)
 						else
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW - gaugeFilledSprite.GetNinePatchInformation().contentBorder.GetRight(), GetGaugeH(), -1, TSprite.BORDER_RIGHT)
+							gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), filledW - gaugeFilledSprite.GetNinePatchInformation().contentBorder.GetRight(), GetGaugeH(), -1, TSprite.BORDER_RIGHT)
 						endif
 					endif
 
 					'unfilled portion
 					if w - filledW > gaugeSprite.GetMinWidth() - _handleDim.x
 						if switchDirection
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX() + Min(filledW, w-gaugeSprite.GetMinWidth()), position.getY() + GetGaugeOffsetY() , Max(w-filledW,gaugeSprite.GetMinWidth()) , GetGaugeH(), -1, TSprite.BORDER_LEFT)
+							gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX() + Min(filledW, w-gaugeSprite.GetMinWidth()), position.y + GetGaugeOffsetY() , Max(w-filledW, gaugeSprite.GetMinWidth()) , GetGaugeH(), -1, TSprite.BORDER_LEFT)
 						else
-							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX() + Min(filledW, w-gaugeSprite.GetMinWidth()), position.getY() + GetGaugeOffsetY() , Max(w-filledW,gaugeSprite.GetMinWidth()) , GetGaugeH(), -1, TSprite.BORDER_LEFT)
+							gaugeSprite.DrawArea(position.x + GetGaugeOffsetX() + Min(filledW, w-gaugeSprite.GetMinWidth()), position.y + GetGaugeOffsetY() , Max(w-filledW, gaugeSprite.GetMinWidth()) , GetGaugeH(), -1, TSprite.BORDER_LEFT)
 						endif
 					endif
 				endif
 
 			case RENDERMODE_DISCRETE
 				local stepW:int = w / float(steps+1)
-				local stepX:int = position.getX() + GetGaugeOffsetX() + GetGaugeOffsetY()*0.5
+				local stepX:int = position.x + GetGaugeOffsetX() + GetGaugeOffsetY()*0.5
 
 				'switch starting position and grow direction
 				if switchDirection
@@ -502,10 +502,10 @@ Type TGUISlider extends TGUIObject
 				for local i:int = 0 to steps
 					'unfilled/unreached values
 					if GetRelativeValue() <= i/float(steps) +0.05
-						gaugeSprite.DrawArea(stepX, position.getY() + GetGaugeOffsetY(), Abs(stepW) - GetGaugeOffsetY()*0.5, GetGaugeH())
+						gaugeSprite.DrawArea(stepX, position.y + GetGaugeOffsetY(), Abs(stepW) - GetGaugeOffsetY()*0.5, GetGaugeH())
 					'filled/reached values
 					else
-						gaugeFilledSprite.DrawArea(stepX, position.getY() + GetGaugeOffsetY(), Abs(stepW) - GetGaugeOffsetY()*0.5, GetGaugeH())
+						gaugeFilledSprite.DrawArea(stepX, position.y + GetGaugeOffsetY(), Abs(stepW) - GetGaugeOffsetY()*0.5, GetGaugeH())
 					endif
 					'DrawText(Left(i/float(steps), 4), stepX, position.getY() + GetGaugeOffsetY())
 					stepX :+ stepW
@@ -514,7 +514,7 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
-	Method DrawGaugeVertical(position:TVec2D, switchDirection:int = 0)
+	Method DrawGaugeVertical(position:SVec2F, switchDirection:int = 0)
 		Local gaugeSprite:TSprite = GetGaugeSprite()
 		Local gaugeFilledSprite:TSprite
 
@@ -543,33 +543,33 @@ Type TGUISlider extends TGUIObject
 			case RENDERMODE_CONTINUOUS
 				'draw full "filled"
 				if steps = 0 and GetRelativeValue() >= 1.0
-					gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), filledH)
+					gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), filledH)
 				'draw full "unfilled"
 				elseif steps = 0 and GetRelativeValue() <= 0.0
-					gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), h)
+					gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), h)
 				else
 					'filled one
 					if filledH > 0
 						if switchDirection
-							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), filledH, -1, TSprite.BORDER_BOTTOM)
+							gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), filledH, -1, TSprite.BORDER_BOTTOM)
 						else
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), Min(filledH, h - 1.5*gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_BOTTOM)
+							gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), Min(filledH, h - 1.5*gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_BOTTOM)
 						endif
 					endif
 
 					'unfilled portion
 					if h - filledH > gaugeSprite.GetMinHeight() - _handleDim.y
 						if switchDirection
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY() + Min(filledH, h - gaugeSprite.GetMinHeight()), GetGaugeW(), Max(h - filledH, gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_TOP)
+							gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY() + Min(filledH, h - gaugeSprite.GetMinHeight()), GetGaugeW(), Max(h - filledH, gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_TOP)
 						else
-							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY() + Min(filledH, h - gaugeSprite.GetMinHeight()), GetGaugeW(), Max(h - filledH, gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_TOP)
+							gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY() + Min(filledH, h - gaugeSprite.GetMinHeight()), GetGaugeW(), Max(h - filledH, gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_TOP)
 						endif
 					endif
 				endif
 
 			case RENDERMODE_DISCRETE
 				local stepH:int = h / float(steps+1)
-				local stepY:int = position.getY() + GetGaugeOffsetY() + GetGaugeOffsetX()*0.5
+				local stepY:int = position.y + GetGaugeOffsetY() + GetGaugeOffsetX()*0.5
 
 				'switch starting position and grow direction
 				if switchDirection
@@ -582,10 +582,10 @@ Type TGUISlider extends TGUIObject
 				for local i:int = 0 to steps
 					'unfilled/unreached values
 					if GetRelativeValue() <= i/float(steps) +0.05
-						gaugeSprite.DrawArea(position.GetX() + GetGaugeOffsetX(), stepY, GetGaugeW(), Abs(stepH) - GetGaugeOffsetX()*0.5)
+						gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), stepY, GetGaugeW(), Abs(stepH) - GetGaugeOffsetX()*0.5)
 					'filled/reached values
 					else
-						gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), stepY, GetGaugeW(), Abs(stepH) - GetGaugeOffsetX()*0.5)
+						gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), stepY, GetGaugeW(), Abs(stepH) - GetGaugeOffsetX()*0.5)
 					endif
 					stepY :+ stepH
 				Next
@@ -594,7 +594,7 @@ Type TGUISlider extends TGUIObject
 
 
 	'draw foreground element
-	Method DrawHandle(position:TVec2D)
+	Method DrawHandle(position:SVec2F)
 		local state:string = ""
 		If IsActive() then state = ".active"
 
@@ -619,7 +619,7 @@ Type TGUISlider extends TGUIObject
 					'switch direction?
 					if direction = DIRECTION_LEFT then offsetX = GetGaugeW() - offsetX - _handleDim.x
 
-					sprite.DrawArea(position.getX() + GetGaugeOffsetX() + offsetX, position.getY(), _handleDim.x, _handleDim.y)
+					sprite.DrawArea(position.x + GetGaugeOffsetX() + offsetX, position.y, _handleDim.x, _handleDim.y)
 
 				case DIRECTION_UP, DIRECTION_DOWN
 					local offsetY:int
@@ -639,7 +639,7 @@ Type TGUISlider extends TGUIObject
 					'switch direction?
 					if direction = DIRECTION_UP then offsetY = GetGaugeH() - offsetY - _handleDim.y
 
-					sprite.DrawArea(position.getX(), position.getY() + GetGaugeOffsetY() + offsetY, _handleDim.x, _handleDim.y)
+					sprite.DrawArea(position.x, position.y + GetGaugeOffsetY() + offsetY, _handleDim.x, _handleDim.y)
 			End Select
 		endif
 	End Method
@@ -649,11 +649,13 @@ Type TGUISlider extends TGUIObject
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
-		SetColor( 255, 255, 255 )
-		SetAlpha( oldColA * GetScreenAlpha() * _gaugeAlpha )
-		DrawGauge( GetScreenRect().position )
-		SetAlpha( oldColA * GetScreenAlpha() )
-		DrawHandle( GetScreenRect().position )
+		Local scrAlpha:Float = GetScreenAlpha()
+		Local scrPos:SVec2F = GetScreenRect().GetPosition()
+		SetColor(255, 255, 255)
+		SetAlpha(oldColA * scrAlpha * _gaugeAlpha)
+		DrawGauge(scrPos)
+		SetAlpha(oldColA * scrAlpha)
+		DrawHandle(scrPos)
 
 		rem
 		?debug

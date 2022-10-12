@@ -10,7 +10,7 @@ Import "Dig/base.gfx.gui.button.bmx"
 
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist Extends TPlannerList
-	Field displaceEpisodeTapes:TVec2D = New TVec2D.Init(6,5)
+	Field displaceEpisodeTapes:TVec2D = New TVec2D(6,5)
 	'area of all genres/filters including top/bottom-area
 	Field genresRect:TRectangle
 	Field genresCount:Int = -1
@@ -113,7 +113,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 	Method GetGenreSize:TVec2D()
 		if not genreSize
-			genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
+			genreSize = new TVec2D(GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.GetDimension())
 		endif
 
 		return genreSize
@@ -123,10 +123,10 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method GetGenresRect:TRectangle()
 		if not genresRect
 			'recalculate dimension of the area of all genres
-			genresRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), GetGenreSize().GetX(), 0)
-			genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
-			genresRect.dimension.y :+ TProgrammeLicenceFilter.GetVisibleCount() * GetGenreSize().GetY()
-			genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.GetH()
+			genresRect = New TRectangle.Init(Pos.x, Pos.y, GetGenreSize().x, 0)
+			genresRect.MoveH( GetSpriteFromRegistry("gfx_programmegenres_top.default").area.h)
+			genresRect.MoveH( TProgrammeLicenceFilter.GetVisibleCount() * GetGenreSize().y)
+			genresRect.MoveH( GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.h)
 		endif
 
 		return genresRect
@@ -136,7 +136,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	'override
 	Method GetEntrySize:TVec2D()
 		if not entrySize
-			entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+			entrySize = new TVec2D(GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.GetDimension())
 		endif
 
 		return entrySize
@@ -147,19 +147,19 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method GetEntriesRect:TRectangle()
 		if not entriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
-			entriesRect = New TRectangle.Init(GetGenresRect().GetX() - 170, GetGenresRect().GetY()+1, GetEntrySize().GetX(), 0)
+			entriesRect = New TRectangle.Init(GetGenresRect().x - 170, GetGenresRect().y+1, GetEntrySize().x, 0)
 			if ListSortVisible
-				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.GetH()
+				entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.h)
 			else
-				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+				entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_top.default").area.h)
 			endif
 			'max 10 licences per page
-			entriesRect.dimension.y :+ maxLicencesPerPage * GetEntrySize().GetY()
+			entriesRect.MoveH( maxLicencesPerPage * GetEntrySize().y)
 
 			if entriesPages > 1
-				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH()
+				entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.h)
 			else
-				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+				entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.h)
 			endif
 
 			'height added when button visible
@@ -174,10 +174,10 @@ Type TgfxProgrammelist Extends TPlannerList
 		if not subEntriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
 			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 174, GetEntriesRect().GetY() + 27, GetEntrySize().GetX(), 0)
-			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			subEntriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_top.default").area.h)
 			'max 10 licences per page
-			subEntriesRect.dimension.y :+ maxLicencesPerPage * GetEntrySize().GetY()
-			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+			subEntriesRect.MoveH( maxLicencesPerPage * GetEntrySize().y)
+			subEntriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.h)
 			'height added when button visible
 			'subEntriesRectButtonH = GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH() - GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 		endif
@@ -261,7 +261,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			'=== DRAW ===
 			Local currSprite:TSprite
 			'maybe it has changed since initialization
-			genreSize.CopyFrom( GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension )
+			genreSize.CopyFrom( GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.GetDimension() )
 			Local currY:Int = GetGenresRect().GetY()
 			Local currX:Int = GetGenresRect().GetX()
 			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, GetGenreSize().x - 12 - 5, GetGenreSize().y)
@@ -300,17 +300,17 @@ Type TgfxProgrammelist Extends TPlannerList
 
 				'genre background contains a 2px splitter (bottom + top)
 				'so add 1 pixel to textY
-				textRect.position.SetY(currY + 1)
+				textRect.SetY(currY + 1)
 
 				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
 				Local filterName:String = visibleFilters[i].GetCaption()
 
 
 				If licenceCount > 0
-					GetBitmapFontManager().baseFont.DrawBox(filterName + " (" +licenceCount+ ")", textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), sALIGN_LEFT_CENTER, SColor8.Black)
+					GetBitmapFontManager().baseFont.DrawBox(filterName + " (" +licenceCount+ ")", textRect.x, textRect.y, textRect.w, textRect.h, sALIGN_LEFT_CENTER, SColor8.Black)
 				Else
 					SetAlpha 0.25 * GetAlpha()
-					GetBitmapFontManager().baseFont.DrawBox(filterName, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), sALIGN_LEFT_CENTER, SColor8.Black)
+					GetBitmapFontManager().baseFont.DrawBox(filterName, textRect.x, textRect.y, textRect.w, textRect.h, sALIGN_LEFT_CENTER, SColor8.Black)
 					SetAlpha 4 * GetAlpha()
 				EndIf
 				'advance to next line
@@ -322,7 +322,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = visibleFilters.length-1
 					currSprite = GetSpriteFromRegistry("gfx_programmegenres_bottom."+entryDrawType)
 					currSprite.draw(currX, currY)
-					currY :+ currSprite.area.GetH()
+					currY :+ currSprite.area.h
 				EndIf
 			Next
 		EndIf
@@ -371,9 +371,9 @@ Type TgfxProgrammelist Extends TPlannerList
 		'it DOES change - causing the next page button width to increase and leave the rectangle
 		'was the wrong sprite referenced?
 		'what should be the effect of reading the size again?
-		entrySize.CopyFrom( GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension )
-		Local currY:Int = GetEntriesRect().GetY()
-		Local currX:Int = GetEntriesRect().GetX()
+		entrySize.CopyFrom( GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.GetDimension() )
+		Local currY:Int = GetEntriesRect().y
+		Local currX:Int = GetEntriesRect().x
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
@@ -500,13 +500,13 @@ Type TgfxProgrammelist Extends TPlannerList
 		if entriesPages > 1
 			local w:int = 0.5 * GetEntriesRect().GetW() - 14 - 20
 			if not entriesButtonPrev
-				entriesButtonPrev = new TGUIButton.Create(new TVec2D.Init(currX + 5 , currY - 23), new TVec2D.Init(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
+				entriesButtonPrev = new TGUIButton.Create(new TVec2D(currX + 5 , currY - 23), new TVec2D(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
 				entriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
 				'manage on our own
 				GuiManager.Remove(entriesButtonPrev)
 			endif
 			if not entriesButtonNext
-				entriesButtonNext = new TGUIButton.Create(new TVec2D.Init(currX + GetEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D.Init(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
+				entriesButtonNext = new TGUIButton.Create(new TVec2D(currX + GetEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
 				entriesButtonNext.spriteName = "gfx_gui_button.datasheet"
 				GuiManager.Remove(entriesButtonNext)
 			endif
@@ -842,13 +842,13 @@ Type TgfxProgrammelist Extends TPlannerList
 		if subEntriesPages > 1
 			local w:int = 0.5 * GetSubEntriesRect().GetW() - 14 - 20
 			if not subEntriesButtonPrev
-				subEntriesButtonPrev = new TGUIButton.Create(new TVec2D.Init(currX + 5 , currY - 23), new TVec2D.Init(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
+				subEntriesButtonPrev = new TGUIButton.Create(new TVec2D(currX + 5 , currY - 23), new TVec2D(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
 				subEntriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
 				'manage on our own
 				GuiManager.Remove(subEntriesButtonPrev)
 			endif
 			if not subEntriesButtonNext
-				subEntriesButtonNext = new TGUIButton.Create(new TVec2D.Init(currX + GetSubEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D.Init(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
+				subEntriesButtonNext = new TGUIButton.Create(new TVec2D(currX + GetSubEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
 				subEntriesButtonNext.spriteName = "gfx_gui_button.datasheet"
 				GuiManager.Remove(subEntriesButtonNext)
 			endif

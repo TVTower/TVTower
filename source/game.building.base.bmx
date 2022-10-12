@@ -75,7 +75,7 @@ Type TBuildingBase Extends TRenderableEntity
 
 
 	Method CenterToFloor:Int(floornumber:Int)
-		area.position.y = ((13 - floornumber) * floorHeight) - 115
+		area.SetY((13 - floornumber) * floorHeight - 115)
 	End Method
 
 

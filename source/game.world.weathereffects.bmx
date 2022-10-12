@@ -82,7 +82,7 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 		self.area = area.copy()
 
 		for local i:int = 0 until layers
-			ConfigureLayer(i+1, new TVec2D.Init(0, 0), new TVec2D.Init(0, 300+i*50), null)
+			ConfigureLayer(i+1, new TVec2D(0, 0), new TVec2D(0, 300+i*50), null)
 		Next
 		return self
 	End Method
@@ -270,16 +270,16 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		'comfing-from-side lightning
 		if spritesSide and spritesSide.length > 0 and Rand(0,10) < 3
 			if rand(0,1) = 0
-				lightning.Add("position", new TVec2D.Init(area.GetX(), rand(int(area.GetY()), int(area.GetY() - rand(0,60)))))
+				lightning.Add("position", new TVec2D(area.GetX(), rand(int(area.y), int(area.y - rand(0,60)))))
 				lightning.AddNumber("direction", 0)
 			else
-				lightning.Add("position", new TVec2D.Init(area.GetX2(), rand(int(area.GetY()), int(area.GetY() - rand(0,60)))))
+				lightning.Add("position", new TVec2D(area.GetX2(), rand(int(area.y), int(area.y - rand(0,60)))))
 				lightning.AddNumber("direction", 1)
 			endif
 			lightning.AddNumber("useSpritesSide", 1)
 			lightning.AddNumber("spriteNumber", rand(0, spritesSide.length-1))
 		else
-			lightning.Add("position", new TVec2D.Init(rand(int(area.GetX()), int(area.GetX2())), rand(int(area.GetY()), int(area.GetY() - rand(0,60)))))
+			lightning.Add("position", new TVec2D(rand(int(area.x), int(area.GetX2())), int(area.y) - rand(0,60)))
 			lightning.AddNumber("useSpritesSide", 0)
 			lightning.AddNumber("direction", rand(0,1))
 			lightning.AddNumber("spriteNumber", rand(0, sprites.length-1))
@@ -449,10 +449,10 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		flake.AddInt("spriteNumber", spriteNumber)
 		flake.Addint("direction", rand(0,1))
 
-		local pos:TVec2D = new TVec2D.Init(rand(int(area.GetX()), int(area.GetX2())), area.GetY() - rand(0, -60) - spriteHeight )
+		local pos:TVec2D = new TVec2D(rand(int(area.x), int(area.GetX2())), area.y + rand(0, 60) - spriteHeight )
 		flake.Add("position", pos)
 		flake.Add("oldPosition", pos.copy())	
-		flake.Add("velocity", new TVec2D.Init(rand(-10,10)/10.0, rand(75, 90) ))
+		flake.Add("velocity", new TVec2D(rand(-10,10)/10.0, rand(75, 90) ))
 		
 		flakes.AddLast(flake)
 	End Method
@@ -546,10 +546,9 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 			lifetimeBase = flake.GetInt("lifetimeBase", 1)
 			lifetimeBase = flake.GetInt("lifetimeBase", 1)
 
-			local tweenPos:TVec2D = new TVec2D.Init(..
-				MathHelper.Tween(oldPosition.x, pos.getX(), GetDeltaTimer().GetTween()), ..
-				MathHelper.Tween(oldPosition.y, pos.getY(), GetDeltaTimer().GetTween()) ..
-			)
+			Local t:Float = GetDeltaTimer().GetTween()
+			local tweenPos:TVec2D = new TVec2D(MathHelper.Tween(oldPosition.x, pos.x, t), ..
+				                               MathHelper.Tween(oldPosition.y, pos.y, t))
 			'fade out but after 50% of lifetime is gone
 			if lifetime/Float(lifeTimeBase) < 0.5
 				SetAlpha(oldA * effectAlpha * 2.0 * lifetime/Float(lifeTimeBase))
@@ -631,7 +630,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 			if useSprite then entity.sprite = useSprite
 			if not entity.sprite then entity.sprite = sprites[rand(0, sprites.length-1)]
 
-			entity.area.dimension.SetXY(entity.sprite.GetWidth(), entity.sprite.GetHeight())
+			entity.area.SetWH(entity.sprite.GetWidth(), entity.sprite.GetHeight())
 		Next
 	End Method
 
@@ -644,13 +643,13 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		if sprites then cloudSprite = sprites[rand(0, sprites.length-1)]
 		if cloudSprite
 			spriteEntity.SetSprite(cloudSprite)
-			spriteEntity.area.dimension.SetXY(cloudSprite.GetWidth(), cloudSprite.GetHeight())
+			spriteEntity.area.SetWH(cloudSprite.GetWidth(), cloudSprite.GetHeight())
 		else
-			spriteEntity.area.dimension.SetXY(100, 50)
+			spriteEntity.area.SetWH(100, 50)
 		endif
 
 		local i:int = clouds.Count()
-		spriteEntity.area.position.SetXY(Rand(-200,800) + area.GetX(), - 30 + Rand(0,40) + area.GetY())
+		spriteEntity.area.MoveXY(Rand(-200,800), -30 + Rand(0,40))
 		spriteEntity.velocity.SetX(2.3 + Rand(0, 20)/10.0)
 
 		cloud.AddNumber(LSVelocityX, spriteEntity.velocity.GetX())
@@ -689,10 +688,10 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 
 			'if weather does not allow clouds, do not wrap offscreen clouds
 			if allowWrapping
-				if entity.velocity.GetX() > 0 and entity.area.GetX() > area.GetX2()
-					entity.area.position.SetX(area.GetX() -(entity.area.GetW()+1))
-				elseif entity.velocity.GetX() < 0 and entity.area.GetX() < area.GetX() - (entity.area.GetW()+1)
-					entity.area.position.SetX(area.GetX2() + 1)
+				if entity.velocity.GetX() > 0 and entity.area.x > area.GetX2()
+					entity.area.SetX(area.x -(entity.area.w+1))
+				elseif entity.velocity.GetX() < 0 and entity.area.x < area.x - (entity.area.w+1)
+					entity.area.SetX(area.GetX2() + 1)
 				endif
 			endif
 		Next

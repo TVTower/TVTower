@@ -9,7 +9,7 @@ Import "base.gfx.gui.bmx"
 
 Type TGUIAccordeonPanel Extends TGUIObject
 	Field isOpen:Int = False
-	Field fixedSize:TVec2D = New TVec2D.Init(-1,-1)
+	Field fixedSize:TVec2D = New TVec2D(-1,-1)
 
 
 	Method GetClassName:String()

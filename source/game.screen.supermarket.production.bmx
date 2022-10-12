@@ -35,6 +35,15 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Field currentProductionConcept:TProductionConcept
 	Global castSortType:Int = 0
 
+	Global evKey_supermarket_customproduction:TLowerString = new TLowerString("supermarket_customproduction")
+	Global evKey_supermarket_customproduction_productionconceptbox:TLowerString = new TLowerString("supermarket_customproduction_productionconceptbox")
+	Global evKey_supermarket_customproduction_newproduction:TLowerString = new TLowerString("supermarket_customproduction_newproduction")
+	Global evKey_supermarket_customproduction_productionbox:TLowerString = new TLowerString("supermarket_customproduction_productionbox")
+	Global evKey_supermarket_customproduction_productionbox_modal:TLowerString = new TLowerString("supermarket_customproduction_productionbox_modal")
+	Global evKey_supermarket_customproduction_castbox:TLowerString = new TLowerString("supermarket_customproduction_castbox")
+	Global evKey_supermarket_customproduction_castbox_modal:TLowerString = new TLowerString("supermarket_customproduction_castbox_modal")
+
+
 	Global hoveredGuiCastItem:TGUICastListItem
 	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
 
@@ -349,7 +358,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If editTextsWindow Then editTextsWindow.Remove()
 
 		GetCurrentPlayer().setHotKeysEnabled(False)
-		editTextsWindow = New TGUIProductionEditTextsModalWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,220), "supermarket_customproduction_productionbox_modal")
+		editTextsWindow = New TGUIProductionEditTextsModalWindow.Create(New TVec2D(250,60), New TVec2D(300,220), "supermarket_customproduction_productionbox_modal")
 		editTextsWindow.SetZIndex(100000)
 		editTextsWindow.SetConcept(GetInstance().currentProductionConcept)
 		editTextsWindow.Open()
@@ -764,7 +773,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'=== CAST ===
 		'============
 		If Not castSlotList
-			castSlotList = New TGUICastSlotList.Create(New TVec2D.Init(300,200), New TVec2D.Init(200, 200), "supermarket_customproduction_castbox")
+			castSlotList = New TGUICastSlotList.Create(New TVec2D(300,200), New TVec2D(200, 200), "supermarket_customproduction_castbox")
 		EndIf
 
 		castSlotList.SetSlotMinDimension(230, 42)
@@ -778,7 +787,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'=== PRODUCTION COMPANY SELECT ===
 		If Not productionCompanySelect
-			productionCompanySelect = New TGUIDropDown.Create(New TVec2D.Init(600,200), New TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
+			productionCompanySelect = New TGUIDropDown.Create(New TVec2D(600,200), New TVec2D(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
 			productionCompanySelect.SetListContentHeight(4*35)
 		EndIf
 		'entries added during ReloadProductionConceptContent()
@@ -787,7 +796,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'=== PRODUCTION WEIGHTS ===
 		For Local i:Int = 0 To productionFocusSlider.length -1
 			If Not productionFocusSlider[i]
-				productionFocusSlider[i] = New TGUISlider.Create(New TVec2D.Init(640,300 + i*25), New TVec2D.Init(150,22), "0", "supermarket_customproduction_productionbox")
+				productionFocusSlider[i] = New TGUISlider.Create(New TVec2D(640,300 + i*25), New TVec2D(150,22), "0", "supermarket_customproduction_productionbox")
 			EndIf
 			productionFocusSlider[i].SetValueRange(0,10)
 			productionFocusSlider[i].steps = 10
@@ -802,7 +811,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'=== EDIT TEXTS BUTTON ===
 		If Not editTextsButton
-			editTextsButton = New TGUIButton.Create(New TVec2D.Init(530, 26), New TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
+			editTextsButton = New TGUIButton.Create(New TVec2D(530, 26), New TVec2D(30, 28), "...", "supermarket_customproduction_newproduction")
 		EndIf
 		editTextsButton.disable()
 		editTextsButton.caption.SetSpriteName("gfx_datasheet_icon_pencil")
@@ -812,7 +821,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'=== FINISH CONCEPT BUTTON ===
 		If Not finishProductionConcept
-			finishProductionConcept = New TGUIButton.Create(New TVec2D.Init(20, 220), New TVec2D.Init(100, 28), "...", "supermarket_customproduction_newproduction")
+			finishProductionConcept = New TGUIButton.Create(New TVec2D(20, 220), New TVec2D(100, 28), "...", "supermarket_customproduction_newproduction")
 		EndIf
 		finishProductionConcept.caption.SetSpriteName("gfx_datasheet_icon_money")
 		finishProductionConcept.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_LEFT_OF_TEXT3 )
@@ -822,13 +831,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'=== PRODUCTION TAKEOVER CHECKBOX ===
 		If Not productionConceptTakeOver
-			productionConceptTakeOver = New TGUICheckbox.Create(New TVec2D.Init(20, 220), New TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
+			productionConceptTakeOver = New TGUICheckbox.Create(New TVec2D(20, 220), New TVec2D(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
 		EndIf
 		productionConceptTakeOver.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION CONCEPT LIST ===
 		If Not productionConceptList
-			productionConceptList = New TGUISelectList.Create(New TVec2D.Init(20,20), New TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
+			productionConceptList = New TGUISelectList.Create(New TVec2D(20,20), New TVec2D(150,180), "supermarket_customproduction_productionconceptbox")
 		EndIf
 		'scroll one concept per "scroll"
 		productionConceptList.scrollItemHeightPercentage = 1.0
@@ -891,7 +900,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			'skip concepts already getting produced
 			If productionConcept.IsProductionStarted() Then Continue
 
-			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D.Init(150,40), "concept")
+			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D(150,40), "concept")
 			item.SetMode( TGuiProductionConceptSelectListItem.MODE_SUPERMARKET ) 
 
 			'done in TGuiProductionConceptSelectListItem.New() already
@@ -959,12 +968,12 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 		EndIf
 
-		GuiManager.Update( TLowerString.Create("supermarket_customproduction_castbox_modal") )
-		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
-		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
-		GuiManager.Update( TLowerString.Create("supermarket_customproduction_newproduction") )
-		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionbox") )
-		GuiManager.Update( TLowerString.Create("supermarket_customproduction_castbox") )
+		GuiManager.Update(evKey_supermarket_customproduction_castbox_modal)
+		GuiManager.Update(evKey_supermarket_customproduction_productionbox_modal)
+		GuiManager.Update(evKey_supermarket_customproduction_productionconceptbox)
+		GuiManager.Update(evKey_supermarket_customproduction_newproduction)
+		GuiManager.Update(evKey_supermarket_customproduction_productionbox)
+		GuiManager.Update(evKey_supermarket_customproduction_castbox)
 
 		If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1))
 			'leaving room now
@@ -1057,14 +1066,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		If currentProductionConcept
 			'=== CHECK AND START BOX ===
-			outer.SetXY(10, 225)
-			outer.dimension.SetXY(210,145)
-			contentX = skin.GetContentX(outer.GetX())
-			contentY = skin.GetContentY(outer.GetY())
-			contentW = skin.GetContentW(outer.GetW())
-			contentH = skin.GetContentH(outer.GetH())
+			outer.SetXYWH(10, 225, 210, 145)
+			contentX = skin.GetContentX(outer.x)
+			contentY = skin.GetContentY(outer.y)
+			contentW = skin.GetContentW(outer.w)
+			contentH = skin.GetContentH(outer.h)
 
-			buttonAreaH = finishProductionConcept.rect.GetH() + 2*buttonAreaPaddingY
+			buttonAreaH = finishProductionConcept.rect.h + 2*buttonAreaPaddingY
 
 			'reset
 			contentY = contentY
@@ -1117,12 +1125,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			If Not currentProductionConcept.IsFocusPointsComplete() Then msgAreaH :+ msgH + msgPaddingY
 			outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
 
-			outer.SetXY(225, 15)
-			outer.dimension.SetXY(350, outerH)
-			contentX = skin.GetContentX(outer.GetX())
-			contentY = skin.GetContentY(outer.GetY())
-			contentW = skin.GetContentW(outer.GetW())
-			contentH = skin.GetContentH(outer.GetH())
+			outer.SetXYWH(225, 15, 350, outerH)
+			contentX = skin.GetContentX(outer.x)
+			contentY = skin.GetContentY(outer.y)
+			contentW = skin.GetContentW(outer.w)
+			contentH = skin.GetContentH(outer.h)
 
 			'reset
 			contentY = contentY
@@ -1147,7 +1154,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
 			'reposition cast list
-			If castSlotList.rect.getX() <> contentX + 5
+			If castSlotList.rect.x <> contentX + 5
 				castSlotList.SetPosition(contentX +5, contentY + 3)
 				'-5 => 210 height, each slot 42px, so 5 slots fit
 				castSlotList.SetSize(contentW - 10, castAreaH - 5 )
@@ -1191,12 +1198,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			outerH = outerSizeH + titleH + productionCompanyH + productionFocusH
 
-			outer.SetXY(580, 15)
-			outer.dimension.SetXY(210, outerH)
-			contentX = skin.GetContentX(outer.GetX())
-			contentY = skin.GetContentY(outer.GetY())
-			contentW = skin.GetContentW(outer.GetW())
-			contentH = skin.GetContentH(outer.GetH())
+			outer.SetXYWH(580, 15, 210, outerH)
+			contentX = skin.GetContentX(outer.x)
+			contentY = skin.GetContentY(outer.y)
+			contentW = skin.GetContentW(outer.w)
+			contentH = skin.GetContentH(outer.h)
 
 
 			'reset
@@ -1209,7 +1215,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			'reposition dropdown
-			If productionCompanySelect.rect.getX() <> contentX + 5
+			If productionCompanySelect.rect.x <> contentX + 5
 				productionCompanySelect.SetPosition(contentX + 5, contentY + 20)
 				productionCompanySelect.SetSize(contentW - 10, -1)
 			EndIf
@@ -1258,16 +1264,16 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_newproduction") )
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox") )
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox") )
-	'		GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox"), -1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
+			GuiManager.Draw(evKey_supermarket_customproduction_productionconceptbox)
+			GuiManager.Draw(evKey_supermarket_customproduction_newproduction)
+			GuiManager.Draw(evKey_supermarket_customproduction_productionbox)
+			GuiManager.Draw(evKey_supermarket_customproduction_castbox)
+			'GuiManager.Draw(evKey_supermarket_customproduction_castbox, -1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
 
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction") )
-	'		GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_DRAGGED) )
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox_modal") )
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
+			GuiManager.Draw(evKey_supermarket_customproduction)
+			'GuiManager.Draw(evKey_supermarket_customproduction_castbox, -1000,-1000, GUIMANAGER_TYPES_DRAGGED) )
+			GuiManager.Draw(evKey_supermarket_customproduction_castbox_modal)
+			GuiManager.Draw(evKey_supermarket_customproduction_productionbox_modal)
 
 			'draw datasheet if needed
 			If hoveredGuiCastItem 
@@ -1309,9 +1315,9 @@ Type TGUIProductionModalWindow Extends TGUIModalWindow
 		darkenedAreaAlpha = 0.25 '0.5 is default
 
 
-		buttonOK = New TGUIButton.Create(New TVec2D.Init(10, dimension.GetY() - 44), New TVec2D.Init(136, 28), "OK", "")
+		buttonOK = New TGUIButton.Create(New TVec2D(10, dimension.GetY() - 44), New TVec2D(136, 28), "OK", "")
 		buttonOK.spriteName = "gfx_gui_button.datasheet"
-		buttonCancel = New TGUIButton.Create(New TVec2D.Init(dimension.GetX() - 15 - 136, dimension.GetY() - 44), New TVec2D.Init(136, 28), "Cancel", "")
+		buttonCancel = New TGUIButton.Create(New TVec2D(dimension.GetX() - 15 - 136, dimension.GetY() - 44), New TVec2D(136, 28), "Cancel", "")
 		buttonCancel.spriteName = "gfx_gui_button.datasheet"
 
 		AddChild(buttonOK)
@@ -1333,8 +1339,8 @@ Type TGUIProductionModalWindow Extends TGUIModalWindow
 
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Super.SetSize(w, h)
-		If buttonOK Then buttonOK.rect.position.SetY( rect.dimension.GetY() - 44)
-		If buttonCancel Then buttonCancel.rect.position.SetY( rect.dimension.GetY() - 44)
+		If buttonOK Then buttonOK.rect.SetY( rect.h - 44)
+		If buttonCancel Then buttonCancel.rect.SetY( rect.h - 44)
 	End Method
 
 
@@ -1386,7 +1392,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	Method Create:TGUISelectCastWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		jobFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(15,12), New TVec2D.Init(130,-1), "Hauptberuf", 128, "")
+		jobFilterSelect = New TGUIDropDown.Create(New TVec2D(15,12), New TVec2D(130,-1), "Hauptberuf", 128, "")
 		jobFilterSelect.SetZIndex( GetZIndex() + 10)
 		jobFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		jobFilterSelect.SetListContentHeight(180)
@@ -1405,7 +1411,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		Next
 
 
-		genderFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(152,12), New TVec2D.Init(90,-1), "Alle", 128, "")
+		genderFilterSelect = New TGUIDropDown.Create(New TVec2D(152,12), New TVec2D(90,-1), "Alle", 128, "")
 		genderFilterSelect.SetZIndex( GetZIndex() + 10)
 		genderFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		genderFilterSelect.SetListContentHeight(60)
@@ -1427,19 +1433,19 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 			genderFilterSelect.AddItem(item)
 		Next
 
-		sortCastButton = New TGUIButton.Create(New TVec2D.Init(250,12), New TVec2D.Init(30, 28), "", "")
+		sortCastButton = New TGUIButton.Create(New TVec2D(250,12), New TVec2D(30, 28), "", "")
 		sortCastButton.enable()
 		sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
 		sortCastButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
 		sortCastButton.spriteName = "gfx_gui_button.datasheet"
 
-		castSelectList = New TGUICastSelectList.Create(New TVec2D.Init(15,50), New TVec2D.Init(270, dimension.y - 103), "")
+		castSelectList = New TGUICastSelectList.Create(New TVec2D(15,50), New TVec2D(270, dimension.y - 103), "")
 
 
 		sortCastTooltip = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
 		sortCastTooltip.parentArea = New TRectangle
 		sortCastTooltip.SetOrientationPreset("TOP")
-		sortCastTooltip.offset = New TVec2D.Init(0,+5)
+		sortCastTooltip.offset = New TVec2D(0,+5)
 		sortCastTooltip.SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 		'standard icons should need a bit longer for tooltips to show up
 		sortCastTooltip.dwellTime = 50
@@ -1752,25 +1758,25 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 	Method Create:TGUIProductionEditTextsModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		labelTitle = New TGUILabel.Create(New TVec2D.Init(15,9), GetLocale("TITLE"), "")
-		labelDescription = New TGUILabel.Create(New TVec2D.Init(15,57), GetLocale("DESCRIPTION"), "")
-		labelEpisode = New TGUILabel.Create(New TVec2D.Init(15,112), GetLocale("EPISODE"), "")
+		labelTitle = New TGUILabel.Create(New TVec2D(15,9), GetLocale("TITLE"), "")
+		labelDescription = New TGUILabel.Create(New TVec2D(15,57), GetLocale("DESCRIPTION"), "")
+		labelEpisode = New TGUILabel.Create(New TVec2D(15,112), GetLocale("EPISODE"), "")
 		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 13, BOLDFONT) )
-		labelSubTitle = New TGUILabel.Create(New TVec2D.Init(15,134), GetLocale("TITLE"), "")
-		labelSubDescription = New TGUILabel.Create(New TVec2D.Init(15,177), GetLocale("DESCRIPTION"), "")
+		labelSubTitle = New TGUILabel.Create(New TVec2D(15,134), GetLocale("TITLE"), "")
+		labelSubDescription = New TGUILabel.Create(New TVec2D(15,177), GetLocale("DESCRIPTION"), "")
 
-		inputTitle = New TGUIInput.Create(New TVec2D.Init(15,12+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
-		inputDescription = New TGUIInput.Create(New TVec2D.Init(15,60+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 512, "")
-		inputSubTitle = New TGUIInput.Create(New TVec2D.Init(15,137+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
-		inputSubDescription = New TGUIInput.Create(New TVec2D.Init(15,180+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 512, "")
+		inputTitle = New TGUIInput.Create(New TVec2D(15,12+13), New TVec2D(245,-1), GetLocale("TITLE"), 128, "")
+		inputDescription = New TGUIInput.Create(New TVec2D(15,60+13), New TVec2D(245,-1), GetLocale("DESCRIPTION"), 512, "")
+		inputSubTitle = New TGUIInput.Create(New TVec2D(15,137+13), New TVec2D(245,-1), GetLocale("TITLE"), 128, "")
+		inputSubDescription = New TGUIInput.Create(New TVec2D(15,180+13), New TVec2D(245,-1), GetLocale("DESCRIPTION"), 512, "")
 
-		clearTitle = New TGUIButton.Create(New TVec2D.Init(15+245, 12 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
+		clearTitle = New TGUIButton.Create(New TVec2D(15+245, 12 + 13 + 2), New TVec2D(25, 25), "x", "")
 		clearTitle.spriteName = "gfx_gui_button.datasheet"
-		clearDescription = New TGUIButton.Create(New TVec2D.Init(15+245, 60 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
+		clearDescription = New TGUIButton.Create(New TVec2D(15+245, 60 + 13 + 2), New TVec2D(25, 25), "x", "")
 		clearDescription.spriteName = "gfx_gui_button.datasheet"
-		clearSubTitle = New TGUIButton.Create(New TVec2D.Init(15+245, 137 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
+		clearSubTitle = New TGUIButton.Create(New TVec2D(15+245, 137 + 13 + 2), New TVec2D(25, 25), "x", "")
 		clearSubTitle.spriteName = "gfx_gui_button.datasheet"
-		clearSubDescription = New TGUIButton.Create(New TVec2D.Init(15+245, 180 + 13 + 2), New TVec2D.Init(25, 26), "x", "")
+		clearSubDescription = New TGUIButton.Create(New TVec2D(15+245, 180 + 13 + 2), New TVec2D(25, 26), "x", "")
 		clearSubDescription.spriteName = "gfx_gui_button.datasheet"
 
 
@@ -2184,7 +2190,7 @@ Type TGUICastSlotList Extends TGUISlotList
 	Method OpenSelectCastWindow(job:Int, gender:Int=-1)
 		If selectCastWindow Then selectCastWindow.Remove()
 
-		selectCastWindow = New TGUISelectCastWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,270), _limitToState+"_modal")
+		selectCastWindow = New TGUISelectCastWindow.Create(New TVec2D(250,60), New TVec2D(300,270), _limitToState+"_modal")
 		selectCastWindow.SetZIndex(100000)
 		selectCastWindow.selectJobID = job
 		selectCastWindow.listOnlyJobID = job
@@ -2227,7 +2233,7 @@ Type TGUICastSlotList Extends TGUISlotList
 
 	'called when trying to "ctrl + v"
 	Method PasteFromClipboard:Int () override
-		local coord:TVec2D = new TVec2D.Init(MouseManager.x, MouseManager.y)
+		local coord:TVec2D = new TVec2D(MouseManager.x, MouseManager.y)
 		Local slot:Int = GetSlotByCoord(coord, True)
 		
 		Local appData:String[] = String( GetAppClipboard() ).Split(":")
@@ -2244,7 +2250,7 @@ Type TGUICastSlotList Extends TGUISlotList
 rem
 	'called when trying to "ctrl + v"
 	Method CopyToClipboard:Int() override
-		local coord:TVec2D = new TVec2D.Init(MouseManager.x, MouseManager.y)
+		local coord:TVec2D = new TVec2D(MouseManager.x, MouseManager.y)
 		Local slot:Int = GetSlotByCoord(coord, True)
 		Local item:TGUICastListItem = TGUICastListItem(GetItemBySlot(slot))
 
@@ -2284,14 +2290,14 @@ endrem
 		If RestrictViewport()
 			SetAlpha 0.5 * GetAlpha()
 
-			Local atPoint:TVec2D = GetScreenRect().position
+			Local atPoint:SVec2F = GetScreenRect().GetPosition()
 
 			For Local slot:Int = 0 Until _slots.length
 			'	local pos:TVec3D = GetSlotOrCoord(slot)
 				If _slots[slot] Then Continue
 				If slotJob.length < slot Then Continue
 
-				Local coord:TVec3D = GetSlotCoord(slot)
+				Local coord:SVec3F = GetSlotCoord(slot)
 
 				Local job:TPersonProductionJob = GetSlotJob(slot)
 
@@ -2310,9 +2316,9 @@ endrem
 	'TODO: nur zeichnen, wenn innerhalb "panel rect"
 				If MouseManager._ignoreFirstClick 'touch mode
 '					TGUICastListItem.DrawCast(atPoint.GetX() + pos.getX(), atPoint.GetY() + pos.getY(), _slotMinDimension.getX(), GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
-					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), Null, 0,0,0, gender, 0.35)
+					TGUICastListItem.DrawCast(GetScreenRect().x + coord.x, GetScreenRect().y + coord.y, guiEntriesPanel.GetContentScreenRect().w-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), Null, 0,0,0, gender, 0.35)
 				Else
-					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), Null, 0,0,0, gender, 0.35)
+					TGUICastListItem.DrawCast(GetScreenRect().x + coord.x, GetScreenRect().y + coord.y, guiEntriesPanel.GetContentScreenRect().w-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), Null, 0,0,0, gender, 0.35)
 				EndIf
 			Next
 			SetAlpha 2.0 * GetAlpha()
@@ -2508,27 +2514,27 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
-	Method getDimension:TVec2D()
+	Method GetDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 295
 		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
-		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetSpriteFromRegistry("gfx_datasheet_cast_icon").GetHeight())
+		Local w:Float = maxWidth
+		Local h:Float = GetSpriteFromRegistry("gfx_datasheet_cast_icon").GetHeight()
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 
 
@@ -3086,7 +3092,7 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 
 	Method CreateSimple:TGUIProductionCompanyDropDownItem(company:TProductionCompanyBase)
 		'make it "unique" enough
-		Self.Create(Null, New TVec2D.Init(100, 35), company.name+" [Lvl: "+company.GetLevel()+"]")
+		Self.Create(Null, New TVec2D(100, 35), company.name+" [Lvl: "+company.GetLevel()+"]")
 
 		data = New TData.Add("productionCompany", company)
 

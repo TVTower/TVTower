@@ -208,10 +208,11 @@ Type TGUITabGroup Extends TGUIObject
 		For Local i:Int = 0 Until buttons.length
 			If Not buttons[i] Then Continue
 
-'print "  buttons["+i+"].rect.position.SetX("+buttonX+")   screenWidth="+buttons[i].GetScreenRect().GetW()
-			buttons[i].rect.position.SetX(buttonX)
+'print "  buttons["+i+"].rect.SetX("+buttonX+")   screenWidth="+buttons[i].GetScreenRect().GetW()
+			buttons[i].rect.SetX(buttonX)
 
-			buttonX :+ buttons[i].GetScreenRect().GetW() + Max(0, (buttonSpacing - buttons[i].GetScreenRect().GetW()))
+			Local buttonScreenWidth:Float = buttons[i].GetScreenRect().w
+			buttonX :+ buttonScreenWidth + Max(0, (buttonSpacing - buttonScreenWidth))
 		Next
 
 

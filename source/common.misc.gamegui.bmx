@@ -58,7 +58,7 @@ End Type
 
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Global spriteDimension:TVec2D
-	Global defaultSpriteDimension:TVec2D = New TVec2D.Init(24, 24)
+	Global defaultSpriteDimension:TVec2D = New TVec2D(24, 24)
 
 
 	Method GetClassName:String()
@@ -68,7 +68,7 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 
     Method Create:TGUISpriteDropDownItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		If Not dimension
-			dimension = New TVec2D.Init(-1, GetSpriteDimension().y + 2)
+			dimension = New TVec2D(-1, GetSpriteDimension().y + 2)
 		Else
 			dimension.x = Max(dimension.x, GetSpriteDimension().x)
 			dimension.y = Max(dimension.y, GetSpriteDimension().y)
@@ -148,8 +148,8 @@ Type TGUIChatWindow Extends TGUIGameWindow
 
 		guiPanel = AddContentBox(0, 0, GetContentScreenRect().GetIntW(), -1)
 
-		'guiChat = New TGUIChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
-		guiChat = New TGUIGameChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
+		'guiChat = New TGUIChat.Create(New TVec2D(0,0), New TVec2D(-1,-1), limitState)
+		guiChat = New TGUIGameChat.Create(New TVec2D(0,0), New TVec2D(-1,-1), limitState)
 
 		'panel manages the chat and window manages the panel
 		guiPanel.AddChild(guiChat)
@@ -245,7 +245,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 			Next
 		EndIf
 
-		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TVec2D.Init(displaceX, maxOtherBoxesY + displaceY), New TVec2D.Init(w, h), "")
+		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TVec2D(displaceX, maxOtherBoxesY + displaceY), New TVec2D(w, h), "")
 
 		box.spriteBaseName = childSpriteBaseName
 		box.spriteAlpha = 1.0
@@ -423,27 +423,28 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-	Method getDimension:TVec2D()
+	Method GetDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel( GetFirstParentalObject("tguiscrollablepanel") )
 		Local maxWidth:Int = 200
 		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
+		Local w:Float = maxWidth
+		Local h:Float = GetBitmapFontManager().baseFont.GetMaxCharHeight()
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 
 

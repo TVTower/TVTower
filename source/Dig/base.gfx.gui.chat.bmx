@@ -50,7 +50,7 @@ Type TGUIChat Extends TGUIPanel
 	Method Create:TGUIChat(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		guiList = New TGUIListBase.Create(New TVec2D.Init(0,0), New TVec2D.Init(GetContentScreenRect().GetW(),GetContentScreenRect().GetH()), limitState)
+		guiList = New TGUIListBase.Create(New TVec2D(0,0), New TVec2D(GetContentScreenRect().GetW(),GetContentScreenRect().GetH()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.SetAutoSortItems(False)
 		guiList.SetAcceptDrop("")
@@ -58,7 +58,7 @@ Type TGUIChat Extends TGUIPanel
 		guiList.SetAutoScroll(True)
 		guiList.SetBackground(Null)
 
-		guiInput = New TGUIInput.Create(New TVec2D.Init(0, dimension.y),New TVec2D.Init(dimension.x,-1), "", 32, limitState)
+		guiInput = New TGUIInput.Create(New TVec2D(0, dimension.y),New TVec2D(dimension.x,-1), "", 32, limitState)
 		guiInput.setParent(Self)
 
 		'resize base and move child elements
@@ -257,8 +257,8 @@ Type TGUIChat Extends TGUIPanel
 		AddEntry( entry )
 		
 		'now we know the actual content and resize properly
-		local dim:TVec2D = entry.GetDimension()
-		entry.SetSize(dim.GetX(), dim.GetY())
+		local dim:SVec2F = entry.GetDimension()
+		entry.SetSize(dim.x, dim.y)
 
 	End Method
 
@@ -333,8 +333,8 @@ Type TGUIChatEntry Extends TGUIListItem
 		SetShowtime( 1000 )
 
 		'now we know the actual content and resize properly
-		local dim:TVec2D = GetDimension()
-		SetSize(dim.GetX(), dim.GetY())
+		local dim:SVec2F = GetDimension()
+		SetSize(dim.x, dim.y)
 
 		GUIManager.add(Self)
 
@@ -342,7 +342,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method GetDimension:TVec2D() override
+	Method GetDimension:SVec2F() override
 		Local move:SVec2I
 		Local senderName:String = Data.getString("senderName")
 		If senderName
@@ -385,7 +385,7 @@ Type TGUIChatEntry Extends TGUIListItem
 			If list Then list.InvalidateLayout()
 		EndIf
 
-		Return new TVec2D.Init(dimension.x, dimension.y)
+		Return new SVec2F(dimension.x, dimension.y)
 	End Method
 
 

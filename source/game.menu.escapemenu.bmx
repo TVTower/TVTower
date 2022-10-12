@@ -23,9 +23,9 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 		For Local i:Int = 0 Until buttons.length
 			'move exit-buttons a bit down
 			If i >= 4
-				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + 10 + i*40), New TVec2D.Init(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
+				buttons[i] = New TGUIButton.Create(New TVec2D(0, buttonsY + 10 + i*40), New TVec2D(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
 			Else
-				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + i*40), New TVec2D.Init(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
+				buttons[i] = New TGUIButton.Create(New TVec2D(0, buttonsY + i*40), New TVec2D(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
 			EndIf
 			AddChild(buttons[i])
 			AddEventListener( EventManager.RegisterListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick", buttons[i]) )
@@ -78,7 +78,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[1]
 				If Not chainLoadMenu
-					chainLoadMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,356), "SYSTEM")
+					chainLoadMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D(520,356), "SYSTEM")
 					chainLoadMenu._defaultValueColor = TColor.clBlack.copy()
 					chainLoadMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -89,7 +89,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[2]
 				If Not chainSaveMenu
-					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,370), "SYSTEM")
+					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D(520,370), "SYSTEM")
 					chainSaveMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSaveMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -100,7 +100,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[3]
 				If Not chainSettingsMenu
-					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D.Init(700,500), "SYSTEM")
+					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D(700,500), "SYSTEM")
 					chainSettingsMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSettingsMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -185,7 +185,7 @@ Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 
 
 
-		settingsPanel = New TGUISettingsPanel.Create(New TVec2D, New TVec2D.Init(700, 500), "SYSTEM")
+		settingsPanel = New TGUISettingsPanel.Create(New TVec2D, New TVec2D(700, 500), "SYSTEM")
 		'add to canvas of this window
 		'GetGuiContent()
 		AddChild(settingsPanel)
@@ -270,7 +270,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 
 '		Local canvas:TGUIObject = GetGuiContent()
 
-		savegameList = New TGUISelectList.Create(New TVec2D.Init(0, 0), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALLOADMENU")
+		savegameList = New TGUISelectList.Create(New TVec2D(0, 0), New TVec2D(GetContentScreenRect().GetW(),80), "MODALLOADMENU")
 
 		AddChild(savegameList)
 
@@ -486,12 +486,12 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 '		Local canvas:TGUIObject = GetGuiContent()
 
-		savegameName = New TGUIInput.Create(New TVec2D.Init(GetContentScreenRect().GetX(), GetContentScreenRect().GetY()), New TVec2D.Init(GetContentScreenRect().GetW(), 40), "", 64, "MODALSAVEMENU")
+		savegameName = New TGUIInput.Create(New TVec2D(GetContentScreenRect().GetX(), GetContentScreenRect().GetY()), New TVec2D(GetContentScreenRect().GetW(), 40), "", 64, "MODALSAVEMENU")
 		savegameName.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY())
 
-		savegameNameLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", Null, "MODALSAVEMENU")
+		savegameNameLabel = New TGUILabel.Create(New TVec2D(0, 0), "", Null, "MODALSAVEMENU")
 
-		savegameList = New TGUISelectList.Create(New TVec2D.Init(0, savegameName.GetScreenRect().GetH()), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALSAVEMENU")
+		savegameList = New TGUISelectList.Create(New TVec2D(0, savegameName.GetScreenRect().GetH()), New TVec2D(GetContentScreenRect().GetW(),80), "MODALSAVEMENU")
 
 		AddChild(savegameList)
 
@@ -655,7 +655,7 @@ endrem
 
 	Method CreateConfirmOverwriteDialogue:Int(fileURI:String)
 		If _confirmOverwriteDialogue Then Return False
-		_confirmOverwriteDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		_confirmOverwriteDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D(400,150), "SYSTEM")
 		_confirmOverwriteDialogue.guiCaptionTextBox.SetFont(headerFont)
 
 		_confirmOverwriteDialogue._defaultValueColor = TColor.clBlack.copy()
@@ -908,8 +908,7 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 	End Method
 
 
-	'override
-	Method GetDimension:TVec2D()
+	Method GetDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 
@@ -918,20 +917,21 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		'2 lines of text
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, 2 * GetBitmapFontManager().baseFont.GetMaxCharHeight())
+		Local w:Float = maxWidth
+		Local h:Float = 2 * GetBitmapFontManager().baseFont.GetMaxCharHeight()
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 
 

@@ -35,8 +35,9 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 	Method onClick:int(triggerEvent:TEventBase) override
 		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
 		if not coord then return False
-
-		local localCoord:TVec2D = new TVec2D.Init( coord.x - GetContentScreenRect().GetX(), coord.y - GetContentScreenRect().GetY())
+		
+		Local screenRectPos:SVec2F = GetContentScreenRect().GetPosition()
+		local localCoord:TVec2D = new TVec2D( coord.x - screenRectPos.x, coord.y - screenRectPos.y)
 		selectedLine = 1 + int((localCoord.y + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
 		selectedLine = MathHelper.Clamp(selectedLine, 0, GetLineCount() -1)
 

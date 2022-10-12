@@ -40,14 +40,14 @@ Type TScreenHandler_Financials
 
 		'=== create gui elements if not done yet
 		if not financeHistoryUpButton
-			financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(130, 22), "DOWN", "officeFinancialScreen")
-			financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 130 + 20, 180), new TVec2D.Init(130, 22), "UP", "officeFinancialScreen")
+			financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D(500 + 20, 180), new TVec2D(130, 22), "DOWN", "officeFinancialScreen")
+			financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D(500 + 130 + 20, 180), new TVec2D(130, 22), "UP", "officeFinancialScreen")
 
 			financeHistoryUpButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
 			financeHistoryDownButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
 
-			financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 11), new TVec2D.Init(24, 24), "LEFT", "officeFinancialScreen")
-			financeNextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 11), new TVec2D.Init(24, 24), "RIGHT", "officeFinancialScreen")
+			financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D(20, 10 + 11), new TVec2D(24, 24), "LEFT", "officeFinancialScreen")
+			financeNextDayButton = new TGUIArrowButton.Create(new TVec2D(20 + 175 + 20, 10 + 11), new TVec2D(24, 24), "RIGHT", "officeFinancialScreen")
 		endif
 
 
@@ -368,8 +368,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 
 		local slot:int				= 0
-		local slotPos:TVec2D		= new TVec2D.Init(0,0)
-		local previousSlotPos:TVec2D= new TVec2D.Init(0,0)
+		local slotPos:TVec2D		= new TVec2D(0,0)
+		local previousSlotPos:TVec2D= new TVec2D(0,0)
 		local slotWidth:int 		= curveArea.GetW() / showDays
 
 		local yPerMoney:Float = curveArea.GetH() / Float(Abs(minValue) + maxValue)

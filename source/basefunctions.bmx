@@ -555,7 +555,7 @@ Type TCatmullRomSpline
 			'local weightAX:float   = 1- distanceAX/distanceAB
 			Local weightAX:Float   = 1- Abs(distance - pointA.z)/Abs(pointB.z - pointA.z)
 
-			Return New TVec2D.Init(..
+			Return New TVec2D(..
 				pointA.x*weightAX + pointB.x*(1-weightAX), ..
 				pointA.y*weightAX + pointB.y*(1-weightAX) ..
 			)

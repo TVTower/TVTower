@@ -91,7 +91,7 @@ Type TSpriteEntity extends TEntity
 			'create an offset rect if defined so
 			local offset:TVec2D = null
 			if childData.GetInt("offsetLeft", 0) <> 0 or childData.GetInt("offsetTop", 0) <> 0
-				offset = new TVec2D.Init(childData.GetInt("offsetLeft", 0), childData.GetInt("offsetTop", 0))
+				offset = new TVec2D(childData.GetInt("offsetLeft", 0), childData.GetInt("offsetTop", 0))
 			EndIf
 
 			spriteEntity.AddChild(child, offset)
@@ -104,9 +104,9 @@ Type TSpriteEntity extends TEntity
 	Method SetSprite:TSpriteEntity(sprite:TSprite)
 		self.sprite = sprite
 		if sprite
-			self.area.dimension.SetXY(sprite.GetWidth(), sprite.GetHeight())
+			self.area.SetWH(sprite.GetWidth(), sprite.GetHeight())
 		else
-			self.area.dimension.SetXY(0, 0)
+			self.area.SetWH(0, 0)
 		endif
 	End Method
 

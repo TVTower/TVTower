@@ -117,7 +117,7 @@ Type TGUIPanel Extends TGUIObject
 			EndIf
 		Else
 			if not guiTextBox
-				guiTextBox = New TGUITextBox.Create(new TVec2D.Init(0,0), new TVec2D.Init(50,50), value, "")
+				guiTextBox = New TGUITextBox.Create(new TVec2D(0,0), new TVec2D(50,50), value, "")
 				'we take care of the text box
 				AddChild(guiTextBox)
 

@@ -53,8 +53,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	Global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = New TVec2D.Init(350,130)
-	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(14,25)
+	Global suitcasePos:TVec2D = New TVec2D(350,130)
+	Global suitcaseGuiListDisplace:TVec2D = New TVec2D(14,25)
 	Field programmesPerLine:Int	= 13
 	Field movieGoodMoneyMinimum:Int = 170000
 	Field movieGoodQualityMinimum:Float = 0.15
@@ -233,10 +233,10 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		If Not GuiListMoviesGood
 			Local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
 
-			GuiListMoviesGood = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(596,50), New TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
-			GuiListMoviesCheap = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(596,148), New TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
-			GuiListSeries = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(596,246), New TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
-			GuiListSuitcase = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(180, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesGood = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(596,50), New TVec2D(200, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesCheap = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(596,148), New TVec2D(200, videoCase.area.GetH()), "movieagency")
+			GuiListSeries = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(596,246), New TVec2D(200, videoCase.area.GetH()), "movieagency")
+			GuiListSuitcase = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D(180, videoCase.area.GetH()), "movieagency")
 
 			GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -275,10 +275,10 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
 			'default vendor position/dimension
-			Local vendorAreaDimension:TVec2D = New TVec2D.Init(200,200)
-			Local vendorAreaPosition:TVec2D = New TVec2D.Init(20,60)
-			If VendorEntity Then vendorAreaDimension = VendorEntity.area.dimension.copy()
-			If VendorEntity Then vendorAreaPosition = VendorEntity.area.position.copy()
+			Local vendorAreaDimension:TVec2D = New TVec2D(200,200)
+			Local vendorAreaPosition:TVec2D = New TVec2D(20,60)
+			If VendorEntity Then vendorAreaDimension.CopyFrom(VendorEntity.area.GetDimension())
+			If VendorEntity Then vendorAreaPosition.CopyFrom(VendorEntity.area.GetPosition())
 
 			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
 			'vendor should accept drop - else no recognition
@@ -1080,7 +1080,7 @@ endrem
 				'check if something is underlaying and whether the licence
 				'differs to the dropped one
 				Local underlayingItem:TGUIProgrammeLicence = Null
-				Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
+				Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D(-1,-1)))
 				If coord Then underlayingItem = TGUIProgrammeLicence(receiverList.GetItemByCoord(coord))
 
 				'allow drop on own place
@@ -1720,8 +1720,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * GetAuctionMovieSprite().area.dimension.y)
 			'area.dimension.CopyFrom(GetAuctionMovieSprite().area.dimension)
 			'fit to a given height
-			area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * 60)
-			area.dimension.SetXY(GetAuctionMovieSprite().area.dimension.x, 60)
+			area.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * 60)
+			area.SetWH(GetAuctionMovieSprite().area.w, 60)
 		EndIf
 		Return area
 	End Method

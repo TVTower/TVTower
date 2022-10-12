@@ -205,11 +205,11 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 			if tooltip.Update()
 				'not enough space for the tooltip above the door
 				If tooltip.GetHeight()-10 > GetScreenRect().GetY() - area.GetH()
-					tooltip.area.position.SetY(GetScreenRect().GetY())
-					tooltip.area.position.SetX(GetScreenRect().GetX() - tooltip.GetWidth())
+					tooltip.area.SetY(GetScreenRect().y)
+					tooltip.area.SetX(GetScreenRect().x - tooltip.GetWidth())
 				Else
-					tooltip.area.position.SetY(GetScreenRect().GetY() - area.GetH() - tooltip.GetHeight())
-					tooltip.area.position.SetX(GetScreenRect().GetX() + area.GetW()/2 - tooltip.GetWidth()/2)
+					tooltip.area.SetY(GetScreenRect().y - area.h - tooltip.GetHeight())
+					tooltip.area.SetX(GetScreenRect().x + area.w/2.0 - tooltip.GetWidth()/2)
 				EndIf
 			else
 				'delete old tooltips

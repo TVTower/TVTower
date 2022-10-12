@@ -81,7 +81,7 @@ endrem
 				'create it
 				tooltip = TTooltip.Create(tooltipText, tooltipDescription, 100, 140, 0, 0)
 				'layout the tooltip centered above the hotspot
-				tooltip.area.position.SetXY(area.GetW()/2 - tooltip.GetWidth()/2, -tooltip.GetHeight())
+				tooltip.area.SetXY(area.w/2 - tooltip.GetWidth()/2, -tooltip.GetHeight())
 				tooltip.enabled = True
 
 				AddChild(tooltip)

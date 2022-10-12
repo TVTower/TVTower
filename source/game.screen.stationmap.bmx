@@ -46,31 +46,31 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		buttonFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
 		listFont = GetBitmapFontManager().Get("Default", 12)
 
-		actionButton = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(150, 28), "", "STATIONMAP")
+		actionButton = New TGUIButton.Create(New TVec2D(0, 0), New TVec2D(150, 28), "", "STATIONMAP")
 		actionButton.spriteName = "gfx_gui_button.datasheet"
 		actionButton.SetFont( buttonFont )
 
 
-		renewButton = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(150, 28), "", "STATIONMAP")
+		renewButton = New TGUIButton.Create(New TVec2D(0, 0), New TVec2D(150, 28), "", "STATIONMAP")
 		renewButton.spriteName = "gfx_gui_button.datasheet"
 		renewButton.SetFont( buttonFont )
 
-		renewInfoButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "i", "STATIONMAP")
+		renewInfoButton = New TGUIButton.Create(New TVec2D(145, 0), New TVec2D(30, 28), "i", "STATIONMAP")
 		renewInfoButton.caption.color = TColor.clBlue.ToSColor8()
 		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
 		renewInfoButton.SetFont( buttonFont )
 
-		autoRenewCheckbox = New TGUICheckBox.Create(New TVec2D.Init(145, 0), New TVec2D.Init(20, 20), "auto renew", "STATIONMAP")
+		autoRenewCheckbox = New TGUICheckBox.Create(New TVec2D(145, 0), New TVec2D(20, 20), "auto renew", "STATIONMAP")
 		'autoRenewCheckbox.caption.color = TColor.clBlue.copy()
 		'autoRenewCheckbox.spriteName = "gfx_gui_button.datasheet"
 		autoRenewCheckbox.SetFont( buttonFont )
 
-		cancelButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "X", "STATIONMAP")
+		cancelButton = New TGUIButton.Create(New TVec2D(145, 0), New TVec2D(30, 28), "X", "STATIONMAP")
 		cancelButton.caption.color = TColor.clRed.ToSColor8()
 		cancelButton.spriteName = "gfx_gui_button.datasheet"
 		cancelButton.SetFont( buttonFont )
 
-		list = New TGUISelectList.Create(New TVec2D.Init(610,133), New TVec2D.Init(178, 100), "STATIONMAP")
+		list = New TGUISelectList.Create(New TVec2D(610,133), New TVec2D(178, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		list.scrollItemHeightPercentage = 1.0
 		list.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -98,7 +98,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			tooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
 			tooltips[i].parentArea = New TRectangle
 			tooltips[i].SetOrientationPreset("TOP")
-			tooltips[i].offset = New TVec2D.Init(0,+5)
+			tooltips[i].offset = New TVec2D(0,+5)
 			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 			'standard icons should need a bit longer for tooltips to show up
 			tooltips[i].dwellTime = 500
@@ -110,7 +110,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			renewContractTooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
 			renewContractTooltips[i].parentArea = New TRectangle
 			renewContractTooltips[i].SetOrientationPreset("TOP")
-			renewContractTooltips[i].offset = New TVec2D.Init(0,+5)
+			renewContractTooltips[i].offset = New TVec2D(0,+5)
 			renewContractTooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 			'standard icons should need a bit longer for tooltips to show up
 			renewContractTooltips[i].dwellTime = 50
@@ -326,10 +326,10 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		If isOpen
 			'NOW done in UpdateLayout()
 			'move list to here...
-'			If list.rect.position.GetX() <> 2 'or list.IsAppearanceChanged()
+'			If list.rect.x <> 2 'or list.IsAppearanceChanged()
 '				list.SetPosition(2, GetHeaderHeight() + 3 )
 				'resizing is done when status changes
-				'list.SetSize(GetContentScreenRect().GetW() - 2, -1)
+				'list.SetSize(GetContentScreenRect().w - 2, -1)
 '			EndIf
 
 
@@ -593,7 +593,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationAntenna = EachIn GetStationMap(playerID).Stations
-			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), station.GetLongName())
+			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
@@ -779,8 +779,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		EndIf
 
 		'=== BUTTONS ===
-		'actionButton.rect.position.SetXY(contentX + 5, currentY + 3)
-		'cancelButton.rect.position.SetXY(contentX + 5 + 150, currentY + 3)
+		'actionButton.rect.SetXY(contentX + 5, currentY + 3)
+		'cancelButton.rect.SetXY(contentX + 5 + 150, currentY + 3)
 	End Method
 End Type
 
@@ -840,7 +840,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationCableNetworkUplink = EachIn GetStationMap(playerID).Stations
-			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), station.GetLongName())
+			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
@@ -1113,8 +1113,8 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		EndIf
 
 		'=== BUTTONS ===
-		'actionButton.rect.position.SetXY(contentX + 5, currentY + 3)
-		'cancelButton.rect.position.SetXY(contentX + 5 + 150, currentY + 3)
+		'actionButton.rect.SetXY(contentX + 5, currentY + 3)
+		'cancelButton.rect.SetXY(contentX + 5 + 150, currentY + 3)
 	End Method
 End Type
 
@@ -1290,7 +1290,7 @@ endrem
 
 		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationSatelliteUplink = EachIn GetStationMap(playerID).Stations
-			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), station.GetLongName())
+			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
@@ -1533,11 +1533,11 @@ endrem
 			EndIf
 		EndIf
 
-		'renewButton.rect.position.SetXY(contentX + 5, currentY + 3)
+		'renewButton.rect.SetXY(contentX + 5, currentY + 3)
 
 		'=== BUTTONS ===
-		'actionButton.rect.position.SetXY(contentX + 5, currentY + 3)
-		'cancelButton.rect.position.SetXY(contentX + 5 + 150, currentY + 3)
+		'actionButton.rect.SetXY(contentX + 5, currentY + 3)
+		'cancelButton.rect.SetXY(contentX + 5 + 150, currentY + 3)
 	End Method
 End Type
 
@@ -1561,7 +1561,7 @@ Type TSatelliteSelectionFrame
 		If Not area Then area = New TRectangle.Init(402, 96, 190, 212)
 		If Not contentArea Then contentArea = New TRectangle
 
-		satelliteList = New TGUISelectList.Create(New TVec2D.Init(410, 121), New TVec2D.Init(178, 100), "STATIONMAP")
+		satelliteList = New TGUISelectList.Create(New TVec2D(410, 121), New TVec2D(178, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		satelliteList.scrollItemHeightPercentage = 1.0
 		satelliteList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -1577,7 +1577,7 @@ Type TSatelliteSelectionFrame
 			tooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
 			tooltips[i].parentArea = New TRectangle
 			tooltips[i].SetOrientationPreset("TOP")
-			tooltips[i].offset = New TVec2D.Init(0,+5)
+			tooltips[i].offset = New TVec2D(0,+5)
 			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 			'standard icons should need a bit longer for tooltips to show up
 			tooltips[i].dwellTime = 500
@@ -1688,7 +1688,7 @@ Type TSatelliteSelectionFrame
 			For Local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
 				If Not satellite.IsLaunched() Then Continue
 
-				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), satellite.name)
+				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), satellite.name)
 
 				'fill complete width
 				item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
@@ -1940,7 +1940,7 @@ Type TStationMapInformationFrame
 
 
 	Method New()
-		sectionList = New TGUISelectList.Create(New TVec2D.Init(410,153), New TVec2D.Init(378, 100), "STATIONMAP")
+		sectionList = New TGUISelectList.Create(New TVec2D(410,153), New TVec2D(378, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		sectionList.scrollItemHeightPercentage = 1.0
 		sectionList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -1954,7 +1954,7 @@ Type TStationMapInformationFrame
 			tooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
 			tooltips[i].parentArea = New TRectangle
 			tooltips[i].SetOrientationPreset("TOP")
-			tooltips[i].offset = New TVec2D.Init(0,+5)
+			tooltips[i].offset = New TVec2D(0,+5)
 			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 			'standard icons should need a bit longer for tooltips to show up
 			tooltips[i].dwellTime = 500
@@ -2108,7 +2108,7 @@ Type TStationMapInformationFrame
 
 		If GetStationMapCollection().sections
 			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
-				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), section.name)
+				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), section.name)
 
 				'fill complete width
 				item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
@@ -2386,30 +2386,30 @@ Type TScreenHandler_StationMap
 
 		'=== create gui elements if not done yet
 		If Not guiInfoButton
-			guiAccordeon = New TGameGUIAccordeon.Create(New TVec2D.Init(586, 64), New TVec2D.Init(211, 317), "", "STATIONMAP")
+			guiAccordeon = New TGameGUIAccordeon.Create(New TVec2D(586, 64), New TVec2D(211, 317), "", "STATIONMAP")
 			TGameGUIAccordeon(guiAccordeon).skinName = "stationmapPanel"
 
-			antennaPanel = New TGameGUIAntennaPanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Stations", "STATIONMAP")
+			antennaPanel = New TGameGUIAntennaPanel.Create(New TVec2D(-1, -1), New TVec2D(-1, -1), "Stations", "STATIONMAP")
 			antennaPanel.Open()
 			guiAccordeon.AddPanel(antennaPanel, 0)
 			Local p:TGUIAccordeonPanel
-			p = New TGameGUICableNetworkPanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Cable Networks", "STATIONMAP")
+			p = New TGameGUICableNetworkPanel.Create(New TVec2D(-1, -1), New TVec2D(-1, -1), "Cable Networks", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 1)
-			p = New TGameGUISatellitePanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Satellites", "STATIONMAP")
+			p = New TGameGUISatellitePanel.Create(New TVec2D(-1, -1), New TVec2D(-1, -1), "Satellites", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 2)
 
 
 			'== info panel
-			guiInfoButton = New TGUIButton.Create(New TVec2D.Init(610, 15), New TVec2D.Init(20, 28), "", "STATIONMAP")
+			guiInfoButton = New TGUIButton.Create(New TVec2D(610, 15), New TVec2D(20, 28), "", "STATIONMAP")
 
 			guiInfoButton.spriteName = "gfx_gui_button.datasheet"
 			guiInfoButton.SetTooltip( New TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), New TRectangle.Init(0,0,-1,-1)) )
-			guiInfoButton.GetTooltip()._minContentDim = New TVec2D.Init(120,-1)
-			guiInfoButton.GetTooltip()._maxContentDim = New TVec2D.Init(150,-1)
+			guiInfoButton.GetTooltip()._minContentDim = New TVec2D(120,-1)
+			guiInfoButton.GetTooltip()._maxContentDim = New TVec2D(150,-1)
 			guiInfoButton.GetTooltip().SetOrientationPreset("LEFT", 10)
 
 			For Local i:Int = 0 Until guiFilterButtons.length
-				guiFilterButtons[i] = New TGUICheckBox.Create(New TVec2D.Init(695 + i*23, 30 ), New TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+				guiFilterButtons[i] = New TGUICheckBox.Create(New TVec2D(695 + i*23, 30 ), New TVec2D(20, 20), String(i + 1), "STATIONMAP")
 				guiFilterButtons[i].ShowCaption(False)
 				guiFilterButtons[i].data.AddNumber("stationType", i+1)
 				'guiFilterButtons[i].SetUnCheckedTintColor( TColor.Create(255,255,255) )
@@ -2420,20 +2420,20 @@ Type TScreenHandler_StationMap
 				guiFilterButtons[i].checkedSpriteName = "gfx_datasheet_icon_" + TVTStationType.GetAsString(i+1) + ".on"
 
 				guiFilterbuttons[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_STATIONTYPE").Replace("%STATIONTYPE%", GetLocale(TVTStationType.GetAsString(i+1)+"S")), New TRectangle.Init(0,60,-1,-1)) )
-				guiFilterbuttons[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
-				guiFilterbuttons[i].GetTooltip()._maxContentDim = New TVec2D.Init(150,-1)
+				guiFilterbuttons[i].GetTooltip()._minContentDim = New TVec2D(80,-1)
+				guiFilterbuttons[i].GetTooltip()._maxContentDim = New TVec2D(150,-1)
 				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("LEFT", 5)
 			Next
 
 
 			For Local i:Int = 0 To 3
-				guiShowStations[i] = New TGUICheckBox.Create(New TVec2D.Init(695 + i*23, 30 ), New TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+				guiShowStations[i] = New TGUICheckBox.Create(New TVec2D(695 + i*23, 30 ), New TVec2D(20, 20), String(i + 1), "STATIONMAP")
 				guiShowStations[i].ShowCaption(False)
 				guiShowStations[i].data.AddNumber("playerNumber", i+1)
 
 				guiShowStations[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_PLAYER_X").Replace("%X%", i+1), New TRectangle.Init(0,60,-1,-1)) )
-				guiShowStations[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
-				guiShowStations[i].GetTooltip()._maxContentDim = New TVec2D.Init(120,-1)
+				guiShowStations[i].GetTooltip()._minContentDim = New TVec2D(80,-1)
+				guiShowStations[i].GetTooltip()._maxContentDim = New TVec2D(120,-1)
 				guiShowStations[i].GetTooltip().SetOrientationPreset("LEFT", 5)
 			Next
 
@@ -2896,7 +2896,7 @@ endrem
 
 			'create a temporary station if not done yet
 			If Not mouseoverStation Then mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
-			Local mousePos:TVec2D = New TVec2D.Init( MouseManager.x, MouseManager.y)
+			Local mousePos:TVec2D = New TVec2D( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
 			If Not mousePos.EqualsXY(mouseoverStation.x, mouseoverStation.y, True)
