@@ -520,7 +520,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'== box area
-		boxH = skin.GetBoxSize(80, -1, "", "spotsPlanned", "neutral").GetY()
+		boxH = skin.GetBoxSize(80, -1, "", "spotsPlanned", "neutral").y
 		'contains 1 line of boxes
 		boxAreaH = 1 * boxH + boxAreaPaddingY
 

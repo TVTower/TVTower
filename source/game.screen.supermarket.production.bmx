@@ -1019,7 +1019,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local boxAreaPaddingY:Int = 4, buttonAreaPaddingY:Int = 4
 		Local msgPaddingY:Int = 4
 
-		msgH = skin.GetMessageSize(100, -1, "").GetY()
+		msgH = skin.GetMessageSize(100, -1, "").y
 
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), contentW - 10, 100))
 
@@ -2705,7 +2705,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local nameOffsetX:Int = 35, nameOffsetY:Int = 3
 		Local nameTextOffsetX:Int = 38
 		Local barOffsetX:Int = 35, barOffsetY:Int = nameOffsetY + nameSprite.GetHeight()
-		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
+		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").y
 
 		'=== NAME ===
 		'face/icon-area covers 36px + shadow, place bar a bit "below"
@@ -2813,8 +2813,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 '			lastProductionsH = 0
 		EndIf
 
-		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
+		barH = skin.GetBarSize(100, -1).y
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(person.GetFullName(), contentW - 10, 100))
 
 		'bar area starts with padding, ends with padding and contains
@@ -3134,7 +3134,7 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 		skin.fontSmall.DrawBox("Lvl: "+company.GetLevel(), scrRect.GetX()+2, scrRect.GetY() - 2, scrRect.GetW()-4, scrRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(60,60,60))
 
 
-		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
+		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").y
 		Local bottomY:Int = scrRect.GetY() + titleH - 1
 
 		skin.RenderBar(scrRect.GetX() + 1, bottomY + 0*barH, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")

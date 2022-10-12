@@ -511,32 +511,32 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 			progressRectHovered = False
 
 		else
-			local overPos:TVec2D = new TVec2D( MouseManager.x - GetScreenRect().GetX(), MouseManager.y - GetScreenRect().GetY())
-			if progressRect.ContainsVec(overPos)
+			if progressRect.ContainsXY(MouseManager.x - GetScreenRect().x, MouseManager.y - GetScreenRect().y)
 				progressRectHovered = True
 			endif
 
 			'check if mouse clicked on the progressRect
 			if mouseIsClicked
+				Local clickPosX:Int = mouseIsClicked.x
+				Local clickPosY:Int = mouseIsClicked.y
 				'convert clicked position to local widget coordinates
-				local clickPos:TVec2D = mouseIsClicked.Copy()
-				clickPos.AddXY(-GetScreenRect().GetX(), -GetScreenRect().GetY())
-				if progressRect.ContainsVec(clickPos)
-'					clickPos.AddXY(progressRect.GetX(), progressRect.GetY())
+				clickPosX :- GetScreenRect().x
+				clickPosY :- GetScreenRect().y
+				if progressRect.ContainsXY(clickPosX, clickPosY)
 					local progress:float = 0
 
 					Select _orientation
 						case GUI_OBJECT_ORIENTATION_HORIZONTAL
-							if progressRect.GetW() > 0
+							if progressRect.w > 0
 								'subtract progress start from position
-								clickPos.X :- progressRect.GetX()
-								progress = clickPos.x / progressRect.GetW()
+								clickPosX :- progressRect.x
+								progress = clickPosX / progressRect.w
 							endif
 						case GUI_OBJECT_ORIENTATION_VERTICAL
-							if progressRect.GetH() > 0
+							if progressRect.h > 0
 								'subtract progress start from position
-								clickPos.y :- progressRect.GetY()
-								progress = clickPos.y / progressRect.GetH()
+								clickPosY :- progressRect.y
+								progress = clickPosY / progressRect.h
 							endif
 					End Select
 					'scroll to the percentage

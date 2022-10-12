@@ -1532,8 +1532,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).y
+		barH = skin.GetBarSize(100, -1).y
 
 		'bar area
 		'bar area starts with padding, ends with padding and contains 2
@@ -1667,8 +1667,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).GetY()
-		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).y
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 
 		'box area
 		'box area starts with padding, ends with padding and contains

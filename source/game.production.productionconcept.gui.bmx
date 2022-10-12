@@ -220,9 +220,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
 		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
-		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
+		barH = skin.GetBarSize(100, -1).y
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'message area
@@ -497,7 +497,7 @@ endrem
 		local splitterHorizontalH:int = 6
 		local msgH:int = 0, msgAreaH:int = 0, msgAreaPaddingY:int = 4
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		if subTitle

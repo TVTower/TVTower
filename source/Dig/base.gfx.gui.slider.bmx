@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2015 Ronny Otto, digidea.de
+	Copyright (C) 2015-2022 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -228,26 +228,24 @@ Type TGUISlider extends TGUIObject
 	Method SetValueByMouse()
 		'convert current mouse position to local widget coordinates
 		'-9 is "manual adjustment"
-		local mousePos:TVec2D = New TVec2D(..
-									MouseManager.x - GetScreenRect().x - GetGaugeOffsetX(), ..
-									MouseManager.y - GetScreenRect().x - GetGaugeOffsetY() ..
-								)
+		local mousePosX:Int = MouseManager.x - GetScreenRect().x - GetGaugeOffsetX()
+		local mousePosY:Int = MouseManager.y - GetScreenRect().y - GetGaugeOffsetY()
 
 		local scale:Float = (maxValue - minValue + 1) / Float(maxValue - minValue)
 		local lengthX:float = GetGaugeW() - 2* GetGaugeOffsetX()
 		'scroll to the percentage
 		Select direction
 			case DIRECTION_RIGHT
-				if steps > 0 then mousePos.x :- 0.5 *(GetGaugeW() / float(steps+1))
-				SetRelativeValue( Max(0.0, scale * Min(1.0, mousePos.x/lengthX)) )
-				'SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePos.x) / GetGaugeW())) )
+				if steps > 0 then mousePosX :- 0.5 *(GetGaugeW() / float(steps+1))
+				SetRelativeValue( Max(0.0, scale * Min(1.0, mousePosX/lengthX)) )
+				'SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePosX) / GetGaugeW())) )
 			case DIRECTION_LEFT
-				if steps > 0 then mousePos.x :+ 0.5 *(GetGaugeW() / float(steps+1))
-				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - mousePos.x/lengthX)) )
+				if steps > 0 then mousePosX :+ 0.5 *(GetGaugeW() / float(steps+1))
+				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - mousePosX/lengthX)) )
 			case DIRECTION_UP
-				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - (mousePos.y) / GetGaugeH())) )
+				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - (mousePosY) / GetGaugeH())) )
 			case DIRECTION_DOWN
-				SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePos.y) / GetGaugeH())) )
+				SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePosY) / GetGaugeH())) )
 		End Select
 
 		TriggerBaseEvent(GUIEventKeys.GUISlider_SetValueByMouse,null, self )

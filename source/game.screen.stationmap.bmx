@@ -622,7 +622,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		Local section:TStationMapSection
 		If TScreenHandler_StationMap.selectedStation Then section = GetStationMapCollection().GetSectionByName(TScreenHandler_StationMap.selectedStation.GetSectionName())
 
-		Local boxH:Int = skin.GetBoxSize(100, -1, "").GetY()
+		Local boxH:Int = skin.GetBoxSize(100, -1, "").y
 		Local boxAreaH:Int = 0
 		Local showDetails:Int = False
 		Local showPermissionText:Int = False
@@ -904,7 +904,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		If TScreenHandler_StationMap.selectedStation Then section = GetStationMapCollection().GetSectionByName(TScreenHandler_StationMap.selectedStation.GetSectionName())
 
 		Local selectedStation:TStationBase = TScreenHandler_StationMap.selectedStation
-		Local boxH:Int = skin.GetBoxSize(100, -1, "").GetY()
+		Local boxH:Int = skin.GetBoxSize(100, -1, "").y
 		Local boxAreaH:Int = 0
 		Local showDetails:Int = False
 		If TScreenHandler_StationMap.selectedStation Then showDetails = True
@@ -1318,7 +1318,7 @@ endrem
 		If Not skin Then Return
 
 		Local selectedStation:TStationBase = TScreenHandler_StationMap.selectedStation
-		Local boxH:Int = skin.GetBoxSize(100, -1, "").GetY()
+		Local boxH:Int = skin.GetBoxSize(100, -1, "").y
 		Local boxAreaH:Int = 0
 		Local showDetails:Int = False
 		If selectedStation Then showDetails = True
@@ -1834,7 +1834,7 @@ Type TSatelliteSelectionFrame
 
 
 			Local halfW:Int = (contentArea.GetW() - 10)/2 - 2
-			Local boxH:Int = skin.GetBoxSize(100, -1, "").GetY()
+			Local boxH:Int = skin.GetBoxSize(100, -1, "").y
 			'=== BOX LINE 1 ===
 			'local qualityText:string = "-/-"
 			'if selectedSatellite.quality <> 100

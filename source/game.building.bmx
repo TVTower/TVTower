@@ -730,7 +730,7 @@ Type TBuilding Extends TBuildingBase
 			If GetWorldTime().GetDay() Mod 2 = 0
 				'compute and draw Ufo
 				Local tweenDistance:Float = MathHelper.Tween(UFO_PathCurrentDistanceOld, UFO_PathCurrentDistance, GetDeltaTimer().GetTween())
-				Local UFOPos:TVec2D = UFO_Path.GetTweenPoint(tweenDistance, True)
+				Local UFOPos:SVec2F = UFO_Path.GetTweenPoint(tweenDistance, True)
 				'print UFO_PathCurrentDistance
 				If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
 					ufo_beaming.area.SetXY(UFOPos.x, 0.25 * (area.y + BuildingHeight - gfx_bgBuildings[0].area.h) + UFOPos.y)
