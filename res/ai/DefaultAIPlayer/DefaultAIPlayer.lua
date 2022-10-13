@@ -423,6 +423,11 @@ function DefaultAIPlayer:CleanUp()
 		end
 	end
 
+	local day = TVT.GetDay() - 2
+	for hour = 0, 23 do
+		MY:RemoveAIData("guessedaudience_" .. day .."_".. hour)
+	end
+
 	self:LogDebug("Requisitions (after): " .. table.count(self.Requisitions))
 end
 

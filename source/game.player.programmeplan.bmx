@@ -97,6 +97,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field owner:Int
 
 	Field _daysPlanned:int = -1 {nosave}
+	Field dayOffset:int = -1
 
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
@@ -124,6 +125,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		news = New TBroadcastMaterial[3]
 		newsShow = newsShow[..0]
 		advertisements = advertisements[..0]
+		dayOffset = -1
 
 		'unregister events if any
 	End Method
@@ -137,7 +139,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method getSkipHoursFromIndex:Int()
-		Return (GetWorldTime().GetStartDay()-1)*24
+		Return (GetWorldTime().GetStartDay()+dayOffset)*24
 	End Method
 
 
@@ -280,6 +282,16 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Return False
 	End Method
 
+	Method TruncateHistory(daysToKeep:Int = 2)
+		local daysToTruncate:Int = GetWorldTime().GetDay() - (GetWorldTime().GetStartDay()+dayOffset) - daysToKeep
+		If daysToTruncate > 0
+			dayOffset = dayOffset + daysToTruncate
+			local hoursToTruncate:Int = daysToTruncate * 24
+			programmes = programmes[hoursToTruncate..]
+			advertisements = advertisements[hoursToTruncate..]
+			newsShow = newsShow[hoursToTruncate..]
+		EndIf
+	End Method
 
 	'Set a time slot locked
 	'each lock is identifyable by "typeID_timeHours"

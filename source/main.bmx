@@ -6168,13 +6168,13 @@ endrem
 				Next
 			Next
 
-			'NEWSEVENTS
-			'remove old news events - wait a bit more than "plan time"
-			'this also gets rid of "one time" news events which should
-			'have been "triggered" then
-			Local daysToKeep:Int = Int(Ceil((hoursToKeep)/48.0) + 1)
-			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		Next
+		'NEWSEVENTS
+		'remove old news events - wait a bit more than "plan time"
+		'this also gets rid of "one time" news events which should
+		'have been "triggered" then
+		Local daysToKeep:Int = 3
+		GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		'remove from collection (reuse if possible)
 		GetNewsEventCollection().RemoveEndedNewsEvents()
 
@@ -6242,9 +6242,12 @@ endrem
 
 
 			'remove no longer needed DailyBroadcastStatistics
-			'by default we store maximally 1 year + current day
-			Local statisticDaysToKeep:Int = 4 * GetWorldTime()._daysPerSeason
+			'by default we store maximally one week
+			Local statisticDaysToKeep:Int = 7 '4 * GetWorldTime()._daysPerSeason
 			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - statisticDaysToKeep )
+			'history for single transactions of office's financial screen can be shorter
+			statisticDaysToKeep = 2
+			GetPlayerFinanceHistoryListCollection().RemoveBeforeTime(time - statisticDaysToKeep * TWorldTime.DAYLENGTH)
 
 
 			'force adagency to refill their sortiment a bit more intensive
