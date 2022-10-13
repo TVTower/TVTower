@@ -147,7 +147,7 @@
 			<variables>
 				<!-- international title for all incarnations - so "de" is enough -->
 				<object>
-					<de>Cannons|Guns|Ropes|Knifes|Jaws|Dynamite|Bones</de>
+					<de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
 				</object>
 				<adjective>
 					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
@@ -175,8 +175,8 @@
 			</variables>
 
 			<jobs>
-				<job index="0" function="1" required="1" gender="1" />
-				<job index="1" function="2" required="1" />
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
 				<!-- there might be up to 2 additional roles without
 				     further specifications -->
 				<job index="2" function="2" required="0" />

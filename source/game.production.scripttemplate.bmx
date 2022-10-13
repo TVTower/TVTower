@@ -355,8 +355,9 @@ Type TScriptTemplate Extends TScriptBase
 			result[i] = result[i].Copy()
 		Next
 
-
+		rem
 		'assign missing roles to actors
+		'...we do not do that here anymore - hundreds of roles would be created without being used anywhere
 		local actorFlag:int = TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR
 		local usedRoleIDs:Int[]
 		'collect already used role guids
@@ -403,7 +404,7 @@ Type TScriptTemplate Extends TScriptBase
 				usedRoleIDs :+ [role.GetID()]
 			endif
 		Next
-
+		endrem
 		return result
 	End Method
 

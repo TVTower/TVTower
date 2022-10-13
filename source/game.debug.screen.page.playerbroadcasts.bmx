@@ -150,6 +150,7 @@ Type TDebugWidget_ProgrammePlanInfo
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_SetNews, self, "onChangeNewsShow") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMap_OnRecalculateAudienceSum, self, "onChangeAudienceSum") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnStart, self, "onStartGame") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnDay, self, "onGameDay") ]
 	End Method
 
 
@@ -157,6 +158,9 @@ Type TDebugWidget_ProgrammePlanInfo
 		predictionRefreshMarketsNeeded = True
 	End Method
 
+	Method onGameDay:int(triggerEvent:TEventBase)
+		RemoveOutdated()
+	End Method
 
 	Method onChangeAudienceSum:Int(triggerEvent:TEventBase)
 		Local reachBefore:Int = triggerEvent.GetData().GetInt("reachBefore")
@@ -349,6 +353,9 @@ Type TDebugWidget_ProgrammePlanInfo
 				If TAdvertisement(programme) Then progString = "I: "+progString
 
 				progString2 = ((hour - programme.programmedHour + 25) Mod 24) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME)
+
+				'show predictions only for the current day
+				if dayShown = currentDay
 '				if currHour < hour
 					'uncached
 					If Not predictionCacheProgAudience[hour]
@@ -385,8 +392,6 @@ Type TDebugWidget_ProgrammePlanInfo
 						predictor.RunPrediction(dayShown, hour)
 						predictionCacheProgAudience[hour] = predictor.GetAudience(playerID)
 					EndIf
-				'show predictions only for the current day
-				if dayShown = currentDay
 					progString2 :+ " |color=200,255,200|"+Int(predictionCacheProgAudience[hour].GetTotalSum()/1000)+"k|/color|"
 				else
 					progString2 :+ " |color=200,200,255|??|/color|"

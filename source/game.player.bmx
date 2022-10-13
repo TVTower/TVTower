@@ -48,10 +48,25 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishEnterRoom, OnFigureFinishEnterRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, OnFigureFinishLeaveRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnReachTarget, OnFigureReachTarget) ]
-
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnDay, self, "onGameDay") ]
 		return result
 	End Method
 
+
+	Method onGameDay:Int(triggerEvent:TEventBase)
+		Local daysToKeep:Int=GameRules.devConfig.GetInt(TLowerString.Create("DEV_KEEP_AI_PLAN_DAYS"), -1)
+		If daysToKeep > 0
+			daysToKeep = max(2, daysToKeep)
+			For local p:TPlayerBase = EachIn players
+				If p
+					Local id:Int=p.GetPlayerID()
+					If Not IsHuman(id)
+						TPlayerProgrammePlanCollection.GetInstance().Get(id).TruncateHistory(daysToKeep)
+					EndIf
+				EndIf
+			Next
+		EndIf
+	End Method
 
 	Method Get:TPlayer(id:Int=-1)
 		return TPlayer(Super.Get(id))
@@ -282,6 +297,10 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 	Method SetAIStringData(key:string, value:string) {_exposeToLua}
 		aiData.Add(key, value)
+	End Method
+
+	Method RemoveAIData(key:string) {_exposeToLua}
+		aiData.Remove(key)
 	End Method
 
 

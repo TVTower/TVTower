@@ -440,9 +440,14 @@ endrem
 
 
 	'override default
-    Method GetTitle:string() {_exposeToLua}
-		return GetNewsEvent().GetTitle()
-    End Method
+	Method GetTitle:string() {_exposeToLua}
+		Local event:TNewsEvent=GetNullableNewsEvent()
+		If event
+			return event.GetTitle()
+		Else
+			return "unknown news"
+		EndIf
+	End Method
 
 
 	'override default
@@ -470,10 +475,14 @@ endrem
 		return TNewsEvent.GetGenreString(GetNewsEvent().GetGenre())
 	End Method
 
+	Method GetNullableNewsEvent:TNewsEvent() {_exposeToLua}
+		if newsEventID = 0 and newsEvent then return newsEvent
+		return  GetNewsEventCollection().GetByID(newsEventID)
+	End Method
 
 	Method GetNewsEvent:TNewsEvent() {_exposeToLua}
 		if newsEventID = 0 and newsEvent then return newsEvent
-		Local result:TNewsEvent = GetNewsEventCollection().GetByID(newsEventID)
+		Local result:TNewsEvent = GetNullableNewsEvent()
 		if not result
 			for local ik:TIntKey = EachIn GetNewsEventCollection().allNewsEvents.Keys()
 				print "known: " + ik.value + "   " + GetNewsEventCollection().GetByID(ik.value).GetTitle()

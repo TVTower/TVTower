@@ -1119,7 +1119,7 @@ Type TDatabaseLoader
 
 				programmeData.GUID = dataGUID
 				programmeData.title = New TLocalizedString
-				programmeData.originalTitle = New TLocalizedString
+				'programmeData.originalTitle = New TLocalizedString
 				programmeData.description = New TLocalizedString
 				programmeData.titleProcessed = Null
 				programmeData.descriptionProcessed = Null
@@ -1161,7 +1161,7 @@ Type TDatabaseLoader
 
 		'=== LOCALIZATION DATA ===
 		programmeData.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
-		programmeData.originalTitle.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "originalTitle")) )
+		'programmeData.originalTitle.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "originalTitle")) )
 		programmeData.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
 
 
@@ -2064,12 +2064,13 @@ Type TDatabaseLoader
 			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		EndIf
 
+		rem
 		'also load the original name if possible
 		xml.LoadValuesToData(node, data, [..
 			"first_name_original", "last_name_original", "nick_name_original", ..
 			"imdb", "tmdb" ..
 		])
-
+		endrem
 
 		Return data
 	End Method

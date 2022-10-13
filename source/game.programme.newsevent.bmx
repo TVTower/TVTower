@@ -228,14 +228,14 @@ Type TNewsEventCollection
 	Method RemoveOutdatedNewsEvents(minAgeInDays:Int=5, genre:Int=-1)
 		Local somethingDeleted:Int = False
 		Local toRemove:TNewsEvent[]
-
-		For Local newsEvent:TNewsEvent = EachIn newsEvents.Values()
+		Local today:Int = GetWorldTime().GetDay()
+		For Local newsEvent:TNewsEvent = EachIn allnewsEvents.Values()
 			'not happened yet - should not happen
 			If Not newsEvent.HasHappened() Then Continue
 			'only interested in a specific genre?
 			If genre <> -1 And newsEvent.GetGenre() <> genre Then Continue
 
-			If Abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
+			If Abs(GetWorldTime().GetDay(newsEvent.happenedTime) - today) >= minAgeInDays
 				toRemove :+ [newsEvent]
 
 				somethingDeleted = True
@@ -245,7 +245,7 @@ Type TNewsEventCollection
 		'delete/modify in an extra step - this approach skips creation
 		'of a map-copy just to avoid concurrent modification
 		For Local n:TNewsEvent = EachIn toRemove
-			RemoveActive(n)
+			Remove(n)
 		Next
 
 		'reset caches, so lists get filled correctly

@@ -39,6 +39,21 @@ Type TPlayerFinanceHistoryListCollection
 
 		return historyLists[playerID-1]
 	End Method
+
+	Method RemoveBeforeTime:int(time:long)
+		For Local i:Int = 0 To historyLists.length-1
+			Local list:TList = historyLists[i]
+			Local toRemove:TPlayerFinanceHistoryEntry[]
+			For Local item:TPlayerFinanceHistoryEntry = EachIn list
+				If item.worldTime < time
+					toRemove:+[item]
+				EndIf
+			Next
+			For local entry:TPlayerFinanceHistoryEntry = EachIn toRemove
+				list.Remove(entry)
+			Next
+		Next
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====

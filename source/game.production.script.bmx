@@ -439,10 +439,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			script.subGenres :+ [subGenre]
 		Next
 
-		'replace placeholders as we know the cast / roles now
-		script.title = script._ReplacePlaceholders(script.title)
-		script.description = script._ReplacePlaceholders(script.description)
-
 		'add children
 		If includingEpisodes
 			If template.programmeDataModifiers
@@ -544,6 +540,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			script.jobs = template.GetFinalJobs()
 		EndIf
 
+		'replace placeholders as we know the cast / roles now
+		script.title = script._ReplacePlaceholders(script.title)
+		script.description = script._ReplacePlaceholders(script.description)
+
 		script.basedOnScriptTemplateID = template.GetID()
 		template.AddUsedForScript(script.GetID())
 
@@ -640,44 +640,36 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							actorsFetched = True
 						EndIf
 
-						Local actorNum:Int = Int(Chr(placeHolder[8]))
-						If actorNum > 0
-							If actors.length > actorNum And actors[actorNum].roleID > 0
-								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( actors[actorNum].roleID )
-								If role Then replacement = role.GetFirstName()
+						Local actorNum:Int = Int(Chr(placeHolder[8]))-1
+						If actors.length > actorNum
+							Local role:TProgrammeRole = EnsureRole(actors[actorNum])
+							If role
+								replacement = role.GetFirstName()
+							Else
+								throw "could not fill role in "+GetTitle()
 							EndIf
-							'gender neutral default
-							If replacement = ""
-								Select actorNum
-									Case 1	replacement = "Robin"
-									Case 2	replacement = "Alex"
-									Default	replacement = "Jamie"
-								End Select
-							EndIf
-							replaced = True
+						Else
+							throw "not enough actors in " +GetTitle() + " for role "+ (actorNum +1)
 						EndIf
+						replaced = True
 					Case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
 						If Not actorsFetched
 							actors = GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
 							actorsFetched = True
 						EndIf
 
-						Local actorNum:Int = Int(Chr(placeHolder[4]))
-						If actorNum > 0
-							If actors.length > actorNum And actors[actorNum].roleID > 0
-								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( actors[actorNum].roleID )
-								If role Then replacement = role.GetFullName()
+						Local actorNum:Int = Int(Chr(placeHolder[4]))-1
+						If actors.length > actorNum
+							Local role:TProgrammeRole = EnsureRole(actors[actorNum])
+							If role
+								replacement = role.GetFullName()
+							Else
+								throw "could not fill role in "+GetTitle()
 							EndIf
-							'gender neutral default
-							If replacement = ""
-								Select actorNum
-									Case 1	replacement = "Robin Mayer"
-									Case 2	replacement = "Alex Hulley"
-									Default	replacement = "Jamie Larsen"
-								End Select
-							EndIf
-							replaced = True
+						Else
+							throw "not enough actors in " +GetTitle() + " for role "+ (actorNum +1)
 						EndIf
+						replaced = True
 
 					Case "GENRE"
 						replacement = GetMainGenreString()
@@ -699,6 +691,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Next
 
 		Return result
+
+		Function EnsureRole:TProgrammeRole(actor:TPersonProductionJob)
+			Local roleID:Int = actor.roleID
+			If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
+			'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
+			Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(actor.country, actor.gender)
+			actor.roleID = role.id
+			return role
+		End Function
 	End Method
 
 
