@@ -115,10 +115,10 @@ Type TFigureJanitor Extends TFigure
 	End Method
 
 
-	'overwrite default to stop moving when cleaning
-	Method GetVelocity:TVec2D()
-		If currentJanitorAction = 1 Then Return New TVec2D
-		Return velocity
+	'override default to stop moving when cleaning
+	Method GetVelocity:SVec2F() override
+		If currentJanitorAction = 1 Then Return New SVec2F(0,0)
+		Return New SVec2F(velocity.x, velocity.y)
 	End Method
 
 

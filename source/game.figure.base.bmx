@@ -389,12 +389,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'right of me
 		if area.GetX() < figure.area.GetX()
 			'i move to the left
-			If velocity.GetX() < 0 then return FALSE
+			If GetVelocity().x < 0 then return FALSE
 			return TRUE
 		'left of me
 		else
 			'i move to the right
-			If velocity.GetX() > 0 then return FALSE
+			If GetVelocity().x > 0 then return FALSE
 			return TRUE
 		endif
 		return FALSE
@@ -664,15 +664,15 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		local result:string = "standBack"
 
 		'if standing
-		If GetVelocity().GetX() = 0 or not moveable
+		If GetVelocity().x = 0 or not moveable
 			if currentAction = ACTION_ENTERING or currentAction = ACTION_PLANNED_ENTER
 				result = "standBack"
 			else
 				result = "standFront"
 			endif
 		Else
-			If GetVelocity().GetX() > 0 Then result = "walkRight"
-			If GetVelocity().GetX() < 0 Then result = "walkLeft"
+			If GetVelocity().x > 0 Then result = "walkRight"
+			If GetVelocity().x < 0 Then result = "walkLeft"
 		EndIf
 
 		if IsWaitingToLeave() then result = "standFront"

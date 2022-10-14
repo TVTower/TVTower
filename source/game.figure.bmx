@@ -267,7 +267,7 @@ Type TFigure extends TFigureBase
 			Local targetX:Int = GetTargetMoveToPosition().x
 
 			'we stand in front of the target -> reach target!
-			if GetVelocity().GetX() = 0 and abs(area.getX() - targetX) < 1.0
+			if GetVelocity().x = 0 and abs(area.getX() - targetX) < 1.0
 				return True
 			endif
 		endif
@@ -277,7 +277,7 @@ Type TFigure extends TFigureBase
 
 	Method FigureMovement:int()
 		'stop movement, will get set to a value if we have a target to move to
-		velocity.setX(0)
+		velocity.SetX(0)
 
 		'we have a target to move to and are not yet entering it
 		'check if we reach it now
@@ -295,23 +295,23 @@ Type TFigure extends TFigureBase
 			If HasToChangeFloor() Then targetX = GetElevator().GetDoorCenterX()
 
 			'we stand in front of the target -> reach target!
-			if GetVelocity().GetX() = 0 and abs(area.getX() - targetX) < 1.0 then reachTemporaryTarget=true
+			if GetVelocity().x = 0 and abs(area.x - targetX) < 1.0 then reachTemporaryTarget=true
 
 			'if able to move, check if the movement will lead to reaching
 			'the target
 			if CanMove()
 				'check whether the target is left or right side of the figure
-				If targetX < area.GetX()
+				If targetX < area.x
 					velocity.SetX( -(Abs(initialdx)))
-				ElseIf targetX > area.GetX()
+				ElseIf targetX > area.x
 					velocity.SetX(  (Abs(initialdx)))
 				EndIf
 
-				local dx:float = GetVelocity().GetX() * GetDeltaTime()
+				local dx:float = GetVelocity().x * GetDeltaTime()
 				'move to right and next step is more right than target
-				if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
+				if dx > 0 and ceil(area.x + dx) >= targetX then reachTemporaryTarget=true
 				'move to left and next step is more left than target
-				if dx < 0 and ceil(area.getX() + dx) <= targetX then reachTemporaryTarget=true
+				if dx < 0 and ceil(area.x + dx) <= targetX then reachTemporaryTarget=true
 			endif
 
 			'we reached our current target (temp or real)
@@ -364,7 +364,7 @@ Type TFigure extends TFigureBase
 		if GetGameBase().gamestate <> TGameBase.STATE_RUNNING
 			GetSoundSource().Stop("steps")
 		Else
-			if GetVelocity().getX() <> 0 and not IsInElevator() and not GetBuildingTime().TooFastForSound() 
+			if GetVelocity().x <> 0 and not IsInElevator() and not GetBuildingTime().TooFastForSound() 
 				GetSoundSource().PlayOrContinueRandomSFX("steps")
 			else
 				GetSoundSource().Stop("steps")
@@ -389,9 +389,9 @@ Type TFigure extends TFigureBase
 
 
 	'overwrite default to add stoppers (at elevator)
-	Method GetVelocity:TVec2D()
-		if IsInElevator() then return new TVec2D
-		return velocity
+	Method GetVelocity:SVec2F() override
+		if IsInElevator() then return new SVec2F(0,0)
+		return new SVec2F(velocity.x, velocity.y)
 	End Method
 
 
@@ -401,7 +401,7 @@ Type TFigure extends TFigureBase
 		local result:string = Super.GetAnimationToUse()
 
 		'check for special animations
-		If GetVelocity().GetX() = 0 or not moveable
+		If GetVelocity().x = 0 or not moveable
 			'boarding/deboarding movement
 			If boardingState <> 0
 				'default (when not walking to your elevator position)
@@ -1401,7 +1401,7 @@ Type TFigure extends TFigureBase
 		'also do not move with WorldTime being paused
 		'alternatively (also do not move when gamespeed is "0")
 		'-> and GetWorldTime().GetTimeFactor() > 0
-		if velocity.GetIntX() <> 0 and not GetWorldTime().IsPaused()
+		if Int(velocity.x) <> 0 and not GetWorldTime().IsPaused()
 			Local tween:Float = GetDeltaTimer().GetTween() 
 			tweenPosX = MathHelper.SteadyTween(oldPosition.x, area.x, tween)
 			tweenPosY = MathHelper.SteadyTween(oldPosition.y, area.y, tween)

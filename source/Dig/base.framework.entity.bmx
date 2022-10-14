@@ -430,8 +430,8 @@ Type TEntity extends TRenderableEntity
 	End Method
 
 
-	Method GetVelocity:TVec2D()
-		return velocity
+	Method GetVelocity:SVec2F()
+		return new SVec2F(velocity.x, velocity.y)
 	End Method
 
 
