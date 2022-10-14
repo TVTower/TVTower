@@ -567,6 +567,13 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetXY:TRectangle(p:SVec2I)
+		self.x = p.x
+		self.y = p.y
+		Return Self
+	End Method
+
+
 	Method SetXY:TRectangle(p:TVec2D)
 		self.x = p.x
 		self.y = p.y
@@ -718,6 +725,15 @@ Type TRectangle {_exposeToLua="selected"}
 			Return abs(x - px) < 1.0 AND abs(y - py) < 1.0
 		Else
 			Return x = px AND y = py
+		Endif
+	End Method
+
+
+	Method isSamePosition:int(p:SVec2I, round:int=False)
+		If round
+			Return abs(x - p.x) < 1.0 AND abs(y - p.y) < 1.0
+		Else
+			Return x = p.x AND y = p.y
 		Endif
 	End Method
 

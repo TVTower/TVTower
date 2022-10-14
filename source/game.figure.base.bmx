@@ -545,9 +545,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
-	Method GetTargetMoveToPosition:TVec2D()
+	Method GetTargetMoveToPosition:SVec2I()
 		local target:TFigureTargetBase = GetTarget()
-		if not target then return Null
+		if not target then return new SVec2I(-1000,-1000)
 
 		return target.GetMoveToPosition()
 	End Method
@@ -570,16 +570,19 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		velocity.SetX(0)
 
-		'set target as current position - so we are exactly there we want to be
-		local targetPosition:TVec2D = GetTargetMoveToPosition()
-		if targetPosition then area.setX( targetPosition.x )
+		Local target:TFigureTargetBase = GetTarget()
+		if target
+			'set target as current position - so we are exactly there we want to be
+			local targetPosition:SVec2I = GetTargetMoveToPosition()
+			if targetPosition.x <> -1000 and targetPosition.y <> -1000 then area.setX( targetPosition.x )
+		EndIf
 
 		currentReachTargetStep = 1
 		'inform target
-		if GetTarget() then GetTarget().Reach(self)
+		if target then target.Reach(self)
 
 		'emit an event
-		TriggerBaseEvent(GameEventKeys.Figure_OnBeginReachTarget, null, self, GetTarget() )
+		TriggerBaseEvent(GameEventKeys.Figure_OnBeginReachTarget, null, self, target )
 
 		'run custom onReachTarget method - eg to wait until entering a door
 		'or just remove the current target
@@ -785,8 +788,8 @@ Type TFigureTargetBase
 	End Method
 
 
-	Method GetMoveToPosition:TVec2D()
-		if TVec2D(targetObj) then return TVec2D(targetObj)
-		return null
+	Method GetMoveToPosition:SVec2I()
+		if TVec2D(targetObj) then return new SVec2I(int(TVec2D(targetObj).x), int(TVec2D(targetObj).y))
+		return new SVec2I(-1000,-1000)
 	End Method
 End Type

@@ -264,7 +264,7 @@ Type TFigure extends TFigureBase
 	Method IsInFrontOfTarget:int()
 		if not HasToChangeFloor() and GetTarget()
 			'get target coordinate
-			Local targetX:Int = GetTargetMoveToPosition().getIntX()
+			Local targetX:Int = GetTargetMoveToPosition().x
 
 			'we stand in front of the target -> reach target!
 			if GetVelocity().GetX() = 0 and abs(area.getX() - targetX) < 1.0
@@ -289,7 +289,7 @@ Type TFigure extends TFigureBase
 			'or target acquired without moving)
 			local reachTemporaryTarget:int = FALSE
 			'get a temporary target coordinate so we can manipulate that safely
-			Local targetX:Int = GetTargetMoveToPosition().getIntX()
+			Local targetX:Int = GetTargetMoveToPosition().x
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
 			If HasToChangeFloor() Then targetX = GetElevator().GetDoorCenterX()
@@ -996,17 +996,17 @@ Type TFigure extends TFigureBase
 		If Not h Then Return False
 		
 		Local target:TFigureTargetBase = new TFigureTarget.Init(h)
-		Local moveToPos:TVec2D = GetMoveToPosition( target )
+		Local moveToPos:SVec2I = GetMoveToPosition( target )
 		If Not moveToPos
 			print "SendToHotspot: failed, moveToPos = null"
 			Return False
 		EndIf
 
 		If forceSend
-			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			ForceChangeTarget(moveToPos.x, moveToPos.y)
 			SetTarget( target )
 		Else
-			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			ChangeTarget(moveToPos.x, moveToPos.y)
 			SetTarget( target )
 		EndIf
 		Return True
@@ -1016,16 +1016,16 @@ Type TFigure extends TFigureBase
 	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
  		If not door then return False
 
-		local moveToPos:TVec2D = GetMoveToPosition( new TFigureTarget.Init(door) )
-		if not moveToPos
+		local moveToPos:SVec2I = GetMoveToPosition( new TFigureTarget.Init(door) )
+		if moveToPos.x = -1000 or moveToPos.y = -1000
 			print "SendToDoor: failed, moveToPos = null"
 			return False
 		endif
 
 		If forceSend
-			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			ForceChangeTarget(moveToPos.x, moveToPos.y)
 		Else
-			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
+			ChangeTarget(moveToPos.x, moveToPos.y)
 		EndIf
 		
 		Return True
@@ -1117,13 +1117,13 @@ Type TFigure extends TFigureBase
 	'overridden to add roomdoor/hotspot
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
-	Method GetTargetMoveToPosition:TVec2D()
+	Method GetTargetMoveToPosition:SVec2I()
 		return GetMoveToPosition( GetTarget() )
 	End Method
 
 
-	Function GetMoveToPosition:TVec2D(target:TFigureTargetBase = null)
-		if not target then return Null
+	Function GetMoveToPosition:SVec2I(target:TFigureTargetBase = null)
+		if not target then return new SVec2I(-1000,-1000)
 		return target.GetMoveToPosition()
 	End Function
 
@@ -1170,14 +1170,14 @@ Type TFigure extends TFigureBase
 		'y is not of floor 0 -13
 		If GetBuildingBase().GetFloor(y) < 0 Or GetBuildingBase().GetFloor(y) > 13 Then Return False
 
-		local newTargetCoord:TVec2D
+		local newTargetCoord:SVec2I
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		newTargetCoord = new TVec2D(x, TBuildingBase.GetFloorY2(GetBuildingBase().GetFloor(y)) )
-		newTarget = newTargetCoord
+		newTargetCoord = new SVec2I(x, TBuildingBase.GetFloorY2(GetBuildingBase().GetFloor(y)) )
+		newTarget = new TVec2D(newTargetCoord.x, newTargetCoord.y)
 
 		'when targeting a room, set target to center of door
-		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
+		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(newTargetCoord.x, newTargetCoord.y)
 		if targetedDoor
 			'only go into the room if we were able to target it from our
 			'source position
@@ -1199,10 +1199,10 @@ Type TFigure extends TFigureBase
 		local leftLimit:int = 15 '200
 
 		if GetBuildingBase().GetFloor(y) = 0
-			If Floor(newTargetCoord.x) >= rightLimit Then newTargetCoord.X = rightLimit
+			If newTargetCoord.x >= rightLimit Then newTargetCoord = new SVec2I(rightLimit, newTargetCoord.y)
 		else
-			If Floor(newTargetCoord.x) <= leftLimit Then newTargetCoord.X = leftLimit
-			If Floor(newTargetCoord.x) >= rightLimit Then newTargetCoord.X = rightLimit
+			If newTargetCoord.x <= leftLimit Then newTargetCoord = new SVec2I(leftLimit, newTargetCoord.y)
+			If newTargetCoord.x >= rightLimit Then newTargetCoord = new SVec2I(rightLimit, newTargetCoord.y)
 		endif
 
 		local targetRoom:TRoomBase
@@ -1220,7 +1220,7 @@ Type TFigure extends TFigureBase
 			'new target and current target are the same
 			if newTarget = GetTargetObject() then return False
 			'new target and current target are at the same position?
-			if newTargetCoord.IsSame( GetTargetMoveToPosition() ) then return False
+			if newTargetCoord = GetTargetMoveToPosition() then return False
 
 			'print playerID+": targets are different " + newTargetCoord.getIntX()+","+newTargetCoord.getIntY()+" vs " + GetTargetMovetoPosition().GetIntX()+","+GetTargetMovetoPosition().getIntY()
 		endif
@@ -1341,7 +1341,7 @@ Type TFigure extends TFigureBase
 				EndIf
 
 				If IsInElevator() and GetElevator().ReadyForBoarding
-					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMovetoPosition().y))
+					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMoveToPosition().y))
 						GetElevator().LeaveTheElevator(Self)
 					EndIf
 				EndIf
@@ -1430,20 +1430,22 @@ Type TFigureTarget extends TFigureTargetBase
 	End Method
 
 
-	Function GetTargetMoveToPosition:TVec2D(target:object)
+	Function GetTargetMoveToPosition:SVec2I(target:object)
 		if TVec2D(target)
-			return TVec2D(target)
+			return new SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
 		elseif TRoomDoorBase(target)
-			return new TVec2D(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2 + TRoomDoorBase(target).stopOffset, TRoomDoorBase(target).area.GetY())
+			Local door:TRoomDoorBase = TRoomDoorBase(target)
+			return new SVec2I(Int(door.area.x + door.area.w/2 + door.stopOffset), Int(door.area.y))
 		elseif THotspot(target)
+			Local hotspot:THotspot = THotspot(target)
 			'attention: return GetY2() (bottom point) as this is used for figures too
-			return new TVec2D(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
+			return new SVec2I(Int(hotspot.area.x + hotspot.area.w/2), Int(hotspot.area.GetY2()))
 		endif
-		return null
+		return new SVec2I(-1000,-1000)
 	End Function
 
 
-	Method GetMoveToPosition:TVec2D()
-		return TFigureTarget.GetTargetMovetoPosition( targetObj )
+	Method GetMoveToPosition:SVec2I()
+		return TFigureTarget.GetTargetMoveToPosition( targetObj )
 	End Method
 End Type
