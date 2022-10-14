@@ -99,11 +99,11 @@ Type TFigure extends TFigureBase
 		'adjust sprite animations
 
 		SetSprite(sprite)
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [8,1000] ], -1, 0 ) )
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("walkRight", [ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("walkLeft", [ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("standFront", [ [8,2500], [9,250] ], -1, 0, 500) )
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("standBack", [ [10,1000] ], -1, 0 ) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("default", [ [8,1000] ], -1, 0 ) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("walkRight", [ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("walkLeft", [ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("standFront", [ [8,2500], [9,250] ], -1, 0, 500) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("standBack", [ [10,1000] ], -1, 0 ) )
 'local coll:TSpriteFrameAnimationCollection = GetFrameAnimations()
 'debugstop
 		name = Figurename

@@ -15,7 +15,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2018 Ronny Otto, digidea.de
+	Copyright (C) 2002-2022 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -53,7 +53,8 @@ Type TRenderableEntity extends TEntityBase
 	Field visible:int = True
 	Field parent:TRenderableEntity = null
 	Field childEntities:TRenderableEntity[]
-	Field childOffsets:TVec2D[]
+	Field childOffsetsX:Int[]
+	Field childOffsetsY:Int[]
 
 	Field _entityOptions:int = 0
 	Const OPTION_IGNORE_PARENT_SCREENLIMIT:int = 1
@@ -92,20 +93,23 @@ Type TRenderableEntity extends TEntityBase
 	End Method
 
 
-	Method AddChild(child:TRenderableEntity, childOffset:TVec2D = null, index:int = -1)
+	Method AddChild(child:TRenderableEntity, offsetX:Int=0, offsetY:Int=0, index:int = -1)
 		if not child then return
 		if not childEntities then childEntities = new TRenderableEntity[0]
-		if not childOffsets then childOffsets = new TVec2D[0]
-
-		if not childOffset then childOffset = new TVec2D()
+		If Not childOffsetsX 
+			childOffsetsX = new Int[0]
+			childOffsetsY = new Int[0]
+		EndIf
 
 		if index < 0 then index = childEntities.length
 		if index >= childEntities.length
 			childEntities :+ [child]
-			childOffsets :+ [childOffset]
+			childOffsetsX :+ [offsetX]
+			childOffsetsY :+ [offsetY]
 		else
 			childEntities = childEntities[.. index] + [child] + childEntities[index ..]
-			childOffsets = childOffsets[.. index] + [childOffset] + childOffsets[index ..]
+			childOffsetsX = childOffsetsX[.. index] + [offsetX] + childOffsetsX[index ..]
+			childOffsetsY = childOffsetsY[.. index] + [offsetY] + childOffsetsY[index ..]
 		endif
 
 		'set self as parent
@@ -140,13 +144,16 @@ Type TRenderableEntity extends TEntityBase
 
 		if index <= 0
 			childEntities = childEntities[1 ..]
-			childOffsets = childOffsets[1 ..]
+			childOffsetsX = childOffsetsX[1 ..]
+			childOffsetsY = childOffsetsY[1 ..]
 		elseif index >= childEntities.length - 1
 			childEntities = childEntities[.. childEntities.length-1]
-			childOffsets = childOffsets[.. childOffsets.length-1]
+			childOffsetsX = childOffsetsX[.. childOffsetsX.length-1]
+			childOffsetsY = childOffsetsY[.. childOffsetsY.length-1]
 		else
 			childEntities = childEntities[.. index] + childEntities[index+1 ..]
-			childOffsets = childOffsets[.. index] + childOffsets[index+1 ..]
+			childOffsetsX = childOffsetsX[.. index] + childOffsetsX[index+1 ..]
+			childOffsetsY = childOffsetsY[.. index] + childOffsetsY[index+1 ..]
 		endif
 
 		return True
@@ -176,7 +183,7 @@ Type TRenderableEntity extends TEntityBase
 	Method RenderChildren:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		For local i:int = 0 until childEntities.length
 			if not childEntities[i] then continue
-			childEntities[i].Render(xOffset + childOffsets[i].GetX(), yOffset + childOffsets[i].GetY(), alignment)
+			childEntities[i].Render(xOffset + childOffsetsX[i], yOffset + childOffsetsY[i], alignment)
 		Next
 	End Method
 

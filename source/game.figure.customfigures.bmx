@@ -86,8 +86,8 @@ Type TFigureJanitor Extends TFigure
 		Super.Create(FigureName, sprite, x, onFloor, speed)
 		area.SetW(14)
 
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("cleanRight", [ [11,130], [12,130] ], -1, 0) )
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("cleanLeft", [ [13,130], [14,130] ], -1, 0) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("cleanRight", [ [11,130], [12,130] ], -1, 0) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("cleanLeft", [ [13,130], [14,130] ], -1, 0) )
 
 		Return Self
 	End Method

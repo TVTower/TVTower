@@ -149,11 +149,11 @@ Type TElevator Extends TEntity
 		'create door
 		door = New TSpriteEntity
 		door.SetSprite(GetSpriteFromRegistry("gfx_building_Fahrstuhl_oeffnend"))
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [0,70] ], 0, 0) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("closed", [ [0,70] ], 0, 0) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("open", [ [7,70] ], 0, 0) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("opendoor", [ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("closedoor", [ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("default", [ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("closed", [ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("open", [ [7,70] ], 0, 0) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("opendoor", [ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("closedoor", [ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
 
 		InitSprites()
 
@@ -655,7 +655,7 @@ Type TElevator Extends TEntity
 			EndIf
 
 			'wait until door animation finished
-			If door.GetFrameAnimations().getCurrentAnimationName() = "closedoor"
+			If door.GetFrameAnimations().GetCurrent().GetNameLS() = "closedoor"
 				If door.GetFrameAnimations().getCurrent().isFinished()
 'print Millisecs()+"  Elevator: 1) closed -> 2)"
 					door.GetFrameAnimations().SetCurrent("closed")
@@ -726,7 +726,7 @@ Type TElevator Extends TEntity
 
 			'continue door animation for opening doors
 			'also deboard passengers as soon as finished
-			If door.GetFrameAnimations().getCurrentAnimationName() = "opendoor"
+			If door.GetFrameAnimations().GetCurrent().GetNameLS() = "opendoor"
 'print Millisecs()+"  Elevator: 3) opening..."
 				'while the door animation is active, the deboarding
 				'figures will move to the exit/door (one after another)

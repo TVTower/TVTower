@@ -3050,6 +3050,12 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
+			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
+			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()
+				Local collection:TSpriteFrameAnimationCollection = TSpriteFrameAnimationCollection(parent)
+				If collection Then collection.SetCurrent(String(fieldObject), False, False)
+
 			'v0.7.2 -> "TStation***.pos:TVec2D" became "TStation***.x and .y"
 			case "TStation.pos:TVec2D".ToLower(), ..
 			     "TStationAntenna.pos:TVec2D".ToLower(), ..
