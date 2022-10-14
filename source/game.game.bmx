@@ -264,7 +264,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		?bmxng
 		if OCM.enabled
 			OCM.FetchDump("GAMESTART")
-			OCM.Dump()
+			If OCM.printEnabled
+				OCM.Dump()
+			EndIf
 			SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
 		endif
 		?

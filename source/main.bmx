@@ -166,6 +166,8 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
 Global collectDebugStats:Int = False
+OCM.enabled = True & (collectDebugStats = True)
+OCM.printEnabled = False & (collectDebugStats = True)
 
 Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
 Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
@@ -1534,15 +1536,50 @@ endrem
 
 		?bmxng
 		If OCM.enabled
+			'Display elements currently managed by the GC.
+			'Also display changes since last "dump" (a second earlier)
+			'This does NOT show temporarily created elements
 			SetColor 0,0,0
-			DrawRect(5,455, 200, 100)
+			DrawRect(5,430, 230, 200)
 			SetColor 190,190,190
-			Local linePos:Int = 460
+			
+			Local linePos:Int = 432
+			GetBitmapFontManager().baseFont.Draw("Managed Obj. (Mem-Leaks detection):", 10 , linePos)
+			linePos :+ 12
+
 			'OK: "TRoom", "TRoomDoor"
-			For Local s:String = EachIn ["TImage", "TPixmap", "TGLImageFrame", "TNewsEvent", "TPlayerProgrammePlan", "TPlayerProgrammeCollection", "TFigure", "TPlayer", "TPlayerBoss", "TProgrammeLicence"]
-				GetBitmapFontManager().baseFont.Draw(s+": " + OCM.GetTotal(s), 10 , linePos)
+			For Local s:String = EachIn ["Array", "String", "TLink", "TVec3D", "TVec2D", "TAudience", "TAudienceBase"]
+				Local e:TObjectCountDumpEntry = OCM.GetEntry(s)
+				GetBitmapFontManager().baseFont.Draw(s+": ", 10 , linePos)
+				if not e
+					GetBitmapFontManager().baseFont.Draw("0", 110 , linePos)
+				Else
+					GetBitmapFontManager().baseFont.Draw(e.total, 110 , linePos)
+					If e.change > 0
+						GetBitmapFontManager().baseFont.Draw("+" + e.change, 150 , linePos)
+					ElseIf e.change < 0
+						GetBitmapFontManager().baseFont.Draw(e.change, 150 , linePos)
+					EndIf
+				EndIf
 				linePos :+ 12
 			Next
+			linePos :+ 12
+			GetBitmapFontManager().baseFont.Draw("Top Changes:", 10 , linePos)
+			linePos :+ 12
+
+			Local dump:TObjectCountDump = OCM.GetLastDump()
+			If dump
+				For Local e:TObjectCountDumpEntry = EachIn dump.GetMostChanged(3)
+					GetBitmapFontManager().baseFont.Draw(OCM.GetKey(e.keyID), 10 , linePos)
+					If e.change > 0
+						GetBitmapFontManager().baseFont.Draw("+" + e.change, 150 , linePos)
+					ElseIf e.change < 0
+						GetBitmapFontManager().baseFont.Draw(e.change, 150 , linePos)
+					EndIf
+					linePos :+ 12
+				Next
+			EndIf
+			
 			SetColor 255,255,255
 		EndIf
 		?
@@ -6960,12 +6997,12 @@ Function ShowApp:Int()
 End Function
 
 
-Global bbGCAllocCount:ULong = 0
+'Global bbGCAllocCount:ULong = 0
 ?bmxng
 'ron|gc
-'Extern
-'    Global bbGCAllocCount:ULong="bbGCAllocCount"
-'End Extern
+Extern
+    Global bbGCAllocCount:ULong="bbGCAllocCount"
+End Extern
 ?
 
 
@@ -6988,15 +7025,32 @@ End Function
 ?
 
 Function StartTVTower(start:Int=True)
-?bmxng
-OCM.enabled  = False
-'OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
-'OCM.AddIgnoreTypes("String, TApp, TBank, TBitmapFont, TBitmapFontChar, TBitmapFontManager")
-'OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
-'OCM.AddIgnoreTypes("TGLImageFrame, TGlobal, TGraphicsContext, THook, TSDLGLContext, TSDLGraphics, TSDLWindow")
-'OCM.AddIgnoreTypes("TImageFont, TImageGlyph, TMax2DGraphics, TMethod, TMutex, TTypeId")
-'OCM.StoreBaseDump()
-?
+	'for now we ignore a lot of types to keep the OCM stuff small
+	
+	OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
+	OCM.AddIgnoreTypes("TStyledBitmapFonts, TRoomBaseCollection, TMovieFlagDefinition, TGUINewsSlotList, TDeltaTimer, TRoomAgency")
+	OCM.AddIgnoreTypes("TSmartFloorRoute, TSizedBitmapFonts, TGUIGameModalWindow, TSpriteParticleEmitter")
+	OCM.AddIgnoreTypes("RoomHandler_RoomAgency, RoomHandler_Roomboard, RoomHandler_Studio")
+	OCM.AddIgnoreTypes("TNewsEventTemplate, TWorld, TProductionCompany, TNewsEventSportLeague_IceHockey")
+	OCM.AddIgnoreTypes("TGUIScrollablePanel, TGUICheckBox, TGUIGameEntryList, TGUIGameChat, TStringBuilder, TBettyPresent, TRoomDoor, TPlayer")
+	OCM.AddIgnoreTypes("TGUIProductionCompanyDropDownItem")
+	'OCM.AddIgnoreTypes("String, TApp, TBank, TBitmapFont, TBitmapFontChar, TBitmapFontManager")
+	OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
+	OCM.AddIgnoreTypes("TGLImageFrame, TGlobal, TGraphicsContext, THook, TSDLGLContext, TSDLGraphics, TSDLWindow")
+	OCM.AddIgnoreTypes("TImageFont, TImageGlyph, TMax2DGraphics, TMethod, TMutex, TTypeId")
+
+	OCM.AddIgnoreTypes("TSoundManager_Soloud, TDigAudioStream_Soloud, TPlayerColor, TBitmapFontChar, TGUITooltipBase, TIntMap")
+	OCM.AddIgnoreTypes("TGame, TThread, TRegistry, TLocalizationLanguage, TLink")
+	OCM.AddIgnoreTypes("TGUIButton, TGUIinput, TGUILabel, TGUISlider, TGUISpriteDropDown, TGUIListBase")
+	OCM.AddIgnoreTypes("TToastMessageCollection, TDrawTextSettings, TSpriteFrameAnimation")
+	OCM.AddIgnoreTypes("TScreen_MainMenu, TSoloudChannel, TBuildingIntervalTimer")
+	OCM.AddIgnoreTypes("TGUIChatWindow, TScreen_PrepareGameStart, TCStream, TGUIDropDown, TVirtualGfx, TFigureCollection")
+	OCM.AddIgnoreTypes("TIngameHelpWindow, TFigureJanitor, TGUIArrowButton, TSLWavStream, TDrawTextEffect, TInGameScreen_Room, TGUIGameWindow")
+	OCM.AddIgnoreTypes("TSoloudSound, TScreen_GameSettings, TSpriteFrameAnimationCollection, TApp, TSLWav, TGUIBackgroundBox, TRoomDoorBaseCollection, TFunction, TMouseManagerClick, TEventListenerRunFunction, TPlayerSoundSourcePosition, TGUISpriteDropDownItem, TSfxSettings, TGUIScroller, TBitmapFont, TGUISelectList, TBitmapFontManager")
+	OCM.AddIgnoreTypes("TSpriteEntity, TFigureGeneratorPart, TBuildingTime, TBuildingBase, TGUITextBox, TIntervalTimer, TDynamicSfxChannel, TGUIDropDownItem, TElevator, TStreamFile, TFigureBaseSoundSource, TScreen_NetworkLobby")
+
+	OCM.StoreBaseDump()
+
 	Global InitialResourceLoadingDone:Int = False
 	Global AppSuspendedProcessed:Int = False
 
@@ -7070,20 +7124,22 @@ TProfiler.Enter("GameLoop")
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
 				Local myArr:int[] = new Int[10000]
-				?bmxng
-				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + tcolor_created + " TColor. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
+				
+				If printDebugStats 
+					Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+				EndIf
 				bbGCAllocCount = 0
-				?Not bmxng
-				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
-				?
 				rectangle_created = 0
 				vec2d_created = 0
 				tcolor_created = 0
 				debugCreationTime :+ 1000
 
-				?bmxng
-					'OCM.FetchDump()
-					'OCM.Dump(null)
+				If OCM.enabled
+					OCM.FetchDump()
+					If OCM.printEnabled
+						OCM.Dump(null)
+					EndIf
+				EndIf
 				?
 			EndIf
 		EndIf
