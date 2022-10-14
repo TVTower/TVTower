@@ -64,7 +64,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			for local i:int = 0 to GuiListNormal.length-1
-				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D(17, sprite.area.GetH()), "scriptagency")
+				GuiListNormal[i] = new TGUIScriptSlotList.Create(new SVec2I(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new SVec2I(17, Int(sprite.area.h)), "scriptagency")
 				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[i].SetSize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
@@ -73,13 +73,13 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D(175, spriteSuitcase.area.GetH()), "scriptagency")
+			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new SVec2I(Int(suitcasePos.x + suitcaseGuiListDisplace.x), Int(suitcasePos.y + suitcaseGuiListDisplace.y)), new SVec2I(175, Int(spriteSuitcase.area.h)), "scriptagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
 			'for more than 1 entry
 			'GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D(188, 240), new TVec2D(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
 			'GuiListNormal2.setEntriesBlockDisplacement(18, 11)
-			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D(206, 251), new TVec2D(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+			GuiListNormal2 = new TGUIScriptSlotlist.Create(new SVec2I(206, 251), new SVec2I(10 + Int(sprite.area.w*scriptsNormal2Amount), Int(sprite.area.h)), "scriptagency")
 
 			GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -97,10 +97,10 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			GuiListSuitcase.SetAcceptDrop("TGUIScriptAgencyScript")
 
 			'default vendor dimension
-			local vendorAreaDimension:TVec2D = new TVec2D(200,300)
-			local vendorAreaPosition:TVec2D = new TVec2D(350,100)
-			If VendorEntity Then vendorAreaDimension = New TVec2D(VendorEntity.area.w, VendorEntity.area.h)
-			If VendorEntity Then vendorAreaPosition = New TVec2D(VendorEntity.area.x, VendorEntity.area.y)
+			local vendorAreaDimension:SVec2I = new SVec2I(200,300)
+			local vendorAreaPosition:SVec2I = new SVec2I(350,100)
+			If VendorEntity Then vendorAreaDimension = New SVec2I(Int(VendorEntity.area.w), Int(VendorEntity.area.h))
+			If VendorEntity Then vendorAreaPosition = New SVec2I(Int(VendorEntity.area.x), Int(VendorEntity.area.y))
 
 			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
 			'vendor should accept drop - else no recognition
@@ -1065,7 +1065,7 @@ End Type
 
 
 Type TGUIScriptAgencyScript Extends TGUIScript
-    Method Create:TGUIScriptAgencyScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="") override
+    Method Create:TGUIScriptAgencyScript(pos:SVec2I, dimension:SVec2I, value:String="") override
 		Return TGUIScriptAgencyScript( Super.Create(pos, dimension, value) )
 	End Method
 

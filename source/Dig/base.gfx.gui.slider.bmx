@@ -80,7 +80,7 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
-	Method Create:TGUISlider(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGUISlider(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 

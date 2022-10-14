@@ -31,11 +31,6 @@ Type TGUIButton Extends TGUIobject
 
 
 	Method Create:TGUIButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
-		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, State)
-	End Method
-
-
-	Method Create:TGUIButton(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
@@ -166,7 +161,7 @@ endrem
 			if not color
 				caption = New TGUILabel.Create(new SVec2I(0,0), text, "")
 			else
-				caption = New TGUILabel.Create(new TVec2D(0,0), text, color.ToSColor8(), "")
+				caption = New TGUILabel.Create(new SVec2I(0,0), text, color.ToSColor8(), "")
 			endif
 			
 			caption.SetContentAlignment(ALIGN_CENTER, ALIGN_CENTER)

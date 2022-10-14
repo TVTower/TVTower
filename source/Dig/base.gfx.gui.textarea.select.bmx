@@ -8,7 +8,7 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 	Field selectedLine:int
 	Field hoveredLine:int
 
-    Method Create:TGUITextAreaSelect(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUITextAreaSelect(pos:SVec2I, dimension:TVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		SetFont( GetBitmapFont("default", 12) )

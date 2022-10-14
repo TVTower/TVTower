@@ -24,7 +24,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGuiProductionConceptListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiProductionConceptListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		Self.assetNameDefault = "gfx_studio_productionConcept_0"
@@ -35,7 +35,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method CreateWithproductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
-		Self.Create()
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.SetProductionConcept(productionConcept)
 		Return Self
 	End Method
@@ -706,7 +706,7 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	End Method
 
 
-    Method Create:TGuiProductionConceptSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiProductionConceptSelectListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 		SetOption(GUI_OBJECT_DRAGABLE, False)
 
@@ -992,7 +992,7 @@ End Type
 
 
 Type TGUIProductionConceptSlotList Extends TGUIGameSlotList
-    Method Create:TGUIProductionConceptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIProductionConceptSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method

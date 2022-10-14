@@ -76,7 +76,7 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-    Method Create:TGUIListBase(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIListBase(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.CreateBase(position, dimension, limitState)
 
 		setZIndex(0)
@@ -86,7 +86,7 @@ Type TGUIListBase Extends TGUIobject
 		'orientation of horizontal scroller has to get set manually
 		guiScrollerH.SetOrientation(GUI_OBJECT_ORIENTATION_HORIZONTAL)
 
-		guiEntriesPanel = New TGUIScrollablePanel.Create(Null, New TVec2D(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), limitState)
+		guiEntriesPanel = New TGUIScrollablePanel.Create(new SVec2I(0,0), New SVec2I(Int(rect.w - guiScrollerV.rect.w), Int(rect.h - guiScrollerH.rect.h)), limitState)
 
 		'manage by our own
 		AddChild(guiEntriesPanel)
@@ -1288,9 +1288,9 @@ Type TGUIListItem Extends TGUIobject
 	End Method
 
 
-    Method Create:TGUIListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'have a basic size (specify a dimension in your custom type)
-		If Not dimension Then dimension = New TVec2D(80,20)
+		If dimension.x = 0 and dimension.y = 0 Then dimension = New SVec2I(80,20)
 
 		'limit this items to nothing - as soon as we parent it, it will
 		'follow the parents limits

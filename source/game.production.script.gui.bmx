@@ -16,7 +16,7 @@ Type TGuiScript Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGUIScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIScript(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		Self.assetNameDefault = "gfx_scripts_0"
@@ -27,7 +27,7 @@ Type TGuiScript Extends TGUIGameListItem
 
 
 	Method CreateWithScript:TGuiScript(script:TScript)
-		Self.Create()
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.setScript(script)
 		Return Self
 	End Method
@@ -128,7 +128,7 @@ End Type
 
 
 Type TGUIScriptSlotList Extends TGUIGameSlotList
-    Method Create:TGUIScriptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIScriptSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method

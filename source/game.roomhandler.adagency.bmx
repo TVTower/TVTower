@@ -41,8 +41,8 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 	Global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = New TVec2D(520,100)
-	Global suitcaseGuiListDisplace:TVec2D = New TVec2D(14,32)
+	Global suitcasePos:SVec2I = New SVec2I(520,100)
+	Global suitcaseGuiListDisplace:SVec2I = New SVec2I(14,32)
 	Global contractsPerLine:Int	= 4
 	Global contractsNormalAmount:Int = 12
 	Global contractsCheapAmount:Int	= 4
@@ -115,7 +115,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 			GuiListNormal = GuiListNormal[..3]
 			For Local i:Int = 0 To GuiListNormal.length-1
 				Local listIndex:Int = GuiListNormal.length-1 - i
-				GuiListNormal[listIndex] = New TGUIAdContractSlotList.Create(New TVec2D(418 - i*80, 122 + i*36), New TVec2D(200, 140), "adagency")
+				GuiListNormal[listIndex] = New TGUIAdContractSlotList.Create(New SVec2I(418 - i*80, 122 + i*36), New SVec2I(200, 140), "adagency")
 				GuiListNormal[listIndex].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[listIndex].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[listIndex].SetSize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
@@ -130,13 +130,10 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 			Next
 
-			GuiListSuitcase	= New TGUIAdContractSlotList.Create(New TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D(255, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
+			GuiListSuitcase	= New TGUIAdContractSlotList.Create(New SVec2I(suitcasePos.x + suitcaseGuiListDisplace.x, suitcasePos.y + suitcaseGuiListDisplace.y), New SVec2I(255, Int(GetSpriteFromRegistry("gfx_contracts_0_dragged").area.h)), "adagency")
 			GuiListSuitcase.SetAutofillSlots(True)
 
-			GuiListCheap = New TGUIAdContractSlotList.Create(New TVec2D(70, 220), New TVec2D(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
-			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D(70, 200), new TVec2D(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
-			'GuiListCheap.setEntriesBlockDisplacement(70,0)
-			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
+			GuiListCheap = New TGUIAdContractSlotList.Create(New SVec2I(70, 220), New SVec2I(5 + Int(GetSpriteFromRegistry("gfx_contracts_0").area.w*4), Int(GetSpriteFromRegistry("gfx_contracts_0").area.h)), "adagency")
 
 			GuiListCheap.Move(0, -20)
 			GuiListCheap.SetSize(-1, GuiListCheap.rect.GetH() + 20) 'for 4x displacement
@@ -160,10 +157,10 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 
 			'default vendor dimension
-			Local vendorAreaDimension:TVec2D = New TVec2D(150,200)
-			Local vendorAreaPosition:TVec2D = New TVec2D(241,110)
-			If VendorEntity Then vendorAreaDimension = New TVec2D(VendorEntity.area.w, VendorEntity.area.h)
-			If VendorEntity Then vendorAreaPosition = New TVec2D(VendorEntity.area.x, VendorEntity.area.y)
+			Local vendorAreaDimension:SVec2I = New SVec2I(150,200)
+			Local vendorAreaPosition:SVec2I = New SVec2I(241,110)
+			If VendorEntity Then vendorAreaDimension = New SVec2I(Int(VendorEntity.area.w), Int(VendorEntity.area.h))
+			If VendorEntity Then vendorAreaPosition = New SVec2I(Int(VendorEntity.area.x), Int(VendorEntity.area.y))
 
 			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "adagency" )
 			'vendor should accept drop - else no recognition
@@ -1352,7 +1349,7 @@ endrem
 
 	Method onDrawRoom:Int( triggerEvent:TEventBase )
 		If VendorEntity Then VendorEntity.Render()
-		GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.x, suitcasePos.y)
 
 		'make suitcase/vendor highlighted if needed
 		Local highlightSuitcase:Int = False
@@ -1371,7 +1368,7 @@ endrem
 			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
 
 			If VendorEntity And highlightVendor Then VendorEntity.Render()
-			If highlightSuitcase Then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			If highlightSuitcase Then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.x, suitcasePos.y)
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
@@ -1529,7 +1526,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGuiAdContract(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiAdContract(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		Self.assetNameDefault = "gfx_contracts_0"
@@ -1540,7 +1537,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 
 	Method CreateWithContract:TGuiAdContract(contract:TAdContract)
-		Self.Create()
+		Self.Create(New SVec2I(0,0), New SVec2I(-1,-1))
 		Self.setContract(contract)
 		Return Self
 	End Method
@@ -1651,7 +1648,7 @@ End Type
 
 Type TGUIAdContractSlotList Extends TGUIGameSlotList
 
-    Method Create:TGUIAdContractSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIAdContractSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method

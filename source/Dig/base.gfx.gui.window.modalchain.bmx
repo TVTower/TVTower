@@ -67,7 +67,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 	End Method
 
 
-	Method Create:TGUIModalWindowChain(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIModalWindowChain(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 		setZIndex(10000)
 		setOption(GUI_OBJECT_CLICKABLE, False)
@@ -322,7 +322,7 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 	End Method
 
 
-	Method Create:TGUIModalWindowChainElement(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIModalWindowChainElement(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 		setZIndex(10001)
 
@@ -415,7 +415,7 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 	End Method
 
 
-	Method Create:TGUIModalWindowChainDialogue(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIModalWindowChainDialogue(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		'by default just a "ok" button
@@ -443,15 +443,15 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 			'a default button
 			Case 1
 				dialogueButtons = dialogueButtons[..1]
-				dialogueButtons[0] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(120, -1), GetLocale("OK"))
+				dialogueButtons[0] = New TGUIButton.Create(New SVec2I(0,0), New SVec2I(120,-1), GetLocale("OK"))
 				AddChild(dialogueButtons[0])
 				'set to ignore parental padding (so it starts at 0,0)
 				dialogueButtons[0].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 			'yes and no button
 			Case 2
 				dialogueButtons = dialogueButtons[..2]
-				dialogueButtons[0] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("YES"))
-				dialogueButtons[1] = New TGUIButton.Create(new TVec2D(0, 0), new TVec2D(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("NO"))
+				dialogueButtons[0] = New TGUIButton.Create(New SVec2I(0,0), new SVec2I(Int(GetContentScreenRect().w / 2 - 10), -1), GetLocale("YES"))
+				dialogueButtons[1] = New TGUIButton.Create(New SVec2I(0,0), new SVec2I(Int(GetContentScreenRect().w / 2 - 10), -1), GetLocale("NO"))
 				AddChild(dialogueButtons[0])
 				AddChild(dialogueButtons[1])
 				'set to ignore parental padding (so it starts at 0,0)

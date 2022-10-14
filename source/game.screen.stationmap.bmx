@@ -40,37 +40,37 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Global subHeaderColor:SColor8 = new SColor8(115,115,115)
 
 
-	Method Create:TGameGUIBasicStationmapPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGameGUIBasicStationmapPanel(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
 		buttonFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
 		listFont = GetBitmapFontManager().Get("Default", 12)
 
-		actionButton = New TGUIButton.Create(New TVec2D(0, 0), New TVec2D(150, 28), "", "STATIONMAP")
+		actionButton = New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(150, 28), "", "STATIONMAP")
 		actionButton.spriteName = "gfx_gui_button.datasheet"
 		actionButton.SetFont( buttonFont )
 
 
-		renewButton = New TGUIButton.Create(New TVec2D(0, 0), New TVec2D(150, 28), "", "STATIONMAP")
+		renewButton = New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(150, 28), "", "STATIONMAP")
 		renewButton.spriteName = "gfx_gui_button.datasheet"
 		renewButton.SetFont( buttonFont )
 
-		renewInfoButton = New TGUIButton.Create(New TVec2D(145, 0), New TVec2D(30, 28), "i", "STATIONMAP")
+		renewInfoButton = New TGUIButton.Create(New SVec2I(145, 0), New SVec2I(30, 28), "i", "STATIONMAP")
 		renewInfoButton.caption.color = TColor.clBlue.ToSColor8()
 		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
 		renewInfoButton.SetFont( buttonFont )
 
-		autoRenewCheckbox = New TGUICheckBox.Create(New TVec2D(145, 0), New TVec2D(20, 20), "auto renew", "STATIONMAP")
+		autoRenewCheckbox = New TGUICheckBox.Create(New SVec2I(145, 0), New SVec2I(20, 20), "auto renew", "STATIONMAP")
 		'autoRenewCheckbox.caption.color = TColor.clBlue.copy()
 		'autoRenewCheckbox.spriteName = "gfx_gui_button.datasheet"
 		autoRenewCheckbox.SetFont( buttonFont )
 
-		cancelButton = New TGUIButton.Create(New TVec2D(145, 0), New TVec2D(30, 28), "X", "STATIONMAP")
+		cancelButton = New TGUIButton.Create(New SVec2I(145, 0), New SVec2I(30, 28), "X", "STATIONMAP")
 		cancelButton.caption.color = TColor.clRed.ToSColor8()
 		cancelButton.spriteName = "gfx_gui_button.datasheet"
 		cancelButton.SetFont( buttonFont )
 
-		list = New TGUISelectList.Create(New TVec2D(610,133), New TVec2D(178, 100), "STATIONMAP")
+		list = New TGUISelectList.Create(New SVec2I(610,133), New SVec2I(178, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		list.scrollItemHeightPercentage = 1.0
 		list.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -551,7 +551,7 @@ End Type
 
 
 Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
-	Method Create:TGameGUIAntennaPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGameGUIAntennaPanel(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
 		localeKey_NewItem = "NEW_STATION"
@@ -593,7 +593,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationAntenna = EachIn GetStationMap(playerID).Stations
-			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), station.GetLongName())
+			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New SVec2I(0,0), New SVec2I(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
@@ -789,7 +789,7 @@ End Type
 
 Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
-	Method Create:TGameGUICableNetworkPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGameGUICableNetworkPanel(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
 		localeKey_NewItem = "NEW_CABLE_NETWORK_UPLINK"
@@ -840,7 +840,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationCableNetworkUplink = EachIn GetStationMap(playerID).Stations
-			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), station.GetLongName())
+			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New SVec2I(0, 0), New SVec2I(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
@@ -1122,7 +1122,7 @@ End Type
 
 
 Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
-	Method Create:TGameGUISatellitePanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGameGUISatellitePanel(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
 		localeKey_NewItem = "NEW_SATELLITE_UPLINK"
@@ -1290,7 +1290,7 @@ endrem
 
 		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationSatelliteUplink = EachIn GetStationMap(playerID).Stations
-			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), station.GetLongName())
+			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New SVec2I(0,0), New SVec2I(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
@@ -1561,7 +1561,7 @@ Type TSatelliteSelectionFrame
 		If Not area Then area = New TRectangle.Init(402, 96, 190, 212)
 		If Not contentArea Then contentArea = New TRectangle
 
-		satelliteList = New TGUISelectList.Create(New TVec2D(410, 121), New TVec2D(178, 100), "STATIONMAP")
+		satelliteList = New TGUISelectList.Create(New SVec2I(410, 121), New SVec2I(178, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		satelliteList.scrollItemHeightPercentage = 1.0
 		satelliteList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -1688,7 +1688,7 @@ Type TSatelliteSelectionFrame
 			For Local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
 				If Not satellite.IsLaunched() Then Continue
 
-				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), satellite.name)
+				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New SVec2I(0,0), New SVec2I(listContentWidth,20), satellite.name)
 
 				'fill complete width
 				item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
@@ -1940,7 +1940,7 @@ Type TStationMapInformationFrame
 
 
 	Method New()
-		sectionList = New TGUISelectList.Create(New TVec2D(410,153), New TVec2D(378, 100), "STATIONMAP")
+		sectionList = New TGUISelectList.Create(New SVec2I(410,153), New SVec2I(378, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		sectionList.scrollItemHeightPercentage = 1.0
 		sectionList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -2108,7 +2108,7 @@ Type TStationMapInformationFrame
 
 		If GetStationMapCollection().sections
 			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
-				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D(listContentWidth,20), section.name)
+				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New SVec2I(0,0), New SVec2I(listContentWidth,20), section.name)
 
 				'fill complete width
 				item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
@@ -2386,21 +2386,21 @@ Type TScreenHandler_StationMap
 
 		'=== create gui elements if not done yet
 		If Not guiInfoButton
-			guiAccordeon = New TGameGUIAccordeon.Create(New TVec2D(586, 64), New TVec2D(211, 317), "", "STATIONMAP")
+			guiAccordeon = New TGameGUIAccordeon.Create(New SVec2I(586, 64), New SVec2I(211, 317), "", "STATIONMAP")
 			TGameGUIAccordeon(guiAccordeon).skinName = "stationmapPanel"
 
-			antennaPanel = New TGameGUIAntennaPanel.Create(New TVec2D(-1, -1), New TVec2D(-1, -1), "Stations", "STATIONMAP")
+			antennaPanel = New TGameGUIAntennaPanel.Create(New SVec2I(-1, -1), New SVec2I(-1, -1), "Stations", "STATIONMAP")
 			antennaPanel.Open()
 			guiAccordeon.AddPanel(antennaPanel, 0)
 			Local p:TGUIAccordeonPanel
-			p = New TGameGUICableNetworkPanel.Create(New TVec2D(-1, -1), New TVec2D(-1, -1), "Cable Networks", "STATIONMAP")
+			p = New TGameGUICableNetworkPanel.Create(New SVec2I(-1, -1), New SVec2I(-1, -1), "Cable Networks", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 1)
-			p = New TGameGUISatellitePanel.Create(New TVec2D(-1, -1), New TVec2D(-1, -1), "Satellites", "STATIONMAP")
+			p = New TGameGUISatellitePanel.Create(New SVec2I(-1, -1), New SVec2I(-1, -1), "Satellites", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 2)
 
 
 			'== info panel
-			guiInfoButton = New TGUIButton.Create(New TVec2D(610, 15), New TVec2D(20, 28), "", "STATIONMAP")
+			guiInfoButton = New TGUIButton.Create(New SVec2I(610, 15), New SVec2I(20, 28), "", "STATIONMAP")
 
 			guiInfoButton.spriteName = "gfx_gui_button.datasheet"
 			guiInfoButton.SetTooltip( New TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), New TRectangle.Init(0,0,-1,-1)) )
@@ -2409,7 +2409,7 @@ Type TScreenHandler_StationMap
 			guiInfoButton.GetTooltip().SetOrientationPreset("LEFT", 10)
 
 			For Local i:Int = 0 Until guiFilterButtons.length
-				guiFilterButtons[i] = New TGUICheckBox.Create(New TVec2D(695 + i*23, 30 ), New TVec2D(20, 20), String(i + 1), "STATIONMAP")
+				guiFilterButtons[i] = New TGUICheckBox.Create(New SVec2I(695 + i*23, 30 ), New SVec2I(20, 20), String(i + 1), "STATIONMAP")
 				guiFilterButtons[i].ShowCaption(False)
 				guiFilterButtons[i].data.AddNumber("stationType", i+1)
 				'guiFilterButtons[i].SetUnCheckedTintColor( TColor.Create(255,255,255) )
@@ -2427,7 +2427,7 @@ Type TScreenHandler_StationMap
 
 
 			For Local i:Int = 0 To 3
-				guiShowStations[i] = New TGUICheckBox.Create(New TVec2D(695 + i*23, 30 ), New TVec2D(20, 20), String(i + 1), "STATIONMAP")
+				guiShowStations[i] = New TGUICheckBox.Create(New SVec2I(695 + i*23, 30 ), New SVec2I(20, 20), String(i + 1), "STATIONMAP")
 				guiShowStations[i].ShowCaption(False)
 				guiShowStations[i].data.AddNumber("playerNumber", i+1)
 

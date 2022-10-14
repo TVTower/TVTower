@@ -62,12 +62,7 @@ Type TGUIDropDown Extends TGUIInput
 	End Method
 
 
-	Method Create:TGUIDropDown(pos:SVec2I, dimension:SVec2I, value:String="", maxLength:Int=128, limitState:String = "")
-		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, maxLength, limitState)
-	End Method
-
-
-    Method Create:TGUIDropDown(position:TVec2D = Null, dimension:TVec2D = Null, value:String="", maxLength:Int=128, limitState:String = "")
+	Method Create:TGUIDropDown(position:SVec2I, dimension:SVec2I, value:String="", maxLength:Int=128, limitState:String = "")
 		'setup base widget (input)
 		Super.Create(position, dimension, value, maxLength, limitState)
 		'but this element does not react to keystrokes
@@ -86,7 +81,7 @@ Type TGUIDropDown Extends TGUIInput
 		'=== ENTRY LIST ===
 		'create and style list
 		If list Then list.Remove()
-		list = New TGUISelectList.Create(New TVec2D(0, Self.rect.GetH()), New TVec2D(rect.GetW(), listHeight), "")
+		list = New TGUISelectList.Create(New SVec2I(0, Int(Self.rect.h)), New SVec2I(Int(rect.h), listHeight), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(False)
@@ -102,7 +97,7 @@ Type TGUIDropDown Extends TGUIInput
 		list.SetZIndex(20000)
 
 		'add bg to list
-		Local bg:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TVec2D, New TVec2D)
+		Local bg:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New SVec2I(0,0), New SVec2I(0,0))
 		bg.spriteBaseName = spriteName
 '		bg.SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 		list.SetBackground(bg)
@@ -444,8 +439,8 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIDropDownItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension Then dimension = New TVec2D(80,20)
+    Method Create:TGUIDropDownItem(position:SVec2I, dimension:SVec2I, value:String="")
+		If dimension.x = 0 and dimension.y = 0 Then dimension = New SVec2I(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")
@@ -471,7 +466,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 		If isHovered()
 			SetColor 250,210,100
-			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
+			DrawRect(GetScreenRect().x, GetScreenRect().y, GetScreenRect().w, GetScreenRect().h)
 		ElseIf isSelected()
 			SetAlpha oldcolA*0.5
 			SetColor 250,210,100

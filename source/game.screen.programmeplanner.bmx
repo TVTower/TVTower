@@ -72,11 +72,11 @@ Type TScreenHandler_ProgrammePlanner
 			Local gapBetweenHours:Int = 45
 			Local area:TRectangle = New TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
 
-			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(New TVec2D(area.x, area.y), New TVec2D(area.w, area.h), "programmeplanner")
+			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(New SVec2I(Int(area.x), Int(area.y)), New SVec2I(Int(area.w), Int(area.h)), "programmeplanner")
 			GuiListProgrammes.Init("pp_programmeblock1", Int(GetSpriteFromRegistry("pp_adblock1").area.w + gapBetweenHours))
 			GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
 
-			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New TVec2D(area.x + GetSpriteFromRegistry("pp_programmeblock1").area.w, area.y), New TVec2D(area.w, area.h), "programmeplanner")
+			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New SVec2I(Int(area.x + GetSpriteFromRegistry("pp_programmeblock1").area.w), Int(area.y)), New SVec2I(Int(area.w), Int(area.h)), "programmeplanner")
 			GuiListAdvertisements.Init("pp_adblock1", Int(GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours))
 			GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
 
@@ -87,10 +87,10 @@ Type TScreenHandler_ProgrammePlanner
 
 
 			'=== create buttons
-			plannerNextDayButton = New TGUIButton.Create(New TVec2D(768, 6), New TVec2D(28, 28), ">", "programmeplanner_buttons")
+			plannerNextDayButton = New TGUIButton.Create(New SVec2I(768, 6), New SVec2I(28, 28), ">", "programmeplanner_buttons")
 			plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
 
-			plannerPreviousDayButton = New TGUIButton.Create(New TVec2D(684, 6), New TVec2D(28, 28), "<", "programmeplanner_buttons")
+			plannerPreviousDayButton = New TGUIButton.Create(New SVec2I(684, 6), New SVec2I(28, 28), "<", "programmeplanner_buttons")
 			plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
 
 			'so we can handle clicks to the daychange-buttons while some
@@ -101,27 +101,27 @@ Type TScreenHandler_ProgrammePlanner
 			plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
 
 
-			ProgrammePlannerButtons[0] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 0*54), Null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[0] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 0*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[0].spriteInlayName = "gfx_programmeplanner_btn_ads"
 
-			ProgrammePlannerButtons[1] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 1*54), Null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[1] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 1*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[1].spriteInlayName = "gfx_programmeplanner_btn_programme"
 
-			ProgrammePlannerButtons[2] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 2*54), Null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[2] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 2*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[2].spriteInlayName = "gfx_programmeplanner_btn_financials"
 
-			ProgrammePlannerButtons[3] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[3] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 3*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[3].spriteInlayName = "gfx_programmeplanner_btn_statistics"
 
-			ProgrammePlannerButtons[4] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[4] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 4*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[4].spriteInlayName = "gfx_programmeplanner_btn_achievements"
 
-			ProgrammePlannerButtons[5] = New TGUIProgrammePlannerButton.Create(New TVec2D(686, 41 + 5*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 5*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn"
 			ProgrammePlannerButtons[5].spriteInlayName = "gfx_programmeplanner_btn_unknown"
 
@@ -2098,11 +2098,6 @@ Type TGUIProgrammePlannerButton extends TGUIButton
 	Field spriteInlay:TSprite
 
 	Method Create:TGUIProgrammePlannerButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "") override
-		Return TGUIProgrammePlannerButton(Super.Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, State))
-	End Method
-
-
-	Method Create:TGUIProgrammePlannerButton(pos:TVec2D, dimension:TVec2D, value:String, State:String = "") override
 		Return TGUIProgrammePlannerButton(Super.Create(pos, dimension, value, State))
 	End Method
 		

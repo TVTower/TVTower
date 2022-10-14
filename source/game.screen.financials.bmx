@@ -40,14 +40,14 @@ Type TScreenHandler_Financials
 
 		'=== create gui elements if not done yet
 		if not financeHistoryUpButton
-			financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D(500 + 20, 180), new TVec2D(130, 22), "DOWN", "officeFinancialScreen")
-			financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D(500 + 130 + 20, 180), new TVec2D(130, 22), "UP", "officeFinancialScreen")
+			financeHistoryUpButton = new TGUIArrowButton.Create(new SVec2I(500 + 20, 180), new SVec2I(130, 22), "DOWN", "officeFinancialScreen")
+			financeHistoryDownButton = new TGUIArrowButton.Create(new SVec2I(500 + 130 + 20, 180), new SVec2I(130, 22), "UP", "officeFinancialScreen")
 
 			financeHistoryUpButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
 			financeHistoryDownButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
 
-			financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D(20, 10 + 11), new TVec2D(24, 24), "LEFT", "officeFinancialScreen")
-			financeNextDayButton = new TGUIArrowButton.Create(new TVec2D(20 + 175 + 20, 10 + 11), new TVec2D(24, 24), "RIGHT", "officeFinancialScreen")
+			financePreviousDayButton = new TGUIArrowButton.Create(new SVec2I(20, 10 + 11), new SVec2I(24, 24), "LEFT", "officeFinancialScreen")
+			financeNextDayButton = new TGUIArrowButton.Create(new SVec2I(20 + 175 + 20, 10 + 11), new SVec2I(24, 24), "RIGHT", "officeFinancialScreen")
 		endif
 
 

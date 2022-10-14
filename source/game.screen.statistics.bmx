@@ -64,12 +64,12 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 		'=== create gui elements if not done yet
 		If Not tabGroup
 			'for all screens
-			tabGroup = New TGUITabGroup.Create(New TVec2D(19, 10), New TVec2D(762,28), "officeStatisticsScreen")
+			tabGroup = New TGUITabGroup.Create(New SVec2I(19, 10), New SVec2I(762,28), "officeStatisticsScreen")
 
 			Local buttonFont:TBitmapFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
 			Local captions:String[] = ["Einschaltquoten", "Senderimage", "Zielgruppen", "Senderkarte", "sonstiges"]
 			For Local i:Int = 0 Until 5
-				Local btn:TGUIToggleButton = New TGUIToggleButton.Create(New TVec2D(i*155, 0), New TVec2D(142, 28), "", "officeStatisticsScreen")
+				Local btn:TGUIToggleButton = New TGUIToggleButton.Create(New SVec2I(i*155, 0), New SVec2I(142, 28), "", "officeStatisticsScreen")
 				btn.SetFont( buttonFont )
 				btn.SetCaption(captions[i])
 				tabGroup.AddButton(btn, i)
@@ -78,8 +78,8 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 
 			'AudienceScreen
-			previousDayButton = New TGUIArrowButton.Create(New TVec2D(290, 251), New TVec2D(24, 24), "LEFT", "officeStatisticsScreen_Audience")
-			nextDayButton = New TGUIArrowButton.Create(New TVec2D(290 + 175 + 20, 251), New TVec2D(24, 24), "RIGHT", "officeStatisticsScreen_Audience")
+			previousDayButton = New TGUIArrowButton.Create(New SVec2I(290, 251), New SVec2I(24, 24), "LEFT", "officeStatisticsScreen_Audience")
+			nextDayButton = New TGUIArrowButton.Create(New SVec2I(290 + 175 + 20, 251), New SVec2I(24, 24), "RIGHT", "officeStatisticsScreen_Audience")
 
 			previousDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
 			nextDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)

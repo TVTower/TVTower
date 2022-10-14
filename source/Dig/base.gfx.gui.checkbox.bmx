@@ -34,11 +34,7 @@ Type TGUICheckBox Extends TGUIButton
 	End Method
 
 
-	Method Create:TGUICheckbox(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
-		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, State)
-	End Method
-
-	Method Create:TGUICheckbox(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
+	Method Create:TGUICheckbox(pos:SVec2I, dimension:SVec2I, value:String, limitState:String = "")
 		'use another sprite name (assign before initing super)
 		spriteName = "gfx_gui_button.round"
 

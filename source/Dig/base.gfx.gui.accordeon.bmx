@@ -17,7 +17,7 @@ Type TGUIAccordeonPanel Extends TGUIObject
 	End Method
 
 
-	Method Create:TGUIAccordeonPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGUIAccordeonPanel(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
@@ -188,7 +188,7 @@ Type TGUIAccordeon Extends TGUIObject
 	End Method
 
 
-	Method Create:TGUIAccordeon(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+	Method Create:TGUIAccordeon(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 

@@ -76,6 +76,7 @@ Const GUIMANAGER_TYPES_DRAGGED:Int    = 2^0
 Const GUIMANAGER_TYPES_NONDRAGGED:Int = 2^1
 Const GUIMANAGER_TYPES_ALL:Int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TYPES_NONDRAGGED
 
+Global GUI_DIM_AUTOSIZE:SVec2I = new SVec2I(-1, -1)
 
 
 
@@ -784,11 +785,7 @@ Type TGUIobject
 '	End Method
 
 
-	Method CreateBase:TGUIobject(pos:TVec2D, dimension:TVec2D, limitState:String="")
-		'create missing params
-		If Not pos Then pos = New TVec2D(0,0)
-		If Not dimension Then dimension = New TVec2D(-1,-1)
-
+	Method CreateBase:TGUIobject(pos:SVec2I, dimension:SVec2I, limitState:String="")
 		SetPosition(pos.x, pos.y)
 		'resize widget, dimension of (-1,-1) is "auto dimension"
 		SetSize(dimension.x, dimension.y)
@@ -2940,9 +2937,9 @@ Type TGUISimpleRect Extends TGUIobject
 	End Method
 
 
-	Method Create:TGUISimpleRect(position:TVec2D, dimension:TVec2D, limitState:String="")
+	Method Create:TGUISimpleRect(position:SVec2I, dimension:SVec2I, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
-		Self.SetSize(dimension.GetX(), dimension.GetY() )
+		Self.SetSize(dimension.x, dimension.y)
 
     	GUIManager.Add( Self )
 		Return Self
@@ -2956,7 +2953,8 @@ Type TGUISimpleRect Extends TGUIobject
 
 	Method DrawDebug()
 		SetAlpha 0.5
-		DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
+		local scrRect:TRectangle = GetScreenRect()
+		DrawRect(scrRect.x, scrRect.y, scrRect.w, scrRect.h)
 		SetAlpha 1.0
 	End Method
 

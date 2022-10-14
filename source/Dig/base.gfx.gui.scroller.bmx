@@ -34,8 +34,8 @@ Type TGUIScrollerBase extends TGUIobject
 		setParent(parent)
 
 		'create buttons
-		guiButtonMinus = New TGUIArrowButton.Create(Null, new TVec2D(22,22), "UP", "")
-		guiButtonPlus = New TGUIArrowButton.Create(Null, new TVec2D(22,22), "DOWN", "")
+		guiButtonMinus = New TGUIArrowButton.Create(New SVec2I(0,0), New SVec2I(22,22), "UP", "")
+		guiButtonPlus = New TGUIArrowButton.Create(New SVec2I(0,0), New SVec2I(22,22), "DOWN", "")
 
 		guiButtonMinus.spriteButtonBaseName = "gfx_gui_button.rounded"
 		guiButtonPlus.spriteButtonBaseName = "gfx_gui_button.rounded"
@@ -332,7 +332,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 	Method Create:TGUIScroller(parent:TGUIobject)
 		Super.Create(parent)
 
-		scrollHandle = New TGUISlider.Create(Null, new TVec2D(22,100), "", "")
+		scrollHandle = New TGUISlider.Create(New SVec2I(0,0), new SVec2I(22,100), "", "")
 		scrollHandle.setParent(Self)
 		scrollHandle.SetValueRange(0,100)
 		scrollHandle.steps = 0

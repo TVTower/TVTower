@@ -53,8 +53,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	Global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = New TVec2D(350,130)
-	Global suitcaseGuiListDisplace:TVec2D = New TVec2D(14,25)
+	Global suitcasePos:SVec2I = New SVec2I(350,130)
+	Global suitcaseGuiListDisplace:SVec2I = New SVec2I(14,25)
 	Field programmesPerLine:Int	= 13
 	Field movieGoodMoneyMinimum:Int = 170000
 	Field movieGoodQualityMinimum:Float = 0.15
@@ -233,10 +233,10 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		If Not GuiListMoviesGood
 			Local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
 
-			GuiListMoviesGood = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(596,50), New TVec2D(200, videoCase.area.GetH()), "movieagency")
-			GuiListMoviesCheap = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(596,148), New TVec2D(200, videoCase.area.GetH()), "movieagency")
-			GuiListSeries = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(596,246), New TVec2D(200, videoCase.area.GetH()), "movieagency")
-			GuiListSuitcase = New TGUIProgrammeLicenceSlotList.Create(New TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D(180, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesGood = New TGUIProgrammeLicenceSlotList.Create(New SVec2I(596,50), New SVec2I(200, Int(videoCase.area.h)), "movieagency")
+			GuiListMoviesCheap = New TGUIProgrammeLicenceSlotList.Create(New SVec2I(596,148), New SVec2I(200, Int(videoCase.area.h)), "movieagency")
+			GuiListSeries = New TGUIProgrammeLicenceSlotList.Create(New SVec2I(596,246), New SVec2I(200, Int(videoCase.area.h)), "movieagency")
+			GuiListSuitcase = New TGUIProgrammeLicenceSlotList.Create(New SVec2I(suitcasePos.x + suitcaseGuiListDisplace.x, suitcasePos.y + suitcaseGuiListDisplace.y), New SVec2I(180, Int(videoCase.area.h)), "movieagency")
 
 			GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -275,10 +275,10 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
 			'default vendor position/dimension
-			Local vendorAreaDimension:TVec2D = New TVec2D(200,200)
-			Local vendorAreaPosition:TVec2D = New TVec2D(20,60)
-			If VendorEntity Then vendorAreaDimension.CopyFrom(VendorEntity.area.GetDimension())
-			If VendorEntity Then vendorAreaPosition.CopyFrom(VendorEntity.area.GetPosition())
+			Local vendorAreaDimension:SVec2I = New SVec2I(200,200)
+			Local vendorAreaPosition:SVec2I = New SVec2I(20,60)
+			If VendorEntity Then vendorAreaDimension = New SVec2I(Int(VendorEntity.area.w), Int(VendorEntity.area.h) )
+			If VendorEntity Then vendorAreaPosition = New SVec2I(Int(VendorEntity.area.x), Int(VendorEntity.area.y) )
 
 			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
 			'vendor should accept drop - else no recognition
@@ -1202,7 +1202,7 @@ endrem
 		If AuctionEntity Then AuctionEntity.Render()
 		If VendorEntity Then VendorEntity.Render()
 
-		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
 
 		'make auction/suitcase/vendor highlighted if needed
 		Local highlightSuitcase:Int = False
@@ -1235,7 +1235,7 @@ endrem
 
 			If AuctionEntity And highlightAuction Then AuctionEntity.Render()
 			If VendorEntity And highlightVendor Then VendorEntity.Render()
-			If highlightSuitcase And spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			If highlightSuitcase And spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
 
 			SetAlpha(oldColA)
 			SetBlend AlphaBlend
@@ -1318,7 +1318,7 @@ endrem
 	Function onDrawMovieAuction:Int( triggerEvent:TEventBase )
 		If AuctionEntity Then AuctionEntity.Render()
 		If VendorEntity Then VendorEntity.Render()
-		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
 
 		Local fontColor:SColor8 = new SColor8(50, 50, 50, 125)
 		Local font:TBitmapFont = GetBitmapFont("Default",12, BOLDFONT)

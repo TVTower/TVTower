@@ -500,13 +500,13 @@ Type TgfxProgrammelist Extends TPlannerList
 		if entriesPages > 1
 			local w:int = 0.5 * GetEntriesRect().GetW() - 14 - 20
 			if not entriesButtonPrev
-				entriesButtonPrev = new TGUIButton.Create(new TVec2D(currX + 5 , currY - 23), new TVec2D(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
+				entriesButtonPrev = new TGUIButton.Create(new SVec2I(currX + 5 , currY - 23), new SVec2I(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
 				entriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
 				'manage on our own
 				GuiManager.Remove(entriesButtonPrev)
 			endif
 			if not entriesButtonNext
-				entriesButtonNext = new TGUIButton.Create(new TVec2D(currX + GetEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
+				entriesButtonNext = new TGUIButton.Create(new SVec2I(Int(currX + GetEntriesRect().w - 7 - w), currY - 23), new SVec2I(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
 				entriesButtonNext.spriteName = "gfx_gui_button.datasheet"
 				GuiManager.Remove(entriesButtonNext)
 			endif
@@ -842,13 +842,13 @@ Type TgfxProgrammelist Extends TPlannerList
 		if subEntriesPages > 1
 			local w:int = 0.5 * GetSubEntriesRect().GetW() - 14 - 20
 			if not subEntriesButtonPrev
-				subEntriesButtonPrev = new TGUIButton.Create(new TVec2D(currX + 5 , currY - 23), new TVec2D(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
+				subEntriesButtonPrev = new TGUIButton.Create(new SVec2I(currX + 5 , currY - 23), new SVec2I(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
 				subEntriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
 				'manage on our own
 				GuiManager.Remove(subEntriesButtonPrev)
 			endif
 			if not subEntriesButtonNext
-				subEntriesButtonNext = new TGUIButton.Create(new TVec2D(currX + GetSubEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
+				subEntriesButtonNext = new TGUIButton.Create(new SVec2I(Int(currX + GetSubEntriesRect().w - 7 - w), currY - 23), new SVec2I(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
 				subEntriesButtonNext.spriteName = "gfx_gui_button.datasheet"
 				GuiManager.Remove(subEntriesButtonNext)
 			endif

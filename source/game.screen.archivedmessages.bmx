@@ -178,7 +178,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 	Method InitGUIElements()
 		if not messageList
-			messageList = new TGUISelectList.Create(new TVec2D(210,60), new TVec2D(525, 280), "office_archivedmessages")
+			messageList = new TGUISelectList.Create(new SVec2I(210,60), new SVec2I(525, 280), "office_archivedmessages")
 		endif
 
 		messageList.scrollItemHeightPercentage = 1.0
@@ -336,7 +336,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("MESSAGES_SHOW_HEADING"), contentX + 12, outer.GetH()-25, colorCategoryDefault)
 		if not showModeSelect
-			showModeSelect = New TGUIDropDown.Create(New TVec2D(outer.GetX() + 12, outer.GetH()-5 ), New TVec2D(147,-1), "", 128, "office_archivedmessages")
+			showModeSelect = New TGUIDropDown.Create(New SVec2I(Int(outer.x) + 12, Int(outer.h)-5 ), New SVec2I(147,-1), "", 128, "office_archivedmessages")
 			showModeSelect.SetListContentHeight(60)
 
 			addShowModeItem(SHOW_UNREAD, "MESSAGES_SHOW_UNREAD")
@@ -415,7 +415,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIArchivedMessageListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIArchivedMessageListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 

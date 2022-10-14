@@ -50,7 +50,7 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
-    Method Create:TGUISlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUISlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		setListOption(GUILIST_AUTOSORT_ITEMS, False)

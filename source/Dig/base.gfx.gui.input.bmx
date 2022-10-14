@@ -63,11 +63,6 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method Create:TGUIInput(pos:SVec2I, dimension:SVec2I, value:String, maxLength:Int=128, limitState:String = "")
-		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), value, maxLength, limitState)
-	End Method
-
-
-	Method Create:TGUIinput(pos:TVec2D, dimension:TVec2D, value:String, maxLength:Int=128, limitState:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, limitState)
 

@@ -1487,7 +1487,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			Local tipNumber:Int = Rand(0, StartTips.count()-1)
 			Local tip:String[] = String[](StartTips.valueAtIndex(tipNumber))
 
-			StartTipWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D(400,350), "InGame")
+			StartTipWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,350), "InGame")
 			StartTipWindow.screenArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.DarkenedArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )

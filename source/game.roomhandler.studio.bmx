@@ -24,10 +24,10 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:Int = 1
 
-	Global deskGuiListPos:TVec2D = New TVec2D(330,335)
-	Global suitcasePos:TVec2D = New TVec2D(550,70)
-	Global trashBinPos:TVec2D = New TVec2D(148,327)
-	Global suitcaseGuiListDisplace:TVec2D = New TVec2D(16,22)
+	Global deskGuiListPos:SVec2I = New SVec2I(330,335)
+	Global suitcasePos:SVec2I = New SVec2I(550,70)
+	Global trashBinPos:SVec2I = New SVec2I(148,327)
+	Global suitcaseGuiListDisplace:SVec2I = New SVec2I(16,22)
 
 	Global studioManagerEntity:TSpriteEntity
 	Global studioManagerArea:TGUISimpleRect
@@ -78,7 +78,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Local spriteScript:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			Local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
 			Local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
-			guiListStudio = New TGUIScriptSlotList.Create(New TVec2D(710, 290), New TVec2D(17, 52), "studio")
+			guiListStudio = New TGUIScriptSlotList.Create(New SVec2I(710, 290), New SVec2I(17, 52), "studio")
 			'set to autofill so that "failed suitcase drops" can safely
 			'be dropped back into the studio slot
 			guiListStudio.SetAutofillSlots(True)
@@ -90,7 +90,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListStudio.SetSlotMinDimension(90, 80)
 			guiListStudio.SetAcceptDrop("TGUIStudioScript")
 
-			guiListSuitcase	= New TGUIScriptSlotlist.Create(New TVec2D(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D(200,80), "studio")
+			guiListSuitcase	= New TGUIScriptSlotlist.Create(New SVec2I(suitcasePos.x + suitcaseGuiListDisplace.x, suitcasePos.y + suitcaseGuiListDisplace.y), New SVec2I(200,80), "studio")
 			guiListSuitcase.SetAutofillSlots(True)
 			guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
@@ -98,7 +98,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListSuitcase.SetEntryDisplacement( 0, 0 )
 			guiListSuitcase.SetAcceptDrop("TGUIStudioScript")
 
-			guiListDeskProductionConcepts = New TGUIProductionConceptSlotList.Create(New TVec2D(deskGuiListPos.GetX(), deskGuiListPos.GetY()), New TVec2D(290,80), "studio")
+			guiListDeskProductionConcepts = New TGUIProductionConceptSlotList.Create(New SVec2I(deskGuiListPos.x, deskGuiListPos.y), New SVec2I(290,80), "studio")
 			'make the list items sortable by the player
 			guiListDeskProductionConcepts.SetAutofillSlots(False)
 			guiListDeskProductionConcepts.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -110,10 +110,10 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 			'default studioManager dimension
-			Local studioManagerAreaDimension:TVec2D = New TVec2D(150,270)
-			Local studioManagerAreaPosition:TVec2D = New TVec2D(0,115)
-			If studioManagerEntity Then studioManagerAreaDimension = New TVec2D(studioManagerEntity.area.w, studioManagerEntity.area.h)
-			If studioManagerEntity Then studioManagerAreaPosition = New TVec2D(studioManagerEntity.area.x, studioManagerEntity.area.y)
+			Local studioManagerAreaDimension:SVec2I = New SVec2I(150,270)
+			Local studioManagerAreaPosition:SVec2I = New SVec2I(0,115)
+			If studioManagerEntity Then studioManagerAreaDimension = New SVec2I(Int(studioManagerEntity.area.w), Int(studioManagerEntity.area.h))
+			If studioManagerEntity Then studioManagerAreaPosition = New SVec2I(Int(studioManagerEntity.area.x), Int(studioManagerEntity.area.y))
 
 			studioManagerArea = New TGUISimpleRect.Create(studioManagerAreaPosition, studioManagerAreaDimension, "studio" )
 			'studioManager should accept drop - else no recognition
@@ -1243,7 +1243,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		If studioManagerEntity Then studioManagerEntity.Render()
 
-		GetSpriteFromRegistry("gfx_suitcase_scripts").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase_scripts").Draw(suitcasePos.x, suitcasePos.y)
 
 		'=== HIGHLIGHT INTERACTIONS ===
 		'make suitcase/vendor highlighted if needed
@@ -1278,11 +1278,11 @@ Type RoomHandler_Studio Extends TRoomHandler
 				GetSpriteFromRegistry("gfx_studio_deskhint").Draw(710, 325)
 			EndIf
 			If highlightSuitcase 
-				GetSpriteFromRegistry("gfx_suitcase_scripts").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+				GetSpriteFromRegistry("gfx_suitcase_scripts").Draw(suitcasePos.x, suitcasePos.y)
 			EndIf
 			If highlightTrashBin 
 				'DrawRect(140, 330, 76, 59)
-				GetSpriteFromRegistry("gfx_studio_trashbin").Draw(trashBinPos.GetX(), trashBinPos.GetY())
+				GetSpriteFromRegistry("gfx_studio_trashbin").Draw(trashBinPos.x, trashBinPos.y)
 			EndIf
 
 			SetAlpha( oldColA )
@@ -1376,7 +1376,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				EndIf
 			EndIf
 
-			If MouseManager.IsClicked(1) and THelper.MouseIn( trashBinPos.GetIntX(), trashBinPos.GetIntY(), 76, 59)
+			If MouseManager.IsClicked(1) and THelper.MouseIn( trashBinPos.x, trashBinPos.y, 76, 59)
 				Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
 				Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
 				If programmeCollection
@@ -1467,7 +1467,7 @@ Type TGUIStudioScript Extends TGUIScript
 	Field roomSize:Int = -1
 
 
-    Method Create:TGUIStudioScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="") override
+    Method Create:TGUIStudioScript(pos:SVec2I, dimension:SVec2I, value:String="") override
 		Return TGUIStudioScript( Super.Create(pos, dimension, value) )
 	End Method
 

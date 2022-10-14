@@ -166,7 +166,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
 Global collectDebugStats:Int = False
-OCM.enabled = True & (collectDebugStats = True)
+OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
 Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
@@ -1794,14 +1794,14 @@ endrem
 
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
 
-		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D(400,130), "SYSTEM")
+		EscapeMenuWindow = New TGUIModalWindowChain.Create(New SVec2I(0,0), New SVec2I(400,130), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
 		EscapeMenuWindow.SetCenterLimit(New TRectangle.setTLBR(20,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
 		'355 = with speed buttons
-		'local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D(300,355), "SYSTEM")
-		Local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D(300,315), "SYSTEM")
+		'local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New SVec2I(0,0), New SVec2I(300,355), "SYSTEM")
+		Local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New SVec2I(0,0), New SVec2I(300,315), "SYSTEM")
 		mainMenu.SetCaption(GetLocale("MENU"))
 
 		EscapeMenuWindow.SetContentElement(mainMenu)
@@ -1896,7 +1896,7 @@ endrem
 
 		App.SetPausedBy(TApp.PAUSED_BY_EXITDIALOGUE)
 
-		ExitAppDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D(400,150), "SYSTEM")
+		ExitAppDialogue = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 		ExitAppDialogue.data.AddNumber("quitToMainMenu", quitToMainMenu)
@@ -2447,7 +2447,7 @@ Type TSaveGame Extends TGameState
 		If messageWindow Then messageWindow.Remove()
 
 		'create a new one
-		messageWindow = New TGUIGameModalWindow.Create(Null, New TVec2D(400, 200), "SYSTEM")
+		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400, 200), "SYSTEM")
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
@@ -3237,7 +3237,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(New TVec2D(300, 330), New TVec2D(200, 400), name)
+		guiButtonsWindow = New TGUIGameWindow.Create(New SVec2I(300, 330), New SVec2I(200, 400), name)
 		guiButtonsWindow.SetPadding(panelGap, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
@@ -3247,14 +3247,14 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
-		guiButtonStart		= New TGUIButton.Create(New TVec2D(0, 0*38), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(New TVec2D(0, 1*38), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonStart		= New TGUIButton.Create(New SVec2I(0, 0*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonNetwork.Disable()
-		guiButtonOnline		= New TGUIButton.Create(New TVec2D(0, 2*38), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New SVec2I(0, 2*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonOnline.Disable()
-		guiButtonLoadGame	= New TGUIButton.Create(New TVec2D(0, 3*38), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(New TVec2D(0, 4*38), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(New TVec2D(0, 5*38 + 10), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonLoadGame	= New TGUIButton.Create(New SVec2I(0, 3*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New SVec2I(0, 4*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New SVec2I(0, 5*38 + 10), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -3267,7 +3267,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		GetBuildingTime().SetTimeFactor(1.0)
 
 		If TLocalization.languagesCount > 0
-			guiLanguageDropDown = New TGUISpriteDropDown.Create(New TVec2D(620, 560), New TVec2D(170,-1), "Sprache", 128, name)
+			guiLanguageDropDown = New TGUISpriteDropDown.Create(New SVec2I(620, 560), New SVec2I(170,-1), "Sprache", 128, name)
 			Local itemHeight:Int = 0
 			Local languageCount:Int = 0
 
@@ -3372,12 +3372,12 @@ Type TScreen_MainMenu Extends TGameScreen
 		'remove a previously created one
 		If loadGameMenuWindow Then loadGameMenuWindow.Remove()
 
-		loadGameMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D(500,150), "SYSTEM")
+		loadGameMenuWindow = New TGUIModalWindowChain.Create(New SVec2I(0,0), New SVec2I(500,150), "SYSTEM")
 		loadGameMenuWindow.SetZIndex(99000)
 		loadGameMenuWindow.SetCenterLimit(New TRectangle.setTLBR(30,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
-		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D(520,356), "SYSTEM")
+		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New SVec2I(0,0), New SVec2I(520,356), "SYSTEM")
 		loadMenu._defaultValueColor = TColor.clBlack.copy()
 		loadMenu.defaultCaptionColor = TColor.clWhite.copy()
 
@@ -3469,16 +3469,16 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(New TVec2D(590, 355), New TVec2D(200, 235), name)
+		guiButtonsWindow = New TGUIGameWindow.Create(New SVec2I(590, 355), New SVec2I(200, 235), name)
 		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.SetCaption("")
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 
-		guiButtonJoin	= New TGUIButton.Create(New TVec2D(0, 0), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(),-1), GetLocale("MENU_JOIN"), name)
-		guiButtonCreate	= New TGUIButton.Create(New TVec2D(0, 45), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(),-1), GetLocale("MENU_CREATE_GAME"), name)
-		guiButtonBack	= New TGUIButton.Create(New TVec2D(0, guiButtonsPanel.GetContentScreenRect().GetH() - guiButtonJoin.GetScreenRect().GetH()), New TVec2D(guiButtonsPanel.GetContentScreenRect().GetW(), -1), GetLocale("MENU_BACK"), name)
+		guiButtonJoin	= New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w),-1), GetLocale("MENU_JOIN"), name)
+		guiButtonCreate	= New TGUIButton.Create(New SVec2I(0, 45), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w),-1), GetLocale("MENU_CREATE_GAME"), name)
+		guiButtonBack	= New TGUIButton.Create(New SVec2I(0, Int(guiButtonsPanel.GetContentScreenRect().h - guiButtonJoin.GetScreenRect().h)), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), GetLocale("MENU_BACK"), name)
 
 		guiButtonsPanel.AddChild(guiButtonJoin)
 		guiButtonsPanel.AddChild(guiButtonCreate)
@@ -3489,12 +3489,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		'GameList
 		'contained within a window/panel for styling
-		guiGameListWindow = New TGUIGameWindow.Create(New TVec2D(20, 355), New TVec2D(520, 235), name)
+		guiGameListWindow = New TGUIGameWindow.Create(New SVec2I(20, 355), New SVec2I(520, 235), name)
 		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		'add list to the panel (which is located in the window
-		guiGameList	= New TGUIGameEntryList.Create(New TVec2D(0,0), New TVec2D(guiGameListPanel.GetContentScreenRect().GetW(),guiGameListPanel.GetContentScreenRect().GetH()), name)
+		guiGameList	= New TGUIGameEntryList.Create(New SVec2I(0,0), New SVec2I(Int(guiGameListPanel.GetContentScreenRect().w), Int(guiGameListPanel.GetContentScreenRect().h)), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
@@ -3718,7 +3718,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		Super.Create(name)
 		SetGroupName("ExGame", "PrepareGameStart")
 
-		messageWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D(400,250), name)
+		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,250), name)
 		'messageWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
 		messageWindow.SetCaptionAndValue("title", "")
 		messageWindow.SetDialogueType(0) 'no buttons

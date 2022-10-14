@@ -23,11 +23,6 @@ Type TGUIArrowButton Extends TGUISpriteButton
 
 
 	Method Create:TGUIArrowButton(pos:SVec2I, dimension:SVec2I, direction:String="LEFT", limitState:String = "")
-		Return Create(new TVec2D(pos.x, pos.y), new TVec2D(dimension.x, dimension.y), direction, limitState)
-	End Method
-
-
-	Method Create:TGUIArrowButton(pos:TVec2D, dimension:TVec2D, direction:String="LEFT", limitState:String = "")
 		Super.Create(pos, dimension, spriteBaseName, limitState)
 
 		SetDirection(direction)
@@ -78,7 +73,7 @@ Type TGUISpriteButton Extends TGUIObject
 	CONST SHOW_BUTTON_ACTIVE:int = 4
 
 
-	Method Create:TGUISpriteButton(pos:TVec2D, dimension:TVec2D, spriteName:String="", limitState:String = "")
+	Method Create:TGUISpriteButton(pos:SVec2I, dimension:SVec2I, spriteName:String="", limitState:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, limitState)
 

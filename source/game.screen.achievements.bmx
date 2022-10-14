@@ -131,7 +131,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 	Method InitGUIElements()
 		if not achievementList
-			achievementList = new TGUISelectList.Create(new TVec2D(210,60), new TVec2D(525, 280), "office_achievements")
+			achievementList = new TGUISelectList.Create(new SVec2I(210,60), new SVec2I(525, 280), "office_achievements")
 		endif
 
 		achievementList.scrollItemHeightPercentage = 1.0
@@ -330,7 +330,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIAchievementListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIAchievementListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 

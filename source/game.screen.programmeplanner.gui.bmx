@@ -39,15 +39,15 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGUIProgrammePlanElement(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension Then dimension = New TVec2D(120,20)
+    Method Create:TGUIProgrammePlanElement(pos:SVec2I, dimension:SVec2I, value:String="")
+		If dimension.x = 0 and dimension.y = 0 Then dimension = New SVec2I(120,20)
 		Super.Create(pos, dimension, value)
 		Return Self
 	End Method
 
 
 	Method CreateWithBroadcastMaterial:TGUIProgrammePlanElement(material:TBroadcastMaterial, limitToState:String="")
-		Create()
+		Create(New SVec2I(0,0), New SVec2I(-1,-1))
 		SetLimitToState(limitToState)
 		SetBroadcastMaterial(material)
 		Return Self
@@ -675,7 +675,7 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 	Global registeredGlobalListeners:Int = False
 
 
-    Method Create:TGUIProgrammePlanSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIProgrammePlanSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		SetOrientation(GUI_OBJECT_ORIENTATION_VERTICAL)
@@ -797,7 +797,7 @@ endrem
 			'clear out old gui element
 			guiElement.remove()
 		Else
-			guiElement = New TGUIProgrammePlanElement.Create()
+			guiElement = New TGUIProgrammePlanElement.Create(New SVec2I(0,0), New SVec2I(-1,-1))
 		EndIf
 		'assign programme
 		guiElement.SetBroadcastMaterial(material)

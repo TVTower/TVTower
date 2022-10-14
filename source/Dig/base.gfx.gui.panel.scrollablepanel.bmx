@@ -20,7 +20,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
-	Method Create:TGUIScrollablePanel(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIScrollablePanel(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 		Self.minSize.SetXY(50,50)
 

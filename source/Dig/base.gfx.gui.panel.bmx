@@ -23,7 +23,7 @@ Type TGUIPanel Extends TGUIObject
 	End Method
 
 
-	Method Create:TGUIPanel(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIPanel(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 
 		GUIManager.Add(Self)
@@ -117,7 +117,7 @@ Type TGUIPanel Extends TGUIObject
 			EndIf
 		Else
 			if not guiTextBox
-				guiTextBox = New TGUITextBox.Create(new TVec2D(0,0), new TVec2D(50,50), value, "")
+				guiTextBox = New TGUITextBox.Create(new SVec2I(0,0), new SVec2I(50,50), value, "")
 				'we take care of the text box
 				AddChild(guiTextBox)
 

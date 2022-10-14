@@ -47,10 +47,11 @@ Type TGUIChat Extends TGUIPanel
 	Global antiSpamTime:Int	= 100
 
 
-	Method Create:TGUIChat(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIChat(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		guiList = New TGUIListBase.Create(New TVec2D(0,0), New TVec2D(GetContentScreenRect().GetW(),GetContentScreenRect().GetH()), limitState)
+		Local cScrRect:TRectangle = GetContentScreenRect()
+		guiList = New TGUIListBase.Create(New SVec2I(0,0), New SVec2I(Int(cScrRect.w), Int(cScrRect.h)), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.SetAutoSortItems(False)
 		guiList.SetAcceptDrop("")
@@ -58,11 +59,11 @@ Type TGUIChat Extends TGUIPanel
 		guiList.SetAutoScroll(True)
 		guiList.SetBackground(Null)
 
-		guiInput = New TGUIInput.Create(New TVec2D(0, dimension.y),New TVec2D(dimension.x,-1), "", 32, limitState)
+		guiInput = New TGUIInput.Create(New SVec2I(0, dimension.y), New SVec2I(dimension.x, -1), "", 32, limitState)
 		guiInput.setParent(Self)
 
 		'resize base and move child elements
-		SetSize(dimension.GetX(), dimension.GetY())
+		SetSize(dimension.x, dimension.y)
 
 		'by default all chats want to list private messages and system announcements
 		setListenToChannel(CHAT_CHANNEL_PRIVATE, True)
@@ -324,7 +325,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-    Method Create:TGUIChatEntry(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIChatEntry(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 

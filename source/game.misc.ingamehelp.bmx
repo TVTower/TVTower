@@ -185,7 +185,7 @@ Type TIngameHelpWindow
 		Local windowW:Int = 600
 		Local windowH:Int = 320
 
-		modalDialogue = New TIngameHelpModalWindow.Create(New TVec2D, New TVec2D(windowW, windowH), state.ToString())
+		modalDialogue = New TIngameHelpModalWindow.Create(New SVec2I(0,0), New SVec2I(windowW, windowH), state.ToString())
 		modalDialogue.SetManaged(False)
 		modalDialogue.screenArea = area.Copy()
 
@@ -219,7 +219,7 @@ Type TIngameHelpWindow
 
 
 		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
-		guiTextArea = New TGUITextArea.Create(New TVec2D(0,0), New TVec2D(canvas.GetContentWidth(), canvas.GetContentHeight(-1) - 22 + 22 * (Not showHideOption)), state.ToString())
+		guiTextArea = New TGUITextArea.Create(New SVec2I(0,0), New SVec2I(Int(canvas.GetContentWidth()), Int(canvas.GetContentHeight(-1) - 22 + 22 * (Not showHideOption))), state.ToString())
 		'guiTextArea.Move(0,0)
 		guiTextArea.SetFont( GetBitmapFont("default", 14) )
 		guiTextArea.textColor = SColor8.Black
@@ -233,7 +233,7 @@ Type TIngameHelpWindow
 
 		Local checkboxWidth:Int = 0
 
-		checkboxHideAll = New TGUICheckBox.Create(New TVec2D(0 + checkboxWidth,190), New TVec2D(-1,-1), "", state.ToString())
+		checkboxHideAll = New TGUICheckBox.Create(New SVec2I(0 + checkboxWidth,190), New SVec2I(-1,-1), "", state.ToString())
 		checkboxHideAll.SetFont( GetBitmapFont("default", 12) )
 '		checkboxHideAll.textColor = TColor.clBlack.Copy()
 		checkboxHideAll.SetValue( GetLocale("DO_NOT_SHOW_ANY_TIPS"))

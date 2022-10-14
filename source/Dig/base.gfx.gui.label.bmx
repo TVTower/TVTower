@@ -47,18 +47,14 @@ Type TGUILabel Extends TGUIobject
 
 
 	Method Create:TGUILabel(pos:SVec2I, text:String, State:String="")
-		Return Create(new TVec2D(pos.x, pos.y), text, self.color, State)
-	End Method
-
-
-	Method Create:TGUILabel(pos:TVec2D, text:String, State:String="")
 		Return Create(pos, text, self.color, State)
 	End Method
 
+
 	'will be added to general GuiManager
 	'-- use CreateSelfContained to get a unmanaged object
-	Method Create:TGUILabel(pos:TVec2D, text:String, color:SColor8, State:String="")
-		Super.CreateBase(pos, Null, State)
+	Method Create:TGUILabel(pos:SVec2I, text:String, color:SColor8, State:String="")
+		Super.CreateBase(pos, new SVec2I(-1,-1), State)
 
 		'by default labels have left aligned content
 		SetContentAlignment(ALIGN_LEFT, ALIGN_CENTER)

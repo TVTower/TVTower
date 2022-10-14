@@ -22,7 +22,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 	End Method
 
 
-	Method Create:TGUIBackgroundBox(position:TVec2D, dimension:TVec2D, limitState:String="")
+	Method Create:TGUIBackgroundBox(position:SVec2I, dimension:SVec2I, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
 
 		SetZindex(0)

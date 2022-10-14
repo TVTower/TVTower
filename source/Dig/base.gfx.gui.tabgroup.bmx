@@ -15,7 +15,7 @@ Type TGUIToggleButton Extends TGUIButton
 	End Method
 
 
-	Method Create:TGUIToggleButton(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
+	Method Create:TGUIToggleButton(pos:SVec2I, dimension:SVec2I, value:String, limitState:String="")
 		'use another sprite name (assign before initing super)
 		spriteName = "gfx_gui_button.round"
 
@@ -149,9 +149,9 @@ Type TGUITabGroup Extends TGUIObject
 	End Method
 
 
-	Method Create:TGUITabGroup(position:TVec2D, dimension:TVec2D, limitState:String="")
+	Method Create:TGUITabGroup(position:SVec2I, dimension:SVec2I, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
-		Self.SetSize(dimension.GetX(), dimension.GetY() )
+		Self.SetSize(dimension.x, dimension.y)
 
     	GUIManager.Add( Self )
 		Return Self
