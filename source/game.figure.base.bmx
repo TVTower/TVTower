@@ -661,24 +661,31 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns what animation has to get played in that moment
 	Method GetAnimationToUse:string()
-		local result:string = "standBack"
+		Local vX:Float = GetVelocity().x
 
-		'if standing
-		If GetVelocity().x = 0 or not moveable
+		'standing in front of door (just came out)
+		If IsWaitingToLeave() 
+			Return "standFront"
+		'standing in front of door (want to go in)
+		Elseif IsWaitingToEnter() 
+			Return "standBack"
+		'standing idling or blocked
+		ElseIf vX = 0 or not moveable
 			if currentAction = ACTION_ENTERING or currentAction = ACTION_PLANNED_ENTER
-				result = "standBack"
+				Return "standBack"
 			else
-				result = "standFront"
+				Return "standFront"
 			endif
-		Else
-			If GetVelocity().x > 0 Then result = "walkRight"
-			If GetVelocity().x < 0 Then result = "walkLeft"
+		'walking
+		ElseIf vX > 0
+			Return "walkRight"
+		'walking
+		ElseIf vX < 0
+			Return "walkLeft"
 		EndIf
 
-		if IsWaitingToLeave() then result = "standFront"
-		if IsWaitingToEnter() then result = "standBack"
-
-		return result
+		'default
+		Return "standBack"
 	End Method
 
 
