@@ -7032,7 +7032,6 @@ End Function
 
 Function StartTVTower(start:Int=True)
 	'for now we ignore a lot of types to keep the OCM stuff small
-	
 	OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
 	OCM.AddIgnoreTypes("TStyledBitmapFonts, TRoomBaseCollection, TMovieFlagDefinition, TGUINewsSlotList, TDeltaTimer, TRoomAgency")
 	OCM.AddIgnoreTypes("TSmartFloorRoute, TSizedBitmapFonts, TGUIGameModalWindow, TSpriteParticleEmitter")
@@ -7130,22 +7129,34 @@ TProfiler.Enter("GameLoop")
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
 				Local myArr:int[] = new Int[10000]
+				Local gcAllocChanges:Int
+				Local gcAllocTotal:Int
+
+				If OCM.enabled
+					OCM.FetchDump()
+					gcAllocChanges = OCM.GetLastDump().totalChange
+					gcAllocTotal = OCM.GetLastDump().total
+					If OCM.printEnabled
+						OCM.Dump(null)
+					EndIf
+				EndIf
 				
-				If printDebugStats 
-					Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+				If printDebugStats
+					If OCM.enabled
+						If gcAllocChanges >= 0
+							Print "tick: " + rectangle_created +" TRectangle. " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" +"+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+						Else
+							Print "tick: " + rectangle_created +" TRectangle. " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" "+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+						EndIf
+					Else
+						Print "tick: " + rectangle_created +" TRectangle. " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+					EndIf
 				EndIf
 				bbGCAllocCount = 0
 				rectangle_created = 0
 				vec2d_created = 0
 				tcolor_created = 0
 				debugCreationTime :+ 1000
-
-				If OCM.enabled
-					OCM.FetchDump()
-					If OCM.printEnabled
-						OCM.Dump(null)
-					EndIf
-				EndIf
 				?
 			EndIf
 		EndIf

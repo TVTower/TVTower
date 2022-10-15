@@ -156,7 +156,7 @@ Type TObjectCountManager
 		Local valueStart:Int, valueEnd:Int
 		Local currentChar:Int
 		Local lastChar:Int
-
+		
 		Local dumpEntry:TObjectCountDump = New TObjectCountDump
 		dumpEntry.time = time
 		
@@ -182,12 +182,13 @@ Type TObjectCountManager
 						c :- baseDump.GetTotal(keyID)
 					EndIf
 
-					If previousDumpEntry
-						local prev:Int = previousDumpEntry.GetTotal(keyID)
-						dumpEntry.Add(keyID, c - prev, c)
-					Else
-						dumpEntry.Add(keyID, c, c)
-					EndIf
+					local prev:Int
+					If previousDumpEntry Then prev = previousDumpEntry.GetTotal(keyID)
+					dumpEntry.Add(keyID, c - prev, c)
+
+					dumpEntry.total :+ c
+					dumpEntry.totalChange :+ (c - prev)
+
 
 					'can simply add as there wont be duplicates
 					dumpEntry.keyCount :+ 1
@@ -315,16 +316,19 @@ endrem
 					If changeDirection > 0 And e.change <= 0 Then Continue
 					If changeDirection < 0 And e.change >= 0 Then Continue
 				EndIf
-				if e.change < 0
-					s.Append(LSet(OCM.GetKey(e.keyID), 32) + RSet(e.total, 8) + RSet(e.change, 8) + "~n")
-				elseif e.change > 0
+				if e.change > 0
 					s.Append(LSet(OCM.GetKey(e.keyID), 32) + RSet(e.total, 8) + RSet("+" + e.change, 8) + "~n")
 				else
-					s.Append(LSet(OCM.GetKey(e.keyID), 32) + RSet(e.total, 8) + RSet("0", 8) + "~n")
+					s.Append(LSet(OCM.GetKey(e.keyID), 32) + RSet(e.total, 8) + RSet(e.change, 8) + "~n")
 				endif
 			Next
 		EndIf
 
+		if ocd.totalChange > 0
+			s.Append("= Total:    " + RSet(ocd.total, 8) + RSet("+" + ocd.totalChange, 27) + "=~n")
+		Else
+			s.Append("= Total:    " + RSet(ocd.total, 8) + RSet(ocd.totalChange, 27) + "=~n")
+		EndIf
 		s.Append("=================   Dump End   =================~n")
 		Return s.ToString()
 	End Method
@@ -335,6 +339,8 @@ End Type
 
 Type TObjectCountDump
 	Field entries:TLongMap = New TLongMap
+	Field total:Int
+	Field totalChange:Int
 	Field time:Long
 	Field description:String
 	Field keyCount:Int 'cache
