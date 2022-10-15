@@ -151,6 +151,7 @@ Type TObjectCountManager
 		Local lastLinebreak:Int = -1
 		Local readingValue:Int = False
 		
+		Local metaStart:Int, metaEnd:Int
 		Local keyStart:Int, keyEnd:Int
 		Local valueStart:Int, valueEnd:Int
 		Local currentChar:Int
@@ -211,14 +212,17 @@ Type TObjectCountManager
 			
 			If Not skipThisLine
 				If currentChar = Asc("{")
+					metaStart = i
 					skipMeta = True
 				ElseIf lastChar = Asc("}")
+					metaEnd = i 'already advanced a char since lastChar!
 					skipMeta = False
 				EndIf
-
 				If Not skipMeta
 					If currentChar = Asc("~t")
-						keyEnd = i
+						keyEnd = i - (metaEnd - metaStart)
+						metaStart = 0
+						metaEnd = 0
 						valueStart = i + 1
 						readingValue = True
 						Continue
