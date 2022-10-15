@@ -7003,12 +7003,12 @@ Function ShowApp:Int()
 End Function
 
 
-'Global bbGCAllocCount:ULong = 0
+Global bbGCAllocCount:ULong = 0
 ?bmxng
 'ron|gc
-Extern
-    Global bbGCAllocCount:ULong="bbGCAllocCount"
-End Extern
+'Extern
+'    Global bbGCAllocCount:ULong="bbGCAllocCount"
+'End Extern
 ?
 
 
