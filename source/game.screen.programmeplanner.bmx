@@ -70,14 +70,16 @@ Type TScreenHandler_ProgrammePlanner
 			'=== create programme/ad-slot lists
 			'the visual gap between 0-11 and 12-23 hour
 			Local gapBetweenHours:Int = 45
-			Local area:TRectangle = New TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
+			Local spriteAdBlock1:TSprite = GetSpriteFromRegistry("pp_adblock1")
+			Local spriteProgrammeBlock1:TSprite = GetSpriteFromRegistry("pp_programmeblock1")
+			Local area:SRectI = New SRectI(45,5,625,Int(12 * spriteProgrammeBlock1.area.h))
 
-			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(New SVec2I(Int(area.x), Int(area.y)), New SVec2I(Int(area.w), Int(area.h)), "programmeplanner")
-			GuiListProgrammes.Init("pp_programmeblock1", Int(GetSpriteFromRegistry("pp_adblock1").area.w + gapBetweenHours))
+			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(New SVec2I(area.x, area.y), New SVec2I(area.w, area.h), "programmeplanner")
+			GuiListProgrammes.Init("pp_programmeblock1", Int(spriteAdBlock1.area.w + gapBetweenHours))
 			GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
 
-			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New SVec2I(Int(area.x + GetSpriteFromRegistry("pp_programmeblock1").area.w), Int(area.y)), New SVec2I(Int(area.w), Int(area.h)), "programmeplanner")
-			GuiListAdvertisements.Init("pp_adblock1", Int(GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours))
+			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New SVec2I(area.x + Int(spriteProgrammeBlock1.area.w), area.y), New SVec2I(area.w, area.h), "programmeplanner")
+			GuiListAdvertisements.Init("pp_adblock1", Int(spriteProgrammeBlock1.area.w + gapBetweenHours))
 			GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
 
 

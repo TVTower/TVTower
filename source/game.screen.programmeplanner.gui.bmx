@@ -47,7 +47,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 	Method CreateWithBroadcastMaterial:TGUIProgrammePlanElement(material:TBroadcastMaterial, limitToState:String="")
-		Create(New SVec2I(0,0), New SVec2I(-1,-1))
+		Create(New SVec2I(0,0), New SVec2I(0,0))
 		SetLimitToState(limitToState)
 		SetBroadcastMaterial(material)
 		Return Self
@@ -70,10 +70,11 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 
 			'now we can calculate the item dimensions
-			SetSize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
+			Local s:TSprite = GetSpriteFromRegistry(GetAssetBaseName()+"1")
+			SetSize(s.area.w, s.area.h * material.getBlocks())
 
 			'set handle (center for dragged objects) to half of a 1-Block
-			Self.SetHandle(New TVec2D(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
+			Self.SetHandle(New TVec2D(s.area.w/2, s.area.h/2))
 		EndIf
 	End Method
 
@@ -140,11 +141,12 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Method GetBlockPos:SVec2I(block:Int=1)
 		'dragged and not in DrawGhostMode
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			Local scrRect:TRectangle = GetScreenRect()
 			If block > 1
 				local assetH:int = GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()
-				Return New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY() + assetH * (block - 1)))
+				Return New SVec2I(int(scrRect.x), int(scrRect.y + assetH * (block - 1)))
 			Else
-				Return New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY()))
+				Return New SVec2I(int(scrRect.x), int(scrRect.y))
 			EndIf
 		Else
 			Local startSlot:Int = lastSlot
@@ -721,7 +723,7 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 
 	Method Init:Int(spriteName:String="", displaceX:Int = 0)
 		Self.zoneLeft.SetWH(GetSpriteFromRegistry(spriteName).area.w, 12 * GetSpriteFromRegistry(spriteName).area.h)
-		Self.zoneRight.SetWH(GetSpriteFromRegistry(spriteName).area.h, 12 * GetSpriteFromRegistry(spriteName).area.h)
+		Self.zoneRight.SetWH(GetSpriteFromRegistry(spriteName).area.w, 12 * GetSpriteFromRegistry(spriteName).area.h)
 
 		Self.slotBackground = GetSpriteFromRegistry(spriteName)
 
@@ -797,7 +799,7 @@ endrem
 			'clear out old gui element
 			guiElement.remove()
 		Else
-			guiElement = New TGUIProgrammePlanElement.Create(New SVec2I(0,0), New SVec2I(-1,-1))
+			guiElement = New TGUIProgrammePlanElement.Create(New SVec2I(0,0), New SVec2I(0,0))
 		EndIf
 		'assign programme
 		guiElement.SetBroadcastMaterial(material)
