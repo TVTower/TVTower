@@ -392,11 +392,6 @@ Type TScreen_GameSettings Extends TGameScreen
 					If GetGameBase().SwitchPlayerIdentity(newPlayerID, playerID)
 						GetGameBase().SetLocalPlayer(newPlayerID)
 
-						'switch difficulties too
-						Local oldDifficultyGUID:String = GetPlayerBase(playerID).difficultyGUID
-						GetPlayerBase(playerID).difficultyGUID = GetPlayerBase(newPlayerID).difficultyGUID
-						GetPlayerBase(newPlayerID).difficultyGUID = oldDifficultyGUID
-
 						'update names
 						RefreshPlayerGUIData(playerID)
 						RefreshPlayerGUIData(newPlayerID)

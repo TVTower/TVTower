@@ -1977,17 +1977,29 @@ endrem
 			Print "SwitchPlayerIdentity() skipped: switching with itself"
 			Return False
 		EndIf
-		Local tmpPlayerName:String = GetPlayer(ID2).name
-		Local tmpChannelName:String = GetPlayer(ID2).channelName
-		Local tmpFigureBase:Int = GetPlayer(ID2).figureBase
+		local player1:TPlayer = GetPlayer(ID1)
+		local player2:TPlayer = GetPlayer(ID2)
 
-		GetPlayer(ID2).name = GetPlayer(ID1).name
-		GetPlayer(ID2).channelName = GetPlayer(ID1).channelName
-		GetPlayer(ID2).figureBase = GetPlayer(ID1).figureBase
+		Local tmpPlayerName:String = player2.name
+		Local tmpChannelName:String = player2.channelName
+		Local tmpFigureBase:Int = player2.figureBase
+		local tmpPlayerColor:TPlayerColor = player2.color
+		local tmpPlayerDifficulty:String = player2.difficultyGUID
 
-		GetPlayer(ID1).name = tmpPlayerName
-		GetPlayer(ID1).channelName = tmpChannelName
-		GetPlayer(ID1).figureBase = tmpFigureBase
+		player2.name = player1.name
+		player2.channelName = player1.channelName
+		player2.figureBase = player1.figureBase
+		player2.color = player1.color
+		player2.color.SetOwner(ID2)
+		player2.difficultyGUID = player1.difficultyGUID
+
+		player1.name = tmpPlayerName
+		player1.channelName = tmpChannelName
+		player1.figureBase = tmpFigureBase
+		player1.color = tmpPlayerColor
+		player1.color.SetOwner(ID1)
+		player1.difficultyGUID = tmpPlayerDifficulty
+
 		Return True
 	End Method
 
