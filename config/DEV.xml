@@ -67,7 +67,7 @@
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
 
 			<!-- number of in game producers shooting movies etc. based on script templates from database-->
-			<DEV_PRODUCERS_COUNT value="4" />
+			<DEV_PRODUCERS_COUNT value="2" />
 			<!-- minimal waiting time in hours between finishing one production and starting the next one-->
 			<DEV_PRODUCERS_MIN_WAIT_HOURS value="36" />
 			<!-- maximal waiting time in hours between finishing one production and starting the next one-->
