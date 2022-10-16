@@ -174,7 +174,7 @@ Type TGUIWindowBase Extends TGUIPanel
 		Else
 			If Not guiCaptionTextBox
 				'create the caption container
-				guiCaptionTextBox = New TGUITextBox.Create(new SVec2I(0,0), new SVec2I(-1,-1), caption, "")
+				guiCaptionTextBox = New TGUITextBox.Create(new SVec2I(0,0), GUI_DIM_AUTOSIZE, caption, "")
 
 				If defaultCaptionColor
 					guiCaptionTextBox.SetValueColor(defaultCaptionColor)

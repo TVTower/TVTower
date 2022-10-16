@@ -8,7 +8,7 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 	Field selectedLine:int
 	Field hoveredLine:int
 
-    Method Create:TGUITextAreaSelect(pos:SVec2I, dimension:TVec2I, limitState:String = "")
+    Method Create:TGUITextAreaSelect(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		SetFont( GetBitmapFont("default", 12) )
@@ -25,8 +25,8 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 		local coordY:Int = triggerEvent.GetData().GetInt("y")
 
 		'make local
-		coordX = coordX - GetContentScreenRect().GetX()
-		coordY = coordY - GetContentScreenRect().GetY()
+		coordX = coordX - GetContentScreenRect().x
+		coordY = coordY - GetContentScreenRect().y
 		hoveredLine = 1 + int((coordX + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
 		hoveredLine = MathHelper.Clamp(hoveredLine, 0, GetLineCount() -1)
 	End Method

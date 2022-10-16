@@ -228,8 +228,8 @@ Type TGUISlider extends TGUIObject
 	Method SetValueByMouse()
 		'convert current mouse position to local widget coordinates
 		'-9 is "manual adjustment"
-		local mousePosX:Int = MouseManager.x - GetScreenRect().x - GetGaugeOffsetX()
-		local mousePosY:Int = MouseManager.y - GetScreenRect().y - GetGaugeOffsetY()
+		local mousePosX:Float = MouseManager.x - GetScreenRect().x - GetGaugeOffsetX()
+		local mousePosY:Float = MouseManager.y - GetScreenRect().y - GetGaugeOffsetY()
 
 		local scale:Float = (maxValue - minValue + 1) / Float(maxValue - minValue)
 		local lengthX:float = GetGaugeW() - 2* GetGaugeOffsetX()

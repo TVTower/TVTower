@@ -215,6 +215,8 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
+		
+		Return True
 	End Method
 
 

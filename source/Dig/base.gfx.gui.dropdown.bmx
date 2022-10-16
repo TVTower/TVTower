@@ -81,7 +81,7 @@ Type TGUIDropDown Extends TGUIInput
 		'=== ENTRY LIST ===
 		'create and style list
 		If list Then list.Remove()
-		list = New TGUISelectList.Create(New SVec2I(0, Int(Self.rect.h)), New SVec2I(Int(rect.h), listHeight), "")
+		list = New TGUISelectList.Create(New SVec2I(0, Int(Self.rect.h)), New SVec2I(Int(rect.w), listHeight), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(False)
