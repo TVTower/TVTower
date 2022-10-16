@@ -48,6 +48,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role = CreateRole("KI-Entwicklung", new SColor8(140,240,250))
 		role.addCast("Ronny Otto~n(KI-Verhalten, KI-Anbindung)")
 		role.addCast("Manuel Vögele~n(KI-Verhalten & -Anbindung)~n(bis 2015)")
+		role.addCast("Alexander Nittka~n(KI-Optimierung)~n(2022 -)")
 
 		role = CreateRole("Handbuch", new SColor8(170,210,250))
 		role.addCast("Själe")
