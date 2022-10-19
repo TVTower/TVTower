@@ -771,7 +771,7 @@ function TaskSchedule:GetFilteredAdContractList(guessedAudience, day, hour, forB
 
 	-- convert number to audience-object
 	if type(guessedAudience) == "number" then
-		guessedAudience = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(guessedAudience)
+		guessedAudience = TVT.audiencePredictor.GetAudienceWithPopulation(guessedAudience)
 	end
 
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)

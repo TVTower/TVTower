@@ -50,9 +50,10 @@ Type TGenreDefinitionBase extends TGameObject
 
 		AudienceAttraction = New TAudience
 		For local i:int = 1 to TVTTargetGroup.baseGroupCount
-			local id:int = TVTTargetGroup.GetAtIndex(i)
-			AudienceAttraction.SetGenderValue(id, data.GetFloat(TVTTargetGroup.GetAsString(id)+"_men", 0.5), TVTPersonGender.MALE)
-			AudienceAttraction.SetGenderValue(id, data.GetFloat(TVTTargetGroup.GetAsString(id)+"_women", 0.5), TVTPersonGender.FEMALE)
+			Local id:int = TVTTargetGroup.GetAtIndex(i)
+			Local targetGroupString:String = TVTTargetGroup.GetAsString(id)
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(targetGroupString+"_men", 0.5), TVTPersonGender.MALE)
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(targetGroupString+"_women", 0.5), TVTPersonGender.FEMALE)
 		Next
 
 		return self

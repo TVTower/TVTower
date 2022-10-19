@@ -68,9 +68,9 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 		Next
 
 		If audienceResultBases.length > 1
-			result.Audience.DivideFloat(audienceResultBases.length)
-			result.WholeMarket.DivideFloat(audienceResultBases.length)
-			result.GetPotentialMaxAudience().DivideFloat(audienceResultBases.length)
+			result.Audience.Divide(audienceResultBases.length)
+			result.WholeMarket.Divide(audienceResultBases.length)
+			result.GetPotentialMaxAudience().Divide(audienceResultBases.length)
 		Endif
 		
 		return result
@@ -115,7 +115,7 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 			targetGroupID = TVTTargetGroup.GetAtIndex(i)
 			'set to (audience.sumX / potentialAudience.sumX)
 			'this sums up values for female and male of each targetgroup 
-			result.SetValue(targetGroupID, Audience.GetTotalValue(targetGroupID) / pmAudience.GetTotalValue(targetGroupID) )
+			result.Set(targetGroupID, Audience.GetTotalValue(targetGroupID) / pmAudience.GetTotalValue(targetGroupID) )
 		Next
 		return result
 	End Method

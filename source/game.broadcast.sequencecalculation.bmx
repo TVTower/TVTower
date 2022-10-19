@@ -15,8 +15,8 @@ Type TSequenceCalculation
 		Local riseModCopy:TAudience
 		Local shrinkModCopy:TAudience
 
-		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBordersFloat(0.8, 1.25)
-		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBordersFloat(0.25, 1.25)
+		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBorders(0.8, 1.25)
+		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBorders(0.25, 1.25)
 
 		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)

@@ -82,7 +82,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 
 	Method CreateWithLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
-		Self.Create(New SVec2I(0,0), New SVec2I(-1,-1))
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.setProgrammeLicence(licence)
 		Return Self
 	End Method

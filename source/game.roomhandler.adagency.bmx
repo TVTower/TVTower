@@ -1537,7 +1537,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 
 	Method CreateWithContract:TGuiAdContract(contract:TAdContract)
-		Self.Create(New SVec2I(0,0), New SVec2I(-1,-1))
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.setContract(contract)
 		Return Self
 	End Method

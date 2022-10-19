@@ -1418,7 +1418,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		'add some items to that list
 		For Local i:Int = 0 To TVTPersonGender.count
-			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), GUI_DIM_AUTOSIZE, "")
+			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(0,0), "")
 
 			If i = 0
 				item.SetValue(GetLocale("GENDER_ALL"))

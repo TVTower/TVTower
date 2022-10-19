@@ -57,21 +57,21 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	Const MODINFLUENCE_CAST:Float = 0.20
 
 
-	Method Init:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
-		Super.Init(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+	Method Set:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float) override
+		Super.Set(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
 		Return self
 	End Method
 
 
-	Method InitValue:TAudienceAttraction(valueMale:Float, valueFemale:Float)
-		Super.InitValue(valueMale, valueFemale)
+	Method Set:TAudienceAttraction(valueMale:Float, valueFemale:Float)
+		Super.Set(valueMale, valueFemale)
 		return self
 	End Method
 	
 
 	Method InitGenderValue:TAudienceAttraction(valueMale:float, valueFemale:float)
-		GetAudienceMale().InitValue(valueMale)
-		GetAudienceFemale().InitValue(valueFemale)
+		audienceFemale = new SAudienceBase(valueFemale)
+		audienceMale = new SAudienceBase(valueMale)
 		return self
 	End Method
 
@@ -88,7 +88,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		Self.BaseAttraction = attraction.Copy()
 		Self.FinalAttraction = attraction.Copy()
 		Self.PublicImageAttraction = attraction.Copy()
-		Self.SetValuesFrom(attraction)
+		Self.Set(attraction)
 		Return Self
 	End Method
 
@@ -127,30 +127,30 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 
 
 	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
-		Self.MultiplyFloat(factor)
+		Self.Multiply(factor)
 
 		Quality	:* factor
 		CastMod :* factor
-		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
+		If GenreTargetGroupMod Then GenreTargetGroupMod.Multiply(factor)
 		GenreMod :* factor
 		GenrePopularityMod :* factor
 		GenreTimeMod :* factor
-		If FlagsTargetGroupMod Then FlagsTargetGroupMod.MultiplyFloat(factor)
+		If FlagsTargetGroupMod Then FlagsTargetGroupMod.Multiply(factor)
 		FlagsPopularityMod :* factor
-		If targetGroupAttractivityMod Then targetGroupAttractivityMod.MultiplyFloat(factor)
-		If PublicImageMod Then PublicImageMod.MultiplyFloat(factor)
-		If TrailerMod Then TrailerMod.MultiplyFloat(factor)
-		If MiscMod Then MiscMod.MultiplyFloat(factor)
-		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
+		If targetGroupAttractivityMod Then targetGroupAttractivityMod.Multiply(factor)
+		If PublicImageMod Then PublicImageMod.Multiply(factor)
+		If TrailerMod Then TrailerMod.Multiply(factor)
+		If MiscMod Then MiscMod.Multiply(factor)
+		If AudienceFlowBonus Then AudienceFlowBonus.Multiply(factor)
 		QualityOverTimeEffectMod :* factor
-		If LuckMod Then LuckMod.MultiplyFloat(factor)
-		'If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
-		if targetGroupAttractivity then targetGroupAttractivity.MultiplyFloat(factor)
-		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
-		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)
-		If FinalAttraction Then FinalAttraction.MultiplyFloat(factor)
-		If PublicImageAttraction Then PublicImageAttraction.MultiplyFloat(factor)
-		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
+		If LuckMod Then LuckMod.Multiply(factor)
+		'If NewsShowBonus Then NewsShowBonus.Multiply(factor)
+		if targetGroupAttractivity then targetGroupAttractivity.Multiply(factor)
+		If SequenceEffect Then SequenceEffect.Multiply(factor)
+		If BaseAttraction Then BaseAttraction.Multiply(factor)
+		If FinalAttraction Then FinalAttraction.Multiply(factor)
+		If PublicImageAttraction Then PublicImageAttraction.Multiply(factor)
+		If AudienceFlowBonus Then AudienceFlowBonus.Multiply(factor)
 
 		Return Self
 	End Method
@@ -159,13 +159,13 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	'time depending value, cannot be used for "base attractivity"
 	'(which is used by Follow-Up-Blocks)
 	Method GetGenreAttractivity:TAudience()
-		local result:TAudience = new TAudience.InitValue(1,1)
+		local result:TAudience = new TAudience.Set(1,1)
 		'adjust by genre-time-attractivity: 0.0 - 2.0
-		result.MultiplyFloat(GenreTimeMod)
+		result.Multiply(GenreTimeMod)
 		'adjust by
 
 		'limit to 0-x
-		result.CutMinimumFloat(0)
+		result.CutMinimum(0)
 		return result
 	End Method
 
@@ -180,24 +180,24 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		'  ex. erotic for male teenagers
 		'  ex. cartoons for children
 		Local _effectiveGenreTargetGroupMod:TAudience = GenreTargetGroupMod.Copy()
-		_effectiveGenreTargetGroupMod.MultiplyFloat(GenrePopularityMod * GenreMod)
-		_effectiveGenreTargetGroupMod.SubtractFloat(1)
-		_effectiveGenreTargetGroupMod.MultiplyFloat(MODINFLUENCE_GENRETARGETGROUP)
-		_effectiveGenreTargetGroupMod.AddFloat(1)
+		_effectiveGenreTargetGroupMod.Multiply(GenrePopularityMod * GenreMod)
+		_effectiveGenreTargetGroupMod.Subtract(1)
+		_effectiveGenreTargetGroupMod.Multiply(MODINFLUENCE_GENRETARGETGROUP)
+		_effectiveGenreTargetGroupMod.Add(1)
 		Local _effectiveFlagsTargetGroupMod:TAudience = FlagsTargetGroupMod.Copy()
-		_effectiveFlagsTargetGroupMod.MultiplyFloat(FlagsPopularityMod * FlagsMod)
-		_effectiveFlagsTargetGroupMod.SubtractFloat(1)
-		_effectiveFlagsTargetGroupMod.MultiplyFloat(MODINFLUENCE_FLAGTARGETGROUP)
-		_effectiveFlagsTargetGroupMod.AddFloat(1)
+		_effectiveFlagsTargetGroupMod.Multiply(FlagsPopularityMod * FlagsMod)
+		_effectiveFlagsTargetGroupMod.Subtract(1)
+		_effectiveFlagsTargetGroupMod.Multiply(MODINFLUENCE_FLAGTARGETGROUP)
+		_effectiveFlagsTargetGroupMod.Add(1)
 		 
-		Local result:TAudience = New TAudience.InitValue(1, 1)
+		Local result:TAudience = New TAudience.Set(1, 1)
 		result.Multiply( _effectiveGenreTargetGroupMod )
 		result.Multiply( _effectiveFlagsTargetGroupMod )
 
 		result.Multiply( targetGroupAttractivityMod )
 
 		'0 = no attractivity, 1 = no adjustment, 2 = totally like it
-		result.CutBordersFloat(0, 2.0)
+		result.CutBorders(0, 2.0)
 
 		Return result
 	End Method
@@ -207,10 +207,10 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		'=== FINAL CALCULATION ===
 		Local result:TAudience = New TAudience
 		'start with an attraction of "100%"
-		result.AddFloat(1.0)
+		result.Add(1.0)
 
 		'quality: 0.0 - 1.0, influence: 100%
-		result.MultiplyFloat( Quality )
+		result.Multiply( Quality )
 
 
 		targetGroupAttractivity = GetTargetGroupAttractivity()
@@ -221,21 +221,21 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		'add +1 so it becomes a multiplier
 		'"multiply" because it "increases" existing interest
 		'(people more likely watch this programme)
-		If TrailerMod Then result.Multiply( TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1.0) )
+		If TrailerMod Then result.Multiply( TrailerMod.Copy().Multiply(MODINFLUENCE_TRAILER).Add(1.0) )
 
 
-		If MiscMod Then result.Multiply( MiscMod.Copy().MultiplyFloat(MODINFLUENCE_MISC) )
+		If MiscMod Then result.Multiply( MiscMod.Copy().Multiply(MODINFLUENCE_MISC) )
 
 
-		result.MultiplyFloat(1.0 + (CastMod-1.0) * MODINFLUENCE_CAST)
+		result.Multiply(1.0 + (CastMod-1.0) * MODINFLUENCE_CAST)
 
 	
 		'store the current attraction for the publicImage-calculation
 		Self.PublicImageAttraction = result.Copy()
-		Self.PublicImageAttraction.AddFloat(1).MultiplyFloat(Quality)
+		Self.PublicImageAttraction.Add(1).Multiply(Quality)
 
 
-		If PublicImageMod Then result.Multiply( PublicImageMod.Copy().AddFloat(1.0) )
+		If PublicImageMod Then result.Multiply( PublicImageMod.Copy().Add(1.0) )
 
 
 		'if QualityOverTimeEffectMod Then result.AddFloat(QualityOverTimeEffectMod)
@@ -260,9 +260,9 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 
 		'avoid negative attraction values or values > 100%
 		'-> else you could have a negative audience
-		result.CutBordersFloat(0.0, 1.0)
+		result.CutBorders(0.0, 1.0)
 		Self.FinalAttraction = result
-		Self.SetValuesFrom(result)
+		Self.Set(result)
 	End Method
 
 
@@ -278,7 +278,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		EndIf
 
 		If TrailerMod
-			print " 3. TRAILER:   * " + TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1).ToStringAverage()
+			print " 3. TRAILER:   * " + TrailerMod.Copy().Multiply(MODINFLUENCE_TRAILER).Add(1).ToStringAverage()
 		Else
 			print " 3. TRAILER:   -/- "
 		endif
@@ -292,7 +292,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		print " 5. CASTMOD:      + " + CastMod
 
 		If PublicImageMod
-			print " 6. IMAGE:     * " + PublicImageMod.Copy().AddFloat(1.0).ToStringAverage()
+			print " 6. IMAGE:     * " + PublicImageMod.Copy().Add(1.0).ToStringAverage()
 		Else
 			print " 6. IMAGE:     -/-"
 		endif

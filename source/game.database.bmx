@@ -1941,7 +1941,7 @@ Type TDatabaseLoader
 		'loop over all genders (all, male, female) and assign found numbers
 		'- making sure to start with "all" allows assign "base", then
 		'  specific (if desired)
-		If Not audience Then audience = New TAudience.InitValue(1.0, 1.0)
+		If Not audience Then audience = New TAudience.Set(1.0, 1.0)
 		For Local genderIndex:Int = 0 To TVTPersonGender.count
 			Local genderID:Int = TVTPersonGender.GetAtIndex(genderIndex)
 			Local genderString:String = TVTpersonGender.GetAsString( genderID )

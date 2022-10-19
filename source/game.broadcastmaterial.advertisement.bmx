@@ -104,12 +104,12 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	'override
 	'add PAID-Flag as set flag
 	Method GetFlagsTargetGroupMod:TAudience()
-		local audienceMod:TAudience = new TAudience.InitValue(1, 1)
+		local audienceMod:TAudience = New TAudience.Set(1, 1)
 		local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
 		if not definition then return audienceMod
 
 		audienceMod.Multiply( GetFlagTargetGroupMod(definition) )
-		audienceMod.CutBordersFloat(0.0, 2.0)
+		audienceMod.CutBorders(0.0, 2.0)
 
 		return audienceMod
 	End Method
@@ -134,7 +134,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
 
 		if contract.base.limitedToTargetGroup > 0
-			Local tgAudience:TAudience = New TAudience.InitValue(1, 1)
+			Local tgAudience:TAudience = New TAudience.Set(1, 1)
 			'for women/men this only is run for the
 			'female/male portion of the audience
 			tgAudience.ModifyTotalValue(contract.base.limitedToTargetGroup, 0.5)
@@ -199,7 +199,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		'Image-Penalty
 		'-1 = for both genders
 		TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for infomercial.", LOG_DEBUG)
-		Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
+		Local penalty:TAudience = New TAudience.Set(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 		GetPublicImage(owner).ChangeImage(penalty)
 	End Method
 

@@ -107,7 +107,7 @@ Type TPlayerProgrammeCollectionCollection
 			if licence.data.GetTrailerMod(owner, False)
 '				print "  before: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
 
-				licence.data.GetTrailerMod(owner).MultiplyFloat(trailerEffectivenessScale)
+				licence.data.GetTrailerMod(owner).Multiply(trailerEffectivenessScale)
 
 '				print "   after: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
 			endif

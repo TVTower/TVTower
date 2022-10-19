@@ -374,7 +374,7 @@ Type TDebugWidget_ProgrammePlanInfo
 								Next
 								If newsshow
 									newsAttr = newsshow.GetAudienceAttraction(hour, 1, prevAttr, Null, True, True)
-'									newsAttr.MultiplyFloat()
+'									newsAttr.Multiply()
 								EndIf
 								Local attr:TAudienceAttraction = prog.GetAudienceAttraction(hour, progBlock, prevAttr, newsAttr, True, True)
 								predictor.SetAttraction(i, attr)

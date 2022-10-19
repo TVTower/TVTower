@@ -119,12 +119,12 @@ Type RoomHandler_News extends TRoomHandler
 			'ATTENTION: We could do this in order of The NewsGenre-Values
 			'           But better add it to the buttons.data-property
 			'           for better checking
-			NewsGenreButtons[0]	= new TGUIButton.Create( new SVec2I(13, 194), New SVec2I(-1,-1), GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
-			NewsGenreButtons[1]	= new TGUIButton.Create( new SVec2I(58, 194), New SVec2I(-1,-1), GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-			NewsGenreButtons[2]	= new TGUIButton.Create( new SVec2I(103, 194), New SVec2I(-1,-1), GetLocale("NEWS_SHOWBIZ"), "newsroom")
-			NewsGenreButtons[3]	= new TGUIButton.Create( new SVec2I(13, 239), New SVec2I(-1,-1), GetLocale("NEWS_SPORT"), "newsroom")
-			NewsGenreButtons[4]	= new TGUIButton.Create( new SVec2I(58, 239), New SVec2I(-1,-1), GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
-			NewsGenreButtons[5]	= new TGUIButton.Create( new SVec2I(103, 239), New SVec2I(-1,-1), GetLocale("NEWS_CULTURE"), "newsroom")
+			NewsGenreButtons[0]	= new TGUIButton.Create( new SVec2I(13, 194), New SVec2I(0,0), GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+			NewsGenreButtons[1]	= new TGUIButton.Create( new SVec2I(58, 194), New SVec2I(0,0), GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+			NewsGenreButtons[2]	= new TGUIButton.Create( new SVec2I(103, 194), New SVec2I(0,0), GetLocale("NEWS_SHOWBIZ"), "newsroom")
+			NewsGenreButtons[3]	= new TGUIButton.Create( new SVec2I(13, 239), New SVec2I(0,0), GetLocale("NEWS_SPORT"), "newsroom")
+			NewsGenreButtons[4]	= new TGUIButton.Create( new SVec2I(58, 239), New SVec2I(0,0), GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+			NewsGenreButtons[5]	= new TGUIButton.Create( new SVec2I(103, 239), New SVec2I(0,0), GetLocale("NEWS_CULTURE"), "newsroom")
 			For local i:int = 0 to 5
 				NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
 				'adjust width according sprite dimensions

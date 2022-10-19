@@ -50,7 +50,7 @@ Type TPublicImageCollection
 				players :+ 1
 			EndIf
 		Next
-		If players > 0 Then avgImage.ImageValues.DivideFloat(players)
+		If players > 0 Then avgImage.ImageValues.Divide(players)
 		Return avgImage
 	End Method
 
@@ -72,7 +72,7 @@ Type TPublicImageCollection
 			'nothing archived yet
 			If Not selectedImageValues
 				selectedImageValues = New TAudience
-				selectedImageValues.InitValue(0, 0)
+				selectedImageValues.Set(0, 0)
 			EndIf
 		EndIf
 		Return selectedImageValues
@@ -102,7 +102,7 @@ Type TPublicImageCollection
 			'nothing archived yet
 			If Not selectedImageValues
 				selectedImageValues = New TAudience
-				selectedImageValues.InitValue(0, 0)
+				selectedImageValues.Set(0, 0)
 			EndIf
 		EndIf
 		Return selectedImageValues
@@ -215,7 +215,7 @@ Type TPublicImageArchiveEntry
 			'create a copy (not referencing values)
 			images[i] = New TPublicImage
 			images[i].playerID = publicImage.playerID
-			images[i].imageValues = New TAudience.CopyFrom( publicImage.imageValues )
+			images[i].imageValues = New TAudience.Set( publicImage.imageValues )
 			images[i].time = publicImage.time
 			'store time of most current
 			time = Max(time, images[i].time)
@@ -247,7 +247,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		obj.playerID = playerID
 
 		'we start with an image of 0 in all target groups
-		obj.ImageValues = New TAudience.InitValue(0, 0)
+		obj.ImageValues = New TAudience.Set(0, 0)
 
 		'add to collection
 		GetPublicImageCollection().Set(playerID, obj)
@@ -256,7 +256,7 @@ Type TPublicImage {_exposeToLua="selected"}
 	
 	
 	Method Reset()
-		imageValues.InitValue(0, 0)
+		imageValues.Set(0, 0)
 		time = 0
 	End Method
 
@@ -272,7 +272,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'our image ranges between 0 and 100 so dividing by 100 results
 		'in a value of 0-1.0, adding 1.0 makes it a modifier
 		'ex: teenager-image of "2": 2/100 + 1.0 = 1.02
-		Return imageValues.Copy().DivideFloat(100).AddFloat(1)
+		Return imageValues.Copy().Divide(100).Add(1)
 	End Method
 
 
@@ -295,10 +295,10 @@ Type TPublicImage {_exposeToLua="selected"}
 		
 		time = GetWorldTime().GetTimeGone()
 
-		ImageValues.Multiply( New TAudience.InitValue(1.0, 1.0).Add(imageChange) )
+		ImageValues.Multiply( New TAudience.Set(1.0, 1.0).Add(imageChange) )
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
-		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
+		ImageValues.CutBorders(0, 100)
 
 		TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
@@ -318,7 +318,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		ImageValues.Add(imageChange)
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
-		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
+		ImageValues.CutBorders(0, 100)
 
 		TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
@@ -419,7 +419,7 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 		Local clone:TGameModifierPublicImage_Modify = New TGameModifierPublicImage_Modify
 		clone.CopyBaseFrom(Self)
 		clone.playerID = Self.playerID
-		clone.value = New TAudience.SetValuesFrom(value)
+		clone.value = New TAudience.Set(value)
 		clone.valueIsRelative = Self.valueIsRelative
 		If Self.paramConditions
 			clone.paramConditions = Self.paramConditions.copy()
@@ -440,11 +440,11 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 		If valueComplex
 			value = valueComplex.Copy()
 		ElseIf valueComplexBase
-			value = New TAudience.InitBase(valueComplexBase, valueComplexBase)
+			value = New TAudience.Set(valueComplexBase, valueComplexBase)
 		ElseIf valueMale <> 0 Or valueFemale <> 0
-			value = New TAudience.InitValue(valueMale, valueFemale)
+			value = New TAudience.Set(valueMale, valueFemale)
 		ElseIf valueSimple <> 0.0
-			value = New TAudience.InitValue(valueSimple, valueSimple)
+			value = New TAudience.Set(valueSimple, valueSimple)
 		EndIf
 		If Not value
 			TLogger.Log("TGameModifierPublicImage_Modify.Init()", "No valid ~qvalue~q-value provided. Modifier not created.", LOG_DEBUG)

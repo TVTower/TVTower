@@ -115,7 +115,7 @@ endif
 	'override
 	'add mod for all news slots
 	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
-		local result:TAudience = new TAudience.InitValue(1,1)
+		local result:TAudience = New TAudience.Set(1,1)
 
 		local newsSlotsUsed:int = 0
 		for local i:int = 0 until news.length
@@ -126,10 +126,10 @@ endif
 			newsSlotsUsed :+ 1
 
 			local newsGenreTargetGroupMod:TAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
-			result.Add( newsGenreTargetGroupMod.Copy().MultiplyFloat(GetNewsSlotWeight(i)) )
+			result.Add( newsGenreTargetGroupMod.Copy().Multiply(GetNewsSlotWeight(i)) )
 		Next
 		if newsSlotsUsed > 1
-			result.DivideFloat(newsSlotsUsed)
+			result.Divide(newsSlotsUsed)
 		endif
 		return result
 	End Method
@@ -182,7 +182,7 @@ endif
 
 			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 			'limit attraction values to 0-1.0
-			tempAudienceAttr.CutBordersFloat(0, 1.0)
+			tempAudienceAttr.CutBorders(0, 1.0)
 
 			'if owner=1 then print "owner #"+owner+"   news #"+i+": " + tempAudienceAttr.targetGroupAttractivity.ToString() +"  * " + GetNewsSlotWeight(i)
 
@@ -201,17 +201,17 @@ endif
 		'bonus if sending varying genres (a good "mix")
 		'5% bonus if 2+ genres used
 		if genresUsed = 2
-'			resultAudienceAttr.MultiplyFloat(1.05)
+'			resultAudienceAttr.Multiply(1.05)
 		'10% bonus if 3+ genres used
 		elseif genresUsed >= 3
-'			resultAudienceAttr.MultiplyFloat(1.10)
+'			resultAudienceAttr.Multiply(1.10)
 		endif
 
 		'malus for not sending something in each slot
 		if slotsUsed = 1
-'			resultAudienceAttr.MultiplyFloat(0.90)
+'			resultAudienceAttr.Multiply(0.90)
 		elseif slotsUsed = 2
-'			resultAudienceAttr.MultiplyFloat(0.96)
+'			resultAudienceAttr.Multiply(0.96)
 		endif
 
 		'Ronny 2016/06/29: should we mark it as a malfunction?
@@ -366,8 +366,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
-		seqCal.PredecessorShareOnShrink = new TAudience.InitValue(0.4, 0.4) '0.5
-		seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.4, 0.4) '0.5
+		seqCal.PredecessorShareOnShrink = New TAudience.Set(0.4, 0.4) '0.5
+		seqCal.PredecessorShareOnRise = New TAudience.Set(0.4, 0.4) '0.5
 	End Method
 
 rem

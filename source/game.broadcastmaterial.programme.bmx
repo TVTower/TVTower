@@ -234,10 +234,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'regardless of this, a trailer can never be more effective than
 		'90% (some people just do ignore trailers)
 		Local trailerEffectiveness:Float = 0.90 * Float(0.98^Min(8, data.GetTimesTrailerAiredSinceLastBroadcast(owner)))
-		Local effectiveAudience:TAudience = audienceResult.GetWholeMarketAudienceQuote().Copy().MultiplyFloat(trailerEffectiveness)
+		Local effectiveAudience:TAudience = audienceResult.GetWholeMarketAudienceQuote().Copy().Multiply(trailerEffectiveness)
 		data.GetTrailerMod(owner, True).Add( effectiveAudience )
 		'avoid the mod to become bigger than 1.0
-		data.GetTrailerMod(owner, True).CutBordersFloat(0.0, 1.0)
+		data.GetTrailerMod(owner, True).CutBorders(0.0, 1.0)
 	End Method
 
 
@@ -292,15 +292,15 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		If data.IsPaid()
 			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for paid programme.", LOG_DEBUG)
 			'-1 = for both genders
-			Local penalty:TAudience = New TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
-			penalty.MultiplyFloat(data.blocks)
+			Local penalty:TAudience = New TAudience.Set(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
+			penalty.Multiply(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)
 			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Player #"+owner+": image change for paid programme: " + penalty.ToString(), LOG_DEBUG)
 		EndIf
 		If data.IsTrash()
 			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for trash programme.", LOG_DEBUG)
-			Local penalty:TAudience = New TAudience.Init(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
-			penalty.MultiplyFloat(data.blocks)
+			Local penalty:TAudience = New TAudience.Set(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
+			penalty.Multiply(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)
 		End If
 
@@ -368,7 +368,7 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 
 		'for all defined targetgroups, increase interest
 		If data.GetTargetGroups() > 0
-			Local tgAudience:TAudience = New TAudience.InitValue(1, 1)
+			Local tgAudience:TAudience = New TAudience.Set(1, 1)
 			For Local targetGroup:Int = 1 To TVTTargetGroup.count
 				Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(targetGroup)
 				If data.HasTargetGroup(targetGroupID)
@@ -405,15 +405,15 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 	'generate average of all flags
 	Method GetFlagsTargetGroupMod:TAudience()
 		Local definitions:TGenreDefinitionBase[] = _GetFlagDefinitions()
-		Local audienceMod:TAudience = New TAudience.InitValue(1, 1)
+		Local audienceMod:TAudience = New TAudience.Set(1, 1)
 
 		If definitions.length > 0
 			For Local definition:TMovieFlagDefinition = EachIn definitions
 				audienceMod.Multiply( GetFlagTargetGroupMod(definition) )
 			Next
-			audienceMod.DivideFloat(definitions.length)
+			audienceMod.Divide(definitions.length)
 
-			audienceMod.CutBordersFloat(0.0, 2.0)
+			audienceMod.CutBorders(0.0, 2.0)
 		EndIf
 
 		Return audienceMod
@@ -583,21 +583,21 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		If lastMovieBlockAttraction.GenreDefinition
 			flowMod = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
 		Else
-			flowMod = New TAudience.InitValue(0, 0) 'Ganze schlechter Follower
+			flowMod = New TAudience.Set(0, 0) 'Ganze schlechter Follower
 		EndIf
 
 		'Ermittlung des Maximalwertes für den Bonus. Wird am Schluss gebraucht
 		Local flowMaximum:TAudience = currentAttraction.BaseAttraction.Copy()
-		flowMaximum.DivideFloat(2)
-		flowMaximum.CutMaximum( lastNewsBlockAttraction.FinalAttraction.Copy().DivideFloat(2)) 'Die letzte News-Show gibt an, wie viel überhaupt noch dran sind um in den Flow zu kommen.
-		flowMaximum.CutBordersFloat(0.1, 0.35)
+		flowMaximum.Divide(2)
+		flowMaximum.CutMaximum( lastNewsBlockAttraction.FinalAttraction.Copy().Divide(2)) 'Die letzte News-Show gibt an, wie viel überhaupt noch dran sind um in den Flow zu kommen.
+		flowMaximum.CutBorders(0.1, 0.35)
 
 
 		'Der Flow hängt nicht nur von den zuvorigen Zuschauern ab, sondern zum Teil auch von der Qualität des Nachfolgeprogrammes.
 		Local attrMod:TAudience = currentAttraction.BaseAttraction.Copy()
-		attrMod.DivideFloat(2)
-		attrMod.CutBordersFloat(0, 0.6)
-		attrMod.AddFloat(0.6) '0.6 - 1.2
+		attrMod.Divide(2)
+		attrMod.CutBorders(0, 0.6)
+		attrMod.Add(0.6) '0.6 - 1.2
 
 		flowModBase.CutMaximum(flowMaximum)
 		flowModBase.Multiply(attrMod) '0.6 - 1.2

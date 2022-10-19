@@ -190,7 +190,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 			modValue = 0.1
 		endif
 
-		Return new TAudience.InitValue(modValue, modValue)
+		Return new TAudience.Set(modValue, modValue)
 	End Method
 
 	'Override
@@ -207,7 +207,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 				result.AudienceFlowBonus.Multiply(audienceFlowMod)
 			Else
 				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
-				result.AudienceFlowBonus.MultiplyFloat(0.2)
+				result.AudienceFlowBonus.Multiply(0.2)
 			End If
 
 

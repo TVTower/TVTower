@@ -148,7 +148,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 
 		guiPanel = AddContentBox(0, 0, GetContentScreenRect().GetIntW(), -1)
 
-		guiChat = New TGUIGameChat.Create(New SVec2I(0,0), New SVec2I(-1,-1), limitState)
+		guiChat = New TGUIGameChat.Create(New SVec2I(0,0), GUI_DIM_AUTOSIZE, limitState)
 
 		'panel manages the chat and window manages the panel
 		guiPanel.AddChild(guiChat)

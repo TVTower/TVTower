@@ -2397,7 +2397,7 @@ Type TDebugAudienceInfo
 
 		font.DrawSimple("1. Programmqualität & Aktual.", 25, offset, SColor8.White)
 		If attraction.Quality
-			DrawAudiencePercent(New TAudience.InitValue(attraction.Quality,  attraction.Quality), 200, offset, True, True)
+			DrawAudiencePercent(New TAudience.Set(attraction.Quality,  attraction.Quality), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
@@ -2412,7 +2412,7 @@ Type TDebugAudienceInfo
 		font.DrawSimple("3. * TrailerMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, SColor8.White)
 		If attraction.TrailerMod
 			font.DrawBox(genre, 60, offset, 205, 25, sALIGN_RIGHT_TOP, colorLight )
-			DrawAudiencePercent(attraction.TrailerMod.Copy().MultiplyFloat(TAudienceAttraction.MODINFLUENCE_TRAILER).AddFloat(1), 200, offset, True, True)
+			DrawAudiencePercent(attraction.TrailerMod.Copy().Multiply(TAudienceAttraction.MODINFLUENCE_TRAILER).Add(1), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
@@ -2423,17 +2423,17 @@ Type TDebugAudienceInfo
 		offset :+ 20
 
 		font.DrawSimple("5. + CastMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, SColor8.White)
-		DrawAudiencePercent(New TAudience.InitValue(attraction.CastMod,  attraction.CastMod), 200, offset, True, True)
+		DrawAudiencePercent(New TAudience.Set(attraction.CastMod,  attraction.CastMod), 200, offset, True, True)
 		offset :+ 20
 
 		font.DrawSimple("6. * SenderimageMod", 25, offset, SColor8.White)
 		If attraction.PublicImageMod
-			DrawAudiencePercent(attraction.PublicImageMod.Copy().AddFloat(1.0), 200, offset, True, True)
+			DrawAudiencePercent(attraction.PublicImageMod.Copy().Add(1.0), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("7. + Zuschauerentwicklung (inaktiv)", 25, offset, SColor8.White)
-	'	DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
+	'	DrawAudiencePercent(New TAudience.Set(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
 		offset :+ 20
 
 		font.DrawSimple("9. + Glück / Zufall", 25, offset, SColor8.White)
