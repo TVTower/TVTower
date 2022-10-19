@@ -2320,6 +2320,8 @@ Type TSaveGame Extends TGameState
 	Global messageWindowBackground:TImage
 	Global messageWindowLastUpdate:Long
 	Global messageWindowUpdatesSkipped:Int = 0
+	Global lastSaveTime:Long = 0 {noSave}
+	Global autoSaveNow:Int = False {noSave}
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -2890,6 +2892,8 @@ endrem
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
 
+		TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
+
 		Return True
 	End Function
 
@@ -2982,6 +2986,7 @@ Local t:Int = MilliSecs()
 		'close message window
 		If messageWindow Then messageWindow.Close()
 
+		TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
 		Return True
 	End Function
 
@@ -3889,6 +3894,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			'just switch to the game, preparation is done
 			GetGame().StartNewGame()
 			startGameCalled = True
+			TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
 		EndIf
 	End Method
 
@@ -6047,13 +6053,14 @@ endrem
 			GetProgrammeProducerCollection().UpdateAll()
 		EndIf
 
-		If minute = 37
+		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
 			Local gameName:String = GameConfig.savegame_lastUsedName
 			Local autoSaveName:String = "autosave.xml"
-			If gameName and gameName <> ""
+			If gameName and gameName <> "" and gameName <> "quicksave"
 				autoSaveName = gameName + "_autosave.xml"
 			EndIf
 			TSaveGame.SaveName(autoSaveName, False)
+			TSaveGame.autoSaveNow = False
 		EndIf
 
 
@@ -6167,6 +6174,9 @@ endrem
 		'remove from collection (reuse if possible)
 		GetNewsEventCollection().RemoveEndedNewsEvents()
 
+		If Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > TWorldTime.DAYLENGTH
+			TSaveGame.autoSaveNow = True
+		EndIf
 	End Function
 
 
