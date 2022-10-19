@@ -112,7 +112,6 @@ endif
 	End Method
 
 
-	'override
 	'add mod for all news slots
 	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
 		local result:TAudience = New TAudience.Set(1,1)
@@ -182,7 +181,7 @@ endif
 
 			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 			'limit attraction values to 0-1.0
-			tempAudienceAttr.CutBorders(0, 1.0)
+			tempAudienceAttr.attraction.CutBorders(0, 1.0)
 
 			'if owner=1 then print "owner #"+owner+"   news #"+i+": " + tempAudienceAttr.targetGroupAttractivity.ToString() +"  * " + GetNewsSlotWeight(i)
 
@@ -218,7 +217,7 @@ endif
 		'mark malfunction if nothing is send
 		if slotsUsed = 0 then resultAudienceAttr.malfunction = True
 
-		'already one with "addAttraction"
+		'already done with "addAttraction"
 		'resultAudienceAttr.Quality = GetQuality()
 
 		Return resultAudienceAttr

@@ -1256,7 +1256,6 @@ Type TTooltipAudience Extends TTooltip
 			Local lines:String[TVTTargetGroup.count]
 			Local percents:String[TVTTargetGroup.count]
 			Local numbers:String[TVTTargetGroup.count]
-			local genderlessQuote:TAudienceBase = audienceResult.GetGenderlessAudienceQuote()
 			Local targetGroupID:Int = 0
 			For Local i:Int = 1 To TVTTargetGroup.count
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)
@@ -1267,7 +1266,6 @@ Type TTooltipAudience Extends TTooltip
 					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
 				else
 					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
-'					percents[i-1] = MathHelper.NumberToString(genderlessQuote.GetValue(targetGroupID) * 100, 2)
 				endif
 			Next
 

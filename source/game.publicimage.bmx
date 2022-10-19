@@ -70,10 +70,7 @@ Type TPublicImageCollection
 			EndIf
 
 			'nothing archived yet
-			If Not selectedImageValues
-				selectedImageValues = New TAudience
-				selectedImageValues.Set(0, 0)
-			EndIf
+			If Not selectedImageValues Then selectedImageValues = New TAudience
 		EndIf
 		Return selectedImageValues
 	End Method
@@ -91,19 +88,13 @@ Type TPublicImageCollection
 			If owningChannelID > 0 And owningChannelID <= archivedImagesGlobal.length
 				Local archive:TPublicImageArchive = archivedImagesGlobal[owningChannelID - 1]
 				If archive
-					Local test:TAudience = GetPublicImage(forChannelID).imageValues
-					Local testarchive:TPublicImageArchiveEntry = archive.Get(archivedBefore, returnFirstPossible)
-					Local test2:TAudience = archive.Get(archivedBefore, returnFirstPossible).images[0].ImageValues
 '					Print "get archived -- archivedBefore="+archivedBefore + "  object="+archive.Get(archivedBefore, returnFirstPossible).GetImage(forChannelID).ToString()
 					selectedImageValues = archive.Get(archivedBefore, returnFirstPossible).GetImage(forChannelID)
 				EndIf
 			EndIf
 
 			'nothing archived yet
-			If Not selectedImageValues
-				selectedImageValues = New TAudience
-				selectedImageValues.Set(0, 0)
-			EndIf
+			If Not selectedImageValues Then selectedImageValues = New TAudience
 		EndIf
 		Return selectedImageValues
 	End Method

@@ -104,23 +104,6 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 	End Method
 
 
-	'returns a "un-gendered" quote (only target groups)
-	Method GetGenderlessAudienceQuote:TAudienceBase() {_exposeToLua}
-		local result:TAudienceBase = new TAudienceBase
-		local pmAudience:TAudience = GetPotentialMaxAudience()
-		local targetGroupID:int = 0
-
-		'ignore man / women (not available with TAudienceBase)
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			targetGroupID = TVTTargetGroup.GetAtIndex(i)
-			'set to (audience.sumX / potentialAudience.sumX)
-			'this sums up values for female and male of each targetgroup 
-			result.Set(targetGroupID, Audience.GetTotalValue(targetGroupID) / pmAudience.GetTotalValue(targetGroupID) )
-		Next
-		return result
-	End Method
-
-
 	'returns the percentage (0-1.0) of reached audience compared to
 	'potentially reachable audience (in front of TV at that moment)
 	Method GetAudienceQuotePercentage:Float(gender:int=-1) {_exposeToLua}

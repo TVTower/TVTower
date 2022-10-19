@@ -6,7 +6,9 @@ Import "game.broadcast.genredefinition.base.bmx"
 'class represents attractivity of a broadcast (it is content of TAudience)
 'It also contains additional information on how it is calculated (for
 'statistics, debugging and recalculation)
-Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
+Type TAudienceAttraction {_exposeToLua="selected"}
+	Field ID:Int
+	Field attraction:TAudience
 	'types: -1 (outage), 1 (movie, 2 (news)
 	Field BroadcastType:Int
 	'=== SEMISTATIC ===
@@ -45,6 +47,9 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	Field GenreDefinition:TGenreDefinitionBase
 	'boolean, outage = 1
 	Field Malfunction:Int
+	
+	Field _genreAttractivity:TAudience {nosave}
+	Field _targetGroupAttractivity:TAudience {nosave}
 
 	Global luckModEnabled:int = True
 
@@ -57,21 +62,23 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	Const MODINFLUENCE_CAST:Float = 0.20
 
 
-	Method Set:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float) override
-		Super.Set(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+	Method Set:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
+		if not attraction Then attraction = New TAudience 
+		attraction.Set(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
 		Return self
 	End Method
 
 
 	Method Set:TAudienceAttraction(valueMale:Float, valueFemale:Float)
-		Super.Set(valueMale, valueFemale)
+		if not attraction Then attraction = New TAudience 
+		attraction.Set(valueMale, valueFemale)
 		return self
 	End Method
 	
 
 	Method InitGenderValue:TAudienceAttraction(valueMale:float, valueFemale:float)
-		audienceFemale = new SAudienceBase(valueFemale)
-		audienceMale = new SAudienceBase(valueMale)
+		if not attraction Then attraction = New TAudience
+		attraction.Set(valueMale, valueFemale)
 		return self
 	End Method
 
@@ -88,14 +95,15 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		Self.BaseAttraction = attraction.Copy()
 		Self.FinalAttraction = attraction.Copy()
 		Self.PublicImageAttraction = attraction.Copy()
-		Self.Set(attraction)
+		Self.attraction = attraction.Copy()
 		Return Self
 	End Method
 
 
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
-		Self.Add(audienceAttr)
+		if not self.attraction Then self.attraction = New TAudience
+		if audienceAttr.attraction Then Self.attraction.Add(audienceAttr.attraction)
 		Quality	:+ audienceAttr.Quality
 		CastMod :+ audienceAttr.CastMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
@@ -127,7 +135,9 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 
 
 	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
-		Self.Multiply(factor)
+		If attraction
+			attraction.Multiply(factor)
+		EndIf
 
 		Quality	:* factor
 		CastMod :* factor
@@ -159,14 +169,13 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	'time depending value, cannot be used for "base attractivity"
 	'(which is used by Follow-Up-Blocks)
 	Method GetGenreAttractivity:TAudience()
-		local result:TAudience = new TAudience.Set(1,1)
+		If not _genreAttractivity:TAudience Then _genreAttractivity = new TAudience
+		_genreAttractivity.Set(1,1)
 		'adjust by genre-time-attractivity: 0.0 - 2.0
-		result.Multiply(GenreTimeMod)
-		'adjust by
-
+		_genreAttractivity.Multiply(GenreTimeMod)
 		'limit to 0-x
-		result.CutMinimum(0)
-		return result
+		_genreAttractivity.CutMinimum(0)
+		return _genreAttractivity
 	End Method
 
 
@@ -190,16 +199,18 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		_effectiveFlagsTargetGroupMod.Multiply(MODINFLUENCE_FLAGTARGETGROUP)
 		_effectiveFlagsTargetGroupMod.Add(1)
 		 
-		Local result:TAudience = New TAudience.Set(1, 1)
-		result.Multiply( _effectiveGenreTargetGroupMod )
-		result.Multiply( _effectiveFlagsTargetGroupMod )
+		 
+		If not _targetGroupAttractivity Then _targetGroupAttractivity = New TAudience
+		_targetGroupAttractivity.Set(1,1)
+		_targetGroupAttractivity.Multiply( _effectiveGenreTargetGroupMod )
+		_targetGroupAttractivity.Multiply( _effectiveFlagsTargetGroupMod )
 
-		result.Multiply( targetGroupAttractivityMod )
+		_targetGroupAttractivity.Multiply( targetGroupAttractivityMod )
 
 		'0 = no attractivity, 1 = no adjustment, 2 = totally like it
-		result.CutBorders(0, 2.0)
+		_targetGroupAttractivity.CutBorders(0, 2.0)
 
-		Return result
+		Return _targetGroupAttractivity
 	End Method
 	
 
@@ -262,7 +273,8 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		'-> else you could have a negative audience
 		result.CutBorders(0.0, 1.0)
 		Self.FinalAttraction = result
-		Self.Set(result)
+		if not self.attraction then self.attraction = new TAudience
+		self.attraction.Set(result)
 	End Method
 
 

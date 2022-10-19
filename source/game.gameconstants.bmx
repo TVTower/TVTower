@@ -1614,6 +1614,8 @@ Type TVTTargetGroup {_exposeToLua}
 	Const count:Int = 9
 	'without women/men
 	Const baseGroupCount:Int = 7
+	Global baseGroupIDs:int[]
+
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
@@ -1694,6 +1696,17 @@ Type TVTTargetGroup {_exposeToLua}
 				Return result[.. result.length-1]
 		End Select
 	End Function
+	
+	
+	Function GetBaseGroupIDs:Int[]()
+		If baseGroupIDs.length = 0
+			baseGroupIDs = new Int[baseGroupCount]
+			For Local i:Int = 1 To baseGroupCount
+				baseGroupIDs[i-1] = GetAtIndex(i)
+			Next
+		EndIf
+		Return baseGroupIDs
+	End Function	
 End Type
 
 
