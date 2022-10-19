@@ -261,6 +261,22 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	'check whether the current level is effective
+	'news must not yet be available if not, otherwise cheating is possible
+	Method IsNewsAbonnementEffective:Int(genre:Int)
+		If genre < 0 or genre > 5 Then Return False 'max 6 categories 0-5
+
+		Local level:Int = Self.newsabonnements[genre]
+		If level > 0 and level <> newsabonnementsDayMax[genre]
+			Local setTime:Long = newsabonnementsSetTime[genre]
+			If setTime > 0 And GetWorldTime().GetTimeGone() - GameRules.newsSubscriptionIncreaseFixTime < setTime
+				return False
+			EndIf
+		EndIf
+		Return True
+	End Method
+
+
 	Method HasNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
 		If genre >= TVTNewsGenre.count or genre < 0 Then Return 0
 
