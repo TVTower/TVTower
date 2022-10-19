@@ -309,7 +309,7 @@ Type TBroadcastManager
 				Local attractionList:TList = CreateList()
 				For Local i:Int = 1 To 4
 					Local r:TAudienceResult = bc.GetAudienceResult(i)
-					channelImageChanges[i-1] = New TAudience.InitValue(0, 0)
+					channelImageChanges[i-1] = New TAudience.Set(0, 0)
 					channelAudiences[i-1] = r.audience.Copy().Divide(r.GetPotentialMaxAudience())
 					'store playerID if not done yet
 					If channelAudiences[i-1] And channelAudiences[i-1].id <= 0

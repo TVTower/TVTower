@@ -151,8 +151,9 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 	Method CreateDefaultResource:Int()
 		if _createdDefaults then return FALSE
 		
-		If Not TGraphicsManager._g Then Throw "TRegistryImageLoader.CreateDefaultResource: Create graphics context before creating TImages"
-
+		If Not TGraphicsManager._g 
+			print "TRegistryImageLoader.CreateDefaultResource: Create graphics context before creating TImages"
+		EndIf
 		'create a base image
 		'this contains a simple checkerboard and a border indicating
 		'9patch marks
@@ -193,11 +194,13 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 				pix.WritePixel(i+20 , j, red)
 			Next
 		Next
-		local img:Timage = LoadImage(pix, DYNAMICIMAGE | FILTEREDIMAGE)
+		If TGraphicsManager._g 
+			local img:Timage = LoadImage(pix, DYNAMICIMAGE | FILTEREDIMAGE)
+			GetRegistry().SetDefault("image", img)
+		EndIf
 
 		'=== ADD DEFAULTS TO REGISTRY ===
 		GetRegistry().SetDefault("pixmap", pix)
-		GetRegistry().SetDefault("image", img)
 
 		_createdDefaults = TRUE
 	End Method

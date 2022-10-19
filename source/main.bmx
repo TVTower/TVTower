@@ -4229,7 +4229,7 @@ Type GameEvents
 
 				Local changed:String = ""
 				If paramS <> ""
-					player.GetPublicImage().ChangeImage( New TAudience.InitValue(Float(paramS), Float(paramS)))
+					player.GetPublicImage().ChangeImage( New TAudience.Set(Float(paramS), Float(paramS)))
 
 					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+"%)"
@@ -5882,7 +5882,7 @@ endrem
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
-					player.GetPublicImage().ChangeImage(New TAudience.AddFloat(-0.5))
+					player.GetPublicImage().ChangeImage(New TAudience.Add(-0.5))
 
 					'chance that the programme will get (tried) to get confiscated
 					Local confiscateProgramme:Int = RandRange(1,100) <= player.GetDifficulty().sentXRatedConfiscateRisk
@@ -7033,6 +7033,7 @@ End Function
 Function StartTVTower(start:Int=True)
 	'for now we ignore a lot of types to keep the OCM stuff small
 	OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
+rem	
 	OCM.AddIgnoreTypes("TStyledBitmapFonts, TRoomBaseCollection, TMovieFlagDefinition, TGUINewsSlotList, TDeltaTimer, TRoomAgency")
 	OCM.AddIgnoreTypes("TSmartFloorRoute, TSizedBitmapFonts, TGUIGameModalWindow, TSpriteParticleEmitter")
 	OCM.AddIgnoreTypes("RoomHandler_RoomAgency, RoomHandler_Roomboard, RoomHandler_Studio")
@@ -7053,7 +7054,7 @@ Function StartTVTower(start:Int=True)
 	OCM.AddIgnoreTypes("TIngameHelpWindow, TFigureJanitor, TGUIArrowButton, TSLWavStream, TDrawTextEffect, TInGameScreen_Room, TGUIGameWindow")
 	OCM.AddIgnoreTypes("TSoloudSound, TScreen_GameSettings, TSpriteFrameAnimationCollection, TApp, TSLWav, TGUIBackgroundBox, TRoomDoorBaseCollection, TFunction, TMouseManagerClick, TEventListenerRunFunction, TPlayerSoundSourcePosition, TGUISpriteDropDownItem, TSfxSettings, TGUIScroller, TBitmapFont, TGUISelectList, TBitmapFontManager")
 	OCM.AddIgnoreTypes("TSpriteEntity, TFigureGeneratorPart, TBuildingTime, TBuildingBase, TGUITextBox, TIntervalTimer, TDynamicSfxChannel, TGUIDropDownItem, TElevator, TStreamFile, TFigureBaseSoundSource, TScreen_NetworkLobby")
-
+endrem
 	OCM.StoreBaseDump()
 
 	Global InitialResourceLoadingDone:Int = False
