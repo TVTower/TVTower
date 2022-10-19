@@ -6047,6 +6047,15 @@ endrem
 			GetProgrammeProducerCollection().UpdateAll()
 		EndIf
 
+		If minute = 37
+			Local gameName:String = GameConfig.savegame_lastUsedName
+			Local autoSaveName:String = "autosave.xml"
+			If gameName and gameName <> ""
+				autoSaveName = gameName + "_autosave.xml"
+			EndIf
+			TSaveGame.SaveName(autoSaveName, False)
+		EndIf
+
 
 		Return True
 	End Function
