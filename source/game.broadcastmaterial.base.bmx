@@ -451,45 +451,52 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
-	global borderMaxDefault:TAudience = new TAudience.Set(0.15, 0.15)
-	global borderMinDefault:TAudience = new TAudience.Set(-0.15, -0.15)
+	global borderMaxDefault:SAudience = new SAudience(0.15, 0.15)
+	global borderMinDefault:SAudience = new SAudience(-0.15, -0.15)
 	Method GetSequenceEffect:TAudience(block:Int, genreDefinition:TGenreDefinitionBase, predecessor:TAudienceAttraction, currentProgramme:TAudienceAttraction, lastProgrammeBlockAttraction:TAudienceAttraction )
-		Local ret:TAudience
-		Local seqCal:TSequenceCalculation = New TSequenceCalculation
+		Local seqCal:SSequenceCalculation
 		seqCal.Predecessor = predecessor
 		seqCal.Successor = currentProgramme
 
 		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastProgrammeBlockAttraction))
 
-		Local seqMod:TAudience
-		Local borderMax:TAudience
-		Local borderMin:TAudience
+		Local seqMod:SAudience
+		Local borderMax:SAudience
+		Local borderMin:SAudience
 
 		If genreDefinition
 			'.Divide(13).Multiply(4) = Divide(4/13)
-			seqMod = genreDefinition.AudienceAttraction.Copy().Divide(4 / 13.0).Add(0.75) '0.75 - 1.15
-			borderMax = genreDefinition.AudienceAttraction.Copy().Divide(10).Add(0.1).CutBorders(0.1, 0.2)
-			borderMin = genreDefinition.AudienceAttraction.Copy().Divide(10).Add(-0.2) '-2 - -0.7
+			seqMod = genreDefinition.AudienceAttraction.data
+			seqMod.Divide(4 / 13.0)
+			seqMod.Add(0.75) '0.75 - 1.15
+			borderMax = genreDefinition.AudienceAttraction.data
+			borderMax.Divide(10)
+			borderMax.Add(0.1)
+			borderMax.CutBorders(0.1, 0.2)
+			borderMin = genreDefinition.AudienceAttraction.data
+			borderMin.Divide(10)
+			borderMin.Add(-0.2) '-2 - -0.7
 		Else
-			seqMod = new TAudience.Set(1, 1)
+			seqMod = new SAudience(1, 1)
 			borderMax = borderMaxDefault
 			borderMin = borderMinDefault
 		EndIf
 
-		ret = seqCal.GetSequenceDefault(seqMod, seqMod)
-		ret.CutBorders(borderMin, borderMax)
+		local result:TAudience = new TAudience
+		result.data = seqCal.GetSequenceDefault(seqMod, seqMod)
+		result.data.CutBorders(borderMin, borderMax)
 
-		Return ret
+		Return result
 	End Method
 
 
-	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
+	Method SetSequenceCalculationPredecessorShare(seqCal:SSequenceCalculation var, audienceFlow:Int)
 		If audienceFlow
-			seqCal.PredecessorShareOnShrink  = new TAudience.Set(0.3, 0.3)
-			seqCal.PredecessorShareOnRise = new TAudience.Set(0.2, 0.2)
+			seqCal.PredecessorShareOnShrink  = new SAudience(0.3, 0.3)
+			seqCal.PredecessorShareOnRise = new SAudience(0.2, 0.2)
 		Else
-			seqCal.PredecessorShareOnShrink  = new TAudience.Set(0.4, 0.4)
-			seqCal.PredecessorShareOnRise = new TAudience.Set(0.2, 0.2)
+			seqCal.PredecessorShareOnShrink  = new SAudience(0.4, 0.4)
+			seqCal.PredecessorShareOnRise = new SAudience(0.2, 0.2)
 		End If
 	End Method
 

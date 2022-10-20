@@ -364,9 +364,9 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
-		seqCal.PredecessorShareOnShrink = New TAudience.Set(0.4, 0.4) '0.5
-		seqCal.PredecessorShareOnRise = New TAudience.Set(0.4, 0.4) '0.5
+	Method SetSequenceCalculationPredecessorShare(seqCal:SSequenceCalculation var, audienceFlow:Int)
+		seqCal.PredecessorShareOnShrink = New SAudience(0.4, 0.4) '0.5
+		seqCal.PredecessorShareOnRise = New SAudience(0.4, 0.4) '0.5
 	End Method
 
 rem
