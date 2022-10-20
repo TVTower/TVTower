@@ -71,7 +71,7 @@ Type TGenreDefinitionBase extends TGameObject
 	End Method
 
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
+	Method GetAudienceFlowMod:SAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem
 	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float)
 		'genreDefintion.AudienceAttraction.Copy()

@@ -177,7 +177,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	End Method
 
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
+	Method GetAudienceFlowMod:SAudience(followerDefinition:TGenreDefinitionBase)
 		'default audience flow mod
 		local modValue:Float = 0.35
 
@@ -190,7 +190,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 			modValue = 0.1
 		endif
 
-		Return new TAudience.Set(modValue, modValue)
+		Return new SAudience(modValue, modValue)
 	End Method
 
 	'Override

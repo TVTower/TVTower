@@ -89,9 +89,9 @@ rem
 	End Method
 endrem
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
+	Method GetAudienceFlowMod:SAudience(followerDefinition:TGenreDefinitionBase)
 		'TODO: Prüfen ob hier auch was zu machen ist?
-		Return new TAudience.Set(1, 1)
+		Return new SAudience(1, 1)
 	End Method
 End Type
 

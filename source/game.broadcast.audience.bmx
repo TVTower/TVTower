@@ -658,20 +658,6 @@ End Struct
 Type TAudienceBase {_exposeToLua="selected"}
 	Field data:SAudienceBase
 
-	Global created:Int
-	Global deleted:Int
-	Global alive:Int
-	
-	Method New()
-		created :+ 1
-		alive :+ 1
-	End Method
-
-	Method Delete()
-		deleted :+ 1
-		alive :- 1
-	End Method
-	
 	
 	'=== CONSTRUCTORS ===
 	Method New(children:Float, teenagers:Float, houseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
@@ -1474,6 +1460,11 @@ Type TAudience {_exposeToLua="selected"}
 
 
 	'=== Constructors ===
+	Method New(audience:SAudience)
+		data = audience
+	End Method
+	
+	
 	Method Set:TAudience(gender:Int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
 		data = new SAudience(gender, children, teenagers, houseWives, employees, unemployed, manager, pensioners)
 
@@ -1678,7 +1669,7 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method Multiply:TAudience(audience:SAudience var)
+	Method Multiply:TAudience(audience:SAudience)
 		data.Multiply(audience)
 		Return Self
 	End Method

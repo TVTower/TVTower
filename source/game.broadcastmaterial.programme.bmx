@@ -361,10 +361,9 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 	End Method
 
 
-	'override
 	'add targetgroup bonus (25% attractivity bonus)
-	Method GetTargetGroupAttractivityMod:TAudience()
-		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
+	Method GetTargetGroupAttractivityMod:SAudience() override
+		Local result:SAudience = Super.GetTargetGroupAttractivityMod()
 
 		'for all defined targetgroups, increase interest
 		If data.GetTargetGroups() > 0
@@ -384,9 +383,7 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		EndIf
 
 		'modify with a complete fine grained target group setup
-		If licence.GetTargetGroupAttractivityMod()
-			result.Multiply( licence.GetTargetGroupAttractivityMod() )
-		EndIf
+		result.Multiply( licence.GetTargetGroupAttractivityMod() )
 
 		Return result
 	End Method
@@ -401,11 +398,10 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 	End Method
 
 
-	'override
 	'generate average of all flags
-	Method GetFlagsTargetGroupMod:TAudience()
+	Method GetFlagsTargetGroupMod:SAudience() override
 		Local definitions:TGenreDefinitionBase[] = _GetFlagDefinitions()
-		Local audienceMod:TAudience = New TAudience.Set(1, 1)
+		Local audienceMod:SAudience = New SAudience(1, 1)
 
 		If definitions.length > 0
 			For Local definition:TMovieFlagDefinition = EachIn definitions
@@ -583,7 +579,7 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		Next
 
 		'Wie gut ist der Follower? Gleiche Genre passen perfekt zusammen, aber es gibt auch gute und schlechte Followerer anderer genre
-		Local flowMod:TAudience = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
+		Local flowMod:SAudience = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
 
 		'Ermittlung des Maximalwertes für den Bonus. Wird am Schluss gebraucht
 		Local flowMaximum:SAudience = currentAttraction.BaseAttraction.data 'struct copy!

@@ -113,8 +113,8 @@ endif
 
 
 	'add mod for all news slots
-	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
-		local result:TAudience = New TAudience.Set(1,1)
+	Method GetGenreTargetGroupMod:SAudience(definition:TGenreDefinitionBase)
+		local result:SAudience = New SAudience(1,1)
 
 		local newsSlotsUsed:int = 0
 		for local i:int = 0 until news.length
@@ -124,8 +124,9 @@ endif
 
 			newsSlotsUsed :+ 1
 
-			local newsGenreTargetGroupMod:TAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
-			result.Add( newsGenreTargetGroupMod.Copy().Multiply(GetNewsSlotWeight(i)) )
+			local newsGenreTargetGroupMod:SAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
+			newsGenreTargetGroupMod.Multiply(GetNewsSlotWeight(i))
+			result.Add( newsGenreTargetGroupMod )
 		Next
 		if newsSlotsUsed > 1
 			result.Divide(newsSlotsUsed)
@@ -155,7 +156,7 @@ endif
 		resultAudienceAttr.FlagsPopularityMod = 0
 		'do not to the following as this mod is added already in "GetAudienceAttraction"
 		'of the individual news
-		'resultAudienceAttr.GenreTargetGroupMod = GetGenreTargetGroupMod()
+		'resultAudienceAttr.GenreTargetGroupMod = New TAudience( GetGenreTargetGroupMod() )
 		'just create an empty audience instead, the function still returns
 		'valid values (for debugging output)
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
@@ -490,16 +491,12 @@ endrem
 	End Method
 
 
-	'override
 	'add individual targetgroup attractivity
-	Method GetTargetGroupAttractivityMod:TAudience()
-		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
+	Method GetTargetGroupAttractivityMod:SAudience() override
+		Local result:SAudience = Super.GetTargetGroupAttractivityMod()
 
 		'modify with a complete fine grained target group setup
-		local ne:TNewsEvent = GetNewsEvent()
-		If ne.GetTargetGroupAttractivityMod()
-			result.Multiply( ne.GetTargetGroupAttractivityMod() )
-		EndIf
+		result.Multiply( GetNewsEvent().GetTargetGroupAttractivityMod() )
 
 		Return result
 	End Method
