@@ -1243,6 +1243,11 @@ Struct SAudience
 	End Method
 
 
+	Method Add(audience:SAudience)
+		audienceFemale = audienceFemale.Add(audience.audienceFemale)
+		audienceMale = audienceMale.Add(audience.audienceMale)
+	End Method
+
 	Method Add(audience:TAudience)
 		'skip adding if the param is "unset"
 		If Not audience Then Return
@@ -1250,7 +1255,6 @@ Struct SAudience
 		audienceFemale = audienceFemale.Add(audience.data.audienceFemale)
 		audienceMale = audienceMale.Add(audience.data.audienceMale)
 	End Method
-
 
 	Method Add(number:Float)
 		audienceFemale = audienceFemale.Add(number)
@@ -1629,6 +1633,10 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
+	Method Add(audience:SAudience)
+		data.add(audience)
+	End Method
+
 	Method Add:TAudience(audience:TAudience)
 		data.Add(audience)
 		Return Self
@@ -1669,6 +1677,11 @@ Type TAudience {_exposeToLua="selected"}
 		Return Self
 	End Method
 
+
+	Method Multiply:TAudience(audience:SAudience var)
+		data.Multiply(audience)
+		Return Self
+	End Method
 
 	Method Multiply:TAudience(audience:TAudience)
 		data.Multiply(audience)

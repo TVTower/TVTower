@@ -342,7 +342,7 @@ Type TBroadcastManager
 					Local channelImageChange:TAudience = channelImageChanges[i-1]
 					channelImageChange.Multiply(modification)
 					Local publicImage:TPublicImage = GetPublicImageCollection().Get(i)
-					If publicImage Then publicImage.ChangeImage(channelImageChange)
+					If publicImage Then publicImage.ChangeImage(channelImageChange.data)
 				Next
 			'Endif
 		End If

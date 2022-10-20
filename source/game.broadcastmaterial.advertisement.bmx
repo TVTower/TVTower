@@ -199,7 +199,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		'Image-Penalty
 		'-1 = for both genders
 		TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for infomercial.", LOG_DEBUG)
-		Local penalty:TAudience = New TAudience.Set(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
+		Local penalty:SAudience = New SAudience(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 		GetPublicImage(owner).ChangeImage(penalty)
 	End Method
 

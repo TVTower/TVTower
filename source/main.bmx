@@ -4229,7 +4229,7 @@ Type GameEvents
 
 				Local changed:String = ""
 				If paramS <> ""
-					player.GetPublicImage().ChangeImage( New TAudience.Set(Float(paramS), Float(paramS)))
+					player.GetPublicImage().ChangeImage( New SAudience(Float(paramS), Float(paramS)))
 
 					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+"%)"
@@ -5882,7 +5882,7 @@ endrem
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
-					player.GetPublicImage().ChangeImage(New TAudience.Add(-0.5))
+					player.GetPublicImage().ChangeImage(New SAudience(-0.5, -0.5))
 
 					'chance that the programme will get (tried) to get confiscated
 					Local confiscateProgramme:Int = RandRange(1,100) <= player.GetDifficulty().sentXRatedConfiscateRisk

@@ -136,35 +136,35 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 			case 0
 				GetPublicImage(1).Reset()
 			case 1
-				GetPublicimage(1).ChangeImage(New TAudience.Set(-changeValue, -changeValue))
+				GetPublicimage(1).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 2
-				GetPublicimage(1).ChangeImage(New TAudience.Set(changeValue, changeValue))
+				GetPublicimage(1).ChangeImage(New SAudience(changeValue, changeValue))
 			case 3
-				GetPublicimage(1).ChangeImage(New TAudience.Set(changeValue*10, changeValue*10))
+				GetPublicimage(1).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 			case 4
 				GetPublicImage(2).Reset()
 			case 5
-				GetPublicimage(2).ChangeImage(New TAudience.Set(-changeValue, -changeValue))
+				GetPublicimage(2).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 6
-				GetPublicimage(2).ChangeImage(New TAudience.Set(changeValue, changeValue))
+				GetPublicimage(2).ChangeImage(New SAudience(changeValue, changeValue))
 			case 7
-				GetPublicimage(2).ChangeImage(New TAudience.Set(changeValue*10, changeValue*10))
+				GetPublicimage(2).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 			case 8
 				GetPublicImage(3).Reset()
 			case 9
-				GetPublicimage(3).ChangeImage(New TAudience.Set(-changeValue, -changeValue))
+				GetPublicimage(3).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 10
-				GetPublicimage(3).ChangeImage(New TAudience.Set(changeValue, changeValue))
+				GetPublicimage(3).ChangeImage(New SAudience(changeValue, changeValue))
 			case 11
-				GetPublicimage(3).ChangeImage(New TAudience.Set(changeValue*10, changeValue*10))
+				GetPublicimage(3).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 			case 12
 				GetPublicImage(4).Reset()
 			case 13
-				GetPublicimage(4).ChangeImage(New TAudience.Set(-changeValue, -changeValue))
+				GetPublicimage(4).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 14
-				GetPublicimage(4).ChangeImage(New TAudience.Set(changeValue, changeValue))
+				GetPublicimage(4).ChangeImage(New SAudience(changeValue, changeValue))
 			case 15
-				GetPublicimage(4).ChangeImage(New TAudience.Set(changeValue*10, changeValue*10))
+				GetPublicimage(4).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 		End Select
 
 		'handled

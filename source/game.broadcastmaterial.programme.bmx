@@ -292,14 +292,14 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		If data.IsPaid()
 			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for paid programme.", LOG_DEBUG)
 			'-1 = for both genders
-			Local penalty:TAudience = New TAudience.Set(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
+			Local penalty:SAudience = New SAudience(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 			penalty.Multiply(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)
 			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Player #"+owner+": image change for paid programme: " + penalty.ToString(), LOG_DEBUG)
 		EndIf
 		If data.IsTrash()
 			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for trash programme.", LOG_DEBUG)
-			Local penalty:TAudience = New TAudience.Set(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
+			Local penalty:SAudience = New SAudience(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
 			penalty.Multiply(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)
 		End If
@@ -368,7 +368,7 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 
 		'for all defined targetgroups, increase interest
 		If data.GetTargetGroups() > 0
-			Local tgAudience:TAudience = New TAudience.Set(1, 1)
+			Local tgAudience:SAudience = New SAudience(1, 1)
 			For Local targetGroup:Int = 1 To TVTTargetGroup.count
 				Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(targetGroup)
 				If data.HasTargetGroup(targetGroupID)
@@ -555,6 +555,10 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 
 
 	Function GetAudienceFlowBonusIntern:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
+		If not lastMovieBlockAttraction.GenreDefinition
+			Return New TAudience.Set(0, 0) 'Ganze schlechter Follower
+		EndIf
+
 		Local flowModBase:TAudience = New TAudience
 		Local flowModBaseTemp:Float
 
@@ -579,30 +583,26 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		Next
 
 		'Wie gut ist der Follower? Gleiche Genre passen perfekt zusammen, aber es gibt auch gute und schlechte Followerer anderer genre
-		Local flowMod:TAudience
-		If lastMovieBlockAttraction.GenreDefinition
-			flowMod = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
-		Else
-			flowMod = New TAudience.Set(0, 0) 'Ganze schlechter Follower
-		EndIf
+		Local flowMod:TAudience = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
 
 		'Ermittlung des Maximalwertes für den Bonus. Wird am Schluss gebraucht
-		Local flowMaximum:TAudience = currentAttraction.BaseAttraction.Copy()
+		Local flowMaximum:SAudience = currentAttraction.BaseAttraction.data 'struct copy!
+		Local lastNewsBlockFlowMax:SAudience = lastNewsBlockAttraction.FinalAttraction.data 'struct copy
+		lastNewsBlockFlowMax.Divide(2)
 		flowMaximum.Divide(2)
-		flowMaximum.CutMaximum( lastNewsBlockAttraction.FinalAttraction.Copy().Divide(2)) 'Die letzte News-Show gibt an, wie viel überhaupt noch dran sind um in den Flow zu kommen.
+		flowMaximum.CutMaximum( lastNewsBlockFlowMax ) 'Die letzte News-Show gibt an, wie viel überhaupt noch dran sind um in den Flow zu kommen.
 		flowMaximum.CutBorders(0.1, 0.35)
 
-
 		'Der Flow hängt nicht nur von den zuvorigen Zuschauern ab, sondern zum Teil auch von der Qualität des Nachfolgeprogrammes.
-		Local attrMod:TAudience = currentAttraction.BaseAttraction.Copy()
+		Local attrMod:SAudience = currentAttraction.BaseAttraction.data
 		attrMod.Divide(2)
 		attrMod.CutBorders(0, 0.6)
 		attrMod.Add(0.6) '0.6 - 1.2
 
-		flowModBase.CutMaximum(flowMaximum)
-		flowModBase.Multiply(attrMod) '0.6 - 1.2
-		flowModBase.Multiply(flowMod) '0.1 - 1
-		flowModBase.CutMaximum(flowMaximum)
+		flowModBase.data.CutMaximum(flowMaximum)
+		flowModBase.data.Multiply(attrMod) '0.6 - 1.2
+		flowModBase.data.Multiply(flowMod) '0.1 - 1
+		flowModBase.data.CutMaximum(flowMaximum)
 		Return flowModBase
 	End Function
 

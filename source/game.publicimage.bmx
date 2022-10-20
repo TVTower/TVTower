@@ -238,7 +238,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		obj.playerID = playerID
 
 		'we start with an image of 0 in all target groups
-		obj.ImageValues = New TAudience.Set(0, 0)
+		obj.ImageValues = New TAudience
 
 		'add to collection
 		GetPublicImageCollection().Set(playerID, obj)
@@ -275,18 +275,16 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
-	Method ChangeImageRelative(imageChange:TAudience)
-		If Not imageChange
-			TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
-			Return
-		EndIf
-
+	Method ChangeImageRelative(imageChange:SAudience)
 		'skip changing if there is nothing to change
 		If imageChange.GetTotalAbsSum() = 0 Then Return
 		
 		time = GetWorldTime().GetTimeGone()
+		
+		Local multiplier:SAudience = New SAudience(1.0, 1.0)
+		multiplier.Add(imageChange)
 
-		ImageValues.Multiply( New TAudience.Set(1.0, 1.0).Add(imageChange) )
+		ImageValues.Multiply( multiplier )
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
 		ImageValues.CutBorders(0, 100)
@@ -295,12 +293,7 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
-	Method ChangeImage(imageChange:TAudience)
-		If Not imageChange
-			TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
-			Return
-		EndIf
-
+	Method ChangeImage(imageChange:SAudience)
 		'skip changing if there is nothing to change
 		If imageChange.GetTotalAbsSum() = 0 Then Return
 
@@ -311,7 +304,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'also avoid values > 100
 		ImageValues.CutBorders(0, 100)
 
-		TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
+		'TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
 
@@ -516,9 +509,9 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 		If logText Then TLogger.Log("TGameModifierPublicImage_Modify.Run()", logText, LOG_DEBUG)
 
 		If valueIsRelative
-			publicImage.ChangeImageRelative( value )
+			publicImage.ChangeImageRelative( value.data )
 		Else
-			publicImage.ChangeImage( value )
+			publicImage.ChangeImage( value.data )
 		EndIf
 		Return True
 	End Method
