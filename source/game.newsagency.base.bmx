@@ -759,7 +759,12 @@ Type TNewsAgency
 					__AddNewsToPlayer(news, playerID)
 				ElseIf newsAbonnement > 0
 					If Not player.IsNewsAbonnementEffective(newsEvent.GetGenre())
-						Continue
+						Local maxLevel:Int = player.GetNewsAbonnementDaysMax(genre)
+						If maxLevel > 0 and maxLevel >= newsEvent.GetMinSubscriptionLevel()
+							__AddNewsToPlayer(news, playerID)
+						Else
+							Continue
+						EndIf
 					ElseIf newsAbonnement >= newsEvent.GetMinSubscriptionLevel()
 						__AddNewsToPlayer(news, playerID)
 					EndIf
