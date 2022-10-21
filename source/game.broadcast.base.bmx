@@ -389,8 +389,8 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 
 	Method SetBaseAttraction(playerID:Int, audience:TAudience) {_exposeToLua}
 		Local attr:TAudienceAttraction = New TAudienceAttraction
-		if not attr.attraction then attr.attraction = new TAudience
-		attr.attraction.Set(audience)
+		attr.FinalAttraction = new TAudience
+		attr.FinalAttraction.Set(audience)
 
 		SetAttraction(playerID, attr)
 	End Method
@@ -710,7 +710,7 @@ endrem
 		attraction.BroadcastType = 0
 		If lastMovieAttraction
 			attraction.Malfunction = lastMovieAttraction.Malfunction
-			attraction.AudienceFlowBonus = lastMovieAttraction.attraction.Copy()
+			attraction.AudienceFlowBonus = lastMovieAttraction.FinalAttraction.Copy()
 			attraction.AudienceFlowBonus.Multiply(0.02)
 
 			attraction.QualityOverTimeEffectMod = -0.2 * attraction.Malfunction
@@ -725,10 +725,6 @@ endrem
 
 	Method SetAttraction(playerID:Int, audienceAttraction:TAudienceAttraction)
 		Attractions[playerID-1] = audienceAttraction
-		If audienceAttraction and audienceAttraction.attraction
-			'limit attraction values to 0-1.0
-			audienceAttraction.attraction.CutBorders(0, 1.0)
-		EndIf
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			If market.HasChannel(playerID)
@@ -799,7 +795,7 @@ endrem
 				If (currAudienceRate > _TopAudienceRate) Then _TopAudienceRate = currAudienceRate
 
 				If audienceResult.AudienceAttraction Then
-					currAttraction = audienceResult.AudienceAttraction.attraction.GetWeightedAverage()
+					currAttraction = audienceResult.AudienceAttraction.FinalAttraction.GetWeightedAverage()
 					If (currAttraction > _TopAttraction) Then _TopAttraction = currAttraction
 
 					currQuality = audienceResult.AudienceAttraction.Quality
@@ -996,11 +992,11 @@ Type TBroadcastFeedback
 		'0 = auf keinen Fall
 		'1 = möglich, aber nicht wahrscheinlich
 		'2 = wahrscheinlich
-		Local averageAttraction:Float = attr.attraction.GetTotalAverage()
+		Local averageAttraction:Float = attr.FinalAttraction.GetTotalAverage()
 		Local allowedAll:TAudience = plausibility
 		Local allowedAdultsOnly:TAudience = audience_AdultOnlyMask
 
-		Local sortMap:TNumberSortMap = attr.attraction.ToNumberSortMap()
+		Local sortMap:TNumberSortMap = attr.FinalAttraction.ToNumberSortMap()
 		sortMap.Sort(False)
 
 
@@ -1037,7 +1033,7 @@ Type TBroadcastFeedback
 
 				'at least one of both genders is allowed
 				If allowedAll.GetTotalValue(targetGroupID) >= 1
-					AudienceInterest.SetTotalValue(targetGroupID, AttractionToInterest(attr.attraction.GetTotalValue(targetGroupID), maxAudienceMod.GetTotalValue(targetGroupID), Int(allowedAll.GetTotalValue(targetGroupID) - 1)))
+					AudienceInterest.SetTotalValue(targetGroupID, AttractionToInterest(attr.FinalAttraction.GetTotalValue(targetGroupID), maxAudienceMod.GetTotalValue(targetGroupID), Int(allowedAll.GetTotalValue(targetGroupID) - 1)))
 					If AudienceInterest.GetTotalValue(targetGroupID) > 0 Then familyMemberCount :- 1
 				EndIf
 
@@ -1265,7 +1261,7 @@ Type TAudienceMarketCalculation
 			Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
 
 			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
-			Local effectiveAttraction:TAudience = attraction.attraction.Copy().Multiply(competitionAttractionModifier)
+			Local effectiveAttraction:TAudience = attraction.FinalAttraction.Copy().Multiply(competitionAttractionModifier)
 			effectiveAttraction.CutBorders(0, 1.0)
 
 			'Anteil an der "erbeuteten" Zapper berechnen
@@ -1342,13 +1338,13 @@ Type TAudienceMarketCalculation
 
 		For Local attraction:TAudienceAttraction = EachIn audienceAttractions
 			If attrSum = Null
-				attrSum = attraction.attraction.Copy()
+				attrSum = attraction.FinalAttraction.Copy()
 			Else
-				attrSum.Add(attraction.attraction)
+				attrSum.Add(attraction.FinalAttraction)
 			EndIf
 
 			If attrRange = Null
-				attrRange = attraction.attraction.Copy()
+				attrRange = attraction.FinalAttraction.Copy()
 			Else
 				For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 					Local groupKey:Int = TVTTargetGroup.GetAtIndex(i)
@@ -1357,7 +1353,7 @@ Type TAudienceMarketCalculation
 						If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
 						Local rangeValue:Float = attrRange.GetGenderValue(groupKey, gender)
-						attrRange.SetGenderValue(groupKey, rangeValue + (1 - rangeValue) * attraction.attraction.GetGenderValue(groupKey, gender), gender)
+						attrRange.SetGenderValue(groupKey, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(groupKey, gender), gender)
 					Next
 				Next
 			EndIf

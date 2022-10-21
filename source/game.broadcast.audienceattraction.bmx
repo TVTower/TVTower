@@ -8,7 +8,6 @@ Import "game.broadcast.genredefinition.base.bmx"
 'statistics, debugging and recalculation)
 Type TAudienceAttraction {_exposeToLua="selected"}
 	Field ID:Int
-	Field attraction:TAudience
 	'types: -1 (outage), 1 (movie, 2 (news)
 	Field BroadcastType:Int
 	'=== SEMISTATIC ===
@@ -31,18 +30,18 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 	Field CastMod:Float = 1.0
 	Field FlagsMod:Float = 1.0
 	Field FlagsPopularityMod:Float = 1.0
-	Field PublicImageMod:TAudience
+	'eg could contain public image influence (perceived attractivity)
 	Field MiscMod:TAudience
 	Field QualityOverTimeEffectMod:Float
 	Field LuckMod:TAudience
 	Field TargetGroupAttractivity:TAudience
 
+	Field PublicImageMod:TAudience
 	Field AudienceFlowBonus:TAudience
 	Field SequenceEffect:TAudience
 
 	Field BaseAttraction:TAudience
 	Field FinalAttraction:TAudience
-	Field PublicImageAttraction:TAudience
 
 	Field GenreDefinition:TGenreDefinitionBase
 	'boolean, outage = 1
@@ -63,48 +62,54 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 
 
 	Method Set:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
-		if not attraction Then attraction = New TAudience 
-		attraction.Set(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+		If Not FinalAttraction Then FinalAttraction = New TAudience 
+		FinalAttraction.Set(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+	
+		'avoid negative attraction values or values > 100%
+		FinalAttraction.CutBorders(0.0, 1.0)
+
 		Return self
 	End Method
 
 
+	Method Set:TAudienceAttraction(valueMale:SAudienceBase, valueFemale:SAudienceBase)
+		if not FinalAttraction Then FinalAttraction = New TAudience
+		FinalAttraction.Set(valueMale, valueFemale)
+		return self
+	End Method
+
+
 	Method Set:TAudienceAttraction(valueMale:Float, valueFemale:Float)
-		if not attraction Then attraction = New TAudience 
-		attraction.Set(valueMale, valueFemale)
+		if not FinalAttraction Then FinalAttraction = New TAudience 
+		FinalAttraction.Set(Max(0, valueMale), Max(0, valueFemale))
 		return self
 	End Method
 	
 
 	Method InitGenderValue:TAudienceAttraction(valueMale:float, valueFemale:float)
-		if not attraction Then attraction = New TAudience
-		attraction.Set(valueMale, valueFemale)
+		if not FinalAttraction Then FinalAttraction = New TAudience
+		FinalAttraction.Set(Max(0, valueMale), Max(0, valueFemale))
 		return self
 	End Method
 
 
 	Method SetPlayerId(playerId:Int)
 		Self.Id = playerId
-		Self.attraction.Id = playerId
 		Self.BaseAttraction.Id = playerId
 		Self.FinalAttraction.Id = playerId
-		Self.PublicImageAttraction.Id = playerId
 	End Method
 
 
 	Method SetFixAttraction:TAudienceAttraction(attraction:TAudience)
 		Self.BaseAttraction = attraction.Copy()
 		Self.FinalAttraction = attraction.Copy()
-		Self.PublicImageAttraction = attraction.Copy()
-		Self.attraction = attraction.Copy()
 		Return Self
 	End Method
 
 
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
-		if not self.attraction Then self.attraction = New TAudience
-		if audienceAttr.attraction Then Self.attraction.Add(audienceAttr.attraction)
+
 		Quality	:+ audienceAttr.Quality
 		CastMod :+ audienceAttr.CastMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
@@ -121,25 +126,18 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
 		If LuckMod Then MiscMod.Add(audienceAttr.LuckMod)
-		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 
 		If targetGroupAttractivity Then targetGroupAttractivity.Add(audienceAttr.targetGroupAttractivity)
 
-		'If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)
 		If SequenceEffect Then SequenceEffect.Add(audienceAttr.SequenceEffect)
 		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
 		If FinalAttraction Then FinalAttraction.Add(audienceAttr.FinalAttraction)
-		If PublicImageAttraction Then PublicImageAttraction.Add(audienceAttr.PublicImageAttraction)
 
 		Return Self
 	End Method
 
 
 	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
-		If attraction
-			attraction.Multiply(factor)
-		EndIf
-
 		Quality	:* factor
 		CastMod :* factor
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Multiply(factor)
@@ -155,13 +153,10 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 		If AudienceFlowBonus Then AudienceFlowBonus.Multiply(factor)
 		QualityOverTimeEffectMod :* factor
 		If LuckMod Then LuckMod.Multiply(factor)
-		'If NewsShowBonus Then NewsShowBonus.Multiply(factor)
 		if targetGroupAttractivity then targetGroupAttractivity.Multiply(factor)
 		If SequenceEffect Then SequenceEffect.Multiply(factor)
 		If BaseAttraction Then BaseAttraction.Multiply(factor)
 		If FinalAttraction Then FinalAttraction.Multiply(factor)
-		If PublicImageAttraction Then PublicImageAttraction.Multiply(factor)
-		If AudienceFlowBonus Then AudienceFlowBonus.Multiply(factor)
 
 		Return Self
 	End Method
@@ -227,8 +222,9 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 
 		targetGroupAttractivity = GetTargetGroupAttractivity()
 		If targetGroupAttractivity Then result.Multiply( targetGroupAttractivity )
-'print "GetTargetGroupAttractivity: " + targetGroupAttractivity.ToString()
-'end
+		'print "GetTargetGroupAttractivity: " + targetGroupAttractivity.ToString()
+		'end
+
 		'trailer bonus: 0 - 1.0, influence: 50%
 		'add +1 so it becomes a multiplier
 		'"multiply" because it "increases" existing interest
@@ -242,11 +238,6 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 		result.Multiply(1.0 + (CastMod-1.0) * MODINFLUENCE_CAST)
 
 	
-		'store the current attraction for the publicImage-calculation
-		Self.PublicImageAttraction = result.Copy()
-		Self.PublicImageAttraction.Add(1).Multiply(Quality)
-
-
 		If PublicImageMod Then result.Multiply( PublicImageMod.Copy().Add(1.0) )
 
 
@@ -274,8 +265,6 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 		'-> else you could have a negative audience
 		result.CutBorders(0.0, 1.0)
 		Self.FinalAttraction = result
-		if not self.attraction then self.attraction = new TAudience
-		self.attraction.Set(result)
 	End Method
 
 

@@ -147,7 +147,6 @@ endif
 		resultAudienceAttr.SequenceEffect = New TAudience
 		resultAudienceAttr.BaseAttraction = New TAudience
 		resultAudienceAttr.FinalAttraction = New TAudience
-		resultAudienceAttr.PublicImageAttraction = New TAudience
 		resultAudienceAttr.targetGroupAttractivity = New TAudience
 		resultAudienceAttr.LuckMod = New TAudience
 		'attention: set mods to 0 (news mods get _added_)
@@ -182,7 +181,7 @@ endif
 
 			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 			'limit attraction values to 0-1.0
-			tempAudienceAttr.attraction.CutBorders(0, 1.0)
+			tempAudienceAttr.FinalAttraction.CutBorders(0, 1.0)
 
 			'if owner=1 then print "owner #"+owner+"   news #"+i+": " + tempAudienceAttr.targetGroupAttractivity.ToString() +"  * " + GetNewsSlotWeight(i)
 

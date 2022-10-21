@@ -3056,31 +3056,6 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
-			'v0.7.4 -> TAudienceManager.audience(Fe)Male now stored in *.attraction:TAudience
-			case "TAudienceAttraction.audienceFemale:TAudienceBase".ToLower(), 
-			     "TAudienceAttraction.audienceMale:TAudienceBase".ToLower()
-				Local aB:TAudienceBase = TAudienceBase(fieldObject)
-				Local aA:TAudienceAttraction = TAudienceAttraction(parent)
-				If aA And aB
-					if not aA.attraction then aA.attraction = new TAudience()
-
-					Local genderID:Int = TVTPersonGender.FEMALE
-					If handle = "TAudienceAttraction.audienceMale:TAudienceBase".ToLower() Then genderID = TVTPersonGender.MALE
-					if genderID = TVTPersonGender.FEMALE
-						aA.attraction.data.audienceFemale = aB.data
-					Else
-						aA.attraction.data.audienceMale = aB.data
-					EndIf
-					'aA.Set(genderID, aB.data.Children, aB.data.Teenagers, aB.data.HouseWives, aB.data.Employees, aB.data.Unemployed, aB.data.Manager, aB.data.Pensioners) 
-				EndIf
-				Return parent
-						
-
-			'v0.7.4 -> TAudienceManager.targetGenderBreakdown and targetAudienceBreakdown removed
-			case "TAudienceManager.targetGenderBreakdown:TAudienceBase".ToLower(), 
-			     "TAudienceManager.targetAudienceBreakdown:TAudienceBase".ToLower()
-				'
-
 			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
 			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
 			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()
