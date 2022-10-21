@@ -298,7 +298,7 @@ Type TBroadcastManager
 
 	Function ChangeImageCauseOfBroadcast(bc:TBroadcast, broadcastType:Int)
 		If (bc.GetTopAudience() > 1000) 'Nur etwas ändern, wenn auch ein paar Zuschauer einschalten und nicht alle Sendeausfall haben.
-			Local modification:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.time)
+			Local modification:SAudience = TBroadcast.GetPotentialAudienceModifier(bc.time)
 
 			'If (broadcastType = 0) Then 'Movies
 				'allocate a Taudience-object for each channel and fill it
@@ -837,64 +837,66 @@ endrem
 
 	'returns how many percent of the target group are possibly watching
 	'TV at the given hour
-	Function GetPotentialAudiencePercentage_TimeMod:TAudience(time:Long = -1)
+	Function GetPotentialAudiencePercentage_TimeMod:SAudience(time:Long = -1)
 		If time < 0 Then time = GetWorldTime().GetTimeGone()
 
-		Local result:TAudience
+		Local result:SAudience
 
 		'TODO: Eventuell auch in ein config-File auslagern
 		Select GetWorldTime().GetDayHour(time)
-			'                                gender
-			'                                  |  children
-			'                                  |    |  teenagers
-			'                                  |    |    |  housewives
-			'                                  |    |    |    |  employees
-			'                                  |    |    |    |    |  unemployed
-			'                                  |    |    |    |    |    |  manager
-			'                                  |    |    |    |    |    |    |  pensioners
-			Case 0  result = New TAudience.Set(-1,   2,   6,  16,  11,  21,  19,  23)
-			Case 1  result = New TAudience.Set(-1, 0.5,   4,   7,   7,  15,   9,  13)
-			Case 2  result = New TAudience.Set(-1, 0.2,   1,   4,   4,  10,   3,   8)
-			Case 3  result = New TAudience.Set(-1, 0.1,   1,   3,   3,   7,   2,   5)
-			Case 4  result = New TAudience.Set(-1, 0.1, 0.5,   2,   3,   4,   1,   3)
-			Case 5  result = New TAudience.Set(-1, 0.2,   1,   2,   4,   3,   3,   3)
-			Case 6  result = New TAudience.Set(-1,   1,   2,   3,   6,   3,   5,   4)
-			Case 7  result = New TAudience.Set(-1,   4,   7,   6,   8,   4,   8,   5)
-			Case 8  result = New TAudience.Set(-1,   5,   2,   8,   5,   7,  11,   8)
-			Case 9  result = New TAudience.Set(-1,   6,   2,   9,   3,  12,   7,  10)
-			Case 10 result = New TAudience.Set(-1,   5,   2,   9,   3,  14,   3,  11)
-			Case 11 result = New TAudience.Set(-1,   5,   3,   9,   4,  15,   4,  12)
-			Case 12 result = New TAudience.Set(-1,   7,   9,  11,   8,  15,   8,  13)
-			Case 13 result = New TAudience.Set(-1,   8,  12,  14,   7,  24,   6,  19)
-			Case 14 result = New TAudience.Set(-1,  10,  13,  15,   6,  31,   2,  21)
-			Case 15 result = New TAudience.Set(-1,  11,  14,  16,   6,  29,   2,  22)
-			Case 16 result = New TAudience.Set(-1,  11,  15,  21,   6,  35,   2,  24)
-			Case 17 result = New TAudience.Set(-1,  12,  16,  22,  11,  36,   3,  25)
-			Case 18 result = New TAudience.Set(-1,  16,  21,  24,  18,  39,   5,  34)
-			Case 19 result = New TAudience.Set(-1,  24,  33,  28,  28,  46,  12,  49)
-			Case 20 result = New TAudience.Set(-1,  16,  36,  33,  37,  56,  23,  60)
-			Case 21 result = New TAudience.Set(-1,  11,  32,  31,  36,  53,  25,  62)
-			Case 22 result = New TAudience.Set(-1,   5,  23,  30,  30,  46,  35,  49)
-			Case 23 result = New TAudience.Set(-1,   3,  14,  24,  20,  34,  33,  35)
+			'                             gender
+			'                               |  children
+			'                               |    |  teenagers
+			'                               |    |    |  housewives
+			'                               |    |    |    |  employees
+			'                               |    |    |    |    |  unemployed
+			'                               |    |    |    |    |    |  manager
+			'                               |    |    |    |    |    |    |  pensioners
+			Case 0  result = New SAudience(-1,   2,   6,  16,  11,  21,  19,  23)
+			Case 1  result = New SAudience(-1, 0.5,   4,   7,   7,  15,   9,  13)
+			Case 2  result = New SAudience(-1, 0.2,   1,   4,   4,  10,   3,   8)
+			Case 3  result = New SAudience(-1, 0.1,   1,   3,   3,   7,   2,   5)
+			Case 4  result = New SAudience(-1, 0.1, 0.5,   2,   3,   4,   1,   3)
+			Case 5  result = New SAudience(-1, 0.2,   1,   2,   4,   3,   3,   3)
+			Case 6  result = New SAudience(-1,   1,   2,   3,   6,   3,   5,   4)
+			Case 7  result = New SAudience(-1,   4,   7,   6,   8,   4,   8,   5)
+			Case 8  result = New SAudience(-1,   5,   2,   8,   5,   7,  11,   8)
+			Case 9  result = New SAudience(-1,   6,   2,   9,   3,  12,   7,  10)
+			Case 10 result = New SAudience(-1,   5,   2,   9,   3,  14,   3,  11)
+			Case 11 result = New SAudience(-1,   5,   3,   9,   4,  15,   4,  12)
+			Case 12 result = New SAudience(-1,   7,   9,  11,   8,  15,   8,  13)
+			Case 13 result = New SAudience(-1,   8,  12,  14,   7,  24,   6,  19)
+			Case 14 result = New SAudience(-1,  10,  13,  15,   6,  31,   2,  21)
+			Case 15 result = New SAudience(-1,  11,  14,  16,   6,  29,   2,  22)
+			Case 16 result = New SAudience(-1,  11,  15,  21,   6,  35,   2,  24)
+			Case 17 result = New SAudience(-1,  12,  16,  22,  11,  36,   3,  25)
+			Case 18 result = New SAudience(-1,  16,  21,  24,  18,  39,   5,  34)
+			Case 19 result = New SAudience(-1,  24,  33,  28,  28,  46,  12,  49)
+			Case 20 result = New SAudience(-1,  16,  36,  33,  37,  56,  23,  60)
+			Case 21 result = New SAudience(-1,  11,  32,  31,  36,  53,  25,  62)
+			Case 22 result = New SAudience(-1,   5,  23,  30,  30,  46,  35,  49)
+			Case 23 result = New SAudience(-1,   3,  14,  24,  20,  34,  33,  35)
 		EndSelect
 		'MAX is 62% -> modifiers should pay attention
 		'-> limit mods to 100/62.0
 
 		'convert to 0-1.0 percentage
-		Return result.Multiply(0.01)
+		result.Multiply(0.01)
+
+		Return result
 	End Function
 
 
 	'returns how many percent of the people watch TV depending on the
 	'world weather (rain = better audience)
-	Function GetPotentialAudiencePercentage_WeatherMod:TAudience(time:Long = -1)
+	Function GetPotentialAudiencePercentage_WeatherMod:SAudience(time:Long = -1)
 		Local weatherMod:Float = GameConfig.GetModifier(modKeyStationMap_Audience_WeatherModLS)
-		Return New TAudience.Set(weatherMod, weatherMod)
+		Return New SAudience(weatherMod, weatherMod)
 	End Function
 
 
-	Function GetPotentialAudienceModifier:TAudience(time:Long = -1)
-		Local modifier:TAudience = New TAudience.Set(1, 1)
+	Function GetPotentialAudienceModifier:SAudience(time:Long = -1)
+		Local modifier:SAudience = New SAudience(1, 1)
 
 		'modify according to current hour
 		modifier.Multiply( GetPotentialAudiencePercentage_TimeMod(time) )
@@ -923,7 +925,7 @@ Type TBroadcastFeedback
 	Field FeedbackStatements:TList = CreateList()
 
 	'a audience mask object with 0 for all disabled audiences and 1 for enabled
-	Global audience_AdultOnlyMask:TAudience = New TAudience.Set(-1,  0, 1, 1, 1, 1, 1, 1)
+	Global audience_AdultOnlyMask:SAudience = New SAudience(-1,  0, 1, 1, 1, 1, 1, 1)
 
 	Const QUALITY:String = "QUALITY"
 	Const POPULARITY:String = "POPULARITY"
@@ -987,14 +989,14 @@ Type TBroadcastFeedback
 
 	'@minAttraction  defines the minimum attraction for all target groups
 	'                to have interest in the programme
-	Method CalculateAudienceInterestForAllowed(attr:TAudienceAttraction, maxAudienceMod:TAudience, plausibility:TAudience, minAttraction:Float)
+	Method CalculateAudienceInterestForAllowed(attr:TAudienceAttraction, maxAudienceMod:SAudience, plausibility:SAudience, minAttraction:Float)
 		'plausibility: Wer schaut wahrscheinlich zu:
 		'0 = auf keinen Fall
 		'1 = möglich, aber nicht wahrscheinlich
 		'2 = wahrscheinlich
 		Local averageAttraction:Float = attr.FinalAttraction.GetTotalAverage()
-		Local allowedAll:TAudience = plausibility
-		Local allowedAdultsOnly:TAudience = audience_AdultOnlyMask
+		Local allowedAll:SAudience = plausibility
+		Local allowedAdultsOnly:SAudience = audience_AdultOnlyMask
 
 		Local sortMap:TNumberSortMap = attr.FinalAttraction.ToNumberSortMap()
 		sortMap.Sort(False)
@@ -1008,7 +1010,7 @@ Type TBroadcastFeedback
 			Local highestAllowedAdult:TKeyValueNumber = GetFirstAllowed(sortMap, allowedAdultsOnly)
 
 			If highestAllowedAdult And highestAllowedAdult.Value >= 0.9 And attr.Quality > 0.8 Then
-				allowedAll = New TAudience.Set(1, 1)
+				allowedAll = New SAudience(1, 1)
 				allowedAll.SetTotalValue(TVTTargetGroup.Children, plausibility.GetTotalValue(TVTTargetGroup.Children))
 			EndIf
 		EndIf
@@ -1050,33 +1052,33 @@ Type TBroadcastFeedback
 
 
 	Method CalculateAudienceInterest(bc:TBroadcast, attr:TAudienceAttraction)
-		Local maxAudienceMod:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.Time)
+		Local maxAudienceMod:SAudience = TBroadcast.GetPotentialAudienceModifier(bc.Time)
 
 		AudienceInterest = New TAudience
 
 		Local hour:Int = GetWorldTime().GetDayHour(bc.time)
 
 		If (hour >= 0 And hour <= 1)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  0, 1, 2, 1, 2, 1, 2), 0.10)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  0, 1, 2, 1, 2, 1, 2), 0.10)
 		ElseIf (hour >= 2 And hour <= 5)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  0, 0, 1, 0, 2, 0, 2), 0.225)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  0, 0, 1, 0, 2, 0, 2), 0.225)
 		ElseIf (hour = 6)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  1, 1, 1, 1, 0, 1, 1), 0.20)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  1, 1, 1, 1, 0, 1, 1), 0.20)
 		ElseIf (hour >= 7 And hour <= 8)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  1, 1, 1, 1, 0, 1, 1), 0.125)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  1, 1, 1, 1, 0, 1, 1), 0.125)
 		ElseIf (hour >= 9 And hour <= 11)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  0, 0, 2, 0, 1, 0, 2), 0.125)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  0, 0, 2, 0, 1, 0, 2), 0.125)
 		ElseIf (hour >= 13 And hour <= 16)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  2, 2, 2, 0, 2, 0, 2), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  2, 2, 2, 0, 2, 0, 2), 0.05)
 		ElseIf (hour >= 22 And hour <= 23)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  0, 1, 2, 2, 2, 2, 2), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  0, 1, 2, 2, 2, 2, 2), 0.05)
 		Else
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New TAudience.Set(-1,  1, 2, 2, 2, 2, 1, 2), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, New SAudience(-1,  1, 2, 2, 2, 2, 1, 2), 0.05)
 		EndIf
 	End Method
 
 
-	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:TAudience)
+	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:SAudience)
 		For Local kv:TKeyValueNumber = EachIn sortMap.Content
 			If allowed.GetTotalValue(TVTTargetGroup.Children) >= 1 And kv.Key = "0" Then Return kv
 			If allowed.GetTotalValue(TVTTargetGroup.Teenagers) >= 1 And kv.Key = TVTTargetGroup.Children Then Return kv
@@ -1244,7 +1246,6 @@ Type TAudienceMarketCalculation
 		'Ermittle wie viel ein Attractionpunkt auf Grund der Konkurrenz-
 		'situation wert ist bzw. Quote bringt.
 		Local competitionAttractionModifier:TAudience = GetCompetitionAttractionModifier()
-		If Not competitionAttractionModifier Then Return
 
 		'print "ComputeAudience:   time=" + GetWorldTime().GetFormattedGameDate(time)
 		'Print "  maxAudience: " + MaxAudience.ToString()
@@ -1261,7 +1262,8 @@ Type TAudienceMarketCalculation
 			Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
 
 			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
-			Local effectiveAttraction:TAudience = attraction.FinalAttraction.Copy().Multiply(competitionAttractionModifier)
+			Local effectiveAttraction:SAudience = attraction.FinalAttraction.data 'copy
+			effectiveAttraction.Multiply(competitionAttractionModifier)
 			effectiveAttraction.CutBorders(0, 1.0)
 
 			'Anteil an der "erbeuteten" Zapper berechnen
@@ -1331,67 +1333,56 @@ Type TAudienceMarketCalculation
 
 	Method GetCompetitionAttractionModifier:TAudience()
 		'Die Summe aller Attractionwerte
-		Local attrSum:TAudience = Null
+		Local attrSum:SAudience
 		'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
-		Local attrRange:TAudience = Null
-		Local result:TAudience
+		Local attrRange:SAudience
+		Local result:TAudience = new TAudience
 
 		For Local attraction:TAudienceAttraction = EachIn audienceAttractions
-			If attrSum = Null
-				attrSum = attraction.FinalAttraction.Copy()
-			Else
-				attrSum.Add(attraction.FinalAttraction)
-			EndIf
+			attrSum.Add(attraction.FinalAttraction)
 
-			If attrRange = Null
-				attrRange = attraction.FinalAttraction.Copy()
-			Else
-				For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-					Local groupKey:Int = TVTTargetGroup.GetAtIndex(i)
-					For Local genderIndex:Int = 0 To 1
-						Local gender:Int = TVTPersonGender.FEMALE
-						If genderIndex = 1 Then gender = TVTPersonGender.MALE
+			For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
+				Local groupKey:Int = TVTTargetGroup.GetAtIndex(i)
+				For Local genderIndex:Int = 0 To 1
+					Local gender:Int = TVTPersonGender.FEMALE
+					If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
-						Local rangeValue:Float = attrRange.GetGenderValue(groupKey, gender)
-						attrRange.SetGenderValue(groupKey, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(groupKey, gender), gender)
-					Next
+					Local rangeValue:Float = attrRange.GetGenderValue(groupKey, gender)
+					attrRange.SetGenderValue(groupKey, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(groupKey, gender), gender)
 				Next
-			EndIf
+			Next
 		Next
 
 
-		If attrSum
-			result = attrRange.Copy()
+		result.data = attrRange 'copy
 
-			For Local genderIndex:Int = 0 To 1
-				Local gender:Int = TVTPersonGender.FEMALE
-				If genderIndex = 1 Then gender = TVTPersonGender.MALE
+		For Local genderIndex:Int = 0 To 1
+			Local gender:Int = TVTPersonGender.FEMALE
+			If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
-				If result.GetGenderSum(gender) > 0 And attrSum.getGenderSum(gender) > 0
-					'attention: attrSum could contain "0" values (div/0 !)
-					'so a blind "result.Divide(attrSum)" is no solution!
-					'-> check all values for 0 and handle them!
+			If result.GetGenderSum(gender) > 0 And attrSum.getGenderSum(gender) > 0
+				'attention: attrSum could contain "0" values (div/0 !)
+				'so a blind "result.Divide(attrSum)" is no solution!
+				'-> check all values for 0 and handle them!
 
-					For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-						Local groupKey:Int = TVTTargetGroup.GetAtIndex(i)
-
-						'one of the targetgroups is not attracted at all
-						'-> reduce to 0 (just set the same value so
-						'   result/attr = 1.0 )
-						If attrSum.GetGenderValue(groupKey, gender) = 0
-							If result.GetGenderValue(groupKey, gender) <> 0
-								attrSum.SetGenderValue( groupKey, result.GetGenderValue(groupKey, gender), gender)
-							Else
-								'does not matter what value we set, it will
-								'be the divisor of "0" (0/1 = 0)
-								attrSum.SetGenderValue( groupKey, 1, gender )
-							EndIf
+				For local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+					'one of the targetgroups is not attracted at all
+					'-> reduce to 0 (just set the same value so
+					'   result/attr = 1.0 )
+					If attrSum.GetGenderValue(targetGroupID, gender) = 0
+						If result.GetGenderValue(targetGroupID, gender) <> 0
+							attrSum.SetGenderValue( targetGroupID, result.GetGenderValue(targetGroupID, gender), gender)
+						Else
+							'does not matter what value we set, it will
+							'be the divisor of "0" (0/1 = 0)
+							attrSum.SetGenderValue( targetGroupID, 1, gender )
 						EndIf
-					Next
-				EndIf
-			Next
-			If attrSum.GetTotalSum() > 0 Then result.Divide(attrSum)
-		EndIf
+					EndIf
+				Next
+			EndIf
+		Next
+		If attrSum.GetTotalSum() > 0 Then result.data.Divide(attrSum)
+
 		Return result
 	End Method
 End Type
