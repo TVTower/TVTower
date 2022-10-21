@@ -3007,8 +3007,14 @@ End Type
 
 Type TSavegameConverter
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
-		'v0.7 -> v0.7.1
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
+			'v0.7.4 -> "TAudienceManager: "currentAudienceBreakdown" renamed to "currentTargetGroupBreakdown"
+			case "TAudienceManager:currentAudienceBreakdown".ToLower()
+				Return "currentTargetGroupBreakdown"
+			case "TAudienceManager:defaultAudienceBreakdown".ToLower()
+				Return "defaultTargetGroupBreakdown"
+
+			'v0.7 -> v0.7.1
 			case "TProduction:startDate".ToLower()
 				Return "startTime"
 			case "TProduction:endDate".ToLower()
@@ -3050,6 +3056,31 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+			'v0.7.4 -> TAudienceManager.audience(Fe)Male now stored in *.attraction:TAudience
+			case "TAudienceAttraction.audienceFemale:TAudienceBase".ToLower(), 
+			     "TAudienceAttraction.audienceMale:TAudienceBase".ToLower()
+				Local aB:TAudienceBase = TAudienceBase(fieldObject)
+				Local aA:TAudienceAttraction = TAudienceAttraction(parent)
+				If aA And aB
+					if not aA.attraction then aA.attraction = new TAudience()
+
+					Local genderID:Int = TVTPersonGender.FEMALE
+					If handle = "TAudienceAttraction.audienceMale:TAudienceBase".ToLower() Then genderID = TVTPersonGender.MALE
+					if genderID = TVTPersonGender.FEMALE
+						aA.attraction.data.audienceFemale = aB.data
+					Else
+						aA.attraction.data.audienceMale = aB.data
+					EndIf
+					'aA.Set(genderID, aB.data.Children, aB.data.Teenagers, aB.data.HouseWives, aB.data.Employees, aB.data.Unemployed, aB.data.Manager, aB.data.Pensioners) 
+				EndIf
+				Return parent
+						
+
+			'v0.7.4 -> TAudienceManager.targetGenderBreakdown and targetAudienceBreakdown removed
+			case "TAudienceManager.targetGenderBreakdown:TAudienceBase".ToLower(), 
+			     "TAudienceManager.targetAudienceBreakdown:TAudienceBase".ToLower()
+				'
+
 			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
 			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
 			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()
@@ -7145,12 +7176,12 @@ TProfiler.Enter("GameLoop")
 				If printDebugStats
 					If OCM.enabled
 						If gcAllocChanges >= 0
-							Print "tick: " + rectangle_created +" TRectangle. " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" +"+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" +"+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
 						Else
-							Print "tick: " + rectangle_created +" TRectangle. " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" "+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" "+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
 						EndIf
 					Else
-						Print "tick: " + rectangle_created +" TRectangle. " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+					Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
 					EndIf
 				EndIf
 				bbGCAllocCount = 0

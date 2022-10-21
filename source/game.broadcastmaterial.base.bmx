@@ -393,12 +393,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
-	Method GetPublicImageMod:TAudience()
+	Method GetPublicImageMod:SAudience()
 		local pubImage:TPublicImage = GetPublicImageCollection().Get(owner)
 		If not pubImage Then Throw TTVTNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has an owner without publicimage.")
 
 		'multiplication-value
-		Local result:TAudience = pubImage.GetAttractionMods()
+		Local result:SAudience = pubImage.GetAttractionMods()
 		result.Multiply(0.35)
 		result.Subtract(0.35)
 		result.CutBorders(-0.35, 0.35)
@@ -595,7 +595,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			audienceAttraction.CastMod = GetCastMod()
 
 			'7 - Image
-			audienceAttraction.PublicImageMod = GetPublicImageMod()
+			audienceAttraction.PublicImageMod = New TAudience(GetPublicImageMod())
 		Else
 			'COPY, not reference the childelements to avoid news manipulating
 			'movie-attraction-data ... if done on "reference base" keep

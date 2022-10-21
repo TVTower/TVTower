@@ -3,7 +3,7 @@ Import "game.broadcast.audience.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 
 
-'class represents attractivity of a broadcast (it is content of TAudience)
+'class represents attractivity of a broadcast
 'It also contains additional information on how it is calculated (for
 'statistics, debugging and recalculation)
 Type TAudienceAttraction {_exposeToLua="selected"}
@@ -85,6 +85,7 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 
 	Method SetPlayerId(playerId:Int)
 		Self.Id = playerId
+		Self.attraction.Id = playerId
 		Self.BaseAttraction.Id = playerId
 		Self.FinalAttraction.Id = playerId
 		Self.PublicImageAttraction.Id = playerId

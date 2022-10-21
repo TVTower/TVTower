@@ -698,10 +698,13 @@ Type TPersist
 				' this should be a field
 				If fieldNode.GetName() = "field" Then
 					Local fieldObj:TField = objType.FindField(fieldNode.getAttribute("name"))
+					Local fieldType:String = fieldNode.getAttribute("type")
+					'check if the current programme knows the stored data structure / type
+					local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
 
 					'Ronny: skip unknown fields (no longer existing in the type)
 					'or redirect to a different field if "renamed"
-					If Not fieldObj
+					If Not fieldObj or storedFieldTypeID <> fieldObj.TypeId()
 						'if the field was just renamed, try to find
 						'the new field to populate
 						Local parentName:String = node.getAttribute("name")
@@ -728,8 +731,6 @@ Type TPersist
 
 					'Ronny: skip loading elements having "nosave" metadata
 					If fieldObj.MetaData("nosave") And Not fieldObj.MetaData("doload") Then Continue
-
-					Local fieldType:String = fieldNode.getAttribute("type")
 
 
 					'ronny: delegate "primitive to object" conversions
@@ -848,7 +849,7 @@ Type TPersist
 										Else
 											'Ronny
 											'check if the current programme knows the stored data structure / type
-											local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
+											'local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
 											if not storedFieldTypeID
 												fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
 											'or if it differs
