@@ -2336,38 +2336,38 @@ Type TDebugAudienceInfo
 
 
 		font.DrawSimple("Bevölkerung", 25, 50, SColor8.White)
-		DrawAudience(audienceResult.WholeMarket, 200, 50)
+		DrawAudience(audienceResult.WholeMarket.data, 200, 50)
 
 		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
 		font.DrawSimple("Potentielle Zuschauer", 25, 70, SColor8.White)
 		font.DrawSimple(percent, 160, 70, SColor8.White)
-		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70)
+		DrawAudience(audienceResult.PotentialMaxAudience.data, 200, 70)
 
 		Local colorLight:SColor8 = new SColor8(150, 150, 150)
 
 		'font.drawStyled("      davon Exklusive", 25, 90, TColor.clWhite)
-		'DrawAudience(audienceResult.ExclusiveAudienceSum, 200, 90, true)
+		'DrawAudience(audienceResult.ExclusiveAudienceSum.data, 200, 90, true)
 
 		'font.drawStyled("      davon gebunden (Audience Flow)", 25, 105, colorLight)
-		'DrawAudience(audienceResult.AudienceFlowSum, 200, 105, true)
+		'DrawAudience(audienceResult.AudienceFlowSum.data, 200, 105, true)
 
 		'font.drawStyled("      davon Zapper", 25, 120, colorLight)
-		'DrawAudience(audienceResult.ChannelSurferToShare, 200, 120, true)
+		'DrawAudience(audienceResult.ChannelSurferToShare.data, 200, 120, true)
 
 
 		font.DrawSimple("Aktuelle Zuschauerzahl", 25, 90, SColor8.White)
 		percent = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 		font.DrawSimple(percent, 160, 90, SColor8.White)
-		DrawAudience(audienceResult.Audience, 200, 90)
+		DrawAudience(audienceResult.Audience.data, 200, 90)
 
 		'font.drawStyled("      davon Exklusive", 25, 155, colorLight)
-		'DrawAudience(audienceResult.ExclusiveAudience, 200, 155, true)
+		'DrawAudience(audienceResult.ExclusiveAudience.data, 200, 155, true)
 
 		'font.drawStyled("      davon gebunden (Audience Flow)", 25, 170, colorLight)
-		'DrawAudience(audienceResult.AudienceFlow, 200, 170, true)
+		'DrawAudience(audienceResult.AudienceFlow.data, 200, 170, true)
 
 		'font.drawStyled("      davon Zapper", 25, 185, colorLight)
-		'DrawAudience(audienceResult.ChannelSurfer, 200, 185, true)
+		'DrawAudience(audienceResult.ChannelSurfer.data, 200, 185, true)
 
 
 
@@ -2397,13 +2397,13 @@ Type TDebugAudienceInfo
 
 		font.DrawSimple("1. Programmqualität & Aktual.", 25, offset, SColor8.White)
 		If attraction.Quality
-			DrawAudiencePercent(New TAudience.Set(attraction.Quality,  attraction.Quality), 200, offset, True, True)
+			DrawAudiencePercent(New SAudience(attraction.Quality, attraction.Quality), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("2. * Zielgruppenattraktivität", 25, offset, SColor8.White)
 		If attraction.targetGroupAttractivity
-			DrawAudiencePercent(attraction.targetGroupAttractivity, 200, offset, True, True)
+			DrawAudiencePercent(attraction.targetGroupAttractivity.data, 200, offset, True, True)
 		Else
 '			print "   dyn: "+  attraction.GetTargetGroupAttractivity().ToString()
 		EndIf
@@ -2412,23 +2412,23 @@ Type TDebugAudienceInfo
 		font.DrawSimple("3. * TrailerMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, SColor8.White)
 		If attraction.TrailerMod
 			font.DrawBox(genre, 60, offset, 205, 25, sALIGN_RIGHT_TOP, colorLight )
-			DrawAudiencePercent(attraction.TrailerMod.Copy().Multiply(TAudienceAttraction.MODINFLUENCE_TRAILER).Add(1), 200, offset, True, True)
+			DrawAudiencePercent(attraction.TrailerMod.Copy().Multiply(TAudienceAttraction.MODINFLUENCE_TRAILER).Add(1).data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("4. + Sonstige Mods ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_MISC*100)+"%)", 25, offset, SColor8.White)
 		If attraction.MiscMod
-			DrawAudiencePercent(attraction.MiscMod, 200, offset, True, True)
+			DrawAudiencePercent(attraction.MiscMod.data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("5. + CastMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, SColor8.White)
-		DrawAudiencePercent(New TAudience.Set(attraction.CastMod,  attraction.CastMod), 200, offset, True, True)
+		DrawAudiencePercent(New SAudience(attraction.CastMod,  attraction.CastMod), 200, offset, True, True)
 		offset :+ 20
 
 		font.DrawSimple("6. * SenderimageMod", 25, offset, SColor8.White)
 		If attraction.PublicImageMod
-			DrawAudiencePercent(attraction.PublicImageMod.Copy().Add(1.0), 200, offset, True, True)
+			DrawAudiencePercent(attraction.PublicImageMod.Copy().Add(1.0).data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
@@ -2438,31 +2438,31 @@ Type TDebugAudienceInfo
 
 		font.DrawSimple("9. + Glück / Zufall", 25, offset, SColor8.White)
 		If attraction.LuckMod
-			DrawAudiencePercent(attraction.LuckMod, 200, offset, True, True)
+			DrawAudiencePercent(attraction.LuckMod.data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("9. + Audience Flow Bonus", 25, offset, SColor8.White)
 		If attraction.AudienceFlowBonus
-			DrawAudiencePercent(attraction.AudienceFlowBonus, 200, offset, True, True)
+			DrawAudiencePercent(attraction.AudienceFlowBonus.data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("10. * Genreattraktivität (zeitabh.)", 25, offset, SColor8.White)
 		If attraction.GetGenreAttractivity()
-			DrawAudiencePercent(attraction.GetGenreAttractivity(), 200, offset, True, True)
+			DrawAudiencePercent(attraction.GetGenreAttractivity().data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("11. + Sequence", 25, offset, SColor8.White)
 		If attraction.SequenceEffect
-			DrawAudiencePercent(attraction.SequenceEffect, 200, offset, True, True)
+			DrawAudiencePercent(attraction.SequenceEffect.data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
 		font.DrawSimple("Finale Attraktivität (Effektiv)", 25, offset, SColor8.White)
 		If attraction.FinalAttraction
-			DrawAudiencePercent(attraction.FinalAttraction, 200, offset, False, True)
+			DrawAudiencePercent(attraction.FinalAttraction.data, 200, offset, False, True)
 		EndIf
 Rem
 		font.Draw("Basis-Attraktivität", 25, offset+230, TColor.clRed)
@@ -2558,7 +2558,7 @@ endrem
 	End Method
 
 
-	Function DrawAudience(audience:TAudience, x:Int, y:Int, gray:Int = False)
+	Function DrawAudience(audience:SAudience, x:Int, y:Int, gray:Int = False)
 		Local val:String
 		Local x2:Int = x + 70
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
@@ -2572,14 +2572,16 @@ endrem
 			font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 		End If
 
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			val = TFunctions.convertValue(audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2)
+		Local i:Int = 0
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+			i :+ 1
+			val = TFunctions.convertValue(audience.GetTotalValue(targetGroupID), 2)
 			font.DrawBox(val, x2 + 70*(i-1), y, 65, 25, sALIGN_RIGHT_TOP, color)
 		Next
 	End Function
 
 
-	Function DrawAudiencePercent(audience:TAudience, x:Int, y:Int, gray:Int = False, hideAverage:Int = False)
+	Function DrawAudiencePercent(audience:SAudience, x:Int, y:Int, gray:Int = False, hideAverage:Int = False)
 		Local val:String
 		Local x2:Int = x + 70
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
@@ -2595,8 +2597,10 @@ endrem
 			End If
 		End If
 
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			val = MathHelper.NumberToString(0.5 * audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)),2)
+		Local i:Int = 0
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+			i :+ 1
+			val = MathHelper.NumberToString(0.5 * audience.GetTotalValue(targetGroupID),2)
 			font.DrawBox(val, x2 + 70*(i-1), y, 65, 25, sALIGN_RIGHT_TOP, color)
 		Next
 	End Function

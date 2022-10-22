@@ -117,9 +117,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		textY :+ 12
 
 		Local a:TAudience = p.GetImageValues()
-		Local targetGroupID:Int = 0
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount 'baseGroupCount = without "men/women"
-			targetGroupID = TVTTargetGroup.GetAtIndex(i)
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs() 'baseGroupCount = without "men/women"
 			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", textX, textY)
 			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), textX + 85, textY)
 			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), textX + 117, textY)

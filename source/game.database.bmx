@@ -1930,10 +1930,11 @@ Type TDatabaseLoader
 		Local data:TData = New TData
 		Local searchData:String[TVTTargetGroup.baseGroupCount*3] '2 genders + "both"
 		Local searchIndex:Int = 0
-		For Local tgIndex:Int = 1 To TVTTargetGroup.baseGroupCount '1-7
-			searchData[searchIndex+0] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) )
-			searchData[searchIndex+1] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_male"
-			searchData[searchIndex+2] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_female"
+		For Local tgID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+			Local base:String = TVTTargetGroup.GetAsString( tgID )
+			searchData[searchIndex+0] = base
+			searchData[searchIndex+1] = base + "_male"
+			searchData[searchIndex+2] = base + "_female"
 			searchIndex :+ 3
 		Next
 		xml.LoadValuesToData(tgAttractivityNode, data, searchData)
@@ -1946,8 +1947,7 @@ Type TDatabaseLoader
 			Local genderID:Int = TVTPersonGender.GetAtIndex(genderIndex)
 			Local genderString:String = TVTpersonGender.GetAsString( genderID )
 
-			For Local tgIndex:Int = 1 To TVTTargetGroup.baseGroupCount '1-7
-				Local tgID:Int = TVTTargetGroup.GetAtIndex(tgIndex)
+			For Local tgID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 				Local tgName:String = TVTTargetGroup.GetAsString(tgID)
 				Local key:String = tgName+"_"+genderString
 				If genderIndex = 0 Then key = tgName

@@ -113,8 +113,7 @@ Type TAudienceManager
 		Local portion:Float = 0
 		Local gBreakdown:TAudienceBase = GetGenderBreakdown(genderID)
 		Local aBreakdown:TAudienceBase = GetTargetGroupBreakdown()
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(i)
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			If targetGroupIDs & targetGroupID
 				portion :+ gBreakdown.data.Get(targetGroupID) * aBreakdown.data.Get(targetGroupID)
 			EndIf
@@ -1272,13 +1271,13 @@ Struct SAudience
 			Select targetID
 				Case TVTTargetGroup.Women
 					If gender = TVTPersonGender.MALE Then Return
-					For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-						ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.FEMALE )
+					For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+						ModifyGenderValue( targetGroupID, addValue, TVTPersonGender.FEMALE )
 					Next
 				Case TVTTargetGroup.Men
 					If gender = TVTPersonGender.FEMALE Then Return
-					For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-						ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.MALE  )
+					For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+						ModifyGenderValue( targetGroupID, addValue, TVTPersonGender.MALE  )
 					Next
 
 				Default

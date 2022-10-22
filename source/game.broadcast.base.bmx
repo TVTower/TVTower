@@ -1341,14 +1341,13 @@ Type TAudienceMarketCalculation
 		For Local attraction:TAudienceAttraction = EachIn audienceAttractions
 			attrSum.Add(attraction.FinalAttraction)
 
-			For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-				Local groupKey:Int = TVTTargetGroup.GetAtIndex(i)
+			For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 				For Local genderIndex:Int = 0 To 1
 					Local gender:Int = TVTPersonGender.FEMALE
 					If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
-					Local rangeValue:Float = attrRange.GetGenderValue(groupKey, gender)
-					attrRange.SetGenderValue(groupKey, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(groupKey, gender), gender)
+					Local rangeValue:Float = attrRange.GetGenderValue(targetGroupID, gender)
+					attrRange.SetGenderValue(targetGroupID, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
 				Next
 			Next
 		Next

@@ -559,11 +559,10 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 		Local flowModBaseTemp:Float
 
 		'AudienceFlow anhand der Differenz und ob steigend oder sinkend. Nur sinkend gibt richtig AudienceFlow
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			For Local genderIndex:Int = 0 To 1
 				Local gender:Int = TVTPersonGender.FEMALE
 				If genderIndex = 1 Then gender = TVTPersonGender.MALE
-				Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(i)
 				Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetGenderValue(targetGroupID, gender), lastNewsBlockAttraction.FinalAttraction.GetGenderValue(targetGroupID, gender))
 				'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
 				Local successorValue:Float = currentAttraction.BaseAttraction.GetGenderValue(targetGroupID, gender)

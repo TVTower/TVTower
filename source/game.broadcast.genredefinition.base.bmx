@@ -84,8 +84,7 @@ Type TGenreDefinitionBase extends TGameObject
 		Local successorValue:Float
 		Local rise:Int = false
 
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			If predecessor
 				predecessorValue = predecessor.BlockAttraction.GetValue(targetGroupID)
 			Else
