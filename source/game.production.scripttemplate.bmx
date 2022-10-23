@@ -108,7 +108,7 @@ Type TScriptTemplate Extends TScriptBase
 	'define an exact time for the live broadcast
 	Field liveDateCode:String
 
-	Field programmeDataModifiers:TData = New TData
+	Field programmeDataModifiers:TData
 
 	'defines if the script is only available from/to/in a specific date
 	Field available:int = True

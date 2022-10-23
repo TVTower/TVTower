@@ -1348,7 +1348,7 @@ Type TDatabaseLoader
 
 		'=== MODIFIERS ===
 		'take over modifiers from parent (if episode)
-		If parentLicence Then programmeData.effects = parentLicence.data.effects.Copy()
+		If parentLicence Then parentLicence.data.effects = parentLicence.data.CopyEffects()
 		LoadV3ModifiersFromNode(programmeData, node, xml)
 
 
@@ -1840,6 +1840,7 @@ Type TDatabaseLoader
 			For Local f:String = EachIn ["name", "value"]
 				If Not modifierData.Has(f) Then ThrowNodeError("DB: <modifier> is missing ~q" + f+"~q.", nodeModifier)
 			Next
+			if not scriptTemplate.programmeDataModifiers then scriptTemplate.programmeDataModifiers = new TData
 			scriptTemplate.programmeDataModifiers.AddFloat(modifierData.GetString("name"), modifierData.GetFloat("value"))
 			'source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
 		Next

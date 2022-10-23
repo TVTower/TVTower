@@ -730,7 +730,10 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
 		programmeData.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
 
-		programmeData.modifiers.Append(productionConcept.script.programmeDataModifiers)
+		If productionConcept.script.programmeDataModifiers
+			if not programmeData.modifiers Then programmeData.modifiers = New TData
+			programmeData.modifiers.Append(productionConcept.script.programmeDataModifiers)
+		EndIf
 		Return programmeLicence
 	End Method
 	

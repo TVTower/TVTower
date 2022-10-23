@@ -448,15 +448,24 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'add children
 		If includingEpisodes
-			script.programmeDataModifiers.Append(template.programmeDataModifiers)
+			If template.programmeDataModifiers
+				if not script.programmeDataModifiers Then script.programmeDataModifiers = New TData
+				script.programmeDataModifiers.Append(template.programmeDataModifiers)
+			EndIf
 			Local mainTemplateEpisodeCount:Int = template.getEpisodes()
 			If mainTemplateEpisodeCount > 1 and mainTemplateEpisodeCount < template.subScripts.length
 				'if parent restricts the number of episodes - get a subset of templates
 				For Local subTemplate:TScriptTemplate = EachIn template.GetSubTemplateSubset(mainTemplateEpisodeCount)
 					Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
 					If subScript
-						subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
-						subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
+						If template.programmeDataModifiers
+							if not subScript.programmeDataModifiers Then subScript.programmeDataModifiers = New TData
+							subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
+						EndIf
+						If subTemplate.programmeDataModifiers
+							if not subScript.programmeDataModifiers Then subScript.programmeDataModifiers = New TData
+							subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
+						EndIf
 						script.AddSubScript(subScript)
 					EndIf
 				Next
@@ -469,8 +478,14 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						For Local i:Int = 0 until episodesCount
 							Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
 							If subScript
-								subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
-								subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
+								If template.programmeDataModifiers
+									if not subScript.programmeDataModifiers Then subScript.programmeDataModifiers = New TData
+									subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
+								EndIf
+								If subTemplate.programmeDataModifiers
+									if not subScript.programmeDataModifiers Then subScript.programmeDataModifiers = New TData
+									subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
+								EndIf
 								script.AddSubScript(subScript)
 								'try to ensure unique episode names
 								Local title:TLocalizedString = subScript.title

@@ -683,7 +683,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 			'trigger happenEffects
 			Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID())
-			effects.Update("happen", effectParams)
+			If effects Then effects.Update("happen", effectParams)
 		EndIf
 	End Method
 
@@ -700,12 +700,12 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'finishBroadcast while this is called on beginBroadcast)
 		If GetTimesBroadcasted() = 0
 			If Not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
-				effects.Update("broadcastFirstTime", effectParams)
+				If effects Then effects.Update("broadcastFirstTime", effectParams)
 				setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 			EndIf
 		EndIf
 
-		effects.Update("broadcast", effectParams)
+		If effects Then effects.Update("broadcast", effectParams)
 	End Method
 
 
@@ -718,12 +718,12 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'finishBroadcast while this is called on beginBroadcast)
 		If GetTimesBroadcasted() = 0
 			If Not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
-				effects.Update("broadcastFirstTimeDone", effectParams)
+				If effects Then effects.Update("broadcastFirstTimeDone", effectParams)
 				setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
 			EndIf
 		EndIf
 
-		effects.Update("broadcastDone", effectParams)
+		If effects Then effects.Update("broadcastDone", effectParams)
 	End Method
 
 
@@ -767,7 +767,11 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method IsSkippable:Int()
 		'cannot skip events with "happen"-effects
-		Return Not HasFlag(TVTNewsFlag.UNSKIPPABLE) And (Not effects.GetList("happen") Or effects.GetList("happen").count() = 0)
+		If effects
+			Return Not HasFlag(TVTNewsFlag.UNSKIPPABLE) And (Not effects.GetList("happen") Or effects.GetList("happen").count() = 0)
+		Else
+			Return Not HasFlag(TVTNewsFlag.UNSKIPPABLE)
+		EndIf
 	End Method
 
 
@@ -1016,14 +1020,16 @@ Type TGameModifierNews_TriggerNewsChoice Extends TGameModifierChoice
 
 		triggerProbability = template.triggerProbability
 		'correct individual probability of the loaded choices
-		For Local i:Int = 0 Until modifiers.length
-			Local triggerModifier:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews(modifiers[i])
-			If Not triggerModifier Then Continue
+		If modifiers
+			For Local i:Int = 0 Until modifiers.length
+				Local triggerModifier:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews(modifiers[i])
+				If Not triggerModifier Then Continue
 
-			modifiersProbability[i] = triggerModifier.triggerProbability
-			'reset individual probability to 100%
-			triggerModifier.triggerProbability = 100
-		Next
+				modifiersProbability[i] = triggerModifier.triggerProbability
+				'reset individual probability to 100%
+				triggerModifier.triggerProbability = 100
+			Next
+		EndIf
 
 		Return Self
 	End Method

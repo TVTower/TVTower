@@ -372,16 +372,19 @@ Type TPublicImage {_exposeToLua="selected"}
 		If (differentAudienceNumbers <= 1) Then modifiers = [0.0]
 
 		'print "ranks: "+ audienceRank[0]+", "+ audienceRank[1]+", "+ audienceRank[2]+", "+ audienceRank[3]
-		For Local i:Int = 0 Until channelAudiencesList.Count()
-			Local channelID:Int = TAudience(channelAudiencesList.ValueAtIndex(i)).Id
-			If channelID <= 0 Then Continue
+		Local i:int = 0 
+		For Local a:TAudience = EachIn channelAudiencesList
+			Local channelID:Int = a.Id
 
-			Local modifier:Float = 0.0
-			If audienceRank[i] <= modifiers.length Then modifier = modifiers[ audienceRank[i]-1 ]
+			If channelID > 0
+				Local modifier:Float = 0.0
+				If audienceRank[i] <= modifiers.length Then modifier = modifiers[ audienceRank[i]-1 ]
 
-			If modifier <> 0.0 
-				channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
+				If modifier <> 0.0 
+					channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
+				EndIf
 			EndIf
+			i:+ 1
 		Next
 	End Function
 End Type
