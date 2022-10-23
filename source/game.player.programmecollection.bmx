@@ -808,6 +808,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)
 		If script = Null Then Return False
 
+		Local currentOwner:Int = script.owner
 		if sell
 			if not script.sell() then return FALSE
 		endif
@@ -817,7 +818,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'a series becomes tradeable only if it is completely produced (or the script is thrown away)
 		if script.isSeries() And script.usedInProgrammeID
-			local licence:TProgrammeLicence = GetPlayerProgrammeCollection(script.owner).GetProgrammeLicence(script.usedInProgrammeID)
+			local licence:TProgrammeLicence = GetPlayerProgrammeCollection(currentOwner).GetProgrammeLicence(script.usedInProgrammeID)
 			if licence and not licence.hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE)
 				licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
 			end if
