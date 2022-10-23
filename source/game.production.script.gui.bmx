@@ -90,10 +90,11 @@ Type TGuiScript Extends TGUIGameListItem
 		GetColor(oldCol)
 		SetColor 0,0,0
 		SetAlpha 0.2 * oldA
+		Local scrRect:TRectangle = Self.GetScreenRect()
 		TFunctions.DrawBaseTargetRect(baseX, ..
 		                              sheetY + 70, ..
-		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
-		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              scrRect.x + scrRect.w/2.0, ..
+		                              scrRect.y + scrRect.h/2.0, ..
 		                              20, 3)
 		SetColor(oldCol)
 		SetAlpha oldA

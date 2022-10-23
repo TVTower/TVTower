@@ -767,7 +767,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method IsSkippable:Int()
 		'cannot skip events with "happen"-effects
 		If effects
-			Return Not HasFlag(TVTNewsFlag.UNSKIPPABLE) And (Not effects.GetList("happen") Or effects.GetList("happen").count() = 0)
+			local happenList:TList = effects.GetList("happen")
+			Return Not HasFlag(TVTNewsFlag.UNSKIPPABLE) And (happenList Or happenList.count() = 0)
 		Else
 			Return Not HasFlag(TVTNewsFlag.UNSKIPPABLE)
 		EndIf

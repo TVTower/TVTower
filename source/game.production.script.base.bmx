@@ -24,8 +24,6 @@ Type TScriptBase Extends TNamedGameObject
 
 	Field programmeDataModifiers:TData
 
-	'is the script title/description editable?
-	Field textsEditable:int = False
 	'scripts of series are parent of episode scripts
 	Field parentScriptID:int = 0
 	'all associated child scripts (episodes)

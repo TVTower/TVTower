@@ -131,8 +131,6 @@ Type TScriptTemplate Extends TScriptBase
 	Field studioSizeMax:int=1
 	Field studioSizeSlope:Float=0.5
 
-	Field requireAudience:Int = 0
-
 	'targetgroups which _might_ be enabled during production
 	Field targetGroupOptional:Int = -1
 	'flags which _might_ be enabled during production

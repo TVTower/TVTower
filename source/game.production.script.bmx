@@ -317,7 +317,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field customTitle:String = ""
 	Field customDescription:String = ""
 	
-	Field newsTopicGUID:String = ""
 	Field newsGenre:Int
 
 	Field outcome:Float	= 0.0
@@ -333,8 +332,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field allowedGuestTypes:Int	= 0
 
 	Field requiredStudioSize:Int = 1 {_exposeToLua="readonly"}
-	'more expensive
-	Field requireAudience:Int = 0
 
 	Field price:Int	= 0
 	Field blocks:Int = 0
