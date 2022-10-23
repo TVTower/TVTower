@@ -75,7 +75,7 @@
 
 			<!-- intended reach of the first antenna;
 				due to min/max values for the radius the actual reach may differ -->
-			<!-- DEV_STATION_INITIAL_INTENDED_REACH value="1000000" /> -->
+			<!-- DEV_STATION_INITIAL_INTENDED_REACH value="1200000" /> -->
 
 			<!-- parameters for randomizing licence attributes from the database
 			     when starting a new game: 

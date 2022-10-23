@@ -6,12 +6,16 @@
 		<programmePriceMod value="0.75"/>
 		<roomRentMod value="0.80"/>
 		<adcontractProfitMod value="1.25"/>
-		<antennaBuyPriceMod value="0.9"/>
-		<antennaDailyCostsIncrease value="0.01"/>
-		<antennaDailyCostsIncreaseMax value="0.1"/>
+		<antennaBuyPriceMod value="1.0"/>
+		<antennaDailyCostsMod value="1.0"/>
+		<antennaDailyCostsIncrease value="0.02"/>
+		<antennaDailyCostsIncreaseMax value="0.2"/>
+		<cableNetworkBuyPriceMod value="1.0"/>
+		<cableNetworkDailyCostsMod value="1.0"/>
+		<satelliteBuyPriceMod value="1.0"/>
+		<satelliteDailyCostsMod value="1.0"/>
 	</easy>
 	<normal>
-		<antennaBuyPriceMod value="1.3"/>
 	</normal>
 	<hard>
 		<startMoney value="0"/>
@@ -20,13 +24,13 @@
 		<roomRentMod value="1.5"/>
 		<adcontractProfitMod value="0.9"/>
 		<adcontractLimitedTargetgroupMod value="1.15"/>
-		<antennaBuyPriceMod value="1.7"/>
+		<antennaBuyPriceMod value="1.4"/>
 		<antennaDailyCostsMod value="1.25"/>
 		<antennaDailyCostsIncrease value="0.04"/>
 		<antennaDailyCostsIncreaseMax value="0.4"/>
-		<cableNetworkBuyPriceMod value="1.5"/>
+		<cableNetworkBuyPriceMod value="1.4"/>
 		<cableNetworkDailyCostsMod value="1.25"/>
-		<satelliteBuyPriceMod value="1.5"/>
+		<satelliteBuyPriceMod value="1.4"/>
 		<satelliteDailyCostsMod value="1.25"/>
 		<broadcastPermissionPriceMod value="1.5"/>
 	</hard>
@@ -61,17 +65,17 @@
 		<adcontractRawMinAudienceMod value="1.0"/><!--factor for number of viewers required-->
 
 		<!--construction times in hours-->
-		<antennaBuyPriceMod value="1.0"/><!--factor for antenna purchase prices-->
+		<antennaBuyPriceMod value="1.2"/><!--factor for antenna purchase prices-->
 		<antennaConstructionTime value="0"/><!--base time for setting up an antenna-->
-		<antennaDailyCostsMod value="1.0"/><!--factor for anntenna daily costs-->
+		<antennaDailyCostsMod value="1.15"/><!--factor for anntenna daily costs-->
 		<antennaDailyCostsIncrease value="0.02"/><!--increase of daily antenna costs; 0.02 = 2%-->
 		<antennaDailyCostsIncreaseMax value="0.3"/><!--maximum increase of daily antenna costs; 0.2 = 20%-->
-		<cableNetworkBuyPriceMod value="1.0"/><!--factor for cable network initial payment price-->
+		<cableNetworkBuyPriceMod value="1.2"/><!--factor for cable network initial payment price-->
 		<cableNetworkConstructionTime value ="0"/><!--time before cable network broadcasts channel programme-->
-		<cableNetworkDailyCostsMod value="1.0"/><!--factor for cable network daily costs-->
-		<satelliteBuyPriceMod value="1.0"/><!--factor for satellite initial payment price-->
+		<cableNetworkDailyCostsMod value="1.15"/><!--factor for cable network daily costs-->
+		<satelliteBuyPriceMod value="1.2"/><!--factor for satellite initial payment price-->
 		<satelliteConstructionTime value ="0"/><!--time before satellite broadcasts channel programme-->
-		<satelliteDailyCostsMod value="1.0"/><!--factor for satellite daily costs-->
+		<satelliteDailyCostsMod value="1.15"/><!--factor for satellite daily costs-->
 		<broadcastPermissionPriceMod value="1.0"/><!--factor for broadcast permission prices-->
 
 		<restartingPlayerPropertyCacheRatio value="0.25"/> 
