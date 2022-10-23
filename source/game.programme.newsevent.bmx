@@ -420,7 +420,6 @@ End Function
 
 
 Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
-	Field template:TNewsEventTemplate
 	Field templateID:Int
 
 	'time when something happened or will happen. "-1" = not happened
@@ -776,8 +775,6 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method GetGenre:Int()
-		If genre = -1 And template Then Return template.genre
-
 		'return default it not overridden
 		If genre = -1 And templateID
 			Local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
