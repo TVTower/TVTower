@@ -755,8 +755,19 @@ Type TNewsAgency
 				'high enough
 				local newsEvent:TNewsEvent = news.GetNewsEvent()
 				local newsAbonnement:Int = player.GetNewsabonnement(newsEvent.GetGenre())
-				If newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL) or (newsAbonnement > 0 And newsAbonnement >= newsEvent.GetMinSubscriptionLevel())
+				If newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)
 					__AddNewsToPlayer(news, playerID)
+				ElseIf newsAbonnement > 0
+					If Not player.IsNewsAbonnementEffective(newsEvent.GetGenre())
+						Local maxLevel:Int = player.GetNewsAbonnementDaysMax(genre)
+						If maxLevel > 0 and maxLevel >= newsEvent.GetMinSubscriptionLevel()
+							__AddNewsToPlayer(news, playerID)
+						Else
+							Continue
+						EndIf
+					ElseIf newsAbonnement >= newsEvent.GetMinSubscriptionLevel()
+						__AddNewsToPlayer(news, playerID)
+					EndIf
 				EndIf
 
 				'mark the news for removal
@@ -884,6 +895,7 @@ Type TNewsAgency
 						'if playerID=1 then print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 						Return False
 					EndIf
+					If not player.IsNewsAbonnementEffective(newsEvent.GetGenre()) Then Return False
 				EndIf
 			EndIf
 
