@@ -561,7 +561,7 @@ endrem
 		'how much days to draw
 		Local showHours:Int = 24
 		'where to draw + dimension
-		Local curveArea:TRectangle = New TRectangle.Init(29, 284, 738, 70)
+		'Local curveArea:SRectI = New SRectI(29, 284, 738, 70)
 		'heighest reached audience value of that hours
 		Local maxValue:Int = 0
 		'minimum audience
@@ -589,13 +589,12 @@ endrem
 				If progNewsIterator = 1 Then tableX = 450
 
 				'the small added/subtracted numbers are for padding of the text
-				Local labelArea:TRectangle = New TRectangle.Init(tableX + 4, 81-1, 175-4, 19)
-				Local valueArea:TRectangle = New TRectangle.Init(labelArea.GetX2(), labelArea.GetY() + 2, 155 - 5, 19)
-				Local captionArea:TRectangle = New TRectangle.Init(labelArea.GetX(), 57, 322, captionHeight)
-				Local bgArea:TRectangle = New TRectangle.Init(tableX + 4, 81, 175-4, 19)
-				bgArea.SetW( valueArea.GetX2() - labelArea.x + 6)
-				bgArea.SetXY( bgArea.x - 3, bgArea.y - 1 )
-
+				Local labelArea:SRectI = New SRectI(tableX + 4, 81-1, 175-4, 19)
+				Local valueArea:SRectI = New SRectI(labelArea.GetX2(), labelArea.y + 2, 155 - 5, 19)
+				Local captionArea:SRectI = New SRectI(labelArea.x, 57, 322, captionHeight)
+				Local bgArea:SRectI = New SRectI(tableX + 4 - 3, 81 -1, valueArea.GetX2() - labelArea.x + 6, 19)
+				
+				
 				Local futureHour:Int = False
 				If parent.showDay > GetWorldTime().GetDay()
 					futureHour = True
@@ -612,7 +611,7 @@ endrem
 					Else
 						valueBG2.DrawArea(bgArea.x, bgArea.y, bgArea.w, bgArea.h)
 					EndIf
-					bgArea.MoveY( bgArea.h )
+					bgArea = bgArea.Move(0, bgArea.h)
 				Next
 
 
@@ -631,15 +630,15 @@ endrem
 				'row entries
 				If parent.showHour < 0 Or parent.showHour > 23 Or futureHour
 					If progNewsIterator = 1
-						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
+						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
 					Else
-						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
+						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
 					EndIf
 				ElseIf Not audienceResult
 					If progNewsIterator = 1
-						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 					Else
-						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 					EndIf
 				Else
 					Local title:String = audienceResult.GetTitle()
@@ -662,24 +661,24 @@ endrem
 							title = GetLocale("NEWS")+" - "+RSet(parent.showHour,2).Replace(" ","0")+":05"
 						EndIf
 					EndIf
-					captionFont.DrawBox(title, captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+					captionFont.DrawBox(title, captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
-					textFont.DrawBox(GetLocale("AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 0*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("AUDIENCE_NUMBER")+":", labelArea.x, labelArea.y + 0*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.x, labelArea.y + 1*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.x, labelArea.y + 2*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
-					TextFont.DrawBox("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH() -2, valueArea.GetW(), valueArea.GetH(), sALIGN_RIGHT_CENTER, rankFontColor)
+					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					TextFont.DrawBox("#"+audienceRanks[0], valueArea.x, valueArea.y + 0*valueArea.h -2, valueArea.w, valueArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
-					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.GetX())
+					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.x)
 					Local splitter:Int = 20
 
 					Local drawOnLeft:Int = True
@@ -688,15 +687,17 @@ endrem
 
 						If i >= 8 Then row = 7
 						If i = 8 Then drawOnLeft = 1
+						
+						Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(i)
 
 						If drawOnLeft
-							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2, 0 ), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
-							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
+							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)), labelArea.x, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(targetGroupID), 2, 0 ), labelArea.x, labelArea.y + row*labelArea.h, halfWidth - splitter - 20, labelArea.h, sALIGN_RIGHT_CENTER, fontColor)
+							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.x, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 						Else
-							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2, 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
-							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
+							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)), labelArea.x + halfWidth + splitter, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(targetGroupID), 2, 0 ), labelArea.x +  halfWidth + splitter, labelArea.y + row*labelArea.h, halfWidth - splitter - 20, labelArea.h, sALIGN_RIGHT_CENTER, fontColor)
+							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.x +  halfWidth + splitter, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 						EndIf
 						drawOnLeft = 1 - drawOnLeft
 					Next
@@ -743,7 +744,6 @@ endrem
 
 		GuiManager.Draw( LS_screenName )
 	End Method
-
 End Type
 
 

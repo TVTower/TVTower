@@ -84,6 +84,51 @@ Struct SRectI
 	Method GetRight:Int()
 		Return h
 	End Method
+
+
+	'moves the rectangle by dx,dy
+	'returns a new rectangle
+	Method Move:SRectI(dx:Int, dy:Int)
+		Return new SRectI(self.x + dx, self.y + dy, self.w, self.h)
+	End Method
+
+
+	Method MoveTo:SRectI(position:SVec2I)
+		Return new SRectI(position.x, position.y, self.w, self.h)
+	End Method
+
+	Method MoveTo:SRectI(x:Int, y:Int)
+		Return new SRectI(x, y, self.w, self.h)
+	End Method
+
+
+	Method Resize:SRectI(size:SVec2I)
+		Return new SRectI(x, y, size.x, size.y)
+	End Method
+
+	Method Resize:SRectI(w:Int, h:Int)
+		Return new SRectI(self.x, self.y, w, h)
+	End Method
+
+
+	Method GetXCenter:Int()
+		Return x + w/2
+	End Method
+
+
+	Method GetYCenter:Int()
+		Return y + h/2
+	End Method
+
+
+	Method GetX2:Int()
+		Return x + w
+	End Method
+
+
+	Method GetY2:Int()
+		Return y + h
+	End Method
 End Struct
 
 
