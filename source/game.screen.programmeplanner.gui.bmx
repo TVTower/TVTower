@@ -117,21 +117,23 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 	'override default to enable splitted blocks (one left, two right etc.)
-	Method containsXY:Int(x:Float,y:Float)
+	Method containsXY:Int(x:Float,y:Float) override
 		If isDragged() Or broadcastMaterial.GetBlocks() = 1
 			Return GetScreenRect().containsXY(x,y)
 		EndIf
 
 		If Self._parent
+			Local parentScrRect:SRectI = _parent.GetScreenRect().ToSRectI()
+
 			For Local i:Int = 1 To GetBlocks()
 				'get the intersecting rectangle between parentRect and blockRect
 				'the x,y-values are screen coordinates!
 				'GetBlockRect() returns a new TRectangle instance
-				If GetBlockRect(i).Intersect( _parent.GetScreenRect() ).containsXY(x,y) Then Return True
+				If GetBlockRect(i).IntersectRect( parentScrRect ).contains(Int(x), Int(y)) Then Return True
 			Next
 		Else
 			For Local i:Int = 1 To GetBlocks()
-				If GetBlockRect(i).containsXY(x,y) Then Return True
+				If GetBlockRect(i).Contains(Int(x), Int(y)) Then Return True
 			Next
 		EndIf
 		Return False
@@ -169,15 +171,17 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
-	Method GetBlockRect:TRectangle(block:Int=1)
+	Method GetBlockRect:SRectI(block:Int=1)
 		Local pos:SVec2I
 		local assetH:int = GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()
 		'dragged and not in DrawGhostMode
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			Local scrRect:TRectangle = GetScreenRect()
+
 			If block > 1
-				pos = New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY() + assetH * (block - 1)))
+				pos = New SVec2I(int(scrRect.x), int(scrRect.y + assetH * (block - 1)))
 			Else
-				pos = New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY()))
+				pos = New SVec2I(int(scrRect.x), int(scrRect.y))
 			EndIf
 		Else
 			Local startSlot:Int = lastSlot
@@ -198,7 +202,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 		EndIf
 
-		Return New TRectangle.Init(pos.x,pos.y, Self.rect.getW(), assetH)
+		Return New SRectI(pos.x,pos.y, Int(Self.rect.w), assetH)
 	End Method
 
 

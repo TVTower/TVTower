@@ -264,7 +264,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			genreSize.CopyFrom( GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.GetDimension() )
 			Local currY:Int = GetGenresRect().GetY()
 			Local currX:Int = GetGenresRect().GetX()
-			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, GetGenreSize().x - 12 - 5, GetGenreSize().y)
+			Local textRect:SRectI = New SRectI(currX + 13, currY, Int(GetGenreSize().x - 12 - 5), Int(GetGenreSize().y))
 
 			Local oldAlpha:Float = GetAlpha()
 
@@ -300,7 +300,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 				'genre background contains a 2px splitter (bottom + top)
 				'so add 1 pixel to textY
-				textRect.SetY(currY + 1)
+				textRect = New SRectI(textRect.x, currY + 1, textRect.w, textRect.h)
 
 				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
 				Local filterName:String = visibleFilters[i].GetCaption()

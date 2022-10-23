@@ -347,7 +347,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'how much days to draw
 		local showDays:int = 10
 		'where to draw + dimension
-		local curveArea:TRectangle = new TRectangle.Init(509 + screenOffsetX,239 + screenOffsetY, 240, 70)
+		local curveArea:SRectI = new SRectI(509 + screenOffsetX, 239 + screenOffsetY, 240, 70)
 		'heighest reached money value of that days
 		Local maxValue:int = 0
 		'minimum money (may be negative)
@@ -367,18 +367,20 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		Next
 
 
-		local slot:int				= 0
-		local slotPos:TVec2D		= new TVec2D(0,0)
-		local previousSlotPos:TVec2D= new TVec2D(0,0)
-		local slotWidth:int 		= curveArea.GetW() / showDays
+		Local slot:int = 0
+		Local slotPosX:Int
+		Local slotPosy:Int
+		local previousSlotPosX:Int
+		local previousSlotPosY:Int
+		local slotWidth:int = curveArea.w / showDays
 
-		local yPerMoney:Float = curveArea.GetH() / Float(Abs(minValue) + maxValue)
+		local yPerMoney:Float = curveArea.h / Float(Abs(minValue) + maxValue)
 		'zero is at "bottom - minMoney*yPerMoney"
-		local yOfZero:Float = curveArea.GetH() - yPerMoney * Abs(minValue)
+		local yOfZero:Float = curveArea.h - yPerMoney * Abs(minValue)
 
 		local hoveredDay:int = -1
 		For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
-			if THelper.MouseIn(int(curveArea.GetX() + (slot-0.5) * slotWidth), int(curveArea.GetY()), slotWidth, int(curveArea.GetH()))
+			if THelper.MouseIn(int(curveArea.x + (slot-0.5) * slotWidth), curveArea.y, slotWidth, curveArea.h)
 				hoveredDay = i
 				'leave for loop
 				exit
@@ -389,21 +391,21 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			local time:Long = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
 			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
-				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, curveArea.GetW(), -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))
+				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.x, curveArea.GetY2() + 2, curveArea.w, -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))
 			Else
-				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, curveArea.GetW(), -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))
+				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.x, curveArea.GetY2() + 2, curveArea.w, -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))
 			Endif
 
-			local hoverX:int = curveArea.GetX() + (slot-0.5) * slotWidth
-			local hoverW:int = Min(curveArea.GetX() + curveArea.GetW() - hoverX, slotWidth)
-			if hoverX < curveArea.GetX() then hoverW = slotWidth / 2
-			hoverX = Max(curveArea.GetX(), hoverX)
+			local hoverX:int = curveArea.x + (slot-0.5) * slotWidth
+			local hoverW:int = Min(curveArea.GetX2() - hoverX, slotWidth)
+			if hoverX < curveArea.x then hoverW = slotWidth / 2
+			hoverX = Max(curveArea.x, hoverX)
 
 			Local oldCol:SColor8; GetColor(oldCol)
 			Local oldColA:Float = GetAlpha()
 			SetBlend( LightBlend )
 			SetAlpha( 0.1 * oldColA )
-			DrawRect(hoverX, curveArea.GetY(), hoverW, curveArea.GetH())
+			DrawRect(hoverX, curveArea.y, hoverW, curveArea.h)
 			SetBlend( AlphaBlend )
 			SetColor( oldCol )
 			SetAlpha( oldColA )
@@ -420,25 +422,29 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'      width of a day)
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			slot = 0
-			slotPos.SetXY(0,0)
-			previousSlotPos.SetXY(0,0)
+			slotPosX = 0
+			slotPosY = 0
+			previousSlotPosX = 0
+			previousSlotPosY = 0
 			local oldAlpha:Float = GetAlpha()
 			For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
 				local afterStart:int = not (i < GetWorldTime().GetStartDay())
 
-				previousSlotPos.SetXY(slotPos.x, slotPos.y)
-				slotPos.SetXY(slot * slotWidth, 0)
+				previousSlotPosX = slotPosX
+				previousSlotPosY = slotPosY
+				slotPosX = slot * slotWidth
+				slotPosY = 0
 				'maximum is at 90% (so it is nicely visible)
-'				if maxValue > 0 then slotPos.SetY(curveArea.GetH() - Floor((player.GetFinance(i).money / float(maxvalue)) * curveArea.GetH()))
+'				if maxValue > 0 then slotPosY = curveArea.h - Floor((player.GetFinance(i).money / float(maxvalue)) * curveArea.h)
 
-				slotPos.SetY(yOfZero - player.GetFinance(i).money * yPerMoney)
+				slotPosY = yOfZero - player.GetFinance(i).money * yPerMoney
 				if afterStart
 					player.color.setRGB()
 					SetAlpha 0.3 * oldAlpha
-					DrawOval(curveArea.GetX() + slotPos.GetX()-3, curveArea.GetY() + slotPos.GetY()-3,6,6)
+					DrawOval(curveArea.x + slotPosX-3, curveArea.y + slotPosY-3,6,6)
 					SetAlpha 1.0 * oldAlpha
 					if slot > 0
-						DrawLine(curveArea.GetX() + previousSlotPos.GetX(), curveArea.GetY() + previousSlotPos.GetY(), curveArea.GetX() + slotPos.GetX(), curveArea.GetY() + slotPos.GetY())
+						DrawLine(curveArea.x + previousSlotPosX, curveArea.y + previousSlotPosY, curveArea.x + slotPosX, curveArea.y + slotPosY)
 						SetColor 255,255,255
 					endif
 					SetAlpha oldAlpha
@@ -449,8 +455,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		SetLineWidth(1)
 
 		'coord descriptor
-		textSmallFont.DrawBox(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY()-2, curveArea.GetW(), 20, sALIGN_RIGHT_TOP, labelColor)
-		textSmallFont.DrawBox(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, sALIGN_RIGHT_BOTTOM, labelColor)
+		textSmallFont.DrawBox(TFunctions.convertValue(maxvalue,2,0), curveArea.x, curveArea.y-2, curveArea.w, 20, sALIGN_RIGHT_TOP, labelColor)
+		textSmallFont.DrawBox(TFunctions.convertValue(minvalue,2,0), curveArea.x, curveArea.GetY2()-20, curveArea.w, 20, sALIGN_RIGHT_BOTTOM, labelColor)
 
 
 		GuiManager.Draw( LS_officeFinancialScreen )
