@@ -540,9 +540,43 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 
+		'=== ABORT PRODUCTIONS ? ===
+		Local productions:TProduction[]
+		For Local p:TProduction = EachIn GetProductionManager().productionsToProduce
+			If p.owner = playerID Then productions :+ [p]
+		Next
+		For Local p:TProduction = EachIn GetProductionManager().liveProductions
+			If p.owner = playerID Then productions :+ [p]
+		Next
+		For Local p:TProduction = EachIn productions
+			GetProductionManager().AbortProduction(p)
+			'delete corresponding concept too
+			GetProductionConceptCollection().Remove(p.productionConcept)
+			TLogger.Log("ResetPlayer()", "Stopped production: "+p.productionConcept.getTitle(), LOG_DEBUG)
+		Next
+
+		'=== SELL ALL SCRIPTS ===
+		Local lists:TList[] = [ programmeCollection.scripts, ..
+		          programmeCollection.suitcaseScripts, ..
+		          programmeCollection.studioScripts ]
+		Local scripts:TScript[]
+		For Local list:TList = EachIn lists
+			For Local script:TScript = EachIn list
+				scripts :+ [script]
+			Next
+		Next
+
+		For Local script:TScript = EachIn scripts
+			'remove script, sell it and destroy production concepts
+			'linked to that script
+			programmeCollection.RemoveScript(script, True)
+			TLogger.Log("ResetPlayer()", "Sold script: "+script.getTitle(), LOG_DEBUG)
+		Next
+
+
 		'=== SELL ALL PROGRAMMES ===
 		'sell forced too (so also programmed ones)
-		Local lists:TList[] = [ programmeCollection.suitcaseProgrammeLicences, ..
+		lists = [ programmeCollection.suitcaseProgrammeLicences, ..
 		                        programmeCollection.singleLicences, ..
 		                        programmeCollection.seriesLicences, ..
 		                        programmeCollection.collectionLicences ]
@@ -585,43 +619,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			contract.Fail( GetWorldTime().GetTimeGone() )
 			TLogger.Log("ResetPlayer()", "Aborted contract: "+contract.getTitle(), LOG_DEBUG)
 		Next
-
-
-
-		'=== SELL ALL SCRIPTS ===
-		lists = [ programmeCollection.scripts, ..
-		          programmeCollection.suitcaseScripts, ..
-		          programmeCollection.studioScripts ]
-		Local scripts:TScript[]
-		For Local list:TList = EachIn lists
-			For Local script:TScript = EachIn list
-				scripts :+ [script]
-			Next
-		Next
-		For Local script:TScript = EachIn scripts
-			'remove script, sell it and destroy production concepts
-			'linked to that script
-			programmeCollection.RemoveScript(script, True)
-			TLogger.Log("ResetPlayer()", "Sold script: "+script.getTitle(), LOG_DEBUG)
-		Next
-
-
-
-		'=== ABORT PRODUCTIONS ? ===
-		Local productions:TProduction[]
-		For Local p:TProduction = EachIn GetProductionManager().productionsToProduce
-			If p.owner = playerID Then productions :+ [p]
-		Next
-		For Local p:TProduction = EachIn GetProductionManager().liveProductions
-			If p.owner = playerID Then productions :+ [p]
-		Next
-		For Local p:TProduction = EachIn productions
-			GetProductionManager().AbortProduction(p)
-			'delete corresponding concept too
-			GetProductionConceptCollection().Remove(p.productionConcept)
-			TLogger.Log("ResetPlayer()", "Stopped production: "+p.productionConcept.getTitle(), LOG_DEBUG)
-		Next
-
 
 
 		'=== STOP ROOM RENT CONTRACTS ===
