@@ -1005,12 +1005,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
 		'where to draw
-		Local outer:TRectangle = New TRectangle
+		Local outer:SRectI = New SRectI
 		'calculate position/size of content elements
-		Local contentX:Int = 0
-		Local contentY:Int = 0
-		Local contentW:Int = 0
-		Local contentH:Int = 0
+		Local content:SRectI = New SRectI()
 		Local outerSizeH:Int = skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 		Local outerH:Int = 0 'size of the "border"
 
@@ -1021,7 +1018,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		msgH = skin.GetMessageSize(100, -1, "").y
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), content.w - 10, 100))
 
 
 		'=== PRODUCTION CONCEPT LIST ===
@@ -1031,90 +1028,78 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			availableHeight = 370
 		EndIf
 
-		outer.Init(10, 15, 210, availableHeight)
-		contentX = skin.GetContentX(outer.GetX())
-		contentY = skin.GetContentY(outer.GetY())
-		contentW = skin.GetContentW(outer.GetW())
-		contentH = skin.GetContentH(outer.GetH())
+		outer = new SRectI(10, 15, 210, availableHeight)
+		content = skin.GetContentRect(outer)
+		Local contentY:Int = content.y
+		
+		Local checkboxArea:Int = productionConceptTakeOver.rect.h + 0*buttonAreaPaddingY
 
-		Local checkboxArea:Int = productionConceptTakeOver.rect.GetH() + 0*buttonAreaPaddingY
+		Local listH:Int = content.h - titleH - checkboxArea
 
-		Local listH:Int = contentH - titleH - checkboxArea
-
-		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		skin.RenderContent(content.x, contentY, content.w, titleH, "1_top")
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), content.x + 5, contentY, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
-		skin.RenderContent(contentX, contentY, contentW, listH , "2")
+		skin.RenderContent(content.x, contentY, content.w, listH , "2")
 		'reposition/resize list and keep scroll position
-		If productionConceptList.rect.getX() <> contentX + 5 OR productionConceptList.getHeight() <> listH - 6
+		If productionConceptList.rect.x <> content.x + 5 OR productionConceptList.getHeight() <> listH - 6
 			Local scrollPosition:Float = productionConceptList.GetScrollPercentageY()
-			productionConceptList.SetPosition(contentX + 5, contentY + 3)
-			productionConceptList.SetSize(contentW - 10, listH - 6)
+			productionConceptList.SetPosition(content.x + 5, contentY + 3)
+			productionConceptList.SetSize(content.w - 10, listH - 6)
 			'if for the enlarged list the scrollbar is still visible restore the scroll position
 			If Not currentProductionConcept And productionConceptList.guiScrollerV And productionConceptList.guiScrollerV.isVisible() Then productionConceptList.SetScrollPercentageY(scrollPosition-0.001)
 		EndIf
 		contentY :+ listH
 
-		skin.RenderContent(contentX, contentY, contentW, contentH - (listH+titleH) , "1_bottom")
+		skin.RenderContent(content.x, contentY, content.w, content.h - (listH + titleH) , "1_bottom")
 		'reposition checkbox
-		productionConceptTakeOver.SetPosition(contentX + 5, contentY + buttonAreaPaddingY)
-		productionConceptTakeOver.SetSize(contentW - 10)
-		contentY :+ contentH - (listH+titleH)
+		productionConceptTakeOver.SetPosition(content.x + 5, contentY + buttonAreaPaddingY)
+		productionConceptTakeOver.SetSize(content.w - 10)
+		contentY :+ content.h - (listH + titleH)
 
-		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+		skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
 
 		If currentProductionConcept
 			'=== CHECK AND START BOX ===
-			outer.SetXYWH(10, 225, 210, 145)
-			contentX = skin.GetContentX(outer.x)
-			contentY = skin.GetContentY(outer.y)
-			contentW = skin.GetContentW(outer.w)
-			contentH = skin.GetContentH(outer.h)
+			outer = New SRectI(10, 225, 210, 145)
+			content = skin.GetContentRect(outer)
+			contentY = content.y
 
 			buttonAreaH = finishProductionConcept.rect.h + 2*buttonAreaPaddingY
 
-			'reset
-			contentY = contentY
-			skin.RenderContent(contentX, contentY, contentW, contentH - buttonAreaH, "1_top")
+			skin.RenderContent(content.x, contentY, content.w, content.h - buttonAreaH, "1_top")
 			contentY :+ 3
-			skin.fontBold.DrawSimple(GetLocale("MOVIE_CAST"), contentX + 5, contentY-1, skin.textColorLabel)
-			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
+			skin.fontBold.DrawSimple(GetLocale("MOVIE_CAST"), content.x + 5, contentY - 1, skin.textColorLabel)
+			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), content.x + 5, contentY -1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
-			skin.fontBold.DrawSimple(GetLocale("PRODUCTION"), contentX + 5, contentY-1, skin.textColorLabel)
-			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
+			skin.fontBold.DrawSimple(GetLocale("PRODUCTION"), content.x + 5, contentY - 1, skin.textColorLabel)
+			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), content.x + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 
 			SetColor 150,150,150
-			DrawRect(contentX + 5, contentY-1, contentW - 10, 1)
+			DrawRect(content.x + 5, contentY - 1, content.w - 10, 1)
 			SetColor 255,255,255
 
 			contentY :+ 1
-			skin.fontBold.DrawSimple(GetLocale("TOTAL_COSTS"), contentX + 5, contentY-1, skin.textColorNeutral)
-			skin.fontBold.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
+			skin.fontBold.DrawSimple(GetLocale("TOTAL_COSTS"), content.x + 5, contentY - 1, skin.textColorNeutral)
+			skin.fontBold.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), content.X + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 
 			contentY :+ 10
-			skin.fontBold.DrawSimple(GetLocale("DURATION"), contentX + 5, contentY-1, skin.textColorNeutral)
-'			local productionTimeHours:Int = currentProductionConcept.GetBaseProductionTime() / TWorldTime.HOURLENGTH
-'			if productionTimeHours = 1
-'				skin.fontNormal.DrawBox(productionTimeHours + " " + GetLocale("HOUR"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
-'			Else
-'				skin.fontNormal.DrawBox(productionTimeHours + " " + GetLocale("HOURS"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
-'			endif
-			skin.fontNormal.DrawBox(TWorldtime.GetHourMinutesLeft(currentProductionConcept.GetBaseProductionTime(), True), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			skin.fontBold.DrawSimple(GetLocale("DURATION"), content.x + 5, contentY-1, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(TWorldtime.GetHourMinutesLeft(currentProductionConcept.GetBaseProductionTime(), True), content.x + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 			contentY :+ subtitleH
 
-			contentY :+ (contentH - buttonAreaH) - 4*subtitleH - 3 -1 - 10
+			contentY :+ (content.h- buttonAreaH) - 4*subtitleH - 3 -1 - 10
 
-			skin.RenderContent(contentX, contentY, contentW, buttonAreaH, "1_bottom")
+			skin.RenderContent(content.x, contentY, content.w, buttonAreaH, "1_bottom")
 			'reposition button
-			finishProductionConcept.SetPosition(contentX + 5, contentY + buttonAreaPaddingY)
-			finishProductionConcept.SetSize(contentW - 10, 38)
+			finishProductionConcept.SetPosition(content.x + 5, contentY + buttonAreaPaddingY)
+			finishProductionConcept.SetSize(content.w - 10, 38)
 			contentY :+ buttonAreaH
 
-			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+			skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
 
 			'=== CAST / MESSAGE BOX ===
@@ -1123,16 +1108,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Local msgAreaH:Int = 0
 			If Not currentProductionConcept.IsCastComplete() Then msgAreaH :+ msgH + msgPaddingY
 			If Not currentProductionConcept.IsFocusPointsComplete() Then msgAreaH :+ msgH + msgPaddingY
-			outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
 
-			outer.SetXYWH(225, 15, 350, outerH)
-			contentX = skin.GetContentX(outer.x)
-			contentY = skin.GetContentY(outer.y)
-			contentW = skin.GetContentW(outer.w)
-			contentH = skin.GetContentH(outer.h)
 
-			'reset
-			contentY = contentY
+			outer = new SRectI(225, 15, 350, outerSizeH + titleH + subTitleH + castAreaH + msgAreaH)
+			content = skin.GetContentRect(outer)
+			contentY = content.y
 
 			Local title:String = currentProductionConcept.GetTitle()
 			Local subTitle:String
@@ -1143,47 +1123,47 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 
 
-			skin.RenderContent(contentX, contentY, contentW, titleH + subTitleH, "1_top")
-			skin.fontCaption.DrawBox(title, contentX + 5, contentY-1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.RenderContent(content.x, contentY, content.w, titleH + subTitleH, "1_top")
+			skin.fontCaption.DrawBox(title, content.x + 5, contentY - 1, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 
 			If currentProductionConcept.script.IsEpisode()
-				skin.fontSmallCaption.DrawBox(subTitle, contentX + 5, contentY-1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				skin.fontSmallCaption.DrawBox(subTitle, content.x + 5, contentY - 1, content.w - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			EndIf
 			contentY :+ subTitleH
 
-			skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
+			skin.RenderContent(content.x, contentY, content.w, castAreaH, "2")
 			'reposition cast list
-			If castSlotList.rect.x <> contentX + 5
-				castSlotList.SetPosition(contentX +5, contentY + 3)
+			If castSlotList.rect.x <> content.x + 5
+				castSlotList.SetPosition(content.x +5, contentY + 3)
 				'-5 => 210 height, each slot 42px, so 5 slots fit
-				castSlotList.SetSize(contentW - 10, castAreaH - 5 )
-				castSlotList.SetSlotMinDimension(contentW - 10, 42)
+				castSlotList.SetSize(content.w - 10, castAreaH - 5 )
+				castSlotList.SetSlotMinDimension(content.w - 10, 42)
 			EndIf
 
 			contentY :+ castAreaH
 
 			If msgAreaH > 0
-				skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
+				skin.RenderContent(content.x, contentY, content.w, msgAreaH, "1_bottom")
 				If Not currentProductionConcept.IsCastComplete()
-					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("CAST_INCOMPLETE"), "audience", "warning")
+					skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("CAST_INCOMPLETE"), "audience", "warning")
 					contentY :+ msgH + msgPaddingY
 				EndIf
 				If Not currentProductionConcept.IsFocusPointsComplete()
 					If currentProductionConcept.productionCompany
 						If Not currentProductionConcept.IsFocusPointsMinimumUsed()
-							skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS"), "spotsplanned", "warning")
+							skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS"), "spotsplanned", "warning")
 						Else
-							skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", "neutral")
+							skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", "neutral")
 						EndIf
 					Else
-						skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", "warning")
+						skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", "warning")
 					EndIf
 					contentY :+ msgH + msgPaddingY
 				EndIf
 			EndIf
 
-			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+			skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
 
 
@@ -1196,32 +1176,27 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			If currentProductionConcept.productionFocus
 				productionFocusH :+ currentProductionConcept.productionFocus.GetFocusAspectCount() * (productionFocusSliderH + productionFocusLabelH)
 			EndIf
-			outerH = outerSizeH + titleH + productionCompanyH + productionFocusH
-
-			outer.SetXYWH(580, 15, 210, outerH)
-			contentX = skin.GetContentX(outer.x)
-			contentY = skin.GetContentY(outer.y)
-			contentW = skin.GetContentW(outer.w)
-			contentH = skin.GetContentH(outer.h)
 
 
-			'reset
-			contentY = contentY
-			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			skin.fontCaption.DrawBox(GetLocale("PRODUCTION_DETAILS"), contentX + 5, contentY-1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			outer = new SRectI(580, 15, 210, outerSizeH + titleH + productionCompanyH + productionFocusH)
+			content = skin.GetContentRect(outer)
+			contentY = content.y
+
+			skin.RenderContent(content.x, contentY, content.w, titleH, "1_top")
+			skin.fontCaption.DrawBox(GetLocale("PRODUCTION_DETAILS"), content.x + 5, contentY - 1, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 
-			skin.RenderContent(contentX, contentY, contentW, productionCompanyH + productionFocusH, "1")
+			skin.RenderContent(content.x, contentY, content.w, productionCompanyH + productionFocusH, "1")
 
-			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_COMPANY"), content.x + 5, contentY + 3, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			'reposition dropdown
-			If productionCompanySelect.rect.x <> contentX + 5
-				productionCompanySelect.SetPosition(contentX + 5, contentY + 20)
-				productionCompanySelect.SetSize(contentW - 10, -1)
+			If productionCompanySelect.rect.x <> content.x + 5
+				productionCompanySelect.SetPosition(content.x + 5, contentY + 20)
+				productionCompanySelect.SetSize(content.w - 10, -1)
 			EndIf
 			contentY :+ productionCompanyH
 
-			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), contentX + 5, contentY + 3, contentW - 10, titleH - 3, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), content.x + 5, contentY + 3, content.w - 10, titleH - 3, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 			'reposition sliders
 			If repositionSliders
@@ -1234,8 +1209,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				For Local i:Int = 0 Until sliderOrder.length
 					Local sliderNum:Int = sliderOrder[i]
 					Local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
-					slider.SetPosition(contentX + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
-					slider.SetSize(contentW - 10)
+					slider.SetPosition(content.x + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
+					slider.SetSize(content.w - 10)
 				Next
 				repositionSliders = False
 			EndIf
@@ -1247,7 +1222,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 					If Not productionFocusSlider[labelNum-1].IsVisible() Then Continue
 					Local focusIndex:Int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
 					Local label:String = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
-					skin.fontNormal.DrawBox(label, contentX + 10, contentY, contentW - 15, titleH, sALIGN_LEFT_CENTER, skin.textColorLabel)
+					skin.fontNormal.DrawBox(label, content.x + 10, contentY, content.w - 15, titleH, sALIGN_LEFT_CENTER, skin.textColorLabel)
 					contentY :+ (productionFocusLabelH + productionFocusSliderH)
 				Next
 
@@ -1255,14 +1230,14 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				If currentProductionConcept.productionCompany
 					Local text:String = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").Replace("%POINTSSET%", pF.GetFocusPointsSet()).Replace("%POINTSMAX%", pF.GetFocusPointsMax())
 					If pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
-						skin.fontNormal.DrawBox("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorWarning)
+						skin.fontNormal.DrawBox("|i|"+text+"|/i|", content.x + 5, contentY, content.w - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorWarning)
 					Else
-						skin.fontNormal.DrawBox("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorLabel)
+						skin.fontNormal.DrawBox("|i|"+text+"|/i|", content.x + 5, contentY, content.w - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorLabel)
 					EndIf
 				EndIf
 				contentY :+ subTitleH
 			EndIf
-			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+			skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
 			GuiManager.Draw(evKey_supermarket_customproduction_productionconceptbox)
 			GuiManager.Draw(evKey_supermarket_customproduction_newproduction)
@@ -1293,7 +1268,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 
 		Else
-			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
+			GuiManager.Draw( evKey_supermarket_customproduction_productionconceptbox )
 		EndIf
 
 		'draw script-sheet
@@ -1720,16 +1695,13 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
-		Local outer:TRectangle = GetScreenRect().Copy() ')new TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), 200, 200)
-		Local contentX:Int = skin.GetContentX(outer.GetX())
-		Local contentY:Int = skin.GetContentY(outer.GetY())
-		Local contentW:Int = skin.GetContentW(outer.GetW())
-		Local contentH:Int = skin.GetContentH(outer.GetH())
+		Local outer:SRectI = GetScreenRect().ToSRectI()
+		Local content:SRectI = skin.GetContentRect(outer)
 
-		skin.RenderContent(contentX, contentY, contentW, 38, "1_top")
-		skin.RenderContent(contentX, contentY+38, contentW, contentH-73, "1")
-		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
-		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+		skin.RenderContent(content.x, content.y, content.w, 38, "1_top")
+		skin.RenderContent(content.x, content.y + 38, content.w, content.h - 73, "1")
+		skin.RenderContent(content.x, content.y + content.h - 35, content.w, 35, "1_bottom")
+		skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 	End Method
 End Type
 

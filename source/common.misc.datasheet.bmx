@@ -182,6 +182,28 @@ Type TDatasheetSkin
 	End Method
 
 
+	Method GetContentRect:SRectI(sheetRect:SRectI)
+		Local cpLeft:Float = contentPadding.GetLeft()
+		Local cpTop:Float = contentPadding.GetTop()
+		Return new SRectI(Int(sheetRect.x + cpLeft), ..
+                          Int(sheetRect.y + contentPadding.GetTop()), ..
+		                  Int(sheetRect.w - cpLeft - contentPadding.GetRight()), ..
+		                  Int(sheetRect.h - cpTop - contentPadding.GetBottom())..
+		                 )
+	End Method
+	
+	
+	Method GetContentRect:SRectI(x:Float, y:Float, sheetWidth:Float, sheetHeight:Float)
+		Local cpLeft:Float = contentPadding.GetLeft()
+		Local cpTop:Float = contentPadding.GetTop()
+		Return new SRectI(Int(x + cpLeft), ..
+                          Int(y + contentPadding.GetTop()), ..
+		                  Int(sheetWidth - cpLeft - contentPadding.GetRight()), ..
+		                  Int(sheetHeight - cpTop - contentPadding.GetBottom())..
+		                 )
+	End Method
+
+
 	Method GetContentX:int(x:Float = 0)
 		return int(x + contentPadding.GetLeft())
 	End Method

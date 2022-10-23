@@ -78,6 +78,11 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method ToSRectI:SRectI()
+		Return New SRectI(Int(x),Int(y),Int(w),Int(h))
+	End Method
+
+
 '	Method ToIntString:String()
 '		return "xy="+position.ToIntString()+"  wh="+dimension.ToIntString()
 '	End Method
