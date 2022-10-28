@@ -1309,10 +1309,8 @@ Type TGUINews Extends TGUIGameListItem
 			fontNormal.DrawSimple("Ist: " + eventCan, screenX + 5, textY)
 			textY :+ 11
 			endrem
-			local happenEffects:int = 0
-			local broadcastEffects:int = 0
-			if ne.effects.GetList("happen") then happenEffects = ne.effects.GetList("happen").Count()
-			if ne.effects.GetList("broadcast") then broadcastEffects = ne.effects.GetList("broadcast").Count()
+			local happenEffects:int = ne.GetEffectsCount("happen")
+			local broadcastEffects:int = ne.GetEffectsCount("broadcast")
 			fontNormal.DrawSimple("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + ne.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
 			textY :+ 11
 

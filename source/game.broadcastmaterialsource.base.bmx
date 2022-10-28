@@ -100,6 +100,32 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 
 		Return effects.Copy()
 	End Method
+	
+	
+	Method GetEffectsList:TList(name:String)
+		if not effects then Return Null
+		Return effects.GetList(name)
+	End Method
+
+
+	Method GetEffectsCount:Int(name:String)
+		if Not effects Then Return 0
+		Local l:TList = effects.GetList(name)
+		If l Then Return l.Count()
+		Return 0
+	End Method
+
+
+	Method GetEffects:TGameModifierGroup(createIfMissing:Int = True)
+		if not effects and createIfMissing Then effects = New TGameModifierGroup
+		Return effects
+	End Method
+	
+	
+	Method UpdateEffects:Int(name:String, params:TData)
+		If Not effects Then Return False
+		Return effects.Update(name, params)
+	End Method
 
 
 	Method GetTitle:String() {_exposeToLua}
