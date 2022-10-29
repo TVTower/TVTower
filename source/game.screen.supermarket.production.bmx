@@ -1493,6 +1493,8 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	End Method
 
 	Method onClickSortCastButton:Int(triggerEvent:TEventBase )
+		If triggerEvent.GetSender() <> sortCastButton Then Return False
+
 		sortType = sortType + 1
 		If sortType > 3 Then sortType = 0
 		SortCastList(sortType)
