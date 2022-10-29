@@ -190,8 +190,7 @@ endrem
 		Local effect:TGameModifierBase = GetGameModifierManager().CreateAndInit(effectName, effectData)
 		If Not effect Then Return False
 		
-		if not effects then effects = new TGameModifierGroup
-		effects.AddEntry(effectTrigger, effect)
+		GetEffects(True).AddEntry(effectTrigger, effect)
 		Return True
 	End Method
 
