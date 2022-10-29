@@ -676,11 +676,30 @@ Type TPersist
 
 		If Not strictMode And serializedFieldTypeID
 			'deserialize it, so that its reference exists
-			Local deserializedObject:object = DeSerializeObject("", fieldNode)
+			Local deserializedObject:object
+			'fall back to parent if reference-persisted
+			'example:
+			'an no longer existing field "currentAnimationName" of type
+			'string will be single line if it is "reference"-persisted
+			'
+			'	<field name="currentAnimationName" ref="8OVR4" type="String" />
+			'
+			'compared to a one defining the reference):
+			'
+			'	<field name="currentAnimationName" type="String">
+			'		<String id="1DUWSUY8PS">standfront</String>
+			'	</field>
+			
+			'If serializedFieldTypeID.Name().ToLower() = "string" and fieldNode.getAttribute("ref")
+			If fieldNode.getAttribute("ref")
+				deserializedObject = DeSerializeObject("", fieldNode, 0, True)
+			Else
+				deserializedObject = DeSerializeObject("", fieldNode)
+			EndIf
 
 			Local parentTypeName:String
 			if parentType then parentTypeName = parentType.name()
-			If not DelegateHandleMissingField:Int(parent, parentTypeName, fieldName, fieldTypeName, deserializedObject)
+			If not DelegateHandleMissingField(parent, parentTypeName, fieldName, fieldTypeName, deserializedObject)
 				Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
 			Else
 				Print "[INFORMATION] TPersistence: Handled missing field: " + parentTypeName+"."+fieldName+":"+fieldTypeName+"."
