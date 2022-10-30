@@ -184,7 +184,7 @@ Type TDialogue
 	
 	Method GetAnswerContentMaxWidth:Int()
 		'print "GetAnswerContentMaxWidth: " + _rawAnswerBalloonRect.w + " - " + GetContentPadding().GetLeft() + " - " + GetContentPadding().GetRight()
-		Return _rawAnswerBalloonRect.x - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
+		Return _rawAnswerBalloonRect.w - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 	End Method
 
 
