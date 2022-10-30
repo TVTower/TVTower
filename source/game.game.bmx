@@ -1687,7 +1687,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 						endif
 					EndIf
 				Next
-				if Millisecs() - t > 1000
+				if Millisecs() - t > 5000
 					For Local player:TPlayer = EachIn GetPlayerCollection().players
 						If player.isLocalAI() 
 							if player.PlayerAI.GetNextEventCount() > 0
