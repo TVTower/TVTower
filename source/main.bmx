@@ -293,6 +293,7 @@ Type TApp
 			GetGraphicsManager().InitGraphics()
 
 			GameRules.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
+			GameRules.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
 
 			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
@@ -511,6 +512,7 @@ Type TApp
 
 
 		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
+		GameRules.autoSaveIntervalHours = config.GetInt("autosaveInterval", 0)
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 

@@ -100,7 +100,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[3]
 				If Not chainSettingsMenu
-					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New SVec2I(0,0), New SVec2I(700,500), "SYSTEM")
+					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New SVec2I(0,0), New SVec2I(700,535), "SYSTEM")
 					chainSettingsMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSettingsMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -185,7 +185,7 @@ Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 
 
 
-		settingsPanel = New TGUISettingsPanel.Create(New SVec2I(0,0), New SVec2I(700, 500), "SYSTEM")
+		settingsPanel = New TGUISettingsPanel.Create(New SVec2I(0,0), New SVec2I(700, 535), "SYSTEM")
 		'add to canvas of this window
 		'GetGuiContent()
 		AddChild(settingsPanel)
