@@ -2295,9 +2295,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
 		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
-		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
+		barH = skin.GetBarSize(100, -1).y
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 		'increase for multiline
 '		if titleH > 18 then titleH :+ 3
@@ -2717,7 +2717,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'reactivate when adding messages
 		'msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		barH = skin.GetBarSize(100, -1).y
 
 		'bar area
 		'bar area starts with padding, ends with padding and contains

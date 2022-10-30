@@ -1532,8 +1532,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).y
+		barH = skin.GetBarSize(100, -1).y
 
 		'bar area
 		'bar area starts with padding, ends with padding and contains 2
@@ -1667,8 +1667,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).GetY()
-		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).y
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 
 		'box area
 		'box area starts with padding, ends with padding and contains
@@ -1893,12 +1893,12 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'finishBroadcast - after "onFinishBroadcasting"-call)
 			If base.GetTimesBroadcasted() = 0
 				If Not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
-					base.effects.Update("broadcastFirstTimeDone", effectParams)
+					base.UpdateEffects("broadcastFirstTimeDone", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
 				EndIf
 			EndIf
 
-			base.effects.Update("broadcastDone", effectParams)
+			If base.effects Then base.effects.Update("broadcastDone", effectParams)
 
 		'send as infomercial
 		ElseIf broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -1906,12 +1906,12 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'finishBroadcast while this is called on beginBroadcast)
 			If base.GetTimesBroadcastedAsInfomercial() = 0
 				If Not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE)
-					base.effects.Update("broadcastFirstTimeInfomercialDone", effectParams)
+					base.UpdateEffects("broadcastFirstTimeInfomercialDone", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE, True)
 				EndIf
 			EndIf
 
-			base.effects.Update("broadcastInfomercialDone", effectParams)
+			base.UpdateEffects("broadcastInfomercialDone", effectParams)
 		EndIf
 	End Method
 
@@ -1929,24 +1929,24 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'finishBroadcast while this is called on beginBroadcast)
 			If base.GetTimesBroadcasted() = 0
 				If Not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
-					base.effects.Update("broadcastFirstTime", effectParams)
+					base.UpdateEffects("broadcastFirstTime", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 				EndIf
 			EndIf
 
-			base.effects.Update("broadcast", effectParams)
+			If base.effects Then base.effects.Update("broadcast", effectParams)
 
 		ElseIf broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			'if nobody broadcasted till now (times are adjusted on
 			'finishBroadcast while this is called on beginBroadcast)
 			If base.GetTimesBroadcastedAsInfomercial() = 0
 				If Not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL)
-					base.effects.Update("broadcastFirstTimeInfomercial", effectParams)
+					base.UpdateEffects("broadcastFirstTimeInfomercial", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL, True)
 				EndIf
 			EndIf
 
-			base.effects.Update("broadcastInfomercial", effectParams)
+			base.UpdateEffects("broadcastInfomercial", effectParams)
 		EndIf
 	End Method
 

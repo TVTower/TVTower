@@ -87,7 +87,7 @@ Type TRoomDoorBaseCollection
 		For Local door:TRoomDoorBase = EachIn list
 			'also allow invisible rooms... so just check if hit the area
 			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.area.GetIntX(), int(door.area.GetY() - (door.area.GetH() -1)), int(door.area.GetW()), int(door.area.GetH()))
+			If THelper.IsIn(x, y, door.area.GetIntX(), int(door.area.y - (door.area.h -1)), int(door.area.w), int(door.area.h))
 				Return door
 			EndIf
 		Next

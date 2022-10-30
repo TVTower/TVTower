@@ -264,7 +264,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		?bmxng
 		if OCM.enabled
 			OCM.FetchDump("GAMESTART")
-			OCM.Dump()
+			If OCM.printEnabled
+				OCM.Dump()
+			EndIf
 			SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
 		endif
 		?
@@ -356,9 +358,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
-		Local gray:TColor = TColor.Create(200, 200, 200)
-		Local gray2:TColor = TColor.Create(100, 100, 100)
-		Local gray3:TColor = TColor.Create(225, 225, 225)
+		Local gray:TColor = TColor.CreateGrey(200)
+		Local gray2:TColor = TColor.CreateGrey(100)
+		Local gray3:TColor = TColor.CreateGrey(225)
 
 		GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
 		GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, EColorizeMode.Overlay), "gfx_roomboard_sign_0"))
@@ -791,14 +793,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		If figure.inRoom Then figure.LeaveRoom(True)
 		figure.SetParent(GetBuilding().buildingInner)
 		figure.MoveToOffscreen()
-		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
+		figure.area.MoveX(playerID*3 + (playerID Mod 2)*15)
 		'forcefully send (no controlling possible until reaching the target)
 		'GetPlayer(i).GetFigure().SendToDoor( GetRoomDoorBasecollection().GetFirstByDetails("office", i), True)
 		Local newsDoor:TRoomDoorBase = GetRoomDoorBasecollection().GetFirstByDetails("news", playerID)
 		If Not newsDoor
 			Throw "No 'news' room found - broken config?"
 		EndIf
-		figure.ForceChangeTarget(Int(newsDoor.area.GetX()) + 60, Int(newsDoor.area.GetY()))
+		figure.ForceChangeTarget(Int(newsDoor.area.x) + 60, Int(newsDoor.area.y))
 
 
 
@@ -1427,14 +1429,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					GetBuilding().AddDoor(door)
 
 					'override defaults
-					If doorConfig.GetInt("width") > 0 Then door.area.dimension.setX( doorConfig.GetInt("width") )
-					If doorConfig.GetInt("height") > 0 Then door.area.dimension.setY( doorConfig.GetInt("height") )
+					If doorConfig.GetInt("width") > 0 Then door.area.SetW( doorConfig.GetInt("width") )
+					If doorConfig.GetInt("height") > 0 Then door.area.SetH( doorConfig.GetInt("height") )
 					door.stopOffset = doorConfig.GetInt("stopOffset", 0)
 					door.doorFlags = doorConfig.GetInt("doorFlags", 0)
 					'move these doors outside so they do not overlap with the "porter"
-					If doorConfig.GetInt("doorType") = -1 Then door.area.position.SetX(-1000 - room.id * door.area.GetW())
+					If doorConfig.GetInt("doorType") = -1 Then door.area.SetX(-1000 - room.id * door.area.w)
 					'allow overriding door positions
-					If doorConfig.GetInt("x",-1000) <> -1000 Then door.area.position.SetX(doorConfig.GetInt("x"))
+					If doorConfig.GetInt("x",-1000) <> -1000 Then door.area.SetX(doorConfig.GetInt("x"))
 				Next
 			EndIf
 
@@ -1482,7 +1484,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			Local tipNumber:Int = Rand(0, StartTips.count()-1)
 			Local tip:String[] = String[](StartTips.valueAtIndex(tipNumber))
 
-			StartTipWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,350), "InGame")
+			StartTipWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,350), "InGame")
 			StartTipWindow.screenArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.DarkenedArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )

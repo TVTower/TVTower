@@ -9,7 +9,7 @@ Type TPlannerList extends TOwnedGameObject
 	Field openState:Int = 0
 	Field currentGenre:Int =-1
 	Field enabled:Int = 0
-	Field Pos:TVec2D = New TVec2D.Init()
+	Field Pos:TVec2D = New TVec2D()
 	Field entriesRect:TRectangle
 	Field entrySize:TVec2D = New TVec2D
 

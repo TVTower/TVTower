@@ -292,7 +292,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 					_actionInfoTooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, true)
 					if not _actionInfoTooltip.parentArea then _actionInfoTooltip.parentArea = new TRectangle
 					_actionInfoTooltip.parentArea.Init(x, y, sign.imageCache.GetWidth()-3, sign.imageCache.GetHeight()-3)
-					_actionInfoTooltip.offset = new TVec2D.Init(0, 0)
+					_actionInfoTooltip.offset = new TVec2D(0, 0)
 					'avoid dwelling, just show it
 					_actionInfoTooltip.SetStep(TTooltipBase.STEP_ACTIVE)
 				EndIf
@@ -520,7 +520,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'== box area
-		boxH = skin.GetBoxSize(80, -1, "", "spotsPlanned", "neutral").GetY()
+		boxH = skin.GetBoxSize(80, -1, "", "spotsPlanned", "neutral").y
 		'contains 1 line of boxes
 		boxAreaH = 1 * boxH + boxAreaPaddingY
 

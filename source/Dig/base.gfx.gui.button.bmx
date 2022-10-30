@@ -31,11 +31,6 @@ Type TGUIButton Extends TGUIobject
 
 
 	Method Create:TGUIButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, State)
-	End Method
-
-
-	Method Create:TGUIButton(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
@@ -76,7 +71,7 @@ Type TGUIButton Extends TGUIobject
 
 		'resize to button dimension
 		caption.SetPosition(captionOffset.x, captionOffset.y)
-		caption.SetSize(rect.dimension.GetX() - captionOffset.x, rect.dimension.GetY() - captionOffset.y)
+		caption.SetSize(rect.w - captionOffset.x, rect.h - captionOffset.y)
 	End Method
 
 
@@ -166,7 +161,7 @@ endrem
 			if not color
 				caption = New TGUILabel.Create(new SVec2I(0,0), text, "")
 			else
-				caption = New TGUILabel.Create(new TVec2D.Init(0,0), text, color.ToSColor8(), "")
+				caption = New TGUILabel.Create(new SVec2I(0,0), text, color.ToSColor8(), "")
 			endif
 			
 			caption.SetContentAlignment(ALIGN_CENTER, ALIGN_CENTER)
@@ -244,22 +239,22 @@ endrem
 	End Method
 
 
-	Method DrawButtonContent:Int(position:TVec2D)
+	Method DrawButtonContent:Int(position:SVec2F)
 		If Not caption Then Return False
 		If Not caption.IsVisible() Then Return False
 
 		'move caption
 		If IsActive()
-			caption.GetScreenRect().position.AddXY(1,1)
+			caption.GetScreenRect().MoveXY(1,1)
 			caption.Draw()
-			caption.GetScreenRect().position.AddXY(-1,-1)
+			caption.GetScreenRect().MoveXY(-1,-1)
 		Else
 			caption.Draw()
 		EndIf
 	End Method
 	
 	
-	Method DrawButtonBackground:Int(position:TVec2D)
+	Method DrawButtonBackground:Int(position:SVec2F)
 		Local sprite:TSprite = GetSprite()
 		If Not IsEnabled()
 			sprite = GetSpriteFromRegistry(GetSpriteName() + ".disabled", sprite)
@@ -270,16 +265,16 @@ endrem
 		If sprite
 			'no active image available (when "mousedown" over widget)
 			If IsActive() And (sprite.name = spriteName Or sprite.name="defaultsprite")
-				sprite.DrawArea(position.getX()+1, position.getY()+1, rect.GetW(), rect.GetH())
+				sprite.DrawArea(position.x+1, position.y+1, rect.w, rect.h)
 			Else
-				sprite.DrawArea(position.getX(), position.getY(), rect.GetW(), rect.GetH())
+				sprite.DrawArea(position.x, position.y, rect.w, rect.h)
 			EndIf
 		EndIf
 	End Method
 
 
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenRect().position
+		Local atPoint:SVec2F = GetScreenRect().GetPosition()
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 

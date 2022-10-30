@@ -523,7 +523,7 @@ Type TCatmullRomSpline
 
 	'returns the coordinate of a given distance
 	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
-	Method GetTweenPoint:TVec2D(distance:Float, relativeValue:Int=False)
+	Method GetTweenPoint:SVec2F(distance:Float, relativeValue:Int=False)
 		If Not cacheGenerated Then generateCache()
 		If relativeValue Then distance = distance * totalDistance
 
@@ -546,7 +546,7 @@ Type TCatmullRomSpline
 		If Not pointA Then pointA = cache[cache.length-1]
 		'if pointA is already the last one we have, the second point
 		'could be the same
-		If Not pointB Then pointB = pointA.Copy()
+		If Not pointB Then pointB = pointA
 
 		If pointA And pointB
 			'local distanceAB:float = abs(pointB.z - pointA.z)
@@ -555,12 +555,10 @@ Type TCatmullRomSpline
 			'local weightAX:float   = 1- distanceAX/distanceAB
 			Local weightAX:Float   = 1- Abs(distance - pointA.z)/Abs(pointB.z - pointA.z)
 
-			Return New TVec2D.Init(..
-				pointA.x*weightAX + pointB.x*(1-weightAX), ..
-				pointA.y*weightAX + pointB.y*(1-weightAX) ..
-			)
+			Return New SVec2F(pointA.x*weightAX + pointB.x*(1-weightAX), ..
+			                  pointA.y*weightAX + pointB.y*(1-weightAX))
 		Else
-			Return Null
+			Return New SVec2F(0,0)
 		EndIf
 	End Method
 

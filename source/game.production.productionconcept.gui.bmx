@@ -24,7 +24,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGuiProductionConceptListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiProductionConceptListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		Self.assetNameDefault = "gfx_studio_productionConcept_0"
@@ -35,7 +35,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method CreateWithproductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
-		Self.Create()
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.SetProductionConcept(productionConcept)
 		Return Self
 	End Method
@@ -220,9 +220,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
 		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
-		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
-		barH = skin.GetBarSize(100, -1).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
+		barH = skin.GetBarSize(100, -1).y
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'message area
@@ -497,7 +497,7 @@ endrem
 		local splitterHorizontalH:int = 6
 		local msgH:int = 0, msgAreaH:int = 0, msgAreaPaddingY:int = 4
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		if subTitle
@@ -706,7 +706,7 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	End Method
 
 
-    Method Create:TGuiProductionConceptSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiProductionConceptSelectListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 		SetOption(GUI_OBJECT_DRAGABLE, False)
 
@@ -791,27 +791,29 @@ TODO: might be needed somewhen
 	End Method
 endrem
 
-	Method GetDimension:TVec2D()
+	Method GetDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 300
 		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, max(minHeight, asset.GetHeight() * scaleAsset))
+		'2 lines of text
+		Local w:Float = maxWidth
+		Local h:Float = max(minHeight, asset.GetHeight() * scaleAsset)
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 
 
@@ -990,7 +992,7 @@ End Type
 
 
 Type TGUIProductionConceptSlotList Extends TGUIGameSlotList
-    Method Create:TGUIProductionConceptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIProductionConceptSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method

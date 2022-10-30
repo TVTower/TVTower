@@ -640,8 +640,14 @@ Type TVTScriptFlag {_exposeToLua}
 	Const POOL_RANDOMIZES_ATTRIBUTES:Int = 16
 	'when given to pool/vendor, the licence will not be buyable again
 	Const POOL_REMOVES_TRADEABILITY:Int = 32
+'currently unused!
+	'is the script title/description editable?
+	Const TEXTS_EDITABLE:Int = 64
+'currently unused!
+	'more expensive
+	Const REQUIRE_AUDIENCE_DURING_PRODUCTION:Int = 128
 
-	Const count:Int = 6
+	Const count:Int = 8
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -658,6 +664,8 @@ Type TVTScriptFlag {_exposeToLua}
 			Case   8	Return 4
 			Case  16	Return 5
 			Case  32	Return 6
+			Case  64	Return 7
+			Case 128	Return 8
 		End Select
 		Return 0
 	End Function
@@ -673,6 +681,8 @@ Type TVTScriptFlag {_exposeToLua}
 			Case POOL_REFILLS_PRODUCTIONLIMITS        Return "pool_refills_productionlimits"
 			Case POOL_RANDOMIZES_ATTRIBUTES           Return "pool_randomizes_attributes"
 			Case POOL_REMOVES_TRADEABILITY            Return "pool_removes_tradeability"
+			Case TEXTS_EDITABLE                       Return "texts_editable"
+			Case REQUIRE_AUDIENCE_DURING_PRODUCTION   Return "require_audience_during_production"
 
 			Default
 				'loop through all entries and add them if contained
@@ -1614,6 +1624,8 @@ Type TVTTargetGroup {_exposeToLua}
 	Const count:Int = 9
 	'without women/men
 	Const baseGroupCount:Int = 7
+	Global baseGroupIDs:int[]
+
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
@@ -1694,6 +1706,17 @@ Type TVTTargetGroup {_exposeToLua}
 				Return result[.. result.length-1]
 		End Select
 	End Function
+	
+	
+	Function GetBaseGroupIDs:Int[]()
+		If baseGroupIDs.length = 0
+			baseGroupIDs = new Int[baseGroupCount]
+			For Local i:Int = 1 To baseGroupCount
+				baseGroupIDs[i-1] = GetAtIndex(i)
+			Next
+		EndIf
+		Return baseGroupIDs
+	End Function	
 End Type
 
 

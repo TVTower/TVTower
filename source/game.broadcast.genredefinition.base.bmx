@@ -49,10 +49,10 @@ Type TGenreDefinitionBase extends TGameObject
 		Next
 
 		AudienceAttraction = New TAudience
-		For local i:int = 1 to TVTTargetGroup.baseGroupCount
-			local id:int = TVTTargetGroup.GetAtIndex(i)
-			AudienceAttraction.SetGenderValue(id, data.GetFloat(TVTTargetGroup.GetAsString(id)+"_men", 0.5), TVTPersonGender.MALE)
-			AudienceAttraction.SetGenderValue(id, data.GetFloat(TVTTargetGroup.GetAsString(id)+"_women", 0.5), TVTPersonGender.FEMALE)
+		For local id:int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+			Local targetGroupString:String = TVTTargetGroup.GetAsString(id)
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(targetGroupString+"_men", 0.5), TVTPersonGender.MALE)
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(targetGroupString+"_women", 0.5), TVTPersonGender.FEMALE)
 		Next
 
 		return self
@@ -71,7 +71,7 @@ Type TGenreDefinitionBase extends TGameObject
 	End Method
 
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
+	Method GetAudienceFlowMod:SAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem
 	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float)
 		'genreDefintion.AudienceAttraction.Copy()
@@ -84,8 +84,7 @@ Type TGenreDefinitionBase extends TGameObject
 		Local successorValue:Float
 		Local rise:Int = false
 
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			If predecessor
 				predecessorValue = predecessor.BlockAttraction.GetValue(targetGroupID)
 			Else

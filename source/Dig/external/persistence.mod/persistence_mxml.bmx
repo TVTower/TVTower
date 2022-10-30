@@ -676,11 +676,30 @@ Type TPersist
 
 		If Not strictMode And serializedFieldTypeID
 			'deserialize it, so that its reference exists
-			Local deserializedObject:object = DeSerializeObject("", fieldNode)
+			Local deserializedObject:object
+			'fall back to parent if reference-persisted
+			'example:
+			'an no longer existing field "currentAnimationName" of type
+			'string will be single line if it is "reference"-persisted
+			'
+			'	<field name="currentAnimationName" ref="8OVR4" type="String" />
+			'
+			'compared to a one defining the reference):
+			'
+			'	<field name="currentAnimationName" type="String">
+			'		<String id="1DUWSUY8PS">standfront</String>
+			'	</field>
+			
+			'If serializedFieldTypeID.Name().ToLower() = "string" and fieldNode.getAttribute("ref")
+			If fieldNode.getAttribute("ref")
+				deserializedObject = DeSerializeObject("", fieldNode, 0, True)
+			Else
+				deserializedObject = DeSerializeObject("", fieldNode)
+			EndIf
 
 			Local parentTypeName:String
 			if parentType then parentTypeName = parentType.name()
-			If not DelegateHandleMissingField:Int(parent, parentTypeName, fieldName, fieldTypeName, deserializedObject)
+			If not DelegateHandleMissingField(parent, parentTypeName, fieldName, fieldTypeName, deserializedObject)
 				Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
 			Else
 				Print "[INFORMATION] TPersistence: Handled missing field: " + parentTypeName+"."+fieldName+":"+fieldTypeName+"."
@@ -698,10 +717,13 @@ Type TPersist
 				' this should be a field
 				If fieldNode.GetName() = "field" Then
 					Local fieldObj:TField = objType.FindField(fieldNode.getAttribute("name"))
+					Local fieldType:String = fieldNode.getAttribute("type")
+					'check if the current programme knows the stored data structure / type
+					local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
 
 					'Ronny: skip unknown fields (no longer existing in the type)
 					'or redirect to a different field if "renamed"
-					If Not fieldObj
+					If Not fieldObj or storedFieldTypeID <> fieldObj.TypeId()
 						'if the field was just renamed, try to find
 						'the new field to populate
 						Local parentName:String = node.getAttribute("name")
@@ -728,8 +750,6 @@ Type TPersist
 
 					'Ronny: skip loading elements having "nosave" metadata
 					If fieldObj.MetaData("nosave") And Not fieldObj.MetaData("doload") Then Continue
-
-					Local fieldType:String = fieldNode.getAttribute("type")
 
 
 					'ronny: delegate "primitive to object" conversions
@@ -848,7 +868,7 @@ Type TPersist
 										Else
 											'Ronny
 											'check if the current programme knows the stored data structure / type
-											local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
+											'local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
 											if not storedFieldTypeID
 												fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
 											'or if it differs

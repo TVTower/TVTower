@@ -44,11 +44,6 @@ Type TGUIWindowBase Extends TGUIPanel
 
 
 	Method Create:TGUIWindowBase(pos:SVec2I, dimension:SVec2I, limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), limitState)
-	End Method
-
-
-	Method Create:TGUIWindowBase(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 
 		'create background, setup text etc.
@@ -71,12 +66,12 @@ Type TGUIWindowBase Extends TGUIPanel
 	End Method
 
 
-	Method InitWindow(dimension:TVec2D)
+	Method InitWindow(dimension:SVec2I)
 		If Not guiBackground
 			SetBackground( new TGUIBackgroundBox.Create(null, null) )
 		Else
-			guiBackground.rect.position.SetXY(0,0)
-			guiBackground.SetSize(dimension.GetX(), dimension.GetY())
+			guiBackground.rect.SetXY(0,0)
+			guiBackground.SetSize(dimension.x, dimension.y)
 		EndIf
 
 		'set another panel background
@@ -97,7 +92,8 @@ Type TGUIWindowBase Extends TGUIPanel
 	'content panel gets created if not done yet
 	Method GetGuiContent:TGUIPanel()
 		if not guiContent
-			guiContent = new TGUIPanel.Create(new TVec2D, new TVec2D.Init(GetContentScreenRect().GetW(), GetContentScreenRect().GetH()), "")
+			Local screenRectDim:SVec2F = GetContentScreenRect().GetDimension()
+			guiContent = new TGUIPanel.Create(new SVec2I(0,0), new SVec2I(Int(screenRectDim.x), Int(screenRectDim.y)), "")
 			AddChild(guiContent)
 		endif
 
@@ -127,14 +123,17 @@ Type TGUIWindowBase Extends TGUIPanel
 
 
 		if guiCaptionTextBox
-			Local rect:TRectangle = new TRectangle.Init(-1,-1,-1,-1)
+			Local rX:Float = -1
+			Local rY:Float = -1
+			Local rW:Float = -1
+			Local rH:Float = -1
 			'if an area was defined - use as much values of this as
 			'possible
 			If guiCaptionArea
-				if guiCaptionArea.position.x <> -1 then rect.position.x = guiCaptionArea.position.x
-				if guiCaptionArea.position.y <> -1 then rect.position.y = guiCaptionArea.position.y
-				if guiCaptionArea.dimension.x <> -1 then rect.dimension.x = guiCaptionArea.dimension.x
-				if guiCaptionArea.dimension.y <> -1 then rect.dimension.y = guiCaptionArea.dimension.y
+				if guiCaptionArea.x <> -1 then rX = guiCaptionArea.x
+				if guiCaptionArea.y <> -1 then rY = guiCaptionArea.y
+				if guiCaptionArea.w <> -1 then rW = guiCaptionArea.w
+				if guiCaptionArea.h <> -1 then rH = guiCaptionArea.h
 			EndIf
 
 			'calculation of undefined/automatic values
@@ -142,21 +141,21 @@ Type TGUIWindowBase Extends TGUIPanel
 			'content but to make it visible in all cases use "max(...)".
 			if guiBackground
 				Local padding:SRect = guiBackground.GetSprite().GetNinePatchInformation().contentBorder
-				if rect.position.x = -1 then rect.position.x = padding.GetLeft()
-				if rect.position.y = -1 then rect.position.y = 0
-				if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenRect().GetW()
-				if rect.dimension.y = -1 then rect.dimension.y = Max(25, padding.GetTop())
+				if rX = -1 then rX = padding.GetLeft()
+				if rY = -1 then rY = 0
+				if rW = -1 then rW = GetContentScreenRect().w
+				if rH = -1 then rH = Max(25, padding.GetTop())
 			else
-				if rect.position.x = -1 then rect.position.x = 0
-				if rect.position.y = -1 then rect.position.y = 0
-				if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenRect().GetW()
-				if rect.dimension.y = -1 then rect.dimension.y = 25
+				if rX = -1 then rX = 0
+				if rY = -1 then rY = 0
+				if rW = -1 then rW = GetContentScreenRect().w
+				if rH = -1 then rH = 25
 			endif
 
 
 			'reposition in all cases
-			guiCaptionTextBox.rect.position.SetXY(rect.GetX(), rect.GetY())
-			guiCaptionTextBox.SetSize(rect.GetW(), rect.GetH())
+			guiCaptionTextBox.rect.SetXY(rX, rY)
+			guiCaptionTextBox.SetSize(rW, rH)
 		endif
 	End Method
 
@@ -175,7 +174,7 @@ Type TGUIWindowBase Extends TGUIPanel
 		Else
 			If Not guiCaptionTextBox
 				'create the caption container
-				guiCaptionTextBox = New TGUITextBox.Create(new TVec2D, new TVec2D, caption, "")
+				guiCaptionTextBox = New TGUITextBox.Create(new SVec2I(0,0), GUI_DIM_AUTOSIZE, caption, "")
 
 				If defaultCaptionColor
 					guiCaptionTextBox.SetValueColor(defaultCaptionColor)

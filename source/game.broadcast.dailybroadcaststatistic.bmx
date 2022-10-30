@@ -217,7 +217,7 @@ Type TDailyBroadcastStatistic
 				hour :+1
 			Next
 		Next
-		if count > 0 then result.DivideFloat(count)
+		if count > 0 then result.Divide(count)
 		return result
 	End Method
 

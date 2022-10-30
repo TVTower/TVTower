@@ -119,6 +119,7 @@ Import "game.misc.savegameserializers.bmx"
 Import "Dig/base.util.bmxng.objectcountmanager.bmx"
 ?
 
+
 ?Not bmxng
 'notify users when there are XML-errors
 Function TVTXmlErrorCallback(data:Object, error:TxmlError)
@@ -165,6 +166,8 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
 Global collectDebugStats:Int = False
+OCM.enabled = False & (collectDebugStats = True)
+OCM.printEnabled = False & (collectDebugStats = True)
 
 Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
 Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
@@ -404,7 +407,7 @@ Type TApp
 		LoadSettings()
 
 		If settingsWindow Then settingsWindow.Remove()
-		settingsWindow = New TSettingsWindow.Init() '.Create(New TVec2D(), New TVec2D.Init(520,45), "SYSTEM")
+		settingsWindow = New TSettingsWindow.Init() '.Create(New TVec2D(), New TVec2D(520,45), "SYSTEM")
 		'fill values
 		settingsWindow.SetGuiValues(App.config)
 
@@ -1385,7 +1388,7 @@ endrem
 		EndIf
 
 		'Simuliere Rechtsklick (Verlassen eines Screens/Raums, Abbruch einer Aktion, Löschen etc.)
-		'If KeyManager.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D.Init(0, 0), 5)
+		'If KeyManager.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D(0, 0), 5)
 		If KeyManager.IsHit(KEY_Q) Then GetPlayer().GetFigure().KickOutOfRoom()
 
 		'Schnellvorlauf
@@ -1533,15 +1536,50 @@ endrem
 
 		?bmxng
 		If OCM.enabled
+			'Display elements currently managed by the GC.
+			'Also display changes since last "dump" (a second earlier)
+			'This does NOT show temporarily created elements
 			SetColor 0,0,0
-			DrawRect(5,455, 200, 100)
+			DrawRect(5,430, 230, 200)
 			SetColor 190,190,190
-			Local linePos:Int = 460
+			
+			Local linePos:Int = 432
+			GetBitmapFontManager().baseFont.Draw("Managed Obj. (Mem-Leaks detection):", 10 , linePos)
+			linePos :+ 12
+
 			'OK: "TRoom", "TRoomDoor"
-			For Local s:String = EachIn ["TImage", "TPixmap", "TGLImageFrame", "TNewsEvent", "TPlayerProgrammePlan", "TPlayerProgrammeCollection", "TFigure", "TPlayer", "TPlayerBoss", "TProgrammeLicence"]
-				GetBitmapFontManager().baseFont.Draw(s+": " + OCM.GetTotal(s), 10 , linePos)
+			For Local s:String = EachIn ["Array", "String", "TLink", "TVec3D", "TVec2D", "TAudience", "TAudienceBase"]
+				Local e:TObjectCountDumpEntry = OCM.GetEntry(s)
+				GetBitmapFontManager().baseFont.Draw(s+": ", 10 , linePos)
+				if not e
+					GetBitmapFontManager().baseFont.Draw("0", 110 , linePos)
+				Else
+					GetBitmapFontManager().baseFont.Draw(e.total, 110 , linePos)
+					If e.change > 0
+						GetBitmapFontManager().baseFont.Draw("+" + e.change, 150 , linePos)
+					ElseIf e.change < 0
+						GetBitmapFontManager().baseFont.Draw(e.change, 150 , linePos)
+					EndIf
+				EndIf
 				linePos :+ 12
 			Next
+			linePos :+ 12
+			GetBitmapFontManager().baseFont.Draw("Top Changes:", 10 , linePos)
+			linePos :+ 12
+
+			Local dump:TObjectCountDump = OCM.GetLastDump()
+			If dump
+				For Local e:TObjectCountDumpEntry = EachIn dump.GetMostChanged(3)
+					GetBitmapFontManager().baseFont.Draw(OCM.GetKey(e.keyID), 10 , linePos)
+					If e.change > 0
+						GetBitmapFontManager().baseFont.Draw("+" + e.change, 150 , linePos)
+					ElseIf e.change < 0
+						GetBitmapFontManager().baseFont.Draw(e.change, 150 , linePos)
+					EndIf
+					linePos :+ 12
+				Next
+			EndIf
+			
 			SetColor 255,255,255
 		EndIf
 		?
@@ -1756,14 +1794,14 @@ endrem
 
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
 
-		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,130), "SYSTEM")
+		EscapeMenuWindow = New TGUIModalWindowChain.Create(New SVec2I(0,0), New SVec2I(400,130), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
 		EscapeMenuWindow.SetCenterLimit(New TRectangle.setTLBR(20,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
 		'355 = with speed buttons
-		'local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
-		Local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,315), "SYSTEM")
+		'local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New SVec2I(0,0), New SVec2I(300,355), "SYSTEM")
+		Local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New SVec2I(0,0), New SVec2I(300,315), "SYSTEM")
 		mainMenu.SetCaption(GetLocale("MENU"))
 
 		EscapeMenuWindow.SetContentElement(mainMenu)
@@ -1858,7 +1896,7 @@ endrem
 
 		App.SetPausedBy(TApp.PAUSED_BY_EXITDIALOGUE)
 
-		ExitAppDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		ExitAppDialogue = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 		ExitAppDialogue.data.AddNumber("quitToMainMenu", quitToMainMenu)
@@ -2409,7 +2447,7 @@ Type TSaveGame Extends TGameState
 		If messageWindow Then messageWindow.Remove()
 
 		'create a new one
-		messageWindow = New TGUIGameModalWindow.Create(Null, New TVec2D.Init(400, 200), "SYSTEM")
+		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400, 200), "SYSTEM")
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
@@ -2969,8 +3007,14 @@ End Type
 
 Type TSavegameConverter
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
-		'v0.7 -> v0.7.1
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
+			'v0.7.4 -> "TAudienceManager: "currentAudienceBreakdown" renamed to "currentTargetGroupBreakdown"
+			case "TAudienceManager:currentAudienceBreakdown".ToLower()
+				Return "currentTargetGroupBreakdown"
+			case "TAudienceManager:defaultAudienceBreakdown".ToLower()
+				Return "defaultTargetGroupBreakdown"
+
+			'v0.7 -> v0.7.1
 			case "TProduction:startDate".ToLower()
 				Return "startTime"
 			case "TProduction:endDate".ToLower()
@@ -3012,6 +3056,12 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
+			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
+			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()
+				Local collection:TSpriteFrameAnimationCollection = TSpriteFrameAnimationCollection(parent)
+				If collection Then collection.SetCurrent(String(fieldObject), False, False)
+
 			'v0.7.2 -> "TStation***.pos:TVec2D" became "TStation***.x and .y"
 			case "TStation.pos:TVec2D".ToLower(), ..
 			     "TStationAntenna.pos:TVec2D".ToLower(), ..
@@ -3193,7 +3243,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(New TVec2D.Init(300, 330), New TVec2D.Init(200, 400), name)
+		guiButtonsWindow = New TGUIGameWindow.Create(New SVec2I(300, 330), New SVec2I(200, 400), name)
 		guiButtonsWindow.SetPadding(panelGap, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
@@ -3203,14 +3253,14 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
-		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0, 0*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0, 1*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonStart		= New TGUIButton.Create(New SVec2I(0, 0*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonNetwork.Disable()
-		guiButtonOnline		= New TGUIButton.Create(New TVec2D.Init(0, 2*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New SVec2I(0, 2*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonOnline.Disable()
-		guiButtonLoadGame	= New TGUIButton.Create(New TVec2D.Init(0, 3*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(New TVec2D.Init(0, 4*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(New TVec2D.Init(0, 5*38 + 10), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonLoadGame	= New TGUIButton.Create(New SVec2I(0, 3*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New SVec2I(0, 4*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New SVec2I(0, 5*38 + 10), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -3223,7 +3273,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		GetBuildingTime().SetTimeFactor(1.0)
 
 		If TLocalization.languagesCount > 0
-			guiLanguageDropDown = New TGUISpriteDropDown.Create(New TVec2D.Init(620, 560), New TVec2D.Init(170,-1), "Sprache", 128, name)
+			guiLanguageDropDown = New TGUISpriteDropDown.Create(New SVec2I(620, 560), New SVec2I(170,-1), "Sprache", 128, name)
 			Local itemHeight:Int = 0
 			Local languageCount:Int = 0
 
@@ -3328,12 +3378,12 @@ Type TScreen_MainMenu Extends TGameScreen
 		'remove a previously created one
 		If loadGameMenuWindow Then loadGameMenuWindow.Remove()
 
-		loadGameMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(500,150), "SYSTEM")
+		loadGameMenuWindow = New TGUIModalWindowChain.Create(New SVec2I(0,0), New SVec2I(500,150), "SYSTEM")
 		loadGameMenuWindow.SetZIndex(99000)
 		loadGameMenuWindow.SetCenterLimit(New TRectangle.setTLBR(30,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
-		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,356), "SYSTEM")
+		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New SVec2I(0,0), New SVec2I(520,356), "SYSTEM")
 		loadMenu._defaultValueColor = TColor.clBlack.copy()
 		loadMenu.defaultCaptionColor = TColor.clWhite.copy()
 
@@ -3425,16 +3475,16 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(New TVec2D.Init(590, 355), New TVec2D.Init(200, 235), name)
+		guiButtonsWindow = New TGUIGameWindow.Create(New SVec2I(590, 355), New SVec2I(200, 235), name)
 		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.SetCaption("")
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 
-		guiButtonJoin	= New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(),-1), GetLocale("MENU_JOIN"), name)
-		guiButtonCreate	= New TGUIButton.Create(New TVec2D.Init(0, 45), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(),-1), GetLocale("MENU_CREATE_GAME"), name)
-		guiButtonBack	= New TGUIButton.Create(New TVec2D.Init(0, guiButtonsPanel.GetContentScreenRect().GetH() - guiButtonJoin.GetScreenRect().GetH()), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), GetLocale("MENU_BACK"), name)
+		guiButtonJoin	= New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w),-1), GetLocale("MENU_JOIN"), name)
+		guiButtonCreate	= New TGUIButton.Create(New SVec2I(0, 45), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w),-1), GetLocale("MENU_CREATE_GAME"), name)
+		guiButtonBack	= New TGUIButton.Create(New SVec2I(0, Int(guiButtonsPanel.GetContentScreenRect().h - guiButtonJoin.GetScreenRect().h)), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), GetLocale("MENU_BACK"), name)
 
 		guiButtonsPanel.AddChild(guiButtonJoin)
 		guiButtonsPanel.AddChild(guiButtonCreate)
@@ -3445,12 +3495,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		'GameList
 		'contained within a window/panel for styling
-		guiGameListWindow = New TGUIGameWindow.Create(New TVec2D.Init(20, 355), New TVec2D.Init(520, 235), name)
+		guiGameListWindow = New TGUIGameWindow.Create(New SVec2I(20, 355), New SVec2I(520, 235), name)
 		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		'add list to the panel (which is located in the window
-		guiGameList	= New TGUIGameEntryList.Create(New TVec2D.Init(0,0), New TVec2D.Init(guiGameListPanel.GetContentScreenRect().GetW(),guiGameListPanel.GetContentScreenRect().GetH()), name)
+		guiGameList	= New TGUIGameEntryList.Create(New SVec2I(0,0), New SVec2I(Int(guiGameListPanel.GetContentScreenRect().w), Int(guiGameListPanel.GetContentScreenRect().h)), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
@@ -3674,7 +3724,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		Super.Create(name)
 		SetGroupName("ExGame", "PrepareGameStart")
 
-		messageWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,250), name)
+		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,250), name)
 		'messageWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
 		messageWindow.SetCaptionAndValue("title", "")
 		messageWindow.SetDialogueType(0) 'no buttons
@@ -4185,7 +4235,7 @@ Type GameEvents
 
 				Local changed:String = ""
 				If paramS <> ""
-					player.GetPublicImage().ChangeImage( New TAudience.InitValue(Float(paramS), Float(paramS)))
+					player.GetPublicImage().ChangeImage( New SAudience(Float(paramS), Float(paramS)))
 
 					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+"%)"
@@ -5838,7 +5888,7 @@ endrem
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
-					player.GetPublicImage().ChangeImage(New TAudience.AddFloat(-0.5))
+					player.GetPublicImage().ChangeImage(New SAudience(-0.5, -0.5))
 
 					'chance that the programme will get (tried) to get confiscated
 					Local confiscateProgramme:Int = RandRange(1,100) <= player.GetDifficulty().sentXRatedConfiscateRisk
@@ -6883,7 +6933,7 @@ Function StartApp:Int()
 	MainMenuJanitor.BoredCleanChance = 30
 	MainMenuJanitor.MovementRangeMinX = 0
 	MainMenuJanitor.MovementRangeMaxX = 800
-	MainMenuJanitor.area.position.SetY(600)
+	MainMenuJanitor.area.SetY(600)
 	'remove figure from collection so it is not drawn/updated in other
 	'screens (eg. ingame)
 	GetFigureCollection().Remove(MainMenuJanitor)
@@ -6987,15 +7037,32 @@ End Function
 ?
 
 Function StartTVTower(start:Int=True)
-?bmxng
-OCM.enabled  = False
-'OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
-'OCM.AddIgnoreTypes("String, TApp, TBank, TBitmapFont, TBitmapFontChar, TBitmapFontManager")
-'OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
-'OCM.AddIgnoreTypes("TGLImageFrame, TGlobal, TGraphicsContext, THook, TSDLGLContext, TSDLGraphics, TSDLWindow")
-'OCM.AddIgnoreTypes("TImageFont, TImageGlyph, TMax2DGraphics, TMethod, TMutex, TTypeId")
-'OCM.StoreBaseDump()
-?
+	'for now we ignore a lot of types to keep the OCM stuff small
+	OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
+rem	
+	OCM.AddIgnoreTypes("TStyledBitmapFonts, TRoomBaseCollection, TMovieFlagDefinition, TGUINewsSlotList, TDeltaTimer, TRoomAgency")
+	OCM.AddIgnoreTypes("TSmartFloorRoute, TSizedBitmapFonts, TGUIGameModalWindow, TSpriteParticleEmitter")
+	OCM.AddIgnoreTypes("RoomHandler_RoomAgency, RoomHandler_Roomboard, RoomHandler_Studio")
+	OCM.AddIgnoreTypes("TNewsEventTemplate, TWorld, TProductionCompany, TNewsEventSportLeague_IceHockey")
+	OCM.AddIgnoreTypes("TGUIScrollablePanel, TGUICheckBox, TGUIGameEntryList, TGUIGameChat, TStringBuilder, TBettyPresent, TRoomDoor, TPlayer")
+	OCM.AddIgnoreTypes("TGUIProductionCompanyDropDownItem")
+	'OCM.AddIgnoreTypes("String, TApp, TBank, TBitmapFont, TBitmapFontChar, TBitmapFontManager")
+	OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
+	OCM.AddIgnoreTypes("TGLImageFrame, TGlobal, TGraphicsContext, THook, TSDLGLContext, TSDLGraphics, TSDLWindow")
+	OCM.AddIgnoreTypes("TImageFont, TImageGlyph, TMax2DGraphics, TMethod, TMutex, TTypeId")
+
+	OCM.AddIgnoreTypes("TSoundManager_Soloud, TDigAudioStream_Soloud, TPlayerColor, TBitmapFontChar, TGUITooltipBase, TIntMap")
+	OCM.AddIgnoreTypes("TGame, TThread, TRegistry, TLocalizationLanguage, TLink")
+	OCM.AddIgnoreTypes("TGUIButton, TGUIinput, TGUILabel, TGUISlider, TGUISpriteDropDown, TGUIListBase")
+	OCM.AddIgnoreTypes("TToastMessageCollection, TDrawTextSettings, TSpriteFrameAnimation")
+	OCM.AddIgnoreTypes("TScreen_MainMenu, TSoloudChannel, TBuildingIntervalTimer")
+	OCM.AddIgnoreTypes("TGUIChatWindow, TScreen_PrepareGameStart, TCStream, TGUIDropDown, TVirtualGfx, TFigureCollection")
+	OCM.AddIgnoreTypes("TIngameHelpWindow, TFigureJanitor, TGUIArrowButton, TSLWavStream, TDrawTextEffect, TInGameScreen_Room, TGUIGameWindow")
+	OCM.AddIgnoreTypes("TSoloudSound, TScreen_GameSettings, TSpriteFrameAnimationCollection, TApp, TSLWav, TGUIBackgroundBox, TRoomDoorBaseCollection, TFunction, TMouseManagerClick, TEventListenerRunFunction, TPlayerSoundSourcePosition, TGUISpriteDropDownItem, TSfxSettings, TGUIScroller, TBitmapFont, TGUISelectList, TBitmapFontManager")
+	OCM.AddIgnoreTypes("TSpriteEntity, TFigureGeneratorPart, TBuildingTime, TBuildingBase, TGUITextBox, TIntervalTimer, TDynamicSfxChannel, TGUIDropDownItem, TElevator, TStreamFile, TFigureBaseSoundSource, TScreen_NetworkLobby")
+endrem
+	OCM.StoreBaseDump()
+
 	Global InitialResourceLoadingDone:Int = False
 	Global AppSuspendedProcessed:Int = False
 
@@ -7069,20 +7136,34 @@ TProfiler.Enter("GameLoop")
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
 				Local myArr:int[] = new Int[10000]
-				?bmxng
-				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + tcolor_created + " TColor. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
+				Local gcAllocChanges:Int
+				Local gcAllocTotal:Int
+
+				If OCM.enabled
+					OCM.FetchDump()
+					gcAllocChanges = OCM.GetLastDump().totalChange
+					gcAllocTotal = OCM.GetLastDump().total
+					If OCM.printEnabled
+						OCM.Dump(null)
+					EndIf
+				EndIf
+				
+				If printDebugStats
+					If OCM.enabled
+						If gcAllocChanges >= 0
+							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" +"+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+						Else
+							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" "+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+						EndIf
+					Else
+					Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+					EndIf
+				EndIf
 				bbGCAllocCount = 0
-				?Not bmxng
-				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
-				?
 				rectangle_created = 0
 				vec2d_created = 0
 				tcolor_created = 0
 				debugCreationTime :+ 1000
-
-				?bmxng
-					'OCM.FetchDump()
-					'OCM.Dump(null)
 				?
 			EndIf
 		EndIf

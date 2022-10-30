@@ -131,7 +131,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 	Method InitGUIElements()
 		if not achievementList
-			achievementList = new TGUISelectList.Create(new TVec2D.Init(210,60), new TVec2D.Init(525, 280), "office_achievements")
+			achievementList = new TGUISelectList.Create(new SVec2I(210,60), new SVec2I(525, 280), "office_achievements")
 		endif
 
 		achievementList.scrollItemHeightPercentage = 1.0
@@ -330,7 +330,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIAchievementListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIAchievementListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
@@ -342,7 +342,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 	End Method
 
 'rem
-	Method getDimension:TVec2D()
+	Method getDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 400
@@ -365,20 +365,21 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		                           textOffsetY + border.GetTop() + border.GetBottom() + maxTextHeight ..
 		                      )
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, maxHeight)
+		Local w:Float = maxWidth
+		Local h:Float = maxHeight
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 'endrem
 

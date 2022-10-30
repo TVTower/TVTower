@@ -34,8 +34,8 @@ Type TGUIScrollerBase extends TGUIobject
 		setParent(parent)
 
 		'create buttons
-		guiButtonMinus = New TGUIArrowButton.Create(Null, new TVec2D.Init(22,22), "UP", "")
-		guiButtonPlus = New TGUIArrowButton.Create(Null, new TVec2D.Init(22,22), "DOWN", "")
+		guiButtonMinus = New TGUIArrowButton.Create(New SVec2I(0,0), New SVec2I(22,22), "UP", "")
+		guiButtonPlus = New TGUIArrowButton.Create(New SVec2I(0,0), New SVec2I(22,22), "DOWN", "")
 
 		guiButtonMinus.spriteButtonBaseName = "gfx_gui_button.rounded"
 		guiButtonPlus.spriteButtonBaseName = "gfx_gui_button.rounded"
@@ -97,13 +97,13 @@ Type TGUIScrollerBase extends TGUIobject
 	'override default
 	Method onAppearanceChanged:int()
 		If _parent
-			rect.position.setXY(_parent.rect.getW() - guiButtonMinus.rect.getW(),0)
+			rect.SetXY(_parent.rect.w - guiButtonMinus.rect.w, 0)
 			'this also aligns the buttons
-			SetSize(_parent.rect.getW(), _parent.rect.getH())
+			SetSize(_parent.rect.w, _parent.rect.h)
 		Else
-			rect.position.setXY(rect.getW() - guiButtonMinus.rect.getW(),0)
+			rect.SetXY(rect.w - guiButtonMinus.rect.w, 0)
 			'this also aligns the buttons
-			SetSize(rect.getW(), rect.getH())
+			SetSize(rect.w, rect.h)
 		EndIf
 	End Method
 
@@ -114,10 +114,10 @@ Type TGUIScrollerBase extends TGUIobject
 		'according the orientation we limit height or width
 		Select _orientation
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
-				h = guiButtonMinus.rect.getH()
+				h = guiButtonMinus.rect.h
 				'if w <= 0 then w = rect.GetW()
 			case GUI_OBJECT_ORIENTATION_VERTICAL
-				w = guiButtonMinus.rect.getW()
+				w = guiButtonMinus.rect.w
 				'if h <= 0 then h = rect.GetH()
 		End Select
 		Super.SetSize(w, h)
@@ -182,12 +182,12 @@ Type TGUIScrollerBase extends TGUIobject
 				guiButtonMinus.SetDirection("LEFT")
 				guiButtonPlus.SetDirection("RIGHT")
 				'set scroller area to full WIDTH of parent
-				if _parent then rect.dimension.SetX(_parent.rect.getW())
+				if _parent then rect.SetW(_parent.rect.w)
 			default
 				guiButtonMinus.SetDirection("UP")
 				guiButtonPlus.SetDirection("DOWN")
 				'set scroller area to full height of parent
-				if _parent then rect.dimension.SetY(_parent.rect.getH())
+				if _parent then rect.SetH(_parent.rect.h)
 		End Select
 
 		SetSize(-1,-1)
@@ -215,6 +215,8 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
+		
+		Return True
 	End Method
 
 
@@ -310,10 +312,10 @@ Type TGUIScrollerBase extends TGUIobject
 		'realign buttons
 
 		'move the first button to the most left and top position
-		guiButtonMinus.rect.position.SetXY(0, 0)
+		guiButtonMinus.rect.SetXY(0, 0)
 		'move the second button to the most right and bottom position
 		'do not use "screenRect" for the button as the LimitToRect() filters it out
-		guiButtonPlus.rect.position.SetXY(GetScreenRect().GetW() - guiButtonPlus.rect.GetW(), GetScreenRect().GetH() - guiButtonPlus.rect.GetH())
+		guiButtonPlus.rect.SetXY(GetScreenRect().w - guiButtonPlus.rect.w, GetScreenRect().h - guiButtonPlus.rect.h)
 	End Method
 End Type
 
@@ -332,7 +334,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 	Method Create:TGUIScroller(parent:TGUIobject)
 		Super.Create(parent)
 
-		scrollHandle = New TGUISlider.Create(Null, new TVec2D.Init(22,100), "", "")
+		scrollHandle = New TGUISlider.Create(New SVec2I(0,0), new SVec2I(22,100), "", "")
 		scrollHandle.setParent(Self)
 		scrollHandle.SetValueRange(0,100)
 		scrollHandle.steps = 0
@@ -443,12 +445,12 @@ Type TGUIScroller Extends TGUIScrollerBase
 			'according the orientation we limit height or width
 			Select _orientation
 				case GUI_OBJECT_ORIENTATION_HORIZONTAL
-					scrollHandle.rect.position.SetXY( guiButtonMinus.rect.GetX2()-3, guiButtonMinus.rect.GetY())
-					scrollHandle.rect.dimension.SetXY( guiButtonPlus.rect.GetX() - guiButtonMinus.rect.GetX2() + 6, guiButtonMinus.rect.GetH())
+					scrollHandle.rect.SetXY( guiButtonMinus.rect.GetX2()-3, guiButtonMinus.rect.y)
+					scrollHandle.rect.SetWH( guiButtonPlus.rect.x - guiButtonMinus.rect.GetX2() + 6, guiButtonMinus.rect.h)
 					scrollHandle.SetDirection(TGUISlider.DIRECTION_RIGHT)
 				case GUI_OBJECT_ORIENTATION_VERTICAL
-					scrollHandle.rect.position.SetXY( guiButtonMinus.rect.GetX(), guiButtonMinus.rect.GetY2() -3)
-					scrollHandle.rect.dimension.SetXY( guiButtonPLus.rect.GetW(), guiButtonPlus.rect.GetY() - guiButtonMinus.rect.GetY2() + 6)
+					scrollHandle.rect.SetXY( guiButtonMinus.rect.x, guiButtonMinus.rect.GetY2() -3)
+					scrollHandle.rect.SetWH( guiButtonPLus.rect.w, guiButtonPlus.rect.y - guiButtonMinus.rect.GetY2() + 6)
 					scrollHandle.SetDirection(TGUISlider.DIRECTION_DOWN)
 			End Select
 		endif
@@ -487,17 +489,17 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 		'subtract buttons
 		Select _orientation
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
-				progressRect.position.AddY(+guiButtonMinus.rect.GetH()/4)
-				progressRect.dimension.SetY(+guiButtonMinus.rect.GetH()/2)
+				progressRect.MoveY(+guiButtonMinus.rect.h/4)
+				progressRect.MoveH(+guiButtonMinus.rect.h/2)
 
-				progressRect.position.AddX(+guiButtonMinus.rect.GetW() - 2)
-				progressRect.dimension.AddX(-guiButtonMinus.rect.GetW() - guiButtonPlus.rect.GetW() + 2)
+				progressRect.MoveX(+guiButtonMinus.rect.w - 2)
+				progressRect.MoveW(-guiButtonMinus.rect.w - guiButtonPlus.rect.w + 2)
 			case GUI_OBJECT_ORIENTATION_VERTICAL
-				progressRect.position.AddX(+guiButtonMinus.rect.GetW()/4)
-				progressRect.dimension.SetX(+guiButtonMinus.rect.GetW()/2)
+				progressRect.MoveX(+guiButtonMinus.rect.w/4)
+				progressRect.MoveW(+guiButtonMinus.rect.w/2)
 
-				progressRect.position.AddY(+guiButtonMinus.rect.GetH() - 2)
-				progressRect.dimension.AddY(-guiButtonMinus.rect.GetH() - guiButtonPlus.rect.GetH() + 2)
+				progressRect.MoveY(+guiButtonMinus.rect.h - 2)
+				progressRect.MoveH(-guiButtonMinus.rect.h - guiButtonPlus.rect.h + 2)
 		End Select
 	End Method
 
@@ -511,32 +513,32 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 			progressRectHovered = False
 
 		else
-			local overPos:TVec2D = new TVec2D.Init( MouseManager.x - GetScreenRect().GetX(), MouseManager.y - GetScreenRect().GetY())
-			if progressRect.ContainsVec(overPos)
+			if progressRect.ContainsXY(MouseManager.x - GetScreenRect().x, MouseManager.y - GetScreenRect().y)
 				progressRectHovered = True
 			endif
 
 			'check if mouse clicked on the progressRect
 			if mouseIsClicked
+				Local clickPosX:Int = mouseIsClicked.x
+				Local clickPosY:Int = mouseIsClicked.y
 				'convert clicked position to local widget coordinates
-				local clickPos:TVec2D = mouseIsClicked.Copy()
-				clickPos.AddXY(-GetScreenRect().GetX(), -GetScreenRect().GetY())
-				if progressRect.ContainsVec(clickPos)
-'					clickPos.AddXY(progressRect.GetX(), progressRect.GetY())
+				clickPosX :- GetScreenRect().x
+				clickPosY :- GetScreenRect().y
+				if progressRect.ContainsXY(clickPosX, clickPosY)
 					local progress:float = 0
 
 					Select _orientation
 						case GUI_OBJECT_ORIENTATION_HORIZONTAL
-							if progressRect.GetW() > 0
+							if progressRect.w > 0
 								'subtract progress start from position
-								clickPos.X :- progressRect.GetX()
-								progress = clickPos.x / progressRect.GetW()
+								clickPosX :- progressRect.x
+								progress = clickPosX / progressRect.w
 							endif
 						case GUI_OBJECT_ORIENTATION_VERTICAL
-							if progressRect.GetH() > 0
+							if progressRect.h > 0
 								'subtract progress start from position
-								clickPos.y :- progressRect.GetY()
-								progress = clickPos.y / progressRect.GetH()
+								clickPosY :- progressRect.y
+								progress = clickPosY / progressRect.h
 							endif
 					End Select
 					'scroll to the percentage

@@ -23,11 +23,6 @@ Type TGUIArrowButton Extends TGUISpriteButton
 
 
 	Method Create:TGUIArrowButton(pos:SVec2I, dimension:SVec2I, direction:String="LEFT", limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), direction, limitState)
-	End Method
-
-
-	Method Create:TGUIArrowButton(pos:TVec2D, dimension:TVec2D, direction:String="LEFT", limitState:String = "")
 		Super.Create(pos, dimension, spriteBaseName, limitState)
 
 		SetDirection(direction)
@@ -78,7 +73,7 @@ Type TGUISpriteButton Extends TGUIObject
 	CONST SHOW_BUTTON_ACTIVE:int = 4
 
 
-	Method Create:TGUISpriteButton(pos:TVec2D, dimension:TVec2D, spriteName:String="", limitState:String = "")
+	Method Create:TGUISpriteButton(pos:SVec2I, dimension:SVec2I, spriteName:String="", limitState:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, limitState)
 
@@ -130,8 +125,8 @@ Type TGUISpriteButton Extends TGUIObject
 	'override so we have a minimum size
 	'size 0, 0 is not possible (leads to autosize)
 	Method SetSize(w:Float = 0, h:Float = 0)
-		if w <= 0 then w = rect.dimension.GetX()
-		if h <= 0 then h = rect.dimension.GetY()
+		if w <= 0 then w = rect.w
+		if h <= 0 then h = rect.h
 
 		'set to minimum size or bigger
 		local spriteDimension:SRect = _GetButtonSprite().GetNinePatchInformation().borderDimension
@@ -175,7 +170,7 @@ Type TGUISpriteButton Extends TGUIObject
 
 	'override default draw-method
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenRect().position
+		Local atPoint:SVec2F = GetScreenRect().GetPosition()
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
@@ -191,10 +186,10 @@ Type TGUISpriteButton Extends TGUIObject
 		elseif HasSpriteButtonOption(SHOW_BUTTON_NORMAL)
 			bs = _GetButtonSprite()
 		endif
-		if bs then bs.DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
+		if bs then bs.DrawArea(atPoint.x, atPoint.y, rect.w, rect.h)
 
 		'draw arrow at center of button
-		_GetSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TVec2D.Init(0.5, 0.5))
+		_GetSprite().Draw(atPoint.x + int(rect.w/2.0), atPoint.y + int(rect.h/2.0), -1, ALIGN_CENTER_CENTER)
 
 		SetColor(oldCol)
 		SetAlpha(oldColA)

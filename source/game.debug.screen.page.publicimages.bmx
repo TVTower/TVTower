@@ -117,9 +117,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		textY :+ 12
 
 		Local a:TAudience = p.GetImageValues()
-		Local targetGroupID:Int = 0
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount 'baseGroupCount = without "men/women"
-			targetGroupID = TVTTargetGroup.GetAtIndex(i)
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs() 'baseGroupCount = without "men/women"
 			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", textX, textY)
 			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), textX + 85, textY)
 			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), textX + 117, textY)
@@ -136,35 +134,35 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 			case 0
 				GetPublicImage(1).Reset()
 			case 1
-				GetPublicimage(1).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicimage(1).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 2
-				GetPublicimage(1).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+				GetPublicimage(1).ChangeImage(New SAudience(changeValue, changeValue))
 			case 3
-				GetPublicimage(1).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
+				GetPublicimage(1).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 			case 4
 				GetPublicImage(2).Reset()
 			case 5
-				GetPublicimage(2).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicimage(2).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 6
-				GetPublicimage(2).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+				GetPublicimage(2).ChangeImage(New SAudience(changeValue, changeValue))
 			case 7
-				GetPublicimage(2).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
+				GetPublicimage(2).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 			case 8
 				GetPublicImage(3).Reset()
 			case 9
-				GetPublicimage(3).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicimage(3).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 10
-				GetPublicimage(3).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+				GetPublicimage(3).ChangeImage(New SAudience(changeValue, changeValue))
 			case 11
-				GetPublicimage(3).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
+				GetPublicimage(3).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 			case 12
 				GetPublicImage(4).Reset()
 			case 13
-				GetPublicimage(4).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
+				GetPublicimage(4).ChangeImage(New SAudience(-changeValue, -changeValue))
 			case 14
-				GetPublicimage(4).ChangeImage(New TAudience.InitValue(changeValue, changeValue))
+				GetPublicimage(4).ChangeImage(New SAudience(changeValue, changeValue))
 			case 15
-				GetPublicimage(4).ChangeImage(New TAudience.InitValue(changeValue*10, changeValue*10))
+				GetPublicimage(4).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 		End Select
 
 		'handled

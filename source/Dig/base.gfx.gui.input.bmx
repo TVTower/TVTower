@@ -48,7 +48,7 @@ Type TGUIinput Extends TGUIobject
 	Field _editable:Int = True
 	Field _mousePositionsCursor:Int = False
 
-	Global minDimension:TVec2D = New TVec2D.Init(40,28)
+	Global minDimension:TVec2D = New TVec2D(40,28)
 	'default name for all inputs
     Global spriteNameDefault:String	= "gfx_gui_input.default"
     
@@ -63,11 +63,6 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method Create:TGUIInput(pos:SVec2I, dimension:SVec2I, value:String, maxLength:Int=128, limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, maxLength, limitState)
-	End Method
-
-
-	Method Create:TGUIinput(pos:TVec2D, dimension:TVec2D, value:String, maxLength:Int=128, limitState:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, limitState)
 
@@ -112,7 +107,7 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method SetValueDisplacement(x:Int, y:Int)
-		valueDisplacement = New TVec2D.Init(x,y)
+		valueDisplacement = New TVec2D(x,y)
 	End Method
 
 
@@ -364,11 +359,11 @@ Type TGUIinput Extends TGUIobject
 	'returns the area the overlay covers
 	Method GetOverlayArea:TRectangle()
 		If overlayText<>""
-			overlayArea.dimension.SetXY(GetFont().GetWidth(overlayText), GetFont().GetHeight(overlayText))
+			overlayArea.SetWH(GetFont().GetWidth(overlayText), GetFont().GetHeight(overlayText))
 		ElseIf GetOverlaySprite()
-			overlayArea.dimension.SetXY(GetOverlaySprite().GetWidth(), GetOverlaySprite().GetHeight())
+			overlayArea.SetWH(GetOverlaySprite().GetWidth(), GetOverlaySprite().GetHeight())
 		Else
-			overlayArea.dimension.SetXY(-1, -1)
+			overlayArea.SetWH(-1, -1)
 		EndIf
 		Return overlayArea
 	End Method
@@ -381,12 +376,13 @@ Type TGUIinput Extends TGUIobject
 
 
 	'draws overlay and returns used dimension/space
-	Method DrawButtonOverlay:TVec2D(position:TVec2D)
+	Method DrawButtonOverlay:SVec2F(position:SVec2F)
 		'contains width/height of space the overlay uses
-		Local dim:TVec2D = New TVec2D.Init(0,0)
+		Local oW:Float
+		Local oH:Float
 		Local overlayArea:TRectangle = GetOverlayArea()
 		'skip invalid overlay data
-		If overlayArea.GetW() < 0  Or overlayPosition = "" Then Return dim
+		If overlayArea.w < 0  Or overlayPosition = "" Then Return new SVec2F(oW, oH)
 
 		'draw background for overlay  [.][  Input  ]
 		'design of input/button has to have a "name.background" sprite for this
@@ -408,29 +404,29 @@ Type TGUIinput Extends TGUIobject
 			Local bgBorderHeight:Int = cb.GetTop() + cb.GetBottom()
 
 			'overlay background width is overlay + background  borders (the non content area)
-			dim.SetX(overlayArea.GetW() + bgBorderWidth)
+			oW = overlayArea.GetW() + bgBorderWidth
 
 			If overlayPosition = "iconLeft"
-				overlayBGSprite.DrawArea(position.GetX(), position.getY(), dim.GetX(), rect.GetH())
+				overlayBGSprite.DrawArea(Float(position.x), Float(position.y), oW, rect.h)
 				'move area of overlay (eg. icon) - so it centers on the overlayBG
-				overlayArea.position.SetX(bgBorderWidth/2)
+				overlayArea.SetX(bgBorderWidth/2)
 			ElseIf overlayPosition = "iconRight"
-				overlayBGSprite.DrawArea(position.GetX() + rect.GetW() - dim.GetX(), position.getY(), dim.GetX(), rect.GetH())
+				overlayBGSprite.DrawArea(Float(position.x) + rect.w - oW, Float(position.y), oW, rect.h)
 				'move area of overlay (eg. icon)
-				overlayArea.position.SetX(rect.GetW() - dim.GetX() + bgBorderWidth/2)
+				overlayArea.SetX(rect.w - oW + bgBorderWidth/2)
 			EndIf
 		EndIf
 
 		'vertical align overlayArea (ceil: "odd" values get rounded so coords are more likely within button area)
-		overlayArea.position.SetY(Float(Ceil((rect.GetH()- overlayArea.GetH())/2)))
+		overlayArea.SetY(Float(Ceil((rect.h - overlayArea.h)/2)))
 		'draw the icon or label if needed
 		If GetOverlaySprite()
-			GetOverlaySprite().Draw(position.GetX() + overlayArea.GetX(), position.getY() + overlayArea.GetY())
+			GetOverlaySprite().Draw(Float(position.x) + overlayArea.x, Float(position.y) + overlayArea.y)
 		ElseIf overlayText<>""
-			GetFont().Draw(overlayText, position.GetX() + overlayArea.GetX(), position.getY() + overlayArea.GetY(), overlayColor)
+			GetFont().Draw(overlayText, Float(position.x) + overlayArea.x, Float(position.y) + overlayArea.y, overlayColor)
 		EndIf
 
-		Return dim
+		Return new SVec2F(oW, oH)
 	End Method
 
 
@@ -519,13 +515,13 @@ Type TGUIinput Extends TGUIobject
 
 	Method DrawContent()
 		'to allow modification
-		Local atPointX:Int = GetScreenRect().position.x
-		Local atPointY:Int = GetScreenRect().position.y
+		Local atPointX:Int = GetScreenRect().x
+		Local atPointY:Int = GetScreenRect().y
 		'Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 		SetAlpha oldColA * GetScreenAlpha()
 
-		Local widgetWidth:Int = rect.GetW()
+		Local widgetWidth:Int = rect.w
 
 		If Not _textPos Then _textPos = New TVec2D
 
@@ -535,7 +531,7 @@ Type TGUIinput Extends TGUIobject
 			'avoids "above center"-look if value does not contain such
 			'characters
 '			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeightAboveBaseline()) / 2)
-			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeight(True)) / 2)
+			_textPos.SetXY(2, (rect.h - GetFont().GetMaxCharHeight(True)) / 2)
 		Else
 			_textPos.copyFrom(valueDisplacement)
 		EndIf
@@ -557,17 +553,17 @@ Type TGUIinput Extends TGUIobject
 		EndIf
 		If sprite
 			'draw overlay and save occupied space
-			Local overlayDim:TVec2D = DrawButtonOverlay(GetScreenRect().position)
+			Local overlayDim:SVec2F = DrawButtonOverlay(GetScreenRect().GetPosition())
 
 			'move sprite by Icon-Area (and decrease width)
 			If overlayPosition = "iconLeft"
-				atPointX :+ overlayDim.GetX()
-				atPointY :+ overlayDim.GetY()
-				_textPos.AddX(overlayDim.GetX())
+				atPointX :+ overlayDim.x
+				atPointY :+ overlayDim.y
+				_textPos.AddX(overlayDim.x)
 			EndIf
-			widgetWidth :- overlayDim.GetX()
+			widgetWidth :- overlayDim.x
 
-			sprite.DrawArea(atPointX, atPointY, widgetWidth, rect.GetH())
+			sprite.DrawArea(atPointX, atPointY, widgetWidth, rect.h)
 			'move text according to content borders
 			_textPos.AddX(sprite.GetNinePatchInformation().contentBorder.GetLeft())
 			'_textPos.SetX(Max(_textPos.GetX(), sprite.GetNinePatchContentBorder().GetLeft()))

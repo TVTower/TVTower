@@ -36,7 +36,7 @@ Import "base.gfx.gui.list.base.bmx"
 
 
 Type TGUISlotList Extends TGUIListBase
-	Field _slotMinDimension:TVec2D = New TVec2D.Init(0,0)
+	Field _slotMinDimension:TVec2D = New TVec2D(0,0)
 	'slotAmount: <=0 means dynamically, else it is fixed
 	Field _slotAmount:Int = -1
 	Field _slots:TGUIobject[0]
@@ -50,7 +50,7 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
-    Method Create:TGUISlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUISlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		setListOption(GUILIST_AUTOSORT_ITEMS, False)
@@ -153,8 +153,8 @@ Type TGUISlotList Extends TGUIListBase
 		Return -1
 	End Method
 
-
-	Method GetSlotOrCoord:TVec3D(slot:Int=-1, coord:TVec2D=Null)
+'TODO: TRectangle auf SRect umstellen und coord auf SVec2D (bzw eigenen Overload)
+	Method GetSlotOrCoord:SVec3F(slot:Int=-1, coord:TVec2D=Null)
 		Local baseRect:TRectangle = Null
 		If _fixedSlotDimension
 			baseRect = New TRectangle.Init(0, 0, _slotMinDimension.getX(), _slotMinDimension.getY())
@@ -169,44 +169,48 @@ Type TGUISlotList Extends TGUIListBase
 		EndIf
 
 		'set startpos at point of block displacement
-		Local currentPos:TVec3D = _entriesBlockDisplacement.ToVec3D()
+		Local currentPosX:Float = _entriesBlockDisplacement.x
+		Local currentPosY:Float = _entriesBlockDisplacement.y
+		Local currentPosZ:Float
 		'take scrolling into consideration
-		currentPos.AddXY(+ guiEntriesPanel.scrollposition.x, + guiEntriesPanel.scrollPosition.y)
+		currentPosX :+ guiEntriesPanel.scrollposition.x
+		currentPosY :+ guiEntriesPanel.scrollPosition.y
 
+		'set to invalid slot position
+		currentPosZ = -1
 
-		currentPos.z = -1 'set to invalid slot position
 		Local slotW:Int
 		Local slotH:Int
 		For Local i:Int = 0 To _slots.length-1
 			'size the slot dimension accordingly
-			slotW = _slotMinDimension.getX()
-			slotH = _slotMinDimension.getY()
+			slotW = _slotMinDimension.x
+			slotH = _slotMinDimension.y
 			'only use slots real dimension if occupied and not fixed
 			If _slots[i] And Not _fixedSlotDimension
-				slotW = Max(slotW, _slots[i].rect.getW())
-				slotH = Max(slotH, _slots[i].rect.getH())
+				slotW = Max(slotW, _slots[i].rect.w)
+				slotH = Max(slotH, _slots[i].rect.h)
 			EndIf
 
 			'move base rect
-			baseRect.position.CopyFrom(currentPos.ToVec2D())
+			baseRect.SetXY(currentPosX, currentPosY)
 
 			'if the current position + dimension contains the given
 			'coord or is of this slot - return this position
 			'1. GIVEN SLOT
-			If slot >= 0 And i = slot Then Return currentPos
+			If slot >= 0 And i = slot Then Return new SVec3F(currentPosX, currentPosY, currentPosZ)
 			'2. GIVEN COORD
 			If coord
 				If _slots[i] And Not _fixedSlotDimension
 					'rects are "local", so remove the previously
 					'added scroll positions
-					If _slots[i].rect.containsXY(coord.getX() - guiEntriesPanel.scrollposition.x,coord.getY() - guiEntriesPanel.scrollPosition.y)
-						currentPos.z = i
-						Return currentPos
+					If _slots[i].rect.containsXY(coord.x - guiEntriesPanel.scrollposition.x, coord.y - guiEntriesPanel.scrollPosition.y)
+						currentPosZ = i
+						Return new SVec3F(currentPosX, currentPosY, currentPosZ)
 					EndIf
 				Else
-					If baseRect.containsXY(coord.getX(), coord.getY())
-						currentPos.z = i
-						Return currentPos
+					If baseRect.containsXY(coord.x, coord.y)
+						currentPosZ = i
+						Return new SVec3F(currentPosX, currentPosY, currentPosZ)
 					EndIf
 				EndIf
 			EndIf
@@ -214,22 +218,23 @@ Type TGUISlotList Extends TGUIListBase
 
 			'move to the next one
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
-				currentPos.AddXY(0, slotH )
+				currentPosY :+ slotH
 			ElseIf _orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
-				currentPos.AddXY(slotW, 0)
+				currentPosX :+ slotW
 			EndIf
 
 			'add the displacement, z-value is stepping, not for LAST element
 			If (i+1) Mod _entryDisplacement.z = 0 And i < _slots.length-1
-				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
+				currentPosX :+ _entryDisplacement.x
+				currentPosY :+ _entryDisplacement.y
 			EndIf
 		Next
 		'return the end of the list coordinate ?!
-		Return currentPos
+		Return new SVec3F(currentPosX, currentPosY, currentPosZ)
 	End Method
 
 
-	Method GetSlotCoord:TVec3D(slot:Int)
+	Method GetSlotCoord:SVec3F(slot:Int)
 		Return GetSlotOrCoord(slot, Null)
 	End Method
 
@@ -530,23 +535,23 @@ Type TGUISlotList Extends TGUIListBase
 		DrawText("entrDim:"+Int(entriesDimension.GetY()), guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY() - 20)
 
 
-		Local atPoint:TVec2D = GetScreenRect().position
+		Local atPoint:SVec2F = GetScreenRect().GetPosition()
 		'restrict by scrollable panel - if not possible, there is no "space left"
 		If RestrictViewport()
-			Local pos:TVec3D = Null
+			Local pos:SVec3F
 			For Local i:Int = 0 To Self._slots.length-1
 			SetAlpha 0.3
 				pos = GetSlotOrCoord(i)
 				'print "slot "+i+": "+pos.GetX()+","+pos.GetY() +" result: "+(atPoint.GetX()+pos.getX())+","+(atPoint.GetY()+pos.getY()) +" h:"+self._slotMinDimension.getY()
 				SetColor 0,0,0
-				DrawRect(atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY(), _slotMinDimension.getX(), _slotMinDimension.getY())
+				DrawRect(atPoint.x + pos.x, atPoint.y + pos.y, _slotMinDimension.x, _slotMinDimension.y)
 				SetColor 255,255,255
-				DrawRect(atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1, _slotMinDimension.getX()-2, _slotMinDimension.getY()-2)
+				DrawRect(atPoint.x + pos.x + 1, atPoint.y + pos.y + 1, _slotMinDimension.x-2, _slotMinDimension.y-2)
 			SetAlpha 0.8
 				SetColor 0,0,0
-				DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1)
+				DrawText("slot "+i+"|"+GetSlotByCoord(new TVec2D(pos.x, pos.y)), atPoint.x + pos.x + 1, atPoint.y + pos.y + 1)
 				SetColor 255,255,255
-				DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
+				DrawText("slot "+i+"|"+GetSlotByCoord(new TVec2D(pos.x, pos.y)), atPoint.x + pos.x, atPoint.y + pos.y)
 			Next
 			SetAlpha 1.0
 			ResetViewPort()
@@ -571,11 +576,11 @@ Type TGUISlotList Extends TGUIListBase
 			EndIf
 
 			'move entry's position to current one
-			If _slots[i] Then _slots[i].rect.position.CopyFrom(currentPos)
+			If _slots[i] Then _slots[i].rect.SetXY(currentPos)
 
 			'resize covered area
-			coveredArea.position.setXY( Min(coveredArea.position.x, currentPos.x), Min(coveredArea.position.y, currentPos.y) )
-			coveredArea.dimension.setXY( Max(coveredArea.dimension.x, currentPos.x+slotW), Max(coveredArea.dimension.y, currentPos.y+slotH) )
+			coveredArea.SetXY( Min(coveredArea.x, currentPos.x), Min(coveredArea.y, currentPos.y) )
+			coveredArea.SetWH( Max(coveredArea.w, currentPos.x+slotW), Max(coveredArea.h, currentPos.y+slotH) )
 
 
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL

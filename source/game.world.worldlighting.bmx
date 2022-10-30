@@ -6,19 +6,20 @@ Import "game.world.worldtime.bmx"
 
 Type TWorldLighting
 	'scene ambient color used for full daylight.
-	Field fullLight:TColor
+	Field fullLight:SColor8
 	'scene ambient color used for full night.
-	Field fullDark:TColor
+	Field fullDark:SColor8
+	'scene fog color to use at dawn and dusk.
+	Field dawnDuskFog:SColor8
+	'scene fog color to use during the day.
+	Field dayFog:SColor8
+	'scene fog color to use at night.
+	Field nightFog:SColor8
+
 	'color to use now
 	Field currentLight:TColor
 	'fog color to use now
 	Field currentFogColor:TColor
-	'scene fog color to use at dawn and dusk.
-	Field dawnDuskFog:TColor
-	'scene fog color to use during the day.
-	Field dayFog:TColor
-	'scene fog color to use at night.
-	Field nightFog:TColor
 
 	Field _lightIntensity:Float
 	Field _lightIntensityBase:Float = 1.0
@@ -27,14 +28,14 @@ Type TWorldLighting
 	'Set values for an acceptable day/night cycle effect
 	Method Init:TWorldLighting()
 		'=== SETUP CONFIGURATION ===
-		fullDark = TColor.Create(32, 28, 46)
-		fullLight = TColor.Create(190, 215, 245)
-		dawnDuskFog = TColor.Create(240, 212, 171)
-		dayFog = TColor.Create(225, 240, 255)
-		nightFog = TColor.Create(15, 30, 80)
+		fullDark = new SColor8(32, 28, 46)
+		fullLight = new SColor8(190, 215, 245)
+		dawnDuskFog = new SColor8(240, 212, 171)
+		dayFog = new SColor8(225, 240, 255)
+		nightFog = new SColor8(15, 30, 80)
 
-		currentLight = fullLight.Copy()
-		currentFogColor = dayFog.Copy()
+		currentLight = new TColor().CopyFrom(fullLight)
+		currentFogColor = new TColor().CopyFrom(dayFog)
 
 		return Self
 	End Method
@@ -42,7 +43,7 @@ Type TWorldLighting
 
 	'returns the brightness compared to full light brightness
 	Method GetSkyBrightness:Float()
-		return Max(0.0, Min(1.0, currentLight.GetBrightness() / fullLight.GetBrightness()))
+		return Max(0.0, Min(1.0, currentLight.GetBrightness() / SColor8Helper.GetBrightness(fullLight)))
 	End Method
 
 
@@ -51,20 +52,20 @@ Type TWorldLighting
 		Select GetWorldTime().GetDayPhase()
 			Case GetWorldTime().DAYPHASE_DAY
 				_lightIntensity = _lightIntensityBase
-				currentLight.CopyFrom( fullLight )
+				currentLight.CopyFrom(fullLight)
 
 			Case GetWorldTime().DAYPHASE_NIGHT
 				_lightIntensity = 0
-				currentLight.CopyFrom( fullDark )
+				currentLight.CopyFrom(fullDark)
 
 			Case GetWorldTime().DAYPHASE_DAWN
 				local relativeTime:Float = GetWorldTime().GetDayTime() - GetWorldTime().GetDawnPhaseBegin()
-				currentLight = TColor.CreateFromMix(fullDark, fullLight, relativeTime / GetWorldTime().GetDawnDuration())
+				currentLight.CopyFrom( SColor8Helper.Mix(fullDark, fullLight, relativeTime / GetWorldTime().GetDawnDuration()) )
 				_lightIntensity = _lightIntensityBase * (relativeTime / GetWorldTime().GetDawnDuration())
 
 			Case GetWorldTime().DAYPHASE_DUSK
 				local relativeTime:Float = GetWorldTime().GetDayTime() - GetWorldTime().GetDuskPhaseBegin()
-				currentLight = TColor.CreateFromMix(fullLight, fullDark, relativeTime / GetWorldTime().GetDuskDuration())
+				currentLight.CopyFrom( SColor8Helper.Mix(fullLight, fullDark, relativeTime / GetWorldTime().GetDuskDuration()) )
 				_lightIntensity = _lightIntensityBase * (1.0 - (relativeTime / GetWorldTime().GetDuskDuration()))
 		End Select
 	End Method
@@ -88,13 +89,13 @@ Type TWorldLighting
 					'x = max 0.5
 					progress = 0.5 + 2* relativeTime / time.GetDawnDuration()
 					progress :- 0.05
-					currentFogColor = TColor.CreateFromMix(nightFog, dawnDuskFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(nightFog, dawnDuskFog, progress) )
 				elseif relativeTime / time.GetDawnDuration() < 0.75
-					currentFogColor = dawnDuskFog.copy()
+					currentFogColor.CopyFrom( dawnDuskFog )
 				else
 					'fade from 0-50%
 					progress = ((relativeTime / time.GetDawnDuration()) - 0.75) * 2
-					currentFogColor = TColor.CreateFromMix(dawnDuskFog, dayFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(dawnDuskFog, dayFog, progress) )
 				endif
 
 			Case time.DAYPHASE_DAY
@@ -104,13 +105,13 @@ Type TWorldLighting
 					'fade from 50-100% (begun in night): 0.5 + x
 					'x = max 0.5
 					progress = 0.5 + 2* relativeTime / time.GetDayDuration()
-					currentFogColor = TColor.CreateFromMix(dawnDuskFog, dayFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(dawnDuskFog, dayFog, progress) )
 				elseif relativeTime / time.GetDayDuration() < 0.75
-					currentFogColor = dayFog.copy()
+					currentFogColor.CopyFrom( dayFog )
 				else
 					'fade from 0-50%
 					progress = ((relativeTime / time.GetDayDuration()) - 3.0/4) * 2.0
-					currentFogColor = TColor.CreateFromMix(dayFog, dawnDuskFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(dayFog, dawnDuskFog, progress) )
 				endif
 
 			Case time.DAYPHASE_DUSK
@@ -120,13 +121,13 @@ Type TWorldLighting
 					'fade from 50-100% (begun in night): 0.5 + x
 					'x = max 0.5
 					progress = 0.5 + 2* relativeTime / time.GetDuskDuration()
-					currentFogColor = TColor.CreateFromMix(dayFog, dawnDuskFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(dayFog, dawnDuskFog, progress) )
 				elseif relativeTime / time.GetDuskDuration() < 0.75
-					currentFogColor = dawnDuskFog.copy()
+					currentFogColor.CopyFrom( dawnDuskFog )
 				else
 					'fade from 0-50%
 					progress = ((relativeTime / time.GetDuskDuration()) - 3.0/4) * 2.0
-					currentFogColor = TColor.CreateFromMix(dawnDuskFog, nightFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(dawnDuskFog, nightFog, progress) )
 				endif
 
 			Case time.DAYPHASE_NIGHT
@@ -144,13 +145,13 @@ Type TWorldLighting
 					'fade from 50-100% (begun in night): 0.5 + x
 					'x = max 0.5
 					progress = 0.5 + 2* relativeTime / time.GetNightDuration()
-					currentFogColor = TColor.CreateFromMix(dawnDuskFog, nightFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(dawnDuskFog, nightFog, progress) )
 				elseif relativeTime / time.GetNightDuration() < 0.75
-					currentFogColor = nightFog.copy()
+					currentFogColor.CopyFrom( nightFog )
 				else
 					'fade from 0-50%
 					progress = ((relativeTime / time.GetNightDuration()) - 3.0/4) * 2.0
-					currentFogColor = TColor.CreateFromMix(nightFog, dawnDuskFog, progress)
+					currentFogColor.CopyFrom( SColor8Helper.Mix(nightFog, dawnDuskFog, progress) )
 				endif
 		End Select
 	End Method

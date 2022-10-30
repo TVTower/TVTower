@@ -47,10 +47,11 @@ Type TGUIChat Extends TGUIPanel
 	Global antiSpamTime:Int	= 100
 
 
-	Method Create:TGUIChat(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIChat(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		guiList = New TGUIListBase.Create(New TVec2D.Init(0,0), New TVec2D.Init(GetContentScreenRect().GetW(),GetContentScreenRect().GetH()), limitState)
+		Local cScrRect:TRectangle = GetContentScreenRect()
+		guiList = New TGUIListBase.Create(New SVec2I(0,0), New SVec2I(Int(cScrRect.w), Int(cScrRect.h)), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.SetAutoSortItems(False)
 		guiList.SetAcceptDrop("")
@@ -58,11 +59,11 @@ Type TGUIChat Extends TGUIPanel
 		guiList.SetAutoScroll(True)
 		guiList.SetBackground(Null)
 
-		guiInput = New TGUIInput.Create(New TVec2D.Init(0, dimension.y),New TVec2D.Init(dimension.x,-1), "", 32, limitState)
+		guiInput = New TGUIInput.Create(New SVec2I(0, dimension.y), New SVec2I(dimension.x, -1), "", 32, limitState)
 		guiInput.setParent(Self)
 
 		'resize base and move child elements
-		SetSize(dimension.GetX(), dimension.GetY())
+		SetSize(dimension.x, dimension.y)
 
 		'by default all chats want to list private messages and system announcements
 		setListenToChannel(CHAT_CHANNEL_PRIVATE, True)
@@ -257,8 +258,8 @@ Type TGUIChat Extends TGUIPanel
 		AddEntry( entry )
 		
 		'now we know the actual content and resize properly
-		local dim:TVec2D = entry.GetDimension()
-		entry.SetSize(dim.GetX(), dim.GetY())
+		local dim:SVec2F = entry.GetDimension()
+		entry.SetSize(dim.x, dim.y)
 
 	End Method
 
@@ -324,7 +325,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-    Method Create:TGUIChatEntry(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIChatEntry(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
@@ -333,8 +334,8 @@ Type TGUIChatEntry Extends TGUIListItem
 		SetShowtime( 1000 )
 
 		'now we know the actual content and resize properly
-		local dim:TVec2D = GetDimension()
-		SetSize(dim.GetX(), dim.GetY())
+		local dim:SVec2F = GetDimension()
+		SetSize(dim.x, dim.y)
 
 		GUIManager.add(Self)
 
@@ -342,7 +343,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method GetDimension:TVec2D() override
+	Method GetDimension:SVec2F() override
 		Local move:SVec2I
 		Local senderName:String = Data.getString("senderName")
 		If senderName
@@ -385,7 +386,7 @@ Type TGUIChatEntry Extends TGUIListItem
 			If list Then list.InvalidateLayout()
 		EndIf
 
-		Return new TVec2D.Init(dimension.x, dimension.y)
+		Return new SVec2F(dimension.x, dimension.y)
 	End Method
 
 

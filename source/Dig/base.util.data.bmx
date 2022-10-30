@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2016 Ronny Otto, digidea.de
+	Copyright (C) 2002-2022 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -40,11 +40,15 @@ Import brl.StringBuilder
 Import "external/string_comp.bmx"
 
 Type TData
-	Field data:TMap = New TMap
+	Field data:TMap
 
 	Method Init:TData(data:TMap=Null)
 		If data
-			Self.data.Clear()
+			If Not self.data
+				self.data = new TMap
+			Else
+				Self.data.Clear()
+			EndIf
 
 			For Local k:Object = EachIn data.Keys()
 				Local ls:TLowerString = TLowerString(k)
@@ -81,23 +85,25 @@ Type TData
 		Local res:TStringBuilder = New TStringBuilder
 		res.Append("TData~n")
 		'local res:string = "TData~n"
-		For Local key:TLowerString = EachIn data.Keys()
-			If TData(data.ValueForKey(key))
-				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1)).Append("~n")
-			ElseIf TData[](data.ValueForKey(key))
-				For Local d:TData = EachIn TData[](data.ValueForKey(key))
-					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(d.ToStringFormat(depth + 1)).Append("~n")
-				Next
-			ElseIf Object[](data.ValueForKey(key))
-				For Local o:Object = EachIn Object[](data.ValueForKey(key))
-					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(o.ToString()).Append("~n")
-				Next
-			ElseIf data.ValueForKey(key)
-				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(data.ValueForKey(key).ToString()).Append("~n")
-			Else
-				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = NULL~n")
-			EndIf
-		Next
+		If self.data
+			For Local key:TLowerString = EachIn data.Keys()
+				If TData(data.ValueForKey(key))
+					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1)).Append("~n")
+				ElseIf TData[](data.ValueForKey(key))
+					For Local d:TData = EachIn TData[](data.ValueForKey(key))
+						res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(d.ToStringFormat(depth + 1)).Append("~n")
+					Next
+				ElseIf Object[](data.ValueForKey(key))
+					For Local o:Object = EachIn Object[](data.ValueForKey(key))
+						res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(o.ToString()).Append("~n")
+					Next
+				ElseIf data.ValueForKey(key)
+					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(data.ValueForKey(key).ToString()).Append("~n")
+				Else
+					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = NULL~n")
+				EndIf
+			Next
+		EndIf
 		res.AppendObject(depthString).Append("'-------~n")
 		Return res.ToString()
 	End Method
@@ -106,15 +112,17 @@ Type TData
 	Method Copy:TData()
 		Local dataCopy:TData = New TData
 
-		For Local key:TLowerString = EachIn data.Keys()
-			'key = key.ToLower()
-			Local value:Object = data.ValueForKey(key)
-			If TData(value)
-				dataCopy.Add(key, TData(value).Copy())
-			Else
-				dataCopy.Add(key, value)
-			EndIf
-		Next
+		If self.data
+			For Local key:TLowerString = EachIn data.Keys()
+				'key = key.ToLower()
+				Local value:Object = data.ValueForKey(key)
+				If TData(value)
+					dataCopy.Add(key, TData(value).Copy())
+				Else
+					dataCopy.Add(key, value)
+				EndIf
+			Next
+		EndIf
 
 		Return dataCopy
 	End Method
@@ -123,10 +131,12 @@ Type TData
 	Function JoinData:Int(dataSource:TData, dataTarget:TData)
 		If Not dataSource Then Return False
 		If Not dataTarget Then Return False
-		For Local key:TLowerString = EachIn dataSource.data.Keys()
-			'key = key.ToLower()
-			dataTarget.Add(key, dataSource.data.ValueForKey(key))
-		Next
+		If dataSource.data
+			For Local key:TLowerString = EachIn dataSource.data.Keys()
+				'key = key.ToLower()
+				dataTarget.Add(key, dataSource.data.ValueForKey(key))
+			Next
+		EndIf
 		Return True
 	End Function
 
@@ -167,35 +177,39 @@ Type TData
 		If Not customized Then customized = New TData
 
 		'add all data available in "customized" but not in "original"
-		For Local key:TLowerString = EachIn customized.data.Keys()
-			'skip if original contains value too
-			If original.Get(key) Then Continue
+		If customized.data
+			For Local key:TLowerString = EachIn customized.data.Keys()
+				'skip if original contains value too
+				If original.Get(key) Then Continue
 
-			result.Add(key, customized.Get(key))
-		Next
+				result.Add(key, customized.Get(key))
+			Next
+		EndIf
 
 
 		'add all data differing in "customized" compared to "original"
 		'iterate through original to skip already "added ones"
-		For Local key:TLowerString = EachIn original.data.Keys()
-			Local newValue:Object = customized.Get(key)
-			'if customized does not contain that value yet - skip
-			If Not newValue Then Continue
+		if original.data
+			For Local key:TLowerString = EachIn original.data.Keys()
+				Local newValue:Object = customized.Get(key)
+				'if customized does not contain that value yet - skip
+				If Not newValue Then Continue
 
-			'both contain a value for the given key
-			'only add the key->value if original and custom differ
-			If newValue <> original.Get(key)
-				If String(newValue) = String(original.Get(key)) Then Continue
+				'both contain a value for the given key
+				'only add the key->value if original and custom differ
+				If newValue <> original.Get(key)
+					If String(newValue) = String(original.Get(key)) Then Continue
 
-				'if it is another dataset, try to get their
-				'difference too
-				If TData(newValue)
-					newValue = GetDataDifference(TData(original.Get(key)), TData(newValue))
+					'if it is another dataset, try to get their
+					'difference too
+					If TData(newValue)
+						newValue = GetDataDifference(TData(original.Get(key)), TData(newValue))
+					EndIf
+
+					result.Add(key, newValue)
 				EndIf
-
-				result.Add(key, newValue)
-			EndIf
-		Next
+			Next
+		EndIf
 
 		Return result
 	End Function
@@ -210,6 +224,7 @@ Type TData
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
 
+		if not self.data then self.data = new TMap
 		Self.data.insert(ls, data)
 		Return Self
 	End Method
@@ -285,9 +300,11 @@ endrem
 
 
 	Method Remove:Object(key:Object)
+		if not self.data Then Return Null
+
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
-
+		
 		Local removed:Object = Get(ls)
 		data.Remove(ls)
 
@@ -296,6 +313,8 @@ endrem
 
 
 	Method Has:Int(key:Object)
+		if not self.data Then Return False
+
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
 
@@ -304,6 +323,8 @@ endrem
 
 
 	Method Get:Object(k:Object, defaultValue:Object=Null, groupsEnabled:Int = False)
+		if not self.data Then Return Null
+
 		Local ls:TLowerString = TLowerString(k)
 		If Not ls Then ls = TLowerString.Create(String(k))
 

@@ -40,10 +40,10 @@ function FilterAdContractsByMinAudience(contractList, minAudienceMin, minAudienc
 
 	if contractList ~= nil then
 		if type(minAudienceMin) == "number" or minAudienceMin == nil then
-			minAudienceMin = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(tonumber(minAudienceMin))
+			minAudienceMin = TVT.audiencePredictor.GetAudienceWithPopulation(tonumber(minAudienceMin))
 		end
 		if type(minAudienceMax) == "number" or minAudienceMax == nil then
-			minAudienceMax = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(tonumber(minAudienceMax))
+			minAudienceMax = TVT.audiencePredictor.GetAudienceWithPopulation(tonumber(minAudienceMax))
 		end
 		local minAudienceMinSum = minAudienceMin.GetTotalSum()
 		local minAudienceMaxSum = minAudienceMax.GetTotalSum()

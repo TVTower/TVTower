@@ -25,8 +25,8 @@ Type RoomHandler_Archive extends TRoomHandler
 	Field spriteSuitcase:TSprite {nosave}
 
 	'configuration
-	Field suitcasePos:TVec2D				= new TVec2D.Init(40,270)
-	Field suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
+	Global suitcasePos:SVec2I				= new SVec2I(40,270)
+	Global suitcaseGuiListDisplace:SVec2I	= new SVec2I(14,25)
 
 	global LS_archive:TLowerString = TLowerString.Create("archive")
 
@@ -52,7 +52,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'=== CREATE ELEMENTS ===
 		if not GuiListSuitCase
 			local baseSprite:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
-			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, GetSpriteFromRegistry("gfx_movie_undefined").area.GetH()), "archive")
+			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new SVec2I(suitcasePos.x + suitcaseGuiListDisplace.x, suitcasePos.y + suitcaseGuiListDisplace.y), new SVec2I(180, Int(GetSpriteFromRegistry("gfx_movie_undefined").area.h)), "archive")
 			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
@@ -61,7 +61,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			GuiListSuitcase.SetSlotMinDimension(baseSprite.area.GetW(), baseSprite.area.GetH())
 			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
-			DudeArea = new TGUISimpleRect.Create(new TVec2D.Init(600,100), new TVec2D.Init(200, 350), "archive" )
+			DudeArea = new TGUISimpleRect.Create(new SVec2I(600,100), new SVec2I(200, 350), "archive" )
 			'dude should accept drop - else no recognition
 			DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -412,14 +412,14 @@ Type RoomHandler_Archive extends TRoomHandler
 		
 		If playerIsOwner
 			'draw suitcase - make suitcase/vendor glow if needed
-			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
 
 			If draggedGuiProgrammeLicence
 				Local oldColA:Float = GetAlpha()
 				SetBlend LightBlend
 				SetAlpha oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
 	
-				spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+				spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
 	
 				SetAlpha(oldColA)
 				SetBlend AlphaBlend

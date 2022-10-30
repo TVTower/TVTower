@@ -37,7 +37,7 @@ Type TError
 		obj.linkReversed = ListReversed.AddFirst(obj)
 
 		'create a new one
-		obj.window = new TGUIGameModalWindow.Create(null, New TVec2D.Init(400,120), "SYSTEM")
+		obj.window = new TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,120), "SYSTEM")
 		obj.window.guiCaptionTextBox.SetFont(headerFont)
 		obj.window._defaultValueColor = TColor.clBlack.copy()
 		obj.window.defaultCaptionColor = TColor.clWhite.copy()

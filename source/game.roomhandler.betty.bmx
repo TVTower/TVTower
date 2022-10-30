@@ -45,7 +45,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		'=== CREATE ELEMENTS =====
 		BettySprite = GetSpriteFromRegistry("gfx_room_betty_betty")
 		if not BettyArea
-			BettyArea = New TGUISimpleRect.Create(new TVec2D.Init(303,142), new TVec2D.Init(112,148), "betty" )
+			BettyArea = New TGUISimpleRect.Create(new SVec2I(303,142), new SVec2I(112,148), "betty" )
 			'Betty accepts presents
 			BettyArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
 		EndIf
@@ -256,7 +256,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		If not presentInSuitcase
 			Local present:TBettyPresent = GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
 			if present 
-				presentInSuitcase = new TGUIBettyPresent.Create(suitcaseArea.x + 14, suitcaseArea.y + 19, present)
+				presentInSuitcase = new TGUIBettyPresent.Create(Int(suitcaseArea.x + 14), Int(suitcaseArea.y + 19), present)
 				presentInSuitcase.setLimitToState("betty")
 				'so we get informed of clicks on the item before the widget
 				'itself does drop/drag handling

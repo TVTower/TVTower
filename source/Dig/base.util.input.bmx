@@ -80,7 +80,7 @@ Rem
 		the button was clicked two times within a defined time
 End Rem
 Type TMouseManager
-	Field currentPos:TVec2D = New TVec2D.Init(0,0)
+	Field currentPos:TVec2D = New TVec2D(0,0)
 	Field x:Int = 0.0
 	Field y:Int = 0.0
 	'amount of pixels moved (0=zero, -upwards, +downwards)
@@ -91,7 +91,7 @@ Type TMouseManager
 	Field longClickMinTime:Int = 450
 
 
-	Field _lastPos:TVec2D = New TVec2D.Init(0,0)
+	Field _lastPos:TVec2D = New TVec2D(0,0)
 	Field _lastScrollWheel:Int = 0
 	
 	'store the last click for each button
@@ -688,7 +688,7 @@ Type TMouseManager
 			EndIf
 
 
-			Local currentPosVec:TVec2D = New TVec2D.Init(x, y)
+			Local currentPosVec:TVec2D = New TVec2D(x, y)
 
 			'check for swipe
 			If _hasIgnoredFirstClick[buttonIndex] And _lastAnyClickPos[buttonIndex] And _lastAnyClickPos[buttonIndex].DistanceTo(currentPosVec) > _minSwipeDistance

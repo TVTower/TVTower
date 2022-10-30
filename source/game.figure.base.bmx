@@ -173,7 +173,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field name:String = "unknown"
 	'backup of self.velocity.x
 	Field initialdx:Float = 0.0
-	Field PosOffset:TVec2D = new TVec2D.Init(0,0)
+	Field PosOffset:TVec2D = new TVec2D(0,0)
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
@@ -258,7 +258,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFloor:Int(pos:TVec2D = Null) abstract
+	Method GetFloor:Int() abstract
+
+	Method GetFloor:Int(y:Float) abstract
 
 
 	Method onLoad:int()
@@ -387,12 +389,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'right of me
 		if area.GetX() < figure.area.GetX()
 			'i move to the left
-			If velocity.GetX() < 0 then return FALSE
+			If GetVelocity().x < 0 then return FALSE
 			return TRUE
 		'left of me
 		else
 			'i move to the right
-			If velocity.GetX() > 0 then return FALSE
+			If GetVelocity().x > 0 then return FALSE
 			return TRUE
 		endif
 		return FALSE
@@ -470,7 +472,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method MoveToCurrentTarget:int()
 		if not GetTarget() then return False
 
-		area.position.CopyFrom( GetTargetMoveToPosition() )
+		area.SetXY( GetTargetMoveToPosition() )
 	End Method
 
 
@@ -543,18 +545,16 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
-	Method GetTargetMoveToPosition:TVec2D()
+	Method GetTargetMoveToPosition:SVec2I()
 		local target:TFigureTargetBase = GetTarget()
-		if not target then return Null
+		if not target then return new SVec2I(-1000,-1000)
 
 		return target.GetMoveToPosition()
 	End Method
 
 
 	Method IsAtCurrentTarget:int()
-		local pos:TVec2D = GetTargetMoveToPosition()
-		if TVec2D(area.position).isSame(pos) then return True
-		return False
+		Return area.IsSamePosition(GetTargetMoveToPosition())
 	End Method
 
 
@@ -570,16 +570,19 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		velocity.SetX(0)
 
-		'set target as current position - so we are exactly there we want to be
-		local targetPosition:TVec2D = GetTargetMoveToPosition()
-		if targetPosition then area.position.setX( targetPosition.getX() )
+		Local target:TFigureTargetBase = GetTarget()
+		if target
+			'set target as current position - so we are exactly there we want to be
+			local targetPosition:SVec2I = GetTargetMoveToPosition()
+			if targetPosition.x <> -1000 and targetPosition.y <> -1000 then area.setX( targetPosition.x )
+		EndIf
 
 		currentReachTargetStep = 1
 		'inform target
-		if GetTarget() then GetTarget().Reach(self)
+		if target then target.Reach(self)
 
 		'emit an event
-		TriggerBaseEvent(GameEventKeys.Figure_OnBeginReachTarget, null, self, GetTarget() )
+		TriggerBaseEvent(GameEventKeys.Figure_OnBeginReachTarget, null, self, target )
 
 		'run custom onReachTarget method - eg to wait until entering a door
 		'or just remove the current target
@@ -658,24 +661,31 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns what animation has to get played in that moment
 	Method GetAnimationToUse:string()
-		local result:string = "standBack"
+		Local vX:Float = GetVelocity().x
 
-		'if standing
-		If GetVelocity().GetX() = 0 or not moveable
+		'standing in front of door (just came out)
+		If IsWaitingToLeave() 
+			Return "standFront"
+		'standing in front of door (want to go in)
+		Elseif IsWaitingToEnter() 
+			Return "standBack"
+		'standing idling or blocked
+		ElseIf vX = 0 or not moveable
 			if currentAction = ACTION_ENTERING or currentAction = ACTION_PLANNED_ENTER
-				result = "standBack"
+				Return "standBack"
 			else
-				result = "standFront"
+				Return "standFront"
 			endif
-		Else
-			If GetVelocity().GetX() > 0 Then result = "walkRight"
-			If GetVelocity().GetX() < 0 Then result = "walkLeft"
+		'walking
+		ElseIf vX > 0
+			Return "walkRight"
+		'walking
+		ElseIf vX < 0
+			Return "walkLeft"
 		EndIf
 
-		if IsWaitingToLeave() then result = "standFront"
-		if IsWaitingToEnter() then result = "standBack"
-
-		return result
+		'default
+		Return "standBack"
 	End Method
 
 
@@ -785,8 +795,8 @@ Type TFigureTargetBase
 	End Method
 
 
-	Method GetMoveToPosition:TVec2D()
-		if TVec2D(targetObj) then return TVec2D(targetObj)
-		return null
+	Method GetMoveToPosition:SVec2I()
+		if TVec2D(targetObj) then return new SVec2I(int(TVec2D(targetObj).x), int(TVec2D(targetObj).y))
+		return new SVec2I(-1000,-1000)
 	End Method
 End Type

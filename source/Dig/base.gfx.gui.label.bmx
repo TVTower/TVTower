@@ -13,7 +13,7 @@ TGUILabel._defaultDrawTextEffect.data.mode = EDrawTextEffect.Emboss
 TGUILabel._defaultDrawTextEffect.data.value = -1.0 'default
 
 Type TGUILabel Extends TGUIobject
-	Field contentDisplacement:TVec2D = New TVec2D.Init(0,0)
+	Field contentDisplacement:TVec2D = New TVec2D(0,0)
 	Field color:SColor8 = SColor8.Black
 	Field _valueDimensionCache:TVec2D = Null
 	Field spriteName:String = ""
@@ -47,18 +47,14 @@ Type TGUILabel Extends TGUIobject
 
 
 	Method Create:TGUILabel(pos:SVec2I, text:String, State:String="")
-		Return Create(new TVec2D.Init(pos.x, pos.y), text, self.color, State)
-	End Method
-
-
-	Method Create:TGUILabel(pos:TVec2D, text:String, State:String="")
 		Return Create(pos, text, self.color, State)
 	End Method
 
+
 	'will be added to general GuiManager
 	'-- use CreateSelfContained to get a unmanaged object
-	Method Create:TGUILabel(pos:TVec2D, text:String, color:SColor8, State:String="")
-		Super.CreateBase(pos, Null, State)
+	Method Create:TGUILabel(pos:SVec2I, text:String, color:SColor8, State:String="")
+		Super.CreateBase(pos, new SVec2I(-1,-1), State)
 
 		'by default labels have left aligned content
 		SetContentAlignment(ALIGN_LEFT, ALIGN_CENTER)
@@ -183,7 +179,7 @@ Type TGUILabel Extends TGUIobject
 			If sprite
 				Select valueSpriteMode
 					Case MODE_SPRITE_ONLY
-						_valueDimensionCache = New TVec2D.Init(sprite.GetWidth(), sprite.GetHeight())
+						_valueDimensionCache = New TVec2D(sprite.GetWidth(), sprite.GetHeight())
 					Case MODE_SPRITE_LEFT_OF_TEXT, MODE_SPRITE_RIGHT_OF_TEXT
 						availableW :- sprite.GetWidth()
 					Case MODE_SPRITE_ABOVE_TEXT, MODE_SPRITE_BELOW_TEXT
@@ -192,7 +188,7 @@ Type TGUILabel Extends TGUIobject
 			EndIf
 
 			Local s:SVec2I = GetFont().GetBoxDimension(value, availableW, availableH)
-			_valueDimensionCache = New TVec2D.Init(s.x, s.y)
+			_valueDimensionCache = New TVec2D(s.x, s.y)
 
 			'add back sprite to result
 			If sprite

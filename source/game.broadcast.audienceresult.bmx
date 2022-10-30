@@ -68,9 +68,9 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 		Next
 
 		If audienceResultBases.length > 1
-			result.Audience.DivideFloat(audienceResultBases.length)
-			result.WholeMarket.DivideFloat(audienceResultBases.length)
-			result.GetPotentialMaxAudience().DivideFloat(audienceResultBases.length)
+			result.Audience.Divide(audienceResultBases.length)
+			result.WholeMarket.Divide(audienceResultBases.length)
+			result.GetPotentialMaxAudience().Divide(audienceResultBases.length)
 		Endif
 		
 		return result
@@ -101,23 +101,6 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 		
 		'quote = audience / maxAudience
 		return Audience.Copy().Divide( GetPotentialMaxAudience() )
-	End Method
-
-
-	'returns a "un-gendered" quote (only target groups)
-	Method GetGenderlessAudienceQuote:TAudienceBase() {_exposeToLua}
-		local result:TAudienceBase = new TAudienceBase
-		local pmAudience:TAudience = GetPotentialMaxAudience()
-		local targetGroupID:int = 0
-
-		'ignore man / women (not available with TAudienceBase)
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			targetGroupID = TVTTargetGroup.GetAtIndex(i)
-			'set to (audience.sumX / potentialAudience.sumX)
-			'this sums up values for female and male of each targetgroup 
-			result.SetValue(targetGroupID, Audience.GetTotalValue(targetGroupID) / pmAudience.GetTotalValue(targetGroupID) )
-		Next
-		return result
 	End Method
 
 

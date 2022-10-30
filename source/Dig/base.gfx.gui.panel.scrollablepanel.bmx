@@ -10,9 +10,9 @@ Import "base.gfx.gui.panel.bmx"
 
 
 Type TGUIScrollablePanel Extends TGUIPanel
-	Field scrollPosition:TVec2D	= new TVec2D.Init(0,0)
-	Field scrollLimit:TVec2D	= new TVec2D.Init(0,0)
-	Field minSize:TVec2D		= new TVec2D.Init(0,0)
+	Field scrollPosition:TVec2D	= new TVec2D(0,0)
+	Field scrollLimit:TVec2D	= new TVec2D(0,0)
+	Field minSize:TVec2D		= new TVec2D(0,0)
 
 
 	Method GetClassName:String()
@@ -20,7 +20,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
-	Method Create:TGUIScrollablePanel(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIScrollablePanel(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 		Self.minSize.SetXY(50,50)
 

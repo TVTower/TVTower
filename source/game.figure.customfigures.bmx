@@ -84,10 +84,10 @@ Type TFigureJanitor Extends TFigure
 	'we need to overwrite it to have a custom type - with custom update routine
 	Method Create:TFigureJanitor(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
 		Super.Create(FigureName, sprite, x, onFloor, speed)
-		area.dimension.setX(14)
+		area.SetW(14)
 
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("cleanRight", [ [11,130], [12,130] ], -1, 0) )
-		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("cleanLeft", [ [13,130], [14,130] ], -1, 0) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("cleanRight", [ [11,130], [12,130] ], -1, 0) )
+		GetFrameAnimations().Add(new TSpriteFrameAnimation("cleanLeft", [ [13,130], [14,130] ], -1, 0) )
 
 		Return Self
 	End Method
@@ -115,10 +115,10 @@ Type TFigureJanitor Extends TFigure
 	End Method
 
 
-	'overwrite default to stop moving when cleaning
-	Method GetVelocity:TVec2D()
-		If currentJanitorAction = 1 Then Return New TVec2D
-		Return velocity
+	'override default to stop moving when cleaning
+	Method GetVelocity:SVec2F() override
+		If currentJanitorAction = 1 Then Return New SVec2F(0,0)
+		Return New SVec2F(velocity.x, velocity.y)
 	End Method
 
 
@@ -176,11 +176,11 @@ Type TFigureJanitor Extends TFigure
 
 			'chose actions
 			'- only if not outside the building
-			If area.position.GetX() > GetBuildingBase().leftWallX
+			If area.x > GetBuildingBase().leftWallX
 				'only clean with a chance of 30% when on the way to something
 				'and do not clean if target is a room near figure
 				Local targetDoor:TRoomDoor = TRoomDoor(GetTargetObject())
-				If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
+				If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.x) Or targetDoor.GetOnFloor() <> GetFloor()))
 					If RandRange(0,100) < NormalCleanChance Then currentJanitorAction = 1
 				EndIf
 				'if just standing around give a chance to clean

@@ -89,12 +89,9 @@ Type TSpriteEntity extends TEntity
 			endif
 
 			'create an offset rect if defined so
-			local offset:TVec2D = null
-			if childData.GetInt("offsetLeft", 0) <> 0 or childData.GetInt("offsetTop", 0) <> 0
-				offset = new TVec2D.Init(childData.GetInt("offsetLeft", 0), childData.GetInt("offsetTop", 0))
-			EndIf
-
-			spriteEntity.AddChild(child, offset)
+			Local offsetX:Int = childData.GetInt("offsetLeft", 0)
+			Local offsetY:Int = childData.GetInt("offsetTop", 0)
+			spriteEntity.AddChild(child, offsetX, offsetY)
 		Next
 		
 		return spriteEntity
@@ -104,9 +101,9 @@ Type TSpriteEntity extends TEntity
 	Method SetSprite:TSpriteEntity(sprite:TSprite)
 		self.sprite = sprite
 		if sprite
-			self.area.dimension.SetXY(sprite.GetWidth(), sprite.GetHeight())
+			self.area.SetWH(sprite.GetWidth(), sprite.GetHeight())
 		else
-			self.area.dimension.SetXY(0, 0)
+			self.area.SetWH(0, 0)
 		endif
 	End Method
 
@@ -142,13 +139,13 @@ Type TSpriteEntity extends TEntity
 			return RenderAt(x, y, alignment)
 		endif
 		'backup current animation
-		local oldAnimationName:string = frameAnimations.currentAnimationName
+		local oldAnimation:TSpriteFrameAnimation = frameAnimations.GetCurrent()
 		'set new animation
-		frameAnimations.currentAnimationName = animationName
+		frameAnimations.SetCurrent(animationName, False, False)
 		'render with new animation
 		RenderAt(x, y, alignment)
 		'set back to backup
-		frameAnimations.currentAnimationName = oldAnimationName
+		frameAnimations.SetCurrent(oldAnimation, False, False)
 	End Method
 
 

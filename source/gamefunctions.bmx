@@ -50,13 +50,13 @@ Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBit
 	newPixmap.ClearPixels(0)
 
 	If blur > 0.0
-		DrawImageOnImage(char.pixmap, newPixmap, 1,1, TColor.Create(0,0,0,1.0))
+		DrawImageOnImageSColor(char.pixmap, newPixmap, 1,1, SColor8.Black)
 		blurPixmap(newPixmap,0.5)
 	EndIf
 
 	'shadow
 	For Local i:Int = 0 To shadowSize
-		DrawImageOnImage(char.pixmap, newPixmap, Int(i*stepX),Int(i*stepY), TColor.Create(0,0,0,intensity/i))
+		DrawImageOnImageSColor(char.pixmap, newPixmap, Int(i*stepX), Int(i*stepY), new SColor8(0,0,0,int(255 * intensity/i)))
 	Next
 	'original image
 	DrawImageOnImage(char.pixmap, newPixmap, 0,0)

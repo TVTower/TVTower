@@ -116,8 +116,8 @@ Type TDialogue
 				'the used height by the content of the balloon
 				'the text is padded by "_contentPadding"
 				local paddingHeight:Int = int(GetContentPadding().GetTop() + GetContentPadding().GetBottom())
-				local contentWidth:Int = int(_balloonRect.dimension.x - (GetContentPadding().GetLeft() + GetContentPadding().GetRight()))
-				'local contentHeight:Int = int(_balloonRect.dimension.y - (GetContentPadding().GetTop() + GetContentPadding().GetBottom()))
+				local contentWidth:Int = int(_balloonRect.w - (GetContentPadding().GetLeft() + GetContentPadding().GetRight()))
+				'local contentHeight:Int = int(_balloonRect.h - (GetContentPadding().GetTop() + GetContentPadding().GetBottom()))
 
 				'find out height without height limitation
 				'give dialogue a minimum height of ... 100
@@ -128,9 +128,9 @@ Type TDialogue
 					'if _balloonGrow = 1 then ...
 
 					'up
-					If _balloonGrow = -1 Then _balloonRect.MoveXY(0, -(requiredHeight - _balloonRect.getH()) )
+					If _balloonGrow = -1 Then _balloonRect.MoveY(-(requiredHeight - _balloonRect.getH()))
 
-					_balloonRect.dimension.y = requiredHeight 
+					_balloonRect.SetH(requiredHeight)
 				EndIf
 			EndIf
 		EndIf
@@ -169,7 +169,7 @@ Type TDialogue
 					'up
 					If _answerBalloonGrow = -1 Then _answerBalloonRect.MoveXY(0, -(usedHeight - _answerBalloonRect.getH()) )
 
-					_answerBalloonRect.dimension.y = usedHeight
+					_answerBalloonRect.SetH(usedHeight)
 					
 					'reset
 					_answerContentRect = null
@@ -183,8 +183,8 @@ Type TDialogue
 	
 	
 	Method GetAnswerContentMaxWidth:Int()
-		'print "GetAnswerContentMaxWidth: " + _rawAnswerBalloonRect.dimension.x + " - " + GetContentPadding().GetLeft() + " - " + GetContentPadding().GetRight()
-		Return _rawAnswerBalloonRect.dimension.x - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
+		'print "GetAnswerContentMaxWidth: " + _rawAnswerBalloonRect.w + " - " + GetContentPadding().GetLeft() + " - " + GetContentPadding().GetRight()
+		Return _rawAnswerBalloonRect.w - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 	End Method
 
 
@@ -303,7 +303,7 @@ Type TDialogue
 
 		dialogueText.DrawText(GetContentRect())
 		'SetColor 0,255,255
-		'dialogueText.DrawOutlineRect(int(GetAnswerBalloonRect().position.x -1), int(GetAnswerBalloonRect().position.y - 1), int(GetAnswerBalloonRect().dimension.x + 2), int(GetAnswerBalloonRect().dimension.y + 2))
+		'dialogueText.DrawOutlineRect(int(GetAnswerBalloonRect().x -1), int(GetAnswerBalloonRect().y - 1), int(GetAnswerBalloonRect().w + 2), int(GetAnswerBalloonRect().h + 2))
 		'SetColor 255,255,255
 
 		dialogueText.DrawAnswers(GetAnswerContentRect())
@@ -356,7 +356,7 @@ Type TDialogueAnswer
 		'answers below the highlighted one
 		if _sizeForWidth <> w and _boldFont
 			local s:SVec2I = _boldFont.GetBoxDimension(Self._text, w, -1)
-			_size.Init(s.x, s.y)
+			_size.SetXY(s.x, s.y)
 			_sizeForWidth = w
 		endif
 		return _size
@@ -523,7 +523,7 @@ Type TDialogueTexts
 
 		For Local answer:TDialogueAnswer = EachIn _answers
 			answer._pos.SetXY(0, advanceY)
-			advanceY :+ answer.GetBoxSize(Int(answerRect.dimension.x)).y
+			advanceY :+ answer.GetBoxSize(Int(answerRect.w)).y
 			advanceY :+ 7
 		Next
 	End Method
@@ -568,8 +568,8 @@ Type TDialogueTexts
 	
 
 	Method DrawText(textRect:TRectangle)
-		FillTextCache(new SVec2I(int(textRect.dimension.x), int(textRect.dimension.y)))
-		_textCache.DrawCached(textRect.GetX(), textRect.GetY())
+		FillTextCache(new SVec2I(int(textRect.w), int(textRect.h)))
+		_textCache.DrawCached(textRect.x, textRect.y)
 	End Method
 
 
@@ -585,7 +585,7 @@ Type TDialogueTexts
 		MoveAnswers(answerRect)
 
 		'SetColor 0,255,255
-		'DrawOutlineRect(int(answerRect.position.x -1), int(answerRect.position.y - 1), int(answerRect.dimension.x + 2), int(answerRect.dimension.y + 2))
+		'DrawOutlineRect(int(answerRect.x -1), int(answerRect.y - 1), int(answerRect.w + 2), int(answerRect.h + 2))
 		'SetColor 255,255,255
 
 		For Local answer:TDialogueAnswer = EachIn _answers
@@ -597,9 +597,9 @@ rem
 		Local advanceY:Int = 0
 		For Local answer:TDialogueAnswer = EachIn _answers
 			SetColor 255,0, advanceY*50
-			DrawOutlineRect(int(answerRect.position.x), int(answerRect.position.y + advanceY), int(answerRect.dimension.x), answer.GetBoxSize(Int(answerRect.dimension.x)).y)
-			DrawOutlineRect(int(answerRect.position.x + answer.GetTextOffset().x), int(answerRect.position.y + advanceY), int(answerRect.dimension.x - answer.GetTextOffset().x), answer.GetBoxSize(Int(answerRect.dimension.x)).y)
-			advanceY :+ answer.GetBoxSize(Int(answerRect.dimension.x)).y
+			DrawOutlineRect(int(answerRect.x), int(answerRect.y + advanceY), int(answerRect.w), answer.GetBoxSize(Int(answerRect.w)).y)
+			DrawOutlineRect(int(answerRect.x + answer.GetTextOffset().x), int(answerRect.y + advanceY), int(answerRect.w - answer.GetTextOffset().x), answer.GetBoxSize(Int(answerRect.w)).y)
+			advanceY :+ answer.GetBoxSize(Int(answerRect.w)).y
 			advanceY :+ 7
 		Next
 		SetColor 255,255,255

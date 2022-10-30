@@ -46,12 +46,7 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
-	Method Create:TGUISelectList(pos:SVec2I, dimension:SVec2I, limitState:String = "")
-		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), limitState)
-	End Method
-
-
-    Method Create:TGUISelectList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+	Method Create:TGUISelectList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		'register listeners in a central location
@@ -205,8 +200,8 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-    Method Create:TGUISelectListItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension Then dimension = New TVec2D.Init(80,20)
+    Method Create:TGUISelectListItem(position:SVec2I, dimension:SVec2I, value:String="")
+		If dimension.x = 0 and dimension.y = 0 Then dimension = New SVec2I(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")

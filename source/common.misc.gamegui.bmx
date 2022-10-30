@@ -23,7 +23,7 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 	End Method
 
 
-	Method Create:TGUISpriteDropDown(position:TVec2D = Null, dimension:TVec2D = Null, value:String="", maxLength:Int=128, limitState:String = "")
+	Method Create:TGUISpriteDropDown(position:SVec2I, dimension:SVec2I, value:String="", maxLength:Int=128, limitState:String = "")
 		Super.Create(position, dimension, value, maxLength, limitState)
 		Return Self
 	End Method
@@ -58,7 +58,7 @@ End Type
 
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Global spriteDimension:TVec2D
-	Global defaultSpriteDimension:TVec2D = New TVec2D.Init(24, 24)
+	Global defaultSpriteDimension:TVec2D = New TVec2D(24, 24)
 
 
 	Method GetClassName:String()
@@ -66,12 +66,12 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	End Method
 
 
-    Method Create:TGUISpriteDropDownItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		If Not dimension
-			dimension = New TVec2D.Init(-1, GetSpriteDimension().y + 2)
+    Method Create:TGUISpriteDropDownItem(position:SVec2I, dimension:SVec2I, value:String="")
+		If dimension.x = 0 and dimension.y = 0
+			dimension = New SVec2I(-1, Int(GetSpriteDimension().y + 2))
 		Else
-			dimension.x = Max(dimension.x, GetSpriteDimension().x)
-			dimension.y = Max(dimension.y, GetSpriteDimension().y)
+			dimension = new SVec2I(Int(Max(dimension.x, GetSpriteDimension().x)),..
+			                       Int(Max(dimension.y, GetSpriteDimension().y)))
 		EndIf
 		Super.Create(position, dimension, value)
 		Return Self
@@ -141,22 +141,21 @@ Type TGUIChatWindow Extends TGUIGameWindow
 	End Method
 
 
-	Method Create:TGUIChatWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIChatWindow(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		'use "create" instead of "createBase" so the caption gets
 		'positioned similar
 		Super.Create(pos, dimension, limitState)
 
 		guiPanel = AddContentBox(0, 0, GetContentScreenRect().GetIntW(), -1)
 
-		'guiChat = New TGUIChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
-		guiChat = New TGUIGameChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
+		guiChat = New TGUIGameChat.Create(New SVec2I(0,0), GUI_DIM_AUTOSIZE, limitState)
 
 		'panel manages the chat and window manages the panel
 		guiPanel.AddChild(guiChat)
 		AddChild(guiPanel)
 
 		'resize base and move child elements
-		SetSize(dimension.GetX(), dimension.GetY())
+		SetSize(dimension.x, dimension.y)
 
 		GUIManager.Add( Self )
 
@@ -210,7 +209,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 	End Method
 
 
-	Method Create:TGUIGameWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIGameWindow(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		GetPadding().SetTop(35)
@@ -245,7 +244,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 			Next
 		EndIf
 
-		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TVec2D.Init(displaceX, maxOtherBoxesY + displaceY), New TVec2D.Init(w, h), "")
+		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New SVec2I(displaceX, maxOtherBoxesY + displaceY), New SVec2I(w, h), "")
 
 		box.spriteBaseName = childSpriteBaseName
 		box.spriteAlpha = 1.0
@@ -284,7 +283,7 @@ Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
 	End Method
 
 
-	Method Create:TGUIGameModalWindowChainDialogue(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIGameModalWindowChainDialogue(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		_defaultValueColor = TColor.clBlack.copy()
 		defaultCaptionColor = TColor.clWhite.copy()
 
@@ -314,7 +313,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 	End Method
 
 
-	Method Create:TGUIGameModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIGameModalWindow(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		_defaultValueColor = TColor.clBlack.copy()
 		defaultCaptionColor = TColor.clWhite.copy()
 
@@ -351,7 +350,7 @@ Type TGUIGameEntryList Extends TGUIGameList
 	End Method
 
 
-    Method Create:TGUIGameEntryList(pos:TVec2D=Null, dimension:TVec2D=Null, limitState:String = "")
+    Method Create:TGUIGameEntryList(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		Return Self
@@ -408,7 +407,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIGameEntry(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIGameEntry(pos:SVec2I, dimension:SVec2I, value:String="")
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
@@ -423,27 +422,28 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-	Method getDimension:TVec2D()
+	Method GetDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel( GetFirstParentalObject("tguiscrollablepanel") )
 		Local maxWidth:Int = 200
 		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
+		Local w:Float = maxWidth
+		Local h:Float = GetBitmapFontManager().baseFont.GetMaxCharHeight()
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 
 
@@ -496,7 +496,7 @@ Type TGUIGameList Extends TGUISelectList
 	End Method
 
 
-    Method Create:TGUIGameList(pos:TVec2D=null, dimension:TVec2D=null, limitState:String = "")
+    Method Create:TGUIGameList(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		Return Self
@@ -516,7 +516,7 @@ Type TGUIGameSlotList Extends TGUISlotList
 	End Method
 
 
-    Method Create:TGUIGameSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUIGameSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		return self
 	End Method
@@ -591,7 +591,7 @@ Type TGUIGameListItem Extends TGUIListItem
 	End Method
 
 
-    Method Create:TGUIGameListItem(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGUIGameListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'creates base, registers click-event,...
 		Super.Create(pos, dimension, value)
 

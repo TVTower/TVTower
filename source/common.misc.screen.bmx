@@ -18,7 +18,7 @@ Type TScreenCollection
 	Field screenTransitionActive:int = False
 
 	Global instance:TScreenCollection
-	Global _screenDimension:TVec2D = new TVec2D.Init(0,0)
+	Global _screenDimension:TVec2D = new TVec2D(0,0)
 	Global useChangeEffects:int = TRUE
 	
 	Function Create:TScreenCollection(baseScreen:TScreen)
@@ -268,7 +268,7 @@ endrem
 
 	Function SetScreenDimension(width:int, height:int)
 		if not _screenDimension then _screenDimension = new TVec2D
-		_screenDimension.Init(width,height)
+		_screenDimension.SetXY(width, height)
 	End Function
 End Type
 Global ScreenCollection:TScreenCollection = TScreenCollection.Create(null)
@@ -584,7 +584,7 @@ End Type
 
 'fading from color-transparent or vice versa
 Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
-	field _color:TColor       = TColor.clBlack
+	field _color:SColor8 = SColor8.Black
 
 	Method Create:TScreenChangeEffect_SimpleFader(direction:int=0, area:TRectangle=null)
 		_direction = direction
@@ -619,7 +619,7 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		SetAlpha tweenProgress
-		_color.SetRGB()
+		SetColor(_color)
 		DrawRect(GetArea().GetX(), GetArea().GetY(), GetArea().GetW(), GetArea().GetH())
 		
 		SetColor(oldCol)
@@ -672,7 +672,7 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 		local rectsWidth:float  = tweenProgress * (GetArea().GetW() / 2)
 		local rectsHeight:float = tweenProgress * (GetArea().GetH() / 2)
 
-		_color.SetRGB()
+		SetColor(_color)
 		SetAlpha alphaProgress
 
 		DrawRect(GetArea().GetX(), GetArea().GetY(), rectsWidth, rectsHeight)

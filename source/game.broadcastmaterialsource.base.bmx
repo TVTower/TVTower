@@ -16,8 +16,8 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 	Field description:TLocalizedString
 
 	'contains "numeric" modifiers (simple key:num-pairs)
-	Field modifiers:TData = New TData
-	Field effects:TGameModifierGroup = New TGameModifierGroup
+	Field modifiers:TData
+	Field effects:TGameModifierGroup
 
 	Field topicality:Float = 1.0
 	Field flags:Int = 0
@@ -50,6 +50,7 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 
 	'returns the stored value for a modifier - defaults to "100%"
 	Method GetModifier:Float(modifierKey:Object, defaultValue:Float = 1.0)
+		If not modifiers then Return defaultValue
 		Return modifiers.GetFloat(modifierKey, defaultValue)
 	End Method
 
@@ -58,7 +59,11 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 	Method SetModifier:Int(modifierKey:Object, value:Float)
 		'skip adding the modifier if it is the same - or a default value
 		'-> keeps datasets smaller
-		If GetModifier(modifierKey) = value Then Return False
+		If modifiers
+			If GetModifier(modifierKey) = value Then Return False
+		Else
+			modifiers = new TData
+		EndIf
 
 		modifiers.AddNumber(modifierKey, value)
 		Return True
@@ -72,17 +77,19 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 		Local clone:TData = New TData
 
 		'find first hit
-		Local node:TNode = modifiers.data._FirstNode()
-		While node And node <> _nilNode
-			If TGameModifierBase(node._value)
-				clone.Add(node._key, TGameModifierBase(node._value).Copy())
-			Else
-				clone.Add(node._key, node._value)
-			EndIf
+		if modifiers.data
+			Local node:TNode = modifiers.data._FirstNode()
+			While node And node <> _nilNode
+				If TGameModifierBase(node._value)
+					clone.Add(node._key, TGameModifierBase(node._value).Copy())
+				Else
+					clone.Add(node._key, node._value)
+				EndIf
 
-			'move on to next node
-			node = node.NextNode()
-		Wend
+				'move on to next node
+				node = node.NextNode()
+			Wend
+		EndIf
 
 		Return clone
 	End Method
@@ -92,6 +99,32 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 		If Not effects Then Return Null
 
 		Return effects.Copy()
+	End Method
+	
+	
+	Method GetEffectsList:TList(name:String)
+		if not effects then Return Null
+		Return effects.GetList(name)
+	End Method
+
+
+	Method GetEffectsCount:Int(name:String)
+		if Not effects Then Return 0
+		Local l:TList = effects.GetList(name)
+		If l Then Return l.Count()
+		Return 0
+	End Method
+
+
+	Method GetEffects:TGameModifierGroup(createIfMissing:Int = True)
+		if not effects and createIfMissing Then effects = New TGameModifierGroup
+		Return effects
+	End Method
+	
+	
+	Method UpdateEffects:Int(name:String, params:TData)
+		If Not effects Then Return False
+		Return effects.Update(name, params)
 	End Method
 
 
@@ -150,14 +183,14 @@ endrem
 	Method AddEffectByData:Int(effectData:TData)
 		If Not effectData Then Return False
 
-		Local effectName:String = effectData.GetString("type").ToLower()
-		Local effectTrigger:String = effectData.GetString("trigger").ToLower()
+		Local effectName:String = effectData.GetString("type")
+		Local effectTrigger:String = effectData.GetString("trigger")
 		If Not effectName Or Not effectTrigger Then Return False
 
 		Local effect:TGameModifierBase = GetGameModifierManager().CreateAndInit(effectName, effectData)
 		If Not effect Then Return False
-
-		effects.AddEntry(effectTrigger, effect)
+		
+		GetEffects(True).AddEntry(effectTrigger, effect)
 		Return True
 	End Method
 

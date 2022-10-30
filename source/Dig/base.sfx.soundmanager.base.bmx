@@ -1067,9 +1067,9 @@ Type TDynamicSfxChannel Extends TSfxChannel
 		if not _channel then GetChannel()
 		if not _channel then return
 
-		Local sourcePoint:TVec3D = Source.GetCenter()
+		'Local sourcePoint:SVec3D = Source.GetCenter()
 		'most probably the center of the figure
-		Local receiverPoint:TVec3D = Receiver.GetCenter()
+		'Local receiverPoint:SVec3D = Receiver.GetCenter()
 
 		If CurrentSettings.forceVolume
 			_channel.SetVolume( CurrentSettings.defaultVolume )
@@ -1209,7 +1209,7 @@ Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
 	Field ID:Int = 0
 	Global _lastID:Int = 0
 
-	Method GetCenter:TVec3D() Abstract
+	Method GetCenter:SVec3D() Abstract
 	Method IsMovable:Int() Abstract
 	Method GetClassIdentifier:String() Abstract
 

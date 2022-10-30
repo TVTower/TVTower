@@ -178,7 +178,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 	Method InitGUIElements()
 		if not messageList
-			messageList = new TGUISelectList.Create(new TVec2D.Init(210,60), new TVec2D.Init(525, 280), "office_archivedmessages")
+			messageList = new TGUISelectList.Create(new SVec2I(210,60), new SVec2I(525, 280), "office_archivedmessages")
 		endif
 
 		messageList.scrollItemHeightPercentage = 1.0
@@ -292,7 +292,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		local skin:TDatasheetSkin = GetDatasheetSkin("archivedmessages")
 
 		'where to draw
-		local outer:TRectangle = new TRectangle
+		local outer:SRectI
 		'calculate position/size of content elements
 		local contentX:int = 0
 		local contentY:int = 0
@@ -307,14 +307,14 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		'=== CATEGORY SELECTION ===
 		listH = (TVTMessageCategory.count+1) * 20 + 5 + 70
-		outer.Init(40, 25 + titleH, 180, 50)
-		contentX = skin.GetContentX(outer.GetX())
-		contentY = skin.GetContentY(outer.GetY())
-		contentW = skin.GetContentW(outer.GetW())
-		contentH = skin.GetContentH(outer.GetH())
+		outer = new SRectI(40, 25 + titleH, 180, 50)
+		contentX = skin.GetContentX(outer.x)
+		contentY = skin.GetContentY(outer.y)
+		contentW = skin.GetContentW(outer.w)
+		contentH = skin.GetContentH(outer.h)
 
 		'resize outer to fit to the list
-		outer.dimension.SetY(50-contentH + listH + titleH)
+		outer = new SRectI(outer.x, outer.y, outer.w, 50-contentH + listH + titleH)
 		contentH = listH
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
@@ -332,11 +332,11 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryDefault, EDrawTextEffect.Emboss, 0.5)
 			endif
 		Next
-		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+		skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
-		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("MESSAGES_SHOW_HEADING"), contentX + 12, outer.GetH()-25, colorCategoryDefault)
+		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("MESSAGES_SHOW_HEADING"), contentX + 12, outer.h-25, colorCategoryDefault)
 		if not showModeSelect
-			showModeSelect = New TGUIDropDown.Create(New TVec2D.Init(outer.GetX() + 12, outer.GetH()-5 ), New TVec2D.Init(147,-1), "", 128, "office_archivedmessages")
+			showModeSelect = New TGUIDropDown.Create(New SVec2I(Int(outer.x) + 12, Int(outer.h)-5 ), New SVec2I(147,-1), "", 128, "office_archivedmessages")
 			showModeSelect.SetListContentHeight(60)
 
 			addShowModeItem(SHOW_UNREAD, "MESSAGES_SHOW_UNREAD")
@@ -345,11 +345,11 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		endif
 
 		'=== MESSAGE LIST ===
-		outer.Init(200, 25, 550, 325)
-		contentX = skin.GetContentX(outer.GetX())
-		contentY = skin.GetContentY(outer.GetY())
-		contentW = skin.GetContentW(outer.GetW())
-		contentH = skin.GetContentH(outer.GetH())
+		outer = New SRectI(200, 25, 550, 325)
+		contentX = skin.GetContentX(outer.x)
+		contentY = skin.GetContentY(outer.y)
+		contentW = skin.GetContentW(outer.w)
+		contentH = skin.GetContentH(outer.h)
 
 		listH = contentH - titleH
 
@@ -367,13 +367,13 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
-		if messageList.rect.getX() <> contentX + 5
+		if messageList.rect.x <> contentX + 5
 			messageList.rect.SetXY(contentX + 5, contentY + 3)
 			messageList.SetSize(contentW - 8, listH - 7)
 		endif
 		contentY :+ listH
 
-		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+		skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
 		GuiManager.Draw( LS_office_archivedmessages )
 
@@ -415,7 +415,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIArchivedMessageListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIArchivedMessageListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
@@ -449,27 +449,27 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 	End Method
 	
 'rem
-	Method getDimension:TVec2D()
+	Method GetDimension:SVec2F() override
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 300
 		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
-		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetContentHeight(maxWidth))
+		Local w:Float = maxWidth
+		Local h:Float = GetContentHeight(maxWidth)
 
 		'add padding
-		dimension.addXY(0, Self.paddingTop)
-		dimension.addXY(0, Self.paddingBottom)
+		h :+ Self.paddingTop
+		h :+ Self.paddingBottom
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If Self.rect.w <> w Or Self.rect.h <> h
 			'resize item
-			Self.SetSize(dimension.getX(), dimension.getY())
+			Self.SetSize(w, h)
 		EndIf
 
-		Return dimension
+		Return new SVec2F(w, h)
 	End Method
 'endrem
 

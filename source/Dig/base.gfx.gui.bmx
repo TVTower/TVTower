@@ -76,6 +76,7 @@ Const GUIMANAGER_TYPES_DRAGGED:Int    = 2^0
 Const GUIMANAGER_TYPES_NONDRAGGED:Int = 2^1
 Const GUIMANAGER_TYPES_ALL:Int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TYPES_NONDRAGGED
 
+Global GUI_DIM_AUTOSIZE:SVec2I = new SVec2I(-1, -1)
 
 
 
@@ -382,7 +383,7 @@ Type TGUIManager
 
 	Method DisplaceGUIobjects(State:TLowerString = Null, x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn List
-			If isState(obj, State) Then obj.rect.position.AddXY( x,y )
+			If isState(obj, State) Then obj.rect.MoveXY( x,y )
 		Next
 	End Method
 
@@ -784,11 +785,7 @@ Type TGUIobject
 '	End Method
 
 
-	Method CreateBase:TGUIobject(pos:TVec2D, dimension:TVec2D, limitState:String="")
-		'create missing params
-		If Not pos Then pos = New TVec2D.Init(0,0)
-		If Not dimension Then dimension = New TVec2D.Init(-1,-1)
-
+	Method CreateBase:TGUIobject(pos:SVec2I, dimension:SVec2I, limitState:String="")
 		SetPosition(pos.x, pos.y)
 		'resize widget, dimension of (-1,-1) is "auto dimension"
 		SetSize(dimension.x, dimension.y)
@@ -1318,15 +1315,15 @@ Type TGUIobject
 
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Local resized:Int = False
-		Local oldW:Float = rect.dimension.GetX()
-		Local oldH:Float = rect.dimension.GetY()
+		Local oldW:Float = rect.w
+		Local oldH:Float = rect.h
 
-		If w > 0 And w <> rect.dimension.x
-			rect.dimension.setX(w)
+		If w > 0 And w <> rect.w
+			rect.SetW(w)
 			resized = True
 		EndIf
-		If h > 0 And h <> rect.dimension.y
-			rect.dimension.setY(h)
+		If h > 0 And h <> rect.h
+			rect.SetH(h)
 			resized = True
 		EndIf
 
@@ -1345,10 +1342,10 @@ Type TGUIobject
 
 
 	Method SetPosition(x:Float, y:Float)
-		If Not rect.position.EqualsXY(x,y)
-			Local dx:Float = x - rect.position.x
-			Local dy:Float = y - rect.position.y
-			rect.position.SetXY(x, y)
+		If Not rect.IsSamePosition(x,y)
+			Local dx:Float = x - rect.x
+			Local dy:Float = y - rect.y
+			rect.SetXY(x, y)
 
 			OnReposition(dx, dy)
 		EndIf
@@ -1356,9 +1353,9 @@ Type TGUIobject
 
 
 	Method SetPositionX(x:Float)
-		If rect.position.x <> x
-			Local dx:Float = x - rect.position.x
-			rect.position.SetX(x)
+		If rect.x <> x
+			Local dx:Float = x - rect.x
+			rect.SetX(x)
 
 			OnReposition(dx, 0)
 		EndIf
@@ -1366,9 +1363,9 @@ Type TGUIobject
 
 
 	Method SetPositionY(y:Float)
-		If rect.position.y <> y
-			Local dy:Float = y - rect.position.y
-			rect.position.SetY(y)
+		If rect.y <> y
+			Local dy:Float = y - rect.y
+			rect.SetY(y)
 
 			OnReposition(0, dy)
 		EndIf
@@ -1377,7 +1374,7 @@ Type TGUIobject
 
 	Method Move(dx:Float, dy:Float)
 		If dx <> 0 Or dy <> 0
-			rect.position.AddXY(dx, dy)
+			rect.MoveXY(dx, dy)
 
 			OnReposition(dx, dy)
 		EndIf
@@ -1385,10 +1382,10 @@ Type TGUIobject
 
 
 	Method SetScreenPosition(x:Float, y:Float)
-		If Not GetScreenRect().position.EqualsXY(x,y)
-			Local dx:Float = x - _screenRect.position.x
-			Local dy:Float = y - _screenRect.position.y
-			rect.position.AddXY(dx, dy)
+		If Not GetScreenRect().IsSamePosition(x,y)
+			Local dx:Float = x - _screenRect.x
+			Local dy:Float = y - _screenRect.y
+			rect.MoveXY(dx, dy)
 
 			OnReposition(dx, dy)
 		EndIf
@@ -1447,7 +1444,7 @@ Type TGUIobject
 	Method Drag:Int(coord:TVec2D=Null)
 		If Not isDragable() Or isDragged() Then Return False
 
-		data.Add("dragPosition", New TVec2D.Init( GetScreenRect().GetX(), GetScreenRect().GetY() ))
+		data.Add("dragPosition", New TVec2D( GetScreenRect().x, GetScreenRect().y ))
 		data.Add("dragState", GUIManager.currentState )
 
 		Local evData:TData = new TData.Add("coord", coord)
@@ -1558,7 +1555,7 @@ Type TGUIobject
 	'use "force = True" to ignore potential Veto's of events/callbacks
 	Method Drop:Int(coord:TVec2D=Null, limitState:TLowerString = Null, allowDropToNonGUIObject:Int = False, force:Int = False)
 		If Not isDragged() Then Return False
-		If coord And coord.getX()=-1 Then coord = New TVec2D.Init(MouseManager.x, MouseManager.y)
+		If coord And coord.getX()=-1 Then coord = New TVec2D(MouseManager.x, MouseManager.y)
 
 		if not limitState then limitState = GUIManager.currentState
 		'debug
@@ -1780,10 +1777,10 @@ Type TGUIobject
 	Method UpdateScreenRect:TRectangle()
 		If HasStatus(GUI_OBJECT_STATUS_SCREENRECT_VALID) Then Return _screenRect
 
-		Local oldX:Float = _screenRect.position.x
-		Local oldY:Float = _screenRect.position.y
-		Local oldW:Float = _screenRect.dimension.x
-		Local oldH:Float = _screenRect.dimension.y
+		Local oldX:Float = _screenRect.x
+		Local oldY:Float = _screenRect.y
+		Local oldW:Float = _screenRect.w
+		Local oldH:Float = _screenRect.h
 
 		_UpdateScreenX()
 		_UpdateScreenY()
@@ -1946,8 +1943,8 @@ Type TGUIobject
 	End Method
 
 
-	Method GetDimension:TVec2D()
-		Return rect.dimension
+	Method GetDimension:SVec2F()
+		Return new SVec2F(rect.w, rect.h)
 	End Method
 
 
@@ -1995,7 +1992,7 @@ Type TGUIobject
 	'button: button or key
 	'x,y:    coordinates
 	Method Click:Int(source:EGUIClickType, button:Int, x:Int=-1, y:Int=-1)
-		Local clickPos:TVec2D = New TVec2D.Init(x, y)
+		Local clickPos:TVec2D = New TVec2D(x, y)
 
 		'print "IS CLICKED    " + _id + "   " + GetClassName()
 		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
@@ -2032,7 +2029,7 @@ Type TGUIobject
 	'button: button or key
 	'x,y:    coordinates
 	Method DoubleClick:Int(source:EGUIClickType, button:Int, x:Int=-1, y:Int=-1)
-		Local clickPos:TVec2D = New TVec2D.Init(x, y)
+		Local clickPos:TVec2D = New TVec2D(x, y)
 
 		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
 		'let the object handle the click
@@ -2191,7 +2188,7 @@ Type TGUIobject
 		If containsMouse and IsActive()
 			For local i:int = 1 to GUIManager.UpdateState_mouseButtonDown.length - 1
 				If GUIManager.UpdateState_mouseButtonDown[i]
-					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseDown, New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseDown, New TData.AddNumber("button",1).Add("coord", New TVec2D(MouseManager.x, MouseManager.y)), Self)
 					OnMouseDown(ev)
 					ev.Trigger()
 				EndIf
@@ -2283,7 +2280,7 @@ Type TGUIobject
 		'If IsFocused() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
 		If IsHovered() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
 'print "on scrollwheel :" + _id + " ["+GetClassName()+"] "' + GetValue()
-			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseScrollwheel, New TData.AddInt("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseScrollwheel, New TData.AddInt("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D(MouseManager.x, MouseManager.y)), Self)
 			OnMouseScrollwheel(ev)
 			ev.Trigger()
 
@@ -2940,9 +2937,9 @@ Type TGUISimpleRect Extends TGUIobject
 	End Method
 
 
-	Method Create:TGUISimpleRect(position:TVec2D, dimension:TVec2D, limitState:String="")
+	Method Create:TGUISimpleRect(position:SVec2I, dimension:SVec2I, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
-		Self.SetSize(dimension.GetX(), dimension.GetY() )
+		Self.SetSize(dimension.x, dimension.y)
 
     	GUIManager.Add( Self )
 		Return Self
@@ -2956,7 +2953,8 @@ Type TGUISimpleRect Extends TGUIobject
 
 	Method DrawDebug()
 		SetAlpha 0.5
-		DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
+		local scrRect:TRectangle = GetScreenRect()
+		DrawRect(scrRect.x, scrRect.y, scrRect.w, scrRect.h)
 		SetAlpha 1.0
 	End Method
 
@@ -2974,7 +2972,7 @@ Type TGUITooltipBase Extends TTooltipBase
 	Field _effectiveContentPadding:TRectangle
 	Field _arrowType:Int = ARROW_DOWN
 
-	Global _defaultOffset:TVec2D = New TVec2D.Init(0, 3)
+	Global _defaultOffset:TVec2D = New TVec2D(0, 3)
 	Const ARROW_NONE:Int = 0
 	Const ARROW_LEFT:Int = 1
 	Const ARROW_RIGHT:Int = 2

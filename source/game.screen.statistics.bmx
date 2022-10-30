@@ -64,12 +64,12 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 		'=== create gui elements if not done yet
 		If Not tabGroup
 			'for all screens
-			tabGroup = New TGUITabGroup.Create(New TVec2D.Init(19, 10), New TVec2D.Init(762,28), "officeStatisticsScreen")
+			tabGroup = New TGUITabGroup.Create(New SVec2I(19, 10), New SVec2I(762,28), "officeStatisticsScreen")
 
 			Local buttonFont:TBitmapFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
 			Local captions:String[] = ["Einschaltquoten", "Senderimage", "Zielgruppen", "Senderkarte", "sonstiges"]
 			For Local i:Int = 0 Until 5
-				Local btn:TGUIToggleButton = New TGUIToggleButton.Create(New TVec2D.Init(i*155, 0), New TVec2D.Init(142, 28), "", "officeStatisticsScreen")
+				Local btn:TGUIToggleButton = New TGUIToggleButton.Create(New SVec2I(i*155, 0), New SVec2I(142, 28), "", "officeStatisticsScreen")
 				btn.SetFont( buttonFont )
 				btn.SetCaption(captions[i])
 				tabGroup.AddButton(btn, i)
@@ -78,8 +78,8 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 
 			'AudienceScreen
-			previousDayButton = New TGUIArrowButton.Create(New TVec2D.Init(290, 251), New TVec2D.Init(24, 24), "LEFT", "officeStatisticsScreen_Audience")
-			nextDayButton = New TGUIArrowButton.Create(New TVec2D.Init(290 + 175 + 20, 251), New TVec2D.Init(24, 24), "RIGHT", "officeStatisticsScreen_Audience")
+			previousDayButton = New TGUIArrowButton.Create(New SVec2I(290, 251), New SVec2I(24, 24), "LEFT", "officeStatisticsScreen_Audience")
+			nextDayButton = New TGUIArrowButton.Create(New SVec2I(290 + 175 + 20, 251), New SVec2I(24, 24), "RIGHT", "officeStatisticsScreen_Audience")
 
 			previousDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
 			nextDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
@@ -328,10 +328,10 @@ endif
 		TScreenHandler_OfficeStatistics.newsColor = new SColor8(110,100,180)
 
 		'news
-		dataChart.AddDataSet(new TDataChartDataSet, TScreenHandler_OfficeStatistics.newsColor, new TVec2D.Init(-5,0))
+		dataChart.AddDataSet(new TDataChartDataSet, TScreenHandler_OfficeStatistics.newsColor, new TVec2D(-5,0))
 		dataChart.SetDataCount(DATASET_NEWS, 26) '26 to have one earlier and later (-1 to 25)
 		'programmes
-		dataChart.AddDataSet(new TDataChartDataSet, TScreenHandler_OfficeStatistics.programmeColor, new TVec2D.Init(5,0))
+		dataChart.AddDataSet(new TDataChartDataSet, TScreenHandler_OfficeStatistics.programmeColor, new TVec2D(5,0))
 		dataChart.SetDataCount(DATASET_PROGRAMME,26)
 
 		dataChart.SetXRange(0, 24)
@@ -561,7 +561,7 @@ endrem
 		'how much days to draw
 		Local showHours:Int = 24
 		'where to draw + dimension
-		Local curveArea:TRectangle = New TRectangle.Init(29, 284, 738, 70)
+		'Local curveArea:SRectI = New SRectI(29, 284, 738, 70)
 		'heighest reached audience value of that hours
 		Local maxValue:Int = 0
 		'minimum audience
@@ -589,13 +589,12 @@ endrem
 				If progNewsIterator = 1 Then tableX = 450
 
 				'the small added/subtracted numbers are for padding of the text
-				Local labelArea:TRectangle = New TRectangle.Init(tableX + 4, 81-1, 175-4, 19)
-				Local valueArea:TRectangle = New TRectangle.Init(labelArea.GetX2(), labelArea.GetY() + 2, 155 - 5, 19)
-				Local captionArea:TRectangle = New TRectangle.Init(labelArea.GetX(), 57, 322, captionHeight)
-				Local bgArea:TRectangle = New TRectangle.Init(tableX + 4, 81, 175-4, 19)
-				bgArea.SetW( valueArea.GetX2() - labelArea.GetX() + 6)
-				bgArea.position.SetXY( bgArea.GetX() - 3, bgArea.GetY() - 1 )
-
+				Local labelArea:SRectI = New SRectI(tableX + 4, 81-1, 175-4, 19)
+				Local valueArea:SRectI = New SRectI(labelArea.GetX2(), labelArea.y + 2, 155 - 5, 19)
+				Local captionArea:SRectI = New SRectI(labelArea.x, 57, 322, captionHeight)
+				Local bgArea:SRectI = New SRectI(tableX + 4 - 3, 81 -1, valueArea.GetX2() - labelArea.x + 6, 19)
+				
+				
 				Local futureHour:Int = False
 				If parent.showDay > GetWorldTime().GetDay()
 					futureHour = True
@@ -608,11 +607,11 @@ endrem
 				'row backgrounds
 				For Local i:Int = 0 To 7
 					If i Mod 2 = 0
-						valueBG.DrawArea(bgArea.GetX(), bgArea.GetY(), bgArea.GetW(), bgArea.GetH())
+						valueBG.DrawArea(bgArea.x, bgArea.y, bgArea.w, bgArea.h)
 					Else
-						valueBG2.DrawArea(bgArea.GetX(), bgArea.GetY(), bgArea.GetW(), bgArea.GetH())
+						valueBG2.DrawArea(bgArea.x, bgArea.y, bgArea.w, bgArea.h)
 					EndIf
-					bgArea.position.AddY( bgArea.GetH() )
+					bgArea = bgArea.Move(0, bgArea.h)
 				Next
 
 
@@ -631,15 +630,15 @@ endrem
 				'row entries
 				If parent.showHour < 0 Or parent.showHour > 23 Or futureHour
 					If progNewsIterator = 1
-						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
+						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
 					Else
-						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
+						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
 					EndIf
 				ElseIf Not audienceResult
 					If progNewsIterator = 1
-						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 					Else
-						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 					EndIf
 				Else
 					Local title:String = audienceResult.GetTitle()
@@ -662,24 +661,24 @@ endrem
 							title = GetLocale("NEWS")+" - "+RSet(parent.showHour,2).Replace(" ","0")+":05"
 						EndIf
 					EndIf
-					captionFont.DrawBox(title, captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+					captionFont.DrawBox(title, captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
-					textFont.DrawBox(GetLocale("AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 0*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("AUDIENCE_NUMBER")+":", labelArea.x, labelArea.y + 0*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.x, labelArea.y + 1*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.x, labelArea.y + 2*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
-					TextFont.DrawBox("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH() -2, valueArea.GetW(), valueArea.GetH(), sALIGN_RIGHT_CENTER, rankFontColor)
+					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					TextFont.DrawBox("#"+audienceRanks[0], valueArea.x, valueArea.y + 0*valueArea.h -2, valueArea.w, valueArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
-					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.GetX())
+					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.x)
 					Local splitter:Int = 20
 
 					Local drawOnLeft:Int = True
@@ -688,15 +687,17 @@ endrem
 
 						If i >= 8 Then row = 7
 						If i = 8 Then drawOnLeft = 1
+						
+						Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(i)
 
 						If drawOnLeft
-							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2, 0 ), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
-							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
+							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)), labelArea.x, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(targetGroupID), 2, 0 ), labelArea.x, labelArea.y + row*labelArea.h, halfWidth - splitter - 20, labelArea.h, sALIGN_RIGHT_CENTER, fontColor)
+							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.x, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 						Else
-							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2, 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
-							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
+							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)), labelArea.x + halfWidth + splitter, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(targetGroupID), 2, 0 ), labelArea.x +  halfWidth + splitter, labelArea.y + row*labelArea.h, halfWidth - splitter - 20, labelArea.h, sALIGN_RIGHT_CENTER, fontColor)
+							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.x +  halfWidth + splitter, labelArea.y + row*labelArea.h, halfWidth - splitter, labelArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 						EndIf
 						drawOnLeft = 1 - drawOnLeft
 					Next
@@ -743,7 +744,6 @@ endrem
 
 		GuiManager.Draw( LS_screenName )
 	End Method
-
 End Type
 
 
@@ -924,8 +924,8 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 
 
 		'TARGET GROUPS
-		tgBgArea.position.SetXY( tgLabelArea.GetX() - 3, tgLabelArea.GetY() - 1 )
-		tgBgArea.position.AddY( tgBgArea.GetH() ) 'skip row 0
+		tgBgArea.SetXY( tgLabelArea.x - 3, tgLabelArea.y - 1 )
+		tgBgArea.MoveY( tgBgArea.h ) 'skip row 0
 
 		For Local i:Int = 0 To TVTTargetGroup.baseGroupCount
 			if tgBgArea.ContainsVec(MouseManager.currentPos)
@@ -933,12 +933,12 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 				exit
 			endif
 
-			tgBgArea.position.AddY( tgBgArea.GetH() )
+			tgBgArea.MoveY( tgBgArea.h )
 		Next
 
 		If hoveredChannelImageTargetGroup = -1
-			pgBgArea.position.SetXY( pgLabelArea.GetX() - 3, pgLabelArea.GetY() - 1)
-			pgBgArea.position.AddY( pgBgArea.GetH() ) 'skip row 0
+			pgBgArea.SetXY( pgLabelArea.x - 3, pgLabelArea.y - 1)
+			pgBgArea.MoveY( pgBgArea.h ) 'skip row 0
 
 			For Local i:Int = 1 To TVTPressureGroup.count
 				if pgBgArea.ContainsVec(MouseManager.currentPos)
@@ -946,7 +946,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 					exit
 				endif
 
-				pgBgArea.position.AddY( pgBgArea.GetH() )
+				pgBgArea.MoveY( pgBgArea.h )
 			Next
 		EndIf
 
@@ -972,29 +972,23 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 
 	Method RenderTargetGroups(parent:TScreenHandler_OfficeStatistics)
 		'TARGET GROUPS
-		tgBgArea.position.SetXY( tgLabelArea.GetX() - 3, tgLabelArea.GetY() - 1 )
-		tgBgArea.position.AddY( tgBgArea.GetH() ) 'skip row 0
+		tgBgArea.SetXY( tgLabelArea.x - 3, tgLabelArea.y - 1 )
+		tgBgArea.MoveY( tgBgArea.h ) 'skip row 0
 
 
 		For Local i:Int = 0 To TVTTargetGroup.baseGroupCount
 			If i Mod 2 = 0
-				'valueBG.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
-				valueBG2.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
+				valueBG2.DrawArea(tgBgArea.x, tgBgArea.y, tgBgArea.w, tgBgArea.h)
 			Else
 				SetColor 240,240,240
-				valueBG2.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
+				valueBG2.DrawArea(tgBgArea.x, tgBgArea.y, tgBgArea.w, tgBgArea.h)
 				SetColor 255,255,255
 			EndIf
 			If i = selectedChannelImageTargetGroup
 '				SetBlend LightBlend
 				SetAlpha 0.25
 				SetColor 70,110,255
-'				If i Mod 2 = 0
-'					valueBG.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
-'				Else
-'					valueBG2.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
-'				EndIf
-				valueBG2.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
+				valueBG2.DrawArea(tgBgArea.x, tgBgArea.y, tgBgArea.w, tgBgArea.h)
 				SetColor 255,255,255
 				SetAlpha 1.0
 				SetBlend alphaBlend
@@ -1002,51 +996,46 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 			If i = hoveredChannelImageTargetGroup
 				SetBlend LightBlend
 				SetAlpha 0.08
-'				If i Mod 2 = 0
-'					valueBG.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
-'				Else
-'					valueBG2.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
-'				EndIf
-				valueBG2.DrawArea(tgBgArea.GetX(), tgBgArea.GetY(), tgBgArea.GetW(), tgBgArea.GetH())
+				valueBG2.DrawArea(tgBgArea.x, tgBgArea.y, tgBgArea.w, tgBgArea.h)
 				SetAlpha 1.0
 				SetBlend alphaBlend
 			EndIf
 
 
-			tgBgArea.position.AddY( tgBgArea.GetH() )
+			tgBgArea.MoveY( tgBgArea.h )
 		Next
 
 		Local channelImageValues:TAudience = GetPublicImageCollection().GetImageValues(parent.roomOwner, 1)
 		Local oldChannelImageValues:TAudience = GetPublicImageCollection().GetImageValues(parent.roomOwner, 1, 1)
-		smallBoldTextFont.DrawBox(GetLocale("AD_TARGETGROUP"), tgCol1x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol1w, int(tgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-		smallBoldTextFont.DrawBox(GetLocale("GENDER_MEN"), tgCol2x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol2w, int(tgLabelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
-		smallBoldTextFont.DrawBox(GetLocale("GENDER_WOMEN"), tgCol3x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol3w, int(tgLabelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
-		smallBoldTextFont.DrawBox(GetLocale("GENDER_ALL"), tgCol4x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol4w, int(tgLabelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("AD_TARGETGROUP"), tgCol1x, tgLabelArea.y + 0*int(tgLabelArea.h), tgCol1w, int(tgLabelArea.h), sALIGN_LEFT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("GENDER_MEN"), tgCol2x, tgLabelArea.y + 0*int(tgLabelArea.h), tgCol2w, int(tgLabelArea.h), sALIGN_RIGHT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("GENDER_WOMEN"), tgCol3x, tgLabelArea.y + 0*int(tgLabelArea.h), tgCol3w, int(tgLabelArea.h), sALIGN_RIGHT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("GENDER_ALL"), tgCol4x, tgLabelArea.y + 0*int(tgLabelArea.h), tgCol4w, int(tgLabelArea.h), sALIGN_RIGHT_CENTER, fontColor)
 
 
 		For Local i:Int = 0 To TVTTargetGroup.baseGroupCount
-			smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), tgCol1x, tgLabelArea.GetY() + (i+1)*int(tgLabelArea.GetH()), tgCol1w, int(tgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+			smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), tgCol1x, tgLabelArea.y + (i+1)*int(tgLabelArea.h), tgCol1w, int(tgLabelArea.h), sALIGN_LEFT_CENTER, fontColor)
 			If i = 0
 				Local change:Float
 				change = channelImageValues.GetGenderAverage(TVTPersonGender.MALE) - oldChannelImageValues.GetGenderAverage(TVTPersonGender.MALE)
-				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.GetY() + (0+1)*tgLabelArea.GetH()), tgCol2w, int(tgLabelArea.GetH()), smallTextFont, fontColor )
+				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol2w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetGenderAverage(TVTPersonGender.FEMALE) - oldChannelImageValues.GetGenderAverage(TVTPersonGender.FEMALE)
-				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.GetY() + (0+1)*tgLabelArea.GetH()), tgCol3w, int(tgLabelArea.GetH()), smallTextFont, fontColor )
+				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol3w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetTotalAverage() - oldChannelImageValues.GetTotalAverage()
-				_DrawValue(MathHelper.NumberToString(channelImageValues.GetTotalAverage(), 2), change, tgCol4x, int(tgLabelArea.GetY() + (0+1)*tgLabelArea.GetH()), tgCol4w, int(tgLabelArea.GetH()), smallTextFont, fontColor )
+				_DrawValue(MathHelper.NumberToString(channelImageValues.GetTotalAverage(), 2), change, tgCol4x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol4w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 			Else
 				Local change:Float
 				change = channelImageValues.GetGenderValue(i, TVTPersonGender.MALE) - oldChannelImageValues.GetGenderValue(i, TVTPersonGender.MALE)
-				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.GetY() + (i+1)*tgLabelArea.GetH()), tgCol2w, int(tgLabelArea.GetH()), smallTextFont, fontColor )
+				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol2w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE) - oldChannelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE)
-				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.GetY() + (i+1)*tgLabelArea.GetH()), tgCol3w, int(tgLabelArea.GetH()), smallTextFont, fontColor )
+				_DrawValue(MathHelper.NumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol3w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetTotalValue(i) - oldChannelImageValues.GetTotalValue(i)
-				_DrawValue(MathHelper.NumberToString(channelImageValues.GetTotalValue(i), 2), change, tgCol4x, int(tgLabelArea.GetY() + (i+1)*tgLabelArea.GetH()), tgCol4w, int(tgLabelArea.GetH()), smallTextFont, fontColor )
+				_DrawValue(MathHelper.NumberToString(channelImageValues.GetTotalValue(i), 2), change, tgCol4x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol4w, int(tgLabelArea.h), smallTextFont, fontColor )
 			EndIf
 		Next
 	End Method
@@ -1054,23 +1043,23 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 
 	Method RenderPressureGroups(parent:TScreenHandler_OfficeStatistics)
 		'LOBBY/PRESSURE GROUPS
-		pgBgArea.position.SetXY( pgLabelArea.GetX() - 3, pgLabelArea.GetY() - 1)
-		pgBgArea.position.AddY( pgBgArea.GetH() ) 'skip row 0
+		pgBgArea.SetXY( pgLabelArea.x - 3, pgLabelArea.y - 1)
+		pgBgArea.MoveY( pgBgArea.h ) 'skip row 0
 
 
 		For Local i:Int = 1 To TVTPressureGroup.count
 			If i Mod 2 = 1
-				valueBG.DrawArea(pgBgArea.GetX(), pgBgArea.GetY(), pgBgArea.GetW(), pgBgArea.GetH())
+				valueBG.DrawArea(pgBgArea.x, pgBgArea.y, pgBgArea.w, pgBgArea.h)
 			Else
-				valueBG.DrawArea(pgBgArea.GetX(), pgBgArea.GetY(), pgBgArea.GetW(), pgBgArea.GetH())
+				valueBG2.DrawArea(pgBgArea.x, pgBgArea.y, pgBgArea.w, pgBgArea.h)
 			EndIf
 			If i = selectedChannelImagePressureGroup
 				SetBlend LightBlend
 				SetAlpha 0.15
 				If i Mod 2 = 0
-					valueBG.DrawArea(pgBgArea.GetX(), pgBgArea.GetY(), pgBgArea.GetW(), pgBgArea.GetH())
+					valueBG.DrawArea(pgBgArea.x, pgBgArea.y, pgBgArea.w, pgBgArea.h)
 				Else
-					valueBG2.DrawArea(pgBgArea.GetX(), pgBgArea.GetY(), pgBgArea.GetW(), pgBgArea.GetH())
+					valueBG2.DrawArea(pgBgArea.x, pgBgArea.y, pgBgArea.w, pgBgArea.h)
 				EndIf
 				SetAlpha 1.0
 				SetBlend alphaBlend
@@ -1079,24 +1068,24 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 				SetBlend LightBlend
 				SetAlpha 0.10
 				If i Mod 2 = 0
-					valueBG.DrawArea(pgBgArea.GetX(), pgBgArea.GetY(), pgBgArea.GetW(), pgBgArea.GetH())
+					valueBG.DrawArea(pgBgArea.x, pgBgArea.y, pgBgArea.w, pgBgArea.h)
 				Else
-					valueBG2.DrawArea(pgBgArea.GetX(), pgBgArea.GetY(), pgBgArea.GetW(), pgBgArea.GetH())
+					valueBG2.DrawArea(pgBgArea.x, pgBgArea.y, pgBgArea.w, pgBgArea.h)
 				EndIf
 				SetAlpha 1.0
 				SetBlend alphaBlend
 			EndIf
 
-			pgBgArea.position.AddY( pgBgArea.GetH() )
+			pgBgArea.MoveY( pgBgArea.h )
 		Next
 
 
-		smallBoldTextFont.DrawBox(GetLocale("PRESSURE_GROUPS"), pgCol1x, pgLabelArea.GetY() + 0*int(pgLabelArea.GetH()), pgCol1w + pgCol2w, int(pgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("PRESSURE_GROUPS"), pgCol1x, pgLabelArea.y + 0*int(pgLabelArea.h), pgCol1w + pgCol2w, int(pgLabelArea.h), sALIGN_LEFT_CENTER, fontColor)
 		For Local i:Int = 1 To TVTPressureGroup.count
-			smallTextFont.DrawBox(GetLocale("PRESSURE_GROUPS_"+TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(i) )), pgCol1x, pgLabelArea.GetY() + (i)*int(pgLabelArea.GetH()), pgCol1w, int(pgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+			smallTextFont.DrawBox(GetLocale("PRESSURE_GROUPS_"+TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(i) )), pgCol1x, pgLabelArea.y + (i)*int(pgLabelArea.h), pgCol1w, int(pgLabelArea.h), sALIGN_LEFT_CENTER, fontColor)
 
 			Local change:Float = GetPressureGroupCollection().GetChannelSympathy(parent.roomOwner, i, 0) - GetPressureGroupCollection().GetChannelSympathy(parent.roomOwner, i, 1)
-			_DrawValue(MathHelper.NumberToString(GetPressureGroup(i).GetChannelSympathy(parent.roomOwner), 2, False), change, pgCol4x, int(pgLabelArea.GetY() + i*int(pgLabelArea.GetH())), pgCol4w, int(pgLabelArea.GetH()), smallTextFont, fontColor)
+			_DrawValue(MathHelper.NumberToString(GetPressureGroup(i).GetChannelSympathy(parent.roomOwner), 2, False), change, pgCol4x, int(pgLabelArea.y + i*int(pgLabelArea.h)), pgCol4w, int(pgLabelArea.h), smallTextFont, fontColor)
 		Next
 	End Method
 
@@ -1212,7 +1201,7 @@ Type TDataChartDataSet
 			points[index].x = x
 			points[index].y = y
 		else
-			points[index] = new TVec2D.Init(x,y)
+			points[index] = new TVec2D(x,y)
 		endif
 
 		_cacheValid = False
@@ -1290,10 +1279,10 @@ Type TDataChart
 	Field rightAxisLabelSize:int = 50
 	Field topAxisLabelSize:int = 15
 	Field bottomAxisLabelSize:int = 15
-	Field leftAxisLabelOffset:TVec2D = new TVec2D.Init(0, 0)
-	Field rightAxisLabelOffset:TVec2D = new TVec2D.Init(4, -4)
-	Field topAxisLabelOffset:TVec2D = new TVec2D.Init(0, -2)
-	Field bottomAxisLabelOffset:TVec2D = new TVec2D.Init(0, 2)
+	Field leftAxisLabelOffset:TVec2D = new TVec2D(0, 0)
+	Field rightAxisLabelOffset:TVec2D = new TVec2D(4, -4)
+	Field topAxisLabelOffset:TVec2D = new TVec2D(0, -2)
+	Field bottomAxisLabelOffset:TVec2D = new TVec2D(0, 2)
 
 	Field valueFormat:String = "%3.3f"
 	Field valueDisplayMaximumY:Float
@@ -1391,7 +1380,7 @@ Type TDataChart
 		'TODO
 
 		'add "skipped pixels" to right label area
-		areaGraph.dimension.AddX( - (areaGraph.GetW() - xSegmentWidth * xSegmentsCount))
+		areaGraph.MoveW( -(areaGraph.w - xSegmentWidth * xSegmentsCount))
 	End Method
 
 
@@ -1658,7 +1647,7 @@ Type TDataChart
 
 
 	Method RenderData()
-		GetGraphicsManager().BackupAndSetViewport( areaGraph.Copy().MoveXY(area.position.x, area.position.y) )
+		GetGraphicsManager().BackupAndSetViewport( areaGraph.Copy().MoveXY(area.x, area.y) )
 
 		local shadowCol:TColor = TColor.Create(0,0,0)
 		shadowCol.a = 0.3

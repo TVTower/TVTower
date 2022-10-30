@@ -16,7 +16,7 @@ Type TGuiScript Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGUIScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIScript(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		Self.assetNameDefault = "gfx_scripts_0"
@@ -27,7 +27,7 @@ Type TGuiScript Extends TGUIGameListItem
 
 
 	Method CreateWithScript:TGuiScript(script:TScript)
-		Self.Create()
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.setScript(script)
 		Return Self
 	End Method
@@ -90,10 +90,11 @@ Type TGuiScript Extends TGUIGameListItem
 		GetColor(oldCol)
 		SetColor 0,0,0
 		SetAlpha 0.2 * oldA
+		Local scrRect:TRectangle = Self.GetScreenRect()
 		TFunctions.DrawBaseTargetRect(baseX, ..
 		                              sheetY + 70, ..
-		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
-		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              scrRect.x + scrRect.w/2.0, ..
+		                              scrRect.y + scrRect.h/2.0, ..
 		                              20, 3)
 		SetColor(oldCol)
 		SetAlpha oldA
@@ -128,7 +129,7 @@ End Type
 
 
 Type TGUIScriptSlotList Extends TGUIGameSlotList
-    Method Create:TGUIScriptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIScriptSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method

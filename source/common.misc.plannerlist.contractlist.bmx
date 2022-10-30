@@ -81,7 +81,7 @@ Type TgfxContractlist Extends TPlannerList
 	'override
 	Method GetEntrySize:TVec2D()
 		if not entrySize
-			entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+			entrySize = new TVec2D(GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.GetDimension())
 		endif
 
 		return entrySize
@@ -94,12 +94,12 @@ Type TgfxContractlist Extends TPlannerList
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
 			entriesRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), GetEntrySize().GetX(), 0)
 			if ListSortVisible
-				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.GetH()
+				entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.h)
 			else
-				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+				entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_top.default").area.h)
 			endif
-			entriesRect.dimension.y :+ GameRules.adContractsPerPlayerMax * GetEntrySize().GetY()
-			entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+			entriesRect.MoveH( GameRules.adContractsPerPlayerMax * GetEntrySize().y)
+			entriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.h)
 		endif
 
 		return entriesRect

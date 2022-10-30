@@ -139,21 +139,21 @@ Type TElevator Extends TEntity
 
 		PassengerPosition  = New String[6]
 		PassengerOffset    = New TVec2D[6]
-		PassengerOffset[0] = New TVec2D.Init(0, 0)
-		PassengerOffset[1] = New TVec2D.Init(-13, 0)
-		PassengerOffset[2] = New TVec2D.Init(12, 0)
-		PassengerOffset[3] = New TVec2D.Init(-7, 0)
-		PassengerOffset[4] = New TVec2D.Init(8, 0)
-		PassengerOffset[5] = New TVec2D.Init(-3, 0)
+		PassengerOffset[0] = New TVec2D(0, 0)
+		PassengerOffset[1] = New TVec2D(-13, 0)
+		PassengerOffset[2] = New TVec2D(12, 0)
+		PassengerOffset[3] = New TVec2D(-7, 0)
+		PassengerOffset[4] = New TVec2D(8, 0)
+		PassengerOffset[5] = New TVec2D(-3, 0)
 
 		'create door
 		door = New TSpriteEntity
 		door.SetSprite(GetSpriteFromRegistry("gfx_building_Fahrstuhl_oeffnend"))
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [0,70] ], 0, 0) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("closed", [ [0,70] ], 0, 0) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("open", [ [7,70] ], 0, 0) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("opendoor", [ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
-		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("closedoor", [ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("default", [ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("closed", [ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("open", [ [7,70] ], 0, 0) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("opendoor", [ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Add(new TSpriteFrameAnimation("closedoor", [ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
 
 		InitSprites()
 
@@ -356,15 +356,14 @@ Type TElevator Extends TEntity
 	End Method
 
 
-	Method GetElevatorCenterPos:TVec3D()
+	Method GetElevatorCenterPos:SVec3D()
 		'-25 = z-Achse fuer Audio. Der Fahrstuhl liegt etwas im Hintergrund
 		If parent
-			Return New TVec3D.Init(parent.area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
+			Return New SVec3D(parent.area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 		Else
-			Return New TVec3D.Init(area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
+			Return New SVec3D(area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 		EndIf
 	End Method
-
 
 	'===== Offset-Funktionen =====
 
@@ -656,7 +655,7 @@ Type TElevator Extends TEntity
 			EndIf
 
 			'wait until door animation finished
-			If door.GetFrameAnimations().getCurrentAnimationName() = "closedoor"
+			If door.GetFrameAnimations().GetCurrent().GetNameLS() = "closedoor"
 				If door.GetFrameAnimations().getCurrent().isFinished()
 'print Millisecs()+"  Elevator: 1) closed -> 2)"
 					door.GetFrameAnimations().SetCurrent("closed")
@@ -684,14 +683,14 @@ Type TElevator Extends TEntity
 				'Direction = 0
 			Else
 				'backup for tweening
-				oldPosition.SetXY(area.position.x, area.position.y)
+				oldPosition.SetXY(area.x, area.y)
 
 				If (CurrentFloor < TargetFloor) Then Direction = 1 Else Direction = -1
 				'set velocity according (negative) direction
 				SetVelocity(0, -Direction * Speed)
 
 				'set new position
-				area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
+				area.MoveXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 
 
 				'do not move further than the target floor
@@ -699,12 +698,12 @@ Type TElevator Extends TEntity
 
 				If (direction < 0 And area.GetY() > tmpTargetFloorY) Or ..
 				   (direction > 0 And area.GetY() < tmpTargetFloorY)
-					area.position.y = tmpTargetFloorY
+					area.SetY(tmpTargetFloorY)
 				EndIf
 
 				'move figures in elevator together with the inner part
 				For Local figure:TFigureBase = EachIn Passengers.Values()
-					figure.area.position.setY( area.GetY() + GetInnerHeight())
+					figure.area.SetY( area.y + GetInnerHeight())
 				Next
 			EndIf
 
@@ -727,7 +726,7 @@ Type TElevator Extends TEntity
 
 			'continue door animation for opening doors
 			'also deboard passengers as soon as finished
-			If door.GetFrameAnimations().getCurrentAnimationName() = "opendoor"
+			If door.GetFrameAnimations().GetCurrent().GetNameLS() = "opendoor"
 'print Millisecs()+"  Elevator: 3) opening..."
 				'while the door animation is active, the deboarding
 				'figures will move to the exit/door (one after another)
@@ -1157,9 +1156,9 @@ Type TSmartFloorRoute Extends TFloorRoute
 
 	Method IntendedFollowingTarget:Int()
 		If who.GetTarget()
-			Return who.getFloor(who.GetTargetMoveToPosition())
+			Return who.getFloor(who.GetTargetMoveToPosition().y)
 		Else
-			Return who.getFloor(New TVec2D.Init())
+			Return who.getFloor(0)
 		EndIf
 	End Method
 
@@ -1291,7 +1290,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	End Method
 
 
-	Method GetCenter:TVec3D()
+	Method GetCenter:SVec3D()
 		Return GetElevator().GetElevatorCenterPos()
 	End Method
 

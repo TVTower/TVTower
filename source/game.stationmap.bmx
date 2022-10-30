@@ -86,7 +86,7 @@ endrem
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:TVec2D = New TVec2D.Init(0, 0)
+	Global populationMapOffset:TVec2D = New TVec2D(0, 0)
 	Global _initDone:Int = False
 	Global _instance:TStationMapCollection
 
@@ -2182,8 +2182,10 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
 		If Not mapSection Then Return Null
 
-		Local stationPos:TVec2I = New TVec2I.CopyFrom(mapSection.rect.position).AddVec( mapSection.GetLocalUplinkPos() )
-		station.Init(stationPos.X, stationPos.Y, -1, owner)
+		Local uplinkPos:TVec2I = mapSection.GetLocalUplinkPos()
+		Local stationPosX:Int = Int(mapSection.rect.x) + uplinkPos.x
+		Local stationPosY:Int = Int(mapSection.rect.y) + uplinkPos.y
+		station.Init(stationPosX, stationPosY, -1, owner)
 		station.SetSectionName(mapSection.name)
 		station.SetSectionISO3116Code(mapSection.iso3116Code)
 		'now we know how to calculate population
@@ -4611,7 +4613,7 @@ Type TStationMapSection
 	Method LoadShapeSprite()
 		shapeSprite = GetSpriteFromRegistry(shapeSpriteName)
 		'resize rect
-		rect.dimension.SetXY(shapeSprite.area.GetW(), shapeSprite.area.GetH())
+		rect.SetWH(shapeSprite.area.GetW(), shapeSprite.area.GetH())
 	End Method
 
 
@@ -4716,7 +4718,7 @@ Type TStationMapSection
 			If Not IsValidUplinkPos(localX, localY)
 				Local mapPos:SVec2I = GetStationMapCollection().GetRandomAntennaCoordinateInSection(Self, False)
 				'make local position
-				uplinkPos = New TVec2I(mapPos.X - rect.position.GetIntX(), mapPos.Y - rect.position.GetIntY())
+				uplinkPos = New TVec2I(mapPos.X - rect.GetIntX(), mapPos.Y - rect.GetIntY())
 			Else
 				uplinkPos = New TVec2I(localX, localY)
 			EndIf
@@ -5366,10 +5368,9 @@ Type TStationMapSection
 		If Not sectionStationIntersectRect Then Return
 
 		'convert world coordinate to local coords
-		sectionStationIntersectRect.position.AddX( -rect.GetX() )
-		sectionStationIntersectRect.position.AddY( -rect.GetY() )
-		stationX :- rect.GetX()
-		stationY :- rect.GetY()
+		sectionStationIntersectRect.MoveXY(-rect.x, -rect.y)
+		stationX :- rect.x
+		stationY :- rect.y
 
 		Local result:Int = 0
 		Local radiusSquared:Int = radius * radius
@@ -5377,8 +5378,8 @@ Type TStationMapSection
 		If Not sprite Then Return
 		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
 
-		For Local posX:Int = sectionStationIntersectRect.GetX() To sectionStationIntersectRect.getX2()
-			For Local posY:Int = sectionStationIntersectRect.GetY() To sectionStationIntersectRect.getY2()
+		For Local posX:Int = sectionStationIntersectRect.x To sectionStationIntersectRect.getX2()
+			For Local posY:Int = sectionStationIntersectRect.y To sectionStationIntersectRect.getY2()
 				'left the circle?
 				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
 				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
@@ -5403,10 +5404,9 @@ Type TStationMapSection
 		If Not sectionStationIntersectRect Then Return 0
 
 		'move world to local coords
-		sectionStationIntersectRect.position.AddX( -rect.GetX() )
-		sectionStationIntersectRect.position.AddY( -rect.GetY() )
-		stationX :- rect.GetX()
-		stationY :- rect.GetY()
+		sectionStationIntersectRect.MoveXY( -rect.x, -rect.y )
+		stationX :- rect.x
+		stationY :- rect.y
 
 Rem
 print name
@@ -5424,8 +5424,8 @@ endrem
 		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
 
 
-		For Local posX:Int = sectionStationIntersectRect.GetX() To sectionStationIntersectRect.getX2()
-			For Local posY:Int = sectionStationIntersectRect.GetY() To sectionStationIntersectRect.getY2()
+		For Local posX:Int = sectionStationIntersectRect.x To sectionStationIntersectRect.getX2()
+			For Local posY:Int = sectionStationIntersectRect.y To sectionStationIntersectRect.getY2()
 				'left the circle?
 				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
 				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue

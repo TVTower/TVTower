@@ -50,7 +50,7 @@ Type TPublicImageCollection
 				players :+ 1
 			EndIf
 		Next
-		If players > 0 Then avgImage.ImageValues.DivideFloat(players)
+		If players > 0 Then avgImage.ImageValues.Divide(players)
 		Return avgImage
 	End Method
 
@@ -70,10 +70,7 @@ Type TPublicImageCollection
 			EndIf
 
 			'nothing archived yet
-			If Not selectedImageValues
-				selectedImageValues = New TAudience
-				selectedImageValues.InitValue(0, 0)
-			EndIf
+			If Not selectedImageValues Then selectedImageValues = New TAudience
 		EndIf
 		Return selectedImageValues
 	End Method
@@ -91,19 +88,13 @@ Type TPublicImageCollection
 			If owningChannelID > 0 And owningChannelID <= archivedImagesGlobal.length
 				Local archive:TPublicImageArchive = archivedImagesGlobal[owningChannelID - 1]
 				If archive
-					Local test:TAudience = GetPublicImage(forChannelID).imageValues
-					Local testarchive:TPublicImageArchiveEntry = archive.Get(archivedBefore, returnFirstPossible)
-					Local test2:TAudience = archive.Get(archivedBefore, returnFirstPossible).images[0].ImageValues
 '					Print "get archived -- archivedBefore="+archivedBefore + "  object="+archive.Get(archivedBefore, returnFirstPossible).GetImage(forChannelID).ToString()
 					selectedImageValues = archive.Get(archivedBefore, returnFirstPossible).GetImage(forChannelID)
 				EndIf
 			EndIf
 
 			'nothing archived yet
-			If Not selectedImageValues
-				selectedImageValues = New TAudience
-				selectedImageValues.InitValue(0, 0)
-			EndIf
+			If Not selectedImageValues Then selectedImageValues = New TAudience
 		EndIf
 		Return selectedImageValues
 	End Method
@@ -215,7 +206,7 @@ Type TPublicImageArchiveEntry
 			'create a copy (not referencing values)
 			images[i] = New TPublicImage
 			images[i].playerID = publicImage.playerID
-			images[i].imageValues = New TAudience.CopyFrom( publicImage.imageValues )
+			images[i].imageValues = New TAudience.Set( publicImage.imageValues )
 			images[i].time = publicImage.time
 			'store time of most current
 			time = Max(time, images[i].time)
@@ -247,7 +238,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		obj.playerID = playerID
 
 		'we start with an image of 0 in all target groups
-		obj.ImageValues = New TAudience.InitValue(0, 0)
+		obj.ImageValues = New TAudience
 
 		'add to collection
 		GetPublicImageCollection().Set(playerID, obj)
@@ -256,7 +247,7 @@ Type TPublicImage {_exposeToLua="selected"}
 	
 	
 	Method Reset()
-		imageValues.InitValue(0, 0)
+		imageValues.Set(0, 0)
 		time = 0
 	End Method
 
@@ -266,13 +257,16 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAttractionMods:TAudience()
+	Method GetAttractionMods:SAudience()
 		'a mod is a modifier - so "1.0" does modify nothing, "2.0" doubles
 		'and "0.5" cuts into halves
 		'our image ranges between 0 and 100 so dividing by 100 results
 		'in a value of 0-1.0, adding 1.0 makes it a modifier
 		'ex: teenager-image of "2": 2/100 + 1.0 = 1.02
-		Return imageValues.Copy().DivideFloat(100).AddFloat(1)
+		Local result:SAudience = imageValues.data
+		result.Divide(100)
+		result.Add(1)
+		Return result
 	End Method
 
 
@@ -284,32 +278,25 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
-	Method ChangeImageRelative(imageChange:TAudience)
-		If Not imageChange
-			TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
-			Return
-		EndIf
-
+	Method ChangeImageRelative(imageChange:SAudience)
 		'skip changing if there is nothing to change
 		If imageChange.GetTotalAbsSum() = 0 Then Return
 		
 		time = GetWorldTime().GetTimeGone()
+		
+		Local multiplier:SAudience = New SAudience(1.0, 1.0)
+		multiplier.Add(imageChange)
 
-		ImageValues.Multiply( New TAudience.InitValue(1.0, 1.0).Add(imageChange) )
+		ImageValues.Multiply( multiplier )
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
-		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
+		ImageValues.CutBorders(0, 100)
 
 		TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
 
-	Method ChangeImage(imageChange:TAudience)
-		If Not imageChange
-			TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
-			Return
-		EndIf
-
+	Method ChangeImage(imageChange:SAudience)
 		'skip changing if there is nothing to change
 		If imageChange.GetTotalAbsSum() = 0 Then Return
 
@@ -318,9 +305,9 @@ Type TPublicImage {_exposeToLua="selected"}
 		ImageValues.Add(imageChange)
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
-		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
+		ImageValues.CutBorders(0, 100)
 
-		TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
+		'TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
 
@@ -385,16 +372,19 @@ Type TPublicImage {_exposeToLua="selected"}
 		If (differentAudienceNumbers <= 1) Then modifiers = [0.0]
 
 		'print "ranks: "+ audienceRank[0]+", "+ audienceRank[1]+", "+ audienceRank[2]+", "+ audienceRank[3]
-		For Local i:Int = 0 Until channelAudiencesList.Count()
-			Local channelID:Int = TAudience(channelAudiencesList.ValueAtIndex(i)).Id
-			If channelID <= 0 Then Continue
+		Local i:int = 0 
+		For Local a:TAudience = EachIn channelAudiencesList
+			Local channelID:Int = a.Id
 
-			Local modifier:Float = 0.0
-			If audienceRank[i] <= modifiers.length Then modifier = modifiers[ audienceRank[i]-1 ]
+			If channelID > 0
+				Local modifier:Float = 0.0
+				If audienceRank[i] <= modifiers.length Then modifier = modifiers[ audienceRank[i]-1 ]
 
-			If modifier <> 0.0 
-				channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
+				If modifier <> 0.0 
+					channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
+				EndIf
 			EndIf
+			i:+ 1
 		Next
 	End Function
 End Type
@@ -419,7 +409,7 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 		Local clone:TGameModifierPublicImage_Modify = New TGameModifierPublicImage_Modify
 		clone.CopyBaseFrom(Self)
 		clone.playerID = Self.playerID
-		clone.value = New TAudience.SetValuesFrom(value)
+		clone.value = New TAudience.Set(value)
 		clone.valueIsRelative = Self.valueIsRelative
 		If Self.paramConditions
 			clone.paramConditions = Self.paramConditions.copy()
@@ -440,11 +430,11 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 		If valueComplex
 			value = valueComplex.Copy()
 		ElseIf valueComplexBase
-			value = New TAudience.InitBase(valueComplexBase, valueComplexBase)
+			value = New TAudience.Set(valueComplexBase, valueComplexBase)
 		ElseIf valueMale <> 0 Or valueFemale <> 0
-			value = New TAudience.InitValue(valueMale, valueFemale)
+			value = New TAudience.Set(valueMale, valueFemale)
 		ElseIf valueSimple <> 0.0
-			value = New TAudience.InitValue(valueSimple, valueSimple)
+			value = New TAudience.Set(valueSimple, valueSimple)
 		EndIf
 		If Not value
 			TLogger.Log("TGameModifierPublicImage_Modify.Init()", "No valid ~qvalue~q-value provided. Modifier not created.", LOG_DEBUG)
@@ -525,9 +515,9 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 		If logText Then TLogger.Log("TGameModifierPublicImage_Modify.Run()", logText, LOG_DEBUG)
 
 		If valueIsRelative
-			publicImage.ChangeImageRelative( value )
+			publicImage.ChangeImageRelative( value.data )
 		Else
-			publicImage.ChangeImage( value )
+			publicImage.ChangeImage( value.data )
 		EndIf
 		Return True
 	End Method

@@ -532,12 +532,12 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 		if figure.GetTarget()
 			If not figure.IsInElevator()
-				local targetPos:TVec2D = figure.GetTargetMoveToPosition()
+				local targetPos:SVec2I = figure.GetTargetMoveToPosition()
 				'only set X if wrong floor or x differs > 10 pixels
 				if posY = targetPos.x
-					if Abs(posX - targetPos.x) > 10 then figure.area.position.setXY(posX, posY)
+					if Abs(posX - targetPos.x) > 10 then figure.area.SetXY(posX, posY)
 				else
-					figure.area.position.setXY(posX, posY)
+					figure.area.SetXY(posX, posY)
 				endif
 			endif
 		endif

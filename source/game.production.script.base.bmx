@@ -22,10 +22,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field scriptFlags:Int = 0
 	Field fixedLiveTime:Long = -1
 
-	Field programmeDataModifiers:TData = New TData
+	Field programmeDataModifiers:TData
 
-	'is the script title/description editable?
-	Field textsEditable:int = False
 	'scripts of series are parent of episode scripts
 	Field parentScriptID:int = 0
 	'all associated child scripts (episodes)

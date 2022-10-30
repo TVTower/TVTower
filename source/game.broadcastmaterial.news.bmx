@@ -112,10 +112,9 @@ endif
 	End Method
 
 
-	'override
 	'add mod for all news slots
-	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
-		local result:TAudience = new TAudience.InitValue(1,1)
+	Method GetGenreTargetGroupMod:SAudience(definition:TGenreDefinitionBase)
+		local result:SAudience = New SAudience(1,1)
 
 		local newsSlotsUsed:int = 0
 		for local i:int = 0 until news.length
@@ -125,11 +124,12 @@ endif
 
 			newsSlotsUsed :+ 1
 
-			local newsGenreTargetGroupMod:TAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
-			result.Add( newsGenreTargetGroupMod.Copy().MultiplyFloat(GetNewsSlotWeight(i)) )
+			local newsGenreTargetGroupMod:SAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
+			newsGenreTargetGroupMod.Multiply(GetNewsSlotWeight(i))
+			result.Add( newsGenreTargetGroupMod )
 		Next
 		if newsSlotsUsed > 1
-			result.DivideFloat(newsSlotsUsed)
+			result.Divide(newsSlotsUsed)
 		endif
 		return result
 	End Method
@@ -147,7 +147,6 @@ endif
 		resultAudienceAttr.SequenceEffect = New TAudience
 		resultAudienceAttr.BaseAttraction = New TAudience
 		resultAudienceAttr.FinalAttraction = New TAudience
-		resultAudienceAttr.PublicImageAttraction = New TAudience
 		resultAudienceAttr.targetGroupAttractivity = New TAudience
 		resultAudienceAttr.LuckMod = New TAudience
 		'attention: set mods to 0 (news mods get _added_)
@@ -156,7 +155,7 @@ endif
 		resultAudienceAttr.FlagsPopularityMod = 0
 		'do not to the following as this mod is added already in "GetAudienceAttraction"
 		'of the individual news
-		'resultAudienceAttr.GenreTargetGroupMod = GetGenreTargetGroupMod()
+		'resultAudienceAttr.GenreTargetGroupMod = New TAudience( GetGenreTargetGroupMod() )
 		'just create an empty audience instead, the function still returns
 		'valid values (for debugging output)
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
@@ -182,7 +181,7 @@ endif
 
 			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 			'limit attraction values to 0-1.0
-			tempAudienceAttr.CutBordersFloat(0, 1.0)
+			tempAudienceAttr.FinalAttraction.CutBorders(0, 1.0)
 
 			'if owner=1 then print "owner #"+owner+"   news #"+i+": " + tempAudienceAttr.targetGroupAttractivity.ToString() +"  * " + GetNewsSlotWeight(i)
 
@@ -201,24 +200,24 @@ endif
 		'bonus if sending varying genres (a good "mix")
 		'5% bonus if 2+ genres used
 		if genresUsed = 2
-'			resultAudienceAttr.MultiplyFloat(1.05)
+'			resultAudienceAttr.Multiply(1.05)
 		'10% bonus if 3+ genres used
 		elseif genresUsed >= 3
-'			resultAudienceAttr.MultiplyFloat(1.10)
+'			resultAudienceAttr.Multiply(1.10)
 		endif
 
 		'malus for not sending something in each slot
 		if slotsUsed = 1
-'			resultAudienceAttr.MultiplyFloat(0.90)
+'			resultAudienceAttr.Multiply(0.90)
 		elseif slotsUsed = 2
-'			resultAudienceAttr.MultiplyFloat(0.96)
+'			resultAudienceAttr.Multiply(0.96)
 		endif
 
 		'Ronny 2016/06/29: should we mark it as a malfunction?
 		'mark malfunction if nothing is send
 		if slotsUsed = 0 then resultAudienceAttr.malfunction = True
 
-		'already one with "addAttraction"
+		'already done with "addAttraction"
 		'resultAudienceAttr.Quality = GetQuality()
 
 		Return resultAudienceAttr
@@ -365,9 +364,9 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
-		seqCal.PredecessorShareOnShrink = new TAudience.InitValue(0.4, 0.4) '0.5
-		seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.4, 0.4) '0.5
+	Method SetSequenceCalculationPredecessorShare(seqCal:SSequenceCalculation var, audienceFlow:Int)
+		seqCal.PredecessorShareOnShrink = New SAudience(0.4, 0.4) '0.5
+		seqCal.PredecessorShareOnRise = New SAudience(0.4, 0.4) '0.5
 	End Method
 
 rem
@@ -491,16 +490,12 @@ endrem
 	End Method
 
 
-	'override
 	'add individual targetgroup attractivity
-	Method GetTargetGroupAttractivityMod:TAudience()
-		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
+	Method GetTargetGroupAttractivityMod:SAudience() override
+		Local result:SAudience = Super.GetTargetGroupAttractivityMod()
 
 		'modify with a complete fine grained target group setup
-		local ne:TNewsEvent = GetNewsEvent()
-		If ne.GetTargetGroupAttractivityMod()
-			result.Multiply( ne.GetTargetGroupAttractivityMod() )
-		EndIf
+		result.Multiply( GetNewsEvent().GetTargetGroupAttractivityMod() )
 
 		Return result
 	End Method

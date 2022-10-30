@@ -84,6 +84,145 @@ Struct SRectI
 	Method GetRight:Int()
 		Return h
 	End Method
+
+
+	'moves the rectangle by dx,dy
+	'returns a new rectangle
+	Method Move:SRectI(dx:Int, dy:Int)
+		Return new SRectI(self.x + dx, self.y + dy, self.w, self.h)
+	End Method
+
+
+	Method MoveTo:SRectI(position:SVec2I)
+		Return new SRectI(position.x, position.y, self.w, self.h)
+	End Method
+
+	Method MoveTo:SRectI(x:Int, y:Int)
+		Return new SRectI(x, y, self.w, self.h)
+	End Method
+
+
+	Method Resize:SRectI(size:SVec2I)
+		Return new SRectI(x, y, size.x, size.y)
+	End Method
+
+	Method Resize:SRectI(w:Int, h:Int)
+		Return new SRectI(self.x, self.y, w, h)
+	End Method
+
+
+	Method GetXCenter:Int()
+		Return x + w/2
+	End Method
+
+
+	Method GetYCenter:Int()
+		Return y + h/2
+	End Method
+
+
+	Method GetX2:Int()
+		Return x + w
+	End Method
+
+
+	Method GetY2:Int()
+		Return y + h
+	End Method
+
+
+	'returns if the rect overlaps with the given one
+	Method Intersects:Int(rect:SRectI)
+		'checking if top left or bottom right of the rect
+		'is contained in our rect via "containsXY" also returns true
+		'for rects next to each other:
+		'rectA = 0,0 - 10,10
+		'rectB = 10,10 - 20,10
+		'-> rectA contains point "10,10"
+		'return ( containsXY( rect.GetX(), rect.GetY() ) ..
+		'         OR containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() ) ..
+		'       )
+
+		'to avoid this, we use "exclusive" ranges (> instead of >=)
+		Return ( x < rect.x + rect.w And y < rect.y + rect.w ) And ..
+		       ( x + w > rect.x And y + h > rect.y )
+	End Method
+
+
+	Method Intersects:Int(x:Int, y:Int, w:Int, h:Int)
+		Return ( self.x < (x + w) And self.y < (y + h) ) And ..
+		       ( self.x + self.w > x And self.y + self.h > y )
+	End Method
+
+
+	'returns a new rectangle describing the intersection of the
+	'rectangle and the given one
+	'attention: returns an "0,0,0,0"-sRectI if there is no intersection
+	Method IntersectRect:SRectI(rectB:SRectI)
+		Local ix:Int = Max(x, rectB.x)
+		Local iy:Int = Max(y, rectB.y)
+		Local iw:Int = Min(x + w, rectB.x + rectB.w ) - ix
+		Local ih:Int = Min(y + h, rectB.y + rectB.h ) - iy
+
+		If iw > 0 And ih > 0
+			Return New SRectI(ix, iy, iw, ih)
+		Else
+			Return New SRectI()
+		EndIf
+	End Method
+
+
+	'returns a new rectangle describing the intersection of the
+	'rectangle and the given one
+	'attention: returns NULL if there is no intersection
+	Method IntersectRect:SRectI(x:Int, y:Int, w:Int, h:Int)
+		Local ix:Int = Max(self.x, x)
+		Local iy:Int = Max(self.y, y)
+		Local iw:Int = Min(self.x + self.w, x + w) - ix
+		Local ih:Int = Min(self.y + self.h, y + h) - iy
+
+		If iw > 0 And ih > 0
+			Return New SRectI(ix, iy, iw, ih)
+		Else
+			Return New SRectI()
+		EndIf
+	End Method
+
+	'returns whether x is within the x-coords of the rectangle
+	Method ContainsX:Int(x:Int)
+		Return (x >= self.x And x <= self.x + self.w)
+	End Method
+
+
+	'returns whether y is within the y-coords of the rectangle
+	Method ContainsY:Int(y:Int)
+		Return (y >= self.y And y <= self.y + self.h)
+	End Method
+
+
+	'returns whether the rectangle contains the given coord
+	Method Contains:Int(x:Int, y:Int)
+		Return (    x >= self.x And x < self.x + self.w ..
+		        And y >= self.y And y < self.y + self.h ..
+		       )
+	End Method
+
+
+	Method Contains:Int(vec:SVec2I)
+		Return (    vec.x >= self.x And vec.x < self.x + self.w ..
+		        And vec.y >= self.y And vec.y < self.y + self.h ..
+		       )
+	End Method
+
+
+	Method Contains:Int(x:Int, y:Int, w:Int, h:Int)
+		Return Contains( x, y ) And Contains(x + w, y + h)
+	End Method
+
+
+	Method Contains:Int(rect:SRectI)
+		Return Contains(rect.x, rect.y) And Contains(rect.x + rect.w, rect.y + rect.h)
+	End Method
 End Struct
 
 

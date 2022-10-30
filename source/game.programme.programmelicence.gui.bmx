@@ -11,7 +11,7 @@ Type TGUIProgrammeLicenceSlotList Extends TGUISlotList
 	Global acceptMovies:Int		= 1
 	Global acceptSeries:Int		= 2
 
-    Method Create:TGUIProgrammeLicenceSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUIProgrammeLicenceSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		'albeit the list base already handles drop on itself
@@ -69,7 +69,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGUIProgrammeLicence(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUIProgrammeLicence(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		'override defaults - with the default genre identifier
@@ -82,7 +82,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 
 	Method CreateWithLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
-		Self.Create()
+		Self.Create(New SVec2I(0,0), New SVec2I(0,0))
 		Self.setProgrammeLicence(licence)
 		Return Self
 	End Method

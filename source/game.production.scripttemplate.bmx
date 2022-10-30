@@ -108,7 +108,7 @@ Type TScriptTemplate Extends TScriptBase
 	'define an exact time for the live broadcast
 	Field liveDateCode:String
 
-	Field programmeDataModifiers:TData = New TData
+	Field programmeDataModifiers:TData
 
 	'defines if the script is only available from/to/in a specific date
 	Field available:int = True
@@ -130,8 +130,6 @@ Type TScriptTemplate Extends TScriptBase
 	Field studioSizeMin:Int=1
 	Field studioSizeMax:int=1
 	Field studioSizeSlope:Float=0.5
-
-	Field requireAudience:Int = 0
 
 	'targetgroups which _might_ be enabled during production
 	Field targetGroupOptional:Int = -1

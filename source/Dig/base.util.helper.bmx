@@ -243,7 +243,7 @@ Type THelper
 
 	'returns whether the mouse is within the given rectangle
 	Function MouseInRect:int(rect:TRectangle)
-		return IsIn(int(MouseManager.x), int(MouseManager.y), int(rect.position.x), int(rect.position.y), int(rect.dimension.x), int(rect.dimension.y))
+		return IsIn(int(MouseManager.x), int(MouseManager.y), int(rect.x), int(rect.y), int(rect.w), int(rect.h))
 	End Function
 
 
@@ -272,32 +272,24 @@ Type THelper
 	End Function
 
 
-	Function GetTweenedPoint:TVec2D(currentPoint:TVec2D, oldPoint:TVec2D, tween:Float, avoidShaking:int=TRUE)
+	Function GetTweenedPoint:SVec2F(currentPoint:TVec2D, oldPoint:TVec2D, tween:Float, avoidShaking:int=TRUE)
 		if avoidShaking
-			return new TVec2D.Init(..
-				 MathHelper.SteadyTween(oldPoint.x, currentPoint.x, tween),..
-				 MathHelper.SteadyTween(oldPoint.y, currentPoint.y, tween)..
-			   )
+			return new SVec2F(MathHelper.SteadyTween(oldPoint.x, currentPoint.x, tween),..
+			                  MathHelper.SteadyTween(oldPoint.y, currentPoint.y, tween))
 		else
-			return new TVec2D.Init(..
-				 MathHelper.Tween(oldPoint.x, currentPoint.x, tween),..
-				 MathHelper.Tween(oldPoint.y, currentPoint.y, tween)..
-			   )
+			return new SVec2F(MathHelper.Tween(oldPoint.x, currentPoint.x, tween),..
+			                  MathHelper.Tween(oldPoint.y, currentPoint.y, tween))
 		endif
 	End Function
 
 
 	Function GetTweenedPoint:SVec2F(currentPoint:SVec2F, oldPoint:SVec2F, tween:Float, avoidShaking:int=TRUE)
 		if avoidShaking
-			return new SVec2F(..
-				 MathHelper.SteadyTween(oldPoint.x, currentPoint.x, tween),..
-				 MathHelper.SteadyTween(oldPoint.y, currentPoint.y, tween)..
-			   )
+			return new SVec2F(MathHelper.SteadyTween(oldPoint.x, currentPoint.x, tween),..
+			                  MathHelper.SteadyTween(oldPoint.y, currentPoint.y, tween))
 		else
-			return new SVec2F(..
-				 MathHelper.Tween(oldPoint.x, currentPoint.x, tween),..
-				 MathHelper.Tween(oldPoint.y, currentPoint.y, tween)..
-			   )
+			return new SVec2F(MathHelper.Tween(oldPoint.x, currentPoint.x, tween),..
+			                  MathHelper.Tween(oldPoint.y, currentPoint.y, tween))
 		endif
 	End Function
 

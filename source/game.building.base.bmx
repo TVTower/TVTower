@@ -75,7 +75,7 @@ Type TBuildingBase Extends TRenderableEntity
 
 
 	Method CenterToFloor:Int(floornumber:Int)
-		area.position.y = ((13 - floornumber) * floorHeight) - 115
+		area.SetY((13 - floornumber) * floorHeight - 115)
 	End Method
 
 
@@ -108,6 +108,25 @@ Type TBuildingBase Extends TRenderableEntity
 	'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau...
 	'also zwischen 0 und ~ 1000
 	Function getFloorByPixelExactPoint:Int(point:TVec2D)
+		For Local i:Int = 0 To 13
+			If GetFloorY2(i) < point.y Then Return i
+		Next
+		Return -1
+	End Function
+
+	'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau...
+	'also zwischen 0 und ~ 1000
+	Function getFloorByPixelExactPoint:Int(point:SVec2F)
+		For Local i:Int = 0 To 13
+			If GetFloorY2(i) < point.y Then Return i
+		Next
+		Return -1
+	End Function
+
+
+	'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau...
+	'also zwischen 0 und ~ 1000
+	Function getFloorByPixelExactPoint:Int(point:SVec3D)
 		For Local i:Int = 0 To 13
 			If GetFloorY2(i) < point.y Then Return i
 		Next

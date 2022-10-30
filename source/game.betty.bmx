@@ -457,8 +457,8 @@ Type TGUIBettyPresent extends TGuiObject
 		return "TGUIBettyPresent"
 	End Method
 
-	Method Create:TGUIBettyPresent(x:float, y:float, present:TBettyPresent)
-		Super.CreateBase(New TVec2D.Init(x,y), New TVec2D.Init(121, 91), "")
+	Method Create:TGUIBettyPresent(x:Int, y:Int, present:TBettyPresent)
+		Super.CreateBase(New SVec2I(x,y), New SVec2I(121, 91), "")
 		
 		SetPresent(present)
 

@@ -329,12 +329,16 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
-	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
-		if not definition then return New TAudience.InitValue(1, 1)
+	Method GetGenreTargetGroupMod:SAudience(definition:TGenreDefinitionBase)
+		if not definition then return New SAudience(1, 1)
 
 		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
 		'add 1 to get a value between 0 - 2
-		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
+		Local result:SAudience = definition.AudienceAttraction.data
+		result.Multiply(0.5)
+		result.Add(1.0)
+		result.CutBorders(0, 2.0)
+		Return result
 	End Method
 
 
@@ -350,15 +354,19 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
-	Method GetFlagTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
+	Method GetFlagTargetGroupMod:SAudience(definition:TGenreDefinitionBase)
 		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
 		'add 1 to get a value between 0 - 2
-		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
+		Local result:SAudience = definition.AudienceAttraction.data
+		result.Multiply(0.5)
+		result.Add(1.0)
+		result.CutBorders(0, 2.0)
+		Return result
 	End Method
 
 
-	Method GetTargetGroupAttractivityMod:TAudience()
-		Return New TAudience.InitValue(1, 1)
+	Method GetTargetGroupAttractivityMod:SAudience()
+		Return New SAudience(1, 1)
 	End Method
 
 
@@ -366,7 +374,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'return a value between 0 - 1.0
 	'describes how much of a potential trailer-bonus of 100% was reached
 	Method GetTrailerMod:TAudience()
-		Return new TAudience.InitValue(0, 0)
+		Return new TAudience.Set(0, 0)
 	End Method
 
 
@@ -379,21 +387,21 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
-	Method GetMiscMod:TAudience(hour:Int)
-		Return new TAudience.InitValue(1.0, 1.0)
+	Method GetMiscMod:SAudience(hour:Int)
+		Return new SAudience(1.0, 1.0)
 	End Method
 
 
 	'default implementation
-	Method GetPublicImageMod:TAudience()
+	Method GetPublicImageMod:SAudience()
 		local pubImage:TPublicImage = GetPublicImageCollection().Get(owner)
 		If not pubImage Then Throw TTVTNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has an owner without publicimage.")
 
 		'multiplication-value
-		Local result:TAudience = pubImage.GetAttractionMods()
-		result.MultiplyFloat(0.35)
-		result.SubtractFloat(0.35)
-		result.CutBordersFloat(-0.35, 0.35)
+		Local result:SAudience = pubImage.GetAttractionMods()
+		result.Multiply(0.35)
+		result.Subtract(0.35)
+		result.CutBorders(-0.35, 0.35)
 		Return result
 	End Method
 
@@ -410,15 +418,15 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
-	Method GetLuckMod:TAudience()
-		Return new TAudience.InitValue(0, 0)
+	Method GetLuckMod:SAudience()
+		Return new SAudience(0, 0)
 	End Method
 
 
 	'default implementation
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction) {_exposeToLua}
 		If lastProgrammeBlockAttraction And lastProgrammeBlockAttraction.AudienceFlowBonus Then
-			Return lastProgrammeBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
+			Return lastProgrammeBlockAttraction.AudienceFlowBonus.Copy().Multiply(0.25)
 		Else
 			Return Null
 		EndIf
@@ -428,12 +436,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation
 	'return a value between 0 - 2.0, 1.0 means "no change"
 	'takes into consideration all used flags.
-	Method GetFlagsTargetGroupMod:TAudience()
+	Method GetFlagsTargetGroupMod:SAudience()
 		'method does not use a "definition"-param" as flags are a collection
 		'of multiple definitions
 		'-> in extending types we then know the flags to use...and could
 		'   manually calculate things then
-		Return New TAudience.InitValue(1, 1)
+		Return New SAudience(1, 1)
 	End Method
 
 
@@ -451,45 +459,52 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
-	global borderMaxDefault:TAudience = new Taudience.InitValue(0.15, 0.15)
-	global borderMinDefault:TAudience = new Taudience.InitValue(-0.15, -0.15)
+	global borderMaxDefault:SAudience = new SAudience(0.15, 0.15)
+	global borderMinDefault:SAudience = new SAudience(-0.15, -0.15)
 	Method GetSequenceEffect:TAudience(block:Int, genreDefinition:TGenreDefinitionBase, predecessor:TAudienceAttraction, currentProgramme:TAudienceAttraction, lastProgrammeBlockAttraction:TAudienceAttraction )
-		Local ret:TAudience
-		Local seqCal:TSequenceCalculation = New TSequenceCalculation
+		Local seqCal:SSequenceCalculation
 		seqCal.Predecessor = predecessor
 		seqCal.Successor = currentProgramme
 
 		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastProgrammeBlockAttraction))
 
-		Local seqMod:TAudience
-		Local borderMax:TAudience
-		Local borderMin:TAudience
+		Local seqMod:SAudience
+		Local borderMax:SAudience
+		Local borderMin:SAudience
 
 		If genreDefinition
 			'.Divide(13).Multiply(4) = Divide(4/13)
-			seqMod = genreDefinition.AudienceAttraction.Copy().DivideFloat(4 / 13.0).AddFloat(0.75) '0.75 - 1.15
-			borderMax = genreDefinition.AudienceAttraction.Copy().DivideFloat(10).AddFloat(0.1).CutBordersFloat(0.1, 0.2)
-			borderMin = genreDefinition.AudienceAttraction.Copy().DivideFloat(10).AddFloat(-0.2) '-2 - -0.7
+			seqMod = genreDefinition.AudienceAttraction.data
+			seqMod.Divide(4 / 13.0)
+			seqMod.Add(0.75) '0.75 - 1.15
+			borderMax = genreDefinition.AudienceAttraction.data
+			borderMax.Divide(10)
+			borderMax.Add(0.1)
+			borderMax.CutBorders(0.1, 0.2)
+			borderMin = genreDefinition.AudienceAttraction.data
+			borderMin.Divide(10)
+			borderMin.Add(-0.2) '-2 - -0.7
 		Else
-			seqMod = new TAudience.InitValue(1, 1)
+			seqMod = new SAudience(1, 1)
 			borderMax = borderMaxDefault
 			borderMin = borderMinDefault
 		EndIf
 
-		ret = seqCal.GetSequenceDefault(seqMod, seqMod)
-		ret.CutBorders(borderMin, borderMax)
+		local result:TAudience = new TAudience
+		result.data = seqCal.GetSequenceDefault(seqMod, seqMod)
+		result.data.CutBorders(borderMin, borderMax)
 
-		Return ret
+		Return result
 	End Method
 
 
-	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
+	Method SetSequenceCalculationPredecessorShare(seqCal:SSequenceCalculation var, audienceFlow:Int)
 		If audienceFlow
-			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.3, 0.3)
-			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.2, 0.2)
+			seqCal.PredecessorShareOnShrink  = new SAudience(0.3, 0.3)
+			seqCal.PredecessorShareOnRise = new SAudience(0.2, 0.2)
 		Else
-			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.4, 0.4)
-			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.2, 0.2)
+			seqCal.PredecessorShareOnShrink  = new SAudience(0.4, 0.4)
+			seqCal.PredecessorShareOnRise = new SAudience(0.2, 0.2)
 		End If
 	End Method
 
@@ -529,14 +544,13 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
 			'Genre-targetgroup-fit
-			audienceAttraction.GenreTargetGroupMod = GetGenreTargetGroupMod(audienceAttraction.genreDefinition)
-
-			audienceAttraction.FlagsTargetGroupMod = GetFlagsTargetGroupMod()
+			audienceAttraction.GenreTargetGroupMod = New TAudience( GetGenreTargetGroupMod(audienceAttraction.genreDefinition) )
+			audienceAttraction.FlagsTargetGroupMod = New TAudience( GetFlagsTargetGroupMod() )
 
 			'a modifier of the targetgroup attractivity (a special target
 			'group was designated for the broadcast material ... eg.
 			'a "Scifi for children")
-			audienceAttraction.targetGroupAttractivityMod = GetTargetGroupAttractivityMod()
+			audienceAttraction.targetGroupAttractivityMod = new TAudience( GetTargetGroupAttractivityMod() )
 		else
 			'COPY, not reference the childelements to avoid news manipulating
 			'movie-attraction-data ... if done on "reference base" keep
@@ -575,13 +589,13 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			audienceAttraction.TrailerMod = GetTrailerMod()
 
 			'5 - Flags und anderes
-			audienceAttraction.MiscMod = GetMiscMod(hour)
+			audienceAttraction.MiscMod = New TAudience( GetMiscMod(hour) )
 
 			'6 - Cast and its benefits/effects
 			audienceAttraction.CastMod = GetCastMod()
 
 			'7 - Image
-			audienceAttraction.PublicImageMod = GetPublicImageMod()
+			audienceAttraction.PublicImageMod = New TAudience(GetPublicImageMod())
 		Else
 			'COPY, not reference the childelements to avoid news manipulating
 			'movie-attraction-data ... if done on "reference base" keep
@@ -599,7 +613,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.FlagsMod = GetFlagsMod()
 
 		'10 - Luck/Random adjustments
-		If withLuckEffect Then audienceAttraction.LuckMod = GetLuckMod()
+		If withLuckEffect Then audienceAttraction.LuckMod = New TAudience(GetLuckMod())
 	End Method
 
 

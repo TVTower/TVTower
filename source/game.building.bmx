@@ -75,17 +75,17 @@ Type TBuilding Extends TBuildingBase
 
 
 	Method Initialize:Int()
-		area.position.SetX(0)
-		area.dimension.SetXY(800, floorCount * floorHeight + 50) 'occupy full area
+		area.SetX(0)
+		area.SetWH(800, floorCount * floorHeight + 50) 'occupy full area
 
 		'create an entity spawning the complete inner area of the building
 		'this entity can be used as parent for other entities - which
 		'want to layout to the "inner area" of the building (eg. doors)
 		If Not buildingInner
 			buildingInner = New TRenderableEntity
-			buildingInner.area.position.SetXY(leftWallX + innerX, 0)
+			buildingInner.area.SetXY(leftWallX + innerX, 0)
 			'subtract missing "splitter wall" of last floor
-			buildingInner.area.dimension.SetXY(floorWidth, floorCount * floorHeight - 7)
+			buildingInner.area.SetWH(floorWidth, floorCount * floorHeight - 7)
 			'set building as parent for proper alignment
 			buildingInner.SetParent(Self)
 		EndIf
@@ -94,7 +94,7 @@ Type TBuilding Extends TBuildingBase
 		InitGraphics()
 
 		'now "gfx_building" exists and we can displace the building
-		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight)
+		area.SetY(0 - gfx_building.area.h + 5 * floorHeight)
 
 		'=== SETUP ELEVATOR ===
 		GetElevator().Initialize()
@@ -106,8 +106,8 @@ Type TBuilding Extends TBuildingBase
 		GetElevator().currentFloor = 9
 
 		GetElevator().SetParent(Self.buildingInner)
-		GetElevator().area.position.SetX(floorWidth/2 - GetElevator().GetDoorWidth()/2)
-		GetElevator().area.position.SetY(GetFloorY2(GetElevator().CurrentFloor) - GetElevator().spriteInner.area.GetH())
+		GetElevator().area.SetX(floorWidth/2 - GetElevator().GetDoorWidth()/2)
+		GetElevator().area.SetY(GetFloorY2(GetElevator().CurrentFloor) - GetElevator().spriteInner.area.h)
 		'the logic to use for the elevator
 		'param = 1: PrivilegePlayerMode active
 		'param = 0: do not lift players on the same route
@@ -244,13 +244,13 @@ Type TBuilding Extends TBuildingBase
 		'sprites
 		ufo_normal	= New TSpriteEntity
 		ufo_normal.SetSprite(GetSpriteFromRegistry("gfx_building_BG_ufo"))
-		ufo_normal.area.position.SetXY(0,100)
-		ufo_normal.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("default", 9, 100))
+		ufo_normal.area.SetXY(0,100)
+		ufo_normal.GetFrameAnimations().Add(new TSpriteFrameAnimation("default", 9, 100))
 
 		ufo_beaming	= New TSpriteEntity
 		ufo_beaming.SetSprite(GetSpriteFromRegistry("gfx_building_BG_ufo2"))
-		ufo_beaming.area.position.SetXY(0,100)
-		ufo_beaming.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("default", 9, 100))
+		ufo_beaming.area.SetXY(0,100)
+		ufo_beaming.GetFrameAnimations().Add(new TSpriteFrameAnimation("default", 9, 100))
 
 		'movement
 		Local displaceY:Int = 280, displaceX:Int = 5
@@ -298,8 +298,8 @@ Type TBuilding Extends TBuildingBase
 		'=== SETUP SOFTDRINK MACHINE ===
 		softDrinkMachine = New TSpriteEntity
 		softDrinkMachine.SetSprite(GetSpriteFromRegistry("gfx_building_softdrinkmachine"))
-		softDrinkMachine.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [0,70] ], 0, 0) )
-		softDrinkMachine.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("use", 15, 50))
+		softDrinkMachine.GetFrameAnimations().Add(new TSpriteFrameAnimation("default", [ [0,70] ], 0, 0) )
+		softDrinkMachine.GetFrameAnimations().Add(new TSpriteFrameAnimation("use", 15, 50))
 		softDrinkMachineActive = False
 	End Method
 
@@ -317,8 +317,8 @@ Type TBuilding Extends TBuildingBase
 			'also make them enterable
 			If hotspot.name = "elevatorplan"
 				hotspot.SetEnterable(True)
-				hotspot.area.position.setX( GetElevator().area.getX() )
-				hotspot.area.dimension.setXY( GetElevator().GetDoorWidth(), 58 )
+				hotspot.area.SetX( GetElevator().area.x )
+				hotspot.area.SetWH( GetElevator().GetDoorWidth(), 58 )
 			EndIf
 		Next
 
@@ -394,9 +394,9 @@ Type TBuilding Extends TBuildingBase
 		door.SetParent(Self.buildingInner)
 		'move door accordingly (only if a slot is defined)
 		if door.doorSlot > 0
-			door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
+			door.area.SetX(GetDoorXFromDoorSlot(door.doorSlot))
 		EndIf
-		door.area.position.SetY(GetFloorY2(door.onFloor))
+		door.area.SetY(GetFloorY2(door.onFloor))
 	End Method
 
 
@@ -500,14 +500,11 @@ Type TBuilding Extends TBuildingBase
 			endif
 
 			'subtract 7 because of missing "wall" in last floor
-			area.position.y =  2 * floorHeight - 7 + 50 - entity.area.GetY()
+			area.SetY(2 * floorHeight - 7 + 50 - entity.area.y)
 			'add 50 for roof
 		else
-			if MouseManager.y <= 20 then area.position.y :+ ((20 - MouseManager.y) * 0.75)
-			if MouseManager.y >= GetGraphicsManager().GetHeight() - 20 then area.position.y :- ((20 - (GetGraphicsManager().GetHeight() - MouseManager.y)) * 0.75)
-'				ghostScrollingPosition = MathHelper.Clamp(ghostScrollingPosition, - 637, 88)
-
-'				area.position.y = ghostScrollingPosition
+			if MouseManager.y <= 20 then area.MoveY((20 - MouseManager.y) * 0.75)
+			if MouseManager.y >= GetGraphicsManager().GetHeight() - 20 then area.MoveY(- (20 - (GetGraphicsManager().GetHeight() - MouseManager.y)) * 0.75)
 		endif
 	End Method
 
@@ -528,7 +525,7 @@ Type TBuilding Extends TBuildingBase
 
 
 		Local deltaTime:Float = GetDeltaTimer().GetDelta()
-		area.position.y = MathHelper.Clamp(area.position.y, - 637, 88)
+		area.SetY(MathHelper.Clamp(area.y, - 637, 88))
 		UpdateBackground(deltaTime)
 
 
@@ -647,7 +644,10 @@ Type TBuilding Extends TBuildingBase
 		If area.GetY() < -500
 			'mix entrance color so it is a mixture of current sky colors
 			'brightness and full brightness (white)
-			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.7).SetRGB()
+			Local grey:Int = int(GetWorld().lighting.GetSkyBrightness() * 255)
+			Local greyColor:SColor8 = new SColor8(grey, grey, grey)
+			SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 0.7) )
+
 			'draw figures outside the wall
 			For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().entries.Values()
 				If Not Figure.alreadydrawn Then Figure.Draw()
@@ -658,7 +658,7 @@ Type TBuilding Extends TBuildingBase
 
 			gfx_buildingEntrance.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 
-			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.9).SetRGB()
+			SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 0.9) )
 			'draw wall
 			gfx_buildingEntranceWall.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 			'draw fence
@@ -717,23 +717,26 @@ Type TBuilding Extends TBuildingBase
 	Method DrawBackground(tweenValue:Float=1.0)
 		Local BuildingHeight:Int = gfx_building.area.GetH() + 56
 
-		Local skyInfluence:Float = 0
-
+		Local skyInfluence:Float
+		Local grey:Int = int(GetWorld().lighting.GetSkyBrightness() * 255)
+		Local greyColor:SColor8 = new SColor8(grey, grey, grey)
+		
 		skyInfluence = 0.7
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
+
 		SetBlend ALPHABLEND
 		'draw UFO
 		If GetWorldTime().GetDayHour() > 18 Or GetWorldTime().GetDayHour() < 7
 			If GetWorldTime().GetDay() Mod 2 = 0
 				'compute and draw Ufo
 				Local tweenDistance:Float = MathHelper.Tween(UFO_PathCurrentDistanceOld, UFO_PathCurrentDistance, GetDeltaTimer().GetTween())
-				Local UFOPos:TVec2D = UFO_Path.GetTweenPoint(tweenDistance, True)
+				Local UFOPos:SVec2F = UFO_Path.GetTweenPoint(tweenDistance, True)
 				'print UFO_PathCurrentDistance
 				If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
-					ufo_beaming.area.position.SetXY(UFOPos.x, 0.25 * (area.GetY() + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y)
+					ufo_beaming.area.SetXY(UFOPos.x, 0.25 * (area.y + BuildingHeight - gfx_bgBuildings[0].area.h) + UFOPos.y)
 					ufo_beaming.Render()
 				Else
-					GetSpriteFromRegistry("gfx_building_BG_ufo").Draw( UFOPos.x, 0.25 * (area.GetY() + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y, ufo_normal.GetFrameAnimations().GetCurrent().GetCurrentFrame())
+					GetSpriteFromRegistry("gfx_building_BG_ufo").Draw( UFOPos.x, 0.25 * (area.y + BuildingHeight - gfx_bgBuildings[0].area.h) + UFOPos.y, ufo_normal.GetFrameAnimations().GetCurrent().GetCurrentFrame())
 				EndIf
 			EndIf
 		EndIf
@@ -741,19 +744,19 @@ Type TBuilding Extends TBuildingBase
 		SetBlend MASKBLEND
 
 		skyInfluence = 0.7
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[0].Draw(GetScreenRect().GetX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
-		gfx_bgBuildings[1].Draw(GetScreenRect().GetX() + 674, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
+		gfx_bgBuildings[0].Draw(GetScreenRect().x, 105 + 0.25 * (area.y + 5 + BuildingHeight - gfx_bgBuildings[0].area.h), - 1)
+		gfx_bgBuildings[1].Draw(GetScreenRect().x + 674, 105 + 0.25 * (area.y + 5 + BuildingHeight - gfx_bgBuildings[1].area.h), - 1)
 
 		skyInfluence = 0.5
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[2].Draw(GetScreenRect().GetX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
-		gfx_bgBuildings[3].Draw(GetScreenRect().GetX() + 676, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
+		gfx_bgBuildings[2].Draw(GetScreenRect().x, 120 + 0.35 * (area.y + BuildingHeight - gfx_bgBuildings[2].area.h), - 1)
+		gfx_bgBuildings[3].Draw(GetScreenRect().x + 676, 120 + 0.35 * (area.y + 60 + BuildingHeight - gfx_bgBuildings[3].area.h), - 1)
 
 		skyInfluence = 0.3
-		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[4].Draw(GetScreenRect().GetX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
-		gfx_bgBuildings[5].Draw(GetScreenRect().GetX() + 674, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
+		SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 1.0 - skyInfluence) )
+		gfx_bgBuildings[4].Draw(GetScreenRect().x, 45 + 0.80 * (area.y + BuildingHeight - gfx_bgBuildings[4].area.h), - 1)
+		gfx_bgBuildings[5].Draw(GetScreenRect().x + 674, 45 + 0.80 * (area.y + BuildingHeight - gfx_bgBuildings[5].area.h), - 1)
 
 		SetColor 255, 255, 255
 		SetAlpha 1.0
@@ -765,8 +768,8 @@ Type TBuilding Extends TBuildingBase
 		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip	= TTooltip.Create(GetLocale("ROOM_IS_OCCUPIED"), GetLocale("ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM"), 0,0,-1,-1, 2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenRect().GetY() - door.area.GetH() - roomUsedTooltip.GetHeight())
-		roomUsedTooltip.area.position.SetX(door.GetScreenRect().GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.SetY(door.GetScreenRect().y - door.area.h - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.SetX(door.GetScreenRect().x + door.area.w/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		Return True
@@ -778,8 +781,8 @@ Type TBuilding Extends TBuildingBase
 		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip = TTooltip.Create(GetLocale("BLOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE"), 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenRect().GetY() - door.area.GetH() - roomUsedTooltip.GetHeight())
-		roomUsedTooltip.area.position.SetX(door.GetScreenRect().GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.SetY(door.GetScreenRect().y - door.area.h - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.SetX(door.GetScreenRect().x + door.area.w/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		Return True
@@ -791,8 +794,8 @@ Type TBuilding Extends TBuildingBase
 		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip = TTooltip.Create(GetLocale("LOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY"), 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenRect().GetY() - door.area.GetH() - roomUsedTooltip.GetHeight())
-		roomUsedTooltip.area.position.SetX(door.GetScreenRect().GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.SetY(door.GetScreenRect().y - door.area.h - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.SetX(door.GetScreenRect().x + door.area.w/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		Return True

@@ -3,7 +3,7 @@ Import "Dig/base.gfx.gui.chat.bmx"
 Import "game.player.base.bmx"
 
 Type TGUIGameChat Extends TGUIChat
-	Method Create:TGUIGamechat(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+	Method Create:TGUIGamechat(pos:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 		Return Self
 	End Method

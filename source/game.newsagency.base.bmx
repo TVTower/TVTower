@@ -487,7 +487,7 @@ Type TNewsAgency
 			'effect.GetData().AddNumber("delayTime", RandRange(45,120)) * TWorldTime.MINUTELENGTH
 			'Variant 2: delay the execution of the effect
 			effect.SetDelayedExecutionTime(Long(GetWorldTime().GetTimeGone()) +  RandRange(45,120) * TWorldTime.MINUTELENGTH)
-			NewsEvent.effects.AddEntry("happen", effect)
+			NewsEvent.GetEffects(True).AddEntry("happen", effect)
 		EndIf
 
 		'send without delay!

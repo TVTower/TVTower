@@ -20,8 +20,8 @@ Type TGUITextBox Extends TGUIobject
 	End Method
 
 
-	Method Create:TGUITextBox(position:TVec2D = null, dimension:TVec2D = null, text:String, limitState:String="")
-		Super.CreateBase(position, dimension, limitState)
+	Method Create:TGUITextBox(pos:SVec2I, dimension:SVec2I, text:String, limitState:String="")
+		Super.CreateBase(pos, dimension, limitState)
 
 		SetValue(text)
 
@@ -58,7 +58,7 @@ Type TGUITextBox Extends TGUIobject
 
 
 	Method SetValuePosition:Int(valueLeft:Float=0.0, valueTop:Float=0.0)
-		rect.position.SetXY(valueLeft, valueTop)
+		rect.SetXY(valueLeft, valueTop)
 	End Method
 
 

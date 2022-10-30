@@ -138,4 +138,16 @@ Type TTriStateIntBitmask extends TIntBitmask
 		c.modified = self.modified
 		return c
 	End Method
+
+
+	Method SerializeTTriStateIntBitmaskToString:String()
+		Return mask+","+modified
+	End Method
+
+
+	Method DeSerializeTTriStateIntBitmaskFromString(text:String)
+		Local vars:String[] = text.split(",")
+		If vars.length > 0 Then mask = Int(vars[0])
+		If vars.length > 1 Then modified = Int(vars[1])
+	End Method
 End Type

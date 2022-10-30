@@ -47,9 +47,9 @@ Type TWorld
 	Field skySun:TSprite {nosave}
 	Field skySunRays:TSprite {nosave}
 
-	Field currentCloudColor:TColor
-	Field currentWindVelocity:Float
-	Field newWindVelocity:Float
+	'Field currentCloudColor:TColor
+	'Field currentWindVelocity:Float
+	'Field newWindVelocity:Float
 
 	Field showRain:Int = True
 	Field showLightning:Int = True
@@ -80,9 +80,9 @@ Type TWorld
 
 	Method Initialize:Int()
 		area = New TRectangle.Init(0,0,800,385)
-		centerPoint = New TVec2D.Init(400, 570 + area.GetY())
-		sunPoint = New TVec2D.Init(400, 1100 + area.GetY())
-		moonPoint =  New TVec2D.Init(400, 100 + area.GetY())
+		centerPoint = New TVec2D(400, 570 + area.GetY())
+		sunPoint = New TVec2D(400, 1100 + area.GetY())
+		moonPoint =  New TVec2D(400, 100 + area.GetY())
 
 		If Not weather Then weather = New TWorldWeather
 		If Not lighting Then lighting = New TWorldLighting
@@ -143,8 +143,8 @@ Type TWorld
 	Method InitSnowEffect:Int(startFlakes:Int = 10, sprites:TSprite[])
 		'to make effect start "offscreen" we increase size a bit
 		Local effectArea:TRectangle = area.copy()
-		effectArea.position.AddX(-50)
-		effectArea.dimension.AddX(50)
+		effectArea.MoveX(-50)
+		effectArea.MoveW(50)
 		snowEffect = New TWeatherEffectSnow.Init(effectArea, startFlakes, sprites)
 	End Method
 
@@ -152,8 +152,8 @@ Type TWorld
 	Method InitRainEffect:Int(layers:Int = 2, sprites:TSprite[])
 		'to make effect start "offscreen" we increase size a bit
 		Local effectArea:TRectangle = area.copy()
-		effectArea.position.AddX(-50)
-		effectArea.dimension.AddX(50)
+		effectArea.MoveX(-50)
+		effectArea.MoveW(50)
 		rainEffect = New TWeatherEffectRain.Init(effectArea, layers, sprites)
 	End Method
 
@@ -254,10 +254,7 @@ Type TWorld
 
 					factor = cloudEffect.cloudBrightness*(1.0-factor) + Weather.GetCloudBrightNess()*factor
 					factor :/ 100.0
-					'if simple grey clouds:
-					'cloudColor = TColor.CreateGrey(factor * 255)
-					'or advanced:
-					cloudEffect.cloudColor = cloudEffect.cloudColorBase.copy().AdjustRelative(-1 + factor)
+					cloudEffect.cloudColor = SColor8Helper.AdjustRelative(cloudEffect.cloudColorBase, -1 + factor)
 				EndIf
 			EndIf
 
@@ -331,15 +328,15 @@ Type TWorld
 '		GetGraphicsManager().SetViewPort(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
 
 		'=== BACKGROUND ===
-		Local skyColor:TColor = lighting.currentLight.copy()
+		Local skyColor:SColor8 = lighting.currentLight.ToSColor8()
 		If rainEffect Then rainEffect.ModifySkyColor(skyColor)
 		If lightningEffect Then lightningEffect.ModifySkyColor(skyColor)
 
 		If useClsMethod
-			SetClsColor skyColor.r, skyColor.g, skyColor.b
+			SetClsColor(skyColor)
 			Cls
 		Else
-			skyColor.SetRGB()
+			SetColor(skyColor)
 			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 			SetColor 255,255,255
 		EndIf

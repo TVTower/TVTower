@@ -31,7 +31,7 @@ Type RoomHandler_News extends TRoomHandler
 	Field ListSortMode:int = 0
 	Field ListSortInAscendingOrder:int = True
 	Global ListSortVisible:int = False
-	Global sortButtonPos:TVec2D = new TVec2D.Init(373,2)
+	Global sortButtonPos:TVec2D = new TVec2D(373,2)
 	Global newsSortKeys:int[] = [0,1,2,3]
 	'age: newest on top (biggest date number)
 	'price: cheapest on top (lowest number on top)
@@ -119,12 +119,12 @@ Type RoomHandler_News extends TRoomHandler
 			'ATTENTION: We could do this in order of The NewsGenre-Values
 			'           But better add it to the buttons.data-property
 			'           for better checking
-			NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(13, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
-			NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(58, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-			NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(103, 194), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
-			NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(13, 239), null, GetLocale("NEWS_SPORT"), "newsroom")
-			NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(58, 239), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
-			NewsGenreButtons[5]	= new TGUIButton.Create( new TVec2D.Init(103, 239), null, GetLocale("NEWS_CULTURE"), "newsroom")
+			NewsGenreButtons[0]	= new TGUIButton.Create( new SVec2I(13, 194), New SVec2I(0,0), GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+			NewsGenreButtons[1]	= new TGUIButton.Create( new SVec2I(58, 194), New SVec2I(0,0), GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+			NewsGenreButtons[2]	= new TGUIButton.Create( new SVec2I(103, 194), New SVec2I(0,0), GetLocale("NEWS_SHOWBIZ"), "newsroom")
+			NewsGenreButtons[3]	= new TGUIButton.Create( new SVec2I(13, 239), New SVec2I(0,0), GetLocale("NEWS_SPORT"), "newsroom")
+			NewsGenreButtons[4]	= new TGUIButton.Create( new SVec2I(58, 239), New SVec2I(0,0), GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+			NewsGenreButtons[5]	= new TGUIButton.Create( new SVec2I(103, 239), New SVec2I(0,0), GetLocale("NEWS_CULTURE"), "newsroom")
 			For local i:int = 0 to 5
 				NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
 				'adjust width according sprite dimensions
@@ -135,7 +135,7 @@ Type RoomHandler_News extends TRoomHandler
 
 			'create the lists in the news planner
 			'we add 2 pixel to the height to make "auto scrollbar" work better
-			guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(14,13), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+			guiNewsListAvailable = new TGUINewsList.Create(new SVec2I(14,13), new SVec2I(Int(GetSpriteFromRegistry("gfx_news_sheet0").area.w), Int(4*GetSpriteFromRegistry("gfx_news_sheet0").area.h)), "Newsplanner")
 			guiNewsListAvailable.SetAcceptDrop("TGUINews")
 			'use a custom sort
 'HEUTE
@@ -149,7 +149,7 @@ Type RoomHandler_News extends TRoomHandler
 			guiNewsListAvailable.guiScrollerV.Move(13, 45)
 			guiNewsListAvailable.guiScrollerV.SetSize(0, guiNewsListAvailable.guiScrollerV.rect.GetH() - 35)
 
-			guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(419,104), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+			guiNewsListUsed = new TGUINewsSlotList.Create(new SVec2I(419,104), new SVec2I(Int(GetSpriteFromRegistry("gfx_news_sheet0").area.w), Int(3*GetSpriteFromRegistry("gfx_news_sheet0").area.h)), "Newsplanner")
 			guiNewsListUsed.SetItemLimit(3)
 			guiNewsListUsed.SetAcceptDrop("TGUINews")
 			guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
@@ -453,7 +453,7 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreTooltip.Hover()
 
 		'move the tooltip
-		NewsGenreTooltip.area.position.SetXY(Max(21,button.rect.GetX() + button.rect.GetW()), button.rect.GetY()-30)
+		NewsGenreTooltip.area.SetXY(Max(21,button.rect.x + button.rect.w), button.rect.y-30)
 
 		If level = 0
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
@@ -975,7 +975,7 @@ Type RoomHandler_News extends TRoomHandler
 		elseif receiverList = guiNewsListUsed
 			local slot:int = -1
 			'check drop position
-			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
+			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D(-1,-1)))
 			if coord then slot = guiNewsListUsed.GetSlotByCoord(coord)
 			if slot = -1 then slot = guiNewsListUsed.getSlot(guiNews)
 
@@ -1031,7 +1031,7 @@ End Type
 
 Type TGUINewsList Extends TGUIListBase
 
-    Method Create:TGUINewsList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUINewsList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method
@@ -1050,7 +1050,7 @@ End Type
 
 Type TGUINewsSlotList Extends TGUISlotList
 
-    Method Create:TGUINewsSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+    Method Create:TGUINewsSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method
@@ -1083,7 +1083,7 @@ Type TGUINews Extends TGUIGameListItem
 	End Method
 
 
-    Method Create:TGUINews(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGUINews(pos:SVec2I, dimension:SVec2I, value:String="")
 		Super.Create(pos, dimension, value)
 
 		'to resize it properly
@@ -1309,10 +1309,8 @@ Type TGUINews Extends TGUIGameListItem
 			fontNormal.DrawSimple("Ist: " + eventCan, screenX + 5, textY)
 			textY :+ 11
 			endrem
-			local happenEffects:int = 0
-			local broadcastEffects:int = 0
-			if ne.effects.GetList("happen") then happenEffects = ne.effects.GetList("happen").Count()
-			if ne.effects.GetList("broadcast") then broadcastEffects = ne.effects.GetList("broadcast").Count()
+			local happenEffects:int = ne.GetEffectsCount("happen")
+			local broadcastEffects:int = ne.GetEffectsCount("broadcast")
 			fontNormal.DrawSimple("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + ne.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
 			textY :+ 11
 

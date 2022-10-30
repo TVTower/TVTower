@@ -1,25 +1,22 @@
 ﻿SuperStrict
 Import "game.broadcast.audienceattraction.bmx"
 
-Type TSequenceCalculation
+Struct SSequenceCalculation
 	Field Predecessor:TAudienceAttraction
 	Field Successor:TAudienceAttraction
-	Field PredecessorShareOnRise:TAudience
-	Field PredecessorShareOnShrink:TAudience
+	Field PredecessorShareOnRise:SAudience
+	Field PredecessorShareOnShrink:SAudience
 
 
-	Method GetSequenceDefault:TAudience( riseMod:TAudience = null, shrinkMod:TAudience = null)
-		Local result:TAudience = new TAudience
+	Method GetSequenceDefault:SAudience( riseMod:SAudience, shrinkMod:SAudience)
+		Local result:SAudience
 		Local predecessorValue:Float
 		Local successorValue:Float
-		Local riseModCopy:TAudience
-		Local shrinkModCopy:TAudience
 
-		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBordersFloat(0.8, 1.25)
-		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBordersFloat(0.25, 1.25)
+		riseMod.CutBorders(0.8, 1.25)
+		shrinkMod.CutBorders(0.25, 1.25)
 
-		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
+		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			For local genderIndex:int = 0 to 1
 				local gender:int = TVTPersonGender.FEMALE
 				if genderIndex = 1 then gender = TVTPersonGender.MALE
@@ -30,10 +27,8 @@ Type TSequenceCalculation
 				EndIf
 				successorValue = Successor.BaseAttraction.GetGenderValue(targetGroupID, gender)
 
-				Local riseModTemp:Float = 1
-				If riseModCopy Then riseModTemp = riseModCopy.GetGenderValue(targetGroupID, gender)
-				Local shrinkModTemp:Float = 1
-				If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetGenderValue(targetGroupID, gender)
+				Local riseModTemp:Float = riseMod.GetGenderValue(targetGroupID, gender)
+				Local shrinkModTemp:Float = shrinkMod.GetGenderValue(targetGroupID, gender)
 
 				Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetGenderValue(targetGroupID, gender)
 				Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetGenderValue(targetGroupID, gender)
@@ -71,4 +66,4 @@ Type TSequenceCalculation
 		End If
 		Return sequence
 	End Method
-End Type
+End Struct

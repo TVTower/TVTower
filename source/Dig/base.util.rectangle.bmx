@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-2022 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -39,24 +39,47 @@ Import "base.util.srectangle.bmx"
 
 global rectangle_created:int = 0
 
+
 Type TRectangle {_exposeToLua="selected"}
-	Field position:TVec2D = new TVec2D {_exposeToLua}
-	Field dimension:TVec2D = new TVec2D {_exposeToLua}
+	Field x:Float
+	Field y:Float
+	Field w:Float
+	Field h:Float
+
 
 	Method New()
 		rectangle_created :+ 1
 	End Method
+	
+	
+	Method New(x:Float, y:Float, w:float, h:float)
+		rectangle_created :+ 1
+
+		self.x = x
+		self.y = y
+		self.w = w
+		self.h = h
+	End Method
+
 
 	'sets the position and dimension (creates new point objects)
 	Method Init:TRectangle(x:Float=0, y:Float=0, w:float=0, h:float=0)
-		position.SetXY(x, y)
-		dimension.SetXY(w, h)
+		self.x = x
+		self.y = y
+		self.w = w
+		self.h = h
+
 		Return Self
 	End Method
 
 
 	Method ToString:String()
-		Return "xy="+position.ToString()+"  wh="+dimension.ToString()
+		Return "xy=" + x + "," + y + "  wh=" + w + ", " + h
+	End Method
+
+
+	Method ToSRectI:SRectI()
+		Return New SRectI(Int(x),Int(y),Int(w),Int(h))
 	End Method
 
 
@@ -66,33 +89,35 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	Method SerializeTRectangleToString:String()
-		Local xS:String = position.x; If Float(Int(position.x)) = position.x Then xS = Int(position.x)
-		Local yS:String = position.y; If Float(Int(position.y)) = position.y Then yS = Int(position.y)
-		Local wS:String = dimension.x; If Float(Int(dimension.x)) = dimension.x Then wS = Int(dimension.x)
-		Local hS:String = dimension.y; If Float(Int(dimension.y)) = dimension.y Then hS = Int(dimension.y)
+		Local xS:String = x; If Float(Int(x)) = x Then xS = Int(x)
+		Local yS:String = y; If Float(Int(y)) = y Then yS = Int(y)
+		Local wS:String = w; If Float(Int(w)) = w Then wS = Int(w)
+		Local hS:String = h; If Float(Int(h)) = h Then hS = Int(h)
 		Return xS+","+yS+","+wS+","+hS
 	End Method
 
 
 	Method DeSerializeTRectangleFromString(text:String)
 		Local vars:String[] = text.split(",")
-		If vars.length > 0 Then position.SetX(Float(vars[0]))
-		If vars.length > 1 Then position.SetY(Float(vars[1]))
-		If vars.length > 2 Then dimension.SetX(Float(vars[2]))
-		If vars.length > 3 Then dimension.SetY(Float(vars[3]))
+		If vars.length > 0 Then x = Float(vars[0])
+		If vars.length > 1 Then y = Float(vars[1])
+		If vars.length > 2 Then w = Float(vars[2])
+		If vars.length > 3 Then h = Float(vars[3])
 	End Method
 
 
 	'create a new rectangle with the same values
 	Method Copy:TRectangle()
-		Return New TRectangle.Init(position.x, position.y, dimension.x, dimension.y)
+		Return New TRectangle.Init(x, y, w, h)
 	End Method
 
 
 	'copies all values from the given rectangle
 	Method New(rect:SRect)
-		position.Init(rect.x, rect.y)
-		dimension.Init(rect.w, rect.h)
+		self.x = rect.x
+		self.y = rect.y
+		self.w = rect.w
+		self.h = rect.h
 	End Method
 
 
@@ -100,16 +125,32 @@ Type TRectangle {_exposeToLua="selected"}
 	Method CopyFrom:TRectangle(rect:TRectangle)
 		If Not rect Then Return Self
 
-		position.copyFrom(rect.position)
-		dimension.copyFrom(rect.dimension)
+		self.x = rect.x
+		self.y = rect.y
+		self.w = rect.w
+		self.h = rect.h
 		Return Self
 	End Method
 
+
 	'copies all values from the given rectangle
 	Method CopyFrom:TRectangle(rect:SRect)
-		position.Init(rect.x, rect.y)
-		dimension.Init(rect.w, rect.h)
+		self.x = rect.x
+		self.y = rect.y
+		self.w = rect.w
+		self.h = rect.h
 		Return Self
+	End Method
+
+
+	Method SwitchPositions:TRectangle(rect:TRectangle)
+		Local oldX:Float = x
+		Local oldY:Float = y
+		x = rect.x
+		y = rect.y
+		rect.x = oldX
+		rect.y = oldY
+		Return self
 	End Method
 
 
@@ -126,8 +167,8 @@ Type TRectangle {_exposeToLua="selected"}
 		'       )
 
 		'to avoid this, we use "exclusive" ranges (> instead of >=)
-		Return ( GetX() < rect.GetX2() And GetY() < rect.GetY2() ) And ..
-		       ( GetX2() > rect.GetX() And GetY2() > rect.GetY() )
+		Return ( x < rect.GetX2() And y < rect.GetY2() ) And ..
+		       ( GetX2() > rect.x And GetY2() > rect.y )
 	End Method
 
 
@@ -143,7 +184,7 @@ Type TRectangle {_exposeToLua="selected"}
 		'       )
 
 		'to avoid this, we use "exclusive" ranges (> instead of >=)
-		Return ( GetX() < (x+w) And GetY() < (y+h) ) And ..
+		Return ( self.x < (x+w) And self.y < (y+h) ) And ..
 		       ( GetX2() > x And GetY2() > y )
 	End Method
 
@@ -152,8 +193,8 @@ Type TRectangle {_exposeToLua="selected"}
 	'rectangle and the given one
 	'attention: returns NULL if there is no intersection
 	Method IntersectRect:TRectangle(rectB:TRectangle) {_exposeToLua}
-		local ix:float = max(GetX(), rectB.GetX())
-		local iy:float = max(GetY(), rectB.GetY())
+		local ix:float = max(x, rectB.x)
+		local iy:float = max(y, rectB.y)
 		local iw:float = min(GetX2(), rectB.GetX2() ) - ix
 		local ih:float = min(GetY2(), rectB.GetY2() ) - iy
 
@@ -169,8 +210,8 @@ Type TRectangle {_exposeToLua="selected"}
 	'rectangle and the given one
 	'attention: returns NULL if there is no intersection
 	Method IntersectRectXYWH:TRectangle(x:Float, y:Float, w:Float, h:Float) {_exposeToLua}
-		local ix:float = max(GetX(), x)
-		local iy:float = max(GetY(), y)
+		local ix:float = max(self.x, x)
+		local iy:float = max(self.y, y)
 		local iw:float = min(GetX2(), x + w) - ix
 		local ih:float = min(GetY2(), y + h) - iy
 
@@ -187,8 +228,8 @@ Type TRectangle {_exposeToLua="selected"}
 	'attention: returns the struct even if there is no intersection
 	'           (check width and height on your own!)
 	Method IntersectSRectXYWH:SRect(x:Float, y:Float, w:Float, h:Float)
-		local ix:float = max(GetX(), x)
-		local iy:float = max(GetY(), y)
+		local ix:float = max(self.x, x)
+		local iy:float = max(self.y, y)
 		Return new SRect(ix, iy, min(GetX2(), x + w) - ix, min(GetY2(), y + h) - iy)
 	End Method
 
@@ -196,15 +237,15 @@ Type TRectangle {_exposeToLua="selected"}
 	'modifies the rectangle to contain the intersection of self and the
 	'given one
 	Method Intersect:TRectangle(rectB:TRectangle)
-		local ix:float = max(position.x, rectB.position.x)
-		local iy:float = max(position.y, rectB.position.y)
-		local iw:float = min(position.x + dimension.x, rectB.position.x + rectB.dimension.x ) - ix
-		local ih:float = min(position.y + dimension.y, rectB.position.y + rectB.dimension.y ) - iy
+		local ix:float = max(x, rectB.x)
+		local iy:float = max(y, rectB.y)
+		local iw:float = min(x + w, rectB.x + rectB.w ) - ix
+		local ih:float = min(y + h, rectB.y + rectB.h ) - iy
 
-		position.x = ix
-		position.y = iy
-		dimension.x = iw
-		dimension.y = ih
+		x = ix
+		y = iy
+		w = iw
+		h = ih
 
 		Return Self
 	End Method
@@ -213,54 +254,53 @@ Type TRectangle {_exposeToLua="selected"}
 	'modifies the rectangle to contain the intersection of self and the
 	'given one
 	Method IntersectXYWH:TRectangle(x:Float, y:Float, w:Float, h:Float)
-		local ix:float = max(position.x, x)
-		local iy:float = max(position.y, y)
-		local iw:float = min(position.x + dimension.x, x + w ) - ix
-		local ih:float = min(position.y + dimension.y, y + h ) - iy
+		local ix:float = max(self.x, x)
+		local iy:float = max(self.y, y)
+		local iw:float = min(self.x + self.w, x + w ) - ix
+		local ih:float = min(self.y + self.h, y + h ) - iy
 
-		position.x = ix
-		position.y = iy
-		dimension.x = iw
-		dimension.y = ih
+		x = ix
+		y = iy
+		w = iw
+		h = ih
 
 		Return Self
 	End Method
 
 
-	?bmxng
 	Method Contains:Int(vec:TVec2D)
-		Return containsXY( vec.GetX(), vec.GetY() )
+		Return containsXY( vec.x, vec.y )
 	End Method
-	?
+
 
 	'returns whether the rectangle contains a point
 	Method ContainsVec:Int(vec:TVec2D) {_exposeToLua}
-		Return containsXY( vec.GetX(), vec.GetY() )
+		Return containsXY( vec.x, vec.y )
 	End Method
 
 
 	'returns whether the rectangle contains the given rectangle
 	Method ContainsRect:Int(rect:TRectangle) {_exposeToLua}
-		Return containsXY(rect.GetX(), rect.GetY()) And containsXY(rect.GetX2(), rect.GetY2())
+		Return containsXY(rect.x, rect.y) And containsXY(rect.GetX2(), rect.GetY2())
 	End Method
 
 
 	'returns whether x is within the x-coords of the rectangle
 	Method ContainsX:Int(x:Float) {_exposeToLua}
-		Return (x >= GetX() And x <= GetX2())
+		Return (x >= self.x And x <= GetX2())
 	End Method
 
 
 	'returns whether y is within the y-coords of the rectangle
 	Method ContainsY:Int(y:Float) {_exposeToLua}
-		Return (y >= GetY() And y <= GetY2() )
+		Return (y >= self.y And y <= GetY2() )
 	End Method
 
 
 	'returns whether the rectangle contains the given coord
 	Method ContainsXY:Int(x:Float, y:Float) {_exposeToLua}
-		Return (    x >= GetX() And x < GetX2() ..
-		        And y >= GetY() And y < GetY2() ..
+		Return (    x >= self.x And x < GetX2() ..
+		        And y >= self.y And y < GetY2() ..
 		       )
 	End Method
 
@@ -268,252 +308,361 @@ Type TRectangle {_exposeToLua="selected"}
 	'resizes a rectangle by the given values (like scaling but with
 	'fixed numbers)
 	Method Grow:TRectangle(dx:Float, dy:Float, dw:Float, dh:Float)
-		position.AddXY(-dx, -dy)
-		dimension.AddXY(dx + dw, dy + dh)
+		x :+ -dx
+		y :+ -dy
+		w :+ (dx + dw)
+		h :+ (dy + dh)
 		Return Self
 	End Method
 
 
 	Method GrowTLBR:TRectangle(top:Float, left:Float, bottom:Float, right:Float)
-		position.AddXY(-top, -left)
-		dimension.AddXY(left + right, top + bottom)
+		x :+ -top
+		y :+ -left
+		w :+ (left + right)
+		h :+ (top + bottom)
 		Return Self
 	End Method
 
 
 	Method Scale:TRectangle(sx:Float, sy:Float)
-		Local centerX:Float = 0.5 * GetW()
-		Local centerY:Float = 0.5 * GetH()
-		position.AddXY( -(sx - 1.0) * centerX, -(sy - 1.0) * centerY)
-		dimension.AddXY( +2*(sx - 1.0) * centerX, +2*(sy - 1.0) * centerY)
+		Local centerX:Float = 0.5 * w
+		Local centerY:Float = 0.5 * h
+		x :+ -(sx - 1.0) * centerX
+		y :+ -(sy - 1.0) * centerY
+		w :+ +2*(sx - 1.0) * centerX
+		h :+ +2*(sy - 1.0) * centerY
 		Return Self
 	End Method
 
 
 	'makes sure that width and height are positive
 	Method MakeDimensionsPositive:TRectangle()
-		Local minX:Float = Float( Min(GetX(), GetX2()) )
-		Local maxX:Float = Float( Max(GetX(), GetX2()) )
-		Local minY:Float = Float( Min(GetY(), GetY2()) )
-		Local maxY:Float = Float( Max(GetY(), GetY2()) )
+		Local minX:Float = Float( Min(x, GetX2()) )
+		Local maxX:Float = Float( Max(x, GetX2()) )
+		Local minY:Float = Float( Min(y, GetY2()) )
+		Local maxY:Float = Float( Max(y, GetY2()) )
 		SetXYWH(minX, minY, maxX-minX, maxY-minY)
 		Return Self
 	End Method
 
 
-	'moves the rectangle to x,y
-	Method MoveXY:TRectangle(x:Float, y:Float)
-		position.AddXY(x, y)
+	'moves the rectangle by x,y
+	Method MoveXY:TRectangle(dx:Float, dy:Float)
+		self.x :+ dx
+		self.y :+ dy
+		Return Self
+	End Method
+
+
+	'moves the rectangle by x
+	Method MoveX:TRectangle(dx:Float)
+		self.x :+ dx
+		Return Self
+	End Method
+
+
+	'moves the rectangle by x
+	Method MoveY:TRectangle(dy:Float)
+		self.y :+ dy
+		Return Self
+	End Method
+
+
+	Method MoveWH:TRectangle(dw:Float, dh:Float)
+		self.w :+ dw
+		self.h :+ dh
+		Return Self
+	End Method
+
+
+	'adjust the rectangle width by dw
+	Method MoveW:TRectangle(dw:Float)
+		self.w :+ dw
+		Return Self
+	End Method
+
+
+	'adjust the rectangle height by dh
+	Method MoveH:TRectangle(dh:Float)
+		self.h :+ dh
 		Return Self
 	End Method
 
 
 	'Set the rectangles values
 	Method SetXYWH:TRectangle(x:Float, y:Float, w:Float, h:Float)
-		position.setXY(x,y)
-		dimension.setXY(w,h)
+		self.x = x
+		self.y = y
+		self.w = w
+		self.h = h
 		Return Self
+	End Method
+	
+
+	Method GetPosition:SVec2F()
+		return new SVec2F(x, y)
+	End Method
+
+
+	Method GetDimension:SVec2F()
+		return new SVec2F(w, h)
 	End Method
 
 
 	Method GetX:Float()
-		Return position.GetX()
+		Return x
 	End Method
 
 
 	Method GetY:Float()
-		Return position.GetY()
+		Return y
 	End Method
 
 
 	Method GetXCenter:Float()
-		Return position.GetX() + 0.5 * dimension.GetX()
+		Return x + 0.5 * w
 	End Method
 
 
 	Method GetYCenter:Float()
-		Return position.GetY() + 0.5 * dimension.GetY()
+		Return y + 0.5 * h
 	End Method
 
 
 	Method GetX2:Float()
-		Return position.GetX() + dimension.GetX()
+		Return x + w
 	End Method
 
 
 	Method GetY2:Float()
-		Return position.GetY() + dimension.GetY()
+		Return y + h
 	End Method
 
 
 	Method GetW:Float()
-		Return dimension.GetX()
+		Return w
 	End Method
 
 
 	Method GetH:Float()
-		Return dimension.GetY()
+		Return h
 	End Method
 
 
 	Method GetIntX:Int()
-		Return position.GetIntX()
+		Return Int(x)
 	End Method
+
 
 	Method GetIntY:Int()
-		Return position.GetIntY()
+		Return Int(y)
 	End Method
+
 
 	Method GetIntX2:Int()
-		Return position.GetIntX() + GetIntW()
+		Return Int(x + w)
 	End Method
+
 
 	Method GetIntY2:Int()
-		Return position.GetIntY() + GetIntH()
+		Return Int(y + h)
 	End Method
 
+
 	Method GetIntW:Int()
-		Return dimension.GetIntX()
+		Return Int(w)
 	End Method
 
 	Method GetIntH:Int()
-		Return dimension.GetIntY()
+		Return Int(h)
 	End Method
 
 
 	'setter when using "sides" insteadsof coords
 	Method setTLBR:TRectangle(top:Float, Left:Float, bottom:Float, Right:Float)
-		position.setXY(top, Left)
-		dimension.setXY(bottom, Right)
+		x = top
+		y = left
+		w = bottom
+		h = right
 		Return Self
 	End Method
 
 
 	Method SetPosition:TRectangle(position:TVec2D)
-		Self.position.CopyFrom(position)
+		x = position.x
+		y = position.y
 		Return Self
 	End Method
 
 
 	Method SetDimension:TRectangle(dimension:TVec2D)
-		Self.dimension.CopyFrom(dimension)
+		w = dimension.x
+		h = dimension.y
 		Return Self
 	End Method
 
 
 	Method SetTop:TRectangle(value:Float)
-		position.SetX(value)
+		x = value
 		Return Self
 	End Method
 
 
 	Method SetLeft:TRectangle(value:Float)
-		position.SetY(value)
+		y = value
 		Return Self
 	End Method
 
 
 	Method SetBottom:TRectangle(value:Float)
-		dimension.SetX(value)
+		w = value
 		Return Self
 	End Method
 
 
 	Method SetRight:TRectangle(value:Float)
-		dimension.SetY(value)
+		h = value
 		Return Self
 	End Method
 
 
 	Method SetX:TRectangle(value:Float)
-		position.SetX(value)
+		x = value
 		Return Self
 	End Method
 
 
 	Method SetY:TRectangle(value:Float)
-		position.SetY(value)
+		y = value
 		Return Self
 	End Method
 
 
 	Method SetX2:TRectangle(value:Float)
-		dimension.SetX(value - position.x)
+		w = value - x
 		Return Self
 	End Method
 
 
 	Method SetY2:TRectangle(value:Float)
-		dimension.SetY(value - position.y)
+		h = value - y
 		Return Self
 	End Method
 
 
 	Method SetXY:TRectangle(valueX:Float, valueY:Float)
-		SetX(valueX)
-		SetY(valueY)
+		x = valueX
+		y = valueY
+		Return Self
+	End Method
+
+
+	Method SetXY:TRectangle(valueX:Double, valueY:Double)
+		x = Float(valueX)
+		y = Float(valueY)
+		Return Self
+	End Method
+
+
+	Method SetXY:TRectangle(p:SVec2D)
+		self.x = p.x
+		self.y = p.y
+		Return Self
+	End Method
+
+
+	Method SetXY:TRectangle(p:SVec2I)
+		self.x = p.x
+		self.y = p.y
+		Return Self
+	End Method
+
+
+	Method SetXY:TRectangle(p:TVec2D)
+		self.x = p.x
+		self.y = p.y
 		Return Self
 	End Method
 
 
 	Method SetWH:TRectangle(valueW:Float, valueH:Float)
-		SetW(valueW)
-		SetH(valueH)
+		w = valueW
+		h = valueH
+		Return Self
+	End Method
+
+
+	Method SetWH:TRectangle(p:TVec2D)
+		self.w = p.x
+		self.h = p.y
+		Return Self
+	End Method
+
+
+	Method SetWH:TRectangle(p:SVec2D)
+		self.w = p.x
+		self.h = p.y
 		Return Self
 	End Method
 
 
 	Method SetW:TRectangle(value:Float)
-		dimension.SetX(value)
+		w = value
 		Return Self
 	End Method
 
 
 	Method SetH:TRectangle(value:Float)
-		dimension.SetY(value)
+		h = value
 		Return Self
 	End Method
 
 
 	Method GetTop:Float()
-		Return position.GetX()
+		Return x
 	End Method
 
 
 	Method GetLeft:Float()
-		Return position.GetY()
+		Return y
 	End Method
 
 
 	Method GetBottom:Float()
-		Return dimension.GetX()
+		Return w
 	End Method
 
 
 	Method GetRight:Float()
-		Return dimension.GetY()
+		Return h
 	End Method
 
 
 	Method GetAbsoluteCenterVec:TVec2D()
-		Return New TVec2D.Init(GetX() + GetW()/2, GetY() + GetH()/2)
+		Return New TVec2D(x + w/2, y + h/2)
+	End Method
+
+
+	Method GetAbsoluteCenterSVec:SVec2D()
+		Return New SVec2D(x + w/2, y + h/2)
 	End Method
 
 
 	Method Round:TRectangle()
-		position.x = Int(position.x + 0.5)
-		position.y = Int(position.y + 0.5)
-		dimension.x = Int(dimension.x + 0.5)
-		dimension.y = Int(dimension.y + 0.5)
+		x = Int(x + 0.5)
+		y = Int(y + 0.5)
+		w = Int(w + 0.5)
+		h = Int(h + 0.5)
 		Return Self
 	End Method
 
 
 	Method Integerize:TRectangle()
-		position.x = Int(position.x)
-		position.y = Int(position.y)
-		dimension.x = Int(dimension.x)
-		dimension.y = Int(dimension.y)
+		x = Int(x)
+		y = Int(y)
+		w = Int(w)
+		h = Int(h)
 		Return Self
 	End Method
 
@@ -523,65 +672,100 @@ Type TRectangle {_exposeToLua="selected"}
 	'returns true if values needed to get adjusted
 	'(same as "intersect()" but with return value and no negatve values)
 	Method LimitToRect:Int(r:TRectangle)
-		local ix:float = max(GetX(), r.GetX())
-		local iy:float = max(GetY(), r.GetY())
+		local ix:float = max(x, r.x)
+		local iy:float = max(y, r.y)
 		local iw:float = Max(0, min(GetX2(), r.GetX2() ) - ix)
 		local ih:float = Max(0, min(GetY2(), r.GetY2() ) - iy)
 
-		if position.x <> ix or position.y <> iy or dimension.x <> iw or dimension.y <> ih
-			position.x = ix
-			position.y = iy
-			dimension.x = iw
-			dimension.y = ih
+		if x <> ix or y <> iy or w <> iw or h <> ih
+			x = ix
+			y = iy
+			w = iw
+			h = ih
 			Return True
 		EndIf
 		Return False
 	End Method
 
 
-	?bmxng
 	Method Equals:Int(x:Float, y:Float, w:Float, h:Float)
 		Return EqualsXYWH(x,y,w,h)
 	End Method
 
+
 	Method Equals:Int(r:TRectangle)
 		Return EqualsRect(r)
 	End Method
-	?
 
 
 	Method EqualsXYWH:Int(x:Float, y:Float, w:Float, h:Float)
-		If position.x <> x Then Return False
-		If position.y <> y Then Return False
-		If dimension.x <> w Then Return False
-		If dimension.y <> h Then Return False
+		If self.x <> x Then Return False
+		If self.y <> y Then Return False
+		If self.w <> w Then Return False
+		If self.h <> h Then Return False
 		Return True
 	End Method
 
 
 	Method EqualsTLBR:Int(rTop:Float, rLeft:Float, rBottom:Float, rRight:Float)
-		If position.x <> rTop Then Return False
-		If position.y <> rLeft Then Return False
-		If dimension.x <> rBottom Then Return False
-		If dimension.y <> rRight Then Return False
+		If self.x <> rTop Then Return False
+		If self.y <> rLeft Then Return False
+		If self.w <> rBottom Then Return False
+		If self.h <> rRight Then Return False
 		Return True
 	End Method
 
 
 	Method EqualsRect:Int(r:TRectangle)
-		If position.x <> r.position.x Then Return False
-		If position.y <> r.position.y Then Return False
-		If dimension.x <> r.dimension.x Then Return False
-		If dimension.y <> r.dimension.y Then Return False
+		If self.x <> r.x Then Return False
+		If self.y <> r.y Then Return False
+		If self.w <> r.w Then Return False
+		If self.h <> r.h Then Return False
 		Return True
+	End Method
+
+
+	Method isSamePosition:int(px:Float, py:Float, round:int=False)
+		If round
+			Return abs(x - px) < 1.0 AND abs(y - py) < 1.0
+		Else
+			Return x = px AND y = py
+		Endif
+	End Method
+
+
+	Method isSamePosition:int(p:SVec2I, round:int=False)
+		If round
+			Return abs(x - p.x) < 1.0 AND abs(y - p.y) < 1.0
+		Else
+			Return x = p.x AND y = p.y
+		Endif
+	End Method
+
+
+	Method isSamePosition:int(p:SVec2D, round:int=False)
+		If round
+			Return abs(x - p.x) < 1.0 AND abs(y - p.y) < 1.0
+		Else
+			Return x = p.x AND y = p.y
+		Endif
+	End Method
+
+
+	Method isSamePosition:int(p:TVec2D, round:int=False) {_exposeToLua}
+		If round
+			Return abs(x - p.x) < 1.0 AND abs(y - p.y) < 1.0
+		Else
+			Return x = p.x AND y = p.y
+		Endif
 	End Method
 
 
 	Method Compare:Int(otherObj:Object)
 		Local rect:TRectangle = TRectangle(otherObj)
 		If rect
-			If rect.dimension.y*rect.dimension.x < dimension.y*dimension.x Then Return -1
-			If rect.dimension.y*rect.dimension.x > dimension.y*dimension.x Then Return 1
+			If rect.h*rect.w < h*w Then Return -1
+			If rect.h*rect.w > h*w Then Return 1
 		EndIf
 		Return Super.Compare(otherObj)
 	End Method

@@ -397,7 +397,11 @@ End Rem
 
 
 	Method SetViewportRect(r:TRectangle)
-		self.SetViewport(int(r.position.x), int(r.position.y), int(r.dimension.x), int(r.dimension.y))
+		self.SetViewport(int(r.x), int(r.y), int(r.w), int(r.h))
+	End Method
+
+	Method SetViewportRect(r:SRectI)
+		self.SetViewport(r.x, r.y, r.w, r.h)
 	End Method
 
 
