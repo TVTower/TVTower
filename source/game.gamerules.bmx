@@ -96,7 +96,7 @@ Type TGameRules {_exposeToLua}
 	Field newsStudioSortNewsBy:string = "age"
 
 	'=== STATIONMAP ===
-	Field stationInitialIntendedReach:int = 1000000
+	Field stationInitialIntendedReach:int = 1200000
 
 
 	'=== DEV.xml ===
