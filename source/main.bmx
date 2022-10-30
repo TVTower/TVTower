@@ -6174,7 +6174,7 @@ endrem
 		'remove from collection (reuse if possible)
 		GetNewsEventCollection().RemoveEndedNewsEvents()
 
-		If Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > TWorldTime.DAYLENGTH
+		If GameRules.autoSaveIntervalHours > 0 And Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > GameRules.autoSaveIntervalHours * TWorldTime.HOURLENGTH
 			TSaveGame.autoSaveNow = True
 		EndIf
 	End Function

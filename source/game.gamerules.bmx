@@ -3,6 +3,8 @@ Import "Dig/base.util.data.bmx"
 
 'specific variables shared across the whole game
 Type TGameRules {_exposeToLua}
+	'auto save x hours after last saving - 0=off
+	Field autoSaveIntervalHours:Int = 0
 	'should a game start with a credit already given
 	Field startGameWithCredit:Int = True
 	'should licence attributes from the database be randomized
