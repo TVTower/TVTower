@@ -134,7 +134,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Self.AddChild(labelInRoomSlowdownPercentage)
 		nextY :+ inputH + guiDistance
 
-		Local labelAutoSaveInterval:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("AUTOSAVE_INTERVAL")+":")
+		Local labelAutoSaveInterval:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("AUTOSAVE_INTERVAL"))
 		inputAutoSaveInterval = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(50,-1), "", 128)
 		Local labelAutoSaveIntervalHours:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + 50 + 5, nextY + 22), GetLocale("HOURS"))
 		Self.AddChild(labelAutoSaveInterval)
