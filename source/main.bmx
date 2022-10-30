@@ -2931,7 +2931,18 @@ Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveURI
-		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveURI))
+		Local event:TEventBase = TEventBase.Create(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveURI))
+		event.Trigger()
+		if event.IsVeto()
+'			saveGame.UpdateMessage(False, "Saving: Saving aborted (timeout?).")
+			'close message window
+			If messageWindow Then messageWindow.Close()
+			Local reason:String = event.GetData().GetString("vetoReason")
+			if reason then reason = "|b|Reason:|/b| " + reason +"~n"
+			TError.Create("Failed to save game", reason + "|i|Might help to wait a moment and then try again.|/i|", False)
+			Return False
+		EndIf
+			
 
 		'assign "initial" version information
 		if not GameConfig.savegame_initialBuildDate then GameConfig.savegame_initialBuildDate = VersionDate

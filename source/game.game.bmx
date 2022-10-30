@@ -1689,7 +1689,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 						endif
 					EndIf
 				Next
-				if Millisecs() - t > 1000
+				if Millisecs() - t > 5000
 					For Local player:TPlayer = EachIn GetPlayerCollection().players
 						If player.isLocalAI() 
 							if player.PlayerAI.GetNextEventCount() > 0
@@ -1700,8 +1700,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 						endif
 					Next
 					'end application for now
-					Notify("AI stalled ... something is wrong! Exiting application.")
-					end
+					'Notify("AI stalled ... something is wrong! Exiting application.")
+					'end
+					
+					'inform save process of fail state
+					triggerEvent.SetVeto(True)
+					triggerEvent.GetData().AddString("vetoReason", "AI did not react quick enough.")
+					Return False
 				endif
 				If not allDone then delay(100)
 			Until allDone
