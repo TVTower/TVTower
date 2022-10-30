@@ -6058,7 +6058,7 @@ endrem
 		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
 			Local gameName:String = GameConfig.savegame_lastUsedName
 			Local autoSaveName:String = "autosave.xml"
-			If gameName and gameName <> "quicksave"
+			If gameName and gameName <> "quicksave" and not gameName.endsWith("_autosave")
 				autoSaveName = gameName + "_autosave.xml"
 			EndIf
 			TSaveGame.SaveName(autoSaveName, False)
