@@ -1324,12 +1324,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetNewsArray:TNews[]() {_exposeToLua}
-		'would return an array of type "object[]"
-		'Return news.toArray()
+		'works only if thread-safe
+		'Return TNews[](news.toArray())
 
-		local result:TNews[ news.Count() ]
+		local newsCount:Int = news.Count()
+		local result:TNews[ newsCount ]
 		local pos:int = 0
 		For local n:TNews = eachin news
+			'extend array if items where added concurrently
+			If pos >= newsCount Then result=result[..pos+1]
 			result[pos] = n
 			pos :+ 1
 		Next
