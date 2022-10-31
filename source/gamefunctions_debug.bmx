@@ -1379,7 +1379,7 @@ Type TDebugScreen
 					FastForward_TargetTime = -1
 					GetGame().SetGameSpeedPreset(1)
 				Else
-					GameRules.autoSaveIntervalHours = 0
+					GameConfig.autoSaveIntervalHours = 0
 					FastForward_Continuous_Active = True
 					FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,0,0,23,23) + 56*TWorldTime.MINUTELENGTH
 					GetGame().SetGameSpeed(FastForwardSpeed)

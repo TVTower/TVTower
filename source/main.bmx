@@ -292,8 +292,8 @@ Type TApp
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
 
-			GameRules.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
-			GameRules.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
+			GameConfig.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
+			GameConfig.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
 
 			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
@@ -511,8 +511,8 @@ Type TApp
 		If adjusted And doInitGraphics Then GetGraphicsManager().InitGraphics()
 
 
-		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
-		GameRules.autoSaveIntervalHours = config.GetInt("autosaveInterval", 0)
+		GameConfig.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
+		GameConfig.autoSaveIntervalHours = config.GetInt("autosaveInterval", 0)
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 
@@ -2849,6 +2849,8 @@ Type TSaveGame Extends TGameState
 			GameConfig.savegame_initialSaveGameVersion = "-1"
 			GameConfig.savegame_saveCount = 0
 		EndIf
+		GameConfig.InRoomTimeSlowDownMod = App.config.GetInt("inroomslowdown", 100) / 100.0
+		GameConfig.autoSaveIntervalHours = App.config.GetInt("autosaveInterval", 0)
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
@@ -6176,7 +6178,7 @@ endrem
 		'remove from collection (reuse if possible)
 		GetNewsEventCollection().RemoveEndedNewsEvents()
 
-		If GameRules.autoSaveIntervalHours > 0 And Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > GameRules.autoSaveIntervalHours * TWorldTime.HOURLENGTH
+		If GameConfig.autoSaveIntervalHours > 0 And Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > GameConfig.autoSaveIntervalHours * TWorldTime.HOURLENGTH
 			TSaveGame.autoSaveNow = True
 		EndIf
 	End Function
