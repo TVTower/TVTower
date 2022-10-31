@@ -292,7 +292,8 @@ Type TApp
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
 
-			GameRules.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
+			GameConfig.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
+			GameConfig.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
 
 			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
@@ -510,7 +511,8 @@ Type TApp
 		If adjusted And doInitGraphics Then GetGraphicsManager().InitGraphics()
 
 
-		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
+		GameConfig.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
+		GameConfig.autoSaveIntervalHours = config.GetInt("autosaveInterval", 0)
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 
@@ -2320,6 +2322,8 @@ Type TSaveGame Extends TGameState
 	Global messageWindowBackground:TImage
 	Global messageWindowLastUpdate:Long
 	Global messageWindowUpdatesSkipped:Int = 0
+	Global lastSaveTime:Long = 0 {noSave}
+	Global autoSaveNow:Int = False {noSave}
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -2845,6 +2849,8 @@ Type TSaveGame Extends TGameState
 			GameConfig.savegame_initialSaveGameVersion = "-1"
 			GameConfig.savegame_saveCount = 0
 		EndIf
+		GameConfig.InRoomTimeSlowDownMod = App.config.GetInt("inroomslowdown", 100) / 100.0
+		GameConfig.autoSaveIntervalHours = App.config.GetInt("autosaveInterval", 0)
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
@@ -2889,6 +2895,8 @@ endrem
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
+
+		TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
 
 		Return True
 	End Function
@@ -2982,6 +2990,7 @@ Local t:Int = MilliSecs()
 		'close message window
 		If messageWindow Then messageWindow.Close()
 
+		TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
 		Return True
 	End Function
 
@@ -3889,6 +3898,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			'just switch to the game, preparation is done
 			GetGame().StartNewGame()
 			startGameCalled = True
+			TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
 		EndIf
 	End Method
 
@@ -6047,6 +6057,16 @@ endrem
 			GetProgrammeProducerCollection().UpdateAll()
 		EndIf
 
+		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
+			Local gameName:String = GameConfig.savegame_lastUsedName
+			Local autoSaveName:String = "autosave.xml"
+			If gameName and gameName <> "quicksave" and not gameName.endsWith("_autosave")
+				autoSaveName = gameName + "_autosave.xml"
+			EndIf
+			TSaveGame.SaveName(autoSaveName, False)
+			TSaveGame.autoSaveNow = False
+		EndIf
+
 
 		Return True
 	End Function
@@ -6158,6 +6178,9 @@ endrem
 		'remove from collection (reuse if possible)
 		GetNewsEventCollection().RemoveEndedNewsEvents()
 
+		If GameConfig.autoSaveIntervalHours > 0 And Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > GameConfig.autoSaveIntervalHours * TWorldTime.HOURLENGTH
+			TSaveGame.autoSaveNow = True
+		EndIf
 	End Function
 
 

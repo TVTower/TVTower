@@ -68,6 +68,7 @@ SOUND_SFX_VOLUME            = Volume des effets sonores
 SOUND_MUTED                 = Son désactivé
 PORT_ONLINEGAME             = Port réseau
 GAME_SPEED_IN_ROOMS         = Vitesse du jeu dans les salles
+#AUTOSAVE_INTERVAL           = 
 
 GAME_TITLE  = Nom de la partie
 START_YEAR  = Début

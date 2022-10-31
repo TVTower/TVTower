@@ -68,6 +68,7 @@ SOUND_SFX_VOLUME            = SFX-Lautstärke
 SOUND_MUTED                 = Stumm
 PORT_ONLINEGAME             = Port für Onlinespiele
 GAME_SPEED_IN_ROOMS         = Spielgeschwind. in Räumen
+AUTOSAVE_INTERVAL           = Automatisches Speichern nach
 
 GAME_TITLE  = Spieltitel
 START_YEAR  = Startjahr

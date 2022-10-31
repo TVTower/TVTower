@@ -193,8 +193,11 @@ Type TDebugScreen
 		EndIf
 		'continuous fast forward: save game and go to the end of the next day
 		If FastForward_Continuous_Active and FastForward_TargetTime < GetWorldTime().GetTimeGone()
-			Local savegameName:String = "savegames/AI-day-" + StringHelper.RSetChar((GetWorldTime().GetDaysRun() + 1),2,"0")+ ".xml"
-			TSaveGame.SaveURI(savegameName)
+			Local daysRun:Int = GetWorldTime().GetDaysRun() + 1
+			If daysRun mod 5 = 0
+				Local savegameName:String = "savegames/AI-day-" + StringHelper.RSetChar(daysRun,3,"0")+ ".xml"
+				TSaveGame.SaveURI(savegameName)
+			EndIf
 			FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,1,1,23,23) + 56*TWorldTime.MINUTELENGTH
 			'GetGame().SetGameSpeed(FastForwardSpeed)
 		EndIf
@@ -1370,12 +1373,13 @@ Type TDebugScreen
 			case 6
 				GetPlayer().GetProgrammePlan().printOverview()
 			case 7
-				'continuous fast forward: save game at the end of every day
+				'continuous fast forward: save game at the end of every fifth day
 				If FastForward_Continuous_Active then
 					FastForward_Continuous_Active = False
 					FastForward_TargetTime = -1
 					GetGame().SetGameSpeedPreset(1)
 				Else
+					GameConfig.autoSaveIntervalHours = 0
 					FastForward_Continuous_Active = True
 					FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,0,0,23,23) + 56*TWorldTime.MINUTELENGTH
 					GetGame().SetGameSpeed(FastForwardSpeed)

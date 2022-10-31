@@ -67,10 +67,6 @@ Type TGameRules {_exposeToLua}
 	'or on finish of actual shooting (False)
 	Field payLiveProductionInAdvance:Int = False
 
-	'percentage of the gametime when in a room (default = 100%)
-	'use a lower value, to slow down the game then (movement + time)
-	Field InRoomTimeSlowDownMod:Float = 1.0
-
 	'how many productions (jobs, so theoretically less productions)
 	'are required to make a person a celebrity
 	Field UpgradeInsignificantOnProductionJobsCount:Int = 3

@@ -27,6 +27,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field inputWindowResolutionHeight:TGUIInput
 	Field inputGameName:TGUIInput
 	Field inputInRoomSlowdown:TGUIInput
+	Field inputAutoSaveInterval:TGUIInput
 	Field inputOnlinePort:TGUIInput
 	Field inputTouchClickRadius:TGUIInput
 	Field checkTouchInput:TGUICheckbox
@@ -126,11 +127,19 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ 22
 
 		Local labelInRoomSlowdown:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("GAME_SPEED_IN_ROOMS")+":")
-		inputInRoomSlowdown = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(75,-1), "", 128)
-		Local labelInRoomSlowdownPercentage:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + 75 + 5, nextY + 18), "%")
+		inputInRoomSlowdown = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(50,-1), "", 128)
+		Local labelInRoomSlowdownPercentage:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + 50 + 5, nextY + 22), "%")
 		Self.AddChild(labelInRoomSlowdown)
 		Self.AddChild(inputInRoomSlowdown)
 		Self.AddChild(labelInRoomSlowdownPercentage)
+		nextY :+ inputH + guiDistance
+
+		Local labelAutoSaveInterval:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("AUTOSAVE_INTERVAL"))
+		inputAutoSaveInterval = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(50,-1), "", 128)
+		Local labelAutoSaveIntervalHours:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + 50 + 5, nextY + 22), GetLocale("HOURS"))
+		Self.AddChild(labelAutoSaveInterval)
+		Self.AddChild(inputAutoSaveInterval)
+		Self.AddChild(labelAutoSaveIntervalHours)
 		nextY :+ inputH + guiDistance
 
 		'-----
@@ -332,6 +341,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		'data.Add("stationmap", inputStationmap.GetValue())
 		data.Add("databaseDir", inputDatabase.GetValue())
 		data.Add("inroomslowdown", inputInRoomSlowdown.GetValue())
+		data.Add("autosaveInterval", inputAutoSaveInterval.GetValue())
 
 '		data.AddBoolString("sound_music", checkMusic.IsChecked())
 '		data.AddBoolString("sound_effects", checkSfx.IsChecked())
@@ -374,6 +384,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		EndIf
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		inputInRoomSlowdown.SetValue(data.GetInt("inroomslowdown", 100))
+		inputAutoSaveInterval.SetValue(data.GetInt("autosaveInterval", 0))
 '		checkMusic.SetChecked(data.GetBool("sound_music", True))
 '		checkSfx.SetChecked(data.GetBool("sound_effects", True))
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
@@ -548,7 +559,7 @@ Type TSettingsWindow
 	Method Init:TSettingsWindow()
 		'LAYOUT CONFIG
 		Local windowW:Int = 700
-		Local windowH:Int = 500
+		Local windowH:Int = 535
 
 		modalDialogue = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(windowW, windowH), "SYSTEM")
 

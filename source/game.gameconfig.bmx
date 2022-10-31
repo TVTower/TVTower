@@ -21,6 +21,11 @@ Type TGameConfig {_exposeToLua}
 	Field savegame_initialSaveGameVersion:String
 	Field savegame_saveCount:Int = 0
 	Field savegame_lastUsedName:String
+	'auto save x hours after last saving - 0=off
+	Field autoSaveIntervalHours:Int = 0 {nosave}
+	'percentage of the gametime when in a room (default = 100%)
+	'use a lower value, to slow down the game then (movement + time)
+	Field InRoomTimeSlowDownMod:Float = 1.0 {nosave}
 
 	Global clNormal:SColor8 = SColor8.Black
 	Global clPositive:SColor8 = new SColor8(90, 110, 90)

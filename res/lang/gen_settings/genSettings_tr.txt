@@ -68,6 +68,7 @@ SOUND_ENGINE                = Ses Motoru
 #SOUND_MUTED                 = 
 PORT_ONLINEGAME             = Internet Oyunu için Port
 #GAME_SPEED_IN_ROOMS         = 
+#AUTOSAVE_INTERVAL           = 
 
 GAME_TITLE  = Oyun Başlığı
 START_YEAR  = Başlangıç Yılı

@@ -2248,8 +2248,8 @@ endrem
 		If Not GetGame().networkGame
 			If GetPlayer().IsInRoom() 'and not GetPlayer().GetFigure().IsInBuilding()
 				If TEntity.globalWorldSpeedFactorMod = 1.0
-					GetWorldTime().SetTimeFactorMod(GameRules.InRoomTimeSlowDownMod)
-					TEntity.globalWorldSpeedFactorMod = GameRules.InRoomTimeSlowDownMod
+					GetWorldTime().SetTimeFactorMod(GameConfig.InRoomTimeSlowDownMod)
+					TEntity.globalWorldSpeedFactorMod = GameConfig.InRoomTimeSlowDownMod
 				EndIf
 			Else
 				If TEntity.globalWorldSpeedFactorMod <> 1.0

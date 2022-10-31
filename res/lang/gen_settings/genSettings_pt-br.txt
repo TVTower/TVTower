@@ -68,6 +68,7 @@ RENDERER                    = Renderizador
 #SOUND_MUTED                 = 
 PORT_ONLINEGAME             = Porta para jogos online
 GAME_SPEED_IN_ROOMS         = Velocidade do jogo dentro das salas
+#AUTOSAVE_INTERVAL           = 
 
 GAME_TITLE  = Título do jogo
 START_YEAR  = Ano inicial
