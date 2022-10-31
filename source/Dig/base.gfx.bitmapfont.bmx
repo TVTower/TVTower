@@ -1779,63 +1779,30 @@ endrem
 			EndIf
 
 
-			If doLineBreak 
+			If doLineBreak
 				Local nextLine:Int = currentLine + 1
 
-				textX = alignment.X * (w - parseInfo.data.GetLineWidth(nextLine))
-				'avoid blurred lines
-				textX = Int(textX)
+				textY :+ parseInfo.data.GetLineHeight(currentLine, settings.boxDimensionMode )
+				textX = 0
 
+				If nextLine <= parseInfo.data.totalLineCount
+					textX = alignment.X * (w - parseInfo.data.GetLineWidth(nextLine))
+					'avoid blurred lines
+					textX = Int(textX)
 
-'		textY :+ parseInfo.data.GetLineHeight(currentLine, settings.boxDimensionMode )
-		Local lineIndex:Int = currentLine - 1
-		Local boxDimensionMode:Int = settings.boxDimensionMode
-		If lineIndex >= 0 And lineIndex < parseInfo.data.lineinfo_widthsDynamic.Length + parseInfo.data.lineinfo_widths.Length And lineIndex < parseInfo.data.totalLineCount
-			'ATTENTION
-			'Compare these lengths in the debug pane of MaxIDE/debugger
-			'they should all have the same length
-			Local __lineinfo_contentHeightsDynamic:Int = parseInfo.data.lineinfo_contentHeightsDynamic.Length
-			Local __lineinfo_maxFontHeightsDynamic:Int = parseInfo.data.lineinfo_maxFontHeightsDynamic.Length
-			Local __lineinfo_boxHeightsDynamic:Int = parseInfo.data.lineinfo_boxHeightsDynamic.Length
-			Local __lineinfo_lineBreakIndicesDynamic:Int = parseInfo.data.lineinfo_lineBreakIndicesDynamic.Length
-			Local __c:Int = currentLine
-			Local __b:Int = settings.boxDimensionMode
+					dynamicIndex = nextLine - parseInfo.data.lineinfo_boxHeights.Length - 1
+					If dynamicIndex >= 0
+						nextLineBreakIndex = parseInfo.data.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
 
-			If lineIndex < parseInfo.data.lineinfo_widths.Length
-				Select boxDimensionMode
-					Case 1
-						textY :+ parseInfo.data.lineinfo_contentHeights[lineIndex]
-					Case 2
-						textY :+ parseInfo.data.lineinfo_maxFontHeights[lineIndex]
-					Default '/ case 0
-						textY :+ parseInfo.data.lineinfo_boxHeights[lineIndex]
-				End Select
-			Else
-				Select boxDimensionMode
-					Case 1
-						textY :+ parseInfo.data.lineinfo_contentHeightsDynamic[lineIndex - parseInfo.data.lineinfo_contentHeights.Length]
-					Case 2
-						textY :+ parseInfo.data.lineinfo_maxFontHeightsDynamic[lineIndex - parseInfo.data.lineinfo_maxFontHeights.Length]
-					Default '/ case 0
-						textY :+ parseInfo.data.lineinfo_boxHeightsDynamic[lineIndex - parseInfo.data.lineinfo_boxHeights.Length]
-				End Select
-			EndIf
-		EndIf
-
-'				textY :+ parseInfo.data.GetLineHeight(currentLine, settings.boxDimensionMode )
-
-				dynamicIndex = nextLine - parseInfo.data.lineinfo_boxHeights.Length - 1
-				If dynamicIndex >= 0
-					nextLineBreakIndex = parseInfo.data.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
-
-					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
-						currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYsDynamic[dynamicIndex]
-					EndIf
-				Else
-					nextLineBreakIndex = parseInfo.data.lineinfo_lineBreakIndices[nextLine - 1]
-					
-					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
-						currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYs[nextLine - 1]
+						If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+							currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYsDynamic[dynamicIndex]
+						EndIf
+					Else
+						nextLineBreakIndex = parseInfo.data.lineinfo_lineBreakIndices[nextLine - 1]
+						
+						If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+							currentDisplaceY = parseInfo.data.lineinfo_fontDisplaceYs[nextLine - 1]
+						EndIf
 					EndIf
 				EndIf
 
@@ -2088,26 +2055,30 @@ endrem
 			EndIf
 
 
-			If doLineBreak 
+			If doLineBreak
 				Local nextLine:Int = currentLine + 1
 
-				textX = alignment.x * (w - parseInfo.GetLineWidth(nextLine))
-				'avoid blurred lines
-				textX = Int(textX)
 				textY :+ parseInfo.GetLineHeight(currentLine, settings.boxDimensionMode )
+				textX = 0
 
-				dynamicIndex = nextLine - parseInfo.lineinfo_boxHeights.length - 1
-				If dynamicIndex >= 0
-					nextLineBreakIndex = parseInfo.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
+				If nextLine <= parseInfo.totalLineCount
+					textX = alignment.X * (w - parseInfo.GetLineWidth(nextLine))
+					'avoid blurred lines
+					textX = Int(textX)
 
-					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
-						currentDisplaceY = parseInfo.lineinfo_fontDisplaceYsDynamic[dynamicIndex]
-					EndIf
-				Else
-					nextLineBreakIndex = parseInfo.lineinfo_lineBreakIndices[nextLine - 1]
-					
-					If settings.lineHeightMode = EDrawLineHeightModes.LineMax
-						currentDisplaceY = parseInfo.lineinfo_fontDisplaceYs[nextLine - 1]
+					dynamicIndex = nextLine - parseInfo.lineinfo_boxHeights.Length - 1
+					If dynamicIndex >= 0
+						nextLineBreakIndex = parseInfo.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
+
+						If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+							currentDisplaceY = parseInfo.lineinfo_fontDisplaceYsDynamic[dynamicIndex]
+						EndIf
+					Else
+						nextLineBreakIndex = parseInfo.lineinfo_lineBreakIndices[nextLine - 1]
+						
+						If settings.lineHeightMode = EDrawLineHeightModes.LineMax
+							currentDisplaceY = parseInfo.lineinfo_fontDisplaceYs[nextLine - 1]
+						EndIf
 					EndIf
 				EndIf
 
