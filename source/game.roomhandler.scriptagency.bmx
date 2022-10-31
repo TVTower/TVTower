@@ -19,7 +19,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Field listNormal2:TScript[]
 
 	'graphical lists for interaction with blocks
-	Global haveToRefreshGuiElements:int = TRUE
+	Global haveToRefreshGuiElements_Vendor:int = TRUE
+	Global haveToRefreshGuiElements_Suitcase:int = TRUE
 	Global GuiListNormal:TGUIScriptSlotList[]
 	Global GuiListNormal2:TGUIScriptSlotList = null
 	Global GuiListSuitcase:TGUIScriptSlotList = null
@@ -195,14 +196,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'guiElement this room manages
 		'Afterwards we force the room to update the gui elements
 		'during next update.
-		'Not RefreshGUIElements() in this function as the
+		'No RefreshGUIElements() in this function as the
 		'new contracts are not loaded yet
 
 		'We cannot rely on "onEnterRoom" as we could have saved
 		'in this room
 		GetInstance().RemoveAllGuiElements()
 
-		haveToRefreshGuiElements = true
+		InvalidateGuiElements()
 	End Method
 
 
@@ -224,8 +225,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'=== FOR ALL PLAYERS ===
 		'
-		'refill the empty blocks, also sets haveToRefreshGuiElements=true
-		'so next call the gui elements will be redone
+		'refill the empty blocks, also sets GuiElements to refresh
+		'on next update
 		GetInstance().ReFillBlocks()
 
 
@@ -480,11 +481,42 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		draggedGuiScript = null
 
 		'to recreate everything during next update...
-		haveToRefreshGuiElements = TRUE
+		GetInstance().InvalidateGuiElements()
+	End Function
+	
+	
+	Function InvalidateGuiElements:Int()
+		InvalidateGuiElements_Suitcase()
+		InvalidateGuiElements_Vendor()
 	End Function
 
 
-	Method RefreshGuiElements_Suitcase:int()
+	Function InvalidateGuiElements_Suitcase:Int()
+		haveToRefreshGuiElements_Suitcase = True
+	End Function
+
+
+	Function InvalidateGuiElements_Vendor:Int()
+		haveToRefreshGuiElements_Vendor = True
+	End Function
+
+
+	Function HaveToRefreshGuiElements:Int()
+		Return haveToRefreshGuiElements_Suitcase or haveToRefreshGuiElements_Vendor
+	End Function
+
+
+	Method RefreshGuiElements:int(forceRefresh:Int = False)
+		If forceRefresh Or haveToRefreshGuiElements()
+			RefreshGuiElements_Suitcase(forceRefresh)
+			RefreshGuiElements_Vendor(forceRefresh)
+		EndIf
+	End Method
+
+
+	Method RefreshGuiElements_Suitcase:int(forceRefresh:Int = False)
+		If Not haveToRefreshGuiElements_Suitcase And Not forceRefresh Then Return False
+
 		'===== REMOVE UNUSED =====
 		'remove gui elements with contracts the player does not have any longer
 		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayerBase().playerID)
@@ -510,10 +542,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 			guiListSuitcase.addItem(block, "-1")
 		Next
+		
+		haveToRefreshGuiElements_Suitcase = False
 	End Method
 
 
-	Method RefreshGuiElements_Vendor:int()
+	Method RefreshGuiElements_Vendor:int(forceRefresh:Int = False)
+		If Not haveToRefreshGuiElements_Vendor And Not forceRefresh Then Return False
+
 		'===== REMOVE UNUSED =====
 		'remove gui elements with contracts the vendor does not have any longer
 		For local i:int = 0 to GuiListNormal.length-1
@@ -578,6 +614,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				RemoveScript(script)
 			endif
 		Next
+
+		haveToRefreshGuiElements_Vendor = False
 	End Method
 
 
@@ -596,15 +634,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		Next
 		return False
 	End Function
-
-
-	Method RefreshGuiElements:int()
-		RefreshGuiElements_Suitcase()
-		RefreshGuiElements_Vendor()
-
-
-		haveToRefreshGuiElements = FALSE
-	End Method
 
 
 	Method WriteNewScripts()
@@ -638,7 +667,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Method ReFillBlocks:Int(replaceOffer:int=FALSE, replaceChance:float=1.0)
 		local lists:TScript[][] = [listNormal,listNormal2]
 
-		haveToRefreshGuiElements = TRUE
+		InvalidateGuiElements()
 
 		replaceChance :* 100 '0-1.0 to 0-100
 
@@ -716,23 +745,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		if not CheckObservedFigureInRoom("scriptagency") then return FALSE
 
 		'refresh the suitcase, not the board shelf!
-		GetInstance().RefreshGuiElements_Suitcase()
-
-rem
-		'only refresh if the vendor did not get the script
-		if triggerEvent.GetEventKey() = GameEventKeys.ProgrammeCollection_RemoveScript
-			if not GetInstance().HasScript(TScript(triggerEvent.GetData().Get("script")))
-				GetInstance().RefreshGuiElements()
-			endif
-		'only refresh if the vendor did not get the script
-		elseif triggerEvent.GetEventKey() = GameEventKeys.ProgrammeCollection_MoveScript
-			if not GetInstance().HasScript(TScript(triggerEvent.GetData().Get("script")))
-				GetInstance().RefreshGuiElements()
-			endif
-		else
-			GetInstance().RefreshGuiElements()
-		endif
-endrem
+		InvalidateGuiElements_Suitcase()
 	End Function
 
 
@@ -754,7 +767,7 @@ endrem
 		guiScript = null
 
 		'rebuild at correct spot
-		GetInstance().RefreshGuiElements()
+		InvalidateGuiElements()
 
 
 		'avoid clicks
@@ -854,8 +867,7 @@ endrem
 		guiBlock = null
 
 		'something changed...refresh missing/obsolete...
-'		GetInstance().RefreshGuiElements()
-		GetInstance().RefreshGuiElements_Vendor()
+		InvalidateGuiElements_Vendor()
 
 		return TRUE
 	End function
@@ -936,7 +948,7 @@ endrem
 					'try to drop back to old list - which triggers
 					'this function again... but with a differing list..
 					guiScript.dropBackToOrigin()
-					haveToRefreshGuiElements = TRUE
+					InvalidateGuiElements()
 				endif
 
 			'case GuiListNormal[0], ... , GuiListNormal2
@@ -952,7 +964,7 @@ endrem
 					'try to drop back to old list - which triggers
 					'this function again... but with a differing list..
 					guiScript.dropBackToOrigin()
-					haveToRefreshGuiElements = TRUE
+					InvalidateGuiElements()
 					return FALSE
 				endif
 		end select
@@ -1049,7 +1061,7 @@ endrem
 
 		if CheckObservedFigureInRoom("scriptagency")
 			'delete unused and create new gui elements
-			if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+			GetInstance().RefreshGUIElements()
 
 			'reset hovered block - will get set automatically on gui-update
 			hoveredGuiScript = null

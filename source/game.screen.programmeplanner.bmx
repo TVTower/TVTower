@@ -39,6 +39,7 @@ Type TScreenHandler_ProgrammePlanner
 	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = Null
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:Int = True
+	Global haveToFindHoveredGuiElement:Int = True
 	Global GuiListProgrammes:TGUIProgrammePlanSlotList
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
@@ -594,7 +595,7 @@ Type TScreenHandler_ProgrammePlanner
 		'elements
 		ChangePlanningDay(GetWorldTime().GetDay())
 		'ChangePlanningDay already refreshes all gui elements
-		'RefreshGUIElements()
+		'InvalidateGUIElements()
 	End Function
 
 
@@ -639,12 +640,11 @@ Type TScreenHandler_ProgrammePlanner
 		Local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
 		If Not collection Or not currentRoom or collection.owner <> currentRoom.owner Then Return False
 
-		'recreate gui elements
-		RefreshGuiElements()
-		'refetch the hovered element (if there was one before)
-		'so it can get drawn correctly in the render calls until the
-		'next update call would fetch the hovered item again
-		FindHoveredPlanElement()
+		'mark gui elements to be recreated on next update/render
+		InvalidateGuiElements()
+		'Mark information about hovered element as invalid so it gets
+		'repopulated in next render/update
+		InvalidateHoveredPlanElement()
 	End Function
 
 
@@ -666,12 +666,11 @@ Type TScreenHandler_ProgrammePlanner
 		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
 		If Not plan or not currentRoom Or plan.owner <> currentRoom.owner Then Return False
 
-		'recreate gui elements
-		RefreshGuiElements()
-		'refetch the hovered element (if there was one before)
-		'so it can get drawn correctly in the render calls until the
-		'next update call would fetch the hovered item again
-		FindHoveredPlanElement()
+		'mark gui elements to be recreated on next update/render
+		InvalidateGuiElements()
+		'Mark information about hovered element as invalid so it gets
+		'repopulated in next render/update
+		InvalidateHoveredPlanElement()
 	End Function
 
 
@@ -1156,6 +1155,12 @@ Type TScreenHandler_ProgrammePlanner
 
 		currentRoom = room
 
+		'delete unused and create new gui elements if needed
+		RefreshGuiElements()
+		'reassign a potential hovered/dragged element if needed
+		FindHoveredPlanElement()
+
+
 		DrawSlotHints()
 
 		GUIManager.Draw( LS_programmeplanner,,, GUIMANAGER_TYPES_NONDRAGGED)
@@ -1500,12 +1505,11 @@ endrem
 			EndIf
 		Next
 
-		'delete unused and create new gui elements
-		If haveToRefreshGuiElements
-			RefreshGuiElements()
-			'reassign a potential hovered/dragged element
-			FindHoveredPlanElement()
-		EndIf
+		'delete unused and create new gui elements if needed
+		RefreshGuiElements()
+		'reassign a potential hovered/dragged element if needed
+		FindHoveredPlanElement()
+
 
 		If planningDay-1 < GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 			plannerPreviousDayButton.disable()
@@ -1747,10 +1751,8 @@ endrem
 			If IsMyScreen( ScreenCollection.GetCurrentScreen() )
 				'FALSE: without removing dragged
 				'->ONLY keeps newly created, not ones dragged from a slot
+				'also marks all gui elements for refresh
 				RemoveAllGuiElements(False)
-
-				RefreshGuiElements()
-				FindHoveredPlanElement()
 			EndIf
 		EndIf
 	End Function
@@ -1789,15 +1791,17 @@ endrem
 			Next
 		EndIf
 
-		'to recreate everything during next update...
-		haveToRefreshGuiElements = True
+		'mark gui elements to be recreated on next update/render
+		InvalidateGuiElements()
 
 		'set to backupped value
 		talkToProgrammePlanner = oldTalk
 	End Function
 
 
-	Function FindHoveredPlanElement:Int()
+	Function FindHoveredPlanElement:Int(forceRefresh:Int = False)
+		if Not haveToFindHoveredGuiElement and Not forceRefresh Then Return False
+
 '		hoveredGuiProgrammePlanElement = Null
 
 		Local obj:TGUIProgrammePlanElement
@@ -1819,10 +1823,25 @@ endrem
 				Return True
 			EndIf
 		Next
+		
+		haveToFindHoveredGuiElement = False
 	End Function
 
 
-	Function RefreshGuiElements:Int()
+	Function InvalidateGuiElements:Int()
+		haveToRefreshGuiElements = True
+	End Function
+
+	Function InvalidateHoveredPlanElement:Int()
+		haveToFindHoveredGuiElement = True
+		'TODO: needed?
+		'hoveredGuiProgrammePlanElement = Null
+	End Function
+	
+
+	Function RefreshGuiElements:Int(forceRefresh:Int = False)
+		If Not haveToRefreshGuiElements and Not forceRefresh Then Return False
+		
 		'do not inform programmeplanner!
 		Local oldTalk:Int =	talkToProgrammePlanner
 		talkToProgrammePlanner = False
