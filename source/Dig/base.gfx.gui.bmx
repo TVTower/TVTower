@@ -243,7 +243,7 @@ Type TGUIManager
 		'undefined object 1 - "a<b"
 		If Not objA Then Return -1
 		'undefined object 2 - "a>b"
-		If objA And Not objB Then Return 1
+		If Not objB Then Return 1
 
 		'if one is the parent of the other, sort so, that the parent
 		'comes last (child on top of parent -> handled before parent)
