@@ -711,16 +711,14 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().GetDayHour()
 		Local time:Long = GetWorldTime().MakeTime(0, day, hour, 0, 0)
-		'percentage of each population group watching now
-		'local percentage:TAudience = TBroadcast.GetPotentialAudiencePercentageForHour(hour).GetAvg()
 
-		'percentage of each group in the population
-		Local population:TAudience = New TAudience.Set(1, AudienceManager.GetTargetGroupBreakdown())
+		'fetch a struct copy
+		Local population:SAudience = AudienceManager.GetAudienceBreakdown().data
 		'GetPotentialAudienceModifier returns percentage watching now
 		population.Multiply(TBroadcast.GetPotentialAudienceModifier(time))
 
-		'-> GetTotalSum() contains the total percentage of the population
-		'   watching TV now
+		'GetTotalSum() contains the total percentage of the 
+		'population watching TV now
 		Return population.GetTotalSum()
 	End Method
 
