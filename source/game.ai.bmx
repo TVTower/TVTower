@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.util.logger.bmx"
 Import "Dig/base.gfx.gui.chat.bmx"
+Import "Dig/base.util.commandqueue.bmx"
 Import "game.ai.base.bmx"
 Import "game.gamerules.bmx"
 Import "game.gameconstants.bmx"
@@ -29,6 +30,8 @@ Import "game.roomhandler.scriptagency.bmx"
 Import "game.roomhandler.studio.bmx"
 Import "game.programmeproducer.bmx"
 
+
+Global AICommandQueue:TCommandQueue = new TCommandQueue
 
 Global AiLog:TLogFile[4]
 For Local i:Int = 0 To 3
@@ -211,6 +214,46 @@ Type TAi Extends TAiBase
 
 		CallLuaFunction("OnInit", Null)
 	End Method
+End Type
+
+
+
+rem
+'this also acts as a kind of "API overview" ("supported commands")
+'-> allowed everywhere
+Enum EAIBaseCommandAction
+	SendToChat
+End Enum
+
+'only allowed when in the office
+Enum EAIOfficeCommandAction
+	of_buyStation
+	of_buyAntennaStation
+	of_buyCableNetworkStation
+	of_buyCableNetworkStationByCableNetworkIndex
+	of_buySatelliteStation
+End Enum
+endrem
+
+
+rem
+Type TAICommand extends TCommand
+	Field action:EAICommandAction
+
+	Method CustomRun() override
+		Select action
+			Case EAICommandAction.md_doBuyProgrammeLicence
+				If payload.length < 1 Then Throw "Invalid params for CommandAction ~q" + action.toString() + "~q"
+				Local callResult:Int = md_doBuyProgrammeLicence(Int(String(payload[0])))
+				result = new SCommandResult(callResult)
+
+			Default
+				Throw "Unhandled CommandAction ~q" + action.toString() + "~q"
+		End Select
+	End Method
+End Type
+endrem
+Type TAICommand extends TCommand
 End Type
 
 
@@ -447,9 +490,18 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method SendToChat:Int(ChatText:String)
-		'emit an event, we received a chat message
-		Local sendToChannels:Int = TGUIChat.GetChannelsFromText(ChatText)
-		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddNumber("senderID", Self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) )
+		Local payload:object[] = [ChatText, string(Self.ME)]
+		Local command:TAICommand = new TAICommand(payload, runCallback)
+		AiCommandQueue.Add(command)
+
+
+		Function runCallback(payload:object[])
+			'emit an event, we received a chat message
+			Local chatText:String = String(payload[0])
+
+			Local sendToChannels:Int = TGUIChat.GetChannelsFromText(chatText)
+			TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddNumber("senderID", Int(String(payload[1]))).AddNumber("channels", sendToChannels).AddString("text", chatText) )
+		End Function
 
 		Return 1
 	EndMethod

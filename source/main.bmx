@@ -680,6 +680,10 @@ Type TApp
 
 
 		UpdateDebugControls()
+		
+
+		'process AI/player commands
+		AICommandQueue.Process()
 
 
 		'=== UPDATE INGAME HELP ===
@@ -892,6 +896,11 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				GameConfig.observerMode = True '1 - GameConfig.observerMode
+				TVTGhostBuildingScrollMode = True '1 - TVTGhostBuildingScrollMode
+				GameConfig.SetObservedObject( MainMenuJanitor )
+				
+
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
