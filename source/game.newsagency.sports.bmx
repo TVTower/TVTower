@@ -1508,9 +1508,8 @@ endrem
 		Local m1:TNewsEventSportMatch = TNewsEventSportMatch(o1)
 		Local m2:TNewsEventSportMatch = TNewsEventSportMatch(o2)
 
-		If m1 And Not m2 Then Return 1
-		If Not m1 And m2 Then Return -1
-		If Not m1 And Not m2 Then Return 0
+		If Not m1 Then Return -1
+		If Not m2 Then Return 1
 
 		If m1.GetMatchTime() < m2.GetMatchTime() Then Return -1
 		If m1.GetMatchTime() > m2.GetMatchTime() Then Return 1

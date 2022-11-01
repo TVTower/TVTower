@@ -1432,6 +1432,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function Sort:Int(o1:Object, o2:Object)
 		Local s1:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(o1)
 		Local s2:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(o2)
+		If Not s1 Then Return -1
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
         Return (s1.slot)-(s2.slot)
 	End Function

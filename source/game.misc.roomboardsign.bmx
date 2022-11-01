@@ -254,6 +254,7 @@ Type TRoomBoardBase
 	Function SortByDraggedState:Int(o1:Object, o2:Object)
 		Local r1:TRoomBoardSign = TRoomBoardSign(o1)
 		Local r2:TRoomBoardSign = TRoomBoardSign(o2)
+		If Not r1 Then Return -1
 		If Not r2 Then Return 1
 
 		Return (r1.dragged * 100) - (r2.dragged * 100)

@@ -52,6 +52,7 @@ Type TBlockMoveable Extends TOwnedGameObject
 	Function SortDragged:Int(o1:Object, o2:Object)
 		Local s1:TBlockMoveable = TBlockMoveable(o1)
 		Local s2:TBlockMoveable = TBlockMoveable(o2)
+		If Not s1 Then Return -1
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
 		Return (s1.dragged * 100)-(s2.dragged * 100)
 	End Function

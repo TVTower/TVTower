@@ -397,6 +397,7 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	Function SortByName:Int(o1:Object, o2:Object)
 		Local a1:TAdContractBase = TAdContractBase(o1)
 		Local a2:TAdContractBase = TAdContractBase(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
 		If a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
@@ -759,6 +760,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortByName:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
 		If a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
@@ -773,6 +775,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortByClassification:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 		If a1.adAgencyClassification = a2.adAgencyClassification
 			Return a1.GetTitle() > a2.GetTitle()
@@ -784,6 +787,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortByProfit:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 		If a1.GetProfit() = a2.GetProfit()
 			Return a1.GetTitle() > a2.GetTitle()
@@ -796,6 +800,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortByMinAudience:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
 		If a1.GetMinAudience() = a2.GetMinAudience()
@@ -809,6 +814,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortByMinAudienceRelative:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
 		'calculate the value as if population consists only of the targetgroup
@@ -825,6 +831,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortByDaysLeft:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
 		If a1.GetDaysLeft() = a2.GetDaysLeft()
@@ -837,6 +844,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Function SortBySpotsToSend:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
+		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
 		If a1.GetSpotsSent() = a2.GetSpotsSent()
