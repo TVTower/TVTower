@@ -49,10 +49,14 @@ Loading and Saving
 
 There are two ways to save and load the game. On the one hand, you can open up the appropriate menu by pressing the "Escape" key. By left-clicking on the respective menu entries, you can get to the corresponding sub-menu. When saving, enter a name. When loading, find a savegame and select the appropriate entry.
 
+You can define an auto-save interval in the settings. When the corresponding number of game hours after saving the last time is over, the game is saved automatically. Zero hours deactivates auto-saving.
+
 On the other hand, there's also the possibility of quick-saving and -loading. Simply press these keys:
 
 * Quick Save - "F5" key
 * Quick Load - "F8" key
+
+Attention: Quick Load restores the game saved using F5; not the last saved game.
 
 Game Speed
 ==========
