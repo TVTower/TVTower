@@ -269,7 +269,7 @@ function JobPlanProduction:Prepare(pParams)
 		self.MaxBudget = 750000
 	elseif blocks > 48 then
 		self.MaxBudget = 280000
-	elseif self.Task.awardType ~= "culture" then
+	elseif self.Task.awardType ~= "culture" and player.money < 200000 then
 		self.MaxBudget = 0
 	end
 end
