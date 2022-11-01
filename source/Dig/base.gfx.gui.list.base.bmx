@@ -971,12 +971,12 @@ Type TGUIListBase Extends TGUIobject
 
 	Function SortByCompare:Int(o1:Object,o2:Object)
 		If Not TGUIObject(o1) Then Return 0
-		Return o1.Compare(o2)
+		Return o1.Compare(o2) 'is this safe for o2=null?
 	End Function
 
 
 	Function SortByValue:Int(o1:Object,o2:Object)
-		If Not TGUIObject(o1) Then Return 0
+		If Not TGUIObject(o1) Then Return -1
 		If Not TGUIObject(o2) Then Return 1
 		If TGUIObject(o1).GetValue() > TGUIObject(o2).GetValue() Return 1
 		Return 0

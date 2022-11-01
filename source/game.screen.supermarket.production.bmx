@@ -1963,9 +1963,8 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByName:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		'sort amateurs "at bottom"
-		'If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return 1
-		'If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return -1
+		If Not a1 Then Return -1
+		If Not a2 Then Return 1
 
 		If a1.person.GetLastName().ToLower() = a2.person.GetLastName().ToLower()
 			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
@@ -2027,9 +2026,8 @@ Type TGUICastSelectList Extends TGUISelectList
 	Function SortCastByFee:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		'sort amateurs "at bottom"
-		'If Not a1 or a1.isAmateur and (not a2 or not a2.isAmateur) Then Return 1
-		'If Not a2 or a2.isAmateur and (not a1 or not a1.isAmateur) Then Return -1
+		If Not a1 Then Return -1
+		If Not a2 Then Return 1
 
 		local playerID:Int = 0
 		local blocks:Int = 1

@@ -553,6 +553,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	Function SortByName:Int(o1:Object, o2:Object)
 		Local p1:TPersonBase = TPersonBase(o1)
 		Local p2:TPersonBase = TPersonBase(o2)
+		If Not p1 Then Return -1
 		If Not p2 Then Return 1
 		If p1.GetFullName() = p2.GetFullName()
 			Return p1.GetGUID() > p2.GetGUID()
