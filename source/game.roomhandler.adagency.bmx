@@ -1245,7 +1245,7 @@ endrem
 		guiAdContract = Null
 
 		'rebuild at correct spot
-		GetInstance().RefreshGuiElements()
+		haveToRefreshGuiElements = True
 
 		'avoid clicks
 		'remove right click - to avoid leaving the room
@@ -1295,7 +1295,7 @@ endrem
 		guiBlock = Null
 
 		'something changed...refresh missing/obsolete...
-		GetInstance().RefreshGuiElements()
+		haveToRefreshGuiElements = True
 
 		Return True
 	End Function
@@ -1348,6 +1348,9 @@ endrem
 
 
 	Method onDrawRoom:Int( triggerEvent:TEventBase )
+		'delete unused and create new gui elements
+		If haveToRefreshGuiElements Then RefreshGUIElements()
+
 		If VendorEntity Then VendorEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.x, suitcasePos.y)
 
@@ -1501,7 +1504,7 @@ endrem
 		Next
 
 		'delete unused and create new gui elements
-		If haveToRefreshGuiElements Then GetInstance().RefreshGUIElements()
+		If haveToRefreshGuiElements Then RefreshGUIElements()
 
 		'reset hovered block - will get set automatically on gui-update
 		hoveredGuiAdContract = Null
