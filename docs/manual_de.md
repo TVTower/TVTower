@@ -18,7 +18,7 @@ Am Ende der Anleitung gibt es eine Liste mit nützlichen Tastenkürzeln.
 Inhalt
 ======
 
-* Laden Speichern
+* Laden / Speichern
 * Spielgeschwindigkeit
 * Bewegung der Spielfigur
 * Funktionsfähige Features:
@@ -41,15 +41,19 @@ Inhalt
 * Veränderungen durch den Spieler
 * Tastenkürzel für die Entwicklerversion
 
-Laden Speichern
-===============
+Laden / Speichern
+=================
 
 Es gibt zwei Möglichkeiten, das Spiel zu speichern und zu laden. Zum einen kann über „Escape“ ein entsprechendes Menü aufgerufen werden. Per Linksklick auf das jeweilige Menüfeld gelangt Ihr zum entsprechenden Untermenü. Beim Speichern noch einen Namen eingeben, beim Laden einen Spielstand aussuchen und das entsprechende Feld auswählen.
+
+In den Einstellungen kann man eine Zeit für automatisches Speichern festlegen. Nach der entsprechenden Anzahl von Stunden nach dem letzten Speichern im Spiel wird automatisch ein Spielstand erzeugt. Der Wert 0 deaktiviert das automatische Speichern.
 
 Desweiteren gibt es die Möglichkeit zum Schnellspeichern bzw. -laden. Dazu einfach die Tasten drücken:
 
 * Schnellspeichern - Taste „F5“
 * Schnellladen - Taste „F8“
+
+Achtung: Das Schnellladen lädt den mit F5 erzeugten Spielstand; nicht den zuletzt erzeugten Spielstand.
 
 Spielgeschwindigkeit
 ====================
