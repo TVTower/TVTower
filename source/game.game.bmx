@@ -2059,7 +2059,7 @@ endrem
 
 		'get currently shown screen of that player
 		If Self.gamestate = TGame.STATE_RUNNING
-			If GetPlayer().GetFigure().inRoom
+			If GetPlayer().GetFigure().inRoom And Not GameConfig.highSpeedObservation
 				ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.GetScreenName()))
 			'go to building
 			Else

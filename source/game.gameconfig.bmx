@@ -8,6 +8,7 @@ Type TGameConfig {_exposeToLua}
 	'which figure/entity to follow with the camera?
 	Field observerMode:int = False
 	Field observedObject:object = null
+	Field highSpeedObservation:int = False
 	Field interfaceRect:TRectangle = new TRectangle.Init(0,385, 800,215)
 	Field nonInterfaceRect:TRectangle = new TRectangle.Init(0,0, 800,385)
 	Field isChristmasTime:int = False

@@ -562,8 +562,11 @@ Type TBuilding Extends TBuildingBase
 		TProfiler.Leave(_profilerKey_DrawBuildingBG)
 
 		SetBlend AlphaBlend
-		If Not GetWorld().autoRenderSnow Then GetWorld().RenderSnow()
-		If Not GetWorld().autoRenderRain Then GetWorld().RenderRain()
+		Local world:TWorld = GetWorld()
+		If Not world.disableEffectRendering
+			If Not world.autoRenderSnow Then world.RenderSnow()
+			If Not world.autoRenderRain Then world.RenderRain()
+		EndIf
 
 
 

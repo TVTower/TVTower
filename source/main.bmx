@@ -1200,7 +1200,7 @@ Type TApp
 
 
 			If KeyManager.isDown(KEY_LCONTROL)
-				If KeyManager.IsHit(KEY_O)
+				If KeyManager.IsHit(KEY_O) And Not GameConfig.highSpeedObservation
 					GameConfig.observerMode = 1 - GameConfig.observerMode
 
 					KeyManager.ResetKey(KEY_O)
@@ -1208,9 +1208,34 @@ Type TApp
 				EndIf
 			EndIf
 
+			If KeyManager.IsHit(KEY_H)
+				If GameConfig.highSpeedObservation
+					GameConfig.observerMode = False
+					TVTGhostBuildingScrollMode = False
+					GameConfig.highSpeedObservation = False
+					GetWorld().disableEffectRendering = False
+					GetSoundManager().MuteMusic(App.config.GetInt("sound_music_volume", 100) = 0)
+					GetSoundManager().MuteSfx(App.config.GetInt("sound_sfx_volume", 100) = 0)
+				Else
+					GameConfig.observerMode = True
+					TVTGhostBuildingScrollMode = True
+					GameConfig.SetObservedObject( MainMenuJanitor )
+					GameConfig.highSpeedObservation = True
+					TInGameInterface.GetInstance().showChannel=0
+					GetWorld().disableEffectRendering = True
+					GetSoundManager().MuteMusic(True)
+					GetSoundManager().MuteSfx(True)
+				EndIf
+			EndIf
+
 
 			If Not GetPlayer().GetFigure().isChangingRoom()
-				If GameConfig.observerMode
+				If GameConfig.highSpeedObservation
+					If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
+					If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
+					If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
+					If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+				ElseIf GameConfig.observerMode
 					If KeyManager.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
 					If KeyManager.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
 					If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
@@ -1602,7 +1627,10 @@ endrem
 				GetBitmapFont("default", 12).DrawBox("(~qF11~q to reactivate AI)", 0, 20, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
 			EndIf
 
-			If GameConfig.observerMode
+			If GameConfig.highSpeedObservation
+				GetBitmapFont("default", 20).DrawBox("HIGHSPEED OBSERVATION; active player #"+GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
+				GetBitmapFont("default", 14).DrawBox("(~qH~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
+			ElseIf GameConfig.observerMode
 				Local playerNum:Int = 0
 				For Local i:Int = 1 To 4
 					If GameConfig.IsObserved( GetPlayer(i).GetFigure() )
@@ -5502,7 +5530,7 @@ endrem
 
 
 		'only interested in active player
-		If contract.owner = GetPlayerCollection().playerID
+		If contract.owner = GetPlayerCollection().playerID And Not GameConfig.highSpeedObservation
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 		EndIf
 	End Function
