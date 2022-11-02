@@ -11,6 +11,7 @@ Type TWorld
 	Field weather:TWorldWeather
 	Field lighting:TWorldLighting
 	Field area:TRectangle
+	Field disableEffectRendering:Int = False
 
 	'=== RAIN ===
 	'rain effect (rain drops)
@@ -329,8 +330,10 @@ Type TWorld
 
 		'=== BACKGROUND ===
 		Local skyColor:SColor8 = lighting.currentLight.ToSColor8()
-		If rainEffect Then rainEffect.ModifySkyColor(skyColor)
-		If lightningEffect Then lightningEffect.ModifySkyColor(skyColor)
+		If Not disableEffectRendering
+			If rainEffect Then rainEffect.ModifySkyColor(skyColor)
+			If lightningEffect Then lightningEffect.ModifySkyColor(skyColor)
+		EndIf
 
 		If useClsMethod
 			SetClsColor(skyColor)
@@ -341,33 +344,36 @@ Type TWorld
 			SetColor 255,255,255
 		EndIf
 
-		'=== GRADIENT ===
-		If showSkyGradient And skyGradient
-			lighting.currentFogColor.SetRGB()
-			skyGradient.DrawArea(area.GetX(), area.GetY2()-300, area.GetW(), 300)
-			SetColor(255,255,255)
+		If Not disableEffectRendering
+
+			'=== GRADIENT ===
+			If showSkyGradient And skyGradient
+				lighting.currentFogColor.SetRGB()
+				skyGradient.DrawArea(area.GetX(), area.GetY2()-300, area.GetW(), 300)
+				SetColor(255,255,255)
+			EndIf
+
+			'=== STARS ===
+			If showStars Then RenderStars()
+
+			'=== SUN ===
+			If showSun Then RenderSun()
+
+			'=== MOON ===
+			If showMoon Then RenderMoon()
+
+			'=== LIGHTNING ===
+			If autoRenderLightning Then RenderLightning()
+
+			'=== CLOUDS ===
+			If autoRenderClouds Then RenderClouds()
+
+			'=== RAIN ===
+			If autoRenderRain Then RenderRain()
+
+			'=== SNOW ===
+			If autoRenderSnow Then RenderSnow()
 		EndIf
-
-		'=== STARS ===
-		If showStars Then RenderStars()
-
-		'=== SUN ===
-		If showSun Then RenderSun()
-
-		'=== MOON ===
-		If showMoon Then RenderMoon()
-
-		'=== LIGHTNING ===
-		If autoRenderLightning Then RenderLightning()
-
-		'=== CLOUDS ===
-		If autoRenderClouds Then RenderClouds()
-
-		'=== RAIN ===
-		If autoRenderRain Then RenderRain()
-
-		'=== SNOW ===
-		If autoRenderSnow Then RenderSnow()
 
 		'reset viewport
 		GetGraphicsManager().SetViewport(vpX, vpY, vpW, vpH)
