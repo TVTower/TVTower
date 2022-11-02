@@ -26,6 +26,8 @@ Type TGameConfig {_exposeToLua}
 	'percentage of the gametime when in a room (default = 100%)
 	'use a lower value, to slow down the game then (movement + time)
 	Field InRoomTimeSlowDownMod:Float = 1.0 {nosave}
+	'store configured value for disableing during fast forward
+	Field InRoomTimeSlowDownModBackup:Float {nosave}
 
 	Global clNormal:SColor8 = SColor8.Black
 	Global clPositive:SColor8 = new SColor8(90, 110, 90)

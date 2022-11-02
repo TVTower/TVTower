@@ -1401,12 +1401,15 @@ endrem
 				DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 				DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
+				GameConfig.InRoomTimeSlowDownModBackup = GameConfig.InRoomTimeSlowDownMod
+				GameConfig.InRoomTimeSlowDownMod = 1.0
 				GetGame().SetGameSpeed( 30 * 60 )
 			EndIf
 		Else
 			'stop fast forward
 			If DEV_FastForward
 				DEV_FastForward = False
+				GameConfig.InRoomTimeSlowDownMod = GameConfig.InRoomTimeSlowDownModBackup
 				TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
 				GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
 				GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup

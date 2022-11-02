@@ -2247,7 +2247,7 @@ endrem
 		'allow slowdown in rooms
 		If Not GetGame().networkGame
 			If GetPlayer().IsInRoom() 'and not GetPlayer().GetFigure().IsInBuilding()
-				If TEntity.globalWorldSpeedFactorMod = 1.0
+				If TEntity.globalWorldSpeedFactorMod <> GameConfig.InRoomTimeSlowDownMod
 					GetWorldTime().SetTimeFactorMod(GameConfig.InRoomTimeSlowDownMod)
 					TEntity.globalWorldSpeedFactorMod = GameConfig.InRoomTimeSlowDownMod
 				EndIf
