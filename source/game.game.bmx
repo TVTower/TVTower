@@ -539,6 +539,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EndIf
 		'inform player AI (if existing) it stopped (means it also stops its thread)
 		player.StopAI()
+		
+		'remove queued up commands from the AI
+		player.commandQueue.Reset()
 
 
 

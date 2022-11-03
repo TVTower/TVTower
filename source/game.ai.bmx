@@ -1,7 +1,6 @@
 SuperStrict
 Import "Dig/base.util.logger.bmx"
 Import "Dig/base.gfx.gui.chat.bmx"
-Import "Dig/base.util.commandqueue.bmx"
 Import "game.ai.base.bmx"
 Import "game.gamerules.bmx"
 Import "game.gameconstants.bmx"
@@ -31,12 +30,12 @@ Import "game.roomhandler.studio.bmx"
 Import "game.programmeproducer.bmx"
 
 
-Global AICommandQueue:TCommandQueue = new TCommandQueue
-
 Global AiLog:TLogFile[4]
-For Local i:Int = 0 To 3
+For Local i:Int = 0 Until AiLog.length
 	AiLog[i] = TLogFile.Create("AI Log v1.0", "log.ai"+(i+1)+".txt", True)
 Next
+
+
 
 
 Type TAi Extends TAiBase
@@ -344,6 +343,11 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 			Return False
 		EndIF
 	End Method
+	
+	
+	Method GetCommandQueue:TCommandQueue() {_private}
+		Return GetPlayerBase(Self.ME).commandQueue
+	End Method
 
 
 	Function Create:TLuaFunctions(pPlayerId:Int) {_private}
@@ -490,17 +494,18 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method SendToChat:Int(ChatText:String)
-		Local payload:object[] = [ChatText, string(Self.ME)]
-		Local command:TAICommand = new TAICommand(payload, runCallback)
-		AiCommandQueue.Add(command)
+		Local payload:object = [ChatText, string(Self.ME)]
+		Local command:TAICommand = new TAICommand(runCallback, payload)
+		GetCommandQueue().RunDeferred(command)
 
 
-		Function runCallback(payload:object[])
+		Function runCallback:SCommandResult(payload:object)
 			'emit an event, we received a chat message
-			Local chatText:String = String(payload[0])
+			Local chatText:String = String(object[](payload)[0])
+			Local senderID:Int = Int(String(object[](payload)[1]))
 
 			Local sendToChannels:Int = TGUIChat.GetChannelsFromText(chatText)
-			TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddNumber("senderID", Int(String(payload[1]))).AddNumber("channels", sendToChannels).AddString("text", chatText) )
+			TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text", chatText) )
 		End Function
 
 		Return 1

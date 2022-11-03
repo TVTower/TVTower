@@ -682,8 +682,10 @@ Type TApp
 		UpdateDebugControls()
 		
 
-		'process AI/player commands
-		AICommandQueue.Process()
+		'process (ai) player commands
+		For Local player:TPLayer = EachIn GetPlayerCollection().players
+			player.commandQueue.Process()
+		Next
 
 
 		'=== UPDATE INGAME HELP ===
