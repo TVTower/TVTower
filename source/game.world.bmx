@@ -85,9 +85,14 @@ Type TWorld
 		sunPoint = New TVec2D(400, 1100 + area.GetY())
 		moonPoint =  New TVec2D(400, 100 + area.GetY())
 
-		If Not weather Then weather = New TWorldWeather
+
+		If Not weather
+			weather = New TWorldWeather
+			'start temperature will be set by internal randomization
+			weather.Init(0, 0, 0, 3600)
+		EndIf
+
 		If Not lighting Then lighting = New TWorldLighting
-		weather.Init(0, 18, 0, 3600)
 		lighting.Init()
 
 		'adjust effect display
@@ -531,6 +536,8 @@ Type TWorld
 		DrawText("wind: "+MathHelper.NumberToString(Weather.GetWindVelocity(),4), x + 10, y + dy)
 		dy :+ 12
 		DrawText("temp: "+MathHelper.NumberToString(Weather.GetTemperature(),4), x + 10, y + dy)
+		dy :+ 12
+		DrawText("targetTemp: "+MathHelper.NumberToString(Weather.currentWeather._targetTemperature, 4), x + 10, y + dy)
 		dy :+ 12
 		DrawText("speed: "+Int(GetWorldTime().GetTimeFactor()), x + 10, y + dy)
 		dy :+ 12
