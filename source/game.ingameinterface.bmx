@@ -54,6 +54,7 @@ Type TInGameInterface
 	Field spriteInterfaceButtonSettings_hover:TSprite
 	Field _interfaceFont:TBitmapFont
 	Field _interfaceBigFont:TBitmapFont
+	Field _interfaceTVfamily:TWatchingFamily
 	Field moneyColor:SColor8
 	Field audienceColor:SColor8
 	Field bettyLovecolor:SColor8
@@ -163,6 +164,7 @@ Type TInGameInterface
 
 		_interfaceFont = GetBitmapFont("Default", 12, BOLDFONT)
 		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
+		_interfaceTVfamily = new TWatchingFamily().Init()
 
 		moneyColor = new SColor8(200,230,200)
 		audienceColor = new SColor8(200,200,230)
@@ -199,7 +201,7 @@ Type TInGameInterface
 
 	
 	Function OnLoadSaveGame:Int( triggerEvent:TEventBase )
-		GetInstance().ClearChat()
+		GetInstance().CleanUp()
 	End Function
 
 
@@ -228,9 +230,9 @@ Type TInGameInterface
 			endif
 		endif
 	End Function
-	
-	
-	Method ClearChat()
+
+
+	Method CleanUp()
 		If chat
 			'clear chat
 			chat.Clear()
@@ -243,6 +245,7 @@ Type TInGameInterface
 			
 			ChatContainsUnread = False
 		EndIf
+		If Not _interfaceTVfamily Then _interfaceTVfamily = New TWatchingFamily().Init()
 	End Method
 
 
@@ -285,6 +288,7 @@ Type TInGameInterface
 			if programmePlan	'similar to "ShowChannel<>0"
 				If GetWorldTime().GetDayMinute() >= 55
 					Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+					_interfaceTVfamily.Update(ShowChannel, programmePlan.GetProgramme())
 					If obj
 						CurrentProgramme = spriteProgrammeAds
 						'real ad
@@ -309,8 +313,10 @@ Type TInGameInterface
 					CurrentProgramme = spriteProgrammeNews
 					CurrentProgrammeToolTip.TitleBGtype	= 3
 					CurrentProgrammeText = getLocale("NEWS")
+					_interfaceTVfamily.Update(ShowChannel, programmePlan.GetNewsShow())
 				Else
 					Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
+					_interfaceTVfamily.Update(ShowChannel, obj)
 					If obj
 						CurrentProgramme = spriteProgrammeNone
 						CurrentProgrammeToolTip.TitleBGtype	= 0
@@ -751,50 +757,7 @@ Type TInGameInterface
 	End Method
 
 
-	'returns a string list of abbreviations for the watching family
-	Function GetWatchingFamily:string[](playerID:int = 0)
-		'fall back to local player
-		if playerID = 0 then playerID = GetPlayerBase().playerID
-		'fetch feedback to see which test-family member might watch
-		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(playerID)
 
-		local result:String[]
-		if not feedback or not feedback.AudienceInterest
-			print "Interface.GetWatchingFamily: no AudienceInterest!"
-			debugstop
-			return result
-		endif
-		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0)
-
-			'maybe sent to bed ? :D
-			'If GetWorldTime().GetDayHour() >= 5 and GetWorldTime().GetDayHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
-			result :+ ["girl"]
-		endif
-
-		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Housewives) > 0) then result :+ ["mother"]
-
-		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0) then result :+ ["grandpa"]
-
-		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0)
-			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
-			'If GetworldTime().GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
-			result :+ ["teen"]
-		endif
-
-		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Unemployed) > 0)
-			result :+ ["unemployed"]
-		else
-			'if there is some audience, show the sleeping unemployed
-			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerBaseCollection().playerID )
-			If audienceResult and audienceResult.GetAudienceQuotePercentage() > 0.05
-				result :+ ["unemployed.bored"]
-			endif
-		endif
-
-		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Manager) > 0) then result :+ ["manager"]
-
-		return result
-	End Function
 
 
 	'draws the interface
@@ -882,46 +845,7 @@ Type TInGameInterface
 
 		'draw TV-family
 		If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
-
-			'fetch a list of watching family members
-			local members:string[] = GetWatchingFamily( ShowChannel )
-			'later: limit to amount of "places" on couch
-			Local familyMembersUsed:int = members.length
-
-			'slots if 3 members watch
-			local figureSlots:int[]
-			if familyMembersUsed >= 3 then figureSlots = [550, 610, 670]
-			if familyMembersUsed = 2 then figureSlots = [580, 640]
-			if familyMembersUsed = 1 then figureSlots = [610]
-
-			'if nothing is displayed, a empty/dark room is shown
-			'by default (on interface bg)
-			'-> just care if family is watching
-			if familyMembersUsed > 0
-				spriteInterfaceAudienceBG.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
-				local currentSlot:int = 0
-
-				'unemployed always on the "most left slot"
-				For local member:string = eachin members
-					if member = "unemployed" or member = "unemployed.bored"
-						figureSlots[0] = 540
-						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
-						currentslot:+1 'occupy a slot
-					endif
-				Next
-
-				For local member:string = eachin members
-					'unemployed already handled
-					if member = "unemployed" or member = "unemployed.bored" then continue
-					'only X slots available
-					if currentSlot >= figureSlots.length then continue
-
-					GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
-					currentslot:+1 'occupy a slot
-				Next
-				'draw the small electronic parts - "the inner tv"
-				spriteInterfaceAudienceOverlay.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
-			endif
+			_interfaceTVfamily.Draw(spriteInterfaceAudienceBG, spriteInterfaceAudienceOverlay)
 		EndIf 'showchannel <>0
 
 
@@ -1078,6 +1002,244 @@ Function GetInGameInterface:TInGameInterface()
 	return TInGameInterface.GetInstance()
 End Function
 
+
+Type TWatchingFamily
+
+	Field currentChannel:Int=0
+	Field currentBroadCast:TBroadcastMaterial[4]
+	Field watchingMembers:String[4][]
+	Field couchPositions:Int[4][]
+	Field employeeExists:Int = False
+
+	Method Init:TWatchingFamily()
+		If GetRegistry().contains("gfx_interface_audience_employee_male") Then employeeExists = True
+		Return self
+	End Method
+
+	'determine family members currently watching TV
+	Method Update(playerID:int = 0, material:TBroadCastMaterial)
+		If playerID = 0 Then Return
+		'use cached result if possible
+		If currentChannel = playerID And material = currentBroadCast[playerID-1] Then Return
+
+		local result:String[]
+		local hour:Int=GetWorldTime().GetDayHour()
+
+		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
+		local useSlots:Int = 0
+		local childAllowed:Int = True
+		If audienceResult
+			'determine number of family members
+			Local percentage:Float = audienceResult.GetAudienceQuotePercentage()
+			If hour >= 10 and hour <=23
+				If percentage >= 0.3
+					useSlots = 3
+				ElseIf percentage >= 0.2
+					useSlots = 2
+				ElseIf percentage >= 0.1
+					useSlots = 1
+				ElseIf percentage >= 0.05
+					result = ["unemployed.bored"]
+				EndIf
+			Else
+				If percentage >= 0.15
+					useSlots = 2
+				ElseIf percentage >= 0.07
+					useSlots = 1
+				ElseIf percentage >= 0.03
+					result = ["unemployed.bored"]
+				EndIf
+			EndIf
+
+			'TODO disallow manager during working hours?
+			If hour <= 4 Or hour >= 22 Then childAllowed = False
+
+			If useSlots > 0
+				'sort target groups by audience quote
+				Local map:TNumberSortMap = audienceResult.Audience.copy().Divide(audienceResult.PotentialMaxAudience).ToNumberSortMap()
+				map.Sort(False)
+				For Local entry:TKeyValueNumber = EachIn map.Content
+					If result.length < useSlots
+						Local group:Int = Int(entry.Key)
+						Local suffix:String = "_male"
+						'TODO if more gender versions exist, then use random gender unless the audience numbers differ a lot (60/40?)
+						'in this case the broadcast licence id must be stored in order to use the same gender for later blocks!
+						If audienceResult.audience.GetGenderValue(group, TVTPersonGender.FEMALE) > audienceResult.audience.GetGenderValue(group, TVTPersonGender.MALE) Then suffix="_female"
+						Select group
+							Case TVTTargetGroup.Children
+								If Not childAllowed Then Continue
+								result :+ ["child"+suffix]
+							Case TVTTargetGroup.Teenagers
+								result :+ ["teen"+suffix]
+							Case TVTTargetGroup.HouseWives
+								result :+ ["housewife"+suffix]
+							Case TVTTargetGroup.Employees
+								If Not employeeExists Then continue
+								result :+ ["employee"+suffix]
+								continue
+							Case TVTTargetGroup.Unemployed
+								result :+ ["unemployed"+suffix]
+							Case TVTTargetGroup.Manager
+								result :+ ["manager"+suffix]
+							Case TVTTargetGroup.Pensioners
+								result :+ ["pensioner"+suffix]
+							Default
+								Throw "unknown audience "+ entry.Key
+						EndSelect
+					EndIf
+				Next
+			EndIf
+		EndIf
+
+rem
+		'add feedback to watching members
+		'leaving original code for later reference
+		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(playerID)
+
+		if not feedback or not feedback.AudienceInterest
+			print "Interface.GetWatchingFamily: no AudienceInterest!"
+			debugstop
+		endif
+
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0)
+
+			'maybe sent to bed ? :D
+			'If GetWorldTime().GetDayHour() >= 5 and GetWorldTime().GetDayHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
+			result :+ ["girl"]
+		endif
+
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Housewives) > 0) then result :+ ["mother"]
+
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0) then result :+ ["grandpa"]
+
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0)
+			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
+			'If GetworldTime().GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
+			result :+ ["teen"]
+		endif
+
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Unemployed) > 0)
+			result :+ ["unemployed"]
+		else
+			'if there is some audience, show the sleeping unemployed
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerBaseCollection().playerID )
+			If audienceResult and audienceResult.GetAudienceQuotePercentage() > 0.05
+				result :+ ["unemployed.bored"]
+			endif
+		endif
+
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Manager) > 0) then result :+ ["manager"]
+endrem
+
+		_assignSpots(result, playerID-1)
+		currentBroadCast[playerID-1] = material
+		currentChannel = playerID
+	End Method
+
+	'assign couch seats
+	Method _assignSpots(newViewers:String[], playerIndex:Int)
+		Local oldMembers:String[] = watchingMembers[playerIndex]
+		Local oldCouchPositions:Int[] = couchPositions[playerIndex]
+		Local finalMembers:String[]
+		Local familyMembersUsed:int = newViewers.length
+		Local newCouchPositions:Int[] = new Int[newViewers.length]
+		'default couch positions
+		If familyMembersUsed >= 3 Then newCouchPositions = [550, 610, 670]
+		If familyMembersUsed = 2 Then newCouchPositions = [580, 640]
+		If familyMembersUsed = 1
+			'prevent alternating of single viewers in center seat
+			newCouchPositions = [610]
+			If oldMembers.length = 1 And oldCouchPositions[0] = 610 Then newCouchPositions = [670]
+		EndIf
+
+		Local unemployedPresent:Int = False
+		Local sameViewerExists:Int = False
+
+		'unemployed always on the left
+		For Local j:int=0 to newViewers.length-1
+			If newViewers[j].StartsWith("unemployed")
+				finalMembers:+ [newViewers[j]]
+				newCouchPositions[0] = 540
+				newViewers[j] = null
+				unemployedPresent = True
+			EndIf
+		Next
+
+		'leave order seats of already watching members unchanged if possible
+		For Local i:int=0 to oldMembers.length-1
+			For Local j:int=0 to newViewers.length-1
+				If oldMembers[i] = newViewers[j]
+					finalMembers:+ [newViewers[j]]
+					newViewers[j] = null
+					sameViewerExists = True
+					Local oldPosition:Int = oldCouchPositions[i]
+					If unemployedPresent And oldPosition < 600
+						'cannot stay in same position
+					ElseIf familyMembersUsed = 3 and ((oldPosition-580) mod 60) = 0
+						'two-seat position but three needed - cannot stay in same position
+					Else
+						'stay in same position
+						newCouchPositions[finalMembers.length-1] = oldPosition
+					EndIf
+				EndIf
+			Next
+		Next
+
+		'at this point all prior viewers should have a non-overlapping spot
+		'as the critical cases have not retained their old seats and were assigned default spots
+		'add remaining (new) viewers
+		For Local j:int=0 to newViewers.length-1
+			If newViewers[j]
+				finalMembers:+ [newViewers[j]]
+				'default couch positions may only be invalid if there were prior viewers
+				If sameViewerExists
+					Local spot:Int = finalMembers.length-1 'spot 0 not possible, as there were prior viewers
+					'check if default position is already occupied
+					Local intendedPosition:Int = newCouchPositions[spot]
+					If spot = 1
+						'right or middle position - too little space - move to the left
+						If abs(intendedPosition - newCouchPositions[spot-1]) < 60 Then newCouchPositions[spot] = newCouchPositions[spot-1] - 60 
+					ElseIf spot = 2
+						'three seats - use only one left
+						If newCouchPositions[1] = intendedPosition Or newCouchPositions[0] = intendedPosition
+							intendedPosition = intendedPosition - 60
+							If newCouchPositions[1] = intendedPosition Or newCouchPositions[0] = intendedPosition Then newCouchPositions[spot] = intendedPosition - 60
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+		Next
+
+		watchingMembers[playerIndex] = finalMembers
+		couchPositions[playerIndex] = newCouchPositions
+	EndMethod
+
+	Method Draw(spriteInterfaceAudienceBG:TSprite, spriteInterfaceAudienceOverlay:TSprite)
+		If currentChannel < 1 Then Return
+		'fetch a list of watching family members
+		local members:string[] = watchingMembers[currentChannel-1]
+
+		'slots if 3 members watch
+		local figureSlots:int[] = couchPositions[currentChannel-1]
+
+		'if nothing is displayed, a empty/dark room is shown
+		'by default (on interface bg)
+		'-> just care if family is watching
+		if members.length > 0
+			spriteInterfaceAudienceBG.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
+			local currentSlot:int = 0
+			For local member:string = eachin members
+				'only X slots available
+				if currentSlot >= figureSlots.length then continue
+
+				GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
+				currentslot:+1 'occupy a slot
+			Next
+			'draw the small electronic parts - "the inner tv"
+			spriteInterfaceAudienceOverlay.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
+		endif
+	End Method
+End Type
 
 
 

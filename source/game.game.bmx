@@ -180,7 +180,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		
 		'remove chat messages
-		GetInGameInterface().ClearChat()
+		GetInGameInterface().CleanUp()
 
 
 		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
