@@ -82,6 +82,7 @@ Type TElevator Extends TEntity
 	Global _soundSource:TSoundSourceElement
 	Global _initDone:Int = False
 	Global _instance:TElevator
+	'Global _lastOpenTime:Int
 
 	Const DOOR_CLOSED:int = 0
 	Const DOOR_OPEN:int = 1
@@ -594,6 +595,7 @@ Type TElevator Extends TEntity
 
 	Method Update:Int()
 		Local deltaTime:Float = GetDeltaTime()
+'If doorStatus = DOOR_OPEN Then print "  elevator update"
 
 		'the -1 is used for displace the object one pixel higher, so
 		'it has to reach the first pixel of the floor until the
@@ -610,6 +612,13 @@ Type TElevator Extends TEntity
 			CurrentFloor = tmpCurrentFloor
 		EndIf
 
+		_updateElevatorState(deltaTime)
+		'invoke a second update status in order to speed up boarding/deboarding
+		If ElevatorStatus = ELEVATOR_AWAITING_TASK Then _updateElevatorState(deltaTime)
+
+	End Method
+
+	Method _updateElevatorState:Int(deltaTime:Float)
 
 		If ElevatorStatus = ELEVATOR_AWAITING_TASK
 			If waitAtFloorTimer.isExpired()
@@ -646,26 +655,30 @@ Type TElevator Extends TEntity
 			EndIf
 		EndIf
 
-
-		If ElevatorStatus = ELEVATOR_CLOSING_DOOR
+		'two attempts to prevent update cycle when fast-forwarding
+		For Local attempt:Int = 1 To 2
+			If ElevatorStatus = ELEVATOR_CLOSING_DOOR
 'print Millisecs()+"  Elevator: 1) closing door - doorStatus="+doorStatus
-			'Wenn die Wartezeit vorbei ist, dann Tueren schliessen
-			If doorStatus <> DOOR_CLOSED And doorStatus <> DOOR_CLOSING
-				If waitAtFloorTimer.isExpired() Then CloseDoor()
-			EndIf
-
-			'wait until door animation finished
-			If door.GetFrameAnimations().GetCurrent().GetNameLS() = "closedoor"
-				If door.GetFrameAnimations().getCurrent().isFinished()
-'print Millisecs()+"  Elevator: 1) closed -> 2)"
-					door.GetFrameAnimations().SetCurrent("closed")
-					doorStatus = DOOR_CLOSED
-					ElevatorStatus = ELEVATOR_MOVING
-					GetSoundSource().PlayOrContinueRandomSFX("elevator_engine")
+				'Wenn die Wartezeit vorbei ist, dann Tueren schliessen
+				If doorStatus <> DOOR_CLOSED And doorStatus <> DOOR_CLOSING
+					If waitAtFloorTimer.isExpired() Then CloseDoor()
 				EndIf
-			EndIf
-		EndIf
 
+				'wait until door animation finished
+				If door.GetFrameAnimations().GetCurrent().GetNameLS() = "closedoor"
+					If door.GetFrameAnimations().getCurrent().isFinished() Or (attempt = 2 And deltaTime > 1)
+'End of boarding cycle
+'print (Millisecs()-_lastOpenTime) + "  Elevator: 1) closed -> 2)"
+						door.GetFrameAnimations().SetCurrent("closed")
+						doorStatus = DOOR_CLOSED
+						ElevatorStatus = ELEVATOR_MOVING
+						GetSoundSource().PlayOrContinueRandomSFX("elevator_engine")
+					EndIf
+				EndIf
+			Else
+				Exit
+			EndIf
+		Next
 
 		If ElevatorStatus = ELEVATOR_MOVING
 'print Millisecs()+"  Elevator: 2) moving"
@@ -714,35 +727,49 @@ Type TElevator Extends TEntity
 			endif
 		EndIf
 
-		If ElevatorStatus = ELEVATOR_OPENING_DOOR
-			If doorStatus = DOOR_CLOSED
+		'two attempts to prevent update cycle when fast-forwarding
+		For Local attempt:Int = 1 To 2
+			If ElevatorStatus = ELEVATOR_OPENING_DOOR
+				If doorStatus = DOOR_CLOSED
+'Start of boarding cycle
+'_lastOpenTime = Millisecs()
 'print Millisecs()+"  Elevator: 3) open door"
-				OpenDoor()
-				'set time for the doors to keep open
-				'adjust this by worldSpeedFactor at that time
-				'so a higher factor shortens time to wait
-				waitAtFloorTimer.SetInterval(int(waitAtFloorTime), True)
-			EndIf
-
-			'continue door animation for opening doors
-			'also deboard passengers as soon as finished
-			If door.GetFrameAnimations().GetCurrent().GetNameLS() = "opendoor"
-'print Millisecs()+"  Elevator: 3) opening..."
-				'while the door animation is active, the deboarding
-				'figures will move to the exit/door (one after another)
-				MoveDeboardingPassengersToCenter(-1, 1)
-
-				If door.GetFrameAnimations().GetCurrent().isFinished()
-'print Millisecs()+"  Elevator: 3) opened -> 4)"
-					ElevatorStatus = ELEVATOR_BOARDING
-					door.GetFrameAnimations().SetCurrent("open")
-					doorStatus = DOOR_OPEN
+					OpenDoor()
+					'set time for the doors to keep open
+					'adjust this by worldSpeedFactor at that time
+					'so a higher factor shortens time to wait
+					waitAtFloorTimer.SetInterval(int(waitAtFloorTime), True)
 				EndIf
+	
+				'continue door animation for opening doors
+				'also deboard passengers as soon as finished
+				If door.GetFrameAnimations().GetCurrent().GetNameLS() = "opendoor"
+'print Millisecs()+"  Elevator: 3) opening..."
+					'while the door animation is active, the deboarding
+					'figures will move to the exit/door (one after another)
+					MoveDeboardingPassengersToCenter(-1, 1)
+	
+					If door.GetFrameAnimations().GetCurrent().isFinished() Or (attempt = 2 And deltaTime > 1)
+'door now open
+'print Millisecs()+"  Elevator: 3) opened -> 4)"
+						ElevatorStatus = ELEVATOR_BOARDING
+						door.GetFrameAnimations().SetCurrent("open")
+						doorStatus = DOOR_OPEN
+						'TODO setting ready for boarding here seemed to work
+						'probably because the waiting timer ensured another update cycle
+					EndIf
+				EndIf
+			Else
+				Exit
 			EndIf
-		EndIf
+		Next
 
+		'TODO this still requires separate update cycles!
+		'door open+readyForBoarding, update, boarding, update, closing...
+		'suck passengers in/spit them out actively rather than "waiting" for them to do that?
 		'(de-)boarding
 		If ElevatorStatus = ELEVATOR_BOARDING
+'time lost here
 'print Millisecs()+"  Elevator: 4) boarding"
 			'continue deboarding (if needed)
 			MoveDeboardingPassengersToCenter()
