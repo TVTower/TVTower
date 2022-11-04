@@ -1963,7 +1963,7 @@ Type TGameState
 	Field _Game:TGame = Null
 	Field _BuildingTime:TBuildingTime = Null
 	Field _WorldTime:TWorldTime = Null
-	Field _World:TWorld = Null
+	Field _WorldWeather:TWorldWeather = Null
 	Field _GameRules:TGamerules = Null
 	Field _GameConfig:TGameConfig = Null
 	Field _Betty:TBetty = Null
@@ -2190,7 +2190,7 @@ Type TGameState
 		_Assign(_NewsEventSportCollection, TNewsEventSportCollection._instance, "NewsEventSportCollection", MODE_LOAD)
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
 		_Assign(_AwardCollection, TAwardCollection._instance, "AwardCollection", MODE_LOAD)
-'		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
+		_Assign(_WorldWeather, TWorld._instance.weather, "WorldWeather", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
@@ -2315,7 +2315,7 @@ Type TGameState
 		_Assign(TNewsEventSportCollection._instance, _NewsEventSportCollection, "NewsEventSportCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TAwardCollection._instance, _AwardCollection, "AwardCollection", MODE_SAVE)
-'		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
+		_Assign(TWorld._instance.weather, _WorldWeather, "WorldWeather", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_Studio._instance, _RoomHandler_Studio, "Studios", MODE_SAVE)

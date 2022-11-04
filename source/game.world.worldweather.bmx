@@ -42,13 +42,14 @@ Type TWorldWeather
 	const WEATHER_CLEAR:int			= 9
 
 
-	Method Init:TWorldWeather(pressure:Float = 0.0, temperature:Float = 18.0, windVelocity:Float = 0.0, weatherInterval:Int = 3600)
+	Method Init:TWorldWeather(pressure:Float = 0.0, temperature:Float = 0.0, windVelocity:Float = 0.0, weatherInterval:Int = 3600)
 		currentWeather = null
 		upcomingWeather.Clear()
 		nextUpdateTime = -1
 		lastUpdateTime = -1
 
-		currentWeather = new TWorldWeatherEntry.Init(pressure, temperature, windVelocity, GetWorldTime().GetTimeGone(), new TWorldWeatherConfiguration)
+		'do not set time yet (-1) - correct time will be set when the game is fully initialized
+		currentWeather = new TWorldWeatherEntry.Init(pressure, temperature, windVelocity, -1, new TWorldWeatherConfiguration)
 
 		SetWeatherInterval(weatherInterval)
 
@@ -86,7 +87,7 @@ Type TWorldWeather
 
 	Method GetWindVelocity:Float()
 		return currentWeather.GetWindVelocity()
-    End Method
+	End Method
 
 
 	Method GetWeather:int()
@@ -94,19 +95,19 @@ Type TWorldWeather
 	End Method
 
 
-    Method GetWeatherText:string()
+	Method GetWeatherText:string()
 		return currentWeather.GetWorldWeatherText()
 	End Method
 
 
 	Method GetCloudOkta:int()
 		return currentWeather.GetCloudOkta()
-    End Method
+	End Method
 
 
-    Method GetMaximumLight:int()
+	Method GetMaximumLight:int()
 		return currentWeather.GetMaximumLight()
-    End Method
+	End Method
 
 
 	Method SetPressure(pressure:Float)
@@ -124,7 +125,7 @@ Type TWorldWeather
 
 
 	'returns whether the sun is visible
-    Method IsSunVisible:int()
+	Method IsSunVisible:int()
 		return currentWeather.IsSunVisible()
 	End Method
 
@@ -143,7 +144,7 @@ Type TWorldWeather
 
 
 	Method GetCurrentWeather:TWorldWeatherEntry()
-		if not currentWeather then Init(0,0)
+		if not currentWeather then Init(0,-1)
 		return currentWeather
 	End Method
 
@@ -171,6 +172,7 @@ Type TWorldWeather
 		if not baseWeather then baseWeather = GetCurrentWeather()
 
 		local weatherTime:Long = baseWeather._time
+		If weatherTime < 0 Then weatherTime = GetWorldTime().GetTimeGone()
 
 		For local i:int = upcomingWeather.Count() until limit
 			if weatherTime >= 0 then weatherTime :+ weatherInterval * TWorldTime.SECONDLENGTH
@@ -252,19 +254,21 @@ End Type
 Type TWorldWeatherEntry
 	Field _pressure:Float
 	Field _temperature:Float
-    Field _windVelocity:Float
-    Field _time:Long = -1
+	Field _windVelocity:Float
+	Field _time:Long = -1
 	Field _config:TWorldWeatherConfiguration
+	Field _targetTemperature:Float
+	Field _targetTemperatureType:Int = 0 '0 not set, 1 day, 2 night
 
 
 	Method Init:TWorldWeatherEntry(pressure:Float, temperature:Float, windVelocity:Float, time:Long = -1, configuration:TWorldWeatherConfiguration)
 		SetPressure(pressure)
 		SetTemperature(temperature)
-        SetWindVelocity(windVelocity)
-        _time = time
-        _config = configuration
+		SetWindVelocity(windVelocity)
+		_time = time
+		_config = configuration
 
-        return self
+		return self
 	End Method
 
 
@@ -273,8 +277,17 @@ Type TWorldWeatherEntry
 		local newWeather:TWorldWeatherEntry = new TWorldWeatherEntry
 		if previousWeather
 			newWeather.Init(previousWeather._pressure, previousWeather._temperature, previousWeather._windVelocity, time, previousWeather._config)
+			newWeather._targetTemperature = previousWeather._targetTemperature
+			newWeather._targetTemperatureType = previousWeather._targetTemperatureType
+			If previousWeather._time <> newWeather._time And GetWorldTime().getMonth(previousWeather._time) <> GetWorldTime().getMonth(newWeather._time)
+				'TODO with one day per season, Febrary->March is a difficult case, extreme temperature changes
+				'within one hour occur
+				'ensure new target temperatures are determined
+				newWeather._targetTemperatureType = 0
+			EndIf
 		else
-			newWeather.Init(0, 18.0, 0, time, new TWorldWeatherConfiguration)
+			newWeather.Init(0, 0, 0, time, new TWorldWeatherConfiguration)
+			throw "no weather for initialization" 'this case never occurred in my tests
 		endif
 
 		newWeather.Update()
@@ -305,59 +318,98 @@ Type TWorldWeatherEntry
 		endif
 
 		'=== UPDATE PRESSURE ===
-        SetPressure(GetPressure() + GetWindVelocity())
-
+		SetPressure(GetPressure() + GetWindVelocity())
 
 		'=== UPDATE TEMPERATURE ===
 		local temperatureChange:float = 0.0
-		'high noon + 1 the max temperature will be reached (max increase)
-		local maxTempHour:int = GetWorldTime().GetDayHour(GetWorldTime().GetSunrise(_time) + GetWorldTime().GetDayLightLength(_time) )
-'print maxTempHour+"  " + (GetWorldTime().GetDayLightLength(_time)/TWorldTime.MINUTELENGTH)+"min"
-		'to make it an "increasing" or "decreasing" tendence we use the
-		'distance to half a dayLightLength (summer 18/2=9 hours)
-		'7:00 = "2/9"   0:00 = "-4/9"   15:00 = "8/9"
-		local halfDayLightLength:int = 9 '0.5 * GetWorldTime().GetDayLightLength(_time)/TWorldTime.HOURLENGTH
-		local heatInfluence:Float = (halfDayLightLength - abs(GetDayHour() - maxTempHour)) / float(halfDayLightLength)
+		local sunrise:int = GetWorldTime().GetSunrise(_time)/TWorldTime.MINUTELENGTH
+		local sunset:int = sunrise + GetWorldTime().GetDayLightLength(_time)/TWorldTime.MINUTELENGTH
+		local minute:int = GetDayHour() * 60
+		local season:Int = GetWorldTime().GetSeason(_time)
+
+		'determine target temperature
+		'TODO more sophisticated dayMaxTempTime and dayMinTempTime; currently 30 min before sunset and 1h before sunrise
+		If minute > sunrise - 60 And minute < sunset - 30 And _targetTemperatureType <> 1
+			'daytime max
+			_targetTemperatureType = 1
+			Local monthIndex:Int = GetWorldTime().GetMonth(_time) - 1
+			Local temperatureRange:Int[] = [[-5,4],[-5,6],[-2,12],[8,16],[14,22],[18,24],[22,32],[24,35],[19,27],[12,23],[8,17],[-3,10]][monthIndex]
+			Local lower:Int = max(_targetTemperature, temperatureRange[0])
+			_targetTemperature = randRange(lower, temperatureRange[1])
+		EndIf
+		If (_targetTemperatureType = 0 And minute < sunrise) OR (minute > sunset - 30 And _targetTemperatureType <> 2)
+			'nighttime min
+			_targetTemperatureType = 2
+			Local monthIndex:Int = GetWorldTime().GetMonth(_time) - 1
+			Local temperatureRange:Int[] = [[-10,0],[-12,0],[-3,5],[2,7],[8,12],[10,16],[15,22],[17,25],[13,22],[7,13],[2,7],[-9,2]][monthIndex]
+			Local upper:Int = min(_targetTemperature, temperatureRange[1])
+			_targetTemperature = randRange(temperatureRange[0], upper)
+
+		EndIf
+
+		'determine time till target temperature
+		local diffToTarget:Float = _targetTemperature - GetTemperature()
+		local timeToTarget:Int = 0
+		If minute > sunrise - 60 And minute < sunset - 30
+			timeToTarget = sunset - 30 - minute
+		ElseIf minute < sunrise - 60
+			timeToTarget = sunrise - 60 - minute
+		ElseIf minute > sunset - 30
+			timeToTarget = 24 * 60 - sunset -30 + sunrise - 60
+		EndIf
+
+		'print "target "+ _targetTemperature + " current "+ GetTemperature() + " timeToTarget "+timeToTarget
+
+		'temperature difference currently linear; raise slow, drop fast?
+		'time must not be too small (division by 0.x)
+		'TODO prevent changes that are too big? 10 degrees per hour not realistic
+		If timeToTarget > 0 Then temperatureChange = diffToTarget / max(1.0, timeToTarget / 60.0)
+
+		local coldSeason:Int = False
+		local warmSeason:Int = False
+		if season = TWorldTime.SEASON_WINTER Then coldSeason = True
+		if season = TWorldTime.SEASON_SUMMER Then warmSeason = True
 
 		'day times (warming period)
-		if heatInfluence > 0
-			temperatureChange :+ heatInfluence * 1.0
+		if temperatureChange > 0
 			'sun shining
-			If IsSunVisible() then temperatureChange :+ 0.25 * heatInfluence
+			If IsSunVisible()
+				If _temperature >= _targetTemperature Then _targetTemperature:+ 0.25
+				temperatureChange :+ 0.25
+			EndIf
 		'night times (lower temperature period)
 		else
-			temperatureChange :- abs(heatInfluence)^2 * 1.20
-
 			'aka "no clouds". No clouds means it gets colder
-			If IsSunVisible() then temperatureChange :- 1.35 * abs(heatInfluence)
+			If coldSeason And IsSunVisible()
+				If _temperature <= _targetTemperature Then _targetTemperature:- 0.25
+				temperatureChange :- 0.25
+			EndIf
 		endif
 
+		Local wsAbs:Float = GetWindSpeed()
+		if coldSeason
+			'winds lower temperature
+			if wsAbs <= 0.25 then temperatureChange :- 0.25*wsAbs
+			'strong winds lower temperature even more
+			if wsAbs > 0.25 then temperatureChange :- 0.35*wsAbs
+		elseif warmSeason
+			'winds lower temperature
+			if wsAbs <= 0.25 then temperatureChange :- 0.05*wsAbs
+			'strong winds lower temperature even more
+			if wsAbs > 0.25 then temperatureChange :- 0.1*wsAbs
+		else
+			'winds lower temperature
+			if wsAbs <= 0.25 then temperatureChange :- 0.15*wsAbs
+			'strong winds lower temperature even more
+			if wsAbs > 0.25 then temperatureChange :- 0.2*wsAbs
+		endif
 
-		'winds lower temperature
-		if GetWindSpeed() <= 0.25 then temperatureChange :- 0.25*GetWindSpeed()
-		'strong winds lower temperature even more
-		if GetWindSpeed() > 0.25 then temperatureChange :- 0.35*GetWindSpeed()
 		'cold and wet winds
-		if IsRaining() then temperatureChange :- (0.4 + 0.25 * GetWindSpeed())
-
+		if Not warmSeason And IsRaining() then temperatureChange :- (0.4 + 0.25 * wsAbs)
 		local newTemperature:Float = GetTemperature() + temperatureChange
 
-		'limit to seasons
-		Select GetWorldTime().GetSeason(_time)
-			case GetWorldTime().SEASON_SPRING, GetWorldTime().SEASON_AUTUMN
-				newTemperature = Max(-10, Min(25, newTemperature))
-			case GetWorldTime().SEASON_SUMMER
-				newTemperature = Max(5, newTemperature)
-			case GetWorldTime().SEASON_WINTER
-				newTemperature = Min(20, newTemperature)
-		EndSelect
-		if newTemperature <> GetTemperature() + temperatureChange
-			newTemperature :+ randRange(int(-3*_config.increment), int(3*_config.increment))
-		endif
-
-		if temperatureChange <> 0
-			SetTemperature(newTemperature)
-		endif
+		newTemperature :+ randRange(int(-3*_config.increment), int(3*_config.increment))
+		SetTemperature(newTemperature)
 	End Method
 
 
