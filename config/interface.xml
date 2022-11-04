@@ -28,13 +28,21 @@
 				<child name="gfx_interface_audience_overlay"	x="0"	y="0"	w="249"	h="150" />
 
 				<!-- family-members -->
-				<child name="gfx_interface_audience_grandpa"	x="221"	y="151"	w="60"	h="150" />
-				<child name="gfx_interface_audience_girl"		x="282"	y="151"	w="60"	h="150" />
-				<child name="gfx_interface_audience_teen"		x="343"	y="151"	w="60"	h="150" />
-				<child name="gfx_interface_audience_unemployed"	x="404"	y="151"	w="80"	h="150" />
+				<child name="gfx_interface_audience_pensioner_male"		x="221"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_pensioner_female"	x="221"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_child_male"			x="282"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_child_female"		x="282"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_teen_male"			x="343"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_teen_female"		x="343"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_unemployed_male"	x="404"	y="151"	w="80"	h="150" />
+				<child name="gfx_interface_audience_unemployed_female"	x="404"	y="151"	w="80"	h="150" />
 				<child name="gfx_interface_audience_unemployed.bored"	x="485"	y="151"	w="80"	h="150" />
-				<child name="gfx_interface_audience_mother"	    x="566"	y="151"	w="66"	h="150" />
-				<child name="gfx_interface_audience_manager"	x="633"	y="151"	w="80"	h="150" offsetLeft="5" />
+				<child name="gfx_interface_audience_housewife_male"		x="566"	y="151"	w="66"	h="150" />
+				<child name="gfx_interface_audience_housewife_female"	x="566"	y="151"	w="66"	h="150" />
+				<child name="gfx_interface_audience_manager_male"		x="633"	y="151"	w="80"	h="150" offsetLeft="5" />
+				<child name="gfx_interface_audience_manager_female"		x="633"	y="151"	w="80"	h="150" offsetLeft="5" />
+				<!--child name="gfx_interface_audience_employee_male"		x=""	y=""	w="80"	h="150" />
+				<child name="gfx_interface_audience_employee_female"	x=""	y=""	w="80"	h="150" /-->
 
 
 				<!-- interface buttons -->
