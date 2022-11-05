@@ -26,6 +26,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiButtonBack:TGUIButton
 	Field guiChatWindow:TGUIChatWindow
 	Field guiPlayerNames:TGUIinput[4]
+	Field guiPlayerRandomButtons:TGUIButton[4]
 	Field guiChannelNames:TGUIinput[4]
 	Field guiDifficulty:TGUIDropDown[4]
 	Field guiFigureArrows:TGUIArrowButton[8]
@@ -167,8 +168,15 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiPlayerPanels[i].SetPadding(playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap)
 			guiAllPlayersPanel.AddChild(guiPlayerPanels[i])
 
-			guiPlayerNames[i] = New TGUIinput.Create(New SVec2I(0, 0), New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w), -1), "player", 16, name)
+			guiPlayerNames[i] = New TGUIinput.Create(New SVec2I(0, 0), New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w)-30, -1), "player", 16, name)
 			guiPlayerNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
+
+			Local dim:Int=Int(guiPlayerNames[i].rect.h)
+			guiPlayerRandomButtons[i] = New TGUIButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w)-25, 0), New SVec2I(dim, dim), "", "")
+			guiPlayerRandomButtons[i].enable()
+			guiPlayerRandomButtons[i].caption.SetSpriteName("gfx_datasheet_icon_marketShare")
+			guiPlayerRandomButtons[i].caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
+			guiPlayerRandomButtons[i].spriteName = "gfx_gui_button.datasheet"
 
 			guiChannelNames[i] = New TGUIinput.Create(New SVec2I(0, 0), New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w), -1), "channel", 16, name)
 			guiChannelNames[i].SetPositionY(100)
@@ -206,6 +214,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 
 			guiPlayerPanels[i].AddChild(guiPlayerNames[i])
+			guiPlayerPanels[i].AddChild(guiPlayerRandomButtons[i])
 			guiPlayerPanels[i].AddChild(guiChannelNames[i])
 			guiPlayerPanels[i].AddChild(guiDifficulty[i])
 			guiPlayerPanels[i].AddChild(guiFigureArrows[i*2 + 0])
@@ -448,9 +457,50 @@ Type TScreen_GameSettings Extends TGameScreen
 					Else
 						GetGameBase().SetGamestate(TGameBase.STATE_MAINMENU)
 					EndIf
+			Case guiPlayerRandomButtons[0]
+				randomize(0)
+			Case guiPlayerRandomButtons[1]
+				randomize(1)
+			Case guiPlayerRandomButtons[2]
+				randomize(2)
+			Case guiPlayerRandomButtons[3]
+				randomize(3)
 		End Select
 	End Method
 
+	Method randomize:Int(player:Int)
+		Local channels:String[]=["TowerTV", "SunTV", "FunTV", "RatTV","MoonTV","StarTV","WatchTV","RainTV","SnowTV","RunTV","StunTV","StormTV","CloudTV","RonTV","CatTV","MouseTV","GoldTV","SilverTV","TinTV","SteelTV"]
+		Local unique:Int
+		Local nameGenerator:TPersonGenerator = GetPersonGenerator()
+		Local gender:Int = nameGenerator.GetRandomGender()
+		Local pl:TPlayerBase = GetPlayerBase(player+1)
+		Repeat
+			unique = True
+			Local newName:String = channels[RandRange(0, channels.length-1)]
+			For Local i:Int = 0 To guiChannelNames.length -1
+				If newName = guiChannelNames[i].GetValue() Then unique = False
+			Next
+			If unique Then guiChannelNames[player].SetValue(newName)
+		Until unique
+		Repeat
+			unique = True
+			Local newName:String = nameGenerator.GetFirstName(nameGenerator.GetRandomCountryCode(),gender)
+			For Local i:Int = 0 To guiPlayerNames.length -1
+				If newName = guiPlayerNames[i].GetValue() Then unique = False
+			Next
+			If unique Then guiPlayerNames[player].SetValue(newName)
+		Until unique
+		If gender = 1
+			pl.UpdateFigureBase(RandRange(0,5))
+		Else
+			pl.UpdateFigureBase(RandRange(6,12))
+		EndIf
+		Local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
+		Local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
+		pl.color.SetOwner(0)
+		pl.color = newcolor.SetOwner(player)
+		pl.RecolorFigure(pl.color)
+	End Method
 
 	Method onCheckCheckboxes:Int(triggerEvent:TEventBase)
 		Local sender:TGUICheckBox = TGUICheckBox(triggerEvent.GetSender())
@@ -679,22 +729,25 @@ endrem
 
 
 		For Local i:Int = 0 Until 4
+			guiPlayerRandomButtons[i].disable()
 			If GetGameBase().networkgame Or GetGameBase().isGameLeader()
 				If Not GetGameBase().IsGameState(TGameBase.STATE_PREPAREGAMESTART) And GetGameBase().IsControllingPlayer(i+1)
+					Local pl:TPlayerBase = GetPlayerBase(i+1)
 					guiPlayerNames[i].enable()
 					guiChannelNames[i].enable()
 
 					'only enable if direction is allowed
-					If GetPlayerBase(i+1).figureBase > 0
+					If pl.figureBase > 0
 						guiFigureArrows[i*2].Enable()
 					Else
 						guiFigureArrows[i*2].Disable()
 					EndIf
-					If GetPlayerBase(i+1).figureBase < figureBaseCount - 1
+					If pl.figureBase < figureBaseCount - 1
 						guiFigureArrows[i*2 +1].Enable()
 					Else
 						guiFigureArrows[i*2 +1].Disable()
 					EndIf
+					If pl.isLocalAI() Then guiPlayerRandomButtons[i].enable()
 				Else
 					guiPlayerNames[i].disable()
 					guiChannelNames[i].disable()
