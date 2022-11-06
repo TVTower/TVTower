@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -171,7 +171,11 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, defaultNameOrSpriteEntity:Object = Null)
+Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object)
+	Return TSpriteEntity( GetRegistry().Get(name) )
+End Function
+
+Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, defaultNameOrSpriteEntity:Object)
 	Return TSpriteEntity( GetRegistry().Get(name, defaultNameOrSpriteEntity, TRegistrySpriteEntityLoader.keySpriteEntityLS) )
 End Function
 

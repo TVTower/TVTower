@@ -289,15 +289,21 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpritePackFromRegistry:TSpritePack(name:Object, defaultNameOrSpritePack:object = Null)
+Function GetSpritePackFromRegistry:TSpritePack(name:Object)
+	Return TSpritePack( GetRegistry().Get(name) )
+End Function
+
+Function GetSpritePackFromRegistry:TSpritePack(name:Object, defaultNameOrSpritePack:object)
 	Return TSpritePack( GetRegistry().Get(name, defaultNameOrSpritePack, TRegistrySpriteLoader.keySpritePackLS) )
 End Function
 
-
-Function GetSpriteFromRegistry:TSprite(name:Object, defaultNameOrSprite:object = Null)
-	Return TSprite( GetRegistry().Get(name, defaultNameOrSprite, TRegistrySpriteLoader.keySpriteLS) )
+Function GetSpriteFromRegistry:TSprite(name:Object)
+	Return TSprite( GetRegistry().Get(name) )
 End Function
 
+Function GetSpriteFromRegistry:TSprite(name:Object, defaultNameOrSprite:object)
+	Return TSprite( GetRegistry().Get(name, defaultNameOrSprite, TRegistrySpriteLoader.keySpriteLS) )
+End Function
 
 Function GetSpriteGroupFromRegistry:TSprite[](baseName:string, defaultNameOrSprite:object = Null)
 	local sprite:TSprite

@@ -591,7 +591,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method GetMaxTopicality:Float()
 		Local maxTopicality:Float = 1.0
 
-		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", New TData))
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		If not devConfig Then devConfig = New TData
 		Local devAgeMod:Float = devConfig.GetFloat("DEV_NEWS_AGE_INFLUENCE", 1.0)
 		Local devQualityAgeMod:Float = devConfig.GetFloat("DEV_NEWS_QUALITYAGE_INFLUENCE", 1.0)
 		Local devBroadcastedMod:Float = devConfig.GetFloat("DEV_NEWS_BROADCAST_INFLUENCE", 1.0)

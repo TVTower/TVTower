@@ -91,7 +91,7 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 		Local color:TPlayerColor = TPlayerColor.Create(r,g,b,a)
 		'if a listname was given - try to add to that group
 		If listName <> ""
-			Local list:TList = TList(GetRegistry().Get(listName, Null))
+			Local list:TList = TList(GetRegistry().Get(listName))
 			'if list is not existing: create it
 			If Not list
 				list = CreateList()

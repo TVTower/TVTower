@@ -293,10 +293,18 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetImageFromRegistry:TImage(name:object, defaultNameOrSprite:object = Null)
+Function GetImageFromRegistry:TImage(name:object)
+	Return TImage( GetRegistry().Get(name) )
+End Function
+
+Function GetImageFromRegistry:TImage(name:object, defaultNameOrSprite:object)
 	Return TImage( GetRegistry().Get(name, defaultNameOrSprite, TRegistryImageLoader.keyImageLS) )
 End Function
 
-Function GetPixmapFromRegistry:TPixmap(name:object, defaultNameOrSprite:object = Null)
+Function GetPixmapFromRegistry:TPixmap(name:object)
+	Return TPixmap( GetRegistry().Get(name) )
+End Function
+
+Function GetPixmapFromRegistry:TPixmap(name:object, defaultNameOrSprite:object)
 	Return TPixmap( GetRegistry().Get(name, defaultNameOrSprite, TRegistryImageLoader.keyPixmapLS) )
 End Function

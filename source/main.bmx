@@ -6974,7 +6974,8 @@ Function StartApp:Int()
 	?
 
 	'assign dev config (resources are now loaded)
-	GameRules.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
+	GameRules.devConfig = TData(GetRegistry().Get("DEV_CONFIG"))
+	If not GameRules.devConfig Then GameRules.devConfig = New TData
 
 	'disable log from now on (if dev wished so)
 	If Not GameRules.devConfig.GetBool("DEV_LOG", True)
