@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -126,6 +126,14 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpriteFrameAnimationCollectionFromRegistry:TSpriteFrameAnimationCollection(name:Object, defaultNameOrSpriteFrameAnimationCollection:object = Null)
+Function GetSpriteFrameAnimationCollectionFromRegistry:TSpriteFrameAnimationCollection(name:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TSpriteFrameAnimationCollection( GetRegistry().Get(name, Null, TRegistrySpriteFrameAnimationLoader.keySpriteFrameAnimationCollectionLS) )
+	Else
+		Return TSpriteFrameAnimationCollection( GetRegistry().Get(name) )
+	EndIf
+End Function
+
+Function GetSpriteFrameAnimationCollectionFromRegistry:TSpriteFrameAnimationCollection(name:Object, defaultNameOrSpriteFrameAnimationCollection:object)
 	Return TSpriteFrameAnimationCollection( GetRegistry().Get(name, defaultNameOrSpriteFrameAnimationCollection, TRegistrySpriteFrameAnimationLoader.keySpriteFrameAnimationCollectionLS) )
 End Function

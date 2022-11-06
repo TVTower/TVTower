@@ -150,8 +150,8 @@ Type TRegistrySpriteEntityLoader extends TRegistryBaseLoader
 		'check if we need to load a sprite first
 		local spriteGUID:string = data.GetString("spriteGUID")
 		if spriteGUID
-			local sprite:TSprite = GetSpriteFromRegistry(spriteGUID, null)
-			if not sprite OR sprite = GetRegistry().GetDefault("sprite")
+			local sprite:TSprite = GetSpriteFromRegistry(spriteGUID, False)
+			if not sprite
 				'cannot load this entity until sprite exists
 				return False
 			endif
@@ -171,8 +171,12 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object)
-	Return TSpriteEntity( GetRegistry().Get(name) )
+Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TSpriteEntity( GetRegistry().Get(name, Null, TRegistrySpriteEntityLoader.keySpriteEntityLS) )
+	Else
+		Return TSpriteEntity( GetRegistry().Get(name) )
+	EndIf
 End Function
 
 Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, defaultNameOrSpriteEntity:Object)

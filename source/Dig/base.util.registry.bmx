@@ -64,6 +64,9 @@ Type TRegistry
 	Field _dataMutex:TMutex = CreateMutex()
 	?
 
+	Global keyDataLS:TLowerString = TLowerString.Create("data")
+	Global keyStringLS:TLowerString = TLowerString.Create("string")
+
 	Global _instance:TRegistry
 
 
@@ -177,17 +180,24 @@ Function GetRegistry:TRegistry()
 	Return TRegistry.GetInstance()
 End Function
 
-Function GetDataFromRegistry:TData(key:Object)
-	Return TData( GetRegistry().Get(key) )
+Function GetDataFromRegistry:TData(key:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TData( GetRegistry().Get(key, Null, TRegistry.keyDataLS) )
+	Else
+		Return TData( GetRegistry().Get(key) )
+	EndIf
 End Function
 
 Function GetDataFromRegistry:TData(key:Object, defaultNameOrObject:Object)
-	Global lsKey:TLowerString = TLowerString.Create("data")
-	Return TData( GetRegistry().Get(key, defaultNameOrObject, lsKey) )
+	Return TData( GetRegistry().Get(key, defaultNameOrObject, TRegistry.keyDataLS) )
 End Function
 
-Function GetStringFromRegistry:String(key:Object)
-	Return String( GetRegistry().Get(key) )
+Function GetStringFromRegistry:String(key:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return String( GetRegistry().Get(key, Null, TRegistry.keyStringLS) )
+	Else
+		Return String( GetRegistry().Get(key) )
+	EndIf
 End Function
 
 Function GetStringFromRegistry:String(key:Object, defaultNameOrObject:Object)

@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -293,16 +293,24 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetImageFromRegistry:TImage(name:object)
-	Return TImage( GetRegistry().Get(name) )
+Function GetImageFromRegistry:TImage(name:object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TImage( GetRegistry().Get(name, Null, TRegistryImageLoader.keyImageLS) )
+	Else
+		Return TImage( GetRegistry().Get(name) )
+	EndIf
 End Function
 
 Function GetImageFromRegistry:TImage(name:object, defaultNameOrSprite:object)
 	Return TImage( GetRegistry().Get(name, defaultNameOrSprite, TRegistryImageLoader.keyImageLS) )
 End Function
 
-Function GetPixmapFromRegistry:TPixmap(name:object)
-	Return TPixmap( GetRegistry().Get(name) )
+Function GetPixmapFromRegistry:TPixmap(name:object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TPixmap( GetRegistry().Get(name, Null, TRegistryImageLoader.keyPixmapLS) )
+	Else
+		Return TPixmap( GetRegistry().Get(name) )
+	EndIf
 End Function
 
 Function GetPixmapFromRegistry:TPixmap(name:object, defaultNameOrSprite:object)

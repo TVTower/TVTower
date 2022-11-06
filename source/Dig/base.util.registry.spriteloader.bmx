@@ -289,16 +289,24 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpritePackFromRegistry:TSpritePack(name:Object)
-	Return TSpritePack( GetRegistry().Get(name) )
+Function GetSpritePackFromRegistry:TSpritePack(name:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TSpritePack( GetRegistry().Get(name, Null, TRegistrySpriteLoader.keySpritePackLS) )
+	Else
+		Return TSpritePack( GetRegistry().Get(name) )
+	EndIf
 End Function
 
 Function GetSpritePackFromRegistry:TSpritePack(name:Object, defaultNameOrSpritePack:object)
 	Return TSpritePack( GetRegistry().Get(name, defaultNameOrSpritePack, TRegistrySpriteLoader.keySpritePackLS) )
 End Function
 
-Function GetSpriteFromRegistry:TSprite(name:Object)
-	Return TSprite( GetRegistry().Get(name) )
+Function GetSpriteFromRegistry:TSprite(name:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TSprite( GetRegistry().Get(name, Null, TRegistrySpriteLoader.keySpriteLS) )
+	Else
+		Return TSprite( GetRegistry().Get(name) )
+	EndIf
 End Function
 
 Function GetSpriteFromRegistry:TSprite(name:Object, defaultNameOrSprite:object)
