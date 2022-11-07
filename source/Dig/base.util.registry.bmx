@@ -201,8 +201,7 @@ Function GetStringFromRegistry:String(key:Object, loadDefaultIfMissing:Int = Tru
 End Function
 
 Function GetStringFromRegistry:String(key:Object, defaultNameOrObject:Object)
-	Global lsKey:TLowerString = TLowerString.Create("string")
-	Return String( GetRegistry().Get(key, defaultNameOrObject, lsKey) )
+	Return String( GetRegistry().Get(key, defaultNameOrObject, TRegistry.keyStringLS) )
 End Function
 
 Function RegistryContains:Int(key:Object)
