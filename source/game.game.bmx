@@ -839,86 +839,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			s.GetProvider().minimumChannelImage = 0
 		EndIf
 		map.AddStation( s, False )
+		'before changing bankruptcy handling, at this point stations at random positions were added
+		'this was changed, so the AI has a chance to choose position itself and does not have to
+		'fight with high initial fix costs
 
-
-		'add some more stations at positions of other players stations
-		If isRestartingPlayer
-			'- fetch average broadcast area
-			'- add all stations to a list and merge "similar ones"
-			'- shuffle them so there is a "random list" to traverse through
-			'- select stations from that list to a new one
-			'  - if there is no station "near it" in the new list already
-			'  - until "average broadcast area" is reached
-			'  - if list end is reached before: add some random stations
-			'    until avg is reached
-
-			Local broadcastAreaToDo:Int = GetStationMapCollection().GetAverageReach()
-			'adjust by quote (and difficulty)
-			broadcastAreaToDo :* difficulty.restartingPlayerReachRatio
-
-			'subtract our newly added station
-			broadcastAreaToDo :- s.GetReach()
-
-			'1000: avoid adding a new station for a handful of people
-			If broadcastAreaToDo > 1000
-				'- add all stations
-				Local allStations:TMap = New TMap
-				For Local i:Int = 1 To 4
-					If i = playerID Then Continue
-
-					Local m:TStationMap = GetStationMap(i)
-					For Local s:TStation = EachIn m.stations
-						'decrease details by 10 to avoid "nearly identical"
-						allStations.Insert((s.x/10)*10+","+(s.y/10)*10, s)
-					Next
-				Next
-
-				'- shuffle them
-				Local randomStationList:TObjectList = New TObjectList
-				For Local s:TStation = EachIn allStations.Values()
-					randomStationList.AddLast(s)
-				Next
-				THelper.ShuffleObjectList(randomStationList)
-
-				'add stations until broadcast area is reached
-				For Local s:TStation = EachIn randomStationList
-					'finished if there is nothing more to do
-					If broadcastAreaToDo < 1000 Then Exit
-
-					Local newPosX:Int = s.x
-					Local newPosY:Int = s.y
-					Local increase:Int = map.CalculateAntennaAudienceIncrease(newPosX, newPosY)
-
-					'ignore stations with too low reachincrease
-					If increase < 10000 Then Continue
-
-					'print "add station at: "+ int(newPos.x)+","+int(newPos.y)+ "  increase: "+ increase
-					'add it at the same spot (or random offset?)
-					Local antennaStation:TStationAntenna = New TStationAntenna.Init( newPosX, newPosY, -1, playerID )
-					antennaStation.radius = GetStationMapCollection().antennaStationRadius
-
-					'add a broadcast permission for this station section (price: 0 euro)
-					section = GetStationMapCollection().GetSectionByName(antennaStation.GetSectionName())
-					If section Then section.SetBroadcastPermission(playerID, True, 0)
-
-					map.AddStation(antennaStation, False)
-
-					broadcastAreaToDo :- increase
-				Next
-				'print "broadcastAreaToDo left: " + broadcastAreaToDo
-
-				'did not find enough stations?
-				'add more random ones
-				'TODO
-				Rem
-				While broadcastAreaToDo > 1000
-					For local i:int = 0 to 10
-
-					Next
-				Wend
-				endrem
-			EndIf
-		EndIf
 		'refresh stats
 		GetStationMap(playerID).DoCensus()
 		GetStationMap(playerID).Update()
@@ -939,26 +863,20 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				avgMoney :+ GetPlayerFinance(i).GetMoney()
 
 				'add monetary value of programme licences
-				Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+				Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
 				Local licenceValue:Int = 0
 				For Local list:TList = EachIn [pc.GetSingleLicences(), pc.GetSeriesLicences(), pc.GetCollectionLicences() ]
 					For Local l:TProgrammeLicence = EachIn list
 						licenceValue :+ l.GetPrice(l.owner)
 					Next
 				Next
-				'convert that value into cash (adjusted by the ratio)
-				avgMoney :+ licenceValue * difficulty.restartingPlayerPropertyCacheRatio
+				avgMoney :+ licenceValue
 			Next
 			avgMoney :/ 3 '3 to ignore our player
 
-			'only add if avg is not lower than start money (avoids
-			'bankrupt players at game start to have more than "startmoney"
-			'because of Quote*Mod > 1.0
-			If avgMoney > addMoney
-				'adjust by quote (and difficulty)
-				avgMoney :* difficulty.restartingPlayerMoneyRatio
-				If avgMoney > addMoney Then addMoney = avgMoney
-			EndIf
+			'adjust by difficulty and replace start money only if average is more
+			avgMoney :* difficulty.restartingPlayerMoneyRatio
+			If avgMoney > addMoney Then addMoney = avgMoney
 			'print "avgMoney = " + avgMoney
 		EndIf
 

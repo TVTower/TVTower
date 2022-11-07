@@ -72,8 +72,6 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 			result.satelliteConstructionTime = ReadInt("satelliteConstructionTime", spec, def, 0, 10)
 			result.satelliteDailyCostsMod = ReadFloat("satelliteDailyCostsMod", spec, def, 0.1, 5)
 			result.broadcastPermissionPriceMod = ReadFloat("broadcastPermissionPriceMod", spec, def, 0.1, 5.0)
-			result.restartingPlayerPropertyCacheRatio = ReadFloat("restartingPlayerPropertyCacheRatio", spec, def, 0.1, 2.0)
-			result.restartingPlayerReachRatio = ReadFloat("restartingPlayerReachRatio", spec, def, 0.1, 2.0)
 			result.restartingPlayerMoneyRatio = ReadFloat("restartingPlayerMoneyRatio", spec, def, 0.1, 2.0)
 			return result
 		End Function
@@ -163,8 +161,6 @@ Type TPlayerDifficulty extends TGameObject
 	Field satelliteConstructionTime:int
 	Field satelliteDailyCostsMod:Float
 	Field broadcastPermissionPriceMod:Float
-	Field restartingPlayerPropertyCacheRatio:Float
-	Field restartingPlayerReachRatio:Float
 	Field restartingPlayerMoneyRatio:Float
 
 	Method GenerateGUID:string()

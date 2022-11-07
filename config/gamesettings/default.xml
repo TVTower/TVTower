@@ -14,6 +14,8 @@
 		<cableNetworkDailyCostsMod value="1.0"/>
 		<satelliteBuyPriceMod value="1.0"/>
 		<satelliteDailyCostsMod value="1.0"/>
+
+		<restartingPlayerMoneyRatio value="1.0"/> 
 	</easy>
 	<normal>
 	</normal>
@@ -33,6 +35,8 @@
 		<satelliteBuyPriceMod value="1.4"/>
 		<satelliteDailyCostsMod value="1.25"/>
 		<broadcastPermissionPriceMod value="1.5"/>
+
+		<restartingPlayerMoneyRatio value="0.6"/> 
 	</hard>
 
 	<!--
@@ -78,9 +82,8 @@
 		<satelliteDailyCostsMod value="1.15"/><!--factor for satellite daily costs-->
 		<broadcastPermissionPriceMod value="1.0"/><!--factor for broadcast permission prices-->
 
-		<restartingPlayerPropertyCacheRatio value="0.25"/> 
-		<restartingPlayerReachRatio value="1.0"/>
-		<restartingPlayerMoneyRatio value="1.0"/> 
+		<!--relevant only for AI-player -->
+		<restartingPlayerMoneyRatio value="0.8"/><!--start money ratio for restarting AI based on other players' money and licences-->
 	</defaults>
 
 	<!-- properties not yet(?) part of the difficulty object-->
