@@ -685,12 +685,17 @@ function JobBuyMovies:Tick()
 	local movies = self.Task.MoviesAtDistributor
 	--TODO not many licences - do not spend everything on new one
 	local maxPrice = self.Task.CurrentBargainBudget
-	if self.Task.blocksCount > 0 and self.Task.blocksCount < 48 then
+	local blocksCount = self.Task.blocksCount
+	if blocksCount > 0 and blocksCount < 48 then
 		if maxPrice > 250000 then
 			maxPrice = maxPrice * 0.5
 		elseif maxPrice > 150000 then
 			maxPrice = maxPrice * 0.7
 		end
+		--TODO max price added to deal with restarting after bankruptcy
+		--problematic for series (price per block would be better), good threshold hard to determine
+		if blocksCount < 24 then maxPrice = math.min(maxPrice, 300000) end
+		if blocksCount < 48 then maxPrice = math.min(maxPrice, 600000) end
 	end
 
 	--TODO do not always buy something
@@ -761,11 +766,15 @@ end
 
 function JobBidAuctions:Tick()
 	local bid = 1
+	--TODO prevent bidding too early on
 	if self.Task.CurrentBudget < 0 then
 		--no money 
 		bid = 0
 	elseif math.random(10,16) >= getPlayer().hour then
 		--too early in the day
+		bid = 0
+	elseif self.Task.blocksCount < 24 then
+		--ensure base licence collection before bidding
 		bid = 0
 	end
 	if bid == 0 then
@@ -791,7 +800,8 @@ function JobBidAuctions:Tick()
 					-- daily budget for good offers without direct need
 					if (nextBid <= self.Task.CurrentBargainBudget) then
 						--TODO genre bias analogous to movies
-						if (v:GetAttractiveness() > 1) then
+						--TODO live only of sending on live time supported
+						if (v:GetAttractiveness() > 1 and not v:IsLive() == 1) then
 							self:LogInfo("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..")")
 							TVT.md_doBidAuctionProgrammeLicence(v:GetId())
 

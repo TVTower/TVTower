@@ -448,6 +448,8 @@ function JobBuyStation:Prepare(pParams)
 		self:SetCancel()
 	end
 	self.Task.CurrentBudget = math.min(self.Task.CurrentBudget, moneyExcludingFixedCosts)
+	--TODO do no spend all money on one task run
+	self.purchaseCount = 0
 end
 
 function JobBuyStation:SetCancel()
@@ -672,9 +674,10 @@ function JobBuyStation:Tick()
 
 		self.Task:PayFromBudget(price)
 		self.Task.maxReachIncrease = self.Task.maxReachIncrease - bestOffer.GetExclusiveReach(false)
+		self.purchaseCount = self.purchaseCount + 1
 	end
 
-	if bestOffer == nil or self.Task.maxReachIncrease < 1000000 or self.Task.CurrentBudget < 300000 then
+	if bestOffer == nil or self.Task.maxReachIncrease < 1000000 or self.Task.CurrentBudget < 300000 or self.purchaseCount >= 3 then
 		self.Status = JOB_STATUS_DONE
 	end
 end
