@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -150,8 +150,8 @@ Type TRegistrySpriteEntityLoader extends TRegistryBaseLoader
 		'check if we need to load a sprite first
 		local spriteGUID:string = data.GetString("spriteGUID")
 		if spriteGUID
-			local sprite:TSprite = GetSpriteFromRegistry(spriteGUID, null)
-			if not sprite OR sprite = GetRegistry().GetDefault("sprite")
+			local sprite:TSprite = GetSpriteFromRegistry(spriteGUID, False)
+			if not sprite
 				'cannot load this entity until sprite exists
 				return False
 			endif
@@ -171,7 +171,15 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, defaultNameOrSpriteEntity:Object = Null)
+Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TSpriteEntity( GetRegistry().Get(name, Null, TRegistrySpriteEntityLoader.keySpriteEntityLS) )
+	Else
+		Return TSpriteEntity( GetRegistry().Get(name) )
+	EndIf
+End Function
+
+Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, defaultNameOrSpriteEntity:Object)
 	Return TSpriteEntity( GetRegistry().Get(name, defaultNameOrSpriteEntity, TRegistrySpriteEntityLoader.keySpriteEntityLS) )
 End Function
 

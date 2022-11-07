@@ -477,7 +477,8 @@ endrem
 	'loads a new figurbase and colorizes it
 	Method UpdateFigureBase:int(newfigurebase:Int)
 		'load configuration from registry
-		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig", new TData))
+		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig"))
+		If not figuresConfig Then figuresConfig = New TData
 		Local playerFigures:string[] = figuresConfig.GetString("playerFigures", "").split(",")
 		Local figureCount:Int = Len(playerFigures)
 

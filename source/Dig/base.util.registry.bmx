@@ -22,7 +22,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -64,6 +64,9 @@ Type TRegistry
 	Field _dataMutex:TMutex = CreateMutex()
 	?
 
+	Global keyDataLS:TLowerString = TLowerString.Create("data")
+	Global keyStringLS:TLowerString = TLowerString.Create("string")
+
 	Global _instance:TRegistry
 
 
@@ -80,16 +83,14 @@ Type TRegistry
 
 	'set a data with the given key
 	Method Set(key:Object, obj:Object)
-		?Threaded
-			LockMutex(_dataMutex)
-		?
+		LockMutex(_dataMutex)
+
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
 
 		data.insert(ls, obj)
-		?Threaded
-			UnlockMutex(_dataMutex)
-		?
+
+		UnlockMutex(_dataMutex)
 	End Method
 
 
@@ -104,20 +105,36 @@ Type TRegistry
 
 	'set a default object for a data type
 	Method SetDefault(key:Object, obj:Object)
-		?Threaded
-			LockMutex(_dataMutex)
-		?
+		LockMutex(_dataMutex)
+
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
 
 		defaults.insert(ls, obj)
-		?Threaded
-			UnlockMutex(_dataMutex)
-		?
+
+		UnlockMutex(_dataMutex)
+	End Method
+	
+	
+	Method Contains:Int(key:Object)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+		
+		Return data.Contains(ls)
 	End Method
 
 
-	Method Get:Object(key:Object, defaultObject:Object=Null, defaultType:Object=Null)
+	'returns object OR null if not existing
+	Method Get:Object(key:Object)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+		
+		Return data.ValueForKey(ls)
+	End Method
+
+	
+	'returns object or a default according to defaultObject/defaultType
+	Method Get:Object(key:Object, defaultObject:Object, defaultType:Object)
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
 
@@ -163,12 +180,32 @@ Function GetRegistry:TRegistry()
 	Return TRegistry.GetInstance()
 End Function
 
-Function GetDataFromRegistry:TData(key:Object, defaultNameOrObject:Object = Null)
-	Return TData( GetRegistry().Get(key, defaultNameOrObject, "data") )
+Function GetDataFromRegistry:TData(key:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return TData( GetRegistry().Get(key, Null, TRegistry.keyDataLS) )
+	Else
+		Return TData( GetRegistry().Get(key) )
+	EndIf
 End Function
 
-Function GetStringFromRegistry:String(key:Object, defaultNameOrObject:Object = Null)
-	Return String( GetRegistry().Get(key, defaultNameOrObject, "string") )
+Function GetDataFromRegistry:TData(key:Object, defaultNameOrObject:Object)
+	Return TData( GetRegistry().Get(key, defaultNameOrObject, TRegistry.keyDataLS) )
+End Function
+
+Function GetStringFromRegistry:String(key:Object, loadDefaultIfMissing:Int = True)
+	If loadDefaultIfMissing
+		Return String( GetRegistry().Get(key, Null, TRegistry.keyStringLS) )
+	Else
+		Return String( GetRegistry().Get(key) )
+	EndIf
+End Function
+
+Function GetStringFromRegistry:String(key:Object, defaultNameOrObject:Object)
+	Return String( GetRegistry().Get(key, defaultNameOrObject, TRegistry.keyStringLS) )
+End Function
+
+Function RegistryContains:Int(key:Object)
+	Return GetRegistry().Contains(key)
 End Function
 
 
@@ -764,9 +801,10 @@ Type TRegistryDataLoader Extends TRegistryBaseLoader
 	Method LoadFromConfig:Object(data:TData, resourceName:String)
 		Local merge:Int = data.GetInt("merge", False)
 		Local name:String = GetNameFromConfig(data)
-		Local values:TData = New TData
+		Local values:TData
 		'if merging - we load the previously stored data (if there is some)
-		If merge Then values = TData(GetRegistry().Get(name, New TData))
+		If merge Then values = TData(GetRegistry().Get(name))
+		If Not values Then values = New TData
 
 		'merge in the new values (to an empty - or the old tdata)
 		values.Append(TData(data.Get("values")))

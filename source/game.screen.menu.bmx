@@ -269,7 +269,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		SetLanguage()
 
 
-		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig", New TData))
+		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig"))
+		If not figuresConfig then figuresConfig = New TData
 		Local playerFigures:String[] = figuresConfig.GetString("playerFigures", "").split(",")
 		figureBaseCount = Len(playerFigures)
 
