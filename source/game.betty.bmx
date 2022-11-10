@@ -209,6 +209,7 @@ Type TBetty
 
 		'reset cache
 		Self._inLoveSum = -1
+		TriggerBaseEvent(GameEventKeys.Betty_OnAdjustLove, new TData().addInt("player",PlayerID), Self)
 	End Method
 
 

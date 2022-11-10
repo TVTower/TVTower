@@ -3381,26 +3381,28 @@ Type TScreen_MainMenu Extends TGameScreen
 	Method onClickButtons:Int(triggerEvent:TEventBase)
 		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
 		If Not sender Then Return False
-
+		Local game:TGame = GetGame()
 		Select sender
 			Case guiButtonSettings
 					App.CreateSettingsWindow()
 
 			Case guiButtonStart
 					PrepareGameObject()
-					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
+					game.SetGamestate(TGame.STATE_SETTINGSMENU)
+					game.onlinegame = False
+					game.networkgame = False
 
 			Case guiButtonNetwork
 					PrepareGameObject()
-					GetGame().onlinegame = False
-					GetGame().networkgame = True
-					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.onlinegame = False
+					game.networkgame = True
 
 			Case guiButtonOnline
 					PrepareGameObject()
-					GetGame().onlinegame = True
-					GetGame().networkgame = True
-					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.onlinegame = True
+					game.networkgame = False
 
 			Case guiButtonLoadGame
 					CreateLoadGameWindow()
@@ -4013,6 +4015,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PublicAuthorities_OnConfiscateProgrammeLicence, publicAuthorities_onConfiscateProgrammeLicence) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Achievement_OnComplete, Achievement_OnComplete) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Award_OnFinish, Award_OnFinish) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Mission_Failed, Mission_OnFail) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Mission_Achieved, Mission_OnAchieve) ]
 
 		'visually inform that selling the last station is impossible
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_OnTrySellLastStation, StationMap_OnTrySellLastStation) ]
@@ -4585,6 +4589,20 @@ Type GameEvents
 				'SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
 		End Select
 
+		?not debug
+			'dev keys were reactivated
+			If GetGame().mission And GameRules.devConfig.GetBool(TApp.keyLS_DevKeys, False)
+				Local toast:TGameToastMessage = New TGameToastMessage
+				toast.SetLifeTime(10)
+				toast.SetMessageType( 1 )
+				toast.SetMessageCategory(TVTMessageCategory.MISC)
+				toast.SetCaption( GetLocale("MISSION")+": "+GetGame().mission.getTitle() )
+				toast.SetText( GetLocale("MISSION_ABORTED"))
+				GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+				GetGame().mission.done()
+				GetGame().mission = null
+			EndIf
+		?
 
 		Function SendHelp()
 			GetGame().SendSystemMessage("[DEV] available commands:")
@@ -5156,6 +5174,55 @@ endrem
 		EndIf
 	End Function
 
+	Function Mission_OnAchieve:Int(triggerEvent:TEventBase)
+		Local mission:TMission=TMission(triggerEvent.GetSender())
+		If mission And mission = GetGame().mission
+			Local messageSuffix:String = triggerEvent.GetData().getString("text","")
+			GetGame().SetGameSpeedPreset(0)
+
+			Local toast:TGameToastMessage = New TGameToastMessage
+			toast.SetLifeTime(20)
+			toast.SetMessageType( 1 )
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			Local hurray:String =""
+			Local score:TMissionHighscore = TMissionHighscore(triggerEvent.GetData().get("highscore"))
+			If score
+				If score.primaryPlayer = score.winningPlayer 
+					hurray = GetRandomLocale2(["MISSION_SUCCESS_TEXT"])+ " "
+				Else
+					messageSuffix:+ ("~n"+GetRandomLocale2(["MISSION_END_NEUTRAL"]))
+				EndIf
+			EndIf
+			toast.SetCaption( GetLocale("MISSION_SUCCESS").replace("%HURRAY%", hurray).replace("%GOAL%", mission.getTitle()) )
+			toast.SetText( "("+GetLocale("MISSION")+": "+mission.GetDescription()+")" + messageSuffix)
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+			'TODO show highscore window + continuing the game possible?
+			GetGame().mission.done()
+			GetGame().mission = null
+		EndIf
+	End Function
+
+	Function Mission_OnFail:Int(triggerEvent:TEventBase)
+		Local mission:TMission=TMission(triggerEvent.GetSender())
+		If mission And mission = GetGame().mission
+			Local messageSuffix:String  = triggerEvent.GetData().getString("text","")
+			GetGame().SetGameOver()
+			'TODO continuing the game possible?
+			GetPlayer().GetFigure()._controllable = False
+			GetGame().SetGameSpeedPreset(0)
+
+			Local toast:TGameToastMessage = New TGameToastMessage
+			toast.SetLifeTime(20)
+			toast.SetMessageType( 1 )
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			toast.SetCaption( GetLocale("MISSION_FAILED").replace("%GOAL%", mission.getTitle()) )
+			toast.SetText( "("+GetLocale("MISSION")+": "+mission.GetDescription()+")" + messageSuffix )
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+			GetGame().mission.done()
+			GetGame().mission = null
+			'TODO show highscore window + continuing the game possible?
+		EndIf
+	End Function
 
 	Function Award_OnFinish:Int(triggerEvent:TEventBase)
 		Local award:TAward = TAward(triggerEvent.GetSender())

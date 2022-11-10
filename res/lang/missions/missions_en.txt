@@ -1,0 +1,42 @@
+MISSION               = Task
+MISSION_START_PEP1    = May you do well!
+MISSION_START_PEP2    = Good luck!
+MISSION_START_PEP3    = Do your best!
+MISSION_START_PEP4    = You can do it!
+MISSION_SUCCESS       = %HURRAY%Task %GOAL% finished successfully
+MISSION_SUCCESS_TEXT1 = Congrationlations!
+MISSION_SUCCESS_TEXT2 = Well done!
+MISSION_SUCCESS_TEXT3 = Great!
+MISSION_END_NEUTRAL1  = What will be your rank in the highscore.
+MISSION_FAILED        = Task %GOAL% failed
+MISSION_OTHER_PLAYER  = %NAME% finished the task first
+MISSION_DISABLE_DEV   = (Developer mode was disabled)
+MISSION_ABORTED       = Task aborted
+
+MISSION_CATEGORY_NOGOAL = Endless Game
+MISSION_CATEGORY_IMAGE  = Image
+MISSION_CATEGORY_MONEY  = Money
+MISSION_CATEGORY_REACH  = Reach
+MISSION_CATEGORY_BETTY  = Betty
+
+MISSION_TITLE_IMAGE = Image
+MISSION_TITLE_MONEY = Account balance
+MISSION_TITLE_REACH = Reach
+MISSION_TITLE_BETTY = Betty Love
+
+MISSION_GOAL_MAXIMIZE = %GOAL% as high as possible
+MISSION_GOAL_LESSTHAN = always less than %GOAL%
+MISSION_GOAL_IMAGE    = %VALUE%% Image
+MISSION_GOAL_MONEY    = Account balance %VALUE%
+MISSION_GOAL_REACH    = %VALUE%% Reach
+MISSION_GOAL_BETTY    = %VALUE%% Betty Love
+
+MISSION_TIME_WITHIN = %GOAL% within %DAYS% days
+MISSION_TIME_AFTER  = %GOAL% after %DAYS% days
+
+MISSION_DIFFICULTY_0 = Custom
+MISSION_DIFFICULTY_1 = Easy
+MISSION_DIFFICULTY_2 = Normal
+MISSION_DIFFICULTY_3 = Hard
+MISSION_DIFFICULTY_4 = Harder
+MISSION_DIFFICULTY_5 = Hardest
