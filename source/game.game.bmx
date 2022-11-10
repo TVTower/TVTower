@@ -255,6 +255,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				GetProductionManager().UpdateCurrentlyAvailableAmateurs()
 			endif
 		EndIf
+		
+		If mission
+			mission.Initialize()
+			print "disable dev options"
+			'TODO disable dev for mission game here
+		EndIf
 
 		'so we could add news etc.
 		TriggerBaseEvent(GameEventKeys.Game_OnStart, timeData)
@@ -270,6 +276,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
 		endif
 		?
+
+		If mission
+			Local toast:TGameToastMessage = New TGameToastMessage
+			toast.SetLifeTime(10)
+			toast.SetMessageType( 1 )
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			toast.SetCaption( GetLocale("MENU_MISSION_GAME")+": "+mission.getTitle() )
+			toast.SetText( mission.GetDescription() )
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+		EndIf
 
 		gamesStarted :+ 1
 	End Method

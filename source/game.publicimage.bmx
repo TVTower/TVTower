@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.logger.bmx"
 Import "game.broadcast.audience.bmx"
 Import "game.modifier.base.bmx"
+Import "game.gameeventkeys.bmx"
 
 
 Type TPublicImageCollection
@@ -292,6 +293,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'also avoid values > 100
 		ImageValues.CutBorders(0, 100)
 
+		TriggerBaseEvent(GameEventKeys.PublicImage_OnChange, new TData, Self)
 		TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
@@ -307,6 +309,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'also avoid values > 100
 		ImageValues.CutBorders(0, 100)
 
+		TriggerBaseEvent(GameEventKeys.PublicImage_OnChange, new TData, Self)
 		'TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 

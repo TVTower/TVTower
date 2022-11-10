@@ -3278,6 +3278,7 @@ End Type
 'MENU: MAIN MENU SCREEN
 Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonStart:TGUIButton
+	Field guiButtonMission:TGUIButton
 	Field guiButtonNetwork:TGUIButton
 	Field guiButtonOnline:TGUIButton
 	Field guiButtonLoadGame:TGUIButton
@@ -3298,7 +3299,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(New SVec2I(300, 330), New SVec2I(200, 400), name)
+		guiButtonsWindow = New TGUIGameWindow.Create(New SVec2I(300, 290), New SVec2I(200, 400), name)
 		guiButtonsWindow.SetPadding(panelGap, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
@@ -3309,15 +3310,17 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
 		guiButtonStart		= New TGUIButton.Create(New SVec2I(0, 0*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonMission	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 2*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonNetwork.Disable()
-		guiButtonOnline		= New TGUIButton.Create(New SVec2I(0, 2*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New SVec2I(0, 3*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonOnline.Disable()
-		guiButtonLoadGame	= New TGUIButton.Create(New SVec2I(0, 3*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(New SVec2I(0, 4*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(New SVec2I(0, 5*38 + 10), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonLoadGame	= New TGUIButton.Create(New SVec2I(0, 4*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New SVec2I(0, 5*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New SVec2I(0, 6*38 + 10), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
+		guiButtonsPanel.AddChild(guiButtonMission)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
 		guiButtonsPanel.AddChild(guiButtonOnline)
 		guiButtonsPanel.AddChild(guiButtonLoadGame)
@@ -3381,26 +3384,38 @@ Type TScreen_MainMenu Extends TGameScreen
 	Method onClickButtons:Int(triggerEvent:TEventBase)
 		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
 		If Not sender Then Return False
-
+		Local game:TGame = GetGame()
 		Select sender
 			Case guiButtonSettings
 					App.CreateSettingsWindow()
 
 			Case guiButtonStart
 					PrepareGameObject()
-					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
+					game.SetGamestate(TGame.STATE_SETTINGSMENU)
+					game.onlinegame = False
+					game.networkgame = False
+					game.missiongame = False
+
+			Case guiButtonMission
+					PrepareGameObject()
+					game.SetGamestate(TGame.STATE_SETTINGSMENU)
+					game.onlinegame = False
+					game.networkgame = False
+					game.missiongame = True
 
 			Case guiButtonNetwork
 					PrepareGameObject()
-					GetGame().onlinegame = False
-					GetGame().networkgame = True
-					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.onlinegame = False
+					game.networkgame = True
+					game.missiongame = False
 
 			Case guiButtonOnline
 					PrepareGameObject()
-					GetGame().onlinegame = True
-					GetGame().networkgame = True
-					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
+					game.onlinegame = True
+					game.networkgame = False
+					game.missiongame = False
 
 			Case guiButtonLoadGame
 					CreateLoadGameWindow()
@@ -3462,6 +3477,7 @@ Type TScreen_MainMenu Extends TGameScreen
 	'override default
 	Method SetLanguage:Int(languageCode:String = "")
 		guiButtonStart.SetCaption(GetLocale("MENU_SOLO_GAME"))
+		guiButtonMission.SetCaption(GetLocale("MENU_MISSION_GAME"))
 		guiButtonNetwork.SetCaption(GetLocale("MENU_NETWORKGAME"))
 		guiButtonOnline.SetCaption(GetLocale("MENU_ONLINEGAME"))
 		guiButtonLoadGame.SetCaption(GetLocale("LOAD_GAME"))
@@ -3489,10 +3505,12 @@ Type TScreen_MainMenu Extends TGameScreen
 		'-> resources not finished loading
 		If Not ScreenGameSettings
 			guiButtonStart.Disable()
+			guiButtonMission.Disable()
 			guiButtonNetwork.Disable()
 			guiButtonOnline.Disable()
 		Else
 			guiButtonStart.Enable()
+			guiButtonMission.Enable()
 			'guiButtonNetwork.Enable()
 			'guiButtonOnline.Enable()
 		EndIf
@@ -4013,6 +4031,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PublicAuthorities_OnConfiscateProgrammeLicence, publicAuthorities_onConfiscateProgrammeLicence) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Achievement_OnComplete, Achievement_OnComplete) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Award_OnFinish, Award_OnFinish) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Mission_Failed, Mission_OnFail) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Mission_Achieved, Mission_OnAchieve) ]
 
 		'visually inform that selling the last station is impossible
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_OnTrySellLastStation, StationMap_OnTrySellLastStation) ]
@@ -5156,6 +5176,48 @@ endrem
 		EndIf
 	End Function
 
+	Function Mission_OnAchieve:Int(triggerEvent:TEventBase)
+		Local mission:TMission=TMission(triggerEvent.GetSender())
+		If mission And mission = GetGame().mission
+			Local messageSuffix:String = triggerEvent.GetData().getString("text","")
+			'print "achieved "+mission.GetTitle() + " "+mission.GetDescription()
+			'print triggerEvent.GetData().ToStringFormat()
+			GetGame().SetGameSpeed( 0 )
+			Local toast:TGameToastMessage = New TGameToastMessage
+			toast.SetLifeTime(20)
+			toast.SetMessageType( 1 )
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			toast.SetCaption( GetLocale("MENU_MISSION_GAME")+" erfolgreich abgeschlossen: "+mission.getTitle() )
+			toast.SetText( mission.GetDescription() + messageSuffix)
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+			'GetGame().SetGameOver()
+			'GetPlayer().GetFigure()._controllable = False
+			'TODO show highscore window + continuing the game possible?
+			GetGame().mission = null
+		EndIf
+	End Function
+
+	Function Mission_OnFail:Int(triggerEvent:TEventBase)
+		Local mission:TMission=TMission(triggerEvent.GetSender())
+		If mission And mission = GetGame().mission
+			Local messageSuffix:String  = triggerEvent.GetData().getString("text","")
+			'print "failed "+mission.GetTitle() + " "+mission.GetDescription()
+			'print triggerEvent.GetData().ToStringFormat()
+			GetGame().SetGameOver()
+			'continuing the game possible?
+			GetPlayer().GetFigure()._controllable = False
+			GetGame().SetGameSpeedPreset(0)
+			Local toast:TGameToastMessage = New TGameToastMessage
+			toast.SetLifeTime(20)
+			toast.SetMessageType( 1 )
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			toast.SetCaption( GetLocale("MENU_MISSION_GAME")+" verfehlt: "+mission.getTitle())
+			toast.SetText( mission.GetDescription() +messageSuffix )
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+			GetGame().mission = null
+			'TODO show highscore window + continuing the game possible?
+		EndIf
+	End Function
 
 	Function Award_OnFinish:Int(triggerEvent:TEventBase)
 		Local award:TAward = TAward(triggerEvent.GetSender())

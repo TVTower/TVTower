@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.util.mersenne.bmx" 'randrange
 Import "game.gameconstants.bmx"
+Import "game.mission.base.bmx"
 Import "game.figure.base.bmx"
 Import "game.world.worldtime.bmx"
 
@@ -15,6 +16,7 @@ Type TGameBase {_exposeToLua="selected"}
 	'0 = Mainmenu, 1=Running, ...
 	Field gamestate:Int = -1
 	Field gameOver:int = False
+	Field mission:TMission
 
 	Field nextXRatedCheckMinute:Int = -1
 	'stores the level of banruptcy for each player
@@ -47,6 +49,7 @@ Type TGameBase {_exposeToLua="selected"}
 	Field playerNames:string[] = ["Ronny", "Sandra", "Seidi", "Alfi"]
 	Field channelNames:string[] = ["TowerTV", "SunTV", "FunTV", "RatTV"]
 
+	Field missiongame:Int = 0
 	'--networkgame auf "isNetworkGame()" umbauen
 	'are we playing a network game? 0=false, 1=true, 2
 	Field networkgame:Int = 0

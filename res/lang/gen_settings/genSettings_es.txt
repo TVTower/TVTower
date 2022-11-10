@@ -132,6 +132,7 @@ WEEK_LONG_SUNDAY     = Domingo
 
 
 MENU_SOLO_GAME       = Jugar Solo
+#MENU_MISSION_GAME    = 
 MENU_START_GAME      = Empezar partida
 MENU_NETWORKGAME     = Partida en LAN
 MENU_ONLINEGAME      = Partida online
