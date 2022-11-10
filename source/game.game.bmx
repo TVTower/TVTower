@@ -255,6 +255,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				GetProductionManager().UpdateCurrentlyAvailableAmateurs()
 			endif
 		EndIf
+		
+		If mission
+			mission.Initialize()
+		EndIf
 
 		'so we could add news etc.
 		TriggerBaseEvent(GameEventKeys.Game_OnStart, timeData)
@@ -270,6 +274,36 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
 		endif
 		?
+
+		Local devKey:TLowerString = New TLowerString.Create("DEV_KEYS")
+		If mission
+			Local suffix:String = ".~n|b|"+GetRandomLocale2(["MISSION_START_PEP"])+"|/b|"
+			?not debug
+				Local devMode:Int = GameRules.devConfig.GetBool(devKey, False)
+				If devMode
+					GameRules.devConfig.AddBool(devKey, False)
+					suffix:+ ("~n"+GetLocale("MISSION_DISABLE_DEV"))
+				EndIf
+			?
+
+			Local toast:TGameToastMessage = New TGameToastMessage
+			toast.SetLifeTime(10)
+			toast.SetMessageType( 1 )
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			toast.SetCaption( GetLocale("MISSION")+": "+mission.getTitle() )
+			toast.SetText( mission.GetDescription() + suffix)
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+		ElseIf Not GameRules.devConfig.GetBool(devKey, False)
+			'possibly reenable dev keys for endless game
+			If FileType("config/DEV.xml") = 1
+				Local dataLoader:TDataXmlStorage = New TDataXmlStorage
+				Local data:TData = dataLoader.Load("config/DEV.xml")
+				If data
+					Local devKeyEnabled:Int = data.GetBool(devKey, False)
+					If devKeyEnabled Then GameRules.devConfig.AddBool(devKey, True)
+				EndIf
+			EndIf
+		EndIf
 
 		gamesStarted :+ 1
 	End Method

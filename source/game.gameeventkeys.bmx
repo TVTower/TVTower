@@ -36,6 +36,9 @@ Type TGameEventKeys
 	'game.award.base.bmx
 	Field Award_OnFinish:TEventKey = GetEventKey("Award.OnFinish", True)
 
+	'game.betty.bmx
+	Field Betty_OnAdjustLove:TEventKey = GetEventKey("Betty_OnAdjustLove.Betty_OnAdjustLove", True)
+
 	'game.broadcastmaterial.advertisement.bmx
 	Field Broadcast_Advertisement_BeginBroadcasting:TEventKey = GetEventKey("broadcast.advertisement.BeginBroadcasting", True)
 	Field Broadcast_Advertisement_BeginBroadcastingAsProgramme:TEventKey = GetEventKey("broadcast.advertisement.BeginBroadcastingAsProgramme", True)
@@ -124,6 +127,10 @@ Type TGameEventKeys
 	Field InGameHelp_ShowHelpWindow:TEventKey = GetEventKey("InGameHelp.ShowHelpWindow", True)
 	Field InGameHelp_CloseHelpWindow:TEventKey = GetEventKey("InGameHelp.CloseHelpWindow", True)
 	Field InGameHelp_ClosedHelpWindow:TEventKey = GetEventKey("InGameHelp.ClosedHelpWindow", True)
+
+	'game.mission.bmx
+	Field Mission_Achieved:TEventKey = GetEventKey("Mission.Achieved", True)
+	Field Mission_Failed:TEventKey = GetEventKey("Mission.Failed", True)
 
 	'game.network.networkhelper.bmx
 	Field Network_InfoChannel_OnReceiveAnnounceGame:TEventKey = GetEventKey("Network.InfoChannel.onReceiveAnnounceGame", True)
@@ -215,7 +222,10 @@ Type TGameEventKeys
 	Field ProgrammeLicenceCollection_OnAddLicence:TEventKey = GetEventKey("ProgrammeLicenceCollection.onAddLicence", True)
 	Field ProgrammeLicence_OnGiveBackToLicencePool:TEventKey = GetEventKey("ProgrammeLicence.onGiveBackToLicencePool", True)
 	Field ProgrammeLicence_OnSetOwner:TEventKey = GetEventKey("ProgrammeLicence.onSetOwner", True)
-		
+
+	'game.publicimage.bmx
+	Field PublicImage_OnChange:TEventKey = GetEventKey("PublicImage.onChange", True)
+
 	'game.room.base.bmx"
 	Field Room_OnBeginEnter:TEventKey = GetEventKey("Room.onBeginEnter", True)
 	Field Room_OnFinishEnter:TEventKey = GetEventKey("Room.onFinishEnter", True)
