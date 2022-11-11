@@ -3027,20 +3027,24 @@ Local t:Int = MilliSecs()
 
 
 	Function GetSavegameName:String(fileURI:String)
+		'strip savegame path from fileURI
 		Local p:String = GetSavegamePath()
-		Local r:String
 		If p.length > 0 And fileURI.Find( p ) = 0
-			r = StripExt( fileURI[ p.length .. ] )
-		Else
-			r = StripDir(StripExt(fileURI))
+			fileURI = fileURI[ p.length .. ]
 		EndIf
 
-		If r.length = 0 Then Return ""
-		If Chr(r[0]) = "/" Or Chr(r[0]) = "\"
-			r = r[1 ..]
+		'if no sub-directories are allowed, strip them
+		'fileURI = StripDir(fileURI)
+		
+		'remove file ending
+		fileURI = StripExt(fileURI)
+
+		'remove leading "/"
+		If fileURI.length > 0 and (fileURI[0] = Asc("/") Or fileURI[0] = Asc("\"))
+			fileURI = fileURI[1 ..]
 		EndIf
 
-		Return r
+		Return fileURI
 	End Function
 
 
