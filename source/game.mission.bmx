@@ -216,7 +216,7 @@ Type TSimpleMission extends TMission
 		Select category
 			case "MONEY"
 				If not currentPlayerFinance Then currentPlayerFinance = GetPlayerFinanceCollection().Get(playerID, -1)
-				currentValue = currentPlayerFinance.GetMoney()
+				currentValue = currentPlayerFinance.GetMoney() - currentPlayerFinance.GetCredit()
 				currentValueRaw = currentValue
 				currentPlayer = currentPlayerFinance.playerID
 			case "REACH"
