@@ -101,13 +101,13 @@ Type TScreen_GameSettings Extends TGameScreen
 		gui24HoursDay.disable() 'option not implemented
 		checkboxHeight :+ gui24HoursDay.GetScreenRect().GetH()
 
-		guiFilterUnreleased = New TGUICheckBox.Create(New SVec2I(xCol1, 0 + checkboxHeight), New SVec2I(280, 0), "", name)
-		guiFilterUnreleased.SetChecked(False, False)
-		checkboxHeight :+ guiFilterUnreleased.GetScreenRect().GetH()
-
 		guiStartWithCredit = New TGUICheckBox.Create(New SVec2I(xCol1, 0 + checkboxHeight), New SVec2I(280, 0), "", name)
 		guiStartWithCredit.SetChecked(GameRules.startGameWithCredit, False)
 		checkboxHeight :+ guiStartWithCredit.GetScreenRect().GetH()
+
+		guiFilterUnreleased = New TGUICheckBox.Create(New SVec2I(xCol1, 0 + checkboxHeight), New SVec2I(280, 0), "", name)
+		guiFilterUnreleased.SetChecked(False, False)
+		checkboxHeight :+ guiFilterUnreleased.GetScreenRect().GetH()
 
 		guiAnnounce = New TGUICheckBox.Create(New SVec2I(xCol1, 0 + checkboxHeight), New SVec2I(280, 0), "", name)
 		guiAnnounce.SetChecked(True, False)
@@ -133,8 +133,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsPanel.AddChild(guiAnnounce)
 		guiSettingsPanel.AddChild(gui24HoursDay)
 		guiSettingsPanel.AddChild(guiSpecialFormats)
-		guiSettingsPanel.AddChild(guiFilterUnreleased)
 		guiSettingsPanel.AddChild(guiStartWithCredit)
+		guiSettingsPanel.AddChild(guiFilterUnreleased)
 		guiSettingsPanel.AddChild(guiRandomizeLicence)
 
 		'MISSIONS
@@ -820,9 +820,9 @@ endrem
 		gui24HoursDay.rect.SetY(0)
 		y :+ gui24HoursDay.GetScreenRect().h
 		y :+ gui24HoursDay.GetScreenRect().h
-		guiFilterUnreleased.rect.SetY(y)
-		y :+ guiFilterUnreleased.GetScreenRect().h
 		guiStartWithCredit.rect.SetY(y)
+		y :+ guiStartWithCredit.GetScreenRect().h
+		guiFilterUnreleased.rect.SetY(y)
 		'column 2
 		y:Int = 0
 		guiSpecialFormats.rect.SetY(y)
