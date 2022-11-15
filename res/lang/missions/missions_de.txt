@@ -15,6 +15,7 @@ MISSION_TITLE_REACH = Reichweite
 MISSION_TITLE_BETTY = Bettys Liebe
 
 MISSION_GOAL_MAXIMIZE = Maximierung %GOAL%
+MISSION_GOAL_LESSTHAN = immer weniger als %GOAL%
 MISSION_GOAL_IMAGE    = %VALUE%% Image
 MISSION_GOAL_MONEY    = Kontostand %VALUE%
 MISSION_GOAL_REACH    = %VALUE%% Reichweite
