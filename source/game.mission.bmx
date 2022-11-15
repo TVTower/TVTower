@@ -12,12 +12,13 @@ Global AllMissions:TMissions = new TMissions()
 
 Type TMissions
 	Field missions:TMap = null {noSave}
+	Field missionCategories:TList {noSave}
 	Field missionIDs:TList {noSave}
 
 	Method getCategories:String[]()
 		If Not missions Then _initMissions()
 		Local categories:String[] = new String[0]
-		For local k:string = EachIn missions.Keys()
+		For local k:string = EachIn missionCategories
 				categories :+ [k]
 			Next
 		Return categories
@@ -38,11 +39,13 @@ Type TMissions
 		If Not missions
 			missions = CreateMap()
 			missionIDs = new TList()
+			missionCategories = new TList()
 		EndIf
 		Local list:TMission[]
 		Local value:Object = missions.ValueForKey(mission.GetCategory())
 		If Not value
 			list = new TMission[1]
+			missionCategories.addLast(mission.GetCategory())
 		Else
 			Local currentList:TMission[] = TMission[](value)
 			If currentList
@@ -66,16 +69,6 @@ Type TMissions
 	Method _initMissions()
 		If Not missions
 
-			_addMission(TSimpleMission.createMoney(100000000))
-			_addMission(TSimpleMission.createMoney(-1,20))
-			_addMission(TSimpleMission.createMoney(-1,40))
-			_addMission(TSimpleMission.createMoney(50000000,40))
-
-			_addMission(TSimpleMission.createReach(80))
-			_addMission(TSimpleMission.createReach(-1,20))
-			_addMission(TSimpleMission.createReach(-1,40))
-			_addMission(TSimpleMission.createReach(50,40))
-
 			_addMission(TSimpleMission.createImage(95))
 			_addMission(TSimpleMission.createImage(-1,20))
 			_addMission(TSimpleMission.createImage(-1,40))
@@ -85,6 +78,16 @@ Type TMissions
 			_addMission(TSimpleMission.createBetty(-1,20))
 			_addMission(TSimpleMission.createBetty(-1,40))
 			_addMission(TSimpleMission.createBetty(50,40))
+
+			_addMission(TSimpleMission.createReach(80))
+			_addMission(TSimpleMission.createReach(-1,20))
+			_addMission(TSimpleMission.createReach(-1,40))
+			_addMission(TSimpleMission.createReach(50,40))
+
+			_addMission(TSimpleMission.createMoney(100000000))
+			_addMission(TSimpleMission.createMoney(-1,20))
+			_addMission(TSimpleMission.createMoney(-1,40))
+			_addMission(TSimpleMission.createMoney(50000000,40))
 
 			rem test mission for failing
 			_addMission(TSimpleMission.createReach(50,1))
