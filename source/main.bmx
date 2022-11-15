@@ -5171,7 +5171,7 @@ endrem
 			toast.SetLifeTime(20)
 			toast.SetMessageType( 1 )
 			toast.SetMessageCategory(TVTMessageCategory.MISC)
-			toast.SetCaption( GetLocale("MENU_MISSION_GAME")+" erfolgreich abgeschlossen: "+mission.getTitle() )
+			toast.SetCaption( GetLocale("MISSION_SUCCESS").replace("%GOAL%", mission.getTitle()) )
 			toast.SetText( mission.GetDescription() + messageSuffix)
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 			'GetGame().SetGameOver()
@@ -5195,8 +5195,8 @@ endrem
 			toast.SetLifeTime(20)
 			toast.SetMessageType( 1 )
 			toast.SetMessageCategory(TVTMessageCategory.MISC)
-			toast.SetCaption( GetLocale("MENU_MISSION_GAME")+" verfehlt: "+mission.getTitle())
-			toast.SetText( mission.GetDescription() +messageSuffix )
+			toast.SetCaption( GetLocale("MISSION_FAILED").replace("%GOAL%", mission.getTitle()) )
+			toast.SetText( mission.GetDescription() + messageSuffix )
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 			GetGame().mission = null
 			'TODO show highscore window + continuing the game possible?

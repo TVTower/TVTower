@@ -132,7 +132,6 @@ SEASON_WINTER        = Winter
 
 
 MENU_SOLO_GAME       = Einzelspieler
-MENU_MISSION_GAME    = Mission
 MENU_START_GAME      = Spiel starten
 MENU_NETWORKGAME     = Netzwerkspiel
 MENU_ONLINEGAME      = Onlinespiel

@@ -132,7 +132,6 @@ WEEK_LONG_SUNDAY     = pazar
 
 
 MENU_SOLO_GAME       = Tek Kişilik Oyun
-#MENU_MISSION_GAME    = 
 MENU_START_GAME      = Oyuna Başla
 MENU_NETWORKGAME     = Ağ Oyunu
 MENU_ONLINEGAME      = İnternet Oyunu

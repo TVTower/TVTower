@@ -282,7 +282,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			toast.SetLifeTime(10)
 			toast.SetMessageType( 1 )
 			toast.SetMessageCategory(TVTMessageCategory.MISC)
-			toast.SetCaption( GetLocale("MENU_MISSION_GAME")+": "+mission.getTitle() )
+			toast.SetCaption( GetLocale("MISSION")+": "+mission.getTitle() )
 			toast.SetText( mission.GetDescription() )
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 		EndIf

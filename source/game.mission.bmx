@@ -134,6 +134,10 @@ Type TSimpleMission extends TMission
 		If category = "BETTY" and targetValue > 0 Then Return EventManager.registerListenerMethod(GameEventKeys.Betty_OnAdjustLove, Self, "OnBettyChange")
 	EndMethod
 
+	Method getTitle:String()
+		Return GetLocale("MISSION_TITLE_"+getCategory())
+	End Method
+
 	Method getCategory:String()
 		return category
 	End Method
@@ -150,11 +154,11 @@ Type TSimpleMission extends TMission
 			case "MONEY"
 				return TFunctions.convertValue(value, 2)
 			case "REACH"
-				return value +"%"
+				return value
 			case "IMAGE"
-				return value +"%"
+				return value
 			case "BETTY"
-				return value/100 +"%"
+				return value/100
 		End Select
 		throw "TSimpleMission.formatValue(): unknown category "+category
 	End Method
@@ -162,15 +166,15 @@ Type TSimpleMission extends TMission
 	Method getDescription:String()
 		Local desc:String
 		If targetValue < 0
-			desc="Maximierung "+ getCategory()
+			desc = GetLocale("MISSION_GOAL_MAXIMIZE").Replace("%GOAL%", getTitle())
 		Else
-			desc= getCategory() +" " + formatValue(targetValue)
+			desc = GetLocale("MISSION_GOAL_"+getCategory()).replace("%VALUE%", formatValue(targetValue))
 		EndIf
 		If daysForAchieving > 0
 			If targetValue < 0
-				desc:+ " nach "+daysForAchieving+" Tagen"
+				desc = GetLocale("MISSION_TIME_AFTER").Replace("%GOAL%", desc).replace("%DAYS%",daysForAchieving)
 			Else
-				desc:+ " innerhalb von "+daysForAchieving+" Tagen"
+				desc = GetLocale("MISSION_TIME_WITHIN").Replace("%GOAL%", desc).replace("%DAYS%",daysForAchieving)
 			EndIf
 		EndIf
 		Return desc
@@ -244,7 +248,8 @@ Type TSimpleMission extends TMission
 					'player wins
 					fireEvent = True
 				Else
-					data.addString("text", "~nEin anderer Spieler war schneller")
+					Local playerName:String = GetPlayer(currentPlayer).Name
+					data.addString("text", "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName))
 					'other player wins
 					fireEvent = True
 					key = GameEventKeys.Mission_Failed

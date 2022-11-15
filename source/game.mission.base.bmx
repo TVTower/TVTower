@@ -20,9 +20,7 @@ Type TMission
 	Field playerID:Int = -1
 	Field daysRun:Int = -1
 
-	Method getTitle:String()
-		Return GetLocale("MISSION_"+getCategory())
-	End Method
+	Method getTitle:String() abstract
 
 	Method getCategory:String() abstract
 
@@ -75,11 +73,17 @@ Type TMission
 		rem
 		'a mission difficulty level might define a specific floor for the player
 		Select difficulty
-			case "easy"
+			case MissionDifficulty.NONE
+				return -1
+			case MissionDifficulty.EASY
 				return 3
-			case "normal"
+			case MissionDifficulty.NORMAL
 				return 2
-			case "hard"
+			case MissionDifficulty.HARD
+				return 4
+			case MissionDifficulty.HARDER
+				return 4
+			case MissionDifficulty.HARDEST
 				return 4
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty

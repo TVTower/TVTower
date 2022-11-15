@@ -132,7 +132,6 @@ SEASON_WINTER        = Hiver
 
 
 MENU_SOLO_GAME       = Partie Solo
-#MENU_MISSION_GAME    = 
 MENU_START_GAME      = Démarrer
 MENU_NETWORKGAME     = Partie LAN
 MENU_ONLINEGAME      = Partie en ligne
