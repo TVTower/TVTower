@@ -4,9 +4,18 @@ Import "game.gameeventkeys.bmx"
 Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
 
+Enum MissionDifficulty
+	NONE = 0
+	EASY = 1
+	NORMAL = 2
+	HARD = 3
+	HARDER = 4
+	HARDEST = 5
+End Enum
+
 Type TMission
 	Global _eventListeners:TEventListenerBase[]
-	Field difficulty:String
+	Field difficulty:MissionDifficulty
 	Field daysForAchieving:Int = -1
 	Field playerID:Int = -1
 	Field daysRun:Int = -1
@@ -23,8 +32,8 @@ Type TMission
 	End Method
 
 	Method getMissionId:String()
-		Local id:String = getCategory() + "_"+difficulty
-		If daysForAchieving > 0 Then id:+ ("_d"+daysForAchieving)
+		Local id:String = getCategory() + "_diff"+difficulty
+		If daysForAchieving > 0 Then id:+ ("_days"+daysForAchieving)
 		Local idSuffix:String = getIdSuffix()
 		If idSuffix Then id:+ ("_"+getIdSuffix())
 		return id.toUpper()
@@ -56,7 +65,12 @@ Type TMission
 
 	Method checkMissionResult(forceFinish:Int=False) abstract
 
-	Method getHumanPlayerPosition:Int(difficulty:String)
+	'Array of enum values does not work!! - the values of the array cannot be converted back via "ordinal"
+	Method getSupportedDifficulties:Int[]()
+		return [ MissionDifficulty.EASY.ordinal(), MissionDifficulty.NORMAL.ordinal(), MissionDifficulty.HARD.ordinal(), MissionDifficulty.HARDER.ordinal(), MissionDifficulty.HARDEST.ordinal(), MissionDifficulty.NONE.ordinal()]
+	End Method
+
+	Method getHumanPlayerPosition:Int(difficulty:MissionDifficulty)
 		Return -1
 		rem
 		'a mission difficulty level might define a specific floor for the player
@@ -72,37 +86,55 @@ Type TMission
 		endrem
 	End Method
 
-	Method getHumanPlayerDifficulty:String(difficulty:String)
+	Method getHumanPlayerDifficulty:String(difficulty:MissionDifficulty)
 		Select difficulty
-			case "easy"
+			case MissionDifficulty.NONE
+				return ""
+			case MissionDifficulty.EASY
 				return "easy"
-			case "normal"
+			case MissionDifficulty.NORMAL
 				return "normal"
-			case "hard"
+			case MissionDifficulty.HARD
+				return "normal"
+			case MissionDifficulty.HARDER
+				return "hard"
+			case MissionDifficulty.HARDEST
 				return "hard"
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty
 	End Method
 
-	Method getAiPlayerDifficulty:String(difficulty:String)
+	Method getAiPlayerDifficulty:String(difficulty:MissionDifficulty)
 		Select difficulty
-			case "easy"
+			case MissionDifficulty.NONE
+				return ""
+			case MissionDifficulty.EASY
 				return "normal"
-			case "normal"
+			case MissionDifficulty.NORMAL
 				return "normal"
-			case "hard"
+			case MissionDifficulty.HARD
+				return "easy"
+			case MissionDifficulty.HARDER
+				return "normal"
+			case MissionDifficulty.HARDEST
 				return "easy"
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty
 	End Method
 
-	Method getStartYear:Int(difficulty:String)
+	Method getStartYear:Int(difficulty:MissionDifficulty)
 		Select difficulty
-			case "easy"
+			case MissionDifficulty.NONE
+				return -1
+			case MissionDifficulty.EASY
 				return 1990
-			case "normal"
+			case MissionDifficulty.NORMAL
 				return 1985
-			case "hard"
+			case MissionDifficulty.HARD
+				return 1995
+			case MissionDifficulty.HARDER
+				return 1995
+			case MissionDifficulty.HARDEST
 				return 1995
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty

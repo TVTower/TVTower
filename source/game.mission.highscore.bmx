@@ -6,6 +6,7 @@ Import "Dig/external/persistence.mod/persistence_mxml.bmx"
 ?not bmxng
 Import "Dig/external/persistence.mod/persistence.bmx"
 ?
+Import "game.mission.base.bmx"
 
 Type TMissionHighscore
 	'TODO how to access the local time for displaying when the game was played
@@ -40,7 +41,7 @@ End Type
 'TODO incorporate number of days per season in missionID (different lists) or highscore itself
 Type TMissionHighscores
 	Field missionID:String
-	Field missiondifficulty:String
+	Field missiondifficulty:Int 'enum not persisted
 	Field scores:TMissionHighscore[] = new TMissionHighscore[0]
 End Type
 
@@ -50,7 +51,7 @@ Type TAllHighscores
 	Global lastDifficulty:String {noSave}
 	Global lastScore:TMissionHighscore {noSave}
 
-	Function addEntry(missionID:String, difficulty:String, score:TMissionHighscore)
+	Function addEntry(missionID:String, difficulty:MissionDifficulty, score:TMissionHighscore)
 		rem
 		'prevent duplicate entries - originally cause be duplicate listener registration
 		If lastID And lastID = missionID And lastDifficulty = difficulty
@@ -77,7 +78,7 @@ Type TAllHighscores
 		Local missionScore:TMissionHighscores
 		For Local index:Int = 0 Until persistedScores.scores.length
 			missionScore = persistedScores.scores[index]
-			If missionScore and missionScore.missionID = missionID and missionScore.missiondifficulty = difficulty
+			If missionScore and missionScore.missionID = missionID and missionScore.missiondifficulty = difficulty.ordinal()
 				highScoreExisted = True
 				missionScore.scores:+ [score]
 				persistedScores.scores[index] = missionScore
@@ -87,7 +88,7 @@ Type TAllHighscores
 		If Not highScoreExisted
 			missionScore = new TMissionHighscores
 			missionScore.missionID = missionID
-			missionScore.missiondifficulty = difficulty
+			missionScore.missiondifficulty = difficulty.ordinal()
 			missionScore.scores = [score]
 			persistedScores.scores:+ [missionScore]
 		EndIf

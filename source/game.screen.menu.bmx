@@ -157,20 +157,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		guiMissions = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(300, -1), "Mission", 60, name)
 
-		guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "", 16, name)
+		guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "Difficulty", 16, name)
 		guiMissionDifficulty.SetPosition(550, settingsRect.getY())
-
-		Local difficultyValues:String[] = ["easy", "normal", "hard"]
-		itemHeight:Int = 0
-		For Local s:String = EachIn difficultyValues
-			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(100,20), GetLocale("DIFFICULTY_"+s))
-			item.data.Add("value", s)
-
-			guiMissionDifficulty.AddItem( item )
-			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
-		Next
-		guiMissionDifficulty.SetListContentHeight(itemHeight * Min(difficultyValues.length,5))
-		guiMissionDifficulty.SetSelectedEntry(guiMissionDifficulty.GetEntryByPos(1))
 
 		modifiedMissions = True
 		'END MISSIONS
@@ -481,16 +469,16 @@ Type TScreen_GameSettings Extends TGameScreen
 						Local mission:TMission = null
 						If guiMissions.getSelectedEntry() Then mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
 						If mission
-							mission.difficulty = guiMissionDifficulty.getSelectedEntry().data.getString("value")
+							mission.difficulty = MissionDifficulty(guiMissionDifficulty.getSelectedEntry().data.getInt("value"))
 							For Local p:Int = 1 To 4
 								If GetPlayerBase(p).IsLocalHuman() Then mission.playerID = p
 							Next
 							GetGameBase().mission = mission
 							TProgrammeData.setIgnoreUnreleasedProgrammes( true )
 							'GameRules.startGameWithCredit = False 'let player decide
-							GameRules.randomizeLicenceAttributes = False
+							'GetGameBase().SetRandomizerBase( 0 ) ' let player decide
 							'TODO licence value randomization!?
-							GetGameBase().SetRandomizerBase( 0 )
+							GameRules.randomizeLicenceAttributes = False
 							GetGameBase().userStartYear = Int(guiStartYear.value)
 						EndIf
 
@@ -587,13 +575,30 @@ Type TScreen_GameSettings Extends TGameScreen
 				For Local m:TMission = EachIn missions
 					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(300,20), m.GetDescription())
 					item.data.Add("value", m)
-	
+
 					guiMissions.AddItem( item )
 					If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 				Next
 				guiMissions.SetListContentHeight(itemHeight * Min(missions.length,7))
 				guiMissions.SetPosition(settingsRect.getX()+160, settingsRect.getY())
 				guiMissions.SetSelectedEntry(guiMissions.GetEntryByPos(0))
+
+				guiMissionDifficulty.Remove()
+				guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "Difficulty", 16, name)
+				guiMissionDifficulty.SetPosition(550, settingsRect.getY())
+
+				Local mission:TMission = TMission(guiMissions.getSelectedEntry().data.Get("value"))
+				Local difficultyValues:Int[] = mission.getSupportedDifficulties()
+				itemHeight:Int = 0
+				For Local s:Int = EachIn difficultyValues
+					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(100,20), GetLocale("MISSION_DIFFICULTY_"+s))
+					item.data.AddInt("value", s)
+
+					guiMissionDifficulty.AddItem( item )
+					If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
+				Next
+				guiMissionDifficulty.SetListContentHeight(itemHeight * Min(difficultyValues.length,7))
+				guiMissionDifficulty.SetSelectedEntry(guiMissionDifficulty.GetEntryByPos(0))
 				guiMissionDifficulty.show()
 			Else
 				guiMissionDifficulty.hide()
@@ -603,14 +608,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		Return True
 	End Method
 
-	Method updateMissionValues(mission:TMission, difficulty:String)
+	Method updateMissionValues(mission:TMission, difficulty:MissionDifficulty)
 		If not mission
 			'guiGameTitleLabel.hide()
 			'guiGameTitle.hide()
 			guiStartYear.enable()
 			guiFilterUnreleased.show()
-			guiGameSeedLabel.show()
-			guiGameSeed.show()
+			'guiGameSeedLabel.show()
+			'guiGameSeed.show()
 			guiRandomizeLicence.show()
 			gui24HoursDay.show()
 			guiSpecialFormats.show()
@@ -620,11 +625,19 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiDifficulty[3].enable()
 			guiMissions.hide()
 			guiMissionDifficulty.hide()
+		ElseIf difficulty = MissionDifficulty.NONE
+			guiStartYear.enable()
+			guiFilterUnreleased.show()
+			guiRandomizeLicence.show()
+			guiDifficulty[0].enable()
+			guiDifficulty[1].enable()
+			guiDifficulty[2].enable()
+			guiDifficulty[3].enable()
 		Else
 			guiStartYear.disable()
 			guiFilterUnreleased.hide()
-			guiGameSeedLabel.hide()
-			guiGameSeed.hide()
+			'guiGameSeedLabel.hide()
+			'guiGameSeed.disable()
 			'guiStartWithCredit.hide()
 			guiRandomizeLicence.hide()
 			gui24HoursDay.hide()
@@ -636,7 +649,13 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiMissions.show()
 			guiMissionDifficulty.show()
 
-			guiStartYear.SetValue(mission.getStartYear(difficulty))
+			Local startYear:Int = mission.getStartYear(difficulty)
+			If startYear > 0
+				guiStartYear.SetValue(startYear)
+			Else
+				guiStartYear.enable()
+			EndIf
+
 			Local intendedPosition:Int = mission.getHumanPlayerPosition(difficulty)
 			If intendedPosition > 0
 				For Local p:Int = 1 To 4
@@ -904,7 +923,8 @@ endrem
 			If modifiedMissions
 				Local mission:TMission = null
 				If guiMissions.getSelectedEntry() Then mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
-				updateMissionValues(mission, String(guiMissionDifficulty.getSelectedEntry().data.getString("value")))
+				Local difficultyInt:Int = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
+				updateMissionValues(mission, MissionDifficulty(difficultyInt))
 			EndIf
 			guiSettingsWindow.SetCaption(GetLocale("MENU_SOLO_GAME"))
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,False)

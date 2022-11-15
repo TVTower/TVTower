@@ -276,6 +276,8 @@ Type TSimpleMission extends TMission
 			score.playerDifficulty = playerForScore.GetDifficulty().GetGUID()
 			score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
 			score.value = data
+			'TODO no entry for free game?
+			'for free game store start year,playerdifficulties
 			If key = GameEventKeys.Mission_Achieved
 				'TODO for "maximize value mission" an AI value might have performed better
 				'ignore those for now
