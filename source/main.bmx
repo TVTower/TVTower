@@ -5177,6 +5177,7 @@ endrem
 			'GetGame().SetGameOver()
 			'GetPlayer().GetFigure()._controllable = False
 			'TODO show highscore window + continuing the game possible?
+			GetGame().mission.done()
 			GetGame().mission = null
 		EndIf
 	End Function
@@ -5198,6 +5199,7 @@ endrem
 			toast.SetCaption( GetLocale("MISSION_FAILED").replace("%GOAL%", mission.getTitle()) )
 			toast.SetText( mission.GetDescription() + messageSuffix )
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+			GetGame().mission.done()
 			GetGame().mission = null
 			'TODO show highscore window + continuing the game possible?
 		EndIf

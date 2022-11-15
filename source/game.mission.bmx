@@ -245,6 +245,7 @@ Type TSimpleMission extends TMission
 		Local data:TData = New TData
 		Local key:TEventKey = GameEventKeys.Mission_Achieved
 		Local fireEvent:Int = False
+		Local text:String
 		If targetValue > 0
 			If currentValue >= targetValue
 				If playerID = currentPlayer
@@ -252,7 +253,7 @@ Type TSimpleMission extends TMission
 					fireEvent = True
 				Else
 					Local playerName:String = GetPlayer(currentPlayer).Name
-					data.addString("text", "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName))
+					text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName)
 					'other player wins
 					fireEvent = True
 					key = GameEventKeys.Mission_Failed
@@ -265,8 +266,7 @@ Type TSimpleMission extends TMission
 			EndIf
 		ElseIf forceFinish
 			'maximized value after x days
-			Local txt:String = "~n"+ getCategory() +" "+formatValue(currentValue)
-			data.addString("text", txt )
+			text = "~n"+GetLocale("MISSION_GOAL_"+ getCategory()).replace("%VALUE%", formatValue(currentValue))
 			fireEvent = True
 		EndIf
 
@@ -317,6 +317,7 @@ Type TSimpleMission extends TMission
 			data.addInt("days", daysRun)
 			data.addInt("player", currentPlayer)'may be misleading if there is no winner
 			data.add("highscore", score)
+			If text Then data.addString("text", text)
 			TriggerBaseEvent(key, data, Self)
 		EndIf
 		currentPlayerFinance = null

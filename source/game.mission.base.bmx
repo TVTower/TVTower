@@ -41,6 +41,7 @@ Type TMission
 		'=== EVENTS ===
 		'remove old listeners
 		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 		Local missionListener:TEventListenerBase = getCheckListener()
 		If missionListener Then _eventListeners :+ [missionListener]
 
@@ -48,6 +49,11 @@ Type TMission
 		daysRun = GetWorldTime().GetDaysRun(-1)
 		If playerID < 1 Then throw "TMission.initialize(): player id was not set!"
 	End Method
+
+	Method done()
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
+	EndMethod
 
 	Method OnDay:Int(triggerEvent:TEventBase)
 		Local now:Long = triggerEvent.GetData().GetLong("time",-1)
