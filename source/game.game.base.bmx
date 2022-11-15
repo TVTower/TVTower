@@ -49,7 +49,6 @@ Type TGameBase {_exposeToLua="selected"}
 	Field playerNames:string[] = ["Ronny", "Sandra", "Seidi", "Alfi"]
 	Field channelNames:string[] = ["TowerTV", "SunTV", "FunTV", "RatTV"]
 
-	Field missiongame:Int = 0
 	'--networkgame auf "isNetworkGame()" umbauen
 	'are we playing a network game? 0=false, 1=true, 2
 	Field networkgame:Int = 0
