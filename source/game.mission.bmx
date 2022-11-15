@@ -281,11 +281,18 @@ Type TSimpleMission extends TMission
 			score.channelName = playerForScore.channelname
 			score.missionAccomplished = True
 			If Not playerForScore.IsHuman() Then score.aiPlayer = True
-			score.playerDifficulty = playerForScore.GetDifficulty().GetGUID()
 			score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
+			score.startYear = GetWorldTime().GetStartYear()
+
+			'store player difficulties - in particular for free games
+			Local diffs:String[0]
+			For Local i:Int = 1 To 4
+				Local diff:String = GetPlayer(i).GetDifficulty().GetGUID()
+				diffs:+ [diff]
+			Next
+			score.playerDifficulties = diffs
+
 			score.value = data
-			'TODO no entry for free game?
-			'for free game store start year,playerdifficulties
 			If key = GameEventKeys.Mission_Achieved
 				'TODO for "maximize value mission" an AI value might have performed better
 				'ignore those for now

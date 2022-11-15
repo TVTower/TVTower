@@ -16,8 +16,9 @@ Type TMissionHighscore
 	Field channelName:String
 	Field gameMinutes:Long
 	Field missionAccomplished:Int = False
+	Field startYear:Int
 	Field aiPlayer:Int = False
-	Field playerDifficulty:String
+	Field playerDifficulties:String[]
 	'encoded entry of the high score, the mission must be capable of translating it back
 	'for presentation and ordering entries
 	Field value:TData
