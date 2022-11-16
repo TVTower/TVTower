@@ -258,8 +258,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		
 		If mission
 			mission.Initialize()
-			print "disable dev options"
-			'TODO disable dev for mission game here
 		EndIf
 
 		'so we could add news etc.
@@ -278,12 +276,21 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		?
 
 		If mission
+			Local suffix:String = ""
+			?not debug
+				Local devMode:Int = GameRules.devConfig.GetBool(New TLowerString.Create("DEV_KEYS"), False)
+				If devMode
+					GameRules.devConfig.AddBool(New TLowerString.Create("DEV_KEYS"), False)
+					suffix = "~n"+GetLocale("MISSION_DISABLE_DEV")
+				EndIf
+			?
+
 			Local toast:TGameToastMessage = New TGameToastMessage
 			toast.SetLifeTime(10)
 			toast.SetMessageType( 1 )
 			toast.SetMessageCategory(TVTMessageCategory.MISC)
 			toast.SetCaption( GetLocale("MISSION")+": "+mission.getTitle() )
-			toast.SetText( mission.GetDescription() )
+			toast.SetText( mission.GetDescription() + suffix)
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 		EndIf
 

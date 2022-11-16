@@ -2,6 +2,8 @@ MISSION               = Task
 MISSION_SUCCESS       = Task %GOAL% finished successfully
 MISSION_FAILED        = Task %GOAL% failed
 MISSION_OTHER_PLAYER  = %NAME% finished the task first
+MISSION_DISABLE_DEV   = Developer mode was disabled
+MISSION_ABORTED       = Task aborted
 
 MISSION_CATEGORY_NOGOAL = Endless Game
 MISSION_CATEGORY_IMAGE  = Image

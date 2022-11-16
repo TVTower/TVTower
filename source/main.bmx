@@ -4589,6 +4589,19 @@ Type GameEvents
 				'SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
 		End Select
 
+		?not debug
+			'dev keys were reactivated
+			If GetGame().mission And GameRules.devConfig.GetBool(TApp.keyLS_DevKeys, False)
+				Local toast:TGameToastMessage = New TGameToastMessage
+				toast.SetLifeTime(10)
+				toast.SetMessageType( 1 )
+				toast.SetMessageCategory(TVTMessageCategory.MISC)
+				toast.SetCaption( GetLocale("MISSION")+": "+GetGame().mission.getTitle() )
+				toast.SetText( GetLocale("MISSION_ABORTED"))
+				GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+				GetGame().mission = null
+			EndIf
+		?
 
 		Function SendHelp()
 			GetGame().SendSystemMessage("[DEV] available commands:")

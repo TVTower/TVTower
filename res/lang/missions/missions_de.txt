@@ -2,6 +2,8 @@ MISSION               = Auftrag
 MISSION_SUCCESS       = Auftrag %GOAL% erfolgreich abgeschlossen
 MISSION_FAILED        = Auftrag %GOAL% verfehlt
 MISSION_OTHER_PLAYER  = %NAME% war schneller
+MISSION_DISABLE_DEV   = Entwicklermodus wurde deaktiviert
+MISSION_ABORTED       = Auftrag abgebrochen
 
 MISSION_CATEGORY_NOGOAL = Endlosspiel
 MISSION_CATEGORY_IMAGE  = Image
