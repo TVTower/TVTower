@@ -24,7 +24,7 @@ MISSION_GOAL_REACH    = %VALUE%% Reichweite
 MISSION_GOAL_BETTY    = %VALUE%% Betty-Liebe
 
 MISSION_TIME_WITHIN = %GOAL% innerhalb von %DAYS% Tagen
-MISSION_TIME_AFTER = %GOAL% nach %DAYS% Tagen
+MISSION_TIME_AFTER  = %GOAL% nach %DAYS% Tagen
 
 MISSION_DIFFICULTY_0 = Angepasst
 MISSION_DIFFICULTY_1 = Einfach
