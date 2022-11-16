@@ -102,6 +102,25 @@ Type TMissions
 		EndIf
 	End Method
 
+	Function getHighScoreData:TMissionHighscorePlayerData(player:Int)
+		Local result:TMissionHighscorePlayerData = new TMissionHighscorePlayerData()
+		result.playerID=player
+		Local playerForScore:TPlayer = GetPlayer(player)
+		result.playerID = player
+		result.playerName = playerForScore.Name
+		result.channelName = playerForScore.channelname
+		If Not playerForScore.IsHuman() Then result.aiPlayer = True
+		result.difficulty = playerForScore.GetDifficulty().GetGUID()
+
+		Local finance:TPlayerFinance = playerForScore.GetFinance()
+		result.accountBalance = finance.GetMoney() - finance.GetCredit()
+		Local image:TPublicImage = playerForScore.GetPublicImage()
+		result.image = image.GetAverageImage()
+		Local map:TStationMap =  GetStationMapCollection().GetMap(player, True)
+		result.reach = map.getCoverage()
+		result.betty = GetBetty().GetInLove(player)
+		Return result
+	EndFunction
 End Type
 
 Type TSimpleMission extends TMission
@@ -217,25 +236,21 @@ Type TSimpleMission extends TMission
 
 	Method checkMissionResult(forceFinish:Int=False)
 		Local currentValue:Int
-		Local currentValueRaw:Float
 		Local currentPlayer:Int = -1
 		Select category
 			case "MONEY"
 				If not currentPlayerFinance Then currentPlayerFinance = GetPlayerFinanceCollection().Get(playerID, -1)
 				currentValue = currentPlayerFinance.GetMoney() - currentPlayerFinance.GetCredit()
-				currentValueRaw = currentValue
 				currentPlayer = currentPlayerFinance.playerID
 			case "REACH"
 				If not currentPlayerMap Then currentPlayerMap = GetStationMapCollection().GetMap(playerID, True)
 				Local coverage:Float = currentPlayerMap.GetCoverage()
 				currentValue = Int(coverage*100)
-				currentValueRaw = coverage
 				currentPlayer = currentPlayerMap.GetOwner()
 			case "IMAGE"
 				If not currentImage Then currentImage = GetPlayer(playerID).GetPublicImage()
 				Local image:Float = currentImage.GetAverageImage()
 				currentValue = Int(image)
-				currentValueRaw = image
 				currentPlayer = currentImage.playerID
 			case "BETTY"
 				Local betty:TBetty = GetBetty()
@@ -245,18 +260,18 @@ Type TSimpleMission extends TMission
 					currentPlayer = playerID
 				EndIf
 				currentValue = betty.GetInLove(currentPlayer)
-				currentValueRaw = currentValue
 		End Select
 
-		Local data:TData = New TData
 		Local key:TEventKey = GameEventKeys.Mission_Achieved
 		Local fireEvent:Int = False
 		Local text:String
+		Local winningPlayer:Int
 		If targetValue > 0
 			If currentValue >= targetValue
 				If playerID = currentPlayer
 					'player wins
 					fireEvent = True
+					winningPlayer = currentPlayer
 				Else
 					Local playerName:String = GetPlayer(currentPlayer).Name
 					text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName)
@@ -274,54 +289,29 @@ Type TSimpleMission extends TMission
 			'maximized value after x days
 			text = "~n"+GetLocale("MISSION_GOAL_"+ getCategory()).replace("%VALUE%", formatValue(currentValue))
 			fireEvent = True
+			'do not set winning player - AI may have performed better
 		EndIf
 
 		If fireEvent
-			data.addFloat("value", currentValue)
-			data.addFloat("valueRaw", currentValueRaw)
-
 			Local score:TMissionHighscore = new TMissionHighscore
-			Local playerForScore:TPlayer = GetPlayer(playerID)
-			score.playerID = playerID
-			score.playerName = playerForScore.Name
-			score.channelName = playerForScore.channelname
-			score.missionAccomplished = True
-			If Not playerForScore.IsHuman() Then score.aiPlayer = True
+			If key = GameEventKeys.Mission_Achieved
+				score.missionAccomplished = True
+			Else
+				score.missionAccomplished = False
+			EndIf
+			score.primaryPlayer = playerID
+			score.winningPlayer = winningPlayer
 			score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
 			score.startYear = GetWorldTime().GetStartYear()
-
-			'store player difficulties - in particular for free games
-			Local diffs:String[0]
-			For Local i:Int = 1 To 4
-				Local diff:String = GetPlayer(i).GetDifficulty().GetGUID()
-				diffs:+ [diff]
+			Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[0]
+			For Local p:Int=1 TO 4
+				playerData:+ [TMissions.getHighScoreData(p)]
 			Next
-			score.playerDifficulties = diffs
+			score.playerData = playerData
+			'print "adding highscore " + playerID
+			TAllHighscores.addEntry(getMissionId(), difficulty, score)
 
-			score.value = data
-			If key = GameEventKeys.Mission_Achieved
-				'TODO for "maximize value mission" an AI value might have performed better
-				'ignore those for now
-				If playerID <> currentPlayer
-					score = null
-					'TODO throw error? should not happen; achieve by other player = fail
-				EndIf
-			Else
-				If currentPlayer = playerID
-					score.missionAccomplished = False
-				Else
-					'TODO create AI score entry?
-					score = null
-				EndIf
-			EndIf
-			If score
-				'print "adding highscore " + playerID
-				TAllHighscores.addEntry(getMissionId(), difficulty, score)
-			EndIf
-			data=data.copy()
-			data.add("type", category)
-			data.addInt("days", daysRun)
-			data.addInt("player", currentPlayer)'may be misleading if there is no winner
+			Local data:TData = New TData
 			data.add("highscore", score)
 			If text Then data.addString("text", text)
 			TriggerBaseEvent(key, data, Self)
@@ -385,7 +375,7 @@ Type TCombinedMission extends TMission
 
 	Method getIdSuffix:String() override
 		Local mapName:String = GetStationMapCollection().GetMapName()
-		Local suffix:String = mapName
+		Local suffix:String = mapName+"_COMBI"
 		If money Then suffix:+("_M"+money)
 		If reach Then suffix:+("_R"+reach)
 		If image Then suffix:+("_I"+image)
@@ -453,7 +443,7 @@ Type TCombinedMission extends TMission
 		Local currentReach:Int = 0
 		Local currentReachRaw:Float
 		Local currentBetty:Int = 0
-		Local failFast:Int = False
+		Local failFast:Int = False 'AI value above a mission threshold
 
 		'evaluate event
 		If currentPlayerFinance
@@ -465,18 +455,18 @@ Type TCombinedMission extends TMission
 			currentReach = Int(coverage*100)
 			currentReachRaw = coverage
 			currentPlayer = currentPlayerMap.GetOwner()
-			If reach < 0 And currentReach >= abs(reach)  And currentPlayer <> playerID Then failFast = True
+			If reach < 0 And currentReach >= abs(reach) And currentPlayer <> playerID Then failFast = True
 		ElseIf currentPublicImage
 			Local image:Float = currentPublicImage.GetAverageImage()
 			currentImage = Int(image)
 			currentImageRaw = image
 			currentPlayer = currentPublicImage.playerID
-			If image < 0 And currentImage >= abs(image)  And currentPlayer <> playerID Then failFast = True
+			If image < 0 And currentImage >= abs(image) And currentPlayer <> playerID Then failFast = True
 		ElseIf currentBettyEvent
 			Local bettyType:TBetty = GetBetty()
 			currentPlayer = currentBettyEvent.GetData().GetInt("player")
 			currentBetty = bettyType.GetInLove(currentPlayer)
-			If betty < 0 And currentBetty >= abs(betty)  And currentPlayer <> playerID Then failFast = True
+			If betty < 0 And currentBetty >= abs(betty) And currentPlayer <> playerID Then failFast = True
 		Else
 			throw "TCominedMission.checkMissionResult: unexpected invocation without any data"
 		EndIf
@@ -508,13 +498,14 @@ Type TCombinedMission extends TMission
 			Local key:TEventKey = GameEventKeys.Mission_Achieved
 			Local score:TMissionHighscore = new TMissionHighscore
 			Local text:String
+			Local winningPlayer:Int
 			If (money < 0 And currentMoney > abs(money)) ..
 					Or (reach < 0 And currentReach >= abs(reach)) ..
 					Or (image < 0 And currentImage >= abs(image)) ..
 					Or (betty < 0 And currentBetty >= abs(betty))
+				'primary player above a threshold
 				key = GameEventKeys.Mission_Failed
 				fireEvent = True
-				score = null
 			Else
 				Local allSuccess:Int = True
 				If (money And currentMoney < money)..
@@ -523,48 +514,35 @@ Type TCombinedMission extends TMission
 					Or (betty And currentBetty < betty)
 					allSuccess = False
 				EndIf
-				If allSuccess Then fireEvent = True
-				If currentPlayer <> playerId
-					key = GameEventKeys.Mission_Failed
-					Local playerName:String = GetPlayer(currentPlayer).Name
-					text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName)
-					score = null
+				If allSuccess
+					fireEvent = True
+					winningPlayer = currentPlayer
+					If currentPlayer <> playerId
+						key = GameEventKeys.Mission_Failed
+						Local playerName:String = GetPlayer(currentPlayer).Name
+						text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName)
+					EndIf
 				EndIf
 			EndIf
 			If fireEvent
-				Local data:TData = New TData
-				If score
-					Local playerForScore:TPlayer = GetPlayer(playerID)
-					score.playerID = playerID
-					score.playerName = playerForScore.Name
-					score.channelName = playerForScore.channelname
-					If key = GameEventKeys.Mission_Achieved
-						score.missionAccomplished = True
-					Else
-						score.missionAccomplished = False
-					EndIf
-					If Not playerForScore.IsHuman() Then score.aiPlayer = True
-					score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
-					score.startYear = GetWorldTime().GetStartYear()
-					If money Then data.addInt("money", currentMoney)
-					If image Then data.addFloat("image", currentImageRaw)
-					If reach Then data.addFloat("reach", currentReachRaw)
-					If betty Then data.addInt("betty", currentBetty)
-
-					'store player difficulties - in particular for free games
-					Local diffs:String[0]
-					For Local i:Int = 1 To 4
-						Local diff:String = GetPlayer(i).GetDifficulty().GetGUID()
-						diffs:+ [diff]
-					Next
-					score.playerDifficulties = diffs
-					TAllHighscores.addEntry(getMissionId(), difficulty, score)
+				score.primaryPlayer = playerID
+				score.winningPlayer = winningPlayer
+				score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
+				If key = GameEventKeys.Mission_Achieved
+					score.missionAccomplished = True
+				Else
+					score.missionAccomplished = False
 				EndIf
-				data=data.copy()
+				score.startYear = GetWorldTime().GetStartYear()
+				Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[0]
+				For Local p:Int=1 TO 4
+					playerData:+ [TMissions.getHighScoreData(p)]
+				Next
+				score.playerData = playerData
+				TAllHighscores.addEntry(getMissionId(), difficulty, score)
+
+				Local data:TData = New TData
 				If text data.addString("text", text)
-				data.add("type", getCategory())
-				data.addInt("days", daysRun)
-				data.addInt("player", currentPlayer)'may be misleading if there is no winner
 				If score Then data.add("highscore", score)
 				TriggerBaseEvent(key, data, Self)
 			EndIf

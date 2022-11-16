@@ -8,35 +8,33 @@ Import "Dig/external/persistence.mod/persistence.bmx"
 ?
 Import "game.mission.base.bmx"
 
-Type TMissionHighscore
-	'TODO how to access the local time for displaying when the game was played
-	'Field realDate:Long
+Type TMissionHighscorePlayerData
+	'metadata
 	Field playerID:Int
 	Field playerName:String
 	Field channelName:String
+	Field aiPlayer:Int = False
+	Field difficulty:String
+
+	'achieved
+	Field accountBalance:Int 'money - credit
+	Field reach:Float
+	Field image:Float
+	Field betty:Int
+	'additional data?
+	'Field data:TData
+End Type
+
+Type TMissionHighscore
+	'TODO how to access the local time for displaying when the game was played
+	'Field realDate:Long
+	Field primaryPlayer:Int
+	Field winningPlayer:Int
 	Field gameMinutes:Long
 	Field missionAccomplished:Int = False
 	Field startYear:Int
-	Field aiPlayer:Int = False
-	Field playerDifficulties:String[]
-	'encoded entry of the high score, the mission must be capable of translating it back
-	'for presentation and ordering entries
-	Field value:TData
+	Field playerData:TMissionHighscorePlayerData[]
 
-	rem
-	Method isDuplicate:Int(other:TMissionHighscore)
-		If playerID <> other.playerID Then Return False
-		If playerName <> other.playerName Then Return False
-		If channelName <> other.channelName Then Return False
-		If missionAccomplished <> other.missionAccomplished Then Return False
-		If aiPlayer <> other.aiPlayer Then Return False
-		If playerDifficulty <> other.playerDifficulty Then Return False
-		If Abs(gameMinutes - other.gameMinutes) > 1 Then Return False
-		'If Abs(realDate - other.realDate) > 500 Then Return False
-		'TODO compare data?
-		Return True
-	End Method
-	endrem
 End Type
 
 'TODO incorporate number of days per season in missionID (different lists) or highscore itself
@@ -53,16 +51,6 @@ Type TAllHighscores
 	Global lastScore:TMissionHighscore {noSave}
 
 	Function addEntry(missionID:String, difficulty:MissionDifficulty, score:TMissionHighscore)
-		rem
-		'prevent duplicate entries - originally cause be duplicate listener registration
-		If lastID And lastID = missionID And lastDifficulty = difficulty
-			If score.isDuplicate(lastScore) then Return
-		EndIf
-		lastID = missionID
-		lastDifficulty = difficulty
-		lastScore = score
-		endrem
-
 		TPersist.format=True
 		TPersist.maxDepth = 4096
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
