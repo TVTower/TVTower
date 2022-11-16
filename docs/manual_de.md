@@ -11,7 +11,8 @@ Dafür sind wir auf Eure Hilfe angewiesen. Meldet uns Fehler, bringt Ideen ein, 
 
 https://www.gamezworld.de/phpforum/
 
-Im Moment ist TVTower als Endlosspiel spielbar. Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
+Im Moment ist TVTower als Endlosspiel oder mit vorgegebenen Aufträgen spielbar. Mögliche Aufträge sind ein Spielziel, das man erreichen muss, bevor die KI es schafft oder die Maximierung vorgegebener Werte in einer bestimmten Zeit.
+Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
 
 Am Ende der Anleitung gibt es eine Liste mit nützlichen Tastenkürzeln.
 
@@ -39,7 +40,7 @@ Inhalt
 * Chat und Cheaten
 * Abläufe im Hintergrund
 * Veränderungen durch den Spieler
-* Tastenkürzel für die Entwicklerversion
+* Tastenkürzel
 
 Laden / Speichern
 =================
@@ -272,6 +273,7 @@ Chat und Cheaten
 ================
 
 Mit der „Enter“-Taste kann man die Chateingabe öffnen und dort auch Befehle ausführen. „/dev help“ listet die verfügbaren Befehle auf. Dabei stehen im Entwicklermodus („/dev devkeys 1“) mehr Befehle zur Verfügung. So würde zum Beispiel ein „/dev money 1 1000“ dem ersten Spieler 1000 Euro aufs Konto gutschreiben.
+In einem Spiel mit Auftrag ist der Entwicklermodus automatisch deaktiviert. Reaktivierung führt zum Abbruch des Auftrags.
 
 Abläufe im Hintergrund
 ======================

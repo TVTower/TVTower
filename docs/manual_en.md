@@ -13,7 +13,8 @@ For this we depend on your help. Tell us about mistakes, make suggestions, discu
 
 https://www.gamezworld.de/phpforum/
 
-At the moment TVTower is playable as an endless game. The AI works, but it's not yet in it's final state.
+At the moment TVTower is playable as an endless game or with predefined tasks. Possible tasks are achieving a given goal before the AI does or maximizing a value within a given time.
+The AI works, but it's not yet in it's final state.
 
 At the end of the manual there's a list of useful keyboard shortcuts.
 
@@ -41,7 +42,6 @@ Contents
 * Interface
 * Chat and Cheats
 * Processes in the Background
-* Changes Made by the Players
 * Keyboard Shortcuts for the Developer Version
 
 Loading and Saving
@@ -275,6 +275,7 @@ Chat and Cheating
 =================
 
 Pressing the "Enter" key opens the chat where you can execute commands. "/dev help" lists the available comands - there are more in development mode ("/dev devkeys 1"). For example, "/dev money 1 1000" will credit 1000 Euros to the account of the first player.
+In a game with a task the development mode is disabled automatically. Reactivating the development mode aborts the task.
 
 Processes in the Background
 ===========================
