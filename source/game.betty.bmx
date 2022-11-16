@@ -162,7 +162,7 @@ Type TBetty
 	End Method
 
 
-	Method AdjustLove(PlayerID:Int, amount:Int, ignorePublicImage:int = False, adjustOthersLove:int = True)
+	Method AdjustLove(PlayerID:Int, amount:Int, adjustOthersLove:int = True)
 		if playerID < 1 or playerID > inLove.length Then Return
 
 		'you cannot subtract more than what is there
@@ -170,11 +170,15 @@ Type TBetty
 		'you cannot add more than what is left to the maximum
 		amount = Min(LOVE_MAXIMUM - Self.InLove[PlayerID-1], amount)
 
+		rem
 		'according to the Mad TV manual, love can never be bigger than the
 		'channel image!
 		'It will not be possible to achieve 100% that easily, so we allow
 		'love to be 150% of the image)
 		'a once "gained love" is subtracted if meanwhile image is lower!
+
+		'we ignore this and allow betty love to be independent of image
+		'missions can ensure that a certain channel image is necessary
 		if not ignorePublicImage
 			local playerImage:TPublicImage = GetPublicImage(PlayerID)
 			if playerImage
@@ -185,6 +189,7 @@ Type TBetty
 				Endif
 			endif
 		endif
+		endrem
 
 		'add love
 		Self.InLove[PlayerID-1] = Max(0, Self.InLove[PlayerID-1] + amount)
@@ -251,7 +256,7 @@ Type TBetty
 			if score = 0 then continue
 
 			'do not adjust love to other players
-			GetInstance().AdjustLove(newsShow.owner, score, False, False)
+			GetInstance().AdjustLove(newsShow.owner, score, False)
 		Next
 	End Function
 
@@ -269,7 +274,7 @@ Type TBetty
 			if score = 0 then continue
 
 			'do not adjust love to other players
-			GetInstance().AdjustLove(broadcastMaterial.owner, score, False, False)
+			GetInstance().AdjustLove(broadcastMaterial.owner, score, False)
 		Next
 	End Function
 
@@ -292,7 +297,7 @@ Type TBetty
 			'not of interest for Betty?
 			if news.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_BETTY) then continue
 
-			local newsPoints:Float = 25 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
+			local newsPoints:Float = 15 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
 			local newsPointsMod:Float = 1.0
 
 			'jury likes good news - and dislikes the really bad ones
@@ -563,7 +568,7 @@ Type TGameModifier_BettyLove extends TGameModifierBase
 		local valueChange:Int = GetData().GetInt("value.change", 0)
 		if valueChange = 0 then return False
 
-		TBetty.GetInstance().AdjustLove(playerID, valueChange, False, False)
+		TBetty.GetInstance().AdjustLove(playerID, valueChange, False)
 
 		return True
 	End Method
@@ -584,7 +589,7 @@ Type TGameModifier_BettyLove extends TGameModifierBase
 
 		local valueBackup:Int = TBetty.GetInstance().GetInLove(playerID)
 
-		TBetty.GetInstance().AdjustLove(playerID, value, False, False)
+		TBetty.GetInstance().AdjustLove(playerID, value, False)
 
 		local valueNew:Int = TBetty.GetInstance().GetInLove(playerID)
 
