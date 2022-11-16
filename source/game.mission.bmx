@@ -71,26 +71,26 @@ Type TMissions
 
 			_addMission(TSimpleMission.createImage(95))
 			_addMission(new TCombinedMission().WithImage(75).WithReach(-30))
+			_addMission(TSimpleMission.createImage(50,40))
 			_addMission(TSimpleMission.createImage(-1,20))
 			_addMission(TSimpleMission.createImage(-1,40))
-			_addMission(TSimpleMission.createImage(50,40))
 
-			_addMission(TSimpleMission.createBetty(100))
 			_addMission(new TCombinedMission().WithBetty(100).WithImage(80))
+			_addMission(TSimpleMission.createBetty(100))
 			_addMission(new TCombinedMission().WithBetty(75).WithImage(50))
+			_addMission(TSimpleMission.createBetty(50,40))
 			_addMission(TSimpleMission.createBetty(-1,20))
 			_addMission(TSimpleMission.createBetty(-1,40))
-			_addMission(TSimpleMission.createBetty(50,40))
 
 			_addMission(TSimpleMission.createReach(80))
+			_addMission(TSimpleMission.createReach(50,40))
 			_addMission(TSimpleMission.createReach(-1,20))
 			_addMission(TSimpleMission.createReach(-1,40))
-			_addMission(TSimpleMission.createReach(50,40))
 
 			_addMission(TSimpleMission.createMoney(100000000))
+			_addMission(TSimpleMission.createMoney(50000000,40))
 			_addMission(TSimpleMission.createMoney(-1,20))
 			_addMission(TSimpleMission.createMoney(-1,40))
-			_addMission(TSimpleMission.createMoney(50000000,40))
 
 			rem test mission for achieving/failing
 			_addMission(new TCombinedMission().WithImage(75).WithReach(-1))
