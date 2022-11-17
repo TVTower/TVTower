@@ -6159,6 +6159,11 @@ endrem
 			GetProgrammeProducerCollection().UpdateAll()
 		EndIf
 
+		'=== UPDATE AWARDS / SAMMYS ===
+		'when updating awards onHour, onDayBegins would fire before the last day's award was handled
+		'fail of mission possible although the award is won/wrong award count
+		If minute = 59 Then GetAwardCollection().UpdateAwards()
+
 		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
 			Local gameName:String = GameConfig.savegame_lastUsedName
 			Local autoSaveName:String = "autosave.xml"
@@ -6182,11 +6187,6 @@ endrem
 
 		'=== UPDATE WORLD / WEATHER AUDIENCE MODIFIERS ===
 		GetGame().UpdateBaseGameModifiers()
-
-
-		'=== UPDATE AWARDS / SAMMYS ===
-		GetAwardCollection().UpdateAwards()
-
 
 		'=== HANDLE EMPTY ROOMS ===
 		'let previous renter take back their rooms (if nobody wanted the
