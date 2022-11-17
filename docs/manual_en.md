@@ -13,7 +13,7 @@ For this we depend on your help. Tell us about mistakes, make suggestions, discu
 
 https://www.gamezworld.de/phpforum/
 
-At the moment TVTower is playable as an endless game or with predefined tasks. Possible tasks are achieving a given goal before the AI does or maximizing a value within a given time.
+At the moment TVTower is playable as an endless game or with predefined tasks. Possible tasks are achieving a given goal before the AI does or maximizing a value within a given time. Games with a task cannot be played in development mode.
 The AI works, but it's not yet in it's final state.
 
 At the end of the manual there's a list of useful keyboard shortcuts.

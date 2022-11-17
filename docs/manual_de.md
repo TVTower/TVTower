@@ -11,7 +11,7 @@ Dafür sind wir auf Eure Hilfe angewiesen. Meldet uns Fehler, bringt Ideen ein, 
 
 https://www.gamezworld.de/phpforum/
 
-Im Moment ist TVTower als Endlosspiel oder mit vorgegebenen Aufträgen spielbar. Mögliche Aufträge sind ein Spielziel, das man erreichen muss, bevor die KI es schafft oder die Maximierung vorgegebener Werte in einer bestimmten Zeit.
+Im Moment ist TVTower als Endlosspiel oder mit vorgegebenen Aufträgen spielbar. Mögliche Aufträge sind ein Spielziel, das man erreichen muss, bevor die KI es schafft oder die Maximierung vorgegebener Werte in einer bestimmten Zeit. Spiele mit Auftrag können nicht im Entwicklermodus gespielt werden.
 Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
 
 Am Ende der Anleitung gibt es eine Liste mit nützlichen Tastenkürzeln.
