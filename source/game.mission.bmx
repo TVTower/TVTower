@@ -1,4 +1,5 @@
 SuperStrict
+Import "game.award.base.bmx"
 Import "game.betty.bmx"
 Import "game.gameeventkeys.bmx"
 Import "game.mission.base.bmx"
@@ -92,6 +93,13 @@ Type TMissions
 			_addMission(TSimpleMission.createMoney(50000000,40))
 			_addMission(TSimpleMission.createMoney(-1,20))
 			_addMission(TSimpleMission.createMoney(-1,40))
+
+			_addMission(TSammyMission.createInARow(3))
+			_addMission(TSammyMission.createInARow(5))
+			_addMission(TSammyMission.createInARow(5, 30))
+			_addMission(TSammyMission.createAllTypes(30))
+			_addMission(TSammyMission.createMaximize(20))
+			_addMission(TSammyMission.createMaximize(40))
 
 			rem test mission for achieving/failing
 			_addMission(new TCombinedMission().WithImage(75).WithReach(-1))
@@ -549,5 +557,185 @@ Type TCombinedMission extends TMission
 				TriggerBaseEvent(key, data, Self)
 			EndIf
 		EndIf
+	EndMethod
+End Type
+
+Type TSammyMission extends TMission
+	Const MAXIMIZE:String = "M" 'maximize number of awards in x days
+	Const ALL_TYPES:String = "A" 'all award types
+	Const IN_A_ROW:String = "R" 'x awards in a row
+
+	Field missionType:String
+	Field targetValue:Int = -1
+	Field currentAward:TAward {nosave}
+
+	Function createMaximize:TSammyMission(days:Int)
+		return create(MAXIMIZE, -1, days)
+	End Function
+
+	Function createAllTypes:TSammyMission(days:Int=-1)
+		return create(ALL_TYPES, 0, days)
+	End Function
+
+	Function createInARow:TSammyMission(count:Int, days:Int=-1)
+		return create(IN_A_ROW, count, days)
+	End Function
+
+	Function create:TSammyMission(mType:String, targetValue:Int=-1, days:Int=-1)
+		Local result:TSammyMission=new TSammyMission
+		result.missionType = mType
+		result.targetValue = targetValue
+		result.daysForAchieving = days
+		return result
+	End Function
+
+	Method getCheckListeners:TEventListenerBase[]()
+		Return [ EventManager.registerListenerMethod(GameEventKeys.Award_OnFinish, Self, "OnAward") ]
+	EndMethod
+
+	Method getTitle:String()
+		Return GetLocale("MISSION_TITLE_"+getCategory())
+	End Method
+
+	Method getCategory:String()
+		return "SAMMY"
+	End Method
+
+	Method getIdSuffix:String() override
+		Local mapName:String = GetStationMapCollection().GetMapName()
+		Local suffix:String = mapName + "_" + missionType
+		If targetValue > 0 Then suffix:+("_"+targetValue)
+		Return suffix
+	End Method
+
+	Method getDescription:String()
+		Local desc:String = GetLocale("MISSION_GOAL_SAMMY_"+missionType)
+		If missionType = IN_A_ROW Then desc = desc.Replace("%COUNT%", targetValue)
+
+		If daysForAchieving > 0
+			If targetValue < 0 
+				desc = GetLocale("MISSION_TIME_AFTER").Replace("%GOAL%", desc).replace("%DAYS%",daysForAchieving)
+			Else
+				desc = GetLocale("MISSION_TIME_WITHIN").Replace("%GOAL%", desc).replace("%DAYS%",daysForAchieving)
+			EndIf
+		EndIf
+		Return desc
+	EndMethod
+
+
+	Method OnAward:Int(triggerEvent:TEventBase)
+		currentAward:TAward = TAward(triggerEvent.GetSender())
+		If Not currentAward Then throw "TSammyMission.Award: no award in event"
+		checkMissionResult(False)
+	End Method
+
+	Method checkMissionResult(forceFinish:Int=False)
+		Local awards:TAwardCollection = GetAwardCollection()
+		If Not awards Then Throw "TSammyMission.checkMissionResult: no awards collection present"
+		If currentAward
+			If awards.currentAward And currentAward <> awards.currentAward Then throw "TSammyMission.checkMissionResult: award from event is not the one currently awarded"
+		EndIf
+		Local list:TList = awards.lastAwards
+		'create copy in reversed order
+		If list
+			list = list.Reversed()
+			If currentAward And list.contains(currentAward) Then throw "TSammyMission.checkMissionResult: last awards not expected to contain current Sammy, yet"
+		Else
+			list = new TList
+		EndIf
+		If currentAward Then list.addFirst(currentAward)
+		'at this point list is the full list of awards with the latest as first element
+
+		'check winning condition
+		Local currentPlayer:Int = -1
+		Local winningPlayer:Int = 0
+		If missionType <> MAXIMIZE And currentAward Then currentPlayer = currentAward.winningPlayerID
+		Local key:TEventKey = GameEventKeys.Mission_Achieved
+		Local fireEvent:Int = False
+		Local text:String = ""
+		Select missionType
+			Case IN_A_ROW
+				Local count:Int = 0
+				For Local aw:TAward = EachIn list
+					Local awardWinner:Int = aw.winningPlayerID
+					If awardWinner = 0
+						Exit
+					ElseIf currentPlayer < 0 Or currentPlayer = awardWinner
+						currentPlayer = awardWinner
+						count:+ 1
+					Else
+						Exit
+					EndIf
+				Next
+				If count >= targetValue
+					winningPlayer = currentPlayer
+					fireEvent = True
+					If currentPlayer <> playerID Then key = GameEventKeys.Mission_Failed
+				ElseIf forceFinish
+					fireEvent = True
+					key = GameEventKeys.Mission_Failed 'winning sammy would have caused achieve before now
+				EndIf
+			Case ALL_TYPES
+				Local types:TIntMap = new TIntMap()
+				types.Insert(TVTAwardType.NEWS,"")
+				types.Insert(TVTAwardType.CULTURE,"")
+				types.Insert(TVTAwardType.AUDIENCE,"")
+				types.Insert(TVTAwardType.CUSTOMPRODUCTION,"")
+				For Local aw:TAward = EachIn list
+					Local awardWinner:Int = aw.winningPlayerID
+					If awardWinner = 0
+						'ignore
+					ElseIf currentPlayer < 0 Or currentPlayer = awardWinner
+						currentPlayer = awardWinner
+						types.Remove(aw.awardType)
+					EndIf
+				Next
+				If types.IsEmpty()
+					winningPlayer = currentPlayer
+					fireEvent = True
+					If currentPlayer <> playerID Then key = GameEventKeys.Mission_Failed
+				ElseIf forceFinish
+					fireEvent = True
+					key = GameEventKeys.Mission_Failed 'winning sammy would have caused achieve before now
+				EndIf
+			Case MAXIMIZE
+				If forceFinish
+					fireEvent = True
+					'do not set winning player - AI may have performed better
+				EndIf
+		End Select
+
+		If fireEvent
+			Local score:TMissionHighscore = new TMissionHighscore
+			score.gameId = gameId
+			If key = GameEventKeys.Mission_Achieved
+				score.missionAccomplished = True
+			Else
+				score.missionAccomplished = False
+				If winningPlayer > 0 And playerID <> winningPlayer
+					Local playerName:String = GetPlayer(winningPlayer).Name 
+					text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName) + text
+				EndIf
+			EndIf
+			score.primaryPlayer = playerID
+			score.winningPlayer = winningPlayer
+			score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
+			score.startYear = GetWorldTime().GetStartYear()
+			Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[4]
+			For Local p:Int=1 TO 4
+				playerData[p-1] = TMissions.getHighScoreData(p)
+			Next
+			score.playerData = playerData
+			if Not score.data Then score.data = new TData
+			score.data.add("sammys", list.Reversed())
+			'print "adding highscore " + playerID
+			TAllHighscores.addEntry(getMissionId(), difficulty, score)
+
+			Local data:TData = New TData
+			data.add("highscore", score)
+			If text Then data.addString("text", text)
+			TriggerBaseEvent(key, data, Self)
+		EndIf
+		currentAward =  null
 	EndMethod
 End Type

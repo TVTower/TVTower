@@ -330,7 +330,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiMissionCategories.AddItem( item )
 			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 		Next
-		guiMissionCategories.SetListContentHeight(itemHeight * Min(AllMissions.getCategories().length+1,5))
+		guiMissionCategories.SetListContentHeight(itemHeight * Min(AllMissions.getCategories().length+1,10))
 		local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
 		guiMissionCategories.SetPosition(settingsRect.getX(), settingsRect.getY())
 		guiMissionCategories.SetSelectedEntry(guiMissionCategories.GetEntryByPos(0))

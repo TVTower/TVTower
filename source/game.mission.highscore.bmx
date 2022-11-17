@@ -34,7 +34,7 @@ Type TMissionHighscore
 	Field missionAccomplished:Int = False
 	Field startYear:Int
 	Field playerData:TMissionHighscorePlayerData[]
-
+	Field data:TData
 End Type
 
 'TODO incorporate number of days per season in missionID (different lists) or highscore itself
