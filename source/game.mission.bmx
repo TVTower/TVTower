@@ -269,10 +269,10 @@ Type TSimpleMission extends TMission
 		Local winningPlayer:Int
 		If targetValue > 0
 			If currentValue >= targetValue
+				winningPlayer = currentPlayer
 				If playerID = currentPlayer
 					'player wins
 					fireEvent = True
-					winningPlayer = currentPlayer
 				Else
 					Local playerName:String = GetPlayer(currentPlayer).Name
 					text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName) + text
@@ -294,6 +294,7 @@ Type TSimpleMission extends TMission
 
 		If fireEvent
 			Local score:TMissionHighscore = new TMissionHighscore
+			score.gameId = gameId
 			If key = GameEventKeys.Mission_Achieved
 				score.missionAccomplished = True
 			Else
@@ -497,6 +498,7 @@ Type TCombinedMission extends TMission
 			Local fireEvent:Int = False
 			Local key:TEventKey = GameEventKeys.Mission_Achieved
 			Local score:TMissionHighscore = new TMissionHighscore
+			score.gameId = gameId
 			Local text:String
 			Local winningPlayer:Int
 			If (money < 0 And currentMoney > abs(money)) ..

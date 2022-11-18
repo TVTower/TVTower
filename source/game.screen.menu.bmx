@@ -474,7 +474,7 @@ Type TScreen_GameSettings Extends TGameScreen
 						Local mission:TMission = null
 						If guiMissions.getSelectedEntry() Then mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
 						If mission
-							mission.difficulty = MissionDifficulty(guiMissionDifficulty.getSelectedEntry().data.getInt("value"))
+							mission.difficulty = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
 							For Local p:Int = 1 To 4
 								If GetPlayerBase(p).IsLocalHuman() Then mission.playerID = p
 							Next
@@ -599,7 +599,7 @@ Type TScreen_GameSettings Extends TGameScreen
 				For Local s:Int = EachIn difficultyValues
 					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(100,20), GetLocale("MISSION_DIFFICULTY_"+s))
 					item.data.AddInt("value", s)
-					If not itemToSelect Or MissionDifficulty.NORMAL.Ordinal() = s Then itemToSelect = item
+					If not itemToSelect Or TVTMissionDifficulty.NORMAL = s Then itemToSelect = item
 
 					guiMissionDifficulty.AddItem( item )
 					If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
@@ -615,7 +615,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Return True
 	End Method
 
-	Method updateMissionValues(mission:TMission, difficulty:MissionDifficulty)
+	Method updateMissionValues(mission:TMission, difficulty:Int)
 		If not mission
 			missionForbidsPositionChange = False
 			'guiGameTitleLabel.hide()
@@ -633,7 +633,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiDifficulty[3].enable()
 			guiMissions.hide()
 			guiMissionDifficulty.hide()
-		ElseIf difficulty = MissionDifficulty.NONE
+		ElseIf difficulty = TVTMissionDifficulty.NONE
 			guiStartYear.enable()
 			guiFilterUnreleased.show()
 			guiRandomizeLicence.show()
@@ -947,12 +947,12 @@ endrem
 			guiGameTitle.hide()
 			If modifiedMissions
 				Local mission:TMission = null
-				Local difficultyInt:Int = 0
+				Local difficultyInt:Int = TVTMissionDifficulty.NONE
 				If guiMissions.getSelectedEntry()
 					mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
 					difficultyInt = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
 				EndIf
-				updateMissionValues(mission, MissionDifficulty(difficultyInt))
+				updateMissionValues(mission, difficultyInt)
 			EndIf
 			guiSettingsWindow.SetCaption(GetLocale("MENU_SOLO_GAME"))
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,False)

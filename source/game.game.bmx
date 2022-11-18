@@ -257,7 +257,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EndIf
 		
 		If mission
-			mission.Initialize()
+			mission.Initialize(gameId)
 		EndIf
 
 		'so we could add news etc.

@@ -8,6 +8,7 @@ Import "game.world.worldtime.bmx"
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGameBase {_exposeToLua="selected"}
+	Field gameId:Int
 	'used so that random values are the same on all computers having
 	'the same seed value
 	Field randomSeedValue:Int = 0
@@ -113,6 +114,9 @@ Type TGameBase {_exposeToLua="selected"}
 
 	'(re)set everything to default values
 	Method Initialize()
+		SeedRand(MilliSecs())
+		gameId = Rand32()
+		SeedRand(0)
 		randomSeedValue = 0
 		title = "MyGame"
 		SetCursor(TGameBase.CURSOR_DEFAULT)

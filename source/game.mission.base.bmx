@@ -1,24 +1,17 @@
 SuperStrict
 Import "Dig/base.util.event.bmx"
+Import "game.gameconstants.bmx"
 Import "game.gameeventkeys.bmx"
 Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
 
-Enum MissionDifficulty
-	NONE = 0
-	EASY = 1
-	NORMAL = 2
-	HARD = 3
-	HARDER = 4
-	HARDEST = 5
-End Enum
-
 Type TMission
 	Global _eventListeners:TEventListenerBase[]
-	Field difficulty:MissionDifficulty
+	Field difficulty:Int = -1
 	Field daysForAchieving:Int = -1
 	Field playerID:Int = -1
 	Field daysRun:Int = -1
+	Field gameId:Int
 
 	Method getTitle:String() abstract
 
@@ -37,7 +30,8 @@ Type TMission
 		return id.toUpper()
 	End Method
 
-	Method initialize()
+	Method initialize(gameId:Int)
+		Self.gameId = gameId
 		'=== EVENTS ===
 		'remove old listeners
 		EventManager.UnregisterListenersArray(_eventListeners)
@@ -70,81 +64,82 @@ Type TMission
 	Method checkMissionResult(forceFinish:Int=False) abstract
 
 	'Array of enum values does not work!! - the values of the array cannot be converted back via "ordinal"
+	'enum is also not persisted in xml!
 	Method getSupportedDifficulties:Int[]()
-		return [ MissionDifficulty.EASY.ordinal(), MissionDifficulty.NORMAL.ordinal(), MissionDifficulty.HARD.ordinal(), MissionDifficulty.HARDER.ordinal(), MissionDifficulty.HARDEST.ordinal(), MissionDifficulty.NONE.ordinal()]
+		return [ TVTMissionDifficulty.EASY, TVTMissionDifficulty.NORMAL, TVTMissionDifficulty.HARD, TVTMissionDifficulty.HARDER, TVTMissionDifficulty.HARDEST, TVTMissionDifficulty.NONE ]
 	End Method
 
-	Method getHumanPlayerPosition:Int(difficulty:MissionDifficulty)
+	Method getHumanPlayerPosition:Int(difficulty:Int)
 		Return -1
 		rem
 		'a mission difficulty level might define a specific floor for the player
 		Select difficulty
-			case MissionDifficulty.NONE
+			case TVTMissionDifficulty.NONE
 				return -1
-			case MissionDifficulty.EASY
+			case TVTMissionDifficulty.EASY
 				return 3
-			case MissionDifficulty.NORMAL
+			case TVTMissionDifficulty.NORMAL
 				return 2
-			case MissionDifficulty.HARD
+			case TVTMissionDifficulty.HARD
 				return 4
-			case MissionDifficulty.HARDER
+			case TVTMissionDifficulty.HARDER
 				return 4
-			case MissionDifficulty.HARDEST
+			case TVTMissionDifficulty.HARDEST
 				return 4
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty
 		endrem
 	End Method
 
-	Method getHumanPlayerDifficulty:String(difficulty:MissionDifficulty)
+	Method getHumanPlayerDifficulty:String(difficulty:Int = -1)
 		Select difficulty
-			case MissionDifficulty.NONE
+			case TVTMissionDifficulty.NONE
 				return ""
-			case MissionDifficulty.EASY
+			case TVTMissionDifficulty.EASY
 				return "easy"
-			case MissionDifficulty.NORMAL
+			case TVTMissionDifficulty.NORMAL
 				return "normal"
-			case MissionDifficulty.HARD
+			case TVTMissionDifficulty.HARD
 				return "normal"
-			case MissionDifficulty.HARDER
+			case TVTMissionDifficulty.HARDER
 				return "hard"
-			case MissionDifficulty.HARDEST
+			case TVTMissionDifficulty.HARDEST
 				return "hard"
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty
 	End Method
 
-	Method getAiPlayerDifficulty:String(difficulty:MissionDifficulty)
+	Method getAiPlayerDifficulty:String(difficulty:Int = -1)
 		Select difficulty
-			case MissionDifficulty.NONE
+			case TVTMissionDifficulty.NONE
 				return ""
-			case MissionDifficulty.EASY
+			case TVTMissionDifficulty.EASY
 				return "normal"
-			case MissionDifficulty.NORMAL
+			case TVTMissionDifficulty.NORMAL
 				return "normal"
-			case MissionDifficulty.HARD
+			case TVTMissionDifficulty.HARD
 				return "easy"
-			case MissionDifficulty.HARDER
+			case TVTMissionDifficulty.HARDER
 				return "normal"
-			case MissionDifficulty.HARDEST
+			case TVTMissionDifficulty.HARDEST
 				return "easy"
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty
 	End Method
 
-	Method getStartYear:Int(difficulty:MissionDifficulty)
+	Method getStartYear:Int(difficulty:Int = -1)
 		Select difficulty
-			case MissionDifficulty.NONE
+			case TVTMissionDifficulty.NONE
 				return -1
-			case MissionDifficulty.EASY
+			case TVTMissionDifficulty.EASY
 				return 1990
-			case MissionDifficulty.NORMAL
+			case TVTMissionDifficulty.NORMAL
 				return 1985
-			case MissionDifficulty.HARD
+			case TVTMissionDifficulty.HARD
 				return 1995
-			case MissionDifficulty.HARDER
+			case TVTMissionDifficulty.HARDER
 				return 1995
-			case MissionDifficulty.HARDEST
+			case TVTMissionDifficulty.HARDEST
 				return 1995
 		End Select
 		throw "TMission:illegal difficulty "+ difficulty
