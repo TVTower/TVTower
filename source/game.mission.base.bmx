@@ -23,10 +23,11 @@ Type TMission
 	End Method
 
 	Method getMissionId:String()
-		Local id:String = getCategory() + "_diff"+difficulty
+		Local id:String = getCategory()
+		'do not include difficulty in ID! it is available separately in mission and highscore
 		If daysForAchieving > 0 Then id:+ ("_days"+daysForAchieving)
 		Local idSuffix:String = getIdSuffix()
-		If idSuffix Then id:+ ("_"+getIdSuffix())
+		If idSuffix Then id:+ ("_"+idSuffix)
 		return id.toUpper()
 	End Method
 
