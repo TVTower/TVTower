@@ -26,6 +26,7 @@ Type TMissionHighscorePlayerData
 End Type
 
 Type TMissionHighscore
+	Field gameId:Int
 	Field realDate:String
 	Field primaryPlayer:Int
 	Field winningPlayer:Int
@@ -49,7 +50,7 @@ Type TAllHighscores
 	Global lastDifficulty:String {noSave}
 	Global lastScore:TMissionHighscore {noSave}
 
-	Function addEntry(missionID:String, difficulty:MissionDifficulty, score:TMissionHighscore)
+	Function addEntry(missionID:String, difficulty:Int, score:TMissionHighscore)
 		score.realDate = CurrentDate("%Y-%m-%d %H:%M:%S")
 		TPersist.format=True
 		TPersist.maxDepth = 4096
@@ -67,7 +68,7 @@ Type TAllHighscores
 		Local missionScore:TMissionHighscores
 		For Local index:Int = 0 Until persistedScores.scores.length
 			missionScore = persistedScores.scores[index]
-			If missionScore and missionScore.missionID = missionID and missionScore.missiondifficulty = difficulty.ordinal()
+			If missionScore and missionScore.missionID = missionID and missionScore.missiondifficulty = difficulty
 				highScoreExisted = True
 				missionScore.scores:+ [score]
 				persistedScores.scores[index] = missionScore
@@ -77,7 +78,7 @@ Type TAllHighscores
 		If Not highScoreExisted
 			missionScore = new TMissionHighscores
 			missionScore.missionID = missionID
-			missionScore.missiondifficulty = difficulty.ordinal()
+			missionScore.missiondifficulty = difficulty
 			missionScore.scores = [score]
 			persistedScores.scores:+ [missionScore]
 		EndIf

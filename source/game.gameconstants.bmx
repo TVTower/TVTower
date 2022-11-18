@@ -2145,3 +2145,12 @@ Type TVTAwardType {_exposeToLua}
 		End Select
 	End Function
 End Type
+
+Type TVTMissionDifficulty
+	Const NONE:Int = 0
+	Const EASY:Int = 1
+	Const NORMAL:Int = 2
+	Const HARD:Int = 3
+	Const HARDER:Int = 4
+	Const HARDEST:Int = 5
+End Type
