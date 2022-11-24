@@ -153,7 +153,7 @@ VersionString = "v0.7.3"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:String = "TVTower"
-Global LOG_NAME:String = "log.profiler.txt"
+Global PROFILER_LOG_NAME:String = "log.profiler.txt"
 
 Global App:TApp = Null
 Global MainMenuJanitor:TFigureJanitor
@@ -6495,7 +6495,7 @@ Function EndHook()
 		player.StopAI()
 	Next
 	
-	TProfiler.DumpLog(LOG_NAME)
+	TProfiler.DumpLog("logfiles/"+PROFILER_LOG_NAME)
 	TLogFile.DumpLogs()
 
 ?bmxng
