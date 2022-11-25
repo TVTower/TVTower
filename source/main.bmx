@@ -6148,6 +6148,16 @@ endrem
 			GetProgrammeDataCollection().UpdateDynamicData()
 		EndIf
 
+		'=== UPDATE Players' news max Level ===
+		'it is determined as a side-effect of the getter
+		If minute Mod 5 = 0
+			For Local player:TPlayer = EachIn GetPlayerCollection().players
+				For Local genre:Int = 0 To TVTNewsGenre.count
+					player.GetNewsAbonnementDaysMax(genre)
+				Next
+			Next
+		EndIf
+
 		'=== UPDATE ACHIEVEMENTS ===
 		'(do that AFTER setting the broadcasts and calculating the
 		' audience as some achievements check audience of a broadcast)

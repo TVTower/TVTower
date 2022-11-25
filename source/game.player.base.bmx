@@ -285,7 +285,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 
 	'return which is the highest level for the given genre today
-	'(which was active for longer than X game minutes)
+	'as a side effect of the call, the maximum level is calculated
+	'if it differs from the current level (a change with a delay
+	'of X game minutes may have occurred)
 	'if the last time a abonnement level was set was before today
 	'use the current level value
 	Method GetNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
@@ -294,6 +296,10 @@ Type TPlayerBase {_exposeToLua="selected"}
 		local abonnementLevel:int = GetNewsAbonnement(genre)
 
 		'if level of genre changed - adjust maximum
+		'I.e. changing the level is a side effect of the getter call.
+		'In order to ensure the usage of the correct level for the price calculation,
+		'GameEvents#onMinute in main.bmx regularly calls this method.
+		'When extracting the calculation from the getter, those calls may become obsolete.
 		if newsabonnementsDayMax[genre] <> abonnementLevel
 
 			'if the "set time" is not the current day, we assume
