@@ -487,7 +487,7 @@ function JobBuyStation:GetAttraction(tempStation)
 		attraction = -3
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
-	return attraction, tempStation.GetTotalBuyPrice(), exclusiveReach
+	return attraction, totalprice, exclusiveReach
 end
 
 
@@ -585,12 +585,17 @@ function JobBuyStation:GetBestAntennaOffer()
 		local exclusiveReach = 0
 		local price = -1
 		local relativeExclusiveReach = 0
+		local budget = self.Task.CurrentBudget
 		if tempStation ~= nil then
-			reach = tempStation.GetReach(false)
-			exclusiveReach = tempStation.GetExclusiveReach(false)
-			relativeExclusiveReach = exclusiveReach / reach
-			price = tempStation.GetPrice()
-			stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
+			price = tempStation.GetTotalBuyPrice()
+			if price <= budget then
+				reach = tempStation.GetReach(false)
+				exclusiveReach = tempStation.GetExclusiveReach(false)
+				relativeExclusiveReach = exclusiveReach / reach
+				stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
+			else
+				stationString = "tempStation is too expensive"
+			end
 		end
 
 		--filter criterias
@@ -600,6 +605,8 @@ function JobBuyStation:GetBestAntennaOffer()
 		elseif price < 0 then
 			self:LogTrace(stationString .. " -> outside of map!")
 			tempStation = nil
+		elseif price > budget then
+			--do nothing - no further checks no eliminating position
 		elseif exclusiveReach / reach < 0.7 then
 			self:LogTrace(stationString .. " -> not enough exclusive reach!")
 			tempStation = nil
@@ -612,11 +619,11 @@ function JobBuyStation:GetBestAntennaOffer()
 
 		if tempStation == nil then
 			table.insert(removeFromIntendedPositions, pos)
-		elseif price <= self.Task.CurrentBudget then
+		elseif price <= budget then
 		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
 			local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
 
-			if (bestOffer == nil or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReach < self.Task.maxReachIncrease then
+			if (bestOffer == nil or attraction > bestAttraction) and price <= budget and exclusiveReach < self.Task.maxReachIncrease then
 				bestOffer = tempStation
 				bestOffer = tempStation
 				bestAttraction = attraction
