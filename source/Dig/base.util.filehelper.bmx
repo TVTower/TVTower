@@ -39,24 +39,41 @@ Import Brl.Filesystem
 
 Type TFileHelper
 	Function EnsureWriteableDirectoryExists:Int(path:String)
-		Local folderExists:int = (FileType(path) = FILETYPE_DIR)
-		'folder might exist in read-only "app dir" already compared
-		'to write-dir. If "writeDir" is earlier in the search path it
-		'would return the write directory as real directory in case of
-		'the path's existence.
+		Local dirs:String[] = path.Replace("\", "/").Split("/")
+		Local currDir:String
+		Local writeDir:String
 		If MaxIO.ioInitialized 
-			Local writeDir:String = MaxIO.GetWriteDir()
-			if MaxIO.GetRealDir(path).Find(writeDir) <> 0
-				folderExists = False
-			EndIf
+			writeDir = MaxIO.GetWriteDir()
 		EndIf
 
-		If not folderExists and not CreateDir(path) 
-			Throw "TFileHelper: Failed to create directory: ~q" + path + "~q."
-		EndIf
+		Local folderExists:int
+		local createdAFolder:int
+		For Local dir:String = EachIn dirs
+			If currDir Then currDir :+ "/"
+			currDir :+ dir
+
+			folderExists = (FileType(currDir) = FILETYPE_DIR)
+
+			'folder might exist in read-only "app dir" already compared
+			'to write-dir. If "writeDir" is earlier in the search path it
+			'would return the write directory as real directory in case of
+			'the path's existence.
+			If MaxIO.ioInitialized 
+				if MaxIO.GetRealDir(currDir).Find(writeDir) <> 0
+					folderExists = False
+				EndIf
+			EndIf
+
+			If Not folderExists
+				If CreateDir(currDir) 
+					createdAFolder = True
+				Else
+					Throw "TFileHelper: Failed to create directory: ~q" + currDir + "~q."
+				EndIf
+			EndIf
+		Next
 
 		'folder exists now but did not before: return True
-		If Not folderExists Then Return True
-		Return True
+		Return createdAFolder
 	End Function
 End Type
