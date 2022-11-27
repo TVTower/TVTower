@@ -132,6 +132,30 @@ Import "game.misc.savegameserializers.bmx"
 Import "Dig/base.util.bmxng.objectcountmanager.bmx"
 ?
 
+'Initialize virtual file system handling
+'=====
+' The virtual file system allows to transparently overlay folders
+' and to restrict write-access to a specific directory (WriteDir).
+' baseDir = Directory of the binary (application)
+' prefDir = "~/.local/share/TVTower" (Linux)
+'           "C:\Users\Ronny\AppData\Roaming\TVTower_org\TVTower" (Windows)
+'           "C:\Users\Ronny\AppData\Roaming\TVTower_org\TVTower" (Mac OS X)
+'           "/Users/Ronny/Library/Application Support/TVTower"
+
+MaxIO.Init()
+Local baseDir:String = MaxIO.GetBaseDir()
+Local prefDir:String = MaxIO.GetPrefDir("TVTower_org", "TVTower")
+'Mount "preference directory" first so it can override any file inside
+'of "base directory.
+'Mount as "/" (root) so files next to "TVTower.bin" are reachable via
+'LoadFile("myfile.txt")
+MaxIO.Mount(prefDir, "/", True)
+MaxIO.Mount(baseDir, "/", True)
+'Redirect any file-write attempts to "prefDir"
+MaxIO.SetWriteDir(prefDir)
+'=====
+
+
 
 ?Not bmxng
 'notify users when there are XML-errors

@@ -38,6 +38,7 @@ SuperStrict
 Import BRL.LinkedList
 Import BRL.Retro		'for lset()
 Import BRL.System		'for currenttime()
+Import Brl.IO			'MaxIO
 ?android
 'needed to be able to retrieve android's internal storage path
 Import Sdl.sdl
@@ -48,9 +49,6 @@ Import "base.util.string.bmx"
 'create a basic log file
 'but ensure directory exists
 Const LOG_DIRECTORY:String = "logfiles"
-If FileType(LOG_DIRECTORY) <> FILETYPE_DIR
-	If not CreateDir(LOG_DIRECTORY) then Throw "Cannot create log directory: ~q" + LOG_DEBUG + "~q."
-EndIf
 Global AppLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.txt")
 Global AppErrorLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.error.txt")
 
@@ -216,6 +214,7 @@ Type TLogFile
 	Field headerWritten:Int = False
 	Field immediateWrite:Int = True
 	Field fileObj:TStream
+	Field fileRenewed:Int = False
 	Field keepFileOpen:Int = True
 
 	Field fileMutex:TMutex = CreateMutex()
@@ -239,10 +238,8 @@ Type TLogFile
 		obj.filename = filename
 		obj.immediateWrite = immediateWrite
 
-		'create the file ("renew" it)
-		If Not CreateFile(filename)
-			Throw "Cannot create logfile: "+filename
-		EndIf
+		'(Try to) remove old log
+		DeleteFile(filename)
 
 		obj.keepFileOpen = keepFileOpen
 
@@ -250,8 +247,8 @@ Type TLogFile
 
 		Return obj
 	End Function
-
-
+	
+	
 	Function DumpLogs()
 		For Local logfile:TLogFile = EachIn TLogFile.logs
 			'if the file is still open, close first
@@ -261,7 +258,7 @@ Type TLogFile
 			'in all cases, just dump down the file again regardless
 			'of the mode (you might have manipulated logs meanwhile)
 			'try to create the file
-			CreateFile(logfile.filename)
+			EnsureWriteableFolderExists(LOG_DIRECTORY)
 			Local file:TStream = WriteFile( logfile.filename )
 			If Not file 
 				UnlockMutex(logfile.fileMutex)
@@ -281,6 +278,25 @@ Type TLogFile
 			UnlockMutex(logfile.fileMutex)
 		Next
 	End Function
+	
+	
+	Function EnsureWriteableFolderExists(path:String)
+		Local folderExists:int = FileType(path) = FILETYPE_DIR
+		'folder might exist in read-only "app dir" already compared
+		'to write-dir. If "writeDir" is earlier in the search path it
+		'would return the write directory as real directory in case of
+		'the path's existence.
+		If MaxIO.ioInitialized 
+			Local writeDir:String = MaxIO.GetWriteDir()
+			if MaxIO.GetRealDir(path).Find(writeDir) <> 0
+				folderExists = False
+			EndIf
+		EndIf
+
+		If not folderExists and not CreateDir(path) 
+			Throw "Log: Cannot create log directory: ~q" + LOG_DEBUG + "~q."
+		EndIf
+	End Function
 
 
 	Method AddLog:Int(text:String, addDateTime:Int=False)
@@ -297,7 +313,14 @@ Type TLogFile
 
 			'open to append if not done yet
 			If Not fileObj
-				fileObj = AppendStream(filename)
+				EnsureWriteableFolderExists(LOG_DIRECTORY)
+
+				If not fileRenewed
+					fileObj = WriteStream(filename)
+					fileRenewed = True
+				Else
+					fileObj = AppendStream(filename)
+				EndIf
 				If Not fileObj 
 					?threaded
 					UnlockMutex(fileMutex)
@@ -309,11 +332,11 @@ Type TLogFile
 			'write the header if not done yet
 			'(doing it here allows to adjust the title after creation)
 			If Not headerWritten
-				WriteLine(fileObj, title)
+				fileObj.WriteLine(title)
 				headerWritten = True
 			EndIf
 
-			WriteLine(fileObj, text)
+			fileObj.WriteLine(text)
 			fileObj.Flush()
 
 			'close file to allow access by other processes
