@@ -536,6 +536,15 @@ Type TApp
 		'a file. Normally you should write to "test.user.xml" to overwrite
 		'the users customized settings
 
+		Local dirs:String[] = ExtractDir(settingsUserPath.Replace("\", "/")).Split("/")
+		Local currDir:String
+		For Local dir:String = EachIn dirs
+			If currDir Then currDir :+ "/"
+			currDir :+ dir
+			'if directory does not exist, create it
+			TFileHelper.EnsureWriteableDirectoryExists(currDir)
+		Next
+
 		'remove "DEV_" ignore key so they get stored too
 		Local storage:TDataXmlStorage = New TDataXmlStorage
 		storage.SetRootNodeKey("config")
@@ -3197,9 +3206,8 @@ endrem
 			If currDir Then currDir :+ "/"
 			currDir :+ dir
 			'if directory does not exist, create it
-			If FileType(currDir) <> 2
-				TLogger.Log("Savegame.Save()", "Savegame path contains missing directories. Creating ~q"+currDir[.. currDir.length-1]+"~q.", LOG_SAVELOAD)
-				CreateDir(currDir)
+			If TFileHelper.EnsureWriteableDirectoryExists(currDir)
+				TLogger.Log("Savegame.Save()", "Savegame path contained missing directories. Created ~q"+currDir[.. currDir.length-1]+"~q.", LOG_SAVELOAD)
 			EndIf
 		Next
 		If FileType(currDir) <> 2
