@@ -468,6 +468,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		Select sender
 			Case guiButtonStart
 					GetGameBase().mission = null
+					GameRules.devConfig = GameRules.devConfigBackup.Copy()
+					GameRules.randomizeLicenceAttributes = guiRandomizeLicence.isChecked()
 					If Not GetGameBase().networkgame And Not GetGameBase().onlinegame
 						TLogger.Log("Game", "Start a new singleplayer game", LOG_DEBUG)
 
@@ -482,8 +484,11 @@ Type TScreen_GameSettings Extends TGameScreen
 							TProgrammeData.setIgnoreUnreleasedProgrammes( true )
 							'GameRules.startGameWithCredit = False 'let player decide
 							'GetGameBase().SetRandomizerBase( 0 ) ' let player decide
-							'TODO licence value randomization!?
-							GameRules.randomizeLicenceAttributes = False
+							GameRules.randomizeLicenceAttributes = True
+							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_REVIEW", 15)
+							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_SPEED", 15)
+							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_OUTCOME", 15)
+							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_PRICE", 15)
 							GetGameBase().userStartYear = Int(guiStartYear.value)
 						EndIf
 

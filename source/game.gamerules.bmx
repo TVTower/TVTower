@@ -97,6 +97,7 @@ Type TGameRules {_exposeToLua}
 
 	'=== DEV.xml ===
 	Field devConfig:TData = new TData
+	Field devConfigBackup:TData = new TData {nosave}
 
 
 	Method Reset()
