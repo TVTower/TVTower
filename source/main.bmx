@@ -4371,6 +4371,7 @@ Type GameEvents
 						GetRegistry().Set("DEV_CONFIG", data)
 						GameRules.devConfig = data
 						GameRules.AssignFromData( Gamerules.devConfig )
+						GameRules.devConfigBackup = GameRules.devConfig.Copy()
 
 						GetGame().SendSystemMessage("[DEV] Reloaded ~qconfig/DEV.xml~q.")
 					Else
@@ -7047,6 +7048,7 @@ Function StartApp:Int()
 	'assign dev config (resources are now loaded)
 	GameRules.devConfig = TData(GetRegistry().Get("DEV_CONFIG"))
 	If not GameRules.devConfig Then GameRules.devConfig = New TData
+	GameRules.devConfigBackup = GameRules.devConfig.Copy()
 
 	'disable log from now on (if dev wished so)
 	If Not GameRules.devConfig.GetBool("DEV_LOG", True)
