@@ -11,9 +11,9 @@ Import "game.player.bmx"
 Global AllMissions:TMissions = new TMissions()
 
 Type TMissions
-	Field missions:TMap = null {noSave}
-	Field missionCategories:TList {noSave}
-	Field missionIDs:TList {noSave}
+	Field missions:TMap = null {nosave}
+	Field missionCategories:TList {nosave}
+	Field missionIDs:TList {nosave}
 
 	Method getCategories:String[]()
 		If Not missions Then _initMissions()
@@ -127,10 +127,10 @@ End Type
 Type TSimpleMission extends TMission
 	Field category:String
 	Field targetValue:Int = -1
-	Field currentPlayerFinance:TPlayerFinance {noSave}
-	Field currentPlayerMap:TStationMap {noSave}
-	Field currentImage:TPublicImage {noSave}
-	Field currentBettyEvent:TEventBase {noSave}
+	Field currentPlayerFinance:TPlayerFinance {nosave}
+	Field currentPlayerMap:TStationMap {nosave}
+	Field currentImage:TPublicImage {nosave}
+	Field currentBettyEvent:TEventBase {nosave}
 
 	Function create:TSimpleMission(category:String, targetValue:Int=-1, days:Int=-1)
 		Local result:TSimpleMission=new TSimpleMission

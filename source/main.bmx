@@ -2353,8 +2353,8 @@ Type TSaveGame Extends TGameState
 	Global messageWindowBackground:TImage
 	Global messageWindowLastUpdate:Long
 	Global messageWindowUpdatesSkipped:Int = 0
-	Global lastSaveTime:Long = 0 {noSave}
-	Global autoSaveNow:Int = False {noSave}
+	Global lastSaveTime:Long = 0 {nosave}
+	Global autoSaveNow:Int = False {nosave}
 
 	'override to do nothing
 	Method Initialize:Int()
