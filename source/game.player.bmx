@@ -48,25 +48,22 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishEnterRoom, OnFigureFinishEnterRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, OnFigureFinishLeaveRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnReachTarget, OnFigureReachTarget) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnDay, self, "onGameDay") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, OnGameDay) ]
 		return result
 	End Method
 
 
-	Method onGameDay:Int(triggerEvent:TEventBase)
+	Function OnGameDay:Int(triggerEvent:TEventBase)
 		Local daysToKeep:Int=GameRules.devConfig.GetInt(TLowerString.Create("DEV_KEEP_AI_PLAN_DAYS"), -1)
 		If daysToKeep > 0
 			daysToKeep = max(2, daysToKeep)
-			For local p:TPlayerBase = EachIn players
-				If p
-					Local id:Int=p.GetPlayerID()
-					If Not IsHuman(id)
-						TPlayerProgrammePlanCollection.GetInstance().Get(id).TruncateHistory(daysToKeep)
-					EndIf
+			For local player:TPlayer = EachIn GetInstance().players
+				If Not (player.IsLocalHuman() or player.IsRemoteHuman())
+					player.GetProgrammePlan().TruncateHistory(daysToKeep)
 				EndIf
 			Next
 		EndIf
-	End Method
+	End Function
 
 	Method Get:TPlayer(id:Int=-1)
 		return TPlayer(Super.Get(id))
