@@ -845,6 +845,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if fireEvents 
 			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveScript, new TData.Add("script", script).AddInt("sell", sell), self)
 		EndIf
+		Return True
 	End Method
 
 

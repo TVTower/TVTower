@@ -5294,11 +5294,11 @@ endrem
 
 
 	Function Room_OnBombExplosion:Int(triggerEvent:TEventBase)
-		GetRoomBoard().ResetPositions()
-
-		'TODO: send out janitor to the roomboard and when arrived, he
-		'      will reset the sign positions
-
+		'ensure janitor will reset signs when next visiting the roomboard
+		Local janitor:TFigureJanitor = TFigureJanitor(TFigureCollection.GetInstance().GetByName("Hausmeister"))
+		If janitor
+			janitor.LastRoomBoardSignResetDay = -1
+		EndIf
 
 		'=== SEND TOASTMESSAGE ===
 		'local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
@@ -5326,6 +5326,49 @@ endrem
 				toast.SetMessageCategory(TVTMessageCategory.MISC)
 
 				toast.SetCaption( caption )
+				If i = room.owner
+					Local player:TPlayer = GetPlayer(room.owner)
+					If room.GetNameRaw() = "news"
+						player.getProgrammePlan().RemoveNewsBySlot(0)
+						player.getProgrammePlan().RemoveNewsBySlot(1)
+						player.getProgrammePlan().RemoveNewsBySlot(2)
+					EndIf
+					Local cost:Int = triggerEvent.GetData().GetInt("renovationBaseCost")
+					If cost > 0
+						cost = TFunctions.RoundToBeautifulValue(cost * 1.2^ (player.GetAudienceReachLevel()-1))
+						text:+ " "+ GetRandomLocale("TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT").Replace("%COST%", MathHelper.DottedValue(cost)+getLocale("CURRENCY"))
+						player.GetFinance().PayMisc(cost)
+					EndIf
+					If room.GetNameRaw() = "archive"
+						Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(room.owner)
+						Local licence:TProgrammeLicence = programmeCollection.GetRandomProgrammeLicence()
+						If licence and licence.getSubLicenceCount() = 0 and licence.IsTradeable()
+							If programmeCollection.RemoveProgrammeLicence(licence)
+								text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT").Replace("%TITLE%", licence.GetTitle())
+							EndIf
+						EndIf
+					EndIf
+					'destroying a single production concept or licence in an unblocked studio works
+					'the interesting case of a production in progress is not yet handled (terrorist does not enter the room)
+					If room.IsUsedAsStudio()
+						Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(room.owner)
+						For Local script:TScript = EachIn programmeCollection.studioScripts
+							If room.GetId() = RoomHandler_Studio.GetInstance().GetStudioIDByScript(script)
+								Local concepts:TProductionConcept[] = TProductionConceptCollection.GetInstance().GetProductionConceptsByScript(script)
+								If concepts And concepts.length > 0
+									Local concept:TProductionConcept = concepts[RandRange(0,concepts.length-1)]
+									If programmeCollection.DestroyProductionConcept(concept)
+										text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT")
+									EndIf
+								Else
+									If programmeCollection.RemoveScript(script)
+										text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT").Replace("%TITLE%", script.GetTitle())
+									EndIf
+								EndIf
+							EndIf
+						Next
+					EndIf
+				EndIf
 				toast.SetText( text )
 
 				toast.GetData().AddNumber("playerID", i)
@@ -6349,9 +6392,6 @@ endrem
 
 			'Check if a player goes bankrupt now
 			GetGame().UpdatePlayerBankruptLevel()
-
-			'reset room signs each day to their normal position
-			GetRoomBoard().ResetPositions()
 
 
 			'remove no longer needed DailyBroadcastStatistics

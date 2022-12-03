@@ -76,6 +76,7 @@ Type TFigureJanitor Extends TFigure
 	Field NormalCleanChance:Int = 30
 	Field MovementRangeMinX:Int	= 20
 	Field MovementRangeMaxX:Int	= 420
+	Field LastRoomBoardSignResetDay:Int = 0 {nosave}
 	'how many seconds does the janitor waits at the elevator
 	'until he goes to elsewhere
 	Field WaitAtElevatorTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(35000, 0, -10000, 10000)
@@ -98,6 +99,17 @@ Type TFigureJanitor Extends TFigure
 	'           to avoid "resets" while Entering
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
 		Super.BeginEnterRoom(door, room)
+
+		'janitor resets signs once a day (and after a detonation)
+		'print "janitor visiting " + room.GetNameRaw()
+		If room And room.GetNameRaw() = "roomboard"
+			Local daysRun:Int = GetWorldTime().GetDaysRun()
+			If daysRun > LastRoomBoardSignResetDay
+				'print "janitor resetting board positions"
+				GetRoomBoard().ResetPositions()
+				LastRoomBoardSignResetDay = daysRun
+			EndIf
+		EndIf
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -157,7 +169,10 @@ Type TFigureJanitor Extends TFigure
 				'move to a different floor (only if doing nothing special)
 				If useElevator And currentJanitorAction = 0 And randomAction > 80 And Not IsAtElevator()
 					Local sendToFloor:Int = GetFloor() + 1
-					If sendToFloor > 13 Then sendToFloor = 0
+					If sendToFloor > 13
+						sendToFloor = 0
+						randomX = MovementRangeMaxX 'increase chance of visiting roomboard
+					EndIf
 					ChangeTarget(randomX, GetBuildingBase().GetFloorY2(sendToFloor))
 				'move to a different X on same floor - if not cleaning now
 				ElseIf currentJanitorAction = 0
