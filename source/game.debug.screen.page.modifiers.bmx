@@ -110,9 +110,9 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 
 	Method Render()
-		RenderGameModifierList(position.x + 5, position.y + 3, 280)
+		RenderGameModifierList(position.x + 5, position.y - 10, 280)
 
-		RenderDifficulties(position.x + 290, position.y + 3)
+		RenderDifficulties(position.x + 290, position.y -10)
 
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
@@ -120,7 +120,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 	End Method
 
 
-	Method RenderGameModifierList(x:int, y:int, w:int = 300, h:int = 355)
+	Method RenderGameModifierList(x:int, y:int, w:int = 300, h:int = 370)
 		DrawOutlineRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 2
@@ -141,7 +141,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		EndIf
 	End Method
 
-	Method RenderDifficulties(x:int, y:int, w:int = 220, h:int = 355)
+	Method RenderDifficulties(x:int, y:int, w:int = 220, h:int = 370)
 		DrawOutlineRect(x, y, w, h)
 		difficultyX = x + 5
 		difficultyY = y + 2
@@ -190,6 +190,10 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 		'Production
 		renderModifier("Production Time", "prodTime", difficulty.productionTimeMod)
+
+		'Terrorist effects
+		renderModifier("Renovation Base Price", "renovPrice", difficulty.renovationBaseCost, 500)
+		renderModifier("Renovation Time Mod", "renovTimeMod", difficulty.renovationTimeMod)
 
 		buttonsCreated = True
 	End Method
@@ -295,6 +299,10 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 				difficulty.interestRateNegativeBalance:+ diff/100.0
 			case "prodTime"
 				difficulty.productionTimeMod:+ diff/100.0
+			case "renovPrice"
+				difficulty.renovationBaseCost:+ diff
+			case "renovTimeMod"
+				difficulty.renovationTimeMod:+ diff/100.0
 			default
 				throw "unkown field for "+ fieldName
 		End Select

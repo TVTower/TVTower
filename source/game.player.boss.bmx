@@ -52,6 +52,7 @@ Type TPlayerBossCollection
 
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFinish, onFinishOrFailAdContract) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFail, onFinishOrFailAdContract) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnBombExplosion, onBombExplosion) ]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Player_OnBeginEnterRoom, onPlayerBeginEnterRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Player_OnLeaveRoom, onPlayerLeaveRoom) ]
@@ -192,6 +193,17 @@ Type TPlayerBossCollection
 	End Function
 
 
+	Function onBombExplosion:Int(triggerEvent:TEventBase)
+		Local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
+		if not room or room.owner <= 0 or room.GetNameRaw() <> "boss" then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
+		if not boss then return False
+
+		boss.onBombInOffice()
+	End Function
+
+
 	Function onDialogueTakeCredit:int(triggerEvent:TEventBase)
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		GetPlayerBoss().onDialogueTakeCredit(value)
@@ -256,12 +268,13 @@ Type TPlayerBoss
 	Const MOODADJUSTMENT_BROADCAST_POS1:Float             = 0.075
 	Const MOODADJUSTMENT_BROADCAST_POS2:Float             = 0.04
 	Const MOODADJUSTMENT_FINISH_CONTRACT:Float            = 0.05
-	Const MOODADJUSTMENT_FAIL_CONTRACT:Float              = -0.1
+	Const MOODADJUSTMENT_FAIL_CONTRACT:Float              = -0.5
 	Const MOODADJUSTMENT_MALFUNCTION_PROGRAMME:Float      = -2.0
 	Const MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH:Float = -0.5
 	Const MOODADJUSTMENT_MALFUNCTION_NEWS:Float           = -1.0
 	Const MOODADJUSTMENT_MALFUNCTION_NEWS_EACH:Float      = -0.25
 	Const MOODADJUSTMENT_WON_AWARD:Float                  = 2.5
+	Const MOODADJUSTMENT_BOMB_IN_BOSS_OFFICE:Float        = -20.0
 	Const MOOD_MAX:Float        =100.0
 	Const MOOD_EXCITED:Float    =100.0
 	Const MOOD_HAPPY:Float      = 90.0
@@ -699,6 +712,10 @@ Type TPlayerBoss
 		ChangeMood(MOODADJUSTMENT_WON_AWARD)
 	End Method
 
+
+	Method onBombInOffice:Int()
+		ChangeMood(MOODADJUSTMENT_BOMB_IN_BOSS_OFFICE)
+	End Method
 
 	'called as soon as a player leaves the boss' room
 	Method onPlayerLeaveRoom:Int(player:TPlayerBase)

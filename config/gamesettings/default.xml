@@ -14,6 +14,8 @@
 		<cableNetworkDailyCostsMod value="1.0"/>
 		<satelliteBuyPriceMod value="1.0"/>
 		<satelliteDailyCostsMod value="1.0"/>
+		<renovationBaseCost value="30000"/>
+		<renovationTimeMod value="0.75"/>
 
 		<restartingPlayerMoneyRatio value="1.0"/> 
 	</easy>
@@ -35,6 +37,8 @@
 		<satelliteBuyPriceMod value="1.4"/>
 		<satelliteDailyCostsMod value="1.25"/>
 		<broadcastPermissionPriceMod value="1.5"/>
+		<renovationBaseCost value="75000"/>
+		<renovationTimeMod value="1.5"/>
 
 		<restartingPlayerMoneyRatio value="0.6"/> 
 	</hard>
@@ -81,6 +85,10 @@
 		<satelliteConstructionTime value ="0"/><!--time before satellite broadcasts channel programme-->
 		<satelliteDailyCostsMod value="1.15"/><!--factor for satellite daily costs-->
 		<broadcastPermissionPriceMod value="1.0"/><!--factor for broadcast permission prices-->
+
+		<!--terrorist effects-->
+		<renovationBaseCost value="50000"/><!--base cost for renovating an owned room after a detonation-->
+		<renovationTimeMod value="1.0"/><!--factor for the renovation time-->
 
 		<!--relevant only for AI-player -->
 		<restartingPlayerMoneyRatio value="0.8"/><!--start money ratio for restarting AI based on other players' money and licences-->

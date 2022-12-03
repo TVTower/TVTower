@@ -436,18 +436,31 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'easy accessor to block a room using predefined values
 	Method SetBlockedState:int(blockedState:int = 0)
 		local time:int = 0
+		local renovationBaseCost:int = 0
 
 		'=== BOMB ===
 		if blockedState & BLOCKEDSTATE_BOMB > 0
 			'"placerholder rooms" (might get rent later)
 			if owner = 0 and IsUsableAsStudio()
-				time = 240 * TWorldTime.MINUTELENGTH
+				time = randRange(6,12) * 30 * TWorldTime.MINUTELENGTH
 			'rooms like movie agency
 			elseIf owner = 0
-				time = 90 * TWorldTime.MINUTELENGTH
+				time = randRange(3,6) * 30 * TWorldTime.MINUTELENGTH
 			'player rooms
 			elseIf owner > 0
-				time = 60 * TWorldTime.MINUTELENGTH
+				Local difficulty:TPlayerDifficulty = GetPlayerDifficulty(owner)
+				time = randRange(3,6) * 15 * TWorldTime.MINUTELENGTH
+				If difficulty.renovationTimeMod > 0 Then time:* difficulty.renovationTimeMod
+				renovationBaseCost = difficulty.renovationBaseCost * 1.5^(GetSize() - 1)
+				If IsUsedAsStudio() Then time:* 5
+				Select getNameRaw()
+					Case "news"
+						time:* 3
+					Case "archive"
+						time:* 4
+					Case "office"
+						time:* 2
+				EndSelect
 			endif
 
 		'=== MARSHAL ===
@@ -458,6 +471,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 			endif
 
 		'=== RENOVATION ===
+		'TODO this state does not seem to be used
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
 			if owner = 0 and IsUsableAsStudio()
 				'ATTENTION: "randRange" to get the same in multiplayer games
@@ -477,7 +491,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform others
 		if blockedState & BLOCKEDSTATE_BOMB > 0
-			TriggerBaseEvent(GameEventKeys.Room_OnBombExplosion, New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID), self)
+			TriggerBaseEvent(GameEventKeys.Room_OnBombExplosion, New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID).AddNumber("renovationBaseCost", renovationBaseCost), self)
 		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
 			TriggerBaseEvent(GameEventKeys.Room_OnMarshalVisit, New TData.AddString("roomGUID", GetGUID()), self)
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
