@@ -1151,8 +1151,6 @@ Type TFigure extends TFigureBase
 		reachedTemporaryTarget = False
 
 		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
-		local newTarget:object = Null
-
 		'only a partial target was given
 		if x=-1 or y=-1
 			Local v:TVec2D = TVec2D(GetTargetObject())
@@ -1170,43 +1168,55 @@ Type TFigure extends TFigureBase
 		'y is not of floor 0 -13
 		If GetBuildingBase().GetFloor(y) < 0 Or GetBuildingBase().GetFloor(y) > 13 Then Return False
 
-		local newTargetCoord:SVec2I
+
+		Local newTarget:object = Null
+		Local newTargetCoord:SVec2I
 
 		'set new target, y is recalculated to "basement"-y of that floor
 		newTargetCoord = new SVec2I(x, TBuildingBase.GetFloorY2(GetBuildingBase().GetFloor(y)) )
-		newTarget = new TVec2D(newTargetCoord.x, newTargetCoord.y)
+
 
 		'when targeting a room, set target to center of door
-		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(newTargetCoord.x, newTargetCoord.y)
+		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
 		if targetedDoor
+			'move to this door
+			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
+			
 			'only go into the room if we were able to target it from our
 			'source position
 			If not targetedDoor.HasFlag(TVTRoomDoorFlag.ONLY_TARGETABLE_ON_SAME_FLOOR) or targetedDoor.onFloor = GetFloor()
+				'found valid "non position" target
 				newTarget = targetedDoor
 			EndIf
-			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
 		endif
+		
+		
+		'nothing (valid) found at the position? target becomes a position
+		If Not newTarget
+			newTarget = New TVec2D(newTargetCoord.x, newTargetCoord.y)
+		EndIf
+		
 
-		'limit target coordinates
-		'on the base floor we can walk outside the building, so just
-		'check right side
-		'target.y contains the floorY so we use "y" which holds clicked
-		'floor
+		'limit target coordinates when moving to a specific x,y pos, not
+		'a specific door/hotspot/...
+		If TVec2D(newTarget)
+			'on the base floor we can walk outside the building, so just
+			'check right side
+			'target.y contains the floorY so we use "y" which holds clicked
+			'floor
 
-		'TODO: do this in a GetLimitX() method to make it overrideable
-		'      by bigger figures - like the the janitor
-		local rightLimit:int = TBuildingBase.floorWidth-15 '603
-		local leftLimit:int = 15 '200
+			'TODO: do this in a GetLimitX() method to make it overrideable
+			'      by bigger figures - like the the janitor
+			local rightLimit:int = TBuildingBase.floorWidth-15 '603
+			local leftLimit:int = 15 '200
 
-		if GetBuildingBase().GetFloor(y) = 0
-			If newTargetCoord.x >= rightLimit Then newTargetCoord = new SVec2I(rightLimit, newTargetCoord.y)
-		else
-			If newTargetCoord.x <= leftLimit Then newTargetCoord = new SVec2I(leftLimit, newTargetCoord.y)
-			If newTargetCoord.x >= rightLimit Then newTargetCoord = new SVec2I(rightLimit, newTargetCoord.y)
-		endif
-
-		local targetRoom:TRoomBase
-		if TRoomDoor(newTarget) then targetRoom = TRoomDoor(newTarget).GetRoom()
+			if GetBuildingBase().GetFloor(y) = 0
+				If newTargetCoord.x >= rightLimit Then TVec2D(newTarget).x = rightLimit
+			else
+				If newTargetCoord.x <= leftLimit Then TVec2D(newTarget).x = leftLimit
+				If newTargetCoord.x >= rightLimit Then TVec2D(newTarget).x = rightLimit
+			endif
+		EndIf
 
 
 		'=== CHECK IF ALREADY THERE ===
@@ -1219,12 +1229,16 @@ Type TFigure extends TFigureBase
 		if GetTargetObject()
 			'new target and current target are the same
 			if newTarget = GetTargetObject() then return False
-			'new target and current target are at the same position?
-			if newTargetCoord = GetTargetMoveToPosition() then return False
+			'new target and current target coordinates are at the same?
+			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetTargetMoveToPosition() ) then return False
 
-			'print playerID+": targets are different " + newTargetCoord.getIntX()+","+newTargetCoord.getIntY()+" vs " + GetTargetMovetoPosition().GetIntX()+","+GetTargetMovetoPosition().getIntY()
+			'print playerID+": targets are different " + TVec2D(newTarget).x+","+TVec2D(newTarget).y+" vs " + GetTargetMoveToPosition().x+","+GetTargetMoveToPosition().y
 		endif
-		'or if already in this room
+
+
+		local targetRoom:TRoomBase
+		if TRoomDoor(newTarget) then targetRoom = TRoomDoor(newTarget).GetRoom()
+		'skip moving if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
 
