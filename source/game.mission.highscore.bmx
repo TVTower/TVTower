@@ -46,9 +46,9 @@ End Type
 
 Type TAllHighscores
 	Field scores:TMissionHighscores[] = new TMissionHighscores[0]
-	Global lastID:String {noSave}
-	Global lastDifficulty:String {noSave}
-	Global lastScore:TMissionHighscore {noSave}
+	Global lastID:String {nosave}
+	Global lastDifficulty:String {nosave}
+	Global lastScore:TMissionHighscore {nosave}
 
 	Function addEntry(missionID:String, difficulty:Int, score:TMissionHighscore)
 		score.realDate = CurrentDate("%Y-%m-%d %H:%M:%S")
