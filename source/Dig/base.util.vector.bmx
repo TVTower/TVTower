@@ -141,6 +141,12 @@ Type TVec2D {_exposeToLua="selected"}
 	End Method
 
 
+	Method CopyFrom:TVec2D(otherVec:SVec2I)
+		SetXY(otherVec.x, otherVec.y)
+		Return self
+	End Method
+
+
 	Method CopyFromVec3D:TVec2D(otherVec:TVec3D)
 		If otherVec
 			SetXY(otherVec.x, otherVec.y)
@@ -296,6 +302,17 @@ Type TVec2D {_exposeToLua="selected"}
 
 
 	Method isSame:int(otherVec:TVec2D, round:int=FALSE) {_exposeToLua}
+		if not otherVec then return False
+
+		If round
+			Return abs(x - otherVec.x) < 1.0 AND abs(y - otherVec.y) < 1.0
+		Else
+			Return x = otherVec.x AND y = otherVec.y
+		Endif
+	End Method
+
+
+	Method isSame:int(otherVec:SVec2I, round:int=FALSE) {_exposeToLua}
 		if not otherVec then return False
 
 		If round
