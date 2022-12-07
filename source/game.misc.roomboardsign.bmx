@@ -701,10 +701,52 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		Local newImage:TImage = background.GetImageCopy()
 		Local font:TBitmapFont = GetBitmapFont("Default",10, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
-		If door.GetOwner() > 0
-			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, New SColor8(50,50,50), EDrawTextEffect.GLOW, 0.20)
+		Local key:String
+		Local playerId:Int = GetPlayerBase().playerID
+		If Not GetPlayerBase().IsLocalHuman() Then playerId = -1
+		Local doorOwner:Int = door.GetOwner()
+		Select door.GetRoomName()
+			Case "roomboard"
+				key = "[P]"
+			Case "betty"
+				key = "[B]"
+			Case "supermarket"
+				key = "[L]"
+			Case "movieagency"
+				key = "[F]"
+			Case "adagency"
+				key = "[W]"
+			Case "scriptagency"
+				key = "[D]"
+			Case "roomagency"
+				key = "[R]"
+			Case "credits"
+				key = "[E]"
+			Case "office"
+				If playerId = doorOwner Then key = "[O]"
+			Case "news"
+				If playerId = doorOwner Then key = "[N]"
+			Case "boss"
+				If playerId = doorOwner Then key = "[C]"
+			Case "archive"
+				If playerId = doorOwner Then key = "[A]"
+			Case "studio"
+				If playerId = doorOwner Then key = "[S]"
+		End Select
+		If key
+			If doorOwner > 0
+				font.DrawBox(door.GetOwnerName(), 22, 2, 135,18, sALIGN_LEFT_TOP, New SColor8(50,50,50), EDrawTextEffect.GLOW, 0.20)
+				font.DrawBox(key, 22, 2, 150,18, sALIGN_RIGHT_TOP, New SColor8(50,50,50, 150), EDrawTextEffect.GLOW, 0.20)
+			Else
+				font.DrawBox(door.GetOwnerName(), 22, 2, 135,18, sALIGN_LEFT_TOP, New SColor8(100,100,100), EDrawTextEffect.GLOW, 0.20)
+				font.DrawBox(key, 22, 2, 150,18, sALIGN_RIGHT_TOP, New SColor8(100,100,100, 150), EDrawTextEffect.GLOW, 0.20)
+			EndIf
 		Else
-			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, New SColor8(100,100,100), EDrawTextEffect.GLOW, 0.20)
+			If doorOwner > 0
+				font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, New SColor8(50,50,50), EDrawTextEffect.GLOW, 0.20)
+			Else
+				font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, New SColor8(100,100,100), EDrawTextEffect.GLOW, 0.20)
+			EndIf
 		EndIf
 		TBitmapFont.setRenderTarget(Null)
 

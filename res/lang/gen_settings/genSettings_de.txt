@@ -1,7 +1,7 @@
 LANGUAGE_NAME_INTERNATIONAL = German
 LANGUAGE_NAME_LOCALE        = Deutsch
 
-MENU      = Menü
+MENU      = Menü / Pause
 OPEN_MENU = Menü öffnen
 
 CHAT           = Chat
@@ -162,7 +162,7 @@ GAMESPEED      = Spielgeschwindigkeit
 SET_SPEED_TO_X = Setze Geschwindigkeit auf Level %SPEED%
 
 MANUAL    = Handbuch
-HELP      = Hilfe
+HELP      = Hilfe / Pause
 SHOW_HELP = Zeige die Hilfe an
 
 DO_NOT_SHOW_AGAIN        = Nicht erneut anzeigen

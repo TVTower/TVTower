@@ -79,6 +79,7 @@ Type TInGameInterface
 	Field chat:TGUIGameChat
 
 	Global _instance:TInGameInterface
+	Global keyLS_DevKeys:TLowerString = New TLowerString.Create("DEV_KEYS")
 
 	Field ingameState:TLowerString = TLowerString.Create("InGame")
 
@@ -582,7 +583,7 @@ Type TInGameInterface
 
 				MenuToolTip.area.SetX(364)
 				MenuToolTip.SetTitle(getLocale("MENU"))
-				MenuToolTip.SetContent(getLocale("OPEN_MENU"))
+				MenuToolTip.SetContent("[ESC] " + getLocale("OPEN_MENU"))
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
@@ -598,7 +599,7 @@ Type TInGameInterface
 
 				MenuToolTip.area.SetX(410)
 				MenuToolTip.SetTitle(getLocale("HELP"))
-				MenuToolTip.SetContent(getLocale("SHOW_HELP"))
+				MenuToolTip.SetContent("[F1] "+ getLocale("SHOW_HELP"))
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
@@ -615,7 +616,11 @@ Type TInGameInterface
 
 				MenuToolTip.area.SetX(439)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
-				MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 1))
+				If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
+					MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 1))
+				Else
+					MenuToolTip.SetContent("[1] "+getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 1))
+				EndIf
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
@@ -631,7 +636,11 @@ Type TInGameInterface
 
 				MenuToolTip.area.SetX(469)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
-				MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 2))
+				If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
+					MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 2))
+				Else
+					MenuToolTip.SetContent("[2] " + getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 2))
+				EndIf
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
@@ -647,7 +656,11 @@ Type TInGameInterface
 
 				MenuToolTip.area.SetX(497)
 				MenuToolTip.SetTitle(getLocale("GAMESPEED"))
-				MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 3))
+				If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
+					MenuToolTip.SetContent(getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 3))
+				Else
+					MenuToolTip.SetContent("[3] "+ getLocale("SET_SPEED_TO_X").Replace("%SPEED%", 3))
+				EndIf
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
