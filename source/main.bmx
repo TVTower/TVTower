@@ -711,6 +711,9 @@ Type TApp
 				__DevHotKeys()
 			Else
 				__NonDevHotKeys()
+				DebugScreen._enabled = 0
+				TVTDebugInfo = 0
+				debugAudienceInfo.mode = 0
 			EndIf
 
 
