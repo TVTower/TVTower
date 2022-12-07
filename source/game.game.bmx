@@ -277,13 +277,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		endif
 		?
 
-		Local devKey:TLowerString = New TLowerString.Create("DEV_KEYS")
 		If mission
 			Local suffix:String = ".~n|b|"+GetRandomLocale2(["MISSION_START_PEP"])+"|/b|"
 			?not debug
-				Local devMode:Int = GameRules.devConfig.GetBool(devKey, False)
-				If devMode
-					GameRules.devConfig.AddBool(devKey, False)
+				If GameRules.devMode
+					GameRules.devMode = 0
 					suffix:+ ("~n"+GetLocale("MISSION_DISABLE_DEV"))
 				EndIf
 			?
@@ -295,16 +293,18 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			toast.SetCaption( GetLocale("MISSION")+": "+mission.getTitle() )
 			toast.SetText( mission.GetDescription() + suffix)
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
-		ElseIf Not GameRules.devConfig.GetBool(devKey, False)
-			'possibly reenable dev keys for endless game
+		ElseIf Not GameRules.devMode
+rem
+			're-enable dev mode for endless game - can be done via dev command...
 			If FileType("config/DEV.xml") = 1
 				Local dataLoader:TDataXmlStorage = New TDataXmlStorage
 				Local data:TData = dataLoader.Load("config/DEV.xml")
 				If data
-					Local devKeyEnabled:Int = data.GetBool(devKey, False)
-					If devKeyEnabled Then GameRules.devConfig.AddBool(devKey, True)
+					Local devKeyEnabled:Int = data.GetBool(New TLowerString.Create("DEV_KEYS"), False)
+					If devKeyEnabled Then GameRules.devMode = True
 				EndIf
 			EndIf
+endrem
 		EndIf
 
 		gamesStarted :+ 1
@@ -338,9 +338,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			TLogger.Log("Game.PrepareStart()", "GameRules initialization + override with DEV values.", LOG_DEBUG)
 			GameRules.AssignFromData( GameRules.devConfigBackup )
 		Else
-			'just reset the rules, value assignment is done on loading the gameload the dev-values into the game rules
-			TLogger.Log("Game.PrepareStart()", "resetting GameRules values.", LOG_DEBUG)
-			GameRules.Reset()
+			'Do nothing; value assignment has been done on loading (TGameState#RestoreGameData)
+			'TLogger.Log("Game.PrepareStart()", "resetting GameRules values.", LOG_DEBUG)
+			'GameRules.Reset()
 		EndIf
 
 
