@@ -1,7 +1,7 @@
 LANGUAGE_NAME_INTERNATIONAL = Francais
 LANGUAGE_NAME_LOCALE        = Francais
 
-MENU      = Menu
+MENU      = Menu / Pause
 OPEN_MENU = Ouvrir le menu
 
 CHAT           = Conversation
@@ -162,7 +162,7 @@ GAMESPEED      = Vitesse du jeu
 SET_SPEED_TO_X = Vitesse réglée sur %SPEED%
 
 MANUAL    = Manuel
-HELP      = Aide
+HELP      = Aide / Pause
 SHOW_HELP = Afficher l'aide
 
 DO_NOT_SHOW_AGAIN        = Ne plus afficher
