@@ -98,11 +98,13 @@ Type TGameRules {_exposeToLua}
 
 
 	'=== DEV.xml ===
+	Field devMode:Int = False
 	Field devConfig:TData = new TData
 	Field devConfigBackup:TData = new TData {nosave}
 
 
 	Method Reset()
+		devMode = False
 		dailyBossVisit = True
 
 		elevatorSpeed = 160
@@ -123,6 +125,7 @@ Type TGameRules {_exposeToLua}
 	Method AssignFromData:int(data:TData)
 		if not data then return False
 
+		devMode = data.GetBool("DEV_KEYS", FALSE)
 		dailyBossVisit = data.GetInt("DEV_DAILY_BOSS_VISIT", dailyBossVisit)
 
 		adContractInstancesMax = data.GetInt("DEV_ADCONTRACT_INSTANCES_MAX", adContractInstancesMax)
