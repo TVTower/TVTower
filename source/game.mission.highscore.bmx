@@ -55,8 +55,8 @@ Type TAllHighscores
 		TPersist.format=True
 		TPersist.maxDepth = 4096
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
-		'TODO file location and name
-		Local file:String = "highscores.xml"
+		'TODO file location
+		Local file:String = "missionScores.xml"
 		Local persistedScores:TAllHighscores
 
 		If FileType(file) = 1
