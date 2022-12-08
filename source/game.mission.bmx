@@ -130,6 +130,20 @@ Type TMissions
 		result.betty = GetBetty().GetInLove(player)
 		Return result
 	EndFunction
+
+	Function addHighscoreEntry(mission:TMission, score:TMissionHighscore)
+		score.gameId = mission.gameId
+		score.primaryPlayer = mission.playerID
+		score.startYear = GetWorldTime().GetStartYear()
+		score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
+		score.daysPerSeason = GetWorldTime()._daysPerSeason
+		Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[0]
+		For Local p:Int=1 TO 4
+			playerData:+ [TMissions.getHighScoreData(p)]
+		Next
+		score.playerData = playerData
+		TAllHighscores.addEntry(mission.getMissionId(), GetStationMapCollection().GetMapName(), mission.difficulty, score)
+	EndFunction
 End Type
 
 Type TSimpleMission extends TMission
@@ -180,9 +194,8 @@ Type TSimpleMission extends TMission
 	End Method
 
 	Method getIdSuffix:String() override
-		Local mapName:String = GetStationMapCollection().GetMapName()
-		Local suffix:String = mapName
-		If targetValue > 0 Then suffix:+("_"+targetValue)
+		Local suffix:String = ""
+		If targetValue > 0 Then suffix:+ targetValue
 		Return suffix
 	End Method
 
@@ -302,23 +315,14 @@ Type TSimpleMission extends TMission
 
 		If fireEvent
 			Local score:TMissionHighscore = new TMissionHighscore
-			score.gameId = gameId
 			If key = GameEventKeys.Mission_Achieved
 				score.missionAccomplished = True
 			Else
 				score.missionAccomplished = False
 			EndIf
-			score.primaryPlayer = playerID
 			score.winningPlayer = winningPlayer
-			score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
-			score.startYear = GetWorldTime().GetStartYear()
-			Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[0]
-			For Local p:Int=1 TO 4
-				playerData:+ [TMissions.getHighScoreData(p)]
-			Next
-			score.playerData = playerData
 			'print "adding highscore " + playerID
-			TAllHighscores.addEntry(getMissionId(), difficulty, score)
+			TMissions.addHighscoreEntry(self, score)
 
 			Local data:TData = New TData
 			data.add("highscore", score)
@@ -383,8 +387,7 @@ Type TCombinedMission extends TMission
 	End Method
 
 	Method getIdSuffix:String() override
-		Local mapName:String = GetStationMapCollection().GetMapName()
-		Local suffix:String = mapName+"_COMBI"
+		Local suffix:String = "COMBI"
 		If money Then suffix:+("_M"+money)
 		If reach Then suffix:+("_R"+reach)
 		If image Then suffix:+("_I"+image)
@@ -506,7 +509,6 @@ Type TCombinedMission extends TMission
 			Local fireEvent:Int = False
 			Local key:TEventKey = GameEventKeys.Mission_Achieved
 			Local score:TMissionHighscore = new TMissionHighscore
-			score.gameId = gameId
 			Local text:String
 			Local winningPlayer:Int
 			If (money < 0 And currentMoney > abs(money)) ..
@@ -535,21 +537,13 @@ Type TCombinedMission extends TMission
 				EndIf
 			EndIf
 			If fireEvent
-				score.primaryPlayer = playerID
 				score.winningPlayer = winningPlayer
-				score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
 				If key = GameEventKeys.Mission_Achieved
 					score.missionAccomplished = True
 				Else
 					score.missionAccomplished = False
 				EndIf
-				score.startYear = GetWorldTime().GetStartYear()
-				Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[0]
-				For Local p:Int=1 TO 4
-					playerData:+ [TMissions.getHighScoreData(p)]
-				Next
-				score.playerData = playerData
-				TAllHighscores.addEntry(getMissionId(), difficulty, score)
+				TMissions.addHighscoreEntry(self, score)
 
 				Local data:TData = New TData
 				If text data.addString("text", text)
@@ -602,8 +596,7 @@ Type TSammyMission extends TMission
 	End Method
 
 	Method getIdSuffix:String() override
-		Local mapName:String = GetStationMapCollection().GetMapName()
-		Local suffix:String = mapName + "_" + missionType
+		Local suffix:String = missionType
 		If targetValue > 0 Then suffix:+("_"+targetValue)
 		Return suffix
 	End Method
@@ -707,7 +700,6 @@ Type TSammyMission extends TMission
 
 		If fireEvent
 			Local score:TMissionHighscore = new TMissionHighscore
-			score.gameId = gameId
 			If key = GameEventKeys.Mission_Achieved
 				score.missionAccomplished = True
 			Else
@@ -717,19 +709,11 @@ Type TSammyMission extends TMission
 					text = "~n"+ GetLocale("MISSION_OTHER_PLAYER").replace("%NAME%", playerName) + text
 				EndIf
 			EndIf
-			score.primaryPlayer = playerID
 			score.winningPlayer = winningPlayer
-			score.gameMinutes = GetWorldTime().GetTimeGoneAsMinute(True)
-			score.startYear = GetWorldTime().GetStartYear()
-			Local playerData:TMissionHighscorePlayerData[] = new TMissionHighscorePlayerData[4]
-			For Local p:Int=1 TO 4
-				playerData[p-1] = TMissions.getHighScoreData(p)
-			Next
-			score.playerData = playerData
 			if Not score.data Then score.data = new TData
 			score.data.add("sammys", list.Reversed())
 			'print "adding highscore " + playerID
-			TAllHighscores.addEntry(getMissionId(), difficulty, score)
+			TMissions.addHighscoreEntry(self, score)
 
 			Local data:TData = New TData
 			data.add("highscore", score)
