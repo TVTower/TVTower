@@ -31,26 +31,24 @@ Type TMissionHighscore
 	Field primaryPlayer:Int
 	Field winningPlayer:Int
 	Field gameMinutes:Long
+	Field daysPerSeason:Int
 	Field missionAccomplished:Int = False
 	Field startYear:Int
 	Field playerData:TMissionHighscorePlayerData[]
 	Field data:TData
 End Type
 
-'TODO incorporate number of days per season in missionID (different lists) or highscore itself
 Type TMissionHighscores
 	Field missionID:String
 	Field missiondifficulty:Int 'enum not persisted
+	Field mapName:String
 	Field scores:TMissionHighscore[] = new TMissionHighscore[0]
 End Type
 
 Type TAllHighscores
 	Field scores:TMissionHighscores[] = new TMissionHighscores[0]
-	Global lastID:String {nosave}
-	Global lastDifficulty:String {nosave}
-	Global lastScore:TMissionHighscore {nosave}
 
-	Function addEntry(missionID:String, difficulty:Int, score:TMissionHighscore)
+	Function addEntry(missionID:String, mapName:String, difficulty:Int, score:TMissionHighscore)
 		score.realDate = CurrentDate("%Y-%m-%d %H:%M:%S")
 		TPersist.format=True
 		TPersist.maxDepth = 4096
@@ -68,7 +66,7 @@ Type TAllHighscores
 		Local missionScore:TMissionHighscores
 		For Local index:Int = 0 Until persistedScores.scores.length
 			missionScore = persistedScores.scores[index]
-			If missionScore and missionScore.missionID = missionID and missionScore.missiondifficulty = difficulty
+			If missionScore and missionScore.missionID = missionID and missionScore.missiondifficulty = difficulty and missionScore.mapName = mapName 
 				highScoreExisted = True
 				missionScore.scores:+ [score]
 				persistedScores.scores[index] = missionScore
@@ -79,6 +77,7 @@ Type TAllHighscores
 			missionScore = new TMissionHighscores
 			missionScore.missionID = missionID
 			missionScore.missiondifficulty = difficulty
+			missionScore.mapName = mapName
 			missionScore.scores = [score]
 			persistedScores.scores:+ [missionScore]
 		EndIf
