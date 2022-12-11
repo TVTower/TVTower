@@ -2827,7 +2827,7 @@ Type TScreenHandler_StationMap
 		GetStationMap(room.owner).Update()
 
 		'process right click
-		If MOUSEMANAGER.isClicked(2) Or MouseManager.IsLongClicked(1)
+		If MOUSEMANAGER.isClicked(2)
 			Local reset:Int = (selectedStation Or mouseoverStation Or satelliteSelectionFrame.IsOpen() or mapInformationFrame.IsOpen())
 
 			If mapInformationFrame.IsOpen()

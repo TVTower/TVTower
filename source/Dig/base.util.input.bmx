@@ -714,12 +714,16 @@ Type TMouseManager
 					if skipLongClicks[buttonIndex] > 0
 						skipLongClicks[buttonIndex] :- 1
 					else
+						'but also a long click one
 						_AddClickEntry(button, CLICKTYPE_LONGCLICK, currentPosVec.Copy(), t)
 
 						'emulating right click?
 						If _longClickLeadsToRightClick And button = 1
 							_AddClickEntry(2, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 							_downTime[2] = _downTime[1]
+						Else
+							'it is a click nonetheless
+							_AddClickEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 						EndIf
 					endif
 
