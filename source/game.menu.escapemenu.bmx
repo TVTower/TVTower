@@ -89,7 +89,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[2]
 				If Not chainSaveMenu
-					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New SVec2I(0,0), New SVec2I(520,370), "SYSTEM")
+					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New SVec2I(0,0), New SVec2I(520,356), "SYSTEM")
 					chainSaveMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSaveMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -486,13 +486,12 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 '		Local canvas:TGUIObject = GetGuiContent()
 
-		savegameName = New TGUIInput.Create(New SVec2I(Int(GetContentScreenRect().x), Int(GetContentScreenRect().y)), New SVec2I(Int(GetContentScreenRect().w), 40), "", 64, "MODALSAVEMENU")
-		savegameName.SetPosition(GetContentScreenRect().x, GetContentScreenRect().y)
-
-		savegameNameLabel = New TGUILabel.Create(New SVec2I(0, 0), "", Null, "MODALSAVEMENU")
-
+		savegameName = New TGUIInput.Create(New SVec2I(0,0), New SVec2I(Int(GetContentScreenRect().w), 40), "", 64, "MODALSAVEMENU")
+		savegameNameLabel = New TGUILabel.Create(New SVec2I(0, 0), "")
 		savegameList = New TGUISelectList.Create(New SVec2I(0, Int(savegameName.GetScreenRect().h)), New SVec2I(Int(GetContentScreenRect().w),80), "MODALSAVEMENU")
 
+		AddChild(savegameName)
+		AddChild(savegameNameLabel)
 		AddChild(savegameList)
 
 		If guiCaptionTextBox
@@ -708,33 +707,17 @@ endrem
 		Local addH:Int = 0
 		If savegameNameLabel
 			savegameNameLabel.SetSize(GetContentScreenRect().GetW(), -1)
-			addH :+ savegameNameLabel.GetScreenRect().GetH() + 15
+			addH :+ savegameNameLabel.GetScreenRect().GetH() + 18
 		EndIf
 		If savegameName
 			savegameName.SetSize(GetContentScreenRect().GetW(), -1)
+			savegameName.SetPosition(0, 0 + addH)
 			addH :+ savegameName.GetScreenRect().GetH() + 5
 		EndIf
 		If savegameList
 			savegameList.SetSize(GetContentScreenRect().GetW(), GetContentScreenRect().GetH() - addH)
-'			savegameList.RecalculateElements()
-		EndIf
-
-
-		'as long as a list cannot be the child element of a window
-		'we have to move them manually (and unparented)
-		addH = 0
-'		local addH:int = 0
-		If savegameNameLabel
-			savegameNameLabel.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY())
-			addH :+ savegameNameLabel.GetScreenRect().GetH() + 15
-		EndIf
-		If savegameName
-			savegameName.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + addH)
-			addH :+ savegameName.GetScreenRect().GetH() + 5
-		EndIf
-
-		If savegameList
 			savegameList.SetPosition(0, 0 + addH)
+			'savegameList.RecalculateElements()
 		EndIf
 	End Method
 
@@ -944,14 +927,16 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 		Local width:Int = GetContentScreenRect().GetW() - 4
 
 		Local leftX:Int = GetContentScreenRect().GetX() + 2
+		Local oldAlpha:Float = GetAlpha()
+		Local useAlpha:Float = oldAlpha * GetScreenAlpha()
+		SetAlpha useAlpha
 
 		GetBitmapFontManager().baseFontBold.DrawBox(GetFileInformation().GetString("fileName"), leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 20, sALIGN_LEFT_TOP, headCol, EDrawTextEffect.Shadow, 0.6)
 		GetFont().DrawBox("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.25 * width, 20, sALIGN_LEFT_TOP, playerCol, EDrawTextEffect.Shadow, 0.25)
 		GetFont().DrawBox("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenRect().GetY() + Self.paddingTop, 0.35 * width, 20, sALIGN_RIGHT_CENTER, col)
 		GetFont().DrawBox("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 20, sALIGN_RIGHT_CENTER, col)
 
-		Local oldAlpha:Float = GetAlpha()
-		SetAlpha oldAlpha * 0.30
+		SetAlpha useAlpha * 0.30
 		DrawRect(leftX, GetScreenRect().GetY() + GetScreenRect().GetH() - 1, width, 1)
 		SetAlpha oldAlpha
 	End Method
@@ -961,13 +946,16 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 		Super.DrawOverlay()
 
 		if fileState < 0
+			Local oldAlpha:Float = GetAlpha()
+			Local useAlpha:Float = oldAlpha * GetScreenAlpha()
+			SetAlpha useAlpha
+
 			Local width:Int = GetContentScreenRect().GetW() - 4 - 10 - 80
 			Local leftX:Int = GetContentScreenRect().GetX() + 2 + 40
-			Local oldAlpha:Float = GetAlpha()
 			SetColor 200,80,0
-			SetAlpha 0.3
+			SetAlpha useAlpha * 0.3
 			DrawRect(leftX + 10, GetScreenRect().GetY() + 10,  width, GetScreenRect().GetH() - 20)
-			SetAlpha 1.0
+			SetAlpha useAlpha
 			SetColor 255,255,255
 			if fileState = -1
 				GetFont().DrawBox(GetLocale("FILE_NOT_FOUND"), leftX, GetScreenRect().GetY() + 10, width, GetScreenRect().GetH() - 20, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)

@@ -2124,6 +2124,10 @@ endrem
 		
 		Local colA:Float = color.a / 255.0
 
+		'modify effectValue and color alpha by screen's  alpha too
+		effectValue :* oldA
+		colA :* oldA
+
 		Select effectMode
 			Case EDrawTextEffect.SHADOW
 				If effectValue = -1 Then effectValue = 0.6
