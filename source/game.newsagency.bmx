@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "game.newsagency.base.bmx"
 Import "game.newsagency.sports.soccer.bmx"
 Import "game.newsagency.sports.icehockey.bmx"
@@ -399,8 +399,8 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 			tempMin = Min(tempMin, weather.GetTemperature())
 			tempMax = Max(tempMax, weather.GetTemperature())
 
-			windMin = Min(windMin, weather.GetWindSpeed() * 20)
-			windMax = Max(windMax, weather.GetWindSpeed() * 20)
+			windMin = Min(windMin, weather.GetWindSpeedKmh())
+			windMax = Max(windMax, weather.GetWindSpeedKmh())
 
 			if weather.GetTemperature() < 0 then isBelowZero = True
 			if weather.IsRaining() and weather.GetTemperature() >= 0 then isRaining = True
@@ -465,11 +465,11 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 
 
 		local weatherText:string
-		if windMin < 2 and windMax < 2
+		if windMin <= 10 and windMax <= 10
 			weatherText = GetRandomLocale("NEARLY_NO_WIND")
 		elseif windMin <> windMax
-			if windMin > 0 and windMax > 10
-				if windMin > 20 and windMax > 35
+			if windMin > 20 and windMax > 20
+				if windMin > 40 and windMax > 60
 					weatherText = GetRandomLocale("STORMY_WINDS_OF_UP_TO_X")
 				else
 					weatherText = GetRandomLocale("SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y")
@@ -482,7 +482,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		endif
 
 		if temperatureText <> "" then description :+ " " + temperatureText.replace("%TEMPERATURE%", tempMin).replace("%MINTEMPERATURE%", tempMin).replace("%MAXTEMPERATURE%", tempMax)
-		if weatherText <> ""  then description :+ " " + weatherText.replace("%MINWINDVELOCITY%", MathHelper.NumberToString(windMin, 2, True)).replace("%MAXWINDVELOCITY%", MathHelper.NumberToString(windMax, 2, True))
+		if weatherText <> ""  then description :+ " " + weatherText.replace("%MINWINDVELOCITY%", MathHelper.NumberToString(windMin, 0, True)).replace("%MAXWINDVELOCITY%", MathHelper.NumberToString(windMax, 0, True))
 
 
 		local localizeTitle:TLocalizedString = new TLocalizedString
