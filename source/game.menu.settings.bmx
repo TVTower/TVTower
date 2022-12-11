@@ -31,14 +31,14 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field inputOnlinePort:TGUIInput
 	Field inputTouchClickRadius:TGUIInput
 	Field checkTouchInput:TGUICheckbox
-	Field checkLongClickMode:TGUICheckbox
-	Field inputLongClickTime:TGUIInput
+	Field checkRightClickEmulation:TGUICheckbox
+	Field inputRightClickEmulationTime:TGUIInput
 
 	Field checkShowIngameHelp:TGUICheckbox
 
 	'labels for deactivation
-	Field labelLongClickTime:TGUILabel
-	Field labelLongClickTimeMilliseconds:TGUILabel
+	Field labelRightClickEmulationTime:TGUILabel
+	Field labelRightClickEmulationTimeMilliseconds:TGUILabel
 	Field labelTouchClickRadiusPixel:TGUILabel
 	Field labelTouchClickRadius:TGUILabel
 
@@ -308,23 +308,23 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenRect().GetH()) + labelH + 4
 
 
-		checkLongClickMode = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(checkboxWidth + 20,-1), GetLocale("LONGCLICK_MODE"))
-		Self.AddChild(checkLongClickMode)
-		nextY :+ checkLongClickMode.GetScreenRect().GetH()
+		checkRightClickEmulation = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(checkboxWidth + 20,-1), GetLocale("RIGHTCLICK_EMULATION"))
+		Self.AddChild(checkRightClickEmulation)
+		nextY :+ checkRightClickEmulation.GetScreenRect().GetH()
 
-		Local labelLongClickMode:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("LONGCLICK_MODE_EXPLANATION"))
-		Self.AddChild(labelLongClickMode)
-		labelLongClickMode.SetSize(checkboxWidth+30, -1)
-		labelLongClickMode.SetFont( GetBitmapFont("default", 10) )
-		labelLongClickMode.SetValueColor(TColor.CreateGrey(75))
-		nextY :+ labelLongClickMode.GetValueDimension().y + 5
+		Local labelRightClickEmulationExplanation:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("RIGHTCLICK_EMULATION_EXPLANATION"))
+		Self.AddChild(labelRightClickEmulationExplanation)
+		labelRightClickEmulationExplanation.SetSize(checkboxWidth+30, -1)
+		labelRightClickEmulationExplanation.SetFont( GetBitmapFont("default", 10) )
+		labelRightClickEmulationExplanation.SetValueColor(TColor.CreateGrey(75))
+		nextY :+ labelRightClickEmulationExplanation.GetValueDimension().y + 5
 
-		labelLongClickTime = New TGUILabel.Create(New SVec2I(nextX + 22, nextY), GetLocale("LONGCLICK_TIME")+":")
-		inputLongClickTime = New TGUIInput.Create(New SVec2I(nextX + 22, nextY + labelH), New SVec2I(50,-1), "", 4)
-		labelLongClickTimeMilliseconds = New TGUILabel.Create(New SVec2I(nextX + 22 + 55 , nextY + labelH + 4), "ms")
-		Self.AddChild(labelLongClickTime)
-		Self.AddChild(inputLongClickTime)
-		Self.AddChild(labelLongClickTimeMilliseconds)
+		labelRightClickEmulationTime = New TGUILabel.Create(New SVec2I(nextX + 22, nextY), GetLocale("RIGHTCLICK_EMULATION_TIME")+":")
+		inputRightClickEmulationTime = New TGUIInput.Create(New SVec2I(nextX + 22, nextY + labelH), New SVec2I(50,-1), "", 4)
+		labelRightClickEmulationTimeMilliseconds = New TGUILabel.Create(New SVec2I(nextX + 22 + 55 , nextY + labelH + 4), "ms")
+		Self.AddChild(labelRightClickEmulationTime)
+		Self.AddChild(inputRightClickEmulationTime)
+		Self.AddChild(labelRightClickEmulationTimeMilliseconds)
 
 		nextY :+ inputH + 5
 
@@ -359,8 +359,8 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 		data.AddBoolString("touchInput", checkTouchInput.IsChecked())
 		data.Add("touchClickRadius", inputTouchClickRadius.GetValue())
-		data.AddBoolString("longClickMode", checkLongClickMode.IsChecked())
-		data.Add("longClicktime", inputLongClickTime.GetValue())
+		data.AddBoolString("rightClickEmulation", checkRightClickEmulation.IsChecked())
+		data.Add("rightClickEmulationTime", inputRightClickEmulationTime.GetValue())
 
 		data.AddBoolString("showIngameHelp", checkShowIngameHelp.IsChecked())
 
@@ -393,17 +393,17 @@ Type TGUISettingsPanel Extends TGUIPanel
 		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
 		checkTouchInput.SetChecked(data.GetBool("touchInput", MouseManager._ignoreFirstClick))
 		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
-		checkLongClickMode.SetChecked(data.GetBool("longClickMode", MouseManager._longClickModeEnabled))
-		inputLongClickTime.SetValue(Max(50, data.GetInt("longClickTime", MouseManager.longClickMinTime)))
+		checkRightClickEmulation.SetChecked(data.GetBool("rightClickEmulation", MouseManager._longClickLeadsToRightClick))
+		inputRightClickEmulationTime.SetValue(Max(50, data.GetInt("rightClickEmulationTime", MouseManager.longClickMinTime)))
 
 		checkShowIngameHelp.SetChecked(data.GetBool("showIngameHelp", IngameHelpWindowCollection.showHelp))
 
 
 		'disable certain elements if needed
-		If Not checkLongClickMode.IsChecked()
-			labelLongClickTime.Disable()
-			inputLongClickTime.Disable()
-			labelLongClickTimeMilliseconds.Disable()
+		If Not checkRightClickEmulation.IsChecked()
+			labelRightClickEmulationTime.Disable()
+			inputRightClickEmulationTime.Disable()
+			labelRightClickEmulationTimeMilliseconds.Disable()
 		EndIf
 		If Not checkTouchInput.IsChecked()
 			labelTouchClickRadius.Disable()
@@ -457,22 +457,22 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local checkBox:TGUICheckbox = TGUICheckbox(event.GetSender())
 		If Not checkBox Then Return False
 
-		If checkBox = checkLongClickMode
-			If Not labelLongClickTime Then Return False
-			If Not inputLongClickTime Then Return False
-			If Not labelLongClickTimeMilliseconds Then Return False
+		If checkBox = checkRightClickEmulation
+			If Not labelRightClickEmulationTime Then Return False
+			If Not inputRightClickEmulationTime Then Return False
+			If Not labelRightClickEmulationTimeMilliseconds Then Return False
 
-			If checkLongClickMode.IsChecked()
-				If Not labelLongClickTime.IsEnabled()
-					labelLongClickTime.Enable()
-					inputLongClickTime.Enable()
-					labelLongClickTimeMilliseconds.Enable()
+			If checkRightClickEmulation.IsChecked()
+				If Not labelRightClickEmulationTime.IsEnabled()
+					labelRightClickEmulationTime.Enable()
+					inputRightClickEmulationTime.Enable()
+					labelRightClickEmulationTimeMilliseconds.Enable()
 				EndIf
 			Else
-				If labelLongClickTime.IsEnabled()
-					labelLongClickTime.Disable()
-					inputLongClickTime.Disable()
-					labelLongClickTimeMilliseconds.Disable()
+				If labelRightClickEmulationTime.IsEnabled()
+					labelRightClickEmulationTime.Disable()
+					inputRightClickEmulationTime.Disable()
+					labelRightClickEmulationTimeMilliseconds.Disable()
 				EndIf
 			EndIf
 		EndIf

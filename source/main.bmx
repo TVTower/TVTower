@@ -297,8 +297,8 @@ Type TApp
 
 			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
-			MouseManager._longClickModeEnabled = obj.config.GetBool("longClickMode", True)
-			MouseManager.longClickMinTime = obj.config.GetInt("longClickTime", 400)
+			MouseManager._longClickLeadsToRightClick = obj.config.GetBool("rightClickEmulation", False)
+			MouseManager.longClickMinTime = obj.config.GetInt("rightClickEmulationTime", 400)
 
 			IngameHelpWindowCollection.showHelp = obj.config.GetBool("showIngameHelp", True)
 
@@ -545,7 +545,8 @@ Type TApp
 
 		MouseManager._minSwipeDistance = config.GetInt("touchClickRadius", 10)
 		MouseManager._ignoreFirstClick = config.GetBool("touchInput", False)
-		MouseManager._longClickModeEnabled = config.GetBool("longClickMode", True)
+		MouseManager._longClickLeadsToRightClick = config.GetBool("rightClickEmulation", True)
+		MouseManager.longClickMinTime = config.GetInt("rightClickEmulationTime", 400)
 
 		IngameHelpWindowCollection.showHelp = config.GetBool("showIngameHelp", True)
 
