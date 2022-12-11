@@ -206,8 +206,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		roomOwner = room.owner
 
-		'emulated right click or clicked door
-		If (MouseManager.IsClicked(1) and THelper.MouseIn(25,40,150,295)) or MouseManager.IsLongClicked(1)
+		'clicked door?
+		If MouseManager.IsClicked(1) and THelper.MouseIn(25,40,150,295)
 			GetPlayer().GetFigure().LeaveRoom()
 
 			MouseManager.SetClickHandled(1)
@@ -218,7 +218,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 
 			'only if player does not want to leave room
-			if not MouseManager.IsLongClicked(1) and not MouseManager.IsClicked(2)
+			if not MouseManager.IsClicked(2)
 				'safe - reachable for all
 				If THelper.MouseIn(165,85,70,100)
 					If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)

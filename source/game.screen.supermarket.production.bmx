@@ -975,7 +975,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		GuiManager.Update(evKey_supermarket_customproduction_productionbox)
 		GuiManager.Update(evKey_supermarket_customproduction_castbox)
 
-		If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1))
+		If MouseManager.IsClicked(2)
 			'leaving room now
 			If Not currentProductionConcept
 				RemoveAllGuiElements()
@@ -1329,14 +1329,11 @@ Type TGUIProductionModalWindow Extends TGUIModalWindow
 		If buttonCancel.IsClicked() Then Close(2)
 		If buttonOK.IsClicked() Then Close(1)
 
-		If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1))
+		If MouseManager.IsClicked(2)
 			Close(2)
 
-			'avoid clicks
 			'remove right click - to avoid leaving the room
 			MouseManager.SetClickHandled(2)
-			'also avoid long click (touch screen)
-			MouseManager.SetLongClickHandled(1)
 		EndIf
 
 		Return Super.Update()

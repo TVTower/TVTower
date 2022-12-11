@@ -169,7 +169,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 			'Update dialogue
 		endif
 
-		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		if MouseManager.IsClicked(2)
 			'leaving room now
 			RemoveAllGuiElements()
 
@@ -337,7 +337,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 			endif
 		endif
 
-		If selectedRoom and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		If selectedRoom and MouseManager.IsClicked(2)
 			selectedRoom = null
 			selectedRoomState = 0
 			
@@ -359,13 +359,15 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 		GuiManager.Update( LS_roomagency_board )
 
-		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		'close room board
+		if MouseManager.IsClicked(2)
 			'leaving room now
 			RemoveAllRoomboardGuiElements()
 
 			mode = MODE_NONE
 
-			'no mouse reset - we still want to leave the room
+			'remove right click - to avoid leaving the room
+			MouseManager.SetClickHandled(2)
 		endif
  	End Method
 

@@ -29,6 +29,8 @@
 	<fps>-1</fps>
 	<touchInput>False</touchInput>
 	<touchClickRadius>10</touchClickRadius>
+	<rightClickEmulation>False</rightClickEmulation>
+	<rightClickEmulationTime>400</rightClickEmulationTime>
 
 	<!--
 		disable all weather effects?

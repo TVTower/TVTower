@@ -1343,62 +1343,59 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 		'mouse over studio manager
-		If Not MouseManager.IsLongClicked(1)
-'			If THelper.MouseIn(0,100,150,300)
-			If THelper.MouseInRect( studioManagerArea.rect )
+		If THelper.MouseInRect( studioManagerArea.rect )
+			If Not studioManagerDialogue
+				'generate the dialogue if not done yet
+				If MouseManager.IsClicked(1)
+					If draggedGuiProductionConcept
+						GenerateStudioManagerDialogue(1)
+
+						draggedGuiProductionConcept.dropBackToOrigin()
+						draggedGuiProductionConcept = Null
+					ElseIf draggedGuiScript
+						GenerateStudioManagerDialogue(2)
+
+						draggedGuiScript.dropBackToOrigin()
+						draggedGuiScript = Null
+					Else
+						GenerateStudioManagerDialogue(0)
+					EndIf
+					MouseManager.SetClickHandled(1)
+				EndIf
+
+				'show tooltip of studio manager
+				'only show when no dialogue is (or just got) opened
 				If Not studioManagerDialogue
-					'generate the dialogue if not done yet
-					If MouseManager.IsClicked(1)
-						If draggedGuiProductionConcept
-							GenerateStudioManagerDialogue(1)
-
-							draggedGuiProductionConcept.dropBackToOrigin()
-							draggedGuiProductionConcept = Null
-						ElseIf draggedGuiScript
-							GenerateStudioManagerDialogue(2)
-
-							draggedGuiScript.dropBackToOrigin()
-							draggedGuiScript = Null
-						Else
-							GenerateStudioManagerDialogue(0)
-						EndIf
-						MouseManager.SetClickHandled(1)
-					EndIf
-
-					'show tooltip of studio manager
-					'only show when no dialogue is (or just got) opened
-					If Not studioManagerDialogue
-						If Not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("STUDIO_MANAGER_TOOLTIP"), 150, 160,-1,-1)
-						studioManagerTooltip.enabled = 1
-						studioManagerTooltip.SetMinTitleAndContentWidth(150)
-						studioManagerTooltip.Hover()
-					EndIf
+					If Not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("STUDIO_MANAGER_TOOLTIP"), 150, 160,-1,-1)
+					studioManagerTooltip.enabled = 1
+					studioManagerTooltip.SetMinTitleAndContentWidth(150)
+					studioManagerTooltip.Hover()
 				EndIf
 			EndIf
+		EndIf
 
-			If MouseManager.IsClicked(1) and THelper.MouseIn( trashBinPos.x, trashBinPos.y, 76, 59)
-				Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
-				Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
-				If programmeCollection
-					Local handledC:Int = False
-					'do not do a "if ... elseif" as we could even delete
-					'both (if for whatever reason we have both dragged
-					'simultaneously 
-					'Destroy, not just remove (would keep it in the concept collection)
-					If draggedGuiProductionConcept and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
-						draggedGuiProductionConcept = null
+		If MouseManager.IsClicked(1) and THelper.MouseIn( trashBinPos.x, trashBinPos.y, 76, 59)
+			Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
+			Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
+			If programmeCollection
+				Local handledC:Int = False
+				'do not do a "if ... elseif" as we could even delete
+				'both (if for whatever reason we have both dragged
+				'simultaneously 
+				'Destroy, not just remove (would keep it in the concept collection)
+				If draggedGuiProductionConcept and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
+					draggedGuiProductionConcept = null
 
-						handledC = True
-					EndIf
-					
-					If draggedGuiScript and programmeCollection.RemoveScript(draggedGuiScript.script, FALSE)
-						draggedGuiScript = null
-						
-						handledC = True
-					EndIf
-					
-					if handledC Then MouseManager.SetClickHandled(1)
+					handledC = True
 				EndIf
+				
+				If draggedGuiScript and programmeCollection.RemoveScript(draggedGuiScript.script, FALSE)
+					draggedGuiScript = null
+					
+					handledC = True
+				EndIf
+				
+				if handledC Then MouseManager.SetClickHandled(1)
 			EndIf
 		EndIf
 
