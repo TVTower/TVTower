@@ -395,7 +395,7 @@ Type TGUIDropDown Extends TGUIInput
 		EndIf
 
 		'close with right click
-		If isOpen() And (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1))
+		If isOpen() And MouseManager.IsClicked(2)
 			'close the list
 			SetOpen(False)
 			'remove focus from gui object
