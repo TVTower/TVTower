@@ -534,25 +534,8 @@ Type TWorld
 		dy :+ 12
 		DrawText("speed: "+Int(GetWorldTime().GetTimeFactor()), x + 10, y + dy)
 		dy :+ 12
-rem
-		Local sunrise:Int = GetWorldTime().GetSunRise()
-		Local sunset:Int = GetWorldTime().GetSunSet()
-		Local sunRiseString:String = ""
-		If sunrise/3600 < 10 Then sunRiseString = "0"
-		sunRiseString:+(sunrise/3600)
-		sunRiseString:+":"
-		If (sunrise Mod 3600)/60 < 10 Then sunRiseString :+ "0"
-		sunRiseString:+(sunrise Mod 3600)/60
-
-		Local sunSetString:String = ""
-		If sunset/3600 < 10 Then sunSetString = "0"
-		sunSetString:+(sunset/3600)
-		sunSetString:+":"
-		If (sunset Mod 3600)/60 < 10 Then sunSetString :+ "0"
-		sunSetString:+(sunset Mod 3600)/60
-endrem
 		Local sunRiseString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunRise(), "h:i")
-		Local sunSetString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetsunSet(), "h:i")
+		Local sunSetString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunSet(), "h:i")
 
 		DrawText("rise: "+sunRiseString+"  set: "+sunSetString, x + 10, y+ dy)
 
