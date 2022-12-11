@@ -84,7 +84,7 @@ Function Render:Int()
 		Else
 			DrawText(MathHelper.NumberToString(weather.GetWindVelocity(), 3), x + 300, y)
 		EndIf
-		DrawText(MathHelper.NumberToString(weather.GetWindSpeed(), 3), x + 370, y)
+		DrawText(MathHelper.NumberToString(weather.GetWindSpeedKmh(), 0, True), x + 370, y)
 		If weather.GetPressure() >= 0
 			DrawText(" " + MathHelper.NumberToString(weather.GetPressure(), 3), x + 440, y)
 		Else

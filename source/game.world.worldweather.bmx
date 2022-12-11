@@ -465,6 +465,12 @@ Type TWorldWeatherEntry
 		return abs(GetWindVelocity())
 	End Method
 
+	Method GetWindSpeedKmh:Int()
+		Local speed:Float = GetWindSpeed()
+		If speed <=1 Then Return speed * 20
+		If speed <=2 Then Return speed * 25
+		return speed * 30
+	End Method
 
 	Method GetWindVelocity:Float()
 		return _windVelocity
