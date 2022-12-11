@@ -852,26 +852,33 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	Method GetDayPhaseBegin:Int() {_exposeToLua}
-		return GetDawnPhaseBegin() + GetDawnDuration()
+		'return GetDawnPhaseBegin() + GetDawnDuration()
+		'this is the same (but less calculation)
+		return GetSunrise()
 	End Method
 
 
 	Method GetDayPhaseBegin:Int(useTime:Long)
 		if useTime <= 0 then useTime = _timeGone
 
-		return GetDawnPhaseBegin(useTime) + GetDawnDuration()
+		'return GetDawnPhaseBegin(useTime) + GetDawnDuration()
+		'this is the same (but less calculation)
+		return GetSunrise(useTime)
 	End Method
 
 
 	Method GetDuskPhaseBegin:Int() {_exposeToLua}
-		return GetDayPhaseBegin() + GetDayDuration()
+		'return GetDayPhaseBegin() + GetDayDuration()
+		'this is the same (but less calculation)
+		return GetSunrise() + GetDayDuration()
 	End Method
 
 
 	Method GetDuskPhaseBegin:Int(useTime:Long)
 		if useTime <= 0 then useTime = _timeGone
 
-		return GetDayPhaseBegin(useTime) + GetDayDuration(useTime)
+		'return GetDayPhaseBegin(useTime) + GetDayDuration(useTime)
+		return GetSunrise(useTime) + GetDayDuration(useTime)
 	End Method
 
 
