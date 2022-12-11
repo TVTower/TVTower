@@ -157,7 +157,7 @@ rem
 
 			'over dude
 			if THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,160,300)
-				If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
+				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.SetClickHandled(1)
 
 					GenerateDialogue()
@@ -181,7 +181,7 @@ endrem
 			endif
 
 			'prepare leaving - will remove room now
-			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
+			If MOUSEMANAGER.IsClicked(2)
 				dialogue = null
 			endif
 

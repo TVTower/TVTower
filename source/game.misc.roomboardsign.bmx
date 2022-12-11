@@ -292,7 +292,7 @@ Type TRoomBoardBase
 			'block is dragable
 			If DraggingAllowed And sign.dragable
 				'if right mbutton clicked and block dragged: reset coord of block
-				If (MOUSEMANAGER.IsClicked(2) Or MouseManager.IsLongClicked(1)) And sign.dragged
+				If MOUSEMANAGER.IsClicked(2) And sign.dragged
 					sign.SetCoords(Int(sign.StartPos.x), Int(sign.StartPos.y))
 					sign.dragged = False
 					visualListOrderValid = False

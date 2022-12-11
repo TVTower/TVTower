@@ -145,7 +145,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		if not item or not item.message then Return False
 
 		If GetInstance().showMode <> SHOW_ALL
-			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
+			If MouseManager.IsClicked(2)
 				Local roomOwner:Int = item.message.owner
 				if roomOwner <= 0 then roomOwner = GetInstance().roomOwner
 				if roomOwner <> GetPlayerBase().playerID Then Return False
@@ -276,7 +276,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		GuiManager.Update( LS_office_archivedmessages )
 
-		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		if MouseManager.IsClicked(2)
 			'leaving room now
 			RemoveAllGuiElements()
 

@@ -224,7 +224,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 		GuiManager.Update( LS_office_achievements )
 
-		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		if MouseManager.IsClicked(2)
 			'leaving room now
 			RemoveAllGuiElements()
 

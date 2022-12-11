@@ -284,7 +284,7 @@ Type TgfxContractlist Extends TPlannerList
 
 
 		'react to right click
-		If openState > 0 and (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1))
+		If openState > 0 and MOUSEMANAGER.IsClicked(2)
 			SetOpen( Max(0, openState - 1) )
 
 			MouseManager.SetClickHandled(2)

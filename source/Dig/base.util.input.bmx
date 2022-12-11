@@ -133,7 +133,7 @@ Type TMouseManager
 
 
 	'TOUCH emulation
-	Field _longClickModeEnabled:Int = False
+	Field _longClickModeEnabled:Int = True
 	Field _longClickLeadsToRightClick:Int = True
 	'skip first click (touch screens)
 	Field _ignoreFirstClick:Int = False

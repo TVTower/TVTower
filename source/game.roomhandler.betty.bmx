@@ -347,14 +347,14 @@ Type RoomHandler_Betty extends TRoomHandler
 			endif
 
 			'prepare leaving - will remove room now
-			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
+			If MOUSEMANAGER.IsClicked(2)
 				dialogue = null
 
 				'avoid clicks
 				'remove right click - to avoid leaving the room
 
 'for now we leave the room now
-'change this when we can actually give Betty our presents 
+'change this when we can actually give Betty our presents
 '				MouseManager.SetClickHandled(2)
 
 			endif

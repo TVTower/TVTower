@@ -5691,8 +5691,8 @@ endrem
 	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
 
 		If Not GetPlayer().GetFigure().IsChangingRoom()
-			'handle normal right click
-			If MOUSEMANAGER.IsClicked(2) Or MOUSEMANAGER.IsLongClicked(1)
+			'handle right click
+			If MOUSEMANAGER.IsClicked(2)
 				'check subrooms
 				'only leave a room if not in a subscreen
 				'if in subscreen, go to parent one

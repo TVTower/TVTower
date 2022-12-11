@@ -347,7 +347,7 @@ Type TIngameHelpWindow
 			'MouseManager.SetClickHandled(2)
 
 			'close the help, do not propagate right-click
-			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
+			If MouseManager.IsClicked(2)
 				Close()
 				MouseManager.SetClickHandled(2)
 			EndIf
