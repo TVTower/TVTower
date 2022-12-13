@@ -185,8 +185,8 @@ Type TProductionManager
 			return productionsToProduce.Remove(production)
 		endif
 	End Method
-	
-	
+
+
 	Method StartLiveProductionInStudio:Int(productionID:Int)
 		'any live production can only happen if the studio it is to
 		'be shot in - is available (rented). Other productions in there
@@ -196,31 +196,37 @@ Type TProductionManager
 		If not production then Return False
 		If not production.productionConcept.script.IsLive() Then Return False
 
-		'if information is missing (eg old savegame) assign first 
-		'possible studio
-		if production.studioRoomID = 0 and production.owner > 0
-			local firstStudio:TRoomBase = GetRoomCollection().GetFirstByDetails("", "studio", production.owner)
-			if firstStudio
+		'ensure shooting takes place in owned studio
+		If production.studioRoomID > 0
+			Local room:TRoom = GetRoomCollection().Get(production.studioRoomID)
+			If Not room Or room.owner <> production.owner Or room.GetName() <> "studio"
+				production.studioRoomID = 0
+			EndIf
+		EndIf
+		'TODO ensure studio matches requirements (size); if no appropriate studio exists then abort production (toast message)
+		'if information is missing (eg old savegame), or the original studio is not owned anymore
+		'assign first  possible studio
+		If production.studioRoomID = 0 And production.owner > 0
+			Local firstStudio:TRoomBase = GetRoomCollection().GetFirstByDetails("", "studio", production.owner)
+			If firstStudio
 				production.studioRoomID = firstStudio.GetID()
-			endif
-		endif
+			EndIf
+		EndIf
 
-		
-		local otherProduction:TProduction = GetProductionInStudio(production.studioRoomID)
+		Local otherProduction:TProduction = GetProductionInStudio(production.studioRoomID)
 		If otherProduction and otherProduction <> production
 			'no need to calculate "real" time here - add some minutes
 			'local t:Long = production.productionConcept.script.GetBlocks() * TWorldTime.HOURLENGTH)
 			'or exacly continue our broadcast finishes?
-			local t:Long = (production.productionConcept.script.GetBlocks()-1) * TWorldTime.HOURLENGTH + 50 * TWorldTime.MINUTELENGTH
+			Local t:Long = (production.productionConcept.script.GetBlocks()-1) * TWorldTime.HOURLENGTH + 50 * TWorldTime.MINUTELENGTH
 			TLogger.Log("TProductionManager.StartLiveProductionInStudio()", "Pausing current production ~q"+otherProduction.productionConcept.GetTitle()+"~q for live shooting of ~q" + production.productionConcept.GetTitle() +"~q.", LOG_DEBUG)
 			otherProduction.SetPaused(True, t)
 		EndIf
 
 		'start live shooting
 		production.BeginShooting()
-		
 	End Method
-	
+
 
 	'start the production in the given studio
 	'returns amount of productions in that studio
