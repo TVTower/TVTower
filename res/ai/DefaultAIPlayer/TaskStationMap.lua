@@ -49,8 +49,6 @@ end
 function TaskStationMap:GetNextJobInTargetRoom()
 	if (self.AnalyseStationMarketJob.Status ~= JOB_STATUS_DONE) then
 		return self.AnalyseStationMarketJob
---	elseif (self.BuyStationJob.Status == JOB_STATUS_DONE) then
---		self:SetWait() --Wenn der Einkauf geklappt hat... muss nichs weiter gemacht werden.
 	end
 
 	if (self.BuyStationJob.Status ~= JOB_STATUS_DONE) then
@@ -59,11 +57,15 @@ function TaskStationMap:GetNextJobInTargetRoom()
 		return self.AdjustStationInvestmentJob
 	end
 
---	self:SetWait()
-
 	--is successful only when in the room!
 	self:CalculateFixedCosts()
-	self:SetDone()
+
+	local taskTime = getPlayer().minutesGone - self.StartTask
+	if taskTime < 7 then
+		self:SetIdle(7-taskTime)
+	else
+		self:SetDone()
+	end
 end
 
 
@@ -684,7 +686,7 @@ function JobBuyStation:Tick()
 		self.purchaseCount = self.purchaseCount + 1
 	end
 
-	if bestOffer == nil or self.Task.maxReachIncrease < 1000000 or self.Task.CurrentBudget < 300000 or self.purchaseCount >= 3 then
+	if bestOffer == nil or self.Task.maxReachIncrease < 1000000 or self.Task.CurrentBudget < 300000 or self.purchaseCount >= 3 or getPlayer().minutesGone - self.Task.StartTask > 20 then
 		self.Status = JOB_STATUS_DONE
 	end
 end

@@ -38,10 +38,6 @@ function TaskAdAgency:Activate()
 	self.SignContracts = SignContracts()
 	self.SignContracts.Task = self
 
-	self.IdleJob = AIIdleJob()
-	self.IdleJob.Task = self
-	self.IdleJob:SetIdleTicks( math.random(5,15) )
-
 	self.SpotsInAgency = {}
 	--self.LogLevel = LOG_TRACE
 end
@@ -59,12 +55,8 @@ function TaskAdAgency:GetNextJobInTargetRoom()
 		return self.SignRequisitedContracts
 	elseif (self.SignContracts.Status ~= JOB_STATUS_DONE) then
 		return self.SignContracts
-
-	elseif (self.IdleJob.Status ~= JOB_STATUS_DONE) then
-		return self.IdleJob
 	end
 
---	self:SetWait()
 	self:SetDone()
 end
 

@@ -26,7 +26,6 @@ currentDebugMsgDepth = 0
 TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
 TASK_STATUS_RUN		= "T_run"
-TASK_STATUS_WAIT	= "T_wait"
 TASK_STATUS_IDLE	= "T_idle"
 TASK_STATUS_DONE	= "T_done"
 TASK_STATUS_CANCEL	= "T_cancel"
@@ -265,6 +264,7 @@ function AIPlayer:BeginNewTask()
 	if self.CurrentTask == nil then
 		logWithLevel(LOG_ERROR, LOG_ERROR, "AIPlayer:BeginNewTask - task is nil... " )
 	else
+		self.CurrentTask.StartTask = 0
 		self.CurrentTask:CallActivate()
 		self.CurrentTask:StartNextJob()
 	end
@@ -349,7 +349,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
 	c.TicksTotalTime = 0 -- Time the ticks needed since task start
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
-	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
+	c.IdleTill = -1 --Zeit bis zu der nichts gemacht werden soll.
 	c.TargetRoom = -1 -- Zielraumes; überschreiben wenn Task in einem Raum erledigt werden muss
 	c.TargetID = -1 -- Ziel-ID; überschreiben wenn Task an einer bestimmten Stelle (z.B. Hotspot) erledigt werden muss
 
@@ -486,9 +486,11 @@ function AITask:StartNextJob()
 	elseif self.Status == TASK_STATUS_PREPARE and self.CurrentJob~=nil and self.CurrentJob.Status ~= JOB_STATUS_DONE then
 		-- go to has failed - try again?
 	else
+		if self.StartTask == 0 then
+			self.StartTaskWorldTicks = self:getWorldTicks()
+			self.StartTask = getPlayer().minutesGone
+		end
 		self.Status = TASK_STATUS_RUN
-		self.StartTaskWorldTicks = self:getWorldTicks()
-		self.StartTask = getPlayer().minutesGone
 
 		local oldJob = self.CurrentJob
 		if oldJob ~= nil then
@@ -518,15 +520,12 @@ function AITask:Tick()
 
 	-- have to idle?
 	if (self.Status == TASK_STATUS_IDLE) then
-		self.idleTicks = self.idleTicks - 1
-		self:LogTrace("idling ... " .. self.idleTicks)
-		if (self.idleTicks < 0) then
-			self.idleTicks = 0
+		self:LogTrace("idling ... ")
+		if (self.IdleTill <= getPlayer().minutesGone) then
+			self.IdleTill = -1
 			self.Status = TASK_STATUS_RUN
 		end
-	end
-
-	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_WAIT)) then
+	elseif (self.Status == TASK_STATUS_RUN) then
 		self.TickCounter = self.TickCounter + 1
 		if (self.TickCounter > self.MaxTicks) then
 			self:LogTrace("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)
@@ -623,16 +622,12 @@ function AITask:TooMuchTicks()
 end
 
 
-function AITask:SetWait()
-	self:LogDebug("Waiting...")
-	self.Status = TASK_STATUS_WAIT
-end
-
-
-function AITask:SetIdle(idleTicks)
-	idleTicks = idleTicks or 10 --default is 10 ticks
-	self:LogDebug("idling for " .. idleTicks .. " ticks")
-	self.Status = TASK_STATUS_IDLE
+function AITask:SetIdle(idleMinutes)
+	if idleMinutes > 0 then
+		self.IdleTill = getPlayer().minutesGone + idleMinutes
+		self:LogDebug("idling for " .. idleMinutes .. " minutes")
+		self.Status = TASK_STATUS_IDLE
+	end
 end
 
 
@@ -1004,6 +999,7 @@ _G["AIJobGoToRoom"] = class(AIJob, function(c)
 	c.TargetRoom = -1
 	c.TargetID = -1
 	c.IsWaiting = false
+	c.CheckRoomBlocked = false
 	c.WaitSince = -1
 	c.WaitSinceWorldTicks = -1
 	c.WaitTill = -1
@@ -1083,6 +1079,8 @@ end
 
 --override
 function AIJobGoToRoom:OnReachTarget()
+	self.CheckRoomBlocked = true
+
 	-- if we reached the target, try to go to our target room again
 	-- maybe we were on an intermediate step - or failed to enter the 
 	-- room as it was occupied
@@ -1102,6 +1100,7 @@ end
 
 
 function AIJobGoToRoom:Prepare(pParams)
+	self.CheckRoomBlocked = false
 	if (self.TargetRoom > 0 and self.TargetID <= 0) then
 		local tID = TVT:GetTargetIDToRoomID(self.TargetRoom)
 		if tID ~= TVT.RESULT_NOTFOUND then
@@ -1143,7 +1142,8 @@ function AIJobGoToRoom:Tick()
 	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then
 		-- check if room is blocked - if so, abort task
-		if (self.TargetRoom >= 0) and TVT.IsRoomBlocked(self.TargetRoom) == 1 then
+		--TODO set CheckRoomBlocked to true initially and set it to false once the elevator is entered
+		if (self.TargetRoom >= 0) and self.CheckRoomBlocked and TVT.IsRoomBlocked(self.TargetRoom) == 1 then
 			local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(self.TargetRoom) )
 			if blockedMinutes <= 10 then
 				self:LogInfo("Target room is blocked but soon reopening.")

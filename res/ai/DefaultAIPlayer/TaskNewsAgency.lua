@@ -48,9 +48,6 @@ function TaskNewsAgency:Activate()
 	self.NewsAgencyJob = JobNewsAgency()
 	self.NewsAgencyJob.Task = self
 
-	self.IdleJob = AIIdleJob()
-	self.IdleJob.Task = self
-	self.IdleJob:SetIdleTicks( math.random(5,15) )
 	--self.LogLevel = LOG_TRACE
 end
 
@@ -64,11 +61,14 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 	end
 	if (self.NewsAgencyJob.Status ~= JOB_STATUS_DONE) then
 		return self.NewsAgencyJob
-	--elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
-	--	return self.IdleJob
 	end
 
-	self:SetDone()
+	local taskTime = getPlayer().minutesGone - self.StartTask
+	if taskTime < 7 then
+		self:SetIdle(7-taskTime)
+	else
+		self:SetDone()
+	end
 end
 
 
