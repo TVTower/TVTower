@@ -18,8 +18,6 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.CurrentBargainBudget = 0
 	c.MovieQuality = nil
 	c:ResetDefaults()
-
-	c.ActivationTime = os.clock()
 end)
 
 function TaskMovieDistributor:typename()
@@ -43,7 +41,6 @@ function TaskMovieDistributor:ResetDefaults()
 end
 
 function TaskMovieDistributor:Activate()
-	self.ActivationTime = os.clock()
 	self.MovieQuality = StatisticEvaluator()
 
 	--init movie count for task's decisions
@@ -69,10 +66,6 @@ function TaskMovieDistributor:Activate()
 
 	self.BidAuctions = JobBidAuctions()
 	self.BidAuctions.Task = self
-
-	--self.IdleJob = AIIdleJob()
-	--self.IdleJob.Task = self
-	--self.IdleJob:SetIdleTicks( math.random(5,15) )
 
 	self.MoviesAtDistributor = {}
 	self.MoviesAtAuctioneer = {}
@@ -107,15 +100,8 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.BuyMovies
 	elseif (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
 		return self.BidAuctions
-
-	--elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
-	--	return self.IdleJob
 	end
 
-	--self:LogTrace("####TIME############ done moviedealer task in " .. (os.clock() - self.ActivationTime) .."s.")
-	self.ActivationTime = os.clock()
-
-	--self:SetWait()
 	self:SetDone()
 end
 
@@ -195,8 +181,6 @@ end
 
 function JobBuyStartProgramme:Tick()
 	local player = getPlayer()
-
-	self.Task.ActivationTime = os.clock()
 
 	local movieBlocksNeeded = -1
 	if player.blocksCount ~= nil then

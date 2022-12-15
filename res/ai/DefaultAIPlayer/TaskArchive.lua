@@ -35,8 +35,12 @@ function TaskArchive:GetNextJobInTargetRoom()
 		return self.SellMoviesJob
 	end
 
-	--self:SetWait()
-	self:SetDone()
+	local taskTime = getPlayer().minutesGone - self.StartTask
+	if taskTime < 7 then
+		self:SetIdle(7-taskTime)
+	else
+		self:SetDone()
+	end
 end
 
 

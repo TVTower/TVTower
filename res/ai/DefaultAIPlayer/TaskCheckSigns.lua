@@ -34,7 +34,6 @@ function TaskCheckSigns:GetNextJobInTargetRoom()
 		return self.CheckRoomSignsJob
 	end
 
---	self:SetWait()
 	self:SetDone()
 end
 

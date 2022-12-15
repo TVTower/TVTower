@@ -42,7 +42,6 @@ function TaskRoomBoard:GetNextJobInTargetRoom()
 		return self.ChangeRoomSignsJob
 	end
 
---	self:SetWait()
 	self:SetDone()
 end
 

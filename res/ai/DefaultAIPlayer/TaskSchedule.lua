@@ -110,10 +110,6 @@ function TaskSchedule:Activate()
 	self.PostAnalyzeScheduleJob = JobPostAnalyzeSchedule()
 	self.PostAnalyzeScheduleJob.Task = self
 
-	self.IdleJob = AIIdleJob()
-	self.IdleJob.Task = self
-	self.IdleJob:SetIdleTicks( math.random(5,15) )
-
 	self.Player = getPlayer()
 	self.adScheduleJobIndex = 0
 	self.availableProgrammes = nil -- cached list of licences from TVT API
@@ -132,6 +128,12 @@ function TaskSchedule:GetNextJobInTargetRoom()
 	elseif (self.FulfillRequisitionJob.Status ~= JOB_STATUS_DONE) then
 		return self.FulfillRequisitionJob
 	elseif (self.AdScheduleJob.Status ~= JOB_STATUS_DONE) then
+		--wait a little to optimize current ad
+		if self.Player.minute > 54 then
+			self:SetIdle(66-self.Player.minute)
+		elseif self.Player.minute < 5 then
+			self:SetIdle(6-self.Player.minute)
+		end
 		--set number of hours to Plan based on index
 		self.AdScheduleJob.hoursToPlan = 3
 		if (self.adScheduleJobIndex == 1) then
@@ -152,18 +154,20 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		return self.ProgrammeScheduleJob
 	--elseif (self.PostAnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
 	--	return self.PostAnalyzeScheduleJob
-	--elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
-	--	return self.IdleJob
 	end
 
 	--TODO maybe run another ad schedule job after waiting if minute is between 55 and 6
 	--ensure that the next hour's ad is optimal as well
 
-	--TODO
-	--self:SetWait()
 	--when done invalidate cache of available licences
 	self.availableProgrammes = nil
-	self:SetDone()
+
+	local taskTime = getPlayer().minutesGone - self.StartTask
+	if taskTime < 7 then
+		self:SetIdle(7-taskTime)
+	else
+		self:SetDone()
+	end
 end
 
 
