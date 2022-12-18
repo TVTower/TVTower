@@ -1136,6 +1136,14 @@ Type TProduction Extends TOwnedGameObject
 
 
 			Case TVTProductionStep.PREPRODUCTION
+				'TODO abort live production if live time reached but preproduction is not yet done
+				rem
+				If productionConcept.script.fixedLiveTime >= 0 and productionConcept.script.fixedLiveTime < GetWorldTime().GetTimeGone()
+					'preproduction not finished but live time reached - abort
+					Abort()
+					Return UpdateProductionStep()
+				EndIf
+				endrem
 				'finished preproduction?
 				'ignore milliseconds/seconds difference
 				If GetWorldTime().GetTimeGone()/TWorldTime.MINUTELENGTH >= (endTime + pauseDuration)/TWorldTime.MINUTELENGTH
@@ -1149,16 +1157,8 @@ Type TProduction Extends TOwnedGameObject
 
 
 			Case TVTProductionStep.PREPRODUCTION_DONE
-				'with livetime being "past" current time we should
-				'begin with shooting as fast as possible
-				'TODO eigentlich ist es jetzt schon zu spät - Livesendung gar nicht möglich, wenn die Vorproduktion noch nicht abgeschlossen ist
-				'oder aber es wird eine "schlechte Show, da man mitten in den Vorbereitungen senden musste.
-				If productionConcept.script.fixedLiveTime >= 0 and productionConcept.script.fixedLiveTime <= GetWorldTime().GetTimeGone()
-					BeginShooting()
-					
-					'maybe next step is also fulfilled
-					Return UpdateProductionStep()
-				EndIf
+				'live productions should not start themselves
+				'alwaysLive is started on airing, fixed live time is started by production manager's UpdateLiveProductions
 				Return False
 
 
