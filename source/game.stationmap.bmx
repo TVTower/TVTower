@@ -5945,7 +5945,8 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 	'run extra so you could update station (and its subscription) after
 	'a launch/start of the provider but before it removes uplinks
 	Method UpdateSubscriptions:Int()
-		For Local i:Int = 0 Until subscribedChannels.Length
+		'process array backwards because it may be shortened by cancelSubscription
+		For Local i:Int = subscribedChannels.Length-1 To 0 Step -1
 			If subscribedChannels[i] And subscribedChannelsDuration[i] >= 0
 				If subscribedChannelsStartTime[i] + subscribedChannelsDuration[i] < GetWorldTime().GetTimeGone()
 					Local channelID:Int = subscribedChannels[i]
