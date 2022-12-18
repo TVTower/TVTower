@@ -570,6 +570,10 @@ Type TProductionManager
 			production.Update()
 			if production.IsProduced() or production.IsAborted()
 				removeProductions :+ [production]
+			elseif production.IsPreProductionDone() And production.productionConcept.script.fixedLiveTime >= 0
+				If production.productionConcept.script.fixedLiveTime <= GetWorldTime().GetTimeGone()
+					StartLiveProductionInStudio(production.GetID())
+				EndIf
 			endif
 		Next
 		'remove all productions which finished
