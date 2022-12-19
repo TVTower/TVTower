@@ -114,6 +114,7 @@ Import "game.debug.screen.page.playerbroadcasts.bmx"
 Import "game.debug.screen.page.adagency.bmx"
 Import "game.debug.screen.page.movieagency.bmx"
 Import "game.debug.screen.page.modifiers.bmx"
+Import "game.debug.screen.page.customproductions.bmx"
 
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"

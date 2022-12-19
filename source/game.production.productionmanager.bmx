@@ -178,6 +178,18 @@ Type TProductionManager
 	End Method
 
 
+	'returns enqueued productions in the given room/studio
+	Method GetProductionQueueInStudio:TProduction[](roomID:Int)
+		Local result:TProduction[]
+		For local production:TProduction = EachIn productionsToProduce
+			if production.studioRoomID <> roomID then continue
+
+			result :+ [production]
+		Next
+		return result
+	End Method
+
+
 	Method AbortProduction:int(production:TProduction)
 		liveProductions.Remove(production)
 

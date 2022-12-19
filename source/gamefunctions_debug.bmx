@@ -36,6 +36,7 @@ Type TDebugScreen
 	Field pagePlayerBroadcasts:TDebugScreenPage_PlayerBroadcasts
 	Field pageAdAgency:TDebugScreenPage_AdAgency
 	Field pageMovieAgency:TDebugScreenPage_MovieAgency
+	Field pageCustomProductions:TDebugScreenPage_CustomProductions
 	Field pageModifiers:TDebugScreenPage_Modifiers
 
 	Global titleFont:TBitmapFont
@@ -57,7 +58,7 @@ Type TDebugScreen
 		Local button:TDebugControlsButton
 
 
-		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Public Image", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Producers", "Sports Sim", "Modifiers", "Misc"]
+		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Public Image", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Custom Production", "Producers", "Sports Sim", "Modifiers", "Misc"]
 		Local mode:int = 0
 		For Local i:Int = 0 Until texts.length
 			if texts[i] = "-" then continue 'spacer
@@ -93,6 +94,9 @@ Type TDebugScreen
 		pageModifiers = TDebugScreenPage_Modifiers.GetInstance().Init()
 		pageModifiers.SetPosition(sideButtonPanelWidth, 20)
 
+		pageCustomProductions = TDebugScreenPage_CustomProductions.GetInstance().Init()
+		pageCustomProductions.SetPosition(sideButtonPanelWidth, 20)
+
 		InitMode_Overview()
 		InitMode_PlayerCommands()
 
@@ -116,6 +120,7 @@ Type TDebugScreen
 		If pageAdAgency Then TDebugScreenPage_AdAgency.GetInstance().Reset()
 		If pageMovieAgency Then TDebugScreenPage_MovieAgency.GetInstance().GetInstance().Reset()
 		If pageModifiers Then pageModifiers.Reset()
+		If pageCustomProductions Then pageCustomProductions.Reset()
 
 		ResetMode_Overview()
 		ResetMode_PlayerCommands()
@@ -154,10 +159,11 @@ Type TDebugScreen
 				'Case 8	UpdateMode_ScriptAgency()
 				'Case 9	UpdateMode_RoomAgency()
 				'Case 10	UpdateMode_Politics()
-				'Case 11	UpdateMode_Producers()
-				'Case 12	UpdateMode_Sports()
-				Case 13	newPage = pageModifiers
-				'Case 14	UpdateMode_Misc()
+				Case 11  newPage = pageCustomProductions
+				'Case 12	UpdateMode_Producers()
+				'Case 13	UpdateMode_Sports()
+				Case 14	newPage = pageModifiers
+				'Case 15	UpdateMode_Misc()
 				default newPage = Null
 			End Select
 			
@@ -237,9 +243,9 @@ Type TDebugScreen
 			Case 8	UpdateMode_ScriptAgency()
 			Case 9	UpdateMode_RoomAgency()
 			Case 10	UpdateMode_Politics()
-			Case 11	UpdateMode_Producers()
-			Case 12	UpdateMode_Sports()
-			Case 14	UpdateMode_Misc()
+			Case 12	UpdateMode_Producers()
+			Case 13	UpdateMode_Sports()
+			Case 15	UpdateMode_Misc()
 			default
 				if currentPage then currentPage.Update()
 		End Select
@@ -276,7 +282,7 @@ Type TDebugScreen
 		DrawRect(sideButtonPanelWidth,0, 800 - sideButtonPanelWidth, 383)
 		SetColor(oldCol)
 		SetAlpha(oldColA)
-		
+
 		Select _mode
 			Case 0	RenderMode_Overview()
 			Case 1	RenderMode_PlayerCommands()
@@ -285,9 +291,9 @@ Type TDebugScreen
 			Case 8	RenderMode_ScriptAgency()
 			Case 9	RenderMode_RoomAgency()
 			Case 10	RenderMode_Politics()
-			Case 11	RenderMode_Producers()
-			Case 12	RenderMode_Sports()
-			Case 14	RenderMode_Misc()
+			Case 12	RenderMode_Producers()
+			Case 13	RenderMode_Sports()
+			Case 15	RenderMode_Misc()
 			default
 				if currentPage then currentPage.Render()
 		End Select
