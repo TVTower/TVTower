@@ -80,6 +80,54 @@ End Type
 
 
 
+
+Struct SDebugClickBox
+	Field callbackParam:Int
+	Field callbackData:Object
+	Field onClickCallback:Int(param:Int, data:Object = Null)
+	Field onHoverCallback:Int(param:Int, data:Object = Null)
+	Field position:SVec2I
+	Field size:SVec2I
+	Field hovered:Int = False
+	Global hoverBoxFound:int
+
+	
+	Method Init(position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int = 0, data:Object = Null)
+		self.hovered = False
+		self.position = position
+		self.size = size
+		self.callbackParam = param
+		self.callbackData = data
+	End Method
+	
+	
+	Method IsHovered:Int()
+		Return hovered
+	End Method
+
+	
+	Method Update()
+		if THelper.MouseIn(position.x, position.y, size.x, size.y)
+			If not hoverBoxFound
+				hovered = True
+				if onHoverCallback Then onHoverCallback(callbackParam, callbackData)
+
+				hoverBoxFound = True
+			EndIf
+			
+			'without callback we "ignore" clicks
+			If onClickCallback and MouseManager.IsClicked(1)
+				onClickCallback(callbackParam, callbackData)
+
+				MouseManager.SetClickHandled(1)
+			EndIf
+		EndIf
+	End Method
+End Struct
+
+
+
+
 'a content block (eg to display some information about a studio or a programme)
 Type TDebugContentBlock
 	Field size:SVec2I
