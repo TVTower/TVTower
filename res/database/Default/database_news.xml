@@ -2063,8 +2063,8 @@ Demonstrations are expected again this year.</en>
 				<en>Uninterrupted search for buried victims</en>
 			</title>
 			<description>
-				<de>Hundreds of emergency forces carefully dig their way through to the victims. More than 1000 people have already been recovered alive.</de>
-				<en></en>
+				<de>Hunderte Einsatzkräfte graben sich vorsichtig zu den Verschütteten durch. Mehr als 1000 Menschen konnten bereits lebend geborgen werden.</de>
+				<en>Hundreds of emergency forces carefully dig their way through to the victims. More than 1000 people have already been recovered alive.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" />
