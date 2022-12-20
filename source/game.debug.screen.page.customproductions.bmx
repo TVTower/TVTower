@@ -8,6 +8,7 @@ Import "game.player.bmx"
 Type TDebugScreenPage_CustomProductions extends TDebugScreenPage
 	Field buttons:TDebugControlsButton[]
 	Field playerStudioBlocks:TDebugContentBlock[]
+	Field scriptsBlock:TDebugContentBlock
 	Field selectedPlayerStudioBlock:TDebugContentBlock
 	Field selectedObjectBlock:TDebugContentBlock
 	Field selectedObject:Object
@@ -39,6 +40,8 @@ rem
 		Next
 endrem		
 		RefreshDisplayedPlayer( GetShownPlayerID() )
+		
+		RefreshScripts()
 
 		Return self
 	End Method
@@ -62,11 +65,13 @@ endrem
 		selectedObjectBlock = Null
 		selectedObject = Null
 		selectedPlayerStudioBlock = Null
+		scriptsBlock = Null
 	End Method
 	
 	
 	Method Activate()
 		RefreshDisplayedPlayer( GetShownPlayerID(), True)
+		RefreshScripts()
 	End Method
 
 
@@ -148,6 +153,8 @@ endrem
 		if selectedObject and selectedObjectBlock
 			selectedObjectBlock.Update(position.x + 320, position.y)
 		EndIf
+		
+		scriptsBlock.Update(position.x + 320, position.y)
 	End Method
 
 
@@ -162,6 +169,8 @@ endrem
 			startY :+ block.size.y
 		Next
 		
+		scriptsBlock.Draw(position.x + 320, position.y)
+
 		if selectedObject and selectedObjectBlock
 			selectedObjectBlock.Draw(position.x + 320, position.y)
 		EndIf
@@ -196,10 +205,21 @@ endrem
 		selectedPlayerStudioBlock = Null
 	End Method
 	
-rem	
+	
+	Method RefreshScripts()
+		if not scriptsBlock Then scriptsBlock = New TDebugContentBlock_Scripts()
+	
+	
+		'- welche Drehbuecher haben die Spieler (Koffer, ProgrammeCollection ... ?)
+		'- Welches Drehbuch steht in welchem Studio?
+
+		'loop over ALL scripts (not just in the collections!)
+'		For local script:TScript = Eachin GetScriptCollection().entries.Values() ' .GetUsedScriptList()
+'		Next
+	End Method
+	
+rem
 Allgemein:
-- welche Drehbuecher haben die Spieler (Koffer, ProgrammeCollection ... ?)
-- Welches Drehbuch steht in welchem Studio?
 - Einkaufslisten - mit Status
 - laufende Produktionen -> welches Studio?
 - Studio -> Laufende Produktion? 
@@ -216,6 +236,42 @@ endrem
 		sender.clicked = False
 		sender.selected = False
 	End Function
+End Type
+
+
+
+
+Type TDebugContentBlock_Scripts extends TDebugContentBlock
+	Method DrawContent(x:Int, y:Int)
+		'update dimensions
+		Local contentWidth:Int = 300
+		Local contentHeight:Int = 0
+		Local dim:SVec2I
+
+		TDebugScreenPage.textFont.Draw("|b|All Scripts|/b|", x, y + contentHeight)
+		contentHeight :+ 12
+
+		'- welche Drehbuecher haben die Spieler (Koffer, ProgrammeCollection ... ?)
+		'- Welches Drehbuch steht in welchem Studio?
+
+		'loop over ALL scripts (not just in the collections!)
+		For local script:TScript = Eachin GetScriptCollection().entries.Values() ' .GetUsedScriptList()
+			'ignore episodes and only expose them if parent selected?
+			If script.IsEpisode() Then Continue
+		
+			TDebugScreenPage.textFont.Draw(script.GetTitle(), x + 5, y + contentHeight)
+			Local extra:String
+			
+			If script.IsOwned()
+				extra :+ "owner="+script.GetOwner()
+			EndIf
+			TDebugScreenPage.textFont.Draw(extra, x + 5 + 200, y + contentHeight, new SColor8(220,220,200))
+			
+			contentHeight :+ 10
+		Next
+
+		contentSize = new SVec2I(contentWidth, contentHeight)
+	End Method
 End Type
 
 
