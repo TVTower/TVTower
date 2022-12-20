@@ -70,6 +70,7 @@ endrem
 	
 	
 	Method Activate()
+		Reset()
 		RefreshDisplayedPlayer( GetShownPlayerID(), True)
 		RefreshScripts()
 	End Method
@@ -80,6 +81,8 @@ endrem
 
 
 	Method Update()
+		If not scriptsBlock or not playerStudioBlocks Then Init()
+
 		Local playerID:Int = GetShownPlayerID()
 
 '		For Local b:TDebugControlsButton = EachIn buttons
@@ -159,6 +162,9 @@ endrem
 
 
 	Method Render()
+		If not scriptsBlock or not playerStudioBlocks Then Init()
+			
+	
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -207,7 +213,7 @@ endrem
 	
 	
 	Method RefreshScripts()
-		if not scriptsBlock Then scriptsBlock = New TDebugContentBlock_Scripts()
+		scriptsBlock = New TDebugContentBlock_Scripts()
 	
 	
 		'- welche Drehbuecher haben die Spieler (Koffer, ProgrammeCollection ... ?)
@@ -244,12 +250,16 @@ End Type
 Type TDebugContentBlock_Scripts extends TDebugContentBlock
 	Method DrawContent(x:Int, y:Int)
 		'update dimensions
-		Local contentWidth:Int = 300
+		Local contentWidth:Int = 320
 		Local contentHeight:Int = 0
 		Local dim:SVec2I
 
 		TDebugScreenPage.textFont.Draw("|b|All Scripts|/b|", x, y + contentHeight)
 		contentHeight :+ 12
+		TDebugScreenPage.textFont.Draw("|b|Title|/b|", x + 5, y + contentHeight)
+		TDebugScreenPage.textFont.Draw("|b|Owner|/b|", x + 5 + 200, y + contentHeight)
+		TDebugScreenPage.textFont.Draw("|b|Loc.|/b|", x + 5 + 200 + 45, y + contentHeight)
+		contentHeight :+ 10
 
 		'- welche Drehbuecher haben die Spieler (Koffer, ProgrammeCollection ... ?)
 		'- Welches Drehbuch steht in welchem Studio?
@@ -258,14 +268,55 @@ Type TDebugContentBlock_Scripts extends TDebugContentBlock
 		For local script:TScript = Eachin GetScriptCollection().entries.Values() ' .GetUsedScriptList()
 			'ignore episodes and only expose them if parent selected?
 			If script.IsEpisode() Then Continue
+			
+			'enable these lines to filter for specific owners
+			'eg.: only players and vendor
+			If not script.IsOwned() or script.GetOwner() < 0 Then Continue
 		
 			TDebugScreenPage.textFont.Draw(script.GetTitle(), x + 5, y + contentHeight)
-			Local extra:String
-			
+			Local ownerText:String
+			Local locText:String
 			If script.IsOwned()
-				extra :+ "owner="+script.GetOwner()
+				Local ownerID:Int = script.GetOwner()
+				If ownerID = TOwnedGameObject.OWNER_VENDOR
+					ownerText = "Vendor"
+				Elseif ownerID > 0
+					ownerText = "Player #"+ownerID
+					
+					'find location of the script
+					Local ppc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(ownerID)
+					If ppc.HasScriptInSuitcase(script)
+						locText :+ "Suitcase"
+					EndIf
+					If ppc.HasScriptInStudio(script)
+						Local roomID:Int = RoomHandler_Studio.GetInstance().GetStudioIDByScript(script)
+						Local room:TRoomBase = GetRoomBaseCollection().Get(roomID)
+						If room
+							locText :+ room.GetName()+" (ID:"+roomID+")"
+						Else
+							locText :+ "Room (ID:"+roomID+")"
+						EndIf
+					EndIf
+					If ppc.HasScript(script)
+						locText :+ "Archive"
+					EndIf
+					
+					If not locText Then locText = "UNKNOWN"
+				ElseIf ownerID < 0
+					Local producer:TProgrammeProducerBase = GetProgrammeProducerCollection().GetByID(- ownerID)
+					If producer
+						ownerText = producer.name
+					Else
+						ownerText = ownerID
+					EndIf
+				Else
+					ownerText = ownerID
+				EndIf
+			Else
+				ownerText = "Nobody"
 			EndIf
-			TDebugScreenPage.textFont.Draw(extra, x + 5 + 200, y + contentHeight, new SColor8(220,220,200))
+			TDebugScreenPage.textFont.Draw(ownerText, x + 5 + 200, y + contentHeight, new SColor8(220,220,200))
+			TDebugScreenPage.textFont.Draw(locText, x + 5 + 200 + 45, y + contentHeight, new SColor8(220,220,200))
 			
 			contentHeight :+ 10
 		Next
