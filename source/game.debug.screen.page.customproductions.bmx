@@ -9,6 +9,8 @@ Type TDebugScreenPage_CustomProductions extends TDebugScreenPage
 	Field buttons:TDebugControlsButton[]
 	Field playerStudioBlocks:TDebugContentBlock[]
 	Field selectedPlayerStudioBlock:TDebugContentBlock
+	Field selectedObjectBlock:TDebugContentBlock
+	Field selectedObject:Object
 	Field displayedPlayerID:Int
 	Field selectedStudioID:Int
 	
@@ -57,6 +59,8 @@ endrem
 		displayedPlayerID = -1
 		playerStudioBlocks = Null
 		selectedStudioID = -1
+		selectedObjectBlock = Null
+		selectedObject = Null
 		selectedPlayerStudioBlock = Null
 	End Method
 	
@@ -77,25 +81,72 @@ endrem
 '			b.Update()
 '		Next
 
+		If GetShownPlayerID() <> displayedPlayerID
+			RefreshDisplayedPlayer( GetShownPlayerID() )
+		EndIf
+
 		local startY:int = position.y
 		For Local block:TDebugContentBlock_Studios = EachIn playerStudioBlocks
 			block.Update(position.x + 5, startY)
-
-			If THelper.MouseIn(position.x + 5, startY, block.size.x, block.size.y) and MouseManager.IsClicked(1)
-				if selectedPlayerStudioBlock Then selectedPlayerStudioBlock.selected = False
-
-				selectedPlayerStudioBlock = block
-				block.selected = True
-				SelectStudio(block.room.GetID())
-
-				MouseManager.SetClickHandled(1)
-			EndIf
-
 			startY :+ block.size.y
 		Next
 
-		If GetShownPlayerID() <> displayedPlayerID
-			RefreshDisplayedPlayer( GetShownPlayerID() )
+
+		'identify selected/hovered elements
+		selectedObject = Null
+		For Local block:TDebugContentBlock_Studios = EachIn playerStudioBlocks
+			If not selectedObject and block.selectedObject
+				selectedObject = block.selectedObject
+			EndIf
+			'hover overrides selection
+			If block.hoveredObject
+				selectedObject = block.hoveredObject
+			EndIf
+		Next
+
+
+		'identify possibly clicked studio block
+		If not selectedObject
+			startY = position.y
+			For Local block:TDebugContentBlock_Studios = EachIn playerStudioBlocks
+				If THelper.MouseIn(position.x + 5, startY, block.size.x, block.size.y) and MouseManager.IsClicked(1)
+					if selectedPlayerStudioBlock Then selectedPlayerStudioBlock.selected = False
+
+					selectedPlayerStudioBlock = block
+					block.selected = True
+					SelectStudio(block.room.GetID())
+
+					MouseManager.SetClickHandled(1)
+				EndIf
+
+				startY :+ block.size.y
+			Next
+		EndIf
+		
+		
+		If selectedObject
+			If TScriptBase(selectedObject)
+				if not TDebugContentBlock_Script(selectedObjectBlock)
+					selectedObjectBlock = new TDebugContentBlock_Script()
+				EndIf
+				TDebugContentBlock_Script(selectedObjectBlock).script = TScriptBase(selectedObject)
+			ElseIf TProduction(selectedObject)
+				if not TDebugContentBlock_Production(selectedObjectBlock)
+					selectedObjectBlock = new TDebugContentBlock_Production()
+				EndIf
+				TDebugContentBlock_Production(selectedObjectBlock).production = TProduction(selectedObject)
+			ElseIf TProductionConcept(selectedObject)
+				if not TDebugContentBlock_ProductionConcept(selectedObjectBlock)
+					selectedObjectBlock = new TDebugContentBlock_ProductionConcept()
+				EndIf
+				TDebugContentBlock_ProductionConcept(selectedObjectBlock).productionConcept = TProductionConcept(selectedObject)
+			Else
+				selectedObjectBlock = Null
+			EndIf
+		EndIf
+
+		if selectedObject and selectedObjectBlock
+			selectedObjectBlock.Update(position.x + 320, position.y)
 		EndIf
 	End Method
 
@@ -110,6 +161,10 @@ endrem
 			block.Draw(position.x + 5, startY)
 			startY :+ block.size.y
 		Next
+		
+		if selectedObject and selectedObjectBlock
+			selectedObjectBlock.Draw(position.x + 320, position.y)
+		EndIf
 	End Method
 	
 	
@@ -166,32 +221,8 @@ End Type
 
 
 
-Type TDebugContentBlock_Studios extends TDebugContentBlock
-	Field room:TRoomBase
-	Field clickBoxes:SDebugClickBox[15]
-	Field clickBoxesActive:int = 0
-	
-
-	Method New(room:TRoomBase)
-		self.room = room
-	End Method
-	
-	
-	Function onHoverScript:Int(scriptID:Int, data:Object = Null)
-	End Function
-
-	Function onClickScript:Int(scriptID:Int, data:Object = Null)
-	End Function
-	
-	
-	Method Update(x:Int, y:Int) override
-		Super.Update(x, y)
-		
-		For local i:int = 0 until clickBoxesActive
-			clickBoxes[i].update()
-		Next
-	End Method
-	
+Type TDebugContentBlock_Script extends TDebugContentBlock
+	Field script:TScriptBase
 
 	Method DrawContent(x:Int, y:Int)
 		'update dimensions
@@ -199,7 +230,98 @@ Type TDebugContentBlock_Studios extends TDebugContentBlock
 		Local contentHeight:Int = 0
 		Local dim:SVec2I
 		
-		clickBoxesActive = 0
+		TScript(script).ShowSheet(x, y, -1, -1)
+		'contentHeight :+ 300
+
+		'TDebugScreenPage.textFont.Draw("|b|"+script.GetTitle() + "|/b|", x + 5, y + contentHeight)
+		'contentHeight :+ 12
+		contentSize = new SVec2I(contentWidth, contentHeight)
+	End Method
+End Type
+
+
+
+
+Type TDebugContentBlock_ProductionConcept extends TDebugContentBlock
+	Field productionConcept:TProductionConcept
+	Global dummyGUIItem:TGuiProductionConceptListItem
+	
+	Method New()
+		dummyGUIItem = new TGuiProductionConceptListItem
+	End Method
+
+
+	Method DrawContent(x:Int, y:Int)
+		'update dimensions
+		Local contentWidth:Int = 300
+		Local contentHeight:Int = 0
+		Local dim:SVec2I
+		
+		dummyGUIItem.productionConcept = productionConcept
+		dummyGUIItem.ShowStudioSheet(x, y, -1, -1)
+		dummyGUIItem.productionConcept = Null
+		'contentHeight :+ 300
+
+		'TDebugScreenPage.textFont.Draw("|b|"+productionConcept.GetTitle() + "|/b|", x + 5, y + contentHeight)
+		'contentHeight :+ 12
+		contentSize = new SVec2I(contentWidth, contentHeight)
+	End Method
+End Type
+
+
+
+Type TDebugContentBlock_Production extends TDebugContentBlock
+	Field production:TProduction
+
+	Method DrawContent(x:Int, y:Int)
+		'update dimensions
+		Local contentWidth:Int = 300
+		Local contentHeight:Int = 0
+		Local dim:SVec2I
+
+		TDebugScreenPage.textFont.Draw("|b|"+production.productionConcept.GetTitle() + "|/b|", x + 5, y + contentHeight)
+		contentHeight :+ 12
+		contentSize = new SVec2I(contentWidth, contentHeight)
+	End Method
+End Type
+
+
+
+Type TDebugContentBlock_Studios extends TDebugContentBlock
+	Field room:TRoomBase
+	Field hoveredObject:Object
+	Field selectedObject:Object
+	
+
+	Method New(room:TRoomBase)
+		self.room = room
+	End Method
+	
+	
+	
+	Method Update(x:Int, y:Int) override
+		Super.Update(x, y)
+		
+		' splitting logic from rendering this way (marking hovered element
+		' during DrawContent() can lead to slight inaccuracies on low FPS
+		' - but it keeps required code amount low and should do for our
+		' "dev/debug purposes"
+		if hoveredObject and MouseManager.IsClicked(1)
+			selectedObject = hoveredObject
+			'print "clicked on obj"
+		Endif
+			
+	End Method
+	
+	
+	Method DrawContent(x:Int, y:Int)
+		'update dimensions
+		Local contentWidth:Int = 300
+		Local contentHeight:Int = 0
+		Local dim:SVec2I
+
+		Local oldHoveredObject:Object = hoveredObject
+		hoveredObject = Null
 		
 		TDebugScreenPage.textFont.Draw("|b|"+room.GetName() + "|/b| (size: " + room.GetSize()+", ID: "+room.GetID()+")", x + 5, y + contentHeight)
 		contentHeight :+ 12
@@ -209,13 +331,13 @@ Type TDebugContentBlock_Studios extends TDebugContentBlock
 			dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| Empty", x + 10, y + contentHeight)
 			contentHeight :+ 12
 		Else
-			If clickBoxes[clickBoxesActive].hovered
-				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, New SColor8(255,220,200))
+			If oldHoveredObject = currentScript
+				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, SColor8.White)
 			Else
-				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight)
+				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, new SColor8(220,220,220))
 			EndIf
-			clickBoxes[clickBoxesActive].Init(new SVec2I(x + 10, y + contentHeight), dim, onHoverScript, onClickScript, currentScript.GetID())
-			clickBoxesActive :+ 1
+			'mark hovered?
+			If THelper.MouseIn(x + 10, y + contentHeight, dim.x, dim.y) Then hoveredObject = currentScript
 			contentHeight :+ 12
 		EndIf
 
@@ -228,8 +350,15 @@ Type TDebugContentBlock_Studios extends TDebugContentBlock
 			contentHeight :+ 10
 
 			For local p:TProduction = eachIn GetProductionManager().GetProductionQueueInStudio(room.GetID())
-				TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight)
-				TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight)
+				If oldHoveredObject = p
+					dim = TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight, SColor8.White)
+					TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight, SColor8.White)
+				Else
+					dim = TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight, new SColor8(220,220,220))
+					TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight, new SColor8(220,220,220))
+				EndIf
+				'mark hovered?
+				If THelper.MouseIn(x + 15, y + contentHeight, 290, dim.y) Then hoveredObject = p
 				contentHeight :+ 10
 			Next
 			contentHeight :+ 2
@@ -238,30 +367,37 @@ Type TDebugContentBlock_Studios extends TDebugContentBlock
 		If currentScript
 			'true = including subscripts
 			Local concepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(currentScript, True)
-			if concepts.length = 0
+			If concepts.length = 0
 				TDebugScreenPage.textFont.Draw("|b|Shopping Lists/Concepts:|/b| Empty", x + 10, y + contentHeight)
 				contentHeight :+ 12
 			Else
 				TDebugScreenPage.textFont.Draw("|b|Shopping Lists/Concepts:|/b|", x + 10, y + contentHeight)
 				contentHeight :+ 10
 				For Local c:TProductionConcept = EachIn concepts
-					TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight)
+					If oldHoveredObject = c
+						dim = TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight, SColor8.White)
+					Else
+						dim = TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight, new SColor8(220,220,220))
+					EndIf
+					'mark hovered?
+					If THelper.MouseIn(x + 15, y + contentHeight, 290, dim.y) Then hoveredObject = c
+
 					If c.IsProductionFinished()
 						'should not be displayed (if so, this is a BUG!)
 						TDebugScreenPage.textFont.Draw("prod. finished", x + 185, y + contentHeight, SColor8.red)
 					ElseIf c.IsProductionStarted()
-						TDebugScreenPage.textFont.Draw("prod. started", x + 185, y + contentHeight, SColor8.green)
+						TDebugScreenPage.textFont.Draw("prod. started", x + 185, y + contentHeight, new SColor8(130,250,130))
 					ElseIf c.IsUnplanned()
 						TDebugScreenPage.textFont.Draw("unplanned", x + 185, y + contentHeight, SColor8.gray)
 					ElseIf c.IsProduceable()
-						TDebugScreenPage.textFont.Draw("produceable", x + 185, y + contentHeight, SColor8.darkgreen)
+						TDebugScreenPage.textFont.Draw("produceable", x + 185, y + contentHeight, new SColor8(120,180,120))
 					ElseIf c.IsPlanned()
 						If c.IsBalancePaid()
-							TDebugScreenPage.textFont.Draw("planned, paid)", x + 185, y + contentHeight)
+							TDebugScreenPage.textFont.Draw("planned, paid)", x + 185, y + contentHeight, new SColor8(220,220,220))
 						ElseIf c.IsDepositPaid()
-							TDebugScreenPage.textFont.Draw("planned, deposit paid", x + 185, y + contentHeight)
+							TDebugScreenPage.textFont.Draw("planned, deposit paid", x + 185, y + contentHeight, new SColor8(220,220,220))
 						Else
-							TDebugScreenPage.textFont.Draw("planned", x + 185, y + contentHeight)
+							TDebugScreenPage.textFont.Draw("planned", x + 185, y + contentHeight, new SColor8(220,220,220))
 						EndIf
 					ElseIf c.IsGettingPlanned()
 						TDebugScreenPage.textFont.Draw("getting planned)", x + 185, y + contentHeight)

@@ -80,7 +80,7 @@ End Type
 
 
 
-
+rem
 Struct SDebugClickBox
 	Field callbackParam:Int
 	Field callbackData:Object
@@ -89,15 +89,28 @@ Struct SDebugClickBox
 	Field position:SVec2I
 	Field size:SVec2I
 	Field hovered:Int = False
-	Global hoverBoxFound:int
+	Field clicked:Int = False
 
 	
-	Method Init(position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int = 0, data:Object = Null)
+	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int = 0, data:Object = Null)
 		self.hovered = False
+		self.clicked = False
 		self.position = position
 		self.size = size
+		self.onHoverCallback = hoverCallback
+		self.onClickCallback = clickCallback
 		self.callbackParam = param
 		self.callbackData = data
+	End Method
+
+	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int)
+		self.hovered = False
+		self.clicked = False
+		self.position = position
+		self.size = size
+		self.onHoverCallback = hoverCallback
+		self.onClickCallback = clickCallback
+		self.callbackParam = param
 	End Method
 	
 	
@@ -108,23 +121,22 @@ Struct SDebugClickBox
 	
 	Method Update()
 		if THelper.MouseIn(position.x, position.y, size.x, size.y)
-			If not hoverBoxFound
-				hovered = True
-				if onHoverCallback Then onHoverCallback(callbackParam, callbackData)
-
-				hoverBoxFound = True
-			EndIf
+			hovered = True
+			if onHoverCallback Then onHoverCallback(callbackParam, callbackData)
 			
 			'without callback we "ignore" clicks
-			If onClickCallback and MouseManager.IsClicked(1)
-				onClickCallback(callbackParam, callbackData)
+			'If onClickCallback and MouseManager.IsClicked(1)
+			
+			If MouseManager.IsClicked(1)
+				clicked = True
+				If onClickCallback Then	onClickCallback(callbackParam, callbackData)
 
 				MouseManager.SetClickHandled(1)
 			EndIf
 		EndIf
 	End Method
 End Struct
-
+endrem
 
 
 
