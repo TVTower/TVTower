@@ -175,7 +175,7 @@ ERROR_NOT_ENOUGH_MONEY              = Not enough money!
 ERROR_NOT_ENOUGH_MONEY_TEXT         = You do not have enough money to finish this action.
 
 NEWGAMESETTINGS_RANDOMIZE          = Randomize
-NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Choose color and names randomly
+NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Choose look (color, figure) and names randomly
 NEWGAMESETTINGS_CHANNELNAME_DETAIL = Name of this player's TV channel
 NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Name of this player
 NEWGAMESETTINGS_DIFFICULTY         = Difficulty

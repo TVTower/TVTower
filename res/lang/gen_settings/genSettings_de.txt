@@ -175,7 +175,7 @@ ERROR_NOT_ENOUGH_MONEY              = Nicht genügend Geld!
 ERROR_NOT_ENOUGH_MONEY_TEXT         = Du besitzt nicht genügend finanzielle Mittel, um diese Aktion durchzuführen.
 
 NEWGAMESETTINGS_RANDOMIZE          = Auswürfeln
-NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Farbe und Namen zufällig auswählen
+NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Aussehen (Farbe, Figur) und Namen zufällig auswählen
 NEWGAMESETTINGS_CHANNELNAME_DETAIL = Der Name des TV-Senders dieses Spielers
 NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Der Name dieses Spielers
 NEWGAMESETTINGS_DIFFICULTY         = Schwierigkeitsgrad
