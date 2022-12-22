@@ -243,6 +243,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiPlayerNames[i].SetTooltip( CreateBasicTooltip("PLAYERNAME", "NEWGAMESETTINGS_PLAYERNAME_DETAIL"), True, False )
 			guiChannelNames[i].SetTooltip( CreateBasicTooltip("CHANNELNAME", "NEWGAMESETTINGS_CHANNELNAME_DETAIL"), True, False )
 			guiDifficulty[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_DIFFICULTY", "NEWGAMESETTINGS_DIFFICULTY_DETAIL"), True, False )
+			guiPlayerRandomButtons[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_RANDOMIZE", "NEWGAMESETTINGS_RANDOMIZE_DETAIL"), True, False )
 
 			'guiPlayerPanels[i].AddChild(guiFigureSelectArrows[i*2 + 0])
 			'guiPlayerPanels[i].AddChild(guiFigureSelectArrows[i*2 + 1])
@@ -272,6 +273,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiWidgets.AddLast(guiPlayerNames[i])
 			guiWidgets.AddLast(guiChannelNames[i])
 			guiWidgets.AddLast(guiDifficulty[i])
+			guiWidgets.AddLast(guiPlayerRandomButtons[i])
 		Next
 		'guiWidgets.AddLast(guiFigureArrows:TGUIArrowButton[8])
 		'guiWidgets.AddLast(guiGameSeedLabel)
