@@ -1591,14 +1591,7 @@ Type TGUIListItem Extends TGUIobject
 
 		if not textCache then textCache = new TBitmapFontText
 
-		textCache.DrawBlock(GetFont(), value + " [" + Self._id + "]", scrRect.GetX() + 5, scrRect.GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, int(rect.GetH()), contentAlignment, valueColor, _drawTextEffect, null)
-
-'		if textCache.HasCache()
-'			textCache.DrawCached(GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)))
-'		else
-'			textCache.DrawBlock(GetFont(), value + " [" + Self._id + "]", GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), Null, valueColor)
-'		endif
-'		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), Null, valueColor)
+		textCache.DrawBlock(GetFont(), value + " [" + Self._id + "]", Int(scrRect.GetX() + 5), Int(scrRect.GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value))), maxWidth-2, int(rect.GetH()), contentAlignment, valueColor, _drawTextEffect, null)
 	End Method
 
 

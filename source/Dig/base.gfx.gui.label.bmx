@@ -258,7 +258,7 @@ Type TGUILabel Extends TGUIobject
 				If oldColA <> 1.0
 					GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				Else
-					textCache.DrawBlock(GetFont(), value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
+					textCache.DrawBlock(GetFont(), value, Int(scrRect.x + contentDisplacement.GetX()), Int(scrRect.y + contentDisplacement.GetY()), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
 				EndIf
 		End Select
 

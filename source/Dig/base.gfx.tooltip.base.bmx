@@ -632,7 +632,6 @@ Type TTooltipBase
 		If _titleCache.HasCache()
 			_titleCache.DrawCached(x,y)
 		Else
-			'GetFontBold().DrawBlock(title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
 			_titleCache.DrawBlock(GetFontBold(), title, x, y, w, h, sALIGN_LEFT_CENTER, titleColor, titleDrawTextEffect, titleDrawTextSettings)
 		EndIf
 
@@ -648,7 +647,6 @@ Type TTooltipBase
 		If _contentCache.HasCache()
 			_contentCache.DrawCached(x,y)
 		Else
-			'GetFont().drawBlock(content, x, y, GetContentWidth(), -1, ALIGN_LEFT_TOP, contentColor)
 			_contentCache.DrawBlock(GetFont(), content, x, y, GetContentWidth(), -1, sALIGN_LEFT_TOP, contentColor, contentDrawTextEffect, contentDrawTextSettings)
 		EndIf
 
