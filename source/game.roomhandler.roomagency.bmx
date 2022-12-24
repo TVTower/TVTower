@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.gfx.gui.bmx"
 Import "Dig/base.gfx.tooltip.base.bmx"
 Import "common.misc.datasheet.bmx"
@@ -101,6 +101,8 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 		'=== FOR WATCHED PLAYERS ===
 		If IsObservedFigure(figure)
+			mode = MODE_NONE
+			selectedRoomState = 0
 			_actionInfoTooltip = Null
 			_actionInfoTooltipUpdate = 0
 			selectedRoom = Null
