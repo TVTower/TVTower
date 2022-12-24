@@ -1420,7 +1420,10 @@ endrem
 
 		'Simuliere Rechtsklick (Verlassen eines Screens/Raums, Abbruch einer Aktion, Löschen etc.)
 		'If KeyManager.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D(0, 0), 5)
-		If KeyManager.IsHit(KEY_Q) Then GetPlayer().GetFigure().KickOutOfRoom()
+		If KeyManager.IsHit(KEY_Q)
+			Local figure:TFigure = GetPlayer().GetFigure()
+			If Not figure.IsInRoom() Or Not figure.LeaveRoom() Then figure.KickOutOfRoom()
+		EndIf
 
 		'Schnellvorlauf
 		If KeyManager.IsDown(KEY_RIGHT)
