@@ -30,6 +30,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Field repositionSliders:Int = True
 	'set to true and production GUI changes wont affect logic
 	Field refreshingProductionGUI:Int = False
+	Field refreshControlEnablement:Int = True {nosave}
 	Field refreshFinishProductionConcept:Int = True
 
 	Field currentProductionConcept:TProductionConcept
@@ -157,8 +158,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Function onEnterScreen:Int( triggerEvent:TEventBase )
+		GetInstance().refreshControlEnablement = True
 		GetInstance().ReloadProductionCompanySelect()
 		GetInstance().ReloadProductionConceptContent()
+		'show correct production company when re-entering the screen
+		GetInstance().RefreshProductionConceptGUI()
 	End Function
 
 
@@ -223,6 +227,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 	'set all gui elements to the values of the production concept
 	Method RefreshProductionConceptGUI()
+		refreshControlEnablement = True
 		If Not currentProductionConcept Then Return
 
 
@@ -741,6 +746,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If triggerEvent.GetSender() <> GetInstance().finishProductionConcept Then Return False
 
 		If Not GetInstance().currentProductionConcept Then Return False
+		GetInstance().RefreshControlEnablement = True
 		'already at last step
 		If GetInstance().currentProductionConcept.IsProduceable() Then Return False
 		'nothing to do (should be disabled already)
@@ -932,40 +938,29 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'reset hovered concept (will be auto-reassigned by the list)
 		hoveredGuiProductionConcept = Null
 
-		'disable / enable elements according to state
-		If Not currentProductionConcept Or currentProductionConcept.IsProduceable()
-			If (Not currentProductionConcept Or Not currentProductionConcept.productionCompany Or productionFocusSlider[0].IsEnabled())
-				'disable _all_ sliders if no production company is selected
+		If refreshControlEnablement
+			'disable / enable elements according to state
+			If Not currentProductionConcept Or currentProductionConcept.IsProduceable()
 				For Local i:Int = 0 To productionFocusSlider.length -1
-					productionFocusSlider[i].Disable()
+					Local slider:TGUISlider = productionFocusSlider[i]
+					'ensure correct value is shown for finished concepts
+					If currentProductionConcept
+						slider.SetValue(currentProductionConcept.GetProductionFocus(slider.data.GetInt("focusIndex")))
+					EndIf
+					slider.Disable()
 				Next
-			EndIf
-
-			'general elements
-			If productionCompanySelect.IsEnabled()
 				productionCompanySelect.Disable()
 				castSlotList.Disable()
-				'if currentProductionConcept then print "DISABLE " + currentProductionConcept.script.GetTitle()
-			EndIf
-		EndIf
-
-		'or enable (specific of) them...
-		If currentProductionConcept And Not currentProductionConcept.IsProduceable()
-			'sliders only with selected production company
-			If currentProductionConcept.productionCompany And Not productionFocusSlider[0].IsEnabled()
+			Else
 				For Local i:Int = 0 To productionFocusSlider.length -1
 					If currentProductionConcept.productionFocus.GetFocusAspectCount() > i
 						productionFocusSlider[i].Enable()
 					EndIf
 				Next
-			EndIf
-
-			'general elements
-			If Not productionCompanySelect.IsEnabled()
 				productionCompanySelect.Enable()
 				castSlotList.Enable()
-				'if currentProductionConcept then print "ENABLE " + currentProductionConcept.script.GetTitle()
 			EndIf
+			refreshControlEnablement = False
 		EndIf
 
 		GuiManager.Update(evKey_supermarket_customproduction_castbox_modal)
