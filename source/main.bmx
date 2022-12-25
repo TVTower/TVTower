@@ -8,9 +8,10 @@ Import Brl.Retro
 
 Import brl.timer
 Import brl.eventqueue
-?Threaded
 Import brl.Threads
-?
+Import Archive.ZSTD
+Import Archive.RAW
+
 'Import "Dig/external/persistence.mod/persistence_json.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
@@ -3003,7 +3004,7 @@ Local t:Int = MilliSecs()
 		'setup tpersist config
 		TPersist.format=True
 'during development...(also savegame.XML should be savegame.ZIP then)
-'		TPersist.compressed = True
+		TPersist.compressed = True
 
 		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
@@ -3015,7 +3016,25 @@ Local t:Int = MilliSecs()
 		'local p:TPersist = New TPersist
 		p.serializer = New TSavegameSerializer
 		If TPersist.compressed
-			p.SerializeToFile(saveGame, saveURI+".zip")
+			'compress the TStream of XML-Data into an archive and save it
+			Local saveStream:TSTream = WriteStream(saveURI+".zst")
+
+'			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.GZIP])
+			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.ZSTD])
+			wa.SetCompressionLevel(9) 'speed vs size
+			wa.Open(saveStream)
+
+			Local entry:TArchiveEntry = New TArchiveEntry
+			wa.Header(entry)
+			Local xmlArchiveStream:TStream = wa.DataStream()
+			'serialize game into a TStream of XML-Data
+			p.SerializeToFile(saveGame, xmlArchiveStream)
+
+			wa.FinishEntry()
+			entry.Free()
+
+			wa.Close()
+			xmlArchiveStream.Close()
 		Else
 			p.SerializeToFile(saveGame, saveURI)
 		EndIf

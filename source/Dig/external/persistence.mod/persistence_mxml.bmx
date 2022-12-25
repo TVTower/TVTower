@@ -148,19 +148,18 @@ Type TPersist
 	Rem
 	bbdoc: Serializes an Object to the file @filename.
 	End Rem
-	Method SerializeToFile(obj:Object, filename:String)
+	Method SerializeToFile(obj:Object, file:Object)
 		If Not _inited Throw "Use TXMLPersistenceBuilder to create TPersist instance."
 		Free()
 		SerializeObject(obj)
 
 		If doc Then
-'			If compressed Then
-'				doc.setCompressMode(9)
-'			Else
-'				doc.setCompressMode(0)
-'			End If
-'			doc.saveFormatFile(filename, format)
-			doc.saveFile(filename, True, format)
+			If TStream(file)
+				doc.saveFile(file, False, format)
+			'filename/string
+			Else
+				doc.saveFile(file, True, format)
+			EndIf
 		End If
 		Free()
 	End Method
