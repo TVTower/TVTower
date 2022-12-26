@@ -592,15 +592,20 @@ Type TPersist
 	Method DeSerializeFromStream:Object(stream:TStream, options:Int = 0)
 		If Not _inited Throw "Use TXMLPersistenceBuilder to create TPersist instance."
 
+		Rem
 		Local data:String
 		Local buf:Byte[2048]
+		Local sb:TStringBuilder = new TStringBuilder
 
 		While Not stream.Eof()
 			Local count:Int = stream.Read(buf, 2048)
-			data:+ String.FromBytes(buf, count)
+			sb.Append( String.FromBytes(buf, count) )
 		Wend
-
+		data = sb.ToString()
 		Local obj:Object = DeSerializeObject(data, Null, options)
+		EndRem
+
+		Local obj:Object = DeSerializeObject(stream, Null, options)
 		Free()
 		Return obj
 	End Method
@@ -1067,12 +1072,11 @@ Type TPersist
 	Rem
 	bbdoc:
 	End Rem
-	Method DeSerializeObject:Object(Text:String, parent:TxmlNode = Null, options:Int = 0, parentIsNode:Int = False)
+	Method DeSerializeObject:Object(TextOrStream:Object, parent:TxmlNode = Null, options:Int = 0, parentIsNode:Int = False)
 		Local node:TxmlNode
 
 		If Not doc Then
-			'doc = TxmlDoc.readDoc(Text, "", "", options)
-			doc = TxmlDoc.readDoc(Text)
+			doc = TxmlDoc.readDoc(TextOrStream)
 			parent = doc.GetRootElement()
 			fileVersion = parent.GetAttribute("ver").ToInt() ' get the format version
 			node = TxmlNode(parent.GetFirstChild())

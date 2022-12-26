@@ -2543,15 +2543,14 @@ Type TSaveGame Extends TGameState
 		
 		Return 1
 	End Function
-
-
-	Function GetGameSummary:TData(fileURI:String)
-		Local stream:TStream = ReadStream(fileURI)
+	
+	
+	Function GetGameSummary:TData(stream:TStream, fileURI:String)
 		If Not stream
-			Print "file not found: "+fileURI
+			TLogger.Log("GetGameSummary", "file not found: " + fileURI, LOG_WARNING)
+			'Notify "GetGameSummary: file not found: " + fileURI
 			Return Null
 		EndIf
-
 
 		Local LINES:String[]
 		Local line:String = ""
@@ -2564,7 +2563,8 @@ Type TSaveGame Extends TGameState
 			If line.Find("<bmo ver=~q") >= 0
 				Local bmoVersion:Int = Int(line[10 .. line.Find("~q>")])
 				If bmoVersion <= 7
-					Return Null
+					validSavegame = False
+					Exit
 				EndIf
 			EndIf
 
@@ -2585,9 +2585,9 @@ Type TSaveGame Extends TGameState
 				validSavegame = True
 			EndIf
 		Wend
-		CloseStream(stream)
+
 		If Not validSavegame
-			Print "unknown savegamefile"
+			TLogger.Log("GetGameSummary", "Invalid/Unknown savegame format in file: " + fileURI, LOG_WARNING)
 			Return Null
 		EndIf
 
@@ -2599,17 +2599,49 @@ Type TSaveGame Extends TGameState
 
 		Local content:String = "~n".Join(LINES)
 
-
-		'local p:TPersist = new TPersist
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		Local res:TData = TData(p.DeserializeObject(content))
-		If Not res Then res = New TData
-		res.Add("fileURI", fileURI)
-		res.Add("fileName", GetSavegameName(fileURI) )
-		res.AddNumber("fileTime", FileTime(fileURI))
 		p.Free()
 
 		Return res
+	End Function
+
+
+	Function GetGameSummary:TData(fileURI:String)
+		'Local streamPosBackup:Long
+		Local stream:TStream
+		'compressed file?
+		Local isCompressed:Int = (ExtractExt(fileURI).ToLower() = "zst")
+		Local summaryData:TData
+		
+		If not isCompressed
+			stream = ReadStream(fileURI)
+			summaryData = GetGameSummary(stream, fileURI )
+			
+			'rewind stream position
+			'stream.Seek(streamPosBackup)
+			'we opened the stream? so we also close it here.
+			If stream Then stream.Close()
+		Else
+			Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD])
+			ra.Open(fileURI)
+
+			Local entry:TArchiveEntry = New TArchiveEntry
+			Local xmlStream:TStream
+			While ra.ReadNextHeader(entry) = ARCHIVE_OK
+				summaryData = GetGameSummary(ra.DataStream(), fileURI)
+				exit
+			Wend
+			ra.Free() 'do not wait for GC
+		EndIf
+
+
+		If Not summaryData Then summaryData = New TData
+		summaryData.Add("fileURI", fileURI)
+		summaryData.Add("fileName", GetSavegameName(fileURI) )
+		summaryData.AddNumber("fileTime", FileTime(fileURI))
+
+		Return summaryData
 	End Function
 
 
@@ -2838,13 +2870,31 @@ Type TSaveGame Extends TGameState
 
 		Local loadingStart:Int = MilliSecs()
 
-		'this creates new TGameObjects - and therefore increases ID count!
-?bmxng
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(saveURI))
-?Not bmxng
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(saveURI, XML_PARSE_HUGE))
-?
+		'savegame deserialization creates new TGameObjects - and thus
+		'increases the ID count!
+		Local saveGame:TSaveGame
+		Local isCompressed:Int = (ExtractExt(saveURI).ToLower() = "zst")
+		If not isCompressed
+			saveGame = TSaveGame(persist.DeserializeFromFile(saveURI))
+		Else
+			'doable once New() is overloaded / corresponding PR merged
+			'Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD])
+			Local ra:TReadArchive = New TReadArchive
+			ra.SetFormat(EArchiveFormat.RAW)
+			ra.AddFilter(EArchivefilter.ZSTD)
+
+			ra.Open(saveURI)
+
+			Local entry:TArchiveEntry = New TArchiveEntry
+			While ra.ReadNextHeader(entry) = ARCHIVE_OK
+				saveGame = TSaveGame(persist.DeserializeFromStream(ra.DataStream()))
+				exit
+			Wend
+			ra.Free() 'do not wait for GC
+		EndIf
+
 		persist.Free()
+
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveURI+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
@@ -3043,7 +3093,9 @@ Local t:Int = MilliSecs()
 		'tell everybody we finished saving
 		'payload is saveURI and saveGame-object
 		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveURI).add("saveGame", saveGame))
-		Print "saving took " + (MilliSecs() - t) + "ms."
+
+		TLogger.Log("Savegame.SaveURI()", "Savegame file ~q"+saveURI+"~q saved in " + (MilliSecs() - t)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
+
 		'close message window
 		If messageWindow Then messageWindow.Close()
 
@@ -3075,8 +3127,13 @@ Local t:Int = MilliSecs()
 
 
 	Function GetSavegameURI:String(fileName:String)
-		If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
-		Return GetSavegameName(fileName) + ".xml"
+		If ExtractExt(GetSavegameName(fileName)).ToLower() = "xml"
+			If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".zst"
+			Return GetSavegameName(fileName) + ".zst"
+		Else
+			If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
+			Return GetSavegameName(fileName) + ".xml"
+		Endif
 	End Function
 
 
