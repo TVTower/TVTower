@@ -321,8 +321,8 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		Local foundEntry:Int = False
 		If GameConfig.savegame_lastUsedName	
 			For Local i:TGUISavegameListItem = EachIn savegameList.entries
-				Local fileName:String = i.GetFileInformation().GetString("fileURI")
-				If TSavegame.GetSavegameName(fileName) = GameConfig.savegame_lastUsedName
+				Local fileURI:String = i.GetFileInformation().GetString("fileURI")
+				If TSavegame.GetSavegameName(fileURI) = GameConfig.savegame_lastUsedName
 					savegameList.SelectEntry(i)
 
 					SelectButton(0)
@@ -414,7 +414,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 				TGUIModalWindowChain(_parent).Close()
 			EndIf
 
-			TSaveGame.LoadName(fileURI, True, True)
+			TSaveGame.Load(fileURI, fileName, True, True)
 
 			Return True
 		EndIf
@@ -687,7 +687,7 @@ endrem
 			Return False
 		EndIf
 
-		TSaveGame.SaveName(fileName, True)
+		TSaveGame.Save(fileURI, fileName, True)
 
 		'close self
 '		Back()
@@ -931,7 +931,20 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 		Local useAlpha:Float = oldAlpha * GetScreenAlpha()
 		SetAlpha useAlpha
 
-		GetBitmapFontManager().baseFontBold.DrawBox(GetFileInformation().GetString("fileName"), leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 20, sALIGN_LEFT_TOP, headCol, EDrawTextEffect.Shadow, 0.6)
+		local compressionInfo:string
+		'add info note to uncompressed savegames if compression is enabled
+		'and vice versa if not
+		Local fileExtension:String = ExtractExt(GetFileInformation().GetString("fileURI")).ToLower()
+		If GameConfig.compressSavegames
+			If fileExtension = GameConfig.uncompressedSavegameExtension
+				compressionInfo = "  |color=220,220,230|"+GameConfig.uncompressedSavegameExtension+"|/color|"
+			EndIf
+		Else
+			If fileExtension = GameConfig.compressedSavegameExtension
+				compressionInfo = "  |color=220,220,230|"+GameConfig.compressedSavegameExtension+"|/color|"
+			EndIf
+		EndIf
+		GetBitmapFontManager().baseFont.DrawBox("|b|"+GetFileInformation().GetString("fileName")+"|/b|" + compressionInfo, leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 20, sALIGN_LEFT_TOP, headCol, EDrawTextEffect.Shadow, 0.6)
 		GetFont().DrawBox("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.25 * width, 20, sALIGN_LEFT_TOP, playerCol, EDrawTextEffect.Shadow, 0.25)
 		GetFont().DrawBox("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenRect().GetY() + Self.paddingTop, 0.35 * width, 20, sALIGN_RIGHT_CENTER, col)
 		GetFont().DrawBox("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 20, sALIGN_RIGHT_CENTER, col)

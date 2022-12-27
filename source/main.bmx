@@ -722,15 +722,15 @@ Type TApp
 			'hotkeys which should exist for dev and non-dev
 			'Save game only when in a game
 			If GetGame().gamestate = TGame.STATE_RUNNING
-				If KeyManager.IsHit(KEY_F5) Then TSaveGame.SaveURI("savegames/quicksave.xml")
+				If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False)
 			EndIf
 
 			If KeyManager.IsHit(KEY_F8)
 				'shift + F8 ignores potential compatibility issues
 				If KeyManager.IsDown(KEY_LSHIFT)
-					TSaveGame.LoadURI("savegames/quicksave.xml", True)
+					TSaveGame.Load("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False, True)
 				Else
-					TSaveGame.LoadURI("savegames/quicksave.xml")
+					TSaveGame.Load("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False, False)
 				EndIf
 			EndIf
 
@@ -2611,7 +2611,7 @@ Type TSaveGame Extends TGameState
 		'Local streamPosBackup:Long
 		Local stream:TStream
 		'compressed file?
-		Local isCompressed:Int = (ExtractExt(fileURI).ToLower() = "zst")
+		Local isCompressed:Int = (ExtractExt(fileURI).ToLower() = GameConfig.compressedSavegameExtension)
 		Local summaryData:TData
 		
 		If not isCompressed
@@ -2790,12 +2790,12 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function LoadName:Int(saveName:String, setLastUsedName:Int = True, skipCompatibilityCheck:Int = False)
-		Local fileURI:String = GetSavegameURI(saveName)
-		If LoadURI(fileURI, skipCompatibilityCheck)
+	Function Load:Int(savegameURI:String, savegameName:String, setLastUsedName:Int = True, skipCompatibilityCheck:Int = False)
+		'Local fileURI:String = GetSavegameURI(saveName)
+		If _LoadURI(savegameURI, skipCompatibilityCheck)
 			If setLastUsedName
-				'also load in last used save name
-				GameConfig.savegame_lastUsedName = saveName
+				'also remember as used save name
+				GameConfig.savegame_lastUsedName = savegameName
 			EndIf
 			
 			Return True
@@ -2805,7 +2805,21 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function LoadURI:Int(saveURI:String="savegame.xml", skipCompatibilityCheck:Int = False)
+	Function Save:Int(savegameURI:String, savegameName:String="savegame", setLastUsedName:Int = True)
+		'Local fileURI:String = GetSavegameURI(saveName)
+		If _SaveURI(savegameURI)
+			If setLastUsedName
+				GameConfig.savegame_lastUsedName = savegameName
+			EndIf
+			Return True
+		Else
+			Return False
+		EndIf
+	End Function
+
+
+	'internal/private function
+	Function _LoadURI:Int(saveURI:String="savegame.xml", skipCompatibilityCheck:Int = False)
 		'stop ai of previous game if some was running
 		For Local i:Int = 1 To 4
 			If GetPlayer(i) Then GetPlayer(i).StopAI()
@@ -2989,23 +3003,9 @@ endrem
 
 		Return True
 	End Function
-
-
-	Function SaveName:Int(saveName:String="savegame", setLastUsedName:Int = True)
-		Local fileURI:String = GetSavegameURI(saveName)
-
-		If SaveURI(fileURI)
-			If setLastUsedName
-				GameConfig.savegame_lastUsedName = saveName
-			EndIf
-			Return True
-		Else
-			Return False
-		EndIf
-	End Function
 		
 
-	Function SaveURI:Int(saveURI:String="savegame.xml")
+	Function _SaveURI:Int(saveURI:String="savegame.xml")
 		ShowMessage(False)
 
 		'check directories and create them if needed
@@ -3024,7 +3024,7 @@ endrem
 			TLogger.Log("Savegame.Save()", "Failed to create directory ~q" + currDir + "~q for ~q"+saveURI+"~q.", LOG_SAVELOAD)
 		EndIf
 
-Local t:Int = MilliSecs()
+		Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveURI
@@ -3067,10 +3067,12 @@ Local t:Int = MilliSecs()
 		p.serializer = New TSavegameSerializer
 		If TPersist.compressed
 			'compress the TStream of XML-Data into an archive and save it
-			Local saveStream:TSTream = WriteStream(saveURI+".zst")
+			Local saveStream:TSTream = WriteStream(saveURI)
 
 '			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.GZIP])
-			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.ZSTD])
+			Local wa:TWriteArchive = New TWriteArchive
+			wa.SetFormat(EArchiveFormat.RAW)
+			wa.AddFilter(EArchiveFilter.ZSTD)
 			wa.SetCompressionLevel(9) 'speed vs size
 			wa.Open(saveStream)
 
@@ -3104,7 +3106,13 @@ Local t:Int = MilliSecs()
 	End Function
 
 
-	Function GetSavegameName:String(fileURI:String)
+	'strip base folders from the absolute URI
+	'subfolders inside the base savegame path are kept
+	'Result might be:
+	' "testgames\testgame1"
+	' "testgames\testgame1.xml" with stripExtension = False
+	' "testgames\testgame1.zst" with stripExtension = False and a compressed game
+	Function GetSavegameLocalURI:String(fileURI:String)
 		'strip savegame path from fileURI
 		Local p:String = GetSavegamePath()
 		If p.length > 0 And fileURI.Find( p ) = 0
@@ -3113,27 +3121,28 @@ Local t:Int = MilliSecs()
 
 		'if no sub-directories are allowed, strip them
 		'fileURI = StripDir(fileURI)
-		
-		'remove file ending
-		fileURI = StripExt(fileURI)
 
 		'remove leading "/"
 		If fileURI.length > 0 and (fileURI[0] = Asc("/") Or fileURI[0] = Asc("\"))
 			fileURI = fileURI[1 ..]
 		EndIf
-
+		
 		Return fileURI
 	End Function
 
 
-	Function GetSavegameURI:String(fileName:String)
-		If ExtractExt(GetSavegameName(fileName)).ToLower() = "xml"
-			If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".zst"
-			Return GetSavegameName(fileName) + ".zst"
-		Else
-			If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
-			Return GetSavegameName(fileName) + ".xml"
-		Endif
+	Function GetSavegameName:String(fileURI:String)
+		Return StripExt( GetSavegameLocalURI(fileURI) )
+	End Function
+
+
+	'set compressSavegames to 0 to forcefully disable compression
+	'set compressSavegames to 1 to forcefully enable compression
+	Function GetSavegameURI:String(fileName:String, compressSavegames:Int = -1)
+		Local result:String = GetSavegamePath()
+		if result Then result :+ "/"
+
+		Return result + GetSavegameName(fileName) + "." + GameConfig.GetSavegameExtension(compressSavegames)
 	End Function
 
 
@@ -6303,11 +6312,12 @@ endrem
 
 		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
 			Local gameName:String = GameConfig.savegame_lastUsedName
-			Local autoSaveName:String = "autosave.xml"
+			Local autoSaveName:String = "autosave"
 			If gameName and gameName <> "quicksave" and not gameName.endsWith("_autosave")
-				autoSaveName = gameName + "_autosave.xml"
+				autoSaveName = gameName + "_autosave"
 			EndIf
-			TSaveGame.SaveName(autoSaveName, False)
+			Local autoSaveURI:String = autoSaveName + "." + GameConfig.GetSavegameExtension()
+			TSaveGame.Save(autoSaveURI, autoSaveName, False)
 			TSaveGame.autoSaveNow = False
 		EndIf
 

@@ -15,6 +15,10 @@ Type TGameConfig {_exposeToLua}
 	Field KeepBankruptPlayerFinances:int = True
 	Field dateFormat:string = "d.m.y"
 	Field devGUID:string
+	Field compressSavegames:Int = True
+	Field compressedSavegameExtension:String = "zst"
+	Field uncompressedSavegameExtension:String = "xml"
+	'Field compressedSavegamesExtension:String = "zst"
 	Field mouseHandlingDisabled:int = False
 	'storage for current savegame (if there is one loaded) information
 	Field savegame_initialBuildDate:String
@@ -44,6 +48,19 @@ Type TGameConfig {_exposeToLua}
 		observedObject = null
 		isChristmasTime = False
 		KeepBankruptPlayerFinances = True
+	End Method
+	
+	
+	'set useCompression to 0 to forcefully disable compression
+	'set useCompression to 1 to forcefully enable compression
+	Method GetSavegameExtension:String(useCompression:Int = -1)
+		If useCompression = -1 Then useCompression = self.compressSavegames
+
+		If useCompression
+			Return compressedSavegameExtension
+		Else
+			Return uncompressedSavegameExtension
+		EndIf
 	End Method
 
 
