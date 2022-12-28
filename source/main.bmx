@@ -3071,17 +3071,18 @@ endrem
 		saveGame.BackupGameData()
 
 		'setup tpersist config
-		TPersist.format = False 'True
+		TPersist.format = True
+		'XML files stay "pretty", compressed ones can already save
+		'a bit processing time (formatting) and on whitespace
+		If GameConfig.compressSavegames Then TPersist.format = False
 
 		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
 		?
 		TPersist.maxDepth = 4096
-		'save the savegame data as xml
-		'TPersist.format=False
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
-		'local p:TPersist = New TPersist
 		p.serializer = New TSavegameSerializer
+
 		If GameConfig.compressSavegames
 			'compress the TStream of XML-Data into an archive and save it
 			Local saveStream:TSTream = WriteStream(saveURI)
