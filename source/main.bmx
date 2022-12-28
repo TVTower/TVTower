@@ -3053,7 +3053,6 @@ endrem
 
 		'setup tpersist config
 		TPersist.format = False 'True
-		TPersist.compressed = GameConfig.compressSavegames
 
 		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
@@ -3064,7 +3063,7 @@ endrem
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		'local p:TPersist = New TPersist
 		p.serializer = New TSavegameSerializer
-		If TPersist.compressed
+		If GameConfig.compressSavegames
 			'compress the TStream of XML-Data into an archive and save it
 			Local saveStream:TSTream = WriteStream(saveURI)
 

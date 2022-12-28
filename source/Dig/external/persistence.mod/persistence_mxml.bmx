@@ -94,11 +94,6 @@ Type TPersist
 	End Rem
 	Global format:Int = False
 
-	Rem
-	bbdoc: Compressed serialization.
-	about: Set to True to compress the serialized data. Default is False - no compression.
-	End Rem
-	Global compressed:Int = False
 	Global maxDepth:Int = 0
 
 ?ptr64
@@ -199,11 +194,6 @@ Type TPersist
 	End Rem
 	Method ToString:String()
 		If doc Then
-'			If compressed Then
-'				doc.setCompressMode(9)
-'			Else
-'				doc.setCompressMode(0)
-'			End If
 			Return doc.ToStringFormat(format)
 		End If
 	End Method
