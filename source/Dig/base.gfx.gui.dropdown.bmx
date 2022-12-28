@@ -440,7 +440,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
     Method Create:TGUIDropDownItem(position:SVec2I, dimension:SVec2I, value:String="")
-		If dimension.x = 0 and dimension.y = 0 Then dimension = New SVec2I(80,20)
+		If (dimension.x = 0 and dimension.y = 0) or dimension = GUI_DIM_AUTOSIZE Then dimension = New SVec2I(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")
