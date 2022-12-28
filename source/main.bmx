@@ -2552,58 +2552,55 @@ Type TSaveGame Extends TGameState
 			Return Null
 		EndIf
 
-		Local LINES:String[]
-		Local line:String = ""
-		Local lineNum:Int = 0
-		Local validSavegame:Int = False
-		While Not Eof(stream)
-			line = stream.ReadLine()
+		Local result:TData
+		'as compressed savegame streams report a size of 0 we cannot simply
+		'check the size first ...
+		Local content:String
+		Try 
+			'read in first 10000 bytes, should be enough, adjust if 
+			'game summary becomes lengthier
+			content = stream.ReadString(10000)
+		Catch ex:Object
+			'TStreamReadException
+		End Try
 
+		If content
 			'scan bmo version to avoid faulty deserialization
-			If line.Find("<bmo ver=~q") >= 0
-				Local bmoVersion:Int = Int(line[10 .. line.Find("~q>")])
-				If bmoVersion <= 7
-					validSavegame = False
-					Exit
+			Local bmoBeginString:String = "<bmo ver=~q"
+			Local bmoBegin:Int = content.Find(bmoBeginString)
+			Local bmoVersion:int
+			if bmoBegin >= 0
+				Local bmoEnd:Int = content.Find("~q>", bmoBegin + bmoBeginString.length)
+				If bmoEnd >= 0
+					bmoVersion = Int(content[bmoBegin + bmoBeginString.length .. bmoEnd])
+				endIf
+			EndIf
+
+			If bmoVersion >= 8
+				Local summaryStart:Int = content.Find("<TData", bmoBegin)
+				Local summaryEnd:Int = content.Find("<field name=~q_Game~q type=~qTGame~q>", summaryStart)
+				If summaryStart < summaryEnd And summaryStart >= 0 And summaryEnd >= 0
+					Local summary:String = content[summaryStart .. summaryEnd]
+					'also delete the "</field>"
+					'and wrap it again in the "<bmo>" tag
+					summaryEnd = summary.FindLast("</field>")
+					If summaryEnd >= 0
+						summary = "<?xml version=~q1.0~q encoding=~qutf-8~q?>~n<bmo ver=~q" + bmoVersion + "~q>~n" + summary[.. summaryEnd] + "~n</bmo>"
+					EndIf
+					Local p:TPersist = New TXMLPersistenceBuilder.Build()
+
+					result = TData(p.DeserializeObject(summary))
+					p.Free()
 				EndIf
 			EndIf
+		EndIf
 
-			If line.Find("name=~q_Game~q type=~qTGame~q>") > 0
-				Exit
-			EndIf
-
-			'should not be needed - or might fail if we once have a bigger amount stored
-			'in gamesummary then expected
-			If lineNum > 1500 Then Exit
-
-			LINES :+ [line]
-			lineNum :+ 1
-			If lineNum = 4 And line.Find("name=~q___gameSummary~q type=~qTData~q>") > 0
-				validSavegame = True
-			EndIf
-			If lineNum = 4 And line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
-				validSavegame = True
-			EndIf
-		Wend
-
-		If Not validSavegame
+		If Not result
 			TLogger.Log("GetGameSummary", "Invalid/Unknown savegame format in file: " + fileURI, LOG_WARNING)
 			Return Null
 		EndIf
-
-		'remove line 3 and 4
-		LINES[2] = ""
-		LINES[3] = ""
-		'remove last line / let the bmo-file end there
-		LINES[LINES.length-1] = "</bmo>"
-
-		Local content:String = "~n".Join(LINES)
-
-		Local p:TPersist = New TXMLPersistenceBuilder.Build()
-		Local res:TData = TData(p.DeserializeObject(content))
-		p.Free()
-
-		Return res
+		
+		Return result
 	End Function
 
 
@@ -2816,6 +2813,27 @@ Type TSaveGame Extends TGameState
 			Return False
 		EndIf
 	End Function
+	
+	
+	Function IdentifyFileFormat:String(uri:String)
+		'read in first up to 100 chars of a file
+		Local s:TStream = ReadStream(uri)
+		Local readAmount:Int = Min(50, s.Size())
+		'file signature of ZST compression: 28 B5 2F FD
+		If readAmount > 4 And s.ReadByte() = $28 and s.ReadByte() = $B5 and s.ReadByte() = $2F and s.ReadByte() = $FD
+			Return "zst"
+		'for xml we simply search for "<?xml" but allow some mistakingly
+		'added newlines (maybe user modified file a bit ... )
+		ElseIf readAmount >= 50
+			'if reading ~100 chars we could also identify "bmo"-value,
+			'if somewhen needed
+			Local chars:String = s.ReadString(readAmount)
+			If chars.find("<?xml") >= 0
+				Return "xml"
+			EndIf
+		EndIf
+		return "unknown"
+	End Function
 
 
 	'internal/private function
@@ -2887,7 +2905,8 @@ Type TSaveGame Extends TGameState
 		'savegame deserialization creates new TGameObjects - and thus
 		'increases the ID count!
 		Local saveGame:TSaveGame
-		Local isCompressed:Int = (ExtractExt(saveURI).ToLower() = "zst")
+		'Local isCompressed:Int = (ExtractExt(saveURI).ToLower() = "zst")
+		Local isCompressed:Int = (IdentifyFileFormat(saveURI) = "zst")
 		If not isCompressed
 			saveGame = TSaveGame(persist.DeserializeFromFile(saveURI))
 		Else
@@ -3071,7 +3090,7 @@ endrem
 			Local wa:TWriteArchive = New TWriteArchive
 			wa.SetFormat(EArchiveFormat.RAW)
 			wa.AddFilter(EArchiveFilter.ZSTD)
-			wa.SetCompressionLevel(9) 'speed vs size
+			wa.SetCompressionLevel(3) 'speed vs size
 			wa.Open(saveStream)
 
 			Local entry:TArchiveEntry = New TArchiveEntry
