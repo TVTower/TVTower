@@ -3052,9 +3052,8 @@ endrem
 		saveGame.BackupGameData()
 
 		'setup tpersist config
-		TPersist.format=True
-'during development...(also savegame.XML should be savegame.ZIP then)
-		TPersist.compressed = True
+		TPersist.format = False 'True
+		TPersist.compressed = GameConfig.compressSavegames
 
 		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")

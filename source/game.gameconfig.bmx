@@ -18,7 +18,6 @@ Type TGameConfig {_exposeToLua}
 	Field compressSavegames:Int = True
 	Field compressedSavegameExtension:String = "zst"
 	Field uncompressedSavegameExtension:String = "xml"
-	'Field compressedSavegamesExtension:String = "zst"
 	Field mouseHandlingDisabled:int = False
 	'storage for current savegame (if there is one loaded) information
 	Field savegame_initialBuildDate:String
