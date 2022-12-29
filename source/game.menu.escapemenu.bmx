@@ -532,7 +532,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		'fill existing savegames
 		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
-		dirTree.SetIncludeFileEndings(["xml"])
+		dirTree.SetIncludeFileEndings(["xml", "zst"])
 		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
 		Local fileURIs:String[] = dirTree.GetFiles()
 
@@ -664,7 +664,7 @@ endrem
 
 		_confirmOverwriteDialogue.SetDialogueType(2)
 		_confirmOverwriteDialogue.SetZIndex(100001)
-		_confirmOverwriteDialogue.SetCaptionAndValue( GetLocale("OVERWRITE_SAVEGAME"), GetLocale("DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X").Replace("%SAVEGAME%", fileURI) )
+		_confirmOverwriteDialogue.SetCaptionAndValue( GetLocale("OVERWRITE_SAVEGAME"), GetLocale("DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X").Replace("%SAVEGAME%", "~q|i|"+fileURI+"|/i|~q") )
 
 		_confirmOverwriteDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
 		'center to this area
@@ -679,11 +679,14 @@ endrem
 	Method SaveSavegame:Int(fileName:String, skipFileCheck:Int = False)
 		If Not fileName Then Return False
 
+		'check for both variants: compressed and uncompressed
 		Local fileURI:String = TSavegame.GetSavegameURI(fileName)
+		Local fileURI1:String = TSavegame.GetSavegameURI(fileName, True)
+		Local fileURI2:String = TSavegame.GetSavegameURI(fileName, False)
 
 		'if savegame exists already, create confirmation dialogue
-		If Not skipFileCheck And FileType(fileURI) = 1
-			CreateConfirmOverwriteDialogue(fileURI)
+		If Not skipFileCheck And (FileType(fileURI1) = 1 or FileType(fileURI2) = 1)
+			CreateConfirmOverwriteDialogue(fileName)
 			Return False
 		EndIf
 

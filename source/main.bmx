@@ -3026,6 +3026,13 @@ endrem
 
 	Function _SaveURI:Int(saveURI:String="savegame.xml")
 		ShowMessage(False)
+		
+		'check if variants of the savegame filename exist - and delete them!
+		Local fileURI1:String = StripExt(saveURI) + "." + GameConfig.uncompressedSavegameExtension
+		Local fileURI2:String = StripExt(saveURI) + "." + GameConfig.compressedSavegameExtension
+		If FileType(fileURI1) = FILETYPE_FILE Then DeleteFile(fileURI1)
+		If FileType(fileURI2) = FILETYPE_FILE Then DeleteFile(fileURI2)
+
 
 		'check directories and create them if needed
 		Local dirs:String[] = ExtractDir(saveURI.Replace("\", "/")).Split("/")
