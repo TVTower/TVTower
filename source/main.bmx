@@ -8,9 +8,10 @@ Import Brl.Retro
 
 Import brl.timer
 Import brl.eventqueue
-?Threaded
 Import brl.Threads
-?
+Import Archive.ZSTD
+Import Archive.RAW
+
 'Import "Dig/external/persistence.mod/persistence_json.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
@@ -721,15 +722,15 @@ Type TApp
 			'hotkeys which should exist for dev and non-dev
 			'Save game only when in a game
 			If GetGame().gamestate = TGame.STATE_RUNNING
-				If KeyManager.IsHit(KEY_F5) Then TSaveGame.SaveURI("savegames/quicksave.xml")
+				If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False)
 			EndIf
 
 			If KeyManager.IsHit(KEY_F8)
 				'shift + F8 ignores potential compatibility issues
 				If KeyManager.IsDown(KEY_LSHIFT)
-					TSaveGame.LoadURI("savegames/quicksave.xml", True)
+					TSaveGame.Load("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False, True)
 				Else
-					TSaveGame.LoadURI("savegames/quicksave.xml")
+					TSaveGame.Load("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False, False)
 				EndIf
 			EndIf
 
@@ -2542,73 +2543,102 @@ Type TSaveGame Extends TGameState
 		
 		Return 1
 	End Function
+	
+	
+	Function GetGameSummary:TData(stream:TStream, fileURI:String)
+		If Not stream
+			TLogger.Log("GetGameSummary", "file not found: " + fileURI, LOG_WARNING)
+			'Notify "GetGameSummary: file not found: " + fileURI
+			Return Null
+		EndIf
+
+		Local result:TData
+		'as compressed savegame streams report a size of 0 we cannot simply
+		'check the size first ...
+		Local content:String
+		Try 
+			'read in first 10000 bytes, should be enough, adjust if 
+			'game summary becomes lengthier
+			content = stream.ReadString(10000)
+		Catch ex:Object
+			'TStreamReadException
+		End Try
+
+		If content
+			'scan bmo version to avoid faulty deserialization
+			Local bmoBeginString:String = "<bmo ver=~q"
+			Local bmoBegin:Int = content.Find(bmoBeginString)
+			Local bmoVersion:int
+			if bmoBegin >= 0
+				Local bmoEnd:Int = content.Find("~q>", bmoBegin + bmoBeginString.length)
+				If bmoEnd >= 0
+					bmoVersion = Int(content[bmoBegin + bmoBeginString.length .. bmoEnd])
+				endIf
+			EndIf
+
+			If bmoVersion >= 8
+				Local summaryStart:Int = content.Find("<TData", bmoBegin)
+				Local summaryEnd:Int = content.Find("<field name=~q_Game~q type=~qTGame~q>", summaryStart)
+				If summaryStart < summaryEnd And summaryStart >= 0 And summaryEnd >= 0
+					Local summary:String = content[summaryStart .. summaryEnd]
+					'also delete the "</field>"
+					'and wrap it again in the "<bmo>" tag
+					summaryEnd = summary.FindLast("</field>")
+					If summaryEnd >= 0
+						summary = "<?xml version=~q1.0~q encoding=~qutf-8~q?>~n<bmo ver=~q" + bmoVersion + "~q>~n" + summary[.. summaryEnd] + "~n</bmo>"
+					EndIf
+					Local p:TPersist = New TXMLPersistenceBuilder.Build()
+
+					result = TData(p.DeserializeObject(summary))
+					p.Free()
+				EndIf
+			EndIf
+		EndIf
+
+		If Not result
+			TLogger.Log("GetGameSummary", "Invalid/Unknown savegame format in file: " + fileURI, LOG_WARNING)
+			Return Null
+		EndIf
+		
+		Return result
+	End Function
 
 
 	Function GetGameSummary:TData(fileURI:String)
-		Local stream:TStream = ReadStream(fileURI)
-		If Not stream
-			Print "file not found: "+fileURI
-			Return Null
+		'Local streamPosBackup:Long
+		Local stream:TStream
+		'compressed file?
+		Local isCompressed:Int = (ExtractExt(fileURI).ToLower() = GameConfig.compressedSavegameExtension)
+		Local summaryData:TData
+		
+		If not isCompressed
+			stream = ReadStream(fileURI)
+			summaryData = GetGameSummary(stream, fileURI )
+			
+			'rewind stream position
+			'stream.Seek(streamPosBackup)
+			'we opened the stream? so we also close it here.
+			If stream Then stream.Close()
+		Else
+			Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD])
+			ra.Open(fileURI)
+
+			Local entry:TArchiveEntry = New TArchiveEntry
+			Local xmlStream:TStream
+			While ra.ReadNextHeader(entry) = ARCHIVE_OK
+				summaryData = GetGameSummary(ra.DataStream(), fileURI)
+				exit
+			Wend
+			ra.Free() 'do not wait for GC
 		EndIf
 
 
-		Local LINES:String[]
-		Local line:String = ""
-		Local lineNum:Int = 0
-		Local validSavegame:Int = False
-		While Not Eof(stream)
-			line = stream.ReadLine()
+		If Not summaryData Then summaryData = New TData
+		summaryData.Add("fileURI", fileURI)
+		summaryData.Add("fileName", GetSavegameName(fileURI) )
+		summaryData.AddNumber("fileTime", FileTime(fileURI))
 
-			'scan bmo version to avoid faulty deserialization
-			If line.Find("<bmo ver=~q") >= 0
-				Local bmoVersion:Int = Int(line[10 .. line.Find("~q>")])
-				If bmoVersion <= 7
-					Return Null
-				EndIf
-			EndIf
-
-			If line.Find("name=~q_Game~q type=~qTGame~q>") > 0
-				Exit
-			EndIf
-
-			'should not be needed - or might fail if we once have a bigger amount stored
-			'in gamesummary then expected
-			If lineNum > 1500 Then Exit
-
-			LINES :+ [line]
-			lineNum :+ 1
-			If lineNum = 4 And line.Find("name=~q___gameSummary~q type=~qTData~q>") > 0
-				validSavegame = True
-			EndIf
-			If lineNum = 4 And line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
-				validSavegame = True
-			EndIf
-		Wend
-		CloseStream(stream)
-		If Not validSavegame
-			Print "unknown savegamefile"
-			Return Null
-		EndIf
-
-		'remove line 3 and 4
-		LINES[2] = ""
-		LINES[3] = ""
-		'remove last line / let the bmo-file end there
-		LINES[LINES.length-1] = "</bmo>"
-
-		Local content:String = "~n".Join(LINES)
-
-
-		'local p:TPersist = new TPersist
-		Local p:TPersist = New TXMLPersistenceBuilder.Build()
-		Local res:TData = TData(p.DeserializeObject(content))
-		If Not res Then res = New TData
-		res.Add("fileURI", fileURI)
-		res.Add("fileName", GetSavegameName(fileURI) )
-		res.AddNumber("fileTime", FileTime(fileURI))
-		p.Free()
-
-		Return res
+		Return summaryData
 	End Function
 
 
@@ -2757,12 +2787,12 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function LoadName:Int(saveName:String, setLastUsedName:Int = True, skipCompatibilityCheck:Int = False)
-		Local fileURI:String = GetSavegameURI(saveName)
-		If LoadURI(fileURI, skipCompatibilityCheck)
+	Function Load:Int(savegameURI:String, savegameName:String, setLastUsedName:Int = True, skipCompatibilityCheck:Int = False)
+		'Local fileURI:String = GetSavegameURI(saveName)
+		If _LoadURI(savegameURI, skipCompatibilityCheck)
 			If setLastUsedName
-				'also load in last used save name
-				GameConfig.savegame_lastUsedName = saveName
+				'also remember as used save name
+				GameConfig.savegame_lastUsedName = savegameName
 			EndIf
 			
 			Return True
@@ -2772,7 +2802,42 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function LoadURI:Int(saveURI:String="savegame.xml", skipCompatibilityCheck:Int = False)
+	Function Save:Int(savegameURI:String, savegameName:String="savegame", setLastUsedName:Int = True)
+		'Local fileURI:String = GetSavegameURI(saveName)
+		If _SaveURI(savegameURI)
+			If setLastUsedName
+				GameConfig.savegame_lastUsedName = savegameName
+			EndIf
+			Return True
+		Else
+			Return False
+		EndIf
+	End Function
+	
+	
+	Function IdentifyFileFormat:String(uri:String)
+		'read in first up to 100 chars of a file
+		Local s:TStream = ReadStream(uri)
+		Local readAmount:Int = Min(50, s.Size())
+		'file signature of ZST compression: 28 B5 2F FD
+		If readAmount > 4 And s.ReadByte() = $28 and s.ReadByte() = $B5 and s.ReadByte() = $2F and s.ReadByte() = $FD
+			Return "zst"
+		'for xml we simply search for "<?xml" but allow some mistakingly
+		'added newlines (maybe user modified file a bit ... )
+		ElseIf readAmount >= 50
+			'if reading ~100 chars we could also identify "bmo"-value,
+			'if somewhen needed
+			Local chars:String = s.ReadString(readAmount)
+			If chars.find("<?xml") >= 0
+				Return "xml"
+			EndIf
+		EndIf
+		return "unknown"
+	End Function
+
+
+	'internal/private function
+	Function _LoadURI:Int(saveURI:String="savegame.xml", skipCompatibilityCheck:Int = False)
 		'stop ai of previous game if some was running
 		For Local i:Int = 1 To 4
 			If GetPlayer(i) Then GetPlayer(i).StopAI()
@@ -2837,13 +2902,32 @@ Type TSaveGame Extends TGameState
 
 		Local loadingStart:Int = MilliSecs()
 
-		'this creates new TGameObjects - and therefore increases ID count!
-?bmxng
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(saveURI))
-?Not bmxng
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(saveURI, XML_PARSE_HUGE))
-?
+		'savegame deserialization creates new TGameObjects - and thus
+		'increases the ID count!
+		Local saveGame:TSaveGame
+		'Local isCompressed:Int = (ExtractExt(saveURI).ToLower() = "zst")
+		Local isCompressed:Int = (IdentifyFileFormat(saveURI) = "zst")
+		If not isCompressed
+			saveGame = TSaveGame(persist.DeserializeFromFile(saveURI))
+		Else
+			'doable once New() is overloaded / corresponding PR merged
+			'Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD])
+			Local ra:TReadArchive = New TReadArchive
+			ra.SetFormat(EArchiveFormat.RAW)
+			ra.AddFilter(EArchivefilter.ZSTD)
+
+			ra.Open(saveURI)
+
+			Local entry:TArchiveEntry = New TArchiveEntry
+			While ra.ReadNextHeader(entry) = ARCHIVE_OK
+				saveGame = TSaveGame(persist.DeserializeFromStream(ra.DataStream()))
+				exit
+			Wend
+			ra.Free() 'do not wait for GC
+		EndIf
+
 		persist.Free()
+
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveURI+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
@@ -2938,24 +3022,17 @@ endrem
 
 		Return True
 	End Function
-
-
-	Function SaveName:Int(saveName:String="savegame", setLastUsedName:Int = True)
-		Local fileURI:String = GetSavegameURI(saveName)
-
-		If SaveURI(fileURI)
-			If setLastUsedName
-				GameConfig.savegame_lastUsedName = saveName
-			EndIf
-			Return True
-		Else
-			Return False
-		EndIf
-	End Function
 		
 
-	Function SaveURI:Int(saveURI:String="savegame.xml")
+	Function _SaveURI:Int(saveURI:String="savegame.xml")
 		ShowMessage(False)
+		
+		'check if variants of the savegame filename exist - and delete them!
+		Local fileURI1:String = StripExt(saveURI) + "." + GameConfig.uncompressedSavegameExtension
+		Local fileURI2:String = StripExt(saveURI) + "." + GameConfig.compressedSavegameExtension
+		If FileType(fileURI1) = FILETYPE_FILE Then DeleteFile(fileURI1)
+		If FileType(fileURI2) = FILETYPE_FILE Then DeleteFile(fileURI2)
+
 
 		'check directories and create them if needed
 		Local dirs:String[] = ExtractDir(saveURI.Replace("\", "/")).Split("/")
@@ -2973,7 +3050,7 @@ endrem
 			TLogger.Log("Savegame.Save()", "Failed to create directory ~q" + currDir + "~q for ~q"+saveURI+"~q.", LOG_SAVELOAD)
 		EndIf
 
-Local t:Int = MilliSecs()
+		Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveURI
@@ -3001,21 +3078,40 @@ Local t:Int = MilliSecs()
 		saveGame.BackupGameData()
 
 		'setup tpersist config
-		TPersist.format=True
-'during development...(also savegame.XML should be savegame.ZIP then)
-'		TPersist.compressed = True
+		TPersist.format = True
+		'XML files stay "pretty", compressed ones can already save
+		'a bit processing time (formatting) and on whitespace
+		If GameConfig.compressSavegames Then TPersist.format = False
 
 		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
 		?
 		TPersist.maxDepth = 4096
-		'save the savegame data as xml
-		'TPersist.format=False
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
-		'local p:TPersist = New TPersist
 		p.serializer = New TSavegameSerializer
-		If TPersist.compressed
-			p.SerializeToFile(saveGame, saveURI+".zip")
+
+		If GameConfig.compressSavegames
+			'compress the TStream of XML-Data into an archive and save it
+			Local saveStream:TSTream = WriteStream(saveURI)
+
+'			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.GZIP])
+			Local wa:TWriteArchive = New TWriteArchive
+			wa.SetFormat(EArchiveFormat.RAW)
+			wa.AddFilter(EArchiveFilter.ZSTD)
+			wa.SetCompressionLevel(3) 'speed vs size
+			wa.Open(saveStream)
+
+			Local entry:TArchiveEntry = New TArchiveEntry
+			wa.Header(entry)
+			Local xmlArchiveStream:TStream = wa.DataStream()
+			'serialize game into a TStream of XML-Data
+			p.SerializeToFile(saveGame, xmlArchiveStream)
+
+			wa.FinishEntry()
+			entry.Free()
+
+			wa.Close()
+			xmlArchiveStream.Close()
 		Else
 			p.SerializeToFile(saveGame, saveURI)
 		EndIf
@@ -3024,7 +3120,9 @@ Local t:Int = MilliSecs()
 		'tell everybody we finished saving
 		'payload is saveURI and saveGame-object
 		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveURI).add("saveGame", saveGame))
-		Print "saving took " + (MilliSecs() - t) + "ms."
+
+		TLogger.Log("Savegame.SaveURI()", "Savegame file ~q"+saveURI+"~q saved in " + (MilliSecs() - t)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
+
 		'close message window
 		If messageWindow Then messageWindow.Close()
 
@@ -3033,7 +3131,13 @@ Local t:Int = MilliSecs()
 	End Function
 
 
-	Function GetSavegameName:String(fileURI:String)
+	'strip base folders from the absolute URI
+	'subfolders inside the base savegame path are kept
+	'Result might be:
+	' "testgames\testgame1"
+	' "testgames\testgame1.xml" with stripExtension = False
+	' "testgames\testgame1.zst" with stripExtension = False and a compressed game
+	Function GetSavegameLocalURI:String(fileURI:String)
 		'strip savegame path from fileURI
 		Local p:String = GetSavegamePath()
 		If p.length > 0 And fileURI.Find( p ) = 0
@@ -3042,22 +3146,28 @@ Local t:Int = MilliSecs()
 
 		'if no sub-directories are allowed, strip them
 		'fileURI = StripDir(fileURI)
-		
-		'remove file ending
-		fileURI = StripExt(fileURI)
 
 		'remove leading "/"
 		If fileURI.length > 0 and (fileURI[0] = Asc("/") Or fileURI[0] = Asc("\"))
 			fileURI = fileURI[1 ..]
 		EndIf
-
+		
 		Return fileURI
 	End Function
 
 
-	Function GetSavegameURI:String(fileName:String)
-		If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
-		Return GetSavegameName(fileName) + ".xml"
+	Function GetSavegameName:String(fileURI:String)
+		Return StripExt( GetSavegameLocalURI(fileURI) )
+	End Function
+
+
+	'set compressSavegames to 0 to forcefully disable compression
+	'set compressSavegames to 1 to forcefully enable compression
+	Function GetSavegameURI:String(fileName:String, compressSavegames:Int = -1)
+		Local result:String = GetSavegamePath()
+		if result Then result :+ "/"
+
+		Return result + GetSavegameName(fileName) + "." + GameConfig.GetSavegameExtension(compressSavegames)
 	End Function
 
 
@@ -6227,11 +6337,12 @@ endrem
 
 		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
 			Local gameName:String = GameConfig.savegame_lastUsedName
-			Local autoSaveName:String = "autosave.xml"
+			Local autoSaveName:String = "autosave"
 			If gameName and gameName <> "quicksave" and not gameName.endsWith("_autosave")
-				autoSaveName = gameName + "_autosave.xml"
+				autoSaveName = gameName + "_autosave"
 			EndIf
-			TSaveGame.SaveName(autoSaveName, False)
+			Local autoSaveURI:String = TSavegame.GetSavegameURI(autoSaveName)
+			TSaveGame.Save(autoSaveURI, autoSaveName, False)
 			TSaveGame.autoSaveNow = False
 		EndIf
 
