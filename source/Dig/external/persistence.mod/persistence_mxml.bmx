@@ -42,19 +42,11 @@ ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release"
 
 endrem
-'Import "../libxml/libxml.bmx" 'BaH.libxml
 Import Text.xml
-?Not bmxng
-'using custom to have support for const/function reflection
-Import "../reflectionExtended/reflection.bmx"
-?bmxng
-'ng has it built-in!
 Import BRL.Reflection
-?
 Import BRL.Map
 Import "../../base.util.longmap.bmx"
 Import BRL.Stream
-'Import brl.standardio
 
 Import "glue.c"
 
@@ -203,21 +195,21 @@ Type TPersist
 		Local elementType:TTypeId = typeId.ElementType()
 
 		Select elementType
-			Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId
+			Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId ', UIntTypeId, ULongTypeId, LongIntTypeId, ULongIntTypeId
 
-				Local content:String = ""
-
+				Local sb:TStringBuilder = new TStringBuilder()
+				
 				For Local i:Int = 0 Until size
 
 					Local aObj:Object = typeId.GetArrayElement(arrayObject, i)
 
 					If i Then
-						content:+ " "
+						sb.Append(" ")
 					End If
-					content:+ String(aObj)
+					sb.Append(String(aObj))
 				Next
-
-				node.SetContent(content)
+				
+				node.SetContent(sb.ToString())
 			Default
 
 				For Local i:Int = 0 Until size
@@ -525,17 +517,16 @@ Type TPersist
 	Rem
 	bbdoc: De-serializes @text into an Object structure.
 	about: Accepts a TxmlDoc, TStream or a String (of data).
-	@options relate to libxml specific parsing flags that can be applied.
 	End Rem
-	Method DeSerialize:Object(data:Object, options:Int = 0)
+	Method DeSerialize:Object(data:Object)
 		If Not _inited Throw "Use TXMLPersistenceBuilder to create TPersist instance."
 
 		If TxmlDoc(data) Then
 			Return DeSerializeFromDoc(TxmlDoc(data))
 		Else If TStream(data) Then
-			Return DeSerializeFromStream(TStream(data), options)
+			Return DeSerializeFromStream(TStream(data))
 		Else If String(data) Then
-			Return DeSerializeObject(String(data), Null, options)
+			Return DeSerializeObject(String(data), Null)
 		End If
 	End Method
 
@@ -558,12 +549,10 @@ Type TPersist
 
 	Rem
 	bbdoc: De-serializes the file @filename into an Object structure.
-	about: @options relate to libxml specific parsing flags that can be applied.
 	End Rem
-	Method DeSerializeFromFile:Object(filename:String, options:Int = 0)
+	Method DeSerializeFromFile:Object(filename:Object)
 		If Not _inited Throw "Use TXMLPersistenceBuilder to create TPersist instance."
-
-		'doc = TxmlDoc.ReadFile(filename, "", options)
+	
 		doc = TxmlDoc.parseFile(filename)
 
 		If doc Then
@@ -577,9 +566,8 @@ Type TPersist
 
 	Rem
 	bbdoc: De-serializes @stream into an Object structure.
-	about: @options relate to libxml specific parsing flags that can be applied.
 	End Rem
-	Method DeSerializeFromStream:Object(stream:TStream, options:Int = 0)
+	Method DeSerializeFromStream:Object(stream:TStream)
 		If Not _inited Throw "Use TXMLPersistenceBuilder to create TPersist instance."
 
 		Rem
@@ -592,10 +580,10 @@ Type TPersist
 			sb.Append( String.FromBytes(buf, count) )
 		Wend
 		data = sb.ToString()
-		Local obj:Object = DeSerializeObject(data, Null, options)
+		Local obj:Object = DeSerializeObject(data, Null)
 		EndRem
 
-		Local obj:Object = DeSerializeObject(stream, Null, options)
+		Local obj:Object = DeSerializeObject(stream, Null)
 		Free()
 		Return obj
 	End Method
@@ -686,7 +674,7 @@ Type TPersist
 			
 			'If serializedFieldTypeID.Name().ToLower() = "string" and fieldNode.getAttribute("ref")
 			If fieldNode.getAttribute("ref")
-				deserializedObject = DeSerializeObject("", fieldNode, 0, True)
+				deserializedObject = DeSerializeObject("", fieldNode, True)
 			Else
 				deserializedObject = DeSerializeObject("", fieldNode)
 			EndIf
@@ -1062,7 +1050,7 @@ Type TPersist
 	Rem
 	bbdoc:
 	End Rem
-	Method DeSerializeObject:Object(TextOrStream:Object, parent:TxmlNode = Null, options:Int = 0, parentIsNode:Int = False)
+	Method DeSerializeObject:Object(TextOrStream:Object, parent:TxmlNode = Null, parentIsNode:Int = False)
 		Local node:TxmlNode
 
 		If Not doc Then
@@ -1377,7 +1365,7 @@ Type TXMLSerializer
 	End Method
 
 	Method DeserializeObject:Object(node:TxmlNode, direct:Int = False)
-		Return persist.DeserializeObject("", node, 0, direct)
+		Return persist.DeserializeObject("", node, direct)
 	End Method
 
 	Rem

@@ -6341,7 +6341,7 @@ endrem
 			If gameName and gameName <> "quicksave" and not gameName.endsWith("_autosave")
 				autoSaveName = gameName + "_autosave"
 			EndIf
-			Local autoSaveURI:String = autoSaveName + "." + GameConfig.GetSavegameExtension()
+			Local autoSaveURI:String = TSavegame.GetSavegameURI(autoSaveName)
 			TSaveGame.Save(autoSaveURI, autoSaveName, False)
 			TSaveGame.autoSaveNow = False
 		EndIf
