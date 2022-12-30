@@ -129,7 +129,7 @@ function DefaultAIPlayer:initParameters()
 	end
 	if (self.BrainSpeed == nil or self.BrainSpeed <= 0) then
 		--Handlungsgeschwindigkeit
-		self.BrainSpeed = math.random(5,7)
+		self.BrainSpeed = math.random(4,6)
 	end
 	--eagerness to start the next task
 	if (self.startTaskAtPriority == nil or self.startTaskAtPriority <= 0) then
@@ -892,9 +892,10 @@ function OnTick(realTimeGone, gameTimeGone, systemTicks, totalTicks)
 		-- also run 1 TickProcessTask()
 		getAIPlayer():Tick()
 
-		-- the faster the brain, the more tasks it does per tick
 		-- 1 Task processing is done already in "Tick()"
-		for i=1,getAIPlayer().BrainSpeed-1 do
+		-- with higher brain speed there is a higher chance
+		-- for doing another tick
+		if math.random(1,10) <= getAIPlayer().BrainSpeed then
 			getAIPlayer():TickProcessTask()
 		end
 	end
