@@ -1523,7 +1523,7 @@ function JobAdSchedule:Tick()
 	--self:LogDebug("JobAdSchedule:Tick()  Time: " .. getPlayer().hour..":"..getPlayer().minute)
 	local currentDay = TVT.GetDay()
 	local currentHour = getPlayer().hour
-	local planSlots = 2
+	local planSlots = 3
 	local planHours = self.hoursToPlan
 --TODO plan advertisement less far
 --	if self.planRunsLeft > 0 then
@@ -1996,7 +1996,7 @@ function JobProgrammeSchedule:Tick()
 	local player = getPlayer()
 	local currentHour = player.hour
 
-	local planSlots = 2
+	local planSlots = 3
 	local planHours = self.hoursToPlan
 
 	--programmes
