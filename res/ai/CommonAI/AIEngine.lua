@@ -143,8 +143,7 @@ function AIPlayer:ForceNextTask()
 				-- target room)
 				cancelTask = true
 				if self.CurrentTask.Status ~= TASK_STATUS_PREPARE and
-				   self.CurrentTask.Status ~= TASK_STATUS_OPEN and
-				   self.CurrentTask.Status ~= TASK_STATUS_RUN then
+				   self.CurrentTask.Status ~= TASK_STATUS_OPEN then
 					cancelTask = false
 				end
 			end
@@ -152,15 +151,20 @@ function AIPlayer:ForceNextTask()
 			if cancelTask then
 				self:LogDebug("ForceNextTask: Cancel current task...")
 				self.CurrentTask:SetAbort()
-			end
 
-			--assign next task
-			self.CurrentTask = nextTask
-			self.CurrentTask.Status = TASK_STATUS_OPEN
-			--activate it
-			self.CurrentTask:CallActivate()
-			--start the next job of the new task
-			self.CurrentTask:StartNextJob()
+				--assign next task only when cancelling the old one
+				self.CurrentTask = nextTask
+				self.CurrentTask.Status = TASK_STATUS_OPEN
+				--leave room in case new task in same room (otherwise no onReachTarget)
+				if(TVT.doLeaveRoom(false) == TVT.RESULT_FAILED) then
+					self:LogDebug("Failed leaving room normally. Forcefully leaving the room now!")
+					TVT.doLeaveRoom(true)
+				end
+				--activate it
+				self.CurrentTask:CallActivate()
+				--start the next job of the new task
+				self.CurrentTask:StartNextJob()
+			end
 		else
 			self:LogInfo("ForceNextTask() failed: no follow up task found...")
 		end

@@ -983,7 +983,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 
 	--requesting audience for the current broadcast?
 	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and getPlayer().hour == fixedHour and getPlayer().minute >= 5) then
-		return TVT.GetCurrentProgrammeAudience()
+		return TVT.GetCurrentProgrammeAudienceResult().Audience
 	end
 
 	-- predicted level of the news show for the given time

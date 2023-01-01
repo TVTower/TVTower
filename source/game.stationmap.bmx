@@ -2157,11 +2157,11 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
-	Method GetTemporaryAntennaStation:TStationBase(X:Int, Y:Int)  {_exposeToLua}
+	Method GetTemporaryAntennaStation:TStationBase(X:Int, Y:Int, fullyInit:Int = True)  {_exposeToLua}
 		Local station:TStation = New TStation
 		station.radius = GetStationMapCollection().antennaStationRadius
 
-		Return station.Init(X, Y, -1, owner)
+		Return station.Init(X, Y, -1, owner, fullyInit)
 	End Method
 
 
@@ -2859,7 +2859,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field listSpriteNameOff:String = "gfx_datasheet_icon_antenna.off"
 
 
-	Method Init:TStationBase( X:Int, Y:Int, price:Int=-1, owner:Int)
+	Method Init:TStationBase( X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True)
 		Self.owner = owner
 		Self.X = X
 		Self.Y = Y
@@ -2872,7 +2872,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		'by default each station could get sold
 		Self.SetFlag(TVTStationFlag.SELLABLE, True)
 
-		Self.RefreshData()
+		If fullyInit Then Self.RefreshData()
 
 		Return Self
 	End Method
@@ -3551,8 +3551,8 @@ End Type
 'compatibility for now
 'Todo: DEPRECATED, remove in v0.8 or later (last in use at 0.6)
 Type TStation Extends TStationAntenna {_exposeToLua="selected"}
-	Method Init:TStation(X:Int, Y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(X, Y, price, owner)
+	Method Init:TStation(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(X, Y, price, owner, fullyInit)
 		Return Self
 	End Method
 End Type
@@ -3574,8 +3574,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationAntenna(X:Int, Y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(X, Y, price, owner)
+	Method Init:TStationAntenna(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(X, Y, price, owner, fullyInit)
 		Return Self
 	End Method
 
@@ -3818,8 +3818,8 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationCableNetworkUplink(X:Int, Y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(X, Y, price, owner)
+	Method Init:TStationCableNetworkUplink(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(X, Y, price, owner, fullyInit)
 
 		Return Self
 	End Method
@@ -4221,8 +4221,8 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationSatelliteUplink(X:Int, Y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(X, Y, price, owner)
+	Method Init:TStationSatelliteUplink(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(X, Y, price, owner, fullyInit)
 
 		Return Self
 	End Method
