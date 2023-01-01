@@ -128,22 +128,46 @@ function JobSellMovies:Tick()
 	end
 
 	local reach = self.Task.Player.totalReach
+	local performanceThreshold = 0.18
 	local minLicenceCount = 35
 	if reach == nil then
 		-- should not happen
 	elseif reach < 2300000 then
 		minLicenceCount = 20
+		performanceThreshold = 0.1
 	elseif reach < 4700000 then
 		minLicenceCount = 25
+		performanceThreshold = 0.14
 	end
 
-	local newLicenceToSell = false
+	local newLicenceToSell = nil
+
 	--check if licence should be sold
-	if table.count(movies) - toSellCount > minLicenceCount then
-		local licenceToSell = self:determineLicenceToSell(movies, toSell)
-		if licenceToSell ~= nil then
-			newLicenceToSell = true
+	if toSellCount < 2 then
+		--sell low performance licences regardless of total licence count
+		newLicenceToSell = self:getLowPerformanceLicenceToSell(movies, performanceThreshold)
+	end
+
+	if (newLicenceToSell == nil and table.count(movies) - toSellCount > minLicenceCount) then
+		newLicenceToSell = self:determineLicenceToSell(movies, toSell)
+	end
+
+	if newLicenceToSell ~= nil then
+		self:LogInfo("mark worst licence for selling: "..newLicenceToSell.Title)
+		table.insert(toSell, newLicenceToSell.referenceId)
+
+		local childCount =  newLicenceToSell.licence:GetSubLicenceCount()
+		if childCount > 0 then
+			for i=0, (childCount-1)
+			do
+				local child = newLicenceToSell.licence:GetSubLicenceAtIndex(i)
+				if child ~= nil then
+					table.insert(toSell, child:GetReferenceID())
+				end
+			end
 		end
+
+		table.removeElement(movies, newLicenceToSell)
 	end
 
 	self:LogDebug("# selected for suitcase: "..#case.. ", # marked for selling: " ..#toSell)
@@ -163,7 +187,7 @@ function JobSellMovies:Tick()
 	self.Status = JOB_STATUS_DONE
 
 	-- if there is something to sell, send figure to movie dealer now
-	if table.count(case) > 0 or newLicenceToSell == true then
+	if table.count(case) > 0 or newLicenceToSell ~=nil then
 		--set day only if something is to be sold
 		self.Task.latestSaleOnDay = TVT.GetDay()
 
@@ -177,7 +201,31 @@ function JobSellMovies:Tick()
 	end
 end
 
-function JobSellMovies:determineLicenceToSell(movies, toSell)
+function JobSellMovies:getLowPerformanceLicenceToSell(movies, threshold)
+	local performanceStats = getPlayer().Stats.PerformanceData
+	if performanceStats~=nil then
+		local worstQuote = 10
+		local worstLicence = nil
+		for i=1, #movies do
+			local movie = movies[i]
+			local ref = movie.referenceId
+			local data = performanceStats.idToDataMap[ref]
+			if data ~=nil then
+				if data.worst < worstQuote then
+					worstQuote = data.worst
+					worstLicence = movie
+				end
+			end
+		end
+		if worstQuote < threshold then
+			self:LogDebug("worst licence (quote) ".. worstLicence.Title .. " quote: " .. worstQuote)
+			return worstLicence
+		end
+	end
+	return nil
+end
+
+function JobSellMovies:determineLicenceToSell(movies)
 	local licenceToSell = nil
 	local rnd = math.random(0,100)
 
@@ -205,22 +253,5 @@ function JobSellMovies:determineLicenceToSell(movies, toSell)
 		end
 	end
 
-	if licenceToSell ~= nil then
-		self:LogInfo("mark worst licence for selling: "..licenceToSell.Title)
-		table.insert(toSell, licenceToSell.referenceId)
-
-		local childCount =  licenceToSell.licence:GetSubLicenceCount()
-		if childCount > 0 then
-			for i=0, (childCount-1)
-			do
-				local child = licenceToSell.licence:GetSubLicenceAtIndex(i)
-				if child ~= nil then
-					table.insert(toSell, child:GetReferenceID())
-				end
-			end
-		end
-
-		table.removeElement(movies, licenceToSell)
-	end
 	return licenceToSell
 end

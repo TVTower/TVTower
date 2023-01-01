@@ -572,6 +572,16 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method isRoomPotentialStudio:Int(roomId:Int = 0)
+		Local Room:TRoom = GetRoomCollection().Get(roomId)
+		If Not Room Then Return Self.RESULT_NOTFOUND
+		If Room.IsUsableAsStudio() And Room.getNameRaw() <> "studio"
+			Return Self.RESULT_OK
+		EndIf
+		Return Self.RESULT_FAILED
+	End Method
+
+
 	'returns how many time is gone since game/app start
 	'we return texts as FOR NOW 32bit builds fail to pass LONG via
 	'reflection.mod
@@ -839,10 +849,15 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetCurrentAdvertisementMinAudience:Int()
+	Method CurrentAdvertisementRequirementsPassed:Int()
 		Local ad:TAdvertisement = TAdvertisement(GetCurrentAdvertisement())
-		If ad Then Return ad.contract.GetMinAudience()
-		Return 0
+		If ad
+			Local audience:TAudienceResult = GetBroadcastManager().GetAudienceResult(Self.ME)
+			If ad.IsPassingRequirements(audience) = "OK" Then Return Self.RESULT_OK
+		Else
+			return Self.RESULT_NOTFOUND
+		EndIf
+		return Self.RESULT_FAILED
 	End Method
 
 
@@ -885,8 +900,8 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetCurrentProgrammeAudience:TAudience()
-		Return GetBroadcastManager().GetCurrentAudienceObject(Self.ME)
+	Method GetCurrentProgrammeAudienceResult:TAudienceResult()
+		Return GetBroadcastManager().GetAudienceResult(Self.ME)
 Rem
 		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime.GetDayHour())
 		If stat
@@ -960,9 +975,21 @@ endrem
 		Return GetStationMap(Self.ME, True).GetTemporaryCableNetworkUplinkStation(cableNetworkIndex)
 	End Method
 
-	Method of_GetTemporaryAntennaStation:TStationBase(x:Int,y:Int)
+	'less calculation-expensive variant for determining if obtaining a temporary antenna makes sense
+	'-8 = no section, -1 = no permission possible yet, 0 = permission already present, permission price otherwise
+	Method of_GetBroadCastPermisionCosts:Int(x:Int,y:Int)
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		Local section:TStationMapSection = GetStationMapCollection().GetSection(x,y)
+		If Not section Then Return Self.RESULT_NOTFOUND
+		If section.HasBroadCastPermission(Self.ME, TVTStationType.ANTENNA) Then Return 0
+		If Not section.CanGetBroadcastPermission(Self.ME) Return -1
+		Local price:Int = section.GetBroadcastPermissionPrice(Self.ME, TVTStationType.ANTENNA)
+		Return price
+	End Method
+
+	Method of_GetTemporaryAntennaStation:TStationBase(x:Int,y:Int,fullyInit:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetTemporaryAntennaStation(x, y)
+		Return GetStationMap(Self.ME, True).GetTemporaryAntennaStation(x, y, fullyInit)
 	End Method
 
 	Method of_GetTemporarySatelliteUplinkStation:TStationBase(satelliteIndex:Int)

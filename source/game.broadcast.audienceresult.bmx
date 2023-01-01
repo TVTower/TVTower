@@ -20,7 +20,7 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 	Field broadcastOutage:Int = False
 	'Die Zahl der Zuschauer die erreicht wurden.
 	'Sozusagen das Ergenis das zählt und angezeigt wird.
-	Field Audience:TAudience
+	Field Audience:TAudience {_exposeToLua}
 	'Der Gesamtmarkt: Also wenn alle die einen TV haben schauen wuerden
 	Field WholeMarket:TAudience
 	'Die Gesamtzuschauerzahl die in dieser Stunde den TV an hat!

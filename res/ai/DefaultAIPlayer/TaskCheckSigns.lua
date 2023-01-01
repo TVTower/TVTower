@@ -66,12 +66,20 @@ function JobCheckRoomSigns:Tick()
 		local response = TVT.ep_GetSignAtIndex(index)
 		if response.result == TVT.RESULT_OK then
 			local sign = response.data
-			if (sign ~= nil and sign.GetOwner() == TVT.ME) then
+			if sign ~= nil then
 				--Noch am richtigen Platz?
 				if sign.IsAtOriginalPosition() == 0 then
-					scheduleRoomBoardTask = true
-					self:LogInfo("own room in danger - need to go to the room board")
-					break
+					if sign.GetOwner() == TVT.ME then
+						scheduleRoomBoardTask = true
+						self:LogInfo("own room in danger - need to go to the room board")
+						break
+					elseif TVT:isRoomPotentialStudio(sign:GetRoomId()) == TVT.RESULT_OK then
+						--just guess - one of the changed signs is a potential studio
+						--fix just in case
+						scheduleRoomBoardTask = true
+						self:LogInfo("potential attempt to gain new studio - need to go to the room board")
+						break
+					end
 				end
 			end
 		end

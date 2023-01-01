@@ -179,6 +179,7 @@ function JobAnalyseStationMarket:Tick()
 	--]]
 	local population = TVT:of_getPopulation()
 
+	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
 	if player.totalReach > population * 0.9 then
 		self.Task.maxReachIncrease = -1
 	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
@@ -262,7 +263,7 @@ function JobAnalyseStationMarket:getBaseAntennaParameters()
 	else
 		local x = math.random(100,300)
 		local y = math.random(100,300)
-		startStation = TVT.of_GetTemporaryAntennaStation(x,y)
+		startStation = TVT.of_GetTemporaryAntennaStation(x,y, true)
 		self:LogDebug("using random coordinates "..x.." "..y)
 	end
 
@@ -309,31 +310,31 @@ function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDel
 end
 
 function JobAnalyseStationMarket:insertIntendedPosition(x, y, positions, sectionCount)
-	local tempStation = TVT.of_GetTemporaryAntennaStation(x, y)
-	if tempStation ~= nil then
-		local price  = tempStation.GetPrice()
-		if price >= 0 then
-			table.insert(positions, { x = tempStation.x, y = tempStation.y })
-			local sectionName = tempStation:GetSectionName(0)
-			local count = sectionCount[sectionName]
-			if count == nil then
-				sectionCount[sectionName] = 1
-			else
-				sectionCount[sectionName] = count + 1
-			end
+	local permissionPrice = TVT.of_GetBroadCastPermisionCosts(x, y)
+	if permissionPrice > -2 then
+		--no full initialization - we are only interested in the section name
+		local tempStation = TVT.of_GetTemporaryAntennaStation(x, y, false)
+		table.insert(positions, { x = tempStation.x, y = tempStation.y })
+		local sectionName = tempStation:GetSectionName(0)
+		local count = sectionCount[sectionName]
+		if count == nil then
+			sectionCount[sectionName] = 1
+		else
+			sectionCount[sectionName] = count + 1
+		end
 
 --[[
-			local reach = tempStation.GetReach(false)
-			local exclusiveReach = tempStation.GetExclusiveReach(false)
-			local relativeExclusiveReach = exclusiveReach / reach
-			stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
-			self:LogInfo(stationString)
-			--buying immediately for checking positions
-			--TVT.of_buyAntennaStation(tempStation.x, tempStation.y)
-			--TVT.sleep(40) --sleep necessary in my environment to prevent seg fault
+		tempStation.refreshData()
+		local reach = tempStation.GetReach()
+		local exclusiveReach = tempStation.GetExclusiveReach(false)
+		local relativeExclusiveReach = exclusiveReach / reach
+		stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
+		self:LogInfo(stationString)
+		--buying immediately for checking positions
+		--TVT.of_buyAntennaStation(tempStation.x, tempStation.y)
+		--TVT.sleep(40) --sleep necessary in my environment to prevent seg fault
 ]]--
-			return 1
-		end
+		return 1
 	end
 	return 0
 end
@@ -576,59 +577,66 @@ function JobBuyStation:GetBestAntennaOffer()
 	self:LogInfo("trying to find best of ".. table.count(self.Task.intendedAntennaPositions) .." antenna positions")
 
 	local removeFromIntendedPositions = {}
+	local budget = self.Task.CurrentBudget
 
 	for k,pos in pairs(self.Task.intendedAntennaPositions) do
 		local x = pos.x
 		local y = pos.y
-		local tempStation = TVT.of_GetTemporaryAntennaStation(x, y)
-
-		local stationString = "tempStation is nil"
-		local reach = 0
-		local exclusiveReach = 0
-		local price = -1
-		local relativeExclusiveReach = 0
-		local budget = self.Task.CurrentBudget
-		if tempStation ~= nil then
-			price = tempStation.GetTotalBuyPrice()
-			if price <= budget then
-				reach = tempStation.GetReach(false)
-				exclusiveReach = tempStation.GetExclusiveReach(false)
-				relativeExclusiveReach = exclusiveReach / reach
-				stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReach / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
-			else
-				stationString = "tempStation is too expensive"
-			end
-		end
-
-		--filter criterias
-		if tempStation == nil then
-			self:LogTrace(stationString)
-			pos = nil -- prevent removing a position where a station should be
-		elseif price < 0 then
-			self:LogTrace(stationString .. " -> outside of map!")
-			tempStation = nil
-		elseif price > budget then
-			--do nothing - no further checks no eliminating position
-		elseif exclusiveReach / reach < 0.7 then
-			self:LogTrace(stationString .. " -> not enough exclusive reach!")
-			tempStation = nil
-		elseif tempStation:GetRunningCosts() / exclusiveReach > 0.4 then
-			self:LogTrace(stationString .. " -> running costs too high!")
-			tempStation = nil
+		local permissionPrice = TVT.of_GetBroadCastPermisionCosts(x, y)
+		if permissionPrice < 0 then
+			--self:LogTrace("no chance for buying" ..x .." ".. y.." "..permissionPrice)
+		elseif permissionPrice > budget then
+			--self:LogTrace("no chance for buying, too expensive")
 		else
-			self:LogTrace(stationString .. " -> OK!")
-		end
+			local tempStation = TVT.of_GetTemporaryAntennaStation(x, y, true)
 
-		if tempStation == nil then
-			table.insert(removeFromIntendedPositions, pos)
-		elseif price <= budget then
-		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
-			local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
+			local stationString = "tempStation is nil"
+			local reach = 0
+			local exclusiveReach = 0
+			local price = -1
+			local relativeExclusiveReach = 0
+			if tempStation ~= nil then
+				price = tempStation.GetTotalBuyPrice()
+				if price <= budget then
+					reach = tempStation.GetReach(false)
+					exclusiveReach = tempStation.GetExclusiveReach(false)
+					relativeExclusiveReach = exclusiveReach / reach
+					stationString = "Station at " .. x .. "," .. y .. "  reach: " .. reach .. "  exclusive/increase: " .. exclusiveReach .. " (incl.fees: " .. price ..")  F: " .. (exclusiveReach / price)
+				else
+					stationString = "tempStation is too expensive"
+				end
+			end
 
-			if (bestOffer == nil or attraction > bestAttraction) and price <= budget and exclusiveReach < self.Task.maxReachIncrease then
-				bestOffer = tempStation
-				bestOffer = tempStation
-				bestAttraction = attraction
+			--filter criterias
+			if tempStation == nil then
+				self:LogTrace(stationString)
+				pos = nil -- prevent removing a position where a station should be
+			elseif price < 0 then
+				self:LogTrace(stationString .. " -> outside of map!")
+				tempStation = nil
+			elseif price > budget then
+				--do nothing - no further checks no eliminating position
+			elseif exclusiveReach / reach < 0.7 then
+				self:LogTrace(stationString .. " -> not enough exclusive reach!")
+				tempStation = nil
+			elseif tempStation:GetRunningCosts() / exclusiveReach > 0.4 then
+				self:LogTrace(stationString .. " -> running costs too high!")
+				tempStation = nil
+			else
+				self:LogTrace(stationString .. " -> OK!")
+			end
+
+			if tempStation == nil then
+				table.insert(removeFromIntendedPositions, pos)
+			elseif price <= budget then
+			-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
+				local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
+
+				if (bestOffer == nil or attraction > bestAttraction) and price <= budget and exclusiveReach < self.Task.maxReachIncrease then
+					bestOffer = tempStation
+					bestOffer = tempStation
+					bestAttraction = attraction
+				end
 			end
 		end
 	end

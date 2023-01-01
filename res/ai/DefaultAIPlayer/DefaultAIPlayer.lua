@@ -434,6 +434,63 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["LicencePerformance"] = class(SLFDataObject, function(c)
+	SLFDataObject.init(c)	-- must init base!
+	c.idToDataMap = {};
+
+end)
+
+function LicencePerformance:typename()
+	return "LicencePerformance"
+end
+
+function LicencePerformance:addData(hour, broadcast, audienceResult)
+	if broadcast~=nil then
+		local src=broadcast:getSource()
+		if broadcast.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
+			local licence = broadcast.licence
+			if (licence ~= nil and licence:GetRelativeTopicality() > 0.97) then
+				--use referenceID for easy integration with archive task
+				local licenceId = licence.GetReferenceID()
+				--aggreagate series results (easier for selling, more genre data in one place)
+				if licence:HasParentLicence() > 0 then
+					local parent = licence:GetParentLicence()
+					if parent ~= nil then
+						licenceId = parent.GetReferenceID()
+					end
+				end
+				local data = self.idToDataMap[licenceId]
+				if data == nil then
+					data = {
+						licenceId = licenceId;
+						genre = licence.GetGenre(); --for potential genre performance analysis
+						best = -2; --global best quote
+						worst = 2; --global worst quote
+						hourAvg = {}; --quote per hour (genre performance)
+					}
+					self.idToDataMap[licenceId] = data
+				end
+				local quote = audienceResult.GetAudienceQuotePercentage(-1)
+				if data.best < quote then
+					data.best = quote
+				end
+				if data.worst > quote then
+					data.worst = quote
+				end
+				local ha = data.hourAvg[hour]
+				if (ha == nil) then
+					data.hourAvg[hour] = quote
+				else
+					--favouring current value is OK
+					data.hourAvg[hour] = (ha + quote)/2.0
+				end
+			end
+		end
+	end
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["BusinessStats"] = class(SLFDataObject, function(c)
 	SLFDataObject.init(c)	-- must init base!
 	c.Audience = nil;
@@ -446,9 +503,10 @@ _G["BusinessStats"] = class(SLFDataObject, function(c)
 	c.SeriesPricePerBlockAcceptable = nil;
 	c.MovieQualityAcceptable = nil;
 	c.SeriesQualityAcceptable = nil;
+	c.PerformanceData = nil
 
-    c.playerProgrammeQualities = {}
-    for playerID=1, 4 do
+	c.playerProgrammeQualities = {}
+	for playerID=1, 4 do
 		c.playerProgrammeQualities[playerID] = {}
 		for hour=1, 24 do --need to be 1 based
 			c.playerProgrammeQualities[playerID][hour] = nil
@@ -473,9 +531,12 @@ function BusinessStats:Initialize()
 	self.SeriesPricePerBlockAcceptable = StatisticEvaluator()
 	self.MovieQualityAcceptable = StatisticEvaluator()
 	self.SeriesQualityAcceptable = StatisticEvaluator()
+	if self.PerformanceData == nil then
+		self.PerformanceData = LicencePerformance()
+	end
 
 	self.playerProgrammeQualities = {}
-    for playerID=1, 4 do
+	for playerID=1, 4 do
 		self.playerProgrammeQualities[playerID] = {}
 		for hour=1, 24 do --need to be 1 based
 			self.playerProgrammeQualities[playerID][hour] = StatisticEvaluator()
@@ -494,7 +555,7 @@ function BusinessStats:OnDayBegins()
 	self.MovieQualityAcceptable:Adjust()
 	self.SeriesQualityAcceptable:Adjust()
 
-    for playerID=1, 4 do
+	for playerID=1, 4 do
 		for hour=1, 24 do --need to be 1 based
 			self.playerProgrammeQualities[playerID][hour]:Adjust()
 		end
@@ -515,11 +576,17 @@ function BusinessStats:ReadStats()
 		end
 		if minute == 5 then
 			--TODO store genre attraction based on max topicality
-			--local currentBroadcast = TVT.GetCurrentProgramme()
+			local currentBroadcast = TVT.GetCurrentProgramme()
 			--debugMsg("top "..currentBroadcast.getSource().GetTopicality() .." "..currentBroadcast.getSource().GetMaxTopicality().." "..currentBroadcast.getSource().getGenre())
-			local currentAudience = TVT.GetCurrentProgrammeAudience().GetTotalSum()
+			local currentAudienceResult = TVT.GetCurrentProgrammeAudienceResult()
+			local currentAudience = currentAudienceResult.Audience.GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
+
+			if self.PerformanceData == nil then
+				self.PerformanceData = LicencePerformance()
+			end
+			self.PerformanceData:addData(hour, currentBroadcast, currentAudienceResult)
 
 
 			self.Audience:AddValue(currentAudience)
@@ -920,28 +987,18 @@ function OnMinute(number)
 	if minute == 6 then
 		local task = player.TaskList[_G["TASK_SCHEDULE"]]
 		if task then
-			local broadcast = TVT.GetCurrentAdvertisement()
-			if broadcast ~= nil then
-				-- only for ads
-				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1 then
-					local audience = TVT.GetCurrentProgrammeAudience()
-					--TODO IsPassingRequirements not exposend and incompatible types, guessAudience from Schedule line 1818??
-					--if broadcast:IsPassingRequirements(audience, nil) ~= "OK" then
-					if audience.GetTotalSum() < TVT.GetCurrentAdvertisementMinAudience() then
-						--TODO test for target groups probably fails!
-						--debugMsg("# increasing SituationPriority for Scheduling - fail advertisement")
-						task.SituationPriority = 200
-						--forcing the next task leads to many aborts
-						--if player.CurrentTask ~= nil and player.CurrentTask.typename() ~= task.typename() then
-						--	player:ForceNextTask()
-						--end
-					end
-				end
-			-- outage? want to get this fixed too
-			else
-				--debugMsg("# increasing SituationPriority for Scheduling (missing ad)")
+			if TVT:CurrentAdvertisementRequirementsPassed() == TVT.RESULT_FAILED then
+				--debugMsg("#recognized failing ad")
 				task.SituationPriority = 200
+				if player.CurrentTask ~= nil and player.CurrentTask.typename() ~= task.typename() then
+					player:ForceNextTask()
+				end
 			end
+
+			--TODO handle outage as well (should not happen with current scheduling)
+			--local broadcast = TVT.GetCurrentAdvertisement()
+			--if broadcast ~= nil then...
+			--if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1 then
 		end
 	end
 end
