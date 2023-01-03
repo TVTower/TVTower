@@ -675,19 +675,23 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		if replaceOffer
 			for local j:int = 0 to lists.length-1
 				for local i:int = 0 to lists[j].length-1
-					if not lists[j][i] then continue
-
-					if RandRange(0,100) < replaceChance
+					Local script:TScript = lists[j][i]
+					if not script then continue
+					if script.fixedLiveTime > 0 And GetWorldTime().GetTimeGone() > script.fixedLiveTime + 15 * TWorldTime.HOURLENGTH
+						'print "REMOVE live script " + + script.GetTitle() + " "(script.fixedLiveTime + 15* TWorldTime.HOURLENGTH) + " "+ GetWorldTime().GetTimeGone()
+						GetScriptCollection().Remove(script)
+						lists[j][i] = null
+					elseif RandRange(0,100) < replaceChance
 						'with 30% chance the script gets trashed
 						'and a completely new one will get created
 						if RandRange(0,100) < 30
-							'print "REMOVE: " + lists[j][i].GetTitle()
-							GetScriptCollection().Remove(lists[j][i])
+							'print "REMOVE: " + script.GetTitle()
+							GetScriptCollection().Remove(script)
 						'else just give it back to the collection
 						'(reset owner)
 						else
-							'print "GIVE BACK: " + lists[j][i].GetTitle()
-							lists[j][i].GiveBackToScriptPool()
+							'print "GIVE BACK: " + script.GetTitle()
+							script.GiveBackToScriptPool()
 						endif
 						'unlink from this list
 						lists[j][i] = null
@@ -718,7 +722,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 				'get a new script - but avoid having multiple scripts
 				'of the same base template (high similarity)
-				script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
+				For Local i:Int = 0 Until 10
+					script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
+					If script.getTitle().contains("#") and i < 10
+						GetScriptCollection().Remove(script)
+					Else
+						Exit
+					Endif
+				Next
 
 				'add new script to slot
 				if script
