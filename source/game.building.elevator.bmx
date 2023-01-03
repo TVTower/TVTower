@@ -1291,6 +1291,8 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	Field Movable:Int = True
 	Field _doorSFXSettings:TSfxSettings
 	Field _engineSFXSettings:TSfxSettings
+	Field _doorChannel:TSfxChannel
+	Field _engineChannel:TSfxChannel
 	Global _instance:TElevatorSoundSource
 
 
@@ -1298,8 +1300,8 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		Local result:TElevatorSoundSource  = New TElevatorSoundSource
 		result.Movable = _movable
 
-		'result.AddDynamicSfxChannel("Main")
-		'result.AddDynamicSfxChannel("Door")
+		result._doorChannel = result.AddDynamicSfxChannel("Door", False)
+		result._engineChannel = result.AddDynamicSfxChannel("Engine", False)
 
 		'there is only ONE elevator - so ignore "ID" in the GUID
 		result.SetGUID("elevatorsoundsource")
@@ -1338,17 +1340,11 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		'open and close use same channel to avoid concurrent playback of the sounds
 		Select sfx
 			Case "elevator_door_open"
-				local s:TSfxChannel = GetSfxChannelByName("Door")
-				if not s then s = AddDynamicSfxChannel("DoorOpen", False)
-				Return s
+				Return Self._doorChannel
 			Case "elevator_door_close"
-				local s:TSfxChannel = GetSfxChannelByName("Door")
-				if not s then s = AddDynamicSfxChannel("DoorClose", False)
-				Return s
+				Return Self._doorChannel
 			Case "elevator_engine"
-				local s:TSfxChannel = GetSfxChannelByName("Main")
-				if not s then s = AddDynamicSfxChannel("Main", False)
-				Return s
+				Return Self._engineChannel
 		EndSelect
 	End Method
 

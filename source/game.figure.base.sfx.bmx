@@ -8,12 +8,12 @@ Import "game.building.base.sfx.bmx"
 Type TFigureBaseSoundSource Extends TSoundSourceElement
 	Field figureID:int
 	Field _stepSfxSettings:TSfxSettings
-	Field ChannelInitialized:Int = 0
+	Field _stepsChannel:TSfxChannel {nosave}
 
 	Function Create:TFigureBaseSoundSource (_figure:TFigureBase)
 		Local result:TFigureBaseSoundSource = New TFigureBaseSoundSource
 		result.figureID = _figure.GetID()
-		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
+		result._stepsChannel = result.AddDynamicSfxChannel("Steps")
 
 		Return result
 	End Function
@@ -45,13 +45,7 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
 			Case "steps"
-				If Not Self.ChannelInitialized
-					'Channel erst hier hinzufügen... am Anfang hat Figure noch keine id
-					Self.AddDynamicSfxChannel("Steps" + Self.GetGUID())
-					Self.ChannelInitialized = True
-				EndIf
-
-				Return GetSfxChannelByName("Steps" + Self.GetGUID())
+				Return Self._stepsChannel
 		EndSelect
 	End Method
 

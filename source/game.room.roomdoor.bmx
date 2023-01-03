@@ -316,12 +316,15 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	Field _doorSfxSettings:TSfxSettings
 	Field _playerBeforeDoorSfxSettings:TSfxSettings
 	Field _playerBehindDoorSfxSettings:TSfxSettings
+	Field _openCloseChannel:TSfxChannel
 	Field IsGamePlayerAction:Int
 
 
 	Function Create:TDoorSoundSource(door:TRoomDoor)
 		Local result:TDoorSoundSource = New TDoorSoundSource
 		result.door = door
+
+		result._openCloseChannel = result.AddDynamicSfxChannel("open_close", True)
 
 		Return result
 	End Function
@@ -389,12 +392,20 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
-		Local result:TSfxChannel = GetSfxChannelByName(sfx)
-		If result = Null
-			'TLogger.log("TDoorSoundSource.GetChannelForSfx()", "SFX ~q"+sfx+"~q was not defined for room ~q"+self.room.name+"~q yet. Registered Channel for this SFX.", LOG_DEBUG)
-			result = Self.AddDynamicSfxChannel(sfx, True)
-		EndIf
-		Return result
+		Select sfx
+			'open and close use same channel to avoid concurrent playback of the sounds
+			Case "door_open"
+				Return Self._openCloseChannel
+			Case "door_close"
+				Return Self._openCloseChannel
+			Default
+				Local result:TSfxChannel = GetSfxChannelByName(sfx)
+				If result = Null
+					TLogger.log("TDoorSoundSource.GetChannelForSfx()", "SFX ~q"+sfx+"~q was not defined for room door yet. Registered Channel for this SFX.", LOG_DEBUG)
+					result = Self.AddDynamicSfxChannel(sfx, True)
+				EndIf
+				Return result
+		EndSelect
 	End Method
 
 
