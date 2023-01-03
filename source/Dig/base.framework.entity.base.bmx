@@ -43,6 +43,7 @@ Import Brl.Map
 
 
 Type TEntityCollection
+	Field entriesID:TIntMap
 	Field entries:TMap = CreateMap()
 	Field entriesCount:int = -1
 	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
@@ -54,15 +55,36 @@ Type TEntityCollection
 			e.RemoveFromCollection(self)
 		Next
 
+		entriesID.Clear()
 		entries.Clear()
 		entriesCount = -1
 
 		return self
 	End Method
+	
+	
+	Method CreateEntriesID()
+		If not entriesID 
+			entriesID = new TIntMap
+		Else
+			entriesID.Clear()
+		EndIf
+
+		For local e:TEntityBase = EachIn entries.Values()
+			entriesID.Insert(e.GetID(), e)
+		Next
+	End Method
 
 
 	Method GetByGUID:TEntityBase(GUID:String)
 		Return TEntityBase(entries.ValueForKey(GUID))
+	End Method
+
+
+	Method Get:TEntityBase(ID:Int)
+		if not entriesID Then CreateEntriesID()
+
+		Return TEntityBase(entriesID.ValueForKey(ID))
 	End Method
 
 
@@ -78,18 +100,8 @@ Type TEntityCollection
 
 
 	Method Add:int(obj:TEntityBase)
-		'insert does not return true or false, so we invalidate in all cases
-		rem
-		if entries.Insert(obj.GetGUID(), obj)
-			'invalidate count
-			entriesCount = -1
-
-			return TRUE
-		endif
-
-		return False
-		endrem
-
+		if not entriesID Then CreateEntriesID()
+		entriesID.Insert(obj.GetID(), obj)
 		entries.Insert(obj.GetGUID(), obj)
 		entriesCount = -1
 		return True
@@ -97,11 +109,17 @@ Type TEntityCollection
 
 
 	Method Remove:int(obj:TEntityBase)
-		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+		Local objID:Int = obj.GetID()
+		if entriesID and entriesID.Remove(objID)
+			entries.Remove(obj.GetGUID())
 			'invalidate count
 			entriesCount = -1
-
 			return True
+		ElseIf entries.Remove(obj.GetGUID())
+			entriesID.Remove(obj.GetID())
+			'invalidate count
+			entriesCount = -1
+			Return True
 		endif
 
 		return False

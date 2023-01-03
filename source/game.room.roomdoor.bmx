@@ -372,7 +372,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 	Method GetCenter:SVec3D()
 		'print "DoorCenter: " + int(door.area.GetX() +  door.area.GetW()/2)+", "+int(door.area.GetY() - door.area.GetH()/2) + "    GetFloorY: " + TBuildingBase.GetFloorY2(Door.area.GetY()) + " ... Floor: " + door.onFloor
-		Return New SVec3D(door.area.GetX() + door.area.GetW()/2, door.area.GetY() + door.area.GetH()/2, -15)
+		Return New SVec3D(door.area.x + door.area.w/2, door.area.y + door.area.h/2, -15)
 	End Method
 
 

@@ -12,7 +12,7 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 
 	Function Create:TFigureBaseSoundSource (_figure:TFigureBase)
 		Local result:TFigureBaseSoundSource = New TFigureBaseSoundSource
-		result.figureID = _figure.id
+		result.figureID = _figure.GetID()
 		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
 
 		Return result

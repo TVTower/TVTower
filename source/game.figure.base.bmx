@@ -47,16 +47,15 @@ Type TFigureBaseCollection extends TEntityCollection
 	End Method
 
 
-	Method GetByGUID:TFigureBase(GUID:String)
+	Method GetByGUID:TFigureBase(GUID:String) override
 		Return TFigureBase(entries.ValueForKey(GUID))
 	End Method
 
 
-	Method Get:TFigureBase(figureID:int)
-		For local figure:TFigureBase = eachin entries.Values()
-			if figure.id = figureID then return figure
-		Next
-		return Null
+	Method Get:TFigureBase(ID:int) override
+		if not entriesID Then CreateEntriesID()
+
+		Return TFigureBase(entriesID.ValueForKey(ID))
 	End Method
 
 
@@ -212,7 +211,6 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field WaitEnterLeavingTime:Int = 200
 
 
-	Field figureID:Int = 0
 	'does the figure accept manual (AI or user) ChangeTarget-commands?
 	Field _controllable:Int = True
 	Field alreadyDrawn:Int = 0 			{nosave}

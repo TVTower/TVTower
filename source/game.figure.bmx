@@ -37,7 +37,6 @@ Type TFigureCollection extends TFigureBaseCollection
 			local collection:TFigureCollection = new TFigureCollection
 			collection.entries = _instance.entries
 			collection.entriesCount = _instance.entriesCount
-			'collection.lastFigureID = _instance.lastFigureID
 			'now the new collection is the instance
 			_instance = collection
 		endif
@@ -45,17 +44,17 @@ Type TFigureCollection extends TFigureBaseCollection
 	End Function
 
 
-	Method Get:TFigure(figureID:int)
-		Return TFigure(Super.Get(figureID))
+	Method Get:TFigure(ID:int) override
+		Return TFigure(Super.Get(ID))
 	End Method
 
 
-	Method GetByName:TFigure(name:string)
+	Method GetByName:TFigure(name:string) override
 		Return TFigure(Super.GetByName(name))
 	End Method
 
 
-	Method GetByGUID:TFigure(guid:string)
+	Method GetByGUID:TFigure(guid:string) override
 		Return TFigure(Super.GetByGUID(guid))
 	End Method
 End Type
@@ -112,8 +111,6 @@ Type TFigure extends TFigureBase
 		initialdx = abs(speed)
 
 		GetFigureCollection().Add(self)
-
-		'self.figureID = GetFigureCollection().GenerateID()
 
 		if not _initdone
 			_initDone = TRUE
