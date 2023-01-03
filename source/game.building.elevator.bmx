@@ -1289,6 +1289,8 @@ End Type
 
 Type TElevatorSoundSource Extends TSoundSourceElement
 	Field Movable:Int = True
+	Field _doorSFXSettings:TSfxSettings
+	Field _engineSFXSettings:TSfxSettings
 	Global _instance:TElevatorSoundSource
 
 
@@ -1374,23 +1376,29 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 
 
 	Method GetDoorOptions:TSfxSettings()
-		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
-		result.nearbyDistanceRange = 50
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.5
-		result.minVolume = 0
-		Return result
+		if not _doorSFXSettings Then _doorSFXSettings = New TSfxFloorSoundBarrierSettings
+
+		'(re)set values
+		_doorSFXSettings.nearbyDistanceRange = 50
+		_doorSFXSettings.maxDistanceRange = 500
+		_doorSFXSettings.nearbyRangeVolume = 1
+		_doorSFXSettings.midRangeVolume = 0.5
+		_doorSFXSettings.minVolume = 0
+
+		Return _doorSFXSettings
 	End Method
 
 
 	Method GetEngineOptions:TSfxSettings()
-		Local result:TSfxSettings = New TSfxSettings
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.25
-		result.minVolume = 0.05
-		Return result
+		If not _engineSFXSettings then _engineSFXSettings = New TSfxSettings
+
+		'(re)set values
+		_engineSFXSettings.nearbyDistanceRange = 0
+		_engineSFXSettings.maxDistanceRange = 500
+		_engineSFXSettings.nearbyRangeVolume = 0.5
+		_engineSFXSettings.midRangeVolume = 0.25
+		_engineSFXSettings.minVolume = 0.05
+
+		Return _engineSFXSettings
 	End Method
 End Type

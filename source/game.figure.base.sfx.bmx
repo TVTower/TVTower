@@ -7,6 +7,7 @@ Import "game.building.base.sfx.bmx"
 
 Type TFigureBaseSoundSource Extends TSoundSourceElement
 	Field figureID:int
+	Field _stepSfxSettings:TSfxSettings
 	Field ChannelInitialized:Int = 0
 
 	Function Create:TFigureBaseSoundSource (_figure:TFigureBase)
@@ -66,15 +67,17 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetStepsSettings:TSfxSettings()
-		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
-		result.nearbyDistanceRange = 60
-		result.maxDistanceRange = 300
-		result.nearbyRangeVolume = 0.3
-		result.midRangeVolume = 0.1
+		If not _stepSfxSettings Then _stepSfxSettings = New TSfxFloorSoundBarrierSettings
 
-		'result.nearbyRangeVolume = 0.15
-		'result.midRangeVolume = 0.05
-		result.minVolume = 0
-		Return result
+		'(re)set values
+		_stepSfxSettings.nearbyDistanceRange = 60
+		_stepSfxSettings.maxDistanceRange = 300
+		_stepSfxSettings.nearbyRangeVolume = 0.3
+		_stepSfxSettings.midRangeVolume = 0.1
+		'_stepSfxSettings.nearbyRangeVolume = 0.15
+		'_stepSfxSettings.midRangeVolume = 0.05
+		_stepSfxSettings.minVolume = 0
+
+		Return _stepSfxSettings
 	End Method
 End Type

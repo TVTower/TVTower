@@ -313,6 +313,9 @@ End Type
 
 Type TDoorSoundSource Extends TSoundSourceElement
 	Field door:TRoomDoor
+	Field _doorSfxSettings:TSfxSettings
+	Field _playerBeforeDoorSfxSettings:TSfxSettings
+	Field _playerBehindDoorSfxSettings:TSfxSettings
 	Field IsGamePlayerAction:Int
 
 
@@ -406,36 +409,57 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 
 	Method GetDoorOptions:TSfxSettings()
-		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
-		result.nearbyDistanceRange = 60
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.25
-		result.midRangeVolume = 0.12
-		result.minVolume = 0
-		Return result
+		If not _doorSfxSettings Then _doorSfxSettings = New TSfxFloorSoundBarrierSettings
+
+		'(re)set values
+		_doorSfxSettings.nearbyDistanceRange = 60
+		_doorSfxSettings.maxDistanceRange = 500
+		_doorSfxSettings.nearbyRangeVolume = 0.25
+		_doorSfxSettings.midRangeVolume = 0.12
+		_doorSfxSettings.minVolume = 0
+
+		Return _doorSfxSettings
 	End Method
 
 
 	Method GetPlayerBeforeDoorSettings:TSfxSettings()
-		Local result:TSfxSettings = GetDoorOptions()
-		result.forceVolume = True
-		result.forcePan = True
-		result.forceDepth = True
-		result.defaultVolume = 0.3
-		result.defaultPan = 0
-		result.defaultDepth = -1
-		Return result
+		If not _playerBeforeDoorSfxSettings Then _playerBeforeDoorSfxSettings = New TSfxFloorSoundBarrierSettings
+
+		'(re)set values
+		_playerBeforeDoorSfxSettings.nearbyDistanceRange = 60
+		_playerBeforeDoorSfxSettings.maxDistanceRange = 500
+		_playerBeforeDoorSfxSettings.nearbyRangeVolume = 0.25
+		_playerBeforeDoorSfxSettings.midRangeVolume = 0.12
+		_playerBeforeDoorSfxSettings.minVolume = 0
+
+		_playerBeforeDoorSfxSettings.forceVolume = True
+		_playerBeforeDoorSfxSettings.forcePan = True
+		_playerBeforeDoorSfxSettings.forceDepth = True
+		_playerBeforeDoorSfxSettings.defaultVolume = 0.3
+		_playerBeforeDoorSfxSettings.defaultPan = 0
+		_playerBeforeDoorSfxSettings.defaultDepth = -1
+
+		Return _playerBeforeDoorSfxSettings
 	End Method
 
 
 	Method GetPlayerBehindDoorSettings:TSfxSettings()
-		Local result:TSfxSettings = GetDoorOptions()
-		result.forceVolume = True
-		result.forcePan = True
-		result.forceDepth = True
-		result.defaultVolume = 0.3
-		result.defaultPan = 0
-		result.defaultDepth = 1
-		Return result
+		If not _playerBehindDoorSfxSettings Then _playerBehindDoorSfxSettings = New TSfxFloorSoundBarrierSettings
+
+		'(re)set values
+		_playerBehindDoorSfxSettings.nearbyDistanceRange = 60
+		_playerBehindDoorSfxSettings.maxDistanceRange = 500
+		_playerBehindDoorSfxSettings.nearbyRangeVolume = 0.25
+		_playerBehindDoorSfxSettings.midRangeVolume = 0.12
+		_playerBehindDoorSfxSettings.minVolume = 0
+
+		_playerBehindDoorSfxSettings.forceVolume = True
+		_playerBehindDoorSfxSettings.forcePan = True
+		_playerBehindDoorSfxSettings.forceDepth = True
+		_playerBehindDoorSfxSettings.defaultVolume = 0.3
+		_playerBehindDoorSfxSettings.defaultPan = 0
+		_playerBehindDoorSfxSettings.defaultDepth = 1
+
+		Return _playerBehindDoorSfxSettings
 	End Method
 End Type
