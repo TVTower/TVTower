@@ -1231,7 +1231,8 @@ End Type
 Type TSoundSourceElement Extends TSoundSourcePosition
 	Field id:int
 	Field GUID:String = ""
-	Field SfxChannels:TMap = CreateMap()
+	Field SfxChannels:TSfxChannel[]
+	Field SfxChannelNames:String[]
 	Global lastID:int = 0
 
 	Method GetIsHearable:Int() Abstract
@@ -1292,7 +1293,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 		
 
 		Local settings:TSfxSettings = sfxSettings
-		If settings = Null Then settings = GetSfxSettings(name)
+		If not settings Then settings = GetSfxSettings(name)
 
 		If TDynamicSfxChannel(channel)
 			TDynamicSfxChannel(channel).SetReceiver(GetReceiver())
@@ -1326,7 +1327,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	
 	
 	Method StopAll()
-		For local channel:TSfxChannel = Eachin sfxChannels.Values()
+		For local channel:TSfxChannel = Eachin sfxChannels
 			channel.Stop()
 		Next
 	End Method
@@ -1351,7 +1352,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 
 	Method Mute:Int(bool:Int=True)
-		For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
+		For Local sfxChannel:TSfxChannel = EachIn SfxChannels
 			sfxChannel.Mute(bool)
 		Next
 		
@@ -1361,11 +1362,15 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 	Method Update()
 		If GetIsHearable()
-			For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
+'			For Local sfxChannel:TSfxChannel = EachIn SfxChannels
+			For local i:int = 0 until sfxChannels.length
+				Local sfxChannel:TSfxChannel = SfxChannels[i]
 				If sfxChannel.IsActive() Then sfxChannel.AdjustSettings(True)
 			Next
 		Else
-			For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
+'			For Local sfxChannel:TSfxChannel = EachIn SfxChannels
+			For local i:int = 0 until sfxChannels.length
+				Local sfxChannel:TSfxChannel = SfxChannels[i]
 				sfxChannel.Mute()
 			Next
 		EndIf
@@ -1375,12 +1380,33 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Method AddDynamicSfxChannel:TSfxChannel(name:String, muteAfterSfx:Int=False)
 		Local sfxChannel:TSfxChannel = TDynamicSfxChannel.CreateDynamicSfxChannel(Self)
 		sfxChannel.MuteAfterCurrentSfx = muteAfterSfx
-		SfxChannels.insert(name, sfxChannel)
+
+		Local index:Int = GetSfxChannelIndex(name)
+		'append
+		if index = -1
+			sfxChannelNames :+ [name]
+			sfxChannels :+ [sfxChannel]
+		'overwrite
+		Else
+			'name already the same
+			'sfxChannelNames[index] = [name]
+			sfxChannels[index] = sfxChannel
+		EndIf
 		Return sfxChannel
+	End Method
+	
+	
+	Method GetSfxChannelIndex:Int(name:String)
+		For local i:int = 0 until sfxChannelNames.length
+			if sfxChannelNames[i] = name then return i
+		Next
+		Return -1
 	End Method
 
 
 	Method GetSfxChannelByName:TSfxChannel(name:String)
-		Return TSfxChannel(MapValueForKey(SfxChannels, name))
+		Local index:int = GetSfxChannelIndex(name)
+		if index = -1 then Return Null
+		Return sfxChannels[index]
 	End Method
 End Type
