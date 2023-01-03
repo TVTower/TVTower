@@ -83,7 +83,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		
 		updateCycle :+ 1
 
-		If nextProductionTime < GetWorldTime().GetTimeGone()
+		If activeProductions.count() = 0 And nextProductionTime < GetWorldTime().GetTimeGone()
 			ScheduleNextProduction(Null)
 			Local minWaitHours:Int = GameRules.devConfig.GetInt("DEV_PRODUCERS_MIN_WAIT_HOURS", 36)
 			Local maxWaitHours:Int = GameRules.devConfig.GetInt("DEV_PRODUCERS_MAX_WAIT_HOURS", 96)
