@@ -651,16 +651,13 @@ Type TApp
 	Global keyLS_DevOSD:TLowerString = New TLowerString.Create("DEV_OSD")
 	Global keyLS_DevKeys:TLowerString = New TLowerString.Create("DEV_KEYS")
 	Function Update:Int()
-		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
 			TriggerBaseEvent(GameEventKeys.App_OnLowPriorityUpdate)
 		EndIf
 
-		TProfiler.Enter(_profilerKey_RessourceLoader)
 		'check for new resources to load
 		RURC.Update()
-		TProfiler.Leave(_profilerKey_RessourceLoader)
 
 
 		MOUSEMANAGER.Update()
@@ -814,15 +811,31 @@ Type TApp
 
 
 		GUIManager.EndUpdates() 'reset modal window states
-
+		
+rem		
+		global lastRun:Int = Millisecs()
+		global lastMem:Int = GCMemAlloced()
+		global memTicks:Int
+		if Millisecs() - lastRun > 1000
+			lastRun = Millisecs()
+			Local newMem:int = GCMemAlloced()
+			Local change:int = newMem - lastMem
+			lastMem = newMem
+			if change = 0 Then memTicks :+ 1
+			if change <> 0
+				print "Memory: " + change + " bytes (" + (change/1024) +"kb). ticks="+memTicks
+				memTicks = 0
+			Else
+				print "Memory: 0 bytes"
+			EndIf
+		endif
+endrem
 
 		'set the mouse clicks handled anyways
 '		MouseManager.ResetClicked(1)
 '		MouseManager.ResetClicked(2)
 		'remove clicks done a longer time ago
 '		MouseManager.RemoveOutdatedClicks(1000)
-
-		TProfiler.Leave(_profilerKey_Update)
 	End Function
 	
 	
@@ -898,6 +911,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				GCSuspend()
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
@@ -1462,6 +1476,7 @@ endrem
 	End Function
 
 	Function RenderDevOSD()
+
 		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
 		Local textX:Int = 5
 		Local oldCol:SColor8; GetColor(oldCol)
@@ -1552,8 +1567,6 @@ endrem
 			'first
 			GetGraphicsManager().Cls()
 		EndIf
-
-		TProfiler.Enter(_profilerKey_Draw)
 
 		'set game cursor to 0/default
 		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
@@ -1749,34 +1762,11 @@ endrem
 			App.SaveScreenshot(GetSpriteFromRegistry("gfx_startscreen_logoSmall"))
 			App.prepareScreenshot = False
 		EndIf
-Rem
 
-		SetColor 100,0,0
-		DrawRect(0,520,250,80)
-		SetColor 255,255,255
-		GetBitmapFont("Default", 16).Draw("[x] wurde "+ appTerminateRegistered+"x geklickt.", 20, 525)
-		if not App.pausedBy
-			GetBitmapFont("Default", 16).Draw("Keine Pause", 20, 540)
-		else
-			GetBitmapFont("Default", 16).Draw("Grund fuer Pause: "+ App.pausedBy, 20, 540)
-		endif
-		if App.ExitAppDialogue
-			GetBitmapFont("Default", 16).Draw("ExitDialog existiert", 20, 555)
-		else
-			GetBitmapFont("Default", 16).Draw("kein ExitDialog vorhanden", 20, 555)
-		endif
-		if App.EscapeMenuWindow
-			GetBitmapFont("Default", 16).Draw("EscapeMenue existiert", 20, 570)
-		else
-			GetBitmapFont("Default", 16).Draw("kein EscapeMenue vorhanden", 20, 570)
-		endif
-endrem
-
-		debugProfiler.Draw(10, 20)
+	'	debugProfiler.Draw(10, 20)
 
 		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
-		TProfiler.Leave(_profilerKey_Draw)
 		Return True
 	End Function
 
@@ -6671,9 +6661,7 @@ endrem
 
 	'lower priority updates (currently happening every 2 "appUpdates")
 	Function onLowPriorityUpdate:Int(triggerEvent:TEventBase)
-		TProfiler.Enter("SoundUpdate")
 		GetSoundManager().Update()
-		TProfiler.Leave("SoundUpdate")
 	End Function
 End Type
 
@@ -7468,7 +7456,6 @@ TProfiler.Enter("GameLoop")
 		If collectDebugStats
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
-				Local myArr:int[] = new Int[10000]
 				Local gcAllocChanges:Int
 				Local gcAllocTotal:Int
 
