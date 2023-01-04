@@ -3254,7 +3254,7 @@ endrem
 		'blink a bit to emphasize a soon ending contract
 		local subTimeLeft:Long = station.GetSubscriptionTimeLeft()
 		if subTimeLeft > 0 and subTimeLeft < 1*TWorldTime.DAYLENGTH
-			entryColor = new SColor8(130,100,50, int(255 * (currentAlpha - float(0.2 + 0.6 * sin(Millisecs()*0.33)))))
+			entryColor = new SColor8(130,100,50, int(255 * (currentAlpha * (0.65 + 0.35 * sin(Millisecs()*0.33)))))
 			rightValueColor = entryColor
 		endif
 
