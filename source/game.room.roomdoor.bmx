@@ -37,12 +37,6 @@ Type TRoomDoorCollection extends TRoomDoorBaseCollection
 
 	Method UpdateTooltips:Int()
 		For Local door:TRoomDoor = EachIn list
-			'delete and skip if not found
-			If not door
-				list.remove(door)
-				continue
-			Endif
-
 			if door.HasFlag(TVTRoomDoorFlag.SHOW_TOOLTIP) then door.UpdateTooltip()
 		Next
 	End Method
@@ -70,6 +64,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Field _soundSource:TDoorSoundSource = Null {nosave}
 	Field _lastOwner:int = 1000 {nosave}
 	Field _signSprite:TSprite {nosave}
+	Field _room:TRoomBase {nosave}
 
 
 	Method GenerateGUID:string()
@@ -104,7 +99,10 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	Method GetRoom:TRoomBase()
 		if not roomID then return Null
-		return GetRoomBaseCollection().Get(roomID)
+		if not _room
+			_room = GetRoomBaseCollection().Get(roomID)
+		EndIf
+		Return _room
 	End Method
 
 
@@ -183,13 +181,20 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Method UpdateTooltip:Int()
 		local room:TRoomBase = GetRoom()
 		if not room then return False
+		
+		Local playerFigure:TFigureBase = GetPlayerBase().GetFigure()
+		Local scrRect:TRectangle = GetScreenRect()
 
-		'only show tooltip if not "empty" and mouse in door-rect
+		'only show tooltip if:
+		'- mouse in door rect
+		'- optional requirement: on same floor
+		'- if tooltip has some content to show
+		'(done in this order as eg "GetDescription(1)" is rather costly
 		if not GameConfig.mouseHandlingDisabled
-			If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(Int(GetScreenRect().GetX()), Int(GetScreenRect().GetY() - area.GetH()), Int(area.GetW()), Int(area.GetH()))
-				'require the player to be on that floor?
-				If not (HasFlag(TVTRoomDoorFlag.TOOLTIP_ONLY_ON_SAME_FLOOR) and GetPlayerBase().GetFigure().GetFloor() <> onFloor)
-					If not tooltip
+			'require the player to be on that floor?
+			If not (HasFlag(TVTRoomDoorFlag.TOOLTIP_ONLY_ON_SAME_FLOOR) and playerFigure.GetFloor() <> onFloor)
+				If playerFigure.IsInBuilding() And THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - area.h), Int(area.w), Int(area.h)) 
+					If not tooltip and room.GetDescription(1)
 						tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
 						tooltip.SetMinTitleAndContentWidth(100, 160)
 						tooltip.AssignRoom(room.id)
@@ -204,12 +209,12 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		If tooltip AND tooltip.enabled
 			if tooltip.Update()
 				'not enough space for the tooltip above the door
-				If tooltip.GetHeight()-10 > GetScreenRect().GetY() - area.GetH()
-					tooltip.area.SetY(GetScreenRect().y)
-					tooltip.area.SetX(GetScreenRect().x - tooltip.GetWidth())
+				If tooltip.GetHeight()-10 > scrRect.y - area.GetH()
+					tooltip.area.SetY(scrRect.y)
+					tooltip.area.SetX(scrRect.x - tooltip.GetWidth())
 				Else
-					tooltip.area.SetY(GetScreenRect().y - area.h - tooltip.GetHeight())
-					tooltip.area.SetX(GetScreenRect().x + area.w/2.0 - tooltip.GetWidth()/2)
+					tooltip.area.SetY(scrRect.y - area.h - tooltip.GetHeight())
+					tooltip.area.SetX(scrRect.x + area.w/2.0 - tooltip.GetWidth()/2)
 				EndIf
 			else
 				'delete old tooltips
@@ -221,11 +226,12 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		local doorSprite:TSprite = GetSprite()
+		Local scrRect:TRectangle = GetScreenRect()
 
 		'==== DRAW DOOR ====
 		If IsOpen()
 			'valign = 1 -> subtract sprite height
-			doorSprite.Draw(xOffset + GetScreenRect().GetX(), yOffset + GetScreenRect().GetY(), getDoorType(), ALIGN_LEFT_BOTTOM)
+			doorSprite.Draw(xOffset + scrRect.x, yOffset + scrRect.y, getDoorType(), ALIGN_LEFT_BOTTOM)
 		EndIf
 
 		local room:TRoomBase = GetRoom()
@@ -234,7 +240,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		'==== DRAW DOOR OWNER SIGN ====
 		'draw on same height than door startY
 		If room.owner < 5 And room.owner >=0
-			GetSignSprite(room.owner).Draw(xOffset + GetScreenRect().GetX() + 2 + doorSprite.framew, yOffset + GetScreenRect().GetY() - area.GetH())
+			GetSignSprite(room.owner).Draw(xOffset + scrRect.x + 2 + doorSprite.framew, yOffset + scrRect.y - area.h)
 		EndIf
 
 
@@ -250,9 +256,9 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 					local scale:float = 1.0
 					scale = TInterpolation.BackOut(0.0, 1.0, Min(room.bombExplosionDuration, bombTimeGone), room.bombExplosionDuration)
 					scale :* TInterpolation.BounceOut(0.0, 1.0, Min(room.bombExplosionDuration, bombTimeGone), room.bombExplosionDuration)
-					GetSpriteFromRegistry("gfx_building_explosion").Draw(xOffset + GetScreenRect().GetX() + area.GetW()/2, yOffset + GetScreenRect().GetY() - doorSprite.area.GetH()/2, -1, ALIGN_CENTER_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_explosion").Draw(xOffset + scrRect.x + area.w/2, yOffset + scrRect.y - doorSprite.area.h/2, -1, ALIGN_CENTER_CENTER, scale)
 				else
-					GetSpriteFromRegistry("gfx_building_blockeddoorsign").Draw(xOffset + GetScreenRect().GetX(), yOffset + GetScreenRect().GetY(), -1, ALIGN_LEFT_BOTTOM)
+					GetSpriteFromRegistry("gfx_building_blockeddoorsign").Draw(xOffset + scrRect.x, yOffset + scrRect.y, -1, ALIGN_LEFT_BOTTOM)
 				endif
 			EndIf
 		EndIf
@@ -261,17 +267,17 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		'==== DRAW DEBUG TEXT ====
 		if TVTDebugInfo
 			local f:TBitmapFont = GetBitmapFont("default", 10)
-			local textY:int = GetScreenRect().GetY() - area.GetH() - 10
+			local textY:int = scrRect.y - area.h - 10
 			if room.hasOccupant()
 				for local figure:TFigureBase = eachin room.occupants
-					f.Draw(figure.name, xOffset + GetScreenRect().GetX(), yOffset + textY)
+					f.Draw(figure.name, xOffset + scrRect.x, yOffset + textY)
 					textY :- 8
 				next
 			else
-				f.Draw("empty", xOffset + GetScreenRect().GetX(), yOffset + textY)
+				f.Draw("empty", xOffset + scrRect.x, yOffset + textY)
 				textY :- 8
 			endif
-			f.Draw("room: "+roomID, xOffset + GetScreenRect().GetX(), yOffset + textY)
+			f.Draw("room: "+roomID, xOffset + scrRect.x, yOffset + textY)
 		endif
 	End Method
 
