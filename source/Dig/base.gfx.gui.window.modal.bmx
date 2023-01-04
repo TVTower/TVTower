@@ -335,8 +335,10 @@ Type TGUIModalWindow Extends TGUIWindowBase
 					'do not allow another Tab-press for X ms
 					KeyManager.blockKey(KEY_TAB, 250)
 
-					SelectButton( (GetSelectedButtonIndex() + 1) mod Self.buttons.length)
-
+					'avoid "modulo 0" 
+					If Self.buttons.length > 0
+						SelectButton( (GetSelectedButtonIndex() + 1) mod Self.buttons.length)
+					EndIf
 				'abort/cancel
 				ElseIf KeyManager.IsHit(KEY_ESCAPE)
 					'do not allow another ESC-press for X ms
