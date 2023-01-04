@@ -36,7 +36,7 @@ Type TGUICheckBox Extends TGUIButton
 
 	Method Create:TGUICheckbox(pos:SVec2I, dimension:SVec2I, value:String, limitState:String = "")
 		'use another sprite name (assign before initing super)
-		spriteName = "gfx_gui_button.round"
+		SetSpriteName("gfx_gui_button.round")
 
 		SetCaptionValues(value,value)
 

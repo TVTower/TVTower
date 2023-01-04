@@ -192,7 +192,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Method RefreshFinishProductionConceptGUI()
 		If Not currentProductionConcept
 			finishProductionConcept.Disable()
-			finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
+			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet")
 			finishProductionConcept.SetValue("")
 
 			Return
@@ -209,17 +209,17 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If currentProductionConcept.IsProduceable()
 			editTextsButton.Disable()
 			finishProductionConcept.Disable()
-			finishProductionConcept.spriteName = "gfx_gui_button.datasheet.informative"
+			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.informative")
 
 			finishProductionConcept.SetValue("|b|"+GetLocale("FINISHED_PLANNING")+"|/b|")
 		ElseIf currentProductionConcept.IsPlanned()
 			finishProductionConcept.Enable()
 			'TODO: positive/negative je nach Geldstand
-			finishProductionConcept.spriteName = "gfx_gui_button.datasheet.positive"
+			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.positive")
 			finishProductionConcept.SetValue("|b|"+GetLocale("FINISH_PLANNING")+"|/b|~n" + GetLocale("AND_PAY_DOWN_MONEY").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|"))
 		Else
 			finishProductionConcept.Disable()
-			finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
+			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet")
 			finishProductionConcept.SetValue("|b|"+GetLocale("PLANNING")+"|/b|~n(" + GetLocale("MONEY_TO_PAY_DOWN").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|") +")")
 		EndIf
 	End Method
@@ -822,7 +822,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		editTextsButton.disable()
 		editTextsButton.caption.SetSpriteName("gfx_datasheet_icon_pencil")
 		editTextsButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
-		editTextsButton.spriteName = "gfx_gui_button.datasheet"
+		editTextsButton.SetSpriteName("gfx_gui_button.datasheet")
 
 
 		'=== FINISH CONCEPT BUTTON ===
@@ -832,7 +832,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		finishProductionConcept.caption.SetSpriteName("gfx_datasheet_icon_money")
 		finishProductionConcept.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_LEFT_OF_TEXT3 )
 		finishProductionConcept.disable()
-		finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
+		finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet")
 		finishProductionConcept.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION TAKEOVER CHECKBOX ===
@@ -1286,9 +1286,9 @@ Type TGUIProductionModalWindow Extends TGUIModalWindow
 
 
 		buttonOK = New TGUIButton.Create(New SVec2I(10, dimension.y - 44), New SVec2I(136, 28), "OK", "")
-		buttonOK.spriteName = "gfx_gui_button.datasheet"
+		buttonOK.SetSpriteName("gfx_gui_button.datasheet")
 		buttonCancel = New TGUIButton.Create(New SVec2I(dimension.x - 15 - 136, dimension.y - 44), New SVec2I(136, 28), "Cancel", "")
-		buttonCancel.spriteName = "gfx_gui_button.datasheet"
+		buttonCancel.SetSpriteName("gfx_gui_button.datasheet")
 
 		AddChild(buttonOK)
 		AddChild(buttonCancel)
@@ -1404,7 +1404,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		sortCastButton.enable()
 		sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
 		sortCastButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
-		sortCastButton.spriteName = "gfx_gui_button.datasheet"
+		sortCastButton.SetSpriteName("gfx_gui_button.datasheet")
 
 		castSelectList = New TGUICastSelectList.Create(New SVec2I(15,50), New SVec2I(270, dimension.y - 103), "")
 
@@ -1737,13 +1737,13 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		inputSubDescription = New TGUIInput.Create(New SVec2I(15,180+13), New SVec2I(245,-1), GetLocale("DESCRIPTION"), 512, "")
 
 		clearTitle = New TGUIButton.Create(New SVec2I(15+245, 12 + 13 + 2), New SVec2I(25, 25), "x", "")
-		clearTitle.spriteName = "gfx_gui_button.datasheet"
+		clearTitle.SetSpriteName("gfx_gui_button.datasheet")
 		clearDescription = New TGUIButton.Create(New SVec2I(15+245, 60 + 13 + 2), New SVec2I(25, 25), "x", "")
-		clearDescription.spriteName = "gfx_gui_button.datasheet"
+		clearDescription.SetSpriteName("gfx_gui_button.datasheet")
 		clearSubTitle = New TGUIButton.Create(New SVec2I(15+245, 137 + 13 + 2), New SVec2I(25, 25), "x", "")
-		clearSubTitle.spriteName = "gfx_gui_button.datasheet"
+		clearSubTitle.SetSpriteName("gfx_gui_button.datasheet")
 		clearSubDescription = New TGUIButton.Create(New SVec2I(15+245, 180 + 13 + 2), New SVec2I(25, 26), "x", "")
-		clearSubDescription.spriteName = "gfx_gui_button.datasheet"
+		clearSubDescription.SetSpriteName("gfx_gui_button.datasheet")
 
 
 

@@ -17,7 +17,7 @@ Type TGUIToggleButton Extends TGUIButton
 
 	Method Create:TGUIToggleButton(pos:SVec2I, dimension:SVec2I, value:String, limitState:String="")
 		'use another sprite name (assign before initing super)
-		spriteName = "gfx_gui_button.round"
+		SetSpriteName("gfx_gui_button.round")
 
 		SetCaptionValues(value, value)
 
@@ -116,14 +116,14 @@ endrem
 	'acts as cache
 	Method GetSprite:TSprite()
 		If toggled And spriteNameToggled
-			spriteName = spriteNameToggled
+			_spriteName = spriteNameToggled
 		ElseIf spriteNameUntoggled
-			spriteName = spriteNameUntoggled
+			_spriteName = spriteNameUntoggled
 		EndIf
 
 		'refresh cache if not set or wrong sprite name
-		If Not _sprite Or _sprite.GetName() <> spriteName
-			_sprite = GetSpriteFromRegistry(spriteName)
+		If Not _sprite Or _sprite.GetName() <> _spriteName
+			_sprite = GetSpriteFromRegistry(_spriteName)
 			'new -non default- sprite: adjust appearance
 			If _sprite.GetName() <> "defaultsprite"
 				SetAppearanceChanged(True)

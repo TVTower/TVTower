@@ -191,7 +191,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiPlayerRandomButtons[i].enable()
 			guiPlayerRandomButtons[i].caption.SetSpriteName("gfx_datasheet_icon_marketShare")
 			guiPlayerRandomButtons[i].caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
-			guiPlayerRandomButtons[i].spriteName = "gfx_gui_button.datasheet"
+			guiPlayerRandomButtons[i].SetSpriteName("gfx_gui_button.datasheet")
 
 			guiChannelNames[i] = New TGUIinput.Create(New SVec2I(0, 0), New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w), -1), "channel", 16, name)
 			guiChannelNames[i].SetPositionY(100)
@@ -855,7 +855,6 @@ endrem
 
 
 	Method Draw:Int(tweenValue:Float)
-
 		DrawMenuBackground(True)
 
 		'background gui items

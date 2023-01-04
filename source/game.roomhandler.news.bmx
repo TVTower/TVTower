@@ -128,7 +128,7 @@ Type RoomHandler_News extends TRoomHandler
 			For local i:int = 0 to 5
 				NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
 				'adjust width according sprite dimensions
-				NewsGenreButtons[i].spriteName = "gfx_news_btn"+i
+				NewsGenreButtons[i].SetSpriteName("gfx_news_btn" + i)
 				'disable drawing of caption
 				NewsGenreButtons[i].caption.Hide()
 			Next
