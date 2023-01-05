@@ -76,7 +76,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 		If spriteTintColor Then spriteTintColor.SetRGB()
 
 		Local r:TRectangle = GetScreenRect()
-		GetSprite().DrawArea(r.GetX(), r.GetY(), r.GetW(), r.GetH())
+		GetSprite().DrawArea(r.x, r.y, r.w, r.h)
 
 		SetColor(oldCol)
 		SetAlpha(oldColA)

@@ -39,12 +39,15 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 			Local scaleSprite:Float = 0.8
 			Local labelHeight:Int = GetFont().GetHeight(GetValue())
 			Local item:TGUISpriteDropDownItem = TGUISpriteDropDownItem(selectedEntry)
-			Local sprite:TSprite = GetSpriteFromRegistry( item.data.GetString("spriteName", "default") )
-			If item And sprite.GetName() <> "defaultSprite"
-				Local itemHeight:Int = (item.GetSpriteDimension().y * scaleSprite)
-				Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
-				sprite.DrawArea(position.x, position.y + displaceY, item.GetSpriteDimension().x * scaleSprite, item.GetSpriteDimension().y * scaleSprite)
-				position.addXY(item.GetSpriteDimension().x * scaleSprite + 3, 0)
+			If item
+				Local sprite:TSprite = item.GetSprite()
+				If sprite.GetName() <> "defaultSprite"
+					Local spriteDim:TVec2D = item.GetSpriteDimension()
+					Local itemHeight:Int = (spriteDim.y * scaleSprite)
+					Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
+					sprite.DrawArea(position.x, position.y + displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
+					position.addXY(spriteDim.x * scaleSprite + 3, 0)
+				EndIf
 			EndIf
 		EndIf
 
@@ -57,6 +60,7 @@ End Type
 
 
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
+	Field _sprite:TSprite
 	Global spriteDimension:TVec2D
 	Global defaultSpriteDimension:TVec2D = New TVec2D(24, 24)
 
@@ -94,37 +98,53 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	End Method
 
 
+	Method GetSprite:TSprite()
+		'refresh cache if not set or wrong sprite name
+		Local spriteName:String = data.GetString("spriteName", "default")
+		if not _sprite or _sprite.GetName() <> spriteName
+			_sprite = GetSpriteFromRegistry(spriteName)
+		endif
+
+		return _sprite
+	End Method
+
+
 	'override to change color
 	Method DrawBackground()
-		Local oldCol:SColor8; GetColor(oldCol)
-		Local oldA:Float = GetAlpha()
+		If IsHovered() or IsSelected()
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldA:Float = GetAlpha()
+			Local scrRect:TRectangle = GetScreenRect()
 
-		SetColor(125, 160, 215)
-		If IsHovered()
-			SetAlpha(oldA * 0.75)
-			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), rect.getH())
-		ElseIf IsSelected()
-			SetAlpha(oldA * 0.5)
-			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), rect.getH())
+			SetColor(125, 160, 215)
+			If IsHovered()
+				SetAlpha(oldA * 0.75)
+				DrawRect(scrRect.x, scrRect.y, scrRect.w, rect.h)
+			Else 'same: ElseIf IsSelected()
+				SetAlpha(oldA * 0.5)
+				DrawRect(scrRect.x, scrRect.y, scrRect.w, rect.h)
+			EndIf
+			SetColor(oldCol)
+			SetAlpha(oldA)
 		EndIf
-		SetColor(oldCol)
-		SetAlpha(oldA)
 	End Method
 
 
 	Method DrawValue()
-		Local valueX:Int = GetScreenRect().GetX() 
+		Local scrRect:TRectangle = GetScreenRect()
+		Local spriteDim:TVec2D = GetSpriteDimension()
+		Local valueX:Int = scrRect.GetX() 
 		Local spriteX:Int
 
-		Local sprite:TSprite = GetSpriteFromRegistry( data.GetString("spriteName", "default") )
+		Local sprite:TSprite = GetSprite()
 		If sprite.GetName() <> "defaultSprite"
-			sprite.DrawArea(valueX, GetScreenRect().GetY()+1, GetSpriteDimension().x, GetSpriteDimension().y)
-			spriteX = GetSpriteDimension().x + 3
+			sprite.DrawArea(valueX, scrRect.y + 1, spriteDim.x, spriteDim.y)
+			spriteX = spriteDim.x + 3
 		Else
-			spriteX = GetSpriteDimension().x + 3
+			spriteX = spriteDim.x + 3
 		EndIf
 		'draw value
-		GetFont().DrawBox(value, valueX + spriteX, GetScreenRect().GetY(), rect.getW() - spriteX, rect.getH(), sALIGN_LEFT_CENTER, valueColor)
+		GetFont().DrawBox(value, valueX + spriteX, scrRect.y, rect.w - spriteX, rect.h, sALIGN_LEFT_CENTER, valueColor)
 	End Method
 End Type
 
