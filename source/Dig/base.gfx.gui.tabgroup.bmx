@@ -125,7 +125,7 @@ endrem
 		If Not _sprite Or _sprite.GetName() <> _spriteName
 			_sprite = GetSpriteFromRegistry(_spriteName)
 			'new -non default- sprite: adjust appearance
-			If _sprite.GetName() <> "defaultsprite"
+			If _sprite <> TSprite.defaultSprite
 				SetAppearanceChanged(True)
 			EndIf
 		EndIf

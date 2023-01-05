@@ -268,7 +268,7 @@ Type TGUISlider extends TGUIObject
 		if not _handleSprite or _handleSprite.GetName() <> handleSpriteName
 			_handleSprite = GetSpriteFromRegistry(handleSpriteName)
 			'new -non default- sprite: adjust appearance
-			if _handleSprite.GetName() <> "defaultsprite"
+			if _handleSprite <> TSprite.defaultSprite
 				SetAppearanceChanged(TRUE)
 			endif
 		endif
@@ -287,7 +287,7 @@ Type TGUISlider extends TGUIObject
 		if not _gaugeSprite or _gaugeSprite.GetName() <> gaugeSpriteName
 			_gaugeSprite = GetSpriteFromRegistry(gaugeSpriteName)
 			'new -non default- sprite: adjust appearance
-			if _gaugeSprite.GetName() <> "defaultsprite"
+			if _gaugeSprite <> TSprite.defaultSprite
 				SetAppearanceChanged(TRUE)
 			endif
 		endif
@@ -311,7 +311,7 @@ Type TGUISlider extends TGUIObject
 		if not _gaugeFilledSprite or _gaugeFilledSprite.GetName() <> gaugeFilledSpriteName
 			_gaugeFilledSprite = GetSpriteFromRegistry(gaugeFilledSpriteName)
 			'new -non default- sprite: adjust appearance
-			if _gaugeFilledSprite.GetName() <> "defaultsprite"
+			if _gaugeFilledSprite <> TSprite.defaultSprite
 				SetAppearanceChanged(TRUE)
 			endif
 		endif
@@ -440,7 +440,7 @@ Type TGUISlider extends TGUIObject
 		if _showFilledGauge
 			gaugeFilledSprite = GetGaugeFilledSprite()
 			'assign default gauge sprite if no "filled" is defined
-			if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite.GetName()) = "defaultsprite"
+			if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite = TSprite.defaultSprite)
 				gaugeFilledSprite = gaugeSprite
 			endif
 		else
@@ -519,7 +519,7 @@ Type TGUISlider extends TGUIObject
 		if _showFilledGauge
 			gaugeFilledSprite = GetGaugeFilledSprite()
 			'assign default gauge sprite if no "filled" is defined
-			if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite.GetName()) = "defaultsprite"
+			if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite = TSprite.defaultSprite)
 				gaugeFilledSprite = gaugeSprite
 			endif
 		else

@@ -115,7 +115,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		if not _signSprite
 			_signSprite = GetSpriteFromRegistry("gfx_building_sign_" + owner)
-			if _signSprite.name = "defaultsprite"
+			if _signSprite = TSprite.defaultSprite
 				local tmpSprite:TSprite = _signSprite
 				_signSprite = null
 				return tmpSprite

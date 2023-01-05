@@ -3016,7 +3016,7 @@ Type TGUITooltipBase Extends TTooltipBase
 		If Not _bgsprite Or _bgsprite.GetName() <> bgSpriteName
 			_bgSprite = GetSpriteFromRegistry(bgSpriteName)
 			'new -non default- sprite: adjust appearance
-			If _bgSprite.GetName() <> "defaultsprite"
+			If _bgSprite <> TSprite.defaultSprite
 				_effectiveContentPadding = Null
 				'SetAppearanceChanged(TRUE)
 			EndIf

@@ -54,7 +54,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 		If Not sprite Or sprite.GetName() <> spriteBaseName
 			sprite = GetSpriteFromRegistry(spriteBaseName)
 			'new -non default- sprite: adjust appearance
-			If sprite.GetName() <> "defaultsprite"
+			If sprite <> TSprite.defaultSprite
 				SetAppearanceChanged(True)
 			EndIf
 		EndIf

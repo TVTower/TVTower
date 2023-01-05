@@ -2132,7 +2132,7 @@ Type TGUIProgrammePlannerButton extends TGUIButton
 		
 		If spriteInlay
 			'no custom ".active" - then just offset +1,+1
-			If IsActive() And (spriteInlay.name = spriteInlayName Or spriteInlay.name="defaultsprite")
+			If IsActive() And (spriteInlay.name = spriteInlayName Or spriteInlay = TSprite.defaultSprite)
 				spriteInlay.Draw(position.x+1, position.y+1)
 			Else
 				spriteInlay.Draw(position.x, position.y)

@@ -41,7 +41,7 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 			Local item:TGUISpriteDropDownItem = TGUISpriteDropDownItem(selectedEntry)
 			If item
 				Local sprite:TSprite = item.GetSprite()
-				If sprite.GetName() <> "defaultSprite"
+				If sprite <> TSprite.defaultSprite
 					Local spriteDim:TVec2D = item.GetSpriteDimension()
 					Local itemHeight:Int = (spriteDim.y * scaleSprite)
 					Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
@@ -137,7 +137,7 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 		Local spriteX:Int
 
 		Local sprite:TSprite = GetSprite()
-		If sprite.GetName() <> "defaultSprite"
+		If sprite <> TSprite.defaultSprite
 			sprite.DrawArea(valueX, scrRect.y + 1, spriteDim.x, spriteDim.y)
 			spriteX = spriteDim.x + 3
 		Else
@@ -664,7 +664,7 @@ Type TGUIGameListItem Extends TGUIListItem
 		if not asset or asset.GetName() <> assetName
 			SetAsset(GetSpriteFromRegistry(self.assetNameDefault))
 			'new -non default- sprite: adjust appearance
-			if asset.GetName() <> "defaultsprite"
+			if asset <> TSprite.defaultSprite
 				SetAppearanceChanged(TRUE)
 			endif
 		endif

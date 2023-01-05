@@ -193,7 +193,7 @@ Type TGameToastMessage Extends TToastMessage
 	Method RenderBackground:Int(xOffset:Float=0, yOffset:Float=0)
 		If showBackgroundSprite
 			'set type again to reload sprite
-			If Not backgroundSprite Or backgroundSprite.name = "defaultsprite" Then SetMessageType(messageType)
+			If Not backgroundSprite Or backgroundSprite = TSprite.defaultSprite Then SetMessageType(messageType)
 			If backgroundSprite
 				Local oldAlpha:Float = GetAlpha()
 				SetAlpha oldAlpha * 0.80

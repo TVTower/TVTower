@@ -187,7 +187,7 @@ endrem
 
 		If newSprite
 			_sprite = newSprite
-			If _sprite.GetName() <> "defaultsprite"
+			If _sprite <> TSprite.defaultSprite
 				SetAppearanceChanged(True)
 'print "changed button sprite: " + _spriteNameInUse
 			EndIf
@@ -308,7 +308,7 @@ endrem
 		Local sprite:TSprite = GetSprite()
 		If sprite
 			'no active image available (when "mousedown" over widget)
-			If IsActive() And (sprite.name = _spriteName Or sprite.name="defaultsprite")
+			If IsActive() And (sprite.name = _spriteName Or sprite = TSprite.defaultSprite)
 				sprite.DrawArea(position.x+1, position.y+1, rect.w, rect.h)
 			Else
 				sprite.DrawArea(position.x, position.y, rect.w, rect.h)
