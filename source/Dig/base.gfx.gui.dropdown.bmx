@@ -72,7 +72,7 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== STYLE BUTTON ===
 		'use another sprite than the default button
-		If Not spriteName Then spriteName = defaultSpriteName
+		If Not _spriteName Then SetSpriteName(defaultSpriteName)
 		SetOverlayPosition("right")
 		SetOverlay(defaultOverlaySpriteName)
 		SetEditable(False)
@@ -98,7 +98,7 @@ Type TGUIDropDown Extends TGUIInput
 
 		'add bg to list
 		Local bg:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New SVec2I(0,0), New SVec2I(0,0))
-		bg.spriteBaseName = spriteName
+		bg.spriteBaseName = _spriteNameBase 'version without potential "orientation"
 '		bg.SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 		list.SetBackground(bg)
 		'use padding from background

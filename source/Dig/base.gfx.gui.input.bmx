@@ -16,7 +16,15 @@ Type TGUIinput Extends TGUIobject
     Field editColor:SColor8 = New SColor8(40,40,40)
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
-    Field spriteName:String = "gfx_gui_input.default"
+    Field _sprite:TSprite
+	Field _spriteName:String = "gfx_gui_input.default"
+	Field _spriteNameBase:String = "gfx_gui_input.default"
+	Field _spriteNameDisabled:String = "gfx_gui_input.default"
+	Field _spriteNameActive:String = "gfx_gui_input.default"
+	Field _spriteNameHovered:String = "gfx_gui_input.default"
+	Field _spriteNameSelected:String = "gfx_gui_input.default"
+	Field _spriteNameInUse:String = "gfx_gui_input.default"
+
     Field textEffectAmount:Float = -1.0
     Field textEffectType:EDrawTextEffect = EDrawTextEffect.None
     Field overlayArea:TRectangle = New TRectangle
@@ -149,13 +157,13 @@ Type TGUIinput Extends TGUIobject
 		
 		'active input fields react to mouse clicks on the input-area
 		'to move the cursor position
-		If Self = GuiManager.GetKeyboardInputReceiver() and _textPos
+		If Self = GuiManager.GetKeyboardInputReceiver()
 			'shrink screenrect to "text area"
 			Local scrRect:TRectangle = GetScreenRect()
-			Local screenX:Int = _textPos.GetX()
-			Local screenY:Int = _textPos.GetY()
+			Local screenX:Int = _textPos.x
+			Local screenY:Int = _textPos.y
 			Local screenW:Int = Self.maxTextWidthCurrent
-			Local screenH:Int = scrRect.GetH() - (_textPos.GetY() - scrRect.GetY())
+			Local screenH:Int = scrRect.h - (_textPos.y - scrRect.y)
 
 			'clear "getchar()"-queue and states
 			'(this avoids entering previously pressed keystrokes)
@@ -333,6 +341,11 @@ Type TGUIinput Extends TGUIobject
 			Case "right" 	overlayPosition = "iconRight"
 			Default			overlayPosition = ""
 		EndSelect
+
+		'update sprite names
+		If _spriteNameBase
+			SetSpriteName(_spriteNameBase)
+		EndIf
     End Method
 
 
@@ -369,11 +382,75 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method GetSpriteName:String()
-		If overlayPosition<>"" Then Return spriteName + "."+overlayPosition
-		Return spriteName
+	Method SetSpriteName(name:String)
+		_spriteNameBase = name
+
+		If overlayPosition
+			_spriteName = _spriteNameBase + "." + overlayPosition
+		Else
+			_spriteName = _spriteNameBase
+		EndIf
+		_spriteNameDisabled = _spriteName + ".disabled"
+		_spriteNameActive = _spriteName + ".active"
+		_spriteNameSelected = _spriteName + ".selected"
+		_spriteNameHovered = _spriteName + ".hover"
+		
+		_spriteNameInUse = ""
 	End Method
 
+
+	Method GetSpriteName:String()
+		Return _spriteName
+	End Method
+
+
+	'acts as cache
+	Method GetSprite:TSprite()
+		'if no spriteName is defined, do not return a sprite 
+		If not _spriteName Then Return Null
+
+		Local newSprite:TSprite
+
+		If Not IsEnabled() 
+			If _spriteNameInUse <> _spriteNameDisabled
+				newSprite = GetSpriteFromRegistry(_spriteNameDisabled, spriteNameDefault)
+				_spriteNameInUse = _spriteNameDisabled 'even if name did NOT exist!
+			EndIf
+		ElseIf IsActive() 
+			If _spriteNameInUse <> _spriteNameActive
+				newSprite = GetSpriteFromRegistry(_spriteNameActive, spriteNameDefault)
+				_spriteNameInUse = _spriteNameActive 'even if name did NOT exist!
+			EndIf
+		ElseIf IsHovered() 
+			If _spriteNameInUse <> _spriteNameHovered
+				newSprite = GetSpriteFromRegistry(_spriteNameHovered, spriteNameDefault)
+				_spriteNameInUse = _spriteNameHovered 'even if name did NOT exist!
+			EndIf
+		ElseIf IsSelected() 
+			If _spriteNameInUse <> _spriteNameSelected
+				newSprite = GetSpriteFromRegistry(_spriteNameSelected, spriteNameDefault)
+				_spriteNameInUse = _spriteNameSelected 'even if name did NOT exist!
+			EndIf
+		'back to normal?
+		ElseIf _spriteNameInUse <> _spriteName
+			newSprite = GetSpriteFromRegistry(_spriteName, spriteNameDefault)
+			_spriteNameInUse = _spriteName
+		EndIf
+
+		If Not _sprite
+			newSprite = GetSpriteFromRegistry(_spriteName, spriteNameDefault)
+		EndIf
+
+		If newSprite
+			_sprite = newSprite
+			If _sprite <> TSprite.defaultSprite
+				SetAppearanceChanged(True)
+				'print "changed input sprite: " + _spriteNameInUse + "   name="+_spriteName + "  hovered="+_spriteNameHovered + "  active="+_spriteNameActive
+			EndIf
+		EndIf
+
+		Return _sprite
+	End Method
 
 	'draws overlay and returns used dimension/space
 	Method DrawButtonOverlay:SVec2F(position:SVec2F)
@@ -430,7 +507,7 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method DrawInputContent:Int(position:TVec2D)
+	Method DrawInputContent:Int(x:Int, y:Int)
 	    Local i:Int	= 0
 		Local printValue:String	= value
 		Local oldCol:SColor8; GetColor(oldCol)
@@ -479,10 +556,10 @@ Type TGUIinput Extends TGUIobject
 			EndIf
 
 
-			GetFont().DrawSimple(leftValue, position.GetIntX(), position.GetIntY(), editColor, EDrawTextEffect.None, textEffectAmount * 0.75)
-			DrawCaret(Int(position.GetIntX() + leftValueW), position.GetIntY())
+			GetFont().DrawSimple(leftValue, x, y, editColor, EDrawTextEffect.None, textEffectAmount * 0.75)
+			DrawCaret(x + leftValueW, y)
 			'ignore cursor-offset (to avoid "letter-jiggling")
-			GetFont().DrawSimple(rightValue, position.GetIntX() + leftValueW, position.GetIntY(), editColor, EDrawTextEffect.None, textEffectAmount * 0.5 )
+			GetFont().DrawSimple(rightValue, x + leftValueW, y, editColor, EDrawTextEffect.None, textEffectAmount * 0.5 )
 	    Else
 			If printValue.length = 0
 				printValue = placeholder
@@ -494,9 +571,9 @@ Type TGUIinput Extends TGUIobject
 
 
 			If value.length = 0
-				GetFont().DrawSimple(printValue, position.GetIntX(), position.GetIntY(), placeholderColor, textEffectType, textEffectAmount)
+				GetFont().DrawSimple(printValue, x, y, placeholderColor, textEffectType, textEffectAmount)
 			Else
-				GetFont().DrawSimple(printValue, position.GetIntX(), position.GetIntY(), color, textEffectType, textEffectAmount)
+				GetFont().DrawSimple(printValue, x, y, color, textEffectType, textEffectAmount)
 			EndIf
 		EndIf
 
@@ -522,7 +599,7 @@ Type TGUIinput Extends TGUIobject
 		SetAlpha oldColA * GetScreenAlpha()
 
 		Local widgetWidth:Int = rect.w
-
+		
 		If Not _textPos Then _textPos = New TVec2D
 
 		If Not valueDisplacement
@@ -541,16 +618,7 @@ Type TGUIinput Extends TGUIobject
 		'=== DRAW BACKGROUND SPRITE ===
 		'if a spriteName is set, we use a spriteNameDefault,
 		'else we just skip drawing the sprite
-		Local sprite:TSprite
-		If spriteName
-			If Self.IsHovered()
-				sprite = GetSpriteFromRegistry(GetSpriteName() + ".hover", spriteNameDefault)
-			ElseIf Self.IsActive()
-				sprite = GetSpriteFromRegistry(GetSpriteName() + ".active", spriteNameDefault)
-			Else
-				sprite = GetSpriteFromRegistry(GetSpriteName(), spriteNameDefault)
-			EndIf
-		EndIf
+		Local sprite:TSprite = GetSprite()
 		If sprite
 			'draw overlay and save occupied space
 			Local overlayDim:SVec2F = DrawButtonOverlay(GetScreenRect().GetPosition())
@@ -578,7 +646,7 @@ Type TGUIinput Extends TGUIobject
 			Self.maxTextWidthCurrent = widgetWidth - (_textPos.GetX() - atPointX)*2
 		EndIf
 		'actually draw
-		DrawInputContent(_textPos)
+		DrawInputContent(_textPos.GetIntX(), _textPos.GetIntY())
 
 		SetAlpha(oldColA)
 	End Method

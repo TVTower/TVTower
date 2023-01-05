@@ -30,10 +30,7 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 
 
 	'override to add sprite next to value
-	Method DrawInputContent:Int(position:TVec2D)
-		'position is already a copy, so we can reuse it without
-		'copying it first
-
+	Method DrawInputContent:Int(x:Int, y:Int) override
 		'draw sprite
 		If TGUISpriteDropDownItem(selectedEntry)
 			Local scaleSprite:Float = 0.8
@@ -42,17 +39,19 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 			If item
 				Local sprite:TSprite = item.GetSprite()
 				If sprite <> TSprite.defaultSprite
-					Local spriteDim:TVec2D = item.GetSpriteDimension()
+					Local spriteDim:SVec2I = item.GetSpriteDimension()
 					Local itemHeight:Int = (spriteDim.y * scaleSprite)
 					Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
-					sprite.DrawArea(position.x, position.y + displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
-					position.addXY(spriteDim.x * scaleSprite + 3, 0)
+					sprite.DrawArea(x, y + displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
+
+					'offset x by sprite
+					x :+ spriteDim.x * scaleSprite + 3
 				EndIf
 			EndIf
 		EndIf
 
 		'draw value
-		Super.DrawInputContent(position)
+		Super.DrawInputContent(x, y)
 	End Method
 End Type
 
@@ -61,8 +60,12 @@ End Type
 
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Field _sprite:TSprite
-	Global spriteDimension:TVec2D
-	Global defaultSpriteDimension:TVec2D = New TVec2D(24, 24)
+	Field _spriteDimension:SVec2I
+	Global defaultSpriteDimension:SVec2I = New SVec2I(24, 24)
+	
+	Method New()
+		_spriteDimension = New SVec2I(-1, -1)
+	End Method
 
 
 	Method GetClassName:String()
@@ -72,29 +75,28 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 
     Method Create:TGUISpriteDropDownItem(position:SVec2I, dimension:SVec2I, value:String="")
 		If dimension.x = 0 and dimension.y = 0
-			dimension = New SVec2I(-1, Int(GetSpriteDimension().y + 2))
+			dimension = New SVec2I(-1, GetSpriteDimension().y + 2)
 		Else
-			dimension = new SVec2I(Int(Max(dimension.x, GetSpriteDimension().x)),..
-			                       Int(Max(dimension.y, GetSpriteDimension().y)))
+			dimension = new SVec2I(Max(dimension.x, GetSpriteDimension().x),..
+			                       Max(dimension.y, GetSpriteDimension().y))
 		EndIf
 		Super.Create(position, dimension, value)
 		Return Self
     End Method
 
 
-    Method GetSpriteDimension:TVec2D()
-		If Not spriteDimension Then Return defaultSpriteDimension
-		Return spriteDimension
+    Method GetSpriteDimension:SVec2I()
+		If _spriteDimension.x = -1 Then Return defaultSpriteDimension
+		Return _spriteDimension
     End Method
 
 
-	Method SetSpriteDimension:Int(dimension:TVec2D)
-		spriteDimension = dimension.copy()
+	Method SetSpriteDimension:Int(dimension:SVec2I)
+		If _spriteDimension <> dimension
+			dimension = _spriteDimension
 
-		SetSize(..
-			Max(dimension.x, GetSpriteDimension().x), ..
-			Max(dimension.y, GetSpriteDimension().y) ..
-		)
+			SetSize(GetSpriteDimension().x, GetSpriteDimension().y)
+		EndIf
 	End Method
 
 
@@ -132,8 +134,8 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 
 	Method DrawValue()
 		Local scrRect:TRectangle = GetScreenRect()
-		Local spriteDim:TVec2D = GetSpriteDimension()
-		Local valueX:Int = scrRect.GetX() 
+		Local spriteDim:SVec2I = GetSpriteDimension()
+		Local valueX:Int = scrRect.x
 		Local spriteX:Int
 
 		Local sprite:TSprite = GetSprite()
