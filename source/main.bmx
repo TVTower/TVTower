@@ -10,6 +10,7 @@ Import brl.timer
 Import brl.eventqueue
 Import brl.Threads
 Import Archive.ZSTD
+Import Archive.gzip
 Import Archive.RAW
 
 'Import "Dig/external/persistence.mod/persistence_json.bmx"
@@ -2620,7 +2621,11 @@ Type TSaveGame Extends TGameState
 			'we opened the stream? so we also close it here.
 			If stream Then stream.Close()
 		Else
-			Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD])
+			Local ra:TReadArchive = New TReadArchive
+			ra.SetFormat(EArchiveFormat.RAW)
+			ra.AddFilter(EArchivefilter.GZIP)
+			ra.AddFilter(EArchivefilter.ZSTD)
+
 			ra.Open(fileURI)
 
 			Local entry:TArchiveEntry = New TArchiveEntry
@@ -2819,12 +2824,22 @@ Type TSaveGame Extends TGameState
 		'read in first up to 100 chars of a file
 		Local s:TStream = ReadStream(uri)
 		Local readAmount:Int = Min(50, s.Size())
+		'zst
 		'file signature of ZST compression: 28 B5 2F FD
 		If readAmount > 4 And s.ReadByte() = $28 and s.ReadByte() = $B5 and s.ReadByte() = $2F and s.ReadByte() = $FD
 			Return "zst"
+		EndIf
+		'gzip
+		If readAmount > 2
+			s.Seek(0)
+			If s.ReadByte() = $1f and s.ReadByte() = $8b
+				Return "zst"
+			EndIf
+		EndIf
 		'for xml we simply search for "<?xml" but allow some mistakingly
 		'added newlines (maybe user modified file a bit ... )
-		ElseIf readAmount >= 50
+		If readAmount >= 50
+			s.Seek(0)
 			'if reading ~100 chars we could also identify "bmo"-value,
 			'if somewhen needed
 			Local chars:String = s.ReadString(readAmount)
@@ -2905,15 +2920,15 @@ Type TSaveGame Extends TGameState
 		'savegame deserialization creates new TGameObjects - and thus
 		'increases the ID count!
 		Local saveGame:TSaveGame
-		'Local isCompressed:Int = (ExtractExt(saveURI).ToLower() = "zst")
 		Local isCompressed:Int = (IdentifyFileFormat(saveURI) = "zst")
 		If not isCompressed
 			saveGame = TSaveGame(persist.DeserializeFromFile(saveURI))
 		Else
 			'doable once New() is overloaded / corresponding PR merged
-			'Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD])
+			'Local ra:TReadArchive = New TReadArchive(EArchiveFormat.RAW, [EArchivefilter.ZSTD, EArchivefilter.GZIP])
 			Local ra:TReadArchive = New TReadArchive
 			ra.SetFormat(EArchiveFormat.RAW)
+			ra.AddFilter(EArchivefilter.GZIP)
 			ra.AddFilter(EArchivefilter.ZSTD)
 
 			ra.Open(saveURI)
@@ -3094,10 +3109,11 @@ endrem
 			'compress the TStream of XML-Data into an archive and save it
 			Local saveStream:TSTream = WriteStream(saveURI)
 
-'			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.GZIP])
+'			Local wa:TWriteArchive = New TWriteArchive(EArchiveFormat.RAW, [EArchiveFilter.ZSTD])
 			Local wa:TWriteArchive = New TWriteArchive
 			wa.SetFormat(EArchiveFormat.RAW)
 			wa.AddFilter(EArchiveFilter.ZSTD)
+			'wa.AddFilter(EArchiveFilter.gzip)
 			wa.SetCompressionLevel(3) 'speed vs size
 			wa.Open(saveStream)
 
@@ -3112,6 +3128,7 @@ endrem
 
 			wa.Close()
 			xmlArchiveStream.Close()
+			saveStream.Close()
 		Else
 			p.SerializeToFile(saveGame, saveURI)
 		EndIf
