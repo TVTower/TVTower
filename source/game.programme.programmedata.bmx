@@ -1459,9 +1459,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local timesBroadcastedValue:Int = GetTimesBroadcasted()
 		Local age:Int = Max(0, GetWorldTime().GetYear() - GetYear())
 
-'		Local newCacheCode:String = timesBroadcastedValue + "_" + age
+		Local newCacheCode:String = timesBroadcastedValue + "_" + GetWorldTime().GetDayHour()
 
-'		If maxTopicalityCacheCode <> newCacheCode
+		If maxTopicalityCacheCode <> newCacheCode
 			Local res:Float = 1.0
 
 			Local timesBroadcasted:Int = 0
@@ -1473,13 +1473,15 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 				age = 0
 				weightAge = 0.0
 
-				'maximum of 40 broadcasts decrease up to "80%" of max topicality
-				timesBroadcasted = 0.8 * Min(100, Int(timesBroadcastedValue * 2.5))
+				'maximum of 10 broadcasts decrease up to "80%" of max topicality
+				timesBroadcasted = 0.8 * Min(100, Int(timesBroadcastedValue * 10))
 				weightTimesBroadcasted = 1.0
 
 			Else
-				'maximum of 25 broadcasts decrease up to "50%" of max topicality
-				timesBroadcasted = 0.5 * Min(100, timesBroadcastedValue * 4)
+				'TODO higher weight for broadcast influence?
+				'TODO non-linear influence
+				'maximum of 10 broadcasts decrease up to "50%" of max topicality
+				timesBroadcasted = 0.5 * Min(100, timesBroadcastedValue * 10)
 			EndIf
 
 			'modifiers could increase or decrease influences of age/aired/...
@@ -1509,7 +1511,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 				EndSelect
 			Else
 				'by default the first broadcast has no influence on the max topicality
-				firstBroadcastInfluence:* GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 0.0)
+				firstBroadcastInfluence:* GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 0.2)
 			EndIf
 
 			'cult-movies are less affected by aging or broadcast amounts
@@ -1522,8 +1524,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			Local influencePercentage:Float = 0.01 * MathHelper.Clamp(weightAge * ageInfluence + notLiveInfluence + firstBroadcastInfluence + weightTimesBroadcasted * timesBroadcastedInfluence, 0, 100)
 
 			maxTopicalityCache = 1.0 - THelper.ATanFunction(influencePercentage, 2)
-'			maxTopicalityCacheCode = newCacheCode
-'		EndIf
+			'print GetTitle() +" age "+ age +" #br "+ timesBroadcastedValue +" ageInfl " +MathHelper.NumberToString(weightAge * ageInfluence) +" firstBrInfl "+ MathHelper.NumberToString(firstBroadcastInfluence) +" brInfl "+ MathHelper.NumberToString(weightTimesBroadcasted * timesBroadcastedInfluence) +" -> "+ MathHelper.NumberToString(maxTopicalityCache)
+			maxTopicalityCacheCode = newCacheCode
+		EndIf
 		Return maxTopicalityCache
 	End Method
 
