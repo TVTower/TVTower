@@ -12,7 +12,7 @@ Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
 Import "basefunctions.bmx"
-
+Import "game.stationmap.bmx"
 
 Type TProgrammeDataCollection Extends TGameObjectCollection
 
@@ -610,9 +610,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		_filterReleaseDateEnd = releaseEnd
 	End Function
 
-
 	'what to earn for each viewer
-	Method GetPerViewerRevenue:Float() {_exposeToLua}
+	Method GetPerViewerRevenue:Float(forPlayer:Int) {_exposeToLua}
+		'TODO caching somehow? - topicality and reach can change
 		Local result:Float = 0.0
 		If HasFlag(TVTProgrammeDataFlag.PAID)
 			'leads to a maximum of "0.15 * (23+12)" if speed/review
@@ -631,6 +631,17 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			'by default no programme has a sponsorship
 			result = 0.0
 			'TODO: include sponsorships
+		EndIf
+		If result > 0
+			Local population:Int = 1000
+			Local reach:Int = population
+			If forPlayer > 0 
+				population = GetStationMapCollection().GetPopulation()
+				reach = GetStationMap(forPlayer, True).GetReach()
+				result = result * (1 - 0.85 * Float(reach) / population)
+				'TODO replace with own difficulty value
+				result:*  GetPlayerDifficulty(forPlayer).adcontractProfitMod
+			EndIf
 		EndIf
 		Return result
 	End Method

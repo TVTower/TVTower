@@ -75,7 +75,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'same for "sponsored" programmes
 		If Self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'fetch the rounded revenue for broadcasting this programme
-			Local revenue:Int = audience.GetTotalSum() * Max(0, data.GetPerViewerRevenue())
+			Local revenue:Int = audience.GetTotalSum() * Max(0, data.GetPerViewerRevenue(owner))
 
 			If revenue > 0
 				'earn revenue for callin-shows
