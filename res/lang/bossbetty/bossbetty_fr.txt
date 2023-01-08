@@ -134,7 +134,7 @@ DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT        = Okay, Je vais rembourser une partie
 DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE  = Au moins une bonne nouvelle aujourd'hui.\n \nCombien souhaites tu rembourser ?
 DIALOGUE_BOSS_CREDIT_REPAY_VALUE1        = Hmm, Je voudrais rembourser |b|%VALUE%€|/b|.
 DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Uuhm, Je souhaite rembourser |b|%VALUE%€|/b|.
-DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, rembourser l'ensemble du crédit|b|%CREDIT%€|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, rembourser l'ensemble du crédit |b|%CREDIT%€|/b|.
 
 DIALOGUE_BOSS_CHANGETOPIC1  = Pouvons-nous parler de quelque chose de différent ?
 #DIALOGUE_BOSS_CHANGETOPIC2  = 

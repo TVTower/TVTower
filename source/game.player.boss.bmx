@@ -491,7 +491,7 @@ Type TPlayerBoss
 				endif
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			Else
-				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", GetPlayerBase().GetCredit()))
+				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCredit())))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			EndIf
@@ -511,7 +511,7 @@ Type TPlayerBoss
 			Next
 			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
 				local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCredit()))
-				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), 0, payBackEvent))
+				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%",  MathHelper.DottedValue(GetPlayerBase().GetCredit())), 0, payBackEvent))
 			EndIf
 			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
 			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
@@ -535,7 +535,7 @@ Type TPlayerBoss
 			ChefDialogue.SetArea(new TRectangle.Init(300, 25, 400, 110))
 			ChefDialogue.moveDialogueBalloonStart = 30
 		endif
-		ChefDialogue.SetAnswerArea(new TRectangle.Init(400, 220, 380, 90))
+		ChefDialogue.SetAnswerArea(new TRectangle.Init(420, 270, 360, 90))
 		ChefDialogue.SetGrow(1,-1)
 
 		if Dialogues.length < visitingPlayerID then Dialogues = Dialogues[.. visitingPlayerID]
