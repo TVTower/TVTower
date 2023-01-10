@@ -379,7 +379,7 @@ Type TInGameInterface
 						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 					EndIf
 
-					content	= GetLocale("AUDIENCE_NUMBER")+": "+ audienceStr + " (" + audiencePercentageStr + " %)"
+					content	= GetLocale("AUDIENCE_NUMBER")+": "+ audienceStr + " (" + audiencePercentageStr + "%)"
 
 
 					'Newsshow details
@@ -516,7 +516,7 @@ Type TInGameInterface
 						audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
 						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 					EndIf
-					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": " + audienceStr + " (" + audiencePercentageStr +" %)")
+					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": " + audienceStr + " (" + audiencePercentageStr +"%)")
 					CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
 
 					CurrentAudienceToolTip.enabled = 1
@@ -891,7 +891,7 @@ Type TInGameInterface
 		endif
 
 		'market share
-		_interfaceFont.DrawBox(audiencePercentageStr+" %", 357, 448, 130, 32, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(audiencePercentageStr+"%", 357, 448, 130, 32, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
 
 		'current day
 		_interfaceFont.DrawBox((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 539, 130, 32, sALIGN_CENTER_BOTTOM, currentDayColor, EDrawTextEffect.Shadow, 0.5)
