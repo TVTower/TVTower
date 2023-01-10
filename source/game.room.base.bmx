@@ -896,7 +896,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 			Return GetLocale("TOMORROW") + " " + GetWorldTime().GetFormattedTime(self.blockedUntil)
 		'other day: show game day + hour
 		else
-			Return GetWorldTime().GetFormattedDate(self.blockedUntil)
+			Return GetLocale("GAMEDAY") + " "+ GetWorldTime().GetFormattedDate(self.blockedUntil, "g (h:i)")
 		endif
 		Return ""
 	End Method

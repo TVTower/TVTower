@@ -570,7 +570,8 @@ Type TInGameInterface
 				content :+ "~n"
 				content :+ "|b|"+GetLocale("DAY_OF_YEAR")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
 				content :+ "~n"
-				content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(GameConfig.dateFormat)+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
+				'content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(GameConfig.dateFormat)+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
+				content :+ GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+" "+ GetWorldTime().GetYear()
 				CurrentTimeToolTip.SetContent(content)
 				CurrentTimeToolTip.enabled = 1
 				CurrentTimeToolTip.Hover()
