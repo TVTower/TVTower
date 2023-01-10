@@ -661,7 +661,6 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		'=== BOXES ===
 		If TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			Local price:String = "", reach:String = "", reachChange:String = "", runningCost:String =""
-			Local sellingHasCost:Int = False
 			Local headerText:String
 			Local subHeaderText:String
 			Local canAfford:Int = True
@@ -676,12 +675,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetExclusiveReach() )
-						Local sellPrice:Int = selectedStation.GetSellPrice()
-						If sellPrice < 0
-							SellingHasCost=True
-							sellPrice=-sellPrice
-						EndIf
-						price = TFunctions.convertValue(sellPrice, 2, 0)
+						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -749,7 +743,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
-				If sellingHasCost
+				If price < 0
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 				Else
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -950,7 +944,6 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		'=== BOXES ===
 		If TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			Local price:String = "", reach:String = "", reachChange:String = "", runningCost:String =""
-			local payPenalty:int = False
 			Local headerText:String
 			Local subHeaderText:String
 			Local canAfford:Int = True
@@ -963,13 +956,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
-						if selectedStation.GetSellPrice() < 0
-							price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
-							payPenalty = True
-						else
-							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-						endif
-
+						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -1080,7 +1067,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
-				if payPenalty
+				if price < 0
 					tooltips[4].SetContent(GetLocale("TERMINATION_FEE"))
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 				else
@@ -1363,7 +1350,6 @@ endrem
 		'=== BOXES ===
 		If TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			Local price:String = "", reach:String = "", reachChange:String = "", runningCost:String =""
-			Local payPenalty:int
 			Local headerText:String
 			Local subHeaderText:String
 			Local canAfford:Int = True
@@ -1394,13 +1380,7 @@ endrem
 								renewContractTooltips[1].SetContent( "+"+TFunctions.convertValue(runningCostChange, 2, 0) + " " + GetLocale("CURRENCY") )
 							endif
 
-
-							if selectedStation.GetSellPrice() < 0
-								price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
-								payPenalty = True
-							else
-								price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-							endif
+							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 
 							If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 								runningCost = "-/-"
@@ -1505,7 +1485,7 @@ endrem
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
-				if payPenalty
+				if price < 0
 					tooltips[4].SetContent(GetLocale("TERMINATION_FEE"))
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 				else
