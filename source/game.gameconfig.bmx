@@ -15,9 +15,6 @@ Type TGameConfig {_exposeToLua}
 	Field KeepBankruptPlayerFinances:int = True
 	Field dateFormat:string = "d.m.y"
 	Field devGUID:string
-	Field compressSavegames:Int = True
-	Field compressedSavegameExtension:String = "zst"
-	Field uncompressedSavegameExtension:String = "xml"
 	Field mouseHandlingDisabled:int = False
 	'storage for current savegame (if there is one loaded) information
 	Field savegame_initialBuildDate:String
@@ -32,6 +29,10 @@ Type TGameConfig {_exposeToLua}
 	Field InRoomTimeSlowDownMod:Float = 1.0 {nosave}
 	'store configured value for disableing during fast forward
 	Field InRoomTimeSlowDownModBackup:Float {nosave}
+
+	Global compressSavegames:Int = True
+	Global compressedSavegameExtension:String = "sav"
+	Global uncompressedSavegameExtension:String = "xml"
 
 	Global clNormal:SColor8 = SColor8.Black
 	Global clPositive:SColor8 = new SColor8(90, 110, 90)
