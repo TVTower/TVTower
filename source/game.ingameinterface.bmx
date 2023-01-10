@@ -1216,7 +1216,8 @@ endrem
 						'three seats - use only one left
 						If newCouchPositions[1] = intendedPosition Or newCouchPositions[0] = intendedPosition
 							intendedPosition = intendedPosition - 60
-							If newCouchPositions[1] = intendedPosition Or newCouchPositions[0] = intendedPosition Then newCouchPositions[spot] = intendedPosition - 60
+							If newCouchPositions[1] = intendedPosition Or newCouchPositions[0] = intendedPosition Then intendedPosition = intendedPosition - 60
+							newCouchPositions[spot] = intendedPosition
 						EndIf
 					EndIf
 				EndIf
