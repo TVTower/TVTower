@@ -191,7 +191,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 				If not (HasFlag(TVTRoomDoorFlag.TOOLTIP_ONLY_ON_SAME_FLOOR) and GetPlayerBase().GetFigure().GetFloor() <> onFloor)
 					If not tooltip
 						tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
-						tooltip.SetMinTitleAndContentWidth(100, 160)
+						tooltip.SetMinTitleAndContentWidth(100, 180)
 						tooltip.AssignRoom(room.id)
 					endif
 

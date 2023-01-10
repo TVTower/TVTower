@@ -6029,7 +6029,8 @@ endrem
 		ElseIf GetWorldTime().GetDay() + 1 = GetWorldTime().GetDay(subscriptionEndTime)
 			t = t.Replace("%DAYX%", GetLocale("TOMORROW") )
 		Else
-			t = t.Replace("%DAYX%", GetWorldTime().GetFormattedGameDate(subscriptionEndTime) )
+			'(currently not used - notification only one day in advance)
+			t = t.Replace("%DAYX%", GetLocale("GAMEDAY") + " " +(GetWorldTime().GetDaysRun(subscriptionEndTime)+1))
 		EndIf
 
 		toast.SetText( t )
