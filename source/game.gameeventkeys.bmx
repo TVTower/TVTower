@@ -120,7 +120,6 @@ Type TGameEventKeys
 	Field BroadcastProvider_OnSetActive:TEventKey = GetEventKey("BroadcastProvider.OnSetActive", True)
 	Field BroadcastProvider_OnSetInactive:TEventKey = GetEventKey("BroadcastProvider.OnSetInactive", True)
 	Field Satellite_OnUpgradeTech:TEventKey = GetEventKey("Satellite.OnUpgradeTech", True)
-	Field Satellite_OnReduceMinimumChannelImage:TEventKey = GetEventKey("Satellite.OnReduceMinimumChannelImage", True)
 	
 	
 	'game.misc.ingamehelp.bmx"

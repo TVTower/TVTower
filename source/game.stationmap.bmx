@@ -6054,8 +6054,6 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 	'name without revision
 	Field brandName:String
 
-	Field nextImageReductionTime:Long = -1
-	Field nextImageReductionValue:Float = 0.97
 	Field nextTechUpgradeTime:Long = -1
 	Field nextTechUpgradeValue:Int = 0
 	Field techUpgradeSpeed:Int
@@ -6200,21 +6198,6 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 
 				nextTechUpgradeTime = GetWorldTime().ModifyTime(-1, 0, 0, Int(RandRange(250,350) * 100.0/techUpgradeSpeed))
 				nextTechUpgradeValue = BiasedRandRange(10, 25, 0.2) * 100.0/techUpgradeSpeed
-			EndIf
-
-
-			If minimumChannelImage > 0.1 And nextImageReductionTime < GetWorldTime().GetTimeGone()
-				If nextImageReductionTime > 0
-					Local oldMinimumChannelImage:Float = minimumChannelImage
-					minimumChannelImage :* nextImageReductionValue
-					'avoid reducing very small values for ever and ever
- 					If minimumChannelImage <= 0.1 Then minimumChannelImage = 0
-					'inform others (eg. for news)
-					TriggerBaseEvent(GameEventKeys.Satellite_OnReduceMinimumChannelImage, New TData.AddFloat("minimumChannelImage", minimumChannelImage).AddFloat("oldMinimumChannelImage", oldMinimumChannelImage), Self )
-				EndIf
-
-				nextImageReductionTime = GetWorldTime().ModifyTime(-1, 0, 0, Int(RandRange(20,30)))
-				nextImageReductionValue = nextImageReductionValue^2
 			EndIf
 		EndIf
 	End Method
