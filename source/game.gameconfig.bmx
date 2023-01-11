@@ -31,7 +31,7 @@ Type TGameConfig {_exposeToLua}
 	Field InRoomTimeSlowDownModBackup:Float {nosave}
 
 	Global compressSavegames:Int = True
-	Global compressedSavegameExtension:String = "sav"
+	Global compressedSavegameExtension:String = "zst"
 	Global uncompressedSavegameExtension:String = "xml"
 
 	Global clNormal:SColor8 = SColor8.Black
@@ -53,15 +53,15 @@ Type TGameConfig {_exposeToLua}
 	
 	'set useCompression to 0 to forcefully disable compression
 	'set useCompression to 1 to forcefully enable compression
-	Method GetSavegameExtension:String(useCompression:Int = -1)
-		If useCompression = -1 Then useCompression = self.compressSavegames
+	Function GetSavegameExtension:String(useCompression:Int = -1)
+		If useCompression = -1 Then useCompression = TGameConfig.compressSavegames
 
 		If useCompression
 			Return compressedSavegameExtension
 		Else
 			Return uncompressedSavegameExtension
 		EndIf
-	End Method
+	End Function
 
 
 	Method IsObserved:int(obj:object)

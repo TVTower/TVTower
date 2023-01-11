@@ -2609,7 +2609,7 @@ Type TSaveGame Extends TGameState
 		'Local streamPosBackup:Long
 		Local stream:TStream
 		'compressed file?
-		Local isCompressed:Int = (ExtractExt(fileURI).ToLower() = GameConfig.compressedSavegameExtension)
+		Local isCompressed:Int = IsCompressedFile(fileURI)
 		Local summaryData:TData
 		
 		If not isCompressed
@@ -2818,7 +2818,13 @@ Type TSaveGame Extends TGameState
 			Return False
 		EndIf
 	End Function
-	
+
+
+	Function IsCompressedFile:Int(uri:String)
+		Local format:String = IdentifyFileFormat(uri)
+		Return (format = "zst" or format = "gzip")	
+	End Function
+
 	
 	Function IdentifyFileFormat:String(uri:String)
 		'read in first up to 100 chars of a file
@@ -2833,7 +2839,7 @@ Type TSaveGame Extends TGameState
 		If readAmount > 2
 			s.Seek(0)
 			If s.ReadByte() = $1f and s.ReadByte() = $8b
-				Return "zst"
+				Return "gzip"
 			EndIf
 		EndIf
 		'for xml we simply search for "<?xml" but allow some mistakingly
@@ -2920,7 +2926,7 @@ Type TSaveGame Extends TGameState
 		'savegame deserialization creates new TGameObjects - and thus
 		'increases the ID count!
 		Local saveGame:TSaveGame
-		Local isCompressed:Int = (IdentifyFileFormat(saveURI) = "zst")
+		Local isCompressed:Int = IsCompressedFile(saveURI)
 		If not isCompressed
 			saveGame = TSaveGame(persist.DeserializeFromFile(saveURI))
 		Else

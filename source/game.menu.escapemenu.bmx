@@ -294,7 +294,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		savegamelist.EmptyList()
 
 		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
-		dirTree.SetIncludeFileEndings(["xml", "zst"])
+		dirTree.SetIncludeFileEndings([TGameConfig.compressedSavegameExtension, TGameConfig.uncompressedSavegameExtension])
 		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
 		Local fileURIs:String[] = dirTree.GetFiles()
 
@@ -532,7 +532,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		'fill existing savegames
 		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
-		dirTree.SetIncludeFileEndings(["xml", "zst"])
+		dirTree.SetIncludeFileEndings([TGameConfig.compressedSavegameExtension, TGameConfig.uncompressedSavegameExtension])
 		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
 		Local fileURIs:String[] = dirTree.GetFiles()
 
