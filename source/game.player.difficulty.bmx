@@ -6,6 +6,7 @@ Import "Dig/base.util.data.xmlstorage.bmx"
 
 Type TPlayerDifficultyCollection Extends TGameObjectCollection
 	Field _initializedDefaults:int = False {nosave} 'initialize each time
+	Global _basePath:String = ""
 	Global _instance:TPlayerDifficultyCollection
 
 
@@ -19,7 +20,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 	Method InitializeDefaults:int()
 		Local dataLoader:TDataXmlStorage = New TDataXmlStorage
 		dataLoader.setRootNodeKey("difficulties")
-		local difficultyConfig:TData = dataLoader.Load("config/gamesettings/default.xml")
+		local difficultyConfig:TData = dataLoader.Load(_basePath+"config/gamesettings/default.xml")
 
 		local easy:TPlayerDifficulty = ReadDifficultyData("easy", difficultyConfig)
 		local normal:TPlayerDifficulty = ReadDifficultyData("normal", difficultyConfig)
