@@ -675,6 +675,62 @@
             <data genre="3" price="0.47" quality="47" />
 			<availability year_range_from="1995" year_range_to="1995" />
         </news>
+		<!-- "TVT AG" -->
+        <news id="cujo-news-tvt-01" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+            <title>
+                <de>TVT-Entwickler arbeiten im Home-Office</de>
+                <en>TVT developers work in a home office</en>
+            </title>
+            <description>
+                <de>Wegen der Pandemie arbeiten ab sofort alle TVT-Entwickler im Home-Office. Laut der TVT AG sind weltweit etwa 35.000 Mitarbeiter davon betroffen.</de>
+                <en>Due to the pandemic, all TVT developers are working in their home offices with immediate effect. According to TVT AG, about 35,000 employees worldwide are affected.</en>
+            </description>
+			<effects>
+                <effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-tvt-02" />
+            </effects>
+            <data genre="0" price="0.5" quality="20" />
+            <availability year_range_from="2020" year_range_to="" />
+        </news>
+        <news id="cujo-news-tvt-02" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+            <title>
+                <de>News werden verschlüsselt</de>
+                <en>News are encrypted</en>
+            </title>
+            <description>
+                <de>Laut der TVT AG werden die News wegen der geltenden GSDVO ab sofort verschlüsselt. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</de>
+                <en>According to TVT AG, the news will be encrypted with immediate effect due to the GSDVO in force. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</en>
+            </description>
+			<effects>
+                <effect trigger="happen" type="triggernews" time="2,1,2,13,17" news="cujo-news-tvt-03" />
+            </effects>
+            <data genre="0" price="0.5" quality="30" />
+        </news>
+        <news id="cujo-news-tvt-03" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+            <title>
+                <de>TVT AG schafft Schreibmaschinen ab</de>
+                <en>TVT AG abolishes typewriters</en>
+            </title>
+            <description>
+                <de>Wie die Pressesprecherin der TVT AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: "Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet."</de>
+                <en>According to TVT AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit Bandium computers from now on."</en>
+            </description>
+			<effects>
+                <effect trigger="happen" type="triggernews" time="2,1,2,14,18" news="cujo-news-tvt-04" />
+            </effects>
+            <data genre="0" price="0.5" quality="30" />
+        </news>
+        <news id="cujo-news-tvt-04" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+            <title>
+                <de>Schokoriegel sollen verboten werden</de>
+                <en>Candy bars to be banned</en>
+            </title>
+            <description>
+                <de>Wie Gesundheitsminister Kurt Leisenfluss in einem TVT-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TVT-Sendern schaltet.</de>
+                <en>Health Minister Kurt Leisenfluss announced on a TVT station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TVT stations.</en>
+            </description>
+            <effects />
+            <data genre="0" price="0.5" quality="40" />
+        </news>
     </allnews>
 	<celebritypeople>
         <!-- Danny Pintauro -->
@@ -957,6 +1013,16 @@
 			<first_name_original>Carlo</first_name_original>
 			<last_name_original>Rola</last_name_original>
 			<details job="1" gender="1" birthday="1958-10-06" deathday="2016-03-14" country="D" />
+		</person>
+		<!-- Moderator -->
+		<!-- Bob Ross -->
+		<person id="cujo-person-ross-blob" tmdb_id="" imdb_id="nm1470679" creator="8827" created_by="Cujo">
+			<first_name>Ross</first_name>
+			<last_name>Blob</last_name>
+			<nick_name></nick_name>
+			<first_name_original>Bob</first_name_original>
+			<last_name_original>Ross</last_name_original>
+			<details job="8" gender="1" birthday="1942-10-29" deathday="1995-07-04" country="USA" />
 		</person>
 	</celebritypeople>
     <allprogrammes>
@@ -1622,6 +1688,83 @@
                 </programme>
             </children>
         </programme>
+			<programme id="cujo-serien-spass-malen" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0383795" creator="8827" created_by="Cujo">
+            <title>
+                <de>Spaß am Malen</de>
+                <en>Fun painting</en>
+            </title>
+			<title_original>
+				<de>Bob Ross: The Joy of Painting</de>
+				<en>The Joy of Painting</en>
+			</title_original>
+            <description>
+                <de>Ross Blob malt ein Bild und erklärt mit sanfter Stimme, wie die Zuschauer den Pinsel halten sollen.</de>
+                <en>Ross Blob paints a picture and explains in a gentle voice how the audience should hold the brush.</en>
+            </description>
+			<staff>
+				<member index="0" function="8">cujo-ross-blob</member>
+			</staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1983" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.25" />
+            <ratings critics="29" speed="3" outcome="42" />
+            <children>
+                <programme id="cujo-serien-spass-malen-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+                    <title>
+                        <de>Wasserfall in den Bergen</de>
+                        <en>Waterfall in the mountains</en>
+                    </title>
+                    <description>
+                        <de>Ross Blob malt einen Wasserfall in den Bergen und zeigt, wie die Wassertropfen zum Glitzern gebracht werden können.</de>
+                        <en>Ross Blob paints a waterfall in the mountains and shows how to make the water droplets sparkle.</en>
+                    </description>
+                    <ratings critics="29" speed="5" />
+                </programme>
+                <programme id="cujo-serien-spass-malen-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+                    <title>
+                        <de>Ein Sonnenuntergang am Meer</de>
+                        <en>A sunset by the sea</en>
+                    </title>
+                    <description>
+                        <de>Ross Blob malt einen orange-leuchtenden Sonnenuntergang und motiviert damit die Zuschauer zum Selbermalen.</de>
+                        <en>Ross Blob paints an orange-glowing sunset, motivating the audience to paint it themselves.</en>
+                    </description>
+                    <ratings critics="29" speed="5" />
+                </programme>
+                <programme id="cujo-serien-spass-malen-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+                    <title>
+                        <de>Die Windmühle</de>
+                        <en>The windmill</en>
+                    </title>
+                    <description>
+                        <de>Ross Blob malt eine Windmühle vor einem Weizenfeld und erklärt den Zuschauern, wie einfach es ist die Getreideähren zu malen.</de>
+                        <en>Ross Blob paints a windmill in front of a wheat field and explains to the audience how easy it is to paint the ears of grain.</en>
+                    </description>
+                    <ratings critics="29" speed="5" />
+                </programme>
+                <programme id="cujo-serien-spass-malen-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+                    <title>
+                        <de>Dunkle Wolken am Himmel</de>
+                        <en>Dark clouds in the sky</en>
+                    </title>
+                    <description>
+                        <de>Blob Ross malt dunkle Wolken an einem Himmel und gibt den Zuschauern Tipps, wie sie ein Gewitter malen können.</de>
+                        <en>Blob Ross paints dark clouds in a sky and gives viewers tips on how to paint a thunderstorm.</en>
+                    </description>
+                    <ratings critics="29" speed="5" />
+                </programme>
+                <programme id="cujo-serien-spass-malen-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+                    <title>
+                        <de>Sonnenblumen am Wegesrand</de>
+                        <en>Sunflowers by the wayside</en>
+                    </title>
+                    <description>
+                        <de>Blob Ross malt drei Sonnenblumen am Wegesrand und zeigt das richtige Malen des Schattenwurfs.</de>
+                        <en>Blob Ross paints three sunflowers by the wayside and demonstrates how to properly paint the shadow cast.</en>
+                    </description>
+                    <ratings critics="29" speed="5" />
+                </programme>
+            </children>
+        </programme>
     </allprogrammes>
 	<allads>
 		<!-- Toyota - Nichts ist unmöglich -->
@@ -1630,11 +1773,35 @@
 				<de>Yotota</de>
 			</title>
 			<description>
-				<de>Alles ist möglich - Yotota</de>
-				<en>Everything is possible - Yotota</en>
+				<de>Alles ist möglich - Yotota - Helfen Sie mit: Yotota stiftet für jedes verkaufte Auto 10 Cent an eine Initiative zur Rettung des Regenwalds.</de>
+				<en>Anything is possible - Yotota - Help: Yotota donates 10 cents for every car sold to an initiative to save the rainforest.</en>
 			</description>
 			<conditions min_audience="10" min_image="0" target_group="0" prohibited_genre="8" prohibited_programme_type="5" prohibited_programme_flag="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
+		</ad>
+		<!-- Duplo -->
+		<ad id="cujo-werbung-pludo">
+			<title>
+				<de>Pludo</de>
+			</title>
+			<description>
+				<de>Pludo - Der wahrscheinlich längste Schokoriegel der Welt - Neu: Sonderaktion - 9 Riegel zum Preis von 11</de>
+				<en>Pludo - Probably the longest chocolate bar in the world - New: Special offer - 9 bars for the price of 11</en>
+			</description>
+			<conditions min_audience="1.2" min_image="0" target_group="0" prohibited_genre="0" prohibited_programme_type="" prohibited_programme_flag="" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="12" repetitions="4" duration="3" profit="1100" penalty="1650" fix_infomercial_profit="1"/>
+		</ad>
+		<!-- Schwartau -->
+		<ad id="cujo-werbung-schwalltau">
+			<title>
+				<de>Schwalltau</de>
+			</title>
+			<description>
+				<de>Schwalltau - Die süßeste Versuchung seit es Marmelade gibt - Jetzt auch mit Tollkirschen</de>
+				<en>Schwalltau - The sweetest temptation since there is jam - Now also with belladonna cherries</en>
+			</description>
+			<conditions min_audience="2.4" min_image="0" target_group="0" prohibited_genre="0" prohibited_programme_type="" prohibited_programme_flag="" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="14" repetitions="3" duration="2" profit="750" penalty="1125" fix_infomercial_profit="1"/>
 		</ad>
 	</allads>
 </tvtdb>
