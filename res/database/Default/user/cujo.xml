@@ -1702,7 +1702,7 @@
                 <en>Ross Blob paints a picture and explains in a gentle voice how the audience should hold the brush.</en>
             </description>
 			<staff>
-				<member index="0" function="8">cujo-ross-blob</member>
+				<member index="0" function="8">cujo-person-ross-blob</member>
 			</staff>
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="USA" year="1983" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.25" />
