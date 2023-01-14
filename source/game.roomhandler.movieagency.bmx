@@ -1086,7 +1086,16 @@ endrem
 				'allow drop on own place
 				If underlayingItem = guiLicence Then Return True
 
-				If underlayingItem
+				'prevent dropping licence to incompatible shelf
+				Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter(GetInstance().filterMoviesGood)
+				If receiverList = GuiListMoviesCheap Then filter = TProgrammeLicenceFilter(GetInstance().filterMoviesCheap)
+				If receiverList = GuiListSeries Then filter = GetInstance().filterSeries
+
+				guiLicence.licence.owner = TOwnedGameObject.OWNER_NOBODY
+				Local isFiltered:Int = filter.DoesFilter(guiLicence.licence)
+				guiLicence.licence.owner = owner
+
+				If underlayingItem Or Not isFiltered
 					triggerEvent.SetVeto()
 					Return False
 				EndIf
@@ -1122,12 +1131,6 @@ endrem
 			Case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
 				'when dropping vendor licence on vendor shelf .. no prob
 				If guiLicence.licence.owner <= 0 Then Return True
-
-				'prevent dropping licence to incompatible shelf
-				If Not receiverList.HasItem(guiLicence)
-					triggerEvent.setVeto()
-					Return False
-				EndIf
 
 				If Not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
 					triggerEvent.setVeto()
