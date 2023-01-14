@@ -353,6 +353,11 @@ Type TScriptTemplate Extends TScriptBase
 		'template jobs)
 		For local i:int = 0 until result.length
 			result[i] = result[i].Copy()
+			Local finalJob:TPersonProductionJob = result[i]
+			If finalJob.gender = 0 And finalJob.roleID <> 0
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID(finalJob.roleID)
+				If role And role.gender > 0 Then finalJob.gender = role.gender
+			EndIf
 		Next
 
 		rem
