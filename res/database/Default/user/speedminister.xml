@@ -20,7 +20,9 @@
         <person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
         <person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
         <person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id032" first_name="Hans" last_name="Prielmann" first_name_original="Heinz" last_name_original="Sielmann" creator="8605" created_by="speedminister" />
+
+        <!-- TODO: The non-fictional people in this file seem to be unused? -->
+        
         <person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" first_name_original="Dennis" last_name_original="Jacobsen" creator="8605" created_by="speedminister" />
         <person id="SpeedMinister-person-id038" first_name="Lianda" last_name="Mahoud" first_name_original="Randa" last_name_original="Chahoud" creator="8605" created_by="speedminister" />
         <!-- Österreich -->
@@ -88,7 +90,7 @@
             </title>
             <description>
                 <de>Abendfüllende Musikshow mit gut gelaunter Anmoderation, viel Musik und kurzen Interviews der Stars. Etwas um den Alltag zu vergessen.</de>
-                <en>Full-length music show with good-humoured moderation, lots of music and short interviews with the stars. Something to forget daily routine.</en>
+                <en>Full-length music show with good-humoured moderation, lots of music and short interviews with the stars. Here's something to help you forget the daily grind.</en>
             </description>
             <staff>
                 <member index="0" function="1">SpeedMinister-person-id001</member>
@@ -106,7 +108,7 @@
                     </title>
                     <description>
                         <de>Neben einer ungarischen Variante des Schuhplattlers heizt die Truppe mit immer schneller werdenden Rhythmen ein. Da kommt Stimmung in die Bude.</de>
-                        <en>In addition to a Hungarian version of the Schuhplattler, the troop is heating up with ever faster rhythms. There's a mood coming up.</en>
+                        <en>In addition to a Hungarian version of the Schuhplattler, the troop gets the audience cooking with ever faster rhythms. This brings life into the place.</en>
                     </description>
                     <ratings critics="59" speed="70" />
                 </programme>
@@ -117,29 +119,29 @@
                     </title>
                     <description>
                         <de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
-                        <en>It wakes even the sleepiest one in the back row. Four tubas, a trumpet, a drum kit and a singer do their best. With mediocre success.</en>
+                        <en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
                     </description>
                     <ratings critics="40" speed="50" />
                 </programme>
                 <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Karl Maische</de>
-                        <en></en>
+                        <en>Karl Mash</en>
                     </title>
                     <description>
                         <de>Mit fettigem Schmäh und pomadigen Sprüchen verhilft er der Show zu gezwungenen Lachern. Die Balladen, die er in den Saal schmettert, sind der positive Höhepunkt.</de>
-                        <en>With greasy taunt and pomade sayings he helps the show to some forced laughs. Only positive climax are the ballads he smashes into the hall.</en>
+                        <en>With greasy banter and pompous catchphrases he gets the show some forced laughs. The ballads he belts into the hall are the positive highlight.</en>
                     </description>
                     <ratings critics="49" speed="51" />
                 </programme>
                 <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Frantius F. Freudius</de>
-                        <en></en>
+                        <en>Johnny J. Joydious</en>
                     </title>
                     <description>
                         <de>Schon mit seinem Künstlernamen treibt er den Zuschauern die Fremdschäm-Schamesröte ins Gesicht. Ein absoluter Topstar der volksirrtümlichen Hitparade.</de>
-                        <en>Already with his stage name he brings up some vicarious embarrassment to all the viewers. An absolute top star of the tradidiotionally hit parade.</en>
+                        <en>Alone with his cringeworthy stagename he makes the audience feel embarrassed until their faces turn red. An absolute top star of the tradidiotionally hit parade.</en>
                     </description>
                     <ratings critics="62" speed="65" />
                 </programme>
@@ -161,18 +163,18 @@
                     </title>
                     <description>
                         <de>„Es steht ein Bär auf'm Flur, es steht ein Bär auf'm Flur, ja, ja, ein Bär auf'm Flur und knurrt mich an.“ Wen es da nicht mitreißt, der ist schon tot!</de>
-                        <en>"There's a bear in the hall, there's a bear in the hall, yeah, yeah, a bear in the hall growling at me." If it doesn't stun you, you're already dead!</en>
+                        <en>"There's a bear in the hall, there's a bear in the hall, yeah, yeah, a bear in the hall growling at me." Whoever isn't carried away is already dead!</en>
                     </description>
                     <ratings critics="60" speed="68" />
                 </programme>
                 <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Edmondia und die Schwanenhalsdreher</de>
-                        <en>Edmondia and the gooseneck turners</en>
+                        <en>Edmondia and the Gooseneck Twisters</en>
                     </title>
                     <description>
-                        <de>Neben gesanglichem Talent, kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere "Talente" bei Edmondia entdecken.</de>
-                        <en>Besides vocal talent neutral viewers or fans can discover much more obvious "talents" at Edmondia.</en>
+                        <de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere "Talente" bei Edmondia entdecken.</de>
+                        <en>Besides vocal talent, the neutral spectator, as well as the fan, can discover much more obvious "talents" in Edmondia.</en>
                     </description>
                     <ratings critics="45" speed="60" />
                 </programme>
@@ -183,11 +185,11 @@
                     </title>
                     <description>
                         <de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen Karlheinz Dorfmichel ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
-                        <en>Fat Fries, Frantius F. Freudius, Edmondia and the gooseneck turners meet aside of the humorist Karlheinz Dorfmichel. The unrivalled climax of the popular tradidiotional calendar.</en>
+                        <en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist John D. Silly Billy. The unrivaled culmination in the popular tradidiotional calendar.</en>
                     </description>
-					<staff>
-						<member index="2" function="64">SpeedMinister-celebritypeople-KarlHeinzDorfmichel</member>
-					</staff>
+                    <staff>
+                        <member index="2" function="64">SpeedMinister-celebritypeople-KarlHeinzDorfmichel</member>
+                    </staff>
                     <ratings critics="55" speed="60" />
                 </programme>
             </children>
@@ -196,11 +198,11 @@
         <programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Andauernd Käse</de>
-                <en>Cheese all around</en>
+                <en>Cheese all the time</en>
             </title>
             <description>
                 <de>Lockere Talkrunde mit Moderator und 2-3 Experten, Verkostung verschiedener Marken, mit klugen Sprüchen und einer Menge Rotwein.</de>
-                <en>Relaxed chat with moderator and 2-3 experts, tasting of different brands, with clever sayings and a lot of red wine.</en>
+                <en>Relaxed chat with moderator and 2-3 experts, tasting of various brands, with clever sayings and a lot of red wine.</en>
             </description>
             <staff>
                 <member index="0" function="1">SpeedMinister-person-id004</member>
@@ -214,11 +216,11 @@
                 <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Analogkäse</de>
-                        <en>Analogous cheese</en>
+                        <en>Cheese analogue</en>
                     </title>
                     <description>
                         <de>Veganer Käse der Zukunft? Darf man von Käse sprechen - bei pflanzlichen Produkten? Kontroverser Serienstart, bei dem viel Käse erzählt wird.</de>
-                        <en>Vegan cheese of the future? Can one speak of cheese with vegetable ingredients? Controversial start to the series, in which a lot of cheese is told.</en>
+                        <en>Vegan cheese of the future? Is it permissible to speak of cheese - in the case of plant-based products? Controversial series start with a lot of cheese-talk.</en>
                     </description>
                     <staff>
                         <member index="2" function="2">Per_custom_Freddy_461</member>
@@ -372,7 +374,7 @@
                     </title>
                     <description>
                         <de>Aller Käse ist zu dieser Abschlussfolge aufgefahren. Sechs Experten schieben sich am kalten Buffet entlang und kennen keine Zurückhaltung. Fazit der Reihe: Alles Käse!</de>
-                        <en>All the cheeses are put on the table this time. Six experts push themselves along the cold buffet and know no restraint. Conclusion of the series: That's cheese!</en>
+                        <en>All the cheeses are ramped up for this final episode. Six experts push themselves along the cold buffet and know no restraint. Conclusion of the series: It's all cheese!</en>
                     </description>
                     <staff>
                         <member index="2" function="2">SpeedMinister-person-id008</member>
@@ -390,7 +392,7 @@
         <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Soldaten, Paviane und Co.</de>
-                <en>Soldiers, baboons, etc.</en>
+                <en>Soldiers, baboons, and co.</en>
             </title>
             <description>
                 <de>Das Leben im afghanischen Zoo der Hauptstadt Kabul mit der Kamera in Szene gesetzt.</de>
@@ -471,7 +473,7 @@
                     </title>
                     <description>
                         <de>Es wird eine Lieferung Medikamente beobachtet, wie sie in den USA zusammengestellt wird und wie das Paket die verschiedenen Logistikknotenpunkte durchwandert. Unterfüttert mit Alltagszenen aus dem kabuler Zoo.</de>
-                        <en>A delivery of medicines is observed as it is assembled in the USA and how the package travels through the various logistics nodes. Lined with everyday scenes from the Kabul Zoo.</en>
+                        <en>A delivery of medicines is observed as it is assembled in the USA and how the package travels through the various logistics hubs. Underpinned with everyday scenes from the Kabul Zoo.</en>
                     </description>
                     <staff>
                         <member index="2" function="2">SpeedMinister-person-id026</member>
@@ -485,7 +487,7 @@
                     </title>
                     <description>
                         <de>Bei den Meerkatzen herrscht Schwund. Sie teilen sich zusammen mit den Löwen und Erdmännchen ein Außengehege. Die Erdmännchen verschwinden in Ihren Höhlen, die Meerkatzen auf die Kletterbäume. Diese sind scheinbar nicht hoch genug.</de>
-                        <en>It's dwindling among guenons. They share an outside enclosure with the lions and meerkats. The males disappear in their caves, the guenons on the climbing trees. These are apparently not high enough.</en>
+                        <en>There is shrinkage among the guenons. They share an outside enclosure with the lions and meerkats. The meerkats disappear in their caves, the guenons on the climbing trees. These are apparently not high enough.</en>
                     </description>
                     <staff>
                         <member index="0" function="2">SpeedMinister-person-id021</member>
@@ -499,8 +501,8 @@
                         <en>The improvised monkey enclosure</en>
                     </title>
                     <description>
-                        <de>Nach der Krise im Löwengehege wird für die Meerkatzen, in einer Blitzaktion ein Außengehege saniert. Zementsäcke verschwinden von verschieden Baustellen der Stadt. Ein 20 Fuß Standardcontainer muss als Tierhaus herhalten.</de>
-                        <en>After the crisis in the lion enclosure, an outdoor enclosure is being renovated for the guenons in a lightning operation. Cement bags disappear from various construction sites in the city. A 20-foot standard container must be used as an animal house.</en>
+                        <de>Nach der Krise im Löwengehege wird für die Meerkatzen in einer Blitzaktion ein Außengehege saniert. Zementsäcke verschwinden von verschieden Baustellen der Stadt. Ein 20 Fuß Standardcontainer muss als Tierhaus herhalten.</de>
+                        <en>After the crisis in the lion enclosure, an outdoor enclosure is being renovated for the guenons in a lightning action. Cement bags disappear from various construction sites in the city. A 20-foot standard container must be used as an animal house.</en>
                     </description>
                     <staff>
                         <member index="0" function="2">SpeedMinister-person-id021</member>
@@ -525,144 +527,6 @@
                 </programme>
             </children>
         </programme>
-
-        <!-- ***** Serie: Expeditionen ins Tierreich, Dokumentation (Originaltitel der Episoden nicht mehr verfügbar) (real) ***** -->
-        <programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Ausflüge ins Tierreich</de>
-                <en>Excursions into the animal kingdom</en>
-            </title>
-            <title_original>
-                <de>Expeditionen ins Tierreich</de>
-                <en>Expeditions into the animal kingdom</en>
-            </title_original>
-            <!-- Alle folgenden Beschreibungen sind fiktiv, d.h. ohne Vorlage erstellt. -->
-            <description>
-                <de>Mit versteckter Kamera wird das Verhalten wilder Tiere möglichst unverfälscht eingefangen.</de>
-                <en>With hidden cameras the behaviour of the wild animals is recorded without any falsification.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">SpeedMinister-person-id032</member>
-                <member index="1" function="2">SpeedMinister-person-id032</member>
-            </staff>
-            <groups target_groups="0" />
-            <!-- neuere Folgen (nicht berücksichtigt) Link: http://www.imdb.com/title/tt0305025/episodes?season=-1&ref_=tt_eps_sn_-1 -->
-            <data country="D" year="1985" distribution="0" maingenre="6" blocks="1" />
-            <ratings critics="75" speed="45" />
-            <!-- Episodes -->
-            <children>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Deutschlands Wälder</de>
-                        <en>The forests of Germany</en>
-                    </title>
-                    <description>
-                        <de>Das Leben wilder Tiere in Deutschlands Wäldern. Hirsch, Wildschwein, Rotfuchs um nur ein paar zu nennen. Luchs und Wildkatze sind dagegen viel seltener.</de>
-                        <en>The life of wild animals in german forests. Deer, wild boars, red fox to name just a few of them. Lynx and wildcat are much more seldom.</en>
-                    </description>
-                    <ratings critics="65" speed="40" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die Alpen</de>
-                        <en>The Alps</en>
-                    </title>
-                    <description>
-                        <de>Hier gilt das Interesse Murmeltieren, Gemsen und den wiederangesiedelten Steinböcken. Sie teilen sich mit Rotwild die Weiden.</de>
-                        <en>Marmots, chamois and relocated steinbocks are from interest. They share their grazing land with red deer.</en>
-                    </description>
-                    <ratings critics="60" speed="35" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die Alligatoren der Everglades</de>
-                        <en>Alligators of the Everglades</en>
-                    </title>
-                    <description>
-                        <de>Nahaufnahmen von Alligatoren bei der Nahrungsbeschaffung und bei der Paarung.</de>
-                        <en>Alligator close-up views while catching their meal and while mating.</en>
-                    </description>
-                    <ratings critics="80" speed="50" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die Füchse Londons</de>
-                        <en>Foxes of London</en>
-                    </title>
-                    <description>
-                        <de>Beobachtungen von wilden Tieren, wo man sie am wenigsten vermutet. In der Großstadt.</de>
-                        <en>Observations of wild animals, where they are at least expected. In the City.</en>
-                    </description>
-                    <ratings critics="76" speed="45" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Madagaskar</de>
-                        <en>Madagascar</en>
-                    </title>
-                    <description>
-                        <de>Eine völlig eigene Tierwelt bietet Madagaskar. Lemuren sind nur die auffälligsten Vertreter, da sie nicht zu überhören sind.</de>
-                        <en>A completly different fauna offers Madagascar. Lemurs are only the most notably representatives, because you cannot fail to hear them.</en>
-                    </description>
-                    <ratings critics="75" speed="48" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die Schmetterlinge Südamerikas</de>
-                        <en>The butterflies of South America</en>
-                    </title>
-                    <description>
-                        <de>Andere Farbkombinationen und größere Flügelspannweiten können die Schmetterlinge des Regenwalds bieten. Die Raupen besitzen verschiedenste Abwehrmechanismen gegen ihre Fressfeinde.</de>
-                        <en>Different colour combinations and greater wingspans can be offered from the butterflies of the rainforest. The caterpillars have got different defence mechanisms against their natural enemies.</en>
-                    </description>
-                    <ratings critics="77" speed="39" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Das Great Barrier Riff</de>
-                        <en>The Great Barrier Reef</en>
-                    </title>
-                    <description>
-                        <de>Bezaubernde Unterwasserwelt entlang der Küste Australiens. Fische so exotisch in Form und Farbe, wie man es sich schöner kaum vorstellen kann.</de>
-                        <en>Adorable underwater world alongside the coast of Australia. Fish as exotic in shape and colour, as it is not possible to imagine.</en>
-                    </description>
-                    <ratings critics="76" speed="42" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die Bären Alaskas</de>
-                        <en>The bears of Alaska</en>
-                    </title>
-                    <description>
-                        <de>Beeindruckend wie eine Bärenmutter sich um ihren Nachwuchs kümmert. Lektionen des Fischfangs an Alaskas lachsreichen Flüssen mit einbezogen.</de>
-                        <en>Impressing how a mother bear cares about her offspring. Lessons of catching fish in Alaskas salmon rich rivers are included.</en>
-                    </description>
-                    <ratings critics="75" speed="40" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Haie</de>
-                        <en>Sharks</en>
-                    </title>
-                    <description>
-                        <de>Vom Katzenhai in der Nordsee, bis zum weißen Hai vor Südafrikas Küste. Die Familie der Haie wird beleuchtet.</de>
-                        <en>Starting with the cat shark in the North Sea, ending with the great white shark infront of South Africas shoreline. The family of the sharks is beeing investigated.</en>
-                    </description>
-                    <ratings critics="80" speed="52" />
-                </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Wale</de>
-                        <en>Whales</en>
-                    </title>
-                    <description>
-                        <de>Die Anmut von Grauwalen, Südkapern, Buckelwalen, Pottwalen und von Blauwalen ist aus kurzer Distanz beobachtbar. Auch Narwale, die Einhörner der Meere werden gezeigt.</de>
-                        <en>The grace of grey whales, southern right whales, humpback whales, sperm whales and blue whales can be seen from short distance. Also narwhales, the unicorns of the seas are shown.</en>
-                    </description>
-                    <ratings critics="77" speed="45" />
-                </programme>
-            </children>
-        </programme>
     </allprogrammes>
 
     <allnews>
@@ -673,11 +537,11 @@
             </title>
             <description>
                 <de>Der Ausnahme-Fussballer Nessi will nach Hause. Am Loch Ness kann man seine Ankunft kaum erwarten.</de>
-                <en>The exceptional footballer Nessi wants to go home. At Loch Ness one can hardly wait for his arrival.</en>
+                <en>The exceptional footballer Nessi wants to go home. At Loch Ness people can hardly wait for his arrival.</en>
             </description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-02" />
-			</effects>
+            <effects>
+                <effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-02" />
+            </effects>
             <data genre="2" price="1.0" quality="40" />
         </news>
         <news id="SpeedMinister-news-Nessi-02" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">

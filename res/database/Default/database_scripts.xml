@@ -1,739 +1,761 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="script data" />
-	<!--
-		title, description, variables, roles and quality are FIXED parts
+    <version value="3" comment="script data" />
+    <!--
+        title, description, variables, roles and quality are FIXED parts
 
-		Scripts for series are defined similar to movies except they
-		also contain a "episodes" part which then defines data of the
-		individual episodes.
+        Scripts for series are defined similar to movies except they
+        also contain a "episodes" part which then defines data of the
+        individual episodes.
 
-		product:
-			which format of programme is scripted here?
-			(fictional = programme with a "story")
-			  0 = undefined           1 = movie (fictional)
-			  2 = series (fictional)  3 = show
-			  4 = reportage           5 = commercial
-			  6 = event               7 = misc
+        product:
+            which format of programme is scripted here?
+            (fictional = programme with a "story")
+              0 = undefined           1 = movie (fictional)
+              2 = series (fictional)  3 = show
+              4 = reportage           5 = commercial
+              6 = event               7 = misc
 
-		licence_type:
-			which kind of programme is scripted here?
-			  0 = unknown           1 = single (movie, single show)
-			  2 = episode           3 = series
+        licence_type:
+            which kind of programme is scripted here?
+              0 = unknown           1 = single (movie, single show)
+              2 = episode           3 = series
 
-		title:
-			contains the title to use
+        title:
+            contains the title to use
 
-		description:
-			description of the script / story
+        description:
+            description of the script / story
 
-		variables:
-			keys which can get used within "title" and "description"
-			Each key contains a group of values to select from.
-			These values are grouped by "|".
+        variables:
+            keys which can get used within "title" and "description"
+            Each key contains a group of values to select from.
+            These values are grouped by "|".
 
-			There are some fixed variables:
-			%GENRE%       the localized genre of the script
-			%ROLEx%       the complete name ("Dr. Samantha Jones") of role X
-			%ROLENAMEx%   the name ("Samantha") of role X
+            There are some fixed variables:
+            %GENRE%       the localized genre of the script
+            %ROLEx%       the complete name ("Dr. Samantha Jones") of role X
+            %ROLENAMEx%   the name ("Samantha") of role X
 
-		jobs:
-			defines what cast (director, actors ...) and other
-			jobs are needed and if they need to fulfill certain
-			criteria
+        jobs:
+            defines what cast (director, actors ...) and other
+            jobs are needed and if they need to fulfill certain
+            criteria
 
-			function     which function (job) has the role
-			               0 = unknown            1 = director
-			               2 = actor              4 = writer
-			               8 = moderator         16 = musician
-			              32 = supporting actor  64 = guest
-			             128 = reporter
-			required     is the role required (1) or random (0)?
-			gender       is the role of a specific gender (1 or 2)
-			             or free to choose (0) ?
+            function     which function (job) has the role
+                           0 = unknown            1 = director
+                           2 = actor              4 = writer
+                           8 = moderator         16 = musician
+                          32 = supporting actor  64 = guest
+                         128 = reporter
+            required     is the role required (1) or random (0)?
+            gender       is the role of a specific gender (1 or 2)
+                         or free to choose (0) ?
 
-		speed
-			how "fast paced" a programme is
-		outcome
-			how "blockbuster-like" a programme is
-		review
-			how reviewers think about the programme
-		potential
-			unused
-		->
-			min          the minimum value in percents
-			max          the maximum value in percents
-			slope        percents defining the weighting of "max"
-			               0 = 100% chance of "min"
-		                  50 = 50% chance for each
-		                 100 = 100% chance of "max"
-	-->
-	<scripttemplates>
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-foodformealtime01">
-			<title>
-				<de>%FOOD% zum %MEALTIME%</de>
-				<en>%FOOD% for %MEALTIME%</en>
-			</title>
-			<description>
-				<de>%NAMEWOMAN% ist %JOB1% und %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% Komödie.</de>
-				<en>%NAMEWOMAN% is %JOB1% and %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% comedy.</en>
-			</description>
+        speed
+            how "fast paced" a programme is
+        outcome
+            how "blockbuster-like" a programme is
+        review
+            how reviewers think about the programme
+        potential
+            unused
+        ->
+            min          the minimum value in percents
+            max          the maximum value in percents
+            slope        percents defining the weighting of "max"
+                           0 = 100% chance of "min"
+                          50 = 50% chance for each
+                         100 = 100% chance of "max"
+    -->
+    <scripttemplates>
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-foodformealtime01">
+            <title>
+                <de>%FOOD% zum %MEALTIME%</de>
+                <en>%FOOD% for %MEALTIME%</en>
+            </title>
+            <description>
+                <de>%NAMEWOMAN% ist %JOB1% und %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% Komödie.</de>
+                <en>%NAMEWOMAN% is %JOB1% and %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% comedy.</en>
+            </description>
 
-		<variables>
-				<food>
-					<de>Kinder|Liebe|Joghurt|Herzhaftes|Erdbeermarmelade|Cornflakes|Honig</de>
-					<en>Children|Love|Joghurt|Hearty|Strawberry marmelade|Cornflakes|Honey</en>
-				</food>
-				<mealtime>
-					<de>Frühstück|Mittagessen|Abendessen|Brunch</de>
-					<en>breakfast|lunch|dinner|brunch</en>
-				</mealtime>
-				<action>
-					<de>trifft|hat einen Unfall mit|wird geschwängert von|betrinkt sich mit</de>
-					<en>meets|has an accident with|gets pregnant with|gets drunk with</en>
-				</action>
-				<job1>
-					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane</de>
-					<en>budding law student|novelist|author of many dime novels</en>
-				</job1>
-				<job2>
-					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
-					<en>a landscapist|an AA|a hairdresser for women</en>
-				</job2>
-				<funny>
-					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
-					<en>Hilarious|Loving|Turbulent|Romantic|Melancholy|Surprising</en>
-				</funny>
-				<namewoman>
-					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
-					<en>%PERSONGENERATOR_NAME(unk,2)%</en>
-				</namewoman>
-				<nameman>
-					<de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
-					<en>%PERSONGENERATOR_LASTNAME(unk,1)%</en>
-				</nameman>
-			</variables>
+        <variables>
+                <food>
+                    <de>Kinder|Liebe|Joghurt|Herzhaftes|Erdbeermarmelade|Cornflakes|Honig</de>
+                    <en>Children|Love|Yogurt|Savory|Strawberry marmalade|Cornflakes|Honey</en>
+                </food>
+                <mealtime>
+                    <de>Frühstück|Mittagessen|Abendessen|Brunch</de>
+                    <en>breakfast|lunch|dinner|brunch</en>
+                </mealtime>
+                <action>
+                    <de>trifft|hat einen Unfall mit|wird geschwängert von|betrinkt sich mit</de>
+                    <en>meets|has an accident with|gets pregnant with|gets drunk with</en>
+                </action>
+                <job1>
+                    <de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane</de>
+                    <en>a budding law student|a novelist|the author of many dime novels</en>
+                </job1>
+                <job2>
+                    <de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
+                    <en>a landscapist|an Alcoholic anonymous|a ladies hairdresser with passion</en>
+                </job2>
+                <funny>
+                    <de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
+                    <en>Hilarious|Loving|Turbulent|Romantic|Melancholic|Surprising</en>
+                </funny>
+                <namewoman>
+                    <de>%PERSONGENERATOR_NAME(unk,2)%</de>
+                    <en>%PERSONGENERATOR_NAME(unk,2)%</en>
+                </namewoman>
+                <nameman>
+                    <de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
+                    <en>%PERSONGENERATOR_LASTNAME(unk,1)%</en>
+                </nameman>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="2" />
-				<job index="2" function="2" required="1" gender="1" />
-				<!-- there might be up to 2 additional roles without
-				     further specifications -->
-				<job index="3" function="32" required="0" role_guid="script-roles-ron-001" />
-				<job index="4" function="32" required="0" />
-			</jobs>
-			<genres maingenre="15" subgenres="5" />
-			<blocks min="2" max="3" slope="30" />
-			<price min="12000" max="17000" slope="60" />
-			<potential min="50" max="70" slope="45" />
-			<outcome min="25" max="35" slope="40" />
-			<review min="45" max="65" slope="40" />
-			<speed min="35" max="65" slope="50" />
-			<studio_size min="1" max="2" slope="30" />
-		</scripttemplate>
-
-
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-fightagainst01">
-			<title>
-				<de>%ADJECTIVE% %OBJECT%</de>
-				<en>%ADJECTIVE% %OBJECT%</en>
-			</title>
-			<description>
-				<de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
-				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY%. They want to %ACTION2%.</en>
-			</description>
-
-			<variables>
-				<!-- international title for all incarnations - so "de" is enough -->
-				<object>
-					<de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
-				</object>
-				<adjective>
-					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
-				</adjective>
-				<job>
-					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
-					<en>Former cop|Firefighter|Head physician|Undertaker|Primary teacher|Climate researcher|Paleontologist</en>
-				</job>
-				<action>
-					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
-					<en>fights|battles|assists|reluctantly supports|supports trustfully</en>
-				</action>
-				<action2>
-					<de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
-					<en>kidnap %ENEMY%|eat %ENEMY%|sky rocket %ENEMY%|hold %ENEMY% hostage|replace %ENEMY% with a clone</en>
-				</action2>
-				<enemy>
-					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
-					<en>a Mexican drug cartel|a secret CIA group|Aliens|a confused sect|the own family|pirates</en>
-				</enemy>
-				<victim>
-					<de>den Präsidenten der USA|den Familienhund|den Sohn von %ROLENAME1%|den Nachbar von %ROLENAME1%</de>
-					<en>the president of the USA|the family dog|the son of %ROLENAME1%|the neighbor of %ROLENAME1%</en>
-				</victim>
-			</variables>
-
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" />
-				<!-- there might be up to 2 additional roles without
-				     further specifications -->
-				<job index="2" function="2" required="0" />
-				<job index="3" function="32" required="0" />
-			</jobs>
-			<!-- mandatory: /  |  optional: xrated, bmovie, trash -->
-			<data flags="0" flags_optional="112" />
-			<genres maingenre="1" />
-			<blocks min="2" max="3" slope="25" />
-			<price min="8000" max="12000" slope="40" />
-			<potential min="30" max="70" slope="45" />
-			<outcome min="40" max="45" slope="40" />
-			<review min="25" max="55" slope="45" />
-			<speed min="45" max="65" slope="25" />
-		</scripttemplate>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" gender="2" />
+                <job index="2" function="2" required="1" gender="1" />
+                <!-- there might be up to 2 additional roles without
+                     further specifications -->
+                <job index="3" function="32" required="0" role_guid="script-roles-ron-001" />
+                <job index="4" function="32" required="0" />
+            </jobs>
+            <genres maingenre="15" subgenres="5" />
+            <blocks min="2" max="3" slope="30" />
+            <price min="12000" max="17000" slope="60" />
+            <potential min="50" max="70" slope="45" />
+            <outcome min="25" max="35" slope="40" />
+            <review min="45" max="65" slope="40" />
+            <speed min="35" max="65" slope="50" />
+            <studio_size min="1" max="2" slope="30" />
+        </scripttemplate>
 
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
-			<title>
-				<de>%NUMBER% %OBJECT% %ACTION%</de>
-				<en>%NUMBER% %OBJECT% %ACTION%</en>
-			</title>
-			<description>
-				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
-				<en>Subtile drama meets Sledge hammer humor. Only star is number 1 of the %NUMBER% %OBJECT%.</en>
-			</description>
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-fightagainst01">
+            <title>
+                <de>%ADJECTIVE% %OBJECT%</de>
+                <en>%ADJECTIVE% %OBJECT%</en>
+            </title>
+            <description>
+                <de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
+                <en>%JOB% %ROLENAME1% %ACTION% %ENEMY% who want to %ACTION2%.</en>
+            </description>
 
-			<variables>
-				<number>
-					<de>2|3|4|5</de>
-				</number>
-				<object>
-					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
-					<en>Idiots|Fools|Dorks|Gangster|Charmer|Policemen|Firefighters|Politicians</en>
-				</object>
-				<action>
-					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
-					<en>on tour|breaking out|topping off|and the love...|looking for affray|deal blows</en>
-				</action>
-			</variables>
+            <variables>
+                <!-- international title for all incarnations - so "de" is enough -->
+                <!-- scr0llbaer: that may be true, but probably still not a good idea, because someone might add nested variables later, which then would resolve into German. -->
+                <object>
+                    <de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
+                    <en>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</en>
+                </object>
+                <adjective>
+                    <de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
+                    <en>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</en>
+                </adjective>
+                <job>
+                    <de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
+                    <en>Former cop|Firefighter|Head physician|Undertaker|Primary school teacher|Climate researcher|Paleontologist</en>
+                </job>
+                <action>
+                    <de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
+                    <en>fights|battles|assists|reluctantly supports|trustfully supports</en>
+                </action>
+                <action2>
+                    <de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
+                    <en>kidnap %VICTIM%|eat %VICTIM%|shoot %VICTIM% to the moon|hold %VICTIM% hostage|replace %VICTIM% with a clone</en>
+                </action2>
+                <enemy>
+                    <de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
+                    <en>a Mexican drug cartel|a secret CIA group|Aliens|a confused sect|the own family|pirates</en>
+                </enemy>
+                <victim>
+                    <de>den Präsidenten der USA|den Familienhund|den Sohn von %ROLENAME1%|den Nachbar von %ROLENAME1%</de>
+                    <en>the president of the USA|the family dog|the son of %ROLENAME1%|the neighbor of %ROLENAME1%</en>
+                </victim>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" />
-				<!-- there might be up to 3 additional roles without
-				     further specifications -->
-				<job index="2" function="32" required="0" />
-				<job index="3" function="32" required="0" />
-				<job index="4" function="32" required="0" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" gender="1" />
+                <!-- there might be up to 2 additional roles without
+                     further specifications -->
+                <job index="2" function="2" required="0" />
+                <job index="3" function="32" required="0" />
+            </jobs>
+            <!-- mandatory: /  |  optional: xrated, bmovie, trash -->
+            <data flags="0" flags_optional="112" />
+            <genres maingenre="1" />
+            <blocks min="2" max="3" slope="25" />
+            <price min="8000" max="12000" slope="40" />
+            <potential min="30" max="70" slope="45" />
+            <outcome min="40" max="45" slope="40" />
+            <review min="25" max="55" slope="45" />
+            <speed min="45" max="65" slope="25" />
+        </scripttemplate>
 
-			<genres maingenre="7" />
-			<blocks min="2" max="3" slope="40" />
-			<price min="8000" max="12000" slope="40" />
-			<potential min="50" max="70" slope="45" />
-			<outcome min="25" max="35" slope="40" />
-			<review min="45" max="65" slope="40" />
-			<speed min="35" max="65" slope="50" />
-		</scripttemplate>
+
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
+            <title>
+                <de>%NUMBER% %OBJECT% %ACTION%</de>
+                <en>%NUMBER% %OBJECT% %ACTION%</en>
+            </title>
+            <description>
+                <de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
+                <en>Subtle drama meets sledgehammer humor. The sole star is number 1 of the %NUMBER% %OBJECT%.</en>
+            </description>
+
+            <variables>
+                <number>
+                    <de>2|3|4|5</de>
+                </number>
+                <object>
+                    <de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
+                    <en>Idiots|Fools|Dorks|Gangsters|Charmers|Policemen|Firefighters|Politicians</en>
+                </object>
+                <action>
+                    <de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
+                    <en>on tour|breaking free|fueling up|and love...|looking for trouble|serve up and dish out</en>
+                </action>
+            </variables>
+
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" />
+                <!-- there might be up to 3 additional roles without
+                     further specifications -->
+                <job index="2" function="32" required="0" />
+                <job index="3" function="32" required="0" />
+                <job index="4" function="32" required="0" />
+            </jobs>
+
+            <genres maingenre="7" />
+            <blocks min="2" max="3" slope="40" />
+            <price min="8000" max="12000" slope="40" />
+            <potential min="50" max="70" slope="45" />
+            <outcome min="25" max="35" slope="40" />
+            <review min="45" max="65" slope="40" />
+            <speed min="35" max="65" slope="50" />
+        </scripttemplate>
 
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-eroticmovie1">
-			<title>
-				<de>%WOMAN% %ACTION% %MAN%</de>
-				<en>%WOMAN% %ACTION% %MAN%</en>
-			</title>
-			<description>
-				<de>%WOMAN% ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
-				<en>%WOMAN% is a daydreamer and begins to loose herself in her erotic fantasies.</en>
-			</description>
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-eroticmovie1">
+            <title>
+                <de>%WOMAN% %ACTION% %MAN%</de>
+                <en>%WOMAN% %ACTION% %MAN%</en>
+            </title>
+            <description>
+                <de>%WOMAN% ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
+                <en>%WOMAN% is a daydreamer and loses herself in her erotic fantasies.</en>
+            </description>
 
-			<variables>
-				<woman>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(unk,2)%|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
-				</woman>
-				<action>
-					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
-					<en>ensnares the|enmeshes the|whispers sweet nothings to the|bewitches the</en>
-				</action>
-				<man>
-					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
-					<en>man of her dreams|abbot|teacher|professor|boss|roomer|baker</en>
-				</man>
-			</variables>
+            <variables>
+                <woman>
+                    <de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(unk,2)%|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
+                </woman>
+                <action>
+                    <de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
+                    <en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
+                </action>
+                <man>
+                    <de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
+                    <en>man of her dreams|abbot|teacher|professor|boss|subtenant|baker</en>
+                </man>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="2" />
-				<job index="2" function="2" required="0" gender="1" />
-				<job index="3" function="32" required="0" gender="2" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" gender="2" />
+                <job index="2" function="2" required="0" gender="1" />
+                <job index="3" function="32" required="0" gender="2" />
+            </jobs>
 
-			<!-- mandatory: xrated  |  optional: bmovie, trash -->
-			<data flags="64" flags_optional="48"/>
-			<studio_size min="1" max="2" slope="20" /> 
-			<genres maingenre="8" subgenres="15"/>
-			<blocks min="2" max="3" slope="20" />
-			<price min="15000" max="25000" slope="40" />
-			<potential min="30" max="65" slope="45" />
-			<outcome min="20" max="45" slope="40" />
-			<review min="15" max="60" slope="40" />
-			<speed min="25" max="65" slope="50" />
-		</scripttemplate>
+            <!-- mandatory: xrated  |  optional: bmovie, trash -->
+            <data flags="64" flags_optional="48"/>
+            <studio_size min="1" max="2" slope="20" /> 
+            <genres maingenre="8" subgenres="15"/>
+            <blocks min="2" max="3" slope="20" />
+            <price min="15000" max="25000" slope="40" />
+            <potential min="30" max="65" slope="45" />
+            <outcome min="20" max="45" slope="40" />
+            <review min="15" max="60" slope="40" />
+            <speed min="25" max="65" slope="50" />
+        </scripttemplate>
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-horrormovie1">
-			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-			</title>
-			<description>
-				<de>%DESCRIPTION%</de>
-				<en>%DESCRIPTION%</en>
-			</description>
-			<variables>
-				<title>
-					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Verfluchte %MONSTER%|Blutrünstige %MONSTER%|%MONSTER% im Blutrausch|%MONSTER% der Nacht|%MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
-					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|%MONSTER% in a Bloodlust|%MONSTER% of the Night|%MONSTER%: They'll Get You|Night of the %MONSTER%</en>
-				</title>
-				<building>
-					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
-					<en>Castle|Country House|Hotel|Inn|Tavern|Forest House|Village|Lighthouse</en>
-				</building>
-				<count>
-					<de>|||3 |4 |5 |8 |10 |1000 </de>
-				</count>
-				<terror>
-					<de>des Horrors|des Terrors|der Angst|der Panik|des Übels</de>
-					<en>of Horror|of Terror|of Fear|of Panic|of Disgust</en>
-				</terror>
-				<monster>
-					<de>Vampire|Zombies|Untoten|Hexen|Werwölfe|Kobolde|Spinnen|Schlangen|Mumien</de>
-					<en>Vampires|Zombies|Undead|Witches|Werewolves|Kobolds|Spiders|Snakes|Mummies</en>
-				</monster>
-				<description>
-					<de>Ein %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</de>
-					<en>A %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</en>
-				</description>
-				<environment>
-					<de>, mit einem Fluch belegt,|, erbaut auf einem alten Friedhof,|, verlassen und verfallen,</de>
-					<en> and its surroundings|, built on an old cemetery|, abandoned and dilapidated</en>
-				</environment>
-				<what>
-					<de>ist Schauplatz blutiger Vermisstenfälle.|wird von Kreaturen heimgesucht.</de>
-					<en>is the scene of bloody missing persons cases.|is haunted by creatures.</en>
-				</what>
-				<monsterwhat>
-					<de>sind das Übel.|greifen jeden an.|beherrschen die Gegend.</de>
-					<en>are the evil.|attack everyone.|dominate the area.</en>
-				</monsterwhat>
-			</variables>
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-horrormovie1">
+            <title>
+                <de>%TITLE%</de>
+                <en>%TITLE%</en>
+            </title>
+            <description>
+                <de>%DESCRIPTION%</de>
+                <en>%DESCRIPTION%</en>
+            </description>
+            <variables>
+                <title>
+                    <de>%BUILDING% der %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Verfluchte %MONSTER%|Blutrünstige %MONSTER%|%MONSTER% im Blutrausch|%MONSTER% der Nacht|%MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
+                    <en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|%MONSTER% in a Bloodlust|%MONSTER% of the Night|%MONSTER%: They'll Get You|Night of the %MONSTER%</en>
+                </title>
+                <building>
+                    <de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
+                    <en>Castle|Country House|Hotel|Inn|Tavern|Forest Lodge|Village|Lighthouse</en>
+                </building>
+                <count>
+                    <de>|||3 |4 |5 |8 |10 |1000 </de>
+                </count>
+                <terror>
+                    <de>des Horrors|des Terrors|der Angst|der Panik|des Übels</de>
+                    <en>of Horror|of Terror|of Fear|of Panic|of Disgust</en>
+                </terror>
+                <monster>
+                    <de>Vampire|Zombies|Untoten|Hexen|Werwölfe|Kobolde|Spinnen|Schlangen|Mumien</de>
+                    <en>Vampires|Zombies|Undead|Witches|Werewolves|Hobgoblins|Spiders|Snakes|Mummies</en>
+                </monster>
+                <description>
+                    <de>Ein %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</de>
+                    <en>A %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</en>
+                </description>
+                <environment>
+                    <de>, mit einem Fluch belegt,|, erbaut auf einem alten Friedhof,|, verlassen und verfallen,</de>
+                    <en> under a curse|, built on an old cemetery|, abandoned and decayed</en>
+                </environment>
+                <what>
+                    <de>ist Schauplatz blutiger Vermisstenfälle.|wird von Kreaturen heimgesucht.</de>
+                    <en>is the scene of bloody missing persons cases.|is haunted by creatures.</en>
+                </what>
+                <monsterwhat>
+                    <de>sind der Grund des Übels.|greifen jeden an.|beherrschen die Gegend.</de>
+                    <en>are the source of the evil.|attack everyone.|reign over the area.</en>
+                </monsterwhat>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" />
-				<job index="2" function="2" required="0" />
-				<job index="3" function="32" required="0" />
-				<job index="4" function="32" required="0" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" />
+                <job index="2" function="2" required="0" />
+                <job index="3" function="32" required="0" />
+                <job index="4" function="32" required="0" />
+            </jobs>
 
-			<!-- optional: xrated | cult -->
-			<data flags_optional="72" />
-			<genres maingenre="12" subgenres="14"/>
-			<blocks min="2" max="3" slope="20" />
-			<price min="9500" max="30000" slope="50" />
-			<potential min="20" max="80" slope="45" />
-			<outcome min="30" max="75" slope="40" />
-			<review min="35" max="60" slope="40" />
-			<speed min="45" max="95" slope="50" />
-			<studio_size min="1" max="2" slope="40" />
-		</scripttemplate>
+            <!-- optional: xrated | cult -->
+            <data flags_optional="72" />
+            <genres maingenre="12" subgenres="14"/>
+            <blocks min="2" max="3" slope="20" />
+            <price min="9500" max="30000" slope="50" />
+            <potential min="20" max="80" slope="45" />
+            <outcome min="30" max="75" slope="40" />
+            <review min="35" max="60" slope="40" />
+            <speed min="45" max="95" slope="50" />
+            <studio_size min="1" max="2" slope="40" />
+        </scripttemplate>
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-dramamovie1">
-			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-			</title>
-			<description>
-				<de>%NAME% %DESCRIPTIONACTION%. Seine %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</de>
-				<en>%NAME% %DESCRIPTIONACTION%. His %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</en>
-			</description>
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-dramamovie1">
+            <title>
+                <de>%TITLE%</de>
+                <en>%TITLE%</en>
+            </title>
+            <description>
+                <de>%NAME% %DESCRIPTIONACTION%. Seine %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</de>
+                <en>%NAME% %DESCRIPTIONACTION%. His %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</en>
+            </description>
 
-			<variables>
-				<title>
-					<!-- twice ... to select it more often -->
-					<de>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% und ich|Ich bin %NAME%</de>
-					<en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%</en>
-				</title>
-				<name>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(aut,1)%</de>
-					<en>%PERSONGENERATOR_FIRSTNAME(us,1)%|%PERSONGENERATOR_FIRSTNAME(uk,1)%</en>
-				</name>
-				<titleaction>
-					<de>und die %DISEASE%|vs. %DISEASE%|kontra %DISEASE%|besingt %DISEASE%</de>
-					<en>and the %DISEASE%|vs. %DISEASE%|contra %DISEASE%|sings about %DISEASE%</en>
-				</titleaction>
-				<descriptionaction>
-					<de>leidet seit dem Kindesalter an %DISEASE%|bestreitet sein Leben mit %DISEASE%|leidet unter %DISEASE%|kann nur singend seine %DISEASE% bekämpfen</de>
-					<en>suffers from %DISEASE% since childhood|makes his living with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% singing</en>
-				</descriptionaction>
-				<disease>
-					<de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
-					<en>Hallucinations|Claustrophobia|Agoraphobia|Coulrophobia|Acrophobia|Aviophobia|Arachnophobia|Dentophobia|Emetophobia</en>
-				</disease>
-				<question>
-					<de>Ist ja nur %DISEASE%|Na klar, %DISEASE%|%DISEASE% - na und?</de>
-					<en>It's just %DISEASE%|Yeah, %DISEASE%|%DISEASE% - so what?</en>
-				</question>
-				<environment>
-					<de>Familie|Freunde|Nachbarn</de>
-					<en>Relatives|Friends|Neighbours</en>
-				</environment>
-				<environmentaction>
-					<de>unterstützen ihn|helfen ihm|lassen nichts unversucht|stehen ihm bei</de>
-					<en>support him|help him|leave no stone unturned|assist him</en>
-				</environmentaction>
-				<feeling>
-					<de>|||~nGefühle hautnah!|~nGefühlskino!|~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
-					<en>|||~nFeelings up close!|~nFeeling cinema!|~nEveryone feels it!|~nFinally told without clichés!</en>
-				</feeling>
-			</variables>
+            <variables>
+                <title>
+                    <!-- twice ... to select it more often -->
+                    <de>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% und ich|Ich bin %NAME%</de>
+                    <en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%</en>
+                </title>
+                <name>
+                    <de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(aut,1)%</de>
+                    <en>%PERSONGENERATOR_FIRSTNAME(us,1)%|%PERSONGENERATOR_FIRSTNAME(uk,1)%</en>
+                </name>
+                <titleaction>
+                    <de>und die %DISEASE%|vs. %DISEASE%|kontra %DISEASE%|besingt %DISEASE%</de>
+                    <en>and the %DISEASE%|vs. %DISEASE%|contra %DISEASE%|sings about %DISEASE%</en>
+                </titleaction>
+                <descriptionaction>
+                    <de>leidet seit dem Kindesalter an %DISEASE%|bestreitet sein Leben mit %DISEASE%|leidet unter %DISEASE%|kann nur singend seine %DISEASE% bekämpfen</de>
+                    <en>has been suffering from %DISEASE% since childhood|lives with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% by singing</en>
+                </descriptionaction>
+                <disease>
+                    <de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
+                    <en>Hallucinations|Claustrophobia|Agoraphobia|Coulrophobia|Acrophobia|Aviophobia|Arachnophobia|Dentophobia|Emetophobia</en>
+                </disease>
+                <question>
+                    <de>Ist ja nur %DISEASE%|Na klar, %DISEASE%|%DISEASE% - na und?</de>
+                    <en>It's just %DISEASE%|Yeah right, %DISEASE%|%DISEASE% - so what?</en>
+                </question>
+                <environment>
+                    <de>Familie|Freunde|Nachbarn</de>
+                    <en>relatives|friends|neighbours</en>
+                </environment>
+                <environmentaction>
+                    <de>unterstützen ihn|helfen ihm|lassen nichts unversucht|stehen ihm bei</de>
+                    <en>support him|help him|leave no stone unturned|assist him</en>
+                </environmentaction>
+                <feeling>
+                    <de>|||~nGefühle hautnah!|~nGefühlskino!|~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
+                    <en>|||~nEmotions up close!|~nEmotional cinema!|~nEveryone feels with it!|~nFinally told without clichés!</en>
+                </feeling>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" />
-				<job index="2" function="32" required="0" gender="2" />
-				<job index="3" function="32" required="0" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" gender="1" />
+                <job index="2" function="32" required="0" gender="2" />
+                <job index="3" function="32" required="0" />
+            </jobs>
 
-			<!-- mandatory: xrated  |  optional: cult -->
-			<data flags_optional="8" />
-			<genres maingenre="7" subgenres="9"/>
-			<blocks min="2" max="3" slope="20" />
-			<price min="7500" max="25000" slope="40" />
-			<potential min="30" max="85" slope="45" />
-			<outcome min="20" max="65" slope="40" />
-			<review min="15" max="80" slope="40" />
-			<speed min="25" max="65" slope="50" />
-		</scripttemplate>
-		
+            <!-- mandatory: xrated  |  optional: cult -->
+            <data flags_optional="8" />
+            <genres maingenre="7" subgenres="9"/>
+            <blocks min="2" max="3" slope="20" />
+            <price min="7500" max="25000" slope="40" />
+            <potential min="30" max="85" slope="45" />
+            <outcome min="20" max="65" slope="40" />
+            <review min="15" max="80" slope="40" />
+            <speed min="25" max="65" slope="50" />
+        </scripttemplate>
+        
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
-			<title>
-				<de>%KIND%%DATE%</de>
-				<en>%KIND%%DATE%</en>
-			</title>
-			<description>
-				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
-				<en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the careless.</en>
-			</description>
+        <scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
+            <title>
+                <de>%KIND%%DATE%</de>
+                <en>%KIND%%DATE%</en>
+            </title>
+            <description>
+                <de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
+                <en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the carefree.</en>
+            </description>
 
-			<variables>
-				<kind>
-					<de>Das %INNER%-Quiz|Das %INNER%-Duell|Die %INNER%-Show</de>
-					<en>The %INNER% Quiz|The %INNER%-Duel|The %INNER% Show</en>
-				</kind>
-				<inner>
-					<de>%ATTRIBUTE% %GROUP%</de>
-					<en>%ATTRIBUTE% %GROUP%</en>
-				</inner>
-				<attribute>
-					<de>tierische|große|abgefahrene|lustige|skurile</de>
-					<en>animalistic|big|whacky|funny|quirky</en>
-				</attribute>
-				<group>
-					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
-					<en>Celebrity|Kids|Politicians|Music|Movie|Guessing|Travel</en>
-				</group>
-				<date>
-					<!-- either add the game year (with space!), or nothing -->
-					<de>| %WORLDTIME:YEAR%</de>
-				</date>
-			</variables>
+            <variables>
+                <kind>
+                    <de>Das %INNER%-Quiz|Das %INNER%-Duell|Die %INNER%-Show</de>
+                    <en>The %INNER% Quiz|The %INNER%-Duel|The %INNER% Show</en>
+                </kind>
+                <inner>
+                    <de>%ATTRIBUTE% %GROUP%</de>
+                    <en>%ATTRIBUTE% %GROUP%</en>
+                </inner>
+                <attribute>
+                    <de>tierische|große|abgefahrene|lustige|skurrile</de>
+                    <en>brute|big|whacky|funny|quirky</en>
+                </attribute>
+                <group>
+                    <de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
+                    <en>Celebrity|Kids|Politicians|Music|Movie|Guessing|Travel</en>
+                </group>
+                <date>
+                    <!-- either add the game year (with space!), or nothing -->
+                    <de>| %WORLDTIME:YEAR%</de>
+                </date>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="2" />
-				<job index="2" function="2" required="0" gender="1" />
-				<job index="3" function="32" required="0" gender="2" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" gender="2" />
+                <job index="2" function="2" required="0" gender="1" />
+                <job index="3" function="32" required="0" gender="2" />
+            </jobs>
 
-			<genres maingenre="100" />
-			<blocks min="2" max="3" slope="40" />
-			<price min="10000" max="18000" slope="40" />
-			<potential min="30" max="55" slope="45" />
-			<outcome min="20" max="35" slope="40" />
-			<review min="25" max="45" slope="40" />
-			<speed min="45" max="60" slope="50" />
-		</scripttemplate>
+            <genres maingenre="100" />
+            <blocks min="2" max="3" slope="40" />
+            <price min="10000" max="18000" slope="40" />
+            <potential min="30" max="55" slope="45" />
+            <outcome min="20" max="35" slope="40" />
+            <review min="25" max="45" slope="40" />
+            <speed min="45" max="60" slope="50" />
+        </scripttemplate>
 
-		<!-- === SERIES === -->
-		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01">
-			<title>
-				<de>%ATTRIBUTE% %OBJECT%</de>
-				<en>%ATTRIBUTE% %OBJECT%</en>
-			</title>
-			<description>
-				<de>Serie über %OBJECT% und ihren Alltag. %JOKES%</de>
-				<en>Series about %OBJECT% and their day. %JOKES%</en>
-			</description>
+        <!-- === SERIES === -->
+        <scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01">
+            <title>
+                <de>%ATTRIBUTE% %OBJECT%</de>
+                <en>%ATTRIBUTE% %OBJECT%</en>
+            </title>
+            <description>
+                <de>Serie über %OBJECT% und ihren Alltag. %JOKES%</de>
+                <en>Series about %OBJECT% and their everyday lives. %JOKES%</en>
+            </description>
 
-			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
-					<title>
-						<de>Pilotfilm</de>
-						<en>Pilot</en>
-					</title>
-					<!-- pilot could be one or two blocks -->
-					<blocks min="1" max="2" />
-				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
-					<title>
-						<de>%SUBJECT1A% im %SUBJECT1B%</de>
-						<en>%SUBJECT1A% in the %SUBJECT1B%</en>
-					</title>
-					<episodes min="1" max="3" />
-					<variables>
-						<subject1a>
-							<de>Ärger|Panik|Pechsträhne|Fette Beute</de>
-							<en>Trouble|Panic|Streak of bad luck|Big booty</en>
-						</subject1a>
-						<subject1b>
-							<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
-							<en>paradise|inn|backyard|police station|supermarket</en>
-						</subject1b>
-					</variables>
-				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
-					<title>
-						<de>%SUBJECT2A% im %SUBJECT1B%</de>
-						<en>%SUBJECT2A% in the %SUBJECT1B%</en>
-					</title>
-					<episodes min="1" max="3" />
-					<variables>
-						<subject2a>
-							<de>Treffen|Krawall|Klamauk|Überraschungsfeier</de>
-							<en>Meeting|Riot|Fuss|Surprise party</en>
-						</subject2a>
-						<subject1b>
-							<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
-							<en>paradise|inn|backyard|police station|supermarket</en>
-						</subject1b>
-					</variables>
-				</scripttemplate>
-			</children>
+            <children>
+                <scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
+                    <title>
+                        <de>Pilotfilm</de>
+                        <en>Pilot</en>
+                    </title>
+                    <!-- pilot could be one or two blocks -->
+                    <blocks min="1" max="2" />
+                </scripttemplate>
+                <scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
+                    <title>
+                        <de>%SUBJECT1A% im %SUBJECT1B%</de>
+                        <en>%SUBJECT1A% in %SUBJECT1B%</en>
+                    </title>
+                    <episodes min="1" max="3" />
+                    <variables>
+                        <subject1a>
+                            <de>Ärger|Panik|Pechsträhne|Fette Beute</de>
+                            <en>Trouble|Panic|Streak of bad luck|Big booty</en>
+                        </subject1a>
+                        <subject1b>
+                            <de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
+                            <en>paradise|the roadhouse|the backyard|the police station|the supermarket</en>
+                        </subject1b>
+                    </variables>
+                </scripttemplate>
+                <scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
+                    <title>
+                        <de>%SUBJECT2A% im %SUBJECT1B%</de>
+                        <en>%SUBJECT2A% in %SUBJECT1B%</en>
+                    </title>
+                    <episodes min="1" max="3" />
+                    <variables>
+                        <subject2a>
+                            <de>Treffen|Krawall|Klamauk|Überraschungsfeier</de>
+                            <en>Meeting|Riot|Fuss|Surprise party</en>
+                        </subject2a>
+                        <subject1b>
+                            <de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
+                            <en>paradise|the roadhouse|the backyard|the police station|the supermarket</en>
+                        </subject1b>
+                    </variables>
+                </scripttemplate>
+            </children>
 
-			<variables>
-				<attribute>
-					<de>Ein Haufen|Die Hillbillie-|Verrückte|Die Wahnsinns-|Bayrische|Tugendhafte|Durchgedrehte|Fromme|Zankende</de>
-					<en>A bunch of|The hillbillie-|Crazy|The frenzy|Bavarian|Virtuous|Nutty|Pious|Brawly</en>
-				</attribute>
-				<object>
-					<de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten|Rettungsschwimmer|Clowns|Krankenpfleger|Stripper|Feuerwehrmänner|Nonnen</de>
-					<en>fishwives|drag-queens|charmer|policemen|lifeguards|clowns|nurses|strippers|firefighters|Nuns</en>
-				</object>
-				<jokes>
-					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||</de>
-					<en>Gags every minute.|Not one failing punch line|Pure entertainment.||</en>
-				</jokes>
-			</variables>
+            <variables>
+                <attribute>
+                    <de>Ein Haufen|Die Hinterwäldler-|Verrückte|Die Wahnsinns-|Bayrische|Tugendhafte|Durchgedrehte|Fromme|Zankende</de>
+                    <en>A bunch of|The hillbilly|Crazy|The frenzied|Bavarian|Virtuous|Nutty|Devout|Quarreling</en>
+                </attribute>
+                <object>
+                    <de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten|Rettungsschwimmer|Clowns|Krankenpfleger|Stripper|Feuerwehrmänner|Nonnen</de>
+                    <en>fishwives|drag-queens|charmers|policemen|lifeguards|clowns|nurses|strippers|firefighters|nuns</en>
+                </object>
+                <jokes>
+                    <de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||</de>
+                    <en>Gags non-stop.|Spot-on punchlines.|Pure entertainment.||</en>
+                </jokes>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" />
-				<!-- there might be up to 2 additional roles without
-				     further specifications -->
-				<job index="2" function="32" required="0" />
-				<job index="3" function="32" required="0" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="2" required="1" />
+                <!-- there might be up to 2 additional roles without
+                     further specifications -->
+                <job index="2" function="32" required="0" />
+                <job index="3" function="32" required="0" />
+            </jobs>
 
-			<genres maingenre="0" />
-			<blocks value="1" />
-			<price min="15000" max="26000" />
-			<potential min="50" max="70" slope="45" />
-			<outcome min="25" max="35" slope="40" />
-			<review min="45" max="65" slope="40" />
-			<speed min="35" max="65" slope="50" />
-		</scripttemplate>
+            <genres maingenre="0" />
+            <blocks value="1" />
+            <price min="15000" max="26000" />
+            <potential min="50" max="70" slope="45" />
+            <outcome min="25" max="35" slope="40" />
+            <review min="45" max="65" slope="40" />
+            <speed min="35" max="65" slope="50" />
+        </scripttemplate>
 
-		<!-- === SERIES === -->
-		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01">
-			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-			</title>
-			<description>
-				<de>Dokumentation über %ANIMALS%.
+        <!-- === SERIES === -->
+        <scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01">
+            <title>
+                <de>%TITLE%</de>
+                <en>%TITLE%</en>
+            </title>
+            <description>
+                <de>Dokumentation über %ANIMALS%.
 %EXTRA%</de>
-				<en>Documentary about %ANIMALS%.
+                <en>Documentary about %ANIMALS%.
 %EXTRA%</en>
-			</description>
+            </description>
 
-			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
-					<title>
-						<de>%TITLEEPISODE1%</de>
-					</title>
-					<blocks min="1" max="1" />
-				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
-					<title>
-						<de>%TITLEEPISODE2%</de>
-					</title>
-					<blocks min="1" max="1" />
-				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
-					<title>
-						<de>%TITLEEPISODE3%</de>
-					</title>
-					<blocks min="1" max="1" />
-				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
-					<title>
-						<de>%TITLEEPISODE4%</de>
-					</title>
-					<blocks min="1" max="1" />
-				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
-					<title>
-						<de>%TITLEEPISODE5%</de>
-					</title>
-					<blocks min="1" max="1" />
-				</scripttemplate>
-				<scripttemplate index="5" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
-					<title>
-						<de>%TITLEEPISODE6%</de>
-					</title>
-					<blocks min="1" max="1" />
-				</scripttemplate>
-			</children>
+            <children>
+                <scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
+                    <title>
+                        <de>%TITLEEPISODE1%</de>
+                        <en>%TITLEEPISODE1%</en>
+                    </title>
+                    <blocks min="1" max="1" />
+                </scripttemplate>
+                <scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
+                    <title>
+                        <de>%TITLEEPISODE2%</de>
+                        <en>%TITLEEPISODE2%</en>
+                    </title>
+                    <blocks min="1" max="1" />
+                </scripttemplate>
+                <scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
+                    <title>
+                        <de>%TITLEEPISODE3%</de>
+                        <en>%TITLEEPISODE3%</en>
+                    </title>
+                    <blocks min="1" max="1" />
+                </scripttemplate>
+                <scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
+                    <title>
+                        <de>%TITLEEPISODE4%</de>
+                        <en>%TITLEEPISODE4%</en>
+                    </title>
+                    <blocks min="1" max="1" />
+                </scripttemplate>
+                <scripttemplate index="4" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
+                    <title>
+                        <de>%TITLEEPISODE5%</de>
+                        <en>%TITLEEPISODE5%</en>
+                    </title>
+                    <blocks min="1" max="1" />
+                </scripttemplate>
+                <scripttemplate index="5" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
+                    <title>
+                        <de>%TITLEEPISODE6%</de>
+                        <en>%TITLEEPISODE6%</en>
+                    </title>
+                    <blocks min="1" max="1" />
+                </scripttemplate>
+            </children>
 
-			<variables>
-				<title>
-					<de>%ANIMAL1%%CONNECTOR1%|Party mit %ANIMAL1%%CONNECTOR1%|Zu Besuch bei %ANIMAL1%%CONNECTOR2%|Auf der Spur von %ANIMAL1%%CONNECTOR2%|Im Zoo bei %ANIMAL1% und %ANIMAL2%</de>
-				</title>
-				<animals>
-					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo.|Pfleger, Gäste und natürlich Tiere im Gehege.</de>
-				</animals>
-				<extra>
-					<de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
-				</extra>
-				<extra1>
-					<de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung</de>
-				</extra1>
-				<extra2>
-					<de>zu hauf.|sowie ab und zu eine finale Spritze| und ab und zu eine Tierfütterung aus Eigenanbau</de>
-				</extra2>
-				<animal1>
-					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
-					<en>Ape|Frog|Camel|Waran|Goat|Elephant|Mouse|Rhino</en>
-				</animal1>
-				<animal2>
-					<de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
-					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Iltis</en>
-				</animal2>
-				<animalep1>
-					<de>Affe|Frosch|Kamel|Waran</de>
-					<en>Ape|Frog|Camel|Waran</en>
-				</animalep1>
-				<animalep2>
-					<de>Biber|Chamäleon|Dachs</de>
-					<en>Beaver|Chameleon|Badger</en>
-				</animalep2>
-				<animalep3>
-					<de>Ziege|Elefant|Maus|Nashorn</de>
-					<en>Goat|Elephant|Mouse|Rhino</en>
-				</animalep3>
-				<animalep4>
-					<de>Esel|Giraffe|Hirsch|Iltis</de>
-					<en>Donkey|Giraffe|Deer|Iltis</en>
-				</animalep4>
-				<connector1>
-					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und %ANIMAL2% ganz wild| und %ANIMAL2% im Zoo|</de>
-				</connector1>
-				<connector2>
-					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und Pfleger</de>
-				</connector2>
-				<titleepisode1>
-					<de>%ANIMALEP1%|%ANIMALEP1% auf Abwegen|%ANIMALEP1% in Gefahr</de>
-				</titleepisode1>
-				<titleepisode2>
-					<de>%ANIMALEP2%|%ANIMALEP2% adoptiert|%ANIMALEP2% vermisst</de>
-				</titleepisode2>
-				<titleepisode3>
-					<de>%ANIMALEP3%|%ANIMALEP3% hautnah|%ANIMALEP3% im OP</de>
-				</titleepisode3>
-				<titleepisode4>
-					<de>%ANIMALEP4%|%ANIMALEP4% geboren!|%ANIMALEP4% gefunden</de>
-				</titleepisode4>
-				<titleepisode5>
-					<de>%ANIMALEP2% trifft auf %ANIMALEP3%|%ANIMALEP2% bemuttert %ANIMALEP3%</de>
-				</titleepisode5>
-				<titleepisode6>
-					<de>%ANIMALEP4% und Pfleger|%ANIMALEP4% frisst %ANIMALEP1%</de>
-				</titleepisode6>
-			</variables>
+            <variables>
+                <title>
+                    <de>%ANIMAL1%%CONNECTOR1%|Party mit %ANIMAL1%%CONNECTOR1%|Zu Besuch bei %ANIMAL1%%CONNECTOR2%|Auf der Spur von %ANIMAL1%%CONNECTOR2%|Im Zoo bei %ANIMAL1% und %ANIMAL2%</de>
+                    <en>%ANIMAL1%%CONNECTOR1%|Party with %ANIMAL1%%CONNECTOR1%|Visiting %ANIMAL1%%CONNECTOR2%|On the trail of %ANIMAL1%%CONNECTOR2%|In the Zoo among %ANIMAL1% and %ANIMAL2%</en>
+                </title>
+                <animals>
+                    <de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo.|Pfleger, Gäste und natürlich Tiere im Gehege.</de>
+                    <en>%ANIMAL1%, %ANIMAL2% and many more animals|animals in the zoo.|keepers, guests and of course animals in the enclosure.</en>
+                </animals>
+                <extra>
+                    <de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
+                    <en>%EXTRA1%%EXTRA2%.||Animal keepers give tips for rearing at home.|Including tips for dealing with pets.</en>
+                </extra>
+                <extra1>
+                    <de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung </de>
+                    <en>Cute baby animals |Cuddlesome feral cats |Bio manure </en>
+                </extra1>
+                <extra2>
+                    <de>zu hauf.|sowie ab und zu eine finale Spritze|und ab und zu eine Tierfütterung aus Eigenanbau</de>
+                    <en>in abundance.|and every now and then a final injection|and from time to time animal feeding from cultivation grown on-location</en>
+                </extra2>
+                <animal1>
+                    <de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
+                    <en>Ape|Frog|Camel|Lizard|Goat|Elephant|Mouse|Rhino</en>
+                </animal1>
+                <animal2>
+                    <de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
+                    <en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Polecat</en>
+                </animal2>
+                <animalep1>
+                    <de>Affe|Frosch|Kamel|Waran</de>
+                    <en>Ape|Frog|Camel|Lizard</en>
+                </animalep1>
+                <animalep2>
+                    <de>Biber|Chamäleon|Dachs</de>
+                    <en>Beaver|Chameleon|Badger</en>
+                </animalep2>
+                <animalep3>
+                    <de>Ziege|Elefant|Maus|Nashorn</de>
+                    <en>Goat|Elephant|Mouse|Rhino</en>
+                </animalep3>
+                <animalep4>
+                    <de>Esel|Giraffe|Hirsch|Iltis</de>
+                    <en>Donkey|Giraffe|Deer|Polecat</en>
+                </animalep4>
+                <connector1>
+                    <de>, %ANIMAL2% und Co.| und %ANIMAL2%| und %ANIMAL2% ganz wild| und %ANIMAL2% im Zoo|</de>
+                    <en>, %ANIMAL2% and co.| and %ANIMAL2%| and %ANIMAL2% all wild| and %ANIMAL2% in the Zoo|</en>
+                </connector1>
+                <connector2>
+                    <de>, %ANIMAL2% und Co.| und %ANIMAL2%| und Pfleger</de>
+                    <en>, %ANIMAL2% and co.| and %ANIMAL2%| and keepers</en>
+                </connector2>
+                <titleepisode1>
+                    <de>%ANIMALEP1%|%ANIMALEP1% auf Abwegen|%ANIMALEP1% in Gefahr</de>
+                    <en>%ANIMALEP1%|%ANIMALEP1% on the loose|%ANIMALEP1% in danger</en>
+                </titleepisode1>
+                <titleepisode2>
+                    <de>%ANIMALEP2%|%ANIMALEP2% adoptiert|%ANIMALEP2% vermisst</de>
+                    <en>%ANIMALEP2%|%ANIMALEP2% adopted|%ANIMALEP2% missing</en>
+                </titleepisode2>
+                <titleepisode3>
+                    <de>%ANIMALEP3%|%ANIMALEP3% hautnah|%ANIMALEP3% im OP</de>
+                    <en>%ANIMALEP3%|%ANIMALEP3% up close|%ANIMALEP3% in surgery</en>
+                </titleepisode3>
+                <titleepisode4>
+                    <de>%ANIMALEP4%|%ANIMALEP4% geboren!|%ANIMALEP4% gefunden</de>
+                    <en>%ANIMALEP4%|%ANIMALEP4% born!|%ANIMALEP4% found</en>
+                </titleepisode4>
+                <titleepisode5>
+                    <de>%ANIMALEP2% trifft auf %ANIMALEP3%|%ANIMALEP2% bemuttert %ANIMALEP3%</de>
+                    <en>%ANIMALEP2% meets %ANIMALEP3%|%ANIMALEP2% brings up %ANIMALEP3%</en>
+                </titleepisode5>
+                <titleepisode6>
+                    <de>%ANIMALEP4% und Pfleger|%ANIMALEP4% frisst %ANIMALEP1%</de>
+                    <en>%ANIMALEP4% and keeper|%ANIMALEP4% eats %ANIMALEP1%</en>
+                </titleepisode6>
+            </variables>
 
-			<jobs>
-				<job index="0" function="1" required="1" />
-				<job index="1" function="128" required="1" />
-			</jobs>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="128" required="1" />
+            </jobs>
 
-			<genres maingenre="6" />
-			<episodes min="4" max="6" />
-			<blocks value="1" />
-			<price min="15000" max="26000" />
-			<potential min="35" max="65" slope="45" />
-			<outcome min="20" max="30" slope="40" />
-			<review min="30" max="45" slope="40" />
-			<speed min="20" max="40" slope="50" />
-		</scripttemplate>
-	</scripttemplates>
+            <genres maingenre="6" />
+            <episodes min="4" max="6" />
+            <blocks value="1" />
+            <price min="15000" max="26000" />
+            <potential min="35" max="65" slope="45" />
+            <outcome min="20" max="30" slope="40" />
+            <review min="30" max="45" slope="40" />
+            <speed min="20" max="40" slope="50" />
+        </scripttemplate>
+    </scripttemplates>
 
-	<programmeroles>
-		<programmerole guid="script-roles-ron-001" first_name="Miranda" last_name="Jones" title="Dr." gender="2" />
-		<programmerole guid="script-roles-ron-002" first_name="Jonathan" last_name="Spykes" gender="1" />
-		<programmerole guid="script-roles-ron-003" first_name="James" last_name="Smith" gender="1" />
-		<programmerole guid="script-roles-ron-004" first_name="Gerry" last_name="Smith" gender="1" />
-		<programmerole guid="script-roles-ron-005" first_name="Violetta" last_name="Smith" gender="2" />
-		<programmerole guid="script-roles-ron-006" first_name="Johann" last_name="Mayer" gender="1" />
-		<programmerole guid="script-roles-ron-007" first_name="Maria" last_name="Mayer" gender="2" />
-		<programmerole guid="script-roles-ron-008" first_name="Gordon" last_name="Stude" title="Prof." gender="1" />
-		<programmerole guid="script-roles-ron-009" first_name="Gordon" last_name="Pike" title="Dr." gender="1" />
+    <programmeroles>
+        <programmerole guid="script-roles-ron-001" first_name="Miranda" last_name="Jones" title="Dr." gender="2" />
+        <programmerole guid="script-roles-ron-002" first_name="Jonathan" last_name="Spykes" gender="1" />
+        <programmerole guid="script-roles-ron-003" first_name="James" last_name="Smith" gender="1" />
+        <programmerole guid="script-roles-ron-004" first_name="Gerry" last_name="Smith" gender="1" />
+        <programmerole guid="script-roles-ron-005" first_name="Violetta" last_name="Smith" gender="2" />
+        <programmerole guid="script-roles-ron-006" first_name="Johann" last_name="Mayer" gender="1" />
+        <programmerole guid="script-roles-ron-007" first_name="Maria" last_name="Mayer" gender="2" />
+        <programmerole guid="script-roles-ron-008" first_name="Gordon" last_name="Stude" title="Prof." gender="1" />
+        <programmerole guid="script-roles-ron-009" first_name="Gordon" last_name="Pike" title="Dr." gender="1" />
 
-		<programmerole guid="script-roles-sco-001" first_name="Lucas" last_name="Scott" title="" gender="1" country="SCO" />
-		<programmerole guid="script-roles-sco-002" first_name="Harry" last_name="Wallace" title="Dr." gender="1" country="SCO" />
-		<programmerole guid="script-roles-sco-003" first_name="Charlie" last_name="McCallum" title="" gender="1" country="SCO" />
+        <programmerole guid="script-roles-sco-001" first_name="Lucas" last_name="Scott" title="" gender="1" country="SCO" />
+        <programmerole guid="script-roles-sco-002" first_name="Harry" last_name="Wallace" title="Dr." gender="1" country="SCO" />
+        <programmerole guid="script-roles-sco-003" first_name="Charlie" last_name="McCallum" title="" gender="1" country="SCO" />
 
-		<programmerole guid="script-roles-swe-001" first_name="Liam" last_name="Bengtsson" title="" gender="1" country="S" />
-		<programmerole guid="script-roles-swe-002" first_name="Alva" last_name="Lindberg" title="Prof." gender="1" country="S" />
-		<programmerole guid="script-roles-swe-003" first_name="Filip" last_name="Jönsson" title="" gender="1" country="S" />
+        <programmerole guid="script-roles-swe-001" first_name="Liam" last_name="Bengtsson" title="" gender="1" country="S" />
+        <programmerole guid="script-roles-swe-002" first_name="Alva" last_name="Lindberg" title="Prof." gender="1" country="S" />
+        <programmerole guid="script-roles-swe-003" first_name="Filip" last_name="Jönsson" title="" gender="1" country="S" />
 
-		<programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="GB" />
-		<programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="GB" />
-		<programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="GB" />
+        <programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="GB" />
+        <programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="GB" />
+        <programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="GB" />
 
-		<programmerole guid="script-roles-ger-001" first_name="Vincent" last_name="Graf" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-002" first_name="Emelie" last_name="Schulte" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-003" first_name="Adrian" last_name="Dietrich" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-004" first_name="Jana" last_name="Ziegler" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-005" first_name="Jonathan" last_name="Kuhn" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-006" first_name="Viktoria" last_name="Kühn" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-007" first_name="Theo" last_name="Engel" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-008" first_name="Josefine" last_name="Horn" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-009" first_name="Niko" last_name="Bergmann" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-010" first_name="Finja" last_name="Thomas" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-011" first_name="Till" last_name="Voigt" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-012" first_name="Isabel" last_name="Sauer" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-013" first_name="Benjamin" last_name="Arnold" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-014" first_name="Helena" last_name="Wolff" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-015" first_name="Florian" last_name="Pfeiffer" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-016" first_name="Isabella" last_name="Hansen" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-017" first_name="Marlon" last_name="Huber" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-018" first_name="Elisa" last_name="Petersen" gender="2" country="D" />
-		<programmerole guid="script-roles-ger-019" first_name="Bernd" last_name="Orlowski" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-020" first_name="Manfred" last_name="Schimanski" gender="1" country="D" />
-		<programmerole guid="script-roles-ger-021" first_name="Klaus" last_name="Rudzinski" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-001" first_name="Vincent" last_name="Graf" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-002" first_name="Emelie" last_name="Schulte" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-003" first_name="Adrian" last_name="Dietrich" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-004" first_name="Jana" last_name="Ziegler" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-005" first_name="Jonathan" last_name="Kuhn" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-006" first_name="Viktoria" last_name="Kühn" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-007" first_name="Theo" last_name="Engel" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-008" first_name="Josefine" last_name="Horn" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-009" first_name="Niko" last_name="Bergmann" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-010" first_name="Finja" last_name="Thomas" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-011" first_name="Till" last_name="Voigt" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-012" first_name="Isabel" last_name="Sauer" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-013" first_name="Benjamin" last_name="Arnold" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-014" first_name="Helena" last_name="Wolff" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-015" first_name="Florian" last_name="Pfeiffer" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-016" first_name="Isabella" last_name="Hansen" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-017" first_name="Marlon" last_name="Huber" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-018" first_name="Elisa" last_name="Petersen" gender="2" country="D" />
+        <programmerole guid="script-roles-ger-019" first_name="Bernd" last_name="Orlowski" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-020" first_name="Manfred" last_name="Schimanski" gender="1" country="D" />
+        <programmerole guid="script-roles-ger-021" first_name="Klaus" last_name="Rudzinski" gender="1" country="D" />
 
 
-	</programmeroles>
+    </programmeroles>
 </tvtdb>

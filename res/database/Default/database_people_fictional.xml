@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+    <version value="3"  />
+    <celebritypeople>
+        <person id="88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Babsi</first_name>
+            <last_name>Angora</last_name>
+            <nick_name></nick_name>
+            <details job="2" gender="2" birthday="" deathday="" country="D" fictional="1" />
+            <data popularity="20" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="75" topgenre="0" />
+        </person>
+        <person id="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Henry</first_name>
+            <last_name>Cutamaran</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
+        </person>
+        <person id="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Patty</first_name>
+            <last_name>Glansen</last_name>
+            <nick_name></nick_name>
+            <details job="2" gender="2" birthday="1961" deathday="" country="D" fictional="1" face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
+            <data popularity="20" affinity="50" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Gustav</first_name>
+            <last_name>Klein</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="1" birthday="1933-05-01" deathday="2015-07-03" country="D" fictional="1" />
+            <data popularity="14" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="3d37e02e-78f2-4749-9de5-429e31b5590b" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Betty</first_name>
+            <last_name>Botterblom</last_name>
+            <nick_name></nick_name>
+            <details job="136" gender="2" birthday="" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
+            <data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
+        </person>
+        <person id="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Samantha</first_name>
+            <last_name>Goodman</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="336ebe49-3b96-46f4-8cd5-da6f64ff8c38" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Yoshi</first_name>
+            <last_name>Grünwald</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="bedfa8be-aaff-457d-b549-893c3a784c9b" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Rudi</first_name>
+            <last_name>Hackl</last_name>
+            <nick_name></nick_name>
+            <details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Dietmar</first_name>
+            <last_name>Hjüpsh</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+        </person>
+        <person id="a6055f37-ab53-425e-9332-14e0dfabc424" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Rolf</first_name>
+            <last_name>Krehl</last_name>
+            <nick_name></nick_name>
+            <details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+        </person>
+        <person id="003bbc46-ee54-43ea-bd2b-230f0feb051f" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Pit</first_name>
+            <last_name>Pot</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Alan</first_name>
+            <last_name>Smithee</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="af527d7c-092c-47f5-a7f0-e1b3e81a8f91" tmdb_id="0" imdb_id="" creator="" comment="duplicate on purpose? There's even an IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
+            <first_name>Alan</first_name>
+            <last_name>Smithee</last_name>
+            <nick_name></nick_name>
+            <details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="058c2105-4440-4d4f-8c62-131fb2fae01c" tmdb_id="0" imdb_id="" creator="">
+            <first_name>Heinz</first_name>
+            <last_name>Ulmer</last_name>
+            <nick_name></nick_name>
+            <details job="2" gender="0" birthday="" deathday="" country="" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+        <person id="817052f9-cfbd-415c-a4b4-a225011afcb1" tmdb_id="0" imdb_id="" creator="" comment="parody version of cd3a2e20-efe1-4a4c-9249-164b67d185f7">
+            <first_name>Arnold</first_name>
+            <last_name>Weissenacker</last_name>
+            <nick_name></nick_name>
+            <details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+            <data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+        </person>
+
+        <!-- from ronny.xml -->
+        <person id="ronny-programmeperson-heinzharaldfehm" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Heinz-Harald</first_name>
+            <last_name>Fehm</last_name>
+            <nick_name></nick_name>
+            <details job="128" gender="1" birthday="1962-01-15" deathday="" country="D" fictional="1" />
+            <data popularity="8" affinity="50" fame="40" scandalizing="10" price_mod="1.1" power="50" humor="25" charisma="60" appearance="55" topgenre="300" />
+        </person>
+        <person id="ronny-programmeperson-gertkalischke" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Gert</first_name>
+            <last_name>Kalischke</last_name>
+            <details job="3" gender="1"  birthday="1943" deathday="2014" country="NL" fictional="1" />
+            <data popularity="5" affinity="20" fame="10" scandalizing="0" price_mod="1" power="20" humor="50" charisma="35" appearance="75" topgenre="15" />
+        </person>
+        <person id="ronny-programmeperson-ellygnatzer" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Elly</first_name>
+            <last_name>Gnartzer</last_name>
+            <details job="193" gender="2"  birthday="1956" deathday="2040" country="D" fictional="1" />
+            <data popularity="8" affinity="40" fame="40" scandalizing="40" price_mod="1" power="20" humor="20" charisma="55" appearance="70" topgenre="101" />
+        </person>
+        <person id="ronny-programmeperson-achimvonklaven" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Achim</first_name>
+            <last_name>von Klaven</last_name>
+            <details job="129" gender="1"  birthday="1931-02-14" deathday="2010-09-27" country="D" fictional="1" />
+            <data popularity="10" affinity="40" fame="20" scandalizing="20" price_mod="1" power="30" humor="0" charisma="68" appearance="15" topgenre="300" />
+        </person>
+        <person id="ronny-programmeperson-holgerpelz" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Holger</first_name>
+            <last_name>Pelz</last_name>
+            <details job="129" gender="1"  birthday="1951" deathday="2033" country="D" fictional="1" />
+            <data popularity="0" affinity="30" fame="0" scandalizing="0" price_mod="1" power="30" humor="10" charisma="20" appearance="30" topgenre="6" />
+        </person>
+        <person id="ronny-programmeperson-samuelloew" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Samuel</first_name>
+            <last_name>Löw</last_name>
+            <details job="129" gender="1"  birthday="1959" deathday="2041" country="IL" fictional="1" />
+            <data popularity="0" affinity="40" fame="0" scandalizing="0" price_mod="1" power="10" humor="80" charisma="30" appearance="50" topgenre="6" />
+        </person>
+        <person id="ronny-programmeperson-thomasstone" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Thomas</first_name>
+            <last_name>Stone</last_name>
+            <details job="129" gender="1"  birthday="1929" deathday="1991" country="USA" fictional="1" />
+            <data popularity="15" affinity="70" fame="0" scandalizing="0" price_mod="1" power="70" humor="10" charisma="55" appearance="25" topgenre="6" />
+        </person>
+        <person id="ronny-programmeperson-bennyjameson" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Benny</first_name>
+            <last_name>Jameson</last_name>
+            <details job="12" gender="1"  birthday="1962" deathday="2040" country="CDN" fictional="1" />
+            <data popularity="10" affinity="40" fame="0" scandalizing="0" price_mod="1" power="30" humor="48" charisma="20" appearance="90" topgenre="9" />
+        </person>
+        <person id="ronny-programmeperson-freddyjbush" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Freddy J.</first_name>
+            <last_name>Bush</last_name>
+            <details job="1" gender="1"  birthday="1942" deathday="2030" country="USA" fictional="1" />
+            <data popularity="10" affinity="70" fame="0" scandalizing="60" price_mod="1" power="40" humor="45" charisma="15" appearance="55" topgenre="9" />
+        </person>
+        <person id="ronny-programmeperson-pipelaho" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Pipé-Laho</first_name>
+            <last_name>Rashin</last_name>
+            <nick_name>Pipé-Laho</nick_name>
+            <details job="16" gender="2" birthday="" deathday="" country="CDN" fictional="1" />
+            <data popularity="60" affinity="40" fame="40" scandalizing="40" price_mod="1.1" power="15" humor="25" charisma="30" appearance="80" topgenre="102" />
+        </person>
+    </celebritypeople>
+
+    <insignificantpeople>
+        <person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" bookable="0" />
+        <person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" bookable="0" />
+        <person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0"  bookable="0" />
+
+        <person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" nick_name="" fictional="1" bookable="0" comment="TODO: how to do multi-language" />
+        <person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="&quot;Groggy&quot;" nick_name=""  fictional="1" bookable="0" comment="TODO: how to do multi-language" />
+        <person id="62dcc893-538b-4fe7-8ac6-daf063185d73" first_name="Ötzi" last_name="Altmann" nick_name="" fictional="1" gender="1" />
+        <person id="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" nick_name="" fictional="1" gender="1" bookable="0"  />
+        <person id="59f79e7c-9a72-4585-9d83-82ced5b6c191" first_name="Fritz" last_name="Ballermann" nick_name="" fictional="1" gender="1" />
+        <person id="396f8bfa-a414-4a25-85c7-4e05c687f6a0" first_name="Klaus" last_name="Berntsch" nick_name="" fictional="1" gender="1" />
+        <person id="660ccb76-bdbb-4c88-a608-f7a79ea73e6f" first_name="Erika" last_name="Böhme" nick_name="" fictional="1" gender="2" bookable="0" />
+        <person id="878b0a3f-dd01-4d01-994a-30fd38eece00" first_name="Mikael" last_name="Borack" nick_name="" fictional="1" gender="1" />
+        <person id="80448f46-150d-445a-b688-63b21523ff13" first_name="Schorsch" last_name="Busch" nick_name="" fictional="0" gender="1" bookable="0" />
+        <person id="a3cca42a-90b7-4533-a240-206066759ea4" first_name="Papriccio" last_name="Delafel" nick_name="" fictional="1" gender="1" />
+        <person id="474ae0d7-8233-47bb-bba9-2d3d3df61919" first_name="Detlef" last_name="Droschke" nick_name="" fictional="1" gender="1"  />
+        <person id="be4f2bdc-b09e-44fa-beac-5e2b74cea402" first_name="Siegmund" last_name="Freund" nick_name="" fictional="1" gender="1" bookable="0" />
+        <person id="8f93af7f-ac58-4573-bfae-ddf4698059bb" first_name="Klaus" last_name="Grobe" nick_name="" fictional="1" gender="1" />
+        <person id="8cc73e2d-02a4-4403-8270-b4a66a3e872c" first_name="Mario" last_name="Groteski" nick_name="" fictional="1" gender="1" />
+        <person id="c9784ca1-3c3a-4d15-a6c9-493e45d03559" first_name="Brett" last_name="Hart" nick_name="" fictional="0" gender="1" comment="parody version" />
+        <person id="d39a1a8b-1f04-485c-b454-1727c2dfc443" first_name="Hulg" last_name="Hoden" nick_name="" fictional="0" gender="1" comment="parody version of 834d00df-d96f-4cfd-85ba-29217d98a3ff" />
+        <person id="ab17d747-426e-4a3c-ae6b-ac27587f7563" first_name="Klaus Grobe" last_name="Jr." nick_name="" fictional="1" gender="1" />
+        <person id="61439b07-6e8f-484e-9447-6c9588270e21" first_name="Astrid" last_name="Jupidar" nick_name="" fictional="1" gender="2" />
+        <person id="bc0c3538-0186-48de-a074-9851c00d4cdd" first_name="Klaus-Jürgen" last_name="Klüppisch" nick_name="" fictional="1" gender="1" />
+        <person id="24967622-b169-4413-90df-6dc574464b65" first_name="Kalle" last_name="Knall" nick_name="" fictional="1" gender="1" />
+        <person id="13ce58ce-216d-4f5c-a9ca-bed86eef67e3" first_name="Kalle" last_name="Knausrig" nick_name="" fictional="1" gender="1" />
+        <person id="4bd36da9-4f07-4067-af4a-01ff5175ad73" first_name="Ulfs" last_name="Maul" nick_name="" fictional="1" gender="1" />
+        <person id="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" gender="1" face_code="1:2:2:#ECA472:-1:-1:2:-1:11#9090b0:3:7:-1:2:1:7:8#303010:-1:2#807020" />
+        <person id="c1543aab-18a4-44ad-be31-34bc1c972553" first_name="Santiago 'de Chile'" last_name="Perez" nick_name="" fictional="1" gender="1" bookable="0" />
+        <person id="22274e45-da7e-4fb2-8698-3a2364973e1a" first_name="Matthias" last_name="Pfeife" nick_name="" fictional="1" gender="1" />
+        <person id="afa8d190-c907-4fcf-9c34-d55136ab3c99" first_name="Mariusz" last_name="Plauz" nick_name="" fictional="1" gender="1" />
+        <person id="ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4" first_name="Beatrix" last_name="Plauz" nick_name="" fictional="1" gender="2" />
+        <person id="9eb98994-41a1-45f3-b70f-bcf4c7393224" first_name="Pelé 'Gravedigger'" last_name="Queruan" nick_name="" fictional="1" gender="1" bookable="0" />
+        <person id="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Erwin" last_name="Rotnase" nick_name="" fictional="1" gender="1" />
+        <person id="0c774ab3-9301-4759-a3e1-40520dc9e7b9" first_name="Paul" last_name="Sarte" nick_name="" fictional="1" gender="1" job="128" />
+        <person id="edb89eb9-1592-41cb-83b6-81eeecfacfd3" first_name="Antonali" last_name="Schwipsiwupsi" nick_name="" fictional="1" gender="1" />
+        <person id="3d9fa753-1621-46b2-b0fe-8096cbba644b" first_name="Bernd 'die Schlange'" last_name="Snake" nick_name="" fictional="1" gender="1" bookable="0" />
+        <person id="fa5cf4fe-7704-4eab-808b-5ea8f3935c6d" first_name="Brecht" last_name="Span" nick_name="" fictional="1" gender="1" />
+        <person id="b306d6f7-83c6-474d-b291-71245e2700c4" first_name="Andreas" last_name="Stahlhammer" nick_name="" fictional="1" gender="1" bookable="0" />
+        <person id="11c74211-662a-4817-b5b5-ec2c635d0158" first_name="Heiner" last_name="Trubbl" nick_name="" fictional="1" gender="1" />
+        <person id="c3494dd5-506b-46d1-97bd-12182ffa88da" first_name="Wladimir Putschkin und Jupp XII." last_name="" nick_name="" fictional="1" comment="a Putschkin that should be treated as a parody version" />
+        <person id="be56dbc0-3bf4-4326-a2a5-f30edf94fd2a" first_name="Ludwig" last_name="Zerbst" nick_name="" fictional="1" gender="1" />
+        <person id="6781fa1c-b8cb-4ad6-9fb5-5222d61a00b7" first_name="Stanislav" last_name="Breczker" nick_name="" fictional="1" gender="1" />
+        <person id="5c93b075-3f35-4ef7-8ef7-e0e99af0ad48" first_name="Ulli" last_name="Katshek" nick_name="" fictional="1" gender="1" />
+        <person id="b9535e13-175b-4bcc-bc34-87aecf06417c" first_name="Jey" last_name="Lenaultsan" nick_name="" fictional="1" />
+        <person id="c92483f6-53bb-4ff9-b164-5283c5d2d86c" first_name="Franz" last_name="Lenzer" nick_name="" fictional="1" gender="1" />
+        <person id="55bada42-a893-4c3c-8bc4-5b51d599a042" first_name="Peter" last_name="Shniefnase" nick_name="" fictional="1" gender="1" comment="wohl irgendwo zwischen Marcel Reich-Ranicki und Slavoj Žižek?" />
+        <person id="8af76be0-b50c-4236-9275-e0cecd6594b0" first_name="Michel" last_name="Shuhblattleer" fictional="1" gender="1" nick_name="" comment="fictional parody version" />
+        <person id="9e19b198-4367-4637-ae6b-bb43264f8b4a" first_name="Walther" last_name="Röhrli" nick_name="" fictional="1" comment="fictional parody version" />
+        <person id="9571b426-f7a9-47c5-94e5-98fede5b25d0" first_name="Jack" last_name="Wjellsniff" nick_name="" fictional="1" />
+        <person id="0142e7e1-c601-4de6-ab42-f3a34bc3c2dd" first_name="Karl-Peter" last_name="Ziflecker" nick_name="" />
+
+        <!-- start programme -->
+        <person id="Ronny-person-various-sjaele" first_name="Själe" last_name="Fjieldsgröhn" fictional="1" gender="1" country="D" job="1" face_code="1:2:3:FEDCCF:-1:-1:2:-1:11#0590B0:14:6:-1:4:7:3:7#45240C:-1:-1"/>
+        <!-- start programme - not available for custom productions -->
+        <person id="Ronny-person-various-ukuleleorchesterstarscrazy" first_name="Ukuleleorchester STARSCrazy" last_name="" nick_name="" fictional="1" gender="1" bookable="0" job="16" />
+        <person id="Ronny-person-various-helmut" first_name="Helmut" last_name="" nick_name="Helmut" fictional="1" gender="1" bookable="0" country="D" job="64" />
+        <person id="Ronny-person-various-ratz" first_name="Ratz" last_name="" nick_name="Ratz" fictional="1" gender="1" bookable="0" country="D" job="64" />
+        <person id="Ronny-person-various-teppic" first_name="Teppic" last_name="" nick_name="Teppic" fictional="1" gender="1" bookable="0" country="D" job="64" />
+        <person id="Ronny-person-various-therob" first_name="TheRob" last_name="" nick_name="TheRob" fictional="1" gender="1" bookable="0" country="D" job="64" />
+        <person id="Ronny-person-various-sushitv" first_name="SushiTV" last_name="" nick_name="SushiTV" fictional="1" gender="1" bookable="0" country="D" job="64" />
+    </insignificantpeople>
+
+    <exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
+</tvtdb>
