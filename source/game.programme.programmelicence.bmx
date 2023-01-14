@@ -2364,17 +2364,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== COUNTRY / YEAR / GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
 		'splitter
-		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 65, contentY, 2, 16)
+		Local yearWidth:Int = 65
+		If data.country And data.country.length > 5 Then yearWidth = 75
+		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + yearWidth, contentY, 2, 16)
 		'country [+year] + genre, year for non-callin-shows
 		If data.HasFlag(TVTProgrammeDataFlag.PAID)
-			skin.fontNormal.DrawBox(data.country, contentX + 5, contentY-1, 65, genreH+1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(data.country, contentX + 5, contentY-1, yearWidth, genreH+1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			skin.fontNormal.DrawBox(data.country + " " + data.GetYear(), contentX + 5, contentY-1, 65, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(data.country + " " + data.GetYear(), contentX + 5, contentY-1, yearWidth, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 
 		local genreLine:String = GetGenresLine()
 
-		skin.fontNormal.DrawBox(genreLine, contentX + 5 + 65 + 2, contentY-1, contentW - 10 - 65 - 2, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(genreLine, contentX + 5 + yearWidth + 2, contentY-1, contentW - 10 - yearWidth - 2, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ genreH
 
 
