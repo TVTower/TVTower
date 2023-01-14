@@ -1123,6 +1123,12 @@ endrem
 				'when dropping vendor licence on vendor shelf .. no prob
 				If guiLicence.licence.owner <= 0 Then Return True
 
+				'prevent dropping licence to incompatible shelf
+				If Not receiverList.HasItem(guiLicence)
+					triggerEvent.setVeto()
+					Return False
+				EndIf
+
 				If Not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
 					triggerEvent.setVeto()
 					Return False
