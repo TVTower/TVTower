@@ -138,10 +138,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			result = True
 		EndIf
 		
-		if currentProductionConcept
+		If currentProductionConcept
 			result = True
 		EndIf
 		SetCurrentProductionConcept(Null)
+		If productionCompanySelect Then productionCompanySelect.SetOpen(0)
 
 		Return result
 	End Method
@@ -174,7 +175,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			productionFocusSlider[i].SetValue(0)
 		Next
 
-		productionCompanySelect.SetValue("Produktionsfirma")
+		productionCompanySelect.SetValue(GetLocale("PRODUCTION_COMPANY"))
 
 		'cast: remove old entries
 		castSlotList.EmptyList()
