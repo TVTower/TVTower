@@ -372,7 +372,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
                 </tower>
                 <latebreaking>
                     <de>Brandaktuell|Aktuell</de>
-                    <en>Late-Breaking|Up-to-date</en>
+                    <en>Late-Breaking|Hot</en>
                 </latebreaking>
                 <title>
                     <de>Tech|Technologie|Tech-Corner|Nerd-Corner</de>
@@ -419,7 +419,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
                 </tower>
                 <latebreaking>
                     <de>Brandaktuell|Aktuell</de>
-                    <en>Late-Breaking|Up-to-date</en>
+                    <en>Late-Breaking|Hot</en>
                 </latebreaking>
                 <title>
                     <de>Showbiz|Unterhaltung|Die Kinoleinwand|Die Große Leinwand|Die Große Bühne</de>
@@ -466,7 +466,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
                 </tower>
                 <latebreaking>
                     <de>Brandaktuell|Aktuell</de>
-                    <en>Late-Breaking|Up-to-date</en>
+                    <en>Late-Breaking|Hot</en>
                 </latebreaking>
                 <title>
                     <de>Sport|Die Sport-Rundumschau|Die Sportfreunde|Fokus Sport</de>
@@ -513,7 +513,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
                 </tower>
                 <latebreaking>
                     <de>Brandaktuell|Aktuell</de>
-                    <en>Late-Breaking|Up-to-date</en>
+                    <en>Late-Breaking|Hot</en>
                 </latebreaking>
                 <title>
                     <de>Politik|Wirtschaft und Politik|Fokus Politik|Polit-Klartext</de>
@@ -607,7 +607,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
                 </tower>
                 <latebreaking>
                     <de>Brandaktuell|Aktuell</de>
-                    <en>Late-Breaking|Up-to-date</en>
+                    <en>Late-Breaking|Hot</en>
                 </latebreaking>
                 <title>
                     <de>Die Videospiele-Show|Arcade Action|Hot Games|Video Action</de>
@@ -879,7 +879,7 @@ About 1000 per episode.</en>
                     </title>
                     <description>
                         <de>Dar, der nun 12-jährige Sohn von Dink, kann den Thron erben. Doch sein Selbstvertrauen ist gering, er wird von seinen Altersgenossen und gar von Prinzessin Isolde drangsaliert, weil seine ihm eigenen magischen Fähigkeiten ein wenig unkonventionell sind.</de>
-                        <en>Dar, the now 12 year old son of Dink, can inherit the throne. However, his confidence is low, he is bullied by his agemeates and even Princess Isolde because his particular magical abilities are a bit unconvential.</en>
+                        <en>Dar, the now 12 year old son of Dink, can inherit the throne. However, his confidence is low, he is bullied by his agemates and even Princess Isolde because his particular magical abilities are a bit unconvential.</en>
                     </description>
                 </scripttemplate>
                 <scripttemplate index="3" product="2" licence_type="2" guid="5b1b2a90-0d09-47d3-be9f-49c8fd06b319">
