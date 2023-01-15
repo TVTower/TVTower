@@ -13,10 +13,12 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	Global VendorEntity:TSpriteEntity
 	Global VendorArea:TGUISimpleRect	'allows registration of drop-event
 
+	Global spriteShelfHighlight:TSprite
 	Global AuctionEntity:TSpriteEntity
 
 	Global hoveredGuiProgrammeLicence:TGUIProgrammeLicence = Null
 	Global draggedGuiProgrammeLicence:TGUIProgrammeLicence = Null
+	Global draggedGuiProgrammeLicenceTargetShelf:TGUIObject
 
 	'arrays holding the different blocks
 	'we use arrays to find "free slots" and set to a specific slot
@@ -226,6 +228,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 		'=== CREATE ELEMENTS ===
 		'=== create room elements
+		spriteShelfHighlight = GetSpriteFromRegistry("gfx_movieagency_shelfhighlight")
 		VendorEntity = GetSpriteEntityFromRegistry("entity_movieagency_vendor")
 		AuctionEntity = GetSpriteEntityFromRegistry("entity_movieagency_auction")
 
@@ -781,6 +784,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 		hoveredGuiProgrammeLicence = Null
 		draggedGuiProgrammeLicence = Null
+		draggedGuiProgrammeLicenceTargetShelf = Null
 
 		'to recreate everything during next update...
 		haveToRefreshGuiElements = True
@@ -1091,9 +1095,7 @@ endrem
 				If receiverList = GuiListMoviesCheap Then filter = TProgrammeLicenceFilter(GetInstance().filterMoviesCheap)
 				If receiverList = GuiListSeries Then filter = GetInstance().filterSeries
 
-				guiLicence.licence.owner = TOwnedGameObject.OWNER_NOBODY
-				Local isFiltered:Int = filter.DoesFilter(guiLicence.licence)
-				guiLicence.licence.owner = owner
+				Local isFiltered:Int = filter.DoesFilter(guiLicence.licence, True)
 
 				If underlayingItem Or Not isFiltered
 					triggerEvent.SetVeto()
@@ -1124,6 +1126,8 @@ endrem
 		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		Local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
 		If Not guiLicence Or Not receiverList Then Return False
+
+		draggedGuiProgrammeLicenceTargetShelf = Null
 
 		Local owner:Int = guiLicence.licence.owner
 
@@ -1177,6 +1181,8 @@ endrem
 			guiLicence.remove()
 			'remove the whole block too
 			guiLicence = Null
+			
+			draggedGuiProgrammeLicenceTargetShelf = Null
 'RONNY
 			haveToRefreshGuiElements = True
 		EndIf
@@ -1217,18 +1223,34 @@ endrem
 		Local highlightSuitcase:Int = False
 		Local highlightVendor:Int = False
 		Local highlightAuction:Int = False
+		Local highlightShelf:Int = 0
 
-
+	
 		'sometimes a draggedGuiProgrammeLicence is defined in an update
 		'but isnt dragged anymore (will get removed in the next tick)
 		'the dragged check avoids that the vendor is highlighted for
 		'1-2 render frames
 		If draggedGuiProgrammeLicence And draggedGuiProgrammeLicence.isDragged()
-			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 			If draggedGuiProgrammeLicence.licence.owner <= 0
 				highlightSuitcase = True
 			Else
 				highlightVendor = True
+				'also allow dropping on a specific shelf?
+				If not draggedGuiProgrammeLicenceTargetShelf
+					highlightShelf = True
+
+					'prevent dropping licence to incompatible shelf
+					If GetInstance().filterSeries.DoesFilter(draggedGuiProgrammeLicence.licence, True)
+						draggedGuiProgrammeLicenceTargetShelf = GuiListSeries
+					Elseif GetInstance().filterMoviesGood.DoesFilter(draggedGuiProgrammeLicence.licence, True)
+						draggedGuiProgrammeLicenceTargetShelf = GuiListMoviesGood
+					ElseIf GetInstance().filterMoviesCheap.DoesFilter(draggedGuiProgrammeLicence.licence, True)
+						draggedGuiProgrammeLicenceTargetShelf = GuiListMoviesCheap
+					Else
+						'set some "non null" so it is only calculated once
+						draggedGuiProgrammeLicenceTargetShelf = VendorArea
+					EndIf
+				EndIf
 			EndIf
 		Else
 			If AuctionEntity And AuctionEntity.GetScreenArea().ContainsXY(MouseManager.x, MouseManager.y)
@@ -1237,7 +1259,7 @@ endrem
 			EndIf
 		EndIf
 
-		If highlightAuction Or highlightVendor Or highlightSuitcase
+		If highlightAuction Or highlightVendor Or highlightSuitcase or highlightShelf
 			Local oldColA:Float = GetAlpha()
 			SetBlend LightBlend
 			SetAlpha oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
@@ -1245,6 +1267,10 @@ endrem
 			If AuctionEntity And highlightAuction Then AuctionEntity.Render()
 			If VendorEntity And highlightVendor Then VendorEntity.Render()
 			If highlightSuitcase And spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
+			
+			If TGUIListBase(draggedGuiProgrammeLicenceTargetShelf)
+				spriteShelfHighlight.Draw(draggedGuiProgrammeLicenceTargetShelf.GetScreenRect().x, draggedGuiProgrammeLicenceTargetShelf.GetScreenRect().y)
+			EndIf
 
 			SetAlpha(oldColA)
 			SetBlend AlphaBlend
@@ -1275,6 +1301,22 @@ endrem
 				hoveredGuiProgrammeLicence.DrawSheet(GetGraphicsManager().GetWidth() - 30, 20, 1)
 			Else
 				hoveredGuiProgrammeLicence.DrawSheet(30, 20, 0)
+			EndIf
+		EndIf
+
+
+		If draggedGuiProgrammeLicence And draggedGuiProgrammeLicence.isDragged()
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			'add "forbidden" icon if hovering your dragged licence over the
+			'wrong lists
+			If TGUIListBase(draggedGuiProgrammeLicenceTargetShelf)
+				If draggedGuiProgrammeLicenceTargetShelf <> GuiListSeries and THelper.MouseInRect(GuiListSeries.GetScreenRect())
+					GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				ElseIf draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesCheap and THelper.MouseInRect(GuiListMoviesCheap.GetScreenRect())
+					GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				ElseIf draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesGood and THelper.MouseInRect(GuiListMoviesGood.GetScreenRect())
+					GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				EndIf
 			EndIf
 		EndIf
 

@@ -266,6 +266,9 @@
 				<child name="gfx_movie_flag_paid"	 		x="0"	y="221"	w="15"	h="5" />
 				<child name="gfx_movie_flag_xrated"	 		x="0"	y="226"	w="15"	h="5" />
 				<child name="gfx_movie_flag_live"	 		x="0"	y="231"	w="15"	h="5" />
+
+
+				<child name="gfx_movieagency_shelfhighlight"    x="192" y="141" w="203" h="73" offsetLeft="4" offsetTop="3" />
 			</children>
 		</spritepack>
 
