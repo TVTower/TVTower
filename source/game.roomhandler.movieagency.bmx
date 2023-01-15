@@ -1310,12 +1310,23 @@ endrem
 			'add "forbidden" icon if hovering your dragged licence over the
 			'wrong lists
 			If TGUIListBase(draggedGuiProgrammeLicenceTargetShelf)
-				If draggedGuiProgrammeLicenceTargetShelf <> GuiListSeries and THelper.MouseInRect(GuiListSeries.GetScreenRect())
-					GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
-				ElseIf draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesCheap and THelper.MouseInRect(GuiListMoviesCheap.GetScreenRect())
-					GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
-				ElseIf draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesGood and THelper.MouseInRect(GuiListMoviesGood.GetScreenRect())
-					GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				If draggedGuiProgrammeLicenceTargetShelf <> GuiListSeries 
+					Local scrRect:TRectangle = GuiListSeries.GetScreenRect()
+					If THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - 25), Int(scrRect.w), Int(scrRect.h + 25))
+						GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+					EndIf
+				EndIf
+				If draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesCheap
+					Local scrRect:TRectangle = GuiListMoviesCheap.GetScreenRect()
+					If THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - 25), Int(scrRect.w), Int(scrRect.h + 25))
+						GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+					EndIf
+				EndIf
+				If draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesGood
+					Local scrRect:TRectangle = GuiListMoviesGood.GetScreenRect()
+					If THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - 25), Int(scrRect.w), Int(scrRect.h + 25))
+						GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+					EndIf
 				EndIf
 			EndIf
 		EndIf
