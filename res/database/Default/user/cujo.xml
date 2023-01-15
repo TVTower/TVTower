@@ -10,7 +10,7 @@
             </title>
             <description>
                 <de>Die beiden weltbekannten Superhelden haben sich gefunden. Sie findet ihn super. Er sie auch. Beide: "Unser erstes Date war super".</de>
-                <en>The world-famous superheroes have found each other. She thinks he's great. He her too. Both: "Our first date was great".</en>
+                <en>The world-famous superheroes have found each other. She thinks he's super. He her too. Both: "Our first date was super".</en>
             </description>
             <effects>
                 <!-- "morgen oder uebermorgen, 12-16 Uhr" -->
@@ -26,7 +26,7 @@
             </title>
             <description>
                 <de>Superkerl kann sein Glück nicht fassen: "Sie küsst super".</de>
-                <en>Superguy can't believe his luck: "She kisses great".</en>
+                <en>Superguy can't believe his luck: "She kisses super".</en>
             </description>
             <effects>
                 <!-- "morgen oder uebermorgen, 13-17 Uhr" -->
@@ -89,7 +89,7 @@
             </title>
             <description>
                 <de>Superkerl: "Sie kocht nicht gerade super."</de>
-                <en>Superguy: "She's not a great cook."</en>
+                <en>Superguy: "She's not a super cook."</en>
             </description>
             <effects>
                 <!-- "morgen oder uebermorgen, 17-21 Uhr" -->
@@ -118,7 +118,7 @@
                 <en>Superwoman and Superguy reconcile again</en>
             </title>
             <description>
-                <de>Superkerl: "Wir sind wieder glücklich. Unsere Versöhnung war super.</de>
+                <de>Superkerl: "Wir sind wieder glücklich. Unsere Versöhnung war super."</de>
                 <en>Superguy: "We are happy again. Our reconciliation was super."</en>
             </description>
             <effects>
@@ -214,8 +214,8 @@
         </news>
         <news id="cujo-news-quantar-05" type="2" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
             <title>
-                <de>Funktionär aus Trunedad und Topigo gibt Bestechung zu</de>
-                <en>Official from Trunedad and Topigo admits bribery</en>
+                <de>Funktionär aus gibt Bestechung zu</de>
+                <en>Official from admits bribery</en>
             </title>
             <description>
                 <de>Der trunedanische Fufa-Funktionär Jeff Worner hat zugegeben, dass er für seine Stimme Geld aus Quantar kassiert hat.</de>
@@ -228,8 +228,8 @@
         </news>
         <news id="cujo-news-quantar-06" type="2" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
             <title>
-                <de>Jupp Lauber bezeichnet Korruption als Einzelfall.</de>
-                <en>Jupp Lauber calls corruption an isolated incident.</en>
+                <de>Jupp Lauber bezeichnet Korruption als Einzelfall</de>
+                <en>Jupp Lauber calls corruption an isolated incident</en>
             </title>
             <description>
                 <de>Jupp Lauber: "Jeff Worner ist ein Krimineller. Alle anderen sind unschuldig."</de>
@@ -260,8 +260,8 @@
                 <en>Jupp Lauber can't believe it</en>
             </title>
             <description>
-                <de>Jupp Lauber gibt dem FRS ein Interview: "Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche Fufa-Funktionär?"</de>
-                <en>Jupp Lauber gives an interview to FRS: "I would never have thought that. Am I really the only honest Fufa official?"</en>
+                <de>Jupp Lauber gibt dem Schweizer Fernsehen ein Interview: "Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche Fufa-Funktionär?"</de>
+                <en>Jupp Lauber gives an interview to Swiss television: "I would never have thought that. Am I really the only honest Fufa official?"</en>
             </description>
             <effects />
             <data genre="2" price="1.0" quality="30" />
@@ -438,12 +438,12 @@
         </news>
         <news id="cujo-news-roter-platz-05" type="2" thread_id="cujo-news-roter-platz" creator="8827" created_by="Cujo">
             <title>
-                <de>Schessnah-Pilot vom KGB verhaftet</de>
-                <en>Schessnah pilot arrested by KGB</en>
+                <de>Schessnah-Pilot vom GKB verhaftet</de>
+                <en>Schessnah pilot arrested by GKB</en>
             </title>
             <description>
-                <de>Der Schessnah-Pilot Markus Trust wurde vom KGB verhaftet. Muss er jetzt lebenslang hinter Gitter?</de>
-                <en>The Schessnah pilot Markus Trust was arrested by the KGB. Does he now have to spend his life behind bars?</en>
+                <de>Der Schessnah-Pilot Markus Trust wurde vom GKB verhaftet. Muss er jetzt lebenslang hinter Gitter?</de>
+                <en>The Schessnah pilot Markus Trust was arrested by the GKB. Does he now have to spend his life behind bars?</en>
             </description>
             <effects>
                 <effect trigger="happen" type="triggernews" time="2,3,4,16,20" news="cujo-news-roter-platz-06" />
@@ -675,15 +675,15 @@
             <data genre="3" price="0.47" quality="47" />
 			<availability year_range_from="1995" year_range_to="1995" />
         </news>
-		<!-- "TVT AG" -->
+		<!-- "Gamezworld AG" -->
         <news id="cujo-news-tvt-01" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
             <title>
-                <de>TVT-Entwickler arbeiten im Home-Office</de>
-                <en>TVT developers work in a home office</en>
+                <de>TV Tower-Entwickler arbeiten im Home-Office</de>
+                <en>TV Tower developers work in a home office</en>
             </title>
             <description>
-                <de>Wegen der Pandemie arbeiten ab sofort alle TVT-Entwickler im Home-Office. Laut der TVT AG sind weltweit etwa 35.000 Mitarbeiter davon betroffen.</de>
-                <en>Due to the pandemic, all TVT developers are working in their home offices with immediate effect. According to TVT AG, about 35,000 employees worldwide are affected.</en>
+                <de>Wegen der Pandemie arbeiten ab sofort alle TV Tower-Entwickler im Home-Office. Laut der Gamezworld AG sind weltweit etwa 35.000 Mitarbeiter davon betroffen.</de>
+                <en>Due to the pandemic, all TV Tower developers are working in their home offices with immediate effect. According to Gamezworld AG, about 35,000 employees worldwide are affected.</en>
             </description>
 			<effects>
                 <effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-tvt-02" />
@@ -697,22 +697,22 @@
                 <en>News are encrypted</en>
             </title>
             <description>
-                <de>Laut der TVT AG werden die News wegen der geltenden GSDVO ab sofort verschlüsselt. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</de>
-                <en>According to TVT AG, the news will be encrypted with immediate effect due to the GSDVO in force. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</en>
+                <de>Laut der Gamezworld AG werden die News wegen der geltenden GSDVO ab sofort verschlüsselt. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</de>
+                <en>According to Gamezworld AG, the news will be encrypted with immediate effect due to the GSDVO in force. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</en>
             </description>
-			<effects>
+	    <effects>
                 <effect trigger="happen" type="triggernews" time="2,1,2,13,17" news="cujo-news-tvt-03" />
             </effects>
             <data genre="0" price="0.5" quality="30" />
         </news>
         <news id="cujo-news-tvt-03" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
             <title>
-                <de>TVT AG schafft Schreibmaschinen ab</de>
-                <en>TVT AG abolishes typewriters</en>
+                <de>Gamezworld AG schafft Schreibmaschinen ab</de>
+                <en>Gamezworld AG abolishes typewriters</en>
             </title>
             <description>
-                <de>Wie die Pressesprecherin der TVT AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: "Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet."</de>
-                <en>According to TVT AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit Bandium computers from now on."</en>
+                <de>Wie die Pressesprecherin der Gamezworld AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: "Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet."</de>
+                <en>According to Gamezworld AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit Bandium computers from now on."</en>
             </description>
 			<effects>
                 <effect trigger="happen" type="triggernews" time="2,1,2,14,18" news="cujo-news-tvt-04" />
@@ -725,8 +725,8 @@
                 <en>Candy bars to be banned</en>
             </title>
             <description>
-                <de>Wie Gesundheitsminister Kurt Leisenfluss in einem TVT-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TVT-Sendern schaltet.</de>
-                <en>Health Minister Kurt Leisenfluss announced on a TVT station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TVT stations.</en>
+                <de>Wie Gesundheitsminister Kurt Schmitt in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TVT-Sendern schaltet.</de>
+                <en>Health Minister Kurt Schmitt announced on a TV Tower station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TVT stations.</en>
             </description>
             <effects />
             <data genre="0" price="0.5" quality="40" />
@@ -1014,7 +1014,7 @@
 			<last_name_original>Rola</last_name_original>
 			<details job="1" gender="1" birthday="1958-10-06" deathday="2016-03-14" country="D" />
 		</person>
-		<!-- Moderator -->
+		<!-- Moderatoren -->
 		<!-- Bob Ross -->
 		<person id="cujo-person-ross-blob" tmdb_id="" imdb_id="nm1470679" creator="8827" created_by="Cujo">
 			<first_name>Ross</first_name>
@@ -1023,6 +1023,15 @@
 			<first_name_original>Bob</first_name_original>
 			<last_name_original>Ross</last_name_original>
 			<details job="8" gender="1" birthday="1942-10-29" deathday="1995-07-04" country="USA" />
+		</person>
+		<!-- Florian König -->
+		<person id="cujo-person-fabian-knoetlich" tmdb_id="" imdb_id="nm2851022" creator="8827" created_by="Cujo">
+			<first_name>Fabian</first_name>
+			<last_name>Knötlich</last_name>
+			<nick_name></nick_name>
+			<first_name_original>Florian</first_name_original>
+			<last_name_original>König</last_name_original>
+			<details job="8" gender="1" birthday="1967-09-14" deathday="" country="D" />
 		</person>
 	</celebritypeople>
     <allprogrammes>
@@ -1068,7 +1077,6 @@
 			<groups target_groups="130" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1984" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="2" price_mod="0.67" />
 			<ratings critics="31" speed="59" outcome="45" />
-			<availability year_range_from="1986" year_range_to="" />
 		</programme>
 		<programme id="cujo-film-vier-haende-rio" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087481" creator="8827" created_by="Cujo">
 			<title>
@@ -1091,7 +1099,6 @@
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1984" distribution="1" maingenre="5" subgenre="2" flags="0" blocks="2" price_mod="0.85" />
 			<ratings critics="10" speed="22" outcome="42" />
-			<availability year_range_from="1986" year_range_to="" />
 		</programme>
 			<programme id="cujo-film-verurteilte-bankier" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0111161" creator="8827" created_by="Cujo"> 
 			<title>
@@ -1114,7 +1121,6 @@
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1994" distribution="1" maingenre="7" subgenre="" flags="0" blocks="3" price_mod="1.25" />
 			<ratings critics="96" speed="22" outcome="88" />
-			<availability year_range_from="1996" year_range_to="" />
 		</programme>
 		<programme id="cujo-film-zwoelf-geschworene" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0050083" creator="8827" created_by="Cujo"> 
 			<title>
@@ -1157,7 +1163,6 @@
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1988" distribution="1" maingenre="5" subgenre="" flags="8" blocks="2" price_mod="0.93" />
 			<ratings critics="80" speed="15" outcome="70" />
-			<availability year_range_from="1990" year_range_to="" />
 		</programme>
 		<programme id="cujo-film-vati-ante-portas" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102629" creator="8827" created_by="Cujo">
 			<title>
@@ -1179,7 +1184,6 @@
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1991" distribution="1" maingenre="5" subgenre="" flags="8" blocks="2" price_mod="0.98" />
 			<ratings critics="67" speed="19" outcome="65" />
-			<availability year_range_from="1993" year_range_to="" />
 		</programme>		
 		<programme id="cujo-film-rache-erben" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087148" creator="8827" created_by="Cujo">
 			<title>
@@ -1200,7 +1204,6 @@
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1985" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.85" />
 			<ratings critics="10" speed="22" outcome="42" />
-			<availability year_range_from="1987" year_range_to="" />
 		</programme>
         <programme id="cujo-serien-kastanienstrasse-01-05" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" creator="8827" created_by="Cujo">
             <title>
@@ -1223,7 +1226,6 @@
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="D" year="1985" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="0.9" />
             <ratings critics="30" speed="27" outcome="49" />
-			<availability year_range_from="1985" year_range_to="1996" />
             <children>
                 <programme id="cujo-serien-kastanienstrasse-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
                     <title>
@@ -1303,7 +1305,6 @@
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="D" year="1997" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="0.95" />
             <ratings critics="40" speed="32" outcome="39" />
-			<availability year_range_from="1997" year_range_to="2008" />
             <children>
                 <programme id="cujo-serien-kastanienstrasse-06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
                     <title>
@@ -1383,7 +1384,6 @@
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="D" year="2009" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="1" />
             <ratings critics="50" speed="37" outcome="29" />
-			<availability year_range_from="2009" year_range_to="" />
             <children>
                 <programme id="cujo-serien-kastanienstrasse-11" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
                     <title>
@@ -1765,6 +1765,26 @@
                 </programme>
             </children>
         </programme>
+	<!-- Doppelpass -->
+	<programme id="cujo-show-doppeltspass" product="3" licence_type="1" tmdb_id="0" imdb_id="tt0435952" creator="8827" created_by="Cujo">
+		<title>
+			<de>Doppeltspaß</de>
+			<en>Double fun</en>
+		</title>
+		<title_original>
+			<de>Doppelpass</de>
+		</title_original>
+		<description>
+		<de>Fabian Knötlich diskutiert mit den Experten Steffen Neffenzwerg und Marco Passler über fragwürdige Schiedsrichterentscheidungen.</de>
+			<en>Fabian Knötlich discusses questionable referee decisions with experts Steffen Neffenzwerg and Marco Passler.</en>
+		</description>
+		<staff>
+			<member index="0" function="8">cujo-person-fabian-knoetlich</member>
+		</staff>
+		<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+		<data country="D" year="1995" distribution="2" maingenre="103" subgenre="203" flags="0" blocks="3" price_mod="0.55" />
+		<ratings critics="30" speed="19" outcome="62" />
+	</programme>
     </allprogrammes>
 	<allads>
 		<!-- Toyota - Nichts ist unmöglich -->
