@@ -1223,8 +1223,7 @@ endrem
 		Local highlightSuitcase:Int = False
 		Local highlightVendor:Int = False
 		Local highlightAuction:Int = False
-		Local highlightShelf:Int = 0
-
+		Local highlightShelf:Int
 	
 		'sometimes a draggedGuiProgrammeLicence is defined in an update
 		'but isnt dragged anymore (will get removed in the next tick)
@@ -1235,21 +1234,35 @@ endrem
 				highlightSuitcase = True
 			Else
 				highlightVendor = True
+
 				'also allow dropping on a specific shelf?
 				If not draggedGuiProgrammeLicenceTargetShelf
-					highlightShelf = True
-
+					Local shelfGuiList:TGUIProgrammeLicenceSlotList
+					
 					'prevent dropping licence to incompatible shelf
 					If GetInstance().filterSeries.DoesFilter(draggedGuiProgrammeLicence.licence, True)
-						draggedGuiProgrammeLicenceTargetShelf = GuiListSeries
+						shelfGuiList = GuiListSeries
 					Elseif GetInstance().filterMoviesGood.DoesFilter(draggedGuiProgrammeLicence.licence, True)
-						draggedGuiProgrammeLicenceTargetShelf = GuiListMoviesGood
+						shelfGuiList = GuiListMoviesGood
 					ElseIf GetInstance().filterMoviesCheap.DoesFilter(draggedGuiProgrammeLicence.licence, True)
-						draggedGuiProgrammeLicenceTargetShelf = GuiListMoviesCheap
-					Else
+						shelfGuiList = GuiListMoviesCheap
+					EndIf
+
+					'skip highlighting if the selected list is not empty
+					If shelfGuiList and Not shelfGuiList.HasItem(draggedGuiProgrammeLicence) And shelfGuiList.GetUnusedSlotAmount() <= 0
+						shelfGuiList = Null
+					EndIf
+
+					If Not shelfGuiList
 						'set some "non null" so it is only calculated once
 						draggedGuiProgrammeLicenceTargetShelf = VendorArea
+					Else
+						draggedGuiProgrammeLicenceTargetShelf = shelfGuiList
 					EndIf
+				EndIf
+
+				If TGUIProgrammeLicenceSlotList(draggedGuiProgrammeLicenceTargetShelf)
+					highlightShelf = True
 				EndIf
 			EndIf
 		Else
@@ -1268,7 +1281,7 @@ endrem
 			If VendorEntity And highlightVendor Then VendorEntity.Render()
 			If highlightSuitcase And spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
 			
-			If TGUIListBase(draggedGuiProgrammeLicenceTargetShelf)
+			If highlightShelf and TGUIListBase(draggedGuiProgrammeLicenceTargetShelf)
 				spriteShelfHighlight.Draw(draggedGuiProgrammeLicenceTargetShelf.GetScreenRect().x, draggedGuiProgrammeLicenceTargetShelf.GetScreenRect().y)
 			EndIf
 
@@ -1309,25 +1322,17 @@ endrem
 			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 			'add "forbidden" icon if hovering your dragged licence over the
 			'wrong lists
+			'also forbid if target list is "full" and won't accept it
+			'and the dragged licence comes from another source
 			If TGUIListBase(draggedGuiProgrammeLicenceTargetShelf)
-				If draggedGuiProgrammeLicenceTargetShelf <> GuiListSeries 
-					Local scrRect:TRectangle = GuiListSeries.GetScreenRect()
+				For local guiList:TGUIProgrammeLicenceSlotList = EachIn [GuiListSeries, GuiListMoviesCheap, GuiListMoviesGood]
+					Local scrRect:TRectangle = guiList.GetScreenRect()
 					If THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - 25), Int(scrRect.w), Int(scrRect.h + 25))
-						GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+						If draggedGuiProgrammeLicenceTargetShelf <> guiList or not highlightShelf
+							GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
+						EndIf
 					EndIf
-				EndIf
-				If draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesCheap
-					Local scrRect:TRectangle = GuiListMoviesCheap.GetScreenRect()
-					If THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - 25), Int(scrRect.w), Int(scrRect.h + 25))
-						GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
-					EndIf
-				EndIf
-				If draggedGuiProgrammeLicenceTargetShelf <> GuiListMoviesGood
-					Local scrRect:TRectangle = GuiListMoviesGood.GetScreenRect()
-					If THelper.MouseIn(Int(scrRect.x), Int(scrRect.y - 25), Int(scrRect.w), Int(scrRect.h + 25))
-						GetGameBase().SetCursorExtra(TGameBase.CURSOR_EXTRA_FORBIDDEN)
-					EndIf
-				EndIf
+				Next
 			EndIf
 		EndIf
 
