@@ -1178,7 +1178,7 @@ Do the two offer enough material for an exciting panel?</en>
 				</programme>
 			</children>
 		</programme>
-	</allprogrammes>
+	
 		<programme id="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<title>
 				<de>Dynamit - Das Magazin</de>
@@ -1869,5 +1869,6 @@ Terrific final.</en>
             </children>
         </programme>
 
+	</allprogrammes>
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
 </tvtdb>
