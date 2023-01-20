@@ -86,7 +86,7 @@ endrem
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:TVec2D = New TVec2D(0, 0)
+	Global populationMapOffset:SVec2I = New SVec2I(0, 0)
 	Global _initDone:Int = False
 	Global _instance:TStationMapCollection
 
@@ -1926,12 +1926,12 @@ EndRem
 		'GetInstance()._regenerateMap = True
 		If TStationAntenna(station)
 			Local radius:Int = TStationAntenna(station).radius
-			Local stationRect:TRectangle = New TRectangle.Init(station.X - radius, station.Y - radius, 2*radius, 2*radius)
+			Local stationRect:SRectI = New SRectI(station.X - radius, station.Y - radius, 2*radius, 2*radius)
 			Local result:TStationMapSection[] = New TStationMapSection[sections.Length]
 			Local added:Int = 0
 
 			For Local section:TStationMapSection = EachIn sections
-				If Not section.rect.IntersectRect(stationRect) Then Continue
+				If Not stationRect.Intersects(Int(section.rect.x), Int(section.rect.y), Int(section.rect.w), Int(section.rect.h)) Then Continue
 
 				result[added] = section
 				added :+ 1
@@ -1966,7 +1966,7 @@ EndRem
 		SetAlpha oldA * 0.8
 		For Local section:TStationMapSection = EachIn sections
 			If Not section.GetShapeSprite() Then Continue
-			section.shapeSprite.Draw(section.rect.GetX(), section.rect.GetY())
+			section.shapeSprite.Draw(section.rect.x, section.rect.y)
 		Next
 		SetAlpha oldA
 	End Method
@@ -1985,8 +1985,8 @@ EndRem
 
 
 	Method RemoveSectionFromPopulationSectionImage:Int(section:TStationMapSection)
-		Local startX:Int = Int(Max(0, section.rect.GetX()))
-		Local startY:Int = Int(Max(0, section.rect.GetY()))
+		Local startX:Int = Int(Max(0, section.rect.x))
+		Local startY:Int = Int(Max(0, section.rect.y))
 		Local endX:Int = Int(Min(populationImageSections.width, section.rect.GetX2()))
 		Local endY:Int = Int(Min(populationImageSections.height, section.rect.GetY2()))
 		Local pix:TPixmap = LockImage(populationImageSections)
@@ -3602,8 +3602,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetRect:TRectangle()
-		Return New TRectangle.Init(X - radius, Y - radius, 2*radius, 2*radius)
+	Method GetMapRect:SRectI()
+		Return New SRectI(X - radius, Y - radius, 2*radius, 2*radius)
 	End Method
 
 
@@ -4136,11 +4136,11 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			If selected
 				SetColor 255,255,255
 				SetAlpha 0.3
-				DrawImage(section.GetSelectedImage(), section.rect.GetX(), section.rect.GetY())
+				DrawImage(section.GetSelectedImage(), section.rect.x, section.rect.y)
 
 				SetAlpha Float(0.2 * Sin(Time.GetAppTimeGone()/4) * oldA) + 0.3
 				SetBlend LightBlend
-				section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
+				section.GetHighlightBorderSprite().Draw(section.rect.x, section.rect.y)
 				SetColor(oldCol)
 				SetAlpha(oldA)
 				SetBlend AlphaBlend
@@ -4151,11 +4151,11 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 				SetColor 255,255,255
 				SetAlpha 0.15
 				SetBlend LightBlend
-				DrawImage(section.GetHoveredImage(), section.rect.GetX(), section.rect.GetY())
+				DrawImage(section.GetHoveredImage(), section.rect.x, section.rect.y)
 
 				SetAlpha 0.4
 				SetBlend LightBlend
-				section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
+				section.GetHighlightBorderSprite().Draw(section.rect.x, section.rect.y)
 				SetColor(oldCol)
 				SetAlpha(oldA)
 				SetBlend AlphaBlend
@@ -4164,7 +4164,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			SetAlpha oldA * 0.3
 			color.SetRGB()
 			'color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
-			section.GetShapeSprite().Draw(section.rect.GetX(), section.rect.GetY())
+			section.GetShapeSprite().Draw(section.rect.x, section.rect.y)
 			SetColor(oldCol)
 			SetAlpha(oldA)
 		EndIf
@@ -4613,7 +4613,7 @@ Type TStationMapSection
 	Method LoadShapeSprite()
 		shapeSprite = GetSpriteFromRegistry(shapeSpriteName)
 		'resize rect
-		rect.SetWH(shapeSprite.area.GetW(), shapeSprite.area.GetH())
+		rect.SetWH(Int(shapeSprite.area.w), Int(shapeSprite.area.h))
 	End Method
 
 
@@ -4676,8 +4676,8 @@ Type TStationMapSection
 	
 	
 	Method IsValidUplinkPos:Int(localX:Int, localY:Int)
-		Local mapX:Int = rect.GetX() + localX 
-		Local mapY:Int = rect.GetY() + localY
+		Local mapX:Int = rect.x + localX 
+		Local mapY:Int = rect.y + localY
 		Local IsValid:Int = False
 
 		Local sprite:TSprite = GetShapeSprite()
@@ -4691,8 +4691,8 @@ Type TStationMapSection
 			For Local otherSection:TStationMapSection = EachIn GetStationMapCollection().sections
 				If Self = otherSection Then Continue
 
-				Local otherLocalX:Int = mapX - otherSection.rect.GetX()
-				Local otherLocalY:Int = mapY - otherSection.rect.GetY()
+				Local otherLocalX:Int = mapX - otherSection.rect.x
+				Local otherLocalY:Int = mapY - otherSection.rect.y
 				Local otherSprite:TSprite = otherSection.GetShapeSprite()
 				If otherSprite 
 					If Not otherSprite._pix Then otherSprite._pix = otherSprite.GetPixmap()
@@ -4712,8 +4712,8 @@ Type TStationMapSection
 	Method GetLocalUplinkPos:TVec2I()
 		If Not uplinkPos
 			'try center of section first
-			Local localX:Int = rect.GetXCenter() - rect.GetX()
-			Local localY:Int = rect.GetYCenter() - rect.GetY()
+			Local localX:Int = rect.GetXCenter() - rect.x
+			Local localY:Int = rect.GetYCenter() - rect.y
 			'check if that spot collides with another state
 			If Not IsValidUplinkPos(localX, localY)
 				Local mapPos:SVec2I = GetStationMapCollection().GetRandomAntennaCoordinateInSection(Self, False)
@@ -4939,8 +4939,8 @@ Type TStationMapSection
 
 
 	Method GeneratePopulationImage:Int(sourcePopulationImage:TImage)
-		Local startX:Int = Int(Max(0, rect.GetX()))
-		Local startY:Int = Int(Max(0, rect.GetY()))
+		Local startX:Int = Int(Max(0, rect.x))
+		Local startY:Int = Int(Max(0, rect.y))
 		Local endX:Int = Int(Min(sourcePopulationImage.width, rect.GetX2()))
 		Local endY:Int = Int(Min(sourcePopulationImage.height, rect.GetY2()))
 		Local sourcePix:TPixmap = LockImage(sourcePopulationImage)
@@ -5114,8 +5114,8 @@ Type TStationMapSection
 						'mark the area within the stations circle
 
 						'local coordinate (within section)
-						stationX = station.X - rect.GetX()
-						stationY = station.Y - rect.GetY()
+						stationX = station.X - rect.x
+						stationY = station.Y - rect.y
 
 						'stay within the section
 						circleRectX = Max(0, stationX - antennaStationRadius)
@@ -5361,14 +5361,14 @@ Type TStationMapSection
 	'params of advanced types (no ints, strings, bytes) are automatically
 	'passed "by reference" (change it here, and it is changed globally)
 	Method _FillAntennaPoints(map:TLongMap, stationX:Int, stationY:Int, radius:Int, color:Int)
-		Local stationRect:TRectangle = New TRectangle.Init(stationX - radius, stationY - radius, 2*radius, 2*radius)
+		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
 		'find minimal rectangle/intersection between section and station
-		Local sectionStationIntersectRect:TRectangle = rect.IntersectRect(stationRect)
+		Local sectionStationIntersectRect:SRectI = stationRect.IntersectRect(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h))
 		'no intersection, nothing to do then?
-		If Not sectionStationIntersectRect Then Return
+		If sectionStationIntersectRect.w = 0 and sectionStationIntersectRect.h = 0 Then Return
 
 		'convert world coordinate to local coords
-		sectionStationIntersectRect.MoveXY(-rect.x, -rect.y)
+		sectionStationIntersectRect = sectionStationIntersectRect.Move(Int(-rect.x), Int(-rect.y))
 		stationX :- rect.x
 		stationY :- rect.y
 
@@ -5397,14 +5397,14 @@ Type TStationMapSection
 		If radius < 0 Then radius = GetStationMapCollection().antennaStationRadius
 
 		'might be negative - if ending before the sections rect
-		Local stationRect:TRectangle = New TRectangle.Init(stationX - radius, stationY - radius, 2*radius, 2*radius)
+		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
 		'find minimal rectangle/intersection between section and station
-		Local sectionStationIntersectRect:TRectangle = rect.IntersectRect(stationRect)
+		Local sectionStationIntersectRect:SRectI = stationRect.IntersectRect(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h))
 		'skip if section and station do not share a pixel
-		If Not sectionStationIntersectRect Then Return 0
+		If sectionStationIntersectRect.w = 0 and sectionStationIntersectRect.h = 0 Then Return 0
 
 		'move world to local coords
-		sectionStationIntersectRect.MoveXY( -rect.x, -rect.y )
+		sectionStationIntersectRect = sectionStationIntersectRect.Move( Int(-rect.x), Int(-rect.y) )
 		stationX :- rect.x
 		stationY :- rect.y
 
@@ -5442,7 +5442,7 @@ endrem
 	Method CalculateAntennaAudienceDecrease:Int(stations:TList, removeStation:TStationAntenna)
 		If Not removeStation Then Return 0
 		'if station is not hitting the section
-		If Not removeStation.GetRect().Intersects(rect) Then Return 0
+		If Not removeStation.GetMapRect().Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Return 0
 
 		Local Points:TLongMap = New TLongMap
 		Local result:Int = 0
@@ -5465,7 +5465,7 @@ endrem
 			If station = removeStation Then Continue
 
 			'skip antennas not overlapping the station to remove
-			If Not station.GetRect().Intersects(removeStation.GetRect()) Then Continue
+			If Not station.GetMapRect().Intersects(removeStation.GetMapRect()) Then Continue
 
 			Self._FillAntennaPoints(Points, Int(station.X), Int(station.Y), station.radius, 1)
 		Next
@@ -5489,9 +5489,9 @@ endrem
 
 
 		'might be negative - if ending before the sections rect
-		Local stationRect:TRectangle = New TRectangle.Init(stationX - radius, stationY - radius, 2*radius, 2*radius)
+		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
 		'skip if section and station do not share a pixel
-		If Not rect.Intersects(stationRect) Then Return 0
+		If Not stationRect.Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Return 0
 
 
 		Local Points:TLongMap = New TLongMap
@@ -5509,10 +5509,10 @@ endrem
 			'If Not station.CanBroadcast() Then Continue
 
 			'skip antennas outside of the section
-			If Not station.GetRect().Intersects(rect) Then Continue
+			If Not station.GetMapRect().Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Continue
 
 			'skip antennas not overlapping the station to add
-			If Not station.GetRect().Intersects(stationRect) Then Continue
+			If Not station.GetMapRect().Intersects(stationRect) Then Continue
 
 			Self._FillAntennaPoints(Points, Int(station.X), Int(station.Y), station.radius, 1)
 		Next
