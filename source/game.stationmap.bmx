@@ -9,6 +9,7 @@ Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.color.bmx"
+Import "Dig/base.util.longintmap.bmx"
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.gfx.sprite.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
@@ -5005,6 +5006,11 @@ Type TStationMapSection
 	Function GeneratePositionKey:Long(X:Int, Y:Int)
 		Return Long(X) Shl 32 | Long(Y)
 	End Function
+
+	Function SplitPositionKey(key:Long, X:Int Var, Y:Int Var)
+		X = Int(key Shr 32)
+		Y = key & $ffffffff
+	End Function
 	Public
 
 
@@ -5360,7 +5366,7 @@ Type TStationMapSection
 
 	'params of advanced types (no ints, strings, bytes) are automatically
 	'passed "by reference" (change it here, and it is changed globally)
-	Method _FillAntennaPoints(map:TLongMap, stationX:Int, stationY:Int, radius:Int, color:Int)
+	Method _FillAntennaPoints(map:TLongIntMap, stationX:Int, stationY:Int, radius:Int, color:Int)
 		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
 		'find minimal rectangle/intersection between section and station
 		Local sectionStationIntersectRect:SRectI = stationRect.IntersectRect(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h))
@@ -5386,7 +5392,7 @@ Type TStationMapSection
 				'left the topographic borders ?
 				If Not PixelIsOpaque(sprite._pix, posX, posY) > 0 Then Continue
 
-				map.Insert(GeneratePositionKey(posX, posY), New TStationMapAntennaPoint(posX , posY, color))
+				map.Insert(GeneratePositionKey(posX, posY), color)
 			Next
 		Next
 	End Method
@@ -5444,7 +5450,7 @@ endrem
 		'if station is not hitting the section
 		If Not removeStation.GetMapRect().Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Return 0
 
-		Local Points:TLongMap = New TLongMap
+		Local Points:TLongIntMap = New TLongIntMap
 		Local result:Int = 0
 
 		'mark the station points of the to remove as "2"
@@ -5471,9 +5477,11 @@ endrem
 		Next
 
 		'count all "still 2" spots
-		For Local point:TStationMapAntennaPoint = EachIn points.Values()
+		For Local point:TLongIntKeyValue = EachIn points.Values()
 			If point.value = 2
-				result :+ populationmap[point.X, point.Y]
+				'split key into coords again
+				Local pX:Int, pY:Int; SplitPositionKey(point.key, pX, pY)
+				result :+ populationmap[pX, pY]
 			EndIf
 		Next
 		Return result
@@ -5494,7 +5502,7 @@ endrem
 		If Not stationRect.Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Return 0
 
 
-		Local Points:TLongMap = New TLongMap
+		Local Points:TLongIntMap = New TLongIntMap
 		Local result:Int = 0
 
 		'add "new" station which may be bought - mark points as ""
@@ -5518,9 +5526,11 @@ endrem
 		Next
 
 		'all points still "2" are what will be added in addition to existing ones
-		For Local point:TStationMapAntennaPoint = EachIn points.Values()
+		For Local point:TLongIntKeyValue = EachIn points.Values()
 			If point.value = 2
-				result :+ populationmap[point.X, point.Y]
+				'split key into coords again
+				Local pX:Int, pY:Int; SplitPositionKey(point.key, pX, pY)
+				result :+ populationmap[pX, pY]
 			EndIf
 		Next
 		Return result
