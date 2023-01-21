@@ -45,7 +45,7 @@ Type TAwardCustomProduction extends TAward
 	Method GetDuration:Long() override
 		if duration = -1
 			'2days
-			duration = GetWorldTime().MakeTime(0, 2, 0, 0)
+			duration = GetWorldTime().GetTimeGoneForGameTime(0, 2, 0, 0)
 		endif
 		return duration
 	End Method

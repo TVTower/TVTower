@@ -244,7 +244,7 @@ Type TBroadcastManager
 		bc.BroadcastType = broadcastType
 
 		If day < 0 Then day = GetWorldTime().GetDay()
-		bc.Time = GetWorldTime().MakeTime(0, day, hour, 0, 0)
+		bc.Time = GetWorldTime().GetTimeGoneForGameTime(0, day, hour, 0, 0)
 
 		Sequence.SetCurrentBroadcast(bc)
 
@@ -469,7 +469,7 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 		EndIf
 
 		If day < 0 Then day = GetWorldTime().GetDay()
-		bc.Time = GetWorldTime().MakeTime(0, day, hour, 0, 0)
+		bc.Time = GetWorldTime().GetTimeGoneForGameTime(0, day, hour, 0, 0)
 
 		'even if currentBroadcastMaterialdd is empty - fill
 		'playersBroadcasts to a length of 4

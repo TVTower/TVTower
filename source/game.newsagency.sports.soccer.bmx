@@ -221,7 +221,7 @@ Type TNewsEventSportLeague_Soccer Extends TNewsEventSportLeague
 		'soccer season
 		'match time: 14. 8. - 14.5. (1. Liga)
 		'match time: 29. 7. -       (3. Liga)
-		Local thisYear:Long = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(time), seasonStartMonth, seasonStartDay)
+		Local thisYear:Long = GetWorldTime().GetTimeGoneForRealDate(GetWorldTime().GetYear(time), seasonStartMonth, seasonStartDay)
 		If thisYear < time 
 			Return thisYear + GetWorldTime().GetYearLength()
 		Else

@@ -118,7 +118,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'=== BANKRUPTCY HINT ===
 		'showing something before that player started
 		if GetPlayerFinanceCollection().GetPlayerStartDay(room.owner) > financeShowDay
-			local midnight:Long = GetWorldTime().MakeTime(0, financeShowDay+1, 0, 0, 0)
+			local midnight:Long = GetWorldTime().GetTimeGoneForGameTime(0, financeShowDay+1, 0, 0, 0)
 			local bankruptcyCountAtMidnight:int = GetPlayer(room.owner).GetBankruptcyAmount(midnight)
 			local bankruptcyCountAtDayBegin:int = GetPlayer(room.owner).GetBankruptcyAmount(midnight - TWorldTime.DAYLENGTH)
 			local bankruptcyCount:int = 4
@@ -134,7 +134,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 		'=== DAY CHANGER ===
 		'add 1 to "today" as we are on this day then
-		local today:Long = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
+		local today:Long = GetWorldTime().GetTimeGoneForGameTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 '		textFont.DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Shadow, 0.2)
 		GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Emboss, 0.2)
@@ -388,7 +388,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			slot :+ 1
 		Next
 		if hoveredDay > 0
-			local time:Long = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
+			local time:Long = GetWorldTime().GetTimeGoneForGameTime(0, hoveredDay, 0, 0)
 			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
 				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.x, curveArea.GetY2() + 2, curveArea.w, -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))

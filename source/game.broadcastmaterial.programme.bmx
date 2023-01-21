@@ -133,7 +133,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		If usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
 			'aired count is stored in programmedata for now
-			'GetBroadcastInformationProvider().SetProgrammeAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+			'GetBroadcastInformationProvider().SetProgrammeAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.GetTimeGoneForGameTime(0,day,hour,minute) )
 
 			'inform others
 			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
@@ -143,7 +143,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 			'inform others
 			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
-'			GetBroadcastInformationProvider().SetTrailerAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+'			GetBroadcastInformationProvider().SetTrailerAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.GetTimeGoneForGameTime(0,day,hour,minute) )
 		Else
 			Self.SetState(Self.STATE_OK)
 			TLogger.Log("FinishBroadcasting", "Finishing programme broadcast with unknown usedAsType="+usedAsType, LOG_ERROR)

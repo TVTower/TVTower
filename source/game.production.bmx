@@ -463,7 +463,7 @@ Type TProduction Extends TOwnedGameObject
 			'2 blocks: ends at 21:55
 			'ATTENTION: ensure it ends at xx:x5 (as the production 
 			'           manager updates in 5 minute intervals)
-			endTime = GetWorldtime().MakeTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
+			endTime = GetWorldtime().GetTimeGoneForGameTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
 		EndIf
 
 		_designatedProgrammeLicence.data.SetState(TVTProgrammeState.IN_PRODUCTION)

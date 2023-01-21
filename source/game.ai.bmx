@@ -720,7 +720,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	Method getPotentialAudiencePercentage:Float(day:Int = - 1, hour:Int = -1)
 		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().GetDayHour()
-		Local time:Long = GetWorldTime().MakeTime(0, day, hour, 0, 0)
+		Local time:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, hour, 0, 0)
 
 		'fetch a struct copy
 		Local population:SAudience = AudienceManager.GetAudienceBreakdown().data

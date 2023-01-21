@@ -849,7 +849,8 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 			dayOfBirth = _FixDate(dayOfBirth)
 		EndIf
 
-		Return GetWorldTime().GetTimeGoneFromString(dayOfBirth)
+		Local parts:String[] = dayOfBirth.split("-")
+		Return GetWorldTime().GetTimeGoneForRealDate(Int(parts[0]),Int(parts[1]),Int(parts[2]))
 	End Method
 
 
@@ -859,7 +860,8 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 			dayOfDeath = _FixDate(dayOfDeath)
 		EndIf
 
-		Return GetWorldTime().GetTimeGoneFromString(dayOfDeath)
+		Local parts:String[] = dayOfDeath.split("-")
+		Return GetWorldTime().GetTimeGoneForRealDate(Int(parts[0]),Int(parts[1]),Int(parts[2]))
 	End Method
 
 	

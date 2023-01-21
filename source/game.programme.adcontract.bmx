@@ -1324,9 +1324,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method GetEndTime:Long() {_exposeToLua}
 		If daySigned < 0
-			Return GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + base.daysToFinish + 1, 0,0)
+			Return GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay() + base.daysToFinish + 1, 0,0)
 		Else
-			Return GetWorldTime().MakeTime(0, daySigned + base.daysToFinish + 1, 0,0)
+			Return GetWorldTime().GetTimeGoneForGameTime(0, daySigned + base.daysToFinish + 1, 0,0)
 		EndIf
 	End Method
 
@@ -1335,7 +1335,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If daySigned < 0
 			Return GetWorldTime().GetTimeGone()
 		Else
-			Return GetWorldTime().MakeTime(0, daySigned, 0,0)
+			Return GetWorldTime().GetTimeGoneForGameTime(0, daySigned, 0,0)
 		EndIf
 	End Method
 

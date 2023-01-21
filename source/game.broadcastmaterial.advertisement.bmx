@@ -152,7 +152,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		contract.doFinishBroadcast(owner, usedAsType)
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
-'			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+'			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.GetTimeGoneForGameTime(0,day,hour,minute) )
 
 			'inform others
 			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcastingAsProgramme, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)

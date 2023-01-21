@@ -571,7 +571,7 @@ endrem
 		Local backupColorA:Float
 
 		'add 1 to "today" as we are on this day then
-		Local today:Long = GetWorldTime().MakeTime(0, parent.showDay, 0, 0)
+		Local today:Long = GetWorldTime().GetTimeGoneForGameTime(0, parent.showDay, 0, 0)
 		Local todayText:String = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 		textFont.DrawBox(GetLocale("GAMEDAY")+" "+todayText, 290+30, 250, 160, 24, sALIGN_CENTER_CENTER, new SColor8(30, 30, 30))
 
@@ -852,7 +852,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 		local timeEnd:Long
 		local timeTotal:Long
 		For local i:int = 0 until 10
-			times[i] = GetWorldTime().MakeTime(1985, 0 + i, 7, 0)
+			times[i] = GetWorldTime().GetTimeGoneForGameTime(1985, 0 + i, 7, 0)
 		Next
 		timeBegin = times[0] - 7200 'oder mehr?
 		timeEnd = times[9] + 7200 'oder mehr?

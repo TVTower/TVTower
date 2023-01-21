@@ -66,7 +66,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	'create a time in seconds
 	'attention: there are only GetDaysPerYear() days per year, not 365!
-	Method MakeTime:Long(year:Int, day:Int, hour:Long, minute:Long, second:Long = 0, milliseconds:Long = 0) {_exposeToLua}
+	Method GetTimeGoneForGameTime:Long(year:Int, day:Int, hour:Long, minute:Long, second:Long = 0, milliseconds:Long = 0) {_exposeToLua}
 		'old:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*60"
 		'as it is 1 minute after end of last year - new years eve ;D
@@ -81,7 +81,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	'create a time in seconds
 	'attention: month and day use real world values (12m and 365d), i.e. parameters represent a real date
-	Method MakeRealTime:Long(year:int, month:int, day:int) {_exposeToLua}
+	Method GetTimeGoneForRealDate:Long(year:int, month:int, day:int) {_exposeToLua}
 		if day > 30 then day = 30
 		local result:long = year * GetYearLength() + ((Long(30 * (month-1) + (day-1)) * GetDaysPerYear() * DAYLENGTH ) / 360)
 		'print "TIME:" +year+"-"+month+"-"+day +"   "+ result +"   "+ GetFormattedGameDate(result)
@@ -100,7 +100,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Method ModifyTime:Long(time:Long = -1, year:int=0, day:int=0, hour:Long=0, minute:Long=0, second:Long=0, millisecond:Long = 0)
 		if time = -1 then time = GetTimeGone()
-		return time + MakeTime(year, day, hour, minute, second, millisecond)
+		return time + GetTimeGoneForGameTime(year, day, hour, minute, second, millisecond)
 	End Method
 
 
@@ -203,7 +203,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		End Select
 	End Function 
 
-
+	'ATTENTION: year month and day (representing a real date) are used to determine the game time
+	'but the resulting time string will not correspond to that date
+	'use GetTimeGoneForRealDate if this is what you want
 	Method GetTimeGoneFromString:Long(str:string)
 		'accepts format "y-m-d h:i"
 		local dateTime:string[] = str.split(" ")
@@ -233,7 +235,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		endif
 
 		'convert "fractional values" (months per year etc) into "seconds"
-		'sum them up and let the maketime() function handle it
+		'sum them up and let the GetTimeGoneForGameTime() function handle it
 
 		'use "long()" to ensure the calculation results in a long not int
 		Local millisecondsTotal:Long = 0
@@ -247,7 +249,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		millisecondsTotal :+ milliseconds
 
 		'alternative (remove years from secondsTotal calculation)
-		'GetWorldTime().MakeTime(years, 0, 0, 0, 0, milliseconds)
+		'GetWorldTime().GetTimeGoneForGameTime(years, 0, 0, 0, 0, milliseconds)
 
 		Return millisecondsTotal
 	End Method
@@ -267,8 +269,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		If year = 0 Then Return False
 		If year < 1930 Then Return False
 
-		SetTimeGone(MakeTime(year,0,0,0))
-		SetTimeStart(MakeTime(year,0,0,0))
+		Local startTime:Long = GetTimeGoneForGameTime(year,0,0,0)
+
+		SetTimeGone(startTime)
+		SetTimeStart(startTime)
 	End Method
 
 
@@ -1069,9 +1073,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 		local result:Long
 		if daysEnd = -1
-			result = MakeTime(0, GetDay(nowTime) + daysBegin, 0, 0)
+			result = GetTimeGoneForGameTime(0, GetDay(nowTime) + daysBegin, 0, 0)
 		else
-			result = MakeTime(0, GetDay(nowTime) + RandRange(daysBegin, daysEnd), 0, 0)
+			result = GetTimeGoneForGameTime(0, GetDay(nowTime) + RandRange(daysBegin, daysEnd), 0, 0)
 		endif
 
 		if atHourMax = -1
@@ -1092,7 +1096,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		local daysTillWeekday:int = (7 - GetWeekDay(nowTime) + weekday) mod 7
 		if GetWeekDay(nowTime) = weekday then daysTillWeekday = 7
 
-		local result:Long = MakeTime(0, GetDay(nowTime) + daysTillWeekday, 0, 0)
+		local result:Long = GetTimeGoneForGameTime(0, GetDay(nowTime) + daysTillWeekday, 0, 0)
 
 		if atHourMax = -1
 			result :+ atHourMin * HOURLENGTH
@@ -1123,11 +1127,11 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		'relative mode, there wont be an time entry before 1000 AD.
 		if yearMin < 1000
 			'print "nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax+"  hourMin="+hourMin+"  hourMax="+hourMax+"  minuteMin="+minuteMin+"  minuteMax="+minuteMax
-			'print "time = " + GetFormattedGameDate(MakeRealTime(GetYear(nowTime) + yearMin, monthMin, dayMin, hourMin, minuteMin))
+			'print "time = " + GetFormattedGameDate(GetTimeGoneForRealDate(GetYear(nowTime) + yearMin, monthMin, dayMin, hourMin, minuteMin))
 			'print "now year = " + GetYear(nowTime)
-			return MakeRealTime(GetYear(nowTime) + yearMin, monthMin, dayMin)
+			return GetTimeGoneForRealDate(GetYear(nowTime) + yearMin, monthMin, dayMin)
 		else
-			return MakeRealTime(yearMin, monthMin, dayMin)
+			return GetTimeGoneForRealDate(yearMin, monthMin, dayMin)
 		endif
 	End Method
 
@@ -1150,7 +1154,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if minuteMax <> minuteMin and minuteMax > -1000000 then minuteMin = RandRange(minuteMin, minuteMax)
 
 
-		return MakeTime(yearMin, gameDayMin -1, hourMin, minuteMin)
+		return GetTimeGoneForGameTime(yearMin, gameDayMin -1, hourMin, minuteMin)
 	End Method
 
 

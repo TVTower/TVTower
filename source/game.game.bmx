@@ -230,7 +230,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'=== CREATE / INIT SPORTS ("life outside")===
 			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)
 			GetNewsEventSportCollection().CreateAllLeagues()
-			GetNewsEventSportCollection().StartAll( Long(GetWorldTime().MakeRealTime(GetWorldTime().GetYear()-1,1,1)) )
+			GetNewsEventSportCollection().StartAll( Long(GetWorldTime().GetTimeGoneForRealDate(GetWorldTime().GetYear()-1,1,1)) )
 			
 
 			'refresh states of old programme productions (now we now
@@ -999,7 +999,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		programmeData.outcome = 0.5
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		'time is adjusted during adding (as we know the time then)
-		'programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
+		'programmeData.releaseTime = GetWorldTime().GetTimeGoneForGameTime(GetWorldTime().GetYear(), 0, 0, 5)
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		'hide from player/vendor/...
@@ -1058,7 +1058,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				EndIf
 			EndIf
 			'adjust opener live-time
-			programmeData.releaseTime = GetWorldTime().MakeTime(0, startDay, startHour, 5)
+			programmeData.releaseTime = GetWorldTime().GetTimeGoneForGameTime(0, startDay, startHour, 5)
 			Local broadcast:TProgramme = TProgramme.Create(currentLicence)
 			playerPlan.SetProgrammeSlot(broadcast, startDay, startHour )
 			'disable control of that programme
@@ -1775,7 +1775,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'0 days = "today", -1 days = ended
 				If contract.GetDaysLeft() < 0
 					'inform contract
-					contract.Fail(GetWorldTime().MakeTime(0, day, 0, 0))
+					contract.Fail(GetWorldTime().GetTimeGoneForGameTime(0, day, 0, 0))
 
 					obsoleteContracts :+ [contract]
 				EndIf
