@@ -305,7 +305,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 			'limit weather forecasts to get created between xx:10-xx:40
 			'to avoid forecasts created just before the news show
 			If GetWorldTime().GetDayMinute(weatherUpdateTime) > 40
-				local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0, 0)
+				local newTime:Long = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0, 0)
 				weatherUpdateTime = newTime
 			EndIf
 

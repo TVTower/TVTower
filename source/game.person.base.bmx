@@ -519,17 +519,14 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	Method Remove:Int(obj:TGameObject)
 		If Super.Remove(obj)
 			For Local index:Int = 0 Until FILTER_COUNT
-				If GetFilteredMap(index).Remove(obj.GetID())
-					GetFilteredList(index).Remove(obj)			
-				EndIf
+				filteredIDMaps[index] = null
 			Next
-						
 			Return True
 		EndIf
 
 		Return False
 	End Method
-			
+
 
 	Method Add:Int(obj:TGameObject)
 		Local p:TPersonBase = TPersonBase(obj)
@@ -539,11 +536,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		
 		Local insignificant:Int, celebrity:Int, castable:Int
 		For Local index:Int = 0 Until FILTER_COUNT
-			_FillPersonMeetsRequirementsVariables(index, insignificant, celebrity, castable)
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, -1) Then Continue
-			
-			GetFilteredList(index).AddLast(p)
-			GetFilteredMap(index).Insert(p.GetID(), p)
+			filteredIDMaps[index] = null
 		Next
 		
 		Return True

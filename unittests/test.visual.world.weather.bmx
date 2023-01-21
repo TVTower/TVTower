@@ -14,8 +14,8 @@ GetGraphicsManager().InitGraphics()
 GetWorld().Initialize() 'weather!
 
 'GetWorldTime()._daysPerSeason = 1
-GetWorldTime().SetTimeGone( GetWorldTime().MakeTime(1985, 0, 0, 0, 0) )
-GetWorldTime().SetTimeStart( GetWorldTime().MakeTime(1985, 0, 0, 0, 0) )
+GetWorldTime().SetTimeGone( GetWorldTime().GetTimeGoneForGameTime(1985, 0, 0, 0, 0) )
+GetWorldTime().SetTimeStart( GetWorldTime().GetTimeGoneForGameTime(1985, 0, 0, 0, 0) )
 'set speed 10x realtime
 'GetWorldTime().SetTimeFactor(3600*2)
 

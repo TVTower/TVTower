@@ -5752,7 +5752,7 @@ endrem
 			text :+ "|color=125,0,0|"+GetLocale("YOU_ARE_IN_DANGER_TO_GET_FIRED")+"|/color|"
 		Else
 			'make this message a bit more sticky
-			Local midnight:Long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 23, 59, 59)
+			Local midnight:Long = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay(), 23, 59, 59)
 
 			toast.SetCloseAtWorldTime(midnight)
 			toast.SetCloseAtWorldTimeText("MESSAGE_CLOSES_AT_TIME")
@@ -6741,8 +6741,8 @@ Function GetPlayerPerformanceOverviewText:String[](day:Int)
 		latestHour = GetWorldTime().GetDayHour()
 		latestMinute = GetWorldTime().GetDayMinute()
 	EndIf
-	Local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
-	Local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
+	Local now:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, latestHour, latestMinute, 0)
+	Local midnight:Long = GetWorldTime().GetTimeGoneForGameTime(0, day+1, 0, 0, 0)
 	Local latestTime:String = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
 
 
@@ -6893,8 +6893,8 @@ Function GetPlayerFinanceOverviewText:String[](playerID:Int, day:Int)
 		latestHour = GetWorldTime().GetDayHour()
 		latestMinute = GetWorldTime().GetDayMinute()
 	EndIf
-	Local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
-	Local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
+	Local now:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, latestHour, latestMinute, 0)
+	Local midnight:Long = GetWorldTime().GetTimeGoneForGameTime(0, day+1, 0, 0, 0)
 	Local latestTime:String = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
 
 
@@ -6973,7 +6973,7 @@ Function GetBroadcastOverviewText:String[](playerID:Int = -1, day:Int = -1)
 	If day = -1 Then day = GetWorldTime().GetDay()
 	Local lastHour:Int = GetWorldTime().GetDayHour()
 	If day < GetWorldTime().GetDay() Then lastHour = 23
-	Local time:Long = GetWorldTime().MakeTime(0, day, lastHour, 0, 0)
+	Local time:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, lastHour, 0, 0)
 
 	Local result:String = ""
 	result :+ "==== BROADCAST OVERVIEW ====  "

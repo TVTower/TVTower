@@ -829,7 +829,7 @@ endrem
 
 		Function YearTime:Long(year:Int)
 '		return year
-			Return GetWorldTime().MakeTime(year, 0, 0, 0, 0)
+			Return GetWorldTime().GetTimeGoneForGameTime(year, 0, 0, 0, 0)
 		End Function
 
 		Return True
@@ -1306,7 +1306,7 @@ endrem
 		'repair broken census times in DEV patch savegames
 		If nextCensusTime > 0 And nextCensusTime > GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
 			TLogger.Log("TStationMapCollection.Update()", "Repaired broken DEV Patch census time.", LOG_DEBUG)
-			nextCensusTime = GetWorldTime().Maketime(0, GetWorldTime().GetDay()+1, 0,0,0)
+			nextCensusTime = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay()+1, 0,0,0)
 		EndIf
 
 		'refresh stats ?
@@ -1375,7 +1375,7 @@ endrem
 		Next
 
 		'create up to 3 satellites
-		Local lastLaunchTime:Long = GetWorldTime().MakeTime(1983, 1,1, 0,0)
+		Local lastLaunchTime:Long = GetWorldTime().GetTimeGoneForGameTime(1983, 1,1, 0,0)
 		For Local satNumber:Int = 0 Until Min(3, satNames.Length)
 			Local satName:String = satNames[satNumber]
 			Local launchTime:Long = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(0,1), RandRange(1,2), 0)
@@ -1603,7 +1603,7 @@ endrem
 		'create some networks
 		Local cnNames:String[] = ["Kabel %name%", "Verbund %name%", "Tele %name%", "%name% Kabel", "FK %name%"]
 
-		Local lastLaunchTime:Long = GetWorldTime().MakeTime(1982, 1,1, 0,0)
+		Local lastLaunchTime:Long = GetWorldTime().GetTimeGoneForGameTime(1982, 1,1, 0,0)
 		Local cnNumber:Int = 0
 
 		For Local section:TStationMapSection = EachIn sections
@@ -3260,10 +3260,10 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 			'next hour (+construction hours) at xx:00
 			If GetWorldTime().GetDayMinute(built + constructionTime * TWorldTime.HOURLENGTH) >= 5
-				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime + 1, 0))
+				SetActivationTime( GetWorldTime().GetTimeGoneForGameTime(0, 0, GetWorldTime().GetHour(built) + constructionTime + 1, 0))
 			'this hour (+construction hours) at xx:05
 			Else
-				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime, 5, 0))
+				SetActivationTime( GetWorldTime().GetTimeGoneForGameTime(0, 0, GetWorldTime().GetHour(built) + constructionTime, 5, 0))
 			EndIf
 		'endif
 

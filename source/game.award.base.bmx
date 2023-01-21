@@ -141,9 +141,9 @@ Type TAwardCollection Extends TGameObjectCollection
 			'set random waiting time for next award 
 			Local startTimeExact:Long = previousEndTime + TWorldTime.HOURLENGTH * RandRange(12,36)
 			If GetWorldTime().GetDayHour(startTimeExact) = 0 And GetWorldTime().GetDayMinute(startTimeExact) = 0
-				startTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(startTimeExact), 0, 0)
+				startTime = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay(startTimeExact), 0, 0)
 			Else
-				startTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(startTimeExact)+1, 0, 0)
+				startTime = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay(startTimeExact)+1, 0, 0)
 			EndIf
 		EndIf
 
@@ -163,7 +163,7 @@ Type TAwardCollection Extends TGameObjectCollection
 		If not GetNextAward()
 			'avoid AwardCustomProduction as first award in a game
 			If GetWorldTime().GetDaysRun() = 0
-				GenerateUpcomingAward(-1, [TVTAwardType.CUSTOMPRODUCTION], GetWorldTime().MakeTime(0, GetWorldTime().GetDay()+1, 0, 0))
+				GenerateUpcomingAward(-1, [TVTAwardType.CUSTOMPRODUCTION], GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay()+1, 0, 0))
 			Else
 				GenerateUpcomingAward(-1, Null)
 			EndIf
@@ -376,7 +376,7 @@ Type TAward Extends TGameObject
 		Local durationHours:Int = wt.GetHour(GetDuration())
 
 		'round now to full hour
-		Local now:Long = GetWorldTime().MakeTime( 0, 0, wt.GetHour(nowTime) + (wt.GetDayMinute(nowTime)>0), 0, 0)
+		Local now:Long = GetWorldTime().GetTimeGoneForGameTime( 0, 0, wt.GetHour(nowTime) + (wt.GetDayMinute(nowTime)>0), 0, 0)
 
 		'end time is minute before next full hour
 		Return GetWorldtime().ModifyTime(now, 0, 0, Max(0, durationHours-1), 59)
@@ -391,7 +391,7 @@ Type TAward Extends TGameObject
 	Method GetDuration:Long()
 		If duration = -1
 			'1 day
-			duration = GetWorldTime().MakeTime(0, 1, 0, 0) 
+			duration = GetWorldTime().GetTimeGoneForGameTime(0, 1, 0, 0) 
 		EndIf
 		Return duration
 	End Method

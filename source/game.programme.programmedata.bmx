@@ -1313,7 +1313,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method SetReleaseTime(dayOfYear:Int)
-		releaseTime = GetWorldTime().MakeTime(GetYear(), dayOfYear Mod GetWorldTime().GetDaysPerYear(), 0, 0)
+		releaseTime = GetWorldTime().GetTimeGoneForGameTime(GetYear(), dayOfYear Mod GetWorldTime().GetDaysPerYear(), 0, 0)
 	End Method
 
 

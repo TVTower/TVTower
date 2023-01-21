@@ -183,7 +183,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For Local i:Int = 0 To Max(programmes.length - 1, advertisements.length - 1)
 			Local currentHour:Int = GetHourFromArrayIndex(i) 'hours since start
-			Local time:Long = GetWorldTime().MakeTime(0, 0, currentHour, 0)
+			Local time:Long = GetWorldTime().GetTimeGoneForGameTime(0, 0, currentHour, 0)
 			Local adString:String = ""
 			Local progString:String = ""
 
@@ -980,7 +980,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		For local i:int = start until programmes.length
 			if not programmes[i] then continue
 
-			local t:long = GetWorldTime().MakeTime(0, 0, GetHourFromArrayIndex(i), 0,0)
+			local t:long = GetWorldTime().GetTimeGoneForGameTime(0, 0, GetHourFromArrayIndex(i), 0,0)
 
 			if programmes[i].programmedDay = -1 or programmes[i].programmedDay <> GetWorldTime().GetDay(t) or programmes[i].programmedHour <> GetWorldTime().GetDayHour(t)
 				local useIndex:int = i
@@ -999,7 +999,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				if useIndex <> i
 					programmes[i] = null
 				else
-					local t:long = GetWorldTime().MakeTime(0, 0, GetHourFromArrayIndex(i), 0,0)
+					local t:long = GetWorldTime().GetTimeGoneForGameTime(0, 0, GetHourFromArrayIndex(i), 0,0)
 					programmes[i].programmedDay = GetWorldTime().GetDay(t)
 					programmes[i].programmedHour = GetWorldTime().GetDayHour(t)
 					toRemove :+ [programmes[i]]
@@ -1010,7 +1010,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		For local i:int = start until advertisements.length
 			if not advertisements[i] then continue
 			if advertisements[i].programmedDay = -1
-				local t:long = GetWorldTime().MakeTime(0, 0, GetHourFromArrayIndex(i), 0,0)
+				local t:long = GetWorldTime().GetTimeGoneForGameTime(0, 0, GetHourFromArrayIndex(i), 0,0)
 				advertisements[i].programmedDay = GetWorldTime().GetDay(t)
 				advertisements[i].programmedHour = GetWorldTime().GetDayHour(t)
 				toRemove :+ [advertisements[i]]
@@ -1020,7 +1020,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'avoid direct array modification, so we loop over an extra array
 		for local b:TBroadcastMaterial = eachin toRemove
-			local t:long = GetWorldTime().MakeTime(0, b.programmedDay, b.programmedHour, 0,0)
+			local t:long = GetWorldTime().GetTimeGoneForGameTime(0, b.programmedDay, b.programmedHour, 0,0)
 			if TAdvertisement(b)
 				RemoveAdvertisement(b)
 				TLogger.Log("PlayerProgrammePlan", "RemoveBrokenObjects() had to remove BROKEN ad ~q" + b.GetTitle()+"~q from day="+GetWorldTime().GetDay(t)+" hour="+GetWorldTime().GetDayHour(t)+":55.", LOG_ERROR)
@@ -1982,7 +1982,7 @@ endrem
 						'print "Finish advertisement " + day+"/" +hour+":"+minute
 
 						'inform contract and earn money
-						TAdvertisement(obj).contract.Finish( GetWorldTime().MakeTime(0, day, hour, minute) )
+						TAdvertisement(obj).contract.Finish( GetWorldTime().GetTimeGoneForGameTime(0, day, hour, minute) )
 
 						'remove contract from collection (and suitcase)
 						'contract is still stored within advertisements (until they get deleted)
@@ -2122,7 +2122,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 	Function onFinishBroadcasting:Int(triggerEvent:TEventBase)
 		local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetSender())
 		local data:TData = triggerEvent.GetData()
-		local time:long = GetWorldTime().Maketime(0, data.GetInt("day"), data.GetInt("hour"), data.GetInt("minute"), 0)
+		local time:long = GetWorldTime().GetTimeGoneForGameTime(0, data.GetInt("day"), data.GetInt("hour"), data.GetInt("minute"), 0)
 
 		Select triggerEvent.GetEventKey()
 			Case GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement

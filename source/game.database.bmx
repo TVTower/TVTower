@@ -2173,7 +2173,7 @@ Type TDatabaseLoader
 
 		'= TIME =
 		'local releaseTime:String = ":".Join([string(releaseYear), string(releaseYearRelative), string(releaseYearMin), string(releaseYearMax), string(releaseDay), string(releaseHour)])
-		Return GetWorldTime().MakeTime(releaseYear, releaseDay-1, releaseHour, 0, 0)
+		Return GetWorldTime().GetTimeGoneForGameTime(releaseYear, releaseDay-1, releaseHour, 0, 0)
 	End Function
 
 

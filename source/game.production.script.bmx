@@ -569,7 +569,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						Next
 						local t:long = GetWorldTime().CalcTime_Auto(GetWorldTime().GetTimeGone(), liveDateCodeParams[0], useParams)
 						'fix to not use any minutes except ":05"
-						script.fixedLiveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(t), GetWorldTime().GetDayHour(t), 5, 0)
+						script.fixedLiveTime = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay(t), GetWorldTime().GetDayHour(t), 5, 0)
 					End If
 				End If
 
