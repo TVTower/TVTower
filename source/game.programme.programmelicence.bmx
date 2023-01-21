@@ -3184,7 +3184,7 @@ Type TProgrammeLicenceFilter
 	'filter criterias ("OR"-chain of criterias)
 	'Ex.: filter cares for genres 1,2 and flags "trash" and "bmovie"
 	'     True is returned genre 1 or 2 or flag "trash" or flag "bmovie"
-	Method DoesFilter:Int(licence:TProgrammeLicence)
+	Method DoesFilter:Int(licence:TProgrammeLicence, skipOwnerChecks:int = False)
 		if not licence then return False
 
 		'if a licence is exceeding the broadcast limit it is not available
@@ -3265,23 +3265,25 @@ Type TProgrammeLicenceFilter
 			Next
 		endif
 
-		'check if owner is one of the owners required for the filter
-		'if not, filter failed
-		if requiredOwners.length > 0
-			local hasOwner:int = False
-			for local owner:int = eachin requiredOwners
-				if owner = licence.owner then hasOwner = True;exit
-			Next
-			if not hasOwner then return False
-		endif
+		If Not skipOwnerChecks
+			'check if owner is one of the owners required for the filter
+			'if not, filter failed
+			if requiredOwners.length > 0
+				local hasOwner:int = False
+				for local owner:int = eachin requiredOwners
+					if owner = licence.owner then hasOwner = True;exit
+				Next
+				if not hasOwner then return False
+			endif
 
-		'check if owner is one of the forbidden owners
-		'if so, filter fails
-		if forbiddenOwners.length > 0
-			for local owner:int = eachin forbiddenOwners
-				if owner = licence.owner then return False
-			Next
-		endif
+			'check if owner is one of the forbidden owners
+			'if so, filter fails
+			if forbiddenOwners.length > 0
+				for local owner:int = eachin forbiddenOwners
+					if owner = licence.owner then return False
+				Next
+			endif
+		EndIf
 
 		'check flags share something
 		if dataFlags > 0 and (licence.GetDataFlags() & dataFlags) <= 0 then return False
@@ -3345,22 +3347,22 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 	End Method
 
 
-	Method DoesFilter:Int(licence:TProgrammeLicence)
-		if filters.length = 0 then return Super.DoesFilter(licence)
+	Method DoesFilter:Int(licence:TProgrammeLicence, skipOwnerChecks:Int = False) override
+		if filters.length = 0 then return Super.DoesFilter(licence, skipOwnerChecks)
 
 		if connectionType = CONNECTION_TYPE_OR
 			For local filter:TProgrammeLicenceFilter = Eachin filters
-				if filter.DoesFilter(licence) then return True
+				if filter.DoesFilter(licence, skipOwnerChecks) then return True
 			Next
 			return False
 		else
 			For local filter:TProgrammeLicenceFilter = Eachin filters
 				if filter <> filters[filters.length - 1]
-					if not filter.DoesFilter(licence) then return False
+					if not filter.DoesFilter(licence, skipOwnerChecks) then return False
 				else
 					'last filter - if this is reached, all others filtered
 					'ok and this one might return desired result
-					if filter.DoesFilter(licence) then return True
+					if filter.DoesFilter(licence, skipOwnerChecks) then return True
 				endif
 			Next
 			return False
