@@ -2184,61 +2184,64 @@ Type TDatabaseLoader
 
 	Method FixPersonsDayOfBirth()
 		'=== CHECK BIRTHDATES ===
-		'persons might have been used in productions dated earlier than
-		'their hardcoded day-of-birth
+		'persons might have been used in productions not matching their hardcoded day-of-birth
+		'(fictional) person should have a minimal age
+
+		Local minAgeCast:Int = 5
+		Local minAgeAdultCast:Int = 18
+		'maximum *additional* years added when adjusting the the age
+		Local adjustAgeRandomYears:Int = 15
 
 		For Local person:TPersonBase = EachIn GetPersonBaseCollection().entries.Values()
 			'ignore persons without a given date of birth
 			If not person.HasCustomPersonality() or person.GetPersonalityData().GetDOB() <= 0 Then Continue
 
-
-			'loop through all known productions and find earliest date
-			Local earliestProductionData:TProgrammeData
+			Local dob:Long = person.GetPersonalityData().GetDOB()
+			Local dobYear:Int = GetWorldTime().GetYear( dob )
+			Local adjustAge:Int = 0
+			Local adjustAgeReason:String = ""
 			For Local programmeDataID:Int = EachIn person.GetProductionData().GetProducedProgrammeIDs()
 				Local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeDataID)
 				If Not programmeData
 					TLogger.Log("TDatabase.FixLoadedDate()", "No ProgrammeData found for ID ~q"+programmeDataID+"~q.", LOG_ERROR)
 					Continue
 				EndIf
-
-				If Not earliestProductionData Or programmeData.GetYear() < earliestProductionData.GetYear()
-					earliestProductionData = programmeData
+				Local prodYear:Int = programmeData.GetYear()
+				If prodYear - dobYear - adjustAge >= minAgeAdultCast Then Continue
+				If person.IsFictional() And hasAdultProperty(person.GetID(), programmeData)
+					adjustAge = minAgeAdultCast - (prodYear - dobYear - adjustAge)
+					adjustAge = RandRange(adjustAge, adjustAge + adjustAgeRandomYears)
+					adjustAgeReason = "... should have been adult for production of "+programmeData.GetTitle() + " in "+prodYear+"."
+				ElseIf programmeData.GetProductionStartTime() - dob < 0
+					adjustAge = minAgeCast - (prodYear - dobYear - adjustAge)
+					adjustAge = RandRange(adjustAge, adjustAge + adjustAgeRandomYears)
+					adjustAgeReason = "... was not born for production of "+programmeData.GetTitle() + " in "+prodYear+"."
 				EndIf
 			Next
 
-			'no production found
-			If Not earliestProductionData Then Continue
-
-			'person should be at least 5 years (fictional)
-			Local dobYear:Int = GetWorldTime().GetYear( person.GetPersonalityData().GetDOB() )
-			Local ageOnProduction:Long = earliestProductionData.GetProductionStartTime() - person.GetPersonalityData().GetDOB()
-			Local ageOnProductionYears:Int = earliestProductionData.GetYear() - dobYear
-			Local adjustAge:Int = False
-
-			'in "time", not years - so babies are possible (eg. actors)
-			If ageOnProduction <= 0
-				TLogger.Log("TDatabase.FixLoadedData()", "Person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q) is born in "+dobYear+". Impossible to have produced ~q"+earliestProductionData.GetTitle()+" in "+earliestProductionData.GetYear()+".", LOG_LOADING | LOG_WARNING)
-				adjustAge = True
-			ElseIf ageOnProductionYears < 5
-				'too young director or scriptwriter
-				If earliestProductionData.HasCastPerson(person.GetID(), TVTPersonJob.DIRECTOR | TVTPersonJob.SCRIPTWRITER)
-					TLogger.Log("TDatabase.FixLoadedData()", "Person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q) is born in "+dobYear+". Impossible to have produced ~q"+earliestProductionData.GetTitle()+" in "+earliestProductionData.GetYear()+". Directors and Scriptwriters need to be at least 5 years old.", LOG_LOADING | LOG_WARNING)
-					adjustAge = True
-				EndIf
-			EndIf
-
-			If adjustAge
+			If adjustAge > 0
 				'we are able to correct non-fictional ones
 				If person.IsFictional()
-					person.GetPersonalityData().dayOfBirth = (earliestProductionData.GetYear() - RandRange(5,25)) + "-" + GetWorldTime().GetMonth(person.GetPersonalityData().GetDOB()) + "-" + GetWorldTime().GetDayOfYear(person.GetPersonalityData().GetDOB())
+					person.GetPersonalityData().dayOfBirth = (dobYear - adjustAge) + "-" + GetWorldTime().GetMonth(dob) + "-" + GetWorldTime().GetDayOfYear(dob)
 					Local dobYearNew:Int = GetWorldTime().GetYear( person.GetPersonalityData().GetDOB() )
-					TLogger.Log("TDatabase.FixLoadedData()", "Adjusted DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Was "+dobYear+" and is now "+dobYearNew+".", LOG_LOADING | LOG_WARNING)
+					TLogger.Log("TDatabase.FixLoadedData()", "Adjusted DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Was "+dobYear+" and is now "+dobYearNew+". "+ adjustAgeReason, LOG_LOADING | LOG_WARNING)
 				Else
-					TLogger.Log("TDatabase.FixLoadedData()", "Cannot adjust DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Person is non-fictional, so DOB should be correct.", LOG_LOADING | LOG_WARNING)
+					TLogger.Log("TDatabase.FixLoadedData()", "Cannot adjust DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Person is non-fictional, so DOB should be correct. "+adjustAgeReason, LOG_LOADING | LOG_WARNING)
 				EndIf
 			EndIf
 		Next
+		Function hasAdultProperty:Int(personId:Int, data:TProgrammeData)
+			'cast should be adult for director/writer, erotic, horror and xrated
+			If data.HasCastPerson(personId, TVTPersonJob.DIRECTOR | TVTPersonJob.SCRIPTWRITER) Then Return True
+			If data.GetGenre() = TVTProgrammeGenre.Erotic Then Return True
+			If data.HasSubGenre(TVTProgrammeGenre.Erotic) Then Return True
+			If data.GetGenre() = TVTProgrammeGenre.Horror Then Return True
+			If data.HasSubGenre(TVTProgrammeGenre.Horror) Then Return True
+			If data.IsXrated() Then Return True
+			Return False
+		End Function
 	End Method
+
 
 
 	Method ThrowNodeError(err:String, node:TxmlNode)
