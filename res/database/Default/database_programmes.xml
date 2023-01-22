@@ -6046,7 +6046,7 @@ Long misjudged by the critics</en>
 		<programme id="855fdb66-87d3-4fb6-8be0-56517c969d32" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048802" creator="">
 			<title>
 				<de>Wenn Papa mit dem Kinde</de>
-				<en>Wenn Papa mit dem Kinde</en>
+				<en>When Daddy and the Kid...</en>
 			</title>
 			<title_original>
 				<de>Wenn der Vater mit dem Sohne</de>
@@ -12339,7 +12339,7 @@ Dream scenes and sentiments warp the storyline. </en>
         
             <!-- ACTION	-->
         
-            <!-- 2003 -->
+            <!-- 2005 -->
          
          <programme id="DF-Filme-Action-Batman_Begins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0372784" rt_id="0" creator="">
             <title>
@@ -12363,7 +12363,7 @@ Dream scenes and sentiments warp the storyline. </en>
                 <member index="5" function="1">01ff36f8-91f4-4e20-8f68-4d9a80624df7</member>   <!-- Christopher Nolan -->
             </staff>
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="USA" year="2003" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.67" />
+            <data country="USA" year="2005" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.67" />
             <ratings critics="75" speed="81" outcome="74" />
         </programme>
         
@@ -13517,7 +13517,7 @@ Dream scenes and sentiments warp the storyline. </en>
 				<member index="3" function="2">TheRob-TowerTV-RichieBaseyard</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="I" year="1954" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1" />
+			<data country="I" year="1954" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="0.4" />
 			<ratings critics="89" speed="84" outcome="68" />
 		</programme>
 		<programme id="59ead126-ff7f-4652-91c3-d4ef73735f4d" product="1" licence_type="1" creator="9551" imdb_id="tt0068646">
@@ -13530,8 +13530,8 @@ Dream scenes and sentiments warp the storyline. </en>
 				<en>The Godfather</en>
 			</title_original>
 			<description>
-				<de>Dieser Film ist ein Angebot, das du nicht ablehnen kannst.</de>
-				<en>This film is an offer you can't refuse.</en>
+				<de>Mit diesem Film machen wir dir ein Angebot, das du nicht ablehnen kannst.</de>
+				<en>With this film we make you an offer you can't refuse.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">93a70280-2682-4cce-8da8-b479d4d368af</member>
@@ -13795,7 +13795,7 @@ Dream scenes and sentiments warp the storyline. </en>
 			</title_original>
 			<description>
 				<de>[1|Full] durchlebt mit [2|Full], die zufällig zu ihm ins Auto stößt, einige Abenteuer im nächtlichen Großstadtdschungel von Los Angeles.</de>
-				<en>With [2|Full], who randomly jumps into his car, [1|Full] goes through some adventures in the nighttime urban jungle of Los Angeles.</en>
+				<en>[2|Full] randomly jumps into [1|Full]'s car. Together they go through some adventures in the nighttime urban jungle of Los Angeles.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">893caa00-2171-4005-997e-296b5cc87ce8</member>
@@ -14945,11 +14945,11 @@ Fifth and final part. Not so good.</en>
 		<programme id="73693ac3-3e6f-4796-824d-bef225185264" product="1" licence_type="1" creator="9551" imdb_id="tt0090633">
 			<title>
 				<de>Der Nagetier-Auswanderer</de>
-				<en>Fievel: A New York Tale</en>
+				<en>Fievel: A New York Tail</en>
 			</title>	
 			<title_original>
 				<de>Feivel der Mauswanderer</de>
-				<en>An American Tale</en>
+				<en>An American Tail</en>
 			</title_original>
 			<description>
 				<de>[1|Last]-Zeichner [0|Last] drehte mit dieser [2|Last]-Produktion einen weiteren Maus-Trickfilm.</de>
@@ -15072,7 +15072,7 @@ Fifth and final part. Not so good.</en>
 			</title_original>
 			<description>
 				<de>Kurz, es geht alles schief, was nur schief gehen kann, und es wird blutrünstig. Und da wir hier im TVTower alle einen pädagogischen Auftrag haben, gibt's für den Rest der Stunde noch eine Analyse zwecks mentaler Verarbeitung und eine Einordnung ins aktuelle Zeitgeschehen.</de>
-				<en>In short, everything that can go wrong does go wrong, and it gets gory. And since we all have an educational mission here at TVTower, the rest of the hour is spent analyzing for the purpose of mentally processing it and placing it in the context of contemporary history.</en>
+				<en>In short, everything that can go wrong does go wrong, and it gets gory. And since we all have an educational mission here at TVTower, the rest of the hour is spent analyzing and mentally processing what we've seen and placing it in the context of contemporary history.</en>
 			</description>
 			<staff>
 				<member index="0" function="2">c9100c90-0450-4e88-a42d-b88b59cdf356</member>
@@ -15092,7 +15092,7 @@ Fifth and final part. Not so good.</en>
 				<en>The Stand</en>
 			</title_original>
 			<description>
-				<de>[1|Full]-Verfilmung. Ein Virus rafft die Menschheit hin. Etwas weit hergeholtes Szenario. Eskaliert dann am Ende auch in einen Endkampf biblischen Ausmaßes, denn einige der immunen Überlebenden sind Agenten Gottes resp. des Teufels persönlich.</de>
+				<de>Ein Virus rafft die Menschheit hin. Etwas weit hergeholtes Szenario. Eskaliert dann am Ende auch in einen Endkampf biblischen Ausmaßes, denn einige der immunen Überlebenden sind Agenten Gottes resp. des Teufels persönlich.</de>
 				<en>[1|Full] film adaptation. A virus ravages mankind. Somewhat far-fetched scenario perhaps. Indeed then escalates at the end into a final battle of biblical proportions, because some of the immune survivors are agents of God resp. the devil himself.</en>
 			</description>
 			<staff>
@@ -15106,7 +15106,7 @@ Fifth and final part. Not so good.</en>
 				<member index="7" function="2">4c27be4b-e7cb-4f4b-9c2f-39af60e5b789</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="2" maingenre="7" subgenre="1,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" year="1994" distribution="2" maingenre="7" subgenre="1,10" flags="0" blocks="2" price_mod="0.75" />
 			<ratings critics="64" speed="59" outcome="68" />
 			<children>
 				<programme id="e3307bae-49da-4151-8c64-87e3c3106f14" product="2" licence_type="2" imdb_id="tt1349235" creator="9551">
@@ -15189,7 +15189,7 @@ Fifth and final part. Not so good.</en>
 				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="GB" year="1970" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.75" />
+			<data country="GB" year="1970" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.5" />
 			<ratings critics="90" speed="75" outcome="67" />
 			<children>
 				<programme id="e8b11cd9-eb15-4e3e-8ccc-d4d239d69020" product="2" licence_type="2" imdb_id="tt0758095" creator="9551">
@@ -15272,7 +15272,7 @@ Fifth and final part. Not so good.</en>
 						<en>How to Not Be Seen</en>
 					</title_original>
 					<description>
-						<de>Außerdem die Attila-der-Hunne-Show-Show, Archäologie heute, Wie man verschiedene Körperteile erkennt, Scott aus der Antarktis, ein Wahlabend-Special, Bruces Sketch, sowie Sgt. Duckies Song als Beitrag der Polizei zum Eurovision Song Contest.</de>
+						<de>Außerdem die Attila-der-Hunne-Show, Archäologie heute, Wie man verschiedene Körperteile erkennt, Scott aus der Antarktis, ein Wahlabend-Special, Bruces Sketch, sowie Sgt. Duckies Song als Beitrag der Polizei zum Eurovision Song Contest.</de>
 						<en>Also Attila the Hun Show, Archaeology Today, How to Recognise Different Parts of the Body, Scott of the Antarctic, an Election Night Special, Bruces sketch, and Sgt. Duckie's song as the Police entry for Eurovision Song Contest.</en>
 					</description>
 				</programme>
@@ -15314,7 +15314,7 @@ Fifth and final part. Not so good.</en>
 				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="GB" year="1974" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.75" />
+			<data country="GB" year="1974" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.5" />
 			<ratings critics="90" speed="75" outcome="67" />
 			<children>
 				<programme id="867805fb-1fa3-4766-8c09-700ec111d309" product="2" licence_type="2" imdb_id="tt0651003" creator="9551">
@@ -15341,8 +15341,8 @@ Fifth and final part. Not so good.</en>
 						<en>Blood, Devastation, Death, War and Horror</en>
 					</title_original>
 					<description>
-						<de>Außerdem gibt es ein Anagramm-Quiz, Pantomime-Pferde, den England-weiten Proust-Zusammenfassungswettbewerb, ein Sprachlabor und Anne Elks Theorie über Brontosaurier.</de>
-						<en>Also featuring an Anagram Quiz, Pantomime Horses, the All-England Summarize Proust Competition, Language Laboratory, Anne Elk's Theory on Brontosauruses.</en>
+						<de>Außerdem gibt es ein Anagramm-Quiz, Pantomime-Pferde, den England-weiten Proust-Zusammenfassungswettbewerb, ein Sprachlabor, Anne Elks Theorie über Brontosaurier und einen Wrestler, der gegen sich selbst kämpft.</de>
+						<en>Also featuring an Anagram Quiz, Pantomime Horses, the All-England Summarize Proust Competition, Language Laboratory, Anne Elk's Theory on Brontosauruses, and a wrestler fighting himself.</en>
 					</description>
 				</programme>
 				<programme id="4878448d-99a5-45df-a173-9f68f37943b2" product="2" licence_type="2" imdb_id="tt0650989" creator="9551">
@@ -15383,8 +15383,8 @@ Fifth and final part. Not so good.</en>
 						<en>The Golden Age of Ballooning</en>
 					</title_original>
 					<description>
-						<de>Auch das Goldene Zeitalter der Darmspülung, der Kauf einer Ameise, der Krieg der leichten Unterhaltung, Internationaler Frauentausch, der Oscar Wilde-Sketch, Abspann des Jahres.</de>
-						<en>Also the Golden Age of Colonic Irrigation, Buying an Ant, the Light Entertainment War, International Wife-Swapping, the Oscar Wilde sketch, Credits of the Year.</en>
+						<de>Auch das Goldene Zeitalter der Darmspülung, der Kauf einer Ameise, der Krieg der leichten Unterhaltung, Internationaler Frauentausch, der Oscar Wilde-Sketch, Rotkäppchen, Abspann des Jahres.</de>
+						<en>Also the Golden Age of Colonic Irrigation, Buying an Ant, the Light Entertainment War, International Wife-Swapping, the Oscar Wilde sketch, Little Red Riding Hood, Credits of the Year.</en>
 					</description>
 				</programme>
 				<programme id="2f88a769-7fa9-47b0-8a4a-796eb0ac5c16" product="2" licence_type="2" imdb_id="tt0650975" creator="9551">
@@ -15411,20 +15411,20 @@ Fifth and final part. Not so good.</en>
 						<en>Party Political Broadcast</en>
 					</title_original>
 					<description>
-						<de>Mr. Neutron, Teddy Salad, Wie beschwört man heute, die schrecklichste Familie Großbritanniens, Isländische Honigwoche, Patientenmissbrauch, ein Appell im Namen extrem reicher Leute, Fledermäuse der Kalahari.</de>
-						<en>Mr. Neutron, Teddy Salad, Conjuring Today, Most Awful Family in Britain, Icelandic Honey Week, Patient Abuse, Appeal on Behalf of Extremely Rich People, Batsmen of the Kalahari.</en>
+						<de>Mr. Neutron, Teddy Salad, Wie beschwört man heute, die schrecklichste Familie Großbritanniens, Isländische Honigwoche, Patientenmissbrauch, ein Appell im Namen extrem reicher Leute, Fledermäuse der Kalahari, das Fußballmatch der Philosophen.</de>
+						<en>Mr. Neutron, Teddy Salad, Conjuring Today, Most Awful Family in Britain, Icelandic Honey Week, Patient Abuse, Appeal on Behalf of Extremely Rich People, Batsmen of the Kalahari, the Philosophers' Football Match.</en>
 					</description>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d6cfd130-7074-400a-9d38-898b5fa31320" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to roughly map 44 real episodes to 10 in the game, roughly filling up the equivalent space in an in-game year if one episode is broadcasted each day.">
+		<programme id="d6cfd130-7074-400a-9d38-898b5fa31320" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Babewatch (Staffeln 1-2)</de>
-				<en>Babewatch (Seasons 1-2)</en>
+				<de>Babewatch (Staffel 1)</de>
+				<en>Babewatch (Season 1)</en>
 			</title>
 			<title_original>
-				<de>Baywatch (Staffeln 1-2)</de>
-				<en>Baywatch (Seasons 1-2)</en>
+				<de>Baywatch (Staffel 1)</de>
+				<en>Baywatch (Season 1)</en>
 			</title_original>
 			<description>
 				<de>Am Strand geht's rund, Rettungsschwimmer haben immer viel zu tun, aber die Aussicht ist ja auch ganz schön.</de>
@@ -15438,7 +15438,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">4ee6f0cd-942c-4b0c-90b7-9395c84d55c1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="1" />
+			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="43" speed="64" outcome="90" />
 			<children>
 				<programme id="d10aeb23-49c3-4d96-986d-8b1519b1bfa5" product="2" licence_type="2" imdb_id="tt0096898" creator="9551">
@@ -15497,6 +15497,20 @@ Fifth and final part. Not so good.</en>
 						<en>An illegal offshore casino causes problems for Cort and some of his fellow lifeguards.</en>
 					</description>
 				</programme>
+				<programme id="e4909c08-4311-499d-a4a2-f3b051232a4d" product="2" licence_type="2" imdb_id="tt0394317" creator="9551">
+					<title>
+						<de>Hai-Derby</de>
+						<en>Sharks!</en>
+					</title>
+					<title_original>
+						<de>Haie!</de>
+						<en>Shark Derby</en>
+					</title_original>
+					<description>
+						<de>Ein örtlicher Geschäftsinhaber organisiert ein Hai-Derby, aber die Veranstaltung gerät schnell außer Kontrolle und führt dazu, dass Jill ins Wasser läuft, um einen kleinen Jungen zu retten, aber dann von dem Hai angegriffen wird.</de>
+						<en>A local business owner organizes a shark derby but the event quickly spirals out of control and leads Jill to run into the water to save a little boy but then is attacked by the shark.</en>
+					</description>
+				</programme>
 				<programme id="13b6b09d-5813-4378-87de-b25968ae2192" product="2" licence_type="2" imdb_id="tt0394283" creator="9551">
 					<title>
 						<de>Alte Freunde</de>
@@ -15511,6 +15525,32 @@ Fifth and final part. Not so good.</en>
 						<en>Mitch, Craig and Garner go on a hang gliding trip that results in a series of accidents for all three.</en>
 					</description>
 				</programme>
+			</children>
+		</programme>
+		<programme id="0ec359ba-8ae3-4f96-9f35-a4c653387ec4" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
+			<title>
+				<de>Babewatch (Staffel 2)</de>
+				<en>Babewatch (Season 2)</en>
+			</title>
+			<title_original>
+				<de>Baywatch (Staffel 2)</de>
+				<en>Baywatch (Season 2)</en>
+			</title_original>
+			<description>
+				<de>Am Strand geht's wieder rund, Rettungsschwimmer haben immer noch viel zu tun, aber die Aussicht ist und bleibt ganz schön.</de>
+				<en>The beach is still bustling, lifeguards still and always have a lot to do, but the view is and remains quite nice.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">8ca05f29-ff46-4749-8b86-3428fb605e0d</member>
+				<member index="1" function="2">84db0cee-f835-41fd-988f-50eacff8be8e</member>
+				<member index="2" function="2">df891147-863b-4a3f-a5b8-59239a2ace0c</member>
+				<member index="3" function="2">55449e81-84f7-41fb-b685-b183cc346f54</member>
+				<member index="4" function="2">4ee6f0cd-942c-4b0c-90b7-9395c84d55c1</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
+			<ratings critics="43" speed="64" outcome="90" />
+			<children>
 				<programme id="acd4c9e7-6e25-4b44-9277-b60ca3cc2b00" product="2" licence_type="2" imdb_id="tt0394279" creator="9551">
 					<title>
 						<de>Alptraum-Bucht</de>
@@ -15537,6 +15577,20 @@ Fifth and final part. Not so good.</en>
 					<description>
 						<de>Ein Fischer bringt die neue Rettungsschwimmerin Megan dazu, ihn zu retten, um sie dann anzugreifen und zu vergewaltigen.</de>
 						<en>A fisherman tricks new lifeguard Megan into rescuing him in order to attack and rape her.</en>
+					</description>
+				</programme>
+				<programme id="2896964e-7f8d-4b5a-9ae0-39c916d758d4" product="2" licence_type="2" imdb_id="tt0394274" creator="9551" comment="Actually Season 1">
+					<title>
+						<de>Schlammige Gewässer</de>
+						<en>Ripping Water</en>
+					</title>
+					<title_original>
+						<de>Reißende Wasser</de>
+						<en>Muddy Waters</en>
+					</title_original>
+					<description>
+						<de>Cort und Eddie fahren zu einem örtlichen Wasservergnügungspark, um Teenagern etwas über die Aufgaben eines Rettungsschwimmers beizubringen, von denen einer aber Eddies Anwesenheit schnell als störend empfindet.</de>
+						<en>Cort and Eddie go to a local water theme park to teach teenagers about lifeguard duties but one of them quickly resents Eddie's presence.</en>
 					</description>
 				</programme>
 				<programme id="0bf20c78-f8c5-49e2-a429-607f6a8bad27" product="2" licence_type="2" imdb_id="tt0394358" creator="9551">
@@ -15583,18 +15637,18 @@ Fifth and final part. Not so good.</en>
 				</programme>
 			</children>
 		</programme>
-		<programme id="c55282c3-1e0d-4a61-a609-ccd5de237e75" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to roughly map 44 real episodes to 10 in the game, roughly filling up the equivalent space in an in-game year if one episode is broadcasted each day.">
+		<programme id="c55282c3-1e0d-4a61-a609-ccd5de237e75" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Babewatch (Staffeln 3-4)</de>
-				<en>Babewatch (Seasons 3-4)</en>
+				<de>Babewatch (Staffel 3)</de>
+				<en>Babewatch (Season 3)</en>
 			</title>
 			<title_original>
-				<de>Baywatch (Staffeln 3-4)</de>
-				<en>Baywatch (Seasons 3-4)</en>
+				<de>Baywatch (Staffel 3)</de>
+				<en>Baywatch (Season 3)</en>
 			</title_original>
 			<description>
-				<de>Und weiter geht's mit dem Leben am Strand. Die Serie bekam nie gute Kritiken, aber ist laut G.-Buch der Rekorde die meistgesehene aller Zeiten.</de>
-				<en>And on it goes with the beach life. The series never got good reviews, but is the most watched of all time, according to the G. Book of Records.</en>
+				<de>Und weiter geht's mit dem Leben am Strand. Die erste Staffel mit [1|Full], aber die letzte mit [4|Full].</de>
+				<en>And on we go with life on the beach. The first season with [1|Full], but the last with [4|Full].</en>
 			</description>
 			<staff>
 				<member index="0" function="2">8ca05f29-ff46-4749-8b86-3428fb605e0d</member>
@@ -15604,7 +15658,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">4ee6f0cd-942c-4b0c-90b7-9395c84d55c1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="1" />
+			<data country="USA" year="1993" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="43" speed="64" outcome="90" />
 			<children>
 				<programme id="5446d41b-deac-4484-a3ec-74e737ad7d1b" product="2" licence_type="2" imdb_id="tt0123433" creator="9551">
@@ -15691,6 +15745,32 @@ Fifth and final part. Not so good.</en>
 						<en>Three teens are trapped on some cliffs with massive waves surrounding them. Mitch rescues them, but gets severely injured. He may be a paraplegic for life.</en>
 					</description>
 				</programme>
+			</children>
+		</programme>
+		<programme id="74e55d85-7a9f-4ee4-bf2b-7db038ca4e79" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
+			<title>
+				<de>Babewatch (Staffel 4)</de>
+				<en>Babewatch (Season 4)</en>
+			</title>
+			<title_original>
+				<de>Baywatch (Staffel 4)</de>
+				<en>Baywatch (Season 4)</en>
+			</title_original>
+			<description>
+				<de>Und weiter geht's mit dem Leben am Strand. Die Serie bekam nie gute Kritiken, aber ist laut G.-Buch der Rekorde die meistgesehene aller Zeiten.</de>
+				<en>And on it goes with the beach life. The series never got good reviews, but is the most watched of all time, according to the G. Book of Records.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">8ca05f29-ff46-4749-8b86-3428fb605e0d</member>
+				<member index="1" function="2">234ba25b-ea07-427c-92d0-5c475c673ccf</member>
+				<member index="2" function="2">84db0cee-f835-41fd-988f-50eacff8be8e</member>
+				<member index="3" function="2">df891147-863b-4a3f-a5b8-59239a2ace0c</member>
+				<member index="4" function="2">20c24fd7-cb02-411d-aa9d-2dd8e2a231ec</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1994" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
+			<ratings critics="43" speed="64" outcome="90" />
+			<children>
 				<programme id="054ffc65-33d8-4013-bda0-abbf0c182b3a" product="2" licence_type="2" imdb_id="tt0394293" creator="9551">
 					<title>
 						<de>Wettrennen gegen die Zeit</de>
@@ -15715,7 +15795,7 @@ Fifth and final part. Not so good.</en>
 						<en>Lover's Cove</en>
 					</title_original>
 					<description>
-						<de>Hobie verliebt sich in ein Mädchen der Junior-Rettungsschwimmer. Mitch und Jackie haben eine Reihe von unterbrochener Dates.</de>
+						<de>Hobie verliebt sich in ein Mädchen der Junior-Rettungsschwimmer. Mitch und Jackie haben eine Reihe unterbrochener Dates.</de>
 						<en>Hobie falls in love with a girl in junior lifeguards. Mitch and Jackie have a number of interrupted dates.</en>
 					</description>
 				</programme>
@@ -15747,16 +15827,44 @@ Fifth and final part. Not so good.</en>
 						<en>Matt and Slade compete for Summer's affections by surfing. Mitch encounters a desperate woman who needs help for her boyfriend.</en>
 					</description>
 				</programme>
+				<programme id="0ef7cd95-731b-498f-93f4-c07f1745f01d" product="2" licence_type="2" imdb_id="tt0394241" creator="9551">
+					<title>
+						<de>Eisenmann Mitch</de>
+						<en>A murderous competition</en>
+					</title>
+					<title_original>
+						<de>Ein mörderischer Wettkampf</de>
+						<en>Ironman Buchannon</en>
+					</title_original>
+					<description>
+						<de>Mitch versucht zu zeigen, dass er noch mit jüngeren Männern mithalten kann, indem er am Ironman-Wettbewerb teilnimmt.</de>
+						<en>Mitch tries to show he can still compete with younger men by taking part in the Ironman competition.</en>
+					</description>
+				</programme>
+				<programme id="af559ea9-6bc3-4e2c-9346-05bfef932bce" product="2" licence_type="2" imdb_id="tt0394298" creator="9551">
+					<title>
+						<de>Rettungsbucht</de>
+						<en>Film crew on the beach</en>
+					</title>
+					<title_original>
+						<de>Filmteam am Strand</de>
+						<en>Rescue Bay</en>
+					</title_original>
+					<description>
+						<de>Als der TV-Produzent Don Brand den Strand besucht, stellt er erfreut fest, dass die Handlungen, die sich am Strand abspielen, perfekt für eine Fernsehserie geeignet sind. Er nennt die Fernsehserie Rescue Bay.</de>
+						<en>When TV-producer Don Brand visits the beach, he is delighted to discover that the actions that take place on the beach are perfect for a TV-series. He calls the TV-series Rescue Bay.</en>
+					</description>
+				</programme>
 			</children>
 		</programme>
-		<programme id="2273036d-1dfa-4990-be2d-fbf2fabd1fd6" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to roughly map 44 real episodes to 10 in the game, roughly filling up the equivalent space in an in-game year if one episode is broadcasted each day. Also, taken some artistic liberties in episode ordering.">
+		<programme id="2273036d-1dfa-4990-be2d-fbf2fabd1fd6" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Night-Ryder (Staffeln 1-2)</de>
-				<en>Night-Ryder (Seasons 1-2)</en>
+				<de>Night-Ryder (Staffel 1)</de>
+				<en>Night-Ryder (Season 1)</en>
 			</title>
 			<title_original>
-				<de>Knight Rider (Staffeln 1-2)</de>
-				<en>Knight Rider (Seasons 1-2)</en>
+				<de>Knight Rider (Staffel 1)</de>
+				<en>Knight Rider (Season 1)</en>
 			</title_original>
 			<description>
 				<de>Er kommt - Ein Auto, ein Computer, ein Mann.
@@ -15771,7 +15879,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="3" function="2">TheRob-TowerTV-RichieBaseyard</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1982" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="1" />
+			<data country="USA" year="1982" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="43494769-75fb-4281-9afd-2aafbc12fc2c" product="2" licence_type="2" imdb_id="tt0084218" creator="9551">
@@ -15858,6 +15966,49 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>A counterfeiter's trail leads to a sleepy little village that not only seems to harbor the wanted criminal, but is also in the CIA's crosshairs.</en>
 					</description>
 				</programme>
+			</children>
+		</programme>
+		<programme id="a8cefae5-ed3d-463b-8723-175a57243d67" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game. Liberties taken in ordering.">
+			<title>
+				<de>Night-Ryder (Staffel 2)</de>
+				<en>Night-Ryder (Season 2)</en>
+			</title>
+			<title_original>
+				<de>Knight Rider (Staffel 2)</de>
+				<en>Knight Rider (Season 2)</en>
+			</title_original>
+			<description>
+				<de>Er kommt - Ein Auto, ein Computer, ein Mann.
+
+[2|Full] springt in dieser Staffel ein für die abwesende Bonnie.</de>
+				<en>A shadowy flight into the dangerous world of a man who does not exist.
+
+[2|Full] is filling in for the absent Bonnie this season.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">8ca05f29-ff46-4749-8b86-3428fb605e0d</member>
+				<member index="1" function="2">c68438a3-1575-4df4-a9e8-d9fb6f5a5139</member>
+				<member index="2" function="2">360f8d69-a4b2-4b06-a9ed-1b752fc02ca8</member>
+				<member index="3" function="2">TheRob-TowerTV-RichieBaseyard</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1983" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
+			<ratings critics="27" speed="84" outcome="88" />
+			<children>
+				<programme id="8ebe7576-7ba5-408f-b79d-5d21e48ce5ea" product="2" licence_type="2" imdb_id="tt0620884" creator="9551" comment="Actually season 1">
+					<title>
+						<de>Assistentin mit Flügeln</de>
+						<en>Assistant with Wings</en>
+					</title>
+					<title_original>
+						<de>Weißer Vogel</de>
+						<en>White Bird</en>
+					</title_original>
+					<description>
+						<de>Die Assistentin eines Anwalts wird einer Verschwörung beschuldigt. Michael versucht, ihr zu helfen, aber er kann nicht verraten, wer er ist, denn sie ist die Frau, die er vor seiner Identitätsänderung heiraten wollte.</de>
+						<en>A Lawyer's assistant is framed for conspiracy. Michael tries to help her, but he cannot reveal who he is, as she is the woman he wanted to marry before his identity change.</en>
+					</description>
+				</programme>
 				<programme id="16e9a0b1-7497-4633-a636-0e8ad55f6785" product="2" licence_type="2" imdb_id="tt0620802" creator="9551">
 					<title>
 						<de>Hüter der Brüderlichkeit</de>
@@ -15900,6 +16051,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>Michael is heading to the Christmas party when he encounters a gypsy boy who witnessed a bank robbery, and now is sought by the robbers from whom he stole a gold watch.</en>
 					</description>
 				</programme>
+				<programme id="e97819e9-2c2f-4b90-9429-abb8d4d9627e" product="2" licence_type="2" imdb_id="tt0620885" creator="9551">
+					<title>
+						<de>Krieger der weißen Linie</de>
+						<en>A Small Town in Danger</en>
+					</title>
+					<title_original>
+						<de>Eine Kleinstadt lebt gefährlich</de>
+						<en>White-Line Warriors</en>
+					</title_original>
+					<description>
+						<de>Die Mitglieder eines Autoclubs werden für eine Reihe von Einbrüchen verantwortlich gemacht, die mit ihren Wochenendbesuchen in einer Kleinstadt an der Küste zusammenfallen.</de>
+						<en>Members of a car club are blamed for a series of burglaries that coincide with their weekend visits to a coastal community.</en>
+					</description>
+				</programme>
 				<programme id="164bdf7e-515b-4c46-b0a9-716e6d1646b3" product="2" licence_type="2" imdb_id="tt0620818" creator="9551">
 					<title>
 						<de>Goliath</de>
@@ -15916,18 +16081,22 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 			</children>
 		</programme>
-		<programme id="9cceb45a-b97b-40e1-95d2-d03a272d69fc" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to roughly map 44 real episodes to 10 in the game, roughly filling up the equivalent space in an in-game year if one episode is broadcasted each day. Also, taken some artistic liberties in episode ordering.">
+		<programme id="9cceb45a-b97b-40e1-95d2-d03a272d69fc" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Night-Ryder (Staffeln 3-4)</de>
-				<en>Night-Ryder (Seasons 3-4)</en>
+				<de>Night-Ryder (Staffel 3)</de>
+				<en>Night-Ryder (Season 3)</en>
 			</title>
 			<title_original>
-				<de>Knight Rider (Staffeln 3-4)</de>
-				<en>Knight Rider (Seasons 3-4)</en>
+				<de>Knight Rider (Staffel 3)</de>
+				<en>Knight Rider (Season 3)</en>
 			</title_original>
 			<description>
-				<de>Der smarte schwarze Pontiac und der ihn fahrender Ritter sind zurück. Ein auf sich gestellter Kreuzzügler in einer gefährlichen Welt.</de>
-				<en>The smart black Pontiac and the knight riding it are back. A lone crusader in a dangerous world.</en>
+				<de>Der smarte schwarze Pontiac und der ihn fahrender Ritter sind zurück.
+
+[2|Full] ist zurück als Bonnie.</de>
+				<en>The smart black Pontiac and the knight riding it are back. A lone crusader in a dangerous world.
+
+[2|Full] is back as Bonnie.</en>
 			</description>
 			<staff>
 				<member index="0" function="2">8ca05f29-ff46-4749-8b86-3428fb605e0d</member>
@@ -15936,7 +16105,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="3" function="2">TheRob-TowerTV-RichieBaseyard</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1984" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="1" />
+			<data country="USA" year="1984" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="d6512f69-ab73-4b81-91e5-f6e3a441e067" product="2" licence_type="2" imdb_id="tt0620844" creator="9551">
@@ -16009,6 +16178,45 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>The Foundation has a new member to help Michael. A scientist's daughter is kidnapped by criminals who want to build a hot new weapon.</en>
 					</description>
 				</programme>
+				<programme id="e80ed11d-9c76-46b9-ae28-635509d7a825" product="2" licence_type="2" imdb_id="tt0620828" creator="9551">
+					<title>
+						<de>K.I.T.T. gegen K.A.R.R.</de>
+						<en>The Black Devil Returns</en>
+					</title>
+					<title_original>
+						<de>Der schwarze Teufel taucht wieder auf</de>
+						<en>K.I.T.T. vs. K.A.R.R.</en>
+					</title_original>
+					<description>
+						<de>Als Endgegner kommt diesmal K.A.R.R. zurück. Jetzt hat er Laser.</de>
+						<en>As the final boss this time, K.A.R.R. is back. Now he's got lasers.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+		<programme id="f7800e12-4a73-4618-8c72-52f335d6873e" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game. Liberties taken in ordering.">
+			<title>
+				<de>Night-Ryder (Staffel 4)</de>
+				<en>Night-Ryder (Season 4)</en>
+			</title>
+			<title_original>
+				<de>Knight Rider (Staffel 4)</de>
+				<en>Knight Rider (Season 4)</en>
+			</title_original>
+			<description>
+				<de>Der smarte schwarze Pontiac und der ihn fahrender Ritter sind zurück. Ein auf sich gestellter Kreuzzügler in einer gefährlichen Welt.</de>
+				<en>The smart black Pontiac and the knight riding it are back. A lone crusader in a dangerous world.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">8ca05f29-ff46-4749-8b86-3428fb605e0d</member>
+				<member index="1" function="2">c68438a3-1575-4df4-a9e8-d9fb6f5a5139</member>
+				<member index="2" function="2">9d01dc2b-7223-4507-acd2-dc009adef554</member>
+				<member index="3" function="2">TheRob-TowerTV-RichieBaseyard</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1985" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
+			<ratings critics="27" speed="84" outcome="88" />
+			<children>
 				<programme id="2b32de06-4277-4772-80a9-a16ccca256bf" product="2" licence_type="2" imdb_id="tt0620846" creator="9551">
 					<title>
 						<de>Nachtritter und der Moloch</de>
@@ -16051,6 +16259,34 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>After a near-fatal encounter with a criminal mastermind, Michael falls into a deep depression and wants to leave the Foundation. He and Stevie get married.</en>
 					</description>
 				</programme>
+				<programme id="75009d69-5807-4049-909d-6a833e3d50cc" product="2" licence_type="2" imdb_id="tt0620830" creator="9551">
+					<title>
+						<de>Mörderische Maschine</de>
+						<en>Murderous Machine</en>
+					</title>
+					<title_original>
+						<de>Killer K.I.T.T.</de>
+						<en>Killer K.I.T.T.</en>
+					</title_original>
+					<description>
+						<de>Diesmal ist es K.I.T.T. selbst, der zum Gegner wird. Ein nerdiger Bösewicht hat ihn umprogrammiert.</de>
+						<en>This time it's K.I.T.T. himself who becomes the enemy. A nerdy villain has reprogrammed him.</en>
+					</description>
+				</programme>
+				<programme id="e5289e56-9b55-4c72-b3be-00420cada5f1" product="2" licence_type="2" imdb_id="tt0620810" creator="9551">
+					<title>
+						<de>Tödlicher Nachtritterschatten</de>
+						<en>Games of Magic</en>
+					</title>
+					<title_original>
+						<de>Zauberspiele</de>
+						<en>Deadly Knightshade</en>
+					</title_original>
+					<description>
+						<de>Ein Magier, bei dem sogar Bonnie schwach wird, hat ein perfektes Alibi für Morde, die ihm angehängt werden.</de>
+						<en>A magician that even Bonnie falls for has a perfect alibi for murders he is framed for.</en>
+					</description>
+				</programme>
 				<programme id="7b80d750-ccbd-479c-8242-31bb9f016506" product="2" licence_type="2" imdb_id="tt0620883" creator="9551">
 					<title>
 						<de>Voodoo-Nachtritter</de>
@@ -16065,34 +16301,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>A self-proclaimed voodoo princess tricks the members of a recently returned archaeological expedition into committing crimes and then killing themselves.</en>
 					</description>
 				</programme>
-				<programme id="e80ed11d-9c76-46b9-ae28-635509d7a825" product="2" licence_type="2" imdb_id="tt0620828" creator="9551">
-					<title>
-						<de>K.I.T.T. gegen K.A.R.R.</de>
-						<en>The Black Devil Returns</en>
-					</title>
-					<title_original>
-						<de>Der schwarze Teufel taucht wieder auf</de>
-						<en>K.I.T.T. vs. K.A.R.R.</en>
-					</title_original>
-					<description>
-						<de>Als Endgegner kommt diesmal K.A.R.R. zurück. Jetzt hat er Laser.</de>
-						<en>As the final boss this time, K.A.R.R. is back. Now he's got lasers.</en>
-					</description>
-				</programme>
 			</children>
 		</programme>
-		<programme id="df738a5c-e562-4873-84b5-3d9b2e564a59" product="2" licence_type="3" creator="9551" imdb_id="tt0071007" comment="Only a few episodes have been picked to roughly map 44 real episodes to 10 in the game, roughly filling up the equivalent space in an in-game year if one episode is broadcasted each day.">
+		<programme id="df738a5c-e562-4873-84b5-3d9b2e564a59" product="2" licence_type="3" creator="9551" imdb_id="tt0071007" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Kleines Haus in der Prärie (Staffeln 1-2)</de>
-				<en>Our Little Farm (Seasons 1-2)</en>
+				<de>Kleines Haus in der Prärie (Staffel 1)</de>
+				<en>Our Little Farm (Season 1)</en>
 			</title>
 			<title_original>
-				<de>Unsere kleine Farm (Staffeln 1-2)</de>
-				<en>Little House on the Prairie (Seasons 1-2)</en>
+				<de>Unsere kleine Farm (Staffel 1)</de>
+				<en>Little House on the Prairie (Season 1)</en>
 			</title_original>
 			<description>
-				<de>Familien-Western-Serie mit [0|First] -selig- [0|Last]. Nach den autobiographischen Büchern der Tochter Laura, aber mit vielen fiktiven Elementen.</de>
-				<en>Family western series with [0|First] -blessed- [0|Last]. Based on daughter Laura's autobiographical books, but with plenty of fiction added.</en>
+				<de>Familien-Western-Serie mit [0|First] -selig- [0|Last], der den hilfsbereiten und gottesfürchtigen Charles spielt, der mit viel Liebe, aber auch Autorität und Strenge seiner tugendhaften Familie vorsteht.</de>
+				<en>Family western series with [0|First] -blessed- [0|Last]], who plays the helpful and God-fearing Charles, who heads his virtuous family with much love, but also authority and strictness.</en>
 			</description>
 			<staff>
 				<member index="0" function="2">111bba01-c84c-4b00-8782-c5810d703a0f</member> <!-- TODO: function="3" -->
@@ -16102,8 +16324,8 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="4" function="2">07bd64b9-e051-459c-8593-8874da843520</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1975" distribution="2" maingenre="9" subgenre="7,18" flags="0" blocks="1" price_mod="0.75" />
-			<ratings critics="68" speed="51" outcome="67" />
+			<data country="USA" year="1975" distribution="2" maingenre="9" subgenre="7,18" flags="0" blocks="1" price_mod="0.6" />
+			<ratings critics="68" speed="51" outcome="59" />
 			<children>
 				<programme id="23317f97-d1cf-4a3f-b915-5be88d55ea35" product="2" licence_type="2" imdb_id="tt0633016" creator="9551">
 					<title>
@@ -16175,6 +16397,46 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>When Christmas comes around, all the Ingalls are caught up in the secrecy and excitement. Charles and Mary take jobs to obtain gifts, but Laura cannot think of how to raise money, until she realizes she has something of value in her horse.</en>
 					</description>
 				</programme>
+				<programme id="ae72ca1e-d00c-46e6-b69c-9d4ddaffc358" product="2" licence_type="2" imdb_id="tt0633059" creator="9551">
+					<title>
+						<de>Typhus</de>
+						<en>Typhus</en>
+					</title>
+					<title_original>
+						<de>Die Seuche</de>
+						<en>Plague</en>
+					</title_original>
+					<description>
+						<de>In Walnut Grove bricht Typhus aus, und Doc Baker rät allen, sich in ihren Häusern zu isolieren.</de>
+						<en>A typhus outbreak hits Walnut Grove, so Doc Baker advises everyone to stay in isolation in their homes.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+		<programme id="e691c8e5-2b67-4e5f-bcda-ed9ede012294" product="2" licence_type="3" creator="9551" imdb_id="tt0071007" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
+			<title>
+				<de>Kleines Haus in der Prärie (Staffel 2)</de>
+				<en>Our Little Farm (Season 2)</en>
+			</title>
+			<title_original>
+				<de>Unsere kleine Farm (Staffel 2)</de>
+				<en>Little House on the Prairie (Season 2)</en>
+			</title_original>
+			<description>
+				<de>Familien-Western-Serie mit [0|First] -selig- [0|Last]. Nach den autobiographischen Büchern der Tochter Laura, aber mit vielen fiktiven Elementen.</de>
+				<en>Family western series with [0|First] -blessed- [0|Last]. Based on daughter Laura's autobiographical books, but with plenty of fiction added.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">111bba01-c84c-4b00-8782-c5810d703a0f</member> <!-- TODO: function="3" -->
+				<member index="1" function="2">4afef1d8-0f12-48a2-a8a2-6b23d64312c2</member>
+				<member index="2" function="2">cccff332-c453-40c6-b9cd-5b820ca9211f</member>
+				<member index="3" function="2">150ab730-2750-4675-b64e-cfeb00be1426</member>
+				<member index="4" function="2">07bd64b9-e051-459c-8593-8874da843520</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1976" distribution="2" maingenre="9" subgenre="7,18" flags="0" blocks="1" price_mod="0.6" />
+			<ratings critics="68" speed="51" outcome="51" />
+			<children>
 				<programme id="0cb6148a-f620-440a-a7ee-9f151b4c6fc1" product="2" licence_type="2" imdb_id="tt0794908" creator="9551">
 					<title>
 						<de>Die wohlhabendste Person in Walnut Grove</de>
@@ -16231,6 +16493,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>Miss Beadle is relieved of her duties as schoolmistress when the town council decide she cannot control the older students. In her place, they appoint Hannibal Applewood, a strict disciplinarian.</en>
 					</description>
 				</programme>
+				<programme id="11304a68-ab8e-483d-9be1-bdeac9e9dd77" product="2" licence_type="2" imdb_id="tt0632999" creator="9551">
+					<title>
+						<de>Der Bankier</de>
+						<en>The Scrooge</en>
+					</title>
+					<title_original>
+						<de>Der Geizhals</de>
+						<en>Ebenezer Sprague</en>
+					</title_original>
+					<description>
+						<de>Laura freundet sich beim Angeln mit einem Fremden an und stellt später verblüfft fest, dass es sich um den egozentrischen und geizigen neuen Bankier von Walnut Grove handelt.</de>
+						<en>Laura befriends a stranger while out fishing, and is stunned to later discover he is none other than Walnut Grove's self-centered and miserly new banker.</en>
+					</description>
+				</programme>
 				<programme id="8e1a35a1-d8f3-47e9-b458-2c756e5d8906" product="2" licence_type="2" imdb_id="tt0633010" creator="9551">
 					<title>
 						<de>Nach Hause gehen</de>
@@ -16247,18 +16523,18 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 			</children>
 		</programme>
-		<programme id="2a3d04ec-d3e7-4acb-b760-7c2f7d17e4e0" product="2" licence_type="3" creator="9551" imdb_id="tt0052451" comment="Here 66 real episodes are mapped to 14 in-game ones.">
+		<programme id="2a3d04ec-d3e7-4acb-b760-7c2f7d17e4e0" product="2" licence_type="3" creator="9551" imdb_id="tt0052451" comment="Here 32 real episodes are mapped to 8 in-game ones.">
 			<title>
-				<de>Wononza (Staffeln 1-2)</de>
-				<en>Wononza (Seasons 1-2)</en>
+				<de>Wononza (Staffel 1)</de>
+				<en>Wononza (Season 1)</en>
 			</title>
 			<title_original>
-				<de>Bonanza (Staffeln 1-2)</de>
-				<en>Bonanza (Seasons 1-2)</en>
+				<de>Bonanza (Staffel 1)</de>
+				<en>Bonanza (Season 1)</en>
 			</title_original>
 			<description>
 				<de>An anderer Stelle in diesem Spiel unheilschwanger angekündigt, hier ist sie, die antike Dauerbrenner-Westernserie rund um Ranch-Daddy [0|Full].</de>
-				<en>Announced ominously elsewhere in this game, here it is, the antique long-running Western series centered around Ranch Daddy [0|Full].</en>
+				<en>Announced ominously elsewhere in this game, here it is, the ancient long-running Western series centered around Ranch Daddy [0|Full].</en>
 			</description>
 			<staff>
 				<member index="0" function="2">82948f0e-8d00-4e24-a2a2-fbfc4aa3b503</member>
@@ -16267,7 +16543,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="3" function="2">111bba01-c84c-4b00-8782-c5810d703a0f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1960" distribution="2" maingenre="18" subgenre="9" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" year="1959" distribution="2" maingenre="18" subgenre="9" flags="0" blocks="1" price_mod="0.6" />
 			<ratings critics="63" speed="61" outcome="79" />
 			<children>
 				<programme id="e7bb2bb3-0b77-40d0-b967-a2b28f1d14c3" product="2" licence_type="2" imdb_id="tt0529483" creator="9551">
@@ -16354,6 +16630,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>The Cartwrights finish a cattle drive in San Francisco. Ben is shanghaied at the Barbary Coast while searching for a pair of ranch hands.</en>
 					</description>
 				</programme>
+				<programme id="7931f866-0a92-4789-8d34-e8ebfdca49f7" product="2" licence_type="2" imdb_id="tt0529560" creator="9551">
+					<title>
+						<de>Füße aus Lehm</de>
+						<en>The Apple Does not Fall Far from the Tree</en>
+					</title>
+					<title_original>
+						<de>Der Apfel fällt nicht weit vom Stamm</de>
+						<en>Feet of Clay</en>
+					</title_original>
+					<description>
+						<de>Die Cartwrights trösten und beherbergen einen Jungen, dessen Mutter gerade gestorben ist und dessen Vater im Gefängnis sitzt. Oder saß. Es heißt, er sei ausgebrochen und suche womöglich nach seinem Sohn.</de>
+						<en>The Cartwrights comfort and shelter a boy whose mother has just died and whose father is in jail. Or was. News is he escaped and might be looking for his son.</en>
+					</description>
+				</programme>
 				<programme id="3b4986b7-7d94-46b3-aa0e-11fe7f1b27b2" product="2" licence_type="2" imdb_id="tt0529535" creator="9551">
 					<title>
 						<de>Tod in der Morgendämmerung</de>
@@ -16368,6 +16658,31 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>A criminal gang that has taken over Virginia City in the form of a protection racket kidnaps Ben.</en>
 					</description>
 				</programme>
+			</children>
+		</programme>
+		<programme id="9d859c07-4724-461e-a9ff-8c97df5415b2" product="2" licence_type="3" creator="9551" imdb_id="tt0052451" comment="Here 34 real episodes are mapped to 8 in-game ones.">
+			<title>
+				<de>Wononza (Staffel 2)</de>
+				<en>Wononza (Season 2)</en>
+			</title>
+			<title_original>
+				<de>Bonanza (Staffel 2)</de>
+				<en>Bonanza (Season 2)</en>
+			</title_original>
+			<description>
+				<de>Staffel zwei der zweitlängsten Westernserie der Welt über die Ranch benannt nach der Ponderosa-Kiefer.</de>
+				<en>Season two of the world's second longest running western series about the ranch named after the Ponderosa Pine.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">82948f0e-8d00-4e24-a2a2-fbfc4aa3b503</member>
+				<member index="1" function="2">d3a4371d-fb5e-4fbb-830f-a55fac72805b</member>
+				<member index="2" function="2">b53cfc21-e7b2-4a53-926b-c9b2518ae825</member>
+				<member index="3" function="2">111bba01-c84c-4b00-8782-c5810d703a0f</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1960" distribution="2" maingenre="18" subgenre="9" flags="0" blocks="1" price_mod="0.6" />
+			<ratings critics="63" speed="61" outcome="79" />
+			<children>
 				<programme id="06f3f604-7b68-43f6-905d-f37e67a873cf" product="2" licence_type="2" imdb_id="tt0529652" creator="9551">
 					<title>
 						<de>Showdown</de>
@@ -16394,6 +16709,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 					<description>
 						<de>Hoss freundet sich mit Charlie an, dem Trinker der Stadt, der einst ein Top-Scout in der Armee war, bevor er seine Truppen in ein Massaker führte. Hoss hilft ihm, sein Selbstwertgefühl wiederzuerlangen.</de>
 						<en>Hoss befriends Charlie, the town drunk who was once a top scout in the Army before he led his troops into a massacre. Hoss helps him regain his self-esteem.</en>
+					</description>
+				</programme>
+				<programme id="05d227d0-71f3-4327-a645-de5e2c8491d3" product="2" licence_type="2" imdb_id="tt0529777" creator="9551">
+					<title>
+						<de>Die Mühle</de>
+						<en>The Farmhand</en>
+					</title>
+					<title_original>
+						<de>Der Knecht</de>
+						<en>The Mill</en>
+					</title_original>
+					<description>
+						<de>Die Cartwrights helfen ihrem querschnittsgelähmten Nachbarn und seiner Frau, einer langjährigen Freundin von Ben, beim Bau einer Mühle. Einer der anderen Helfer ist Ben gegenüber misstrauisch.</de>
+						<en>The Cartwrights offer to build a mill for their paraplegic neighbor and his wife, who is a longtime friend of Ben. One of the other helpers is suspicious of Ben.</en>
 					</description>
 				</programme>
 				<programme id="f737f441-bbc9-4c3a-8dce-51296c9fce64" product="2" licence_type="2" imdb_id="tt0529654" creator="9551">
@@ -16468,14 +16797,14 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 			</children>
 		</programme>
-		<programme id="5189c273-66dc-40f6-a82f-c8e0d95ba1a9" product="2" licence_type="3" creator="9551" imdb_id="tt0106179" comment="49 real episodes, 12 in-game">
+		<programme id="5189c273-66dc-40f6-a82f-c8e0d95ba1a9" product="2" licence_type="3" creator="9551" imdb_id="tt0106179" comment="24 real episodes, 7 in-game">
 			<title>
-				<de>Die X-Karteien - Die mysterösen Fälle des FBI (Staffeln 1-2)</de>
-				<en>Folder X (Seasons 1-2)</en>
+				<de>Die X-Karteien - Die mysterösen Fälle des FBI (Staffel 1)</de>
+				<en>Folder X (Season 1)</en>
 			</title>
 			<title_original>
-				<de>Akte X - Die unheimlichen Fälle des FBI (Staffeln 1-2)</de>
-				<en>The X-Files (Seasons 1-2)</en>
+				<de>Akte X - Die unheimlichen Fälle des FBI (Staffel 1)</de>
+				<en>The X-Files (Season 1)</en>
 			</title_original>
 			<description>
 				<de>I want to believe! FBI-Ermittler werden schon ab und an mit ein paar ungewöhnlich außerweltlich erscheinenden Dingen konfrontiert. Agent Fox fühlt sich berufen für die neue Spezialabteilung.</de>
@@ -16488,8 +16817,8 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="3" function="2">f5db9f8d-8447-4bf6-b318-6f5cf025ede3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1995" distribution="2" maingenre="14" subgenre="4,7" flags="0" blocks="1" price_mod="1" />
-			<ratings critics="67" speed="76" outcome="82" />
+			<data country="USA" year="1993" distribution="2" maingenre="14" subgenre="4,7" flags="8" blocks="1" price_mod="0.8" />
+			<ratings critics="67" speed="76" outcome="51" />
 			<children>
 				<programme id="4f53a488-d92e-4166-927a-5dfac11533bc" product="2" licence_type="2" imdb_id="tt0170817" creator="9551">
 					<title>
@@ -16589,6 +16918,31 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>A rather mundane car chase leads Mulder and Scully to a scientific lab encompassing a secret after all which could provide proof of a government conspiracy.</en>
 					</description>
 				</programme>
+			</children>
+		</programme>
+		<programme id="54e7c68a-44bc-46c8-90ea-4c3b7e460d25" product="2" licence_type="3" creator="9551" imdb_id="tt0106179" comment="25 real episodes, 7 in-game">
+			<title>
+				<de>Die X-Karteien - Die mysterösen Fälle des FBI (Staffel 2)</de>
+				<en>Folder X (Season 2)</en>
+			</title>
+			<title_original>
+				<de>Akte X - Die unheimlichen Fälle des FBI (Staffel 2)</de>
+				<en>The X-Files (Season 2)</en>
+			</title_original>
+			<description>
+				<de>Die Abteilung mit dem X wurde eigentlich am Schluss der letzten Staffel geschlossen. Aber die Spukshow muss weitergehen, und wie sie weitergeht.</de>
+				<en>The department with the X had actually been closed at the end of the last season. But the spook show must go on, and boy, how it does go on.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">589f07a5-1dec-44fe-a224-90ad4e99beb9</member>
+				<member index="1" function="2">04cb5741-7ee1-43f8-93a1-0bc5c8fd5753</member>
+				<member index="2" function="2">92da6da4-2154-4cc2-9b8a-39d897eb812a</member>
+				<member index="3" function="2">f5db9f8d-8447-4bf6-b318-6f5cf025ede3</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1994" distribution="2" maingenre="14" subgenre="4,7" flags="8" blocks="1" price_mod="0.8" />
+			<ratings critics="67" speed="76" outcome="63" />
+			<children>
 				<programme id="82c27a58-760d-4419-9dae-1414d5052273" product="2" licence_type="2" imdb_id="tt0751154" creator="9551">
 					<title>
 						<de>Kleine grüne Männchen</de>
@@ -16603,6 +16957,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>With the X-Files shut down, FBI agent Fox Mulder finds his own belief in the truth waning. So when an old political ally gives him a new reason to believe, he goes alone to an abandoned SETI program site.</en>
 					</description>
 				</programme>
+				<programme id="5024ceff-6166-432e-92f2-d52e62e77f14" product="2" licence_type="2" imdb_id="tt0751169" creator="9551">
+					<title>
+						<de>Ein Atemzug</de>
+						<en>On the Edge</en>
+					</title>
+					<title_original>
+						<de>An der Grenze</de>
+						<en>One Breath</en>
+					</title_original>
+					<description>
+						<de>Als die verschwundene Scully auf mysteriöse Weise komatös in einem Krankenhaus wieder auftaucht, ist Mulder darauf fixiert, die Verantwortlichen zu finden, doch sein Streben nach Rache könnte ihn genau zu dem machen, was er verachtet.</de>
+						<en>When the disappeared Scully mysteriously re-appears comatose in a hospital, Mulder fixates himself on finding the people responsible, though his quest for vengeance could make him exactly like those he despises.</en>
+					</description>
+				</programme>
 				<programme id="eda25211-3f04-4566-9a5e-c456736deddc" product="2" licence_type="2" imdb_id="tt0751107" creator="9551">
 					<title>
 						<de>Duane Berry</de>
@@ -16615,6 +16983,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 					<description>
 						<de>Ein ehemaliger FBI-Agent bricht aus einer psychiatrischen Klinik aus und nimmt mehrere Personen in einem Reisebüro als Geiseln. Mulder und Krycek werden zu den Verhandlungen hinzugezogen, da der Mann behauptet, von einem UFO entführt worden zu sein.</de>
 						<en>An ex-FBI agent escapes from a mental hospital and holds several people hostage in a travel agency. Mulder and Krycek are sent in to help with the negotiations since the man claims to have been a UFO abductee.</en>
+					</description>
+				</programme>
+				<programme id="46bce789-68af-4873-aabc-c02f05678574" product="2" licence_type="2" imdb_id="tt0751102" creator="9551">
+					<title>
+						<de>Die Faust die verwundet</de>
+						<en>Satan</en>
+					</title>
+					<title_original>
+						<de>Satan</de>
+						<en>Die Hand Die Verletzt</en>
+					</title_original>
+					<description>
+						<de>Teenager fingieren ein okkultes Ritual und verursachen versehentlich den Mord und die Verstümmelung eines Mitglieds ihrer Gruppe. Die eigentlichen Kultisten der Stadt versuchen, ihre Spuren zu verwischen, aber es gibt etwas, vor dem selbst sie Angst haben.</de>
+						<en>Teenagers feign an occult ritual and inadvertently cause the murder and mutilation of one of their group. The town's real worshippers attempt to hide their tracks, but there's something even they are afraid of.</en>
 					</description>
 				</programme>
 				<programme id="40076233-7427-427a-9366-fb40daa10e14" product="2" licence_type="2" imdb_id="tt0751093" creator="9551">
@@ -16661,14 +17043,14 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 			</children>
 		</programme>
-		<programme id="c5b534ec-a3b8-49e9-a353-7caecc2056e5" product="2" licence_type="3" creator="9551" imdb_id="tt0078622" comment="1 pilot + 42 episodes mapped to 10 in-game.">
+		<programme id="c5b534ec-a3b8-49e9-a353-7caecc2056e5" product="2" licence_type="3" creator="9551" imdb_id="tt0078622" comment="1 pilot + 22 episodes mapped to 6 in-game.">
 			<title>
-				<de>Mit Herz von Hart zu Hart (Staffeln 1-2)</de>
-				<en>Hart with Heart (Seasons 1-2)</en>
+				<de>Mit Herz von Hart zu Hart (Staffel 1)</de>
+				<en>Hart with Heart (Season 1)</en>
 			</title>
 			<title_original>
-				<de>Hart aber herzlich (Staffeln 1-2)</de>
-				<en>Hart to Hart (Seasons 1-2)</en>
+				<de>Hart aber herzlich (Staffel 1)</de>
+				<en>Hart to Hart (Season 1)</en>
 			</title_original>
 			<description>
 				<de>Ein wohlhabendes Ehepaar, das einen glamourösen Jetset-Lebensstil führt, ist komischerweise regelmäßig von kriminellen Aktivitäten betroffen und muss dann immer wieder unbezahlte Detektivarbeit machen.</de>
@@ -16680,7 +17062,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="2" function="2">00d3d86b-322e-49ca-aab3-922ecf133695</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1980" distribution="2" maingenre="4" subgenre="2,14" flags="0" blocks="1" price_mod="0.8" />
+			<data country="USA" year="1979" distribution="2" maingenre="4" subgenre="2,14" flags="0" blocks="1" price_mod="0.6" />
 			<ratings critics="53" speed="46" outcome="55" />
 			<children>
 				<programme id="53cb2a41-17f6-4059-84e2-afe8a96cbd8c" product="2" licence_type="2" imdb_id="tt0079272" creator="9551">
@@ -16709,6 +17091,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 					<description>
 						<de>Jonathan zerschlägt einen Halbsklaverei-Ring, der von einem leitenden Angestellten seiner Reederei betrieben wird, doch der nun entlassene Manager schickt einen Auftragskiller, der sich als Jennifers Cousin ausgibt.</de>
 						<en>Jonathan breaks up a semi-slavery ring operated by one of his shipping line's executives, but the now-fired manager sends a hit man to pretend to be Jennifer's cousin.</en>
+					</description>
+				</programme>
+				<programme id="4b0d664d-508e-4463-ac54-a9e38d46dfd5" product="2" licence_type="2" imdb_id="tt0597303" creator="9551">
+					<title>
+						<de>In welche Richtung, Friedwart?</de>
+						<en>Freeway Knows the Murderer</en>
+					</title>
+					<title_original>
+						<de>Friedwart kennt den Mörder</de>
+						<en>Which Way, Freeway?</en>
+					</title_original>
+					<description>
+						<de>Friedwart, der Hund der Harts, hat eine neue Freundin. Als deren Herrchen getötet wird, verschwindet Friedwart mit der Waffe - hat sie aber nicht mehr, als er nach Hause kommt.</de>
+						<en>Freeway, the Harts' dog, has got a new girlfriend, and when her master is killed Freeway disappears with the gun - but doesn't have it when he gets home.</en>
 					</description>
 				</programme>
 				<programme id="5dbbc590-9861-4542-b67b-7a141181758f" product="2" licence_type="2" imdb_id="tt0597220" creator="9551">
@@ -16753,6 +17149,30 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>Marital suspicions lead a woman to accidentally kill her husband, but when his debt-ridden brother tries to step into his place, the Harts blow his cover.</en>
 					</description>
 				</programme>
+			</children>
+		</programme>
+		<programme id="3a878649-915b-4232-ba38-9d4249aeaa61" product="2" licence_type="3" creator="9551" imdb_id="tt0078622" comment="20 episodes mapped to 6 in-game.">
+			<title>
+				<de>Mit Herz von Hart zu Hart (Staffel 2)</de>
+				<en>Hart with Heart (Season 2)</en>
+			</title>
+			<title_original>
+				<de>Hart aber herzlich (Staffel 2)</de>
+				<en>Hart to Hart (Season 2)</en>
+			</title_original>
+			<description>
+				<de>Eine zweite Runde frische Morde für die "freie" Journalistin und ihren Ehemann, den "Selfmade-Millionär" (Angabe nicht inflationsbereinigt).</de>
+				<en>A second round of fresh murders for the "freelance" journalist and her husband, the "self-made millionaire." (figure not adjusted for inflation).</en>
+			</description>
+			<staff>
+				<member index="0" function="2">9b06ce5b-c242-4a45-b1c1-2a12d7c482bf</member>
+				<member index="1" function="2">c5d8b67e-1697-473e-bde5-30068b34c96a</member>
+				<member index="2" function="2">00d3d86b-322e-49ca-aab3-922ecf133695</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="USA" year="1980" distribution="2" maingenre="4" subgenre="2,14" flags="0" blocks="1" price_mod="0.6" />
+			<ratings critics="53" speed="46" outcome="55" />
+			<children>
 				<programme id="2b5231ed-de47-433c-8834-0ed660190976" product="2" licence_type="2" imdb_id="tt0597266" creator="9551">
 					<title>
 						<de>Mord, Mord an der Wand</de>
@@ -16809,6 +17229,20 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>Jennifer suffers a concussion in a fall at the park, meaning no one but Jonathan believes she witnessed a patient's murder in a small hospital.</en>
 					</description>
 				</programme>
+				<programme id="c759cf36-a8ef-4048-90fa-dbd33783e297" product="2" licence_type="2" imdb_id="tt0597261" creator="9551">
+					<title>
+						<de>Mord verbeugt sich</de>
+						<en>Theatrical Murder</en>
+					</title>
+					<title_original>
+						<de>Mordstheater</de>
+						<en>Murder Takes a Bow</en>
+					</title_original>
+					<description>
+						<de>Als ein mit den Harts befreundeter Dramatiker ermordet und die Kopie seines letzten Werks entwendet wird, ist Jonathan überzeugt, dass etwas in dem Stück den Mörder motiviert hat.</de>
+						<en>When a playwright friend of the Harts is killed and the Harts' copy of his last work is snatched, Jonathan is convinced something in the play motivated the murderer.</en>
+					</description>
+				</programme>
 				<programme id="d310c619-a6ef-4856-a480-fbccfa4350f9" product="2" licence_type="2" imdb_id="tt0597209" creator="9551">
 					<title>
 						<de>Blue-Chip-Mord</de>
@@ -16825,7 +17259,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 			</children>
 		</programme>
-		<programme id="37dd5352-cf6f-4d5b-be6a-825072b592d4" product="2" licence_type="3" creator="9551" imdb_id="tt0053488" comment="'Mein Name ist Hase' ist *nicht* die eigentliche deutsche Version, das ist eine später erschienene Kompilation. Aber die künstlerische Freiheit nehmen wir uns. 'Bunny und seine Kumpane' kennt doch keine Sau mehr. Auch freie Episodenzusammenstellung und zudem in deutschen abgeändert.">
+		<programme id="37dd5352-cf6f-4d5b-be6a-825072b592d4" product="2" licence_type="3" creator="9551" imdb_id="tt0053488" comment="'Mein Name ist Hase' ist *nicht* die eigentliche deutsche Version, sondern eine später erschienene Kompilation. Aber die künstlerische Freiheit nehmen wir uns. 'Bunny und seine Kumpane' kennt doch keine Sau mehr. Auch freie Episodenzusammenstellung und zudem in deutschen abgeändert.">
 			<title>
 				<de>Hase, mein Name</de>
 				<en>My Name is Bunny</en>
@@ -16839,7 +17273,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<en>Overture, curtain, lights, this is it, the night of nights! Tonight what heights we'll hit. On with the show, this is it.</en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1960" distribution="2" maingenre="3" subgenre="5" flags="8" blocks="1" price_mod="0.5" />
+			<data country="USA" year="1960" distribution="2" maingenre="3" subgenre="5" flags="8" blocks="1" price_mod="0.4" />
 			<ratings critics="65" speed="78" outcome="76" />
 			<children>
 				<programme id="532db8ec-3f81-45ab-8511-3aca07952f35" product="2" licence_type="2" imdb_id="" creator="9551">
