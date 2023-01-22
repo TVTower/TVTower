@@ -1355,7 +1355,7 @@ endrem
 
 		If KeyManager.IsHit(KEY_K)
 			TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
-			For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+			For Local fig:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 				If fig.GetInRoom()
 					fig.KickOutOfRoom()
 					'fig.KickOutOfRoom(GetPlayer().GetFigure())
@@ -1379,13 +1379,13 @@ endrem
 		EndIf
 		If KeyManager.Ishit(Key_F10)
 			If (TAiBase.AiRunning)
-				For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+				For Local fig:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 					If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
 				Next
 				TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
 				TAiBase.AiRunning = False
 			Else
-				For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+				For Local fig:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 					If GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
 				Next
 				TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
@@ -3241,6 +3241,16 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
+			case "TFigureCollection.entries:TMap".ToLower()
+				Local fc:TFigureCollection = TFigureCollection(parent)
+				If fc
+					Local map:TMap = TMap(fieldObject)
+					For local eb:TEntityBase = EachIn map.Values()
+						fc.Add(eb)
+					Next
+				EndIf
+
 			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
 			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
 			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()

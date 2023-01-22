@@ -35,7 +35,8 @@ Type TFigureCollection extends TFigureBaseCollection
 		'to this "whacky hack"
 		elseif not TFigureCollection(_instance)
 			local collection:TFigureCollection = new TFigureCollection
-			collection.entries = _instance.entries
+			collection.entriesID = _instance.entriesID
+			collection.entriesGUID = _instance.entriesGUID
 			collection.entriesCount = _instance.entriesCount
 			'now the new collection is the instance
 			_instance = collection
@@ -446,7 +447,7 @@ Type TFigure extends TFigureBase
 
 
 	Method GreetPeopleOnSameFloor()
-		For Local Figure:TFigure = EachIn GetFigureCollection().entries.Values()
+		For Local Figure:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 			'skip other figures
 			if self = Figure then continue
 			'skip if both can't see each other to me
