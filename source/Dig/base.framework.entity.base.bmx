@@ -111,6 +111,13 @@ Type TEntityCollection
 
 
 	Method Add:int(obj:TEntityBase)
+		?debug
+		'In debug builds we remove first to ensure consistency.
+		'Remove() throws an error if an element existed in 
+		'neither none nor both entry-maps.
+		Remove(obj)
+		?
+		
 		GetEntriesID().Insert(obj.GetID(), obj)
 		GetEntriesGUID().Insert(obj.GetGUID(), obj)
 		entriesCount = -1
@@ -126,7 +133,8 @@ Type TEntityCollection
 		entriesCount = -1
 	
 		If result = 1
-			throw "Invalid collection state: entriesID differed to entriesGUID"
+			DebugStop
+			Throw "Invalid collection state: entriesID differed to entriesGUID. ID=" + obj.GetID() + "  GUID=~q" + obj.GetGUID()+"~q." 
 		ElseIf result = 0
 			Return False
 		Else
