@@ -212,7 +212,7 @@ Type TGameBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetCursorExtra(cursorOverlay:Int)
+	Method SetCursorExtra(cursorExtra:Int)
 		self.cursorExtra = cursorExtra
 	End Method
 

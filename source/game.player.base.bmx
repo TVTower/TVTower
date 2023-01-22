@@ -531,8 +531,15 @@ endrem
 
 	Method GetDifficulty:TPlayerDifficulty()
 		if not difficulty
-			SetDifficulty(difficultyGUID)
-
+			'try to obtain difficulty object from savegame
+			local diff:TPlayerDifficulty = GetPlayerDifficulty(playerId)
+			if diff
+				if diff.GetGUID() <> difficultyGUID then throw "TPlayerBase.GetDifficulty() failed: level mismatch for player " + playerId
+				difficulty = diff
+			else
+				'fall back to difficulty by name
+				SetDifficulty(difficultyGUID)
+			endif
 			if not difficulty then Throw "TPlayerBase.GetDifficulty() failed: difficulty ~q"+difficultyGUID+"~q not found."
 		endif
 
