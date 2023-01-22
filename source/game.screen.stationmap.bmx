@@ -235,6 +235,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		'ignore clicks if not in the own office
 		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+		'ignore clicks if not sellable (e.g. initial contract)
+		If Not TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.SELLABLE) Then Return False
 
 		If TScreenHandler_StationMap.selectedStation
 			TScreenHandler_StationMap.selectedStation.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, button.IsChecked())
@@ -269,6 +271,11 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			'force stat refresh (so we can display decrease properly)!
 			TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
 			autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
+			If TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.SELLABLE)
+				autoRenewCheckbox.enable()
+			Else
+				autoRenewCheckbox.disable()
+			EndIf
 		EndIf
 
 		SetActionMode( GetSellActionMode() )
