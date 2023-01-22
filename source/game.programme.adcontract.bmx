@@ -1195,7 +1195,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If base.fixedPrice
 			'print self.base.title.Get() + " has fixed price : "+ int(baseValue * GetSpotCount()) + " base:"+int(baseprice) + " profitbase:"+base.profitBase +" penaltyBase:"+base.penaltyBase
 			'basePrice is a precalculated value (eg. 1000 euro)
-			Return baseValue * GetSpotCount()
+			Return baseValue
 		EndIf
 
 		Local population:Int = 1000
