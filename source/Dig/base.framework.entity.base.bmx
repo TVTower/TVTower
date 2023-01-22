@@ -44,7 +44,7 @@ Import Brl.Map
 
 Type TEntityCollection
 	Field entriesID:TIntMap
-	Field entriesGUID:TStringMap
+	Field entriesGUID:TStringMap {nosave}
 	Field entriesCount:int = -1
 
 	Method Initialize:TEntityCollection()
