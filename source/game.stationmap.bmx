@@ -4444,8 +4444,19 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 			'government-dependent costs
 			'section specific costs for bought land + bureaucracy costs
 			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.SATELLITE_UPLINK)
-			'section government costs, changes over time (dynamic reach)
-			buyPrice :+ 0.10 * GetReach(True)
+
+			'reach increase in later years would make satellites very cheap compared to
+			'cable (having reach 5Mio, broadcast permission 10Mio) and antenna
+			'to compensate for that the dynamic purchase costs rise with coverage
+			'the factor 4 is used to reach a reasonable maximum price
+			'population 80 Mio, reach 1 Mio, reachFactor "irrelevant", dynamic price 500K
+			'population 80 Mio, reach 5 Mio, reachFactor 0.25, dynamic price 1.75Mio
+			'population 80 Mio, reach 10 Mio,reachFactor 0.5,  dynamic price 6Mio
+			'the last seems to be about the maximum reach of the satellites in Germany (3 Satellites)
+			Local reach:Float = Float(GetReach(False))
+			Local reachFactor:Float = 4 * reach / GetReachMax(False)
+			buyPrice :+ (0.1+reachFactor) * reach
+
 			'government sympathy adjustments (-10% to +10%)
 			'buyPrice :+ 0.1 * (-1 + 2*channelSympathy) * price
 			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
