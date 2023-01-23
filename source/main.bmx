@@ -1235,6 +1235,16 @@ Type TApp
 			EndIf
 
 
+			If KeyManager.IsHit(KEY_U)
+				Local currentIndex:Int = 0
+				For Local lang:TLocalizationLanguage = EachIn TLocalization.languages
+					If lang = TLocalization.currentLanguage Then exit
+					currentIndex:+ 1
+				Next
+				App.SetLanguage(TLocalization.languages[(currentIndex+1) Mod (TLocalization.languages.length)].languageCode)
+			EndIf
+
+
 			If Not GetPlayer().GetFigure().isChangingRoom()
 				If GameConfig.highSpeedObservation
 					If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)

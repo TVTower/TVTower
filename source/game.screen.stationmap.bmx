@@ -2799,7 +2799,7 @@ Type TScreenHandler_StationMap
 		'if stationmap changed or we changed the room meanwhile
 		'then we have to rebuild the stationList and potentially remove
 		'selections in lists
-		If changedSubRoom or stationMapChanged & currentSubRoom.owner
+		If changedSubRoom or stationMapChanged
 			ReactToStationMapChanges()
 		EndIf
 
