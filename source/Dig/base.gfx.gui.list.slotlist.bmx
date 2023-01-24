@@ -292,7 +292,7 @@ Type TGUISlotList Extends TGUIListBase
 
 	'set the slots and emits events
 	Method _SetSlot:Int(slot:Int, item:TGUIobject)
-		If slot < 0 Or slot > Self._slots.length-1 Then Return False
+		If slot < 0 Or slot > Self._slots.length - 1 Then Return False
 
 		'skip clearing an empty slot
 		If Not item And Not Self._slots[slot] Then Return False
@@ -333,6 +333,9 @@ Type TGUISlotList Extends TGUIListBase
 
 	'may return a object which was on the place where the new item is to position
 	Method SetItemToSlot:Int(item:TGUIobject,slot:Int)
+		'If slot < 0 or slot > _slots.length - 1 Then Throw "SetItemToSlot: slot " + slot + " out of valid range: 0 - " + (_slotAmount-1)
+		If slot < 0 or slot > _slots.length - 1 Then Return False
+
 		Local itemSlot:Int = Self.GetSlot(item)
 		'somehow we try to place an item at the place where the item
 		'already resides
@@ -461,12 +464,13 @@ Type TGUISlotList Extends TGUIListBase
 			addToSlot = Self.GetSlotByCoord(dropCoord)
 
 		EndIf
-		'no slot was hit
-		If addToSlot < 0 
+		'no slot was hit or index out of bounds
+		If addToSlot < 0 or addToSlot > _slots.length - 1
 			If not extraIsRawSlot and not Self._autofillSlots
 				print "WARNING: TGUISlotList.AddItem() to non autofillslot-list without passing a valid slot as param!"
 				TLogger.Log("TGUISlotList.AddItem()", "Trying to add to non autofillslot-list without passing a valid slot as param!", LOG_ERROR)
 			EndIf
+
 			Return False
 		EndIf
 
@@ -480,7 +484,8 @@ Type TGUISlotList Extends TGUIListBase
 		If dragItem And Not dragItem.isDragable() Then Return False
 
 		'set parent of the item - so item is able to calculate position
-		guiEntriesPanel.addChild(item )
+		'disabled: will be done in Self.SetItemToSlot() if slots differ
+		'guiEntriesPanel.addChild(item )
 
 
 		'recalculate positions, dimensions etc.
