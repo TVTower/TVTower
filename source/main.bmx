@@ -171,6 +171,9 @@ Global collectDebugStats:Int = False
 OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
+'disable profiler
+TProfiler.activated = False
+
 Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
 Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
 Global _profilerKey_RessourceLoader:TLowerString = New TLowerString.Create("RessourceLoader")
