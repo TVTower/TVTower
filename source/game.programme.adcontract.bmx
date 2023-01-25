@@ -1443,10 +1443,15 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If group < 0 Then group = GetLimitedToTargetGroup()
 
 		If group > 0 ' And group <= TVTTargetGroup.GetAtIndex(TVTTargetGroup.count)
-			Local targetGroups:String[] = TVTTargetGroup.GetAsString(group).split(",")
+			Local targetGroupIDs:Int[] = TVTTargetGroup.GetIndexes(group)
+			'Local targetGroups:String[] = TVTTargetGroup.GetAsString(group).split(",")
 			Local targetGroupStrings:String[]
-			For Local t:String = EachIn targetGroups
-				targetGroupStrings :+ [GetLocale("TARGETGROUP_"+t)]
+			For Local tgIndex:int = EachIn targetGroupIDs
+				Local col:SColor8 = GameConfig.GetTargetGroupColor(tgIndex)
+				'Local colorBox:String = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"
+				'targetGroupStrings :+ [colorBox + GetLocale("TARGETGROUP_" + TVTTargetGroup.GetIndexAsString(tgIndex)) + colorBox]
+				'targetGroupStrings :+ ["|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + GetLocale("TARGETGROUP_" + TVTTargetGroup.GetIndexAsString(tgIndex))]
+				targetGroupStrings :+ ["|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + GetLocale("TARGETGROUP_" + TVTTargetGroup.GetIndexAsString(tgIndex)) +" |sprite=gfx_targetGroup_"+TVTTargetGroup.GetIndexAsString(tgIndex)+",13,13|"]
 			Next
 			Return ", ".join(targetGroupStrings)
 		Else

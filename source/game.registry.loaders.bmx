@@ -88,7 +88,7 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 		Local b:Int	= data.GetInt("b", 0)
 		Local a:Int	= data.GetFloat("a", 1.0)
 
-		Local color:TPlayerColor = TPlayerColor.Create(r,g,b,a)
+		Local color:TColor = TColor.Create(r,g,b,a)
 		'if a listname was given - try to add to that group
 		If listName <> ""
 			Local list:TList = TList(GetRegistry().Get(listName))
@@ -99,10 +99,15 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 			EndIf
 			'add
 			list.addLast(color)
+
+			'add the color as extra registry entry if name given
+			'(special colors have names :D)
+			If name <> "" Then GetRegistry().Set(listName+"::"+name, color)
+		Else
+			'add the color as extra registry entry if name given
+			'(special colors have names :D)
+			If name <> "" Then GetRegistry().Set(name, color)
 		EndIf
-		'add the color as extra registry entry if name given
-		'(special colors have names :D)
-		If name <> "" Then GetRegistry().Set(name, color)
 
 		'indicate that the loading was successful
 		Return color

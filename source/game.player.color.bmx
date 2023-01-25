@@ -47,7 +47,7 @@ Type TPlayerColor extends TColor
 		For local pc:TPlayerColor = EachIn list
 			pc.ownerID = 0
 		Next
-		list.Clear()
+		'list.Clear()
 	End Function
 
 

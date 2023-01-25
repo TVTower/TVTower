@@ -309,9 +309,38 @@ Type TApp
 			'load graphics needed for loading screen,
 			'load directly (no delayed loading)
 			obj.LoadResources(obj.baseResourceXmlUrl, True)
+
+
+			'connect sprite provider
+			TBitmapFont._spriteProvider = BitmapFontSpriteProvider
+			
+			'load extra game config from base resources
+
+			'targetgroup colors
+			GameConfig.targetGroupColors = New SColor8[TVTTargetGroup.count + 1] 'include 0/ALL
+			For Local tgIndex:int = 0 until TVTTargetGroup.count
+				Local tgColor:TColor = TColor(GetRegistry().Get("targetGroupColors::" + TVTTargetGroup.GetIndexAsString(tgIndex)))
+				if tgColor
+					GameConfig.targetGroupColors[tgIndex] = new SColor8(tgColor.r, tgColor.g, tgColor.b)
+				EndIf
+			Next
+
+			'player colors
+			Local playerColorList:TList = TList(GetRegistry().Get("playerColors"))
+			If not playerColorList Then Throw "no playerColors found in configuration"
+			For local color:TColor = EachIn playerColorList
+				Local pColor:TPlayerColor = TPlayerColor.Create(color.r,color.g,color.b,color.a)
+				pColor.AddToList()
+			Next
 		EndIf
 
 		Return obj
+	End Function
+	
+	
+	Function BitmapFontSpriteProvider:TSprite(name:String)
+		print "name: " + name
+		Return GetSpriteFromRegistry(name)
 	End Function
 
 
