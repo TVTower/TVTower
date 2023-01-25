@@ -557,7 +557,9 @@ Type TBuilding Extends TBuildingBase
 
 
 	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
+		TProfiler.Enter(_profilerKey_DrawBuildingBG)
 		DrawBackground()
+		TProfiler.Leave(_profilerKey_DrawBuildingBG)
 
 		SetBlend AlphaBlend
 		Local world:TWorld = GetWorld()

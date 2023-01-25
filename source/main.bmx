@@ -651,13 +651,16 @@ Type TApp
 	Global keyLS_DevOSD:TLowerString = New TLowerString.Create("DEV_OSD")
 	Global keyLS_DevKeys:TLowerString = New TLowerString.Create("DEV_KEYS")
 	Function Update:Int()
+		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
 			TriggerBaseEvent(GameEventKeys.App_OnLowPriorityUpdate)
 		EndIf
 
+		TProfiler.Enter(_profilerKey_RessourceLoader)
 		'check for new resources to load
 		RURC.Update()
+		TProfiler.Leave(_profilerKey_RessourceLoader)
 
 
 		MOUSEMANAGER.Update()
@@ -811,31 +814,15 @@ Type TApp
 
 
 		GUIManager.EndUpdates() 'reset modal window states
-		
-rem		
-		global lastRun:Int = Millisecs()
-		global lastMem:Int = GCMemAlloced()
-		global memTicks:Int
-		if Millisecs() - lastRun > 1000
-			lastRun = Millisecs()
-			Local newMem:int = GCMemAlloced()
-			Local change:int = newMem - lastMem
-			lastMem = newMem
-			if change = 0 Then memTicks :+ 1
-			if change <> 0
-				print "Memory: " + change + " bytes (" + (change/1024) +"kb). ticks="+memTicks
-				memTicks = 0
-			Else
-				print "Memory: 0 bytes"
-			EndIf
-		endif
-endrem
+
 
 		'set the mouse clicks handled anyways
 '		MouseManager.ResetClicked(1)
 '		MouseManager.ResetClicked(2)
 		'remove clicks done a longer time ago
 '		MouseManager.RemoveOutdatedClicks(1000)
+
+		TProfiler.Leave(_profilerKey_Update)
 	End Function
 	
 	
@@ -911,7 +898,6 @@ endrem
 
 
 			If KeyManager.IsHit(KEY_Y)
-				GCSuspend()
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
@@ -1476,7 +1462,6 @@ endrem
 	End Function
 
 	Function RenderDevOSD()
-
 		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
 		Local textX:Int = 5
 		Local oldCol:SColor8; GetColor(oldCol)
@@ -1567,6 +1552,8 @@ endrem
 			'first
 			GetGraphicsManager().Cls()
 		EndIf
+
+		TProfiler.Enter(_profilerKey_Draw)
 
 		'set game cursor to 0/default
 		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
@@ -1767,6 +1754,7 @@ endrem
 
 		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
+		TProfiler.Leave(_profilerKey_Draw)
 		Return True
 	End Function
 
@@ -6672,7 +6660,9 @@ endrem
 
 	'lower priority updates (currently happening every 2 "appUpdates")
 	Function onLowPriorityUpdate:Int(triggerEvent:TEventBase)
+		TProfiler.Enter("SoundUpdate")
 		GetSoundManager().Update()
+		TProfiler.Leave("SoundUpdate")
 	End Function
 End Type
 
