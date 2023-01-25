@@ -441,29 +441,6 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function RefreshHoveredProgrammePlanElement:Int()
-		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListProgrammes._slots
-			If guiObject.isDragged() Or guiObject.isHovered()
-				hoveredGuiProgrammePlanElement = guiObject
-				Return True
-			EndIf
-		Next
-		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListAdvertisements._slots
-			If guiObject.isDragged() Or guiObject.isHovered()
-				hoveredGuiProgrammePlanElement = guiObject
-				Return True
-			EndIf
-		Next
-		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiManager.ListDragged
-			If guiObject.isDragged() Or guiObject.isHovered()
-				hoveredGuiProgrammePlanElement = guiObject
-				Return True
-			EndIf
-		Next
-		Return False
-	End Function
-
-
 	Function DrawSlotHints()
 		'nothing for noe
 	End Function
@@ -1158,7 +1135,10 @@ Type TScreenHandler_ProgrammePlanner
 		'delete unused and create new gui elements if needed
 		RefreshGuiElements()
 		'reassign a potential hovered/dragged element if needed
-		FindHoveredPlanElement()
+		'(except programme/ad contract list is open)
+		If not PPprogrammeList.GetOpen() and not PPcontractList.GetOpen()
+			FindHoveredPlanElement()
+		EndIf
 
 
 		DrawSlotHints()
@@ -1265,7 +1245,6 @@ endrem
 		EndIf
 
 
-		'if not hoveredGuiProgrammePlanElement then RefreshHoveredProgrammePlanElement()
 		'only draw, if not over the right side button
 		If hoveredGuiProgrammePlanElement and MouseManager.x < 680
 			'draw the current sheet
@@ -1508,7 +1487,10 @@ endrem
 		'delete unused and create new gui elements if needed
 		RefreshGuiElements()
 		'reassign a potential hovered/dragged element if needed
-		FindHoveredPlanElement()
+		'(except programme/ad contract list is open)
+		If not PPprogrammeList.GetOpen() and not PPcontractList.GetOpen()
+			FindHoveredPlanElement()
+		EndIf
 
 
 		If planningDay-1 < GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
@@ -1804,23 +1786,19 @@ endrem
 
 '		hoveredGuiProgrammePlanElement = Null
 
-		Local obj:TGUIProgrammePlanElement
-		For obj = EachIn GuiManager.ListDragged
-			If obj.containsXY(MouseManager.x, MouseManager.y)
-				hoveredGuiProgrammePlanElement = obj
-				Return True
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListProgrammes._slots
+			If guiObject.isDragged() Or guiObject.isHovered()
+				hoveredGuiProgrammePlanElement = guiObject
 			EndIf
 		Next
-		For obj = EachIn GuiListProgrammes._slots
-			If obj.containsXY(MouseManager.x, MouseManager.y)
-				hoveredGuiProgrammePlanElement = obj
-				Return True
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListAdvertisements._slots
+			If guiObject.isDragged() Or guiObject.isHovered()
+				hoveredGuiProgrammePlanElement = guiObject
 			EndIf
 		Next
-		For obj = EachIn GuiListAdvertisements._slots
-			If obj.containsXY(MouseManager.x, MouseManager.y)
-				hoveredGuiProgrammePlanElement = obj
-				Return True
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiManager.ListDragged
+			If guiObject.isDragged() Or guiObject.isHovered()
+				hoveredGuiProgrammePlanElement = guiObject
 			EndIf
 		Next
 		
