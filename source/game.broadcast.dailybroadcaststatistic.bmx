@@ -326,8 +326,8 @@ Type TDailyBroadcastStatistic
 					SortList(availableAudiences, False, TAudience.EmployeesSort)
 				Case TVTTargetGroup.Unemployed
 					SortList(availableAudiences, False, TAudience.UnemployedSort)
-				Case TVTTargetGroup.Manager
-					SortList(availableAudiences, False, TAudience.ManagerSort)
+				Case TVTTargetGroup.Managers
+					SortList(availableAudiences, False, TAudience.ManagersSort)
 				Case TVTTargetGroup.Pensioners
 					SortList(availableAudiences, False, TAudience.PensionersSort)
 				Case TVTTargetGroup.Women

@@ -330,8 +330,8 @@ Type TPublicImage {_exposeToLua="selected"}
 				channelAudiencesList.Sort(False, TAudience.EmployeesSort)
 			Case TVTTargetGroup.UNEMPLOYED
 				channelAudiencesList.Sort(False, TAudience.UnemployedSort)
-			Case TVTTargetGroup.MANAGER
-				channelAudiencesList.Sort(False, TAudience.ManagerSort)
+			Case TVTTargetGroup.MANAGERS
+				channelAudiencesList.Sort(False, TAudience.ManagersSort)
 			Case TVTTargetGroup.PENSIONERS
 				channelAudiencesList.Sort(False, TAudience.PensionersSort)
 			Default

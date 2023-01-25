@@ -1616,7 +1616,7 @@ Type TVTTargetGroup {_exposeToLua}
 	Const HOUSEWIVES:Int = 4		'3
 	Const EMPLOYEES:Int = 8			'4
 	Const UNEMPLOYED:Int = 16		'5
-	Const MANAGER:Int = 32			'6
+	Const MANAGERS:Int = 32			'6
 	Const PENSIONERS:Int = 64		'7
 	Const WOMEN:Int = 128			'8
 	Const MEN:Int = 256				'9
@@ -1643,7 +1643,7 @@ Type TVTTargetGroup {_exposeToLua}
 			Case HOUSEWIVES  Return [3]
 			Case EMPLOYEES   Return [4]
 			Case UNEMPLOYED  Return [5]
-			Case MANAGER     Return [6]
+			Case MANAGERS    Return [6]
 			Case PENSIONERS  Return [7]
 			Case WOMEN       Return [8]
 			Case MEN         Return [9]
@@ -1670,7 +1670,7 @@ Type TVTTargetGroup {_exposeToLua}
 			Case "housewives"  Return HOUSEWIVES
 			Case "employees"   Return EMPLOYEES
 			Case "unemployed"  Return UNEMPLOYED
-			Case "manager"     Return MANAGER
+			Case "managers"    Return MANAGERS
 			Case "pensioners"  Return PENSIONERS
 			Case "women"       Return WOMEN
 			Case "men"         Return MEN
@@ -1688,7 +1688,7 @@ Type TVTTargetGroup {_exposeToLua}
 			Case HOUSEWIVES  Return "housewives"
 			Case EMPLOYEES   Return "employees"
 			Case UNEMPLOYED  Return "unemployed"
-			Case MANAGER     Return "manager"
+			Case MANAGERS    Return "managers"
 			Case PENSIONERS  Return "pensioners"
 			Case WOMEN       Return "women"
 			Case MEN         Return "men"

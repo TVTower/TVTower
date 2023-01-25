@@ -1093,7 +1093,7 @@ Type TWatchingFamily
 								continue
 							Case TVTTargetGroup.Unemployed
 								result :+ ["unemployed"+suffix]
-							Case TVTTargetGroup.Manager
+							Case TVTTargetGroup.Managers
 								result :+ ["manager"+suffix]
 							Case TVTTargetGroup.Pensioners
 								result :+ ["pensioner"+suffix]

@@ -335,7 +335,7 @@ Type TBroadcastManager
 				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.HOUSEWIVES, weight)
 				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.EMPLOYEES, weight)
 				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.UNEMPLOYED, weight)
-				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.MANAGER, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.MANAGERS, weight)
 				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.PENSIONERS, weight)
 
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
@@ -1085,8 +1085,8 @@ Type TBroadcastFeedback
 			If allowed.GetTotalValue(TVTTargetGroup.HouseWives) >= 1 And kv.Key = TVTTargetGroup.Teenagers Then Return kv
 			If allowed.GetTotalValue(TVTTargetGroup.Employees) >= 1 And kv.Key = TVTTargetGroup.HouseWives Then Return kv
 			If allowed.GetTotalValue(TVTTargetGroup.Unemployed) >= 1 And kv.Key = TVTTargetGroup.Employees Then Return kv
-			If allowed.GetTotalValue(TVTTargetGroup.Manager) >= 1 And kv.Key = TVTTargetGroup.Unemployed Then Return kv
-			If allowed.GetTotalValue(TVTTargetGroup.Pensioners) >= 1 And kv.Key = TVTTargetGroup.Manager Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Managers) >= 1 And kv.Key = TVTTargetGroup.Unemployed Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Pensioners) >= 1 And kv.Key = TVTTargetGroup.Managers Then Return kv
 		Next
 	End Method
 

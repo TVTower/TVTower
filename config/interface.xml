@@ -61,7 +61,7 @@
 				<child name="gfx_targetGroup_housewives" x="283" y="387" w="13" h="13" />
 				<child name="gfx_targetGroup_employees"  x="298" y="387" w="13" h="13" />
 				<child name="gfx_targetGroup_unemployed" x="313" y="387" w="13" h="13" />
-				<child name="gfx_targetGroup_manager"    x="328" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_managers"   x="328" y="387" w="13" h="13" />
 				<child name="gfx_targetGroup_pensioners" x="343" y="387" w="13" h="13" />
 				<child name="gfx_targetGroup_men"        x="358" y="387" w="13" h="13" />
 				<child name="gfx_targetGroup_women"      x="373" y="387" w="13" h="13" />

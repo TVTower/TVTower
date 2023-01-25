@@ -53,7 +53,7 @@ Type TAudienceManager
 			'                                                             HouseWives (20% of 60% adults = 12%)
 			'                                                                    Employees (67,5% of 60% adults = 40,5%)
 			'                                                                           Unemployed (7,5% of 60% adults = 4,5%)
-			'                                                                                  Manager (5% of 60% adults = 3%)
+			'                                                                                  Managers (5% of 60% adults = 3%)
 			'                                                                                         Pensioners (21%)
 			defaultTargetGroupBreakdown = New TAudienceBase(0.090, 0.100, 0.120, 0.405, 0.045, 0.030, 0.210)
 		EndIf
@@ -80,7 +80,7 @@ Type TAudienceManager
 			'                                                              HouseWives
 			'                                                                     Employees
 			'                                                                            Unemployed
-			'                                                                                   Manager
+			'                                                                                   Managers
 			'                                                                                          Pensioners
 			defaultGenderFemaleBreakdown = New TAudienceBase(0.487, 0.487, 0.900, 0.400, 0.450, 0.200, 0.580)
 		EndIf
@@ -165,7 +165,7 @@ Struct SAudienceBase
 	Field Readonly HouseWives:Float
 	Field Readonly Employees:Float
 	Field Readonly Unemployed:Float
-	Field Readonly Manager:Float
+	Field Readonly Managers:Float
 	Field Readonly Pensioners:Float
 	
 	
@@ -176,7 +176,7 @@ Struct SAudienceBase
 		If vars.length > 2 Then HouseWives = Float(vars[2])
 		If vars.length > 3 Then Employees = Float(vars[3])
 		If vars.length > 4 Then Unemployed = Float(vars[4])
-		If vars.length > 5 Then Manager = Float(vars[5])
+		If vars.length > 5 Then Managers = Float(vars[5])
 		If vars.length > 6 Then Pensioners = Float(vars[6])
 	End Method
 	
@@ -187,18 +187,18 @@ Struct SAudienceBase
 		Self.HouseWives	= audience * breakdown.HouseWives
 		Self.Employees = audience * breakdown.Employees
 		Self.Unemployed	= audience * breakdown.Unemployed
-		Self.Manager = audience * breakdown.Manager
+		Self.Managers = audience * breakdown.Managers
 		Self.Pensioners	= audience * breakdown.Pensioners
 	End Method
 	
 	
-	Method New(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
+	Method New(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, managers:Float, pensioners:Float)
 		Self.Children = children
 		Self.Teenagers = teenagers
 		Self.HouseWives	= HouseWives
 		Self.Employees = employees
 		Self.Unemployed	= unemployed
-		Self.Manager = manager
+		Self.Managers = managers
 		Self.Pensioners	= pensioners
 	End Method
 
@@ -209,7 +209,7 @@ Struct SAudienceBase
 		Self.HouseWives	= value
 		Self.Employees = value
 		Self.Unemployed	= value
-		Self.Manager = value
+		Self.Managers = value
 		Self.Pensioners	= value
 	End Method
 
@@ -221,7 +221,7 @@ Struct SAudienceBase
 		                         HouseWives * factor, ..
 		                         Employees * factor, ..
 		                         Unemployed * factor, ..
-		                         Manager * factor, ..
+		                         Managers * factor, ..
 		                         Pensioners * factor)
 	End Method
 
@@ -233,7 +233,7 @@ Struct SAudienceBase
 		                         HouseWives * factors.HouseWives, ..
 		                         Employees * factors.Employees, ..
 		                         Unemployed * factors.Unemployed, ..
-		                         Manager * factors.Manager, ..
+		                         Managers * factors.Managers, ..
 		                         Pensioners * factors.Pensioners)
 	End Method
 
@@ -246,7 +246,7 @@ Struct SAudienceBase
 		Local newHouseWives:Float = HouseWives
 		Local newEmployees:Float = Employees
 		Local newUnemployed:Float = Unemployed
-		Local newManager:Float = Manager
+		Local newManagers:Float = Managers
 		Local newPensioners:Float = Pensioners
 
 		Select targetGroupID
@@ -260,8 +260,8 @@ Struct SAudienceBase
 				newEmployees = value
 			Case TVTTargetGroup.Unemployed
 				newUnemployed = value
-			Case TVTTargetGroup.Manager
-				newManager = value
+			Case TVTTargetGroup.Managers
+				newManagers = value
 			Case TVTTargetGroup.Pensioners
 				newPensioners = value
 			Default
@@ -279,7 +279,7 @@ Struct SAudienceBase
 		End Select
 
 		Return New SAudienceBase(newChildren, newTeenagers, newHouseWives, ..
-		                         newEmployees, newUnemployed, newManager, ..
+		                         newEmployees, newUnemployed, newManagers, ..
 		                         newPensioners)
 	End Method
 
@@ -291,7 +291,7 @@ Struct SAudienceBase
 		                         HouseWives + value, ..
 		                         Employees + value, ..
 		                         Unemployed + value, ..
-		                         Manager + value, ..
+		                         Managers + value, ..
 		                         Pensioners + value)
 	End Method
 
@@ -303,7 +303,7 @@ Struct SAudienceBase
 		                         HouseWives + audience.HouseWives, ..
 		                         Employees + audience.Employees, ..
 		                         Unemployed + audience.Unemployed, ..
-		                         Manager + audience.Manager, ..
+		                         Managers + audience.Managers, ..
 		                         Pensioners + audience.Pensioners)
 	End Method
 
@@ -316,7 +316,7 @@ Struct SAudienceBase
 		Local newHouseWives:Float = HouseWives
 		Local newEmployees:Float = Employees
 		Local newUnemployed:Float = Unemployed
-		Local newManager:Float = Manager
+		Local newManagers:Float = Managers
 		Local newPensioners:Float = Pensioners
 
 		Select targetGroupID
@@ -330,8 +330,8 @@ Struct SAudienceBase
 				newEmployees :+ number
 			Case TVTTargetGroup.Unemployed
 				newUnemployed :+ number
-			Case TVTTargetGroup.Manager
-				newManager :+ number
+			Case TVTTargetGroup.Managers
+				newManagers :+ number
 			Case TVTTargetGroup.Pensioners
 				newPensioners :+ number
 			Default
@@ -349,7 +349,7 @@ Struct SAudienceBase
 		End Select
 
 		Return New SAudienceBase(newChildren, newTeenagers, newHouseWives, ..
-		                         newEmployees, newUnemployed, newManager, ..
+		                         newEmployees, newUnemployed, newManagers, ..
 		                         newPensioners)
 	End Method
 
@@ -365,7 +365,7 @@ Struct SAudienceBase
 		                         HouseWives - audience.HouseWives, ..
 		                         Employees - audience.Employees, ..
 		                         Unemployed - audience.Unemployed, ..
-		                         Manager - audience.Manager, ..
+		                         Managers - audience.Managers, ..
 		                         Pensioners - audience.Pensioners)
 	End Method
 
@@ -384,7 +384,7 @@ Struct SAudienceBase
 		If audience.HouseWives = 0 Then Throw "SAudienceBase.Divide: Div/0 - audience.HouseWives is 0. HouseWives is " + HouseWives
 		If audience.Employees = 0 Then Throw "SAudienceBase.Divide: Div/0 - audience.Employees is 0. Employees is " + Employees
 		If audience.Unemployed = 0 Then Throw "SAudienceBase.Divide: Div/0 - audience.Unemployed is 0. Unemployed is " + Unemployed
-		If audience.Manager = 0 Then Throw "SAudienceBase.Divide: Div/0 - audience.Manager is 0. Manager is " + Manager
+		If audience.Managers = 0 Then Throw "SAudienceBase.Divide: Div/0 - audience.Managers is 0. Managers is " + Managers
 		If audience.Pensioners = 0 Then Throw "SAudienceBase.Divide: Div/0 - audience.Pensioners is 0. Pensioners is " + Pensioners
 
 		Return New SAudienceBase(Children / audience.Children, ..
@@ -392,7 +392,7 @@ Struct SAudienceBase
 		                         HouseWives / audience.HouseWives, ..
 		                         Employees / audience.Employees, ..
 		                         Unemployed / audience.Unemployed, ..
-		                         Manager / audience.Manager, ..
+		                         Managers / audience.Managers, ..
 		                         Pensioners / audience.Pensioners)
 	End Method
 
@@ -405,7 +405,7 @@ Struct SAudienceBase
 		                         HouseWives / number, ..
 		                         Employees / number, ..
 		                         Unemployed / number, ..
-		                         Manager / number, ..
+		                         Managers / number, ..
 		                         Pensioners / number)
 	End Method
 
@@ -416,7 +416,7 @@ Struct SAudienceBase
 		                         Int(HouseWives + 0.5 * Sgn(HouseWives)), ..
 		                         Int(Employees + 0.5 * Sgn(Employees)), ..
 		                         Int(Unemployed + 0.5 * Sgn(Unemployed)), ..
-		                         Int(Manager + 0.5 * Sgn(Manager)), ..
+		                         Int(Managers + 0.5 * Sgn(Managers)), ..
 		                         Int(Pensioners + 0.5 * Sgn(Pensioners)))
 	End Method	
 
@@ -447,7 +447,7 @@ Struct SAudienceBase
 		Local newHouseWives:Float = HouseWives
 		Local newEmployees:Float = Employees
 		Local newUnemployed:Float = Unemployed
-		Local newManager:Float = Manager
+		Local newManagers:Float = Managers
 		Local newPensioners:Float = Pensioners
 
 		If Children < value Then newChildren = value
@@ -455,11 +455,11 @@ Struct SAudienceBase
 		If HouseWives < value Then newHouseWives = value
 		If Employees < value Then newEmployees = value
 		If Unemployed < value Then newUnemployed = value
-		If Manager < value Then newManager = value
+		If Managers < value Then newManagers = value
 		If Pensioners < value Then newPensioners = value
 
 		Return New SAudienceBase(newChildren, newTeenagers, newHouseWives, ..
-		                         newEmployees, newUnemployed, newManager, ..
+		                         newEmployees, newUnemployed, newManagers, ..
 		                         newPensioners)
 	End Method
 
@@ -470,7 +470,7 @@ Struct SAudienceBase
 		Local newHouseWives:Float = HouseWives
 		Local newEmployees:Float = Employees
 		Local newUnemployed:Float = Unemployed
-		Local newManager:Float = Manager
+		Local newManagers:Float = Managers
 		Local newPensioners:Float = Pensioners
 
 		If Children < minimum.Children Then newChildren = minimum.Children
@@ -478,11 +478,11 @@ Struct SAudienceBase
 		If HouseWives < minimum.HouseWives Then newHouseWives = minimum.HouseWives
 		If Employees < minimum.Employees Then newEmployees = minimum.Employees
 		If Unemployed < minimum.Unemployed Then newUnemployed = minimum.Unemployed
-		If Manager < minimum.Manager Then newManager = minimum.Manager
+		If Managers < minimum.Managers Then newManagers = minimum.Managers
 		If Pensioners < minimum.Pensioners Then newPensioners = minimum.Pensioners
 
 		Return New SAudienceBase(newChildren, newTeenagers, newHouseWives, ..
-		                         newEmployees, newUnemployed, newManager, ..
+		                         newEmployees, newUnemployed, newManagers, ..
 		                         newPensioners)
 	End Method
 
@@ -493,7 +493,7 @@ Struct SAudienceBase
 		Local newHouseWives:Float = HouseWives
 		Local newEmployees:Float = Employees
 		Local newUnemployed:Float = Unemployed
-		Local newManager:Float = Manager
+		Local newManagers:Float = Managers
 		Local newPensioners:Float = Pensioners
 
 		If Children > value Then newChildren = value
@@ -501,11 +501,11 @@ Struct SAudienceBase
 		If HouseWives > value Then newHouseWives = value
 		If Employees > value Then newEmployees = value
 		If Unemployed > value Then newUnemployed = value
-		If Manager > value Then newManager = value
+		If Managers > value Then newManagers = value
 		If Pensioners > value Then newPensioners = value
 
 		Return New SAudienceBase(newChildren, newTeenagers, newHouseWives, ..
-		                         newEmployees, newUnemployed, newManager, ..
+		                         newEmployees, newUnemployed, newManagers, ..
 		                         newPensioners)
 	End Method
 
@@ -516,7 +516,7 @@ Struct SAudienceBase
 		Local newHouseWives:Float = HouseWives
 		Local newEmployees:Float = Employees
 		Local newUnemployed:Float = Unemployed
-		Local newManager:Float = Manager
+		Local newManagers:Float = Managers
 		Local newPensioners:Float = Pensioners
 
 		If Children > maximum.Children Then newChildren = maximum.Children
@@ -524,11 +524,11 @@ Struct SAudienceBase
 		If HouseWives > maximum.HouseWives Then newHouseWives = maximum.HouseWives
 		If Employees > maximum.Employees Then newEmployees = maximum.Employees
 		If Unemployed > maximum.Unemployed Then newUnemployed = maximum.Unemployed
-		If Manager > maximum.Manager Then newManager = maximum.Manager
+		If Managers > maximum.Managers Then newManagers = maximum.Managers
 		If Pensioners > maximum.Pensioners Then newPensioners = maximum.Pensioners
 
 		Return New SAudienceBase(newChildren, newTeenagers, newHouseWives, ..
-		                         newEmployees, newUnemployed, newManager, ..
+		                         newEmployees, newUnemployed, newManagers, ..
 		                         newPensioners)
 	End Method
 
@@ -547,8 +547,8 @@ Struct SAudienceBase
 				Return Employees
 			Case TVTTargetGroup.Unemployed
 				Return Unemployed
-			Case TVTTargetGroup.Manager
-				Return Manager
+			Case TVTTargetGroup.Managers
+				Return Managers
 			Case TVTTargetGroup.Pensioners
 				Return Pensioners
 			Case TVTTargetGroup.Men
@@ -586,13 +586,13 @@ Struct SAudienceBase
 
 	Method GetSum:Float()
 		'ignore gender in base variant
-		Return Children + Teenagers + HouseWives + Employees + Unemployed + Manager + Pensioners
+		Return Children + Teenagers + HouseWives + Employees + Unemployed + Managers + Pensioners
 	End Method
 
 
 	Method GetAbsSum:Float()
 		'ignore gender in base variant
-		Return Abs(Children) + Abs(Teenagers) + Abs(HouseWives) + Abs(Employees) + Abs(Unemployed) + Abs(Manager) + Abs(Pensioners)
+		Return Abs(Children) + Abs(Teenagers) + Abs(HouseWives) + Abs(Employees) + Abs(Unemployed) + Abs(Managers) + Abs(Pensioners)
 	End Method
 
 
@@ -614,7 +614,7 @@ Struct SAudienceBase
 		       f2i(HouseWives) + "," +..
 		       f2i(Employees) + "," +..
 		       f2i(Unemployed) + "," +..
-		       f2i(Manager) + "," +..
+		       f2i(Managers) + "," +..
 		       f2i(Pensioners)
 
 		Function f2i:String(f:Float)
@@ -633,7 +633,7 @@ Struct SAudienceBase
         sb.Append("H:").Append(MathHelper.NumberToString(HouseWives, dec, True)).Append(splitter)
         sb.Append("E:").Append(MathHelper.NumberToString(Employees, dec, True)).Append(splitter)
         sb.Append("U:").Append(MathHelper.NumberToString(Unemployed, dec, True)).Append(splitter)
-        sb.Append("M:").Append(MathHelper.NumberToString(Manager, dec, True)).Append(splitter)
+        sb.Append("M:").Append(MathHelper.NumberToString(Managers, dec, True)).Append(splitter)
         sb.Append("P:").Append(MathHelper.NumberToString(Pensioners, dec, True))
         Return sb.ToString()
 	End Method
@@ -659,14 +659,14 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 	
 	'=== CONSTRUCTORS ===
-	Method New(children:Float, teenagers:Float, houseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
-		Set(children, teenagers, houseWives, employees, unemployed, manager, pensioners)
+	Method New(children:Float, teenagers:Float, houseWives:Float, employees:Float, unemployed:Float, managers:Float, pensioners:Float)
+		Set(children, teenagers, houseWives, employees, unemployed, managers, pensioners)
 	End Method
 
 	
 
-	Method Set:TAudienceBase(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
-		data = new SAudienceBase(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+	Method Set:TAudienceBase(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, managers:Float, pensioners:Float)
+		data = new SAudienceBase(children, teenagers, HouseWives, employees, unemployed, managers, pensioners)
 		Return Self
 	End Method
 
@@ -898,7 +898,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 		amap.Add(TVTTargetGroup.HouseWives, data.HouseWives)
 		amap.Add(TVTTargetGroup.Employees, data.Employees)
 		amap.Add(TVTTargetGroup.Unemployed, data.Unemployed)
-		amap.Add(TVTTargetGroup.Manager, data.Manager)
+		amap.Add(TVTTargetGroup.Managers, data.Managers)
 		amap.Add(TVTTargetGroup.Pensioners, data.Pensioners)
 		Return amap
 	End Method
@@ -912,7 +912,7 @@ Type TAudienceBase {_exposeToLua="selected"}
         sb.Append("H:").Append(MathHelper.NumberToString(data.HouseWives*100, dec, True)).Append(splitter)
         sb.Append("E:").Append(MathHelper.NumberToString(data.Employees*100, dec, True)).Append(splitter)
         sb.Append("U:").Append(MathHelper.NumberToString(data.Unemployed*100, dec, True)).Append(splitter)
-        sb.Append("M:").Append(MathHelper.NumberToString(data.Manager*100, dec, True)).Append(splitter)
+        sb.Append("M:").Append(MathHelper.NumberToString(data.Managers*100, dec, True)).Append(splitter)
         sb.Append("P:").Append(MathHelper.NumberToString(data.Pensioners*100, dec, True)).Append("%")
         Return sb.ToString()
 	End Method
@@ -993,11 +993,11 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Function
 
 
-	Function ManagerSort:Int(o1:Object, o2:Object)
+	Function ManagersSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceBase = TAudienceBase(o1)
 		Local s2:TAudienceBase = TAudienceBase(o2)
 		If Not s2 Then Return 1
-		Return 1 - 2 * (s1.data.Manager < s2.data.Manager) 
+		Return 1 - 2 * (s1.data.Managers < s2.data.Managers) 
 	End Function
 
 
@@ -1016,12 +1016,12 @@ Struct SAudience
 	Field audienceMale:SAudienceBase
 	Field audienceFemale:SAudienceBase
 
-	Method New(gender:Int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
+	Method New(gender:Int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, managers:Float, pensioners:Float)
 		If gender = -1 Or gender = TVTPersonGender.FEMALE
-			audienceFemale = New SAudienceBase(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+			audienceFemale = New SAudienceBase(children, teenagers, HouseWives, employees, unemployed, managers, pensioners)
 		EndIf
 		If gender = -1 Or gender = TVTPersonGender.MALE
-			audienceMale = New SAudienceBase(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+			audienceMale = New SAudienceBase(children, teenagers, HouseWives, employees, unemployed, managers, pensioners)
 		EndIf
 	End Method
 
@@ -1185,7 +1185,7 @@ Struct SAudience
 			result :+ audienceMale.HouseWives * audienceBreakdown.HouseWives * (1 - audienceFemaleGenderBreakdown.HouseWives)
 			result :+ audienceMale.Employees * audienceBreakdown.Employees * (1 - audienceFemaleGenderBreakdown.Employees)
 			result :+ audienceMale.Unemployed * audienceBreakdown.Unemployed * (1 - audienceFemaleGenderBreakdown.Unemployed)
-			result :+ audienceMale.Manager * audienceBreakdown.Manager * (1 - audienceFemaleGenderBreakdown.Manager)
+			result :+ audienceMale.Managers * audienceBreakdown.Managers * (1 - audienceFemaleGenderBreakdown.Managers)
 			result :+ audienceMale.Pensioners * audienceBreakdown.Pensioners * (1 - audienceFemaleGenderBreakdown.Pensioners)
 		EndIf
 		If audienceFemale
@@ -1194,7 +1194,7 @@ Struct SAudience
 			result :+ audienceFemale.HouseWives * audienceBreakdown.HouseWives * audienceFemaleGenderBreakdown.HouseWives
 			result :+ audienceFemale.Employees * audienceBreakdown.Employees * audienceFemaleGenderBreakdown.Employees
 			result :+ audienceFemale.Unemployed * audienceBreakdown.Unemployed * audienceFemaleGenderBreakdown.Unemployed
-			result :+ audienceFemale.Manager * audienceBreakdown.Manager * audienceFemaleGenderBreakdown.Manager
+			result :+ audienceFemale.Managers * audienceBreakdown.Managers * audienceFemaleGenderBreakdown.Managers
 			result :+ audienceFemale.Pensioners * audienceBreakdown.Pensioners * audienceFemaleGenderBreakdown.Pensioners
 		EndIf
 
@@ -1418,7 +1418,7 @@ Struct SAudience
         sb.Append("H:").Append(MathHelper.NumberToString(audienceMale.HouseWives*100, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.HouseWives*100, dec, True)).Append("% / ")
         sb.Append("E:").Append(MathHelper.NumberToString(audienceMale.Employees*100, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Employees*100, dec, True)).Append("% / ")
         sb.Append("U:").Append(MathHelper.NumberToString(audienceMale.Unemployed*100, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Unemployed*100, dec, True)).Append("% / ")
-        sb.Append("M:").Append(MathHelper.NumberToString(audienceMale.Manager*100, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Manager*100, dec, True)).Append("% / ")
+        sb.Append("M:").Append(MathHelper.NumberToString(audienceMale.Managers*100, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Managers*100, dec, True)).Append("% / ")
         sb.Append("P:").Append(MathHelper.NumberToString(audienceMale.Pensioners*100, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Pensioners*100, dec, True)).Append("%")
         Return sb.ToString()
 	End Method
@@ -1431,7 +1431,7 @@ Struct SAudience
         sb.Append("H:").Append(MathHelper.NumberToString(audienceMale.HouseWives, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.HouseWives, dec, True)).Append(" / ")
         sb.Append("E:").Append(MathHelper.NumberToString(audienceMale.Employees, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Employees, dec, True)).Append(" / ")
         sb.Append("U:").Append(MathHelper.NumberToString(audienceMale.Unemployed, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Unemployed, dec, True)).Append(" / ")
-        sb.Append("M:").Append(MathHelper.NumberToString(audienceMale.Manager, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Manager, dec, True)).Append(" / ")
+        sb.Append("M:").Append(MathHelper.NumberToString(audienceMale.Managers, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Managers, dec, True)).Append(" / ")
         sb.Append("P:").Append(MathHelper.NumberToString(audienceMale.Pensioners, dec, True)).Append("/").Append(MathHelper.NumberToString(audienceFemale.Pensioners, dec, True))
         Return sb.ToString()
     End Method
@@ -1464,8 +1464,8 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 	
 	
-	Method Set:TAudience(gender:Int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
-		data = new SAudience(gender, children, teenagers, houseWives, employees, unemployed, manager, pensioners)
+	Method Set:TAudience(gender:Int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, managers:Float, pensioners:Float)
+		data = new SAudience(gender, children, teenagers, houseWives, employees, unemployed, managers, pensioners)
 
 		Return Self
 	End Method
@@ -1753,7 +1753,7 @@ Type TAudience {_exposeToLua="selected"}
 		amap.Add(TVTTargetGroup.HouseWives, data.audienceFemale.HouseWives + data.audienceMale.HouseWives)
 		amap.Add(TVTTargetGroup.Employees, data.audienceFemale.Employees + data.audienceMale.Employees)
 		amap.Add(TVTTargetGroup.Unemployed, data.audienceFemale.Unemployed + data.audienceMale.Unemployed)
-		amap.Add(TVTTargetGroup.Manager, data.audienceFemale.Manager + data.audienceMale.Manager)
+		amap.Add(TVTTargetGroup.Managers, data.audienceFemale.Managers + data.audienceMale.Managers)
 		amap.Add(TVTTargetGroup.Pensioners, data.audienceFemale.Pensioners + data.audienceMale.Pensioners)
 
 		rem
@@ -1762,7 +1762,7 @@ Type TAudience {_exposeToLua="selected"}
 		amap.Add(TVTTargetGroup.HouseWives, GetTotalValue(TVTTargetGroup.HouseWives))
 		amap.Add(TVTTargetGroup.Employees, GetTotalValue(TVTTargetGroup.Employees))
 		amap.Add(TVTTargetGroup.Unemployed, GetTotalValue(TVTTargetGroup.Unemployed))
-		amap.Add(TVTTargetGroup.Manager, GetTotalValue(TVTTargetGroup.Manager))
+		amap.Add(TVTTargetGroup.Managers, GetTotalValue(TVTTargetGroup.Managers))
 		amap.Add(TVTTargetGroup.Pensioners, GetTotalValue(TVTTargetGroup.Pensioners))
 		EndRem
 		Return amap
@@ -1852,11 +1852,11 @@ Type TAudience {_exposeToLua="selected"}
 	End Function
 
 
-	Function ManagerSort:Int(o1:Object, o2:Object)
+	Function ManagersSort:Int(o1:Object, o2:Object)
 		Local s1:TAudience = TAudience(o1)
 		Local s2:TAudience = TAudience(o2)
 		If Not s2 Then Return 1
-		Return 1 - 2 * ((s1.data.audienceFemale.Manager + s1.data.audienceMale.Manager) < (s2.data.audienceFemale.Manager + s2.data.audienceMale.Manager)) 
+		Return 1 - 2 * ((s1.data.audienceFemale.Managers + s1.data.audienceMale.Managers) < (s2.data.audienceFemale.Managers + s2.data.audienceMale.Managers)) 
 	End Function
 
 

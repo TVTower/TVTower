@@ -2017,7 +2017,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If IsLimitedToTargetGroup(TVTTargetGroup.HOUSEWIVES) Then result:* 4
 		If IsLimitedToTargetGroup(TVTTargetGroup.EMPLOYEES) Then result:* 4
 		If IsLimitedToTargetGroup(TVTTargetGroup.UNEMPLOYED) Then result:* 3
-		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGER) Then result:* 7
+		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGERS) Then result:* 7
 		If IsLimitedToTargetGroup(TVTTargetGroup.PENSIONERS) Then result:* 4
 		If IsLimitedToTargetGroup(TVTTargetGroup.WOMEN) Then result:* 2
 		If IsLimitedToTargetGroup(TVTTargetGroup.MEN) Then result:* 2

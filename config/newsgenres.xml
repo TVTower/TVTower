@@ -8,7 +8,7 @@
 				<audienceAttraction id="HouseWifes" men="-0.2" women="-0.5" />
 				<audienceAttraction id="Employees" men="0" women="-0.15" />
 				<audienceAttraction id="Unemployed" men="-0.1" women="-0.25" />
-				<audienceAttraction id="Manager" men="0.4" women="0.2" />
+				<audienceAttraction id="Managers" men="0.4" women="0.2" />
 				<audienceAttraction id="Pensioners" men="0.15" women="0" />
 			</audienceAttractions>			
 		</newsgenre>
@@ -19,7 +19,7 @@
 				<audienceAttraction id="HouseWifes" men="0.1" women="0.4" />
 				<audienceAttraction id="Employees" men="0" women="0.15" />
 				<audienceAttraction id="Unemployed" men="0.15" women="0.4" />
-				<audienceAttraction id="Manager" men="-0.4" women="-0.2" />
+				<audienceAttraction id="Managers" men="-0.4" women="-0.2" />
 				<audienceAttraction id="Pensioners" men="-0.1" women="0" />
 			</audienceAttractions>			
 		</newsgenre>
@@ -30,7 +30,7 @@
 				<audienceAttraction id="HouseWifes" men="0.1" women="0" />
 				<audienceAttraction id="Employees" men="0.2" women="0" />
 				<audienceAttraction id="Unemployed" men="0.2" women="-0.1" />
-				<audienceAttraction id="Manager" men="0.1" women="-0.4" />
+				<audienceAttraction id="Managers" men="0.1" women="-0.4" />
 				<audienceAttraction id="Pensioners" men="0.1" women="0" />
 			</audienceAttractions>			
 		</newsgenre>
@@ -41,7 +41,7 @@
 				<audienceAttraction id="HouseWifes" men="0" women="-0.4" />
 				<audienceAttraction id="Employees" men="0.1" women="-0.1" />
 				<audienceAttraction id="Unemployed" men="0.1" women="-0.1" />
-				<audienceAttraction id="Manager" men="0.15" women="0" />
+				<audienceAttraction id="Managers" men="0.15" women="0" />
 				<audienceAttraction id="Pensioners" men="-0.2" women="-0.3" />
 			</audienceAttractions>			
 		</newsgenre>		
@@ -52,7 +52,7 @@
 				<audienceAttraction id="HouseWifes" men="0.1" women="0.20" />
 				<audienceAttraction id="Employees" men="-0.05" women="0.1" />
 				<audienceAttraction id="Unemployed" men="-0.15" women="-0.1" />
-				<audienceAttraction id="Manager" men="-0.25" women="-0.1" />
+				<audienceAttraction id="Managers" men="-0.25" women="-0.1" />
 				<audienceAttraction id="Pensioners" men="0.25" women="0.4" />
 			</audienceAttractions>			
 		</newsgenre>
@@ -63,7 +63,7 @@
 				<audienceAttraction id="HouseWifes" men="-0.6" women="-0.3" />
 				<audienceAttraction id="Employees" men="0" women="0.1" />
 				<audienceAttraction id="Unemployed" men="-0.6" women="-0.3" />
-				<audienceAttraction id="Manager" men="0.2" women="0.3" />
+				<audienceAttraction id="Managers" men="0.2" women="0.3" />
 				<audienceAttraction id="Pensioners" men="0.3" women="0.5" />
 			</audienceAttractions>			
 		</newsgenre>
