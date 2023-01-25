@@ -198,6 +198,28 @@ Type TgfxContractlist Extends TPlannerList
 					font.DrawBox(contract.GetTitle(), currX + 22, currY + 3, 150,15, sALIGN_LEFT_CENTER, SColor8.Black)
 				endif
 
+				'add visual marker for target groups
+				Local targetGroups:Int = contract.GetLimitedToTargetGroup()
+				if targetGroups > 0
+					Local oldCol:SColor8; GetColor(oldCol)
+					Local targetGroupIDs:Int[] = TVTTargetGroup.GetIndexes(targetGroups)
+					'render 2 ... or only first
+					if targetGroupIDs.length = 2
+						Local colNum:int = 0
+						For Local tgIndex:int = EachIn targetGroupIDs
+							Local col:SColor8 = GameConfig.GetTargetGroupColor(tgIndex)
+							SetColor(col)
+							DrawRect(currX + 149, currY + 4 + colNum*(5+2), 6, 5)
+							colNum :+ 1
+						Next
+					Else
+						Local col:SColor8 = GameConfig.GetTargetGroupColor(targetGroupIDs[0])
+						SetColor(col)
+						DrawRect(currX + 149, currY + 5, 6, 10)
+					EndIf
+					SetColor(oldCol)
+				EndIf
+
 				if contract.GetLimitedToTargetGroup() > 0 or contract.GetLimitedToProgrammeGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0
 					GetSpriteFromRegistry("gfx_programmetape_stamp_attention").draw(currX + 8, currY+1)
 				endif
