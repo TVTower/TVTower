@@ -377,8 +377,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	'used when adding a contract to the suitcase
 	Method AddUnsignedAdContractToSuitcase:int(contract:TAdContract)
 		If not contract then return FALSE
-		'do not add if already "full"
-		if suitcaseAdContracts.count() >= GameRules.adContractsPerPlayerMax then return FALSE
+
+		'do not add if already "full" (this also includes signed contracts)
+		if suitcaseAdContracts.count() + adContracts.count() >= GameRules.adContractsPerPlayerMax then return FALSE
 
 		'add a special block-object to the suitcase
 		suitcaseAdContracts.AddLast(contract)
