@@ -106,7 +106,8 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 		Local playerID:Int = GetShownPlayerID()
 
 		RenderBlock_AdAgencyOffers(playerID, position.x + 5, position.y + 3, 250, 230)
-		RenderBlock_AdAgencyInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
+		'RenderBlock_AdAgencyInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
+		RenderBlock_PlayerAdContractInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
 
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
@@ -115,6 +116,33 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 		if offerHightlight
 			offerHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID)
 		endif
+	End Method
+
+
+	Method RenderBlock_PlayerAdContractInformation(playerID:int, x:int, y:int, w:int = 160, h:int = 180)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		titleFont.Draw("Player contracts", textX, textY)
+		textY :+ 12
+		Local slot:Int = 1
+		For local adContract:TAdContract = EachIn GetPlayerProgrammeCollection(playerID).adContracts
+			textFont.Draw(slot, textX, textY)
+			textFont.Draw(adContract.GetTitle(), textX + 15, textY)
+			slot :+ 1
+			textY :+ 10
+		Next
+		
+		textY :+ 20
+
+		Local suitCasePos:Int = 1
+		For local adContract:TAdContract = EachIn GetPlayerProgrammeCollection(playerID).suitcaseAdContracts
+			textFont.Draw(slot, textX, textY)
+			textFont.Draw(adContract.GetTitle(), textX + 15, textY)
+			suitCasePos :+ 1
+			slot :+ 1
+			textY :+ 10
+		Next
 	End Method
 
 

@@ -184,6 +184,8 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropContract, "TGuiAdContract" ) ]
 		'drop on vendor - sell things
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropContractOnVendor, "TGuiAdContract" ) ]
+		'dropping an contract on another can lead to a "replacement"
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceContract, "TGUIAdContractSlotList" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverContract, "TGuiAdContract" ) ]
 		'this lists want to delete the item if a right mouse click happens...
@@ -1274,9 +1276,7 @@ endrem
 		Local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
 		If Not guiBlock Or Not receiver Or receiver <> VendorArea Then Return False
 
-		Local parent:TGUIobject = guiBlock._parent
-		If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
-		Local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(parent)
+		Local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(TGUIListBase.FindGUIListBaseParent(guiBlock._parent))
 		If Not senderList Then Return False
 
 		'if coming from suitcase, try to remove it from the player
@@ -1301,6 +1301,45 @@ endrem
 	End Function
 
 
+	Function onReplaceContract:int( triggerEvent:TEventBase )
+		'as soon as dropping a contract on a "full" suitcase, we remove 
+		'the "dragged" from the players suitcase
+		'- One can only drag "unsigned" contracts from the suitcase
+		'- contracts are only "unsigned" if taken from the agency this visit
+		'- so for any "unsigned" contract there must be a free slot in the
+		'  agency (desk)
+
+		If Not CheckObservedFigureInRoom("adagency") Then Return False
+
+		Local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(triggerEvent._sender)
+		If Not senderList Then Return False
+
+		Local droppedGuiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent.GetData().Get("source"))
+		Local draggedGuiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent.GetData().Get("target"))
+		
+		'dropping a contract from the vendor to the suitcase 
+		'(on an already occupied slot)
+		If senderlist = GuiListSuitcase and droppedGuiAdContract.contract.IsOwnedByVendor()
+			'remove replaced/dragged contract from player
+			Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetObservedPlayerID())
+			programmeCollection.RemoveUnsignedAdContractFromSuitcase(draggedGuiAdContract.contract)
+			'remove replacing/dropped contract from vendor
+			GetInstance().RemoveContract(droppedGuiAdContract.contract)
+			'print "  -> removed dragged contract from player suitcase, removed dropped contract from vendor"
+
+			'add replacing/dropped contract to player
+			programmeCollection.AddUnsignedAdContractToSuitcase(droppedGuiAdContract.contract)
+			'add replaced/dragged contract to vendor
+			GetInstance().AddContract(draggedGuiAdContract.contract)
+			'print "  -> added dropped contract to player suitcase, added dragged contract to vendor"
+		'ElseIf (senderlist = GuiListCheap or senderlist = GuiListNormal) and droppedGuiAdContract.contract.owner > 0
+			'replacement on vendor lists does not need special handling as
+			'we do not want to automatically place the "replacement" in the
+			'players suitcase
+		EndIf
+	End Function
+
+
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
 	Function onDropContract:Int( triggerEvent:TEventBase )
@@ -1321,7 +1360,6 @@ endrem
 		'find out if we sell it to the vendor or drop it to our suitcase
 		If receiverList <> GuiListSuitcase
 			guiAdContract.InitAssets( guiAdContract.getAssetName(-1, False ), guiAdContract.getAssetName(-1, True ) )
-
 			'no problem when dropping vendor programme to vendor..
 			If owner <= 0 Then Return True
 
@@ -1337,6 +1375,7 @@ endrem
 			guiAdContract.InitAssets(guiAdContract.getAssetName(-1, True ), guiAdContract.getAssetName(-1, True ))
 			'no problem when dropping own programme to suitcase..
 			If owner = GetPlayerBase().playerID Then Return True
+
 			If Not GetInstance().GiveContractToPlayer(guiAdContract.contract, GetPlayerBase().playerID)
 				triggerEvent.setVeto()
 				Return False
