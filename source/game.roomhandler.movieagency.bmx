@@ -302,6 +302,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		'drop ... so sell/buy the thing
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, "TGUIProgrammeLicence") ]
+		'dropping a licence on another (in suitcase) can lead to a "replacement"
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceProgrammeLicence, "TGUIProgrammeLicenceSlotList" ) ]
 		'is dragging even allowed? - eg. intercept if not enough money
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence") ]
 		'we want to know if we hover a specific block - to show a datasheet
@@ -1119,6 +1121,35 @@ endrem
 	End Function
 
 
+	Function onReplaceProgrammeLicence:int( triggerEvent:TEventBase )
+		'as soon as dropping a licence on a "full" suitcase, we remove 
+		'the "dragged" from the player's suitcase
+		'- licences exceeding the suitcase limit must come from the shelf
+		'- so for any "in addition" dragged licence there must be a free
+		'  slot in the shelf
+
+		If Not CheckObservedFigureInRoom("movieagency") Then Return False
+		Local senderList:TGUIProgrammeLicenceSlotList = TGUIProgrammeLicenceSlotList(triggerEvent._sender)
+		If Not senderList Then Return False
+
+		Local droppedGUIProgrammeLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetData().Get("source"))
+		Local draggedGUIProgrammeLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetData().Get("target"))
+		
+		'dropping a licence from the vendor to the suitcase 
+		'(on an already occupied slot)
+		If senderlist = GuiListSuitcase and droppedGUIProgrammeLicence.licence.IsOwnedByVendor()
+			'buy replaced (now dragged) from player
+			GetInstance().BuyProgrammeLicenceFromPlayer(draggedGuiProgrammeLicence.licence)
+			'sell replacement (now dropped) to player
+			GetInstance().SellProgrammeLicenceToPlayer(droppedGUIProgrammeLicence.licence, GetObservedPlayerID())
+		'ElseIf (senderlist = GuiListMoviesCheap or senderList = GuiListMoviesGood or senderlist = GuiListSeries) and droppedGUIProgrammeLicence.licence.owner > 0
+			'replacement on vendor lists does not need special handling as
+			'we do not want to automatically place the "replacement" in the
+			'player's suitcase
+		EndIf
+	End Function
+
+
 	'dropping takes place - sell/buy licences or veto if not possible
 	Function onDropProgrammeLicence:Int( triggerEvent:TEventBase )
 		If Not CheckPlayerObservedAndInRoom("movieagency") Then Return False
@@ -1146,10 +1177,7 @@ endrem
 
 				If Not GetInstance().SellProgrammeLicenceToPlayer(guiLicence.licence, GetPlayerBaseCollection().playerID)
 					triggerEvent.setVeto()
-					'try to drop back to old list - which triggers
-					'this function again... but with a differing list..
-					guiLicence.dropBackToOrigin()
-					haveToRefreshGuiElements = True
+					Return False
 				EndIf
 		End Select
 
@@ -1232,7 +1260,8 @@ endrem
 		If draggedGuiProgrammeLicence And draggedGuiProgrammeLicence.isDragged()
 			If draggedGuiProgrammeLicence.licence.owner <= 0
 				highlightSuitcase = True
-			Else
+			EndIf
+			'Else
 				highlightVendor = True
 
 				'also allow dropping on a specific shelf?
@@ -1264,7 +1293,7 @@ endrem
 				If TGUIProgrammeLicenceSlotList(draggedGuiProgrammeLicenceTargetShelf)
 					highlightShelf = True
 				EndIf
-			EndIf
+			'EndIf
 		Else
 			If AuctionEntity And AuctionEntity.GetScreenArea().ContainsXY(MouseManager.x, MouseManager.y)
 				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
