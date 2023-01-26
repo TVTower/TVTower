@@ -330,7 +330,7 @@ Type TApp
 			If not playerColorList Then Throw "no playerColors found in configuration"
 			For local color:TColor = EachIn playerColorList
 				Local pColor:TPlayerColor = TPlayerColor.Create(color.r,color.g,color.b,color.a)
-				pColor.AddToList()
+				pColor.Register()
 			Next
 		EndIf
 
@@ -2065,7 +2065,7 @@ Type TGameState
 	Field _RoomHandler_News:RoomHandler_News
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Field _RoomBaseCollection:TRoomBaseCollection
-	Field _PlayerColorList:TList
+	Field _PlayerColorList:TObjectList
 	Field _CurrentScreenName:String
 	Field _adAgencySortMode:Int
 	Field _officeProgrammeSortMode:Int
@@ -2185,7 +2185,7 @@ Type TGameState
 		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
 		_Assign(_RoomBaseCollection, TRoomBaseCollection._instance, "RoomBaseCollection", MODE_LOAD)
 
-		_Assign(_PlayerColorList, TPlayerColor.List, "PlayerColorList", MODE_LOAD)
+		_Assign(_PlayerColorList, TPlayerColor.registeredColors, "PlayerColorList", MODE_LOAD)
 		_Assign(_GameInformationCollection, TGameInformationCollection._instance, "GameInformationCollection", MODE_LOAD)
 		_Assign(_IngameHelpWindowCollection, IngameHelpWindowCollection, "IngameHelp", MODE_LOAD)
 
@@ -2318,7 +2318,7 @@ Type TGameState
 
 		_Assign(TProgrammeProducerCollection._instance, _ProgrammeProducerCollection, "ProgrammeProducerCollection", MODE_SAVE)
 
-		_Assign(TPlayerColor.List, _PlayerColorList, "PlayerColorList", MODE_SAVE)
+		_Assign(TPlayerColor.registeredColors, _PlayerColorList, "PlayerColorList", MODE_SAVE)
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
 		_Assign(IngameHelpWindowCollection, _IngameHelpWindowCollection, "IngameHelp", MODE_SAVE)
 

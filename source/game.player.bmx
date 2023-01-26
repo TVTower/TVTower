@@ -393,10 +393,10 @@ endrem
 	' figureimage, a programmecollection and a programmeplan
 	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TPlayerColor, FigureName:String = "")
 		Local Player:TPlayer = New TPlayer
-
+		
 		Player.Name	= Name
 		Player.playerID	= playerID
-		Player.color = color.SetOwner(playerID).AddToList()
+		Player.color = color.Register().SetOwner(playerID)
 		Player.channelname = channelname
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx)
 		Player.Figure.playerID = playerID

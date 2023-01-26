@@ -561,7 +561,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		Else
 			pl.UpdateFigureBase(RandRange(6,12))
 		EndIf
-		Local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
+		Local colors:TPlayerColor[] = TPlayerColor.getUnowned()
+		if colors.length = 0 then colors :+ [TPlayerColor.Create(255,255,255)]
+
 		Local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
 		pl.color.SetOwner(0)
 		pl.color = newcolor.SetOwner(player)
@@ -867,7 +869,7 @@ endrem
 			colorRect = New SRect(slotPosX + 2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 			'draw colors
-			For Local pc:TPlayerColor = EachIn TPlayerColor.List
+			For Local pc:TPlayerColor = EachIn TPlayerColor.registeredColors
 				If pc.ownerID = 0
 					colorRect = New SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 					pc.SetRGB()
@@ -1049,7 +1051,7 @@ endrem
 				If MOUSEMANAGER.IsClicked(1)
 					Local colorRect:SRect = New SRect(slotPosX + 2, Int(guiChannelNames[i].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
-					For Local pc:TPlayerColor = EachIn TPlayerColor.List
+					For Local pc:TPlayerColor = EachIn TPlayerColor.registeredColors
 						'only for unused colors
 						If pc.ownerID <> 0 Then Continue
 

@@ -492,12 +492,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			If player.IsLocalAI()
 				'give the player a new figure
 				player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, Int(figure.initialdx))
-				Local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
+				Local colors:TPlayerColor[] = TPlayerColor.getUnowned()
+				if colors.length = 0 then colors :+ [TPlayerColor.Create(255,255,255)]
 				Local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
 				If newColor
 					'set color free to use again
 					player.color.SetOwner(0)
-					player.color = newcolor.SetOwner(playerID).AddToList()
+					player.color = newcolor.Register().SetOwner(playerID)
 					player.RecolorFigure(player.color)
 				EndIf
 				'choose a random one

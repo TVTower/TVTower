@@ -1,9 +1,13 @@
 SuperStrict
 Import "Dig/base.util.color.bmx"
+Import Brl.ObjectList
+
 
 Type TPlayerColor extends TColor
 	'store if a player/object... uses that color
 	Field ownerID:int = 0
+
+	Global registeredColors:TObjectList = new TObjectList
 
 
 	Function Create:TPlayerColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
@@ -15,7 +19,6 @@ Type TPlayerColor extends TColor
 		obj.ownerID = 0
 		return obj
 	End Function
-	
 
 
 	'=== SERIALIZATION / DESERIALIZATION ===
@@ -44,24 +47,52 @@ Type TPlayerColor extends TColor
 
 
 	Function Initialize:Int()
-		For local pc:TPlayerColor = EachIn list
+		'mark all unowned
+		For local pc:TPlayerColor = EachIn registeredColors
 			pc.ownerID = 0
 		Next
 		'list.Clear()
 	End Function
-
-
-	Method RemoveFromList:TPlayerColor()
-		list.remove(self)
-		return self
-	End Method
 	
 
-	Method AddToList:TPlayerColor()
-		Super.AddToList()
-		return self
+	Function IsRegisteredColor:Int(col:TPlayerColor)
+		Return registeredColors.Contains(col)
+	End Function
+	
+
+	Function RegisterColor:Int(col:TPlayerColor)
+		If not IsRegisteredColor(col)
+			registeredColors.AddLast(col)
+			Return True
+		EndIf
+		Return False
+	End Function
+
+
+	Function UnregisterColor:Int(col:TPlayerColor)
+		Return registeredColors.remove(col)
+	End Function
+
+
+	Function GetFromListByRGBA:TPlayerColor(r:Int, g:Int, b:Int, a:Float=1.0)
+		For Local obj:TPlayerColor = EachIn registeredColors
+			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
+		Next
+		Return Null
+	End Function
+
+
+	Method Unregister:TPlayerColor()
+		UnregisterColor(self)
+		Return self
 	End Method
 	
+	
+	Method Register:TPlayerColor()
+		RegisterColor(self)
+		Return self
+	End Method
+
 
 	Method SetOwner:TPlayerColor(ownerID:int)
 		self.ownerID = ownerID
@@ -69,20 +100,20 @@ Type TPlayerColor extends TColor
 	End Method
 
 
-	Function getByOwner:TPlayerColor(ownerID:int=0)
-		For local obj:TPlayerColor = EachIn List
+	Function GetByOwner:TPlayerColor(ownerID:int=0)
+		For local obj:TPlayerColor = EachIn registeredColors
 			if obj.ownerID = ownerID then return obj
 		Next
 		return Null
 	End Function
 
 
-	Function getUnowned:TPlayerColor[](defaultColor:TPlayerColor)
+	Function GetUnowned:TPlayerColor[](defaultColor:TPlayerColor = Null)
 		local unowned:TPlayerColor[]
-		For local c:TPlayerColor = EachIn List
+		For local c:TPlayerColor = EachIn registeredColors
 			if c.ownerID = 0 then unowned :+ [c]
 		Next
-		if unowned.length = 0 then unowned :+ [defaultColor]
+		if unowned.length = 0 and defaultColor then unowned :+ [defaultColor]
 		return unowned
 	End Function
 End Type
