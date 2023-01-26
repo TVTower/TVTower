@@ -350,8 +350,6 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 
 	'TODO: store in BroadcastInformationProvider
 	Field timesBroadcastedAsInfomercial:Int[] = [0]
-	Field _handledFirstTimeBroadcast:Int = False
-	Field _handledFirstTimeBroadcastAsInfomercial:Int = False
 
 	Rem
 		modifiers:
