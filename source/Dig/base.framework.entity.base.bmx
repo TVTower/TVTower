@@ -134,7 +134,7 @@ Type TEntityCollection
 	
 		If result = 1
 			DebugStop
-			Notify "Invalid collection state: entriesID differed to entriesGUID. ID=" + obj.GetID() + "  GUID=~q" + obj.GetGUID()+"~q." 
+			print "Invalid collection state: entriesID differed to entriesGUID. ID=" + obj.GetID() + "  GUID=~q" + obj.GetGUID()+"~q." 
 			'Throw "Invalid collection state: entriesID differed to entriesGUID. ID=" + obj.GetID() + "  GUID=~q" + obj.GetGUID()+"~q." 
 		ElseIf result = 0
 			Return False
