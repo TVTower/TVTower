@@ -287,6 +287,10 @@ Type TSprite
 
 	Field ninePatch:TNinePatchInformation
 	
+	'can be used to define a default sprite used if a requested one was not available
+	'for now it is used in the TRegistry and TRegistrySpriteLoader
+	Global defaultSprite:TSprite
+	
 	Const BORDER_NONE:Int = 0
 	Const BORDER_LEFT:Int = 1
 	Const BORDER_RIGHT:Int = 2

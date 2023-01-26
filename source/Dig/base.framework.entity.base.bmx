@@ -15,7 +15,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2018 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -43,26 +43,59 @@ Import Brl.Map
 
 
 Type TEntityCollection
-	Field entries:TMap = CreateMap()
+	Field entriesID:TIntMap
+	Field entriesGUID:TStringMap {nosave}
 	Field entriesCount:int = -1
-	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
 
 	Method Initialize:TEntityCollection()
 		'call Remove() for all objects so they can unregister stuff
 		'and tidy up in general
-		For local e:TEntityBase = EachIn entries.Values()
-			e.RemoveFromCollection(self)
-		Next
+		If entriesID
+			For local e:TEntityBase = EachIn entriesID.Values()
+				e.RemoveFromCollection(self)
+			Next
+		EndIf
 
-		entries.Clear()
+		If entriesID 
+			entriesID.Clear()
+			entriesID = Null
+		EndIf
+		If entriesGUID 
+			entriesGUID.Clear()
+			entriesGUID = Null
+		EndIf
+
 		entriesCount = -1
 
 		return self
 	End Method
+	
+	
+	Method GetEntriesID:TIntMap()
+		If not entriesID Then entriesID = new TIntMap
+		Return entriesID
+	End Method
+	
+
+	Method GetEntriesGUID:TStringMap()
+		If not entriesGUID 
+			entriesGUID = new TStringMap
+			For local e:TEntityBase = EachIn GetEntriesID().Values()
+				entriesGUID.Insert(e.GetGUID(), e)
+			Next
+		EndIf
+		
+		Return entriesGUID
+	End Method
 
 
 	Method GetByGUID:TEntityBase(GUID:String)
-		Return TEntityBase(entries.ValueForKey(GUID))
+		Return TEntityBase(GetEntriesGUID().ValueForKey(GUID))
+	End Method
+
+
+	Method Get:TEntityBase(ID:Int)
+		Return TEntityBase(GetEntriesID().ValueForKey(ID))
 	End Method
 
 
@@ -70,7 +103,7 @@ Type TEntityCollection
 		if entriesCount >= 0 then return entriesCount
 
 		entriesCount = 0
-		For Local base:TEntityBase = EachIn entries.Values()
+		For Local base:TEntityBase = EachIn GetEntriesID().Values()
 			entriesCount :+1
 		Next
 		return entriesCount
@@ -78,62 +111,44 @@ Type TEntityCollection
 
 
 	Method Add:int(obj:TEntityBase)
-		'insert does not return true or false, so we invalidate in all cases
-		rem
-		if entries.Insert(obj.GetGUID(), obj)
-			'invalidate count
-			entriesCount = -1
-
-			return TRUE
-		endif
-
-		return False
-		endrem
-
-		entries.Insert(obj.GetGUID(), obj)
+		?debug
+		'In debug builds we remove first to ensure consistency.
+		'Remove() throws an error if an element existed in 
+		'neither none nor both entry-maps.
+		Remove(obj)
+		?
+		
+		GetEntriesID().Insert(obj.GetID(), obj)
+		GetEntriesGUID().Insert(obj.GetGUID(), obj)
 		entriesCount = -1
 		return True
 	End Method
 
 
 	Method Remove:int(obj:TEntityBase)
-		if obj.GetGuid() and entries.Remove(obj.GetGUID())
-			'invalidate count
-			entriesCount = -1
-
-			return True
-		endif
-
-		return False
+		Local result:Int
+		result :+ GetEntriesID().Remove(obj.GetID())
+		result :+ GetEntriesGUID().Remove(obj.GetGUID())
+		'invalidate count
+		entriesCount = -1
+	
+		If result = 1
+			DebugStop
+			Notify "Invalid collection state: entriesID differed to entriesGUID. ID=" + obj.GetID() + "  GUID=~q" + obj.GetGUID()+"~q." 
+			'Throw "Invalid collection state: entriesID differed to entriesGUID. ID=" + obj.GetID() + "  GUID=~q" + obj.GetGUID()+"~q." 
+		ElseIf result = 0
+			Return False
+		Else
+			Return True
+		EndIf
 	End Method
 
 
 	'=== ITERATOR ===
-	'for "EachIn"-support
-
-	'Set iterator to begin of array
-	Method ObjectEnumerator:TEntityCollection()
-		_entriesMapEnumerator = entries.Values()._enumerator
-		'_iteratorPos = 0
-		Return Self
-	End Method
-
-
-	'checks if there is another element
-	Method HasNext:Int()
-		Return _entriesMapEnumerator.HasNext()
-
-		'If _iteratorPos > GetCount() Then Return False
-		'Return True
-	End Method
-
-
-	'return next element, and increase position
-	Method NextObject:Object()
-		Return _entriesMapEnumerator.NextObject()
-
-		'_iteratorPos :+ 1
-		'Return entries.ValueAtIndex(_iteratorPos-1)
+	'The object returned by #ObjectEnumerator can be used with EachIn 
+	'to iterate through the elements in the collection.
+	Method ObjectEnumerator:TIntNodeEnumerator()
+		Return GetEntriesID().Values()._enumerator
 	End Method
 End Type
 

@@ -54,7 +54,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 		If Not sprite Or sprite.GetName() <> spriteBaseName
 			sprite = GetSpriteFromRegistry(spriteBaseName)
 			'new -non default- sprite: adjust appearance
-			If sprite.GetName() <> "defaultsprite"
+			If sprite <> TSprite.defaultSprite
 				SetAppearanceChanged(True)
 			EndIf
 		EndIf
@@ -76,7 +76,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 		If spriteTintColor Then spriteTintColor.SetRGB()
 
 		Local r:TRectangle = GetScreenRect()
-		GetSprite().DrawArea(r.GetX(), r.GetY(), r.GetW(), r.GetH())
+		GetSprite().DrawArea(r.x, r.y, r.w, r.h)
 
 		SetColor(oldCol)
 		SetAlpha(oldColA)

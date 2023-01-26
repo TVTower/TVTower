@@ -143,7 +143,7 @@ Type TGUILabel Extends TGUIobject
 		If (Not _sprite And spriteName<>"") Or (_sprite And _sprite.GetName() <> spriteName)
 			_sprite = GetSpriteFromRegistry(spriteName)
 			'new -non default- sprite: adjust appearance
-			If _sprite.GetName() <> "defaultsprite"
+			If _sprite <> TSprite.defaultSprite
 				SetAppearanceChanged(True)
 			EndIf
 		EndIf

@@ -45,7 +45,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				local presentY:int = box.getY() + 13 + (i / 5) * (91 + 19)
 				local present:TBettyPresent = TBettyPresent.GetPresent(i)
 				presentButtons[i] = new TGUIButton.Create(new SVec2I(presentX, presentY), new SVec2I(123,91), "present "+(i+1), "supermarket_presents")
-				presentButtons[i].spriteName = present.getSpriteName()
+				presentButtons[i].SetSpriteName( present.getSpriteName() )
 				presentButtons[i].data.add("present", present)
 
 '				presentButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)

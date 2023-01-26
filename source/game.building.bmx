@@ -609,7 +609,7 @@ Type TBuilding Extends TBuildingBase
 		EndIf
 
 
-		For Local figure:TFigureBase = EachIn GetFigureBaseCollection()
+		For Local figure:TFigureBase = EachIn GetFigureBaseCollection() '.GetEntriesID().Values()
 			'draw figure later if outside of building
 '			If figure.GetScreenRect().GetX() < GetScreenRect().GetX() + 127 Then Continue
 			If figure.GetScreenRect().GetX() + figure.GetScreenRect().GetW() < buildingInner.GetScreenRect().GetX() Then Continue
@@ -652,7 +652,7 @@ Type TBuilding Extends TBuildingBase
 			SetColor( SColor8Helper.Mix(greyColor, SColor8.White, 0.7) )
 
 			'draw figures outside the wall
-			For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().entries.Values()
+			For Local Figure:TFigureBase = EachIn GetFigureBaseCollection() '.GetEntriesID().Values()
 				If Not Figure.alreadydrawn Then Figure.Draw()
 			Next
 

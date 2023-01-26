@@ -501,13 +501,13 @@ Type TgfxProgrammelist Extends TPlannerList
 			local w:int = 0.5 * GetEntriesRect().GetW() - 14 - 20
 			if not entriesButtonPrev
 				entriesButtonPrev = new TGUIButton.Create(new SVec2I(currX + 5 , currY - 23), new SVec2I(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
-				entriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
+				entriesButtonPrev.SetSpriteName("gfx_gui_button.datasheet")
 				'manage on our own
 				GuiManager.Remove(entriesButtonPrev)
 			endif
 			if not entriesButtonNext
 				entriesButtonNext = new TGUIButton.Create(new SVec2I(Int(currX + GetEntriesRect().w - 7 - w), currY - 23), new SVec2I(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
-				entriesButtonNext.spriteName = "gfx_gui_button.datasheet"
+				entriesButtonNext.SetSpriteName("gfx_gui_button.datasheet")
 				GuiManager.Remove(entriesButtonNext)
 			endif
 
@@ -843,13 +843,13 @@ Type TgfxProgrammelist Extends TPlannerList
 			local w:int = 0.5 * GetSubEntriesRect().GetW() - 14 - 20
 			if not subEntriesButtonPrev
 				subEntriesButtonPrev = new TGUIButton.Create(new SVec2I(currX + 5 , currY - 23), new SVec2I(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
-				subEntriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
+				subEntriesButtonPrev.SetSpriteName("gfx_gui_button.datasheet")
 				'manage on our own
 				GuiManager.Remove(subEntriesButtonPrev)
 			endif
 			if not subEntriesButtonNext
 				subEntriesButtonNext = new TGUIButton.Create(new SVec2I(Int(currX + GetSubEntriesRect().w - 7 - w), currY - 23), new SVec2I(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
-				subEntriesButtonNext.spriteName = "gfx_gui_button.datasheet"
+				subEntriesButtonNext.SetSpriteName("gfx_gui_button.datasheet")
 				GuiManager.Remove(subEntriesButtonNext)
 			endif
 

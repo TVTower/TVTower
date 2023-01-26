@@ -47,17 +47,17 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		listFont = GetBitmapFontManager().Get("Default", 12)
 
 		actionButton = New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(150, 28), "", "STATIONMAP")
-		actionButton.spriteName = "gfx_gui_button.datasheet"
+		actionButton.SetSpriteName("gfx_gui_button.datasheet")
 		actionButton.SetFont( buttonFont )
 
 
 		renewButton = New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(150, 28), "", "STATIONMAP")
-		renewButton.spriteName = "gfx_gui_button.datasheet"
+		renewButton.SetSpriteName("gfx_gui_button.datasheet")
 		renewButton.SetFont( buttonFont )
 
 		renewInfoButton = New TGUIButton.Create(New SVec2I(145, 0), New SVec2I(30, 28), "i", "STATIONMAP")
 		renewInfoButton.caption.color = TColor.clBlue.ToSColor8()
-		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
+		renewInfoButton.SetSpriteName("gfx_gui_button.datasheet")
 		renewInfoButton.SetFont( buttonFont )
 
 		autoRenewCheckbox = New TGUICheckBox.Create(New SVec2I(145, 0), New SVec2I(20, 20), "auto renew", "STATIONMAP")
@@ -67,7 +67,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		cancelButton = New TGUIButton.Create(New SVec2I(145, 0), New SVec2I(30, 28), "X", "STATIONMAP")
 		cancelButton.caption.color = TColor.clRed.ToSColor8()
-		cancelButton.spriteName = "gfx_gui_button.datasheet"
+		cancelButton.SetSpriteName("gfx_gui_button.datasheet")
 		cancelButton.SetFont( buttonFont )
 
 		list = New TGUISelectList.Create(New SVec2I(610,133), New SVec2I(178, 100), "STATIONMAP")
@@ -2389,7 +2389,7 @@ Type TScreenHandler_StationMap
 			'== info panel
 			guiInfoButton = New TGUIButton.Create(New SVec2I(610, 15), New SVec2I(20, 28), "", "STATIONMAP")
 
-			guiInfoButton.spriteName = "gfx_gui_button.datasheet"
+			guiInfoButton.SetSpriteName("gfx_gui_button.datasheet")
 			guiInfoButton.SetTooltip( New TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), New TRectangle.Init(0,0,-1,-1)) )
 			guiInfoButton.GetTooltip()._minContentDim = New TVec2D(120,-1)
 			guiInfoButton.GetTooltip()._maxContentDim = New TVec2D(150,-1)

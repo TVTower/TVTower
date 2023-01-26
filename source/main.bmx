@@ -171,6 +171,9 @@ Global collectDebugStats:Int = False
 OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
+'disable profiler
+TProfiler.activated = False
+
 Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
 Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
 Global _profilerKey_RessourceLoader:TLowerString = New TLowerString.Create("RessourceLoader")
@@ -1351,7 +1354,7 @@ endrem
 
 		If KeyManager.IsHit(KEY_K)
 			TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
-			For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+			For Local fig:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 				If fig.GetInRoom()
 					fig.KickOutOfRoom()
 					'fig.KickOutOfRoom(GetPlayer().GetFigure())
@@ -1375,13 +1378,13 @@ endrem
 		EndIf
 		If KeyManager.Ishit(Key_F10)
 			If (TAiBase.AiRunning)
-				For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+				For Local fig:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 					If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
 				Next
 				TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
 				TAiBase.AiRunning = False
 			Else
-				For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+				For Local fig:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
 					If GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
 				Next
 				TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
@@ -1759,30 +1762,8 @@ endrem
 			App.SaveScreenshot(GetSpriteFromRegistry("gfx_startscreen_logoSmall"))
 			App.prepareScreenshot = False
 		EndIf
-Rem
 
-		SetColor 100,0,0
-		DrawRect(0,520,250,80)
-		SetColor 255,255,255
-		GetBitmapFont("Default", 16).Draw("[x] wurde "+ appTerminateRegistered+"x geklickt.", 20, 525)
-		if not App.pausedBy
-			GetBitmapFont("Default", 16).Draw("Keine Pause", 20, 540)
-		else
-			GetBitmapFont("Default", 16).Draw("Grund fuer Pause: "+ App.pausedBy, 20, 540)
-		endif
-		if App.ExitAppDialogue
-			GetBitmapFont("Default", 16).Draw("ExitDialog existiert", 20, 555)
-		else
-			GetBitmapFont("Default", 16).Draw("kein ExitDialog vorhanden", 20, 555)
-		endif
-		if App.EscapeMenuWindow
-			GetBitmapFont("Default", 16).Draw("EscapeMenue existiert", 20, 570)
-		else
-			GetBitmapFont("Default", 16).Draw("kein EscapeMenue vorhanden", 20, 570)
-		endif
-endrem
-
-		debugProfiler.Draw(10, 20)
+	'	debugProfiler.Draw(10, 20)
 
 		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
@@ -3261,6 +3242,16 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
+			case "TFigureCollection.entries:TMap".ToLower()
+				Local fc:TFigureCollection = TFigureCollection(parent)
+				If fc
+					Local map:TMap = TMap(fieldObject)
+					For local eb:TEntityBase = EachIn map.Values()
+						fc.Add(eb)
+					Next
+				EndIf
+
 			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
 			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
 			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()
@@ -3458,14 +3449,15 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
-		guiButtonStart		= New TGUIButton.Create(New SVec2I(0, 0*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		Local buttonWidth:int = Int(guiButtonsPanel.GetContentScreenRect().w)
+		guiButtonStart		= New TGUIButton.Create(New SVec2I(0, 0*38), New SVec2I(buttonWidth, -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(buttonWidth, -1), "", name)
 		guiButtonNetwork.Disable()
-		guiButtonOnline		= New TGUIButton.Create(New SVec2I(0, 2*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New SVec2I(0, 2*38), New SVec2I(buttonWidth, -1), "", name)
 		guiButtonOnline.Disable()
-		guiButtonLoadGame	= New TGUIButton.Create(New SVec2I(0, 3*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(New SVec2I(0, 4*38), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(New SVec2I(0, 5*38 + 10), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
+		guiButtonLoadGame	= New TGUIButton.Create(New SVec2I(0, 3*38), New SVec2I(buttonWidth, -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New SVec2I(0, 4*38), New SVec2I(buttonWidth, -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New SVec2I(0, 5*38 + 10), New SVec2I(buttonWidth, -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -7479,7 +7471,6 @@ TProfiler.Enter("GameLoop")
 		If collectDebugStats
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
-				Local myArr:int[] = new Int[10000]
 				Local gcAllocChanges:Int
 				Local gcAllocTotal:Int
 

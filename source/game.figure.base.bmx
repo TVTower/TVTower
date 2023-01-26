@@ -47,21 +47,18 @@ Type TFigureBaseCollection extends TEntityCollection
 	End Method
 
 
-	Method GetByGUID:TFigureBase(GUID:String)
-		Return TFigureBase(entries.ValueForKey(GUID))
+	Method GetByGUID:TFigureBase(GUID:String) override
+		Return TFigureBase(GetEntriesGUID().ValueForKey(GUID))
 	End Method
 
 
-	Method Get:TFigureBase(figureID:int)
-		For local figure:TFigureBase = eachin entries.Values()
-			if figure.id = figureID then return figure
-		Next
-		return Null
+	Method Get:TFigureBase(ID:int) override
+		Return TFigureBase(GetEntriesID().ValueForKey(ID))
 	End Method
 
 
 	Method GetByName:TFigureBase(name:string)
-		For local figure:TFigureBase = eachin entries.Values()
+		For local figure:TFigureBase = eachin self 'GetEntriesID().Values()
 			if figure.name = name then return figure
 		Next
 		return Null
@@ -94,7 +91,7 @@ Type TFigureBaseCollection extends TEntityCollection
 
 			shuffledFigures = new TFigureBase[entriesCount]
 			local i:int = 0
-			For Local Figure:TFigureBase = EachIn entries.Values()
+			For Local Figure:TFigureBase = EachIn self 'GetEntriesID().Values()
 				shuffledFigures[i] = Figure
 				i :+ 1
 			Next
@@ -127,7 +124,7 @@ Type TFigureBaseCollection extends TEntityCollection
 	'run when loading finished
 	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TFigureBaseCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
-		For local figure:TFigureBase = eachin _instance.entries.Values()
+		For local figure:TFigureBase = eachin _instance '.GetEntriesID().Values()
 			figure.onLoad()
 		Next
 	End Function
@@ -135,7 +132,7 @@ Type TFigureBaseCollection extends TEntityCollection
 
 	'run when a game starts
 	Function onGameStart:int(triggerEvent:TEventBase)
-		For local figure:TFigureBase = eachin _instance.entries.Values()
+		For local figure:TFigureBase = eachin _instance '.GetEntriesID().Values()
 			figure.onGameStart()
 		Next
 	End Function
@@ -143,7 +140,7 @@ Type TFigureBaseCollection extends TEntityCollection
 
 	'run when a game gets paused (eg ESC menu)
 	Function onGamePause:int(triggerEvent:TEventBase)
-		For local figure:TFigureBase = eachin _instance.entries.Values()
+		For local figure:TFigureBase = eachin _instance '.GetEntriesID().Values()
 			figure.onGamePause()
 		Next
 	End Function
@@ -151,7 +148,7 @@ Type TFigureBaseCollection extends TEntityCollection
 
 	'run when a game gets resumed (from pause)
 	Function onGameResume:int(triggerEvent:TEventBase)
-		For local figure:TFigureBase = eachin _instance.entries.Values()
+		For local figure:TFigureBase = eachin _instance '.GetEntriesID().Values()
 			figure.onGameResume()
 		Next
 	End Function
@@ -212,7 +209,6 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field WaitEnterLeavingTime:Int = 200
 
 
-	Field figureID:Int = 0
 	'does the figure accept manual (AI or user) ChangeTarget-commands?
 	Field _controllable:Int = True
 	Field alreadyDrawn:Int = 0 			{nosave}

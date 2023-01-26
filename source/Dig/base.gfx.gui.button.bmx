@@ -11,7 +11,13 @@ Import "base.util.registry.spriteloader.bmx"
 
 
 Type TGUIButton Extends TGUIobject
-	Field spriteName:String = "gfx_gui_button.default"
+	Field _spriteName:String = "gfx_gui_button.default"
+	Field _spriteNameDisabled:String = "gfx_gui_button.default"
+	Field _spriteNameActive:String = "gfx_gui_button.default"
+	Field _spriteNameHovered:String = "gfx_gui_button.default"
+	Field _spriteNameSelected:String = "gfx_gui_button.default"
+	Field _spriteNameInUse:String = "gfx_gui_button.default"
+	
 	Field _sprite:TSprite 'private
 	Field caption:TGUILabel	= Null
 	Field captionOffset:SVec2I
@@ -35,6 +41,8 @@ Type TGUIButton Extends TGUIobject
 		Super.CreateBase(pos, dimension, State)
 
 		SetValue(value)
+		
+		SetSpriteName(_spriteName)
 
     	GUIManager.Add(Self)
 		Return Self
@@ -127,17 +135,64 @@ endrem
 	End Method
 
 
+	Method SetSpriteName(spriteName:String)
+		_spriteName = spriteName
+		_spriteNameDisabled = spriteName + ".disabled"
+		_spriteNameActive = spriteName + ".active"
+		_spriteNameSelected = spriteName + ".selected"
+		_spriteNameHovered = spriteName + ".hover"
+		
+		_spriteNameInUse = ""
+	End Method
+
+
+	Method GetSpriteName:String()
+		Return _spriteName
+	End Method
+
 
 	'acts as cache
 	Method GetSprite:TSprite()
-		'refresh cache if not set or wrong sprite name
-		If Not _sprite Or _sprite.GetName() <> spriteName
-			_sprite = GetSpriteFromRegistry(spriteName)
-			'new -non default- sprite: adjust appearance
-			If _sprite.GetName() <> "defaultsprite"
+		Local newSprite:TSprite
+
+		If Not IsEnabled() 
+			If _spriteNameInUse <> _spriteNameDisabled
+				newSprite = GetSpriteFromRegistry(_spriteNameDisabled, _sprite)
+				_spriteNameInUse = _spriteNameDisabled 'even if name did NOT exist!
+			EndIf
+		ElseIf IsActive() 
+			If _spriteNameInUse <> _spriteNameActive
+				newSprite = GetSpriteFromRegistry(_spriteNameActive, _sprite)
+				_spriteNameInUse = _spriteNameActive 'even if name did NOT exist!
+			EndIf
+		ElseIf IsHovered() 
+			If _spriteNameInUse <> _spriteNameHovered
+				newSprite = GetSpriteFromRegistry(_spriteNameHovered, _sprite)
+				_spriteNameInUse = _spriteNameHovered 'even if name did NOT exist!
+			EndIf
+		ElseIf IsSelected() 
+			If _spriteNameInUse <> _spriteNameSelected
+				newSprite = GetSpriteFromRegistry(_spriteNameSelected, _sprite)
+				_spriteNameInUse = _spriteNameSelected 'even if name did NOT exist!
+			EndIf
+		'back to normal?
+		ElseIf _spriteNameInUse <> _spriteName
+			newSprite = GetSpriteFromRegistry(_spriteName, _sprite)
+			_spriteNameInUse = _spriteName
+		EndIf
+
+		If Not _sprite
+			newSprite = GetSpriteFromRegistry(_spriteName, _sprite)
+		EndIf
+
+		If newSprite
+			_sprite = newSprite
+			If _sprite <> TSprite.defaultSprite
 				SetAppearanceChanged(True)
+'print "changed button sprite: " + _spriteNameInUse
 			EndIf
 		EndIf
+
 		Return _sprite
 	End Method
 
@@ -215,11 +270,6 @@ endrem
 	End Function
 
 
-	Method GetSpriteName:String()
-		Return spriteName
-	End Method
-
-
 	Method SetCaptionAlign(alignType:String = "LEFT", valignType:String = "CENTER")
 		If Not caption Then Return
 
@@ -256,15 +306,9 @@ endrem
 	
 	Method DrawButtonBackground:Int(position:SVec2F)
 		Local sprite:TSprite = GetSprite()
-		If Not IsEnabled()
-			sprite = GetSpriteFromRegistry(GetSpriteName() + ".disabled", sprite)
-		Else
-			sprite = GetSpriteFromRegistry(GetSpriteName() + GetStateSpriteAppendix(), sprite)
-		EndIf
-
 		If sprite
 			'no active image available (when "mousedown" over widget)
-			If IsActive() And (sprite.name = spriteName Or sprite.name="defaultsprite")
+			If IsActive() And (sprite.name = _spriteName Or sprite = TSprite.defaultSprite)
 				sprite.DrawArea(position.x+1, position.y+1, rect.w, rect.h)
 			Else
 				sprite.DrawArea(position.x, position.y, rect.w, rect.h)

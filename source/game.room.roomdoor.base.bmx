@@ -247,7 +247,7 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	Method GetSprite:TSprite()
 		if not _sprite
 			_sprite = GetSpriteFromRegistry("gfx_building_Tueren")
-			if _sprite.name = "defaultsprite"
+			if _sprite = TSprite.defaultSprite
 				local tmpSprite:TSprite = _sprite
 				_sprite = null
 				return tmpSprite

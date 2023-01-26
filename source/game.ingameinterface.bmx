@@ -111,7 +111,7 @@ Type TInGameInterface
 			chat.guiInput.setMaxLength(200)
 			chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
 			chat.guiInput.SetMaxTextWidth(255)
-			chat.guiInput.spriteName = "gfx_interface_ingamechat_input"
+			chat.guiInput.SetSpriteName("gfx_interface_ingamechat_input")
 			chat.guiInput.color = SColor8AdjustFactor(chat.guiInput.color, 30)
 			chat.guiInput.SetValueDisplacement(3,3)
 		EndIf

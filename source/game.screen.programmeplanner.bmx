@@ -91,10 +91,10 @@ Type TScreenHandler_ProgrammePlanner
 
 			'=== create buttons
 			plannerNextDayButton = New TGUIButton.Create(New SVec2I(768, 6), New SVec2I(28, 28), ">", "programmeplanner_buttons")
-			plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
+			plannerNextDayButton.SetSpriteName("gfx_gui_button.datasheet")
 
 			plannerPreviousDayButton = New TGUIButton.Create(New SVec2I(684, 6), New SVec2I(28, 28), "<", "programmeplanner_buttons")
-			plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
+			plannerPreviousDayButton.SetSpriteName("gfx_gui_button.datasheet")
 
 			'so we can handle clicks to the daychange-buttons while some
 			'programmeplan elements are dragged
@@ -105,27 +105,27 @@ Type TScreenHandler_ProgrammePlanner
 
 
 			ProgrammePlannerButtons[0] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 0*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[0].SetSpriteName("gfx_programmeplanner_btn")
 			ProgrammePlannerButtons[0].spriteInlayName = "gfx_programmeplanner_btn_ads"
 
 			ProgrammePlannerButtons[1] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 1*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[1].SetSpriteName("gfx_programmeplanner_btn")
 			ProgrammePlannerButtons[1].spriteInlayName = "gfx_programmeplanner_btn_programme"
 
 			ProgrammePlannerButtons[2] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 2*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[2].SetSpriteName("gfx_programmeplanner_btn")
 			ProgrammePlannerButtons[2].spriteInlayName = "gfx_programmeplanner_btn_financials"
 
 			ProgrammePlannerButtons[3] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 3*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[3].SetSpriteName("gfx_programmeplanner_btn")
 			ProgrammePlannerButtons[3].spriteInlayName = "gfx_programmeplanner_btn_statistics"
 
 			ProgrammePlannerButtons[4] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 4*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[4].SetSpriteName("gfx_programmeplanner_btn")
 			ProgrammePlannerButtons[4].spriteInlayName = "gfx_programmeplanner_btn_achievements"
 
 			ProgrammePlannerButtons[5] = New TGUIProgrammePlannerButton.Create(New SVec2I(686, 41 + 5*54), GUI_DIM_AUTOSIZE, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[5].SetSpriteName("gfx_programmeplanner_btn")
 			ProgrammePlannerButtons[5].spriteInlayName = "gfx_programmeplanner_btn_unknown"
 
 			For Local i:Int = 0 To 5
@@ -2110,7 +2110,7 @@ Type TGUIProgrammePlannerButton extends TGUIButton
 		
 		If spriteInlay
 			'no custom ".active" - then just offset +1,+1
-			If IsActive() And (spriteInlay.name = spriteInlayName Or spriteInlay.name="defaultsprite")
+			If IsActive() And (spriteInlay.name = spriteInlayName Or spriteInlay = TSprite.defaultSprite)
 				spriteInlay.Draw(position.x+1, position.y+1)
 			Else
 				spriteInlay.Draw(position.x, position.y)

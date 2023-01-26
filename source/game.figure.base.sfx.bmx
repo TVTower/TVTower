@@ -7,12 +7,13 @@ Import "game.building.base.sfx.bmx"
 
 Type TFigureBaseSoundSource Extends TSoundSourceElement
 	Field figureID:int
-	Field ChannelInitialized:Int = 0
+	Field _stepSfxSettings:TSfxSettings
+	Field _stepsChannel:TSfxChannel {nosave}
 
 	Function Create:TFigureBaseSoundSource (_figure:TFigureBase)
 		Local result:TFigureBaseSoundSource = New TFigureBaseSoundSource
-		result.figureID = _figure.id
-		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
+		result.figureID = _figure.GetID()
+		result._stepsChannel = result.AddDynamicSfxChannel("Steps")
 
 		Return result
 	End Function
@@ -44,13 +45,7 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
 			Case "steps"
-				If Not Self.ChannelInitialized
-					'Channel erst hier hinzufügen... am Anfang hat Figure noch keine id
-					Self.AddDynamicSfxChannel("Steps" + Self.GetGUID())
-					Self.ChannelInitialized = True
-				EndIf
-
-				Return GetSfxChannelByName("Steps" + Self.GetGUID())
+				Return Self._stepsChannel
 		EndSelect
 	End Method
 
@@ -66,15 +61,17 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetStepsSettings:TSfxSettings()
-		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
-		result.nearbyDistanceRange = 60
-		result.maxDistanceRange = 300
-		result.nearbyRangeVolume = 0.3
-		result.midRangeVolume = 0.1
+		If not _stepSfxSettings Then _stepSfxSettings = New TSfxFloorSoundBarrierSettings
 
-		'result.nearbyRangeVolume = 0.15
-		'result.midRangeVolume = 0.05
-		result.minVolume = 0
-		Return result
+		'(re)set values
+		_stepSfxSettings.nearbyDistanceRange = 60
+		_stepSfxSettings.maxDistanceRange = 300
+		_stepSfxSettings.nearbyRangeVolume = 0.3
+		_stepSfxSettings.midRangeVolume = 0.1
+		'_stepSfxSettings.nearbyRangeVolume = 0.15
+		'_stepSfxSettings.midRangeVolume = 0.05
+		_stepSfxSettings.minVolume = 0
+
+		Return _stepSfxSettings
 	End Method
 End Type

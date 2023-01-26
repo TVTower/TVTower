@@ -634,22 +634,19 @@ Type TGUIManager
 		'visuals)
 		UpdateElementswithChangedAppearance()
 
-
+		If Not _listsSorted Then SortLists()
+		
+		local draggedCount:Int = ListDragged.Count()
+	
 		If GUIMANAGER_TYPES_NONDRAGGED & drawTypes
-			if not _listsSorted Then SortLists()
 			activeTooltips.Clear()
 			For Local obj:TGUIobject = EachIn List
 				'all special objects get drawn separately
-				If ListDragged.contains(obj) Then Continue
+				If draggedCount > 0 and ListDragged.contains(obj) Then Continue
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'skip invisible objects
 				If Not obj.IsVisible() Then Continue
-
-				'avoid getting drawn multiple times
-				'this can be overcome with a manual "obj.Draw()"-call
-				'if obj._lastDrawTick = _lastDrawTick then continue
-				'obj._lastDrawTick = _lastDrawTick
 
 				obj.Draw()
 
@@ -668,18 +665,11 @@ Type TGUIManager
 		EndIf
 
 
-		If GUIMANAGER_TYPES_DRAGGED & drawTypes
-			if not _listsSorted Then SortLists()
-
+		If GUIMANAGER_TYPES_DRAGGED & drawTypes and draggedCount > 0
 			'draw all dragged objects above normal objects...
 			'from bottom to top
 			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
-
-				'avoid getting drawn multiple times
-				'this can be overcome with a manual "obj.Draw()"-call
-				'if obj._lastDrawTick = _lastDrawTick then continue
-				'obj._lastDrawTick = _lastDrawTick
 
 				obj.Draw()
 
@@ -3026,7 +3016,7 @@ Type TGUITooltipBase Extends TTooltipBase
 		If Not _bgsprite Or _bgsprite.GetName() <> bgSpriteName
 			_bgSprite = GetSpriteFromRegistry(bgSpriteName)
 			'new -non default- sprite: adjust appearance
-			If _bgSprite.GetName() <> "defaultsprite"
+			If _bgSprite <> TSprite.defaultSprite
 				_effectiveContentPadding = Null
 				'SetAppearanceChanged(TRUE)
 			EndIf
