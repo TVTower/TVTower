@@ -687,7 +687,7 @@ Type TDatabaseLoader
 		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
 
 		If newsEventTemplate.availableScript
-			If Not GetScriptExpression().IsValid(newsEventTemplate.availableScript)
+			If Not GetScriptExpression().IsValidConditionExpression(newsEventTemplate.availableScript)
 				TLogger.Log("DB", "Script of NewsEventTemplate ~q" + newsEventTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
 				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
 			EndIf
@@ -983,7 +983,7 @@ Type TDatabaseLoader
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
 		If adContract.availableScript
-			If Not GetScriptExpression().IsValid(adContract.availableScript)
+			If Not GetScriptExpression().IsValidConditionExpression(adContract.availableScript)
 				TLogger.Log("DB", "Script of AdContract ~q" + adContract.GetGUID() + "~q contains errors:", LOG_WARNING)
 				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
 			EndIf

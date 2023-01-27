@@ -17,7 +17,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2015 Ronny Otto, digidea.de
+	Copyright (C) 2015-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -43,6 +43,7 @@ SuperStrict
 
 Import Brl.StandardIO
 Import Brl.Retro
+Import Brl.StringBuilder
 
 'based on the approach described at
 'http://www.strchr.com/expression_evaluator (author: Peter Kankowski)
@@ -54,6 +55,7 @@ Type TScriptExpression
 	global _lastCommandErrored:int = False
 	global _error:string = ""
 	global _variableHandler:string(variable:string, params:string[], resultType:int var)
+	global _stringBuilder:TStringBuilder = New TStringBuilder
 
 	global _instance:TScriptExpression
 
@@ -68,9 +70,86 @@ Type TScriptExpression
 		if not _instance then _instance = new TScriptExpression
 		return _instance
 	End Function
+	
+	
+	Method ExtractTrueFalseValues:Int(text:String, trueValue:String var, falseValue:String var)
+		' Extracts 
+		'	hello
+		' and
+		'   world "yeah"
+		' from this text value:
+		' "hello" "world \"yeah\""
+		' or also (as it only checks the quot marks"
+		' "hello", "world \"yeah\""
+		
+		Local escapeNext:Int = False
+		Local quotCharFound:int = 0
+		Local quotCharOpeningPos:int = 0
+		For local i:int = 0 until text.length
+			if text[i] = asc("\")
+				escapeNext = True
+			Elseif text[i] = asc("~q")
+				If not escapeNext 
+					quotCharFound :+ 1
+					Select quotCharFound
+						Case 1	quotCharOpeningPos = i
+						Case 2	trueValue = text[quotCharOpeningPos+1 .. i]
+						Case 3	quotCharOpeningPos = i
+						Case 4	falseValue = text[quotCharOpeningPos+1 .. i]
+					EndSelect
+				EndIf
+			Endif
+			escapeNext = false
+		Next
+		
+		'print "extracted: true="+trueValue
+		'print "extracted: false="+falseValue
+		'print "quotCharFound = " + quotCharFound
+		
+		Return (quotCharFound >= 2) 'at least "true" is defined"
+	End Method
 
 
-	Method Eval:int(expression:string, variableHandler:string(variable:string, params:string[], resultType:int var) = null)
+	'evaluates a given expression, conditional expressions ("time_year = 1985")
+	'are converted to "1" or "0"
+	Method Eval:String(expression:String, variableHandler:string(variable:string, params:string[], resultType:int var) = null)
+		local expressionResult:string = GetScriptExpression().EvalString(expression)
+
+		'maybe it was an conditional expression ("time_year = 1995")?
+		If TScriptExpression._lastCommandErrored
+			Local _lastCommandErrored:Int = TScriptExpression._lastCommandErrored
+			Local _errorCount:Int = GetScriptExpression()._errorCount
+			Local conditionalResult:Int = GetScriptExpression().EvalCondition(expression, variableHandler)
+			If GetScriptExpression()._errorCount = 0
+				'maybe the expression defined values for true/false?
+				Local hasComma:Int = expression.Find(",")
+				If hasComma > 0 And hasComma < expression.length
+					Local trueValue:String
+					Local falseValue:String
+					If ExtractTrueFalseValues(expression[hasComma + 1 ..], trueValue, falseValue)
+						If conditionalResult
+							expressionResult = trueValue
+						Else
+							expressionResult = falseValue
+						EndIf
+					Else
+						expressionResult = string(conditionalResult)
+					EndIf
+				Else
+					expressionResult = string(conditionalResult)
+				EndIf
+			Else
+				'revert changes of the EvalCondition() call
+				TScriptExpression._lastCommandErrored = _lastCommandErrored
+				TScriptExpression._errorCount = _errorCount
+			EndIf
+		EndIf
+		Return expressionResult
+	End Method
+
+
+	'evaluates a given expression, returns either 0 or 1
+	Method EvalCondition:int(expression:string, variableHandler:string(variable:string, params:string[], resultType:int var) = null)
 		_expression = expression
 		_expressionIndex = 0
 		_errorCount = 0
@@ -446,8 +525,8 @@ Type TScriptExpression
 	End Method
 
 
-	Method IsValid:int(expression:string)
-		Eval(expression)
+	Method IsValidConditionExpression:int(expression:string)
+		EvalCondition(expression)
 		return _errorCount = 0
 	End Method
 End Type
@@ -461,12 +540,12 @@ End Function
 
 
 Function ReplaceTextWithScriptExpression:int(text:string, replacement:string var)
-	local expressionResult:string = GetScriptExpression().EvalString(text)
+	local expressionResult:string = GetScriptExpression().Eval(text)
 
 	'found something valid?
 	if TScriptExpression._lastCommandErrored
 		replacement = TScriptExpression._error
-		return False
+		Return False
 	else
 		replacement = expressionResult
 		return True

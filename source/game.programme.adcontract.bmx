@@ -459,7 +459,7 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		If availableScript And Not GetScriptExpression().Eval(availableScript)
+		If availableScript And Not GetScriptExpression().EvalCondition(availableScript)
 			Return False
 		EndIf
 

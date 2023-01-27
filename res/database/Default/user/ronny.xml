@@ -646,7 +646,7 @@ Illustrious guests and music by [3|Nick].</en>
 
 		<news id="ronny-news-sandsturm-01" type="0" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny">
 			<title>
-				<de>Sandsturm am nördlichen Polarkreis</de>
+				<de>${hashtag} ${yearBigger1985} ${yearIs1985} ${yearSmaller1985} Sandsturm am nördlichen Polarkreis</de>
 				<en>Sandstorm near the Arctic Circle</en>
 			</title>
 			<description>
@@ -658,6 +658,24 @@ Illustrious guests and music by [3|Nick].</en>
 				<effect trigger="happen" type="triggernews" time="2,1,1,9,15" news="ronny-news-sandsturm-02" />
 			</effects>
 			<data genre="4" price="1.0" quality="48" />
+			<variables>
+				<hashtag>
+						<de>${TIME_YEAR = 1985,&quot;#Area 51, #SolarEnergy&quot;,&quot;&quot;}</de>
+				</hashtag>
+   
+				<year>
+					<de>${TIME_YEAR}</de>
+				</year>
+				<yearBigger1985>
+					<de>${TIME_YEAR &gt; 1985}</de>
+				</yearBigger1985>
+				<yearIs1985>
+					<de>${TIME_YEAR = 1985}</de>
+				</yearIs1985>
+				<yearSmaller1985>
+					<de>${TIME_YEAR &lt; 1985}</de>
+				</yearSmaller1985>
+			</variables>
 		</news>
 		<news id="ronny-news-sandsturm-02" type="2" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny">
 			<title>

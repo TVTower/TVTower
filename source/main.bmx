@@ -901,6 +901,20 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				Local newsGUID:String = "sandsturm-01"
+				'check template first
+				Local news:TNewsEvent
+				Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(newsGUID)
+				If Not template Then template = GetNewsEventTemplateCollection().SearchByPartialGUID(newsGUID)
+
+				If template and template.IsAvailable()
+					news = New TNewsEvent.InitFromTemplate(template)
+					print news.GetTitle()
+					print news.GetDescription()
+				EndIf
+					
+
+
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
