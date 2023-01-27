@@ -339,7 +339,6 @@ Type TApp
 	
 	
 	Function BitmapFontSpriteProvider:TSprite(name:String)
-		print "name: " + name
 		Return GetSpriteFromRegistry(name)
 	End Function
 
