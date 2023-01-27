@@ -142,6 +142,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			result = True
 		EndIf
 		SetCurrentProductionConcept(Null)
+		If productionCompanySelect Then productionCompanySelect.SetOpen(0)
 
 		Return result
 	End Method
@@ -174,7 +175,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			productionFocusSlider[i].SetValue(0)
 		Next
 
-		productionCompanySelect.SetValue("Produktionsfirma")
+		productionCompanySelect.SetSelectedEntry(Null)
+		productionCompanySelect.SetValue(GetLocale("PRODUCTION_COMPANY"))
 
 		'cast: remove old entries
 		castSlotList.EmptyList()
@@ -251,8 +253,10 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Exit
 		Next
 		'adjust gui dropdown
-		If productionCompanyItem Then productionCompanySelect.SetSelectedEntry(productionCompanyItem)
-
+		If productionCompanyItem 
+			productionCompanySelect.SetSelectedEntry(productionCompanyItem)
+			productionCompanySelect.RefreshValue()
+		EndIf
 
 		'=== PRODUCTION FOCUS ITEMS ===
 		'hide sliders according to focuspoint type of script
@@ -486,6 +490,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If Not company Then Return False
 
 		GetInstance().currentProductionConcept.SetProductionCompany(company)
+
+		GetInstance().refreshControlEnablement = True
 	End Function
 
 
@@ -509,6 +515,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'adjust gui dropdown
 		GetInstance().productionCompanySelect.SetSelectedEntry(newItem)
+		GetInstance().productionCompanySelect.RefreshValue()
 
 		'to inform the sliders we need to remove the focus from them
 		'-> set it to the dropdown
@@ -858,6 +865,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Method ReloadProductionCompanySelect()
 		'=== PRODUCTION COMPANY SELECT ===
 		productionCompanySelect.list.EmptyList()
+		productionCompanySelect.SetSelectedEntry(Null)
 		productionCompanySelect.SetValue(GetLocale("PRODUCTION_COMPANY"))
 
 		'add some items to that list
@@ -952,11 +960,24 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				productionCompanySelect.Disable()
 				castSlotList.Disable()
 			Else
-				For Local i:Int = 0 To productionFocusSlider.length -1
-					If currentProductionConcept.productionFocus.GetFocusAspectCount() > i
-						productionFocusSlider[i].Enable()
+				'disable sliders if no company is selected
+				if not productionCompanySelect.GetSelectedEntry() 
+					If productionFocusSlider[0].IsEnabled()
+						For Local slider:TGUISlider = EachIn productionFocusSlider
+							slider.Disable()
+						Next
 					EndIf
-				Next
+				Else
+					Local focusAspectCount:int = currentProductionConcept.productionFocus.GetFocusAspectCount()
+					If focusAspectCount > 0 and Not productionFocusSlider[0].IsEnabled()
+						For Local i:Int = 0 To productionFocusSlider.length -1
+							If focusAspectCount > i
+								productionFocusSlider[i].Enable()
+							EndIf
+						Next
+					EndIf
+				EndIf
+
 				productionCompanySelect.Enable()
 				castSlotList.Enable()
 			EndIf
