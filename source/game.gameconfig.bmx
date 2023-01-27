@@ -33,7 +33,9 @@ Type TGameConfig {_exposeToLua}
 	Global compressSavegames:Int = True
 	Global compressedSavegameExtension:String = "zst"
 	Global uncompressedSavegameExtension:String = "xml"
-
+	
+	Global targetGroupColors:SColor8[]
+	
 	Global clNormal:SColor8 = SColor8.Black
 	Global clPositive:SColor8 = new SColor8(90, 110, 90)
 	Global clNegative:SColor8 = new SColor8(110, 90, 90)
@@ -89,6 +91,12 @@ rem
 		return _values
 	End Method
 endrem
+
+	Method GetTargetGroupColor:SColor8(targetGroupIndex:Int)
+		if targetGroupIndex < 0 or targetGroupIndex > targetGroupColors.length Then Return SColor8.White
+		return targetGroupColors[targetGroupIndex]
+	End Method
+
 
 	Method GetModifier:Float(key:object, defaultValue:Float=1.0)
 		if not _modifiers then return defaultValue

@@ -83,7 +83,6 @@ Type TColor
 	Field b:Int			= 0
 	Field a:Float		= 1.0
 
-	Global list:TList	= CreateList()	'storage for colors (allows handle referencing)
 	'some const
 	Global clBlack:TColor = TColor.CreateGrey(0)
 	Global clWhite:TColor = TColor.CreateGrey(255)
@@ -183,28 +182,6 @@ Type TColor
 		Self.a = 1.0
 		Return Self
 	End Method
-
-
-	Method AddToList:TColor()
-		'remove first and append as last color
-		list.remove(Self)
-		list.AddLast(Self)
-
-		Return Self
-	End Method
-
-
-	Function getFromList:TColor(col:TColor)
-		Return TColor.getFromListByRGBA(col.r,col.g,col.b,col.a)
-	End Function
-
-
-	Function getFromListByRGBA:TColor(r:Int, g:Int, b:Int, a:Float=1.0)
-		For Local obj:TColor = EachIn TColor.List
-			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
-		Next
-		Return Null
-	End Function
 
 
 	Method GetBrightness:Float()

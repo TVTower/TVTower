@@ -31,5 +31,6 @@
 		</spritepack>
 		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
 		<file name="resource_gui" url="config/gui.xml" />
+		<file name="settings_colors" url="config/settings_colors.xml" />
 	</resources>
 </tvt>

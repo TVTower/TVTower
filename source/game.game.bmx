@@ -492,12 +492,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			If player.IsLocalAI()
 				'give the player a new figure
 				player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, Int(figure.initialdx))
-				Local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
+				Local colors:TPlayerColor[] = TPlayerColor.getUnowned()
+				if colors.length = 0 then colors :+ [TPlayerColor.Create(255,255,255)]
 				Local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
 				If newColor
 					'set color free to use again
 					player.color.SetOwner(0)
-					player.color = newcolor.SetOwner(playerID).AddToList()
+					player.color = newcolor.Register().SetOwner(playerID)
 					player.RecolorFigure(player.color)
 				EndIf
 				'choose a random one
@@ -1793,16 +1794,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'skip if already done
 		If GetPlayer(1) Then Return
 
-		'Creating PlayerColors - could also be done "automagically"
-		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
-		If playerColors = Null Then Throw "no playerColors found in configuration"
-		For Local col:TColor = EachIn playerColors
-			col.AddToList()
-		Next
-
 		'create players, draws playerfigures on figures-image
 		'TColor.GetByOwner -> get first unused color,
 		'TPlayer.Create sets owner of the color
+		local c1:TPlayerColor = TPlayerColor.getByOwner(0)
 		GetPlayerCollection().Set(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TPlayerColor.getByOwner(0), "Player 1"))
 		GetPlayerCollection().Set(2, TPlayer.Create(2, playerNames[1], channelNames[1], GetSpriteFromRegistry("Player2"),	180,  5, 90, TPlayerColor.getByOwner(0), "Player 2"))
 		GetPlayerCollection().Set(3, TPlayer.Create(3, playerNames[2], channelNames[2], GetSpriteFromRegistry("Player3"),	140,  8, 90, TPlayerColor.getByOwner(0), "Player 3"))

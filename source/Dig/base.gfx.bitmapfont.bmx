@@ -508,20 +508,20 @@ Type TBitmapFont
 		If MaxSigns <> -1 Then loadMaxGlyphs = MaxSigns
 
 		If extraChars = ""
-			extraChars :+ Chr(8364) '
-			extraChars :+ Chr(8230) '
-			extraChars :+ Chr(8220) '
-			extraChars :+ Chr(8221) '
-			extraChars :+ Chr(8222) '
-			extraChars :+ Chr(171) '
-			extraChars :+ Chr(187) '
+			extraChars :+ Chr(8364) 'Euro
+			extraChars :+ Chr(8230) 'Horizontal Ellipsis
+			extraChars :+ Chr(8220) 'Left Double Quotation Mark
+			extraChars :+ Chr(8221) 'Right Double Quotation Mark
+			extraChars :+ Chr(8222) 'Double Low-9 Quotation Mark
+			extraChars :+ Chr(171)  'Left-Pointing Double Angle Quotation Mark
+			extraChars :+ Chr(187)  'Right-Pointing Double Angle Quotation Mark
 			'extraChars :+ chr(8227) '
 			'extraChars :+ chr(9662) '
-			extraChars :+ Chr(9650) '
-			extraChars :+ Chr(9660) '
-			extraChars :+ Chr(9664) '
-			extraChars :+ Chr(9654) '
-			extraChars :+ Chr(9632) '
+			extraChars :+ Chr(9650) 'Black Up-Pointing Triangle
+			extraChars :+ Chr(9660) 'Black Down-Pointing Triangle
+			extraChars :+ Chr(9664) 'Black Left-Pointing Triangle
+			extraChars :+ Chr(9654) 'Black Right-Pointing Triangle
+			extraChars :+ Chr(9632) 'Black Square
 		EndIf
 
 		Self.glyphCount = glyphCount
@@ -2901,7 +2901,7 @@ Type STextParseInfo
 			'inbetween
 			If txt[ci] = Asc(",")
 				If cIndex = 0
-					name = txt[payload.start .. payload.start + payload.length]
+					name = txt[payload.start .. ci]
 				Else
 					dim[cIndex - 1] = payload.ToByte( cStart , ci )
 				EndIf

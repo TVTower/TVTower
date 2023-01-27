@@ -1633,6 +1633,22 @@ Type TVTTargetGroup {_exposeToLua}
 	End Function
 
 
+	'only returns an index for "nonmixed" target groups
+	Function GetIndex:Int(key:Int)
+		Select key
+			Case CHILDREN    Return 1
+			Case TEENAGERS   Return 2
+			Case HOUSEWIVES  Return 3
+			Case EMPLOYEES   Return 4
+			Case UNEMPLOYED  Return 5
+			Case MANAGERS    Return 6
+			Case PENSIONERS  Return 7
+			Case WOMEN       Return 8
+			Case MEN         Return 9
+		End Select
+	End Function
+
+
 	'returns an array of all hit indexes
 	Function GetIndexes:Int[](key:Int = 0)
 		If key < 0 Then Return [0]
@@ -1678,6 +1694,23 @@ Type TVTTargetGroup {_exposeToLua}
 		End Select
 	End Function
 
+
+	Function GetIndexAsString:String(index:Int = 0)
+		If index <= 0 Then Return "all"
+
+		Select index
+			Case 1  Return "children"
+			Case 2  Return "teenagers"
+			Case 3  Return "housewives"
+			Case 4  Return "employees"
+			Case 5  Return "unemployed"
+			Case 6  Return "managers"
+			Case 7  Return "pensioners"
+			Case 8  Return "women"
+			Case 9  Return "men"
+		End Select
+	End Function
+	
 
 	Function GetAsString:String(key:Int = 0)
 		If key < 0 Then Return "all"

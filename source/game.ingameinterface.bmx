@@ -1436,7 +1436,8 @@ Type TTooltipAudience Extends TTooltip
 			Local targetGroupID:Int = 0
 			For Local i:Int = 1 To TVTTargetGroup.count
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)
-				lines[i-1] = getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
+				Local col:SColor8 = GameConfig.GetTargetGroupColor(i)
+				lines[i-1] = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
 				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 2, 0)
 
 				if i = 8 or i = 9
