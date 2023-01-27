@@ -142,6 +142,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			result = True
 		EndIf
 		SetCurrentProductionConcept(Null)
+		If productionCompanySelect Then productionCompanySelect.SetOpen(0)
 
 		Return result
 	End Method
