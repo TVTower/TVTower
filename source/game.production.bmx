@@ -877,11 +877,12 @@ Type TProduction Extends TOwnedGameObject
 		'script improvements by the director or experienced actors
 		scriptPotentialMod = productionConcept.CalculateScriptPotentialMod()
 
-
+rem
 		TLogger.Log("TProduction.FixProductionMods()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
 		'TLogger.Log("TProduction.FixProductionMods()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
 		TLogger.Log("TProduction.FixProductionMods()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
 		TLogger.Log("TProduction.FixProductionMods()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
+endrem
 	End Method
 	
 	
@@ -915,6 +916,7 @@ Type TProduction Extends TOwnedGameObject
 		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
 		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
 
+rem
 		TLogger.Log("TProduction.FixProductionValues()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
 		TLogger.Log("TProduction.FixProductionValues()", "castFit:                  " + castFit, LOG_DEBUG)
 		TLogger.Log("TProduction.FixProductionValues()", "castComplexity:           " + castComplexity, LOG_DEBUG)
@@ -922,6 +924,7 @@ Type TProduction Extends TOwnedGameObject
 		TLogger.Log("TProduction.FixProductionValues()", "effectiveFocusPoints:     " + effectiveFocusPoints, LOG_DEBUG)
 		TLogger.Log("TProduction.FixProductionValues()", "effectiveFocusPointsMod:  " + effectiveFocusPointsMod, LOG_DEBUG)
 		TLogger.Log("TProduction.FixProductionValues()", "productionCompanyQuality: " + productionCompanyQuality, LOG_DEBUG)
+endrem
 	End Method
 
 
