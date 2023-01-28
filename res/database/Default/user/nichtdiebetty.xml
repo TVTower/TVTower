@@ -50,12 +50,13 @@
 		<programme id="nichtdiebetty-programme-helgoland-01" product="1" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Helgoland</de>
-				<en></en>
+				<en>Helgoland</en>
 			</title>
 			<description>
 				<de>Gezeigt werden alle Sehenswürdigkeiten. Die Lange Anna. Die Lummen. Jede. In Nahaufnahme.
 Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
-				<en></en>
+				<en>Shown are all the sights. The Long Anna. The auks. Each one. In close-up.
+And at the end fisherman Matjes demonstrates how to properly shell prawns.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">nichtdiebetty-celebritypeople-hainerbecherflechter</member>
@@ -67,4 +68,4 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 	</allprogrammes>
 
 
-	</tvtdb>
+</tvtdb>
