@@ -1000,6 +1000,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				Next
 			endif
 
+rem
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
 			local jobsText:String
 			if person._jobs = 0 
@@ -1044,7 +1045,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  --)", LOG_DEBUG)
 			endif
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "=   personFit:  "+personFit, LOG_DEBUG)
-
+endrem
 			castFitSum :+ personFit
 			personCount :+1
 		Next

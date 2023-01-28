@@ -70,7 +70,7 @@ Type TAwardCustomProduction extends TAward
 			'store new best licence
 			if bestLicences.length < licence.owner then bestLicences = bestLicences[.. licence.owner]
 			bestLicences[licence.owner-1] = licence
-			print "Awards: new best licence for #"+licence.owner+": " + licence.GetTitle()
+			'print "Awards: new best licence for #"+licence.owner+": " + licence.GetTitle()
 
 			'adjust score
 			AdjustScore(licence.owner, score - currentScore)

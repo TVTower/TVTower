@@ -172,7 +172,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Local oldExperience:Int = experience
 		GainExperienceForProgrammeLicence(result)
 
-		Print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience)
+		'Print "Programme producer ~q"+name+"~q produced ~q" + result.GetTitle() +"~q. Cost="+production.productionConcept.GetTotalCost() +"  Earned="+(nationalSale+internationalSale) + "(nat="+nationalSale+"  int="+internationalSale+"). New budget="+budget + ". Experience=" + oldExperience +" + " + (experience - oldExperience)
 
 		'and add to done productions
 		'add series header - on first ep or only on last?
