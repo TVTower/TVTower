@@ -284,7 +284,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'      Genre Einfluss auf die Lobbygruppen nehmen (bzw. "ob")
 		'      Alternativ - aehnlich einem Flag "definieren", dass dieses Programm ueberhaupt
 		'      Einfluss hat ("Werbefilm")
-Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
+'Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 
 
 		'=== ADJUST CHANNEL IMAGE ===

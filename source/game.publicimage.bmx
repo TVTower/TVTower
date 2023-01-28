@@ -102,8 +102,8 @@ Type TPublicImageCollection
 
 
 	'archive images in the name of the given channel
-	'each archive still contains image data for al channels, the owner-
-	'ship is of interest for access by the players
+	'each archive still contains image data for all channels, 
+	'the ownership is of interest for access by the players
 	Method ArchiveImages(channelID:Int = 0)
 		If Not archivedImages Then archivedImages = New TPublicImageArchive[4 + 1] 'players + "all"
 		If Not archivedImagesGlobal Then archivedImagesGlobal = New TPublicImageArchive[4] 'players
@@ -121,7 +121,7 @@ Type TPublicImageCollection
 				archivedImagesGlobal[cID].Add( latest )
 			Next
 		EndIf
-
+rem
 		For Local i:Int = 0 Until 5
 			If i = 0 And archivedImages[i]
 				Print "ArchiveImage count: ["+i+"]=" + archivedImages[i].entries.length
@@ -129,6 +129,7 @@ Type TPublicImageCollection
 				Print "ArchiveImage count: ["+i+"]=" + archivedImages[i].entries.length +"  global="+archivedImagesGlobal[i-1].entries.length
 			EndIf
 		Next
+endrem
 '		For local img:TPublicImage = eachIn entries
 '			img.ArchiveImageValues()
 '		Next

@@ -117,7 +117,7 @@ Type TPressureGroupCollection
 				archivedSympathies = [ new TPressureGroupSympathyArchive.Init() ] + archivedSympathies
 			endif
 		endif
-		print "ArchiveSympathies: count=" + archivedSympathies.length
+		'print "ArchiveSympathies: count=" + archivedSympathies.length
 	End Method
 End Type
 
