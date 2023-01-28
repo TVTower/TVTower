@@ -892,20 +892,23 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		Local addMoney:Int = difficulty.startMoney
 		If isRestartingPlayer
-			Local avgMoney:Int = 0
+			Local avgMoney:Long = 0
 			For Local i:Int = 1 To 4
 				If i = playerID Then Continue
-				avgMoney :+ GetPlayerFinance(i).GetMoney()
+				Local playerSum:Long = GetPlayerFinance(i).GetMoney()
 
 				'add monetary value of programme licences
 				Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
-				Local licenceValue:Int = 0
+				Local licenceValue:Long = 0
 				For Local list:TList = EachIn [pc.GetSingleLicences(), pc.GetSeriesLicences(), pc.GetCollectionLicences() ]
 					For Local l:TProgrammeLicence = EachIn list
 						licenceValue :+ l.GetPrice(l.owner)
 					Next
 				Next
-				avgMoney :+ licenceValue
+				playerSum :+ licenceValue
+				'limit each player's influence to 100Mio; 
+				'limiting the maximal resulting start amount to 100Mio
+				avgMoney:+ min(playerSum, 100000000)
 			Next
 			avgMoney :/ 3 '3 to ignore our player
 
