@@ -196,16 +196,16 @@ Any means will do.</en>
 
 				<stockexchange1>
 					<de>Der Aktienindex DUX startet heute bei lebhaftem Handel im Plus. %STOCKEXCHANGE1A%|Die Zeichen des DUX stehen Dank regem Handel auf Plus. %STOCKEXCHANGE1A%</de>
-					<en>The stock index DUX starts today with brisk trading in the plus. %STOCKEXCHANGE1A%|The signs of the DUX are on the plus side thanks to brisk trading. %STOCKEXCHANGE1A%</en>
+					<en>Today, the stock index DUX starts with brisk trading in the plus. %STOCKEXCHANGE1A%|The signs of the DUX are on the plus side thanks to brisk trading. %STOCKEXCHANGE1A%</en>
 				</stockexchange1>
 				<stockexchange1A>
 					<de>Gute Zahlen bei den %VALUES%n sorgen für Phantasie und steigende Kurse.|Gute Analysteneinschätzungen bei den %VALUES%n beflügeln die Kurse.|Gute Konjunkturdaten befeuern die guten Aussichten.|Gute Arbeitsmarktdaten sorgen für Optimismus.|Übernahmephantasien in der %SECTION% erfreuen die Bullen.</de>
-					<en>Good figures for %VALUES% provide for fantasies and rising share prices.|Good analyst ratings for %VALUES% boost share prices.|Good economic data fuel the positive outlook.|Gute Arbeitsmarktdaten sorgen für Optimismus.|Takeover fantasies in the %SECTION% delight the bulls.</en>
+					<en>Good figures for %VALUES% provide for fantasies and rising share prices.|Good analyst ratings for %VALUES% boost share prices.|Good economic data fuel the positive outlook.|Good labor market data provide for optimism.|Takeover fantasies in the %SECTION% delight the bulls.</en>
 				</stockexchange1A>
 
 				<stockexchange2>
 					<de>Der Aktienindex DUX startet heute sehr verhalten. %STOCKEXCHANGE2A%|Der Aktienindex DUX zeigt sich unauffällig. %STOCKEXCHANGE2A%</de>
-					<en>The stock index DUX today starts very cautiously. %STOCKEXCHANGE2A%|The stock index DUX displays an unremarkable performance. %STOCKEXCHANGE2A%</en>
+					<en>Today, the stock index DUX starts very cautiously. %STOCKEXCHANGE2A%|The stock index DUX displays an unremarkable performance. %STOCKEXCHANGE2A%</en>
 				</stockexchange2>
 				<stockexchange2A>
 					<de>Zahlen der %SECTION% liegen im Rahmen der Erwartungen.|%VALUES% behaupten sich.|Der Feiertag in Übersee sorgt für einen zögerlichen Handel.|Die Konjunkturdaten sorgen für ruhigen Handel.|Übernahmepläne in der %SECTION% sorgen für Verstimmung.</de>
@@ -224,7 +224,7 @@ Any means will do.</en>
 
 				<resources1>
 					<de>Rohstoffe heute erfreulich. %RESOURCES1A%|Rohstoffwerte wissen zu gefallen. %RESOURCES1A%</de>
-					<en>Commodities today are pleasing. %RESOURCES1A%|Commodity stocks look appealing. %RESOURCES1A%</en>
+					<en>Commodities are pleasing today. %RESOURCES1A%|Commodity stocks look appealing. %RESOURCES1A%</en>
 				</resources1>
 				<resources1A>
 					<de>Gold legte gestern nachbörslich stark zu.|Öl-Preise erholen sich wegen stärker Nachfrage.|Öl-Preise profitieren von gesenkter Fördermenge.|Der Wolfram-Bedarf der Industrie ist stark gestiegen.</de>

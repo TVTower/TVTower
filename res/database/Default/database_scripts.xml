@@ -257,11 +257,11 @@
 				</woman>
 				<action>
 					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
-						<en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
+					<en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
 				</action>
 				<man>
 					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
-						<en>man of her dreams|abbot|teacher|professor|boss|subtenant|baker</en>
+					<en>man of her dreams|abbot|teacher|professor|boss|subtenant|baker</en>
 				</man>
 			</variables>
 
@@ -377,7 +377,7 @@
 				</titleaction>
 				<descriptionaction>
 					<de>leidet seit dem Kindesalter an %DISEASE%|bestreitet sein Leben mit %DISEASE%|leidet unter %DISEASE%|kann nur singend seine %DISEASE% bekämpfen</de>
-					<en>has been suffering from %DISEASE% since childhood|lives with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% by singing</en>
+					<en>has been suffering from %DISEASE% since childhood|lives with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% while singing</en>
 				</descriptionaction>
 				<disease>
 					<de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
@@ -635,7 +635,7 @@
 				</extra1>
 				<extra2>
 					<de>zu hauf.|sowie ab und zu eine finale Spritze|und ab und zu eine Tierfütterung aus Eigenanbau</de>
-					<en>in abundance.|and every now and then a final injection|and from time to time animal feeding from cultivation grown on-location</en>
+					<en>in abundance.|and every now and then a final injection|and from time to time animal feeding from cultivation grown on-site</en>
 				</extra2>
 				<animal1>
 					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>

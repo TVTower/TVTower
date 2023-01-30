@@ -53,7 +53,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 		<ad id="14340286-55d9-408f-b0b5-9cd4208054dc" comment="TODO: Discuss Translation: I felt the barrel doesn't fit with carpentry. 'Pull s.o. over the barrel' could perhaps be used in a new ad, with a German version of 'Fass aufmachen'.">
 			<title>
 				<de>Tischlerei Nagler</de>
-				<en>Carpentry J. Nailer</en>
+				<en>J. Nailer Carpentry</en>
 			</title>
 			<description>
 				<de>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</de>
@@ -172,7 +172,7 @@ You will really have to chew.</en>
 			</title>
 			<description>
 				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt</de>
-				<en>We're stupid. We throw out our goods at ridiculous prices. So off you go to the nearest Burst-Bay market</en>
+				<en>We're stupid. We throw out our goods at ridiculous prices. So off you go to the nearest Burst-Buy market</en>
 			</description>
 			<conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="4" duration="4" profit="600" penalty="920" infomercial_profit="56" fix_infomercial_profit="1"/>
@@ -195,7 +195,7 @@ You will really have to chew.</en>
 			</title>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Birne und Genschman zum Preis von einem.</de>
-				<en>Action play figures of your favorite politicians. For a short time Pear and Genschman for the price of one.</en>
+				<en>Action play figures of your favorite politicians. For a short time 'The Pear' and 'Genschman' for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -219,7 +219,7 @@ You will really have to chew.</en>
 			</title>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit "Hol mir ma ne Flasche Bier"-Gerhard und Putzgruppen-Joschka zum Preis von einem.</de>
-				<en>Action play figures of your favorite politicians. For a short time "Get me a bottle of beer" -Gerhard and "Cleaning Squad"-Joschka for the price of one.</en>
+				<en>Action play figures of your favorite politicians. For a short time "Get me a bottle of beer"-Gerhard and "Cleaning Squad"-Joschka for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -291,7 +291,7 @@ In Berlin Tempelhof and Steglitz</en>
 			</title>
 			<description>
 				<de>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</de>
-				<en>The rapid candy against cough. Now also as a nicotine substitute.</en>
+				<en>The fast-acting candy against cough. Now also as a nicotine substitute.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="5" repetitions="5" duration="3" profit="585" penalty="1050" infomercial_profit="58" fix_infomercial_profit="1"/>
@@ -328,7 +328,7 @@ In Berlin Tempelhof and Steglitz</en>
 			<description>
 				<de>Ausziehen! Ausziehen! Ausziehen!!!
 Aber nur mit Ulbricht Umzüge!</de>
-				<en>Off your clothes! Off your clothes!!! Off your clothes and into the moving box!
+				<en>Clothes off! Clothes off!!! Clothes off and into the moving box!
 But only with Relocation Rudolph!</en>
 			</description>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
@@ -351,7 +351,7 @@ But only with Relocation Rudolph!</en>
 			</title>
 			<description>
 				<de>MacGreifer als Werbeträger für die FasterCard: R. D. Handerson noch einmal in seiner Paraderolle - unbezahlbar.</de>
-				<en>MacGrabber as a promotional campaigner for the FasterCard: R. D. Handerson once again in his signature role - priceless.</en>
+				<en>MacGrifter as a promotional campaigner for the FasterCard: R. D. Handerson once again in his signature role - priceless.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="21" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="27" fix_infomercial_profit="1"/>
@@ -436,7 +436,7 @@ But only with Relocation Rudolph!</en>
 			</title>
 			<description>
 				<de>Hier fallen nicht nur Späne, nein auch die Preise. Ein Hobelmarkt ist sicher auch in Ihrer Nähe.</de>
-				<en>Here not only the woodchips are dropping but also the prices. A Planer Market is certainly also in your area.</en>
+				<en>Not only the woodchips are dropping here, but also the prices. Surely there is a Planer Market also close to you.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="4" duration="3" profit="750" penalty="1200" infomercial_profit="72" fix_infomercial_profit="1"/>
@@ -469,8 +469,8 @@ But only with Relocation Rudolph!</en>
 				<de>Vitalon Super Supau</de>
 			</title>
 			<description>
-				<de>Die „Vitalon Foods Company“ aus Taiwan läßt R. D. Handerson als MacGreifer für ihren Sporttrunk werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</de>
-				<en>The "Vitalon Foods Company" from Taiwan lets R. D. Handerson advertise as MacGrifter for their sports drink: on a bicycle, in a jeep, during Tai Chi and on a motorboat.</en>
+				<de>Die „Vitalon Foods Company“ aus Taiwan läßt R. D. Handerson als MacGreifer für ihren Sporttrunk werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Rennboot.</de>
+				<en>The "Vitalon Foods Company" from Taiwan lets R. D. Handerson advertise as MacGrifter for their sports drink: on a bicycle, in a jeep, during Tai Chi and on a speedboat.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="16" repetitions="3" duration="4" profit="525" penalty="825" infomercial_profit="43" fix_infomercial_profit="1"/>
@@ -516,7 +516,7 @@ But only with Relocation Rudolph!</en>
 			</title>
 			<description>
 				<de>Lecker Zimtstäbchen mit Reizhustengarantie. Noch nie war so trocken...so lecker.</de>
-				<en>Delicious cinnamon sticks with guaranteed dry cough. Never before dry as dust has been ... so delicious.</en>
+				<en>Delicious cinnamon sticks with guaranteed dry cough. Never before dry-as-dust has been... so delicious.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="4" duration="4" profit="657" penalty="950" infomercial_profit="58" fix_infomercial_profit="1"/>
@@ -527,7 +527,7 @@ But only with Relocation Rudolph!</en>
 			</title>
 			<description>
 				<de>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</de>
-				<en>When you buy a bottle of red wine, you now get two headache tablets for free.</en>
+				<en>With each purchase of a bottle of red wine, you now get two headache tablets for free.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="8" repetitions="5" duration="3" profit="642" penalty="1022" fix_infomercial_profit="1"/>
@@ -612,13 +612,13 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="22" repetitions="3" duration="2" profit="557" penalty="975" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="a81fea24-859f-463e-a69c-0124de937a47">
+		<ad id="a81fea24-859f-463e-a69c-0124de937a47" comment="TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
 			<title>
 				<de>Schorotti</de>
 			</title>
 			<description>
 				<de>Der Schorotti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
-				<en>The Schorotti-Maure-Mallow features fantastic chocolate. Take one and melt away.</en>
+				<en>The Schorotti Maure-Mallow features fantastic chocolate. Take one and melt away.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="4" duration="2" profit="700" penalty="1050" fix_infomercial_profit="1"/>
@@ -730,7 +730,7 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Quietscht Ihre Matratze? Rufen Sie den Matratzendoktor. Inklusive Probestunde.</de>
-				<en>Is your mattress squeaking? Call the Mattress-Doc. Trial lesson included.</en>
+				<en>Is your mattress squeaking? Call the Mattress-Doc. Trial session included.</en>
 			</description>
 			<conditions min_audience="1.82" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="8" repetitions="4" duration="2" profit="885" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1"/>
@@ -741,7 +741,7 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</de>
-				<en>Promotion week at Bikeshop. Buy a bike, get one for free.</en>
+				<en>Promotion week at Bikeshop. Buy one bike, get one for free.</en>
 			</description>
 			<conditions min_audience="0.7905" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="3" duration="2" profit="1586" penalty="2296" infomercial_profit="118" fix_infomercial_profit="1"/>
@@ -764,7 +764,7 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
-				<en>Do puzzles, play, have fun. Rabensburger recommends novelties and classics from its range of products.</en>
+				<en>Do jigsaw puzzles, play, have fun. Rabensburger recommends novelties and classics from its range of products.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="2" profit="421" penalty="684" infomercial_profit="37" fix_infomercial_profit="1"/>
@@ -831,11 +831,11 @@ Campaign week: no bottle deposit.</en>
 		<ad id="d2de2875-249c-4b10-8ba2-0dda65ae5674">
 			<title>
 				<de>Polstermöbel Dobrawa</de>
-				<en>Upholstery Dobrawa</en>
+				<en>Dobrawa Upholstery</en>
 			</title>
 			<description>
 				<de>Polsterwerkstatt Dobrawa seit 1933.</de>
-				<en>Upholstery manufacture Dobrawa since 1933.</en>
+				<en>Dobrawa upholstery manufacture since 1933.</en>
 			</description>
 			<conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="6" repetitions="4" duration="3" profit="1300" penalty="1400" fix_infomercial_profit="1"/>
@@ -858,7 +858,7 @@ Campaign week: no bottle deposit.</en>
 			</title>
 			<description>
 				<de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
-				<en>Have already become a schoolmate long ago: The cartridges that fill the fountain pen.</en>
+				<en>They already have become a schoolmate long ago: The cartridges that fill the fountain pen.</en>
 			</description>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="3" duration="2" profit="612" penalty="840" infomercial_profit="55" fix_infomercial_profit="1"/>
@@ -1128,7 +1128,7 @@ I feel good with Lemur</en>
 			</title>
 			<description>
 				<de>Deine Stammkneipe mit dem Hauch des Prätentiösen. Bierdeckel an den Wänden zeugen von weitreichender Bierkenntnis des Wirtes.</de>
-				<en>Your favourite pub with a touch of the pretentious. Beermats on the walls bear testify to the innkeeper's extensive knowledge of beer.</en>
+				<en>Your favourite pub with a touch of the pretentious. Beermats on the walls testify to the innkeeper's extensive knowledge of beer.</en>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1"/>
@@ -1202,7 +1202,7 @@ I feel good with Lemur</en>
 			</title>
 			<description>
 				<de>Wir verkaufen wieder nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
-				<en>We, again, sell nothing but nodding dogs. But at unrivaled low prices. Brand new: the dwarf dachshund in 1:1 scale.</en>
+				<en>We still sell nothing but nodding dogs. But at unrivaled low prices. Brand new: the dwarf dachshund in 1:1 scale.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1241,7 +1241,7 @@ I feel good with Lemur</en>
 			</title>
 			<description>
 				<de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer Walkman wird nie wieder etwas anderes spielen wollen!</de>
-				<en>Not one cassette, not two, not three! Incredible 4 music cassettes that we have loaded with the hits of the last 5 years. Your Walkman will never want to play anything else!</en>
+				<en>Not one cassette, not two, not three! Incredible 4 music cassettes packed with the hits of the last 5 years. Your Walkman will never want to play anything else!</en>
 			</description>
 			<conditions min_audience="2.083" min_image="7" target_group="2"/>
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="815" penalty="1100" fix_infomercial_profit="1"/>
@@ -1265,7 +1265,7 @@ I feel good with Lemur</en>
 			</title>
 			<description>
 				<de>Antikes und Kram zu Spottpreisen. Egal was, egal woher - wir zahlen für Ihren alten Mist! Gern auch Hausbesuche. Einfach den Schlüssel unter den Abstreicher, wir kümmern uns um den Rest.</de>
-				<en>Antique and junk at rock bottom prices. No matter what, no matter from where - we will pay for your old crap! With pleasure also house calls. Just put the key under the doormat and we'll take care of the rest.</en>
+				<en>Antiques and junk at rock bottom prices. No matter what, no matter wherefrom - we will pay for your old crap! With pleasure also house calls. Just put the key under the doormat and we'll take care of the rest.</en>
 			</description>
 			<conditions min_audience="0.26" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="20" repetitions="3" duration="2" profit="2200" penalty="2400" fix_infomercial_profit="1"/>
@@ -1339,7 +1339,7 @@ Brucey - harsh fragrance for expert men.</en>
 			</title>
 			<description>
 				<de>Der hawaiianische Kaubonbon jetzt mit neuem Trendgeschmack. Kandierte Hühnerkrallen verleihen die faszinierende Würze.</de>
-				<en>The Hawaiian chewy candy now with a brand new and trendy flavor. Candied chicken claws create lend the fascinating spice.</en>
+				<en>The Hawaiian chewy candy now with a brand new and trendy flavor. Candied chicken claws lend the fascinating spice.</en>
 			</description>
 			<conditions min_audience="2.6041" min_image="18" target_group="1"/>
 			<data quality="20" repetitions="4" duration="2" profit="770" penalty="1082" fix_infomercial_profit="1" />
@@ -1410,7 +1410,7 @@ Brucey - harsh fragrance for expert men.</en>
 			</title>
 			<description>
 				<de>Aus dem Osten der Hopfen, aus dem Westen die Luft ... und das Gold. Lecker Bierchen für Väter aller Länder.</de>
-				<en>From East Germany the hops, from West Germany the air ... and the gold. Delicious little brews for fathers of all countries.</en>
+				<en>East German hop, from West Germany the air ... and the gold. Delicious little brews for fathers of all countries.</en>
 			</description>
 			<conditions min_audience="9.3772" min_image="12" target_group="256"/>
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="377" penalty="500" infomercial_profit="85" fix_infomercial_profit="1"/>
@@ -1495,7 +1495,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Die vollwertige Bio-Mahlzeit aus der Tube. Schmeckt wie bei Muttern, krümelt nicht und sooo gesund! Ideal für lange Zockerpartien.</de>
-				<en>The wholesome organic meal from the tube. Tastes like at mother's, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
+				<en>The wholesome organic meal from the tube. Tastes like the food at home from mother, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
 			</description>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1132" penalty="1900" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1544,8 +1544,8 @@ Available in any well-stocked drugstore.</en>
 				<en>The bulky converter</en>
 			</title>
 			<description>
-				<de>Das Handbuch zum Umrechnen von Mark der DDR in D-Mark! Für alle, die's genau wissen wollen. Weil früher alles besser war. Und billiger?</de>
-				<en>The manual for converting East German mark (DDM) into Deutsche Mark (DEM)! For all who want to know things precisely. Because everything was better in the old days. And cheaper?</en>
+				<de>Das Handbuch zum Umrechnen von D-Mark in Mark der DDR! Für alle, die's genau wissen wollen. Weil früher alles besser war. Und billiger?</de>
+				<en>The manual for converting Deutsche Mark (DEM) into East German mark (DDM)! For all who want to know things precisely. Because everything was better in the old days. And cheaper?</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1701,7 +1701,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht rein! Oans, zwoa, droa, ziags!</de>
-				<en>Really ingenious: Pilsner, export and wheat bear now also available as suppositories! Conveniently in a party pack of 40! That gets in! Oans, zwoa, droa, ziags!</en>
+				<en>Really ingenious: Pilsner, export and wheat beer now also available as suppositories! Conveniently in a party pack of 40! That gets in! Oans, zwoa, droa, ziags!</en>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" />
@@ -1714,7 +1714,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
-				<en>Premium honey products from your favorite apiary Dumblebee. We provide our bees a good, motivating work environment. Including after-work pints!</en>
+				<en>Premium honey products from your favorite apiary Dumblebee. We provide our bees with a good, motivating work environment. Including after-work pints!</en>
 			</description>
 			<conditions min_audience="0.0511" min_image="7" target_group="4"/>
 			<data infomercial="1" quality="12" repetitions="3" duration="3" profit="3500" penalty="5094" fix_infomercial_profit="1"/>
@@ -1790,7 +1790,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Diskriminierung oder Hetzschrift. Gerne. - Ehre? Menschenwürde oder Mitgefühl? Das kennen wir nicht!
 				Mietmaul - Wir sind gleicher als Andere.</de>
-				<en>Discrimination or hate speech. With pleasure. - Honor? Human dignity or compassion? That is not known to us!
+				<en>Discrimination or hate speech. With pleasure. - Honor? Human dignity or compassion? Unknown to us!
 				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="30" target_group="32"/>
@@ -2045,7 +2045,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Die Malediven in 200m Tiefe. Hören Sie Traumstrände. Vorgewärmte Kojen gehören hier zur Grundausstattung.</de>
-				<en>Experience the original U96 Replica on your dream route. The Maldives in 200m depth. Listen to dream beaches. Preheated berths are part of the basic equipment here.</en>
+				<en>Experience the original U96 Replica on your dream route. The Maldives in 200m depth. Listen to dream beaches. Preheated berths are part of the basic equipment on board.</en>
 			</description>
 			<conditions min_audience="33.86" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="25" repetitions="2" duration="4" profit="138" penalty="207" fix_infomercial_profit="1"/>
@@ -2105,7 +2105,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Leitfaden zur aufrichtigen inneren Reinigung, Tipps und Tricks, Best Practices und vieles mehr. Infos bei uns! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</de>
-				<en>Guide to sincere inner cleansing, tips and tricks, best practices and much more. Info at our site! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</en>
+				<en>Guide to sincere inner cleansing, tips and tricks, best practices and much more. Contact us for more info! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</en>
 			</description>
 			<conditions min_audience="26.05" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="158" penalty="301" infomercial_profit="69" fix_infomercial_profit="1"/>
@@ -2367,7 +2367,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</de>
-				<en>Come to our car yard. Truck washing facilities. Showers and toilets available! Free coffee for a 1000 liters diesel refuel!!! Godspeeders! At the Route 7!</en>
+				<en>Come to our car yard. Truck washing facilities. Showers and toilets available! One free coffee for a 1000 liters diesel refuel!!! Godspeeders! At the Route 7!</en>
 			</description>
 			<conditions min_audience="0.26" min_image="4" target_group="256"/>
 			<data infomercial="1" quality="9" repetitions="3" duration="4" profit="2440" penalty="3200" fix_infomercial_profit="1"/>

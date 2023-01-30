@@ -54,7 +54,7 @@
 			</title>
 			<description>
 				<de>Durch heftige Schneestürme in der Ukraine verschiebt sich der Shuttlestart zur Terrorismusbekämpfung erneut. US Präsident Baush ist beunruhigt wegen der Kosten.</de>
-				<en>Fierce snowstorms in Ukraine postpone anti-terrorism shuttle launch again. US President Baush is worried about the costs.</en>
+				<en>Fierce snowstorms in Ukraine postpone the anti-terrorism shuttle launch again. US President Baush is worried about the costs.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="52a3c289-8be8-4410-9dda-b9cff4eb6f34" />
@@ -231,8 +231,8 @@
 				<en>Another slaying with a desk</en>
 			</title>
 			<description>
-				<de>Polizei vermutet gleichen Täter wie im ersten Fall, ein Trittbrettfahrer wird jedoch nicht ausgeschlossen, trat der Fall doch diesmal im Süden statt.</de>
-				<en>Police suspects the same perpetrator as in the first case, but a copycat is not excluded, the case occurred this time in the south.</en>
+				<de>Polizei vermutet gleichen Täter wie im ersten Fall. Ein Trittbrettfahrer wird jedoch nicht ausgeschlossen, trat der Fall doch diesmal im Süden statt.</de>
+				<en>Police suspect the same perpetrator as in the first case. However, a copycat is not ruled out, since the case occurred in the south this time.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="8661ce67-edd4-4d30-885b-5374d39f37c3" />
@@ -247,7 +247,7 @@
 			</title>
 			<description>
 				<de>Beide Opfer des von der Bevölkerung „Schreibtisch-Mörder“ genannten Täters, waren Angestellte eines großen Möbelhauses.</de>
-				<en>Both victims of the perpetrator, named "desk murderer" by the population, were employees of a large furniture store.</en>
+				<en>Both victims of the perpetrator, called "desk murderer" by the public, were employees of a large furniture store.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="3a75a2f5-c859-40df-ad2a-be5e6fd4567b" />
@@ -349,8 +349,8 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Queen: I feel good!</en>
 			</title>
 			<description>
-				<de>Nach der Untersuchung der angegriffenen Queen sagte sie: “I am pleased!“ und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</de>
-				<en>After examining the attacked Queen, she said: "I am pleased!" and saw no problems in her new - small - size.</en>
+				<de>Die angegriffene Königin, nachdem sie untersucht wurde, sagte: “I am pleased!“ und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</de>
+				<en>The attacked Queen, after having been examined, said: "I am pleased!" and saw no problems in her new - small - size.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a3bbd916-2520-4a31-8f3e-3380950230da" />
@@ -569,7 +569,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 Mark.</de>
-				<en>Tourists have been attacked in the Chemnitz forest by the escaped rhinoceros in their recreational vehicle. The damage amounts to about 100,000 DEM.</en>
+				<en>Tourists have been attacked in the Chemnitz forest by the escaped rhinoceros in their camper. The damage amounts to about 100,000 DEM.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
@@ -584,7 +584,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa € 50.000.</de>
-				<en>Tourists have been attacked in the Chemnitz forest by the escaped rhinoceros in their recreational vehicle. The damage amounts to about € 50,000.</en>
+				<en>Tourists have been attacked in the Chemnitz forest by the escaped rhinoceros in their camper. The damage amounts to about € 50,000.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
@@ -628,7 +628,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Im Karl-Marx-Städter Zoo fehlte heute morgen bei der Zählung ein Nashorn. Die Bevölkerung wird gebeten das Haus nicht zu verlassen.</de>
-				<en>A rhinoceros was missing from the Karl Marx City Zoo this morning during a census. The population is asked not to leave the house.</en>
+				<en>A rhinoceros was missing from the Karl-Marx-Stadt zoo this morning during a census. The population is asked not to leave the house.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_karlmarxstadt" time="2,1,2,5,15" />
@@ -645,7 +645,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Das vermisste Nashorn aus dem Karl-Marx-Städter Zoo ist von Zeugen in einem nahe gelegenen Wald gesehen worden.</de>
-				<en>The missing rhino from the Karl Marx Stadt Zoo has been seen by witnesses in a nearby forest.</en>
+				<en>The missing rhino from the Karl-Marx-Stadt Zoo has been seen by witnesses in a nearby forest.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" time="1,8,20" />
@@ -661,7 +661,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Touristen sind im Karl-Marx-Städter Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 Mark.</de>
-				<en>Tourists have been attacked in the Karl Marx Stadt forest by the escaped rhinoceros in their recreational vehicle. The damage amounts to about 100,000 Ostmark.</en>
+				<en>Tourists have been attacked in the Karl-Marx-Stadt forest by the escaped rhinoceros in their camper. The damage amounts to about 100,000 Ostmark.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_karlmarxstadt" time="2,1,1,4,12" />
@@ -985,7 +985,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Grienpies ist über die Forderung des Finanzministers entsetzt: Koalas vertragen keine Mentholbonbons!</de>
-				<en>Creenpiece is appalled by the demand of the Minister of Finance: koalas can't stomach menthol candies!</en>
+				<en>Creampeas is appalled by the demand of the Minister of Finance: koalas can't stomach menthol candies!</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -1054,7 +1054,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Star Electric zeigte auf der HiFi-Messe einen neuen Fernseher, der das laufende Programm intelligenter macht. Dumme werden weniger Dumm. Seifenopern erträglicher.</de>
-				<en>Star Electric demonstrated at the HiFi Fair a new TV that makes the running program smarter. The stupid become less stupid. Soap operas more tolerable.</en>
+				<en>At the HiFi Fair, Star Electric demonstrated a new TV that makes the running program smarter. The stupid become less stupid, soap operas more tolerable.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="8bc34c83-4fc3-4aab-afa6-f67fa479902c" />
@@ -1335,7 +1335,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Die deutsche Tele-Komm schafft die klassische Wählscheibe ab. Inoffizieller Grund: Zu geringe Effizienz der Callcenter.</de>
-				<en>The German Tele-Komm company abolishes the classic dial pad. Unofficial reason: Call centers not efficient enough.</en>
+				<en>The German Tele-Komm company abolishes the classic dial plate. Unofficial reason: Call centers not efficient enough.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
@@ -1471,7 +1471,7 @@ Demonstrations are expected again this year.</en>
 			</title>
 			<description>
 				<de>Bereits vor dem Treffen der führenden Witschaftsnationen campen Demonstranten in Paris. „Wir sind zu allem bereit“, so ein Demonstrant.</de>
-				<en>Demonstrators are already camping out in Paris ahead of the meeting of the world's leading economic nations. "We are ready for anything," said one of the demonstrators.</en>
+				<en>Demonstrators are already camping out in Paris prior to the meeting of the world's leading economic nations. "We are ready for anything," said one of the demonstrators.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="fb43d1ce-61b8-4625-8385-520b8f0d282c" time="2,1,1,4,13" />
@@ -1560,7 +1560,7 @@ Demonstrations are expected again this year.</en>
 			</title>
 			<description>
 				<de>Die Bachenhausener Strafkammer befand den Gärtner Rico Mielke der Körperverletzung schuldig. „Sie sind wohl blind?“, fragte der klagende Anwalt.</de>
-				<en>The Bachenhausen Criminal Court found gardener Rico Mielke guilty of assault. "You must be blind?" asked the plaintiff lawyer.</en>
+				<en>The Bachenhausen Criminal Court found gardener Rico Mielke guilty of assault. "Are you blind?" asked the plaintiff lawyer.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="39" />
@@ -1710,7 +1710,7 @@ Demonstrations are expected again this year.</en>
 		<news id="6134da01-d7d0-48dc-94d5-fbe43bd4dda6" thread_id="aebe2cd0-0c5e-4d38-9cca-b2ab634ee4f6" type="0" creator="">
 			<title>
 				<de>Computer Oskar-nominiert</de>
-				<en>Oscar-nominated computer</en>
+				<en>Computer nominated for Oscar</en>
 			</title>
 			<description>
 				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oskar nominiert wurde.</de>
@@ -2788,14 +2788,14 @@ Demonstrations are expected again this year.</en>
 				<en>Tea light price at record high</en>
 			</title>
 			<description>
-				<de>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichtern um 300 Prozent des bisherigen Wertes.</de>
-				<en>After the oil price of oil and gas has stabilized, the price of tea lights increases by 300 percent of the previous value.</en>
+				<de>Nachdem sich die Preise für Öl und Gas gefestigt haben, steigt der Preis von Teelichtern um 300 Prozent des bisherigen Wertes.</de>
+				<en>After the prices for oil and gas have stabilized, the price of tea lights increases by 300 percent of the previous value.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="bb461721-455c-4b8b-b45f-1465c7700644" thread_id="f5f7219e-7144-49de-adc0-19a32c81642c" type="0" creator="">
+		<news id="bb461721-455c-4b8b-b45f-1465c7700644" thread_id="f5f7219e-7144-49de-adc0-19a32c81642c" type="0" creator="" comment="TODO: Mertel vs Murkel">
 			<title>
 				<de>Bundeskanzler lehnt Filmhauptrolle ab</de>
 				<en>Chancellor rejects main movie role</en>
@@ -2824,7 +2824,7 @@ Demonstrations are expected again this year.</en>
 		<news id="69190830-8d76-432b-8217-ddcc685d0466" thread_id="fdf31ef7-053f-41b2-9ac2-e92b4f23da48" type="0" creator="">
 			<title>
 				<de>MacGeifer-Satire in Produktion</de>
-				<en>MacGeifer satire in production</en>
+				<en>MacGrifter satire in production</en>
 			</title>
 			<description>
 				<de>Nach jahrelanger Überlegung produziert R. D. Handerson nun eine Satire seiner Erfolgserie. Papierklammer, Gummiband und Taschenmesser stimmten schon zu.</de>

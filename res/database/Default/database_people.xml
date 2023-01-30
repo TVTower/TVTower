@@ -44,7 +44,7 @@
 			<nick_name></nick_name>
 			<first_name_original>Nancy</first_name_original>
 			<last_name_original>Allen</last_name_original>
-			<details job="2" gender="0" birthday="1950-6-24" deathday="" country="" />
+			<details job="2" gender="0" birthday="1950-06-24" deathday="" country="" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="de494c09-c094-4217-a010-5241833ef53f" tmdb_id="0" imdb_id="nm0491048" creator="">
@@ -169,7 +169,7 @@
 			<nick_name></nick_name>
 			<details job="136" gender="2" birthday="" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
 			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
-			</person>
+		</person>
 		<person id="79c081cb-755e-41b8-bd50-11f00e6b1382" tmdb_id="0" imdb_id="nm0108523" creator="">
 			<first_name>Pierre</first_name>
 			<last_name>Briceson</last_name>
@@ -252,7 +252,7 @@
 			<nick_name></nick_name>
 			<first_name_original>James</first_name_original>
 			<last_name_original>Finlayson</last_name_original>
-			<details job="2" gender="0" birthday="1887-08-27" deathday="1953-10-9" country="" />
+			<details job="2" gender="0" birthday="1887-08-27" deathday="1953-10-09" country="" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="370a8d9d-ceef-4a7c-9c09-cc7e9d616311" tmdb_id="0" imdb_id="nm0001077" creator="">
@@ -1258,7 +1258,7 @@
 			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person id="af527d7c-092c-47f5-a7f0-e1b3e81a8f91" tmdb_id="0" imdb_id="" creator="" comment="duplicate on purpose? There's even an IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
+		<person id="af527d7c-092c-47f5-a7f0-e1b3e81a8f91" tmdb_id="0" imdb_id="" creator="" comment="TODO: duplicate on purpose? There's even an IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
 			<first_name>Alan</first_name>
 			<last_name>Smithee</last_name>
 			<nick_name></nick_name>
