@@ -71,7 +71,7 @@ NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Director %DIRECTORNAME1% brings film 
 
 NEWS_ANNOUNCE_MOVIE_TITLE1 = New movie with %ACTORNAME1%
 NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% shoots new film
-#NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% with new film in theaters
+NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% with new film in theaters
 
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME1% bring «%MOVIETITLE%» to the screen.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Coming soon to theaters: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is already full of praise for the film.
@@ -119,8 +119,8 @@ SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = defeats thanks to a converted corner kick 
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = defeat thanks to a converted corner kick by %TEAM1STARSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = defeats thanks to saved penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = defeat thanks to saved penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
-#SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = beats thanks to brilliant saves by goalkeeper %TEAM1KEEPERSHORT% %MATCHKIND%
-#SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = beat thanks to brilliant saves by goalkeeper %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = beats thanks to brilliant saves by goalkeeper %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = beat thanks to brilliant saves by goalkeeper %TEAM1KEEPERSHORT% %MATCHKIND%
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = gives away 3 valuable points %MATCHKIND% to
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = give away 3 valuable points %MATCHKIND% to

@@ -417,7 +417,7 @@ A classic with [1|Full].</en>
 				<en>Sons of the Desert</en>
 			</title_original>
 			<description>
-				<de>Mr. [1|Last] und Mr. [2|Last] wollen zum Treffen ihres Clubs "Die Wüstensöhne" nach Chicago. Um ihre Frauen zu überzeugen, muß sich [1|Last] krank stellen. Aber letztlich fliegen die beiden auf.</de>
+				<de>Mr. [1|Last] und Mr. [2|Last] wollen zum Treffen ihres Clubs "Die Wüstensöhne" nach Chicago. Um ihre Frauen zu überzeugen, muss sich [1|Last] krank stellen. Aber letztlich fliegen die beiden auf.</de>
 				<en>Mr. [1|Last] and Mr. [2|Last] want to go to Chicago for the meeting of their club "The Desert Sons". To convince their wives, [1|Last] has to pretend to be sick. But in the end, the two are busted.</en>
 			</description>
 			<staff>
@@ -9976,7 +9976,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			<ratings critics="76" speed="54" outcome="40" />
 			<children>
 			    <!-- Offizielle Original-Episodentitel auf deutsch gibt es scheinbar nicht, werden hier von den englischen Originaltiteln übersetzt -->
-				<programme id="TheRob-serie-DasVerborgene-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739264" creator="8751" created_by="TheRob">
 					<title>
 						<de>Visionen</de>
 						<en>Visions</en>
@@ -9990,7 +9990,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>In Paris, a man has a vision that his brother is being murdered. When he returns home, he realizes it's true. What is going on?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgenen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgenen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739258" creator="8751" created_by="TheRob">
 					<title>
 						<de>Anhalter</de>
 						<en>Hitchhiker</en>
@@ -10004,7 +10004,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>A man gives a female hitchhiker a ride. In the pub in the next village, a name is being called, and she freaks out. No one wants to speak. Why?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739256" creator="8751" created_by="TheRob">
 					<title>
 						<de>Essen ist fertig</de>
 						<en>Food is ready</en>
@@ -10018,7 +10018,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>The husband saves his wife's life after a snake bite. But then he learns that his true love is widowed.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739262" creator="8751" created_by="TheRob">
 					<title>
 						<de>What is up, Doc</de>
 						<en>What is up, Doc</en>
@@ -10032,7 +10032,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>Off to Italy. A young doctor wants to bring his father, also a doctor, to America. But the village does not want to let their "real" doctor go.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep005" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep005" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739261" creator="8751" created_by="TheRob">
 					<title>
 						<de>Schaue tief</de>
 						<en>Look deep</en>
@@ -10046,7 +10046,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>A young lady gives her ex-lover a crystal ball as a farewell gift. In it, he can now see how she is cheating on her husband.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep006" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep006" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739257" creator="8751" created_by="TheRob">
 					<title>
 						<de>Letzter Wille</de>
 						<en>Last will</en>
@@ -10060,7 +10060,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>Two brothers are fighting over their father's inheritance. Well, time to restore order, right out of the grave.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep007" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep007" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739255" creator="8751" created_by="TheRob">
 					<title>
 						<de>Alpträume</de>
 						<en>Nightmares</en>
@@ -10074,7 +10074,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>A pilot suddenly falls into a trance. But the co-pilot saves everyone from the crash. The pilot must go into what lies hidden behind the veil to find out the cause.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep008" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep008" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739260" creator="8751" created_by="TheRob">
 					<title>
 						<de>Was eine Hitze</de>
 						<en>OMG what a heat</en>
@@ -10088,7 +10088,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>A dutiful citizen calls the police when he observes a burglary. But when the police arrive, the apartment is unoccupied.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep009" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep009" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739263" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Dame kehrt zurück</de>
 						<en>The lady returns</en>
@@ -10102,7 +10102,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>Deceased? Not really. Born again in India. Time to visit the old family and clarify a few things.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep010" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep010" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739259" creator="8751" created_by="TheRob">
 					<title>
 						<de>Londons meistgesuchter Star</de>
 						<en>London's most wanted star</en>
@@ -12040,7 +12040,7 @@ Dream scenes and sentiments warp the storyline. </en>
 			<data country="USA" year="1983" distribution="0" maingenre="4" subgenre="7" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="95" speed="80" outcome="85" />
 			<children>
-				<programme id="TheRob-serie-DelanoandChefs-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1588949" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die ZwanzigerJahre</de>
 						<en>The Twenties</en>
@@ -12055,7 +12055,7 @@ Dream scenes and sentiments warp the storyline. </en>
 					</description>
 					<ratings critics="99" speed="75" />
 				</programme>
-				<programme id="TheRob-serie-DelanoandChefs-Ep002" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep002" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1588950" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Vierziger Jahre</de>
 						<en>The Fourties</en>
@@ -12070,7 +12070,7 @@ Dream scenes and sentiments warp the storyline. </en>
 					</description>
 					<ratings critics="90" speed="83" />
 				</programme>
-				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1588951" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Sechziger Jahre</de>
 						<en>The Sixties</en>
@@ -12111,7 +12111,7 @@ Dream scenes and sentiments warp the storyline. </en>
 			<data country="USA" year="1981" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="92" speed="57" outcome="65" />
 			<children>
-				<programme id="TheRob-serie-HinterEden-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-HinterEden-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1780080" creator="8751" created_by="TheRob">
 					<title>
 						<de>Brüder</de>
 						<en>Brothers</en>
@@ -12126,7 +12126,7 @@ Dream scenes and sentiments warp the storyline. </en>
 					</description>
 					<ratings critics="97" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-HinterEden-Ep002" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-HinterEden-Ep002" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1875253" creator="8751" created_by="TheRob">
 					<title>
 						<de>Cathy</de>
 						<en>Cathy</en>
@@ -12141,7 +12141,7 @@ Dream scenes and sentiments warp the storyline. </en>
 					</description>
 					<ratings critics="83" speed="78" />
 				</programme>
-				<programme id="TheRob-serie-HinterEden-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-HinterEden-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1875252" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rivalen</de>
 						<en>Rivals</en>
@@ -12492,7 +12492,7 @@ Dream scenes and sentiments warp the storyline. </en>
 			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="38" outcome="30" />
 			<children>
-				<programme id="TheRob-serie-RingeundRosen-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RingeundRosen-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt4741620" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das Frühstück</de>
 						<en>Breakfast</en>
@@ -12506,7 +12506,7 @@ Dream scenes and sentiments warp the storyline. </en>
 						<en>As an introduction, the family is highlighted at breakfast.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RingeundRosen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RingeundRosen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt4741632" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der Ring</de>
 						<en>The Ring</en>
@@ -12520,7 +12520,7 @@ Dream scenes and sentiments warp the storyline. </en>
 						<en>At last, some fantasy. The magic ring appears.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RingeundRosen-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RingeundRosen-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt4741654" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Flucht</de>
 						<en>The Escape</en>

@@ -98,7 +98,7 @@
 			</title>
 			<description>
 				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die Arbeiterpartei Deutschland (APD) unter Ministerpräsident Hannes Reif mit 52,1% der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
-				<en>In the state elections in North Rhine-Westphalia, the Arbeiterpartei Deutschland (APD) headed by Prime Minister Hannes Reif achieves the best election result in its history in this state, with 52.1% of the vote.</en>
+				<en>In the state elections in North Rhine-Westphalia, the Workers' Party of Germany (APD) headed by Prime Minister Hannes Reif achieves the best election result in its history in this state, with 52.1% of the vote.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 			<effects>
@@ -180,7 +180,7 @@
 			</title>
 			<description>
 				<de>Hoher Besuch beim Parteitag der Sozialistischen Partei Ost-Deutschland (SPOD) im Palast der Republik: KPdvSS-Generalsekretär, Sergei Michailow, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
-				<en>High-ranking visitor at the party congress of the Sozialistische Partei Ost-Deutschland (SPOD) in the Palace of the Republic: KPdvSS General Secretary, Sergei Michailow, addresses the comrades and also brings a few gifts.</en>
+				<en>High-ranking visitor at the party congress of the Sozialistische Partei Ost-Deutschland (SPOD) in the Palace of the Republic: CPSU General Secretary, Sergei Michailow, addresses the comrades and also brings a few gifts.</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 		</news>
@@ -232,11 +232,11 @@
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Michailow wird KPdvSS-Generalsekretär</de>
-				<en>Michailow becomes KPdvSS Secretary General</en>
+				<en>Michailow becomes CPSU Secretary General</en>
 			</title>
 			<description>
 				<de>Im Alter von 54 Jahren wird Sergei Michailow zum jüngsten Generalsekretär in der Geschichte der Kommunistischen Partei der vereinigten Sowjet-Staaten (KPdvSS) gewählt.</de>
-				<en>At the age of 54, Sergei Mikhailov is elected the youngest General Secretary in the history of the Communist Party of the United Soviet States (CPdvSS).</en>
+				<en>At the age of 54, Sergei Mikhailov is elected the youngest General Secretary in the history of the Communist Party of the Soviet Union (CPSU).</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 		</news>
@@ -249,7 +249,7 @@
 			</title>
 			<description>
 				<de>Forderungen von KPdvSS-Generalsekretär, Sergei Michailow, nach mehr Rede- und Pressefreiheit waren das zentrale Thema auf dem 27. Parteitag der Kommunistischen Partei der vereinigten Sowjet-Staaten.</de>
-				<en>Demands by KPdvSS General Secretary, Sergei Michailow, for more freedom of speech and press were the central theme at the 27th Party Congress of the Communist Party of the United Soviet States.</en>
+				<en>Demands by CPSU General Secretary, Sergei Michailow, for more freedom of speech and press were the central theme at the 27th Party Congress of the Communist Party of the Soviet Union.</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 		</news>
@@ -263,7 +263,7 @@
 			</title>
 			<description>
 				<de>KPdvSS-Generalsekretär, Sergei Michailow, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
-				<en>KPdvSS Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
+				<en>CPSU Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 			<effects>
@@ -280,7 +280,7 @@
 			</title>
 			<description>
 				<de>KPdvSS-Generalsekretär Sergei Michailow hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, Markus Lahr, auf dem Roten Platz in Moskau entlassen.</de>
-				<en>KPdvSS Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Lahr, on Red Square in Moscow.</en>
+				<en>CPSU Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Lahr, on Red Square in Moscow.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 			<effects>
@@ -297,7 +297,7 @@
 			</title>
 			<description>
 				<de>KPdvSS-Generalsekretär Sergei Michailow hat über 300 weitere perestroika- und glasnostfeindlich eingestellte Generäle entlassen. Er möchte die Wende im Ostblock weiter voran treiben.</de>
-				<en>KPdvSS Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
+				<en>CPSU Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 		</news>
@@ -397,7 +397,7 @@
 			</title>
 			<description>
 				<de>Laut eigenen Angaben hat Nuck Chorris bereits 2x bis zur Unendlichkeit gezählt. Die Mathe-Experten dieser Erde rätseln immer noch darüber, ob das stimmt.</de>
-				<en>According to his own statements, Nuck Chorris has already counted 2x to infinity. The math experts of this world are still puzzling over whether this is true.</en>
+				<en>According to his own statements, Nuck Chorris has already counted to infinity twice. The math experts of this world are still puzzling over whether this is true.</en>
 			</description>
 			<data genre="1" price="0.3" quality="30" fictional="1" />
 		</news>
@@ -507,7 +507,7 @@
 			</title>
 			<description>
 				<de>Den geklauten Filmpreis hat er zurück gegeben. Trotzdem wurde Benny Jameson zu einer dreitägigen Gefängnisstrafe verurteilt, die er bereits angetreten hat.</de>
-				<en>The stolen film award he gave back. Nevertheless, Benny Jameson was convicted to a three-day prison sentence, which he has already entered.</en>
+				<en>He gave back the stolen film award. Nevertheless, Benny Jameson was convicted to a three-day prison sentence, which he has already entered.</en>
 			</description>
 			<data genre="1" price="0.5" quality="45" fictional="1" />
 			<effects>
@@ -2752,7 +2752,7 @@
 			</title>
 			<description>
 				<de>Nur wenige Menschen leiden an Easiophobie - der Angst zu schreiben. Der deutsche Erfolgsautor Heribert Fanta ist einer von Ihnen. Er möchte sich künftig nur noch auf die Produktion von Film-Dokumentationen konzentrieren.</de>
-				<en>Few people suffer from easiophobia - the fear of writing. The successful German author Heribert Fanta is one of them. In the future he would like to concentrate only on the production of film documentaries anymore.</en>
+				<en>Few people suffer from easiophobia - the fear of writing. The successful German author Heribert Fanta is one of them. In the future he would like to concentrate on the production of film documentaries only.</en>
 			</description>
 			<data genre="5" price="0.4" quality="40" fictional="1" />
 			<effects>
@@ -2895,7 +2895,7 @@
 			</title>
 			<description>
 				<de>Durch einen Säureanschlag wird im Kunsthaus Wanne-Eickel das Gemälde "Die Rubensdame" von Hans-Dieter Blasewitz völlig zerstört.</de>
-				<en>Through an acid attack in the Wanne-Eickel art gallery, the painting "The Rubens Lady" by Hans-Dieter Blasewitz has been completely destroyed</en>
+				<en>Through an acid attack in the Wanne-Eickel art gallery, the painting "The Rubens Lady" by Hans-Dieter Blasewitz has been completely destroyed.</en>
 			</description>
 			<data genre="5" price="0.35" quality="35" fictional="1" />
 		</news>

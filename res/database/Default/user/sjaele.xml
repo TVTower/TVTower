@@ -168,7 +168,7 @@
 				<en>Nanny helps adults</en>
 			</title>
 			<description>
-				<de>Walther F. aus Chemnitz erfuhr aus der TV-Sendung “Das Superkindermädchen”, dass ihn seine Frau vor zwei Jahren verlassen und die Kinder mitgenommen hat.</de>
+				<de>Walther F. aus Chemnitz erfuhr aus der TV-Sendung "Das Superkindermädchen", dass ihn seine Frau vor zwei Jahren verlassen und die Kinder mitgenommen hat.</de>
 				<en>Walther F. from Chemnitz learned from the TV show "The Super-Babysitter" that his wife has left him two years ago and taken the children with her.</en>
 			</description>
 			<data genre="1" price="1.0" quality="23" />
@@ -313,8 +313,8 @@
 				<en>New Mars calendar</en>
 			</title>
 			<description>
-				<de>Der Darische Kalender unterteilt das Marsjahr in 24 Monate und enthält sämtliche Schalttage. Nur noch einen Tag Abweichung auf 12 000 Marsjahre.</de>
-				<en>The Darian Calendar divides the Martian year into 24 months and includes all leap days. Deviation now only one day per 12 000 Mars years.</en>
+				<de>Der Darische Kalender unterteilt das Marsjahr in 24 Monate und enthält sämtliche Schalttage. Nur noch einen Tag Abweichung auf 12.000 Marsjahre.</de>
+				<en>The Darian Calendar divides the Martian year into 24 months and includes all leap days. Deviation now only one day per 12,000 Mars years.</en>
 			</description>
 			<data genre="3" price="1.0" quality="25" />
 			<availability year_range_from="2001" year_range_to="" />
@@ -1067,8 +1067,8 @@
 
 		<news id="Sjaele-news-Koriatis-Zusammenbruch" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>K. Koriatis Zusammenbruch</de>
-				<en>K. Koriati's collapse</en>
+				<de>C. Koriatis Zusammenbruch</de>
+				<en>C. Koriati's collapse</en>
 			</title>
 			<description>
 				<de>Costa brach beim Bierfest in Chemnitz zusammen. Inzwischen ist er wieder fit.</de>

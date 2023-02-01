@@ -654,7 +654,7 @@
 					</title>
 					<description>
 						<de>Eine alte Dame wird bestohlen. Die Polizei kann nichts machen, nur unsere Helden können der Dame helfen.</de>
-						<en>An old lady is stolen. The police can do nothing, only our heroes can help the lady.</en>
+						<en>An old lady is getting robbed. The police can't do anything, only our heroes can help the lady.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Abenteuerfreunde-Ep6">
@@ -664,7 +664,7 @@
 					</title>
 					<description>
 						<de>Ein neues Kind ist in der Stadt. Als es versucht mit dem Bus wieder in sein altes Leben zu flüchten, halten ihn unsere Helden auf und zeigen ihm wie schön seine neue Heimat ist.</de>
-						<en>A new kid is in town. When he tries to escape back to his old life by bus, our heroes stop him and show him how beautiful his new home is.</en>
+						<en>A new kid is in town. When he tries to take the bus and escape back to his old life, our heroes stop him and show him how beautiful his new home is.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Abenteuerfreunde-Ep7">
@@ -1445,15 +1445,15 @@
 			<speed slope="40" max="50" min="30" />
 		</scripttemplate>
 
-		<!--TODO reaktivieren/weglassen? (Warum?)
+		<!--TODO reaktivieren/weglassen? (Warum?)-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Ratespass">
 			<title>
 				<de>Ratespass mit %Name1% %Name2%</de>
-				<en>%Name1% %Name2% Live</en>
+				<en>Quiz fun with %Name1% %Name2%</en>
 			</title>
 			<description>
-				<de>Die berühmte Sängerin %Name1% %Name2%, leitet diese wundervolle Rateshow, bei denen die Gäste ein tolles Essservier gewinnen können.</de>
-				<en>Live and in stereo %Name1% %Name2%</en>
+				<de>Die berühmte Sängerin %Name1% %Name2% leitet diese wundervolle Rateshow, bei denen die Gäste ein tolles Essservice gewinnen können.</de>
+				<en>Famous singer %Name1% %Name2% hosts this wonderful quiz show where guests can win a fabulous dinnerware set.</en>
 			</description>
 			<variables>
 				<name1>
@@ -1484,11 +1484,11 @@
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Webcamfreude">
 			<title>
 				<de>%Name1% %Name2%s "Versteckte Webcam"</de>
-				<en>%Name1% %Name2% Live</en>
+				<en>%Name1% %Name2%'s "Hidden Webcam"</en>
 			</title>
 			<description>
-				<de>Webcams werden in zufälligen Häusern installiert, eine Woche lang werden die Bewohner bei allem was sie machen gefilmt und live ins Internet gestreamt. Die Show konfrontiert die Protagonisten mit ihren verfehlungen und zeigt die schönsten Szenen.</de>
-				<en>Live and in stereo %Name1% %Name2%</en>
+				<de>Webcams werden in zufälligen Häusern installiert. Eine Woche lang werden die Bewohner bei allem was sie machen gefilmt und live ins Internet gestreamt. Die Show konfrontiert die Protagonisten mit ihren Verfehlungen und zeigt die schönsten Szenen.</de>
+				<en>Webcams are installed in random houses. For a whole week, the residents are filmed in everything they do and are streamed live on the Internet. The show confronts the protagonists with their transgressions and shows the most beautiful scenes.</en>
 			</description>
 			<variables>
 				<name1>
@@ -1514,7 +1514,8 @@
 			<outcome slope="30" max="70" min="20" />
 			<review slope="35" max="70" min="20" />
 			<speed slope="40" max="70" min="30" />
-		</scripttemplate>-->
+			<availability year_range_from="2003" year_range_to="-1" />
+		</scripttemplate> <!-- -->
 
 		<!--kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-MagischeWesen">
@@ -1647,7 +1648,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-MagischeWesen-Ep12">
 					<title>
 						<de>Weltübernahme der %name1%</de>
-						<en>World Takeover of the %name1%</en>
+						<en>The %name1% take over the world</en>
 					</title>
 					<description>
 						<de>Der letzte Mensch wurde getötet und die %name1% ziehen aus dem %name2% aus, um die ganze Welt zu besiedeln.</de>

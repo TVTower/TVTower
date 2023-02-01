@@ -17,14 +17,14 @@ DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT5 = Hi %PLAYERNAME%,\n\nour latest meeting was
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT6 = Hey there!\n\nI'll make us some tea - hope you have some time to chat.
 
 DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1                              = Currently, no Sammy is awarded. I think in some days the race for points will start again.
-DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1                              = Currently, no Sammy is awarded %PLAYERNAME%. Maybe I can tell you more tomorrow.
+DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1                              = Currently, no Sammy is awarded, %PLAYERNAME%. Maybe I can tell you more tomorrow.
 DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE_LEVEL0_TEXT1          = The %AWARDNAME%?\n\nThere is no clear favorite yet.
 DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL0_TEXT1     = The %AWARDNAME%?\n\nCurrently, it's looking good for you.
-DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1     = The %AWARDNAME%?\n\nCurrently, it's looking good for you %PLAYERNAME%.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1     = The %AWARDNAME%?\n\nCurrently, it's looking good for you, %PLAYERNAME%.
 DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL0_TEXT1      = The %AWARDNAME%?\n\nThis much I can tell you: you are in the midfield.
-DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1      = The %AWARDNAME%?\n\nThis much I can tell you %PLAYERNAME%: you are in the midfield.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1      = The %AWARDNAME%?\n\nThis much I can tell you, %PLAYERNAME%: you are in the midfield.
 DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = The %AWARDNAME%?\n\nTo win you will have to try harder.
-DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = The %AWARDNAME%?\n\nTo win you will have to try harder %PLAYERNAME%.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = The %AWARDNAME%?\n\nTo win you will have to try harder, %PLAYERNAME%.
 
 DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL0_TEXT1  = I would like to gift you with a little something.
 DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL0_TEXT2  = Uhhm, I have brought you a gift.

@@ -9,7 +9,7 @@
 			</title>
 			<description>
 				<de>US-Präsident Baush will zur Sicherheit den Terrorismus auch im All bekämpfen. Ein Spaceshuttle soll künftig 24h/Tag die int. Raumstation umkreisen. Kosten: 50Mrd USD.</de>
-				<en>For safety's sake, US President Baush wants to fight terrorism also in space. A space shuttle is to orbit the int. space station 24 hours a day in the future. Cost: USD 50 billion.</en>
+				<en>Just to be on the safe side, US President Baush wants to fight terrorism also in space. A space shuttle is to orbit the int. space station 24 hours a day in the future. Cost: USD 50 billion.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" />
@@ -83,8 +83,8 @@
 				<en>Safety program failed!</en>
 			</title>
 			<description>
-				<de>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. „Ohne die 2 Shuttles ist das All sicherer“, so ein Kongressabgeordneter.</de>
-				<en>The Senate put a stop to the President's security measures in space. "Space is safer without the 2 shuttles," said one congressman.</en>
+				<de>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. „Ohne die zwei Shuttles ist das All sicherer“, so ein Kongressabgeordneter.</de>
+				<en>The Senate put a stop to the President's security measures in space. "Space is safer without the two shuttles," said one congressman.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="68" />
@@ -171,8 +171,8 @@
 				<en>Counterterrorism - now 2 shuttles</en>
 			</title>
 			<description>
-				<de>Um die Sicherheit vor Terroristen im All sicherzustellen, sollen jetzt 2 Spaceshuttles die int. Raumstation umkreisen. „Man kann ja nie wissen was passiert“, so Baush.</de>
-				<en>Intended to ensure security against terrorists in space, 2 space shuttles are now to orbit the int. space station. "You never know what's going to happen," Baush said.</en>
+				<de>Um die Sicherheit vor Terroristen im All sicherzustellen, sollen jetzt zwei Spaceshuttles die int. Raumstation umkreisen. „Man kann ja nie wissen was passiert“, so Baush.</de>
+				<en>Intended to ensure security against terrorists in space, two space shuttles are now to orbit the int. space station. "You never know what's going to happen," Baush said.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="689218a0-412c-4afb-9901-fd77f62c484f" />
@@ -201,8 +201,8 @@
 				<en>Resistance to shuttle plans</en>
 			</title>
 			<description>
-				<de>Das vom US-Präsidenten Baush verlangte 3. Shuttle für Reperaturzwecke für weitere 20Mrd USD wird vom Senat boykottiert. Auch die Bürger protestieren in Washington.</de>
-				<en>Senate boycotts 3rd shuttle. President Baush demanded it for repair purposes. Additional costs: 20 billion USD. There are also citizens protests in Washington.</en>
+				<de>Das vom US-Präsidenten Baush verlangte dritte Shuttle für Reperaturzwecke für weitere 20Mrd USD wird vom Senat boykottiert. Auch die Bürger protestieren in Washington.</de>
+				<en>Senate boycotts third shuttle. President Baush demanded it for repair purposes. Additional costs: 20 billion USD. There are also citizens protests in Washington.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="2b808db1-96cf-46ab-b912-f172fdf60b69" />
@@ -1309,7 +1309,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Der tägliche Konsum von Bier fördert nach neusten wissenschaftlichen Untersuchen den Haarwuchs. Nebenwirkung: Die Leber gibt den Geist auf.</de>
-				<en>Daily consumption of beer promotes hair growth, according to the latest scientific research. Side effect: the liver kicks the bucket.</en>
+				<en>According to the latest scientific research, daily consumption of beer promotes hair growth. Side effect: the liver kicks the bucket.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="29" />
