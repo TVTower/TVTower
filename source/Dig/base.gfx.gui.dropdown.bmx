@@ -81,7 +81,7 @@ Type TGUIDropDown Extends TGUIInput
 		'=== ENTRY LIST ===
 		'create and style list
 		If list Then list.Remove()
-		list = New TGUISelectList.Create(New SVec2I(0, Int(Self.rect.h)), New SVec2I(Int(rect.w), listHeight), "")
+		list = New TGUISelectList.Create(New SVec2I(0, Int(Self.rect.h)), New SVec2I(Int(rect.w), listHeight), limitState)
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(False)
@@ -97,7 +97,7 @@ Type TGUIDropDown Extends TGUIInput
 		list.SetZIndex(20000)
 
 		'add bg to list
-		Local bg:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New SVec2I(0,0), New SVec2I(0,0))
+		Local bg:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New SVec2I(0,0), New SVec2I(0,0), limitState)
 		bg.spriteBaseName = _spriteNameBase 'version without potential "orientation"
 '		bg.SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 		list.SetBackground(bg)
