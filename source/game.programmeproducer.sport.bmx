@@ -203,7 +203,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		Local programmeData:TProgrammeData
 		If parentLicence
 			programmeData = New TSportsProgrammeData
-			THelper.TakeOverObjectValues(parentLicence.data, programmeData)
+			THelper.TakeOverObjectValues(parentLicence.data, programmeData, "id") 'do not copy "id" !
 		EndIf
 		If Not programmeData Then programmeData = New TSportsProgrammeData
 
