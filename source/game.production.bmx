@@ -680,7 +680,12 @@ Type TProduction Extends TOwnedGameObject
 			Local job:TPersonProductionJob = productionConcept.script.jobs[castIndex]
 			If Not p Or Not job Then Continue
 
-			programmeData.AddCast(New TPersonProductionJob.Init(p.GetID(), job.job))
+			If job.roleID
+				'transfer role to licence cast for potential variable substitution
+				programmeData.AddCast(New TPersonProductionJob.Init(p.GetID(), job.job, job.gender, job.country, job.roleId))
+			Else
+				programmeData.AddCast(New TPersonProductionJob.Init(p.GetID(), job.job))
+			EndIF
 		Next
 
 		Return programmeData

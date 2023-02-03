@@ -170,7 +170,7 @@ Type TDatabaseLoader
 		'exclude some files as we add it by default to load it
 		'as the first files / specific order (as they do not require
 		'others - this avoids "extending X"-log-entries)
-		dirTree.SetExcludeFileNames(["database_people", "database_ads", "database_programmes", "database_news"])
+		dirTree.SetExcludeFileNames(["database_scripts", "database_people", "database_ads", "database_programmes", "database_news"])
 
 		'add the rest of available files in the given dir
 		'(this also sorts the files)
@@ -178,10 +178,11 @@ Type TDatabaseLoader
 
 		'add that files at the top
 		'(in reversed order as each is added at top of the others!)
-		dirTree.AddFile(dbDirectory+"/database_achievements.xml", True) '5
-		dirTree.AddFile(dbDirectory+"/database_programmes.xml", True) '4
-		dirTree.AddFile(dbDirectory+"/database_news.xml", True) '3
-		dirTree.AddFile(dbDirectory+"/database_ads.xml", True) '2
+		dirTree.AddFile(dbDirectory+"/database_achievements.xml", True) '6
+		dirTree.AddFile(dbDirectory+"/database_programmes.xml", True) '5
+		dirTree.AddFile(dbDirectory+"/database_news.xml", True) '4
+		dirTree.AddFile(dbDirectory+"/database_ads.xml", True) '3
+		dirTree.AddFile(dbDirectory+"/database_scripts.xml", True) '2
 		dirTree.AddFile(dbDirectory+"/database_people.xml", True) '1
 
 
@@ -290,6 +291,16 @@ Type TDatabaseLoader
 			Next
 		EndIf
 
+		'===== IMPORT ALL PROGRAMME ROLES =====
+		Local nodeAllRoles:TxmlNode = xml.FindRootChild("programmeroles")
+		If nodeAllRoles
+			For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
+				If nodeRole.getName() <> "programmerole" Then Continue
+
+				LoadV3ProgrammeRoleFromNode(nodeRole, xml)
+			Next
+		EndIf
+
 
 		'===== IMPORT ALL PROGRAMMES (MOVIES/SERIES) =====
 		'ATTENTION: LOAD PERSONS FIRST !!
@@ -331,17 +342,6 @@ Type TDatabaseLoader
 					endif
 					endrem
 				EndIf
-			Next
-		EndIf
-
-
-		'===== IMPORT ALL PROGRAMME ROLES =====
-		Local nodeAllRoles:TxmlNode = xml.FindRootChild("programmeroles")
-		If nodeAllRoles
-			For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
-				If nodeRole.getName() <> "programmerole" Then Continue
-
-				LoadV3ProgrammeRoleFromNode(nodeRole, xml)
 			Next
 		EndIf
 
@@ -1271,6 +1271,14 @@ Type TDatabaseLoader
 			Local memberIndex:Int = xml.FindValueInt(nodeMember, "index", 0)
 			Local memberFunction:Int = xml.FindValueInt(nodeMember, "function", 0)
 			Local memberGenerator:String = xml.FindValue(nodeMember, "generator", "")
+			Local jobRoleGUID:String = xml.FindValue(nodeMember, "role_guid", "")
+			Local jobRoleID:Int = 0
+			If jobRoleGUID
+				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
+				If role
+					jobRoleID = role.GetID()
+				EndIf
+			EndIf
 			Local memberGUID:String = nodeMember.GetContent().Trim()
 
 			Local member:TPersonBase
@@ -1320,7 +1328,7 @@ Type TDatabaseLoader
 			member.SetJob(memberFunction)
 
 			'add cast
-			programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction))
+			programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction, member.gender, member.countryCode, jobRoleID))
 		Next
 
 
