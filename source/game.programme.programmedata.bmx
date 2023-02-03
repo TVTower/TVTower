@@ -8,6 +8,7 @@ Import "Dig/base.util.localization.bmx"
 Import "game.player.difficulty.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.person.base.bmx"
+Import "game.programme.programmerole.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
@@ -1018,26 +1019,61 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method _ReplacePlaceholdersInString:String(content:String)
 		Local result:String = content
 
-		'placeholders are: "%object|guid|whatinformation%"
-		'              or: "${object|guid|whatinformation}"
+		'placeholders are: "%object:guid:whatinformation%"
+		'              or: "${object:guid:whatinformation}"
+		'person   :  guid : <Full|First|Nick|Last>
+		'cast     : index : <Full|First|Nick|Last>
+		'castRole : index : <Full|First|Last>
+		'role     :  guid : <Full|First|Last>
 		Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(content)
 		For Local placeHolder:String = EachIn placeHolders
-			Local elements:String[] = placeHolder.split("|")
+			Local elements:String[] = placeHolder.split(":")
 			If elements.length < 3 Then Continue
 
-			If elements[0] = "person"
+			If elements[0].endsWith("person")
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(elements[1])
 				If Not person
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Full", "John Doe")
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|First", "John")
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Nick", "John")
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Last", "Doe")
+					throw "could not find person with id " + elements[1]
 				Else
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Full", person.GetFullName())
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|First", person.GetFirstName())
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Nick", person.GetNickName())
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Last", person.GetLastName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person:"+elements[1]+":Full", person.GetFullName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person:"+elements[1]+":First", person.GetFirstName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person:"+elements[1]+":Nick", person.GetNickName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "person:"+elements[1]+":Last", person.GetLastName())
 				EndIf
+			ElseIf elements[0].endsWith("cast")
+				Local cast:TPersonProductionJob = GetCastAtIndex(int(elements[1]))
+				If not cast
+					throw "could not find cast at index " + elements[1] + " for programme with ID "+ GetGUID()
+				Else
+					Local person:TPersonBase = GetPersonBaseCollection().GetByID(cast.personID)
+					TTemplateVariables.ReplacePlaceholderInText(result, "cast:"+elements[1]+":Full", person.GetFullName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "cast:"+elements[1]+":First", person.GetFirstName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "cast:"+elements[1]+":Nick", person.GetNickName())
+					TTemplateVariables.ReplacePlaceholderInText(result, "cast:"+elements[1]+":Last", person.GetLastName())
+				EndIf
+			ElseIf elements[0].endsWith("castRole")
+				Local cast:TPersonProductionJob = GetCastAtIndex(int(elements[1]))
+				If not cast
+					throw "could not find cast at index " + elements[1] + " for programme with ID "+ GetGUID()
+				Else
+					Local role:TProgrammeRole = GetProgrammeRoleCollection().GetById(cast.roleID)
+					If role
+						TTemplateVariables.ReplacePlaceholderInText(result, "castRole:"+elements[1]+":Full", role.GetFullName())
+						TTemplateVariables.ReplacePlaceholderInText(result, "castRole:"+elements[1]+":First", role.GetFirstName())
+						TTemplateVariables.ReplacePlaceholderInText(result, "castRole:"+elements[1]+":Last", role.GetLastName())
+					Else
+						throw "could not find role with ID "+cast.roleID
+					EndIf
+				EndIf
+			ElseIf elements[0].endsWith("role")
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(elements[1])
+					If role
+						TTemplateVariables.ReplacePlaceholderInText(result, "role:"+elements[1]+":Full", role.GetFullName())
+						TTemplateVariables.ReplacePlaceholderInText(result, "role:"+elements[1]+":First", role.GetFirstName())
+						TTemplateVariables.ReplacePlaceholderInText(result, "role:"+elements[1]+":Last", role.GetLastName())
+					Else
+						throw "could not find role with ID "+elements[1]
+					EndIf
 			EndIf
 		Next
 
@@ -1047,12 +1083,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 				'check for cast
 				For Local i:Int = 0 To 10
 					job = GetCastAtIndex(i)
-					If Not job
-						result = result.Replace("["+i+"|Full]", "John Doe")
-						result = result.Replace("["+i+"|First]", "John")
-						result = result.Replace("["+i+"|Nick]", "John")
-						result = result.Replace("["+i+"|Last]", "Doe")
-					Else
+					If job
 						Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
 						result = result.Replace("["+i+"|Full]", person.GetFullName())
 						result = result.Replace("["+i+"|First]", person.GetFirstName())

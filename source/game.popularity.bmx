@@ -2,6 +2,7 @@ SuperStrict
 Import Brl.LinkedList
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.mersenne.bmx"
+Import "common.misc.templatevariables.bmx"
 Import "game.modifier.base.bmx"
 
 
@@ -365,7 +366,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	End Method
 	
 	
-	Method GetPopularity:TPopularity()
+	Method GetPopularity:TPopularity(params:TData = Null)
 		local popularity:TPopularity
 		If popularityID > 0
 			popularity = GetPopularityManager().GetByID(popularityID)
@@ -373,7 +374,19 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 		If not popularity and popularityReferenceID > 0
 			popularity = GetPopularityManager().GetByReferenceID(popularityReferenceID)
 		ElseIf not popularity and popularityReferenceGUID
-			popularity = GetPopularityManager().GetByReferenceGUID(popularityReferenceGUID)
+			If popularityReferenceGUID.Contains("${")
+				If params
+					Local variables:TTemplateVariables = TTemplateVariables(params.get("variables"))
+					If variables
+						Local resolved:TLocalizedString = new TLocalizedString()
+						resolved.Set(popularityReferenceGUID)
+						resolved=variables.ReplacePlaceholders(resolved)
+						popularity = GetPopularityManager().GetByReferenceGUID(resolved.Get())
+					EndIf
+				EndIf
+			Else
+				popularity = GetPopularityManager().GetByReferenceGUID(popularityReferenceGUID)
+			EndIf
 		EndIf
 		Return popularity
 	End Method
@@ -384,7 +397,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 		'skip if probability is missed
 		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
 
-		local popularity:TPopularity = GetPopularity()
+		local popularity:TPopularity = GetPopularity(params:TData)
 		if not popularity
 			TLogger.Log(ToString(), "cannot find popularity to trigger: ID=" + popularityID + "  referenceGUID=~q" + popularityReferenceGUID + "~q   referenceID=" + popularityReferenceID, LOG_ERROR)
 			return false
