@@ -546,7 +546,10 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		Next
 
 		'select and activate input field if NO name was entered yet!
-		If Not savegameName.GetValue()
+		'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+		'input - instead of "GetValue()" which uses the last value before
+		'the input became active
+		If Not savegameName.GetCurrentValue()
 			doSetManualFocus = True
 		EndIf
 	End Method
@@ -602,7 +605,10 @@ rem
 		EndIf
 endrem
 		If not savegameName.IsActive()
-			If savegameName.GetValue()
+			'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+			'input - instead of "GetValue()" which uses the last value before
+			'the input became active
+			If savegameName.GetCurrentValue()
 				'only select if no other was selected already
 				If GetSelectedButtonIndex() = -1
 					SelectButton(0)
@@ -629,13 +635,17 @@ endrem
 
 		'handle Enter-Key
 		If KeyManager.IsHit(KEY_ENTER)
+'print "ENTER " + Millisecs() + "   GetSelectedButtonIndex()="+GetSelectedButtonIndex() + "   dialogueButtons[0].isEnabled()="+dialogueButtons[0].isEnabled()
 			'avoid others getting triggered too (eg. chat)
 			'also avoids a popup confirm dialogue to see enter on next 
 			'update
 			KeyManager.blockKey(KEY_ENTER, 250)
 		
 			If GetSelectedButtonIndex() = 0 and dialogueButtons[0].isEnabled()
-				SaveSavegame(savegameName.GetValue())
+				'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+				'input - instead of "GetValue()" which uses the last value before
+				'the input became active
+				SaveSavegame(savegameName.GetCurrentValue())
 			ElseIf GetSelectedButtonIndex() = 1 and dialogueButtons[1].isEnabled()
 				Back()
 			EndIf
@@ -750,7 +760,10 @@ endrem
 
 		'approve overwrite
 		If buttonNumber = 0
-			SaveSavegame(savegameName.GetValue(), True)
+			'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+			'input - instead of "GetValue()" which uses the last value before
+			'the input became active
+			SaveSavegame(savegameName.GetCurrentValue(), True)
 		EndIf
 
 		'remove connection to dialogue (guimanager takes care of fading)
@@ -796,7 +809,10 @@ endrem
 		Local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		If Not button Or button <> dialogueButtons[0] Then Return False
 
-		If Not SaveSavegame(savegameName.GetValue())
+		'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+		'input - instead of "GetValue()" which uses the last value before
+		'the input became active
+		If Not SaveSavegame(savegameName.GetCurrentValue())
 			triggerEvent.SetVeto(True)
 			Return False
 		EndIf
