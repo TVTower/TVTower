@@ -421,6 +421,8 @@ End Function
 
 Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Field templateID:Int
+	'for passing on substitutions to follow up events
+	Field templateVariables:TTemplateVariables
 
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Long = -1
@@ -467,7 +469,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method InitFromTemplate:TNewsEvent(template:TNewsEventTemplate)
+	Method InitFromTemplate:TNewsEvent(template:TNewsEventTemplate, parentVariables:TTemplateVariables = Null)
 		'reset template (random data like template variables)
 		If template Then template.ResetRandomData()
 
@@ -477,7 +479,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'mark the template (and increase usage count)
 		template.SetUsed(Self.GetGUID())
 
-		ReplacePlaceholdersFromTemplate(template, 0)
+		ReplacePlaceholdersFromTemplate(template, parentVariables, 0)
 
 		Self.happenedTime = template.happenTime
 		If template.targetGroupAttractivityMod
@@ -502,18 +504,48 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 	
 	
-	Method ReplacePlaceholdersFromTemplate:Int(template:TNewsEventTemplate = Null, time:Long = 0)
+	Method ReplacePlaceholdersFromTemplate:Int(template:TNewsEventTemplate = Null, parentVariables:TTemplateVariables = null, time:Long = 0)
 		If not template and not self.templateID Then Return False
 		If not template
 			template = GetNewsEventTemplateCollection().GetByID(self.templateID)
 			If not template Then Return False
 		EndIf
 
+		Local varToUse:TTemplateVariables
+		If templateVariables
+			varToUse = templateVariables
+		Else
+			varToUse = parentVariables
+			If Not varToUse And template.templateVariables
+				'no stored variables and no parent variables - use a copy from the template
+				varToUse = template.templateVariables.Copy()
+			ElseIf template.templateVariables
+				'both template variables and parent variables exist - check if merging is necessary
+				Local mergeNecessary:Int = False
+				'TODO nested variables with parent are not yet considered by this check
+				For Local key:Object = EachIn parentVariables.variables.keys()
+					If Not template.templateVariables.variables.Contains(key)
+						'parent contains additional variable
+						mergeNecessary = True
+						Exit
+					EndIf
+				Next
+				If mergeNecessary
+					throw "implement merge of template variables - cause: " + template.GetTitle()
+				Else
+					'for self triggered news merge will not be necessary - parent variables are ignored
+					'for now we assume that the existence of template variables starts a new news thread
+					'and hence use the template's variables
+					varToUse = template.templateVariables.Copy()
+				EndIf
+			EndIf
+		EndIf
+
 		'copy text if we intend to replace content
 		'(for now only check main language)
 		If template.title.Get().Find("%") >= 0 or template.title.Get().Find("${") >= 0
-			If template.templateVariables
-				Self.title = _ReplacePlaceholders(template.templateVariables.ReplacePlaceholders(template.title), time)
+			If varToUse
+				Self.title = _ReplacePlaceholders(varToUse.ReplacePlaceholders(template.title), time)
 			Else
 				Self.title = _ReplacePlaceholders(template.title, time)
 			EndIf
@@ -521,13 +553,19 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			Self.title = template.title
 		EndIf
 		If template.description.Get().Find("%") >= 0 or template.description.Get().Find("${") >= 0
-			If template.templateVariables
-				Self.description = _ReplacePlaceholders(template.templateVariables.ReplacePlaceholders(template.description), time)
+			If varToUse
+				Self.description = _ReplacePlaceholders(varToUse.ReplacePlaceholders(template.description), time)
 			Else
 				Self.description = _ReplacePlaceholders(template.description, time)
 			EndIf
 		Else
 			Self.description = template.description
+		EndIf
+
+		'store variables for passing on to potential trigger
+		If varToUse And Not templateVariables
+			templateVariables = varToUse
+			'print "storing templateVariables for " +Self.GetTitle()
 		EndIf
 	End Method
 
@@ -674,7 +712,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'replace placeholders with CURRENT information (on creation
 			'of the news event the time could differ, or the weather
 			'is not so shiny...)
-			ReplacePlaceholdersFromTemplate(null, time)
+			ReplacePlaceholdersFromTemplate(null, templateVariables, time)
 
 			'set topicality to 100%
 			topicality = 1.0
@@ -683,6 +721,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 			'trigger happenEffects
 			Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID())
+			If templateVariables
+				effectParams.Add("variables", templateVariables)
+			EndIf
 			If effects Then effects.Update("happen", effectParams)
 		EndIf
 	End Method
@@ -705,6 +746,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
+		If templateVariables
+			effectParams.Add("variables", templateVariables)
+		EndIf
 		If effects Then effects.Update("broadcast", effectParams)
 	End Method
 
@@ -723,6 +767,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
+		If templateVariables
+			effectParams.Add("variables", templateVariables)
+		EndIf
 		If effects Then effects.Update("broadcastDone", effectParams)
 	End Method
 
@@ -936,7 +983,9 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 		Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(triggerNewsGUID)
 		If template
 			If template.IsAvailable()
-				news = New TNewsEvent.InitFromTemplate(template)
+				Local variables:TTemplateVariables = TTemplateVariables(params.Get("variables"))
+'				If variables Then variables=variables.Copy()
+				news = New TNewsEvent.InitFromTemplate(template, variables)
 				If news
 					GetNewsEventCollection().Add(news)
 				EndIf
