@@ -1,6 +1,7 @@
 CREDIT_REPAID   = Montant emprunté
 CREDIT_TAKEN    = Montant remboursé
 ACCOUNT_BALANCE = Solde du compte
+#TARGET_GROUPS   = 
 
 ACHIEVEMENTS                        = Succès
 ACHIEVEMENTCATEGORY_CATEGORIES      = Catégories

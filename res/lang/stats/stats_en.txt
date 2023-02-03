@@ -1,6 +1,7 @@
 CREDIT_REPAID   = credit repaid
 CREDIT_TAKEN    = credit taken
 ACCOUNT_BALANCE = account balance
+TARGET_GROUPS   = Target groups
 
 ACHIEVEMENTS                        = Achievements
 ACHIEVEMENTCATEGORY_CATEGORIES      = Categories

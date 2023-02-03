@@ -1,6 +1,7 @@
 CREDIT_REPAID   = empréstimo pago
 CREDIT_TAKEN    = empréstimo feito
 ACCOUNT_BALANCE = saldo da conta
+TARGET_GROUPS   = Grupos alvo
 
 ACHIEVEMENTS                        = Conquistas
 ACHIEVEMENTCATEGORY_CATEGORIES      = Categorias
