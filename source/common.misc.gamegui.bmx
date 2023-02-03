@@ -322,6 +322,17 @@ Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
 		Super.SetCaption(caption)
 		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(headerFont)
 	End Method
+
+
+	Method Draw() override
+		'reset cursor in "draw" for now so "underlaying" element
+		'modifications are ignored
+		'(eg the forbidden state in a programme planner)
+		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
+
+		Super.Draw()
+	End Method
+
 End Type
 
 
