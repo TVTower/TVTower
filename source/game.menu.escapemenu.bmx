@@ -158,7 +158,7 @@ End Type
 
 
 
-Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
+Type TGUIModalSettingsMenu Extends TGUIGameModalWindowChainDialogue
 	Field settingsPanel:TGUISettingsPanel
 	Field _eventListeners:TEventListenerBase[]
 
@@ -250,7 +250,7 @@ End Type
 
 
 
-Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
+Type TGUIModalLoadSavegameMenu Extends TGUIGameModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field _eventListeners:TEventListenerBase[]
 	Field _onLoadSavegameFunc:Int()
@@ -461,7 +461,7 @@ End Type
 
 
 
-Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
+Type TGUIModalSaveSavegameMenu Extends TGUIGameModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field savegameName:TGUIInput
 	Field savegameNameLabel:TGUILabel
