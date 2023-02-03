@@ -1,6 +1,7 @@
 CREDIT_REPAID   = Kredit zurückgezahlt
 CREDIT_TAKEN    = Kredit aufgenommen
 ACCOUNT_BALANCE = Kontostand
+TARGET_GROUPS   = Zielgruppen
 
 ACHIEVEMENTS                        = Erfolge
 ACHIEVEMENTCATEGORY_CATEGORIES      = Kategorien

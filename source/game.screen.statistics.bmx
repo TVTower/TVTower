@@ -67,11 +67,9 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 			tabGroup = New TGUITabGroup.Create(New SVec2I(19, 10), New SVec2I(762,28), "officeStatisticsScreen")
 
 			Local buttonFont:TBitmapFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
-			Local captions:String[] = ["Einschaltquoten", "Senderimage", "Zielgruppen", "Senderkarte", "sonstiges"]
 			For Local i:Int = 0 Until 5
 				Local btn:TGUIToggleButton = New TGUIToggleButton.Create(New SVec2I(i*155, 0), New SVec2I(142, 28), "", "officeStatisticsScreen")
 				btn.SetFont( buttonFont )
-				btn.SetCaption(captions[i])
 				tabGroup.AddButton(btn, i)
 '				statisticGroupButtons :+ [btn]
 			Next
@@ -109,6 +107,11 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 	Method SetLanguage()
 		'nothing up to now
+		Local captions:String[] = ["AUDIENCE_RATINGS", "CHANNEL_IMAGE", "TARGET_GROUPS", "STATIONMAP", "FINANCES_MISC"]
+		For Local i:Int = 0 Until tabGroup.buttons.length
+			Local btn:TGUIToggleButton = tabGroup.buttons[i]
+			btn.SetCaption(StringHelper.UCFirstSimple(GetLocale(captions[i])))
+		Next
 	End Method
 
 
