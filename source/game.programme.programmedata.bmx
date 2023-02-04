@@ -769,7 +769,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetCastGroup:TPersonBase[](jobFlag:Int)
 		Local res:TPersonBase[0]
 		For Local job:TPersonProductionJob = EachIn cast
-			If job.job = jobFlag
+			If job.job & jobFlag
 				res :+ [ GetPersonBaseCollection().GetByID( job.personID) ]
 			EndIf
 		Next
