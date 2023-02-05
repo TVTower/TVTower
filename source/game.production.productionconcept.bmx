@@ -460,7 +460,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		ResetCache()
 
-		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetScript, new TData.Add("script", script), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetScript, new TData.Add("script", script), Self )
 	End Method
 
 
@@ -486,7 +486,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		ResetCache()
 
-		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetProductionCompany, new TData.Add("productionCompany", productionCompany), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetProductionCompany, new TData.Add("productionCompany", productionCompany), Self )
 	End Method
 
 
@@ -562,7 +562,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		castSympathy = 1.0
 		castSympathyCached = False
 
-		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetCast, new TData.AddNumber("castIndex", castIndex).Add("person", person), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetCast, new TData.AddNumber("castIndex", castIndex).Add("person", person), Self )
 
 		return True
 	End Method
@@ -1116,7 +1116,7 @@ endrem
 		'maybe some limitation corrected the value
 		value = productionFocus.GetFocus(focusIndex)
 
-		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.AddNumber("focusIndex", focusIndex).AddNumber("value", value), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.AddNumber("focusIndex", focusIndex).AddNumber("value", value), Self )
 
 		return True
 	End Method
@@ -1387,7 +1387,7 @@ Type TProductionFocusBase
 		endif
 
 		'emit event with corrected value (via GetFocus())
-		TriggerBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self )
 		return True
 	End Method
 

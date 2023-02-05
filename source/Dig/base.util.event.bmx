@@ -73,6 +73,22 @@ Function TriggerBaseEvent(event:TEventBase)
 	EventManager.triggerEvent(event)
 End Function
 
+Function RegisterBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.registerEvent(TEventBase.Create(trigger, data, sender, receiver, channel))
+End Function
+
+Function RegisterBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.registerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel))
+End Function
+
+Function RegisterBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.registerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel))
+End Function
+
+Function RegisterBaseEvent(event:TEventBase)
+	EventManager.registerEvent(event)
+End Function
+
 Function GetEventKey:TEventKey(text:String, createIfMissing:Int)
 	Return EventManager.GetEventKey(text, createIfMissing)
 End Function
@@ -501,9 +517,9 @@ Type TEventManager
 	Method _ProcessEvents(onlyChannel:Int=Null)
 		If Not _events.IsEmpty()
 			' get the next event
-			'LockMutex(_eventsMutex) 'First only "reads", no mutex needed)
+			LockMutex(_eventsMutex) 'First only "reads", no mutex needed)
 			Local event:TEventBase = TEventBase(_events.First())
-			'UnlockMutex(_eventsMutex)
+			UnlockMutex(_eventsMutex)
 
 			If event <> Null
 				If onlyChannel <> Null
