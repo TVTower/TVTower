@@ -2299,6 +2299,10 @@ endrem
 					ElseIf job.gender = TVTPersonGender.FEMALE
 						genderHint = " ("+GetLocale("FEMALE")+")"
 					EndIf
+					If job.roleID
+						Local role:TProgrammeRole = GetProgrammeRoleCollection().GetById(job.roleID)
+						If role Then genderHint = " - "+role.GetFullName()
+					EndIf
 				EndIf
 
 	'TODO: nur zeichnen, wenn innerhalb "panel rect"
