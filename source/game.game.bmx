@@ -248,7 +248,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			TriggerBaseEvent(GameEventKeys.Game_OnDay, timeData)
 			'time after day
 			TriggerBaseEvent(GameEventKeys.Game_OnMinute, timeData)
-			TriggerBaseEvent(GameEventKeys.Game_OnHour, timeData) 
+			TriggerBaseEvent(GameEventKeys.Game_OnHour, timeData)
 		Else
 			if not GetProductionManager().currentAvailableAmateurs or GetProductionManager().currentAvailableAmateurs.length = 0
 				TLogger.Log("TGame", "Ensure enough castable amateurs exist (old savegame).", LOG_DEBUG)
@@ -264,6 +264,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		TriggerBaseEvent(GameEventKeys.Game_OnStart, timeData)
 		'inform about the begin of this game (for now equal to "OnStart")
 		TriggerBaseEvent(GameEventKeys.Game_OnBegin, timeData)
+		'trigger setting current language for database language update
+		TriggerBaseEvent(GameEventKeys.App_OnSetLanguage, New TData.Add("languageCode", TLocalization.GetCurrentLanguageCode()), Self)
 
 		?bmxng
 		if OCM.enabled

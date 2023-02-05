@@ -53,7 +53,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
-		'_eventListeners :+ [ EventManager.registerListenerFunction( "App.onSetLanguage", onSetLanguage ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "App.onSetLanguage", onSetLanguage ) ]
 	End Method
 
 
@@ -436,6 +436,8 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		For Local data:TProgrammeData = EachIn entries.Values()
 			data.titleProcessed = Null
 			data.descriptionProcessed = Null
+			data.cachedActors = data.cachedActors[..0]
+			data.cachedDirectors = data.cachedDirectors[..0]
 		Next
 	End Method
 
@@ -477,11 +479,9 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Function
 
 	'=== EVENT HANDLERS ===
-	Rem
 	Function onSetLanguage:int( triggerEvent:TEventBase )
 		GetInstance().RemoveReplacedPlaceholderCaches()
 	End Function
-	endrem
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -791,7 +791,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetActors:TPersonBase[]()
 		If cachedActors.length = 0
 			For Local job:TPersonProductionJob = EachIn cast
-				If job.job = TVTPersonJob.ACTOR
+				If job.job & TVTPersonJob.ACTOR
 					cachedActors :+ [ GetPersonBaseCollection().GetByID( job.personID ) ]
 				EndIf
 			Next
@@ -804,7 +804,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetDirectors:TPersonBase[]()
 		If cachedDirectors.length = 0
 			For Local job:TPersonProductionJob = EachIn cast
-				If job.job = TVTPersonJob.DIRECTOR
+				If job.job & TVTPersonJob.DIRECTOR
 					cachedDirectors :+ [ GetPersonBaseCollection().GetByID( job.personID ) ]
 				EndIf
 			Next
