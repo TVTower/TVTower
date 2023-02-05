@@ -46,6 +46,7 @@ Type TDatabaseLoader
 	Field skipProgrammeCreators:String
 	Field config:TData = New TData
 	Global metaData:TData = New TData
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method New()
@@ -108,6 +109,9 @@ Type TDatabaseLoader
 		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PERSONS_CREATED_BY", "").Split(",")
 			skipPersonCreators :+ " "+Trim(s).ToLower()+" "
 		Next
+
+		'localize person names / roles
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.App_OnSetLanguage, onSetLanguage ) ]
 	End Method
 
 
@@ -171,6 +175,8 @@ Type TDatabaseLoader
 		'as the first files / specific order (as they do not require
 		'others - this avoids "extending X"-log-entries)
 		dirTree.SetExcludeFileNames(["database_scripts", "database_people", "database_people_fictional", "database_ads", "database_programmes", "database_programmes_fictional", "database_news"])
+		'exclude localization directories - will be processed by SetLanguage
+		dirTree.SetExcludeDirectoryNames(["lang", "lang_original"])
 
 		'add the rest of available files in the given dir
 		'(this also sorts the files)
@@ -2359,6 +2365,60 @@ Type TDatabaseLoader
 		If Not foundEntry Then Return Null
 		Return localized
 	End Function
+
+	Function onSetLanguage:Int(triggerEvent:TEventBase)
+		Local lang:String = triggerEvent.GetData().GetString("languageCode", "en")
+
+		'first restore default:
+		'English is intended to be the default language for localized person entries
+		'and should contain an entry for all localized persons and roles.
+		'So a reasonable default is used in case not all languages translate all names.
+		If lang <> "en" Then SetLanguage("en")
+		SetLanguage(lang)
+	End Function
+
+	Function SetLanguage(lang:String)
+		Local baseDir:String = "res/database/Default/"
+		Local file:String = baseDir+"lang/"+lang+".xml"
+
+		Local xml:TXmlHelper = TXmlHelper.Create(file)
+		Local nodeAllPersons:TxmlNode
+		nodeAllPersons = xml.FindRootChild("persons")
+		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
+			If nodePerson.getName() <> "person" Then Continue
+			Local data:TData = New TData
+			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name"])
+			Local guid:String=data.GetString("guid")
+			If guid
+				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(guid)
+				If person
+					person.firstName=data.GetString("first_name","")
+					person.lastName=data.GetString("last_name","")
+					person.nickName=data.GetString("nick_name","")
+					'print "updated person to "+person.GetFullName()
+				EndIf
+			EndIf
+		Next
+
+		Local nodeAllRoles:TxmlNode
+		nodeAllRoles = xml.FindRootChild("roles")
+		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
+			If nodeRole.getName() <> "role" Then Continue
+			Local data:TData = New TData
+			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "title"])
+			Local guid:String=data.GetString("guid")
+			If guid
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
+				If role
+					role.firstName=data.GetString("first_name","")
+					role.lastName=data.GetString("last_name","")
+					role.title=data.GetString("title","")
+					'print "updated role to "+role.GetFullName()
+				EndIf
+			EndIf
+		Next
+
+	EndFunction
 End Type
 
 
