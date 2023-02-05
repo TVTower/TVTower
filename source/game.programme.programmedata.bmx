@@ -1045,7 +1045,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			If result.find("[") >= 0
 				Local job:TPersonProductionJob
 				'check for cast
-				For Local i:Int = 0 To 5
+				For Local i:Int = 0 To 10
 					job = GetCastAtIndex(i)
 					If Not job
 						result = result.Replace("["+i+"|Full]", "John Doe")
