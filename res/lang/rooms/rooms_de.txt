@@ -148,7 +148,7 @@ INGAME_HELP_TITLE_SCREEN_ARCHIVE = Das Archiv
 INGAME_HELP_TEXT_SCREEN_ROOMAGENCY  = Wenn ein Studio für Deine Produktionen nicht mehr ausreicht, kannst Du hier weitere Räume mieten oder bestehende Mietvertäge wieder kündigen.\nWenn keine freien Räume zur Verfügung stehen, musst Du wohl erst dafür sorgen...
 INGAME_HELP_TITLE_SCREEN_ROOMAGENCY = Der Makler
 
-INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Besucher verlassen sich auf die Angaben im Raumplan bevor sie den Fahrstuhl besteigen. Mutwillig herbeigeführte Unordnung wird einmal täglich korrigiert.
+INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Besucher verlassen sich auf die Angaben im Raumplan, bevor sie den Fahrstuhl besteigen. Mutwillig herbeigeführte Unordnung, die dazu führen könnte, dass Besucher im falschen Raum landen, wird einmal täglich korrigiert.
 INGAME_HELP_TITLE_SCREEN_ROOMBOARD = Die Hinweistafel
 
 INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produziere Deine eigenen Filme, Serien oder Shows. Hier kaufst Du dafür die Drehbücher. Ungenutzte Drehücher wirst Du hier auch wieder los. Drehbücher angefangener Serienproduktionen können nur noch im Papierkorb eines Studios entsorgt werden.

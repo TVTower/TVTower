@@ -705,140 +705,140 @@
 
 	<celebritypeople>
 		<person id="Rumpelfreddy-fictionalperson-AnnaAdlerman" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		 <!-- Express nach Sibirien (2) -->
+			<!-- Express nach Sibirien (2) -->
 			<first_name>Anna</first_name>
 			<last_name>Adlerman</last_name>
 			<details job="2" gender="2"  birthday="1946" deathday="" country="D" />
 			<data popularity="10" affinity="45" fame="0" scandalizing="0" price_mod="1" power="45" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Rumpelfreddy-fictionalperson-HannaHobkinns" fictional="1"  creator="8667" created_by="Rumpelfreddy">
-		 <!-- Julia in der Feenwelt(1) -->
+			<!-- Julia in der Feenwelt(1) -->
 			<first_name>Hannah</first_name>
 			<last_name>Hobkinns</last_name>
 			<details job="1" gender="2"  birthday="1984" deathday="" country="GB" />
 			<data popularity="14" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="60" topgenre="0" />
 		</person>
 		<person id="Rumpelfreddy-fictionalperson-LenaLauterberg" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Lena</first_name>
 			<last_name>Lauterberg</last_name>
 			<details job="2" gender="2"  birthday="1979-04-03" deathday="" country="D" />
 			<data popularity="8" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_4" fictional="1"  creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Sarah</first_name>
 			<last_name>van Sonderbar</last_name>
 			<details job="1" gender="2"  birthday="1987" deathday="" country="D" />
 			<data popularity="9" affinity="18" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_5" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Blondie</first_name>
 			<last_name>Prall</last_name>
 			<details job="1" gender="2"  birthday="1976" deathday="" country="A" />
 			<data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_6" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Kroko See 6 (2) -->
+			<!-- Kroko See 6 (2) -->
 			<first_name>Olga</first_name>
 			<last_name>Ostburg</last_name>
 			<details job="2" gender="2"  birthday="1981" deathday="" country="D" />
 			<data popularity="10" affinity="7" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_7" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Gerlinde</first_name>
 			<last_name>von Gluterhof</last_name>
 			<details job="1" gender="2"  birthday="1961" deathday="" country="D" />
 			<data popularity="15" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_8" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Kroko See 6 (2)-->
+			<!-- Kroko See 6 (2)-->
 			<first_name>Marie</first_name>
 			<last_name>Merkl</last_name>
 			<details job="2" gender="2"  birthday="1978" deathday="" country="D" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_9" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Leonie</first_name>
 			<last_name>Luberlippe</last_name>
 			<details job="1" gender="2"  birthday="1983" deathday="" country="D" />
 			<data popularity="10" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_10" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Zoe</first_name>
 			<last_name>Zeckenbart</last_name>
 			<details job="1" gender="2"  birthday="1960" deathday="" country="D" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_11" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Lukas</first_name>
 			<last_name>Liebsterman</last_name>
 			<details job="1" gender="1"  birthday="1980" deathday="" country="D" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_12" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
+			<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
 			<first_name>Tobias</first_name>
 			<last_name>Täubchen</last_name>
 			<details job="1" gender="1"  birthday="1962" deathday="" country="D" />
 			<data popularity="15" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_13" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Express nach Sibirien (1) -->
+			<!-- Express nach Sibirien (1) -->
 			<first_name>Hardtmann</first_name>
 			<last_name>von Eisenhalt</last_name>
 			<details job="1" gender="1"  birthday="1940" deathday="" country="D" />
 			<data popularity="18" affinity="40" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_14" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Bernd</first_name>
 			<last_name>Bohrman</last_name>
 			<details job="1" gender="1"  birthday="1976" deathday="" country="D" />
 			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_15" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
+			<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
 			<first_name>David</first_name>
 			<last_name>Davidson</last_name>
 			<details job="2" gender="1"  birthday="1953" deathday="" country="DK" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_16" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Walter</first_name>
 			<last_name>Wienerwurst</last_name>
 			<details job="1" gender="1"  birthday="1982" deathday="" country="D" />
 			<data popularity="7" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_17" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Krokosee 6 (2) -->
+			<!-- Krokosee 6 (2) -->
 			<first_name>Felix</first_name>
 			<last_name>Feuerfranz</last_name>
 			<details job="2" gender="1"  birthday="1974" deathday="" country="D"  />
 			<data popularity="2" affinity="27" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_18" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Günter</first_name>
 			<last_name>von und zu Gutberg</last_name>
 			<details job="1" gender="1"  birthday="1985" deathday="" country="D" />
 			<data popularity="11" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_19" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Johannes</first_name>
 			<last_name>Jasager</last_name>
 			<details job="1" gender="1"  birthday="1970" deathday="" country="D" />
 			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="Per_custom_Freddy_20" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
+			<!--  -->
 			<first_name>Karl</first_name>
 			<last_name>Krautrauch</last_name>
 			<details job="1" gender="1"  birthday="1953" deathday="" country="D" />
@@ -870,7 +870,7 @@
 			<ratings critics="50" speed="55" outcome="10" />
 		</programme>
 		
-		 <programme id="Freddy_Film_TO_2" product="1" licence_type="1" fictional="0" imdb_id="tt0806143" creator="8667" created_by="Rumpelfreddy">
+		<programme id="Freddy_Film_TO_2" product="1" licence_type="1" fictional="0" imdb_id="tt0806143" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<!-- Org. Operation Rienzi 2005 Kurzfim -->
 				<de>Codename Rienzi</de>
@@ -893,7 +893,7 @@
 			<ratings critics="62" speed="24" outcome="12" />
 		</programme>
 		
-		 <programme id="Freddy_Film_TO_3" product="1" licence_type="1" fictional="0" imdb_id="tt0349458" creator="8667" created_by="Rumpelfreddy">
+		<programme id="Freddy_Film_TO_3" product="1" licence_type="1" fictional="0" imdb_id="tt0349458" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<!-- Org. Flatsch 2001 Kurzfilm. Gewann einige Festivals -->
 				<de>Platsch</de>
@@ -1086,7 +1086,7 @@
 				<member index="1" function="2">Per_custom_Freddy_140</member>
 				<member index="2" function="2">Per_custom_Freddy_116</member>
 				<member index="3" function="2">Per_custom_Freddy_253</member>
-				<member index="4" function="2">Per_custom_Freddy_363</member>            
+				<member index="4" function="2">Per_custom_Freddy_363</member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="CDN" year="1994" distribution="0" maingenre="1" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
@@ -1288,7 +1288,7 @@
 		<programme id="Freddy_Film_CustomB_15" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Santa gegen die Magmazwerge</de>
-				<en>Santa against the Magma Dwarfs </en>
+				<en>Santa against the Magma Dwarfs</en>
 			</title>
 			<description>
 				<de>Santas Werkstatt am Nordpol droht durch einen Vulkan zerstört zu werden. 3 Tage vor Weihnachten. Also zerstört Santa kurzerhand die Unterweltzivilisation, die daran Schuld trägt.</de>

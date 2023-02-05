@@ -98,7 +98,7 @@
 			</title>
 			<description>
 				<de>Ein Mann, der Alles in der Welt als sein Eigentum betracht, rastet aus, als ihm eine Krawatte entwendet wird. Eine der ersten Amoklaufverfilmungen.</de>
-				<en>A man who considers everything in the world his property goes berserk when a tie is stolen from him. One of the first film adaptations of a rampage.</en>
+				<en>A man who considers everything in the world his property goes berserk when one of his ties is stolen. One of the first film adaptations of a rampage.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
@@ -258,7 +258,7 @@
 			</title>
 			<description>
 				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat [1|Full] richtig gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
-				<en>[0|Full] and [1|Full] in lively discussion. Where do we stand with the editor? How should the AI look like? And did [1|Full] act correctly? Is real life more important? And who is doing the AI now? Exciting, but a bit too lengthy.</en>
+				<en>[0|Full] and [1|Full] in lively discussion. Where do we stand with the editor? What should the AI look like? And did [1|Full] act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -336,7 +336,7 @@
 			</title>
 			<description>
 				<de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
-				<en>Together with her friends, Iris visits the alpine pastures, the farmers and their beds or haylofts. Was not forgotten in the revival of the Seventies, unfortunately.</en>
+				<en>Together with her friends, Iris visits the alpine pastures, the farmers and their beds or haylofts. This movie was not forgotten in the revival of the Seventies, unfortunately.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
@@ -482,7 +482,7 @@
 						<en>Pencils</en>
 					</title>
 					<description>
-						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaftem Bleistift nuckeln kommen zur Sprache.</de>
+						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaftem Bleistiftnuckeln kommen zur Sprache.</de>
 						<en>Lead and color are explored. Even the consequences of permanent pencil nibbling are brought up.</en>
 					</description>
 					<ratings critics="66" speed="25" />
@@ -540,7 +540,7 @@
 			</title>
 			<description>
 				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
-				<en>Baba the living Trabbi-car performs wonderful services for his owner. It can swim, fly and beat up car burglars. Summoned by a whistle, he always dutifully comes along when help is needed.</en>
+				<en>Baba the living Trabbi-car performs wonderful services for its owner. It can swim, fly and beat up car burglars. Summoned by a whistle, it always dutifully comes along when help is needed.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -641,7 +641,7 @@
 					</title>
 					<description>
 						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
-						<en>[1|Full]'s' legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
+						<en>[1|Full]'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
 					</description>
 					<ratings critics="70" speed="40" />
 				</programme>
@@ -840,7 +840,7 @@
 					</title>
 					<description>
 						<de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
-						<en>Improvement over the last episode. Plenty of time to think or fall asleep. Fall asleep only while waiting in the paid queue, please.</en>
+						<en>Improvement over the last episode. Plenty of time to think or fall asleep. Please fall asleep only while you wait in the queue that charges fees.</en>
 					</description>
 					<ratings critics="32" speed="4" />
 				</programme>
@@ -969,7 +969,7 @@
 					</title>
 					<description>
 						<de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen.</de>
-						<en>Celebrated final episode for the ladies. Male hip swings. This time the first names of the butt cheek owners are requested. All presented in wonderful landscape shots. You can see the fun the anchorwoman is having.</en>
+						<en>Celebrated final episode for the ladies. Male hip swings. This time the first names of the butt cheek owners have to be guessed. All presented in wonderful landscape shots. You can see the fun the anchorwoman is having.</en>
 					</description>
 					<ratings critics="26" speed="53" />
 					<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
@@ -1032,8 +1032,8 @@
 						<en>Plum jelly</en>
 					</title>
 					<description>
-						<de>Wie entkerne ich Pflaumen. Und den Zucker nicht vergessen</de>
-						<en>How do I remove the stones from plums. And do not forget the sugar</en>
+						<de>Wie entkerne ich Pflaumen. Und den Zucker nicht vergessen.</de>
+						<en>How do I remove the stones from plums. And do not forget the sugar.</en>
 					</description>
 					<ratings critics="35" speed="9" />
 				</programme>
@@ -1099,7 +1099,7 @@
 			</title>
 			<description>
 				<de>Wer hat den Engel gestohlen? Detektiv Butlow ermittelt. Nun, es gab genügend besseres.</de>
-				<en>Who stole The Angel? Detective Butlov investigates. Well, there were plenty of better films.</en>
+				<en>Who stole the Angel? Detective Butlov investigates. Well, there were plenty of better films.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
@@ -1388,7 +1388,7 @@
 					</title>
 					<description>
 						<de>Graf Ruccola muss die Paprika retten. Sie wurde von einem menschlichen Gewürzhersteller entführt. Schafft er es rechtzeitig?</de>
-						<en>Count Ruccola must rescue the bell pepper. She has been kidnapped by a human spice maker. Will he make it in time?</en>
+						<en>Count Ruccola must rescue the bell pepper. It has been kidnapped by a human spice maker. Will he make it in time?</en>
 					</description>
 					<ratings critics="51" speed="38" />
 				</programme>
@@ -1399,7 +1399,7 @@
 					</title>
 					<description>
 						<de>Der Stechapfel will ein Heilmittel für Husten werden. Da erzählt ihm Graf Ruccola, was er bisher alles mit den Menschen erlebt hat. Wird der Stechapfel jetzt giftig?</de>
-						<en>The jimsonweed wants to become a cure for cough. That's when Count Ruccola tells him all about what he has experienced with humans so far. Will the jimsonweed now become poisonous?</en>
+						<en>The jimsonweed wants to become a cure for cough. That's when Count Ruccola explains to it everything he has experienced with humans so far. Will the jimsonweed now become poisonous?</en>
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
@@ -1472,7 +1472,7 @@
 				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das große Kennenlernen</de>
-						<en>The big coming to know each other</en>
+						<en>The big getting to know each other</en>
 					</title>
 					<description>
 						<de>Ralle und Rolle entdecken die Wahrheit und lernen sich kennen. Freude über den unerwarteten Bruder und blankes Entsetzen über den Beruf sorgen für Unterhaltung.</de>
@@ -1640,7 +1640,7 @@
 			</title>
 			<description>
 				<de>Was muss man heutzutage haben? Die absoluten Neuheiten, die man sich unbedingt kaufen muss, wenn man sicher in die Zukunft möchte!</de>
-				<en>What are the must haves these days? The absolute novelties that you must buy if you want to safely go into the future!</en>
+				<en>What are the must-haves these days? The absolute novelties that you must buy if you want to safely go into the future!</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_687</member>
@@ -1727,7 +1727,7 @@
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Reference: https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt">
 					<title>
 						<de>Ronny sucht das Fliwatüt</de>
 						<en>Ronny is looking for the Flywatoot</en>
@@ -1756,7 +1756,7 @@
 					</title>
 					<description>
 						<de>Ronny und das Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
-						<en>Ronny and the byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
+						<en>Ronny and the Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
@@ -1966,7 +1966,7 @@
 					</title>
 					<description>
 						<de>Russland. Wer kennt schon das kaspische Meer? Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Russia. Russia. Who has ever heard of the Caspian Sea anyway? Vera bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<en>Russia. Who has ever heard of the Caspian Sea anyway? Vera bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
 					</description>
 				</programme>
 			</children>
@@ -2267,7 +2267,7 @@
 			
 			<description>
 				<de>Besprechung der Neuerscheinungen. Was muss man sehen, was kann man sich sparen?</de>
-				<en>Review of new releases. What is a must see, what can be spared?</en>
+				<en>Review of new releases. What is a must-see, what can be spared?</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2320,13 +2320,23 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
-				<de>Geburt des Senders</de>
-				<en>Birth of the station</en>
+				<de>%birth% %station%</de>
+				<en>%birth% of the %station%</en>
 			</title>
 			<description>
 				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
 				<en>You missed the opening show? Here are the best scenes and outtakes, as well as some retrospections from participants.</en>
 			</description>
+			<variables>
+				<birth>
+					<de>Geburt|Der Ursprung|Die Entstehung|Die Wurzeln|Eröffnung|Kick-off|Der Start|Der Anfang|Die Taufe|Die Genese|Die Einweihung|Die Einführung|Die Gründung|Die Morgendämmerung|Das Auftauchen|Das Erscheinen</de>
+					<en>Birth|The Origin|The Formation|The Roots|The Opening|The Launch|The Beginning|The Inception|The Onset|The Genesis|The Inauguration|The Initiation|The Founding|The Dawning|The Emergence|The Appearance</en>
+				</birth>
+				<station>
+					<de>des Senders|des Fernsehsenders|des TV-Senders|des Kanals|des Fernsehkanals|des TV-Kanals</de>
+					<en>Station|Television Station|TV Station|Channel|Television Channel|TV Channel</en>
+				</station>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" gender="1" />

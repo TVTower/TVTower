@@ -5,7 +5,7 @@ NEWS_SPORT            = Sports
 NEWS_CURRENTAFFAIRS   = Current affairs
 NEWS_CULTURE          = Culture
 
-NEWS_SORT_TOPICALITY = Sort by freshness
+NEWS_SORT_TOPICALITY = Sort by topicality
 NEWS_SORT_PAID       = Sort by paid state
 NEWS_SORT_AGE        = Sort by age
 NEWS_SORT_PRICE      = Sort by price
@@ -27,7 +27,7 @@ RIGHT_CLICK_TO_DELETE = Right click to delete
 
 NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Ambassador of PR Duban offends counterpart
 NEWS_TERROR_GROUP1_LEVEL1_TEXT1  = It is a scandal: an ambassador of PR Duban insulted his counterpart from the FR Duban.
-NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Ambassador of FR Duban insults neighbours.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Ambassador of FR Duban insults neighbours
 NEWS_TERROR_GROUP2_LEVEL1_TEXT1  = This cannot be true: an ambassador of FR Duban insulted the representatives of the PR Duban.
 
 NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Ambassador beaten up
@@ -75,8 +75,9 @@ NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% with new film in theaters
 
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME1% bring «%MOVIETITLE%» to the screen.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Coming soon to theaters: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is already full of praise for the film.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Finishing touches on the film «%MOVIETITLE%». %ACTORNAME1% expresses pride about his latest creation.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Finishing touches on «%MOVIETITLE%». %ACTORNAME1% is proud to star in the film.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = First trailer for «%MOVIETITLE%» released. %DIRECTORNAME1%: "Best movie of the year".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Finishing touches on the film «%MOVIETITLE%». %DIRECTORNAME1% expresses pride about latest creation.
 
 
 WEATHER_FORECAST_FOR_X_TILL_Y    = Weather forecast for %BEGINHOUR% to %ENDHOUR% o'clock

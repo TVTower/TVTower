@@ -139,7 +139,7 @@ INGAME_HELP_TITLE_SCREEN_OFFICE_STATIONMAP = Map of the broadcasting area.
 INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO  = The subscribed news categories are the basis for a news broadcast. The buttons on the left allow you to choose the subscription level for several categories. A higher level causes the news items to be available sooner for broadcasting.\n\nA left-click on the bulletin board brings you to the news planner. 
 INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO = News studio
 
-INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO_NEWSPLANNER  = A news broadcast has three available slots, the uppermost being the most important. Available but unused news items are listed on the left. A left-click picks up a news item. Another left-click drops it in the current position while a right-click deletes it irrevocably. So if you want to broadcast a news item at a later point, drop it on the left side.\n\nBroadcasted news lose freshness (indicated by the red bar) resulting in attracting less audience. So replace old news in time.
+INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO_NEWSPLANNER  = A news broadcast has three available slots, the uppermost being the most important. Available but unused news items are listed on the left. A left-click picks up a news item. Another left-click drops it in the current position while a right-click deletes it irrevocably. So if you want to broadcast a news item at a later point, drop it on the left side.\n\nBroadcasted news lose topicality (indicated by the red bar) resulting in attracting less audience. So replace old news in time.
 INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO_NEWSPLANNER = News planner
 
 INGAME_HELP_TEXT_SCREEN_ARCHIVE  = Here you can pick up movies for selling them in the movie agency. Be careful not to carry away movies planned for broadcasting.
@@ -148,7 +148,7 @@ INGAME_HELP_TITLE_SCREEN_ARCHIVE = Archive
 INGAME_HELP_TEXT_SCREEN_ROOMAGENCY  = If one studio is not sufficient for your productions, you can rent further rooms here or cancel existing contracts.\nIf no free rooms are available, you'll have to do somwthing about it...
 INGAME_HELP_TITLE_SCREEN_ROOMAGENCY = Room Agency
 
-INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Visitors rely on the information from the room board before entering the elevator. Intentional disarray is corrected once a day.
+INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Visitors rely on the information from the room board before entering the elevator. Intentional disarray, which might cause visitors to end up in the wrong room, is corrected once a day.
 INGAME_HELP_TITLE_SCREEN_ROOMBOARD = Roomboard
 
 INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produce your own movies, series or shows. Here you can buy the necessary scripts. You can sell unused scripts again. The script for a series you already started producing can only be disposed of in a studio's wastebasket.

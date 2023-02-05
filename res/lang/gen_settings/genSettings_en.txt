@@ -197,6 +197,6 @@ HINT                                   = Hint
 STARTHINT_TITLE1 = Programme plan
 STARTHINT_TEXT1  = The CTRL-key allows you to place a programme multiple times on your plan, whereas the SHIFT-key tries to place the next episode of a series.
 STARTHINT_TITLE2 = Programme plan
-STARTHINT_TEXT2  = The success of a broadcast heavily depends largely on the quality/rating of the programme. Equally crucial are the time of the broadcast, popularity of the genre, the audience flow to (hopefully similar) following programmes, the number of trailers aired, the quality of the newscast, and other factors.\n\nProgrammes of some genres such as comedies, may also be broadcast more frequently than others.
+STARTHINT_TEXT2  = The success of a broadcast heavily depends largely on the quality/rating of the programme. Equally crucial are the time of the broadcast, popularity of the genre, the audience flow to (hopefully similar) following programmes, the number of trailers aired, the quality of the newscast, and other factors.\n\nProgrammes of some genres, such as comedies, may also be broadcast more frequently than others.
 STARTHINT_TITLE3 = Ad contracts
 STARTHINT_TEXT3  = Ad contracts have defined requirements like the minimum audience. This and of course profits/penalties are directly based on the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.

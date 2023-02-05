@@ -180,7 +180,7 @@
 			</title>
 			<description>
 				<de>Hoher Besuch beim Parteitag der Sozialistischen Partei Ost-Deutschland (SPOD) im Palast der Republik: KPdvSS-Generalsekretär, Sergei Michailow, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
-				<en>High-ranking visitor at the party congress of the Sozialistische Partei Ost-Deutschland (SPOD) in the Palace of the Republic: CPSU General Secretary, Sergei Michailow, addresses the comrades and also brings a few gifts.</en>
+				<en>High-ranking visitor at the party congress of the Sozialistische Partei Ost-Deutschland (SPOD) in the Palace of the Republic: CPUSS General Secretary, Sergei Michailow, addresses the comrades and also brings a few gifts.</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 		</news>
@@ -232,11 +232,11 @@
 			<availability script="TIME_YEAR=1985" />
 			<title>
 				<de>Michailow wird KPdvSS-Generalsekretär</de>
-				<en>Michailow becomes CPSU Secretary General</en>
+				<en>Michailow becomes CPUSS Secretary General</en>
 			</title>
 			<description>
 				<de>Im Alter von 54 Jahren wird Sergei Michailow zum jüngsten Generalsekretär in der Geschichte der Kommunistischen Partei der vereinigten Sowjet-Staaten (KPdvSS) gewählt.</de>
-				<en>At the age of 54, Sergei Mikhailov is elected the youngest General Secretary in the history of the Communist Party of the Soviet Union (CPSU).</en>
+				<en>At the age of 54, Sergei Mikhailov is elected the youngest General Secretary in the history of the Communist Party of the United Soviet States (CPUSS).</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 		</news>
@@ -249,7 +249,7 @@
 			</title>
 			<description>
 				<de>Forderungen von KPdvSS-Generalsekretär, Sergei Michailow, nach mehr Rede- und Pressefreiheit waren das zentrale Thema auf dem 27. Parteitag der Kommunistischen Partei der vereinigten Sowjet-Staaten.</de>
-				<en>Demands by CPSU General Secretary, Sergei Michailow, for more freedom of speech and press were the central theme at the 27th Party Congress of the Communist Party of the Soviet Union.</en>
+				<en>Demands by CPUSS General Secretary, Sergei Michailow, for more freedom of speech and press were the central theme at the 27th Party Congress of the Communist Party of the United Soviet States.</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 		</news>
@@ -263,7 +263,7 @@
 			</title>
 			<description>
 				<de>KPdvSS-Generalsekretär, Sergei Michailow, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
-				<en>CPSU Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
+				<en>CPUSS Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
 			<effects>
@@ -280,7 +280,7 @@
 			</title>
 			<description>
 				<de>KPdvSS-Generalsekretär Sergei Michailow hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, Markus Lahr, auf dem Roten Platz in Moskau entlassen.</de>
-				<en>CPSU Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Lahr, on Red Square in Moscow.</en>
+				<en>CPUSS Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Lahr, on Red Square in Moscow.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 			<effects>
@@ -297,7 +297,7 @@
 			</title>
 			<description>
 				<de>KPdvSS-Generalsekretär Sergei Michailow hat über 300 weitere perestroika- und glasnostfeindlich eingestellte Generäle entlassen. Er möchte die Wende im Ostblock weiter voran treiben.</de>
-				<en>CPSU Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
+				<en>CPUSS Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 		</news>
