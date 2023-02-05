@@ -53,8 +53,10 @@ Import "base.util.math.bmx"
 'collection of useful functions
 Type THelper
 	Function ATanFunction:Float(p:Float, modifier:float=1.0)
-		local scale:float = 1.0 / (ATan(1.0 * modifier) / 90.0)
-		return scale * ATan(p * modifier) / 90.0
+'		local scale:float = 1.0 / (ATan(1.0 * modifier) / 90.0)
+'		return scale * ATan(p * modifier) / 90.0
+
+		Return ATan(p*modifier) / ATan(1.0 * modifier)
 	End Function
 
 
