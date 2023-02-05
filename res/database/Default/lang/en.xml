@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<!--
+		Localization file for persons and roles.
+		The database's root directory may contain a "lang"-subdirectory with files for known locales
+		analogous to the property files in res/lang (e.g. en.xml, fr.xml, pt-br.xml...)
+		English is the default language, so for each entry in any localization file
+		there should be a "neutral" English version, so not all entries need to be present for each language.
+
+		Example person entry:
+		<person guid="common-amateur-actors" first_name="" last_name="Amateur Actor" nick_name="Amateur Actor" />
+
+		Example role entry:
+		<role guid="script-roles-ron-001" first_name="Vincent" last_name="Count" title="" />
+
+		When adding entries, please keep the order of referenced persons/roles identical in all files.
+		This allows simple diffing of the localization files.
+
+		"Real" names that cannot be handled via name_original tags in the actual database files
+		can be kept in a similar structure in a folder "lang_original" next to the lang folder
+		(lang_original/en.xml, etc.)
+	-->
+	<persons>
+		<person guid="common-amateur-actors" first_name="" last_name="Amateur Actor" nick_name="Amateur Actor" />
+		<person guid="common-amateur-director" first_name="" last_name="Amateur Director" nick_name="Amateur Director" />
+		<person guid="unnamed-person" first_name="" last_name="Unknown" nick_name="Unknown" />
+	</persons>
+	<roles>
+		<!--
+			<role guid="script-roles-ron-001" first_name="Vincent" last_name="Count" title="" />
+		-->
+	</roles>
+</tvtdb>

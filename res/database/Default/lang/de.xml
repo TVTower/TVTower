@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<!--Beschreibung (englisch) siehe en.xml-->
+	<persons>
+		<person guid="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" />
+		<person guid="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" />
+		<person guid="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" />
+	</persons>
+	<roles>
+		<!--
+			<role guid="script-roles-ron-001" first_name="Vincent" last_name="Graf" title="" />
+		-->
+	</roles>
+</tvtdb>
