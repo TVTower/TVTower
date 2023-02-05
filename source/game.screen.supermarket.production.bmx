@@ -659,6 +659,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	'LOGIC -> GUI reaction
 	'GUI -> GUI reaction
 	Function onProductionConceptChangeCast:Int(triggerEvent:TEventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
+		If GetInstance().currentProductionConcept <> triggerEvent.GetSender() Then Return False
+
 		Local castIndex:Int = triggerEvent.GetData().GetInt("castIndex")
 		Local person:TPersonBase = TPersonBase(triggerEvent.GetData().Get("person"))
 
