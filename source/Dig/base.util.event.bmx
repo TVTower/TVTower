@@ -517,18 +517,16 @@ Type TEventManager
 	Method _ProcessEvents(onlyChannel:Int=Null)
 		If Not _events.IsEmpty()
 			' get the next event
-			LockMutex(_eventsMutex) 'First only "reads", no mutex needed)
+			LockMutex(_eventsMutex)
 			Local event:TEventBase = TEventBase(_events.First())
 			UnlockMutex(_eventsMutex)
 
 			If event <> Null
 				If onlyChannel <> Null
 					'system
-					?Threaded
 					If event._channel = 1 And event._channel <> onlyChannel
 						If CurrentThread() <> MainThread() Then Return
 					EndIf
-					?
 				EndIf
 
 				' is it time for this event?
