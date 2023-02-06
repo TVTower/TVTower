@@ -665,14 +665,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local castIndex:Int = triggerEvent.GetData().GetInt("castIndex")
 		Local person:TPersonBase = TPersonBase(triggerEvent.GetData().Get("person"))
 
-		'do this before skipping without changes
-		GetInstance().refreshFinishProductionConcept = True
-
 		'skip without changes
 		If GetInstance().castSlotList.GetSlotCast(castIndex) = person Then Return False
 		'if currentProductionConcept.GetCast(castIndex) = person then return False
 
-		'create new gui element
+		GetInstance().refreshFinishProductionConcept = True
+
+		'create or update gui element
 		GetInstance().castSlotList.SetSlotCast(castIndex, person)
 	End Function
 
@@ -2150,25 +2149,26 @@ Type TGUICastSlotList Extends TGUISlotList
 		'skip if already done
 		If GetSlotCast(slotIndex) = person Then Return
 
-		'remove a potential gui list item
 		Local i:TGUICastListItem = TGUICastListItem(GetItemBySlot(slotIndex))
-		If i
-			If i.person = person Then Return
-			i.remove()
-			'RemoveItem(i)
-		EndIf
-
 
 		If person
-			'create gui even without a valid jobID (0).
+			If not i
+				i = New TGUICastListItem.CreateSimple(person, GetSlotJobID(slotIndex) )
+			Else
+				'reuse existing item
+				i.Init(person, GetSlotJobID(slotIndex))
+			EndIf
 
 			'print "SetSlotCast: AddItem " + slotIndex +"  "+person.GetFullName()
-			i = New TGUICastListItem.CreateSimple(person, GetSlotJobID(slotIndex) )
 			'hide the name of amateurs
 			If Not person.IsCelebrity() Then i.isAmateur = True
 			i.SetOption(GUI_OBJECT_DRAGABLE, True)
+		'empty the slot
 		Else
-			i = Null
+			If i 
+				i.remove()
+				i = Null
+			EndIf
 		EndIf
 
 		AddItem( i, String(slotIndex) )
@@ -2372,8 +2372,19 @@ Type TGUICastListItem Extends TGUISelectListItem
 		If not person Then Throw "TGUICastListItem.CreateSimple() - no person passed"
 
 		'make it "unique" enough
-		Self.Create(Null, Null, person.GetFullName())
+		Self.Create(Null, Null, "")
+		
+		Self.Init(person, displayJobID)
 
+		'resize it
+		GetDimension()
+
+		Return Self
+	End Method
+	
+	
+	Method Init(person:TPersonBase, displayJobID:Int)
+		Self.SetValue(person.GetFullName())
 		Self.displayName = person.GetFullName()
 		Self.person = person
 		Self.isAmateur = False
@@ -2381,13 +2392,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Self.displayJobID = -1
 		Self.selectJobID = displayJobID
 		Self.lastDisplayJobID = displayJobID
-
-		'resize it
-		GetDimension()
-
-		Return Self
 	End Method
-
+	
 
     Method Create:TGUICastListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
