@@ -271,12 +271,12 @@
 
 		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
-				<de>TVGigant - der Anfang</de>
-				<en>TVGigant - the beginning</en>
+				<de>TVTower - der Anfang</de>
+				<en>TVTower - the beginning</en>
 			</title>
 			<description>
-				<de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVGigant. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de>
-				<en>[0|Full] and [1|Full] as well as [2|Full] explain their motivation. Why TVGigant. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
+				<de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de>
+				<en>[0|Full] and [1|Full] as well as [2|Full] explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -2321,7 +2321,7 @@
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
 				<de>%birth% %station%</de>
-				<en>%birth% of the %station%</en>
+				<en>%birth% of %station%</en>
 			</title>
 			<description>
 				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
@@ -2329,12 +2329,12 @@
 			</description>
 			<variables>
 				<birth>
-					<de>Geburt|Der Ursprung|Die Entstehung|Die Wurzeln|Eröffnung|Kick-off|Der Start|Der Anfang|Die Taufe|Die Genese|Die Einweihung|Die Einführung|Die Gründung|Die Morgendämmerung|Das Auftauchen|Das Erscheinen</de>
-					<en>Birth|The Origin|The Formation|The Roots|The Opening|The Launch|The Beginning|The Inception|The Onset|The Genesis|The Inauguration|The Initiation|The Founding|The Dawning|The Emergence|The Appearance</en>
+					<de>Geburt|Die Geburtsstunde|Der Ursprung|Die Entstehung|Die Wurzeln|Die Eröffnung|Der Kick-off|Der Start|Der Anfang|Die Taufe|Die Genese|Die Einweihung|Die Einführung|Die Gründung|Die Morgendämmerung|Das Auftauchen|Das Erscheinen|Die Ankunft</de>
+					<en>Birth|The First Hours|The Origin|The Formation|The Roots|The Opening|The Launch|The Beginning|The Inception|The Onset|The Genesis|The Inauguration|The Initiation|The Founding|The Dawning|The Emergence|The Appearance|The Arrival</en>
 				</birth>
 				<station>
-					<de>des Senders|des Fernsehsenders|des TV-Senders|des Kanals|des Fernsehkanals|des TV-Kanals</de>
-					<en>Station|Television Station|TV Station|Channel|Television Channel|TV Channel</en>
+					<de>des Senders|des Fernsehsenders|des TV-Senders|dieses Kanals|dieses Fernsehkanals|dieses TV-Kanals|dieses Programms</de>
+					<en>the Station|this Television Station|this TV Station|this Channel|this Television Channel|this TV Channel|this Programme</en>
 				</station>
 			</variables>
 			<jobs>

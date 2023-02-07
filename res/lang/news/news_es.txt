@@ -77,6 +77,7 @@ NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Soon in the movies: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is full of praise for the movie.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Latest works for movie «%MOVIETITLE%». %ACTORNAME1% is proud starring the movie.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = First trailers for «%MOVIETITLE%» available. %DIRECTORNAME1%: "Best movie of the year".
+#NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 =
 
 
 WEATHER_FORECAST_FOR_X_TILL_Y    = Previsión del tiempo para %BEGINHOUR% hasta %ENDHOUR% en punto

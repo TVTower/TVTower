@@ -6984,17 +6984,17 @@ Tragic love story.</en>
 				<en>BBWr - Best-Of Bolivian Wrestling</en>
 			</title>
 			<description>
-				<de>[1|Last] - Härter - bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</de>
-				<en>Heavy - Heavier - Bolivian Wrestling. Lousy actors and genuine blood delight fans around the world.</en>
+				<de>[0|Last] - Härter - bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</de>
+				<en>[0|Last] - Harder - Bolivian Wrestling. Lousy actors and genuine blood delight fans around the world.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
-				<member index="1" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
-				<member index="2" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
-				<member index="3" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
-				<member index="4" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
-				<member index="5" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
-				<member index="6" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="1">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="BOL" year="2005" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.80" />
@@ -7002,12 +7002,12 @@ Tragic love story.</en>
 			<children>
 				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>Hart - Hoden</de>
-						<en></en>
+						<de>[0|Last] - [1|Last]</de>
+						<en>[0|Last] - [1|Last]</en>
 					</title>
 					<description>
-						<de>Ein spannendes Match von 1987 in dem Hoden seinem Widersacher Hart zeigt wo der Hammer hängt.</de>
-						<en>An exciting match from 1987 in which Hoden shows his opponent Hart who's wearing the pants.</en>
+						<de>Ein spannendes Match von 1987, in dem [1|Last] seinem Widersacher [0|Last] zeigt, wo der Hammer hängt.</de>
+						<en>An exciting match from 1987 in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
 					</description>
 					<ratings critics="27" speed="27" />
 				</programme>
@@ -7017,8 +7017,8 @@ Tragic love story.</en>
 						<en>The New One is Briefed</en>
 					</title>
 					<description>
-						<de>Die neuen Moderatoren Brett Hart und Hulg Hoden weisen den Neuling, Santiago 'de Chile' Perez ein... mit Stühlen auf dem Rücken.</de>
-						<en>The new hosts Brett Hart and Hulg Hoden are briefing the newbie, Santiago 'de Chile' Perez... with chairs against his back.</en>
+						<de>Die neuen Moderatoren [0|Full] und [1|Full] weisen den Neuling, [5|First] '[5|Nick]' [5|Last] ein... mit Stühlen auf dem Rücken.</de>
+						<en>The new hosts [0|Full] and [1|Full] are briefing the newbie, [5|First] '[5|Nick]' [5|Last]... with chairs against his back.</en>
 					</description>
 					<staff>
 						<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -7027,23 +7027,23 @@ Tragic love story.</en>
 				</programme>
 				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>Snake - Gravedigger</de>
-						<en>Snake - Gravedigger</en>
+						<de>[2|Last] - [4|Nick]</de>
+						<en>[2|Last] - [4|Nick]</en>
 					</title>
 					<description>
-						<de>Wer macht das Rennen? Der Amateur Snake aus Ostsachsen gegen den BWr-Champion Pelé Queruan. Ein bissiger Kampf ist garantiert!</de>
-						<en>Who will bring home the bacon? The amateur Snake from East Saxony against the BWr champion Pelé Queruan. A gritty fight is guaranteed!</en>
+						<de>Wer macht das Rennen? Der Amateur '[2|Nick]' aus Ostsachsen gegen den BWr-Champion [4|First] '[4|Nick]' [4|Last]. Ein bissiger Kampf ist garantiert!</de>
+						<en>Who will bring home the bacon? The amateur '[2|Nick]' from East Saxony against the BWr champion [4|First] '[4|Nick]' [4|Last]. A gritty fight is guaranteed!</en>
 					</description>
 					<ratings critics="15" speed="39" />
 				</programme>
 				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>Stahlhammer - Perez</de>
-						<en>Stahlhammer - Perez</en>
+						<de>[3|Last] - [5|Last]</de>
+						<en>[3|Last] - [5|Last]</en>
 					</title>
 					<description>
-						<de>Schlägt der Stahlhammer auf Granit oder schafft er es dem Altmeister Santiago 'de Chile' Perez zu schlagen? Nur für hartgesottene Zuschauer, hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</de>
-						<en>Does the steel hammer hit granite or does he manage to beat the old master Santiago 'de Chile' Perez? Only for the tough spectators, here the world record in long-range blood-splatter was set to 5.3 meters.</en>
+						<de>Schlägt der [3|Last] auf Granit oder schafft er es dem Altmeister [5|First] '[5|Nick]' [5|Last] zu schlagen? Nur für hartgesottene Zuschauer, hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</de>
+						<en>Does [3|Last] hit granite or does he manage to beat the old master [5|First] '[5|Nick]' [5|Last]? Only for the tough spectators, here the world record in long-range blood-splatter was set to 5.3 meters.</en>
 					</description>
 					<staff>
 						<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -7056,8 +7056,8 @@ Tragic love story.</en>
 						<en>Tag Team Match</en>
 					</title>
 					<description>
-						<de>Die Moderatoren nach Jahren wieder im Ring. Hart und Hoden im Team mit Stahlhammer gegen die bolivianische Muskelpracht verstärkt durch den deutschen Snake.</de>
-						<en>The hosts back in the ring after years. Hart and Hoden teaming up with Stahlhammer against the splendid Bolivian display of muscles supported by the German Snake.</en>
+						<de>Die Moderatoren nach Jahren wieder im Ring. [0|Last] und [1|Last] im Team mit [3|Last] gegen die bolivianische Muskelpracht verstärkt durch den deutschen [2|Last].</de>
+						<en>The hosts back in the ring after years. [0|Last] and [1|Last] teaming up with [3|Last] against the splendid Bolivian display of muscles supported by the German [2|Last].</en>
 					</description>
 					<ratings critics="16" speed="51" />
 				</programme>
@@ -7772,13 +7772,13 @@ Tragic love story.</en>
 				<programme id="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>Lothar Molch</de>
-						<en>Lothar Molch</en>
+						<en>Landon Newt</en>
 					</title>
 					<description>
 						<de>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
 
 Bieten die beiden genügend Stoff für eine spannende Runde?</de>
-						<en>Guests at the start of the new show: Lothar Newt, Chairman of the Graytinged Panthers, and Sabine Filz from the Office of Social Affairs.
+						<en>Guests at the start of the new show: Landon Newt, Chairman of the Graytinged Panthers, and Sabrina Sleaze from the Office of Social Affairs.
 
 Do the two offer enough material for an exciting panel?</en>
 					</description>
@@ -7919,7 +7919,7 @@ A must for every housewife, a curse for hard men.</en>
 					</title>
 					<description>
 						<de>Peng hat's gemacht und [1|First] spielt mit einer platzenden Melone den Urknall nach.</de>
-						<en>BAM! it did, and [1|First] reenacts the big bang with a bursting melon.</en>
+						<en>BAM! it went, and [1|First] reenacts the big bang with a bursting melon.</en>
 					</description>
 					<ratings critics="24" speed="7" />
 				</programme>
@@ -8044,7 +8044,7 @@ A must for every housewife, a curse for hard men.</en>
 			</title_original>
 			<description>
 				<de>Schnell verliebt, schnell zusammen abgehauen und auch schnell schwanger. Aber was passiert, wenn man glücklich zusammen ist, ein Kind erwartet und nicht weiß, dass sein Vater die Ehe heimlich annuliert hat?</de>
-				<en>Quickly fall in love, quickly run away together and also quickly pregnant. But what happens when you're happily together, expecting a child, and you don't know that your father has secretly nullified the marriage?</en>
+				<en>Quickly fall in love, quickly run away together, and quickly get pregnant too. But what happens when you're happily together, expecting a child, and you don't know that your father has secretly nullified the marriage?</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-EdmundGulden</member>
@@ -8068,7 +8068,7 @@ A must for every housewife, a curse for hard men.</en>
 			</title_original>
 			<description>
 				<de>1850 in den USA. Eine Dame merkt, dass sie ihren Mann verliert. Um ihn zu behalten geht sie kompromisslos vor. Denn der Schein muss bestehen bleiben.</de>
-				<en>1850 in the USA. A lady realizes that she is losing her husband. To keep him, she takes uncompromising action. Because appearances must remain.</en>
+				<en>1850 in the USA. A lady realizes that she is losing her husband. To keep him, she takes uncompromising action. Because appearances must be kept up.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">c6431bc0-a0c6-4638-ab30-573066975d0f</member>
@@ -8219,7 +8219,7 @@ A must for every housewife, a curse for hard men.</en>
 			</title_original>
 			<description>
 				<de>[1|Full] in Ihrer Paraderolle als Königin von Ägypten</de>
-				<en>[1|Full] in her parade role as Queen of Egypt.</en>
+				<en>[1|Full] in her signature role as Queen of Egypt.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-Borgmevens</member>
@@ -8399,7 +8399,7 @@ A must for every housewife, a curse for hard men.</en>
 			</title_original>
 			<description>
 				<de>Frisch verheiratet besuchen Mortey und seine Angetraute Morteys Tanten. Konnte er ahnen, dass sie echte Leichen im Keller haben. Ein „Evergreen des schwarzen Humors“ mit herrlicher Mimik von [1|Full].</de>
-				<en>Just married, Mortey and his wife visit Mortey's aunts. Could he have guessed that they have enough actual skeletons in the closet to fill a cemetary. An "evergreen of black humor" with wonderful facial expressions by [1|Full]. </en>
+				<en>Just married, Mortey and his wife visit Mortey's aunts. Could he have guessed that they have enough actual skeletons in the closet to fill a cemetary. An "evergreen of black humor" with wonderful facial expressions by [1|Full].</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
@@ -8691,7 +8691,7 @@ A must for every housewife, a curse for hard men.</en>
 				<en>Easy Rider</en>
 			</title_original>
 			<description>
-				<de>Roadmovie, der sich mit dem Leben zweier Aussenseiter beschäfigt.</de>
+				<de>Roadmovie, das sich mit dem Leben zweier Außenseiter beschäfigt.</de>
 				<en>Road movie that explores the lives of two outsiders.</en>
 			</description>
 			<staff>
@@ -8886,8 +8886,8 @@ A must for every housewife, a curse for hard men.</en>
 				<en>JFK</en>
 			</title_original>
 			<description>
-				<de>Ein Anwalt versucht das Attentat auf den US-amerikanischen Präsidenten zu rekonstruieren. Das will man ihm nicht erlauben. Nette Verschwörungstheorie</de>
-				<en>A lawyer tries to reconstruct the assassination of the US president. He is not allowed to do so. Nice conspiracy theory</en>
+				<de>Ein Anwalt versucht das Attentat auf den US-amerikanischen Präsidenten zu rekonstruieren. Das will man ihm nicht erlauben. Nette Verschwörungstheorie.</de>
+				<en>A lawyer tries to reconstruct the assassination of the US president. He is not allowed to do so. Nice conspiracy theory.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-RolligerStein</member>
@@ -10132,7 +10132,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			</title_original>
 			<description>
 				<de>Ein Gangsterpaar mischt die Welt auf und werden erbarmungslos gejagt.</de>
-				<en>A gangster couple upset the world and are hunted mercilessly.</en>
+				<en>A gangster couple upsets the world and is hunted mercilessly.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-ArturePenure</member>

@@ -77,6 +77,7 @@ NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Yönetmen %DIRECTORNAME1% ve aktör %ACTORNAM
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Yakında sinemalarda: %ACTORNAME1% , «%MOVIETITLE%» ile. Aktör %ACTORNAME2% yardımcı rollerde.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = «%MOVIETITLE%» için son çalışmalar. %ACTORNAME1% bu filmde oynadığı için gururlu.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = «%MOVIETITLE%» ilk fragman hazır. %DIRECTORNAME1%: "Bu yılın En İyisi".
+#NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 =
 
 
 WEATHER_FORECAST_FOR_X_TILL_Y    = %BEGINHOUR% - %ENDHOUR% saatleri arası hava durumu
