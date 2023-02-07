@@ -9,7 +9,7 @@
 
 		<!-- DOKU  -->
 		
-		<programme id="DF-Serien-Dokumentation-001" product="6" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">
+		<programme id="DF-Serien-Dokumentation-001" product="2" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 			<title>
 				<de>Pfusch am Bau</de>
 				<en>Botched up Construction Sites</en>
@@ -26,7 +26,7 @@
 			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="" flags="" blocks="1" price_mod="1.0" />
 			<ratings critics="35" speed="10" outcome="4" />
 			<children>
-				<programme id="DF-Serien-Dokumentation-001-E01" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">>
+				<programme id="DF-Serien-Dokumentation-001-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Aller Anfang...</de>
 						<en>All beginnings are...</en>
@@ -37,7 +37,7 @@
 					</description>
 					<ratings critics="39" speed="9" />
 				</programme>
-				<programme id="DF-Serien-Dokumentation-001-E02" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">>
+				<programme id="DF-Serien-Dokumentation-001-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Ein krummes Ding</de>
 						<en>A crooked thing</en>
@@ -48,7 +48,7 @@
 					</description>
 					<ratings critics="27" speed="12" />
 				</programme>
-				<programme id="DF-Serien-Dokumentation-001-E03" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">>
+				<programme id="DF-Serien-Dokumentation-001-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Der Maurer war's</de>
 						<en>The bricklayer did it</en>
@@ -59,7 +59,7 @@
 					</description>
 					<ratings critics="33" speed="11" />
 				</programme>
-				<programme id="DF-Serien-Dokumentation-001-E04" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">>
+				<programme id="DF-Serien-Dokumentation-001-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Das gibt Anpfiff</de>
 						<en>The whistle blows</en>
@@ -70,7 +70,7 @@
 					</description>
 					<ratings critics="32" speed="9" />
 				</programme>
-				<programme id="DF-Serien-Dokumentation-001-E05" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">>
+				<programme id="DF-Serien-Dokumentation-001-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Der "fast" perfekte Antrich</de>
 						<en>The "almost" perfect coat of paint</en>
@@ -81,7 +81,7 @@
 					</description>
 					<ratings critics="29" speed="10" />
 				</programme>
-				<programme id="DF-Serien-Dokumentation-001-E06" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="" created_by="DerFronck">>
+				<programme id="DF-Serien-Dokumentation-001-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Das böse Ende</de>
 						<en>The bad end</en>

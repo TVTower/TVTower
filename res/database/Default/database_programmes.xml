@@ -8231,7 +8231,7 @@ A must for every housewife, a curse for hard men.</en>
 			<ratings critics="49" speed="49" outcome="49" />
 		</programme>
 
-		<programme id="04439fd1-e89f-TheRobTestSerie01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt2757036" creator="8751" created_by="TheRob" comments="No official English title seems to exist, applying translation">
+		<programme id="04439fd1-e89f-TheRobTestSerie01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt2757036" creator="8751" created_by="TheRob" comment="No official English title seems to exist, applying translation">
 			<title>
 				<!-- Western von gestern, Orginal Serie wird auf 1975 datiert -->
 				<de>Gestern gab es Western</de>
@@ -9381,7 +9381,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
 			    <!-- Original episode titles in English don't seem to exist, only in Hungarian; applying translation from original official German version for better in-game clarity -->
-				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>3D voll echt</de>
 						<en>3D completely real</en>
@@ -9396,7 +9396,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="28" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Fischersatz</de>
 						<en>Fish substitute</en>
@@ -9411,7 +9411,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="26" speed="37" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Sauschnell zur Fete</de>
 						<en>Quick as a whip to the party</en>
@@ -9426,7 +9426,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Wettermacher</de>
 						<en>The weather generator</en>
@@ -9441,7 +9441,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="27" speed="39" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Hilfe, Androiden</de>
 						<en>Help, androids</en>
@@ -9456,7 +9456,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="30" speed="33" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Planetenurlaub</de>
 						<en>Hollidays on an other planet</en>
@@ -9471,7 +9471,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="25" speed="38" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Doof und glücklich</de>
 						<en>Dopey and happy</en>
@@ -9486,7 +9486,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Zeitreise</de>
 						<en>Time travel</en>
@@ -9501,7 +9501,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="26" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Der Manipulator</de>
 						<en>The manipulator</en>
@@ -9516,7 +9516,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Treibhauslegende</de>
 						<en>Green house legend</en>
@@ -9531,7 +9531,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="21" speed="42" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Die Tarnkappenpille</de>
 						<en>The invisibility pill</en>
@@ -9546,7 +9546,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="26" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Rhythmus der Kuh</de>
 						<en>Rhythm of the cow</en>
@@ -9561,7 +9561,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="28" speed="30" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Das Traumhaus</de>
 						<en>The dream house</en>
@@ -12456,11 +12456,11 @@ Dream scenes and sentiments warp the storyline.</en>
 					<title>
 						<de>Endlich Heimat</de>
 						<en>Home! Sweet Home</en>
+					</title>
 					<title_original>
 						<de>Endlich Heimat</de>
 						<en>Home! Sweet Home</en>
 					</title_original>
-					</title>
 					<description>
 						<de>Auf nach Hause. Wie gelingt die Flucht?</de>
 						<en>On the way home. How to make the escape?</en>

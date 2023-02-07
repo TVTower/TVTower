@@ -467,7 +467,7 @@
 			<first_name>Samantha</first_name>
 			<last_name>Goodman</last_name>
 			<nick_name></nick_name>
-			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="1" gender="2" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1c6d2298-9462-4549-b09a-05a584bf9949" tmdb_id="0" imdb_id="nm0001570" creator="">
@@ -519,7 +519,7 @@
 			<first_name>Yoshi</first_name>
 			<last_name>Grünwald</last_name>
 			<nick_name></nick_name>
-			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c39a70f6-b8fd-40fe-96cd-9dcb0e460e53" tmdb_id="0" imdb_id="nm0000620" creator="">
@@ -553,7 +553,7 @@
 			<first_name>Rudi</first_name>
 			<last_name>Hackl</last_name>
 			<nick_name></nick_name>
-			<details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="2" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="d86d607a-ec9e-42a2-a74b-26a810ab6a54" tmdb_id="0" imdb_id="nm0000168" creator="">
@@ -619,7 +619,7 @@
 			<first_name>Dietmar</first_name>
 			<last_name>Hjüpsh</last_name>
 			<nick_name></nick_name>
-			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
 		</person>
 		<person id="ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97" tmdb_id="0" imdb_id="nm0389219" creator="">
 			<first_name>Gurt</first_name>
@@ -749,7 +749,7 @@
 			<first_name>Rolf</first_name>
 			<last_name>Krehl</last_name>
 			<nick_name></nick_name>
-			<details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="2" gender="1" birthday="" deathday="" country="" fictional="1" />
 		</person>
 		<person id="153dc080-86a1-4f3d-bb13-65b3aa90f7ea" tmdb_id="0" imdb_id="nm0000040" creator="">
 			<first_name>Laurel</first_name>
@@ -1064,7 +1064,7 @@
 			<first_name>Pit</first_name>
 			<last_name>Pot</last_name>
 			<nick_name></nick_name>
-			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="aa96c3b5-5a8b-481b-a426-bb5c4b059132" tmdb_id="0" imdb_id="nm0690691" creator="">
@@ -1251,18 +1251,11 @@
 			<details job="2" gender="0" birthday="1969-08-18" deathday="" country="" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person id="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" tmdb_id="0" imdb_id="" creator="">
+		<person id="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" tmdb_id="0" imdb_id="" creator="" comment="IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
 			<first_name>Alan</first_name>
 			<last_name>Smithee</last_name>
 			<nick_name></nick_name>
-			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
-			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-		</person>
-		<person id="af527d7c-092c-47f5-a7f0-e1b3e81a8f91" tmdb_id="0" imdb_id="" creator="" comment="TODO: duplicate on purpose? There's even an IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
-			<first_name>Alan</first_name>
-			<last_name>Smithee</last_name>
-			<nick_name></nick_name>
-			<details job="1" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="66d0558c-74bc-4513-a6ae-78656e60c8ec" tmdb_id="0" imdb_id="nm0000228" creator="">
@@ -1401,7 +1394,7 @@
 			<first_name>Heinz</first_name>
 			<last_name>Ulmer</last_name>
 			<nick_name></nick_name>
-			<details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="2" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a86fd32f-09b5-409a-b4cf-4a93df10be3d" tmdb_id="0" imdb_id="nm0001811" creator="">
@@ -1479,7 +1472,7 @@
 			<first_name>Arnold</first_name>
 			<last_name>Weissenacker</last_name>
 			<nick_name></nick_name>
-			<details job="2" gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details job="2" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="cd3a2e20-efe1-4a4c-9249-164b67d185f7" tmdb_id="0" imdb_id="nm0000216" creator="">
@@ -1849,9 +1842,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Patrick</first_name_original>
 			<last_name_original>Swayze</last_name_original>
-			<images />
-			<details job="2" gender="1" birthday="1952-08-18" deathday="2009-09-14" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="1" birthday="1952-08-18" deathday="2009-09-14" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-James_Read" tmdb_id="0" imdb_id="nm0416856" creator="" created_by="DerFronck">
@@ -1860,9 +1852,8 @@
 			<nick_name></nick_name>
 			<first_name_original>James</first_name_original>
 			<last_name_original>Read</last_name_original>
-			<images />
-			<details job="2" gender="1" birthday="1953-07-31" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="1" birthday="1953-07-31" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-David_Carradine" tmdb_id="0" imdb_id="nm0001016" creator="" created_by="DerFronck">
@@ -1871,9 +1862,8 @@
 			<nick_name></nick_name>
 			<first_name_original>David</first_name_original>
 			<last_name_original>Carradine</last_name_original>
-			<images />
-			<details job="1" gender="1" birthday="1936-12-08" deathday="2009-06-03" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="1" gender="1" birthday="1936-12-08" deathday="2009-06-03" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Lesley-Anne_Down" tmdb_id="0" imdb_id="nm0001153" creator="" created_by="DerFronck">
@@ -1882,9 +1872,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Lesley-Anne</first_name_original>
 			<last_name_original>Down</last_name_original>
-			<images />
-			<details job="2" gender="2" birthday="1954-03-17" deathday="" country="UK" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="2" birthday="1954-03-17" deathday="" country="GB" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Terri_Garber" tmdb_id="0" imdb_id="nm0304965" creator="" created_by="DerFronck">
@@ -1893,9 +1882,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Terri</first_name_original>
 			<last_name_original>Garber</last_name_original>
-			<images />
-			<details job="2" gender="2" birthday="1960-12-28" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="2" birthday="1960-12-28" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Kirstie_Alley" tmdb_id="0" imdb_id="nm0000263" creator="" created_by="DerFronck">
@@ -1904,9 +1892,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Kirstie</first_name_original>
 			<last_name_original>Alley</last_name_original>
-			<images />
-			<details job="2" gender="2" birthday="1951-01-12" deathday="2022-12-05" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="2" birthday="1951-01-12" deathday="2022-12-05" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Douglas_Heyes" tmdb_id="0" imdb_id="nm0382227" creator="" created_by="DerFronck">
@@ -1915,9 +1902,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Douglas</first_name_original>
 			<last_name_original>Heyes</last_name_original>
-			<images />
-			<details job="1" gender="1" birthday="1919-05-22" deathday="1993-02-08" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="1" gender="1" birthday="1919-05-22" deathday="1993-02-08" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="5779c57f-0a2e-480d-a330-e8e9ea954f4e" tmdb_id="0" imdb_id="nm0000156" creator="" created_by="DerFronck">
@@ -1926,9 +1912,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Jeff</first_name_original>
 			<last_name_original>Goldblum</last_name_original>
-			<images />
-			<details job="2" gender="1" birthday="1952-10-22" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="1" birthday="1952-10-22" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-John_Getz" tmdb_id="0" imdb_id="nm0315288" creator="" created_by="DerFronck">
@@ -1937,9 +1922,8 @@
 			<nick_name></nick_name>
 			<first_name_original>John</first_name_original>
 			<last_name_original>Getz</last_name_original>
-			<images />
-			<details job="2" gender="1" birthday="1946-10-15" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="1" birthday="1946-10-15" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-David_Cronenberg" tmdb_id="0" imdb_id="nm0000343" creator="" created_by="DerFronck">
@@ -1948,9 +1932,8 @@
 			<nick_name></nick_name>
 			<first_name_original>David</first_name_original>
 			<last_name_original>Cronenberg</last_name_original>
-			<images />
-			<details job="1" gender="1" birthday="1943-03-15" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="1" gender="1" birthday="1943-03-15" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Geena_Davis" tmdb_id="0" imdb_id="nm0000133" creator="" created_by="DerFronck">
@@ -1959,9 +1942,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Geena</first_name_original>
 			<last_name_original>Davis</last_name_original>
-			<images />
-			<details job="2" gender="2" birthday="1956-02-21" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="2" birthday="1956-02-21" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="e52d395b-af82-4685-b5c3-232da27ac9c6" tmdb_id="0" imdb_id="nm0000387" creator="" created_by="DerFronck">
@@ -1970,9 +1952,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Robert</first_name_original>
 			<last_name_original>Englund</last_name_original>
-			<images />
-			<details job="2" gender="1" birthday="1947-06-06" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="1" birthday="1947-06-06" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Jsu_Garcia" tmdb_id="0" imdb_id="nm0006987" creator="" created_by="DerFronck">
@@ -1981,9 +1962,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Jsu</first_name_original>
 			<last_name_original>Garcia</last_name_original>
-			<images />
-			<details job="2" gender="1" birthday="1963-10-06" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="1" birthday="1963-10-06" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Heather_Langenkmap" tmdb_id="0" imdb_id="nm0000486" creator="" created_by="DerFronck">
@@ -1992,9 +1972,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Heather</first_name_original>
 			<last_name_original>Langenkamp</last_name_original>
-			<images />
-			<details job="2" gender="2" birthday="1964-07-17" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="2" birthday="1964-07-17" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Amandy_Wyss" tmdb_id="0" imdb_id="nm0944143" creator="" created_by="DerFronck">
@@ -2003,9 +1982,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Amanda</first_name_original>
 			<last_name_original>Wyss</last_name_original>
-			<images />
-			<details job="2" gender="2" birthday="1960-11-24" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="2" gender="2" birthday="1960-11-24" deathday="" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<person id="DF-Celebreties-Wes_Craven" tmdb_id="0" imdb_id="nm0000127" creator="" created_by="DerFronck">
@@ -2014,9 +1992,8 @@
 			<nick_name></nick_name>
 			<first_name_original>Wes</first_name_original>
 			<last_name_original>Craven</last_name_original>
-			<images />
-			<details job="1" gender="1" birthday="1939-08-02" deathday="2015-08-30" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<details job="1" gender="1" birthday="1939-08-02" deathday="2015-08-30" country="USA" />
+			<data popularity="1" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" />
 		</person>
 
 		<!-- persons from TheRob -->
