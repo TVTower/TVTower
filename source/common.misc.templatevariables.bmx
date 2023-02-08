@@ -254,10 +254,12 @@ Type TTemplateVariables
 		'placeholders (at least some of them)!
 		For local i:int = 0 until 20
 			local replacedPlaceholdersAllLang:int = 0
+			'as base value for the next recursive round, copy the previous result
+			'otherwise replacements in the "default language" would be used for other languages as well
+			local langBaseCopy:TLocalizedString = result.copy()
 			For local langID:int = eachIn languageIDs 'text.GetLanguageIDs()
 				local replacedPlaceholdersThisLang:int = 0
-				'use result already (to allow recursive-replacement)
-				local value:string = result.Get(langID)
+				local value:string = langBaseCopy.Get(langID)
 				local placeholders:string[] = StringHelper.ExtractPlaceholdersCombined(value, True)
 
 				if placeholders.length > 0
