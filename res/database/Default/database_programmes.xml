@@ -196,12 +196,12 @@ Modest joke concatenations after the comics of [1|Full].</en>
 		</programme>
 		<programme id="a21b8f61-59a1-4924-8881-8fece978b63d" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0133152" creator="">
 			<title>
-				<de>Affenerde (2001)</de>
-				<en>Apes' Earth (2001)</en>
+				<de>Affenerde</de>
+				<en>Apes' Earth</en>
 			</title>
 			<title_original>
-				<de>Planet der Affen (2001)</de>
-				<en>Planet of the Apes (2001)</en>
+				<de>Planet der Affen</de>
+				<en>Planet of the Apes</en>
 			</title_original>
 			<description>
 				<de>Im Jahre 2029 wird ein Astronaut mitsamt einiger Testaffen durch Raum und Zeit katapultiert und bruchlandet 5021 A.D. auf einem Planeten, wo diese Affen dann die Herrschaft übernehmen. Starke Kostüme, insgesamt aber leider schwaches Remake</de>
@@ -1903,12 +1903,12 @@ Stirring film, planned as a TV series - it ended with the pilot.</en>
 		</programme>
 		<programme id="a1d45a76-b16f-43b0-aa9d-7fe8778be885" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065718" creator="" comment="International title 'The Fire-Tongue Bowl' seems to be more common for the 1970 version, but keeping the 1944 title for continuity">
 			<title>
-				<de>Die Streichholzhammerbowle (1970)</de>
-				<en>The Mulled Wine on Fire (1970)</en>
+				<de>Die Streichholzhammerbowle</de>
+				<en>The Mulled Wine on Fire</en>
 			</title>
 			<title_original>
-				<de>Die Feuerzangenbowle (1970)</de>
-				<en>The Punch Bowl (1970)</en>
+				<de>Die Feuerzangenbowle</de>
+				<en>The Punch Bowl</en>
 			</title_original>
 			<description>
 				<de>Schriftsteller Johannes Pfeiffer versucht spät, das nachzuholen, was er als Schüler verpasst hat: Auf einer richtigen Schule den Lehrern Streiche zu spielen.
@@ -1929,12 +1929,12 @@ No easy task for [1|Full]. 1970 version.</en>
 		</programme>
 		<programme id="c714764b-adf6-423d-9d6e-c8c8aa92aa0e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036818" creator="">
 			<title>
-				<de>Die Streichholzhammerbowle (1944)</de>
-				<en>The Mulled Wine on Fire (1944)</en>
+				<de>Die Streichholzhammerbowle</de>
+				<en>The Mulled Wine on Fire</en>
 			</title>
 			<title_original>
-				<de>Die Feuerzangenbowle (1944)</de>
-				<en>The Punch Bowl (1944)</en>
+				<de>Die Feuerzangenbowle</de>
+				<en>The Punch Bowl</en>
 			</title_original>
 			<description>
 				<de>Die Geschichte um den Schüler Pfeiffer, der die Schulzeit auskostet.
@@ -3383,9 +3383,9 @@ Less successful sequel to the action hit.</en>
 			</title_original>
 			<description>
 				<de>Die Lebensgeschichte des Judah Ben Hur.
-Monumentaler Meilenstein</de>
+Monumentaler Meilenstein.</de>
 				<en>The life story of Judah Ben-Hur.
-Epic film milestone</en>
+Epic film milestone.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">c6431bc0-a0c6-4638-ab30-573066975d0f</member>
@@ -6317,7 +6317,7 @@ Moving film with [1|Full] in his first leading film role.</en>
 		<programme id="b04ded66-43a5-4a9c-9f0e-d7073edb4e2f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0052357" creator="">
 			<title>
 				<de>Vertikal - Aus dem Reich von Oben</de>
-				<en></en>
+				<en>Vertical</en>
 			</title>
 			<title_original>
 				<de>Vertigo - Aus dem Reich der Toten</de>
