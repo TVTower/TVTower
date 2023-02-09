@@ -30,7 +30,50 @@ Type TTemplateVariables
 	Method GetParentTemplateVariables:TTemplateVariables()
 		return null
 	End Method
+	
+	
+	Method CopyFrom:TTemplateVariables(v:TTemplateVariables)
+		If Not v.variables 
+			self.variables = Null
+		Else
+			self.variables = New TMap
+			For local key:Object = EachIn v.variables
+				local ls:TLocalizedString = TLocalizedString(v.variables.ValueForKey(key))
+				If not ls
+					Throw "TTemplateVariables: Unsupported content in variables."
+				EndIf
+				self.variables.Insert(key, ls.Copy())
+			Next
+		EndIf
 
+		If Not v.variablesLanguagesIDs
+			self.variablesLanguagesIDs = Null
+		Else
+			self.variablesLanguagesIDs = v.variablesLanguagesIDs[ .. ]
+		EndIf
+
+
+		If Not v.placeholderVariables
+			self.placeholderVariables = Null
+		Else
+			self.placeholderVariables = New TMap
+			For local key:Object = EachIn v.placeholderVariables
+				local ls:TLocalizedString = TLocalizedString(v.placeholderVariables.ValueForKey(key))
+				If not ls
+					Throw "TTemplateVariables: Unsupported content in placeholderVariables."
+				EndIf
+				self.placeholderVariables.Insert(key, ls.Copy())
+			Next
+		EndIf
+		Return Self
+	End Method
+
+	
+	Method Copy:TTemplateVariables()
+		local c:TTemplateVariables = New TTemplateVariables
+		Return c.CopyFrom(self)
+	End Method
+		
 
 	Method Reset()
 		placeholderVariables = null
