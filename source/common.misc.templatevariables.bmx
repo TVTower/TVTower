@@ -37,7 +37,7 @@ Type TTemplateVariables
 			self.variables = Null
 		Else
 			self.variables = New TMap
-			For local key:Object = EachIn v.variables
+			For local key:Object = EachIn v.variables.Keys()
 				local ls:TLocalizedString = TLocalizedString(v.variables.ValueForKey(key))
 				If not ls
 					Throw "TTemplateVariables: Unsupported content in variables."
@@ -57,7 +57,7 @@ Type TTemplateVariables
 			self.placeholderVariables = Null
 		Else
 			self.placeholderVariables = New TMap
-			For local key:Object = EachIn v.placeholderVariables
+			For local key:Object = EachIn v.placeholderVariables.Keys()
 				local ls:TLocalizedString = TLocalizedString(v.placeholderVariables.ValueForKey(key))
 				If not ls
 					Throw "TTemplateVariables: Unsupported content in placeholderVariables."
