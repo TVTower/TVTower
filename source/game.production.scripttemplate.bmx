@@ -645,6 +645,28 @@ Type TScriptTemplateVariables extends TTemplateVariables
 	Field parent:TScriptTemplate {nosave}
 
 
+	Method CopyFrom:TScriptTemplateVariables(v:TTemplateVariables) override
+		throw "copying of script variables is not supported!"
+		rem
+		Local scriptV:TScriptTemplateVariables = TScriptTemplateVariables(v)
+		If scriptV
+			self.parentID = scriptV.parentID
+			self.parent = scriptV.parent
+		Else
+			Super.CopyFrom(v)
+		EndIf
+
+		Return self
+		endrem
+	End Method
+
+
+	Method Copy:TScriptTemplateVariables() override
+		local c:TScriptTemplateVariables = New TScriptTemplateVariables
+		Return c.CopyFrom(self)
+	End Method
+
+
 	Method GetParentTemplateVariables:TTemplateVariables()
 		if parentID and not parent
 			parent = GetScriptTemplateCollection().GetByID(parentID)
