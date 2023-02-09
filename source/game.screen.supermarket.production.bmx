@@ -2393,7 +2393,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Self.selectJobID = displayJobID
 		Self.lastDisplayJobID = displayJobID
 	End Method
-	
+
 
     Method Create:TGUICastListItem(pos:SVec2I, dimension:SVec2I, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
