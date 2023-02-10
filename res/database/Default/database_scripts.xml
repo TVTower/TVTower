@@ -146,7 +146,7 @@
 
 			<variables>
 				<!-- international title for all incarnations - so "de" is enough -->
-				<!-- scr0llbaer: that may be true, but probably still not a good idea, because someone might add nested variables later, which then would resolve into German. -->
+				<!-- scr0llbaer: that may be true, but probably still not a good idea, because someone might add nested variables later, which then would resolve into German. EDIT: addressed in https://github.com/TVTower/TVTower/pull/906 -->
 				<object>
 					<de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
 					<en>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</en>

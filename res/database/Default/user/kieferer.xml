@@ -98,7 +98,6 @@ But the tour operator tricks them.</en>
 				</modifier>
 				<randomcity>
 					<de>%STATIONMAP:RANDOMCITY%</de>
-					<en>%STATIONMAP:RANDOMCITY%</en>
 				</randomcity>
 			</variables>
 
@@ -135,7 +134,6 @@ Any means will do.</en>
 				</modifier>
 				<randomcity>
 					<de>%STATIONMAP:RANDOMCITY%|Prosperous Creek</de>
-					<en>%STATIONMAP:RANDOMCITY%|Prosperous Creek</en>
 				</randomcity>
 			</variables>
 			<jobs>
