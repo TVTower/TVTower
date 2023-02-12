@@ -13,7 +13,7 @@
 				<task id="tvt-gameachievement-task-audience1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 250.000 Zuschauer</de>
-						<en>Reach an audience of 250.000</en>
+						<en>Reach an audience of 250,000</en>
 					</title>
 					<text>
 						<de>Strahle ein Programm aus und erreiche damit mindestens 250.000 Zuschauer.</de>
@@ -36,7 +36,7 @@
 		<achievement id="tvt-gameachievement-audience2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sender auf Überholspur</de>
-				<en>Broadcaster in the fast track</en>
+				<en>Broadcaster in the fast lane</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -98,7 +98,7 @@
 		<achievement id="tvt-gameachievement-newsaudience1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wald- und Wiesenjournalismus</de>
-				<en>Every day journalism</en>
+				<en>Everyday journalism</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -137,11 +137,11 @@
 				<task id="tvt-gameachievement-task-newsaudience2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 1 Million Zuschauer mit Nachrichten</de>
-						<en>Reach an audience of 1 million with a news show</en>
+						<en>Reach an audience of 1 million with a news broadcast</en>
 					</title>
 					<text>
 						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 1 Million Zuschauer.</de>
-						<en>Broadcast a news show and reach an audience of at least 1 million.</en>
+						<en>Broadcast news and reach an audience of at least 1 million.</en>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="1000000" checkMinute="0" />
 				</task>
@@ -160,7 +160,7 @@
 		<achievement id="tvt-gameachievement-newsaudience3" creator="5578" created_by="Ronny">
 			<title>
 				<de>Nachrichten für alle</de>
-				<en>News for all</en>
+				<en>News for everyone</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -168,11 +168,11 @@
 				<task id="tvt-gameachievement-task-newsaudience3" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 5 Million Zuschauer mit Nachrichten</de>
-						<en>Reach an audience of 5 million with a news show</en>
+						<en>Reach an audience of 5 million with a news broadcast</en>
 					</title>
 					<text>
 						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 5 Million Zuschauer.</de>
-						<en>Broadcast a news show and reach an audience of at least 5 million.</en>
+						<en>Broadcast news and reach an audience of at least 5 million.</en>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="5000000" checkMinute="0" />
 				</task>
@@ -199,11 +199,11 @@
 				<task id="tvt-gameachievement-task-reachBroadcastArea1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sendegebiet mit 5 Millionen Einwohnern</de>
-						<en>Broadcast area with 5 million inhabitants</en>
+						<en>Broadcast area with 5 million people</en>
 					</title>
 					<text>
 						<de>Erhöhe das Sendegebiet auf über 5 Millionen Einwohner.</de>
-						<en>Increase the broadcast area to more than 5 million inhabitants.</en>
+						<en>Increase the broadcast area to more than 5 million people.</en>
 					</text>
 					<data type="reachBroadcastArea" minReachAbsolute="5000000" />
 				</task>
@@ -230,11 +230,11 @@
 				<task id="tvt-gameachievement-task-reachBroadcastArea2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sendegebiet mit 10 Millionen Einwohnern</de>
-						<en>Broadcast area with 10 million inhabitants</en>
+						<en>Broadcast area with 10 million people</en>
 					</title>
 					<text>
 						<de>Erhöhe das Sendegebiet auf über 10 Millionen Einwohner.</de>
-						<en>Increase the broadcast area to more than 10 million inhabitants.</en>
+						<en>Increase the broadcast area to more than 10 million people.</en>
 					</text>
 					<data type="reachBroadcastArea" minReachAbsolute="10000000" />
 				</task>
@@ -261,11 +261,11 @@
 				<task id="tvt-gameachievement-task-reachBroadcastArea3" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sendegebiet mit 25 Millionen Einwohnern</de>
-						<en>Broadcast area with 25 million inhabitants</en>
+						<en>Broadcast area with 25 million people</en>
 					</title>
 					<text>
 						<de>Erhöhe das Sendegebiet auf über 15 Millionen Einwohner.</de>
-						<en>Increase the broadcast area to more than 15 million inhabitants.</en>
+						<en>Increase the broadcast area to more than 15 million people.</en>
 					</text>
 					<data type="reachBroadcastArea" minReachAbsolute="25000000" />
 				</task>
@@ -327,7 +327,7 @@
 					</title>
 					<text>
 						<de>Sende 3 Showbiz-Nachrichten in einer Nachrichtensendung.</de>
-						<en>Broadcast 3 showbiz news in one single news show.</en>
+						<en>Broadcast 3 showbiz news in one single news broadcast.</en>
 					</text>
 					<data type="BroadcastNewsShow" genre1="1" genre2="1" genre3="1" />
 				</task>

@@ -82,7 +82,7 @@
 		<variables>
 				<food>
 					<de>Kinder|Liebe|Joghurt|Herzhaftes|Erdbeermarmelade|Cornflakes|Honig</de>
-					<en>Children|Love|Joghurt|Hearty|Strawberry marmelade|Cornflakes|Honey</en>
+					<en>Children|Love|Yogurt|Savory|Strawberry marmalade|Cornflakes|Honey</en>
 				</food>
 				<mealtime>
 					<de>Frühstück|Mittagessen|Abendessen|Brunch</de>
@@ -94,15 +94,15 @@
 				</action>
 				<job1>
 					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane</de>
-					<en>budding law student|novelist|author of many dime novels</en>
+					<en>a budding law student|a novelist|the author of many dime novels</en>
 				</job1>
 				<job2>
 					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
-					<en>a landscapist|an AA|a hairdresser for women</en>
+					<en>a landscapist|an Alcoholic anonymous|a ladies hairdresser with passion</en>
 				</job2>
 				<funny>
 					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
-					<en>Hilarious|Loving|Turbulent|Romantic|Melancholy|Surprising</en>
+					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
 				</funny>
 				<namewoman>
 					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
@@ -141,28 +141,31 @@
 			</title>
 			<description>
 				<de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
-				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY%. They want to %ACTION2%.</en>
+				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY% who want to %ACTION2%.</en>
 			</description>
 
 			<variables>
 				<!-- international title for all incarnations - so "de" is enough -->
+				<!-- scr0llbaer: that may be true, but probably still not a good idea, because someone might add nested variables later, which then would resolve into German. EDIT: addressed in https://github.com/TVTower/TVTower/pull/906 -->
 				<object>
 					<de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
+					<en>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</en>
 				</object>
 				<adjective>
 					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
+					<en>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</en>
 				</adjective>
 				<job>
 					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
-					<en>Former cop|Firefighter|Head physician|Undertaker|Primary teacher|Climate researcher|Paleontologist</en>
+					<en>Former cop|Firefighter|Head physician|Undertaker|Primary school teacher|Climate researcher|Paleontologist</en>
 				</job>
 				<action>
 					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
-					<en>fights|battles|assists|reluctantly supports|supports trustfully</en>
+					<en>fights|battles|assists|reluctantly supports|trustfully supports</en>
 				</action>
 				<action2>
 					<de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
-					<en>kidnap %ENEMY%|eat %ENEMY%|sky rocket %ENEMY%|hold %ENEMY% hostage|replace %ENEMY% with a clone</en>
+					<en>kidnap %VICTIM%|eat %VICTIM%|shoot %VICTIM% to the moon|hold %VICTIM% hostage|replace %VICTIM% with a clone</en>
 				</action2>
 				<enemy>
 					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
@@ -201,7 +204,7 @@
 			</title>
 			<description>
 				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
-				<en>Subtile drama meets Sledge hammer humor. Only star is number 1 of the %NUMBER% %OBJECT%.</en>
+				<en>Subtle drama meets sledgehammer humor. The sole star is number 1 of the %NUMBER% %OBJECT%.</en>
 			</description>
 
 			<variables>
@@ -210,11 +213,11 @@
 				</number>
 				<object>
 					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
-					<en>Idiots|Fools|Dorks|Gangster|Charmer|Policemen|Firefighters|Politicians</en>
+					<en>Idiots|Fools|Dorks|Gangsters|Charmers|Policemen|Firefighters|Politicians</en>
 				</object>
 				<action>
 					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
-					<en>on tour|breaking out|topping off|and the love...|looking for affray|deal blows</en>
+					<en>on tour|breaking free|fueling up|and love...|looking for trouble|serve up and dish out</en>
 				</action>
 			</variables>
 
@@ -245,7 +248,7 @@
 			</title>
 			<description>
 				<de>%WOMAN% ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
-				<en>%WOMAN% is a daydreamer and begins to loose herself in her erotic fantasies.</en>
+				<en>%WOMAN% is a daydreamer and loses herself in her erotic fantasies.</en>
 			</description>
 
 			<variables>
@@ -254,11 +257,11 @@
 				</woman>
 				<action>
 					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
-					<en>ensnares the|enmeshes the|whispers sweet nothings to the|bewitches the</en>
+					<en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
 				</action>
 				<man>
 					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
-					<en>man of her dreams|abbot|teacher|professor|boss|roomer|baker</en>
+					<en>man of her dreams|abbot|teacher|professor|boss|subtenant|baker</en>
 				</man>
 			</variables>
 
@@ -297,7 +300,7 @@
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
-					<en>Castle|Country House|Hotel|Inn|Tavern|Forest House|Village|Lighthouse</en>
+					<en>Castle|Country House|Hotel|Inn|Tavern|Forest Lodge|Village|Lighthouse</en>
 				</building>
 				<count>
 					<de>|||3 |4 |5 |8 |10 |1000 </de>
@@ -308,7 +311,7 @@
 				</terror>
 				<monster>
 					<de>Vampire|Zombies|Untoten|Hexen|Werwölfe|Kobolde|Spinnen|Schlangen|Mumien</de>
-					<en>Vampires|Zombies|Undead|Witches|Werewolves|Kobolds|Spiders|Snakes|Mummies</en>
+					<en>Vampires|Zombies|Undead|Witches|Werewolves|Hobgoblins|Spiders|Snakes|Mummies</en>
 				</monster>
 				<description>
 					<de>Ein %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</de>
@@ -316,15 +319,15 @@
 				</description>
 				<environment>
 					<de>, mit einem Fluch belegt,|, erbaut auf einem alten Friedhof,|, verlassen und verfallen,</de>
-					<en> and its surroundings|, built on an old cemetery|, abandoned and dilapidated</en>
+					<en> under a curse|, built on an old cemetery|, abandoned and decayed</en>
 				</environment>
 				<what>
 					<de>ist Schauplatz blutiger Vermisstenfälle.|wird von Kreaturen heimgesucht.</de>
 					<en>is the scene of bloody missing persons cases.|is haunted by creatures.</en>
 				</what>
 				<monsterwhat>
-					<de>sind das Übel.|greifen jeden an.|beherrschen die Gegend.</de>
-					<en>are the evil.|attack everyone.|dominate the area.</en>
+					<de>sind der Grund des Übels.|greifen jeden an.|beherrschen die Gegend.</de>
+					<en>are the source of the evil.|attack everyone.|reign over the area.</en>
 				</monsterwhat>
 			</variables>
 
@@ -374,7 +377,7 @@
 				</titleaction>
 				<descriptionaction>
 					<de>leidet seit dem Kindesalter an %DISEASE%|bestreitet sein Leben mit %DISEASE%|leidet unter %DISEASE%|kann nur singend seine %DISEASE% bekämpfen</de>
-					<en>suffers from %DISEASE% since childhood|makes his living with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% singing</en>
+					<en>has been suffering from %DISEASE% since childhood|lives with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% while singing</en>
 				</descriptionaction>
 				<disease>
 					<de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
@@ -382,11 +385,11 @@
 				</disease>
 				<question>
 					<de>Ist ja nur %DISEASE%|Na klar, %DISEASE%|%DISEASE% - na und?</de>
-					<en>It's just %DISEASE%|Yeah, %DISEASE%|%DISEASE% - so what?</en>
+					<en>It's just %DISEASE%|Yeah right, %DISEASE%|%DISEASE% - so what?</en>
 				</question>
 				<environment>
 					<de>Familie|Freunde|Nachbarn</de>
-					<en>Relatives|Friends|Neighbours</en>
+					<en>relatives|friends|neighbours</en>
 				</environment>
 				<environmentaction>
 					<de>unterstützen ihn|helfen ihm|lassen nichts unversucht|stehen ihm bei</de>
@@ -394,7 +397,7 @@
 				</environmentaction>
 				<feeling>
 					<de>|||~nGefühle hautnah!|~nGefühlskino!|~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
-					<en>|||~nFeelings up close!|~nFeeling cinema!|~nEveryone feels it!|~nFinally told without clichés!</en>
+					<en>|||~nEmotions up close!|~nEmotional cinema!|~nEveryone feels with it!|~nFinally told without clichés!</en>
 				</feeling>
 			</variables>
 
@@ -424,7 +427,7 @@
 			</title>
 			<description>
 				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
-				<en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the careless.</en>
+				<en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the carefree.</en>
 			</description>
 
 			<variables>
@@ -437,8 +440,8 @@
 					<en>%ATTRIBUTE% %GROUP%</en>
 				</inner>
 				<attribute>
-					<de>tierische|große|abgefahrene|lustige|skurile</de>
-					<en>animalistic|big|whacky|funny|quirky</en>
+					<de>tierische|große|abgefahrene|lustige|skurrile</de>
+					<en>brute|big|whacky|funny|quirky</en>
 				</attribute>
 				<group>
 					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
@@ -474,7 +477,7 @@
 			</title>
 			<description>
 				<de>Serie über %OBJECT% und ihren Alltag. %JOKES%</de>
-				<en>Series about %OBJECT% and their day. %JOKES%</en>
+				<en>Series about %OBJECT% and their everyday lives. %JOKES%</en>
 			</description>
 
 			<children>
@@ -489,7 +492,7 @@
 				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
 					<title>
 						<de>%SUBJECT1A% im %SUBJECT1B%</de>
-						<en>%SUBJECT1A% in the %SUBJECT1B%</en>
+						<en>%SUBJECT1A% in %SUBJECT1B%</en>
 					</title>
 					<episodes min="1" max="3" />
 					<variables>
@@ -499,14 +502,14 @@
 						</subject1a>
 						<subject1b>
 							<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
-							<en>paradise|inn|backyard|police station|supermarket</en>
+							<en>paradise|the roadhouse|the backyard|the police station|the supermarket</en>
 						</subject1b>
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
 					<title>
 						<de>%SUBJECT2A% im %SUBJECT1B%</de>
-						<en>%SUBJECT2A% in the %SUBJECT1B%</en>
+						<en>%SUBJECT2A% in %SUBJECT1B%</en>
 					</title>
 					<episodes min="1" max="3" />
 					<variables>
@@ -516,7 +519,7 @@
 						</subject2a>
 						<subject1b>
 							<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
-							<en>paradise|inn|backyard|police station|supermarket</en>
+							<en>paradise|the roadhouse|the backyard|the police station|the supermarket</en>
 						</subject1b>
 					</variables>
 				</scripttemplate>
@@ -524,16 +527,16 @@
 
 			<variables>
 				<attribute>
-					<de>Ein Haufen|Die Hillbillie-|Verrückte|Die Wahnsinns-|Bayrische|Tugendhafte|Durchgedrehte|Fromme|Zankende</de>
-					<en>A bunch of|The hillbillie-|Crazy|The frenzy|Bavarian|Virtuous|Nutty|Pious|Brawly</en>
+					<de>Ein Haufen|Die Hinterwäldler-|Verrückte|Die Wahnsinns-|Bayrische|Tugendhafte|Durchgedrehte|Fromme|Zankende</de>
+					<en>A bunch of|The hillbilly|Crazy|The frenzied|Bavarian|Virtuous|Nutty|Devout|Quarreling</en>
 				</attribute>
 				<object>
 					<de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten|Rettungsschwimmer|Clowns|Krankenpfleger|Stripper|Feuerwehrmänner|Nonnen</de>
-					<en>fishwives|drag-queens|charmer|policemen|lifeguards|clowns|nurses|strippers|firefighters|Nuns</en>
+					<en>fishwives|drag-queens|charmers|policemen|lifeguards|clowns|nurses|strippers|firefighters|nuns</en>
 				</object>
 				<jokes>
 					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||</de>
-					<en>Gags every minute.|Not one failing punch line|Pure entertainment.||</en>
+					<en>Gags non-stop.|Spot-on punchlines.|Pure entertainment.||</en>
 				</jokes>
 			</variables>
 
@@ -572,36 +575,42 @@
 				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
 					<title>
 						<de>%TITLEEPISODE1%</de>
+						<en>%TITLEEPISODE1%</en>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
 					<title>
 						<de>%TITLEEPISODE2%</de>
+						<en>%TITLEEPISODE2%</en>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
 					<title>
 						<de>%TITLEEPISODE3%</de>
+						<en>%TITLEEPISODE3%</en>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
 					<title>
 						<de>%TITLEEPISODE4%</de>
+						<en>%TITLEEPISODE4%</en>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
 					<title>
 						<de>%TITLEEPISODE5%</de>
+						<en>%TITLEEPISODE5%</en>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
 					<title>
 						<de>%TITLEEPISODE6%</de>
+						<en>%TITLEEPISODE6%</en>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
@@ -610,30 +619,35 @@
 			<variables>
 				<title>
 					<de>%ANIMAL1%%CONNECTOR1%|Party mit %ANIMAL1%%CONNECTOR1%|Zu Besuch bei %ANIMAL1%%CONNECTOR2%|Auf der Spur von %ANIMAL1%%CONNECTOR2%|Im Zoo bei %ANIMAL1% und %ANIMAL2%</de>
+					<en>%ANIMAL1%%CONNECTOR1%|Party with %ANIMAL1%%CONNECTOR1%|Visiting %ANIMAL1%%CONNECTOR2%|On the trail of %ANIMAL1%%CONNECTOR2%|In the Zoo among %ANIMAL1% and %ANIMAL2%</en>
 				</title>
 				<animals>
 					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo.|Pfleger, Gäste und natürlich Tiere im Gehege.</de>
+					<en>%ANIMAL1%, %ANIMAL2% and many more animals|animals in the zoo.|keepers, guests and of course animals in the enclosure.</en>
 				</animals>
 				<extra>
 					<de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
+					<en>%EXTRA1%%EXTRA2%.||Animal keepers give tips for rearing at home.|Including tips for dealing with pets.</en>
 				</extra>
 				<extra1>
-					<de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung</de>
+					<de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung </de>
+					<en>Cute baby animals |Cuddlesome feral cats |Bio manure </en>
 				</extra1>
 				<extra2>
-					<de>zu hauf.|sowie ab und zu eine finale Spritze| und ab und zu eine Tierfütterung aus Eigenanbau</de>
+					<de>zu hauf.|sowie ab und zu eine finale Spritze|und ab und zu eine Tierfütterung aus Eigenanbau</de>
+					<en>in abundance.|and every now and then a final injection|and from time to time animal feeding from cultivation grown on-site</en>
 				</extra2>
 				<animal1>
 					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
-					<en>Ape|Frog|Camel|Waran|Goat|Elephant|Mouse|Rhino</en>
+					<en>Ape|Frog|Camel|Lizard|Goat|Elephant|Mouse|Rhino</en>
 				</animal1>
 				<animal2>
 					<de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
-					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Iltis</en>
+					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Polecat</en>
 				</animal2>
 				<animalep1>
 					<de>Affe|Frosch|Kamel|Waran</de>
-					<en>Ape|Frog|Camel|Waran</en>
+					<en>Ape|Frog|Camel|Lizard</en>
 				</animalep1>
 				<animalep2>
 					<de>Biber|Chamäleon|Dachs</de>
@@ -645,31 +659,39 @@
 				</animalep3>
 				<animalep4>
 					<de>Esel|Giraffe|Hirsch|Iltis</de>
-					<en>Donkey|Giraffe|Deer|Iltis</en>
+					<en>Donkey|Giraffe|Deer|Polecat</en>
 				</animalep4>
 				<connector1>
 					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und %ANIMAL2% ganz wild| und %ANIMAL2% im Zoo|</de>
+					<en>, %ANIMAL2% and co.| and %ANIMAL2%| and %ANIMAL2% all wild| and %ANIMAL2% in the Zoo|</en>
 				</connector1>
 				<connector2>
 					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und Pfleger</de>
+					<en>, %ANIMAL2% and co.| and %ANIMAL2%| and keepers</en>
 				</connector2>
 				<titleepisode1>
 					<de>%ANIMALEP1%|%ANIMALEP1% auf Abwegen|%ANIMALEP1% in Gefahr</de>
+					<en>%ANIMALEP1%|%ANIMALEP1% on the loose|%ANIMALEP1% in danger</en>
 				</titleepisode1>
 				<titleepisode2>
 					<de>%ANIMALEP2%|%ANIMALEP2% adoptiert|%ANIMALEP2% vermisst</de>
+					<en>%ANIMALEP2%|%ANIMALEP2% adopted|%ANIMALEP2% missing</en>
 				</titleepisode2>
 				<titleepisode3>
 					<de>%ANIMALEP3%|%ANIMALEP3% hautnah|%ANIMALEP3% im OP</de>
+					<en>%ANIMALEP3%|%ANIMALEP3% up close|%ANIMALEP3% in surgery</en>
 				</titleepisode3>
 				<titleepisode4>
 					<de>%ANIMALEP4%|%ANIMALEP4% geboren!|%ANIMALEP4% gefunden</de>
+					<en>%ANIMALEP4%|%ANIMALEP4% born!|%ANIMALEP4% found</en>
 				</titleepisode4>
 				<titleepisode5>
 					<de>%ANIMALEP2% trifft auf %ANIMALEP3%|%ANIMALEP2% bemuttert %ANIMALEP3%</de>
+					<en>%ANIMALEP2% meets %ANIMALEP3%|%ANIMALEP2% brings up %ANIMALEP3%</en>
 				</titleepisode5>
 				<titleepisode6>
 					<de>%ANIMALEP4% und Pfleger|%ANIMALEP4% frisst %ANIMALEP1%</de>
+					<en>%ANIMALEP4% and keeper|%ANIMALEP4% eats %ANIMALEP1%</en>
 				</titleepisode6>
 			</variables>
 

@@ -75,8 +75,9 @@ NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% mit neuem Film im Kino
 
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Regisseur %DIRECTORNAME1% und Schauspieler %ACTORNAME1% bringen «%MOVIETITLE%» auf die Leinwand.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Bald im Kino: %ACTORNAME1% in «%MOVIETITLE%». %ACTORNAME2% ist schon voll des Lobes für den Film.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Letzte Arbeiten am Film «%MOVIETITLE%». %ACTORNAME1% zeigt sich stolz auf neues Werk.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Letzte Arbeiten an «%MOVIETITLE%». %ACTORNAME1% ist stolz darauf, in dem Film mitzuspielen.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = Erster Trailer zu «%MOVIETITLE%» veröffentlicht. %DIRECTORNAME1%: "Bester Film des Jahres".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Letzte Arbeiten am Film «%MOVIETITLE%». %DIRECTORNAME1% zeigt sich stolz auf neues Werk.
 
 
 WEATHER_FORECAST_FOR_X_TILL_Y    = Wetterbericht für %BEGINHOUR% bis %ENDHOUR% Uhr
