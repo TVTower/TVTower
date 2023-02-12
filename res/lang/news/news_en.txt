@@ -1,7 +1,7 @@
-NEWS_TECHNICS_MEDIA   = Media / Technics
+NEWS_TECHNICS_MEDIA   = Media / Technology
 NEWS_POLITICS_ECONOMY = Politics / Economy
 NEWS_SHOWBIZ          = Showbiz
-NEWS_SPORT            = Sport
+NEWS_SPORT            = Sports
 NEWS_CURRENTAFFAIRS   = Current affairs
 NEWS_CULTURE          = Culture
 
@@ -20,95 +20,96 @@ NEWSSTUDIO_SUBSCRIPTION_LEVEL                      = subscription level
 NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER         = do not subscribe genre any longer
 NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL                 = next subscription level
 NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL              = current subscription level
-NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Today you used a maximum of subscription level %MAXLEVEL%. So today you pay %TOPAY%.
+NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = You have already used the subscription level %MAXLEVEL% today and have to pay %TOPAY% at the end of the day.
 
 RIGHT_CLICK_TO_DELETE = Right click to delete
 
 
-NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Ambassador of the PR Duban offends his counterpart
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Ambassador of PR Duban offends counterpart
 NEWS_TERROR_GROUP1_LEVEL1_TEXT1  = It is a scandal: an ambassador of PR Duban insulted his counterpart from the FR Duban.
-NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Ambassador of FR Duban insults neighbours.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Ambassador of FR Duban insults neighbours
 NEWS_TERROR_GROUP2_LEVEL1_TEXT1  = This cannot be true: an ambassador of FR Duban insulted the representatives of the PR Duban.
 
-NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Ambassador beaten
-NEWS_TERROR_GROUP1_LEVEL2_TEXT1  = On his way home, the Ambassador of the PR Duban was knocked out in the basement garage. Witnesses saw a car of FR Duban drive off.
-NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Apartment of an ambassador devastated
-NEWS_TERROR_GROUP2_LEVEL2_TEXT1  = The apartment of the Ambassador of the FR Duban was devastated. Clues point to the circles of VR Duban ...
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Ambassador beaten up
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1  = On his way home, the Ambassador of the PR Duban was knocked unconscious in the basement garage. Witnesses saw a car of the FR Duban drive off.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Ambassador's apartment vandalized
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1  = The apartment of the Ambassador of the Free Republic of Duban has been vandalized. Evidence points to circles of the Duban People's Republic ...
 
-NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = VR Duban threatens retaliation
-NEWS_TERROR_GROUP1_LEVEL3_TEXT1  = The VR Duban openly threatens with revenge. The culprits were allegedly found. The situation is tough.
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = PR Duban threatens retaliation
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1  = The PR Duban is openly threatening revenge. The culprits have allegedly been found. The situation is precarious.
 NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = FR Duban warns of consequences
-NEWS_TERROR_GROUP2_LEVEL3_TEXT1  = Enough. So the concise text of the message. The FR Duban takes countermeasures.
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1  = Enough. This is the concise wording of the embassy. The FR Duban is adopting countermeasures.
 
 NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = The police warn of terrorists
-NEWS_TERROR_GROUP1_LEVEL4_TEXT1  = The police lost track of a recently sighted terrorist. He is claimed to be of Dubanian origin.
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1  = Police lost track of a recently spotted terrorist. He is said to be of Duban origin.
 NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = The police warn of terrorists
-NEWS_TERROR_GROUP2_LEVEL4_TEXT1  = The police lost track of a recently sighted terrorist. He is claimed to be of Dubanian origin.
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1  = Police lost track of a recently spotted terrorist. He is said to be of Duban origin.
 
 BOMB_DETONATION_IN_TVTOWER                   = Bomb detonation in TVTower
-BOMB_DETONATION_IN_TVTOWER_TEXT              = A bomb detonation unsettled the people of the famous TVTower. The bomb damaged the room "%ROOM%". Investigations are in full swing.
+BOMB_DETONATION_IN_TVTOWER_TEXT              = A bomb detonation unsettled the people at the famous TVTower. The bomb damaged the room "%ROOM%". Investigations are in full swing.
 TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation damaged the room %ROOM%.
 TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT       = Renovation will cost %COST%.
 TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT     = The explosion destroyed '%TITLE%'.
 TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT     = The explosion destroyed a production plan.
-BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Attack on TVTower: No clues found
-BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = Public authorities investigated after the attack in the famous TVTower. Unfortunately they weren't able to find any useful clues.
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Attack on TVTower: No traces
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = After the attack in the well-known TV Tower, the authorities investigated. Unfortunately, no usable evidence could be secured.
 BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES       = Attack on TVTower: Clues found
-BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = Public authorities investigated after the attack in the famous TVTower - with success! Apparently resident TV channels (%CHANNELS%) assisted unwillingly with their roomsign-switch-games.
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = After the attack at the well-known TVTower, the authorities investigated - with success! Apparently, resident broadcasters (%CHANNELS%) contributed to the disaster with their sign-swapping games.
 
 
-NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE       = New movie by and with %DIRECTORNAME1%
-NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Director and main actor %DIRECTORNAME1% has new movie «%MOVIETITLE%» in the line.
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE       = New film made by and starring %DIRECTORNAME1%
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Director and main actor %DIRECTORNAME1% brings movie «%MOVIETITLE%» to the screen.
 
 NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE       = Soon in the movies: «%MOVIETITLE%»
 NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION = First trailer for «%MOVIETITLE%» published.
 
 NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_TITLE       = Soon in the movies: «%MOVIETITLE%»
-NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = Main actor %ACTORNAME1% soon in the movies with «%MOVIETITLE%».
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = Main actor %ACTORNAME1% soon to be featured in theaters with «%MOVIETITLE%».
 
 NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE       = Soon in the movies: «%MOVIETITLE%»
-NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Director %DIRECTORNAME1% lands «%MOVIETITLE%» to a cinema near you.
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Director %DIRECTORNAME1% brings film «%MOVIETITLE%» to a cinema near you.
 
 NEWS_ANNOUNCE_MOVIE_TITLE1 = New movie with %ACTORNAME1%
-NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% directs new movie
-#NEWS_ANNOUNCE_MOVIE_TITLE3 = 
+NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% shoots new film
+NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% with new film in theaters
 
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME1% deliver «%MOVIETITLE%» to the screen.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Soon in the movies: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is full of praise for the movie.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Latest works for movie «%MOVIETITLE%». %ACTORNAME1% is proud to star in the movie.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = First trailers for «%MOVIETITLE%» available. %DIRECTORNAME1%: "Best movie of the year".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME1% bring «%MOVIETITLE%» to the screen.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Coming soon to theaters: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is already full of praise for the film.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Finishing touches on «%MOVIETITLE%». %ACTORNAME1% is proud to star in the film.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = First trailer for «%MOVIETITLE%» released. %DIRECTORNAME1%: "Best movie of the year".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Finishing touches on the film «%MOVIETITLE%». %DIRECTORNAME1% expresses pride about latest creation.
 
 
-WEATHER_FORECAST_FOR_X_TILL_Y    = Weather forecast for %BEGINHOUR% till %ENDHOUR% o'clock
+WEATHER_FORECAST_FOR_X_TILL_Y    = Weather forecast for %BEGINHOUR% to %ENDHOUR% o'clock
 SKY_IS_PARTIALLY_CLOUDY          = Sky is partially cloudy.
 SKY_IS_OVERCAST1                 = Sky is full of clouds.
 SKY_IS_OVERCAST2                 = Sky is overcast. 
-SKY_IS_WITHOUT_CLOUDS            = Sky stays free of clouds.
+SKY_IS_WITHOUT_CLOUDS            = Sky remains free of clouds.
 SUN_SHINES_WHOLE_TIME            = Sun will shine the whole time.
-SUN_WINS_AGAINST_CLOUDS1         = Sun wins against existing clouds.
-SUN_WINS_AGAINST_CLOUDS2         = There are hardly any clouds.
-SUN_IS_SHINING_SOMETIMES         = Sun will shine from time to time.
-SUN_IS_NOT_SHINING               = Grey sky, sun won't shine.
+SUN_WINS_AGAINST_CLOUDS1         = The sun will prevail against existing clouds.
+SUN_WINS_AGAINST_CLOUDS2         = The sun will displace any existing clouds.
+SUN_IS_SHINING_SOMETIMES         = The sun can be seen in parts.
+SUN_IS_NOT_SHINING               = It's getting dreary. The sun will hide.
 RAIN_AND_SNOW_ALTERNATE          = Rain and snow alternate.
-RAIN_IS_POSSIBLE                 = It might rain.
-SNOW_IS_FALLING                  = Attention on the streets. Snow is falling and black ice is possible.
-TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will be between %MINTEMPERATURE% and %MAXTEMPERATURE%°C
-TEMPERATURE_IS_CONSTANT_AT_X     = Temperature is at constant  %TEMPERATURE%°C
+RAIN_IS_POSSIBLE                 = Rain is to be expected.
+SNOW_IS_FALLING                  = Caution on the roads. Snow brings slippery conditions.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will range between %MINTEMPERATURE% and %MAXTEMPERATURE%°C.
+TEMPERATURE_IS_CONSTANT_AT_X     = Temperature amounts to a constant %TEMPERATURE%°C.
 
 IN_THE_LATER_HOURS1                       = In the later hours
 IN_THE_LATER_HOURS2                       = After dawn
-IN_THE_LATER_HOURS3                       = Later
-STORMY_WINDS_OF_UP_TO_X1                  = Squalls of up to %MAXWINDVELOCITY% km/h drag over the land.
+IN_THE_LATER_HOURS3                       = Later then
+STORMY_WINDS_OF_UP_TO_X1                  = Squalls of up to %MAXWINDVELOCITY% km/h sweep across the country.
 STORMY_WINDS_OF_UP_TO_X2                  = Strong breezes up to squalls of %MAXWINDVELOCITY% km/h.
-NEARLY_NO_WIND1                           = There is almost no wind.
-NEARLY_NO_WIND2                           = The wind hardly blows.
-SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze from %MINWINDVELOCITY% km/h and isolated gusts of up to %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1                           = It is almost windless.
+NEARLY_NO_WIND2                           = There is almost no wind.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze of %MINWINDVELOCITY% km/h and isolated gusts of up to %MAXWINDVELOCITY% km/h.
 WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1      = The wind speeds are between %MINWINDVELOCITY% and %MAXWINDVELOCITY% km/h.
-WIND_VELOCITY_IS_CONSTANT_AT_X1           = The wind speed is a constant %WINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1           = The wind speed is constantly %WINDVELOCITY% km/h.
 
 
-SCORE_POINT  = Point
-SCORE_POINTS = Points
+SCORE_POINT  = point
+SCORE_POINTS = points
 
 SPORT_ICEHOCKEY = Ice hockey
 SPORT_SOCCER    = Soccer
@@ -119,55 +120,55 @@ SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = defeats thanks to a converted corner kick 
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = defeat thanks to a converted corner kick by %TEAM1STARSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = defeats thanks to saved penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = defeat thanks to saved penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
-#SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = 
-#SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = 
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = beats thanks to brilliant saves by goalkeeper %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = beat thanks to brilliant saves by goalkeeper %TEAM1KEEPERSHORT% %MATCHKIND%
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = gives away 3 valuable points %MATCHKIND% to
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = give away 3 valuable points %MATCHKIND% to
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = goes under due to an oversight of keeper %TEAM1KEEPERSHORT% %MATCHKIND% against
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = go under due to an oversight of keeper %TEAM1KEEPERSHORT% %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = is defeated due to blunder of keeper %TEAM1KEEPERSHORT% %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = are defeated due to blunder of keeper %TEAM1KEEPERSHORT% %MATCHKIND% against
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = loses with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = lose with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
 
-SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = after %PLAYTIMEMINUTES% minutes of doubtful soccer
+SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = after %PLAYTIMEMINUTES% minutes of questionable play
 SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = after %PLAYTIMEMINUTES% minutes of tactical duels
-SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = after exciting %PLAYTIMEMINUTES% minutes of lawn sport
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = after exciting %PLAYTIMEMINUTES% minutes of field sport
 
 SPORT_TEAMREPORT_MATCHWIN_S1 = wins thanks to %TEAM1STAR%
 SPORT_TEAMREPORT_MATCHWIN_P1 = win thanks to %TEAM1STAR%
 SPORT_TEAMREPORT_MATCHWIN_S2 = defeats %MATCHKIND%
 SPORT_TEAMREPORT_MATCHWIN_P2 = defeat %MATCHKIND%
-SPORT_TEAMREPORT_MATCHWIN_S3 = overcomes
-SPORT_TEAMREPORT_MATCHWIN_P3 = overcome
+SPORT_TEAMREPORT_MATCHWIN_S3 = subdues
+SPORT_TEAMREPORT_MATCHWIN_P3 = subdue
 SPORT_TEAMREPORT_MATCHWIN_S4 = wins %MATCHSCORE1TEXT% against
 SPORT_TEAMREPORT_MATCHWIN_P4 = win %MATCHSCORE1TEXT% against
 
 SPORT_TEAMREPORT_MATCHDRAW_S1 = gives away the chance of %MATCHSCOREMAXTEXT% against
 SPORT_TEAMREPORT_MATCHDRAW_P1 = gave away the chance of %MATCHSCOREMAXTEXT% against
-SPORT_TEAMREPORT_MATCHDRAW_S2 = only reaches a draw against
-SPORT_TEAMREPORT_MATCHDRAW_P2 = only reach a draw against
+SPORT_TEAMREPORT_MATCHDRAW_S2 = reaches only a draw against
+SPORT_TEAMREPORT_MATCHDRAW_P2 = reach only a draw against
 SPORT_TEAMREPORT_MATCHDRAW_S3 = brings home %MATCHSCOREDRAWGAMETEXT% against
 SPORT_TEAMREPORT_MATCHDRAW_P3 = bring home %MATCHSCOREDRAWGAMETEXT% against
 
 SPORT_TEAMREPORT_MATCHLOOSE_S1 = gifts %MATCHKIND% %MATCHSCORE2TEXT% to
 SPORT_TEAMREPORT_MATCHLOOSE_P1 = gift %MATCHKIND% %MATCHSCORE2TEXT% to
 SPORT_TEAMREPORT_MATCHLOOSE_S2 = disgraces itself %MATCHKIND% against
-SPORT_TEAMREPORT_MATCHLOOSE_P2 = disgrace itself %MATCHKIND% against
-SPORT_TEAMREPORT_MATCHLOOSE_S3 = gifts %MATCHKIND% %MATCHSCORE2TEXT% to
-SPORT_TEAMREPORT_MATCHLOOSE_P3 = gift %MATCHKIND% %MATCHSCORE2TEXT% to
+SPORT_TEAMREPORT_MATCHLOOSE_P2 = disgrace themselves %MATCHKIND% against
+SPORT_TEAMREPORT_MATCHLOOSE_S3 = gives away %MATCHKIND% %MATCHSCORE2TEXT% to
+SPORT_TEAMREPORT_MATCHLOOSE_P3 = give away %MATCHKIND% %MATCHSCORE2TEXT% to
 
 SPORT_TEAMREPORT_MATCHKIND1 = deservedly
-SPORT_TEAMREPORT_MATCHKIND2 = flukey
-SPORT_TEAMREPORT_MATCHKIND3 = after a long %PLAYTIMEMINUTES% minutes of match time
-SPORT_TEAMREPORT_MATCHKIND4 = in a racket of a game
+SPORT_TEAMREPORT_MATCHKIND2 = undeservingly
+SPORT_TEAMREPORT_MATCHKIND3 = after long %PLAYTIMEMINUTES% minutes playing time
+SPORT_TEAMREPORT_MATCHKIND4 = in a spectacle of play
 SPORT_TEAMREPORT_MATCHKIND5 = in a nail-biter
 SPORT_TEAMREPORT_MATCHKIND6 = in a sold out stadium
-SPORT_TEAMREPORT_MATCHKIND7 = in front of fully occupied coulisses
-SPORT_TEAMREPORT_MATCHKIND8 = in front of a chanting audience
-SPORT_TEAMREPORT_MATCHKIND9 = in front of a frenetic audience
-SPORT_TEAMREPORT_MATCHKIND11 = with almost empty fanblock
-SPORT_TEAMREPORT_MATCHKIND12 = in front of filled stadiums
-SPORT_TEAMREPORT_MATCHRESULT = %TEAMA1RTICLE1% %TEAM1% %MATCHRESULT% %TEAM2ARTICLE2% %TEAM2% with %FINALSCORE%.
+SPORT_TEAMREPORT_MATCHKIND7 = to a capacity crowd
+SPORT_TEAMREPORT_MATCHKIND8 = to a chanting crowd
+SPORT_TEAMREPORT_MATCHKIND9 = to a frenetic crowd
+SPORT_TEAMREPORT_MATCHKIND11 = with an almost empty fanblock
+SPORT_TEAMREPORT_MATCHKIND12 = to a packed stadium
+SPORT_TEAMREPORT_MATCHRESULT = %TEAM1ARTICLE1% %TEAM1% %MATCHRESULT% %TEAM2ARTICLE2% %TEAM2% with %FINALSCORE%.
 ##Variant A = "_der_ FC gewinnt"
 ##Variant B = "besiegt _den_ FC"
 SPORT_TEAMNAME_S_VARIANT_A = the

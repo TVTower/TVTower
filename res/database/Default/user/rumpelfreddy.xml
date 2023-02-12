@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-    <version value="3" comment="Freddys_Krempel" />
-    <insignificantpeople>
+	<version value="3" comment="Freddys_Krempel" />
+	<insignificantpeople>
 		<!-- Schottisch -->
 		<person id="Per_custom_Freddy_21" first_name="Sophie" last_name="McAgne" nick_name="" gender="2" country="SCO" fictional="1" />
 		<person id="Per_custom_Freddy_22" first_name="Olivia" last_name="Blair" nick_name="" gender="2" country="SCO" fictional="1" />
@@ -221,7 +221,7 @@
 		<person id="Per_custom_Freddy_238" first_name="Jack" last_name="McClary" nick_name="" gender="1" country="IRL" fictional="1" />
 		<person id="Per_custom_Freddy_239" first_name="Sophie" last_name="McDorrell" nick_name="" gender="2" country="IRL" fictional="1" />
 		<person id="Per_custom_Freddy_240" first_name="James" last_name="McFlaherty " nick_name="" gender="1" country="IRL" fictional="1" />
-		<person id="Per_custom_Freddy_241" first_name="Emma" last_name="O´Kelley" nick_name="" gender="2" country="IRL" fictional="1" />
+		<person id="Per_custom_Freddy_241" first_name="Emma" last_name="O'Kelley" nick_name="" gender="2" country="IRL" fictional="1" />
 		<person id="Per_custom_Freddy_242" first_name="Daniel" last_name="Fitzpatrick " nick_name="" gender="1" country="IRL" fictional="1" />
 		<person id="Per_custom_Freddy_243" first_name="Grace" last_name="McKee" nick_name="" gender="2" country="IRL" fictional="1" />
 		<person id="Per_custom_Freddy_244" first_name="Sean" last_name="Riordan" nick_name="" gender="1" country="IRL" fictional="1" />
@@ -703,612 +703,640 @@
 		<person id="Per_custom_Freddy_700" first_name="Ella" last_name="Schreiber" nick_name="" gender="2" country="D" fictional="1" />
 	</insignificantpeople>
 
-    <celebritypeople>
-        <person id="Rumpelfreddy-fictionalperson-AnnaAdlerman" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		 <!-- Express nach Sibirien (2) -->
-            <first_name>Anna</first_name>
-            <last_name>Adlerman</last_name>
-            <details job="2" gender="2"  birthday="1946" deathday="" country="D" />
-            <data popularity="10" affinity="45" fame="0" scandalizing="0" price_mod="1" power="45" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+	<celebritypeople>
+		<person id="Rumpelfreddy-fictionalperson-AnnaAdlerman" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<!-- Express nach Sibirien (2) -->
+			<first_name>Anna</first_name>
+			<last_name>Adlerman</last_name>
+			<details job="2" gender="2"  birthday="1946" deathday="" country="D" />
+			<data popularity="10" affinity="45" fame="0" scandalizing="0" price_mod="1" power="45" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Rumpelfreddy-fictionalperson-HannaHobkinns" fictional="1"  creator="8667" created_by="Rumpelfreddy">
-		 <!-- Julia in der Feenwelt(1) -->
-            <first_name>Hannah</first_name>
-            <last_name>Hobkinns</last_name>
-            <details job="1" gender="2"  birthday="1984" deathday="" country="GB" />
-            <data popularity="14" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="60" topgenre="0" />
-        </person>
+			<!-- Julia in der Feenwelt(1) -->
+			<first_name>Hannah</first_name>
+			<last_name>Hobkinns</last_name>
+			<details job="1" gender="2"  birthday="1984" deathday="" country="GB" />
+			<data popularity="14" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="60" topgenre="0" />
+		</person>
 		<person id="Rumpelfreddy-fictionalperson-LenaLauterberg" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Lena</first_name>
-            <last_name>Lauterberg</last_name>
-            <details job="2" gender="2"  birthday="1979-04-03" deathday="" country="D" />
-            <data popularity="8" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Lena</first_name>
+			<last_name>Lauterberg</last_name>
+			<details job="2" gender="2"  birthday="1979-04-03" deathday="" country="D" />
+			<data popularity="8" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_4" fictional="1"  creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Sarah</first_name>
-            <last_name>van Sonderbar</last_name>
-            <details job="1" gender="2"  birthday="1987" deathday="" country="D" />
-            <data popularity="9" affinity="18" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Sarah</first_name>
+			<last_name>van Sonderbar</last_name>
+			<details job="1" gender="2"  birthday="1987" deathday="" country="D" />
+			<data popularity="9" affinity="18" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_5" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Blondie</first_name>
-            <last_name>Prall</last_name>
-            <details job="1" gender="2"  birthday="1976" deathday="" country="A" />
-            <data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Blondie</first_name>
+			<last_name>Prall</last_name>
+			<details job="1" gender="2"  birthday="1976" deathday="" country="A" />
+			<data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_6" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Kroko See 6 (2) -->
-            <first_name>Olga</first_name>
-            <last_name>Ostburg</last_name>
-            <details job="2" gender="2"  birthday="1981" deathday="" country="D" />
-            <data popularity="10" affinity="7" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!-- Kroko See 6 (2) -->
+			<first_name>Olga</first_name>
+			<last_name>Ostburg</last_name>
+			<details job="2" gender="2"  birthday="1981" deathday="" country="D" />
+			<data popularity="10" affinity="7" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_7" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Gerlinde</first_name>
-            <last_name>von Gluterhof</last_name>
-            <details job="1" gender="2"  birthday="1961" deathday="" country="D" />
-            <data popularity="15" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Gerlinde</first_name>
+			<last_name>von Gluterhof</last_name>
+			<details job="1" gender="2"  birthday="1961" deathday="" country="D" />
+			<data popularity="15" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_8" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Kroko See 6 (2)-->
-            <first_name>Marie</first_name>
-            <last_name>Merkl</last_name>
-            <details job="2" gender="2"  birthday="1978" deathday="" country="D" />
-            <data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!-- Kroko See 6 (2)-->
+			<first_name>Marie</first_name>
+			<last_name>Merkl</last_name>
+			<details job="2" gender="2"  birthday="1978" deathday="" country="D" />
+			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_9" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Leonie</first_name>
-            <last_name>Luberlippe</last_name>
-            <details job="1" gender="2"  birthday="1983" deathday="" country="D" />
-            <data popularity="10" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Leonie</first_name>
+			<last_name>Luberlippe</last_name>
+			<details job="1" gender="2"  birthday="1983" deathday="" country="D" />
+			<data popularity="10" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_10" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Zoe</first_name>
-            <last_name>Zeckenbart</last_name>
-            <details job="1" gender="2"  birthday="1960" deathday="" country="D" />
-            <data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Zoe</first_name>
+			<last_name>Zeckenbart</last_name>
+			<details job="1" gender="2"  birthday="1960" deathday="" country="D" />
+			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_11" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Lukas</first_name>
-            <last_name>Liebsterman</last_name>
-            <details job="1" gender="1"  birthday="1980" deathday="" country="D" />
-            <data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Lukas</first_name>
+			<last_name>Liebsterman</last_name>
+			<details job="1" gender="1"  birthday="1980" deathday="" country="D" />
+			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_12" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
-            <first_name>Tobias</first_name>
-            <last_name>Täubchen</last_name>
-            <details job="1" gender="1"  birthday="1962" deathday="" country="D" />
-            <data popularity="15" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
+			<first_name>Tobias</first_name>
+			<last_name>Täubchen</last_name>
+			<details job="1" gender="1"  birthday="1962" deathday="" country="D" />
+			<data popularity="15" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_13" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Express nach Sibirien (1) -->
-            <first_name>Hardtmann</first_name>
-            <last_name>von Eisenhalt</last_name>
-            <details job="1" gender="1"  birthday="1940" deathday="" country="D" />
-            <data popularity="18" affinity="40" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!-- Express nach Sibirien (1) -->
+			<first_name>Hardtmann</first_name>
+			<last_name>von Eisenhalt</last_name>
+			<details job="1" gender="1"  birthday="1940" deathday="" country="D" />
+			<data popularity="18" affinity="40" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_14" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Bernd</first_name>
-            <last_name>Bohrman</last_name>
-            <details job="1" gender="1"  birthday="1976" deathday="" country="D" />
-            <data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Bernd</first_name>
+			<last_name>Bohrman</last_name>
+			<details job="1" gender="1"  birthday="1976" deathday="" country="D" />
+			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_15" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
-            <first_name>David</first_name>
-            <last_name>Davidson</last_name>
-            <details job="2" gender="1"  birthday="1953" deathday="" country="DK" />
-            <data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
+			<first_name>David</first_name>
+			<last_name>Davidson</last_name>
+			<details job="2" gender="1"  birthday="1953" deathday="" country="DK" />
+			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_16" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Walter</first_name>
-            <last_name>Wienerwurst</last_name>
-            <details job="1" gender="1"  birthday="1982" deathday="" country="D" />
-            <data popularity="7" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Walter</first_name>
+			<last_name>Wienerwurst</last_name>
+			<details job="1" gender="1"  birthday="1982" deathday="" country="D" />
+			<data popularity="7" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_17" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!-- Krokosee 6 (2) -->
-            <first_name>Felix</first_name>
-            <last_name>Feuerfranz</last_name>
-            <details job="2" gender="1"  birthday="1974" deathday="" country="D"  />
-            <data popularity="2" affinity="27" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!-- Krokosee 6 (2) -->
+			<first_name>Felix</first_name>
+			<last_name>Feuerfranz</last_name>
+			<details job="2" gender="1"  birthday="1974" deathday="" country="D"  />
+			<data popularity="2" affinity="27" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_18" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Günter</first_name>
-            <last_name>von und zu Gutberg</last_name>
-            <details job="1" gender="1"  birthday="1985" deathday="" country="D" />
-            <data popularity="11" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Günter</first_name>
+			<last_name>von und zu Gutberg</last_name>
+			<details job="1" gender="1"  birthday="1985" deathday="" country="D" />
+			<data popularity="11" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_19" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Johannes</first_name>
-            <last_name>Jasager</last_name>
-            <details job="1" gender="1"  birthday="1970" deathday="" country="D" />
-            <data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
+			<!--  -->
+			<first_name>Johannes</first_name>
+			<last_name>Jasager</last_name>
+			<details job="1" gender="1"  birthday="1970" deathday="" country="D" />
+			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
 		<person id="Per_custom_Freddy_20" fictional="1" creator="8667" created_by="Rumpelfreddy">
-		<!--  -->
-            <first_name>Karl</first_name>
-            <last_name>Krautrauch</last_name>
-            <details job="1" gender="1"  birthday="1953" deathday="" country="D" />
-            <data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
-    </celebritypeople>
+			<!--  -->
+			<first_name>Karl</first_name>
+			<last_name>Krautrauch</last_name>
+			<details job="1" gender="1"  birthday="1953" deathday="" country="D" />
+			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
+	</celebritypeople>
 
-    <allprogrammes>
-        <programme id="Freddy_Film_TO_1" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+	<allprogrammes>
+		<programme id="Freddy_Film_TO_1" product="1" licence_type="1" fictional="0" imdb_id="tt1283466" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. Arbeit für Alle 2008 Kurzfilm. Einer der wenigen FSK 18 ohne Feiertagsfreigabe die Bundesfördermittel bekommen haben und behalten durften -->
-                <de>Arbeit für Jedermann</de>
-                <en>Work for Everyone</en>
-            </title>
-            <description>
-                <de>Fiktive Dokumentation über einen Zombiejäger der als Rentner immer noch arbeiten muss. Nie war Gesellschaftskritik blutiger.</de>
-                <en>Fictional documentation about a retired Zombiehunter how still needs to work. Never before was criticism of society more gory than now.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
+				<de>Arbeit für Jedermann</de>
+				<en>Work for Everyone</en>
+			</title>
+			<title_original>
+				<de>Arbeit für Alle</de>
+				<en>Full Employment</en>
+			</title_original>
+			<description>
+				<de>Fiktive Dokumentation über einen Zombiejäger, der als Rentner immer noch arbeiten muss. Nie war Gesellschaftskritik blutiger.</de>
+				<en>Fictional documentary about a zombie hunter who, as a pensioner, still has to work. Social criticism has never been more gory.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
 				<member index="1" function="2">Freddy-realperson-wilfredelster</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2008" distribution="0" maingenre="12" subgenre="5" flags="68" blocks="2" price_mod="1.0" />
-            <ratings critics="50" speed="55" outcome="10" />
-        </programme>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2008" distribution="0" maingenre="12" subgenre="5" flags="68" blocks="2" price_mod="1.0" />
+			<ratings critics="50" speed="55" outcome="10" />
+		</programme>
 		
-		 <programme id="Freddy_Film_TO_2" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+		<programme id="Freddy_Film_TO_2" product="1" licence_type="1" fictional="0" imdb_id="tt0806143" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. Operation Rienzi 2005 Kurzfim -->
-                <de>Codename Rienzi</de>
-                <en></en>
-            </title>
-            <description>
-                <de>Zeigt den schwierigen Weg des Frühstückseis unseres Präsidenten, vom Premiumhuhn auf den Teller.</de>
-                <en>Shows the difficult route of our president's breakfast egg. From vip chicken right on to their plate.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
+				<de>Codename Rienzi</de>
+				<en>Codename Rienzi</en>
+			</title>
+			<title_original>
+				<de>Operation Rienzi</de>
+				<en>Operation Rienzi</en>
+			</title_original>
+			<description>
+				<de>Zeigt den schwierigen Weg des Frühstückseis unseres Präsidenten, vom Premiumhuhn auf den Teller.</de>
+				<en>Shows the difficult journey of our president's breakfast egg, from the premium chicken to the plate.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
 				<member index="1" function="2">Freddy-realperson-wilfredelster</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2005" distribution="0" maingenre="5" subgenre="" flags="4" blocks="1" price_mod="1.0" />
-            <ratings critics="62" speed="24" outcome="12" />
-        </programme>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2005" distribution="0" maingenre="5" subgenre="" flags="4" blocks="1" price_mod="1.0" />
+			<ratings critics="62" speed="24" outcome="12" />
+		</programme>
 		
-		 <programme id="Freddy_Film_TO_3" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+		<programme id="Freddy_Film_TO_3" product="1" licence_type="1" fictional="0" imdb_id="tt0349458" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. Flatsch 2001 Kurzfilm. Gewann einige Festivals -->
-                <de>Platsch</de>
-                <en>Splach</en>
-            </title>
-            <description>
-                <de>Ein Blick in das Innenleben einer Schreibmaschine. Zeigt das Gefühlsleben der Buchstaben und deren Furcht vor dem Farbband. Gewinner von mehreren Indiefestivals.</de>
-                <en>An interior view of a mechanical typewriter and the letters constant fear of the ink ribbon. Winner of several indie festivals.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2001" distribution="0" maingenre="5" subgenre="" flags="4" blocks="2" price_mod="1.0" />
-            <ratings critics="70" speed="18" outcome="22" />
-        </programme>
-		
+				<de>Platsch</de>
+				<en>Swash</en>
+			</title>
+			<title_original>
+				<de>Flatsch</de>
+				<en>Flatsch</en>
+			</title_original>
+			<description>
+				<de>Ein Blick in das Innenleben einer Schreibmaschine. Zeigt das Gefühlsleben der Buchstaben und deren Furcht vor dem Farbband. Gewinner von mehreren Indiefestivals.</de>
+				<en>A look into the inner workings of a typewriter. Shows the emotional life of the letters and their fear of the ribbon. Winner of several indie festivals.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2001" distribution="0" maingenre="5" subgenre="" flags="4" blocks="2" price_mod="1.0" />
+			<ratings critics="70" speed="18" outcome="22" />
+		</programme>
+
 		<!-- Mehr B-Movies für jedermann -->
 		
-		<programme id="Freddy_Film_Trash_1" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+		<programme id="Freddy_Film_Trash_1" product="1" licence_type="1" fictional="0" imdb_id="tt0050432" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. The Giant Claw 1957. Berühmt dafür das schlechteste Megamonster der 50er zu haben -->
-                <de>Das Riesenhühnerbein</de>
-                <en>The Giant Chickenleg</en>
-            </title>
-            <description>
-                <de>Ein Antimateriehühnchen greift die Erde an. Das Monster war so billig, dass sogar dem Publikum der Atem fehlte, vor Lachen.</de>
-                <en>An antimatter chicken attacks our world. The Monster was so cheap that the audience nearly fainted because they couldn't stop screaming with laughter.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-fredfears</member>
+				<de>Das Riesenhühnerbein</de>
+				<en>The Giant Chicken Leg</en>
+			</title>
+			<title_original>
+				<de>Angriff der Riesenkralle</de>
+				<en>The Giant Claw</en>
+			</title_original>
+			<description>
+				<de>Ein Antimateriehühnchen greift die Erde an. Das Monster war so billig, dass sogar dem Publikum der Atem fehlte, vor Lachen.</de>
+				<en>An antimatter chicken attacks Earth. The monster was so cheap that even the audience was breathless, with laughter.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-fredfears</member>
 				<member index="1" function="2">Freddy-realperson-jeffnorrov</member>
 				<member index="2" function="2">Freddy-realperson-mariacornight</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1957" distribution="0" maingenre="12" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
-            <ratings critics="8" speed="38" outcome="16" />
-        </programme>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1957" distribution="0" maingenre="12" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
+			<ratings critics="8" speed="38" outcome="16" />
+		</programme>
 		
-		<programme id="Freddy_Film_Trash_2" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+		<programme id="Freddy_Film_Trash_2" product="1" licence_type="1" fictional="0" imdb_id="tt0065832" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. Hercules in New York 1970. Erstes Schwarzenegger Movie. Abgrundtief schlechte Schauspielleistung. -->
-                <de>Sohn des Zeus in LA</de>
-                <en>Son of Zeus in LA</en>
-            </title>
-            <description>
-                <de>Herkules wird auf die Erde geschickt um in LA den Mr. Universum Titel zu gewinnen. Ein Tiefpunkt der Schauspielkunst.</de>
-                <en>Hercules is send down to earth to win the Mr. Univers Title in LA. A real low point in acting. </en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-antonseidel</member>
-				<member index="1" function="2">817052f9-cfbd-415c-a4b4-a225011afcb1</member>
+				<de>Sohn des Zeus in Amerika</de>
+				<en>Son of Zeus in America</en>
+			</title>
+			<title_original>
+				<de>Hercules in New York</de>
+				<en>Hercules in New York</en>
+			</title_original>
+			<description>
+				<de>Herkules wird auf die Erde geschickt um in New York den Mr. Universum Titel zu gewinnen. Ein Tiefpunkt der Schauspielkunst.</de>
+				<en>Hercules is sent to Earth to win the Mr. Universe title in New York. A low point in the art of acting.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-antonseidel</member>
+				<member index="1" function="2">cd3a2e20-efe1-4a4c-9249-164b67d185f7</member>
 				<member index="2" function="2">Freddy-realperson-bedorahloonies</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1970" distribution="0" maingenre="10" subgenre="1" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="6" speed="42" outcome="19" />
-        </programme>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1970" distribution="0" maingenre="10" subgenre="1" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="6" speed="42" outcome="19" />
+		</programme>
 		
-		<programme id="Freddy_Film_Trash_3" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+		<programme id="Freddy_Film_Trash_3" product="1" licence_type="1" fictional="0" imdb_id="tt0097550" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. I bought a Vampire Motorcycle / Iron Thunder (1990). Britischer schwarzen Humor. Dieser Film ist wohl mit Absicht schlecht.-->
-                <de>Mein neues Vampirfahrad</de>
-                <en>My new vampire Bicycle</en>
-            </title>
-            <description>
-                <de>Das Fahrrad eines ermordeten Satanisten versucht das Blut seiner Besitzer auszusaugen. Billige schwarze Satire auf schlechte Horrorfilme.</de>
-                <en>The Bicycle owned by a murdered satanist trys to suck their new owners blood. Cheap black satire on bad horror movies.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-denniscampball</member>
+				<de>Mein neues Vampirfahrad</de>
+				<en>My new Vampire Bicycle</en>
+			</title>
+			<title_original>
+				<de>Iron Thunder</de>
+				<en>I Bought a Vampire Motorcycle</en>
+			</title_original>
+			<description>
+				<de>Das Zweiradgefährt eines ermordeten Satanisten versucht das Blut seiner Besitzer auszusaugen. Billige schwarze Satire auf schlechte Horrorfilme.</de>
+				<en>The two-wheeled vehicle of a murdered Satanist tries to suck the blood of its owners. Cheap black satire of bad horror movies.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-denniscampball</member>
 				<member index="1" function="2">Freddy-realperson-NailNorrissey</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="GB" year="1990" distribution="0" maingenre="5" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="14" speed="53" outcome="14" />
-        </programme>
+			</staff>
+			<groups target_groups="0" />
+			<data country="GB" year="1990" distribution="0" maingenre="5" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="14" speed="53" outcome="14" />
+		</programme>
 		
-		<programme id="Freddy_Film_Trash_4" product="1" licence_type="1" fictional="0" creator="8667" created_by="Rumpelfreddy">
-            <title>
+		<programme id="Freddy_Film_Trash_4" product="1" licence_type="1" fictional="0" imdb_id="tt0084314" creator="8667" created_by="Rumpelfreddy">
+			<title>
 				<!-- Org. Mazes and Monsters 1982. Anti D&D Propaganda. Erster Film mit Tom Hanks in der Hauptrolle. -->
-                <de>Magie und Monster</de>
-                <en>Doors and Deamons</en>
-            </title>
-            <description>
-                <de>[1|Full] erster Film. Ein absurder Thriller über einen Rollenspieler der anfängt Obdachlose zu ermorden. Denn jeder weiß ja, Rollenspiele kommen von Satan.</de>
-                <en>[1|Full] first Movie. An absurd Thriller about a roleplayer how starts murdering hoboes. Because everybody knows roleplaying games were created by Satan himself. </en>
-            </description>
-            <staff>
-                <member index="0" function="1">Freddy-realperson-stevstar</member>
+				<de>Magie und Monster</de>
+				<en>Doors and Daemons</en>
+			</title>
+			<title_original>
+				<de>Labyrinth der Monster</de>
+				<en>Mazes and Monsters</en>
+			</title_original>
+			<description>
+				<de>[1|Full] erster Film. Ein absurder Thriller über einen Rollenspieler der anfängt Obdachlose zu ermorden. Denn jeder weiß ja, Rollenspiele kommen von Satan.</de>
+				<en>[1|Full]'s first film. An absurd thriller about a roleplayer who starts murdering homeless people. Because everyone knows, role-playing games come from Satan himself.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-stevstar</member>
 				<member index="1" function="2">Freddy-realperson-TomHencs</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1982" distribution="0" maingenre="17" subgenre="7" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="21" speed="31" outcome="25" />
-        </programme>
-		
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1982" distribution="0" maingenre="17" subgenre="7" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="21" speed="31" outcome="25" />
+		</programme>
+
 		<programme id="Freddy_Film_CustomB_1" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Express nach Sibirien</de>
-                <en>Express to Siberia</en>
-            </title>
-            <description>
-                <de>Eine Mutter versucht ihren in Sibirien verschollenen Sohn wieder zu finden. Kalter Krieg Propaganda aus dem Bilderbuch.</de>
-                <en>A mother is trying to find her missing son in Siberia. Picture book Cold War propaganda.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_13</member>
-                <member index="1" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
-                <member index="2" function="2">Per_custom_Freddy_15</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="1969" distribution="0" maingenre="1" subgenre="7" flags="32" blocks="3" price_mod="1.0" />
-            <ratings critics="23" speed="8" outcome="9" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_2" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Tempel des Grauens</de>
-                <en>Temple of Horror</en>
-            </title>
-            <description>
-                <de>Superarchäologe McMuffin überlistet südamerikanische Indianer und klaut ihren Schatz. Nichts in diesem Film ist nicht aus Pappmaschee.</de>
-                <en>Super archaeologist McMuffin outwittes south american Indians and steal their treasure. Nothing in this film is not pure fake.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_34</member>
-                <member index="1" function="2">Per_custom_Freddy_140</member>
-                <member index="2" function="2">Per_custom_Freddy_116</member>
-                <member index="3" function="2">Per_custom_Freddy_146</member>
-                <member index="4" function="2">Per_custom_Freddy_361</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="CDN" year="1988" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="11" speed="43" outcome="14" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_3" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Tempel der Verdammnis</de>
-                <en>Temple of Doom</en>
-            </title>
-            <description>
-                <de>Superarchäologe McMuffin schleicht an karibischen Zombies vorbei und klaut ihren Schatz. Schlechtere Zombies muss man erst mal finden.</de>
-                <en>Super archaeologist McMuffin sneaks past caribbean zombies and steal their treasure. Worse zombies you have to find first time.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_34</member>
-                <member index="1" function="2">Per_custom_Freddy_140</member>
-                <member index="2" function="2">Per_custom_Freddy_116</member>
-                <member index="3" function="2">Per_custom_Freddy_273</member>
-                <member index="4" function="2">Per_custom_Freddy_362</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="CDN" year="1991" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="10" speed="38" outcome="15" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_4" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Tempel der Mumie</de>
-                <en>Temple of the Mummy</en>
-            </title>
-            <description>
-                <de>Superarchäologe McMuffin äschert eine Mumie ein und klaut ihren Schatz. Das beste am Film sind die Wüstenaufnahmen wenn niemand zu sehen ist.</de>
-                <en>Super archaeologist McMuffin incinerates a mummy and steal their treasure. The best thing about the movie are the desert shots when no one can be seen.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_34</member>
-                <member index="1" function="2">Per_custom_Freddy_140</member>
-                <member index="2" function="2">Per_custom_Freddy_116</member>
-                <member index="3" function="2">Per_custom_Freddy_253</member>
-                <member index="4" function="2">Per_custom_Freddy_363</member>            
-            </staff>
-            <groups target_groups="0" />
-            <data country="CDN" year="1994" distribution="0" maingenre="1" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="7" speed="39" outcome="18" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_5" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Das Rennen zum Nordpol</de>
-                <en>The race to the North Pole</en>
-            </title>
-            <description>
-                <de>Versuch einer Verfilmung des Rennens um die Entdeckung des Nordpols. Bleibt beim Versuch.</de>
-                <en>Attempt at filming the race of the discovery of the North Pole. Remains a trial.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_72</member>
-                <member index="1" function="2">Per_custom_Freddy_46</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="S" year="1952" distribution="0" maingenre="1" subgenre="7" flags="32" blocks="3" price_mod="1.0" />
-            <ratings critics="19" speed="12" outcome="9" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_6" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Glück in Schweden</de>
-                <en>Happiness in Sweden</en>
-            </title>
-            <description>
-                <de>Millie aus Kentucky gewinnt eine Abenteuerreise durch Schweden. In Schweden zurecht auf dem Index.</de>
-                <en>Millie from Kentucky wins an adventure trip through Sweden. Illigal to broadcast in Sweden.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_115</member>
-                <member index="1" function="2">Per_custom_Freddy_143</member>
-                <member index="2" function="2">Per_custom_Freddy_50</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="2002" distribution="0" maingenre="1" subgenre="15" flags="32" blocks="3" price_mod="1.0" />
-            <ratings critics="8" speed="16" outcome="9" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_7" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Kroko See 6</de>
-                <en>Crocodile Lake 6</en>
-            </title>
-            <description>
-                <de>Schon wieder sind ein mutiertes Krokodil und seine Klone in einem Badesee gesehen worden. Bademeister und Ex-Fremdenlegionär Günter schnetzelt sie alle.</de>
-                <en>Again a mutated crocodile and his clones have been seen in a lake. Lifeguard and ex Foreign Legionnaire Gunter slaughters all.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_12</member>
-                <member index="1" function="2">Per_custom_Freddy_17</member>
-                <member index="2" function="2">Per_custom_Freddy_8</member>
-                <member index="3" function="2">Per_custom_Freddy_6</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2004" distribution="0" maingenre="2" subgenre="" flags="96" blocks="2" price_mod="1.0" />
-            <ratings critics="4" speed="48" outcome="9" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_8" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>27 sind nicht genug</de>
-                <en>27 are not enough</en>
-            </title>
-            <description>
-                <de>27 Weltkriegsveteranen bekämpfen einen Superterroristen der die USA bedroht. 27 mal Schauspielkunst am Abgrund.</de>
-                <en>27 World War veterans fight a super terrorists how threatens the USA. 27 times acting on the edge of a precipice.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_34</member>
-                <member index="1" function="2">Per_custom_Freddy_146</member>
-                <member index="2" function="2">Per_custom_Freddy_140</member>
-                <member index="3" function="2">Per_custom_Freddy_12</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="1995" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="7" speed="51" outcome="19" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_9" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Midgards Schlacht um die Erde</de>
-                <en>Midgards Battle for Earth</en>
-            </title>
-            <description>
-                <de>Thor bekämpft seinen mit Hammer und Sichel bewaffneten bösen Zwilling der die USA vernichten will, indem der den Kommunismus mit Hilfe von Satan ausruft.</de>
-                <en>Thor battles his, armed with hammer and sickle, evil twin who wants to destroy the United States by using a proclamation of communism with the help of Satan.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_37</member>
-                <member index="1" function="2">Per_custom_Freddy_109</member>
-                <member index="2" function="2">Per_custom_Freddy_150</member>
-                <member index="3" function="2">Per_custom_Freddy_168</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1982" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="11" speed="43" outcome="19" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_10" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Tiefsee Dinoschrecken, Banzai</de>
-                <en>Dino deep sea terror, banzai</en>
-            </title>
-            <description>
-                <de>Ein Megahai, der Dinosaurier DNA gefressen hat, überfällt Japan und wird von Jetman mit einem Staubwedel aufgehalten da das Monster gegen Staub allergisch ist.</de>
-                <en>A gigant shark how has eaten dinosaur DNA attacks Japan but is stopped by Jetman with a feather duster because the monster is allergic to dust.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_309</member>
-                <member index="1" function="2">Per_custom_Freddy_310</member>
-                <member index="2" function="2">Per_custom_Freddy_308</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="J" year="1961" distribution="0" maingenre="2" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
-            <ratings critics="8" speed="37" outcome="13" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_11" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Metzel Mambo</de>
-                <en>Slaughter Mambo</en>
-            </title>
-            <description>
-                <de>In der Zukunft gibt nur noch Essen für die, welche an einem blutigen Arenaspiel teilnehmen. Mambo rettet seine Familie in dem er alle anderen tötet.</de>
-                <en>In the future food is only for those who are participating in a bloody arena game. Mambo saves his family by killing everyone else.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_37</member>
-                <member index="1" function="2">Per_custom_Freddy_219</member>
-                <member index="2" function="2">Per_custom_Freddy_243</member>
-                <member index="3" function="2">Per_custom_Freddy_223</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2001" distribution="0" maingenre="2" subgenre="16" flags="96" blocks="2" price_mod="1.0" />
-            <ratings critics="3" speed="61" outcome="19" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_12" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Frucht Kung Fu</de>
-                <en>Fruit Kung Fu</en>
-            </title>
-            <description>
-                <de>Shao Lin Mönch Chang unterrichtet den amerikanischen Teenager Tom im Früchte-Kung-Fu damit dieser seine Eltern rächen kann.</de>
-                <en>Shao Lin monk Chang teaches the american teenager Tom in Fruit Kung Fu so that he can avenge his parents.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_524</member>
-                <member index="1" function="2">Per_custom_Freddy_219</member>
-                <member index="2" function="2">Per_custom_Freddy_582</member>
-                <member index="3" function="2">Per_custom_Freddy_588</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1989" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="13" speed="42" outcome="16" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_13" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Frucht Kung Fu 2</de>
-                <en>Fruit Kung Fu 2</en>
-            </title>
-            <description>
-                <de>Tom kämpft gegen böse Gemüsekultisten mit Hilfe seines Frucht Kung Fu. Deutlich schlechter als Teil eins.</de>
-                <en>Tom fights against evil vegetable cultists with the help of his Fruit Kung Fu. Significantly worse than part one.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_524</member>
-                <member index="1" function="2">Per_custom_Freddy_219</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1991" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="9" speed="47" outcome="10" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_14" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Frucht Kung Fu 3</de>
-                <en>Fruit Kung Fu 3</en>
-            </title>
-            <description>
-                <de>Tom ist tot. Sein Geist erscheint dem deutschen Tim im Schlaf und bringt im Frucht Kung Fu bei, damit dieser gegen die russische Mafia kämpfen kann.</de>
-                <en>Tom is dead. His spirit appears to the German Tim in his sleep and teaches him Fruit Kung Fu so that he can fight against the Russian Mafia.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_12</member>
-                <member index="1" function="2">Per_custom_Freddy_15</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2001" distribution="0" maingenre="2" subgenre="5" flags="48" blocks="2" price_mod="1.0" />
-            <ratings critics="2" speed="32" outcome="4" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_15" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Santa gegen die Magmazwerge</de>
-                <en>Santa against the Magma Dwarfs </en>
-            </title>
-            <description>
-                <de>Santas Werkstatt am Nordpol droht durch einen Vulkan zerstört zu werden. 3 Tage vor Weihnachten. Also zerstört Santa kurzerhand die Unterweltzivilisation, die daran Schuld trägt.</de>
-                <en>Santas workshop at the North Pole is liable to be destroyed by a volcano 3 days before Christmas. So Santa just destroys the underworld civilization that is to blame. </en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_167</member>
-                <member index="1" function="2">Per_custom_Freddy_142</member>
-                <member index="2" function="2">Per_custom_Freddy_27</member>
-                <member index="3" function="2">Per_custom_Freddy_33</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="1959" distribution="0" maingenre="2" subgenre="9" flags="32" blocks="3" price_mod="1.0" />
-            <ratings critics="7" speed="18" outcome="22" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_16" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Julia in der Feenwelt</de>
-                <en>Julia in the fairy world</en>
-            </title>
-            <description>
-                <de>Julias neue Schuhe gibt es nur in der Welt der Feen. Also reist sie mit Hilfe von Poo ihrem rosa Eisbär dorthin um zu shoppen.</de>
-                <en>Julia's new shoes are available only in the world of fairies. So she travels with the help of her pink polar bear Poo there to shop.</en>
-            </description>
-            <staff>
-                <member index="0" function="1">Rumpelfreddy-fictionalperson-HannaHobkinns</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2005" distribution="0" maingenre="3" subgenre="9" flags="48" blocks="2" price_mod="1.0" />
-            <ratings critics="6" speed="12" outcome="27" />
-        </programme>
-        
-        <programme id="Freddy_Film_CustomB_17" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
-            <title>
-                <de>Super Mega Duper Teenage Kraft Roboter 4</de>
-                <en>Super Duper Mega Teenage Robot Force 4</en>
-            </title>
-            <description>
-                <de>18 Teenager kombinieren ihre Superkraftroboter um den Galaktischen Übermotz Roboter aufzuhalten. Reines Produktplacement ohne jede Qualität.</de>
-                <en>18 teenagers combine their super power robots to stop the galactic Ubermotz robot. Pure product placement without any quality. </en>
-            </description>
-            <staff>
-                <member index="0" function="1">Per_custom_Freddy_117</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="USA" year="2006" distribution="0" maingenre="3" subgenre="16" flags="32" blocks="2" price_mod="1.0" />
-            <ratings critics="5" speed="41" outcome="16" />
-        </programme>
-    </allprogrammes>
+			<title>
+				<de>Express nach Sibirien</de>
+				<en>Express to Siberia</en>
+			</title>
+			<description>
+				<de>Eine Mutter versucht ihren in Sibirien verschollenen Sohn wieder zu finden. Kalter Krieg Propaganda aus dem Bilderbuch.</de>
+				<en>A mother is trying to find her missing son in Siberia. Picture book Cold War propaganda.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_13</member>
+				<member index="1" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
+				<member index="2" function="2">Per_custom_Freddy_15</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1969" distribution="0" maingenre="1" subgenre="7" flags="32" blocks="3" price_mod="1.0" />
+			<ratings critics="23" speed="8" outcome="9" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_2" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Tempel des Grauens</de>
+				<en>Temple of Horror</en>
+			</title>
+			<description>
+				<de>Superarchäologe McMuffin überlistet südamerikanische Indianer und klaut ihren Schatz. Nichts in diesem Film ist nicht aus Pappmaschee.</de>
+				<en>Super archaeologist McMuffin outwits South American Indians and steals their treasure. Nothing in this film is not made of papier-mâché.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_34</member>
+				<member index="1" function="2">Per_custom_Freddy_140</member>
+				<member index="2" function="2">Per_custom_Freddy_116</member>
+				<member index="3" function="2">Per_custom_Freddy_146</member>
+				<member index="4" function="2">Per_custom_Freddy_361</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="CDN" year="1988" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="11" speed="43" outcome="14" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_3" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Tempel der Verdammnis</de>
+				<en>Temple of Doom</en>
+			</title>
+			<description>
+				<de>Superarchäologe McMuffin schleicht an karibischen Zombies vorbei und klaut ihren Schatz. Schlechtere Zombies muss man erst mal finden.</de>
+				<en>Super archaeologist McMuffin sneaks past Caribbean zombies and steals their treasure. It takes a lot of effort to find worse zombies.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_34</member>
+				<member index="1" function="2">Per_custom_Freddy_140</member>
+				<member index="2" function="2">Per_custom_Freddy_116</member>
+				<member index="3" function="2">Per_custom_Freddy_273</member>
+				<member index="4" function="2">Per_custom_Freddy_362</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="CDN" year="1991" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="10" speed="38" outcome="15" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_4" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Tempel der Mumie</de>
+				<en>Temple of the Mummy</en>
+			</title>
+			<description>
+				<de>Superarchäologe McMuffin äschert eine Mumie ein und klaut ihren Schatz. Das beste am Film sind die Wüstenaufnahmen wenn niemand zu sehen ist.</de>
+				<en>Super archaeologist McMuffin incinerates a mummy and steals its treasure. The best thing about the movie are the desert shots when no one is around.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_34</member>
+				<member index="1" function="2">Per_custom_Freddy_140</member>
+				<member index="2" function="2">Per_custom_Freddy_116</member>
+				<member index="3" function="2">Per_custom_Freddy_253</member>
+				<member index="4" function="2">Per_custom_Freddy_363</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="CDN" year="1994" distribution="0" maingenre="1" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="7" speed="39" outcome="18" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_5" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Das Rennen zum Nordpol</de>
+				<en>The race to the North Pole</en>
+			</title>
+			<description>
+				<de>Versuch einer Verfilmung des Rennens um die Entdeckung des Nordpols. Bleibt beim Versuch.</de>
+				<en>Attempt at filming the race to discover the North Pole. Keep trying.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_72</member>
+				<member index="1" function="2">Per_custom_Freddy_46</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="S" year="1952" distribution="0" maingenre="1" subgenre="7" flags="32" blocks="3" price_mod="1.0" />
+			<ratings critics="19" speed="12" outcome="9" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_6" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Glück in Schweden</de>
+				<en>Happiness in Sweden</en>
+			</title>
+			<description>
+				<de>Millie aus Kentucky gewinnt eine Abenteuerreise durch Schweden. In Schweden zurecht auf dem Index.</de>
+				<en>Millie from Kentucky wins an adventure trip through Sweden. On the index in Sweden. Deservedly.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_115</member>
+				<member index="1" function="2">Per_custom_Freddy_143</member>
+				<member index="2" function="2">Per_custom_Freddy_50</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="2002" distribution="0" maingenre="1" subgenre="15" flags="32" blocks="3" price_mod="1.0" />
+			<ratings critics="8" speed="16" outcome="9" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_7" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Kroko See 6</de>
+				<en>Crocodile Lake 6</en>
+			</title>
+			<description>
+				<de>Schon wieder sind ein mutiertes Krokodil und seine Klone in einem Badesee gesehen worden. Bademeister und Ex-Fremdenlegionär Günter schnetzelt sie alle.</de>
+				<en>Again a mutated crocodile and its clones have been seen in a lake. Lifeguard and ex Foreign Legionnaire Gunter slaughters them all.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_8</member>
+				<member index="3" function="2">Per_custom_Freddy_6</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2004" distribution="0" maingenre="2" subgenre="" flags="96" blocks="2" price_mod="1.0" />
+			<ratings critics="4" speed="48" outcome="9" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_8" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>27 sind nicht genug</de>
+				<en>27 are not enough</en>
+			</title>
+			<description>
+				<de>27 Weltkriegsveteranen bekämpfen einen Superterroristen der die USA bedroht. 27 mal Schauspielkunst am Abgrund.</de>
+				<en>27 World War veterans fight a super terrorists how threatens the USA. 27 times abysmal acting.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_34</member>
+				<member index="1" function="2">Per_custom_Freddy_146</member>
+				<member index="2" function="2">Per_custom_Freddy_140</member>
+				<member index="3" function="2">Per_custom_Freddy_12</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1995" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="7" speed="51" outcome="19" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_9" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Midgards Schlacht um die Erde</de>
+				<en>Midgards Battle for Earth</en>
+			</title>
+			<description>
+				<de>Thor bekämpft seinen mit Hammer und Sichel bewaffneten bösen Zwilling der die USA vernichten will, indem der den Kommunismus mit Hilfe von Satan ausruft.</de>
+				<en>Thor fights his evil twin armed with a hammer and sickle who wants to destroy the USA by proclaiming communism with the help of Satan.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_37</member>
+				<member index="1" function="2">Per_custom_Freddy_109</member>
+				<member index="2" function="2">Per_custom_Freddy_150</member>
+				<member index="3" function="2">Per_custom_Freddy_168</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1982" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="11" speed="43" outcome="19" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_10" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Tiefsee Dinoschrecken, Banzai</de>
+				<en>Dino deep sea terror, banzai</en>
+			</title>
+			<description>
+				<de>Ein Megahai, der Dinosaurier DNA gefressen hat, überfällt Japan und wird von Jetman mit einem Staubwedel aufgehalten da das Monster gegen Staub allergisch ist.</de>
+				<en>A mega shark that has eaten dinosaur DNA invades Japan but is stopped by Jetman with a feather duster because the monster is allergic to dust.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_309</member>
+				<member index="1" function="2">Per_custom_Freddy_310</member>
+				<member index="2" function="2">Per_custom_Freddy_308</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="J" year="1961" distribution="0" maingenre="2" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
+			<ratings critics="8" speed="37" outcome="13" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_11" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Metzel Mambo</de>
+				<en>Slaughter Mambo</en>
+			</title>
+			<description>
+				<de>In der Zukunft gibt nur noch Essen für die, welche an einem blutigen Arenaspiel teilnehmen. Mambo rettet seine Familie indem er alle anderen tötet.</de>
+				<en>In the future, there is only food for those who participate in a bloody arena game. Mambo saves his family by killing everyone else.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_37</member>
+				<member index="1" function="2">Per_custom_Freddy_219</member>
+				<member index="2" function="2">Per_custom_Freddy_243</member>
+				<member index="3" function="2">Per_custom_Freddy_223</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2001" distribution="0" maingenre="2" subgenre="16" flags="96" blocks="2" price_mod="1.0" />
+			<ratings critics="3" speed="61" outcome="19" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_12" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Frucht Kung Fu</de>
+				<en>Fruit Kung Fu</en>
+			</title>
+			<description>
+				<de>Shao Lin Mönch Chang unterrichtet den amerikanischen Teenager Tom im Früchte-Kung-Fu damit dieser seine Eltern rächen kann.</de>
+				<en>Shao Lin monk Chang teaches American teenager Tom Fruit Kung Fu so that he can avenge his parents.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_524</member>
+				<member index="1" function="2">Per_custom_Freddy_219</member>
+				<member index="2" function="2">Per_custom_Freddy_582</member>
+				<member index="3" function="2">Per_custom_Freddy_588</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1989" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="13" speed="42" outcome="16" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_13" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Frucht Kung Fu 2</de>
+				<en>Fruit Kung Fu 2</en>
+			</title>
+			<description>
+				<de>Tom kämpft gegen böse Gemüsekultisten mit Hilfe seines Frucht Kung Fu. Deutlich schlechter als Teil eins.</de>
+				<en>Tom fights against evil vegetable cultists with the help of his Fruit Kung Fu. Significantly worse than part one.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_524</member>
+				<member index="1" function="2">Per_custom_Freddy_219</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1991" distribution="0" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="9" speed="47" outcome="10" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_14" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Frucht Kung Fu 3</de>
+				<en>Fruit Kung Fu 3</en>
+			</title>
+			<description>
+				<de>Tom ist tot. Sein Geist erscheint dem deutschen Tim im Schlaf und bringt im Frucht Kung Fu bei, damit dieser gegen die russische Mafia kämpfen kann.</de>
+				<en>Tom is dead. His spirit appears to the German Tim in his sleep and teaches him Fruit Kung Fu so that he can fight against the Russian Mafia.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_15</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2001" distribution="0" maingenre="2" subgenre="5" flags="48" blocks="2" price_mod="1.0" />
+			<ratings critics="2" speed="32" outcome="4" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_15" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Santa gegen die Magmazwerge</de>
+				<en>Santa against the Magma Dwarfs</en>
+			</title>
+			<description>
+				<de>Santas Werkstatt am Nordpol droht durch einen Vulkan zerstört zu werden. 3 Tage vor Weihnachten. Also zerstört Santa kurzerhand die Unterweltzivilisation, die daran Schuld trägt.</de>
+				<en>Santa's workshop at the North Pole is in danger of being destroyed by a volcano. 3 days before Christmas. So Santa destroys without further ado the underworld civilization that is to blame.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_167</member>
+				<member index="1" function="2">Per_custom_Freddy_142</member>
+				<member index="2" function="2">Per_custom_Freddy_27</member>
+				<member index="3" function="2">Per_custom_Freddy_33</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1959" distribution="0" maingenre="2" subgenre="9" flags="32" blocks="3" price_mod="1.0" />
+			<ratings critics="7" speed="18" outcome="22" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_16" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Julia in der Feenwelt</de>
+				<en>Julia in the fairy world</en>
+			</title>
+			<description>
+				<de>Julias neue Schuhe gibt es nur in der Welt der Feen. Also reist sie mit Hilfe von Poo ihrem rosa Eisbär dorthin um zu shoppen.</de>
+				<en>Julia's new shoes are available only in the world of fairies. Thus, with the help of Poo, her pink polar bear, she travels there so she can go shopping.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Rumpelfreddy-fictionalperson-HannaHobkinns</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2005" distribution="0" maingenre="3" subgenre="9" flags="48" blocks="2" price_mod="1.0" />
+			<ratings critics="6" speed="12" outcome="27" />
+		</programme>
+		
+		<programme id="Freddy_Film_CustomB_17" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Super Mega Duper Teenage Kraft Roboter 4</de>
+				<en>Super Duper Mega Teenage Robot Force 4</en>
+			</title>
+			<description>
+				<de>18 Teenager kombinieren ihre Superkraftroboter um den Galaktischen Übermotz Roboter aufzuhalten. Reines Produktplacement ohne jede Qualität.</de>
+				<en>18 teenagers combine their super power robots to stop the Galactic Supreme Uber-Robot. Pure product placement without any quality. </en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_117</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="2006" distribution="0" maingenre="3" subgenre="16" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="5" speed="41" outcome="16" />
+		</programme>
+	</allprogrammes>
 </tvtdb>
