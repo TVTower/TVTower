@@ -8010,7 +8010,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			<data country="H" year="1969" distribution="2" maingenre="3" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
-			    <!-- Original episode titles in English don't seem to exist, only in Hungarian; applying translation from original official German version for better in-game clarity -->
+				<!-- Original episode titles in English don't seem to exist, only in Hungarian; applying translation from original official German version for better in-game clarity -->
 				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>3D voll echt</de>
@@ -8606,7 +8606,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			<data country="USA" year="1958" distribution="2" maingenre="12" subgenre="14" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="76" speed="54" outcome="40" />
 			<children>
-			    <!-- Offizielle Original-Episodentitel auf deutsch gibt es scheinbar nicht, werden hier von den englischen Originaltiteln übersetzt -->
+				<!-- Offizielle Original-Episodentitel auf deutsch gibt es scheinbar nicht, werden hier von den englischen Originaltiteln übersetzt -->
 				<programme id="TheRob-serie-DasVerborgene-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt0739264" creator="8751" created_by="TheRob">
 					<title>
 						<de>Visionen</de>
@@ -11169,9 +11169,351 @@ Dream scenes and sentiments warp the storyline.</en>
 			</children>
 		</programme>
 
-		<!-- from rumpelfreddy - TODO -->
+		<!-- from rumpelfreddy -->
 
-		<!-- from speedminister.xml - TODO -->
+		<programme id="Freddy_Film_TO_1" product="1" licence_type="1" fictional="0" imdb_id="tt1283466" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. Arbeit für Alle 2008 Kurzfilm. Einer der wenigen FSK 18 ohne Feiertagsfreigabe die Bundesfördermittel bekommen haben und behalten durften -->
+				<de>Arbeit für Jedermann</de>
+				<en>Work for Everyone</en>
+			</title>
+			<title_original>
+				<de>Arbeit für Alle</de>
+				<en>Full Employment</en>
+			</title_original>
+			<description>
+				<de>Fiktive Dokumentation über einen Zombiejäger, der als Rentner immer noch arbeiten muss. Nie war Gesellschaftskritik blutiger.</de>
+				<en>Fictional documentary about a zombie hunter who, as a pensioner, still has to work. Social criticism has never been more gory.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
+				<member index="1" function="2">Freddy-realperson-wilfredelster</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2008" distribution="0" maingenre="12" subgenre="5" flags="68" blocks="2" price_mod="1.0" />
+			<ratings critics="50" speed="55" outcome="10" />
+		</programme>
+		
+		<programme id="Freddy_Film_TO_2" product="1" licence_type="1" fictional="0" imdb_id="tt0806143" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. Operation Rienzi 2005 Kurzfim -->
+				<de>Codename Rienzi</de>
+				<en>Codename Rienzi</en>
+			</title>
+			<title_original>
+				<de>Operation Rienzi</de>
+				<en>Operation Rienzi</en>
+			</title_original>
+			<description>
+				<de>Zeigt den schwierigen Weg des Frühstückseis unseres Präsidenten, vom Premiumhuhn auf den Teller.</de>
+				<en>Shows the difficult journey of our president's breakfast egg, from the premium chicken to the plate.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
+				<member index="1" function="2">Freddy-realperson-wilfredelster</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2005" distribution="0" maingenre="5" subgenre="" flags="4" blocks="1" price_mod="1.0" />
+			<ratings critics="62" speed="24" outcome="12" />
+		</programme>
+		
+		<programme id="Freddy_Film_TO_3" product="1" licence_type="1" fictional="0" imdb_id="tt0349458" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. Flatsch 2001 Kurzfilm. Gewann einige Festivals -->
+				<de>Platsch</de>
+				<en>Swash</en>
+			</title>
+			<title_original>
+				<de>Flatsch</de>
+				<en>Flatsch</en>
+			</title_original>
+			<description>
+				<de>Ein Blick in das Innenleben einer Schreibmaschine. Zeigt das Gefühlsleben der Buchstaben und deren Furcht vor dem Farbband. Gewinner von mehreren Indiefestivals.</de>
+				<en>A look into the inner workings of a typewriter. Shows the emotional life of the letters and their fear of the ribbon. Winner of several indie festivals.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="2001" distribution="0" maingenre="5" subgenre="" flags="4" blocks="2" price_mod="1.0" />
+			<ratings critics="70" speed="18" outcome="22" />
+		</programme>
+
+		<!-- Mehr B-Movies für jedermann -->
+		
+		<programme id="Freddy_Film_Trash_1" product="1" licence_type="1" fictional="0" imdb_id="tt0050432" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. The Giant Claw 1957. Berühmt dafür das schlechteste Megamonster der 50er zu haben -->
+				<de>Das Riesenhühnerbein</de>
+				<en>The Giant Chicken Leg</en>
+			</title>
+			<title_original>
+				<de>Angriff der Riesenkralle</de>
+				<en>The Giant Claw</en>
+			</title_original>
+			<description>
+				<de>Ein Antimateriehühnchen greift die Erde an. Das Monster war so billig, dass sogar dem Publikum der Atem fehlte, vor Lachen.</de>
+				<en>An antimatter chicken attacks Earth. The monster was so cheap that even the audience was breathless, with laughter.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-fredfears</member>
+				<member index="1" function="2">Freddy-realperson-jeffnorrov</member>
+				<member index="2" function="2">Freddy-realperson-mariacornight</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1957" distribution="0" maingenre="12" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
+			<ratings critics="8" speed="38" outcome="16" />
+		</programme>
+		
+		<programme id="Freddy_Film_Trash_2" product="1" licence_type="1" fictional="0" imdb_id="tt0065832" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. Hercules in New York 1970. Erstes Schwarzenegger Movie. Abgrundtief schlechte Schauspielleistung. -->
+				<de>Sohn des Zeus in Amerika</de>
+				<en>Son of Zeus in America</en>
+			</title>
+			<title_original>
+				<de>Hercules in New York</de>
+				<en>Hercules in New York</en>
+			</title_original>
+			<description>
+				<de>Herkules wird auf die Erde geschickt um in New York den Mr. Universum Titel zu gewinnen. Ein Tiefpunkt der Schauspielkunst.</de>
+				<en>Hercules is sent to Earth to win the Mr. Universe title in New York. A low point in the art of acting.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-antonseidel</member>
+				<member index="1" function="2">cd3a2e20-efe1-4a4c-9249-164b67d185f7</member>
+				<member index="2" function="2">Freddy-realperson-bedorahloonies</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1970" distribution="0" maingenre="10" subgenre="1" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="6" speed="42" outcome="19" />
+		</programme>
+		
+		<programme id="Freddy_Film_Trash_3" product="1" licence_type="1" fictional="0" imdb_id="tt0097550" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. I bought a Vampire Motorcycle / Iron Thunder (1990). Britischer schwarzen Humor. Dieser Film ist wohl mit Absicht schlecht.-->
+				<de>Mein neues Vampirfahrad</de>
+				<en>My new Vampire Bicycle</en>
+			</title>
+			<title_original>
+				<de>Iron Thunder</de>
+				<en>I Bought a Vampire Motorcycle</en>
+			</title_original>
+			<description>
+				<de>Das Zweiradgefährt eines ermordeten Satanisten versucht das Blut seiner Besitzer auszusaugen. Billige schwarze Satire auf schlechte Horrorfilme.</de>
+				<en>The two-wheeled vehicle of a murdered Satanist tries to suck the blood of its owners. Cheap black satire of bad horror movies.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-denniscampball</member>
+				<member index="1" function="2">Freddy-realperson-NailNorrissey</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="GB" year="1990" distribution="0" maingenre="5" subgenre="12" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="14" speed="53" outcome="14" />
+		</programme>
+		
+		<programme id="Freddy_Film_Trash_4" product="1" licence_type="1" fictional="0" imdb_id="tt0084314" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<!-- Org. Mazes and Monsters 1982. Anti D&D Propaganda. Erster Film mit Tom Hanks in der Hauptrolle. -->
+				<de>Magie und Monster</de>
+				<en>Doors and Daemons</en>
+			</title>
+			<title_original>
+				<de>Labyrinth der Monster</de>
+				<en>Mazes and Monsters</en>
+			</title_original>
+			<description>
+				<de>[1|Full] erster Film. Ein absurder Thriller über einen Rollenspieler der anfängt Obdachlose zu ermorden. Denn jeder weiß ja, Rollenspiele kommen von Satan.</de>
+				<en>[1|Full]'s first film. An absurd thriller about a roleplayer who starts murdering homeless people. Because everyone knows, role-playing games come from Satan himself.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Freddy-realperson-stevstar</member>
+				<member index="1" function="2">Freddy-realperson-TomHencs</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="USA" year="1982" distribution="0" maingenre="17" subgenre="7" flags="32" blocks="2" price_mod="1.0" />
+			<ratings critics="21" speed="31" outcome="25" />
+		</programme>
+
+		<!-- from speedminister.xml -->
+
+		<!-- ***** Serie: Expeditionen ins Tierreich, Dokumentation (Originaltitel der Episoden nicht mehr verfügbar) (real) ***** -->
+		<programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" imdb_id="tt0305025" creator="8605" created_by="SpeedMinister" comment="The series started in 1965. As this programme was tagged with 1985, contributors are supposedly welcome to add more 'seasons'.">
+			<title>
+				<de>Ausflüge ins Tierreich (1985)</de>
+				<en>Excursions into the Animal Kingdom (1985)</en>
+			</title>
+			<title_original>
+				<de>Expeditionen ins Tierreich (1985)</de>
+				<en>Expeditions into the Animal Kingdom (1985)</en>
+			</title_original>
+			<!-- Alle folgenden Beschreibungen sind fiktiv, d.h. ohne Vorlage erstellt. -->
+			<description>
+				<de>Mit versteckter Kamera wird das Verhalten wilder Tiere möglichst unverfälscht eingefangen.</de>
+				<en>With a hidden camera, the behavior of wild animals is captured as unaltered as possible.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">SpeedMinister-person-id032</member>
+				<member index="1" function="2">SpeedMinister-person-id032</member>
+			</staff>
+			<groups target_groups="0" />
+			<!-- neuere Folgen (nicht berücksichtigt) Link: http://www.imdb.com/title/tt0305025/episodes?season=-1&ref_=tt_eps_sn_-1 -->
+			<data country="D" year="1985" distribution="0" maingenre="6" blocks="1" />
+			<ratings critics="75" speed="45" />
+			<!-- Episodes -->
+			<children>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Deutschlands Wälder</de>
+						<en>The forests of Germany</en>
+					</title>
+					<title_original>
+						<de>Deutschlands Wälder</de>
+						<en>The forests of Germany</en>
+					</title_original>
+					<description>
+						<de>Das Leben wilder Tiere in Deutschlands Wäldern. Hirsch, Wildschwein, Rotfuchs um nur ein paar zu nennen. Luchs und Wildkatze sind dagegen viel seltener.</de>
+						<en>The life of wild animals in German forests. Deer, wild boars, red fox to name just a few of them. Lynx and wildcat are much more seldom.</en>
+					</description>
+					<ratings critics="65" speed="40" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die Alpen</de>
+						<en>The Alps</en>
+					</title>
+					<title_original>
+						<de>Die Alpen</de>
+						<en>The Alps</en>
+					</title_original>
+					<description>
+						<de>Hier gilt das Interesse Murmeltieren, Gemsen und den wiederangesiedelten Steinböcken. Sie teilen sich mit Rotwild die Weiden.</de>
+						<en>Here, the main focus is on marmots, chamois and the reintroduced ibexes. They share the pastures with red deer.</en>
+					</description>
+					<ratings critics="60" speed="35" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die Alligatoren der Everglades</de>
+						<en>Alligators of the Everglades</en>
+					</title>
+					<title_original>
+						<de>Die Alligatoren der Everglades</de>
+						<en>Alligators of the Everglades</en>
+					</title_original>
+					<description>
+						<de>Nahaufnahmen von Alligatoren bei der Nahrungsbeschaffung und bei der Paarung.</de>
+						<en>Alligator close-up views while catching their meal and while mating.</en>
+					</description>
+					<ratings critics="80" speed="50" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die Füchse Londons</de>
+						<en>Foxes of London</en>
+					</title>
+					<title_original>
+						<de>Die Füchse Londons</de>
+						<en>Foxes of London</en>
+					</title_original>
+					<description>
+						<de>Beobachtungen von wilden Tieren, wo man sie am wenigsten vermutet. In der Großstadt.</de>
+						<en>Observations of wild animals, where they are least expected. In the City.</en>
+					</description>
+					<ratings critics="76" speed="45" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Madagaskar</de>
+						<en>Madagascar</en>
+					</title>
+					<title_original>
+						<de>Madagaskar</de>
+						<en>Madagascar</en>
+					</title_original>
+					<description>
+						<de>Eine völlig eigene Tierwelt bietet Madagaskar. Lemuren sind nur die auffälligsten Vertreter, da sie nicht zu überhören sind.</de>
+						<en>Madagascar offers a completely unique animal world. Lemurs are only the most conspicuous representatives, as they cannot be overheard.</en>
+					</description>
+					<ratings critics="75" speed="48" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die Schmetterlinge Südamerikas</de>
+						<en>The butterflies of South America</en>
+					</title>
+					<title_original>
+						<de>Die Schmetterlinge Südamerikas</de>
+						<en>The butterflies of South America</en>
+					</title_original>
+					<description>
+						<de>Andere Farbkombinationen und größere Flügelspannweiten können die Schmetterlinge des Regenwalds bieten. Die Raupen besitzen verschiedenste Abwehrmechanismen gegen ihre Fressfeinde.</de>
+						<en>Other color combinations and larger wingspans can be found in the butterflies of the rainforest. The caterpillars have various defense mechanisms against their predators.</en>
+					</description>
+					<ratings critics="77" speed="39" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Das Great Barrier Riff</de>
+						<en>The Great Barrier Reef</en>
+					</title>
+					<title_original>
+						<de>Das Great Barrier Riff</de>
+						<en>The Great Barrier Reef</en>
+					</title_original>
+					<description>
+						<de>Bezaubernde Unterwasserwelt entlang der Küste Australiens. Fische so exotisch in Form und Farbe, wie man es sich schöner kaum vorstellen kann.</de>
+						<en>Enchanting underwater world along the coast of Australia. Fish as exotic in shape and color as one can barely imagine more beautiful.</en>
+					</description>
+					<ratings critics="76" speed="42" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die Bären Alaskas</de>
+						<en>The bears of Alaska</en>
+					</title>
+					<title_original>
+						<de>Die Bären Alaskas</de>
+						<en>The bears of Alaska</en>
+					</title_original>
+					<description>
+						<de>Beeindruckend wie eine Bärenmutter sich um ihren Nachwuchs kümmert. Lektionen des Fischfangs an Alaskas lachsreichen Flüssen mit einbezogen.</de>
+						<en>Impressing how a mother bear cares about her offspring. Lessons in catching fish in Alaska's salmon rich rivers are included.</en>
+					</description>
+					<ratings critics="75" speed="40" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Haie</de>
+						<en>Sharks</en>
+					</title>
+					<title_original>
+						<de>Haie</de>
+						<en>Sharks</en>
+					</title_original>
+					<description>
+						<de>Vom Katzenhai in der Nordsee, bis zum weißen Hai vor Südafrikas Küste. Die Familie der Haie wird beleuchtet.</de>
+						<en>From the cat shark in the North Sea, to the great white shark off South Africa's coast. The family of sharks is illuminated.</en>
+					</description>
+					<ratings critics="80" speed="52" />
+				</programme>
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Wale</de>
+						<en>Whales</en>
+					</title>
+					<title_original>
+						<de>Wale</de>
+						<en>Whales</en>
+					</title_original>
+					<description>
+						<de>Die Anmut von Grauwalen, Südkapern, Buckelwalen, Pottwalen und von Blauwalen ist aus kurzer Distanz beobachtbar. Auch Narwale, die Einhörner der Meere werden gezeigt.</de>
+						<en>The grace of grey whales, southern right whales, humpback whales, sperm whales and blue whales can be seen from short distance. Also narwhales, the unicorns of the seas are shown.</en>
+					</description>
+					<ratings critics="77" speed="45" />
+				</programme>
+			</children>
+		</programme>
 
 		<!-- imported from DerFronck Forum 30.04.2017 - TODO -->
 
