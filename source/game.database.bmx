@@ -170,7 +170,7 @@ Type TDatabaseLoader
 		'exclude some files as we add it by default to load it
 		'as the first files / specific order (as they do not require
 		'others - this avoids "extending X"-log-entries)
-		dirTree.SetExcludeFileNames(["database_scripts", "database_people", "database_ads", "database_programmes", "database_news"])
+		dirTree.SetExcludeFileNames(["database_scripts", "database_people", "database_people_fictional", "database_ads", "database_programmes", "database_programmes_fictional", "database_news"])
 
 		'add the rest of available files in the given dir
 		'(this also sorts the files)
@@ -178,12 +178,14 @@ Type TDatabaseLoader
 
 		'add that files at the top
 		'(in reversed order as each is added at top of the others!)
-		dirTree.AddFile(dbDirectory+"/database_achievements.xml", True) '6
-		dirTree.AddFile(dbDirectory+"/database_programmes.xml", True) '5
-		dirTree.AddFile(dbDirectory+"/database_news.xml", True) '4
-		dirTree.AddFile(dbDirectory+"/database_ads.xml", True) '3
-		dirTree.AddFile(dbDirectory+"/database_scripts.xml", True) '2
-		dirTree.AddFile(dbDirectory+"/database_people.xml", True) '1
+		dirTree.AddFile(dbDirectory+"/database_achievements.xml", True) 'last
+		dirTree.AddFile(dbDirectory+"/database_programmes_fictional.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_programmes.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_news.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_ads.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_scripts.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_people_fictional.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_people.xml", True) 'first
 
 
 		Local fileURIs:String[] = dirTree.GetFiles()
@@ -222,6 +224,7 @@ Type TDatabaseLoader
 		contractsCount = 0
 		personsCount = 0
 		personsBaseCount = 0
+		scriptTemplatesCount = 0
 
 		'recognize version
 		Local versionNode:TxmlNode = xml.FindRootChild("version")
@@ -369,7 +372,7 @@ Type TDatabaseLoader
 		EndIf
 
 
-		TLogger.Log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 3). Found " + seriesCount + " series, " + moviesCount + " movies, " + personsBaseCount + "/" + personsCount +" basePersons/persons, " + contractsCount + " advertisements, " + newsCount + " news, " + achievementCount+" achievements. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
+		TLogger.Log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 3). Found " + seriesCount + " series, " + moviesCount + " movies, " + personsBaseCount + "/" + personsCount +" basePersons/persons, " + contractsCount + " advertisements, " + newsCount + " news, " + achievementCount+" achievements, "+ scriptTemplatesCount+" script templates. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
 	End Method
 
 
@@ -1890,8 +1893,10 @@ Type TDatabaseLoader
 		'=== ADD TO COLLECTION ===
 		GetScriptTemplateCollection().Add(scriptTemplate)
 
-		scriptTemplatesCount :+ 1
-		totalScriptTemplatesCount :+ 1
+		If Not parentScriptTemplate
+			scriptTemplatesCount :+ 1
+			totalScriptTemplatesCount :+ 1
+		EndIf
 
 		Return scriptTemplate
 	End Method
