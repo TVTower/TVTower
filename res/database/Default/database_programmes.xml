@@ -1463,7 +1463,7 @@ Bloody spectacle for genre fans and dimwits.</en>
 				<member index="3" function="2">ca543b12-8e37-4f9c-8800-af4f9e44b488</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1998" distribution="1" maingenre="2" subgenre="" flags="64" blocks="3" price_mod="1" />
+			<data country="USA" year="1998" distribution="1" maingenre="2" subgenre="12,16" flags="64" blocks="3" price_mod="1" />
 			<ratings critics="4" speed="51" outcome="51" />
 		</programme>
 		<programme id="a48d3913-b963-465c-b41d-cfa55046f6da" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0187738" creator="">
@@ -1488,7 +1488,7 @@ Successful continuation of the scare.</en>
 				<member index="3" function="2">1c82f854-c349-4dc4-aa15-7cda8594d803</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2002" distribution="1" maingenre="2" subgenre="" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" year="2002" distribution="1" maingenre="2" subgenre="12,16" flags="64" blocks="2" price_mod="1" />
 			<ratings critics="0" speed="65" outcome="56" />
 		</programme>
 		<programme id="88593448-151d-4928-88af-19507cbbbbb1" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049293" creator="">
@@ -8266,7 +8266,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep002" product="4" fictional="1" licence_type="2" tmdb_id="0" imdb_id="tt0854057" creator="7430" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep002" product="4" licence_type="2" tmdb_id="0" imdb_id="tt0854057" creator="7430" created_by="TheRob">
 					<title>
 						<de>Die Wale</de>
 						<en>The whales</en>
@@ -9645,7 +9645,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Sanddornkahn" product="2" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0074050" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Sanddornkahn" product="2" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0074050" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Sandokan, Action -->
 				<de>Sanddornkahn</de>
@@ -9666,60 +9666,59 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="3" function="2">TheRob-TowerTV-PhilliGemoy</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="1,7" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="42" speed="46" outcome="" />
 			<children>
-				<!-- No official original German episode titles found, applying translation from original English -->
 				<programme id="TheRob-serie-Sanddornkahn-Episode001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306736" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.1</de>
-						<en>Episode 1.1</en>
+						<de>Die Entführung</de>
+						<en>The Conquest</en>
 					</title>
 					<title_original>
-						<de>Die Entführung</de>
+						<de>Die Eroberer</de>
 						<en>The Kidnapping</en>
 					</title_original>
 					<description>
-						<de>S. erkennt die Ungerechtigkeiten der Briten und entscheidet sich für den Kampf.</de>
-						<en>S. recognizes the injustices of the British and decides to fight.</en>
+						<de>S. erkennt die Ungerechtigkeiten der Briten und entscheidet sich für den Kampf. Eine chinesische Dschunke unter Kontrolle der Engländer wird versenkt.</de>
+						<en>S. recognizes the injustices of the British and decides to fight. A Chinese junk under British control is sunk.</en>
 					</description>
 				</programme>
 					<programme id="TheRob-serie-Sanddornkahn-Episode002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306737" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.2</de>
-						<en>Episode 1.2</en>
-					</title>
-					<title_original>
 						<de>Der Geheimnisvolle Prinz</de>
-						<en>The Mysterious Prince</en>
-					</title_original>
-					<description>
-						<de>S. jagt das erste britische Schiff und versenkt es.</de>
-						<en>S. chases the first British ship and destroys it.</en>
-					</description>
-				</programme>
-				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306738" creator="8751" created_by="TheRob">
-					<title>
-						<de>Episode 1.3</de>
-						<en>Episode 1.3</en>
+						<en>The Foreign Prince</en>
 					</title>
 					<title_original>
-						<de>Die Tigerjagd</de>
-						<en>The Tiger Hunt</en>
+						<de>Der fremde Prinz</de>
+						<en>The Mysterious Prince</en>
 					</title_original>
 					<description>
 						<de>Ausgerechnet in eine britische Lady verliebt sich S. und bringt sich dadurch in Gefahr.</de>
 						<en>S. falls in love with a British lady, of all people, and thus puts himself in danger.</en>
 					</description>
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306738" creator="8751" created_by="TheRob">
+					<title>
+						<de>Verfolgung des Tigers</de>
+						<en>Chasing the Tiger</en>
+					</title>
+					<title_original>
+						<de>Tigerjagd</de>
+						<en>The Tiger Hunt</en>
+					</title_original>
+					<description>
+						<de>Auf einer angesetzten Tigerjagd tötet ein junger Jäger einen Tiger, aber es ist noch ein zweites Tier in der Nähe. S. stellt sich der Bestie nur mit dem Messer bewaffnet entgegen.</de>
+						<en>On a scheduled tiger hunt, a young hunter kills a tiger, but there is a second one nearby. S. confronts the beast armed only with a knife.</en>
+					</description>
 					<ratings critics="54" speed="30" />
 				</programme>
 				<programme id="TheRob-serie-Sanddornkahn-Episode004" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306739" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.4</de>
-						<en>Episode 1.4</en>
+						<de>Das Angebot</de>
+						<en>The Sacrifice</en>
 					</title>
 					<title_original>
-						<de>Das Angebot</de>
+						<de>Das Opfer</de>
 						<en>The Offer</en>
 					</title_original>
 					<description>
@@ -9729,11 +9728,11 @@ Dream scenes and sentiments warp the storyline.</en>
 				</programme>
 				<programme id="TheRob-serie-Sanddornkahn-Episode005" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306740" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.5</de>
-						<en>Episode 1.5</en>
+						<de>Der Treuebruch</de>
+						<en>Defection</en>
 					</title>
 					<title_original>
-						<de>Verrat</de>
+						<de>Der Verrat</de>
 						<en>Betrayal</en>
 					</title_original>
 					<description>
@@ -9744,8 +9743,8 @@ Dream scenes and sentiments warp the storyline.</en>
 				</programme>
 				<programme id="TheRob-serie-Sanddornkahn-Episode006" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306741" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.6</de>
-						<en>Episode 1.6</en>
+						<de>Der Kampf</de>
+						<en>The Combat</en>
 					</title>
 					<title_original>
 						<de>Die Schlacht</de>

@@ -1243,7 +1243,7 @@
 			<studio_size min="1" max="2" slope="60" />
 		</scripttemplate>
 
-		<!--Episoden gekürzt, kein optionaler Kult-->
+		<!--Episoden gekürzt (TODO: Klären Warum?), kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Metalsucher">
 			<title>
 				<de>%name1%%name2% in Alaska</de>

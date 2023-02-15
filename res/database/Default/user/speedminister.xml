@@ -21,10 +21,10 @@
         <person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
         <person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
 
-        <!-- TODO: Most non-fictional people in this file seem to be unused? -->
-        
-        <person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" first_name_original="Dennis" last_name_original="Jacobsen" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id038" first_name="Lianda" last_name="Mahoud" first_name_original="Randa" last_name_original="Chahoud" creator="8605" created_by="speedminister" />
+        <!-- TODO: Most non-fictional people in this file seem to be unused? Update: IMDB data added, TODO: move entries, TODO: add related programme, e.g. tt0978537: Ijon Tichy: Raumpilot -->
+
+        <person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" first_name_original="Dennis" last_name_original="Jacobsen" gender="1" birthday="" deathday="" imdb_id="nm0414706" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id038" first_name="Lianda" last_name="Mahoud" first_name_original="Randa" last_name_original="Chahoud" gender="2" birthday="" deathday="" imdb_id="nm1216097" creator="8605" created_by="speedminister" />
         <!-- Österreich -->
         <person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
         <person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
@@ -40,43 +40,43 @@
         <!-- USA -->
         <person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
         <person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
-        <person id="SpeedMinister-person-id033" first_name="Steven" last_name="Kessel" first_name_original="Steve" last_name_original="Ressel" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id034" first_name="Johan" last_name="Richcorner" first_name_original="Jordan" last_name_original="Reichek" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id035" first_name="Robby" last_name="Bumblebee" first_name_original="Rob" last_name_original="Hummel" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id036" first_name="J. Honey" last_name="Busquez" first_name_original="Jhonen" last_name_original="Vasquez" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id033" first_name="Steven" last_name="Kessel" first_name_original="Steve" last_name_original="Ressel" gender="1" birthday="" deathday="" imdb_id="nm0720383" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id034" first_name="Johan" last_name="Richcorner" first_name_original="Jordan" last_name_original="Reichek" gender="1" birthday="1967-10-12" deathday="" imdb_id="nm1264053" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id035" first_name="Robby" last_name="Bumblebee" first_name_original="Rob" last_name_original="Hummel" gender="1" birthday="" deathday="" imdb_id="nm0401850" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id036" first_name="J. Honey" last_name="Busquez" first_name_original="Jhonen" last_name_original="Vasquez" gender="1" birthday="1974-09-01" deathday="" imdb_id="nm0890679" creator="8605" created_by="speedminister" />
         <!-- Frankreich -->
-        <person id="SpeedMinister-person-id028" first_name="Manuel" last_name="Goldstein" first_name_original="Emmanuel" last_name_original="Gorinstein" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id029" first_name="Alex" last_name="de la Palletière" first_name_original="Alexandre" last_name_original="de La Patellière" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id030" first_name="Matthias" last_name="Pförtner" first_name_original="Mathieu" last_name_original="Delaporte" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id028" first_name="Manuel" last_name="Goldstein" first_name_original="Emmanuel" last_name_original="Gorinstein" gender="1" birthday="" deathday="" imdb_id="nm1900601" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id029" first_name="Alex" last_name="de la Palletière" first_name_original="Alexandre" last_name_original="de La Patellière" gender="1" birthday="" deathday="" imdb_id="nm0478799" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id030" first_name="Matthias" last_name="Pförtner" first_name_original="Mathieu" last_name_original="Delaporte" gender="1" birthday="1971-09-02" deathday="" imdb_id="nm1141181" creator="8605" created_by="speedminister" />
         <!-- Belgien -->
-        <person id="SpeedMinister-person-id031" first_name="Rondo" last_name="van Lenk" first_name_original="Romain" last_name_original="van Liemt" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id031" first_name="Rondo" last_name="van Lenk" first_name_original="Romain" last_name_original="van Liemt" gender="1" birthday="" deathday="" imdb_id="nm2956687" creator="8605" created_by="speedminister" />
         <!-- England -->
-        <person id="SpeedMinister-person-id039" first_name="Ilan J.W." last_name="Bubble Cap" first_name_original="Alan J.W." last_name_original="Bell" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id040" first_name="Douggy" last_name="Eves" first_name_original="Douglas" last_name_original="Adams" creator="8605" created_by="speedminister" />
-        <person id="SpeedMinister-person-id041" first_name="Joe" last_name="Nedlloyd" first_name_original="John" last_name_original="Lloyd" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id039" first_name="Ilan J.W." last_name="Bubble Cap" first_name_original="Alan J.W." last_name_original="Bell" gender="1" birthday="1937-11-14" deathday="" imdb_id="nm0068007" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id040" first_name="Douggy" last_name="Eves" first_name_original="Douglas" last_name_original="Adams" gender="1" birthday="1952-03-11" deathday="2001-05-11" imdb_id="nm0010930" creator="8605" created_by="speedminister" />
+        <person id="SpeedMinister-person-id041" first_name="Joe" last_name="Nedlloyd" first_name_original="John Bedford" last_name_original="Lloyd" gender="1" birthday="1951-09-30" deathday="" imdb_id="nm0516032" creator="8605" created_by="speedminister" />
     </insignificantpeople>
 
     <celebritypeople>
-        <person id="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
+        <person id="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
             <first_name>Karlheinz</first_name>
             <last_name>Dorfmichel</last_name>
             <details job="2" gender="1"  birthday="1941" deathday="" country="D" />
             <data popularity="7" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
-        <person id="SpeedMinister-celebritypeople-OttokarKahn" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
+        <person id="SpeedMinister-celebritypeople-OttokarKahn" tmdb_id="0" imdb_id="nm2579540" creator="8605" created_by="SpeedMinister">
             <first_name>Ottokar</first_name>
             <last_name>Kahn</last_name>
             <first_name_original>Oliver</first_name_original>
             <last_name_original>Jahn</last_name_original>
-            <details job="3" gender="1"  birthday="1969" deathday="" country="D" />
+            <details job="3" gender="1" birthday="1969" deathday="" country="D" />
             <data popularity="7" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
-        <person id="SpeedMinister-celebritypeople-CoraSchirmer" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
+        <person id="SpeedMinister-celebritypeople-CoraSchirmer" tmdb_id="0" imdb_id="nm1160560" creator="8605" created_by="SpeedMinister">
             <first_name>Cora</first_name>
             <last_name>Schirmer</last_name>
             <first_name_original>Nora</first_name_original>
             <last_name_original>Tschirner</last_name_original>
-            <details job="2" gender="1"  birthday="1981" deathday="" country="D" />
+            <details job="2" gender="2" birthday="1981-06-12" deathday="" country="D" />
             <data popularity="25" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
     </celebritypeople>
@@ -195,7 +195,7 @@
             </children>
         </programme>
         <!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Andauernd Käse</de>
                 <en>Cheese all the time</en>
@@ -389,7 +389,7 @@
             </children>
         </programme>
         <!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Soldaten, Paviane und Co.</de>
                 <en>Soldiers, baboons, and co.</en>

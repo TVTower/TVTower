@@ -1774,7 +1774,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Moumental-BestofTVTower" product="7" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Moumental-BestofTVTower" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
 				<de>Best of TVTower</de>
