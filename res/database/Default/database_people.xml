@@ -3250,7 +3250,7 @@
 		<!-- Steven Hilliard Stern -->
 		<person id="Freddy-realperson-stevstar" first_name="Stev" last_name="Star" nick_name="Canadian Star" first_name_original="Steven Hilliard" last_name_original="Stern" fictional="0" birthday="1937-11-01" deathday="2018-06-27" imdb_id="nm0827854" creator="8667" created_by="Rumpelfreddy" />
 
-		<!-- from speedminister.xml - Mostly unused yet, TODO: add related programme, e.g. tt0978537: Ijon Tichy: Raumpilot -->
+		<!-- from speedminister.xml - TODO: add related programme - https://www.gamezworld.de/phpforum/viewtopic.php?pid=79070#p79070 -->
 
 		<person id="SpeedMinister-person-id032" first_name="Hans" last_name="Prielmann" first_name_original="Heinz" last_name_original="Sielmann" creator="8605" birthday="1917-06-02" deathday="2006-10-06" imdb_id="nm0797140" created_by="speedminister" />
 		<person id="SpeedMinister-person-id037" first_name="Den" last_name="Jakobson" first_name_original="Dennis" last_name_original="Jacobsen" gender="1" birthday="" deathday="" imdb_id="nm0414706" creator="8605" created_by="speedminister" />

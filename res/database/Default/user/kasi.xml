@@ -1243,7 +1243,7 @@
 			<studio_size min="1" max="2" slope="60" />
 		</scripttemplate>
 
-		<!--Episoden gekürzt (TODO: Klären Warum?), kein optionaler Kult-->
+		<!--Episoden gekürzt (TODO: evtl wieder aktivieren), kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Metalsucher">
 			<title>
 				<de>%name1%%name2% in Alaska</de>
@@ -1379,8 +1379,8 @@
 			</children>
 			<variables>
 				<name1>
-					<de>Gold|Silber|Platin|Uran|Plutinium</de>
-					<en>Gold|Silver|Platinum|Uranium|Plutinium</en>
+					<de>Gold|Silber|Platin|Uran|Plutonium</de>
+					<en>Gold|Silver|Platinum|Uranium|Plutonium</en>
 				</name1>
 				<name2>
 					<de>funde|sichtungen|stätten|sucher|verstecke</de>

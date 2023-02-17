@@ -9685,7 +9685,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				</programme>
 					<programme id="TheRob-serie-Sanddornkahn-Episode002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306737" creator="8751" created_by="TheRob">
 					<title>
-						<de>Der Geheimnisvolle Prinz</de>
+						<de>Der geheimnisvolle Prinz</de>
 						<en>The Foreign Prince</en>
 					</title>
 					<title_original>
@@ -11016,7 +11016,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<ratings critics="83" speed="69" outcome="84" />
 		</programme>
 
-		<programme id="TheRob-serie-adv-RobinWusoe" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0167516" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-adv-RobinWusoe" product="2" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0167516" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Robinson Crusoe, Abenteuer -->
 				<de>Robin Wusoe</de>
@@ -11039,7 +11039,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="67" speed="44" outcome="" />
 			<children>
-				<programme id="TheRob-serie-RobinWusoe-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep001" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wie es begann</de>
 						<en>How it began</en>
@@ -11053,7 +11053,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>The protagonist tells about the start of his journey and about his wishes and dreams.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep002" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Freitag?</de>
 						<en>Friday?</en>
@@ -11067,7 +11067,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>Stranded on an island, R. meets a stranger.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep003" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Kannibalen!</de>
 						<en>Cannibals!</en>
@@ -11081,7 +11081,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>R. and F. slowly understand that they share the island with some very unfriendly people.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep004" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Endlich Heimat</de>
 						<en>Home! Sweet Home</en>
@@ -11337,7 +11337,7 @@ Dream scenes and sentiments warp the storyline.</en>
 		<!-- from speedminister.xml -->
 
 		<!-- ***** Serie: Expeditionen ins Tierreich, Dokumentation (Originaltitel der Episoden nicht mehr verfügbar) (real) ***** -->
-		<programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" imdb_id="tt0305025" creator="8605" created_by="SpeedMinister" comment="The series started in 1965. As this programme was tagged with 1985, contributors are supposedly welcome to add more 'seasons'.">
+		<programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" fictional="0" imdb_id="tt0305025" creator="8605" created_by="SpeedMinister" comment="The series started in 1965. As this programme was tagged with 1985, contributors are supposedly welcome to add more 'seasons'.">
 			<title>
 				<de>Ausflüge ins Tierreich (1985)</de>
 				<en>Excursions into the Animal Kingdom (1985)</en>
@@ -11361,7 +11361,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<ratings critics="75" speed="45" />
 			<!-- Episodes -->
 			<children>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Deutschlands Wälder</de>
 						<en>The forests of Germany</en>
@@ -11376,7 +11376,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="65" speed="40" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Alpen</de>
 						<en>The Alps</en>
@@ -11391,7 +11391,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="60" speed="35" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Alligatoren der Everglades</de>
 						<en>Alligators of the Everglades</en>
@@ -11406,7 +11406,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="50" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Füchse Londons</de>
 						<en>Foxes of London</en>
@@ -11421,7 +11421,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="45" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Madagaskar</de>
 						<en>Madagascar</en>
@@ -11436,7 +11436,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="75" speed="48" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Schmetterlinge Südamerikas</de>
 						<en>The butterflies of South America</en>
@@ -11451,7 +11451,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="77" speed="39" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Das Great Barrier Riff</de>
 						<en>The Great Barrier Reef</en>
@@ -11466,7 +11466,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="42" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Bären Alaskas</de>
 						<en>The bears of Alaska</en>
@@ -11481,7 +11481,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="75" speed="40" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Haie</de>
 						<en>Sharks</en>
@@ -11496,7 +11496,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="52" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Wale</de>
 						<en>Whales</en>
