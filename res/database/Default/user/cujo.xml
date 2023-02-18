@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
 	<version value="3" comment="Cujos Daten" />
 	<allnews>
@@ -10,13 +10,13 @@
 			</title>
 			<description>
 				<de>Die beiden weltbekannten Superhelden haben sich gefunden. Sie findet ihn super. Er sie auch. Beide: "Unser erstes Date war super".</de>
-				<en>The world-famous superheroes have found each other. She thinks he's super. He her too. Both: "Our first date was super".</en>
+				<en>The world-famous superheroes have found each other. She thinks he's super. He feels the same. Both: "Our first date was super".</en>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 12-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-superkerl-02" />
 			</effects>
-			<data genre="1" price="1.0" quality="10" />
+			<data genre="1" price="1.0" quality="10" flags="2"/>
 			<availability year_range_from="1985" year_range_to="1995" />
 		</news>
 		<news id="cujo-news-superkerl-02" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
@@ -153,7 +153,7 @@
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="70" />
-		</news>	
+		</news>
 		<!-- "Fifa-WM 2022 in Katar" -->
 		<news id="cujo-news-quantar-01" type="0" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
 			<title>
@@ -280,7 +280,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,11" news="cujo-news-passenger-02" />
 			</effects>
-			<data genre="4" price="1.0" quality="40" />
+			<data genre="4" price="1.0" quality="40" flags="2"/>
 			<availability year_range_from="1986" year_range_to="1987" />
 		</news>
 		<news id="cujo-news-passenger-02" type="2" thread_id="cujo-news-passenger" creator="8827" created_by="Cujo">
@@ -393,7 +393,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,2,3" news="cujo-news-roter-platz-02" />
 			</effects>
-			<data genre="4" price="0.55" quality="10" />
+			<data genre="4" price="0.55" quality="10" flags="2"/>
 		</news>
 		<news id="cujo-news-roter-platz-02" type="2" thread_id="cujo-news-roter-platz" creator="8827" created_by="Cujo">
 			<title>
@@ -478,6 +478,7 @@
 			<data genre="4" price="0.78" quality="55" />
 		</news>
 		<!-- "Ältester Mensch der Welt" -->
+		<!--TODO variables-->
 		<news id="cujo-news-aeltestermensch-01" type="0" thread_id="cujo-news-aeltestermensch" creator="8827" created_by="Cujo">
 			<title>
 				<de>Ältester Mensch der Welt gestorben</de>
@@ -487,7 +488,7 @@
 				<de>Im Alter von 120 Jahren, 8 Monaten und 13 Tagen ist der Japaner Shigeko Izmari gestorben. Als er geboren wurde, produzierte der Konsolenhersteller Nidennto noch Gummistiefel.</de>
 				<en>At the age of 120 years, 8 months and 13 days, Japanese Shigeko Izmari has died. When he was born, the console manufacturer Nidennto was still producing rubber boots.</en>
 			</description>
-			<data genre="4" price="0.9" quality="30" />
+			<data genre="4" price="0.9" quality="30" flags="2"/>
 		</news>
 		<!-- "Bill Gates: Internet ist nur ein Hype" -->
 		<news id="cujo-news-internet-trend-01" type="0" thread_id="cujo-news-internet-trend" creator="8827" created_by="Cujo">
@@ -503,6 +504,7 @@
 			<availability year_range_from="1993" year_range_to="1995" />
 		</news>
 		<!-- "Wildecker Herzbuben" -->
+		<!--TODO variables-->
 		<news id="cujo-news-wildberger-karobuben-01" type="0" thread_id="cujo-news-wildberger-karobuben" creator="8827" created_by="Cujo">
 			<title>
 				<de>Wildberger Karobuben: "Wir sind jetzt schlank"</de>
@@ -512,10 +514,11 @@
 				<de>In einem Exklusiv-Interview mit der Zeitschrift FARBIGE erzählen die Wildberger Karobuben von ihrer Hungerkur: "Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich."</de>
 				<en>In an exclusive interview with FARBIGE magazine, the Wildberg Karobuben talk about their starvation diet: "We ate almost nothing for 7 months and lost 300 grams in that time. Added up, of course."</en>
 			</description>
-			<data genre="1" price="1.03" quality="19" />
+			<data genre="1" price="1.03" quality="19"/>
 			<availability year_range_from="1989" year_range_to="" />
 		</news>
-		<!-- "Stiftung Warentest" -->	
+		<!-- "Stiftung Warentest" -->
+		<!--TODO variables-->
 		<news id="cujo-news-stiftung-guetertest-01" type="0" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Kugelschreiber</de>
@@ -525,12 +528,10 @@
 				<de>Die Stiftung Gütertest hat 5.748 Kugelschreiber getestet. Den besten Stift stellte die Firma Bastilo her. Erst nach einer Schreibdauer von 723 Stunden war seine Mine leer. 7 Tester wurden wegen eines Schreibkrampfes stationär behandelt.</de>
 				<en>Fondation goodstest tested 5,748 ballpoint pens. The best ballpoint pen was produced by the Bastilo company. Its refill was only empty after writing for 723 hours. 7 testers were hospitalized due to writer's cramp.</en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" time="2,2,5,17,21" news="cujo-news-stiftung-guetertest-02" />
-			</effects>
 			<data genre="4" price="0.81" quality="59" />
 		</news>
-		<news id="cujo-news-stiftung-guetertest-02" type="2" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<!--TODO variables-->
+		<news id="cujo-news-stiftung-guetertest-02" type="0" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Vibratoren</de>
 				<en>Fondation goodstest tests vibrators</en>
@@ -552,7 +553,7 @@
 				<de>Der Kenianer Saul Taggert hat den ersten offiziellen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in einer Zeit von 2:04:55 Stunden. Bisher wurden beim Marathon nur Weltbestzeiten gelistet.</de>
 				<en>Kenyan Saul Taggert has set the first official marathon world record. In Berlin, he ran the 42.195-kilometer course in a time of 2:04:55 hours. Until now, only world best times have been listed for the marathon.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2003" year_range_to="2003" />
 		</news>
 		<news id="cujo-news-marathon-2007" type="0" thread_id="cujo-news-marathon-2007" creator="8827" created_by="Cujo">
@@ -564,7 +565,7 @@
 				<de>Der Äthiopier Helle Geberlassy hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:04:26 Stunden. Er verbesserte damit den bisherigen Weltrekord um 29 Sekunden.</de>
 				<en>Ethiopian Helle Geberlassy has set a new marathon world record. In the German capital Berlin, he ran the 42.195 kilometer course in the new best time of 2:04:26 hours. He thus improved the previous world record by 29 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2007" year_range_to="2007" />
 		</news>
 		<news id="cujo-news-marathon-2008" type="0" thread_id="cujo-news-marathon-2008" creator="8827" created_by="Cujo">
@@ -576,7 +577,7 @@
 				<de>Der Äthiopier Helle Geberlassy hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:03:59 Stunden. Er verbesserte damit den von ihm gehaltenen Weltrekord um 27 Sekunden.</de>
 				<en>Ethiopian Helle Geberlassy has set a new marathon world record. In Berlin, he ran the 42.195 kilometer course in the new best time of 2:03:59 hours. He thus improved the world record held by him by 27 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2008" year_range_to="2008" />
 		</news>
 		<news id="cujo-news-marathon-2011" type="0" thread_id="cujo-news-marathon-2011" creator="8827" created_by="Cujo">
@@ -588,7 +589,7 @@
 				<de>Der Kenianer Patt Mattku hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:03:38 Stunden. Er verbesserte damit den bisherigen Weltrekord um 21 Sekunden.</de>
 				<en>Kenyan Patt Mattku has set a new marathon world record. In the German capital Berlin, he ran the 42.195 kilometer course in the new best time of 2:03:38 hours. He thus improved the previous world record by 21 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2011" year_range_to="2011" />
 		</news>
 		<news id="cujo-news-marathon-2013" type="0" thread_id="cujo-news-marathon-2013" creator="8827" created_by="Cujo">
@@ -600,7 +601,7 @@
 				<de>Der Kenianer Nelson Sigpang hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:03:23 Stunden. Er verbesserte damit den bisherigen Weltrekord um 15 Sekunden.</de>
 				<en>Kenyan Nelson Sigpang has set a new marathon world record. In Berlin, he ran the 42.195 kilometer course in the new best time of 2:03:23 hours. He thus improved the previous world record by 15 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2013" year_range_to="2013" />
 		</news>
 		<news id="cujo-news-marathon-2014" type="0" thread_id="cujo-news-marathon-2014" creator="8827" created_by="Cujo">
@@ -612,7 +613,7 @@
 				<de>Der Kenianer Danny Komitti hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:02:57 Stunden. Er verbesserte damit den bisherigen Weltrekord um 26 Sekunden.</de>
 				<en>Kenyan Danny Komitti has set a new marathon world record. In Berlin, he ran the 42.195 kilometer course in the new best time of 2:02:57 hours. He thus improved the previous world record by 26 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2014" year_range_to="2014" />
 		</news>
 		<news id="cujo-news-marathon-2018" type="0" thread_id="cujo-news-marathon-2018" creator="8827" created_by="Cujo">
@@ -624,7 +625,7 @@
 				<de>Der Kenianer Elwood Pogchige hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:01:39 Stunden. Er verbesserte damit den bisherigen Weltrekord um 78 Sekunden.</de>
 				<en>Kenyan Elwood Pogchige has set a new marathon world record. In Berlin, he ran the 42.195 kilometer course in the new best time of 2:01:39 hours. He thus improved the previous world record by 78 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2018" year_range_to="2018" />
 		</news>
 		<news id="cujo-news-marathon-2022" type="0" thread_id="cujo-news-marathon-2022" creator="8827" created_by="Cujo">
@@ -636,7 +637,7 @@
 				<de>Der Kenianer Elwood Pogchige hat einen neuen Marathon-Weltrekord aufgestellt. In Berlin lief er die 42,195 Kilometer lange Strecke in der neuen Bestzeit von 2:01:09 Stunden. Er verbesserte damit seinen eigenen Weltrekord um 30 Sekunden.</de>
 				<en>Kenyan Elwood Pogchige has set a new marathon world record. In the German capital Berlin, he ran the 42.195 kilometer course in the new best time of 2:01:09 hours. He thus improved his own world record by 30 seconds.</en>
 			</description>
-			<data genre="2" price="1.0" quality="80" />
+			<data genre="2" price="1.0" quality="80" flags="2"/>
 			<availability year_range_from="2022" year_range_to="2022" />
 		</news>
 		<!-- Spiele des Jahres -->
@@ -649,7 +650,7 @@
 				<de>"Dr. Watson Kriminalzimmer" wurde zum Brettspiel des Jahres 1985 gekürt. Der Jury imponierte, dass das Spiel sowohl allein als auch in einer Gruppe gespielt werden kann.</de>
 				<en>"Dr. Watson Crime Room" was chosen as the board game of the year 1985. The jury was impressed by the fact that the game can be played both alone and in a group.</en>
 			</description>
-			<data genre="3" price="0.49" quality="45" />
+			<data genre="3" price="0.49" quality="45" flags="2"/>
 			<availability year_range_from="1985" year_range_to="1985" />
 		</news>
 		<news id="cujo-news-brettspiel-1990" type="0" thread_id="cujo-news-brettspiel-1990" creator="8827" created_by="Cujo">
@@ -661,7 +662,7 @@
 				<de>Das Brettspiel des Jahres 1990 heißt "Blaues Blut wird zur Pflicht". Mehrere Barone kämpfen in Auktionen um die besten Antiquitäten. Um ihr Ziel zu erreichen, können sie Diebe und Spione verpflichten.</de>
 				<en>The board game of the year 1990 is called "Blue Blood Becomes Duty". Several barons fight in auctions for the best antiques. To achieve their goal, they can hire thieves and spies.</en>
 			</description>
-			<data genre="3" price="0.48" quality="46" />
+			<data genre="3" price="0.48" quality="46" flags="2"/>
 			<availability year_range_from="1990" year_range_to="1990" />
 		</news>
 		<news id="cujo-news-brettspiel-1995" type="0" thread_id="cujo-news-brettspiel-1995" creator="8827" created_by="Cujo">
@@ -673,7 +674,7 @@
 				<de>"Die Pioniere von Kastlan" wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler Karl Stäuber.</de>
 				<en>"The Pioneers of Kastlan" was voted board game of the year in 1995. Players have to collect raw materials in order to build roads, settlements and cities. It was invented by the game developer Karl Stäuber.</en>
 			</description>
-			<data genre="3" price="0.47" quality="47" />
+			<data genre="3" price="0.47" quality="47" flags="2"/>
 			<availability year_range_from="1995" year_range_to="1995" />
 		</news>
 		<!-- "Gamezworld AG" -->
@@ -686,13 +687,10 @@
 				<de>Wegen der Pandemie arbeiten ab sofort alle TV Tower-Entwickler im Home-Office. Laut der Gamezworld AG sind weltweit etwa 35.000 Mitarbeiter davon betroffen.</de>
 				<en>Due to the pandemic, all TV Tower developers are working in their home offices with immediate effect. According to Gamezworld AG, about 35,000 employees worldwide are affected.</en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-gamezworld-02" />
-			</effects>
 			<data genre="0" price="0.5" quality="20" />
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news id="cujo-news-gamezworld-02" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news id="cujo-news-gamezworld-02" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
 				<de>News werden verschlüsselt</de>
 				<en>News are encrypted</en>
@@ -701,12 +699,10 @@
 				<de>Laut der Gamezworld AG werden die News wegen der geltenden GSDVO ab sofort verschlüsselt. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</de>
 				<en>According to Gamezworld AG, the news will be encrypted with immediate effect due to the GSDVO in force. v/KNne yTZbUgc+p FMJ6 MH8qT XQFrZsi.</en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" time="2,1,2,13,17" news="cujo-news-gamezworld-03" />
-			</effects>
-			<data genre="0" price="0.5" quality="30" />
+			<data genre="0" price="0.5" quality="30" flags="2"/>
+			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news id="cujo-news-gamezworld-03" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news id="cujo-news-gamezworld-03" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
 				<de>Gamezworld AG schafft Schreibmaschinen ab</de>
 				<en>Gamezworld AG abolishes typewriters</en>
@@ -715,10 +711,8 @@
 				<de>Wie die Pressesprecherin der Gamezworld AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: "Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet."</de>
 				<en>According to Gamezworld AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit Bandium computers from now on."</en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" time="2,1,2,14,18" news="cujo-news-gamezworld-04" />
-			</effects>
-			<data genre="0" price="0.5" quality="30" />
+			<data genre="0" price="0.5" quality="30" flags="2"/>
+			<availability year_range_from="2000" year_range_to="" />
 		</news>
 		<news id="cujo-news-gamezworld-04" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
@@ -733,308 +727,6 @@
 			<data genre="0" price="0.5" quality="40" />
 		</news>
 	</allnews>
-	<celebritypeople>
-		<!-- Danny Pintauro -->
-		<person id="cujo-person-johnny-tinpauro" tmdb_id="0" imdb_id="nm0001622" creator="8827" created_by="Cujo">
-			<first_name>Johnny</first_name>
-			<last_name>Tinpauro</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Danny</first_name_original>
-			<last_name_original>Pintauro</last_name_original>
-			<details job="2" gender="1" birthday="1976-01-06" deathday="" country="USA" fictional="0" />
-			<data popularity="66" affinity="33" fame="43" scandalizing="44" price_mod="0.91" power="41" humor="76" charisma="61" appearance="88" topgenre="5" />
-		</person>
-		<!-- Helen Slater -->
-		<person id="cujo-person-ellen-laser" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
-			<first_name>Ellen</first_name>
-			<last_name>Laser</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Helen</first_name_original>
-			<last_name_original>Slater</last_name_original>
-			<details job="18" gender="2" birthday="1963-12-15" deathday="" country="USA" fictional="0" />
-			<data popularity="59" affinity="60" fame="68" scandalizing="12" price_mod="0.72" power="39" humor="60" charisma="72" appearance="65" topgenre="7" />
-		</person>
-		<!-- Tim Robbins -->
-		<person id="cujo-person-tom-hoppins" tmdb_id="0" imdb_id="nm0000209" creator="8827" created_by="Cujo">
-			<first_name>Tom</first_name>
-			<last_name>Hoppins</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Tim</first_name_original>
-			<last_name_original>Robbins</last_name_original>
-			<details job="23" gender="1" birthday="" deathday="" country="USA" fictional="0" />
-			<data popularity="65" affinity="71" fame="81" scandalizing="27" price_mod="1.05" power="55" humor="39" charisma="82" appearance="76" topgenre="17" />
-		</person>
-		<!-- Loriot -->
-		<person id="cujo-person-torilo" tmdb_id="0" imdb_id="nm0902086" creator="8827" created_by="Cujo">
-			<first_name>Ricco</first_name>
-			<last_name>von Lübow</last_name>
-			<nick_name>Torilo</nick_name>
-			<first_name_original>Vicco</first_name_original>
-			<last_name_original>von Bülow</last_name_original>
-			<details job="3" gender="1" birthday="" deathday="" country="D" fictional="0" />
-			<data popularity="80" affinity="60" fame="30" scandalizing="8" price_mod="1.1" power="10" humor="80" charisma="60" appearance="35" topgenre="5" />
-		</person>
-		<!-- Evelyn Hamann -->
-		<person id="cujo-person-emilie-mahann" tmdb_id="0" imdb_id="nm0357327" creator="8827" created_by="Cujo">
-			<first_name>Emilie</first_name>
-			<last_name>Mahann</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Evelyn</first_name_original>
-			<last_name_original>Hamann</last_name_original>
-			<details job="2" gender="2" birthday="" deathday="" country="D" fictional="0" />
-			<data popularity="75" affinity="40" fame="8" scandalizing="6" price_mod="0.7" power="10" humor="80" charisma="20" appearance="15" topgenre="5" />
-		</person>
-		<!-- Marie-Luise Marjan -->
-		<person id="cujo-person-marlene-lotte-hajan" tmdb_id="0" imdb_id="nm0548184" creator="8827" created_by="Cujo">
-			<first_name>Marlene-Lotte</first_name>
-			<last_name>Hajan</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Marie-Luise</first_name_original>
-			<last_name_original>Marjan</last_name_original>
-			<details job="2" gender="2" birthday="" deathday="" country="D" fictional="0" />
-			<data popularity="79" affinity="69" fame="78" scandalizing="12" price_mod="0.88" power="63" humor="62" charisma="72" appearance="35" topgenre="9" />
-		</person>
-		<!-- Annemarie Wendl -->
-		<person id="cujo-person-marianne-stendel" tmdb_id="0" imdb_id="nm0920864" creator="8827" created_by="Cujo">
-			<first_name>Marianne</first_name>
-			<last_name>Stendel</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Annemarie</first_name_original>
-			<last_name_original>Wendl</last_name_original>
-			<details job="2" gender="2" birthday="" deathday="" country="D" fictional="0" />
-			<data popularity="69" affinity="55" fame="58" scandalizing="42" price_mod="0.69" power="33" humor="42" charisma="42" appearance="25" topgenre="9" />
-		</person>
-		<!-- Til Schweiger -->
-		<person id="cujo-person-will-schweitzer" tmdb_id="0" imdb_id="nm0001709" creator="8827" created_by="Cujo">
-			<first_name>Will</first_name>
-			<last_name>Schweitzer</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Til</first_name_original>
-			<last_name_original>Schweiger</last_name_original>
-			<details job="2" gender="1" birthday="" deathday="" country="D" fictional="0" />
-			<data popularity="39" affinity="28" fame="38" scandalizing="82" price_mod="1.04" power="63" humor="22" charisma="56" appearance="77" topgenre="5" />
-		</person>
-		<!-- Willi Herren -->
-		<person id="cujo-person-olli-herden" tmdb_id="0" imdb_id="nm0380337" creator="8827" created_by="Cujo">
-			<first_name>Olli</first_name>
-			<last_name>Herden</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Willi</first_name_original>
-			<last_name_original>Herren</last_name_original>
-			<details job="2" gender="1" birthday="1975-06-17" deathday="2021-04-20" country="D" fictional="0" />
-			<data popularity="25" affinity="16" fame="78" scandalizing="89" price_mod="0.39" power="33" humor="22" charisma="7" appearance="44" topgenre="9" />
-		</person>
-		<!-- Sontje Peplow -->
-		<person id="cujo-person-antje-poppwol" tmdb_id="0" imdb_id="nm0672548" creator="8827" created_by="Cujo">
-			<first_name>Antje</first_name>
-			<last_name>Poppwol</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Sontje</first_name_original>
-			<last_name_original>Peplow</last_name_original>
-			<details job="2" gender="2" birthday="1981-04-01" deathday="" country="D" fictional="0" />
-			<data popularity="55" affinity="56" fame="48" scandalizing="12" price_mod="0.57" power="53" humor="54" charisma="67" appearance="78" topgenre="9" />
-		</person>
-		<!-- Hermes Hodolides -->
-		<person id="cujo-person-herakles-dododiles" tmdb_id="0" imdb_id="nm0388318" creator="8827" created_by="Cujo">
-			<first_name>Herakles</first_name>
-			<last_name>Dododiles</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Hermes</first_name_original>
-			<last_name_original> Hodolides</last_name_original>
-			<details job="2" gender="1" birthday="1963-09-15" deathday="" country="GR" fictional="0" />
-			<data popularity="49" affinity="42" fame="24" scandalizing="13" price_mod="0.55" power="42" humor="31" charisma="55" appearance="32" topgenre="9" />
-		</person>
-		<!-- Amorn Surangkanjanajai -->
-		<person id="cujo-person-amon-surganjankanayani" tmdb_id="0" imdb_id="nm0839539" creator="8827" created_by="Cujo">
-			<first_name>Amorn</first_name>
-			<last_name>Surangkanjanajai</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Amorn</first_name_original>
-			<last_name_original>Surangkanjanajai</last_name_original>
-			<details job="2" gender="1" birthday="1953-03-23" deathday="" country="HK" fictional="0" />
-			<data popularity="69" affinity="31" fame="12" scandalizing="6" price_mod="0.28" power="22" humor="71" charisma="65" appearance="52" topgenre="9" />
-		</person>
-		<!-- Irene Fischer -->
-		<person id="cujo-person-marlene-angler" tmdb_id="0" imdb_id="nm5874034" creator="8827" created_by="Cujo">
-			<first_name>Marlene</first_name>
-			<last_name>Angler</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Irene</first_name_original>
-			<last_name_original>Fischer</last_name_original>
-			<details job="7" gender="2" birthday="1959-12-24" deathday="" country="D" fictional="0" />
-			<data popularity="43" affinity="62" fame="22" scandalizing="16" price_mod="0.39" power="55" humor="31" charisma="45" appearance="42" topgenre="9" />
-		</person>
-		<!-- Moritz A. Sachs -->
-		<person id="cujo-person-max-b-sax" tmdb_id="0" imdb_id="nm0755176" creator="8827" created_by="Cujo">
-			<first_name>Max B.</first_name>
-			<last_name>Sax</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Moritz A.</first_name_original>
-			<last_name_original>Sachs</last_name_original>
-			<details job="7" gender="2" birthday="1978-08-13" deathday="" country="D" fictional="0" />
-			<data popularity="55" affinity="50" fame="32" scandalizing="26" price_mod="0.44" power="69" humor="57" charisma="65" appearance="71" topgenre="9" />
-		</person>
-		<!-- Jim Parsons -->
-		<person id="cujo-person-tim-sparson" tmdb_id="0" imdb_id="nm1433588" creator="8827" created_by="Cujo">
-			<first_name>Tim</first_name>
-			<last_name>Sparson</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Jim</first_name_original>
-			<last_name_original>Parsons</last_name_original>
-			<details job="2" gender="1" birthday="" deathday="" country="USA" fictional="0" />
-			<data popularity="58" affinity="48" fame="62" scandalizing="27" price_mod="0.98" power="53" humor="59" charisma="57" appearance="55" topgenre="5" />
-		</person>
-		<!-- Johnny Galecki -->
-		<person id="cujo-person-jerry-lakecki" tmdb_id="0" imdb_id="nm0301959" creator="8827" created_by="Cujo">
-			<first_name>Jerry</first_name>
-			<last_name>Lakecki</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Johnny</first_name_original>
-			<last_name_original>Galecki</last_name_original>
-			<details job="2" gender="1" birthday="" deathday="" country="USA" fictional="0" />
-			<data popularity="53" affinity="43" fame="59" scandalizing="33" price_mod="0.91" power="49" humor="64" charisma="63" appearance="69" topgenre="5" />
-		</person>
-		<!-- Kaley Cuoco -->
-		<person id="cujo-person-kelly-kukoko" tmdb_id="0" imdb_id="nm0192505" creator="8827" created_by="Cujo">
-			<first_name>Kelly</first_name>
-			<last_name>Kukoko</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Kaley</first_name_original>
-			<last_name_original>Cuoco</last_name_original>
-			<details job="2" gender="2" birthday="" deathday="" country="USA" fictional="0" />
-			<data popularity="55" affinity="45" fame="51" scandalizing="53" price_mod="0.83" power="41" humor="67" charisma="73" appearance="83" topgenre="5" />
-		</person>
-		<!-- Peter Lustig -->
-		<person id="cujo-person-paul-witzig" tmdb_id="0" imdb_id="nm0527341" creator="8827" created_by="Cujo">
-			<first_name>Paul</first_name>
-			<last_name>Witzig</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Peter</first_name_original>
-			<last_name_original>Lustig</last_name_original>
-			<details job="10" gender="2" birthday="1937-10-27" deathday="2016-02-23" country="D" fictional="0" />
-			<data popularity="87" affinity="81" fame="92" scandalizing="11" price_mod="0.94" power="31" humor="72" charisma="71" appearance="51" topgenre="9" />
-		</person>
-		<!-- Helmut Krauss -->
-		<person id="cujo-person-horst-krause" tmdb_id="0" imdb_id="nm0527341" creator="8827" created_by="Cujo">
-			<first_name>Horst</first_name>
-			<last_name>Krause</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Helmut</first_name_original>
-			<last_name_original>Krauss</last_name_original>
-			<details job="34" gender="2" birthday="1941-06-11" deathday="2019-08-26" country="D" fictional="0" />
-			<data popularity="37" affinity="41" fame="15" scandalizing="17" price_mod="0.69" power="49" humor="52" charisma="41" appearance="35" topgenre="9" />
-		</person>
-		<!-- Regisseure -->
-		<!-- Lewis Teague -->
-		<person id="cujo-person-louis-tiggu" tmdb_id="" imdb_id="nm0853546" creator="8827" created_by="Cujo">
-			<first_name>Louis</first_name>
-			<last_name>Tiggu</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Lewis</first_name_original>
-			<last_name_original>Teague</last_name_original>
-			<details job="1" gender="1" birthday="1938-03-08" deathday="" country="USA" />
-		</person>
-		<!-- Jeannot Szwarc -->
-		<person id="cujo-person-jane-swart" tmdb_id="" imdb_id="nm0844358" creator="8827" created_by="Cujo">
-			<first_name>Jane</first_name>
-			<last_name>Swart</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Jeannot</first_name_original>
-			<last_name_original>Szwarc</last_name_original>
-			<details job="1" gender="2" birthday="1939-11-21" deathday="" country="F" />
-		</person>
-		<!-- Richard Donner -->
-		<person id="cujo-person-robert-turner" tmdb_id="" imdb_id="nm0078346" creator="8827" created_by="Cujo">
-			<first_name>Robert</first_name>
-			<last_name>Turner</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Richard</first_name_original>
-			<last_name_original>Donner</last_name_original>
-			<details job="1" gender="1" birthday="1930-04-24" deathday="2021-07-05" country="USA" />
-		</person>
-		<!-- Sidney Lumet -->
-		<person id="cujo-person-siggy-tumle" tmdb_id="" imdb_id="nm0001486" creator="8827" created_by="Cujo">
-			<first_name>Siggy</first_name>
-			<last_name>Tumle</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Sidney</first_name_original>
-			<last_name_original>Lumet</last_name_original>
-			<details job="1" gender="1" birthday="1924-06-25" deathday="2011-04-09" country="USA" />
-		</person>
-		<!-- E. B. Clutcher -->
-		<person id="cujo-person-enrico-klatscher" tmdb_id="" imdb_id="nm0005645" creator="8827" created_by="Cujo">
-			<first_name>Enrico</first_name>
-			<last_name>Klatscher</last_name>
-			<nick_name></nick_name>
-			<first_name_original>E. B.</first_name_original>
-			<last_name_original>Clucher</last_name_original>
-			<details job="1" gender="1" birthday="1922-07-10" deathday="2002-03-23" country="I" />
-		</person>
-		<!-- Hans W. Geißendörfer -->
-		<person id="cujo-person-horst-ziegenstaedter" tmdb_id="" imdb_id="nm0312078" creator="8827" created_by="Cujo">
-			<first_name>Horst</first_name>
-			<last_name>Ziegenstädter</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Hans W.</first_name_original>
-			<last_name_original>Geißendörfer</last_name_original>
-			<details job="1" gender="1" birthday="1941-04-06" deathday="" country="D" />
-		</person>
-		<!-- Ester Amrami -->
-		<person id="cujo-person-elvira-pampami" tmdb_id="" imdb_id="nm2539925" creator="8827" created_by="Cujo">
-			<first_name>Elvira</first_name>
-			<last_name>Pampami</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Ester</first_name_original>
-			<last_name_original>Amrami</last_name_original>
-			<details job="5" gender="2" birthday="1979-02-05" deathday="" country="IL" />
-		</person>
-		<!-- Dominikus Probst -->
-		<person id="cujo-person-damian-prost" tmdb_id="" imdb_id="nm0698239" creator="8827" created_by="Cujo">
-			<first_name>Damian</first_name>
-			<last_name>Prost</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Dominikus</first_name_original>
-			<last_name_original>Probst</last_name_original>
-			<details job="3" gender="1" birthday="1958-08-09" deathday="" country="D" />
-		</person>
-		<!-- Chuck Lorre -->
-		<person id="cujo-person-jack-klor" tmdb_id="" imdb_id="nm521143" creator="8827" created_by="Cujo">
-			<first_name>Jack</first_name>
-			<last_name>Klor</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Chuck</first_name_original>
-			<last_name_original>Lorre</last_name_original>
-			<details job="1" gender="1" birthday="1952-10-18" deathday="" country="USA" />
-		</person>
-		<!-- Carlo Rola -->
-		<person id="cujo-person-karl-lora" tmdb_id="" imdb_id="nm0738001" creator="8827" created_by="Cujo">
-			<first_name>Karl</first_name>
-			<last_name>Lora</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Carlo</first_name_original>
-			<last_name_original>Rola</last_name_original>
-			<details job="1" gender="1" birthday="1958-10-06" deathday="2016-03-14" country="D" />
-		</person>
-			<!-- Moderatoren -->
-			<!-- Bob Ross -->
-		<person id="cujo-person-ross-blob" tmdb_id="" imdb_id="nm1470679" creator="8827" created_by="Cujo">
-			<first_name>Ross</first_name>
-			<last_name>Blob</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Bob</first_name_original>
-			<last_name_original>Ross</last_name_original>
-			<details job="8" gender="1" birthday="1942-10-29" deathday="1995-07-04" country="USA" />
-		</person>
-			<!-- Florian König -->
-		<person id="cujo-person-fabian-knoetlich" tmdb_id="" imdb_id="nm2851022" creator="8827" created_by="Cujo">
-			<first_name>Fabian</first_name>
-			<last_name>Knötlich</last_name>
-			<nick_name></nick_name>
-			<first_name_original>Florian</first_name_original>
-			<last_name_original>König</last_name_original>
-			<details job="8" gender="1" birthday="1967-09-14" deathday="" country="D" />
-		</person>
-	</celebritypeople>
 	<allprogrammes>
 		<programme id="cujo-film-juco" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0057687" creator="8827" created_by="Cujo"> 
 			<title>
@@ -1185,8 +877,8 @@
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1991" distribution="1" maingenre="5" subgenre="" flags="8" blocks="2" price_mod="0.98" />
 			<ratings critics="67" speed="19" outcome="65" />
-		</programme>	
-		<programme id="cujo-film-rache-erben" product="3" licence_type="3" tmdb_id="0" imdb_id="tt0087148" creator="8827" created_by="Cujo">
+		</programme>
+		<programme id="cujo-film-rache-erben" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087148" creator="8827" created_by="Cujo">
 			<title>
 				<de>Titi und die Rache der Erben</de>
 				<en>Titi and the revenge of the heirs</en>
@@ -1223,11 +915,10 @@
 				<member index="1" function="2">cujo-person-marlene-lotte-hajan</member>
 				<member index="2" function="2">cujo-person-marianne-stendel</member>
 				<member index="3" function="2">cujo-person-will-schweitzer</member>
-			</staff>		
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1985" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="0.9" />
 			<ratings critics="30" speed="27" outcome="49" />
-			<availability year_range_from="1985" year_range_to="1996" />
 			<children>
 				<programme id="cujo-serien-kastanienstrasse-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
 					<title>
@@ -1303,11 +994,10 @@
 				<member index="1" function="2">cujo-person-olli-herden</member>
 				<member index="2" function="2">cujo-person-antje-poppwol</member>
 				<member index="3" function="2">cujo-person-herakles-dododiles</member>
-			</staff>		
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1997" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="0.95" />
 			<ratings critics="40" speed="32" outcome="39" />
-			<availability year_range_from="1997" year_range_to="2008" />
 			<children>
 				<programme id="cujo-serien-kastanienstrasse-06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
 					<title>
@@ -1333,12 +1023,12 @@
 				</programme>
 				<programme id="cujo-serien-kastanienstrasse-08" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
 					<title>
-						<de>Else: "Sodom und Gomerra"</de>
-						<en>Else: "Sodom and Gomerra"</en>
+						<de>Else: "Sodom und Gomorra"</de>
+						<en>Else: "Sodom and Gomorrah"</en>
 					</title>
 					<description>
-						<de>Else ist mit dem Lebensstil der Nachbarn nicht einverstanden. Für sie herrscht in der Kastanienstraße "Sodom und Gomerra".</de>
-						<en>Else does not agree with the lifestyle of the neighbors. For her, "Sodom and Gomerra" reigns in Chestnut Street.</en>
+						<de>Else ist mit dem Lebensstil der Nachbarn nicht einverstanden. Für sie herrscht in der Kastanienstraße "Sodom und Gomorra".</de>
+						<en>Else does not agree with the lifestyle of the neighbors. For her, "Sodom and Gomerrah" reigns in Chestnut Street.</en>
 					</description>
 					<ratings critics="40" speed="32" />
 				</programme>
@@ -1383,11 +1073,10 @@
 				<member index="1" function="2">cujo-person-amon-surganjankanayani</member>
 				<member index="2" function="2">cujo-person-marlene-angler</member>
 				<member index="3" function="2">cujo-person-max-b-sax</member>
-			</staff>		
+			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2009" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="1" />
 			<ratings critics="50" speed="37" outcome="29" />
-			<availability year_range_from="2009" year_range_to="" />
 			<children>
 				<programme id="cujo-serien-kastanienstrasse-11" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
 					<title>
@@ -1445,7 +1134,7 @@
 					<ratings critics="50" speed="37" />
 				</programme>
 			</children>
-		</programme>	
+		</programme>
 		<programme id="cujo-serien-large-detonation" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0898266" creator="8827" created_by="Cujo">
 			<title>
 				<de>The Large Detonation Theory</de>
@@ -1593,7 +1282,7 @@
 				<programme id="cujo-serien-best-torilo-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
 					<title>
 						<de>Das Bild hängt schief</de>
-						<en>The picture hangs crooked</en>
+						<en>The picture is crooked</en>
 					</title>
 					<description>
 						<de>Ein Freund des Hauses kommt zu Besuch. Das Dienstmädchen lässt ihn ein und sagt, er soll im Salon warten. Als er dort ein schiefes Bild gerade rücken will, zerstört er die Einrichtung.</de>
@@ -1624,7 +1313,7 @@
 					<ratings critics="22" speed="25" />
 				</programme>
 			</children>
-		</programme>	
+		</programme>
 		<programme id="cujo-serien-tigerzahn" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0135097" creator="8827" created_by="Cujo">
 			<title>
 				<de>Tigerzahn</de>
@@ -1779,7 +1468,7 @@
 				<de>Doppelpass</de>
 			</title_original>
 			<description>
-			<de>Fabian Knötlich diskutiert mit den Experten Steffen Neffenzwerg und Marco Passler über fragwürdige Schiedsrichterentscheidungen.</de>
+				<de>Fabian Knötlich diskutiert mit den Experten Steffen Neffenzwerg und Marco Passler über fragwürdige Schiedsrichterentscheidungen.</de>
 				<en>Fabian Knötlich discusses questionable referee decisions with experts Steffen Neffenzwerg and Marco Passler.</en>
 			</description>
 			<staff>
