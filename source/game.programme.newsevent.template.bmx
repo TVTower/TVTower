@@ -126,10 +126,25 @@ Type TNewsEventTemplateCollection
 		obj.timesUsed :+ 1
 		obj.SetLastUsedTime( Long(GetWorldTime().GetTimeGone()) )
 
-		unusedTemplates.Remove(obj.GetID())
-		if obj.IsReuseable()
-			reuseableTemplates.insert(obj.GetID(), obj)
-		endif
+		Local setUsed:TNewsEventTemplate[]
+		setUsed:+ [obj]
+
+		'set templates with the same thread id as used as well
+		If obj.threadId
+			For Local unused:TNewsEventTemplate = EachIn unusedTemplates.values()
+				If unused And unused<>obj And unused.threadId = obj.threadId Then
+					setUsed:+ [unused]
+					'print "  setting '"+ unused.GetTitle()+"' used due to thread "+obj.threadId
+				EndIf
+			Next
+		EndIf
+
+		For Local t:TNewsEventTemplate = EachIn setUsed
+			unusedTemplates.Remove(t.GetID())
+			If t.IsReuseable()
+				reuseableTemplates.insert(t.GetID(), t)
+			EndIf
+		Next
 
 		_InvalidateCaches()
 	End Method
@@ -182,18 +197,37 @@ Type TNewsEventTemplateCollection
 
 	'resets already used news event templates so they can get used again
 	Method ResetUsedTemplates(minAgeInDays:int=5, genre:int=-1)
-		local toReuse:TNewsEventTemplate[]
+		Local toReuse:TNewsEventTemplate[]
 
-		For local template:TNewsEventTemplate = eachin reuseableTemplates.Values()
-			'only interested in a specific genre?
-			if genre <> -1 and template.genre <> genre then continue
+		Local day:Long = GetWorldTime().GetDay()
+		Local currentlyUsedIds:TList = new TList
 
-			if abs(GetWorldTime().GetDay(template.lastUsedTime) - GetWorldTime().GetDay()) >= minAgeInDays
-				toReuse :+ [template]
-			endif
+		'prevent thread ids recently used from being reset
+		For Local template:TNewsEventTemplate = EachIn allTemplates.Values()
+			If genre <> -1 And template.genre <> genre Then Continue
+			If Not template.threadId Then Continue
+
+			If abs(GetWorldTime().GetDay(template.lastUsedTime) - day) < minAgeInDays
+				currentlyUsedIds.AddLast(template.threadId)
+				'print "  mark thread as used recently " + template.threadId
+			EndIf
 		Next
 
-		For local t:TNewsEventTemplate = Eachin toReuse
+		For Local template:TNewsEventTemplate = EachIn reuseableTemplates.Values()
+			'only interested in a specific genre?
+			If Not template Or genre <> -1 And template.genre <> genre Then Continue
+			'ignore recently used thread ids
+			If currentlyUsedIds.Contains(template.threadId)
+				'print "  ignoring template "+ template.GetTitle() +" because of thread " +template.threadId
+				Continue
+			EndIf
+
+			If abs(GetWorldTime().GetDay(template.lastUsedTime) - day) >= minAgeInDays
+				toReuse :+ [template]
+			EndIf
+		Next
+
+		For local t:TNewsEventTemplate = EachIn toReuse
 			reuseableTemplates.Remove(t.GetID())
 
 			unusedTemplates.Insert(t.GetID(), t)
@@ -203,10 +237,10 @@ Type TNewsEventTemplateCollection
 		Next
 
 		'reset cache if needed
-		if toReuse.length > 0
+		If toReuse.length > 0
 			_InvalidateUnusedAvailableInitialTemplates()
 			_InvalidateUnusedInitialTemplates()
-		endif
+		EndIf
 	End Method
 
 
@@ -348,6 +382,7 @@ End Function
 
 Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Field LS_guid:TLowerString
+	Field threadId:String
 	Field genre:Int = 0
 	Field quality:Float = -1.0
 	Field qualityMin:Float = -1.0
