@@ -1463,7 +1463,7 @@ Bloody spectacle for genre fans and dimwits.</en>
 				<member index="3" function="2">ca543b12-8e37-4f9c-8800-af4f9e44b488</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1998" distribution="1" maingenre="2" subgenre="" flags="64" blocks="3" price_mod="1" />
+			<data country="USA" year="1998" distribution="1" maingenre="2" subgenre="12,16" flags="64" blocks="3" price_mod="1" />
 			<ratings critics="4" speed="51" outcome="51" />
 		</programme>
 		<programme id="a48d3913-b963-465c-b41d-cfa55046f6da" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0187738" creator="">
@@ -1488,7 +1488,7 @@ Successful continuation of the scare.</en>
 				<member index="3" function="2">1c82f854-c349-4dc4-aa15-7cda8594d803</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2002" distribution="1" maingenre="2" subgenre="" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" year="2002" distribution="1" maingenre="2" subgenre="12,16" flags="64" blocks="2" price_mod="1" />
 			<ratings critics="0" speed="65" outcome="56" />
 		</programme>
 		<programme id="88593448-151d-4928-88af-19507cbbbbb1" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049293" creator="">
@@ -8266,7 +8266,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep002" product="4" fictional="1" licence_type="2" tmdb_id="0" imdb_id="tt0854057" creator="7430" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep002" product="4" licence_type="2" tmdb_id="0" imdb_id="tt0854057" creator="7430" created_by="TheRob">
 					<title>
 						<de>Die Wale</de>
 						<en>The whales</en>
@@ -9645,7 +9645,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Sanddornkahn" product="2" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0074050" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Sanddornkahn" product="2" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0074050" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Sandokan, Action -->
 				<de>Sanddornkahn</de>
@@ -9666,60 +9666,59 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="3" function="2">TheRob-TowerTV-PhilliGemoy</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="1,7" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="42" speed="46" outcome="" />
 			<children>
-				<!-- No official original German episode titles found, applying translation from original English -->
 				<programme id="TheRob-serie-Sanddornkahn-Episode001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306736" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.1</de>
-						<en>Episode 1.1</en>
+						<de>Die Entführung</de>
+						<en>The Conquest</en>
 					</title>
 					<title_original>
-						<de>Die Entführung</de>
+						<de>Die Eroberer</de>
 						<en>The Kidnapping</en>
 					</title_original>
 					<description>
-						<de>S. erkennt die Ungerechtigkeiten der Briten und entscheidet sich für den Kampf.</de>
-						<en>S. recognizes the injustices of the British and decides to fight.</en>
+						<de>S. erkennt die Ungerechtigkeiten der Briten und entscheidet sich für den Kampf. Eine chinesische Dschunke unter Kontrolle der Engländer wird versenkt.</de>
+						<en>S. recognizes the injustices of the British and decides to fight. A Chinese junk under British control is sunk.</en>
 					</description>
 				</programme>
 					<programme id="TheRob-serie-Sanddornkahn-Episode002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306737" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.2</de>
-						<en>Episode 1.2</en>
+						<de>Der geheimnisvolle Prinz</de>
+						<en>The Foreign Prince</en>
 					</title>
 					<title_original>
-						<de>Der Geheimnisvolle Prinz</de>
+						<de>Der fremde Prinz</de>
 						<en>The Mysterious Prince</en>
-					</title_original>
-					<description>
-						<de>S. jagt das erste britische Schiff und versenkt es.</de>
-						<en>S. chases the first British ship and destroys it.</en>
-					</description>
-				</programme>
-				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306738" creator="8751" created_by="TheRob">
-					<title>
-						<de>Episode 1.3</de>
-						<en>Episode 1.3</en>
-					</title>
-					<title_original>
-						<de>Die Tigerjagd</de>
-						<en>The Tiger Hunt</en>
 					</title_original>
 					<description>
 						<de>Ausgerechnet in eine britische Lady verliebt sich S. und bringt sich dadurch in Gefahr.</de>
 						<en>S. falls in love with a British lady, of all people, and thus puts himself in danger.</en>
 					</description>
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306738" creator="8751" created_by="TheRob">
+					<title>
+						<de>Verfolgung des Tigers</de>
+						<en>Chasing the Tiger</en>
+					</title>
+					<title_original>
+						<de>Tigerjagd</de>
+						<en>The Tiger Hunt</en>
+					</title_original>
+					<description>
+						<de>Auf einer angesetzten Tigerjagd tötet ein junger Jäger einen Tiger, aber es ist noch ein zweites Tier in der Nähe. S. stellt sich der Bestie nur mit dem Messer bewaffnet entgegen.</de>
+						<en>On a scheduled tiger hunt, a young hunter kills a tiger, but there is a second one nearby. S. confronts the beast armed only with a knife.</en>
+					</description>
 					<ratings critics="54" speed="30" />
 				</programme>
 				<programme id="TheRob-serie-Sanddornkahn-Episode004" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306739" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.4</de>
-						<en>Episode 1.4</en>
+						<de>Das Angebot</de>
+						<en>The Sacrifice</en>
 					</title>
 					<title_original>
-						<de>Das Angebot</de>
+						<de>Das Opfer</de>
 						<en>The Offer</en>
 					</title_original>
 					<description>
@@ -9729,11 +9728,11 @@ Dream scenes and sentiments warp the storyline.</en>
 				</programme>
 				<programme id="TheRob-serie-Sanddornkahn-Episode005" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306740" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.5</de>
-						<en>Episode 1.5</en>
+						<de>Der Treuebruch</de>
+						<en>Defection</en>
 					</title>
 					<title_original>
-						<de>Verrat</de>
+						<de>Der Verrat</de>
 						<en>Betrayal</en>
 					</title_original>
 					<description>
@@ -9744,8 +9743,8 @@ Dream scenes and sentiments warp the storyline.</en>
 				</programme>
 				<programme id="TheRob-serie-Sanddornkahn-Episode006" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306741" creator="8751" created_by="TheRob">
 					<title>
-						<de>Episode 1.6</de>
-						<en>Episode 1.6</en>
+						<de>Der Kampf</de>
+						<en>The Combat</en>
 					</title>
 					<title_original>
 						<de>Die Schlacht</de>
@@ -11017,7 +11016,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<ratings critics="83" speed="69" outcome="84" />
 		</programme>
 
-		<programme id="TheRob-serie-adv-RobinWusoe" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0167516" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-adv-RobinWusoe" product="2" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0167516" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Robinson Crusoe, Abenteuer -->
 				<de>Robin Wusoe</de>
@@ -11040,7 +11039,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="67" speed="44" outcome="" />
 			<children>
-				<programme id="TheRob-serie-RobinWusoe-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep001" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wie es begann</de>
 						<en>How it began</en>
@@ -11054,7 +11053,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>The protagonist tells about the start of his journey and about his wishes and dreams.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep002" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Freitag?</de>
 						<en>Friday?</en>
@@ -11068,7 +11067,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>Stranded on an island, R. meets a stranger.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep003" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Kannibalen!</de>
 						<en>Cannibals!</en>
@@ -11082,7 +11081,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>R. and F. slowly understand that they share the island with some very unfriendly people.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep004" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Endlich Heimat</de>
 						<en>Home! Sweet Home</en>
@@ -11338,7 +11337,7 @@ Dream scenes and sentiments warp the storyline.</en>
 		<!-- from speedminister.xml -->
 
 		<!-- ***** Serie: Expeditionen ins Tierreich, Dokumentation (Originaltitel der Episoden nicht mehr verfügbar) (real) ***** -->
-		<programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" imdb_id="tt0305025" creator="8605" created_by="SpeedMinister" comment="The series started in 1965. As this programme was tagged with 1985, contributors are supposedly welcome to add more 'seasons'.">
+		<programme id="SpeedMinister-Serie-Expeditionen-01" product="4" licence_type="3" fictional="0" imdb_id="tt0305025" creator="8605" created_by="SpeedMinister" comment="The series started in 1965. As this programme was tagged with 1985, contributors are supposedly welcome to add more 'seasons'.">
 			<title>
 				<de>Ausflüge ins Tierreich (1985)</de>
 				<en>Excursions into the Animal Kingdom (1985)</en>
@@ -11362,7 +11361,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<ratings critics="75" speed="45" />
 			<!-- Episodes -->
 			<children>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Deutschlands Wälder</de>
 						<en>The forests of Germany</en>
@@ -11377,7 +11376,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="65" speed="40" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Alpen</de>
 						<en>The Alps</en>
@@ -11392,7 +11391,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="60" speed="35" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Alligatoren der Everglades</de>
 						<en>Alligators of the Everglades</en>
@@ -11407,7 +11406,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="50" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Füchse Londons</de>
 						<en>Foxes of London</en>
@@ -11422,7 +11421,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="45" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Madagaskar</de>
 						<en>Madagascar</en>
@@ -11437,7 +11436,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="75" speed="48" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Schmetterlinge Südamerikas</de>
 						<en>The butterflies of South America</en>
@@ -11452,7 +11451,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="77" speed="39" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Das Great Barrier Riff</de>
 						<en>The Great Barrier Reef</en>
@@ -11467,7 +11466,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="42" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Bären Alaskas</de>
 						<en>The bears of Alaska</en>
@@ -11482,7 +11481,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="75" speed="40" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Haie</de>
 						<en>Sharks</en>
@@ -11497,7 +11496,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="52" />
 				</programme>
-				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
+				<programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Wale</de>
 						<en>Whales</en>
