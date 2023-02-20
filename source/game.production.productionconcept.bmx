@@ -1158,19 +1158,20 @@ endrem
 	End Method
 
 
-	Method GetProductionCost:int()
-		if productionCompany
+	Method GetProductionCost:Int()
+		If productionCompany
 			local fee:int = productionCompany.GetFee(owner) ' script.owner)
-
-			'each set point costs a bit more than the previous
-			local focusPoints:int = productionFocus.GetFocusPointsSet()
-			For local i:int = 1 until focusPoints
-				fee :+ 500*i
+			'for each category the cost per point doubles
+			For local focusIndex:Int = EachIn productionFocus.activeFocusIndices
+				Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
+				For Local i:Int = 0 until focusPoints
+					fee :+ 1000 * (2 ^ i)
+				Next
 			Next
-			return fee
-		endif
+			Return fee
+		EndIf
 
-		return 0
+		Return 0
 	End Method
 
 
@@ -1212,18 +1213,18 @@ endrem
 
 
 			'POINTS ADD TO TIME !
-			local focusPoints:int = productionFocus.GetFocusPointsSet()
-			'ignore points without penalty
-			focusPoints :- (teamPoints + speedPoints)
-			if focusPoints > 0
-				For local i:int = 0 until focusPoints
-					if script.IsFictional()
-						base :+ (15 + i*7) * TWorldTime.MINUTELENGTH
-					else
-						base :+ (10 + i*5) * TWorldTime.MINUTELENGTH
-					endif
-				Next
-			endif
+			For Local focusIndex:Int = EachIn productionFocus.activeFocusIndices
+				If focusIndex <> TVTProductionFocus.TEAM And focusIndex <> TVTProductionFocus.PRODUCTION_SPEED
+					Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
+					For Local i:Int = 0 until focusPoints
+						if script.IsFictional()
+							base :+ (45 * (i+1) + 3 * 2^i) * TWorldTime.MINUTELENGTH
+						else
+							base :+ (30 * (i+1) + 2 * 2^i) * TWorldTime.MINUTELENGTH
+						endif
+					Next
+				EndIf
+ 			Next
 		endif
 
 		base :* speedPointTimeMod
