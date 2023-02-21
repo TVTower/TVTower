@@ -204,8 +204,8 @@ Modest joke concatenations after the comics of [1|Full].</en>
 				<en>Planet of the Apes</en>
 			</title_original>
 			<description>
-				<de>Im Jahre 2029 wird ein Astronaut mitsamt einiger Testaffen durch Raum und Zeit katapultiert und bruchlandet 5021 A.D. auf einem Planeten, wo diese Affen dann die Herrschaft übernehmen. Starke Kostüme, insgesamt aber leider schwaches Remake</de>
-				<en>In 2029, an astronaut together with some test monkeys is catapulted through space and time and in 5021 AD crash lands on a planet where these monkeys then take over. Strong costumes, but overall a weak remake, unfortunately</en>
+				<de>Im Jahre 2029 wird ein Astronaut mitsamt einiger Testaffen durch Raum und Zeit katapultiert und bruchlandet 5021 A.D. auf einem Planeten, wo diese Affen dann die Herrschaft übernehmen. Starke Kostüme, insgesamt aber leider schwaches Remake.</de>
+				<en>In 2029, an astronaut together with some test monkeys is catapulted through space and time and in 5021 AD crash lands on a planet where these monkeys then take over. Strong costumes, but overall a weak remake, unfortunately.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">3b3efc56-1b7a-4f07-bea0-be815c3b1a17</member>
@@ -2633,9 +2633,9 @@ Fast-paced action with star cast.</en>
 				<en>Batman</en>
 			</title_original>
 			<description>
-				<de>Flederflügelmann [1|Full] gegen Joker [2|Full]
+				<de>Flederflügelmann [1|Full] gegen Joker [2|Full].
 Die finstere Fledermaus als Pionier der Realverfilmungswelle.</de>
-				<en>Bat wing man [1|Full] vs. Joker [2|Full]
+				<en>Bat wing man [1|Full] vs. Joker [2|Full].
 The dark bat as a trailblazer of the wave of live action film adaptations.</en>
 			</description>
 			<staff>
@@ -11291,7 +11291,7 @@ Dream scenes and sentiments warp the storyline.</en>
 		<programme id="Freddy_Film_Trash_3" product="1" licence_type="1" fictional="0" imdb_id="tt0097550" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<!-- Org. I bought a Vampire Motorcycle / Iron Thunder (1990). Britischer schwarzen Humor. Dieser Film ist wohl mit Absicht schlecht.-->
-				<de>Mein neues Vampirfahrad</de>
+				<de>Mein neues Vampirfahrrad</de>
 				<en>My new Vampire Bicycle</en>
 			</title>
 			<title_original>
@@ -12519,7 +12519,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Conan the Barbarian</en>
 			</title_original>
 			<description>
-				<de>Der Protagonist noch ein Kind, als seine Sippe ermordet und er selber versklavt wird. Er wird zum Kämpfer gemacht und später freigelassen. Auf der Suche nach Abenteuern stößt er auf den Zauberer Thulsa Doom, der für den Mord an seiner Sippe verantwortlich war.</de>
+				<de>Der Protagonist war noch ein Kind, als seine Sippe ermordet und er selber versklavt wurde. Er wird zum Kämpfer gemacht und später freigelassen. Auf der Suche nach Abenteuern stößt er auf den Zauberer Thulsa Doom, der für den Mord an seiner Sippe verantwortlich war.</de>
 				<en>The protagonist still a child when his clan is murdered and he himself is enslaved. He is made a fighter and later released. In search of adventures, he comes across the wizard Thulsa Doom, who was responsible for the murder of his clan.</en>
 			</description>
 			<staff>
@@ -15160,8 +15160,8 @@ Sequel to the highly acclaimed and successful first ape film, but scathing revie
 				<en>Escape from the Planet of the Apes</en>
 			</title_original>
 			<description>
-				<de>Das Szenario wird umgedreht, recht freundlich gesinnte Affen aus der Zukunft besuchen die Erde im Hier und Jetzt und müssen sich mit der heutigen bestialischen Menschheit auseinandersetzen. Dritter Teil der Reihe. Kritiken wieder im Aufwärtstrend</de>
-				<en>The scenario is turned around, quite friendly apes from the future visit Earth in the here and now and have to deal with today's bestial humanity. Third part of the series. Reviews on the up again</en>
+				<de>Das Szenario wird umgedreht, recht freundlich gesinnte Affen aus der Zukunft besuchen die Erde im Hier und Jetzt und müssen sich mit der heutigen bestialischen Menschheit auseinandersetzen. Dritter Teil der Reihe. Kritiken wieder im Aufwärtstrend.</de>
+				<en>The scenario is turned around, quite friendly apes from the future visit Earth in the here and now and have to deal with today's bestial humanity. Third part of the series. Reviews on the up again.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">4e6bdaf6-9c18-4ceb-a2ab-07d1934f78cc</member>
@@ -16891,7 +16891,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<en>Knight Rider (Season 4)</en>
 			</title_original>
 			<description>
-				<de>In der letzten Staffel erhält K.I.T.T. ein Cabrioverdeck sowie Extrapanzerung und einen Wahnsinnsgeschwindigkeitsmodus. Niemand behauptet, die Serie war besonders intelligent. Im Wesentlichen an Kinder gerichtet war sie als Erwachsenenkost verkleidet.</de>
+				<de>In der letzten Staffel erhält K.I.T.T. ein Cabrioverdeck sowie Extrapanzerung und einen Wahnsinns-Geschwindigkeitsmodus. Niemand behauptet, die Serie war besonders intelligent. Im Wesentlichen an Kinder gerichtet war sie als Erwachsenenkost verkleidet.</de>
 				<en>In the final season, K.I.T.T. gets a convertible top as well as extra armor and an insane speed mode. No one claims the series was particularly intelligent. It was essentially aimed towards children yet dressed up as adult fare.</en>
 			</description>
 			<staff>
@@ -18745,10 +18745,12 @@ An American historical drama television series about a family in rural Virginia 
 				<de>Die Waltons (Staffel 2)</de>
 				<en>The Waltons (Season 2)</en>
 			</title_original>
+			<description>
 				<de>"Gute Nacht, John Boy." - "Gute Nacht."
 Dies wurde zu einer der bekanntesten Floskeln in den 1970er Jahren. In der Endsequenz der Sendung sagen sich die Familienmitglieder gegenseitig gute Nacht, bevor sie in den Schlaf gleiten.</de>
 				<en>"Good night, John Boy." - "Good night, everyone."
 This became one of the most common catchphrases of the 1970s. The show's end sequence featured the family saying goodnight to one another before drifting off to sleep.</en>
+			</description>
 			<staff>
 				<member index="0" function="2">3b76fd30-a736-465c-83e4-55b9c4ceafd1</member>
 				<member index="1" function="2">9fc3a42c-65d0-43f8-9390-6c8a42194ffe</member>
@@ -19429,8 +19431,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Russian Roulette</en>
 					</title_original>
 					<description>
-						<de>Das Schenken geht zu weit, als Roger unwissentlich die Zauberflasche einer russischen Kosmonautin als Symbol der Freundschaft schenkt. Tony unternimmt alles, um die Flasche zurückzubekommen, aber nicht bevor die Kosmonautin merkt, dass sie nun einen Flaschengeist hat.</de>
-						<en>The gift-giving goes too far when Roger unwittingly gifts the magic bottle to a Russian cosmonaut lady as a symbol of friendship. Tony does everything he can to get the bottle back, but not before the cosmonaut realizes that she now has a genie of her own.</en>
+						<de>Roger schenkt unwissentlich die Zauberflasche einer russischen Kosmonautin als Symbol der Freundschaft. Tony unternimmt alles, um die Flasche zurückzubekommen, aber nicht bevor die Kosmonautin merkt, dass sie nun einen Flaschengeist hat.</de>
+						<en>Roger unwittingly gifts the magic bottle to a Russian cosmonaut lady as a symbol of friendship. Tony does everything he can to get the bottle back, but not before the cosmonaut realizes that she now has a genie of her own.</en>
 					</description>
 				</programme>
 				<programme id="192b401d-55f2-436c-8a32-920b01d964f3" product="2" licence_type="2" imdb_id="tt0609180" creator="9551">
@@ -19443,8 +19445,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>What House Across the Street?</en>
 					</title_original>
 					<description>
-						<de>Mütter wissen es in der Regel am besten, und so beschließt die Flaschengeistdame, dem Rat ihrer Mutter zu folgen und Tony eifersüchtig zu machen, indem sie einen Heiratsantrag annimmt. Sie blinzelt zwei reiche Eltern und eine Villa auf der anderen Straßenseite von Tonys Haus ins Leben.</de>
-						<en>Mothers usually know best, so the genie-lady decides to follow her mother's advice and make Tony jealous by accepting a marriage proposal. She blinks into existence two rich parents and a mansion across the street from Tony's house.</en>
+						<de>Mütter wissen es in der Regel am besten, und so beschließt die Flaschengeistdame, dem Rat ihrer Mutter zu folgen und Tony eifersüchtig zu machen, indem sie einen Heiratsantrag annimmt.</de>
+						<en>Mothers usually know best, so the genie-lady decides to follow her mother's advice and make Tony jealous by accepting a marriage proposal.</en>
 					</description>
 				</programme>
 				<programme id="7a4c6cbd-b502-4a49-bfe0-92dcacc43308" product="2" licence_type="2" imdb_id="tt0609149" creator="9551">
@@ -19670,7 +19672,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<member index="6" function="2">53c1c446-e1ac-4c16-9994-35dffdd2f66e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1964" distribution="2" maingenre="5" subgenre="9" flags="0" blocks="0.5" price_mod="1" />
+			<data country="USA" year="1964" distribution="2" maingenre="5" subgenre="9" flags="0" blocks="1" price_mod="0.5" />
 			<ratings critics="34" speed="62" outcome="53" />
 			<children>
 				<programme id="e2b7e275-9af9-461a-8d2d-c71662ca0283" product="2" licence_type="2" imdb_id="tt0368744" creator="9551">
@@ -20346,7 +20348,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				</programme>
 			</children>
 		</programme>
-		<programme id="140c5f68-6215-45ad-a685-1fc6f071233f" product="2" licence_type="3" creator="9551" imdb_id="tt0307711" comment="No English version, applying translation of title. I made up that there's a 'Best Of', but later I found out that a compilation DVD does indeed exist. https://www.fernsehserien.de/der-7-sinn">
+		<programme id="140c5f68-6215-45ad-a685-1fc6f071233f" product="2" licence_type="3" creator="9551" imdb_id="tt0307711" fictional="0" comment="No English version, applying translation of title. I made up that there's a 'Best Of', but later I found out that a compilation DVD does indeed exist. https://www.fernsehserien.de/der-7-sinn">
 			<title>
 				<de>Sei 8sam! (Best of)</de>
 				<en>Pay 8tention! (Best of)</en>
@@ -20356,8 +20358,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<en>The 7th Sense (Best of)</en>
 			</title_original>
 			<description>
-				<de>Die Mutter aller Verkehrserziehungssendungen. Eine ganze Stunde lang [1|Full], und das in vier Episoden! Die besten und wichtigsten Tips für umsichtige Autofahrer und alle erwachsenen Verkehrsteilnehmer im alltäglichen Straßenverkehr, aus den vielen Sendejahren zusammengestellt.</de>
-				<en>From Germany comes the mother of all traffic education shows. One whole hour of [1|Full], and that in four episodes! The best and most important tips for careful drivers and all adult road users in everyday traffic, compiled from the many years of broadcasting.</en>
+				<de>Die Mutter aller Verkehrserziehungssendungen. Eine ganze Stunde lang [1|Full], und das in 4 Episoden! Die wichtigsten Tipps für umsichtige Autofahrer und alle erwachsenen Teilnehmer im täglichen Straßenverkehr, aus den vielen Sendejahren zusammengestellt.</de>
+				<en>From Germany comes the mother of all traffic education shows. One whole hour of [1|Full], and that in 4 episodes! The most important tips for careful drivers and all adult road users in everyday traffic, compiled from the many years of broadcasting.</en>
 			</description>
 			<staff>
 				<member index="0" function="21">f41917ee-82d1-4c42-9bf9-dda00db1f72d</member>
@@ -20368,7 +20370,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 			<releaseTime year_relative="-8" />
 			<ratings critics="77" speed="39" outcome="47" />
 			<children>
-				<programme id="52f6d3ff-3a58-4632-ac4a-3fbe93c37211" product="2" licence_type="2" imdb_id="" creator="9551">
+				<programme id="52f6d3ff-3a58-4632-ac4a-3fbe93c37211" product="2" licence_type="2" imdb_id="" fictional="1" creator="9551">
 					<title>
 						<de>Unfälle und Gefahren der Nacht</de>
 						<en>Accidents and Dangers of the Night</en>
@@ -20382,7 +20384,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Also: Honking and full throttle, When it gets slippery, Trains, Railroad crossings, Insurance, Vacation preparations, Women drivers, Speeding, Reversing, When you want to turn, Getting in lane and turning, etc.</en>
 					</description>
 				</programme>
-				<programme id="cf5d0f9f-9343-4031-ab37-d54ea7ff546c" product="2" licence_type="2" imdb_id="" creator="9551">
+				<programme id="cf5d0f9f-9343-4031-ab37-d54ea7ff546c" product="2" licence_type="2" imdb_id="" fictional="1" creator="9551">
 					<title>
 						<de>Autobahn und Glätte</de>
 						<en>Highways and Icy Roads</en>
@@ -20396,7 +20398,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Also: The zip merge, Tunnels, Small motorcycles, Riding a moped made easy, Scooters but safe!, Federal Armed Forces, ABS, Seat belts, Danger due to defective shock absorbers, Be mindful of the tram, Litter, etc.</en>
 					</description>
 				</programme>
-				<programme id="5b5ec006-e35a-44e7-9f8e-9196c5e578e9" product="2" licence_type="2" imdb_id="" creator="9551">
+				<programme id="5b5ec006-e35a-44e7-9f8e-9196c5e578e9" product="2" licence_type="2" imdb_id="" fictional="1" creator="9551">
 					<title>
 						<de>Kinder und Ältere Menschen im Straßenverkehr</de>
 						<en>Children and Elderly People in Road Traffic</en>
@@ -20410,7 +20412,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Also: We want to cross the road, Safe crossing the road (also for the middle-aged), Cyclists live dangerously!, Dogs, Aggression in traffic, Drive distinctly!, Roundabouts, Trailers, Parking garage, Motor homes, Observe police signs, etc.</en>
 					</description>
 				</programme>
-				<programme id="b6121888-5bed-455a-8cca-f3d65b8fc041" product="2" licence_type="2" imdb_id="" creator="9551">
+				<programme id="b6121888-5bed-455a-8cca-f3d65b8fc041" product="2" licence_type="2" imdb_id="" fictional="1" creator="9551">
 					<title>
 						<de>Rettungsgasse und Haftung von Helfern</de>
 						<en>Emergency Lanes and Liability of Helpers</en>
