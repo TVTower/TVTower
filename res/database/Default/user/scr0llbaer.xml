@@ -1,0 +1,1586 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="Data entries by scr0llbaer" />
+
+	<insignificantpeople>
+		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" bookable="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
+		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" bookable="1" country="D" job="206" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
+	</insignificantpeople>
+	
+	<celebritypeople>
+	</celebritypeople>
+
+	<allnews>
+		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in Themse gesichtet</de>
+				<en>Whale sighted in Thames</en>
+			</title>
+			<description>
+				<de>Da staunten die Anwohner an den Ufern des Flusses nicht schlecht, als sie am frühen Morgen lautes Platschen und hoch aufspritzendes Wasser bewundern durften.</de>
+				<en>The residents on the shores of the river were amazed when they witnessed loud splashing and high spraying water in the early morning.</en>
+			</description>
+			<data genre="4" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="92598126-f227-4fd2-894e-a5902eaeb392" />
+			</effects>
+			<!-- TODO: variables>
+				<thames>
+					<de>Themse|Rhein|Mississippi|Nil|Amazonas|Wolga|Seine</de>
+					<en>Thames|Rhine|Mississippi|Nile|Amazon River|Volga|Seine</en>
+				</thames>
+			</variables-->
+		</news>
+
+		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Grienpies schlägt Alarm</de>
+				<en>Creenpiece sounds the alarm</en>
+			</title>
+			<description>
+				<de>Wegen Wal in Themse müsse eine Rettungsaktion sofort eingeleitet werden.</de>
+				<en>Rescue operation for whale in Thames must be initiated immediately, Creenpiece said.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="5367ea49-6b5c-4703-87d1-b2427212f4d3" probability1="50" news2="5d9a2849-c5f2-4504-912f-84cf5065a9b5" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in Themse: Rettung in Sicht</de>
+				<en>Whale in Thames: Rescue in sight</en>
+			</title>
+			<description>
+				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
+				<en>Creenpiece launches rescue action. The animal must not come to harm, the spokesman said.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="43799353-d91e-4f70-accb-703f6d6b861a" />
+			</effects>
+		</news>
+
+		<news id="43799353-d91e-4f70-accb-703f6d6b861a" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Schlechtes Wetter behindert Wal-Rettung</de>
+				<en>Bad weather hinders rescue action for whale</en>
+			</title>
+			<description>
+				<de>Wegen dem anhaltenden Sturm können die Schiffe nicht einsatzbereit gemacht werden, ist es aus der Leitstelle zu vernehmen.</de>
+				<en>Due to the ongoing storm, the boats can not be made operational, according to the control center.</en>
+			</description>
+			<data genre="4" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="5ab7ad14-2513-427f-893c-913d936e0575" />
+			</effects>
+		</news>
+
+		<news id="5ab7ad14-2513-427f-893c-913d936e0575" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Weiterhin Schwierigkeiten bei Wal-Rettung</de>
+				<en>Difficulties with whale rescue continue</en>
+			</title>
+			<description>
+				<de>Man versuche es mit Locksignalen, doch der Wal reagiere nicht.</de>
+				<en>It is being attempted with mating calls, but the whale does not react.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="321a8590-eec0-4f1d-8031-6d1f9b443b33" probability1="50" news2="9891cfa6-1cd9-41e4-b179-496da048f7d4" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="321a8590-eec0-4f1d-8031-6d1f9b443b33" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Zustand des Wals verschlechtert sich</de>
+				<en>Condition of the whale deteriorates</en>
+			</title>
+			<description>
+				<de>Grienpies: Man müsse umgehend eine Lösung für die Situation finden, sonst überlebe der Wal nicht.</de>
+				<en>Creenpiece: A solution to the situation must be found immediately, otherwise the whale will not survive, Creenpiece said.</en>
+			</description>
+			<data genre="4" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="a33be652-8202-4685-a6ae-1b530f04b3a5" />
+			</effects>
+		</news>
+
+		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in Themse ist tot</de>
+				<en>Whale in Thames dead</en>
+			</title>
+			<description>
+				<de>Die genaue Todesursache ist noch unklar, vermutlich war der Wal bereits schwach und konnte nicht genug Nahrung finden.</de>
+				<en>The exact cause of death is still unclear, probably the whale was already weak and could not find enough food.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+		</news>
+
+		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in Themse schwimmt zur Flußmündung</de>
+				<en>Whale in Thames swims to river mouth</en>
+			</title>
+			<description>
+				<de>Es sind Fortschritte bei der Rettungsaktion zu verzeichnen. Hoffentlich findet der Wal seinen Weg.</de>
+				<en>Progress is being made in the rescue operation. Hopefully the whale will find its way.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="5d9a2849-c5f2-4504-912f-84cf5065a9b5" />
+			</effects>
+		</news>
+
+		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal von Themse ins Meer zurückgeschwommen</de>
+				<en>Whale from Thames swam back to sea</en>
+			</title>
+			<description>
+				<de>Na also! Der Wal ist wieder in seinem natürlichen Habitat.</de>
+				<en>There you go! The whale is back in its natural habitat.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+		</news>
+	</allnews>
+
+	<allprogrammes>
+		<programme id="f95058fe-1d4e-4d93-83f6-e33ae06ed346" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
+			<title>
+				<de>Das alte Nepal</de>
+				<en>Ancient Nepal</en>
+			</title>
+			<description>
+				<de>Steaks, Bier und Zigaretten waren die Hauptnahrungsmittel im alten Nepal.
+
+Format: Abgefilmte Vorträge. Unaufgeregt und Unaufregend.</de>
+
+				<en>Steaks, beer and cigarettes were the main staples in ancient Nepal.
+
+Format: Filmed lectures. Laid-back and to lay down.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="NL" distribution="2" maingenre="6" subgenre="103,300" flags="4" blocks="1" price_mod="0.5" />
+			<releaseTime year_relative="-15" />
+			<ratings critics="21" speed="3" outcome="9" />
+			<children>
+				<programme id="1fc5dff9-f72d-40c9-938f-990a3875603b" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>Steaks</de>
+						<en>Steaks</en>
+					</title>
+					<description>
+						<de>Steaks waren eins der Hauptnahrungsmittel im alten Nepal.</de>
+						<en>Steaks were one of the main staples in ancient Nepal.</en>
+					</description>
+				</programme>
+				<programme id="78656b84-7730-420f-b85c-7d05fc259b70" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>Bier</de>
+						<en>Beer</en>
+					</title>
+					<description>
+						<de>Bier war eins der Hauptnahrungsmittel im alten Nepal.</de>
+						<en>Beer was one of the main staples in ancient Nepal.</en>
+					</description>
+				</programme>
+				<programme id="b5ed35d3-7618-4368-a7b8-60d453bee37d" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>Zigaretten</de>
+						<en>Cigarettes</en>
+					</title>
+					<description>
+						<de>Zigaretten war eins der Hauptnahrungsmittel im alten Nepal.</de>
+						<en>Cigarettes were one of the main staples in ancient Nepal.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+		<programme id="89507f2c-f6e9-4d63-bf32-657a280f72c3" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
+			<title>
+				<de>Wohnen am Atomkraftwerk</de>
+				<en>Living next to a nuclear power plant</en>
+			</title>
+			<description>
+				<de>Immer weniger Menschen wollen noch auf die Vorteile eines modernen Reaktors verzichten.</de>
+				<en>Fewer and fewer people are willing to forego the advantages of a modern reactor.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="1" function="128">82d81b92-29ee-420e-82b2-a4690a1679db</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" />
+			<data country="DK" year="1971" distribution="2" maingenre="300" subgenre="6" flags="4" blocks="1" price_mod="0.5" />
+			<ratings critics="33" speed="31" outcome="12" />
+			<children>
+				<programme id="3b56f810-64c1-49e6-8540-274098947b10" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>Three Mile Island</de>
+						<en>Three Mile Island</en>
+					</title>
+					<description>
+						<de>In Pennsylvania entsteht eine der modernsten und sichersten Anlagen. Wir waren vor Ort.</de>
+						<en>One of the most modern and safest plants is being built in Pennsylvania. We were on site.</en>
+					</description>
+				</programme>
+				<programme id="001f3d7b-ae35-429b-9d47-a690fe6c9958" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>Tschernobyl</de>
+						<en>Chernobyl</en>
+					</title>
+					<description>
+						<de>In der Oblast Kiew entsteht eine der modernsten und sichersten Anlagen. Wir waren vor Ort.</de>
+						<en>One of the most modern and safest plants is being built in Kiev Oblast. We were on site.</en>
+					</description>
+				</programme>
+				<programme id="71956dc0-4fbb-4e9a-ac62-a0821eea04bd" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>Fukushima</de>
+						<en>Fukushima</en>
+					</title>
+					<description>
+						<de>Auf der japanischen Hauptinsel Honshū entsteht eine der modernsten und sichersten Anlagen. Wir waren vor Ort.</de>
+						<en>One of the most modern and safest plants is being built on the main Japanese island of Honshū. We were on site.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+	</allprogrammes>
+
+	<programmeroles>
+		<programmerole guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" first_name="Dylan" last_name="Miller" gender="1" />
+		<programmerole guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" first_name="Sara" last_name="Pander" gender="2" />
+		<programmerole guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" first_name="Benedict" last_name="Bernoulli" gender="1" />
+		<programmerole guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" first_name="Ryleigh" last_name="Shaw" gender="2" />
+		<programmerole guid="726103c3-40df-495d-97a0-13c7cc9c3386" first_name="Professor" last_name="Ed" title="Dr." gender="1" />
+		<programmerole guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" first_name="Nurse" last_name="Frieda" gender="2" />
+		<programmerole guid="67ffb376-8df4-46ed-ba50-65e31806326a" first_name="Weird" last_name="Fred" gender="1" />
+		<programmerole guid="a4061798-165c-4dc0-9025-84e1c954155b" first_name="Pink" last_name="Meteor" gender="0" />
+		<programmerole guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" first_name="Yellow" last_name="Tentacle" gender="0" />
+		<programmerole guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" first_name="Pink" last_name="Tentacle" gender="0" />
+		<programmerole guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" first_name="Jack" last_name="the Plant" gender="0" />
+		<programmerole guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" first_name="Cousin" last_name="Med" gender="1" />
+		<programmerole guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" first_name="Lakelyn" last_name="" gender="2" />
+		<programmerole guid="1bae2190-de25-4400-a3a8-3606d1b6944b" first_name="Roagie" last_name="" gender="1" />
+		
+		<programmerole guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" first_name="Benjamin" last_name="Franklin" gender="1" />
+		<programmerole guid="c2edde3f-c2ff-4800-a020-79f59662176f" first_name="George" last_name="Washington" gender="1" />
+		<programmerole guid="29aa9b04-b155-4975-b1b0-45355c293668" first_name="John" last_name="Hancock" gender="1" />
+		<programmerole guid="c4f29c58-9028-48d4-84de-cad66012d2e4" first_name="Thomas" last_name="Jefferson" gender="1" />
+
+		<programmerole guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" first_name="Zed Mack" last_name="Zedrick" gender="1" />
+		<programmerole guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" first_name="Amy" last_name="Harris" gender="2" />
+		<programmerole guid="833302a7-87ee-4afc-95db-f0fde5e7866a" first_name="Lilly" last_name="Berner" gender="2" />
+		<programmerole guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" first_name="Madison" last_name="Japens" gender="2" />
+		<programmerole guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" first_name="Elvis" last_name="" gender="1" />
+
+		<programmerole guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" first_name="Dink" last_name="" gender="1" />
+		<programmerole guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" first_name="Mimikry" last_name="" gender="2" />
+		<programmerole guid="d2168e7c-3c95-4778-b406-cb305633946a" first_name="Trint" last_name="" gender="1" />
+		<programmerole guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" first_name="Dar" last_name="" gender="1" />
+		<programmerole guid="53104872-6c35-43df-a8b6-a3863db9cf9b" first_name="Isolde" last_name="" gender="2" />
+		<programmerole guid="8a54557b-ded8-4427-bb60-7796c1f84317" first_name="Arturo" last_name="" gender="1" />
+
+		<programmerole guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" first_name="Raymond" last_name="Plankwood" gender="1" />
+		<programmerole guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" first_name="Evelyn" last_name="Harley" gender="2" />
+		<programmerole guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" first_name="P.G." last_name="LeCruck" gender="1" />
+		
+		<programmerole guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" first_name="Stevan" last_name="" gender="1" />
+		<programmerole guid="a42f6980-1685-422c-8796-8b502b9b41d9" first_name="Kara" last_name="" gender="2" />
+		<programmerole guid="d783dea1-1f41-496f-a239-12ac44c6fe60" first_name="Cellist" last_name="" gender="1" />
+
+		<programmerole guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" first_name="Leather Jacket Leo" last_name="" gender="1" />
+		<programmerole guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" first_name="Fervent Faviola" last_name="" gender="2" />
+		
+		<programmerole guid="437539e5-4c6b-4207-981a-051a82021745" first_name="Bobby" last_name="Blaze" gender="1" />
+		<programmerole guid="ba05561a-0266-4cfe-b020-353781fd881c" first_name="Xorp" last_name="" gender="0" />
+	</programmeroles>
+
+	<scripttemplates>
+		<scripttemplate product="3" licence_type="1" guid="e569b0af-e97f-4897-8b8d-6c426fa5a7d5" creator="9551" comment="Low-Budget- und Endlos-Variante von scripttemplate-ron-morningshow">
+			<title>
+				<de>%title%</de>
+				<en>%title%</en>
+			</title>
+			<description>
+				<de>Programmfüller für den jeden Morgen. Hier werden nochmal die Beiträge aus dem Mülleimer gefischt, die die Kollegen aus der Nachrichtenredaktion schon weggeschmissen haben. Andere niedrigschwellige Inhalte finden sich bestimmt auch noch.</de>
+				<en>Programme filler for every morning. Here the stories that the colleagues from the newsroom have already thrown away are fished out of the garbage can again. Other low-threshold content can surely be sourced as well.</en>
+			</description>
+
+			<variables>
+				<title>
+					<de>Morgenmuffel-TV|Mundgeruch am Morgen|Miesepeter am Morgen|Morgengrieß-Kram|G'n Morgääähn</de>
+					<en>Morning Grouch TV|Bad breath in the Morning|Grumpy in the Morning|Morning Flour and Stuff|G'd Moryaaawn</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="8" required="1" />
+			</jobs>
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="420" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="103" subgenres="6,300" />
+			<blocks value="3" />
+			<price min="2000" max="4000" />
+			<potential min="20" max="40" />
+			<outcome min="20" max="40" />
+			<review min="10" max="20" />
+			<speed min="10" max="20" />
+			<production_time value="60" />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
+			<title>
+				<de>%title%</de>
+				<en>%title%</en>
+			</title>
+			<description>
+				<de>Es lohnt sich! Für jeden Morgen! Tolles Programm und gute Unterhaltung für einen beschwingten Start in den Tag.</de>
+				<en>It's worth it! For every morning! Great program and good entertainment for an upbeat start into the day.</en>
+			</description>
+
+			<variables>
+				<title>
+					<de>Das saftige Frühstücks-TV|5-Sterne Frühstück Deluxe|Morgenpracht-TV|Croissant mit Latte am Morgen TV</de>
+					<en>The Lush Breakfast TV|5-Star Breakfast Deluxe|Morning Glory TV|Croissant with Latte in the Morning TV</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="2048" gender="2" required="1" />
+				<job index="5" function="64" required="0" />
+				<job index="6" function="8" required="0" />
+				<job index="7" function="16" required="0" />
+			</jobs>
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="999" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="103" subgenres="104,300" />
+			<blocks value="3" />
+			<price min="200000" max="500000" />
+			<potential min="60" max="90" />
+			<outcome min="70" max="90" />
+			<review min="50" max="70" />
+			<speed min="60" max="90" />
+			<production_time value="60" />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower% %latebreaking%: %title%</de>
+				<en>%tower% %latebreaking%: %title%</en>
+			</title>
+			<description>
+				<de>Technologie aktuell. Jeden Tag neu. Die neuesten Entwicklungen und Trends bei Elektronik, Telekommunikation, Computern.</de>
+				<en>The latest in technology. New every day. The most recent developments and trends in electronics, telecommunications, computers.</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower</de>
+					<en>TVT|Tower</en>
+				</tower>
+				<latebreaking>
+					<de>Brandaktuell|Aktuell</de>
+					<en>Late-Breaking|Hot</en>
+				</latebreaking>
+				<title>
+					<de>Tech|Technologie|Tech-Corner|Nerd-Corner</de>
+					<en>Tech|Technology|Tech Corner|Nerd Corner</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="1337" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="300" subgenres="6,16" />
+			<blocks value="1" />
+			<price min="10000" max="20000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<production_time value="60" />
+			<programme_data_modifiers> <!-- The idea is it's current news so it should get old quickly, but it should recover faster than usual to be still usable for the 1x repeat, e.g. in night programme. -->
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<targetgroupattractivity children_male="0.5" children_female="-1.0" teenagers_male="1.0" teenagers_female="-0.5" housewives_male="0" housewives_female="-1.0" employees_male="2.0" employees_female="0" unemployed_male="0.5" unemployed_female="-1.0" managers_male="2.0" managers_female="0.5" pensioners_male="0" pensioners_female="-1.0" comment="TODO: Does this work in scripts? Clarify." />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower% %latebreaking%: %title%</de>
+				<en>%tower% %latebreaking%: %title%</en>
+			</title>
+			<description>
+				<de>Showbiz aktuell. Jeden Tag neu. Das neueste rund um's Showbusiness: Filme, Musik, Stars und Sternchen, Klatsch und Tratsch, und vieles mehr.</de>
+				<en>Showbiz news. New every day. The latest in show business: movies, music, stars and starlets, gossip, and much more.</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower</de>
+					<en>TVT|Tower</en>
+				</tower>
+				<latebreaking>
+					<de>Brandaktuell|Aktuell</de>
+					<en>Late-Breaking|Hot</en>
+				</latebreaking>
+				<title>
+					<de>Showbiz|Unterhaltung|Die Kinoleinwand|Die Große Leinwand|Die Große Bühne</de>
+					<en>Showbiz|Entertainment|The Silver Screen|The Big Screen|The Big Stage</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="666" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="301" subgenres="204,7" />
+			<groups target_groups_optional="158" />
+			<blocks value="1" />
+			<price min="10000" max="20000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower% %latebreaking%: %title%</de>
+				<en>%tower% %latebreaking%: %title%</en>
+			</title>
+			<description>
+				<de>Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe. Fußball, Eishockey, Basketball, Football, Tennis, Leichtathletik, Boxen, Formel 1, alles dabei.</de>
+				<en>Sports up to date. New every day. The top leagues and competitions. Soccer, ice hockey, basketball, football, tennis, athletics, boxing, formula 1, you name it.</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower</de>
+					<en>TVT|Tower</en>
+				</tower>
+				<latebreaking>
+					<de>Brandaktuell|Aktuell</de>
+					<en>Late-Breaking|Hot</en>
+				</latebreaking>
+				<title>
+					<de>Sport|Die Sport-Rundumschau|Die Sportfreunde|Fokus Sport</de>
+					<en>Sports|The Sports Roundup|The Sports Friends|Sports in Focus</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="9090" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="300" subgenres="203,103" />
+			<blocks value="1" />
+			<price min="10000" max="20000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<targetgroupattractivity children_male="0.5" children_female="-0.5" teenagers_male="0.5" teenagers_female="-0.5" housewives_male="-0.2" housewives_female="-1.0" employees_male="1.5" employees_female="-0.5" unemployed_male="1.5" unemployed_female="-0.5" managers_male="0.5" managers_female="-1.0" pensioners_male="0.3" pensioners_female="-0.5" />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower% %latebreaking%: %title%</de>
+				<en>%tower% %latebreaking%: %title%</en>
+			</title>
+			<description>
+				<de>Politik aktuell. Jeden Tag neu. Wir analysieren die neuesten Entwicklungen in Wirtschaft und Politik.</de>
+				<en>Politics up to date. New every day. We analyze the latest developments in business and politics.</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower</de>
+					<en>TVT|Tower</en>
+				</tower>
+				<latebreaking>
+					<de>Brandaktuell|Aktuell</de>
+					<en>Late-Breaking|Hot</en>
+				</latebreaking>
+				<title>
+					<de>Politik|Wirtschaft und Politik|Fokus Politik|Polit-Klartext</de>
+					<en>Politics|Business and Politics|Politics in Focus|Politics Plain Talk</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="2323" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="300" subgenres="201,101" />
+			<groups target_groups_optional="104" />
+			<blocks value="1" />
+			<price min="10000" max="20000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower%: %title% %latebreaking%</de>
+				<en>%tower%: %title% %latebreaking%</en>
+			</title>
+			<description>
+				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
+				<en>The latest in culture. New every day. Openings, exhibitions, cultural festivals, concerts, art, literature. New publications as well as historical retrospects and reflections.</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower</de>
+					<en>TVT|Tower</en>
+				</tower>
+				<title>
+					<de>Kultur|Kunst und Kultur|Kulturwelt|Kultursphäre</de>
+					<en>Culture|Art and Culture|Cultural World|Cultural Sphere</en>
+				</title>
+				<latebreaking>
+					<de>Aktuell|der Gegenwart|im aktuellen Kontext</de>
+					<en>Up-to-date|of the Present Day|in a Contemporary Context</en>
+				</latebreaking>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="5" production_limit="1685" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="300" subgenres="6,11" />
+			<groups target_groups_optional="232" />
+			<blocks value="1" />
+			<price min="10000" max="20000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower% %latebreaking%: %title%</de>
+				<en>%tower% %latebreaking%: %title%</en>
+			</title>
+			<description>
+				<de>Die neuesten und heißesten Videospiele werden hier präsentiert und getestet. Nur für euch! Außerdem könnt ihr im Studio gegeneinander antreten und Preise gewinnen!</de>
+				<en>The latest and hottest video games will be presented and tested here. Just for you! You can also compete against each other in the studio and win prizes!</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower</de>
+					<en>TVT|Tower</en>
+				</tower>
+				<latebreaking>
+					<de>Brandaktuell|Aktuell</de>
+					<en>Late-Breaking|Hot</en>
+				</latebreaking>
+				<title>
+					<de>Die Videospiele-Show|Arcade Action|Hot Games|Video Action</de>
+					<en>The Videogame Show|Arcade Action|Hot Games|Video Action</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="9000" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="104" subgenres="2,16" />
+			<groups target_groups_optional="19" />
+			<blocks value="1" />
+			<price min="10000" max="20000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<targetgroupattractivity children_male="2.0" children_female="0" teenagers_male="2.0" teenagers_female="0" housewives_male="0" housewives_female="-1.0" employees_male="1.0" employees_female="-0.5" unemployed_male="2.0" unemployed_female="0" managers_male="0.5" managers_female="0" pensioners_male="-1.0" pensioners_female="-2.0" comment="TODO: Does this work in scripts? Clarify." />
+		</scripttemplate>
+
+		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
+			<title>
+				<de>Die Götterwelt von %bali%</de>
+				<en>The Gods of %bali%</en>
+			</title>
+			<description>
+				<de>Alle 412.000 Götter werden vorgestellt.
+
+Etwa 1000 pro Episode.</de>
+				<en>All 412,000 gods are presented.
+
+About 1000 per episode.</en>
+			</description>
+
+			<variables>
+				<bali>
+					<de>Bali|Laos|Kambodscha|Myanmar|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien</de>
+					<en>Bali|Laos|Cambodia|Myanmar|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia</en>
+				</bali>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="128" required="1" />
+			</jobs>
+
+			<data flags="4" production_limit="412" production_broadcast_limit="2" production_licence_flags="36" />
+			<genres maingenre="6" subgenres="300" />
+			<blocks value="2" />
+			<price min="3000" max="6000" />
+			<potential min="20" max="70" />
+			<outcome min="20" max="70" />
+			<review min="30" max="80" />
+			<speed min="20" max="50" />
+			<programme_data_modifiers> <!-- Idea is that while the content itself may be kind of ageless and could reach Discovery Channel-like quality, the episodes are nevertheless meant to be discarded quickly (only 2 broadcasts) as there are too many gods to cover, and as to not spam one's archive. -->
+				<modifier name="topicality::age" value="0.1" />
+				<modifier name="topicality::refresh" value="0.5" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="352a2fbc-7e7b-462b-a217-34c300043d19" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Maniac_Mansion">
+			<title>
+				<de>%title%</de>
+				<en>%title%</en>
+			</title>
+			<description>
+				<de>Dylans Freundin Sara wurde entführt vom verrückten Professor Dr. Ed! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de>
+				<en>Dylan's girlfriend Sara has been kidnapped by the mad professor Dr. Ed! He and his friends want to free her from his mansion. There are a lot more strange things going on there! And where is gasoline for the chainsaw when you need it.</en>
+			</description>
+
+			<variables>
+				<title>
+					<de>Der %adj% %house-m%|Die %adj% %house-f%|Das %adj% %house-n%</de>
+					<en>The %adj% %house-m%|The %adj% %house-f%|The %adj% %house-n%</en>
+				</title>
+				<adj>
+					<de>Wahnwitzige|Verrückte|Irrwitzige|Durchgeknallte|Geisteskranke|Irrsinnige|Aberwitzige|Manische|Wahnsinnige|Absurde|Groteske|Bizarre|Abgedrehte</de>
+					<en>Lunatic|Crazy|Mad|Frenzied|Frantic|Insane|Ludicrous|Manic|Maniacal|Absurd|Grotesque|Bizarre|Wacky</en>
+				</adj>
+				<house-m>
+					<de>Landsitz</de>
+					<en>Country Estate</en>
+				</house-m>
+				<house-f>
+					<de>Villa|Residenz</de>
+					<en>Villa|Residence</en>
+				</house-f>
+				<house-n>
+					<de>Herrenhaus|Gutshaus|Anwesen|Landhaus|Tollhaus</de>
+					<en>Manor|Farmhouse|Estate|Country House|Madhouse</en>
+				</house-n>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" />
+				<job index="2" function="2" required="1" gender="2" role_guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" />
+				<job index="3" function="2" required="1" gender="1" role_guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" />
+				<job index="4" function="2" required="1" gender="2" role_guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" />
+				<job index="5" function="2" required="1" gender="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
+				<job index="6" function="2" required="1" gender="2" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
+				<job index="7" function="2" required="1" gender="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
+				<job index="8" function="2" required="1" gender="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
+				<job index="9" function="2" required="1" gender="0" role_guid="a4061798-165c-4dc0-9025-84e1c954155b" />
+				<job index="10" function="2" required="1" gender="0" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
+				<job index="11" function="2" required="1" gender="0" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
+				<job index="12" function="2" required="1" gender="0" role_guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" />
+			</jobs>
+
+			<data flags_optional="104" />
+			<genres maingenre="12" subgenres="5,16" />
+			<blocks value="2" />
+			<price min="55000" max="77000" />
+			<potential min="70" max="90" />
+			<outcome min="65" max="85" />
+			<review min="75" max="90" />
+			<speed min="70" max="85" />
+			<studio_size value="2" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Day_of_the_Tentacle">
+			<title>
+				<de>%Revenge% des Tentakels</de>
+				<en>The %Revenge% of the Tentacle</en>
+			</title>
+			<description>
+				<de>Zurück zur abgedrehten Villa! Dr. Ed ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass Pink Tentakel die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
+				<en>Back to the wacky mansion! Dr. Ed is on our side this time. Well, almost. He wants to prevent Pink Tentacle from enslaving humanity, but has massively screwed up something with the time machine. The protagonists now have to fix things.</en>
+			</description>
+
+			<variables>
+				<revenge>
+					<de>Die Rache|Die Rückkehr|Der Große Auftritt|Der Große Akt|Tobsucht</de>
+					<en>Revenge|Return|Grand Entrance|Big Act|Tantrum</en>
+				</revenge>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" />
+				<job index="2" function="2" required="1" gender="2" role_guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" />
+				<job index="3" function="2" required="1" gender="1" role_guid="1bae2190-de25-4400-a3a8-3606d1b6944b" />
+				<job index="4" function="2" required="1" gender="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
+				<job index="5" function="2" required="1" gender="2" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
+				<job index="6" function="2" required="1" gender="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
+				<job index="7" function="2" required="1" gender="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
+				<job index="8" function="2" required="1" gender="0" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
+				<job index="9" function="2" required="1" gender="0" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
+				<job index="10" function="2" required="1" gender="1" role_guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" />
+				<job index="11" function="2" required="1" gender="1" role_guid="c2edde3f-c2ff-4800-a020-79f59662176f" />
+				<job index="12" function="2" required="1" gender="1" role_guid="29aa9b04-b155-4975-b1b0-45355c293668" />
+				<job index="13" function="2" required="1" gender="1" role_guid="c4f29c58-9028-48d4-84de-cad66012d2e4" />
+				<job index="14" function="32" required="1" gender="2" />
+				<job index="15" function="32" required="1" gender="1" />
+			</jobs>
+
+			<data flags_optional="40" />
+			<genres maingenre="5" subgenres="16,3" />
+			<blocks value="3" />
+			<price min="65000" max="90000" />
+			<potential min="75" max="95" />
+			<outcome min="75" max="95" />
+			<review min="80" max="95" />
+			<speed min="70" max="90" />
+			<studio_size value="3" />
+			<!-- TODO: releaseTime year_relative="+3" comment="Is relative releaseTime available for scripts? It would make sense!" /-->
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Zak_McKracken_and_the_Alien_Mindbenders">
+			<title>
+				<de>%myname%Zed Mack Zedrick, %roving% Reporter</de>
+				<en>Hi, Zed Mack Zedrick%myname%, %roving% Reporter</en>
+			</title>
+			<description>
+				<de>Ich muss für dieses Schmierblatt schreiben, dabei will ich den Pulitzer-Preis gewinnen! Aber ich bin Aliens auf der Spur, wirklich! Die wollen die Menschheit verdummen! Ich treff die Frau aus meinem Traum, und selbst zum Mars verschlägt's mich.</de>
+				<en>I have to write for this tabloid, yet I want to win the Pulitzer Prize! But I'm on the trail of aliens, really! They're trying to dumb down humanity, I'm telling you! I'll meet the woman from my dream, and I'll even be going to Mars.</en>
+			</description>
+
+			<variables>
+				<myname>
+					<de>Hi, |Gestatten, |</de>
+					<en> my Name| here|</en>
+				</myname>
+				<roving>
+					<de>rasender|rastloser|reisender</de>
+					<en>roving|restless|roaming</en>
+				</roving>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" />
+				<job index="2" function="2" required="1" gender="2" role_guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" />
+				<job index="3" function="2" required="1" gender="2" role_guid="833302a7-87ee-4afc-95db-f0fde5e7866a" />
+				<job index="4" function="2" required="1" gender="2" role_guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" />
+				<job index="5" function="2" required="1" gender="1" role_guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" />
+				<job index="6" function="2" required="1" gender="1" />
+				<job index="7" function="2" required="1" gender="2" />
+				<job index="8" function="32" required="1" gender="1" />
+				<job index="9" function="32" required="1" gender="2" />
+			</jobs>
+
+			<data flags_optional="40" />
+			<genres maingenre="16" subgenres="5,14" />
+			<blocks value="3" />
+			<price min="31000" max="48000" />
+			<potential min="55" max="92" />
+			<outcome min="67" max="89" />
+			<review min="77" max="92" />
+			<speed min="41" max="73" />
+			<studio_size value="3" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="40d169cd-eeb2-400e-b839-f69690893bc1" creator="9551" comment="Quelle: Das Kino in meinem Kopf, das enstand, als ich zum ersten Mal den Titel von TheRob-Script-Com-EngeloderBengel, bei mir 'Aribert außer Rand und Band' gelesen hatte. :)">
+			<title>
+				<de>%title%</de>
+				<en>%title%</en>
+			</title>
+			<description>
+				<de>%name% ist behütet in einer fürsorglichen Familie aufgewachsen und lebt Mitte 20 in einer Studenten-WG mit braven Kommilitonen. Doch er spürt, etwas ist in ihm. Was ist das nur? Ist er vielleicht nicht ganz monogam? Sein Umfeld beginnt zu verzweifeln...</de>
+				<en>%name% grew up safely in a caring family and in his mid-20s lives in a flat-share with well-behaved fellow students. But he senses something is inside him. What is it? Is he perhaps not quite monogamous? Everyone close to him begins to despair...</en>
+			</description>
+			<variables>
+				<title>
+					<de>%name% vogelwild|%name% ganz aus dem Häuschen|%name% voll aufgekratzt|Für %name% gibt es kein Morgen mehr|%name% nicht mehr zu bändigen|%name% ganz ganz wild|%name% völlig ungezügelt|%name% wird ganz wild</de>
+					<en>%name% all boisterous|%name% all over the place|%name% totally psyched|For %name% there is no more tomorrow|%name% no longer to be tamed|%name% going so very wild|%name% totally unbridled|%name% gets all wild</en>
+				</title>
+				<name>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%</de>
+				</name>
+			</variables>
+			
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="1" />
+			</jobs>
+			<genres maingenre="5" subgenres="9,7" />
+			<blocks min="2" max="3" />
+			<price min="60000" max="111500" />
+			<potential min="65" max="100" />
+			<outcome min="65" max="100" />
+			<review min="65" max="100" />
+			<speed min="65" max="100" />
+			<studio_size min="2" max="3" />
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="ea871c60-e653-4dac-82bb-9e2e78393385" creator="9551" comment="Was available as a TV series in MadTV - https://en.wikipedia.org/wiki/Xanth">
+			<title>
+				<de>Die %saga% vom %magic% Xynthia (Staffel 1)</de>
+				<en>The %saga% of %magic% Xynthia (Season 1)</en>
+			</title>
+			<description>
+				<de>Xynthia ist ein magisches Land, das von Menschen und Fabelwesen, alle mit Zauberfähigkeiten, bewohnt wird. Die Magie ist nach bestimmten Regeln verteilt. Die Fantasy-Roman-Reihe wurde noch nicht verfilmt, hier ist deine Chance und das Drehbuch.</de>
+				<en>Xynthia is a magical land inhabited by humans and mythical creatures, all with magic abilities. The magic is distributed according to certain rules. The fantasy novel series has not yet been adapted to films, here's your chance and the script.</en>
+			</description>
+
+			<variables>
+				<saga>
+					<de>Saga|Legende|Erzählungen|Geschichten</de>
+					<en>Saga|Legend|Tales|Lore</en>
+				</saga>
+				<magic>
+					<de>Magischen Land|Mystischen Land|zauberhaften|verzauberten</de>
+					<en>Magic|Mystic|Spellbound|Enchanted</en>
+				</magic>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="91ce0ca8-c448-4c4d-b162-078ba29ad1d4">
+					<title>
+						<de>Der Zauberspruch der Mimikry</de>
+						<en>Mimikry Magic</en>
+					</title>
+					<description>
+						<de>Dink wird in die dröge (unsere) profane Welt verbannt, weil er in Xynthia versehentlich das Gesetz gebrochen hat, da er kein magisches Talent hat. Er findet einige talentierte Gefährten, die ihm helfen, besonders das wandlungsfähige Mädchen Mimikry.</de>
+						<en>Dink is exiled to the dreary (our) Mundane World because he has inadvertently broken the law in Xynthia by not having a magical talent. He finds some talented companions to help him, especially the chameleonic girl Mimikry.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="c4ba18ba-082d-4488-8c4d-4de361c1efb8">
+					<title>
+						<de>Die Quelle der Magie</de>
+						<en>The Spring of Magic</en>
+					</title>
+					<description>
+						<de>König Trint hat Dink, der nun verheiratet mit Mimikry ist, zum offiziellen Forscher von Xynthia ernannt, der nun die Aufgabe hat, das Geheimnis der Magie des Landes zu ergründen und herauszufinden, woher sie kommt.</de>
+						<en>King Trint has appointed Dink, who is now married to Mimikry, the Official Researcher of Xynthia, who is now tasked to discover the secret behind the magic of the land and where it comes from.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="8e98489a-ccb1-4759-9c43-c91cd81acd2d">
+					<title>
+						<de>Das magische Schloss</de>
+						<en>Castle Zrougna</en>
+					</title>
+					<description>
+						<de>Dar, der nun 12-jährige Sohn von Dink, kann den Thron erben. Doch sein Selbstvertrauen ist gering, er wird von seinen Altersgenossen und gar von Prinzessin Isolde drangsaliert, weil seine ihm eigenen magischen Fähigkeiten ein wenig unkonventionell sind.</de>
+						<en>Dar, the now 12 year old son of Dink, can inherit the throne. However, his confidence is low, he is bullied by his agemates and even Princess Isolde because his particular magical abilities are a bit unconvential.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="5b1b2a90-0d09-47d3-be9f-49c8fd06b319">
+					<title>
+						<de>Zentaurenschneise</de>
+						<en>Centaur Glade</en>
+					</title>
+					<description>
+						<de>Dar ist vorübergehend König, weil Trint auf einer Mission in der profanen Welt ist. Als er nicht zurückzukehren scheint, begibt er sich auf eine Reise, um Hilfe zu holen, und trifft dabei auf Arturo den Zentauren.</de>
+						<en>Dar is temporarily king because Trint is on a mission in the Mundane World. When he won't seem to return, he embarks on a journey to get some help and meets Arturo the Centaur.</en>
+					</description>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" />
+				<job index="2" function="2" required="1" gender="2" role_guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" />
+				<job index="3" function="2" required="1" gender="1" role_guid="d2168e7c-3c95-4778-b406-cb305633946a" />
+				<job index="4" function="2" required="1" gender="1" role_guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" />
+				<job index="5" function="2" required="1" gender="2" role_guid="53104872-6c35-43df-a8b6-a3863db9cf9b" />
+				<job index="6" function="2" required="1" gender="1" role_guid="8a54557b-ded8-4427-bb60-7796c1f84317" />
+				<job index="7" function="32" required="1" gender="2" />
+				<job index="8" function="32" required="1" gender="1" />
+			</jobs>
+
+			<genres maingenre="10" subgenres="1" />
+			<episodes min="4" max="4" />
+			<blocks value="2" />
+			<price min="70000" max="110000" />
+			<potential min="30" max="70" />
+			<outcome min="40" max="80" />
+			<review min="30" max="60" />
+			<speed min="30" max="70" />
+			<studio_size value="3" />
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="e10c6a0a-fde6-4f73-8bb4-30a6d65cd744" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/The_Secret_of_Monkey_Island">
+			<title>
+				<de>Das %donkey%%bay%-%mystery%</de>
+				<en>The %mystery% of %donkey% %bay%</en>
+			</title>
+			<description>
+				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund Raymond Plankwood strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat LeCruck. Und dann ist da noch die Liebe.</de>
+				<en>Deep in the Caribbean few 'undred yearsies ago. Youngster Raymond Plankwood gets stranded on a pirate island. But that be jus' fine, always wanted t' be a pirate anyway. Howe'er, area be 'aunted by ghost pirate LeCruck. An' then thar also be love.</en>
+			</description>
+
+			<variables>
+				<mystery>
+					<de>Mysterium|Rätsel|Geheimnis</de>
+					<en>Mystery|Riddle|Enigma</en>
+				</mystery>
+				<donkey>
+					<de>Esels|Lemuren|Schimpansen|Pavianen</de>
+					<en>Donkey|Lemure|Chimpanzee|Baboon</en>
+				</donkey>
+				<bay>
+					<de>bucht|insel|eiland</de>
+					<en>Bay|Island|Isle</en>
+				</bay>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="b33a635e-d381-4349-9a41-7d2277c5d6da">
+					<title>
+						<de>Hûrlýë Island</de>
+						<en>Hûrlýë Island</en>
+					</title>
+					<description>
+						<de>Raymond ist erstmal auf Hûrlýë Island gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen LeCruck vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
+						<en>Raymond is stranded on Hûrlýë Island for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of LeCruck, actually seasoned men, and other bizarre characters.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="db9757c0-a155-4c1d-9b06-1035d8c63444">
+					<title>
+						<de>Die drei Prüfungen</de>
+						<en>The Three Trials</en>
+					</title>
+					<description>
+						<de>Die lokale Gouverneurin Evelyn scheint schon eine gute Partie zu sein, wie Raymond von Plakaten und Gerede entnehmen kann. Schließlich erfährt Raymond, wie das mit der Piratenaufnahmeprüfung so läuft.</de>
+						<en>The local governor Evelyn appears to be quite a catch, as Raymond can tell from posters and gossip. Finally, he learns how this pirate admission thing goes about.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="ef230bd2-7d96-43ec-bb0d-01e84787243c">
+					<title>
+						<de>Die kämpfst wie eine Kuh</de>
+						<en>You fight like a Cow</en>
+					</title>
+					<description>
+						<de>Als erste Prüfung muss Raymond gegen den Schwertmeister der Insel antreten. Dazu gibt viele Hindernisse zu überwinden, vor allem sind erstmal erbitterte Wortgefechte zu überstehen.</de>
+						<en>As a first test Raymond has to compete against the sword master of the island. There are many obstacles to overcome, especially fierce battles of words.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="1e345224-e090-4a83-9303-55150550d76d">
+					<title>
+						<de>Diebelei</de>
+						<en>Theft of Hearts</en>
+					</title>
+					<description>
+						<de>Der Schwertmeisterin wurde Paroli geboten, jetzt muss als zweite Prüfung ein wertvolles Artefakt aus dem Haus der Gouverneurin gestohlen werden. Dort wird er freilich von Evelyn ertappt. Amors Pfeile treffen ihn. Evelyn ist gar nicht mal abgeneigt...</de>
+						<en>The sword master? Raymond stood up to her. Now a valuable artifact must be stolen from the governor's house as the second trial. There, of course, he is caught by Evelyn. Cupid's arrows hit him. Evelyn isn't even averse...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="6ee0bbaf-6dd4-4360-857e-6d4b492c3463">
+					<title>
+						<de>Schatzsuche</de>
+						<en>Treasure Hunt</en>
+					</title>
+					<description>
+						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt Raymond, dass LeCruck Evelyn auch immer liebte und für sie das %donkey%%bay%-%mystery% lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
+						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, Raymond learns that LeCruck always loved Evelyn, too, and wanted to uncover the the %mystery% of %donkey% %bay% for her, but became a ghost pirate there instead.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="ce069d69-7735-4270-814a-eb5f20c895dd">
+					<title>
+						<de>Hinter dir, ein dreiköpfiger Affe!</de>
+						<en>Behind you, a three-headed monkey!</en>
+					</title>
+					<description>
+						<de>Jetzt kann sich Raymond ein Pirat schimpfen, aber oh Schreck! LeCruck hat mit seinem Geisterschiff Evelyn entführt! %donkey%%bay%, nicht nur eine Sage! Raymond muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
+						<en>Now Raymond can call himself a pirate, but oh horrors! LeCruck has kidnapped Evelyn with his ghost ship! %donkey% %bay%, not just a legend! Raymond must round up a crew and sail to this island.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="0f626bb5-c7fb-4c51-aea7-4fe00f012cad">
+					<title>
+						<de>Die Reise</de>
+						<en>The Journey</en>
+					</title>
+					<description>
+						<de>Der Gebrauchtschiffhändler war... schwierig, eine Crew zu finden ebenso, und die erweist sich nun auch als nicht besonders... motiviert.</de>
+						<en>The previously-owned-ships dealer was... tough. And so was finding a crew. And they're now proving to be... not very motivated.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="50d96da4-78ea-497c-8802-bb586d01682b">
+					<title>
+						<de>%donkey%%bay%</de>
+						<en>%donkey% %bay%</en>
+					</title>
+					<description>
+						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber Raymond trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
+						<en>Getting there was grueling enough, and legend has it that no one ever returned alive. But Raymond encounters another human being on the beach after all. The shipwrecked and slightly crazed Hendrik has been stranded there for years.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="e7988271-a81f-4dc1-8eed-46fd7d88089d">
+					<title>
+						<de>Die Kannibalen</de>
+						<en>The Cannibals</en>
+					</title>
+					<description>
+						<de>Mit Kannibalen sollte man nicht spaßen. Aber es stellt sich heraus, dass man mit ihnen verhandeln kann, besonders da sie sich mit Hendrik schon seit langem irgendwie arrangieren müssen...</de>
+						<en>Cannibals are not to be messed with. But it turns out that you can negotiate with them, especially since they've had to come to some sorts of arrangements with Hendrik somehow for a long time already...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="b93968b6-f863-44a5-b7c4-42a6f434f0a5">
+					<title>
+						<de>LeCruck's Schiff</de>
+						<en>LeCruck's ship</en>
+					</title>
+					<description>
+						<de>Schließlich gelangt Raymond in die Höhlen unter der Insel, wo LeCruck's Geisterschiff auf Anker liegt. Er klaut Voodoo-Zutaten von dort, und die Kannibalen brauen für ihn dann ein Geistervernichtungs-Elixier.</de>
+						<en>Finally, Raymond gets to the caves under the island, where LeCruck's ghost ship is at anchor. He steals voodoo ingredients from there, and the cannibals then brew a ghost-destroying elixir for him.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="10" product="2" licence_type="2" guid="c5c297fc-ecbb-4595-a342-40fc8f1d3b27">
+					<title>
+						<de>Zurück nach Hûrlýë Island</de>
+						<en>Back to Hûrlýë Island</en>
+					</title>
+					<description>
+						<de>Doch LeCruck ist inzwischen wieder zurückgesegelt, um Evelyn zu heiraten. Raymond muss die Kirche auf Hûrlýë Island stürmen, um das zu verhindern!</de>
+						<en>But LeCruck has since sailed back to marry Evelyn. Raymond must gatecrash the church on Hûrlýë Island to prevent this!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="11" product="2" licence_type="2" guid="a38b5c1a-ee98-49f8-83d0-06a3d27a5eaf">
+					<title>
+						<de>Das Elixier</de>
+						<en>The Elixir</en>
+					</title>
+					<description>
+						<de>Evelyn kann sich schon ganz gut selbst helfen. Und Raymond verliert auch noch das Elixier bei seiner tollpatschigen Rettungsaktion. Wie kann er nun im großen Showdown LeCruck doch noch besiegen?</de>
+						<en>Evelyn can already help herself quite well. And Raymond also loses the elixir during his clumsy rescue attempt. How can he still defeat LeCruck in the big showdown?</en>
+					</description>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" />
+				<job index="2" function="2" required="1" gender="2" role_guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" />
+				<job index="3" function="2" required="1" gender="1" role_guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="1" />
+				<job index="6" function="2" required="1" gender="2" />
+				<job index="7" function="2" required="1" gender="1" />
+			</jobs>
+
+			<genres maingenre="1" subgenres="5,10" />
+			<episodes min="12" max="12" />
+			<blocks value="1" />
+			<price min="80000" max="130000" />
+			<potential min="59" max="95" />
+			<outcome min="71" max="95" />
+			<review min="79" max="95" />
+			<speed min="54" max="89" />
+			<studio_size value="3" />
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="61661455-9607-44fd-a090-c1caa8ee3205" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Dead_Winter_Dead">
+			<title>
+				<de>%dead% %winter% in %sarajevo%</de>
+				<en>%dead% %winter% in %sarajevo%</en>
+			</title>
+			<description>
+				<de>Kriegsdrama über den jungen, enthusiastischen und leicht beeindruckbaren Stevan auf der einen, und die warmherzige, aber resolute Kara auf der anderen Seite der Front in Jugoslawien, und einem Teufels-Cellisten dazwischen.</de>
+				<en>War drama about the young, enthusiastic and impressionable Stevan on one side, and the warm-hearted but resolute Kara on the other side of the front in Yugoslavia, and a devil's cellist in between.</en>
+			</description>
+
+			<variables>
+				<dead>
+					<de>Toter|Karger|Kalter</de>
+					<en>Dead|Desolate|Cold</en>
+				</dead>
+				<winter>
+					<de>Winter|Schnee|Schneeregen|Eisregen|Frost</de>
+					<en>Winter|Snow|Rain and Snow|Freezing Rain|Frost</en>
+				</winter>
+				<sarajevo>
+					<de>Sarajevo|Bosnien|Serbien|Jugoslawien</de>
+					<en>Sarajevo|Bosnia|Serbia|Yugoslavia</en>
+				</sarajevo>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="971877f7-c985-45a0-84ad-9aaba6dd72a2">
+					<title>
+						<de>Sarajevo</de>
+						<en>Sarajevo</en>
+					</title>
+					<description>
+						<de>Eröffnungssequenz: Ein steinener Wasserspeier-Gnom hoch oben auf einer alten gotischen Kirche im noch friedlichen Sarajevo. Seit Jahrhunderten versucht er, die Menschen zu verstehen. Was ist Lachen, was sind Tränen?</de>
+						<en>Opening sequence: A stone gargoyle high atop an old gothic church in still peaceful Sarajevo. For centuries he has been trying to understand humans. What is laughter, what are tears?</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="27d2d5b0-f64f-4e04-9650-a32d16528535">
+					<title>
+						<de>Die Zeit ist Jetzt</de>
+						<en>The Time is Now</en>
+					</title>
+					<description>
+						<de>1990 scheint es die beste Zeit zu sein nach dem Fall der Berliner Mauer, und Jugoslawien ist zum ersten Mal seit dem Römischen Reich eine freie Nation. Und dennoch beginnen Kleingeister, Hass zwischen den Menschen zu säen...</de>
+						<en>In 1990 it seems to be the best time after the fall of the Berlin Wall, and Yugoslavia is a free nation for the first time since the Roman Empire. And yet, small minds start sowing hatred between the people...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="3787d6c3-04cc-41c1-a9b8-c11c09a40c1e">
+					<title>
+						<de>Also Bin Ich</de>
+						<en>Therefore I am</en>
+					</title>
+					<description>
+						<de>Stevan kann sein Glück nicht fassen, in einem solchen Moment lebendig und jung zu sein. Kara führt ein gutes Leben in einer liebevollen Familie und hat viele Pläne für eine Zukunft voller Möglichkeiten. Doch langsam ändert sich die Lage...</de>
+						<en>Stevan cannot believe his good fortune to be alive and young at such a moment. Kara has a good life in a loving family and many plans for a future full of possibilities. But slowly the situation is changing...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="a04d98a6-9c12-4d9a-a3af-96c8602ab882">
+					<title>
+						<de>Sternenglanz</de>
+						<en>Starblaze</en>
+					</title>
+					<description>
+						<de>Stevan schließt sich der serbischen Miliz an und findet sich in den Hügeln von Sarajevo wieder, wo er nachts Mörsergranaten abfeuert. In der Stadt ist Kara beim Waffenkauf und schießt dann mit Kameraden in den Hügeln rund um die Stadt.</de>
+						<en>Stevan joins the Serb militia and finds himself in the hills of Sarajevo firing mortar shells at night. In the city, Kara is buying weapons and then shooting with comrades in the hills around the city.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="2af6aed6-cff6-442c-bc62-cb6081832150">
+					<title>
+						<de>So wollten wir das nicht</de>
+						<en>This is not how we wanted</en>
+					</title>
+					<description>
+						<de>Die Jahre gehen vorüber. 1994. Ein alter Orchestermusiker, der seine Heimat vor vielen Jahren verlassen hatte und um die Welt tourte, ist nun zurück und findet nur Ruinen. Das haben wir nicht gemeint, als wir für Veränderung gebetet haben.</de>
+						<en>The years go by. 1994. An old orchestra musician who had left his homeland many years ago and toured the world is now back and finds only ruins. This is not what we meant when we prayed for change.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="f93e0e8b-15fa-4a3e-8aa0-70e7e3582d48">
+					<title>
+						<de>Mozart-Manie</de>
+						<en>Mozart Mania</en>
+					</title>
+					<description>
+						<de>Sonnenuntergang. Der Artilleriebeschuss beginnt. Der Cellist beendet sein Gebet. Er begibt sich nicht in die Schutzräume. Er klettert auf einen einst prachtvollen, zerstörten Brunnen, holt sein Cello heraus. Spielt Mozart, während um ihn herum die Granaten explodieren.</de>
+						<en>Sunset. The artillery shelling begins. The cellist finishes his prayer. He does not go to the shelters. He climbs on a once magnificent, destroyed fountain, takes out his cello. Plays Mozart while the shells explode around him.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="6c91098b-5b46-460c-945a-1f3c695396a3">
+					<title>
+						<de>Andenken</de>
+						<en>Remembrance</en>
+					</title>
+					<description>
+						<de>Von diesem Abend an sollte der Cellist sein Ritual jeden Abend wiederholen. Und jeden Abend hören Stevan und Kara aus der Distanz zu und denken über ihr Leben nach, während sie zwischen den Explosionen durch das Niemandsland streifen.</de>
+						<en>From that night on, the cellist would repeat his ritual every night. And every night Stevan and Kara listen from a distance, thinking about their lives as they roam the no man's land between explosions.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="98f1d16e-5a8e-4838-8f3b-a51213062008">
+					<title>
+						<de>%dead% %winter%</de>
+						<en>%dead% %winter%</en>
+					</title>
+					<description>
+						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. Stevan ist auf Patrouille und macht eine grausame Entdeckung...</de>
+						<en>Though the winter does its best to cover the landscape with a blanket of temporary innocence, the war only escalates in violence and brutality. Stevan is on patrol and makes a horrifying discovery...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="1bbdafb5-6df5-4939-bf3c-1cb7ce4cee11">
+					<title>
+						<de>The Child</de>
+						<en>Das Kind</en>
+					</title>
+					<description>
+						<de>Es ist eine Sache, Granaten in einen Mörser zu stecken, und eine ganz andere, zu sehen, wo sie landen. Stevan gehen die Gesichter der Kinder nicht aus dem Kopf. Er fasst einen Entschluss...</de>
+						<en>It's one thing to put grenades in a mortar, and quite another to see where they land. Stevan can't get the children's faces out of his head. He makes a decision...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="f56ac8f3-39c3-4f8c-8335-2ccca588973e">
+					<title>
+						<de>Horche wie die Glocken</de>
+						<en>Carol of the Bells</en>
+					</title>
+					<description>
+						<de>Stevan und Kara sitzen in ihren jeweiligen Bunkern und lauschen den Weihnachtsliedern des Cellisten, die sich mit den Geräuschen des Krieges vermischen. Es hat gerade aufgehört zu schneien, als die Musik plötzlich abrupt aufhört...</de>
+						<en>Stevan and Kara are sitting in their respective bunkers listening to the cellist's Christmas carols mixed with the sounds of war. It has just stopped snowing, when the music suddenly stops abruptly...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="10" product="2" licence_type="2" guid="4da79f0c-f071-4551-becd-e641cea6be0d">
+					<title>
+						<de>Stille Nacht</de>
+						<en>God Rest Ye</en>
+					</title>
+					<description>
+						<de>Das Schlimmste befürchtend machen sich Stevan und Kara auf den Weg durch das Niemandsland. Als sie dort aufeinandertreffen, erkennen sie instinktiv, dass sie beide aus demselben Grund dort sind, und fangen nicht an zu kämpfen.</de>
+						<en>Fearing the worst, Stevan and Kara make their way through No Man's Land. When they meet there, they instinctively realize that they are both there for the same reason and don't start fighting.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="11" product="2" licence_type="2" guid="9a2dfccb-8244-408c-955e-3dc7b80e63d0">
+					<title>
+						<de>Nicht was du glaubst</de>
+						<en>Not what you think</en>
+					</title>
+					<description>
+						<de>Der Cellist liegt blutüberströmt tot im Schnee. Vom klaren Himmel fällt ein Tropfen auf Stevans Gesicht, doch da oben ist nur der Steingnom der Kirche. Stevan versichert Kara, er sei nicht was sie glaube. Die beiden verlassen gemeinsam die Nacht.</de>
+						<en>The cellist lies dead in the snow, covered in blood. From the clear sky a drop falls on Stevan's face, but up there is only the stone goblin of the church. Stevan assures Kara that he is not what she thinks he is. The two leave the night together.</en>
+					</description>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" />
+				<job index="2" function="2" required="1" gender="2" role_guid="a42f6980-1685-422c-8796-8b502b9b41d9" />
+				<job index="3" function="2" required="1" gender="1" role_guid="d783dea1-1f41-496f-a239-12ac44c6fe60" />
+				<job index="4" function="2" required="1" gender="1" />
+				<job index="5" function="2" required="1" gender="2" />
+				<job index="6" function="32" required="1" gender="1" />
+				<job index="7" function="32" required="1" gender="2" />
+			</jobs>
+
+			<availability year_range_from="1995" year_range_to="-1" />
+			<genres maingenre="7" subgenres="2" />
+			<episodes min="12" max="12" />
+			<blocks value="1" />
+			<price min="57000" max="96000" />
+			<potential min="40" max="90" />
+			<outcome min="50" max="90" />
+			<review min="40" max="90" />
+			<speed min="20" max="80" />
+			<studio_size value="3" />
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Commander_Keen">
+			<title>
+				<de>%title%</de>
+				<en>%title%</en>
+			</title>
+			<description>
+				<de>Cartoon-Reihe über den 9-jährigen Wunderknaben Bobby Blaze. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu %captain% Ween und macht sich auf...</de>
+				<en>Cartoon series about the 9-year-old boy genius Bobby Blaze. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes %captain% Ween and sets out...</en>
+			</description>
+
+			<variables>
+				<title>
+					<de>Die %space%%adventures% des %captain% Ween|Die %galactic% %adventures-c% des %captain% Ween</de>
+					<en>The %space% %adventures% of %captain% Ween|The %galactic% %adventures-c% of %captain% Ween</en>
+				</title>
+				<space>
+					<de>Weltraum|Weltall|Sternen|Galaxis</de>
+					<en>Space|Out-in-Space|Stellar|Galaxy</en>
+				</space>
+				<adventures>
+					<de>abenteuer|missionen|erkundungen</de>
+					<en>Adventures|Missions|Quests</en>
+				</adventures>
+				<galactic>
+					<de>Galaktischen|Kosmischen|Außerirdischen|Überirdischen</de>
+					<en>Galactic|Cosmic|Extraterrestrial|Celestial</en>
+				</galactic>
+				<adventures-c>
+					<de>Abenteuer|Missionen|Erkundungen</de>
+					<en>Adventures|Missions|Quests</en>
+				</adventures-c>
+				<captain>
+					<de>Captain|Colonel|Commander</de>
+					<en>Captain|Colonel|Commander</en>
+				</captain>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="e003b82d-ee68-4ed0-9207-ea45903da38a">
+					<title>
+						<de>Gestrandet auf dem Mars</de>
+						<en>Stranded on Mars</en>
+					</title>
+					<description>
+						<de>Eines Abends sind Bobbys Eltern außer Haus. Das ist die Gelegenheit. Er steuert sein erstes Ziel an: den Mars. Während er den Planeten erkundet, stehlen die Vornicons wichtige Komponenten seines Gefährts...</de>
+						<en>One night Bobby's parents are out of the house. This is the opportunity. He heads for his first destination: Mars. While he explores the planet, the Vornicons steal important components of his spacecraft...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="5b733f65-8a43-46b9-b009-ebb300c9ef2d">
+					<title>
+						<de>Invasion der Vornicons</de>
+						<en>Invasion of the Vornicons</en>
+					</title>
+					<description>
+						<de>Ween schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen Xorp, kann er jedoch nicht verstecken. Die Vornicons haben inzwischen ein Mutterschiff im Erdorbit...</de>
+						<en>Ween makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed Xorp. The Vornicons, meanwhile, have a mothership in Earth orbit...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="e1360097-a12f-4cbf-81a8-a7299d9ee789">
+					<title>
+						<de>Die Erde fliegt in die Luft</de>
+						<en>The Earth blows up</en>
+					</title>
+					<description>
+						<de>Das Vornicon-Mutterschiff hat seine Strahlenkanonen auf mehrere Wahrzeichen auf der Erde gerichtet. Kann Ween in das Schiff eindringen, die Kanonen finden und vernichten?</de>
+						<en>The Vornicon mothership has aimed its ray guns at several landmarks on Earth. Can Ween penetrate the ship, find the cannons and destroy them?</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="c028f88d-bae8-474f-9654-5e3ff79b05a8">
+					<title>
+						<de>Ween muss sterben</de>
+						<en>Ween must die</en>
+					</title>
+					<description>
+						<de>Es stellt sich heraus, die Vornicons werden von einem Großen Gehirn ferngesteuert und kontrolliert. Ween macht sich auf auf dessen Heimatplaneten...</de>
+						<en>It turns out the Vornicons are remotely controlled by a Great Brain. Ween sets out for its home planet...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="daba5e8b-11ec-4ae0-aae8-10a110bb4784">
+					<title>
+						<de>Das geheimnisvolle Orakel</de>
+						<en>The mysterious oracle</en>
+					</title>
+					<description>
+						<de>Das Große Gehirn ist besiegt, doch, wie Ween mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die Shiraki wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten Gnostica helfen...</de>
+						<en>The Great Brain is defeated, but, as Ween discovers by means of his self-built faster-than-light radio: the Shiraki want to destroy the whole galaxy. Maybe the mysterious oracle on the planet Gnostica can help...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="be85e20a-3dbc-421a-93d6-5bdfad070ede">
+					<title>
+						<de>Die Vernichtungsmaschine</de>
+						<en>The annihilation machine</en>
+					</title>
+					<description>
+						<de>Auf Gnostica muss Ween feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den Shiraki entführt wurde. Ween muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
+						<en>On Gnostica, Ween finds that its Council of Immortal Sages has already been kidnapped by the Shiraki. Ween must free the sages in order to be able to activate the oracle...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="45e0e001-645a-449e-a861-abb17b3192b7">
+					<title>
+						<de>Lebwohl Galaxie</de>
+						<en>Farewell galaxy</en>
+					</title>
+					<description>
+						<de>Vom Orakel erfuhr Ween, die Shiraki sind Schattenwesen von der dunklen Seite der Galaxie und haben auf Codrak IV eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. Ween muss sie stoppen...</de>
+						<en>Ween learned from the oracle that the Shiraki are shadow beings from the dark side of the galaxy and have an extermination machine on Codrak IV. They want to destroy the galaxy and rebuild it according to their ideas. Ween must stop them...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="754c2dec-f377-4b4b-a24a-4b4b3a93b35b">
+					<title>
+						<de>Aliens haben mein Kindermädchen gefressen</de>
+						<en>Aliens ate my nanny</en>
+					</title>
+					<description>
+						<de>Wieder steckte Bobbys böswilliger Erzfeind aus der Schule, der einen IQ-Punkt mehr hat, hinter allem und kontrollierte all die Alien-Rassen. Und dieser macht auch einfach nicht halt und will diesmal gleich das ganze Universum zerstören. Der große Showdown beginnt...</de>
+						<en>Again, Bobby's malicious nemesis from school, who has one IQ point more, was behind everything and controlled all the alien races. And he just doesn't stop and wants to destroy the whole universe this time. The big showdown begins...</en>
+					</description>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="437539e5-4c6b-4207-981a-051a82021745" />
+				<job index="2" function="2" required="1" gender="0" role_guid="ba05561a-0266-4cfe-b020-353781fd881c" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="32" required="1" gender="1" />
+				<job index="6" function="32" required="1" gender="2" />
+			</jobs>
+
+			<genres maingenre="3" subgenres="16,1" />
+			<episodes min="8" max="8" />
+			<blocks value="1" />
+			<price min="9000" max="14000" />
+			<potential min="50" max="70" />
+			<outcome min="50" max="70" />
+			<review min="60" max="70" />
+			<speed min="50" max="70" />
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Leisure_Suit_Larry">
+			<title>
+				<de>Leather Jacket Leo, %ladykiller%</de>
+				<en>Leather Jacket Leo, %ladykiller%</en>
+			</title>
+			<description>
+				<de>Leo ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
+				<en>Leo is untouched and innocent until his mid-30s. But now he wants to get it done and seeks out a flophouse. After some difficulties... Finally! Slowly he gets the hang of it, and then starts looking for the woman of his life.</en>
+			</description>
+
+			<variables>
+				<ladykiller>
+					<de>Ladykiller|Schwerenöter vom Dienst|Reizender Charmeur|Bezaubernder Schmeichler</de>
+					<en>Ladykiller|Philanderer at your Service|Endearing Charmer|Adorable Sweet-Talker</en>
+				</ladykiller>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="8f5a2c84-89b4-41fe-9e27-3898382f612b">
+					<title>
+						<de>Leather Jacket Leo from the Land of the Lone Lobsters</de>
+						<en>Leather Jacket Leo from the Land of the Lone Lobsters</en>
+					</title>
+					<description>
+						<de>Es hagelt nur so an Abfuhren. Schließlich in einem schmutzigen Etablissement ... ein nicht so berauschendes Erlebnis, und er fängt sich auch noch was ein. Eine Dame am Pool scheint ihn endlich wirklich ein bisschen zu mögen...</de>
+						<en>Of course one rejection after another. Finally in a dirty establishment ... a not so exhilarating experience, and he also catches something. A lady at the pool at last seems to really like him a bit....</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="e1a1fbeb-fd0d-4ebd-ace4-35d57276d7e8">
+					<title>
+						<de>Suche nach Sex in sechstausend sündigen Spas</de>
+						<en>Searching for Sex in Six-Thousand Sinful Spas</en>
+					</title>
+					<description>
+						<de>Nach der nur kurzweiligen Affaire gewinnt Leo immerhin in der Lotterie und macht sich auf in die Südsee, und gerät nicht nur in erotische Abenteuer, sondern macht auch Bekanntschaft mit den Geheimdiensten...</de>
+						<en>After the only short-lived affair, Leo wins the lottery at least, and sets off to the South Seas. He not only gets into erotic adventures, but also gets involved with the secret services...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="4985f4d8-734b-4991-a7af-eee33546e38f">
+					<title>
+						<de>Fervent Faviola Fostering Vibrating Vernacular</de>
+						<en>Fervent Faviola Fostering Vibrating Vernacular</en>
+					</title>
+					<description>
+						<de>Leo hat 5 Jahre lang ein tolles Leben auf Hawaii und eine glückliche Ehe, doch plötzlich wird er verlassen, als sich seine Frau in eine andere Frau verliebt. Nach einigen Abenteuern findet er eine neue für's Leben, aber dann geht was schief...</de>
+						<en>Leo has a great life in Hawaii for 5 years and a happy marriage, but suddenly he is abandoned when his wife falls in love with another woman. After some adventures he finds someone new for life, but then something goes wrong...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="a7bbc175-7b5d-45c6-ad1a-9482ab041222">
+					<title>
+						<de>The Missing Floppa</de>
+						<en>The Missing Floppa</en>
+					</title>
+					<description>
+						<de>Dies ist eine etwas abgespacete Episode. Leo findet sich in einem Schwarzen Loch wieder. Nanu, was ist denn hier passiert? Obwohl... schwarzes Loch... höhö. Und was macht die Wildkatze hier.</de>
+						<en>This is a somewhat spaced out episode. Leo finds himself in a black hole. Well, what happened here? Although... black hole... heh. And what is the wildcat doing here.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="d7c7c96a-1bc3-4e1b-8875-d20ff1ddf632">
+					<title>
+						<de>Fervent Faviola als Undercover-Agentin</de>
+						<en>Fervent Faviola as an Undercover Agent</en>
+					</title>
+					<description>
+						<de>Nach dieser seltsamen Amnesie findet sich Leo in der Erwachsenenfilmindustrie wieder, für die er weltweit auf der Suche nach Models ist. Faviola ist inzwischen für's FBI unterwegs.</de>
+						<en>After this strange amnesia, Leo finds himself in the adult film industry, for which he is searching for models worldwide. Faviola, meanwhile, is on the road for the FBI.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="6ff0a3a1-6c6c-45e4-bfd3-f2729b6210d7">
+					<title>
+						<de>Get in Shape or Get Shamed</de>
+						<en>Get in Shape or Get Shamed</en>	
+					</title>
+					<description>
+						<de>Wieder schweren Herzens getrennt von Faviola, gewinnt Leo einen Aufenthalt in einem Resort, wo er aber als nichtzahlender Gast schäbig behandelt wird. Aber er versucht dennoch wieder auf allerlei Art und Weise, bei den Frauen zu landen. Vor allem geht's um Fitness...</de>
+						<en>Separated from Faviola again with a heavy heart, Leo wins a stay at a resort, where, however, he is treated shabbily as a non-paying guest. But he still tries again in all sorts of ways to land with the women. Most of all, it's about fitness...</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="4065b465-ca94-4d7f-b49a-ec020bcb4630">
+					<title>
+						<de>Sailing Love</de>
+						<en>Sailing Love</en>
+					</title>
+					<description>
+						<de>Diesmal auf einem Kreuzfahrtschiff mit prominenten Stars und Sternchen besetzt (oder deren Doppelgängern?) werden viele Wettbewerbe und Spielchen veranstaltet, die Leo gewinnen will.</de>
+						<en>This time on a cruise ship filled with prominent stars and starlets (or their doppelgängers?) there are many contests and games that Leo wants to win.</en>
+					</description>	
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="503f7801-dc8d-4f55-a0e9-c017592eba62">
+					<title>
+						<de>Cum hoc ergo cum laude</de>
+						<en>Cum hoc ergo cum laude</en>
+					</title>
+					<description>
+						<de>Ein Spinoff? Es geht diesmal um Leos Neffen, der auch Leo heißt, im College ist und bei einer Dating Show mitmacht. Onkel Leo gibt immerhin noch wertvolle Tips. Was ist mit Faviola? Ist noch offen, vielleicht in der nächsten Staffel...</de>
+						<en>A spinoff? This time it's about Leo's nephew, who is also named Leo, and who's in college, and participating in a dating show. Uncle Leo still gives valuable tips, at least. What about Faviola? It's still open, maybe in the next season...</en>
+					</description>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" role_guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" />
+				<job index="2" function="2" required="1" gender="2" role_guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="32" required="1" gender="1" />
+				<job index="6" function="32" required="1" gender="2" />
+			</jobs>
+
+			<data flags="64" flags_optional="56" />
+			<genres maingenre="8" subgenres="5,15" />
+			<episodes min="8" max="8" />
+			<blocks value="2" />
+			<price min="46000" max="96000" />
+			<potential min="50" max="70" />
+			<outcome min="50" max="70" />
+			<review min="30" max="50" />
+			<speed min="30" max="80" />
+			<studio_size value="2" />
+		</scripttemplate>
+	</scripttemplates>
+</tvtdb>
+
