@@ -164,6 +164,18 @@ Type TNewsAgency
 		Local bombRedirectedByPlayers:Int = triggerEvent.GetData().GetInt("roomSignMovedByPlayers")
 		Local bombLastRedirectedByPlayerID:Int = triggerEvent.GetData().GetInt("roomSignLastMoveByPlayerID")
 
+		'reset level on bomb explosion, also delay next Update so things
+		'do not happen one after another
+		Local na:TNewsAgency = GetInstance()
+		For Local terroristGroup:Int = EachIn [0,1]
+			If na.terroristAggressionLevel[terroristGroup] >= na.terroristAggressionLevelMax
+				'reset to level 0
+				na.terroristAggressionLevel[terroristGroup] = 0
+				'8 * normal random "interval"
+				na.terroristUpdateTime[terroristGroup] :+ 8 * TWorldTime.MINUTELENGTH * randRange(na.terroristUpdateTimeInterval[0], na.terroristUpdateTimeInterval[1])
+			EndIf
+		Next
+
 		Local room:TRoomBase = TRoomBase( triggerEvent.GetSender() )
 		If Not room
 			TLogger.Log("NewsAgency", "Failed to create news for bomb explosion: invalid room passed for roomGUID ~q"+roomGUID+"~q", LOG_ERROR)
@@ -408,15 +420,6 @@ Type TNewsAgency
 		'handle effects
 		OnChangeTerroristAggressionLevel(terroristGroup, oldLevel, level)
 
-
-		'reset level if limit reached, also delay next Update so things
-		'do not happen one after another
-		If terroristAggressionLevel[terroristGroup] >= terroristAggressionLevelMax
-			'reset to level 0
-			terroristAggressionLevel[terroristGroup] = 0
-			'8 * normal random "interval"
-			terroristUpdateTime[terroristGroup] :+ 8 * TWorldTime.MINUTELENGTH * randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
-		EndIf
 		Return True
 	End Method
 
@@ -428,6 +431,7 @@ Type TNewsAgency
 			Local level:Int = terroristAggressionLevel[terroristGroup]
 			Local fig:TFigureTerrorist = TFigureTerrorist(GetGameBase().terrorists[terroristGroup])
 			'figure is just delivering a bomb?
+			'print "  GetTerroristAggressionLevel "+level
 			If fig And fig.HasToDeliver() Then Return terroristAggressionLevelMax
 			Return level
 		Else
@@ -466,6 +470,7 @@ Type TNewsAgency
 
 		'send out terrorist
 		If aggressionLevel = terroristAggressionLevelMax
+			'print "   SENDING TERRORIST"
 			Local effect:TGameModifierBase = New TGameModifierBase
 
 			effect.GetData().Add("figure", GetGameBase().terrorists[terroristGroup])
