@@ -50,7 +50,7 @@
 			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
 
 			<!-- define refill mode when choosing new contracts -->
-			<!-- <DEV_ADAGENCY_REFILL_MODE value="2" /> -->
+			<!-- <DEV_ADAGENCY_REFILL_MODE value="10" /> -->
 
 
 

@@ -86,7 +86,7 @@ Type TGameRules {_exposeToLua}
 
 	'=== ADAGENCY ===
 	Field adagencySortContractsBy:string = "minaudience"
-	Field adagencyRefillMode:int = 1
+	Field adagencyRefillMode:int = 10
 
 	'=== NEWS STUDIO ===
 	Field newsStudioSortNewsBy:string = "age"
@@ -108,7 +108,7 @@ Type TGameRules {_exposeToLua}
 
 
 		adagencySortContractsBy = "minaudience"
-		adagencyRefillMode = 2 'new one
+		adagencyRefillMode = 10 'mixed mode
 
 		newsStudioSortNewsBy = "age"
 

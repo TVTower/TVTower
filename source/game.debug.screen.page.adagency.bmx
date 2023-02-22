@@ -23,7 +23,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 
 
 	Method Init:TDebugScreenPage_AdAgency()
-		Local texts:String[] = ["Refill Offers", "Replace Offers", "Change Mode"]
+		Local texts:String[] = ["Refill Offers", "Replace All Offers", "Replace Offers", "Change Mode"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
@@ -52,11 +52,16 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 			case 1
 				RoomHandler_AdAgency.GetInstance().ReFillBlocks(True, 1.0)
 			case 2
-				if RoomHandler_AdAgency.GetInstance()._setRefillMode = 2
-					RoomHandler_AdAgency.GetInstance().SetRefillMode(1)
+				RoomHandler_AdAgency.GetInstance().ReFillBlocks(True, GameRules.refillAdAgencyPercentage)
+			case 3
+				if RoomHandler_AdAgency.GetInstance()._setRefillMode = 10
+					RoomHandler_AdAgency.GetInstance().SetRefillMode(11)
+					GetInstance().UpdateAdAgencyModeButton()
+				elseif RoomHandler_AdAgency.GetInstance()._setRefillMode = 11
+					RoomHandler_AdAgency.GetInstance().SetRefillMode(12)
 					GetInstance().UpdateAdAgencyModeButton()
 				else
-					RoomHandler_AdAgency.GetInstance().SetRefillMode(2)
+					RoomHandler_AdAgency.GetInstance().SetRefillMode(10)
 					GetInstance().UpdateAdAgencyModeButton()
 				endif
 		End Select
@@ -80,10 +85,11 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 
 
 	Method UpdateAdAgencyModeButton()
-		Select RoomHandler_AdAgency.GetInstance()._setRefillMode
-			case 1	buttons[2].text = "Change Mode: " + RoomHandler_AdAgency.GetInstance()._setRefillMode + "->2"
-			case 2	buttons[2].text = "Change Mode: " + RoomHandler_AdAgency.GetInstance()._setRefillMode + "->1"
-			default	buttons[2].text = "Change Mode: " + RoomHandler_AdAgency.GetInstance()._setRefillMode + "->2"
+		Local cm:Int = RoomHandler_AdAgency.GetInstance()._setRefillMode
+		Select cm
+			case 10 buttons[3].text = "Change Mode "+cm+" -> conservative"
+			case 11 buttons[3].text = "Change Mode "+cm+" -> bold"
+			case 12 buttons[3].text = "Change Mode "+cm+" -> random"
 		End Select
 	End Method
 
