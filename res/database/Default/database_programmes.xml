@@ -386,11 +386,11 @@ A classic with [1|Full].</en>
 		</programme>
 		<programme id="22530967-81d9-4117-9f3d-086ae3ce959d" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0033022" creator="">
 			<title>
-				<de>[1|Last] &amp; [2|Last] - Auf hohem Meere / Hilfe, wir sind ertrunken</de>
+				<de>[1|Last] &amp; [2|Last] - Auf hohem Meere</de>
 				<en>[1|Last] &amp; [2|Last] - On the high seas</en>
 			</title>
 			<title_original>
-				<de>Abenteuer auf hoher See</de>
+				<de>Laurel und Hardy: Auf hoher See</de>
 				<en>Saps at Sea</en>
 			</title_original>
 			<description>
@@ -7613,10 +7613,8 @@ Tragic love story.</en>
 				<en>Faust</en>
 			</title_original>
 			<description>
-				<de>„Da steh ich nun, ich armer Tor! Und bin so klug als wie zuvor.“
-Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|Full]. Viel gerühmt und von Schulkindern gemieden.</de>
-				<en>"Now here I am, a fool for sure! No wiser than I was before."
-The legendary film version of the classic of German Literature starring [1|Full] and [2|Full]. Much praised and shunned by schoolchildren.</en>
+				<de>„Da steh ich nun, ich armer Tor! Und bin so klug als wie zuvor.“ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|Full]. Viel gerühmt und von Schulkindern gemieden.</de>
+				<en>"Now here I am, a fool for sure! No wiser than I was before." The legendary film version of the classic of German Literature starring [1|Full] and [2|Full]. Much praised and shunned by schoolchildren.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
@@ -11522,7 +11520,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 1  - 2011  -->
 
-		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" rt_id="0" creator="" created_by="DerFronck">>
+		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" creator="" created_by="DerFronck">
 			<title>
 				<de>Das Spiel um den Thron (Staffel 1)</de>
 				<en>A Throne in Ice and Fire (Season 1)</en>
@@ -11549,7 +11547,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="2011" distribution="2" maingenre="10" subgenre="1,7" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="90" speed="60" outcome="80" />
 			<children>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" rt_id="0" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="" created_by="DerFronck">
 					<title>
 						<de>Der Winter wird kommen</de>
 						<en>Something cold is coming</en>
@@ -11564,7 +11562,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="40" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1668746" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1668746" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Weg des Königs</de>
 						<en>The Way of the King</en>
@@ -11579,7 +11577,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="45" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829962" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829962" creator="5578" created_by="Ronny">
 					<title>
 						<de>Lord, es schneit</de>
 						<en>Lord, it's snowing</en>
@@ -11594,7 +11592,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829963" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829963" creator="5578" created_by="Ronny">
 					<title>
 						<de>Kümmel, Saufgelage und Erbrochenes</de>
 						<en>Gimps, Rascals, and Out-of-Order Things</en>
@@ -11609,7 +11607,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="72" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829964" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829964" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Storch und die Möwe</de>
 						<en>The Hound and the Iron</en>
@@ -11624,7 +11622,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="81" speed="54" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837862" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837862" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Krone aus Gold</de>
 						<en>The Crown of Gold</en>
@@ -11639,7 +11637,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="75" speed="56" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837863" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837863" creator="5578" created_by="Ronny">
 					<title>
 						<de>Friss oder werde gefressen</de>
 						<en>You Live or You Lose</en>
@@ -11654,7 +11652,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="81" speed="52" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837864" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837864" creator="5578" created_by="Ronny">
 					<title>
 						<de>Am Ende wird es spitz</de>
 						<en>The Punch Lines up at the End</en>
@@ -11669,7 +11667,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="55" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851398" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851398" creator="5578" created_by="Ronny">
 					<title>
 						<de>Bachelor</de>
 						<en>Bachelor</en>
@@ -11684,7 +11682,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="86" speed="68" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851397" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851397" creator="5578" created_by="Ronny">
 					<title>
 						<de>Flammen und Glut</de>
 						<en>Flames and Gore</en>
@@ -11704,7 +11702,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 2 - 2012-->
 
-		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" rt_id="0" creator="" created_by="DerFronck">>
+		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" creator="" created_by="DerFronck">
 			<title>
 				<de>Das Spiel um den Thron (Staffel 2)</de>
 				<en>A Throne in Ice and Fire (Season 2)</en>
@@ -11731,7 +11729,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="2012" distribution="2" maingenre="10" subgenre="1,7" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="88" speed="65" outcome="80" />
 			<children>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1971833" rt_id="0" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1971833" creator="" created_by="DerFronck">
 					<title>
 						<de>Im Norden vergisst man nichts</de>
 						<en>In the North They Don't Forget</en>
@@ -11746,7 +11744,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="40" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069318" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069318" creator="5578" created_by="Ronny">
 					<title>
 						<de>Das dunkle Land</de>
 						<en>The Dark Land</en>
@@ -11761,7 +11759,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="45" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2070135" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2070135" creator="5578" created_by="Ronny">
 					<title>
 						<de>Tote sterben nicht</de>
 						<en>The Dead Don't Die</en>
@@ -11776,7 +11774,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069319" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069319" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Knochengarten</de>
 						<en>The Bone Garden</en>
@@ -11791,7 +11789,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="82" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2074658" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2074658" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Schatten aus Harrenhal</de>
 						<en>The Shadow from Harrenhal</en>
@@ -11806,7 +11804,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="54" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085238" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085238" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die alten und die neuen Götter</de>
 						<en>The Old and the New Gods</en>
@@ -11821,7 +11819,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="50" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085239" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085239" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der ehrenlose Mann</de>
 						<en>The Honorless Man</en>
@@ -11836,7 +11834,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="81" speed="52" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085240" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085240" creator="5578" created_by="Ronny">
 					<title>
 						<de>Kronprinz aus Winterfell</de>
 						<en>Crown Prince from Winterfell</en>
@@ -11851,7 +11849,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="74" speed="50" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2084342" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2084342" creator="5578" created_by="Ronny">
 					<title>
 						<de>Tiefschwarze Wässer</de>
 						<en>Deep Dark Waters</en>
@@ -11866,7 +11864,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="89" speed="63" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2112510" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2112510" creator="5578" created_by="Ronny">
 					<title>
 						<de>Alle Menschen müssen sterben</de>
 						<en>All Men Must Die</en>
@@ -11888,7 +11886,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 1 - 2010 -->
 
-		<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt1520211" rt_id="0" creator="" created_by="DerFronck">>
+		<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt1520211" creator="" created_by="DerFronck">
 			<title>
 				<de>Der Tod auf Latschen (Staffel 1)</de>
 				<en>The Treading Death (Season 1)</en>
@@ -11914,7 +11912,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="2010" distribution="2" maingenre="12" subgenre="17,7" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="74" speed="60" outcome="85" />
 			<children>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" rt_id="0" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="" created_by="DerFronck">
 					<title>
 						<de>Geschichten aus alten Zeiten</de>
 						<en>Stories from old times</en>
@@ -11929,7 +11927,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="64" speed="40" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628064" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628064" creator="5578" created_by="Ronny">
 					<title>
 						<de>In der Falle der Beisser</de>
 						<en>In the trap of the biters</en>
@@ -11944,7 +11942,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="83" speed="45" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628065" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628065" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erzähl das den Fröschen</de>
 						<en>Day of the Frogs</en>
@@ -11959,7 +11957,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628066" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628066" creator="5578" created_by="Ronny">
 					<title>
 						<de>Pathos</de>
 						<en>Pathos</en>
@@ -11974,7 +11972,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="53" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628067" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628067" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der 194. Tag</de>
 						<en>The 194th Day</en>
@@ -11989,7 +11987,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="54" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628068" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628068" creator="5578" created_by="Ronny">
 					<title>
 						<de>T.S. - Neunzehn</de>
 						<en>T.S. - Nineteen</en>
@@ -12011,7 +12009,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 01 -->
 
-		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088583" rt_id="0" creator="" created_by="DerFronck">>
+		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088583" creator="" created_by="DerFronck">
 			<title>
 				<de>Kerzen im Wind (Staffel 1)</de>
 				<en>Torches in the Storm (Season 1)</en>
@@ -12037,7 +12035,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1986" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="1" price_mod="0.67" />
 			<ratings critics="79" speed="35" outcome="72" />
 			<children>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1336827" rt_id="0" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1336827" creator="" created_by="DerFronck">
 					<title>
 						<de>Jugendlicher Leichtsinn</de>
 						<en>Wild Youth</en>
@@ -12052,7 +12050,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="20" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338435" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338435" creator="5578" created_by="Ronny">
 					<title>
 						<de>Diese Liebe ist falsch</de>
 						<en>Forbidden Love</en>
@@ -12067,7 +12065,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="35" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338436" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338436" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Diener der Oberen</de>
 						<en>Masters and Slaves</en>
@@ -12082,7 +12080,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="23" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338437" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338437" creator="5578" created_by="Ronny">
 					<title>
 						<de>Haßliebe</de>
 						<en>Love and Hate</en>
@@ -12097,7 +12095,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="37" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1339895" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1339895" creator="5578" created_by="Ronny">
 					<title>
 						<de>Zerstörte Welt</de>
 						<en>A World Breaks Apart</en>
@@ -12112,7 +12110,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="34" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1340322" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1340322" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sinkende Sterne</de>
 						<en>When Stars Are Falling</en>
@@ -12132,7 +12130,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Fackeln im Sturm - Staffel 02 -->
 
-		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0090490" rt_id="0" creator="" created_by="DerFronck">>
+		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0090490" creator="" created_by="DerFronck">
 			<title>
 				<de>Kerzen im Wind (Staffel 2)</de>
 				<en>Torches in the Storm (Season 2)</en>
@@ -12158,7 +12156,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1987" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="1" price_mod="0.67" />
 			<ratings critics="79" speed="35" outcome="72" />
 			<children>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6422264" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6422264" creator="5578" created_by="Ronny">
 					<title>
 						<de>Nah am Abgrund</de>
 						<en>On the Edge of the Abyss</en>
@@ -12174,7 +12172,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="74" speed="37" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425140" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425140" creator="5578" created_by="Ronny">
 					<title>
 						<de>Krieg der Völker</de>
 						<en>Civil War</en>
@@ -12190,7 +12188,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="74" speed="45" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425148" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425148" creator="5578" created_by="Ronny">
 					<title>
 						<de>Das Ende der Sklaverei</de>
 						<en>The Shackles are Falling</en>
@@ -12206,7 +12204,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="78" speed="49" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425150" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425150" creator="5578" created_by="Ronny">
 					<title>
 						<de>Vergeltung ohne Frieden</de>
 						<en>Unforgiving Revenge</en>
@@ -12222,7 +12220,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="81" speed="35" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425158" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425158" creator="5578" created_by="Ronny">
 					<title>
 						<de>Pures Chaos</de>
 						<en>Chaos Reigns</en>
@@ -12238,7 +12236,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="78" speed="42" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425162" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425162" creator="5578" created_by="Ronny">
 					<title>
 						<de>Allerbeste Freunde</de>
 						<en>My Best Friend</en>
@@ -12258,7 +12256,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Fackeln im Sturm - Staffel 03 -->
 
-		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0108823" rt_id="0" creator="" created_by="DerFronck">>
+		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0108823" creator="" created_by="DerFronck">
 			<title>
 				<de>Kerzen im Wind (Staffel 3)</de>
 				<en>Torches in the Storm (Season 3)</en>
@@ -12284,7 +12282,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1988" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="2" price_mod="0.67" />
 			<ratings critics="79" speed="35" outcome="72" />
 			<children>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425172" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425172" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Kampf ist noch nicht vorbei</de>
 						<en>The Battle Goes On</en>
@@ -12300,7 +12298,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="78" speed="38" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425190" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425190" creator="5578" created_by="Ronny">
 					<title>
 						<de>Ohne jeden Ausweg</de>
 						<en>For Better or Worse</en>
@@ -12316,7 +12314,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="76" speed="34" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425194" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425194" creator="5578" created_by="Ronny">
 					<title>
 						<de>Das Schicksal von Mont Royal</de>
 						<en>Decision in Mont Royal</en>
@@ -12340,7 +12338,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 2005 -->
 
-		 <programme id="DF-Filme-Action-Batman_Begins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0372784" rt_id="0" creator="">
+		 <programme id="DF-Filme-Action-Batman_Begins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0372784" creator="">
 			<title>
 				<de>Flederflügel legt los</de>
 				<en>Batwing Begins</en>
@@ -12370,7 +12368,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 1984 -->
 
-		<programme id="DF_Filme_HORROR_Nightmare - Mörderische Träume" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087800" rt_id="0" creator="">
+		<programme id="DF_Filme_HORROR_Nightmare - Mörderische Träume" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087800" creator="">
 			<title>
 				<de>Horror in der Pappel-Allee</de>
 				<en>Horror on Olm Street</en>
@@ -12399,7 +12397,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 1986 -->
 
-		<programme id="DF_Filme_HORROR_Die_Fliege" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091064" rt_id="0" creator="">
+		<programme id="DF_Filme_HORROR_Die_Fliege" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091064" creator="">
 			<title>
 				<de>Die Mücke</de>
 				<en>The Mosquito</en>
@@ -12409,7 +12407,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The Fly</en>
 			</title_original>
 			<description>
-				<de>Ein Teleportations-Experiment des Wissenschaftlers Seth Brundle misslingt, bleibt aber vorerst unbemerkt. Während er sich in die hübsche Journalistin Veronica verliebt, verwandelt sich sein Körper allmählich in einen riesigen Mensch/Insekten - Mutanten.</de>
+				<de>Ein Teleportations-Experiment des Wissenschaftlers Seth Brundle misslingt, bleibt aber vorerst unbemerkt. Während er sich in die hübsche Journalistin Veronica verliebt, verwandelt sich sein Körper allmählich in einen riesigen Mensch-/Insekten-Mutanten.</de>
 				<en>A teleportation experiment by scientist Seth Brundle fails, but goes unnoticed for the time being. While he falls in love with the pretty journalist Veronica, his body gradually transforms into a giant human/insect mutant.</en>
 			</description>
 			<staff>
@@ -12425,7 +12423,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 				<!-- DRAMA  -->
 
-		<programme id="DF-Filme-DRAMA-Stand_by_Me" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092005" rt_id="0" creator="">
+		<programme id="DF-Filme-DRAMA-Stand_by_Me" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092005" creator="">
 			<title>
 				<de>Steh mir bei - Das große Sommer-Rätsel</de>
 				<en>Stay Here With Me</en>
@@ -12455,7 +12453,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 2012 -->
 
-		<programme id="DF_Filme_Science-Fiction_Prometheus - Dunkle Zeichen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1446714" rt_id="0" creator="">
+		<programme id="DF_Filme_Science-Fiction_Prometheus - Dunkle Zeichen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1446714" creator="">
 			<title>
 				<de>Prophet Zeus - Dunkle Vorzeichen</de>
 				<en>Prophet Zeus</en>
@@ -12482,7 +12480,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 2015 -->
 
-		<programme id="DF_Filme_Science-Fiction_Der Marsianer - Rettet Mark Watney" product="1" licence_type="1" tmdb_id="0" imdb_id="tt3659388" rt_id="0" creator="">
+		<programme id="DF_Filme_Science-Fiction_Der Marsianer - Rettet Mark Watney" product="1" licence_type="1" tmdb_id="0" imdb_id="tt3659388" creator="">
 			<title>
 				<de>Der Mars-Indianer - Bringt ihn lebend</de>
 				<en>Save Mark Watney from Mars</en>
@@ -12509,7 +12507,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 		<!-- added (with modifications) from Stukov repo -->
 
-		<programme id="Stukov_Conan, der Barbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082198" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Conan, der Barbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082198" creator="Stukov">
 			<title>
 				<de>Canon, der Wildling</de>
 				<en>Canon the Wildling</en>
@@ -12533,7 +12531,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1982" day="3" />
 			<ratings critics="61" speed="68" outcome="54" />
 		</programme>
-		<programme id="Stukov_Gremlins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Gremlins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="Stukov">
 			<title>
 				<de>Grimlings - Kleine Biester</de>
 				<en>Grimlings</en>
@@ -12555,7 +12553,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1984" day="6" />
 			<ratings critics="80" speed="74" outcome="82" />
 		</programme>
-		<programme id="Stukov_Dune" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Dune" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="Stukov">
 			<title>
 				<de>Dene: Der Sandplanet</de>
 				<en>Dene</en>
@@ -12587,7 +12585,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1984" day="12" />
 			<ratings critics="44" speed="61" outcome="47" />
 		</programme>
-		<programme id="Stukov_Otto - Der Film" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089753" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Otto - Der Film" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089753" creator="Stukov">
 			<title>
 				<de>[0|First] - Der Kinofilm</de>
 				<en>[0|First] - The Feature</en>
@@ -12612,7 +12610,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1985" day="7" />
 			<ratings critics="39" speed="73" outcome="73" />
 		</programme>
-		<programme id="Stukov_Filme_Troglodyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1314248" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Troglodyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1314248" creator="Stukov">
 			<title>
 				<de>Trilobite / Ocean Monster - Das Biest aus der See</de>
 				<en>Trilobite / Ocean Monster</en>
@@ -12635,7 +12633,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="2008" day="6" />
 			<ratings critics="11" speed="35" outcome="26" />
 		</programme>
-		<programme id="Stukov_Filme_Asteroid" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118261" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Asteroid" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118261" creator="Stukov">
 			<title>
 				<de>Meteroid - Unheil aus dem Weltraum</de>
 				<en>Meteroid</en>
@@ -12657,7 +12655,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1997" day="2" />
 			<ratings critics="20" speed="35" outcome="27" />
 		</programme>
-		<programme id="Stukov_Filme_Hobbit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077687" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Hobbit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077687" creator="Stukov">
 			<title>
 				<de>Der Halbling</de>
 				<en>The Halfling</en>
@@ -12677,7 +12675,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA/J" year="1977" distribution="2" maingenre="3" subgenre="10,9" flags="2" blocks="2" price_mod="0.50" />
 			<ratings critics="65" speed="61" outcome="38" />
 		</programme>
-		<programme id="Stukov_Filme_Der Herr der Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Der Herr der Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="Stukov" comment="targetgroupattractivity: More adult-oriented than usual cartoons, i.e. fantasy. TODO: Clarify: Does this override the definition for the genre in programmedatamods.xml? Or are these parameters applied after the calculation?">
 			<title>
 				<de>Meister Der Dinge</de>
 				<en>The Master Of Things</en>
@@ -12695,10 +12693,10 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA/GB" year="1978" distribution="1" maingenre="3" subgenre="1,10" flags="2" blocks="3" price_mod="0.50" />
-			<targetgroupattractivity children="1.5" teenagers_male="1.5" teenagers_female="0.5" housewives_male="0" housewifes_female="0.2" employees_male="0.3" employees_female="0" unemployed_male="0.3" unemployed_female="0" managers="0" pensioners_male="-1.5" pensioners_female="-2" comment="More adult-oriented than usual cartoons, i.e. fantasy. TODO: Clarify: Does this override the definition for the genre in programmedatamods.xml? Or are these parameters applied after the calculation?" />
+			<targetgroupattractivity children="1.5" teenagers_male="1.5" teenagers_female="0.5" housewives_male="0" housewives_female="0.2" employees_male="0.3" employees_female="0" unemployed_male="0.3" unemployed_female="0" managers="0" pensioners_male="-1.5" pensioners_female="-2" />
 			<ratings critics="50" speed="61" outcome="58" />
 		</programme>
-		<programme id="Stukov_Filme_Die Rückkehr des Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Die Rückkehr des Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="Stukov">
 			<title>
 				<de>Die Rückkehr des Oberhauptes</de>
 				<en>The Return Of the Supreme</en>
@@ -12719,7 +12717,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1980" day="5" />
 			<ratings critics="63" speed="40" outcome="36" />
 		</programme>
-		<programme id="Stukov_Filme_Auch ein Sheriff braucht mal Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Auch ein Sheriff braucht mal Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="Stukov">
 			<title>
 				<de>Unterstütz deinen Sheriff vor Ort</de>
 				<en>Think local, help your Sheriff!</en>
@@ -12743,7 +12741,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1969" distribution="1" maingenre="5" subgenre="18" flags="" blocks="2" price_mod="0.5" />
 			<ratings critics="71" speed="76" outcome="49" />
 		</programme>
-		<programme id="Stukov_Filme_Halloween: Die Nacht des Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Halloween: Die Nacht des Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="Stukov">
 			<title>
 				<de>All Saints' Eve: Der Schrecken der Nacht</de>
 				<en>All Saints' Eve</en>
@@ -12765,7 +12763,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1978" distribution="1" maingenre="12" subgenre="17" flags="96" blocks="2" price_mod="1.00" />
 			<ratings critics="87" speed="82" outcome="66" />
 		</programme>
-		<programme id="Stukov_Das Reich der Sonne" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092965" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Das Reich der Sonne" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092965" creator="Stukov">
 			<title>
 				<de>Das Imperium des Tagesgestirns</de>
 				<en>The Realm of the Day Star</en>
@@ -12789,7 +12787,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1987" day="12" />
 			<ratings critics="71" speed="83" outcome="35" />
 		</programme>
-		<programme id="Stukov_Der Name der Rose" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091605" rt_id="0" creator="Stukov">
+		<programme id="Stukov_Der Name der Rose" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091605" creator="Stukov">
 			<title>
 				<de>Wie heißt die Rose</de>
 				<en>What's the Rose called</en>
@@ -12815,7 +12813,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1986" day="9" />
 			<ratings critics="71" speed="80" outcome="41" />
 		</programme>
-		<programme id="Stukov_Das Ding aus einer anderen Welt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0084787" rt_id="0" creator="Stukov" comment="Alt description: Es ist die erste Woche im Winter des Jahres 1982. Eine Forschungsstation in der Antarktis bekommt Besuch von einer außerirdischen Kraft, die alles assimilieren kann, was sie berührt.">
+		<programme id="Stukov_Das Ding aus einer anderen Welt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0084787" creator="Stukov" comment="Alt description: Es ist die erste Woche im Winter des Jahres 1982. Eine Forschungsstation in der Antarktis bekommt Besuch von einer außerirdischen Kraft, die alles assimilieren kann, was sie berührt.">
 			<title>
 				<de>Das Etwas aus der Fremde</de>
 				<en>The What</en>
@@ -13457,7 +13455,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme id="ee8c5f83-a04d-415e-b57a-c1101db0981f" product="1" licence_type="1" creator="9551" imdb_id="tt0090297">
+		<programme id="ee8c5f83-a04d-415e-b57a-c1101db0981f" product="1" licence_type="1" creator="9551" imdb_id="tt0090297" comment="targetgroupattractivity: Comedy for 'intellectuals' (or tries to be, in this instance).">
 			<title>
 				<de>Flüssigkeit - Der Film</de>
 				<en>Liquid</en>
@@ -13479,7 +13477,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1985" day="1" />
-			<targetgroupattractivity children="0" teenagers="0.5" housewives="0" employees="1" unemployed="0" managers="2" pensioners="0" comment="Comedy for 'intellectuals' (or tries to be, in this instance)." />
+			<targetgroupattractivity children="0" teenagers="0.5" housewives="0" employees="1" unemployed="0" managers="2" pensioners="0" />
 			<ratings critics="7" speed="63" outcome="8" />
 		</programme>
 		<programme id="0d6338e8-fc05-4221-97de-94028eb31fcc" product="1" licence_type="1" creator="9551" imdb_id="tt0099371">
@@ -13529,7 +13527,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1989" day="12" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="79" speed="76" outcome="75" />
 		</programme>
 		<programme id="94b593a9-eae1-4596-9045-7470976a6e3b" product="1" licence_type="1" creator="9551" imdb_id="tt0083987">
@@ -13601,9 +13599,9 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="0" function="1">bcd7fb7a-5a88-4a82-b60a-d0c9e97712ae</member>
 				<member index="1" function="2">76d41e20-ed64-40f5-9c2e-13efb9e13182</member>
 				<member index="2" function="2">070bd0dd-1a11-4b2b-80b7-922dae98c3ca</member>
-				<member index="4" function="2">157e161b-6686-44d7-9ea4-7084a3941d76</member>
-				<member index="5" function="2">76415d04-45f6-4196-a351-71f0832ded60</member>
-				<member index="6" function="2">3ed07f6c-0e64-4874-b97c-22e6d272a90e</member>
+				<member index="3" function="2">157e161b-6686-44d7-9ea4-7084a3941d76</member>
+				<member index="4" function="2">76415d04-45f6-4196-a351-71f0832ded60</member>
+				<member index="5" function="2">3ed07f6c-0e64-4874-b97c-22e6d272a90e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="16" subgenre="2,14" flags="0" blocks="3" price_mod="1" />
@@ -13633,7 +13631,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1985" day="11" />
-			<targetgroupattractivity children="0" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="89" speed="65" outcome="14" />
 		</programme>
 		<programme id="b88e060e-b3a0-48b7-9a82-852dd99ea9c9" product="1" licence_type="1" creator="9551" imdb_id="tt0097742">
@@ -13775,7 +13773,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1979" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="87" speed="85" outcome="55" />
 		</programme>
 		<programme id="46783d97-2145-48e4-b9e8-e4b8e4e95856" product="1" licence_type="1" creator="9551" imdb_id="tt0089853">
@@ -13800,7 +13798,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="15,10" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1985" day="3" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="86" speed="83" outcome="26" />
 		</programme>
 		<programme id="d341bba7-0d2a-4c4f-8eda-f3cc21bdaa69" product="1" licence_type="1" creator="9551" imdb_id="tt0034583">
@@ -13957,7 +13955,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The Godfather Part III</en>
 			</title_original>
 			<description>
-				<de>Der Epilog der Filmreihe, laut [0|Full]. [1|Full] als Patriarch der Mafia-Familie will nun in allen Bereichen seines Lebens irgendwie ins Reine kommen will.</de>
+				<de>Der Epilog der Filmreihe, laut [0|Full]. [1|Full] als Patriarch der Mafia-Familie will nun in allen Bereichen seines Lebens irgendwie ins Reine kommen.</de>
 				<en>Epilogue of the film series, according to [0|Full]. [1|Full], as the patriarch of the mafia family, now wants to somehow come clean in all aspects of his life.</en>
 			</description>
 			<staff>
@@ -14384,7 +14382,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1986" day="2" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="85" speed="84" outcome="45" />
 		</programme>
 		<programme id="2c45fb1a-ba52-4bcf-a7e9-92c46262ee7b" product="1" licence_type="1" creator="9551" imdb_id="tt0096438">
@@ -14433,7 +14431,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1971" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" comment="'Strong Pythonesque' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
 			<ratings critics="81" speed="79" outcome="33" />
 		</programme>
 		<programme id="b38408f2-ee29-43af-aad8-d2839348f3da" product="1" licence_type="1" creator="9551" imdb_id="tt0071853">
@@ -14459,7 +14457,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1975" distribution="1" maingenre="5" subgenre="1,10" flags="8" blocks="2" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="-0.5" comment="'Pythonesque' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="-0.5" />
 			<ratings critics="89" speed="87" outcome="51" />
 		</programme>
 		<programme id="e52cc33e-7569-488f-8c2d-3ef4e48febeb" product="1" licence_type="1" creator="9551" imdb_id="tt0079470">
@@ -14485,7 +14483,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1979" distribution="1" maingenre="5" subgenre="" flags="8" blocks="2" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="-0.5" comment="'Pythonesque' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="-0.5" />
 			<ratings critics="89" speed="88" outcome="61" />
 		</programme>
 		<programme id="a69b639e-ebd2-41e7-ad75-ac5729886a04" product="1" licence_type="1" creator="9551" imdb_id="tt0085959">
@@ -14512,7 +14510,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" distribution="1" maingenre="5" subgenre="202" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1983" day="3" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" comment="'Strong Pythonesque' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
 			<ratings critics="81" speed="77" outcome="53" />
 		</programme>
 		<programme id="fccda1a3-748d-4f45-bf7e-cf643ebb8689" product="1" licence_type="1" creator="9551" imdb_id="tt0066026">
@@ -14538,7 +14536,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1970" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="1" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="76" speed="76" outcome="77" />
 		</programme>
 		<programme id="a98e1cd1-a870-40e4-8ad3-da6a108d9221" product="1" licence_type="1" creator="9551" imdb_id="tt0092699">
@@ -14563,7 +14561,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1987" day="12" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="2.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="2.0" pensioners="0" />
 			<ratings critics="91" speed="71" outcome="59" />
 		</programme>
 		<programme id="684d3de1-b956-44cb-883c-90a4c940eae9" product="1" licence_type="1" creator="9551" imdb_id="tt0061017">
@@ -14632,7 +14630,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1987" day="10" />
-			<targetgroupattractivity children="0" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="0" />
 			<ratings critics="69" speed="74" outcome="18" />
 		</programme>
 		<programme id="c79d915e-dd59-477d-b086-10d21fd029c8" product="1" licence_type="1" creator="9551" imdb_id="tt0099422">
@@ -14685,7 +14683,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="2" subgenre="5,10" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1984" day="6" />
-			<targetgroupattractivity children="0.5" teenagers_male="2" teenagers_female="0.5" housewives_male="1" housewives_female="0.5" employees_male="0.5" employees_female="0.2" unemployed_male="0.8" unemployed_female="0.4" managers_male="-0.3" managers_female="-0.7" pensioners_male="0" pensioners_female="-0.5" comment="Strong comedy-oriented." />
+			<targetgroupattractivity children="0.5" teenagers_male="2" teenagers_female="0.5" housewives_male="1" housewives_female="0.5" employees_male="0.5" employees_female="0.2" unemployed_male="0.8" unemployed_female="0.4" managers_male="-0.3" managers_female="-0.7" pensioners_male="0" pensioners_female="-0.5" />
 			<ratings critics="87" speed="84" outcome="88" />
 		</programme>
 		<programme id="bb10c157-221e-41b2-95b0-58fec91957ca" product="1" licence_type="1" creator="9551" imdb_id="tt0097428">
@@ -14714,7 +14712,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="2" subgenre="5,10" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1989" day="6" />
-			<targetgroupattractivity children="0.5" teenagers_male="2" teenagers_female="0.5" housewives_male="1" housewives_female="0.5" employees_male="0.5" employees_female="0.2" unemployed_male="0.8" unemployed_female="0.4" managers_male="-0.3" managers_female="-0.7" pensioners_male="0" pensioners_female="-0.5" comment="Strong comedy-oriented." />
+			<targetgroupattractivity children="0.5" teenagers_male="2" teenagers_female="0.5" housewives_male="1" housewives_female="0.5" employees_male="0.5" employees_female="0.2" unemployed_male="0.8" unemployed_female="0.4" managers_male="-0.3" managers_female="-0.7" pensioners_male="0" pensioners_female="-0.5" />
 			<ratings critics="53" speed="59" outcome="76" />
 		</programme>
 		<programme id="d2180454-e80a-4416-8071-ee5158cb2c99" product="1" licence_type="1" creator="9551" imdb_id="tt0091939">
@@ -14737,7 +14735,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1986" day="8" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" comment="'Intelligent' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
 			<ratings critics="87" speed="67" outcome="22" />
 		</programme>
 		<programme id="53c79c7d-d72d-4285-8880-45499c31c31a" product="1" licence_type="1" creator="9551" imdb_id="tt0094082">
@@ -14796,7 +14794,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Phase IV</en>
 			</title_original>
 			<description>
-				<de>Spannender SciFi-Thriller über Ameisen, die intelligent werden und in Massen über Menschen herfallen und töten. Trotz der albern klingenden Prämisse sehr gut gemacht. Eine Art Schachspiel gegen eine unbekannte außerirdische Macht.</de>
+				<de>Spannender SciFi-Thriller über Ameisen, die intelligent werden und in Massen über Menschen herfallen und sie töten. Trotz der albern klingenden Prämisse sehr gut gemacht. Eine Art Schachspiel gegen eine unbekannte außerirdische Macht.</de>
 				<en>Exciting sci-fi thriller about ants that become intelligent and en masse infest and kill humans. Very well done despite the goofy sounding premise. A kind of chess game against an unknown alien force.</en>
 			</description>
 			<staff>
@@ -15101,12 +15099,12 @@ A possibly well-fitting title soundtrack didn't come until years later.</en>
 		</programme>
 		<programme id="2f59ee10-99ed-4ab1-8963-8ccccced8301" product="1" licence_type="1" creator="9551" imdb_id="tt0080736">
 			<title>
-				<de>Affenerde (1968)</de>
-				<en>Apes' Earth (1968)</en>
+				<de>Affenerde</de>
+				<en>Apes' Earth</en>
 			</title>
 			<title_original>
-				<de>Planet der Affen (1968)</de>
-				<en>Planet of the Apes (1968)</en>
+				<de>Planet der Affen</de>
+				<en>Planet of the Apes</en>
 			</title_original>
 			<description>
 				<de>Nach Kälteschlaf strandet der Astronaut Taylor im Jahre 3978 mit einem Kollegen auf einem unbekannten Planeten, auf dem Affen die Herrschaft über die Menschen übernommen haben. Ihr Wahnsinnigen! Ich verfluche euch! Ich verfluche euch alle!</de>
@@ -15509,7 +15507,7 @@ Fifth and final part. Not so good.</en>
 				<member index="2" function="2">f30d7ba8-2e45-4fc2-99f2-ecdb39043312</member>
 				<member index="3" function="2">fafff870-06c3-490a-ba98-3f3d8e8f60d1</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="0" target_groups_optional="1" pro_pressure_groups="0" />
 			<data country="F" distribution="1" maingenre="5" subgenre="7,16" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1981" day="12" />
 			<ratings critics="27" speed="63" outcome="71" />
@@ -15621,7 +15619,7 @@ Fifth and final part. Not so good.</en>
 				</programme>
 			</children>
 		</programme>
-		<programme id="b9b2fd4a-dd06-4373-bd40-f59936da28f0" product="2" licence_type="3" creator="9551" imdb_id="tt0063929" comments="Episodes follow only a small selection of the real ones, but content and sketch titles have been aggregated from all real episodes.">
+		<programme id="b9b2fd4a-dd06-4373-bd40-f59936da28f0" product="2" licence_type="3" creator="9551" imdb_id="tt0063929" comment="Episodes follow only a small selection of the real ones, but content and sketch titles have been aggregated from all real episodes.">
 			<title>
 				<de>Marty Serpent's Dashing Arena (Staffeln 1-2)</de>
 				<en>Marty Serpent's Dashing Arena (Seasons 1-2)</en>
@@ -15644,7 +15642,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1970" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" comment="'Strong Pythonesque' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
 			<ratings critics="90" speed="75" outcome="67" />
 			<children>
 				<programme id="e8b11cd9-eb15-4e3e-8ccc-d4d239d69020" product="2" licence_type="2" imdb_id="tt0758095" creator="9551">
@@ -15747,7 +15745,7 @@ Fifth and final part. Not so good.</en>
 				</programme>
 			</children>
 		</programme>
-		<programme id="c04b6376-c857-4821-9194-69ba2d7405e6" product="2" licence_type="3" creator="9551" imdb_id="tt0063929" comments="Episodes follow only a small selection of the real ones, but content and sketch titles have been aggregated from all real episodes.">
+		<programme id="c04b6376-c857-4821-9194-69ba2d7405e6" product="2" licence_type="3" creator="9551" imdb_id="tt0063929" comment="Episodes follow only a small selection of the real ones, but content and sketch titles have been aggregated from all real episodes.">
 			<title>
 				<de>Marty Serpent's Dashing Arena (Staffeln 3-4)</de>
 				<en>Marty Serpent's Dashing Arena (Seasons 3-4)</en>
@@ -15770,7 +15768,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1974" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" comment="'Strong Pythonesque' Comedy." />
+			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
 			<ratings critics="90" speed="75" outcome="67" />
 			<children>
 				<programme id="867805fb-1fa3-4766-8c09-700ec111d309" product="2" licence_type="2" imdb_id="tt0651003" creator="9551">
@@ -15873,7 +15871,7 @@ Fifth and final part. Not so good.</en>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d6cfd130-7074-400a-9d38-898b5fa31320" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
+		<programme id="d6cfd130-7074-400a-9d38-898b5fa31320" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game. targetgroupattractivity: The kind of 'action' that is liked by women more than usual.">
 			<title>
 				<de>Babewatch (Staffel 1)</de>
 				<en>Babewatch (Season 1)</en>
@@ -15895,7 +15893,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" comment="The kind of 'action' that is liked by women more than usual." />
+			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
 			<ratings critics="45" speed="61" outcome="67" />
 			<children>
 				<programme id="d10aeb23-49c3-4d96-986d-8b1519b1bfa5" product="2" licence_type="2" imdb_id="tt0096898" creator="9551">
@@ -16006,7 +16004,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" comment="The kind of 'action' that is liked by women more than usual." />
+			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
 			<ratings critics="37" speed="59" outcome="74" />
 			<children>
 				<programme id="acd4c9e7-6e25-4b44-9277-b60ca3cc2b00" product="2" licence_type="2" imdb_id="tt0394279" creator="9551">
@@ -16117,7 +16115,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1992" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" comment="The kind of 'action' that is liked by women more than usual." />
+			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
 			<ratings critics="43" speed="64" outcome="81" />
 			<children>
 				<programme id="5446d41b-deac-4484-a3ec-74e737ad7d1b" product="2" licence_type="2" imdb_id="tt0123433" creator="9551">
@@ -16228,7 +16226,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1993" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" comment="The kind of 'action' that is liked by women more than usual." />
+			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
 			<ratings critics="42" speed="62" outcome="82" />
 			<children>
 				<programme id="054ffc65-33d8-4013-bda0-abbf0c182b3a" product="2" licence_type="2" imdb_id="tt0394293" creator="9551">
@@ -16339,7 +16337,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1994" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" comment="The kind of 'action' that is liked by women more than usual." />
+			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
 			<ratings critics="41" speed="61" outcome="89" />
 			<children>
 				<programme id="ad197a0a-7858-4753-af55-0c0dc51bc853" product="2" licence_type="2" imdb_id="tt0394259" creator="9551">
@@ -16451,7 +16449,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1995" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" comment="The kind of 'action' that is liked by women more than usual." />
+			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
 			<ratings critics="48" speed="71" outcome="92" />
 			<children>
 				<programme id="9ada754b-d09a-4608-b1d3-3e62e4e70c87" product="2" licence_type="2" imdb_id="tt0394355" creator="9551">
@@ -16566,7 +16564,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1982" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" comment="Definitely targeted at children." />
+			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="43494769-75fb-4281-9afd-2aafbc12fc2c" product="2" licence_type="2" imdb_id="tt0084218" creator="9551">
@@ -16680,7 +16678,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1983" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" comment="Definitely targeted at children." />
+			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="8ebe7576-7ba5-408f-b79d-5d21e48ce5ea" product="2" licence_type="2" imdb_id="tt0620884" creator="9551" comment="Actually season 1">
@@ -16792,7 +16790,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1984" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" comment="Definitely targeted at children." />
+			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="d6512f69-ab73-4b81-91e5-f6e3a441e067" product="2" licence_type="2" imdb_id="tt0620844" creator="9551">
@@ -16902,7 +16900,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1985" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" comment="Definitely targeted at children." />
+			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="2b32de06-4277-4772-80a9-a16ccca256bf" product="2" licence_type="2" imdb_id="tt0620846" creator="9551">
@@ -17505,7 +17503,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="3" function="2">f5db9f8d-8447-4bf6-b318-6f5cf025ede3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1993" distribution="2" maingenre="14" subgenre="4,7" flags="8" blocks="1" price_mod="0.8" />
+			<data country="USA" year="1993" distribution="2" maingenre="14" subgenre="4,16" flags="8" blocks="1" price_mod="0.8" />
 			<ratings critics="67" speed="76" outcome="51" />
 			<children>
 				<programme id="4f53a488-d92e-4166-927a-5dfac11533bc" product="2" licence_type="2" imdb_id="tt0170817" creator="9551">
@@ -17628,7 +17626,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<member index="3" function="2">f5db9f8d-8447-4bf6-b318-6f5cf025ede3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="2" maingenre="14" subgenre="4,7" flags="8" blocks="1" price_mod="0.8" />
+			<data country="USA" year="1994" distribution="2" maingenre="14" subgenre="4,16" flags="8" blocks="1" price_mod="0.8" />
 			<ratings critics="67" speed="76" outcome="63" />
 			<children>
 				<programme id="82c27a58-760d-4419-9dae-1414d5052273" product="2" licence_type="2" imdb_id="tt0751154" creator="9551">
@@ -19035,7 +19033,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>The School</en>
 					</title_original>
 					<description>
-						<de>Jeff, Woody und einige der anderen Kinder freuen sich über die neue Lehrerin, bis sie herausfinden, dass diese nicht will, dass die Hunde während des Unterrichts unter den Schulbänken liegen, wie das früher der Fall war.</de>
+						<de>Jeff, Woody und einige der anderen Kinder freuen sich auf die neue Lehrerin, bis sie herausfinden, dass diese nicht will, dass die Hunde während des Unterrichts unter den Schulbänken liegen, wie das früher der Fall war.</de>
 						<en>Jeff, Woody, and some of the other children are excited about the new schoolteacher, until they find out the she does not want the dogs to lie underneath the desks during the school day as was done previously.</en>
 					</description>
 				</programme>
@@ -19255,8 +19253,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>The Only Way Out</en>
 					</title_original>
 					<description>
-						<de>Ein 12-jähriger Junge bittet Theo um Hilfe bei der Suche nach seinem verschwundenen Vater. Der Fall nimmt eine interessante Wendung, denn Theo wird nicht zu dem vermissten Vater geführt, sondern zu einem Dieb, der mit gestohlenen 25 Millionen Dollar nach Brasilien geflohen ist.</de>
-						<en>A 12-year-old boy wants Theo's help in locating his missing father. The case takes an interesting twist in which Theo is not led to the missing father, but to a thief who fled to Brazil with stolen $25 million.</en>
+						<de>Ein 12-jähriger Junge bittet Theo um Hilfe bei der Suche nach seinem verschwundenen Vater. Der Fall nimmt eine interessante Wendung, denn Theo wird nicht zu dem Vater geführt, sondern zu einem Dieb, der mit gestohlenen 25 Millionen Dollar nach Brasilien geflohen ist.</de>
+						<en>A 12-year-old boy wants Theo's help in locating his missing father. The case takes an interesting twist in which Theo is not led to the father, but to a thief who fled to Brazil with stolen $25 million.</en>
 					</description>
 				</programme>
 			</children>
@@ -19293,8 +19291,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>The Chinatown Murders</en>
 					</title_original>
 					<description>
-						<de>Eine Reihe von Syndikatsmorden in Chinatown führt zu einem kleinen Bandenkrieg. Theo findet heraus, dass diese Morde zwei rivalisierenden Organisationen in die Schuhe geschoben werden, damit die wahren Täter, die sich aus einem dilettantischen Quartett zusammensetzen, das Gebiet übernehmen können.</de>
-						<en>A series of syndicate murders in Chinatown is leading to a small gang war. Theo finds out that those murders are blamed on a pair of rival organizations so that the real culprits, made up of an amateurish foursome, can move in and take over the territory.</en>
+						<de>Eine Reihe von Syndikatsmorden in Chinatown führt zu einem kleinen Bandenkrieg. Theo findet heraus, dass diese Morde zwei rivalisierenden Organisationen in die Schuhe geschoben werden, damit die wahren Täter das Gebiet übernehmen können.</de>
+						<en>A series of syndicate murders in Chinatown is leading to a small gang war. Theo finds out that those murders are blamed on a pair of rival organizations so that the real culprits can move in and take over the territory.</en>
 					</description>
 				</programme>
 				<programme id="7405fa2e-162e-4576-a6cf-2be3ba89d8c4" product="2" licence_type="2" imdb_id="tt0621328" creator="9551">
@@ -19307,8 +19305,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Hush Now, Don't You Die</en>
 					</title_original>
 					<description>
-						<de>Ein College-Mädchen wurde entführt, in ein Lagerhaus gebracht und von zwei Killern vergewaltigt. Einer wird von einem anderen erschossen und das Mädchen entkommt. Ihre Aussage würde sicherlich helfen, aber aus Angst davor, öffentlich zu sagen, dass sie vergewaltigt wurde, geht sie nicht zur Polizei.</de>
-						<en>A college girl has been kidnapped, taken to a warehouse and raped by two assassins. One is shot by another and the girl escapes. Her testimony would surely help, but because of fear from publicly saying that she was raped, she's not going to police.</en>
+						<de>Ein College-Mädchen wurde entführt, in ein Lagerhaus gebracht und von zwei Killern vergewaltigt. Einer wird von einem anderen erschossen und das Mädchen entkommt. Aus Angst davor, öffentlich zu sagen, dass sie vergewaltigt wurde, geht sie nicht zur Polizei.</de>
+						<en>A college girl has been kidnapped, taken to a warehouse and raped by two assassins. One is shot by another and the girl escapes. Because of fear from publicly saying that she was raped, she's not going to police.</en>
 					</description>
 				</programme>
 				<programme id="2217b087-e4c3-45fc-96ad-edd3483a52d8" product="2" licence_type="2" imdb_id="tt0621364" creator="9551">
@@ -19321,8 +19319,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Queen of the Gypsies</en>
 					</title_original>
 					<description>
-						<de>Eine Zigeunerin wird Zeugin eines Banküberfalls und rekrutiert die Diebe für einen Beutezug, an dem sechs Banken an einem Tag ausgeraubt werden. Dann kontrolliert sie jeden Aspekt von Theos Ermittlungen und stellt denselben Dieben eine Falle. Theo merkt bald, dass sie eine der unglaublichsten Personen ist, die er je getroffen hat.</de>
-						<en>A Gypsy woman, witness to a bank robbery, recruits the thieves for a heist involving six banks in one day. She then controls every aspect of Theo's investigation while setting up the very same thieves. Theo soon realizes she is one of the most incredible persons he has ever met.</en>
+						<de>Eine Zigeunerin wird Zeugin eines Banküberfalls und rekrutiert die Diebe vom Fleck weg für einen Beutezug. Dann kontrolliert sie jeden Aspekt der Ermittlungen und stellt ihren Dieben eine Falle. Theo merkt, sie ist eine der unglaublichsten Menschen, die er je traf.</de>
+						<en>A Gypsy woman, witness to a bank robbery, recruits the thieves on the spot for a heist. She then controls every aspect of the investigations while setting up her thieves. Theo realizes she is one of the most incredible persons he has ever met.</en>
 					</description>
 				</programme>
 				<programme id="61df3c32-89ec-4054-85d6-ab981789197f" product="2" licence_type="2" imdb_id="tt0621325" creator="9551">
@@ -19626,8 +19624,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>The Greatest Entertainer in the World</en>
 					</title_original>
 					<description>
-						<de>Tony braucht den Musiker [4|Full] als Entertainer für General Petersons 10-jähriges Jubiläum bei der NASA, aber der ist bereits gebucht. Die Flaschengeistdame kommt zur Rettung, indem sie ein Duplikat von [4|First] erstellt.</de>
-						<en>Tony needs the musician [4|Full] to be the entertainer for General Peterson's 10th anniversary at NASA, but he's already booked. The genie-lady comes to the rescue by creating a duplicate of [4|First].</en>
+						<de>Tony braucht den Musiker [5|Full] als Entertainer für General Petersons 10-jähriges Jubiläum bei der NASA, aber der ist bereits gebucht. Die Flaschengeistdame kommt zur Rettung, indem sie ein Duplikat von [5|First] erstellt.</de>
+						<en>Tony needs the musician [5|Full] to be the entertainer for General Peterson's 10th anniversary at NASA, but he's already booked. The genie-lady comes to the rescue by creating a duplicate of [5|First].</en>
 					</description>
 					<staff>
 						<member index="5" function="2">29d28546-ed92-4c74-93bd-bf5893c0ec5d</member>
@@ -19881,8 +19879,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Castaways Pictures Presents</en>
 					</title_original>
 					<description>
-						<de>Willie entdeckt ein gesunkenes Schiff in der Lagune. Das Schiff ist nur noch halb erhalten, aber die Ladung ist intakt: zwei Kisten mit Filmproduktionsausrüstung und Kostümen. Der Professor kommt auf die Idee, einen Film zu drehen, der ihre Geschichte erzählt, ihn mit einem Floß loszuschicken und auf Rettung zu hoffen.</de>
-						<en>Willie discovers a sunken ship in the lagoon. The ship is only half there, but the cargo is intact: two crates of movie production equipment and costumes. The Professor then comes up with the idea to make a film telling their story, send it out on a raft, and hope for rescue.</en>
+						<de>Willie entdeckt ein gesunkenes Schiff in der Lagune. Es ist nur noch halb erhalten, aber die Ladung ist intakt: zwei Kisten mit Filmproduktionsausrüstung. Der Professor kommt auf die Idee, einen Film zu drehen, ihn mit einem Floß loszuschicken und auf Rettung zu hoffen.</de>
+						<en>Willie discovers a sunken ship in the lagoon. It is only half there, but the cargo is intact: two crates of movie production equipment. The Professor then comes up with the idea to make a film, send it out on a raft, and hope for rescue.</en>
 					</description>
 				</programme>
 				<programme id="345ea726-6f81-4424-8d27-84a573110fbc" product="2" licence_type="2" imdb_id="tt1230840" creator="9551">
@@ -19909,8 +19907,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Don't Bug the Mosquitoes</en>
 					</title_original>
 					<description>
-						<de>Die sensationelle Musikgruppe "The Mosquitoes" landet auf der Insel, um dringend benötigte Ruhe zu finden. Die Jungs bestehen darauf, mehrere Monate auf der Insel zu bleiben. Die Schiffbrüchigen hoffen, den "Mosquitoes" das Leben schwer zu machen zu können, damit sie die Insel verlassen - und sie mitnehmen. Letztlich freilich erfolglos.</de>
-						<en>The music sensation "The Mosquitoes" land on the island for much needed peace and quiet. The guys insist on staying on the island for several months. The castaways hope to make The Mosquitoes' lives miserable so they'll want to leave - and take the castaways with them. Ultimately, of course, unsuccessfully.</en>
+						<de>Die "Mosquitoes", eine Popsensation, landen auf der Insel, um dringend benötigte Ruhe zu finden. Sie wollen mehrere Monate bleiben. Die Schiffbrüchigen hoffen darauf, sie wegekeln zu können, um mit abgeholt zu werden. Letztlich freilich erfolglos.</de>
+						<en>The "Mosquitoes", a pop sensation, land on the island for much needed peace and quiet. They plan to stay for several months. The castaways hope to annoy them and make them leave, so they'll be picked up with them. Ultimately, of course, unsuccessfully.</en>
 					</description>
 				</programme>
 				<programme id="5a4d3f4e-7d03-48a7-9294-f18c69d0f556" product="2" licence_type="2" imdb_id="tt0588088" creator="9551">
@@ -19965,8 +19963,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>The Friendly Physician</en>
 					</title_original>
 					<description>
-						<de>Ein verrückter Wissenschaftler kommt, um die Schiffbrüchigen zu "retten". Zunächst bringt er den Skipper und Willie auf seine nahe gelegene Insel. Dort treffen sie den Bediensteten des Wissenschaftlers, Igor, und einen Hund, der miaut, und sie erfahren die wahren Absichten des Doktors.</de>
-						<en>A mad scientist comes to "rescue" the castaways. At first he brings the Skipper and Willie to his nearby island. There they meet the scientist's servant Igor and a dog that meows, and they learn about the doctor's real motives.</en>
+						<de>Ein verrückter Wissenschaftler kommt zur "Rettung". Zunächst bringt er den Skipper und Willie auf seine nahe gelegene Insel. Dort treffen sie den Bediensteten Igor und einen Hund, der miaut, und sie erfahren die wahren Absichten des Doktors.</de>
+						<en>A mad scientist comes for the "rescue". At first he brings the Skipper and Willie to his nearby island. There they meet servant Igor and a dog that meows, and they learn about the doctor's real motives.</en>
 					</description>
 				</programme>
 				<programme id="d8c46a23-8535-4a36-8383-7cdac8d7a1a0" product="2" licence_type="2" imdb_id="tt0784362" creator="9551">
@@ -19979,8 +19977,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Meet the Meteor</en>
 					</title_original>
 					<description>
-						<de>Ein Meteor kracht auf die Insel. Als der Professor beobachtet, dass Setzlinge seitdem schnell zu Bäumen heranwachsen, kommt er zu dem Schluss, dass die kosmischen Strahlen des Meteors den Alterungsprozess auf der Insel beschleunigen, und dass sie alle in einer Woche an Altersschwäche sterben werden.</de>
-						<en>A meteor crashes onto the island. Observing that since then, seedlings have rapidly grown into trees, the Professor concludes that the meteor's cosmic rays are speeding up the aging process on the island, and that they all will die of old age in one week.</en>
+						<de>Ein Meteor kracht auf die Insel. Als der Professor beobachtet, dass seitdem die Bäume schnell wachsen, kommt er zu dem Schluss, dass kosmische Strahlen die Alterungsprozesse beschleunigen, und dass sie alle innerhalb einer Woche sterben werden.</de>
+						<en>A meteor crashes onto the island. Observing that trees grow rapidly since then, the Professor concludes that cosmic rays are speeding up the aging processes, and that they all will die within a week.</en>
 					</description>
 				</programme>
 			</children>
@@ -20127,8 +20125,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>A Thousand Pardons - You're Dead!</en>
 					</title_original>
 					<description>
-						<de>Nachdem die Bräute dreier in Vietnam getöteter G.I.s tot aufgefunden werden, deckt das Fünf-Null-Team einen Versicherungsbetrug auf, der von einem Sergeant betrieben wird, der einen mörderischen Zorn hegt.</de>
-						<en>After the brides of three G.I.s killed in Vietnam turn up dead, the Five-O team uncovers an insurance scam run by a sergeant with a murderous grudge.</en>
+						<de>Nachdem die Bräute dreier in Vietnam getöteter GIs tot aufgefunden werden, deckt das Fünf-Null-Team einen Versicherungsbetrug auf, der von einem Sergeant betrieben wird, der einen mörderischen Zorn hegt.</de>
+						<en>After the brides of three GIs killed in Vietnam turn up dead, the Five-O team uncovers an insurance scam run by a sergeant with a murderous grudge.</en>
 					</description>
 				</programme>
 				<programme id="3a9ea7b8-7c82-4fe9-8b44-2ad4dba1a4cb" product="2" licence_type="2" imdb_id="tt0598055" creator="9551">
@@ -20141,8 +20139,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Forty Feet High and It Kills!</en>
 					</title_original>
 					<description>
-						<de>Gerüchte über einen angeblich bevorstehenden Tsunami versetzen Hawaii in Angst und Schrecken, doch McGarrett entdeckt die wahre Bedrohung: Der chinesische Agent ist zurück. Er hat einen renommierten Genetiker entführt und plant, die Entdeckungen des Wissenschaftlers zu nutzen, um eine überlegene Rasse zu schaffen.</de>
-						<en>Fear spreads through Hawaii after rumors of a supposed imminent tsunami, but McGarrett discovers the true threat: the Chinese agent is back. He has kidnapped a renowned geneticist and plans to use the scientist's discoveries to create a superior race.</en>
+						<de>Gerüchte über einen bevorstehenden Tsunami sorgen für Panik auf Hawaii, doch McGarrett entdeckt die wahre Bedrohung: Der chinesische Agent ist zurück. Er hat einen renommierten Genetiker entführt und plant, eine überlegene Rasse zu schaffen.</de>
+						<en>Fear spreads through Hawaii after rumors of a imminent tsunami, but McGarrett discovers the true threat: the Chinese agent is back. He has kidnapped a renowned geneticist and plans to create a superior race.</en>
 					</description>
 				</programme>
 				<programme id="8445c1ce-6b66-46f0-af64-84715e402d47" product="2" licence_type="2" imdb_id="tt0598077" creator="9551">
@@ -20169,8 +20167,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Blind Tiger</en>
 					</title_original>
 					<description>
-						<de>Eine Überraschungs-Geburtstagsfeier für McGarrett endet mit einem Knall - einer Autobombenexplosion in seinem schwarzen 1968er Mercury Park Lane Brougham. Durch die Explosion ist McGarrett erblindet. Während er sich erholt, sucht das Fünf-Null-Team auf den Inseln nach seinem vermeintlichen Mörder.</de>
-						<en>A surprise birthday party for McGarrett ends with a bang - a car-bomb explosion of his black 1968 Mercury Park Lane Brougham. The explosion leaves McGarrett blinded. As he recuperates, the Five-O team searches the islands for his would-be killer.</en>
+						<de>Eine Überraschungs-Geburtstagsfeier für McGarrett endet mit einem Knall - einer Autobombenexplosion. Durch diese ist McGarrett erblindet. Während er sich erholt, sucht das Fünf-Null-Team auf den Inseln nach dem Täter.</de>
+						<en>A surprise birthday party for McGarrett ends with a bang - a car-bomb explosion, which leaves McGarrett blinded. As he recuperates, the Five-O team searches the islands for the perpetrator.</en>
 					</description>
 				</programme>
 				<programme id="a0af767d-dc9e-4aa1-810b-e26eb020f943" product="2" licence_type="2" imdb_id="tt0598217" creator="9551">
