@@ -20,10 +20,11 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 	Field listNormal:TAdContract[]
 	Field listCheap:TAdContract[]
 	Field listAll:TList {nosave}
-	Field levelFilters:TAdContractBaseFilter[6]
+	Field levelFilters:TAdContractBaseFilter[3]
 
 	'cache to check if changes are processed yet
 	Field _setRefillMode:Int = 0 {nosave}
+	Field refillData:SAdContractRefillData = Null {nosave}
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:Int = True
@@ -34,9 +35,9 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 	'sorting
 	Global ListSortMode:Int = 0
 	Global ListSortVisible:Int = False
-	Global contractsSortKeys:Int[] = [0,1,2]
+	Global contractsSortKeys:Int[] = [0,1]
 	Global contractsSortKeysTooltips:TTooltipBase[3]
-	Global contractsSortSymbols:String[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
+	Global contractsSortSymbols:String[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money"]
 
 	Global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
@@ -178,6 +179,10 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'to react on changes in the programmeCollection (eg. contract finished)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
+		'update quote statistics for refill; on day start and on game begins (new/load)
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, onDay) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onDay) ]
+
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
@@ -486,13 +491,6 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 	Method SetRefillMode(mode:Int)
 		_setRefillMode = mode
-		If _setRefillMode = 2
-			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money"]
-			contractsSortKeys = [0, 1]
-		Else
-			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
-			contractsSortKeys = [0, 1, 2]
-		EndIf
 	End Method
 
 
@@ -769,86 +767,32 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		listAll = Null
 
 		'delete some random ads
-		If replaceOffer Then RemoveRandomContracts(replaceChance)
-
-
-		If GameRules.adagencyRefillMode <= 1
-			RefillBlocksMode1()
-		Else
-			RefillBlocksMode2()
+		If replaceOffer
+			Local removed:Int = RemoveRandomContracts(replaceChance)
+			TLogger.Log("AdAgency.RefillBlocks", "removed "+removed+" contracts", LOG_DEBUG)
 		EndIf
+		If _setRefillMode < 10 Then _setRefillMode = 10
+		Select _setRefillMode
+			Case 10
+				If RandRange(1,100) > 65
+					RefillBlocksMode1()
+				Else
+					RefillBlocksMode2()
+				EndIf
+			Case 11
+				RefillBlocksMode1()
+			Case 12
+				RefillBlocksMode2()
+			Default
+				throw "invalid ad agency refill mode " + _setRefillMode
+		EndSelect
 	End Method
 
 
 	Method RefillBlocksMode1()
 		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocksMode1.", LOG_DEBUG)
 
-		'=== CALCULATE VARIOUS INFORMATION FOR FILTERS ===
-		'we calculate the "average quote" using yesterdays audience but
-		'todays reach ... so it is not 100% accurate (buying stations today
-		'will lower the quote)
-		Local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
-		Local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
-		Local averageChannelQuoteDayTime:Float = 0.0
-		Local averageChannelQuotePrimeTime:Float = 0.0
-		Local dayWithoutPrimeTime:Int[] = [6,7,8,9,10,11,12,13,14,15,16,17,23 ] 'without primetime 18-22 and night time 0-5
-		Local dayOnlyPrimeTime:Int[] = [18,19,20,21,22]
-		If averageChannelReach > 0
-			'GetAverageAudienceForHours expects "hours to skip" !
-			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
-			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetTotalSum() / averageChannelReach
-		EndIf
-
-		Local highestChannelImage:Float = averageChannelImage
-		Local highestChannelQuoteDayTime:Float = 0.0
-		Local highestChannelQuotePrimeTime:Float = 0.0
-
-		Local lowestChannelImage:Float = averageChannelImage
-		Local lowestChannelQuoteDayTime:Float = -1
-		Local lowestChannelQuotePrimeTime:Float = -1
-
-		Local onDayOne:Int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
-		If onDayOne
-			'quotes of TOTAL REACH, not of WHO IS AT HOME
-			lowestChannelQuoteDayTime = 0.005
-			lowestChannelQuotePrimeTime = 0.01
-
-			averageChannelQuoteDayTime = 0.015 '0.02
-			averageChannelQuotePrimeTime = 0.04
-
-			highestChannelQuoteDayTime = 0.045
-			highestChannelQuotePrimeTime = 0.075 '0.1
-		Else
-			For Local i:Int = 1 To 4
-				Local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
-				If image > highestChannelImage Then highestChannelImage = image
-				If image < lowestChannelImage Then lowestChannelImage = image
-
-				'daytime (without night)
-				If averageChannelReach > 0
-					Local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetTotalSum()
-					Local quote:Float = audience / averageChannelReach
-					If lowestChannelQuoteDayTime < 0 Then lowestChannelQuoteDayTime = quote
-					If lowestChannelQuoteDayTime > quote Then lowestChannelQuoteDayTime = quote
-					If highestChannelQuoteDayTime < quote Then highestChannelQuoteDayTime = quote
-				EndIf
-
-				'primetime (without day and night)
-				If averageChannelReach > 0
-					Local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetTotalSum()
-					Local quote:Float = audience / averageChannelReach
-					If lowestChannelQuotePrimeTime < 0 Then lowestChannelQuotePrimeTime = quote
-					If lowestChannelQuotePrimeTime > quote Then lowestChannelQuotePrimeTime = quote
-					If highestChannelQuotePrimeTime < quote Then highestChannelQuotePrimeTime = quote
-				EndIf
-			Next
-		EndIf
-		'convert to percentage
-		highestChannelImage :* 0.01
-		averageChannelImage :* 0.01
-		lowestChannelImage :* 0.01
-
-
+		Local d:SAdContractRefillData = refillData
 		'=== SETUP FILTERS ===
 		Local spotMin:Float = 0.0001 '0.01% to avoid 0.0-spots
 		Local rangeStep:Float = 0.005 '0.5%
@@ -857,10 +801,10 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'the cheap list contains really low contracts
 		Local cheapListFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
-		cheapListFilter.SetAudience(spotMin, Max(spotMin, 0.005))
+		cheapListFilter.SetAudience(spotMin, Max(spotMin, 1.5 * d.lowestChannelQuoteDaytime))
 		'no image requirements - or not more than the lowest image
 		'(so all could sign this)
-		cheapListFilter.SetMinImageRange(0, 0.01 * lowestChannelImage)
+		cheapListFilter.SetMinImageRange(0, 0.01 * d.lowestChannelImage)
 		'cheap contracts should in now case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
@@ -869,63 +813,39 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'more) contracts, that's why we subtract 1
 		If limitInstances > 0 Then cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		'the 12 contracts are divided into 6 groups
-		'4x fitting the lowest requirements (2x day, 2x prime)
-		'4x fitting the average requirements -> 8x planned but slots limited (2x day, 2x prime)
-		'4x fitting the highest requirements (2x day, 2x prime)
+		'the 12 contracts are divided into 3 groups
+		'4x fitting the lowest requirements
+		'4x fitting the average requirements
+		'4x fitting the highest requirements
 		For Local i:Int = 0 Until levelFilters.length
 			If Not levelFilters[i] Then levelFilters[i] = New TAdContractBaseFilter
 		Next
 		'=== LOWEST ===
 		levelFilters[0] = New TAdContractbaseFilter
-		'from 80-120% of lowest (Minimum of 0.01%)
-		levelFilters[0].SetAudience(Max(spotMin, 0.8 * lowestChannelQuoteDaytime), Max(spotMin , 1.2 * lowestChannelQuoteDayTime))
+		'from lowest to average day quote (Minimum of 0.01%)
+		levelFilters[0].SetAudience(Max(spotMin, d.lowestChannelQuoteDaytime), Max(spotMin , d.averageChannelQuoteDayTime))
 		'1% - avgImage %
-		levelFilters[0].SetMinImageRange(0.0, lowestChannelImage)
+		levelFilters[0].SetMinImageRange(0.0, d.lowestChannelImage)
 		'lowest should be without "limits"
 		levelFilters[0].SetSkipLimitedToProgrammeGenre()
 		levelFilters[0].SetSkipLimitedToTargetGroup()
 		If limitInstances > 0 Then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
+		'=== AVERAGE ===
 		levelFilters[1] = New TAdContractbaseFilter
-		levelFilters[1].SetAudience(Max(spotMin, 0.8 * lowestChannelQuotePrimeTime), Max(spotMin , 1.2 * lowestChannelQuotePrimeTime))
-		levelFilters[1].SetMinImageRange(0.0, lowestChannelImage)
-		levelFilters[1].SetSkipLimitedToProgrammeGenre()
-		levelFilters[1].SetSkipLimitedToTargetGroup()
+		'from 80% of avg to lowest prime/dayaverage, may cross with lowest and high
+		levelFilters[1].SetAudience(Max(spotMin, 0.8 * d.averageChannelQuoteDayTime), Max(d.highestChannelQuoteDayTime, d.lowestChannelQuotePrimeTime))
+		'0-100% of average Image
+		levelFilters[1].SetMinImageRange(0, d.averageChannelImage)
 		If limitInstances > 0 Then levelFilters[1].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		'=== AVERAGE ===
-		levelFilters[2] = New TAdContractbaseFilter
-		'from 70% of avg to 130% of avg, may cross with lowest!
-		'levelFilters[1].SetAudience(0.8 * averageChannelQuote, Max(0.01, 1.2 * averageChannelQuote))
-		'weighted Minimum/Maximum (the more away from border, the
-		'stronger the influence)
-		Local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
-		Local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
-		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
-		'0-100% of average Image
-		levelFilters[2].SetMinImageRange(0, averageChannelImage)
-		If limitInstances > 0 Then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
-
-		levelFilters[3] = New TAdContractbaseFilter
-		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
-		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
-		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
-		levelFilters[3].SetMinImageRange(0, averageChannelImage)
-		If limitInstances > 0 Then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
-
 		'=== HIGH ===
-		levelFilters[4] = New TAdContractbaseFilter
-		'from 50% of avg to 150% of highest
-		levelFilters[4].SetAudience(Max(spotMin, 0.7 * highestChannelQuoteDayTime), Max(spotMin, 1.2 * highestChannelQuoteDayTime))
+		levelFilters[2] = New TAdContractbaseFilter
+		'from 80% of highest day to 130% of highest prime
+		levelFilters[2].SetAudience(Max(spotMin, 0.8 * d.highestChannelQuoteDayTime), 1.3 * Max(d.highestChannelQuoteDayTime, d.highestChannelQuotePrimeTime))
 		'0-100% of highest Image
-		levelFilters[4].SetMinImageRange(0, highestChannelImage)
-		If limitInstances > 0 Then levelFilters[4].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
-
-		levelFilters[5] = New TAdContractbaseFilter
-		levelFilters[5].SetAudience(Max(spotMin, 0.7 * highestChannelQuotePrimeTime), Max(spotMin, 1.2 * highestChannelQuotePrimeTime))
-		levelFilters[5].SetMinImageRange(0, highestChannelImage)
-		If limitInstances > 0 Then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		levelFilters[2].SetMinImageRange(0, d.highestChannelImage)
+		If limitInstances > 0 Then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		TLogger.Log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
 
@@ -956,32 +876,14 @@ endrem
 					Local filterNum:Int = 0
 					Select Floor(i / 4)
 						Case 2
-							'levelFilters[4 + 5]
-							If i Mod 4 <= 1
-								filterNum = 4
-								classification = 4
-							Else
-								filterNum = 5
-								classification = 5
-							EndIf
+							filterNum = 2
+							classification = 2
 						Case 1
-							'levelFilters[2 + 3]
-							If i Mod 4 <= 1
-								filterNum = 2
-								classification = 2
-							Else
-								filterNum = 3
-								classification = 3
-							EndIf
+							filterNum = 1
+							classification = 1
 						Case 0
-							'levelFilters[0 + 1]
-							If i Mod 4 <= 1
-								filterNum = 0
-								classification = 0
-							Else
-								filterNum = 1
-								classification = 1
-							EndIf
+							filterNum = 0
+							classification = 0
 					End Select
 
 					'check if there is an adcontract base available for this filter
@@ -1056,68 +958,21 @@ endrem
 		'now all filters contain "valid ranges"
 		TLogger.Log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 
-		For Local i:Int = 0 Until 6
-			If i Mod 2 = 0
-				TLogger.Log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [DAYTIME]", LOG_DEBUG)
-			Else
-				TLogger.Log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
-			EndIf
+		For Local i:Int = 0 Until 3
+			TLogger.Log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString(), LOG_DEBUG)
 		Next
 	End Method
 
 
+	'reduced mode - separate only cheap and non-cheap contracts
 	Method RefillBlocksMode2()
 		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocksMode2.", LOG_DEBUG)
 
-		'=== CALCULATE VARIOUS INFORMATION FOR FILTERS ===
-		'we calculate the "average quote" using yesterdays audience but
-		'todays reach ... so it is not 100% accurate (buying stations today
-		'will lower the quote)
-		Local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
-		Local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
-
-		Local highestChannelImage:Float = averageChannelImage
-		Local lowestChannelImage:Float = averageChannelImage
-
-		Local highestChannelQuote:Float = 0.0
-		Local lowestChannelQuote:Float = -1
-		Local averageChannelQuote:Float = -1
-
-		Local onDayOne:Int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
-		If onDayOne
-			'quotes of TOTAL REACH, not of WHO IS AT HOME
-			lowestChannelQuote = 0.005
-			averageChannelQuote = 0.085
-			highestChannelQuote = 0.175
-		Else
-			For Local i:Int = 1 To 4
-				Local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
-				If image > highestChannelImage Then highestChannelImage = image
-				If image < lowestChannelImage Then lowestChannelImage = image
-
-				If averageChannelReach > 0
-					Local bestAudience:Int = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetBestAudienceForHours(i, [-1]).GetTotalSum()
-					Local quote:Float = bestAudience / Float(averageChannelReach)
-					If highestChannelQuote < quote Then highestChannelQuote = quote
-				EndIf
-			Next
-
-			'highestQuote to use is AT LEAST 17.5% (like default) to avoid
-			'a too low maximum if all channels fail for one day
-			highestChannelQuote = Max(highestChannelQuote, 0.175)
-		EndIf
-		'convert to percentage
-		highestChannelImage :* 0.01
-		averageChannelImage :* 0.01
-		lowestChannelImage :* 0.01
-
+		Local d:SAdContractRefillData = refillData
 
 		'=== OTHER BASIC INFORMATION ===
 		Local limitInstances:Int = GameRules.adContractInstancesMax
 		Local rangeStep:Float = 0.005 '0.5%
-
-
-
 
 		'=== CHEAP LIST ===
 		'the cheap list contains really low contracts
@@ -1125,7 +980,7 @@ endrem
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(0.0005, 0.005)
 		'no image requirements > lowest (so all could sign this)
-		cheapListFilter.SetMinImageRange(0, 0.01 * lowestChannelImage)
+		cheapListFilter.SetMinImageRange(0, 0.01 * d.lowestChannelImage)
 		'cheap contracts should in no case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
@@ -1138,9 +993,9 @@ endrem
 		'=== NON-CHEAP ===
 		levelFilters[0] = New TAdContractbaseFilter
 		'from 0,51% to 120% of best audience of that day
-		levelFilters[0].SetAudience(0.0051, 1.2 * highestChannelQuote)
+		levelFilters[0].SetAudience(0.0051, 1.2 * d.highestChannelQuotePrimeTime)
 		'1% - avgImage %
-		levelFilters[0].SetMinImageRange(0.0, 1.2*highestChannelImage)
+		levelFilters[0].SetMinImageRange(0.0, 1.2 * d.highestChannelImage)
 		If limitInstances > 0 Then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 
@@ -1221,6 +1076,12 @@ endrem
 	'===================================
 	'Ad Agency: Room screen
 	'===================================
+
+	Function onDay:Int( triggerEvent:TEventBase )
+		Local instance:RoomHandler_AdAgency = RoomHandler_AdAgency.GetInstance()
+		instance.refillData.update()
+		Return True
+	End Function
 
 	'if players are in the agency during changes
 	'to their programme collection, react to...
@@ -1491,11 +1352,6 @@ endrem
 	Method onUpdateRoom:Int( triggerEvent:TEventBase )
 		If VendorEntity Then VendorEntity.Update()
 
-		'update refill mode if needed
-		If GameRules.adagencyRefillMode <> _setRefillMode
-			SetRefillMode(GameRules.adagencyRefillMode)
-		EndIf
-
 		ListSortVisible = False
 		If Not draggedGuiAdContract
 			'show and react to mouse-over-sort-buttons
@@ -1704,3 +1560,105 @@ Type TGUIAdContractSlotList Extends TGUIGameSlotList
 		Return False
 	End Method
 End Type
+
+
+
+'common image and broadcast quote statistics used for configuring ad contract filters
+'updated once a day
+Struct SAdContractRefillData
+
+	Field lowestChannelImage:Float
+	Field averageChannelImage:Float
+	Field highestChannelImage:Float
+
+	'quotes of TOTAL REACH, not of WHO IS AT HOME
+	Field lowestChannelQuoteDayTime:Float
+	Field averageChannelQuoteDayTime:Float
+	Field highestChannelQuoteDayTime:Float
+
+	Field lowestChannelQuotePrimeTime:Float
+	Field averageChannelQuotePrimeTime:Float
+	Field highestChannelQuotePrimeTime:Float
+
+	Method update()
+		Local day:Int = GetWorldTime().GetDay()
+
+		If day > GetWorldtime().GetStartDay()
+			Local statistics:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day-1, True)
+
+			Local averageImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
+			Local lowestImage:Float = averageImage
+			Local highestImage:Float = averageImage
+
+			Local lowestQuoteDayTime:Float = 1.0
+			Local averageQuoteDayTime:Float = 0.0
+			Local highestQuoteDayTime:Float = 0.0
+
+			Local lowestQuotePrimeTime:Float = 1.0
+			Local averageQuotePrimeTime:Float = 0.0
+			Local highestQuotePrimeTime:Float = 0.0
+
+			Local broadcast:TAudienceResultBase
+			Local value:Float = 0
+			Local dayCount:Int = 0
+			Local primeCount:Int = 0
+			For Local i:Int = 1 To 4
+				Local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
+				If image > highestImage Then highestImage = image
+				If image < lowestImage Then lowestImage = image
+
+				For local h:Int = 0 to 23
+					broadcast = statistics.GetAudienceResult(i, h, False)
+					If broadcast
+						value = broadcast.GetWholeMarketAudienceQuotePercentage()
+						If value > 0
+							'print "value " + i + " hour "+ h +" "+value
+							If h < 18 Or h > 22
+								dayCount:+1
+								averageQuoteDayTime:+ value
+								If lowestQuoteDayTime > value Then lowestQuoteDayTime = value
+								If highestQuoteDayTime < value Then highestQuoteDayTime = value
+							Else
+								primeCount:+1
+								averageQuotePrimeTime:+ value
+								If lowestQuotePrimeTime > value Then lowestQuotePrimeTime = value
+								If highestQuotePrimeTime < value Then highestQuotePrimeTime = value
+							EndIf
+						EndIf
+					EndIf
+				Next
+			Next
+			averageQuoteDayTime:/ dayCount
+			averageQuotePrimeTime:/ primeCount
+
+			lowestChannelImage = lowestImage * 0.01
+			averageChannelImage = averageImage * 0.01
+			highestChannelImage = highestImage * 0.01
+
+			lowestChannelQuoteDayTime = lowestQuoteDayTime
+			averageChannelQuoteDayTime = averageQuoteDayTime
+			highestChannelQuoteDayTime = highestQuoteDayTime
+
+			lowestChannelQuotePrimeTime = lowestQuotePrimeTime
+			averageChannelQuotePrimeTime = averageQuotePrimeTime
+			highestChannelQuotePrimeTime = highestQuotePrimeTime
+		Else
+			'from refill2
+			'averageChannelQuote = 0.085
+			'highestChannelQuote = 0.175
+
+			lowestChannelQuoteDayTime:Float = 0.005
+			averageChannelQuoteDayTime:Float = 0.01
+			highestChannelQuoteDayTime:Float = 0.07
+
+			lowestChannelQuotePrimeTime:Float = 0.07
+			averageChannelQuotePrimeTime:Float = 0.1
+			highestChannelQuotePrimeTime:Float = 0.15
+		EndIf
+		rem
+		print "Image "+ lowestChannelImage + " " + averageChannelImage + " " + highestChannelImage
+		print "Day   "+ lowestChannelQuoteDayTime + " " + averageChannelQuoteDayTime + " " + highestChannelQuoteDayTime
+		print "Prime "+ lowestChannelQuotePrimeTime + " " + averageChannelQuotePrimeTime + " " + highestChannelQuotePrimeTime
+		endrem
+	EndMethod
+End Struct
