@@ -3758,15 +3758,15 @@
 
 		<!-- from Stukov -->
 
-		<person id="Stukov_GeorgeMiller_" first_name="Gabriel" last_name="Millson" first_name_original="George" last_name_original="Miller" imdb_id="nm0004306" gender="1" job="1" topgenre="2" birthday="1945-03-03" deathday="" />
+		<person id="Stukov_GeorgeMiller_" first_name="Gabriel" last_name="Millson" first_name_original="George" last_name_original="Miller" imdb_id="nm0004306" gender="1" job="1" birthday="1945-03-03" deathday="" />
 		<person id="Stukov_SandraEcheverría" first_name="Sandy" last_name="Evecharrié" first_name_original="Sandra" last_name_original="Echeverría" imdb_id="nm1214700" gender="2" job="98" birthday="1984-12-11" deathday="" />
 		<person id="Stukov_HaileeSteinfeld" first_name="Hayden" last_name="Stonefield" first_name_original="Hailee" last_name_original="Steinfeld" imdb_id="nm2794962" gender="2" job="106" birthday="1996-12-11" deathday="" />
 		<person id="Stukov_HonorDavisPye" first_name="Holton" last_name="Daves-Pie" first_name_original="Honor" last_name_original="Davis-Pye" imdb_id="nm10675999" gender="2" job="96" birthday="2009-12-11" deathday="" />
-		<person id="Stukov_ReyMysterio" first_name="Ray" last_name="Mistico" first_name_original="Rey" last_name_original="Mysterio" imdb_id="nm0347595" gender="1" job="4192"  birthday="1974-12-11" deathday=""/>
-		<person id="Stukov_ThomasCarter" first_name="Travis" last_name="Cartridge" first_name_original="Thomas" last_name_original="Carter" imdb_id="nm0141961" gender="1" job="69"  birthday="1953-07-17" deathday=""/>
-		<person id="Stukov_RandalKleiser" first_name="Randy" last_name="Kliesing" first_name_original="Randal" last_name_original="Kleiser" imdb_id="nm0459170" gender="1" job="1"  birthday="1946-07-20" deathday=""/>
-		<person id="Stukov_JoeDante" first_name="John" last_name="Danti" first_name_original="Joe" last_name_original="Dante" imdb_id="nm0001102" gender="1" job="1" topgenre="12"  birthday="1946-11-28" deathday=""/>
-		<person id="Stukov_BradfordDillman" first_name="Brantley" last_name="Dellmen" first_name_original="Bradford" last_name_original="Dillman" imdb_id="nm0226947" gender="1" job="34" topgenre="12" birthday="1930-04-14" deathday="2018-01-16" />
+		<person id="Stukov_ReyMysterio" first_name="Ray" last_name="Mistico" first_name_original="Rey" last_name_original="Mysterio" imdb_id="nm0347595" gender="1" job="4192" birthday="1974-12-11" deathday=""/>
+		<person id="Stukov_ThomasCarter" first_name="Travis" last_name="Cartridge" first_name_original="Thomas" last_name_original="Carter" imdb_id="nm0141961" gender="1" job="69" birthday="1953-07-17" deathday=""/>
+		<person id="Stukov_RandalKleiser" first_name="Randy" last_name="Kliesing" first_name_original="Randal" last_name_original="Kleiser" imdb_id="nm0459170" gender="1" job="1" birthday="1946-07-20" deathday=""/>
+		<person id="Stukov_JoeDante" first_name="John" last_name="Danti" first_name_original="Joe" last_name_original="Dante" imdb_id="nm0001102" gender="1" job="1" birthday="1946-11-28" deathday=""/>
+		<person id="Stukov_BradfordDillman" first_name="Brantley" last_name="Dellmen" first_name_original="Bradford" last_name_original="Dillman" imdb_id="nm0226947" gender="1" job="34" birthday="1930-04-14" deathday="2018-01-16" />
 		<person id="Stukov_JackSkyyler" first_name="Chuck" last_name="Skyylent" first_name_original="Jack" last_name_original="Skyyler" imdb_id="nm4457201" gender="1" job="1" birthday="" deathday="" />
 		<person id="Stukov_SteveYamamoto" first_name="Stephan" last_name="Yatamono" first_name_original="Steve" last_name_original="Yamamoto" imdb_id="nm0945493" gender="1" job="1" birthday="" deathday="" />
 		<person id="Stukov_PaulZiller" first_name="Pete" last_name="Zillsen" first_name_original="Paul" last_name_original="Ziller" imdb_id="nm0956484" gender="1" job="1" birthday="" deathday="" />
