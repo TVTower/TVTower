@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="Data entries by scr0llbaer" />
+	<version value="3" comment="Data entries by scr0llbaer. TODO: Apply references to roles in scripts. Remove gender from job entries and let it inherit from role, once that feature is in release." />
 
 	<insignificantpeople>
 		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" bookable="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
@@ -35,11 +35,11 @@
 		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Grienpies schlägt Alarm</de>
-				<en>Creenpiece sounds the alarm</en>
+				<en>Creampeas sounds the alarm</en>
 			</title>
 			<description>
 				<de>Wegen Wal in Themse müsse eine Rettungsaktion sofort eingeleitet werden.</de>
-				<en>Rescue operation for whale in Thames must be initiated immediately, Creenpiece said.</en>
+				<en>Rescue operation for whale in Thames must be initiated immediately, Creampeas said.</en>
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 			<effects>
@@ -54,7 +54,7 @@
 			</title>
 			<description>
 				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
-				<en>Creenpiece launches rescue action. The animal must not come to harm, the spokesman said.</en>
+				<en>Creampeas launches rescue action. The animal must not come to harm, the spokesman said.</en>
 			</description>
 			<data genre="4" price="1" quality="50" fictional="1" />
 			<effects>
@@ -68,8 +68,8 @@
 				<en>Bad weather hinders rescue action for whale</en>
 			</title>
 			<description>
-				<de>Wegen dem anhaltenden Sturm können die Schiffe nicht einsatzbereit gemacht werden, ist es aus der Leitstelle zu vernehmen.</de>
-				<en>Due to the ongoing storm, the boats can not be made operational, according to the control center.</en>
+				<de>Die Leitstelle vermeldet, dass die Schiffe auf Grund des anhaltenden Sturms nicht einsatzbereit gemacht werden können.</de>
+				<en>The control center reports that the ships cannot be made operational due to the ongoing storm.</en>
 			</description>
 			<data genre="4" price="1" quality="60" fictional="1" />
 			<effects>
@@ -99,7 +99,7 @@
 			</title>
 			<description>
 				<de>Grienpies: Man müsse umgehend eine Lösung für die Situation finden, sonst überlebe der Wal nicht.</de>
-				<en>Creenpiece: A solution to the situation must be found immediately, otherwise the whale will not survive, Creenpiece said.</en>
+				<en>Creampeas: A solution to the situation must be found immediately, otherwise the whale will not survive, Creampeas said.</en>
 			</description>
 			<data genre="4" price="1" quality="40" fictional="1" />
 			<effects>
@@ -372,7 +372,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<production_time value="60" />
 		</scripttemplate>
 
-		<scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these. TODO: targetgroupattractivity">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -417,7 +417,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<targetgroupattractivity children_male="0.5" children_female="-1.0" teenagers_male="1.0" teenagers_female="-0.5" housewives_male="0" housewives_female="-1.0" employees_male="2.0" employees_female="0" unemployed_male="0.5" unemployed_female="-1.0" managers_male="2.0" managers_female="0.5" pensioners_male="0" pensioners_female="-1.0" comment="TODO: Does this work in scripts? Clarify." />
+			<targetgroupattractivity children_male="0.5" children_female="-1.0" teenagers_male="1.0" teenagers_female="-0.5" housewives_male="0" housewives_female="-1.0" employees_male="2.0" employees_female="0" unemployed_male="0.5" unemployed_female="-1.0" managers_male="2.0" managers_female="0.5" pensioners_male="0" pensioners_female="-1.0" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
@@ -995,12 +995,12 @@ About 1000 per episode.</en>
 					<en>Mystery|Riddle|Enigma</en>
 				</mystery>
 				<donkey>
-					<de>Esels|Lemuren|Schimpansen|Pavianen</de>
+					<de>Esels|Lemuren|Schimpansen|Pavian</de>
 					<en>Donkey|Lemure|Chimpanzee|Baboon</en>
 				</donkey>
 				<bay>
-					<de>bucht|insel|eiland</de>
-					<en>Bay|Island|Isle</en>
+					<de>bucht|insel|eiland|riff|strand</de>
+					<en>Bay|Island|Isle|Reef|Shore</en>
 				</bay>
 			</variables>
 
@@ -1027,7 +1027,7 @@ About 1000 per episode.</en>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="ef230bd2-7d96-43ec-bb0d-01e84787243c">
 					<title>
-						<de>Die kämpfst wie eine Kuh</de>
+						<de>Du kämpfst wie eine Kuh</de>
 						<en>You fight like a Cow</en>
 					</title>
 					<description>
@@ -1041,7 +1041,7 @@ About 1000 per episode.</en>
 						<en>Theft of Hearts</en>
 					</title>
 					<description>
-						<de>Der Schwertmeisterin wurde Paroli geboten, jetzt muss als zweite Prüfung ein wertvolles Artefakt aus dem Haus der Gouverneurin gestohlen werden. Dort wird er freilich von Evelyn ertappt. Amors Pfeile treffen ihn. Evelyn ist gar nicht mal abgeneigt...</de>
+						<de>Der Schwertmeisterin hat Raymond Paroli geboten, jetzt muss er als zweite Prüfung ein wertvolles Artefakt aus dem Haus der Gouverneurin stehlen. Dort wird er freilich von Evelyn ertappt. Amors Pfeile treffen ihn. Evelyn ist gar nicht mal abgeneigt...</de>
 						<en>The sword master? Raymond stood up to her. Now a valuable artifact must be stolen from the governor's house as the second trial. There, of course, he is caught by Evelyn. Cupid's arrows hit him. Evelyn isn't even averse...</en>
 					</description>
 				</scripttemplate>
@@ -1161,8 +1161,8 @@ About 1000 per episode.</en>
 
 			<variables>
 				<dead>
-					<de>Toter|Karger|Kalter</de>
-					<en>Dead|Desolate|Cold</en>
+					<de>Toter|Karger|Kalter|Trostloser|Trister|Rauer</de>
+					<en>Dead|Desolate|Cold|Dismal|Dreary|Bleak</en>
 				</dead>
 				<winter>
 					<de>Winter|Schnee|Schneeregen|Eisregen|Frost</de>
@@ -1332,8 +1332,8 @@ About 1000 per episode.</en>
 
 			<variables>
 				<title>
-					<de>Die %space%%adventures% des %captain% Ween|Die %galactic% %adventures-c% des %captain% Ween</de>
-					<en>The %space% %adventures% of %captain% Ween|The %galactic% %adventures-c% of %captain% Ween</en>
+					<de>Die %space%%adventures% des %captain% Ween|Die %galactic% %adventures_c% des %captain% Ween</de>
+					<en>The %space% %adventures% of %captain% Ween|The %galactic% %adventures_c% of %captain% Ween</en>
 				</title>
 				<space>
 					<de>Weltraum|Weltall|Sternen|Galaxis</de>
@@ -1347,13 +1347,13 @@ About 1000 per episode.</en>
 					<de>Galaktischen|Kosmischen|Außerirdischen|Überirdischen</de>
 					<en>Galactic|Cosmic|Extraterrestrial|Celestial</en>
 				</galactic>
-				<adventures-c>
+				<adventures_c>
 					<de>Abenteuer|Missionen|Erkundungen</de>
 					<en>Adventures|Missions|Quests</en>
-				</adventures-c>
+				</adventures_c>
 				<captain>
-					<de>Captain|Colonel|Commander</de>
-					<en>Captain|Colonel|Commander</en>
+					<de>Captain|Colonel|Commander|Admiral</de>
+					<en>Captain|Colonel|Commander|Admiral</en>
 				</captain>
 			</variables>
 
@@ -1460,7 +1460,7 @@ About 1000 per episode.</en>
 			<speed min="50" max="70" />
 		</scripttemplate>
 
-		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Leisure_Suit_Larry">
+		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Leisure_Suit_Larry - TODO: eventually translate some episode titles to German, keeping alliterations">
 			<title>
 				<de>Leather Jacket Leo, %ladykiller%</de>
 				<en>Leather Jacket Leo, %ladykiller%</en>
