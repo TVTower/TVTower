@@ -238,11 +238,13 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			scriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(True, True)
 			Local rnd:Int = RandRange(0, 100)
 			'print "contemplating "+ scriptTemplate.getTitle() +" with random "+ rnd
-			If scriptTemplate.IsLive() 
+			If scriptTemplate.productionLimit <> 1
+				'ignore script
+			ElseIf scriptTemplate.IsLive() 
 				If rnd > 95 Then Return scriptTemplate
 			ElseIf scriptTemplate.IsSeries() 
 				If rnd > 90 Then Return scriptTemplate
-			ElseIf scriptTemplate.productionLimit = 1
+			Else
 				'it is not the outcome that will be used for the production, but it is an indicator
 				Local outcome:Int = 100 * scriptTemplate.Getoutcome()
 				If rnd > outcome Then Return scriptTemplate
