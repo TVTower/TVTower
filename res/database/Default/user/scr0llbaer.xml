@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="Data entries by scr0llbaer. TODO: Apply references to roles in scripts. Remove gender from job entries and let it inherit from role, once that feature is in release." />
+	<version value="3" comment="Data entries by scr0llbaer. TODO: Apply references to roles in scripts. TODO: maybe eventually re-introduce 'funny numbers' for production_limit" />
 
 	<insignificantpeople>
 		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" bookable="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
@@ -13,8 +13,8 @@
 	<allnews>
 		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in Themse gesichtet</de>
-				<en>Whale sighted in Thames</en>
+				<de>Wal in %thames% gesichtet</de>
+				<en>Whale sighted in %thames%</en>
 			</title>
 			<description>
 				<de>Da staunten die Anwohner an den Ufern des Flusses nicht schlecht, als sie am frühen Morgen lautes Platschen und hoch aufspritzendes Wasser bewundern durften.</de>
@@ -24,12 +24,12 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="92598126-f227-4fd2-894e-a5902eaeb392" />
 			</effects>
-			<!-- TODO: variables>
+			<variables>
 				<thames>
 					<de>Themse|Rhein|Mississippi|Nil|Amazonas|Wolga|Seine</de>
 					<en>Thames|Rhine|Mississippi|Nile|Amazon River|Volga|Seine</en>
 				</thames>
-			</variables-->
+			</variables>
 		</news>
 
 		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
@@ -38,8 +38,8 @@
 				<en>Creampeas sounds the alarm</en>
 			</title>
 			<description>
-				<de>Wegen Wal in Themse müsse eine Rettungsaktion sofort eingeleitet werden.</de>
-				<en>Rescue operation for whale in Thames must be initiated immediately, Creampeas said.</en>
+				<de>Wegen Wal in %thames% müsse eine Rettungsaktion sofort eingeleitet werden.</de>
+				<en>Rescue operation for whale in %thames% must be initiated immediately, Creampeas said.</en>
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 			<effects>
@@ -49,8 +49,8 @@
 
 		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in Themse: Rettung in Sicht</de>
-				<en>Whale in Thames: Rescue in sight</en>
+				<de>Wal in %thames%: Rettung in Sicht</de>
+				<en>Whale in %thames%: Rescue in sight</en>
 			</title>
 			<description>
 				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
@@ -109,8 +109,8 @@
 
 		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in Themse ist tot</de>
-				<en>Whale in Thames dead</en>
+				<de>Wal in %thames% ist tot</de>
+				<en>Whale in %thames% dead</en>
 			</title>
 			<description>
 				<de>Die genaue Todesursache ist noch unklar, vermutlich war der Wal bereits schwach und konnte nicht genug Nahrung finden.</de>
@@ -121,8 +121,8 @@
 
 		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in Themse schwimmt zur Flußmündung</de>
-				<en>Whale in Thames swims to river mouth</en>
+				<de>Wal in %thames% schwimmt zur Flußmündung</de>
+				<en>Whale in %thames% swims to river mouth</en>
 			</title>
 			<description>
 				<de>Es sind Fortschritte bei der Rettungsaktion zu verzeichnen. Hoffentlich findet der Wal seinen Weg.</de>
@@ -136,8 +136,8 @@
 
 		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal von Themse ins Meer zurückgeschwommen</de>
-				<en>Whale from Thames swam back to sea</en>
+				<de>Wal von %thames% ins Meer zurückgeschwommen</de>
+				<en>Whale from %thames% swam back to sea</en>
 			</title>
 			<description>
 				<de>Na also! Der Wal ist wieder in seinem natürlichen Habitat.</de>
@@ -323,7 +323,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<jobs>
 				<job index="0" function="8" required="1" />
 			</jobs>
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="420" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="6,300" />
 			<blocks value="3" />
 			<price min="2000" max="4000" />
@@ -361,7 +361,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="6" function="8" required="0" />
 				<job index="7" function="16" required="0" />
 			</jobs>
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="999" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="104,300" />
 			<blocks value="3" />
 			<price min="200000" max="500000" />
@@ -404,7 +404,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="1337" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="6,16" />
 			<blocks value="1" />
 			<price min="10000" max="20000" />
@@ -452,7 +452,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="666" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="301" subgenres="204,7" />
 			<groups target_groups_optional="158" />
 			<blocks value="1" />
@@ -500,7 +500,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="9090" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="203,103" />
 			<blocks value="1" />
 			<price min="10000" max="20000" />
@@ -548,7 +548,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="2323" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="201,101" />
 			<groups target_groups_optional="104" />
 			<blocks value="1" />
@@ -596,7 +596,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="5" production_limit="1685" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="6,11" />
 			<groups target_groups_optional="232" />
 			<blocks value="1" />
@@ -644,7 +644,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="9000" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="104" subgenres="2,16" />
 			<groups target_groups_optional="19" />
 			<blocks value="1" />
@@ -663,23 +663,74 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
 			<title>
-				<de>Die Götterwelt von %bali%</de>
-				<en>The Gods of %bali%</en>
+				<de>%the_gods_of%</de>
+				<en>%the_gods_of%</en>
 			</title>
 			<description>
 				<de>Alle 412.000 Götter werden vorgestellt.
 
-Etwa 1000 pro Episode.</de>
+Also 4120 per Episode.</de>
 				<en>All 412,000 gods are presented.
 
-About 1000 per episode.</en>
+So that's 4120 per episode.</en>
 			</description>
 
 			<variables>
-				<bali>
-					<de>Bali|Laos|Kambodscha|Myanmar|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien</de>
-					<en>Bali|Laos|Cambodia|Myanmar|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia</en>
-				</bali>
+				<index>
+					<de>1|2|3|4|5|6|7|8|9|10|11|12</de>
+				</index>
+				<the_gods_of>
+					<de>Die Götterwelt von ${region_${index}}</de>
+					<en>The Gods of ${region_${index}}</en>
+				</the_gods_of>
+				<region_1>
+					<de>Bali</de>
+					<en>Bali</en>
+				</region_1>
+				<region_2>
+					<de>Laos</de>
+					<en>Laos</en>
+				</region_2>
+				<region_3>
+					<de>Kambodscha</de>
+					<en>Cambodia</en>
+				</region_3>
+				<region_4>
+					<de>Myanmar</de>
+					<en>Myanmar</en>
+				</region_4>
+				<region_5>
+					<de>Bhutan</de>
+					<en>Bhutan</en>
+				</region_5>
+				<region_6>
+					<de>Nepal</de>
+					<en>Nepal</en>
+				</region_6>
+				<region_7>
+					<de>Bangladesch</de>
+					<en>Bangladesch</en>
+				</region_7>
+				<region_8>
+					<de>Sri Lanka</de>
+					<en>Sri Lanka</en>
+				</region_8>
+				<region_9>
+					<de>Tibet</de>
+					<en>Tibet</en>
+				</region_9>
+				<region_10>
+					<de>Vietnam</de>
+					<en>Vietnam</en>
+				</region_10>
+				<region_11>
+					<de>Macau</de>
+					<en>Macau</en>
+				</region_11>
+				<region_12>
+					<de>Kalmückien</de>
+					<en>Kalmykia</en>
+				</region_12>
 			</variables>
 
 			<jobs>
@@ -688,7 +739,7 @@ About 1000 per episode.</en>
 				<job index="2" function="128" required="1" />
 			</jobs>
 
-			<data flags="4" production_limit="412" production_broadcast_limit="2" production_licence_flags="36" />
+			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks value="2" />
 			<price min="3000" max="6000" />
@@ -737,18 +788,18 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" />
-				<job index="2" function="2" required="1" gender="2" role_guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" />
-				<job index="3" function="2" required="1" gender="1" role_guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" />
-				<job index="4" function="2" required="1" gender="2" role_guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" />
-				<job index="5" function="2" required="1" gender="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
-				<job index="6" function="2" required="1" gender="2" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
-				<job index="7" function="2" required="1" gender="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
-				<job index="8" function="2" required="1" gender="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
-				<job index="9" function="2" required="1" gender="0" role_guid="a4061798-165c-4dc0-9025-84e1c954155b" />
-				<job index="10" function="2" required="1" gender="0" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
-				<job index="11" function="2" required="1" gender="0" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
-				<job index="12" function="2" required="1" gender="0" role_guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" />
+				<job index="1" function="2" required="1" role_guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" />
+				<job index="2" function="2" required="1" role_guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" />
+				<job index="3" function="2" required="1" role_guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" />
+				<job index="4" function="2" required="1" role_guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" />
+				<job index="5" function="2" required="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
+				<job index="6" function="2" required="1" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
+				<job index="7" function="2" required="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
+				<job index="8" function="2" required="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
+				<job index="9" function="2" required="1" role_guid="a4061798-165c-4dc0-9025-84e1c954155b" />
+				<job index="10" function="2" required="1" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
+				<job index="11" function="2" required="1" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
+				<job index="12" function="2" required="1" role_guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" />
 			</jobs>
 
 			<data flags_optional="104" />
@@ -781,19 +832,19 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" />
-				<job index="2" function="2" required="1" gender="2" role_guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" />
-				<job index="3" function="2" required="1" gender="1" role_guid="1bae2190-de25-4400-a3a8-3606d1b6944b" />
-				<job index="4" function="2" required="1" gender="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
-				<job index="5" function="2" required="1" gender="2" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
-				<job index="6" function="2" required="1" gender="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
-				<job index="7" function="2" required="1" gender="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
-				<job index="8" function="2" required="1" gender="0" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
-				<job index="9" function="2" required="1" gender="0" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
-				<job index="10" function="2" required="1" gender="1" role_guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" />
-				<job index="11" function="2" required="1" gender="1" role_guid="c2edde3f-c2ff-4800-a020-79f59662176f" />
-				<job index="12" function="2" required="1" gender="1" role_guid="29aa9b04-b155-4975-b1b0-45355c293668" />
-				<job index="13" function="2" required="1" gender="1" role_guid="c4f29c58-9028-48d4-84de-cad66012d2e4" />
+				<job index="1" function="2" required="1" role_guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" />
+				<job index="2" function="2" required="1" role_guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" />
+				<job index="3" function="2" required="1" role_guid="1bae2190-de25-4400-a3a8-3606d1b6944b" />
+				<job index="4" function="2" required="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
+				<job index="5" function="2" required="1" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
+				<job index="6" function="2" required="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
+				<job index="7" function="2" required="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
+				<job index="8" function="2" required="1" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
+				<job index="9" function="2" required="1" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
+				<job index="10" function="2" required="1" role_guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" />
+				<job index="11" function="2" required="1" role_guid="c2edde3f-c2ff-4800-a020-79f59662176f" />
+				<job index="12" function="2" required="1" role_guid="29aa9b04-b155-4975-b1b0-45355c293668" />
+				<job index="13" function="2" required="1" role_guid="c4f29c58-9028-48d4-84de-cad66012d2e4" />
 				<job index="14" function="32" required="1" gender="2" />
 				<job index="15" function="32" required="1" gender="1" />
 			</jobs>
@@ -807,7 +858,7 @@ About 1000 per episode.</en>
 			<review min="80" max="95" />
 			<speed min="70" max="90" />
 			<studio_size value="3" />
-			<!-- TODO: releaseTime year_relative="+3" comment="Is relative releaseTime available for scripts? It would make sense!" /-->
+			<availability script="TIME_YEARSPLAYED>2" />
 		</scripttemplate>
 
 		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Zak_McKracken_and_the_Alien_Mindbenders">
@@ -833,11 +884,11 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" />
-				<job index="2" function="2" required="1" gender="2" role_guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" />
-				<job index="3" function="2" required="1" gender="2" role_guid="833302a7-87ee-4afc-95db-f0fde5e7866a" />
-				<job index="4" function="2" required="1" gender="2" role_guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" />
-				<job index="5" function="2" required="1" gender="1" role_guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" />
+				<job index="1" function="2" required="1" role_guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" />
+				<job index="2" function="2" required="1" role_guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" />
+				<job index="3" function="2" required="1" role_guid="833302a7-87ee-4afc-95db-f0fde5e7866a" />
+				<job index="4" function="2" required="1" role_guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" />
+				<job index="5" function="2" required="1" role_guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" />
 				<job index="6" function="2" required="1" gender="1" />
 				<job index="7" function="2" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
@@ -958,12 +1009,12 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" />
-				<job index="2" function="2" required="1" gender="2" role_guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" />
-				<job index="3" function="2" required="1" gender="1" role_guid="d2168e7c-3c95-4778-b406-cb305633946a" />
-				<job index="4" function="2" required="1" gender="1" role_guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" />
-				<job index="5" function="2" required="1" gender="2" role_guid="53104872-6c35-43df-a8b6-a3863db9cf9b" />
-				<job index="6" function="2" required="1" gender="1" role_guid="8a54557b-ded8-4427-bb60-7796c1f84317" />
+				<job index="1" function="2" required="1" role_guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" />
+				<job index="2" function="2" required="1" role_guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" />
+				<job index="3" function="2" required="1" role_guid="d2168e7c-3c95-4778-b406-cb305633946a" />
+				<job index="4" function="2" required="1" role_guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" />
+				<job index="5" function="2" required="1" role_guid="53104872-6c35-43df-a8b6-a3863db9cf9b" />
+				<job index="6" function="2" required="1" role_guid="8a54557b-ded8-4427-bb60-7796c1f84317" />
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
@@ -1129,9 +1180,9 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" />
-				<job index="2" function="2" required="1" gender="2" role_guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" />
-				<job index="3" function="2" required="1" gender="1" role_guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" />
+				<job index="1" function="2" required="1" role_guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" />
+				<job index="2" function="2" required="1" role_guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" />
+				<job index="3" function="2" required="1" role_guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" />
 				<job index="4" function="2" required="1" gender="2" />
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
@@ -1299,9 +1350,9 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" />
-				<job index="2" function="2" required="1" gender="2" role_guid="a42f6980-1685-422c-8796-8b502b9b41d9" />
-				<job index="3" function="2" required="1" gender="1" role_guid="d783dea1-1f41-496f-a239-12ac44c6fe60" />
+				<job index="1" function="2" required="1" role_guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" />
+				<job index="2" function="2" required="1" role_guid="a42f6980-1685-422c-8796-8b502b9b41d9" />
+				<job index="3" function="2" required="1" role_guid="d783dea1-1f41-496f-a239-12ac44c6fe60" />
 				<job index="4" function="2" required="1" gender="1" />
 				<job index="5" function="2" required="1" gender="2" />
 				<job index="6" function="32" required="1" gender="1" />
@@ -1442,8 +1493,8 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="437539e5-4c6b-4207-981a-051a82021745" />
-				<job index="2" function="2" required="1" gender="0" role_guid="ba05561a-0266-4cfe-b020-353781fd881c" />
+				<job index="1" function="2" required="1" role_guid="437539e5-4c6b-4207-981a-051a82021745" />
+				<job index="2" function="2" required="1" role_guid="ba05561a-0266-4cfe-b020-353781fd881c" />
 				<job index="3" function="2" required="1" gender="1" />
 				<job index="4" function="2" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
@@ -1562,8 +1613,8 @@ About 1000 per episode.</en>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" role_guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" />
-				<job index="2" function="2" required="1" gender="2" role_guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" />
+				<job index="1" function="2" required="1" role_guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" />
+				<job index="2" function="2" required="1" role_guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" />
 				<job index="3" function="2" required="1" gender="1" />
 				<job index="4" function="2" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
