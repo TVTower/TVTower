@@ -11520,7 +11520,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 1  - 2011  -->
 
-		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" creator="" created_by="DerFronck">
+		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" creator="8782" created_by="DerFronck">
 			<title>
 				<de>Das Spiel um den Thron (Staffel 1)</de>
 				<en>A Throne in Ice and Fire (Season 1)</en>
@@ -11547,7 +11547,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="2011" distribution="2" maingenre="10" subgenre="1,7" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="90" speed="60" outcome="80" />
 			<children>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der Winter wird kommen</de>
 						<en>Something cold is coming</en>
@@ -11562,7 +11562,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="40" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1668746" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1668746" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der Weg des Königs</de>
 						<en>The Way of the King</en>
@@ -11577,7 +11577,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="45" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829962" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829962" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Lord, es schneit</de>
 						<en>Lord, it's snowing</en>
@@ -11592,7 +11592,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829963" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829963" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Kümmel, Saufgelage und Erbrochenes</de>
 						<en>Gimps, Rascals, and Out-of-Order Things</en>
@@ -11607,7 +11607,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="72" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829964" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1829964" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der Storch und die Möwe</de>
 						<en>The Hound and the Iron</en>
@@ -11622,7 +11622,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="81" speed="54" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837862" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837862" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Die Krone aus Gold</de>
 						<en>The Crown of Gold</en>
@@ -11637,7 +11637,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="75" speed="56" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837863" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837863" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Friss oder werde gefressen</de>
 						<en>You Live or You Lose</en>
@@ -11652,7 +11652,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="81" speed="52" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837864" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1837864" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Am Ende wird es spitz</de>
 						<en>The Punch Lines up at the End</en>
@@ -11667,7 +11667,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="55" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851398" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851398" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Bachelor</de>
 						<en>Bachelor</en>
@@ -11682,7 +11682,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="86" speed="68" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851397" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1851397" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Flammen und Glut</de>
 						<en>Flames and Gore</en>
@@ -11702,7 +11702,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 2 - 2012-->
 
-		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" creator="" created_by="DerFronck">
+		<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0944947" creator="8782" created_by="DerFronck">
 			<title>
 				<de>Das Spiel um den Thron (Staffel 2)</de>
 				<en>A Throne in Ice and Fire (Season 2)</en>
@@ -11729,7 +11729,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="2012" distribution="2" maingenre="10" subgenre="1,7" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="88" speed="65" outcome="80" />
 			<children>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1971833" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1971833" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Im Norden vergisst man nichts</de>
 						<en>In the North They Don't Forget</en>
@@ -11744,7 +11744,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="40" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069318" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069318" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Das dunkle Land</de>
 						<en>The Dark Land</en>
@@ -11759,7 +11759,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="45" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2070135" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2070135" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Tote sterben nicht</de>
 						<en>The Dead Don't Die</en>
@@ -11774,7 +11774,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="80" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069319" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2069319" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der Knochengarten</de>
 						<en>The Bone Garden</en>
@@ -11789,7 +11789,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="82" speed="53" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2074658" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2074658" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der Schatten aus Harrenhal</de>
 						<en>The Shadow from Harrenhal</en>
@@ -11804,7 +11804,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="54" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085238" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085238" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Die alten und die neuen Götter</de>
 						<en>The Old and the New Gods</en>
@@ -11819,7 +11819,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="50" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085239" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E07" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085239" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der ehrenlose Mann</de>
 						<en>The Honorless Man</en>
@@ -11834,7 +11834,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="81" speed="52" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085240" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E08" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2085240" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Kronprinz aus Winterfell</de>
 						<en>Crown Prince from Winterfell</en>
@@ -11849,7 +11849,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="74" speed="50" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2084342" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E09" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2084342" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Tiefschwarze Wässer</de>
 						<en>Deep Dark Waters</en>
@@ -11864,7 +11864,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="89" speed="63" />
 				</programme>
-				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2112510" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E10" product="2" licence_type="2" tmdb_id="0" imdb_id="tt2112510" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Alle Menschen müssen sterben</de>
 						<en>All Men Must Die</en>
@@ -11886,7 +11886,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Staffel 1 - 2010 -->
 
-		<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt1520211" creator="" created_by="DerFronck">
+		<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt1520211" creator="8782" created_by="DerFronck">
 			<title>
 				<de>Der Tod auf Latschen (Staffel 1)</de>
 				<en>The Treading Death (Season 1)</en>
@@ -11912,7 +11912,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="2010" distribution="2" maingenre="12" subgenre="17,7" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="74" speed="60" outcome="85" />
 			<children>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="" created_by="DerFronck">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Geschichten aus alten Zeiten</de>
 						<en>Stories from old times</en>
@@ -11927,7 +11927,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="64" speed="40" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628064" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628064" creator="8782" created_by="DerFronck">
 					<title>
 						<de>In der Falle der Beisser</de>
 						<en>In the trap of the biters</en>
@@ -11942,7 +11942,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="83" speed="45" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628065" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628065" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Erzähl das den Fröschen</de>
 						<en>Day of the Frogs</en>
@@ -11957,7 +11957,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628066" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628066" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Pathos</de>
 						<en>Pathos</en>
@@ -11972,7 +11972,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="53" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628067" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628067" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der 194. Tag</de>
 						<en>The 194th Day</en>
@@ -11987,7 +11987,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="54" />
 				</programme>
-				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628068" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-HORROR-The_Walking_Dead_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1628068" creator="8782" created_by="DerFronck">
 					<title>
 						<de>T.S. - Neunzehn</de>
 						<en>T.S. - Nineteen</en>
@@ -12050,7 +12050,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="20" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338435" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338435" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Diese Liebe ist falsch</de>
 						<en>Forbidden Love</en>
@@ -12065,7 +12065,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="35" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338436" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338436" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Die Diener der Oberen</de>
 						<en>Masters and Slaves</en>
@@ -12080,7 +12080,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="23" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338437" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338437" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Haßliebe</de>
 						<en>Love and Hate</en>
@@ -12095,7 +12095,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="76" speed="37" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1339895" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1339895" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Zerstörte Welt</de>
 						<en>A World Breaks Apart</en>
@@ -12110,7 +12110,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="78" speed="34" />
 				</programme>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1340322" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1340322" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Sinkende Sterne</de>
 						<en>When Stars Are Falling</en>
@@ -12130,7 +12130,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Fackeln im Sturm - Staffel 02 -->
 
-		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0090490" creator="" created_by="DerFronck">
+		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0090490" creator="8782" created_by="DerFronck">
 			<title>
 				<de>Kerzen im Wind (Staffel 2)</de>
 				<en>Torches in the Storm (Season 2)</en>
@@ -12156,7 +12156,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1987" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="1" price_mod="0.67" />
 			<ratings critics="79" speed="35" outcome="72" />
 			<children>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6422264" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6422264" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Nah am Abgrund</de>
 						<en>On the Edge of the Abyss</en>
@@ -12172,7 +12172,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="74" speed="37" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425140" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425140" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Krieg der Völker</de>
 						<en>Civil War</en>
@@ -12188,7 +12188,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="74" speed="45" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425148" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425148" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Das Ende der Sklaverei</de>
 						<en>The Shackles are Falling</en>
@@ -12204,7 +12204,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="78" speed="49" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425150" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425150" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Vergeltung ohne Frieden</de>
 						<en>Unforgiving Revenge</en>
@@ -12220,7 +12220,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="81" speed="35" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425158" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425158" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Pures Chaos</de>
 						<en>Chaos Reigns</en>
@@ -12236,7 +12236,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="78" speed="42" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425162" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425162" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Allerbeste Freunde</de>
 						<en>My Best Friend</en>
@@ -12256,7 +12256,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- Fackeln im Sturm - Staffel 03 -->
 
-		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0108823" creator="" created_by="DerFronck">
+		<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0108823" creator="8782" created_by="DerFronck">
 			<title>
 				<de>Kerzen im Wind (Staffel 3)</de>
 				<en>Torches in the Storm (Season 3)</en>
@@ -12282,7 +12282,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1988" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="2" price_mod="0.67" />
 			<ratings critics="79" speed="35" outcome="72" />
 			<children>
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425172" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425172" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Der Kampf ist noch nicht vorbei</de>
 						<en>The Battle Goes On</en>
@@ -12298,7 +12298,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="78" speed="38" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425190" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425190" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Ohne jeden Ausweg</de>
 						<en>For Better or Worse</en>
@@ -12314,7 +12314,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					<ratings critics="76" speed="34" />
 				</programme>
 
-				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425194" creator="5578" created_by="Ronny">
+				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_03-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6425194" creator="8782" created_by="DerFronck">
 					<title>
 						<de>Das Schicksal von Mont Royal</de>
 						<en>Decision in Mont Royal</en>
@@ -12338,7 +12338,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 2005 -->
 
-		 <programme id="DF-Filme-Action-Batman_Begins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0372784" creator="">
+		 <programme id="DF-Filme-Action-Batman_Begins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0372784" creator="8782">
 			<title>
 				<de>Flederflügel legt los</de>
 				<en>Batwing Begins</en>
@@ -12368,7 +12368,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 1984 -->
 
-		<programme id="DF_Filme_HORROR_Nightmare - Mörderische Träume" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087800" creator="">
+		<programme id="DF_Filme_HORROR_Nightmare - Mörderische Träume" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087800" creator="8782">
 			<title>
 				<de>Horror in der Pappel-Allee</de>
 				<en>Horror on Olm Street</en>
@@ -12397,7 +12397,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 1986 -->
 
-		<programme id="DF_Filme_HORROR_Die_Fliege" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091064" creator="">
+		<programme id="DF_Filme_HORROR_Die_Fliege" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091064" creator="8782">
 			<title>
 				<de>Die Mücke</de>
 				<en>The Mosquito</en>
@@ -12423,7 +12423,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 				<!-- DRAMA  -->
 
-		<programme id="DF-Filme-DRAMA-Stand_by_Me" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092005" creator="">
+		<programme id="DF-Filme-DRAMA-Stand_by_Me" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092005" creator="8782">
 			<title>
 				<de>Steh mir bei - Das große Sommer-Rätsel</de>
 				<en>Stay Here With Me</en>
@@ -12453,7 +12453,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 2012 -->
 
-		<programme id="DF_Filme_Science-Fiction_Prometheus - Dunkle Zeichen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1446714" creator="">
+		<programme id="DF_Filme_Science-Fiction_Prometheus - Dunkle Zeichen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1446714" creator="8782">
 			<title>
 				<de>Prophet Zeus - Dunkle Vorzeichen</de>
 				<en>Prophet Zeus</en>
@@ -12480,7 +12480,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 					<!-- 2015 -->
 
-		<programme id="DF_Filme_Science-Fiction_Der Marsianer - Rettet Mark Watney" product="1" licence_type="1" tmdb_id="0" imdb_id="tt3659388" creator="">
+		<programme id="DF_Filme_Science-Fiction_Der Marsianer - Rettet Mark Watney" product="1" licence_type="1" tmdb_id="0" imdb_id="tt3659388" creator="8782">
 			<title>
 				<de>Der Mars-Indianer - Bringt ihn lebend</de>
 				<en>Save Mark Watney from Mars</en>
@@ -12507,7 +12507,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 		<!-- added (with modifications) from Stukov repo -->
 
-		<programme id="Stukov_Conan, der Barbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082198" creator="Stukov">
+		<programme id="Stukov_Conan, der Barbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082198" creator="9584" created_by="Stukov">
 			<title>
 				<de>Canon, der Wildling</de>
 				<en>Canon the Wildling</en>
@@ -12531,7 +12531,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1982" day="3" />
 			<ratings critics="61" speed="68" outcome="54" />
 		</programme>
-		<programme id="Stukov_Gremlins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="Stukov">
+		<programme id="Stukov_Gremlins" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="9584" created_by="Stukov">
 			<title>
 				<de>Grimlings - Kleine Biester</de>
 				<en>Grimlings</en>
@@ -12553,7 +12553,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1984" day="6" />
 			<ratings critics="80" speed="74" outcome="82" />
 		</programme>
-		<programme id="Stukov_Dune" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="Stukov">
+		<programme id="Stukov_Dune" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="9584" created_by="Stukov">
 			<title>
 				<de>Dene: Der Sandplanet</de>
 				<en>Dene</en>
@@ -12585,7 +12585,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1984" day="12" />
 			<ratings critics="44" speed="61" outcome="47" />
 		</programme>
-		<programme id="Stukov_Otto - Der Film" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089753" creator="Stukov">
+		<programme id="Stukov_Otto - Der Film" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089753" creator="9584" created_by="Stukov">
 			<title>
 				<de>[0|First] - Der Kinofilm</de>
 				<en>[0|First] - The Feature</en>
@@ -12610,7 +12610,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1985" day="7" />
 			<ratings critics="39" speed="73" outcome="73" />
 		</programme>
-		<programme id="Stukov_Filme_Troglodyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1314248" creator="Stukov">
+		<programme id="Stukov_Filme_Troglodyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1314248" creator="9584" created_by="Stukov">
 			<title>
 				<de>Trilobite / Ocean Monster - Das Biest aus der See</de>
 				<en>Trilobite / Ocean Monster</en>
@@ -12633,7 +12633,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="2008" day="6" />
 			<ratings critics="11" speed="35" outcome="26" />
 		</programme>
-		<programme id="Stukov_Filme_Asteroid" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118261" creator="Stukov">
+		<programme id="Stukov_Filme_Asteroid" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118261" creator="9584" created_by="Stukov">
 			<title>
 				<de>Meteroid - Unheil aus dem Weltraum</de>
 				<en>Meteroid</en>
@@ -12655,7 +12655,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1997" day="2" />
 			<ratings critics="20" speed="35" outcome="27" />
 		</programme>
-		<programme id="Stukov_Filme_Hobbit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077687" creator="Stukov">
+		<programme id="Stukov_Filme_Hobbit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077687" creator="9584" created_by="Stukov">
 			<title>
 				<de>Der Halbling</de>
 				<en>The Halfling</en>
@@ -12675,7 +12675,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA/J" year="1977" distribution="2" maingenre="3" subgenre="10,9" flags="2" blocks="2" price_mod="0.50" />
 			<ratings critics="65" speed="61" outcome="38" />
 		</programme>
-		<programme id="Stukov_Filme_Der Herr der Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="Stukov" comment="targetgroupattractivity: More adult-oriented than usual cartoons, i.e. fantasy. TODO: Clarify: Does this override the definition for the genre in programmedatamods.xml? Or are these parameters applied after the calculation?">
+		<programme id="Stukov_Filme_Der Herr der Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="9584" created_by="Stukov" comment="targetgroupattractivity: More adult-oriented than usual cartoons, i.e. fantasy. TODO: Clarify: Does this override the definition for the genre in programmedatamods.xml? Or are these parameters applied after the calculation?">
 			<title>
 				<de>Meister Der Dinge</de>
 				<en>The Master Of Things</en>
@@ -12696,7 +12696,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<targetgroupattractivity children="1.5" teenagers_male="1.5" teenagers_female="0.5" housewives_male="0" housewives_female="0.2" employees_male="0.3" employees_female="0" unemployed_male="0.3" unemployed_female="0" managers="0" pensioners_male="-1.5" pensioners_female="-2" />
 			<ratings critics="50" speed="61" outcome="58" />
 		</programme>
-		<programme id="Stukov_Filme_Die Rückkehr des Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="Stukov">
+		<programme id="Stukov_Filme_Die Rückkehr des Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="9584" created_by="Stukov">
 			<title>
 				<de>Die Rückkehr des Oberhauptes</de>
 				<en>The Return Of the Supreme</en>
@@ -12717,7 +12717,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1980" day="5" />
 			<ratings critics="63" speed="40" outcome="36" />
 		</programme>
-		<programme id="Stukov_Filme_Auch ein Sheriff braucht mal Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="Stukov">
+		<programme id="Stukov_Filme_Auch ein Sheriff braucht mal Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="9584" created_by="Stukov">
 			<title>
 				<de>Unterstütz deinen Sheriff vor Ort</de>
 				<en>Think local, help your Sheriff!</en>
@@ -12741,7 +12741,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1969" distribution="1" maingenre="5" subgenre="18" flags="" blocks="2" price_mod="0.5" />
 			<ratings critics="71" speed="76" outcome="49" />
 		</programme>
-		<programme id="Stukov_Filme_Halloween: Die Nacht des Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="Stukov">
+		<programme id="Stukov_Filme_Halloween: Die Nacht des Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="9584" created_by="Stukov">
 			<title>
 				<de>All Saints' Eve: Der Schrecken der Nacht</de>
 				<en>All Saints' Eve</en>
@@ -12763,7 +12763,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1978" distribution="1" maingenre="12" subgenre="17" flags="96" blocks="2" price_mod="1.00" />
 			<ratings critics="87" speed="82" outcome="66" />
 		</programme>
-		<programme id="Stukov_Das Reich der Sonne" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092965" creator="Stukov">
+		<programme id="Stukov_Das Reich der Sonne" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092965" creator="9584" created_by="Stukov">
 			<title>
 				<de>Das Imperium des Tagesgestirns</de>
 				<en>The Realm of the Day Star</en>
@@ -12787,7 +12787,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1987" day="12" />
 			<ratings critics="71" speed="83" outcome="35" />
 		</programme>
-		<programme id="Stukov_Der Name der Rose" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091605" creator="Stukov">
+		<programme id="Stukov_Der Name der Rose" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091605" creator="9584" created_by="Stukov">
 			<title>
 				<de>Wie heißt die Rose</de>
 				<en>What's the Rose called</en>
@@ -12813,7 +12813,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1986" day="9" />
 			<ratings critics="71" speed="80" outcome="41" />
 		</programme>
-		<programme id="Stukov_Das Ding aus einer anderen Welt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0084787" creator="Stukov" comment="Alt description: Es ist die erste Woche im Winter des Jahres 1982. Eine Forschungsstation in der Antarktis bekommt Besuch von einer außerirdischen Kraft, die alles assimilieren kann, was sie berührt.">
+		<programme id="Stukov_Das Ding aus einer anderen Welt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0084787" creator="9584" created_by="Stukov" comment="Alt description: Es ist die erste Woche im Winter des Jahres 1982. Eine Forschungsstation in der Antarktis bekommt Besuch von einer außerirdischen Kraft, die alles assimilieren kann, was sie berührt.">
 			<title>
 				<de>Das Etwas aus der Fremde</de>
 				<en>The What</en>
@@ -16777,7 +16777,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<en>Knight Rider (Season 3)</en>
 			</title_original>
 			<description>
-				<de>Turbo Boost! Der smarte schwarze Pontiac und der ihn fahrender Ritter sind zurück. Ein auf sich gestellter Krieger in einer gefährlichen Welt.
+				<de>Turbo Boost! Der smarte schwarze Pontiac und der ihn fahrende Ritter sind zurück. Ein auf sich gestellter Krieger in einer gefährlichen Welt.
 [2|Full] ist wieder da als Bonnie.</de>
 				<en>Turbo Boost! The smart black Pontiac and the knight riding it are back. A lone crusader in a dangerous world.
 [2|Full] has returned once more as Bonnie.</en>
@@ -19641,8 +19641,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>The Birds and the Bees Bit</en>
 					</title_original>
 					<description>
-						<de>Tony erfährt, dass Dschinns ihre Kräfte verlieren, wenn sie Sterbliche heiraten. Also macht er einen Heiratsantrag. Ober-Dschinn Haji blickt in die Zukunft und sieht, dass es die perfekte Ehe sein wird. Allerdings sieht er noch etwas voraus.</de>
-						<en>Tony learns that genies lose their powers when they marry mortals. Thereupon he makes a marriage proposal. Chief-jinn Haji looks into the future and sees it will be the perfect union. However, he also foresees something else.</en>
+						<de>Tony erfährt, dass Dschinns ihre Kräfte verlieren, wenn sie Sterbliche heiraten. Also macht er einen Heiratsantrag. Obermotz-Dschinn Haji blickt in die Zukunft und sieht, dass es die perfekte Ehe sein wird. Allerdings sieht er noch etwas anderes voraus.</de>
+						<en>Tony learns that genies lose their powers when they marry mortals. Thereupon he makes a marriage proposal. Supreme boss jinn Haji looks into the future and sees it will be the perfect union. However, he also foresees something else.</en>
 					</description>
 				</programme>
 			</children>
@@ -20498,8 +20498,8 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Safer Skies</en>
 					</title_original>
 					<description>
-						<de>Verbesserungen bei der Sicherheit von Verkehrsflugzeugen, einschließlich der automatischen Landung der Hawker Siddeley Trident, der Fly-by-Wire-Funktion des Airbus A320 (und des Fehlens dieser Funktion bei der Boeing 737) sowie andere derzeit sich in Entwicklung befindende Sicherheitsfunktionen.</de>
-						<en>Jetliner safety enhancements, including the automatic landing capabilities of the Hawker Siddeley Trident, the fly-by-wire capabilities of the Airbus A320 (and lack thereof in the Boeing 737) as well as other safety features currently in development.</en>
+						<de>Die automatische Landefähigkeit der Hawker Siddeley Trident, die Fly-by-Wire-Funktion des Airbus A320 (und des Fehlens dieser bei der Boeing 737) sowie andere sich derzeit in Entwicklung befindende Sicherheitsverbesserungen an Verkehrsflugzeugen.</de>
+						<en>The automatic landing capabilities of the Hawker Siddeley Trident, the fly-by-wire capabilities of the Airbus A320 (and lack thereof in the Boeing 737) as well as other Jetliner safety enhancements currently in development.</en>
 					</description>
 				</programme>
 				<programme id="bd5c213d-e14f-439f-980b-add448910561" product="2" licence_type="2" imdb_id="tt5720286" creator="9551">
