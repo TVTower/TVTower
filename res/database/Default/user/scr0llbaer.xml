@@ -417,7 +417,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<targetgroupattractivity children_male="0.5" children_female="-1.0" teenagers_male="1.0" teenagers_female="-0.5" housewives_male="0" housewives_female="-1.0" employees_male="2.0" employees_female="0" unemployed_male="0.5" unemployed_female="-1.0" managers_male="2.0" managers_female="0.5" pensioners_male="0" pensioners_female="-1.0" />
+			<!--targetgroupattractivity children_male="0.5" children_female="-1.0" teenagers_male="1.0" teenagers_female="-0.5" housewives_male="0" housewives_female="-1.0" employees_male="2.0" employees_female="0" unemployed_male="0.5" unemployed_female="-1.0" managers_male="2.0" managers_female="0.5" pensioners_male="0" pensioners_female="-1.0" /-->
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
@@ -513,7 +513,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<targetgroupattractivity children_male="0.5" children_female="-0.5" teenagers_male="0.5" teenagers_female="-0.5" housewives_male="-0.2" housewives_female="-1.0" employees_male="1.5" employees_female="-0.5" unemployed_male="1.5" unemployed_female="-0.5" managers_male="0.5" managers_female="-1.0" pensioners_male="0.3" pensioners_female="-0.5" />
+			<!--targetgroupattractivity children_male="0.5" children_female="-0.5" teenagers_male="0.5" teenagers_female="-0.5" housewives_male="-0.2" housewives_female="-1.0" employees_male="1.5" employees_female="-0.5" unemployed_male="1.5" unemployed_female="-0.5" managers_male="0.5" managers_female="-1.0" pensioners_male="0.3" pensioners_female="-0.5" /-->
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
@@ -658,7 +658,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<targetgroupattractivity children_male="2.0" children_female="0" teenagers_male="2.0" teenagers_female="0" housewives_male="0" housewives_female="-1.0" employees_male="1.0" employees_female="-0.5" unemployed_male="2.0" unemployed_female="0" managers_male="0.5" managers_female="0" pensioners_male="-1.0" pensioners_female="-2.0" comment="TODO: Does this work in scripts? Clarify." />
+			<!--targetgroupattractivity children_male="2.0" children_female="0" teenagers_male="2.0" teenagers_female="0" housewives_male="0" housewives_female="-1.0" employees_male="1.0" employees_female="-0.5" unemployed_male="2.0" unemployed_female="0" managers_male="0.5" managers_female="0" pensioners_male="-1.0" pensioners_female="-2.0" comment="TODO: Does this work in scripts? Clarify." /-->
 		</scripttemplate>
 
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
