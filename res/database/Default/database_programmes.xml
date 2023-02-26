@@ -3485,8 +3485,8 @@ Film adaptation of the comic book by Flaszini and Oberzo.</en>
 				<en>Caesar sets the Gauls 12 tasks. Should they master them, he will admit defeat. Klasterix and Knobelix are chosen to pass the difficult tests.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">60318881-ed5f-4b1e-89cf-f950940d4424</member> <!-- TODO: function="1029" -->
-				<member index="1" function="1">700f8809-30af-40fe-a6e3-d24bfd2f3856</member> <!-- TODO: function="1029" -->
+				<member index="0" function="1029">60318881-ed5f-4b1e-89cf-f950940d4424</member>
+				<member index="1" function="1029">700f8809-30af-40fe-a6e3-d24bfd2f3856</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="F" year="1976" distribution="1" maingenre="3" subgenre="" flags="2" blocks="2" price_mod="0.67" />
@@ -3508,8 +3508,8 @@ Regie-Debüt für [0|Full].</de>
 Directorial debut for [0|Full].</en>
 			</description>
 			<staff>
-				<member index="0" function="1">60318881-ed5f-4b1e-89cf-f950940d4424</member> <!-- TODO: function="1029" -->
-				<member index="1" function="1">700f8809-30af-40fe-a6e3-d24bfd2f3856</member> <!-- TODO: function="1029" -->
+				<member index="0" function="1029">60318881-ed5f-4b1e-89cf-f950940d4424</member>
+				<member index="1" function="1029">700f8809-30af-40fe-a6e3-d24bfd2f3856</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="F" year="1968" distribution="1" maingenre="3" subgenre="" flags="2" blocks="2" price_mod="0.67" />
@@ -3672,7 +3672,7 @@ Cinema hit 1986.</en>
 				<de>Kurz nach Mitternacht auf der Reeperbahn,
 ob du'n Mädel hast oder nur gedacht,
 amüsierst du dich, denn das findet sich
-auf der Reeperbahn nachts um kurz nach Mitternacht.</de>
+auf der Reeperbahn um kurz nach Mitternacht.</de>
 				<en>On the Reeperbahn just after midnight,
 whether you've got a girl or you lie,
 you have a good time, because that's what you'll find,
@@ -11117,7 +11117,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="1" function="2">TheRob-TowerTV-DaveMcWarum</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="" flags="8" blocks="1" price_mod="1.00" />
+			<data country="GB" year="1953" distribution="2" maingenre="10" subgenre="" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="38" outcome="30" />
 			<children>
 				<programme id="TheRob-serie-RingeundRosen-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt4741620" creator="8751" created_by="TheRob">
@@ -12082,7 +12082,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				</programme>
 				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1338437" creator="8782" created_by="DerFronck">
 					<title>
-						<de>Haßliebe</de>
+						<de>Hassliebe</de>
 						<en>Love and Hate</en>
 					</title>
 					<title_original>
@@ -12507,7 +12507,7 @@ Dream scenes and sentiments warp the storyline.</en>
 
 		<!-- added (with modifications) from Stukov repo -->
 
-		<programme id="Stukov_Conan, der Barbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082198" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Conan_der_Barbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082198" creator="9584" created_by="Stukov">
 			<title>
 				<de>Canon, der Wildling</de>
 				<en>Canon the Wildling</en>
@@ -12585,7 +12585,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1984" day="12" />
 			<ratings critics="44" speed="61" outcome="47" />
 		</programme>
-		<programme id="Stukov_Otto - Der Film" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089753" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Otto_Der_Film" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089753" creator="9584" created_by="Stukov">
 			<title>
 				<de>[0|First] - Der Kinofilm</de>
 				<en>[0|First] - The Feature</en>
@@ -12675,7 +12675,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA/J" year="1977" distribution="2" maingenre="3" subgenre="10,9" flags="2" blocks="2" price_mod="0.50" />
 			<ratings critics="65" speed="61" outcome="38" />
 		</programme>
-		<programme id="Stukov_Filme_Der Herr der Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="9584" created_by="Stukov" comment="targetgroupattractivity: More adult-oriented than usual cartoons, i.e. fantasy. TODO: Clarify: Does this override the definition for the genre in programmedatamods.xml? Or are these parameters applied after the calculation?">
+		<programme id="Stukov_Filme_Der_Herr_der_Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="9584" created_by="Stukov" comment="targetgroupattractivity: More adult-oriented than usual cartoons.">
 			<title>
 				<de>Meister Der Dinge</de>
 				<en>The Master Of Things</en>
@@ -12693,10 +12693,10 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA/GB" year="1978" distribution="1" maingenre="3" subgenre="1,10" flags="2" blocks="3" price_mod="0.50" />
-			<targetgroupattractivity children="1.5" teenagers_male="1.5" teenagers_female="0.5" housewives_male="0" housewives_female="0.2" employees_male="0.3" employees_female="0" unemployed_male="0.3" unemployed_female="0" managers="0" pensioners_male="-1.5" pensioners_female="-2" />
+			<targetgroupattractivity children="0.75" teenagers="1.5" housewives="1.5" employees="1.25" unemployed="1.25" managers="1.25" pensioners="1.25" />
 			<ratings critics="50" speed="61" outcome="58" />
 		</programme>
-		<programme id="Stukov_Filme_Die Rückkehr des Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Filme_Die Rückkehr_des_Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="9584" created_by="Stukov">
 			<title>
 				<de>Die Rückkehr des Oberhauptes</de>
 				<en>The Return Of the Supreme</en>
@@ -12717,7 +12717,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1980" day="5" />
 			<ratings critics="63" speed="40" outcome="36" />
 		</programme>
-		<programme id="Stukov_Filme_Auch ein Sheriff braucht mal Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Filme_Auch_ein_Sheriff_braucht_mal_Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="9584" created_by="Stukov">
 			<title>
 				<de>Unterstütz deinen Sheriff vor Ort</de>
 				<en>Think local, help your Sheriff!</en>
@@ -12741,7 +12741,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1969" distribution="1" maingenre="5" subgenre="18" flags="" blocks="2" price_mod="0.5" />
 			<ratings critics="71" speed="76" outcome="49" />
 		</programme>
-		<programme id="Stukov_Filme_Halloween: Die Nacht des Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Filme_Halloween_Die_Nacht_des_Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="9584" created_by="Stukov">
 			<title>
 				<de>All Saints' Eve: Der Schrecken der Nacht</de>
 				<en>All Saints' Eve</en>
@@ -12763,7 +12763,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1978" distribution="1" maingenre="12" subgenre="17" flags="96" blocks="2" price_mod="1.00" />
 			<ratings critics="87" speed="82" outcome="66" />
 		</programme>
-		<programme id="Stukov_Das Reich der Sonne" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092965" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Das_Reich_der_Sonne" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0092965" creator="9584" created_by="Stukov">
 			<title>
 				<de>Das Imperium des Tagesgestirns</de>
 				<en>The Realm of the Day Star</en>
@@ -12787,7 +12787,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1987" day="12" />
 			<ratings critics="71" speed="83" outcome="35" />
 		</programme>
-		<programme id="Stukov_Der Name der Rose" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091605" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Der_Name_der_Rose" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091605" creator="9584" created_by="Stukov">
 			<title>
 				<de>Wie heißt die Rose</de>
 				<en>What's the Rose called</en>
@@ -12813,7 +12813,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1986" day="9" />
 			<ratings critics="71" speed="80" outcome="41" />
 		</programme>
-		<programme id="Stukov_Das Ding aus einer anderen Welt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0084787" creator="9584" created_by="Stukov" comment="Alt description: Es ist die erste Woche im Winter des Jahres 1982. Eine Forschungsstation in der Antarktis bekommt Besuch von einer außerirdischen Kraft, die alles assimilieren kann, was sie berührt.">
+		<programme id="Stukov_Das_Ding_aus_einer_anderen_Welt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0084787" creator="9584" created_by="Stukov" comment="Alt description: Es ist die erste Woche im Winter des Jahres 1982. Eine Forschungsstation in der Antarktis bekommt Besuch von einer außerirdischen Kraft, die alles assimilieren kann, was sie berührt.">
 			<title>
 				<de>Das Etwas aus der Fremde</de>
 				<en>The What</en>
@@ -12852,7 +12852,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Style-defining masterpiece by [0|Full] set in the late 1950s deep in Orlean's voodoo district about a private investigator who becomes embroiled in a series of brutal murders.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">21cf3fe5-98dc-48a0-b84f-a31c54ba2861</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">21cf3fe5-98dc-48a0-b84f-a31c54ba2861</member>
 				<member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
 				<member index="2" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
 				<member index="3" function="2">6e7e605a-597f-421e-aacd-81acc26cf55e</member>
@@ -12900,7 +12900,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Concert film by and with the British musician and actor [0|Full]. Documents the preparation and rehearsals for his first solo show. His backing band also gets a word in edgewise.</en>
 			</description>
 			<staff>
-				<member index="0" function="2">687adb8f-943b-41d6-bfdb-7e49a305774f</member> <!-- TODO: function="18" -->
+				<member index="0" function="18">687adb8f-943b-41d6-bfdb-7e49a305774f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB/USA" distribution="1" maingenre="202" subgenre="6" flags="0" blocks="2" price_mod="0.5" />
@@ -13445,7 +13445,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Concert footage from the European tour. The focus is on the whole band. Most of the songs are linked by a themed narrative.</en>
 			</description>
 			<staff>
-				<member index="0" function="2">12aab252-4ac3-4f69-9e3a-8510e02a6f0d</member> <!--TODO: function="23" -->
+				<member index="0" function="23">12aab252-4ac3-4f69-9e3a-8510e02a6f0d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="202" subgenre="6" flags="0" blocks="2" price_mod="1" />
@@ -13477,7 +13477,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1985" day="1" />
-			<targetgroupattractivity children="0" teenagers="0.5" housewives="0" employees="1" unemployed="0" managers="2" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="7" speed="63" outcome="8" />
 		</programme>
 		<programme id="0d6338e8-fc05-4221-97de-94028eb31fcc" product="1" licence_type="1" creator="9551" imdb_id="tt0099371">
@@ -13527,7 +13527,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1989" day="12" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="79" speed="76" outcome="75" />
 		</programme>
 		<programme id="94b593a9-eae1-4596-9045-7470976a6e3b" product="1" licence_type="1" creator="9551" imdb_id="tt0083987">
@@ -13631,7 +13631,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1985" day="11" />
-			<targetgroupattractivity children="0" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="89" speed="65" outcome="14" />
 		</programme>
 		<programme id="b88e060e-b3a0-48b7-9a82-852dd99ea9c9" product="1" licence_type="1" creator="9551" imdb_id="tt0097742">
@@ -13766,14 +13766,14 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>By and starring [0|Full], who plays a gag writer for TV shows who is not satisfied with both his job and the relationship chaos in his personal life.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">44609506-1160-4a27-8765-7126691d1555</member> <!-- TODO: function="7" -->
+				<member index="0" function="7">44609506-1160-4a27-8765-7126691d1555</member>
 				<member index="1" function="2">46424e55-668a-4281-ae8f-0dd945ac926d</member>
 				<member index="2" function="2">3887c0cb-f7a8-4535-9e90-751a81c4b95b</member>
 				<member index="3" function="2">770dc8b2-a364-4cdf-99a3-6b8157c5cf92</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1979" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="87" speed="85" outcome="55" />
 		</programme>
 		<programme id="46783d97-2145-48e4-b9e8-e4b8e4e95856" product="1" licence_type="1" creator="9551" imdb_id="tt0089853">
@@ -13790,7 +13790,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>In the 1930s, a movie hero descends from the screen to his admirer, a waitress oppressed by her husband. She must then decide whether to live in fantasy or reality.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">44609506-1160-4a27-8765-7126691d1555</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">44609506-1160-4a27-8765-7126691d1555</member>
 				<member index="1" function="2">696debc3-b32a-4f63-afdc-ce2a43edad79</member>
 				<member index="2" function="2">0bc5cf6c-b76f-4feb-bfda-ae838f61b317</member>
 				<member index="3" function="2">30e987f6-5bf5-43de-99a9-0a3ab667ee8e</member>
@@ -13798,7 +13798,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="15,10" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1985" day="3" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="86" speed="83" outcome="26" />
 		</programme>
 		<programme id="d341bba7-0d2a-4c4f-8eda-f3cc21bdaa69" product="1" licence_type="1" creator="9551" imdb_id="tt0034583">
@@ -13886,7 +13886,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The wife and assistant of a sturdy iron-chain blasting street performer has died. He has to look for a new assistant. Quite according to his nature then, he treats her not very sensitively.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">9bb7eaa8-1ec6-4bdc-8477-b825fc2572f0</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">9bb7eaa8-1ec6-4bdc-8477-b825fc2572f0</member>
 				<member index="1" function="2">612668a7-f17f-4495-8e3f-d662b33d150e</member>
 				<member index="2" function="2">47ebce00-d182-4e47-aadb-0919c2194905</member>
 				<member index="3" function="2">TheRob-TowerTV-RichieBaseyard</member>
@@ -14082,7 +14082,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>With [1|Full] as a high-class escort who is framed for murder and now can't get an alibi from his female clients for some reasons.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">e1884571-a16d-4ca3-921c-648dd4a4e0f7</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">e1884571-a16d-4ca3-921c-648dd4a4e0f7</member>
 				<member index="1" function="2">0cde7605-f644-4c16-94f9-f83a77ae0855</member>
 				<member index="2" function="2">12018104-896a-420c-a604-589366fd4ca1</member>
 			</staff>
@@ -14105,7 +14105,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>[0|Full]' sci-fi epic that had established new standards, about an overreaching superpower and the rebellion in a galaxy far, far away.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">3cb963f7-fadf-467d-bcb1-7c3bfa375543</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">3cb963f7-fadf-467d-bcb1-7c3bfa375543</member>
 				<member index="1" function="2">91655656-507b-4827-8d83-651265eae17f</member>
 				<member index="2" function="2">070bd0dd-1a11-4b2b-80b7-922dae98c3ca</member>
 				<member index="3" function="2">e7814154-1644-4a2d-b0a9-fd2f53ba5bdd</member>
@@ -14113,6 +14113,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1977" distribution="1" maingenre="16" subgenre="2,10" flags="8" blocks="2" price_mod="1" />
+			<targetgroupattractivity children_male="1.5" children_female="1.25" teenagers_male="1" teenagers_female="1.25" />
 			<ratings critics="90" speed="91" outcome="93" />
 		</programme>
 		<programme id="2e6e1c6e-3bdb-438e-8187-5b473caf8080" product="1" licence_type="1" creator="9551" imdb_id="tt0080684">
@@ -14138,6 +14139,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="16" subgenre="2,10" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1980" day="5" />
+			<targetgroupattractivity children_male="1.5" children_female="1.25" teenagers_male="1" teenagers_female="1.25" />
 			<ratings critics="89" speed="92" outcome="88" />
 		</programme>
 		<programme id="c724f8ae-8a6d-4af7-b2a5-5248c12c2f53" product="1" licence_type="1" creator="9551" imdb_id="tt0086190">
@@ -14163,6 +14165,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="16" subgenre="2,10" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1983" day="5" />
+			<targetgroupattractivity children_male="1.5" children_female="1.25" teenagers_male="1" teenagers_female="1.25" />
 			<ratings critics="76" speed="85" outcome="89" />
 		</programme>
 		<programme id="2155c01b-2f9c-4b73-82b5-4186e956c07d" product="1" licence_type="1" creator="9551" imdb_id="tt0089346">
@@ -14254,7 +14257,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The first Terminator was already terrifying enough, now Skynet sends a new model back through time which, made of liquid metal, appears invincible. Groundbreaking at the time in terms of special effects.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">2371f9cf-79a1-4dc4-8909-f69511853549</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">2371f9cf-79a1-4dc4-8909-f69511853549</member>
 				<member index="1" function="2">cd3a2e20-efe1-4a4c-9249-164b67d185f7</member>
 				<member index="2" function="2">edffeff9-2ca3-4356-8646-6ed3ec43e6c2</member>
 				<member index="3" function="2">0a60d3e1-fbac-4bb9-b7fb-cb964618d545</member>
@@ -14327,7 +14330,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Bombast film by [0|Full] about a dystopia à la '1984'. A bit more futuristic with a higher standard of living, but no less bureaucratic and no less horrible.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
 				<member index="1" function="2">9afc8888-b231-464f-bc0b-5a4f6d766fc4</member>
 				<member index="2" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
 			</staff>
@@ -14382,7 +14385,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1986" day="2" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="85" speed="84" outcome="45" />
 		</programme>
 		<programme id="2c45fb1a-ba52-4bcf-a7e9-92c46262ee7b" product="1" licence_type="1" creator="9551" imdb_id="tt0096438">
@@ -14422,16 +14425,16 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The first feature film of the British comedy troupe. Unfortunately, only a collection of sketches, but still entertaining.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member> <!-- TODO: function="7" -->
-				<member index="1" function="2">ab5bfc3f-c316-4921-bf81-87ee8250537e</member> <!-- TODO: function="5" -->
-				<member index="2" function="2">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member> <!-- TODO: function="5" -->
-				<member index="3" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member> <!-- TODO: function="5" -->
-				<member index="4" function="2">4825bc96-8103-4575-8b0b-736831eba53a</member> <!-- TODO: function="5" -->
-				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member> <!-- TODO: function="5" -->
+				<member index="0" function="7">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="1" function="6">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
+				<member index="2" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
+				<member index="3" function="6">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
+				<member index="4" function="6">4825bc96-8103-4575-8b0b-736831eba53a</member>
+				<member index="5" function="6">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1971" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
+			<targetgroupattractivity children="1" teenagers="1.5" housewives="1" employees="1.5" unemployed="0.75" managers="2" pensioners="0.75" />
 			<ratings critics="81" speed="79" outcome="33" />
 		</programme>
 		<programme id="b38408f2-ee29-43af-aad8-d2839348f3da" product="1" licence_type="1" creator="9551" imdb_id="tt0071853">
@@ -14448,16 +14451,16 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The British comedy troupe now no longer just delivers funny scenes, but embeds them in a wacky framework story about King Arthur.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">ab5bfc3f-c316-4921-bf81-87ee8250537e</member> <!-- TODO: function="7" -->
-				<member index="1" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member> <!-- TODO: function="7" -->
-				<member index="2" function="2">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member> <!-- TODO: function="5" -->
-				<member index="3" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member> <!-- TODO: function="5" -->
-				<member index="4" function="2">4825bc96-8103-4575-8b0b-736831eba53a</member> <!-- TODO: function="5" -->
-				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member> <!-- TODO: function="5" -->
+				<member index="0" function="7">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
+				<member index="1" function="7">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="2" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
+				<member index="3" function="6">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
+				<member index="4" function="6">4825bc96-8103-4575-8b0b-736831eba53a</member>
+				<member index="5" function="6">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1975" distribution="1" maingenre="5" subgenre="1,10" flags="8" blocks="2" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="-0.5" />
+			<targetgroupattractivity children="1" teenagers="1.5" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="0.75" />
 			<ratings critics="89" speed="87" outcome="51" />
 		</programme>
 		<programme id="e52cc33e-7569-488f-8c2d-3ef4e48febeb" product="1" licence_type="1" creator="9551" imdb_id="tt0079470">
@@ -14474,16 +14477,16 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>The craziest Jesus film ever. Just push your lips and whistle, that's the thing.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">ab5bfc3f-c316-4921-bf81-87ee8250537e</member> <!-- TODO: function="7" -->
-				<member index="1" function="2">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member> <!-- TODO: function="5" -->
-				<member index="2" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member> <!-- TODO: function="5" -->
-				<member index="3" function="2">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member> <!-- TODO: function="5" -->
-				<member index="4" function="2">4825bc96-8103-4575-8b0b-736831eba53a</member> <!-- TODO: function="5" -->
-				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member> <!-- TODO: function="5" -->
+				<member index="0" function="7">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
+				<member index="1" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
+				<member index="2" function="6">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
+				<member index="3" function="6">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="4" function="6">4825bc96-8103-4575-8b0b-736831eba53a</member>
+				<member index="5" function="6">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1979" distribution="1" maingenre="5" subgenre="" flags="8" blocks="2" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="-0.5" />
+			<targetgroupattractivity children="1" teenagers="1.5" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="0.75" />
 			<ratings critics="89" speed="88" outcome="61" />
 		</programme>
 		<programme id="a69b639e-ebd2-41e7-ad75-ac5729886a04" product="1" licence_type="1" creator="9551" imdb_id="tt0085959">
@@ -14500,17 +14503,17 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>42 alone is not always the answer. With plenty of music, the British comedy troupe takes us on a journey through the stages of a more or less typical human life.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member> <!-- TODO: function="7" -->
-				<member index="1" function="2">ab5bfc3f-c316-4921-bf81-87ee8250537e</member> <!-- TODO: function="5" -->
-				<member index="2" function="2">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member> <!-- TODO: function="5" -->
-				<member index="3" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member> <!-- TODO: function="5" -->
-				<member index="4" function="2">4825bc96-8103-4575-8b0b-736831eba53a</member> <!-- TODO: function="5" -->
-				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member> <!-- TODO: function="5" -->
+				<member index="0" function="7">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="1" function="6">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
+				<member index="2" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
+				<member index="3" function="6">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
+				<member index="4" function="6">4825bc96-8103-4575-8b0b-736831eba53a</member>
+				<member index="5" function="6">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" distribution="1" maingenre="5" subgenre="202" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1983" day="3" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
+			<targetgroupattractivity children="1" teenagers="1.5" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="0.75" />
 			<ratings critics="81" speed="77" outcome="53" />
 		</programme>
 		<programme id="fccda1a3-748d-4f45-bf7e-cf643ebb8689" product="1" licence_type="1" creator="9551" imdb_id="tt0066026">
@@ -14536,7 +14539,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1970" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="1" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="76" speed="76" outcome="77" />
 		</programme>
 		<programme id="a98e1cd1-a870-40e4-8ad3-da6a108d9221" product="1" licence_type="1" creator="9551" imdb_id="tt0092699">
@@ -14553,7 +14556,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>[1|Full] as an attractive, highly competent newscaster soon finds herself in a love triangle.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">d2ad4be3-56fa-417e-85a2-5c8b10cbdda7</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">d2ad4be3-56fa-417e-85a2-5c8b10cbdda7</member>
 				<member index="1" function="2">3d21d90b-b73f-4569-b7af-340ee7042d7d</member>
 				<member index="2" function="2">e8752e52-dbd7-4715-bacc-23d19aff3126</member>
 				<member index="3" function="2">0ad7e827-d3c0-4d4e-b569-968b33180e44</member>
@@ -14561,7 +14564,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1987" day="12" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="2.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="91" speed="71" outcome="59" />
 		</programme>
 		<programme id="684d3de1-b956-44cb-883c-90a4c940eae9" product="1" licence_type="1" creator="9551" imdb_id="tt0061017">
@@ -14630,7 +14633,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1987" day="10" />
-			<targetgroupattractivity children="0" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0.8" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="69" speed="74" outcome="18" />
 		</programme>
 		<programme id="c79d915e-dd59-477d-b086-10d21fd029c8" product="1" licence_type="1" creator="9551" imdb_id="tt0099422">
@@ -14647,7 +14650,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>[0|Full]'s brilliant film adaptation of the comic strip about the master detective, whom he also plays himself. In addition, with singer [2|First].</en>
 			</description>
 			<staff>
-				<member index="0" function="1">TheRob-TowerTV-SorenReatty</member> <!-- TODO: function="3" -->
+				<member index="0" function="3">TheRob-TowerTV-SorenReatty</member>
 				<member index="1" function="2">ea2194ca-de70-42b8-90dd-b070be4bec65</member>
 				<member index="2" function="2">a8357c75-2dc8-490c-b850-4a245eb781ce</member>
 				<member index="3" function="2">6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3</member>
@@ -14672,8 +14675,8 @@ Dream scenes and sentiments warp the storyline.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">04e5ecc5-fd17-4d24-a170-5ef3537342ca</member>
-				<member index="1" function="2">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member> <!-- TODO: function="5" -->
-				<member index="2" function="2">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member> <!-- TODO: function="5" -->
+				<member index="1" function="5">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
+				<member index="2" function="5">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member>
 				<member index="3" function="2">a1943cde-0332-4706-8130-9c7a69e52efd</member>
 				<member index="4" function="2">96cd5e3e-d8e8-49ab-992b-dade2dc37067</member>
 				<member index="5" function="2">34eb3aad-b365-4c89-bdff-f6fa235618dc</member>
@@ -14683,7 +14686,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="2" subgenre="5,10" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1984" day="6" />
-			<targetgroupattractivity children="0.5" teenagers_male="2" teenagers_female="0.5" housewives_male="1" housewives_female="0.5" employees_male="0.5" employees_female="0.2" unemployed_male="0.8" unemployed_female="0.4" managers_male="-0.3" managers_female="-0.7" pensioners_male="0" pensioners_female="-0.5" />
+			<targetgroupattractivity children="1.5" teenagers="2" housewives="1.25" employees="1" unemployed="1" managers="1" pensioners="1" />
 			<ratings critics="87" speed="84" outcome="88" />
 		</programme>
 		<programme id="bb10c157-221e-41b2-95b0-58fec91957ca" product="1" licence_type="1" creator="9551" imdb_id="tt0097428">
@@ -14701,8 +14704,8 @@ Dream scenes and sentiments warp the storyline.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">04e5ecc5-fd17-4d24-a170-5ef3537342ca</member>
-				<member index="1" function="2">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member> <!-- TODO: function="5" -->
-				<member index="2" function="2">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member> <!-- TODO: function="5" -->
+				<member index="1" function="5">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
+				<member index="2" function="5">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member>
 				<member index="3" function="2">a1943cde-0332-4706-8130-9c7a69e52efd</member>
 				<member index="4" function="2">96cd5e3e-d8e8-49ab-992b-dade2dc37067</member>
 				<member index="5" function="2">34eb3aad-b365-4c89-bdff-f6fa235618dc</member>
@@ -14712,7 +14715,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="2" subgenre="5,10" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1989" day="6" />
-			<targetgroupattractivity children="0.5" teenagers_male="2" teenagers_female="0.5" housewives_male="1" housewives_female="0.5" employees_male="0.5" employees_female="0.2" unemployed_male="0.8" unemployed_female="0.4" managers_male="-0.3" managers_female="-0.7" pensioners_male="0" pensioners_female="-0.5" />
+			<targetgroupattractivity children="1.5" teenagers="2" housewives="1.25" employees="1" unemployed="1" managers="1" pensioners="1" />
 			<ratings critics="53" speed="59" outcome="76" />
 		</programme>
 		<programme id="d2180454-e80a-4416-8071-ee5158cb2c99" product="1" licence_type="1" creator="9551" imdb_id="tt0091939">
@@ -14729,13 +14732,13 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>Humorous film by and starring [0|Full] about young woman with three lovers.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">2a5c68d6-7166-41ca-a234-2465b0eeb420</member> <!-- TODO: function="7" -->
+				<member index="0" function="7">2a5c68d6-7166-41ca-a234-2465b0eeb420</member>
 				<member index="1" function="2">95e9a81b-1556-41e8-b4cb-412f8a2d3fbe</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1986" day="8" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="0" />
+			<targetgroupattractivity children="1" teenagers="1" housewives="1" employees="1.5" unemployed="1" managers="2" pensioners="1" />
 			<ratings critics="87" speed="67" outcome="22" />
 		</programme>
 		<programme id="53c79c7d-d72d-4285-8880-45499c31c31a" product="1" licence_type="1" creator="9551" imdb_id="tt0094082">
@@ -15012,7 +15015,7 @@ A possibly well-fitting title soundtrack didn't come until years later.</en>
 </en>
 			</description>
 			<staff>
-				<member index="0" function="1">93a70280-2682-4cce-8da8-b479d4d368af</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">93a70280-2682-4cce-8da8-b479d4d368af</member>
 				<member index="1" function="2">832ff5e9-dd92-4517-83c6-dbaf23221c34</member>
 				<member index="2" function="2">876760aa-c243-4e4b-a333-76d5a5aabf19</member>
 				<member index="3" function="2">ab68fbad-64d8-4328-a131-9c2d0f05e210</member>
@@ -15038,7 +15041,7 @@ A possibly well-fitting title soundtrack didn't come until years later.</en>
 				<en>Impressive debut of [0|Full] as a filmmaker. Highly acclaimed late western and road movie with great chemistry between [1|Full] and [2|Full].</en>
 			</description>
 			<staff>
-				<member index="0" function="1">13defbeb-4d84-4d11-b5d3-57cf1953ead7</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">13defbeb-4d84-4d11-b5d3-57cf1953ead7</member>
 				<member index="1" function="2">832ff5e9-dd92-4517-83c6-dbaf23221c34</member>
 				<member index="2" function="2">b1f4b00e-7a70-45ab-8278-d1636eb1cf6f</member>
 			</staff>
@@ -15230,7 +15233,7 @@ Fifth and final part. Not so good.</en>
 				<en>Aleister Crowley, proto-satanist and turn-of-the-19th-century enfant terrible, returns to wreak havoc, channeled thanks to virtual reality and a scatterbrained Cambridge professor. Musician and multi-talent [3|Full] tries his hand at filmmaking.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">bd39b6cb-1cca-4a6d-8138-02d515f9468f</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">bd39b6cb-1cca-4a6d-8138-02d515f9468f</member>
 				<member index="1" function="2">ec88bd42-984e-4cc7-885b-c684350eac51</member>
 				<member index="2" function="2">d329b894-1377-431d-8c82-e9f21512f6af</member>
 				<member index="3" function="52">6eed09f6-ddfb-403a-bfe1-6870bc0c374e</member>
@@ -15254,9 +15257,9 @@ Fifth and final part. Not so good.</en>
 				<en>Cult film about a legendary blues band that the two protagonists have to round up again for a charity concert in order to be able to financially save the orphanage in which they grew up.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">893caa00-2171-4005-997e-296b5cc87ce8</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">893caa00-2171-4005-997e-296b5cc87ce8</member>
 				<member index="1" function="2">9b629c89-985c-4775-9777-77fb37ed7f05</member>
-				<member index="2" function="2">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member> <!-- TODO: function="6" -->
+				<member index="2" function="6">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
 				<member index="3" function="2">e7814154-1644-4a2d-b0a9-fd2f53ba5bdd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
@@ -15328,7 +15331,7 @@ Fifth and final part. Not so good.</en>
 				<en>Anti-war film by [0|Full]. The killing already starts at the training camp, before anyone even goes to Vietnam...</en>
 			</description>
 			<staff>
-				<member index="0" function="1">153dc080-86a1-4f3d-bb13-65b3aa90f7ea</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">153dc080-86a1-4f3d-bb13-65b3aa90f7ea</member>
 				<member index="1" function="2">d680edb9-d803-4a5c-8ed5-ac4c6351c9ce</member>
 				<member index="2" function="2">605ff150-e5ab-4526-baf2-91eb0d316213</member>
 				<member index="3" function="2">acceb533-1b65-4210-a659-c730aae41dcc</member>
@@ -15352,7 +15355,7 @@ Fifth and final part. Not so good.</en>
 				<en>A widowed field mouse must summon all her strength to defy the adversities of her surroundings and nature, and seeks the help of a cohort of rats. Atmospheric work of [0|Full].</en>
 			</description>
 			<staff>
-				<member index="0" function="1">be3ffc3d-b63e-42d4-bda4-ad4f9efd8597</member> <!-- TODO: function="5" -->
+				<member index="0" function="5">be3ffc3d-b63e-42d4-bda4-ad4f9efd8597</member>
 				<member index="1" function="2">9257ca3d-16e0-4679-839a-e50589607a90</member>
 				<member index="2" function="2">a7d4d503-871d-4e90-a5ea-10381f7e3eb5</member>
 				<member index="3" function="2">TheRob-TowerTV-RonSaradine</member>
@@ -15507,9 +15510,10 @@ Fifth and final part. Not so good.</en>
 				<member index="2" function="2">f30d7ba8-2e45-4fc2-99f2-ecdb39043312</member>
 				<member index="3" function="2">fafff870-06c3-490a-ba98-3f3d8e8f60d1</member>
 			</staff>
-			<groups target_groups="0" target_groups_optional="1" pro_pressure_groups="0" />
+			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="F" distribution="1" maingenre="5" subgenre="7,16" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1981" day="12" />
+			<targetgroupattractivity children="2" teenagers="2" housewives="1" employees="0.8" unemployed="1" managers="0.8" pensioners="1" />
 			<ratings critics="27" speed="63" outcome="71" />
 		</programme>
 		<programme id="439def18-559e-407d-b462-97ac1443500b" product="1" licence_type="1" creator="9551" imdb_id="tt0289477">
@@ -15633,26 +15637,27 @@ Fifth and final part. Not so good.</en>
 				<en>The notorious surreal sketch comedy series created by and starring [0|Full], [1|Full], [2|Full], [3|Full], [4|Full] and [5|Full]. It's often so hilariously absurd that it doesn't even need any punchlines.</en>
 			</description>
 			<staff>
-				<member index="0" function="2">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
-				<member index="1" function="2">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
-				<member index="2" function="2">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
-				<member index="3" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
-				<member index="4" function="2">4825bc96-8103-4575-8b0b-736831eba53a</member>
-				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
+				<member index="0" function="6">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="1" function="6">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
+				<member index="2" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
+				<member index="3" function="6">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
+				<member index="4" function="6">4825bc96-8103-4575-8b0b-736831eba53a</member>
+				<member index="5" function="6">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
+				<member index="6" function="4">SpeedMinister-person-id040</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1970" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
+			<targetgroupattractivity children="1" teenagers="1.5" housewives="1" employees="1.5" unemployed="0.75" managers="2" pensioners="0.75" />
 			<ratings critics="90" speed="75" outcome="67" />
 			<children>
 				<programme id="e8b11cd9-eb15-4e3e-8ccc-d4d239d69020" product="2" licence_type="2" imdb_id="tt0758095" creator="9551">
 					<title>
-						<de>Which Way, Canada?</de>
+						<de>Wohin des Weges, Kanada?</de>
 						<en>Which Way, Canada?</en>
 					</title>
 					<title_original>
-						<de>Whither Canada</de>
-						<en>Whither Canada</en>
+						<de>Quo vadis, Kanada?</de>
+						<en>Whither Canada?</en>
 					</title_original>
 					<description>
 						<de>Mit dem lustigsten Witz der Welt, der zum Totlachen führt und deshalb im Krieg verwendet wird, dem Eheberater, dem Restaurant-Sketch und vielen mehr.</de>
@@ -15661,11 +15666,11 @@ Fifth and final part. Not so good.</en>
 				</programme>
 				<programme id="485aee69-699d-493b-8589-879c74df3573" product="2" licence_type="2" imdb_id="tt0650986" creator="9551">
 					<title>
-						<de>Owl-Elongating Lessons</de>
+						<de>Lektionen im Strecken von Eulen</de>
 						<en>Owl-Elongating Lessons</en>
 					</title>
 					<title_original>
-						<de>Owl-Stretching Time</de>
+						<de>Wie man Eulen streckt</de>
 						<en>Owl-Stretching Time</en>
 					</title_original>
 					<description>
@@ -15675,57 +15680,57 @@ Fifth and final part. Not so good.</en>
 				</programme>
 				<programme id="a21b7c1b-e421-4b56-aac2-fc9546cb8efe" product="2" licence_type="2" imdb_id="tt0651004" creator="9551">
 					<title>
-						<de>Why so Serious</de>
+						<de>Warum so ernsthaft?</de>
 						<en>Why so Serious</en>
 					</title>
 					<title_original>
-						<de>You're No Fun Anymore</de>
+						<de>Du verdirbst mir den ganzen Spaß!</de>
 						<en>You're No Fun Anymore</en>
 					</title_original>
 					<description>
-						<de>Mit dem Knusperfrosch, It's the Arts, der 20th Century Wühlmaus, Nacktheit in voller Frontansicht, dem toten Papagei, der Kilimandscharo-Expedition, dem Holzfäller-Lied, dem ersten Gumby-Sketch, dem Berufsberater, Ron Obvious.</de>
+						<de>Mit dem Knusperfrosch, Es ist Kultur, der 20th Century Wühlmaus, Vollkommen hüllenlos, Der Papagei ist tot, der Kilimandscharo-Expedition, dem Holzfäller-Lied, dem ersten Gumby-Sketch, dem Berufsberater, Ron Obvious.</de>
 						<en>With the Crunchy Frog, It's the Arts, the 20th Century Vole, full frontal nudity, the dead parrot, the Kilimanjaro Expedition, the Lumberjack song, the first Gumby sketch, the Vocational Guidance Counsellor, Ron Obvious.</en>
 					</description>
 				</programme>
 				<programme id="fc704f03-309d-40c5-b04d-c01aeed78591" product="2" licence_type="2" imdb_id="tt0650978" creator="9551">
 					<title>
-						<de>Interlude</de>
+						<de>Kurzes Zwischenspiel</de>
 						<en>Interlude</en>
 					</title>
 					<title_original>
-						<de>Intermission</de>
+						<de>Kurze Unterbrechung</de>
 						<en>Intermission</en>
 					</title_original>
 					<description>
-						<de>Der Oberschicht-Trottel des Jahres, historische Imitationen, das Ministerium für alberne Gangarten, die Piranha-Brüder, sich der Presse stellen.</de>
+						<de>Der Oberschicht-Trottel des Jahres, historische Imitationen, das Ministerium für alberne Gänge, die Piranha-Brüder, sich der Presse stellen.</de>
 						<en>The Upper Class Twit of the Year, historical impersonations, the Ministry of Silly Walks, the Piranha Brothers, face the press.</en>
 					</description>
 				</programme>
 				<programme id="aa733e2c-5eb2-4763-a601-afcdef4ed7dd" product="2" licence_type="2" imdb_id="tt0651001" creator="9551">
 					<title>
-						<de>The Holy Inquisition</de>
+						<de>Heilige Inquisition</de>
 						<en>The Holy Inquisition</en>
 					</title>
 					<title_original>
-						<de>The Spanish Inquisition</de>
+						<de>Spanische Inquisition</de>
 						<en>The Spanish Inquisition</en>
 					</title_original>
 					<description>
-						<de>Neben der Spanischen Inquisition gibt es einen Bischof, der probt, Flugstunden, Déjà Vu, einen psychiatrischen Milchmann, etwas Live aus der Grill-o-Mat Snack Bar Paignton, It's A Living, eine Schulpreisverleihung und eine Entschuldigung.</de>
+						<de>Neben der Spanischen Inquisition gibt es einen Bischof, der probt, Flugstunden, Déjà Vu, einen psychiatrischen Milchmann, etwas Live aus der Grill-o-Mat Snackbar Paignton, Ein Job wie jeder andere, eine Schulpreisverleihung und eine Entschuldigung.</de>
 						<en>Besides the sketch of the title, there's a bishop rehearsing, flying lessons, Déjà Vu, a psychiatrist milkman, something Live From the Grill-o-Mat Snack Bar Paignton, It's A Living, a School Prize-Giving, and an apology.</en>
 					</description>
 				</programme>
 				<programme id="c0ee6ce1-42cd-4a3b-afa0-bc411d114530" product="2" licence_type="2" imdb_id="tt0786606" creator="9551">
 					<title>
-						<de>How to Hide Better</de>
+						<de>Wie man sich besser versteckt</de>
 						<en>How to Hide Better</en>
 					</title>
 					<title_original>
-						<de>How to Not Be Seen</de>
+						<de>Wie man nicht gesehen wird</de>
 						<en>How to Not Be Seen</en>
 					</title_original>
 					<description>
-						<de>Außerdem die Attila-der-Hunne-Show, Archäologie heute, Wie man verschiedene Körperteile erkennt, Scott aus der Antarktis, ein Wahlabend-Special, Bruces Sketch, sowie Sgt. Duckies Song als Beitrag der Polizei zum Eurovision Song Contest.</de>
+						<de>Außerdem die Attila-der-Hunne-Show, Archäologie heute, Wie man diverse Körperteile richtig identifiziert, Scott aus der Antarktis, ein Wahlabend-Special, Bruces Sketch, sowie Sgt. Duckies Song als Beitrag der Polizei zum Eurovision Song Contest.</de>
 						<en>Also Attila the Hun Show, Archaeology Today, How to Recognise Different Parts of the Body, Scott of the Antarctic, an Election Night Special, Bruces sketch, and Sgt. Duckie's song as the Police entry for Eurovision Song Contest.</en>
 					</description>
 				</programme>
@@ -15759,25 +15764,26 @@ Fifth and final part. Not so good.</en>
 				<en>The continuation of the sketch series by and with the iconic British comedy troupe.</en>
 			</description>
 			<staff>
-				<member index="0" function="2">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
-				<member index="1" function="2">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
-				<member index="2" function="2">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
-				<member index="3" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
-				<member index="4" function="2">4825bc96-8103-4575-8b0b-736831eba53a</member>
-				<member index="5" function="2">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
+				<member index="0" function="6">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="1" function="6">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
+				<member index="2" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
+				<member index="3" function="6">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
+				<member index="4" function="6">4825bc96-8103-4575-8b0b-736831eba53a</member>
+				<member index="5" function="6">bcc4d7a7-c155-443b-a726-8fde2735daec</member>
+				<member index="6" function="4">SpeedMinister-person-id040</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="GB" year="1974" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.5" />
-			<targetgroupattractivity children="0.5" teenagers="0.5" housewives="1.0" employees="1.0" unemployed="0" managers="1.0" pensioners="-0.5" />
+			<targetgroupattractivity children="1" teenagers="1.5" housewives="1" employees="1.5" unemployed="0.75" managers="2" pensioners="0.75" />
 			<ratings critics="90" speed="75" outcome="67" />
 			<children>
 				<programme id="867805fb-1fa3-4766-8c09-700ec111d309" product="2" licence_type="2" imdb_id="tt0651003" creator="9551">
 					<title>
-						<de>Whickerson's World</de>
+						<de>Das Befragungs-Eiland</de>
 						<en>Whickerson's World</en>
 					</title>
 					<title_original>
-						<de>Whicker's World</de>
+						<de>Die Interviewer-Insel</de>
 						<en>Whicker's World</en>
 					</title_original>
 					<description>
@@ -15787,11 +15793,11 @@ Fifth and final part. Not so good.</en>
 				</programme>
 				<programme id="1e432f43-c6ba-46dc-be55-b75583c47441" product="2" licence_type="2" imdb_id="tt0650968" creator="9551">
 					<title>
-						<de>Gore, Desolation, Dying, War and Horror</de>
+						<de>Grauen, Zerstörung, Sterben, Krieg und Horror</de>
 						<en>Gore, Desolation, Dying, War and Horror</en>
 					</title>
 					<title_original>
-						<de>Blood, Devastation, Death, War and Horror</de>
+						<de>Blut, Verwüstung, Tod, Krieg und Horror</de>
 						<en>Blood, Devastation, Death, War and Horror</en>
 					</title_original>
 					<description>
@@ -15801,11 +15807,11 @@ Fifth and final part. Not so good.</en>
 				</programme>
 				<programme id="4878448d-99a5-45df-a173-9f68f37943b2" product="2" licence_type="2" imdb_id="tt0650989" creator="9551">
 					<title>
-						<de>Vegetable Day</de>
+						<de>Gemüsetag</de>
 						<en>Vegetable Day</en>
 					</title>
 					<title_original>
-						<de>Salad Days</de>
+						<de>Lemon Curry</de>
 						<en>Salad Days</en>
 					</title_original>
 					<description>
@@ -15815,29 +15821,29 @@ Fifth and final part. Not so good.</en>
 				</programme>
 				<programme id="d052dd28-f948-4df6-81c9-93075e0aee6b" product="2" licence_type="2" imdb_id="tt0650971" creator="9551">
 					<title>
-						<de>E. Herbert Thropshawn's Illness</de>
+						<de>Reiten zum Hodensee</de>
 						<en>E. Herbert Thropshawn's Illness</en>
 					</title>
 					<title_original>
-						<de>E. Henry Thripshaw's Disease</de>
+						<de>Der Ritt zum Podensee</de>
 						<en>E. Henry Thripshaw's Disease</en>
 					</title_original>
 					<description>
-						<de>Bombe im Flugzeug, Zehn Sekunden Sex, Autobahnkreuz M1 gebaut von Figuren aus Paradise Lost, die Preise auf dem Planeten Algon, Boxen heute Abend, Dennis Moore, ein Buch zur Schlafenszeit.</de>
+						<de>Bombe im Flugzeug, Zehn Sekunden Sex, Autobahnkreuz M1 gebaut von Figuren aus Paradise Lost, die Preise auf dem Planeten Algon, Boxen heute Abend, Dennis Moore, das Buch zum Einschlafen.</de>
 						<en>Bomb on the Plane, Ten Seconds of Sex, M1 Interchange Built By Characters from Paradise Lost, Prices on the Planet Algon, Boxing Tonight, Dennis Moore, a Book at Bedtime.</en>
 					</description>
 				</programme>
 				<programme id="c7795ef3-5084-498f-9142-217181ec0f9e" product="2" licence_type="2" imdb_id="tt0650996" creator="9551">
 					<title>
-						<de>The Illuminated Age of Balloon Flight</de>
+						<de>Ballonflug im Zeitalter der Aufklärung</de>
 						<en>The Illuminated Age of Balloon Flight</en>
 					</title>
 					<title_original>
-						<de>The Golden Age of Ballooning</de>
+						<de>Das goldene Zeitalter der Ballonfahrt</de>
 						<en>The Golden Age of Ballooning</en>
 					</title_original>
 					<description>
-						<de>Auch das Goldene Zeitalter der Darmspülung, der Kauf einer Ameise, der Krieg der leichten Unterhaltung, Internationaler Frauentausch, der Oscar Wilde-Sketch, Rotkäppchen, Abspann des Jahres.</de>
+						<de>Auch das goldene Zeitalter der Darmspülung, der Kauf einer Ameise, der Krieg der leichten Unterhaltung, Internationaler Frauentausch, der Oscar Wilde-Sketch, Rotkäppchen, Abspann des Jahres.</de>
 						<en>Also the Golden Age of Colonic Irrigation, Buying an Ant, the Light Entertainment War, International Wife-Swapping, the Oscar Wilde sketch, Little Red Riding Hood, Credits of the Year.</en>
 					</description>
 				</programme>
@@ -15857,11 +15863,11 @@ Fifth and final part. Not so good.</en>
 				</programme>
 				<programme id="fb30c3c3-b7af-4b71-a77e-dd3cbf14c9b7" product="2" licence_type="2" imdb_id="tt0650987" creator="9551">
 					<title>
-						<de>A Broadcast from your Political Fraction</de>
+						<de>Eine Sendung von Ihrer politischen Fraktion</de>
 						<en>A Broadcast from your Political Fraction</en>
 					</title>
 					<title_original>
-						<de>Party Political Broadcast</de>
+						<de>Parteipolitisches</de>
 						<en>Party Political Broadcast</en>
 					</title_original>
 					<description>
@@ -15893,7 +15899,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
+			<targetgroupattractivity children="1" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<ratings critics="45" speed="61" outcome="67" />
 			<children>
 				<programme id="d10aeb23-49c3-4d96-986d-8b1519b1bfa5" product="2" licence_type="2" imdb_id="tt0096898" creator="9551">
@@ -16004,7 +16010,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
+			<targetgroupattractivity children="1" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<ratings critics="37" speed="59" outcome="74" />
 			<children>
 				<programme id="acd4c9e7-6e25-4b44-9277-b60ca3cc2b00" product="2" licence_type="2" imdb_id="tt0394279" creator="9551">
@@ -16115,7 +16121,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1992" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
+			<targetgroupattractivity children="1" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<ratings critics="43" speed="64" outcome="81" />
 			<children>
 				<programme id="5446d41b-deac-4484-a3ec-74e737ad7d1b" product="2" licence_type="2" imdb_id="tt0123433" creator="9551">
@@ -16226,7 +16232,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1993" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
+			<targetgroupattractivity children="1" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<ratings critics="42" speed="62" outcome="82" />
 			<children>
 				<programme id="054ffc65-33d8-4013-bda0-abbf0c182b3a" product="2" licence_type="2" imdb_id="tt0394293" creator="9551">
@@ -16337,7 +16343,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1994" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
+			<targetgroupattractivity children="1" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<ratings critics="41" speed="61" outcome="89" />
 			<children>
 				<programme id="ad197a0a-7858-4753-af55-0c0dc51bc853" product="2" licence_type="2" imdb_id="tt0394259" creator="9551">
@@ -16449,7 +16455,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1995" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="0" teenagers_male="2" teenagers_female="1.5" housewives_male="0" housewives_female="-0.5" employees_male="0.5" employees_female="0.5" unemployed_male="0.8" unemployed_female="0.8" managers_male="-0.3" managers_female="-0.3" pensioners_male="-1.2" pensioners_female="-1.2" />
+			<targetgroupattractivity children="1" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<ratings critics="48" speed="71" outcome="92" />
 			<children>
 				<programme id="9ada754b-d09a-4608-b1d3-3e62e4e70c87" product="2" licence_type="2" imdb_id="tt0394355" creator="9551">
@@ -16564,7 +16570,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1982" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
+			<targetgroupattractivity children_male="2" children_female="1.25" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="43494769-75fb-4281-9afd-2aafbc12fc2c" product="2" licence_type="2" imdb_id="tt0084218" creator="9551">
@@ -16678,7 +16684,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1983" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
+			<targetgroupattractivity children_male="2" children_female="1.25" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="8ebe7576-7ba5-408f-b79d-5d21e48ce5ea" product="2" licence_type="2" imdb_id="tt0620884" creator="9551" comment="Actually season 1">
@@ -16790,7 +16796,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1984" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
+			<targetgroupattractivity children_male="2" children_female="1.25" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="d6512f69-ab73-4b81-91e5-f6e3a441e067" product="2" licence_type="2" imdb_id="tt0620844" creator="9551">
@@ -16900,7 +16906,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1985" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.8" />
-			<targetgroupattractivity children="1.5" teenagers_male="2" teenagers_female="1" housewives_male="0" housewives_female="-0.5" />
+			<targetgroupattractivity children_male="2" children_female="1.25" />
 			<ratings critics="27" speed="84" outcome="88" />
 			<children>
 				<programme id="2b32de06-4277-4772-80a9-a16ccca256bf" product="2" licence_type="2" imdb_id="tt0620846" creator="9551">
@@ -17003,7 +17009,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<en>Family western series with [0|First] -blessed- [0|Last], who plays the helpful and God-fearing Charles, who heads his virtuous family with much love, but also authority and strictness.</en>
 			</description>
 			<staff>
-				<member index="0" function="2">111bba01-c84c-4b00-8782-c5810d703a0f</member> <!-- TODO: function="3" -->
+				<member index="0" function="3">111bba01-c84c-4b00-8782-c5810d703a0f</member>
 				<member index="1" function="2">4afef1d8-0f12-48a2-a8a2-6b23d64312c2</member>
 				<member index="2" function="2">cccff332-c453-40c6-b9cd-5b820ca9211f</member>
 				<member index="3" function="2">150ab730-2750-4675-b64e-cfeb00be1426</member>
@@ -17113,7 +17119,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<en>Family western series with [0|First] -blessed- [0|Last]. Based on daughter Laura's autobiographical books, but with plenty of fiction added.</en>
 			</description>
 			<staff>
-				<member index="0" function="2">111bba01-c84c-4b00-8782-c5810d703a0f</member> <!-- TODO: function="3" -->
+				<member index="0" function="3">111bba01-c84c-4b00-8782-c5810d703a0f</member>
 				<member index="1" function="2">4afef1d8-0f12-48a2-a8a2-6b23d64312c2</member>
 				<member index="2" function="2">cccff332-c453-40c6-b9cd-5b820ca9211f</member>
 				<member index="3" function="2">150ab730-2750-4675-b64e-cfeb00be1426</member>
@@ -20440,7 +20446,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<en>Heavy metal singer, airline pilot and jack-of-all-trades [0|Full] looks at and often flies a number of aircraft from across the history of commercial aviation. There are some quite surprising aerobatics done in rather large aircraft.</en>
 			</description>
 			<staff>
-				<member index="0" function="8">6eed09f6-ddfb-403a-bfe1-6870bc0c374e</member> <!-- TODO: function="152" -->
+				<member index="0" function="152">6eed09f6-ddfb-403a-bfe1-6870bc0c374e</member>
 			</staff>
 			<groups target_groups="362" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="GB" year="2005" distribution="2" maingenre="6" subgenre="300" flags="0" blocks="1" price_mod="0.2" />
@@ -20498,7 +20504,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 						<en>Safer Skies</en>
 					</title_original>
 					<description>
-						<de>Die automatische Landefähigkeit der Hawker Siddeley Trident, die Fly-by-Wire-Funktion des Airbus A320 (und des Fehlens dieser bei der Boeing 737) sowie andere sich derzeit in Entwicklung befindende Sicherheitsverbesserungen an Verkehrsflugzeugen.</de>
+						<de>Die automatische Landefähigkeit der Hawker Siddeley Trident, die Fly-by-Wire-Funktion des Airbus A320 (und das Fehlen dieser bei der Boeing 737) sowie andere sich derzeit in Entwicklung befindende Sicherheitsverbesserungen an Verkehrsflugzeugen.</de>
 						<en>The automatic landing capabilities of the Hawker Siddeley Trident, the fly-by-wire capabilities of the Airbus A320 (and lack thereof in the Boeing 737) as well as other Jetliner safety enhancements currently in development.</en>
 					</description>
 				</programme>
