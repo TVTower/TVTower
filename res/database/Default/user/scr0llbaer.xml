@@ -663,8 +663,8 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
 			<title>
-				<de>%the_gods_of%</de>
-				<en>%the_gods_of%</en>
+				<de>Die Götterwelt von %bali%</de>
+				<en>The Gods of %bali%</en>
 			</title>
 			<description>
 				<de>Alle 412.000 Götter werden vorgestellt.
@@ -676,61 +676,10 @@ So that's 4120 per episode.</en>
 			</description>
 
 			<variables>
-				<index>
-					<de>1|2|3|4|5|6|7|8|9|10|11|12</de>
-				</index>
-				<the_gods_of>
-					<de>Die Götterwelt von ${region_${index}}</de>
-					<en>The Gods of ${region_${index}}</en>
-				</the_gods_of>
-				<region_1>
-					<de>Bali</de>
-					<en>Bali</en>
-				</region_1>
-				<region_2>
-					<de>Laos</de>
-					<en>Laos</en>
-				</region_2>
-				<region_3>
-					<de>Kambodscha</de>
-					<en>Cambodia</en>
-				</region_3>
-				<region_4>
-					<de>Myanmar</de>
-					<en>Myanmar</en>
-				</region_4>
-				<region_5>
-					<de>Bhutan</de>
-					<en>Bhutan</en>
-				</region_5>
-				<region_6>
-					<de>Nepal</de>
-					<en>Nepal</en>
-				</region_6>
-				<region_7>
-					<de>Bangladesch</de>
-					<en>Bangladesch</en>
-				</region_7>
-				<region_8>
-					<de>Sri Lanka</de>
-					<en>Sri Lanka</en>
-				</region_8>
-				<region_9>
-					<de>Tibet</de>
-					<en>Tibet</en>
-				</region_9>
-				<region_10>
-					<de>Vietnam</de>
-					<en>Vietnam</en>
-				</region_10>
-				<region_11>
-					<de>Macau</de>
-					<en>Macau</en>
-				</region_11>
-				<region_12>
-					<de>Kalmückien</de>
-					<en>Kalmykia</en>
-				</region_12>
+				<bali>
+					<de>Bali|Laos|Kambodscha|Myanmar|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien</de>
+					<en>Bali|Laos|Cambodia|Myanmar|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia</en>
+				</bali>
 			</variables>
 
 			<jobs>
