@@ -12610,7 +12610,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1985" day="7" />
 			<ratings critics="39" speed="73" outcome="73" />
 		</programme>
-		<programme id="Stukov_Filme_Troglodyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1314248" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Troglodyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1314248" creator="9584" created_by="Stukov">
 			<title>
 				<de>Trilobite / Ocean Monster - Das Biest aus der See</de>
 				<en>Trilobite / Ocean Monster</en>
@@ -12633,7 +12633,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="2008" day="6" />
 			<ratings critics="11" speed="35" outcome="26" />
 		</programme>
-		<programme id="Stukov_Filme_Asteroid" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118261" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Asteroid" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118261" creator="9584" created_by="Stukov">
 			<title>
 				<de>Meteroid - Unheil aus dem Weltraum</de>
 				<en>Meteroid</en>
@@ -12655,7 +12655,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1997" day="2" />
 			<ratings critics="20" speed="35" outcome="27" />
 		</programme>
-		<programme id="Stukov_Filme_Hobbit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077687" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Hobbit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077687" creator="9584" created_by="Stukov">
 			<title>
 				<de>Der Halbling</de>
 				<en>The Halfling</en>
@@ -12675,7 +12675,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA/J" year="1977" distribution="2" maingenre="3" subgenre="10,9" flags="2" blocks="2" price_mod="0.50" />
 			<ratings critics="65" speed="61" outcome="38" />
 		</programme>
-		<programme id="Stukov_Filme_Der_Herr_der_Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="9584" created_by="Stukov" comment="targetgroupattractivity: More adult-oriented than usual cartoons.">
+		<programme id="Stukov_Der_Herr_der_Ringe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077869" creator="9584" created_by="Stukov">
 			<title>
 				<de>Meister Der Dinge</de>
 				<en>The Master Of Things</en>
@@ -12696,7 +12696,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<targetgroupattractivity children="0.75" teenagers="1.5" housewives="1.5" employees="1.25" unemployed="1.25" managers="1.25" pensioners="1.25" />
 			<ratings critics="50" speed="61" outcome="58" />
 		</programme>
-		<programme id="Stukov_Filme_Die Rückkehr_des_Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Die Rückkehr_des_Königs" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079802" creator="9584" created_by="Stukov">
 			<title>
 				<de>Die Rückkehr des Oberhauptes</de>
 				<en>The Return Of the Supreme</en>
@@ -12717,7 +12717,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<releaseTime year="1980" day="5" />
 			<ratings critics="63" speed="40" outcome="36" />
 		</programme>
-		<programme id="Stukov_Filme_Auch_ein_Sheriff_braucht_mal_Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Auch_ein_Sheriff_braucht_mal_Hilfe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065051" creator="9584" created_by="Stukov">
 			<title>
 				<de>Unterstütz deinen Sheriff vor Ort</de>
 				<en>Think local, help your Sheriff!</en>
@@ -12741,7 +12741,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<data country="USA" year="1969" distribution="1" maingenre="5" subgenre="18" flags="" blocks="2" price_mod="0.5" />
 			<ratings critics="71" speed="76" outcome="49" />
 		</programme>
-		<programme id="Stukov_Filme_Halloween_Die_Nacht_des_Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Halloween_Die_Nacht_des_Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="9584" created_by="Stukov">
 			<title>
 				<de>All Saints' Eve: Der Schrecken der Nacht</de>
 				<en>All Saints' Eve</en>
@@ -14728,8 +14728,8 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>She's Gotta Have It</en>
 			</title_original>
 			<description>
-				<de>Humoristischer Film von und mit [0|Full] über junge Frau mit drei Liebhabern.</de>
-				<en>Humorous film by and starring [0|Full] about young woman with three lovers.</en>
+				<de>Humoristischer Film von und mit [0|Full] über eine junge Frau mit drei Liebhabern.</de>
+				<en>Humorous film by and starring [0|Full] about a young woman with three lovers.</en>
 			</description>
 			<staff>
 				<member index="0" function="7">2a5c68d6-7166-41ca-a234-2465b0eeb420</member>
