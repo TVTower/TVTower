@@ -357,9 +357,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
 				<job index="4" function="2048" gender="2" required="1" />
-				<job index="5" function="64" required="0" />
-				<job index="6" function="8" required="0" />
-				<job index="7" function="16" required="0" />
+				<!--job index="5" function="64" required="0" /-->
+				<!--job index="6" function="8" required="0" /-->
+				<!--job index="7" function="16" required="0" /-->
 			</jobs>
 			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="104,300" />
@@ -402,7 +402,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="64" required="0" />
+				<!--job index="4" function="64" required="0" /-->
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="6,16" />
@@ -450,7 +450,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="64" required="0" />
+				<!--job index="4" function="64" required="0" /-->
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="301" subgenres="204,7" />
@@ -498,7 +498,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="64" required="0" />
+				<!--job index="4" function="64" required="0" /-->
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="203,103" />
@@ -546,7 +546,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="64" required="0" />
+				<!--job index="4" function="64" required="0" /-->
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="201,101" />
@@ -594,7 +594,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="64" required="0" />
+				<!--job index="4" function="64" required="0" /-->
 			</jobs>
 			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="6,11" />
@@ -612,7 +612,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			</programme_data_modifiers>
 		</scripttemplate>
 
-		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
+		<!--scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: Commenting out until targetgroupattractivity can be used. TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -658,8 +658,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<!--targetgroupattractivity children_male="2.0" children_female="0" teenagers_male="2.0" teenagers_female="0" housewives_male="0" housewives_female="-1.0" employees_male="1.0" employees_female="-0.5" unemployed_male="2.0" unemployed_female="0" managers_male="0.5" managers_female="0" pensioners_male="-1.0" pensioners_female="-2.0" comment="TODO: Does this work in scripts? Clarify." /-->
-		</scripttemplate>
+		</scripttemplate-->
 
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
 			<title>
@@ -714,25 +713,25 @@ So that's 4120 per episode.</en>
 
 			<variables>
 				<title>
-					<de>Der %adj% %house-m%|Die %adj% %house-f%|Das %adj% %house-n%</de>
-					<en>The %adj% %house-m%|The %adj% %house-f%|The %adj% %house-n%</en>
+					<de>Der %adj% %house_m%|Die %adj% %house_f%|Das %adj% %house_n%</de>
+					<en>The %adj% %house_m%|The %adj% %house_f%|The %adj% %house_n%</en>
 				</title>
 				<adj>
 					<de>Wahnwitzige|Verrückte|Irrwitzige|Durchgeknallte|Geisteskranke|Irrsinnige|Aberwitzige|Manische|Wahnsinnige|Absurde|Groteske|Bizarre|Abgedrehte</de>
 					<en>Lunatic|Crazy|Mad|Frenzied|Frantic|Insane|Ludicrous|Manic|Maniacal|Absurd|Grotesque|Bizarre|Wacky</en>
 				</adj>
-				<house-m>
+				<house_m>
 					<de>Landsitz</de>
 					<en>Country Estate</en>
-				</house-m>
-				<house-f>
+				</house_m>
+				<house_f>
 					<de>Villa|Residenz</de>
 					<en>Villa|Residence</en>
-				</house-f>
-				<house-n>
+				</house_f>
+				<house_n>
 					<de>Herrenhaus|Gutshaus|Anwesen|Landhaus|Tollhaus</de>
 					<en>Manor|Farmhouse|Estate|Country House|Madhouse</en>
-				</house-n>
+				</house_n>
 			</variables>
 
 			<jobs>
