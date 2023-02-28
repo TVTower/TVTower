@@ -1099,6 +1099,7 @@ endrem
 
 		programmeData.blocks = script.GetBlocks()
 		programmeData.flags = script.flags
+		If script.targetGroupAttractivityMod Then programmeData.targetGroupAttractivityMod = script.targetGroupAttractivityMod
 
 		programmeData.genre = script.mainGenre
 		If script.subGenres

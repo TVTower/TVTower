@@ -1861,6 +1861,9 @@ Type TDatabaseLoader
 			'source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
 		Next
 
+		'=== TARGETGROUP ATTRACTIVITY MOD ===
+		scriptTemplate.targetGroupAttractivityMod = GetV3TargetgroupAttractivityModFromNode(null, node, xml)
+
 		'=== EPISODES ===
 		'load children _after_ element is configured
 		Local nodeChildren:TxmlNode = xml.FindChild(node, "children")

@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.logger.bmx"
+Import "game.broadcast.audience.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
@@ -23,6 +24,7 @@ Type TScriptBase Extends TNamedGameObject
 	Field fixedLiveTime:Long = -1
 
 	Field programmeDataModifiers:TData
+	Field targetGroupAttractivityMod:TAudience = Null
 
 	'scripts of series are parent of episode scripts
 	Field parentScriptID:int = 0
