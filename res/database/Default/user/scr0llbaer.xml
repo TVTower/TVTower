@@ -334,7 +334,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<production_time value="60" />
 		</scripttemplate>
 
-		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
+		<!-- TODO: commenting out most live scripts for now, because outcome is never as desired. Reactivate eventually. -->
+
+		<!--scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
 				<de>%title%</de>
 				<en>%title%</en>
@@ -356,10 +358,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="2048" gender="2" required="1" />
-				<!--job index="5" function="64" required="0" /-->
-				<!--job index="6" function="8" required="0" /-->
-				<!--job index="7" function="16" required="0" /-->
+				<job index="4" function="2048" gender="2" required="0" />
+				<job index="5" function="64" required="0" />
+				<job index="6" function="8" required="0" />
+				<job index="7" function="16" required="0" >
 			</jobs>
 			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="104,300" />
@@ -370,9 +372,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<review min="50" max="70" />
 			<speed min="60" max="90" />
 			<production_time value="60" />
-		</scripttemplate>
+		</scripttemplate-->
 
-		<scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these. TODO: targetgroupattractivity">
+		<!--scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these. TODO: targetgroupattractivity">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -402,7 +404,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<!--job index="4" function="64" required="0" /-->
+				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="6,16" />
@@ -413,14 +415,13 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<review min="40" max="80" />
 			<speed min="40" max="80" />
 			<production_time value="60" />
-			<programme_data_modifiers> <!-- The idea is it's current news so it should get old quickly, but it should recover faster than usual to be still usable for the 1x repeat, e.g. in night programme. -->
+			<programme_data_modifiers>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<!--targetgroupattractivity children_male="0.5" children_female="-1.0" teenagers_male="1.0" teenagers_female="-0.5" housewives_male="0" housewives_female="-1.0" employees_male="2.0" employees_female="0" unemployed_male="0.5" unemployed_female="-1.0" managers_male="2.0" managers_female="0.5" pensioners_male="0" pensioners_female="-1.0" /-->
-		</scripttemplate>
+		</scripttemplate-->
 
-		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<!--scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -450,7 +451,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<!--job index="4" function="64" required="0" /-->
+				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="301" subgenres="204,7" />
@@ -466,9 +467,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate>
+		</scripttemplate-->
 
-		<scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<!--scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -498,7 +499,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<!--job index="4" function="64" required="0" /-->
+				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="203,103" />
@@ -513,10 +514,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<!--targetgroupattractivity children_male="0.5" children_female="-0.5" teenagers_male="0.5" teenagers_female="-0.5" housewives_male="-0.2" housewives_female="-1.0" employees_male="1.5" employees_female="-0.5" unemployed_male="1.5" unemployed_female="-0.5" managers_male="0.5" managers_female="-1.0" pensioners_male="0.3" pensioners_female="-0.5" /-->
-		</scripttemplate>
+		</scripttemplate-->
 
-		<scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<!--scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -546,7 +546,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<!--job index="4" function="64" required="0" /-->
+				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="201,101" />
@@ -562,9 +562,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate>
+		</scripttemplate-->
 
-		<scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<!--scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower%: %title% %latebreaking%</de>
 				<en>%tower%: %title% %latebreaking%</en>
@@ -594,7 +594,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<!--job index="4" function="64" required="0" /-->
+				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="300" subgenres="6,11" />
@@ -610,7 +610,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate>
+		</scripttemplate-->
 
 		<!--scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: Commenting out until targetgroupattractivity can be used. TODO: I am not happy with the titles and descriptions of these.">
 			<title>
