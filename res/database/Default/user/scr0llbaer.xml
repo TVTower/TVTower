@@ -361,7 +361,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="4" function="2048" gender="2" required="0" />
 				<job index="5" function="64" required="0" />
 				<job index="6" function="8" required="0" />
-				<job index="7" function="16" required="0" >
+				<job index="7" function="16" required="0" />
 			</jobs>
 			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="104,300" />
