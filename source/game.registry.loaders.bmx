@@ -482,6 +482,9 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		Local audienceAttractions:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
+			If TVTTargetGroup.GetByString(attrId) = TVTTargetGroup.ALL
+				HandleError("unknown audienceAttraction group "+ attrId)
+			EndIf
 			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
 			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
 			Local all:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
@@ -500,13 +503,19 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 			Local castAttributes:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				If Not castAttributes Then castAttributes = CreateMap()
-				Local jobID:Int = TVTPersonJob.GetByString(subNodeChild.GetName().ToLower())
+				Local jobName:String = subNodeChild.GetName()
+				Local jobID:Int = TVTPersonJob.GetByString(jobName.ToLower())
 				'appearance, charisma,...
-				Local attributeID:Int = TVTPersonPersonalityAttribute.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
+				Local attributeName:String = TXmlHelper.FindValue(subNodeChild, "attribute", "")
+				Local attributeID:Int = TVTPersonPersonalityAttribute.GetByString(attributeName)
 				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.0")
 
-				If jobID = TVTPersonJob.UNKNOWN Then Continue
-				If attributeID = TVTPersonPersonalityAttribute.NONE Then Continue
+				If jobID = TVTPersonJob.UNKNOWN
+					HandleError("unknown job for castAttributes: "+ jobName)
+				EndIf 
+				If attributeID = TVTPersonPersonalityAttribute.NONE
+					HandleError("unknown attribute for castAttributes: "+ attributeName)
+				EndIf
 
 				'limit values to -1.0 - +1.0
 				value = String( MathHelper.Clamp(Float(value), -1.0 , 1.0) )
@@ -525,10 +534,14 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 			Local focusPointPriorities:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				If Not focusPointPriorities Then focusPointPriorities = CreateMap()
-				Local focusPointID:Int = TVTProductionFocus.GetByString(subNodeChild.GetName().ToLower())
+				Local focusPointName:String = subNodeChild.GetName().ToLower()
+				Local focusPointID:Int = TVTProductionFocus.GetByString(focusPointName)
+				'TODO no clamping of value!?
 				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
-
-				If focusPointID = TVTProductionFocus.NONE Then Continue
+				
+				If focusPointID = TVTProductionFocus.NONE
+					HandleError("unknown focuspoint: "+ focusPointName)
+				EndIf
 
 				focusPointPriorities.Insert(String(focusPointID), value)
 			Next
@@ -568,7 +581,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 				If Int(followers[i]) = followers[i].Trim() Then Continue
 				Local follower:Int = TVTProgrammeGenre.GetByString(followers[i])
 				If follower = TVTProgrammeGenre.UNDEFINED
-					Print "INVALID GOODFOLLOWER GENRE: "+followers[i]
+					HandleError("invalid good follower: "+followers[i])
 				EndIf
 				followers[i] = follower
 			Next
@@ -581,7 +594,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 				If Int(followers[i]) = followers[i].Trim() Then Continue
 				Local follower:Int = TVTProgrammeGenre.GetByString(followers[i])
 				If follower = TVTProgrammeGenre.UNDEFINED
-					Print "INVALID BADFOLLOWER GENRE: "+followers[i]
+					HandleError("invalid bad follower: "+followers[i])
 				EndIf
 				followers[i] = follower
 			Next
@@ -625,4 +638,9 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		'indicate that the loading was successful
 		Return programmeDataMod
 	End Method
+
+	Function HandleError(message:String)
+		'throw "TRegistryProgrammeDataModsLoader: " + message
+		TLogger.log("TRegistryProgrammeDataModsLoader", message , LOG_LOADING | LOG_ERROR, TRUE)
+	EndFunction
 End Type
