@@ -1648,7 +1648,7 @@ Struct SAdContractRefillData
 			'highestChannelQuote = 0.175
 
 			lowestChannelQuoteDayTime:Float = 0.005
-			averageChannelQuoteDayTime:Float = 0.01
+			averageChannelQuoteDayTime:Float = 0.03
 			highestChannelQuoteDayTime:Float = 0.07
 
 			lowestChannelQuotePrimeTime:Float = 0.07
