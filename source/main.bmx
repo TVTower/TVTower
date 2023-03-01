@@ -6185,6 +6185,27 @@ endrem
 
 
 		'=== ADJUST CURRENT BROADCASTS ===
+		'check if an unproduced live programme is to get aired (live shooting)
+		'ensures quality data is calculated in time
+		If minute = 5
+			For Local player:TPlayer = EachIn GetPlayerCollection().players
+				Local programme:TProgramme = TProgramme(player.GetProgrammePlan().GetProgramme(day, hour))
+				'If player.GetProgrammePlan().GetProgrammeBlock(day, hour) = 1
+				If programme and programme.data.IsLive() and programme.programmedHour <= hour 'block 1
+					'try to find an still to shoot production
+					local production:TProduction = GetProductionManager().GetLiveProductionByProgrammeLicenceID(programme.licence.GetID())
+					'preproduction is done else it would not be "programmeable"
+					'so simply check if production is finished
+					if production and not production.IsProduced() 
+						'only start it once
+						if not production.IsShooting()
+							GetProductionManager().StartLiveProductionInStudio(production.GetID())
+						EndIf
+					EndIf
+				EndIf
+			Next
+		EndIf
+
 		'broadcasts change at xx:00, xx:05, xx:55
 		If minute = 5 Or minute = 55 Or minute = 0
 			Local broadcastMaterial:TBroadcastMaterial
@@ -6293,28 +6314,6 @@ endrem
 				players[a] = players[b]
 				players[b] = p
 			Next
-			
-			
-			'check if an unproduced live programme is to get aired
-			'(live shooting)
-			If minute = 5
-				For Local player:TPlayer = EachIn players
-					Local programme:TProgramme = TProgramme(player.GetProgrammePlan().GetProgramme(day, hour))
-					'If player.GetProgrammePlan().GetProgrammeBlock(day, hour) = 1
-					If programme and programme.data.IsLive() and programme.programmedHour <= hour 'block 1
-						'try to find an still to shoot production
-						local production:TProduction = GetProductionManager().GetLiveProductionByProgrammeLicenceID(programme.licence.GetID())
-						'preproduction is done else it would not be "programmeable"
-						'so simply check if production is finished
-						if production and not production.IsProduced() 
-							'only start it once
-							if not production.IsShooting()
-								GetProductionManager().StartLiveProductionInStudio(production.GetID())
-							EndIf
-						EndIf
-					EndIf
-				Next
-			EndIf
 
 
 			For Local player:TPlayer = EachIn players
