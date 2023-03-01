@@ -13,8 +13,8 @@
 	<allnews>
 		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in %thames% gesichtet</de>
-				<en>Whale sighted in %thames%</en>
+				<de>Wal in ${thames} gesichtet</de>
+				<en>Whale sighted in ${thames}</en>
 			</title>
 			<description>
 				<de>Da staunten die Anwohner an den Ufern des Flusses nicht schlecht, als sie am frühen Morgen lautes Platschen und hoch aufspritzendes Wasser bewundern durften.</de>
@@ -38,8 +38,8 @@
 				<en>Creampeas sounds the alarm</en>
 			</title>
 			<description>
-				<de>Wegen Wal in %thames% müsse eine Rettungsaktion sofort eingeleitet werden.</de>
-				<en>Rescue operation for whale in %thames% must be initiated immediately, Creampeas said.</en>
+				<de>Wegen Wal in ${thames} müsse eine Rettungsaktion sofort eingeleitet werden.</de>
+				<en>Rescue operation for whale in ${thames} must be initiated immediately, Creampeas said.</en>
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 			<effects>
@@ -49,8 +49,8 @@
 
 		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in %thames%: Rettung in Sicht</de>
-				<en>Whale in %thames%: Rescue in sight</en>
+				<de>Wal in ${thames}: Rettung in Sicht</de>
+				<en>Whale in ${thames}: Rescue in sight</en>
 			</title>
 			<description>
 				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
@@ -109,8 +109,8 @@
 
 		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in %thames% ist tot</de>
-				<en>Whale in %thames% dead</en>
+				<de>Wal in ${thames} ist tot</de>
+				<en>Whale in ${thames} dead</en>
 			</title>
 			<description>
 				<de>Die genaue Todesursache ist noch unklar, vermutlich war der Wal bereits schwach und konnte nicht genug Nahrung finden.</de>
@@ -121,8 +121,8 @@
 
 		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal in %thames% schwimmt zur Flußmündung</de>
-				<en>Whale in %thames% swims to river mouth</en>
+				<de>Wal in ${thames} schwimmt zur Flußmündung</de>
+				<en>Whale in ${thames} swims to river mouth</en>
 			</title>
 			<description>
 				<de>Es sind Fortschritte bei der Rettungsaktion zu verzeichnen. Hoffentlich findet der Wal seinen Weg.</de>
@@ -136,8 +136,8 @@
 
 		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Wal von %thames% ins Meer zurückgeschwommen</de>
-				<en>Whale from %thames% swam back to sea</en>
+				<de>Wal von ${thames} ins Meer zurückgeschwommen</de>
+				<en>Whale from ${thames} swam back to sea</en>
 			</title>
 			<description>
 				<de>Na also! Der Wal ist wieder in seinem natürlichen Habitat.</de>
