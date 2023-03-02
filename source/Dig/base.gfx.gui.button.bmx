@@ -170,7 +170,7 @@ endrem
 				newSprite = GetSpriteFromRegistry(_spriteNameHovered, _sprite)
 				_spriteNameInUse = _spriteNameHovered 'even if name did NOT exist!
 			EndIf
-		ElseIf IsSelected() 
+		ElseIf IsSelected()
 			If _spriteNameInUse <> _spriteNameSelected
 				newSprite = GetSpriteFromRegistry(_spriteNameSelected, _sprite)
 				_spriteNameInUse = _spriteNameSelected 'even if name did NOT exist!

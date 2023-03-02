@@ -604,25 +604,6 @@ rem
 			EndIf
 		EndIf
 endrem
-		If not savegameName.IsActive()
-			'ensure to use "GetCurrentValue()" (whatever is stored "inside"
-			'input - instead of "GetValue()" which uses the last value before
-			'the input became active
-			If savegameName.GetCurrentValue()
-				'only select if no other was selected already
-				If GetSelectedButtonIndex() = -1
-					SelectButton(0)
-				EndIf
-'			ElseIf GetSelectedButtonIndex() = 0
-'				SelectButton(1)
-			'select abort/cancel if save is no longer enabled
-			ElseIf not dialogueButtons[0].isEnabled() 
-				SelectButton(1)
-			EndIf
-		'deactivate buttons if the input is active (name entered now)
-		ElseIf GetSelectedButtonIndex() <> -1
-			SelectButton(-1)
-		EndIf
 
 		'disable/enable load-button (check current value to react during
 		'typing already)
@@ -632,9 +613,39 @@ endrem
 			If Not dialogueButtons[0].isEnabled() Then dialogueButtons[0].enable()
 		EndIf
 
+		If not savegameName.IsActive()
+			Local selectButtonIndex:Int = GetSelectedButtonIndex()
+			'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+			'input - instead of "GetValue()" which uses the last value before
+			'the input became active
+			If savegameName.GetCurrentValue()
+				'only select if no other was selected already
+				If GetSelectedButtonIndex() = -1 
+					selectButtonIndex = 0
+				EndIf
+'			ElseIf GetSelectedButtonIndex() = 0
+'				selectButtonIndex = 1
+			'select abort/cancel if save is no longer enabled
+			ElseIf not dialogueButtons[0].isEnabled() and GetSelectedButtonIndex() <> 1
+				selectButtonIndex = 1
+			EndIf
 
-		'handle Enter-Key
-		If KeyManager.IsHit(KEY_ENTER)
+			'select the desired button - but if it is not enabled, select the cancel (1) button
+			If GetSelectedButtonIndex() <> selectButtonIndex
+				If selectButtonIndex >= 0 and selectButtonIndex <> 1 and dialogueButtons[selectButtonIndex].isEnabled()
+					SelectButton(selectButtonIndex)
+				ElseIf GetSelectedButtonIndex() <> 1
+					SelectButton(1)
+				EndIf
+			EndIf
+		'deactivate buttons if the input is active (name entered now)
+		ElseIf GetSelectedButtonIndex() <> -1
+			SelectButton(-1)
+		EndIf
+
+
+		'handle Enter-Key (except something like an input is reading input)
+		If KeyManager.IsHit(KEY_ENTER) And Not GuiManager.GetKeyboardInputReceiver()
 'print "ENTER " + Millisecs() + "   GetSelectedButtonIndex()="+GetSelectedButtonIndex() + "   dialogueButtons[0].isEnabled()="+dialogueButtons[0].isEnabled()
 			'avoid others getting triggered too (eg. chat)
 			'also avoids a popup confirm dialogue to see enter on next 

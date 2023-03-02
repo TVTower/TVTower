@@ -458,12 +458,20 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 				dialogueButtons[0].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 				dialogueButtons[1].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 		End Select
+		
+		MoveDialogueButtonsIntoPosition()
 	End Method
 
 
 	'size 0, 0 is not possible (leads to autosize)
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Super.SetSize(w, h)
+		
+		MoveDialogueButtonsIntoPosition()
+	End Method
+	
+	
+	Method MoveDialogueButtonsIntoPosition()
 		'move button
 		If dialogueButtons.length = 1
 			dialogueButtons[0].SetPosition(rect.GetW()/2 - dialogueButtons[0].rect.GetW()/2, GetScreenRect().GetH() - 50)
@@ -482,19 +490,39 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 	End Method
 	
 	
+	Method CanSelectButton:int(index:Int)
+		If index >= 0 And index <= Self.dialogueButtons.length - 1
+			If Self.dialogueButtons[index].IsEnabled()
+				Return True
+			EndIf
+		EndIf
+		Return False
+	End Method
+	
+	
 	Method SelectButton:Int(index:Int)
 		Local selectedSomething:Int
-		'remove selection indicator from others
-		For Local i:Int = 0 To Self.dialogueButtons.length - 1
-			If index <> i 
-				If Self.dialogueButtons[i].IsSelected()
-					Self.dialogueButtons[i].SetSelected(False)
+		Local lastSelected:Int = GetSelectedButtonIndex()
+
+		If lastSelected <> index
+			'select new (if possible)
+			If index >= 0 And index <= Self.dialogueButtons.length - 1
+				If Not Self.dialogueButtons[index].IsEnabled()
+					'cannot set a disabled as selected
+					'... ignore request for now
+				Else
+					Self.dialogueButtons[index].SetSelected(True)
+					selectedSomething = True
 				EndIf
-			Else
-				Self.dialogueButtons[i].SetSelected(True)
-				selectedSomething = True
 			EndIf
-		Next
+
+			'deselect old (if new is selected - or deselection is requested)
+			If selectedSomething Or index = -1 
+				If lastSelected <> -1 And Self.dialogueButtons[lastSelected].IsSelected()
+					Self.dialogueButtons[lastSelected].SetSelected(False)
+				EndIf
+			EndIf
+		EndIf
 		
 		Return selectedSomething
 	End Method
