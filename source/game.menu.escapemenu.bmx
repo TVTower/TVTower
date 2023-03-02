@@ -546,10 +546,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		Next
 
 		'select and activate input field if NO name was entered yet!
-		'ensure to use "GetCurrentValue()" (whatever is stored "inside"
-		'input - instead of "GetValue()" which uses the last value before
-		'the input became active
-		If Not savegameName.GetCurrentValue()
+		If Not GetSavegameNameValue()
 			doSetManualFocus = True
 		EndIf
 	End Method
@@ -560,7 +557,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			savegameNameLabel.SetValue( GetLocale("NAME_OF_SAVEGAME") + ":" )
 		EndIf
 	End Method
-
+	
 
 	Method Remove:Int()
 		Super.Remove()
@@ -594,7 +591,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		'this avoids breaking the "tab through buttons" functions
 rem
 		If savegameName.IsFocused() or savegameList.IsFocused()
-			If savegameName.GetCurrentValue()
+			If GetSavegameNameValue()
 				'only select if no other was selected already
 				If GetSelectedButtonIndex() = -1
 					SelectButton(0)
@@ -607,7 +604,7 @@ endrem
 
 		'disable/enable load-button (check current value to react during
 		'typing already)
-		If savegameName.GetCurrentValue() = ""
+		If GetSavegameNameValue() = ""
 			If dialogueButtons[0].isEnabled() Then dialogueButtons[0].disable()
 		Else
 			If Not dialogueButtons[0].isEnabled() Then dialogueButtons[0].enable()
@@ -615,10 +612,7 @@ endrem
 
 		If not savegameName.IsActive()
 			Local selectButtonIndex:Int = GetSelectedButtonIndex()
-			'ensure to use "GetCurrentValue()" (whatever is stored "inside"
-			'input - instead of "GetValue()" which uses the last value before
-			'the input became active
-			If savegameName.GetCurrentValue()
+			If GetSavegameNameValue()
 				'only select if no other was selected already
 				If GetSelectedButtonIndex() = -1 
 					selectButtonIndex = 0
@@ -653,10 +647,7 @@ endrem
 			KeyManager.blockKey(KEY_ENTER, 250)
 		
 			If GetSelectedButtonIndex() = 0 and dialogueButtons[0].isEnabled()
-				'ensure to use "GetCurrentValue()" (whatever is stored "inside"
-				'input - instead of "GetValue()" which uses the last value before
-				'the input became active
-				SaveSavegame(savegameName.GetCurrentValue())
+				SaveSavegame(GetSavegameNameValue())
 			ElseIf GetSelectedButtonIndex() = 1 and dialogueButtons[1].isEnabled()
 				Back()
 			EndIf
@@ -670,6 +661,14 @@ endrem
 		Super.DrawContent()
 
 		GuiManager.Draw( LS_modalSaveMenu )
+	End Method
+	
+	
+	Method GetSavegameNameValue:String()
+		'ensure to use "GetCurrentValue()" (whatever is stored "inside"
+		'input - instead of "GetValue()" which uses the last value before
+		'the input became active
+		Return savegameName.GetCurrentValue()
 	End Method
 
 
@@ -771,10 +770,7 @@ endrem
 
 		'approve overwrite
 		If buttonNumber = 0
-			'ensure to use "GetCurrentValue()" (whatever is stored "inside"
-			'input - instead of "GetValue()" which uses the last value before
-			'the input became active
-			SaveSavegame(savegameName.GetCurrentValue(), True)
+			SaveSavegame(GetSavegameNameValue(), True)
 		EndIf
 
 		'remove connection to dialogue (guimanager takes care of fading)
@@ -785,7 +781,7 @@ endrem
 	Method onChangeSavegameNameInputValue:Int( triggerEvent:TEventBase )
 		Local guiInput:TGUIInput = TGUIInput(triggerEvent._sender)
 		if not guiInput then Return False
-		Local newName:String = guiInput.GetCurrentValue()
+		Local newName:String = GetSavegameNameValue()
 		
 		Local refocus:Int
 		If guiInput.IsFocused() then refocus = True
@@ -820,10 +816,7 @@ endrem
 		Local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		If Not button Or button <> dialogueButtons[0] Then Return False
 
-		'ensure to use "GetCurrentValue()" (whatever is stored "inside"
-		'input - instead of "GetValue()" which uses the last value before
-		'the input became active
-		If Not SaveSavegame(savegameName.GetCurrentValue())
+		If Not SaveSavegame(GetSavegameNameValue())
 			triggerEvent.SetVeto(True)
 			Return False
 		EndIf
