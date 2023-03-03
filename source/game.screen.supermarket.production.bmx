@@ -685,10 +685,6 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local castIndex:Int = triggerEvent.GetData().GetInt("castIndex")
 		Local person:TPersonBase = TPersonBase(triggerEvent.GetData().Get("person"))
 
-		'skip without changes
-		If GetInstance().castSlotList.GetSlotCast(castIndex) = person Then Return False
-		'if currentProductionConcept.GetCast(castIndex) = person then return False
-
 		GetInstance().haveToRefreshFinishProductionConceptGUI = True
 
 		'create or update gui element
