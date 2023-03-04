@@ -401,6 +401,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.potential = template.GetPotential()
 		script.blocks = template.GetBlocks()
 		script.price = template.GetPrice()
+		If template.targetGroupAttractivityMod Then script.targetGroupAttractivityMod = template.targetGroupAttractivityMod.Copy()
 
 		script.flags = template.GetFinalFlags()
 		script.targetGroup = template.GetFinalTargetGroup()
