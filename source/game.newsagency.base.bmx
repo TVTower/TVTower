@@ -105,20 +105,20 @@ Type TNewsAgency
 		For Local i:Int = 0 Until TVTNewsGenre.count
 			Select i
 				Case TVTNewsGenre.POLITICS_ECONOMY
-					NextEventTimeIntervals[i] = [210, 330]
+					NextEventTimeIntervals[i] = [300, 500]
 				Case TVTNewsGenre.SHOWBIZ
-					NextEventTimeIntervals[i] = [180, 290]
+					NextEventTimeIntervals[i] = [270, 450]
 				Case TVTNewsGenre.SPORT
-					NextEventTimeIntervals[i] = [200, 300]
+					NextEventTimeIntervals[i] = [300, 450]
 				Case TVTNewsGenre.TECHNICS_MEDIA
-					NextEventTimeIntervals[i] = [220, 350]
+					NextEventTimeIntervals[i] = [330, 530]
 				Case TVTNewsGenre.CULTURE
-					NextEventTimeIntervals[i] = [240, 380]
+					NextEventTimeIntervals[i] = [360, 600]
 				'default
 			'	case TVTNewsGenre.CURRENT_AFFAIRS
-			'		NextEventTimeIntervals[i] = [180, 300]
+			'		NextEventTimeIntervals[i] = [270, 450]
 				Default
-					NextEventTimeIntervals[i] = [180, 300]
+					NextEventTimeIntervals[i] = [270, 450]
 			End Select
 		Next
 	End Method
@@ -1052,13 +1052,13 @@ Type TNewsAgency
 
 		'during night, news come not that often
 		If GetWorldTime().GetDayHour() < 4
-			addMinutes :+ RandRange(15,45)
+			addMinutes :+ RandRange(30,70)
 		'during night, news come not that often
 		ElseIf GetWorldTime().GetDayHour() >= 22
-			addMinutes :+ RandRange(15,30)
+			addMinutes :+ RandRange(30,60)
 		'work time - even earlier now
 		ElseIf GetWorldTime().GetDayHour() > 8 And GetWorldTime().GetDayHour() < 14
-			addMinutes :- RandRange(15,30)
+			addMinutes :- RandRange(20,40)
 		EndIf
 
 
