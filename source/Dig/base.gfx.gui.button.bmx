@@ -11,12 +11,12 @@ Import "base.util.registry.spriteloader.bmx"
 
 
 Type TGUIButton Extends TGUIobject
-	Field _spriteName:String = "gfx_gui_button.default"
-	Field _spriteNameDisabled:String = "gfx_gui_button.default"
-	Field _spriteNameActive:String = "gfx_gui_button.default"
-	Field _spriteNameHovered:String = "gfx_gui_button.default"
-	Field _spriteNameSelected:String = "gfx_gui_button.default"
-	Field _spriteNameInUse:String = "gfx_gui_button.default"
+	Field _spriteName:String
+	Field _spriteNameDisabled:String
+	Field _spriteNameActive:String 
+	Field _spriteNameHovered:String
+	Field _spriteNameSelected:String
+	Field _spriteNameInUse:String
 	
 	Field _sprite:TSprite 'private
 	Field caption:TGUILabel	= Null
@@ -34,15 +34,17 @@ Type TGUIButton Extends TGUIobject
 	Method GetClassName:String()
 		Return "tguibutton"
 	End Method
-
+	
+	
+	Method New()
+		SetSpriteName("gfx_gui_button.default")
+	End Method
 
 	Method Create:TGUIButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
 		SetValue(value)
-		
-		SetSpriteName(_spriteName)
 
     	GUIManager.Add(Self)
 		Return Self
