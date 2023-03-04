@@ -214,6 +214,13 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 			endif
 		endif
 
+		'Do not send news for each match - higher league index = higher chance of being ignored
+		If Not season Or season.seasonType <> TNewsEventSportSeason.SEASONTYPE_PLAYOFF
+			If randRange(1,100) > 50 + 10 * leagueIndex
+				Return False
+			EndIf
+		EndIf
+
 		Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(match.GetMatchTime()) ) )
 
 
