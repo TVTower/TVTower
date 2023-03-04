@@ -31,7 +31,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	'set to true and production GUI changes wont affect logic
 	Field refreshingProductionGUI:Int = False
 	Field refreshControlEnablement:Int = True {nosave}
-	Field refreshFinishProductionConcept:Int = True
+	Field haveToRefreshFinishProductionConceptGUI:Int = True
 
 	Field currentProductionConcept:TProductionConcept
 	Global castSortType:Int = 0
@@ -109,6 +109,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'to reload concept list when entering a screen
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		'refresh finish button on money change (maybe no longer enough money to finish... )
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnChangeMoney, onPlayerChangeMoney) ]
+
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
@@ -167,6 +170,18 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	End Function
 
 
+	Function onPlayerChangeMoney:Int( triggerEvent:TEventBase )
+		Local pf:TPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
+		If Not pf Then throw "onPlayerChangeMoney: Incorrect event sender for event PlayerFinance_OnChangeMoney."
+		
+		If pf.playerID = GetObservedPlayerID() 
+			GetInstance().haveToRefreshFinishProductionConceptGUI = True
+		EndIf
+
+		Return True
+	End Function
+
+
 	'reset gui elements to their initial state (new production)
 	Method ResetProductionConceptGUI()
 		refreshingProductionGUI = True
@@ -192,6 +207,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Method RefreshFinishProductionConceptGUI()
+		haveToRefreshFinishProductionConceptGUI = False
+
 		If Not currentProductionConcept
 			finishProductionConcept.Disable()
 			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet")
@@ -212,12 +229,15 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			editTextsButton.Disable()
 			finishProductionConcept.Disable()
 			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.informative")
-
 			finishProductionConcept.SetValue("|b|"+GetLocale("FINISHED_PLANNING")+"|/b|")
 		ElseIf currentProductionConcept.IsPlanned()
-			finishProductionConcept.Enable()
-			'TODO: positive/negative je nach Geldstand
-			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.positive")
+			If GetPlayerBase().GetFinance().CanAfford(currentProductionConcept.GetDepositCost())
+				finishProductionConcept.Enable()
+				finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.positive")
+			Else
+				finishProductionConcept.Disable()
+				finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.negative")
+			EndIf
 			finishProductionConcept.SetValue("|b|"+GetLocale("FINISH_PLANNING")+"|/b|~n" + GetLocale("AND_PAY_DOWN_MONEY").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|"))
 		Else
 			finishProductionConcept.Disable()
@@ -552,7 +572,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If focusIndex < 0 Or GetInstance().productionFocusSlider.length < focusIndex Then Return False
 
 		'do this before skipping without changes
-		GetInstance().refreshFinishProductionConcept = True
+		GetInstance().haveToRefreshFinishProductionConceptGUI = True
 
 		'skip without changes
 		If Int(GetInstance().productionFocusSlider[focusIndex -1].GetValue()) = value Then Return False
@@ -665,11 +685,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local castIndex:Int = triggerEvent.GetData().GetInt("castIndex")
 		Local person:TPersonBase = TPersonBase(triggerEvent.GetData().Get("person"))
 
-		'skip without changes
-		If GetInstance().castSlotList.GetSlotCast(castIndex) = person Then Return False
-		'if currentProductionConcept.GetCast(castIndex) = person then return False
-
-		GetInstance().refreshFinishProductionConcept = True
+		GetInstance().haveToRefreshFinishProductionConceptGUI = True
 
 		'create or update gui element
 		GetInstance().castSlotList.SetSlotCast(castIndex, person)
@@ -892,12 +908,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		productionConceptList.EmptyList()
 
 
-		'might be null on game load / screen initialization
-		Local fig:TFigureBase = TRoomHandler.GetObservedFigure()
-		If Not fig Then Return
-
 		'only valid players can have concept lists
-		Local observedPlayerID:Int = fig.playerID
+		Local observedPlayerID:Int = GetObservedPlayerID()
 		If observedPlayerID <= 0 Then Return
 
 		
@@ -1014,7 +1026,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 	Method Render()
 		'update finishProductionConcept-button's value if needed
-		If refreshFinishProductionConcept
+		If haveToRefreshFinishProductionConceptGUI
 			RefreshFinishProductionConceptGUI()
 		EndIf
 

@@ -136,13 +136,15 @@ endrem
 
 
 	Method SetSpriteName(spriteName:String)
-		_spriteName = spriteName
-		_spriteNameDisabled = spriteName + ".disabled"
-		_spriteNameActive = spriteName + ".active"
-		_spriteNameSelected = spriteName + ".selected"
-		_spriteNameHovered = spriteName + ".hover"
-		
-		_spriteNameInUse = ""
+		If _spriteName <> spriteName
+			_spriteName = spriteName
+			_spriteNameDisabled = spriteName + ".disabled"
+			_spriteNameActive = spriteName + ".active"
+			_spriteNameSelected = spriteName + ".selected"
+			_spriteNameHovered = spriteName + ".hover"
+			
+			_spriteNameInUse = ""
+		EndIf
 	End Method
 
 
@@ -155,39 +157,50 @@ endrem
 	Method GetSprite:TSprite()
 		Local newSprite:TSprite
 
-		If Not IsEnabled() 
+		If Not IsEnabled()
 			If _spriteNameInUse <> _spriteNameDisabled
-				newSprite = GetSpriteFromRegistry(_spriteNameDisabled, _sprite)
+				newSprite = GetSpriteFromRegistry(_spriteNameDisabled)
+				'if not defined, try to fall back to "normal" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteName)
 				_spriteNameInUse = _spriteNameDisabled 'even if name did NOT exist!
 			EndIf
 		ElseIf IsActive() 
 			If _spriteNameInUse <> _spriteNameActive
-				newSprite = GetSpriteFromRegistry(_spriteNameActive, _sprite)
+				newSprite = GetSpriteFromRegistry(_spriteNameActive)
+				'if not defined, try to fall back to "hovered" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteNameHovered)
+				'if not defined, try to fall back to "normal" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteName)
 				_spriteNameInUse = _spriteNameActive 'even if name did NOT exist!
 			EndIf
 		ElseIf IsHovered() 
 			If _spriteNameInUse <> _spriteNameHovered
-				newSprite = GetSpriteFromRegistry(_spriteNameHovered, _sprite)
+				newSprite = GetSpriteFromRegistry(_spriteNameHovered)
+				'if not defined, try to fall back to "active" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteNameActive)
+				'if not defined, try to fall back to "normal" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteName)
 				_spriteNameInUse = _spriteNameHovered 'even if name did NOT exist!
 			EndIf
 		ElseIf IsSelected()
 			If _spriteNameInUse <> _spriteNameSelected
-				newSprite = GetSpriteFromRegistry(_spriteNameSelected, _sprite)
+				newSprite = GetSpriteFromRegistry(_spriteNameSelected)
+				'if not defined, try to fall back to "hovered" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteNameHovered)
+				'if not defined, try to fall back to "normal" one
+				if newSprite.name = "defaultsprite" Then newSprite = GetSpriteFromRegistry(_spriteName)
 				_spriteNameInUse = _spriteNameSelected 'even if name did NOT exist!
 			EndIf
-		'back to normal?
-		ElseIf _spriteNameInUse <> _spriteName
+		'back to normal or initialization?
+		ElseIf _spriteNameInUse <> _spriteName or not _sprite
 			newSprite = GetSpriteFromRegistry(_spriteName, _sprite)
 			_spriteNameInUse = _spriteName
 		EndIf
 
-		If Not _sprite
-			newSprite = GetSpriteFromRegistry(_spriteName, _sprite)
-		EndIf
 
 		If newSprite
 			_sprite = newSprite
-			If _sprite <> TSprite.defaultSprite
+			If _sprite <> TSprite.defaultSprite and _sprite.name <> "defaultsprite"
 				SetAppearanceChanged(True)
 'print "changed button sprite: " + _spriteNameInUse
 			EndIf
