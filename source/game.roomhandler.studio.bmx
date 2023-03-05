@@ -881,9 +881,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 			For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
 				conceptTitles.addLast(p.getTitle().toLower())
 			Next
-			If conceptTitles.contains(pc.getTitle().toLower())
+			If conceptTitles.contains(pc.getTitle().toLower()) Or Not pc.getTitle().Contains("#")
 				Local newTitle:String
-				For Local i:Int = 2 Until 50
+				For Local i:Int = 1 Until 1000
 					newTitle = pc.script.GetTitle()+  " - #" + i
 					If Not conceptTitles.contains(newTitle.toLower()) Then Exit
 				Next
