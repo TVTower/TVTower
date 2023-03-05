@@ -1237,6 +1237,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		endif
 		If IsSeries()
 			genreString :+ " / " + GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount())
+		ElseIf GetProductionLimitMax() > 1
+			genreString :+ " / " +  GetProductionLimitMax() + " " +GetLocale("MOVIE_EPISODES")
 		EndIf
 
 		skin.fontNormal.DrawBox(genreString, contentX + 5, contentY, contentW - 10, genreH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
