@@ -126,30 +126,49 @@ Type TScriptCollection Extends TGameObjectCollection
 
 	Method GenerateRandom:TScript(avoidTemplateIDs:Int[])
 		Local template:TScriptTemplate
-		If Not avoidTemplateIDs Or avoidTemplateIDs.length = 0
-			template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-		Else
-			Local foundValid:Int = False
-			Local tries:Int = 0
-
-			template = GetScriptTemplateCollection().GetRandomByFilter(True, True, "", avoidTemplateIDs)
-			'get a random one, ignore avoid IDs
-			If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
-				Print "TScriptCollection.GenerateRandom() - warning. No available template found (avoid-list too big?). Trying an avoided entry."
+		'iterate several times in case template with production limit and protected title is involved
+		For Local i:Int = 0 Until 20
+			'determine candidate
+			If Not avoidTemplateIDs Or avoidTemplateIDs.length = 0
 				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+			Else
+				template = GetScriptTemplateCollection().GetRandomByFilter(True, True, "", avoidTemplateIDs)
+				'get a random one, ignore avoid IDs
+				If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
+					TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Trying an avoided entry.", LOG_WARNING)
+					template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+				EndIf
+				'get a random one, ignore availability
+				If Not template
+					TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Using an unfiltered entry.", LOG_WARNING)
+					template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
+				EndIf
 			EndIf
-			'get a random one, ignore availability
-			If Not template
-				Print "TScriptCollection.GenerateRandom() - failed. No available template found (avoid-list too big?). Using an unfiltered entry."
-				template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
+
+			'If the template has a production limit, ensure no protected title is used
+			If template.GetProductionLimitMax() > 1
+				Local tempName:TLocalizedString
+				For Local i:Int = 0 Until 20
+					template.reset()
+					tempName = template.GenerateFinalTitle()
+					If Not GetScriptCollection().IsTitleProtected(tempName)
+						Exit
+					Else
+						tempName = Null
+					EndIf
+				Next
+				If Not tempName Then template = Null
 			EndIf
-		EndIf
 
-		Local script:TScript = TScript.CreateFromTemplate(template,True)
-		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
-		Add(script)
-
-		Return script
+			If template
+				Local script:TScript = TScript.CreateFromTemplate(template,True)
+				script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+				Add(script)
+				Return script
+			EndIf
+		Next
+		'this should never happen - twenty tries and always protected multi-production template is unlikely
+		throw "TScriptCollection.GenerateRandom(): could not create a new script"
 	End Method
 
 
@@ -719,6 +738,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		If basedOnScriptTemplateID
 			Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
 			If template Then template.FinishProduction(programmeLicenceID)
+
+			'on finishing a multi-production; allow producing the same title again
+			If GetProductionLimitMax() > 1 And CanGetProducedCount() <= 0
+				GetScriptCollection().RemoveTitleProtection(title)
+			EndIf
 		EndIf
 	End Method
 

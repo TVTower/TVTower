@@ -531,8 +531,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		If Not script Then script = CreateScript()
 		'add the script to the collection?
 		'...
-		'or just protect the title of being used again
-		GetScriptCollection().AddTitleProtection(script.title, -1)
+		'or just protect the title (for non-multi-production script) of being used again
+		If script.GetProductionLimitMax() <= 1
+			GetScriptCollection().AddTitleProtection(script.title, -1)
+		EndIf
 
 		'Print "CreateProductionConcept():"
 
