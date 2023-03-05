@@ -356,10 +356,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<!--job index="4" function="2048" gender="2" required="0" /--> <!-- TODO: Eventually reactivate, should casting models become possible -->
-				<job index="5" function="64" required="0" />
-				<job index="6" function="8" required="0" />
-				<job index="7" function="16" required="0" />
+				<job index="4" function="64" required="0" />
+				<job index="5" function="8" required="0" />
+				<job index="6" function="16" required="0" />
+				<!--job index="7" function="2048" gender="2" required="0" /--> <!-- TODO: Eventually reactivate, should casting models become possible -->
 			</jobs>
 			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="104,300" />
@@ -420,7 +420,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			</programme_data_modifiers>
 		</scripttemplate>
 
-		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented?">
 			<title>
 				<de>%tower% Dynamit - Das Magazin: %latebreaking%</de>
 				<en>%tower% Dynamite - The Magazine: %latebreaking%</en>
@@ -497,7 +497,7 @@ A must for every housewife, a curse for hard men.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="204" subgenres="6,301" />
 			<blocks value="1" />
 			<price min="100000" max="200000" />
@@ -518,8 +518,8 @@ A must for every housewife, a curse for hard men.</en>
 				<en>%recreational% %athletes% from %randomcity% and elsewhere</en>
 			</title>
 			<description>
-				<de>Aktuelle News und Berichterstattungen aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Kartsport und Formel 3 &amp; 4, und vieles mehr.</de>
-				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, karting and Formula 3 &amp; 4, and much more.</en>
+				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Kartsport &amp; Formel 3 &amp; 4 und vieles mehr.</de>
+				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, karting &amp; Formula 3 &amp; 4, and much more.</en>
 			</description>
 
 			<variables>
@@ -533,7 +533,6 @@ A must for every housewife, a curse for hard men.</en>
 				</athletes>
 				<randomcity>
 					<de>%STATIONMAP:RANDOMCITY%</de>
-					<en>%STATIONMAP:RANDOMCITY%</en>
 				</randomcity>
 			</variables>
 
@@ -562,11 +561,11 @@ A must for every housewife, a curse for hard men.</en>
 		<scripttemplate product="3" licence_type="1" guid="acf3207f-bfcd-4aef-9c10-a4871dcab928" creator="9551">
 			<title>
 				<de>%secondleague% Sport%report%</de>
-				<en>%secondleague% Sports %report%</en>
+				<en>%secondleague% Sports%report%</en>
 			</title>
 			<description>
-				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Leichtathletik, Boxen, Kunstturnen, Eiskunstlauf, Reitsport und vieles mehr.</de>
-				<en>Second comes right after first! Updates on everything that is second-tier sports in the country. Second leagues in soccer, ice hockey, basketball, soccer, table tennis. Also Formula 2, athletics, boxing, gymnastics, figure skating, equestrian sports and much more.</en>
+				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport und vieles mehr.</de>
+				<en>Second comes right after first! Updates on everything that is second-tier sports in the country. Second leagues in soccer, ice hockey, basketball, soccer, table tennis. Also Formula 2, gymnastics, figure skating, equestrian sports and much more.</en>
 			</description>
 
 			<variables>
@@ -575,8 +574,8 @@ A must for every housewife, a curse for hard men.</en>
 					<en>Second League|Second Class|Second Tier|Second Division</en>
 				</secondleague>
 				<report>
-					<de>report|reportage|bericht|berichterstattung</de>
-					<en>Report|Feature|Bulletin|Coverage|</en>
+					<de>report|reportage|bericht|berichterstattung|</de>
+					<en> Report| Feature| Bulletin| Coverage|</en>
 				</report>
 			</variables>
 
@@ -609,8 +608,8 @@ A must for every housewife, a curse for hard men.</en>
 				<en>%tower% %latebreaking%: %title%</en>
 			</title>
 			<description>
-				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
-				<en>The top licenses included! The latest in sports. New every day. The top leagues and competitions of the nation and around the world. Soccer, ice hockey, basketball, football, tennis, athletics, boxing, formula 1, winter sports, you name it.</en>
+				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
+				<en>The top licenses included! The latest in sports. New every day. The top leagues and competitions of the nation and around the world. Soccer, ice hockey, basketball, football, tennis, table tennis, athletics, boxing, formula 1, winter sports, you name it.</en>
 			</description>
 
 			<variables>
@@ -700,8 +699,8 @@ A must for every housewife, a curse for hard men.</en>
 
 		<scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower%: %title% %latebreaking%</de>
-				<en>%tower%: %title% %latebreaking%</en>
+				<de>%tower%: %title%%latebreaking%</de>
+				<en>%tower%: %title%%latebreaking%</en>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -714,12 +713,12 @@ A must for every housewife, a curse for hard men.</en>
 					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<title>
-					<de>Kultur|Kunst und Kultur|Kulturwelt|Kultursphäre</de>
-					<en>Culture|Art and Culture|Cultural World|Cultural Sphere</en>
+					<de>Kultur|Kunst und Kultur|Kulturwelt|Kultursphäre|Kulturwoche</de>
+					<en>Culture|Art and Culture|Cultural World|Cultural Sphere|Cultural Week</en>
 				</title>
 				<latebreaking>
-					<de>Aktuell|der Gegenwart|im aktuellen Kontext</de>
-					<en>Up-to-date|of the Present Day|in a Contemporary Context</en>
+					<de> Aktuell| der Gegenwart| im aktuellen Kontext|</de>
+					<en> Up-to-date| of the Present| in a Contemporary Context|</en>
 				</latebreaking>
 			</variables>
 
