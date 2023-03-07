@@ -795,7 +795,7 @@ A must for every housewife, a curse for hard men.</en>
 			</programme_data_modifiers>
 		</scripttemplate>
 
-		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: Commenting out until targetgroupattractivity can be used. TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
