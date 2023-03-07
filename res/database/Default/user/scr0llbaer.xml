@@ -408,7 +408,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1.25" housewives_female="0.75" employees_male="2" employees_female="1" unemployed_male="1.5" unemployed_female="0.75" managers_male="2" managers_female="1.5" pensioners_male="1.25" pensioners_female="0.25" />
 			<genres maingenre="300" subgenres="6,16" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="50000" max="100000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -453,16 +453,64 @@ A must for every housewife, a curse for hard men.</en>
 			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="301" subgenres="204,7" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
-			<potential min="25" max="55" />
-			<outcome min="25" max="55" />
-			<review min="25" max="55" />
-			<speed min="25" max="55" />
+			<price min="75000" max="150000" />
+			<potential min="40" max="70" />
+			<outcome min="40" max="70" />
+			<review min="40" max="70" />
+			<speed min="40" max="70" />
 			<production_time value="60" />
 			<programme_data_modifiers>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="40a79c72-f53d-4b4f-ad29-886dd6c99135" creator="9551" comment="TODO: Added after proposals from ronny and nittka, but perhaps this format should be more distinct from 'dynamite' somehow.">
+			<title>
+				<de>%pulse% - %show% %withexplosivenews%</de>
+				<en>%pulse% - The %show% %withexplosivenews%</en>
+			</title>
+			<description>
+				<de>Und noch ein Showbiz-Format. Die Welt da draußen scheint nicht genug davon bekommen zu können.</de>
+				<en>And another showbiz format. The world out there can't seem to get enough of it.</en>
+			</description>
+
+			<variables>
+				<pulse>
+					<de>Puls|Sprengstoff|Blitze|Buzz|Feuerwerk|Blitzlicht|Inferno|Zündstoff|Bumms|Furore</de>
+					<en>Pulse|Explosive|Flash|Buzz|Fireworks|Spotlight|Inferno|Fuse|Boom|Furore</en>
+				</pulse>
+				<show>
+					<de>Die Show|Der Ticker|Die Sendung|Das Magazin</de>
+					<en>Show|Ticker|Broadcast|Magazine</en>
+				</show>
+				<withexplosivenews>
+					<de>mit brisanten News|für Promi-News|mit aktuellen Skandalen|mit dem neuesten Klatsch und Tratsch|mit den heißesten Gerüchten|mit den neuesten Promi-Storys|mit den explosivsten Enthüllungen|mit den heißesten Gerüchten aus der Promi-Welt|mit den Knallern aus der Promi-Szene|mit den neuesten Skandalen und Enthüllungen</de>
+					<en>With Explosive News|for Celebrity News|With the Current Scandals|With the Latest Gossip and Rumors|With the Hottest Rumors|With the Latest Celebrity Stories|With the Most Explosive Revelations|With the Hottest Rumors From the Celebrity World|With the Blasts from the Celebrity Scene|With the Latest Scandals and Revelations</en>
+				</withexplosivenews>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="301" subgenres="204,7" />
+			<blocks value="1" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="50" />
+			<outcome min="20" max="50" />
+			<review min="20" max="50" />
+			<speed min="20" max="50" />
+			<production_time value="50" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<availability script="TIME_YEARSPLAYED>1" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
@@ -500,7 +548,7 @@ A must for every housewife, a curse for hard men.</en>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="204" subgenres="6,301" />
 			<blocks value="1" />
-			<price min="100000" max="200000" />
+			<price min="300000" max="600000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -518,8 +566,8 @@ A must for every housewife, a curse for hard men.</en>
 				<en>%recreational% %athletes% from %randomcity% and elsewhere</en>
 			</title>
 			<description>
-				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Kartsport &amp; Formel 3 &amp; 4 und vieles mehr.</de>
-				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, karting &amp; Formula 3 &amp; 4, and much more.</en>
+				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
+				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
 			</description>
 
 			<variables>
@@ -546,7 +594,7 @@ A must for every housewife, a curse for hard men.</en>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
-			<price min="5000" max="10000" />
+			<price min="15000" max="30000" />
 			<potential min="20" max="50" />
 			<outcome min="20" max="50" />
 			<review min="20" max="50" />
@@ -564,7 +612,7 @@ A must for every housewife, a curse for hard men.</en>
 				<en>%secondleague% Sports%report%</en>
 			</title>
 			<description>
-				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport und vieles mehr.</de>
+				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
 				<en>Second comes right after first! Updates on everything that is second-tier sports in the country. Second leagues in soccer, ice hockey, basketball, soccer, table tennis. Also Formula 2, gymnastics, figure skating, equestrian sports and much more.</en>
 			</description>
 
@@ -589,7 +637,7 @@ A must for every housewife, a curse for hard men.</en>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
-			<price min="50000" max="100000" />
+			<price min="100000" max="200000" />
 			<potential min="30" max="60" />
 			<outcome min="30" max="60" />
 			<review min="30" max="60" />
@@ -650,6 +698,8 @@ A must for every housewife, a curse for hard men.</en>
 			<availability script="TIME_YEARSPLAYED>2" />
 		</scripttemplate>
 
+		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
+
 		<scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
@@ -685,7 +735,7 @@ A must for every housewife, a curse for hard men.</en>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="201" subgenres="300,101" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="50000" max="100000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -733,7 +783,7 @@ A must for every housewife, a curse for hard men.</en>
 			<groups target_groups_optional="232" />
 			<genres maingenre="300" subgenres="6,11" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="30000" max="60000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -782,7 +832,7 @@ A must for every housewife, a curse for hard men.</en>
 			<genres maingenre="104" subgenres="2,16" />
 			<groups target_groups_optional="19" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="30000" max="60000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -824,7 +874,7 @@ So that's 4120 per episode.</en>
 			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks value="2" />
-			<price min="3000" max="6000" />
+			<price min="30000" max="90000" />
 			<potential min="20" max="70" />
 			<outcome min="20" max="70" />
 			<review min="30" max="80" />

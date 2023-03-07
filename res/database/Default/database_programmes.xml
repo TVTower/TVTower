@@ -3633,7 +3633,7 @@ Cinema hit 1986.</en>
 				<member index="2" function="2">d2bcf9c4-96ea-4510-af94-035a95858a3c</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="AUS" year="1986" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.67" />
+			<data country="AUS/USA" year="1986" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.67" />
 			<ratings critics="32" speed="32" outcome="51" />
 		</programme>
 		<programme id="77e95ae0-1d5f-4109-9f45-704d0a82b55e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0078346" creator="">
