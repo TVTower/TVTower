@@ -169,7 +169,7 @@
 					<stunts value="1.2" />
 				</focusPointPriorities>
 			</genre>
-			<genre id="3" name="cartoon" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
+			<genre id="3" name="animation" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>5,9</goodFollower>
 				<badFollower>17,12,8,13</badFollower>
 				<timeMods>
@@ -296,7 +296,7 @@
 					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="6" name="documentation" outcome-mod="0.2" review-mod="0.5" speed-mod="0.3">
+			<genre id="6" name="documentary" outcome-mod="0.2" review-mod="0.5" speed-mod="0.3">
 				<goodFollower>0,7,11,200,201,202,203</goodFollower>
 				<badFollower>1,2,3,4,5,8,9,10,12,14,15,17</badFollower>
 				<timeMods>
@@ -693,7 +693,7 @@
 					<audienceAttraction id="Pensioners" value="-1.7" />
 				</audienceAttractions>
 			</genre>
-			<genre id="15" name="love" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
+			<genre id="15" name="romance" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>5,9,202,203</goodFollower>
 				<badFollower>3,11</badFollower>
 				<timeMods>
@@ -739,7 +739,7 @@
 					<supportingactor attribute="appearance" value="0.4" />
 				</castAttributes>
 			</genre>
-			<genre id="16" name="sci-fi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
+			<genre id="16" name="scifi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
 				<goodFollower>1,2,10,14,17</goodFollower>
 				<badFollower>8,15</badFollower>
 				<timeMods>

@@ -442,6 +442,15 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 				'skip invalid configurations
 				If Not childData Then Continue
 
+				If childNode.GetName().ToLower() = "genre"
+					Local genreId:Int=childData.GetInt("id",-1)
+					If genreId < 0 Then HandleError("missing genre id")
+					If genreId > 0
+						Local genre:String = childData.getString("name","*")
+						If TVTProgrammeGenre.GetByString(genre) <> genreId Then HandleError("wrong genre name "+genre)
+					EndIf
+				EndIf
+
 				'add each entry to "ToLoad"-list
 				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
