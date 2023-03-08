@@ -1178,60 +1178,79 @@ Do the two offer enough material for an exciting panel?</en>
 				</programme>
 			</children>
 		</programme>
-		<programme id="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="TODO: Shouldn't this be a show to produce?">
+		<programme id="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="modified by scr0llbaer. Created live script version d6242a49-71e0-4997-97d6-3684e5c67d54">
 			<title>
-				<de>Dynamit - Das Magazin</de>
-				<en>Dynamite - The Magazine</en>
+				<de>Dynamit - Das Magazin Spezial: [2|Nick] und [3|Nick]</de>
+				<en>Dynamite - The Magazine Special: [2|Nick] and [3|Nick]</en>
 			</title>
 			<description>
-				<de>Das Ex-Model [1|Full] präsentiert aktuellen Tratsch, Promi-Geflüster und tränenrührende Tagesgeschehnisse.
-
-Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
-				<en>The ex-model [1|Full] presents current gossip, celebrity rumors and tear-jerking daily events.
-
-A must for every housewife, a curse for hard men.</en>
+				<de>Das Ex-Model [1|Full] präsentiert die Spezialausgabe unseres Dynamitmagazins anlässlich des 30. Geburtstages von [3|Nick].</de>
+				<en>The ex-model [1|Full] presents the special edition of our dynamite magazine on the occasion of [3|Nick]'s 30th birthday.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="2">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+				<member index="2" function="64">28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3</member>
+				<member index="3" function="64">4623935a-750a-4e5a-9d1b-6875062ff2a8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1991" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="1" />
+			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="1" />
+			<releaseTime year="1991" day="7" />
 			<ratings critics="28" speed="61" outcome="0" />
 			<children>
 				<programme id="178fcb7d-b54d-4064-b3c3-4e577f56d2bf" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Dynamit - Das Magazin - Startfolge</de>
-						<en>Dynamite - The Magazine - Launch episode</en>
+						<de>Dynamit [2|Nick] und [3|Nick] Spezial - Startfolge</de>
+						<en>Dynamite [2|Nick] and [3|Nick] Special - Launch episode</en>
 					</title>
+					<description>
+						<de>[3|First]s 30. Geburtstag löst zahlreiche Spekulationen über ihre Ehe aus. [3|First] hatte verbreiten lassen, dass sie ihren Geburtstag allein verbringen würde. Am Morgen erfährt sie, dass sie in Meinungsumfragen zum beliebtesten Mitglied der Königsfamilie gekürt worden ist.</de>
+						<en>[3|First]'s 30th birthday triggers numerous speculations about her marriage. [3|First] had let it be known that she would spend her birthday alone. In the morning, she learns that she has been voted the most popular member of the royal family in opinion polls.</en>
+					</description>
 					<ratings critics="42" speed="56" />
 				</programme>
 				<programme id="39bdbcf8-7865-4d95-b874-18031947c36e" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Dynamit - Das Magazin Folge 1</de>
-						<en>Dynamite - The Magazine Episode 1</en>
+						<de>Dynamit [2|Nick] und [3|Nick] Spezial - Folge 2</de>
+						<en>Dynamite [2|Nick] and [3|Nick] Special - Episode 2</en>
 					</title>
+					<description>
+						<de>Es bleibt Prinz [2|First] nicht verborgen, dass sich seine Frau im Umgang mit den Medien wesentlich geschickter erweist als er selbst. Ihre kurzfristigen Triumphe genügen [3|First] jedoch nicht.</de>
+						<en>It does not go unnoticed by Prince [2|First] that his wife is proving to be much more adept at dealing with the media than he is. However, her short-term triumphs are not enough for [3|First].</en>
+					</description>
 					<ratings critics="42" speed="56" />
 				</programme>
 				<programme id="558991e0-7971-4489-912b-c7ab299c5062" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Dynamit - Das Magazin Folge 2</de>
-						<en>Dynamite - The Magazine Episode 2</en>
+						<de>Dynamit [2|Nick] und [3|Nick] Spezial - Folge 3</de>
+						<en>Dynamite [2|Nick] and [3|Nick] Special - Episode 3</en>
 					</title>
+					<description>
+						<de>Gerüchten zufolge kriselt es in der Ehe, und [3|First] möchte nicht, dass die Öffentlichkeit sie für ein Scheitern ihrer Ehe verantwortlich machen würde.</de>
+						<en>Rumor has it that there is a crisis in the marriage, and [3|First] does not want the public to hold her responsible for a breakup of their marriage.</en>
+					</description>
 					<ratings critics="28" speed="51" />
 				</programme>
 				<programme id="a45a7dd5-af5b-4365-80c5-4cf6d7c441c3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Dynamit - Das Magazin Folge 3</de>
-						<en>Dynamite - The Magazine Episode 3</en>
+						<de>Dynamit [2|Nick] und [3|Nick] Spezial - Folge 4</de>
+						<en>Dynamite [2|Nick] and [3|Nick] Special - Episode 4</en>
 					</title>
+					<description>
+						<de>Weiter heißt es, [3|First] denke, es sei aber ein Fehler, weiterhin Stillschweigen über den Zustand ihrer Ehe zu bewahren. Sie trifft sich angeblich mit einem guten Bekannten und Journalisten, um an einem Buch zu schreiben.</de>
+						<en>It is further said that [3|First] thinks it would be a mistake to continue to keep quiet about the state of her marriage, however. She is reportedly meeting with a close acquaintance and journalist to write a book.</en>
+					</description>
 					<ratings critics="70" speed="42" />
 				</programme>
 				<programme id="d8f1c57b-feac-483e-9689-80252d487126" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Dynamit - Das Magazin Folge 4</de>
-						<en>Dynamite - The Magazine Episode 4</en>
+						<de>Dynamit [2|Nick] und [3|Nick] Spezial - Schlussfolge</de>
+						<en>Dynamite [2|Nick] and [3|Nick] Special - Last Episode</en>
 					</title>
+					<description>
+						<de>Zum Finale unseres Specials präsentieren wir exklusiv brandneue Insider-Informationen! [2|First] hat ja angeblich eine Affäre, und [3|First] hat nun Beweise dafür aus seiner Aktentasche gestohlen, die sie in ihrem Buch veröffentlichen wird!</de>
+						<en>For the finale of our special, we exclusively present hot new insider information! [2|First] is, after all, allegedly having an affair, and [3|First] has now stolen evidence of it from his briefcase, which she will publish in her book!</en>
+					</description>
 					<ratings critics="28" speed="51" />
 				</programme>
 			</children>

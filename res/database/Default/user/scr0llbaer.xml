@@ -334,9 +334,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<production_time value="60" />
 		</scripttemplate>
 
-		<!-- TODO: commenting out most live scripts for now, because outcome is never as desired. Reactivate eventually. -->
-
-		<!--scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
+		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
 				<de>%title%</de>
 				<en>%title%</en>
@@ -358,10 +356,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="8" required="1" />
 				<job index="3" function="128" required="1" />
-				<job index="4" function="2048" gender="2" required="0" />
-				<job index="5" function="64" required="0" />
-				<job index="6" function="8" required="0" />
-				<job index="7" function="16" required="0" />
+				<job index="4" function="64" required="0" />
+				<job index="5" function="8" required="0" />
+				<job index="6" function="16" required="0" />
+				<!--job index="7" function="2048" gender="2" required="0" /--> <!-- TODO: Eventually reactivate, should casting models become possible -->
 			</jobs>
 			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="103" subgenres="104,300" />
@@ -372,9 +370,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			<review min="50" max="70" />
 			<speed min="60" max="90" />
 			<production_time value="60" />
-		</scripttemplate-->
+		</scripttemplate>
 
-		<!--scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these. TODO: targetgroupattractivity">
+		<scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -386,8 +384,8 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 
 			<variables>
 				<tower>
-					<de>TVT|Tower</de>
-					<en>TVT|Tower</en>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -407,9 +405,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1.25" housewives_female="0.75" employees_male="2" employees_female="1" unemployed_male="1.5" unemployed_female="0.75" managers_male="2" managers_female="1.5" pensioners_male="1.25" pensioners_female="0.25" />
 			<genres maingenre="300" subgenres="6,16" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="50000" max="100000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -419,31 +418,29 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate-->
+		</scripttemplate>
 
-		<!--scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented?">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
+				<de>%tower% Dynamit - Das Magazin: %latebreaking%</de>
+				<en>%tower% Dynamite - The Magazine: %latebreaking%</en>
 			</title>
 			<description>
-				<de>Showbiz aktuell. Jeden Tag neu. Das neueste rund um's Showbusiness: Filme, Musik, Stars und Sternchen, Klatsch und Tratsch, und vieles mehr.</de>
-				<en>Showbiz news. New every day. The latest in show business: movies, music, stars and starlets, gossip, and much more.</en>
+				<de>Showbiz aktuell. Jeden Tag neu. Aktueller Tratsch, Promi-Geflüster und tränenrührende Tagesgeschehnisse.
+Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
+				<en>Showbiz news. Updated every day. Current gossip, celebrity rumors and tear-jerking daily events.
+A must for every housewife, a curse for hard men.</en>
 			</description>
 
 			<variables>
 				<tower>
-					<de>TVT|Tower</de>
-					<en>TVT|Tower</en>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<latebreaking>
-					<de>Brandaktuell|Aktuell</de>
-					<en>Late-Breaking|Hot</en>
+					<de>Aktuell|Brandaktuell|Brandheiße News|Aktuellste News</de>
+					<en>Late-Breaking|The Hot Stuff|Blazing News|Breaking News</en>
 				</latebreaking>
-				<title>
-					<de>Showbiz|Unterhaltung|Die Kinoleinwand|Die Große Leinwand|Die Große Bühne</de>
-					<en>Showbiz|Entertainment|The Silver Screen|The Big Screen|The Big Stage</en>
-				</title>
 			</variables>
 
 			<jobs>
@@ -453,44 +450,91 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
 			<genres maingenre="301" subgenres="204,7" />
-			<groups target_groups_optional="158" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
-			<potential min="40" max="80" />
-			<outcome min="40" max="80" />
-			<review min="40" max="80" />
-			<speed min="40" max="80" />
+			<price min="75000" max="150000" />
+			<potential min="40" max="70" />
+			<outcome min="40" max="70" />
+			<review min="40" max="70" />
+			<speed min="40" max="70" />
 			<production_time value="60" />
 			<programme_data_modifiers>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate-->
+		</scripttemplate>
 
-		<!--scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="40a79c72-f53d-4b4f-ad29-886dd6c99135" creator="9551" comment="TODO: Added after proposals from ronny and nittka, but perhaps this format should be more distinct from 'dynamite' somehow.">
+			<title>
+				<de>%pulse% - %show% %withexplosivenews%</de>
+				<en>%pulse% - The %show% %withexplosivenews%</en>
+			</title>
+			<description>
+				<de>Und noch ein Showbiz-Format. Die Welt da draußen scheint nicht genug davon bekommen zu können.</de>
+				<en>And another showbiz format. The world out there can't seem to get enough of it.</en>
+			</description>
+
+			<variables>
+				<pulse>
+					<de>Puls|Sprengstoff|Blitze|Buzz|Feuerwerk|Blitzlicht|Inferno|Zündstoff|Bumms|Furore</de>
+					<en>Pulse|Explosive|Flash|Buzz|Fireworks|Spotlight|Inferno|Fuse|Boom|Furore</en>
+				</pulse>
+				<show>
+					<de>Die Show|Der Ticker|Die Sendung|Das Magazin</de>
+					<en>Show|Ticker|Broadcast|Magazine</en>
+				</show>
+				<withexplosivenews>
+					<de>mit brisanten News|für Promi-News|mit aktuellen Skandalen|mit dem neuesten Klatsch und Tratsch|mit den heißesten Gerüchten|mit den neuesten Promi-Storys|mit den explosivsten Enthüllungen|mit den heißesten Gerüchten aus der Promi-Welt|mit den Knallern aus der Promi-Szene|mit den neuesten Skandalen und Enthüllungen</de>
+					<en>With Explosive News|for Celebrity News|With the Current Scandals|With the Latest Gossip and Rumors|With the Hottest Rumors|With the Latest Celebrity Stories|With the Most Explosive Revelations|With the Hottest Rumors From the Celebrity World|With the Blasts from the Celebrity Scene|With the Latest Scandals and Revelations</en>
+				</withexplosivenews>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="301" subgenres="204,7" />
+			<blocks value="1" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="50" />
+			<outcome min="20" max="50" />
+			<review min="20" max="50" />
+			<speed min="20" max="50" />
+			<production_time value="50" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<availability script="TIME_YEARSPLAYED>1" />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
 			</title>
 			<description>
-				<de>Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe. Fußball, Eishockey, Basketball, Football, Tennis, Leichtathletik, Boxen, Formel 1, alles dabei.</de>
-				<en>Sports up to date. New every day. The top leagues and competitions. Soccer, ice hockey, basketball, football, tennis, athletics, boxing, formula 1, you name it.</en>
+				<de>Filme, Musik, Stars und Sternchen. Die ganz große Kino-Show. Trailer, Ausschnitte, Infos und Interviews zu den aktuellen Neuerscheinungen.</de>
+				<en>Movies, music, stars and starlets. Cinema at its very most. Trailers, clips, info and interviews of and about the latest new releases.</en>
 			</description>
 
 			<variables>
 				<tower>
-					<de>TVT|Tower</de>
-					<en>TVT|Tower</en>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
 					<en>Late-Breaking|Hot</en>
 				</latebreaking>
 				<title>
-					<de>Sport|Die Sport-Rundumschau|Die Sportfreunde|Fokus Sport</de>
-					<en>Sports|The Sports Roundup|The Sports Friends|Sports in Focus</en>
+					<de>Die Filmschau|Die Kino Show|Die Kinoleinwand|Die Große Leinwand|Die Große Bühne</de>
+					<en>The Movies Show|The Cinema Show|The Silver Screen|The Big Screen|The Big Stage</en>
 				</title>
 			</variables>
 
@@ -502,9 +546,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
-			<genres maingenre="300" subgenres="203,103" />
+			<genres maingenre="204" subgenres="6,301" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="300000" max="600000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -514,9 +558,149 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate-->
+		</scripttemplate>
 
-		<!--scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
+			<title>
+				<de>%recreational%%athletes% aus %randomcity% und anderswo</de>
+				<en>%recreational% %athletes% from %randomcity% and elsewhere</en>
+			</title>
+			<description>
+				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
+				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
+			</description>
+
+			<variables>
+				<recreational>
+					<de>Freizeit|Feierabend|Hobby|Amateur</de>
+					<en>Recreational|Leisure|Hobby|Amateur</en>
+				</recreational>
+				<athletes>
+					<de>athleten|kicker und co.|-Sportfreunde</de>
+					<en>Athletes|Footballers and co.|Sports Friends</en>
+				</athletes>
+				<randomcity>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</randomcity>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="203" subgenres="103,300" />
+			<blocks value="1" />
+			<price min="15000" max="30000" />
+			<potential min="20" max="50" />
+			<outcome min="20" max="50" />
+			<review min="20" max="50" />
+			<speed min="20" max="50" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="acf3207f-bfcd-4aef-9c10-a4871dcab928" creator="9551">
+			<title>
+				<de>%secondleague% Sport%report%</de>
+				<en>%secondleague% Sports%report%</en>
+			</title>
+			<description>
+				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
+				<en>Second comes right after first! Updates on everything that is second-tier sports in the country. Second leagues in soccer, ice hockey, basketball, soccer, table tennis. Also Formula 2, gymnastics, figure skating, equestrian sports and much more.</en>
+			</description>
+
+			<variables>
+				<secondleague>
+					<de>Zweite Liga|Zweite Klasse|Zweite Reihe|Zweite Division</de>
+					<en>Second League|Second Class|Second Tier|Second Division</en>
+				</secondleague>
+				<report>
+					<de>report|reportage|bericht|berichterstattung|</de>
+					<en> Report| Feature| Bulletin| Coverage|</en>
+				</report>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="203" subgenres="103,300" />
+			<blocks value="1" />
+			<price min="100000" max="200000" />
+			<potential min="30" max="60" />
+			<outcome min="30" max="60" />
+			<review min="30" max="60" />
+			<speed min="30" max="60" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<availability script="TIME_YEARSPLAYED>1" />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+			<title>
+				<de>%tower% %latebreaking%: %title%</de>
+				<en>%tower% %latebreaking%: %title%</en>
+			</title>
+			<description>
+				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
+				<en>The top licenses included! The latest in sports. New every day. The top leagues and competitions of the nation and around the world. Soccer, ice hockey, basketball, football, tennis, table tennis, athletics, boxing, formula 1, winter sports, you name it.</en>
+			</description>
+
+			<variables>
+				<tower>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
+				</tower>
+				<latebreaking>
+					<de>Brandaktuell|Aktuell</de>
+					<en>Late-Breaking|Hot</en>
+				</latebreaking>
+				<title>
+					<de>Sport|Die Sport-Rundumschau|Brennpunkt Sport|Top-Sport|Sport im Fokus|Sport im Blickpunkt</de>
+					<en>Sports|The Sports Roundup|Hot Sports|Top Sports|Sports in Focus|Sports in the Spotlight</en>
+				</title>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="8" required="1" />
+				<job index="3" function="128" required="1" />
+				<job index="4" function="64" required="0" />
+			</jobs>
+			<data flags="1" production_limit="12" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<genres maingenre="203" subgenres="103,300" />
+			<blocks value="1" />
+			<price min="500000" max="900000" />
+			<potential min="60" max="90" />
+			<outcome min="60" max="90" />
+			<review min="60" max="90" />
+			<speed min="60" max="90" />
+			<production_time value="60" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="5" />
+				<modifier name="topicality::refresh" value="2" />
+			</programme_data_modifiers>
+			<availability script="TIME_YEARSPLAYED>2" />
+		</scripttemplate>
+
+		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
+
+		<scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -528,8 +712,8 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 
 			<variables>
 				<tower>
-					<de>TVT|Tower</de>
-					<en>TVT|Tower</en>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -549,10 +733,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
-			<genres maingenre="300" subgenres="201,101" />
-			<groups target_groups_optional="104" />
+			<genres maingenre="201" subgenres="300,101" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="50000" max="100000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -562,12 +745,12 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate-->
+		</scripttemplate>
 
-		<!--scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower%: %title% %latebreaking%</de>
-				<en>%tower%: %title% %latebreaking%</en>
+				<de>%tower%: %title%%latebreaking%</de>
+				<en>%tower%: %title%%latebreaking%</en>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -576,16 +759,16 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 
 			<variables>
 				<tower>
-					<de>TVT|Tower</de>
-					<en>TVT|Tower</en>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<title>
-					<de>Kultur|Kunst und Kultur|Kulturwelt|Kultursphäre</de>
-					<en>Culture|Art and Culture|Cultural World|Cultural Sphere</en>
+					<de>Kultur|Kunst und Kultur|Kulturwelt|Kultursphäre|Kulturwoche</de>
+					<en>Culture|Art and Culture|Cultural World|Cultural Sphere|Cultural Week</en>
 				</title>
 				<latebreaking>
-					<de>Aktuell|der Gegenwart|im aktuellen Kontext</de>
-					<en>Up-to-date|of the Present Day|in a Contemporary Context</en>
+					<de> Aktuell| der Gegenwart| im aktuellen Kontext|</de>
+					<en> Up-to-date| of the Present| in a Contemporary Context|</en>
 				</latebreaking>
 			</variables>
 
@@ -597,10 +780,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
-			<genres maingenre="300" subgenres="6,11" />
 			<groups target_groups_optional="232" />
+			<genres maingenre="300" subgenres="6,11" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="30000" max="60000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -610,9 +793,9 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate-->
+		</scripttemplate>
 
-		<!--scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: Commenting out until targetgroupattractivity can be used. TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -624,8 +807,8 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 
 			<variables>
 				<tower>
-					<de>TVT|Tower</de>
-					<en>TVT|Tower</en>
+					<de>TVT|Tower|TVTower</de>
+					<en>TVT|Tower|TVTower</en>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -645,10 +828,11 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<job index="4" function="64" required="0" />
 			</jobs>
 			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1" housewives_female="0.5" employees_male="1.25" employees_female="0.5" unemployed_male="1.5" unemployed_female="1" managers_male="1.25" managers_female="1" pensioners_male="0.5" pensioners_female="0.25" />
 			<genres maingenre="104" subgenres="2,16" />
 			<groups target_groups_optional="19" />
 			<blocks value="1" />
-			<price min="10000" max="20000" />
+			<price min="30000" max="60000" />
 			<potential min="40" max="80" />
 			<outcome min="40" max="80" />
 			<review min="40" max="80" />
@@ -658,7 +842,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-		</scripttemplate-->
+		</scripttemplate>
 
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
 			<title>
@@ -690,7 +874,7 @@ So that's 4120 per episode.</en>
 			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks value="2" />
-			<price min="3000" max="6000" />
+			<price min="30000" max="90000" />
 			<potential min="20" max="70" />
 			<outcome min="20" max="70" />
 			<review min="30" max="80" />

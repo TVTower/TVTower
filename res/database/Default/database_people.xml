@@ -4087,6 +4087,8 @@
 		<person id="c5b51f5f-ff5b-4dd5-bacb-94a945edc2f8" first_name="Milton" last_name="Stove" first_name_original="Milburn" last_name_original="Stone" birthday="1904-07-05" deathday="1980-06-12" imdb_id="nm0832065" creator="9551" />
 		<person id="358ab0ee-54ed-4190-a190-a6167be17539" first_name="Angela" last_name="Bloke" first_name_original="Amanda" last_name_original="Blake" birthday="1929-02-20" deathday="1989-08-16" imdb_id="nm0086469" creator="9551" />
 		<person id="f693c277-b35c-45c0-b900-6834ddc841ba" first_name="Darius" last_name="Waver" first_name_original="Dennis" last_name_original="Weaver" birthday="1924-06-04" deathday="2006-02-24" imdb_id="nm0915840" creator="9551" />
+		<person id="28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3" first_name="Carl" last_name="III" nick_name="Prince Carl" nick_name_original="Prince Charles" first_name_original="Charles" last_name_original="III" gender="1" birthday="1948-11-14" deathday="" imdb_id="nm0697608" creator="9551" />
+		<person id="4623935a-750a-4e5a-9d1b-6875062ff2a8" first_name="Delia" last_name="of Wales" nick_name="Lady Dee" nick_name_original="Lady Di" first_name_original="Diana" last_name_original="of Wales" gender="2" birthday="1961-07-01" deathday="1997-08-31" imdb_id="nm0697740" creator="9551" />
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
