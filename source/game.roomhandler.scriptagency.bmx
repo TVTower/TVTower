@@ -720,11 +720,16 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				'if exists and is valid...skip it
 				if lists[j][i] then continue
 
+				'prevent cheat of buying scripts to get good ones
+				'on normal refill, only offer pool scripts or none-prime ones
+				Local preventNewGoodScript:Int = Not replaceOffer And (GetScriptCollection().GetAvailableScriptList().Count() = 0)
 				'get a new script - but avoid having multiple scripts
 				'of the same base template (high similarity)
 				For Local i:Int = 0 Until 10
 					script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
-					If script.getTitle().contains("#") and i < 10
+					If preventNewGoodScript And script.GetPotential() > 0.3 Then
+						GetScriptCollection().Remove(script)
+					ElseIf script.getTitle().contains("#") and i < 10
 						GetScriptCollection().Remove(script)
 					Else
 						Exit

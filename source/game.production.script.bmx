@@ -154,8 +154,16 @@ Type TScriptCollection Extends TGameObjectCollection
 
 
 	Method GetRandomAvailable:TScript(avoidTemplateIDs:Int[] = Null)
-		'if no script is available, create (and return) some a new one
-		If GetAvailableScriptList().Count() = 0 Then Return GenerateRandom(avoidTemplateIDs)
+		Local availableCount:Int = GetAvailableScriptList().Count()
+		'if no script is available, create (and return) a new one
+		If availableCount = 0 Then Return GenerateRandom(avoidTemplateIDs)
+
+		'with a low chance, create a random script rather than using one from pool
+		If availableCount < 10
+			If randRange(1,100) > 70 Then Return GenerateRandom(avoidTemplateIDs)
+		Else
+			If randRange(1,100) > 90 Then Return GenerateRandom(avoidTemplateIDs)
+		EndIf
 
 		'fetch a random script
 		If Not avoidTemplateIDs Or avoidTemplateIDs.length = 0
