@@ -1510,7 +1510,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 						notLiveInfluence :* 2
 				EndSelect
 			Else
-				'by default the first broadcast has no influence on the max topicality
+				'by default the first broadcast has a much smaller influence than for live programmes
 				firstBroadcastInfluence:* GetModifier(modKeyTopicality_FirstBroadcastDoneLS, 0.2)
 			EndIf
 
