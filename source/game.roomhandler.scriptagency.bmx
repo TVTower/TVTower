@@ -678,7 +678,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 					Local script:TScript = lists[j][i]
 					if not script then continue
 					if script.fixedLiveTime > 0 And GetWorldTime().GetTimeGone() > script.fixedLiveTime + 15 * TWorldTime.HOURLENGTH
-						'print "REMOVE live script " + + script.GetTitle() + " "(script.fixedLiveTime + 15* TWorldTime.HOURLENGTH) + " "+ GetWorldTime().GetTimeGone()
+						'print "REMOVE live script " + script.GetTitle() + " " + (script.fixedLiveTime + 15* TWorldTime.HOURLENGTH) + " "+ GetWorldTime().GetTimeGone()
 						GetScriptCollection().Remove(script)
 						lists[j][i] = null
 					elseif RandRange(0,100) < replaceChance
@@ -727,14 +727,20 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				'of the same base template (high similarity)
 				For Local i:Int = 0 Until 10
 					script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
+
 					If preventNewGoodScript And script.GetPotential() > 0.3 Then
 						GetScriptCollection().Remove(script)
-					ElseIf script.getTitle().contains("#") and i < 10
+						script = Null
+					ElseIf script.getTitle().contains("#")
 						GetScriptCollection().Remove(script)
+						script = Null
 					Else
 						Exit
 					Endif
 				Next
+				'if the prevention was not successful, simply fall back
+				'to using a random without additional requirements
+				If Not script Then script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
 
 				'add new script to slot
 				if script
