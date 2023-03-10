@@ -390,8 +390,8 @@
 				<en>Talk with %NAME%</en>
 			</title>
 			<description>
-				<de>Typisches Talkshowformat, bei dem die Verzweiflung des Moderators mit jeder einzelnen Sendung zunimmt. Begleiten Sie %NAME% bei schrecklichen Gesprächen mit willkürlich auf der Straße aufgelesenen Menschen, die für eine Sekunde Berühmtheit praktisch alles sagen würden.</de>
-				<en>Typical talk show format where the desperation of the host increases with each show. Join %NAME% as he has horrible conversations with random people picked up on the street who will say practically anything for a second of fame.</en>
+				<de>Talkshowformat, bei dem die Verzweiflung des Moderators mit jeder einzelnen Sendung zunimmt. Begleiten Sie %NAME% bei schrecklichen Gesprächen mit willkürlich aufgelesenen Menschen, die für eine Sekunde Berühmtheit praktisch alles sagen würden.</de>
+				<en>Talk show format where the desperation of the host increases with each show. Join %NAME% as he has horrible conversations with people picked up at random who will say practically anything for a second of fame.</en>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="3" index="0" guid="Kasi-script-Talkshow-Ep1">

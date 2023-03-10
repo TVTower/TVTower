@@ -14675,8 +14675,8 @@ Dream scenes and sentiments warp the storyline.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">04e5ecc5-fd17-4d24-a170-5ef3537342ca</member>
-				<member index="1" function="5">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
-				<member index="2" function="5">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member>
+				<member index="1" function="6">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
+				<member index="2" function="6">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member>
 				<member index="3" function="2">a1943cde-0332-4706-8130-9c7a69e52efd</member>
 				<member index="4" function="2">96cd5e3e-d8e8-49ab-992b-dade2dc37067</member>
 				<member index="5" function="2">34eb3aad-b365-4c89-bdff-f6fa235618dc</member>
@@ -14704,8 +14704,8 @@ Dream scenes and sentiments warp the storyline.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">04e5ecc5-fd17-4d24-a170-5ef3537342ca</member>
-				<member index="1" function="5">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
-				<member index="2" function="5">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member>
+				<member index="1" function="6">d7aac1f9-c0c1-42ed-83c8-6c6944ea410e</member>
+				<member index="2" function="6">966bcb56-3332-4c0f-9e8a-1714aebeff1a</member>
 				<member index="3" function="2">a1943cde-0332-4706-8130-9c7a69e52efd</member>
 				<member index="4" function="2">96cd5e3e-d8e8-49ab-992b-dade2dc37067</member>
 				<member index="5" function="2">34eb3aad-b365-4c89-bdff-f6fa235618dc</member>
@@ -15898,7 +15898,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">4ee6f0cd-942c-4b0c-90b7-9395c84d55c1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
+			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
 			<ratings critics="45" speed="61" outcome="67" />
 			<children>
@@ -16009,7 +16009,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">4ee6f0cd-942c-4b0c-90b7-9395c84d55c1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
+			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
 			<ratings critics="37" speed="59" outcome="74" />
 			<children>
@@ -16120,7 +16120,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">4ee6f0cd-942c-4b0c-90b7-9395c84d55c1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
+			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<data country="USA" year="1992" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="43" speed="64" outcome="81" />
 			<children>
@@ -16231,7 +16231,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">20c24fd7-cb02-411d-aa9d-2dd8e2a231ec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
+			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<data country="USA" year="1993" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="42" speed="62" outcome="82" />
 			<children>
@@ -16342,7 +16342,7 @@ Fifth and final part. Not so good.</en>
 				<member index="4" function="2">20c24fd7-cb02-411d-aa9d-2dd8e2a231ec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
+			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<data country="USA" year="1994" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="41" speed="61" outcome="89" />
 			<children>
@@ -16454,7 +16454,7 @@ Fifth and final part. Not so good.</en>
 				<!-- index 5 used for episode guest star -->
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
+			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
 			<data country="USA" year="1995" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" />
 			<ratings critics="48" speed="71" outcome="92" />
 			<children>
@@ -16549,7 +16549,7 @@ Fifth and final part. Not so good.</en>
 		</programme>
 		<programme id="2273036d-1dfa-4990-be2d-fbf2fabd1fd6" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Night-Ryder (Staffel 1)</de>
+				<de>Neid-Reiter (Staffel 1)</de>
 				<en>Night-Ryder (Season 1)</en>
 			</title>
 			<title_original>
@@ -16661,7 +16661,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 		</programme>
 		<programme id="a8cefae5-ed3d-463b-8723-175a57243d67" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game. Liberties taken in ordering.">
 			<title>
-				<de>Night-Ryder (Staffel 2)</de>
+				<de>Neid-Reiter (Staffel 2)</de>
 				<en>Night-Ryder (Season 2)</en>
 			</title>
 			<title_original>
@@ -16775,7 +16775,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 		</programme>
 		<programme id="9cceb45a-b97b-40e1-95d2-d03a272d69fc" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game.">
 			<title>
-				<de>Night-Ryder (Staffel 3)</de>
+				<de>Neid-Reiter (Staffel 3)</de>
 				<en>Night-Ryder (Season 3)</en>
 			</title>
 			<title_original>
@@ -16801,7 +16801,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			<children>
 				<programme id="d6512f69-ab73-4b81-91e5-f6e3a441e067" product="2" licence_type="2" imdb_id="tt0620844" creator="9551">
 					<title>
-						<de>Nachtreiter der Drohnen</de>
+						<de>Neid-Reiter der Drohnen</de>
 						<en>A Mysterious Robot</en>
 					</title>
 					<title_original>
@@ -16829,7 +16829,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 				<programme id="4bbf7885-acbc-4e67-ac0b-e5dfb88eac14" product="2" licence_type="2" imdb_id="tt0620809" creator="9551">
 					<title>
-						<de>Ritter der tiefsten Nacht</de>
+						<de>Reiter des tiefsten Neids</de>
 						<en>Deadly Orchids</en>
 					</title>
 					<title_original>
@@ -16887,7 +16887,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 		</programme>
 		<programme id="f7800e12-4a73-4618-8c72-52f335d6873e" product="2" licence_type="3" creator="9551" imdb_id="tt0083437" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game. Liberties taken in ordering.">
 			<title>
-				<de>Night-Ryder (Staffel 4)</de>
+				<de>Neid-Reiter (Staffel 4)</de>
 				<en>Night-Ryder (Season 4)</en>
 			</title>
 			<title_original>
@@ -16911,7 +16911,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 			<children>
 				<programme id="2b32de06-4277-4772-80a9-a16ccca256bf" product="2" licence_type="2" imdb_id="tt0620846" creator="9551">
 					<title>
-						<de>Nachtritter und der Moloch</de>
+						<de>Neid-Reiter und der Moloch</de>
 						<en>K.I.T.T.'s Accident with Consequences</en>
 					</title>
 					<title_original>
@@ -20366,7 +20366,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<en>From Germany comes the mother of all traffic education shows. One whole hour of [1|Full], and that in 4 episodes! The most important tips for careful drivers and all adult road users in everyday traffic, compiled from the many years of broadcasting.</en>
 			</description>
 			<staff>
-				<member index="0" function="21">f41917ee-82d1-4c42-9bf9-dda00db1f72d</member>
+				<member index="0" function="21">dda26fcf-74fc-4ac4-94bb-a69d6b1c048d</member>
 				<member index="1" function="8">f41917ee-82d1-4c42-9bf9-dda00db1f72d</member>
 			</staff>
 			<groups target_groups="0" target_groups_optional="8" pro_pressure_groups="0" />
@@ -20449,7 +20449,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<member index="0" function="152">6eed09f6-ddfb-403a-bfe1-6870bc0c374e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity children_male="2" teenagers_male="2" housewives_male="1.25" housewives_female="0.25" employees_male="1.5" employees_female="0.75" unemployed_male="1.5" unemployed_female="0.5" managers="1.5" pensioners_female="0.25" />
+			<targetgroupattractivity children_male="1.5" teenagers_male="1.5" housewives_male="1.25" housewives_female="0.25" employees_male="1.5" employees_female="0.75" unemployed_male="1.5" unemployed_female="0.5" managers="1.5" pensioners_female="0.25" />
 			<data country="GB" year="2005" distribution="2" maingenre="6" subgenre="300" flags="0" blocks="1" price_mod="0.2" />
 			<ratings critics="57" speed="67" outcome="41" />
 			<children>
