@@ -10,6 +10,7 @@
 *.bak
 *.app
 *.bmx/
+*.vscode/
 log.*.txt
 tests/
 *logfiles/
