@@ -34,12 +34,16 @@ Type TDebugScreenPage
 
 
 	Method GetShownPlayerID:Int()
-		Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
-		If GetInGameInterface().ShowChannel > 0
-			playerID = GetInGameInterface().ShowChannel
+		If GetGameBase().gamestate <> TGameBase.STATE_RUNNING
+			Return 1
+		Else
+			Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
+			If GetInGameInterface().ShowChannel > 0
+				playerID = GetInGameInterface().ShowChannel
+			EndIf
+			If playerID <= 0 Then playerID = GetPlayerBase().playerID
+			Return playerID
 		EndIf
-		If playerID <= 0 Then playerID = GetPlayerBase().playerID
-		Return playerID
 	End Method
 
 
@@ -72,6 +76,137 @@ Type TDebugScreenPage
 		SetAlpha(oldColA)
 		SetColor(oldCol)
 	End Function
+End Type
+
+
+
+rem
+Struct SDebugClickBox
+	Field callbackParam:Int
+	Field callbackData:Object
+	Field onClickCallback:Int(param:Int, data:Object = Null)
+	Field onHoverCallback:Int(param:Int, data:Object = Null)
+	Field position:SVec2I
+	Field size:SVec2I
+	Field hovered:Int = False
+	Field clicked:Int = False
+
+	
+	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int = 0, data:Object = Null)
+		self.hovered = False
+		self.clicked = False
+		self.position = position
+		self.size = size
+		self.onHoverCallback = hoverCallback
+		self.onClickCallback = clickCallback
+		self.callbackParam = param
+		self.callbackData = data
+	End Method
+
+	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int)
+		self.hovered = False
+		self.clicked = False
+		self.position = position
+		self.size = size
+		self.onHoverCallback = hoverCallback
+		self.onClickCallback = clickCallback
+		self.callbackParam = param
+	End Method
+	
+	
+	Method IsHovered:Int()
+		Return hovered
+	End Method
+
+	
+	Method Update()
+		if THelper.MouseIn(position.x, position.y, size.x, size.y)
+			hovered = True
+			if onHoverCallback Then onHoverCallback(callbackParam, callbackData)
+			
+			'without callback we "ignore" clicks
+			'If onClickCallback and MouseManager.IsClicked(1)
+			
+			If MouseManager.IsClicked(1)
+				clicked = True
+				If onClickCallback Then	onClickCallback(callbackParam, callbackData)
+
+				MouseManager.SetClickHandled(1)
+			EndIf
+		EndIf
+	End Method
+End Struct
+endrem
+
+
+
+'a content block (eg to display some information about a studio or a programme)
+Type TDebugContentBlock
+	Field size:SVec2I
+	Field contentSize:SVec2I
+	Field contentPadding:SVec2I
+	Field selected:Int
+	Field hovered:Int
+	
+	
+	Method New()
+		contentPadding = New SVec2I(2,2)
+	End Method
+
+
+	Method SetHovered(bool:Int=True)
+		hovered = False
+	End Method
+
+
+	Method SetSelected(bool:Int=True)
+		selected = False
+	End Method
+
+
+	Method DrawBG(x:Int, y:Int, w:Int, h:int)
+		If selected
+			SetColor 80,60,40
+		ElseIf hovered
+			SetColor 60,60,60
+		Else
+			SetColor 40,40,40
+		EndIf
+		DrawRect(x, y, w, h)
+
+		If selected
+			SetColor 90,70,50
+		ElseIf hovered
+			SetColor 70,70,70
+		Else
+			SetColor 50,40,40
+		EndIf
+		DrawRect(x+1, y+1, w-2, h-2)
+		SetColor 255,255,255
+	End Method
+	
+
+	Method Update(x:Int, y:Int)	
+		If THelper.MouseIn(x,y, size.x, size.y)
+			hovered = True
+		Else
+			hovered = False
+		EndIf
+	End Method
+	
+	
+	Method Draw:SVec2I(x:Int, y:Int)
+		'update size
+		size = new SVec2I(2 * contentPadding.x + contentSize.x, 2 * contentPadding.y + contentSize.y)
+
+		DrawBG(x, y, size.x, size.y)
+
+		DrawContent(x, y)
+	End Method
+	
+	
+	Method DrawContent(x:Int, y:Int) abstract
+'	End Method
 End Type
 
 

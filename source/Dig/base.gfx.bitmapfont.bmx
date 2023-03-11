@@ -2091,27 +2091,28 @@ endrem
 	End Method
 
 
-	Method Draw(txt:String,x:Float,y:Float)
+	Method Draw:SVec2I(txt:String,x:Float,y:Float)
 		Local col:SColor8
 		GetColor(col)
-		Draw(txt, x, y, col)
+		Return Draw(txt, x, y, col)
 	End Method
 
 
-	Method Draw(txt:String,x:Float,y:Float, color:SColor8)
+	Method Draw:SVec2I(txt:String,x:Float,y:Float, color:SColor8)
 		LockMutex(globalParseInfoMutex)
 		globalParseInfo.data.calculated = False
-		DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, globalParseInfo)
+		Local result:SVec2I = DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, globalParseInfo)
 		UnlockMutex(globalParseInfoMutex)
+		Return result
 	End Method
 
 
-	Method Draw(txt:String,x:Float,y:Float, color:SColor8, parseInfo:TTextParseInfo)
-		DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, parseInfo)
+	Method Draw:SVec2I(txt:String,x:Float,y:Float, color:SColor8, parseInfo:TTextParseInfo)
+		Return DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, parseInfo)
 	End Method
 
-	Method Draw(txt:String,x:Float,y:Float, color:SColor8, parseInfo:STextParseInfo Var)
-		DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, parseInfo)
+	Method Draw:SVec2I(txt:String,x:Float,y:Float, color:SColor8, parseInfo:STextParseInfo Var)
+		Return DrawBox(txt, x, y, 100000, 100000, New SVec2F(0,0), color, parseInfo)
 	End Method
 
 
