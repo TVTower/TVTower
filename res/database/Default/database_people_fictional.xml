@@ -204,7 +204,7 @@
 		<person id="fa5cf4fe-7704-4eab-808b-5ea8f3935c6d" first_name="Brecht" last_name="Span" nick_name="" fictional="1" gender="1" />
 		<person id="b306d6f7-83c6-474d-b291-71245e2700c4" first_name="Andreas" last_name="Stahlhammer" nick_name="" fictional="1" gender="1" bookable="0" />
 		<person id="11c74211-662a-4817-b5b5-ec2c635d0158" first_name="Heiner" last_name="Trubbl" nick_name="" fictional="1" gender="1" />
-		<person id="c3494dd5-506b-46d1-97bd-12182ffa88da" first_name="Wladimir Putschkin und Jupp XII." last_name="" nick_name="" fictional="1" comment="a Putschkin that should be treated as a parody version" />
+		<person id="c3494dd5-506b-46d1-97bd-12182ffa88da" first_name="Wladimir Putschkin und Jupp XII." last_name="" nick_name="" fictional="1" bookable="0" comment="a Putschkin that should be treated as a parody version" />
 		<person id="be56dbc0-3bf4-4326-a2a5-f30edf94fd2a" first_name="Ludwig" last_name="Zerbst" nick_name="" fictional="1" gender="1" />
 		<person id="6781fa1c-b8cb-4ad6-9fb5-5222d61a00b7" first_name="Stanislav" last_name="Breczker" nick_name="" fictional="1" gender="1" />
 		<person id="5c93b075-3f35-4ef7-8ef7-e0e99af0ad48" first_name="Ulli" last_name="Katshek" nick_name="" fictional="1" gender="1" />
