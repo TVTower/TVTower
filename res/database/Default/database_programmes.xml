@@ -299,8 +299,8 @@ Modest joke concatenations after the comics of [1|Full].</en>
 				<en>American History X</en>
 			</title_original>
 			<description>
-				<de>Harter Film über Rassenunterschiede und -rivalitäten mit überzeugendem Ende</de>
-				<en>Tough film about racial differences and rivalries with compelling ending</en>
+				<de>Harter Film über Rassenunterschiede und -rivalitäten mit überzeugendem Ende.</de>
+				<en>Tough film about racial differences and rivalries with compelling ending.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">03704ead-958f-4739-950d-7a01bd027d03</member>
@@ -6456,7 +6456,7 @@ El Mariachi fans were utterly disappointed by [0|Last].</en>
 				<member index="5" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2003" distribution="1" maingenre="2" subgenre="" flags="64" blocks="2" price_mod="1.33" />
+			<data country="MEX/USA" year="2003" distribution="1" maingenre="2" subgenre="" flags="64" blocks="2" price_mod="1.33" />
 			<ratings critics="14" speed="84" outcome="37" />
 		</programme>
 		<programme id="6bda71ba-e56a-46c3-9762-9ae18c587839" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0258000" creator="">
@@ -9143,7 +9143,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="2" function="2">TheRob-TowerTV-ErlandoJoschkason</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CH" year="1986" distribution="1" maingenre="16" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
+			<data country="S/GB/F" year="1986" distribution="1" maingenre="7" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="86" speed="26" outcome="71" />
 		</programme>
 
@@ -12591,7 +12591,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>[0|First] - The Feature</en>
 			</title>
 			<title_original>
-				<de>Otto - The Film</de>
+				<de>Otto - Der Film</de>
 				<en>Holly - The Movie</en>
 			</title_original>
 			<description>
@@ -12599,11 +12599,10 @@ Dream scenes and sentiments warp the storyline.</en>
 				<en>A young East Frisian comes to Hamburg to try his luck. Above all, he is preoccupied with two problems: How can he impress Silvia, a rich young girl, and where can he get DM 9876.50 to pay off a loan shark?</en>
 			</description>
 			<staff>
-				<member index="0" function="1">Stukov_OttoWaalkes</member>
-				<member index="1" function="2">Stukov_OttoWaalkes</member>
-				<member index="2" function="2">868c1f51-3974-4690-9168-e97509ba94bf</member>
-				<member index="3" function="2">2043dc99-f378-49fe-863d-53329e014edd</member>
-				<member index="4" function="2">2dc70f52-f4e3-4514-9282-b28220b45be6</member>
+				<member index="0" function="7">Stukov_OttoWaalkes</member>
+				<member index="1" function="2">868c1f51-3974-4690-9168-e97509ba94bf</member>
+				<member index="2" function="2">2043dc99-f378-49fe-863d-53329e014edd</member>
+				<member index="3" function="2">2dc70f52-f4e3-4514-9282-b28220b45be6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" distribution="1" maingenre="5" subgenre="15" flags="" blocks="2" />
