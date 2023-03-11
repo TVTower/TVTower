@@ -1701,7 +1701,7 @@ Type TDebugScreen
 		textY :+ 14
 		For local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
 			If Not script.isOwnedByVendor() Then continue
-			RenderScript(script, entryNum, textX, textY, barWidth, oldAlpha, scriptAgencyOfferHightlight)
+			RenderScript(script, entryNum, textX, textY, barWidth, oldAlpha, scriptAgencyOfferHightlight, True)
 			textY:+ 13
 			entryNum :+ 1
 		Next
@@ -1728,7 +1728,7 @@ Type TDebugScreen
 			entryNum :+ 1
 		Next
 		
-		Function RenderScript(script:TScript, entryNum:Int, textX:Int, textY:Int, barWidth:Int, oldAlpha:Float, scriptAgencyOfferHightlight:Tscript)
+		Function RenderScript(script:TScript, entryNum:Int, textX:Int, textY:Int, barWidth:Int, oldAlpha:Float, scriptAgencyOfferHightlight:Tscript, checkAgencyList:Int = False)
 			If entryNum Mod 2 = 0
 				SetColor 0,0,0
 			Else
@@ -1748,7 +1748,13 @@ Type TDebugScreen
 				SetBlend ALPHABLEND
 			endif
 
-			textFont.DrawSimple(script.GetTitle(), textX, textY - 2)
+			If checkAgencyList and not RoomHandler_ScriptAgency.GetInstance().HasScript(script)
+				SetColor 200, 0, 0
+				textFont.DrawSimple("[NOT IN LIST] " + script.GetTitle(), textX, textY - 2)
+				SetColor 255, 255, 255
+			Else
+				textFont.DrawSimple(script.GetTitle(), textX, textY - 2)
+			EndIf
 		End Function
 	End Method
 

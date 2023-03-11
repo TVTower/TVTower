@@ -22,9 +22,9 @@ Type TScriptCollection Extends TGameObjectCollection
 	'cache for faster access
 
 	'holding used scripts
-	Field _usedScripts:TList = CreateList() {nosave}
-	Field _availableScripts:TList = CreateList() {nosave}
-	Field _parentScripts:TList = CreateList() {nosave}
+	Field _usedScripts:TList {nosave}
+	Field _availableScripts:TList {nosave}
+	Field _parentScripts:TList {nosave}
 
 	Global _instance:TScriptCollection
 
