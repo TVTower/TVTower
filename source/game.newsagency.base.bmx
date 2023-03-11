@@ -609,17 +609,34 @@ Type TNewsAgency
 	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
 		'filter to entries we need
 		Local candidates:TProgrammeLicence[] = New TProgrammeLicence[20]
+		'TODO enhancements for licence news
+		' * more variety in texts
+		' * news for series, and player custom productions (new texts necessary)
+		' * alternative fallback logic - return no licence and reduce quality thresholld over time
+		' * news for "bad" movies as well (with corresponding texts and negative popularity impact)
+		Local fallback:TProgrammeLicence
 		Local candidatesAdded:Int = 0
 		'series,collections,movies but no episodes/collection entries
 		For Local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection()._GetParentLicences().Values()
 			'must be in production!
 			If Not licence.GetData().IsInProduction() Then Continue
+			'must be a movie
+			If licence.GetData().productType <> TVTProgrammeProductType.MOVIE Then Continue
 			'ignore if filtered out
 			If licence.IsOwned() Then Continue
 			'ignore already announced movies
 			If licence.getData().releaseAnnounced Then Continue
 			'ignore unreleased if outside the given filter
 			If Not licence.GetData().ignoreUnreleasedProgrammes And licence.getData().GetYear() < TProgrammeData._filterReleaseDateStart Or licence.getData().GetYear() > TProgrammeData._filterReleaseDateEnd Then Continue
+			'print "  _GetAnnouncableProgrammeLicence "+ licence.GetTitle()+" "+licence.GetQualityRaw()
+			'require minimum quality
+			Local quality:Float = licence.GetQualityRaw()
+			If quality < 0.55
+				If quality > 0.35
+					If Not fallback Or quality > fallback.GetQualityRaw() Then fallback = licence
+				EndIf
+				Continue
+			EndIf
 
 			If candidates.length >= candidatesAdded Then candidates = candidates[.. candidates.length + 20]
 			candidates[candidatesAdded] = licence
@@ -628,6 +645,8 @@ Type TNewsAgency
 		If candidates.length > candidatesAdded Then candidates = candidates[.. candidatesAdded]
 
 		If candidates.length > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromArray(candidates)
+
+		If fallback Then Return fallback
 
 		Return Null
 	End Method
