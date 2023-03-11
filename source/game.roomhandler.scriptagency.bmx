@@ -725,7 +725,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				Local preventNewGoodScript:Int = Not replaceOffer And (GetScriptCollection().GetAvailableScriptList().Count() = 0)
 				'get a new script - but avoid having multiple scripts
 				'of the same base template (high similarity)
-				For Local i:Int = 0 Until 10
+				For Local i:Int = 0 Until 25
 					script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
 
 					If preventNewGoodScript And script.GetPotential() > 0.3 Then
