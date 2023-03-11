@@ -116,18 +116,25 @@ endrem
 		'identify possibly clicked studio block
 		If not selectedObject
 			startY = position.y
+			Local i:int
 			For Local block:TDebugContentBlock_Studios = EachIn playerStudioBlocks
-				If THelper.MouseIn(position.x + 5, startY, block.size.x, block.size.y) and MouseManager.IsClicked(1)
+				'open / close
+				If THelper.MouseIn(position.x + 5, startY, 20, 20) and MouseManager.IsClicked(1)
+					block.open = 1 - block.open
+					MouseManager.SetClickHandled(1)
+				ElseIf THelper.MouseIn(position.x + 5, startY, block.size.x, block.size.y) and MouseManager.IsClicked(1)
 					if selectedPlayerStudioBlock Then selectedPlayerStudioBlock.selected = False
 
 					selectedPlayerStudioBlock = block
 					block.selected = True
+					block.open = True
 					SelectStudio(block.room.GetID())
 
 					MouseManager.SetClickHandled(1)
 				EndIf
 
 				startY :+ block.size.y
+				i :+ 1
 			Next
 		EndIf
 		
@@ -398,6 +405,7 @@ Type TDebugContentBlock_Studios extends TDebugContentBlock
 	Field room:TRoomBase
 	Field hoveredObject:Object
 	Field selectedObject:Object
+	Field open:int = True
 	
 
 	Method New(room:TRoomBase)
@@ -429,91 +437,110 @@ Type TDebugContentBlock_Studios extends TDebugContentBlock
 
 		Local oldHoveredObject:Object = hoveredObject
 		hoveredObject = Null
+
+		Local highlightToggle:Int = False
+		If THelper.MouseIn(x + 5, y + contentHeight, 20, 20)
+			highlightToggle = True
+		EndIf
 		
-		TDebugScreenPage.textFont.Draw("|b|"+room.GetName() + "|/b| (size: " + room.GetSize()+", ID: "+room.GetID()+")", x + 5, y + contentHeight)
-		contentHeight :+ 12
-
-		local currentScript:TScriptBase = RoomHandler_Studio.GetInstance().GetCurrentStudioScript(room.GetID())
-		If not currentScript
-			dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| Empty", x + 10, y + contentHeight)
-			contentHeight :+ 12
-		Else
-			If oldHoveredObject = currentScript
-				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, SColor8.White)
+		if not open
+			If highlightToggle
+				TDebugScreenPage.textFont.Draw("[+]", x + 5, y + contentHeight, SColor8.White)
 			Else
-				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, new SColor8(220,220,220))
+				TDebugScreenPage.textFont.Draw("[+]", x + 5, y + contentHeight, new SColor8(220,220,220))
 			EndIf
-			'mark hovered?
-			If THelper.MouseIn(x + 10, y + contentHeight, dim.x, dim.y) Then hoveredObject = currentScript
+			TDebugScreenPage.textFont.Draw("|b|"+room.GetName() + "|/b| (size: " + room.GetSize()+", ID: "+room.GetID()+")", x + 20, y + contentHeight)
 			contentHeight :+ 12
-		EndIf
-
-		Local productions:TProduction[] = GetProductionManager().GetProductionQueueInStudio(room.GetID())
-		If productions.length = 0
-			TDebugScreenPage.textFont.Draw("|b|Production Queue:|/b| Empty", x + 10, y + contentHeight)
+		else
+			If highlightToggle
+				TDebugScreenPage.textFont.Draw("[-]", x + 5, y + contentHeight, SColor8.White)
+			Else
+				TDebugScreenPage.textFont.Draw("[-]", x + 5, y + contentHeight, new SColor8(220,220,220))
+			EndIf
+			TDebugScreenPage.textFont.Draw("|b|"+room.GetName() + "|/b| (size: " + room.GetSize()+", ID: "+room.GetID()+")", x + 20, y + contentHeight)
 			contentHeight :+ 12
-		Else
-			TDebugScreenPage.textFont.Draw("|b|Production Queue:|/b| ", x + 10, y + contentHeight)
-			contentHeight :+ 10
-
-			For local p:TProduction = eachIn GetProductionManager().GetProductionQueueInStudio(room.GetID())
-				If oldHoveredObject = p
-					dim = TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight, SColor8.White)
-					TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight, SColor8.White)
-				Else
-					dim = TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight, new SColor8(220,220,220))
-					TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight, new SColor8(220,220,220))
-				EndIf
-				'mark hovered?
-				If THelper.MouseIn(x + 15, y + contentHeight, 290, dim.y) Then hoveredObject = p
-				contentHeight :+ 10
-			Next
-			contentHeight :+ 2
-		EndIf
-
-		If currentScript
-			'true = including subscripts
-			Local concepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(currentScript, True)
-			If concepts.length = 0
-				TDebugScreenPage.textFont.Draw("|b|Shopping Lists/Concepts:|/b| Empty", x + 10, y + contentHeight)
+			local currentScript:TScriptBase = RoomHandler_Studio.GetInstance().GetCurrentStudioScript(room.GetID())
+			If not currentScript
+				dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| Empty", x + 10, y + contentHeight)
 				contentHeight :+ 12
 			Else
-				TDebugScreenPage.textFont.Draw("|b|Shopping Lists/Concepts:|/b|", x + 10, y + contentHeight)
+				If oldHoveredObject = currentScript
+					dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, SColor8.White)
+				Else
+					dim = TDebugScreenPage.textFont.Draw("|b|Script:|/b| " + currentScript.GetTitle(), x + 10, y + contentHeight, new SColor8(220,220,220))
+				EndIf
+				'mark hovered?
+				If THelper.MouseIn(x + 10, y + contentHeight, dim.x, dim.y) Then hoveredObject = currentScript
+				contentHeight :+ 12
+			EndIf
+
+			Local productions:TProduction[] = GetProductionManager().GetProductionQueueInStudio(room.GetID())
+			If productions.length = 0
+				TDebugScreenPage.textFont.Draw("|b|Production Queue:|/b| Empty", x + 10, y + contentHeight)
+				contentHeight :+ 12
+			Else
+				TDebugScreenPage.textFont.Draw("|b|Production Queue:|/b| ", x + 10, y + contentHeight)
 				contentHeight :+ 10
-				For Local c:TProductionConcept = EachIn concepts
-					If oldHoveredObject = c
-						dim = TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight, SColor8.White)
+
+				For local p:TProduction = eachIn GetProductionManager().GetProductionQueueInStudio(room.GetID())
+					If oldHoveredObject = p
+						dim = TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight, SColor8.White)
+						TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight, SColor8.White)
 					Else
-						dim = TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight, new SColor8(220,220,220))
+						dim = TDebugScreenPage.textFont.Draw(p.productionConcept.GetTitle(), x + 15, y + contentHeight, new SColor8(220,220,220))
+						TDebugScreenPage.textFont.Draw(TVTProductionStep.GetAsString(p.productionStep), x + 185, y + contentHeight, new SColor8(220,220,220))
 					EndIf
 					'mark hovered?
-					If THelper.MouseIn(x + 15, y + contentHeight, 290, dim.y) Then hoveredObject = c
-
-					If c.IsProductionFinished()
-						'should not be displayed (if so, this is a BUG!)
-						TDebugScreenPage.textFont.Draw("prod. finished", x + 185, y + contentHeight, SColor8.red)
-					ElseIf c.IsProductionStarted()
-						TDebugScreenPage.textFont.Draw("prod. started", x + 185, y + contentHeight, new SColor8(130,250,130))
-					ElseIf c.IsUnplanned()
-						TDebugScreenPage.textFont.Draw("unplanned", x + 185, y + contentHeight, SColor8.gray)
-					ElseIf c.IsProduceable()
-						TDebugScreenPage.textFont.Draw("produceable", x + 185, y + contentHeight, new SColor8(120,180,120))
-					ElseIf c.IsPlanned()
-						If c.IsBalancePaid()
-							TDebugScreenPage.textFont.Draw("planned, paid)", x + 185, y + contentHeight, new SColor8(220,220,220))
-						ElseIf c.IsDepositPaid()
-							TDebugScreenPage.textFont.Draw("planned, deposit paid", x + 185, y + contentHeight, new SColor8(220,220,220))
-						Else
-							TDebugScreenPage.textFont.Draw("planned", x + 185, y + contentHeight, new SColor8(220,220,220))
-						EndIf
-					ElseIf c.IsGettingPlanned()
-						TDebugScreenPage.textFont.Draw("getting planned)", x + 185, y + contentHeight)
-					EndIf
+					If THelper.MouseIn(x + 15, y + contentHeight, 290, dim.y) Then hoveredObject = p
 					contentHeight :+ 10
 				Next
 				contentHeight :+ 2
 			EndIf
-		EndIf
+
+			If currentScript
+				'true = including subscripts
+				Local concepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(currentScript, True)
+				If concepts.length = 0
+					TDebugScreenPage.textFont.Draw("|b|Shopping Lists/Concepts:|/b| Empty", x + 10, y + contentHeight)
+					contentHeight :+ 12
+				Else
+					TDebugScreenPage.textFont.Draw("|b|Shopping Lists/Concepts:|/b|", x + 10, y + contentHeight)
+					contentHeight :+ 10
+					For Local c:TProductionConcept = EachIn concepts
+						If oldHoveredObject = c
+							dim = TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight, SColor8.White)
+						Else
+							dim = TDebugScreenPage.textFont.Draw(c.GetTitle(), x + 15, y + contentHeight, new SColor8(220,220,220))
+						EndIf
+						'mark hovered?
+						If THelper.MouseIn(x + 15, y + contentHeight, 290, dim.y) Then hoveredObject = c
+
+						If c.IsProductionFinished()
+							'should not be displayed (if so, this is a BUG!)
+							TDebugScreenPage.textFont.Draw("prod. finished", x + 185, y + contentHeight, SColor8.red)
+						ElseIf c.IsProductionStarted()
+							TDebugScreenPage.textFont.Draw("prod. started", x + 185, y + contentHeight, new SColor8(130,250,130))
+						ElseIf c.IsUnplanned()
+							TDebugScreenPage.textFont.Draw("unplanned", x + 185, y + contentHeight, SColor8.gray)
+						ElseIf c.IsProduceable()
+							TDebugScreenPage.textFont.Draw("produceable", x + 185, y + contentHeight, new SColor8(120,180,120))
+						ElseIf c.IsPlanned()
+							If c.IsBalancePaid()
+								TDebugScreenPage.textFont.Draw("planned, paid)", x + 185, y + contentHeight, new SColor8(220,220,220))
+							ElseIf c.IsDepositPaid()
+								TDebugScreenPage.textFont.Draw("planned, deposit paid", x + 185, y + contentHeight, new SColor8(220,220,220))
+							Else
+								TDebugScreenPage.textFont.Draw("planned", x + 185, y + contentHeight, new SColor8(220,220,220))
+							EndIf
+						ElseIf c.IsGettingPlanned()
+							TDebugScreenPage.textFont.Draw("getting planned)", x + 185, y + contentHeight)
+						EndIf
+						contentHeight :+ 10
+					Next
+					contentHeight :+ 2
+				EndIf
+			EndIf
+		endif
 		
 		contentSize = new SVec2I(contentWidth, contentHeight)
 	End Method
