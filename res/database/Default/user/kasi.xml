@@ -170,8 +170,8 @@
 					<en>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</en>
 				</name1>
 				<name2>
-					<de>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</de>
-					<en>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</en>
+					<de>Miller|Jackobson|Smith|Bloomberg|Gate|Johnson|Petersen</de>
+					<en>Miller|Jackobson|Smith|Bloomberg|Gate|Johnson|Petersen</en>
 				</name2>
 			</variables>
 			<jobs>
