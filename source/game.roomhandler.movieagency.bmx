@@ -73,10 +73,11 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		InitializeFilters()
 	End Method
 
+
 	Function checkFilters:Int( triggerEvent:TEventBase )
-		Local a:RoomHandler_MovieAgency = GetInstance()
-		If a Then a.InitializeFilters()
+		GetInstance().InitializeFilters()
 	End Function
+
 
 	Method InitializeFilters:Int()
 		'determine thresholds
@@ -343,6 +344,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onResetAuctionBlockCache) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInActive, onResetAuctionBlockCache) ]
 
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, checkFilters) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, checkFilters)]
 
 		'fill/update offerPlan-lists
