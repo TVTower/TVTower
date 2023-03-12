@@ -478,7 +478,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local bestFee:Int
 			Local bestCompany:TProductionCompanyBase = Null
 			For Local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.Values()
-				Local companyFee:Int = p.GetFee(script.owner, script.GetBlocks())
+				Local companyFee:Int = p.GetFee(script.owner,  script.GetBlocks(), script.productionBroadCastLimit)
 				'better than what we found ?
 				if bestCompany
 					If p.GetFocusPoints() > bestFocusPoints and companyFee < budget * 0.7

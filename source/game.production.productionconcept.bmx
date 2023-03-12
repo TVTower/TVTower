@@ -1160,7 +1160,7 @@ endrem
 
 	Method GetProductionCost:Int()
 		If productionCompany
-			local fee:int = productionCompany.GetFee(owner, script.GetBlocks()) ' script.owner)
+			local fee:int = productionCompany.GetFee(owner, script.GetBlocks(), script.productionBroadCastLimit) ' script.owner)
 			'for each category the cost per point doubles
 			For local focusIndex:Int = EachIn productionFocus.activeFocusIndices
 				Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
