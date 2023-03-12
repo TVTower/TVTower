@@ -1118,10 +1118,8 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 					</title>
 					<description>
 						<de>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
-
 Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 						<en>Guests at the start of the new show: Landon Newt, Chairman of the Graytinged Panthers, and Sabrina Sleaze from the Office of Social Affairs.
-
 Do the two offer enough material for an exciting panel?</en>
 					</description>
 					<staff>
@@ -1189,7 +1187,7 @@ Do the two offer enough material for an exciting panel?</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-				<member index="1" function="2">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+				<member index="1" function="8">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3</member>
 				<member index="3" function="64">4623935a-750a-4e5a-9d1b-6875062ff2a8</member>
 			</staff>
