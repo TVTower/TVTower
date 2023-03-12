@@ -58,10 +58,6 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	Global suitcasePos:SVec2I = New SVec2I(350,130)
 	Global suitcaseGuiListDisplace:SVec2I = New SVec2I(14,25)
 	Field programmesPerLine:Int	= 13
-	Field movieGoodMoneyMinimum:Int = 170000
-	Field movieGoodQualityMinimum:Float = 0.15
-	Field movieCheapMoneyMaximum:Int = 145000
-	Field movieCheapQualityMaximum:Float = 0.50
 
 	Global _instance:RoomHandler_MovieAgency
 	Global _eventListeners:TEventListenerBase[]
@@ -77,8 +73,37 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		InitializeFilters()
 	End Method
 
+	Function checkFilters:Int( triggerEvent:TEventBase )
+		Local a:RoomHandler_MovieAgency = GetInstance()
+		If a Then a.InitializeFilters()
+	End Function
 
 	Method InitializeFilters:Int()
+		'determine thresholds
+		Local movieGoodMoneyMinimum:Int = 170000
+		Local movieGoodQualityMinimum:Float = 0.15
+		Local movieCheapMoneyMaximum:Int = 145000
+		Local movieCheapQualityMaximum:Float = 0.50
+		Local relativeTopicalityMin:Float = 0.25
+		Local crapFilterTopicality:Float = 0.05
+		Local minCount:Int = 100
+
+		For Local player:Int = 1 until 4
+			Local collection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(player)
+			If collection
+				minCount = min(mincount, collection.GetSingleLicenceCount())
+			Else
+				minCount = 0
+			EndIf
+		Next
+		If minCount > 20
+			movieGoodMoneyMinimum:Int = 400000
+			movieGoodQualityMinimum:Float = 0.25
+			movieCheapMoneyMaximum:Int = 500000
+			relativeTopicalityMin = 0.35
+			crapFilterTopicality = 0.1
+		EndIf
+
 		If Not filterMoviesGood
 			filterMoviesGood = New TProgrammeLicenceFilterGroup
 			filterMoviesGood.AddFilter(New TProgrammeLicenceFilter)
@@ -113,7 +138,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		filterMoviesGood.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesGood.filters[0].priceMin = movieGoodMoneyMinimum
 		filterMoviesGood.filters[0].priceMax = -1
-		filterMoviesGood.filters[0].relativeTopicalityMin = 0.25
+		filterMoviesGood.filters[0].relativeTopicalityMin = relativeTopicalityMin
 		filterMoviesGood.filters[0].relativeTopicalityMax = -1.0
 		filterMoviesGood.filters[0].maxTopicalityMin = 0.35 'avoid older/broadcasted too often
 		filterMoviesGood.filters[0].maxTopicalityMax = -1.0
@@ -123,7 +148,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		filterMoviesGood.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesGood.filters[1].qualityMin = movieCheapQualityMaximum
 		filterMoviesGood.filters[1].qualityMax = -1.0
-		filterMoviesGood.filters[1].relativeTopicalityMin = 0.25
+		filterMoviesGood.filters[1].relativeTopicalityMin = relativeTopicalityMin
 		filterMoviesGood.filters[1].relativeTopicalityMax = -1.0
 		filterMoviesGood.filters[1].maxTopicalityMin = 0.35 'avoid older/broadcasted too often
 		filterMoviesGood.filters[1].maxTopicalityMax = -1.0
@@ -136,7 +161,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		filterMoviesCheap.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesCheap.filters[0].priceMin = 0
 		filterMoviesCheap.filters[0].priceMax = 0.75*movieCheapMoneyMaximum
-		filterMoviesCheap.filters[0].relativeTopicalityMin = 0.25
+		filterMoviesCheap.filters[0].relativeTopicalityMin = relativeTopicalityMin
 		filterMoviesCheap.filters[0].relativeTopicalityMax = -1.0
 		filterMoviesCheap.filters[0].maxTopicalityMin = 0.15 'avoid older/broadcasted too often
 		filterMoviesCheap.filters[0].maxTopicalityMax = -1.0
@@ -148,7 +173,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		filterMoviesCheap.filters[1].priceMax = 1.0*movieCheapMoneyMaximum
 		filterMoviesCheap.filters[1].qualityMin = -1.0
 		filterMoviesCheap.filters[1].qualityMax = movieCheapQualityMaximum
-		filterMoviesCheap.filters[1].relativeTopicalityMin = 0.25
+		filterMoviesCheap.filters[1].relativeTopicalityMin = relativeTopicalityMin
 		filterMoviesCheap.filters[1].relativeTopicalityMax = -1.0
 		filterMoviesCheap.filters[1].maxTopicalityMin = 0.20 'avoid older/broadcasted too often
 		filterMoviesCheap.filters[1].maxTopicalityMax = -1.0
@@ -159,7 +184,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		filterSeries.licenceTypes = [TVTProgrammeLicenceType.SERIES]
 		'filterSeries.filters[0].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 		'as long as there are not that much series, allow 15% instead of 25%
-		filterSeries.relativeTopicalityMin = 0.15
+		filterSeries.relativeTopicalityMin = relativeTopicalityMin * 0.75
 		filterSeries.relativeTopicalityMax = -1.0
 		filterSeries.maxTopicalityMin = 0.25 'avoid older/broadcasted too often
 		filterSeries.maxTopicalityMax = -1.0
@@ -170,7 +195,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		'filter out no longer useful-to-broadcast stuff
 		filterCrap.licenceTypes = [TVTProgrammeLicenceType.SERIES, TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterCrap.maxTopicalityMin = 0.00
-		filterCrap.maxTopicalityMax = 0.05
+		filterCrap.maxTopicalityMax = crapFilterTopicality
 		filterCrap.checkTradeability = True
 '		filterCrap.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
@@ -317,6 +342,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onResetAuctionBlockCache) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInActive, onResetAuctionBlockCache) ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, checkFilters)]
 
 		'fill/update offerPlan-lists
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicence_OnSetOwner, onSetProgrammeLicenceOwner) ]
