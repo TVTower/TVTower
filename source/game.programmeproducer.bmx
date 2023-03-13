@@ -478,12 +478,13 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local bestFee:Int
 			Local bestCompany:TProductionCompanyBase = Null
 			For Local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.Values()
+				Local companyFee:Int = p.GetFee(script.owner,  script.GetBlocks(), script.productionBroadCastLimit)
 				'better than what we found ?
 				if bestCompany
-					If p.GetFocusPoints() > bestFocusPoints and p.GetFee() < budget * 0.7
+					If p.GetFocusPoints() > bestFocusPoints and companyFee < budget * 0.7
 						'if company is more far from requirements than 
 						'current and also more expensive!
-						If abs(p.GetFocusPoints() - requiredFocusPoints) > abs(bestFocusPoints - requiredFocusPoints) and p.GetFee() > bestFee Then Continue
+						If abs(p.GetFocusPoints() - requiredFocusPoints) > abs(bestFocusPoints - requiredFocusPoints) and companyFee > bestFee Then Continue
 						'ignore company to give others a chance
 						If RandRange(0, 100) > 75 Then Continue
 						'alternative: if more than required, then only if cheaper
@@ -494,12 +495,12 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 						bestCompany = p
 						bestFocusPoints = p.GetFocusPoints()
-						bestFee = p.GetFee()
+						bestFee = companyFee
 					Endif
 				Else
 					bestCompany = p
 					bestFocusPoints = p.GetFocusPoints()
-					bestFee = p.GetFee()
+					bestFee = companyFee
 				EndIf
 			Next
 			

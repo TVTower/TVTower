@@ -222,7 +222,9 @@ Type TProductionCompanyBase Extends TGameObject
 
 
 	'base might differ depending on sympathy for channel
-	Method GetFee:Int(channel:Int=-1)
+	Method GetFee:Int(channel:Int=-1, blocks:Int = 1, broadCastLimit: Int = 0)
+		Local blocksMod:Float = 0.3 + blocks * 0.7
+		If broadCastLimit Then blocksMod = 0.7 + blocks * 0.3
 		Local sympathyMod:Float = 1.0
 		'modify by up to 50% ...
 		If channel >= 0 Then sympathyMod :- 0.5 * GetChannelSympathy(channel)
@@ -231,7 +233,7 @@ Type TProductionCompanyBase Extends TGameObject
 		'up to "* 100" -> 100% xp means 2000*100 = 200000
 		xpMod :+ 100 * GetExperiencePercentage()
 
-		Return sympathyMod * priceModifier * (20000 + Floor(Int(10000 * xpMod)/100)*100)
+		Return sympathyMod * priceModifier * (20000 + Floor(Int(10000 * xpMod)/100)*100) * blocksMod
 	End Method
 
 
