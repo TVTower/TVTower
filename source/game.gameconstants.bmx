@@ -14,6 +14,7 @@ Global CopyrightString:String = ""
 
 Global TVTPlayerCount:Int = 4
 
+Const CURRENCYSIGN:String = Chr(8364) 'eurosign
 
 
 Global TVTDebugInfo:Int = False

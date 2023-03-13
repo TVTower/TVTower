@@ -375,7 +375,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			contentY :+ msgH
 		endif
 		If showMsgDepositPaid
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", MathHelper.DottedValue(productionConcept.GetDepositCost()) + GetLocale("CURRENCY")), "money", "neutral", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", MathHelper.DottedValue(productionConcept.GetDepositCost()) + CURRENCYSIGN), "money", "neutral", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 

@@ -481,25 +481,25 @@ Type TInGameInterface
 			If THelper.MouseIn(309,412,178,32)
 				MoneyToolTip.title = getLocale("MONEY")
 				local content:String = ""
-				content	= "|b|"+getLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
+				content	= "|b|"+getLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetPlayerBase().GetMoney()) + CURRENCYSIGN
 				if GetPlayerBase().GetCredit() > 0
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(GetPlayerBase().GetCredit()) +CURRENCYSIGN+"|/color|"
 				else
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|0" + getLocale("CURRENCY")+"|/color|"
+					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|0" + CURRENCYSIGN+"|/color|"
 				endif
 
 				local profit:int = GetPlayerFinance(GetPlayerBase().playerID).GetCurrentProfit()
 				if profit > 0
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,200,100|+"+ MathHelper.DottedValue(profit) + getLocale("CURRENCY")+"|/color|"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,200,100|+"+ MathHelper.DottedValue(profit) + CURRENCYSIGN+"|/color|"
 				elseif profit = 0
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,100,100|0" + getLocale("CURRENCY")+"|/color|"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,100,100|0" + CURRENCYSIGN+"|/color|"
 				else
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(profit) + getLocale("CURRENCY")+"|/color|"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(profit) + CURRENCYSIGN+"|/color|"
 				endif
 
 				MoneyTooltip.SetContent(content)

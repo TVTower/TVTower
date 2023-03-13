@@ -294,8 +294,8 @@ Type TAward Extends TGameObject
 
 		If priceMoney <> 0
 			If result <> "" Then result :+ "~n"
-			If priceMoney > 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=0,125,0|+" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
-			If priceMoney < 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=125,0,0|" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
+			If priceMoney > 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=0,125,0|+" + MathHelper.DottedValue(priceMoney)+CURRENCYSIGN+"|/color|"
+			If priceMoney < 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=125,0,0|" + MathHelper.DottedValue(priceMoney)+CURRENCYSIGN+"|/color|"
 		EndIf
 
 		Return result
