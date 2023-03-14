@@ -781,6 +781,9 @@ Type TProduction Extends TOwnedGameObject
 			programmeLicence.getData().releaseTime = GetWorldTime().GetTimeGone()
 		EndIf
 
+		'difficulty price modifier shall not apply to custom productions
+		If programmeLicence.IsAPlayersCustomProduction() Then programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
+
 		GetProgrammeDataCollection().Add(programmeLicence.data)
 		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
 
@@ -973,6 +976,9 @@ endrem
 			'production done - but for the child elements)
 			'parentLicence.GetData().productionID = - self.GetID() 
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
+
+			'difficulty price modifier shall not apply to custom productions
+			If parentLicence.IsAPlayersCustomProduction() Then parentLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
 
 			'if the template header does not define all licence flags, the ones
 			'set for the header heavily depend on the production order of episodes!

@@ -960,6 +960,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 					'set owner (and automatically remove from offerPlan-lists)
 					licence.SetOwner(licence.OWNER_VENDOR)
 					lists[listIndex][entryIndex] = licence
+					'once a custom production is sold, the player difficulty should be considered
+					If licence.IsAPlayersCustomProduction() Then licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, False)
 				Else
 					If Not warnedOfMissingLicence
 						TLogger.Log("MovieAgency.RefillBlocks()", "Not enough licences to refill slot["+entryIndex+"+] in list["+listIndex+"]", LOG_WARNING | LOG_DEBUG)
