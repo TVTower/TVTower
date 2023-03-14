@@ -347,7 +347,7 @@ Type TAchievementReward_Money extends TAchievementReward
 	'override
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
-		if not t then t = MathHelper.DottedValue(money) +" "+ CURRENCYSIGN
+		if not t then t = GetFormattedCurrency(money)
 		return t
 	End Method
 

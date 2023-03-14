@@ -112,7 +112,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		If presentButtons[0]
 			For local i:int = 0 to 9
 				local present:TBettyPresent = TBettyPresent.GetPresent(i)
-				presentButtons[i].SetValue( MathHelper.DottedValue(present.price) + CURRENCYSIGN + " ("+GetBetty().getPresentGivenCount(present)+"x)")
+				presentButtons[i].SetValue( GetFormattedCurrency(present.price) +" ("+GetBetty().getPresentGivenCount(present)+"x)")
 			Next
 		End If
 	End function

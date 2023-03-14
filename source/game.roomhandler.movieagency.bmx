@@ -1997,7 +1997,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			textBlockDrawSettings.data.lineHeight = 13
 			titleFont.DrawBox(licence.GetTitle(), 31,3, 215,36, sALIGN_LEFT_TOP, new SColor8(50,50,50), textBlockDrawSettings, EDrawTextEffect.Emboss, 0.4)
 
-			font.DrawBox("|color=90,90,90|" + GetLocale("AUCTION_MAKE_BID")+":|/color| |b|"+MathHelper.DottedValue(GetNextBid(GetPlayerBase().playerID))+CURRENCYSIGN+"|/b|", 31,30, 212,-1, sALIGN_RIGHT_TOP, new SColor8(50,50,50), EDrawTextEffect.Emboss, 0.4)
+			font.DrawBox("|color=90,90,90|" + GetLocale("AUCTION_MAKE_BID")+":|/color| |b|"+GetFormattedCurrency(GetNextBid(GetPlayerBase().playerID))+"|/b|", 31,30, 212,-1, sALIGN_RIGHT_TOP, new SColor8(50,50,50), EDrawTextEffect.Emboss, 0.4)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(Null)

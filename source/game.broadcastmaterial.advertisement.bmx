@@ -177,7 +177,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		Local earn:Int = audienceResult.Audience.GetTotalSum() * contract.GetPerViewerRevenue()
 		if earn > 0
-			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetTotalSum() +". CPV="+contract.GetPerViewerRevenue() , LOG_DEBUG)
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+GetFormattedCurrency(earn)+" with an audience of " + audienceResult.Audience.GetTotalSum() +". CPV="+contract.GetPerViewerRevenue() , LOG_DEBUG)
 			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		elseif earn = 0
 			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned nothing with an audience of " + audienceResult.Audience.GetTotalSum() +". CPV="+contract.GetPerViewerRevenue(), LOG_DEBUG)

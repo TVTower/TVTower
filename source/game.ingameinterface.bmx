@@ -481,25 +481,25 @@ Type TInGameInterface
 			If THelper.MouseIn(309,412,178,32)
 				MoneyToolTip.title = getLocale("MONEY")
 				local content:String = ""
-				content	= "|b|"+getLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetPlayerBase().GetMoney()) + CURRENCYSIGN
+				content	= "|b|"+getLocale("MONEY")+":|/b| "+GetFormattedCurrency(GetPlayerBase().GetMoney())
 				if GetPlayerBase().GetCredit() > 0
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(GetPlayerBase().GetCredit()) +CURRENCYSIGN+"|/color|"
+					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ GetFormattedCurrency(GetPlayerBase().GetCredit()) +"|/color|"
 				else
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|0" + CURRENCYSIGN+"|/color|"
+					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|" + GetFormattedCurrency(0)+"|/color|"
 				endif
 
 				local profit:int = GetPlayerFinance(GetPlayerBase().playerID).GetCurrentProfit()
 				if profit > 0
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,200,100|+"+ MathHelper.DottedValue(profit) + CURRENCYSIGN+"|/color|"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,200,100|+"+ GetFormattedCurrency(profit) +"|/color|"
 				elseif profit = 0
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,100,100|0" + CURRENCYSIGN+"|/color|"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,100,100|" + GetFormattedCurrency(0)+"|/color|"
 				else
 					content	:+ "~n"
-					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(profit) + CURRENCYSIGN+"|/color|"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=200,100,100|"+ GetFormattedCurrency(profit) +"|/color|"
 				endif
 
 				MoneyTooltip.SetContent(content)

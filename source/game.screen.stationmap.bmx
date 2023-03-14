@@ -771,7 +771,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 			If showPermissionText And section And selectedStation
 				If Not section.HasBroadcastPermission(selectedStation.owner)
-					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + CURRENCYSIGN+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
+					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+GetFormattedCurrency(section.GetBroadcastPermissionPrice(selectedStation.owner)) +"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				Else
 					currentY :- 1 'align it a bit better
 					skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
@@ -974,13 +974,13 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						local runningCostChange:int = selectedStation.GetCurrentRunningCosts() - selectedStation.GetRunningCosts()
 						if runningCostChange < 0
 							renewContractTooltips[1].contentColor = skin.textColorGood
-							renewContractTooltips[1].SetContent( TFunctions.convertValue(runningCostChange, 2, 0) + " " + CURRENCYSIGN )
+							renewContractTooltips[1].SetContent( GetFormattedCurrency(runningCostChange))
 						elseif runningCostChange = 0
 							renewContractTooltips[1].contentColor = skin.textColorNeutral
-							renewContractTooltips[1].SetContent( "+/- 0 " + CURRENCYSIGN )
+							renewContractTooltips[1].SetContent( "+/- " + GetFormattedCurrency(0))
 						else
 							renewContractTooltips[1].contentColor = skin.textColorBad
-							renewContractTooltips[1].SetContent( "+"+TFunctions.convertValue(runningCostChange, 2, 0) + " " + CURRENCYSIGN )
+							renewContractTooltips[1].SetContent( "+" + GetFormattedCurrency(runningCostChange))
 						endif
 
 					EndIf
@@ -1098,7 +1098,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 			If showPermissionText And section And selectedStation
 				If Not section.HasBroadcastPermission(selectedStation.owner)
-					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + CURRENCYSIGN+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
+					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+GetFormattedCurrency(section.GetBroadcastPermissionPrice(selectedStation.owner)) +"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				Else
 					currentY :- 1 'align it a bit better
 					skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
@@ -1378,13 +1378,13 @@ endrem
 							local runningCostChange:int = selectedStation.GetCurrentRunningCosts() - selectedStation.GetRunningCosts()
 							if runningCostChange < 0
 								renewContractTooltips[1].contentColor = skin.textColorGood
-								renewContractTooltips[1].SetContent( TFunctions.convertValue(runningCostChange, 2, 0) + " " + CURRENCYSIGN )
+								renewContractTooltips[1].SetContent( GetFormattedCurrency(runningCostChange))
 							elseif runningCostChange = 0
 								renewContractTooltips[1].contentColor = skin.textColorNeutral
-								renewContractTooltips[1].SetContent( "+/- 0 " + CURRENCYSIGN )
+								renewContractTooltips[1].SetContent( "+/- " +GetFormattedCurrency(0))
 							else
 								renewContractTooltips[1].contentColor = skin.textColorBad
-								renewContractTooltips[1].SetContent( "+"+TFunctions.convertValue(runningCostChange, 2, 0) + " " + CURRENCYSIGN )
+								renewContractTooltips[1].SetContent( "+"+GetFormattedCurrency(runningCostChange))
 							endif
 
 							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
@@ -1516,7 +1516,8 @@ endrem
 
 
 			If showIncludesHardwareText
-				skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_HARDWARE").Replace("%X%", "|b|"+TFunctions.convertValue(123, 2, 0) + " " + CURRENCYSIGN+"|/b|"), contentX + 5, currentY, contentW - 10, includesHardwareTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.55)
+				'TODO constant value 123?
+				skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_HARDWARE").Replace("%X%", "|b|"+ GetFormattedCurrency(123) +"|/b|"), contentX + 5, currentY, contentW - 10, includesHardwareTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.55)
 			EndIf
 		EndIf
 
@@ -2267,7 +2268,7 @@ Type TStationMapInformationFrame
 
 			skin.fontSmallCaption.DrawBox(GetLocale("BROADCAST_PERMISSION")+":", col3, textY + 0*lineH, col3W+col4W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral)
 			skin.fontNormal.DrawBox(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
-			skin.fontNormal.DrawBox(TFunctions.DottedValue(selectedSection.GetBroadcastPermissionPrice(owner))+" " +CURRENCYSIGN, col4, textY + 1*lineH, col4W, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(GetFormattedCurrency(selectedSection.GetBroadcastPermissionPrice(owner)), col4, textY + 1*lineH, col4W, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			skin.fontNormal.DrawBox(GetLocale("CHANNEL_IMAGE")+":", col3, textY + 2*lineH, col3W,  -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
 			skin.fontNormal.DrawBox(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			if selectedSection.HasBroadcastPermission(owner)

@@ -2505,7 +2505,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If showMsgEarnInfo
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
-			local revenue:string = MathHelper.DottedValue(int(1000 * data.GetPerViewerRevenue(useOwner)))+CURRENCYSIGN
+			local revenue:string = GetFormattedCurrency(int(1000 * data.GetPerViewerRevenue(useOwner)))
 
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
@@ -2514,7 +2514,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if showMsgLiveProductionCost
 			Local productionCostsLeftValue:int
 			if extraData then productionCostsLeftValue = extraData.GetInt("productionCostsLeft")
-			local productionCostsLeft:string = MathHelper.DottedValue(productionCostsLeftValue)+CURRENCYSIGN
+			local productionCostsLeft:string = GetFormattedCurrency(productionCostsLeftValue)
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("LIVE_PRODUCTION_FINISH_WILL_COST_X").Replace("%X%", productionCostsLeft) , "money", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif

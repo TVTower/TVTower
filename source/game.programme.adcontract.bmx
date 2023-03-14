@@ -1617,7 +1617,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If forPlayerID > 0
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
-			Local revenue:String = MathHelper.DottedValue(Int(1000 * GetPerViewerRevenueForPlayer(forPlayerID)))+CURRENCYSIGN
+			Local revenue:String = GetFormattedCurrency(Int(1000 * GetPerViewerRevenueForPlayer(forPlayerID)))
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf

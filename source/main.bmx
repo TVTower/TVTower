@@ -5190,11 +5190,11 @@ endrem
 		If triggerEvent.GetEventKey() = GameEventKeys.PlayerBoss_OnPlayerTakesCredit
 			toast.SetMessageType(2) 'positive
 			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_TAKEN")))
-			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=0,125,0|+ "+ MathHelper.DottedValue(value) + " " + CURRENCYSIGN + "|/color||/b|")
+			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=0,125,0|+ "+ GetFormattedCurrency(value) + "|/color||/b|")
 		Else
 			toast.SetMessageType(3) 'negative
 			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_REPAID")))
-			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=125,0,0|- "+ MathHelper.DottedValue(value) + " " + CURRENCYSIGN + "|/color||/b|")
+			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=125,0,0|- "+ GetFormattedCurrency(value) + "|/color||/b|")
 		EndIf
 
 		'play a special sound instead of the default one
@@ -5233,7 +5233,7 @@ endrem
 		toast.SetCaption(GetLocale("AUTHORITIES_STOPPED_BROADCAST"))
 		toast.SetText( ..
 			GetLocale("BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME").Replace("%TITLE%", "|b|"+programme.GetTitle()+"|/b|") + " " + ..
-			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(penalty)+CURRENCYSIGN+"|/b|") ..
+			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+GetFormattedCurrency(penalty)+"|/b|") ..
 		)
 		toast.GetData().AddNumber("playerID", programme.owner)
 
@@ -5507,7 +5507,7 @@ endrem
 					Local cost:Int = triggerEvent.GetData().GetInt("renovationBaseCost")
 					If cost > 0
 						cost = TFunctions.RoundToBeautifulValue(cost * 1.2^ (player.GetAudienceReachLevel()-1))
-						text:+ " "+ GetRandomLocale("TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT").Replace("%COST%", MathHelper.DottedValue(cost)+CURRENCYSIGN)
+						text:+ " "+ GetRandomLocale("TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT").Replace("%COST%", GetFormattedCurrency(cost))
 						player.GetFinance().PayMisc(cost)
 					EndIf
 					If room.GetNameRaw() = "archive"
@@ -5579,7 +5579,7 @@ endrem
 
 		toast.SetText( ..
 			GetLocale("SOMEONE_BID_MORE_THAN_YOU_FOR_X").Replace("%TITLE%", licence.GetTitle()) + " " + ..
-			GetLocale("YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(previousBestBid)+CURRENCYSIGN+"|/b|") ..
+			GetLocale("YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED").Replace("%MONEY%", "|b|"+GetFormattedCurrency(previousBestBid)+"|/b|") ..
 		)
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
@@ -5664,11 +5664,11 @@ endrem
 			If GameRules.payLiveProductionInAdvance
 				toast.SetText(GetLocale("THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED").Replace("%TITLE%", "|b|"+title+"|/b|"))
 			Else
-				toast.SetText((GetLocale("THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + CURRENCYSIGN + "|/b|" ))
+				toast.SetText((GetLocale("THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + GetFormattedCurrency(production.productionConcept.GetTotalCost()) + "|/b|" ))
 			EndIf
 		Else
 			toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
-			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + CURRENCYSIGN + "|/b|" ))
+			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + GetFormattedCurrency(production.productionConcept.GetTotalCost()) + "|/b|" ))
 		EndIf
 
 		toast.GetData().AddNumber("playerID", production.owner)
@@ -5706,7 +5706,7 @@ endrem
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetCaption(GetLocale("PREPRODUCTION_FINISHED"))
 		If GameRules.payLiveProductionInAdvance
-			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + CURRENCYSIGN + "|/b|" ))
+			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + GetFormattedCurrency(production.productionConcept.GetTotalCost()) + "|/b|" ))
 		Else
 			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
 		EndIf
@@ -5803,7 +5803,7 @@ endrem
 		toast.SetCaption(GetLocale("ADCONTRACT_FINISHED"))
 		toast.SetText( ..
 			GetLocale("ADCONTRACT_X_SUCCESSFULLY_FINISHED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
-			GetLocale("PROFIT_OF_X_GOT_CREDITED").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(contract.GetProfit())+CURRENCYSIGN+"|/b|") ..
+			GetLocale("PROFIT_OF_X_GOT_CREDITED").Replace("%MONEY%", "|b|"+GetFormattedCurrency(contract.GetProfit())+"|/b|") ..
 		)
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
@@ -5837,7 +5837,7 @@ endrem
 		toast.SetCaption(GetLocale("ADCONTRACT_FAILED"))
 		toast.SetText( ..
 			GetLocale("ADCONTRACT_X_FAILED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
-			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(contract.GetPenalty())+CURRENCYSIGN+"|/b|") ..
+			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+GetFormattedCurrency(contract.GetPenalty())+"|/b|") ..
 		)
 
 		toast.GetData().AddNumber("playerID", contract.owner)

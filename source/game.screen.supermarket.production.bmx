@@ -238,11 +238,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				finishProductionConcept.Disable()
 				finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet.negative")
 			EndIf
-			finishProductionConcept.SetValue("|b|"+GetLocale("FINISH_PLANNING")+"|/b|~n" + GetLocale("AND_PAY_DOWN_MONEY").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + CURRENCYSIGN+"|/b|"))
+			finishProductionConcept.SetValue("|b|"+GetLocale("FINISH_PLANNING")+"|/b|~n" + GetLocale("AND_PAY_DOWN_MONEY").Replace("%money%", "|b|"+GetFormattedCurrency(currentProductionConcept.GetDepositCost())+"|/b|"))
 		Else
 			finishProductionConcept.Disable()
 			finishProductionConcept.SetSpriteName("gfx_gui_button.datasheet")
-			finishProductionConcept.SetValue("|b|"+GetLocale("PLANNING")+"|/b|~n(" + GetLocale("MONEY_TO_PAY_DOWN").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + CURRENCYSIGN+"|/b|") +")")
+			finishProductionConcept.SetValue("|b|"+GetLocale("PLANNING")+"|/b|~n(" + GetLocale("MONEY_TO_PAY_DOWN").Replace("%money%", "|b|"+GetFormattedCurrency(currentProductionConcept.GetDepositCost())+"|/b|") +")")
 		EndIf
 	End Method
 

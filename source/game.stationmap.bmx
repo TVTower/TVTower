@@ -3465,11 +3465,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 				totalPrice = GetBuyPrice()
 			Else
 				font.Draw(GetTypeName()+": ", textX, textY)
-				fontBold.DrawBox(TFunctions.DottedValue(GetBuyPrice()) + " " + CURRENCYSIGN, textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+				fontBold.DrawBox(GetFormattedCurrency(GetBuyPrice()) , textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 				textY:+ textH
 
 				font.Draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
-				fontBold.DrawBox(TFunctions.DottedValue(section.GetBroadcastPermissionPrice(owner, stationType)) + " " + CURRENCYSIGN, textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+				fontBold.DrawBox(GetFormattedCurrency(section.GetBroadcastPermissionPrice(owner, stationType)), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 				textY:+ textH
 
 				'always request the _current_ (refreshed) price
@@ -3478,9 +3478,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 			font.Draw(GetLocale("PRICE")+": ", textX, textY)
 			If Not GetPlayerFinance(owner).CanAfford(totalPrice)
-				fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + CURRENCYSIGN, textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,150,150))
+				fontBold.DrawBox(GetFormattedCurrency(totalPrice), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,150,150))
 			Else
-				fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + CURRENCYSIGN, textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+				fontBold.DrawBox(GetFormattedCurrency(totalPrice), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			EndIf
 		EndIf
 
