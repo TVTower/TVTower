@@ -696,6 +696,11 @@ Type TNewsAgency
 			'skip news events not happening yet
 			If Not newsEvent.HasHappened() Then Continue
 
+			If Not newsEvent.IsAvailable()
+				GetNewsEventCollection().Remove(newsEvent)
+				Continue
+			EndIf
+
 			AnnounceNewsEventToPlayers(newsEvent)
 
 			'attention: RESET_TICKER_TIME is only "useful" for followup news
