@@ -98,7 +98,7 @@
 				</job1>
 				<job2>
 					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
-					<en>a landscapist|an Alcoholic anonymous|a ladies hairdresser with passion</en>
+					<en>a landscapist|an Alcoholic Anonymous|a ladies hairdresser with passion</en>
 				</job2>
 				<funny>
 					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
@@ -622,8 +622,8 @@
 					<en>%ANIMAL1%%CONNECTOR1%|Party with %ANIMAL1%%CONNECTOR1%|Visiting %ANIMAL1%%CONNECTOR2%|On the trail of %ANIMAL1%%CONNECTOR2%|In the Zoo among %ANIMAL1% and %ANIMAL2%</en>
 				</title>
 				<animals>
-					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo.|Pfleger, Gäste und natürlich Tiere im Gehege.</de>
-					<en>%ANIMAL1%, %ANIMAL2% and many more animals|animals in the zoo.|keepers, guests and of course animals in the enclosure.</en>
+					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo|Pfleger, Gäste und natürlich Tiere im Gehege</de>
+					<en>%ANIMAL1%, %ANIMAL2% and many more animals|animals in the zoo|keepers, guests and of course animals in the enclosure</en>
 				</animals>
 				<extra>
 					<de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>

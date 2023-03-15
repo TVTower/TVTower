@@ -2397,7 +2397,7 @@
 			<last_name>Dododiles</last_name>
 			<nick_name></nick_name>
 			<first_name_original>Hermes</first_name_original>
-			<last_name_original> Hodolides</last_name_original>
+			<last_name_original>Hodolides</last_name_original>
 			<details job="2" gender="1" birthday="1963-09-15" deathday="" country="GR" fictional="0" />
 			<data popularity="49" affinity="42" fame="24" scandalizing="13" price_mod="0.55" power="42" humor="31" charisma="55" appearance="32" topgenre="9" />
 		</person>
@@ -3565,7 +3565,7 @@
 		<!-- Peter van Eyck  -->
 		<person id="TheRob-TowerTV-PetevonSpike" first_name="Pete" last_name="von Spike" nick_name="" first_name_original="Peter" last_name_original="van Eyck" birthday="1911-07-16" deathday="1969-07-15" imdb_id="nm0886870" creator="8751" created_by="TheRob" />
 		<!-- Dieter Hallervorden -->
-		<person id="TheRob-TowerTV-DieterWallvomNorden" first_name="Dieter" last_name="Wall vom Norden" first_name_original="Dieter" last_name_original="Hallervorden" nick_name="" birthday="1935-09-05" deathday="" imdb_id="nm0356448" creator="8751" created_by="TheRob" />
+		<person id="TheRob-TowerTV-DieterWallvomNorden" first_name="Dieter" last_name="Wall vom Norden" nick_name="Diti" nick_name_original="Didi" first_name_original="Dieter" last_name_original="Hallervorden" birthday="1935-09-05" deathday="" imdb_id="nm0356448" creator="8751" created_by="TheRob" />
 		<!-- Gene Tierney -->
 		<person id="TheRob-TowerTV-JeanePierley" first_name="Jeane" last_name="Pierley" nick_name="" first_name_original="Gene" last_name_original="Tierney" birthday="1920-11-19" deathday="1991-11-06" imdb_id="nm0000074" creator="8751" created_by="TheRob" />
 		<!-- John Carradine -->
@@ -3724,7 +3724,7 @@
 		<!-- Mara Corday -->
 		<person id="Freddy-realperson-mariacornight" first_name="Maria" last_name="Cornight" nick_name="Loretta" nick_name_original="Loretta" first_name_original="Mara" last_name_original="Corday" fictional="0" birthday="1930-01-03" deathday="" imdb_id="nm0179408" creator="8667" created_by="Rumpelfreddy" />
 		<!-- Fred F. Sears -->
-		<person id="Freddy-realperson-fredfears" first_name="Fred" last_name="Fears" nick_name="Bonanza Henry" nick_name_original="Bonanza Henry" first_name_original="Fred F." last_name_original="Sears" fictional="0" birthday="1913-07-07" deathday="1957-11-30" imdb_id="nm0780764" creator="8667" created_by="Rumpelfreddy" />
+		<person id="Freddy-realperson-fredfears" first_name="Fred" last_name="Fears" nick_name="Wononza Henry" nick_name_original="Bonanza Henry" first_name_original="Fred F." last_name_original="Sears" fictional="0" birthday="1913-07-07" deathday="1957-11-30" imdb_id="nm0780764" creator="8667" created_by="Rumpelfreddy" />
 		<!-- Arthur Seidelman -->
 		<person id="Freddy-realperson-antonseidel" first_name="Anton" last_name="Seidel" nick_name="Anton A." nick_name_original="Athur A." first_name_original="Arthur" last_name_original="Seidelman" fictional="0" birthday="" deathday="" imdb_id="nm0782381" creator="8667" created_by="Rumpelfreddy" />
 		<!-- Deborah Loomis -->
@@ -3815,7 +3815,7 @@
 		<person id="da4a70c6-fe0c-4be0-89da-2604222e0685" first_name="Agatha" last_name="Kissme" nick_name="" first_name_original="Agatha" last_name_original="Christie" birthday="1890-09-15" deathday="1976-01-12" imdb_id="nm0002005" creator="9551" />
 		<person id="59ee959d-c794-4c94-a9c6-ff6b5966962e" first_name="Boris" last_name="Pastilnacken" nick_name="" first_name_original="Boris" last_name_original="Pasternak" birthday="1890-02-10" deathday="1960-05-30" imdb_id="nm0664985" creator="9551" />
 		<person id="a1bd39e9-c2ea-495f-96f6-8adf194be54b" first_name="Karl" last_name="Meier" nick_name="" first_name_original="Karl" last_name_original="May" birthday="1842-02-25" deathday="1912-03-30" imdb_id="nm0562015" creator="9551" />
-		<person id="9ef1f1fb-30f4-4df4-8073-87179e95c6b8" first_name="Steve" last_name="Kingson" nick_name="" first_name_original="Stephen" last_name_original="King" birthday="1947-09-21" deathday="" imdb_id="nm0000175" creator="9551" />
+		<person id="9ef1f1fb-30f4-4df4-8073-87179e95c6b8" first_name="Steve" last_name="Koenig" nick_name="" first_name_original="Stephen" last_name_original="King" birthday="1947-09-21" deathday="" imdb_id="nm0000175" creator="9551" />
 		<person id="d0a5479d-736b-430c-a8bc-9dc180184bf3" first_name="R.J.J." last_name="Trollkind" nick_name="" first_name_original="J.R.R." last_name_original="Tolkien" birthday="1892-01-03" deathday="1973-09-02" imdb_id="nm0866058" creator="9551" />
 		<person id="18b28f36-060e-4bcf-a2d9-dc528527b7d8" first_name="Steward" last_name="Sherman" nick_name="" first_name_original="Bernard" last_name_original="Herrmann" birthday="1911-06-29" deathday="1975-12-24" imdb_id="nm0002136" creator="9551" />
 		<person id="db61d8fe-1493-48dd-ab9c-249e4a4b7c35" first_name="Jan" last_name="Fleme" nick_name="" first_name_original="Ian" last_name_original="Fleming" birthday="1908-05-28" deathday="1964-08-12" imdb_id="nm0001220" creator="9551" />

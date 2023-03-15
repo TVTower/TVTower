@@ -2173,7 +2173,7 @@
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
 				<de>%WHAT% für %WHO%</de>
-				<en>%WHAT% for %WHO%</en>
+				<en>Writing %WHAT% for %WHO%</en>
 			</title>
 			<description>
 				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
@@ -2182,7 +2182,7 @@
 			<variables>
 				<what>
 					<de>Drehbücher|Nachrichten|Serien|Filme</de>
-					<en>Movie scripts|News|Series|Movies</en>
+					<en>movie scripts|news|series|movies</en>
 				</what>
 				<who>
 					<de>Anfänger|Neulinge|Fortgeschrittene|Profis|Neugierige</de>

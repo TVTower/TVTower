@@ -272,15 +272,15 @@
 			</effects>
 		</news>
 
-		<news id="news-jorgaeff-1987-0-UdSSR-01b" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Michailow, Markus Lahr">
+		<news id="news-jorgaeff-1987-0-UdSSR-01b" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Michailow, Markus Trust">
 			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Michailow entlässt Minister</de>
 				<en>Michailow dismisses minister</en>
 			</title>
 			<description>
-				<de>KPdvSS-Generalsekretär Sergei Michailow hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, Markus Lahr, auf dem Roten Platz in Moskau entlassen.</de>
-				<en>CPUSS Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Lahr, on Red Square in Moscow.</en>
+				<de>KPdvSS-Generalsekretär Sergei Michailow hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, Markus Trust, auf dem Roten Platz in Moskau entlassen.</de>
+				<en>CPUSS Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Trust, on Red Square in Moscow.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 			<effects>
@@ -1531,8 +1531,8 @@
 				<en>Shuttle launch planned again</en>
 			</title>
 			<description>
-				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte wieder ein unbemanntes Shuttle ins All schicken. Die Raumfähre Contender soll einen Kommunikations-Satelliten aussetzen, sowie bekannte Kometen analysieren.</de>
-				<en>The North American Space Agency NASE wants to send an unmanned shuttle into space again. The space shuttle Contender is to launch a communications satellite, as well as to analyze known comets.</en>
+				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte wieder ein unbemanntes Shuttle ins All schicken. Die Raumfähre Passenger soll einen Kommunikations-Satelliten aussetzen, sowie bekannte Kometen analysieren.</de>
+				<en>The North American Space Agency NASE wants to send an unmanned shuttle into space again. The space shuttle Passenger is to launch a communications satellite, as well as to analyze known comets.</en>
 			</description>
 			<data genre="3" price="0.5" quality="50" fictional="0" flags="2" />
 			<effects>
@@ -1548,8 +1548,8 @@
 				<en>Space shuttle exploded during launch</en>
 			</title>
 			<description>
-				<de>Schwerer Rückschlag für das nordamerikanische Raumfahrtprogramm! Nur wenige Sekunden nach dem Start ist die Raumfähre Contender explodiert. Die Raumfahrtbehörde NASE rätselt über die Ursachen des Unglücks.</de>
-				<en>Serious setback for the North American space program! Only a few seconds after launch, the space shuttle Contender exploded. The space agency NASE is puzzled over the causes of the accident.</en>
+				<de>Schwerer Rückschlag für das nordamerikanische Raumfahrtprogramm! Nur wenige Sekunden nach dem Start ist die Raumfähre Passenger explodiert. Die Raumfahrtbehörde NASE rätselt über die Ursachen des Unglücks.</de>
+				<en>Serious setback for the North American space program! Only a few seconds after launch, the space shuttle Passenger exploded. The space agency NASE is puzzled over the causes of the accident.</en>
 			</description>
 			<data genre="3" price="1" quality="100" fictional="0" flags="2" />
 			<effects>
@@ -1565,8 +1565,8 @@
 				<en>Shuttle explosion: cause of accident clarified</en>
 			</title>
 			<description>
-				<de>Die nordamerikanische Raumfahrtbehörde NASE hat die Ursache für die Explosion der Raumfähre Contender gefunden und macht einen fehlenden Dichtungsring für das Unglück verantwortlich.</de>
-				<en>The North American space agency NASE has found the cause of the explosion of the space shuttle Contender and blames a missing seal ring for the disaster.</en>
+				<de>Die nordamerikanische Raumfahrtbehörde NASE hat die Ursache für die Explosion der Raumfähre Passenger gefunden und macht einen fehlenden Dichtungsring für das Unglück verantwortlich.</de>
+				<en>The North American space agency NASE has found the cause of the explosion of the space shuttle Passenger and blames a missing seal ring for the disaster.</en>
 			</description>
 			<data genre="3" price="0.85" quality="85" fictional="0" flags="2" />
 			<effects>
@@ -2584,8 +2584,8 @@
 				<en>Pilot lands on Red Square in Moscow</en>
 			</title>
 			<description>
-				<de>Der deutsche Pilot Markus Lahr ist mit seiner Cessna auf dem Roten Platz in Moskau gelandet.</de>
-				<en>The German pilot Markus Lahr has landed with his Cessna on the Red Square in Moscow.</en>
+				<de>Der deutsche Pilot Markus Trust ist mit seiner Schessnah auf dem Roten Platz in Moskau gelandet.</de>
+				<en>The German pilot Markus Trust has landed with his Schessnah on the Red Square in Moscow.</en>
 			</description>
 			<data genre="4" price="0.8" quality="80" fictional="0" flags="2" />
 			<effects>

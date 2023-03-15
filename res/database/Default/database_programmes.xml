@@ -313,17 +313,17 @@ Modest joke concatenations after the comics of [1|Full].</en>
 		</programme>
 		<programme id="631f722f-b5dc-4663-bd81-5e9b1231c84e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093978" creator="">
 			<title>
-				<de>An Asian Spooky Story</de>
+				<de>An Asian Spooky Story - Verlockung aus dem Jenseits</de>
 				<en>An Asian Spooky Story</en>
 			</title>
 			<title_original>
-				<de>A Chinese Ghost Story</de>
+				<de>A Chinese Ghost Story - Verführung aus dem Reich der Toten</de>
 				<en>A Chinese Ghost Story</en>
 			</title_original>
 			<description>
 				<de>In einem Tempel verliebt sich ein junger Chinese in ein Mädchen. Da das Mädchen als Geist auf der Erde wandelt, nimmt er sich vor, ihr Leben einzuhauchen...
 Raffinierter phantastischer Film.</de>
-				<en>In a temple, a young Chinese man falls in love with a girl. Since the girl walks the earth as a ghost, he takes it upon himself to breathe life into her....
+				<en>In a temple, a young Chinese man falls in love with a girl. Since the girl walks the earth as a ghost, he takes it upon himself to breathe life into her...
 A sophisticated and fantastic film.</en>
 			</description>
 			<staff>
@@ -2951,7 +2951,7 @@ Superbly staged gangster film.</en>
 				<member index="4" function="2">42b56d65-244f-4a70-bc35-22e1fd7709f0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CN" year="2003" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="CHN" year="2002" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="56" speed="32" outcome="47" />
 		</programme>
 		<programme id="487e524e-09d2-4294-b552-4f361cd26651" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0212985" creator="">
@@ -4489,8 +4489,8 @@ Abysmally dark, frightening and breathtaking - cult film of the 80s.</en>
 				<en>Police Cadets 3: Unstoppable</en>
 			</title>
 			<title_original>
-				<de>Police Academy 3 - ...und keiner kann sie bremsen.</de>
-				<en>Police Academy 3: Back in Training.</en>
+				<de>Police Academy 3 - ...und keiner kann sie bremsen</de>
+				<en>Police Academy 3: Back in Training</en>
 			</title_original>
 			<description>
 				<de>Die beiden staatlichen Polizeiakademien sollen geschlossen werden. Die Kadetten beider Akademien treten in einem Wettkampf gegeneinander an.</de>
@@ -12848,7 +12848,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</title_original>
 			<description>
 				<de>Stilbildender Meisterfilm von [0|Full], spielt in den späten 1950er Jahren tief im Voodoo-Viertel von New Orleans und handelt von einem Privatdetektiv, der in eine Reihe von brutalen Morden verwickelt wird.</de>
-				<en>Style-defining masterpiece by [0|Full] set in the late 1950s deep in Orlean's voodoo district about a private investigator who becomes embroiled in a series of brutal murders.</en>
+				<en>Style-defining masterpiece by [0|Full] set in the late 1950s deep in New Orlean's voodoo district about a private investigator who becomes embroiled in a series of brutal murders.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">21cf3fe5-98dc-48a0-b84f-a31c54ba2861</member>
@@ -14028,7 +14028,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</title_original>
 			<description>
 				<de>Rock-Musical über die Flower-Power-Generation. Ein "Stamm" von New Yorker Hippies protestiert gegen Krieg, Rassismus und die Spaltung Amerikas, und stellt ein "skandalöses" Verhalten zur Schau.</de>
-				<en>Rock musical about the flower power generation. A "tribe" of New York hippies protest war, racism and the division of America, and exhibits "scandalous" behavior.</en>
+				<en>Rock musical about the flower power generation. A "tribe" of New York hippies protests war, racism and the division of America, and exhibits "scandalous" behavior.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">f3f8c75a-6f0a-4f0f-bedf-74a7ebd1ce48</member>

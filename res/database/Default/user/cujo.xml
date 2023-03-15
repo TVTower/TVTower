@@ -157,12 +157,12 @@
 		<!-- "Fifa-WM 2022 in Katar" -->
 		<news id="cujo-news-quantar-01" type="0" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
 			<title>
-				<de>Fufa vergibt heute die Fußball-WM 2022</de>
-				<en>Fufa awards the 2022 World Cup today</en>
+				<de>FUFA vergibt heute die Fußball-WM 2022</de>
+				<en>FUFA awards the 2022 World Cup today</en>
 			</title>
 			<description>
-				<de>Heute gibt die Fufa den Austragungsort der Fußball-WM 2022 bekannt. SUA, Pajan und Intralien gelten als Favoriten. Der Wüstenstaat Quantar gilt als krasser Außenseiter.</de>
-				<en>Today Fufa announces the venue for the 2022 World Cup. SUA, Pajan and Intralia are considered favorites. The desert state of Quantar is considered a glaring outsider.</en>
+				<de>Heute gibt die FUFA den Austragungsort der Fußball-WM 2022 bekannt. SUA, Pajan und Intralien gelten als Favoriten. Der Wüstenstaat Quantar gilt als krasser Außenseiter.</de>
+				<en>Today FUFA announces the venue for the 2022 World Cup. SUA, Pajan and Intralia are considered favorites. The desert state of Quantar is considered a glaring outsider.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,7,8" news="cujo-news-quantar-02" />
@@ -177,8 +177,8 @@
 				<en>Sensation - Quantar to host the 2022 World Cup</en>
 			</title>
 			<description>
-				<de>Fufa-Generalsekretär Jupp Lauber öffnet den Briefumschlag und liest den Namen des Ausrichters vor. Es ist Quantar.</de>
-				<en>Fufa Secretary General Jupp Lauber opens the envelope and reads out the name of the organizer. It is Quantar.</en>
+				<de>FUFA-Generalsekretär Jupp Lauber öffnet den Briefumschlag und liest den Namen des Ausrichters vor. Es ist Quantar.</de>
+				<en>FUFA Secretary General Jupp Lauber opens the envelope and reads out the name of the organizer. It is Quantar.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,1,13,17" news="cujo-news-quantar-03" />
@@ -187,12 +187,12 @@
 		</news>
 		<news id="cujo-news-quantar-03" type="2" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
 			<title>
-				<de>Wurde die Fufa-WM gekauft?</de>
-				<en>Was the Fufa World Cup bought?</en>
+				<de>Wurde die FUFA-WM gekauft?</de>
+				<en>Was the FUFA World Cup bought?</en>
 			</title>
 			<description>
-				<de>War bei der Vergabe der Fufa-WM Korruption im Spiel? SUA, Pajan und Intralien fühlen sich benachteiligt.</de>
-				<en>Was corruption involved in the awarding of the Fufa World Cup? SUA, Pajan and Intralia feel disadvantaged.</en>
+				<de>War bei der Vergabe der FUFA-WM Korruption im Spiel? SUA, Pajan und Intralien fühlen sich benachteiligt.</de>
+				<en>Was corruption involved in the awarding of the FUFA World Cup? SUA, Pajan and Intralia feel disadvantaged.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,14,18" news="cujo-news-quantar-04" />
@@ -205,8 +205,8 @@
 				<en>Lauber: "Award was perfectly fine."</en>
 			</title>
 			<description>
-				<de>Fufa-Generalsekretär Jupp Lauber bestreitet alle Korruptionsvorwürfe. "Bei der Fufa gibt es nur ehrliche Menschen."</de>
-				<en>Fufa Secretary General Jupp Lauber denies all allegations of corruption. "There are only honest people at Fufa."</en>
+				<de>FUFA-Generalsekretär Jupp Lauber bestreitet alle Korruptionsvorwürfe. "Bei der FUFA gibt es nur ehrliche Menschen."</de>
+				<en>FUFA Secretary General Jupp Lauber denies all allegations of corruption. "There are only honest people at FUFA."</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,15,19" news="cujo-news-quantar-05" />
@@ -219,8 +219,8 @@
 				<en>Official admits bribery</en>
 			</title>
 			<description>
-				<de>Der trunedanische Fufa-Funktionär Jeff Worner hat zugegeben, dass er für seine Stimme Geld aus Quantar kassiert hat.</de>
-				<en>Trunedan Fufa official Jeff Worner has admitted that he collected money from Quantar for his vote.</en>
+				<de>Der trunedanische FUFA-Funktionär Jeff Worner hat zugegeben, dass er für seine Stimme Geld aus Quantar kassiert hat.</de>
+				<en>Trunedan FUFA official Jeff Worner has admitted that he collected money from Quantar for his vote.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,16,20" news="cujo-news-quantar-06" />
@@ -243,8 +243,8 @@
 		</news>
 		<news id="cujo-news-quantar-07" type="2" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
 			<title>
-				<de>Weitere Korruptionsfälle bei Fufa</de>
-				<en>Further cases of corruption at Fufa</en>
+				<de>Weitere Korruptionsfälle bei FUFA</de>
+				<en>Further cases of corruption at FUFA</en>
 			</title>
 			<description>
 				<de>Auch Funktionäre aus Muategela, Praskilien, Pasnien und Gäypten haben Geld aus Quantar angenommen.</de>
@@ -261,8 +261,8 @@
 				<en>Jupp Lauber can't believe it</en>
 			</title>
 			<description>
-				<de>Jupp Lauber gibt dem Schweizer Fernsehen ein Interview: "Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche Fufa-Funktionär?"</de>
-				<en>Jupp Lauber gives an interview to Swiss television: "I would never have thought that. Am I really the only honest Fufa official?"</en>
+				<de>Jupp Lauber gibt dem Schweizer Fernsehen ein Interview: "Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche FUFA-Funktionär?"</de>
+				<en>Jupp Lauber gives an interview to Swiss television: "I would never have thought that. Am I really the only honest FUFA official?"</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.0" quality="30" />
@@ -362,8 +362,8 @@
 				<en>Successful landing of the passenger space shuttle</en>
 			</title>
 			<description>
-				<de>Die Passenger-Raumfähre ist im Kenidi Space-Center in Florida gelandet. Die sechs Astronauten und die Lehrerin stiegen wohlbehalten aus. Die NUSA bezeichnet die Mission als vollen Erfolg. Alle Ziele wurden erreicht.</de>
-				<en>The Passenger Space Shuttle has landed at the Kenidi Space Center in Florida. The six astronauts and the teacher disembark safely. NUSA calls the mission a complete success. All goals were achieved.</en>
+				<de>Die Passenger-Raumfähre ist im Kenidi Space-Center in Florida gelandet. Die sechs Astronauten und die Lehrerin stiegen wohlbehalten aus. Die NASE bezeichnet die Mission als vollen Erfolg. Alle Ziele wurden erreicht.</de>
+				<en>The Passenger Space Shuttle has landed at the Kenidi Space Center in Florida. The six astronauts and the teacher disembark safely. NASE calls the mission a complete success. All goals were achieved.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="50" />
@@ -522,11 +522,11 @@
 		<news id="cujo-news-stiftung-guetertest-01" type="0" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Kugelschreiber</de>
-				<en>Fondation goodstest tests ballpoint pens</en>
+				<en>Consumers' Association tests ballpoint pens</en>
 			</title>
 			<description>
 				<de>Die Stiftung Gütertest hat 5.748 Kugelschreiber getestet. Den besten Stift stellte die Firma Bastilo her. Erst nach einer Schreibdauer von 723 Stunden war seine Mine leer. 7 Tester wurden wegen eines Schreibkrampfes stationär behandelt.</de>
-				<en>Fondation goodstest tested 5,748 ballpoint pens. The best ballpoint pen was produced by the Bastilo company. Its refill was only empty after writing for 723 hours. 7 testers were hospitalized due to writer's cramp.</en>
+				<en>Consumers' Association tested 5,748 ballpoint pens. The best ballpoint pen was produced by the Bastilo company. Its refill was only empty after writing for 723 hours. 7 testers were hospitalized due to writer's cramp.</en>
 			</description>
 			<data genre="4" price="0.81" quality="59" />
 		</news>
@@ -534,11 +534,11 @@
 		<news id="cujo-news-stiftung-guetertest-02" type="0" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Vibratoren</de>
-				<en>Fondation goodstest tests vibrators</en>
+				<en>Consumers' Association tests vibrators</en>
 			</title>
 			<description>
 				<de>In einem großen Praxistest hat die Stiftung Gütertest 27 Vibratoren getestet. Acht Modelle wurden von den Testerinnen mit "befriedigend" bewertet.</de>
-				<en>In a major practical test, Fondation goodstest tested 27 vibrators. Eight models were rated "satisfactory" by the testers.</en>
+				<en>In a major practical test, Consumers' Association tested 27 vibrators. Eight models were rated "satisfactory" by the testers.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.82" quality="58" />
@@ -728,7 +728,7 @@
 		</news>
 	</allnews>
 	<allprogrammes>
-		<programme id="cujo-film-juco" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0057687" creator="8827" created_by="Cujo"> 
+		<programme id="cujo-film-juco" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0085382" creator="8827" created_by="Cujo">
 			<title>
 				<de>Juco</de>
 				<en>Juco</en>
@@ -738,19 +738,20 @@
 				<en>Cujo</en>
 			</title_original>
 			<description>
-				<de>Der Bernhardiner Juco wird von einer Fledermaus mit Tollwut infiziert. Er belagert Mona, die mit ihrem Sohn Ted in einem Auto Schutz sucht. Ein Horror-Klassiker von Steffen König.</de>
-				<en>St. Bernard Juco is infected with rabies by a bat. He besieges Mona, who seeks shelter in a car with her son Ted.</en>
+				<de>Ein Bernhardiner wird von einer Fledermaus mit Tollwut infiziert. Er belagert Mona, die mit ihrem Sohn Ted in einem Auto Schutz sucht. Verfilmung eines Horror-Klassikers von [3|Full].</de>
+				<en>A St. Bernard is infected with rabies by a bat. He besieges Mona, who seeks shelter in a car with her son Ted. Adaptation of a horror classic by [3|Full].</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cujo-person-louis-tiggu</member>
 				<member index="1" function="2">923edac9-ac51-46c8-89de-8631559e3a1a</member> <!-- Dee Wallace-Stone -->
 				<member index="2" function="2">cujo-person-johnny-tinpauro</member>
+				<member index="3" function="1024">9ef1f1fb-30f4-4df4-8073-87179e95c6b8</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1983" distribution="1" maingenre="12" subgenre="" flags="64" blocks="2" price_mod="0.64" />
 			<ratings critics="49" speed="60" outcome="53" />
 		</programme>
-		<programme id="cujo-film-superweib" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0088206" creator="8827" created_by="Cujo"> 
+		<programme id="cujo-film-superweib" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0088206" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superweib</de>
 				<en>Superwoman</en>
@@ -766,6 +767,9 @@
 			<staff>
 				<member index="0" function="1">cujo-person-jane-swart</member>
 				<member index="1" function="2">cujo-person-ellen-laser</member>
+				<member index="2" function="2">TheRob-TowerTV-FayRunAWay</member>
+				<member index="3" function="2">TheRob-TowerTV-PetrORuler</member>
+				<member index="4" function="2">696debc3-b32a-4f63-afdc-ce2a43edad79</member>
 			</staff>
 			<groups target_groups="130" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1984" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="2" price_mod="0.67" />
@@ -793,7 +797,7 @@
 			<data country="D" year="1984" distribution="1" maingenre="5" subgenre="2" flags="0" blocks="2" price_mod="0.85" />
 			<ratings critics="10" speed="22" outcome="42" />
 		</programme>
-			<programme id="cujo-film-verurteilte-bankier" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0111161" creator="8827" created_by="Cujo"> 
+			<programme id="cujo-film-verurteilte-bankier" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0111161" creator="8827" created_by="Cujo">
 			<title>
 				<de>Der verurteilte Bankier</de>
 				<en>The convicted banker</en>
@@ -815,7 +819,7 @@
 			<data country="USA" year="1994" distribution="1" maingenre="7" subgenre="" flags="0" blocks="3" price_mod="1.25" />
 			<ratings critics="96" speed="22" outcome="88" />
 		</programme>
-		<programme id="cujo-film-zwoelf-geschworene" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0050083" creator="8827" created_by="Cujo"> 
+		<programme id="cujo-film-zwoelf-geschworene" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0050083" creator="8827" created_by="Cujo">
 			<title>
 				<de>Der zwölfte Geschworene</de>
 				<en>The twelfth juror</en>
@@ -864,6 +868,7 @@
 			</title>
 			<title_original>
 				<de>Pappa ante Portas</de>
+				<en>Attention, Papa Arrives!</en>
 			</title_original>
 			<description>
 				<de>Friedrich Loose ist beruflich überfordert und wird in den Vorruhestand versetzt. Um sich zu beschäftigen, will er seiner Frau bei der Hausarbeit helfen und sorgt dabei für Chaos.</de>
@@ -880,15 +885,16 @@
 		</programme>
 		<programme id="cujo-film-rache-erben" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087148" creator="8827" created_by="Cujo">
 			<title>
-				<de>Titi und die Rache der Erben</de>
-				<en>Titi and the revenge of the heirs</en>
+				<de>[0|Nick] und die Rache der Erben</de>
+				<en>[0|Nick] and the revenge of the heirs</en>
 			</title>
 			<title_original>
 				<de>Didi und die Rache der Enterbten</de>
+				<en>Nonstop Trouble with the Family</en>
 			</title_original>
 			<description>
-				<de>Ein alter Bankier enterbt seine komplette Verwandschaft und setzt den Totengräber Dietmar Knödel zum Alleinerben ein. Dieter Wall vom Norden spielt sieben Rollen. Ein echter Blödelspaß.</de>
-				<en>An old banker disinherits his entire family and names the gravedigger Dietmar Knödel as his sole heir. Titi Vollerharden plays seven roles. A real goofball fun.</en>
+				<de>Ein alter Bankier enterbt seine komplette Verwandschaft und setzt den Totengräber Dietmar Knödel zum Alleinerben ein. [0|Full] spielt sieben Rollen. Ein echter Blödelspaß.</de>
+				<en>An old banker disinherits his entire family and names the gravedigger Dietmar Knödel as his sole heir. [0|Full] plays seven roles. Real goofball fun.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-DieterWallvomNorden</member>
@@ -898,13 +904,14 @@
 			<data country="D" year="1985" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.85" />
 			<ratings critics="10" speed="22" outcome="42" />
 		</programme>
-		<programme id="cujo-serien-kastanienstrasse-01-05" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-kastanienstrasse-01-05" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" fictional="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Kastanienstraße</de>
 				<en>Chestnut Street</en>
 			</title>
 			<title_original>
-				<de>Lindenstraße</de>
+				<de>Lindenstraße (Staffel 1)</de>
+				<en>Linden Street (Season 1)</en>
 			</title_original>
 			<description>
 				<de>Die Kastanienstraße zeigt das Leben mehrerer Familien in einer ganz normalen Münchener Straße.</de>
@@ -920,70 +927,91 @@
 			<data country="D" year="1985" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="0.9" />
 			<ratings critics="30" speed="27" outcome="49" />
 			<children>
-				<programme id="cujo-serien-kastanienstrasse-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Willkommen bei den Bleimers</de>
 						<en>Welcome to the Bleimers</en>
 					</title>
+					<title_original>
+						<de>Willkommen bei den Bleimers</de>
+						<en>Welcome to the Bleimers</en>
+					</title_original>
 					<description>
 						<de>Helga öffnet die Tür und begrüßt die Fernsehzuschauer.</de>
 						<en>Helga opens the door and welcomes the TV viewers.</en>
 					</description>
 					<ratings critics="30" speed="27" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Tanja und der Tennislehrer</de>
 						<en>Tanja and the tennis instructor</en>
 					</title>
+					<title_original>
+						<de>Tanja und der Tennislehrer</de>
+						<en>Tanja and the tennis instructor</en>
+					</title_original>
 					<description>
 						<de>Tanja wird vom Tennislehrer verführt. Er vermittelt ihr das richtige Ballgefühl.</de>
-						<en>Tanja is seduced by the tennis instructor. It gives her the right feel for the ball.</en>
+						<en>Tanja is seduced by the tennis instructor. He gives her the right feel for the ball.</en>
 					</description>
 					<ratings critics="30" speed="27" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Drasler sitzt im Rollstuhl</de>
 						<en>Drasler sits in a wheelchair</en>
 					</title>
+					<title_original>
+						<de>Drasler sitzt im Rollstuhl</de>
+						<en>Drasler sits in a wheelchair</en>
+					</title_original>
 					<description>
 						<de>Vasily fährt betrunken Auto und übersieht Doktor Drasler. Nach dem Unfall sitzt der Doc bis zum Rest seines Lebens im Rollstuhl.</de>
 						<en>Vasily is driving drunk and overlooks Doctor Drasler. After the accident, the doc sits in a wheelchair for the rest of his life.</en>
 					</description>
 					<ratings critics="30" speed="27" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Ein schwuler Kuss</de>
 						<en>A gay kiss</en>
 					</title>
+					<title_original>
+						<de>Ein schwuler Kuss</de>
+						<en>A gay kiss</en>
+					</title_original>
 					<description>
 						<de>Carsten und Robert küssen sich. Es ist der erste Schwulenkuss in einer TV Tower-Fernsehserie.</de>
 						<en>Carsten and Robert kiss each other. It is the first gay kiss in a TV Tower television series.</en>
 					</description>
 					<ratings critics="30" speed="27" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Der mexikanische Adoptivjunge</de>
-						<en>A gay kiss</en>
+						<en>The adopted Mexican boy</en>
 					</title>
+					<title_original>
+						<de>Der mexikanische Adoptivjunge</de>
+						<en>The adopted Mexican boy</en>
+					</title_original>
 					<description>
 						<de>Gotthold und Britta adoptieren einen mexikanischen Adoptivjungen. Manolo hat große Schwierigkeiten mit der Mentalität der Deutschen. Die Menschen in der Kastanienstraße sind ganz anders als die Mexikaner.</de>
-						<en>Gotthold and Britta adopt a Mexican adopted boy. Manolo has great difficulty with the mentality of the Germans. The people on Kastanienstrasse are very different from the Mexicans.</en>
+						<en>Gotthold and Britta adopt a Mexican boy. Manolo has great difficulty with the mentality of the Germans. The people on Kastanienstrasse are very different from the Mexicans.</en>
 					</description>
 					<ratings critics="30" speed="27" />
 				</programme>
 			</children>
 		</programme>
-		<programme id="cujo-serien-kastanienstrasse-06-10" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-kastanienstrasse-06-10" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" fictional="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Kastanienstraße: Eine schicksalhafte Zeit</de>
 				<en>Chestnut Street: A fateful time</en>
 			</title>
 			<title_original>
-				<de>Lindenstraße II</de>
+				<de>Lindenstraße: Eine schicksalhafte Zeit</de>
+				<en>Linden Street: A fateful time</en>
 			</title_original>
 			<description>
 				<de>Die Menschen in der Kastanienstraße müssen schwere Krisen meistern. Sie halten aber zusammen und bestehen diese schicksalhafte Zeit gemeinsam.</de>
@@ -999,55 +1027,75 @@
 			<data country="D" year="1997" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="0.95" />
 			<ratings critics="40" speed="32" outcome="39" />
 			<children>
-				<programme id="cujo-serien-kastanienstrasse-06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-06" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Lisa schlägt mit der Pfanne zu</de>
 						<en>Lisa strikes with the pan</en>
 					</title>
+					<title_original>
+						<de>Lisa schlägt mit der Pfanne zu</de>
+						<en>Lisa strikes with the pan</en>
+					</title_original>
 					<description>
 						<de>Lisa schlägt dem Priester mit der Pfanne auf den Kopf. War es Mord, Totschlag oder Notwehr?</de>
 						<en>Lisa hits the priest on the head with the pan. Was it murder, manslaughter or self-defense?</en>
 					</description>
 					<ratings critics="40" speed="32" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-07" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-07" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Anna schubst Dobelbein</de>
 						<en>Anna pushes Dobelbein</en>
 					</title>
+					<title_original>
+						<de>Anna schubst Dobelbein</de>
+						<en>Anna pushes Dobelbein</en>
+					</title_original>
 					<description>
 						<de>Anna wird von Dobelbein bedrängt. Um sich zu retten, schubst sie ihn die Treppe runter.</de>
 						<en>Anna is being harassed by Dobelbein. To save herself, she pushes him down the stairs.</en>
 					</description>
 					<ratings critics="40" speed="32" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-08" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-08" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Else: "Sodom und Gomorra"</de>
 						<en>Else: "Sodom and Gomorrah"</en>
 					</title>
+					<title_original>
+						<de>Else: "Sodom und Gomorra"</de>
+						<en>Else: "Sodom and Gomorrah"</en>
+					</title_original>
 					<description>
 						<de>Else ist mit dem Lebensstil der Nachbarn nicht einverstanden. Für sie herrscht in der Kastanienstraße "Sodom und Gomorra".</de>
 						<en>Else does not agree with the lifestyle of the neighbors. For her, "Sodom and Gomerrah" reigns in Chestnut Street.</en>
 					</description>
 					<ratings critics="40" speed="32" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-09" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-09" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Olafs Attentat</de>
 						<en>Olaf's assassination</en>
 					</title>
+					<title_original>
+						<de>Olafs Attentat</de>
+						<en>Olaf's assassination</en>
+					</title_original>
 					<description>
 						<de>Olaf fühlt sich von allen verraten. Er besorgt sich ein Gewehr und schießt auf die Hochzeitsgäste.</de>
 						<en>Olaf feels betrayed by everyone. He gets a rifle and shoots at the wedding guests.</en>
 					</description>
 					<ratings critics="40" speed="32" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-10" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-10" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Ines liegt im Koma</de>
 						<en>Ines is in a coma</en>
 					</title>
+					<title_original>
+						<de>Ines liegt im Koma</de>
+						<en>Ines is in a coma</en>
+					</title_original>
 					<description>
 						<de>Ines wird von Olaf verfolgt und stürzt die Treppe runter. Sie verletzt sich dabei schwer und liegt mehrere Monate im Koma.</de>
 						<en>Ines is chased by Olaf and falls down the stairs. She is seriously injured and lies in a coma for several months.</en>
@@ -1056,13 +1104,14 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="cujo-serien-kastanienstrasse-11-15" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-kastanienstrasse-11-15" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0088554" fictional="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Best of Kastanienstraße</de>
 				<en>Best of Chestnut Street</en>
 			</title>
 			<title_original>
-				<de>Lindenstraße III</de>
+				<de>Best of Lindenstraße</de>
+				<en>Best of Linden Street</en>
 			</title_original>
 			<description>
 				<de>Liebe, Hochzeit, Streit, Scheidung, Hass und Tod. Das alles und noch viel mehr bieten die besten Folgen der Kastanienstraße.</de>
@@ -1078,55 +1127,75 @@
 			<data country="D" year="2009" distribution="2" maingenre="9" subgenre="" flags="" blocks="1" price_mod="1" />
 			<ratings critics="50" speed="37" outcome="29" />
 			<children>
-				<programme id="cujo-serien-kastanienstrasse-11" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-11" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Mary holt die Geflügelschere raus</de>
 						<en>Mary gets out the poultry shears</en>
 					</title>
+					<title_original>
+						<de>Mary holt die Geflügelschere raus</de>
+						<en>Mary gets out the poultry shears</en>
+					</title_original>
 					<description>
 						<de>Mary will sich vor einer Vergewaltigung schützen und schneidet mit einer Geflügelschere Olafs bestes Stück ab.</de>
 						<en>Mary wants to protect herself from rape and cuts off Olaf's best piece with a pair of poultry shears.</en>
 					</description>
 					<ratings critics="50" speed="37" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-12" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-12" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Tiffi kennt den Vater nicht</de>
 						<en>Tiffi does not know the father</en>
 					</title>
+					<title_original>
+						<de>Tiffi kennt den Vater nicht</de>
+						<en>Tiffi does not know the father</en>
+					</title_original>
 					<description>
 						<de>Tiffi hat Jens mit ihrem Ex-Lover Dodo betrogen. Nach der Geburt von Anita weiß sie nicht, wer von beiden der Vater ist.</de>
 						<en>Tiffi has cheated on Jens with her ex-lover Dodo. After the birth of Anita she does not know which of the two is the father.</en>
 					</description>
 					<ratings critics="50" speed="37" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-13" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-13" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Willi zündet die Handgranate</de>
 						<en>Willi ignites the hand grenade</en>
 					</title>
+					<title_original>
+						<de>Willi zündet die Handgranate</de>
+						<en>Willi ignites the hand grenade</en>
+					</title_original>
 					<description>
 						<de>Willi hat sich im Darknet einige Handgranaten gekauft. Beim Herumspielen damit zündet er eine davon.</de>
 						<en>Willi has bought some hand grenades on the darknet. While playing around with them, he detonates one of them.</en>
 					</description>
 					<ratings critics="50" speed="37" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-14" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-14" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Doktor Drasler stirbt</de>
 						<en>Doctor Drasler dies</en>
 					</title>
+					<title_original>
+						<de>Doktor Drasler stirbt</de>
+						<en>Doctor Drasler dies</en>
+					</title_original>
 					<description>
 						<de>Als beim Anhören einer Oper ein falscher Ton gespielt wird, erleidet Doktor Drasler einen Herzinfarkt. Drei Tage später wird er zusammen mit seinem Rollstuhl begraben.</de>
 						<en>When a wrong note is played while listening to an opera, Doctor Drasler suffers a heart attack. Three days later he is buried together with his wheelchair.</en>
 					</description>
 					<ratings critics="50" speed="37" />
 				</programme>
-				<programme id="cujo-serien-kastanienstrasse-15" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-kastanienstrasse-15" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Helga erinnert sich</de>
 						<en>Mary gets out the poultry shears</en>
 					</title>
+					<title_original>
+						<de>Helga erinnert sich</de>
+						<en>Mary gets out the poultry shears</en>
+					</title_original>
 					<description>
 						<de>Helga feiert ihren 70. Geburtstag im Restaurant Sakiraris. Nach dem Ende der Feierlichkeiten erinnert sie sich daran, was sie alles in der Kastanienstraße erlebt hat.</de>
 						<en>Helga celebrates her 70th birthday at Sakiraris Restaurant. After the festivities are over, she remembers everything she experienced on Chestnut Street.</en>
@@ -1135,7 +1204,7 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="cujo-serien-large-detonation" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0898266" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-large-detonation" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0898266" fictional="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>The Large Detonation Theory</de>
 				<en>The Large Detonation Theory</en>
@@ -1154,80 +1223,108 @@
 				<member index="3" function="2">cujo-person-kelly-kukoko</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2007" distribution="2" maingenre="5" subgenre="" flags="256" blocks="1" price_mod="1" />
+			<data country="USA" year="2007" distribution="2" maingenre="5" subgenre="" flags="" blocks="1" price_mod="1" />
 			<ratings critics="30" speed="67" outcome="73" />
 			<children>
-				<programme id="cujo-serien-large-detonation-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Ponny zieht ein</de>
 						<en>Ponny moves in</en>
 					</title>
+					<title_original>
+						<de>Ponny zieht ein</de>
+						<en>Ponny moves in</en>
+					</title_original>
 					<description>
 						<de>Ponny zieht in die Wohnung gegenüber ein. Sie ist nicht so intelligent wie Nelson und Lennart, verfügt aber über einen gesunden Menschenverstand.</de>
 						<en>Ponny moves into the apartment across the street. She is not as intelligent as Nelson and Lennart, but has common sense.</en>
 					</description>
 					<ratings critics="30" speed="67" />
 				</programme>
-				<programme id="cujo-serien-large-detonation-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Der defekte Fahrstuhl</de>
 						<en>The broken elevator</en>
 					</title>
+					<title_original>
+						<de>Der defekte Fahrstuhl</de>
+						<en>The broken elevator</en>
+					</title_original>
 					<description>
 						<de>Lennart stellt einen Behälter mit einer gefährlichen Chemikalie im Aufzug ab. Dieser explodiert und zerstört dadurch den Fahrstuhl.</de>
 						<en>Lennart puts a container with a dangerous chemical in the elevator. It explodes and destroys the elevator.</en>
 					</description>
 					<ratings critics="30" speed="67" />
 				</programme>
-				<programme id="cujo-serien-large-detonation-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Spaß mit Fahnen</de>
 						<en>Fun with flags</en>
 					</title>
+					<title_original>
+						<de>Spaß mit Fahnen</de>
+						<en>Fun with flags</en>
+					</title_original>
 					<description>
-						<de>Nelson und Emmi moderieren gemeinsam für ihren Video-Kanal die Sendung "Spaß mit Fahnen".´</de>
+						<de>Nelson und Emmi moderieren gemeinsam für ihren Video-Kanal die Sendung "Spaß mit Fahnen".</de>
 						<en>Nelson and Emmi co-host the show "Fun with Flags" for their video channel.</en>
 					</description>
 					<ratings critics="30" speed="67" />
 				</programme>
-				<programme id="cujo-serien-large-detonation-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Nelson trifft Professor Atom</de>
 						<en>Nelson meets Professor Atom</en>
 					</title>
+					<title_original>
+						<de>Nelson trifft Professor Atom</de>
+						<en>Nelson meets Professor Atom</en>
+					</title_original>
 					<description>
 						<de>Nelson liebte in seiner Kindheit die Wissenschaftssendung von Professor Atom. Auf einer Party lernt er ihn kennen und outet sich als großer Fan seiner Sendung.</de>
 						<en>Nelson loved Professor Atom's science show when he was a kid. He meets him at a party and reveals himself to be a big fan of his show.</en>
 					</description>
 					<ratings critics="30" speed="67" />
 				</programme>
-				<programme id="cujo-serien-large-detonation-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Das Date mit Ponny</de>
 						<en>The date with Ponny</en>
 					</title>
+					<title_original>
+						<de>Das Date mit Ponny</de>
+						<en>The date with Ponny</en>
+					</title_original>
 					<description>
 						<de>Lennert und Ponny gehen zusammen essen. Ponny wartet zuerst auf ihre gemeinsamen Freunde. Erst später realisiert sie, dass es sich bei dem Restaurantbesuch um ein Date mit Lennert gehandelt hat.</de>
 						<en>Lennert and Ponny go out to eat together. Ponny first waits for her mutual friends. Only later does she realize that the restaurant visit was a date with Lennert.</en>
 					</description>
 					<ratings critics="30" speed="67" />
 				</programme>
-				<programme id="cujo-serien-large-detonation-06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-06" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Howie im Weltall</de>
 						<en>Howie in space</en>
 					</title>
+					<title_original>
+						<de>Howie im Weltall</de>
+						<en>Howie in space</en>
+					</title_original>
 					<description>
 						<de>Howie hat eine Weltraumtoilette für eine Raumstation entwickelt. Gemeinsam mit anderen Astronauten fliegt er dorthin und wird von ihnen geärgert.</de>
 						<en>Howie has developed a space toilet for a space station. Together with other astronauts he flies there and is annoyed by them.</en>
 					</description>
 					<ratings critics="30" speed="67" />
 				</programme>
-				<programme id="cujo-serien-large-detonation-07" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-large-detonation-07" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Der Comicbuchladen</de>
 						<en>The comic book store</en>
 					</title>
+					<title_original>
+						<de>Der Comicbuchladen</de>
+						<en>The comic book store</en>
+					</title_original>
 					<description>
 						<de>Stu betreibt einen Comicbuchladen. Nelson, Lennert und ihre Freunde sind dort Stammgäste.</de>
 						<en>Stu runs a comic book store. Nelson, Lennert and their friends are regulars there.</en>
@@ -1236,17 +1333,18 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="cujo-serien-best-torilo" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0329874" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-best-torilo" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0329874" fictional="0" creator="8827" created_by="Cujo">
 			<title>
-				<de>Best of Torilo</de>
-				<en>Best of Torilo</en>
+				<de>Best of [0|Nick]</de>
+				<en>Best of [0|Nick]</en>
 			</title>
 			<title_original>
-				<de>Loriot</de>
+				<de>Best of Loriot</de>
+				<en>Best of Loriot</en>
 			</title_original>
 			<description>
-				<de>Die besten Sketche und Zeichentrickfilme mit Torilo. Zum Totlachen.</de>
-				<en>The best sketches and cartoons with Torilo. Hilarious.</en>
+				<de>Die besten Sketche und Zeichentrickfilme mit [0|Nick]. Zum Totlachen.</de>
+				<en>The best sketches and cartoons with [0|Nick]. Hilarious.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cujo-person-torilo</member>
@@ -1257,55 +1355,75 @@
 			<data country="D" year="1976" distribution="2" maingenre="5" subgenre="" flags="8" blocks="1" price_mod="0.88" />
 			<ratings critics="22" speed="25" outcome="89" />
 			<children>
-				<programme id="cujo-serien-best-torilo-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-best-torilo-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Ernst Buchemann gewinnt im Lotto</de>
 						<en>Ernst Buchemann wins the lottery</en>
 					</title>
+					<title_original>
+						<de>Ernst Buchemann gewinnt im Lotto</de>
+						<en>Ernst Buchemann wins the lottery</en>
+					</title_original>
 					<description>
 						<de>Ernst Buchemann ist Rentner und 65 Jahre alt. Mit seinem Lottogewinn von 600.000 DM will er eine Damenboutique in Wiesbaden eröffnen.</de>
 						<en>Ernst Buchemann is a pensioner and 65 years old. He wants to use his lottery winnings of DM 600,000 to open a ladies' boutique in Wiesbaden.</en>
 					</description>
 					<ratings critics="22" speed="25" />
 				</programme>
-				<programme id="cujo-serien-best-torilo-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-best-torilo-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Die Felsenlaus</de>
 						<en>The rock louse</en>
 					</title>
+					<title_original>
+						<de>Die Felsenlaus</de>
+						<en>The rock louse</en>
+					</title_original>
 					<description>
 						<de>Die Felsenlaus ist ein Nagetier, das Brücken zum Einsturz bringen kann. Jedes Exemplar frisst pro Tag 25 Kilogramm Beton und Ziegelsteine.</de>
 						<en>The rock louse is a rodent that can cause bridges to collapse. Each specimen eats 25 kilograms of concrete and bricks per day.</en>
 					</description>
 					<ratings critics="22" speed="25" />
 				</programme>
-				<programme id="cujo-serien-best-torilo-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-best-torilo-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Das Bild hängt schief</de>
 						<en>The picture is crooked</en>
 					</title>
+					<title_original>
+						<de>Das Bild hängt schief</de>
+						<en>The picture is crooked</en>
+					</title_original>
 					<description>
 						<de>Ein Freund des Hauses kommt zu Besuch. Das Dienstmädchen lässt ihn ein und sagt, er soll im Salon warten. Als er dort ein schiefes Bild gerade rücken will, zerstört er die Einrichtung.</de>
 						<en>A friend of the house comes to visit. The maid lets him in and tells him to wait in the parlor. When he tries to straighten a crooked picture there, he destroys the furnishings.</en>
 					</description>
 					<ratings critics="22" speed="25" />
 				</programme>
-				<programme id="cujo-serien-best-torilo-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-best-torilo-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Das Reiskorn</de>
 						<en>The grain of rice</en>
 					</title>
+					<title_original>
+						<de>Das Reiskorn</de>
+						<en>The grain of rice</en>
+					</title_original>
 					<description>
 						<de>Bei einem Rendezvous entdeckt Hannelore ein Reiskorn am Mund ihres Verehrers. Trotz mehreren Versuchen es zu entfernen, taucht es immer wieder auf.</de>
 						<en>On a date, Hannelore discovers a grain of rice on her beau's mouth. Despite several attempts to remove it, it keeps reappearing.</en>
 					</description>
 					<ratings critics="22" speed="25" />
 				</programme>
-				<programme id="cujo-serien-best-torilo-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-best-torilo-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Das Gummientchen</de>
 						<en>The rubber ducky</en>
 					</title>
+					<title_original>
+						<de>Das Gummientchen</de>
+						<en>The rubber ducky</en>
+					</title_original>
 					<description>
 						<de>Meier-Schüdenleidt will in seinem Hotelzimmer baden. In seiner Badewanne sitzt aber bereits Doktor Blögner mit seinem Gummientchen.</de>
 						<en>Meier-Schüdenleidt wants to take a bath in his hotel room. But Doctor Blögner is already sitting in his bathtub with his rubber ducky.</en>
@@ -1314,17 +1432,18 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="cujo-serien-tigerzahn" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0135097" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-tigerzahn" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0135097" fictional="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Tigerzahn</de>
 				<en>Tiger Tooth</en>
 			</title>
 			<title_original>
 				<de>Löwenzahn</de>
+				<en>Dandelion</en>
 			</title_original>
 			<description>
-				<de>Paul Witzig wohnt in dem kleinen Städtchen Löwendorf. Er trägt eine Nickelbrille und eine Latzhose. Paul beobachtet interessiert die Natur und Umwelt rund um seinen Bauwagen.</de>
-				<en>Paul Witzig lives in the small town of Löwendorf. He wears nickel glasses and dungarees. Paul observes nature and the environment around his construction trailer with interest.</en>
+				<de>[1|Full] wohnt in dem kleinen Städtchen Löwendorf. Er trägt eine Nickelbrille und eine Latzhose. [1|First] beobachtet interessiert die Natur und Umwelt rund um seinen Bauwagen.</de>
+				<en>[1|Full] lives in the small town of Löwendorf. He wears nickel glasses and dungarees. [1|First] observes nature and the environment around his construction trailer with interest.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cujo-person-karl-lora</member>
@@ -1335,53 +1454,69 @@
 			<data country="D" year="1981" distribution="2" maingenre="9" subgenre="" flags="264" blocks="1" price_mod="0.71" />
 			<ratings critics="64" speed="21" outcome="83" />
 			<children>
-				<programme id="cujo-serien-tigerzahn-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-tigerzahn-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
-						<de>Paul rettet einen Käfer</de>
-						<en>Paul rescues a beetle</en>
+						<de>[1|First] rettet einen Käfer</de>
+						<en>[1|First] rescues a beetle</en>
 					</title>
+					<title_original>
+						<de>[1|First] rettet einen Käfer</de>
+						<en>[1|First] rescues a beetle</en>
+					</title_original>
 					<description>
-						<de>Pauls Nachbar Kuschalke tritt auf einen Hirschkäfer. Paul kümmert sich um das verletzte Insekt und päppelt es wieder auf.</de>
-						<en>Paul's neighbor Kuschalke steps on a stag beetle. Paul takes care of the injured insect and nurses it back to health.</en>
+						<de>[1|First] Nachbar Kuschalke tritt auf einen Hirschkäfer. [1|First] kümmert sich um das verletzte Insekt und päppelt es wieder auf.</de>
+						<en>[1|First]'s neighbor Kuschalke steps on a stag beetle. [1|First] takes care of the injured insect and nurses it back to health.</en>
 					</description>
 					<ratings critics="64" speed="21" />
 				</programme>
-				<programme id="cujo-serien-tigerzahn-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-tigerzahn-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
-						<de>Paul macht seine Butter selbst</de>
-						<en>Paul makes his own butter</en>
+						<de>[1|First] macht seine Butter selbst</de>
+						<en>[1|First] makes his own butter</en>
 					</title>
+					<title_original>
+						<de>[1|First] macht seine Butter selbst</de>
+						<en>[1|First] makes his own butter</en>
+					</title_original>
 					<description>
-						<de>Der Löwendorfer Supermarkt hat wegen eines Stromausfalls geschlossen. Für Paul kein Problem. Er stellt die Butter für seine Brote einfach selbst her.</de>
-						<en>The Löwendorf supermarket is closed due to a power outage. No problem for Paul. He simply makes the butter for his bread himself.</en>
+						<de>Der Löwendorfer Supermarkt hat wegen eines Stromausfalls geschlossen. Für [1|First] kein Problem. Er stellt die Butter für seine Brote einfach selbst her.</de>
+						<en>The Löwendorf supermarket is closed due to a power outage. No problem for [1|First]. He simply makes the butter for his bread himself.</en>
 					</description>
 					<ratings critics="64" speed="21" />
 				</programme>
-				<programme id="cujo-serien-tigerzahn-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-tigerzahn-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
-						<de>Paul baut sich einen Roboter</de>
-						<en>Paul builds himself a robot</en>
+						<de>[1|First] baut sich einen Roboter</de>
+						<en>[1|First] builds his own robot</en>
 					</title>
+					<title_original>
+						<de>[1|First] baut sich einen Roboter</de>
+						<en>[1|First] builds his own robot</en>
+					</title_original>
 					<description>
-						<de>Paul ist das ständige Putzen leid. Er baut sich einen Roboter, der ihn bei der Hausarbeit unterstützen soll.</de>
-						<en>Paul is tired of cleaning all the time. He builds a robot to help him with the housework.</en>
+						<de>[1|First] ist das ständige Putzen leid. Er baut sich einen Roboter, der ihn bei der Hausarbeit unterstützen soll.</de>
+						<en>[1|First] is tired of cleaning all the time. He builds a robot to help him with the housework.</en>
 					</description>
 					<ratings critics="64" speed="21" />
 				</programme>
-				<programme id="cujo-serien-tigerzahn-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-tigerzahn-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
-						<de>Paul gräbt was aus</de>
-						<en>Paul digs up something</en>
+						<de>[1|First] gräbt was aus</de>
+						<en>[1|First] digs up something</en>
 					</title>
+					<title_original>
+						<de>[1|First] gräbt was aus</de>
+						<en>[1|First] digs up something</en>
+					</title_original>
 					<description>
-						<de>Paul findet im Garten einen Knochen. Stammt der etwa von einem Dinosaurier? Er lässt ihn im Museum untersuchen und erfährt dort viel über Archäologie.</de>
-						<en>Paul finds a bone in the garden. Does it come from a dinosaur? He has it examined at the museum and learns a lot about archaeology.</en>
+						<de>[1|First] findet im Garten einen Knochen. Stammt der etwa von einem Dinosaurier? Er lässt ihn im Museum untersuchen und erfährt dort viel über Archäologie.</de>
+						<en>[1|First] finds a bone in the garden. Does it come from a dinosaur? He has it examined at the museum and learns a lot about archaeology.</en>
 					</description>
 					<ratings critics="64" speed="21" />
 				</programme>
 			</children>
 		</programme>
-		<programme id="cujo-serien-spass-malen" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0383795" creator="8827" created_by="Cujo">
+		<programme id="cujo-serien-spass-malen" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0383795" fictional="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Spaß am Malen</de>
 				<en>Fun painting</en>
@@ -1391,8 +1526,8 @@
 				<en>The Joy of Painting</en>
 			</title_original>
 			<description>
-				<de>Ross Blob malt ein Bild und erklärt mit sanfter Stimme, wie die Zuschauer den Pinsel halten sollen.</de>
-				<en>Ross Blob paints a picture and explains in a gentle voice how the audience should hold the brush.</en>
+				<de>[0|Full] malt ein Bild und erklärt mit sanfter Stimme, wie die Zuschauer den Pinsel halten sollen.</de>
+				<en>[0|Full] paints a picture and explains in a gentle voice how the audience should hold the brush.</en>
 			</description>
 			<staff>
 				<member index="0" function="8">cujo-person-ross-blob</member>
@@ -1401,65 +1536,85 @@
 			<data country="USA" year="1983" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.25" />
 			<ratings critics="29" speed="3" outcome="42" />
 			<children>
-				<programme id="cujo-serien-spass-malen-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-spass-malen-01" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Wasserfall in den Bergen</de>
 						<en>Waterfall in the mountains</en>
 					</title>
+					<title_original>
+						<de>Wasserfall in den Bergen</de>
+						<en>Waterfall in the mountains</en>
+					</title_original>
 					<description>
-						<de>Ross Blob malt einen Wasserfall in den Bergen und zeigt, wie die Wassertropfen zum Glitzern gebracht werden können.</de>
-						<en>Ross Blob paints a waterfall in the mountains and shows how to make the water droplets sparkle.</en>
+						<de>[0|Full] malt einen Wasserfall in den Bergen und zeigt, wie die Wassertropfen zum Glitzern gebracht werden können.</de>
+						<en>[0|Full] paints a waterfall in the mountains and shows how to make the water droplets sparkle.</en>
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
-				<programme id="cujo-serien-spass-malen-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-spass-malen-02" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Ein Sonnenuntergang am Meer</de>
 						<en>A sunset by the sea</en>
 					</title>
+					<title_original>
+						<de>Ein Sonnenuntergang am Meer</de>
+						<en>A sunset by the sea</en>
+					</title_original>
 					<description>
-						<de>Ross Blob malt einen orange-leuchtenden Sonnenuntergang und motiviert damit die Zuschauer zum Selbermalen.</de>
-						<en>Ross Blob paints an orange-glowing sunset, motivating the audience to paint it themselves.</en>
+						<de>[0|Full] malt einen orange-leuchtenden Sonnenuntergang und motiviert damit die Zuschauer zum Selbermalen.</de>
+						<en>[0|Full] paints an orange-glowing sunset, motivating the audience to paint it themselves.</en>
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
-				<programme id="cujo-serien-spass-malen-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-spass-malen-03" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Die Windmühle</de>
 						<en>The windmill</en>
 					</title>
+					<title_original>
+						<de>Die Windmühle</de>
+						<en>The windmill</en>
+					</title_original>
 					<description>
-						<de>Ross Blob malt eine Windmühle vor einem Weizenfeld und erklärt den Zuschauern, wie einfach es ist die Getreideähren zu malen.</de>
-						<en>Ross Blob paints a windmill in front of a wheat field and explains to the audience how easy it is to paint the ears of grain.</en>
+						<de>[0|Full] malt eine Windmühle vor einem Weizenfeld und erklärt den Zuschauern, wie einfach es ist die Getreideähren zu malen.</de>
+						<en>[0|Full] paints a windmill in front of a wheat field and explains to the audience how easy it is to paint the ears of grain.</en>
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
-				<programme id="cujo-serien-spass-malen-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-spass-malen-04" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Dunkle Wolken am Himmel</de>
 						<en>Dark clouds in the sky</en>
 					</title>
+					<title_original>
+						<de>Dunkle Wolken am Himmel</de>
+						<en>Dark clouds in the sky</en>
+					</title_original>
 					<description>
-						<de>Blob Ross malt dunkle Wolken an einem Himmel und gibt den Zuschauern Tipps, wie sie ein Gewitter malen können.</de>
-						<en>Blob Ross paints dark clouds in a sky and gives viewers tips on how to paint a thunderstorm.</en>
+						<de>[0|Full] malt dunkle Wolken an einem Himmel und gibt den Zuschauern Tipps, wie sie ein Gewitter malen können.</de>
+						<en>[0|Full] paints dark clouds in a sky and gives viewers tips on how to paint a thunderstorm.</en>
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
-				<programme id="cujo-serien-spass-malen-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8827" created_by="Cujo">
+				<programme id="cujo-serien-spass-malen-05" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Sonnenblumen am Wegesrand</de>
 						<en>Sunflowers by the wayside</en>
 					</title>
+					<title_original>
+						<de>Sonnenblumen am Wegesrand</de>
+						<en>Sunflowers by the wayside</en>
+					</title_original>
 					<description>
-						<de>Blob Ross malt drei Sonnenblumen am Wegesrand und zeigt das richtige Malen des Schattenwurfs.</de>
-						<en>Blob Ross paints three sunflowers by the wayside and demonstrates how to properly paint the shadow cast.</en>
+						<de>[0|Full] malt drei Sonnenblumen am Wegesrand und zeigt das richtige Malen des Schattenwurfs.</de>
+						<en>[0|Full] paints three sunflowers by the wayside and demonstrates how to properly paint the shadow cast.</en>
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
 			</children>
 		</programme>
 		<!-- Doppelpass -->
-		<programme id="cujo-show-doppeltspass" product="3" licence_type="1" tmdb_id="0" imdb_id="tt0435952" creator="8827" created_by="Cujo">
+		<programme id="cujo-show-doppeltspass" product="3" licence_type="1" tmdb_id="0" imdb_id="tt0435952" creator="8827" created_by="Cujo" comment="TODO: It's a series. Create more episodes?">
 			<title>
 				<de>Doppeltspaß</de>
 				<en>Double fun</en>
@@ -1468,8 +1623,8 @@
 				<de>Doppelpass</de>
 			</title_original>
 			<description>
-				<de>Fabian Knötlich diskutiert mit den Experten Steffen Neffenzwerg und Marco Passler über fragwürdige Schiedsrichterentscheidungen.</de>
-				<en>Fabian Knötlich discusses questionable referee decisions with experts Steffen Neffenzwerg and Marco Passler.</en>
+				<de>[0|Full] diskutiert mit den Experten Steffen Neffenzwerg und Marco Passler über fragwürdige Schiedsrichterentscheidungen.</de>
+				<en>[0|Full] Knötlich discusses questionable referee decisions with experts Steffen Neffenzwerg and Marco Passler.</en>
 			</description>
 			<staff>
 				<member index="0" function="8">cujo-person-fabian-knoetlich</member>
