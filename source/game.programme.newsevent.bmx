@@ -1188,7 +1188,9 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 					GetNewsEventCollection()._InvalidateCaches()
 				EndIf
 			Next
-			
+
+			'prevent undoing enablement immediately
+			setFlag(TGameModifierBase.FLAG_PERMANENT)
 			Return True
 		Else
 			Local newsEvent:TNewsEvent = GetNewsEvent()
@@ -1201,6 +1203,8 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 				'refresh caches
 				GetNewsEventCollection()._InvalidateCaches()
 
+				'prevent undoing enablement immediately
+				setFlag(TGameModifierBase.FLAG_PERMANENT)
 				Return True
 			EndIf
 		EndIf
