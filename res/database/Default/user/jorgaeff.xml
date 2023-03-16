@@ -273,7 +273,6 @@
 		</news>
 
 		<news id="news-jorgaeff-1987-0-UdSSR-01b" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Michailow, Markus Trust">
-			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Michailow entlässt Minister</de>
 				<en>Michailow dismisses minister</en>
@@ -290,7 +289,6 @@
 		</news>
 
 		<news id="news-jorgaeff-1987-0-UdSSR-01c" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Weitere Entlassungen in Moskau</de>
 				<en>Further dismissals in Moscow</en>
@@ -300,6 +298,9 @@
 				<en>CPUSS Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,5,6,18,22" news="cujo-news-roter-platz-07" />
+			</effects>
 		</news>
 
 		<news id="news-jorgaeff-1985-0-USA-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2577,8 +2578,7 @@
 		</news>
 
 		<!-- triggers other thread...-->
-		<news id="news-jorgaeff-1987-4-UdSSR-01a" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1987" />
+		<news id="news-jorgaeff-1987-4-UdSSR-01a" type="0" creator="8936" created_by="jorgaeff" comment="TODO: available set to 0 for now because of duplicate cujo-news-roter-platz">
 			<title>
 				<de>Pilot landet auf Rotem Platz in Moskau</de>
 				<en>Pilot lands on Red Square in Moscow</en>
@@ -2587,7 +2587,7 @@
 				<de>Der deutsche Pilot Markus Trust ist mit seiner Schessnah auf dem Roten Platz in Moskau gelandet.</de>
 				<en>The German pilot Markus Trust has landed with his Schessnah on the Red Square in Moscow.</en>
 			</description>
-			<data genre="4" price="0.8" quality="80" fictional="0" flags="2" />
+			<data genre="4" price="0.8" quality="80" fictional="0" flags="2" available="0" />
 			<effects>
 				<!-- "in 1 Tagen 10-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01b" />

@@ -280,7 +280,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,11" news="cujo-news-passenger-02" />
 			</effects>
-			<data genre="4" price="1.0" quality="40" flags="2"/>
+			<data genre="4" price="1.0" quality="40" flags="2" available="0" />
 			<availability year_range_from="1986" year_range_to="1987" />
 		</news>
 		<news id="cujo-news-passenger-02" type="2" thread_id="cujo-news-passenger" creator="8827" created_by="Cujo">
@@ -396,6 +396,7 @@
 			<data genre="4" price="0.55" quality="10" flags="2"/>
 		</news>
 		<news id="cujo-news-roter-platz-02" type="2" thread_id="cujo-news-roter-platz" creator="8827" created_by="Cujo">
+			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Schessnah 127 auf Rotem Platz in Moskau gelandet</de>
 				<en>Schessnah 127 landed on Red Square in Moscow</en>
@@ -461,7 +462,7 @@
 				<en>Markus Trust, who embarrassed the Russian Air Force a few days ago with his Schessnah landing on Moscow's Red Square, was sentenced by a judge to 5 years in a labor camp for serious hooliganism.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" time="2,5,6,18,22" news="cujo-news-roter-platz-07" />
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01b" />
 			</effects>
 			<data genre="4" price="0.85" quality="65" />
 		</news>
@@ -1464,7 +1465,7 @@
 						<en>[1|First] rescues a beetle</en>
 					</title_original>
 					<description>
-						<de>[1|First] Nachbar Kuschalke tritt auf einen Hirschkäfer. [1|First] kümmert sich um das verletzte Insekt und päppelt es wieder auf.</de>
+						<de>[1|First]s Nachbar Kuschalke tritt auf einen Hirschkäfer. [1|First] kümmert sich um das verletzte Insekt und päppelt es wieder auf.</de>
 						<en>[1|First]'s neighbor Kuschalke steps on a stag beetle. [1|First] takes care of the injured insect and nurses it back to health.</en>
 					</description>
 					<ratings critics="64" speed="21" />
@@ -1614,13 +1615,14 @@
 			</children>
 		</programme>
 		<!-- Doppelpass -->
-		<programme id="cujo-show-doppeltspass" product="3" licence_type="1" tmdb_id="0" imdb_id="tt0435952" creator="8827" created_by="Cujo" comment="TODO: It's a series. Create more episodes?">
+		<programme id="cujo-show-doppeltspass" product="3" licence_type="1" tmdb_id="0" imdb_id="tt0435952" creator="8827" created_by="Cujo" comment="TODO: It's a series. Create more episodes? Or make it a script?">
 			<title>
 				<de>Doppeltspaß</de>
 				<en>Double fun</en>
 			</title>
 			<title_original>
 				<de>Doppelpass</de>
+				<en>One-Two</en>
 			</title_original>
 			<description>
 				<de>[0|Full] diskutiert mit den Experten Steffen Neffenzwerg und Marco Passler über fragwürdige Schiedsrichterentscheidungen.</de>
