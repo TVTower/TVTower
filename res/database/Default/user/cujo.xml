@@ -269,6 +269,7 @@
 		</news>
 		<!-- "Challenger-Unglück" -->
 		<news id="cujo-news-passenger-01" type="0" thread_id="cujo-news-passenger" creator="8827" created_by="Cujo">
+			<availability script="TIME_YEAR=1986" />
 			<title>
 				<de>Start der Raumfähre Passenger geplant</de>
 				<en>Launch of space shuttle Passenger planned</en>
@@ -279,9 +280,10 @@
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,11" news="cujo-news-passenger-02" />
+				<!-- alternative Nachricht deaktivieren-->
+				<effect trigger="happen" type="modifyNewsAvailability" enable="0" news="news-jorgaeff-space-1986-3-01"/>
 			</effects>
-			<data genre="4" price="1.0" quality="40" flags="2" available="0" />
-			<availability year_range_from="1986" year_range_to="1987" />
+			<data genre="4" price="1.0" quality="40" flags="2" />
 		</news>
 		<news id="cujo-news-passenger-02" type="2" thread_id="cujo-news-passenger" creator="8827" created_by="Cujo">
 			<title>

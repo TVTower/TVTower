@@ -300,8 +300,6 @@
 				<en>CPUSS Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
-			<effects>
-			</effects>
 		</news>
 
 		<news id="news-jorgaeff-1985-0-USA-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1538,6 +1536,8 @@
 			</description>
 			<data genre="3" price="0.5" quality="50" fictional="0" flags="2" />
 			<effects>
+				<!-- alternative Nachricht deaktivieren-->
+				<effect trigger="happen" type="modifyNewsAvailability" enable="0" news="cujo-news-passenger-01"/>
 				<!-- "morgen 1-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,1,8" news="news-jorgaeff-space-1986-3-02" />
 			</effects>
