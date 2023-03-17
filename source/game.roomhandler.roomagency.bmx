@@ -587,7 +587,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 			if room.GetOwner() <= 0
 				if not room.IsRented() ' and room.IsRentable()
-					adText :+ GetLocale("ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY").Replace("%X%", MathHelper.DottedValue(room.GetRentForPlayer(currentPlayerID)) +" "+GetLocale("CURRENCY"))
+					adText :+ GetLocale("ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY").Replace("%X%", GetFormattedCurrency(room.GetRentForPlayer(currentPlayerID)))
 				else
 					adText :+ "~n~n" + GetRandomLocale("ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE")
 				endif
@@ -598,7 +598,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		if adText then t :+ "~n"
 
 		if room.IsRentable() and room.GetOwner() <> currentPlayerID
-			t :+ GetLocale("ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X").Replace("%X%", MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ) +" "+GetLocale("CURRENCY"))
+			t :+ GetLocale("ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X").Replace("%X%", GetFormattedCurrency( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ))
 		endif
 		skin.fontNormal.DrawBox(t, contentX + 5, contentY, contentW - 10, descriptionH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH

@@ -8,17 +8,23 @@ Rem
 EndRem
 SuperStrict
 
+Import "Dig/base.util.math.bmx"
+
 Global VersionDate:String = "unknown"
 Global VersionString:String = ""
 Global CopyrightString:String = ""
 
 Global TVTPlayerCount:Int = 4
 
+Const CURRENCYSIGN:String = Chr(8364) 'eurosign
 
 
 Global TVTDebugInfo:Int = False
 Global TVTGhostBuildingScrollMode:Int = False
 
+Function GetFormattedCurrency:String(money:Long)
+	return MathHelper.DottedValue(money) +" "+ CURRENCYSIGN
+EndFunction
 
 'collection of all constants types (so it could be exposed
 'to LUA in one step)

@@ -460,18 +460,18 @@ Type RoomHandler_News extends TRoomHandler
 			if not playersRoom
 				NewsGenreTooltip.content = ""
 			else
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ GetFormattedCurrency(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+"/"+getLocale("DAY")
 			endif
 		Else
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if not playersRoom
 				NewsGenreTooltip.content = ""
 			else
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level))+getLocale("CURRENCY")+"/"+getLocale("DAY")+"~n"
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL")+":~t"+ GetFormattedCurrency(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level))+"/"+getLocale("DAY")+"~n"
 				if level = GameRules.maxAbonnementLevel
 					NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")
 				Else
-					NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
+					NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+":~t"+ GetFormattedCurrency(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+"/"+getLocale("DAY")
 				EndIf
 			endif
 		EndIf
@@ -480,7 +480,7 @@ Type RoomHandler_News extends TRoomHandler
 				NewsGenreTooltip.content :+ "~n~n"
 				local tip:String = getLocale("NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY")
 				tip = tip.Replace("%MAXLEVEL%", GetPlayerBase().GetNewsAbonnementDaysMax(genre))
-				tip = tip.Replace("%TOPAY%", MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, GetPlayerBase().GetNewsAbonnementDaysMax(genre))) + getLocale("CURRENCY"))
+				tip = tip.Replace("%TOPAY%", GetFormattedCurrency(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, GetPlayerBase().GetNewsAbonnementDaysMax(genre))))
 				NewsGenreTooltip.content :+ getLocale("HINT")+": " + tip
 			endif
 		endif

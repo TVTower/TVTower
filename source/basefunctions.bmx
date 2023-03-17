@@ -21,8 +21,6 @@ Import "Dig/external/persistence.mod/persistence.bmx"
 ?
 Import "Dig/base.util.mersenne.bmx"
 
-Const CURRENCYSIGN:String = Chr(8364) 'eurosign
-
 
 
 Type TNumberCurveValue

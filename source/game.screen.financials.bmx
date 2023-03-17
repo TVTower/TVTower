@@ -163,8 +163,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			Endif
 			'ronny: do not "abs()" the value - this helps color-blind
 			'       people to distinguish positive and negative
-			logFont.DrawBox("|"+logCol+"|"+MathHelper.DottedValue(history.GetMoney())+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 40 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, sALIGN_LEFT_CENTER, clLog)
-			'logFont.DrawBlock("|"+logCol+"|"+MathHelper.DottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
+			logFont.DrawBox("|"+logCol+"|"+GetFormattedCurrency(history.GetMoney())+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 40 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, sALIGN_LEFT_CENTER, clLog)
+			'logFont.DrawBlock("|"+logCol+"|"+GetFormattedCurrency(abs(history.GetMoney()))+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
 			logSlot:+1
 		Next
 
