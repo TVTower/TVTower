@@ -462,6 +462,7 @@
 				<en>Markus Trust, who embarrassed the Russian Air Force a few days ago with his Schessnah landing on Moscow's Red Square, was sentenced by a judge to 5 years in a labor camp for serious hooliganism.</en>
 			</description>
 			<effects>
+				<effect trigger="happen" type="triggernews" time="2,5,6,18,22" news="cujo-news-roter-platz-07" />
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01b" />
 			</effects>
 			<data genre="4" price="0.85" quality="65" />
