@@ -21,6 +21,7 @@ Type TDatabaseLoader
 	Field moviesCount:Int, totalMoviesCount:Int
 	Field seriesCount:Int, totalSeriesCount:Int
 	Field newsCount:Int, totalNewsCount:Int
+	Field totalNewsGenreCount:Int[][2]
 	Field achievementCount:Int, totalAchievementCount:Int
 	Field contractsCount:Int, totalContractsCount:Int
 	Field personsBaseCount:Int, totalPersonsBaseCount:Int
@@ -206,6 +207,11 @@ Type TDatabaseLoader
 
 		If required Or validURIs > 0
 			TLogger.Log("TDatabase.Load()", "Loaded from "+validURIs + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalPersonsBaseCount+"/"+totalPersonsCount +" basePersons/persons, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates and "+ totalAchievementCount+" achievements. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
+			Local newsGenreString:String = "initial news templates (unique/reusable): "
+			For Local i:Int = 0 Until TVTNewsGenre.count
+				newsGenreString :+ (TVTNewsGenre.GetAsString(i) + " ("+totalNewsGenreCount[i][0]+"/"+totalNewsGenreCount[i][1]+") ")
+			Next
+			TLogger.Log("TDatabase.Load()",newsGenreString, LOG_LOADING)
 		EndIf
 
 		If required And (totalSeriesCount = 0 Or totalMoviesCount = 0 Or totalNewsCount = 0 Or totalContractsCount = 0)
@@ -231,7 +237,12 @@ Type TDatabaseLoader
 		personsCount = 0
 		personsBaseCount = 0
 		scriptTemplatesCount = 0
-
+		If totalNewsGenreCount.length < TVTNewsGenre.count
+			totalNewsGenreCount = []
+			For Local i:Int = 0 Until TVTNewsGenre.count
+				totalNewsGenreCount :+ [[0, 0]]
+			Next
+		EndIf
 		'recognize version
 		Local versionNode:TxmlNode = xml.FindRootChild("version")
 		'by default version number is "2"
@@ -743,6 +754,14 @@ Type TDatabaseLoader
 			GetNewsEventTemplateCollection().Add(newsEventTemplate)
 			If newsEventTemplate.newsType <> TVTNewsType.FollowingNews
 				newsCount :+ 1
+				Local count:Int[] = totalNewsGenreCount[newsEventTemplate.genre]
+				If newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+					'ignore in count
+				ElseIf newsEventTemplate.HasFlag(TVTNewsFlag.UNIQUE_EVENT)
+					count[0]:+ 1
+				Else
+					count[1]:+ 1
+				EndIf
 			EndIf
 			totalNewsCount :+ 1
 		EndIf
