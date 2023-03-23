@@ -386,10 +386,21 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 End Type
 
 
+Type TWeatherEffectSnowFlake
+	Field lifetime:Int
+	Field lifetimeBase:Int
+	Field spriteNumber:Int = -1
+	Field direction:Byte
+	Field position:SVec2F
+	Field positionOld:SVec2F
+	Field velocity:SVec2F
+End Type
+
+
 
 
 Type TWeatherEffectSnow extends TWeatherEffectBase
-	Field flakes:TList = CreateList()
+	Field flakes:TObjectList = New TObjectList
 	Field flakeLifetimeMin:int = 2200
 	Field flakeLifetimeMax:int = 3800
 	Field nextFlakeTime:Long = 0
@@ -424,10 +435,10 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		'assign new sprites to use
 		SetUseSprites(useSprites)
 
-		For local flake:TData = eachin flakes
-			local spriteNumber:int = flake.GetInt("spriteNumber", -1)
+		For local flake:TWeatherEffectSnowFlake = eachin flakes
+			local spriteNumber:int = flake.spriteNumber
 			if spriteNumber < 0 or spriteNumber > sprites.length-1
-				flake.Add("spriteNumber", sprites[rand(0, sprites.length-1)])
+				flake.spriteNumber = rand(0, sprites.length-1)
 			EndIf
 		Next
 	End Method
@@ -438,70 +449,66 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		if flakes.Count() >= flakesMax then return False
 
 		'lifetime in seconds
-		local lifetime:Int = rand(flakeLifetimeMin,flakeLifetimeMax)
-		local spriteNumber:int = rand(0, Max(0,sprites.length-1))
+		local lifetime:Int = rand(flakeLifetimeMin, flakeLifetimeMax)
+		local spriteNumber:int = rand(0, Max(0, sprites.length-1))
 		local spriteHeight:int = 30
 		if sprites[spriteNumber] then spriteHeight = sprites[spriteNumber].GetHeight()
 		
-		local flake:TData = new TData
-		flake.AddInt("lifetime", lifetime)
-		flake.AddInt("lifetimeBase", lifetime)
-		flake.AddInt("spriteNumber", spriteNumber)
-		flake.Addint("direction", rand(0,1))
+		Local flake:TWeatherEffectSnowFlake = New TWeatherEffectSnowFlake
+		flake.lifetime = lifetime
+		flake.lifetimeBase = lifetime
+		flake.spriteNumber = spriteNumber
+		flake.direction = Byte(rand(0,1))
 
-		local pos:TVec2D = new TVec2D(rand(int(area.x), int(area.GetX2())), area.y + rand(0, 60) - spriteHeight )
-		flake.Add("position", pos)
-		flake.Add("oldPosition", pos.copy())	
-		flake.Add("velocity", new TVec2D(rand(-10,10)/10.0, rand(75, 90) ))
+		local pos:SVec2F = new SVec2F(rand(int(area.x), int(area.GetX2())), area.y + rand(0, 60) - spriteHeight )
+		flake.position = pos
+		flake.positionOld = pos	
+		flake.velocity = new SVec2F(rand(-10,10)/10.0, rand(75, 90) )
 		
 		flakes.AddLast(flake)
+		
+		Return True
 	End Method
 
 
 	Method Update:int()
 		If not IsActive() then return False
 
-		local lifetime:Int
-		local pos:TVec2D
-		local vel:TVec2D
-		local removed:TData[]
+		local removed:TWeatherEffectSnowFlake[]
 
-		For local flake:TData = EachIn flakes
-			lifetime = flake.GetInt("lifetime", 0) - int(1000 * GetDeltaTimer().GetDelta())
-			if lifetime < 0 
+		Local delta:Float = GetDeltaTimer().GetDelta()
+
+		For local flake:TWeatherEffectSnowFlake = EachIn flakes
+			flake.lifetime :- int(1000 * delta)
+			if flake.lifetime < 0 
 				removed :+ [flake]
 				continue
 			endif
 			
-			vel = TVec2D(flake.Get("velocity"))
-			pos = TVec2D(flake.Get("position"))
-			if not vel then vel = new TVec2D
-			if not pos then pos = new TVec2D
-			flake.Add("oldPosition", pos.copy())	
-			pos.x :+ GetDeltaTimer().GetDelta() * vel.x
-			pos.y :+ GetDeltaTimer().GetDelta() * vel.y
-
-			'adjust position
-			pos.AddXY(Float(sin(pos.y * 0.75)*1.05), 0.0)
+			flake.positionOld = flake.position
+			
+			'adjust position / swirl around
+			Local newX:Float = delta * flake.velocity.x + Float(sin(flake.position.y * 0.75)*1.05)
+			Local newY:Float = delta * flake.velocity.y
+			flake.position = flake.position + New SVec2F(newX, newY)
 
 			'below ground
-			if pos.y > area.GetY2() 
+			if flake.position.y > area.GetY2() 
 				removed :+ [flake]
 				continue
 			endif
-
-			flake.Add("position", pos) 			
-			flake.AddInt("lifetime", lifetime) 			
 		Next
 
-		For local d:TData = Eachin removed
+		For local d:TWeatherEffectSnowFlake = Eachin removed
 			flakes.Remove(d)
 		Next
 
 		'add a new flake if time is near
 		if nextFlakeTime < Time.GetTimeGone()
 			For local i:int = 0 until rand(nextFlakeEmitAmountMin, nextFlakeEmitAmountMax)
-				AddFlake()
+				If not AddFlake()
+					Exit
+				EndIf
 			Next
 			nextFlakeTime = Time.GetTimeGone() + rand(nextFlakeIntervalMin, nextFlakeIntervalMax)
 		endif
@@ -532,33 +539,23 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		local lifetimeBase:Int
 		local pos:TVec2D
 		local sprite:TSprite
-		For local flake:TData = eachin flakes
-			sprite = sprites[flake.GetInt("spriteNumber", 0)]
+		For local flake:TWeatherEffectSnowFlake = eachin flakes
+			sprite = sprites[flake.spriteNumber]
 			if not sprite then continue
 			
-			pos = TVec2D(flake.Get("position"))
-			local oldPosition:TVec2D = TVec2D(flake.Get("oldPosition"))
-			if not oldPosition then oldPosition = new TVec2D
-			if not pos then pos = new TVec2D
-
-			direction = flake.GetInt("direction", 0)
-			lifetime = flake.GetInt("lifetime", 1)
-			lifetimeBase = flake.GetInt("lifetimeBase", 1)
-			lifetimeBase = flake.GetInt("lifetimeBase", 1)
-
 			Local t:Float = GetDeltaTimer().GetTween()
-			local tweenPos:TVec2D = new TVec2D(MathHelper.Tween(oldPosition.x, pos.x, t), ..
-				                               MathHelper.Tween(oldPosition.y, pos.y, t))
+			local tweenPos:SVec2F = new SVec2F(MathHelper.Tween(flake.positionOld.x, flake.position.x, t), ..
+				                               MathHelper.Tween(flake.positionOld.y, flake.position.y, t))
 			'fade out but after 50% of lifetime is gone
-			if lifetime/Float(lifeTimeBase) < 0.5
-				SetAlpha(oldA * effectAlpha * 2.0 * lifetime/Float(lifeTimeBase))
+			if flake.lifetime/Float(flake.lifeTimeBase) < 0.5
+				SetAlpha(oldA * effectAlpha * 2.0 * flake.lifetime/Float(flake.lifeTimeBase))
 			else
 				SetAlpha(oldA * effectAlpha)
 			endif
 			
 			'mirrored drawing?
-			if direction = 1
-				local oldScaleX:Float,oldScaleY:Float
+			if flake.direction = 1
+				local oldScaleX:Float, oldScaleY:Float
 				GetScale(oldScaleX, oldScaleY)
 				SetScale(-1 * oldScaleX, oldScaleY)
 
