@@ -163,10 +163,18 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 End Type
 
 
+Type TWeatherEffectLightningElement
+	Field lifetime:Int
+	Field lifetimeBase:Int
+	Field direction:Byte
+	Field position:SVec2I
+	Field useSpritesSide:Int
+	Field spriteNumber:Int
+End Type
 
 
 Type TWeatherEffectLightning extends TWeatherEffectBase
-	Field lightnings:TList = CreateList()
+	Field lightnings:TObjectList = new TObjectList
 	'time in milliseconds
 	Field lightningLifetimeMin:int = 150
 	Field lightningLifetimeMax:int = 210
@@ -217,29 +225,29 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	Method AddLightning:int()
 		'lifetime in milliseconds
 		local lifetime:Int = rand(lightningLifetimeMin, lightningLifetimeMax)
-		local lightning:TData = new TData
-		lightning.AddInt("lifetime", lifetime)
-		lightning.AddInt("lifetimeBase", lifetime)
+		local lightningElement:TWeatherEffectLightningElement = new TWeatherEffectLightningElement
+		lightningElement.lifetime = lifetime
+		lightningElement.lifetimeBase = lifetime
 
 		'comfing-from-side lightning
 		if spritesSide and spritesSide.length > 0 and Rand(0,10) < 3
 			if rand(0,1) = 0
-				lightning.Add("position", new TVec2D(area.GetX(), rand(int(area.y), int(area.y - rand(0,60)))))
-				lightning.AddNumber("direction", 0)
+				lightningElement.position = New SVec2I(Int(area.GetX()), rand(int(area.y), int(area.y - rand(0,60))))
+				lightningElement.direction = 0
 			else
-				lightning.Add("position", new TVec2D(area.GetX2(), rand(int(area.y), int(area.y - rand(0,60)))))
-				lightning.AddNumber("direction", 1)
+				lightningElement.position = New SVec2I(Int(area.GetX2()), rand(int(area.y), int(area.y - rand(0,60))))
+				lightningElement.direction = 1
 			endif
-			lightning.AddNumber("useSpritesSide", 1)
-			lightning.AddNumber("spriteNumber", rand(0, spritesSide.length-1))
+			lightningElement.useSpritesSide = 1
+			lightningElement.spriteNumber =rand(0, spritesSide.length-1)
 		else
-			lightning.Add("position", new TVec2D(rand(int(area.x), int(area.GetX2())), int(area.y) - rand(0,60)))
-			lightning.AddNumber("useSpritesSide", 0)
-			lightning.AddNumber("direction", rand(0,1))
-			lightning.AddNumber("spriteNumber", rand(0, sprites.length-1))
+			lightningElement.position = New SVec2I(rand(int(area.x), int(area.GetX2())), int(area.y) - rand(0,60))
+			lightningElement.useSpritesSide = 0
+			lightningElement.direction = rand(0,1)
+			lightningElement.spriteNumber = rand(0, sprites.length-1)
 		endif
 		
-		lightnings.AddLast(lightning)
+		lightnings.AddLast(lightningElement)
 
 		nextLightningTime = Time.GetTimeGone() + rand(nextLightningIntervalMin, nextLightningIntervalMax)
 	End Method
@@ -249,15 +257,13 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		If not IsActive() then return False
 
 		local lifetime:Int
-		local removed:TData[]
-		For local lightning:TData = EachIn lightnings
-			lifeTime = lightning.GetInt("lifetime", 0) - int(1000 * GetDeltaTimer().GetDelta())
-			if lifetime < 0 then removed :+ [lightning]
-
-			lightning.AddInt("lifetime", lifetime) 			
+		local removed:TWeatherEffectLightningElement[]
+		For local lightningElement:TWeatherEffectLightningElement = EachIn lightnings
+			lightningElement.lifetime :- int(1000 * GetDeltaTimer().GetDelta())
+			if lightningElement.lifetime < 0 then removed :+ [lightningElement]
 		Next
 
-		For local d:TData = Eachin removed
+		For local d:TWeatherEffectLightningElement = Eachin removed
 			lightnings.Remove(d)
 		Next
 
@@ -266,14 +272,11 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	End Method
 
 
-	Method GetLightningAlpha:Float(lightning:TData)
-		local lifetime:Int = lightning.GetInt("lifetime", 0)
-		local lifetimeBase:Float = lightning.GetInt("lifetimeBase", 0)
-
-		if lifetimeBase - lifetime <= 20
-			return (lifetimeBase - lifetime)/20.0
-		elseif lifetime <= 20
-			return 1.0 - (20 - lifetime)/20.0
+	Method GetLightningAlpha:Float(lightningElement:TWeatherEffectLightningElement)
+		if lightningElement.lifetimeBase - lightningElement.lifetime <= 20
+			return (lightningElement.lifetimeBase - lightningElement.lifetime)/20.0
+		elseif lightningElement.lifetime <= 20
+			return 1.0 - (20 - lightningElement.lifetime)/20.0
 		endif
 		return 1.0
 	End Method
@@ -282,11 +285,11 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	'override to brighten the sky with a active lightning
 	Method ModifySkyColor(screenColor:SColor8 var)
 		local maxAlpha:Float = 0.0
-		For local lightning:TData = EachIn lightnings
+		For local lightningElement:TWeatherEffectLightningElement = EachIn lightnings
 			'skip calculating more if already at max
 			if maxAlpha >= 1.0 then continue
 			
-			maxAlpha = max(maxAlpha, GetLightningAlpha(lightning))
+			maxAlpha = max(maxAlpha, GetLightningAlpha(lightningElement))
 		Next
 		
 		'mix a white screen into the color
@@ -304,33 +307,29 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		if fadeState.IsFadingOff() then effectAlpha = 1.0 - effectAlpha
 
 		'=== DRAW LIGHTNINGS ===
-		For local lightning:TData = eachin lightnings
+		For local lightningElement:TWeatherEffectLightningElement = eachin lightnings
 			local sprite:TSprite
 
-			if lightning.GetInt("useSpritesSide", 0) = 1
-				sprite = spritesSide[lightning.GetInt("spriteNumber", 0)]
+			if lightningElement.useSpritesSide = 1
+				sprite = spritesSide[lightningElement.spriteNumber]
 			else
-				sprite = sprites[lightning.GetInt("spriteNumber", 0)]
+				sprite = sprites[lightningElement.spriteNumber]
 			endif
 			if not sprite then continue
 			
-			local pos:TVec2D = TVec2D(lightning.Get("position"))
-			if not pos then pos = new TVec2D
-			local direction:int = lightning.GetInt("direction", 0)
-
-			SetAlpha(oldA * effectAlpha * GetLightningAlpha(lightning))
+			SetAlpha(oldA * effectAlpha * GetLightningAlpha(lightningElement))
 
 			'mirrored drawing?
-			if direction = 1
+			if lightningElement.direction = 1
 				local oldScaleX:Float,oldScaleY:Float
 				GetScale(oldScaleX, oldScaleY)
 				SetScale(-1 * oldScaleX, oldScaleY)
 
-				sprite.Draw(pos.x, pos.y)
+				sprite.Draw(lightningElement.position.x, lightningElement.position.y)
 
 				SetScale(oldScaleX, oldScaleY)
 			else
-				sprite.Draw(pos.x, pos.y)
+				sprite.Draw(lightningElement.position.x, lightningElement.position.y)
 			endif
 		Next
 	
