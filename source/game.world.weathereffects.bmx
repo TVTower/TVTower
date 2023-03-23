@@ -515,8 +515,17 @@ End Type
 
 
 
+Type TWeatherEffectCloud
+	Field spriteEntity:TSpriteEntity
+	Field velocityX:Float
+	Field velocityStrengthX:Float
+	Field alpha:Float
+End Type
+
+
+
 Type TWeatherEffectClouds extends TWeatherEffectBase
-	Field clouds:TList = CreateList()
+	Field clouds:TObjectList = new TObjectList
 	Field cloudMax:int = 30
 	'current cloud color
 	Field cloudColor:SColor8 = SColor8.WHITE
@@ -525,10 +534,6 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 	Field cloudBrightness:int = 100
 	Field skyBrightness:Float = 1.0
 	
-	Field LSVelocityX:TLowerString = TLowerString.Create("velocityX")
-	Field LSVelocityStrengthX:TLowerString = TLowerString.Create("velocityStrengthX")
-	Field LSAlpha:TLowerString = TLowerString.Create("alpha")
-	Field LSSpriteEntity:TLowerString = TLowerString.Create("spriteEntity")
 
 	Method Init:TWeatherEffectClouds(area:TRectangle, cloudAmount:int = 30, useSprites:TSprite[])
 		SetUseSprites(useSprites)
@@ -550,7 +555,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 
 	Method AddCloud:int()
 		local cloudSprite:TSprite
-		local cloud:TData = new TData
+		local cloud:TWeatherEffectCloud = new TWeatherEffectCloud
 		local spriteEntity:TSpriteEntity = new TSpriteEntity
 
 		if sprites then cloudSprite = sprites[rand(0, sprites.length-1)]
@@ -565,19 +570,18 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		spriteEntity.area.MoveXY(Rand(-200,800), -30 + Rand(0,40))
 		spriteEntity.velocity.SetX(2.3 + Rand(0, 20)/10.0)
 
-		cloud.AddNumber(LSVelocityX, spriteEntity.velocity.GetX())
-		cloud.AddNumber(LSVelocityStrengthX, abs(spriteEntity.velocity.GetX()))
-		cloud.AddNumber(LSAlpha, Float(Rand(85,100))/100.0)
-		'assign spriteentity
-		cloud.Add(LSSpriteEntity, spriteEntity)
+		cloud.velocityX = spriteEntity.velocity.GetX()
+		cloud.velocityStrengthX = abs(spriteEntity.velocity.GetX())
+		cloud.alpha = Rand(85,100)/100.0
+		cloud.spriteEntity = spriteEntity
 
 		clouds.AddLast(cloud)
 	End Method
 
 
 	Method StoreCloudVelocity()
-		For local cloud:TData = eachin clouds
-			cloud.AddNumber(LSVelocityX, TSpriteEntity(cloud.Get(LSSpriteEntity)).velocity.GetX())
+		For local cloud:TWeatherEffectCloud = eachin clouds
+			cloud.velocityX = cloud.spriteEntity.velocity.GetX()
 		Next
 	End Method
 
@@ -585,26 +589,24 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 	Method AdjustCloudMovement(windStrength:float=0.0, timeSinceLastUpdate:int = 0, allowWrapping:int=True)
 		local strengthX:float
 		local velocityX:float
-		local entity:TSpriteEntity
 
-		For local cloud:TData = eachin clouds
-			entity = TSpriteEntity(cloud.Get(LSSpriteEntity))
-			entity.velocity.SetX(Float(TInterpolation.Linear(..
-				cloud.GetFloat(LSVelocityX),..
-				cloud.GetFloat(LSVelocityStrengthX) * windStrength,..
+		For local cloud:TWeatherEffectCloud = eachin clouds
+			cloud.spriteEntity.velocity.SetX(Float(TInterpolation.Linear(..
+				cloud.velocityX,..
+				cloud.velocityStrengthX * windStrength,..
 				Double(Min(30 * TWorldTime.MINUTELENGTH, timeSinceLastUpdate)), 30 * TWorldTime.MINUTELENGTH)..
 			))
 			'do not use the global worldSpeed
-			entity.worldSpeedFactor = GetWorldTime().GetTimeFactor() * 0.01
+			cloud.spriteEntity.worldSpeedFactor = GetWorldTime().GetTimeFactor() * 0.01
 		
-			entity.Update()
+			cloud.spriteEntity.Update()
 
 			'if weather does not allow clouds, do not wrap offscreen clouds
 			if allowWrapping
-				if entity.velocity.GetX() > 0 and entity.area.x > area.GetX2()
-					entity.area.SetX(area.x -(entity.area.w+1))
-				elseif entity.velocity.GetX() < 0 and entity.area.x < area.x - (entity.area.w+1)
-					entity.area.SetX(area.GetX2() + 1)
+				if cloud.spriteEntity.velocity.GetX() > 0 and cloud.spriteEntity.area.x > area.GetX2()
+					cloud.spriteEntity.area.SetX(area.x -(cloud.spriteEntity.area.w+1))
+				elseif cloud.spriteEntity.velocity.GetX() < 0 and cloud.spriteEntity.area.x < area.x - (cloud.spriteEntity.area.w+1)
+					cloud.spriteEntity.area.SetX(area.GetX2() + 1)
 				endif
 			endif
 		Next
@@ -627,18 +629,16 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		'darken according to lighting (up to 20%)
 		SetColor( SColor8Helper.Mix(cloudColor, SColor8.BLACK, 0.2 - 0.2 * skyBrightness) )
 
-		local entity:TSpriteEntity
 		local cloudNumber:int = 0
-		For local cloud:TData = eachin clouds
-			entity = TSpriteEntity(cloud.Get(LSSpriteEntity))
+		For local cloud:TWeatherEffectCloud = eachin clouds
 			'skip invisible ones
-			if entity.area.GetX() > 801 then continue
-			if entity.area.GetX() < - (entity.area.GetW()+1) then continue
+			if cloud.spriteEntity.area.GetX() > 801 then continue
+			if cloud.spriteEntity.area.GetX() < - (cloud.spriteEntity.area.GetW()+1) then continue
 			SetAlpha effectAlpha * (oldA*0.9 + 0.1*(float(cloudNumber)/(clouds.Count())) )
-			if entity.sprite
-				entity.Render()
+			if cloud.spriteEntity.sprite
+				cloud.spriteEntity.Render()
 			else
-				DrawOval(entity.area.GetX(), entity.area.GetY(), 100, 50)
+				DrawOval(cloud.spriteEntity.area.GetX(), cloud.spriteEntity.area.GetY(), 100, 50)
 			endif
 			cloudNumber :+1
 		Next
