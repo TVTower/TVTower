@@ -86,30 +86,6 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 		Next
 		return self
 	End Method
-
-
-	'reassign sprites for each raindrop
-	Method ReassignSprites:int(useSprites:TSprite[])
-		'assign new sprites to use
-		SetUseSprites(useSprites)
-
-		For local i:int = 0 until layerSprites.length
-			'fetch sprite with given name again - or use random one
-			local useSpriteNumber:Int = -1
-			For local sprite:TSprite = eachin sprites
-				if sprite.name <> layerSprites[i].name then continue
-
-				useSpriteNumber = i
-				exit
-			Next
-			'if number is not available anymore ... use random
-			if useSpriteNumber < 0 or useSpriteNumber > sprites.length-1
-				useSpriteNumber = rand(0, sprites.length-1)
-			EndIf
-
-			layerSprites[i] = sprites[useSpriteNumber]
-		Next
-	End Method
 	
 
 	Method ConfigureLayer(layerNumber:int, position:TVec2D, velocity:TVec2D, sprite:TSprite = null)
@@ -225,28 +201,6 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		Next
 		
 		return self
-	End Method
-
-
-	'reassign sprites for each lightning strike
-	Method ReassignSprites:int(useSprites:TSprite[], useSpritesSide:TSprite[])
-		'assign new sprites to use
-		SetUseSprites(useSprites)
-		SetUseSpritesSide(useSpritesSide)
-
-		For local lightning:TData = eachin lightnings
-			local spriteNumber:int = lightning.GetInt("spriteNumber", -1)
-			local useSpritesSide:int = lightning.GetInt("useSpritesSide", 0)
-			if useSpritesSide
-				if spriteNumber < 0 or spriteNumber > spritesSide.length-1
-					lightning.Add("spriteNumber", spritesSide[rand(0, spritesSide.length-1)])
-				EndIf
-			else
-				if spriteNumber < 0 or spriteNumber > sprites.length-1
-					lightning.Add("spriteNumber", sprites[rand(0, sprites.length-1)])
-				EndIf
-			endif
-		Next
 	End Method
 
 
@@ -430,20 +384,6 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 	End Method
 
 
-	'reassign sprites for each snowflake
-	Method ReassignSprites:int(useSprites:TSprite[])
-		'assign new sprites to use
-		SetUseSprites(useSprites)
-
-		For local flake:TWeatherEffectSnowFlake = eachin flakes
-			local spriteNumber:int = flake.spriteNumber
-			if spriteNumber < 0 or spriteNumber > sprites.length-1
-				flake.spriteNumber = rand(0, sprites.length-1)
-			EndIf
-		Next
-	End Method
-
-
 	Method AddFlake:int()
 		'do not add if already at max
 		if flakes.Count() >= flakesMax then return False
@@ -605,30 +545,6 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		Next
 		
 		return self
-	End Method
-
-
-	'reassign sprites for each cloud
-	Method ReassignSprites:int(useSprites:TSprite[])
-		'assign new sprites to use
-		SetUseSprites(useSprites)
-
-		local entity:TSpriteEntity
-		For local cloud:TData = eachin clouds
-			entity = TSpriteEntity(cloud.Get(LSSpriteEntity))
-			'fetch sprite with given name again - or use random one
-			local useSprite:TSprite
-			For local sprite:TSprite = eachin sprites
-				if sprite.name <> entity.sprite.name then continue
-
-				useSprite = sprite
-				exit
-			Next
-			if useSprite then entity.sprite = useSprite
-			if not entity.sprite then entity.sprite = sprites[rand(0, sprites.length-1)]
-
-			entity.area.SetWH(entity.sprite.GetWidth(), entity.sprite.GetHeight())
-		Next
 	End Method
 
 
