@@ -449,7 +449,7 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 			flake.positionOld = flake.position
 			
 			'adjust position (by local velocity, wind and a bit swirling around)
-			Local newX:Float = delta * flake.velocity.x + 1.5 * windVelocity + Float(sin(flake.position.y * 0.75)*1.05) 
+			Local newX:Float = delta * flake.velocity.x + 1.5 * windVelocity + Float(sin(flake.position.y * 0.75)*1.05)
 			Local newY:Float = delta * flake.velocity.y
 			flake.position = flake.position + New SVec2F(newX, newY)
 
