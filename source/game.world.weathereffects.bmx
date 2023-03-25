@@ -354,14 +354,16 @@ End Type
 
 Type TWeatherEffectSnow extends TWeatherEffectBase
 	Field flakes:TObjectList = New TObjectList
-	Field flakeLifetimeMin:int = 2200
-	Field flakeLifetimeMax:int = 3800
+	Field flakeLifetimeMin:int = 3000
+	Field flakeLifetimeMax:int = 6500
 	Field nextFlakeTime:Long = 0
 	Field nextFlakeIntervalMin:int = 150
-	Field nextFlakeIntervalMax:int = 450
+	Field nextFlakeIntervalMax:int = 550
 	Field nextFlakeEmitAmountMin:int = 3
-	Field nextFlakeEmitAmountMax:int = 6
-	Field flakesMax:int = 75
+	Field nextFlakeEmitAmountMax:int = 10
+	Field flakesMax:int = 150
+
+	Field windVelocity:Float = 0
 
 
 	Method Init:TWeatherEffectSnow(area:TRectangle, startFlakes:int = 15, useSprites:TSprite[])
@@ -391,18 +393,38 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		local lifetime:Int = rand(flakeLifetimeMin, flakeLifetimeMax)
 		local spriteNumber:int = rand(0, Max(0, sprites.length-1))
 		local spriteHeight:int = 30
-		if sprites[spriteNumber] then spriteHeight = sprites[spriteNumber].GetHeight()
-		
+		local spriteWidth:int = 30
+		if sprites[spriteNumber] 
+			spriteHeight = sprites[spriteNumber].GetHeight()
+			spriteWidth = sprites[spriteNumber].GetWidth()
+		endif
 		Local flake:TWeatherEffectSnowFlake = New TWeatherEffectSnowFlake
 		flake.lifetime = lifetime
 		flake.lifetimeBase = lifetime
 		flake.spriteNumber = spriteNumber
-		flake.direction = Byte(rand(0,1))
+		flake.direction = rand(0,1)
 
-		local pos:SVec2F = new SVec2F(rand(int(area.x), int(area.GetX2())), area.y + rand(0, 60) - spriteHeight )
+		Local windFromSideMod:Float = 1.0 + abs(windVelocity)
+		Local limitLeft:Int = area.x - spriteWidth/2 - Int(75*windFromSideMod)
+		Local limitRight:Int = area.GetX2() + spriteWidth/2 + Int(75*windFromSideMod)
+		'if wind is from a specific direction now ... skip "outside" snow
+		'we would possibly not see at all
+		If windVelocity < -0.125 
+			limitLeft :+ 50
+		ElseIf windVelocity > 0.125 
+			limitRight :+ 50
+		EndIf
+		Local x:Int = rand(limitLeft, limitRight)
+		Local y:Int = area.y - rand(0, 150) - spriteHeight
+		'if coming from "outside" we can already start a bit "later" to
+		'simulate more mass of snow
+		if x < area.x - spriteWidth/2 or x > area.GetX2() + spriteWidth/2
+			y = area.y + rand(50, 150) - spriteHeight
+		endif
+		local pos:SVec2F = new SVec2F(x, y)
 		flake.position = pos
 		flake.positionOld = pos	
-		flake.velocity = new SVec2F(rand(-10,10)/10.0, rand(75, 90) )
+		flake.velocity = new SVec2F(rand(-2,2)/10.0, rand(75, 90) )
 		
 		flakes.AddLast(flake)
 		
@@ -419,15 +441,15 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 
 		For local flake:TWeatherEffectSnowFlake = EachIn flakes
 			flake.lifetime :- int(1000 * delta)
-			if flake.lifetime < 0 
+			if flake.lifetime < 0 or flake.position.x < area.x - 150 or flake.position.x > area.GetX2() + 150
 				removed :+ [flake]
 				continue
 			endif
 			
 			flake.positionOld = flake.position
 			
-			'adjust position / swirl around
-			Local newX:Float = delta * flake.velocity.x + Float(sin(flake.position.y * 0.75)*1.05)
+			'adjust position (by local velocity, wind and a bit swirling around)
+			Local newX:Float = delta * flake.velocity.x + 1.5 * windVelocity + Float(sin(flake.position.y * 0.75)*1.05) 
 			Local newY:Float = delta * flake.velocity.y
 			flake.position = flake.position + New SVec2F(newX, newY)
 
@@ -442,8 +464,8 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 			flakes.Remove(d)
 		Next
 
-		'add a new flake if time is near
-		if nextFlakeTime < Time.GetTimeGone()
+		'add a new flake if time is near or something got removed
+		if nextFlakeTime < Time.GetTimeGone() or removed.length > 0
 			For local i:int = 0 until rand(nextFlakeEmitAmountMin, nextFlakeEmitAmountMax)
 				If not AddFlake()
 					Exit
