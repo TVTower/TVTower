@@ -85,13 +85,11 @@ Type TWorld
 		sunPoint = New TVec2D(400, 1100 + area.GetY())
 		moonPoint =  New TVec2D(400, 100 + area.GetY())
 
-		If Not weather
-			weather = New TWorldWeather
-			'start temperature will be set by internal randomization
-			weather.Init(0, 0, 0, 3600)
-		Else
-			weather.lastUpdateTime = -1
-		EndIf
+		If Not weather Then weather = New TWorldWeather
+		'start temperature will be set by internal randomization
+		weather.Init(0, 0, 0, 3600)
+		weather.lastUpdateTime = -1
+
 
 		If Not lighting Then lighting = New TWorldLighting
 		lighting.Init()
