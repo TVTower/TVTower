@@ -1182,18 +1182,20 @@ endrem
 		'leave order seats of already watching members unchanged if possible
 		For Local i:int=0 to oldMembers.length-1
 			For Local j:int=0 to newViewers.length-1
+				Local oldPosition:Int = oldCouchPositions[i]
 				If oldMembers[i] = newViewers[j]
-					finalMembers:+ [newViewers[j]]
-					newViewers[j] = null
-					sameViewerExists = True
-					Local oldPosition:Int = oldCouchPositions[i]
 					If unemployedPresent And oldPosition < 600
 						'cannot stay in same position
-					ElseIf familyMembersUsed = 3 and ((oldPosition-580) mod 60) = 0
-						'two-seat position but three needed - cannot stay in same position
 					Else
-						'stay in same position
-						newCouchPositions[finalMembers.length-1] = oldPosition
+						finalMembers:+ [newViewers[j]]
+						newViewers[j] = null
+						sameViewerExists = True
+						If familyMembersUsed = 3 and ((oldPosition-580) mod 60) = 0
+							'two-seat position but three needed - cannot stay in same position
+						Else
+							'stay in same position
+							newCouchPositions[finalMembers.length-1] = oldPosition
+						EndIf
 					EndIf
 				EndIf
 			Next
