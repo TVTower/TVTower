@@ -54,16 +54,6 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
-		'GUI -> GUI
-		'we want to know if we hover a specific block
-'		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, "TGUICastListItem") ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConceptItem, "TGuiProductionConceptListItem") ]
-
-
-		'LOGIC -> GUI
-		'finish an achievement while looking at the list
-'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionConcept_SetCast, onProductionConceptChangeCast) ]
-
 		'to reload achievement list when entering a screen
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 
