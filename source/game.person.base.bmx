@@ -1588,31 +1588,31 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 
 
 	Method SetDayOfBirth:Int(date:String="")
+		Self.dayOfBirth = _normalizedDate(date)
+	End Method
+
+
+	Method SetDayOfDeath:Int(date:String="")
+		Self.dayOfDeath = _normalizedDate(date)
+	End Method
+
+	Method _normalizedDate:String(date:String="")
 		If date = ""
-			date = "0000-00-00"
+			Return "0000-00-00"
 		Else
+			Local negativeYear:Int=False
+			If date.startsWith("-")
+				negativeYear = True
+				date = date[1..date.length]
+			EndIf
 			Local parts:String[] = date.split("-")
 			'feeding "0" will make it auto-correct (wrong length)
 			If parts.length < 2 Then parts :+ ["0"]
 			If parts.length < 3 Then parts :+ ["0"]
 			date = "-".Join(parts)
+			If negativeYear Then date = "-" + date
+			Return date
 		EndIf
-
-		Self.dayOfBirth = date
-	End Method
-
-
-	Method SetDayOfDeath:Int(date:String="")
-		If date = ""
-			date = "0000-00-00"
-		Else
-			Local parts:String[] = date.split("-")
-			If parts.length < 2 Then parts :+ ["0"]
-			If parts.length < 3 Then parts :+ ["0"]
-			date = "-".Join(parts)
-		EndIf
-
-		Self.dayOfDeath = date
 	End Method
 
 
@@ -1626,6 +1626,12 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		if not GetPerson() then Return dateText
 		
 		if dateText
+			Local negativeYear:Int = False
+			If dateText.StartsWith("-")
+				negativeYear = True
+				dateText=dateText[1..dateText.length]
+				If Not GetPerson().IsFictional() Then throw "relative birth year allowed only for fictional persons: "+ GetPerson().GetFullName()
+			EndIf
 			local split:String[] = dateText.split("-")
 			if year = -1 Then year = int(split[0])
 			if month = -1 and split.length > 1 Then month = int(split[1])
@@ -1634,6 +1640,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 			if year = 0 then year = -1
 			if month = 0 then month = -1
 			if day = 0 then day = -1
+			If negativeYear Then year = - year
 		endif
 
 		'maybe first movie was done at age of 10 - 40
@@ -1652,9 +1659,12 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		EndIf
 		endrem
 
-		If year = -1 
+		If year = -1
 			if earliestYear = -1 Then earliestYear = GetEarliestProductionYear()
 			year = earliestYear - ((hash + 1) Mod 30 + 10 ) 'subtract 10-40 years
+		ElseIf year < 0
+			'negative year indicates relative year
+			year = GetWorldTime().GetStartYear() + year - 1
 		EndIf
 		If month = -1
 			month = (hash + 5) Mod 12 + 1 '1 - 12
