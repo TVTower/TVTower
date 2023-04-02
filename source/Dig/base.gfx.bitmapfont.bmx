@@ -366,6 +366,9 @@ Type TBitmapFont
 	Const PAYLOAD_CHARCODE:Int = Asc("=")
 	Const ESCAPE_CHARCODE:Int = Asc("\")
 	
+	Const NO_BREAKING_SPACE:String = Chr(8239)
+	Const NARROW_NO_BREAKING_SPACE:String = Chr(8239)
+	
 	'each line height depends on the chars in this line
 	Const LINEHEIGHTMODE_INDIVIDUAL:Int = -1
 	'line height depends on the highest line in a the block
@@ -508,6 +511,8 @@ Type TBitmapFont
 		If MaxSigns <> -1 Then loadMaxGlyphs = MaxSigns
 
 		If extraChars = ""
+			extraChars :+ Chr(8239) 'Narrow No Breaking Space
+			extraChars :+ Chr(160)  'No Breaking Space
 			extraChars :+ Chr(8364) 'Euro
 			extraChars :+ Chr(8230) 'Horizontal Ellipsis
 			extraChars :+ Chr(8220) 'Left Double Quotation Mark
