@@ -366,7 +366,7 @@ Type TBitmapFont
 	Const PAYLOAD_CHARCODE:Int = Asc("=")
 	Const ESCAPE_CHARCODE:Int = Asc("\")
 	
-	Const NO_BREAKING_SPACE:String = Chr(8239)
+	Const NO_BREAKING_SPACE:String = Chr(160)
 	Const NARROW_NO_BREAKING_SPACE:String = Chr(8239)
 	
 	'each line height depends on the chars in this line
