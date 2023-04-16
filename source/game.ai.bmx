@@ -982,6 +982,7 @@ endrem
 		Local section:TStationMapSection = GetStationMapCollection().GetSection(x,y)
 		If Not section Then Return Self.RESULT_NOTFOUND
 		If section.HasBroadCastPermission(Self.ME, TVTStationType.ANTENNA) Then Return 0
+		If Not section.NeedsBroadcastPermission(Self.ME, TVTStationType.ANTENNA) Then Return 0
 		If Not section.CanGetBroadcastPermission(Self.ME) Return -1
 		Local price:Int = section.GetBroadcastPermissionPrice(Self.ME, TVTStationType.ANTENNA)
 		Return price
