@@ -15,6 +15,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	Field selectedRoom:TRoomBase
 	Field selectedRoomState:Int = 0
 	Field hoveredRoom:TRoomBase
+	Field hoveredRoomForbidden:Int = False
 	Field hoveredSign:TRoomBoardSign
 	Field roomContractTexts:TMap = new TMap
 
@@ -146,6 +147,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 
 	Method Update()
+		hoveredRoomForbidden = False
 		If THelper.MouseIn(0,0,230,325)
 			If not roomboardTooltip
 				roomboardTooltip = TTooltip.Create(GetLocale("ROOM_OVERVIEW"), GetLocale("CANCEL_OR_RENT_ROOMS"), 70, 120, 0, 0)
@@ -186,8 +188,14 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		If roomboardTooltip Then roomboardTooltip.Render()
 
 		if mode = MODE_SELECTROOM
-			If THelper.MouseIn(0,0,230,325)
-				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			If hoveredRoomForbidden
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+			ElseIf THelper.MouseIn(0,0,230,325)
+				If hoveredRoom
+					GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+				Else
+					GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
+				EndIf
 			EndIf
 
 			RenderRoomBoard()
@@ -228,6 +236,17 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 				hoveredRoom = TRoomDoor(sign.door).GetRoom()
 				hoveredSign = sign
 
+				If hoveredRoom.GetOwner() = playerID
+					'not forbidden
+				ElseIf Not hoveredRoom.IsRentable()
+					hoveredRoomForbidden = True
+				ElseIf GetRoomAgency().CanBeginRoomRental(hoveredRoom, playerID) = ERoomAgencyRentalResults.OK
+					Local courtage:Int = GetRoomAgency().GetCourtageForOwner(hoveredRoom, playerID)
+					If Not GetPlayerFinance(playerID).CanAfford(courtage)
+						hoveredRoomForbidden = True
+					EndIf
+				EndIf
+
 				'if room.IsRentable() or (room.IsRented() and room.GetOwner() = playerID) and MouseManager.IsClicked(1)
 				if MouseManager.IsClicked(1)
 					'first click
@@ -238,7 +257,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 					Endif
 					
 					'only select/confirm the room if it is allowed
-					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable()) or ..
+					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable() And Not hoveredRoomForbidden) or ..
 					   (hoveredRoom.GetOwner() = playerID)
 						'confirmation click
 						if selectedRoom = hoveredRoom
