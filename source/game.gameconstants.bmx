@@ -23,7 +23,9 @@ Global TVTDebugInfo:Int = False
 Global TVTGhostBuildingScrollMode:Int = False
 
 Function GetFormattedCurrency:String(money:Long)
-	return MathHelper.DottedValue(money) +" "+ CURRENCYSIGN
+	'160 is the "no breaking space" code
+	'8239 is the "narrow no breaking space" code
+	return MathHelper.DottedValue(money) + Chr(160) + CURRENCYSIGN
 EndFunction
 
 'collection of all constants types (so it could be exposed
