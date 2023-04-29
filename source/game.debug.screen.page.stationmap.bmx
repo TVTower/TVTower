@@ -3,13 +3,18 @@ Import "game.debug.screen.page.bmx"
 Import "game.game.bmx"
 Import "game.stationmap.bmx"
 
-'TODO: * data sheet when overing
-'      * lazy init - obtain data when opening, on "map" change, on player selection
+'TODO: * data sheet when hovering
+'      * reset on "map" change
 '      * sorting (by section, by audience count, by "name", running cost (absolute/per 1000 viewers))
+'      * make buttons less wide
 Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Global _instance:TDebugScreenPage_Stationmap
 	Field buttons:TDebugControlsButton[]
 	Field attributeToShow:Int = 0 '0=exclusive reach, 1=running costs, 2=costs/1K viewer
+	Field currentPlayer:Int = -1
+	Field satellites:TList = CreateList()
+	Field cables:TList = CreateList()
+	Field antennas:TList = CreateList()
 
 	Method New()
 		_instance = self
@@ -46,19 +51,47 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 
 
 	Method Reset()
+		currentPlayer = -1
+		satellites.Clear()
+		cables.Clear()
+		antennas.Clear()
 	End Method
 
 
 	Method Activate()
+		Reset()
 	End Method
 
 
 	Method Deactivate()
+		Reset()
 	End Method
 
 
 	Method Update()
 		Local playerID:Int = GetShownPlayerID()
+		If playerID <> currentPlayer
+			Reset() 'in particular clear the arrays
+			Local map:TStationMap = GetStationMap(playerID)
+			For local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
+				Local station:TStationBase = map.GetSatelliteUplinkBySatellite(satellite)
+				If station
+					satellites.AddLast(station)
+				EndIf
+			Next
+			For local section:TStationMapSection = EachIn GetStationMapCollection().sections
+				Local sectionName:String = section.name
+				Local station:TStationBase = map.GetCableNetworkUplinkStationBySectionName(sectionName)
+				If station
+					cables.AddLast(station)
+				EndIf
+				For Local station:TStationAntenna = EachIn map.GetStationsBySectionName(sectionName)
+					antennas.AddLast(station)
+				Next
+			Next
+			currentPlayer = playerID
+		EndIf
+
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
 		Next
@@ -126,32 +159,27 @@ endrem
 		textFont.Draw("Sat Uplinks: " + map.GetStationCount(TVTStationType.SATELLITE_UPLINK), textX, textY)
 		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
-		For local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
-			Local station:TStationBase = map.GetSatelliteUplinkBySatellite(satellite)
-			If station
-				textFont.Draw( Chr(9654) + " " + satellite.GetName(), textX + 5, textY)
-				textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
-				textY :+ 10
-			EndIf
+		For local station:TStationBase = EachIn satellites
+			Local n:String =station.GetName()
+			if n.length > 13 then n = ".." + n[n.length-12..]
+			textFont.Draw( Chr(9654) + " " + n, textX + 5, textY)
+			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+			textY :+ 10
 		Next
 		textY :+ 3
 
 		textFont.Draw("Cable Uplinks: " + map.GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK), textX, textY)
 		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
-		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
-			Local sectionName:String = section.name
-			Local station:TStationBase = map.GetCableNetworkUplinkStationBySectionName(sectionName)
-			If station
-				Local iso:String = station.GetSectionISO3166Code()
-				Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG")
-				if n.length > 11 then n = n[.. 10]+".."
-				Local c:SColor8 = SColor8.WHITE
-				if not station.IsActive() then c = SColor8.GRAY
-				textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-				textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
-				textY :+ 10
-			EndIf
+		For local station:TStationBase = EachIn cables
+			Local iso:String = station.GetSectionISO3166Code()
+			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG")
+			if n.length > 13 then n = n[.. 12]+".."
+			Local c:SColor8 = SColor8.WHITE
+			if not station.IsActive() then c = SColor8.GRAY
+			textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
 		Next
 		textY :+ 3
 
@@ -159,23 +187,20 @@ endrem
 		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 
 		textY :+ 12
-		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
-			Local sectionName:String = section.name
-			For local station:TStationAntenna = EachIn map.GetStationsBySectionName(sectionName)
-				If textY >= y + h - 1
-					x = x + 135
-					textX:Int = x + 3
-					textY:Int = y - 1
-				EndIf
-				Local iso:String = station.GetSectionISO3166Code()
-				Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_SHORT")
-				if n.length > 11 then n = n[.. 10]+".."
-				Local c:SColor8 = SColor8.WHITE
-				if not station.IsActive() then c = SColor8.GRAY
-				textFont.DrawBox( Chr(9654) + " " + n +": " + station.GetName(), textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-				textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
-				textY :+ 10
-			Next
+		For local station:TStationBase = EachIn antennas
+			If textY >= y + h - 1
+				x = x + 135
+				textX:Int = x + 3
+				textY:Int = y - 1
+			EndIf
+			Local iso:String = station.GetSectionISO3166Code()
+			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_SHORT")
+			if n.length > 13 then n = n[.. 12]+".."
+			Local c:SColor8 = SColor8.WHITE
+			if not station.IsActive() then c = SColor8.GRAY
+			textFont.DrawBox( Chr(9654) + " " + n +": " + station.GetName(), textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
 		Next
 
 		Function getValueToShow:String(station:TStationBase, typeToShow:Int)
