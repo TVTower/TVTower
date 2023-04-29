@@ -6,12 +6,22 @@ Import "game.stationmap.bmx"
 'TODO: * data sheet when overing
 '      * lazy init - obtain data when opening, on "map" change, on player selection
 '      * sorting (by section, by audience count, by "name", running cost (absolute/per 1000 viewers))
-'      * switch show population, show running costs
 Type TDebugScreenPage_Stationmap extends TDebugScreenPage
+	Global _instance:TDebugScreenPage_Stationmap
 	Field buttons:TDebugControlsButton[]
+	Field attributeToShow:Int = 0 '0=exclusive reach, 1=running costs, 2=costs/1K viewer
+
+	Method New()
+		_instance = self
+	End Method
+
+	Function GetInstance:TDebugScreenPage_Stationmap()
+		if not _instance then new TDebugScreenPage_Stationmap
+		return _instance
+	End Function 
 
 	Method Init:TDebugScreenPage_Stationmap()
-		Local texts:String[] = ["Destroy", "Add"]
+		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
@@ -114,20 +124,20 @@ endrem
 		Local textYStart:Int = textY
 
 		textFont.Draw("Sat Uplinks: " + map.GetStationCount(TVTStationType.SATELLITE_UPLINK), textX, textY)
-		textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
 		For local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
 			Local station:TStationBase = map.GetSatelliteUplinkBySatellite(satellite)
 			If station
 				textFont.Draw( Chr(9654) + " " + satellite.GetName(), textX + 5, textY)
-				textFont.DrawBox(MathHelper.DottedValue(station.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+				textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 				textY :+ 10
 			EndIf
 		Next
 		textY :+ 3
 
 		textFont.Draw("Cable Uplinks: " + map.GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK), textX, textY)
-		textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
 		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
 			Local sectionName:String = section.name
@@ -139,14 +149,14 @@ endrem
 				Local c:SColor8 = SColor8.WHITE
 				if not station.IsActive() then c = SColor8.GRAY
 				textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-				textFont.DrawBox(MathHelper.DottedValue(station.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+				textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 				textY :+ 10
 			EndIf
 		Next
 		textY :+ 3
 
 		textFont.Draw("Antennas: " + map.GetStationCount(TVTStationType.ANTENNA), textX, textY)
-		textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 
 		textY :+ 12
 		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
@@ -163,22 +173,32 @@ endrem
 				Local c:SColor8 = SColor8.WHITE
 				if not station.IsActive() then c = SColor8.GRAY
 				textFont.DrawBox( Chr(9654) + " " + n +": " + station.GetName(), textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-				textFont.DrawBox(MathHelper.DottedValue(station.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+				textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 				textY :+ 10
 			Next
 		Next
+
+		Function getValueToShow:String(station:TStationBase, typeToShow:Int)
+			Select typeToShow
+				case 0
+					return MathHelper.DottedValue(station.GetExclusiveReach())
+				case 1
+					return MathHelper.DottedValue(station.GetRunningCosts())
+				case 2
+					return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetExclusiveReach())
+			End Select
+		EndFunction
 	End Method
 
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
-		Local changeValue:Float = 1.0 '1%
 		Select sender.dataInt
-rem
 			case 0
-				GetPublicImage(1).Reset()
+				GetInstance().attributeToShow = 0
 			case 1
-				GetPublicimage(1).ChangeImage(New TAudience.InitValue(-changeValue, -changeValue))
-endrem
+				GetInstance().attributeToShow = 1
+			case 2
+				GetInstance().attributeToShow = 2
 		End Select
 
 		'handled
