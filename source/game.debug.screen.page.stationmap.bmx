@@ -3,9 +3,8 @@ Import "game.debug.screen.page.bmx"
 Import "game.game.bmx"
 Import "game.stationmap.bmx"
 
-'TODO: * data sheet when hovering
-'      * reset on "map" change
-'      * change summary value depending on attribute to show (reach, cost, cost per viewer)
+'TODO: * reset on "map" change
+'      * change summary value depending on attribute to show (reach, cost, cost per viewer)?
 Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Global _instance:TDebugScreenPage_Stationmap
 	Field buttons:TDebugControlsButton[]
@@ -26,7 +25,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	End Function 
 
 	Method Init:TDebugScreenPage_Stationmap()
-		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer", "default sort", "sort by excl. reach", "sort by cost", "sort by cost/viewer"]
+		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer", "default sort", "sort by excl. reach", "sort by running costs", "sort by cost/1K Viewer"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
@@ -143,6 +142,10 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Local boxHeight:Int = 330
 		Local fistBlockOffset:Int = 15
 
+		SetColor 50,50,40
+		DrawRect(position.x + 545, position.y + 200, 120, boxHeight - 200)
+		SetColor 255,255,255
+
 		RenderBlock_PlayerStations(playerID, position.x + 5, position.y, boxWidth, boxHeight)
 		RenderBlock_PlayerStationsList(playerID, fistBlockOffset, position.x + 5, position.y, boxWidth, boxHeight)
 rem
@@ -190,15 +193,25 @@ endrem
 		Local textX:Int = x + 3
 		Local textY:Int = y + firstBlockOffset + 3 - 1
 		Local textYStart:Int = textY
+		Local c:SColor8
+		Local detailsStationName:String
+		Local detailsStation:TStationBase = Null
+		Local xForDetails:Int = x + 540
 
 		textFont.Draw("Sat Uplinks: " + map.GetStationCount(TVTStationType.SATELLITE_UPLINK), textX, textY)
 		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
-		For local station:TStationBase = EachIn satellites
+		For Local station:TStationBase = EachIn satellites
+			c = SColor8.WHITE
 			Local n:String =station.GetName()
-			if n.length > 13 then n = ".." + n[n.length-12..]
-			textFont.Draw( Chr(9654) + " " + n, textX + 5, textY)
-			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+			If THelper.MouseIn(textX, textY, w, 10)
+				detailsStation = station
+				c = SColor8.RED
+				detailsStationName = n
+			EndIf
+			If n.length > 13 Then n = ".." + n[n.length-12..]
+			textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 		Next
 		textY :+ 3
@@ -206,12 +219,17 @@ endrem
 		textFont.Draw("Cable Uplinks: " + map.GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK), textX, textY)
 		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
-		For local station:TStationBase = EachIn cables
+		For Local station:TStationBase = EachIn cables
+			c:SColor8 = SColor8.WHITE
 			Local iso:String = station.GetSectionISO3166Code()
 			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG")
-			if n.length > 13 then n = n[.. 12]+".."
-			Local c:SColor8 = SColor8.WHITE
-			if not station.IsActive() then c = SColor8.GRAY
+			If not station.IsActive() Then c = SColor8.GRAY
+			If THelper.MouseIn(textX, textY, w, 10)
+				detailsStation = station
+				c = SColor8.RED
+				detailsStationName = n
+			EndIf
+			If n.length > 13 Then n = n[.. 12]+".."
 			textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
@@ -222,7 +240,8 @@ endrem
 		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaAudienceSum(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 
 		textY :+ 12
-		For local station:TStationBase = EachIn antennas
+		For Local station:TStationBase = EachIn antennas
+			c:SColor8 = SColor8.WHITE
 			If textY >= y + h - 1
 				x = x + 135
 				textX:Int = x + 3
@@ -230,13 +249,39 @@ endrem
 			EndIf
 			Local iso:String = station.GetSectionISO3166Code()
 			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_SHORT")
-			if n.length > 13 then n = n[.. 12]+".."
-			Local c:SColor8 = SColor8.WHITE
-			if not station.IsActive() then c = SColor8.GRAY
+			If not station.IsActive() Then c = SColor8.GRAY
+			If THelper.MouseIn(textX, textY, w, 10)
+				detailsStation = station
+				c = SColor8.RED
+				detailsStationName = n +": " + station.GetName()
+			EndIf
+			If n.length > 13 Then n = n[.. 12]+".."
 			textFont.DrawBox( Chr(9654) + " " + n +": " + station.GetName(), textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 		Next
+
+		If detailsStation
+			c:SColor8 = SColor8.WHITE
+			w = 120
+			textX = xForDetails
+			textY = y + 205
+			textFont.DrawBox(detailsStationName, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+
+			textY :+ 10
+			textFont.DrawBox("Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
+			textFont.DrawBox("excl. Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
+			textFont.DrawBox("Costs", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetRunningCosts()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
+			textFont.DrawBox("Costs/1K Viewer", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+		EndIf
+
 
 		Function getValueToShow:String(station:TStationBase, typeToShow:Int)
 			Select typeToShow
