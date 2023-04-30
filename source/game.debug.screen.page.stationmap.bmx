@@ -5,12 +5,12 @@ Import "game.stationmap.bmx"
 
 'TODO: * data sheet when hovering
 '      * reset on "map" change
-'      * sorting (by section, by audience count, by "name", running cost (absolute/per 1000 viewers))
-'      * make buttons less wide
+'      * change summary value depending on attribute to show (reach, cost, cost per viewer)
 Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Global _instance:TDebugScreenPage_Stationmap
 	Field buttons:TDebugControlsButton[]
 	Field attributeToShow:Int = 0 '0=exclusive reach, 1=running costs, 2=costs/1K viewer
+	Field sortMode:Int = 0 '0=default, 1=exclusive reach 2=cost, 3=cost/viewer
 	Field currentPlayer:Int = -1
 	Field satellites:TList = CreateList()
 	Field cables:TList = CreateList()
@@ -26,7 +26,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	End Function 
 
 	Method Init:TDebugScreenPage_Stationmap()
-		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer"]
+		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer", "default sort", "sort by excl. reach", "sort by cost", "sort by cost/viewer"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
@@ -44,8 +44,9 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 
 		'move buttons
 		For local b:TDebugControlsButton = EachIn buttons
-			b.x = x + 510 + 5
+			b.x = x + 545 + 5
 			b.y = y + b.dataInt * (b.h + 3)
+			b.SetWH(110, b.h)
 		Next
 	End Method
 
@@ -71,7 +72,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Method Update()
 		Local playerID:Int = GetShownPlayerID()
 		If playerID <> currentPlayer
-			Reset() 'in particular clear the arrays
+			Reset() 'in particular clear the lists
 			Local map:TStationMap = GetStationMap(playerID)
 			For local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
 				Local station:TStationBase = map.GetSatelliteUplinkBySatellite(satellite)
@@ -91,19 +92,53 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 			Next
 			currentPlayer = playerID
 		EndIf
+		Select sortMode
+			case 1
+				satellites.Sort(False, SortByReach)
+				cables.Sort(False, SortByReach)
+				antennas.Sort(False, SortByReach)
+			case 2
+				satellites.Sort(False, SortByCost)
+				cables.Sort(False, SortByCost)
+				antennas.Sort(False, SortByCost)
+			case 3
+				satellites.Sort(False, SortByCostPerViewer)
+				cables.Sort(False, SortByCostPerViewer)
+				antennas.Sort(False, SortByCostPerViewer)
+		EndSelect
 
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
 		Next
+
+		Function SortByReach:Int(o1:Object, o2:Object)
+			Local s1:TStationBase = TStationBase(o1)
+			Local s2:TStationBase = TStationBase(o2)
+			Return s1.GetExclusiveReach()-s2.GetExclusiveReach()
+		End Function
+
+		Function SortByCost:Int(o1:Object, o2:Object)
+			Local s1:TStationBase = TStationBase(o1)
+			Local s2:TStationBase = TStationBase(o2)
+			Return s1.GetRunningCosts()-s2.GetRunningCosts()
+		End Function
+
+		Function SortByCostPerViewer:Int(o1:Object, o2:Object)
+			Local s1:TStationBase = TStationBase(o1)
+			Local s2:TStationBase = TStationBase(o2)
+			Return 1000.0 * s1.GetRunningCosts() / s1.GetExclusiveReach() -  1000.0 * s2.GetRunningCosts() / s2.GetExclusiveReach()
+		End Function
 	End Method
 
 
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
+		DrawOutlineRect(position.x + 545, 13, 120, 150)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
+
 		Local boxWidth:Int = 130
 		Local boxHeight:Int = 330
 		Local fistBlockOffset:Int = 15
@@ -224,6 +259,18 @@ endrem
 				GetInstance().attributeToShow = 1
 			case 2
 				GetInstance().attributeToShow = 2
+			case 3
+				GetInstance().sortMode = 0
+				GetInstance().Reset()
+			case 4
+				GetInstance().sortMode = 1
+				GetInstance().Reset()
+			case 5
+				GetInstance().sortMode = 2
+				GetInstance().Reset()
+			case 6
+				GetInstance().sortMode = 3
+				GetInstance().Reset()
 		End Select
 
 		'handled
