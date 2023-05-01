@@ -1,13 +1,12 @@
 SuperStrict
 Import "game.debug.screen.page.bmx"
-Import "game.game.bmx"
-Import "game.stationmap.bmx"
+Import "../game.game.bmx"
+Import "../game.stationmap.bmx"
 
 'TODO: * reset on "map" change
 '      * change summary value depending on attribute to show (reach, cost, cost per viewer)?
 Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Global _instance:TDebugScreenPage_Stationmap
-	Field buttons:TDebugControlsButton[]
 	Field attributeToShow:Int = 0 '0=exclusive reach, 1=running costs, 2=costs/1K viewer
 	Field sortMode:Int = 0 '0=default, 1=exclusive reach 2=cost, 3=cost/viewer
 	Field currentPlayer:Int = -1
@@ -15,20 +14,24 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Field cables:TList = CreateList()
 	Field antennas:TList = CreateList()
 
+
 	Method New()
 		_instance = self
 	End Method
 
+
 	Function GetInstance:TDebugScreenPage_Stationmap()
-		if not _instance then new TDebugScreenPage_Stationmap
-		return _instance
-	End Function 
+		If Not _instance Then new TDebugScreenPage_Stationmap
+		Return _instance
+	End Function
+
 
 	Method Init:TDebugScreenPage_Stationmap()
 		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer", "default sort", "sort by excl. reach", "sort by running costs", "sort by cost/1K Viewer"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
+			button.w = 110
 			button._onClickHandler = OnButtonClickHandler
 
 			buttons :+ [button]
@@ -38,14 +41,11 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	End Method
 
 
-	Method SetPosition(x:Int, y:Int)
-		position = new SVec2I(x, y)
-
+	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
-		For local b:TDebugControlsButton = EachIn buttons
-			b.x = x + 545 + 5
-			b.y = y + b.dataInt * (b.h + 3)
-			b.SetWH(110, b.h)
+		For Local b:TDebugControlsButton = EachIn buttons
+			b.x :+ dx + 35
+			b.y :+ dy
 		Next
 	End Method
 
@@ -73,13 +73,13 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		If playerID <> currentPlayer
 			Reset() 'in particular clear the lists
 			Local map:TStationMap = GetStationMap(playerID)
-			For local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
+			For Local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
 				Local station:TStationBase = map.GetSatelliteUplinkBySatellite(satellite)
 				If station
 					satellites.AddLast(station)
 				EndIf
 			Next
-			For local section:TStationMapSection = EachIn GetStationMapCollection().sections
+			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
 				Local sectionName:String = section.name
 				Local station:TStationBase = map.GetCableNetworkUplinkStationBySectionName(sectionName)
 				If station
@@ -92,15 +92,15 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 			currentPlayer = playerID
 		EndIf
 		Select sortMode
-			case 1
+			Case 1
 				satellites.Sort(False, SortByReach)
 				cables.Sort(False, SortByReach)
 				antennas.Sort(False, SortByReach)
-			case 2
+			Case 2
 				satellites.Sort(False, SortByCost)
 				cables.Sort(False, SortByCost)
 				antennas.Sort(False, SortByCost)
-			case 3
+			Case 3
 				satellites.Sort(False, SortByCostPerViewer)
 				cables.Sort(False, SortByCostPerViewer)
 				antennas.Sort(False, SortByCostPerViewer)
@@ -142,9 +142,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Local boxHeight:Int = 330
 		Local fistBlockOffset:Int = 15
 
-		SetColor 50,50,40
-		DrawRect(position.x + 545, position.y + 200, 120, boxHeight - 200)
-		SetColor 255,255,255
+		DrawOutlineRect(position.x + 545, position.y + 200, 120, boxHeight - 200)
 
 		RenderBlock_PlayerStations(playerID, position.x + 5, position.y, boxWidth, boxHeight)
 		RenderBlock_PlayerStationsList(playerID, fistBlockOffset, position.x + 5, position.y, boxWidth, boxHeight)
@@ -171,11 +169,7 @@ endrem
 		Local player:TPlayer = GetPlayer(playerID)
 
 		For Local i:Int = 0 Until 4
-			SetColor 40,40,40
-			DrawRect(x + i*135, y, w, h)
-			SetColor 50,50,40
-			DrawRect(x + 1 + i*135, y+1, w-2, h)
-			SetColor 255,255,255
+			DrawOutlineRect(x + i*135, y, w, h)
 		Next
 
 		Local textX:Int = x + 3
@@ -186,7 +180,7 @@ endrem
 	End Method
 
 
-	Method RenderBlock_PlayerStationsList(playerID:Int, firstBlockOffset:Int, x:Int, y:Int, w:Int, h:int)
+	Method RenderBlock_PlayerStationsList(playerID:Int, firstBlockOffset:Int, x:Int, y:Int, w:Int, h:Int)
 		Local player:TPlayer = GetPlayer(playerID)
 		Local map:TStationMap = GetStationMap(playerID)
 
@@ -223,7 +217,7 @@ endrem
 			c:SColor8 = SColor8.WHITE
 			Local iso:String = station.GetSectionISO3166Code()
 			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG")
-			If not station.IsActive() Then c = SColor8.GRAY
+			If Not station.IsActive() Then c = SColor8.GRAY
 			If THelper.MouseIn(textX, textY, w, 10)
 				detailsStation = station
 				c = SColor8.RED
@@ -249,7 +243,7 @@ endrem
 			EndIf
 			Local iso:String = station.GetSectionISO3166Code()
 			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_SHORT")
-			If not station.IsActive() Then c = SColor8.GRAY
+			If Not station.IsActive() Then c = SColor8.GRAY
 			If THelper.MouseIn(textX, textY, w, 10)
 				detailsStation = station
 				c = SColor8.RED
@@ -285,12 +279,12 @@ endrem
 
 		Function getValueToShow:String(station:TStationBase, typeToShow:Int)
 			Select typeToShow
-				case 0
-					return MathHelper.DottedValue(station.GetExclusiveReach())
-				case 1
-					return MathHelper.DottedValue(station.GetRunningCosts())
-				case 2
-					return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetExclusiveReach())
+				Case 0
+					Return MathHelper.DottedValue(station.GetExclusiveReach())
+				Case 1
+					Return MathHelper.DottedValue(station.GetRunningCosts())
+				Case 2
+					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetExclusiveReach())
 			End Select
 		EndFunction
 	End Method
@@ -298,22 +292,22 @@ endrem
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
 		Select sender.dataInt
-			case 0
+			Case 0
 				GetInstance().attributeToShow = 0
-			case 1
+			Case 1
 				GetInstance().attributeToShow = 1
-			case 2
+			Case 2
 				GetInstance().attributeToShow = 2
-			case 3
+			Case 3
 				GetInstance().sortMode = 0
 				GetInstance().Reset()
-			case 4
+			Case 4
 				GetInstance().sortMode = 1
 				GetInstance().Reset()
-			case 5
+			Case 5
 				GetInstance().sortMode = 2
 				GetInstance().Reset()
-			case 6
+			Case 6
 				GetInstance().sortMode = 3
 				GetInstance().Reset()
 		End Select

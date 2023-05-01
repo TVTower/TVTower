@@ -108,14 +108,23 @@ Import "game.gamescriptexpression.bmx"
 
 Import "game.screen.menu.bmx"
 
-Import "game.debug.screen.page.stationmap.bmx"
-Import "game.debug.screen.page.publicimages.bmx"
-Import "game.debug.screen.page.playerfinancials.bmx"
-Import "game.debug.screen.page.playerbroadcasts.bmx"
-Import "game.debug.screen.page.adagency.bmx"
-Import "game.debug.screen.page.movieagency.bmx"
-Import "game.debug.screen.page.modifiers.bmx"
-Import "game.debug.screen.page.customproductions.bmx"
+Import "gameDebug/game.debug.screen.page.overview.bmx"
+Import "gameDebug/game.debug.screen.page.playercommands.bmx"
+Import "gameDebug/game.debug.screen.page.playerfinancials.bmx"
+Import "gameDebug/game.debug.screen.page.playerbroadcasts.bmx"
+Import "gameDebug/game.debug.screen.page.publicimages.bmx"
+Import "gameDebug/game.debug.screen.page.stationmap.bmx"
+Import "gameDebug/game.debug.screen.page.adagency.bmx"
+Import "gameDebug/game.debug.screen.page.movieagency.bmx"
+Import "gameDebug/game.debug.screen.page.newsagency.bmx"
+Import "gameDebug/game.debug.screen.page.scriptagency.bmx"
+Import "gameDebug/game.debug.screen.page.roomagency.bmx"
+Import "gameDebug/game.debug.screen.page.politics.bmx"
+Import "gameDebug/game.debug.screen.page.customproductions.bmx"
+Import "gameDebug/game.debug.screen.page.producers.bmx"
+Import "gameDebug/game.debug.screen.page.sports.bmx"
+Import "gameDebug/game.debug.screen.page.modifiers.bmx"
+Import "gameDebug/game.debug.screen.page.misc.bmx"
 
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"
@@ -146,7 +155,7 @@ Include "gamefunctions.bmx"
 
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_debug.bmx"
+Include "gameDebug/gamefunctions_debug.bmx"
 
 Include "game.menu.escapemenu.bmx"
 
@@ -179,7 +188,7 @@ TProfiler.activated = False
 Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
 Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
 Global _profilerKey_RessourceLoader:TLowerString = New TLowerString.Create("RessourceLoader")
-Global _profilerKey_AI_MINUTE:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_MINUTE"), New TLowerString.Create("PLAYER_AI2_MINUTE"), New TLowerString.Create("PLAYER_AI3_MINUTE"), New TLowerString.Create("PLAYER_AI4_MINUTE")]
+'AI minute key moved to TDebugScreenPage_Overview, so it can be evaluated in the screen
 Global _profilerKey_AI_SECOND:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_SECOND"), New TLowerString.Create("PLAYER_AI2_SECOND"), New TLowerString.Create("PLAYER_AI3_SECOND"), New TLowerString.Create("PLAYER_AI4_SECOND")]
 
 DebugProfiler.active = False 'True
@@ -187,10 +196,10 @@ DebugProfiler.ObserveCall(_profilerKey_Update)
 DebugProfiler.ObserveCall(_profilerKey_Draw)
 DebugProfiler.ObserveCall("GameLoop::Draw")
 DebugProfiler.ObserveCall("GameLoop::Update")
-DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[0])
-DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[1])
-DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[2])
-DebugProfiler.ObserveCall(_profilerKey_AI_MINUTE[3])
+DebugProfiler.ObserveCall(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[0])
+DebugProfiler.ObserveCall(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[1])
+DebugProfiler.ObserveCall(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[2])
+DebugProfiler.ObserveCall(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[3])
 
 
 '==== Initialize ====
@@ -756,7 +765,7 @@ Type TApp
 			'hotkeys which should exist for dev and non-dev
 			'Save game only when in a game
 			If GetGame().gamestate = TGame.STATE_RUNNING
-				If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave." + GameConfig.GetSavegameExtension(), "", False)
+				If KeyManager.IsHit(KEY_F5) Then TSaveGame.PrepareAutoSave("savegames/quicksave." + GameConfig.GetSavegameExtension())
 			EndIf
 
 			If KeyManager.IsHit(KEY_F8)
@@ -848,6 +857,9 @@ Type TApp
 
 		GUIManager.EndUpdates() 'reset modal window states
 
+		If TSaveGame.toSaveNow
+			If TSaveGame.Save(TSaveGame.toSaveUri, "", False) Then TSaveGame.toSaveNow = False
+		EndIf
 
 		'set the mouse clicks handled anyways
 '		MouseManager.ResetClicked(1)
@@ -1562,6 +1574,24 @@ endrem
 
 		'update regardless of enabled or not
 		DebugScreen.UpdateSystem()
+
+
+		'handle (temporary) fast forward here - saving game not available in screen
+		Local fastForwardScreen:TDebugScreenPage_Misc = TDebugScreenPage_Misc.GetInstance()
+		If fastForwardScreen.FastForward_Active and fastForwardScreen.FastForward_TargetTime < GetWorldTime().GetTimeGone()
+			fastForwardScreen.Dev_StopFastForwardToTime()
+		EndIf
+		'continuous fast forward: save game and go to the end of the next day
+		If fastForwardScreen.FastForward_Continuous_Active and fastForwardScreen.FastForward_TargetTime < GetWorldTime().GetTimeGone()
+			Local daysRun:Int = GetWorldTime().GetDaysRun() + 1
+			If daysRun mod 5 = 0
+				Local savegameName:String = "savegames/AI-day-" + StringHelper.RSetChar(daysRun,3,"0")
+				Local savegameURI:String = savegameName + "." + GameConfig.GetSavegameExtension()
+				TSaveGame.PrepareAutoSave(savegameURI)
+			EndIf
+			fastForwardScreen.FastForward_TargetTime = GetWorldTime().CalcTime_DaysFromNowAtHour(-1,1,1,23,23) + 56*TWorldTime.MINUTELENGTH
+		EndIf
+
 
 		If DebugScreen._enabled
 			GameConfig.mouseHandlingDisabled = True
@@ -2386,6 +2416,9 @@ Type TSaveGame Extends TGameState
 	Global lastSaveTime:Long = 0 {nosave}
 	Global autoSaveNow:Int = False {nosave}
 
+	Global toSaveNow:Int = False {nosave}
+	Global toSaveUri:String {nosave}
+
 	'override to do nothing
 	Method Initialize:Int()
 		'
@@ -2825,6 +2858,12 @@ Type TSaveGame Extends TGameState
 		EndIf
 		
 		Return False
+	End Function
+
+
+	Function PrepareAutoSave(savegameURI:String)
+		toSaveNow = True
+		toSaveUri = savegameURI
 	End Function
 
 
@@ -4436,7 +4475,7 @@ Type GameEvents
 				EndIf
 
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-				DebugScreen.Dev_SetPlayerAI(player.playerID, Int(params) = 1)
+				TDebugScreenPage_Misc.GetInstance().Dev_SetPlayerAI(player.playerID, Int(params) = 1)
 
 			Case "bossmood"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
@@ -4943,10 +4982,10 @@ endrem
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
 				localAIPlayerCount :+ 1
-				TProfiler.Enter(_profilerKey_AI_MINUTE[player.playerID-1], False)
+				TProfiler.Enter(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[player.playerID-1], False)
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnTick).SetToSynchronize().AddLong(realTime).AddLong(gameTime) )
 				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).AddInt(minuteOfHour) )
-				TProfiler.Leave(_profilerKey_AI_MINUTE[player.playerID-1], 100, False)
+				TProfiler.Leave(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[player.playerID-1], 100, False)
 			EndIf
 		Next
 
@@ -6397,7 +6436,7 @@ endrem
 				autoSaveName = gameName + "_autosave"
 			EndIf
 			Local autoSaveURI:String = TSavegame.GetSavegameURI(autoSaveName)
-			TSaveGame.Save(autoSaveURI, autoSaveName, False)
+			TSaveGame.PrepareAutoSave(autoSaveURI)
 			TSaveGame.autoSaveNow = False
 		EndIf
 
@@ -6601,7 +6640,7 @@ endrem
 			'=== PRINT OUT FINANCIAL STATS ===
 
 			For Local playerID:Int = 1 To 4
-				Local text:String[] = GetPlayerFinanceOverviewText(playerID, day - 1)
+				Local text:String[] = TDebugScreenPage_Misc.GetInstance().GetPlayerFinanceOverviewText(playerID, day - 1)
 				For Local s:String = EachIn text
 					TLogger.Log("OnDay Financials", s, LOG_DEBUG)
 				Next
@@ -6734,332 +6773,14 @@ End Function
 
 '===== COMMON FUNCTIONS =====
 
-Function GetPlayerPerformanceOverviewText:String[](day:Int)
-	If day = -1 Then day = GetWorldTime().GetDay()
-	Local latestHour:Int = 23
-	Local latestMinute:Int = 59
-	If day = GetWorldTime().GetDay()
-		latestHour = GetWorldTime().GetDayHour()
-		latestMinute = GetWorldTime().GetDayMinute()
-	EndIf
-	Local now:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, latestHour, latestMinute, 0)
-	Local midnight:Long = GetWorldTime().GetTimeGoneForGameTime(0, day+1, 0, 0, 0)
-	Local latestTime:String = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
-
-
-	Local text:String[]
-
-	Local title:String = LSet("Performance Stats for day " + (GetWorldTime().GetDaysRun(midnight)+1) + ". Time: 00:00 - " + latestTime, 83)
-
-	text :+ [".-----------------------------------------------------------------------------------."]
-	text :+ ["|" + title                                          + "|"]
-
-	For Local playerID:Int = 1 To 4
-		Local bankruptcyCount:Int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
-		Local bankruptcyTime:Long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
-		'bankruptcy happened today?
-		If bankruptcyCount > 0
-			Local restartTime:Long = bankruptcyTime 'GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
-
-			'bankruptcy on that day (or more detailed: right on midnight the
-			'next day)
-			If GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay(midnight)
-				text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 83) + "|"]
-			EndIf
-
-			'restarted later on?
-			If GetWorldTime().GetDay(restartTime) = GetWorldTime().GetDay(midnight)
-				text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(restartTime) +" on day " + (GetWorldTime().getDaysRun(restartTime)+1)+" !", 83) + "|"]
-			EndIf
-		EndIf
-	Next
-
-	text :+ ["|---------------------------------------.----------.----------.----------.----------|"]
-	text :+ ["| TITLE                                 |       P1 |       P2 |       P3 |       P4 |"]
-	text :+ ["|---------------------------------------|----------|----------|----------|----------|"]
-
-	Local keys:String[]
-	Local values1:String[]
-	Local values2:String[]
-	Local values3:String[]
-	Local values4:String[]
-
-	Local adAudienceProgrammeAudienceRate:Float[4]
-	Local failedAdSpots:Int[4]
-	Local spotPenalty:String[4]
-	Local sentTrailers:Int[4]
-	Local sentInfomercials:Int[4]
-	Local sentAdvertisements:Int[4]
-
-	Local broadcastStat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
-	If broadcastStat
-		Local audienceSum:Long[4]
-		Local adAudienceSum:Long[4]
-
-		For Local player:Int = 1 To 4
-			For Local hour:Int = 0 To latestHour
-				Local audience:TAudienceResultBase = broadcastStat.GetAudienceResult(player, hour, False)
-				Local adAudience:TAudienceResultBase = broadcastStat.GetAdAudienceResult(player, hour, False)
-
-				Local advertisement:TAdvertisement
-				Local adAudienceValue:Int, audienceValue:Int
-
-
-				' AD
-				If adAudience
-					If TAdvertisement(adAudience.broadcastMaterial)
-						advertisement = TAdvertisement(adAudience.broadcastMaterial)
-						adAudienceValue = Int(advertisement.contract.GetMinAudience())
-					Else
-						sentTrailers[player-1] :+ 1
-					EndIf
-				EndIf
-
-				' PROGRAMME
-				If audience And audience.broadcastMaterial
-					audienceValue = Int(audience.audience.GetTotalSum())
-
-					If TAdvertisement(audience.broadcastMaterial)
-						sentInfomercials[player-1] :+ 1
-					EndIf
-				EndIf
-
-				If advertisement
-					If advertisement.isState(TAdvertisement.STATE_OK)
-						adAudienceSum[player-1] :+ adAudienceValue
-						audienceSum[player-1] :+ audienceValue
-					ElseIf advertisement.isState(TAdvertisement.STATE_FAILED)
-						failedAdSpots[player-1] :+ 1
-					EndIf
-				EndIf
-			Next
-			adAudienceProgrammeAudienceRate[player-1] = 0
-			If adAudienceSum[player-1] > 0
-				adAudienceProgrammeAudienceRate[player-1] = Float(adAudienceSum[player-1]) / audienceSum[player-1]
-			EndIf
-
-			Local finance:TPlayerFinance = TPlayerFinanceCollection.getInstance().Get(player, day)
-			Local penalty:Long = finance.expense_penalty
-			If penalty > 0
-				spotPenalty[player-1] = ""+penalty / 1000 +"K; "
-			Else
-				spotPenalty[player-1] =""
-			EndIf
-		Next
-	EndIf
-
-	keys :+ [ "AdMinAudience/ProgrammeAudience-Rate" ]
-	values1 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[0]*100,2)+"%" ]
-	values2 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[1]*100,2)+"%" ]
-	values3 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[2]*100,2)+"%" ]
-	values4 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[3]*100,2)+"%" ]
-
-	keys :+ [ "Penalty; Failed Adspots" ]
-	values1 :+ [ spotPenalty[0]+String(failedAdSpots[0]) ]
-	values2 :+ [ spotPenalty[1]+String(failedAdSpots[1]) ]
-	values3 :+ [ spotPenalty[2]+String(failedAdSpots[2]) ]
-	values4 :+ [ spotPenalty[3]+String(failedAdSpots[3]) ]
-	keys :+ [ "Sent [T]railers and [I]nfomercials" ]
-	values1 :+ [ "T:"+sentTrailers[0] + " I:"+sentInfomercials[0] ]
-	values2 :+ [ "T:"+sentTrailers[1] + " I:"+sentInfomercials[1] ]
-	values3 :+ [ "T:"+sentTrailers[2] + " I:"+sentInfomercials[2] ]
-	values4 :+ [ "T:"+sentTrailers[3] + " I:"+sentInfomercials[3] ]
 
 
 
 
-	'MathHelper.DottedValue(financeTotal.expense_programmeLicences)
-	For Local i:Int = 0 Until keys.length
-		Local line:String = "| "+LSet(StringHelper.RemoveUmlauts(keys[i]), 38) + "|"
-
-		line :+ RSet( values1[i] + " |", 11)
-		line :+ RSet( values2[i] + " |", 11)
-		line :+ RSet( values3[i] + " |", 11)
-		line :+ RSet( values4[i] + " |", 11)
-
-		text :+ [line]
-	Next
-
-	text :+ ["'---------------------------------------'----------'----------'----------'----------'"]
-
-	Return text
-End Function
-
-
-Function GetPlayerFinanceOverviewText:String[](playerID:Int, day:Int)
-	If day = -1 Then day = GetWorldTime().GetDay()
-	Local latestHour:Int = 23
-	Local latestMinute:Int = 59
-	If day = GetWorldTime().GetDay()
-		latestHour = GetWorldTime().GetDayHour()
-		latestMinute = GetWorldTime().GetDayMinute()
-	EndIf
-	Local now:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, latestHour, latestMinute, 0)
-	Local midnight:Long = GetWorldTime().GetTimeGoneForGameTime(0, day+1, 0, 0, 0)
-	Local latestTime:String = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
-
-
-	'ignore player start day and fetch information about "older incarnations"
-	'of that player too (bankruptcies)
-	Local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, day)
-	Local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
-
-	Local title:String = LSet("Finance Stats for player #" + playerID + " on day " + GetWorldTime().GetDaysRun(midnight) +" ("+GetWorldTime().GetDay(midnight)+")"+ ". Time: 00:00 - " + latestTime, 85)
-	Local text:String[]
-
-	text :+ [".--------------------------------------------------------------------------------------."]
-	text :+ ["| " + title                                          + "|"]
-	If Not finance
-		text :+ ["| " + LSet("No Financial overview available for the requested day.", 85) + "|"]
-	EndIf
-
-	Local bankruptcyCountAtMidnight:Int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
-	'bankruptcy happened today?
-	If bankruptcyCountAtMidnight > 0
-		Local bankruptcyCountAtDayBegin:Int = GetPlayer(playerID).GetBankruptcyAmount(midnight - TWorldTime.DAYLENGTH)
-		'print "player #"+playerID+": bankruptcyCountAtDayBegin=" + bankruptcyCountAtDayBegin+ "  ..AtMidnight=" + bankruptcyCountAtMidnight+"  midnight="+GetWorldTime().GetFormattedGameDate(midnight)
-
-		For Local bankruptcyCount:Int = bankruptcyCountAtDayBegin To bankruptcyCountAtMidnight
-			If bankruptcyCount = 0 Then Continue
-			Local bankruptcyTime:Long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
-
-			Rem
-			'disabled: use this if restarts of players happen the next day
-			local restartTime:Long = GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
-
-			'bankruptcy on that day (or more detailed: right on midnight the
-			'next day)
-			if GetWorldTime().GetDay(bankruptcyTime) = day
-				text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 85) + "|"]
-			endif
-			endrem
-
-			text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(bankruptcyTime) + " that day!", 85) + "|"]
-		Next
-	EndIf
-
-
-	If finance And financeTotal
-		Local titleLength:Int = 30
-		text :+ ["|-------------------------------------------------------------.------------------------|"]
-		text :+ ["| Money:        "+RSet(MathHelper.DottedValue(finance.GetMoney()), 15)+"  |                         |           TOTAL           |"]
-		text :+ ["|--------------------------------|------------.------------|-------------.-------------|"]
-		text :+ ["|                                |   INCOME   |  EXPENSE   |   INCOME    |   EXPENSE   |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_programmeLicences), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_programmeLicences), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_programmeLicences), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_programmeLicences), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_ads), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_penalty), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_ads), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_penalty), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_callerRevenue), 10) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_callerRevenue), 11) + " | " + RSet("-", 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_sponsorshipRevenue), 10) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_sponsorshipRevenue), 11) + " | " + RSet("-", 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_news), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_news), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_newsAgencies), 10)+ " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_newsAgencies), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_stations), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_stations), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_stations), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_stations), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS_FEES")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_stationFees), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_stationFees), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_scripts), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_scripts), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_scripts), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_scripts), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_productionStuff), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_productionStuff), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_rent), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_rent), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_drawingCreditInterest + finance.expense_creditInterest), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest + financeTotal.expense_creditInterest), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_creditTaken), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_creditRepayed), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_creditTaken), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_creditRepayed), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_misc), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_misc), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_misc), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_misc), 11)+ " |"]
-		text :+ ["|--------------------------------|------------|------------|-------------|-------------|"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_total), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_total), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_total), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_total), 11)+ " |"]
-		text :+ ["'--------------------------------'------------'------------'-------------'-------------'"]
-	Else
-		text :+ ["'--------------------------------------------------------------------------------------'"]
-	EndIf
-	Return text
-End Function
 
 
 
-Function GetBroadcastOverviewText:String[](playerID:Int = -1, day:Int = -1)
-	If day = -1 Then day = GetWorldTime().GetDay()
-	Local lastHour:Int = GetWorldTime().GetDayHour()
-	If day < GetWorldTime().GetDay() Then lastHour = 23
-	Local time:Long = GetWorldTime().GetTimeGoneForGameTime(0, day, lastHour, 0, 0)
 
-	Local result:String = ""
-	result :+ "==== BROADCAST OVERVIEW ====  "
-	result :+ GetWorldTime().GetFormattedDate(time) + "~n"
-
-	Local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
-	If Not stat
-		result :+ "  no dailybroadcaststatistic found." + "~n"
-		Return [result]
-	EndIf
-
-	Local playerMin:Int = 1
-	Local playerMax:Int	= 4
-	If playerId > 0
-		playerMin = playerID
-		playerMax = playerID
-	EndIf
-
-	For Local player:Int = playerMin To playerMax
-		result :+ ".----------." + "~n"
-		result :+ "| PLAYER " + player + " |" + "~n"
-		result :+ ".-------.--'------.---------------------------.-----------------.----------------------.---------." + "~n"
-		result :+ "| TIME  | NEWS-Q  | PROGRAMME                 | QUOTE / SHARE   | ADVERTISEMENT        | MIN-Q   |" + "~n"
-		result :+ "|-------+---------+---------------------------+-----------------+----------------------+---------|" + "~n"
-		For Local hour:Int = 0 To lastHour
-			Local audience:TAudienceResultBase = stat.GetAudienceResult(player, hour, False)
-			Local newsAudience:TAudienceResultBase = stat.GetNewsAudienceResult(player, hour, False)
-			Local adAudience:TAudienceResultBase = stat.GetAdAudienceResult(player, hour, False)
-'			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
-
-			'old savegames
-			Local adSlotMaterial:TBroadcastMaterial
-			If adAudience
-				adSlotMaterial = adAudience.broadcastMaterial
-			Else
-				adSlotMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)
-			EndIf
-
-
-			Local progText:String, progAudienceText:String
-			Local adText:String, adAudienceText:String
-			Local newsAudienceText:String
-
-
-			If audience And audience.broadcastMaterial
-				progText = audience.broadcastMaterial.GetTitle()
-				If Not audience.broadcastMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
-					progText = "[I] " + progText
-				EndIf
-
-				progAudienceText = RSet(Int(audience.audience.GetTotalSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
-			Else
-				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 7)
-				progText = "Outage"
-			EndIf
-			progText = LSet(StringHelper.RemoveUmlauts(progText), 25)
-
-
-			If newsAudience
-				newsAudienceText = RSet(Int(newsAudience.audience.GetTotalSum()), 7)
-			Else
-				newsAudienceText = RSet(" -/- ", 7)
-			EndIf
-
-
-			If adSlotMaterial
-				adText = LSet(adSlotMaterial.GetTitle(), 20)
-				adAudienceText = RSet(" -/- ", 7)
-
-				If adSlotMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
-					adText = LSet("[T] " + StringHelper.RemoveUmlauts(adSlotMaterial.GetTitle()), 20)
-				ElseIf adSlotMaterial.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
-					adAudienceText = RSet(Int(TAdvertisement(adSlotMaterial).contract.GetMinAudience()),7)
-				EndIf
-			Else
-				adText = LSet("-/-", 20)
-				adAudienceText = RSet(" -/- ", 7)
-			EndIf
-
-			result :+ "| " + RSet(hour, 2)+":00 | " + newsAudienceText+" | " + progText + " | " + progAudienceText+" | " + adText + " | " + adAudienceText +" |" +"~n"
-		Next
-		result :+ "'-------'---------'---------------------------'-----------------'----------------------'---------'" + "~n"
-	Next
-	Return [result]
-End Function
 
 
 ?bmxng And (android Or ios)
@@ -7559,66 +7280,4 @@ TProfiler.Leave("GameLoop")
 
 	'take care of network
 	If GetGame().networkgame Then Network.DisconnectFromServer()
-End Function
-
-
-
-
-Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int, h:Int, label:String, drawType:Int=0)
-	SetAlpha 0.5
-	SetColor 150,150,150
-	DrawRect(x,y,w,h)
-
-	SetAlpha 0.75
-	SetColor 200,200,200
-	DrawLine(x,y,x,y+h)
-	DrawLine(x+w,y,x+w,y+h)
-	DrawLine(x,y,x+w,y)
-	DrawLine(x,y+h,x+w,y+h)
-
-	SetAlpha 1.0
-
-	If profilerCall And profilerCall.historyDuration.length > 0
-		Local durationMax:Float = profilerCall.historyDuration[0]
-		Local durationMin:Float = profilerCall.historyDuration[0]
-		Local durationAvg:Float = profilerCall.historyDuration[0]
-		Local timeMin:Double = profilerCall.historyTime[0]
-		Local timeMax:Double = profilerCall.historyTime[ profilerCall.historyTime.length - 1 ]
-		Local timeSpan:Double
-
-		Local canvasW:Int = w - 2
-		Local canvasH:Int = h - 2 - 10 '-10 for label
-
-		'find max / calc avg
-		For Local i:Int = 0 Until profilerCall.historyDuration.length
-			If durationMax < profilerCall.historyDuration[i] Then durationMax = profilerCall.historyDuration[i]
-			If durationMin > profilerCall.historyDuration[i] Then durationMin = profilerCall.historyDuration[i]
-			If timeMin > profilerCall.historyTime[i] Then timeMin = profilerCall.historyTime[i]
-			If timeMax < profilerCall.historyTime[i] Then timeMax = profilerCall.historyTime[i]
-			durationAvg :+ profilerCall.historyDuration[i]
-		Next
-		durationAvg :/ profilerCall.historyDuration.length
-
-		timeSpan = timeMax - timeMin
-
-
-		SetColor 150,150,150
-		For Local i:Int = 0 Until profilerCall.historyTime.length
-			Local aboveAvg:Float = profilerCall.historyDuration[i] / durationAvg
-			SetColor 150 + Int(MathHelper.Clamp(100*(aboveAvg-1), 0, 100)),150,150
-
-			Local px:Float = x + 1 + canvasW * (profilerCall.historyTime[i] - timeMin) / timeSpan
-			Local py:Float = y + h - 1 - canvasH * profilerCall.historyDuration[i] / durationMax
-			Select drawType
-				Case 0
-					DrawLine(px, py, px, y + h - 1)
-				Default
-					Plot(px, py)
-			End Select
-		Next
-
-		SetColor 255,255,255
-		GetBitmapFont("Default", 10).DrawBox(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, sALIGN_RIGHT_TOP, SColor8.White)
-	EndIf
-	GetBitmapFont("Default", 10).DrawBox(label, x+2, y+2, w-4, 20, sALIGN_LEFT_TOP, SColor8.White)
 End Function

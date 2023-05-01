@@ -1,13 +1,23 @@
 SuperStrict
 Import "game.debug.screen.page.bmx"
-Import "game.game.bmx"
-Import "game.player.bmx"
-
-
+Import "../game.game.bmx"
+Import "../game.player.bmx"
 
 Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
-	Field buttons:TDebugControlsButton[]
-	
+	Global _instance:TDebugScreenPage_PlayerFinancials
+
+
+	Method New()
+		_instance = self
+	End Method
+
+
+	Function GetInstance:TDebugScreenPage_PlayerFinancials()
+		If Not _instance Then new TDebugScreenPage_PlayerFinancials
+		Return _instance
+	End Function
+
+
 	Method Init:TDebugScreenPage_PlayerFinancials()
 		Local texts:String[] = ["Set Player 1 Bankrupt", "Set Player 2 Bankrupt", "Set Player 3 Bankrupt", "Set Player 4 Bankrupt"]
 		Local button:TDebugControlsButton
@@ -17,26 +27,24 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 
 			buttons :+ [button]
 		Next
-		
+
 		Return self
 	End Method
-	
-	
-	Method SetPosition(x:Int, y:Int)
-		position = new SVec2I(x, y)
 
+
+	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
-		For local b:TDebugControlsButton = EachIn buttons
-			b.x = x + 510 + 5
-			b.y = y + b.dataInt * (b.h + 3)
+		For Local b:TDebugControlsButton = EachIn buttons
+			b.x :+ dx
+			b.y :+ dy
 		Next
 	End Method
-	
-	
+
+
 	Method Reset()
 	End Method
-	
-	
+
+
 	Method Activate()
 	End Method
 
@@ -46,8 +54,6 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 
 
 	Method Update()
-		Local playerID:Int = GetShownPlayerID()
-
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
 		Next
@@ -57,7 +63,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		DrawOutlineRect(position.x + 510, 13, 160, 150)
+		DrawOutlineRect(position.x + 510, 13, 160, 80)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -77,11 +83,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Local padding:Int = 15
 			Local boxWidth:Int = labelWidth + padding + colWidth*4 + 2 '2 is border*2
 
-			SetColor 40,40,40
-			DrawRect(x, y, boxWidth, 140)
-			SetColor 50,50,40
-			DrawRect(x+1, y+1, boxWidth-2, 140)
-			SetColor 255,255,255
+			DrawOutlineRect(x, y, boxWidth, 140)
 
 			Local textX:Int = x + 3
 			Local textY:Int = y + 3 - 1
@@ -111,7 +113,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 		EndIf
 	End Method
 
-	
+
 	Method RenderBlock_FinancialInfo(playerID:Int, x:Int, y:Int)
 		If playerID = -1
 			RenderBlock_FinancialInfo(1, x, y + 30*0)
@@ -121,10 +123,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Return
 		EndIf
 
-		SetColor 0,0,0
-		DrawRect(x, y, 123, 35)
-
-		SetColor 255,255,255
+		DrawOutlineRect(x, y, 123, 35)
 
 		Local textX:Int = x+1
 		Local textY:Int = y+1
@@ -139,7 +138,6 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 		textY :+ 9
 		font.Draw("~tAd:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_penalty), textX, textY)
 	End Method
-
 
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)

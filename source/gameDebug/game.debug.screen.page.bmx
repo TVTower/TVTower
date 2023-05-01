@@ -1,11 +1,11 @@
 SuperStrict
-Import "game.ingameinterface.bmx"
-Import "game.player.base.bmx"
-
+Import "../game.ingameinterface.bmx"
+Import "../game.player.base.bmx"
 
 Type TDebugScreenPage
 	Field position:SVec2I
 	Field dimension:SVec2I
+	Field buttons:TDebugControlsButton[]
 
 	Global titleFont:TBitmapFont
 	Global textFont:TBitmapFont
@@ -22,13 +22,12 @@ Type TDebugScreenPage
 
 	Method MoveBy(dx:Int, dy:Int)
 	End Method
-	
 
-	
+
 	Method SetPosition(x:Int, y:Int) 
-		local move:SVec2I = new SVec2I(x - position.x, y - position.y)
+		Local move:SVec2I = new SVec2I(x - position.x, y - position.y)
 		position = new SVec2I(x, y)
-		
+
 		MoveBy(move.x, move.y)
 	End Method
 
@@ -47,7 +46,7 @@ Type TDebugScreenPage
 	End Method
 
 
-	Method CreateActionButton:TDebugControlsButton(index:int, text:String, x:Int, y:Int)
+	Function CreateActionButton:TDebugControlsButton(index:Int, text:String, x:Int, y:Int)
 		Local button:TDebugControlsButton = New TDebugControlsButton
 		button.h = 15
 		button.w = 150
@@ -55,11 +54,11 @@ Type TDebugScreenPage
 		button.y = y + index * (button.h + 3)
 		button.dataInt = index
 		button.text = text
-		return button
-	End Method
+		Return button
+	End Function
 
 
-	Function DrawOutlineRect(x:int, y:int, w:int, h:int, borderTop:int = True, borderRight:int = True, borderBottom:int = True, borderLeft:Int = True, r:int = 0, g:int = 0, b:int = 0, borderAlpha:Float = 0.5, bgAlpha:Float = 0.5)
+	Function DrawOutlineRect(x:Int, y:Int, w:Int, h:Int, borderTop:Int = True, borderRight:Int = True, borderBottom:Int = True, borderLeft:Int = True, r:Int = 0, g:Int = 0, b:Int = 0, borderAlpha:Float = 0.75, bgAlpha:Float = 0.75)
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 		SetColor(r, g, b)
@@ -68,16 +67,15 @@ Type TDebugScreenPage
 		DrawRect(x+2, y+2, w-4, h-4)
 
 		SetAlpha(borderAlpha * oldColA)
-		if borderTop then DrawRect(x, y, w, 2)
-		if borderRight then DrawRect(x + w - 2, y, 2, h)
-		if borderBottom then DrawRect(x, y + h - 2, w, 2)
-		if borderLeft then DrawRect(x, y, 2, h)
+		If borderTop Then DrawRect(x, y, w, 2)
+		If borderRight Then DrawRect(x + w - 2, y, 2, h)
+		If borderBottom Then DrawRect(x, y + h - 2, w, 2)
+		If borderLeft Then DrawRect(x, y, 2, h)
 
 		SetAlpha(oldColA)
 		SetColor(oldCol)
 	End Function
 End Type
-
 
 
 rem
@@ -92,7 +90,7 @@ Struct SDebugClickBox
 	Field clicked:Int = False
 
 	
-	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int = 0, data:Object = Null)
+	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:Int, data:Object = Null) = Null, clickCallback:Int(param:Int, data:Object = Null) = Null, param:Int = 0, data:Object = Null)
 		self.hovered = False
 		self.clicked = False
 		self.position = position
@@ -103,7 +101,7 @@ Struct SDebugClickBox
 		self.callbackData = data
 	End Method
 
-	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:int, data:Object = Null) = Null, clickCallback:Int(param:int, data:Object = Null) = Null, param:Int)
+	Method New (position:SVec2I, size:SVec2I, hoverCallback:Int(param:Int, data:Object = Null) = Null, clickCallback:Int(param:Int, data:Object = Null) = Null, param:Int)
 		self.hovered = False
 		self.clicked = False
 		self.position = position
@@ -112,20 +110,20 @@ Struct SDebugClickBox
 		self.onClickCallback = clickCallback
 		self.callbackParam = param
 	End Method
-	
-	
+
+
 	Method IsHovered:Int()
 		Return hovered
 	End Method
 
-	
+
 	Method Update()
-		if THelper.MouseIn(position.x, position.y, size.x, size.y)
+		If THelper.MouseIn(position.x, position.y, size.x, size.y)
 			hovered = True
-			if onHoverCallback Then onHoverCallback(callbackParam, callbackData)
+			If onHoverCallback Then onHoverCallback(callbackParam, callbackData)
 			
 			'without callback we "ignore" clicks
-			'If onClickCallback and MouseManager.IsClicked(1)
+			'If onClickCallback And MouseManager.IsClicked(1)
 			
 			If MouseManager.IsClicked(1)
 				clicked = True
@@ -139,7 +137,6 @@ End Struct
 endrem
 
 
-
 'a content block (eg to display some information about a studio or a programme)
 Type TDebugContentBlock
 	Field size:SVec2I
@@ -147,8 +144,8 @@ Type TDebugContentBlock
 	Field contentPadding:SVec2I
 	Field selected:Int
 	Field hovered:Int
-	
-	
+
+
 	Method New()
 		contentPadding = New SVec2I(2,2)
 	End Method
@@ -164,7 +161,7 @@ Type TDebugContentBlock
 	End Method
 
 
-	Method DrawBG(x:Int, y:Int, w:Int, h:int)
+	Method DrawBG(x:Int, y:Int, w:Int, h:Int)
 		If selected
 			SetColor 80,60,40
 		ElseIf hovered
@@ -184,7 +181,7 @@ Type TDebugContentBlock
 		DrawRect(x+1, y+1, w-2, h-2)
 		SetColor 255,255,255
 	End Method
-	
+
 
 	Method Update(x:Int, y:Int)	
 		If THelper.MouseIn(x,y, size.x, size.y)
@@ -193,8 +190,8 @@ Type TDebugContentBlock
 			hovered = False
 		EndIf
 	End Method
-	
-	
+
+
 	Method Draw:SVec2I(x:Int, y:Int)
 		'update size
 		size = new SVec2I(2 * contentPadding.x + contentSize.x, 2 * contentPadding.y + contentSize.y)
@@ -203,12 +200,11 @@ Type TDebugContentBlock
 
 		DrawContent(x, y)
 	End Method
-	
-	
+
+
 	Method DrawContent(x:Int, y:Int) abstract
 '	End Method
 End Type
-
 
 
 Type TDebugControlsButton
@@ -225,17 +221,20 @@ Type TDebugControlsButton
 	Field visible:Int = True
 	Field _onClickHandler(sender:TDebugControlsButton)
 
+
 	Method SetXY:TDebugControlsButton(x:Int, y:Int)
 		self.x = x
 		self.y = y
 		Return self
 	End Method
 
+
 	Method SetWH:TDebugControlsButton(w:Int, h:Int)
 		self.w = w
 		self.h = h
 		Return self
 	End Method
+
 
 	Method Update:Int(offsetX:Int=0, offsetY:Int=0)
 		If Not visible Or Not Enabled Then Return False
@@ -256,9 +255,9 @@ Type TDebugControlsButton
 
 		RenderButton(offsetX + x, offsetY + y, w, h, text, enabled, selected)
 	End Method
-	
-	
-	Function RenderButton(x:Int, y:Int, w:Int, h:int, text:String, enabled:Int = True, selected:Int = False)
+
+
+	Function RenderButton(x:Int, y:Int, w:Int, h:Int, text:String, enabled:Int = True, selected:Int = False)
 		Local oldColA:Float = GetAlpha()
 		If Not enabled Then SetAlpha oldColA * 0.5 
 
@@ -279,7 +278,7 @@ Type TDebugControlsButton
 		DrawRect(x+1,y+1,w-2,h-2)
 		SetColor 255,255,255
 		GetBitmapFont("default", 11).DrawBox(text, x,y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
-		
+
 		SetAlpha(oldColA)
 	End Function
 
@@ -291,4 +290,3 @@ Type TDebugControlsButton
 		If _onClickHandler Then _onClickHandler(Self)
 	End Method
 End Type
-

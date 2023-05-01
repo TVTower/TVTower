@@ -510,11 +510,6 @@ Type TWorld
 
 
 	Method RenderDebug:Int(x:Float = 0, y:Float = 0, width:Int=200, height:Int=180)
-		SetColor 0,0,0
-		SetAlpha GetAlpha()*0.5
-		DrawRect(x,y,width,height)
-		SetAlpha GetAlpha()*2.0
-		SetColor 255,255,255
 		Local dy:Int = 5
 		DrawText("== World Data ==", x + 10, y + dy)
 		dy :+ 12
