@@ -1,13 +1,23 @@
 SuperStrict
 Import "game.debug.screen.page.bmx"
-Import "game.game.bmx"
-Import "game.player.bmx"
-
-
+Import "../game.game.bmx"
+Import "../game.player.bmx"
 
 Type TDebugScreenPage_PublicImages extends TDebugScreenPage
-	Field buttons:TDebugControlsButton[]
-	
+	Global _instance:TDebugScreenPage_PublicImages
+
+
+	Method New()
+		_instance = self
+	End Method
+
+
+	Function GetInstance:TDebugScreenPage_PublicImages()
+		If Not _instance Then new TDebugScreenPage_PublicImages
+		Return _instance
+	End Function 
+
+
 	Method Init:TDebugScreenPage_PublicImages()
 		Local texts:String[] = ["Reset", "-1%", "+1%", "+10%", "Reset", "-1%", "+1%", "+10%", "Reset", "-1%", "+1%", "+10%", "Reset", "-1%", "+1%", "+10%"]
 		Local button:TDebugControlsButton
@@ -17,40 +27,14 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 			buttons :+ [button]
 		Next
-		
+
 		Return self
 	End Method
-	
-	
-	Method SetPosition(x:Int, y:Int)
-		position = new SVec2I(x, y)
 
+
+	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
-		For local b:TDebugControlsButton = EachIn buttons
-			b.x = x + 510 + 5
-			b.y = y + b.dataInt * (b.h + 3)
-		Next
-	End Method
-	
-	
-	Method Reset()
-	End Method
-	
-	
-	Method Activate()
-	End Method
-
-
-	Method Deactivate()
-	End Method
-
-
-	Method Update()
-		Local playerID:Int = GetShownPlayerID()
-
-
-		'move buttons
-		if buttons.length >= 6
+		If buttons.length >= 6
 			buttons[ 0].SetXY(position.x + 510 + 20, position.y + 0 * 18 + 5).SetWH( 43, 15)
 			buttons[ 1].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 0 * 18 + 5).SetWH( 26, 15)
 			buttons[ 2].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 0 * 18 + 5).SetWH( 26, 15)
@@ -67,9 +51,23 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 			buttons[13].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 3 * 18 + 5).SetWH( 26, 15)
 			buttons[14].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 3 * 18 + 5).SetWH( 26, 15)
 			buttons[15].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 3 * 18 + 5).SetWH( 30, 15)
-		endif
+		EndIf
+	End Method
 
 
+	Method Reset()
+	End Method
+
+
+	Method Activate()
+	End Method
+
+
+	Method Deactivate()
+	End Method
+
+
+	Method Update()
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
 		Next
@@ -77,7 +75,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 
 	Method Render()
-		DrawOutlineRect(position.x + 510, 13, 160, 150)
+		DrawOutlineRect(position.x + 510 - 2, position.y, 165, 90)
 		textFont.Draw("P1", position.x + 510, position.y + 0 * 18 + 5)
 		textFont.Draw("P2", position.x + 510, position.y + 1 * 18 + 5)
 		textFont.Draw("P3", position.x + 510, position.y + 2 * 18 + 5)
@@ -86,7 +84,6 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
-		
 
 		RenderBlock_ChannelImage(1, position.x + 5, position.y)
 		RenderBlock_ChannelImage(2, position.x + 5 + 250, position.y)
@@ -99,11 +96,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 		Local boxWidth:Int = 210
 
-		SetColor 40,40,40
-		DrawRect(x, y, boxWidth, 130)
-		SetColor 50,50,40
-		DrawRect(x+1, y+1, boxWidth-2, 130)
-		SetColor 255,255,255
+		DrawOutlineRect(x, y, boxWidth, 130)
 
 		Local textX:Int = x + 3
 		Local textY:Int = y + 3 - 1
@@ -127,41 +120,40 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 	End Method
 
 
-
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
 		Local changeValue:Float = 1.0 '1%
 		Select sender.dataInt
-			case 0
+			Case 0
 				GetPublicImage(1).Reset()
-			case 1
+			Case 1
 				GetPublicimage(1).ChangeImage(New SAudience(-changeValue, -changeValue))
-			case 2
+			Case 2
 				GetPublicimage(1).ChangeImage(New SAudience(changeValue, changeValue))
-			case 3
+			Case 3
 				GetPublicimage(1).ChangeImage(New SAudience(changeValue*10, changeValue*10))
-			case 4
+			Case 4
 				GetPublicImage(2).Reset()
-			case 5
+			Case 5
 				GetPublicimage(2).ChangeImage(New SAudience(-changeValue, -changeValue))
-			case 6
+			Case 6
 				GetPublicimage(2).ChangeImage(New SAudience(changeValue, changeValue))
-			case 7
+			Case 7
 				GetPublicimage(2).ChangeImage(New SAudience(changeValue*10, changeValue*10))
-			case 8
+			Case 8
 				GetPublicImage(3).Reset()
-			case 9
+			Case 9
 				GetPublicimage(3).ChangeImage(New SAudience(-changeValue, -changeValue))
-			case 10
+			Case 10
 				GetPublicimage(3).ChangeImage(New SAudience(changeValue, changeValue))
-			case 11
+			Case 11
 				GetPublicimage(3).ChangeImage(New SAudience(changeValue*10, changeValue*10))
-			case 12
+			Case 12
 				GetPublicImage(4).Reset()
-			case 13
+			Case 13
 				GetPublicimage(4).ChangeImage(New SAudience(-changeValue, -changeValue))
-			case 14
+			Case 14
 				GetPublicimage(4).ChangeImage(New SAudience(changeValue, changeValue))
-			case 15
+			Case 15
 				GetPublicimage(4).ChangeImage(New SAudience(changeValue*10, changeValue*10))
 		End Select
 

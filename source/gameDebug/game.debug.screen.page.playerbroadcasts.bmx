@@ -1,82 +1,58 @@
 SuperStrict
 Import "game.debug.screen.page.bmx"
-Import "game.game.bmx"
-Import "game.player.bmx"
-
+Import "../game.game.bmx"
+Import "../game.player.bmx"
 
 Global debugWidget_ProgrammeCollectionInfo:TDebugWidget_ProgrammeCollectionInfo = new TDebugWidget_ProgrammeCollectionInfo
 
-
-
 Type TDebugScreenPage_PlayerBroadcasts extends TDebugScreenPage
-	Field buttons:TDebugControlsButton[]
-	Field widget_playerProgrammePlanInfo:TDebugWidget_ProgrammePlanInfo
-	
 	Global _instance:TDebugScreenPage_PlayerBroadcasts
-	
-	
+	Field widget_playerProgrammePlanInfo:TDebugWidget_ProgrammePlanInfo
+
+
 	Method New()
 		_instance = self
 	End Method
-	
-	
+
+
 	Function GetInstance:TDebugScreenPage_PlayerBroadcasts()
-		if not _instance then new TDebugScreenPage_PlayerBroadcasts
-		return _instance
-	End Function 
-	
+		If Not _instance Then new TDebugScreenPage_PlayerBroadcasts
+		Return _instance
+	End Function
+
 
 	Method Init:TDebugScreenPage_PlayerBroadcasts()
 		Local texts:String[] = ["< Day", "Today", "Day >"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
-			button._onClickHandler = OnButtonClickHandler
-			button.x = 15 + 110*i
+			button.x = 15 + 110 * i
 			button.y = 345
 			button.w = 100
+			button._onClickHandler = OnButtonClickHandler
 
 			buttons :+ [button]
 		Next
-		
+
 		widget_playerProgrammePlanInfo = new TDebugWidget_ProgrammePlanInfo
-		
+
 		Return self
 	End Method
 
 
-	Function OnButtonClickHandler(sender:TDebugControlsButton)
-		Local dayShown:Int = GetInstance().widget_playerProgrammePlanInfo.dayShown
-		Select sender.dataInt
-			case 0
-				dayShown:-1
-			case 1
-				dayShown = GetWorldTime().GetDay()
-			case 2
-				dayShown:+1
-		End Select
-		
-		GetInstance().widget_playerProgrammePlanInfo.SetDayShown(dayShown)
-
-		'handled
-		sender.clicked = False
-		sender.selected = False
-	End Function
-	
-	
 	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
-		For local b:TDebugControlsButton = EachIn buttons
+		For Local b:TDebugControlsButton = EachIn buttons
 			b.x :+ dx
 			b.y :+ dy
 		Next
 	End Method
-	
-	
+
+
 	Method Reset()
 	End Method
-	
-	
+
+
 	Method Activate()
 	End Method
 
@@ -113,10 +89,27 @@ Type TDebugScreenPage_PlayerBroadcasts extends TDebugScreenPage
 		ElseIf debugWidget_ProgrammeCollectionInfo.contractForHover
 			debugWidget_ProgrammeCollectionInfo.contractForHover.ShowSheet( position.x + 170, position.y + 3, 0, 0, playerID)
 		EndIf
-
 	End Method
-End Type
 
+
+	Function OnButtonClickHandler(sender:TDebugControlsButton)
+		Local dayShown:Int = GetInstance().widget_playerProgrammePlanInfo.dayShown
+		Select sender.dataInt
+			Case 0
+				dayShown:-1
+			Case 1
+				dayShown = GetWorldTime().GetDay()
+			Case 2
+				dayShown:+1
+		End Select
+
+		GetInstance().widget_playerProgrammePlanInfo.SetDayShown(dayShown)
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+End Type
 
 
 Type TDebugWidget_ProgrammePlanInfo
@@ -128,7 +121,7 @@ Type TDebugWidget_ProgrammePlanInfo
 	Field predictionCacheProgAudience:TAudience[24]
 	Field predictionCacheProg:TAudienceAttraction[24]
 	Field predictionCacheNews:TAudienceAttraction[24]
-	Field predictionRefreshMarketsNeeded:int = True
+	Field predictionRefreshMarketsNeeded:Int = True
 	Field currentPlayer:Int = 0
 	Field adSlotWidth:Int = 120
 	Field programmeSlotWidth:Int = 200
@@ -158,15 +151,17 @@ Type TDebugWidget_ProgrammePlanInfo
 		predictionRefreshMarketsNeeded = True
 	End Method
 
-	Method onGameDay:int(triggerEvent:TEventBase)
+
+	Method onGameDay:Int(triggerEvent:TEventBase)
 		RemoveOutdated()
 	End Method
+
 
 	Method onChangeAudienceSum:Int(triggerEvent:TEventBase)
 		Local reachBefore:Int = triggerEvent.GetData().GetInt("reachBefore")
 		Local reach:Int = triggerEvent.GetData().GetInt("reach")
 		Local playerID:Int = triggerEvent.GetData().GetInt("playerID")
-		if playerID = currentPlayer and reach <> reachBefore
+		If playerID = currentPlayer And reach <> reachBefore
 			predictionRefreshMarketsNeeded = True
 		EndIf
 	End Method
@@ -211,7 +206,7 @@ Type TDebugWidget_ProgrammePlanInfo
 			For Local idKey:TIntKey = EachIn map.Keys()
 				Local broadcastTime:Long = Long( String(map.ValueForKey(idKey.value)) )
 				'old or not happened yet ?
-				If broadcastTime + 8000 < Time.GetTimeGone() ' or broadcastTime > Time.GetTimeGone()
+				If broadcastTime + 8000 < Time.GetTimeGone() ' Or broadcastTime > Time.GetTimeGone()
 					remove :+ [idKey.value]
 					Continue
 				EndIf
@@ -308,7 +303,7 @@ Type TDebugWidget_ProgrammePlanInfo
 
 		For Local hour:Int = 0 Until daysProgramme.length
 			Local audienceResult:TAudienceResultBase
-			If dayShown < currentDay or dayShown = currentDay and hour <= currHour
+			If dayShown < currentDay Or dayShown = currentDay And hour <= currHour
 '			If hour <= currHour
 				audienceResult = dailyBroadcastStatistic.GetAudienceResult(playerID, hour)
 			EndIf
@@ -355,8 +350,8 @@ Type TDebugWidget_ProgrammePlanInfo
 				progString2 = ((hour - programme.programmedHour + 25) Mod 24) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME)
 
 				'show predictions only for the current day
-				if dayShown = currentDay
-'				if currHour < hour
+				If dayShown = currentDay
+'				If currHour < hour
 					'uncached
 					If Not predictionCacheProgAudience[hour]
 						For Local i:Int = 1 To 4
@@ -393,9 +388,9 @@ Type TDebugWidget_ProgrammePlanInfo
 						predictionCacheProgAudience[hour] = predictor.GetAudience(playerID)
 					EndIf
 					progString2 :+ " |color=200,255,200|"+Int(predictionCacheProgAudience[hour].GetTotalSum()/1000)+"k|/color|"
-				else
+				Else
 					progString2 :+ " |color=200,200,255|??|/color|"
-				endif
+				EndIf
 
 				Local player:TPlayer = GetPlayer(playerID)
 				Local guessedAudience:TAudience
@@ -450,16 +445,16 @@ Type TDebugWidget_ProgrammePlanInfo
 
 			'indicate reached / required audience
 			'indicator for previous days (not essential) causes segmentation fault
-			If dayShown = currentDay and hour < currHour And TAdvertisement(advertisement) And audienceResult
+			If dayShown = currentDay And hour < currHour And TAdvertisement(advertisement) And audienceResult
 				Local reachedAudience:Int = audienceResult.audience.GetTotalValue(TAdvertisement(advertisement).contract.GetLimitedToTargetGroup())
 				Local adMinAudience:Int = TAdvertisement(advertisement).contract.GetMinAudience()
-				local passingRequirements:String = TAdvertisement(advertisement).isPassingRequirements(TAudienceResult(audienceResult))
-				local ratio:Float = Float(adMinAudience) / reachedAudience
-				if adMinAudience > reachedAudience then ratio = reachedAudience / Float(adMinAudience)
+				Local passingRequirements:String = TAdvertisement(advertisement).isPassingRequirements(TAudienceResult(audienceResult))
+				Local ratio:Float = Float(adMinAudience) / reachedAudience
+				If adMinAudience > reachedAudience Then ratio = reachedAudience / Float(adMinAudience)
 				Select passingRequirements
-					case "OK"
+					Case "OK"
 						SetColor 160,160,255
-					default
+					Default
 						SetColor 255,160,160
 				End Select
 				SetAlpha 0.75 * oldAlpha
@@ -496,8 +491,8 @@ Type TDebugWidget_ProgrammePlanInfo
 				SetAlpha 0.85 * oldAlpha
 				DrawRect(x, newsY + newsSlot * lineHeight, clockSlotWidth, lineHeight-1)
 				DrawRect(programmeSlotX, newsY + newsSlot * lineHeight, programmeSlotWidth, lineHeight-1)
-	
-	
+
+
 				If TNews(news)
 					Local newsTime:Long = GetAddedTime(news.GetID(), TVTBroadcastMaterialType.NEWS)
 					If newsTime <> 0
@@ -508,15 +503,15 @@ Type TDebugWidget_ProgrammePlanInfo
 						DrawRect(programmeSlotX, newsY + newsSlot * lineHeight, programmeSlotWidth, lineHeight-1)
 						SetBlend ALPHABLEND
 					EndIf
-	
+
 					SetColor 220,110,110
 					SetAlpha 0.50 * oldAlpha
 					DrawRect(programmeSlotX, newsY + newsSlot * lineHeight + lineHeight-3, programmeSlotWidth * TNews(news).GetNewsEvent().GetTopicality(), 2)
 				EndIf
-	
+
 				SetColor 255,255,255
 				SetAlpha oldAlpha
-	
+
 				font.DrawBox( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight + lineTextDY, clockSlotWidth-2, lineTextHeight, sALIGN_CENTER_TOP, SColor8.White)
 				If news
 					font.DrawBox(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
@@ -564,18 +559,16 @@ Type TDebugWidget_ProgrammePlanInfo
 				SetColor 255,255,255
 		End Select
 	End Method
-	
-	
+
+
 	Method SetDayShown(newDayShown:Int)
 		dayShown = newDayShown
 		showCurrent = (dayShown = GetWorldTime().GetDay())
 		Local today:Int = GetWorldTime().GetDay()
-		If showCurrent > 0 and today <> dayShown Then dayShown = today
+		If showCurrent > 0 And today <> dayShown Then dayShown = today
 		dayShown = Max(dayShown, GetWorldTime().GetStartDay())
 	End Method
 End Type
-
-
 
 
 Type TDebugWidget_ProgrammeCollectionInfo
@@ -608,14 +601,15 @@ Type TDebugWidget_ProgrammeCollectionInfo
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_PreparePlayer, onPreparePlayer) ]
 	End Method
-	
+
 
 	Function onGameStart:Int(triggerEvent:TEventBase)
 		debugWidget_ProgrammeCollectionInfo.Initialize()
-		
+
 		scheduledRemoveOutdatedTimes = New Long[0]
 		haveToRemoveOutdated = True
 	End Function
+
 
 	'called if a player restarts
 	Function onPreparePlayer:Int(triggerEvent:TEventBase)
@@ -672,8 +666,8 @@ Type TDebugWidget_ProgrammeCollectionInfo
 
 		haveToRemoveOutdated = True
 	End Function
-	
-	
+
+
 	Function AddToRemoveOutdatedSchedule(scheduledTime:Long)
 		'cleanup to avoid excessive array usage (with nobody watching
 		'the debug screen)
@@ -714,7 +708,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 		If scheduledRemoveOutdatedTimes.length > 0
 			Local removeTillIndex:Int = -1
 			Local t:Long = Time.GetTimeGone()
-			For Local i:int = 0 until scheduledRemoveOutdatedTimes.length
+			For Local i:Int = 0 Until scheduledRemoveOutdatedTimes.length
 				If t >= scheduledRemoveOutdatedTimes[i]
 					removeTillIndex = i
 				Else
@@ -729,18 +723,20 @@ Type TDebugWidget_ProgrammeCollectionInfo
 			EndIf
 		EndIf
 	End Function
-	
+
+
 'dev
 rem
 	Function PrintOutdatedScheduleTimes()
 		print "OutdatedScheduleTimes:"
-		for local i:int = 0 until scheduledRemoveOutdatedTimes.length
+		for Local i:Int = 0 Until scheduledRemoveOutdatedTimes.length
 			print scheduledRemoveOutdatedTimes[i]
 		Next
 		print "----"
 	End Function
 endrem
-	
+
+
 	Function RemoveOutdated()
 		Local maps:TIntMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
 
@@ -767,7 +763,6 @@ endrem
 			Next
 		Next
 	End Function
-
 
 
 	Function GetAddedTime:Long(id:Int, materialType:Int=0)
@@ -838,7 +833,7 @@ endrem
 		contractForHover = null
 
 		'clean up if needed
-		If scheduledRemoveOutdatedTimes.length > 0 and scheduledRemoveOutdatedTimes[0] < Time.GetTimeGone()
+		If scheduledRemoveOutdatedTimes.length > 0 And scheduledRemoveOutdatedTimes[0] < Time.GetTimeGone()
 			haveToRemoveOutdated = False
 			RemoveOutdated()
 		EndIf
@@ -956,7 +951,7 @@ endrem
 			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
 
 			Local attString:String = ""
-'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
+'			Local s:String = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
 			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
@@ -1007,7 +1002,7 @@ endrem
 			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
 
 			Local attString:String = ""
-'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
+'			Local s:String = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
 			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
@@ -1015,7 +1010,6 @@ endrem
 
 			entryPos :+ 1
 		Next
-		
 
 		SetAlpha oldAlpha
 		SetColor 255,255,255

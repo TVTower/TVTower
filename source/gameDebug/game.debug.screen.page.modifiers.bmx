@@ -1,9 +1,10 @@
 SuperStrict
 Import "game.debug.screen.page.bmx"
-Import "game.game.bmx"
-Import "game.player.bmx"
+Import "../game.game.bmx"
+Import "../game.player.bmx"
 
 Type TDebugScreenPage_Modifiers extends TDebugScreenPage
+	Global _instance:TDebugScreenPage_Modifiers
 	Field buttons:TDebugControlsButton[]
 	Field difficultyX:Int
 	Field difficultyY:Int
@@ -12,7 +13,6 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 	Field difficulty:TPlayerDifficulty
 	Field buttonsCreated:Int = False
 
-	Global _instance:TDebugScreenPage_Modifiers
 
 	Method New()
 		_instance = self
@@ -20,8 +20,8 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 
 	Function GetInstance:TDebugScreenPage_Modifiers()
-		if not _instance then new TDebugScreenPage_Modifiers
-		return _instance
+		If Not _instance Then new TDebugScreenPage_Modifiers
+		Return _instance
 	End Function
 
 
@@ -37,42 +37,6 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 		Return self
 	End Method
-
-
-	Function OnButtonClickHandler(sender:TDebugControlsButton)
-		Local collection:TPlayerDifficultyCollection=TPlayerDifficultyCollection.GetInstance()
-		Local level:String = ""
-		Local changePlayerLevel:Int = True
-		Select sender.dataInt
-			case 0
-				level ="easy"
-			case 1
-				level ="normal"
-			case 2
-				level ="hard"
-			case 3
-				'reset all level values
-				changePlayerLevel = False
-				local levels:String[] = new String[4]
-				For Local i:Int = 0 Until levels.length
-					levels[i] = GetPlayerDifficulty(i+1).GetGUID()
-				Next
-				collection.InitializeDefaults()
-				For Local i:Int = 0 Until levels.length
-					collection.AddToPlayer(i+1, collection.GetByGUID(levels[i]))
-				Next
-		End Select
-
-		local screen:TDebugScreenPage_Modifiers=TDebugScreenPage_Modifiers.GetInstance()
-		If changePlayerLevel Then
-			collection.AddToPlayer(screen.playerID, collection.GetByGUID(level))
-		EndIf
-		screen.Reset()
-
-		'handled
-		sender.clicked = False
-		sender.selected = False
-	End Function
 
 
 	Method Reset()
@@ -99,7 +63,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 	Method Update()
 		Local player:Int = GetShownPlayerID()
-		If player <> playerID then
+		If player <> playerID
 			playerID = player
 			difficulty:TPlayerDifficulty = GetPlayerDifficulty(playerID)
 		EndIf 
@@ -110,10 +74,11 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 
 	Method Render()
-		RenderGameModifierList(position.x + 5, position.y - 10, 280)
+		RenderGameModifierList(position.x + 5, position.y - 10, 275)
 
-		RenderDifficulties(position.x + 290, position.y -10)
+		RenderDifficulties(position.x + 285, position.y -10)
 
+		DrawOutlineRect(position.x + 510, 13, 160, 80)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -198,30 +163,34 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		buttonsCreated = True
 	End Method
 
+
 	Method renderModifier(caption:String, fieldName:String, value:Float, change:Int=5)
 		textFont.DrawBox(caption, difficultyX, difficultyY, difficultyWidth - 60 - 25, 15, sALIGN_LEFT_TOP, SColor8.White)
 		textFont.DrawBox(MathHelper.NumberToString(value, 3), difficultyX, difficultyY, difficultyWidth - 60, 15, sALIGN_RIGHT_TOP, SColor8.White)
 
-		if not buttonsCreated then
+		If Not buttonsCreated
 			createModifierButtons(fieldName, change, difficultyX + difficultyWidth, difficultyY)
-		endif
+		EndIf
 		difficultyY = difficultyY + 12
 	End Method
+
 
 	Method renderModifier(caption:String, fieldName:String, value:Int, change:Int=10)
 		textFont.DrawBox(caption, difficultyX, difficultyY, difficultyWidth - 60 - 25, 15, sALIGN_LEFT_TOP, SColor8.White)
 		textFont.DrawBox(value, difficultyX, difficultyY, difficultyWidth - 60, 15, sALIGN_RIGHT_TOP, SColor8.White)
 
-		if not buttonsCreated then
+		If Not buttonsCreated
 			createModifierButtons(fieldName, change, difficultyX + difficultyWidth, difficultyY)
-		endif
+		EndIf
 		difficultyY = difficultyY + 12
 	End Method
+
 
 	Method createModifierButtons(fieldName:String, change:Int, xOffset:Int, yPos:Int)
 		createModifierButton(fieldName, "+", change, xOffset-55, ypos)
 		createModifierButton(fieldName, "-", -change, xOffset-30, ypos)
 	End Method
+
 
 	Method createModifierButton(fieldName:String, plusMinus:String, change:Int, xOffset:Int, yPos:Int)
 		Local button:TDebugControlsButton = New TDebugControlsButton
@@ -236,76 +205,113 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		buttons :+ [button]
 	End Method
 
+
 	Function OnClickModifyHandler(sender:TDebugControlsButton)
 		Local difficulty:TPlayerDifficulty = TDebugScreenPage_Modifiers.GetInstance().difficulty
 		Local diff:Int = sender.dataInt
 		Local fieldName:String = String(sender.data)
 		Select fieldName
-			case "licPrice"
+			Case "licPrice"
 				difficulty.programmePriceMod:+ diff/100.0
-			case "xPenalty"
+			Case "xPenalty"
 				difficulty.sentXRatedPenalty:+ diff
-			case "xRisk"
+			Case "xRisk"
 				difficulty.sentXRatedConfiscateRisk:+ diff
 
-			case "adAudience"
+			Case "adAudience"
 				difficulty.adcontractRawMinAudienceMod:+ diff/100.0
-			case "adPrice"
+			Case "adPrice"
 				difficulty.adcontractPriceMod:+ diff/100.0
-			case "adProfit"
+			Case "adProfit"
 				difficulty.adcontractProfitMod:+ diff/100.0
-			case "adPenalty"
+			Case "adPenalty"
 				difficulty.adcontractPenaltyMod:+ diff/100.0
-			case "adTarget"
+			Case "adTarget"
 				difficulty.adcontractLimitedTargetgroupMod:+ diff/100.0
-			case "infoProfit"
+			Case "infoProfit"
 				difficulty.adcontractInfomercialProfitMod:+ diff/100.0
 
-			case "permPrice"
+			Case "permPrice"
 				difficulty.broadcastPermissionPriceMod:+ diff/100.0
-			case "stPrice"
+			Case "stPrice"
 				difficulty.antennaBuyPriceMod:+ diff/100.0
-			case "stTime"
+			Case "stTime"
 				difficulty.antennaConstructionTime:+ diff
-			case "stDaily"
+			Case "stDaily"
 				difficulty.antennaDailyCostsMod:+ diff/100.0
-			case "stInc"
+			Case "stInc"
 				difficulty.antennaDailyCostsIncrease:+ diff/100.0
-			case "stIncMax"
+			Case "stIncMax"
 				difficulty.antennaDailyCostsIncreaseMax:+ diff/100.0
-			case "cablePrice"
+			Case "cablePrice"
 				difficulty.cableNetworkBuyPriceMod:+ diff/100.0
-			case "cableTime"
+			Case "cableTime"
 				difficulty.cableNetworkConstructionTime:+ diff
-			case "cableDaily"
+			Case "cableDaily"
 				difficulty.cableNetworkDailyCostsMod:+ diff/100.0
-			case "satPrice"
+			Case "satPrice"
 				difficulty.satelliteBuyPriceMod:+ diff/100.0
-			case "satTime"
+			Case "satTime"
 				difficulty.satelliteConstructionTime:+ diff
-			case "satDaily"
+			Case "satDaily"
 				difficulty.satelliteDailyCostsMod:+ diff/100.0
-			case "newsPrice"
+			Case "newsPrice"
 				difficulty.newsItemPriceMod:+ diff/100.0
-			case "roomPrice"
+			Case "roomPrice"
 				difficulty.roomRentMod:+ diff/100.0
-			case "credBase"
+			Case "credBase"
 				difficulty.creditBaseValue:+ diff
-			case "credRate"
+			Case "credRate"
 				difficulty.interestRateCredit:+ diff/100.0
-			case "credIntPos"
+			Case "credIntPos"
 				difficulty.interestRatePositiveBalance:+ diff/100.0
-			case "credIntNeg"
+			Case "credIntNeg"
 				difficulty.interestRateNegativeBalance:+ diff/100.0
-			case "prodTime"
+			Case "prodTime"
 				difficulty.productionTimeMod:+ diff/100.0
-			case "renovPrice"
+			Case "renovPrice"
 				difficulty.renovationBaseCost:+ diff
-			case "renovTimeMod"
+			Case "renovTimeMod"
 				difficulty.renovationTimeMod:+ diff/100.0
-			default
+			Default
 				throw "unkown field for "+ fieldName
 		End Select
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Function OnButtonClickHandler(sender:TDebugControlsButton)
+		Local collection:TPlayerDifficultyCollection=TPlayerDifficultyCollection.GetInstance()
+		Local level:String = ""
+		Local changePlayerLevel:Int = True
+		Select sender.dataInt
+			Case 0
+				level ="easy"
+			Case 1
+				level ="normal"
+			Case 2
+				level ="hard"
+			Case 3
+				'reset all level values
+				changePlayerLevel = False
+				Local levels:String[] = new String[4]
+				For Local i:Int = 0 Until levels.length
+					levels[i] = GetPlayerDifficulty(i+1).GetGUID()
+				Next
+				collection.InitializeDefaults()
+				For Local i:Int = 0 Until levels.length
+					collection.AddToPlayer(i+1, collection.GetByGUID(levels[i]))
+				Next
+		End Select
+
+		Local screen:TDebugScreenPage_Modifiers=TDebugScreenPage_Modifiers.GetInstance()
+		If changePlayerLevel Then
+			collection.AddToPlayer(screen.playerID, collection.GetByGUID(level))
+		EndIf
+		screen.Reset()
+
 		'handled
 		sender.clicked = False
 		sender.selected = False
