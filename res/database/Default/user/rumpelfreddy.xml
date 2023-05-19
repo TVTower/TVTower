@@ -1154,6 +1154,7 @@
 				<member index="0" function="1">Rumpelfreddy-fictionalperson-HannaHobkinns</member>
 			</staff>
 			<groups target_groups="0" />
+			<targetgroupattractivity teenagers_female="1.5" housewives_female="1.25" employees_female="1.25" unemployed_female="1.25" />
 			<data country="D" year="2005" distribution="0" maingenre="3" subgenre="9" flags="48" blocks="2" price_mod="1.0" />
 			<ratings critics="6" speed="12" outcome="27" />
 		</programme>
@@ -1165,12 +1166,13 @@
 			</title>
 			<description>
 				<de>18 Teenager kombinieren ihre Superkraftroboter um den Galaktischen Übermotz Roboter aufzuhalten. Reines Produktplacement ohne jede Qualität.</de>
-				<en>18 teenagers combine their super power robots to stop the Galactic Supreme Uber-Robot. Pure product placement without any quality. </en>
+				<en>18 teenagers combine their super power robots to stop the Galactic Supreme Uber-Robot. Pure product placement without any quality.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_117</member>
 			</staff>
 			<groups target_groups="0" />
+			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.25" employees_male="1.25" unemployed_male="1.25" />
 			<data country="USA" year="2006" distribution="0" maingenre="3" subgenre="16" flags="32" blocks="2" price_mod="1.0" />
 			<ratings critics="5" speed="41" outcome="16" />
 		</programme>

@@ -18,7 +18,7 @@
 				<member index="3" function="2">0c774ab3-9301-4759-a3e1-40520dc9e7b9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BE" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<data country="B" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
 			<ratings critics="9" speed="4" outcome="0" />
 		</programme>
 		<programme id="f51954ef-5d8a-4ca0-9936-fca27da79267" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -48,7 +48,7 @@
 				<en>Only on television and nowhere else are these junk items auctioned off to the unsuspecting.</en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BE" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
+			<data country="B" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
 			<ratings critics="7" speed="10" outcome="0" />
 		</programme>
 		<programme id="35190c1d-aa55-4e84-967f-72a374e84dcf" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -210,6 +210,7 @@
 				<member index="0" function="1">5b52221c-10f6-4ad8-b818-c89c304e9ea0</member>
 				<member index="1" function="2">80448f46-150d-445a-b688-63b21523ff13</member>
 				<member index="2" function="2">c3494dd5-506b-46d1-97bd-12182ffa88da</member>
+				<member index="3" function="2">e94ba1d8-bb1f-4650-afea-3647a248b94d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="2006" distribution="1" maingenre="17" subgenre="" flags="16" blocks="3" price_mod="1.7" />
@@ -359,7 +360,7 @@
 				<en>Folk High Schools under Test</en>
 			</title>
 			<description>
-				<de>Eine Generation die "Lehre" mit "Leere" um- und be- und schreibt. Keine Arbeit und Moos für alle!</de>
+				<de>Eine Generation die „Lehre“ mit „Leere“ um- und be- und schreibt. Keine Arbeit und Moos für alle!</de>
 				<en>A generation that (re)writes and describes "the long hall" with "the long haul". No jobs and moolah for all!</en>
 			</description>
 			<staff>
@@ -1860,11 +1861,11 @@ Terrific final.</en>
 				</programme>
 				<programme id="DF-Serien-Dokumentation-001-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
-						<de>Der "fast" perfekte Antrich</de>
+						<de>Der „fast“ perfekte Antrich</de>
 						<en>The "almost" perfect coat of paint</en>
 					</title>
 					<description>
-						<de>Malerlehrling Nico Schwarzer ist einfach noch zu grün. Beim Anmischen der Wandfarbe greift er statt zum Farb-Pulver in die Kaffee-Dose seines abwesenden Kollegen. Achselzuckend meint er nur: "nix grau - kackbraun"</de>
+						<de>Malerlehrling Nico Schwarzer ist einfach noch zu grün. Beim Anmischen der Wandfarbe greift er statt zum Farb-Pulver in die Kaffee-Dose seines abwesenden Kollegen. Achselzuckend meint er nur: „nix grau - kackbraun“</de>
 						<en>Apprentice painter Nico Blacken is still a bit too wet behind his ears. While mixing the wall paint, he reaches for his absent colleague's coffee can instead of the paint powder. Shrugging, he just says: "gray no - shit brown."</en>
 					</description>
 					<ratings critics="29" speed="10" />
@@ -1875,7 +1876,7 @@ Terrific final.</en>
 						<en>The bad end</en>
 					</title>
 					<description>
-						<de>Beim Einzug schließlich ist es die Umzugs-Spedition, die für Empören bei den Bauherren sorgt. Amateurhaft gestapelt, geht nach dem Öffnen der Ladeklappen die Hälfte des antiken, chinesischen Porzellans zu Bruch. Fahrer Acki Grümpel: "Das war eh alles Schrott".</de>
+						<de>Beim Einzug schließlich ist es die Umzugs-Spedition, die für Empören bei den Bauherren sorgt. Amateurhaft gestapelt, geht nach dem Öffnen der Ladeklappen die Hälfte des antiken, chinesischen Porzellans zu Bruch. Fahrer Acki Grümpel: „Das war eh alles Schrott.“</de>
 						<en>Finally, when it comes to moving in, it is the moving company that causes outrage among the building owners. Stacked amateurishly, half of the antique Chinese porcelain is broken after the loading flaps are opened. Driver Archie Scrappers: "It was all junk anyway."</en>
 					</description>
 					<ratings critics="34" speed="14" />

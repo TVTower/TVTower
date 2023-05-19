@@ -190,7 +190,7 @@
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea1" creator="5578" created_by="Ronny">
 			<title>
-				<de>Reichweite "Bronze"</de>
+				<de>Reichweite „Bronze“</de>
 				<en>Broadcast Area "Bronze"</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
@@ -221,7 +221,7 @@
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea2" creator="5578" created_by="Ronny">
 			<title>
-				<de>Reichweite "Silber"</de>
+				<de>Reichweite „Silber“</de>
 				<en>Broadcast Area "Silver"</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
@@ -252,7 +252,7 @@
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea3" creator="5578" created_by="Ronny">
 			<title>
-				<de>Reichweite "Gold"</de>
+				<de>Reichweite „Gold“</de>
 				<en>Broadcast Area "Gold"</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->

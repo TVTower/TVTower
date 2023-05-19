@@ -179,6 +179,7 @@
 				<job function="16" index="1" gender="2" required="1" />
 			</jobs>
 			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="36" production_broadcast_limit="1" />
+			<targetgroupattractivity teenagers="1.5" employees="1.25" unemployed="1.25" housewives="1.25" pensioners="0.25" />
 			<genres maingenre="202" />
 			<production_time slope="40" max="180" min="60" />
 			<blocks slope="40" max="4" min="2" />
@@ -1122,7 +1123,7 @@
 						<en>Your mom is not fat at all</en>
 					</title>
 					<description>
-						<de>"Deine Mutter"-Sprüche sind beliebt. Doch warum deine Mama cleverer als alle anderen und egal mit welchem Gewicht nicht dick ist, wird in der Show erläutert.</de>
+						<de>„Deine Mutter“-Sprüche sind beliebt. Doch warum deine Mama cleverer als alle anderen und egal mit welchem Gewicht nicht dick ist, wird in der Show erläutert.</de>
 						<en>"Your mom" taglines are popular. But why your mom is smarter than everyone else and is not fat, no matter what weight, is explained in the show.</en>
 					</description>
 				</scripttemplate>
@@ -1482,7 +1483,7 @@
 
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Webcamfreude">
 			<title>
-				<de>%Name1% %Name2%s "Versteckte Webcam"</de>
+				<de>%Name1% %Name2%s „Versteckte Webcam“</de>
 				<en>%Name1% %Name2%'s "Hidden Webcam"</en>
 			</title>
 			<description>
@@ -1710,7 +1711,7 @@
 						<en>Today is a special night</en>
 					</title>
 					<description>
-						<de>Die Einschaltquoten des letzten Tages waren grandios. "Die Nacht%name%" würdigt dies mit besondere Szenen.</de>
+						<de>Die Einschaltquoten des letzten Tages waren grandios. „Die Nacht%name%“ würdigt dies mit besondere Szenen.</de>
 						<en>The viewing rates of the last day were terrific. "The night %name%" honors this with special scenes.</en>
 					</description>
 				</scripttemplate>
@@ -1893,7 +1894,7 @@
 						<en>Thick Trouble</en>
 					</title>
 					<description>
-						<de>Einer der runden %zahl% passt nicht mehr durch die Tür und verpasst die Verabredung mit den anderen. Diese sind sehr wütend, da man das "All you can eat" für %zahl% nicht mit einer Person weniger antreten kann.</de>
+						<de>Einer der runden %zahl% passt nicht mehr durch die Tür und verpasst die Verabredung mit den anderen. Diese sind sehr wütend, da man das „All you can eat“ für %zahl% nicht mit einer Person weniger antreten kann.</de>
 						<en>One of the chummy-yummy %zahl% no longer fits through the door and misses the appointment with the others. These are very angry, because it is not possible to attend the "All you can eat" for %zahl% with one person less.</en>
 					</description>
 				</scripttemplate>

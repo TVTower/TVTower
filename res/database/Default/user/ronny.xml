@@ -550,11 +550,11 @@ Illustrious guests and music by [3|Nick].</en>
 		-->
 		<news id="ronny-news-drucktaste-01" type="0" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
-				<de>"DRUCK"-Taste: Abgaben geplant</de>
+				<de>„DRUCK“-Taste: Abgaben geplant</de>
 				<en>"PRINT"-Key: levies planned</en>
 			</title>
 			<description>
-				<de>Die VG Text-und-Computer strengt eine Vergütung für die Nutzung auf Computertastaturen befindlicher "Druck"-Tasten an. Schon die Absicht zu Drucken ist abzugelten.</de>
+				<de>Die VG Text-und-Computer strengt eine Vergütung für die Nutzung auf Computertastaturen befindlicher „Druck“-Tasten an. Schon die Absicht zu Drucken ist abzugelten.</de>
 				<en>The Text-and-Computer Regulation Agency is seeking remuneration for the use of the "Print" key located on computer keyboards. Even the intention to print is to be compensated.</en>
 			</description>
 			<effects>
@@ -567,11 +567,11 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-drucktaste-02a" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
-				<de>"DRUCK"-Taste: Plombe spart Abgaben</de>
+				<de>„DRUCK“-Taste: Plombe spart Abgaben</de>
 				<en>"PRINT"-Key: Seals to spare levies</en>
 			</title>
 			<description>
-				<de>Tastaturhersteller wie Charry oder LogischTec haben reagiert: sie verplomben die "DRUCK"-Taste um die sonst fälligen Abgaben zu umgehen.</de>
+				<de>Tastaturhersteller wie Charry oder LogischTec haben reagiert: sie verplomben die „DRUCK“-Taste um die sonst fälligen Abgaben zu umgehen.</de>
 				<en>Keyboard manufacturers such as Charry or LogischTec have reacted: they seal the "PRINT" key to bypass the otherwise due duties.</en>
 			</description>
 			<effects>
@@ -582,11 +582,11 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-drucktaste-02b" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
-				<de>"DRUCK"-Taste: Vereine demonstrieren</de>
+				<de>„DRUCK“-Taste: Vereine demonstrieren</de>
 				<en>"PRINT"-Key: Associations protest</en>
 			</title>
 			<description>
-				<de>Der Verein der Internetausdrucker und -archivierer (RAR eV) ruft zur Großdemo auf: Freiheit für die "DRUCK"-Taste.</de>
+				<de>Der Verein der Internetausdrucker und -archivierer (RAR eV) ruft zur Großdemo auf: Freiheit für die „DRUCK“-Taste.</de>
 				<en>The association of "People printing out and archiving the Internet" (RAR society) calls for major demonstrations: freedom for the "PRINT"-key.</en>
 			</description>
 			<effects>
@@ -596,11 +596,11 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-drucktaste-02b1" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
-				<de>"DRUCK"-Taste: Für private Haushalte kostenlos</de>
+				<de>„DRUCK“-Taste: Für private Haushalte kostenlos</de>
 				<en>"PRINT"-Key: Free for private households</en>
 			</title>
 			<description>
-				<de>Nach den Demos des RAR eV rudert die Politik zurück: das Drücken der "DRUCK"-Taste im privaten Rahmen bleibt abgabenfrei. Entsprechende "Privat"-Tastaturen sind nun erhältlich.</de>
+				<de>Nach den Demos des RAR eV rudert die Politik zurück: das Drücken der „DRUCK“-Taste im privaten Rahmen bleibt abgabenfrei. Entsprechende „Privat“-Tastaturen sind nun erhältlich.</de>
 				<en>After the demonstrations of the RAR society the politicians are backpedaling: pressing the "PRINT"-key in private context remains tax-free. Corresponding "private household" keyboards are now available.</en>
 			</description>
 			<effects>
@@ -611,11 +611,11 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-drucktaste-03" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
-				<de>"DRUCK"-Taste: Keine Abgaben mehr</de>
+				<de>„DRUCK“-Taste: Keine Abgaben mehr</de>
 				<en>"PRINT"-Key: No more levies</en>
 			</title>
 			<description>
-				<de>Regierung stimmt Vorschlag der VG "Text und Computer" zu: die "DRUCK"-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
+				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
 				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 euros would be offset by administrative costs of 2.8 million euros.</en>
 			</description>
 			<data genre="3" price="1.0" quality="30" />
@@ -728,7 +728,7 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>Pipé-Laho number 1</en>
 			</title>
 			<description>
-				<de>Das frankoindonesische Popsternchen Pipé-Laho erreicht mit "Moi? J'arrive." Platz 1 der hiesigen Charts. Moderne Arrangements und traditionelle indonesische Instrumente werden zum Trend.</de>
+				<de>Das frankoindonesische Popsternchen Pipé-Laho erreicht mit „Moi? J'arrive“ Platz 1 der hiesigen Charts. Moderne Arrangements und traditionelle indonesische Instrumente werden zum Trend.</de>
 				<en>The French-Indonesian pop starlet Pipé-Laho reaches No. 1 on the local charts with "Moi? J'arrive.". Modern arrangements and traditional Indonesian instruments create a new trend.</en>
 			</description>
 			<data genre="1" price="1.0" quality="32" />
@@ -754,7 +754,7 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>"Joe Thingamabob" back again</en>
 			</title>
 			<description>
-				<de>Jean-Peter Fleusch ("Kunst der unscharfen Ränder") meldet Rückkehr der Skulptur "Karl Dingensbummens". Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
+				<de>Jean-Peter Fleusch („Kunst der unscharfen Ränder“) meldet Rückkehr der Skulptur „Karl Dingensbummens“. Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
 				<en>Jean-Peter Fleusch ("Art of blurred edges") reports return of the sculpture "Joe Thingamabob". Cleaners had mistaken it for packaging material and deposited it in a warehouse.</en>
 			</description>
 			<data genre="5" price="1.0" quality="20" />
@@ -782,11 +782,11 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-frauenbart-02a" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
-				<de>Ausstellung "Frauenbärte %WORLDTIME:YEAR%" lockt Betrüger</de>
+				<de>Ausstellung „Frauenbärte %WORLDTIME:YEAR%“ lockt Betrüger</de>
 				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures scammers</en>
 			</title>
 			<description>
-				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung "Frauenbärte" zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
+				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung „Frauenbärte“ zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
 				<en>Today, two men disguised with beards tried to trick their way into the "Women's Beards" exhibition for free. During the scuffle, a security guard had her mustache plucked.</en>
 			</description>
 			<data genre="5" price="1.0" quality="17" />
@@ -815,18 +815,18 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-tarotimwandel-01" type="0" creator="5578" created_by="Ronny">
 			<title>
-				<de>"Tarot im Wandel der Zeit" auf Tour</de>
+				<de>„Tarot im Wandel der Zeit“ auf Tour</de>
 				<en>"Tarot in the course of time" on tour</en>
 			</title>
 			<description>
-				<de>Die Ausstellung der "Zunft" reist quer durchs Land. Ausgestellt wird alles, vom alten Taschenschlitzwerkzeug bis zur ersten verdienten Mark mit 0190er Nummern.</de>
+				<de>Die Ausstellung der „Zunft“ reist quer durchs Land. Ausgestellt wird alles, vom alten Taschenschlitzwerkzeug bis zur ersten verdienten Mark mit 0190er Nummern.</de>
 				<en>The exhibition of the "guild" travels across the country. On display is everything, from the vintage pocket slitting tool up to the first Deutschmark earned with call-in phone numbers.</en>
 			</description>
 			<data genre="5" price="1.2" quality="23" />
 		</news>
 		<news id="ronny-news-steinzeit-01" type="0" creator="5578" created_by="Ronny">
 			<title>
-				<de>"Das war die Steinzeit" gastiert in %CITYNAME%</de>
+				<de>„Das war die Steinzeit“ gastiert in %CITYNAME%</de>
 				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
 			</title>
 			<description>
@@ -996,7 +996,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
 				</cntry>
 			</variables>
-			<!--TODO descriptions!"-->
+			<!--TODO descriptions!-->
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-visiting-ep1">
 					<!--pilot is always present!-->

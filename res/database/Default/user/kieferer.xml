@@ -271,8 +271,8 @@ Any means will do.</en>
 					<en>Dollar rises, %CURRENCY3A%|Dollar on the upswing, %CURRENCY3A%</en>
 				</currency3>
 				<currency3A>
-					<de>%WORLDTIME:GERMANCURRENCY% gibt Vortagesgewinn ab.|%WORLDTIME:GERMANCURRENCY% weiterhin in starker Verfassung.|Höhere Inflation sorgt für Unsicherheit beim %WORLDTIME:GERMANCURRENCY%.|Yen überraschend stark.</de>
-					<en>%WORLDTIME:GERMANCURRENCY% gives up previous day's gain.|%WORLDTIME:GERMANCURRENCY% remains in robust condition.|Higher inflation causes uncertainty for the %WORLDTIME:GERMANCURRENCY%.|Yen surprisingly strong.</en>
+					<de>%WORLDTIME:GERMANCURRENCY% gibt Vortagesgewinn ab.|%WORLDTIME:GERMANCURRENCY% weiterhin in starker Verfassung.|höhere Inflation sorgt für Unsicherheit bei %WORLDTIME:GERMANCURRENCY%.|Yen überraschend stark.</de>
+					<en>%WORLDTIME:GERMANCURRENCY% gives up previous day's gain.|%WORLDTIME:GERMANCURRENCY% remains in robust condition.|higher inflation causes uncertainty for the %WORLDTIME:GERMANCURRENCY%.|Yen surprisingly strong.</en>
 				</currency3A>
 
 

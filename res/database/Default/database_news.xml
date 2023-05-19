@@ -349,7 +349,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Queen: I feel good!</en>
 			</title>
 			<description>
-				<de>Die angegriffene Königin, nachdem sie untersucht wurde, sagte: “I am pleased!“ und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</de>
+				<de>Die angegriffene Königin, nachdem sie untersucht wurde, sagte: „I am pleased!“ und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</de>
 				<en>The attacked Queen, after having been examined, said: "I am pleased!" and saw no problems in her new - small - size.</en>
 			</description>
 			<effects>
@@ -399,7 +399,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="7d63161c-7937-4cce-95c6-2c82529c06ac" />
 			</effects>
 			<data genre="1" price="0.8" quality="23" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1987" year_range_to="-1" />
 		</news>
 		<news id="7d63161c-7937-4cce-95c6-2c82529c06ac" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
 			<title>
@@ -414,7 +414,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="296f6aca-a031-4f2f-b6a5-2317abadbb40" />
 			</effects>
 			<data genre="1" price="0.8" quality="13" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1987" year_range_to="-1" />
 		</news>
 		<news id="296f6aca-a031-4f2f-b6a5-2317abadbb40" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
 			<title>
@@ -429,7 +429,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
 			</effects>
 			<data genre="1" price="0.8" quality="19" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1987" year_range_to="-1" />
 		</news>
 		<news id="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
 			<title>
@@ -442,7 +442,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</description>
 			<effects />
 			<data genre="1" price="0.8" quality="21" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1987" year_range_to="-1" />
 		</news>
 		<news id="6bba8dff-b5da-40b1-9db8-0e3cc655c14b" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="0" creator="">
 			<title>
@@ -556,7 +556,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Eco-terrorists liberated rhino</en>
 			</title>
 			<description>
-				<de>Laut einem Bekennerschreiben sind die Tierschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</de>
+				<de>Laut einem Bekennerschreiben sind die Tierschützer von der Gruppe „ZORRO“ für das Entlaufen des Nashorns verantwortlich.</de>
 				<en>According to a claim of responsibility, the animal rights activists from the group "ZORRO" are responsible for the escape of the rhinoceros.</en>
 			</description>
 			<data genre="4" price="1.0" quality="25" />
@@ -922,12 +922,339 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="094806da-5113-4b57-b09a-c0639ebc20f9" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="0" creator="">
 			<title>
-				<de>Finanzminister: Koalas her!</de>
-				<en>Minister of Finance: Bring on the koalas!</en>
+				<de>%title%</de>
+				<en>%title%</en>
 			</title>
 			<description>
-				<de>Der Finanzminister beantragt im Bundestag die Verpflichtung jeden Bundesbürgers zur Haltung eines Koalas.</de>
-				<en>The Minister of Finance requests the German Bundestag to oblige every federal citizen to keep a koala.</en>
+				<de>%desc%</de>
+				<en>%desc%</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="18200428-fdff-4e2d-88fa-4902939c7aa3" />
+			</effects>
+			<variables>
+				<title>
+					<de>%minister%: ${animals_${index}} her!</de>
+					<en>%minister%: Bring on the ${animals_${index}}!</en>
+				</title>
+				<desc>
+					<de>Der %minister% beantragt im Bundestag die Verpflichtung eines jeden Bundesbürgers zur Haltung ein${animal_gen_${index}}.</de>
+					<en>The %minister% requests in Parliament the obligation of every citizen to keep a ${animal_gen_${index}}.</en>
+				</desc>
+				<index>
+					<de>0|1|2|3|4|5|6|7|8|9</de>
+				</index>
+				<minister>
+					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|DG-Metall-Chef|BV-Energie-Chef|ADCA-Chef|Bahnchef</de>
+					<en>Finance Minister|Interior Minister|Foreign Minister|Defense Minister|Prime Minister|WA-Steel Chief|EI-Energy Chief|AB-Automobile Chief|Railroads Chief</en>
+				</minister>
+				<animal_0>
+					<de>Koala</de>
+					<en>koala</en>
+				</animal_0>
+				<animal_1>
+					<de>Nilpferd</de>
+					<en>hippo</en>
+				</animal_1>
+				<animal_2>
+					<de>Bergschaf</de>
+					<en>mountain goat</en>
+				</animal_2>
+				<animal_3>
+					<de>Faultier</de>
+					<en>sloth</en>
+				</animal_3>
+				<animal_4>
+					<de>Känguru</de>
+					<en>kangaroo</en>
+				</animal_4>
+				<animal_5>
+					<de>Shiba</de>
+					<en>Shiba Inu</en>
+				</animal_5>
+				<animal_6>
+					<de>Steinlaus</de>
+					<en>stone louse</en>
+				</animal_6>
+				<animal_7>
+					<de>Schaukelpferd</de>
+					<en>rocking horse</en>
+				</animal_7>
+				<animal_8>
+					<de>Sexmagazin-Leser</de>
+					<en>sex magazine reader</en>
+				</animal_8>
+				<animal_9>
+					<de>Gamezworld-Entwickler</de>
+					<en>Gamezworld developer</en>
+				</animal_9>
+				<animal_akk_0>
+					<de>en Koala</de>
+					<en>koala</en>
+				</animal_akk_0>
+				<animal_akk_1>
+					<de> Nilpferd</de>
+					<en>hippo</en>
+				</animal_akk_1>
+				<animal_akk_2>
+					<de> Bergschaf</de>
+					<en>mountain goat</en>
+				</animal_akk_2>
+				<animal_akk_3>
+					<de> Faultier</de>
+					<en>sloth</en>
+				</animal_akk_3>
+				<animal_akk_4>
+					<de> Känguru</de>
+					<en>kangaroo</en>
+				</animal_akk_4>
+				<animal_akk_5>
+					<de>en Shiba</de>
+					<en>Shiba Inu</en>
+				</animal_akk_5>
+				<animal_akk_6>
+					<de>e Steinlaus</de>
+					<en>stone louse</en>
+				</animal_akk_6>
+				<animal_akk_7>
+					<de> Schaukelpferd</de>
+					<en>rocking horse</en>
+				</animal_akk_7>
+				<animal_akk_8>
+					<de>en Sexmagazin-Leser</de>
+					<en>sex magazine reader</en>
+				</animal_akk_8>
+				<animal_akk_9>
+					<de>en Gamezworld-Entwickler</de>
+					<en>Gamezworld developer</en>
+				</animal_akk_9>
+				<animals_0>
+					<de>Koalas</de>
+					<en>koalas</en>
+				</animals_0>
+				<animals_1>
+					<de>Nilpferde</de>
+					<en>hippos</en>
+				</animals_1>
+				<animals_2>
+					<de>Bergschafe</de>
+					<en>mountain goats</en>
+				</animals_2>
+				<animals_3>
+					<de>Faultiere</de>
+					<en>sloths</en>
+				</animals_3>
+				<animals_4>
+					<de>Kängurus</de>
+					<en>kangaroos</en>
+				</animals_4>
+				<animals_5>
+					<de>Shibas</de>
+					<en>Shiba Inus</en>
+				</animals_5>
+				<animals_6>
+					<de>Steinläuse</de>
+					<en>stone lice</en>
+				</animals_6>
+				<animals_7>
+					<de>Schaukelpferde</de>
+					<en>rocking horses</en>
+				</animals_7>
+				<animals_8>
+					<de>Sexmagazin-Leser</de>
+					<en>sex magazine readers</en>
+				</animals_8>
+				<animals_9>
+					<de>Gamezworld-Entwickler</de>
+					<en>Gamezworld developers</en>
+				</animals_9>
+				<animal_gen_0>
+					<de>es Koalas</de>
+					<en>koala</en>
+				</animal_gen_0>
+				<animal_gen_1>
+					<de>es Nilpferds</de>
+					<en>hippo</en>
+				</animal_gen_1>
+				<animal_gen_2>
+					<de>es Bergschafs</de>
+					<en>mountain goat</en>
+				</animal_gen_2>
+				<animal_gen_3>
+					<de>es Faultiers</de>
+					<en>sloth</en>
+				</animal_gen_3>
+				<animal_gen_4>
+					<de>es Kängurus</de>
+					<en>kangaroo</en>
+				</animal_gen_4>
+				<animal_gen_5>
+					<de>es Shibas</de>
+					<en>Shiba Inu</en>
+				</animal_gen_5>
+				<animal_gen_6>
+					<de>er Steinlaus</de>
+					<en>stone louse</en>
+				</animal_gen_6>
+				<animal_gen_7>
+					<de>es Schaukelpferds</de>
+					<en>rocking horse</en>
+				</animal_gen_7>
+				<animal_gen_8>
+					<de>es Sexmagazin-Lesers</de>
+					<en>sex magazine reader</en>
+				</animal_gen_8>
+				<animal_gen_9>
+					<de>es Gamezworld-Entwicklers</de>
+					<en>Gamezworld developer</en>
+				</animal_gen_9>
+				<animals_dat_0>
+					<de>Koalas</de>
+					<en>koalas</en>
+				</animals_dat_0>
+				<animals_dat_1>
+					<de>Nilpferden</de>
+					<en>hippos</en>
+				</animals_dat_1>
+				<animals_dat_2>
+					<de>Bergschafen</de>
+					<en>mountain goats</en>
+				</animals_dat_2>
+				<animals_dat_3>
+					<de>Faultieren</de>
+					<en>sloths</en>
+				</animals_dat_3>
+				<animals_dat_4>
+					<de>Kängurus</de>
+					<en>kangaroos</en>
+				</animals_dat_4>
+				<animals_dat_5>
+					<de>Shibas</de>
+					<en>Shiba Inus</en>
+				</animals_dat_5>
+				<animals_dat_6>
+					<de>Steinläusen</de>
+					<en>stone lice</en>
+				</animals_dat_6>
+				<animals_dat_7>
+					<de>Schaukelpferden</de>
+					<en>rocking horses</en>
+				</animals_dat_7>
+				<animals_dat_8>
+					<de>Sexmagazin-Lesern</de>
+					<en>sex magazine readers</en>
+				</animals_dat_8>
+				<animals_dat_9>
+					<de>Gamezworld-Entwicklern</de>
+					<en>Gamezworld developers</en>
+				</animals_dat_9>
+				<haveclaws_0>
+					<de>schmerzhaft hart krallen</de>
+					<en>have painfully hard claws</en>
+				</haveclaws_0>
+				<haveclaws_1>
+					<de>ziemlich kräftig zubeißen können</de>
+					<en>bite pretty hard</en>
+				</haveclaws_1>
+				<haveclaws_2>
+					<de>oft zum Rammen mit dem Kopf ansetzen</de>
+					<en>often charge and butt heads</en>
+				</haveclaws_2>
+				<haveclaws_3>
+					<de>oft von der Decke fallen</de>
+					<en>often fall from the ceiling</en>
+				</haveclaws_3>
+				<haveclaws_4>
+					<de>gut im Boxen sind</de>
+					<en>are good at boxing</en>
+				</haveclaws_4>
+				<haveclaws_5>
+					<de>die meiste Zeit nur ziemlich doof aus der Wäsche gucken</de>
+					<en>just look dumbfounded most of the time</en>
+				</haveclaws_5>
+				<haveclaws_6>
+					<de>schon mal das ganze Haus verputzen, wenn man grad nicht aufpasst</de>
+					<en>can sometimes dispatch the whole house if you're not paying attention for a moment</en>
+				</haveclaws_6>
+				<haveclaws_7>
+					<de>ziemlich laut quietschen</de>
+					<en>squeak pretty loudly</en>
+				</haveclaws_7>
+				<haveclaws_8>
+					<de>schwierig zur Stubenreinheit zu erziehen sind</de>
+					<en>are hard to house-train</en>
+				</haveclaws_8>
+				<haveclaws_9>
+					<de>schwierig zur Körperhygiene zu erziehen sind</de>
+					<en>are hard to train for personal hygiene</en>
+				</haveclaws_9>
+				<mentholcandies_0>
+					<de>e Mentholbonbons</de>
+					<en>menthol candies</en>
+				</mentholcandies_0>
+				<mentholcandies_1>
+					<de>e Honigmelonen</de>
+					<en>cantaloupes</en>
+				</mentholcandies_1>
+				<mentholcandies_2>
+					<de> Meersalz</de>
+					<en>sea salt</en>
+				</mentholcandies_2>
+				<mentholcandies_3>
+					<de> Fast Food</de>
+					<en>fast food</en>
+				</mentholcandies_3>
+				<mentholcandies_4>
+					<de>e Windbeutel</de>
+					<en>bean bags</en>
+				</mentholcandies_4>
+				<mentholcandies_5>
+					<de>e Schokotaler, auch wenn ein Hundelogo drauf ist</de>
+					<en>chocolate coins, even if there's a dog logo on them</en>
+				</mentholcandies_5>
+				<mentholcandies_6>
+					<de>e Sandwiches</de>
+					<en>sandwiches</en>
+				</mentholcandies_6>
+				<mentholcandies_7>
+					<de>e Hafermilch</de>
+					<en>oat milk</en>
+				</mentholcandies_7>
+				<mentholcandies_8>
+					<de> Zitronensorbet</de>
+					<en>lemon sorbet</en>
+				</mentholcandies_8>
+				<mentholcandies_9>
+					<de>e vegetarische Pizza</de>
+					<en>vegetarian pizza</en>
+				</mentholcandies_9>
+			</variables>
+			<data genre="0" price="1.0" quality="28" />
+			<availability year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="18200428-fdff-4e2d-88fa-4902939c7aa3" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
+			<title>
+				<de>%minister% verrückt geworden?</de>
+				<en>%minister% gone mad?</en>
+			</title>
+			<description>
+				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der %minister% offenbar verrückt geworden sei.</de>
+				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that the %minister% appears to have gone mad.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="21f5d3a5-ba85-40a2-861d-6914ff6123dd" />
+			</effects>
+			<data genre="0" price="1.0" quality="28" />
+			<availability year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="21f5d3a5-ba85-40a2-861d-6914ff6123dd" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
+			<title>
+				<de>%minister%: ${animals_${index}} bald Pflicht!</de>
+				<en>%minister%: ${animals_${index}} soon mandatory!</en>
+			</title>
+			<description>
+				<de>Der %minister% meint es ernst und bekräftigt nochmal seine Forderung. Er habe auch die nötige Befugnis, sie durchzusetzen: Ab 1. Mai nächsten Jahres muss jeder Bürger ein${animal_akk_${index}} besitzen!</de>
+				<en>The %minister% is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a ${animal_akk_${index}}!</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d4b58f67-56ed-4c7b-a524-3c641187c348" />
@@ -937,12 +1264,12 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="bf0ee1be-3dc3-4581-8614-fff5253d6330" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Des Finanzministers Liebe</de>
-				<en>The Finance Minister's Love</en>
+				<de>Des %minister%s Liebe</de>
+				<en>The %minister%'s Love</en>
 			</title>
 			<description>
-				<de>Der Finanzminister hat seine heimliche Liebe zu Koalas zugegeben, obwohl sich heraus gestellt hat, dass Koalas schmerzhaft hart krallen.</de>
-				<en>The finance minister has admitted his secret love for koalas, although it turned out that koalas have painfully hard claws.</en>
+				<de>Der %minister% hat seine heimliche Liebe zu ${animals_dat_${index}} zugegeben, obwohl sich herausgestellt hat, dass ${animals_${index}} ${haveclaws_${index}}.</de>
+				<en>The %minister% has admitted his secret love for ${animals_dat_${index}}, although it turned out that ${animals_${index}} ${haveclaws_${index}}.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="17528858-a7e0-4b6d-a515-d245e40ce87c" />
@@ -952,12 +1279,12 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="23fc5b0e-d3d8-4049-970b-236966ec8da5" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Finanzminister schreibt Biographie</de>
-				<en>Finance minister writes biography</en>
+				<de>%minister% schreibt Biographie</de>
+				<en>%minister% writes biography</en>
 			</title>
 			<description>
-				<de>Der Finanzminister hat seine Memoiren geschrieben und seinem 8-Kapitel-Buch sieben Kapitel seinen Koalas gewidmet.</de>
-				<en>The Secretary of the Treasury wrote his memoirs and devoted seven chapters of his 8-chapter book to his koalas.</en>
+				<de>Der %minister% hat seine Memoiren geschrieben und in seinem 8-Kapitel-Buch sieben Kapitel seinen ${animals_dat_${index}} gewidmet.</de>
+				<en>The %minister% wrote his memoirs and devoted seven chapters of his 8-chapter book to his ${animals_dat_${index}}.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="39" />
@@ -965,12 +1292,12 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="17528858-a7e0-4b6d-a515-d245e40ce87c" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Finanzminister zurückgetreten</de>
-				<en>Minister of Finance resigned</en>
+				<de>%minister% zurückgetreten</de>
+				<en>%minister% resigned</en>
 			</title>
 			<description>
-				<de>Nach seinem Bekenntnis in der Koala-Affäre hat sich der Finanzminister entschlossen, sein Amt aufzugeben und zurückzutreten.</de>
-				<en>After his confession in the Koala affair, the Minister of Finance has decided to give up his office and resign.</en>
+				<de>Nach seinem Bekenntnis in der ${animal_${index}}-Affäre hat sich der %minister% entschlossen, sein Amt aufzugeben und zurückzutreten.</de>
+				<en>After his confession in the ${animal_${index}} affair, the %minister% has decided to give up his office and resign.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
@@ -980,12 +1307,12 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="79b75334-0bec-4061-a029-890601f10b5e" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Koala-Skandal</de>
-				<en>Koala scandal</en>
+				<de>${animal_${index}}-Skandal</de>
+				<en>The ${animal_${index}} scandal</en>
 			</title>
 			<description>
-				<de>Grienpies ist über die Forderung des Finanzministers entsetzt: Koalas vertragen keine Mentholbonbons!</de>
-				<en>Creampeas is appalled by the demand of the Minister of Finance: koalas can't stomach menthol candies!</en>
+				<de>Grienpies ist über die Forderung des %minister%s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
+				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of the ${animal_gen_${index}} in the home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -995,12 +1322,27 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="d4b58f67-56ed-4c7b-a524-3c641187c348" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Welt lacht über Koala-Minister</de>
-				<en>World laughs at koala minister</en>
+				<de>Nation lacht über ${animal_${index}}-%minister%</de>
+				<en>Nation laughs at ${animal_${index}} %minister%</en>
 			</title>
 			<description>
-				<de>Die ganze Welt lacht über den Antrag des Finanzministers, die Haltung eines Koalas zur Pflicht zu machen.</de>
-				<en>The whole world is laughing at the Finance Minister's proposal to make keeping a koala mandatory.</en>
+				<de>Die ganze Nation lacht über den Antrag des %minister%s, die Haltung ein${animal_gen_${index}} zur Pflicht zu machen.</de>
+				<en>The whole nation is laughing at the %minister%'s proposal to make keeping a ${animal_gen_${index}} mandatory.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="53fdba7b-a310-4a31-85e6-5247e908ca10" />
+			</effects>
+			<data genre="0" price="1.0" quality="28" />
+			<availability year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="53fdba7b-a310-4a31-85e6-5247e908ca10" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
+			<title>
+				<de>Welt lacht über ${animal_${index}}-%minister%</de>
+				<en>World laughs at ${animal_${index}} %minister%</en>
+			</title>
+			<description>
+				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht zu machen will.</de>
+				<en>The whole world is laughing at our %minister% who wants to make keeping a ${animal_gen_${index}} mandatory.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
@@ -1347,7 +1689,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Alton new Program Director at Pro9</en>
 			</title>
 			<description>
-				<de>Der Ex-Showpraktikant von Stephan Rapp ist heute überraschend Programmchef geworden. Ändern wird sich nichts, "Wir haben doch Zeit", so Alton.</de>
+				<de>Der Ex-Showpraktikant von Stephan Rapp ist heute überraschend Programmchef geworden. Ändern wird sich nichts, „Wir haben doch Zeit“, so Alton.</de>
 				<en>Stephan Rapp's ex-show intern has surprisingly become programme director today. Nothing will change, "We have plenty of time," says Alton.</en>
 			</description>
 			<effects />
@@ -1544,7 +1886,7 @@ Demonstrations are expected again this year.</en>
 				<en>Allotment gardener wounds policeman</en>
 			</title>
 			<description>
-				<de>Der Kleingärtner Rico Milke schoss auf der Wildschweinjagd in seinem Garten einen Polizisten an. "Ich hielt ihn für ein Wildschwein", beteuerte der Schütze.</de>
+				<de>Der Kleingärtner Rico Milke schoss auf der Wildschweinjagd in seinem Garten einen Polizisten an. „Ich hielt ihn für ein Wildschwein“, beteuerte der Schütze.</de>
 				<en>Allotment gardener Rico Milke shot at a policeman while hunting wild boar in his garden. "I thought he was a boar," the shooter asserted.</en>
 			</description>
 			<effects>
@@ -1588,7 +1930,7 @@ Demonstrations are expected again this year.</en>
 				<en>Coaching license for M. Preyts?</en>
 			</title>
 			<description>
-				<de>Die Chancen stehen gut: „Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.“, so der Bertaner. Berlin darf hoffen.</de>
+				<de>Die Chancen stehen gut: „Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden“, so der Bertaner. Berlin darf hoffen.</de>
 				<en>The chances are good: "I would like to acquire the trainer's license first, then you can talk to me," says the former Berta player. Berlin may hope.</en>
 			</description>
 			<effects>
@@ -1709,12 +2051,12 @@ Demonstrations are expected again this year.</en>
 		</news>
 		<news id="6134da01-d7d0-48dc-94d5-fbe43bd4dda6" thread_id="aebe2cd0-0c5e-4d38-9cca-b2ab634ee4f6" type="0" creator="">
 			<title>
-				<de>Computer Oskar-nominiert</de>
+				<de>Computer Oscar-nominiert</de>
 				<en>Computer nominated for Oscar</en>
 			</title>
 			<description>
-				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oskar nominiert wurde.</de>
-				<en>The American computer manufacturer EppelWoi was astonished when their computer was nominated for the Oskar for Best Supporting Role.</en>
+				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oscar nominiert wurde.</de>
+				<en>The American computer manufacturer EppelWoi was astonished when their computer was nominated for the Oscar for Best Supporting Role.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="33" />
@@ -1793,8 +2135,8 @@ Demonstrations are expected again this year.</en>
 				<en>Lottery winner missing</en>
 			</title>
 			<description>
-				<de>Nur einen Tag nach Start der Kreuzfahrt fehlt von der 97jährigen Lottogewinnerin jede Spur. Ein Matrose: „Sie ist vielleicht mit jemandem durchgebrannt?“.</de>
-				<en>Just one day after the cruise started, there is no trace of the 97-year-old lottery winner. A sailor: "She may have run off with someone?".</en>
+				<de>Nur einen Tag nach Start der Kreuzfahrt fehlt von der 97jährigen Lottogewinnerin jede Spur. Ein Matrose: „Sie ist vielleicht mit jemandem durchgebrannt?“</de>
+				<en>Just one day after the cruise started, there is no trace of the 97-year-old lottery winner. A sailor: "She may have run off with someone?"</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="5f7ea775-4031-4cf8-8bc0-83c9b0aca07d" />
@@ -1890,7 +2232,7 @@ Demonstrations are expected again this year.</en>
 				<en>Street sweeper dead</en>
 			</title>
 			<description>
-				<de>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: "...und er kehrt nie wieder!"</de>
+				<de>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“</de>
 				<en>The man who found the 500 euro bill died of alcohol poisoning. On his gravestone is written: "...and he'll never sweep through the docklands again".</en>
 			</description>
 			<effects />
@@ -2123,7 +2465,7 @@ Demonstrations are expected again this year.</en>
 				<en>Earthquake: Search suspended</en>
 			</title>
 			<description>
-				<de>Nach dem Erdbeben in San Francisco wird die Suche nach überlebenden eingestellt. "Es besteht eigentlich keine Hoffnung mehr", so ein Helfer.</de>
+				<de>Nach dem Erdbeben in San Francisco wird die Suche nach überlebenden eingestellt. „Es besteht eigentlich keine Hoffnung mehr“, so ein Helfer.</de>
 				<en>In the wake of the San Francisco earthquake, the search for survivors is suspended. "There is really no hope left," said one responder.</en>
 			</description>
 			<effects>
@@ -2194,7 +2536,7 @@ Demonstrations are expected again this year.</en>
 				<en>Computer game destroys PC</en>
 			</title>
 			<description>
-				<de>Das Spiel "Rasante Geschwindigkeiten 12" des Herstellers Elektromerz hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</de>
+				<de>Das Spiel „Rasante Geschwindigkeiten 12“ des Herstellers Elektromerz hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</de>
 				<en>The game "Whirlwind Speeds 12" by producer Elektromerz destroyed the graphics card of a gamer. It burst into flames.</en>
 			</description>
 			<effects>
@@ -2629,7 +2971,7 @@ Demonstrations are expected again this year.</en>
 				<en>Fans collect for Ron</en>
 			</title>
 			<description>
-				<de>Nach dem Com-Port-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: "Wir können doch unseren Ron nicht im Stich lassen."</de>
+				<de>Nach dem Com-Port-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: „Wir können doch unseren Ron nicht im Stich lassen.“</de>
 				<en>After the COM port rubber doll scandal, TVTower fans collect money for the court costs: "We can't let our Ron down."</en>
 			</description>
 			<effects>
@@ -2801,7 +3143,7 @@ Demonstrations are expected again this year.</en>
 				<en>Chancellor rejects main movie role</en>
 			</title>
 			<description>
-				<de>Kanzler Schröler lehnte die Hauptrolle in dem Film "Lügen ist meine Leidenschaft" verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</de>
+				<de>Kanzler Schröler lehnte die Hauptrolle in dem Film „Lügen ist meine Leidenschaft“ verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</de>
 				<en>Chancellor Schröler angrily turned down the lead role in the movie "Lies are my passion". Film partner Angie Mertel is bitterly disappointed.</en>
 			</description>
 			<effects />
