@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="Data entries by scr0llbaer. TODO: Apply references to roles in scripts. TODO: maybe eventually re-introduce 'funny numbers' for production_limit" />
+	<version value="3" comment="Data entries by scr0llbaer. TODO: maybe eventually re-introduce 'funny numbers' for production_limit" />
 
 	<insignificantpeople>
 		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" bookable="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
@@ -145,6 +145,19 @@
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 		</news>
+
+		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing the it still can be used in general and in addition when slightly modified to a fictional copycat event.">
+			<availability script="TIME_YEAR &gt;= 1988 &amp;&amp; TIME_SEASON=1" />
+			<title>
+				<de>Schessnah in der Nähe von Moskau gesichtet</de>
+				<en>Schessnah spotted near Moscow</en>
+			</title>
+			<description>
+				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke Schessnah gesichtet. Handelt es sich dabei um einen Nachahmer? Einen Selbstmordattentäter?</de>
+				<en>Russian air defense has spotted a German small plane of the brand Schessnah near Moscow. Is it a copycat? A suicide bomber?</en>
+			</description>
+			<data genre="4" price="0.55" quality="8" fictional="1" />
+		</news>
 	</allnews>
 
 	<allprogrammes>
@@ -157,7 +170,6 @@
 				<de>Steaks, Bier und Zigaretten waren die Hauptnahrungsmittel im alten Nepal.
 
 Format: Abgefilmte Vorträge. Unaufgeregt und Unaufregend.</de>
-
 				<en>Steaks, beer and cigarettes were the main staples in ancient Nepal.
 
 Format: Filmed lectures. Laid-back and to lay down.</en>
@@ -167,7 +179,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="NL" distribution="2" maingenre="6" subgenre="103,300" flags="4" blocks="1" price_mod="0.5" />
-			<releaseTime year_relative="-15" />
+			<releaseTime year_relative="-15" year_relative_min="1970" year_relative_max="1995" />
 			<ratings critics="21" speed="3" outcome="9" />
 			<children>
 				<programme id="1fc5dff9-f72d-40c9-938f-990a3875603b" product="2" licence_type="2" creator="9551">
@@ -254,52 +266,58 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 	</allprogrammes>
 
 	<programmeroles>
-		<programmerole guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" first_name="Dylan" last_name="Miller" gender="1" />
-		<programmerole guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" first_name="Sara" last_name="Pander" gender="2" />
-		<programmerole guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" first_name="Benedict" last_name="Bernoulli" gender="1" />
-		<programmerole guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" first_name="Ryleigh" last_name="Shaw" gender="2" />
-		<programmerole guid="726103c3-40df-495d-97a0-13c7cc9c3386" first_name="Professor" last_name="Ed" title="Dr." gender="1" />
-		<programmerole guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" first_name="Nurse" last_name="Frieda" gender="2" />
-		<programmerole guid="67ffb376-8df4-46ed-ba50-65e31806326a" first_name="Weird" last_name="Fred" gender="1" />
-		<programmerole guid="a4061798-165c-4dc0-9025-84e1c954155b" first_name="Pink" last_name="Meteor" gender="0" />
-		<programmerole guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" first_name="Yellow" last_name="Tentacle" gender="0" />
-		<programmerole guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" first_name="Pink" last_name="Tentacle" gender="0" />
-		<programmerole guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" first_name="Jack" last_name="the Plant" gender="0" />
-		<programmerole guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" first_name="Cousin" last_name="Med" gender="1" />
-		<programmerole guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" first_name="Lakelyn" last_name="" gender="2" />
-		<programmerole guid="1bae2190-de25-4400-a3a8-3606d1b6944b" first_name="Roagie" last_name="" gender="1" />
+		<programmerole guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" first_name="Dylan" last_name="Miller" first_name_original="Dave" last_name_original="Miller" gender="1" />
+		<programmerole guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" first_name="Sara" last_name="Pander" first_name_original="Sandy" last_name_original="Pantz" gender="2" />
+		<programmerole guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" first_name="Benedict" last_name="Bernoulli" first_name_original="Bernard" last_name_original="Bernoulli" gender="1" />
+		<programmerole guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" first_name="Ryleigh" last_name="Shaw" first_name_original="Razor" last_name_original="Sharp" gender="2" />
+		<programmerole guid="726103c3-40df-495d-97a0-13c7cc9c3386" first_name="Ed" last_name="Eddersen" title="Doctor" first_name_original="Fred" last_name_original="Edison" gender="1" />
+		<programmerole guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" first_name="Frieda" last_name="Eddersen" title="Nurse" first_name_original="Edna" last_name_original="Edison" gender="2" />
+		<programmerole guid="67ffb376-8df4-46ed-ba50-65e31806326a" first_name="Flint" last_name="Eddersen" title="Weird" first_name_original="Fred" last_name_original="Edison" gender="1" />
+		<programmerole guid="a4061798-165c-4dc0-9025-84e1c954155b" first_name="Pink" last_name="Meteor" first_name_original="Purple" last_name_original="Meteor" gender="0" />
+		<programmerole guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" first_name="Yellow" last_name="Tentacle" first_name_original="Green" last_name_original="Tentacle" gender="0" />
+		<programmerole guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" first_name="Pink" last_name="Tentacle" first_name_original="Purple" last_name_original="Tentacle" gender="0" />
+		<programmerole guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" first_name="Jack" last_name="the Plant" first_name_original="Chuck" last_name_original="the Plant" gender="0" />
+		<programmerole guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" first_name="Dead Cousin Med" last_name="Eddersen" first_name_original="Dead Cousin Ted" last_name_original="Edison" gender="1" />
+		<programmerole guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" first_name="Lakelyn" last_name="" first_name_original="Laverne" last_name_original="" gender="2" />
+		<programmerole guid="1bae2190-de25-4400-a3a8-3606d1b6944b" first_name="Roagie" last_name="" first_name_original="Hoagie" last_name_original="" gender="1" />
 		
-		<programmerole guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" first_name="Benjamin" last_name="Franklin" gender="1" />
-		<programmerole guid="c2edde3f-c2ff-4800-a020-79f59662176f" first_name="George" last_name="Washington" gender="1" />
-		<programmerole guid="29aa9b04-b155-4975-b1b0-45355c293668" first_name="John" last_name="Hancock" gender="1" />
-		<programmerole guid="c4f29c58-9028-48d4-84de-cad66012d2e4" first_name="Thomas" last_name="Jefferson" gender="1" />
+		<programmerole guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" first_name="Benjamin" last_name="Franklin" first_name_original="Benjamin" last_name_original="Franklin" gender="1" comment="these are of course also real historical persons. TODO: add to people?" />
+		<programmerole guid="c2edde3f-c2ff-4800-a020-79f59662176f" first_name="George" last_name="Washington" first_name_original="George" last_name_original="Washington" gender="1" />
+		<programmerole guid="29aa9b04-b155-4975-b1b0-45355c293668" first_name="John" last_name="Hancock" first_name_original="John" last_name_original="Hancock" gender="1" />
+		<programmerole guid="c4f29c58-9028-48d4-84de-cad66012d2e4" first_name="Thomas" last_name="Jefferson" first_name_original="Thomas" last_name_original="Jefferson" gender="1" />
 
-		<programmerole guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" first_name="Zed Mack" last_name="Zedrick" gender="1" />
-		<programmerole guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" first_name="Amy" last_name="Harris" gender="2" />
-		<programmerole guid="833302a7-87ee-4afc-95db-f0fde5e7866a" first_name="Lilly" last_name="Berner" gender="2" />
-		<programmerole guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" first_name="Madison" last_name="Japens" gender="2" />
-		<programmerole guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" first_name="Elvis" last_name="" gender="1" />
+		<programmerole guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" first_name="Zed Mack" last_name="Zedrick" first_name_original="Zak" last_name_original="McKracken" gender="1" />
+		<programmerole guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" first_name="Amy" last_name="Harris" first_name_original="Annie" last_name_original="Larris" gender="2" />
+		<programmerole guid="833302a7-87ee-4afc-95db-f0fde5e7866a" first_name="Lilly" last_name="Berner" first_name_original="Leslie" last_name_original="Bennett" gender="2" />
+		<programmerole guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" first_name="Madison" last_name="Japens" first_name_original="Melissa" last_name_original="China" gender="2" />
+		<programmerole guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" first_name="Elvis" last_name="Presley" first_name_original="Elvis" last_name_original="Prizzley" gender="1" comment="also of course actually real person ef66c1fc-8baf-4c7b-8b25-4971fba4858a" />
 
-		<programmerole guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" first_name="Dink" last_name="" gender="1" />
-		<programmerole guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" first_name="Mimikry" last_name="" gender="2" />
-		<programmerole guid="d2168e7c-3c95-4778-b406-cb305633946a" first_name="Trint" last_name="" gender="1" />
-		<programmerole guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" first_name="Dar" last_name="" gender="1" />
-		<programmerole guid="53104872-6c35-43df-a8b6-a3863db9cf9b" first_name="Isolde" last_name="" gender="2" />
-		<programmerole guid="8a54557b-ded8-4427-bb60-7796c1f84317" first_name="Arturo" last_name="" gender="1" />
+		<programmerole guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" first_name="Dink" last_name="" first_name_original="Bink" last_name_original="" gender="1" />
+		<programmerole guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" first_name="Mimikry" last_name="" first_name_original="Chameleon" last_name_original="" gender="2" />
+		<programmerole guid="d2168e7c-3c95-4778-b406-cb305633946a" first_name="Trint" last_name="" first_name_original="Trent" last_name_original="" gender="1" />
+		<programmerole guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" first_name="Dar" last_name="" first_name_original="Dor" last_name_original="" gender="1" />
+		<programmerole guid="53104872-6c35-43df-a8b6-a3863db9cf9b" first_name="Isolde" last_name="" first_name_original="Irene" last_name_original="" gender="2" />
+		<programmerole guid="8a54557b-ded8-4427-bb60-7796c1f84317" first_name="Arturo" last_name="" first_name_original="Arnolde" last_name_original="" gender="1" />
 
-		<programmerole guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" first_name="Raymond" last_name="Plankwood" gender="1" />
-		<programmerole guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" first_name="Evelyn" last_name="Harley" gender="2" />
-		<programmerole guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" first_name="P.G." last_name="LeCruck" gender="1" />
+		<programmerole guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" first_name="Raymond" last_name="Plankwood" first_name_original="Guybrush" last_name_original="Threepwood" gender="1" />
+		<programmerole guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" first_name="Evelyn" last_name="Harley" first_name_original="Elaine" last_name_original="Marley" gender="2" />
+		<programmerole guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" first_name="" last_name="LeCruck" first_name_original="" last_name_original="LeChuck" gender="1" comment="TODO: first_name actually P.G. but not enough space." />
 		
-		<programmerole guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" first_name="Stevan" last_name="" gender="1" />
-		<programmerole guid="a42f6980-1685-422c-8796-8b502b9b41d9" first_name="Kara" last_name="" gender="2" />
-		<programmerole guid="d783dea1-1f41-496f-a239-12ac44c6fe60" first_name="Cellist" last_name="" gender="1" />
+		<programmerole guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" first_name="Stevan" last_name="" first_name_original="Serdjan" last_name_original="" gender="1" />
+		<programmerole guid="a42f6980-1685-422c-8796-8b502b9b41d9" first_name="Kara" last_name="" first_name_original="Katrina" last_name_original="" gender="2" />
+		<programmerole guid="d783dea1-1f41-496f-a239-12ac44c6fe60" first_name="Cellist" last_name="" first_name_original="Cellist" last_name_original="" gender="1" />
 
-		<programmerole guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" first_name="Leather Jacket Leo" last_name="" gender="1" />
-		<programmerole guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" first_name="Fervent Faviola" last_name="" gender="2" />
+		<programmerole guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" first_name="Leather Jacket Leo" last_name="" nick_name="Leo" nick_name_original="Larry" first_name_original="Leisure Suit Larry" last_name_original="" gender="1" />
+		<programmerole guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" first_name="Fervent Faviola" last_name="" nick_name="Faviola" nick_name_original="Patty" first_name_original="Passionate Patty" last_name_original="" gender="2" />
 		
-		<programmerole guid="437539e5-4c6b-4207-981a-051a82021745" first_name="Bobby" last_name="Blaze" gender="1" />
-		<programmerole guid="ba05561a-0266-4cfe-b020-353781fd881c" first_name="Xorp" last_name="" gender="0" />
+		<programmerole guid="437539e5-4c6b-4207-981a-051a82021745" first_name="Bobby" last_name="Blaze" first_name_original="Billy" last_name_original="Blaze" gender="1" />
+		<programmerole guid="ba05561a-0266-4cfe-b020-353781fd881c" first_name="Xorp" last_name="" first_name_original="Yorp" last_name_original="" gender="0" />
+
+		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Speiübel" last_name="" first_name_original="Spejbl" last_name_original="" gender="1" comment="TODO: move the 'Spejbl and Hurvínek' franchise roles to a main roles file and use references from there in the programmes file once that feature is available. International variable role names Speiübel vs Spyble? Introduce role prices? These could serve as an example for a 'cheap' franchise." />
+		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Dubrovnik" last_name="" first_name_original="Hurvínek" last_name_original="" gender="1" />
+		<programmerole guid="06769c4e-15c8-40e4-968b-54ca8f32b96b" first_name="Karolina" last_name="" first_name_original="Kateřina" last_name_original="" gender="2" />
+		<programmerole guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" first_name="Markéta" last_name="" first_name_original="Mánička" last_name_original="" gender="2" comment="In database_programmes.xml hitherto used spoof name 'Ilonka' is apparently meant for this character, but something like 'Markéta' ought to resemble the original name better." />
+		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Zdeněk" last_name="" first_name_original="Žeryk" last_name_original="" gender="1" comment="A dog. In German apparently 'Jerry'." />
 	</programmeroles>
 
 	<scripttemplates>
@@ -510,7 +528,7 @@ A must for every housewife, a curse for hard men.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_YEARSPLAYED>1" />
+			<availability script="TIME_DAYSPLAYED &gt; 12" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
@@ -647,7 +665,7 @@ A must for every housewife, a curse for hard men.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_YEARSPLAYED>1" />
+			<availability script="TIME_DAYSPLAYED &gt; 12" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
@@ -695,7 +713,7 @@ A must for every housewife, a curse for hard men.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_YEARSPLAYED>2" />
+			<availability script="TIME_DAYSPLAYED &gt; 18" />
 		</scripttemplate>
 
 		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
@@ -891,8 +909,8 @@ So that's 4120 per episode.</en>
 				<en>%title%</en>
 			</title>
 			<description>
-				<de>Dylans Freundin Sara wurde entführt vom verrückten Professor Dr. Ed! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de>
-				<en>Dylan's girlfriend Sara has been kidnapped by the mad professor Dr. Ed! He and his friends want to free her from his mansion. There are a lot more strange things going on there! And where is gasoline for the chainsaw when you need it.</en>
+				<de>%ROLENAME1%s Freundin %ROLENAME2% wurde entführt vom verrückten Professor Dr. %ROLENAME5%! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de> <!-- TODO: Reference ROLETITLEx supported? -->
+				<en>%ROLENAME1%'s girlfriend %ROLENAME2% has been kidnapped by the mad professor Dr. %ROLENAME5%! He and his friends want to free her from his mansion. There are a lot more strange things going on there! And where is gasoline for the chainsaw when you need it.</en>
 			</description>
 
 			<variables>
@@ -951,8 +969,8 @@ So that's 4120 per episode.</en>
 				<en>The %Revenge% of the Tentacle</en>
 			</title>
 			<description>
-				<de>Zurück zur abgedrehten Villa! Dr. Ed ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass Pink Tentakel die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
-				<en>Back to the wacky mansion! Dr. Ed is on our side this time. Well, almost. He wants to prevent Pink Tentacle from enslaving humanity, but has massively screwed up something with the time machine. The protagonists now have to fix things.</en>
+				<de>Zurück zur abgedrehten Villa! Dr. %ROLENAME4% ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass %ROLE8% die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
+				<en>Back to the wacky mansion! Dr. %ROLENAME4% is on our side this time. Well, almost. He wants to prevent %ROLE8% from enslaving humanity, but has massively screwed up something with the time machine. The protagonists now have to fix things.</en>
 			</description>
 
 			<variables>
@@ -990,13 +1008,15 @@ So that's 4120 per episode.</en>
 			<review min="80" max="95" />
 			<speed min="70" max="90" />
 			<studio_size value="3" />
-			<availability script="TIME_YEARSPLAYED>2" />
+			<availability script="TIME_DAYSPLAYED &gt; 18" />
 		</scripttemplate>
+
+		<!-- TODO: Add a series with episodes from https://maniac-mansion-mania.com/ to make more use of all the defined roles. -->
 
 		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Zak_McKracken_and_the_Alien_Mindbenders">
 			<title>
-				<de>%myname%Zed Mack Zedrick, %roving% Reporter</de>
-				<en>Hi, Zed Mack Zedrick%myname%, %roving% Reporter</en>
+				<de>%myname%%ROLE1%, %roving% Reporter</de>
+				<en>Hi, %ROLE1%%myname%, %roving% Reporter</en>
 			</title>
 			<description>
 				<de>Ich muss für dieses Schmierblatt schreiben, dabei will ich den Pulitzer-Preis gewinnen! Aber ich bin Aliens auf der Spur, wirklich! Die wollen die Menschheit verdummen! Ich treff die Frau aus meinem Traum, und selbst zum Mars verschlägt's mich.</de>
@@ -1099,12 +1119,12 @@ So that's 4120 per episode.</en>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="91ce0ca8-c448-4c4d-b162-078ba29ad1d4">
 					<title>
-						<de>Der Zauberspruch der Mimikry</de>
-						<en>Mimikry Magic</en>
+						<de>Der Zauberspruch der %ROLENAME2%</de>
+						<en>%ROLENAME2% Magic</en>
 					</title>
 					<description>
-						<de>Dink wird in die dröge (unsere) profane Welt verbannt, weil er in Xynthia versehentlich das Gesetz gebrochen hat, da er kein magisches Talent hat. Er findet einige talentierte Gefährten, die ihm helfen, besonders das wandlungsfähige Mädchen Mimikry.</de>
-						<en>Dink is exiled to the dreary (our) Mundane World because he has inadvertently broken the law in Xynthia by not having a magical talent. He finds some talented companions to help him, especially the chameleonic girl Mimikry.</en>
+						<de>%ROLENAME1% wird in die dröge (unsere) profane Welt verbannt, weil er in Xynthia versehentlich das Gesetz gebrochen hat, da er kein magisches Talent hat. Er findet einige talentierte Gefährten, die ihm helfen, besonders das wandlungsfähige Mädchen %ROLENAME2%.</de>
+						<en>%ROLENAME1% is exiled to the dreary (our) Mundane World because he has inadvertently broken the law in Xynthia by not having a magical talent. He finds some talented companions to help him, especially the chameleonic girl %ROLENAME2%.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="c4ba18ba-082d-4488-8c4d-4de361c1efb8">
@@ -1113,8 +1133,8 @@ So that's 4120 per episode.</en>
 						<en>The Spring of Magic</en>
 					</title>
 					<description>
-						<de>König Trint hat Dink, der nun verheiratet mit Mimikry ist, zum offiziellen Forscher von Xynthia ernannt, der nun die Aufgabe hat, das Geheimnis der Magie des Landes zu ergründen und herauszufinden, woher sie kommt.</de>
-						<en>King Trint has appointed Dink, who is now married to Mimikry, the Official Researcher of Xynthia, who is now tasked to discover the secret behind the magic of the land and where it comes from.</en>
+						<de>König %ROLENAME3% hat %ROLENAME1%, der nun verheiratet mit %ROLENAME2% ist, zum offiziellen Forscher von Xynthia ernannt, der nun die Aufgabe hat, das Geheimnis der Magie des Landes zu ergründen und herauszufinden, woher sie kommt.</de>
+						<en>King %ROLENAME3% has appointed %ROLENAME1%, who is now married to %ROLENAME2%, the Official Researcher of Xynthia, who is now tasked to discover the secret behind the magic of the land and where it comes from.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="8e98489a-ccb1-4759-9c43-c91cd81acd2d">
@@ -1123,8 +1143,8 @@ So that's 4120 per episode.</en>
 						<en>Castle Zrougna</en>
 					</title>
 					<description>
-						<de>Dar, der nun 12-jährige Sohn von Dink, kann den Thron erben. Doch sein Selbstvertrauen ist gering, er wird von seinen Altersgenossen und gar von Prinzessin Isolde drangsaliert, weil seine ihm eigenen magischen Fähigkeiten ein wenig unkonventionell sind.</de>
-						<en>Dar, the now 12 year old son of Dink, can inherit the throne. However, his confidence is low, he is bullied by his agemates and even Princess Isolde because his particular magical abilities are a bit unconvential.</en>
+						<de>%ROLENAME4%, der nun 12-jährige Sohn von %ROLENAME1%, kann den Thron erben. Doch sein Selbstvertrauen ist gering, er wird von seinen Altersgenossen und gar von Prinzessin %ROLENAME5% drangsaliert, weil seine ihm eigenen magischen Fähigkeiten ein wenig unkonventionell sind.</de>
+						<en>%ROLENAME4%, the now 12 year old son of %ROLENAME1%, can inherit the throne. However, his confidence is low, he is bullied by his agemates and even Princess %ROLENAME5% because his particular magical abilities are a bit unconvential.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="5b1b2a90-0d09-47d3-be9f-49c8fd06b319">
@@ -1133,8 +1153,8 @@ So that's 4120 per episode.</en>
 						<en>Centaur Glade</en>
 					</title>
 					<description>
-						<de>Dar ist vorübergehend König, weil Trint auf einer Mission in der profanen Welt ist. Als er nicht zurückzukehren scheint, begibt er sich auf eine Reise, um Hilfe zu holen, und trifft dabei auf Arturo den Zentauren.</de>
-						<en>Dar is temporarily king because Trint is on a mission in the Mundane World. When he won't seem to return, he embarks on a journey to get some help and meets Arturo the Centaur.</en>
+						<de>%ROLENAME4% ist vorübergehend König, weil %ROLENAME3% auf einer Mission in der profanen Welt ist. Als er nicht zurückzukehren scheint, begibt er sich auf eine Reise, um Hilfe zu holen, und trifft dabei auf %ROLENAME6% den Zentauren.</de>
+						<en>%ROLENAME4% is temporarily king because %ROLENAME3% is on a mission in the Mundane World. When he won't seem to return, he embarks on a journey to get some help and meets %ROLENAME6% the Centaur.</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1168,8 +1188,8 @@ So that's 4120 per episode.</en>
 				<en>The %mystery% of %donkey% %bay%</en>
 			</title>
 			<description>
-				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund Raymond Plankwood strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat LeCruck. Und dann ist da noch die Liebe.</de>
-				<en>Deep in the Caribbean few 'undred yearsies ago. Youngster Raymond Plankwood gets stranded on a pirate island. But that be jus' fine, always wanted t' be a pirate anyway. Howe'er, area be 'aunted by ghost pirate LeCruck. An' then thar also be love.</en>
+				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund %ROLE1% strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat %ROLE3%. Und dann ist da noch die Liebe.</de> <!-- TODO: ROLELASTx? -->
+				<en>Deep in the Caribbean few 'undred yearsies ago. Youngster %ROLE1% gets stranded on a pirate island. But that be jus' fine, always wanted t' be a pirate anyway. Howe'er, area be 'aunted by ghost pirate %ROLE3%. An' then thar also be love.</en>
 			</description>
 
 			<variables>
@@ -1194,8 +1214,8 @@ So that's 4120 per episode.</en>
 						<en>Hûrlýë Island</en>
 					</title>
 					<description>
-						<de>Raymond ist erstmal auf Hûrlýë Island gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen LeCruck vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
-						<en>Raymond is stranded on Hûrlýë Island for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of LeCruck, actually seasoned men, and other bizarre characters.</en>
+						<de>%ROLENAME1% ist erstmal auf Hûrlýë Island gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen %ROLE3% vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
+						<en>%ROLENAME1% is stranded on Hûrlýë Island for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of %ROLE3%, actually seasoned men, and other bizarre characters.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="db9757c0-a155-4c1d-9b06-1035d8c63444">
@@ -1204,8 +1224,8 @@ So that's 4120 per episode.</en>
 						<en>The Three Trials</en>
 					</title>
 					<description>
-						<de>Die lokale Gouverneurin Evelyn scheint schon eine gute Partie zu sein, wie Raymond von Plakaten und Gerede entnehmen kann. Schließlich erfährt Raymond, wie das mit der Piratenaufnahmeprüfung so läuft.</de>
-						<en>The local governor Evelyn appears to be quite a catch, as Raymond can tell from posters and gossip. Finally, he learns how this pirate admission thing goes about.</en>
+						<de>Die lokale Gouverneurin %ROLENAME2% scheint schon eine gute Partie zu sein, wie %ROLENAME1% von Plakaten und Gerede entnehmen kann. Schließlich erfährt %ROLENAME1%, wie das mit der Piratenaufnahmeprüfung so läuft.</de>
+						<en>The local governor %ROLENAME2% appears to be quite a catch, as %ROLENAME1% can tell from posters and gossip. Finally, %ROLENAME1% learns how this pirate admission thing goes about.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="ef230bd2-7d96-43ec-bb0d-01e84787243c">
@@ -1214,8 +1234,8 @@ So that's 4120 per episode.</en>
 						<en>You fight like a Cow</en>
 					</title>
 					<description>
-						<de>Als erste Prüfung muss Raymond gegen den Schwertmeister der Insel antreten. Dazu gibt viele Hindernisse zu überwinden, vor allem sind erstmal erbitterte Wortgefechte zu überstehen.</de>
-						<en>As a first test Raymond has to compete against the sword master of the island. There are many obstacles to overcome, especially fierce battles of words.</en>
+						<de>Als erste Prüfung muss %ROLENAME1% gegen den Schwertmeister der Insel antreten. Dazu gibt viele Hindernisse zu überwinden, vor allem sind erstmal erbitterte Wortgefechte zu überstehen.</de>
+						<en>As a first test %ROLENAME1% has to compete against the sword master of the island. There are many obstacles to overcome, especially fierce battles of words.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="1e345224-e090-4a83-9303-55150550d76d">
@@ -1224,8 +1244,8 @@ So that's 4120 per episode.</en>
 						<en>Theft of Hearts</en>
 					</title>
 					<description>
-						<de>Der Schwertmeisterin hat Raymond Paroli geboten, jetzt muss er als zweite Prüfung ein wertvolles Artefakt aus dem Haus der Gouverneurin stehlen. Dort wird er freilich von Evelyn ertappt. Amors Pfeile treffen ihn. Evelyn ist gar nicht mal abgeneigt...</de>
-						<en>The sword master? Raymond stood up to her. Now a valuable artifact must be stolen from the governor's house as the second trial. There, of course, he is caught by Evelyn. Cupid's arrows hit him. Evelyn isn't even averse...</en>
+						<de>Der Schwertmeisterin hat %ROLENAME1% Paroli geboten, jetzt muss er als zweite Prüfung ein wertvolles Artefakt aus dem Haus der Gouverneurin stehlen. Dort wird er freilich von %ROLENAME2% ertappt. Amors Pfeile treffen ihn. %ROLENAME2% ist gar nicht mal abgeneigt...</de>
+						<en>The sword master? %ROLENAME1% stood up to her. Now a valuable artifact must be stolen from the governor's house as the second trial. There, of course, he is caught by %ROLENAME2%. Cupid's arrows hit him. %ROLENAME2% isn't even averse...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="6ee0bbaf-6dd4-4360-857e-6d4b492c3463">
@@ -1234,8 +1254,8 @@ So that's 4120 per episode.</en>
 						<en>Treasure Hunt</en>
 					</title>
 					<description>
-						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt Raymond, dass LeCruck Evelyn auch immer liebte und für sie das %donkey%%bay%-%mystery% lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
-						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, Raymond learns that LeCruck always loved Evelyn, too, and wanted to uncover the the %mystery% of %donkey% %bay% for her, but became a ghost pirate there instead.</en>
+						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt %ROLENAME1%, dass %ROLE3% %ROLENAME2% auch immer liebte und für sie das %donkey%%bay%-%mystery% lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
+						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, %ROLENAME1% learns that %ROLE3% always loved %ROLENAME2%, too, and wanted to uncover the the %mystery% of %donkey% %bay% for her, but became a ghost pirate there instead.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="ce069d69-7735-4270-814a-eb5f20c895dd">
@@ -1244,8 +1264,8 @@ So that's 4120 per episode.</en>
 						<en>Behind you, a three-headed monkey!</en>
 					</title>
 					<description>
-						<de>Jetzt kann sich Raymond ein Pirat schimpfen, aber oh Schreck! LeCruck hat mit seinem Geisterschiff Evelyn entführt! %donkey%%bay%, nicht nur eine Sage! Raymond muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
-						<en>Now Raymond can call himself a pirate, but oh horrors! LeCruck has kidnapped Evelyn with his ghost ship! %donkey% %bay%, not just a legend! Raymond must round up a crew and sail to this island.</en>
+						<de>Jetzt kann sich %ROLENAME1% ein Pirat schimpfen, aber oh Schreck! %ROLE3% hat mit seinem Geisterschiff %ROLENAME2% entführt! %donkey%%bay%, nicht nur eine Sage! %ROLENAME1% muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
+						<en>Now %ROLENAME1% can call himself a pirate, but oh horrors! %ROLE3% has kidnapped %ROLENAME2% with his ghost ship! %donkey% %bay%, not just a legend! %ROLENAME1% must round up a crew and sail to this island.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="0f626bb5-c7fb-4c51-aea7-4fe00f012cad">
@@ -1264,8 +1284,8 @@ So that's 4120 per episode.</en>
 						<en>%donkey% %bay%</en>
 					</title>
 					<description>
-						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber Raymond trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
-						<en>Getting there was grueling enough, and legend has it that no one ever returned alive. But Raymond encounters another human being on the beach after all. The shipwrecked and slightly crazed Hendrik has been stranded there for years.</en>
+						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber %ROLENAME1% trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
+						<en>Getting there was grueling enough, and legend has it that no one ever returned alive. But %ROLENAME1% encounters another human being on the beach after all. The shipwrecked and slightly crazed Hendrik has been stranded there for years.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="e7988271-a81f-4dc1-8eed-46fd7d88089d">
@@ -1280,12 +1300,12 @@ So that's 4120 per episode.</en>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="b93968b6-f863-44a5-b7c4-42a6f434f0a5">
 					<title>
-						<de>LeCruck's Schiff</de>
-						<en>LeCruck's ship</en>
+						<de>%ROLE3%'s Schiff</de>
+						<en>%ROLE3%'s ship</en>
 					</title>
 					<description>
-						<de>Schließlich gelangt Raymond in die Höhlen unter der Insel, wo LeCruck's Geisterschiff auf Anker liegt. Er klaut Voodoo-Zutaten von dort, und die Kannibalen brauen für ihn dann ein Geistervernichtungs-Elixier.</de>
-						<en>Finally, Raymond gets to the caves under the island, where LeCruck's ghost ship is at anchor. He steals voodoo ingredients from there, and the cannibals then brew a ghost-destroying elixir for him.</en>
+						<de>Schließlich gelangt %ROLENAME1% in die Höhlen unter der Insel, wo %ROLE3%s Geisterschiff auf Anker liegt. Er klaut Voodoo-Zutaten von dort, und die Kannibalen brauen für ihn dann ein Geistervernichtungs-Elixier.</de>
+						<en>Finally, %ROLENAME1% gets to the caves under the island, where %ROLE3%'s ghost ship is at anchor. He steals voodoo ingredients from there, and the cannibals then brew a ghost-destroying elixir for him.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="c5c297fc-ecbb-4595-a342-40fc8f1d3b27">
@@ -1294,8 +1314,8 @@ So that's 4120 per episode.</en>
 						<en>Back to Hûrlýë Island</en>
 					</title>
 					<description>
-						<de>Doch LeCruck ist inzwischen wieder zurückgesegelt, um Evelyn zu heiraten. Raymond muss die Kirche auf Hûrlýë Island stürmen, um das zu verhindern!</de>
-						<en>But LeCruck has since sailed back to marry Evelyn. Raymond must gatecrash the church on Hûrlýë Island to prevent this!</en>
+						<de>Doch %ROLE3% ist inzwischen wieder zurückgesegelt, um %ROLENAME2% zu heiraten. %ROLENAME1% muss die Kirche auf Hûrlýë Island stürmen, um das zu verhindern!</de>
+						<en>But %ROLE3% has since sailed back to marry %ROLENAME2%. %ROLENAME1% must gatecrash the church on Hûrlýë Island to prevent this!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="a38b5c1a-ee98-49f8-83d0-06a3d27a5eaf">
@@ -1304,8 +1324,8 @@ So that's 4120 per episode.</en>
 						<en>The Elixir</en>
 					</title>
 					<description>
-						<de>Evelyn kann sich schon ganz gut selbst helfen. Und Raymond verliert auch noch das Elixier bei seiner tollpatschigen Rettungsaktion. Wie kann er nun im großen Showdown LeCruck doch noch besiegen?</de>
-						<en>Evelyn can already help herself quite well. And Raymond also loses the elixir during his clumsy rescue attempt. How can he still defeat LeCruck in the big showdown?</en>
+						<de>%ROLENAME2% kann sich schon ganz gut selbst helfen. Und %ROLENAME1% verliert auch noch das Elixier bei seiner tollpatschigen Rettungsaktion. Wie kann er nun im großen Showdown %ROLE3% doch noch besiegen?</de>
+						<en>%ROLENAME2% can already help herself quite well. And %ROLENAME1% also loses the elixir during his clumsy rescue attempt. How can he still defeat %ROLE3% in the big showdown?</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1338,8 +1358,8 @@ So that's 4120 per episode.</en>
 				<en>%dead% %winter% in %sarajevo%</en>
 			</title>
 			<description>
-				<de>Kriegsdrama über den jungen, enthusiastischen und leicht beeindruckbaren Stevan auf der einen, und die warmherzige, aber resolute Kara auf der anderen Seite der Front in Jugoslawien, und einen Teufels-Cellisten dazwischen.</de>
-				<en>War drama about the young, enthusiastic and impressionable Stevan on one side, and the warm-hearted but resolute Kara on the other side of the front in Yugoslavia, and a devil's cellist in between.</en>
+				<de>Kriegsdrama über den jungen, enthusiastischen und leicht beeindruckbaren %ROLENAME1% auf der einen, und die warmherzige, aber resolute %ROLENAME2% auf der anderen Seite der Front in Jugoslawien, und einen Teufels-%ROLENAME3%en dazwischen.</de>
+				<en>War drama about the young, enthusiastic and impressionable %ROLENAME1% on one side, and the warm-hearted but resolute %ROLENAME2% on the other side of the front in Yugoslavia, and a devil's %ROLENAME3% in between.</en>
 			</description>
 
 			<variables>
@@ -1364,7 +1384,7 @@ So that's 4120 per episode.</en>
 						<en>Sarajevo</en>
 					</title>
 					<description>
-						<de>Eröffnungssequenz: Ein steinener Wasserspeier-Gnom hoch oben auf einer alten gotischen Kirche im noch friedlichen Sarajevo. Seit Jahrhunderten versucht er, die Menschen zu verstehen. Was ist Lachen, was sind Tränen?</de>
+						<de>Eröffnungssequenz: Ein steinener Wasserspeier-Dämon hoch oben auf einer alten gotischen Kirche im noch friedlichen Sarajevo. Seit Jahrhunderten versucht er, die Menschen zu verstehen. Was ist Lachen, was sind Tränen?</de>
 						<en>Opening sequence: A stone gargoyle high atop an old gothic church in still peaceful Sarajevo. For centuries he has been trying to understand humans. What is laughter, what are tears?</en>
 					</description>
 				</scripttemplate>
@@ -1384,8 +1404,8 @@ So that's 4120 per episode.</en>
 						<en>Therefore I am</en>
 					</title>
 					<description>
-						<de>Stevan kann sein Glück nicht fassen, in einem solchen Moment lebendig und jung zu sein. Kara führt ein gutes Leben in einer liebevollen Familie und hat viele Pläne für eine Zukunft voller Möglichkeiten. Doch langsam ändert sich die Lage...</de>
-						<en>Stevan cannot believe his good fortune to be alive and young at such a moment. Kara has a good life in a loving family and many plans for a future full of possibilities. But slowly the situation is changing...</en>
+						<de>%ROLENAME1% kann sein Glück nicht fassen, in einem solchen Moment lebendig und jung zu sein. %ROLENAME2% führt ein gutes Leben in einer liebevollen Familie und hat viele Pläne für eine Zukunft voller Möglichkeiten. Doch langsam ändert sich die Lage...</de>
+						<en>%ROLENAME1% cannot believe his good fortune to be alive and young at such a moment. %ROLENAME2% has a good life in a loving family and many plans for a future full of possibilities. But slowly the situation is changing...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="a04d98a6-9c12-4d9a-a3af-96c8602ab882">
@@ -1394,8 +1414,8 @@ So that's 4120 per episode.</en>
 						<en>Starblaze</en>
 					</title>
 					<description>
-						<de>Stevan schließt sich der serbischen Miliz an und findet sich in den Hügeln von Sarajevo wieder, wo er nachts Mörsergranaten abfeuert. In der Stadt ist Kara beim Waffenkauf und schießt dann mit Kameraden in den Hügeln rund um die Stadt.</de>
-						<en>Stevan joins the Serb militia and finds himself in the hills of Sarajevo firing mortar shells at night. In the city, Kara is buying weapons and then shooting with comrades in the hills around the city.</en>
+						<de>%ROLENAME1% schließt sich der serbischen Miliz an und findet sich in den Hügeln von Sarajevo wieder, wo er nachts Mörsergranaten abfeuert. In der Stadt ist %ROLENAME2% beim Waffenkauf und schießt dann mit Kameraden in den Hügeln rund um die Stadt.</de>
+						<en>%ROLENAME1% joins the Serb militia and finds himself in the hills of Sarajevo firing mortar shells at night. In the city, %ROLENAME2% is buying weapons and then shooting with comrades in the hills around the city.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="2af6aed6-cff6-442c-bc62-cb6081832150">
@@ -1414,8 +1434,8 @@ So that's 4120 per episode.</en>
 						<en>Mozart Mania</en>
 					</title>
 					<description>
-						<de>Sonnenuntergang. Der Artilleriebeschuss beginnt. Der Cellist beendet sein Gebet. Er begibt sich nicht in die Schutzräume. Er klettert auf einen einst prachtvollen, zerstörten Brunnen, holt sein Cello heraus. Spielt Mozart, während um ihn herum die Granaten explodieren.</de>
-						<en>Sunset. The artillery shelling begins. The cellist finishes his prayer. He does not go to the shelters. He climbs on a once magnificent, destroyed fountain, takes out his cello. Plays Mozart while the shells explode around him.</en>
+						<de>Sonnenuntergang. Der Artilleriebeschuss beginnt. Der %ROLENAME3% beendet sein Gebet. Er begibt sich nicht in die Schutzräume. Er klettert auf einen einst prachtvollen, zerstörten Brunnen, holt sein Cello heraus. Spielt Mozart, während um ihn herum die Granaten explodieren.</de>
+						<en>Sunset. The artillery shelling begins. The %ROLENAME3% finishes his prayer. He does not go to the shelters. He climbs on a once magnificent, destroyed fountain, takes out his cello. Plays Mozart while the shells explode around him.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="6c91098b-5b46-460c-945a-1f3c695396a3">
@@ -1424,8 +1444,8 @@ So that's 4120 per episode.</en>
 						<en>Remembrance</en>
 					</title>
 					<description>
-						<de>Von diesem Abend an sollte der Cellist sein Ritual jeden Abend wiederholen. Und jeden Abend hören Stevan und Kara aus der Distanz zu und denken über ihr Leben nach, während sie zwischen den Explosionen durch das Niemandsland streifen.</de>
-						<en>From that night on, the cellist would repeat his ritual every night. And every night Stevan and Kara listen from a distance, thinking about their lives as they roam the no man's land between explosions.</en>
+						<de>Von diesem Abend an sollte der %ROLENAME3% sein Ritual jeden Abend wiederholen. Und jeden Abend hören %ROLENAME1% und %ROLENAME2% aus der Distanz zu und denken über ihr Leben nach, während sie zwischen den Explosionen durch das Niemandsland streifen.</de>
+						<en>From that night on, the %ROLENAME3% would repeat his ritual every night. And every night %ROLENAME1% and %ROLENAME2% listen from a distance, thinking about their lives as they roam the no man's land between explosions.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="98f1d16e-5a8e-4838-8f3b-a51213062008">
@@ -1434,8 +1454,8 @@ So that's 4120 per episode.</en>
 						<en>%dead% %winter%</en>
 					</title>
 					<description>
-						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. Stevan ist auf Patrouille und macht eine grausame Entdeckung...</de>
-						<en>Though the winter does its best to cover the landscape with a blanket of temporary innocence, the war only escalates in violence and brutality. Stevan is on patrol and makes a horrifying discovery...</en>
+						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. %ROLENAME1% ist auf Patrouille und macht eine grausame Entdeckung...</de>
+						<en>Though the winter does its best to cover the landscape with a blanket of temporary innocence, the war only escalates in violence and brutality. %ROLENAME1% is on patrol and makes a horrifying discovery...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="1bbdafb5-6df5-4939-bf3c-1cb7ce4cee11">
@@ -1444,8 +1464,8 @@ So that's 4120 per episode.</en>
 						<en>The Child</en>
 					</title>
 					<description>
-						<de>Es ist eine Sache, Granaten in einen Mörser zu stecken, und eine ganz andere, zu sehen, wo sie landen. Stevan gehen die Gesichter der Kinder nicht aus dem Kopf. Er fasst einen Entschluss...</de>
-						<en>It's one thing to put grenades in a mortar, and quite another to see where they land. Stevan can't get the children's faces out of his head. He makes a decision...</en>
+						<de>Es ist eine Sache, Granaten in einen Mörser zu stecken, und eine ganz andere, zu sehen, wo sie landen. %ROLENAME1% gehen die Gesichter der Kinder nicht aus dem Kopf. Er fasst einen Entschluss...</de>
+						<en>It's one thing to put grenades in a mortar, and quite another to see where they land. %ROLENAME1% can't get the children's faces out of his head. He makes a decision...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="f56ac8f3-39c3-4f8c-8335-2ccca588973e">
@@ -1454,8 +1474,8 @@ So that's 4120 per episode.</en>
 						<en>Carol of the Bells</en>
 					</title>
 					<description>
-						<de>Stevan und Kara sitzen in ihren jeweiligen Bunkern und lauschen den Weihnachtsliedern des Cellisten, die sich mit den Geräuschen des Krieges vermischen. Es hat gerade aufgehört zu schneien, als die Musik plötzlich abrupt aufhört...</de>
-						<en>Stevan and Kara are sitting in their respective bunkers listening to the cellist's Christmas carols mixed with the sounds of war. It has just stopped snowing, when the music suddenly stops abruptly...</en>
+						<de>%ROLENAME1% und %ROLENAME2% sitzen in ihren jeweiligen Bunkern und lauschen den Weihnachtsliedern des %ROLENAME3%en, die sich mit den Geräuschen des Krieges vermischen. Es hat gerade aufgehört zu schneien, als die Musik plötzlich abrupt aufhört...</de>
+						<en>%ROLENAME1% and %ROLENAME2% are sitting in their respective bunkers listening to the %ROLENAME3%'s Christmas carols mixed with the sounds of war. It has just stopped snowing, when the music suddenly stops abruptly...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="4da79f0c-f071-4551-becd-e641cea6be0d">
@@ -1464,8 +1484,8 @@ So that's 4120 per episode.</en>
 						<en>God Rest Ye</en>
 					</title>
 					<description>
-						<de>Das Schlimmste befürchtend machen sich Stevan und Kara auf den Weg durch das Niemandsland. Als sie dort aufeinandertreffen, erkennen sie instinktiv, dass sie beide aus demselben Grund dort sind, und fangen nicht an zu kämpfen.</de>
-						<en>Fearing the worst, Stevan and Kara make their way through No Man's Land. When they meet there, they instinctively realize that they are both there for the same reason and don't start fighting.</en>
+						<de>Das Schlimmste befürchtend machen sich %ROLENAME1% und %ROLENAME2% auf den Weg durch das Niemandsland. Als sie dort aufeinandertreffen, erkennen sie instinktiv, dass sie beide aus demselben Grund dort sind, und fangen nicht an zu kämpfen.</de>
+						<en>Fearing the worst, %ROLENAME1% and %ROLENAME2% make their way through No Man's Land. When they meet there, they instinctively realize that they are both there for the same reason and don't start fighting.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="9a2dfccb-8244-408c-955e-3dc7b80e63d0">
@@ -1474,8 +1494,8 @@ So that's 4120 per episode.</en>
 						<en>Not what you think</en>
 					</title>
 					<description>
-						<de>Der Cellist liegt blutüberströmt tot im Schnee. Vom klaren Himmel fällt ein Tropfen auf Stevans Gesicht, doch da oben ist nur der Steingnom der Kirche. Stevan versichert Kara, er sei nicht was sie glaube. Die beiden verlassen gemeinsam die Nacht.</de>
-						<en>The cellist lies dead in the snow, covered in blood. From the clear sky a drop falls on Stevan's face, but up there is only the stone goblin of the church. Stevan assures Kara that he is not what she thinks he is. The two leave the night together.</en>
+						<de>Der %ROLENAME3% liegt blutüberströmt tot im Schnee. Vom klaren Himmel fällt ein Tropfen auf %ROLENAME1%s Gesicht, doch da oben ist nur der Steindämon der Kirche. %ROLENAME1% versichert %ROLENAME2%, er sei nicht was sie glaube. Die beiden verlassen gemeinsam die Nacht.</de>
+						<en>The %ROLENAME3% lies dead in the snow, covered in blood. From the clear sky a drop falls on %ROLENAME1%'s face, but up there is only the stone gargoyle of the church. %ROLENAME1% assures %ROLENAME2% that he is not what she thinks he is. The two leave the night together.</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1509,8 +1529,8 @@ So that's 4120 per episode.</en>
 				<en>%title%</en>
 			</title>
 			<description>
-				<de>Cartoon-Reihe über den 9-jährigen Wunderknaben Bobby Blaze. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu %captain% Ween und macht sich auf...</de>
-				<en>Cartoon series about the 9-year-old boy genius Bobby Blaze. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes %captain% Ween and sets out...</en>
+				<de>Cartoon-Reihe über den 9-jährigen Wunderknaben %ROLE1%. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu %captain% Ween und macht sich auf...</de>
+				<en>Cartoon series about the 9-year-old boy genius %ROLE1%. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes %captain% Ween and sets out...</en>
 			</description>
 
 			<variables>
@@ -1547,8 +1567,8 @@ So that's 4120 per episode.</en>
 						<en>Stranded on Mars</en>
 					</title>
 					<description>
-						<de>Eines Abends sind Bobbys Eltern außer Haus. Das ist die Gelegenheit. Er steuert sein erstes Ziel an: den Mars. Während er den Planeten erkundet, stehlen die Vornicons wichtige Komponenten seines Gefährts...</de>
-						<en>One night Bobby's parents are out of the house. This is the opportunity. He heads for his first destination: Mars. While he explores the planet, the Vornicons steal important components of his spacecraft...</en>
+						<de>Eines Abends sind %ROLENAME1%s Eltern außer Haus. Das ist die Gelegenheit. Er steuert sein erstes Ziel an: den Mars. Während er den Planeten erkundet, stehlen die Vornicons wichtige Komponenten seines Gefährts...</de>
+						<en>One night %ROLENAME1%'s parents are out of the house. This is the opportunity. He heads for his first destination: Mars. While he explores the planet, the Vornicons steal important components of his spacecraft...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="5b733f65-8a43-46b9-b009-ebb300c9ef2d">
@@ -1557,8 +1577,8 @@ So that's 4120 per episode.</en>
 						<en>Invasion of the Vornicons</en>
 					</title>
 					<description>
-						<de>Ween schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen Xorp, kann er jedoch nicht verstecken. Die Vornicons haben inzwischen ein Mutterschiff im Erdorbit...</de>
-						<en>Ween makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed Xorp. The Vornicons, meanwhile, have a mothership in Earth orbit...</en>
+						<de>Ween schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen %ROLENAME2%, kann er jedoch nicht verstecken. Die Vornicons haben inzwischen ein Mutterschiff im Erdorbit...</de> <!-- TODO: Is ROLENICKx supported? -->
+						<en>Ween makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed %ROLENAME2%. The Vornicons, meanwhile, have a mothership in Earth orbit...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="e1360097-a12f-4cbf-81a8-a7299d9ee789">
@@ -1617,8 +1637,8 @@ So that's 4120 per episode.</en>
 						<en>Aliens ate my nanny</en>
 					</title>
 					<description>
-						<de>Wieder steckte Bobbys böswilliger Erzfeind aus der Schule, der einen IQ-Punkt mehr hat, hinter allem und kontrollierte all die Alien-Rassen. Und dieser macht auch einfach nicht halt und will diesmal gleich das ganze Universum zerstören. Der große Showdown beginnt...</de>
-						<en>Again, Bobby's malicious nemesis from school, who has one IQ point more, was behind everything and controlled all the alien races. And he just doesn't stop and wants to destroy the whole universe this time. The big showdown begins...</en>
+						<de>Wieder steckte %ROLENAME1%s böswilliger Erzfeind aus der Schule, der einen IQ-Punkt mehr hat, hinter allem und kontrollierte all die Alien-Rassen. Und dieser macht auch einfach nicht halt und will diesmal gleich das ganze Universum zerstören. Der große Showdown beginnt...</de>
+						<en>Again, %ROLENAME1%'s malicious nemesis from school, who has one IQ point more, was behind everything and controlled all the alien races. And he just doesn't stop and wants to destroy the whole universe this time. The big showdown begins...</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1645,11 +1665,11 @@ So that's 4120 per episode.</en>
 
 		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Leisure_Suit_Larry - TODO: eventually translate some episode titles to German, keeping alliterations">
 			<title>
-				<de>Leather Jacket Leo, %ladykiller%</de>
-				<en>Leather Jacket Leo, %ladykiller%</en>
+				<de>%ROLENAME1%, %ladykiller%</de>
+				<en>%ROLENAME1%, %ladykiller%</en>
 			</title>
 			<description>
-				<de>Leo ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
+				<de>Leo ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de> <!-- TODO: Is ROLENICKx supported? -->
 				<en>Leo is untouched and innocent until his mid-30s. But now he wants to get it done and seeks out a flophouse. After some difficulties... Finally! Slowly he gets the hang of it, and then starts looking for the woman of his life.</en>
 			</description>
 
@@ -1663,8 +1683,8 @@ So that's 4120 per episode.</en>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="8f5a2c84-89b4-41fe-9e27-3898382f612b">
 					<title>
-						<de>Leather Jacket Leo from the Land of the Lone Lobsters</de>
-						<en>Leather Jacket Leo from the Land of the Lone Lobsters</en>
+						<de>%ROLENAME1% from the Land of the Lone Lobsters</de>
+						<en>%ROLENAME1% from the Land of the Lone Lobsters</en>
 					</title>
 					<description>
 						<de>Es hagelt nur so an Abfuhren. Schließlich in einem schmutzigen Etablissement ... ein nicht so berauschendes Erlebnis, und er fängt sich auch noch was ein. Eine Dame am Pool scheint ihn endlich wirklich ein bisschen zu mögen...</de>
@@ -1683,8 +1703,8 @@ So that's 4120 per episode.</en>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="4985f4d8-734b-4991-a7af-eee33546e38f">
 					<title>
-						<de>Fervent Faviola Fostering Vibrating Vernacular</de>
-						<en>Fervent Faviola Fostering Vibrating Vernacular</en>
+						<de>%ROLENAME2% Fostering Vibrating Vernacular</de>
+						<en>%ROLENAME2% Fostering Vibrating Vernacular</en>
 					</title>
 					<description>
 						<de>Leo hat 5 Jahre lang ein tolles Leben auf Hawaii und eine glückliche Ehe, doch plötzlich wird er verlassen, als sich seine Frau in eine andere Frau verliebt. Nach einigen Abenteuern findet er eine neue für's Leben, aber dann geht was schief...</de>
@@ -1703,8 +1723,8 @@ So that's 4120 per episode.</en>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="d7c7c96a-1bc3-4e1b-8875-d20ff1ddf632">
 					<title>
-						<de>Fervent Faviola als Undercover-Agentin</de>
-						<en>Fervent Faviola as an Undercover Agent</en>
+						<de>%ROLENAME2% als Undercover-Agentin</de>
+						<en>%ROLENAME2% as an Undercover Agent</en>
 					</title>
 					<description>
 						<de>Nach dieser seltsamen Amnesie findet sich Leo in der Erwachsenenfilmindustrie wieder, für die er weltweit auf der Suche nach Models ist. Faviola ist inzwischen für's FBI unterwegs.</de>
@@ -1763,6 +1783,152 @@ So that's 4120 per episode.</en>
 			<review min="30" max="50" />
 			<speed min="30" max="80" />
 			<studio_size value="2" />
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="71f4752c-2c8f-41f0-82c6-3461e02e8160" creator="9551" comment="TODO: To test a future 'franchise script' feature. Episode titles and contents by ChatGPT. A bit formulaic perhaps.">
+			<title>
+				<de>%ROLENAME1% und %ROLENAME2% - Die %new% %adventures%</de>
+				<en>%ROLENAME1% and %ROLENAME2% - The %new% %adventures%</en>
+			</title>
+			<description>
+				<de>Eine Neuauflage der beliebten tschechischen Marionettenserie über Vater %ROLENAME1%, den kleinen Sohn %ROLENAME2%, Schulfreundin %ROLENAME4%, Großmutter Frau %ROLENAME3% und Hund %ROLENAME5%. Behutsam modernisiert und mit nur sehr spärlicher Anwendung neuer technischer Hilfsmittel, so dass der Charme erhalten bleibt.</de>
+				<en>A new edition of the popular Czech puppet series about father %ROLENAME1%, little son %ROLENAME2%, school girl friend %ROLENAME4%, grandmother Ms. %ROLENAME3% and dog %ROLENAME5%. Cautiously modernized and with only very sparse use of new technical aids, so that the charm is preserved.</en>
+			</description>
+
+			<variables>
+				<new>
+					<de>Neuen|Neuartigen|Weiteren|Zweiten|Frischen|Ungeahnten|Nachfolgenden|Unversuchten|Ursprünglichen|Neuerlichen|Wiederbelebten|Erneuten|Neugeborenen|Wiedererstarkten|Reanimierten|Auferstandenen</de>
+					<en>New|Novel|Further|Second|Fresh|Unprecedented|Successive|Untried|Pristine|Refreshed|Revived|Renewed|Reborn|Invigorated|Reanimated|Resurrected</en>
+				</new>
+				<adventures>
+					<de>Abenteuer|Erlebnisse|Zeiten|Tücken|Ereignisse|Entdeckungen|Eskapaden|Erforschungen|Missionen|Vorhaben|Episoden|Taten|Prüfungen|Aufgaben|Unternehmungen|Schwierigkeiten|Gefahren|Herausforderungen</de>
+					<en>Adventures|Experiences|Times|Ordeals|Happenings|Explorations|Escapades|Expeditions|Missions|Ventures|Episodes|Deeds|Trials|Quests|Acts|Enterprises|Tribulations|Hazards|Challenges</en>
+				</adventures>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="2fe84236-dc27-4bb8-8d01-19479b344543">
+					<title>
+						<de>Das verschmitzte Haustier</de>
+						<en>The Mischievous Pet</en>
+					</title>
+					<description>
+						<de>%ROLENAME2% bringt einen streunenden Hund mit nach Hause und sorgt damit für Chaos im Haushalt. %ROLENAME1% und %ROLENAME2% versuchen, den Hund vor Frau %ROLENAME3% zu verstecken, was zu witzigen Begegnungen und einer herzerwärmenden Auflösung führt.</de>
+						<en>%ROLENAME2% brings home a stray dog, causing chaos in the household. %ROLENAME1% and %ROLENAME2% try to hide the dog from Ms. %ROLENAME3%, leading to hilarious encounters and a heartwarming resolution.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="84a75131-37e9-4ffe-821f-0c3deb7ce740">
+					<title>
+						<de>Das magische Abenteuer</de>
+						<en>The Magical Adventure</en>
+					</title>
+					<description>
+						<de>%ROLENAME1% entdeckt ein geheimnisvolles altes Buch, und mit %ROLENAME2%s Hilfe begeben sie sich versehentlich in eine magische Welt. Dort müssen sie sich mit skurrilen Wesen herumschlagen und einen Weg zurück nach Hause finden.</de>
+						<en>%ROLENAME1% discovers a mysterious old book, and with %ROLENAME2%'s help, they accidentally transport themselves into a magical world. They must navigate whimsical creatures and find a way back home.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="8823f7b7-3748-4683-94b4-f4fc35be6f56">
+					<title>
+						<de>Die Talentshow</de>
+						<en>The Talent Show</en>
+					</title>
+					<description>
+						<de>%ROLENAME2% und %ROLENAME4% beschließen, an einer lokalen Talentshow teilzunehmen, aber sie brauchen %ROLENAME1%s Hilfe, um ihren Auftritt vorzubereiten. %ROLENAME1%s mangelnde Talentmanagementfähigkeiten führen jedoch zu skurrilen Missgeschicken.</de>
+						<en>%ROLENAME2% and %ROLENAME4% decide to participate in a local talent show, but they need %ROLENAME1%'s help to prepare their act. However, %ROLENAME1%'s lack of talent management skills leads to comical mishaps.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="9db22b70-29f8-4b67-b4a2-ac512e6022d5">
+					<title>
+						<de>Die große Camping-Katastrophe</de>
+						<en>The Great Camping Disaster</en>
+					</title>
+					<description>
+						<de>Die Familie beschließt, einen Campingausflug zu machen, aber %ROLENAME1%s mangelnde Outdoor-Kenntnisse führen zu einer Reihe von lustigen Camping-Desastern. %ROLENAME2% und %ROLENAME5% lassen sich clevere Lösungen einfallen, um den Tag zu retten.</de>
+						<en>The family decides to go on a camping trip, but %ROLENAME1%'s lack of outdoor skills creates a series of hilarious camping disasters. %ROLENAME2% and the %ROLENAME5% come up with clever solutions to save the day.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="bff2275b-56d2-4581-a88b-9632a1510e38">
+					<title>
+						<de>Das Geheimnis des verschwundenen Kuchens</de>
+						<en>The Mystery of the Missing Cake</en>
+					</title>
+					<description>
+						<de>Frau %ROLENAME3% backt einen leckeren Kuchen für einen besonderen Anlass, aber er verschwindet auf mysteriöse Weise. %ROLENAME1% und %ROLENAME2% werden zu Amateurdetektiven, um das Rätsel zu lösen, und kommen dabei unerwarteten Schuldigen auf die Spur.</de>
+						<en>Ms. %ROLENAME3% bakes a delicious cake for a special occasion, but it mysteriously disappears. %ROLENAME1% and %ROLENAME2% turn into amateur detectives to solve the mystery, uncovering unexpected culprits.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="75a226c4-26cc-4a3d-b39c-e0c154f5841b">
+					<title>
+						<de>Die Roboterinvasion</de>
+						<en>The Robot Invasion</en>
+					</title>
+					<description>
+						<de>%ROLENAME1% bestellt versehentlich einen schlecht funktionierenden Roboter, der im Haus für Chaos sorgt. Mit %ROLENAME2%s spitzbübischen Ideen versuchen sie, den Roboter zu überlisten, bevor er ihr Leben übernimmt.</de>
+						<en>%ROLENAME1% accidentally orders a malfunctioning robot, causing chaos in the house. With %ROLENAME1%'s mischievous ideas, they attempt to outsmart the robot before it takes over their lives.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="59b6fb38-f8be-43e7-9273-7e93ca321199">
+					<title>
+						<de>Die Geburtstagsüberraschung</de>
+						<en>The Birthday Surprise</en>
+					</title>
+					<description>
+						<de>%ROLENAME1% und %ROLENAME2% planen eine Überraschungsgeburtstagsfeier für Frau %ROLENAME3%, aber alles geht schief. Ihre Versuche, die Überraschung geheim zu halten, führen zu witzigen Missverständnissen und unerwarteten Wendungen.</de>
+						<en>%ROLENAME1% and %ROLENAME2% plan a surprise birthday party for Ms. %ROLENAME3%, but everything goes awry. Their attempts to keep the surprise under wraps result in hilarious misunderstandings and unexpected twists.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="7bfa386a-d0c6-4d89-9f86-52e5ab9e0e7c">
+					<title>
+						<de>Die magische Zeitreise</de>
+						<en>The Magical Time Travel</en>
+					</title>
+					<description>
+						<de>%ROLENAME2% entdeckt auf dem Dachboden eine Zeitreisemaschine und überredet %ROLENAME1%, sich auf ein Abenteuer in die Vergangenheit zu begeben. Ihre Reise führt sie in verschiedene historische Epochen, was zu lustigen Begegnungen und wertvollen Lektionen führt.</de>
+						<en>%ROLENAME2% discovers a time-traveling machine in the attic and convinces %ROLENAME1% to go on an adventure to the past. Their journey takes them to various historical eras, leading to humorous encounters and valuable lessons.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="c42695d0-c3cc-4d97-bcca-9cf521793fd3">
+					<title>
+						<de>Der verschwundene Schatz</de>
+						<en>The Case of the Missing Treasure</en>
+					</title>
+					<description>
+						<de>%ROLENAME4% findet eine alte Schatzkarte, und mit %ROLENAME1%s Hilfe überredet sie %ROLENAME1% und %ROLENAME2%, sich auf eine Schatzsuche zu begeben. Ihre Reise ist gespickt mit lustigen Hindernissen und unerwarteten Entdeckungen, die zu einer überraschenden Wendung führen.</de>
+						<en>%ROLENAME4% finds an old treasure map, and with %ROLENAME5%'s help, she convinces %ROLENAME1% and %ROLENAME2% to embark on a treasure hunt. Their journey is filled with funny obstacles and unexpected discoveries, leading to a surprising twist.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="752a897a-c895-411c-a864-f95e6e1dd6fb">
+					<title>
+						<de>Die Musikkapelle Fiasco</de>
+						<en>The Music Band Fiasco</en>
+					</title>
+					<description>
+						<de>%ROLENAME4%, inspiriert von einer berühmten Musikband, überredet %ROLENAME2% und %ROLENAME5%, ihre eigene Band zu gründen. %ROLENAME1% schließt sich widerwillig an, was zu urkomischen Versuchen führt, Instrumente zu spielen und chaotische, aber amüsante Auftritte zu gestalten.</de>
+						<en>%ROLENAME4%, inspired by a famous music band, convinces %ROLENAME2% and %ROLENAME5% to form their own band. %ROLENAME1% reluctantly joins in, leading to hilarious attempts at playing instruments and creating chaotic but amusing performances.</en>
+					</description>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="3670b612-8825-4c4d-a382-0227fe8d9184" />
+				<job index="2" function="2" required="1" role_guid="1d1f05ea-43ff-4399-81d9-f00239460700" />
+				<job index="3" function="2" required="1" role_guid="06769c4e-15c8-40e4-968b-54ca8f32b96b" />
+				<job index="4" function="2" required="1" role_guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" />
+				<job index="5" function="2" required="1" role_guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" />
+			</jobs>
+
+			<data flags="2" flags_optional="" />
+			<genres maingenre="9" subgenres="5" />
+			<episodes min="10" max="10" />
+			<blocks value="1" />
+			<price min="100000" max="200000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="40" max="80" />
+			<studio_size value="1" />
+			<availability script="TIME_DAYSPLAYED &gt; 12" />
 		</scripttemplate>
 	</scripttemplates>
 </tvtdb>

@@ -179,6 +179,7 @@
 				<job function="16" index="1" gender="2" required="1" />
 			</jobs>
 			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="36" production_broadcast_limit="1" />
+			<targetgroupattractivity teenagers="1.5" employees="1.25" unemployed="1.25" housewives="1.25" pensioners="0.25" />
 			<genres maingenre="202" />
 			<production_time slope="40" max="180" min="60" />
 			<blocks slope="40" max="4" min="2" />

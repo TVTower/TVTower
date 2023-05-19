@@ -9,7 +9,7 @@
 				<en>Superwoman falls in love with Superguy</en>
 			</title>
 			<description>
-				<de>Die beiden weltbekannten Superhelden haben sich gefunden. Sie findet ihn super. Er sie auch. Beide: "Unser erstes Date war super".</de>
+				<de>Die beiden weltbekannten Superhelden haben sich gefunden. Sie findet ihn super. Er sie auch. Beide: „Unser erstes Date war super“.</de>
 				<en>The world-famous superheroes have found each other. She thinks he's super. He feels the same. Both: "Our first date was super".</en>
 			</description>
 			<effects>
@@ -25,8 +25,8 @@
 				<en>Superwoman and Superguy get engaged</en>
 			</title>
 			<description>
-				<de>Superkerl kann sein Glück nicht fassen: "Sie küsst super".</de>
-				<en>Superguy can't believe his luck: "She kisses super".</en>
+				<de>Superkerl kann sein Glück nicht fassen: „Sie küsst super.“</de>
+				<en>Superguy can't believe his luck: "Her kisses are super."</en>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 13-17 Uhr" -->
@@ -40,8 +40,8 @@
 				<en>Superguy and Superwoman got married</en>
 			</title>
 			<description>
-				<de>Superweib über Superkerl: "In der Hochzeitsnacht war er super".</de>
-				<en>Superweib about Superguy: "On the wedding night he was super".</en>
+				<de>Superweib über Superkerl: „In der Hochzeitsnacht war er super.“</de>
+				<en>Superweib about Superguy: "On the wedding night he was super."</en>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 14-18 Uhr" -->
@@ -55,8 +55,8 @@
 				<en>Superwoman is pregnant</en>
 			</title>
 			<description>
-				<de>Superkerl: "Ich will ein super Vater werden".</de>
-				<en>Superguy: "I want to be a super father".</en>
+				<de>Superkerl: „Ich will ein super Vater werden.“</de>
+				<en>Superguy: "I want to be a super father."</en>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 15-19 Uhr" -->
@@ -70,8 +70,8 @@
 				<en>Superwoman gives birth to a boy</en>
 			</title>
 			<description>
-				<de>Superkerl und Superweib sind glücklich: "Das ist unser Superboy".</de>
-				<en>Superguy and Superwoman are happy: "This is our Superboy".</en>
+				<de>Superkerl und Superweib sind glücklich: „Das ist unser Superboy.“</de>
+				<en>Superguy and Superwoman are happy: "This is our Superboy."</en>
 			</description>
 				<!-- "morgen oder uebermorgen, 16-20 Uhr" -->
 			<effects>
@@ -88,7 +88,7 @@
 				<en>Superguy and Superwoman separation rumors</en>
 			</title>
 			<description>
-				<de>Superkerl: "Sie kocht nicht gerade super."</de>
+				<de>Superkerl: „Sie kocht nicht gerade super.“</de>
 				<en>Superguy: "She's not a super cook."</en>
 			</description>
 			<effects>
@@ -103,8 +103,8 @@
 				<en>Superguy and Superwoman separation rumors</en>
 			</title>
 			<description>
-				<de>Superweib: "Er kann keinen Nagel in die Wand schlagen."</de>
-				<en>Superweib: "He can't drive a nail into the wall."</en>
+				<de>Superweib: „Er kann keinen Nagel in die Wand schlagen.“</de>
+				<en>Superwoman: "He can't drive a nail into the wall."</en>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 17-21 Uhr" -->
@@ -118,7 +118,7 @@
 				<en>Superwoman and Superguy reconcile again</en>
 			</title>
 			<description>
-				<de>Superkerl: "Wir sind wieder glücklich. Unsere Versöhnung war super."</de>
+				<de>Superkerl: „Wir sind wieder glücklich. Unsere Versöhnung war super.“</de>
 				<en>Superguy: "We are happy again. Our reconciliation was super."</en>
 			</description>
 			<effects>
@@ -148,8 +148,8 @@
 				<en>Superguy and Superwoman get a divorce</en>
 			</title>
 			<description>
-				<de>Superboy leidet unter Trennung. Er will einen Supervater und eine Supermutter. "Ich brauche kein neues Regal".</de>
-				<en>Superboy suffers from separation. He wants a super father and a super mother. "I do not need a new shelf".</en>
+				<de>Superboy leidet unter Trennung. Er will einen Supervater und eine Supermutter. „Ich brauche kein neues Regal.“</de>
+				<en>Superboy suffers from separation. He wants a super father and a super mother. "I do not need a new shelf."</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="70" />
@@ -261,7 +261,7 @@
 				<en>Jupp Lauber can't believe it</en>
 			</title>
 			<description>
-				<de>Jupp Lauber gibt dem Schweizer Fernsehen ein Interview: "Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche FUFA-Funktionär?"</de>
+				<de>Jupp Lauber gibt dem Schweizer Fernsehen ein Interview: „Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche FUFA-Funktionär?“</de>
 				<en>Jupp Lauber gives an interview to Swiss television: "I would never have thought that. Am I really the only honest FUFA official?"</en>
 			</description>
 			<effects />
@@ -384,6 +384,7 @@
 		</news>
 		<!-- "Mathias Rust landet auf Rotem Platz" -->
 		<news id="cujo-news-roter-platz-01" type="0" thread_id="cujo-news-roter-platz" creator="8827" created_by="Cujo">
+			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Schessnah in der Nähe von Moskau gesichtet</de>
 				<en>Schessnah spotted near Moscow</en>
@@ -395,10 +396,9 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,2,3" news="cujo-news-roter-platz-02" />
 			</effects>
-			<data genre="4" price="0.55" quality="10" flags="2"/>
+			<data genre="4" price="0.55" quality="10" flags="2" />
 		</news>
 		<news id="cujo-news-roter-platz-02" type="2" thread_id="cujo-news-roter-platz" creator="8827" created_by="Cujo">
-			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Schessnah 127 auf Rotem Platz in Moskau gelandet</de>
 				<en>Schessnah 127 landed on Red Square in Moscow</en>
@@ -432,7 +432,7 @@
 				<en>Schessnah pilot promotes international understanding</en>
 			</title>
 			<description>
-				<de>Markus Trust, der Hamburger Pilot, der mit seiner Schessnah auf dem Roten Platz gelandet ist, appelliert an alle Menschen: "Lasst uns in Frieden leben."</de>
+				<de>Markus Trust, der Hamburger Pilot, der mit seiner Schessnah auf dem Roten Platz gelandet ist, appelliert an alle Menschen: „Lasst uns in Frieden leben.“</de>
 				<en>Markus Trust, the Hamburg pilot who landed his Schessnah on Red Square, appeals to all people: "Let's live in peace."</en>
 			</description>
 			<effects>
@@ -501,7 +501,7 @@
 				<en>Willy Bates: Internet is just a trend</en>
 			</title>
 			<description>
-				<de>In einem Fernseh-Interview prophezeit der Software-Entwickler Willy Bates dem Internet keine große Zukunft: "Das ist nur ein kurzfristiger Trend. In 10 Jahren gibt es das nicht mehr."</de>
+				<de>In einem Fernseh-Interview prophezeit der Software-Entwickler Willy Bates dem Internet keine große Zukunft: „Das ist nur ein kurzfristiger Trend. In 10 Jahren gibt es das nicht mehr.“</de>
 				<en>In a television interview, software developer Willy Bates doesn't predict a great future for the Internet: "It's just a short-term trend. It won't be around in 10 years."</en>
 			</description>
 			<data genre="3" price="0.8" quality="37" />
@@ -515,7 +515,7 @@
 				<en>Wildberger Karobuben: "We are now slim"</en>
 			</title>
 			<description>
-				<de>In einem Exklusiv-Interview mit der Zeitschrift FARBIGE erzählen die Wildberger Karobuben von ihrer Hungerkur: "Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich."</de>
+				<de>In einem Exklusiv-Interview mit der Zeitschrift FARBIGE erzählen die Wildberger Karobuben von ihrer Hungerkur: „Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich.“</de>
 				<en>In an exclusive interview with FARBIGE magazine, the Wildberg Karobuben talk about their starvation diet: "We ate almost nothing for 7 months and lost 300 grams in that time. Added up, of course."</en>
 			</description>
 			<data genre="1" price="1.03" quality="19"/>
@@ -663,7 +663,7 @@
 				<en>Jury selects board game of the year 1990</en>
 			</title>
 			<description>
-				<de>Das Brettspiel des Jahres 1990 heißt "Blaues Blut wird zur Pflicht". Mehrere Barone kämpfen in Auktionen um die besten Antiquitäten. Um ihr Ziel zu erreichen, können sie Diebe und Spione verpflichten.</de>
+				<de>Das Brettspiel des Jahres 1990 heißt „Blaues Blut wird zur Pflicht“. Mehrere Barone kämpfen in Auktionen um die besten Antiquitäten. Um ihr Ziel zu erreichen, können sie Diebe und Spione verpflichten.</de>
 				<en>The board game of the year 1990 is called "Blue Blood Becomes Duty". Several barons fight in auctions for the best antiques. To achieve their goal, they can hire thieves and spies.</en>
 			</description>
 			<data genre="3" price="0.48" quality="46" flags="2"/>
@@ -675,7 +675,7 @@
 				<en>The board game of the year 1995 is a building game</en>
 			</title>
 			<description>
-				<de>"Die Pioniere von Kastlan" wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler Karl Stäuber.</de>
+				<de>„Die Pioniere von Kastlan“ wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler Karl Stäuber.</de>
 				<en>"The Pioneers of Kastlan" was voted board game of the year in 1995. Players have to collect raw materials in order to build roads, settlements and cities. It was invented by the game developer Karl Stäuber.</en>
 			</description>
 			<data genre="3" price="0.47" quality="47" flags="2"/>
@@ -712,7 +712,7 @@
 				<en>Gamezworld AG abolishes typewriters</en>
 			</title>
 			<description>
-				<de>Wie die Pressesprecherin der Gamezworld AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: "Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet."</de>
+				<de>Wie die Pressesprecherin der Gamezworld AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: „Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet.“</de>
 				<en>According to Gamezworld AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit Bandium computers from now on."</en>
 			</description>
 			<data genre="0" price="0.5" quality="30" flags="2"/>

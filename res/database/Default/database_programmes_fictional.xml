@@ -210,6 +210,7 @@
 				<member index="0" function="1">5b52221c-10f6-4ad8-b818-c89c304e9ea0</member>
 				<member index="1" function="2">80448f46-150d-445a-b688-63b21523ff13</member>
 				<member index="2" function="2">c3494dd5-506b-46d1-97bd-12182ffa88da</member>
+				<member index="3" function="2">e94ba1d8-bb1f-4650-afea-3647a248b94d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="2006" distribution="1" maingenre="17" subgenre="" flags="16" blocks="3" price_mod="1.7" />
@@ -359,7 +360,7 @@
 				<en>Folk High Schools under Test</en>
 			</title>
 			<description>
-				<de>Eine Generation die "Lehre" mit "Leere" um- und be- und schreibt. Keine Arbeit und Moos für alle!</de>
+				<de>Eine Generation die „Lehre“ mit „Leere“ um- und be- und schreibt. Keine Arbeit und Moos für alle!</de>
 				<en>A generation that (re)writes and describes "the long hall" with "the long haul". No jobs and moolah for all!</en>
 			</description>
 			<staff>

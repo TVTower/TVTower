@@ -412,6 +412,7 @@
 				<member index="4" function="2">Per_custom_Freddy_636</member>
 			</staff>
 			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" />
 			<data country="D" year="1977" distribution="2" maingenre="202" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="32" speed="9" outcome="0" />
 		</programme>
@@ -1344,7 +1345,7 @@
 				<member index="1" function="2">Per_custom_Freddy_363</member>
 				<member index="2" function="2">Per_custom_Freddy_356</member>
 			</staff>
-			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="F" year="2001" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="56" speed="38" outcome="0" />
 			<children>
@@ -1992,79 +1993,100 @@
 			<children>
 				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Buddy Holly</de>
-						<en>Buddy Holly</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">7305874f-d807-4bb7-98a9-14062f74c667</member>
+					</staff>
 					<ratings critics="41" speed="59" />
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Ritchie Valens</de>
-						<en>Ritchie Valens</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">e8016a46-dbe5-4772-a2f6-70234f0c10ea</member>
+					</staff>
 					<ratings critics="28" speed="59" />
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Monotones</de>
-						<en>Monotones</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">7711c596-5eb1-46f1-82b1-0826a1189f18</member>
+					</staff>
 					<ratings critics="28" speed="59" />
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Little Richard</de>
-						<en>Little Richard</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">3cf19225-1fa3-425a-a226-73c837815e87</member>
+					</staff>
 					<ratings critics="30" speed="58" />
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Eddie Cochran</de>
-						<en>Eddie Cochran</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">9a05551e-1677-4fd8-8356-490faf5719e4</member>
+					</staff>
 					<ratings critics="27" speed="60" />
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Chuck Berry</de>
-						<en>Chuck Berry</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">2b5afaec-4de7-4015-82ce-3fa4e35f4ec3</member>
+					</staff>
 					<ratings critics="32" speed="59" />
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>Elvis Presley</de>
-						<en>Elvis Presley</en>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
 					</description>
+					<staff>
+						<member index="2" function="16">ef66c1fc-8baf-4c7b-8b25-4971fba4858a</member>
+					</staff>
 					<ratings critics="32" speed="61" />
 				</programme>
 			</children>
@@ -2090,15 +2112,14 @@
 			<ratings critics="71" speed="37" outcome="0" />
 		</programme>
 
-		<!--
-		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: Aber 12 Stunden sollten doch funktionieren oder?">
+		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Ursprünglich 24 Stunden und auskommentiert, geändert auf 12 Stunden, damit alles funktioniert in der GUI">
 			<title>
 				<de>Ein Monumentaler Versuch</de>
-				<en>A monumental Try</en>
+				<en>An Attempt at an Epic</en>
 			</title>
 			<description>
-				<de>24 Stunden im Leben an einer dänischen Familie am Tag des Ausbruches des zweiten Weltkrieges. Die Kritiker feierten das Werk, doch wer ist wirklich bereit für einen 24 Stunden Film?</de>
-				<en>24 hours in the life in a family from Denmark during the day the second world war begins. The critics were euphoric, but who was ready for a 24 hours movie?</en>
+				<de>12 Stunden im Leben an einer dänischen Familie am Tag des Ausbruches des zweiten Weltkrieges. Die Kritiker feierten das Werk, doch wer ist wirklich bereit für einen 12-Stunden Film?</de>
+				<en>12 hours in the life in a family from Denmark during the day the second world war begins. The critics were euphoric, but who's ready for a 12 hours movie, really?</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_70</member>
@@ -2108,10 +2129,9 @@
 				<member index="4" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="DK" year="1951" distribution="2" maingenre="13" subgenre="9" flags="12" blocks="24" price_mod="1.00" />
+			<data country="DK" year="1951" distribution="2" maingenre="13" subgenre="9" flags="12" blocks="12" price_mod="1.00" />
 			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
-		-->
 
 		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->

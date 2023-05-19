@@ -139,7 +139,7 @@
                         <en>Edmondia and the Gooseneck Twisters</en>
                     </title>
                     <description>
-                        <de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere "Talente" bei Edmondia entdecken.</de>
+                        <de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere „Talente“ bei Edmondia entdecken.</de>
                         <en>Besides vocal talent, the neutral spectator, as well as the fan, can discover much more obvious "talents" in Edmondia.</en>
                     </description>
                     <ratings critics="45" speed="60" />
@@ -536,4 +536,43 @@
             <data genre="2" price="1.0" quality="32" />
         </news>
     </allnews>
+
+    <allads>
+        <ad id="speedminister-ad-Mikrohard" creator="8605" created_by="SpeedMinister">
+            <title>
+                <de>Mikrohard Software Klaut</de>
+                <en>Mikrohard Software Clout</en>
+            </title>
+            <description>
+                <de>Kaufen(!) Sie unsere Software und laden Sie Ihre Firmengeheimnisse SELBST auf unsere Server. Da bleibt es dann unter 5 Augen! Danke.</de>
+                <en>Buy(!) our software and upload your company secrets YOURSELF on our servers. Then things can remian confidential under 5 eyes! Thank you.</en>
+            </description>
+            <conditions min_audience="10.42" min_image="0" target_group="0"/>
+            <data infomercial="1" quality="15" repetitions="1" duration="2" profit="290" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
+        </ad>
+        <ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister">
+            <title>
+                <de>Anwaltskanzlei Firnhick</de>
+                <en>Law Firm Fainbruck</en>
+            </title>
+            <description>
+                <de>Lobbyisten setzen gerade durch, dass wir Nichtkunden verklagen können, wegen Geschäftsschädigung! Werden Sie unser Kunde! Sonst zerren wir Sie vor Gericht!</de>
+                <en>Lobbyists are just enforcing that we can sue non-customers, for business damage! Become our customer! Otherwise we will take you to court!</en>
+            </description>
+            <conditions min_audience="2.08" min_image="0" target_group="0"/>
+            <data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1"/>
+        </ad>
+        <ad id="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister">
+            <title>
+                <de>Büroeinrichtung Wimmerl</de>
+                <en>Office Equipment Pimpler</en>
+            </title>
+            <description>
+                <de>Büromöbel in dunkelgrau, mausgrau und businessgrau. - Warum habe ich mein Geld nicht in eine Losbude gesteckt, auf dem Rummel? Kaufen Sie! Erlösen Sie mich!</de>
+                <en>Office furniture in dark gray, mouse gray and business gray. - Why didn't I put my money in a lottery booth, at the carnival? Buy! Redeem me!</en>
+            </description>
+            <conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+            <data quality="12" repetitions="2" duration="4" profit="215" penalty="337" infomercial_profit="21" fix_infomercial_profit="1"/>
+        </ad>
+    </allads>
 </tvtdb>
