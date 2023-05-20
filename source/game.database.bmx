@@ -2376,8 +2376,12 @@ Type TDatabaseLoader
 			If value <> ""
 				Local languageID:Int = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
 
-				localized.Set(value, languageID)
-				foundEntry = True
+				If languageID <> -1
+					localized.Set(value, languageID)
+					foundEntry = True
+				Else
+					TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
+				EndIf
 			EndIf
 		Next
 
