@@ -2365,14 +2365,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
 		'splitter
 		Local yearWidth:Int = 65
-		If data.country And data.country.length > 5 Then yearWidth = 75
+		'country [+year] + genre, year only for non-callin-shows
+		Local countryYear:String = data.country + " " + data.GetYear()
+		If data.HasFlag(TVTProgrammeDataFlag.PAID) Then countryYear = data.country
+		If countryYear.length > 10 Then yearWidth = skin.fontNormal.GetWidth(countryYear) + 5
 		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + yearWidth, contentY, 2, 16)
-		'country [+year] + genre, year for non-callin-shows
-		If data.HasFlag(TVTProgrammeDataFlag.PAID)
-			skin.fontNormal.DrawBox(data.country, contentX + 5, contentY-1, yearWidth, genreH+1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-		else
-			skin.fontNormal.DrawBox(data.country + " " + data.GetYear(), contentX + 5, contentY-1, yearWidth, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
-		endif
+		skin.fontNormal.DrawBox(countryYear, contentX + 5, contentY-1, yearWidth, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 
 		local genreLine:String = GetGenresLine()
 
