@@ -538,10 +538,10 @@
     </allnews>
 
     <allads>
-        <ad id="speedminister-ad-Mikrohard" creator="8605" created_by="SpeedMinister">
+        <ad id="speedminister-ad-Mikrohard" creator="8605" created_by="SpeedMinister" comment="TODO: Add a version for earlier than 2008?">
             <title>
-                <de>Mikrohard Software Klaut</de>
-                <en>Mikrohard Software Clout</en>
+                <de>Makrohart Software Klaut</de>
+                <en>Macrohard Software Clout</en>
             </title>
             <description>
                 <de>Kaufen(!) Sie unsere Software und laden Sie Ihre Firmengeheimnisse SELBST auf unsere Server. Da bleibt es dann unter 5 Augen! Danke.</de>
@@ -549,8 +549,9 @@
             </description>
             <conditions min_audience="10.42" min_image="0" target_group="0"/>
             <data infomercial="1" quality="15" repetitions="1" duration="2" profit="290" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
+            <availability year_range_from="2008" />
         </ad>
-        <ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister">
+        <ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
             <title>
                 <de>Anwaltskanzlei Firnhick</de>
                 <en>Law Firm Fainbruck</en>

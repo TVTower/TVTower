@@ -1149,7 +1149,7 @@ Unique due to the waltz music and the post-war Vienna.</en>
 				<en>The Exorcist</en>
 			</title_original>
 			<description>
-				<de>Ein junges Mädchen ist "besessen". Ein Geistlicher soll sie von der dunklen Macht befreien.
+				<de>Ein junges Mädchen ist „besessen“. Ein Geistlicher soll sie von der dunklen Macht befreien.
 Horror vom Feinsten.</de>
 				<en>A young girl is "possessed". A clergyman is supposed to free her from the dark power.
 Horror at its finest.</en>
@@ -5270,7 +5270,7 @@ Good action, but nothing more.</en>
 				<en>Red Dragon</en>
 			</title_original>
 			<description>
-				<de>Noch vor "Schweigende Hammel": Bei seinen Ermittlungen gegen einen Massenmörder muss Will Graham auf den Rat Lecters zurückgreifen.
+				<de>Noch vor „Schweigende Hammel“: Bei seinen Ermittlungen gegen einen Massenmörder muss Will Graham auf den Rat Lecters zurückgreifen.
 [1|Last] zum dritten Mal in der Rolle seines Lebens.</de>
 				<en>Prior to the events with the silent sheep: Investigating a mass murderer, Will Graham must call on Lecter's advice.
 [1|Last] for the third time in the role of his life.</en>
@@ -5892,14 +5892,16 @@ With the incomparable music of [5|Full].</en>
 			</title_original>
 			<description>
 				<de>Als Ersatz für ihren schwer kranken Sohn adoptiert das Ehepaar Swinton einen Roboter, der einem Menschen erstaunlich nahe kommt.
-[0|Last]s Hommage an Laurel Kubus.</de>
+[0|Last]s Hommage an [1|Full].</de>
 				<en>To replace their seriously ill son, Mr. and Mrs. Swinton adopt a robot that looks remarkably close to a human.
-[0|Last]s tribute to Laurel Kubus.</en>
+[0|Last]s tribute to [1|Full].</en>
 			</description>
 			<staff>
-				<member index="0" function="1">95bfcae9-e542-49e8-9b69-a4a77e4cc42c</member>
-				<member index="1" function="2">80405819-596d-4fe0-90f6-e864cc5169e7</member>
-				<member index="2" function="2">c075bb8d-6f6a-46aa-aadc-ae3c73ad7d33</member>
+				<member index="0" function="5">95bfcae9-e542-49e8-9b69-a4a77e4cc42c</member>
+				<member index="1" function="0">153dc080-86a1-4f3d-bb13-65b3aa90f7ea</member> <!-- co-producer -->
+				<member index="2" function="2">80405819-596d-4fe0-90f6-e864cc5169e7</member>
+				<member index="3" function="2">c075bb8d-6f6a-46aa-aadc-ae3c73ad7d33</member>
+				<member index="4" function="2">e8752e52-dbd7-4715-bacc-23d19aff3126</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="2001" distribution="1" maingenre="16" subgenre="" flags="0" blocks="3" price_mod="1" />
@@ -8980,7 +8982,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 				<en>A killer on his last big job and a suicidal man who spoils everything for the former with his attempts. This can only get weird. [0|Full] and his famous duo.</en>
 			</description>
 			<staff>
-				<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
+				<member index="0" function="5">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
 				<member index="1" function="2">3cc8d242-ead8-483b-b5ef-c826057abc0f</member>
 				<member index="2" function="2">TheRob-celebritypeople-WalterRattnau</member>
 				<member index="3" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
@@ -11996,8 +11998,8 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>Dawn of a New Day</en>
 					</title_original>
 					<description>
-						<de>Willkommen in Babylonia, der Heimat von Lena, Mahad und ihrer Mutter Mila. Als friedlicher Zufluchtsort in der Tyrannei der Sphäre lebt die Familie glücklich und zufrieden, aber mit einem Geheimnis. Sie sind Seijins, Menschen mit telekinetischen Kräften, die meistgesuchten Menschen in Skyland.</de>
-						<en>Welcome to Babylonia, home of Lena, Mahad and their mother Mila. A peaceful haven in the tyranny of the Sphere, the family lives happily, but with a secret. They are Seijins, humans with telekinetic powers, the most wanted people in Skyland.</en>
+						<de>Willkommen in Babylonia, der Heimat von Lena, Mahad und ihrer Mutter Mila. Als friedlicher Zufluchtsort in der Tyrannei der Sphäre lebt die Familie glücklich und zufrieden, aber mit einem Geheimnis. Sie sind Seijins, Menschen mit telekinetischen Kräften.</de>
+						<en>Welcome to Babylonia, home of Lena, Mahad and their mother Mila. A peaceful haven in the tyranny of the Sphere, the family lives happily, but with a secret. They are Seijins, humans with telekinetic powers.</en>
 					</description>
 					<data blocks="2" />
 					<ratings critics="45" speed="38" />
@@ -16563,16 +16565,16 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 		</programme>
 		<programme id="Stukov_Transformers_Der_Kampf_um_Cybertron" product="1" licence_type="1" imdb_id="tt0092106" creator="9584" created_by="Stukov">
 			<title>
-				<de>Reshapers - Die Schlacht um Trybercon</de>
-				<en>The Reshapers: The Feature Film</en>
+				<de>Transshapers - Die Schlacht um Trybercon</de>
+				<en>The Transshapers: The Feature Film</en>
 			</title>
 			<title_original>
 				<de>Transformers - Der Kampf um Cybertron</de>
 				<en>The Transformers: The Movie</en>
 			</title_original>
 			<description>
-				<de>Der erste Kinofilm des Franchises. Spielt zwischen Staffel 2 und 3 der damaligen Serie, in der fernen Zukunft des Jahres 2005, als der Hauptschauplatz des Krieges zwischen den Autobots und den Decepticons auf dem mechanischen Heimatplaneten der Protagonisten-Roboter war. Die Kinder waren schockiert, als einige Figuren starben.</de>
-				<en>The first feature film of the franchise. Set between seasons 2 and 3 of the series at the time, in the distant future of 2005, when the main scene of the war between the Autobots and the Decepticons was on the mechanical home planet of the protagonist robots. The children were shocked when some characters died.</en>
+				<de>Der erste Kinofilm des Franchises. Spielt zwischen Staffel 2 und 3 im fernen 2005 während des Krieges zwischen den Autobots und den Decepticons. Die Kinder waren schockiert, als einige Figuren starben.</de>
+				<en>The first feature film of the franchise. Set between seasons 2 and 3 in faraway 2005 during the war between the Autobots and the Decepticons. The children were shocked when some characters died.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Stukov_NelsonShin</member>
@@ -16598,8 +16600,8 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<en>Maximum Overdrive</en>
 			</title_original>
 			<description>
-				<de>Die Strahlen eines Kometen machen Lastwagen und andere Maschinen lebendig und mörderisch gefährlich. Ein paar in einer Raststätte gefangene Menschen müssen sich freikämpfen. [0|Full] versuchte sich als Regisseur, gab später zu, er war völlig zugedröhnt. Er führte nie wieder Regie.</de>
-				<en>The rays of a comet make trucks and other machines alive and murderously dangerous. A few people trapped in a rest stop must fight their way free. [0|Full] tried his hand at directing, later admitting he was completely drugged. He never directed again.</en>
+				<de>Die Strahlen eines Kometen machen Lastwagen lebendig und mörderisch gefährlich. Die in einer Raststätte gefangenen Protagonisten müssen sich freikämpfen. [0|Full] versuchte sich als Regisseur, gab später zu, er war völlig zugedröhnt. Er führte nie wieder Regie.</de>
+				<en>The rays of a comet make trucks alive and murderously dangerous. The protagonists trapped in a rest stop must fight their way free. [0|Full] tried his hand at directing, later admitting he was completely drugged. He never directed again.</en>
 			</description>
 			<staff>
 				<member index="0" function="1029">9ef1f1fb-30f4-4df4-8073-87179e95c6b8</member>
@@ -16621,8 +16623,8 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<en>Men in Black</en>
 			</title_original>
 			<description>
-				<de>Agent „K“ sucht nach einem neuen Rekruten, um außerirdische Aktivitäten auf der Erde zu überwachen. Der schnell denkende und schnell sprechende NYPD Detective „J“ ist der perfekte Kandidat. Allerdings muss er viele Male geblitzdingst werden, bevor er sich an seine neuen Aufgaben gewöhnt.</de>
-				<en>Agent "K" seeks out a new recruit to monitor alien activity on Earth. The quick-thinking and fast-talking NYPD Detective "J" is the perfect candidate. Though he must be flashy-thinged many times before he gets used to his new tasks.</en>
+				<de>Agent „K“ sucht nach einem neuen Rekruten, um außerirdische Aktivitäten auf der Erde zu überwachen. Der aufgeweckte NYPD-Detective „J“ ist der perfekte Kandidat. Allerdings muss er zur „Eingewöhnung“ viele Male geblitzdingst werden.</de>
+				<en>Agent "K" seeks out a new recruit to monitor alien activity on Earth. The quick-witted NYPD Detective "J" is the perfect candidate. However, he needs to be flashy-thinged many times to "acclimate".</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Stukov_BarrySonnenfeld</member>
@@ -16698,8 +16700,8 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<en>Minions</en>
 			</title_original>
 			<description>
-				<de>Zweiterfolgreichster Animationsfilm überhaupt damals und das Prequel zur beliebten Reihe, das die Ursprünge von Grus kleinen gelben Schergen erklärt. Sie existieren seit Millionen von Jahren und versuchen verzweifelt, die trostlose Antarktis hinter sich zu lassen, um einen neuen Meister zu finden.</de>
-				<en>The second highest-grossing animated film of all time back then and the prequel to the popular series that explains the origins of Gru's little yellow henchmen. They have existed for millions of years and are trying to leave desolate Antarctica, desperate to find a new master.</en>
+				<de>Das Prequel zur beliebten Reihe, das die Ursprünge von Grus kleinen gelben Schergen erklärt. Sie existieren seit Millionen von Jahren und versuchen verzweifelt, die trostlose Antarktis hinter sich zu lassen, um einen neuen Meister zu finden.</de>
+				<en>The prequel to the popular series that explains the origins of Gru's little yellow henchmen. They have existed for millions of years and are trying to leave desolate Antarctica, desperate to find a new master.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">a9ada9c2-4b06-4519-bf2f-793bbf66c0b0</member>
@@ -19603,8 +19605,8 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>Wuthering Heights</en>
 			</title_original>
 			<description>
-				<de>Romanverfilmung über die Beziehung zwischen der bürgerlichen, unentschlossenen Cathy und dem Adoptivkind und Stalljungen Heathcliff, der nach Jahren immer noch von Cathys nun alkoholkranken Bruder misshandelt wird.</de>
-				<en>Novel adaptation about the relationship between the bourgeois, indecisive Cathy and adopted child and stable boy Heathcliff, who years later is still being abused by Cathy's now alcoholic brother.</en>
+				<de>Romanverfilmung über die Beziehung zwischen der bürgerlichen, unentschlossenen Cathy und dem Adoptivkind und Stalljungen Heathcliff, der nach Jahren immer noch von Cathys alkoholkrankem Bruder misshandelt wird.</de>
+				<en>Novel adaptation about the relationship between the bourgeois, indecisive Cathy and adopted child and stable boy Heathcliff, who years later is still being abused by Cathy's alcoholic brother.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">c6431bc0-a0c6-4638-ab30-573066975d0f</member>
@@ -20338,7 +20340,7 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>Saturday Night Fever</en>
 			</title_original>
 			<description>
-				<de>Machte [1|Full] zum Superstar und hatte unermesslichen Einfluss auf spätere Tanzfilme und die Disko-Kultur. Der Italoamerikaner Tony lebt in Brooklyn, flieht ein wenig vor dem harten realen Leben, indem er gern tanzen geht, und wird zum Disco-Star.</de>
+				<de>Machte [1|Full] zum Superstar und hatte unermesslichen Einfluss auf spätere Tanzfilme und die Disko-Kultur. Der Italoamerikaner Tony lebt in Brooklyn, flieht ein wenig vor dem harten realen Leben, indem er gern tanzen geht, und wird zum Disko-Star.</de>
 				<en>Made [1|Full] a superstar and had an immeasurable influence on later dance films and disco culture. Italian-American Tony lives in Brooklyn, somewhat tries to escape from tough real life by preferring to go dancing, and becomes a disco star.</en>
 			</description>
 			<staff>
@@ -20402,7 +20404,7 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<member index="4" function="2">cf2e581a-2189-4635-9358-68d9c83aad01</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="5,202" flags="2" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="202,3" flags="2" blocks="2" price_mod="1" />
 			<releaseTime year="1977" day="3" />
 			<ratings critics="55" speed="59" outcome="62" />
 		</programme>
@@ -20540,7 +20542,7 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>National Lampoon's Animal House</en>
 			</title_original>
 			<description>
-				<de>Wie jedes Jahr müssen sich die Erstsemester eine Studentenverbindung suchen. Bei „Delta Tau Chi“ geht's um Alkohol, Sex und wilde Partys dazu, mitsamt ständigem Konflikt mit dem Rektor und den ihm nahestehenden autoritären „Omegas“. Kultfilm in den USA.</de>
+				<de>Wie jedes Jahr müssen sich die Erstsemester eine Studentenverbindung suchen. Bei „Delta Tau Chi“ geht's um Alkohol, Sex und wilde Partys, mitsamt ständigem Konflikt mit dem Rektor und den ihm nahestehenden autoritären „Omegas“. Kultfilm in den USA.</de>
 				<en>Like every year, the freshmen have to find a fraternity. "Delta Tau Chi" is about alcohol, sex and wild parties, along with constant conflict with the rector and the authoritarian "Omegas" close to him. Cult film in the U.S.</en>
 			</description>
 			<staff>
@@ -20591,7 +20593,7 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>The White Shark 2</en>
 			</title>
 			<title_original>
-				<de>Der Weiße Hai 2</de>
+				<de>Der weiße Hai 2</de>
 				<en>Jaws 2</en>
 			</title_original>
 			<description>
@@ -20825,10 +20827,8 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>Richard Pryor: Live in Concert</en>
 			</title_original>
 			<description>
-				<de>Der erste abendfüllende Kinofilm, der nur aus Stand-up-Comedy besteht. Von und mit Comedian und Schauspieler [0|Full]. Spielte locker ein vielfaches des Budgets ein.
-„Die beste Stand-up-Performance, die je auf Film gebannt wurde.“</de>
-				<en>The first full-length feature movie consisting of only stand-up comedy. By and with comedian and actor [0|Full]. Easily grossed many times its budget.
-"The single greatest stand-up performance ever captured on film."</en>
+				<de>Der erste abendfüllende Kinofilm, der nur aus Stand-up-Comedy besteht. Von und mit Comedian und Schauspieler [0|Full]. Spielte locker ein vielfaches des Budgets ein. „Die beste Stand-up-Performance, die je auf Film gebannt wurde.“</de>
+				<en>The first full-length feature movie consisting of only stand-up comedy. By and with comedian and actor [0|Full]. Easily grossed many times its budget. "The single greatest stand-up performance ever captured on film."</en>
 			</description>
 			<staff>
 				<member index="0" function="14">3ab666d4-3505-489c-831f-0ad3bf29fcc8</member>
@@ -21539,8 +21539,8 @@ Coming of Age film about two girls at summer camp who make a bet on who will los
 				<it>Il Bisbetico Domato</it>
 			</title_original>
 			<description>
-				<de>Kommerziell sehr erfolgreich in Europa. Der mürrische Elia wehrt sich gegen die Bemühungen seiner Haushälterin, ihn zu verkuppeln. Auch einer schönen jungen Frau, die wegen einer Panne auf seinem Hof übernachtet, zeigt er zunächst die kalte Schulter.</de>
-				<en>Commercially very successful in Europe. The grumpy Elia resists the efforts of his housekeeper to set him up. Initially he also gives the cold shoulder to a beautiful young woman who spends the night on his farm because of a breakdown.</en>
+				<de>Kommerziell sehr erfolgreich in Europa. Der mürrische Elia wehrt sich gegen die Bemühungen seiner Haushälterin, ihn zu verkuppeln. Auch einer schönen jungen Frau, die wegen einer Autopanne auf seinem Hof übernachtet, zeigt er zunächst die kalte Schulter.</de>
+				<en>Commercially very successful in Europe. The grumpy Elia resists the efforts of his housekeeper to set him up. Initially he also gives the cold shoulder to a beautiful young woman who spends the night on his estate because of a car breakdown.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">7b13faf5-54d8-4975-9245-90d7bf93cba4</member>
@@ -21640,8 +21640,8 @@ Coming of Age film about two girls at summer camp who make a bet on who will los
 				<en>On Golden Pond</en>
 			</title_original>
 			<description>
-				<de>[1|Full] und Tochter [2|First] das erste und einzige Mal zusammen in einem Film. Oscarprämiert und nach einem Theaterstück. Ein älteres Ehepaar und die entfremdete Tochter nähern sich in ihrem Seehaus wieder an, dank dem kleinen Sohn deren neuen Freundes.</de>
-				<en>[1|Full] and daughter [2|First] the first and only time together in a film. Oscar-winning and based on a play. An elderly couple and their estranged daughter become closer again in their lake-house thanks to her new boyfriend's young son.</en>
+				<de>[2|Full] und Tochter [3|First] das erste und einzige Mal zusammen in einem Film. Oscarprämiert und nach einem Theaterstück. Ein älteres Ehepaar und die entfremdete Tochter nähern sich in ihrem Seehaus wieder an, dank dem kleinen Sohn deren neuen Freundes.</de>
+				<en>[2|Full] and daughter [3|First] the first and only time together in a film. Oscar-winning and based on a play. An elderly couple and their estranged daughter become closer again in their lake-house thanks to her new boyfriend's young son.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">6f67c858-2cd3-4c32-85e7-53f4c4b053e8</member>
@@ -22061,8 +22061,10 @@ Action comedy with a star-studded cast.</en>
 				<en>History of the World: Part I</en>
 			</title_original>
 			<description>
-				<de>„Nun mal aufgepasst: Der Herr, der Herr Jehova, hat euch, seinem Volke, diese fünfzehn... Oi...! Zehn! ...diese zehn Gebote gegeben, die ihr alle zu befolgen sollt!“ Teil II erschien übrigens auch inzwischen, im Jahre 2023.</de>
-				<en>"Hear me, all pay heed: The Lord, the Lord Jehovah has given unto you these fifteen... Oy...! Ten! Ten commandments for all to obey!" Part II, by the way, also was released in the meantime, in the year 2023.</en>
+				<de>„Nun mal aufgepasst: Der Herr, der Herr Jehova, hat euch, seinem Volke, diese fünfzehn... Oi...! Zehn! ...diese zehn Gebote gegeben, die ihr alle zu befolgen sollt!“
+Teil II erschien übrigens auch inzwischen, im Jahre 2023.</de>
+				<en>"Hear me, all pay heed: The Lord, the Lord Jehovah has given unto you these fifteen... Oy...! Ten! Ten commandments for all to obey!"
+Part II, by the way, also was released in the meantime, in the year 2023.</en>
 			</description>
 			<staff>
 				<member index="0" function="7">6843df02-c76f-4d3f-a5f9-eb59deeb820a</member>
@@ -22539,7 +22541,7 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 				<fr>Le Professionnel</fr>
 			</title_original>
 			<description>
-				<de>Ein französischer Geheimagent wird landet unverschuldet im Straflager eines afrikanischen Landes. Nach zwei Jahren gelingt ihm die Flucht, will seine Mission zu Ende bringen und sich an der Obrigkeit rächen, die ihn ausgeliefert hatte.</de>
+				<de>Ein französischer Geheimagent landet unverschuldet im Straflager eines afrikanischen Landes. Nach zwei Jahren gelingt ihm die Flucht, will seine Mission zu Ende bringen und sich an der Obrigkeit rächen, die ihn ausgeliefert hatte.</de>
 				<en>A French secret agent, through no fault of his own, ends up in a penal camp in an African country. After two years, he manages to escape, intends to complete his mission and to take revenge on the authorities who had extradited him.</en>
 			</description>
 			<staff>
@@ -22637,8 +22639,8 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 				<en>Irezumi: Spirit Of Tattoo</en>
 			</title_original>
 			<description>
-				<de>Akane will den Fetisch-Herzenswusch ihres Partners erfüllen und sich großflächig auf Rücken und Gesäß tätowieren lassen. Der Großmeister dieser Kunst besteht aber darauf, dass sich ihre Haut nur hinreichend entspannt, wenn sie während des Vorgangs sexuell penetriert wird.</de>
-				<en>Akane wants to fulfill her partner's fetish heart's desire and get a large tattoo on her back and buttocks. However, the grand master of this art insists that her skin will only relax sufficiently if she is sexually penetrated during the process.</en>
+				<de>Akane will den Fetisch-Herzenswusch ihres Partners erfüllen und sich auf Rücken und Gesäß tätowieren lassen. Der Großmeister dieser Kunst besteht darauf, dass sich ihre Haut nur entspannt, wenn sie während des Vorgangs sexuell penetriert wird.</de>
+				<en>Akane wants to fulfill her partner's fetish heart's desire and get a tattoo on her back and buttocks. The grand master of this art insists that her skin will only relax if she is sexually penetrated during the process.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">d9c8a912-7caf-4b62-bd7c-78a362bf0565</member>
@@ -22874,8 +22876,8 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 				<en>48 Hrs.</en>
 			</title_original>
 			<description>
-				<de>Ein ruppiger San-Francisco-Cop und ein gewiefter Krimineller können sich nicht riechen, müssen aber miteinander auskommen. [2|Full]s Debüt an der Seite von [1|Full] begründete auch die 80er „Buddy Cop“-Welle. FSK-18 wegen der Sprüche, nicht wegen der Action.</de>
-				<en>A gruff San Francisco cop and a street-smart criminal can't smell each other but have to get along. [2|Full]'s debut alongside [1|Full] also started the '80s "buddy cop" wave. Rated adult-only in Germany because of the banter, not the action.</en>
+				<de>Ein ruppiger San-Francisco-Cop und ein gewiefter Krimineller können sich nicht riechen, müssen aber miteinander auskommen. [2|Full]s Debüt an der Seite von [1|Last] begründete auch die 80er „Buddy Cop“-Welle. FSK-18 eigentlich nur wegen der Sprüche.</de>
+				<en>A gruff San Francisco cop and a street-smart criminal can't smell each other but have to get along. [2|Full]'s debut alongside [1|Last] also started the '80s "buddy cop" wave. Rated adult-only actually only because of the banter.</en>
 			</description>
 			<staff>
 				<member index="0" function="3">db8f4d31-245f-4221-becf-9361e45fd525</member>
@@ -23911,7 +23913,7 @@ One of the most successful films of the year in South Korea.</en>
 				<member index="6" function="4">TheRob-celebritypeople-RolligerStein</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7,1" flags="72" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="4" subgenre="7,2" flags="72" blocks="3" price_mod="1" />
 			<releaseTime year="1983" day="12" />
 			<ratings critics="78" speed="88" outcome="72" />
 		</programme>
@@ -23925,8 +23927,8 @@ One of the most successful films of the year in South Korea.</en>
 				<en>Blue Thunder</en>
 			</title_original>
 			<description>
-				<de>Ein Vietnamkriegsveteran-Pilot darf für die Polizei in L.A. einen brandaktuellen, schwer bewaffneten und gepanzerten Hubschrauber mit hochentwickelten Sensoren und Stealth-Technologie testen. Er trifft auf seinen Erzfeind und kommt einer Verschwörung auf die Spur.</de>
-				<en>A Vietnam War veteran pilot gets to test for the L.A. Police a hot new heavily armed and armored helicopter with advanced sensors and stealth technology. He meets his nemesis and ends up uncovering a conspiracy.</en>
+				<de>Ein Vietnamkriegsveteran-Pilot darf für die Polizei in L.A. einen brandaktuellen bewaffneten und gepanzerten Hubschrauber mit hochentwickelten Sensoren und Stealth-Technologie testen. Er trifft auf seinen Erzfeind und kommt einer Verschwörung auf die Spur.</de>
+				<en>A Vietnam War veteran pilot gets to test for the L.A. Police a hot new armed and armored helicopter with advanced sensors and stealth technology. He meets his nemesis and ends up uncovering a conspiracy.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">246ea74a-2f5f-4f60-9370-ec5a3194d22d</member>
@@ -23952,8 +23954,8 @@ One of the most successful films of the year in South Korea.</en>
 				<en>Yentl</en>
 			</title_original>
 			<description>
-				<de>[0|Full] führte Regie, war Co-Autorin, Co-Produzentin und Hauptdarstellerin in diesem Musikdrama, das auf einem Theaterstück bzw. einer Kurzgeschichte basiert. Ein jüdisches Mädchen im Polen des frühen 20. Jahrhunderts gibt vor, ein Junge zu sein, um Ausbildung in talmudischem Recht zu erhalten.</de>
-				<en>[0|Full] directed, co-wrote, co-produced, and starred in this musical drama film, adapted from a play based on a short story. A Jewish girl in early 20th century Poland pretends to be a boy to get education in Talmudic Law.</en>
+				<de>[0|Full] führte Regie, war Co-Autorin, Co-Produzentin und Hauptdarstellerin in diesem Musikdrama, basierend auf einem Theaterstück bzw. einer Kurzgeschichte. Ein jüdisches Mädchen im 1900er Polen gibt für eine Talmud-Ausbildung vor, ein Junge zu sein.</de>
+				<en>[0|Full] directed, co-wrote, co-produced, and starred in this musical drama film, adapted from a play based on a short story. A Jewish girl in 1900s Poland pretends to be a boy for a Talmud education.</en>
 			</description>
 			<staff>
 				<member index="0" function="7">a62c5f2b-d61d-4c45-9b8f-ba0d0cdc5285</member>
@@ -24055,8 +24057,8 @@ One of the most successful films of the year in South Korea.</en>
 				<en>Christine</en>
 			</title_original>
 			<description>
-				<de>Veröffentlicht noch im selben Jahr, in dem auch das Buch von [1|Full] erschien. Ein unbeliebter Junge einer Vorstadt-Highschool kauft sein erstes Auto. „Sie“ ist lebendig und verliebt in ihn auf extreme und psychotische Weise, und er übernimmt diese Charakterzüge.</de>
-				<en>Released still in the same year [1|Full]'s book was published. An unpopular guy in a suburban high school buys his first car. "She" is sentient and in love with him in an extreme and psychotic way, and he adapts these traits.</en>
+				<de>Veröffentlicht noch im selben Jahr, in dem auch [1|Full]s Buch erschien. Ein in seiner Vorstadt-Highschool unbeliebter Junge kauft sein erstes Auto. „Sie“ ist lebendig und verliebt in ihn auf extreme und psychotische Weise, und er übernimmt diese Charakterzüge.</de>
+				<en>Released still in the same year [1|Full]'s book was published. A guy who's unpopular in his suburban high school buys his first car. "She" is sentient and in love with him in an extreme and psychotic way, and he adapts these traits.</en>
 			</description>
 			<staff>
 				<member index="0" function="17">1ae56fa2-8710-48d9-acc5-86bc250c1de0</member>
@@ -24669,8 +24671,8 @@ Actually quite professionally done film adaptation of the novel, but it is neith
 				<en>Greystoke: The Legend of Tarzan, Lord of the Apes</en>
 			</title_original>
 			<description>
-				<de>Der Erbe eines Earls wird in einem Dschungel geboren, in dem seine Eltern strandeten, und wird nach deren Tod von Affen aufgezogen. Als Erwachsener wird er von einem Forschungsreisenden entdeckt und nach England zurückgebracht. Nun muss er sich an die menschliche Zivilisation anpassen.</de>
-				<en>An heir to an Earl is born in the jungle where his parents are marooned, and raised by apes after they die. As an adult, he is discovered by an explorer and returned to England. Now he must adjust to the ways of human civilization.</en>
+				<de>Der Erbe eines Earls wird in einem Dschungel geboren und nach dem Tod seiner Eltern Tod von Affen aufgezogen. Als Erwachsener wird er von einem Forschungsreisenden entdeckt und nach England zurückgebracht. Nun muss er sich an die Zivilisation anpassen.</de>
+				<en>An heir to an Earl is born in the jungle and raised by apes after his parents die. As an adult, he is discovered by an explorer and returned to England. Now he must adjust to the ways of civilization.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Stukov_HughHudson</member>
@@ -24852,8 +24854,8 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Conan the Destroyer</en>
 			</title_original>
 			<description>
-				<de>Der zweite Teil der Reihe. Der Protagonist und sein Gefährte werden von Königin Taramis beauftragt, die Prinzessin zu begleiten, um ein Artefakt zu beschaffen, mit dem Dagoth, der „Träumende Gott“, wiedererweckt werden kann. Sie ahnen nicht, dass dies ein Zeitalter der Finsternis einleiten wird.</de>
-				<en>Second part of the series. The protagonist and his accomplice are tasked by Queen Taramis to escort the princess to obtain an artifact needed to resurrect Dagoth, "The Dreaming God". Little do they know this will bring about an age of darkness.</en>
+				<de>Der zweite Teil der Reihe. Der Protagonist und sein Gefährte werden von Königin Taramis beauftragt, die Prinzessin zu begleiten, um ein Artefakt zu beschaffen, mit dem Dagoth, der „Träumende Gott“, wiedererweckt werden kann.</de>
+				<en>Second part of the series. The protagonist and his accomplice are tasked by Queen Taramis to escort the princess to obtain an artifact needed to resurrect Dagoth, "The Dreaming God".</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RichieButcher</member>
@@ -26055,8 +26057,8 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Return to Oz</en>
 			</title_original>
 			<description>
-				<de>Semi-Fortsetzung des Klassikers von 1939, tatsächlich um einiges düsterer, was dem großen kommerziellen Erfolg im Wege gestanden haben mag. Dorothy muss aus einer psychiatrischen Klinik fliehen. Als sie irgendwie in Oz ankommt, haben sich viele Dinge zum Schlechten verändert.</de>
-				<en>Semi-sequel to the 1939 classic, actually quite a bit darker, which may have prevented the large commercial success. Dorothy has to flee from a psychiatric clinic. When she somehow arrives in Oz, many things have changed for the worse.</en>
+				<de>Semi-Fortsetzung des Klassikers von 1939, tatsächlich um einiges düsterer, was dem kommerziellen Erfolg im Wege gestanden haben mag. Dorothy muss aus einer Psychiatrie fliehen. Als sie irgendwie in Oz ankommt, haben sich viele Dinge zum Schlechten verändert.</de>
+				<en>Semi-sequel to the 1939 classic, actually quite a bit darker, which may have prevented the commercial success. Dorothy has to flee from a psychiatric clinic. When she somehow arrives in Oz, many things have changed for the worse.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">2dac2de8-73c8-4b3f-b640-d78b67005be3</member>
@@ -26312,8 +26314,8 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Superelectronics</en>
 			</title_original>
 			<description>
-				<de>Der vierte der „Nasen“-Filme. [2|First] erfindet den „Video-Integrator“, mit dem man „in Videofilme einsteigen“ kann. Er und [1|Nick] erleben so zahlreiche Abenteuer im Wilden Westen, im Dschungel, mit Vampiren, usw., bis Konzerne aufmerksam werden.</de>
-				<en>The fourth of the "Noses" films. [2|First] invents the "Video Integrator", with which one can "jump into video films". In this way, he and [1|Nick] experience numerous adventures in the Wild West, in the jungle, with vampires, etc., until companies take notice.</en>
+				<de>Der vierte der „Nasen“-Filme. [2|First] erfindet den „Video-Integrator“, mit dem man „in Videofilme einsteigen“ kann. Er und [1|Nick] erleben so zahlreiche Abenteuer im Wilden Westen, im Dschungel, mit Vampiren, usw., bis Konzerne auf die Erfindung aufmerksam werden.</de>
+				<en>The fourth of the "Noses" films. [2|First] invents the "Video Integrator", with which one can "jump into video films". In this way, he and [1|Nick] experience numerous adventures in the Wild West, in the jungle, with vampires, etc., until companies take notice of the invention.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">aecbde25-54c0-46ca-9d23-d0fe8511680f</member>
@@ -26465,7 +26467,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Back to School</en>
 			</title_original>
 			<description>
-				<de>Ein erfolgreicher und lebensfroher Geschäftsmann ist frisch von der untreuen Frau getrennt, und da er grad sonst nicht viel zu tun hat, und der Sohnemann auf dem College nicht so gut zu recht kommt, schreibt er sich einfach mal selber ein, na logisch, und wird dort zum Partylöwen.</de>
+				<de>Ein erfolgreicher und lebensfroher Geschäftsmann ist frisch von der untreuen Frau getrennt, und da er grad sonst nicht viel zu tun hat, und der Sohn auf dem College nicht klar kommt, schreibt er sich einfach mal selber ein, na logisch, und wird dort zum Partylöwen.</de>
 				<en>A successful and fun-loving businessman and fun-loving is freshly separated from his unfaithful wife, and since he doesn't have much else to do, and his son isn't doing so well at college, he simply enrolls himself, obviously, and becomes a party animal there.</en>
 			</description>
 			<staff>
@@ -26493,7 +26495,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Poltergeist II: The Other Side</en>
 			</title_original>
 			<description>
-				<de>Nach der Zerstörung ihres Hauses am Ende des ersten Teils zieht die Familie Freeling in ein neues Haus, doch schon bald werden sie wieder vom Übernatürlichen heimgesucht. Das Franchise wird oft als verflucht bezeichnet, da mehrere involvierte Menschen vorzeitig verstarben.</de>
+				<de>Nach der Zerstörung ihres Hauses am Ende des ersten Teils zieht die Familie Freeling in ein neues Haus, doch schon bald werden sie wieder vom Übernatürlichen heimgesucht. Das Franchise gilt oft als verflucht, da mehrere involvierte Menschen vorzeitig verstarben.</de>
 				<en>After the destruction of their house at the end of the first part, the Freeling family moves to a new home, but soon they are haunted by the supernatural again. The franchise is often said to be cursed, because several people associated with it died prematurely.</en>
 			</description>
 			<staff>
@@ -26570,7 +26572,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Cobra</en>
 			</title_original>
 			<description>
-				<de>Maria ([1|Last]), ein knallharter Polizist aus L.A., muss sich mit einer Mordserie eines Mannes befassen, der der Polizei nur als „Night Slasher“ bekannt ist, und sich gleichzeitig mit verschiedenen mörderischen Verrückten herumschlagen, die Unfug über eine „Neue Welt“ erzählen.</de>
+				<de>Maria ([1|Last]), ein knallharter Polizist aus L.A., muss sich mit einer Mordserie eines Mannes befassen, der der Polizei nur als „Night Slasher“ bekannt ist, und sich mit verschiedenen mörderischen Verrückten herumschlagen, die Unfug über eine „Neue Welt“ erzählen.</de>
 				<en>Marion ([1|Last]), an intense, no-nonsense LA cop, has to deal with a string of murders by a man known to police only as the Night Slasher, while also dealing with various murderous nuts spouting nonsense about a "New Order".</en>
 			</description>
 			<staff>
@@ -26808,7 +26810,7 @@ Nice, but not a big hit. [2|Last] played only second fiddle in animated films at
 				<en>Howard the Duck</en>
 			</title_original>
 			<description>
-				<de>Ein recht sarkastischer Erpel aus dem All wird versehentlich auf die Erde gezappt wird und muss sich an die menschliche Welt gewöhnen. Die [1|Last]film-Produktion wurde mehrfach mit der Goldenen Himbeere ausgezeichnet.</de>
+				<de>Ein recht sarkastischer Erpel aus dem All wird versehentlich auf die Erde gezappt und muss sich an die menschliche Welt gewöhnen. Die [1|Last]film-Produktion wurde mehrfach mit der Goldenen Himbeere ausgezeichnet.</de>
 				<en>A rather sarcastic drake from outer space is accidentally zapped to Earth and has to get used to the human world. The [1|Last]film production won several Golden Raspberry awards.</en>
 			</description>
 			<staff>
@@ -27068,7 +27070,7 @@ Filmed at the same time as part 1, it was as much a critical as a commercial dis
 				<it>Voglia di guardare</it>
 			</title_original>
 			<description>
-				<de>Christina, die vernachlässigte Frau eines vielbeschäftigten Arztes und insgeheimen Voyeurs, beginnt eine Affäre mit dem Besitzer eines eleganten Bordells. (Die E. im deutschen Titel ist vollkommen sinnlos und hat selbst zu den Nachahmern jener Reihe keinerlei Bezug.)</de>
+				<de>Christina, die vernachlässigte Frau eines viel beschäftigten Arztes und insgeheimen Voyeurs, beginnt eine Affäre mit dem Besitzer eines eleganten Bordells. (Die E. im deutschen Titel ist vollkommen sinnlos und hat zu jener Reihe keinerlei Bezug.)</de>
 				<en>Christina, the neglected wife of a busy doctor and closet voyeur, begins an afair with the owner of an elegant brothel.</en>
 			</description>
 			<staff>
@@ -28019,7 +28021,7 @@ Ellen has retreated to the Bahamas after her youngest son was killed by a shark.
 				<en>Wings of Desire</en>
 			</title_original>
 			<description>
-				<de>Ein Engel verliebt sich in eine Trapezkünstlerin und beschließt, Mensch zu werden. Ein Meisterwerk des europäischen Arthouse-Films mit Schwarz-Weiß-Kinematografie und poetischen Dialogen, das den Zuschauer auf eine Reise der Liebe und des Staunens einlädt.</de>
+				<de>Ein Engel verliebt sich in eine Trapezkünstlerin und beschließt, Mensch zu werden. Meisterwerk des europäischen Arthouse-Films mit S/W-Kinematografie und poetischen Dialogen, das den Zuschauer auf eine Reise der Liebe und des Staunens einlädt.</de>
 				<en>An angel falls in love with a trapeze artist and decides to become human. A masterpiece of European art-house cinema with black-and-white cinematography and poetic dialogue to take the viewer on a journey of love and wonder.</en>
 			</description>
 			<staff>
@@ -28345,7 +28347,7 @@ Ellen has retreated to the Bahamas after her youngest son was killed by a shark.
 				<en>Crocodile Dundee II</en>
 			</title_original>
 			<description>
-				<de>Mick bekommt es mit einer Bande rachsüchtiger kolumbianischer Drogendealer zu tun. Er ignoriert die Aufforderung, ins Zeugenschutzprogramm zu gehen. Lieber demütigt er die Dealer in ihrem eigenen Revier und dann auch in Australiens Outback, wo er eh Heimvorteil hat.</de>
+				<de>Mick bekommt es mit einer Bande rachsüchtiger kolumbianischer Drogendealer zu tun. Er ignoriert die Aufforderung, ins Zeugenschutzprogramm zu gehen. Lieber demütigt er die Dealer in ihrem eigenen Revier und dann in Australiens Outback, wo er eh Heimvorteil hat.</de>
 				<en>Mick is running afoul of a gang of vengeful Colombian drug dealers. He ignores the request to go into the witness protection program. Rather he humiliates the dealers on their own turf and then in Australia's outback where he has home field advantage anyway.</en>
 			</description>
 			<staff>
@@ -28553,7 +28555,7 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 				<en>Oliver &amp; Company</en>
 			</title_original>
 			<description>
-				<de>Der 27. Zeichentrick-Spielfilm führt [1|Last] wieder in den Aufwärtstrend. Im New York der 1980er Jahre werden einige junge Kätzchen verkauft. Der rotbraune Titelheld bleibt zurück. Er findet aber bald eine Hundebande, die ihn aufnimmt, mit einem liebenswerten Kleinganoven als Herrchen.</de>
+				<de>Der 27. Zeichentrick-Spielfilm führt [1|Last] wieder in den Aufwärtstrend. Im 1980er New York werden einige junge Kätzchen verkauft. Der rotbraune Titelheld bleibt zurück. Er findet aber bald eine Hundebande mit liebenswertem Kleinganoven-Herrchen, die ihn aufnimmt.</de>
 				<en>The 27th [1|Last] animated feature film leads [1|Last] back to the upward trend. In 1980s New York, some young kittens are sold. The reddish-brown title hero is left behind. However, he soon finds a dog gang that takes him in, with a lovable petty hoodlum as their master.</en>
 			</description>
 			<staff>
@@ -28626,7 +28628,7 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 				<en>A Nightmare on Elm Street 4: The Dream Master</en>
 			</title_original>
 			<description>
-				<de>Der kommerziell erfolgreichste Slasher-Film der 80er Jahre. Trotz aller Bemühungen der Dream Warriors steigt Freddy wieder aus seinem Grab. Nachdem er die Überlebenden des letzten Films schnell beseitigt hat, bringt er Kristen dazu, ihre Traumfähigkeiten unfreiwillig weiterzugeben.</de>
+				<de>Der kommerziell erfolgreichste Slasher-Film der 80er. Trotz aller Bemühungen der Dream Warriors steigt Freddy wieder aus seinem Grab. Nachdem er die Überlebenden des letzten Films schnell beseitigt hat, bringt er Kristen dazu, ihre Traumfähigkeiten unfreiwillig weiterzugeben.</de>
 				<en>The commercially most successful slasher movie of the '80s. Despite the Dream Warriors' best efforts, Freddy returns from his grave. After quickly dispatching the survivors of the last film, he makes Kristen involuntarily pass on her dream abilities.</en>
 			</description>
 			<staff>
@@ -28750,8 +28752,8 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 				<en>The Last Temptation of Christ</en>
 			</title_original>
 			<description>
-				<de>Die wohl dramatischste Jesus-Verfilmung aller Zeiten, da der Protagonist als Allerweltskerl mit Fehlern dargestellt wird, der auch gern mal Prostituierten bei Sex zusieht. Es gab Boykotte, Proteste und sogar Anschläge auf Kinos. Aber nicht nur von Christen gab's Kritik, auch einige schauspielerische Leistungen seien dürftig.</de>
-				<en>Probably the most dramatic Jesus film adaptation of all time, since the protagonist is portrayed as an everyman with flaws who also likes to watch prostitutes having sex. There were boycotts, protests and even attacks on cinemas. But it wasn't just Christians who criticized the film; some of the acting performances were also considered poor.</en>
+				<de>Die wohl dramatischste Jesus-Verfilmung aller Zeiten, da der Protagonist als Allerweltskerl mit Fehlern dargestellt wird, der auch gern mal Prostituierten zusieht. Es gab Boykotte, Proteste und Anschläge auf Kinos. Außerdem waren einige schauspielerische Leistungen dürftig.</de>
+				<en>Probably the most dramatic Jesus film adaptation of all time, since the protagonist is portrayed as an everyman with flaws who also likes to watch prostitutes. There were boycotts, protests and attacks on cinemas. Also some of the acting performances were considered poor.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">1034ee00-f6ff-4db0-8800-fa3c87e9fb74</member>
@@ -29018,7 +29020,7 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 				<en>Friday the 13th Part VII: The New Blood</en>
 			</title_original>
 			<description>
-				<de>Als junges Mädchen tötete Tina versehentlich ihren Vater durch ihre übersinnlichen Fähigkeiten. Die Schuldgefühle plagten sie, aber sie hat im Erwachsenenalter etwas Normalität gefunden, bis sie versehentlich jemand namens Jason wieder zum Leben erweckt.</de>
+				<de>Als junges Mädchen tötete Tina versehentlich ihren Vater durch ihre übersinnlichen Fähigkeiten. Die Schuldgefühle plagten sie, aber sie hat im Erwachsenenalter etwas Normalität gefunden, bis sie versehentlich jemanden namens Jason wieder zum Leben erweckt.</de>
 				<en>As a young girl, Tina accidentally killed her father through her psychic abilities. Guilt plagued her, but she has found some normalcy in adulthood, until she accidentally resurrects someone named Jason.</en>
 			</description>
 			<staff>
@@ -29190,10 +29192,8 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 				<en>Arthur 2: On the Rocks</en>
 			</title_original>
 			<description>
-				<de>Der Protagonist hatte sich natürlich für die Liebe entschieden, nicht für das Geld, und genau das fehlt ihm jetzt 7 Jahre später. Außerdem hat er einen reichen Feind aus der Zeit damals, der all seine aufrichtigen Bestrebungen nun sabotiert.
-Wenig erfolgreiche Fortsetzung des Klassikers.</de>
-				<en>The protagonist, of course, had chosen love, not money, and that's what he's missing now 7 years later. Besides, he has a rich enemy from that time, who now sabotages all his sincere aspirations.
-Little successful sequel to the classic.</en>
+				<de>Der Protagonist hatte sich natürlich für die Liebe entschieden, nicht für das Geld, und genau das fehlt ihm jetzt 7 Jahre später. Außerdem hat er einen reichen Feind von damals, der all seine Bestrebungen sabotiert. Wenig erfolgreiche Fortsetzung des Klassikers.</de>
+				<en>The protagonist, of course, had chosen love, not money, and that's what he's missing now 7 years later. Besides, he has a rich enemy from that time, who sabotages all his aspirations. Little successful sequel to the classic.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">7145ed4d-c6cc-4e9d-91a9-c08b3a165119</member>
@@ -29219,10 +29219,8 @@ Little successful sequel to the classic.</en>
 				<en>The Adventures of Baron Munchausen</en>
 			</title_original>
 			<description>
-				<de>Das Zeitalter der Aufklärung. Es ist Krieg. Ein Theater führt ein Stück über Baron Münchhausen auf, doch der echte taucht auf, unterbricht und erzählt, wie das alles wirklich war.
-Kommerzieller Flop, aber visuell prächtiges Werk und [0|Last]s Abschluss seiner „Dreamer Trilogy“.</de>
-				<en>The Age of Reason. It is war. A theater performs a play about Baron Munchausen, but the real one shows up, interrupts and tells how it all actually went down.
-Commercial flop, but a visually splendid creation and [0|Last]'s conclusion to his "Dreamer Trilogy".</en>
+				<de>Das Zeitalter der Aufklärung. Es ist Krieg. Ein Theater führt ein Stück über Baron Münchhausen auf, doch der echte taucht auf, unterbricht und erzählt, wie das alles wirklich war. Kommerzieller Flop, aber visuell prächtiges Werk und [0|Last]s Abschluss seiner „Dreamer Trilogy“.</de>
+				<en>The Age of Reason. It is war. A theater performs a play about Baron Munchausen, but the real one shows up, interrupts and tells how it all actually went down. Commercial flop, but a visually splendid creation and [0|Last]'s conclusion to his "Dreamer Trilogy".</en>
 			</description>
 			<staff>
 				<member index="0" function="5">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
@@ -29324,8 +29322,8 @@ Commercial flop, but a visually splendid creation and [0|Last]'s conclusion to h
 				<en>Hellbound: Hellraiser II</en>
 			</title_original>
 			<description>
-				<de>Weder die Ermittler noch die Institutsärzte glauben Kirsty, als sie von außerdimensionalen Wesen und ihrem untoten Onkel erzählt, der ihren Vater getötet hat. Zum Glück greift Dr. Channard ein, so dass sie zusammen ihre Arbeit machen und die nötigen Dimensionsportale öffnen können.</de>
-				<en>Neither the investigators nor the institute doctors believe Kirsty when she tells them about extra-dimensional beings and her undead uncle who killed her father. Fortunately, Dr. Channard intervenes so that together they can complete their tasks and open the necessary dimensional portals.</en>
+				<de>Weder die Ermittler noch die Institutsärzte glauben Kirsty, als sie von außerdimensionalen Wesen und ihrem untoten Onkel erzählt. Zum Glück greift Dr. Channard ein, so dass sie zusammen ihre Arbeit machen und die nötigen Dimensionsportale öffnen können.</de>
+				<en>Neither the investigators nor the institute doctors believe Kirsty when she tells them about extra-dimensional beings and her undead uncle. Fortunately, Dr. Channard intervenes so that together they can complete their tasks and open the necessary dimensional portals.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">baf1537e-3da2-4edd-9406-9df7328a59a1</member>
@@ -29743,8 +29741,8 @@ Commercial flop, but a visually splendid creation and [0|Last]'s conclusion to h
 				<en>Honey, I Shrunk the Kids</en>
 			</title_original>
 			<description>
-				<de>Vier Vorort-Kinder werden versehentlich von einer Maschine geschrumpft und auf dem Bordstein abgestellt. Sie müssen sich dann ihren Weg zurück nach „Hause“ erkämpfen durch den ungemähte Rasendschungels mit Bienenerkämpfen, wie Bienen, Skorpione, Katzen und Rasensprenger.</de>
-				<en>Four suburb kids are accidentally shrunk by a machine and deposited on the curb. They then have to fight their way back "home" through the many dangers of the unmowed lawn jungle, such as bees, scorpions, cats and lawn sprinklers.</en>
+				<de>Vier Vorort-Kinder werden versehentlich von einer Maschine geschrumpft und auf dem Bordstein abgestellt. Sie müssen sich dann ihren Weg zurück nach „Hause“ erkämpfen durch den ungemähten Rasendschungel mit Bienen, Skorpionen, Katzen und Rasensprenger.</de>
+				<en>Four suburb kids are accidentally shrunk by a machine and deposited on the curb. They then have to fight their way back "home" through the unmowed lawn jungle with bees, scorpions, cats and lawn sprinklers.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">fea4309e-be22-40f5-8ba7-a92daf466d45</member>
@@ -30026,8 +30024,8 @@ Commercial flop, but a visually splendid creation and [0|Last]'s conclusion to h
 				<en>Field of Dreams</en>
 			</title_original>
 			<description>
-				<de>Ein Farmer träumt oft nachts davon, einen seiner Äcker umzugestalten - in ein Baseballfeld! Er nimmt das riskante Unterfangen auf sich, und nach ein paar Monaten ist es getan. Bevölkert mit berühmten toten Spielern, die nur die Familie sehen kann. Aber das hat einen Grund.</de>
-				<en>A farmer often dreams at night of transforming one of his fields - into a baseball pitch! He takes on the risky endeavor and after a few months it's done. Populated with famous dead players that only the family can see. But there's a reason for that.</en>
+				<de>Ein Farmer träumt oft nachts davon, einen seiner Äcker umzugestalten - in ein Baseballfeld! Er nimmt das riskante Unterfangen auf sich. Nach getaner Arbeit ist es bevölkert mit berühmten toten Spielern, die nur die Familie sehen kann. Aber das hat einen Grund.</de>
+				<en>A farmer often dreams at night of transforming one of his fields - into a baseball pitch! He takes on the risky endeavor. After the work is done, it is populated with famous dead players that only the family can see. But there's a reason for that.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">d82fa4da-2524-4f04-aa05-bf77939f2d28</member>
@@ -30078,10 +30076,8 @@ Commercial flop, but a visually splendid creation and [0|Last]'s conclusion to h
 				<en>The 'Burbs</en>
 			</title_original>
 			<description>
-				<de>Eine Gruppe „normaler“ Vorstadtbewohner kommt zu dem Verdacht, dass im Haus ihrer selten gesehenen ausländischen Nachbarn etwas sehr Unheimliches vor sich geht.
-Trotz der ansprechenden Prämisse und der guten Besetzung erzielte der Film nur einen mittelmäßigen Erfolg bei Kritik und Publikum.</de>
-				<en>A group of "normal" suburbanites come to suspect that something very sinister is going on in the home of their rarely-seen foreign neighbors.
-Despite an engaging premise and good cast, the film achieved only mediocre success with critics and audiences.</en>
+				<de>Eine Gruppe „normaler“ Vorstadtbewohner kommt zu dem Verdacht, dass im Haus ihrer selten gesehenen ausländischen Nachbarn etwas sehr Unheimliches vor sich geht. Trotz guter Prämisse und Besetzung nur mittelmäßig erfolgreich.</de>
+				<en>A group of "normal" suburbanites come to suspect that something very sinister is going on in the home of their rarely-seen foreign neighbors. Despite good premise and cast only moderately successful.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Stukov_JoeDante</member>
@@ -30460,8 +30456,8 @@ Despite an engaging premise and good cast, the film achieved only mediocre succe
 				<en>The Gods Must Be Crazy II</en>
 			</title_original>
 			<description>
-				<de>Der Film hat vier Handlungsstränge, die sich am Schluss treffen: Xixos Kinder reisen unfreiwillig auf einem LKW mit. / Xixo sucht seine Kinder. / Eine Frau und ein Mann notlanden mit einem Ultraleichtflugzeug im Busch. / Zwei Soldaten nehmen sich wechselseitig in Kriegsgefangenschaft.</de>
-				<en>The film has four storylines that meet at the end: Xixo's children travel involuntarily on a truck. / Xixo searches for his children. / A woman and a man make an emergency landing in an ultralight plane in the bush. / Two soldiers take each other prisoner of war.</en>
+				<de>Der Film hat vier Handlungsstränge, die sich am Schluss treffen: Xixo sucht seine Kinder. / Diese reisen unfreiwillig auf einem LKW mit. / Eine Frau und ein Mann notlanden im Busch. / Zwei Soldaten nehmen sich wechselseitig in Kriegsgefangenschaft.</de>
+				<en>The film has four storylines that meet at the end: Xixo is searching for his children. / Who involutarily travel on a truck. / A woman and a man make an emergency landing in the bush. / Two soldiers take each other prisoner of war.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">d72489a4-02d9-4368-803f-f07ad3cb1013</member>
@@ -30608,10 +30604,8 @@ Considered one of [0|Full]'s greatest films. </en>
 				<en>Teenage Mutant Ninja Turtles</en>
 			</title_original>
 			<description>
-				<de>Die erste Realverfilmung des Comics war ein großer Erfolg.
-New York wird von einer schweren Verbrechenswelle heimgesucht, die von einem in Ninjitsu ausgebildeten Clan organisiert wird. Nur ein Team aus Mutanten-Schildkröten, die ebenfalls in Ninjitsu ausgebildet sind, kann hier Abhilfe schaffen.</de>
-				<en>The first live-action adaptation of the comic was a great success.
-New York is hit by a serious crime wave organized by a clan trained in Ninjitsu. Only a team of mutant turtles, also trained in Ninjitsu, can remedy the situation.</en>
+				<de>Die erste Realverfilmung des Comics war ein großer Erfolg. New York wird von einem Ninjitsu-kämpfenden Clan terrorisiert. Nur ein Team aus Mutanten-Schildkröten, die ebenfalls Ninjitsu können, kann hier Abhilfe schaffen.</de>
+				<en>The first live-action adaptation of the comic was a great success. New York is being terrorized by a ninjitsu-fighting clan. Only a team of mutant turtles, also trained in ninjitsu, can remedy the situation.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">edb6f93c-6373-4949-b019-62f3c2e5e5c5</member>
@@ -30687,8 +30681,8 @@ New York is hit by a serious crime wave organized by a clan trained in Ninjitsu.
 				<en>Another 48 Hrs.</en>
 			</title_original>
 			<description>
-				<de>Diesmal ist es der Polizist Jack, der 2 Tage Zeit hat, seinen Namen von einer Totschlags-Anklage reinzuwaschen. Dazu braucht er wieder die Hilfe von Reggie, der jetzt ein frisch entlassener Sträfling ist. Zeitgleich hat ein Drogenbaron eine Biker-Gang angeheuert, um Reggie zu töten.</de>
-				<en>This time it is police officer Jack who has 2 days to clear his name from a manslaughter charge. To do so, he again needs the help of Reggie, who is now a newly released convict. At the same time, a drug lord has hired a biker gang to kill Reggie.</en>
+				<de>Diesmal ist es der Polizist Jack, der 2 Tage Zeit hat, seinen Namen von einer Totschlags-Anklage reinzuwaschen. Dazu braucht er wieder die Hilfe von Reggie, der jetzt ein frisch entlassener Sträfling ist. Zeitgleich wurde eine Biker-Gang auf Reggie angesetzt.</de>
+				<en>This time it is police officer Jack who has 2 days to clear his name from a manslaughter charge. To do so, he again needs the help of Reggie, who is now a newly released convict. At the same time, a biker gang has been set up on Reggie.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">db8f4d31-245f-4221-becf-9361e45fd525</member>
@@ -30888,8 +30882,8 @@ New York is hit by a serious crime wave organized by a clan trained in Ninjitsu.
 				<en>Gremlins 2 - The New Batch</en>
 			</title_original>
 			<description>
-				<de>Statt ein kleines abgelegenes Dorf überfallen die kleinen Viecher (natürlich wieder nach unbeabsichtigter Verletzung der 3 Regeln) nun medienwirksam einen Wolkenkratzer mitten in New York und treiben dort allerlei lustigen Unfug. Sehr viel komödiantischer als der erste Teil.</de>
-				<en>Instead of a small remote village, the little beasties (again, of course, after the 3 rules were unintentionally broken) now raid a skyscraper in the middle of New York and do all sorts of funny mischief there, which gets attention by the media. Much more comedic than the first part.</en>
+				<de>Statt ein kleines abgelegenes Dorf überfallen die kleinen Viecher (natürlich wieder nach unbeabsichtigter Verletzung der 3 Regeln) nun medienwirksam einen Wolkenkratzer mitten in New York und treiben dort allerlei lustigen Unfug. Sehr viel komödiantischer als Teil 1.</de>
+				<en>Instead of a small remote village, the little beasties (again, of course, after the 3 rules were unintentionally broken) now raid a skyscraper in the middle of New York and do all sorts of funny mischief there, which gets attention by the media. Much more comedic than part 1.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Stukov_JoeDante</member>
@@ -30914,8 +30908,8 @@ New York is hit by a serious crime wave organized by a clan trained in Ninjitsu.
 				<en>Edward Scissorhands</en>
 			</title_original>
 			<description>
-				<de>Das Geschöpf eines verrückten Erfinders wird bei dessen Tod nicht vollendet und verbleibt mit unfertigen Armen in Form großer Scheren. Aber er macht sich in der Gemeinde beliebt, denn er kann Gärten und Hecken schön dekorativ zuschneiden. Seine Gutmütigkeit wird jedoch von seiner unerwiderten Liebe ausgenutzt.</de>
-				<en>The creature of a mad inventor is not completed at his death and remains with unfinished arms in the form of large scissors. But he makes himself popular in the community, because he can cut gardens and hedges beautifully and decoratively. However, his good nature is exploited by his unrequited love.</en>
+				<de>Das Geschöpf eines verrückten Erfinders wird bei dessen Tod nicht vollendet und verbleibt mit unfertigen Armen in Form großer Scheren. Er kann aber Gärten und Hecken schön dekorativ zuschneiden. Seine Gutmütigkeit wird jedoch von seiner unerwiderten Liebe ausgenutzt.</de>
+				<en>The creature of a mad inventor is not completed at his death and remains with unfinished arms in the form of large scissors. But he can cut gardens and hedges beautifully and decoratively. However, his good nature is exploited by his unrequited love.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">3b3efc56-1b7a-4f07-bea0-be815c3b1a17</member>
@@ -30996,7 +30990,7 @@ After the last big success, this film was a small but only temporary commercial 
 				<en>Mermaids</en>
 			</title_original>
 			<description>
-				<de>Die ungebundene Rachel zieht mit ihren Töchtern von Stadt zu Stadt. Charlotte rebelliert, indem sie sich prüde kleidet und eine Nonne werden will. Am neuen Ort verliebt sie sich selbst in einen Klosterangestellten, und auch Rachel hat nun einen neuen Verehrer, der nicht so schnell aufgibt.</de>
+				<de>Die ungebundene Rachel zieht mit ihren Töchtern von Stadt zu Stadt. Charlotte rebelliert, indem sie sich prüde kleidet und Nonne werden will. Am neuen Ort verliebt sie sich selbst in einen Klosterangestellten, und auch Rachel hat einen neuen Verehrer, der nicht so schnell aufgibt.</de>
 				<en>Unattached Rachel moves from town to town with her daughters. Charlotte rebels by dressing prudishly and wanting to become a nun. In the new place, she falls in love with a convent employee herself, and Rachel now also has a new suitor who won't give up easily.</en>
 			</description>
 			<staff>
@@ -31098,8 +31092,8 @@ After the last big success, this film was a small but only temporary commercial 
 				<en>Jacob's Ladder</en>
 			</title_original>
 			<description>
-				<de>Der Protagonist ist von ständig wiederkehrenden Albträumen geplagt. Die Nachwirkungen des Vietnamkriegs? Die Nebenwirkungen der dort geheim eingesetzten Drogen? Das Trauma durch den Tod seines kleinen Sohnes? Es scheint jedoch immer mehr, dass die Dämonen und Monster real sind.</de>
-				<en>The protagonist is plagued by constantly recurring nightmares. The aftermath of the Vietnam War? The side effects of the drugs secretly used there? The trauma caused by the death of his little son? However, it seems more and more that the demons and monsters are real.</en>
+				<de>Der Protagonist ist von ständig wiederkehrenden Albträumen geplagt. Die Nachwirkungen des Vietnamkriegs? Die Nebenwirkungen der dort geheim eingesetzten Drogen? Das Trauma durch den Tod seines kleinen Sohnes? Die Dämonen sind jedoch real.</de>
+				<en>The protagonist is plagued by constantly recurring nightmares. The aftermath of the Vietnam War? The side effects of the drugs secretly used there? The trauma caused by the death of his little son? However, the demons are real.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">bd3f227f-6632-4537-8d8b-ee234f00f0c4</member>
@@ -31124,8 +31118,8 @@ After the last big success, this film was a small but only temporary commercial 
 				<en>The Exorcist III</en>
 			</title_original>
 			<description>
-				<de>Fünfzehn Jahre nach den Ereignissen des Originalfilms (den zweiten Teil ignorierend) untersucht ein Lieutenant eine rätselhafte Mordserie in Georgetown, hinter der ein satanisches Motiv zu stecken scheint, und die zudem alle Merkmale des verstorbenen Serienmörders „The Gemini“ aufweist.</de>
-				<en>Fifteen years after the events of the original film (ignoring the second part), a lieutenant investigates a mysterious series of murders in Georgetown, behind which there seems to be a satanic motive, and which also has all the hallmarks of the deceased serial killer "The Gemini".</en>
+				<de>15 Jahre nach den Ereignissen des Originalfilms (den zweiten Teil ignorierend) untersucht ein Lieutenant eine rätselhafte Mordserie, hinter der ein satanisches Motiv zu stecken scheint, und die zudem alle Merkmale des verstorbenen Serienmörders „The Gemini“ aufweist.</de>
+				<en>15 years after the events of the original film (ignoring the second part), a lieutenant investigates a mysterious series of murders, behind which there seems to be a satanic motive, and which also has all the hallmarks of the deceased serial killer "The Gemini".</en>
 			</description>
 			<staff>
 				<member index="0" function="5">e7f4db16-07df-44ed-8b4f-8c6c33fe809a</member>
@@ -31256,8 +31250,8 @@ The Navy supported this film, unfortunately it was not as successful as they hop
 				<en>Werner and the Wizard of Booze</en>
 			</title_original>
 			<description>
-				<de>„Guten Tach, Frau Hansen, Fa. Röhrich, Gas, Wasser, Scheiße.“ Die erste Verfilmung des [2|Nick]-Comics über den norddeutschen Klempner-Lehrling, der Bier und Motorräder liebt, vermischte sehr lustige Trickfilm- mit weniger guten Realszenen. Alles in allem aber ein großer Kinoerfolg.</de>
-				<en>"G'd Day, Mrs. Hansen, Röhrich Company, Gas, Water, Shit." The first film adaptation of [2|Nick]'s comic books about the North German plumber's apprentice who loves beer and motorbikes mixed very funny animated scenes with less good real-life action. All in all though a great box-office success.</en>
+				<de>„Guten Tach, Frau Hansen, Fa. Röhrich, Gas, Wasser, Scheiße.“ Die erste Verfilmung des [2|Nick]-Comics über den Klempner-Lehrling, der Bier und Motorräder liebt, vermischte lustige Trickfilm- mit weniger guten Realszenen, aber war sehr efolgreich.</de>
+				<en>"G'd Day, Mrs. Hansen, Röhrich Company, Gas, Water, Shit." The first film adaptation of [2|Nick]'s comic books about the plumber's apprentice who loves beer and motorbikes mixed funny animated scenes with less good real-life action, but was very successful.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">7ed02a31-2f54-4658-a2b4-0dcaa62f25db</member>
@@ -31433,8 +31427,8 @@ The film series went on to become the longest-running in Korean cinema.</en>
 				<en>The Day After</en>
 			</title_original>
 			<description>
-				<de>Das Drama über die Nuklearwaffen-Apokalypse in den USA erschien als Fernsehfilm und war ein echter Straßenfeger, der auch auf den Präsidenten einen tiefen Eindruck hinterließ. In anderen Ländern erschien der Film auch im Kino.</de>
-				<en>The drama about the nuclear weapon apocalypse in the U.S. appeared as a TV movie and was a true blockbuster that also left a deep impression on the president. In other countries, the film also appeared in theaters.</en>
+				<de>Das Drama über die Nuklearwaffen-Apokalypse in den USA erschien als Fernsehfilm und war ein echter Straßenfeger, der auf den Präsidenten einen tiefen Eindruck hinterließ. In anderen Ländern erschien der Film auch im Kino.</de>
+				<en>The drama about the nuclear weapon apocalypse in the U.S. appeared as a TV movie and was a true blockbuster that left a deep impression on the president. In other countries, the film also appeared in theaters.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">75e8b7f2-89d6-42ef-acdc-a6ed050866e5</member>
