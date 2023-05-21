@@ -266,6 +266,18 @@ Type TNewsEventTemplateCollection
 			endif
 		endif
 
+		'if there are templates with complex availability conditions (more than one condition must be met)
+		'use it with a higher probability; otherwise such a template may never be used at all
+		If RandRange(0, 10) > 5
+			Local scriptArr:TNewsEventTemplate[] = new TNewsEventTemplate[0]
+			For Local t:TNewsEventTemplate = EachIn arr
+				If t.availableScript And t.availableScript.contains("&&")
+					scriptArr:+ [t]
+				EndIf
+			Next
+			If scriptArr.length > 0 Then Return scriptArr[ RandRange(0, scriptArr.length-1) ]
+		EndIf
+
 		'fetch a random news
 		return arr[ RandRange(0, arr.length-1) ]
 	End Method
