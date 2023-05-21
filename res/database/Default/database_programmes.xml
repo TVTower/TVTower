@@ -429,7 +429,7 @@ A classic with [1|Full].</en>
 				<en>Sons of the Desert</en>
 			</title_original>
 			<description>
-				<de>Mr. [1|Last] und Mr. [2|Last] wollen zum Treffen ihres Clubs "Die Wüstensöhne" nach Chicago. Um ihre Frauen zu überzeugen, muss sich [1|Last] krank stellen. Aber letztlich fliegen die beiden auf.</de>
+				<de>Mr. [1|Last] und Mr. [2|Last] wollen zum Treffen ihres Clubs „Die Wüstensöhne“ nach Chicago. Um ihre Frauen zu überzeugen, muss sich [1|Last] krank stellen. Aber letztlich fliegen die beiden auf.</de>
 				<en>Mr. [1|Last] and Mr. [2|Last] want to go to Chicago for the meeting of their club "The Desert Sons". To convince their wives, [1|Last] has to pretend to be sick. But in the end, the two are busted.</en>
 			</description>
 			<staff>
@@ -12408,7 +12408,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" />
 			<!--  http://www.imdb.com/title/tt0235923/episodes?season=1&ref_=tt_eps_sn_1, http://www.episodeworld.com/show/Invader_ZIM/season=all/german, http://de.wikipedia.org/wiki/Invader_Zim,
 			Kritik: https://www.commonsensemedia.org/tv-reviews/invader-zim -->
-			<data country="USA" year="2004" distribution="2" maingenre="3" subgenre="2,1" blocks="1" />
+			<data country="USA" year="2004" distribution="2" maingenre="3" subgenre="5,16" blocks="1" />
 			<ratings critics="35" speed="60" />
 			<!-- Episodes -->
 			<children>
@@ -12673,7 +12673,7 @@ Gaz desperately wants a "Game Slave 2", the latest portable game console.</en>
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" />
 			<!--  http://www.imdb.com/title/tt0235923/episodes?season=1&ref_=tt_eps_sn_1, http://www.episodeworld.com/show/Invader_ZIM/season=all/german, http://de.wikipedia.org/wiki/Invader_Zim,
 			Kritk: https://www.commonsensemedia.org/tv-reviews/invader-zim -->
-			<data country="USA" year="2006" distribution="2" maingenre="3" subgenre="2,1" blocks="1" />
+			<data country="USA" year="2006" distribution="2" maingenre="3" subgenre="5,16" blocks="1" />
 			<ratings critics="35" speed="62" />
 			<!-- Episodes -->
 			<children>
@@ -12851,10 +12851,8 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 						<en>Vindicated / The Voting of the Doomed</en>
 					</title_original>
 					<description>
-						<de>Dib erzählt Schulpsychologe Dwicky alles über Zim und dessen perfide Welteroberungspläne. Dwicky ist tief beeindruckt und bietet Dib an, bei Zims Entlarvung mitzuhelfen. /
-Die Wahl zum Schulsprecher steht bevor. Zim beschließt, zu kandidieren.</de>
-						<en>Dib tells school psychologist Dwicky all about Zim and his perfidious plans for world conquest. Dwicky is deeply impressed and offers Dib to help expose Zim. /
-The election for school president is coming up. Zim decides to run for office.</en>
+						<de>Dib erzählt Schulpsychologe Dwicky alles über Zim und dessen perfide Welteroberungspläne. Dwicky ist tief beeindruckt und bietet Dib an, bei Zims Entlarvung mitzuhelfen. / Die Wahl zum Schulsprecher steht bevor. Zim beschließt, zu kandidieren.</de>
+						<en>Dib tells school psychologist Dwicky all about Zim and his perfidious plans for world conquest. Dwicky is deeply impressed and offers Dib to help expose Zim. / The election for school president is coming up. Zim decides to run for office.</en>
 					</description>
 					<ratings critics="37" speed="54" />
 				</programme>
@@ -15687,7 +15685,7 @@ The election for school president is coming up. Zim decides to run for office.</
 				<member index="2" function="2">370a8d9d-ceef-4a7c-9c09-cc7e9d616311</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="1,17" flags="64" blocks="2" price_mode="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="1,17" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1985" day="5" />
 			<ratings critics="34" speed="59" outcome="82" />
 		</programme>
@@ -15706,8 +15704,10 @@ The election for school president is coming up. Zim decides to run for office.</
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-LeeJRombson</member>
-				<member index="1" function="2">TheRob-TowerTV-RicardoKammerlein</member>
-				<member index="2" function="2">b61f0b0a-536f-4205-aa3c-e8558d65f53f</member>
+				<member index="1" function="1024">a0cba482-5b20-40dd-9934-6358d9c0b963</member>
+				<member index="2" function="2">TheRob-TowerTV-RicardoKammerlein</member>
+				<member index="3" function="2">b798874f-f83a-4888-a4a1-3fe00c1c6262</member>
+				<member index="4" function="2">ceb215ec-d881-4f50-bf54-87e0737a9ebb</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="1" subgenre="2,5" flags="0" blocks="2" />
@@ -15966,7 +15966,7 @@ The election for school president is coming up. Zim decides to run for office.</
 				<member index="0" function="1">Stukov_MichaelCrichton</member>
 				<member index="1" function="2">e0807a2d-e04d-4abf-9422-afa44b202438</member>
 				<member index="2" function="2">a250fe7d-5f0d-4c59-93b4-af5d70824cb9</member>
-				<member index="2" function="3">DF-Celebreties-Lesley-Anne_Down</member>
+				<member index="3" function="3">DF-Celebreties-Lesley-Anne_Down</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="IRL" distribution="1" maingenre="4" subgenre="1,7" flags="" blocks="2" price_mod="0.5" />
@@ -16090,7 +16090,7 @@ The election for school president is coming up. Zim decides to run for office.</
 				<member index="2" function="2">79c081cb-755e-41b8-bd50-11f00e6b1382</member>
 				<member index="3" function="2">3b95248d-1e47-4ff2-a090-b8dcc84274f4</member>
 				<member index="4" function="2">d13a5678-5183-4f7f-a2a4-13526e8c3844</member>
-				<member index="4" function="2">f0538156-247f-45f6-a710-39c66bd7a9f9</member>
+				<member index="5" function="2">f0538156-247f-45f6-a710-39c66bd7a9f9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D/I/YU" year="1966" distribution="1" maingenre="18" subgenre="1" flags="" blocks="2" price_mod="0.5" />
@@ -17799,6 +17799,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 			<title_original>
 				<de>La Strada - Das Lied der Straße</de>
 				<en>La Strada</en>
+				<it>La Strada</it>
 			</title_original>
 			<description>
 				<de>Die Frau und Assistentin eines kräftigen eisenkettensprengenden Straßenkünstlers ist gestorben. Er muss sich nach einer neuen Assistentin umsehen. Ganz nach seiner Natur behandelt er diese dann nicht sehr feinfühlig.</de>
@@ -19677,7 +19678,7 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>Invaders from Mars</en>
 			</title_original>
 			<description>
-				<de>„Es könnte morgen passieren!“ Tja, damals war der Mars noch so geheimnisvoll und womöglich bewohnt. Doch niemand glaubt dem kleinen David, dass hinter dem Haus seiner Eltern ein Raumschiff gelandet ist. Und immer mehr Bewohner verhalten sich seltsam.</de>
+				<de>„Es könnte morgen passieren!“ Tja, damals war der Mars noch so geheimnisvoll und womöglich bewohnt. Doch niemand glaubt dem kleinen David, dass hinter dem Haus seiner Eltern ein Raumschiff gelandet ist. Und immer mehr Einwohner verhalten sich seltsam.</de>
 				<en>"It could happen tomorrow!" Well, back then Mars was still so mysterious and possibly inhabited. Though no one believes little David that a spaceship has landed behind his parents' house. And more and more residents are acting strangely.</en>
 			</description>
 			<staff>
@@ -20142,8 +20143,8 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>One Flew Over the Cuckoo's Nest</en>
 			</title_original>
 			<description>
-				<de>Mit 5 Oscars ausgezeichnet. [1|Full] als charmanter Schelm in einer psychiatrischen Anstalt, der seine Mitinsassen gegen eine tyrannische Krankenschwester aufhetzt. Der Film schafft es sogar, den Zuschauer an seinem eigenen Verstand zweifeln zu lassen.</de>
-				<en>Awarded 5 Oscars. [1|Full] as a charming rogue in a mental institution who rallies his fellow inmates against a tyrannical nurse. The film even manages to make the viewer question their own sanity.</en>
+				<de>5 Oscars. [1|Full] als charmanter Schelm in einer psychiatrischen Anstalt, der seine Mitinsassen gegen eine tyrannische Krankenschwester aufhetzt. Der Film schafft es sogar, den Zuschauer an seinem eigenen Verstand zweifeln zu lassen.</de>
+				<en>5 Oscars. [1|Full] as a charming rogue in a mental institution who rallies his fellow inmates against a tyrannical nurse. The film even manages to make the viewer question their own sanity.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">f3f8c75a-6f0a-4f0f-bedf-74a7ebd1ce48</member>
@@ -21500,7 +21501,7 @@ Coming of Age film about two girls at summer camp who make a bet on who will los
 				<member index="3" function="2">50cfe603-ab46-4664-be85-072174a344c0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="I/USA/E" distribution="1" maingenre="5" subgenre="2,10" flags="0" blocks="3" price_mod="0.5" />
+			<data country="I/USA/E" distribution="1" maingenre="5" subgenre="2,10" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1980" day="9" />
 			<ratings critics="20" speed="55" outcome="75" />
 		</programme>
@@ -22279,7 +22280,7 @@ Part II, by the way, also was released in the meantime, in the year 2023.</en>
 				<member index="5" function="2">8637f3d9-31e2-4725-82d2-3142cf408147</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="14,17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="14,17" flags="96" blocks="2" price_mod="0.5" />
 			<releaseTime year="1981" day="5" />
 			<ratings critics="31" speed="48" outcome="43" />
 		</programme>
@@ -22880,7 +22881,7 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 				<en>A gruff San Francisco cop and a street-smart criminal can't smell each other but have to get along. [2|Full]'s debut alongside [1|Last] also started the '80s "buddy cop" wave. Rated adult-only actually only because of the banter.</en>
 			</description>
 			<staff>
-				<member index="0" function="3">db8f4d31-245f-4221-becf-9361e45fd525</member>
+				<member index="0" function="5">db8f4d31-245f-4221-becf-9361e45fd525</member>
 				<member index="1" function="2">4a3889b9-4461-4ac4-9fc3-148866070573</member>
 				<member index="2" function="2">adcc18d5-1942-483a-8d0a-583b3b78d7aa</member>
 				<member index="3" function="2">cd3031e0-bdca-4288-bb57-fa0ca3863553</member>
@@ -23158,7 +23159,7 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 				<member index="2" function="2">d493e78d-4df0-435e-8f9f-84dbef5f112f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="32" blocks="2" price_mod="0.5" />
 			<releaseTime year="1982" day="8" />
 			<ratings critics="11" speed="43" outcome="48" />
 		</programme>
@@ -23177,8 +23178,9 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 			</description>
 			<staff>
 				<member index="0" function="1029">7ae1f666-11b7-47e9-b889-a5cc5424b0a9</member>
-				<member index="1" function="2">2d4e13d7-a121-4ab5-9f87-86c5425a71ee</member>
-				<member index="2" function="2">TheRob-TowerTV-BruceAlileader</member>
+				<member index="1" function="0">c19a3126-bdef-42d8-9c1a-ac8224563052</member>
+				<member index="2" function="2">2d4e13d7-a121-4ab5-9f87-86c5425a71ee</member>
+				<member index="3" function="2">TheRob-TowerTV-BruceAlileader</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="16" subgenre="2,1" flags="8" blocks="2" price_mod="1" />
@@ -23743,8 +23745,8 @@ One of the most successful films of the year in South Korea.</en>
 				<en>Staying Alive</en>
 			</title_original>
 			<description>
-				<de>Die Fortsetzung des Tanzfilm-Superhits? Gemacht von [0|First] '[0|Nick]' [0|Last]? Und [1|Full] dementsprechend nun mit kriegerischem Stirnband? Eine typische Dreiecksbeziehung? Ja, das kam nicht gut an bei der Kritik. Kommerziell aber noch erfolgreich.</de>
-				<en>The sequel to the dance movie superhit? Made by [0|First] '[0|Nick]' [0|Last]? And [1|Full] accordingly now wearing a warrior headband? A typical love triangle? Yeah, that didn't go over well with critics. Commercially still successful, though.</en>
+				<de>Die Fortsetzung des Tanzfilm-Superhits? Gemacht von [0|First] '[0|Nick]' [0|Last]? Und [1|Full] dementsprechend nun mit kämpferischem Stirnband? Eine typische Dreiecksbeziehung? Ja, das kam nicht gut an bei der Kritik. Kommerziell aber noch erfolgreich.</de>
+				<en>The sequel to the dance movie superhit? Made by [0|First] '[0|Nick]' [0|Last]? And [1|Full] accordingly now wearing a combative headband? A typical love triangle? Yeah, that didn't go over well with critics. Commercially still successful, though.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">836b4aa3-b5c6-4529-b30d-4501594cdf13</member>
@@ -23954,7 +23956,7 @@ One of the most successful films of the year in South Korea.</en>
 				<en>Yentl</en>
 			</title_original>
 			<description>
-				<de>[0|Full] führte Regie, war Co-Autorin, Co-Produzentin und Hauptdarstellerin in diesem Musikdrama, basierend auf einem Theaterstück bzw. einer Kurzgeschichte. Ein jüdisches Mädchen im 1900er Polen gibt für eine Talmud-Ausbildung vor, ein Junge zu sein.</de>
+				<de>[0|Full] war Regisseurin, Co-Autorin, Co-Produzentin und Hauptdarstellerin in diesem Musikdrama, basierend auf einem Theaterstück und Kurzgeschichte. Ein jüdisches Mädchen im 1900er Polen gibt für eine Talmud-Ausbildung vor, ein Junge zu sein.</de>
 				<en>[0|Full] directed, co-wrote, co-produced, and starred in this musical drama film, adapted from a play based on a short story. A Jewish girl in 1900s Poland pretends to be a boy for a Talmud education.</en>
 			</description>
 			<staff>
@@ -24840,7 +24842,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<member index="5" function="2">39b3dfe1-81cd-437f-9d4e-7e6eac9d3425</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="96" blocks="2" price_mod="0.5" />
 			<releaseTime year="1984" day="4" />
 			<ratings critics="26" speed="51" outcome="45" />
 		</programme>
@@ -25034,8 +25036,8 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Breakin' 2: Electric Boogaloo</en>
 			</title_original>
 			<description>
-				<de>Erschien noch im selben Jahr wie Teil 1. Die Kids retten tanzend ein Gemeindezentrum vor dem Abriss. War ein ziemlicher Flop, aber der Untertitel ging in die englische Umgangssprache ein zur Bezeichnung sinnloser Fortsetzungen.</de>
-				<en>Released the same year as part 1. The kids save a community center from demolition while dancing. Was quite a flop, but the subtitle entered English vernacular to describe pointless sequels.</en>
+				<de>Erschien noch im selben Jahr wie Teil 1. Die Kids retten tanzend ein Gemeindezentrum vor dem Abriss. War ein ziemlicher Flop, aber der Titelzusatz ging in die englische Umgangssprache ein zur Bezeichnung sinnloser Fortsetzungen.</de>
+				<en>Released the same year as part 1. The kids save a community center from demolition while dancing. Was quite a flop, but the title addendum entered English vernacular to describe pointless sequels.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">ce58b225-1073-445d-8201-f156e85a2a12</member>
@@ -25747,8 +25749,8 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Pee-wee's Big Adventure</en>
 			</title_original>
 			<description>
-				<de>Der Protagonist (Stand-up-Comedian [1|Full]) ist ein ziemlicher Kindskopf. Als sein geliebtes Fahrrad von einem rivalisierenden Kindskopf gestohlen wird, begibt sich auf eine Reise quer durchs Land und begegnet unterwegs vielen noch skurrileren Gestalten.</de>
-				<en>The protagonist (stand-up comedian [1|Full]) is quite a manchild. When his treasured bike is stolen by a rival manchild, he embarks on a cross country journey, meeting many even more bizarre characters along the way.</en>
+				<de>Der Protagonist (Comedian [1|Full]) ist ein ziemlicher Kindskopf. Als sein geliebtes Fahrrad von einem rivalisierenden Kindskopf gestohlen wird, begibt sich auf eine Reise quer durchs Land und begegnet unterwegs vielen noch skurrileren Gestalten.</de>
+				<en>The protagonist (Comedian [1|Full]) is quite a manchild. When his treasured bike is stolen by a rival manchild, he embarks on a cross country journey, meeting many even more bizarre characters along the way.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">3b3efc56-1b7a-4f07-bea0-be815c3b1a17</member>
@@ -25812,7 +25814,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<member index="3" function="2">cf79826c-6199-4930-9154-b3f8939e4cfd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="14,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="14,17" flags="32" blocks="2" price_mod="0.5" />
 			<releaseTime year="1985" day="3" />
 			<ratings critics="21" speed="28" outcome="34" />
 		</programme>
@@ -25861,7 +25863,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<member index="4" function="2">401e3078-2248-4431-a99d-42902bc9e137</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="10,15" flags="0" blocks="1985" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="10,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1985" day="8" />
 			<ratings critics="43" speed="52" outcome="49" />
 		</programme>
@@ -26761,7 +26763,7 @@ Nice, but not a big hit. [2|Last] played only second fiddle in animated films at
 				<en>Friday the 13th Part VI: Jason Lives</en>
 			</title_original>
 			<description>
-				<de>Tommy hat es satt, dass der Massenmörder Jason immer noch in seinem Kopf herumspukt. Also fährt er zum Friedhof, gräbt die Leiche aus, um mit einer Metallstange ihr Herz zu durchbohren und sie dann zu verbrennen. Doch ein Blitz schlägt ein und erweckt Jason wieder zum Leben.</de>
+				<de>Tommy hat es satt, dass der Massenmörder Jason immer noch in seinem Kopf herumspukt. Also fährt er zum Friedhof, gräbt die Leiche aus, um mit einer Metallstange ihr Herz zu durchbohren und sie dann zu verbrennen. Doch ein Blitz schlägt ein und wiederbelebt Jason.</de>
 				<en>Tommy is fed up with the mass murderer Jason still haunting his mind. So he drives to the cemetery, digs up the corpse to pierce its heart with a metal rod and then burn it. But lightning strikes and brings Jason back to life.</en>
 			</description>
 			<staff>
@@ -26772,7 +26774,7 @@ Nice, but not a big hit. [2|Last] played only second fiddle in animated films at
 				<member index="4" function="2">5dbb1c07-3fec-4bb2-a1c7-51c9e20968f5</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="96" blocks="2" price_mod="0.5" />
 			<releaseTime year="1986" day="8" />
 			<ratings critics="50" speed="53" outcome="32" />
 		</programme>
@@ -26915,8 +26917,8 @@ Filmed at the same time as part 1, it was as much a critical as a commercial dis
 				<en>Heat</en>
 			</title_original>
 			<description>
-				<de>Ein Bodyguard und ehemaliger Soldat mit Spielsucht und einer Vorliebe für Karate nimmt die Dinge selbst in die Hand, als der Sohn eines Freundes in Schwierigkeiten mit der Mafia gerät, und begibt sich auf ein wildes, actiongeladenes Abenteuer durch die zwielichtige Unterwelt von Las Vegas.</de>
-				<en>A bodyguard and former soldier with a gambling addiction and a love for karate takes matters into his own hands when a friend's son gets in trouble with the mob, and goes on a wild, action-packed adventure through the seedy underworld of Las Vegas.</en>
+				<de>Ein Bodyguard und ehemaliger Soldat mit Spielsucht und einer Vorliebe für Karate nimmt die Dinge selbst in die Hand, als der Sohn eines Freundes Schwierigkeiten mit der Mafia hat, und begibt sich auf ein actiongeladenes Abenteuer durch die zwielichtige Las Vegas-Unterwelt.</de>
+				<en>A bodyguard and former soldier with a gambling addiction and a love for karate takes matters into his own hands when a friend's son gets in trouble with the mob, and goes on an action-packed adventure through the seedy underworld of Las Vegas.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">2630ecfc-be46-4549-916e-41d5901d815a</member>
@@ -28516,6 +28518,7 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 				<member index="4" function="2">12018104-896a-420c-a604-589366fd4ca1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
+			<targetgroupattractivity teenagers_male="0.5" teenagers_female="1.5" employees_male="0.5" employees_female="1.5" unemployed_male="0.5" unemployed_female="1.5" managers="1.5" pensioners_male="0.5" pensioners_female="1.5" />
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,202" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1988" day="12" />
 			<ratings critics="44" speed="83" outcome="64" />
@@ -30536,6 +30539,7 @@ Considered one of [0|Full]'s greatest films. </en>
 				<member index="1" function="2">4ce14b33-67ca-40a5-bdcb-fd2c257edf05</member>
 				<member index="2" function="2">1105e850-ea1a-451a-a443-043c748f25db</member>
 				<member index="3" function="2">f21c5c7d-6ffd-4ae5-9006-e3a7d69e5c52</member>
+				<member index="4" function="32">6946dffd-0f54-4462-8587-47a8c036857c</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="HK" distribution="1" maingenre="2" subgenre="4,7" flags="64" blocks="2" price_mod="0.5" />
@@ -31358,11 +31362,12 @@ The Navy supported this film, unfortunately it was not as successful as they hop
 				<en>Three poor crooks in 1967 Hong Kong want to build a better life for themselves, but this fails because of rival gangsters. In desperation, they flee to war-torn Vietnam, where things get even worse.</en>
 			</description>
 			<staff>
-				<member index="0" function="7">6946dffd-0f54-4462-8587-47a8c036857c</member>
+				<member index="0" function="5">6946dffd-0f54-4462-8587-47a8c036857c</member>
 				<member index="1" function="2">600f4917-7015-4488-b0c8-9963f00e6d6a</member>
 				<member index="2" function="2">ad4a174b-cc27-4668-b0ce-32524d894c61</member>
 				<member index="3" function="2">ffe60433-cd3e-411f-b43a-d2915165b2e4</member>
 				<member index="4" function="2">613c8ce1-a55d-4d46-b2f6-3fdfcb3fde68</member>
+				<member index="5" function="2">6946dffd-0f54-4462-8587-47a8c036857c</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="HK" distribution="1" maingenre="2" subgenre="4,7" flags="64" blocks="3" price_mod="0.5" />
@@ -31483,7 +31488,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="F/D" year="1983" distribution="3" maingenre="8" subgenre="7,202" flags="32" blocks="1" price_mod="0.25" />
-			<ratings critics="25" speed="40" outcome="20" />
+			<ratings critics="10" speed="40" outcome="20" />
 		</programme>
 
 			<!-- TV series -->

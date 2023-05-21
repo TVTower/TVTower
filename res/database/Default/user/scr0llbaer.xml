@@ -270,7 +270,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 		<programmerole guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" first_name="Sara" last_name="Pander" first_name_original="Sandy" last_name_original="Pantz" gender="2" />
 		<programmerole guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" first_name="Benedict" last_name="Bernoulli" first_name_original="Bernard" last_name_original="Bernoulli" gender="1" />
 		<programmerole guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" first_name="Ryleigh" last_name="Shaw" first_name_original="Razor" last_name_original="Sharp" gender="2" />
-		<programmerole guid="726103c3-40df-495d-97a0-13c7cc9c3386" first_name="Ed" last_name="Eddersen" title="Doctor" first_name_original="Fred" last_name_original="Edison" gender="1" />
+		<programmerole guid="726103c3-40df-495d-97a0-13c7cc9c3386" first_name="Ed" last_name="Eddersen" title="Dr" first_name_original="Fred" last_name_original="Edison" gender="1" />
 		<programmerole guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" first_name="Frieda" last_name="Eddersen" title="Nurse" first_name_original="Edna" last_name_original="Edison" gender="2" />
 		<programmerole guid="67ffb376-8df4-46ed-ba50-65e31806326a" first_name="Flint" last_name="Eddersen" title="Weird" first_name_original="Fred" last_name_original="Edison" gender="1" />
 		<programmerole guid="a4061798-165c-4dc0-9025-84e1c954155b" first_name="Pink" last_name="Meteor" first_name_original="Purple" last_name_original="Meteor" gender="0" />
@@ -317,7 +317,7 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Dubrovnik" last_name="" first_name_original="Hurvínek" last_name_original="" gender="1" />
 		<programmerole guid="06769c4e-15c8-40e4-968b-54ca8f32b96b" first_name="Karolina" last_name="" first_name_original="Kateřina" last_name_original="" gender="2" />
 		<programmerole guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" first_name="Markéta" last_name="" first_name_original="Mánička" last_name_original="" gender="2" comment="In database_programmes.xml hitherto used spoof name 'Ilonka' is apparently meant for this character, but something like 'Markéta' ought to resemble the original name better." />
-		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Zdeněk" last_name="" first_name_original="Žeryk" last_name_original="" gender="1" comment="A dog. In German apparently 'Jerry'." />
+		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Zdeněk" last_name="" first_name_original="Žeryk" last_name_original="" gender="0" comment="A dog. In German apparently 'Jerry'." />
 	</programmeroles>
 
 	<scripttemplates>
@@ -1171,7 +1171,7 @@ So that's 4120 per episode.</en>
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
 
-			<genres maingenre="10" subgenres="1" />
+			<genres maingenre="10" subgenres="5,1" />
 			<episodes min="4" max="4" />
 			<blocks value="2" />
 			<price min="70000" max="110000" />
@@ -1210,12 +1210,12 @@ So that's 4120 per episode.</en>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="b33a635e-d381-4349-9a41-7d2277c5d6da">
 					<title>
-						<de>Hûrlýë Island</de>
-						<en>Hûrlýë Island</en>
+						<de>Hûrlýë Island™</de>
+						<en>Hûrlýë Island™</en>
 					</title>
 					<description>
-						<de>%ROLENAME1% ist erstmal auf Hûrlýë Island gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen %ROLE3% vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
-						<en>%ROLENAME1% is stranded on Hûrlýë Island for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of %ROLE3%, actually seasoned men, and other bizarre characters.</en>
+						<de>%ROLENAME1% ist erstmal auf Hûrlýë Island™ gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen %ROLE3% vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
+						<en>%ROLENAME1% is stranded on Hûrlýë Island™ for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of %ROLE3%, actually seasoned men, and other bizarre characters.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="db9757c0-a155-4c1d-9b06-1035d8c63444">
@@ -1310,12 +1310,12 @@ So that's 4120 per episode.</en>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="c5c297fc-ecbb-4595-a342-40fc8f1d3b27">
 					<title>
-						<de>Zurück nach Hûrlýë Island</de>
-						<en>Back to Hûrlýë Island</en>
+						<de>Zurück nach Hûrlýë Island™</de>
+						<en>Back to Hûrlýë Island™</en>
 					</title>
 					<description>
-						<de>Doch %ROLE3% ist inzwischen wieder zurückgesegelt, um %ROLENAME2% zu heiraten. %ROLENAME1% muss die Kirche auf Hûrlýë Island stürmen, um das zu verhindern!</de>
-						<en>But %ROLE3% has since sailed back to marry %ROLENAME2%. %ROLENAME1% must gatecrash the church on Hûrlýë Island to prevent this!</en>
+						<de>Doch %ROLE3% ist inzwischen wieder zurückgesegelt, um %ROLENAME2% zu heiraten. %ROLENAME1% muss die Kirche auf Hûrlýë Island™ stürmen, um das zu verhindern!</de>
+						<en>But %ROLE3% has since sailed back to marry %ROLENAME2%. %ROLENAME1% must gatecrash the church on Hûrlýë Island™ to prevent this!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="a38b5c1a-ee98-49f8-83d0-06a3d27a5eaf">
@@ -1791,8 +1791,8 @@ So that's 4120 per episode.</en>
 				<en>%ROLENAME1% and %ROLENAME2% - The %new% %adventures%</en>
 			</title>
 			<description>
-				<de>Eine Neuauflage der beliebten tschechischen Marionettenserie über Vater %ROLENAME1%, den kleinen Sohn %ROLENAME2%, Schulfreundin %ROLENAME4%, Großmutter Frau %ROLENAME3% und Hund %ROLENAME5%. Behutsam modernisiert und mit nur sehr spärlicher Anwendung neuer technischer Hilfsmittel, so dass der Charme erhalten bleibt.</de>
-				<en>A new edition of the popular Czech puppet series about father %ROLENAME1%, little son %ROLENAME2%, school girl friend %ROLENAME4%, grandmother Ms. %ROLENAME3% and dog %ROLENAME5%. Cautiously modernized and with only very sparse use of new technical aids, so that the charm is preserved.</en>
+				<de>Eine Neuauflage der beliebten tschechischen Marionettenserie über Vater %ROLENAME1%, den kleinen Sohn %ROLENAME2%, Schulfreundin %ROLENAME4%, Großmutter Frau %ROLENAME3% und Hund %ROLENAME5%. Behutsam modernisiert, so dass der Charme erhalten bleibt.</de>
+				<en>A new edition of the popular Czech puppet series about father %ROLENAME1%, little son %ROLENAME2%, school girl friend %ROLENAME4%, grandmother Ms. %ROLENAME3% and dog %ROLENAME5%. Cautiously modernized, so that the charm is preserved.</en>
 			</description>
 
 			<variables>
@@ -1801,7 +1801,7 @@ So that's 4120 per episode.</en>
 					<en>New|Novel|Further|Fresh|Unprecedented|Successive|Untried|Pristine|Refreshed|Revived|Renewed|Reborn|Invigorated|Reanimated|Resurrected</en>
 				</new>
 				<adventures>
-					<de>Abenteuer|Erlebnisse|Zeiten|Tücken|Ereignisse|Entdeckungen|Eskapaden|Erforschungen|Missionen|Vorhaben|Episoden|Taten|Prüfungen|Aufgaben|Unternehmungen|Schwierigkeiten|Gefahren|Herausforderungen</de>
+					<de>Abenteuer|Erlebnisse|Zeiten|Tücken|Ereignisse|Entdeckungen|Eskapaden|Erforschungen|Missionen|Vorhaben|Episoden|Taten|Prüfungen|Aufgaben|Tätigkeiten|Unternehmungen|Schwierigkeiten|Gefahren|Herausforderungen</de>
 					<en>Adventures|Experiences|Times|Ordeals|Happenings|Explorations|Escapades|Expeditions|Missions|Ventures|Episodes|Deeds|Trials|Quests|Acts|Enterprises|Tribulations|Hazards|Challenges</en>
 				</adventures>
 			</variables>
@@ -1893,7 +1893,7 @@ So that's 4120 per episode.</en>
 						<en>The Case of the Missing Treasure</en>
 					</title>
 					<description>
-						<de>%ROLENAME4% findet eine alte Schatzkarte, und mit %ROLENAME1%s Hilfe überredet sie %ROLENAME1% und %ROLENAME2%, sich auf eine Schatzsuche zu begeben. Ihre Reise ist gespickt mit lustigen Hindernissen und unerwarteten Entdeckungen, die zu einer überraschenden Wendung führen.</de>
+						<de>%ROLENAME4% findet eine alte Schatzkarte, und mit %ROLENAME5%s Hilfe überredet sie %ROLENAME1% und %ROLENAME2%, sich auf eine Schatzsuche zu begeben. Ihre Reise ist gespickt mit lustigen Hindernissen und unerwarteten Entdeckungen, die zu einer überraschenden Wendung führen.</de>
 						<en>%ROLENAME4% finds an old treasure map, and with %ROLENAME5%'s help, she convinces %ROLENAME1% and %ROLENAME2% to embark on a treasure hunt. Their journey is filled with funny obstacles and unexpected discoveries, leading to a surprising twist.</en>
 					</description>
 				</scripttemplate>

@@ -2020,9 +2020,9 @@
 			<!-- "Effekt: es stehen weniger Nachrichten zur Verfügung" -->
 		</news>
 
-		<news id="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: These never seem to appear. Check if changes to the availability script fixes this.">
+		<news id="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint mittwochs ab 18.00 Uhr" -->
-			<availability script="TIME_WEEKDAY=2 &amp;&amp; TIME_HOUR &gt;= 18" />
+			<availability script="TIME_WEEKDAY=2 &amp;&amp; TIME_HOUR >= 18" />
 			<title>
 				<de>Gewinnzahlen vom Mittwochs-Lotto</de>
 				<en>Winning numbers from Wednesday Lottery</en>
@@ -2036,7 +2036,7 @@
 
 		<news id="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint samstags ab 20.00 Uhr" -->
-			<availability script="TIME_WEEKDAY=5 &amp;&amp; TIME_HOUR &gt;= 20" />
+			<availability script="TIME_WEEKDAY=5 &amp;&amp; TIME_HOUR >= 20" />
 			<title>
 				<de>Gewinnzahlen vom Samstags-Lotto</de>
 				<en>Winning numbers from Saturday Lottery</en>
@@ -2050,7 +2050,7 @@
 
 		<news id="news-jorgaeff-sonntag-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint jeden Sonntag ab 18.00 Uhr" -->
-			<availability script="TIME_WEEKDAY=6 &amp;&amp; TIME_HOUR &gt;= 18" />
+			<availability script="TIME_WEEKDAY=6 &amp;&amp; TIME_HOUR >= 18" />
 			<title>
 				<de>Das Wort zum Sonntag</de>
 				<en>Sunday's Words of Wisdom</en>
@@ -2565,8 +2565,8 @@
 			<data genre="4" price="0.7" quality="70" fictional="1" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1987-4-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: Clarify: Will this one appear at all? According to docu, TIME_SEASON must be between 1 and 4.">
-			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_SEASON=0" />
+		<news id="news-jorgaeff-1987-4-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_MONTH=1" />
 			<title>
 				<de>Falsche Neujahrsansprache ausgestrahlt</de>
 				<en>Wrong New Year's speech aired</en>

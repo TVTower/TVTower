@@ -563,7 +563,7 @@
             <conditions min_audience="2.08" min_image="0" target_group="0"/>
             <data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1"/>
         </ad>
-        <ad id="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister">
+        <ad id="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister" comment="TODO: For these last 3 ads: The original parameters and values seemed off and outdated. So I've cloned them from other existing ads which seemed the best fit. They should be modified a bit for more variation.">
             <title>
                 <de>Büroeinrichtung Wimmerl</de>
                 <en>Office Equipment Pimpler</en>

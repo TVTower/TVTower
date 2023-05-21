@@ -18,7 +18,7 @@
 				<member index="3" function="2">0c774ab3-9301-4759-a3e1-40520dc9e7b9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BE" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<data country="B" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
 			<ratings critics="9" speed="4" outcome="0" />
 		</programme>
 		<programme id="f51954ef-5d8a-4ca0-9936-fca27da79267" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -48,7 +48,7 @@
 				<en>Only on television and nowhere else are these junk items auctioned off to the unsuspecting.</en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BE" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
+			<data country="B" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
 			<ratings critics="7" speed="10" outcome="0" />
 		</programme>
 		<programme id="35190c1d-aa55-4e84-967f-72a374e84dcf" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
