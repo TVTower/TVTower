@@ -147,7 +147,7 @@
 		</news>
 
 		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing the it still can be used in general and in addition when slightly modified to a fictional copycat event.">
-			<availability script="TIME_YEAR &gt;= 1988 &amp;&amp; TIME_SEASON=1" />
+			<availability year_range_from="1988" year_range_to="-1" script="TIME_SEASON=1" />
 			<title>
 				<de>Schessnah in der Nähe von Moskau gesichtet</de>
 				<en>Schessnah spotted near Moscow</en>
@@ -528,7 +528,7 @@ A must for every housewife, a curse for hard men.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_DAYSPLAYED &gt; 12" />
+			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
@@ -665,7 +665,7 @@ A must for every housewife, a curse for hard men.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_DAYSPLAYED &gt; 12" />
+			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
@@ -713,7 +713,7 @@ A must for every housewife, a curse for hard men.</en>
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_DAYSPLAYED &gt; 18" />
+			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 
 		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
@@ -969,8 +969,8 @@ So that's 4120 per episode.</en>
 				<en>The %Revenge% of the Tentacle</en>
 			</title>
 			<description>
-				<de>Zurück zur abgedrehten Villa! Dr. %ROLENAME4% ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass %ROLE8% die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
-				<en>Back to the wacky mansion! Dr. %ROLENAME4% is on our side this time. Well, almost. He wants to prevent %ROLE8% from enslaving humanity, but has massively screwed up something with the time machine. The protagonists now have to fix things.</en>
+				<de>Zurück zur abgedrehten Villa! Dr. %ROLENAME4% ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass %ROLE5% die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
+				<en>Back to the wacky mansion! Dr. %ROLENAME4% is on our side this time. Well, almost. He wants to prevent %ROLE5% from enslaving humanity, but has massively screwed up something with the time machine. The protagonists now have to fix things.</en>
 			</description>
 
 			<variables>
@@ -986,11 +986,11 @@ So that's 4120 per episode.</en>
 				<job index="2" function="2" required="1" role_guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" />
 				<job index="3" function="2" required="1" role_guid="1bae2190-de25-4400-a3a8-3606d1b6944b" />
 				<job index="4" function="2" required="1" role_guid="726103c3-40df-495d-97a0-13c7cc9c3386" />
-				<job index="5" function="2" required="1" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
-				<job index="6" function="2" required="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
-				<job index="7" function="2" required="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
-				<job index="8" function="2" required="1" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
-				<job index="9" function="2" required="1" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
+				<job index="5" function="2" required="1" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
+				<job index="6" function="2" required="1" role_guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" />
+				<job index="7" function="2" required="1" role_guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" />
+				<job index="8" function="2" required="1" role_guid="67ffb376-8df4-46ed-ba50-65e31806326a" />
+				<job index="9" function="2" required="1" role_guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" />
 				<job index="10" function="2" required="1" role_guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" />
 				<job index="11" function="2" required="1" role_guid="c2edde3f-c2ff-4800-a020-79f59662176f" />
 				<job index="12" function="2" required="1" role_guid="29aa9b04-b155-4975-b1b0-45355c293668" />
@@ -1008,7 +1008,7 @@ So that's 4120 per episode.</en>
 			<review min="80" max="95" />
 			<speed min="70" max="90" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED &gt; 18" />
+			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 
 		<!-- TODO: Add a series with episodes from https://maniac-mansion-mania.com/ to make more use of all the defined roles. -->
@@ -1928,7 +1928,7 @@ So that's 4120 per episode.</en>
 			<review min="40" max="80" />
 			<speed min="40" max="80" />
 			<studio_size value="1" />
-			<availability script="TIME_DAYSPLAYED &gt; 12" />
+			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
 	</scripttemplates>
 </tvtdb>

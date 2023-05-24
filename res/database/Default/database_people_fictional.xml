@@ -168,10 +168,10 @@
 		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" bookable="0" />
 		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0"  bookable="0" />
 
-		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" fictional="1" bookable="0" />
-		<person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" fictional="1" bookable="0" />
+		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" fictional="1" bookable="0" />
+		<person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="„Groggy“" fictional="1" bookable="0" />
 		<person id="62dcc893-538b-4fe7-8ac6-daf063185d73" first_name="Ötzi" last_name="Altmann" nick_name="" fictional="1" gender="1" />
-		<person id="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" fictional="1" gender="1" bookable="0" />
+		<person id="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" fictional="1" gender="1" bookable="0" />
 		<person id="59f79e7c-9a72-4585-9d83-82ced5b6c191" first_name="Fritz" last_name="Ballermann" nick_name="" fictional="1" gender="1" />
 		<person id="396f8bfa-a414-4a25-85c7-4e05c687f6a0" first_name="Klaus" last_name="Berntsch" nick_name="" fictional="1" gender="1" />
 		<person id="660ccb76-bdbb-4c88-a608-f7a79ea73e6f" first_name="Erika" last_name="Böhme" nick_name="" fictional="1" gender="2" bookable="0" />
@@ -197,7 +197,7 @@
 		<person id="afa8d190-c907-4fcf-9c34-d55136ab3c99" first_name="Mariusz" last_name="Plauz" nick_name="" fictional="1" gender="1" />
 		<person id="ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4" first_name="Beatrix" last_name="Plauz" nick_name="" fictional="1" gender="2" />
 		<person id="9eb98994-41a1-45f3-b70f-bcf4c7393224" first_name="Pelé" last_name="Queruan" nick_name="Gravedigger" fictional="1" gender="1" bookable="0" />
-		<person id="f43f2b92-43cd-4fc8-93aa-25adc647fb63" fictional="1" gender="1" />
+		<person id="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Erwin" last_name="Rotnase" fictional="1" gender="1" />
 		<person id="0c774ab3-9301-4759-a3e1-40520dc9e7b9" first_name="Paul" last_name="Sarte" nick_name="" fictional="1" gender="1" job="128" />
 		<person id="edb89eb9-1592-41cb-83b6-81eeecfacfd3" first_name="Antonali" last_name="Schwipsiwupsi" nick_name="" fictional="1" gender="1" />
 		<person id="3d9fa753-1621-46b2-b0fe-8096cbba644b" first_name="Bernd" last_name="Snake" nick_name="Die Schlange" fictional="1" gender="1" bookable="0" />

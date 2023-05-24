@@ -3360,8 +3360,10 @@ Epic film milestone.</en>
 				<en>The Hunt for Red October</en>
 			</title_original>
 			<description>
-				<de>Ein russisches Atom-U-Boot fährt auf die Küste der USA zu. Angst breitet sich aus, denn die Ziele des Captains sind ungewiß.</de>
-				<en>A Russian nuclear submarine is heading for the coast of the USA. Fear spreads as the captain's targets are uncertain.</en>
+				<de>Ein russisches Atom-U-Boot fährt auf die Küste der USA zu. Angst breitet sich aus, denn die Ziele des Captains sind ungewiss.
+Verfilmung des ersten Teils einer [9|Full]-Romantrilogie.</de>
+				<en>A Russian nuclear submarine is heading for the coast of the USA. Fear spreads as the captain's targets are uncertain.
+Film adaptation of the first part of a [9|Full] trilogy of novels.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">bae8ed17-ebab-4a38-b10a-50546e895a1f</member>
@@ -3373,6 +3375,8 @@ Epic film milestone.</en>
 				<member index="6" function="2">158a8da0-dff0-4856-9418-948dc3df5b76</member>
 				<member index="7" function="2">e8953e53-2fd2-40ef-b07e-c0167cf0c965</member>
 				<member index="8" function="2">5eea5e25-747f-4ef3-bd5a-c9937660a07b</member>
+				<member index="9" function="1024">e5195e06-4957-429c-b4b1-7daa98a14c09</member>
+				<member index="10" function="16">65c05369-bdaa-452c-8d2c-4a2b42cabd32</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1990" distribution="1" maingenre="2" subgenre="" flags="0" blocks="3" price_mod="0.67" />
@@ -30617,7 +30621,7 @@ Considered one of [0|Full]'s greatest films. </en>
 				<member index="2" function="2">4fa7b35b-75ae-4807-a9de-ff56ef701601</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="10" subgenre="1,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="10" subgenre="2,5" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1990" day="3" />
 			<ratings critics="42" speed="77" outcome="83" />
 		</programme>

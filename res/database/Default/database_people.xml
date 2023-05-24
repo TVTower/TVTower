@@ -2,6 +2,24 @@
 <tvtdb>
 	<version value="3"  />
 	<celebritypeople>
+		<person id="cd3a2e20-efe1-4a4c-9249-164b67d185f7" tmdb_id="0" imdb_id="nm0000216" creator="">
+			<first_name>Arnold</first_name>
+			<last_name>Weissenacker</last_name>
+			<nick_name>Arno</nick_name>
+			<nick_name_original>Arnie</nick_name_original>
+			<first_name_original>Arnold</first_name_original>
+			<last_name_original>Schwarzenegger</last_name_original>
+			<details job="2" gender="1" birthday="1947-07-30" deathday="" country="" />
+		</person>
+		<person id="836b4aa3-b5c6-4529-b30d-4501594cdf13" tmdb_id="0" imdb_id="nm0000230" creator="">
+			<first_name>Silvester</first_name>
+			<last_name>Melone</last_name>
+			<nick_name>Sly</nick_name>
+			<nick_name_original>Sly</nick_name_original>
+			<first_name_original>Sylvester</first_name_original>
+			<last_name_original>Stallone</last_name_original>
+			<details job="2" gender="1" birthday="1946-07-06" deathday="" country="" />
+		</person>
 		<person id="3fcd8263-9bf4-4c23-9323-0e4105d75dbb" tmdb_id="0" imdb_id="nm0000719" creator="">
 			<first_name>F. Murrisch</first_name>
 			<last_name>Aberham</last_name>
@@ -718,15 +736,6 @@
 			<details job="2" gender="1" birthday="1950-07-11" deathday="" country="" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person id="836b4aa3-b5c6-4529-b30d-4501594cdf13" tmdb_id="0" imdb_id="nm0000230" creator="">
-			<first_name>Silvester</first_name>
-			<last_name>Melone</last_name>
-			<nick_name>Sly</nick_name>
-			<nick_name_original>Sly</nick_name_original>
-			<first_name_original>Sylvester</first_name_original>
-			<last_name_original>Stallone</last_name_original>
-			<details job="2" gender="1" birthday="1946-07-06" deathday="" country="" />
-		</person>
 		<person id="f9a18a26-3dc4-401d-93bb-221247211dff" tmdb_id="0" imdb_id="nm0000226" creator="">
 			<first_name>Willst</first_name>
 			<last_name>Miff</last_name>
@@ -1227,15 +1236,6 @@
 			<last_name_original>Weaver</last_name_original>
 			<details job="2" gender="2" birthday="1949-10-08" deathday="" country="" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-		</person>
-		<person id="cd3a2e20-efe1-4a4c-9249-164b67d185f7" tmdb_id="0" imdb_id="nm0000216" creator="">
-			<first_name>Arnold</first_name>
-			<last_name>Weissenacker</last_name>
-			<nick_name>Arno</nick_name>
-			<nick_name_original>Arnie</nick_name_original>
-			<first_name_original>Arnold</first_name_original>
-			<last_name_original>Schwarzenegger</last_name_original>
-			<details job="2" gender="1" birthday="1947-07-30" deathday="" country="" />
 		</person>
 		<person id="ec20fc5a-a552-4119-8d1e-d310650c2830" tmdb_id="0" imdb_id="nm0000142" creator="">
 			<first_name>Klint</first_name>
@@ -4791,6 +4791,7 @@
 		<person id="ea91382e-9313-4e49-9640-d5d72966f79d" first_name="Su-mi" last_name="Ok" first_name_original="Su-bi" last_name_original="Oh" gender="2" birthday="" deathday="" imdb_id="nm1107284" creator="9551" />
 		<person id="07031a9a-1941-4aaa-9a23-40efb5043f98" first_name="Hye-rin" last_name="Lee" first_name_original="Hae-ri" last_name_original="Lim" gender="2" birthday="" deathday="" imdb_id="nm1105725" creator="9551" />
 		<person id="34c9761b-b1b1-4313-89e8-b347660a3a2f" first_name="Ri-hee" last_name="Ji" first_name_original="Ri-hye" last_name_original="Ju" gender="2" birthday="" deathday="" imdb_id="nm1105476" creator="9551" />
+		<person id="e5195e06-4957-429c-b4b1-7daa98a14c09" first_name="Tim" last_name="Clonky" first_name_original="Tom" last_name_original="Clancy" gender="1" birthday="1947-04-12" deathday="2013-10-01" imdb_id="nm0002007" creator="9551" />
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
