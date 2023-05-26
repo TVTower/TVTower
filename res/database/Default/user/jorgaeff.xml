@@ -468,11 +468,11 @@
 
 		<news id="news-jorgaeff-drops-05" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Patty Glansen gesteht Affaire</de>
+				<de>Patty Glansen gesteht Affäre</de>
 				<en>Patty Glansen confesses affair</en>
 			</title>
 			<description>
-				<de>Am Rande der Filmpreisverleihungen gesteht Patty Glansen, die zusammen mit Jonnie Drops in „Mein Grog - dein Grog“ vor der Kamera stand, eine Affaire mit dem Schauspieler.</de>
+				<de>Am Rande der Filmpreisverleihungen gesteht Patty Glansen, die zusammen mit Jonnie Drops in „Mein Grog - dein Grog“ vor der Kamera stand, eine Affäre mit dem Schauspieler.</de>
 				<en>On the sidelines of the film awards, Patty Glansen, who co-starred with Jonnie Drops in "My Grog - Your Grog," confesses to an affair with the actor.</en>
 			</description>
 			<data genre="1" price="0.35" quality="35" fictional="1" />
@@ -1323,7 +1323,7 @@
 		</news>
 
 		<news id="news-jorgaeff-1987-2-01" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_SEASON=0" />
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_MONTH=1" />
 			<title>
 				<de>Bas Bode: raus in Down-under</de>
 				<en>Bas Bode: out in Down-under</en>
@@ -2972,7 +2972,7 @@
 		</news>
 
 		<news id="news-jorgaeff-1987-5-01" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_SEASON=0" />
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_MONTH=1" />
 			<title>
 				<de>Berlin feiert 750 Jahre</de>
 				<en>Berlin celebrates 750 years</en>

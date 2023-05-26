@@ -3274,7 +3274,7 @@ Average TV fare that lacks a sophisticated script.</en>
 		</programme>
 		<programme id="354f60b9-89ac-4f01-b13e-49429f09f087" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093773" creator="">
 			<title>
-				<de>Jäger aus dem All</de>
+				<de>Poacher - Jäger aus dem All</de>
 				<en>Poacher from Space</en>
 			</title>
 			<title_original>
@@ -3298,7 +3298,7 @@ Average TV fare that lacks a sophisticated script.</en>
 		</programme>
 		<programme id="fbc0bd08-3076-46dc-a966-dc1fdfcd461e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0100403" creator="">
 			<title>
-				<de>Jäger aus dem All 2</de>
+				<de>Poacher from Space 2</de>
 				<en>Poacher from Space 2</en>
 			</title>
 			<title_original>
@@ -6614,7 +6614,7 @@ El Mariachi fans were utterly disappointed by [0|Last].</en>
 				<member index="5" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="MEX/USA" year="2003" distribution="1" maingenre="2" subgenre="" flags="64" blocks="2" price_mod="1.33" />
+			<data country="MEX/USA" year="2003" distribution="1" maingenre="2" subgenre="17,18" flags="64" blocks="2" price_mod="1.33" />
 			<ratings critics="14" speed="84" outcome="37" />
 		</programme>
 		<programme id="6bda71ba-e56a-46c3-9762-9ae18c587839" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0258000" creator="">
@@ -11511,7 +11511,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="1" function="2">eec1280f-fda9-424b-88c4-fda15c7ec6b6</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="USA" year="1982" distribution="0" maingenre="17" subgenre="7" flags="32" blocks="2" price_mod="1.0" />
+			<data country="USA" year="1982" distribution="2" maingenre="17" subgenre="7,10" flags="32" blocks="2" price_mod="1.0" />
 			<ratings critics="21" speed="31" outcome="25" />
 		</programme>
 
@@ -12349,7 +12349,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>Blue Sky</en>
 					</title_original>
 					<description>
-						<de>Dank der neuen Tarnvorrichtung "Blauer Himmel", der vom Vector installiert wurde, kann Puerto Angel versteckt bleiben, was den Piraten erlaubt, ihre Raubzüge zu unternehmen, ohne Angst vor einer Invasion haben zu müssen.</de>
+						<de>Dank der neuen Tarnvorrichtung „Blauer Himmel“, der vom Vector installiert wurde, kann Puerto Angel versteckt bleiben, was den Piraten erlaubt, ihre Raubzüge zu unternehmen, ohne Angst vor einer Invasion haben zu müssen.</de>
 						<en>Thanks to the new defense grid, Blue Sky, installed by the Vector, Puerto Angel can remain hidden indefinitely, allowing the pirates to conduct their raids without fear of invasion.</en>
 					</description>
 					<ratings critics="37" speed="34" />
@@ -12364,7 +12364,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>The Secret of Temuera</en>
 					</title_original>
 					<description>
-						<de>Lena erhält eine Vision von Ärger im Block "Temuera". Oslos Truppen blockieren das Gebiet bei der Suche nach einem legendären Relikt, "der Ursprung", der die Kraft eines Seijins verhundertfachen soll.</de>
+						<de>Lena erhält eine Vision von Ärger im Block „Temuera“. Oslos Truppen blockieren das Gebiet bei der Suche nach einem legendären Relikt, "der Ursprung", der die Kraft eines Seijins verhundertfachen soll.</de>
 						<en>Lena receives a vision of trouble in the Temuera block. Oslo's troops are occupying the area, looking for a legendary relic, "the Origin", which can magnify a Seijin's powers hundredfold.</en>
 					</description>
 					<ratings critics="47" speed="40" />
@@ -12596,7 +12596,7 @@ Zim turns the school hamster into a giant, terrifying monster.</en>
 					</title_original>
 					<description>
 						<de>Zim fühlt sich durch ein Baby in der Nachbarschaft beobachtet. /
-Gaz entscheidet sich für "Bloatys Pizzaschwein" für den Familienabend, doch Dib schafft es nicht rechtzeitig zu erscheinen.</de>
+Gaz entscheidet sich für „Bloatys Pizzaschwein“ für den Familienabend, doch Dib schafft es nicht rechtzeitig zu erscheinen.</de>
 						<en>Zim feels he is being watched by a baby in the neighborhood. /
 Gaz decides on "Bloaty's Pizza Hog" for family night, but Dib can't manage to show up on time.</en>
 					</description>
@@ -12630,7 +12630,7 @@ Zim receives a reminder for a DVD he borrowed. He returns it that night.</en>
 					</title_original>
 					<description>
 						<de>Zim infiziert Dib mit einem genetischen Virus, der ihn langsam in Sülzwurst verwandelt. /
-Gaz will unbedingt einen "Game Slave 2" haben, die neueste tragbare Spielkonsole.</de>
+Gaz will unbedingt einen „Game Slave 2“ haben, die neueste tragbare Spielkonsole.</de>
 						<en>Zim infects Dib with a genetic virus that slowly turns him into bologna. /
 Gaz desperately wants a "Game Slave 2", the latest portable game console.</en>
 					</description>
@@ -13039,7 +13039,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			</title_original>
 			<description>
 				<de>Sehr frei nach [4|Full]. Tichy, eine Art Baron Münchhausen im Weltall, navigiert mit seiner „Drei-Zimmer-Rakete“ durch das Universum. Sein selbstgebauter weiblicher Roboter Analoge Halluzinelle, ein Hologramm, ist seine ständige Begleiterin.</de>
-				<en>Very loosely based on [4|Full]. Tichy, a sort of Baron Munchausen, in space navigates the universe with his "three-room rocket". His homemade female robot Analoge Hallucinelle, a hologramme, is his ubiquitous companion.</en>
+				<en>Very loosely based on [4|Full]. Tichy, a sort of Baron Munchausen in space, navigates the universe with his "three-room rocket". His homemade female robot Analoge Hallucinelle, a hologramme, is his ubiquitous companion.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">SpeedMinister-person-id037</member>
@@ -23249,8 +23249,8 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 		</programme>
 		<programme id="b1f210f5-2426-4bb1-8ec4-fefa56f6ddaa" product="1" licence_type="1" creator="9551" imdb_id="tt0084503">
 			<title>
-				<de>[1|First] - The Bricks</de>
-				<en>[1|First]: The Bricks</en>
+				<de>[5|First] - The Bricks</de>
+				<en>[5|First]: The Bricks</en>
 			</title>
 			<title_original>
 				<de>Pink Floyd - The Wall</de>
@@ -23906,8 +23906,8 @@ One of the most successful films of the year in South Korea.</en>
 				<en>Scarface</en>
 			</title_original>
 			<description>
-				<de>Der gewaltsame Aufstieg des kubanischen Flüchtlings T. Montana an die Spitze des Drogenhandels in Miami. Die Gewaltdarstellung und die Sprüche waren damals kontrovers. Das Werk wurde von den Kritikern abgelehnt, wurde seitdem aber neu bewertet. Durchbruch für [2|Last].</de>
-				<en>Cuban refugee T. Montana's violent rise to the top of Miami's drug trade. The graphic violence and language originally drew controversy. The work was originally panned by critics, but has since been reappraised. Breakthrough for [2|Last].</en>
+				<de>Der gewaltsame Aufstieg des kubanischen Flüchtlings T. Montana an die Spitze des Drogenhandels in Miami. Die Gewaltdarstellung und die Sprüche waren damals kontrovers und wurde von Kritikern abgelehnt. Seitdem aber neu bewertet. Durchbruch für [2|Last].</de>
+				<en>Cuban refugee T. Montana's violent rise to the top of Miami's drug trade. The graphic violence and language originally drew controversy and was panned by critics. Has since been reappraised. Breakthrough for [2|Last].</en>
 			</description>
 			<staff>
 				<member index="0" function="1">6b53e3ec-0d66-4131-84ec-a48b9bbe3b77</member>
@@ -26628,7 +26628,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Short Circuit</en>
 			</title_original>
 			<description>
-				<de>Beim Wartungscheck der innovativen neuen Militär-Killerroboter gibt's einen Kurzschluss. Nummer 5 wird lebending, sensibel und will nicht mehr töten. Er wird vom Hersteller verfolgt und findet Zuflucht bei einer Familie.</de>
+				<de>Beim Wartungscheck der innovativen neuen Militär-Killerroboter gibt's einen Kurzschluss. Nummer 5 wird lebendig, sensibel und will nicht mehr töten. Er wird vom Hersteller verfolgt und findet Zuflucht bei einer Familie.</de>
 				<en>During the maintenance check of the innovative new military killer robots, there's a short circuit. Number 5 becomes alive, sensitive and no longer wants to kill. He is pursued by the manufacturer and finds refuge with a family.</en>
 			</description>
 			<staff>
@@ -27636,7 +27636,7 @@ Ellen has retreated to the Bahamas after her youngest son was killed by a shark.
 		</programme>
 		<programme id="d7c59e31-6f04-4df5-97bc-4973d02cdc23" product="1" licence_type="1" creator="9551" imdb_id="tt0094012">
 			<title>
-				<de>[0]' Starballs</de>
+				<de>[0|Full]' Starballs</de>
 				<en>Starballs</en>
 			</title>
 			<title_original>
@@ -28222,7 +28222,7 @@ Ellen has retreated to the Bahamas after her youngest son was killed by a shark.
 				<en>The Naked Gun: From the Files of Police Squad!</en>
 			</title_original>
 			<description>
-				<de>Basierend auf einer kurzlebigen TV-Serie, die dem Sender zu "fordernd" und zu lustig für's Publikum war. Also musste ein Kinofilm her. [3|Full] als Cop, der immer bierernste Miene macht zum urkomischen Spiel um ihn herum.</de>
+				<de>Basierend auf einer kurzlebigen TV-Serie, die dem Sender zu „fordernd“ und zu lustig für's Publikum war. Also musste ein Kinofilm her. [3|Full] als Cop, der immer bierernste Miene macht zum urkomischen Spiel um ihn herum.</de>
 				<en>Based on a short-lived TV series that the station deemed too "demanding" and too funny for the audience. So a feature film had to be made. [3|Full] as a cop always with a stone-hard face amidst the hilarious scenes around him.</en>
 			</description>
 			<staff>
