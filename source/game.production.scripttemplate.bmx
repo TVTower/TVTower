@@ -576,11 +576,17 @@ Type TScriptTemplate Extends TScriptBase
 		return BiasedRandRange(episodesMin, episodesMax, episodesSlope)
 	End Method
 
-	Method GetSubTemplateSubset:TScriptTemplate[](count:int)
+	Method GetSubTemplateSubset:TScriptTemplate[](count:Int, forceIncludePilot:Int = 0)
 		count = Min(count, subScripts.length)
 		Local result:TScriptTemplate[] = new TScriptTemplate[count]
-		Local keep:Int[] = [0]
-		If count > 1 Then keep :+ RandRangeArray(1, subScripts.length-1, count-1)
+		Local keep:Int[] = []
+		Local startIndex:Int = 0
+		If forceIncludePilot
+			keep:+ [0]
+			count:- 1
+			startIndex = 1
+		EndIf
+		If count > 1 Then keep :+ RandRangeArray(startIndex, subScripts.length-1, count-1)
 		keep.Sort()
 		For local i:Int = 0 until keep.length
 			result[i] = TScriptTemplate(subScripts[keep[i]])
