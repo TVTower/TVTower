@@ -201,11 +201,11 @@
 		</news>
 		<news id="cujo-news-quantar-04" type="2" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
 			<title>
-				<de>Lauber: "Vergabe war völlig in Ordnung."</de>
+				<de>Lauber: „Vergabe war völlig in Ordnung.“</de>
 				<en>Lauber: "Award was perfectly fine."</en>
 			</title>
 			<description>
-				<de>FUFA-Generalsekretär Jupp Lauber bestreitet alle Korruptionsvorwürfe. "Bei der FUFA gibt es nur ehrliche Menschen."</de>
+				<de>FUFA-Generalsekretär Jupp Lauber bestreitet alle Korruptionsvorwürfe. „Bei der FUFA gibt es nur ehrliche Menschen.“</de>
 				<en>FUFA Secretary General Jupp Lauber denies all allegations of corruption. "There are only honest people at FUFA."</en>
 			</description>
 			<effects>
@@ -233,7 +233,7 @@
 				<en>Jupp Lauber calls corruption an isolated incident</en>
 			</title>
 			<description>
-				<de>Jupp Lauber: "Jeff Worner ist ein Krimineller. Alle anderen sind unschuldig."</de>
+				<de>Jupp Lauber: „Jeff Worner ist ein Krimineller. Alle anderen sind unschuldig.“</de>
 				<en>Jupp Lauber: "Jeff Worner is a criminal. Everyone else is innocent."</en>
 			</description>
 			<effects>
@@ -541,7 +541,7 @@
 				<en>Consumers' Association tests vibrators</en>
 			</title>
 			<description>
-				<de>In einem großen Praxistest hat die Stiftung Gütertest 27 Vibratoren getestet. Acht Modelle wurden von den Testerinnen mit "befriedigend" bewertet.</de>
+				<de>In einem großen Praxistest hat die Stiftung Gütertest 27 Vibratoren getestet. Acht Modelle wurden von den Testerinnen mit „befriedigend“ bewertet.</de>
 				<en>In a major practical test, Consumers' Association tested 27 vibrators. Eight models were rated "satisfactory" by the testers.</en>
 			</description>
 			<effects />
@@ -651,7 +651,7 @@
 				<en>Detective game is voted board game of the year 1985</en>
 			</title>
 			<description>
-				<de>"Dr. Watson Kriminalzimmer" wurde zum Brettspiel des Jahres 1985 gekürt. Der Jury imponierte, dass das Spiel sowohl allein als auch in einer Gruppe gespielt werden kann.</de>
+				<de>„Dr. Watson Kriminalzimmer“ wurde zum Brettspiel des Jahres 1985 gekürt. Der Jury imponierte, dass das Spiel sowohl allein als auch in einer Gruppe gespielt werden kann.</de>
 				<en>"Dr. Watson Crime Room" was chosen as the board game of the year 1985. The jury was impressed by the fact that the game can be played both alone and in a group.</en>
 			</description>
 			<data genre="3" price="0.49" quality="45" flags="2"/>

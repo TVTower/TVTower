@@ -2105,7 +2105,7 @@ The trio [1|Last], [2|Last], [3|Last] provides the huge fun of the film.</en>
 				<de>In der Wohnung einer jungen Frau geschehen seltsame Dinge.
 
 Schockierender Thriller mit [1|Full]
-"No More Mr. Nice Hero" titelte die Los Angeles Times.</de>
+„No More Mr. Nice Hero“ titelte die Los Angeles Times.</de>
 				<en>Strange things are happening in the apartment of a young woman.
 
 Shocking thriller with [1|Full].
@@ -4092,7 +4092,7 @@ Considered to be the culmination of the trilogy.</en>
 				<en>End of Days</en>
 			</title_original>
 			<description>
-				<de>Dämonische Story, die von der Unruhe vor "dem Millennium" profitieren wollte, [1|Last] auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte.</de>
+				<de>Dämonische Story, die von der Unruhe vor „dem Millennium“ profitieren wollte, [1|Last] auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte.</de>
 				<en>Demonic story that wanted to profit from the turmoil preceding "the millennium", but it could not catapult [1|Last] further up the ladder of his career.</en>
 			</description>
 			<staff>
@@ -8414,7 +8414,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="F" year="1975" distribution="2" maingenre="6" subgenre="9" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="75" speed="50" outcome="" />
+			<ratings critics="75" speed="50" />
 			<children>
 				<programme id="TheRob-serie-WunderderMeere-Ep001" product="4"  licence_type="2" tmdb_id="0" imdb_id="tt0845400" creator="8751" created_by="TheRob">
 					<title>
@@ -8516,7 +8516,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1967" distribution="2" maingenre="4" subgenre="" flags="0" blocks="2" price_mod="1.00" />
-			<ratings critics="76" speed="58" outcome="" /> <!-- TODO: clarify - outcome is empty here. In the game this title works quite well. What is the default? 50? -->
+			<ratings critics="76" speed="58" /> <!-- TODO: clarify - outcome is empty here. In the game this title works quite well... If no outcome is given, a value is caclculated -->
 			<children>
 				<programme id="TheRob-serie-Sensemannhechelt-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1277346" creator="8751" created_by="TheRob">
 					<title>
@@ -8586,7 +8586,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="DDR" year="1964" distribution="2" maingenre="13" subgenre="" flags="8" blocks="2" price_mod="1.00" />
-			<ratings critics="67" speed="54" outcome="" />
+			<ratings critics="67" speed="54" />
 			<children>
 				<programme id="TheRob-serie-FuchsunterFuechsen-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -8826,7 +8826,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<en>The Doctors</en>
 					</title_original>
 					<description>
-						<de>Ab nach Italien. Ein junger Doktor will seinen Vater, auch ein Arzt, nach Amerika holen. Doch das Dorf will ihren "wahren" Doktor nicht gehen lassen.</de>
+						<de>Ab nach Italien. Ein junger Doktor will seinen Vater, auch ein Arzt, nach Amerika holen. Doch das Dorf will ihren „wahren“ Doktor nicht gehen lassen.</de>
 						<en>Off to Italy. A young doctor wants to bring his father, also a doctor, to America. But the village does not want to let their "real" doctor go.</en>
 					</description>
 				</programme>
@@ -9745,7 +9745,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1980" distribution="2" maingenre="1" subgenre="11" flags="0" blocks="2" price_mod="1.00" />
-			<ratings critics="88" speed="67" outcome="" />
+			<ratings critics="88" speed="67" />
 			<children>
 				<programme id="TheRob-serie-SamuraiAdam-Episode001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1488968" creator="8751" created_by="TheRob">
 					<title>
@@ -9847,7 +9847,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="1,7" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="42" speed="46" outcome="" />
+			<ratings critics="42" speed="46" />
 			<children>
 				<programme id="TheRob-serie-Sanddornkahn-Episode001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306736" creator="8751" created_by="TheRob">
 					<title>
@@ -11217,7 +11217,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="" flags="8" blocks="2" price_mod="1.00" />
-			<ratings critics="67" speed="44" outcome="" />
+			<ratings critics="67" speed="44" />
 			<children>
 				<programme id="TheRob-serie-RobinWusoe-Ep001" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -12364,7 +12364,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<en>The Secret of Temuera</en>
 					</title_original>
 					<description>
-						<de>Lena erhält eine Vision von Ärger im Block „Temuera“. Oslos Truppen blockieren das Gebiet bei der Suche nach einem legendären Relikt, "der Ursprung", der die Kraft eines Seijins verhundertfachen soll.</de>
+						<de>Lena erhält eine Vision von Ärger im Block „Temuera“. Oslos Truppen blockieren das Gebiet bei der Suche nach einem legendären Relikt, „der Ursprung“, der die Kraft eines Seijins verhundertfachen soll.</de>
 						<en>Lena receives a vision of trouble in the Temuera block. Oslo's troops are occupying the area, looking for a legendary relic, "the Origin", which can magnify a Seijin's powers hundredfold.</en>
 					</description>
 					<ratings critics="47" speed="40" />
@@ -13340,7 +13340,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 						<en>Winter Is Coming</en>
 					</title_original>
 					<description>
-						<de>Ein Deserteur der Nachtwache bringt erschreckende Nachrichten von den Ländern nördlich der Mauer, und Lord Eddard "Ned" Stark soll die Hand des Königs Robert Baratheon werden.</de>
+						<de>Ein Deserteur der Nachtwache bringt erschreckende Nachrichten von den Ländern nördlich der Mauer, und Lord Eddard „Ned“ Stark soll die Hand des Königs Robert Baratheon werden.</de>
 						<en>A Night's Watch deserter brings frightening news from the lands north of the Wall, and Lord Eddard "Ned" Stark is to become the Hand of King Robert Baratheon.</en>
 					</description>
 					<ratings critics="73" speed="40" />
@@ -14668,7 +14668,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 				</programme>
 				<programme id="cujo-serien-kastanienstrasse-08" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
-						<de>Else: "Sodom und Gomorra"</de>
+						<de>Else: „Sodom und Gomorra“</de>
 						<en>Else: "Sodom and Gomorrah"</en>
 					</title>
 					<title_original>
@@ -14676,7 +14676,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 						<en>Else: "Sodom and Gomorrah"</en>
 					</title_original>
 					<description>
-						<de>Else ist mit dem Lebensstil der Nachbarn nicht einverstanden. Für sie herrscht in der Kastanienstraße "Sodom und Gomorra".</de>
+						<de>Else ist mit dem Lebensstil der Nachbarn nicht einverstanden. Für sie herrscht in der Kastanienstraße „Sodom und Gomorra“.</de>
 						<en>Else does not agree with the lifestyle of the neighbors. For her, "Sodom and Gomerrah" reigns in Chestnut Street.</en>
 					</description>
 					<ratings critics="40" speed="32" />
@@ -14875,7 +14875,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 						<en>Fun with flags</en>
 					</title_original>
 					<description>
-						<de>Nelson und Emmi moderieren gemeinsam für ihren Video-Kanal die Sendung "Spaß mit Fahnen".</de>
+						<de>Nelson und Emmi moderieren gemeinsam für ihren Video-Kanal die Sendung „Spaß mit Fahnen“.</de>
 						<en>Nelson and Emmi co-host the show "Fun with Flags" for their video channel.</en>
 					</description>
 					<ratings critics="30" speed="67" />
@@ -32332,7 +32332,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 						<en>Short Sighted</en>
 					</title_original>
 					<description>
-						<de>Logan verdient sich den Titel "Anfänger des Jahres", nachdem er die Anfängerschule abgeschlossen hat; der Vater von Hobies Freund, ein kleinwüchsiger Mensch, ertrinkt fast bei dem Versuch, ein Mädchen und ihren Hund zu retten.</de>
+						<de>Logan verdient sich den Titel „Anfänger des Jahres“, nachdem er die Anfängerschule abgeschlossen hat; der Vater von Hobies Freund, ein kleinwüchsiger Mensch, ertrinkt fast bei dem Versuch, ein Mädchen und ihren Hund zu retten.</de>
 						<en>Logan earns the title "Rookie of the Year" after completing rookie school; Hobie's friend's father, a dwarf, almost drowns while trying to save a girl and her dog.</en>
 					</description>
 				</programme>
@@ -33992,7 +33992,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 						<en>Magnus</en>
 					</title_original>
 					<description>
-						<de>Chester ist entsetzt, als sein "unzivilisierter" Landei-Bruder für einen Weihnachtsbesuch nach Dodge kommt.</de>
+						<de>Chester ist entsetzt, als sein „unzivilisierter“ Landei-Bruder für einen Weihnachtsbesuch nach Dodge kommt.</de>
 						<en>Chester is appalled when his "uncivilized" country-bumpkin brother comes to Dodge for a Christmas visit.</en>
 					</description>
 				</programme>
@@ -34630,7 +34630,7 @@ An American historical drama television series about a family in rural Virginia 
 						<en>The Sinner</en>
 					</title_original>
 					<description>
-						<de>Ein junger Prediger kommt zum Haus der Familie, frisch vom Seminar, wo er den zu der Zeit populären "Feuer und Schwefel"-Stil des Predigens gelernt hat.</de>
+						<de>Ein junger Prediger kommt zum Haus der Familie, frisch vom Seminar, wo er den zu der Zeit populären „Feuer und Schwefel“-Stil des Predigens gelernt hat.</de>
 						<en>A young preacher comes to the family's home, fresh from seminary, where he has learned the currently-popular fire and brimstone style of preaching.</en>
 					</description>
 				</programme>
@@ -34658,7 +34658,7 @@ An American historical drama television series about a family in rural Virginia 
 						<en>The Reunion</en>
 					</title_original>
 					<description>
-						<de>Die Baldwin-Schwestern planen ein Familientreffen, als ihr Cousin Homer zu Besuch kommt. Doch Homer macht sich mit über 100 Gläsern des "Rezepts" davon, die für das Treffen bestimmt waren, und plant, sie in Charlottesville zu verkaufen.</de>
+						<de>Die Baldwin-Schwestern planen ein Familientreffen, als ihr Cousin Homer zu Besuch kommt. Doch Homer macht sich mit über 100 Gläsern des „Rezepts“ davon, die für das Treffen bestimmt waren, und plant, sie in Charlottesville zu verkaufen.</de>
 						<en>The Baldwin sisters plan to hold a family reunion when their cousin Homer visits, but Homer runs off with their batch of over 100 jars of the "Recipe" intended for the reunion, planning to sell it in Charlottesville.</en>
 					</description>
 				</programme>
@@ -34672,7 +34672,7 @@ An American historical drama television series about a family in rural Virginia 
 						<en>The Deed</en>
 					</title_original>
 					<description>
-						<de>Als eine Holzfabrik versucht, den "Mountain" für sich zu beanspruchen, entdeckt die Familie, dass ihre Vorfahren nie einen Rechtsanspruch auf ihr Land angemeldet hatten.</de>
+						<de>Als eine Holzfabrik versucht, den „Mountain“ für sich zu beanspruchen, entdeckt die Familie, dass ihre Vorfahren nie einen Rechtsanspruch auf ihr Land angemeldet hatten.</de>
 						<en>When a lumber company tries to claim the Mountain, the family discovers that their ancestors never filed for legal title to their land.</en>
 					</description>
 				</programme>

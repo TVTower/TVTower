@@ -19,7 +19,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1951" distribution="2" maingenre="4" subgenre="" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="30" speed="49" outcome="" />
+			<ratings critics="30" speed="49" />
 			<children>
 				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -946,7 +946,7 @@
 						<en>Cambodia</en>
 					</title>
 					<description>
-						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der "sabbernden" Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
+						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der „sabbernden“ Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
 						<en>Old temples, fields, big cities and jungles. Everything with even more skin. The callers are queuing up. A masterpiece of "drooling" education. So near and yet so far. The last name of the lady must be guessed.</en>
 					</description>
 					<ratings critics="29" speed="33" />
@@ -1157,7 +1157,7 @@
 						<en>Count Ruccola meets asparagus</en>
 					</title>
 					<description>
-						<de>Graf Ruccola endeckt den Spargel, und jetzt riecht es beim "um die Ecke gehen" auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
+						<de>Graf Ruccola endeckt den Spargel, und jetzt riecht es beim „um die Ecke gehen“ auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
 						<en>Count Ruccola discovers the asparagus, and now when "going around the corner" it suddenly smells funny. Why is that? And does Count Ruccola take another bite, or does he prefer to leave the asparagus aside?</en>
 					</description>
 					<ratings critics="57" speed="35" />
@@ -1424,7 +1424,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="DDR" year="1980" distribution="2" maingenre="4" subgenre="14" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="40" speed="40" outcome="" />
+			<ratings critics="40" speed="40" />
 			<children>
 				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -1502,7 +1502,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1940" distribution="2" maingenre="14" subgenre="12" flags="64" blocks="1" price_mod="1.00" />
-			<ratings critics="65" speed="40" outcome="" />
+			<ratings critics="65" speed="40" />
 			<children>
 				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -1649,7 +1649,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1952" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="28" speed="44" outcome="" />
+			<ratings critics="28" speed="44" />
 			<children>
 				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -1791,7 +1791,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1980" distribution="2" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
-			<ratings critics="89" speed="38" outcome="" />
+			<ratings critics="89" speed="38" />
 			<children>
 				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -1908,7 +1908,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="CS" year="1980" distribution="2" maingenre="6" subgenre="8" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="29" speed="59" outcome="" />
+			<ratings critics="29" speed="59" />
 			<children>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -1989,7 +1989,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="I" year="1959" distribution="2" maingenre="102" subgenre="" flags="0" blocks="1" price_mod="1.00" />
-			<ratings critics="30" speed="59" outcome="" />
+			<ratings critics="30" speed="59" />
 			<children>
 				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
@@ -2700,7 +2700,7 @@
 					<en>Intrigues|Ambuscades|Competition|Drama|Scheming|Quotas|Mistakes|Power Struggles|Confiscators</en>
 				</object>
 				<subject1a>
-					<de>Die Wäscherei|Der Pförtner|Bio-Control|Die Tabak-Lobby|Der Computershop "Spysoft"|Die Knarren-Agentur|Der Anti-Raucher e.V.|Das Psychiaterbüro "Harry Dippl"|Die Peace-Brothers</de>
+					<de>Die Wäscherei|Der Pförtner|Bio-Control|Die Tabak-Lobby|Der Computershop „Spysoft“|Die Knarren-Agentur|Der Anti-Raucher e.V.|Das Psychiaterbüro „Harry Dippl“|Die Peace-Brothers</de>
 					<en>Laundry|Porter|Bio-Control|Tobacco lobby|Computershop "Spysoft"|Guns Agency|No to Tobacco Society|Pychiatrist "Harry Dippl"|Peace-Brothers</en>
 				</subject1a>
 				<subject1b>

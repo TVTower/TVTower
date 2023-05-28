@@ -244,7 +244,7 @@
 		<news id="news-jorgaeff-1986-0-UdSSR-01" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
-				<de>Michailow fordert "Glasnost"</de>
+				<de>Michailow fordert „Glasnost“</de>
 				<en>Michailow calls for "glasnost"</en>
 			</title>
 			<description>
@@ -420,7 +420,7 @@
 
 		<news id="news-jorgaeff-drops-02" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>"Mein Grog - dein Grog": Dreh geht weiter</de>
+				<de>„Mein Grog - dein Grog“: Dreh geht weiter</de>
 				<en>"My Grog - Your Grog": filming continues</en>
 			</title>
 			<description>
@@ -617,7 +617,7 @@
 		<news id="news-jorgaeff-1986-1-03" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
-				<de>"Jenseits von Eden" ausgezeichnet</de>
+				<de>„Jenseits von Eden“ ausgezeichnet</de>
 				<en>"East of Eden" awarded</en>
 			</title>
 			<description>
@@ -630,7 +630,7 @@
 		<news id="news-jorgaeff-1987-1-01" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1987" />
 			<title>
-				<de>Michel Jacobson veröffentlicht "Bed"</de>
+				<de>Michel Jacobson veröffentlicht „Bed“</de>
 				<en>Michel Jacobson releases "Bed"</en>
 			</title>
 			<description>
@@ -1099,7 +1099,7 @@
 				<en>The Dutch miss World Cup</en>
 			</title>
 			<description>
-				<de>Die niederländische Fußball-Nationalmannschaft hat die Weltmeisterschaft im Sommer des nächsten Jahres verpasst. Am letzten Spieltag der Qualifikation unterlag "Oranje" dem Erzrivalen aus Belgien.</de>
+				<de>Die niederländische Fußball-Nationalmannschaft hat die Weltmeisterschaft im Sommer des nächsten Jahres verpasst. Am letzten Spieltag der Qualifikation unterlag „Oranje“ dem Erzrivalen aus Belgien.</de>
 				<en>The Dutch national soccer team has missed the World Cup in the summer of next year. On the last matchday of the qualifiers, "Oranje" lost to their arch-rivals from Belgium.</en>
 			</description>
 			<data genre="2" price="0.4" quality="40" fictional="0" />
@@ -2725,7 +2725,7 @@
 				<en>Cleaning lady destroys work of art</en>
 			</title>
 			<description>
-				<de>Das Werk "Bei Hempels unterm Sofa" von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000€ teures Kunstwerk vor sich zu haben.</de>
+				<de>Das Werk „Bei Hempels unterm Sofa“ von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000€ teures Kunstwerk vor sich zu haben.</de>
 				<en>The work "At Family Hempel under the Sofa" by Georg Hempel was destroyed in the National Museum by a cleaning lady. The cleaner was not aware to have an 800.000€ priced work of art in front of her.</en>
 			</description>
 			<data genre="5" price="0.35" quality="35" fictional="1" />
