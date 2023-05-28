@@ -476,7 +476,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local mainTemplateEpisodeCount:Int = template.getEpisodes()
 			If mainTemplateEpisodeCount > 1 and mainTemplateEpisodeCount < template.subScripts.length
 				'if parent restricts the number of episodes - get a subset of templates
-				For Local subTemplate:TScriptTemplate = EachIn template.GetSubTemplateSubset(mainTemplateEpisodeCount)
+				Local pilot:TScriptTemplate = TScriptTemplate(template.subScripts[0])
+				Local forceIncludePilot:Int = pilot.episodesMin > 0
+				For Local subTemplate:TScriptTemplate = EachIn template.GetSubTemplateSubset(mainTemplateEpisodeCount, forceIncludePilot)
 					Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
 					If subScript
 						If template.programmeDataModifiers
