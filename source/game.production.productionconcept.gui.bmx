@@ -960,7 +960,7 @@ endrem
 
 
 		if subTitle
-			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
+			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, titleFont.GetLineHeight(), sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
 			if titleSize.y > 20
 				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 3), GetScreenRect().GetW() - textOffsetX - 3, 14, sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
 			else
