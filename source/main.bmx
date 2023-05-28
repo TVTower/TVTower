@@ -256,6 +256,7 @@ Type TApp
 	'Global EscapeMenuWindowEventListeners:TLink[]
 
 	Global DEV_FastForward:Int = False
+	Global DEV_FastForward_TargetReached:Int = True
 	Global DEV_FastForward_SpeedFactorBackup:Float = 0.0
 	Global DEV_FastForward_TimeFactorBackup:Float = 0.0
 	Global DEV_FastForward_BuildingTimeSpeedFactorBackup:Float = 0.0
@@ -908,37 +909,18 @@ Type TApp
 				If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
 					GetGame().SetGameSpeed( Int(GetWorldTime().GetTimeFactor()) + 5 )
 				Else
-					'fast forward
-					If Not DEV_FastForward
-						DEV_FastForward = True
-						DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
-						DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
-						DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
-
-						'set fixed speed instead of adding to the current
-						If KeyManager.IsDown(KEY_RCONTROL)
-							GetGame().SetGameSpeed( 150 * 60 )
-'							TEntity.globalWorldSpeedFactor :+ 200
-'							GetWorldTime().AdjustTimeFactor(+8000)
-'							GetBuildingTime().AdjustTimeFactor(+200)
-						ElseIf KeyManager.IsDown(KEY_LCONTROL)
-							GetGame().SetGameSpeed( 60 * 60 )
-						EndIf
-					EndIf
-				EndIf
-			Else
-				'stop fast forward
-				If DEV_FastForward
-					DEV_FastForward = False
-					TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
-					GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
-					GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
+					__SwitchFastForward(True)
 				EndIf
 			EndIf
 
 
-			If KeyManager.IsDown(KEY_LEFT) Then
-				GetGame().SetGameSpeed( Max(Int(GetWorldTime().GetTimeFactor()) - 5, 0) )
+			If KeyManager.IsDown(KEY_LEFT)
+				If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
+					GetGame().SetGameSpeed( Max(Int(GetWorldTime().GetTimeFactor()) - 5, 0) )
+				Else
+					DEV_FastForward_TargetReached = True
+					__SwitchFastForward(False)
+				EndIf
 			EndIf
 
 
@@ -1309,21 +1291,23 @@ Type TApp
 				EndIf
 
 
+				'Navigation
+				Local room:String
 				If KeyManager.IsHit(KEY_W)
 					If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
+						room = "adagency"
 					EndIf
 				EndIf
-				If KeyManager.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
-				If KeyManager.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
+				If KeyManager.IsHit(KEY_A) Then room = "archive"
+				If KeyManager.IsHit(KEY_B) Then room = "betty"
 				If KeyManager.IsHit(KEY_F)
 					If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+						room = "movieagency"
 					EndIf
 				EndIf
-				If KeyManager.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
+				If KeyManager.IsHit(KEY_O) Then room = "office"
 				If not (KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL))
-					If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
+					If KeyManager.IsHit(KEY_C) Then room = "boss"
 				EndIf
 				If KeyManager.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
 Rem
@@ -1341,41 +1325,28 @@ Rem
 endrem
 				If KeyManager.isHit(KEY_S)
 					If KeyManager.IsDown(KEY_LCONTROL)
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
+						room = "supermarket"
 					ElseIf KeyManager.IsDown(KEY_RCONTROL) Or KeyManager.IsDown(KEY_LALT)
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
+						room = "scriptagency"
 					Else
-						Local rooms:TRoomBase[] = GetRoomCollection().GetAllByDetails("studio", "", GetPlayerCollection().playerID)
-				 		If rooms and rooms.length > 0 
-							For Local r:TRoomBase = EachIn rooms
-								If not r.isBlocked()
-									DEV_switchRoom(r)
-									exit
-								EndIf
-							Next
-						EndIf
+						room = "studio"
 					EndIf
 				EndIf
-				If KeyManager.IsHit(KEY_D) 'German "Drehbuchagentur"
-					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
-				EndIf
-				If KeyManager.IsHit(KEY_L)
-					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
-				EndIf
+				If KeyManager.IsHit(KEY_D) Then room = "scriptagency" 'German "Drehbuchagentur"
+				If KeyManager.IsHit(KEY_L) Then room = "supermarket"
 
 				'e wie "employees" :D
-				If KeyManager.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
-				If KeyManager.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
+				If KeyManager.IsHit(KEY_E) Then room = "credits"
+				If KeyManager.IsHit(KEY_N) Then room = "news"
 				If KeyManager.IsHit(KEY_R)
 					If KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL)
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
+						room = "roomboard"
 					Else
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
+						room = "roomagency"
 					EndIf
 				EndIf
-				If KeyManager.IsHit(KEY_P)
-					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
-				EndIf
+				If KeyManager.IsHit(KEY_P) Then room = "roomboard"
+				If room Then __GoToRoom(room)
 			EndIf
 		EndIf
 		If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 30 * 60 ) '30 game minutes per realtime second
@@ -1434,12 +1405,11 @@ endrem
 			EndIf
 		EndIf
 	End Function
-	
+
 
 	Function __NonDevHotKeys:Int()
 		'Navigation
 		Local room:String
-		Local targetRoom:TRoom
 		If KeyManager.IsHit(KEY_A) Then room="archive"
 		If KeyManager.IsHit(KEY_B) Then room="betty"
 		If KeyManager.IsHit(KEY_C) Then room="boss" 'Chef
@@ -1450,30 +1420,9 @@ endrem
 		If KeyManager.IsHit(KEY_O) Then room="office"
 		If KeyManager.IsHit(KEY_P) Then room="roomboard" 'Panel
 		If KeyManager.IsHit(KEY_R) Then room="roomagency"
-		If KeyManager.IsHit(KEY_S)
-			room="studio"
-			Local rooms:TRoomBase[] = GetRoomCollection().GetAllByDetails(room, "", GetPlayerCollection().playerID)
-	 		If rooms and rooms.length > 0 
-				For Local r:TRoomBase = EachIn rooms
-					If not r.isBlocked()
-						targetRoom = TRoom(r)
-						exit
-					EndIf
-				Next
-			EndIf
-		EndIF
+		If KeyManager.IsHit(KEY_S) Then room="studio"
 		If KeyManager.IsHit(KEY_W) Then room="adagency" 'Werbung
-		If room
-			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails("", room, GetPlayerCollection().playerID)
-			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails("", room)
-			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails(room, "")
-			If targetRoom
-				Local targetDoor:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(targetRoom.id)
-				If targetDoor
-					GetPlayer().GetFigure().SendToDoor(targetDoor)
-				Endif
-			Endif
-		EndIf
+		If room Then __GoToRoom(room)
 
 		'Simuliere Rechtsklick (Verlassen eines Screens/Raums, Abbruch einer Aktion, Löschen etc.)
 		'If KeyManager.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D(0, 0), 5)
@@ -1484,25 +1433,9 @@ endrem
 
 		'Schnellvorlauf
 		If KeyManager.IsDown(KEY_RIGHT)
-			If Not DEV_FastForward
-				DEV_FastForward = True
-				DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
-				DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
-				DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
-
-				GameConfig.InRoomTimeSlowDownModBackup = GameConfig.InRoomTimeSlowDownMod
-				GameConfig.InRoomTimeSlowDownMod = 1.0
-				GetGame().SetGameSpeed( 30 * 60 )
-			EndIf
+			__SwitchFastForward(True)
 		Else
-			'stop fast forward
-			If DEV_FastForward
-				DEV_FastForward = False
-				GameConfig.InRoomTimeSlowDownMod = GameConfig.InRoomTimeSlowDownModBackup
-				TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
-				GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
-				GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
-			EndIf
+			__SwitchFastForward(False)
 		EndIf
 
 		'Geschwindigkeitslevel
@@ -1515,6 +1448,65 @@ endrem
 			IngameHelpWindowCollection.openHelpWindow()
 		EndIf
 	End Function
+
+
+	Function __GotoRoom(room:String)
+		Local targetRoom:TRoom
+		If room = "studio"
+			Local rooms:TRoomBase[] = GetRoomCollection().GetAllByDetails(room, "", GetPlayerCollection().playerID)
+	 		If rooms and rooms.length > 0 
+				For Local r:TRoomBase = EachIn rooms
+					If not r.isBlocked()
+						targetRoom = TRoom(r)
+						exit
+					EndIf
+				Next
+			EndIf
+		EndIf
+		If room
+			If Not targetRoom Then targetRoom = GetRoomCollection().GetFirstByDetails("", room, GetPlayerCollection().playerID)
+			If Not targetRoom Then targetRoom = GetRoomCollection().GetFirstByDetails("", room)
+			If Not targetRoom Then targetRoom = GetRoomCollection().GetFirstByDetails(room, "")
+			If targetRoom
+				Local targetDoor:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(targetRoom.id)
+				If targetDoor
+					'obsolete - no beaming to target
+					'If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
+						'DEV_switchRoom(targetRoom)
+					'EndIf
+					If Not GetPlayer().GetFigure().IsInRoom(room)
+						DEV_FastForward_TargetReached = False
+						__SwitchFastForward(True)
+						GetPlayer().GetFigure().SendToDoor(targetDoor)
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+	End Function
+
+
+	Function __SwitchFastForward(ff:Int = 0)
+		'stop fast forward
+		If DEV_FastForward And Not ff And DEV_FastForward_TargetReached
+			DEV_FastForward = False
+			GameConfig.InRoomTimeSlowDownMod = GameConfig.InRoomTimeSlowDownModBackup
+			TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
+			GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
+			GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
+		EndIf
+
+		If ff And Not DEV_FastForward
+			DEV_FastForward = True
+			DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
+			DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
+			DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
+
+			GameConfig.InRoomTimeSlowDownModBackup = GameConfig.InRoomTimeSlowDownMod
+			GameConfig.InRoomTimeSlowDownMod = 1.0
+			GetGame().SetGameSpeed( 30 * 60 )
+		EndIf
+	EndFunction
+
 
 	Function RenderDevOSD()
 		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
@@ -4189,6 +4181,8 @@ Type GameEvents
 		'doors and screen-transition-animation)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_SetInRoom, onFigureSetInRoom) ]
 
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnReachTarget, RestoreSpeedOnReachTarget) ]
+
 		'refresh ingame help
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnFinishEnter, OnEnterNewScreen) ]
 
@@ -4323,6 +4317,15 @@ Type GameEvents
 			Else
 				ScreenCollection._SetCurrentScreen(GetGame().GameScreen_world)
 			EndIf
+		EndIf
+	End Function
+
+
+	Function RestoreSpeedOnReachTarget:Int(triggerEvent:TEventBase)
+		Local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
+		If fig = GetPlayer().GetFigure()
+			App.DEV_FastForward_TargetReached = True
+			App.__SwitchFastForward(False)
 		EndIf
 	End Function
 
