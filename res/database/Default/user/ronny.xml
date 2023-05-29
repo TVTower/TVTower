@@ -615,7 +615,7 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>"PRINT"-Key: No more levies</en>
 			</title>
 			<description>
-				<de>Regierung stimmt Vorschlag der VG "Text und Computer" zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
+				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
 				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 euros would be offset by administrative costs of 2.8 million euros.</en>
 			</description>
 			<data genre="3" price="1.0" quality="30" />
@@ -754,7 +754,7 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>"Joe Thingamabob" back again</en>
 			</title>
 			<description>
-				<de>Jean-Peter Fleusch ("Kunst der unscharfen Ränder") meldet Rückkehr der Skulptur „Karl Dingensbummens“. Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
+				<de>Jean-Peter Fleusch („Kunst der unscharfen Ränder“) meldet Rückkehr der Skulptur „Karl Dingensbummens“. Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
 				<en>Jean-Peter Fleusch ("Art of blurred edges") reports return of the sculpture "Joe Thingamabob". Cleaners had mistaken it for packaging material and deposited it in a warehouse.</en>
 			</description>
 			<data genre="5" price="1.0" quality="20" />
@@ -782,7 +782,7 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 		<news id="ronny-news-frauenbart-02a" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
-				<de>Ausstellung "Frauenbärte %WORLDTIME:YEAR%" lockt Betrüger</de>
+				<de>Ausstellung „Frauenbärte %WORLDTIME:YEAR%“ lockt Betrüger</de>
 				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures scammers</en>
 			</title>
 			<description>
@@ -819,14 +819,14 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>"Tarot in the course of time" on tour</en>
 			</title>
 			<description>
-				<de>Die Ausstellung der "Zunft" reist quer durchs Land. Ausgestellt wird alles, vom alten Taschenschlitzwerkzeug bis zur ersten verdienten Mark mit 0190er Nummern.</de>
+				<de>Die Ausstellung der „Zunft“ reist quer durchs Land. Ausgestellt wird alles, vom alten Taschenschlitzwerkzeug bis zur ersten verdienten Mark mit 0190er Nummern.</de>
 				<en>The exhibition of the "guild" travels across the country. On display is everything, from the vintage pocket slitting tool up to the first Deutschmark earned with call-in phone numbers.</en>
 			</description>
 			<data genre="5" price="1.2" quality="23" />
 		</news>
 		<news id="ronny-news-steinzeit-01" type="0" creator="5578" created_by="Ronny">
 			<title>
-				<de>"Das war die Steinzeit" gastiert in %CITYNAME%</de>
+				<de>„Das war die Steinzeit“ gastiert in %CITYNAME%</de>
 				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
 			</title>
 			<description>
