@@ -498,8 +498,8 @@ Type TScriptTemplate Extends TScriptBase
 	Method SetBlocksRange(minValue:Int, maxValue:Int=-1, slope:Float=0.5)
 		if maxValue = -1 then maxValue = minValue
 		MathHelper.SortIntValues(minValue, maxValue)
-		minValue = max(1, minValue)
-		maxValue = max(1, maxValue)
+		minValue = MathHelper.clamp(minValue, 1, 12)
+		maxValue = MathHelper.clamp(maxValue, 1, 12)
 
 		blocksMin = minValue
 		blocksMax = maxValue
