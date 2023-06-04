@@ -3010,7 +3010,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 				Local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
 				If script 
 					genreID = script.mainGenre
-					genreDefinition = GetMovieGenreDefinition( genreID )
+					genreDefinition = GetMovieGenreDefinition( [genreID] + script.subgenres )
 				EndIf
 			EndIf
 

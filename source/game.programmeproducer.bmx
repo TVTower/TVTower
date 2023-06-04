@@ -405,7 +405,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			End If
 			Local script:TScript = productionConcept.script
 			Local genreID:Int = script.mainGenre
-			Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition( genreID )
+			Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition( [genreID] +script.subgenres)
 
 			For Local i:Int = 0 Until alternatives.length
 				Local alternative:TPersonBase = alternatives[i]

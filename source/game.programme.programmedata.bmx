@@ -1559,7 +1559,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 	Method GetGenreDefinition:TMovieGenreDefinition()
 		If Not genreDefinitionCache Then
-			genreDefinitionCache = GetMovieGenreDefinitionCollection().Get(Genre)
+			genreDefinitionCache = GetMovieGenreDefinitionCollection().Get([Genre]+subgenres)
 
 			If Not genreDefinitionCache
 				TLogger.Log("GetGenreDefinition()", "Programme ~q"+GetTitle()+"~q: Genre #"+Genre+" misses a genreDefinition. Creating BASIC definition-", LOG_ERROR)
