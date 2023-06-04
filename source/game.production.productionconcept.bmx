@@ -667,7 +667,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	'producers could use this)
 	'returns amount of unspend points
 	Method AssignEffectiveFocusPoints:Int(pointsToSpend:Int)
-		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
+		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subgenres)
 
 		Local indices:Int[] = productionFocus.GetOrderedFocusIndices()
 		Local priorities:Float[] = new Float[indices.length]
@@ -718,7 +718,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		_effectiveFocusPoints = 0.0
 		_effectiveFocusPointsMax = 0.0
 
-		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
+		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subGenres)
 
 		For local focusPointID:int = EachIn productionFocus.GetOrderedFocusIndices()
 			'production speed does not add to quality
@@ -841,7 +841,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		local castFitSum:Float = 0.0
 		local personCount:int = 0
-		local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
+		local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subgenres)
 
 
 		For local castIndex:int = 0 until cast.length
