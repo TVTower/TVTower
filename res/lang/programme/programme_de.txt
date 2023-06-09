@@ -12,15 +12,16 @@ LOW_AUDIENCE  = geringe Zuschauermenge
 HIGH_AUDIENCE = hohe Zuschauermenge
 
 
-MOVIE_SPEED      = Tempo
-MOVIE_CRITIC     = Kritik
-MOVIE_BOXOFFICE  = Kinokasse
-MOVIE_TVAUDIENCE = Zuschauer
-MOVIE_TOPICALITY = Aktualität
-MOVIE_BLOCKS     = Blöcke
-MOVIE_XRATED     = FSK18
-MOVIE_EPISODES   = Folgen
-MOVIE_CAST       = Besetzung
+MOVIE_SPEED       = Tempo
+MOVIE_CRITIC      = Kritik
+MOVIE_BOXOFFICE   = Kinokasse
+MOVIE_TVAUDIENCE  = Zuschauer
+MOVIE_TOPICALITY  = Aktualität
+MOVIE_BLOCKS      = Blöcke
+MOVIE_XRATED      = FSK18
+MOVIE_EPISODES    = Folgen
+MOVIE_CAST        = Besetzung
+MOVIE_REPITITIONS = Wiederholungen
 
 MOVIE_LIVESHOW   = Live-Ausstrahlung
 MOVIE_CALLINSHOW = Du verdienst %PROFIT% je 1.000 Zuschauer.

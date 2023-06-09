@@ -555,6 +555,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Function
 
 
+	Function SortByRepititions:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
+		If p2 and p1
+			return p1.GetTimesBroadcasted(p1.GetOwner()) - p2.GetTimesBroadcasted(p2.GetOwner())
+		Endif
+		return SortByName(o1, o2)
+	End Function
+
+
 	Method hasLicenceFlag:Int(flag:Int) {_exposeToLua}
 		Return licenceFlags & flag
 	End Method

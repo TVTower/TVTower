@@ -12,15 +12,16 @@ PLANNER_MESSAGES     = Messages
 #HIGH_AUDIENCE = 
 
 
-MOVIE_SPEED      = Vitesse
-MOVIE_CRITIC     = Critiques
-#MOVIE_BOXOFFICE  = Box-office
-#MOVIE_TVAUDIENCE = 
-MOVIE_TOPICALITY = Actualité
-#MOVIE_BLOCKS     = blocks
-MOVIE_XRATED     = Classé X
-MOVIE_EPISODES   = episodes
-MOVIE_CAST       = Distribution
+MOVIE_SPEED       = Vitesse
+MOVIE_CRITIC      = Critiques
+#MOVIE_BOXOFFICE   = Box-office
+#MOVIE_TVAUDIENCE  = 
+MOVIE_TOPICALITY  = Actualité
+#MOVIE_BLOCKS      = blocks
+MOVIE_XRATED      = Classé X
+MOVIE_EPISODES    = episodes
+MOVIE_CAST        = Distribution
+#MOVIE_REPITITIONS = 
 
 #MOVIE_LIVESHOW   = 
 MOVIE_CALLINSHOW = Gain %PROFIT% par 1.000 téléspectacteurs.

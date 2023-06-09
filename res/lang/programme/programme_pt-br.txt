@@ -12,15 +12,16 @@ LOW_AUDIENCE  = Baixa audiência
 HIGH_AUDIENCE = Audiência elevada
 
 
-MOVIE_SPEED      = Velocidade
-MOVIE_CRITIC     = Crítica
-MOVIE_BOXOFFICE  = Bilheteria
-MOVIE_TVAUDIENCE = Audiência TV
-MOVIE_TOPICALITY = Atualidade
-MOVIE_BLOCKS     = bloco
-MOVIE_XRATED     = como adulto
-MOVIE_EPISODES   = episódios
-MOVIE_CAST       = Elenco
+MOVIE_SPEED       = Velocidade
+MOVIE_CRITIC      = Crítica
+MOVIE_BOXOFFICE   = Bilheteria
+MOVIE_TVAUDIENCE  = Audiência TV
+MOVIE_TOPICALITY  = Atualidade
+MOVIE_BLOCKS      = bloco
+MOVIE_XRATED      = como adulto
+MOVIE_EPISODES    = episódios
+MOVIE_CAST        = Elenco
+MOVIE_REPITITIONS = Repetições
 
 MOVIE_LIVESHOW   = Programa ao vivo
 MOVIE_CALLINSHOW = Você ganha %PROFIT% por cada 1.000 espectadores.
