@@ -175,12 +175,12 @@ ERROR_NOT_ENOUGH_MONEY              = Dinheiro insuficiente!
 ERROR_NOT_ENOUGH_MONEY_TEXT         = Você não possui dinheiro suficiente para terminar essa ação.
 
 #NEWGAMESETTINGS_RANDOMIZE          =
-NEWGAMESETTINGS_RANDOMIZE_DETAIL    = Escolha a aparência (cor, figura) e nomes aleatoriamente
-NEWGAMESETTINGS_CHANNELNAME_DETAIL  = Nome do canal de TV deste jogador
-NEWGAMESETTINGS_PLAYERNAME_DETAIL   = Nome deste jogador
-NEWGAMESETTINGS_DIFFICULTY          = Dificuldade
-NEWGAMESETTINGS_DIFFICULTY_DETAIL   = A dificuldade |b|para|/b| este jogador
-NEWGAMESETTINGS_START_YEAR_DETAIL   = O ano em que o jogo vai começar. Afeta os programas disponíveis!
+NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Escolha a aparência (cor, figura) e nomes aleatoriamente
+NEWGAMESETTINGS_CHANNELNAME_DETAIL = Nome do canal de TV deste jogador
+NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Nome deste jogador
+NEWGAMESETTINGS_DIFFICULTY         = Dificuldade
+NEWGAMESETTINGS_DIFFICULTY_DETAIL  = A dificuldade |b|para|/b| este jogador
+NEWGAMESETTINGS_START_YEAR_DETAIL  = O ano em que o jogo vai começar. Afeta os programas disponíveis!
 #NEWGAMESETTINGS_GAME_SEED          =
 #NEWGAMESETTINGS_GAME_SEED_DETAIL   =
 

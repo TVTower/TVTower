@@ -99,7 +99,7 @@ DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = e você distribuiu 
 
 PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Transmissão ao vivo hoje às %X% horas.
 PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Transmissão ao vivo amanhã às %X% horas.
-PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Transmissão ao vivo em %X% às %Y% horas.
+PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Transmissão ao vivo em %Y% às %X% horas.
 
 CLICK_TO_SELECT_PERSON = Clique para selecionar a Pessoa
 TOUCH_TO_SELECT_PERSON = Toque para selecionar a Pessoa
