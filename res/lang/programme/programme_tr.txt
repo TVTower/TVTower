@@ -12,15 +12,16 @@ LOW_AUDIENCE  = Düşük İzleyici
 HIGH_AUDIENCE = Yüksek İzleyici
 
 
-MOVIE_SPEED      = Tempo
-MOVIE_CRITIC     = Eleştiri
-MOVIE_BOXOFFICE  = Gişe Hasılatı
-#MOVIE_TVAUDIENCE = 
-MOVIE_TOPICALITY = Güncellik
-MOVIE_BLOCKS     = bloklar
-MOVIE_XRATED     = +18
-MOVIE_EPISODES   = bölüm
-MOVIE_CAST       = Ekip
+MOVIE_SPEED       = Tempo
+MOVIE_CRITIC      = Eleştiri
+MOVIE_BOXOFFICE   = Gişe Hasılatı
+#MOVIE_TVAUDIENCE  = 
+MOVIE_TOPICALITY  = Güncellik
+MOVIE_BLOCKS      = bloklar
+MOVIE_XRATED      = +18
+MOVIE_EPISODES    = bölüm
+MOVIE_CAST        = Ekip
+#MOVIE_REPITITIONS = 
 
 #MOVIE_LIVESHOW   = 
 MOVIE_CALLINSHOW = Her 1.000 İzleyici başına %PROFIT% kazanacaksınız.

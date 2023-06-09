@@ -12,15 +12,16 @@ PLANNER_MESSAGES     = Mensajes
 #HIGH_AUDIENCE = 
 
 
-MOVIE_SPEED      = Velocidad
-MOVIE_CRITIC     = Critica
-MOVIE_BOXOFFICE  = Taquilla
-#MOVIE_TVAUDIENCE = 
-MOVIE_TOPICALITY = Actualidad
-MOVIE_BLOCKS     = bloque
-MOVIE_XRATED     = Clasificado X
-MOVIE_EPISODES   = Episodios
-MOVIE_CAST       = Lanzar
+MOVIE_SPEED       = Velocidad
+MOVIE_CRITIC      = Critica
+MOVIE_BOXOFFICE   = Taquilla
+#MOVIE_TVAUDIENCE  = 
+MOVIE_TOPICALITY  = Actualidad
+MOVIE_BLOCKS      = bloque
+MOVIE_XRATED      = Clasificado X
+MOVIE_EPISODES    = Episodios
+MOVIE_CAST        = Lanzar
+#MOVIE_REPITITIONS = 
 
 #MOVIE_LIVESHOW   = 
 MOVIE_CALLINSHOW = Usted gana %PROFIT% por 1.000 espectadores.

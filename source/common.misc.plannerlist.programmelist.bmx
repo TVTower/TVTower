@@ -62,11 +62,12 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 	Method New()
-		sortSymbols = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_runningTime", "gfx_datasheet_icon_topicality"]
-		sortKeys = [0, 1, 2]
+		sortSymbols = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_runningTime", "gfx_datasheet_icon_topicality", "gfx_datasheet_icon_repetitions"]
+		sortKeys = [0, 1, 2, 3]
 		sortTooltips = [ new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("NAME")), new TRectangle.Init(0,0,-1,-1)), ..
 		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MOVIE_BLOCKS")), new TRectangle.Init(0,0,-1,-1)), ..
-		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MOVIE_TOPICALITY")), new TRectangle.Init(0,0,-1,-1)) ..
+		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MOVIE_TOPICALITY")), new TRectangle.Init(0,0,-1,-1)), ..
+		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MOVIE_REPITITIONS")), new TRectangle.Init(0,0,-1,-1)) ..
 		]
 
 		RegisterEvents()
@@ -201,6 +202,8 @@ Type TgfxProgrammelist Extends TPlannerList
 					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByBlocks)
 				case 2
 					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByTopicality)
+				case 3
+					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByRepititions)
 				default
 					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByName)
 			End Select
