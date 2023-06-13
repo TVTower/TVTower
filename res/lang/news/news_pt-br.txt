@@ -5,7 +5,7 @@ NEWS_SPORT            = Esportes
 NEWS_CURRENTAFFAIRS   = Atualidades
 NEWS_CULTURE          = Cultura
 
-NEWS_SORT_TOPICALITY = Classificar por tópico
+NEWS_SORT_TOPICALITY = Classificar por atualidade
 #NEWS_SORT_PAID       = 
 #NEWS_SORT_AGE        = 
 NEWS_SORT_PRICE      = Classificar por preço
