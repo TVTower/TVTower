@@ -644,21 +644,21 @@ Type TLocalizationLanguage
 		If group Then key = group + "::" + key
 		key = lower(key)
 
-		local availableStrings:int = 1
+		local availableStrings:int = 0
 		local found:int = 0
 		local subKey:string = ""
 		repeat
 			subKey = Key
 			if availableStrings > 0 then subKey :+ availableStrings
 			if map.Contains(subKey)
-				availableStrings :+ 1
 				found :+ 1
 			elseif availableStrings <> 0
 				exit
 			endif
+			availableStrings :+ 1
 		until found > 10
 
-		return availableStrings
+		return found
 	End Method
 End Type
 
