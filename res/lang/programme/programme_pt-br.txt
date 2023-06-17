@@ -12,7 +12,7 @@ LOW_AUDIENCE  = Baixa audiência
 HIGH_AUDIENCE = Audiência elevada
 
 
-MOVIE_SPEED      = Velocidaade
+MOVIE_SPEED      = Velocidade
 MOVIE_CRITIC     = Crítica
 MOVIE_BOXOFFICE  = Bilheteria
 MOVIE_TVAUDIENCE = Audiência TV
@@ -96,7 +96,7 @@ LICENCETYPE_EPISODE        = Episódio
 LICENCETYPE_SERIES         = Série
 LICENCETYPE_FRANCHISE      = Franquia
 SERIES_WITH_X_EPISODES     = Série com %EPISODESCOUNT% episódios
-#COLLECTION_WITH_X_ELEMENTS =
+COLLECTION_WITH_X_ELEMENTS = Coleção com %X% elementos
 
 PROGRAMME_PRODUCT_UNDEFINED   = Indefinido
 PROGRAMME_PRODUCT_MOVIE       = Filme
@@ -113,34 +113,34 @@ PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programa e trailer na grade de progra
 ONLY_1_BROADCAST_POSSIBLE                = Apenas 1 transmissão possível!
 ONLY_X_BROADCASTS_POSSIBLE               = Apenas %X% transmissões são possíveis!
 NO_MORE_BROADCASTS_ALLOWED               = Sem mais transmissões permitidas!
-#BROADCAST_TIME_RESTRICTED                = 
+BROADCAST_TIME_RESTRICTED                = Tempo de transmissão restrito!
 BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Transmissão permitida apenas das %X%:00 às %Y%:00!
 FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Primeira transmissão permitida apenas das %X%:00 às %Y%:00!
-#LIVE_PRODUCTION_FINISH_WILL_COST_X       =
+LIVE_PRODUCTION_FINISH_WILL_COST_X       = O acabamento da produção ao vivo custará %X%!
 
 OPENINGSHOW_TITLE       = Grande lançamento de "%CHANNELNAME%
 OPENINGSHOW_DESCRIPTION = Vamos estourar a champanhe. %CHANNELNAME% está sendo lançado hoje.
 
 SPORT_PROGRAMME_TITLE                                = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
 SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = All %MATCHCOUNT% upcoming matches of %LEAGUENAME% in season %SEASONYEARSTART%.
-SPORT_PROGRAMME_MATCH_TIMES                          = Match times
-#SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = 
-#SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = 
-#SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = 
-#SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = 
-#SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = 
+SPORT_PROGRAMME_MATCH_TIMES                          = Hora da Partida
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Partida entre a colocação %TEAM1RANK% e %TEAM2RANK% da liga. %TEAM1NAMEINITIALS% treinador %TEAM1TRAINERSHORT% está otimista.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS% estrela %TEAM1STARSHORT% contra a equipe em torno do artilheiro %TEAM2STAR%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Um jogo interessante está chegando quando %TEAM1ARTICLE1% %TEAM1NAME% encontra os jogadores de %TEAM2NAMEINITIALS%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% visitando %TEAM1NAMEINITIALS% em %TEAM1CITY%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% e sua equipe viajam para %TEAM2CITY%, classificação %TEAM2RANK% na liga.
 
-#SPORT_PROGRAMME_PLAYOFF_MATCH    = 
-#SPORT_PROGRAMME_MATCH_OF_LEAGUEX = 
-#SPORT_PLAYOFFS_LONG              = 
-#SPORT_PLAYOFFS_SHORT             = 
+SPORT_PROGRAMME_PLAYOFF_MATCH    = Partida de mata-mata.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Partida de %LEAGUENAME%.
+SPORT_PLAYOFFS_LONG              = "Jogos decisivos"
+SPORT_PLAYOFFS_SHORT             = "MM"
 
-#SPORT_AFTER_PENALTY_SHORT  = 
-#SPORT_AFTER_OVERTIME_SHORT = 
+SPORT_AFTER_PENALTY_SHORT  = "PENAL"
+SPORT_AFTER_OVERTIME_SHORT = "PRORRO"
 
-#LIVE_ON_TAPE                        = 
-#ALL_MATCHES_FINISHED                = 
-#X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = 
+LIVE_ON_TAPE                        = Ao vivo em fita
+ALL_MATCHES_FINISHED                = TODAS AS PARTIDAS CONCLUÍDAS
+X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% Partidas ao vivo já iniciadas.
 
 
 PENALTY_OF_X_WAS_PAID                                      = Multa contratual de %MONEY% foi paga.

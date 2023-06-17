@@ -1,6 +1,6 @@
 INCREASE          = Aumento
-#RUNNING_COSTS     = 
-BROADCASTING_AREA = Aréa de transmissão
+RUNNING_COSTS     = Custos de Funcionamento
+BROADCASTING_AREA = Área de transmissão
 OF_THE_MAP        = no mapa
 
 ##https://www.iso.org/obp/ui/#iso:code:3166:DE
@@ -40,36 +40,36 @@ OF_THE_MAP        = no mapa
 #MAP_COUNTRY_DE-NW_SHORT =
 #MAP_COUNTRY_DE-MV_SHORT =
 
-#AUDIENCE_REACH_LEVEL_WILL_INCREASE = 
-#AUDIENCE_REACH_LEVEL_INCREASED     = 
-#LEVEL_INCREASED_FROM_X_TO_Y        = 
-#PRICES_WILL_RISE                   = 
-#AUDIENCE_REACH_LEVEL_DECREASED     = 
-#LEVEL_DECREASED_FROM_X_TO_Y        = 
-#PRICES_WILL_FALL                   = 
+AUDIENCE_REACH_LEVEL_WILL_INCREASE = O nível de alcance do público aumentará!
+AUDIENCE_REACH_LEVEL_INCREASED     = O nível de alcance do público aumentou
+LEVEL_INCREASED_FROM_X_TO_Y        = O nível aumenta de %X% para %Y%.
+PRICES_WILL_RISE                   = Os preços dos programas e notícias vão subir.
+AUDIENCE_REACH_LEVEL_DECREASED     = O nível de alcance do público diminuiu
+LEVEL_DECREASED_FROM_X_TO_Y        = O nível diminuiu de %X% para %Y%.
+PRICES_WILL_FALL                   = Os preços dos programas e notícias cairão.
 
-#SHOW_MAP_DETAILS                       = 
-#CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = 
+SHOW_MAP_DETAILS                       = Mostrar detalhes do mapa
+CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Clique para mostrar informações avançadas do mapa.
 
-#TOGGLE_DISPLAY_OF_STATIONTYPE = 
-#TOGGLE_DISPLAY_OF_PLAYER_X    = 
+TOGGLE_DISPLAY_OF_STATIONTYPE = Alternar exibição de |b|%STATIONTYPE%|/b|
+TOGGLE_DISPLAY_OF_PLAYER_X    = Alternar exibição de |b|player %X%|/b|
 
-#SATUPLINK_TO_X = 
+SATUPLINK_TO_X = SatUplink para %X%
 
-#BROADCAST_QUALITY      = 
+BROADCAST_QUALITY      = Qualidade de Transmissão
 #MARKET_SHARE           = 
-#REQUIRED_CHANNEL_IMAGE = 
-#SUBSCRIBED_CHANNELS    = 
-#LAUNCHED               = 
+REQUIRED_CHANNEL_IMAGE = Imagem de canal obrigatória
+SUBSCRIBED_CHANNELS    = Canais inscritos
+LAUNCHED               = Lançado
 
-#PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = 
-#BROADCAST_PERMISSION_EXISTING             = 
-#BROADCAST_PERMISSION_MISSING              = 
-#BROADCAST_PERMISSION                      = 
-#BROADCAST_PERMISSION_SHORT                = 
-#PERMISSION                                = 
-#IMAGE                                     = 
-#RENEW_AUTOMATICALLY                       = 
+PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = O preço inclui %X% para permissão de transmissão
+BROADCAST_PERMISSION_EXISTING             = Permissão de transmissão existente
+BROADCAST_PERMISSION_MISSING              = Permissão de transmissão ausente
+BROADCAST_PERMISSION                      = Permissão de transmissão
+BROADCAST_PERMISSION_SHORT                = Transmissão perm.
+PERMISSION                                = Permissão
+IMAGE                                     = Imagem
+RENEW_AUTOMATICALLY                       = Renovar automaticamente
 
 #STATIONMAP_SECTION_NAME  = 
 #STATIONMAP_SECTIONS_NAME = 
@@ -80,28 +80,28 @@ OF_THE_MAP        = no mapa
 
 #PRESSURE_GROUP              = 
 #PRESSURE_GROUPS             = 
-#PRESSURE_GROUPS_SMOKERLOBBY = 
-#PRESSURE_GROUPS_ANTISMOKER  = 
-#PRESSURE_GROUPS_ARMSLOBBY   = 
-#PRESSURE_GROUPS_PACIFISTS   = 
-#PRESSURE_GROUPS_CAPITALISTS = 
-#PRESSURE_GROUPS_COMMUNISTS  = 
+PRESSURE_GROUPS_SMOKERLOBBY = Lobby de Fumantes
+PRESSURE_GROUPS_ANTISMOKER  = Antifumante
+PRESSURE_GROUPS_ARMSLOBBY   = Lobby de Armas
+PRESSURE_GROUPS_PACIFISTS   = Pacifistas
+PRESSURE_GROUPS_CAPITALISTS = Capitalistas
+PRESSURE_GROUPS_COMMUNISTS  = Comunistas
 
-#CHANNEL_IMAGE_TOO_LOW = 
-#CHANNEL_LIMIT_REACHED = 
-#PROVIDER              = 
+CHANNEL_IMAGE_TOO_LOW = Imagem do canal muito baixa
+CHANNEL_LIMIT_REACHED = Limite de canal atingido
+PROVIDER              = Fornecedor
 
-#CONTRACT_DURATION = 
+CONTRACT_DURATION = Duração do contrato
 #PROCEEDS_OF_SALE  = 
-#TERMINATION_FEE   = 
+TERMINATION_FEE   = Taxa de rescisão
 
-#CONTRACT_ENDS_SOON                                                 = 
-#CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = 
-#SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX     = 
+CONTRACT_ENDS_SOON                                                 = Contrato termina em breve
+CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = |b|Cable network uplink|/b| contrato com |b|%COMPANYX%|/b| terminará em %TIMEX% (%DAYX%).
+SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX     = |b|Satellite uplink|/b| contrato com |b|%COMPANYX%|/b| terminará em %TIMEX% (%DAYX%).
 
 ACQUIRED_PROPERTY = Propriedade adquirida
 STATION           = Estação
-#STATIONS          = 
+STATIONS          = Estações
 #ANTENNA           = 
 #ANTENNAS          = 
 #ANTENNA_RECEIVER  = 
@@ -114,27 +114,27 @@ STATION           = Estação
 #CABLE_NETWORK_RECEIVER  = 
 #CABLE_NETWORK_RECEIVERS = 
 
-#SATELLITE           = 
-#SATELLITES          = 
+SATELLITE           = Satélite
+SATELLITES          = Satélites
 #SATELLITE_UPLINK    = 
 #SATELLITE_UPLINKS   = 
-#SATELLITE_RECEIVER  = 
-#SATELLITE_RECEIVERS = 
-#UNUSED_TRANSMITTER  = 
+SATELLITE_RECEIVER  = Antena parabólica
+SATELLITE_RECEIVERS = Antenas parabólicas
+UNUSED_TRANSMITTER  = Transmissor não utilizado
 
 NEW_STATION              = Nova estação
 BUY_STATION              = Comprar estação
 SELL_STATION             = Vender estação
-#NEW_CABLE_NETWORK_UPLINK = 
-#NEW_SATELLITE_UPLINK     = 
+NEW_CABLE_NETWORK_UPLINK = Novo Cable Network Uplink
+NEW_SATELLITE_UPLINK     = Novo satélite Uplink
 #SIGN_UPLINK              = 
-#CANCEL_UPLINK            = 
-#SELL_TRANSMITTER         = 
-#RENEW_CONTRACT           = 
+CANCEL_UPLINK            = Cancelar uplink
+SELL_TRANSMITTER         = Vender transmissor
+RENEW_CONTRACT           = Renovar contrato
 
 SELECT_LOCATION  = Selecione o local
 SELECT_STATION   = Selecione a estação
-#SELECT_SATELLITE = 
+SELECT_SATELLITE = Selecione o satélite
 TOO_EXPENSIVE    = Muito caro
 UNSELLABLE       = Impossível vender
 

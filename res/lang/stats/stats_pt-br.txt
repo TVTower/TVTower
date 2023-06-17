@@ -15,14 +15,14 @@ ACHIEVEMENT_COMPLETED               = Conquista completa
 REWARD                              = Recompensa
 TASK                                = Tarefa
 
-#BEFORE_XTH_PLAYER_RESTART = 
+BEFORE_XTH_PLAYER_RESTART = Antes de %X%. reinício do jogador
 
-#PLAYER_WENT_BANKRUPT                   = 
-#PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT1 = 
-#PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT2 = 
-#PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT3 = 
-#PLAYER_WILL_START_AGAIN                = 
-#AI_WILL_TAKE_OVER_THIS_PLAYER          = 
+PLAYER_WENT_BANKRUPT                   = Jogador faliu.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT1 = O jogador %X% do canal %Y% não jogou bem o suficiente e faliu.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT2 = Espera-se que o jogador %X% do canal %Y% tenha um plano de contingência, pois acabou de falir.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT3 = O canal %Y% faliu. O antigo gerente %X% foi demitido por incompetência.
+PLAYER_WILL_START_AGAIN                = O jogador começará novamente.
+AI_WILL_TAKE_OVER_THIS_PLAYER          = AI vai assumir este jogador.
 
 
 STATISTICS_NOT_AVAILABLE    = Estatísticas indisponíveis
@@ -38,7 +38,7 @@ TV_TURN_IT_ON               = Você deveria ligá-la de novo ;D
 AUDIENCE_RATING             = Avaliação da audiência
 AUDIENCE_RATINGS            = Avaliações da audiência
 POTENTIAL_AUDIENCE_NUMBER   = Audiência potencial
-#POTENTIAL_AUDIENCE          = 
+POTENTIAL_AUDIENCE          = Audiência potencial
 AUDIENCE_NUMBER             = Audiência
 INVALID_BY_BROADCAST_OUTAGE = Inválido por falha de transmissão
 NEXT_ADBLOCK                = Próximo bloco comercial
@@ -47,7 +47,7 @@ NEXT_NOTHINGSET             = não configurado!
 
 FINANCES_EXPENSES                    = Despesas
 FINANCES_INCOME                      = Renda
-#FINANCES_TODAYS_INCOME               = 
+FINANCES_TODAYS_INCOME               = Renda de hoje
 FINANCES_LAST_FINANCIAL_ACTIVITIES   = Últimas atividades financeiras
 FINANCES_FINANCIAL_CURVES            = Curvas financeiras
 FINANCES_TRADING_PROGRAMMELICENCES   = Aquisição de licença de programas
@@ -73,7 +73,7 @@ FINANCES_HISTORY_FOR_CREDITTAKEN          = empréstimo
 FINANCES_HISTORY_FOR_STATIONBOUGHT        = compra de estação
 FINANCES_HISTORY_FOR_STATIONSOLD          = venda de estação
 FINANCES_HISTORY_OF_STATIONFEES           = taxas das estações
-#FINANCES_HISTORY_OF_BROADCASTPERMISSIONS  = 
+FINANCES_HISTORY_OF_BROADCASTPERMISSIONS  = permissões de transmissão
 FINANCES_HISTORY_FOR_MISC                 = de diversos
 FINANCES_HISTORY_OF_GRANTED_BENEFITS      = de benefícios recebidos
 FINANCES_HISTORY_FOR_PROGRAMMELICENCE     = do programa: %TITLE%
