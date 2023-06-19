@@ -160,7 +160,8 @@
 				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1990" distribution="2" maingenre="6" subgenre="" flags="4" blocks="5" price_mod="1.33" />
+			<data country="D" distribution="2" maingenre="6" subgenre="" flags="4" blocks="5" price_mod="1.33" />
+			<releaseTime year_relative="5"  />
 			<ratings critics="75" speed="15" outcome="10" />
 		</programme>
 		<programme id="42761763-4125-4a66-8227-40027caab44a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -177,7 +178,8 @@
 				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1985" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<data country="D" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="0" />
 			<ratings critics="100" speed="39" outcome="0" />
 		</programme>
 		<programme id="4fe2dff2-039d-4747-b37a-7f79010b9997" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">

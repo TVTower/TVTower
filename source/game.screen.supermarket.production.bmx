@@ -1629,7 +1629,8 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		'in the job) - for "all jobs" do not show amateurs
 		Local amateurCount:Int = 5
 		If filterToJobID = 0 Then amateurCount = 0
-		Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, 10, amateurCount, 1, True)
+		Local minAge:Int = getMinAge()
+		Local persons:TPersonBase[] = GetProductionManager().GetCastCandidates(filterToJobID, filterToGenderID, minAge, amateurCount, 1, True)
 
 		Rem
 			'Variant for "all jobs": no filter for celebrities but keep use job filter for amateurs
@@ -1666,9 +1667,37 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		castSelectList.filteredGenderID = filterToGenderID
 		'initial sorting
 		castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
+
+		'TODO this filter does not prevent moving an underage actor to a director slot
+		Function getMinAge:Int()
+			Local handler:TScreenHandler_SupermarketProduction = TScreenHandler_SupermarketProduction.GetInstance()
+			Local script:TScriptBase = handler.currentProductionConcept.script
+			Local jobSlotList:TGUICastSlotList = handler.castSlotList
+			Local jobId:Int = jobSlotList.selectCastWindow.selectJobID
+
+			Local adultAge:Int = 20
+			If script
+				If jobId = TVTPersonJob.DIRECTOR Then Return adultAge
+				If script.IsXRated()
+					If jobId = TVTPersonJob.HOST Then Return adultAge
+					If jobId = TVTPersonJob.REPORTER Then Return adultAge
+				EndIf
+				Local genres:Int[] = [script.mainGenre]
+				If script.subGenres Then genres:+ script.subGenres
+				For Local i:Int = 0 Until genres.length
+					Local genre:Int = genres[i]
+					If genre = TVTProgrammeGenre.Erotic Then Return adultAge
+					'If genre = TVTProgrammeGenre.Horror Then Return adultAge
+					'If genre = TVTProgrammeGenre.Thriller Then Return adultAge
+				Next
+				return 10
+			Else
+				Return adultAge
+			EndIf
+		EndFunction
 	End Method
-	
-	
+
+
 	Method Update:Int() override
 		Super.Update()
 		
@@ -2236,6 +2265,21 @@ Type TGUICastSlotList Extends TGUISlotList
 
 		Local personID:Int = int(appData[1])
 		local person:TPersonBase = GetPersonBase(personID)
+
+		'quick fix: prevent pasting minors
+		'TODO implement proper "slot allowed for person" functionality, see also getMinAge function in LoadPersons
+		If person.GetAge() < 20
+			Local handler:TScreenHandler_SupermarketProduction = TScreenHandler_SupermarketProduction.GetInstance()
+			Local script:TScriptBase = handler.currentProductionConcept.script
+			If script
+				Local genres:Int[] = [script.mainGenre]
+				If script.subGenres Then genres:+ script.subGenres
+				For Local i:Int = 0 Until genres.length
+					Local genre:Int = genres[i]
+					If genre = TVTProgrammeGenre.Erotic Then Return False
+				Next
+			EndIf
+		EndIf
 
 		SetSlotCast(slot, person)
 		
