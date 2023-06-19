@@ -289,6 +289,9 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 '			castFavorites[i] = GetPersonBaseCollection().GetByID(castFavoritesIDs[i])
 '		next
 
+		'TODO follow rules for casting as well; age already part of Filter?
+		'use filter parameter object rather than 8 parameters
+		'currently global min age
 		'choose some cast suiting to the requirements of the script
 		Local usedPersonIDs:Int[]
 		For Local i:Int = 0 Until script.jobs.length
@@ -314,7 +317,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				'if person print "would reuse: " + person.GetFullName()
 				'slight chance to ignore the given one?
 				'and to look for a new one
-				If person And RandRange(0,100) < 10 Then person = Null
+				If person And (RandRange(0,100) < 10 Or Not passesAgeRestriction(person)) Then person = Null
 			EndIf
 
 
@@ -327,6 +330,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				Else
 					person = GetPersonBaseCollection().GetRandomCastableInsignificant(Null, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
 				EndIf
+				If Not passesAgeRestriction(person) Then person = Null
 
 				'not enough insignificants available?
 				If Not person
@@ -381,6 +385,11 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		'pc.CalculateCastFit()
 
 
+		Function passesAgeRestriction:Int(person:TPersonBase)
+			If person.GetAge() < 20 Then Return False
+			Return True
+		End Function
+
 		'try to find a better fit: equally good but less expensive, better but only slightly more expensive
 		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[])
 			'do not replace if insignificant was chosen
@@ -400,7 +409,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 			For Local i:Int = 0 Until alternatives.length
 				Local alternative:TPersonBase = alternatives[i]
-				If Not alternative Or Not alternative.IsCastable() Or Not alternative.IsBookable() Then Continue
+				If Not alternative Or Not alternative.IsCastable() Or Not alternative.IsBookable() Or Not passesAgeRestriction(alternative) Then Continue
 				If IsBetterFit(result, alternative, job.job, genreDefinition) Then result = alternative
 			Next
 

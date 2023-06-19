@@ -2253,7 +2253,7 @@ Type TDatabaseLoader
 					Continue
 				EndIf
 				Local prodYear:Int = programmeData.GetYear()
-				If prodYear - dobYear - adjustAge >= minAgeAdultCast Then Continue
+				If prodYear - (dobYear - adjustAge) >= minAgeAdultCast Then Continue
 				If person.IsFictional() And hasAdultProperty(person.GetID(), programmeData)
 					adjustAge = minAgeAdultCast - (prodYear - dobYear - adjustAge)
 					adjustAge = RandRange(adjustAge, adjustAge + adjustAgeRandomYears)

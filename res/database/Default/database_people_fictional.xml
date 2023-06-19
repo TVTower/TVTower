@@ -6,14 +6,14 @@
 			<first_name>Babsi</first_name>
 			<last_name>Angora</last_name>
 			<nick_name></nick_name>
-			<details job="2" gender="2" birthday="" deathday="" country="D" fictional="1" />
+			<details job="2" gender="2" birthday="-20" deathday="" country="D" fictional="1" />
 			<data popularity="20" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="75" topgenre="0" />
 		</person>
 		<person id="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<first_name>Henry</first_name>
 			<last_name>Cutamaran</last_name>
 			<nick_name></nick_name>
-			<details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="1" gender="1" birthday="-25" deathday="" country="" fictional="1" />
 		</person>
 		<person id="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<first_name>Patty</first_name>
@@ -33,7 +33,7 @@
 			<first_name>Betty</first_name>
 			<last_name>Botterblom</last_name>
 			<nick_name></nick_name>
-			<details job="136" gender="2" birthday="" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
+			<details job="136" gender="2" birthday="-25" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
 			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
 		</person>
 		<person id="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" tmdb_id="0" imdb_id="" creator="">
