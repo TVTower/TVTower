@@ -40,7 +40,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Teklif vermek için Film veya Diziye 
 AUCTION_MAKE_BID                         = Teklif
 AUCTION_WITHOUT_BID                      = Teklifsiz
 YOU_HAVE_BEEN_OUTBID                     = Açık arttırmada sizden yüksek teklif veren oldu.
-SOMEONE_BID_MORE_THAN_YOU_FOR_X          = "%TITLE%" için senden daha iyi teklif veren oldu.
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = |b|%TITLE%|b| için senden daha iyi teklif veren oldu.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Verdiğiniz, %MONEY% miktarda teklif ücreti iade edildi.  
 YOU_HAVE_WON_AN_AUCTION                  = Bir Açık Arttırma kazandınız.
 
@@ -145,9 +145,9 @@ OPENINGSHOW_DESCRIPTION = Şampanyaları patlatın. %CHANNELNAME% bugün açıl�
 
 
 PENALTY_OF_X_WAS_PAID                                      = Ödenen ceza: %MONEY% .
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = +18 olan Film, "%TITLE%" , gün içinde YAYINLANAMAZ.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = +18 olan Film, |b|%TITLE%|b| , gün içinde YAYINLANAMAZ.
 AUTHORITIES_STOPPED_BROADCAST                              = Yetkililer yayını durdurdu
 AUTHORITIES_CONFISCATED_LICENCE                            = Yetkililer lisansa el koydu
-PROGRAMMELICENCE_X_GOT_CONFISCATED                         = "%TITLE%" isimli program lisansına el konuldu.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = |b|%TITLE%|/b| isimli program lisansına el konuldu.
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Yetkililer yanlış odayı ziyaret ettiler.
 BETTER_WATCH_OUT_NEXT_TIME                                 = Bir dahaki sefere daha dikkatli davranın.

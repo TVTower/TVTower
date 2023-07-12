@@ -40,7 +40,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Clique no filme ou série para dar um
 AUCTION_MAKE_BID                         = Dar lance
 AUCTION_WITHOUT_BID                      = Sem lance
 YOU_HAVE_BEEN_OUTBID                     = Seu lance foi superado
-SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Alguém deu um lance maior que o seu para "%TITLE%"
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Alguém deu um lance maior que o seu para |b|%TITLE%|/b|.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Seu lance anterior de %MONEY% foi reembolsado.
 YOU_HAVE_WON_AN_AUCTION                  = Você ganhou o leilão
 
@@ -145,9 +145,9 @@ X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% Partidas ao vivo já iniciadas.
 
 
 PENALTY_OF_X_WAS_PAID                                      = Multa contratual de %MONEY% foi paga.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Transmissão do programa pornô "%TITLE%" não é permitida durante o dia.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Transmissão do programa pornô |b|%TITLE%|/b| não é permitida durante o dia.
 AUTHORITIES_STOPPED_BROADCAST                              = As autoridades interromperam a transmissão
 AUTHORITIES_CONFISCATED_LICENCE                            = As autoridades confiscaram a licença
-PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licença do programa "%TITLE%" foi confiscada.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licença do programa |b|%TITLE%|/b| foi confiscada.
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Parece que as autoridades foram à sala errada.
 BETTER_WATCH_OUT_NEXT_TIME                                 = Melhor ter cuidado da próxima vez.

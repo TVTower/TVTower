@@ -50,17 +50,17 @@ MUSIC                       = Musik
 SFX                         = Soundeffekte
 FULLSCREEN                  = Vollbild
 VSYNC                       = VSync
-RIGHTCLICK_EMULATION              = Emuliere "Rechte Maustaste"
+RIGHTCLICK_EMULATION              = Emuliere „Rechte Maustaste“
 RIGHTCLICK_EMULATION_EXPLANATION  = Simuliere Rechtsklick mit lange-drücken-Klick der linken Maustaste oder Touch
-RIGHTCLICK_EMULATION_TIME         = Zeit bis "Rechtsklick"
+RIGHTCLICK_EMULATION_TIME         = Zeit bis „Rechtsklick“
 WINDOW_MODE_RESOLUTION      = Auflösung im Fenstermodus
 INPUT                       = Eingabe
 USE_TOUCH_INPUT             = Nutze Touchscreen-Eingabe
 USE_TOUCH_INPUT_EXPLANATION = Der erste Klick setzt den Mauscursor, folgende zählen als Klick. Erneute Cursorpositionierung bei zu großem Abstand zwischen den Klickpositionen.
-MOVE_INSTEAD_CLICK_RADIUS   = Radius "Bewegen statt Klick"
+MOVE_INSTEAD_CLICK_RADIUS   = Radius „Bewegen statt Klick“
 MULTIPLAYER                 = Mehrspieler
 SINGLEPLAYER                = Einzelspieler
-DEFAULTS_FOR_NEW_GAME       = Vorgaben "Neues Spiel"
+DEFAULTS_FOR_NEW_GAME       = Vorgaben „Neues Spiel“
 RENDERER                    = Renderer
 SOUND_ENGINE                = Soundengine
 SOUND_MUSIC_VOLUME          = Musiklautstärke
@@ -188,9 +188,9 @@ MESSAGE_CLOSES_AT_TIME = Nachricht schließt sich um %TIME% Uhr
 MESSAGE_CLOSES_AT_DAY  = Nachricht schließt sich am %TIME%
 
 
-HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = "ALT"-Taste drücken für mehr Details.
-HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = "ALT"-Taste: Tooltip fixieren.
-HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = "ALT"-Taste: Tooltip freigeben.
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = „ALT“-Taste drücken für mehr Details.
+HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = „ALT“-Taste: Tooltip fixieren.
+HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = „ALT“-Taste: Tooltip freigeben.
 HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode
 HINT                                   = Hinweis
 

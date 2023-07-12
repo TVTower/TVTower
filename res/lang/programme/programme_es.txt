@@ -40,7 +40,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Haga click en la película o serie pa
 AUCTION_MAKE_BID                         = Oferta
 AUCTION_WITHOUT_BID                      = Sin oferta
 YOU_HAVE_BEEN_OUTBID                     = Le han sobrepujado
-SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Alguien una oferta más de lo que para "%TITLE%"
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Alguien una oferta más de lo que para |b|%TITLE%|/b|.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Su oferta previa de %MONEY% fue devuelto.
 YOU_HAVE_WON_AN_AUCTION                  = Ha ganado una subasta
 
@@ -145,9 +145,9 @@ OPENINGSHOW_DESCRIPTION = Vamos a estallar los corchos. %CHANNELNAME% está lanz
 
 
 PENALTY_OF_X_WAS_PAID                                      = Penalizacion de %MONEY% fue pagado.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme "%TITLE%" not allowed during daytime.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme |b|%TITLE%|/b| not allowed during daytime.
 AUTHORITIES_STOPPED_BROADCAST                              = Las autoridades detuvieron la emisión
 AUTHORITIES_CONFISCATED_LICENCE                            = Las autoridades confiscaron la licencia
-PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licencia del programa "%TITLE%" quedo confiscado.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licencia del programa |b|%TITLE%|/b| quedo confiscado.
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Parece autoridades visitaron la habitación equivocada.
 BETTER_WATCH_OUT_NEXT_TIME                                 = Ten cuidado la próxima vez.

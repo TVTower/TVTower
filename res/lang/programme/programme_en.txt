@@ -40,7 +40,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Click on movie or series to place a b
 AUCTION_MAKE_BID                         = Bid
 AUCTION_WITHOUT_BID                      = Without bid
 YOU_HAVE_BEEN_OUTBID                     = You've been outbid
-SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Someone bid more than you for "%TITLE%"
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Someone bid more than you for |b|%TITLE%|/b|.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Your previous bid of %MONEY% was refunded.
 YOU_HAVE_WON_AN_AUCTION                  = You've won an auction
 
@@ -145,9 +145,9 @@ X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% Live matches already started.
 
 
 PENALTY_OF_X_WAS_PAID                                      = Penalty of %MONEY% was paid.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme "%TITLE%" not allowed during daytime.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme |b|%TITLE%|/b| not allowed during daytime.
 AUTHORITIES_STOPPED_BROADCAST                              = Authorities stopped broadcast
 AUTHORITIES_CONFISCATED_LICENCE                            = Authorities confiscated programme rights
-PROGRAMMELICENCE_X_GOT_CONFISCATED                         = The programme rights for "%TITLE%" got confiscated.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = The programme rights for |b|%TITLE%|/b| got confiscated.
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Seems authorities visited the wrong room.
 BETTER_WATCH_OUT_NEXT_TIME                                 = Better watch out next time.
