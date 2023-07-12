@@ -331,6 +331,8 @@ Type TBetty
 		local programme:TProgramme = TProgramme(broadcastMaterial)
 		if programme.data.HasFlag(TVTProgrammeDataFlag.PAID) then return -5
 		if programme.data.HasFlag(TVTProgrammeDataFlag.TRASH) then return -3
+		if programme.data.GetGenre() = TVTProgrammeGenre.Erotic then return -20
+		if programme.data.HasSubGenre(TVTProgrammeGenre.Erotic) then return -10
 
 		'in all other cases: only interested in culture-programmes
 		if not programme.data.HasFlag(TVTProgrammeDataFlag.CULTURE) then return 0

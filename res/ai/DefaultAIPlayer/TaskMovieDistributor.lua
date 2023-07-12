@@ -156,6 +156,16 @@ function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
 		self.CurrentBudget = self.CurrentBudget + value -- Zurück zahlen
 	end
 end
+
+function TaskMovieDistributor:IsErotic(prog)
+	if prog:GetGenre() == TVT.Constants.ProgrammeGenre.Erotic then
+		return true
+	elseif prog.data:HasSubGenre(TVT.Constants.ProgrammeGenre.Erotic) > 0 then
+		return true
+	else
+		return false
+	end
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -217,10 +227,10 @@ function JobBuyStartProgramme:Tick()
 		elseif v:GetQuality() < 0.10 or v:GetQualityRaw() < 0.25 then
 			--avoid the absolute trash :-)
 			self:LogDebug("IGNORING PROGRAMME (quality) "..v:getTitle())
-		elseif (v:isPaid() > 0 or v:getTopicality() < 0.25 or v:GetGenre() == TVT.Constants.ProgrammeGenre.Horror) then
+		elseif (v:isPaid() > 0 or v:getTopicality() < 0.25 or v:GetGenre() == TVT.Constants.ProgrammeGenre.Horror or self.Task:IsErotic(v)) then
 			--prevent other problematic start programmes: call-in, horror, too old
 			self:LogDebug("IGNORING PROGRAMME (old, genre) "..v:getTitle())
-		elseif pricePerBlock > 50000 then 
+		elseif pricePerBlock > 50000 then
 			self:LogDebug("IGNORING PROGRAMME (price) "..v:getTitle() .. " ".. pricePerBlock)
 		elseif math.random(0,10) > 8 then
 			-- ignore randomly
@@ -709,6 +719,9 @@ function JobBuyMovies:shouldBuyMovie(movie)
 	--TODO more sophisticated bias for choosing movie genre
 	if movie:GetAttractiveness() > 1 then
 		local genre = movie:GetGenre()
+		if self.Task:IsErotic(movie) and math.random(0,100) > 1 then
+			return 0
+		end
 		if genre == TVT.Constants.ProgrammeGenre.Horror and math.random(0,100) > 25 then
 			return 0
 		end
