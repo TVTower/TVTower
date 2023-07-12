@@ -37,6 +37,6 @@ AD_INFOMERCIAL_PROFIT        = Einnahmen: %PROFIT% pro 1000 Zuschauer
 
 ADCONTRACT_FINISHED                = Werbevertrag beendet
 ADCONTRACT_FAILED                  = Werbevertrag fehlgeschlagen
-ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag "%TITLE%" erfolgreich abgeschlossen.
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag |b|%TITLE%|/b| erfolgreich abgeschlossen.
 PROFIT_OF_X_GOT_CREDITED           = Die Prämie von %MONEY% wurde gutgeschrieben.
-ADCONTRACT_X_FAILED                = Werbevertrag "%TITLE%" fehlgeschlagen.
+ADCONTRACT_X_FAILED                = Werbevertrag |b|%TITLE%|/b| fehlgeschlagen.

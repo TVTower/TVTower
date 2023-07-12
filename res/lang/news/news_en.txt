@@ -49,7 +49,7 @@ BOMB_DETONATION_IN_TVTOWER                   = Bomb detonation in TVTower
 BOMB_DETONATION_IN_TVTOWER_TEXT              = A bomb detonation unsettled the people at the famous TVTower. The bomb damaged the room "%ROOM%". Investigations are in full swing.
 TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation damaged the room %ROOM%.
 TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT       = Renovation will cost %COST%.
-TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT     = The explosion destroyed '%TITLE%'.
+TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT     = The explosion destroyed |b|%TITLE%|/b|.
 TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT     = The explosion destroyed a production plan.
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Attack on TVTower: No traces
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = After the attack in the well-known TV Tower, the authorities investigated. Unfortunately, no usable evidence could be secured.
@@ -58,26 +58,26 @@ BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = After the attack at the well-know
 
 
 NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE       = New film made by and starring %DIRECTORNAME1%
-NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Director and main actor %DIRECTORNAME1% brings movie «%MOVIETITLE%» to the screen.
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Director and main actor %DIRECTORNAME1% brings movie "%MOVIETITLE%" to the screen.
 
-NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE       = Soon in the movies: «%MOVIETITLE%»
-NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION = First trailer for «%MOVIETITLE%» published.
+NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE       = Soon in the movies: "%MOVIETITLE%"
+NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION = First trailer for "%MOVIETITLE%" published.
 
-NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_TITLE       = Soon in the movies: «%MOVIETITLE%»
-NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = Main actor %ACTORNAME1% soon to be featured in theaters with «%MOVIETITLE%».
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_TITLE       = Soon in the movies: "%MOVIETITLE%"
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = Main actor %ACTORNAME1% soon to be featured in theaters with "%MOVIETITLE%".
 
-NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE       = Soon in the movies: «%MOVIETITLE%»
-NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Director %DIRECTORNAME1% brings film «%MOVIETITLE%» to a cinema near you.
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE       = Soon in the movies: "%MOVIETITLE%"
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Director %DIRECTORNAME1% brings film "%MOVIETITLE%" to a cinema near you.
 
 NEWS_ANNOUNCE_MOVIE_TITLE1 = New movie with %ACTORNAME1%
 NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% shoots new film
 NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% with new film in theaters
 
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME1% bring «%MOVIETITLE%» to the screen.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Coming soon to theaters: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is already full of praise for the film.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Finishing touches on «%MOVIETITLE%». %ACTORNAME1% is proud to star in the film.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = First trailer for «%MOVIETITLE%» released. %DIRECTORNAME1%: "Best movie of the year".
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Finishing touches on the film «%MOVIETITLE%». %DIRECTORNAME1% expresses pride about latest creation.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Director %DIRECTORNAME1% and actor %ACTORNAME1% bring "%MOVIETITLE%" to the screen.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Coming soon to theaters: %ACTORNAME1% in "%MOVIETITLE%". Actor %ACTORNAME2% is already full of praise for the film.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Finishing touches on "%MOVIETITLE%". %ACTORNAME1% is proud to star in the film.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = First trailer for "%MOVIETITLE%" released. %DIRECTORNAME1%: "Best movie of the year".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Finishing touches on the film "%MOVIETITLE%". %DIRECTORNAME1% expresses pride about latest creation.
 
 
 WEATHER_FORECAST_FOR_X_TILL_Y    = Weather forecast for %BEGINHOUR% to %ENDHOUR% o'clock

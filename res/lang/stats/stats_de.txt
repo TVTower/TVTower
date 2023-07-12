@@ -10,7 +10,7 @@ ACHIEVEMENTCATEGORY_NEWS            = Nachrichten
 ACHIEVEMENTCATEGORY_PROGRAMMES      = Programme
 ACHIEVEMENTCATEGORY_STATIONMAP      = Senderkarte
 ACHIEVEMENTCATEGORY_MISC            = Sonstiges
-YOU_JUST_COMPLETED_ACHIEVEMENTTITLE = Du hast soeben "%ACHIEVEMENTTITLE%" erfüllt.
+YOU_JUST_COMPLETED_ACHIEVEMENTTITLE = Du hast soeben „%ACHIEVEMENTTITLE%“ erfüllt.
 ACHIEVEMENT_COMPLETED               = Erfolg errungen
 REWARD                              = Belohnung
 TASK                                = Aufgabe
@@ -26,7 +26,7 @@ AI_WILL_TAKE_OVER_THIS_PLAYER          = KI wird diesen Spieler übernehmen.
 
 
 STATISTICS_NOT_AVAILABLE    = Statistiken nicht verfügbar
-BROADCASTING_OUTAGE         = Sendeausfall !!
+BROADCASTING_OUTAGE         = Sendeausfall!!
 ADVERTISMENT                = Werbung
 BLOCK                       = Block
 BLOCKS                      = Blöcke

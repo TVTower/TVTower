@@ -37,8 +37,8 @@ ROOM_FRDUBAN             = Botschaft der FR Duban
 ROOM_PORTER              = Pförtner
 ROOM_LAUNDRY             = Wäscherei
 ROOM_BIOCONTROL          = Bio-Control
-ROOM_PSYCHIATRIST        = Psychiaterbüro "Harry Dippl"
-ROOM_COMPUTERSHOP        = Computershop "SpySoft"
+ROOM_PSYCHIATRIST        = Psychiaterbüro „Harry Dippl“
+ROOM_COMPUTERSHOP        = Computershop „SpySoft“
 ROOM_AUCTION             = Auktion
 ROOM_AUCTION_SUB         = Film- und Serienauktion
 ROOM_SIZE                = Raumgröße: %SIZE%
@@ -89,8 +89,8 @@ ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE2 = Noch ist dieser
 
 
 DIALOGUE_SUPERMARKET_TITLE1 = Hey Dude !
-DIALOGUE_SUPERMARKET_TITLE2 = Hallo %PLAYERNAME% !
-DIALOGUE_SUPERMARKET_TITLE3 = Howdy, %PLAYERNAME% !
+DIALOGUE_SUPERMARKET_TITLE2 = Hallo %PLAYERNAME%!
+DIALOGUE_SUPERMARKET_TITLE3 = Howdy, %PLAYERNAME%!
 DIALOGUE_SUPERMARKET_TEXT1  = Was willst Du heute bei mir erledigen?
 DIALOGUE_SUPERMARKET_TEXT2  = Was kann ich heute für Dich tun?
 DIALOGUE_SUPERMARKET_TEXT3  = Du bekommst das alleine hin oder? Ich bin mal einen durchzie... Luft schnappen.
@@ -124,13 +124,13 @@ FOR_PRIVATE_AFFAIRS = Für schmutzige Angelegenheiten
 INGAME_HELP_TEXT_SCREEN_EMPTYROOM  = 'Tschuldigung\n\nDieser Raum ist noch ohne weitere Funktionen. Wir arbeiten aber daran!
 INGAME_HELP_TITLE_SCREEN_EMPTYROOM = AUSSER BETRIEB
 
-INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Das Speichern und Laden von Spielständen erfolgt im Menu. Es wird mit "Escape" geöffnet.
+INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Das Speichern und Laden von Spielständen erfolgt im Menu. Es wird mit „Escape“ geöffnet.
 INGAME_HELP_TITLE_SCREEN_OFFICE_SAFE = Der Safe
 
-INGAME_HELP_TEXT_SCREEN_OFFICE_ARCHIVEDMESSAGES  = Hier kannst Du empfangene Nachrichten noch einmal nachlesen. Es werden nur Nachrichten der ausgewählten Kategorie angezeigt.\nWenn Du Dir nur gelesene oder nur ungelesene Nachrichten anzeigen lässt, kannst Du den "gelesen"-Status mit einem Rechtsklick auf die Nachricht umschalten.
+INGAME_HELP_TEXT_SCREEN_OFFICE_ARCHIVEDMESSAGES  = Hier kannst Du empfangene Nachrichten noch einmal nachlesen. Es werden nur Nachrichten der ausgewählten Kategorie angezeigt.\nWenn Du Dir nur gelesene oder nur ungelesene Nachrichten anzeigen lässt, kannst Du den „gelesen“-Status mit einem Rechtsklick auf die Nachricht umschalten.
 INGAME_HELP_TITLE_SCREEN_OFFICE_ARCHIVEDMESSAGES = Archivierte Nachrichten
 
-INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = In diesem Bildschirm kannst Du neue Programme in den Sendeplan setzen und bisherige Ausstrahlungen nachvollziehen. Zum Hinzufügen eines Programmes, dieses einfach auf der rechten Seite per Button "Programm" auswählen und dann mit der linken Maustaste auf dem gewünschten Programmplatz fallen lassen. Mittels Rechtsklick kann ein aufgehobener Programmblock gelöscht werden.\n\nLässt Du Werbung auf einem Programmplatz fallen, so erfolgt eine Ausstrahlung als "Dauerwerbesendung". Ein Programm auf einem Werbeplatz wird hingegen zu einem Programmtrailer umgeformt.\n\nHandelt es sich bei einem Programm um ein Live-Format, so weisen farbige Markierungen darauf hin, an welcher Stelle eine Platzierung erfolgen kann.\n\n|b|Tipp für Freunde der Tastenkürzel:|/b| Durch Drücken einer Strg-Taste könnt ihr ein Programm mehrfach im Planer platzieren. Eine Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
+INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = In diesem Bildschirm kannst Du neue Programme in den Sendeplan setzen und bisherige Ausstrahlungen nachvollziehen. Zum Hinzufügen eines Programmes, dieses einfach auf der rechten Seite per Button „Programm“ auswählen und dann mit der linken Maustaste auf dem gewünschten Programmplatz fallen lassen. Mittels Rechtsklick kann ein aufgehobener Programmblock gelöscht werden.\n\nLässt Du Werbung auf einem Programmplatz fallen, so erfolgt eine Ausstrahlung als „Dauerwerbesendung“. Ein Programm auf einem Werbeplatz wird hingegen zu einem Programmtrailer umgeformt.\n\nHandelt es sich bei einem Programm um ein Live-Format, so weisen farbige Markierungen darauf hin, an welcher Stelle eine Platzierung erfolgen kann.\n\n|b|Tipp für Freunde der Tastenkürzel:|/b| Durch Drücken einer Strg-Taste könnt ihr ein Programm mehrfach im Planer platzieren. Eine Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
 INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Der Programmplaner
 
 INGAME_HELP_TEXT_SCREEN_OFFICE_STATIONMAP  = Hier verwaltest Du Dein Sendegebiet. Du kannst Sendemasten kaufen und verkaufen, Verträge für Kabelnetz- und Satellitenanbindungen abschließen und kündigen. Die erreichte Zuschauerzahl hat Einfluss auf Film- und Nachrichtenpreise sowie auf die Bedingungen der Werbeverträge.\nInformationen zu einem existierenden Sendemasten oder Vertrag erhält man, indem man den entsprechenden Eintrag in der Liste rechts selektiert. Mögliche Aktionen erscheinen dann unter der Liste. Mit einem Rechtsklick wird die Selektion aufgehoben oder eine Aktion abgebrochen.\nFür den Kauf eines neuen Sendemasten muss die entsprechende Aktion gewählt und der Mast dann mit der Maus oder den Pfeiltasten auf der Karte platziert werden. Für die jeweilige Position werden dann Informationen wie Preis und Anzahl neu erreichter Zuschauer angezeigt. Mit der linken Maustaste oder der Leertaste wird die Position festgelegt und der Kauf kann rechts abgeschlossen werden.\nKabelnetz- und Satellitenverträge laufen ein Jahr. Eine automatische Vertragsverlängerung kann aktiviert werden.
@@ -166,7 +166,7 @@ INGAME_HELP_TITLE_SCREEN_MOVIEAUCTION = Die Auktion
 INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRESENTS  = Wenn es Dir in dem Spiel wirklich um Betty geht, kannst Du hier Geschenke für sie kaufen.
 INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRESENTS = Geschenke
 
-INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Wähle die Einkaufsliste für die Produktion aus, die Du planen möchtest. Durch das Setzen der Option "Einstellungen übernehmen" wird diese Planung - z.B. für weitere Folgen einer Serie - für die nächste gewählte Einkaufsliste übernommen.\nJe nach Drehbuch sind nun mehrere Rollen zu besetzen, deren Anforderungen sich nach Beruf und Genre unterscheiden. Die Filter- und Sortiermöglichkeiten helfen Dir vielleicht, eine passende Auswahl zu treffen.\nWähle nun noch eine Produktionsfirma und verteile Punkte für die Produktionsschwerpunkte. Vielleicht solltest Du vor dem Abschluss der Produktion nochmal im Studio vorbeischauen und den Studioleiter um seine Meinung bitten. Nach dem Abschluss der Produktion und erfolgter Anzahlung können nämlich keine Änderungen mehr vorgenommen werden.
+INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Wähle die Einkaufsliste für die Produktion aus, die Du planen möchtest. Durch das Setzen der Option „Einstellungen übernehmen“ wird diese Planung - z.B. für weitere Folgen einer Serie - für die nächste gewählte Einkaufsliste übernommen.\nJe nach Drehbuch sind nun mehrere Rollen zu besetzen, deren Anforderungen sich nach Beruf und Genre unterscheiden. Die Filter- und Sortiermöglichkeiten helfen Dir vielleicht, eine passende Auswahl zu treffen.\nWähle nun noch eine Produktionsfirma und verteile Punkte für die Produktionsschwerpunkte. Vielleicht solltest Du vor dem Abschluss der Produktion nochmal im Studio vorbeischauen und den Studioleiter um seine Meinung bitten. Nach dem Abschluss der Produktion und erfolgter Anzahlung können nämlich keine Änderungen mehr vorgenommen werden.
 INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRODUCTION = Produktionsplanung
 
 INGAME_HELP_TEXT_SCREEN_ADAGENCY  = Hier kannst Du Werbeverträge abschließen. Zu jedem Vertrag werden die relevanten Bedingungen wie Anzahl der zu sendenden Werbeblöcke, nötige Zuschauerzahl, Zielgruppe angezeigt. Packe die gewünschten Verträge in den Koffer.\nDer Abschluss erfolgt durch Verlassen des Raums. Vorher können die Verträge noch zurückgegeben werden.

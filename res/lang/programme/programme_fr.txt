@@ -40,7 +40,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Clique sur un film ou une serie pour 
 AUCTION_MAKE_BID                         = Offre
 AUCTION_WITHOUT_BID                      = Sans offre
 YOU_HAVE_BEEN_OUTBID                     = Tu as été surenchéri
-SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Quelqu'un a enchéri plus que toi pour «%TITLE%».
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Quelqu'un a enchéri plus que toi pour |b|%TITLE%|/b|.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Ton offre de %MONEY% a été remboursé.
 YOU_HAVE_WON_AN_AUCTION                  = Tu as remporté une enchère.
 
@@ -145,9 +145,9 @@ X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% matchs en direct commencés
 
 
 PENALTY_OF_X_WAS_PAID                                      = Pénalité de %MONEY% a été payé.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = La diffusion du programme classé X «%TITLE%» n'est pas autorisée pendant la journée.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = La diffusion du programme classé X |b|%TITLE%|/b| n'est pas autorisée pendant la journée.
 AUTHORITIES_STOPPED_BROADCAST                              = Les autorités interdisent la diffusion.
 AUTHORITIES_CONFISCATED_LICENCE                            = Les autorités retirent la licence.
-PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licence de programme «%TITLE%» retiré.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licence de programme |b|%TITLE%|/b| retiré.
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Il parait que les autorités ont inspecté la mauvaise salle.
 BETTER_WATCH_OUT_NEXT_TIME                                 = Fais gaffe la prochaine fois !

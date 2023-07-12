@@ -40,7 +40,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Zum Bieten auf Film oder Serie klicke
 AUCTION_MAKE_BID                         = Bieten
 AUCTION_WITHOUT_BID                      = Ohne Gebot
 YOU_HAVE_BEEN_OUTBID                     = Du wurdest überboten
-SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Jemand hat mehr für "%TITLE%" geboten.
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Jemand hat mehr für |b|%TITLE%|/b| geboten.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Dein altes Gebot von %MONEY% wurde zurückerstattet.
 YOU_HAVE_WON_AN_AUCTION                  = Du hast eine Auktion gewonnen
 
@@ -133,11 +133,11 @@ SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% und seine 
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Relegationsspiel.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Spiel der %LEAGUENAME%.
-SPORT_PLAYOFFS_LONG              = "Relegation"
-SPORT_PLAYOFFS_SHORT             = "REL"
+SPORT_PLAYOFFS_LONG              = „Relegation“
+SPORT_PLAYOFFS_SHORT             = „REL“
 
-SPORT_AFTER_PENALTY_SHORT  = "n.E."
-SPORT_AFTER_OVERTIME_SHORT = "n.V."
+SPORT_AFTER_PENALTY_SHORT  = „n.E.“
+SPORT_AFTER_OVERTIME_SHORT = „n.V.“
 
 LIVE_ON_TAPE                        = Liveaufzeichnung
 ALL_MATCHES_FINISHED                = Alle Begegnungen beendet
@@ -145,9 +145,9 @@ X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% der Live-Begegnungen bereits gesta
 
 
 PENALTY_OF_X_WAS_PAID                                      = Die Strafe von %MONEY% wurde beglichen.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Die Ausstrahlung des FSK18-Programmes "%TITLE%" ist tagsüber nicht erlaubt.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Die Ausstrahlung des FSK18-Programmes |b|%TITLE%|/b| ist tagsüber nicht erlaubt.
 AUTHORITIES_STOPPED_BROADCAST                              = Behörden stoppen Ausstrahlung
 AUTHORITIES_CONFISCATED_LICENCE                            = Behörden beschlagnahmen Lizenz
-PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Programmlizenz "%TITLE%" wurde beschlagnahmt.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Programmlizenz |b|%TITLE%|/b| wurde beschlagnahmt.
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Es scheint die Behörden haben den falschen Raum aufgesucht.
 BETTER_WATCH_OUT_NEXT_TIME                                 = Pass das nächste Mal lieber auf.
