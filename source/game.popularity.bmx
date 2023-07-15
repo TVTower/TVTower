@@ -228,15 +228,21 @@ Type TPopularity
 	'Passt die LongTermPopularity mit einigen Wahrscheinlichkeiten an
 	'oder ändert sie komplett
 	Method AdjustTrendDirectionRandomly()
+		Local rnd:Int = RandRange(1,100)
+		'Local oldVal:Float = longTermPopularity
 		'2%-Chance das der langfristige Trend komplett umschwenkt
-		If RandRange(1,100) <= ChanceToChangeCompletely Then
+		If rnd <= ChanceToChangeCompletely Then
 			SetLongTermPopularity(RandRange(LongTermPopularityLowerBound, LongTermPopularityUpperBound))
+			'print "changing popularity completely "+referenceGUID +": "+oldVal+"->"+longTermPopularity
 		'10%-Chance das der langfristige Trend umschwenkt
-		ElseIf RandRange(1,100) <= ChanceToChange Then
-			SetLongTermPopularity(LongTermPopularity + RandRange(ChangeLowerBound, ChangeUpperBound))
+		ElseIf rnd <= ChanceToChange Then
+			'favour small changes
+			SetLongTermPopularity(LongTermPopularity + Int(GaussRandRange(ChangeLowerBound, ChangeUpperBound, 0.5, 0.25)))
+			'print "changing Long Term popularity "+referenceGUID+": "+oldVal+"->"+longTermPopularity
 		'25%-Chance das sich die langfristige Popularität etwas dem aktuellen Trend/Popularität anpasst
-		Elseif RandRange(1,100) <= ChanceToAdjustLongTermPopularity Then
+		Elseif rnd <= ChanceToAdjustLongTermPopularity Then
 			SetLongTermPopularity(LongTermPopularity + ((Popularity-LongTermPopularity)/2) + Trend)
+			'print "adjust trend popularity "+referenceGUID+": "+oldVal+"->"+longTermPopularity +" Pop:"+Popularity+ " Trend:"+Trend
 		Endif
 	End Method
 

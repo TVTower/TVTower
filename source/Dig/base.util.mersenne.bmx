@@ -116,7 +116,7 @@ Function GaussRandRange:Double(minValue:Double, maxValue:Double, mean:Float, sta
 	local v1:Float = mt_RandRange(0,1000000) / 1000000.0
 	local v2:Float = mt_RandRange(0,1000000) / 1000000.0
 
-	return minValue + (maxValue - minValue) * mean * abs(1.0 + sqr(-2.0 * log(v1)) * cos(2.0 * pi * v2) * standardDerivation)
+	return minValue + (maxValue - minValue) * mean * abs(1.0 + sqr(-2.0 * log(v1)) * cos(360 * v2) * standardDerivation)
 End Function
 
 

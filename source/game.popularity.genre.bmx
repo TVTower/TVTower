@@ -1,9 +1,12 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.util.data.bmx"
 Import "game.popularity.bmx"
 
 
 Type TGenrePopularity Extends TPopularity
+
+	Field broadCastCountSinceUpdate:Int = 0
+
 	Function Create:TGenrePopularity(referenceID:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TGenrePopularity = New TGenrePopularity
 
@@ -55,6 +58,20 @@ Type TGenrePopularity Extends TPopularity
 
 		ChangeTrend(changeVal)
 		'Print "BroadcastedProgramme: Change Trend '" + referenceGUID + "': " + changeVal +". New Trend: "+ Popularity
+
+		Local wholeMarketQuote:Float = data.GetFloat("audienceWholeMarketQuote")
+		'do not count as broadcast if audience was too small
+		If Not wholeMarketQuote Or wholeMarketQuote >= 0.005
+			broadCastCountSinceUpdate:+ 1
+
+			'decrease popularity a bit with each broadcast
+			If Popularity > -5
+				Local diff:Float = 0.8^(broadCastCountSinceUpdate-1)
+				Popularity:- diff
+			EndIf
+		EndIf
+		'decrease long term popularity with first broadcast
+		If broadCastCountSinceUpdate = 1 And LongTermPopularity > -5 Then SetLongTermPopularity(LongTermPopularity - 1)
 	End Method
 
 
@@ -79,4 +96,27 @@ Type TGenrePopularity Extends TPopularity
 		ChangeTrend(changeVal)
 		'Print "BroadcastedNews: Change Trend '" + referenceGUID + "': " + changeVal +"  newsSlot:"+newsSlot +". New Trend: "+ Popularity
 	End Method
+
+	Method UpdatePopularity() override
+		'Increase popularity of programme genres not broadcasted
+		If broadCastCountSinceUpdate = 0 And referenceGUID.startsWith("moviegenre")
+			If Popularity < 0
+				Popularity:+ 5
+			ElseIf Popularity < 20
+				Popularity:+ 3
+			Else
+				Popularity:+ 1
+			EndIf
+			If LongTermPopularity < 0
+				SetLongTermPopularity(LongTermPopularity + 5)
+			ElseIf LongTermPopularity < 10
+				SetLongTermPopularity(LongTermPopularity + 3)
+			ElseIf LongTermPopularity < 20
+				SetLongTermPopularity(LongTermPopularity + 1)
+			EndIf
+			'print "increasing popularity due to non-broadcast "+referenceGUID+ " "+ Popularity + " "+LongTermPopularity
+		EndIf
+		super.UpdatePopularity()
+		broadCastCountSinceUpdate = 0
+	EndMethod
 End Type
