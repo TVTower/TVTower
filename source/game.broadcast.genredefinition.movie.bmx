@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.util.registry.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.popularity.bmx"
@@ -173,7 +173,12 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 
 	Method GetPopularity:TGenrePopularity()
-		return TGenrePopularity(Super.GetPopularity())
+		Local result:TGenrePopularity=TGenrePopularity(Super.GetPopularity())
+		If Not result.referenceGUID
+			result.referenceGUID = "moviegenre-"+referenceID
+'			print "  popularity for " +referenceID +": "+ result.referenceID
+		EndIf
+		Return result
 	End Method
 
 

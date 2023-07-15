@@ -422,6 +422,7 @@ Type TDebugAudienceInfo
 		Local y:Int = 25
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
 
+		GetBitmapFontManager().baseFontBold.DrawSimple("Spieler: "+playerID, 25, 25, SColor8.Red)
 		font.DrawBox("Gesamt", x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 		font.DrawBox("Kinder", x + (70*1), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
 		font.DrawBox("Jugendliche", x + (70*2), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
@@ -472,10 +473,14 @@ Type TDebugAudienceInfo
 
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
+		Local popularity:String = ""
 		Select attraction.BroadcastType
 			Case TVTBroadcastMaterialType.PROGRAMME
 				If (attraction.BaseAttraction <> Null And attraction.genreDefinition)
 					genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.genreDefinition.referenceID))
+					If attraction.GenrePopularityMod
+						popularity = "Popularity "+genre+ ": " + MathHelper.NumberToString(attraction.GenrePopularityMod,2) +"; Long Term: "+MathHelper.NumberToString(1+ attraction.genreDefinition._popularity.LongTermPopularity/100.0,2)
+					EndIf
 				EndIf
 			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				If (attraction.BaseAttraction <> Null)
@@ -489,7 +494,10 @@ Type TDebugAudienceInfo
 
 		Local offset:Int = 110
 
-		GetBitmapFontManager().baseFontBold.DrawSimple("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ") [Spieler: "+playerID+"]", 25, offset, SColor8.Red)
+		GetBitmapFontManager().baseFontBold.DrawSimple("Sendung (" + genre + "): " + audienceResult.GetTitle(), 25, offset, SColor8.Red)
+		If popularity
+			font.DrawBox(popularity, 455, offset, 300, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		EndIf
 		offset :+ 20
 
 		font.DrawSimple("1. Programmqualität & Aktual.", 25, offset, SColor8.White)
