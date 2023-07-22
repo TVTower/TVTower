@@ -390,30 +390,30 @@
 				<goodFollower></goodFollower>
 				<badFollower>3,5,6,7,9,11,200,201,202,203</badFollower>
 				<timeMods>
-					<timeMod time="0" value="0.3"/>
-					<timeMod time="1" value="0.3"/>
+					<timeMod time="0" value="0.25"/>
+					<timeMod time="1" value="0.25"/>
 					<timeMod time="2" value="0.2"/>
 					<timeMod time="3" value="0.15"/>
 					<timeMod time="4" value="0.1"/>
 					<timeMod time="5" value="0"/>
-					<timeMod time="6" value="0"/>
-					<timeMod time="7" value="0"/>
-					<timeMod time="8" value="0"/>
-					<timeMod time="9" value="0"/>
-					<timeMod time="10" value="0"/>
-					<timeMod time="11" value="0"/>
-					<timeMod time="12" value="0.05"/>	<!-- boulevard time -->
-					<timeMod time="13" value="0"/>
-					<timeMod time="14" value="0"/>
-					<timeMod time="15" value="0"/>
-					<timeMod time="16" value="0"/>
-					<timeMod time="17" value="0"/>
-					<timeMod time="18" value="0.05"/>	<!-- boulevard time -->
-					<timeMod time="19" value="0.1"/>	<!-- boulevard time -->
-					<timeMod time="20" value="0.1"/>
-					<timeMod time="21" value="0.15"/>
-					<timeMod time="22" value="0.2"/>
-					<timeMod time="23" value="0.3"/>
+					<timeMod time="6" value="-0.05"/>
+					<timeMod time="7" value="-0.1"/>
+					<timeMod time="8" value="-0.15"/>
+					<timeMod time="9" value="-0.15"/>
+					<timeMod time="10" value="-0.15"/>
+					<timeMod time="11" value="-0.15"/>
+					<timeMod time="12" value="-0.05"/>	<!-- boulevard time -->
+					<timeMod time="13" value="-0.15"/>
+					<timeMod time="14" value="-0.15"/>
+					<timeMod time="15" value="-0.15"/>
+					<timeMod time="16" value="-0.15"/>
+					<timeMod time="17" value="-0.15"/>
+					<timeMod time="18" value="-0.05"/>	<!-- boulevard time -->
+					<timeMod time="19" value="-0.05"/>	<!-- boulevard time -->
+					<timeMod time="20" value="0"/>
+					<timeMod time="21" value="0.05"/>
+					<timeMod time="22" value="0.15"/>
+					<timeMod time="23" value="0.25"/>
 				</timeMods>
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="-2" />
@@ -582,18 +582,18 @@
 					<timeMod time="4" value="0.1"/>
 					<timeMod time="5" value="0.05"/>
 					<timeMod time="6" value="0"/>
-					<timeMod time="7" value="0"/>
-					<timeMod time="8" value="0"/>
-					<timeMod time="9" value="0"/>
-					<timeMod time="10" value="0"/>
-					<timeMod time="11" value="0"/>
-					<timeMod time="12" value="0"/>
-					<timeMod time="13" value="0"/>
-					<timeMod time="14" value="0"/>
-					<timeMod time="15" value="0"/>
-					<timeMod time="16" value="0"/>
-					<timeMod time="17" value="0"/>
-					<timeMod time="18" value="0"/>
+					<timeMod time="7" value="-0.05"/>
+					<timeMod time="8" value="-0.1"/>
+					<timeMod time="9" value="-0.1"/>
+					<timeMod time="10" value="-0.1"/>
+					<timeMod time="11" value="-0.1"/>
+					<timeMod time="12" value="-0.1"/>
+					<timeMod time="13" value="-0.1"/>
+					<timeMod time="14" value="-0.1"/>
+					<timeMod time="15" value="-0.1"/>
+					<timeMod time="16" value="-0.1"/>
+					<timeMod time="17" value="-0.1"/>
+					<timeMod time="18" value="-0.05"/>
 					<timeMod time="19" value="0"/>
 					<timeMod time="20" value="0.05"/>
 					<timeMod time="21" value="0.1"/>
@@ -1476,14 +1476,14 @@
 					<audienceAttraction id="Pensioners" value="0" />
 				</audienceAttractions>
 			</flag>
-			<flag id="64" name="xrated" outcome-mod="0.3" review-mod="0.1" speed-mod="0.6">
+			<flag id="4" name="culture" outcome-mod="0.1" review-mod="0.7" speed-mod="0.2">
 				<timeMods>
 					<timeMod time="0" value="0.1"/>
 					<timeMod time="1" value="0.1"/>
-					<timeMod time="2" value="0.1"/>
-					<timeMod time="3" value="0.05"/>
-					<timeMod time="4" value="0.05"/>
-					<timeMod time="5" value="0.05"/>
+					<timeMod time="2" value="0.05"/>
+					<timeMod time="3" value="0"/>
+					<timeMod time="4" value="0"/>
+					<timeMod time="5" value="0"/>
 					<timeMod time="6" value="0"/>
 					<timeMod time="7" value="0"/>
 					<timeMod time="8" value="0"/>
@@ -1493,10 +1493,158 @@
 					<timeMod time="12" value="0"/>
 					<timeMod time="13" value="0"/>
 					<timeMod time="14" value="0"/>
-					<timeMod time="15" value="0"/>
-					<timeMod time="16" value="0"/>
+					<timeMod time="15" value="0.05"/>
+					<timeMod time="16" value="0.1"/>
+					<timeMod time="17" value="0.1"/>
+					<timeMod time="18" value="0.1"/>
+					<timeMod time="19" value="0.05"/>
+					<timeMod time="20" value="0"/>
+					<timeMod time="21" value="0"/>
+					<timeMod time="22" value="0.05"/>
+					<timeMod time="23" value="0.1"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="-0.1" />
+					<audienceAttraction id="Teenagers" value="-0.2" />
+					<audienceAttraction id="HouseWives" value="0" />
+					<audienceAttraction id="Employees" value="0.05" />
+					<audienceAttraction id="Unemployed" value="-0.2" />
+					<audienceAttraction id="Managers" value="0.2" />
+					<audienceAttraction id="Pensioners" value="0.2" />
+				</audienceAttractions>
+			</flag>
+			<flag id="8" name="cult" outcome-mod="0.3" review-mod="0" speed-mod="0">
+				<timeMods>
+					<timeMod time="0" value="0.1"/>
+					<timeMod time="1" value="0.05"/>
+					<timeMod time="2" value="0"/>
+					<timeMod time="3" value="0"/>
+					<timeMod time="4" value="0"/>
+					<timeMod time="5" value="0"/>
+					<timeMod time="6" value="0"/>
+					<timeMod time="7" value="0"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0"/>
+					<timeMod time="11" value="0"/>
+					<timeMod time="12" value="0"/>
+					<timeMod time="13" value="0"/>
+					<timeMod time="14" value="0"/>
+					<timeMod time="15" value="0.05"/>
+					<timeMod time="16" value="0.1"/>
+					<timeMod time="17" value="0.1"/>
+					<timeMod time="18" value="0.1"/>
+					<timeMod time="19" value="0.15"/>
+					<timeMod time="20" value="0.2"/>
+					<timeMod time="21" value="0.2"/>
+					<timeMod time="22" value="0.2"/>
+					<timeMod time="23" value="0.1"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="0" />
+					<audienceAttraction id="Teenagers" value="0" />
+					<audienceAttraction id="HouseWives" value="0.1" />
+					<audienceAttraction id="Employees" value="0.2" />
+					<audienceAttraction id="Unemployed" value="0.2" />
+					<audienceAttraction id="Managers" value="0.05" />
+					<audienceAttraction id="Pensioners" value="0.05" />
+				</audienceAttractions>
+			</flag>
+			<flag id="16" name="trash" outcome-mod="0.6" review-mod="0.1" speed-mod="0.6">
+				<timeMods>
+					<timeMod time="0" value="0.1"/>
+					<timeMod time="1" value="0.2"/>
+					<timeMod time="2" value="0.2"/>
+					<timeMod time="3" value="0.2"/>
+					<timeMod time="4" value="0.2"/>
+					<timeMod time="5" value="0.1"/>
+					<timeMod time="6" value="0.05"/>
+					<timeMod time="7" value="0"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0"/>
+					<timeMod time="11" value="0"/>
+					<timeMod time="12" value="0.05"/>
+					<timeMod time="13" value="0.1"/>
+					<timeMod time="14" value="0.1"/>
+					<timeMod time="15" value="0.1"/>
+					<timeMod time="16" value="0.05"/>
 					<timeMod time="17" value="0"/>
-					<timeMod time="18" value="0."/>
+					<timeMod time="18" value="-0.1"/>
+					<timeMod time="19" value="-0.15"/>
+					<timeMod time="20" value="-0.2"/>
+					<timeMod time="21" value="-0.2"/>
+					<timeMod time="22" value="-0.1"/>
+					<timeMod time="23" value="0"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="0" />
+					<audienceAttraction id="Teenagers" value="0.1" />
+					<audienceAttraction id="HouseWives" value="0.1" />
+					<audienceAttraction id="Employees" value="0" />
+					<audienceAttraction id="Unemployed" value="0.1" />
+					<audienceAttraction id="Managers" value="-0.2" />
+					<audienceAttraction id="Pensioners" value="-0.2" />
+				</audienceAttractions>
+			</flag>
+			<flag id="32" name="bmovie" outcome-mod="0.4" review-mod="0.3" speed-mod="0.5">
+				<timeMods>
+					<timeMod time="0" value="0.1"/>
+					<timeMod time="1" value="0.2"/>
+					<timeMod time="2" value="0.2"/>
+					<timeMod time="3" value="0.2"/>
+					<timeMod time="4" value="0.2"/>
+					<timeMod time="5" value="0.1"/>
+					<timeMod time="6" value="0.05"/>
+					<timeMod time="7" value="0"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0"/>
+					<timeMod time="11" value="0"/>
+					<timeMod time="12" value="0.05"/>
+					<timeMod time="13" value="0.1"/>
+					<timeMod time="14" value="0.1"/>
+					<timeMod time="15" value="0.1"/>
+					<timeMod time="16" value="0.05"/>
+					<timeMod time="17" value="0"/>
+					<timeMod time="18" value="-0.1"/>
+					<timeMod time="19" value="-0.15"/>
+					<timeMod time="20" value="-0.2"/>
+					<timeMod time="21" value="-0.2"/>
+					<timeMod time="22" value="-0.1"/>
+					<timeMod time="23" value="0"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="0" />
+					<audienceAttraction id="Teenagers" value="0.1" />
+					<audienceAttraction id="HouseWives" value="0" />
+					<audienceAttraction id="Employees" value="0.1" />
+					<audienceAttraction id="Unemployed" value="0.2" />
+					<audienceAttraction id="Managers" value="-0.1" />
+					<audienceAttraction id="Pensioners" value="-0.1" />
+				</audienceAttractions>
+			</flag>
+			<flag id="64" name="xrated" outcome-mod="0.3" review-mod="0.1" speed-mod="0.6">
+				<timeMods>
+					<timeMod time="0" value="0.1"/>
+					<timeMod time="1" value="0.1"/>
+					<timeMod time="2" value="0.1"/>
+					<timeMod time="3" value="0.05"/>
+					<timeMod time="4" value="0.05"/>
+					<timeMod time="5" value="0.05"/>
+					<timeMod time="6" value="-0.1"/>
+					<timeMod time="7" value="-0.1"/>
+					<timeMod time="8" value="-0.1"/>
+					<timeMod time="9" value="-0.1"/>
+					<timeMod time="10" value="-0.1"/>
+					<timeMod time="11" value="-0.1"/>
+					<timeMod time="12" value="-0.1"/>
+					<timeMod time="13" value="-0.1"/>
+					<timeMod time="14" value="-0.1"/>
+					<timeMod time="15" value="-0.1"/>
+					<timeMod time="16" value="-0.1"/>
+					<timeMod time="17" value="-0.1"/>
+					<timeMod time="18" value="0"/>
 					<timeMod time="19" value="0.05"/>	<!-- not allowed, but increased interest -->
 					<timeMod time="20" value="0.1"/>
 					<timeMod time="21" value="0.1"/>

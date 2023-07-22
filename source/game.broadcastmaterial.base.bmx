@@ -328,6 +328,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
+	Method GetFlagsTimeMod:Float(hour:Int)
+		Return 1.0
+	End Method
+
+
+	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetGenreTargetGroupMod:SAudience(definition:TGenreDefinitionBase)
 		if not definition then return New SAudience(1, 1)
@@ -568,6 +574,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		If audienceAttraction.genreDefinition
 			audienceAttraction.GenreTimeMod = GetGenreTimeMod(audienceAttraction.genreDefinition, hour)
 		EndIf
+		audienceAttraction.FlagsTimeMod = GetFlagsTimeMod(hour)
 	End Method
 
 

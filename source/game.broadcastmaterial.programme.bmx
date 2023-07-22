@@ -440,10 +440,34 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Local valueMod:Float = 1.0
 
 		If definitions.length > 0
+			valueMod = 0.0
 			For Local definition:TMovieFlagDefinition = EachIn definitions
-				valueMod :* GetFlagPopularityMod(definition)
+				valueMod :+ GetFlagPopularityMod(definition)
 			Next
 			valueMod :/ definitions.length
+		EndIf
+
+		MathHelper.Clamp(valueMod, 0.0, 2.0)
+		Return valueMod
+	End Method
+
+
+	'override
+	'generate average of all flags
+	Method GetFlagsTimeMod:Float(hour:Int)
+		Local definitions:TGenreDefinitionBase[] = _GetFlagDefinitions()
+		Local valueMod:Float = 1.0
+
+		If definitions.length > 0
+			valueMod = 0.0
+			For Local definition:TMovieFlagDefinition = EachIn definitions
+				valueMod :+ GetGenreTimeMod(definition, hour)
+			Next
+			valueMod :/ definitions.length
+		EndIf
+		'TODO bias for erotic programmes during the day
+		If data.HasSubGenre(TVTProgrammeGenre.Erotic) And hour > 5 And hour < 20
+			valueMod:* 0.9
 		EndIf
 
 		MathHelper.Clamp(valueMod, 0.0, 2.0)
