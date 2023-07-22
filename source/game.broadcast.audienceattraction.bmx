@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "game.broadcast.audience.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 
@@ -22,6 +22,7 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 	Field FlagsTargetGroupMod:TAudience
 	Field targetGroupAttractivityMod:TAudience
 	Field GenreTimeMod:Float
+	Field FlagsTimeMod:Float
 
 	'=== DYNAMIC mods ==
 	'(based on broadcast time / popularity / modifiers )
@@ -116,6 +117,7 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 		GenreMod :+ audienceAttr.GenreMod
 		GenrePopularityMod :+ audienceAttr.GenrePopularityMod
 		GenreTimeMod :+ audienceAttr.GenreTimeMod
+		FlagsTimeMod :+ audienceAttr.FlagsTimeMod
 		If FlagsTargetGroupMod Then FlagsTargetGroupMod.Add(audienceAttr.FlagsTargetGroupMod)
 		FlagsMod :+ audienceAttr.FlagsMod
 		FlagsPopularityMod :+ audienceAttr.FlagsPopularityMod
@@ -144,6 +146,7 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 		GenreMod :* factor
 		GenrePopularityMod :* factor
 		GenreTimeMod :* factor
+		FlagsTimeMod :* factor
 		If FlagsTargetGroupMod Then FlagsTargetGroupMod.Multiply(factor)
 		FlagsPopularityMod :* factor
 		If targetGroupAttractivityMod Then targetGroupAttractivityMod.Multiply(factor)
@@ -162,13 +165,15 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 	End Method
 
 
-	'time depending value, cannot be used for "base attractivity"
+	'time depending value - includes genre and flags, cannot be used for "base attractivity"
 	'(which is used by Follow-Up-Blocks)
 	Method GetGenreAttractivity:TAudience()
 		If not _genreAttractivity:TAudience Then _genreAttractivity = new TAudience
 		_genreAttractivity.Set(1,1)
 		'adjust by genre-time-attractivity: 0.0 - 2.0
-		_genreAttractivity.Multiply(GenreTimeMod)
+
+		'TODO relative weight for genre/flags
+		_genreAttractivity.Multiply(0.65* GenreTimeMod + 0.35 * FlagsTimeMod)
 		'limit to 0-x
 		_genreAttractivity.CutMinimum(0)
 		return _genreAttractivity
