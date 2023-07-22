@@ -6157,58 +6157,63 @@ endrem
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===
 		'countdown for the refillers
-		GetGame().refillMovieAgencyTime :-1
-		GetGame().refillAdAgencyTime :-1
-		GetGame().refillScriptAgencyTime :-1
+		Local game:TGame = GetGame()
+		game.refillMovieAgencyTime :-1
+		game.refillAdAgencyTime :-1
+		game.refillScriptAgencyTime :-1
 		'refill if needed
-		If GetGame().refillMovieAgencyTime <= 0
+		If game.refillMovieAgencyTime <= 0
 			'delay if there is one in this room
 			If GetRoomCollection().GetFirstByDetails("", "movieagency").hasOccupant()
-				GetGame().refillMovieAgencyTime :+ 15
+				game.refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
-				GetGame().refillMovieAgencyTime = GameRules.refillMovieAgencyTimer + randrange(0,20)-10
+				If GetWorldTime().GetDaysRun() > 0
+					game.refillMovieAgencyTime = GameRules.refillMovieAgencyTimer + randrange(0,20)-10
+				Else
+					game.refillMovieAgencyTime = 90 + randrange(0,20)-10
+				EndIf
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency (" + GetWorldTime().GetFormattedGameDate() + ")", LOG_DEBUG)
-				Local t:Long = Time.MillisecsLong()
+				'Local t:Long = Time.MillisecsLong()
 				RoomHandler_movieagency.GetInstance().ReFillBlocks(True, 0.5)
-				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
+				'TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
 		EndIf
-		If GetGame().refillScriptAgencyTime <= 0
+		If game.refillScriptAgencyTime <= 0
 			'delay if there is one in this room
 			If GetRoomCollection().GetFirstByDetails("", "scriptagency").hasOccupant()
-				GetGame().refillScriptAgencyTime :+ 15
+				game.refillScriptAgencyTime :+ 15
 			Else
 				'fix old savegames with "-1" values
 				If GameRules.refillScriptAgencyTimer < 0 Then GameRules.refillScriptAgencyTimer = 180
 				'reset but with a bit randomness
-				GetGame().refillScriptAgencyTime = GameRules.refillScriptAgencyTimer + randrange(0,20)-10
+				game.refillScriptAgencyTime = GameRules.refillScriptAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling scriptagency (" + GetWorldTime().GetFormattedGameDate() + ")", LOG_DEBUG)
-				Local t:Long = Time.MillisecsLong()
+				'Local t:Long = Time.MillisecsLong()
 				RoomHandler_scriptagency.GetInstance().WriteNewScripts()
 				RoomHandler_scriptagency.GetInstance().ReFillBlocks(True, 0.65)
-				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
+				'TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
 		EndIf
-		If GetGame().refillAdAgencyTime <= 0
+		If game.refillAdAgencyTime <= 0
 			'delay if there is one in this room
 			If GetRoomCollection().GetFirstByDetails("", "adagency").hasOccupant()
-				GetGame().refillAdAgencyTime :+ 15
+				game.refillAdAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
-				GetGame().refillAdAgencyTime = GameRules.refillAdAgencyTimer + randrange(0,20)-10
+				game.refillAdAgencyTime = GameRules.refillAdAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency (" + GetWorldTime().GetFormattedGameDate() + ")", LOG_DEBUG)
-				Local t:Long = Time.MillisecsLong()
+				'Local t:Long = Time.MillisecsLong()
 				If GetGameBase().refillAdAgencyOverridePercentage <> GameRules.refillAdAgencyPercentage
 					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGameBase().refillAdAgencyOverridePercentage)
 					GetGameBase().refillAdAgencyOverridePercentage = GameRules.refillAdAgencyPercentage
 				Else
 					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GameRules.refillAdAgencyPercentage)
 				EndIf
-				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
+				'TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
 		EndIf
 
