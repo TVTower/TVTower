@@ -899,7 +899,7 @@ So that's 4120 per episode.</en>
 			<speed min="20" max="50" />
 			<programme_data_modifiers> <!-- Idea is that while the content itself may be kind of ageless and could reach Discovery Channel-like quality, the episodes are nevertheless meant to be discarded quickly (only 2 broadcasts) as there are too many gods to cover, and as to not spam one's archive. -->
 				<modifier name="topicality::age" value="0.1" />
-				<modifier name="topicality::refresh" value="0.5" />
+				<modifier name="topicality::refresh" value="0.7" />
 			</programme_data_modifiers>
 		</scripttemplate>
 

@@ -969,7 +969,7 @@ Illustrious guests and music by [3|Nick].</en>
 			<data flags="4" />
 			<programme_data_modifiers>
 				<modifier name="price" value="0.15" />
-				<modifier name="topicality::refresh" value="0.25" />
+				<modifier name="topicality::refresh" value="0.65" />
 				<modifier name="topicality::age" value="0.3" />
 				<modifier name="topicality::wearoff" value="1.5" />
 				<modifier name="topicality::firstBroadcastDone" value="0.03" />
@@ -1136,7 +1136,7 @@ Illustrious guests and music by [3|Nick].</en>
 			<data flags="4" />
 			<programme_data_modifiers>
 				<modifier name="price" value="0.15" />
-				<modifier name="topicality::refresh" value="0.25" />
+				<modifier name="topicality::refresh" value="0.65" />
 				<modifier name="topicality::age" value="0.3" />
 				<modifier name="topicality::wearoff" value="1.5" />
 				<modifier name="topicality::firstBroadcastDone" value="0.03" />
@@ -1269,7 +1269,7 @@ Illustrious guests and music by [3|Nick].</en>
 			<data flags="4" />
 			<programme_data_modifiers>
 				<modifier name="price" value="0.15" />
-				<modifier name="topicality::refresh" value="0.25" />
+				<modifier name="topicality::refresh" value="0.65" />
 				<modifier name="topicality::age" value="0.3" />
 				<modifier name="topicality::wearoff" value="1.5" />
 				<modifier name="topicality::firstBroadcastDone" value="0.03" />
