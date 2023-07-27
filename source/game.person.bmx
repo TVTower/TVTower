@@ -900,7 +900,7 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 		if popularityValue = -1000 then popularityValue = BiasedRandRange(-10, 20, fame)
 		popularityValue = Min(Max(popularityValue, -50), 100)
 
-		if popularityTarget = -1000 then BiasedRandRange(Max(-50, popularityValue - 10), Min(100, popularityValue + 20), fame)
+		if popularityTarget = -1000 then popularityTarget = BiasedRandRange(Max(-50, popularityValue - 10), Min(100, popularityValue + 20), fame)
 		popularityTarget = Min(Max(popularityTarget, -50), 100)
 
 		pop = TPersonPopularity.Create(personID, popularityValue, popularityTarget)
