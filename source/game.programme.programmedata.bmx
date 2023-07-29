@@ -1318,13 +1318,15 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method GetPrice:Int(playerID:Int)
-		Local value:Int = 0
-		Local priceMod:Float = GetQuality() 'this includes age-adjustments
+		Local topicality:Float = GetTopicality() 'this includes age-adjustments
 		Local maxTopicality:Float = GetMaxTopicality()
 
-		Local newCacheCode:String = priceMod+"_"+maxTopicality+"_" + Self.IsLive()
+		Local newCacheCode:String = topicality+"_"+maxTopicality+"_" + Self.IsLive()
 		If priceCacheCode <> newCacheCode
+			Local value:Int = 0
 			Local qRaw:Float = GetQualityRaw()
+			'priceMod used to be GetQuality(); make this factor stable wrt. topicality
+			Local priceMod:Float = qRaw * (0.10 + 0.90 * maxTopicality^2)
 
 			'=== FRESHNESS ===
 			'this is ~1 yrs
@@ -1356,11 +1358,18 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			If Self.IsLive() Then priceMod :* 1.20
 
 
+			'raw price based on max topicality
 			If isType(TVTProgrammeProductType.MOVIE)
 				value = 25000 + 2400000 * priceMod
 			 'shows, productions, series...
 			Else
 				value = 15000 + 1600000 * priceMod
+			EndIf
+
+			'make price difference due to topicality loss explicit
+			'maximum loss of 50%
+			If topicality < maxTopicality
+				value :- (value / 2 * (maxTopicality - topicality))
 			EndIf
 
 

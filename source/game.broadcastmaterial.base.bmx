@@ -407,6 +407,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	'default implementation
+	Method GetTopicalityModifier:Float()
+		Return 1.0
+	End Method
+
+
+	'default implementation
 	Method GetQualityOverTimeEffectMod:Float(quality:Float, block:Int )
 		If (block <= 1) Then Return 0
 		If (quality < 0.5)
@@ -538,9 +544,9 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
 
-		'1 - Quality of the broadcast
+		'1 - Quality of the broadcast (including topicality loss impact)
 		'store it regardless of block or previous broadcast
-		audienceAttraction.Quality = GetQuality()
+		audienceAttraction.Quality = GetQuality() * GetTopicalityModifier()
 
 		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
 			'Genre-targetgroup-fit
@@ -572,9 +578,9 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
 
-		'1 - Quality of the broadcast
+		'1 - Quality of the broadcast  (including topicality loss impact)
 		'store it regardless of block or previous broadcast
-		audienceAttraction.Quality = GetQuality()
+		audienceAttraction.Quality = GetQuality() * GetTopicalityModifier()
 
 		'begin of a programme, begin of broadcast - or news show
 		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
