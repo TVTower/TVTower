@@ -347,6 +347,23 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Return data.GetQuality()
 	End Method
 
+	'override
+	'reduce movie quality if not sent with maximal topicality
+	Method GetTopicalityModifier:Float()
+		Local topicality:Float = data.GetTopicality()
+		Local diff:Float = data.maxTopicalityCache - topicality
+		If diff <= 0
+			Return 1.05
+		ElseIf diff > 0.2
+			Return 0.6
+		ElseIf diff > 0.1
+			Return 0.75
+		ElseIf diff > 0.05
+			Return 0.9
+		EndIf
+		Return 1.0
+	End Method
+
 
 	'override
 	Method GetCastMod:Float()
