@@ -11,7 +11,7 @@
 			<DEV_SYNC_AI_ON_TIME value="FALSE" />
 			<!--how many days of the AI's programme plan history should be kept (-1 for all);
 				the more days, the bigger the save game size-->
-			<DEV_KEEP_AI_PLAN_DAYS value="2" />
+			<DEV_KEEP_AI_PLAN_DAYS value="4" />
 
 			<!-- 
 			<DEV_WORLD_DAYS_PER_SEASON value="3" comment="value*4 = days per year" />

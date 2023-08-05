@@ -42,6 +42,12 @@ function TaskStationMap:Activate()
 
 	self.BuyStationJob = JobBuyStation()
 	self.BuyStationJob.Task = self
+	if self.antennaCalculationCount == nil then
+		self.antennaCalculationCount = 0
+	end
+	if self.antennaCalculationCount == 0 and table.count(self.intendedAntennaPositions) > 0 then
+		self.antennaCalculationCount = 1
+	end
 	--self.LogLevel = LOG_TRACE
 end
 
@@ -248,6 +254,7 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 
 	foundCount = table.count(positionTable)
 	if foundCount > 15 then
+		self.Task.antennaCalculationCount = self.Task.antennaCalculationCount + 1
 		self.Task.intendedAntennaPositions = positionTable
 		self.Task.antennasPerSection = sectionCount
 		self:LogInfo("found ".. foundCount .. " antennas")
@@ -480,14 +487,14 @@ function JobBuyStation:GetAttraction(tempStation)
 	--to avoid buying too many stations (upkeep!)
 	local attraction = 1 / pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
 	self:LogTrace("    -> attraction before" .. attraction .." rc " .. runningCosts)
-	if totalprice > self.Task.CurrentBudget then
+	if tempStation:CanSignContract() == 0 then
+		attraction = -3
+	elseif totalprice > self.Task.CurrentBudget then
 		attraction = -1
 	elseif attraction < 1 then
 		attraction = -2
 	elseif exclusiveReach < 100000 then
 		attraction = attraction * 0.5
-	elseif tempStation:CanSignContract() == 0 then
-		attraction = -3
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
 	return attraction, totalprice, exclusiveReach
@@ -556,6 +563,13 @@ function JobBuyStation:GetBestSatelliteOffer()
 						bestAttraction = attraction
 						bestIndex = i
 					end
+
+					--if you can afford a satellite TAKE IT
+					if (bestOffer == nil and attraction > -3 and price < player.money and player.hour < 7 and exclusiveReach < self.Task.maxReachIncrease) then
+						bestOffer = tempStation
+						bestAttraction = 3
+						bestIndex = i
+					end
 				end
 			end
 		end
@@ -619,9 +633,12 @@ function JobBuyStation:GetBestAntennaOffer()
 			elseif exclusiveReach / reach < 0.7 then
 				self:LogTrace(stationString .. " -> not enough exclusive reach!")
 				tempStation = nil
-			elseif tempStation:GetRunningCosts() / exclusiveReach > 0.4 then
-				self:LogTrace(stationString .. " -> running costs too high!")
-				tempStation = nil
+--TODO remove due to running costs - but not too early, because this will cause
+--removal from intended positions and re-calculation (with overlaps)
+--maybe use antennaCalculationCount as guard...
+--			elseif tempStation:GetRunningCosts() / exclusiveReach > 0.4 then
+--				self:LogTrace(stationString .. " -> running costs too high!")
+--				tempStation = nil
 			else
 				self:LogTrace(stationString .. " -> OK!")
 			end

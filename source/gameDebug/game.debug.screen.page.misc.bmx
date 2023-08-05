@@ -259,7 +259,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 						'do NOT call ad.Create() as it adds to the adcollection
 						ad.base = a
 						print a.GetTitle()+";"+ad.GetMinAudience()+";"+MathHelper.NumberToString(100 * a.minAudienceBase,2)+";"+MathHelper.NumberToString(ad.GetMinImage()*100, 2)..
-						+ad.GetProfit()+";"+ad.GetPenalty()+";"+ad.GetSpotCount()+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+ad.GetLimitedToTargetGroupString()
+						+";"+ad.GetProfit()+";"+ad.GetPenalty()+";"+ad.GetSpotCount()+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+ad.GetLimitedToTargetGroupString()
 					Next
 				else
 					Print ".---------------------------------.------------------.---------.----------.----------.-------.------.-------."

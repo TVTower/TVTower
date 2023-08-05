@@ -108,7 +108,7 @@ function JobSellMovies:Tick()
 				vm = newarchivedMovie(m)
 				self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id.."), planned: "..tostring(vm.planned))
 				if table.contains(toSell, vm.referenceId) then
-					if vm.relativeTopicality > 0.99 then
+					if (vm.relativeTopicality > 0.95 or vm.maxTopicality < 0.35) then
 						self:LogInfo("  placing "..vm.Title.." (max topicality "..vm.maxTopicality.. ", times run " ..vm.timesRun ..") into suitcase for selling")
 						table.insert(case, vm)
 					end
@@ -128,16 +128,16 @@ function JobSellMovies:Tick()
 	end
 
 	local reach = self.Task.Player.totalReach
-	local performanceThreshold = 0.18
-	local minLicenceCount = 35
+	local performanceThreshold = 0.15
+	local minLicenceCount = 50
 	if reach == nil then
 		-- should not happen
 	elseif reach < 2300000 then
-		minLicenceCount = 20
-		performanceThreshold = 0.1
-	elseif reach < 4700000 then
 		minLicenceCount = 25
-		performanceThreshold = 0.14
+		performanceThreshold = 0.07
+	elseif reach < 4700000 then
+		minLicenceCount = 35
+		performanceThreshold = 0.1
 	end
 
 	local newLicenceToSell = nil

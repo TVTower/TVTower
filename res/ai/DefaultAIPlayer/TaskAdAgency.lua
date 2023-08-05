@@ -305,8 +305,8 @@ end
 function SignRequisitedContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
 	self.maxAudience = MY.GetMaxAudience()
-	self.highAudienceFactor = 0.09
-	self.avgAudienceFactor = 0.05
+	self.highAudienceFactor = 0.08
+	self.avgAudienceFactor = 0.045
 
 	self.Player = getPlayer()
 	self.SpotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_ADAGENCY"])
@@ -420,7 +420,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 				if maxTopBlocks < 12 then 
 					daysToFinish = daysToFinish -1
 				end
-				if spotsLeft < 3 and spotsLeft < daysToFinish then doSign = true end
+				if spotsLeft < 2 and spotsLeft < daysToFinish then doSign = true end
 			elseif avg == true then
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
 			else

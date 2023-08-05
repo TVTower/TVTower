@@ -112,7 +112,9 @@ function JobCheckCredit:Prepare(pParams)
 	end
 	if self.Task.NeededInvestmentBudget > 0 then
 		self.Task.TryToRepayCredit = math.max(0, math.min(money, self.Task.NeededInvestmentBudget))
-	elseif MY.GetCredit(-1) == 0 and player.hour < 6 then
+	end
+	if MY.GetCredit(-1) == 0 and player.hour < 6 then
+		self.Task.TryToRepayCredit = 0
 		local stationTask = player.TaskList[TASK_STATIONMAP]
 		--get credit and increase chance for good investment
 		if stationTask ~= nil and stationTask.maxReachIncrease ~=  nil and stationTask.maxReachIncrease < 0 then

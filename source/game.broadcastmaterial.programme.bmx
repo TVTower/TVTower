@@ -310,7 +310,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'using the maximum of all blocks here (as this is the maximum
 		'audience knowing about that movie)
 		If TProgrammeLicenceCollection.GetInstance().IsLicenceDataUsedMultipleTimes(data.GetID())
-			print "did non use difficulty for topicality cut because the data is used by multiple licences"
+			'print "did non use difficulty for topicality cut because the data is used by multiple licences"
 			data.CutTopicality(GetTopicalityCutModifier(maxWholeMarketAudiencePercentage))
 		Else
 			'If the programme data is unique to the owned licence, use player difficulty modifier

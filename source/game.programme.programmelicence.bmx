@@ -99,7 +99,7 @@ Type TProgrammeLicenceCollection
 		If _licencesDataIdsMultiUseMap = null Then _licencesDataIdsMultiUseMap = new TIntMap()
 		Local dataId:Int = licence.data.GetID()
 		If _licencesDataIds.contains(dataId)
-			print "###found data used multiple times "+dataId
+			'print "###found data used multiple times "+dataId
 			_licencesDataIdsMultiUseMap.Insert(dataId, Null)
 		Else
 			_licencesDataIds.Insert(dataId, Null)
@@ -112,13 +112,13 @@ Type TProgrammeLicenceCollection
 
 	Method IsLicenceDataUsedMultipleTimes:Int(dataId:Int)
 		If Not _licencesDataIdsMultiUseMap
-			print "Duplicate Id Set not initialized"
+			'print "Duplicate Id Set not initialized"
 			_licencesDataIds = new TIntMap()
 			_licencesDataIdsMultiUseMap = new TIntMap()
 			For Local licence:TProgrammeLicence = EachIn licences.values()
 				Local dataId:Int = licence.data.GetID()
 				If _licencesDataIds.contains(dataId)
-					print "###found data used multiple times "+dataId
+					'print "###found data used multiple times "+dataId
 					_licencesDataIdsMultiUseMap.Insert(dataId, Null)
 				Else
 					_licencesDataIds.Insert(dataId, Null)
