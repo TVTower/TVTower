@@ -353,6 +353,8 @@ Type TPublicImage {_exposeToLua="selected"}
 		Local lastNumber:Float = 0
 		Local audienceIndex:Int = 0
 		Local audienceRank:Int[] = New Int[channelAudiencesList.Count()]
+		Local averageImage:Float = GetPublicImageCollection().GetAverage().GetImageValues().GetTotalValue(targetGroup)
+		Local currentChannelImage:Float
 		For Local a:TAudience = EachIn channelAudiencesList
 			Local currentNumber:Float = a.GetTotalValue(targetGroup)
 
@@ -384,7 +386,18 @@ Type TPublicImage {_exposeToLua="selected"}
 				Local modifier:Float = 0.0
 				If audienceRank[i] <= modifiers.length Then modifier = modifiers[ audienceRank[i]-1 ]
 
-				If modifier <> 0.0 
+				If modifier <> 0.0
+
+					'modifier changed depending on deviation from the average image
+					'above average: win less but lose more (audience expect better from you)
+					'below average: win more and lose less (audience is pleasantly surprised)
+					currentChannelImage:Float = GetPublicImageCollection().Get(channelID).GetImageValues().GetTotalValue(targetGroup)
+					If modifier > 0
+						modifier:* (1 + (averageImage - currentChannelImage) / 100)
+					Else
+						modifier:* (1 - (averageImage - currentChannelImage) / 100)
+					EndIf
+
 					channelImageChanges[ channelID-1 ].SetTotalValue(targetGroup, modifier * weightModifier)
 				EndIf
 			EndIf
