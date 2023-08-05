@@ -742,12 +742,14 @@ Type TgfxProgrammelist Extends TPlannerList
 		'if no paging was used, hide empty slots
 		'(to have consistent button coordinates we show empty slots on
 		' subsequent pages)
-		if subEntriesPage = 1
+		if subEntriesPages = 1
 			endIndex = Min(subLicences.length-1, endIndex)
 		endif
 
+		Local licence:TProgrammeLicence
 		For Local i:Int = startIndex to endIndex
-			Local licence:TProgrammeLicence = subLicences[i]
+			licence = Null
+			If i < subLicences.length Then licence = subLicences[i]
 
 			Local entryPositionType:String = "entry"
 			If i = startIndex Then entryPositionType = "first"
