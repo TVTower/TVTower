@@ -117,6 +117,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		'TODO Spieler mit gleichem Level teilen sich wohl dasselbe Objekt - keine spielerindividuellen Difficulty-Werte
 		'programme
 		renderModifier("Programme Price", "licPrice", difficulty.programmePriceMod)
+		renderModifier("Prog. Topicality Cut", "licTopCut", difficulty.programmeTopicalityCutMod)
 		renderModifier("Xrated Penalty", "xPenalty", difficulty.sentXRatedPenalty, 5000)
 		renderModifier("Xrated Confiscate Risk", "xRisk", difficulty.sentXRatedConfiscateRisk)
 
@@ -213,6 +214,8 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		Select fieldName
 			Case "licPrice"
 				difficulty.programmePriceMod:+ diff/100.0
+			Case "licTopCut"
+				difficulty.programmeTopicalityCutMod:+ diff/100.0
 			Case "xPenalty"
 				difficulty.sentXRatedPenalty:+ diff
 			Case "xRisk"
