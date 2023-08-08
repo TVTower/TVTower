@@ -35,6 +35,10 @@ Type TProgrammeLicenceCollection
 	'cache for faster access
 	Field _parentLicences:TIntMap {nosave}
 	Field _licencesGUID:TMap {nosave}
+	'ids of the data elements used in licences
+	Field _licencesDataIds:TIntMap {nosave}
+	'ids of data elements used in more than one licence
+	Field _licencesDataIdsMultiUseMap:TIntMap {nosave}
 
 	Global _instance:TProgrammeLicenceCollection
 
@@ -53,6 +57,8 @@ Type TProgrammeLicenceCollection
 
 		_licencesGUID = null
 		_parentLicences = null
+		_licencesDataIds = null
+		_licencesDataIdsMultiUseMap = null
 
 		return self
 	End Method
@@ -89,9 +95,38 @@ Type TProgrammeLicenceCollection
 
 		licences.Insert(licence.GetID(), licence)
 		_GetLicencesGUID().Insert(licence.GetGUID(), licence)
+		If _licencesDataIds = null Then _licencesDataIds = new TIntMap()
+		If _licencesDataIdsMultiUseMap = null Then _licencesDataIdsMultiUseMap = new TIntMap()
+		Local dataId:Int = licence.data.GetID()
+		If _licencesDataIds.contains(dataId)
+			print "###found data used multiple times "+dataId
+			_licencesDataIdsMultiUseMap.Insert(dataId, Null)
+		Else
+			_licencesDataIds.Insert(dataId, Null)
+		EndIf
 
 		TriggerBaseEvent(GameEventKeys.ProgrammeLicenceCollection_OnAddLicence, null, self, licence)
 		return True
+	End Method
+
+
+	Method IsLicenceDataUsedMultipleTimes:Int(dataId:Int)
+		If Not _licencesDataIdsMultiUseMap
+			print "Duplicate Id Set not initialized"
+			_licencesDataIds = new TIntMap()
+			_licencesDataIdsMultiUseMap = new TIntMap()
+			For Local licence:TProgrammeLicence = EachIn licences.values()
+				Local dataId:Int = licence.data.GetID()
+				If _licencesDataIds.contains(dataId)
+					print "###found data used multiple times "+dataId
+					_licencesDataIdsMultiUseMap.Insert(dataId, Null)
+				Else
+					_licencesDataIds.Insert(dataId, Null)
+				EndIf
+			Next
+			Return False
+		EndIf
+		Return _licencesDataIdsMultiUseMap.contains(dataId)
 	End Method
 
 

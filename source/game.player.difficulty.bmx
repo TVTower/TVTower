@@ -47,6 +47,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 			result.interestRatePositiveBalance = ReadFloat("interestRatePositiveBalance", spec, def, 0.0, 0.3)
 			result.interestRateNegativeBalance = ReadFloat("interestRateNegativeBalance", spec, def, 0.0, 0.3)
 			result.programmePriceMod = ReadFloat("programmePriceMod", spec, def, 0.1, 5.0)
+			result.programmeTopicalityCutMod = ReadFloat("programmeTopicalityCutMod", spec, def, 0.5, 2.0)
 			result.newsItemPriceMod = ReadFloat("newsItemPriceMod", spec, def, 0.1, 5.0)
 			result.roomRentMod = ReadFloat("roomRentMod", spec, def, 0.1, 5.0)
 			result.productionTimeMod = ReadFloat("productionTimeMod", spec, def, 0.1, 5.0)
@@ -140,6 +141,7 @@ Type TPlayerDifficulty extends TGameObject
 	Field interestRatePositiveBalance:Float
 	Field interestRateNegativeBalance:Float
 	Field programmePriceMod:Float = 1.0
+	Field programmeTopicalityCutMod:Float = 1.0
 	Field newsItemPriceMod:Float
 	Field roomRentmod:Float = 1.0
 	Field productionTimeMod:Float

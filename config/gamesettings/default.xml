@@ -4,6 +4,7 @@
 		<startMoney value="750000"/>
 		<startCredit value="250000"/>
 		<programmePriceMod value="0.75"/>
+		<programmeTopicalityCutMod value="0.9"/>
 		<roomRentMod value="0.80"/>
 		<adcontractProfitMod value="1.25"/>
 		<antennaBuyPriceMod value="1.0"/>
@@ -25,6 +26,7 @@
 		<startMoney value="0"/>
 		<creditMinimumOnGameStart value="500000"/>
 		<programmePriceMod value="1.1"/>
+		<programmeTopicalityCutMod value="1.1"/>
 		<roomRentMod value="1.5"/>
 		<adcontractProfitMod value="0.9"/>
 		<adcontractLimitedTargetgroupMod value="1.15"/>
@@ -57,6 +59,7 @@
 		<interestRateNegativeBalance value="0.1"/><!--interest rate to be paid for negative balance; 0.1 = 10%-->
 
 		<programmePriceMod value="1.0"/><!--factor for licence prices-->
+		<programmeTopicalityCutMod value="1.0"/><!--factor for topicaltiy loss after broadcast (smaller value=less topicality loss)-->
 		<newsItemPriceMod value="1.0"/><!--factor for news item prices-->
 		<roomRentMod value="1.0"/><!--factor for room rents-->
 		<productionTimeMod value="1.0"/><!--factor for production time-->
