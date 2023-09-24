@@ -908,9 +908,16 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		Local licencesPerList:TProgrammeLicence[][]
 
 		For Local listIndex:Int = 0 To lists.length-1
+			Local cheapEroticCount:Int=0
 			Local needed:Int = 0
 			For Local entryIndex:Int = 0 To lists[listIndex].length-1
-				If lists[listIndex][entryIndex] Then Continue
+				If lists[listIndex][entryIndex]
+					'count exisiting cheap erotic entries
+					If listIndex = 1 And lists[listIndex][entryIndex].GetGenre() = TVTProgrammeGenre.Erotic
+						cheapEroticCount :+ 1
+					EndIf
+					Continue
+				EndIf
 				needed :+ 1
 			Next
 
@@ -922,7 +929,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 						'licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesGood, needed)
 					Case listMoviesCheap
 						'exclude the good movies
-						licences = GetNextOffers(Null, [filterCrap, TProgrammeLicenceFilter(filterMoviesGood)], needed)
+						licences = GetNextOffers(Null, [filterCrap, TProgrammeLicenceFilter(filterMoviesGood)], needed, Null, 2 - cheapEroticCount)
 						'licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesCheap, needed)
 					Case listSeries
 						licences = GetNextOffers([filterSeries], [filterCrap], needed, offerPlanSeriesLicences)
@@ -973,11 +980,12 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	End Method
 
 
-	Method GetNextOffers:TProgrammeLicence[](includeFilters:TProgrammeLicenceFilter[], excludeFilters:TProgrammeLicenceFilter[], amount:Int=1, list:TObjectList=Null)
+	Method GetNextOffers:TProgrammeLicence[](includeFilters:TProgrammeLicenceFilter[], excludeFilters:TProgrammeLicenceFilter[], amount:Int=1, list:TObjectList=Null, maxEroticCount:Int=100)
 		If Not list Then list = offerPlanSingleLicences
 
 		Local result:TProgrammeLicence[] = New TProgrammeLicence[amount]
 		Local added:Int = 0
+		Local allowedErotic:Int = maxEroticCount
 		For Local p:TProgrammeLicence = EachIn list
 			If Not includeFilters
 				If Not p.IsTradeable() Then Continue
@@ -1002,6 +1010,14 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 					EndIf
 				Next
 				If filtered Then Continue
+			EndIf
+
+			If p.GetGenre() = TVTProgrammeGenre.Erotic
+				If allowedErotic > 0
+					allowedErotic :- 1
+				Else
+					Continue
+				EndIf
 			EndIf
 
 			result[added] = p
