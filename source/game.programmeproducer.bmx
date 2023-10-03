@@ -330,7 +330,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				Else
 					person = GetPersonBaseCollection().GetRandomCastableInsignificant(Null, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
 				EndIf
-				If Not passesAgeRestriction(person) Then person = Null
+				If person And Not passesAgeRestriction(person) Then person = Null
 
 				'not enough insignificants available?
 				If Not person
