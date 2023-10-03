@@ -1901,8 +1901,9 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 
 		'add newly done jobs
 		jobsDone[0] :+ 1
-		For Local jobIndex:Int = 1 To TVTPersonJob.count
-			If (job & TVTPersonJob.GetAtIndex(jobIndex)) > 0
+		'TODO rename jobsDone or extend not only to cast jobs
+		For Local jobIndex:Int = 1 To TVTPersonJob.castCount
+			If (job & TVTPersonJob.GetCastJobAtIndex(jobIndex)) > 0
 				jobsDone[jobIndex] :+ 1
 			EndIf
 		Next
