@@ -114,10 +114,9 @@ Type TGameBase {_exposeToLua="selected"}
 
 	'(re)set everything to default values
 	Method Initialize()
-		SeedRand(MilliSecs())
+		SetRandomizerBase(MilliSecs())
 		gameId = Rand32()
-		SeedRand(0)
-		randomSeedValue = 0
+		SetRandomizerBase(0)
 		title = "MyGame"
 		SetCursor(TGameBase.CURSOR_DEFAULT)
 		gamestate = 1 'mainmenu
@@ -358,7 +357,7 @@ endrem
 
 
 	Method SetRandomizerBase( value:Int=0 )
-		randomSeedValue = value
+		randomSeedValue = Abs(value)
 		'seed the random base for MERSENNE TWISTER (seedrnd for the internal one)
 		SeedRand(randomSeedValue)
 	End Method

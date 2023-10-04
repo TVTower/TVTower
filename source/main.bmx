@@ -2251,6 +2251,8 @@ Type TGameState
 		_Assign(_RoomHandler_ScriptAgency, RoomHandler_ScriptAgency._instance, "ScriptAgency", MODE_LOAD)
 		_Assign(_RoomHandler_News, RoomHandler_News._instance, "News", MODE_LOAD)
 		_Assign(_Game, TGame._instance, "Game")
+		'initialize() sets seed to 0, after assign randomSeedValue is correct, but was not used for setting the actual seed
+		GetGame().SetRandomizerBase(GetGame().randomSeedValue)
 
 
 		RoomHandler_AdAgency.ListSortMode = _adAgencySortMode
