@@ -308,7 +308,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 		Local screen:TDebugScreenPage_Modifiers=TDebugScreenPage_Modifiers.GetInstance()
 		If changePlayerLevel Then
-			collection.AddToPlayer(screen.playerID, collection.GetByGUID(level))
+			GetPlayerBase(screen.playerID).SetDifficulty(level)
 		EndIf
 		screen.Reset()
 
