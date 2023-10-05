@@ -2430,7 +2430,7 @@ Available in any well-stocked drugstore.</en>
 				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy". Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
 			</description>
 			<conditions min_audience="2.30" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="240" penalty="330" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="600" penalty="820" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-rennpferde-01" creator="8605" created_by="SpeedMinister">
 			<title>
