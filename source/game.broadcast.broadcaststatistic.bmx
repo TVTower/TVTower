@@ -10,6 +10,7 @@ Type TBroadcastStatistic
 	Field bestAudienceResult:TAudienceResultBase[][4]
 	'store last audience for each player
 	Field lastAudienceResult:TAudienceResultBase[][4]
+	Field bestAudiencePercantage:Float[4]
 
 
 	Method SetAudienceResult:Int(channelNumber:int, block:int, audienceResult:TAudienceResult)
@@ -31,6 +32,10 @@ Type TBroadcastStatistic
 			if best.audience.GetTotalSum() < audienceResult.audience.GetTotalSum()
 				bestAudienceResult[channelNumber-1][block-1] = audienceResult
 			endif
+			local percentage:Float = audienceResult.GetAudienceQuotePercentage()
+			If Not bestAudiencePercantage[channelNumber-1] Or percentage > bestAudiencePercantage[channelNumber-1]
+				bestAudiencePercantage[channelNumber-1] = percentage
+			EndIf
 		endif
 			
 		return True
