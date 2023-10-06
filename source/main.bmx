@@ -2081,7 +2081,7 @@ Type TGameState
 	Field _programmeDataFilterReleaseDateStart:Int = False
 	Field _programmeDataFilterReleaseDateEnd:Int = False
 	Field _interface_ShowChannel:Int = 0
-	Field _interface_ChatShow:Int = 0
+	Field _interface_ChatWindowMode:Int = 1
 	Field _interface_ChatShowHideLocked:Int = 0
 	Field _aiBase_AiRunning:Int = False
 	Const MODE_LOAD:Int = 0
@@ -2267,7 +2267,7 @@ Type TGameState
 		TProgrammeData._filterReleaseDateEnd = _programmeDataFilterReleaseDateEnd
 
 		GetInGameInterface().ShowChannel = _interface_ShowChannel
-		GetInGameInterface().ChatShow = _interface_ChatShow
+		GetInGameInterface().ChatWindowMode = _interface_ChatWindowMode
 		GetInGameInterface().ChatShowHideLocked = _interface_ChatShowHideLocked
 
 		TAiBase.AiRunning = _aiBase_AiRunning
@@ -2295,7 +2295,7 @@ Type TGameState
 		_programmeDataFilterReleaseDateEnd = TProgrammeData._filterReleaseDateEnd
 
 		_interface_ShowChannel = GetInGameInterface().ShowChannel
-		_interface_ChatShow = GetInGameInterface().ChatShow
+		_interface_ChatWindowMode = GetInGameInterface().ChatWindowMode
 		_interface_ChatShowHideLocked = GetInGameInterface().ChatShowHideLocked
 
 		_aiBase_AiRunning = TAiBase.AiRunning
