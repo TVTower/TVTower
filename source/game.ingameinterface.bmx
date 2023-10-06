@@ -26,7 +26,6 @@ Type TInGameInterface
 	Field CurrentProgrammeText:String
 	Field CurrentProgrammeToolTip:TTooltip
 	Field CurrentAudienceToolTip:TTooltipAudience
-	Field keepCurrentAudienceToolTipOpen:int = False
 	Field MoneyToolTip:TTooltip
 	Field BettyToolTip:TTooltip
 	Field ChannelImageTooltip:TTooltip
@@ -55,6 +54,7 @@ Type TInGameInterface
 	Field spriteInterfaceButtonHelp_hover:TSprite
 	Field spriteInterfaceButtonSettings_hover:TSprite
 	Field _interfaceFont:TBitmapFont
+	Field _interfaceAudienceFont:TBitmapFont
 	Field _interfaceBigFont:TBitmapFont
 	Field _interfaceTVfamily:TWatchingFamily
 	Field moneyColor:SColor8
@@ -71,7 +71,7 @@ Type TInGameInterface
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
 	Field LastShowChannel:Byte = 0
-	Field ChatShow:int = False
+	Field ChatWindowMode:Int = 0 '0=TV-Family, 1=Chat, 2=Audience Distribution
 	Field ChatContainsUnread:int = False
 	Field ChatShowHideLocked:int = False
 	Field hoveredMenuButton:int = 0
@@ -169,6 +169,7 @@ Type TInGameInterface
 		spriteInterfaceAudienceAreaOverlay = GetSpriteFromRegistry("gfx_interface_audience_area_overlay")
 
 		_interfaceFont = GetBitmapFont("Default", 12, BOLDFONT)
+		_interfaceAudienceFont = GetBitmapFont("Default", 12)
 		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
 		_interfaceTVfamily = new TWatchingFamily().Init()
 
@@ -220,7 +221,7 @@ Type TInGameInterface
 
 		'if user did not lock the current view
 		If not GetInstance().ChatShowHideLocked
-			GetInstance().ChatShow = True
+			GetInstance().ChatWindowMode = 1
 		EndIf
 	End Function
 
@@ -243,12 +244,6 @@ Type TInGameInterface
 			'clear chat
 			chat.Clear()
 
-			'by default hide chat again (as it is empty now)
-			'(except if user did lock the current view)
-			If not ChatShowHideLocked
-				ChatShow = False
-			EndIf
-			
 			ChatContainsUnread = False
 		EndIf
 		If Not _interfaceTVfamily Then _interfaceTVfamily = New TWatchingFamily().Init()
@@ -524,7 +519,7 @@ Type TInGameInterface
 				MoneyToolTip.enabled 	= 1
 				MoneyToolTip.Hover()
 			EndIf
-			If THelper.MouseIn(309,447,178,32) or CurrentAudienceToolTip.forceShow
+			If chatWindowMode <> 2 And (THelper.MouseIn(309,447,178,32) or CurrentAudienceToolTip.forceShow)
 				local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
 				if playerProgrammePlan
 					Local audienceStr:String = "0"
@@ -718,38 +713,34 @@ Type TInGameInterface
 		'=== THINGS DONE REGARDLESS OF PAUSED STATE ===
 
 
-
 		'=== SHOW / HIDE / LOCK CHAT ===
 		'arrow area
-		if MouseManager.IsClicked(1) and THelper.MouseIn(540, 397, 200, 20)
-			'reset unread
-			ChatContainsUnread = False
-
-			if not ChatShow
-				ChatShow = True
-				if chat then chat.ShowChat()
-			Else
-				ChatShow = False
-				if chat then chat.HideChat()
+		if MouseManager.IsClicked(1) And THelper.MouseIn(537, 397, 215, 20)
+			Local emptyChatFallback:Int = 2
+			If THelper.MouseIn(537, 397, 25, 20)
+				ChatWindowMode :- 1
+				emptyChatFallback = 0
+			ElseIf THelper.MouseIn(717, 397, 25, 20)
+				ChatWindowMode :+ 1
 			EndIf
-
+			ChatWindowMode = (ChatWindowMode + 3)Mod 3
+			'do not show chat if there are no chat entries
+			If ChatWindowMode = 1 And chat And chat.guiList.entries.count() = 0 Then ChatWindowMode = emptyChatFallback
 			'handled left click
 			MouseManager.SetClickHandled(1)
 		endif
 		'lock area
 		if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
 			ChatShowHideLocked = 1- ChatShowHideLocked
-
 			'handled left click
 			MouseManager.SetClickHandled(1)
 		endif
 
-		if chat and not ChatShowHideLocked
-			if not ChatShow
-				chat.HideChat()
-			else
-				chat.ShowChat()
-			endif
+		if chat and ChatWindowMode = 1
+			chat.ShowChat()
+			ChatContainsUnread = False
+		else
+			chat.HideChat()
 		endif
 		'====
 
@@ -860,7 +851,7 @@ Type TInGameInterface
 		'=== TV-FAMILY ===
 
 		'draw TV-family
-		If Not ChatShow
+		If ChatWindowMode = 0
 			If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
 				_interfaceTVfamily.Draw(True, spriteInterfaceAudienceOffBG, spriteInterfaceAudienceOnBG)
 			'draw empty couch
@@ -972,29 +963,81 @@ Type TInGameInterface
 		'draw shadow over TV/Chat
 		spriteInterfaceAudienceAreaOverlay.Draw(511, 412, 0, ALIGN_LEFT_TOP)
 
-		'=== DRAW CHAT ARROWS ===
+		'=== DRAW CHAT OVERLAY + ARROWS ===
 		local arrowPos:int = 397
-		local arrowDir:string = "down"
-		local arrowMode:string = "default"
-		if ChatShow then arrowDir = "up"
-		local lockMode:string = "unlocked"
-		if ChatShowHideLocked then lockMode = "locked"
-		if ChatContainsUnread then arrowMode = "highlight"
-
-
-		if THelper.MouseIn(540, arrowPos, 200, 20)
-			arrowMode = "active"
-		endif
-		if THelper.MouseIn(770, arrowPos, 20, 20)
-			lockMode = "active"
-		endif
 
 		'arrows
-		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow."+arrowDir+"."+arrowMode).Draw(540, arrowPos)
-		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow."+arrowDir+"."+arrowMode).Draw(720, arrowPos)
+		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow.up."+GetArrowHighlightMode(537, ChatContainsUnread)).Draw(540, arrowPos)
+		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow.down."+GetArrowHighlightMode(717, ChatContainsUnread)).Draw(720, arrowPos)
+
 		'key
+		local lockMode:string = "unlocked"
+		if THelper.MouseIn(770, arrowPos, 20, 20)
+			lockMode = "active"
+		elseif ChatShowHideLocked
+			lockMode = "locked"
+		endif
 		GetSpriteFromRegistry("gfx_interface_ingamechat_key."+lockMode).Draw(770, arrowPos)
-		'===
+
+		'=== DRAW AUDIENCE DETAILS
+		If ChatWindowMode = 2
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(playerID)
+			Local iconWidth:Int=15
+			Local iconHeight:Int=15
+			Local w:Int=230
+			Local lineheight:Int=15
+			Local lineX:Int = 520
+			Local lineY:Int = 420
+			Local lineText:String = ""
+			Local lineTextX:Int = lineX + iconWidth + 5
+			Local lineTextWidth:Int = w - (iconWidth + 5)
+			Local lineIconOffsetY:Int = Floor(0.5 * (lineHeight - iconHeight))
+			Local lines:String[TVTTargetGroup.count]
+			Local percents:String[TVTTargetGroup.count]
+			Local numbers:String[TVTTargetGroup.count]
+			Local targetGroupID:Int = 0
+			Local colorLight:SColor8 = new SColor8(235,235,235)
+
+			'show how many people your stations cover (compared to country)
+			Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
+			Local totalReach:Int = GetStationMapCollection().population
+			lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"
+			_interfaceAudienceFont.DrawSimple(lineText, lineX, lineY, colorLight)
+			lineY :+ _interfaceAudienceFont.GetHeight(lineText)
+	
+			'draw overview text
+			lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
+			_interfaceAudienceFont.DrawSimple(lineText, lineX, lineY, colorLight)
+			lineY :+ 1 * _interfaceAudienceFont.GetHeight(lineText) + 5
+
+			For Local i:Int = 1 To TVTTargetGroup.count
+				targetGroupID = TVTTargetGroup.GetAtIndex(i)
+				Local col:SColor8 = GameConfig.GetTargetGroupColor(i)
+				lines[i-1] = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
+				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 2, 0)
+
+				if i = 8 or i = 9
+					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
+				else
+					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
+				endif
+			Next
+
+			Local colorDark:SColor8 = new SColor8(230,230,230)
+			Local colorTextLight:SColor8 = SColor8AdjustFactor(colorLight, 0)
+			Local colorTextDark:SColor8 = SColor8AdjustFactor(colorDark, -140)
+
+			For Local i:Int = 1 To TVTTargetGroup.count
+				SetColor 255,255,255
+				targetGroupID = TVTTargetGroup.GetAtIndex(i)
+				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX+1, lineY + lineIconOffsetY)
+				_interfaceAudienceFont.DrawBox(lines[i-1], lineTextX, lineY,  w, lineHeight + 2, sALIGN_LEFT_CENTER, ColorTextLight)
+				_interfaceAudienceFont.DrawBox(numbers[i-1], lineTextX, lineY, lineTextWidth - 5 - 50, lineHeight + 2, sALIGN_RIGHT_CENTER, ColorTextLight)
+				_interfaceAudienceFont.DrawBox(percents[i-1]+"%", lineTextX, lineY, lineTextWidth - 5, lineHeight + 2, sALIGN_RIGHT_CENTER, ColorTextLight)
+				lineY :+ lineHeight
+			Next
+		EndIf
+
 
 		'change mouse icon when hovering the "buttons"
 		if not GetWorldTime().IsPaused()
@@ -1011,6 +1054,16 @@ Type TInGameInterface
 		For local tip:TTooltip = eachin tooltips
 			If tip.enabled Then tip.Render()
 		Next
+
+		Function GetArrowHighlightMode:String(offset:Int, chatContainsUnread:Int)
+			If THelper.MouseIn(offset, 397, 25, 20)
+				return "active"
+			ElseIf chatContainsUnread
+				return "highlight"
+			Else
+				return "default"
+			EndIf
+		End Function
 	End Method
 End Type
 
