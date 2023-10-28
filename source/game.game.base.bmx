@@ -192,6 +192,11 @@ Type TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method EndGame:Int()
+		'stub
+	End Method
+	
+
 	Method Update(deltaTime:Float=1.0)
 		'stub
 	End Method
