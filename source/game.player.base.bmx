@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
+Import "Dig/base.util.commandqueue.bmx"
 Import "game.player.color.bmx"
 Import "game.player.finance.bmx"
 Import "game.player.difficulty.bmx"
@@ -134,6 +135,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field difficultyGUID:string = "normal"
 
 	Field playerAI:TAiBase
+	
+	Field commandQueue:TCommandQueue
 
 	'type of the player, local/remote human/ai
 	Field playerType:int = 0
@@ -170,6 +173,11 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Const PLAYERTYPE_REMOTE_HUMAN:int = 2
 	Const PLAYERTYPE_REMOTE_AI:int = 3
 	Const PLAYERTYPE_INACTIVE:int = 4
+	
+	
+	Method New()
+		commandQueue = new TCommandQueue
+	End Method
 
 
 	'reset everything to base state
