@@ -1462,6 +1462,30 @@ endrem
 						EndIf
 					EndIf
 				EndIf
+			Else
+				Local ad:TAdvertisement = TAdvertisement(draggedGuiProgrammePlanElement.broadcastMaterial)
+				Local day:Int = GetWorldTime().GetDay()
+				If ad And KEYMANAGER.isHit(KEY_SPACE) And day = planningDay
+					print "dragged ad placement"
+					Local hour:Int = GetWorldTime().GetDayHour()
+					Local minute:Int = GetWorldTime().GetDayMinute()
+					If minute > 54 Then hour:+ 1
+					If TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.ADVERTISEMENT, planningDay, hour, day, hour, 10)
+						Local h:Int = 38
+						Local xOffset:Int = 390;
+						Local yOffset:Int = 22 + h/2
+						If hour >= 12
+							xOffset:Int = 820;
+							yOffset= yOffset - 12*h
+						EndIf
+						MoveMouse(xOffset, yOffset+ hour * h)
+						'slot.Click(EGUIClickType.Pointer,1 , 5,5)
+						'TODO I was not able to obtain the screen coordinates from the slot...
+						'also the slot is null if nothing is placed, yet
+						'Local coord:SVec3F = GuiListAdvertisements.GetSlotCoord(hour)
+						'MoveMouse(coord.x + GuiListAdvertisements.getScreenRect().getX(), coord.y+ GuiListAdvertisements.getScreenRect().getY())
+					EndIf
+				EndIf
 			EndIf
 		EndIf
 
