@@ -139,7 +139,7 @@ Type TAwardCollection Extends TGameObjectCollection
 			'set time to the next 0:00 coming _after the waiting
 			'time is gone (or use that midnight if exactly 0:00)
 			'set random waiting time for next award 
-			Local startTimeExact:Long = previousEndTime + TWorldTime.HOURLENGTH * RandRange(12,36)
+			Local startTimeExact:Long = previousEndTime + TWorldTime.HOURLENGTH * RandRange(24,96)
 			If GetWorldTime().GetDayHour(startTimeExact) = 0 And GetWorldTime().GetDayMinute(startTimeExact) = 0
 				startTime = GetWorldTime().GetTimeGoneForGameTime(0, GetWorldTime().GetDay(startTimeExact), 0, 0)
 			Else
@@ -151,7 +151,13 @@ Type TAwardCollection Extends TGameObjectCollection
 		Local award:TAward = CreateAward(awardType)
 		award.SetStartTime( startTime )
 		award.SetEndTime( award.CalculateEndTime(startTime) )
-
+		If lastAwards
+			Local awardCount:Int = 0
+			For Local a:TAward = EachIn lastAwards
+				If a.awardType = awardType then awardCount:+ 1
+			Next
+			award.priceImage = Max(0.5, award.priceImage - awardCount * 0.25)
+		EndIf
 		AddUpcoming( award )
 		TLogger.Log("TAwardCollection.GenerateUpcomingAward()", "Generated ~qupcoming~q award: type="+TVTAwardType.GetAsString(award.awardType)+" ["+award.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(award.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(award.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 	End Method
@@ -238,7 +244,7 @@ Type TAward Extends TGameObject
 	Field duration:Long = -1
 	'basic prices all awards offer
 	Field priceMoney:Int = 50000
-	Field priceImage:Float = 2.5
+	Field priceImage:Float = 1.5
 	Field priceBettyLove:Int = 0
 
 	Field _scoreSum:Int = -1 {nosave}

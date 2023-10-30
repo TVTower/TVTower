@@ -15,7 +15,7 @@ Type TAwardNews extends TAward
 		awardType = TVTAwardType.NEWS
 
 		priceMoney = 25000
-		priceImage = 2.0
+		priceImage = 1.5
 
 		'=== REGISTER EVENTS ===
 		EventManager.UnregisterListenersArray(_eventListeners)
