@@ -34,11 +34,11 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import Brl.Vector
+Import Math.Vector
 
 
 '=== Test ===
-rem
+Rem
 local s:SRect = new SRect(0,0,10,10)
 'print s.Grow(10).ToString()
 print s.Scale(10).ToString()
@@ -54,15 +54,15 @@ Struct SRectI
 	Field ReadOnly h:Int
 
 	Method New(x:Int, y:Int, w:Int, h:Int)
-		self.x = x
-		self.y = y
-		self.w = w
-		self.h = h
+		Self.x = x
+		Self.y = y
+		Self.w = w
+		Self.h = h
 	End Method
 
 
 	Function CreateTLBR:SRectI(top:Int, Left:Int, bottom:Int, Right:Int)
-		Return new SRectI(top, left, bottom, right)
+		Return New SRectI(top, Left, bottom, Right)
 	End Function
 
 
@@ -89,25 +89,25 @@ Struct SRectI
 	'moves the rectangle by dx,dy
 	'returns a new rectangle
 	Method Move:SRectI(dx:Int, dy:Int)
-		Return new SRectI(self.x + dx, self.y + dy, self.w, self.h)
+		Return New SRectI(Self.x + dx, Self.y + dy, Self.w, Self.h)
 	End Method
 
 
 	Method MoveTo:SRectI(position:SVec2I)
-		Return new SRectI(position.x, position.y, self.w, self.h)
+		Return New SRectI(position.x, position.y, Self.w, Self.h)
 	End Method
 
 	Method MoveTo:SRectI(x:Int, y:Int)
-		Return new SRectI(x, y, self.w, self.h)
+		Return New SRectI(x, y, Self.w, Self.h)
 	End Method
 
 
 	Method Resize:SRectI(size:SVec2I)
-		Return new SRectI(x, y, size.x, size.y)
+		Return New SRectI(x, y, size.x, size.y)
 	End Method
 
 	Method Resize:SRectI(w:Int, h:Int)
-		Return new SRectI(self.x, self.y, w, h)
+		Return New SRectI(Self.x, Self.y, w, h)
 	End Method
 
 
@@ -150,8 +150,8 @@ Struct SRectI
 
 
 	Method Intersects:Int(x:Int, y:Int, w:Int, h:Int)
-		Return ( self.x < (x + w) And self.y < (y + h) ) And ..
-		       ( self.x + self.w > x And self.y + self.h > y )
+		Return ( Self.x < (x + w) And Self.y < (y + h) ) And ..
+		       ( Self.x + Self.w > x And Self.y + Self.h > y )
 	End Method
 
 
@@ -176,10 +176,10 @@ Struct SRectI
 	'rectangle and the given one
 	'attention: returns NULL if there is no intersection
 	Method IntersectRect:SRectI(x:Int, y:Int, w:Int, h:Int)
-		Local ix:Int = Max(self.x, x)
-		Local iy:Int = Max(self.y, y)
-		Local iw:Int = Min(self.x + self.w, x + w) - ix
-		Local ih:Int = Min(self.y + self.h, y + h) - iy
+		Local ix:Int = Max(Self.x, x)
+		Local iy:Int = Max(Self.y, y)
+		Local iw:Int = Min(Self.x + Self.w, x + w) - ix
+		Local ih:Int = Min(Self.y + Self.h, y + h) - iy
 
 		If iw > 0 And ih > 0
 			Return New SRectI(ix, iy, iw, ih)
@@ -190,27 +190,27 @@ Struct SRectI
 
 	'returns whether x is within the x-coords of the rectangle
 	Method ContainsX:Int(x:Int)
-		Return (x >= self.x And x <= self.x + self.w)
+		Return (x >= Self.x And x <= Self.x + Self.w)
 	End Method
 
 
 	'returns whether y is within the y-coords of the rectangle
 	Method ContainsY:Int(y:Int)
-		Return (y >= self.y And y <= self.y + self.h)
+		Return (y >= Self.y And y <= Self.y + Self.h)
 	End Method
 
 
 	'returns whether the rectangle contains the given coord
 	Method Contains:Int(x:Int, y:Int)
-		Return (    x >= self.x And x < self.x + self.w ..
-		        And y >= self.y And y < self.y + self.h ..
+		Return (    x >= Self.x And x < Self.x + Self.w ..
+		        And y >= Self.y And y < Self.y + Self.h ..
 		       )
 	End Method
 
 
 	Method Contains:Int(vec:SVec2I)
-		Return (    vec.x >= self.x And vec.x < self.x + self.w ..
-		        And vec.y >= self.y And vec.y < self.y + self.h ..
+		Return (    vec.x >= Self.x And vec.x < Self.x + Self.w ..
+		        And vec.y >= Self.y And vec.y < Self.y + Self.h ..
 		       )
 	End Method
 
@@ -237,30 +237,30 @@ Struct SRect
 
 	'sets the position and dimension (creates new point objects)
 	Method New(x:Float, y:Float, w:Float, h:Float)
-		self.x = x
-		self.y = y
-		self.w = w
-		self.h = h
+		Self.x = x
+		Self.y = y
+		Self.w = w
+		Self.h = h
 	End Method
 
 
-	Method New(x:Float, y:Float, w:Float, h:Float, round:Int, integerize:Int=True)
-		if round
-			self.x = Int(x + 0.5)
-			self.y = Int(y + 0.5)
-			self.w = Int(w + 0.5)
-			self.h = Int(h + 0.5)
-		elseif integerize
-			self.x = Int(x)
-			self.y = Int(y)
-			self.w = Int(w)
-			self.h = Int(h)
-		endif
+	Method New(x:Float, y:Float, w:Float, h:Float, Round:Int, integerize:Int=True)
+		If Round
+			Self.x = Int(x + 0.5)
+			Self.y = Int(y + 0.5)
+			Self.w = Int(w + 0.5)
+			Self.h = Int(h + 0.5)
+		ElseIf integerize
+			Self.x = Int(x)
+			Self.y = Int(y)
+			Self.w = Int(w)
+			Self.h = Int(h)
+		EndIf
 	End Method
 	
 
 	Function CreateTLBR:SRect(top:Float, Left:Float, bottom:Float, Right:Float)
-		Return new SRect(top, left, bottom, right)
+		Return New SRect(top, Left, bottom, Right)
 	End Function
 
 
@@ -281,11 +281,11 @@ Struct SRect
 	Function DeSerializeSRectFromString:SRect(text:String)
 		Local vars:String[] = text.split(",")
 		Local x:Float, y:Float, w:Float, h:Float
-		If vars.length > 0 Then x = Float(vars[0])
-		If vars.length > 1 Then y = Float(vars[1])
-		If vars.length > 2 Then w = Float(vars[2])
-		If vars.length > 3 Then h = Float(vars[3])
-		Return new SRect(x,y,w,h)
+		If vars.Length > 0 Then x = Float(vars[0])
+		If vars.Length > 1 Then y = Float(vars[1])
+		If vars.Length > 2 Then w = Float(vars[2])
+		If vars.Length > 3 Then h = Float(vars[3])
+		Return New SRect(x,y,w,h)
 	End Function
 
 
@@ -314,8 +314,8 @@ Struct SRect
 
 
 	Method Intersects:Int(x:Float, y:Float, w:Float, h:Float)
-		Return ( self.x < (x + w) And self.y < (y + h) ) And ..
-		       ( self.x + self.w > x And self.y + self.h > y )
+		Return ( Self.x < (x + w) And Self.y < (y + h) ) And ..
+		       ( Self.x + Self.w > x And Self.y + Self.h > y )
 	End Method
 
 
@@ -340,10 +340,10 @@ Struct SRect
 	'rectangle and the given one
 	'attention: returns NULL if there is no intersection
 	Method IntersectRect:SRect(x:Float, y:Float, w:Float, h:Float)
-		Local ix:Float = Max(self.x, x)
-		Local iy:Float = Max(self.y, y)
-		Local iw:Float = Min(self.x + self.w, x + w) - ix
-		Local ih:Float = Min(self.y + self.h, y + h) - iy
+		Local ix:Float = Max(Self.x, x)
+		Local iy:Float = Max(Self.y, y)
+		Local iw:Float = Min(Self.x + Self.w, x + w) - ix
+		Local ih:Float = Min(Self.y + Self.h, y + h) - iy
 
 		If iw > 0 And ih > 0
 			Return New SRect(ix, iy, iw, ih)
@@ -355,20 +355,20 @@ Struct SRect
 
 	'returns whether x is within the x-coords of the rectangle
 	Method ContainsX:Int(x:Float)
-		Return (x >= self.x And x <= self.x + self.w)
+		Return (x >= Self.x And x <= Self.x + Self.w)
 	End Method
 
 
 	'returns whether y is within the y-coords of the rectangle
 	Method ContainsY:Int(y:Float)
-		Return (y >= self.y And y <= self.y + self.h)
+		Return (y >= Self.y And y <= Self.y + Self.h)
 	End Method
 
 
 	'returns whether the rectangle contains the given coord
 	Method ContainsXY:Int(x:Float, y:Float)
-		Return (    x >= self.x And x < self.x + self.w ..
-		        And y >= self.y And y < self.y + self.h ..
+		Return (    x >= Self.x And x < Self.x + Self.w ..
+		        And y >= Self.y And y < Self.y + Self.h ..
 		       )
 	End Method
 
@@ -414,17 +414,17 @@ Struct SRect
 	'returns as new rectangle resized by the given values
 	'(like scaling but with fixed numbers)
 	Method Grow:SRect(dx:Float, dy:Float, dw:Float, dh:Float)
-		Return new SRect(x - dx, y - dy, w + dw, h + dh)
+		Return New SRect(x - dx, y - dy, w + dw, h + dh)
 	End Method
 
 	Method Grow:SRect(v:Float)
-		Return new SRect(x - v, y - v, w + v, h + v)
+		Return New SRect(x - v, y - v, w + v, h + v)
 	End Method
 
 
 	'scale BY a value, center defined in percentage
 	Method Scale:SRect(sx:Float, sy:Float, centerX:Float, centerY:Float)
-		Return new SRect(x - sx * (1.0 - centerX) * w, ..
+		Return New SRect(x - sx * (1.0 - centerX) * w, ..
 		                 y - sy * (1.0 - centerY) * h, ..
 		                 w * sx, ..
 		                 h * sy  ..
@@ -433,7 +433,7 @@ Struct SRect
 
 	
 	Method Scale:SRect(sx:Float, sy:Float)
-		Return new SRect(x - sx * 0.5 * w, ..
+		Return New SRect(x - sx * 0.5 * w, ..
 		                 y - sy * 0.5 * h, ..
 		                 w * sx, ..
 		                 h * sy  ..
@@ -453,28 +453,28 @@ Struct SRect
 		Local maxX:Float = Float( Max(x, x + w) )
 		Local minY:Float = Float( Min(y, y + h) )
 		Local maxY:Float = Float( Max(y, y + h) )
-		Return new SRect(minX, minY, maxX-minX, maxY-minY)
+		Return New SRect(minX, minY, maxX-minX, maxY-minY)
 	End Method
 
 
 	'moves the rectangle by dx,dy
 	'returns a new rectangle
 	Method Move:SRect(dx:Float, dy:Float)
-		Return new SRect(self.x + dx, self.y + dy, self.w, self.h)
+		Return New SRect(Self.x + dx, Self.y + dy, Self.w, Self.h)
 	End Method
 
 
 	Method MoveTo:SRect(position:SVec2f)
-		Return new SRect(position.x, position.y, self.w, self.h)
+		Return New SRect(position.x, position.y, Self.w, Self.h)
 	End Method
 
 	Method MoveTo:SRect(x:Float, y:Float)
-		Return new SRect(x, y, self.w, self.h)
+		Return New SRect(x, y, Self.w, Self.h)
 	End Method
 
 
 	Method Resize:SRect(size:SVec2f)
-		Return new SRect(x, y, size.x, size.y)
+		Return New SRect(x, y, size.x, size.y)
 	End Method
 
 
@@ -557,7 +557,7 @@ Struct SRect
 	'into the given rectangle r
 	'sets adjusted to true if values needed to get adjusted
 	'(same as "intersect()" but with no negatve values)
-	Method LimitedToRect:SRect(r:SRect, adjusted:Int var)
+	Method LimitedToRect:SRect(r:SRect, adjusted:Int Var)
 		Local ix:Float = Max(x, r.x)
 		Local iy:Float = Max(y, r.y)
 		Local iw:Float = Max(0, Min(x + w, r.x + r.w ) - ix)
@@ -573,10 +573,10 @@ Struct SRect
 
 
 	Method Equals:Int(x:Float, y:Float, w:Float, h:Float)
-		If self.x <> x Then Return False
-		If self.y <> y Then Return False
-		If self.w <> w Then Return False
-		If self.h <> h Then Return False
+		If Self.x <> x Then Return False
+		If Self.y <> y Then Return False
+		If Self.w <> w Then Return False
+		If Self.h <> h Then Return False
 		Return True
 	End Method
 
@@ -595,10 +595,10 @@ Struct SRect
 
 
 	Method EqualsTLBR:Int(rTop:Float, rLeft:Float, rBottom:Float, rRight:Float)
-		If self.x <> rTop Then Return False
-		If self.y <> rLeft Then Return False
-		If self.x <> rBottom Then Return False
-		If self.y <> rRight Then Return False
+		If Self.x <> rTop Then Return False
+		If Self.y <> rLeft Then Return False
+		If Self.x <> rBottom Then Return False
+		If Self.y <> rRight Then Return False
 		Return True
 	End Method
 

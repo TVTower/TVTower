@@ -41,7 +41,7 @@ ENDREM
 SuperStrict
 Import brl.System
 Import brl.PolledInput
-Import Brl.vector
+Import Math.vector
 Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
 Import "base.util.virtualgraphics.bmx"
@@ -96,12 +96,12 @@ Type TMouseManager
 	
 	'store the last click for each button
 	'so we can check if we moved "since then"
-	field lastClick:TMouseManagerClick[5]
-	field lastDoubleClick:TMouseManagerClick[5]
-	field lastLongClick:TMouseManagerClick[5]
+	Field lastClick:TMouseManagerClick[5]
+	Field lastDoubleClick:TMouseManagerClick[5]
+	Field lastLongClick:TMouseManagerClick[5]
 
-	field skipLongClicks:Int[] = [0,0,0,0,0]
-	field skipClicks:Int[] = [0,0,0,0,0]
+	Field skipLongClicks:Int[] = [0,0,0,0,0]
+	Field skipClicks:Int[] = [0,0,0,0,0]
 
 	'store up to 20 click information of all click types and all buttons
 	'so clicks between "updates" can still be processed one after another
@@ -126,7 +126,7 @@ Type TMouseManager
 	Field _down:Int[] = [0,0,0,0,0]
 	'time since when the button was pressed last
 	Field _downTime:Long[] = [0:Long,0:Long,0:Long,0:Long,0:Long]
-	Field _downStartPos:SVec2I[] = new SVec2I[5]
+	Field _downStartPos:SVec2I[] = New SVec2I[5]
 	'can clicks/hits get read?
 	'special info read is possible (IsDown(), IsNormal())
 	Field _enabled:Int[] = [True, True, True, True, True]
@@ -194,8 +194,8 @@ Type TMouseManager
 
 
 	Method New()
-		_unhandledClicksStack = new TObjectQueue
-		_handledClicksStack = new TObjectQueue
+		_unhandledClicksStack = New TObjectQueue
+		_handledClicksStack = New TObjectQueue
 	End Method
 
 
@@ -213,7 +213,7 @@ Type TMouseManager
 		'remove (up to) defined amount
 		Else
 			For Local i:Int = 0 Until clickCount
-				If _unhandledClicksStack.IsEmpty() Then exit
+				If _unhandledClicksStack.IsEmpty() Then Exit
 
 				_unhandledClicksStack.Dequeue()
 			Next
@@ -223,12 +223,12 @@ Type TMouseManager
 	
 	
 	Method _RemoveClickEntries:Int(button:Int = -1, clickType:Int = -1)
-		local clicks:object[] = _unhandledClicksStack.ToArray()
+		Local clicks:Object[] = _unhandledClicksStack.ToArray()
 		_unhandledClicksStack.Clear()
 
-		For local c:TMouseManagerClick = EachIn clicks
-			if button >= 0 and c.button <> button then continue
-			if clickType >= 0 and c.clickType <> clickType then continue
+		For Local c:TMouseManagerClick = EachIn clicks
+			If button >= 0 And c.button <> button Then Continue
+			If clickType >= 0 And c.clickType <> clickType Then Continue
 			 
 			_unhandledClicksStack.Enqueue(c)
 		Next
@@ -244,11 +244,11 @@ Type TMouseManager
 		_changedClicksUpdateCycle = _updateCycle
 		
 		Select clickType
-			case CLICKTYPE_DOUBLECLICK
+			Case CLICKTYPE_DOUBLECLICK
 				lastDoubleClick[button-1] = click
-			case CLICKTYPE_LONGCLICK
+			Case CLICKTYPE_LONGCLICK
 				lastLongClick[button-1] = click
-			default
+			Default
 				lastClick[button-1] = click
 		End Select
 		
@@ -258,7 +258,7 @@ Type TMouseManager
 
 	'return amount of managed buttons
 	Method GetButtonCount:Int()
-		Return _down.length 'ignore 0
+		Return _down.Length 'ignore 0
 	End Method
 	
 	
@@ -307,10 +307,10 @@ Type TMouseManager
 	'remove all logged clicks older than "age" milliseconds
 	Method RemoveOutdatedClicks:Int(age:Int)
 		Local removed:Int = 0
-		Local t:Long = Time.GetAppTimeGone()
+		Local t:Long = time.GetAppTimeGone()
 		
 		Local click:TMouseManagerClick = _GetClickEntry()
-		While click and click.t + age < t
+		While click And click.t + age < t
 			_RemoveClickEntry()
 			click = _GetClickEntry()
 		Wend
@@ -322,8 +322,8 @@ Type TMouseManager
 	'TODO: remove button, kept it in for compatiblity (in case we split
 	'      it clickStack up for each button)
 	Method SetClickHandled:Int(button:Int)
-		local c:TMouseManagerClick = _GetClickEntry()
-		if not c then Return False
+		Local c:TMouseManagerClick = _GetClickEntry()
+		If Not c Then Return False
 
 		c.handled = True
 		
@@ -390,7 +390,7 @@ Type TMouseManager
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return False
 
-		Return not c.handled and c.button = button and c.clickType = CLICKTYPE_CLICK
+		Return Not c.handled And c.button = button And c.clickType = CLICKTYPE_CLICK
 	End Method
 
 
@@ -401,7 +401,7 @@ Type TMouseManager
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return False
 
-		Return not c.handled and c.button = button and c.clickType = CLICKTYPE_DOUBLECLICK
+		Return Not c.handled And c.button = button And c.clickType = CLICKTYPE_DOUBLECLICK
 	End Method
 
 
@@ -413,7 +413,7 @@ Type TMouseManager
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return False
 
-		Return not c.handled and c.button = button and c.clickType = CLICKTYPE_LONGCLICK
+		Return Not c.handled And c.button = button And c.clickType = CLICKTYPE_LONGCLICK
 	End Method
 
 
@@ -445,11 +445,11 @@ Type TMouseManager
 		'fetch last click
 		Local c:TMouseManagerClick
 		Select clickType
-			case CLICKTYPE_DOUBLECLICK
+			Case CLICKTYPE_DOUBLECLICK
 				c = lastDoubleClick[button]
-			case CLICKTYPE_LONGCLICK
+			Case CLICKTYPE_LONGCLICK
 				c = lastLongClick[button]
-			default
+			Default
 				c = lastClick[button]
 		End Select
 		If Not c Then Return 0
@@ -468,7 +468,7 @@ Type TMouseManager
 
 	'TODO: remove button, kept it in for compatiblity (in case we split
 	'      it clickStack up for each button)
-	Method GetClickPosition:TVec2D(button:int)
+	Method GetClickPosition:TVec2D(button:Int)
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return Null
 		If c.handled Then Return Null
@@ -477,11 +477,11 @@ Type TMouseManager
 
 
 	Method GetDownStartPosition:SVec2I(button:Int)
-		if _down[button-1]
+		If _down[button-1]
 			Return _downStartPos[button-1]
-		else
-			Return new SVec2I(-1,-1)
-		Endif
+		Else
+			Return New SVec2I(-1,-1)
+		EndIf
 	End Method
 
 
@@ -503,7 +503,7 @@ Type TMouseManager
 	'returns how many milliseconds a button is down
 	Method GetDownTime:Long(button:Int)
 		If _downTime[button-1] > 0
-			Return Time.GetAppTimeGone() - _downTime[button-1]
+			Return time.GetAppTimeGone() - _downTime[button-1]
 		Else
 			Return 0
 		EndIf
@@ -521,8 +521,8 @@ Type TMouseManager
 	Method GetClicks:Int(button:Int, clickType:Int = -1)
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return 0
-		if button >= 0 and c.button <> button Then Return 0
-		if clickType >= 0 and c.clickType <> clickType Then Return 0
+		If button >= 0 And c.button <> button Then Return 0
+		If clickType >= 0 And c.clickType <> clickType Then Return 0
 
 		Return 1
 	End Method
@@ -532,8 +532,8 @@ Type TMouseManager
 	Method GetDoubleClicks:Int(button:Int)
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return 0
-		if button >= 0 and c.button <> button Then Return 0
-		if c.clickType <> CLICKTYPE_DOUBLECLICK Then Return 0
+		If button >= 0 And c.button <> button Then Return 0
+		If c.clickType <> CLICKTYPE_DOUBLECLICK Then Return 0
 
 		Return 1
 	End Method
@@ -543,8 +543,8 @@ Type TMouseManager
 	Method GetLongClicks:Int(button:Int)
 		Local c:TMouseManagerClick = _GetClickEntry()
 		If Not c Then Return 0
-		if button >= 0 and c.button <> button Then Return 0
-		if c.clickType <> CLICKTYPE_LONGCLICK Then Return 0
+		If button >= 0 And c.button <> button Then Return 0
+		If c.clickType <> CLICKTYPE_LONGCLICK Then Return 0
 
 		Return 1
 	End Method
@@ -597,14 +597,14 @@ Type TMouseManager
 	Method Update:Int()
 		'if nobody was handling something for more than a cycle
 		'remove the oldest/first unhandled one
-		If _changedClicksUpdateCycle <> _updateCycle and _unhandledClicksStack and _unhandledClicksStack.Count() > 0
+		If _changedClicksUpdateCycle <> _updateCycle And _unhandledClicksStack And _unhandledClicksStack.Count() > 0
 			'print "updatecycle="+ _updateCycle + "  Removing " + _unhandledClicksStack.Count() + " unhandled click(s).  " + Millisecs()
 			'print "- " + TMouseManagerClick( _unhandledClicksStack.Dequeue() ).ToString()
 			_unhandledClicksStack.Dequeue()
 		EndIf
 
 		'some click got handled?
-		If _handledClicksStack and _handledClicksStack.Count() > 0 
+		If _handledClicksStack And _handledClicksStack.Count() > 0 
 			'print "Removing " + _handledClicksStack.Count() + " handled clicks.  " + Millisecs()
 			_handledClicksStack.Clear()
 		EndIf
@@ -634,7 +634,7 @@ Type TMouseManager
 
 		'MOVEMENT TIME
 		If HasMoved() 
-			_lastMovementTime = Time.GetTimeGone()
+			_lastMovementTime = time.GetTimeGone()
 		EndIf
 
 
@@ -659,8 +659,8 @@ Type TMouseManager
 
 			'Print Time.GetTimeGone() + "  normal => down   x="+x + " y="+y
 			_down[buttonIndex] = True
-			_downTime[buttonIndex] = Time.GetAppTimeGone()
-			_downStartPos[buttonIndex] = new SVec2I(x, y)
+			_downTime[buttonIndex] = time.GetAppTimeGone()
+			_downStartPos[buttonIndex] = New SVec2I(x, y)
 		EndIf
 
 
@@ -675,9 +675,9 @@ Type TMouseManager
 				Return False
 			EndIf
 
-			Local t:Long = Time.GetAppTimeGone()
+			Local t:Long = time.GetAppTimeGone()
 			Local timeSinceLastClick:Int = 0
-			if lastClick[buttonIndex] then timeSinceLastClick = t - lastClick[buttonIndex].t
+			If lastClick[buttonIndex] Then timeSinceLastClick = t - lastClick[buttonIndex].t
 
 			If timeSinceLastClick < doubleClickMaxTime
 				_clicksInDoubleClickTimeCount[buttonIndex] :+ 1
@@ -711,9 +711,9 @@ Type TMouseManager
 
 				' check for a long click
 				If _longClickModeEnabled And _downTime[buttonIndex] + longClickMinTime < t
-					if skipLongClicks[buttonIndex] > 0
+					If skipLongClicks[buttonIndex] > 0
 						skipLongClicks[buttonIndex] :- 1
-					else
+					Else
 						'but also a long click one
 						_AddClickEntry(button, CLICKTYPE_LONGCLICK, currentPosVec.Copy(), t)
 
@@ -725,16 +725,16 @@ Type TMouseManager
 							'it is a click nonetheless
 							_AddClickEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 						EndIf
-					endif
+					EndIf
 
 					'Print Time.GetTimeGone() + "      click => long clicked    downTime="+_downTime[button] +"  longClickMinTime="+longClickMinTime +"   button="+button
 
 				' normal click + double clicks
 				Else
 					'Print Time.GetTimeGone() + "    down => up => click   GetClicks( " + button + ")=" + GetClicks(button) + " _clicksInDoubleClickTimeCount["+buttonIndex+"]="+_clicksInDoubleClickTimeCount[buttonIndex]
-					if skipClicks[buttonIndex] > 0
+					If skipClicks[buttonIndex] > 0
 						skipClicks[buttonIndex] :- 1
-					else
+					Else
 						_AddClickEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 
 						'double clicks (additionally to normal clicks!)
@@ -743,7 +743,7 @@ Type TMouseManager
 
 							_clicksInDoubleClickTimeCount[buttonIndex] :- 2
 						EndIf
-					endif
+					EndIf
 				EndIf
 			EndIf
 
@@ -764,8 +764,8 @@ Type TMouseManagerClick
 	Field position:TVec2D
 	Field t:Long
 	Field handled:Int 
-	Field id:int
-	Global lastID:int = 0
+	Field id:Int
+	Global lastID:Int = 0
 	
 	Method New()
 		lastID :+ 1
@@ -774,7 +774,7 @@ Type TMouseManagerClick
 		
 
 	Method Init:TMouseManagerClick(button:Int, clickType:Int, position:TVec2D, clickTime:Long = -1)
-		If clickTime = -1 Then clickTime = Time.GetAppTimeGone()
+		If clickTime = -1 Then clickTime = time.GetAppTimeGone()
 		Self.button = button
 		Self.clickType = clickType
 		Self.position = position
@@ -786,13 +786,13 @@ Type TMouseManagerClick
 	
 	Method ToString:String()
 		Select clickType
-			case TMouseManager.CLICKTYPE_CLICK
+			Case TMouseManager.CLICKTYPE_CLICK
 				Return "Click #" + id +". button=" + button + "  clickType=" + clickType + " [singleclick]  position="+position.ToString() + "  t=" + t + "  handled="+handled
-			case TMouseManager.CLICKTYPE_DOUBLECLICK
+			Case TMouseManager.CLICKTYPE_DOUBLECLICK
 				Return "Click #" + id +". button=" + button + "  clickType=" + clickType + " [doubleclick]  position="+position.ToString() + "  t=" + t + "  handled="+handled
-			case TMouseManager.CLICKTYPE_LONGCLICK
+			Case TMouseManager.CLICKTYPE_LONGCLICK
 				Return "Click #" + id +". button=" + button + "  clickType=" + clickType + " [longclick]  position="+position.ToString() + "  t=" + t + "  handled="+handled
-			default
+			Default
 				Return "Click #" + id +". button=" + button + "  clickType=" + clickType + " [unknown]  position="+position.ToString() + "  t=" + t + "  handled="+handled
 		End Select
 	End Method
@@ -847,7 +847,7 @@ Type TKeyManager
 	'returns how many milliseconds a key is down
 	Method GetDownTime:Long(key:Int)
 		If _downTime[key-1] > 0
-			Return Time.GetAppTimeGone() - _downTime[key-1]
+			Return time.GetAppTimeGone() - _downTime[key-1]
 		Else
 			Return 0
 		EndIf
@@ -866,7 +866,7 @@ Type TKeyManager
 		EndIf
 
 
-		Local nowTime:Long = Time.GetAppTimeGone()
+		Local nowTime:Long = time.GetAppTimeGone()
 		For Local i:Int = 1 To 255
 			'ignore key if it is blocked
 			'or set back to "normal" afterwards
@@ -883,7 +883,7 @@ Type TKeyManager
 			EndIf
 
 			'normal check
-			If not KeyDown(i) and isBlockedTillRelease(i)
+			If Not KeyDown(i) And isBlockedTillRelease(i)
 				_keyStatus[i] = KEY_STATE_NORMAL
 			EndIf
 			If _keyStatus[i] = KEY_STATE_NORMAL
@@ -924,7 +924,7 @@ Type TKeyManager
 	Method BlockKey:Int(key:Int, milliseconds:Int=0)
 		'time can be absolute as a key block is just for blocking a key
 		'which has not to be deterministic
-		_blockKeyTime[key] = Time.GetAppTimeGone() + milliseconds
+		_blockKeyTime[key] = time.GetAppTimeGone() + milliseconds
 		'also add the block state to the  current status
 		_keyStatus[key] :| KEY_STATE_BLOCKED
 	End Method
@@ -959,8 +959,8 @@ Type TKeyWrapper
 	
 	
 	Method New()
-		For local i:int = 0 to 255
-			keyHoldInformation[i] = new TKeyHoldInformation(i, 600, 100)
+		For Local i:Int = 0 To 255
+			keyHoldInformation[i] = New TKeyHoldInformation(i, 600, 100)
 		Next
 	End Method
 	
@@ -971,7 +971,7 @@ Type TKeyWrapper
 
 
 	Method Update:Int()
-		For local key:int = 0 To 255
+		For Local key:Int = 0 To 255
 			keyHoldInformation[key].Update( KeyManager._keyStatus[key] )
 		Next
 	End Method
@@ -1028,25 +1028,25 @@ Type TKeyHoldInformation
 
 
 	Method Init(key:Int, firstHoldTime:Int=600, holdTime:Int=100)
-		self.key = key
+		Self.key = key
 
-		self._firstHoldTime = firstHoldTime
-		self._holdTime = holdTime
-		self._nextHoldTimer = -1
+		Self._firstHoldTime = firstHoldTime
+		Self._holdTime = holdTime
+		Self._nextHoldTimer = -1
 	End Method
 
 
 	Method Update:Int(keyState:Int = -1)
-		if keyState = -1 then keyState = KeyManager.GetStatus(key)
+		If keyState = -1 Then keyState = KeyManager.GetStatus(key)
 
 		'reset HIT
-		If keyState <> KEY_STATE_HIT and _hitState
+		If keyState <> KEY_STATE_HIT And _hitState
 			'print Time.GetAppTimeGone() +"  key " + key + " no longer hit."
 			_hitState = False
 		EndIf
 		
 		'reset HOLD
-		If (keyState = KEY_STATE_NORMAL or keyState = KEY_STATE_UP) and _nextHoldTimer >= 0
+		If (keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP) And _nextHoldTimer >= 0
 			'print Time.GetAppTimeGone() +"  key " + key + " no longer hold."
 			_holdState = False
 			_nextHoldTimer = -1
@@ -1054,7 +1054,7 @@ Type TKeyHoldInformation
 		EndIf
 
 		'update HOLD / wait for next
-		If _holdState and _nextHoldTimer >= 0 and Time.GetAppTimeGone() > _nextHoldTimer
+		If _holdState And _nextHoldTimer >= 0 And time.GetAppTimeGone() > _nextHoldTimer
 			'print Time.GetAppTimeGone() +"  key " + key + " repetition reset."
 			_holdState = False
 		EndIf
@@ -1065,15 +1065,15 @@ Type TKeyHoldInformation
 			'print Time.GetAppTimeGone() +"  key " + key + " hit."
 			_hitState = True
 			'set "first hold" start
-			_nextHoldTimer = Time.GetAppTimeGone() + _firstHoldTime
+			_nextHoldTimer = time.GetAppTimeGone() + _firstHoldTime
 		EndIf
 
 		'set HOLD
-		If keyState = KEY_STATE_DOWN and _nextHoldTimer >= 0 and Time.GetAppTimeGone() > _nextHoldTimer
+		If keyState = KEY_STATE_DOWN And _nextHoldTimer >= 0 And time.GetAppTimeGone() > _nextHoldTimer
 			'print Time.GetAppTimeGone() +"  key " + key + " is (repeated) hold."
 			_holdState = True
 			'set "next hold" start
-			_nextHoldTimer = Time.GetAppTimeGone() + _holdTime
+			_nextHoldTimer = time.GetAppTimeGone() + _holdTime
 			'increase count of "repeated holds since key down" 
 			_holdRepetitions :+ 1
 		EndIf
@@ -1083,12 +1083,12 @@ Type TKeyHoldInformation
 	'returns if key is currently hit or "hold" (and enough holding time
 	'is gone)
 	Method IsPressed:Int()
-		Return (IsHit() or IsHold())
+		Return (IsHit() Or IsHold())
 	End Method
 
 
 	Method IsHit:Int()
-		if KeyManager.GetStatus(key) & KEY_STATE_BLOCKED Then Return False
+		If KeyManager.GetStatus(key) & KEY_STATE_BLOCKED Then Return False
 
 		Return _hitState
 	End Method
@@ -1096,7 +1096,7 @@ Type TKeyHoldInformation
 
 	'returns if a key is currently hold
 	Method IsHold:Int()
-		if KeyManager.GetStatus(key) & KEY_STATE_BLOCKED Then Return False
+		If KeyManager.GetStatus(key) & KEY_STATE_BLOCKED Then Return False
 
 		Return _holdState
 	End Method
