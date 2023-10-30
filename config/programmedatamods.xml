@@ -275,8 +275,8 @@
 					<timeMod time="17" value="0.05"/>
 					<timeMod time="18" value="0.1"/>
 					<timeMod time="19" value="0.1"/>
-					<timeMod time="20" value="0.2"/>
-					<timeMod time="21" value="0.2"/>
+					<timeMod time="20" value="0.15"/>
+					<timeMod time="21" value="0.15"/>
 					<timeMod time="22" value="0.1"/>
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
@@ -460,16 +460,16 @@
 					<timeMod time="16" value="0.1"/>
 					<timeMod time="17" value="0.1"/>
 					<timeMod time="18" value="0.1"/>
-					<timeMod time="19" value="0.15"/>
-					<timeMod time="20" value="0.2"/>
-					<timeMod time="21" value="0.15"/>
+					<timeMod time="19" value="0.1"/>
+					<timeMod time="20" value="0.15"/>
+					<timeMod time="21" value="0.1"/>
 					<timeMod time="22" value="0.05"/>
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="1" />
 					<audienceAttraction id="Teenagers" value="0.2" />
-					<audienceAttraction id="HouseWives" men="1" women="1.5" />
+					<audienceAttraction id="HouseWives" men="0.7" women="1.2" />
 					<audienceAttraction id="Employees" men="0.5" women="1" />
 					<audienceAttraction id="Unemployed" men="0" women="0.3" />
 					<audienceAttraction id="Managers" value="-1" />
