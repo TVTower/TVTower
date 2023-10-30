@@ -1475,7 +1475,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 			Local timesBroadcasted:Int = 0
 			Local weightAge:Float = 0.8
-			Local weightTimesBroadcasted:Float = 0.4
+			Local weightTimesBroadcasted:Float = 0.6
 
 			If IsPaid()
 				'always age = 0 ... so just decrease by broadcasts
@@ -1487,10 +1487,34 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 				weightTimesBroadcasted = 1.0
 
 			Else
-				'TODO higher weight for broadcast influence?
-				'TODO non-linear influence
-				'maximum of 10 broadcasts decrease up to "50%" of max topicality
-				timesBroadcasted = 0.5 * Min(100, timesBroadcastedValue * 10)
+				Select timesBroadcastedValue
+					Case 0
+						timesBroadcasted = 0
+					Case 1
+						timesBroadcasted = 5
+					Case 2
+						timesBroadcasted = 12
+					Case 3
+						timesBroadcasted = 22
+					Case 4
+						timesBroadcasted = 37
+					Case 5
+						timesBroadcasted = 57
+					Case 6
+						timesBroadcasted = 72
+					Case 7
+						timesBroadcasted = 82
+					Case 8
+						timesBroadcasted = 89
+					Case 9
+						timesBroadcasted = 94
+					Case 10
+						timesBroadcasted = 98
+					Default
+						timesBroadcasted = 100
+				EndSelect
+				'maximum of 10 broadcasts decrease up to "60%" of max topicality
+				timesBroadcasted = 0.6 * Min(100, timesBroadcasted)
 			EndIf
 
 			'modifiers could increase or decrease influences of age/aired/...
