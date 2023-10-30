@@ -37,7 +37,7 @@ End Rem
 SuperStrict
 Import BRL.Max2D
 Import BRL.Map
-Import BRL.Vector
+Import Math.Vector
 'to load from truetype
 Import brl.FreeTypeFont
 'Import "base.util.srectangle.bmx"
@@ -265,12 +265,12 @@ Type TBitmapFontChar
 
 
 	Method Init:TBitmapFontChar(img:TImage, x:Int,y:Int,w:Int, h:Int, charWidth:Float)
-		if img
+		If img
 			Self.pixmap = LockImage(img)
 			UnlockImage(img)
-		else
-			Self.pixmap = null
-		endif
+		Else
+			Self.pixmap = Null
+		EndIf
 		Self.pos = New SVec2I(x,y)
 		Self.dim = New SVec2I(w,h)
 		Self.charWidth = charWidth
@@ -423,7 +423,7 @@ Type TBitmapFont
 
 	Method SetCharsEffectFunction(position:Int, _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData), config:TData=Null)
 		position :-1 '0 based
-		If _charsEffectFunc.length <= position
+		If _charsEffectFunc.Length <= position
 			_charsEffectFunc = _charsEffectFunc[..position+1]
 			_charsEffectFuncConfig = _charsEffectFuncConfig[..position+1]
 		EndIf
@@ -435,9 +435,9 @@ Type TBitmapFont
 	'overrideable method
 	Method ApplyCharsEffect(config:TData=Null)
 		'if instead of overriding a function was provided - use this
-		If _charsEffectFunc.length > 0
+		If _charsEffectFunc.Length > 0
 			'for local _charKey:TIntKey = eachin chars.keys()
-			For Local charKey:Int = 0 Until chars.length
+			For Local charKey:Int = 0 Until chars.Length
 
 				'local charKey:Int = _charKey.Value
 				'local char:TBitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
@@ -449,7 +449,7 @@ Type TBitmapFont
 				'manipulate char
 				Local _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)
 				Local _config:TData
-				For Local i:Int = 0 To _charsEffectFunc.length-1
+				For Local i:Int = 0 To _charsEffectFunc.Length-1
 					_func = _charsEffectFunc[i]
 					_config = _charsEffectFuncConfig[i]
 					If Not _config Then _config = config
@@ -564,7 +564,7 @@ endrem
 				Self._maxCharWidth = Max(Self._maxCharWidth, chars[i].charWidth)
 			EndIf
 		Next
-		For Local charNum:Int = 0 Until ExtraChars.length
+		For Local charNum:Int = 0 Until ExtraChars.Length
 			n = imgFont.CharToGlyph( ExtraChars[charNum] )
 			If n < 0 Or n > glyphCount Then Continue
 			glyph = imgFont.LoadGlyph(n)
@@ -586,15 +586,15 @@ endrem
 
 
 	Method resizeChars(index:Int)
-		If index >= chars.length Then
-			chars = chars[.. index + 1 + chars.length/3]
+		If index >= chars.Length Then
+			chars = chars[.. index + 1 + chars.Length/3]
 		End If
 	End Method
 
 
 	Method resizeCharsSprites(index:Int)
-		If index >= charsSprites.length Then
-			charsSprites = charsSprites[.. index + 1 + charsSprites.length/3]
+		If index >= charsSprites.Length Then
+			charsSprites = charsSprites[.. index + 1 + charsSprites.Length/3]
 		End If
 	End Method
 
@@ -602,10 +602,10 @@ endrem
 	'create a charmap-atlas with information where to optimally store
 	'each char
 	Method CreateCharmap:TSpriteAtlas(spaceBetweenChars:Int=0)
-		Local charmap:TSpriteAtlas = New TSpriteAtlas(64,64, chars.length)
+		Local charmap:TSpriteAtlas = New TSpriteAtlas(64,64, chars.Length)
 		Local bitmapFontChar:TBitmapFontChar
 		'for local _charKey:TIntKey = eachin chars.keys()
-		For Local charKey:Int = 0 Until chars.length
+		For Local charKey:Int = 0 Until chars.Length
 			'local charKey:Int = _charKey.Value
 			'bitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
 			bitmapFontChar = chars[charKey]
@@ -626,7 +626,7 @@ endrem
 		'loop through atlas boxes and add chars
 		For Local atlasRect:SSpriteAtlasRect = EachIn charmap.elements
 			'skip missing data
-			If (atlasRect.id < 0 Or atlasRect.id > chars.length) Or (Not chars[atlasRect.id]) Then Continue
+			If (atlasRect.id < 0 Or atlasRect.id > chars.Length) Or (Not chars[atlasRect.id]) Then Continue
 			
 			Local bm:TBitmapFontChar = chars[atlasRect.id]
 			If Not bm.pixmap Then Continue
@@ -754,7 +754,7 @@ endrem
 		
 		Local upperChars:String = "EU" 'some upper case chars
 		Local maxY:Int
-		For Local i:Int = 0 Until upperChars.length
+		For Local i:Int = 0 Until upperChars.Length
 			Local bm:TBitmapFontChar = __GetBitmapFontChar(upperChars[i])
 			maxY = Max(maxY, bm.pos.y + bm.dim.y)
 		Next
@@ -762,7 +762,7 @@ endrem
 
 		Local belowBaseChars:String = "q_|"
 		maxY = 0
-		For Local i:Int = 0 Until belowBaseChars.length
+		For Local i:Int = 0 Until belowBaseChars.Length
 			Local bm:TBitmapFontChar = __GetBitmapFontChar(belowBasechars[i])
 			maxY = Max(maxY, bm.pos.y + bm.dim.y)
 		Next
@@ -788,7 +788,7 @@ endrem
 			lineHeight = fixedLineHeight
 		EndIf
 		
-		For Local i:Int = 0 Until s.length
+		For Local i:Int = 0 Until s.Length
 			Local charCode:Int = s[i]
 			Local newLineChar:Int = (charCode = 13 Or charCode = Asc("~n"))
 
@@ -803,9 +803,9 @@ endrem
 			
 			'update text dimensions
 			'(when new line char or reached end)
-			If newLineChar Or i = s.length - 1
+			If newLineChar Or i = s.Length - 1
 				textMaxW = Max(textMaxW, textW)
-				If trimWhitespace And (currentLine = 0 Or i = s.length - 1)
+				If trimWhitespace And (currentLine = 0 Or i = s.Length - 1)
 					textH :+ Min(contentLineHeight, lineHeight)
 				Else
 					textH :+ lineHeight
@@ -1087,14 +1087,14 @@ endrem
 			Self.LoadExtendedCharacters()
 		EndIf
 
-		If charCode < chars.length
+		If charCode < chars.Length
 			bm = chars[charCode]
 		EndIf
 
 		'some fonts do not contain the given char ... display "?" there
 		If Not bm
 			charCode = Asc("?")
-			If charCode < chars.length
+			If charCode < chars.Length
 				bm = chars[charCode]
 			EndIf
 		EndIf
@@ -1110,13 +1110,13 @@ endrem
 	Method __DrawSingleChar(bm:TBitmapFontchar, charCode:Int, x:Float, y:Float)
 		If bm
 			'is the char a drawable one ?
-			If charCode > 32 And charCode < charsSprites.length
+			If charCode > 32 And charCode < charsSprites.Length
 				Local sprite:TSprite = charsSprites[charCode]
 				
 				If sprite
 					Local tx:Float = bm.pos.x * gfx.tform_ix + bm.pos.y * gfx.tform_iy
 					Local ty:Float = bm.pos.x * gfx.tform_jx + bm.pos.y * gfx.tform_jy
-					sprite.Draw(int(x + tx), int(y + ty))
+					sprite.Draw(Int(x + tx), Int(y + ty))
 				EndIf
 			EndIf
 		EndIf
@@ -1131,7 +1131,7 @@ endrem
 	Method __DrawSingleCharToPixmap(bm:TBitmapFontchar, charCode:Int, x:Float, y:Float, color:SColor8)
 		If bm
 			'is the char a drawable one ?
-			If charCode > 32 And charCode < charsSprites.length
+			If charCode > 32 And charCode < charsSprites.Length
 				Local sprite:TSprite = charsSprites[charCode]
 				
 				If sprite
@@ -1156,7 +1156,7 @@ endrem
 		Local charCode:Int
 		Local textX:Float, width:Float
 		
-		For Local ellipsisIndex:Int = 0 Until ellipsis.length
+		For Local ellipsisIndex:Int = 0 Until ellipsis.Length
 			charCode = ellipsis[ellipsisIndex]
 			bm = __GetBitmapFontChar(charCode)
 
@@ -1180,28 +1180,28 @@ endrem
 	
 	Method GetBoxLineText:String(txt:String, lineIndex:Int, w:Float, h:Float, settings:TDrawTextSettings, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
 		LockMutex(globalBoxParseInfoMutex)
-		local currentFont:TBitmapFont = self
+		Local currentFont:TBitmapFont = Self
 
 		globalBoxParseInfo.data.calculated = False
-		if settings
+		If settings
 			globalBoxParseInfo.data.CalculateDimensions(txt, w, h, currentFont, settings.data)
-		else
+		Else
 			globalBoxParseInfo.data.CalculateDimensions(txt, w, h, currentFont, defaultDrawSettings)
-		endif
+		EndIf
 
 		Local nextLineBreakIndex:Int = globalBoxParseInfo.data.lineinfo_lineBreakIndices[0]
 		Local lastLineBreakIndex:Int = 0
 		Local result:String
 		Local currentIndex:Int
 		Repeat
-			if currentIndex = lineIndex
+			If currentIndex = lineIndex
 				result = txt[lastLineBreakIndex .. nextLineBreakIndex+1]
-				exit
-			endif
+				Exit
+			EndIf
 
 			currentIndex:+ 1
 		
-			local dynamicIndex:Int = currentIndex - globalBoxParseInfo.data.lineinfo_boxHeights.length
+			Local dynamicIndex:Int = currentIndex - globalBoxParseInfo.data.lineinfo_boxHeights.Length
 			If dynamicIndex >= 0
 				lastLineBreakIndex = nextLineBreakIndex + 1
 				nextLineBreakIndex = globalBoxParseInfo.data.lineinfo_lineBreakIndicesDynamic[dynamicIndex]
@@ -1232,7 +1232,7 @@ endrem
 			Return DrawBox(txt, x, y, w, h, alignment, color, settings.data)
 		Else
 			Return DrawBox(txt, x, y, w, h, alignment, color, defaultDrawSettings)
-		Endif
+		EndIf
 	End Method
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, settings:SDrawTextSettings Var)
@@ -1245,11 +1245,11 @@ endrem
 	End Method
 
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, settings:TDrawTextSettings, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
-		if settings
+		If settings
 			Return DrawBox(txt, x, y, w, h, alignment, color, settings.data, effectMode, effectValue)
-		else
+		Else
 			Return DrawBox(txt, x, y, w, h, alignment, color, defaultDrawSettings, effectMode, effectValue)
-		endif
+		EndIf
 	End Method
 	
 	Method DrawBox:SVec2I(txt:String,x:Float,y:Float,w:Float,h:Float, alignment:SVec2F, color:SColor8, settings:SDrawTextSettings Var, effectMode:EDrawTextEffect, effectValue:Float = -1.0)
@@ -1365,7 +1365,7 @@ endrem
 		effect.value = effectValue
 		Local dim:SVec2I = DrawBox(txt, x, y, w, h, alignment, color, effect)
 
-		rem
+		Rem
 		LockMutex(globalBoxParseInfoMutex)
 		globalBoxParseInfo.data.calculated = False
 		DrawBox(txt, x, y, w, h, alignment, color, New SVec2F(0,0), globalBoxParseInfo.data, EDrawTextOption.None, effect, defaultDrawSettings)
@@ -1908,12 +1908,12 @@ endrem
 		EndIf
 '		EndIf
 		Local renderedElementCount:Int = 0
-		For Local i:Int = 0 Until txt.length
+		For Local i:Int = 0 Until txt.Length
 
 			Local charCode:Int = txt[i]
 			Local escaped:Int = False
 
-			Local dynamicIndex:Int = currentLine - parseInfo.lineinfo_BoxHeights.length
+			Local dynamicIndex:Int = currentLine - parseInfo.lineinfo_BoxHeights.Length
 
 			'only render what parseInfo was able to process
 			If i > parseInfo.handledCharIndex Then Exit
@@ -1948,13 +1948,13 @@ endrem
 						EndIf
 					EndIf
 				EndIf
-				i = txt.length
+				i = txt.Length
 				Exit
 			EndIf
 
 		
 			' escaping command or escape char?
-			If charCode = ESCAPE_CHARCODE And i < txt.length - 2 And (txt[i+1] = COMMAND_CHARCODE Or txt[i+1] = ESCAPE_CHARCODE)
+			If charCode = ESCAPE_CHARCODE And i < txt.Length - 2 And (txt[i+1] = COMMAND_CHARCODE Or txt[i+1] = ESCAPE_CHARCODE)
 				i :+ 1
 				charCode = txt[i]
 				escaped = True
@@ -1970,12 +1970,12 @@ endrem
 
 				'handle commands only changing colors (etc) but not
 				'altering the layout
-				if drawToPixmap and (options & EDrawTextOption.IgnoreColor)
-					local ignoreColor:SColor8
+				If drawToPixmap And (options & EDrawTextOption.IgnoreColor)
+					Local ignoreColor:SColor8
 					parseInfo.HandleVisibleOnlyCommands(currentFont, txt, i, ignoreColor)
-				else
+				Else
 					parseInfo.HandleVisibleOnlyCommands(currentFont, txt, i, currentColor)
-				endif
+				EndIf
 
 				' react to font changes (if required)
 				If element.changedFont 
@@ -2240,7 +2240,7 @@ endrem
 		SetColor(color)
 		SetAlpha(color.a/255.0)
 
-		For Local i:Int = 0 Until s.length
+		For Local i:Int = 0 Until s.Length
 			Local charCode:Int = s[i]
 			Local newLineChar:Int = charCode = 13 Or charCode = Asc("~n")
 
@@ -2267,7 +2267,7 @@ endrem
 
 			'update text dimensions
 			'(when new line char or reached end)
-			If newLineChar Or i = s.length - 1
+			If newLineChar Or i = s.Length - 1
 				'move to next line
 				textY :+ lineHeight
 				If textX > textMaxX Then textMaxX = textX
@@ -2301,27 +2301,27 @@ Struct SDrawTextEffect
 	Field color:SColor8 = SColor8.White
 
 	Method Init(mode:EDrawTextEffect, value:Float, color:SColor8)
-		self.mode = mode
-		self.value = value
-		self.color = color
+		Self.mode = mode
+		Self.value = value
+		Self.color = color
 	End Method
 	
 	
 	Method InitDefaults(mode:EDrawTextEffect)
 		value = -1.0
 		Select mode
-			case EDrawTextEffect.Shadow
+			Case EDrawTextEffect.Shadow
 				color = SColor8.Black
-			case EDrawTextEffect.Emboss
+			Case EDrawTextEffect.Emboss
 				color = SColor8.White
-			case EDrawTextEffect.Glow
+			Case EDrawTextEffect.Glow
 				color = SColor8.White
 		End Select
 	End Method
 End Struct
 
 
-Enum EDrawTextEffect:Byte Flags
+Enum EDrawTextEffect:Byte flags
 	None = 0
 	Shadow = 1
 	Glow
@@ -2331,7 +2331,7 @@ End Enum
 
 
 
-Enum EDrawTextOption:Byte Flags
+Enum EDrawTextOption:Byte flags
 	None = 0
 	IgnoreColor = 1
 	IgnoreFontstyles
@@ -2378,14 +2378,14 @@ Type TStyledBitmapFonts
 
 	Method Get:TBitmapFont(style:Int)
 		style :+ 1
-		If style < styles.length
+		If style < styles.Length
 			Return styles[style]
 		End If
 	End Method
 
 	Method Insert(style:Int, font:TBitmapFont)
 		style :+ 1
-		If style >= styles.length
+		If style >= styles.Length
 			styles = styles[..style + 1]
 		End If
 		styles[style] = font
@@ -2400,7 +2400,7 @@ Type TSizedBitmapFonts
 
 	Method Get:TBitmapFont(size:Int, style:Int)
 		size :+ 1
-		If size < sizes.length
+		If size < sizes.Length
 			Local styled:TStyledBitmapFonts = sizes[size]
 			If styled Then
 				Return styled.Get(style)
@@ -2410,7 +2410,7 @@ Type TSizedBitmapFonts
 
 	Method Insert(size:Int, style:Int, font:TBitmapFont)
 		size :+ 1
-		If size >= sizes.length
+		If size >= sizes.Length
 			sizes = sizes[..size + 1]
 		End If
 		Local styled:TStyledBitmapFonts = sizes[size]
@@ -2594,17 +2594,17 @@ Type STextParseInfo
 
 
 	Method Reset(estimatedLineCount:Int = -1, estimatedStyleColors:Int = -1)
-		Local dynamicArrayLength:Int = Max(0, estimatedLineCount - lineinfo_widths.length)
-		Local dynamicStyleColorsLength:Int = Max(0, estimatedStyleColors - stylesColors.length)
+		Local dynamicArrayLength:Int = Max(0, estimatedLineCount - lineinfo_widths.Length)
+		Local dynamicStyleColorsLength:Int = Max(0, estimatedStyleColors - stylesColors.Length)
 
 		ResetStyle()
 
 		'presize arrays
-		If dynamicStyleColorsLength >= 0 And stylesColorsDynamic.length <> dynamicStyleColorsLength
+		If dynamicStyleColorsLength >= 0 And stylesColorsDynamic.Length <> dynamicStyleColorsLength
 			stylesColorsDynamic = New SColor8[dynamicStyleColorsLength]
 		EndIf
 
-		If dynamicArrayLength >= 0 And lineinfo_widthsDynamic.length <> dynamicArrayLength
+		If dynamicArrayLength >= 0 And lineinfo_widthsDynamic.Length <> dynamicArrayLength
 			EnsureDynamicArraySize(dynamicArrayLength)
 		EndIf
 
@@ -2708,11 +2708,11 @@ Type STextParseInfo
 	
 	Method GetLineWidth:Short(line:Int, boxDimensionMode:Int = 0)
 		Local lineIndex:Int = line - 1
-		If lineIndex >= 0 And lineIndex < lineinfo_widths.length + lineinfo_widthsDynamic.length
-			If lineIndex < lineinfo_widths.length
+		If lineIndex >= 0 And lineIndex < lineinfo_widths.Length + lineinfo_widthsDynamic.Length
+			If lineIndex < lineinfo_widths.Length
 				Return lineinfo_widths[lineIndex]
 			Else
-				Return lineinfo_widthsDynamic[lineIndex - lineinfo_widths.length]
+				Return lineinfo_widthsDynamic[lineIndex - lineinfo_widths.Length]
 			EndIf
 		EndIf
 		Return -1
@@ -2721,8 +2721,8 @@ Type STextParseInfo
 	
 	Method GetLineHeight:Int(line:Int, boxDimensionMode:Int = 0)
 		Local lineIndex:Int = line - 1
-		If lineIndex >= 0 And lineIndex < lineinfo_widthsDynamic.length + lineinfo_widths.length And lineIndex < totalLineCount
-			If lineIndex < lineinfo_widths.length
+		If lineIndex >= 0 And lineIndex < lineinfo_widthsDynamic.Length + lineinfo_widths.Length And lineIndex < totalLineCount
+			If lineIndex < lineinfo_widths.Length
 				Select boxDimensionMode
 					Case 1
 						Return lineinfo_contentHeights[lineIndex]
@@ -2734,11 +2734,11 @@ Type STextParseInfo
 			Else
 				Select boxDimensionMode
 					Case 1
-						Return lineinfo_contentHeightsDynamic[lineIndex - lineinfo_contentHeights.length]
+						Return lineinfo_contentHeightsDynamic[lineIndex - lineinfo_contentHeights.Length]
 					Case 2
-						Return lineinfo_maxFontHeightsDynamic[lineIndex - lineinfo_maxFontHeights.length]
+						Return lineinfo_maxFontHeightsDynamic[lineIndex - lineinfo_maxFontHeights.Length]
 					Default '/ case 0
-						Return lineinfo_boxHeightsDynamic[lineIndex - lineinfo_boxHeights.length]
+						Return lineinfo_boxHeightsDynamic[lineIndex - lineinfo_boxHeights.Length]
 				End Select
 			EndIf
 		EndIf
@@ -2777,8 +2777,8 @@ Type STextParseInfo
 		ElseIf totalLineCount>1
 			'Local thisLineIndex:int = totalLineCount - 1
 			'Local lastLineIndex:int = thisLineIndex - 1
-			Local lastLineIndex:int = totalLineCount - 1 - 1
-			Local dynamicIndex:Int = lastLineIndex - lineinfo_lineBreakIndices.length
+			Local lastLineIndex:Int = totalLineCount - 1 - 1
+			Local dynamicIndex:Int = lastLineIndex - lineinfo_lineBreakIndices.Length
 
 			If dynamicIndex >= 0 
 				If lineinfo_lineBreakIndicesDynamic[dynamicIndex] >= possibleLineBreakIndex
@@ -2836,7 +2836,7 @@ Type STextParseInfo
 			Local StaticArray c:Byte[4]; c[3] = 255 'default to alpha = 1.0
 
 			Local ci:Int
-			For Local i:Int = 0 Until payload.length
+			For Local i:Int = 0 Until payload.Length
 				ci = payload.start + i
 
 				'inbetween
@@ -2856,9 +2856,9 @@ Type STextParseInfo
 				hasCurrentColor = True
 			
 				
-				Local dynamicIndex:Int = stylesColorsIndex - stylesColors.length
+				Local dynamicIndex:Int = stylesColorsIndex - stylesColors.Length
 				If dynamicIndex >= 0
-					If stylesColorsDynamic.length <= dynamicIndex Then stylesColorsDynamic = stylesColorsDynamic[ .. dynamicIndex + 10]
+					If stylesColorsDynamic.Length <= dynamicIndex Then stylesColorsDynamic = stylesColorsDynamic[ .. dynamicIndex + 10]
 					stylesColorsDynamic[dynamicIndex] = currentColor
 				Else
 					stylesColors[stylesColorsIndex] = currentColor
@@ -2875,7 +2875,7 @@ Type STextParseInfo
 			' when we reached index 0 this time, fall back to
 			' initial color
 			If stylesColorsIndex >= 1
-				Local dynamicIndex:Int = stylesColorsIndex - stylesColors.length - 1
+				Local dynamicIndex:Int = stylesColorsIndex - stylesColors.Length - 1
 				If dynamicIndex >= 0
 					currentColor = stylesColorsDynamic[dynamicIndex]
 				Else
@@ -2901,7 +2901,7 @@ Type STextParseInfo
 		Local StaticArray dim:Byte[2]; dim[0] = -1; dim[1] = -1 'default to no dimension
 
 		Local ci:Int
-		For Local i:Int = 0 Until payload.length
+		For Local i:Int = 0 Until payload.Length
 			ci = payload.start + i
 
 			'inbetween
@@ -2957,7 +2957,7 @@ Type STextParseInfo
 		
 
 		Local dimI:Int
-		For Local i:Int = 0 Until payload.length
+		For Local i:Int = 0 Until payload.Length
 			dimI = payload.start + i
 
 			'inbetween
@@ -2987,14 +2987,14 @@ Type STextParseInfo
 
 	Method EatCommands(txt:String Var, txtPos:Int Var)
 		' finished processing txt if last char is a command char
-		If txtPos = txt.length - 1 Then Return
+		If txtPos = txt.Length - 1 Then Return
 
 		' read command until next commandCharCode
 		' if encountering the "=" sign, read payload
 		Local j:Int = txtPos
 		Local isPayload:Int = False
 
-		While j < txt.length - 1
+		While j < txt.Length - 1
 			j :+ 1
 			If txt[j] = TBitmapFont.COMMAND_CHARCODE
 				Exit
@@ -3006,7 +3006,7 @@ Type STextParseInfo
 
 	Method HandleCommand:STextParseElement(font:TBitmapFont Var, txt:String Var, txtPos:Int Var, x:Int, y:Int)
 		' finished processing txt if last char is a command char
-		If txtPos = txt.length - 1 Then Return New STextParseElement()
+		If txtPos = txt.Length - 1 Then Return New STextParseElement()
 
 		' read command until next commandCharCode
 		' if encountering the "=" sign, read payload
@@ -3014,7 +3014,7 @@ Type STextParseInfo
 		Local isPayload:Int = False
 		Local fontChanged:Byte
 
-		While j < txt.length - 1
+		While j < txt.Length - 1
 			j :+ 1
 			If txt[j] = TBitmapFont.PAYLOAD_CHARCODE
 				command.Set(txt, txtPos + 1, j - (txtPos + 1))
@@ -3079,7 +3079,7 @@ Type STextParseInfo
 		element.manualLineBreak = (charCode = 13 Or charCode = Asc("~n"))
 		element.width = charDim.x
 		element.height = charDim.y
-		element.advWidth = floor(charAdv.x)
+		element.advWidth = Floor(charAdv.x)
 		element.visible = True
 		element.renderObject = bm
 
@@ -3095,7 +3095,7 @@ Type STextParseInfo
 	
 	
 	Method EnsureDynamicArraySize(size:Int)
-		If lineinfo_boxHeightsDynamic.length < size
+		If lineinfo_boxHeightsDynamic.Length < size
 			lineinfo_boxHeightsDynamic = lineinfo_boxHeightsDynamic[.. size + 10]
 			lineinfo_contentHeightsDynamic = lineinfo_contentHeightsDynamic[.. size + 10]
 			lineinfo_maxFontHeightsDynamic = lineinfo_maxFontHeightsDynamic[.. size + 10]
@@ -3143,7 +3143,7 @@ Type STextParseInfo
 		'lastAutomaticLineBreakIndex = -1
 
 		'handled max until said differently
-		handledCharIndex = txt.length
+		handledCharIndex = txt.Length
 		
 		Local element:STextParseElement
 		' on a line break we might eat the breaking char (eg. a "space")
@@ -3155,7 +3155,7 @@ Type STextParseInfo
 		Local textY:Float
 		Local lastHandledCommandIndex:Int = 0
 		'find line breaks
-		For Local i:Int = 0 Until txt.length
+		For Local i:Int = 0 Until txt.Length
 			Local charCode:Int = txt[i]
 			Local escaped:Int = False
 
@@ -3166,7 +3166,7 @@ Type STextParseInfo
 
 
  			' escaping command or escape char?
-			If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
+			If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.Length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
 				i :+ 1
 				charCode = txt[i]
 				escaped = True
@@ -3191,13 +3191,13 @@ Type STextParseInfo
 '				endif
 
 				'skip command if already handled
-				if i <= lastHandledCommandIndex
+				If i <= lastHandledCommandIndex
 					i:-1
 					EatCommands(txt, i)
 					lastHandledCommandIndex = i
 				' react to font changes (if required)
 				ElseIf element.changedFont
-					local commandEndIndex:Int = i-1
+					Local commandEndIndex:Int = i-1
 					UpdateLinebreakIndex(txt, commandEndIndex)
 
 					HandleFontChanges(currentFont, True)
@@ -3233,7 +3233,7 @@ Type STextParseInfo
 						element = HandleChar(currentFont, txt, i, textX)
 						charCode = txt[i]
 					
-					ElseIf settings.skipOptionalElementOnEOL and element.skipOnLinebreak
+					ElseIf settings.skipOptionalElementOnEOL And element.skipOnLinebreak
 						'nothing to do
 
 					ElseIf UpdateLinebreakIndex(txt, i)
@@ -3258,7 +3258,7 @@ Type STextParseInfo
 
 
 			'eat new line chars and spaces, ...
-			If (element.manualLinebreak Or automaticLinebreak) And element.skipOnLinebreak And i < txt.length - 1
+			If (element.manualLinebreak Or automaticLinebreak) And element.skipOnLinebreak And i < txt.Length - 1
 				eatChars :+ 1
 			'eat end of commands etc
 			ElseIf Not element.visible
@@ -3276,14 +3276,14 @@ Type STextParseInfo
 
 
 			'move on to the next line ?
-			If (automaticLineBreak Or element.manualLineBreak) Or i = txt.length-1
+			If (automaticLineBreak Or element.manualLineBreak) Or i = txt.Length-1
 				'reset line width
 				lineWidth = 0
 				textX = 0
 				lastAutomaticLineBreakIndex = -1
 
 				' and also store where it does the break
-				Local dynamicIndex:Int = totalLineCount - 1 - lineinfo_lineBreakIndices.length
+				Local dynamicIndex:Int = totalLineCount - 1 - lineinfo_lineBreakIndices.Length
 				If dynamicIndex >= 0 
 					EnsureDynamicArraySize(dynamicIndex + 1)
 					lineinfo_lineBreakIndicesDynamic[dynamicIndex] = i
@@ -3302,7 +3302,7 @@ Type STextParseInfo
 				EndIf
 
 
-				If i < txt.length - 1  'or add if last is a newline char?
+				If i < txt.Length - 1  'or add if last is a newline char?
 					totalLineCount :+ 1
 					visibleLineCount :+ 1
 				EndIf
@@ -3337,7 +3337,7 @@ Type STextParseInfo
 		Local lineBoxHeightMax:Short
 		
 
-		For Local i:Int = 0 Until txt.length 'handledCharIndex
+		For Local i:Int = 0 Until txt.Length 'handledCharIndex
 			Local charCode:Int = txt[i]
 			Local escaped:Int = False
 
@@ -3347,9 +3347,9 @@ Type STextParseInfo
 				lineWidth = 0
 				currentLineLineBoxHeight = currentFont.GetLineHeight(settings.lineHeight)
 				'avoid last line being "cut" - so increase line height if required
-				if currentLine = totalLineCount
+				If currentLine = totalLineCount
 					currentLineLineBoxHeight = Max(currentLineLineBoxHeight, currentFont.GetLineHeight(-1))
-				endif
+				EndIf
 
 				currentLineContentHeight = 0
 				currentLineMaxFontHeight = currentFont.GetMaxCharHeight(True)
@@ -3358,7 +3358,7 @@ Type STextParseInfo
 			EndIf
 		
  			' escaping command or escape char?
-			If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
+			If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.Length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
 				i :+ 1
 				charCode = txt[i]
 				escaped = True
@@ -3373,7 +3373,7 @@ Type STextParseInfo
 				fontChanges :+ element.changedFont
 
 				' react to font changes (if required)
-				If fontChanges > 0 and element.changedFont
+				If fontChanges > 0 And element.changedFont
 					HandleFontChanges(currentFont, True)
 					currentLineFontDisplaceYMax = Int(Min(currentLineFontDisplaceYMax, currentFont.displaceY))
 					'update to new line height
@@ -3381,9 +3381,9 @@ Type STextParseInfo
 
 					currentLineLineBoxHeight = Max(currentLineLineBoxHeight, currentFont.GetLineHeight(settings.lineHeight))
 					'avoid last line being "cut" - so increase line height if required
-					if currentLine = totalLineCount
+					If currentLine = totalLineCount
 						currentLineLineBoxHeight = Max(currentLineLineBoxHeight, currentFont.GetLineHeight(-1))
-					endif
+					EndIf
 				EndIf
 
 			' received char potentially being displayed
@@ -3393,7 +3393,7 @@ Type STextParseInfo
 				If Not settings.skipOptionalElementOnEOL Then element.skipOnLinebreak = False
 			EndIf
 
-			Local dynamicIndex:Int = currentLine - 1 - lineinfo_lineBreakIndices.length
+			Local dynamicIndex:Int = currentLine - 1 - lineinfo_lineBreakIndices.Length
 						
 			'has next char to be placed on a new line?
 			Local doLineBreak:Int
@@ -3434,7 +3434,7 @@ Type STextParseInfo
 
 
 			'increase height
-			If doLineBreak Or i = txt.length - 1
+			If doLineBreak Or i = txt.Length - 1
 				'if this is the last line, then ensure a possibly "too short"
 				'font designer's line height is not cutting the text or an sprite
 				If currentLine = totalLineCount
@@ -3450,7 +3450,7 @@ Type STextParseInfo
 					'if there is a fixed line height requested, we should
 					'not exceed it (sprites still might exceed visually)
 					'exception is last line
-					If settings.lineHeight > 0 and currentLine < totalLineCount
+					If settings.lineHeight > 0 And currentLine < totalLineCount
 						currentLineLineBoxHeight = Min(settings.lineHeight, currentLineLineBoxHeight)
 					EndIf
 				EndIf
@@ -3491,7 +3491,7 @@ Type STextParseInfo
 
 				'print "line break ... " + currentLine + "/" + totalLineCount + "   dynamicIndex="+dynamicIndex + "  index="+(currentLine-1) +"  width="+lineWidth + " maxWidth="+lineWidthMax
 				
-				If i < txt.length - 1  'or add if last is a newline char?
+				If i < txt.Length - 1  'or add if last is a newline char?
 					currentLine :+ 1
 				EndIf
 			EndIf
@@ -3509,7 +3509,7 @@ Type STextParseInfo
 			currentLineLineBoxHeight = Max(settings.lineHeight, lineBoxHeightMax)
 
 			For Local i:Int = 0 Until totalLineCount
-				Local dynamicIndex:Int = i - lineinfo_lineBreakIndices.length
+				Local dynamicIndex:Int = i - lineinfo_lineBreakIndices.Length
 				If dynamicIndex >= 0
 					lineinfo_boxHeightsDynamic[dynamicIndex] = currentLineLineBoxHeight
 				Else
@@ -3525,7 +3525,7 @@ Type STextParseInfo
 		'step 4: find truncations
 		' only do this when end of last line exceeds height limit
 		' also adjust blockwidth (wider lines might have been cut off)
-		Local dynamicIndex:Int = totalLineCount - 1 - lineinfo_widths.length
+		Local dynamicIndex:Int = totalLineCount - 1 - lineinfo_widths.Length
 		Local lastLineY:Int = GetLineY(totalLineCount)
 		' ensure that we calculate in both cases: linebox cut or content cut
 		Local lastLineHeight:Short = Min(GetLineHeight(totalLineCount, 1), GetLineHeight(totalLineCount, 0))
@@ -3556,7 +3556,7 @@ Type STextParseInfo
 				Local elementStart:Int = i
 
 				' escaping command or escape char?
-				If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
+				If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.Length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
 					i :+ 1
 					charCode = txt[i]
 					escaped = True
@@ -3571,7 +3571,7 @@ Type STextParseInfo
 					fontChanges :+ element.changedFont
 
 					' react to font changes (if required)
-					If fontChanges > 0 and element.changedFont
+					If fontChanges > 0 And element.changedFont
 						HandleFontChanges(currentFont, True)
 					EndIf
 
@@ -3584,7 +3584,7 @@ Type STextParseInfo
 				EndIf
 
 				' escaping command or escape char?
-				If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
+				If charCode = TBitmapFont.ESCAPE_CHARCODE And i < txt.Length - 2 And (txt[i+1] = TBitmapFont.COMMAND_CHARCODE Or txt[i+1] = TBitmapFont.ESCAPE_CHARCODE)
 					i :+ 1
 					charCode = txt[i]
 					escaped = True
@@ -3623,7 +3623,7 @@ Type STextParseInfo
 
 				' truncate "upcoming" lines 
 				' draw an ellipsis on this line?
-				If truncateEndOfLine And ((doLineBreak And i >= nextLineBreakIndex) Or i = txt.length - 1)
+				If truncateEndOfLine And ((doLineBreak And i >= nextLineBreakIndex) Or i = txt.Length - 1)
 					truncateEndIndex = i
 				
 					'only add ellipsis if possible - and allowed
@@ -3636,7 +3636,7 @@ Type STextParseInfo
 
 							visibleElementCount :+ 1
 							
-							dynamicIndex:Int = currentLine - 1 - lineinfo_widths.length
+							dynamicIndex:Int = currentLine - 1 - lineinfo_widths.Length
 							If dynamicIndex >= 0 
 								lineinfo_widthsDynamic[dynamicIndex] = lineWidth
 							Else
@@ -3672,7 +3672,7 @@ Type STextParseInfo
 
 							visibleElementCount :+ 1
 
-							dynamicIndex = currentLine - 1 - lineinfo_boxHeights.length
+							dynamicIndex = currentLine - 1 - lineinfo_boxHeights.Length
 							If dynamicIndex >= 0
 								EnsureDynamicArraySize(dynamicIndex + 1)
 								lineinfo_widthsDynamic[dynamicIndex] = lineWidth
@@ -3687,11 +3687,11 @@ Type STextParseInfo
 '					_visibleBoxHeight :+ GetLineHeight(currentLine, settings.boxDimensionMode)
 					_visibleBoxHeight :+ GetLineHeight(currentLine, 0)
 
-					i = txt.length
+					i = txt.Length
 					
 					'done
 					Exit
-				Elseif settings.skipOptionalElementOnEOL and element.skipOnLinebreak and nextLineBreakIndex = i
+				ElseIf settings.skipOptionalElementOnEOL And element.skipOnLinebreak And nextLineBreakIndex = i
 					'skip this char
 				Else
 					visibleElementCount :+ 1
@@ -3701,8 +3701,8 @@ Type STextParseInfo
 				EndIf
 				
 				'line break - but not the one happening on "last char" ?
-				If doLineBreak Or i = txt.length - 1
-					dynamicIndex = currentLine - lineinfo_boxHeights.length
+				If doLineBreak Or i = txt.Length - 1
+					dynamicIndex = currentLine - lineinfo_boxHeights.Length
 
 					'move on to next line (already calculated)
 					'and update the next line break index
@@ -3780,20 +3780,20 @@ End Struct
 Struct SSubString
 	Field s:String
 	Field start:Int
-	Field length:Int
+	Field Length:Int
 	Field isSet:Int = False
 	
-	Method Set(s:String, start:Int, length:Int)
+	Method Set(s:String, start:Int, Length:Int)
 		Self.s = s
 		Self.start = start
-		Self.length = length
+		Self.Length = Length
 		isSet = True
 	End Method
 	
 	Method Matches:Int(other:String)
-		If length <> other.length Return False
+		If Length <> other.Length Return False
 		Local i:Int = 0
-		While i < length
+		While i < Length
 			If s[start + i] <> other[i] Return False
 			i :+ 1
 		Wend
@@ -3947,15 +3947,15 @@ Type TBitmapFontText
 	End Method
 
 	Method CacheDrawBlock:Int(font:TBitmapFont, text:String, w:Int, h:Int, alignment:SVec2F, color:SColor8, effect:TDrawTextEffect, settings:TDrawTextSettings)
-		if not effect and not settings
+		If Not effect And Not settings
 			Return CacheDrawBlock(font, text, w, h, alignment, color, font.defaultDrawEffect, font.defaultDrawSettings)
-		elseif not effect
+		ElseIf Not effect
 			Return CacheDrawBlock(font, text, w, h, alignment, color, font.defaultDrawEffect, settings.data)
-		elseif not settings
+		ElseIf Not settings
 			Return CacheDrawBlock(font, text, w, h, alignment, color, effect.data, font.defaultDrawSettings)
-		else
+		Else
 			Return CacheDrawBlock(font, text, w, h, alignment, color, effect.data, settings.data)
-		endif
+		EndIf
 	End Method
 
 	Method CacheDrawBlock:Int(font:TBitmapFont, text:String, w:Int, h:Int, alignment:SVec2F, color:SColor8, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var)
@@ -4058,7 +4058,7 @@ SetColor 255,255,255
 SetAlpha 1.0
 endrem
 		'render cache
-		Local offX:Int = int(Floor((w - cacheDimension.x) * alignment.x))
+		Local offX:Int = Int(Floor((w - cacheDimension.x) * alignment.x))
 		Local offY:Int = Int(Floor((h - cacheDimension.y) * alignment.y))
 
 Rem
