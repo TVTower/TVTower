@@ -25,9 +25,9 @@ Type TAwardCulture extends TAward
 		awardType = TVTAwardType.CULTURE
 
 		priceMoney = 40000
-		priceImage = 2.5
-		'for now this is 50/10000 so 0.5% but this is an absolute value 
-		priceBettyLove = 50
+		priceImage = 1.5
+		'for now this is 75/10000 so 0.75% but this is an absolute value 
+		priceBettyLove = 75
 
 
 		'=== REGISTER EVENTS ===
