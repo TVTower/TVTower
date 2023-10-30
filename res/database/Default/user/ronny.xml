@@ -436,10 +436,10 @@ Illustrious guests and music by [3|Nick].</en>
 			<ratings critics="18" speed="35" />
 		</programme>
 
-		<programme id="ronny-programme-betonfuerdenclan-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="beton1" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
-				<de>Beton für den Clan</de>
-				<en>Concrete for the Clans</en>
+				<de>Beton für den Clan 1</de>
+				<en>Concrete for the Clans 1</en>
 			</title>
 			<description>
 				<de>Gibt es wichtige Unterschiede zwischen Bau-Beton und Mafia-Beton?
@@ -451,14 +451,71 @@ Illustrious guests and music by [3|Nick].</en>
 				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
 				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
 			</staff>
-			<modifiers>
-				<!-- the programme ages slower than average -->
-				<modifier name="topicality::age" value="0.75" />
-			</modifiers>
-			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<data country="D" distribution="2" maingenre="0" blocks="1" />
 			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="1995" />
-			<ratings critics="25" speed="20" />
+			<ratings critics="30" speed="30" outcome="30"/>
 		</programme>
+
+		<programme id="beton2" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Beton für den Clan 2</de>
+				<en>Concrete for the Clans 2</en>
+			</title>
+			<description>
+				<de>Gibt es wichtige Unterschiede zwischen Bau-Beton und Mafia-Beton?
+5 Betonsorten im großen Hafenbecken-Test.</de>
+				<en>Are there any significant differences between construction concrete and mafia concrete?
+5 concrete types in the big port basin test.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
+				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
+			</staff>
+			<data country="D" distribution="2" maingenre="5" blocks="1" />
+			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="1995" />
+			<ratings critics="30" speed="30" outcome="30"/>
+		</programme>
+
+		<programme id="beton3" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Beton für den Clan 3</de>
+				<en>Concrete for the Clans 3</en>
+			</title>
+			<description>
+				<de>Gibt es wichtige Unterschiede zwischen Bau-Beton und Mafia-Beton?
+5 Betonsorten im großen Hafenbecken-Test.</de>
+				<en>Are there any significant differences between construction concrete and mafia concrete?
+5 concrete types in the big port basin test.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
+				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
+			</staff>
+			<data country="D" distribution="2" maingenre="7" blocks="1" />
+			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="1995" />
+			<ratings critics="30" speed="30" outcome="30"/>
+		</programme>
+
+		<programme id="beton4" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Beton für den Clan 4</de>
+				<en>Concrete for the Clans 4</en>
+			</title>
+			<description>
+				<de>Gibt es wichtige Unterschiede zwischen Bau-Beton und Mafia-Beton?
+5 Betonsorten im großen Hafenbecken-Test.</de>
+				<en>Are there any significant differences between construction concrete and mafia concrete?
+5 concrete types in the big port basin test.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
+				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
+			</staff>
+			<data country="D" distribution="2" maingenre="9" blocks="1" />
+			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="1995" />
+			<ratings critics="30" speed="30" outcome="30"/>
+		</programme>
+
 	</allprogrammes>
 
 	<allnews>
