@@ -787,6 +787,9 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'is already "nobody" in the room)
 		if HasFlag(TVTRoomFlag.RESTRICT_TO_SINGLE_OCCUPANT)
 			return False
+		'room/view can be entered even if figures disallow each other
+		elseif HasFlag(TVTRoomFlag.NEVER_RESTRICT_OCCUPANT_NUMBER)
+			return True
 		'else all can enter as there is no limit...
 		else
 			'except at least one other entity in the room disallows it
