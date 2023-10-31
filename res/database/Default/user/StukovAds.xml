@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" />
+	<!--
+	0			0 	 - 0,25			100 - 3000
+	0,25		0,10 - 0,60			100 - 2500
+	0,5			0,33 - 1,20			100 - 2000
+	1			0,75 - 2,75			100 - 1750
+	2,5			2,25 - 5,25			100 - 1500
+	5			4,75 - 8,00			100 - 1250
+	10			6,00 - 12,00		100 - 1200
+	25			9,00 - 18,00		100 - 1000
+	50			12,00 - 24,00		100 - 850
+	100			20,00 - 50,00		100 - 750
+	-->
+	<allads>
+
+		<ad id="Stukov-Logical1">
+			<title>
+				<de>Logikus</de> <!-- orig: Logical -->
+			</title>
+			<description>
+				<de>Der Super-Arcade-Spaß von RegenbogenWünsche!</de>
+				<en>Super arcade fun by RainbowWishes!</en>
+			</description>
+			<conditions min_audience="0.3951" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="25" repetitions="5" duration="8" profit="1438" penalty="3131" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Logical2">
+			<title>
+				<de>Logikus</de> <!-- orig: Logical -->
+			</title>
+			<description>
+				<de>Der Super-Arcade-Spaß von RegenbogenWünsche!</de> <!-- orig: Rainbow Arts -->
+				<en>Super arcade fun by RainbowWishes!</en>
+			</description>
+			<conditions min_audience="0.1832" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="6" repetitions="2" duration="5" profit="774" penalty="1567" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Logical3">
+			<title>
+				<de>Logikus</de> <!-- orig: Logical -->
+			</title>
+			<description>
+				<de>Der Super-Arcade-Spaß von RegenbogenWünsche!</de>  <!-- orig: Rainbow Arts -->
+				<en>Super arcade fun by RainbowWishes!</en>
+			</description>
+			<conditions min_audience="0.5493" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="35" repetitions="6" duration="2" profit="1777" penalty="1337" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Baguette1">
+			<title>
+				<de>La Baguette</de>
+			</title>
+			<description>
+				<de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
+				<en>Your baguettes in lengths of 1, 2 or 3 metres!</en>
+			</description>
+			<conditions min_audience="1.3420" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="4" repetitions="8" duration="1" profit="1224" penalty="1784" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Baguette2">
+			<title>
+				<de>La Baguette</de>
+			</title>
+			<description>
+				<de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
+				<en>Your baguettes in lengths of 1, 2 or 3 metres!</en>
+			</description>
+			<conditions min_audience="2.5601" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="3" repetitions="2" duration="3" profit="801" penalty="1373" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Kariodent1">
+			<title>
+				<de>Kariodent</de>
+				<en>Cariodent</en>
+			</title>
+			<description>
+				<de>Stopft Löcher auch in schlechten Zähnen</de>
+				<en>Plugs holes even in bad teeth</en>
+			</description>
+			<conditions min_audience="11.1466" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="10" repetitions="7" duration="2" profit="603" penalty="1920" infomercial_profit="16" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Kariodent2">
+			<title>
+				<de>Kariodent</de>
+				<en>Cariodent</en>
+			</title>
+			<description>
+				<de>Stopft Löcher auch in schlechten Zähnen</de>
+				<en>Plugs holes even in bad teeth</en>
+			</description>
+			<conditions min_audience="8.6502" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="13" repetitions="8" duration="1" profit="326" penalty="1694" infomercial_profit="196" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Kariodent3">
+			<title>
+				<de>Kariodent</de>
+				<en>Cariodent</en>
+			</title>
+			<description>
+				<de>Stopft Löcher auch in schlechten Zähnen</de>
+				<en>Plugs holes even in bad teeth</en>
+			</description>
+			<conditions min_audience="6.1336" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="26" repetitions="3" duration="8" profit="1038" penalty="1409" infomercial_profit="106" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Kapitalia1">
+			<title>
+				<de>Kapitalia</de>
+			</title>
+			<description>
+				<de>Kapitalia Lebensversicherungen - Wir verwalten ihr Geld schnell und verlässlich</de>
+				<en>Kapitalia Life Insurance - We manage your money quickly and reliably</en>
+			</description>
+			<conditions min_audience="2.9149" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="32" repetitions="1" duration="2" profit="275" penalty="2181" infomercial_profit="251" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Kapitalia2">
+			<title>
+				<de>Kapitalia</de>
+			</title>
+			<description>
+				<de>Kapitalia Lebensversicherungen - Wir verwalten ihr Geld schnell und verlässlich</de>
+				<en>Kapitalia Life Insurance - We manage your money quickly and reliably</en>
+			</description>
+			<conditions min_audience="4.6048" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="24" repetitions="2" duration="1" profit="646" penalty="1498" infomercial_profit="154" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Kapitalia3">
+			<title>
+				<de>Kapitalia</de>
+			</title>
+			<description>
+				<de>Kapitalia Lebensversicherungen - Wir verwalten ihr Geld schnell und verlässlich</de>
+				<en>Kapitalia Life Insurance - We manage your money quickly and reliably</en>
+			</description>
+			<conditions min_audience="2.3790" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="17" repetitions="5" duration="4" profit="459" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Juicycat1">
+			<title>
+				<de>Juicycat</de>
+			</title>
+			<description>
+				<de>Echter, klarer Katzensaft! Mjamjam!</de>
+				<en>Genuine clear cat juice! Yum-yum!</en>
+			</description>
+			<conditions min_audience="7.4667" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
+			<data quality="24" repetitions="5" duration="5" profit="623" penalty="2229" infomercial_profit="70" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Juicycat2">
+			<title>
+				<de>Juicycat</de>
+			</title>
+			<description>
+				<de>Echter, klarer Katzensaft! Mjamjam!</de>
+				<en>Genuine clear cat juice! Yum-yum!</en>
+			</description>
+			<conditions min_audience="6.2115" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
+			<data quality="3" repetitions="7" duration="7" profit="805" penalty="1625" infomercial_profit="167" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Juicycat3">
+			<title>
+				<de>Juicycat</de>
+			</title>
+			<description>
+				<de>Echter, klarer Katzensaft! Mjamjam!</de>
+				<en>Genuine clear cat juice! Yum-yum!</en>
+			</description>
+			<conditions min_audience="7.0629" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
+			<data quality="31" repetitions="2" duration="8" profit="128" penalty="1796" infomercial_profit="3" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Hoffmann1">
+			<title>
+				<de>Hoffmann</de>
+			</title>
+			<description>
+				<de>Computerspiele schnell und bugfrei!</de>
+				<en>Computer games fast and bug free!</en>
+			</description>
+			<conditions min_audience="0.3133" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="31" repetitions="4" duration="8" profit="1965" penalty="2836" infomercial_profit="208" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Hoffmann2">
+			<title>
+				<de>Hoffmann</de>
+			</title>
+			<description>
+				<de>Computerspiele schnell und bugfrei!</de>
+				<en>Computer games fast and bug free!</en>
+			</description>
+			<conditions min_audience="0.4120" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="12" repetitions="1" duration="7" profit="1527" penalty="1377" infomercial_profit="142" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-Hoffmann3">
+			<title>
+				<de>Hoffmann</de>
+			</title>
+			<description>
+				<de>Computerspiele schnell und bugfrei!</de>
+				<en>Computer games fast and bug free!</en>
+			</description>
+			<conditions min_audience="0.5770" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="19" repetitions="7" duration="1" profit="2376" penalty="2712" infomercial_profit="180" fix_infomercial_profit="1"/>			
+		</ad>
+
+		<ad id="Stukov-ESCAL1">
+			<title>
+				<de>ESCAL</de>
+			</title>
+			<description>
+				<de>Computerschrott ab 50 Pfennig das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
+				<en>Computer scrap beginning at 50 pfennig per kilo. Now also offering modern B/W monitors.</en>
+			</description>
+			<conditions min_audience="0.6367" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="3" repetitions="3" duration="1" profit="1622" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1"/>
+			<availability year_range_to="2002" />
+		</ad>
+
+		<ad id="Stukov-ESCALEURO1">
+			<title>
+				<de>ESCAL.deu</de>
+			</title>
+			<description>
+				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne Farb-Röhren-Monitore im Angebot.</de>
+				<en>Computer scrap beginning at 50 eurocent per kilo. Now also offering modern CRT screens.</en>
+			</description>
+			<conditions min_audience="0.9108" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="34" repetitions="4" duration="5" profit="148" penalty="2153" infomercial_profit="103" fix_infomercial_profit="1"/>
+			<availability year_range_from="2003" />
+		</ad>
+
+		<ad id="Stukov-ESCAL2">
+			<title>
+				<de>ESCAL</de>
+			</title>
+			<description>
+				<de>Computerschrott ab 50 Pfennig das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
+				<en>Computer scrap beginning at 50 pfennig per kilo. Now also offering modern B/W monitors.</en>
+			</description>
+			<conditions min_audience="0.3615" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="35" repetitions="2" duration="6" profit="390" penalty="1947" infomercial_profit="87" fix_infomercial_profit="1"/>
+			<availability year_range_to="2002" />
+		</ad>
+
+		<ad id="Stukov-ESCALEURO2">
+			<title>
+				<de>ESCAL.deu</de>
+			</title>
+			<description>
+				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne Farb-Röhren-Monitore im Angebot.</de>
+				<en>Computer scrap beginning at 50 eurocent per kilo. Now also offering modern CRT screens.</en>
+			</description>
+			<conditions min_audience="1.1557" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="17" repetitions="6" duration="7" profit="1355" penalty="1141" infomercial_profit="170" fix_infomercial_profit="1"/>
+			<availability year_range_from="2003" />
+		</ad>
+
+		<ad id="Stukov-Duban1">
+			<title>
+				<de>Dubantours</de>
+				<en>Duban Tours</en>
+			</title>
+			<description>
+				<de>Reisen Sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt Sie hin. Mach Urlaub in Duban - Baden, Sonnen, Erdöl graben.</de>
+				<en>Travel to the world's largest beaches, whether Gobi or Sahara. Dubantours will take you there. Take a vacation in Duban - swim, sunbathe, drill for oil!</en>
+			</description>
+			<conditions min_audience="0.6478" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="24" repetitions="4" duration="4" profit="1005" penalty="1292" infomercial_profit="237" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Duban2">
+			<title>
+				<de>Dubantours</de>
+				<en>Duban Tours</en>
+			</title>
+			<description>
+				<de>Reisen Sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt Sie hin. Mach Urlaub in Duban - Baden, Sonnen, Erdöl graben.</de>
+				<en>Travel to the world's largest beaches, whether Gobi or Sahara. Dubantours will take you there. Take a vacation in Duban - swim, sunbathe, drill for oil!</en>
+			</description>
+			<conditions min_audience="0.9585" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="5" repetitions="1" duration="2" profit="307" penalty="2609" infomercial_profit="145" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Doggy1">
+			<title>
+				<de>Gib Pfote</de>
+				<en>Give paw!</en>
+			</title>
+			<description>
+				<de>Die natürlichen Bestandteile von „Gib Pfote“ wird ihr Hund lieben. Lecker Pudel.</de>
+				<en>Your dog will love the natural ingredients of "Give paw!". Tasty Poodle.</en>
+			</description>
+			<conditions min_audience="0.3379" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="27" repetitions="7" duration="6" profit="1054" penalty="1786" infomercial_profit="10" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-Doggy2">
+			<title>
+				<de>Gib Pfote</de>
+				<en>Give paw!</en>
+			</title>
+			<description>
+				<de>Die natürlichen Bestandteile von „Gib Pfote“ wird ihr Hund lieben. Lecker Pudel.</de>
+				<en>Your dog will love the natural ingredients of "Give paw!". Tasty Poodle.</en>
+			</description>
+			<conditions min_audience="0.3984" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="26" repetitions="3" duration="4" profit="747" penalty="2325" infomercial_profit="50" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-KittyFood1">
+			<title>
+				<de>Kitty Food</de>
+			</title>
+			<description>
+				<de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
+				<en>By cats for cats. Nutritious canned food for your house cat.</en>
+			</description>
+			<conditions min_audience="0.8236" min_image="2" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="12" repetitions="4" duration="5" profit="717" penalty="736" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov-KittyFood2">
+			<title>
+				<de>Kitty Food</de>
+			</title>
+			<description>
+				<de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
+				<en>By cats for cats. Nutritious canned food for your house cat.</en>
+			</description>
+			<conditions min_audience="1.0380" min_image="5" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="8" repetitions="6" duration="2" profit="1415" penalty="1203" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Commodore1" comment="TODO: different versions through the years">
+			<title>
+				<de>Cormoran</de> <!-- orig: Commodore -->
+			</title>
+			<description>
+				<de>CDVid - Die neue Multimedia-Dimension!</de> <!-- orig: CDTV -->
+				<en>CDVid - The new multimedia dimension</en>
+			</description>
+			<conditions min_audience="16.0459" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible?  -->
+			<data quality="28" repetitions="3" duration="6" profit="905" penalty="1529" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Commodore2" comment="TODO: different versions through the years">
+			<title>
+				<de>Cormoran</de> <!-- orig: Commodore -->
+			</title>
+			<description>
+				<de>CDVid - Die neue Multimedia-Dimension!</de> <!-- orig: CDTV -->
+				<en>CDVid - The new multimedia dimension</en>
+			</description>
+			<conditions min_audience="10.8920" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" />
+			<data quality="17" repetitions="8" duration="3" profit="223" penalty="1053" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Commodore3" comment="TODO: different versions through the years">
+			<title>
+				<de>Cormoran</de> <!-- orig: Commodore -->
+			</title>
+			<description>
+				<de>CDVid - Die neue Multimedia-Dimension!</de> <!-- orig: CDTV -->
+				<en>CDVid - The new multimedia dimension</en>
+			</description>
+			<conditions min_audience="11.0607" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" />
+			<data quality="10" repetitions="6" duration="8" profit="569" penalty="1107" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Colgate1">
+			<title>
+				<de>Calgonti</de> <!-- orig: Colgate -->
+			</title>
+			<description>
+				<de>Die Zahncreme! Jetzt mit radioaktiven Putzstoffen.</de>
+				<en>The toothpaste! Now with radioactive cleaning substances.</en>
+			</description>
+			<conditions min_audience="26.8521" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="21" repetitions="4" duration="2" profit="726" penalty="1563" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Colgate2">
+			<title>
+				<de>Calgonti</de> <!-- orig: Colgate -->
+			</title>
+			<description>
+				<de>Die Zahncreme! Jetzt mit radioaktiven Putzstoffen.</de>
+				<en>The toothpaste! Now with radioactive cleaning substances.</en>
+			</description>
+			<conditions min_audience="32.1162" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="35" repetitions="5" duration="8" profit="634" penalty="1256" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Colgate3">
+			<title>
+				<de>Calgonti</de> <!-- orig: Colgate -->
+			</title>
+			<description>
+				<de>Die Zahncreme! Jetzt mit radioaktiven Putzstoffen.</de>
+				<en>The toothpaste! Now with radioactive cleaning substances.</en>
+			</description>
+			<conditions min_audience="45.8007" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="12" repetitions="8" duration="2" profit="360" penalty="1385" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Coca Cola1">
+			<title>
+				<de>Cacca Cola</de> <!-- orig: Coca Cola -->
+			</title>
+			<description>
+				<de>Can't eat the peeling</de> <!-- orig: Can't beat the feeling -->
+				<en>Can't eat the peeling</en>
+			</description>
+			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
+			<data quality="15" repetitions="6" duration="4" profit="889" penalty="380" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Coca Cola2">
+			<title>
+				<de>Cacca Cola</de> <!-- orig: Coca Cola -->
+			</title>
+			<description>
+				<de>Can't eat the peeling</de> <!-- orig: Can't beat the feeling -->
+				<en>Can't eat the peeling</en>
+			</description>
+			<conditions min_audience="17.9125" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
+			<data quality="29" repetitions="2" duration="1" profit="413" penalty="1229" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Coca Cola3">
+			<title>
+				<de>Cacca Cola</de> <!-- orig: Coca Cola -->
+			</title>
+			<description>
+				<de>Can't eat the peeling</de> <!-- orig: Can't beat the feeling -->
+				<en>Can't eat the peeling</en>
+			</description>
+			<conditions min_audience="11.6625" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
+			<data quality="17" repetitions="4" duration="4" profit="709" penalty="1751" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_China-Wok1">
+			<title>
+				<de>China-Wok</de>
+				<en>China Wok</en>
+			</title>
+			<description>
+				<de>Der einzige echte Wok. Original aus China.</de>
+				<en>The only genuine wok. Authentic from China.</en>
+			</description>
+			<conditions min_audience="5.3570" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
+			<data infomercial="1" quality="6" repetitions="3" duration="8" profit="654" penalty="426" infomercial_profit="127" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_China-Wok2">
+			<title>
+				<de>China-Wok</de>
+				<en>China Wok</en>
+			</title>
+			<description>
+				<de>Der einzige echte Wok. Original aus China.</de>
+				<en>The only genuine wok. Authentic from China.</en>
+			</description>
+			<conditions min_audience="4.6794" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
+			<data infomercial="1" quality="1" repetitions="5" duration="5" profit="530" penalty="1589" infomercial_profit="198" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_China-Wok3">
+			<title>
+				<de>China-Wok</de>
+				<en>China Wok</en>
+			</title>
+			<description>
+				<de>Der einzige echte Wok. Original aus China.</de>
+				<en>The only genuine wok. Authentic from China.</en>
+			</description>
+			<conditions min_audience="7.9464" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
+			<data infomercial="1" quality="33" repetitions="7" duration="7" profit="366" penalty="524" infomercial_profit="74" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Camel1" comment="TODO: Mad TV English version 'translation' was a different ad: 'Maple-Translate - Nous translate alles!'">
+			<title>
+				<de>Dromedar</de> <!-- Orig: Camel -->
+				<en>Dromedary</en>
+			</title>
+			<description>
+				<de>Der Rauch durchs Nadelöhr! Total Taste!</de> <!-- Orig: Voller Geschmack! -->
+				<en>The smoke through the eye of the needle! Total Taste!</en>
+			</description>
+			<conditions min_audience="9.3446" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2"/>
+			<data infomercial="1" quality="14" repetitions="1" duration="4" profit="528" penalty="1538" infomercial_profit="46" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Camel2">
+			<title>
+				<de>Dromedar</de> <!-- Orig: Camel -->
+				<en>Dromedary</en>
+			</title>
+			<description>
+				<de>Der Rauch durchs Nadelöhr! Total Taste!</de> <!-- Orig: Voller Geschmack! -->
+				<en>The smoke through the eye of the needle! Total Taste!</en>
+			</description>
+			<conditions min_audience="6.2656" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2"/>
+			<data infomercial="1" quality="24" repetitions="4" duration="7" profit="716" penalty="2319" infomercial_profit="188" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Camel3">
+			<title>
+				<de>Dromedar</de> <!-- Orig: Camel -->
+				<en>Dromedary</en>
+			</title>
+			<description>
+				<de>Der Rauch durchs Nadelöhr! Total Taste!</de> <!-- Orig: Voller Geschmack! -->
+				<en>The smoke through the eye of the needle! Total Taste!</en>
+			</description>
+			<conditions min_audience="10.7777" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2"/>
+			<data infomercial="1" quality="20" repetitions="8" duration="1" profit="144" penalty="2072" infomercial_profit="72" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Bikeshop1">
+			<title>
+				<de>Bikeshop</de>
+			</title>
+			<description>
+				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</de>
+				<en>Promotion week at Bikeshop. Buy one bike, get one for free.</en>
+			</description>
+			<conditions min_audience="1.1821" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="14" repetitions="8" duration="1" profit="365" penalty="2573" infomercial_profit="177" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Bikeshop2">
+			<title>
+				<de>Bikeshop</de>
+			</title>
+			<description>
+				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</de>
+				<en>Promotion week at Bikeshop. Buy one bike, get one for free.</en>
+			</description>
+			<conditions min_audience="0.6383" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="23" repetitions="5" duration="6" profit="896" penalty="3232" infomercial_profit="222" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Baraus1">
+			<title>
+				<de>Baraus</de>
+				<en>Corner Bank</en>
+			</title>
+			<description>
+				<de>Bankhaus Baraus zahlt Bar aus.</de>
+				<en>Bank Corner - your cash performer.</en> <!-- Version Mad TV: Cashback - Cash as cash can. -->
+			</description>
+			<conditions min_audience="2.6948" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
+			<data infomercial="1" quality="14" repetitions="1" duration="7" profit="216" penalty="2246" infomercial_profit="12" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Baraus2">
+			<title>
+				<de>Baraus</de>
+				<en>Corner Bank</en>
+			</title>
+			<description>
+				<de>Bankhaus Baraus zahlt Bar aus.</de>
+				<en>Bank Corner - your cash performer.</en>
+			</description>
+			<conditions min_audience="1.2125" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
+			<data infomercial="1" quality="17" repetitions="6" duration="5" profit="1382" penalty="2930" infomercial_profit="235" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Baraus3">
+			<title>
+				<de>Baraus</de>
+				<en>Corner Bank</en>
+			</title>
+			<description>
+				<de>Bankhaus Baraus zahlt Bar aus.</de>
+				<en>Bank Corner - your cash performer.</en>
+			</description>
+			<conditions min_audience="1.7994" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
+			<data infomercial="1" quality="13" repetitions="5" duration="6" profit="952" penalty="1122" infomercial_profit="176" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_AuntLizzys1">
+			<title>
+				<de>Aunt Lizzy's</de>
+			</title>
+			<description>
+				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
+				<en>Cherry syrup from organic farming. Bottled by Aunt Lizzy herself.</en>
+			</description>
+			<conditions min_audience="0.1234" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="6" repetitions="5" duration="4" profit="1399" penalty="2895" infomercial_profit="31" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_AuntLizzys2">
+			<title>
+				<de>Aunt Lizzy's</de>
+			</title>
+			<description>
+				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
+				<en>Cherry syrup from organic farming. Bottled by Aunt Lizzy herself.</en>
+			</description>
+			<conditions min_audience="0.0884" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="14" repetitions="7" duration="6" profit="2264" penalty="1303" infomercial_profit="121" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Atari_1">
+			<title>
+				<de>Arrati</de> <!-- orig: Atari -->
+			</title>
+			<description>
+				<de>Wir machen Ritzentechnologie reinwärts.</de> <!-- orig: Wir machen Spitzentechnologie preiswert. TODO: better spoof -->
+				<en>Plower without the Rice.</en> <!-- orig: Power without the price. TODO: better spoof -->
+			</description>
+			<conditions min_audience="6.6496" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="25" repetitions="7" duration="3" profit="553" penalty="1847" infomercial_profit="135" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Atari_2">
+			<title>
+				<de>Arrati</de> <!-- orig: Atari -->
+			</title>
+			<description>
+				<de>Wir machen Ritzentechnologie reinwärts.</de> <!-- orig: Wir machen Spitzentechnologie preiswert. TODO: better spoof -->
+				<en>Plower without the Rice.</en> <!-- orig: Power without the price. TODO: better spoof -->
+			</description>
+			<conditions min_audience="9.9370" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="11" repetitions="5" duration="2" profit="454" penalty="2254" infomercial_profit="124" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Atari_3">
+			<title>
+				<de>Arrati</de> <!-- orig: Atari -->
+			</title>
+			<description>
+				<de>Wir machen Ritzentechnologie reinwärts.</de> <!-- orig: Wir machen Spitzentechnologie preiswert. TODO: better spoof -->
+				<en>Plower without the Rice.</en> <!-- orig: Power without the price. TODO: better spoof -->
+			</description>
+			<conditions min_audience="7.7190" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="35" repetitions="2" duration="6" profit="847" penalty="1235" infomercial_profit="282" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad_Adventravel1" creator="" created_by="Stukov" comment="">
+			<title>
+				<de>Adventravel</de>
+			</title>
+			<description>
+				<de>Schwimmen im Piranha-See und viele andere günstige Angebote!</de>
+				<en>Swimming in the Piranha Lake and many other affordable deals!</en>
+			</description>
+			<conditions min_audience="8.6285" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="14" repetitions="4" duration="5" profit="448" penalty="1871" infomercial_profit="7" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad_Adventravel2" creator="" created_by="Stukov" comment="">
+			<title>
+				<de>Adventravel</de>
+			</title>
+			<description>
+				<de>Schwimmen im Piranha-See und viele andere günstige Angebote!</de>
+				<en>Swimming in the Piranha Lake and many other affordable deals!</en>
+			</description>
+			<conditions min_audience="0.2709" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="11" repetitions="5" duration="6" profit="1134" penalty="1338" infomercial_profit="120" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad_Adventravel3" creator="" created_by="Stukov" comment="">
+			<title>
+				<de>Adventravel</de>
+			</title>
+			<description>
+				<de>Schwimmen im Piranha-See und viele andere günstige Angebote!</de>
+				<en>Swimming in the Piranha Lake and many other affordable deals!</en>
+			</description>
+			<conditions min_audience="5.5991" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="15" repetitions="7" duration="2" profit="929" penalty="2015" infomercial_profit="147" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad-Peugeot1" creator="" created_by="Stukov" comment="">
+			<title>
+				<de>Peureault</de> <!-- orig: Peugeot -->
+			</title>
+			<description>
+				<de>Peureault. It's only a car!</de>
+				<en>Peureault. It's only a car!</en>
+			</description>
+			<conditions min_audience="2.6360" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="2" repetitions="1" duration="3" profit="705" penalty="2613" infomercial_profit="171" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad-Peugeot2" creator="" created_by="Stukov" comment="">
+			<title>
+				<de>Peureault</de> <!-- orig: Peugeot -->
+			</title>
+			<description>
+				<de>Peureault. It's only a car!</de>
+				<en>Peureault. It's only a car!</en>
+			</description>
+			<conditions min_audience="3.5233" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="4" repetitions="1" duration="7" profit="654" penalty="2327" infomercial_profit="104" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad-Peugeot3" creator="" created_by="Stukov" comment="">
+			<title>
+				<de>Peureault</de> <!-- orig: Peugeot -->
+			</title>
+			<description>
+				<de>Peureault. It's only a car!</de>
+				<en>Peureault. It's only a car!</en>
+			</description>
+			<conditions min_audience="11.4755" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="9" repetitions="5" duration="4" profit="278" penalty="1210" infomercial_profit="193" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad_Aeroswift_1">
+			<title>
+				<de>Aeroswift</de>
+			</title>
+			<description>
+				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
+				<en>Spaceships, phaser weapons, Mars mining rights. On sale at Aeroswift this week at rock-bottom prices.</en>
+			</description>
+			<conditions min_audience="11.7193" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="11" repetitions="3" duration="5" profit="1636" penalty="2448" infomercial_profit="3" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad_Aeroswift_2">
+			<title>
+				<de>Aeroswift</de>
+			</title>
+			<description>
+				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
+				<en>Spaceships, phaser weapons, Mars mining rights. On sale at Aeroswift this week at rock-bottom prices.</en>
+			</description>
+			<conditions min_audience="8.5230" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="5" repetitions="3" duration="5" profit="700" penalty="1948" infomercial_profit="200" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Ad_Aeroswift_3">
+			<title>
+				<de>Aeroswift</de>
+			</title>
+			<description>
+				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
+				<en>Spaceships, phaser weapons, Mars mining rights. On sale at Aeroswift this week at rock-bottom prices.</en>
+			</description>
+			<conditions min_audience="6.1476" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="35" repetitions="2" duration="6" profit="1520" penalty="2211" infomercial_profit="279" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Andrae Design1">
+			<title>
+				<de>Andrae Design</de>
+			</title>
+			<description>
+				<de>Visitenkarten? Ottifanten? Andrae!</de>
+				<en>Business cards? Ottifants? Andrae!</en>
+			</description>
+			<conditions min_audience="0.0864" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="18" repetitions="5" duration="6" profit="2171" penalty="2892" infomercial_profit="51" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Andrae Design2">
+			<title>
+				<de>Andrae Design</de>
+			</title>
+			<description>
+				<de>Visitenkarten? Ottifanten? Andrae!</de>
+				<en>Business cards? Ottifants? Andrae!</en>
+			</description>
+			<conditions min_audience="0.1242" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="26" repetitions="3" duration="4" profit="1083" penalty="1114" infomercial_profit="151" fix_infomercial_profit="1"/>
+		</ad>
+
+		<ad id="Stukov_Andrae Design3">
+			<title>
+				<de>Andrae Design</de>
+			</title>
+			<description>
+				<de>Visitenkarten? Ottifanten? Andrae!</de>
+				<en>Business cards? Ottifants? Andrae!</en>
+			</description>
+			<conditions min_audience="0.0441" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="9" repetitions="6" duration="7" profit="1267" penalty="2164" infomercial_profit="125" fix_infomercial_profit="1"/>
+		</ad>
+
+	</allads>
+</tvtdb>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" />
+	<allachievements>
+		<achievement id="Stukov-Liebesfilm100" creator="" created_by="Stukov">
+			<title>
+				<de>Liebe ist in der Luft</de>
+				<en>Love is in the Air</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="Stukov-Task-Liebesfilm100" creator="" created_by="Stukov">
+					<title>
+						<de>Erreiche 100.000 Zuschauer in einem Liebesfilm</de>
+						<en>Reach an audience of 100.000 during a love story</en>
+					</title>
+					<text>
+						<de>Strahle einen Liebesfilm aus und erreiche damit mindestens 100.000 Zuschauer.</de>
+						<en>Broadcast a love story and reach an audience of at least 100.000.</en>
+					</text>
+					<data type="reachAudience" minAudienceAbsolute="100000" limitToGenres="15" checkMinute="6" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="Stukov-Reward-Liebesfilm100" creator="" created_by="Stukov">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="50000" />
+				</reward>
+			</rewards>
+			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
+			<data flags="0" group="1" category="1" index="4" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+		</achievement>
+	</allachievements>
+</tvtdb>

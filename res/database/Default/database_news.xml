@@ -935,99 +935,131 @@ Her normal body size is expected to be reached in a week.</en>
 			<variables>
 				<title>
 					<de>%minister%: ${animals_${index}} her!</de>
-					<en>%minister%: Bring on the ${animals_${index}}!</en>
+					<en>%minister%: Gimme ${animals_${index}}!</en>
 				</title>
 				<desc>
 					<de>Der %minister% beantragt im Bundestag die Verpflichtung eines jeden Bundesbürgers zur Haltung ein${animal_gen_${index}}.</de>
-					<en>The %minister% requests in Parliament the obligation of every citizen to keep a ${animal_gen_${index}}.</en>
+					<en>The %minister% requests in Parliament the obligation of every citizen to keep a${animal_gen_${index}}.</en>
 				</desc>
 				<index>
-					<de>0|1|2|3|4|5|6|7|8|9</de>
+					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
 				</index>
 				<minister>
-					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|DG-Metall-Chef|BV-Energie-Chef|ADCA-Chef|Bahnchef</de>
-					<en>Finance Minister|Interior Minister|Foreign Minister|Defense Minister|Prime Minister|WA-Steel Chief|EI-Energy Chief|AB-Automobile Chief|Railroads Chief</en>
+					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|DG-Metall-Chef|BV-Energie-Chef|ADCA-Chef|Bahnchef|Verkehrsminister</de>
+					<en>Finance Minister|Interior Minister|Foreign Minister|Defense Minister|Prime Minister|WA-Steel Chief|EI-Energy Chief|AB-Automobile Chief|Railways Secretary|Transport Secretary</en>
 				</minister>
 				<animal_0>
 					<de>Koala</de>
-					<en>koala</en>
+					<en> koala</en>
 				</animal_0>
 				<animal_1>
 					<de>Nilpferd</de>
-					<en>hippo</en>
+					<en> hippo</en>
 				</animal_1>
 				<animal_2>
 					<de>Bergschaf</de>
-					<en>mountain goat</en>
+					<en> mountain goat</en>
 				</animal_2>
 				<animal_3>
 					<de>Faultier</de>
-					<en>sloth</en>
+					<en> sloth</en>
 				</animal_3>
 				<animal_4>
 					<de>Känguru</de>
-					<en>kangaroo</en>
+					<en> kangaroo</en>
 				</animal_4>
 				<animal_5>
 					<de>Shiba</de>
-					<en>Shiba Inu</en>
+					<en> Shiba Inu</en>
 				</animal_5>
 				<animal_6>
 					<de>Steinlaus</de>
-					<en>stone louse</en>
+					<en> stone louse</en>
 				</animal_6>
 				<animal_7>
 					<de>Schaukelpferd</de>
-					<en>rocking horse</en>
+					<en> rocking horse</en>
 				</animal_7>
 				<animal_8>
 					<de>Sexmagazin-Leser</de>
-					<en>sex magazine reader</en>
+					<en> sex magazine reader</en>
 				</animal_8>
 				<animal_9>
 					<de>Gamezworld-Entwickler</de>
-					<en>Gamezworld developer</en>
+					<en> Gamezworld developer</en>
 				</animal_9>
+				<animal_a>
+					<de>Eisbär</de>
+					<en> polar bear</en>
+				</animal_a>
+				<animal_b>
+					<de>Grashüpfer</de>
+					<en> grasshopper</en>
+				</animal_b>
+				<animal_c>
+					<de>Kaiserpinguin</de>
+					<en>n emperor penguin</en>
+				</animal_c>
+				<animal_d>
+					<de>Stinktier</de>
+					<en> skunk</en>
+				</animal_d>
 				<animal_akk_0>
 					<de>en Koala</de>
-					<en>koala</en>
+					<en> koala</en>
 				</animal_akk_0>
 				<animal_akk_1>
 					<de> Nilpferd</de>
-					<en>hippo</en>
+					<en> hippo</en>
 				</animal_akk_1>
 				<animal_akk_2>
 					<de> Bergschaf</de>
-					<en>mountain goat</en>
+					<en> mountain goat</en>
 				</animal_akk_2>
 				<animal_akk_3>
 					<de> Faultier</de>
-					<en>sloth</en>
+					<en> sloth</en>
 				</animal_akk_3>
 				<animal_akk_4>
 					<de> Känguru</de>
-					<en>kangaroo</en>
+					<en> kangaroo</en>
 				</animal_akk_4>
 				<animal_akk_5>
 					<de>en Shiba</de>
-					<en>Shiba Inu</en>
+					<en> Shiba Inu</en>
 				</animal_akk_5>
 				<animal_akk_6>
 					<de>e Steinlaus</de>
-					<en>stone louse</en>
+					<en> stone louse</en>
 				</animal_akk_6>
 				<animal_akk_7>
 					<de> Schaukelpferd</de>
-					<en>rocking horse</en>
+					<en> rocking horse</en>
 				</animal_akk_7>
 				<animal_akk_8>
 					<de>en Sexmagazin-Leser</de>
-					<en>sex magazine reader</en>
+					<en> sex magazine reader</en>
 				</animal_akk_8>
 				<animal_akk_9>
 					<de>en Gamezworld-Entwickler</de>
-					<en>Gamezworld developer</en>
+					<en> Gamezworld developer</en>
 				</animal_akk_9>
+				<animal_akk_a>
+					<de>en Eisbär</de>
+					<en> polar bear</en>
+				</animal_akk_a>
+				<animal_akk_b>
+					<de>en Grashüpfer</de>
+					<en> grasshopper</en>
+				</animal_akk_b>
+				<animal_akk_c>
+					<de>en Kaiserpinguin</de>
+					<en>n emperor penguin</en>
+				</animal_akk_c>
+				<animal_akk_d>
+					<de> Stinktier</de>
+					<en> skunk</en>
+				</animal_akk_d>
 				<animals_0>
 					<de>Koalas</de>
 					<en>koalas</en>
@@ -1068,6 +1100,22 @@ Her normal body size is expected to be reached in a week.</en>
 					<de>Gamezworld-Entwickler</de>
 					<en>Gamezworld developers</en>
 				</animals_9>
+				<animals_a>
+					<de>Eisbären</de>
+					<en>polar bears</en>
+				</animals_a>
+				<animals_b>
+					<de>Grashüpfer</de>
+					<en>grasshoppers</en>
+				</animals_b>
+				<animals_c>
+					<de>Kaiserpinguine</de>
+					<en>emperor penguins</en>
+				</animals_c>
+				<animals_d>
+					<de>Stinktiere</de>
+					<en>skunks</en>
+				</animals_d>
 				<animal_gen_0>
 					<de>es Koalas</de>
 					<en>koala</en>
@@ -1108,6 +1156,22 @@ Her normal body size is expected to be reached in a week.</en>
 					<de>es Gamezworld-Entwicklers</de>
 					<en>Gamezworld developer</en>
 				</animal_gen_9>
+				<animal_gen_a>
+					<de>es Eisbärs</de>
+					<en>polar bear</en>
+				</animal_gen_a>
+				<animal_gen_b>
+					<de>es Grashüpfers</de>
+					<en>grasshopper</en>
+				</animal_gen_b>
+				<animal_gen_c>
+					<de>es Kaiserpinguins</de>
+					<en>emperor penguin</en>
+				</animal_gen_c>
+				<animal_gen_d>
+					<de>es Stinktiers</de>
+					<en>skunk</en>
+				</animal_gen_d>
 				<animals_dat_0>
 					<de>Koalas</de>
 					<en>koalas</en>
@@ -1148,6 +1212,22 @@ Her normal body size is expected to be reached in a week.</en>
 					<de>Gamezworld-Entwicklern</de>
 					<en>Gamezworld developers</en>
 				</animals_dat_9>
+				<animals_dat_a>
+					<de>Eisbären</de>
+					<en>polar bears</en>
+				</animals_dat_a>
+				<animals_dat_b>
+					<de>Grashüpfern</de>
+					<en>grasshoppers</en>
+				</animals_dat_b>
+				<animals_dat_c>
+					<de>Kaiserpinguinen</de>
+					<en>emperor penguins</en>
+				</animals_dat_c>
+				<animals_dat_d>
+					<de>Stinktieren</de>
+					<en>skunks</en>
+				</animals_dat_d>
 				<haveclaws_0>
 					<de>schmerzhaft hart krallen</de>
 					<en>have painfully hard claws</en>
@@ -1170,7 +1250,7 @@ Her normal body size is expected to be reached in a week.</en>
 				</haveclaws_4>
 				<haveclaws_5>
 					<de>die meiste Zeit nur ziemlich doof aus der Wäsche gucken</de>
-					<en>just look dumbfounded most of the time</en>
+					<en>don't do much other than just look dumbfounded most of the time</en>
 				</haveclaws_5>
 				<haveclaws_6>
 					<de>schon mal das ganze Haus verputzen, wenn man grad nicht aufpasst</de>
@@ -1188,6 +1268,22 @@ Her normal body size is expected to be reached in a week.</en>
 					<de>schwierig zur Körperhygiene zu erziehen sind</de>
 					<en>are hard to train for personal hygiene</en>
 				</haveclaws_9>
+				<haveclaws_a>
+					<de>schon mal gern NDW-Musik laut aufdrehen und wild stampfend dazu tanzen</de>
+					<en>occasionally enjoy turning up New German Wave music loudly, dancing and stomping wildly to it</en> <!-- reference: https://en.wikipedia.org/wiki/Eisb%C3%A4r -->
+				</haveclaws_a>
+				<haveclaws_b>
+					<de>recht launisch sind, mal wild rum hü-hüpfen und dann wieder melancholisch Geige spielen</de>
+					<en>are quite moody, sometimes wheeeee-wildly hopping around, sometimes melancholically playing the violin</en>
+				</haveclaws_b>
+				<haveclaws_c>
+					<de>schon mal ungefragt die Platte löschen und GNU/Linux installieren</de>
+					<en>may, uncalled for, delete hard disks and install GNU/Linux</en>
+				</haveclaws_c>
+				<haveclaws_d>
+					<de>halt, naja, ziemlich stinken</de>
+					<en>are, well, quite skunky and malodorous</en>
+				</haveclaws_d>
 				<mentholcandies_0>
 					<de>e Mentholbonbons</de>
 					<en>menthol candies</en>
@@ -1228,6 +1324,22 @@ Her normal body size is expected to be reached in a week.</en>
 					<de>e vegetarische Pizza</de>
 					<en>vegetarian pizza</en>
 				</mentholcandies_9>
+				<mentholcandies_a>
+					<de> Eis und auch keinen Eischnee</de>
+					<en>ice cream and snow cones</en>
+				</mentholcandies_a>
+				<mentholcandies_b>
+					<de>Ostergras</de>
+					<en>wheatgrass</en>
+				</mentholcandies_b>
+				<mentholcandies_c>
+					<de> Eis und auch keinen Eischnee</de>
+					<en>ice cream and snow cones</en>
+				</mentholcandies_c>
+				<mentholcandies_d>
+					<de>en Stinkekäse</de>
+					<en>stinky cheese</en>
+				</mentholcandies_d>
 			</variables>
 			<data genre="0" price="1.0" quality="28" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -1238,8 +1350,8 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>%minister% gone mad?</en>
 			</title>
 			<description>
-				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der %minister% offenbar verrückt geworden sei.</de>
-				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that the %minister% appears to have gone mad.</en>
+				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der %minister% wegen seinen ${animals_dat_${index}} offenbar verrückt geworden sei.</de>
+				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that because of his ${animals_dat_${index}}, the %minister% appears to have gone mad.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="21f5d3a5-ba85-40a2-861d-6914ff6123dd" />
@@ -1254,7 +1366,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Der %minister% meint es ernst und bekräftigt nochmal seine Forderung. Er habe auch die nötige Befugnis, sie durchzusetzen: Ab 1. Mai nächsten Jahres muss jeder Bürger ein${animal_akk_${index}} besitzen!</de>
-				<en>The %minister% is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a ${animal_akk_${index}}!</en>
+				<en>The %minister% is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a${animal_akk_${index}}!</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d4b58f67-56ed-4c7b-a524-3c641187c348" />
@@ -1312,7 +1424,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Grienpies ist über die Forderung des %minister%s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
-				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of the ${animal_gen_${index}} in the home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
+				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of a${animal_gen_${index}} in the home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -1327,7 +1439,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Die ganze Nation lacht über den Antrag des %minister%s, die Haltung ein${animal_gen_${index}} zur Pflicht zu machen.</de>
-				<en>The whole nation is laughing at the %minister%'s proposal to make keeping a ${animal_gen_${index}} mandatory.</en>
+				<en>The whole nation is laughing at the %minister%'s proposal to make keeping a${animal_gen_${index}} mandatory.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="53fdba7b-a310-4a31-85e6-5247e908ca10" />
@@ -1341,8 +1453,8 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>World laughs at ${animal_${index}} %minister%</en>
 			</title>
 			<description>
-				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht zu machen will.</de>
-				<en>The whole world is laughing at our %minister% who wants to make keeping a ${animal_gen_${index}} mandatory.</en>
+				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht machen will.</de>
+				<en>The whole world is laughing at our %minister% who wants to make keeping a${animal_gen_${index}} mandatory.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
