@@ -787,10 +787,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'is already "nobody" in the room)
 		if HasFlag(TVTRoomFlag.RESTRICT_TO_SINGLE_OCCUPANT)
 			return False
-		'elevatorplan can always be entered
-		elseif getName() = "elevatorplan"
-			'on certain occasions the HasOccupantDisallowingEnteringEntity
-			'prevented player from entering the elevator plan
+		'room/view can be entered even if figures disallow each other
+		elseif HasFlag(TVTRoomFlag.NEVER_RESTRICT_OCCUPANT_NUMBER)
 			return True
 		'else all can enter as there is no limit...
 		else

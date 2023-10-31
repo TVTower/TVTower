@@ -1387,6 +1387,9 @@ Type TVTRoomFlag
 	'can the rental state of a room be changed in this moment
 	'(eg. an object in the room blocks rental cancelation)
 	Const RENTAL_CHANGE_BLOCKED:Int = 64
+	'room/view can be entered by anybody at any time
+	'even if the figures would "disallow each other"
+	Const NEVER_RESTRICT_OCCUPANT_NUMBER:Int = 128
 End Type
 
 

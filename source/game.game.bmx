@@ -365,7 +365,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'mark porter, elevatorplan, ... as fake rooms
 			If room.GetOwner() <= 0
 				Select room.GetNameRaw().ToLower()
-					Case "porter", "building", "elevatorplan", "credits", "roomboard"
+					Case "elevatorplan"
+						room.SetFlag(TVTRoomFlag.FAKE_ROOM, True)
+						room.SetFlag(TVTRoomFlag.NEVER_RESTRICT_OCCUPANT_NUMBER, True)
+					Case "porter", "building", "credits", "roomboard"
 						room.SetFlag(TVTRoomFlag.FAKE_ROOM, True)
 				End Select
 			EndIf
