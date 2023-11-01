@@ -6435,7 +6435,7 @@ endrem
 		EndIf
 
 		'=== UPDATE AWARDS / SAMMYS ===
-		'when updating awards onHour, onDayBegins would fire before the last day's award was handled
+		'ensure awards finish on the correct day (usually 23:59); ending an award on the next day could cause
 		'fail of mission possible although the award is won/wrong award count
 		If minute = 59 Then GetAwardCollection().UpdateAwards()
 
@@ -6656,6 +6656,11 @@ endrem
 				Next
 			Next
 		EndIf
+
+		'=== UPDATE AWARDS / SAMMYS ===
+		'in particular start award on the beginning of the day
+		'otherwise it might start 00:59 and and at that time on the next day...
+		GetAwardCollection().UpdateAwards()
 
 		Return True
 	End Function
