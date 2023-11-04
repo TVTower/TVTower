@@ -42,8 +42,10 @@ Type TInGameInterface
 	Field spriteProgrammeAds:TSprite
 	Field spriteProgrammeInfomercialOverlay:TSprite
 	Field spriteInterfaceBottom:TSprite
-	Field spriteInterfaceAudienceBG:TSprite
-	Field spriteInterfaceAudienceOverlay:TSprite
+	Field spriteInterfaceAudienceOffBG:TSprite
+	Field spriteInterfaceAudienceOnBG:TSprite
+	Field spriteInterfaceAudienceTVOverlay:TSprite
+	Field spriteInterfaceAudienceAreaOverlay:TSprite
 	Field spriteInterfaceButtonSpeed1_active:TSprite
 	Field spriteInterfaceButtonSpeed2_active:TSprite
 	Field spriteInterfaceButtonSpeed3_active:TSprite
@@ -93,7 +95,7 @@ Type TInGameInterface
 	Method Init:TInGameInterface()
 		if not chat
 			'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
-			chat = New TGUIGameChat.Create(New SVec2I(515, 404), New SVec2I(278,180), "InGame")
+			chat = New TGUIGameChat.Create(New SVec2I(515, 414), New SVec2I(278,180), "InGame")
 			'keep the chat entries visible
 			'chat.setDefaultHideEntryTime(10000)
 			chat.setOption(GUI_OBJECT_CLICKABLE, False)
@@ -160,8 +162,10 @@ Type TInGameInterface
 		spriteInterfaceButtonSpeed1_active = GetSpriteFromRegistry("gfx_interface_button_speed1.active")
 		spriteInterfaceButtonSpeed2_active = GetSpriteFromRegistry("gfx_interface_button_speed2.active")
 		spriteInterfaceButtonSpeed3_active = GetSpriteFromRegistry("gfx_interface_button_speed3.active")
-		spriteInterfaceAudienceBG = GetSpriteFromRegistry("gfx_interface_audience_bg")
-		spriteInterfaceAudienceOverlay = GetSpriteFromRegistry("gfx_interface_audience_overlay")
+		spriteInterfaceAudienceOffBG = GetSpriteFromRegistry("gfx_interface_audience_off_bg")
+		spriteInterfaceAudienceOnBG = GetSpriteFromRegistry("gfx_interface_audience_on_bg")
+		spriteInterfaceAudienceTVOverlay = GetSpriteFromRegistry("gfx_interface_audience_tv_overlay")
+		spriteInterfaceAudienceAreaOverlay = GetSpriteFromRegistry("gfx_interface_audience_area_overlay")
 
 		_interfaceFont = GetBitmapFont("Default", 12, BOLDFONT)
 		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
@@ -702,44 +706,28 @@ Type TInGameInterface
 
 
 		'=== SHOW / HIDE / LOCK CHAT ===
-		if not ChatShow
-			'arrow area
-			if MouseManager.IsClicked(1) and THelper.MouseIn(540, 397, 200, 20)
-				'reset unread
-				ChatContainsUnread = False
+		'arrow area
+		if MouseManager.IsClicked(1) and THelper.MouseIn(540, 397, 200, 20)
+			'reset unread
+			ChatContainsUnread = False
 
+			if not ChatShow
 				ChatShow = True
 				if chat then chat.ShowChat()
-
-				'handled left click
-				MouseManager.SetClickHandled(1)
-			endif
-			'lock area
-			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
-				ChatShowHideLocked = 1- ChatShowHideLocked
-
-				'handled left click
-				MouseManager.SetClickHandled(1)
-			endif
-		else
-			'arrow area
-			if MouseManager.IsClicked(1) and THelper.MouseIn(540, 583, 200, 17)
-				'reset unread
-				ChatContainsUnread = False
-
+			Else
 				ChatShow = False
 				if chat then chat.HideChat()
+			EndIf
 
-				'handled left click
-				MouseManager.SetClickHandled(1)
-			endif
-			'lock area
-			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 583, 20, 20)
-				ChatShowHideLocked = 1 - ChatShowHideLocked
+			'handled left click
+			MouseManager.SetClickHandled(1)
+		endif
+		'lock area
+		if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
+			ChatShowHideLocked = 1- ChatShowHideLocked
 
-				'handled left click
-				MouseManager.SetClickHandled(1)
-			endif
+			'handled left click
+			MouseManager.SetClickHandled(1)
 		endif
 
 		if chat and not ChatShowHideLocked
@@ -858,9 +846,16 @@ Type TInGameInterface
 		'=== TV-FAMILY ===
 
 		'draw TV-family
-		If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
-			_interfaceTVfamily.Draw(spriteInterfaceAudienceBG, spriteInterfaceAudienceOverlay)
-		EndIf 'showchannel <>0
+		If Not ChatShow
+			If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
+				_interfaceTVfamily.Draw(True, spriteInterfaceAudienceOffBG, spriteInterfaceAudienceOnBG)
+			'draw empty couch
+			Else
+				_interfaceTVfamily.Draw(False, spriteInterfaceAudienceOffBG, spriteInterfaceAudienceOnBG)
+			EndIf 'showchannel <>0
+			'draw the small electronic parts - "the inner tv"
+			spriteInterfaceAudienceTVOverlay.Draw(515, 417, 0, ALIGN_LEFT_TOP)
+		EndIf
 
 
 		'=== INTERFACE TEXTS ===
@@ -961,21 +956,14 @@ Type TInGameInterface
 		endif
 
 		'=== DRAW CHAT OVERLAY + ARROWS ===
-		local arrowPos:int = 0
-		local arrowDir:string = ""
+		local arrowPos:int = 397
+		local arrowDir:string = "down"
 		local arrowMode:string = "default"
+		if ChatShow then arrowDir = "up"
 		local lockMode:string = "unlocked"
 		if ChatShowHideLocked then lockMode = "locked"
 		if ChatContainsUnread then arrowMode = "highlight"
 
-		if ChatShow
-			GetSpriteFromRegistry("gfx_interface_ingamechat_bg").Draw(800, 600, -1, ALIGN_RIGHT_BOTTOM)
-			arrowPos = 583
-			arrowDir = "up"
-		else
-			arrowPos = 397
-			arrowDir = "down"
-		endif
 
 		if THelper.MouseIn(540, arrowPos, 200, 20)
 			arrowMode = "active"
@@ -990,7 +978,9 @@ Type TInGameInterface
 		'key
 		GetSpriteFromRegistry("gfx_interface_ingamechat_key."+lockMode).Draw(770, arrowPos)
 		'===
-
+		
+		'draw shadow over TV/Chat
+		spriteInterfaceAudienceAreaOverlay.Draw(511, 412, 0, ALIGN_LEFT_TOP)
 
 		'change mouse icon when hovering the "buttons"
 		if not GetWorldTime().IsPaused()
@@ -1230,9 +1220,21 @@ endrem
 		watchingMembers[playerIndex] = finalMembers
 		couchPositions[playerIndex] = newCouchPositions
 	EndMethod
+	
 
-	Method Draw(spriteInterfaceAudienceBG:TSprite, spriteInterfaceAudienceOverlay:TSprite)
-		If currentChannel < 1 Then Return
+	Method HasWatchingMember:Int()
+		If currentChannel < 1 Then Return False
+		Return watchingMembers[currentChannel-1].length > 0
+	End Method
+
+
+	Method Draw(showFamily:Int, spriteInterfaceAudienceOffBG:TSprite, spriteInterfaceAudienceOnBG:TSprite)
+		If Not showFamily Or currentChannel < 1
+			'off-variant of couch
+			spriteInterfaceAudienceOffBG.Draw(521, 419, 0, ALIGN_LEFT_TOP)
+			Return
+		EndIf
+
 		'fetch a list of watching family members
 		local members:string[] = watchingMembers[currentChannel-1]
 
@@ -1240,10 +1242,10 @@ endrem
 		local figureSlots:int[] = couchPositions[currentChannel-1]
 
 		'if nothing is displayed, a empty/dark room is shown
-		'by default (on interface bg)
-		'-> just care if family is watching
-		if members.length > 0
-			spriteInterfaceAudienceBG.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
+		if members.length = 0
+			spriteInterfaceAudienceOffBG.Draw(521, 419, 0, ALIGN_LEFT_TOP)
+		Elseif members.length > 0
+			spriteInterfaceAudienceOnBG.Draw(521, 419, 0, ALIGN_LEFT_TOP)
 			local currentSlot:int = 0
 			For local member:string = eachin members
 				'only X slots available
@@ -1252,8 +1254,6 @@ endrem
 				GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 				currentslot:+1 'occupy a slot
 			Next
-			'draw the small electronic parts - "the inner tv"
-			spriteInterfaceAudienceOverlay.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
 		endif
 	End Method
 End Type
