@@ -243,6 +243,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
 		Select sender.dataInt
 			Case 0
+				Local csv:Int = False
 				Local adList:TList = CreateList()
 				For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 					adList.AddLast(a)
@@ -251,39 +252,51 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 
 
 				Print "==== AD CONTRACT OVERVIEW ===="
-				Print ".---------------------------------.------------------.---------.----------.----------.-------.-------."
-				Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Avail |"
-				Print "|---------------------------------+------------------+---------+----------+----------|-------|-------|"
+				If csv
+					Print "Name;Audience;%;Image;Profit;Penalty;Spots;Days;Available;TargetGroup"
+					For Local a:TAdContractBase = EachIn adList
+						Local ad:TAdContract = New TAdContract
+						'do NOT call ad.Create() as it adds to the adcollection
+						ad.base = a
+						print a.GetTitle()+";"+ad.GetMinAudience()+";"+MathHelper.NumberToString(100 * a.minAudienceBase,2)+";"+MathHelper.NumberToString(ad.GetMinImage()*100, 2)..
+						+ad.GetProfit()+";"+ad.GetPenalty()+";"+ad.GetSpotCount()+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+ad.GetLimitedToTargetGroupString()
+					Next
+				else
+					Print ".---------------------------------.------------------.---------.----------.----------.-------.------.-------."
+					Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Days | Avail |"
+					Print "|---------------------------------+------------------+---------+----------+----------|-------|------|-------|"
 
-				'For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-				For Local a:TAdContractBase = EachIn adList
-					Local ad:TAdContract = New TAdContract
-					'do NOT call ad.Create() as it adds to the adcollection
-					ad.base = a
-					Local title:String = LSet(a.GetTitle(), 30)
-					Local audience:String = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
-					Local image:String =  RSet(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
-					Local profit:String =  RSet(ad.GetProfit(), 8)
-					Local penalty:String =  RSet(ad.GetPenalty(), 8)
-					Local spots:String = RSet(ad.GetSpotCount(), 5)
-					Local availability:String = ""
-					Local targetGroup:String = ""
-					If ad.GetLimitedToTargetGroup() > 0
-						targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
-						title :+ "*"
-					Else
-						title :+ " "
-					EndIf
-					If ad.base.IsAvailable()
-						availability = RSet("Yes", 5)
-					Else
-						availability = RSet("No", 5)
-					EndIf
-
-					Print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" | " + availability +" |" + targetgroup
-
-				Next
-				Print "'---------------------------------'------------------'---------'----------'----------'-------'-------'"
+					'For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+					For Local a:TAdContractBase = EachIn adList
+						Local ad:TAdContract = New TAdContract
+						'do NOT call ad.Create() as it adds to the adcollection
+						ad.base = a
+						Local title:String = LSet(a.GetTitle(), 30)
+						Local audience:String = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
+						Local image:String =  RSet(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
+						Local profit:String =  RSet(ad.GetProfit(), 8)
+						Local penalty:String =  RSet(ad.GetPenalty(), 8)
+						Local spots:String = RSet(ad.GetSpotCount(), 5)
+						Local days:String = RSet(ad.GetDaysToFinish(), 4)
+						Local availability:String = ""
+						Local targetGroup:String = ""
+						If ad.GetLimitedToTargetGroup() > 0
+							targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
+							title :+ "*"
+						Else
+							title :+ " "
+						EndIf
+						If ad.base.IsAvailable()
+							availability = RSet("Yes", 5)
+						Else
+							availability = RSet("No", 5)
+						EndIf
+	
+						Print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots + " | " + days + " | " + availability + " |" + targetgroup
+	
+					Next
+					Print "'---------------------------------'------------------'---------'----------'----------'-------'------'-------'"
+				EndIf
 '
 			Case 1
 				'single overview - only today
