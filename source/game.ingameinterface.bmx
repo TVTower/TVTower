@@ -70,6 +70,7 @@ Type TInGameInterface
 	Field noiseDisplace:TRectangle = new TRectangle
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
+	Field LastShowChannel:Byte = 0
 	Field ChatShow:int = False
 	Field ChatContainsUnread:int = False
 	Field ChatShowHideLocked:int = False
@@ -276,7 +277,20 @@ Type TInGameInterface
 			If MOUSEMANAGER.IsClicked(1)
 				For Local i:Int = 0 To 4
 					If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
-						ShowChannel = i
+						If i = 0
+							If ShowChannel = 0
+								If LastShowChannel
+									ShowChannel = LastShowChannel
+								Else
+									ShowChannel = GetCurrentPlayer().playerID
+								EndIF
+							Else
+								LastShowChannel = ShowChannel
+								ShowChannel = 0
+							EndIf
+						Else
+							ShowChannel = i
+						EndIf
 
 						'handled left click
 						MouseManager.SetClickHandled(1)
