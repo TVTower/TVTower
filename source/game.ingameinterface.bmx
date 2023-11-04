@@ -955,7 +955,10 @@ Type TInGameInterface
 			SetAlpha oldAlpha
 		endif
 
-		'=== DRAW CHAT OVERLAY + ARROWS ===
+		'draw shadow over TV/Chat
+		spriteInterfaceAudienceAreaOverlay.Draw(511, 412, 0, ALIGN_LEFT_TOP)
+
+		'=== DRAW CHAT ARROWS ===
 		local arrowPos:int = 397
 		local arrowDir:string = "down"
 		local arrowMode:string = "default"
@@ -978,9 +981,6 @@ Type TInGameInterface
 		'key
 		GetSpriteFromRegistry("gfx_interface_ingamechat_key."+lockMode).Draw(770, arrowPos)
 		'===
-		
-		'draw shadow over TV/Chat
-		spriteInterfaceAudienceAreaOverlay.Draw(511, 412, 0, ALIGN_LEFT_TOP)
 
 		'change mouse icon when hovering the "buttons"
 		if not GetWorldTime().IsPaused()
