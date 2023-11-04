@@ -4,6 +4,7 @@ Import "game.achievements.base.bmx"
 Import "game.broadcast.audienceresult.bmx"
 Import "game.broadcast.base.bmx"
 Import "game.broadcastmaterial.news.bmx" 'TNewsshow
+Import "game.broadcastmaterial.programme.bmx" 'TProgramme
 Import "game.world.worldtime.bmx"
 Import "game.player.finance.bmx"
 
@@ -144,6 +145,13 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 
 					local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(playerID)
 					if not audienceResult or not audienceResult.audience then continue
+
+					'handle defined limits for programmes
+					if (limitToGenres or limitToFlags) and checkMinute>=5 and checkMinute<=54
+						Local material:TProgramme = TProgramme(GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(playerID))
+						if limitToGenres and (not material or material.licence.GetGenre() <> limitToGenres) then continue
+						if limitToFlags and (not material or not material.licence.data.HasFlag(limitToFlags)) then continue
+					endif
 
 					if minAudienceAbsolute >= 0 and audienceResult.audience.GetTotalSum() > minAudienceAbsolute
 						SetCompleted(playerID, time)
