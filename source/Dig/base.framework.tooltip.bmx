@@ -62,6 +62,8 @@ Type TTooltip Extends TEntity
 	Field tooltipImage:Int		=-1
 	Field titleBGtype:Int		= 0
 	Field enabled:Int			= 0
+	Field _keepOnScreenOffsetX:Int		= 0
+	Field _keepOnScreenOffsetY:Int		= 0
 
 	Global tooltipHeader:TSprite
 	Global tooltipIcons:TSprite
@@ -127,6 +129,8 @@ Type TTooltip Extends TEntity
 
 	Method Update:Int()
 		if not enabled then return False
+		_keepOnScreenOffsetX = 0
+		_keepOnScreenOffsetY = 0
 
 		lifeTime :- GetDeltaTimer().GetDelta()
 		_aliveTime :+ GetDeltaTimer().GetDelta()
@@ -150,10 +154,16 @@ Type TTooltip Extends TEntity
 		local outOfScreenRight:int = Max(0, GetScreenX() + GetWidth() - GetGraphicsManager().GetWidth())
 		local outOfScreenTop:int = Min(0, GetScreenY())
 		local outOfScreenBottom:int = Max(0, GetScreenY() + GetHeight() - GetGraphicsManager().GetHeight())
-		if outOfScreenLeft then area.MoveX(outOfScreenLeft)
-		if outOfScreenRight then area.MoveX(-outOfScreenRight)
-		if outOfScreenTop then area.MoveY(outOfScreenTop)
-		if outOfScreenBottom then area.MoveY(-outOfScreenBottom)
+		if outOfScreenLeft
+			_keepOnScreenOffsetX = outOfScreenLeft
+		elseif outOfScreenRight And GetX() > 0
+			_keepOnScreenOffsetX = -Min(GetX(), outOfScreenRight)
+		endif
+		if outOfScreenTop
+			_keepOnScreenOffsetY = outOfScreenTop
+		elseif outOfScreenBottom and GetY() > 0
+			_keepOnScreenOffsetY = -Min(GetY(), outOfScreenBottom)
+		endif
 
 		Return True
 	End Method
@@ -163,6 +173,7 @@ Type TTooltip Extends TEntity
 		if title = value then return FALSE
 
 		title = value
+
 		'force redraw/cache reset
 		dirtyImage = True
 	End Method
@@ -172,6 +183,7 @@ Type TTooltip Extends TEntity
 		if content = value then return FALSE
 
 		content = value
+
 		'force redraw/cache reset
 		dirtyImage = True
 	End Method
@@ -269,10 +281,10 @@ Type TTooltip Extends TEntity
 	Method DrawShadow(width:Float, height:Float)
 		SetColor 0, 0, 0
 		SetAlpha getFadeAmount() * 0.3
-		DrawRect(GetScreenX()+2, GetScreenY()+2, width, height)
+		DrawRect(GetScreenX()+2+ _keepOnScreenOffsetX, GetScreenY()+2+ _keepOnScreenOffsetY, width, height)
 
 		SetAlpha getFadeAmount() * 0.1
-		DrawRect(GetScreenX()+1, GetScreenY()+1, width, height)
+		DrawRect(GetScreenX()+1+ _keepOnScreenOffsetX, GetScreenY()+1+ _keepOnScreenOffsetY, width, height)
 		SetColor 255,255,255
 	End Method
 
@@ -336,15 +348,15 @@ Type TTooltip Extends TEntity
 			Local boxHeight:Int	= GetHeight()
 			Local boxInnerWidth:Int	= boxWidth - 2
 			Local boxInnerHeight:Int = boxHeight - 2
-			Local innerX:int = GetScreenX() + 1
-			Local innerY:int = GetScreenY() + 1
+			Local innerX:int = GetScreenX() + 1 + _keepOnScreenOffsetX
+			Local innerY:int = GetScreenY() + 1 + _keepOnScreenOffsetY
 			Local captionHeight:Int = GetTitleHeight()
 			DrawShadow(boxWidth, boxHeight)
 
 			SetAlpha oldA * getFadeAmount()
 			SetColor 0,0,0
 			'border
-			DrawRect(GetScreenX(), GetScreenY(), boxWidth, boxHeight)
+			DrawRect(GetScreenX() + _keepOnScreenOffsetX, GetScreenY()+ _keepOnScreenOffsetY, boxWidth, boxHeight)
 			SetColor 255,255,255
 
 			'draw background of whole tooltip
@@ -376,7 +388,7 @@ endrem
 			DrawShadow(ImageWidth(image),ImageHeight(image))
 			SetAlpha oldA * getFadeAmount()
 			SetColor 255,255,255
-			DrawImage(image, GetScreenX(), GetScreenY())
+			DrawImage(image, GetScreenX()+ _keepOnScreenOffsetX, GetScreenY()+ _keepOnScreenOffsetY)
 			SetAlpha 1.0
 		EndIf
 
@@ -384,6 +396,6 @@ endrem
 		SetAlpha(oldA)
 
 		'=== DRAW CHILDREN ===
-		RenderChildren(xOffset, yOffset, alignment)
+		RenderChildren(xOffset+ _keepOnScreenOffsetX, yOffset+ _keepOnScreenOffsetY, alignment)
 	End Method
 End Type
