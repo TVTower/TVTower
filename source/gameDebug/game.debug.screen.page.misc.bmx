@@ -239,29 +239,51 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 		Next
 	End Method
 
+	Function SortContractAudienceRange:Int(o1:Object, o2:Object)
+		Local a1:TAdContractBase = TAdContractBase(o1)
+		Local a2:TAdContractBase = TAdContractBase(o2)
+		If Not a1 Then Return -1
+		If Not a2 Then Return 1
+		Local a1Audience:Float=a1.minAudienceBase
+		Local a2Audience:Float=a2.minAudienceBase
+
+		If a1Audience = a2Audience
+			If a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
+				Return a1.profitBase > a2.profitBase
+			Else 
+				Return a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+			EndIf
+		ElseIf a1Audience > a2Audience
+			Return 1
+		EndIf
+		Return -1
+	End Function
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
 		Select sender.dataInt
 			Case 0
-				Local csv:Int = False
+				Local csv:Int = GameRules.devConfig.GetInt("DEV_ADCONTRACT_STAT_CSV", 0)
 				Local adList:TList = CreateList()
 				For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 					adList.AddLast(a)
 				Next
-				adList.Sort(True, TAdContractBase.SortByName)
 
 
 				Print "==== AD CONTRACT OVERVIEW ===="
 				If csv
-					Print "Name;Audience;%;Image;Profit;Penalty;Spots;Days;Available;TargetGroup"
+					adList.Sort(True, SortContractAudienceRange)
+					Print "Name;Audience;%;Image;Base;Profit;per Spot;Penalty;Spots;Days;Available;TargetGroup"
 					For Local a:TAdContractBase = EachIn adList
 						Local ad:TAdContract = New TAdContract
 						'do NOT call ad.Create() as it adds to the adcollection
 						ad.base = a
+						Local profit:Int = ad.GetProfit()
+						Local spots:Int = ad.GetSpotCount()
 						print a.GetTitle()+";"+ad.GetMinAudience()+";"+MathHelper.NumberToString(100 * a.minAudienceBase,2)+";"+MathHelper.NumberToString(ad.GetMinImage()*100, 2)..
-						+";"+ad.GetProfit()+";"+ad.GetPenalty()+";"+ad.GetSpotCount()+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+ad.GetLimitedToTargetGroupString()
+						+";"+Int(a.profitBase)+";"+profit+";"+profit/spots+";"+ad.GetPenalty()+";"+spots+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+ad.GetLimitedToTargetGroupString()
 					Next
 				else
+					adList.Sort(True, TAdContractBase.SortByName)
 					Print ".---------------------------------.------------------.---------.----------.----------.-------.------.-------."
 					Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Days | Avail |"
 					Print "|---------------------------------+------------------+---------+----------+----------|-------|------|-------|"

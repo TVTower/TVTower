@@ -15,6 +15,7 @@
 		<cableNetworkDailyCostsMod value="1.0"/>
 		<satelliteBuyPriceMod value="1.0"/>
 		<satelliteDailyCostsMod value="1.0"/>
+		<broadcastPermissionPriceMod value="1.25"/>
 		<renovationBaseCost value="30000"/>
 		<renovationTimeMod value="0.75"/>
 
@@ -32,13 +33,13 @@
 		<adcontractLimitedTargetgroupMod value="1.15"/>
 		<antennaBuyPriceMod value="1.4"/>
 		<antennaDailyCostsMod value="1.25"/>
-		<antennaDailyCostsIncrease value="0.04"/>
-		<antennaDailyCostsIncreaseMax value="0.4"/>
+		<antennaDailyCostsIncrease value="0.02"/>
+		<antennaDailyCostsIncreaseMax value="0.3"/>
 		<cableNetworkBuyPriceMod value="1.4"/>
-		<cableNetworkDailyCostsMod value="1.25"/>
+		<cableNetworkDailyCostsMod value="1.3"/>
 		<satelliteBuyPriceMod value="1.4"/>
-		<satelliteDailyCostsMod value="1.25"/>
-		<broadcastPermissionPriceMod value="1.5"/>
+		<satelliteDailyCostsMod value="1.3"/>
+		<broadcastPermissionPriceMod value="1.15"/>
 		<renovationBaseCost value="75000"/>
 		<renovationTimeMod value="1.5"/>
 
@@ -70,24 +71,24 @@
 		<adcontractProfitMod value="1.0"/><!--factor for ad contract profits-->
 		<adcontractPenaltyMod value="1.0"/><!--factor for ad contract penalty payments-->
 		<adcontractInfomercialProfitMod value="1.0"/><!--factor for infomercial profits-->
-		<adcontractLimitedTargetgroupMod value="1.3"/><!--maximum profit/penalty factor if target group is limited (>=1.0)-->
-		<adcontractLimitedGenreMod value="1.5"/><!--profit/penalty factor if genre is limited (>=1.0)-->
-		<adcontractLimitedProgrammeFlagMod value="1.25"/><!--profit/penalty factor if programme flags are limited (>=1.0)-->
+		<adcontractLimitedTargetgroupMod value="1.25"/><!--maximum profit/penalty factor if target group is limited (>=1.0)-->
+		<adcontractLimitedGenreMod value="1.3"/><!--profit/penalty factor if genre is limited (>=1.0)-->
+		<adcontractLimitedProgrammeFlagMod value="1.2"/><!--profit/penalty factor if programme flags are limited (>=1.0)-->
 		<adcontractRawMinAudienceMod value="1.0"/><!--factor for number of viewers required-->
 
 		<!--construction times in hours-->
 		<antennaBuyPriceMod value="1.2"/><!--factor for antenna purchase prices-->
 		<antennaConstructionTime value="0"/><!--base time for setting up an antenna-->
 		<antennaDailyCostsMod value="1.15"/><!--factor for anntenna daily costs-->
-		<antennaDailyCostsIncrease value="0.02"/><!--increase of daily antenna costs; 0.02 = 2%-->
-		<antennaDailyCostsIncreaseMax value="0.3"/><!--maximum increase of daily antenna costs; 0.2 = 20%-->
+		<antennaDailyCostsIncrease value="0.015"/><!--increase of daily antenna costs; 0.02 = 2%-->
+		<antennaDailyCostsIncreaseMax value="0.2"/><!--maximum increase of daily antenna costs; 0.2 = 20%-->
 		<cableNetworkBuyPriceMod value="1.2"/><!--factor for cable network initial payment price-->
 		<cableNetworkConstructionTime value ="0"/><!--time before cable network broadcasts channel programme-->
 		<cableNetworkDailyCostsMod value="1.15"/><!--factor for cable network daily costs-->
 		<satelliteBuyPriceMod value="1.2"/><!--factor for satellite initial payment price-->
 		<satelliteConstructionTime value ="0"/><!--time before satellite broadcasts channel programme-->
 		<satelliteDailyCostsMod value="1.15"/><!--factor for satellite daily costs-->
-		<broadcastPermissionPriceMod value="1.0"/><!--factor for broadcast permission prices-->
+		<broadcastPermissionPriceMod value="0.8"/><!--factor for broadcast permission prices-->
 
 		<!--terrorist effects-->
 		<renovationBaseCost value="50000"/><!--base cost for renovating an owned room after a detonation-->

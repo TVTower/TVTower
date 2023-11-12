@@ -34,7 +34,9 @@
 
 			<!-- AD CONTRACTS -->
 			<!-- ============ -->
-
+			<!-- Print debug screen ad contract statistic as csv, not as table
+				<DEV_ADCONTRACT_STAT_CSV value="1" />
+			-->
 			<!-- How many contracts could use the same contract base
 			     (the same "original contract") at the same time
 			     Options:

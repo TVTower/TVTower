@@ -802,12 +802,14 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		Local cheapListFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(spotMin, Max(spotMin, 1.5 * d.lowestChannelQuoteDaytime))
-		'no image requirements - or not more than the lowest image
+		'no image requirements - or not much more than the lowest image
 		'(so all could sign this)
-		cheapListFilter.SetMinImageRange(0, 0.01 * d.lowestChannelImage)
-		'cheap contracts should in now case limit genre/groups
+		cheapListFilter.SetMinImageRange(0, 1.1 * d.lowestChannelImage)
+
+		'cheap contracts should not limit genre
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
-		cheapListFilter.SetSkipLimitedToTargetGroup()
+		'cheapListFilter.SetSkipLimitedToTargetGroup()
+
 		'the dev value is defining how many simultaneously are allowed
 		'while the filter filters contracts already having that much (or
 		'more) contracts, that's why we subtract 1
@@ -979,11 +981,13 @@ endrem
 		Local cheapListFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(0.0005, 0.005)
-		'no image requirements > lowest (so all could sign this)
-		cheapListFilter.SetMinImageRange(0, 0.01 * d.lowestChannelImage)
-		'cheap contracts should in no case limit genre/groups
+		'no image requirements much higher than lowest (so all could sign this)
+		cheapListFilter.SetMinImageRange(0, 1.1 * d.lowestChannelImage)
+
+		'cheap contracts should not limit genre
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
-		cheapListFilter.SetSkipLimitedToTargetGroup()
+		'cheapListFilter.SetSkipLimitedToTargetGroup()
+
 		'the dev value is defining how many simultaneously are allowed
 		'while the filter filters contracts already having that much (or
 		'more) contracts, that's why we subtract 1
