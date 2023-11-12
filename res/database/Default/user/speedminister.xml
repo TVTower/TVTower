@@ -548,7 +548,7 @@
                 <en>Buy(!) our software and upload your company secrets YOURSELF on our servers. Then things can remian confidential under 5 eyes! Thank you.</en>
             </description>
             <conditions min_audience="10.42" min_image="0" target_group="0"/>
-            <data infomercial="1" quality="15" repetitions="1" duration="2" profit="290" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
+            <data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
             <availability year_range_from="2008" />
         </ad>
         <ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
@@ -573,7 +573,7 @@
                 <en>Office furniture in dark gray, mouse gray and business gray. - Why didn't I put my money in a lottery booth, at the carnival? Buy! Redeem me!</en>
             </description>
             <conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-            <data quality="12" repetitions="2" duration="4" profit="215" penalty="337" infomercial_profit="21" fix_infomercial_profit="1"/>
+            <data quality="12" repetitions="2" duration="4" profit="235" penalty="337" infomercial_profit="21" fix_infomercial_profit="1"/>
         </ad>
     </allads>
 </tvtdb>

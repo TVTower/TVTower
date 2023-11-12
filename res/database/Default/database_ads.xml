@@ -11,7 +11,7 @@
 				<en>The new Fort has arrived. Increased safety and an appealing design at an unbeatable price.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="20" repetitions="3" duration="2" profit="392" penalty="490" infomercial_profit="39" fix_infomercial_profit="1"/>
+			<data quality="20" repetitions="3" duration="2" profit="420" penalty="500" infomercial_profit="39" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="044991ac-f4a6-4705-8e84-052d497d1b3a">
 			<title>
@@ -22,7 +22,7 @@
 				<en>One wipe for kitchen AND toilet. Now with funny animal designs.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="5" duration="4" profit="727" penalty="1000" infomercial_profit="68" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="5" duration="4" profit="672" penalty="950" infomercial_profit="68" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="1199be32-4985-4697-a5c8-c0da0ef09fc1">
 			<title>
@@ -36,7 +36,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 Do you have that to offer? Gosh, my Swedish friend!</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="2" duration="3" profit="270" penalty="470" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="2" duration="3" profit="285" penalty="460" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="Rahmah-Ron1">
 			<title>
@@ -48,7 +48,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 				<en>Tender butter made from yeti milk.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="25" repetitions="1" duration="2" profit="275" penalty="400" fix_infomercial_profit="1"/>
+			<data quality="25" repetitions="1" duration="2" profit="280" penalty="400" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="14340286-55d9-408f-b0b5-9cd4208054dc" comment="TODO: Discuss Translation: I felt the barrel doesn't fit with carpentry. 'Pull s.o. over the barrel' could perhaps be used in a new ad, with a German version of 'Fass aufmachen'.">
 			<title>
@@ -60,7 +60,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 				<en>Our quality is convincing. You want to feel ripped off? Only here that won't be off the mahogany table.</en>
 			</description>
 			<conditions min_audience="0.1032" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="3" duration="3" profit="2500" penalty="3800" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="3" duration="3" profit="4000" penalty="4900" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="153bd5af-1163-4c22-a718-3ceb63da26c7">
 			<title>
@@ -84,7 +84,7 @@ Daran hat man zu kauen.</de>
 You will really have to chew.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="25" repetitions="5" duration="4" profit="804" penalty="1150" infomercial_profit="75" fix_infomercial_profit="1"/>
+			<data quality="25" repetitions="5" duration="4" profit="680" penalty="1000" infomercial_profit="75" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="1edeb46a-caf8-4ce0-a66f-71706fc48b62">
 			<title>
@@ -96,7 +96,7 @@ You will really have to chew.</en>
 				<en>Travel to the world's largest beaches, whether Gobi or Sahara. Duban Tours will take you there.</en>
 			</description>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="3" duration="3" profit="315" penalty="400" infomercial_profit="41" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="3" duration="3" profit="345" penalty="450" infomercial_profit="41" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="1fa08a9f-5658-46a1-b634-43bbacd1a7bb">
 			<title>
@@ -108,7 +108,7 @@ You will really have to chew.</en>
 				<en>For the customer's purest throat.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="23" repetitions="1" duration="2" profit="384" penalty="450" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<data quality="23" repetitions="1" duration="2" profit="415" penalty="460" infomercial_profit="40" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030">
 			<title>
@@ -119,7 +119,7 @@ You will really have to chew.</en>
 				<en>Koka Cola's most popular competitor - but as pure in taste?</en>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="25" repetitions="1" duration="3" profit="230" penalty="380" fix_infomercial_profit="1"/>
+			<data quality="25" repetitions="1" duration="3" profit="240" penalty="380" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="2e70e2e8-1b23-4aa5-90dc-40e2f5230f71">
 			<title>
@@ -140,8 +140,8 @@ You will really have to chew.</en>
 				<de>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</de>
 				<en>Ramm Bam Baaam - Order your ringtone now with discount subscription.</en>
 			</description>
-			<conditions min_audience="0.39" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="2" duration="3" profit="2240" penalty="3220" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.39" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="10" repetitions="2" duration="3" profit="2000" penalty="3220" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="360b9ee1-9e2e-469d-b61e-fa8a69cbf560">
 			<title>
@@ -152,7 +152,7 @@ You will really have to chew.</en>
 				<en>Introduced nine years earlier in the US, Mr. Ploper came to Germany in 1967 and established itself as the most popular household cleaner.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="2" duration="3" profit="359" penalty="550" infomercial_profit="29" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="29" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad">
 			<title>
@@ -163,7 +163,7 @@ You will really have to chew.</en>
 				<en>The fourth place. The GS2 is the successor to the GS from Sunny.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="3" duration="3" profit="386" penalty="600" infomercial_profit="33" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="3" duration="3" profit="347" penalty="550" infomercial_profit="33" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="3bf32cbc-3322-4f3b-851b-88b964cb990d">
 			<title>
@@ -175,7 +175,7 @@ You will really have to chew.</en>
 				<en>We're stupid. We throw out our goods at ridiculous prices. So off you go to the nearest Burst-Buy market</en>
 			</description>
 			<conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="20" repetitions="4" duration="4" profit="600" penalty="920" infomercial_profit="56" fix_infomercial_profit="1"/>
+			<data quality="20" repetitions="4" duration="4" profit="540" penalty="920" infomercial_profit="56" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="41f0778e-f2fd-4b34-be1a-1d67f2ff3ce4">
 			<title>
@@ -187,7 +187,7 @@ You will really have to chew.</en>
 				<en>Listen to mature women knitting.</en>
 			</description>
 			<conditions min_audience="1.3" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="5" repetitions="4" duration="3" profit="1100" penalty="1700" fix_infomercial_profit="1"/>
+			<data quality="5" repetitions="4" duration="3" profit="1020" penalty="1700" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="PoliPlayw01">
 			<title>
@@ -245,8 +245,8 @@ You will really have to chew.</en>
 				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
 				<en>Cherry syrup from organic farming. Bottled by Aunt Lizzy herself.</en>
 			</description>
-			<conditions min_audience="0.1553" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="11" repetitions="4" duration="3" fix_price="0" profit="2600" penalty="3400" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.1553" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="11" repetitions="4" duration="3" fix_price="0" profit="2250" penalty="3250" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="4621cea4-26c9-4c74-b796-a687651333f4">
 			<title>
@@ -257,7 +257,7 @@ You will really have to chew.</en>
 				<en>Mmmmhmmm - this IS a delicious burger. If you're into burgers, you have to try these!</en>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="2" duration="3" profit="275" penalty="350" infomercial_profit="37" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="2" duration="3" profit="250" penalty="350" infomercial_profit="37" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="4921816c-91a3-42c5-8ca8-56d67394f8dc">
 			<title>
@@ -268,7 +268,7 @@ You will really have to chew.</en>
 				<en>By cats for cats. Nutritious canned food for your house cat.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="3" duration="1" profit="577" penalty="850" fix_infomercial_profit="1"/>
+			<data quality="10" repetitions="3" duration="1" profit="550" penalty="850" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="496e9783-2d9c-44aa-b71f-845533dc907e">
 			<title>
@@ -282,7 +282,7 @@ In Tempelhof and Steglitz</de>
 In Berlin Tempelhof and Steglitz</en>
 			</description>
 			<conditions min_audience="3.1251" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="5" repetitions="4" duration="3" profit="700" penalty="1200" infomercial_profit="67" fix_infomercial_profit="1"/>
+			<data quality="5" repetitions="4" duration="3" profit="650" penalty="1100" infomercial_profit="67" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="4cc7ea59-a0dd-4dda-90b8-ec217635d631">
 			<title>
@@ -318,7 +318,7 @@ In Berlin Tempelhof and Steglitz</en>
 				<en>Sparkling hops of gold. During the critical days of the month, man should always have Pop'Beer in the fridge.</en>
 			</description>
 			<conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="3" duration="3" profit="976" penalty="1550" infomercial_profit="97" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="3" duration="3" profit="900" penalty="1400" infomercial_profit="97" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="589d51a5-52ab-463f-90f9-ddf48abef355">
 			<title>
@@ -343,7 +343,7 @@ But only with Relocation Rudolph!</en>
 				<en>With Mach 4 or EVEN FASTER, the razor flies over the facial skin of a real guy - for the best in men.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="2" duration="3" profit="500" penalty="950" infomercial_profit="42" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="2" duration="3" profit="460" penalty="900" infomercial_profit="42" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9">
 			<title>
@@ -354,7 +354,7 @@ But only with Relocation Rudolph!</en>
 				<en>MacGrifter as a promotional campaigner for the FasterCard: R. D. Handerson once again in his signature role - priceless.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="21" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="27" fix_infomercial_profit="1"/>
+			<data quality="21" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="27" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="66303d6e-e116-4dcb-8984-f216a70c21fd">
 			<title>
@@ -366,7 +366,7 @@ But only with Relocation Rudolph!</en>
 				<en>Friendly women from Eastern Europe create your horoscope "live" on the phone.</en>
 			</description>
 			<conditions min_audience="0.39" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="4" duration="3" profit="2120" penalty="2700" infomercial_profit="110" fix_infomercial_profit="1"/>
+			<data quality="10" repetitions="4" duration="3" profit="2000" penalty="2700" infomercial_profit="110" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="6c93f77e-8180-4811-a5e1-57b375eef68f">
 			<title>
@@ -390,7 +390,7 @@ But only with Relocation Rudolph!</en>
 				<en>Nice women from the catalog. Thanks to distance selling, return possible without problems.</en>
 			</description>
 			<conditions min_audience="0.62" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="3" duration="3" profit="1766" penalty="2800" infomercial_profit="124" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="3" duration="3" profit="1583" penalty="2500" infomercial_profit="124" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="7408e6f0-0505-42d9-96e0-bf6dc4869039">
 			<title>
@@ -414,8 +414,8 @@ But only with Relocation Rudolph!</en>
 				<de>Kein Geld für den Urlaub oder die Yacht? Wir schicken Postkarten aus Uganda oder fälschen Fotos.</de>
 				<en>No money for the vacation or a yacht? We send postcards from Uganda or fake photos.</en>
 			</description>
-			<conditions min_audience="0.2074" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="16" repetitions="3" duration="3" profit="2500" penalty="3800" infomercial_profit="100" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.39" min_image="6" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="16" repetitions="3" duration="3" profit="2100" penalty="3400" infomercial_profit="100" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="79e0a668-f929-4746-bcb2-b073f1f2bf65">
 			<title>
@@ -426,8 +426,8 @@ But only with Relocation Rudolph!</en>
 				<de>Wir sorgen für Ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</de>
 				<en>We take care of your sanitary facilities. Starting at 10 € - no shits!</en>
 			</description>
-			<conditions min_audience="0.4679" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="9" repetitions="3" duration="3" profit="2111" penalty="3280" infomercial_profit="119" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.4679" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="9" repetitions="3" duration="3" profit="1888" penalty="3280" infomercial_profit="119" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="7a86d4cd-7266-4247-ac6a-b63a62d12c93">
 			<title>
@@ -439,7 +439,7 @@ But only with Relocation Rudolph!</en>
 				<en>Not only the woodchips are dropping here, but also the prices. Surely there is a Planer Market also close to you.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="4" duration="3" profit="750" penalty="1200" infomercial_profit="72" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="4" duration="3" profit="700" penalty="1100" infomercial_profit="72" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="7bf56c92-52f5-44aa-8cef-2788ece421ac">
 			<title>
@@ -451,7 +451,7 @@ But only with Relocation Rudolph!</en>
 				<en>Clean your laundry down to the pores with "White Frieze"!</en>
 			</description>
 			<conditions min_audience="15.63" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="1" duration="3" profit="260" penalty="433" infomercial_profit="23" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="1" duration="3" profit="240" penalty="400" infomercial_profit="23" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="81181726-b98e-42fd-8ffb-23ddb068d61d">
 			<title>
@@ -462,7 +462,7 @@ But only with Relocation Rudolph!</en>
 				<en>The brand clothing with the umbrella. Fashionable cuts and trendy colors included.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="19" repetitions="3" duration="2" profit="327" penalty="570" infomercial_profit="32" fix_infomercial_profit="1"/>
+			<data quality="19" repetitions="3" duration="2" profit="340" penalty="560" infomercial_profit="32" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="8384acef-9c23-4efa-9ffa-0d0e370693d4">
 			<title>
@@ -473,7 +473,7 @@ But only with Relocation Rudolph!</en>
 				<en>The "Vitalon Foods Company" from Taiwan lets R. D. Handerson advertise as MacGrifter for their sports drink: on a bicycle, in a jeep, during Tai Chi and on a speedboat.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="16" repetitions="3" duration="4" profit="525" penalty="825" infomercial_profit="43" fix_infomercial_profit="1"/>
+			<data quality="16" repetitions="3" duration="4" profit="490" penalty="790" infomercial_profit="43" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="848b76e8-f93f-4a6f-aa55-b62643c0793d">
 			<title>
@@ -507,7 +507,7 @@ But only with Relocation Rudolph!</en>
 				<en>Out of beer? Don't send the wife, just Call-A-Beer!</en>
 			</description>
 			<conditions min_audience="3.6461" min_image="18" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="11" repetitions="5" duration="2" profit="685" penalty="1199" infomercial_profit="122" fix_infomercial_profit="1"/>
+			<data quality="11" repetitions="5" duration="2" profit="620" penalty="1000" infomercial_profit="122" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="8b3add88-51b3-4776-b144-da0fcdd665a6">
 			<title>
@@ -519,7 +519,7 @@ But only with Relocation Rudolph!</en>
 				<en>Delicious cinnamon sticks with guaranteed dry cough. Never before dry-as-dust has been... so delicious.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="4" duration="4" profit="657" penalty="950" infomercial_profit="58" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="4" duration="4" profit="600" penalty="950" infomercial_profit="58" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="914bf7d1-8338-4ace-87c8-a84dca3872f5">
 			<title>
@@ -530,7 +530,7 @@ But only with Relocation Rudolph!</en>
 				<en>With each purchase of a bottle of red wine, you now get two headache tablets for free.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="8" repetitions="5" duration="3" profit="642" penalty="1022" fix_infomercial_profit="1"/>
+			<data quality="8" repetitions="5" duration="3" profit="610" penalty="990" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="95a1c5b7-c89a-4fe8-85c9-834c07daa2f9">
 			<title>
@@ -542,7 +542,7 @@ But only with Relocation Rudolph!</en>
 				<en>Piraczi-copies look nearly as good as the originals. We also sell permanent markers!</en>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="4" repetitions="5" duration="2" profit="650" penalty="950" infomercial_profit="95" fix_infomercial_profit="1"/>
+			<data quality="4" repetitions="5" duration="2" profit="670" penalty="950" infomercial_profit="95" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a">
 			<title>
@@ -554,7 +554,7 @@ But only with Relocation Rudolph!</en>
 				<en>The ketchup for those who do not drown their fries in mayonnaise. Also suitable for burgers, sausages and chicken nuggets.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="3" duration="3" profit="356" penalty="558" infomercial_profit="35" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="3" duration="3" profit="377" penalty="558" infomercial_profit="35" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="Sjaele-spysoft2" creator="7430" created_by="Sjaele">
 			<title>
@@ -565,7 +565,7 @@ But only with Relocation Rudolph!</en>
 				<en>Surfing the web in the garden! WiFi cables up to 200m.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="2" duration="2" profit="407" penalty="625" infomercial_profit="41" fix_infomercial_profit="1"/>
+			<data quality="10" repetitions="2" duration="2" profit="440" penalty="640" infomercial_profit="41" fix_infomercial_profit="1"/>
 			<availability year_range_from="1998" />
 		</ad>
 		<ad id="a401f20f-8832-45df-a274-2599fd8d0afb">
@@ -599,7 +599,7 @@ But only with Relocation Rudolph!</en>
 				<en>The incomparable chocolate bar with the captivating taste.</en>
 			</description>
 			<conditions min_audience="5.73" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="2" duration="3" profit="500" penalty="823" infomercial_profit="45" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="2" duration="3" profit="450" penalty="823" infomercial_profit="45" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
 			<title>
@@ -610,7 +610,7 @@ But only with Relocation Rudolph!</en>
 				<en>The number 1 in model building. Whether Messerschmitt, Panther, or U.S.S. Enterprise - Ravelli has it all.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="22" repetitions="3" duration="2" profit="557" penalty="975" fix_infomercial_profit="1"/>
+			<data quality="22" repetitions="3" duration="2" profit="545" penalty="975" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="a81fea24-859f-463e-a69c-0124de937a47" comment="TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
 			<title>
@@ -635,7 +635,7 @@ Der Vorteil: Kein Porto für Überweisungsträger.</de>
 The benefit: No postage for remittance slips.</en>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="2" duration="4" profit="215" penalty="337" infomercial_profit="21" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="2" duration="4" profit="240" penalty="350" infomercial_profit="21" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="a8c56723-2603-4622-bf23-4645b8fa3bb5">
 			<title>
@@ -658,7 +658,7 @@ The benefit: No postage for remittance slips.</en>
 				<en>In two commercials, the famous R. D. Handerson presents a useful phone card powered by Telecom USA.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="2" duration="3" profit="286" penalty="448" infomercial_profit="28" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="2" duration="3" profit="315" penalty="448" infomercial_profit="28" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ad62c53b-3d7d-404e-bb37-0babaed87df1">
 			<title>
@@ -671,7 +671,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's models.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="2" duration="2" profit="304" penalty="459" infomercial_profit="27" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="2" duration="2" profit="290" penalty="459" infomercial_profit="27" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="b422ad7a-ed8a-4c01-a4fa-0496c07e73d5">
 			<title>
@@ -682,8 +682,8 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 				<de>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</de>
 				<en>Boxer shorts from the village. Guaranteed worn only once - per side.</en>
 			</description>
-			<conditions min_audience="0.1" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="3" duration="4" profit="2800" penalty="3400" infomercial_profit="80" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.1" min_image="2" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="10" repetitions="3" duration="4" profit="3900" penalty="5000" infomercial_profit="80" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="b5dbf200-bd84-4126-b80e-66a71661c8aa">
 			<title>
@@ -708,7 +708,7 @@ Tubenkrone - Schokolade mit Charakter.</de>
 Tuberthrone - Chocolate with character.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="4" duration="2" profit="415" penalty="606" infomercial_profit="39" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="4" duration="2" profit="430" penalty="606" infomercial_profit="39" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b">
 			<title>
@@ -733,7 +733,7 @@ It's a sunny.</en>
 				<en>Is your mattress squeaking? Call the Mattress-Doc. Trial session included.</en>
 			</description>
 			<conditions min_audience="1.82" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="8" repetitions="4" duration="2" profit="885" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1"/>
+			<data quality="8" repetitions="4" duration="2" profit="800" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="bd51bc63-e6f4-43cd-86ac-9f1d039aa188">
 			<title>
@@ -744,7 +744,7 @@ It's a sunny.</en>
 				<en>Promotion week at Bikeshop. Buy one bike, get one for free.</en>
 			</description>
 			<conditions min_audience="0.7905" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="3" duration="2" profit="1586" penalty="2296" infomercial_profit="118" fix_infomercial_profit="1"/>
+			<data quality="10" repetitions="3" duration="2" profit="1333" penalty="2000" infomercial_profit="118" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="beff6512-fd07-4e1d-aaf8-ce8da3ebd876">
 			<title>
@@ -767,7 +767,7 @@ It's a sunny.</en>
 				<en>Do jigsaw puzzles, play, have fun. Rabensburger recommends novelties and classics from its range of products.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="14" repetitions="3" duration="2" profit="421" penalty="684" infomercial_profit="37" fix_infomercial_profit="1"/>
+			<data quality="14" repetitions="3" duration="2" profit="380" penalty="570" infomercial_profit="37" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
 			<title>
@@ -790,7 +790,7 @@ It's a sunny.</en>
 				<en>It is not just Furrest Gomp who passionately drinks Dr. Blather.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="18" repetitions="2" duration="4" profit="340" penalty="425" infomercial_profit="28" fix_infomercial_profit="1"/>
+			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7">
 			<title>
@@ -826,7 +826,7 @@ Aktionswoche: Pfandfrei.</de>
 Campaign week: no bottle deposit.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="11" repetitions="4" duration="4" profit="784" penalty="1085" infomercial_profit="74" fix_infomercial_profit="1"/>
+			<data quality="11" repetitions="4" duration="4" profit="700" penalty="1000" infomercial_profit="74" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="d2de2875-249c-4b10-8ba2-0dda65ae5674">
 			<title>
@@ -838,7 +838,7 @@ Campaign week: no bottle deposit.</en>
 				<en>Dobrawa upholstery manufacture since 1933.</en>
 			</description>
 			<conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="6" repetitions="4" duration="3" profit="1300" penalty="1400" fix_infomercial_profit="1"/>
+			<data quality="6" repetitions="4" duration="3" profit="1100" penalty="1400" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="d319be4e-e9fe-42d9-9e43-351ddde2fbe5">
 			<title>
@@ -849,8 +849,8 @@ Campaign week: no bottle deposit.</en>
 				<de>Verlieren Sie 50 Kilo innerhalb eines Monats!</de>
 				<en>Lose 50 kilograms within one month!</en>
 			</description>
-			<conditions min_audience="0.31" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="10" repetitions="3" duration="4" profit="2433" penalty="2675" infomercial_profit="116" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.31" min_image="2" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="10" repetitions="3" duration="4" profit="2100" penalty="2675" infomercial_profit="116" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="d43943a8-67c3-47a5-bb96-e0f03b5194df">
 			<title>
@@ -861,7 +861,7 @@ Campaign week: no bottle deposit.</en>
 				<en>They already have become a schoolmate long ago: The cartridges that fill the fountain pen.</en>
 			</description>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="3" duration="2" profit="612" penalty="840" infomercial_profit="55" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="3" duration="2" profit="540" penalty="840" infomercial_profit="55" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="d4e84634-b122-4cca-90c6-c44707d8a79e">
 			<title>
@@ -884,7 +884,7 @@ Campaign week: no bottle deposit.</en>
 				<en>The fruit juice drink in the world-famous bulgy bottle. Expensive, but almost always just right.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="13" repetitions="2" duration="2" profit="365" penalty="500" infomercial_profit="31" fix_infomercial_profit="1"/>
+			<data quality="13" repetitions="2" duration="2" profit="325" penalty="500" infomercial_profit="31" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="d66284c0-6440-4590-a620-f400d67c98b8">
 			<title>
@@ -895,7 +895,7 @@ Campaign week: no bottle deposit.</en>
 				<en>Wurth Paris delivers the scent of selected essences for a noble perfume.</en>
 			</description>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="14" repetitions="3" duration="3" profit="530" penalty="750" fix_infomercial_profit="1"/>
+			<data quality="14" repetitions="3" duration="3" profit="500" penalty="750" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="Escal-Sjaele-01">
 			<title>
@@ -906,7 +906,7 @@ Campaign week: no bottle deposit.</en>
 				<en>Computer scrap starting at 50 pfennigs per kilo. Now also offering modern B/W monitors.</en>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="7" duration="3" profit="581" penalty="746" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="7" duration="3" profit="570" penalty="746" infomercial_profit="40" fix_infomercial_profit="1"/>
 			<availability year_range_to="2002" />
 		</ad>
 		<ad id="d8ee3597-56e1-4117-909a-bde9da3f9f9e">
@@ -918,7 +918,7 @@ Campaign week: no bottle deposit.</en>
 				<en>Computer scrap starting at 50 eurocent per kilo. Now also offering modern CRT screens.</en>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="14" repetitions="7" duration="3" profit="581" penalty="746" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<data quality="14" repetitions="7" duration="3" profit="570" penalty="746" infomercial_profit="40" fix_infomercial_profit="1"/>
 			<availability year_range_from="2003" />
 		</ad>
 		<ad id="da699c1f-4117-4fc6-b365-a3a7608105ab">
@@ -930,7 +930,7 @@ Campaign week: no bottle deposit.</en>
 				<en>Spaceships, phaser weapons, Mars mining rights. On sale at Aeroswift this week at rock-bottom prices.</en>
 			</description>
 			<conditions min_audience="8.3352" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="19" repetitions="3" duration="4" profit="400" penalty="650" infomercial_profit="24" fix_infomercial_profit="1"/>
+			<data quality="19" repetitions="3" duration="4" profit="377" penalty="620" infomercial_profit="24" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="dd4e46bc-3dae-4738-af7a-f2665bf53435">
 			<title>
@@ -942,7 +942,7 @@ Campaign week: no bottle deposit.</en>
 				<en>A feast with the eyes!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="9" repetitions="4" duration="3" profit="1533" penalty="2094" fix_infomercial_profit="1"/>
+			<data quality="9" repetitions="4" duration="3" profit="1333" penalty="2094" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ddfbfa22-5af8-4558-afc4-b34619bab1c9">
 			<title>
@@ -965,7 +965,7 @@ Campaign week: no bottle deposit.</en>
 				<en>The perfect blend of goose fat and natural vegetable fat makes Tasty Fat soooo incredibly delicious.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="13" repetitions="2" duration="3" fix_price="0" profit="305" penalty="507" infomercial_profit="30" fix_infomercial_profit="1"/>
+			<data quality="13" repetitions="2" duration="3" fix_price="0" profit="325" penalty="520" infomercial_profit="30" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="e096e5ef-34d6-41a4-a98e-cb690673f074">
 			<title>
@@ -978,7 +978,7 @@ Nur echt mit Elch!</de>
 Only genuine with the elk!</en>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="2" duration="2" profit="248" penalty="401" infomercial_profit="24" fix_infomercial_profit="1"/>
+			<data quality="15" repetitions="2" duration="2" profit="275" penalty="420" infomercial_profit="24" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="e1f2329c-2a43-453d-8711-11de240d1fbf">
 			<title>
@@ -1001,7 +1001,7 @@ Only genuine with the elk!</en>
 				<en>Bargain rates for well-heeled backpackers. Provisions and band-aids are not included in the price.</en>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="3" duration="2" profit="2250" penalty="3250" fix_infomercial_profit="1"/>
+			<data quality="12" repetitions="3" duration="2" profit="2750" penalty="4000" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="e77d26ae-895d-448f-b6ac-7171b785d21f">
 			<title>
@@ -1049,7 +1049,7 @@ Ich fühl mich wohl mit Lemur</de>
 I feel good with Lemur</en>
 			</description>
 			<conditions min_audience="7.29" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="13" repetitions="4" duration="4" profit="484" penalty="645" fix_infomercial_profit="1"/>
+			<data quality="13" repetitions="4" duration="4" profit="420" penalty="645" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="f86e045c-51ca-4725-aaff-2d5c158348f9">
 			<title>
@@ -1060,7 +1060,7 @@ I feel good with Lemur</en>
 				<en>High wearing comfort and almost invisible - the new Maike hygiene pads.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="9" repetitions="3" duration="4" profit="366" penalty="558" infomercial_profit="34" fix_infomercial_profit="1"/>
+			<data quality="9" repetitions="3" duration="4" profit="340" penalty="540" infomercial_profit="34" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="fc24c505-d3cc-467c-a57c-a154f9d308cb">
 			<title>
@@ -1118,7 +1118,7 @@ I feel good with Lemur</en>
 				<en>Get our flashy covers for your mobile phone. Gone is the dull gray-blue. Now also available for Sumens models.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="900" penalty="1274" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="770" penalty="1100" infomercial_profit="50" fix_infomercial_profit="1"/>
 			<availability year_range_from="1998" year_range_to="2003" />
 		</ad>
 		<ad id="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
@@ -1142,8 +1142,8 @@ I feel good with Lemur</en>
 				<de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
 				<en>Funny lanterns in numerous animal shapes. Brand new: Cow and Ladybug. The cracker for every child's birthday.</en>
 			</description>
-			<conditions min_audience="0.0511" min_image="25" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="875" penalty="1174" infomercial_profit="75" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.1" min_image="8" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="3800" penalty="4500" infomercial_profit="75" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
 			<title>
@@ -1155,7 +1155,7 @@ I feel good with Lemur</en>
 				<en>Crazy beats from Israelic star DJ Meshugge. Now all 3 hits on one Album.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="900" penalty="1474" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="770" penalty="1200" infomercial_profit="50" fix_infomercial_profit="1"/>
 			<availability year_range_from="1992" year_range_to="1995" />
 		</ad>
 		<ad id="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
@@ -1168,7 +1168,7 @@ I feel good with Lemur</en>
 				<en>Handmade cheese from high up in the Alps. Bearded dairymen, the sun, lush meadows and happy cows provide the palate for any city dweller.</en>
 			</description>
 			<conditions min_audience="1.041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="21" repetitions="7" duration="6" profit="1225" penalty="2024" infomercial_profit="85" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="21" repetitions="7" duration="6" profit="1050" penalty="2024" infomercial_profit="85" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-Veggismecki" creator="5578" created_by="Ronny">
 			<title>
@@ -1180,7 +1180,7 @@ I feel good with Lemur</en>
 				<en>Delicious tofu tarts for the contemporary vegetarian. All tofu livestock is kept species-appropriate and reared with organic feed.</en>
 			</description>
 			<conditions min_audience="2.6041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="27" repetitions="6" duration="5" profit="736" penalty="1314" infomercial_profit="80" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="27" repetitions="6" duration="5" profit="690" penalty="1200" infomercial_profit="80" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-Wackeldackel02">
 			<title>
@@ -1218,7 +1218,7 @@ I feel good with Lemur</en>
 				<en>Your music compilation! All the hits of the past 3 days on one jam-packed 90 minute cassette. In stereo!</en>
 			</description>
 			<conditions min_audience="2.08" min_image="12" target_group="2"/>
-			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="815" penalty="1220" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="780" penalty="1220" fix_infomercial_profit="1"/>
 			<availability year_range_from="1985" year_range_to="1986" />
 		</ad>
 		<ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
@@ -1231,7 +1231,7 @@ I feel good with Lemur</en>
 				<en>"All Hits" is back again! 40 mad hits on one double MC. Only now with folding poster you can color yourself.</en>
 			</description>
 			<conditions min_audience="2.083" min_image="4" target_group="3"/>
-			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="815" penalty="1150" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="780" penalty="1150" fix_infomercial_profit="1"/>
 			<availability year_range_from="1987" year_range_to="1988" />
 		</ad>
 		<ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
@@ -1244,7 +1244,7 @@ I feel good with Lemur</en>
 				<en>Not one cassette, not two, not three! Incredible 4 music cassettes packed with the hits of the last 5 years. Your Walkman will never want to play anything else!</en>
 			</description>
 			<conditions min_audience="2.083" min_image="7" target_group="2"/>
-			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="815" penalty="1100" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1"/>
 			<availability year_range_from="1988" year_range_to="1990" />
 		</ad>
 		<ad id="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
@@ -1256,7 +1256,7 @@ I feel good with Lemur</en>
 				<en>You hate not lifting a finger? SOS Arthritis relieves the discomfort within a few hours. Order now and get 1 bottle of snake oil for free.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="12" target_group="64" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="12" repetitions="4" duration="3" profit="745" penalty="1042" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="12" repetitions="4" duration="3" profit="685" penalty="990" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-bargeld-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1295,7 +1295,7 @@ Brucey - herber Duft für Männer vom Fach.</de>
 Brucey - harsh fragrance for expert men.</en>
 			</description>
 			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="440" penalty="800" infomercial_profit="49" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="470" penalty="800" infomercial_profit="49" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-einkaufseck-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1319,7 +1319,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>We still mill your book! Whether family book or diary, we get your work to the masses.</en>
 			</description>
 			<conditions min_audience="4.6881" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="25" repetitions="5" duration="3" profit="528" penalty="823" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="5" duration="3" profit="510" penalty="823" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1330,7 +1330,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>The banger chewy candy from Hawaii. Never before has sugar tasted so tro-tro-tropical.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="18" target_group="1"/>
-			<data quality="15" repetitions="4" duration="2" profit="770" penalty="1167" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="4" duration="2" profit="720" penalty="1100" fix_infomercial_profit="1" />
 			<availability year_range_to="1999" />
 		</ad>
 		<ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
@@ -1342,7 +1342,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>The Hawaiian chewy candy now with a brand new and trendy flavor. Candied chicken claws lend the fascinating spice.</en>
 			</description>
 			<conditions min_audience="2.6041" min_image="18" target_group="1"/>
-			<data quality="20" repetitions="4" duration="2" profit="770" penalty="1082" fix_infomercial_profit="1" />
+			<data quality="20" repetitions="4" duration="2" profit="720" penalty="1100" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" />
 		</ad>
 		<ad id="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
@@ -1365,7 +1365,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>The naughty youth magazine. We answer your intimate questions without a grin :-).</en>
 			</description>
 			<conditions min_audience="5.21" min_image="12" target_group="2"/>
-			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="560" penalty="1175" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="510" penalty="1175" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-litfasssaeule-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1377,7 +1377,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>You think you are pretty beautiful? Show your neighbors your best side: On the billboard around the corner.</en>
 			</description>
 			<conditions min_audience="0.1" min_image="0"/>
-			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="2650" penalty="3343" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="4000" penalty="4900" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1388,8 +1388,8 @@ Brucey - harsh fragrance for expert men.</en>
 				<de>Wir bannen Sie oder Ihre Familie auf die Leinwand. Wenn Sie keine Zeit haben sollten, pausen wir auch von Fotos ab. Für andere ... Kunstprojekte ... bitte Termin vereinbaren.</de>
 				<en>We capture you or your family on the canvas. If you do not have time, we also trace from photos. For other ... art projects ... please make an appointment.</en>
 			</description>
-			<conditions min_audience="0.4679" min_image="12" target_group="4"/>
-			<data infomercial="1" quality="14" repetitions="4" duration="4" profit="2222" penalty="3298" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.4679" min_image="6" target_group="4"/>
+			<data infomercial="1" quality="14" repetitions="4" duration="4" profit="1888" penalty="3298" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1401,7 +1401,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>You don't feel like spending the evening of your life alone? You enjoy the presence of other retirees? We offer day trips to the most beautiful villages - and the best rheumatism blankets.</en>
 			</description>
 			<conditions min_audience="1.562" min_image="12" target_group="64"/>
-			<data infomercial="1" quality="12" repetitions="5" duration="4" profit="1000" penalty="1500" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="12" repetitions="5" duration="4" profit="890" penalty="1500" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1413,7 +1413,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>East German hop, from West Germany the air ... and the gold. Delicious little brews for fathers of all countries.</en>
 			</description>
 			<conditions min_audience="9.3772" min_image="12" target_group="256"/>
-			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="377" penalty="500" infomercial_profit="85" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="340" penalty="520" infomercial_profit="85" fix_infomercial_profit="1"/>
 			<availability year_range_from="1990" year_range_to="1993" />
 		</ad>
 		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
@@ -1425,7 +1425,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>The walker is rusted? Your relatives have been glaringly absent for years? Sanitaxi provides you with all the hygiene products you need. Now with trendy designs on every second liner.</en>
 			</description>
 			<conditions min_audience="5.7301" min_image="12" target_group="64"/>
-			<data infomercial="1" quality="12" repetitions="2" duration="4" profit="527" penalty="952" infomercial_profit="67" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="12" repetitions="2" duration="4" profit="440" penalty="952" infomercial_profit="67" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-schminkstift-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1462,7 +1462,7 @@ Available in any well-stocked drugstore.</en>
 				<en>The trendy pub for birds and other chatterboxes. Tuesdays free-secco if you come with multicolored finger nails.</en>
 			</description>
 			<conditions min_audience="0.6242" min_image="18" target_group="2"/>
-			<data infomercial="1" quality="11" repetitions="4" duration="5" profit="1833" penalty="2244" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="11" repetitions="4" duration="5" profit="1583" penalty="2400" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-zockomo-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1474,7 +1474,7 @@ Available in any well-stocked drugstore.</en>
 				<en>U too many money under mattress? We helping u find distant relatives for bequeth!</en>
 			</description>
 			<conditions min_audience="18.76" min_image="0"/>
-			<data infomercial="1" quality="15" repetitions="3" duration="7" profit="202" penalty="520" infomercial_profit="95" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="3" duration="7" profit="220" penalty="500" infomercial_profit="95" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="sjaele-ad-Abschiedsgruss" creator="7430" created_by="Sjaele">
 			<title>
@@ -1498,7 +1498,7 @@ Available in any well-stocked drugstore.</en>
 				<en>The wholesome organic meal from the tube. Tastes like the food at home from mother, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
 			</description>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1132" penalty="1900" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
 			<title>
@@ -1561,7 +1561,7 @@ Available in any well-stocked drugstore.</en>
 				<en>The website for converting Euro (EUR) into Deutsche Mark (DEM). For all who want to know things precisely. Because everything was better in the old days.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="440" penalty="697" infomercial_profit="50" fix_infomercial_profit="1"/>
 			<availability year_range_from="2003" />
 		</ad>
 		<ad id="speedminister-ad-Beisele" creator="8605" created_by="SpeedMinister">
@@ -1574,7 +1574,7 @@ Available in any well-stocked drugstore.</en>
 				<en>We dae nae footer wi' yer business bit ye aye benefit o' commissioning us. Guid insae guid enough! It haes tae be Billayehill!</en>
 			</description>
 			<conditions min_audience="18.76" min_image="7" target_group="32"/>
-			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="227" penalty="339" infomercial_profit="20" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="220" penalty="339" infomercial_profit="20" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1586,7 +1586,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Cotton balls for any occasion. Bobo Cotton Balls for the woman, for the child and for the soldier.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="550" penalty="872" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="575" penalty="890" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Bruch" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1609,7 +1609,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Dream returns without lifting a finger. Sending entire populations into famine? - Doesn't matter? - Bullseye with Bullshit Bingo Brokers!</en>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="3" duration="4" profit="228" penalty="320" infomercial_profit="15" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="3" duration="4" profit="240" penalty="320" infomercial_profit="15" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Doublie-Kate" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1620,7 +1620,7 @@ Available in any well-stocked drugstore.</en>
 				<en>3D scanner and 3D printer in one. Think of the possibilities! Turn a metal template into a plastic original. Doublie-Kate from "Life is Groats"!</en>
 			</description>
 			<conditions min_audience="28.65" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="20" repetitions="2" duration="4" profit="156" penalty="309" infomercial_profit="35" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="2" duration="4" profit="170" penalty="309" infomercial_profit="35" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Doerrobst" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1643,7 +1643,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Looking for someone to diss and hate? Are you still lacking an archenemy? Use "Enemy24"! We will find your personal opponent!</en>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="304" penalty="558" infomercial_profit="28" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="330" penalty="565" infomercial_profit="28" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Enzyklopedie1" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1655,7 +1655,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Let us assume that the calculation of time reaches infinitely into the past and that it reaches infinitely into the future. Thus, the present is exactly half of time, half of all there is. Singularity Publishing.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="198" penalty="303" infomercial_profit="25" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="210" penalty="303" infomercial_profit="25" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Enzyklopedie2" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1667,7 +1667,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Published in 2 volumes. Volume 1 already available today. However, we can predict that Band 2 will never appear, as we can not see into the future. A paradox? Singularity Publishing.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="37" target_group="0"/>
-			<data infomercial="1" quality="31" repetitions="2" duration="2" profit="200" penalty="315" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="31" repetitions="2" duration="2" profit="215" penalty="315" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Fluchomat" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1716,8 +1716,8 @@ Available in any well-stocked drugstore.</en>
 				<de>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
 				<en>Premium honey products from your favorite apiary Dumblebee. We provide our bees with a good, motivating work environment. Including after-work pints!</en>
 			</description>
-			<conditions min_audience="0.0511" min_image="7" target_group="4"/>
-			<data infomercial="1" quality="12" repetitions="3" duration="3" profit="3500" penalty="5094" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.0511" min_image="4" target_group="4"/>
+			<data infomercial="1" quality="12" repetitions="3" duration="3" profit="2650" penalty="3343" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1740,7 +1740,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Our double-decker air buses are generously furnished. For children there is a water slide, a ball pit and elephant rides in the stern.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="630" penalty="1001" infomercial_profit="67" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="672" penalty="1001" infomercial_profit="67" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Landwirtschafts-Discount" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1752,7 +1752,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Whether it's chopped straw, hay silage, corn silage, organic waste, grain mash, cattle or pig slurry, we have it all! Buy from Old Joe with the brown thumb!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="11" repetitions="6" duration="4" profit="1466" penalty="2009" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="11" repetitions="6" duration="4" profit="1400" penalty="2009" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Mietmaul1" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1766,7 +1766,7 @@ Available in any well-stocked drugstore.</en>
 				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="7" target_group="32"/>
-			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="277" penalty="452" infomercial_profit="14" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="270" penalty="440" infomercial_profit="14" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Mietmaul2" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1780,7 +1780,7 @@ Available in any well-stocked drugstore.</en>
 				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="18" target_group="32"/>
-			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="307" penalty="543" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="278" penalty="460" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Mietmaul3" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1794,7 +1794,7 @@ Available in any well-stocked drugstore.</en>
 				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="30" target_group="32"/>
-			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="337" penalty="532" infomercial_profit="14" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="14" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Mietmaul4" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1819,7 +1819,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Your two- and three-wheeler dealer in your area. For young and old, we have something for everyone. We also do conversions as long as it does not have 4 wheels.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="19" repetitions="4" duration="4" profit="430" penalty="988" infomercial_profit="40" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="19" repetitions="4" duration="4" profit="445" penalty="988" infomercial_profit="40" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Musikscheune" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1857,7 +1857,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Tear-resistant and bulletproof. Pemto - even stops 150mph sneezers.</en>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="262" penalty="425" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="270" penalty="425" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1869,7 +1869,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Tear-resistant and bulletproof. Pemto - when things get urgent.</en>
 			</description>
 			<conditions min_audience="14.07" min_image="32" target_group="0"/>
-			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="270" penalty="420" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="265" penalty="410" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1881,7 +1881,7 @@ Available in any well-stocked drugstore.</en>
 				<en>We are not against Ques! The word does not come from Anti-, but from Antique. Means purchase and sale of historical furniture.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="11" repetitions="1" duration="4" profit="660" penalty="948" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="11" repetitions="1" duration="4" profit="690" penalty="948" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Ploerre" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1893,7 +1893,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Even a chancellor once sang: "Muck Beer - Muck Beer - I'll get some for me."</en>
 			</description>
 			<conditions min_audience="3.13" min_image="4" target_group="256"/>
-			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="683" penalty="879" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="640" penalty="890" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Rapunzel" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1905,7 +1905,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Toupets and wigs. If you don't have to rely on them - good for you. Otherwise come to Rapunzel's. Buy 5 meters or more and get a meter for free!</en>
 			</description>
 			<conditions min_audience="18.76" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="4" duration="6" profit="215" penalty="372" infomercial_profit="20" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="4" duration="6" profit="225" penalty="360" infomercial_profit="20" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Rhinozerosfarm" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1929,7 +1929,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Sniffmaster 2000, the infinitely useful smell transmitter. This is like phone calls for the nose. So come and join the smelling, no matter where you are! Sniffmaster 2000!</en>
 			</description>
 			<conditions min_audience="23.44" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="182" penalty="327" infomercial_profit="17" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="185" penalty="327" infomercial_profit="17" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Roll-Shop" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1965,7 +1965,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Chocolate to the power of three. All edges the same length! The best idea ever! We have edges of 10cm, 20cm and 30cm!</en>
 			</description>
 			<conditions min_audience="3.1251" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="6" duration="3" profit="618" penalty="900" infomercial_profit="11" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="6" duration="3" profit="640" penalty="900" infomercial_profit="11" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Schniggo2" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2001,7 +2001,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Steel concrete and brass are the materials of choice. Childproof. Unbreakable. Teddy Bears by Rump.</en>
 			</description>
 			<conditions min_audience="1.041" min_image="18" target_group="1"/>
-			<data infomercial="1" quality="11" repetitions="3" duration="4" profit="1340" penalty="2000" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="11" repetitions="3" duration="4" profit="1100" penalty="1800" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Stop-Hound" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2012,7 +2012,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Fox Enterprises presents "Stop Hound". Apply the spray on the body. 20h effect! Stops dogs even against the wind. The anti-bite spray "Stop Hound".</en>
 			</description>
 			<conditions min_audience="8.34" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="337" penalty="581" infomercial_profit="35" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="360" penalty="600" infomercial_profit="35" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-TVBunker" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2084,7 +2084,7 @@ Available in any well-stocked drugstore.</en>
 				<en>We sell tickets to all major events, trade fairs and live concerts. Also special tickets like Back-Stage or On-Stage are available!</en>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="245" penalty="345" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="250" penalty="345" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Weinstein" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2096,7 +2096,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Suck your way through exquisite vintages of wine history. Tartar of wine assortments from the winery of the same name now available!</en>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="616" penalty="970" infomercial_profit="67" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="650" penalty="970" infomercial_profit="67" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-bafm-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2108,7 +2108,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Guide to sincere inner cleansing, tips and tricks, best practices and much more. Contact us for more info! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</en>
 			</description>
 			<conditions min_audience="26.05" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="158" penalty="301" infomercial_profit="69" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="185" penalty="320" infomercial_profit="69" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-baumschule-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2132,7 +2132,7 @@ Available in any well-stocked drugstore.</en>
 				<en>In parks and gardens you feel free, but the highlight is a Bummbeard's tree.</en>
 			</description>
 			<conditions min_audience="1.82" min_image="45" target_group="256"/>
-			<data infomercial="1" quality="18" repetitions="6" duration="4" profit="848" penalty="999" infomercial_profit="90" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="6" duration="4" profit="770" penalty="999" infomercial_profit="90" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-bildergalerie-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2144,7 +2144,7 @@ Available in any well-stocked drugstore.</en>
 				<en>We are down-to-earth! No monochrome surfaces at fantasy prices. With us e.g. "roaring stag on two-mast schooner in stormy sea" only 500 bucks.</en>
 			</description>
 			<conditions min_audience="2.083" min_image="12" target_group="4"/>
-			<data infomercial="1" quality="19" repetitions="4" duration="2" profit="840" penalty="1400" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="19" repetitions="4" duration="2" profit="780" penalty="1300" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-chemicalair-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2155,7 +2155,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Pesticide, fungicide, herbicide. Our plane is ready. We spray your field, your orchard and your garden. Also available for private customers! Just give us a call.</en>
 			</description>
 			<conditions min_audience="28.65" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="12" repetitions="1" duration="4" profit="147" penalty="232" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="12" repetitions="1" duration="4" profit="175" penalty="240" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-esel24-02" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2192,7 +2192,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Sparkling soda, fizzing can, chills for the mouth and throat, super tasty? Dream no more! four4down brings you back to earth!</en>
 			</description>
 			<conditions min_audience="23.44" min_image="0"/>
-			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="171" penalty="315" infomercial_profit="17" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="193" penalty="320" infomercial_profit="17" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
 			<title>
@@ -2215,7 +2215,7 @@ Available in any well-stocked drugstore.</en>
 				<en>The car is a blast! 100% steel! Higher than a truck and wider than long. You can stand upright or stretch out on the back seat. Why still pay rent?</en>
 			</description>
 			<conditions min_audience="26.05" min_image="4" target_group="256"/>
-			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="168" penalty="307" infomercial_profit="36" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="180" penalty="330" infomercial_profit="36" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2226,7 +2226,7 @@ Available in any well-stocked drugstore.</en>
 				<en>The dog food with aspartame. Fatten your darling! As the pig, so the dog, your little pet will be round as a hog.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="290" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="520" infomercial_profit="60" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2262,7 +2262,7 @@ Available in any well-stocked drugstore.</en>
 (*for an extra charge)</en>
 			</description>
 			<conditions min_audience="23.44" min_image="7" target_group="8"/>
-			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="193" penalty="268" infomercial_profit="17" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="185" penalty="300" infomercial_profit="17" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2346,7 +2346,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Pizza from the Swedish oven. Beautifully crunchy and firm to the bite. Can also be used as a substitute fuel. Every odd calendar day we also deliver.</en>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="17" repetitions="2" duration="2" profit="2000" penalty="1900" infomercial_profit="20" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="17" repetitions="2" duration="2" profit="2120" penalty="1900" infomercial_profit="20" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-placebotazementamol-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2358,7 +2358,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Placebotazementamol since 1276. Tradition since the Middle Ages. Charlatans and quacks swear by it! Now new as a pastille.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="0"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="187" penalty="250" infomercial_profit="18" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="205" penalty="250" infomercial_profit="18" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-potzblitz-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2369,8 +2369,8 @@ Available in any well-stocked drugstore.</en>
 				<de>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</de>
 				<en>Come to our car yard. Truck washing facilities. Showers and toilets available! One free coffee for a 1000 liters diesel refuel!!! Godspeeders! At the Route 7!</en>
 			</description>
-			<conditions min_audience="0.26" min_image="4" target_group="256"/>
-			<data infomercial="1" quality="9" repetitions="3" duration="4" profit="2440" penalty="3200" fix_infomercial_profit="1"/>
+			<conditions min_audience="0.26" min_image="2" target_group="256"/>
+			<data infomercial="1" quality="9" repetitions="3" duration="4" profit="2300" penalty="3200" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-raffgier-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2382,7 +2382,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Your money is our focus. In our banks we guard it. We defend it against EVERYONE. No exceptions.</en>
 			</description>
 			<conditions min_audience="31.26" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="18" repetitions="1" duration="6" profit="138" penalty="214" infomercial_profit="23" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="1" duration="6" profit="160" penalty="220" infomercial_profit="23" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-raffgier-02" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2394,7 +2394,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Our insurers will take your money even without any reciprocation at all! Please send it in.</en>
 			</description>
 			<conditions min_audience="31.26" min_image="68" target_group="128"/>
-			<data infomercial="1" quality="27" repetitions="3" duration="4" profit="138" penalty="130" infomercial_profit="23" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="27" repetitions="3" duration="4" profit="145" penalty="130" infomercial_profit="23" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2406,7 +2406,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Frozen fish bars to pry open crates, tear down walls, stabilize furniture, repair rails. Terrific in construction, modest in the frying pan. Well then, enjoy your meal.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="0"/>
-			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="311" penalty="515" infomercial_profit="62" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="345" penalty="515" infomercial_profit="62" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-rechtschreibdudan-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2418,7 +2418,7 @@ Available in any well-stocked drugstore.</en>
 				<en>You think you misheard something in the tram the other day? Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that shit.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="471" penalty="646" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="500" penalty="720" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-rechtschreibdudan-02" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2429,8 +2429,8 @@ Available in any well-stocked drugstore.</en>
 				<de>Sie wissen nicht mehr, was die Worte von heute bedeuten? Z.B. gestern der „Freund“ ist heute der „Feind“. Neusprech &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Jetzt als mechanische App, also: im Buchhandel.</de>
 				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy". Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
 			</description>
-			<conditions min_audience="2.30" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="600" penalty="820" fix_infomercial_profit="1"/>
+			<conditions min_audience="2.34" min_image="0" target_group="0"/>
+			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="950" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-rennpferde-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2501,7 +2501,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Valvoa the ladies' truck. 460 PS only 350,000 Euro, also available in pink on request. Valvoa reeks off!</en>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
 			<availability year_range_from="2002" />
 		</ad>
 		<ad id="speedminister-ad-valvoa-02" creator="8605" created_by="SpeedMinister">
@@ -2513,7 +2513,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Valvoa the ladies' truck. 460 PS only 700,000 DEM, on request also in pink. Valvoa reeks off!</en>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
 			<availability year_range_to="2001" />
 		</ad>
 
