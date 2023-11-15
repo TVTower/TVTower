@@ -95,7 +95,7 @@ Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon die Eröffn
 
 Solange die Programm- oder Werbeblöcke grau eingefärbt sind, könnt Ihr sie auf andere Sendeplätze verschieben. Andere Einfärbungen deuten darauf hin, dass sie gerade gesendet werden oder wurden. Rot eingefärbte, schon gesendete Werbeblöcke deuten darauf hin, dass die geforderte Einschaltquote nicht erreicht wurde.
 
-Führt Ihr den Mauszeiger über einen Sendung oder eine Werbung, erscheint ein Tooltip, der Informationen zur gewählten Sendung enthält.
+Führt Ihr den Mauszeiger über einen Sendung oder eine Werbung, erscheint ein Tooltip, der Informationen zur gewählten Sendung enthält. Die „Shift“-Taste schaltet im Tooltip einer Sendung auf die Anzeige der maximalen Einschaltquote statt der maximalen Zuschauerzahl um.
 
 Zum Bewegen der Sendungen/Werbung klickt einfach mit links darauf, dann hängt die Sendung am Mauszeiger. Zum Ablegen klickt wieder links.
 
@@ -153,7 +153,7 @@ Werbemakler
 
 Das ist der gute Mann, der uns die Mäuse fängt. Nun eigentlich schwatzt er uns Sachen auf, die den Zuschauern einen Film vermiesen oder Platz schaffen, um Chips zu holen. Kurz und gut: Hier gibt’s die Werbeblöcke, die stündlich gesendet dafür sorgen, dass wir Geld reinkriegen. Ihr seht auf dem Tisch und an der Wand Ordner stehen und rechts oben wieder einen Koffer. In diesem Koffer stehen normalerweise schon Ordner. Das sind die bereits abgeschlossenen Werbeverträge. Drei davon spendiert das Spiel gleich beim Spielstart. Dass die drei Ordner im Koffer stehen und nicht irgendwo im Archiv, soll Euch darauf hinweisen, dass der Platz im Koffer beschränkt ist. Ist der Koffer voll, so könnt Ihr keinen neuen Werbevertrag abschließen. Platz schaffen funktioniert nur, indem Ihr Werbung zu Ende sendet. Oder wenn sie nach der Frist verfällt, was jedoch eine Strafzahlung zur Folge hat.
 
-Fahrt mit den Mauszeigern über die Ordner und ihr seht die werberelevanten Informationen. Die Prämie muss ich nicht weiter erläutern. Die Strafe wird fällig, wenn Ihr die erforderlichen Blöcke nicht in der angegebenen Zeit mit den geforderten Zuschauern sendet. Im Tooltip wird Euch übrigens auch angezeigt, wie oft die Werbung schon eingeplant bzw. gesendet wurde.
+Fahrt mit den Mauszeigern über die Ordner und ihr seht die werberelevanten Informationen. Die Prämie muss ich nicht weiter erläutern. Die Strafe wird fällig, wenn Ihr die erforderlichen Blöcke nicht in der angegebenen Zeit mit den geforderten Zuschauern sendet. Im Tooltip wird Euch übrigens auch angezeigt, wie oft die Werbung schon eingeplant bzw. gesendet wurde. Das Halten der „Shift“-Taste während der Tooltipanzeige schaltet auf die Anzeige von Profit/Strafe pro Block um.
 
 Auch hier werden die gerissenen Lücken nach Verlassen des Raumes wieder aufgefüllt. Also schnell nochmal rein, ob noch was Günstiges hinzugekommen ist.
 
@@ -298,6 +298,9 @@ Spielgeschwindigkeit
 
 Räume
 ------
+
+Bei der Verwendung der Tastenkürzel zum Anspringen der Räume wird automatisch der Schnellvorlauf aktiviert, bis der Raum erreicht ist.
+
 * A: Archiv
 * B: Betty
 * C: Chef

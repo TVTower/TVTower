@@ -97,7 +97,7 @@ You will see the first day. At the beginning of the game, the Opening Show and t
 
 As long as the programme or advertisement blocks are coloured grey, then you can move them to other broadcast slots. Other colours mean that they are already being or have been  broadcast. A red advertising block means that it did not fulfill the requirements.
 
-Moving the mouse pointer over a programme or an advertisement displays a tooltip containing information about the selected programme.
+Moving the mouse pointer over a programme or an advertisement displays a tooltip containing information about the selected programme. Pressing the "Shift"-key while displaying the programme tooltip toggles to showing the maximum audience rate instead of the maximal absolute audience.
 
 To move a programme/advertisement simply left-click on it, then the item is picked up and is attached to the mouse pointer. To drop the item, left-click again.
 
@@ -155,7 +155,7 @@ Ad Agency
 
 This is the good fellow who keeps the wolf from the door. Well, he actually wants to flog us the stuff which ruins a film for the viewers or gives them a chance to get crisps. In a nutshell: here are the commercials which are broadcast each hour and keep the cash rolling in. You can see folders on the table and by the wall and your suitcase in the top right corner. There are usually folders in this case. Those are the advertising contracts you previously signed. You automatically get three at the start of the game. If the suitcase is full, then you can't sign new advertising contracts. You can only free up space once your adverts have finished broadcasting. Or if they pass the time limit, which, however, results in a penalty.
 
-Move the mouse over the folders and you'll see information about the relevant advert. I don't need to explain the profit any further. The penalty is due if you don't broadcast the required commercials in the specified time with the required viewers. The tooltip also shows you how many times the advert has already been scheduled and broadcast.
+Move the mouse over the folders and you'll see information about the relevant advert. I don't need to explain the profit any further. The penalty is due if you don't broadcast the required commercials in the specified time with the required viewers. The tooltip also shows you how many times the advert has already been scheduled and broadcast. Pressing the "Shift"-key while displaing the tooltip toggles to protit/penalty per block.
 
 Here, too, the gaps that have been torn will be filled again after leaving the room. So head straight back in to see if something attractive has come in.
 
@@ -300,6 +300,9 @@ Game Speed
 
 Rooms
 -----
+
+When using a room shortcut, fast forward is activated until the room is reached.
+
 [The German names are given where these explain the shortcut]
 * A: Archive
 * B: Betty
