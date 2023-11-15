@@ -470,14 +470,14 @@
 		</scripttemplate>
 
 		<!-- === SERIES === -->
-		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01" comment="TODO: maybe add episode after pilot describing an actual work day in a location more specific and typical for the protagonists">
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01" comment="">
 			<title>
-				<de>%adj% ${who_${i}}%titleaddendum%</de>
-				<en>%adj% ${who_${i}}%titleaddendum%</en>
+				<de>%adj%${who_${i}}%titleaddendum%</de>
+				<en>%adj%${who_${i}}%titleaddendum%</en>
 			</title>
 			<description>
-				<de>%seriesabout% ${how_${i}}. %adj% ${who_${i}}%legacy%. %jokes%</de>
-				<en>%seriesabout% ${how_${i}}. %adj% ${who_${i}}%legacy%. %jokes%</en>
+				<de>%seriesabout% ${how_${i}}. %adj%${who_${i}}%legacy%. %jokes%</de>
+				<en>%seriesabout% ${how_${i}}. %adj%${who_${i}}%legacy%. %jokes%</en>
 			</description>
 			<variables>
 				<seriesabout>
@@ -485,15 +485,15 @@
 					<en>Series about|About|A TV series about|Features about|Reports on|Coverage of|Portraits of|Documentary about|Disclosure of|Chronicles of|Stories about|First hand about|Journal about|Diary about</en>
 				</seriesabout>
 				<adj>
-					<de>Ein Haufen|Die Hinterwäldler-|Verrückte|Wahnsinns-|Bayrische|Tugendhafte|Durchgedrehte|Fromme|Zankende|Schelmische|Verschmitzte|Witzige|Abenteuerlustige|Extravagante|Geheimnisvolle|Exzentrische|Temperamentvolle|Joviale|Hartnäckige|Lebensfrohe|Verwegene|Brillante</de>
-					<en>A bunch of|The hillbilly|Crazy|The frenzied|Bavarian|Virtuous|Nutty|Devout|Quarreling|Mischievous|Impish|Witty|Adventurous|Flamboyant|The mysterious|Eccentric|Spirited|The jovial|The tenacious|The vivacious|Swashbuckling|The brilliant</en>
+					<de>Ein Haufen |Die Hinterwäldler-|Verrückte |Wahnsinns-|Bayrische |Tugendhafte |Durchgedrehte |Fromme |Zankende |Schelmische |Verschmitzte |Witzige |Abenteuerlustige |Extravagante |Geheimnisvolle |Exzentrische |Temperamentvolle |Joviale |Hartnäckige |Lebensfrohe |Verwegene |Brillante </de>
+					<en>A bunch of |The hillbilly |Crazy |The frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The mysterious |Eccentric |Spirited |The jovial |The tenacious |The vivacious |Swashbuckling |The brilliant </en>
 				</adj>
 				<i>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same as j in episodes -->
 				</i>
 				<who_0>
 					<de>Waschweiber</de>
-					<en>fishwives</en>
+					<en>washer women</en>
 				</who_0>
 				<who_1>
 					<de>Drag-Queens</de>
@@ -544,7 +544,7 @@
 					<en>extreme couponers</en>
 				</who_c>
 				<who_d>
-					<de>Zeitreisende</de>
+					<de>Zeitreisepiloten</de> <!-- wegen unterschiedlicher Pluralformen (unbestimmt / bestimmt) funktioniert 'Reisende' (vs Die Reisenden) nicht -->
 					<en>time travellers</en>
 				</who_d>
 				<who_e>
@@ -766,13 +766,183 @@
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
 					<title>
+						<de>%overtime% ${atworkplace_${i}}</de>
+						<en>%overtime% ${atworkplace_${i}}</en>
+					</title>
+					<description>
+						<de>Die ${who_${i}} %havetheirhandsfull%. ${who_${j}} aus %othertown% ${description_${i}}</de>
+						<en>The ${who_${i}} %havetheirhandsfull%. ${who_${j}} from %othertown% ${description_${i}}</en>
+					</description>
+					<variables>
+						<overtime>
+							<de>Überstunden|Stress|Anspannung|Fleißarbeit|Knochenarbeit|Zusatzschicht|Sorgfalt|Sorgfaltspflicht|Gewissenhaftigkeit|Pflichtbewusstsein|Schweiß|Verpflichtung|Hingabe|Engagement</de>
+							<en>Overtime|Stress|Struggle|Scut work|Grunt work|Extra shift|Diligence|Due diligence|Conscientiousness|Sense of duty|Sweat|Commitment|Dedication|Engagement</en>
+						</overtime>
+						<atworkplace_0>
+							<de>am Fluss</de>
+							<en>at the river</en>
+						</atworkplace_0>
+						<atworkplace_1>
+							<de>im Varieté</de>
+							<en>at the varieté</en>
+						</atworkplace_1>
+						<atworkplace_2>
+							<de>in der Absteige</de>
+							<en>at the flophouse</en>
+						</atworkplace_2>
+						<atworkplace_3>
+							<de>im Polizeirevier</de>
+							<en>at the police station</en>
+						</atworkplace_3>
+						<atworkplace_4>
+							<de>am Strand</de>
+							<en>at the beach</en>
+						</atworkplace_4>
+						<atworkplace_5>
+							<de>im Zirkus</de>
+							<en>in the circus</en>
+						</atworkplace_5>
+						<atworkplace_6>
+							<de>im Pflegeheim</de>
+							<en>in the nursing home</en>
+						</atworkplace_6>
+						<atworkplace_7>
+							<de>im Stripclub</de>
+							<en>at the strip club</en>
+						</atworkplace_7>
+						<atworkplace_8>
+							<de>auf der Feuerwache</de>
+							<en>in the fire station</en>
+						</atworkplace_8>
+						<atworkplace_9>
+							<de>im Kloster</de>
+							<en>in the convent</en>
+						</atworkplace_9>
+						<atworkplace_a>
+							<de>auf dem Diskussionsforum</de>
+							<en>at the discussion forum</en>
+						</atworkplace_a>
+						<atworkplace_b>
+							<de>im Restaurant</de>
+							<en>in the restaurant</en>
+						</atworkplace_b>
+						<atworkplace_c>
+							<de>im Discounter</de>
+							<en>at the discount store</en>
+						</atworkplace_c>
+						<atworkplace_d>
+							<de>im Geheimlabor</de>
+							<en>at the secret laboratory</en>
+						</atworkplace_d>
+						<atworkplace_e>
+							<de>in der Manege</de>
+							<en>in the circus ring</en>
+						</atworkplace_e>
+						<atworkplace_f>
+							<de>im Konzertsaal</de>
+							<en>in the concert hall</en>
+						</atworkplace_f>
+						<atworkplace_g>
+							<de>in der Drehbuchagentur</de>
+							<en>at the screenwriting agency</en>
+						</atworkplace_g>
+						<atworkplace_h>
+							<de>auf der Ranch</de>
+							<en>at the ranch</en>
+						</atworkplace_h>
+						<havetheirhandsfull>
+							<de>haben alle Hände voll zu tun|sind schwer beschäftigt|sind voll im Einsatz|sind schwer bei der Arbeit|sind gestresst|sind gestresst, es wird ihnen nichts geschenkt</de>
+							<en>have their hands full|are heavily busy|are in full action|are hard at work|are stressed|are stressed, they get nothing for free</en>
+						</havetheirhandsfull>
+						<j>
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
+						</j>
+						<othertown>
+							<de>%STATIONMAP:RANDOMCITY%</de>
+						</othertown>
+						<description_0>
+							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Die ${who_${j}} müssen Extrazuschlag aushandeln.</de>
+							<en>are passing through and want their gear cleaned, pronto! The ${who_${j}} have to negotiate an extra surcharge.</en>
+						</description_0>
+						<description_1>
+							<de>sind da zur großen Mode-Make-up-Challenge! Die ${who_${i}} und ${who_${j}} müssen Pärchen bilden und abends einen glamourösen Catwalk-Showdown hinlegen!</de>
+							<en>are here for the big fashion-make-up challenge! The ${who_${i}} and ${who_${j}} have to pair up and put on a glamorous catwalk showdown in the evening!</en>
+						</description_1>
+						<description_2>
+							<de>haben auf die Kontaktanzeigen geantwortet und sind eingetroffen. Die ${who_${i}} sind nicht sicher, ob da ein Fehler vorliegt.</de>
+							<en>have responded to the contact ads and arrived. The ${who_${i}} aren't sure if there's been a mistake.</en>
+						</description_2>
+						<description_3>
+							<de>sind eingetroffen als Sparringspartner zum diesjährigen Sportfest-Fitnesstest. %firstname2% hatte wohl zuviele Donuts in letzter Zeit.</de>
+							<en>have arrived as sparring partners for this year's sports festival fitness test. %firstname2% must have had too many donuts recently.</en>
+						</description_3>
+						<description_4>
+							<de>planschen zu unbekümmert im Wasser und werden von den Wellen fortgetragen. Die ${who_${i}} retten wieder einmal den Tag.</de>
+							<en>splash around too light-heartedly in the water and are carried away by the waves. The ${who_${i}} save the day once again.</en>
+						</description_4>
+						<description_5>
+							<de>wollen in der Nachmittagsvorstellung unterhalten werden, obwohl sonst kaum Publikum da ist. Die ${who_${i}} machen die tote Hose bunt.</de>
+							<en>want to be entertained in the afternoon performance, even though there is hardly any other audience. The ${who_${i}} color the dullness.</en>
+						</description_5>
+						<description_6>
+							<de>sind da zur Beschwerde, weil sie mit der Behandlung ihrer Opas nicht einverstanden sind. Die ${who_${i}} mediieren gewaltfrei.</de>
+							<en>are there to complain because they don't agree with the treatment of their grandfathers. The ${who_${i}} mediate non-violently.</en>
+						</description_6>
+						<description_7>
+							<de>sind da samt Junggesellenabschieds-Entourage. Die ${who_${i}} müssen demonstrieren, wie man mal so richtig die Sau rauslässt.</de>
+							<en>are here along with a stag party entourage. The ${who_${i}} have to demonstrate how to really get down and dirty.</en>
+						</description_7>
+						<description_8>
+							<de>haben wegen eines Großbrandes angerufen. Die ${who_${i}} rücken aus, obwohl man nicht wissen kann, ob das wieder nur ein Lausbubenstreich ist.</de>
+							<en>have called about a major fire. The ${who_${i}} move out, although there's no way of knowing whether it is just another mischievous prank.</en>
+						</description_8>
+						<description_9>
+							<de>sind eingetroffen und wollen bekehrt werden. Die ${who_${i}} stimmen erstmal zu einem Liedchen für sie an.</de>
+							<en>have arrived and want to be converted. The ${who_${i}} first of all tune in to a little song for them.</en>
+						</description_9>
+						<description_a>
+							<de>wollen das mit der gefälschten Mondlandung einfach nicht glauben, trotz all der Beweise. %firstname3% packt seinen größten Trumpf aus.</de>
+							<en>just don't want to believe the fake moon landing, despite all the evidence. %firstname3% pulls out his biggest trump card.</en>
+						</description_a>
+						<description_b>
+							<de>am Nebentisch haben keine Manieren und schmatzen laut. %firstname2% fühlt sich gestört und kann so nicht arbeiten.</de>
+							<en>at the next table have no manners and are smacking noisily. %firstname2% feels disrupted and can't work like this.</en>
+						</description_b>
+						<description_c>
+							<de>haben Rabattmarken dabei, die's nur dort gibt. Die ${who_${i}} sind ganz begeistert und werden morgen gleich die 150 Kilometer nach %othertown% fahren.</de>
+							<en>have discount stamps with them that are only available there. The ${who_${i}} are really excited and will drive the 100 miles to %othertown% tomorrow.</en>
+						</description_c>
+						<description_d>
+							<de>und aus dem letzten Jahrhundert wurden versehentlich herbeigebeamt. %firstname1% muss für sie erstmal die Bildschirmanzeige entmystifizieren.</de>
+							<en>and from the last century were beamed here by mistake. %firstname1% has to demystify the screen display for them first.</en>
+						</description_d>
+						<description_e>
+							<de>haben sich in der Mitte niedergelassen, und die ${who_${i}} müssen ein paar Extrarunden drehen.</de>
+							<en>have sat down in the center, and the ${who_${i}} have to do a few extra laps.</en>
+						</description_e>
+						<description_f>
+							<de>schreien erneut nach Zugabe und wollen nochmal den Bogey-Marsch hören - zum fünften Mal. %firstname3% lässt sich immerhin noch eine Variation einfallen.</de>
+							<en>shout for another encore and want to hear the Bogey March again - for the fifth time. %firstname3%, nevertheless, comes up with one more variation.</en>
+						</description_f>
+						<description_g>
+							<de>sind da und wollen ihre Abenteuer verfilmt haben. Unsere ${who_${j}} sind sehr skeptisch, ob man da was gutes draus machen kann.</de>
+							<en>are here and want to have their adventures turned into a film. Our ${who_${j}} are very skeptical as to whether they can make something good out of it.</en>
+						</description_g>
+						<description_h>
+							<de>sind da mit ihren Nichten, die reiten lernen wollen, doch die Pferde haben heute keine Lust. Die ${who_${i}} finden den richtigen Ton.</de>
+							<en>are here with their nieces who want to learn to ride, but the horses don't feel like it today. The ${who_${i}} find the right tone.</en>
+						</description_h>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
+					<title>
 						<de>%trouble% im ${location_${k}}</de>
 						<en>%trouble% in ${location_${k}}</en> <!-- TODO: apply capitalization function when available -->
 					</title>
 					<description>
 						<de>%descriptions%</de>
 					</description>
-					<episodes min="1" max="3" />
+					<episodes min="1" max="2" />
 					<variables>
 						<descriptions>
 							<de>%description_0%|%description_1%</de>
@@ -786,18 +956,18 @@
 							<en>In %town%, %park% is %asocialhotspot%. The ${who_${i}} encounter ${who_${j}} from %othertown% and %fiercely% %discuss% %politics%.</en>
 						</description_1>
 						<trouble>
-							<de>Ärger|Panik|Pechsträhne|Fette Beute|Chaos|Durcheinander|Desaster|Aufruhr|Krise|Aufregung|Verwüstung|Unruhe|Tumult|Eklat|Zoff|Krawall</de>
-							<en>Trouble|Panic|Streak of bad luck|Big booty|Chaos|Mayhem|Disaster|Turmoil|Crisis|Commotion|Havoc|Unrest|Tumult|Uproar|Down and out|Riot</en>
+							<de>Ärger|Panik|Pechsträhne|Chaos|Durcheinander|Desaster|Aufruhr|Krise|Aufregung|Verwüstung|Unruhe|Tumult|Eklat|Zoff|Krawall</de>
+							<en>Trouble|Panic|Streak of bad luck|Chaos|Mayhem|Disaster|Turmoil|Crisis|Commotion|Havoc|Unrest|Tumult|Uproar|Down and out|Riot</en>
 						</trouble>
 						<j>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same as i -->
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
 						</j>
 						<k>
 							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de>
 						</k>
 						<whythere_0>
-							<de>, um dem himmlischen Frieden ein für alle mal den Garaus zu machen</de>
-							<en> to put an end to the heavenly peace once and for all</en>
+							<de>, überrumpelt Petrus an der Himmelspforte und will dem ewigen Frieden ein für alle mal den Garaus zu machen</de>
+							<en>, overpowers St. Peter at the Gates of Heaven, and wants to put an end to eternal peace once and for all</en>
 						</whythere_0>
 						<whythere_1>
 							<de> und ist drauf und dran, die Zeche zu prellen</de>
@@ -920,7 +1090,7 @@
 						</politics>
 					</variables>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
+				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_04">
 					<title>
 						<de>%meeting% im ${location_${k}}</de>
 						<en>%meeting% in ${location_${k}}</en> <!-- TODO: apply capitalization function when available -->
@@ -928,7 +1098,7 @@
 					<description>
 						<de>%descriptions%</de>
 					</description>
-					<episodes min="1" max="3" />
+					<episodes min="1" max="2" />
 					<variables>
 						<descriptions>
 							<de>%description_0%|%description_1%</de>
@@ -942,11 +1112,11 @@
 							<en>In %town%, %bar% currently is %thepartylocation%. %musicsession%</en>
 						</description_1>
 						<meeting>
-							<de>Treffen|Aufruhr|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
-							<en>Meeting|Riot|Fuss|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
+							<de>Treffen|Aufruhr|Fette Beute|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
+							<en>Meeting|Riot|Fuss|Big booty|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
 						</meeting>
 						<j>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same as i -->
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
 						</j>
 						<k>
 							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de>
@@ -976,8 +1146,8 @@
 							<en>After all, after-work shopping doesn't take care of itself, but it can be done quickly.</en>
 						</whythere_4>
 						<whythere_5>
-							<de>Der Zirkus gastiert nämlich gerade in %town%, und man fühlt sich mit den Schaustellern im Geiste verbunden.</de>
-							<en>In fact, the circus is currently touring %town%, and there's a feeling of spiritual connection with the carnies.</en>
+							<de>Ein Wanderzirkus gastiert nämlich gerade in %town%, und man fühlt sich mit den Schaustellern im Geiste verbunden.</de>
+							<en>In fact, a traveling circus is currently touring %town%, and there's a feeling of spiritual connection with the carnies.</en>
 						</whythere_5>
 						<whythere_6>
 							<de>Es gehört nämlich der abergläubischen Tante von %firstname3%. Lachend lösen unsere ${who_${i}} das Problem mit der elektrischen Leitung und genießen den Landurlaub.</de>

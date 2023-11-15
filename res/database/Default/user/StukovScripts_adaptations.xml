@@ -151,8 +151,8 @@
 						<en>The Goblins</en>
 					</title_original>
 					<description>
-						<de>%Goblin% ist ein Goblin. Ein kleiner, schwächlicher Goblin. Wenn er eines nicht sein will, dann ein Held. Eines Tages jedoch passiert etwas .. und %Goblin% muss zum Helden werden ... irgendwie. Ach ja und %Gott% gibt es auch.</de>
-						<en>%Goblin% is a goblin. A small, weak goblin. If there's one thing he doesn't want to be, it's a hero. One day, however, something happens ... and %Goblin% has to become a hero .... somehow. Oh, and %God% exists, too.</en>
+						<de>%Goblin% ist ein Goblin - ein kleiner, schwächlicher Goblin. Wenn er eines nicht sein will, dann ist es ein Held zu sein. Eines Tages jedoch passiert etwas ... und %Goblin% muss zum Helden werden ... irgendwie. Ach ja und %Gott% gibt es auch.</de>
+						<en>%Goblin% is a goblin - a small, weak goblin. If there's one thing he doesn't want to be, then it is to be a hero. One day, however, something happens ... and %Goblin% has to become a hero ... somehow. Oh, and %Gott% exists, too.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Goblins_2">
@@ -165,8 +165,8 @@
 						<en>Return of the Goblins</en>
 					</title_original>
 					<description>
-						<de>Als eines Tages ein Oger auftaucht und die Goblins um Hilfe bittet wird der schwächliche %Goblin% auf eine brandgefährliche Mission geschickt. Ach ja und %Gott% gibt es auch.</de>
-						<en>When one day an ogre shows up and asks the goblins for help, the frail %Goblin% is sent on a blazingly dangerous mission. Oh yes and %God% also exists.</en>
+						<de>Als eines Tages ein Oger auftaucht und die Goblins um Hilfe bittet, wird der schwächliche %Goblin% auf eine brandgefährliche Mission geschickt. Ach ja und %Gott% gibt es auch.</de>
+						<en>When one day an ogre shows up and asks the goblins for help, the frail %Goblin% is sent on a blazingly dangerous mission. Oh yes and %Gott% also exists.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Goblins_3">
@@ -179,15 +179,15 @@
 						<en>The War of the Goblins</en>
 					</title_original>
 					<description>
-						<de>Ein Angriff auf die Goblin Hoehlen und schon steck %Goblin% Drachentoeter mitten im Krieg. Ach ja und %Gott% gibt es auch.</de>
-						<en>One attack on the goblin caves and %Goblin% Drachentoeter is already in the middle of the war. Oh yes and %God% is also there.</en>
+						<de>Ein Angriff auf die Goblin Hoehlen und schon steckt %Goblin% Drachentoeter mitten im Krieg. Ach ja und %Gott% gibt es auch.</de>
+						<en>One attack on the goblin caves and %Goblin% Dragonslayer is already in the middle of the war. Oh yes and %Gott% is also there.</en>
 					</description>
 				</scripttemplate>
 			</children>
 			<variables>
 				<Gott>
 					<de>Schattenstern|Isa|Lichtbeisser|Ipsep|Noc|Herbststern</de>
-					<en>Schattenstern|Isa|Lichtbeisser|Ipsep|Noc|Herbststern</en>
+					<en>Shadowstar|Isa|Lightbiter|Ipsep|Noc|Autumnstar</en>
 				</Gott>
 				<Goblin>
 					<de>Jig|Braf|Relka|Grell</de>
@@ -227,25 +227,25 @@
 				<en>Darkest Dungeon - The Film</en>
 			</title_original>
 			<description>
-				<de>Versuch einer Verfilmung des Computerspiels, naja zumindest der Kampf gegen Monster. %Class1%, %Class2%, %Class3% und %Class4% versuchen zu überleben. Jayne Wune leiht seine Stimme, oder ist es nur eingespielt?</de>
+				<de>Versuch einer Verfilmung des Computerspiels, naja zumindest der Kampf gegen Monster. %Class1%, %Class2%, %Class3% und %Class4% versuchen zu überleben. Jayne Wune leiht seine Stimme, oder ist sie nur eingespielt?</de>
 				<en>Attempt at a film adaptation of the computer game, well at least the fight against monsters. %Class1%, %Class2%, %Class3% and %Class4% try to survive. Jayne Wune lends his voice, or is it just recorded?</en>
 			</description>
 			<variables>
 				<Class1>
-					<de>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</de>
-					<en>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</en>
+					<de>Grave Robber|Crusader|Arbalest</de>
+					<en>Grave Robber|Crusader|Arbalest</en>
 				</Class1>
 				<Class2>
-					<de>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</de>
-					<en>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</en>
+					<de>Bounty Hunter|Hellion|Highwayman</de>
+					<en>Bounty Hunter|Hellion|Highwayman</en>
 				</Class2>
 				<Class3>
-					<de>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</de>
-					<en>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</en>
+					<de>Houndmaster|Jester|Man-at-Arms</de>
+					<en>Houndmaster|Jester|Man-at-Arms</en>
 				</Class3>
 				<Class4>
-					<de>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</de>
-					<en>Grave Robber|Crusader|Arbalest|Bounty Hunter|Hellion|Highwayman|Houndmaster|Jester|Man-at-Arms|Occultist|Plague Doctor|Vestal|Flagellant</en>
+					<de>Occultist|Plague Doctor|Vestal|Flagellant</de>
+					<en>Occultist|Plague Doctor|Vestal|Flagellant</en>
 				</Class4>
 			</variables>
 			<jobs>

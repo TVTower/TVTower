@@ -1077,7 +1077,7 @@
 			</title_original>
 			<description>
 				<de>%ROLENAME1%s Spiel beginnt, wenn der Schiedsrichter abgepfiffen hat. Bei „seinem“ norddeutschen Profifußballverein steht er in der „dritten Hälfte“ im Startaufgebot. Seine Jungs, die besten Jahre, ihr Vermächtnis sind ihm heilig.</de>
-				<en>%ROLENAME1%s game starts when the referee blows the final whistle. At "his" northern German professional soccer club, he is in the starting lineup of the "third half". His boys, their best years, their legacy are sacred to him.</en>
+				<en>%ROLENAME1%s match starts when the referee blows the final whistle. For "his" northern German professional soccer club he is in the starting lineup of the "third half". His buddies, their best years, their legacy are sacred to him.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1090,7 +1090,7 @@
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
 			<data flags="0" flags_optional="" />
-			<genres maingenre="2" subgenres="7,5" />
+			<genres maingenre="2" subgenres="7,203" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -1219,7 +1219,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="628f6d38-a2bc-4122-b191-07461282fef1" creator="9551" comment="https://en.wikipedia.org/wiki/Railsea">
 			<title>
-				<de>Eisenmeer</de>
+				<de>Das Eisenmeer</de>
 				<en>Ironsea</en>
 			</title>
 			<title_original>
@@ -1227,8 +1227,8 @@
 				<en>Railsea</en>
 			</title_original>
 			<description>
-				<de>Auf einer mit endlosen Gleisen durchzogenen Steampunk-Erde, die von riesigen fleischfressenden Viechern beherrscht wird, die von den Menschen auch als Nahrung gejagt werden, machen sich %ROLENAME1% und %ROLENAME2% auf die Suche nach einem Schatz.</de>
-				<en>On a steampunk Earth crisscrossed with endless connected railroad tracks and dominated by giant carnivorous creatures that humans also hunt for food, %ROLENAME1% and %ROLENAME2% set out to find treasure.</en>
+				<de>Auf einer mit endlosen Gleisen durchzogenen Steampunk-Erde, die von riesigen fleischfressenden Viechern beherrscht wird, die von den Menschen Walfang-artig auch als Nahrung gejagt werden, machen sich %ROLENAME1% und %ROLENAME2% auf die Suche nach einem Schatz.</de>
+				<en>On a steampunk Earth crisscrossed with endless connected railroad tracks and dominated by giant carnivorous creatures, that also are hunted whaling-like by humans for food, %ROLENAME1% and %ROLENAME2% set out to find treasure.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1317,7 +1317,7 @@
 						<en>Score</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME1%, %ROLENAME7% und %ROLENAME5% entern erfolgreich den Geldtransport-zug und werfen die Taschen in den Fluss. %ROLENAME2%s Boot wartet unten, aber als das Trio an Bord geht, wird auf sie geschossen.</de>
+						<de>%ROLENAME1%, %ROLENAME7% und %ROLENAME5% entern erfolgreich den Geldtransport-Zug und werfen die Taschen in den Fluss. %ROLENAME2%s Boot wartet unten, aber als das Trio an Bord geht, wird auf sie geschossen.</de>
 						<en>%ROLENAME1%, %ROLENAME7%, and %ROLENAME5% successfully board the money train, tossing the bags into the river. %ROLENAME2%'s boat waits below, but when the trio boards, they are shot at.</en>
 					</description>
 				</scripttemplate>
@@ -1603,8 +1603,8 @@
 				<en>Fables (Season 1)</en>
 			</title_original>
 			<description>
-				<de>In Fabletown mitten in New York leben die Figuren aus Folklore und Märchen im Exil, auf der Flucht vor einem mysteriösen, gefährlichen Feind, und versteckt vor den Menschen. Der Große nicht-mehr-so-Böse Wolf sorgt als Sheriff für Recht und Ordnung.</de>
-				<en>In Fabletown in the middle of New York, characters from folklore and fairy tales live in exile, on the run from a mysterious, dangerous adversary, and hiding from humans. The Big no-longer-so-Bad Wolf keeps law and order as sheriff.</en>
+				<de>Märchenstunde für Erwachsene. In Fabletown mitten in N.Y. leben Figuren aus Folklore und Märchen incognito und im Exil auf der Flucht vor einem mysteriösen, gefährlichen Feind. Der Große nicht-mehr-so-Böse Wolf sorgt als Sheriff für Recht und Ordnung.</de>
+				<en>Story time for grown-ups. In Fabletown in the middle of N.Y., characters from folklore and fairy tales live incognito and in exile on the run from a mysterious, dangerous adversary. The Big no-longer-so-Bad Wolf keeps law and order as sheriff.</en>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="29249def-a2c3-41c1-944a-8add4cd09c72">
@@ -1617,8 +1617,8 @@
 						<en>Legends in Exile</en>
 					</title_original>
 					<description>
-						<de>Die Einführung von Fabletown und den wichtigsten Figuren. %ROLE1% untersucht den scheinbaren Mord an %ROLENAME3%.</de>
-						<en>The introduction to Fabletown. %ROLE1% investigates the apparent murder of %ROLENAME3%.</en>
+						<de>Die Einführung von Fabletown und den wichtigsten Figuren. %ROLE1% untersucht den scheinbaren Mord an %ROLENAME3%. (Sie wurde ja einst im Bett erwischt mit dem %ROLENAME4%, dem damaligen Verlobten ihrer Schwester %ROLENAME2% aka Schneeweißchen).</de>
+						<en>The introduction to Fabletown. %ROLE1% investigates the apparent murder of %ROLENAME3%. (She was once caught in bed with %ROLENAME4%, the then-fiancé of her sister %ROLENAME2%).</en>
 					</description>
 					<jobs>
 						<job index="5" function="2" required="1" gender="1" />
@@ -1636,8 +1636,8 @@
 						<en>Animal Farm</en>
 					</title_original>
 					<description>
-						<de>Die Einführung der Farm, einem Ort für nicht-menschliche Fables. Langsam kommt es auf der Farm zu einer Revolte, die von %ROLENAME2% eingedämmt werden muss.</de>
-						<en>The introduction of the farm, a place for non-human fables. Gradually, a revolt occurs on the farm, which must be contained by %ROLENAME2%.</en>
+						<de>Die Einführung der Farm, einem Ort für diejenigen Fables, die keine menschliche Gestalt haben oder keine annehmen können. Langsam kommt es auf der Farm zu einer Revolte, die von %ROLENAME2% eingedämmt werden muss.</de>
+						<en>The introduction of the farm, a place for those Fables who are not human or cannot take on human form. Gradually, a revolt occurs on the farm, which must be contained by %ROLENAME2%.</en>
 					</description>
 					<jobs>
 						<job index="5" function="2" required="1" gender="1" />
@@ -1823,8 +1823,8 @@
 						<en>The Long Year</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME2%s Kinder werden geboren, und sie erkennt, dass sie auf die Farm umziehen muss. %ROLENAME1% ist dort nicht willkommen und begibt sich stattdessen ins Exil. %ROLENAME2% begegnet %ROLENAME1%s entfremdetem Vater, dem %ROLENAME5%.</de>
-						<en>%ROLENAME2% gives birth and realizes she must relocate to the Farm. %ROLENAME1% isn't allowed there and instead exiles himself. %ROLENAME2% encounters %ROLENAME1%'s estranged father, the %ROLENAME5%.</en>
+						<de>%ROLENAME2%s Kinder werden geboren, und sie erkennt, dass sie auf die Farm umziehen muss. %ROLENAME1% (der wie ein Werwolf mutieren kann) ist dort nicht willkommen und begibt sich stattdessen ins Exil. %ROLENAME2% begegnet %ROLENAME1%s entfremdetem Vater, dem %ROLENAME5%.</de>
+						<en>%ROLENAME2% gives birth and realizes she must relocate to the Farm. %ROLENAME1% (who can mutate like a werewolf) isn't allowed there and instead exiles himself. %ROLENAME2% encounters %ROLENAME1%'s estranged father, the %ROLENAME5%.</en>
 					</description>
 					<jobs>
 						<job index="5" function="2" required="1" role_guid="9e026c4a-04e2-41e9-8865-a8753d53ef01" />
@@ -1899,7 +1899,7 @@
 						<en>Arabian Nights (and Days)</en>
 					</title_original>
 					<description>
-						<de>Eine Delegation von Arabischen Fabeln unter der Leitung von %ROLENAME5% besucht Fabletown, um eine Allianz gegen den Feind zu schließen.</de>
+						<de>Eine Delegation arabischer Fabels unter der Leitung von %ROLENAME5% besucht Fabletown, um eine Allianz gegen den Feind zu schließen.</de>
 						<en>A delegation of Arabian Fables led by %ROLENAME5% visits Fabletown to discuss an alliance against the Adversary.</en>
 					</description>
 					<jobs>
@@ -1937,7 +1937,7 @@
 						<en>Wolves</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME5% sucht nach dem vermissten %ROLENAME1% und bringt ihm eine Nachricht von Fabletown.</de>
+						<de>%ROLENAME5% sucht nach dem vermissten %ROLENAME1% und bringt ihm eine Nachricht aus Fabletown.</de>
 						<en>%ROLENAME5% searches for the missing %ROLENAME1% and brings him a message from Fabletown.</en>
 					</description>
 					<jobs>
@@ -2894,7 +2894,7 @@
 						<en>Tonight He Grins Again</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME1% landet wieder auf der Straße. „Und was wie ein Honigkuchenpferd grinste war der altbekannte Teufel der Abhängigkeit auf seinem Rücken.“</de>
+						<de>%ROLENAME1% landet wieder auf der Straße. „Und was wie eine Grinsekatze lachte war der altbekannte Teufel der Abhängigkeit auf seinem Rücken.“</de>
 						<en>%ROLENAME1% ends up back on the street. "And grinning like a cheshire cat was that same old monkey on his back."</en>
 					</description>
 				</scripttemplate>
@@ -3621,7 +3621,6 @@ Das von einem großen Produzenten verworfene Projekt kann nun von kleineren Stud
 
 The project, which was cancelled by a major producer, is now free to be realized by smaller studios.</en>
 			</description>
-
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="402b8658-2824-414d-891f-d32287544e1c">
 					<title>
@@ -4170,7 +4169,6 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<de>Nicht nur %ROLENAME1%, sondern auch seine Kumpels, seine Frau %ROLENAME2% und selbst sein kleines krabbelndes Baby %ROLENAME3% haben ihre verrückten Jobs, denen sie den ganzen lieben langen Tag nachkommen müssen.</de>
 				<en>Not only %ROLENAME1%, but also his buddies, his wife %ROLENAME2% and even his little crawling baby %ROLENAME3% have their crazy jobs that they have to keep up with all day long.</en>
 			</description>
-
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" role_guid="0fb5bd2a-7183-4238-9836-4a9486d8b9be" />

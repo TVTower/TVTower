@@ -922,6 +922,4 @@
 		<person id="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" bookable="1" fictional="1" creator="9551" />
 	
 	</insignificantpeople>
-
-	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
 </tvtdb>

@@ -1424,7 +1424,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Grienpies ist über die Forderung des %minister%s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
-				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of a${animal_gen_${index}} in the home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
+				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of a${animal_gen_${index}} indoors at home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />

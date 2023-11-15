@@ -6,8 +6,8 @@
 			<first_name>Babsi</first_name>
 			<last_name>Angora</last_name>
 			<nick_name></nick_name>
-			<!-- relative birthdate not advisable here, she is used in some programmes with fixed dates (and described as an 'ex-model'); the programmes with flexible dates should fit well too now -->
-			<details job="2" gender="2" birthday="1951" deathday="" country="D" fictional="1" />
+			<!-- TODO: relative birthdate not advisable here, she is used in some programmes with fixed dates (and described as an 'ex-model'); the programmes with flexible dates should fit well too now -->
+			<details job="136" gender="2" birthday="1951" deathday="" country="D" fictional="1" />
 			<data popularity="20" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="75" topgenre="0" />
 		</person>
 		<person id="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">

@@ -622,7 +622,7 @@
 			<releaseTime year="1996" day="8" />
 			<ratings critics="8" speed="13" outcome="12" />
 		</programme>
-		<programme id="85449d89-45f4-467e-a970-e60255cac262" product="1" licence_type="1" creator="9551" imdb_id="tt0196267" comment="TODO: d2v">
+		<programme id="85449d89-45f4-467e-a970-e60255cac262" product="1" licence_type="1" creator="9551" imdb_id="tt0196267">
 			<title>
 				<de>Heißkalte Bengel 2</de>
 				<en>Ruthless Intentions 2: Manchester High</en>
@@ -2688,8 +2688,8 @@
 				<en>The Transformers (Season 2)</en>
 			</title_original>
 			<description>
-				<de>Was ist besser als Roboter? Natürlich Dinosaurier-Roboter! Diese spielen weiterhin eine wichtige Rolle, und die Entstehungsgeschichte des Krieges und der Rivalität zwischen Optimus Prime und Megatron wird enthüllt.</de>
-				<en>What's better than robots? Of course, dinosaur robots! They continue to play an important role, and the origin story of the war and the rivalry between Optimus Prime and Megatron is revealed.</en>
+				<de>Was ist noch besser als Roboter? Natürlich Dinosaurier-Roboter! Diese spielen weiterhin eine wichtige Rolle, und die Entstehungsgeschichte des Krieges und der Rivalität zwischen Optimus Prime und Megatron wird enthüllt.</de>
+				<en>What's even better than robots? Of course, dinosaur robots! They continue to play an important role, and the origin story of the war and the rivalry between Optimus Prime and Megatron is revealed.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">6c01bea7-fe39-4a45-a6dd-15dc362a0d53</member>
@@ -3244,6 +3244,9 @@
 						<de>Das frisch verheiratete Ehepaar Wilbur und Carol zieht in ihr erstes gemeinsames Haus und stellt fest, dass der Vormieter sein Pferd in der Scheune zurückgelassen hat. Wilbur möchte es behalten. Zu seiner Überraschung stimmt das Pferd ihm zu. Mit klaren Worten.</de>
 						<en>Newlyweds Wilbur and Carol move into their first house together, and find that the previous tenant left his horse behind in the barn. Wilbur wants to keep it. To his surprise, the horse agrees with him. Speaking out clearly.</en>
 					</description>
+					<effects>
+						<effect trigger="happen" type="modifyAvailability" enable="1" programme="421850be-e53f-40ec-b9aa-04e69f85aa81" /> <!-- TODO: doesn't seem to be working yet -->
+					</effects>
 				</programme>
 				<programme id="d9dd7486-9f8c-4584-81be-ba419a9c0c2e" product="2" licence_type="2" imdb_id="tt0649875" creator="9551">
 					<title>
@@ -3394,7 +3397,7 @@
 				<!-- index 4 used for guest stars -->
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1961" distribution="2" maingenre="5" subgenre="9,10" flags="0" blocks="1" price_mod="0.25" />
+			<data country="USA" year="1961" distribution="2" maingenre="5" subgenre="9,10" flags="0" blocks="1" price_mod="0.25" available="0" />
 			<ratings critics="55" speed="65" outcome="60" />
 			<children>
 				<programme id="8881275a-af9a-497e-81f1-c4ed29b8530f" product="2" licence_type="2" imdb_id="tt0649847" creator="9551">

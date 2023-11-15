@@ -7,6 +7,7 @@
 		<!-- Roles based on common folklore, fairytales, mythology etc characters, most also in the language files! -->
 
 		<programmerole guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" first_name="Snow White" last_name="" first_name_original="Snow White" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Snow_White" />
+		<programmerole guid="9faa394a-3c7e-4943-9236-7ccf70db6c6e" first_name="Snow White" last_name="" first_name_original="Snow White" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Snow-White_and_Rose-Red | may sometimes be the same character as a00ea58a-4a9f-466e-9fe5-cf8b53730b60 - but originally they're not" />
 		<programmerole guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" first_name="Rose Red" last_name="" first_name_original="Rose Red" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Snow-White_and_Rose-Red" />
 		<programmerole guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" first_name="Prince Charming" last_name="" first_name_original="Prince Charming" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Prince_Charming " />
 		<programmerole guid="520fcf21-87d3-4a4d-a791-8c3b55bec8a0" first_name="Jack" last_name="Horner" nick_name="Little Jack Horner" nick_name_original="Little Jack Horner" first_name_original="Jack" last_name_original="Horner" gender="1" comment="https://en.wikipedia.org/wiki/Little_Jack_Horner" />
@@ -21,7 +22,7 @@
 		<!-- Roles based on historical characters -->
 
 		<programmerole guid="ef836d42-649b-423b-97dd-0f1e9a539690" first_name="Anton Conan" last_name="Dole" title="Sir" first_name_original="Arthur Conan" last_name_original="Doyle" gender="1" comment="https://en.wikipedia.org/wiki/Arthur_Conan_Doyle" />
-		<programmerole guid="d9a1a4fe-e7ad-4181-a0de-9def0468cc2a" first_name="" last_name="Hudinou" nick_name="The Great Hudinou" nick_name_original="The Great Houdini" first_name_original="" last_name_original="Houdini" gender="1" comment="https://en.wikipedia.org/wiki/Harry_Houdini | TODO: first name Harry | TODO: put nickname in language files" />
+		<programmerole guid="d9a1a4fe-e7ad-4181-a0de-9def0468cc2a" first_name="" last_name="Huldinou" nick_name="The Great Huldinou" nick_name_original="The Great Houdini" first_name_original="" last_name_original="Houdini" gender="1" comment="https://en.wikipedia.org/wiki/Harry_Houdini | TODO: first name Harry | TODO: put nickname in language files" />
 		<programmerole guid="935e5bc7-bbf7-453a-a14f-44d63202c881" first_name="Gertraud E." last_name="Stern" first_name_original="Gertrude" last_name_original="Stein" gender="2" comment="https://en.wikipedia.org/wiki/Gertrude_Stein" />
 		<programmerole guid="62705657-da02-4b01-9d42-c439d692d819" first_name="Earnest" last_name="Henningweg" first_name_original="Ernest" last_name_original="Hemingway" gender="1" comment="https://en.wikipedia.org/wiki/Ernest_Hemingway" />
 		<programmerole guid="44fe5edc-0212-46f7-8011-c59c6e6bd18c" first_name="Joy" last_name="Jayce" first_name_original="James" last_name_original="Joyce" gender="1" comment="https://en.wikipedia.org/wiki/James_Joyce" />
@@ -68,7 +69,7 @@
 
 		<programmerole guid="roles-transformers-transformer" first_name="Tresforger" last_name="" first_name_original="Transformer" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Transformers" />
 		<programmerole guid="roles-transformers-autobot" first_name="Mobibot" last_name="" first_name_original="Autobot" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Autobot" />
-		<programmerole guid="roles-transformers-decepticon" first_name="Deflekticon" last_name="" first_name_original="Defecticon" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Decepticon" />
+		<programmerole guid="roles-transformers-decepticon" first_name="Deflekticon" last_name="" first_name_original="Decepticon" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Decepticon" />
 		<programmerole guid="roles-transformers-optimus-prime" first_name="Ultimus" last_name="Premio" first_name_original="Optimus" last_name_original="Prime" gender="1" comment="https://en.wikipedia.org/wiki/Optimus_Prime" />
 		<programmerole guid="roles-transformers-megatron" first_name="Metacon" last_name="" first_name_original="Megatron" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Megatron" />
 		<programmerole guid="roles-transformers-starscream" first_name="Starscreech" last_name="" first_name_original="Starscream" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Starscream" />
@@ -215,7 +216,7 @@
 		<programmerole guid="614ae67d-1d56-423f-b309-fff3d09d26ee" first_name="Trudy" last_name="" title="Mr." first_name_original="Tracy" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" /> <!-- a giant dog -->
 		<programmerole guid="0813e3ca-c2ed-4b9c-ab27-eedab3f9b75e" first_name="Chuck" last_name="Jilli" first_name_original="Jack" last_name_original="Chili" gender="1" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" />
 
-		<programmerole guid="7d1c5ae3-4c95-4776-8adb-5a42f7e5161e" first_name="Hartmut" last_name="Kolber" first_name_original="Heiko" last_name_original="Kolbe" gender="" comment="https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller)" />
+		<programmerole guid="7d1c5ae3-4c95-4776-8adb-5a42f7e5161e" first_name="Hartmut" last_name="Kolber" first_name_original="Heiko" last_name_original="Kolbe" gender="1" comment="https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller)" />
 
 		<programmerole guid="97f5016b-5885-46cd-ae20-e77e96e596d7" first_name="Bernard" last_name="Brésil" first_name_original="Bruno" last_name_original="Brazil" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
 		<programmerole guid="d837dba2-739b-4dc7-b602-b4512379bcc6" first_name="Groucho" last_name="Morali" first_name_original="Gaucho" last_name_original="Morales" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />

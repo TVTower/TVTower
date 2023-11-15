@@ -4,7 +4,7 @@
 
 	<insignificantpeople>
 		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" bookable="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
-		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" bookable="1" country="D" job="206" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
+		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" bookable="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
 	</insignificantpeople>
 	
 	<celebritypeople>
@@ -1290,7 +1290,7 @@ So that's 4120 per episode.</en>
 						<en>You fight like a Cow</en>
 					</title_original>
 					<description>
-						<de>Als erste Prüfung muss %ROLENAME1% gegen den Schwertmeister der Insel antreten. Dazu gibt viele Hindernisse zu überwinden, vor allem sind erstmal erbitterte Wortgefechte zu überstehen.</de>
+						<de>Als erste Prüfung muss %ROLENAME1% gegen den Schwertmeister der Insel antreten. Dazu gibt es viele Hindernisse zu überwinden, vor allem sind erstmal erbitterte Wortgefechte zu überstehen.</de>
 						<en>As a first test %ROLENAME1% has to compete against the sword master of the island. There are many obstacles to overcome, especially fierce battles of words.</en>
 					</description>
 				</scripttemplate>
@@ -1932,7 +1932,7 @@ So that's 4120 per episode.</en>
 						<en>%ROLENAME1% has a great life in Hawaii for 5 years and a happy marriage, but suddenly he is abandoned when his wife falls in love with another woman. After some adventures he finds someone new for life, but then something goes wrong...</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="a7bbc175-7b5d-45c6-ad1a-9482ab041222" comment="spoof title reference to https://floppapedia-revamped.fandom.com/wiki/Big_Floppa">
+				<scripttemplate index="3" product="2" licence_type="2" guid="a7bbc175-7b5d-45c6-ad1a-9482ab041222" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry#Leisure_Suit_Larry_4:_The_Missing_Floppies | spoof title reference to https://floppapedia-revamped.fandom.com/wiki/Big_Floppa">
 					<title>
 						<de>Floppa vermisst</de>
 						<en>The Missing Floppa</en>

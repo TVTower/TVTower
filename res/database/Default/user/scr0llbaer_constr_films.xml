@@ -77,7 +77,7 @@
 				<member index="5" function="2">TheRob-TowerTV-DebbyKehre</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="11,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="11" subgenre="7,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1953" day="6" />
 			<ratings critics="81" speed="75" outcome="41" />
 		</programme>
@@ -137,7 +137,7 @@
 				<en>The Little Shop of Horrors</en>
 			</title_original>
 			<description>
-				<de>Ein unbeholfener Floristengehilfe züchtet versentlich eine hypnotische sprechende Pflanze, die immer mehr Blut braucht. Einer der größten Erfolge von B-Movie-Meister [0|Full]. Es wurde als Bühnenmusical adaptiert, das dann wiederum in den 1980ern verfilmt wurde.</de>
+				<de>Ein unbeholfener Floristengehilfe züchtet versentlich eine hypnotische sprechende Pflanze, die immer mehr Blut braucht. Einer der größten Erfolge von B-Movie-Meister [0|Full]. Wurde als Bühnenmusical adaptiert, das dann wiederum in den 1980ern verfilmt wurde.</de>
 				<en>A bumbling florist's assistant accidentally grows a hypnotic talking plant that needs more and more blood. One of the biggest successes of B-movie master [0|Full]. It was adapted as a stage musical, which in turn was then made into a movie in the 1980s.</en>
 			</description>
 			<staff>
@@ -360,7 +360,7 @@
 				<member index="8" function="2">690bc6cc-4c9f-4bf7-8538-5e8e556379c7</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="GB/USA" distribution="1" maingenre="7" subgenre="11,1" flags="0" blocks="2" price_mod="1" />
+			<data country="GB/USA" distribution="1" maingenre="11" subgenre="7,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1970" day="2" />
 			<ratings critics="42" speed="38" outcome="29" />
 		</programme>
@@ -853,7 +853,7 @@
 		</programme>
 		<programme id="1aad1b4a-5275-4bb0-beca-9cb1e7f806d6" product="1" licence_type="1" creator="9551" imdb_id="tt0103060">
 			<title>
-				<de>Tortoises II: Das Mysterium des Ouze</de>
+				<de>Tortoise Monsters II - Das Mysterium des Ouze</de>
 				<en>Teenie Martial Tortoise Monsters II: The Mystery of the Ouze</en>
 			</title>
 			<title_original>
@@ -1228,8 +1228,8 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<en>Return to the Blue Lagoon</en>
 			</title_original>
 			<description>
-				<de>Richard ist der kleine Sohn des verstorbenen Paars aus Teil 1 und strandet wieder auf derselben Insel mit einer Witwe, die bald an einer Lungenentzündung stirbt, und ihrer Tochter Lilli. Da capo, was muss man an der Erfolgsformel schon ändern. Sie ging aber nicht auf, der Film war ein katastrophaler Misserfolg.</de>
-				<en>Richard is the little son of the couple, who died, of part 1, and is stranded again on the same island with a widow, who soon dies of pneumonia, and her daughter Lilli. Da capo, what's the need to change the winning formula. But it didn't work out, the film was a catastrophic failure.</en>
+				<de>Der kleine Sohn des Paars aus Teil 1 strandet wieder auf derselben Insel mit einer bald sterbenden Witwe und ihrer Tochter. Da capo, was muss man an der Erfolgsformel schon ändern. Sie ging aber nicht auf, der Film war ein katastrophaler Misserfolg.</de>
+				<en>The little son of the couple of part 1 is stranded again on the same island with a widow, who soon dies, and her daughter. Da capo, what's the need to change the winning formula. But it didn't work out, the film was a catastrophic failure.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">6dac79b9-4836-4c27-a342-fc81424d22b3</member>
@@ -2812,8 +2812,8 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 		</programme>
 		<programme id="de075ab4-9a2b-41ed-99b6-f64c88a807d7" product="1" licence_type="1" creator="9551" imdb_id="tt0105073" comment="No official English title, applying translation">
 			<title>
-				<de>[1|First] - Die Romanze</de>
-				<en>[1|First] - The Romance</en>
+				<de>[0|First] - Die Romanze</de>
+				<en>[0|First] - The Romance</en>
 			</title>
 			<title_original>
 				<de>Otto - Der Liebesfilm</de>
@@ -3621,7 +3621,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<en>Rising Sun</en>
 			</title_original>
 			<description>
-				<de>Zwei Cops müssen den Mord an einem Callgirl während der L.A.-Zentrale-Einweihung eines japanischen Konzerns aufklären. Ein verworrener Fall mit viel Techno-Fachjapanisch, Wirtschaftsspionage, kult. Missverständnissen und einem geheimnisvollen Sextape.</de>
+				<de>Zwei Cops müssen den Mord an einem Callgirl während der L.A.-Zentrale-Einweihung eines japanischen Konzerns aufklären. Ein verworrener Fall mit viel Techno-Fachjapanisch, Wirtschaftsspionage, kulturellen Missverständnissen und einem geheimnisvollen Sextape.</de>
 				<en>Two cops must solve the murder of a call girl during the commencement of a Japanese corporation's L.A. headquarters. A convoluted case with a lot of techno-babble, corporate espionage, cultural misunderstandings and a mysterious sex tape.</en>
 			</description>
 			<staff>
@@ -5149,7 +5149,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<en>The Client</en>
 			</title_original>
 			<description>
-				<de>Ein gerissener elfjähriger Junge versucht in einem Wald, den Selbstmord eines Anwalts, der sich in einer Zwickmühle befindet, zu verhindern. Erfolglos. Und er „erbt“ auch noch dessen Problem und kann sich nur eine junge unerfahrene Anwältin leisten.</de>
+				<de>Ein schlauer elfjähriger Junge versucht in einem Wald, den Selbstmord eines Anwalts, der sich in einer Zwickmühle befindet, zu verhindern. Erfolglos. Und er „erbt“ auch noch dessen Problem und kann sich nur eine junge unerfahrene Anwältin leisten.</de>
 				<en>A cunning eleven-year-old boy in a forest tries to prevent the suicide of a lawyer who is in a quandary. Unsuccessfully. And he also "inherits" his problem and can only afford a young inexperienced female lawyer.</en>
 			</description>
 			<staff>
@@ -6552,7 +6552,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 		</programme>
 		<programme id="27f77617-c266-4ec2-83a4-fc2ff588b2c9" product="1" licence_type="1" creator="9551" imdb_id="tt0113253">
 			<title>
-				<de>All Saints' Eve VI - Die Plage dese Michael M.</de>
+				<de>All Saints' Eve VI - Die Plage des Michael M.</de>
 				<en>All Saints' Eve 6: The Plague of Michael M.</en>
 			</title>
 			<title_original>
@@ -7207,7 +7207,7 @@ Won 9 Oscars.</en>
 		</programme>
 		<programme id="930c8020-ea88-4309-a98e-aada6143f9e5" product="1" licence_type="1" creator="9551" imdb_id="tt0115641">
 			<title>
-				<de>Beaver and Bung-Head tun's in den Staaten</de>
+				<de>Beaver und Bung-Head tun's in den Staaten</de>
 				<en>Beaver and Bung-Head Do the U.S.</en>
 			</title>
 			<title_original>
@@ -9177,7 +9177,7 @@ Won several Golden Raspberry Awards.</en>
 				<en>The Harmonists</en>
 			</title_original>
 			<description>
-				<de>Basierend auf der wahren Geschichte der 1927 gegründeten deutschen A-capella-Sextetts. Es erlangt internationalen Ruhm und Popularität. Doch bald gibt es Schwierigkeiten, denn die Hälfte der Gruppe ist jüdisch.</de>
+				<de>Basierend auf der wahren Geschichte des 1927 gegründeten deutschen A-capella-Sextetts. Es erlangt internationalen Ruhm und Popularität. Doch bald gibt es Schwierigkeiten, denn die Hälfte der Gruppe ist jüdisch.</de>
 				<en>Based on the true story about the the German a-capella sextet founded in 1927. They meet international fame and popularity. But soon there is trouble, as half the group is Jewish.</en>
 			</description>
 			<staff>
@@ -9442,7 +9442,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="5" function="2">eccd8bc8-fafe-4853-8f9b-a4cdc8abdf77</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="10" subgenre="2,17" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="16,17" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1998" day="5" />
 			<ratings critics="19" speed="30" outcome="84" />
 		</programme>

@@ -109,7 +109,7 @@ A symphonic science fiction trip.</en>
 			</title>
 			<title_original>
 				<de>28 Tage später</de>
-				<en>28 Days Later...</en>
+				<en>28 Days Later</en>
 			</title_original>
 			<description>
 				<de>Ein Virus hat scheinbar ganz London entvölkert. Jim, der aus dem Koma erwacht ist, sieht sich in der leeren Großstadt lediglich Infizierten gegenüber, die Jagd auf ihn machen.</de>
@@ -1424,7 +1424,7 @@ Well-known actors, but the concept is not convincing.</en>
 				<member index="6" function="2">58d9d43f-3318-4d01-b40b-1640cd9026ec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1980" distribution="1" maingenre="17" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="GB" year="1980" distribution="1" maingenre="4" subgenre="14,17" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="28" speed="23" outcome="32" />
 		</programme>
 		<programme id="596591ce-2274-47e4-b989-86adaa05dee5" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0075314" creator="">
@@ -1672,7 +1672,7 @@ Successful continuation of the scare.</en>
 				<en>The Firm</en>
 			</title_original>
 			<description>
-				<de>Ein frisch promovierter Anwalt wird von einer renommierten Anwaltsfirma angeworben. Daß die Arbeit dort auch ihre Schattenseiten hat, merkt er, als hintereinander zwei Angestellte ums Leben kommen.</de>
+				<de>Ein frisch promovierter Anwalt wird von einer renommierten Anwaltsfirma angeworben. Dass die Arbeit dort auch ihre Schattenseiten hat, merkt er, als hintereinander zwei Angestellte ums Leben kommen.</de>
 				<en>A newly graduated lawyer is recruited by a renowned law firm. He realizes that the work there also has its shadowy sides when two employees die one after the other.</en>
 			</description>
 			<staff>
@@ -2194,7 +2194,7 @@ Exciting adventure adapted from [5|Full].</en>
 				<member index="5" function="1024">a1bd39e9-c2ea-495f-96f6-8adf194be54b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1965" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.90" />
+			<data country="D/E" year="1965" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="70" outcome="51" />
 		</programme>
 		<programme id="5d7e43a1-5e60-41ac-9fd8-365798d3c86a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104257" creator="">
@@ -2935,7 +2935,7 @@ Music: [5|Full].</en>
 				<member index="5" function="16">9d5bd693-58dc-490d-b050-9aae6c0c7f65</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1965" distribution="1" maingenre="18" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="I" year="1965" distribution="1" maingenre="18" subgenre="2,7" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="61" speed="70" outcome="70" />
 		</programme>
 		<programme id="a9e1994f-afa9-4820-884a-83e36fb3eb85" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0081505" creator="">
@@ -3905,7 +3905,7 @@ Based on the novel by [4|Full].</en>
 				<member index="4" function="1024">da4a70c6-fe0c-4be0-89da-2604222e0685</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1961" distribution="1" maingenre="4" subgenre="" flags="8" blocks="2" price_mod="0.90" />
+			<data country="GB" year="1961" distribution="1" maingenre="4" subgenre="5,14" flags="8" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="42" outcome="56" />
 		</programme>
 		<programme id="4c8d0a86-edf7-4cd2-b18f-16fb66d5fd2b" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0110419" creator="">
@@ -5598,7 +5598,7 @@ New Year's Eve fun and ritual to watch in some countries.</en>
 			<ratings critics="70" speed="70" outcome="70" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.25" />
-				<modifier name="topicality::refresh" value="0.1" />
+				<!-- TODO: add topicality::refresh value to make it take approx. 1 year to recover -->
 			</modifiers>
 		</programme>
 		<programme id="376ada51-867e-46f1-bb24-e0ee855dc50f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0133952" creator="">
@@ -6807,7 +6807,7 @@ Original idea, well and excitingly executed.</en>
 				<member index="6" function="2">8a850479-ce72-4f8f-88dd-e3b0a196399f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1966" distribution="1" maingenre="18" subgenre="" flags="0" blocks="4" price_mod="0.67" />
+			<data country="I" year="1966" distribution="1" maingenre="18" subgenre="2,7" flags="0" blocks="4" price_mod="0.67" />
 			<ratings critics="51" speed="42" outcome="70" />
 		</programme>
 		<programme id="b666104b-1157-4996-97da-2a4253d6bfd3" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0069697" creator="">
@@ -15761,7 +15761,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 				<member index="7" function="2">86ca6073-b009-4a0c-91b1-aae03fe19728</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="2" flags="" blocks="2" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="7" flags="" blocks="2" />
 			<releaseTime year="1986" day="12" />
 			<ratings critics="81" speed="73" outcome="80" />
 		</programme>
@@ -16882,7 +16882,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
 			<data country="USA" distribution="1" maingenre="3" subgenre="5,1" flags="2" blocks="2" />
 			<releaseTime year="2015" day="7" />
-			<ratings critics="55" speed="49" outcome="82" />
+			<ratings critics="55" speed="49" outcome="94" />
 		</programme>
 
 		<!-- added by scr0llbaer -->
@@ -19806,7 +19806,7 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<en>The Magician of Oz</en>
 			</title>
 			<title_original>
-				<de>Der Zauberer von Oz</de>
+				<de>Der Zauberer von Oz / Das zauberhafte Land</de>
 				<en>The Wizard of Oz</en>
 			</title_original>
 			<description>
@@ -25580,7 +25580,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Luna's Favourites</en>
 			</title>
 			<title_original>
-				<de>Die Günstlinge des Mondes</de>
+				<de>Die Günstlinge des Mondes / Ritter der Finsternis</de>
 				<en>Favourites of the Moon</en>
 				<fr>Les Favoris de la lune</fr>
 			</title_original>
@@ -26170,11 +26170,11 @@ The fourth part of the series, of course, was not the last after all.</en>
 		</programme>
 		<programme id="388e2f55-bfb1-431f-828c-e0e52a939b12" product="1" licence_type="1" creator="9551" imdb_id="tt0088993">
 			<title>
-				<de>Zombies 2</de>
+				<de>Zombies 2 - Das Schlusskapitel</de>
 				<en>High Noon of the Deceased</en>
 			</title>
 			<title_original>
-				<de>Zombie 2</de>
+				<de>Zombie 2 - Das letzte Kapitel</de>
 				<en>Day of the Dead</en>
 			</title_original>
 			<description>
@@ -26337,8 +26337,8 @@ The fourth part of the series, of course, was not the last after all.</en>
 				<en>Porky's Revenge</en>
 			</title_original>
 			<description>
-				<de>Der dritte und letzte Teil der Reihe mit den notgeilen Teenagern beginnt mit Cheerleaders, die den Gewinnern eines Basketballspiels eine Orgie versprechen. Sie verarschen die Jungs aber, die dann nackig vor angezogenen Familien stehen. Und so geht der Film dann weiter.</de>
-				<en>The third and last part of the series with the horny teenagers starts with cheerleaders who promise an orgy to the winners of a basketball game. But they screw the guys who end up naked in front of clothed families. And that's how the movie goes on.</en>
+				<de>Der 3. und letzte Teil der Reihe mit den notgeilen Teens beginnt mit Cheerleaders, die den Gewinnern eines Basketballspiels eine Orgie versprechen. Sie verarschen die Jungs aber, die dann nackig vor Familien stehen. Und so geht's dann weiter.</de>
+				<en>The 3rd and last part of the series with the horny teenagers starts with cheerleaders who promise an orgy to the winners of a basketball game. But they screw the guys who end up naked in front of families. And that's how things go on.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">d19a5005-4e72-4029-9c9d-f23564a0f810</member>
@@ -27739,7 +27739,7 @@ Filmed at the same time as part 1, it was as much a critical as a commercial dis
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.25" employees="1.25" unemployed="1.25" pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="202,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="202,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1987" day="8" />
 			<ratings critics="69" speed="85" outcome="86" />
 		</programme>
