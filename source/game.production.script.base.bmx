@@ -7,6 +7,7 @@ Import "game.world.worldtime.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.gamerules.bmx"
+Import "game.modifier.base.bmx"
 Import "game.player.difficulty.bmx"
 
 Type TScriptBase Extends TNamedGameObject
@@ -25,6 +26,8 @@ Type TScriptBase Extends TNamedGameObject
 
 	Field programmeDataModifiers:TData
 	Field targetGroupAttractivityMod:TAudience = Null
+	'effects both for scripts and the produced programme
+	Field effects:TGameModifierGroup
 
 	'scripts of series are parent of episode scripts
 	Field parentScriptID:int = 0
