@@ -912,11 +912,17 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			Local needed:Int = 0
 			For Local entryIndex:Int = 0 To lists[listIndex].length-1
 				If lists[listIndex][entryIndex]
-					'count exisiting cheap erotic entries
-					If listIndex = 1 And lists[listIndex][entryIndex].GetGenre() = TVTProgrammeGenre.Erotic
-						cheapEroticCount :+ 1
+					If Not lists[listIndex][entryIndex].IsAvailable()
+						'remove entries not available anymore (as when replacing)
+						lists[listIndex][entryIndex].SetOwner(TOwnedGameObject.OWNER_NOBODY)
+						lists[listIndex][entryIndex] = Null
+					Else
+						'count exisiting cheap erotic entries
+						If listIndex = 1 And lists[listIndex][entryIndex].GetGenre() = TVTProgrammeGenre.Erotic
+							cheapEroticCount :+ 1
+						EndIf
+						Continue
 					EndIf
-					Continue
 				EndIf
 				needed :+ 1
 			Next
@@ -987,7 +993,12 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		Local added:Int = 0
 		Local allowedErotic:Int = maxEroticCount
 		For Local p:TProgrammeLicence = EachIn list
-			If Not includeFilters
+			'IsAvailable() includes more than those flags and is potentially suppressed in filter
+			If p.HasBroadCastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+				Continue
+			ElseIf p.data.HasBroadCastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+				Continue
+			ElseIf Not includeFilters
 				If Not p.IsTradeable() Then Continue
 				If Not p.IsReleased() Then Continue
 			Else
