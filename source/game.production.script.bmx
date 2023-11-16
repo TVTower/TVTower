@@ -467,6 +467,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			script.subGenres :+ [subGenre]
 		Next
 
+		If template.effects
+			script.effects=template.effects.Copy()
+		EndIf
+
 		'add children
 		If includingEpisodes
 			If template.programmeDataModifiers
@@ -533,8 +537,26 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 			If script.subScripts
 				'#440 propagate final optional header flags to episodes
+				'also propagate parent effects
 				For Local subScript:TScript = EachIn script.subScripts
 					subScript.flags :| script.flags
+					If script.effects
+						If subScript.effects
+							'appending parent effects to existing subscript entries
+							Local node:TNode = script.effects.entries._FirstNode()
+							While node And node <> TGameModifierGroup._nilNode
+								Local l:TList = TList(node._value)
+								If Not l Then Continue
+								For Local m:TGameModifierBase = EachIn l
+									subScript.effects.AddEntry(String(node._key), m)
+								Next
+								'move on to next node
+								node = node.NextNode()
+							Wend
+						Else
+							subScript.effects = script.effects.Copy()
+						EndIf
+					EndIf
 				Next
 
 				'#424 script with children is live (only) if any of the children is live

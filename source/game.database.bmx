@@ -1950,6 +1950,21 @@ Type TDatabaseLoader
 			)
 		EndIf
 
+
+		'=== EFFECTS ===
+		'add effects after processing the children
+		'as script template does not extend TBroadcastMaterialSourceBase,
+		'propagating parent effects is to big an effort here
+		'it will be done when creating the script from the template
+		'at this point each template gets exactly the effects defined in the database
+		Local nodeEffects:TxmlNode = xml.FindChild(node, "effects")
+		If nodeEffects
+			Local tmpSource:TBroadcastMaterialSourceBase = new TBroadcastMaterialSourceBase()
+			LoadV3EffectsFromNode(tmpSource, node, xml)
+			If tmpSource.effects Then scriptTemplate.effects = tmpSource.effects.Copy()
+			If scriptTemplate.effects Then print scriptTemplate.GetTitle() +" has effects"
+		EndIf
+
 		'=== ADD TO COLLECTION ===
 		GetScriptTemplateCollection().Add(scriptTemplate)
 

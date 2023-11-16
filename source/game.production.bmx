@@ -739,6 +739,9 @@ Type TProduction Extends TOwnedGameObject
 			if not programmeData.modifiers Then programmeData.modifiers = New TData
 			programmeData.modifiers.Append(productionConcept.script.programmeDataModifiers)
 		EndIf
+		If productionConcept.script.effects
+			programmeLicence.effects = productionConcept.script.effects.Copy()
+		EndIf
 		Return programmeLicence
 	End Method
 	
