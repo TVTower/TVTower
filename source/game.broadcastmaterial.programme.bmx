@@ -182,6 +182,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'store audience for this block
 			licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
 
+			If licence And licence.effects
+				Local effectParams:TData = New TData.AddInt("programmeId", Self.licence.GetId())
+				licence.effects.Update("broadcast", effectParams)
+				'very first broadcast - not owner dependent
+				If licence.data.GetTimesBroadcasted(-1) = 0 Then licence.effects.Update("broadcastFirstTime", effectParams)
+			EndIf
+
 			'inform others
 			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -334,6 +341,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'instead of just setting back topicality, just refresh it "once"
 		'data.trailerTopicality = 1.0
 		data.RefreshTrailerTopicality()
+
+		If licence And licence.effects
+			Local effectParams:TData = New TData.AddInt("programmeId", Self.licence.GetId())
+			licence.effects.Update("broadcastDone", effectParams)
+			'very first broadcast - not owner dependent
+			If data.GetTimesBroadcasted(-1) = 1 Then licence.effects.Update("broadcastFirstTimeDone", effectParams)
+		EndIf
 
 		'print "aired programme "+GetTitle()+" "+data.GetTimesAired(owner)+"x."
 		'print self.GetTitle() + "  finished at day="+day+" hour="+hour+" minute="+minute + " aired="+data.timesAired + " topicality="+data.topicality+" oldTop="+oldTop

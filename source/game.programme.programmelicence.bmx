@@ -3425,3 +3425,70 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 		endif
 	End Method
 End Type
+
+
+'backup of old availability flags as for news should not be necessary
+'the only reason the effect can fail is that the licence is not found
+'in this case no changes need to be undone
+Type TGameModifierProgramme_ModifyAvailability Extends TGameModifierBase
+	Field programmeGUID:String
+	Field enable:Int = True
+
+
+	Function CreateNewInstance:TGameModifierProgramme_ModifyAvailability()
+		Return New TGameModifierProgramme_ModifyAvailability
+	End Function
+
+
+	Method Copy:TGameModifierProgramme_ModifyAvailability()
+		Local clone:TGameModifierProgramme_ModifyAvailability = New TGameModifierProgramme_ModifyAvailability
+		clone.CopyBaseFrom(Self)
+		clone.programmeGUID = Self.programmeGUID
+		clone.enable = Self.enable
+		Return clone
+	End Method
+
+
+	Method Init:TGameModifierProgramme_ModifyAvailability(data:TData, extra:TData=Null)
+		If Not data Then Return Null
+
+		programmeGUID = data.GetString("guid", "")
+		enable = data.GetBool("enable", True)
+
+		Return Self
+	End Method
+
+
+	Method GetLicence:TProgrammeLicence()
+		Return TProgrammeLicence(GetProgrammeLicenceCollection().GetByGUID( programmeGUID ))
+	End Method
+
+	'undo not necessary
+	rem
+	'override
+	Method UndoFunc:Int(params:TData)
+	End Method
+	endrem 
+
+	'override to trigger a specific news
+	Method RunFunc:Int(params:TData)
+		Local licence:TProgrammeLicence = GetLicence()
+		If licence
+			'disabling should only affect the licence - do not disable potentially reused data
+			If enable
+				licence.data.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+				For local sub:TProgrammeLicence = eachin licence.subLicences
+					sub.data.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+				Next
+			EndIf
+			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+			For local sub:TProgrammeLicence = eachin licence.subLicences
+				sub.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
+			Next
+		EndIf
+		Return False
+	End Method
+End Type
+
+
+GetGameModifierManager().RegisterCreateFunction("ModifyProgrammeAvailability", TGameModifierProgramme_ModifyAvailability.CreateNewInstance)

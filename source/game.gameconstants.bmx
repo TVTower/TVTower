@@ -654,8 +654,9 @@ Type TVTScriptFlag {_exposeToLua}
 'currently unused!
 	'more expensive
 	Const REQUIRE_AUDIENCE_DURING_PRODUCTION:Int = 128
+	Const NOT_AVAILABLE:Int = 256
 
-	Const count:Int = 8
+	Const count:Int = 9
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -674,6 +675,7 @@ Type TVTScriptFlag {_exposeToLua}
 			Case  32	Return 6
 			Case  64	Return 7
 			Case 128	Return 8
+			Case 256	Return 9
 		End Select
 		Return 0
 	End Function
@@ -691,6 +693,7 @@ Type TVTScriptFlag {_exposeToLua}
 			Case POOL_REMOVES_TRADEABILITY            Return "pool_removes_tradeability"
 			Case TEXTS_EDITABLE                       Return "texts_editable"
 			Case REQUIRE_AUDIENCE_DURING_PRODUCTION   Return "require_audience_during_production"
+			Case NOT_AVAILABLE                        Return "not_available"
 
 			Default
 				'loop through all entries and add them if contained

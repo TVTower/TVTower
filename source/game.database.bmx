@@ -1267,6 +1267,9 @@ Type TDatabaseLoader
 
 		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
 
+		'TODO discuss - is it a good idea to use this flag for both licence AND data?
+		'data flag has precedence; data not available - licence not available
+		'availability effect turns both flags on, but only licence flag off
 		Local available:Int = data.GetBool("available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 		programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
@@ -1399,13 +1402,17 @@ Type TDatabaseLoader
 
 
 		'=== EFFECTS ===
-		LoadV3EffectsFromNode(programmeData, node, xml)
+		'TODO discuss parent effects are copied, if they are wanted only in one episode
+		'then define them only there
+		If parentLicence Then programmeLicence.effects = parentLicence.CopyEffects()
+		'TODO discuss - should effects be part of licence or data
+		'I think, the effects should depend only on the licence and not be propagated
+		LoadV3EffectsFromNode(programmeLicence, node, xml)
 
 
 
 		'=== MODIFIERS ===
 		'take over modifiers from parent (if episode)
-		If parentLicence Then parentLicence.data.effects = parentLicence.data.CopyEffects()
 		LoadV3ModifiersFromNode(programmeData, node, xml)
 
 
@@ -1831,9 +1838,13 @@ Type TDatabaseLoader
 			"live_date", "live_time", ..
 			"target_group", "target_group_optional", ..
 			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-			"production_limit", "production_time_mod" ..
+			"production_limit", "production_time_mod", ..
+			"available"..
 		])
 		scriptTemplate.scriptFlags = data.GetInt("scriptflags", scriptTemplate.scriptFlags)
+		If Not data.GetInt("available", True)
+			scriptTemplate.setScriptFlag(TVTScriptFlag.NOT_AVAILABLE, True)
+		EndIf
 
 		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
@@ -1843,7 +1854,7 @@ Type TDatabaseLoader
 		
 		scriptTemplate.targetGroup = data.GetInt("target_group", scriptTemplate.targetGroup)
 		scriptTemplate.targetGroupOptional = data.GetInt("target_group_optional", scriptTemplate.targetGroupOptional)
-		
+
 		If data.Has("studio_size")
 			scriptTemplate.studioSizeMin = data.GetInt("studio_size")
 			scriptTemplate.studioSizeMax = data.GetInt("studio_size")

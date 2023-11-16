@@ -350,7 +350,8 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
 		popularityID = data.GetInt("id"+index, data.GetInt("id", 0))
 		popularityReferenceID = data.GetInt("referenceID"+index, data.GetInt("referenceID", 0))
-		popularityReferenceGUID = data.GetString("referenceGUID"+index, data.GetString("referenceGUID", ""))
+		popularityReferenceGUID = data.GetString("guid"+index, data.GetString("guid", ""))
+		If Not popularityReferenceGUID Then popularityReferenceGUID = data.GetString("referenceGUID"+index, data.GetString("referenceGUID", ""))
 		if popularityID = 0 and popularityReferenceID = 0 and popularityReferenceGUID = ""
 			TLogger.Log(ToString(), "Init() failed - no popularityID or referenceID/referenceGUID given.", LOG_ERROR)
 			return Null
