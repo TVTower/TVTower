@@ -111,7 +111,6 @@ Type TScriptTemplate Extends TScriptBase
 	Field programmeDataModifiers:TData
 
 	'defines if the script is only available from/to/in a specific date
-	Field available:int = True
 	Field availableScript:string = ""
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
@@ -201,8 +200,8 @@ Type TScriptTemplate Extends TScriptBase
 	Method IsAvailable:int()
 		'=== generic availability ===
 
-		'field "available" = false ?
-		if not available then return False
+		'flag "not available" set ?
+		if HasScriptFlag(TVTScriptFlag.NOT_AVAILABLE) then return False
 
 		if availableYearRangeFrom > 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
 		if availableYearRangeTo > 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False
@@ -699,3 +698,65 @@ Type TScriptTemplateVariables extends TTemplateVariables
 		parentID = id
 	End Method
 End Type
+
+
+
+'backup of old availability flags as for news should not be necessary
+'the only reason the effect can fail is that the script template is not found
+'in this case no changes need to be undone
+Type TGameModifierScriptTemplate_ModifyAvailability Extends TGameModifierBase
+	Field templateGUID:String
+	Field enable:Int = True
+
+
+	Function CreateNewInstance:TGameModifierScriptTemplate_ModifyAvailability()
+		Return New TGameModifierScriptTemplate_ModifyAvailability
+	End Function
+
+
+	Method Copy:TGameModifierScriptTemplate_ModifyAvailability()
+		Local clone:TGameModifierScriptTemplate_ModifyAvailability = New TGameModifierScriptTemplate_ModifyAvailability
+		clone.CopyBaseFrom(Self)
+		clone.templateGUID = Self.templateGUID
+		clone.enable = Self.enable
+		Return clone
+	End Method
+
+
+	Method Init:TGameModifierScriptTemplate_ModifyAvailability(data:TData, extra:TData=Null)
+		If Not data Then Return Null
+
+		templateGUID = data.GetString("guid", "")
+		enable = data.GetBool("enable", True)
+
+		Return Self
+	End Method
+
+
+	Method GeTemplate:TScriptTemplate()
+		Return TScriptTemplate(GetScriptTemplateCollection().GetByGUID( templateGUID ))
+	End Method
+
+	'undo not necessary
+	rem
+	'override
+	Method UndoFunc:Int(params:TData)
+	End Method
+	endrem 
+
+	'override to trigger a specific news
+	Method RunFunc:Int(params:TData)
+		Local template:TScriptTemplate = GeTemplate()
+		If template
+			template.setScriptFlag(TVTScriptFlag.NOT_AVAILABLE, Not enable)
+			For local sub:TScriptTemplate = eachin template.subScripts
+				sub.setScriptFlag(TVTScriptFlag.NOT_AVAILABLE, Not enable)
+			Next
+		EndIf
+		Return False
+	End Method
+End Type
+
+
+GetGameModifierManager().RegisterCreateFunction("ModifyScriptAvailability", TGameModifierScriptTemplate_ModifyAvailability.CreateNewInstance)
+
