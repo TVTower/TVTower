@@ -2064,12 +2064,8 @@ Type TStationMapInformationFrame
 		Local colWidthC:Int = 0.1 * textW
 		Local colWidthD:Int = 0.25 * textW
 
-		Local currentColor:TColor = New TColor.Get()
-		Local entryColor:TColor
-
 		'draw with different color according status
 		'draw antenna
-		SetAlpha(currentColor.a)
 		item.GetFont().DrawBox(valueA, Int(item.GetScreenRect().GetX() + textOffsetX), colY, colWidthA, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthA
 		item.GetFont().DrawBox(valueB, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthB, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
@@ -2078,8 +2074,6 @@ Type TStationMapInformationFrame
 		textOffsetX :+ colWidthC
 		item.GetFont().DrawBox(valueD, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthD, colHeight, sALIGN_RIGHT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthD
-
-		currentColor.SetRGBA()
 	End Function
 
 
@@ -2581,6 +2575,8 @@ Type TScreenHandler_StationMap
 		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
 
+		SetBlend AlphaBlend
+
 		'draw map
 		GetSpriteFromRegistry("map_Surface").Draw(0,0)
 
@@ -2638,9 +2634,10 @@ Type TScreenHandler_StationMap
 		'when selecting a station position with the mouse or a
 		'cable network or a satellite
 		If actionMode = MODE_BUY_ANTENNA Or actionMode = MODE_BUY_SATELLITE_UPLINK Or actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
-			SetAlpha Float(0.8 + 0.2 * Sin(MilliSecs()/6))
+			Local oldColA:Float = GetAlpha()
+			SetAlpha oldColA * Float(0.8 + 0.2 * Sin(MilliSecs()/6))
 			DrawImage(GetStationMapCollection().populationImageOverlay, 0,0)
-			SetAlpha 1.0
+			SetAlpha oldColA
 		EndIf
 
 
