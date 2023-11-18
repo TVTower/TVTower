@@ -86,6 +86,15 @@ Type TScriptCollection Extends TGameObjectCollection
 			RemoveTitleProtection(script.title)
 		EndIf
 
+		If script.basedOnScriptTemplateID
+			Local template:TScriptTemplate = GetScriptTemplateCollection().getById(script.basedOnScriptTemplateID)
+			If template And template.IsUsedForScript(script.GetID())
+				template.RemoveUsedForScript(script.GetID())
+			Else
+				TLogger.log("TScriptCollection.Remove", "Template for script "+script.GetTitle()+ " not found for marking it as unused.", LOG_ERROR)
+			EndIf
+		EndIf
+
 		Return Super.Remove(script)
 	End Method
 
