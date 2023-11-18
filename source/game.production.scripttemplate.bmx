@@ -256,6 +256,18 @@ Type TScriptTemplate Extends TScriptBase
 		Return True
 	End Method
 
+	Method RemoveUsedForScript:Int(scriptID:int)
+		If IsUsedForScript(scriptID)
+			For Local i:Int = 0 Until usedForScripts.length
+				if usedForScripts[i] = scriptID
+					usedForScripts = usedForScripts[.. i] + usedForScripts[i + 1 ..]
+					Return True
+				EndIf
+			Next
+		EndIf
+		Return False
+	End Method
+
 
 	'set a job to the specific index
 	'the index must be existing already
