@@ -462,7 +462,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 					if not table.contains(ignoreLicences, licence:GetReferenceID()) then
 						local blocks = licence.data.GetBlocks(0)
 						totalBlocks = totalBlocks + blocks
-						if licence:GetRelativeTopicality() > 0.99 then 
+						if licence:GetTopicality() >= 0.4 and licence:GetRelativeTopicality() > 0.99 then 
 							maxTopicalityBlocks = maxTopicalityBlocks + blocks
 						end
 					end
@@ -471,7 +471,8 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		player.blocksCount = totalBlocks
 		player.maxTopicalityBlocksCount = maxTopicalityBlocks
-		if maxTopicalityBlocks > 24 then self.useMaxTopicalityOnly = true end
+		--TODO check if max topicality blocks should be used for scheduling
+		--if maxTopicalityBlocks > 24 then self.useMaxTopicalityOnly = true end
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
@@ -1156,10 +1157,10 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 
 	-- increase priority if guessedAudience/level is requested again
 	for k,v in pairs(self.SpotRequisition) do
+		-- remove outdated slot requisitions (to avoid multiple reqs
+		-- for the same time slot)
+		v:RemoveSlotRequisitionByTime(day, hour)
 		if (v.Level == level) then
-			-- remove outdated slot requisitions (to avoid multiple reqs
-			-- for the same time slot)
-			v:RemoveSlotRequisitionByTime(day, hour)
 
 			-- store "lowest" audience to avoid "hard to fulfill
 			-- contracts" (lvl5 contract with 100k min requested by

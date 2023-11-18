@@ -417,10 +417,11 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		else
 			local daysToFinish = adContract.GetDaysToFinish() - 1
 			if hard == true then
-				if maxTopBlocks < 12 then 
+				if maxTopBlocks < 18 then
 					daysToFinish = daysToFinish -1
 				end
-				if spotsLeft < 2 and spotsLeft < daysToFinish then doSign = true end
+				--always sign still causes too many penalties - randomize
+				if spotsLeft < 2 and spotsLeft < daysToFinish and math.random(0,100) > 60 then doSign = true end
 			elseif avg == true then
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
 			else

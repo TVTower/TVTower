@@ -200,6 +200,7 @@ function JobBuyScript:canBuy(script)
 	elseif script:GetProductionLimit() > 1 then
 		return false
 	elseif script:IsSeries() == 1 then
+		--TODO buy series only if enough money and not too much credit!!
 		if self.scriptMaxPrice > 100000 then
 			--not tested if check state fallback works for series with many episodes
 			if script:GetEpisodes() > 8 then
@@ -261,17 +262,46 @@ end
 
 function JobPlanProduction:Prepare(pParams)
 	local player = getPlayer()
+	local reach = player.totalReach
 	local blocks = player.blocksCount
+	local money = player.money
+	local credit = MY.GetCredit(-1)
+	local lastDayProfit = player.Budget:GetLastDayProfit()
+	local fixedCosts = player.Budget.CurrentFixedCosts
+
 	self.MaxBudget = 140000
-	if blocks > 72 then
-		self.MaxBudget = 1500000
-	elseif blocks > 64 then
-		self.MaxBudget = 750000
-	elseif blocks > 48 then
-		self.MaxBudget = 280000
-	elseif self.Task.awardType ~= "culture" and player.money < 200000 then
+	--TODO more conservative budget if not much money, even if many blocks (but bad average quality)
+	--TODOin AI-code handle series budget better
+	if player.money - credit < -1000000 then
 		self.MaxBudget = 0
+	elseif self.Task.awardType ~= "culture" and (player.money < 200000) then
+		self.MaxBudget = 0
+	elseif reach > 5000000 and ((credit <= 200000 and lastDayProfit > 0) or (money > fixedCosts)) then
+		if blocks > 72 then
+			self.MaxBudget = 1500000
+		elseif blocks > 64 then
+			self.MaxBudget = 750000
+		elseif blocks > 48 then
+			self.MaxBudget = 280000
+		end
+	elseif reach > 3000000 and (money > fixedCosts / 2) and (credit < 750000) then
+		if blocks > 72 then
+			self.MaxBudget = 750000
+		elseif blocks > 64 then
+			self.MaxBudget = 500000
+		elseif blocks > 48 then
+			self.MaxBudget = 280000
+		end
+	elseif reach > 2000000 then
+		if blocks > 72 then
+			self.MaxBudget = 500000
+		elseif blocks > 64 then
+			self.MaxBudget = 350000
+		elseif blocks > 48 then
+			self.MaxBudget = 250000
+		end
 	end
+	--self:LogInfo("production budget is "..self.MaxBudget)
 end
 
 function JobPlanProduction:Tick()

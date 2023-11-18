@@ -553,7 +553,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 			local satellite = TVT.of_GetSatelliteAtIndex(i)
 			-- ignore if we already are clients of this provider
 			-- ignore non-launched and not available for player
-			if satellite.IsSubscribedChannel(TVT.ME) == 0 and satellite.IsLaunched() == 1 and satellite.IsActive() == 1 then
+			if satellite~=nil and satellite.IsSubscribedChannel(TVT.ME) == 0 and satellite.IsLaunched() == 1 and satellite.IsActive() == 1 then
 				local tempStation = TVT.of_GetTemporarySatelliteUplinkStation(i)
 				if tempStation then
 					local attraction, price, exclusiveReach = self:GetAttraction(tempStation)
