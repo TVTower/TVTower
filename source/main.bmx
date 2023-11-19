@@ -5516,6 +5516,8 @@ endrem
 			janitor.LastRoomBoardSignResetDay = -1
 		EndIf
 
+		Local currentPlayer:int = GetPlayerBase().playerID
+
 		'=== SEND TOASTMESSAGE ===
 		'local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
 		'local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
@@ -5552,7 +5554,7 @@ endrem
 					Local cost:Int = triggerEvent.GetData().GetInt("renovationBaseCost")
 					If cost > 0
 						cost = TFunctions.RoundToBeautifulValue(cost * 1.2^ (player.GetAudienceReachLevel()-1))
-						text:+ " "+ GetRandomLocale("TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT").Replace("%COST%", GetFormattedCurrency(cost))
+						If i = currentPlayer Then text:+ " "+ GetRandomLocale("TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT").Replace("%COST%", GetFormattedCurrency(cost))
 						player.GetFinance().PayMisc(cost)
 					EndIf
 					If room.GetNameRaw() = "archive"
@@ -5560,7 +5562,7 @@ endrem
 						Local licence:TProgrammeLicence = programmeCollection.GetRandomProgrammeLicence()
 						If licence and licence.getSubLicenceCount() = 0 and licence.IsTradeable()
 							If programmeCollection.RemoveProgrammeLicence(licence)
-								text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT").Replace("%TITLE%", licence.GetTitle())
+								If i = currentPlayer Then text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT").Replace("%TITLE%", licence.GetTitle())
 							EndIf
 						EndIf
 					EndIf
@@ -5574,11 +5576,11 @@ endrem
 								If concepts And concepts.length > 0
 									Local concept:TProductionConcept = concepts[RandRange(0,concepts.length-1)]
 									If programmeCollection.DestroyProductionConcept(concept)
-										text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT")
+										If i = currentPlayer Then text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT")
 									EndIf
 								Else
 									If programmeCollection.RemoveScript(script)
-										text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT").Replace("%TITLE%", script.GetTitle())
+										If i = currentPlayer Then text:+ "~n"+ GetRandomLocale("TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT").Replace("%TITLE%", script.GetTitle())
 									EndIf
 								EndIf
 							EndIf
@@ -5594,7 +5596,7 @@ endrem
 
 
 				'only add if it is the active player
-				If i = GetPlayerBase().playerID
+				If i = currentPlayer
 					GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 				EndIf
 			Next
