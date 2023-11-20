@@ -568,6 +568,7 @@ Enum EPopulationCanvasMode
 	ClipBigger          'set values bigger than "value" to 0
 	ClipBinary          'set values unequal to "value" to 0, equal to 1 
 	ClipNegativeBinary  'set values equal to "value" to 0, unequal to 0
+	MaskOut             'set result to 0 if this layer contains a value
 	MaskExclusiveCoverage 'only keep from this layer what is set here but not in others
 	MaskedAdd           'add value if result of "other" layers is <> 0 (useful to build "unions")
 	NegativeMaskedAdd   'add value if result of "other" layers is 0
@@ -575,7 +576,7 @@ Enum EPopulationCanvasMode
 'TODO: measure if "Multiply" is similar fast
 '====
 	BinaryMask          'amount of the value 0=0%, all others 100%
-	NegativeBinaryMask  'amount of the value 0=100%, all others 0%
+	NegativeBinaryMask  'amount of the value 0=100%, all others 0%  (useful to "mask out")
 End Enum
 
 
@@ -1586,6 +1587,19 @@ Type TPopulationCanvasLayer_Canvas extends TPopulationCanvasLayer
 
 	Method New(canvas:TPopulationCanvas)
 		self.canvas = canvas
+	End Method
+
+
+	'refresh boundary caches?
+	Method UpdateLayerBoundaries() override
+		if canvas
+			Local x:Int, y:Int, w:int, h:int
+			canvas.GetUsedArea(x, y, w, h)
+			self.x = x
+			self.y = y
+			self.x2 = x + w 
+			self.y2 = y + h 
+		EndIf
 	End Method
 
 	

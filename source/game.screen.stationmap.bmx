@@ -2635,8 +2635,9 @@ Type TScreenHandler_StationMap
 		'cable network or a satellite
 		If actionMode = MODE_BUY_ANTENNA Or actionMode = MODE_BUY_SATELLITE_UPLINK Or actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
 			Local oldColA:Float = GetAlpha()
-			SetAlpha oldColA * Float(0.8 + 0.2 * Sin(MilliSecs()/6))
-			DrawImage(GetStationMapCollection().populationImageOverlay, 0,0)
+			SetAlpha oldColA * Float(0.6 + 0.2 * Sin(MilliSecs()/6))
+			Local populationDensityOverlayXY:SVec2I = GetStationMapCollection().GetPopulationDensityOverlayXY()
+			DrawImage(GetStationMapCollection().GetPopulationDensityOverlay(), populationDensityOverlayXY.x, populationDensityOverlayXY.y)
 			SetAlpha oldColA
 		EndIf
 
