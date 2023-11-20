@@ -900,9 +900,6 @@ endrem
 		'check if all required config entries are set
 		If Not mapDataRootNode Or Not registryLoader Then Return False
 
-		Local densityNodeOLD:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitymap")
-		If Not densityNodeOLD Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitymap>-entry.")
-
 		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
 		If Not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
 
@@ -932,19 +929,15 @@ endrem
 		Local mapSurfaceOffsetY:Int = TXmlHelper.FindValueInt(surfaceNode, "map_offset_y", 0)
 		if mapSurfaceImageURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmapdata><surface url>-entry.")
 
-
-'TODO: Ronny - entfernen (map_PopulationDensityOLD)
-		'directly load the given resources
-		registryLoader.LoadSingleResourceFromXML(densityNodeOLD, Null, True, New TData.AddString("name", "map_PopulationDensityOLD"))
-
 		'load the map information / density data
 		Local mapConfigBaseURI:String = registryLoader.baseURI
 		If ExtractDir(_instance.mapConfigFile) and ExtractDir(registryLoader.baseURI)
 			mapConfigBaseURI = ExtractDir(registryLoader.baseURI) + "/" + ExtractDir(_instance.mapConfigFile)
+		ElseIf ExtractDir(_instance.mapConfigFile)
+			mapConfigBaseURI = ExtractDir(_instance.mapConfigFile)
 		EndIf
 		_instance.LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapSurfaceOffsetX, mapSurfaceOffsetY, mapSurfaceImageURL)
 		
-
 
 		'older savegames might contain a config which has the data converted
 		'to key->value[] arrays instead of values being overridden on each load.
@@ -971,7 +964,8 @@ endrem
 			'find and load states configuration
 			Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
 			If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
-
+			
+			Local sectionID:Int = 1
 			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 				Local name:String	= TXmlHelper.FindValue(child, "name", "")
 				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
@@ -990,7 +984,8 @@ endrem
 
 				'add state section if data is ok
 				If name<>"" And sprite<>""
-					_instance.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sprite, sectionConfig) )
+					_instance.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sectionID, sprite, sectionConfig) )
+					sectionID :+ 1
 				EndIf
 			Next
 			
@@ -1055,6 +1050,9 @@ endrem
 		self.mapInfo = New TStationMapInfo(fullDensityDataURI, New SVec2I(mapCountryOffsetX, mapCountryOffsetY), fullSurfaceImageURI)
 		TLogger.Log("TStationMapCollection.LoadMapInformation", "Loaded Map information (population = " + mapInfo.densityData.totalPopulation+") in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
 
+		'calculate stretch factors and configure used screen size
+		'TODO: Werte aus XML entnehmen (topo_design_width, topo_design_height)
+		mapInfo.SetScreenMapSize(509, 371)
 	End Method
 
 
@@ -1077,7 +1075,6 @@ endrem
 		Local xmlRootNode:TxmlNode = xmlHelper.GetRootNode()
 		Local xmlStationMapNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "stationmap", xmlFile, "Misses the <stationmap>-entry.")
 
-		Local densityNodeOLD:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "densitymap", xmlFile, "Misses the <stationmap><densitymap>-entry.")
 		Local surfaceNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "surface", xmlFile, "Misses the <stationmap><surface>-entry.")
 		Local configNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "config", xmlFile, "Misses the <stationmap><config>-entry.")
 		Local cityNamesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "citynames", xmlFile, "Misses the <stationmap><citynames>-entry.")
@@ -1098,17 +1095,6 @@ endrem
 		if mapSurfaceImageURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmap><surface url>-entry.")
 
 
-'ddd entfernen
-		'directly load the given resources
-		Local populationDensityNodeOLD:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "densitymap", xmlFile, "Misses the <stationmap><densitymap>-entry.")
-		Local populationDensityPixmap:TPixmap = LoadPixmap( baseURI + TXmlHelper.FindValue(populationDensityNodeOLD, "url", "") )
-		if not populationDensityPixmap 
-			TLogger.Log("TStationMapCollection.LoadMapFromXML()", "invalid pop density pixmap: ~q" + baseURI + TXmlHelper.FindValue(populationDensityNodeOLD, "url", "") + "~q.", LOG_DEBUG)
-			Throw "Pixmap fehlt. TODO: OLD entfernen"
-		EndIf
-		GetRegistry().Set("map_PopulationDensityOLD", populationDensityPixmap )
-		
-		
 		'load sprites/section images
 		Local resourcesNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "resources", xmlFile, "Misses the <resources>-entry.")
 		Local registryLoader:TRegistryLoader = New TRegistryLoader
@@ -1120,8 +1106,9 @@ endrem
 		Local mapConfigBaseURI:String = baseURI
 		If ExtractDir(mapConfigFile) and ExtractDir(baseURI)
 			mapConfigBaseURI = ExtractDir(baseURI) + "/" + ExtractDir(mapConfigFile)
+		ElseIf ExtractDir(mapConfigFile)
+			mapConfigBaseURI = ExtractDir(mapConfigFile)
 		EndIf
-		
 		LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapDensityDataOffsetX, mapDensityDataOffsetY, mapSurfaceImageURL)
 		
 
@@ -1151,6 +1138,7 @@ endrem
 
 			'find and load states configuration
 			Local statesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "states", xmlFile, "Misses the <stationmap><states>-entry.")
+			Local sectionID:Int = 1
 			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 				Local name:String = TXmlHelper.FindValue(child, "name", "")
 				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
@@ -1170,7 +1158,8 @@ endrem
 
 				'add state section if data is ok
 				If name And sprite
-					self.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sprite, sectionConfig) )
+					self.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sectionID, sprite, sectionConfig) )
+					sectionID :+ 1
 				EndIf
 			Next
 			
@@ -1270,24 +1259,29 @@ endrem
 	End Method
 	
 	
-	Method GetSharedReach:Int(includePlayerIDsMask:Int, excludePlayerIDsMask:Int = 0)
-		Local canvas:TPopulationCanvas = GetSharedReachCanvas(includePlayerIDsMask, excludePlayerIDsMask)
+	'return (antenna) reach on complete country
+	Method GetSharedReach:Int(includePlayerIDsMask:Int, excludePlayerIDsMask:Int = 0, requireAllIncluded:Int = True, section:TStationMapSection = Null)
+		Local canvas:TPopulationCanvas = GetSharedReachCanvas(includePlayerIDsMask, excludePlayerIDsMask, requireAllIncluded, section)
 		if canvas then return canvas.GetValue()
 		
 		Return 0
 	End Method
 
 
-
+	'return (antenna) reach on complete country
 	Method GetSharedReach:Int(playerIDs:Int[])
 		Return GetSharedReach( GetPlayerIDsMask(playerIDs), 0)
 	End Method
 
 
+	'return (antenna) reach canvas for complete country (or specified section)
+	Method GetSharedReachCanvas:TPopulationCanvas(includePlayerIDsMask:Int, excludePlayerIDsMask:Int, requireAllIncluded:Int = True, section:TStationMapSection = Null)
+		'8 bytes for include mask, 8 bytes for exclude mask, 8 bytes for section, 8 bytes for options
+		Local options:Byte = Byte(requireAllIncluded = True) Shl 8
+		Local sectionID:Int = 0
+		If section Then sectionID = section.sectionID
+		Local key:Int = includePlayerIDsMask Shl 24 | excludePlayerIDsMask Shl 16 | sectionID Shl 8 | options
 
-	Method GetSharedReachCanvas:TPopulationCanvas(includePlayerIDsMask:Int, excludePlayerIDsMask:Int)
-		'16 bytes for include mask and 16 bytes for exclude mask
-		Local key:Int = Int(includePlayerIDsMask Shl 32) | excludePlayerIDsMask
 		If includePlayerIDsMask < 0 or excludePlayerIDsMask < 0 Then key = 0 'same canvas for all "invalid" masks
 		
 		Local playerCount:Int = stationMaps.length
@@ -1304,32 +1298,29 @@ endrem
 			includeLayer = New TPopulationCanvasLayer_Canvas(New TPopulationCanvas)
 			excludeLayer = New TPopulationCanvasLayer_Canvas(New TPopulationCanvas) 
 			
-			'include canvas layer
-			'keep points where all of the mask broadcast
+			'include canvas layer (result of the includeLayer is 0 or 1)
 			canvas.SetLayer(includeLayer, 0, EPopulationCanvasMode.AddBinary)
-			'the clip layer sets all to 0 except where ALL included players broadcast
-			Local shareClipMaskLayer:TPopulationCanvasLayer = New TPopulationCanvasLayer
-			shareClipMaskLayer.value = GetPlayerIDsFromMask(includePlayerIDsMask).length
-			'place layer after player layers
-			Local shareClipMaskLayerIndex:Int = playerCount-1 + 1
-			includeLayer.canvas.SetLayer(shareClipMaskLayer, shareClipMaskLayerIndex, EPopulationCanvasMode.ClipNegativeBinary)
-			includeLayer.canvas.SetLayerVisibility(shareClipMaskLayerIndex, True)
-			includeLayer.canvas.SetLayerIgnoreInAreaCalculation(shareClipMaskLayerIndex,True)
-
+			'add a clip layer to set all to 0 except where ALL included players broadcast
+			if requireAllIncluded
+				Local shareClipMaskLayer:TPopulationCanvasLayer = New TPopulationCanvasLayer
+				shareClipMaskLayer.value = GetPlayerIDsFromMask(includePlayerIDsMask).length
+				'place layer after player layers
+				Local shareClipMaskLayerIndex:Int = playerCount-1 + 1
+				includeLayer.canvas.SetLayer(shareClipMaskLayer, shareClipMaskLayerIndex, EPopulationCanvasMode.ClipNegativeBinary)
+				includeLayer.canvas.SetLayerVisibility(shareClipMaskLayerIndex, True)
+				includeLayer.canvas.SetLayerIgnoreInAreaCalculation(shareClipMaskLayerIndex,True)
+			EndIf
+			
 			'exclude canvas layer
 			'only keep points where at least one of the mask broadcasts
 			'(no clipping needed as no exact "value" has to be reached within
 			' the canvas -> it is an "or" combination of the excluded players)
 			canvas.SetLayer(excludeLayer, 1, EPopulationCanvasMode.NegativeBinaryMask)
-			
-			'population layer
-			canvas.SetLayer(GetPopulationDensityLayer(), 2, EPopulationCanvasMode.Multiply)
-			canvas.SetLayerIgnoreInAreaCalculation(2,True)
 		Else
 			includeLayer = TPopulationCanvasLayer_Canvas(canvas.GetLayer(0))
 			excludeLayer = TPopulationCanvasLayer_Canvas(canvas.GetLayer(1))
 		EndIf
-		
+
 		'hide complete exclude layer to avoid calculation
 		if excludePlayerIDsMask = 0
 			canvas.SetLayerVisibility(1, False)
@@ -1346,11 +1337,27 @@ endrem
 			includeLayer.canvas.SetLayer(antennaLayer, i-1, EPopulationCanvasMode.AddBinary)
 			includeLayer.canvas.SetLayerVisibility(i-1, include_visible)
 
-			Local exclude_visible:Int = excludePlayerIDsMask & (1 Shl (i-1))
-			excludeLayer.canvas.SetLayer(antennaLayer, i-1, EPopulationCanvasMode.AddBinary)
-			excludeLayer.canvas.SetLayerVisibility(i-1, exclude_visible)
-	
+			if excludePlayerIDsMask > 0
+				Local exclude_visible:Int = excludePlayerIDsMask & (1 Shl (i-1))
+				excludeLayer.canvas.SetLayer(antennaLayer, i-1, EPopulationCanvasMode.AddBinary)
+				excludeLayer.canvas.SetLayerVisibility(i-1, exclude_visible)
+			EndIf
 		Next
+
+		'population layer
+		canvas.SetLayer(GetPopulationDensityLayer(), 2, EPopulationCanvasMode.Multiply)
+		canvas.SetLayerIgnoreInAreaCalculation(2,True)
+		
+		'section mask/cutout layer
+		If section
+			'ignore other layer sizes (use "lowest possible"
+			canvas.SetLayerIgnoreInAreaCalculation(0, True)
+			canvas.SetLayerIgnoreInAreaCalculation(1, True)
+			canvas.SetLayerIgnoreInAreaCalculation(2, True)
+			'limit by section
+			canvas.SetLayer(section.GetPopulationMaskLayer(), 3, EPopulationCanvasMode.MultiplyBinary, -1, section.populationMaskOffsetX, section.populationMaskOffsetY)
+		EndIf
+
 		Return canvas
 	End Method
 
@@ -2255,15 +2262,13 @@ EndRem
 
 
 	Method CalculateSectionsPopulation:Int()
-		'Eventuell muessen die jeweiligen Section-images skaliert werden,
-		'damit sie mit der DensityData-Dimension uebereinstimmen,
-		'dann kann "1:1" auf gearbeitet werden (also mit dem Layersystem)
-
-		
-		
 		'extract canvas data from sections
-		'1. calculate stretch factor "screen design based sections" vs "density data"
+		'0. calculate stretch factor "screen design based sections" vs "density data"
 		'   as the section collision images are based on a "base / design screen dimension"
+		'-> this is already done when "SetScreenMapSize()" is called 
+		'   during init()
+		'1. sort sections by area to repair potential overlaps with least
+		'   effect on small sections
 		'2. fetch collision image / borders and stretch it to the size of the DensityData 
 		'3. create a (local coord) mask layer for the populationcanvas out of the stretched image
 		'   only add what is not yet occupied already by an other section
@@ -2279,15 +2284,10 @@ EndRem
 		'           the overlap added!
 
 
-		'== 1. calculate stretch factors ==
-'TODO: Berechnung an anderer Stelle machen (im Init / beim Setzen von mapInfo ?) 		
-'TODO: Werte aus XML entnehmen (topo_design_width, topo_design_height)
-		mapInfo.SetScreenMapSize(509, 371)
-		'mapInfo.screenMapSize = New SVec2I(509,371)
-
-
+		'== 1. Sort Sections ==
 		'order sections by "size" - so that smaller sections less likely
-		'remove overlap (removed overlap in relation to area is much higher there -> bigger impact!)
+		'remove overlap (removed overlap in relation to area is much 
+		'higher there -> bigger impact!)
 		local sortedSections:TIntMap = New TIntMap
 		For Local section:TStationMapSection = EachIn sections
 			Local sectionSprite:TSprite = section.GetShapeSprite()
@@ -2338,21 +2338,20 @@ EndRem
 			'so next section can use this information already
 			allSectionsCanvas.AddLayer(sectionMaskLayer, EPopulationCanvasMode.Add, -1, sectionDataOffsetX, sectionDataOffsetY)
 		Next
-		'debug: save sections "overview"
-		'SavePixmapPNG(self.GetPopulationDensityLayer().CreatePixmapFromLayer(), "populationdensitylayer.png")
-		SavePixmapPNG(allSectionsCanvas.CreatePixmapFromCanvas(), "populationdensitycanvas2.png")
 
+		rem
+		'only count what is covered by sections?
 		Local populationCanvas:TPopulationCanvas = New TPopulationCanvas
 		populationCanvas.SetLayer(self.GetPopulationDensityLayer(), 0)
 		'this allows "multiplying" all sections as if they there "one"
 		populationCanvas.SetLayer(New TPopulationCanvasLayer_Canvas(allSectionsCanvas), 1, EPopulationCanvasMode.MultiplyBinary, -1, 0, 0)
-		print "total population in density layer: " + self.GetPopulationDensityLayer().GetValue().value
-		print "total population in sections: " + populationCanvas.GetValue()
-		'SavePixmapPNG(populationCanvas.CreatePixmapFromCanvas(), "populationdensitycanvas3.png")
-		
+		self.population = populationCanvas.GetValue()
+		endrem
+	
+		'count complete density layer instead?
 		self.population = self.GetPopulationDensityLayer().GetValue().value
-'end
 
+rem
 		'https://datacommons.org/place/nuts/DEG?hl=de -> dort Bundeslaender eintippen
 		local expectedPop:Int[]
 		expectedPop :+ [569396] 'Bremen
@@ -2377,54 +2376,6 @@ EndRem
 			TLogger.Log("TStationMapCollection.CalculateSectionsPopulation", "Section " + section.name + " population = " + section.GetPopulation() +"    eurostat = " + expectedPop[i]+"  " + Left((100 * expectedPop[i]/float(section.GetPopulation()) - 100 ),5)+"%)", LOG_DEBUG | LOG_LOADING)
 			i :+ 1
 		Next
-'//TODO			
-
-rem
-		Graphics 1100,900
-		ShowMouse()
-		Local img:TImage = LoadImage(populationCanvas.CreatePixmapFromCanvas())
-		local selectedSection:TStationMapSection
-		Local selectedSectionPopMaskImg:TImage
-		Local popCanvasImg:TImage = LoadImage( self.GetPopulationDensityLayer().CreatePixmapFromLayer() )
-		Repeat
-		SetClsColor 150,150,150
-		cls
-		DrawImage(img, 0, 0)
-		DrawImage(popCanvasImg, 0,0)
-		local y:Int = 20
-		SetColor 0,0,0
-		For Local section:TStationMapSection = EachIn sections
-			If THelper.IsIn(MouseX(), MouseY(), 800, y, 200, 15)
-				if selectedSection <> section
-					selectedSection = section
-					selectedSectionPopMaskImg = LoadImage(section.GetPopulationMaskLayer().CreatePixmapFromLayer())
-				EndIf
-					
-				SetColor 250,0,0
-				DrawText(section.name, 800, y)
-				SetColor 255,255,255
-				'shapesprite: kollisionsbild / Displaygroesse
-				section.GetShapeSprite().Draw(section.rect.x, section.rect.y)
-				if selectedSectionPopMaskImg
-					SetColor 255,0,0
-					'pop mask: interne groesse (Populationdata)
-					DrawImage(selectedSectionPopMaskImg, section.populationMaskOffsetX, section.populationMaskOffsetY)
-					SetColor 255,255,255
-				EndIf
-			Else
-				SetColor 0,0,0
-				DrawText(section.name, 800, y)
-				SetColor 255,255,255
-			EndIf
-			y :+ 15
-		Next
-		SetColor 255,255,255
-		Flip 0
-		Until KeyHit(KEY_ESCAPE) or AppTerminate()
-
-
-'hier weiter
-throw "ende gelaende"
 endrem
 		Return True
 	End Method
@@ -5345,8 +5296,9 @@ Type TStationMapSection
 	
 	'(local) position inside the section
 	Field uplinkPos:TVec2I
-	
+
 	Field name:String
+	Field sectionID:Int
 	Field iso3116code:String
 	Field populationMap:Int[,] {nosave}
 	Field population:Int = -1
@@ -5366,10 +5318,11 @@ Type TStationMapSection
 	End Method
 
 
-	Method Create:TStationMapSection(pos:SVec2I, name:String, iso3116code:String, shapeSpriteName:String, config:TData = Null)
+	Method Create:TStationMapSection(pos:SVec2I, name:String, iso3116code:String, sectionID:Int, shapeSpriteName:String, config:TData = Null)
 		Self.shapeSpriteName = shapeSpriteName
 		Self.rect = New TRectangle.Init(pos.X, pos.Y, 0, 0)
 		Self.name = name
+		Self.sectionID = sectionID
 		Self.iso3116code = iso3116code
 		LoadShapeSprite()
 
@@ -5992,14 +5945,23 @@ Type TStationMapSection
 			UnlockMutex(shareCacheMutex)
 		EndIf
 
-
 		'== GENERATE CACHE ==
 		If Not result
 			result = New TStationMapPopulationShare
 			
-			result.value.total = GetStationMapCollection().GetSharedReach(includeChannelMask.value, excludeChannelMask.value)
-'TODO: shared value berechnen ?
-			result.value.shared = 0
+			'population which can receive at least one in the included channels
+			result.value.total = GetStationMapCollection().GetSharedReach(includeChannelMask.value, excludeChannelMask.value, False, self)
+			'population which can receive all included channels
+			If includeChannelMask.GetEnabledCount() = 1
+				'this is the same if only 1 channel is to include
+				result.value.shared = result.value.total
+				'print "Include: " + includeChannelMask.ToString() + "  Exclude: " + excludeChannelMask.ToString() + "  Result:  Total="+result.value.total + "  Shared=" + result.value.shared + "   REUSE"
+			Else
+'hier weiter: Thueringen hat 7000 ?? schaut da ein Punkt "raus", oder
+'ist das Problem ein Zugriff auf Koordinate "x=0" oder "y = max"
+				result.value.shared = GetStationMapCollection().GetSharedReach(includeChannelMask.value, excludeChannelMask.value, True, self)
+				print "Include: " + includeChannelMask.ToString() + "  Exclude: " + excludeChannelMask.ToString() + "  Result:  Total="+result.value.total + "  Shared=" + result.value.shared  + "   name="+self.GetName()
+			EndIf
 
 rem
 			For Local mapX:Int = 0 Until antennaShareGridWidth 

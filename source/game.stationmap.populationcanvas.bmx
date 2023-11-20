@@ -363,9 +363,6 @@ endrem
 				case EPopulationCanvasMode.ClipSmaller
 					result = int(result * (result >= value))
 				case EPopulationCanvasMode.ClipBigger
-					'if result < 0
-					'	print "x="+x+", y="+y+"  result="+result+"  layer="+layers[i].GetValue(x, y).value
-					'endif
 					result = int(result * (result <= value))
 				'set result to 0 if is same as "value" (clip "equal")
 				case EPopulationCanvasMode.ClipBinary

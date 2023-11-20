@@ -69,10 +69,6 @@
 		<!-- CSV-Data or binary version if already converted -->
 		<densitydata url="germany_densitydata.bin" offset_x="35" offset_y="-3" />
 
-		<!-- map with graytone values of population density,
-			 colordepth must be RGBA, not Grayscale !!
-		-->
-		<densitymap type="pixmap" url="res/maps/germany/germany_densitymap.png" />
 		<!-- country_offset: offset of the country/usable area on the surface/map image -->
 		<surface url="germany_surface.png" country_offset_x="37" country_offset_y="3" />
 		<!-- states: x,y are offsets to "country on map/surface" (might have an offset / has visual "neighbour countries") -->
