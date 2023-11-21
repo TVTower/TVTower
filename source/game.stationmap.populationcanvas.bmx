@@ -511,6 +511,26 @@ endrem
 	End Method
 	
 
+	Method CreatePixmapFromCanvasValues:TPixmap()
+		Local x:Int, y:Int, w:int, h:int
+		GetUsedArea(x, y, w, h)
+
+		Local pix:TPixmap = CreatePixmap(w, h, PF_RGBA8888)
+		pix.ClearPixels(0)
+
+		For local canvasX:Int = x until x + w
+			For local canvasY:Int = y until y + h
+				local value:Int = GetValue(canvasX, canvasY)
+				'argb
+				Local layerColor:Int = (Int(255*(value<>0) * $1000000) + Int((value>0)*100 * $10000) + Int(value * $100) + Int(255))
+				'Local layerColor:Int = (Int(value * $1000000) + Int(canvasX * $10000) + Int(value * $100) + (value>0)*255)
+				pix.WritePixel(canvasX - x, canvasY - y, layerColor)
+			Next
+		Next
+		return pix
+	End Method	
+
+
 	Method CreatePixmapFromCanvas:TPixmap()
 		Local x:Int, y:Int, w:int, h:int
 		GetUsedArea(x, y, w, h)

@@ -1277,13 +1277,14 @@ endrem
 	'return (antenna) reach canvas for complete country (or specified section)
 	Method GetSharedReachCanvas:TPopulationCanvas(includePlayerIDsMask:Int, excludePlayerIDsMask:Int, requireAllIncluded:Int = True, section:TStationMapSection = Null)
 		'8 bytes for include mask, 8 bytes for exclude mask, 8 bytes for section, 8 bytes for options
-		Local options:Byte = Byte(requireAllIncluded = True) Shl 8
+		Local options:Byte = (requireAllIncluded = True) Shl 8
 		Local sectionID:Int = 0
 		If section Then sectionID = section.sectionID
+		if includePlayerIDsMask > 255 Then Throw "GetSharedReachCanvas: invalid includePlayerIDsMask ("+includePlayerIDsMask+")."
+		if excludePlayerIDsMask > 255 Then Throw "GetSharedReachCanvas: invalid excludePlayerIDsMask ("+excludePlayerIDsMask+")."
+		if sectionID > 255 Then Throw "GetSharedReachCanvas: invalid sectionID ("+sectionID+")."
 		Local key:Int = includePlayerIDsMask Shl 24 | excludePlayerIDsMask Shl 16 | sectionID Shl 8 | options
 
-		If includePlayerIDsMask < 0 or excludePlayerIDsMask < 0 Then key = 0 'same canvas for all "invalid" masks
-		
 		Local playerCount:Int = stationMaps.length
 		
 		If Not _sharedReachCanvases Then _sharedReachCanvases = New TIntMap
@@ -1312,10 +1313,11 @@ endrem
 			EndIf
 			
 			'exclude canvas layer
-			'only keep points where at least one of the mask broadcasts
+			'remove points where at least one of the mask broadcasts
 			'(no clipping needed as no exact "value" has to be reached within
 			' the canvas -> it is an "or" combination of the excluded players)
 			canvas.SetLayer(excludeLayer, 1, EPopulationCanvasMode.NegativeBinaryMask)
+			'canvas.SetLayerIgnoreInAreaCalculation(1,True)
 		Else
 			includeLayer = TPopulationCanvasLayer_Canvas(canvas.GetLayer(0))
 			excludeLayer = TPopulationCanvasLayer_Canvas(canvas.GetLayer(1))
@@ -5957,37 +5959,9 @@ Type TStationMapSection
 				result.value.shared = result.value.total
 				'print "Include: " + includeChannelMask.ToString() + "  Exclude: " + excludeChannelMask.ToString() + "  Result:  Total="+result.value.total + "  Shared=" + result.value.shared + "   REUSE"
 			Else
-'hier weiter: Thueringen hat 7000 ?? schaut da ein Punkt "raus", oder
-'ist das Problem ein Zugriff auf Koordinate "x=0" oder "y = max"
-				result.value.shared = GetStationMapCollection().GetSharedReach(includeChannelMask.value, excludeChannelMask.value, True, self)
-				print "Include: " + includeChannelMask.ToString() + "  Exclude: " + excludeChannelMask.ToString() + "  Result:  Total="+result.value.total + "  Shared=" + result.value.shared  + "   name="+self.GetName()
+				result.value.shared = GetStationMapCollection().GetSharedReach(includeChannelMask.value, excludeChannelMask.value, False, self)
+				'print "Include: " + includeChannelMask.ToString() + "  Exclude: " + excludeChannelMask.ToString() + "  Result:  Total="+result.value.total + "  Shared=" + result.value.shared  + "   name="+self.GetName()
 			EndIf
-
-rem
-			For Local mapX:Int = 0 Until antennaShareGridWidth 
-				For Local mapY:Int = 0 Until antennaShareGridHeight
-					Local index:Int = mapY * antennaShareGridWidth + mapX
-					Local mask:Byte = shareGrid[index]
-					'skip if none of our interested is here
-					If includeChannelMask.HasNone(mask) Then Continue
-					'skip if one of the to exclude is here
-					If Not excludeChannelMask.HasNone(mask) Then Continue
-
-					'someone has a station there
-					'-> check already done in the skip above
-					'If ((mapMask.mask & includeChannelMask) <> 0)
-						result.value.total :+ populationmap[mapX, mapY]
-					'EndIf
-					'all searched have a station there
-					If (mask & includeChannelMask.value) = includeChannelMask.value
-						result.value.shared :+ populationmap[mapX, mapY]
-					EndIf
-				Next
-			Next
-endrem
-			
-'			LockMutex(antennaShareMutex) 'to savely iterate over values()
-'			UnlockMutex(antennaShareMutex)
 
 			'store new cached data
 			If shareCache
@@ -6962,21 +6936,16 @@ Struct SChannelMask
 	
 
 	Method Set:SChannelMask(channelID:Int, enable:Int = True)
-		'activate the bit for a given channelID
-		'each channel corresponds to an index/position
-		'id1 = mask 1, id2 = mask 2
-		'id3 = mask 4, id4 = mask 8 ...
-
-		Return New SChannelMask( value | (enable Shl (channelID-1)) )
+		If enable
+			Return New SChannelMask( value | (1 Shl (channelID-1)) )
+		Else
+			Return New SChannelMask( value & ~(1 Shl (channelID-1)) )
+		EndIf
 	End Method
 	
 
 	Method Has:Int(channelID:Int)
-		'each channel corresponds to an index/position
-		'id1 = mask 1, id2 = mask 2
-		'id3 = mask 4, id4 = mask 8 ...
-
-		Return value & (1:Int Shl (channelID-1)) <> 0
+		Return value & (1 Shl (channelID-1)) <> 0
 	End Method
 
 
@@ -6998,7 +6967,8 @@ Struct SChannelMask
 
 
 	Method Negated:SChannelMask()
-		Return New SChannelMask( ~value )
+		'ignore all channels > 8
+		Return New SChannelMask( ~value & 255)
 	End Method
 	
 	
@@ -7019,7 +6989,7 @@ Struct SChannelMask
 	Method ToString:String()
 		Local res:String
 		For local i:int = 1 to 4
-			if Has(i) 
+			if value & (1 Shl (i-1)) <> 0 'Has(i) 
 				if res 
 					res :+ ", " + i
 				else
