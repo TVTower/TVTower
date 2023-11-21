@@ -31,7 +31,7 @@ Import "game.stationmap.densitydata.bmx"
 
 'parent of all stationmaps
 Type TStationMapCollection
-	Field mapInfo:TStationMapInfo
+	Field mapInfo:TStationMapInfo {nosave}
 	Field _populationDensityLayer:TPopulationCanvasLayer {nosave}
 	Field _sharedReachCanvases:TIntMap {nosave}
 	
