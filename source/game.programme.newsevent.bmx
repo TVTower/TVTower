@@ -347,6 +347,18 @@ Type TNewsEventCollection
 
 			news.happenedTime = time
 
+			'protect a thread id until the last news of that thread has happened
+			Local collection:TNewsEventTemplateCollection = GetNewsEventTemplateCollection()
+			Local template:TNewsEventTemplate = collection.getById(news.templateID)
+			If template And template.IsReuseable() And template.threadid
+				'print "checking template "+ news.GetTitle()
+				Local threadTime:Long = Long(String(collection.threadLastHappened.ValueForKey(template.threadid)))
+				If threadTime < news.happenedTime
+					collection.threadLastHappened.insert(template.threadid, ""+news.happenedTime)
+					'print "UPDATING "+template.threadid +" "+news.happenedTime
+				EndIf
+			EndIf
+
 			'add to the "happened" list
 			If news.HasHappened()
 				AddHappenedEvent(news)

@@ -25,6 +25,7 @@ Type TNewsEventTemplateCollection
 	Field unusedTemplates:TIntMap = new TIntMap
 	'TLowerString-GUID->object pairs
 	Field allTemplatesGUID:TMap = new TMap
+	Field threadLastHappened:TStringMap = new TStringMap
 
 	'CACHES (eg. for random accesses)
 	'the *Count fields help to predefine an initial size of the arrays
@@ -51,6 +52,7 @@ Type TNewsEventTemplateCollection
 	Method Initialize:TNewsEventTemplateCollection()
 		allTemplates.Clear()
 		allTemplatesGUID.Clear()
+		threadLastHappened.Clear()
 
 		unusedTemplates.Clear()
 		reuseableTemplates.Clear()
@@ -201,15 +203,20 @@ Type TNewsEventTemplateCollection
 
 		Local day:Long = GetWorldTime().GetDay()
 		Local currentlyUsedIds:TList = new TList
-
-		'prevent thread ids recently used from being reset
+		Local templateThreadLastHappenedTime:Long
+		Local threshold:Long = GetWorldTime().GetTimeGone() - minAgeInDays * TWorldTime.DAYLENGTH
+		'prevent thread ids recently used or currently active from being reset
 		For Local template:TNewsEventTemplate = EachIn allTemplates.Values()
 			If genre <> -1 And template.genre <> genre Then Continue
 			If Not template.threadId Then Continue
 
-			If abs(GetWorldTime().GetDay(template.lastUsedTime) - day) < minAgeInDays
+			templateThreadLastHappenedTime = Long(String(threadLastHappened.valueForKey(template.threadId)))
+			If templateThreadLastHappenedTime > threshold
 				currentlyUsedIds.AddLast(template.threadId)
-				'print "  mark thread as used recently " + template.threadId
+				'print "  mark thread as used recently new " + template.threadId +" "+template.GetTitle() +" "+GetWorldTime().GetFormattedGameDate(templateThreadLastHappenedTime)
+			ElseIf abs(GetWorldTime().GetDay(template.lastUsedTime) - day) < minAgeInDays
+				currentlyUsedIds.AddLast(template.threadId)
+				'print "  mark thread as used recently old" + template.threadId +" "+template.GetTitle()+" "+GetWorldTime().GetFormattedGameDate(template.lastUsedTime)
 			EndIf
 		Next
 
@@ -246,10 +253,10 @@ Type TNewsEventTemplateCollection
 
 	Method GetRandomUnusedAvailableInitial:TNewsEventTemplate(genre:int=-1)
 		'if no news is available, make older ones available again
-		'start with 4 days ago and lower until we got a news
-		local days:int = 4
+		'start with 7 days ago and lower until we got a news
+		local days:int = 7
 		While GetUnusedAvailableInitialTemplates(genre).length = 0 and days >= 0
-			TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
+			If days<=4 Then TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
 			ResetUsedTemplates(days, genre)
 			days :- 1
 		Wend
