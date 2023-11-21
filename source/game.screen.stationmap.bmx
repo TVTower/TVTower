@@ -2308,6 +2308,7 @@ Type TScreenHandler_StationMap
 	Global mouseoverSection:TStationMapSection
 	Global selectedStation:TStationBase
 	Global mouseoverStation:TStationBase
+	Global mouseoverStationOverCountry:Int
 	Global mouseoverStationPosition:TVec2D
 	
 	'indicator for each player (bitmask)
@@ -2653,12 +2654,12 @@ Type TScreenHandler_StationMap
 		'TStationMapSection.DrawAll()
 
 		'backgrounds
-		If mouseoverStation And mouseoverStation = selectedStation
+		If mouseoverStation And mouseoverStationPosition And mouseoverStation = selectedStation
 			'avoid drawing it two times...
 			mouseoverStation.DrawBackground(True, True)
 		Else
 			'also draw the station used for buying/searching
-			If mouseoverStation Then mouseoverStation.DrawBackground(False, True)
+			If mouseoverStation And mouseoverStationPosition Then mouseoverStation.DrawBackground(False, True)
 			'also draw the station used for buying/searching
 			If selectedStation Then selectedStation.DrawBackground(True, False)
 		EndIf
@@ -2668,12 +2669,12 @@ Type TScreenHandler_StationMap
 		GetStationMap(room.owner).Draw()
 
 		'also draw the station used for buying/searching
-		If mouseoverStation Then mouseoverStation.Draw()
+		If mouseoverStation and mouseoverStationPosition Then mouseoverStation.Draw()
 		'also draw the station used for buying/searching
 		If selectedStation Then selectedStation.Draw(True)
 
 
-		if mouseoverStation ' or selectedStation
+		if mouseoverStation And mouseoverStationPosition ' or selectedStation
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 
 			If actionMode = MODE_BUY_ANTENNA
@@ -2713,7 +2714,7 @@ Type TScreenHandler_StationMap
 		Next
 
 		'draw a kind of tooltip over a mouseoverStation
-		If mouseoverStation
+		If mouseoverStation And mouseoverStationPosition
 			mouseoverStation.DrawInfoTooltip()
 		else
 			'if over a section, draw special tooltip displaying reasons
@@ -2883,6 +2884,8 @@ endrem
 			'create a temporary station if not done yet
 			If Not mouseoverStation Then mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
 			Local mousePos:TVec2D = New TVec2D( MouseManager.x, MouseManager.y)
+			if not mouseoverStationPosition Then mouseoverStationPosition = New TVec2D
+			mouseoverStationPosition.SetXY(MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
 			If Not mousePos.EqualsXY(mouseoverStation.x, mouseoverStation.y, True)
@@ -2895,7 +2898,7 @@ endrem
 
 			Local hoveredMapSection:TStationMapSection
 			If mouseoverStation Then hoveredMapSection = GetStationMapCollection().GetSection(mouseoverStation.x, mouseoverStation.y)
-
+			
 			'if mouse gets clicked, we store that position in a separate station
 			If MOUSEMANAGER.isClicked(1) OR KEYMANAGER.IsHit(KEY_SPACE)
 				'check reach and valid federal state
@@ -2910,7 +2913,7 @@ endrem
 			'no antennagraphic in foreign countries
 			'-> remove the station so it wont get displayed
 			If Not hoveredMapSection Or mouseoverStation.GetReach() <= 0
-				mouseoverStation = Null
+				'mouseoverStation = Null
 				mouseoverStationPosition = Null
 			EndIf
 
