@@ -2544,9 +2544,8 @@ Type TStationMapInfo
 			densityDataNewH = densityDataNewH * densityDataAspectScaleFactor
 		EndIf
 
-		Print "ResizeDensityData()"
-		print "  Orig: " + densityData.width+", " + densityData.height
-		print "  Aspect ratio adjusted: " + densityDataNewW+", " + densityDataNewH
+		TLogger.Log("ResizeDensityData()", "Orig: " + densityData.width+", " + densityData.height, LOG_DEBUG)
+		TLogger.Log("ResizeDensityData()", "Aspect ratio adjusted: " + densityDataNewW+", " + densityDataNewH, LOG_DEBUG)
 
 		'scale densityData down to a handle-able size (avoid too many points to calculate)
 		If densityData.height > densityData.width
@@ -2560,7 +2559,7 @@ Type TStationMapInfo
 				densityDataNewW = densityDataMaxDim
 			EndIf
 		EndIf
-		print "  Max dim adjusted: " + densityDataNewW+", " + densityDataNewH
+		TLogger.Log("ResizeDensityData()", "Max dim adjusted: " + densityDataNewW+", " + densityDataNewH, LOG_DEBUG)
 
 
 		'stretch density data to new dimensions
@@ -2569,8 +2568,8 @@ Type TStationMapInfo
 		'calculate pixel-kilometer factor
 		densityDataScreenScale = screenMapSize.x / Float(densityData.width)
 		
-		print "  Stretched: " + densityData.width+", " + densityData.height
-		print "  Scale: " + densityDataScreenScale
+		TLogger.Log("ResizeDensityData()", "Stretched: " + densityData.width+", " + densityData.height, LOG_DEBUG)
+		TLogger.Log("ResizeDensityData()", "Scale: " + densityDataScreenScale, LOG_DEBUG)
 	End Method
 End Type
 
