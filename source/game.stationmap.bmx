@@ -1066,14 +1066,24 @@ endrem
 	Method LoadMapFromXML:Int(xmlFile:String="", baseUri:String = "")
 		If xmlFile <> "" Then mapConfigFile = xmlFile
 
+		If not mapConfigFile
+			TLogger.Log("TStationMapCollection.LoadFromXML", "No file defined for loading.", LOG_ERROR)
+			Throw("TStationMapCollection.LoadFromXML: No file defined for loading.")
+		EndIf
+
 		'=== LOAD XML CONFIG ===
 		'Local registryLoader:TRegistryLoader = New TRegistryLoader
 		'registryLoader.baseURI = baseURI
 		'registryLoader.LoadFromXML(mapConfigFile, True)
 		'TLogger.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
 
-		Local fullXMLFileURI:String = xmlFile
-		If ExtractDir(baseURI) Then fullXMLFileURI = ExtractDir(baseURI) + "/" + xmlFile
+		Local fullXMLFileURI:String = mapConfigFile
+		If ExtractDir(baseURI) Then fullXMLFileURI = ExtractDir(baseURI) + "/" + mapConfigFile
+
+		If FileType(fullXMLFileURI) <> FILETYPE_FILE
+			TLogger.Log("TStationMapCollection.LoadFromXML", "File ~q"+fullXMLFileURI+"~q not found.", LOG_ERROR)
+			Throw("TStationMapCollection.LoadFromXML: File ~q"+fullXMLFileURI+"~q not found.")
+		EndIf
 
 		Local xmlHelper:TXmlHelper = TXmlHelper.Create(fullXMLFileURI, "", False)
 		Local xmlRootNode:TxmlNode = xmlHelper.GetRootNode()
@@ -1088,15 +1098,15 @@ endrem
 		Local densityDataNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "densitydata", xmlFile, "Misses the <stationmap><densitydata>-entry.")
 
 		Local densityData:TData = TXmlHelper.LoadAllValuesToData(densityDataNode, New TData)
-		if not densityData.Has("url") then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmap><densitydata url>-entry.")
+		if not densityData.Has("url") then Throw("File ~q"+mapConfigFile+"~q misses the <stationmap><densitydata url>-entry.")
 
 		Local mapDensityDataURL:String = densityData.GetString("url")
 		Local mapDensityDataOffsetX:Int = densityData.GetInt("offset_x", 0)
 		Local mapDensityDataOffsetY:Int = densityData.GetInt("offset_y", 0)
-		if mapDensityDataURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmap><densitydata url>-entry.")
+		if mapDensityDataURL = "" then Throw("File ~q"+mapConfigFile+"~q misses a valid <stationmap><densitydata url>-entry.")
 
 		Local mapSurfaceImageURL:String = TXmlHelper.FindValue(surfaceNode, "url", "")
-		if mapSurfaceImageURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmap><surface url>-entry.")
+		if mapSurfaceImageURL = "" then Throw("File ~q"+mapConfigFile+"~q misses a valid <stationmap><surface url>-entry.")
 
 		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "startantenna")
 		If Not startAntennaNode Then Throw("File ~q"+mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
