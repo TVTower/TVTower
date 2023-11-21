@@ -1339,7 +1339,9 @@ Type TDatabaseLoader
 			'which are created after that programme
 			If Not member
 				member = New TPersonBase
-				member.SetFlag(TVTPersonFlag.FICTIONAL, True)
+				Local memberFictional:Int = True
+				If mdata Then memberFictional = mdata.GetInt("fictional", 0)
+				member.SetFlag(TVTPersonFlag.FICTIONAL, memberFictional)
 
 				If memberGenerator
 					'generator is "countrycode1 countrycode2, gender, levelup"
