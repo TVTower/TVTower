@@ -68,6 +68,8 @@
 		
 		<!-- CSV-Data or binary version if already converted -->
 		<densitydata url="germany_densitydata.bin" offset_x="35" offset_y="-3" />
+		
+		<startantenna x="360" y="320" />
 
 		<!-- country_offset: offset of the country/usable area on the surface/map image -->
 		<surface url="germany_surface.png" country_offset_x="37" country_offset_y="3" />

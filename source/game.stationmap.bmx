@@ -913,6 +913,9 @@ endrem
 		'not mandatory
 		'If Not sportsDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><sports>-entry.")
 
+		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "startantenna")
+		If Not startAntennaNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
+
 		Local densityDataNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitydata")
 		If Not densityDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitydata>-entry.")
 		Local densityData:TData = New TData
@@ -938,6 +941,7 @@ endrem
 		EndIf
 		_instance.LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapSurfaceOffsetX, mapSurfaceOffsetY, mapSurfaceImageURL)
 		
+		_instance.mapInfo.startAntennaPos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "x", 0), TXmlHelper.FindValueInt(startAntennaNode, "y", 0))
 
 		'older savegames might contain a config which has the data converted
 		'to key->value[] arrays instead of values being overridden on each load.
@@ -1094,6 +1098,9 @@ endrem
 		Local mapSurfaceImageURL:String = TXmlHelper.FindValue(surfaceNode, "url", "")
 		if mapSurfaceImageURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmap><surface url>-entry.")
 
+		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "startantenna")
+		If Not startAntennaNode Then Throw("File ~q"+mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
+
 
 		'load sprites/section images
 		Local resourcesNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "resources", xmlFile, "Misses the <resources>-entry.")
@@ -1111,6 +1118,8 @@ endrem
 		EndIf
 		LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapDensityDataOffsetX, mapDensityDataOffsetY, mapSurfaceImageURL)
 		
+
+		mapInfo.startAntennaPos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "x", 0), TXmlHelper.FindValueInt(startAntennaNode, "y", 0))
 
 
 		'older savegames might contain a config which has the data converted
@@ -1209,7 +1218,7 @@ endrem
 		'dynamic antenna radius depending on start year (start antenna reach)
 		Local map:TStationMap = GetStationMap(1, True)
 		'coordinates from game.game.bmx PreparePlayerStep1
-		Local station:TStationBase = map.GetTemporaryAntennaStation(310,260, False)
+		Local station:TStationBase = map.GetTemporaryAntennaStation(GetStationMapCollection().mapInfo.startAntennaPos.x, GetStationMapCollection().mapInfo.startAntennaPos.y, False)
 		If station And antennaStationRadius = ANTENNA_RADIUS_NOT_INITIALIZED
 			antennaStationRadius = 50
 			For Local r:Int = 20 To 50
@@ -2409,6 +2418,8 @@ Type TStationMapInfo
 	Field densityDataScreenScale:Float = 1.0
 	'maximum dimension of the density data set
 	Field densityDataMaxDim:Int = 1500
+	'where to place first player antenna
+	Field startAntennaPos:SVec2I
 
 	Field surfaceImage:TImage
 
