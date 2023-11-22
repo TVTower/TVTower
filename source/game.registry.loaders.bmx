@@ -463,7 +463,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 		'=== HANDLE "<GENRE>" ===
 		Local fieldNames:String[] = ["id", "name"]
-		fieldNames :+ ["outcomeMod|outcome-mod", "reviewMod|review-mod", "speedMod|speed-mod"]
+		fieldNames :+ ["outcomeMod|outcome-mod", "reviewMod|review-mod", "speedMod|speed-mod", "refreshMod|refresh-mod", "wearoffMod|wearoff-mod"]
 		fieldNames :+ ["goodFollower", "badFollower"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 		data.Add("nodeName", node.GetName().ToLower())
@@ -580,6 +580,8 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		programmeDataMod.Insert("outcomeMod", data.GetString("outcomeMod", -1))
 		programmeDataMod.Insert("reviewMod", data.GetString("reviewMod", -1))
 		programmeDataMod.Insert("speedMod", data.GetString("speedMod", -1))
+		programmeDataMod.Insert("refreshMod", data.GetString("refreshMod", -1))
+		programmeDataMod.Insert("wearoffMod", data.GetString("wearoffMod", -1))
 
 		programmeDataMod.Insert("castAttributes", data.Get("castAttributes"))
 		programmeDataMod.Insert("focusPointPriorities", data.Get("focusPointPriorities"))

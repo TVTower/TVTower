@@ -172,127 +172,13 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		Return _finishedProductionProgrammeData
 	End Method
 
-
-	Method GetGenreRefreshModifier:Float(genre:Int)
-		'TODO add refresh modifier to programmedatamods (TMovieGenreDefinition
-		'values get multiplied with the refresh factor
-		'so this means: higher (>1.0) values increase the resulting
-		'topicality win
-		Select genre
-			Case TVTProgrammeGenre.Adventure
-				Return 1.0
-			Case TVTProgrammeGenre.Action
-				Return 1.0
-			Case TVTProgrammeGenre.Animation
-				Return 1.1
-			Case TVTProgrammeGenre.Crime
-				Return 1.0
-			Case TVTProgrammeGenre.Comedy
-				Return 1.25
-			Case TVTProgrammeGenre.Documentary
-				Return 1.1
-			Case TVTProgrammeGenre.Drama
-				Return 1.05
-			Case TVTProgrammeGenre.Erotic
-				Return 0.9
-			Case TVTProgrammeGenre.Family
-				Return 1.15
-			Case TVTProgrammeGenre.Fantasy
-				Return 1.1
-			Case TVTProgrammeGenre.History
-				Return 1.0
-			Case TVTProgrammeGenre.Horror
-				Return 1.0
-			Case TVTProgrammeGenre.Monumental
-				Return 0.95
-			Case TVTProgrammeGenre.Mystery
-				Return 0.95
-			Case TVTProgrammeGenre.Romance
-				Return 1.1
-			Case TVTProgrammeGenre.Scifi
-				Return 0.95
-			Case TVTProgrammeGenre.Thriller
-				Return 1.0
-			Case TVTProgrammeGenre.Western
-				Return 0.95
-			Case TVTProgrammeGenre.Show, ..
-			     TVTProgrammeGenre.Show_Politics, ..
-			     TVTProgrammeGenre.Show_Music, ..
-			     TVTProgrammeGenre.Show_Talk, ..
-			     TVTProgrammeGenre.Show_Game
-				Return 0.90
-			Case TVTProgrammeGenre.Event, ..
-			     TVTProgrammeGenre.Event_Politics, ..
-			     TVTProgrammeGenre.Event_Music, ..
-			     TVTProgrammeGenre.Event_Sport, ..
-			     TVTProgrammeGenre.Event_Showbiz
-				Return 0.90
-			Case TVTProgrammeGenre.Feature, ..
-			     TVTProgrammeGenre.Feature_YellowPress
-				Return 0.95
-			Default
-				Return 1.0
-		End Select
+	Method GetGenreRefreshModifier:Float(genres:Int[])
+		Return GetMovieGenreDefinitionCollection().Get(genres).RefreshMod
 	End Method
 
 
-	Method GetGenreWearoffModifier:Float(genre:Int)
-		'values get multiplied with the wearOff factor
-		'so this means: higher (>1.0) values increase the resulting
-		'topicality loss
-		Select genre
-			Case TVTProgrammeGenre.Adventure
-				Return 1.0
-			Case TVTProgrammeGenre.Action
-				Return 1.05
-			Case TVTProgrammeGenre.Animation
-				Return 1.0
-			Case TVTProgrammeGenre.Crime
-				Return 1.05
-			Case TVTProgrammeGenre.Comedy
-				Return 0.90
-			Case TVTProgrammeGenre.Documentary
-				Return 0.85
-			Case TVTProgrammeGenre.Drama
-				Return 0.95
-			Case TVTProgrammeGenre.Erotic
-				Return 0.80
-			Case TVTProgrammeGenre.Family
-				Return 0.85
-			Case TVTProgrammeGenre.Fantasy
-				Return 1.05
-			Case TVTProgrammeGenre.History
-				Return 1.0
-			Case TVTProgrammeGenre.Horror
-				Return 1.0
-			Case TVTProgrammeGenre.Monumental
-				Return 1.1
-			Case TVTProgrammeGenre.Mystery
-				Return 1.05
-			Case TVTProgrammeGenre.Romance
-				Return 1.0
-			Case TVTProgrammeGenre.Scifi
-				Return 1.10
-			Case TVTProgrammeGenre.Thriller
-				Return 1.05
-			Case TVTProgrammeGenre.Western
-				Return 1.10
-			Case TVTProgrammeGenre.Show, ..
-			     TVTProgrammeGenre.Show_Politics, ..
-			     TVTProgrammeGenre.Show_Music
-				Return 1.10
-			Case TVTProgrammeGenre.Event, ..
-			     TVTProgrammeGenre.Event_Politics, ..
-			     TVTProgrammeGenre.Event_Music, ..
-			     TVTProgrammeGenre.Event_Sport, ..
-			     TVTProgrammeGenre.Event_Showbiz
-				Return 1.15
-			Case TVTProgrammeGenre.Feature, ..
-			     TVTProgrammeGenre.Feature_YellowPress
-				Return 1.05
-			Default
-				Return 1.0
-		End Select
+	Method GetGenreWearoffModifier:Float(genres:Int[])
+		Return GetMovieGenreDefinitionCollection().Get(genres).WearoffMod
 	End Method
 
 
@@ -966,9 +852,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetGenreWearoffModifier:Float(genre:Int=-1)
-		If genre = -1 Then genre = Self.genre
-		Return GetProgrammeDataCollection().GetGenreWearoffModifier(genre)
+	Method GetGenreWearoffModifier:Float(genres:Int[] = Null)
+		If genres = Null Then genres = [Self.genre]+subGenres
+		Return GetProgrammeDataCollection().GetGenreWearoffModifier(genres)
 	End Method
 
 
@@ -997,9 +883,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetGenreRefreshModifier:Float(genre:Int=-1)
-		If genre = -1 Then genre = Self.genre
-		Return GetProgrammeDataCollection().GetGenreRefreshModifier(genre)
+	Method GetGenreRefreshModifier:Float(genres:Int[] = Null)
+		If genres = Null Then genres = [Self.genre]+subGenres
+		Return GetProgrammeDataCollection().GetGenreRefreshModifier(genres)
 	End Method
 
 
