@@ -4,6 +4,8 @@ Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.modifier.base.bmx"
 Import "game.gameinformation.base.bmx"
+Import "game.person.base.bmx"
+Import "game.programme.programmerole.bmx"
 Import "Dig/base.util.scriptexpression.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.bitmask.bmx"
@@ -251,6 +253,30 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 			For Local placeHolder:String = EachIn placeHolders
 				Local replacement:String = ""
 				Local replaced:Int = False
+				Local elements:String[] = placeHolder.split(":")
+				If elements.length = 3
+					If elements[0].endsWith("person")
+						Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(elements[1])
+						If Not person
+							throw "could not find person with id " + elements[1]
+						Else
+							TTemplateVariables.ReplacePlaceholderInText(value, "person:"+elements[1]+":Full", person.GetFullName())
+							TTemplateVariables.ReplacePlaceholderInText(value, "person:"+elements[1]+":First", person.GetFirstName())
+							TTemplateVariables.ReplacePlaceholderInText(value, "person:"+elements[1]+":Nick", person.GetNickName())
+							TTemplateVariables.ReplacePlaceholderInText(value, "person:"+elements[1]+":Last", person.GetLastName())
+							replaced = True
+						EndIf
+					ElseIf elements[0].endsWith("role")
+						Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(elements[1])
+							If role
+								TTemplateVariables.ReplacePlaceholderInText(value, "role:"+elements[1]+":Full", role.GetFullName())
+								TTemplateVariables.ReplacePlaceholderInText(value, "role:"+elements[1]+":First", role.GetFirstName())
+								TTemplateVariables.ReplacePlaceholderInText(value, "role:"+elements[1]+":Last", role.GetLastName())
+							Else
+								throw "could not find role with ID "+elements[1]
+							EndIf
+					EndIf
+				EndIf
 				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in

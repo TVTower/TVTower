@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.math.bmx"
 Import "game.gameconstants.bmx"
@@ -119,8 +119,8 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 	End Method
 
 
-	Method GetPopularity:TPopularity() override
-		Local popularity:TPopularity = Super.GetPopularity()
+	Method GetPopularity:TPopularity(params:TData = Null) override
+		Local popularity:TPopularity = Super.GetPopularity(params)
 		If Not popularity 
 			Local person:TPersonBase
 			If popularityReferenceID Then person = GetPerson(popularityReferenceID)
