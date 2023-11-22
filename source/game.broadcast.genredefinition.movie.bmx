@@ -168,6 +168,16 @@ Type TMovieGenreDefinitionCollection
 			floats[i] = all[i].ReviewMod
 			result.ReviewMod = weighted(floats)
 		Next
+		'refresh
+		For i:Int = 0 Until ids.length
+			floats[i] = all[i].RefreshMod
+			result.RefreshMod = weighted(floats)
+		Next
+		'wearoff
+		For i:Int = 0 Until ids.length
+			floats[i] = all[i].WearoffMod
+			result.WearoffMod = weighted(floats)
+		Next
 
 		'timeMod
 		result.TimeMods = result.TimeMods[..24]
@@ -253,6 +263,8 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field OutcomeMod:Float = 0.5
 	Field ReviewMod:Float = 0.3
 	Field SpeedMod:Float = 0.2
+	Field RefreshMod:Float = 1.0
+	Field WearoffMod:Float = 1.0
 
 	Field GoodFollower:TList = CreateList()
 	Field BadFollower:TList = CreateList()
@@ -277,6 +289,8 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		OutcomeMod = data.GetFloat("outcomeMod", 1.0)
 		ReviewMod = data.GetFloat("reviewMod", 1.0)
 		SpeedMod = data.GetFloat("speedMod", 1.0)
+		RefreshMod = data.GetFloat("refreshMod", 1.0)
+		WearoffMod = data.GetFloat("wearoffMod", 1.0)
 
 		GoodFollower = TList(data.Get("goodFollower"))
 		If GoodFollower = Null Then GoodFollower = CreateList()
@@ -288,7 +302,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		focusPointPriorities = TMap(data.Get("focusPointPriorities"))
 
 		'print "Load moviegenre" + referenceId + ": " + AudienceAttraction.ToString()
-		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
+		'print "RefreshMod: " + RefreshMod + " | WearoffMod: " + WearoffMod + " | OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 
 		return self
 	End Method

@@ -7,7 +7,9 @@
 				name:         just a description/remark
 				outcome-mod:  modifier for outcome values
 				review-mod:   modifier for review values
-				speed-mod:	  modifier for speed values
+				speed-mod:    modifier for speed values
+				refresh-mod:  modifier for topicality refresh after broadcast (0.8=slower, 1.2=faster)
+				wearoff-mod:  modifier for topicality loss on broadcast (0.8=less, 1.2=more)
 				goodFollower: ids of good followup genres (comma separated)
 				badFollower:  ids of bad followup genres (comma separated)
 				timeMods:     modifier for broadcast times
@@ -32,7 +34,7 @@
 							    1.0 = absolute benefit from it  (appearance in romantic movies)
 							   -1.0 = absolute penalty for it (muscles in a lovestory...)
 			-->
-			<genre id="0" name="various" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6">
+			<genre id="0" name="various" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6" refresh-mod="1.0" wearoff-mod ="1.0">
 				<goodFollower></goodFollower>
 				<badFollower>monumental</badFollower>
 				<timeMods>
@@ -71,7 +73,7 @@
 					<audienceAttraction id="Pensioners" value="0" />
 				</audienceAttractions>
 			</genre>
-			<genre id="1" name="adventure" outcome-mod="0.45" review-mod="0.25" speed-mod="0.3">
+			<genre id="1" name="adventure" outcome-mod="0.45" review-mod="0.25" speed-mod="0.3" refresh-mod="1.0" wearoff-mod ="1.0">
 				<goodFollower>2,10</goodFollower>
 				<badFollower>7,11,15</badFollower>
 				<timeMods>
@@ -121,7 +123,7 @@
 					<stunts value="1.1" />
 				</focusPointPriorities>
 			</genre>
-			<genre id="2" name="action" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
+			<genre id="2" name="action" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3" refresh-mod="1.0" wearoff-mod ="1.05">
 				<goodFollower>1,4,17</goodFollower>
 				<badFollower>6,7</badFollower>
 				<timeMods>
@@ -169,7 +171,7 @@
 					<stunts value="1.2" />
 				</focusPointPriorities>
 			</genre>
-			<genre id="3" name="animation" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
+			<genre id="3" name="animation" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2" refresh-mod="1.1" wearoff-mod ="1.0">
 				<goodFollower>5,9</goodFollower>
 				<badFollower>17,12,8,13</badFollower>
 				<timeMods>
@@ -208,7 +210,7 @@
 					<audienceAttraction id="Pensioners" value="-2" />
 				</audienceAttractions>
 			</genre>
-			<genre id="4" name="crime" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
+			<genre id="4" name="crime" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3" refresh-mod="1.0" wearoff-mod ="1.05">
 				<goodFollower>2,17</goodFollower>
 				<badFollower>3,6</badFollower>
 				<timeMods>
@@ -251,7 +253,7 @@
 					<supportingactor attribute="charisma" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="5" name="comedy" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
+			<genre id="5" name="comedy" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3" refresh-mod="1.15" wearoff-mod ="0.9">
 				<goodFollower>0,9,10,15</goodFollower>
 				<badFollower>6,7,8,12</badFollower>
 				<timeMods>
@@ -275,8 +277,8 @@
 					<timeMod time="17" value="0.05"/>
 					<timeMod time="18" value="0.1"/>
 					<timeMod time="19" value="0.1"/>
-					<timeMod time="20" value="0.2"/>
-					<timeMod time="21" value="0.2"/>
+					<timeMod time="20" value="0.15"/>
+					<timeMod time="21" value="0.15"/>
 					<timeMod time="22" value="0.1"/>
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
@@ -296,7 +298,7 @@
 					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="6" name="documentary" outcome-mod="0.2" review-mod="0.5" speed-mod="0.3">
+			<genre id="6" name="documentary" outcome-mod="0.2" review-mod="0.5" speed-mod="0.3" refresh-mod="1.1" wearoff-mod ="0.85">
 				<goodFollower>0,7,11,200,201,202,203</goodFollower>
 				<badFollower>1,2,3,4,5,8,9,10,12,14,15,17</badFollower>
 				<timeMods>
@@ -340,7 +342,7 @@
 					<host attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="7" name="drama" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
+			<genre id="7" name="drama" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2" refresh-mod="1.05" wearoff-mod ="0.95">
 				<goodFollower>4, 6,13</goodFollower>
 				<badFollower>1,2,5,10,12,16</badFollower>
 				<timeMods>
@@ -386,7 +388,7 @@
 					<coulisse value="1.2" />
 				</focusPointPriorities>
 			</genre>
-			<genre id="8" name="erotic" outcome-mod="0.2" review-mod="0.2" speed-mod="0.6">
+			<genre id="8" name="erotic" outcome-mod="0.2" review-mod="0.2" speed-mod="0.6" refresh-mod="0.9" wearoff-mod ="0.9">
 				<goodFollower></goodFollower>
 				<badFollower>3,5,6,7,9,11,200,201,202,203</badFollower>
 				<timeMods>
@@ -437,7 +439,7 @@
 					<vfx_and_sfx value="0.5" />
 				</focusPointPriorities>
 			</genre>
-			<genre id="9" name="family" outcome-mod="0.40" review-mod="0.3" speed-mod="0.3">
+			<genre id="9" name="family" outcome-mod="0.40" review-mod="0.3" speed-mod="0.3" refresh-mod="1.15" wearoff-mod ="0.85">
 				<goodFollower>1,3,5</goodFollower>
 				<badFollower>2,4,8,12,17</badFollower>
 				<timeMods>
@@ -460,16 +462,16 @@
 					<timeMod time="16" value="0.1"/>
 					<timeMod time="17" value="0.1"/>
 					<timeMod time="18" value="0.1"/>
-					<timeMod time="19" value="0.15"/>
-					<timeMod time="20" value="0.2"/>
-					<timeMod time="21" value="0.15"/>
+					<timeMod time="19" value="0.1"/>
+					<timeMod time="20" value="0.15"/>
+					<timeMod time="21" value="0.1"/>
 					<timeMod time="22" value="0.05"/>
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="1" />
 					<audienceAttraction id="Teenagers" value="0.2" />
-					<audienceAttraction id="HouseWives" men="1" women="1.5" />
+					<audienceAttraction id="HouseWives" men="0.7" women="1.2" />
 					<audienceAttraction id="Employees" men="0.5" women="1" />
 					<audienceAttraction id="Unemployed" men="0" women="0.3" />
 					<audienceAttraction id="Managers" value="-1" />
@@ -482,7 +484,7 @@
 					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="10" name="fantasy" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
+			<genre id="10" name="fantasy" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2" refresh-mod="1.1" wearoff-mod ="1.05">
 				<goodFollower>2,14,16</goodFollower>
 				<badFollower>6,7,8</badFollower>
 				<timeMods>
@@ -527,7 +529,7 @@
 					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="11" name="history" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
+			<genre id="11" name="history" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2" refresh-mod="1.0" wearoff-mod ="1.0">
 				<goodFollower>6,7,13,201</goodFollower>
 				<badFollower>3,8</badFollower>
 				<timeMods>
@@ -571,7 +573,7 @@
 					<supportingactor attribute="charisma" value="0.3" />
 				</castAttributes>
 			</genre>
-			<genre id="12" name="horror" outcome-mod="0.4" review-mod="0.2" speed-mod="0.4">
+			<genre id="12" name="horror" outcome-mod="0.4" review-mod="0.2" speed-mod="0.4" refresh-mod="1.0" wearoff-mod ="1.0">
 				<goodFollower>2,10,16,17</goodFollower>
 				<badFollower>3,5,6,7,8,9,200,201,202,203</badFollower>
 				<timeMods>
@@ -610,7 +612,7 @@
 					<audienceAttraction id="Pensioners" men="-1.8" women="-2" />
 				</audienceAttractions>
 			</genre>
-			<genre id="13" name="monumental" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2">
+			<genre id="13" name="monumental" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2" refresh-mod="0.95" wearoff-mod ="1.1">
 				<goodFollower>6,10,11,18</goodFollower>
 				<badFollower>1,2,3,5,8,12</badFollower>
 				<timeMods>
@@ -654,7 +656,7 @@
 					<supportingactor attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
-			<genre id="14" name="mystery" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
+			<genre id="14" name="mystery" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2" refresh-mod="0.95" wearoff-mod ="1.05">
 				<goodFollower>4,11,17</goodFollower>
 				<badFollower>3,8</badFollower>
 				<timeMods>
@@ -693,7 +695,7 @@
 					<audienceAttraction id="Pensioners" value="-1.7" />
 				</audienceAttractions>
 			</genre>
-			<genre id="15" name="romance" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
+			<genre id="15" name="romance" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2" refresh-mod="1.1" wearoff-mod ="1.0">
 				<goodFollower>5,9,202,203</goodFollower>
 				<badFollower>3,11</badFollower>
 				<timeMods>
@@ -739,7 +741,7 @@
 					<supportingactor attribute="appearance" value="0.4" />
 				</castAttributes>
 			</genre>
-			<genre id="16" name="scifi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
+			<genre id="16" name="scifi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2" refresh-mod="0.95" wearoff-mod ="1.1">
 				<goodFollower>1,2,10,14,17</goodFollower>
 				<badFollower>8,15</badFollower>
 				<timeMods>
@@ -788,7 +790,7 @@
 					<stunts value="1.2" />
 				</focusPointPriorities>
 			</genre>
-			<genre id="17" name="thriller" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
+			<genre id="17" name="thriller" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3" refresh-mod="1.0" wearoff-mod ="1.05">
 				<goodFollower>2,4,14</goodFollower>
 				<badFollower>5,8,201</badFollower>
 				<timeMods>
@@ -833,7 +835,7 @@
 					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="18" name="western" outcome-mod="0.4" review-mod="0.3" speed-mod="0.3">
+			<genre id="18" name="western" outcome-mod="0.4" review-mod="0.3" speed-mod="0.3" refresh-mod="0.95" wearoff-mod ="1.1">
 				<goodFollower>2,13</goodFollower>
 				<badFollower>8</badFollower>
 				<timeMods>
@@ -878,7 +880,7 @@
 			</genre>
 
 
-			<genre id="100" name="show" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
+			<genre id="100" name="show" outcome-mod="0" review-mod="0.5" speed-mod="0.5" refresh-mod="0.9" wearoff-mod ="1.1">
 				<goodFollower>5,9,11</goodFollower>
 				<badFollower>8,12</badFollower>
 				<timeMods>
@@ -925,7 +927,7 @@
 					<guest attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2">
+			<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2" refresh-mod="0.9" wearoff-mod ="1.1">
 				<goodFollower>4,6,17</goodFollower>
 				<badFollower>15</badFollower>
 				<timeMods>
@@ -971,7 +973,7 @@
 					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
-			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5">
+			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5" refresh-mod="0.9" wearoff-mod ="1.1">
 				<goodFollower>5,9,100,102</goodFollower>
 				<badFollower>6,101,201</badFollower>
 				<timeMods>
@@ -1018,7 +1020,7 @@
 					<guest attribute="appearance" value="0.5" />
 				</castAttributes>
 			</genre>
-			<genre id="103" name="show_talk" outcome-mod="0.2" review-mod="0.30" speed-mod="0.50">
+			<genre id="103" name="show_talk" outcome-mod="0.2" review-mod="0.30" speed-mod="0.50" refresh-mod="0.9" wearoff-mod ="1.1">
 				<goodFollower>5,9</goodFollower>
 				<badFollower>12,13</badFollower>
 				<timeMods>
@@ -1065,7 +1067,7 @@
 					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
-			<genre id="104" name="show_game" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5">
+			<genre id="104" name="show_game" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5" refresh-mod="0.9" wearoff-mod ="1.1">
 				<goodFollower>5,9,100,102</goodFollower>
 				<badFollower>6,101,201</badFollower>
 				<timeMods>
@@ -1113,7 +1115,7 @@
 				</castAttributes>
 			</genre>
 
-			<genre id="200" name="event" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
+			<genre id="200" name="event" outcome-mod="0" review-mod="0.5" speed-mod="0.5" refresh-mod="0.9" wearoff-mod ="1.15">
 				<goodFollower>5,9,11</goodFollower>
 				<badFollower>8,12</badFollower>
 				<timeMods>
@@ -1152,7 +1154,7 @@
 					<audienceAttraction id="Pensioners" value="0.5" />
 				</audienceAttractions>
 			</genre>
-			<genre id="201" name="event_politics" outcome-mod="0.15" review-mod="0.65" speed-mod="0.2">
+			<genre id="201" name="event_politics" outcome-mod="0.15" review-mod="0.65" speed-mod="0.2" refresh-mod="0.9" wearoff-mod ="1.15">
 				<goodFollower>4,6,17</goodFollower>
 				<badFollower>15</badFollower>
 				<timeMods>
@@ -1194,7 +1196,7 @@
 					<guest attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
-			<genre id="202" name="event_music" outcome-mod="0.15" review-mod="0.35" speed-mod="0.5">
+			<genre id="202" name="event_music" outcome-mod="0.15" review-mod="0.35" speed-mod="0.5" refresh-mod="0.9" wearoff-mod ="1.15">
 				<goodFollower>5,9</goodFollower>
 				<badFollower>12,13</badFollower>
 				<timeMods>
@@ -1237,7 +1239,7 @@
 					<guest attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
-			<genre id="203" name="event_sport" outcome-mod="0.15" review-mod="0.3" speed-mod="0.55">
+			<genre id="203" name="event_sport" outcome-mod="0.15" review-mod="0.3" speed-mod="0.55" refresh-mod="0.9" wearoff-mod ="1.15">
 				<goodFollower>0,1,2</goodFollower>
 				<timeMods>
 					<timeMod time="0" value="0.1"/>
@@ -1275,7 +1277,7 @@
 					<audienceAttraction id="Pensioners" men="0.3" women="-0.5" />
 				</audienceAttractions>
 			</genre>
-			<genre id="204" name="event_showbiz" outcome-mod="0.2" review-mod="0.3" speed-mod="0.5">
+			<genre id="204" name="event_showbiz" outcome-mod="0.2" review-mod="0.3" speed-mod="0.5" refresh-mod="0.9" wearoff-mod ="1.15">
 				<goodFollower>5,6,9</goodFollower>
 				<badFollower>8,12</badFollower>
 				<timeMods>
@@ -1318,7 +1320,7 @@
 					<guest attribute="appearance" value="0.3" />
 				</castAttributes>
 			</genre>
-			<genre id="300" name="feature" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5">
+			<genre id="300" name="feature" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5" refresh-mod="0.95" wearoff-mod ="1.05">
 				<goodFollower>feature_yellowpress,history,documentary</goodFollower>
 				<badFollower></badFollower>
 				<timeMods>
@@ -1359,7 +1361,7 @@
 			</genre>
 
 
-			<genre id="301" name="feature_yellowpress" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5">
+			<genre id="301" name="feature_yellowpress" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5" refresh-mod="0.95" wearoff-mod ="1.05">
 				<goodFollower>feature_yellowpress,romance,drama</goodFollower>
 				<badFollower>action,scifi,thriller</badFollower>
 				<timeMods>
@@ -1400,7 +1402,7 @@
 			</genre>
 
 			<!-- advertisements sent as infomercials -->
-			<genre id="400" name="infomercial" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6">
+			<genre id="400" name="infomercial" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6" refresh-mod="1.0" wearoff-mod ="1.0">
 				<timeMods>
 					<timeMod time="0" value="0.025"/>
 					<timeMod time="1" value="0.05"/>
