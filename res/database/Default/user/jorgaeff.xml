@@ -255,7 +255,7 @@
 		</news>
 
 		<!-- triggers other thread...-->
-		<news id="news-jorgaeff-1986-0-UdSSR-02a" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1986-0-UdSSR-02a" type="0" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1986" />
 			<title>
 				<de>Michailow bittet um Abrüstung</de>

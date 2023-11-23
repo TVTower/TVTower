@@ -139,7 +139,6 @@
 				<de>Superboy leidet unter Trennung. Er will einen Supervater und eine Supermutter. Das unappetitliche Essen stört ihn nicht.</de>
 				<en>Superboy suffers from separation. He wants a super father and a super mother. The unappetizing food does not bother him.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="70" />
 		</news>
 		<news id="cujo-news-superkerl-08b" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
@@ -151,7 +150,6 @@
 				<de>Superboy leidet unter Trennung. Er will einen Supervater und eine Supermutter. „Ich brauche kein neues Regal.“</de>
 				<en>Superboy suffers from separation. He wants a super father and a super mother. "I do not need a new shelf."</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="70" />
 		</news>
 		<!-- "Fifa-WM 2022 in Katar" -->
@@ -264,7 +262,6 @@
 				<de>Jupp Lauber gibt dem Schweizer Fernsehen ein Interview: „Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche FUFA-Funktionär?“</de>
 				<en>Jupp Lauber gives an interview to Swiss television: "I would never have thought that. Am I really the only honest FUFA official?"</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.0" quality="30" />
 		</news>
 		<!-- "Challenger-Unglück" -->
@@ -367,7 +364,6 @@
 				<de>Die Passenger-Raumfähre ist im Kenidi Space-Center in Florida gelandet. Die sechs Astronauten und die Lehrerin stiegen wohlbehalten aus. Die NASE bezeichnet die Mission als vollen Erfolg. Alle Ziele wurden erreicht.</de>
 				<en>The Passenger Space Shuttle has landed at the Kenidi Space Center in Florida. The six astronauts and the teacher disembark safely. NASE calls the mission a complete success. All goals were achieved.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="50" />
 		</news>
 		<news id="cujo-news-passenger-06" type="2" thread_id="cujo-news-passenger" creator="8827" created_by="Cujo">
@@ -379,7 +375,6 @@
 				<de>Die Unglücksursache für die Passenger-Katastrophe, bei der sieben Menschen ums Leben kamen, steht fest. Die Dichtungsringe einer Feststoffrakete waren defekt.</de>
 				<en>The cause of the passenger disaster that killed seven people has been determined. The sealing rings of a solid rocket were defective.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="60" />
 		</news>
 		<!-- "Mathias Rust landet auf Rotem Platz" -->
@@ -478,7 +473,6 @@
 				<de>Der auf dem Roten Platz gelandete Schessnah-Pilot Markus Trust wird begnadigt. Nach 15 Monaten Arbeitslager kann er morgen zu seiner Familie zurückkehren. Seine Schessnah wird verschrottet.</de>
 				<en>Schessnah pilot Markus Trust, who landed in Red Square, is pardoned. After 15 months in a labor camp, he can return to his family tomorrow. His Schessnah will be scrapped.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.78" quality="55" />
 		</news>
 		<!-- "Ältester Mensch der Welt" -->
@@ -544,7 +538,6 @@
 				<de>In einem großen Praxistest hat die Stiftung Gütertest 27 Vibratoren getestet. Acht Modelle wurden von den Testerinnen mit „befriedigend“ bewertet.</de>
 				<en>In a major practical test, Consumers' Association tested 27 vibrators. Eight models were rated "satisfactory" by the testers.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.82" quality="58" />
 		</news>
 		<!-- "Marathon-Weltrekorde -->
@@ -727,7 +720,6 @@
 				<de>Wie Gesundheitsminister Kurt Schmitt in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
 				<en>Health Minister Kurt Smith announced on a TV Tower station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TV Tower stations.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.5" quality="40" />
 		</news>
 	</allnews>
@@ -741,7 +733,7 @@
 				<de>Alles ist möglich - Yotota - Helfen Sie mit: Yotota stiftet für jedes verkaufte Auto 10 Cent an eine Initiative zur Rettung des Regenwalds.</de>
 				<en>Anything is possible - Yotota - Help: Yotota donates 10 cents for every car sold to an initiative to save the rainforest.</en>
 			</description>
-			<conditions min_audience="10" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Duplo -->
@@ -753,8 +745,8 @@
 				<de>Pludo - Der wahrscheinlich längste Schokoriegel der Welt - Neu: Sonderaktion - 9 Riegel zum Preis von 11</de>
 				<en>Pludo - Probably the longest chocolate bar in the world - New: Special offer - 9 bars for the price of 11</en>
 			</description>
-			<conditions min_audience="1.2" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="12" repetitions="4" duration="3" profit="1100" penalty="1650" fix_infomercial_profit="1"/>
+			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="12" repetitions="4" duration="3" profit="1000" penalty="1550" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Schwartau -->
 		<ad id="cujo-werbung-schwalltau">
@@ -765,7 +757,7 @@
 				<de>Schwalltau - Die süßeste Versuchung seit es Marmelade gibt - Jetzt auch mit Tollkirschen</de>
 				<en>Schwalltau - The sweetest temptation since there is jam - Now also with belladonna cherries</en>
 			</description>
-			<conditions min_audience="2.4" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="2.3435" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="2" profit="750" penalty="1125" fix_infomercial_profit="1"/>
 		</ad>
 	</allads>

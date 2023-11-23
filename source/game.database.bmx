@@ -176,7 +176,7 @@ Type TDatabaseLoader
 		'exclude some files as we add it by default to load it
 		'as the first files / specific order (as they do not require
 		'others - this avoids "extending X"-log-entries)
-		dirTree.SetExcludeFileNames(["database_scripts", "database_people", "database_people_fictional", "database_ads", "database_programmes", "database_programmes_fictional", "database_news"])
+		dirTree.SetExcludeFileNames(["database_scripts", "database_people", "database_roles", "database_people_fictional", "database_ads", "database_programmes", "database_programmes_fictional", "database_news"])
 		'exclude localization directories - will be processed by SetLanguage
 		dirTree.SetExcludeDirectoryNames(["lang", "lang_original"])
 
@@ -192,6 +192,7 @@ Type TDatabaseLoader
 		dirTree.AddFile(dbDirectory+"/database_news.xml", True)
 		dirTree.AddFile(dbDirectory+"/database_ads.xml", True)
 		dirTree.AddFile(dbDirectory+"/database_scripts.xml", True)
+		dirTree.AddFile(dbDirectory+"/database_roles.xml", True)
 		dirTree.AddFile(dbDirectory+"/database_people_fictional.xml", True)
 		dirTree.AddFile(dbDirectory+"/database_people.xml", True) 'first
 

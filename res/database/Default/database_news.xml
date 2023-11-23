@@ -86,7 +86,6 @@
 				<de>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. „Ohne die zwei Shuttles ist das All sicherer“, so ein Kongressabgeordneter.</de>
 				<en>The Senate put a stop to the President's security measures in space. "Space is safer without the two shuttles," said one congressman.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="68" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -294,7 +293,6 @@
 				<de>Der erst vor kurzem in Untersuchungshaft vernommene Angestellte Harry Holzmüller hat beide Fälle gestanden.</de>
 				<en>The employee Forrest Timberley, who was only recently questioned in custody, confessed to both cases.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="48" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -339,7 +337,6 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</de>
 				<en>The world-renowned doctors have finished their examinations. "She is growing back, 5 cm per day!"
 Her normal body size is expected to be reached in a week.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.4" quality="52" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -382,7 +379,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Ein kanadischer Baumfäller wurde mit seiner eigener Axt erschlagen. Zeugenberichten nach habe sich der Baum gewehrt.</de>
 				<en>A Canadian woodcutter was slain with his own ax. According to witness reports, the tree had fought back.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -440,7 +436,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Kidd wurde heute in der Südstadt Kölns begraben. Das Begräbnis auf dem Autofriedhof lockte zehntausende Trauernde. Sie mussten David Hasseldorf in den Arm nehmen.</de>
 				<en>Kidd was buried today in Cologne South. The burial in the car cemetery attracted tens of thousands of mourners. They had to give David Hasseldorf hugs.</en>
 			</description>
-			<effects />
 			<data genre="1" price="0.8" quality="21" />
 			<availability year_range_from="1987" year_range_to="-1" />
 		</news>
@@ -468,7 +463,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Nach Debatten, WiSims zu spielen sei das Natürlichste eines Menschen, hat die Regierung ein Einsehen und erlässt die Sondersteuer. Das Volk feiert ausgelassen.</de>
 				<en>After debates that playing biz-sims is the most natural thing a person can do, the government relents and abolishes the special tax. The nation celebrates wildly.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.5" quality="51" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -616,7 +610,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Das freigelassene Nashorn ist nach seinem spektakulären Ausflug wieder wohlbehalten im Zoo angekommen.</de>
 				<en>The released rhino has arrived back at the zoo safe and sound after its spectacular excursion.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="23" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -725,7 +718,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Nach dem umstrittenen Plan eine komplette Sauerstoffgebühr einzuführen, soll die Bevölkerung nur noch für das Ausatmen zahlen. Luft anhalten!</de>
 				<en>After the controversial plan to introduce a complete oxygen fee, the population will now only pay for exhaling. Hold your breath!</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.7" quality="61" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -889,7 +881,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Der Vorstand und die Arbeitnehmervertreter des amerikanischen Autokonzerns einigten sich so eben auf 2500 Entlassungen. Beide Seiten sind zufrieden.</de>
 				<en>The Board of Management and employee representatives of the American car giant have just reached agreement to lay off 2,500 people. Both sides are satisfied.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="51" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -903,7 +894,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Nach Schweizer Vorbild wird zum 1. Januar die Automaut eingeführt. Autofahrer waren empört, bis sie hörten, dass die Niederländer Deutschland umfahren werden.</de>
 				<en>Following the Swiss example, car tolls will be introduced by January 1st. Motorists were outraged until they heard that the Dutch will be bypassing Germany.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="68" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -916,7 +906,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Mit Hilfe eines Drachenanzugs hat der Finne Aki Wärärtiisamökölaii das Ski-Springen in Köln-Poll gewonnen und mit einem 312-Meter-Sprung einen neuen Rekord verbucht.</de>
 				<en>With the help of a kite suit, Finland's Aki Wärärtiisamökölaii won the ski jumping competition in Cologne-Poll, setting a new record with a 312-meter jump.</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1398,7 +1387,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Der %minister% hat seine Memoiren geschrieben und in seinem 8-Kapitel-Buch sieben Kapitel seinen ${animals_dat_${index}} gewidmet.</de>
 				<en>The %minister% wrote his memoirs and devoted seven chapters of his 8-chapter book to his ${animals_dat_${index}}.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1471,7 +1459,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Die Arbeitslosenquote ist im Vergleich zum Vormonat wieder gesunken. Arbeitslose langsam aber sicher in der Unterzahl.</de>
 				<en>The unemployment rate has fallen again compared to the previous month. The unemployed are slowly but surely in the minority.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1484,7 +1471,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Insider-Informationen nach sollen Flaschensammler ab sofort für ihre Tätigkeit Gewinnsteuern bezahlen. Die Vereinigung Deutscher Flaschensammler legt Berufung ein.</de>
 				<en>According to insider information, deposit bottle collectors are to pay profit taxes on their activities with immediate effect. The Association of German Bottle Collectors is appealing.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="15" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1497,7 +1483,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Durch den Kauf von acht Silikon-Spritzen im Baumarkt will ein Arbeitsloser seiner Tochter zur Brust-OP verhelfen.</de>
 				<en>By purchasing eight silicone syringes at a hardware store, an unemployed man wants to help his daughter get a breast surgery.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="9" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1555,7 +1540,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Ein Professor fand heraus, dass das neue Radio der Star Electric kein Programm aus fernen Galaxien empfängt, sondern lediglich gewöhnliches Rauschen auf Mittelwelle.</de>
 				<en>A professor found that Star Electric's new radio wasn't receiving any channels from distant galaxies, just ordinary noise on medium wave.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1568,7 +1552,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Acht erfolgreiche Bobfahrer haben die jamaikanische Staatsbürgerschaft angenommen. Sie seien von einem Film inspiriert worden.</de>
 				<en>Eight successful bobsledders have adopted Jamaican citizenship. They were inspired by a movie, they said.</en>
 			</description>
-			<effects />
 			<data genre="2" price="0.7" quality="25" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1581,7 +1564,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Ab sofort wird das Fahren mit Licht Pflicht. Damit soll die Unfallrate gesenkt werden.</de>
 				<en>Driving with lights will be mandatory with immediate effect. The aim is to reduce the accident rate.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1594,7 +1576,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Ein argentinischer Priester wurde von einer herabfallenden Statue tödlich am Kopf verletzt.</de>
 				<en>An Argentinian priest was fatally injured in the head by a falling statue.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="9" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1625,7 +1606,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Da war die Suppe wohl versalzen. Die Fernsehköche verloren 1:3 gegen die Nationalmannschaft.</de>
 				<en>Seems the recipe was spoiled in the end. The TV chefs lost 1-3 against the national team.</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.05" quality="18" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1638,7 +1618,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Mit einem Kochlöffel Vorsprung gewannen die Fernsehköche gegen die Nationalmannschaft und trugen den 2:1 Sieg an die Kochherde der TV-Landschaft.</de>
 				<en>With a cooking spoon of a lead, the TV chefs won against the national team and carried the 2-1 victory to the cooking stoves of the TV landscape.</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.05" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1651,7 +1630,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Mit vielen Teenie-Tränen wurde heute Nachmittag die deutsche Teenieband Shanghai Hotel aufgelöst. Die Mitglieder hätten sich die Freundinnen ausgespannt.</de>
 				<en>With many tears from the teens, the German teen band Shanghai Hotel disbanded this afternoon. The members allegedly stole each other's girlfriends.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="23" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1739,7 +1717,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Um die Endlosberechnung von Pi zu beenden, muß man lediglich das Integral von Pi in Verhältnis zu der relativen Masse der Nachkommastellen setzen.</de>
 				<en>To end the infinite calculation loop of Pi, one only has to set the integral of pi in relation to the relative mass of the decimal places.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="49" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1752,7 +1729,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Der 100m-Weltrekordler hat seinen Rücktritt angekündigt, da er seit kurzem an einer Wasserallergie leidet.</de>
 				<en>The 100m world record holder has announced his retirement because he recently began suffering from a water allergy.</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1765,7 +1741,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Der tägliche Konsum von Bier fördert nach neusten wissenschaftlichen Untersuchen den Haarwuchs. Nebenwirkung: Die Leber gibt den Geist auf.</de>
 				<en>According to the latest scientific research, daily consumption of beer promotes hair growth. Side effect: the liver kicks the bucket.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1778,7 +1753,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Die deutsche Tele-Komm schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
 				<en>German Tele-Komm is phasing out analog technology. It is no longer profitable because it is no longer used, according to a spokesman.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="1995" year_range_to="-1" />
 		</news>
@@ -1791,7 +1765,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Die deutsche Tele-Komm schafft die klassische Wählscheibe ab. Inoffizieller Grund: Zu geringe Effizienz der Callcenter.</de>
 				<en>The German Tele-Komm company abolishes the classic dial plate. Unofficial reason: Call centers not efficient enough.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="1994" />
 		</news>
@@ -1804,7 +1777,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Der Ex-Showpraktikant von Stephan Rapp ist heute überraschend Programmchef geworden. Ändern wird sich nichts, „Wir haben doch Zeit“, so Alton.</de>
 				<en>Stephan Rapp's ex-show intern has surprisingly become programme director today. Nothing will change, "We have plenty of time," says Alton.</en>
 			</description>
-			<effects />
 			<data genre="1" price="0.7" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1817,7 +1789,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Die römische Welt ist schockiert: bei Ausgrabungen in Rom stellte sich heraus, dass Caesar Gallier war.</de>
 				<en>The Roman world is shocked: excavations in Rome revealed that Caesar was a Gaul.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1830,7 +1801,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Nach Einführung des Dosenpfands geben die Initiatoren des Grünen Punktes auf: Dosen werden nicht mehr weggeschmissen!</de>
 				<en>After the introduction of the deposit on cans, the initiators of the Green Dot give up: Cans are no longer thrown away!</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.7" quality="25" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1843,7 +1813,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Oliver Kalkhoven bekommt einen von TowerTV gesponsorten Spezial-Sammy für seine tiefgehende Beiträge zum Fernsehen.</de>
 				<en>Oliver Kalkhoven gets a special Sammy sponsored by TowerTV for his in-depth contributions to television.</en>
 			</description>
-			<effects />
 			<data genre="5" price="1.0" quality="58" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1856,7 +1825,6 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Die Band mit den Hits wie „Hier kommt Alexandra“ gibt für nächstes Jahr ihre Abschiedstournee bekannt.</de>
 				<en>The band with hits like "Here comes Alexandra" announce their farewell tour for next year.</en>
 			</description>
-			<effects />
 			<data genre="1" price="0.7" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1871,7 +1839,6 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en>The well-known TV bard Joachim Bretzel gives an autograph session at the opening of the new KaDeOst department store.
 A NASA pot set will also be raffled off.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="14" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1884,7 +1851,6 @@ A NASA pot set will also be raffled off.</en>
 				<de>Mit der Einführung einer Dung-Steuer für Huftiere erhöhen die Produzenten die Preise um 200%.</de>
 				<en>With the introduction of a manure tax for ungulates, producers increase prices by 200%.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.7" quality="62" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1897,7 +1863,6 @@ A NASA pot set will also be raffled off.</en>
 				<de>Skandal! Keiner schreibt trotz hoher und heiliger Versprechen neue News. Dabei fehlen vor allem Showbizz-, Kultur- und Technik/Wissenschaft-Nachrichten.</de>
 				<en>Scandal! No one writes new news despite high and holy promises. Especially Showbiz, Cultural and Technology/Science news are missing.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="45" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -1972,7 +1937,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nach dem Tränengaseinsatz der Pariser Gendarmerie wurden 2 Demonstranten mit schweren Augenverletzungen ins Krankenhaus eingeliefert.</de>
 				<en>After the use of tear gas by the Paris gendarmerie, 2 demonstrators were hospitalized with serious eye injuries.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2016,7 +1980,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die Bachenhausener Strafkammer befand den Gärtner Rico Mielke der Körperverletzung schuldig. „Sie sind wohl blind?“, fragte der klagende Anwalt.</de>
 				<en>The Bachenhausen Criminal Court found gardener Rico Mielke guilty of assault. "Are you blind?" asked the plaintiff lawyer.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.7" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2090,7 +2053,6 @@ Demonstrations are expected again this year.</en>
 				<de>Perfekt: Michel Preyts wird den Trainerposten in der Hauptstadt übernehmen. Er freue sich auf diese Herausforderung, so Preyts, langjährige Nr. 11.</de>
 				<en>Perfect: Michel Preyts will accept the coaching position in the capital. He is looking forward to this challenge, says Preyts, no. 11 of many years.</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.0" quality="30" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2104,7 +2066,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die deutsche Gesundheitsministerin lädt zum Saufen ein. Der Konsum von Rotwein in gesunden Mengen (1-2 Glas pro Tag) beugt Herzinfarkt vor.</de>
 				<en>The German Minister of Health invites people to booze. Consumption of red wine in healthy quantities (1-2 glasses per day) prevents heart attacks.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.7" quality="58" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2129,7 +2090,6 @@ Demonstrations are expected again this year.</en>
 				<de>Ein angetrunkener Mann übersah eine Glastür und musste mit einer Kopfwunde ins Krankenhaus. Sein Kommentar: „Hab es nicht kommen sehen.“</de>
 				<en>A drunken man missed a glass door and had to go to hospital with a head wound. His comment: "Didn't see it coming."</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="9" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2157,7 +2117,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die Menschen feiern: die große Dunkelheit, die gestern Nacht einsetzte, ist vorbei! Das Land lag ca. 7 Stunden in Dunkelheit. Seit den Morgenstunden wird es heller.</de>
 				<en>People are celebrating: the great darkness that set in last night is over! The country lay in darkness for about 7 hours. Since the morning hours it is getting brighter.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="49" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2170,7 +2129,6 @@ Demonstrations are expected again this year.</en>
 				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oscar nominiert wurde.</de>
 				<en>The American computer manufacturer EppelWoi was astonished when their computer was nominated for the Oscar for Best Supporting Role.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="33" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2183,7 +2141,6 @@ Demonstrations are expected again this year.</en>
 				<de>Der Wetterdienst warnt im Schwarzwald vor heftigen Böen bis hin zu hurrikanähnlichen Stürmen.</de>
 				<en>The weather service warns of violent gusts up to hurricane-like storms in the Black Forest.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.7" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2196,7 +2153,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die Vereinigung der Feministen boykottiert die zur Zeit laufende Beach-Volleyball-Weltmeisterschaft, da die Kleiderordnung zu sexistisch sei.</de>
 				<en>The Association of Feminists boycotts the currently running Beach Volleyball World Championship, saying the dress code is too sexist.</en>
 			</description>
-			<effects />
 			<data genre="2" price="0.7" quality="40" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2209,7 +2165,6 @@ Demonstrations are expected again this year.</en>
 				<de>In seiner langen und anspruchsvollen Rede hat der norwegische König U3-Sänger Sono zum Nobelpreisträger des Friedens ernannt.</de>
 				<en>In his long and exigent speech, the Norwegian King has named U3 singer Sono Nobel laureate of peace.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.5" quality="58" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2222,7 +2177,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nach einem Urteil des Bundesgerichthofes wird das Lottospielen in Deutschland strafbar. 82 Millionen Deutsche betroffen.</de>
 				<en>Following a ruling by the Federal Court of Justice, playing the lottery in Germany becomes a punishable offence. 82 million Germans affected.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.5" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2265,7 +2219,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die rüstige Sächsin, die Millionen gewann und auf Kreuzfahrt verscholl, ist wieder da: Sie verbrachte die Nacht in den Armen des Schiffsarztes.</de>
 				<en>The sprightly Saxon woman who won millions and disappeared on a cruise is back: she spent the night in the arms of the ship's doctor.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="26" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2278,7 +2231,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die sowjetische Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
 				<en>The Soviet space station has received signals that do not originate from our solar system. Whether they are alien is still unclear.</en>
 			</description>
-			<effects />
 			<data genre="3" price="0.7" quality="72" />
 			<availability year_range_from="1986" year_range_to="1998" />
 		</news>
@@ -2291,7 +2243,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die internationale Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
 				<en>The International Space Station has received signals that do not originate from our solar system. Whether they are alien is still unclear.</en>
 			</description>
-			<effects />
 			<data genre="3" price="0.7" quality="72" />
 			<availability year_range_from="1999" year_range_to="-1" />
 		</news>
@@ -2319,7 +2270,6 @@ Demonstrations are expected again this year.</en>
 				<de>Der Finder des 1.000-Mark-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“.</de>
 				<en>The man who found the 1,000-mark bill died of alcohol poisoning. On his gravestone is written: "...and he'll never sweep through the docklands again".</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="2001" />
 		</news>
@@ -2347,7 +2297,6 @@ Demonstrations are expected again this year.</en>
 				<de>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“</de>
 				<en>The man who found the 500 euro bill died of alcohol poisoning. On his gravestone is written: "...and he'll never sweep through the docklands again".</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="19" />
 			<availability year_range_from="2002" year_range_to="-1" />
 		</news>
@@ -2360,7 +2309,6 @@ Demonstrations are expected again this year.</en>
 				<de>Das Modehaus C&amp;B meldet Insolvenz an. Man sei nicht vom Rentner-Image losgekommen, so der Geschäftsführer.</de>
 				<en>Fashion house C&amp;B files for bankruptcy. According to the managing director, the company could not get away from its pensioner reputation.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.7" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2373,7 +2321,6 @@ Demonstrations are expected again this year.</en>
 				<de>Die fleischfressende Pflanze wurde der Oma Charlotte D. zum Verhängnis. Die demente Großmutter hatte vergessen, die Pflanze zu füttern.</de>
 				<en>The carnivorous plant was the doom of Charlotte D.'s grandmother. The demented grandmother had forgotten to feed the plant.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="14" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2476,7 +2423,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nach einem nächtlichen Gipfeltreffen der Parteispitzen von NPDU und SPDS wird es wohl eine Koalition der beiden stärksten deutschen Parteien geben.</de>
 				<en>After an overnight summit meeting of the party leaders of the NPDU and SPDS, there will probably be a coalition of the two strongest German parties.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.5" quality="88" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2638,7 +2584,6 @@ Demonstrations are expected again this year.</en>
 				<de>In einer Berliner Diskothek kam es heute Nacht zu einer Massenschlägerei. Grund: jemand hatte nach einem Schluck sein Glas in die Bowle zurückgeschüttet.</de>
 				<en>A mass brawl broke out in a Berlin discotheque tonight. Reason: someone had poured his glass back into the punch after taking a sip.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2711,7 +2656,6 @@ Demonstrations are expected again this year.</en>
 				<de>Wie Elektromerz mitteilte, habe man die Hersteller von Computerkomponenten zwingen wollen, optische Rechner anzubieten.</de>
 				<en>According to Elektromerz, the intention was to force computer component manufacturers to offer optical computers.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2724,7 +2668,6 @@ Demonstrations are expected again this year.</en>
 				<de>Aufgrund des heißen Sommers verbuchten die Hersteller von Grills einen 363%igen Boom.</de>
 				<en>Due to the hot summer, manufacturers of grills recorded a 363% boom.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.1" quality="12" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2737,7 +2680,6 @@ Demonstrations are expected again this year.</en>
 				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch online.</de>
 				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers will be available online only.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="1993" year_range_to="-1" />
 		</news>
@@ -2750,7 +2692,6 @@ Demonstrations are expected again this year.</en>
 				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch per Bildschirmtext.</de>
 				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers will be available via teletext only.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="1982" year_range_to="1992" />
 		</news>
@@ -2942,7 +2883,6 @@ Demonstrations are expected again this year.</en>
 				<de>Richterin B. Salosch verurteilte heute Martin Semmelgerste zu 6 Monaten Haft ohne Bewährung. Sein Rechtsanwalt besteht jedoch auf einen Fahrsimulator.</de>
 				<en>Judge B. Salosch today sentenced Martin Semmelgerste to 6 months in prison without parole. However, his lawyer insists on a driving simulator.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -2983,7 +2923,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nachdem Journalisten herausfanden, dass der polnische Verkehrsminister Inhaber einer Helmfabrik ist, tritt dieser nun zurück.</de>
 				<en>After journalists found out that the Polish Minister of Transport is the owner of a helmet factory, he now resigns.</en>
 			</description>
-			<effects />
 			<data genre="0" price="0.7" quality="48" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3042,7 +2981,6 @@ Demonstrations are expected again this year.</en>
 				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte USB-Gummipuppen für Alle.</de>
 				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded USB rubber dolls for everyone.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.7" quality="48" />
 			<availability year_range_from="1996" year_range_to="-1" />
 		</news>
@@ -3101,7 +3039,6 @@ Demonstrations are expected again this year.</en>
 				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte Gummipuppen mit RS-232-Port für Alle.</de>
 				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded RS-232 port rubber dolls for everyone.</en>
 			</description>
-			<effects />
 			<data genre="4" price="0.7" quality="48" />
 			<availability year_range_from="-1" year_range_to="1995" />
 		</news>
@@ -3115,7 +3052,6 @@ Demonstrations are expected again this year.</en>
 				<de>Endlich, nach 38 Jahren wurde wieder der erste Grünspecht in der Eifel gesichtet. Lokale Naturschützer sind begeistert.</de>
 				<en>Finally, after 38 years the first green woodpecker has been sighted again in the Eifel. Local conservationists are enthusiastic.</en>
 			</description>
-			<effects />
 			<data genre="3" price="1.0" quality="21" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3173,7 +3109,6 @@ Demonstrations are expected again this year.</en>
 				<de>Das aus dem Filmgeschäft ausgestiegene Bello-Hundedouble ist ganz unten angekommen: Beim Streunen erwischt und im Hundeheim in Gewahrsam genommen.</de>
 				<en>The Bello dog double who got out of the movie business has hit rock bottom: Caught straying and taken into custody at the dog shelter.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3232,7 +3167,6 @@ Demonstrations are expected again this year.</en>
 				<de>Wallonien, das nach der Unabhängigkeit Flanderns auch unabhängig wurde, wird die von Brüssel erlegten EU-Kriterien nicht erreichen können.</de>
 				<en>Wallonia, which also became independent after the independence of Flanders, will not be able to meet the EU criteria imposed by Brussels.</en>
 			</description>
-			<effects />
 			<data genre="0" price="1.0" quality="70" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3245,7 +3179,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nachdem sich die Preise für Öl und Gas gefestigt haben, steigt der Preis von Teelichtern um 300 Prozent des bisherigen Wertes.</de>
 				<en>After the prices for oil and gas have stabilized, the price of tea lights increases by 300 percent of the previous value.</en>
 			</description>
-			<effects />
 			<data genre="4" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3258,7 +3191,6 @@ Demonstrations are expected again this year.</en>
 				<de>Kanzler Schröler lehnte die Hauptrolle in dem Film „Lügen ist meine Leidenschaft“ verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</de>
 				<en>Chancellor Schröler angrily turned down the lead role in the movie "Lies are my passion". Film partner Angie Mertel is bitterly disappointed.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="32" />
 			<availability year_range_from="1998" year_range_to="2005" />
 		</news>
@@ -3271,7 +3203,6 @@ Demonstrations are expected again this year.</en>
 				<de>Ein Bodyguard soll von einer Modeldiva geschlagen worden sein. Er hatte sich geweigert, der betrunkenen Diva die Autoschlüssel auszuhändigen.</de>
 				<en>A bodyguard is said to have been beaten by a fashion diva. He had refused to hand over the car keys to the drunken diva.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3284,7 +3215,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nach jahrelanger Überlegung produziert R. D. Handerson nun eine Satire seiner Erfolgserie. Papierklammer, Gummiband und Taschenmesser stimmten schon zu.</de>
 				<en>After years of consideration, R. D. Handerson is now producing a satire of his hit series. Paper clip, rubber band and pocket knife already agreed.</en>
 			</description>
-			<effects />
 			<data genre="1" price="1.0" quality="35" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -3297,7 +3227,6 @@ Demonstrations are expected again this year.</en>
 				<de>Nach jahrelanger Tennis-Abstinenz plant Boris Wecker sein Come-back. Konkurrenten freuen sich auf legendäre Hechtsprünge.</de>
 				<en>After years of tennis abstinence, Boris Wecker is planning his comeback. Competitors are looking forward to legendary pike jumps.</en>
 			</description>
-			<effects />
 			<data genre="2" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>

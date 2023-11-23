@@ -743,7 +743,7 @@ It's a sunny.</en>
 				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst. Bikeshop ist top.</de>
 				<en>Promotion week at Bikeshop. Buy one bike, get one for free. Bikeshop is top-notch.</en>
 			</description>
-			<conditions min_audience="0.7905" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="0.78" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="3" duration="2" profit="1333" penalty="2000" infomercial_profit="118" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="beff6512-fd07-4e1d-aaf8-ce8da3ebd876">
@@ -1690,7 +1690,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
 				<en>A touch of genious: our double bock beer is now available free of alcohol too! Oans, zwoa, droa, g'suffa!</en>
 			</description>
-			<conditions min_audience="4.1617" min_image="40" target_group="0"/>
+			<conditions min_audience="4.1671" min_image="40" target_group="0"/>
 			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" />
 			<availability year_range_from="2006" />
 		</ad>
