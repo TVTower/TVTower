@@ -83,6 +83,8 @@ Type TGameRules {_exposeToLua}
 	'how many contracts of the same contractBase can exist at the
 	'same time? (0 disables any limit)
 	Field adContractInstancesMax:int = 1
+	'randomize profit/penalty
+	Field adContractRandomize:int= 0
 
 	'=== ADAGENCY ===
 	Field adagencySortContractsBy:string = "minaudience"
@@ -114,6 +116,7 @@ Type TGameRules {_exposeToLua}
 
 		adContractInstancesMax = 1
 		adContractsPerPlayerMax = 12
+		adContractRandomize = 0
 	End Method
 
 
@@ -124,6 +127,7 @@ Type TGameRules {_exposeToLua}
 
 		adContractInstancesMax = data.GetInt("DEV_ADCONTRACT_INSTANCES_MAX", adContractInstancesMax)
 		adContractsPerPlayerMax = data.GetInt("DEV_ADCONTRACTS_PER_PLAYER_MAX", adContractsPerPlayerMax)
+		adContractRandomize = data.GetBool("DEV_ADCONTRACT_RANDOMIZE", False)
 
 		'=== ADAGENCY ===
 		adagencySortContractsBy = data.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", adagencySortContractsBy).Trim().ToLower()

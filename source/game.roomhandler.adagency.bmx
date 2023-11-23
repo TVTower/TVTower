@@ -945,6 +945,7 @@ endrem
 					'set classification so contract knows its "origin"
 					contract.adAgencyClassification = classification
 					contract.SetOwner(contract.OWNER_VENDOR)
+					If GameRules.adContractRandomize Then contract.Randomize()
 
 					GetContractsInStock().AddLast(contract)
 					'add afterwards as "GetContractsInStock()" might create
@@ -1057,6 +1058,7 @@ endrem
 				If contract
 					'set classification so contract knows its "origin"
 					contract.adAgencyClassification = classification
+					If GameRules.adContractRandomize Then contract.Randomize()
 
 					contract.SetOwner(contract.OWNER_VENDOR)
 					GetContractsInStock().AddLast(contract)

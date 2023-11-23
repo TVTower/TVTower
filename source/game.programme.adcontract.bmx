@@ -718,6 +718,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	' 4,5 - best daytime + primetime
 	Field adAgencyClassification:Int = 0
 
+	Field profitRandomMod:Float = 0.0
+	Field penaltyRandomMod:Float = 0.0
+
 	'for statistics
 	Field stateTime:Long = -1
 	Field state:Int = 0
@@ -754,6 +757,14 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Self.base = baseContract
 	End Method
 
+
+	Method Randomize()
+		Local count:Int = GetSpotsToSend()
+		Local dev:Float = 0.3 + (count) * 0.05
+		profitRandomMod = GaussRandRange(0.8,1.2,0.5, dev)
+		penaltyRandomMod = GaussRandRange(0.8,1.2,0.5, dev)
+		'print GetTitle() +" "+dev+" "+profitRandomMod+" "+penaltyRandomMod
+	End Method
 
 	Function SortByName:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
@@ -1235,11 +1246,13 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'limiting to specific flags change the price too
 		If GetLimitedToProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
 
-		'adjust by a player difficulty
+		'adjust by a player difficulty and randomize
 		If priceType = PRICETYPE_PROFIT
 			price :* difficulty.adcontractProfitMod
+			If profitRandomMod > 0 Then price :* profitRandomMod
 		ElseIf priceType = PRICETYPE_PENALTY
 			price :* difficulty.adcontractPenaltyMod
+			If penaltyRandomMod > 0 Then price :* penaltyRandomMod
 		ElseIf priceType = PRICETYPE_INFOMERCIALPROFIT
 			price :* difficulty.adcontractInfomercialProfitMod
 		EndIf
