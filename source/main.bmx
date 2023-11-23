@@ -2241,7 +2241,12 @@ Type TGameState
 		_Assign(_WorldWeather, TWorld._instance.weather, "WorldWeather", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
+
+		Local backup:TData = GameRules.devConfigBackup
+		GameRules.Reset()
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
+		If backup Then GameRules.devConfigBackup = backup
+
 		_Assign(_GameConfig, GameConfig, "GameConfig", MODE_LOAD)
 		_Assign(_AuctionProgrammeBlocksList, TAuctionProgrammeBlocks.list, "AuctionProgrammeBlocks", MODE_LOAD)
 

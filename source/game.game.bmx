@@ -336,11 +336,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		If startNewGame
 			'initialize variables too
 			TLogger.Log("Game.PrepareStart()", "GameRules initialization + override with DEV values.", LOG_DEBUG)
-			GameRules.Reset()
+			GameRules.AssignFromData( GameRules.devConfigBackup )
 		Else
-			'just load the dev-values into the game rules
-			TLogger.Log("Game.PrepareStart()", "GameRules override with DEV values.", LOG_DEBUG)
-			GameRules.AssignFromData( GameRules.devConfig )
+			'just reset the rules, value assignment is done on loading the gameload the dev-values into the game rules
+			TLogger.Log("Game.PrepareStart()", "resetting GameRules values.", LOG_DEBUG)
+			GameRules.Reset()
 		EndIf
 
 

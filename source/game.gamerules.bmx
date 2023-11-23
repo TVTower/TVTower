@@ -114,9 +114,6 @@ Type TGameRules {_exposeToLua}
 
 		adContractInstancesMax = 1
 		adContractsPerPlayerMax = 12
-
-
-		AssignFromData(devConfig)
 	End Method
 
 
