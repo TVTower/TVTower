@@ -849,7 +849,7 @@ endrem
 		Local map:TStationMap = GetStationMap(playerID, True)
 
 		'add new station
-		Local s:TStationBase = New TStationAntenna.Init( 310, 260, -1, playerID )
+		Local s:TStationBase = New TStationAntenna.Init( GetStationMapCollection().mapInfo.startAntennaPos.x, GetStationMapCollection().mapInfo.startAntennaPos.y , -1, playerID )
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		If s.getReach() < GameRules.stationInitialIntendedReach
 			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1

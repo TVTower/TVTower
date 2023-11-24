@@ -269,7 +269,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		TScreenHandler_StationMap.selectedStation = station
 		If TScreenHandler_StationMap.selectedStation
 			'force stat refresh (so we can display decrease properly)!
-			TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
+			TScreenHandler_StationMap.selectedStation.reachExclusiveMax = -1
+			TScreenHandler_StationMap.selectedStation.GetExclusiveReach()
 			autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
 			If TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.SELLABLE)
 				autoRenewCheckbox.enable()
@@ -2064,12 +2065,8 @@ Type TStationMapInformationFrame
 		Local colWidthC:Int = 0.1 * textW
 		Local colWidthD:Int = 0.25 * textW
 
-		Local currentColor:TColor = New TColor.Get()
-		Local entryColor:TColor
-
 		'draw with different color according status
 		'draw antenna
-		SetAlpha(currentColor.a)
 		item.GetFont().DrawBox(valueA, Int(item.GetScreenRect().GetX() + textOffsetX), colY, colWidthA, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthA
 		item.GetFont().DrawBox(valueB, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthB, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
@@ -2078,8 +2075,6 @@ Type TStationMapInformationFrame
 		textOffsetX :+ colWidthC
 		item.GetFont().DrawBox(valueD, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthD, colHeight, sALIGN_RIGHT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthD
-
-		currentColor.SetRGBA()
 	End Function
 
 
@@ -2581,6 +2576,8 @@ Type TScreenHandler_StationMap
 		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
 
+		SetBlend AlphaBlend
+
 		'draw map
 		GetSpriteFromRegistry("map_Surface").Draw(0,0)
 
@@ -2638,9 +2635,14 @@ Type TScreenHandler_StationMap
 		'when selecting a station position with the mouse or a
 		'cable network or a satellite
 		If actionMode = MODE_BUY_ANTENNA Or actionMode = MODE_BUY_SATELLITE_UPLINK Or actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
-			SetAlpha Float(0.8 + 0.2 * Sin(MilliSecs()/6))
-			DrawImage(GetStationMapCollection().populationImageOverlay, 0,0)
-			SetAlpha 1.0
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
+			SetAlpha oldColA * Float(0.7 + 0.2 * Sin(MilliSecs()/6))
+			SetColor 225, 75, 0
+			Local populationDensityOverlayXY:SVec2I = GetStationMapCollection().GetPopulationDensityOverlayXY()
+			DrawImage(GetStationMapCollection().GetPopulationDensityOverlay(), populationDensityOverlayXY.x, populationDensityOverlayXY.y)
+			SetColor(oldCol)
+			SetAlpha oldColA
 		EndIf
 
 
@@ -2655,12 +2657,12 @@ Type TScreenHandler_StationMap
 		'TStationMapSection.DrawAll()
 
 		'backgrounds
-		If mouseoverStation And mouseoverStation = selectedStation
+		If mouseoverStation And mouseoverStationPosition And mouseoverStation = selectedStation
 			'avoid drawing it two times...
 			mouseoverStation.DrawBackground(True, True)
 		Else
 			'also draw the station used for buying/searching
-			If mouseoverStation Then mouseoverStation.DrawBackground(False, True)
+			If mouseoverStation And mouseoverStationPosition Then mouseoverStation.DrawBackground(False, True)
 			'also draw the station used for buying/searching
 			If selectedStation Then selectedStation.DrawBackground(True, False)
 		EndIf
@@ -2670,12 +2672,12 @@ Type TScreenHandler_StationMap
 		GetStationMap(room.owner).Draw()
 
 		'also draw the station used for buying/searching
-		If mouseoverStation Then mouseoverStation.Draw()
+		If mouseoverStation and mouseoverStationPosition Then mouseoverStation.Draw()
 		'also draw the station used for buying/searching
 		If selectedStation Then selectedStation.Draw(True)
 
 
-		if mouseoverStation ' or selectedStation
+		if mouseoverStation And mouseoverStationPosition ' or selectedStation
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 
 			If actionMode = MODE_BUY_ANTENNA
@@ -2715,7 +2717,7 @@ Type TScreenHandler_StationMap
 		Next
 
 		'draw a kind of tooltip over a mouseoverStation
-		If mouseoverStation
+		If mouseoverStation And mouseoverStationPosition
 			mouseoverStation.DrawInfoTooltip()
 		else
 			'if over a section, draw special tooltip displaying reasons
@@ -2885,6 +2887,8 @@ endrem
 			'create a temporary station if not done yet
 			If Not mouseoverStation Then mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
 			Local mousePos:TVec2D = New TVec2D( MouseManager.x, MouseManager.y)
+			if not mouseoverStationPosition Then mouseoverStationPosition = New TVec2D
+			mouseoverStationPosition.SetXY(MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
 			If Not mousePos.EqualsXY(mouseoverStation.x, mouseoverStation.y, True)
@@ -2912,7 +2916,7 @@ endrem
 			'no antennagraphic in foreign countries
 			'-> remove the station so it wont get displayed
 			If Not hoveredMapSection Or mouseoverStation.GetReach() <= 0
-				mouseoverStation = Null
+				'mouseoverStation = Null
 				mouseoverStationPosition = Null
 			EndIf
 

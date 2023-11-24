@@ -24,28 +24,26 @@ Import "basefunctions.bmx"
 Import "common.misc.numericpairinterpolator.bmx"
 Import "game.gameeventkeys.bmx"
 Import "game.world.worldtime.bmx"
-
+Import "game.stationmap.densitydata.bmx"
 
 
 'parent of all stationmaps
 Type TStationMapCollection
+	Field mapInfo:TStationMapInfo {nosave}
+
 	Field sections:TStationMapSection[]
 	'section name of all satellite uplinks
 	Field satelliteUplinkSectionName:String
 
 	'list of stationmaps
 	Field stationMaps:TStationMap[0]
+	'radius in "kilometers"
 	Field antennaStationRadius:Int = ANTENNA_RADIUS_NOT_INITIALIZED
+	
 	Field population:Int = 0 'remove
 	'satellites currently in orbit
 	Field satellites:TList
 	Field cableNetworks:TList
-	'the original density map
-	Field populationImageOriginalSprite:TSprite {nosave}
-	Field populationImageOriginal:TImage {nosave}
-	'the adjusted density map (only show "high pop"-areas)
-	Field populationImageOverlay:TImage {nosave}
-	Field populationImageSections:TImage {nosave}
 
 	Field config:TData = New TData
 	Field cityNames:TData = New TData
@@ -57,19 +55,20 @@ Type TStationMapCollection
 
 	Field mapConfigFile:String = ""
 	'caches
+	'the adjusted density map (only show "high pop"-areas)
+	Field _populationDensityOverlay:TImage {nosave}
 	Field _currentPopulationAntennaShare:Double = -1 {nosave}
 	Field _currentPopulationCableShare:Double = -1 {nosave}
 	Field _currentPopulationSatelliteShare:Double = -1 {nosave}
-rem
-	Field _sectionNames:String[] {nosave}
-	Field _sectionISO3116Codes:String[] {nosave}
-endrem
 	'attention: the interpolation function hook is _not_ saved in the
 	'           savegame
 	'           So make sure to tackle this when saving share data!
 	Field populationAntennaShareData:TNumericPairInterpolator {nosave}
 	Field populationCableShareData:TNumericPairInterpolator {nosave}
 	Field populationSatelliteShareData:TNumericPairInterpolator {nosave}
+	
+	'surface (boundaries) for complete map, not just single sections
+	Field surfaceData:TStationMapSurfaceData {nosave}
 
 
 	'how people can receive your TV broadcast
@@ -85,9 +84,6 @@ endrem
 	Const RECEIVERMODE_EXCLUSIVE:Int = 2
 	Const ANTENNA_RADIUS_NOT_INITIALIZED:Int = -1
 
-	'difference between screen0,0 and pixmap
-	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:SVec2I = New SVec2I(0, 0)
 	Global _initDone:Int = False
 	Global _instance:TStationMapCollection
 
@@ -188,6 +184,15 @@ endrem
 			_currentPopulationSatelliteShare = GetPopulationSatelliteShare()
 		EndIf
 		Return _currentPopulationSatelliteShare
+	End Method
+
+
+	'returns the antenna share for the given screen coordinate
+	Method GetPopulationAntennaShare:Float(x:Int, y:Int)
+		Local section:TStationMapSection = GetSection(x, y)
+		If section then Return section.GetPopulationAntennaShare()
+
+		Return GetCurrentPopulationAntennaShare()
 	End Method
 
 
@@ -322,6 +327,54 @@ endrem
 			EndIf
 		EndIf
 		Return satelliteUplinkSectionName
+	End Method
+
+
+	Method GetAntennaExclusivePopulation:int(densityX:Int, densityY:int, radius:Int, owner:Int, antennaOwned:Int = True)
+		Local surfaceX:Int = mapInfo.DataXToScreenX(densityX)
+		Local surfaceY:Int = mapInfo.DataYToScreenY(densityY)
+		Local connectedSections:TStationMapSection[] = GetSectionsConnectedToAntenna(surfaceX, surfaceY, radius)
+		Local result:Int
+		For Local section:TStationMapSection = Eachin connectedSections
+			result:+ section.GetAntennaExclusivePopulation(densityX, densityY, radius, owner, antennaOwned)
+		Next
+		Return result
+	End Method
+
+
+	Method GetAntennaPopulation:Int(densityX:Int, densityY:Int, radius:Int)
+		'stay within the section
+		Local circleRectX:Int = Max(0, densityX - radius)
+		Local circleRectY:Int = Max(0, densityY - radius)
+		Local circleRectX2:Int = Min(densityX + radius, self.surfaceData.width-1)
+		Local circleRectY2:Int = Min(densityY + radius, self.surfaceData.height-1)
+		Local radiusSquared:Int = radius * radius
+		Local populationSum:Int
+
+		For Local posX:Int = circleRectX To circleRectX2
+			For Local posY:Int = circleRectY To circleRectY2
+				'left the circle?
+				If CalculateDistanceSquared(posX - densityX, posY - densityY) > radiusSquared Then Continue
+				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
+
+				'left the topographic borders ?
+				If surfaceData.data[posY * surfaceData.width + posX] = 0 Then Continue
+
+				'ensure we can access densitydata array properly
+				If posY < self.mapInfo.densityData.height and posX < self.mapInfo.densityData.width
+					populationSum :+ self.mapInfo.densityData.data[posY * self.mapInfo.densityData.width + posX]
+				EndIf
+			Next
+		Next
+		Return populationSum
+	End Method
+
+
+	Method GetAntennaAudience:Int(densityX:Int, densityY:Int, radius:Int)
+		Local screenX:Int = mapInfo.DataXToScreenX(densityX)
+		Local screenY:Int = mapInfo.DataYToScreenY(densityY)
+		Local share:Float = GetPopulationAntennaShare(screenX, screenY)
+		Return GetAntennaPopulation(densityX, densityY, radius) * share
 	End Method
 
 
@@ -641,7 +694,7 @@ endrem
 			'check if spot in local space is on an opaque/colliding pixel
 			If PixelIsOpaque(sprite._pix, mapX - section.rect.GetIntX(), mapY - section.rect.GetIntY()) > 0
 				found = True
-				'check if other map sections have an opacque pixel there too (ambiguity!)
+				'check if other map sections have an opaque pixel there too (ambiguity!)
 				If Not allowSectionCrossing
 					For Local otherSection:TStationMapSection = EachIn sections
 						If section = otherSection Then Continue
@@ -676,39 +729,43 @@ endrem
 		Return New SVec2I(-1, -1)
 	End Method
 
-	'override
-	Method GetSprite:TSprite()
-		If Not populationImageOriginalSprite Then populationImageOriginalSprite = New TSprite.InitFromImage(populationImageOriginal, "populationImageOriginalSprite")
-		Return populationImageOriginalSprite
-	End Method
 
-
-	Method CalculateTotalAntennaStationReach:Int(stationX:Int, stationY:Int, radius:Int = -1)
-		Local result:Int = 0
-		For Local section:TStationMapSection = EachIn sections
-			result :+ section.CalculateAntennaStationReach(stationX, stationY, radius)
+	Method GetPopulationDensityOverlayRawPixmap:TPixmap(emphasizePopulation:int = False)
+		Local pix:TPixmap = CreatePixmap(mapInfo.densityData.width, mapInfo.densityData.height, PF_RGBA8888)
+		pix.ClearPixels(0)
+		Local maxPop:Float = mapInfo.densityData.maxPopulationDensity
+		if maxPop = 0 Then maxPop = 100
+		For local x:Int = 0 until mapInfo.densityData.width
+			For local y:Int = 0 until mapInfo.densityData.height
+				Local value:Int = 255 * mapInfo.densityData.data[y * mapInfo.densityData.width + x] / maxPop
+				Local layerColor:Int = (Int(255*(value<>0) * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				If emphasizePopulation 
+					value = Min((3*value)^1.2, 255) 
+					layerColor = (Int(((value>0)*55 + Min(1.5*value^1.5, 200)) * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				EndIf
+				pix.WritePixel(x, y, layerColor)
+			Next
 		Next
-		Return result
+		Return pix
 	End Method
+	
 
-
-	Method CalculateTotalAntennaAudienceIncrease:Int(stations:TList, X:Int=-1000, Y:Int=-1000, radius:Int = -1)
-		Local result:Int = 0
-		For Local section:TStationMapSection = EachIn sections
-			result :+ section.CalculateAntennaAudienceIncrease(stations, X, Y, radius)
-		Next
-		Return result
+	Method GetPopulationDensityOverlay:TImage()
+		If Not _populationDensityOverlay Or _populationDensityOverlay.width <> mapInfo.screenMapSize.x Or _populationDensityOverlay.height <> mapInfo.screenMapSize.y
+			'scale data to screen size -> already done by directly using the scaled data
+			'_populationDensityOverlay = LoadImage(ResizePixmap(pix, Int(pix.width * mapInfo.densityDataScreenScale), Int(pix.height * mapInfo.densityDataScreenScale)))
+			'_populationDensityOverlay = LoadImage(GetPopulationDensityOverlayRaxPixmap(True))
+			Local pix:TPixmap = GetPopulationDensityOverlayRawPixmap(True)
+			_populationDensityOverlay = LoadImage(ResizePixmap(pix, Int(pix.width * mapInfo.densityDataScreenScale), Int(pix.height * mapInfo.densityDataScreenScale)))
+		EndIf
+		Return _populationDensityOverlay
 	End Method
-
-
-	Method CalculateTotalAntennaAudienceDecrease:Int(stations:TList, station:TStationAntenna)
-		Local result:Int = 0
-		For Local section:TStationMapSection = EachIn sections
-			result :+ section.CalculateAntennaAudienceDecrease(stations, station)
-		Next
-		Return result
+	
+	
+	Method GetPopulationDensityOverlayXY:SVec2I()
+		Return new SVec2I(mapInfo.surfaceScreenOffset.x + mapInfo.densityDataOnSurfaceOffset.x, mapInfo.surfaceScreenOffset.y + mapInfo.densityDataOnSurfaceOffset.y)
 	End Method
-
+	
 
 	Method LoadPopulationShareData:Int()
 		Rem
@@ -840,6 +897,7 @@ endrem
 
 	'as soon as a station gets active (again), the sharemap has to get
 	'regenerated (for a correct audience calculation)
+	'alo stationmaps can recalculate their reaches
 	Function onSetStationActiveState:Int(triggerEvent:TEventBase)
 		Local station:TStationBase = TStationBase(triggerEvent.GetSender())
 		If Not station Then Return False
@@ -849,10 +907,14 @@ endrem
 			s.InvalidateData()
 		Next
 
-		'set the owning stationmap to "changed" so only this single
-		'audience sum only gets recalculated (saves cpu time)
-		GetInstance().GetMap(station.owner).reachInvalid = True
-		
+		'inform owning stationmap (so eg. to invalidate reach-calculation
+		'caches)
+		If triggerEvent.GetEventKey() = GameEventKeys.Station_OnSetActive
+			GetInstance().GetMap(station.owner).OnChangeStationActiveState(station, True)
+		ElseIf triggerEvent.GetEventKey() = GameEventKeys.Station_OnSetInactive
+			GetInstance().GetMap(station.owner).OnChangeStationActiveState(station, False)
+		EndIf
+	
 		Return True
 	End Function
 
@@ -874,6 +936,7 @@ endrem
 	Function onSaveGameLoad:Int(triggerEvent:TEventBase)
 		TLogger.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
 
+		'reload map configuration
 		_instance.LoadMapFromXML()
 
 		'Ronny: no longer needed as recalculation is done automatically
@@ -911,10 +974,9 @@ endrem
 	Function onLoadStationMapData:Int(triggerEvent:TEventBase)
 		Local mapDataRootNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
 		Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
-		If Not mapDataRootNode Or Not registryLoader Then Return False
 
-		Local densityNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitymap")
-		If Not densityNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitymap>-entry.")
+		'check if all required config entries are set
+		If Not mapDataRootNode Or Not registryLoader Then Return False
 
 		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
 		If Not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
@@ -929,9 +991,35 @@ endrem
 		'not mandatory
 		'If Not sportsDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><sports>-entry.")
 
-		'directly load the given resources
-		registryLoader.LoadSingleResourceFromXML(densityNode, Null, True, New TData.AddString("name", "map_PopulationDensity"))
-		registryLoader.LoadSingleResourceFromXML(surfaceNode, Null, True, New TData.AddString("name", "map_Surface"))
+		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "startantenna")
+		If Not startAntennaNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
+
+		Local densityDataNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitydata")
+		If Not densityDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitydata>-entry.")
+		Local densityData:TData = New TData
+		TXmlHelper.LoadAllValuesToData(densityDataNode, densityData)
+		if not densityData.Has("url") then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitydata url>-entry.")
+
+		Local mapDensityDataURL:String = densityData.GetString("url")
+		Local mapDensityDataOffsetX:Int = densityData.GetInt("offset_x", 0)
+		Local mapDensityDataOffsetY:Int = densityData.GetInt("offset_y", 0)
+		if mapDensityDataURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmapdata><densitydata url>-entry.")
+
+		Local mapSurfaceImageURL:String = TXmlHelper.FindValue(surfaceNode, "url", "")
+		Local mapSurfaceOffsetX:Int = TXmlHelper.FindValueInt(surfaceNode, "map_offset_x", 0)
+		Local mapSurfaceOffsetY:Int = TXmlHelper.FindValueInt(surfaceNode, "map_offset_y", 0)
+		if mapSurfaceImageURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmapdata><surface url>-entry.")
+
+		'load the map information / density data
+		Local mapConfigBaseURI:String = registryLoader.baseURI
+		If ExtractDir(_instance.mapConfigFile) and ExtractDir(registryLoader.baseURI)
+			mapConfigBaseURI = ExtractDir(registryLoader.baseURI) + "/" + ExtractDir(_instance.mapConfigFile)
+		ElseIf ExtractDir(_instance.mapConfigFile)
+			mapConfigBaseURI = ExtractDir(_instance.mapConfigFile)
+		EndIf
+		_instance.LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapSurfaceOffsetX, mapSurfaceOffsetY, mapSurfaceImageURL)
+		
+		_instance.mapInfo.startAntennaPos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "x", 0), TXmlHelper.FindValueInt(startAntennaNode, "y", 0))
 
 		'older savegames might contain a config which has the data converted
 		'to key->value[] arrays instead of values being overridden on each load.
@@ -958,7 +1046,8 @@ endrem
 			'find and load states configuration
 			Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
 			If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
-
+			
+			Local sectionID:Int = 1
 			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 				Local name:String	= TXmlHelper.FindValue(child, "name", "")
 				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
@@ -977,7 +1066,7 @@ endrem
 
 				'add state section if data is ok
 				If name<>"" And sprite<>""
-					_instance.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sprite, sectionConfig) )
+					_instance.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sectionID, sprite, sectionConfig) )
 				EndIf
 			Next
 			
@@ -1023,17 +1112,191 @@ endrem
 	End Function
 
 
+	Method LoadMapInformation(baseURI:String, mapDensityDataURI:String, mapCountryOffsetX:Int, mapCountryOffsetY:Int, mapSurfaceImageURI:String)
+		local fullDensityDataURI:String = mapDensityDataURI
+		local fullSurfaceImageURI:String = mapSurfaceImageURI
+		'make it an absolute url if required
+		If StripDir(fullDensityDataURI) = fullDensityDataURI
+			fullDensityDataURI = baseURI + "/" + fullDensityDataURI
+		EndIf
+		If StripDir(fullSurfaceImageURI) = fullSurfaceImageURI
+			fullSurfaceImageURI = baseURI + "/" + fullSurfaceImageURI
+		EndIf
+'print "LoadMapInformation("+baseURI+")"
+'print "  fullDensityDataURI = " + fullDensityDataURI
+'print "  fullSurfaceImageURI = " + fullSurfaceImageURI
+'print "  currentDir = " + currentDir()
+
+		Local stopWatch:TStopWatch = New TStopWatch.Init()
+		self.mapInfo = New TStationMapInfo(fullDensityDataURI, New SVec2I(mapCountryOffsetX, mapCountryOffsetY), fullSurfaceImageURI)
+		TLogger.Log("TStationMapCollection.LoadMapInformation", "Loaded Map information (population = " + mapInfo.densityData.totalPopulation+") in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
+
+		'calculate stretch factors and configure used screen size
+		'TODO: Werte aus XML entnehmen (topo_design_width, topo_design_height)
+		mapInfo.SetScreenMapSize(509, 371)
+	End Method
+
+
 	'load a map configuration from a specific xml file
 	'eg. "germany.xml"
 	'we use xmlLoader so image ressources in the file get autoloaded
 	Method LoadMapFromXML:Int(xmlFile:String="", baseUri:String = "")
 		If xmlFile <> "" Then mapConfigFile = xmlFile
 
+		If not mapConfigFile
+			TLogger.Log("TStationMapCollection.LoadFromXML", "No file defined for loading.", LOG_ERROR)
+			Throw("TStationMapCollection.LoadFromXML: No file defined for loading.")
+		EndIf
+
 		'=== LOAD XML CONFIG ===
+		'Local registryLoader:TRegistryLoader = New TRegistryLoader
+		'registryLoader.baseURI = baseURI
+		'registryLoader.LoadFromXML(mapConfigFile, True)
+		'TLogger.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
+
+		Local fullXMLFileURI:String = mapConfigFile
+		If ExtractDir(baseURI) Then fullXMLFileURI = ExtractDir(baseURI) + "/" + mapConfigFile
+
+		If FileType(fullXMLFileURI) <> FILETYPE_FILE
+			TLogger.Log("TStationMapCollection.LoadFromXML", "File ~q"+fullXMLFileURI+"~q not found.", LOG_ERROR)
+			Throw("TStationMapCollection.LoadFromXML: File ~q"+fullXMLFileURI+"~q not found.")
+		EndIf
+
+		Local xmlHelper:TXmlHelper = TXmlHelper.Create(fullXMLFileURI, "", False)
+		Local xmlRootNode:TxmlNode = xmlHelper.GetRootNode()
+		Local xmlStationMapNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "stationmap", xmlFile, "Misses the <stationmap>-entry.")
+
+		Local surfaceNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "surface", xmlFile, "Misses the <stationmap><surface>-entry.")
+		Local configNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "config", xmlFile, "Misses the <stationmap><config>-entry.")
+		Local cityNamesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "citynames", xmlFile, "Misses the <stationmap><citynames>-entry.")
+		Local sportsDataNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "sports")
+		'not mandatory
+		'Local sportsDataNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "sports", xmlFile, "Misses the <stationmap><sports>-entry.")
+		Local densityDataNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "densitydata", xmlFile, "Misses the <stationmap><densitydata>-entry.")
+
+		Local densityData:TData = TXmlHelper.LoadAllValuesToData(densityDataNode, New TData)
+		if not densityData.Has("url") then Throw("File ~q"+mapConfigFile+"~q misses the <stationmap><densitydata url>-entry.")
+
+		Local mapDensityDataURL:String = densityData.GetString("url")
+		Local mapDensityDataOffsetX:Int = densityData.GetInt("offset_x", 0)
+		Local mapDensityDataOffsetY:Int = densityData.GetInt("offset_y", 0)
+		if mapDensityDataURL = "" then Throw("File ~q"+mapConfigFile+"~q misses a valid <stationmap><densitydata url>-entry.")
+
+		Local mapSurfaceImageURL:String = TXmlHelper.FindValue(surfaceNode, "url", "")
+		if mapSurfaceImageURL = "" then Throw("File ~q"+mapConfigFile+"~q misses a valid <stationmap><surface url>-entry.")
+
+		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "startantenna")
+		If Not startAntennaNode Then Throw("File ~q"+mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
+
+
+		'load sprites/section images
+		Local resourcesNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "resources", xmlFile, "Misses the <resources>-entry.")
 		Local registryLoader:TRegistryLoader = New TRegistryLoader
 		registryLoader.baseURI = baseURI
-		registryLoader.LoadFromXML(mapConfigFile, True)
-		'TLogger.Log("TGetStationMapCollection().LoadMapFromXML", "config parsed", LOG_LOADING)
+		registryLoader.LoadSingleResourceFromXML(resourcesNode, Null, True)
+
+
+		'load the map information / density data
+		Local mapConfigBaseURI:String = baseURI
+		If ExtractDir(mapConfigFile) and ExtractDir(baseURI)
+			mapConfigBaseURI = ExtractDir(baseURI) + "/" + ExtractDir(mapConfigFile)
+		ElseIf ExtractDir(mapConfigFile)
+			mapConfigBaseURI = ExtractDir(mapConfigFile)
+		EndIf
+		LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapDensityDataOffsetX, mapDensityDataOffsetY, mapSurfaceImageURL)
+		
+
+		mapInfo.startAntennaPos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "x", 0), TXmlHelper.FindValueInt(startAntennaNode, "y", 0))
+
+
+		'older savegames might contain a config which has the data converted
+		'to key->value[] arrays instead of values being overridden on each load.
+		'so better just clear the config
+		self.config = New TData
+		self.cityNames = New TData
+		If sportsDataNode Then _instance.sportsData = New TData
+
+		TXmlHelper.LoadAllValuesToData(configNode, self.config)
+		TXmlHelper.LoadAllValuesToData(cityNamesNode, self.cityNames)
+		If sportsDataNode
+			TXmlHelper.LoadAllValuesToData(sportsDataNode, self.sportsData)
+		EndIf
+
+
+		'=== LOAD STATES ===
+		'only if not done before
+		'ATTENTION: overriding current sections will remove broadcast
+		'           permissions as this is called _after_ a savegame
+		'           got loaded!
+		If self.sections.Length = 0
+			'remove old states
+			'_instance.ResetSections()
+
+			'find and load states configuration
+			Local statesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "states", xmlFile, "Misses the <stationmap><states>-entry.")
+			Local sectionID:Int = 1
+			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
+				Local name:String = TXmlHelper.FindValue(child, "name", "")
+				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
+				Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
+				Local pos:SVec2I = New SVec2I( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+
+				Local pressureGroups:Int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
+				Local sectionConfig:TData
+				Local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
+				If sectionConfigNode
+					sectionConfig = TXmlHelper.LoadAllValuesToData(sectionConfigNode, New TData)
+				EndIf
+				'override config if pressureGroups are defined already
+				If pressureGroups >= 0
+					sectionConfig.AddInt("pressureGroups", pressureGroups)
+				EndIf
+
+				'add state section if data is ok
+				If name And sprite
+					self.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sectionID, sprite, sectionConfig) )
+					sectionID :+ 1
+				EndIf
+			Next
+			
+			'calculate positions (now all sprites are loaded)
+			For Local s:TStationMapSection = EachIn self.sections
+				'validate if defined via XML
+				If s.uplinkPos 
+					If Not s.IsValidUplinkPos(s.uplinkPos.GetX(), s.uplinkPos.GetY())
+						TLogger.Log("TStationMapCollection.onLoadStationMapData()", "Invalid / Ambiguous uplink position for state ~q" + s.name+"~q. x="+s.uplinkPos.GetX()+" y="+s.uplinkPos.GetY(), LOG_DEBUG)
+						s.uplinkPos = Null
+					EndIf
+				EndIf
+					
+				s.GetLocalUplinkPos()
+			Next
+		Else
+			'at least renew / fix properties written in the potentially
+			'more current config file
+
+			'find and load states configuration
+			Local statesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "states", xmlFile, "Misses the <stationmap><states>-entry.")
+			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
+				Local name:String = TXmlHelper.FindValue(child, "name", "")
+				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
+
+				local existingSection:TStationMapSection = self.GetSectionByName(name)
+				If existingSection
+					existingsection.iso3116Code = iso3116Code
+				EndIf
+			Next
+		EndIf
+
+
+		self.LoadPopulationShareData()
+
+		'=== CREATE SATELLITES / CABLE NETWORKS ===
+		If Not _instance.satellites Or _instance.satellites.Count() = 0 Then _instance.ResetSatellites()
+		If Not _instance.cableNetworks Or _instance.cableNetworks.Count() = 0 Then _instance.ResetCableNetworks()
+
+
+
 
 		'=== INIT MAP DATA ===
 		CreatePopulationMaps()
@@ -1042,81 +1305,62 @@ endrem
 		'dynamic antenna radius depending on start year (start antenna reach)
 		Local map:TStationMap = GetStationMap(1, True)
 		'coordinates from game.game.bmx PreparePlayerStep1
-		Local station:TStationBase = map.GetTemporaryAntennaStation(310,260)
+		Local station:TStationBase = map.GetTemporaryAntennaStation(GetStationMapCollection().mapInfo.startAntennaPos.x, GetStationMapCollection().mapInfo.startAntennaPos.y, False)
 		If station And antennaStationRadius = ANTENNA_RADIUS_NOT_INITIALIZED
 			antennaStationRadius = 50
 			For Local r:Int = 20 To 50
 				TStationAntenna(station).radius = r
-				If station.getReach(True) > GameRules.stationInitialIntendedReach
+				station.InvalidateReach()
+				If station.GetReach() > GameRules.stationInitialIntendedReach
 					antennaStationRadius = r
 					Exit
 				EndIf
 			Next
-			If station.getReach(True) < GameRules.stationInitialIntendedReach
+			station.InvalidateReach()
+			If station.GetReach() < GameRules.stationInitialIntendedReach
 				'player will get cable, reduce station radius
 				antennaStationRadius = 40
 			EndIf
 		EndIf
 
 		Return True
+		
+		
+		Function GetNodeOrThrow:TXmlNode(parentNode:TxmlNode, nodeName:String, configFile:String, errorMessage:String)
+			Local node:TxmlNode = TXmlHelper.FindChild(parentNode, nodeName)
+			If Not node 
+				TLogger.Log("TStationMapCollection.LoadFromXML", "Problem in file ~q" + configFile + "~q. " + errorMessage, LOG_ERROR)
+				Throw("TStationMapCollection.LoadFromXML: Problem in file ~q" + configFile + "~q. " + errorMessage)
+			EndIf
+			
+			Return node
+		End Function
+	End Method
+
+
+rem
+	Method GetTotalReach:Int(playerID:Int)
+		Local sm:TStationMap = Get(playerID)
+		if sm 
+			Return sm.GetTotalAntennaReach()
+		EndIf
+		
+		Return 0
+	End Method
+endrem	
+
+
+	Method Get:TStationMap(playerID:Int)
+		if playerID < 1 or playerID > stationMaps.length Then Return Null
+		Return stationMaps[playerID-1]
 	End Method
 
 
 	Method CreatePopulationMaps()
 		Local stopWatch:TStopWatch = New TStopWatch.Init()
-		Local srcPix:TPixmap = GetPixmapFromRegistry("map_PopulationDensity")
-		If Not srcPix
-			TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
-			Throw("TStationMap: ~qmap_PopulationDensity~q missing.")
-			Return
-		EndIf
 
-		'move pixmap so it overlays the rest
-		Local pix:TPixmap = CreatePixmap(Int(srcPix.width + populationMapOffset.X), Int(srcPix.height + populationMapOffset.Y), srcPix.format)
-		pix.ClearPixels(0)
-		pix.paste(srcPix, Int(populationMapOffset.X), Int(populationMapOffset.Y))
-
-		Local maxBrightnessPop:Int = TStationMapSection.GetPopulationForBrightness(0)
-		Local minBrightnessPop:Int = TStationMapSection.GetPopulationForBrightness(255)
-
-		'read all inhabitants of the map
-		'normalize the population map so brightest becomes 255
-		Local i:Int, j:Int, c:Int, s:Int = 0
-		population = 0
-		For j = 0 To pix.height-1
-			For i = 0 To pix.width-1
-				c = pix.ReadPixel(i, j)
-				If ARGB_ALPHA(pix.ReadPixel(i, j)) = 0 Then Continue
-				Local brightness:Int = ARGB_RED(c)
-				Local pixelPopulation:Int = TStationMapSection.GetPopulationForBrightness( brightness )
-
-				'store pixel with lower alpha for lower population
-				'-20 is the base level to avoid colorization of "nothing"
-				Local brightnessRate:Float = Min(1.0, 2 * pixelPopulation / Float(maxBrightnessPop))
-				If brightnessRate < 0.1
-					brightnessRate = 0
-				Else
-					brightnessRate :* (1.0 - brightness/255.0)
-					brightnessRate = brightnessRate^0.25
-				EndIf
-
-				pix.WritePixel(i,j, ARGB_Color(Int(brightnessRate*255), Int((1.0-brightnessRate)*255), 0, 0))
-'				pix.WritePixel(i,j, ARGB_Color(255, int(brightnessRate*255), int(brightnessRate*255), int(0.2 * brightnessRate*255)))
-
-				population :+ pixelPopulation
-			Next
-		Next
-
-
-		'store original
-		populationImageOriginal = LoadImage(srcPix)
-		'load the manipulated population image
-		populationImageOverlay = LoadImage(pix)
-
-		'create sections image and calculate population of each section
 		CalculateSectionsPopulation()
-
-		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
+		TLogger.Log("TStationMapCollection.CreatePopulationMap", "calculated a population of:" + population + " in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
 	End Method
 
 
@@ -1132,7 +1376,7 @@ endrem
 			EndIf
 		Next
 
-		TLogger.Log("TGetStationMapCollection().AssignPressureGroups", "Assigned pressure groups to sections of the map not containing predefined ones.", LOG_DEBUG | LOG_LOADING)
+		TLogger.Log("GetStationMapCollection().AssignPressureGroups", "Assigned pressure groups to sections of the map not containing predefined ones.", LOG_DEBUG | LOG_LOADING)
 	End Method
 
 
@@ -1160,7 +1404,7 @@ endrem
 		For Local section:TStationMapSection = EachIn sections
 			section.InvalidateData()
 			'pre-create data already
-			section.GetAntennaShareGrid()
+			'section.GetAntennaShareGrid()
 		Next
 
 		Return True
@@ -1919,6 +2163,41 @@ EndRem
 	End Method
 	
 
+	Method GetSectionsConnectedToAntenna:TStationMapSection[](x:Int, y:int, radius:Int)
+		Local circleRectX:Int = Max(0, x - radius)
+		Local circleRectY:Int = Max(0, y - radius)
+		Local circleRectX2:Int = Min(x + radius, surfaceData.width-1)
+		Local circleRectY2:Int = Min(y + radius, surfaceData.height-1)
+		Local radiusSquared:Int = radius * radius
+		Local stationRect:SRectI = New SRectI(circleRectX, circleRectY, circleRectX2 - circleRectX, circleRectY2 - circleRectY)
+		local result:TStationMapSection[]
+
+		For Local section:TStationMapSection = EachIn sections
+			'skip sections absolutely not hit
+			If Not stationRect.Intersects(Int(section.rect.x), Int(section.rect.y), Int(section.rect.w), Int(section.rect.h)) Then Continue
+			
+			Local sectionHit:Int = False
+			'check exactly
+			For Local posX:Int = circleRectX To circleRectX2
+				For Local posY:Int = circleRectY To circleRectY2
+					'left the circle?
+					If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
+					'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
+
+					'within the topographic borders ?
+					If posX < section._surfaceData.width and posY < section._surfaceData.height and section._surfaceData.data[posY * section._surfaceData.width + posX] > 1
+						result :+ [section]
+						sectionHit = True
+						exit
+					EndIf
+				Next
+				if sectionHit Then exit
+			Next
+		Next
+		Return result
+	End Method
+
+
 	'returns sections "nearby" a station (connection not guaranteed as
 	'check of a circle-antenna is based on two rects intersecting or not)
 	Method GetSectionsConnectedToStation:TStationMapSection[](station:TStationBase)
@@ -1985,43 +2264,158 @@ EndRem
 	End Method
 
 
-	Method RemoveSectionFromPopulationSectionImage:Int(section:TStationMapSection)
-		Local startX:Int = Int(Max(0, section.rect.x))
-		Local startY:Int = Int(Max(0, section.rect.y))
-		Local endX:Int = Int(Min(populationImageSections.width, section.rect.GetX2()))
-		Local endY:Int = Int(Min(populationImageSections.height, section.rect.GetY2()))
-		Local pix:TPixmap = LockImage(populationImageSections)
-		Local emptyCol:Int = ARGB_Color(0, 0,0,0)
+	Method CalculateSectionsPopulation:Int()
+		'extract canvas data from sections
+		'0. calculate stretch factor "screen design based sections" vs "density data"
+		'   as the section collision images are based on a "base / design screen dimension"
+		'-> this is already done when "SetScreenMapSize()" is called 
+		'   during init()
+		'1. sort sections by area to repair potential overlaps with least
+		'   effect on small sections
+		'2. fetch collision image / borders and stretch it to the size of the DensityData 
+		'3. create a (local coord) surface layer out of the stretched image
+		'   only add what is not yet occupied already by an other section
 
-		Local sectionPix:TPixmap
-		Local sprite:TSprite = section.GetShapeSprite()
-		If Not sprite Then Return False
-		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
+		'regarding 3.:
+		'Sections might overlap if not properly done.
+		'To repair this we add all sections to a canvas and then
+		'use the canvas to check if points on a section are already in use
+		'by previously processed sections
+		'-> any potential overlap is now "removed" from this section
+		'ATTENTION: the order of the sections decides which one gets 
+		'           the overlap added!
 
-		For Local X:Int = startX Until endX
-			For Local Y:Int = startY Until endY
-				If PixelIsOpaque(sprite._pix, Int(X-section.rect.GetX()), Int(Y-section.rect.GetY())) > 0
-					pix.WritePixel(X,Y, emptyCol)
-				EndIf
-			Next
+
+		'== 1. Sort Sections ==
+		'order sections by "size" - so that smaller sections less likely
+		'remove overlap (removed overlap in relation to area is much 
+		'higher there -> bigger impact!)
+		local sortedSections:TIntMap = New TIntMap
+		For Local section:TStationMapSection = EachIn sections
+			Local sectionSprite:TSprite = section.GetShapeSprite()
+			if sectionSprite
+				local sectionPix:TPixmap = sectionSprite.GetPixmap() 
+				local sectionPixArea:Int = sectionPix.width * sectionPix.height
+				local key:Int = sectionPixArea 'smaller key for smaller areas -> process first!
+				While sortedSections.contains(key)
+					key :-1
+				Wend
+				sortedSections.Insert(key, section)
+			EndIf
 		Next
 
-		Return True
-	End Method
+	
+		'reset surface data
+		'to know the actual surface width we have to find out 
+		'the maximum of all section borders
+		Local sectionsMaxX:Int
+		Local sectionsMaxY:Int
+		For Local section:TStationMapSection = EachIn sortedSections.Values()
+			if sectionsMaxX = 0
+				sectionsMaxX = Int(section.rect.x + section.rect.w)
+				sectionsMaxY = Int(section.rect.y + section.rect.h)
+			else
+				sectionsMaxX = Max(sectionsMaxX, Int(section.rect.x + section.rect.w))
+				sectionsMaxY = Max(sectionsMaxY, Int(section.rect.y + section.rect.h))
+			endif
+		Next
+		print sectionsMaxX+", " + sectionsMaxY + "  ->  " + mapInfo.SurfaceXToDataX(sectionsMaxX) + ", " + mapInfo.SurfaceYToDataY(sectionsMaxY)
+		self.surfaceData = New TStationMapSurfaceData(mapInfo.SurfaceXToDataX(sectionsMaxX), mapInfo.SurfaceYToDataY(sectionsMaxY))
 
+		'For Local section:TStationMapSection = EachIn sections
+		For Local section:TStationMapSection = EachIn sortedSections.Values()
+			'print "processing " +section.name
+			'== 2. fetch and stretch collision images ==
+			Local sectionSprite:TSprite = section.GetShapeSprite()
+			if not sectionSprite Then Throw "no section sprite found"
+			'scale image to density data
+			local sectionPix:TPixmap = sectionSprite.GetPixmap() 
+			local scaledPix:TPixmap = ResizePixmap(sectionPix, Int(sectionPix.width / mapInfo.densityDataScreenScale), Int(sectionPix.height / mapInfo.densityDataScreenScale))
+			
+			'scale screen offsets to data offsets
+			'section rects are local to "station map surface/topo map"
+			section.densityDataOffsetX = mapInfo.SurfaceXToDataX(Int(section.rect.x))
+			section.densityDataOffsetY = mapInfo.SurfaceYToDataY(Int(section.rect.y))
 
-	Method CalculateSectionsPopulation:Int()
-		'copy the original image - start with a "full population map"
-		populationImageSections = LoadImage( LockImage(populationImageOriginal) )
+			'== 3. Cut already used "points" (overlap) ==
+			Local usedWidth:Int = 0
+			Local usedHeight:Int = 0
+			For local x:int = 0 until scaledPix.width
+				For local y:int = 0 until scaledPix.height
+					'clear pixels which are used by other sections already
+					
+					'default value is 0, so we only need to set values
+					'for "opaque pixels" 
+					If PixelIsOpaque(scaledPix, x, y)
+						'the surface pixmap might be a bit of compared to
+						'the density map - so ensure we can access the data
+						'array correctly
+						Local surfaceDataX:Int = x + section.densityDataOffsetX
+						Local surfaceDataY:Int = y + section.densityDataOffsetY
+						'clear if already used by other sections
+						If surfaceDataX >= 0 and surfaceDataY >= 0 and surfaceDataX < self.surfaceData.width and surfaceDataY < self.surfaceData.height and self.surfaceData.data[surfaceDataY * self.surfaceData.width + surfaceDataX] > 0
+							scaledpix.WritePixel(x, y, 0)
+						Else
+							usedWidth = Max(x, usedWidth)
+							usedHeight = Max(y, usedHeight)
+						EndIf
+					EndIf
+				Next
+			Next
 
-		For Local section:TStationMapSection = EachIn sections
-			section.GeneratePopulationImage(populationImageSections)
-			section.CalculatePopulation()
-			'remove the generated section population image from the map
-			'population image
-			RemoveSectionFromPopulationSectionImage(section)
+			'add to total surface so next section can use this information already
+			self.surfaceData.SetDataFromPixmap(scaledPix, section.densityDataOffsetX, section.densityDataOffsetY)
+
+			'load in as sections surface data
+			section.SetSurfaceData( New TStationMapSurfaceData(usedWidth, usedHeight).SetDataFromPixmap(scaledPix) )
+			
+			'SavePixmapPNG(section._surfaceData.ToPixmap(), "section_"+section.GetName()+".png")
 		Next
 		
+		'SavePixmapPNG(self.surfaceData.ToPixmap(), "surfaceData.png")
+		SavePixmapPNG(GetPopulationDensityOverlayRawPixmap(False), "populationdensity_raw.png")
+		SavePixmapPNG(GetPopulationDensityOverlayRawPixmap(True), "populationdensity_raw_enhanced.png")
+		
+		'TODO:
+		'Nicht von Bundeslaendern belegete "Bevoelkerungsdichte" null setzen?
+
+		'count complete density layer instead?
+		'self.population = -1
+		'self.population = self.GetPopulation()
+
+		'only count population in the sections (so incorrect boundaries
+		'lead to missing population)
+		self.population = 0
+		For Local section:TStationMapSection = EachIn sections
+			self.population :+ section.GetPopulation()
+		Next
+
+'rem
+		'https://datacommons.org/place/nuts/DEG?hl=de -> dort Bundeslaender eintippen
+		local expectedPop:Int[]
+		expectedPop :+ [569396] 'Bremen
+		expectedPop :+ [3443000] 'Berlin
+		expectedPop :+ [1774000] 'Hamburg
+		expectedPop :+ [10744921] 'bawue
+		expectedPop :+ [12510331] 'bayern
+		expectedPop :+ [1022585] 'saarland
+		expectedPop :+ [4012675] 'rheinlandpfalz
+		expectedPop :+ [6061951] 'hessen
+		expectedPop :+ [2249882] 'thueringen
+		expectedPop :+ [4168732] 'sachsen
+		expectedPop :+ [2356219] 'sachsenanhalt
+		expectedPop :+ [7928815] 'niedersachsen
+		expectedPop :+ [2832027] 'schleswigholstein
+		expectedPop :+ [2511525] 'brandenburg
+		expectedPop :+ [17872763] 'nrw
+		expectedPop :+ [1651216] 'meckpom
+
+		local i:int = 0
+		For Local section:TStationMapSection = EachIn sections
+			TLogger.Log("TStationMapCollection.CalculateSectionsPopulation", "Section " + section.name + " population = " + section.GetPopulation() +"    eurostat = " + expectedPop[i]+"  " + Left((100 * expectedPop[i]/float(section.GetPopulation()) - 100 ),5)+"%)", LOG_DEBUG | LOG_LOADING)
+			i :+ 1
+		Next
+'endrem
 		Return True
 	End Method
 End Type
@@ -2036,6 +2430,177 @@ End Function
 Function GetStationMap:TStationMap(playerID:Int, createIfMissing:Int = False)
 	Return TStationMapCollection.GetInstance().GetMap(playerID, createIfMissing)
 End Function
+
+
+
+
+Type TStationMapInfo
+	'offset of surface to screen (if the topo image starts not at 0,0)
+	Field surfaceScreenOffset:SVec2I
+	'offset of the density data to the surface/map ("topo image")
+	Field densityDataOnSurfaceOffset:SVec2I
+	Field densityData:TStationMapDensityData
+	'how big is the visual topography of the map?
+	Field screenMapSize:SVec2I
+	'scale factor "screen vs density data"
+	Field densityDataScreenScale:Float = 1.0
+	'maximum dimension of the density data set
+	Field densityDataMaxDim:Int = 1500
+	'where to place first player antenna
+	Field startAntennaPos:SVec2I
+
+	Field surfaceImage:TImage
+
+
+	Method New(densityDataURI:String, densityDataOnSurfaceOffset:SVec2I, surfaceImageURI:String)
+		self.densityDataOnSurfaceOffset = densityDataOnSurfaceOffset
+		self.densityData = New TStationMapDensityData(densityDataURI)
+		self.surfaceImage = LoadImage(surfaceImageURI)
+		If not surfaceImage then Throw "TStationMapInfo: Cannot load image " + surfaceImageURI
+
+		'register as sprite
+		local sprite:TSprite = new TSprite.InitFromImage(surfaceImage, "map_Surface")
+		GetRegistry().Set("map_Surface", sprite)
+
+	End Method
+
+
+	Method GenerateDensityDataImage:TImage(emphasizeHigh:Int = False, markPopulatedOnly:Int = False, scaleToScreenSize:Int = False)
+		Local img:TImage = GenerateDensityDataImage(densityData, emphasizeHigh, markPopulatedOnly)
+		if scaleToScreenSize
+			img = LoadImage(ResizePixmap(LockImage(img), screenMapSize.x, screenMapSize.y))
+		EndIf
+		Return img
+	End Method 	
+
+	
+	Function GenerateDensityDataImage:TImage(densityData:TStationMapDensityData, emphasizeHigh:int = False, markPopulatedOnly:Int = False)
+		Local pix:TPixmap = CreatePixmap(densityData.width, densityData.height, PF_RGBA8888)
+		Local scaleFactor:Float = 255.0 / densityData.maxPopulationDensity
+		pix.ClearPixels(0)
+		For local pixX:Int = 0 until pix.width
+			For local pixY:Int = 0 until pix.height
+				local v:Int = densityData[pixX,pixY]
+				if v > 0
+					If markPopulatedOnly
+						pix.WritePixel(pixX,pixY, New SColor8(255, 255, 255).ToARGB())
+					ElseIf emphasizeHigh
+						v = Min(255, 255 * (v/Float(densityData.maxPopulationDensity)^0.85 * 1.4)) 
+						pix.WritePixel(pixX,pixY, New SColor8(255, 255, 255, v).ToARGB())
+					Else
+						v = Min(255, v * scaleFactor)
+						pix.WritePixel(pixX,pixY, New SColor8(255, 255, 255, v).ToARGB())
+					EndIf
+				EndIf
+			Next
+		Next
+		Return LoadImage(pix)
+	End Function
+
+
+	'scale values from data to screen
+	Method DataToScreen:Int(dataValue:Int)
+		Return densityDataScreenScale * dataValue
+	End Method
+
+	'scale values from screen to data
+	Method ScreenToData:Int(screenValue:Int)
+		Return screenValue / densityDataScreenScale
+	End Method
+
+
+	'convert a given data x coordinate to a screen x coordinate
+	Method DataXToScreenX:Int(x:Int)
+		Return x * densityDataScreenScale + surfaceScreenOffset.x + densityDataOnSurfaceOffset.x
+	End Method
+
+	'convert a given data y coordinate to a screen y coordinate
+	Method DataYToScreenY:Int(y:Int)
+		Return y * densityDataScreenScale + surfaceScreenOffset.y + densityDataOnSurfaceOffset.y
+	End Method
+
+
+	'convert a given screen x coordinate to a data x coordinate
+	'(eg. mouse clicks) 
+	Method ScreenXToDataX:Int(x:Int)
+		Return (x - surfaceScreenOffset.x - densityDataOnSurfaceOffset.x) / densityDataScreenScale
+	End Method
+
+	'convert a given screen y coordinate to a data y coordinate
+	'(eg. mouse clicks) 
+	Method ScreenYToDataY:Int(y:Int)
+		Return (y - surfaceScreenOffset.y - densityDataOnSurfaceOffset.y) / densityDataScreenScale
+	End Method
+
+
+	'convert a given surface/topo x coordinate to a data x coordinate
+	Method SurfaceXToDataX:Int(x:Int)
+		Return (x - densityDataOnSurfaceOffset.x) / densityDataScreenScale
+	End Method
+
+	'convert a given surface/topo y coordinate to a data y coordinate
+	Method SurfaceYToDataY:Int(y:Int)
+		Return (y - densityDataOnSurfaceOffset.y) / densityDataScreenScale
+	End Method
+	
+	
+	
+	Method SetScreenMapSize:Int(x:Int, y:Int)
+		if x = screenMapSize.x and y = screenMapSize.y Then Return False
+
+		screenMapSize = New SVec2I(x,y)
+
+		ResizeDensityData()
+		
+		Return True
+	End Method
+	
+	
+	Method ResizeDensityData()
+		'we need to stretch the density map it to have the same "aspect-ratio" than the screen map
+		'because this makes "circular antennas" placed on the topo map to be also
+		'round shaped on the density map
+		Local densityDataNewW:Int = densityData.GetRawWidth() 'Raw .. original sizes (and aspect ratio)
+		Local densityDataNewH:Int = densityData.GetRawHeight()
+
+		'scale down height or width
+		Local screenMapAspectRatio:Float = screenMapSize.x/Float(screenMapSize.y)
+		Local densityDataAspectRatio:Float = densityDataNewW/Float(densityDataNewH)
+		Local densityDataAspectScaleFactor:Float = densityDataAspectRatio/screenMapAspectRatio
+		If densityDataNewW > densityDataNewH
+			densityDataNewW = densityDataNewW * densityDataAspectScaleFactor
+		Else
+			densityDataNewH = densityDataNewH * densityDataAspectScaleFactor
+		EndIf
+
+		TLogger.Log("ResizeDensityData()", "Orig: " + densityData.width+", " + densityData.height, LOG_DEBUG)
+		TLogger.Log("ResizeDensityData()", "Aspect ratio adjusted: " + densityDataNewW+", " + densityDataNewH, LOG_DEBUG)
+
+		'scale densityData down to a handle-able size (avoid too many points to calculate)
+		If densityData.height > densityData.width
+			If densityData.height > densityDataMaxDim
+				densityDataNewW = Int(densityData.width * (Float(densityDataMaxDim)/densityData.height) + 0.5)
+				densityDataNewH = densityDataMaxDim
+			EndIf
+		Else
+			If densityData.width > densityDataMaxDim
+				densityDataNewH = Int(densityData.height * (Float(densityDataMaxDim)/densityData.width) + 0.5)
+				densityDataNewW = densityDataMaxDim
+			EndIf
+		EndIf
+		TLogger.Log("ResizeDensityData()", "Max dim adjusted: " + densityDataNewW+", " + densityDataNewH, LOG_DEBUG)
+
+
+		'stretch density data to new dimensions
+		densityData.Stretch(densityDataNewW, densityDataNewH)
+
+		'calculate pixel-kilometer factor
+		densityDataScreenScale = screenMapSize.x / Float(densityData.width)
+		
+		TLogger.Log("ResizeDensityData()", "Stretched: " + densityData.width+", " + densityData.height, LOG_DEBUG)
+		TLogger.Log("ResizeDensityData()", "Scale: " + densityDataScreenScale, LOG_DEBUG)
+	End Method
+End Type
 
 
 
@@ -2058,6 +2623,9 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	'amount of stations added per type
 	Field stationsAdded:Int[4]
 	Field sectionBroadcastPermissions:TMap
+	
+	'Caches
+	Field _antennasLayer:TStationMapAntennaLayer {nosave}
 
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
@@ -2091,11 +2659,61 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method OnChangeStationActiveState:Int(station:TStationBase, setToActive:Int)
+		'mark audience sum cache to get recalculated (saves cpu time)
+		self.reachInvalid = True
+
+		If TStationAntenna(station)
+			Local antenna:TStationAntenna = TStationAntenna(station)
+			'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
+			'      basieren
+			if antenna.dataX = -1 and antenna.dataY = -1
+				antenna.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(antenna.x)
+				antenna.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(antenna.y)
+			EndIf
+
+			If station.IsActive()
+				'TODO: anpassen, wenn antenna.x keine Screencoordinate mehr ist
+				'Local popIncrease:Int = GetAddedAntennaPopulation(antenna.dataX, antenna.dataX, antenna.radius)
+				'mark antenna area as used by an (additional) antenna
+				_GetAllAntennasLayer().AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+				'inform all sections too
+				Local surfaceX:Int = GetStationMapCollection().mapInfo.DataXToScreenX(antenna.dataX)
+				Local surfaceY:Int = GetStationMapCollection().mapInfo.DataYToScreenY(antenna.dataY)
+print "activate antenna"
+-> connected funktioniert noch nicht
+-> eventuell den antennaLayers von den sections entfernen, von der "Map" reicht ja
+				For local section:TStationMapSection = EachIn GetStationMapCollection().GetSectionsConnectedToAntenna(surfaceX, surfaceY, antenna.radius)
+print "- affected section: " + section.GetName()
+					'only update if cache exists:
+					If section._antennasLayers[antenna.owner-1]
+print "- adding to section " + section.GetName()
+						section._antennasLayers[antenna.owner-1].AddAntenna(antenna.dataX - section.densityDataOffsetX, antenna.dataY - section.densityDataOffsetY, antenna.radius)
+					EndIf
+				Next
+				
+
+				'if _totalAntennaReachCache < 0 then _totalAntennaReachCache = 0
+				'_totalAntennaReachCache :+ popIncrease
+			Else
+				'TODO: anpassen, wenn antenna.x keine Screencoordinate mehr ist
+				Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.dataX, antenna.dataY, antenna.radius)
+				'mark antenna area as no longer used by an antenna
+				_GetallAntennasLayer().RemoveAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+
+				'_totalAntennaReachCache :- popDecrease
+				'if _totalAntennaReachCache < 0 Then _totalAntennaReachCache = 0
+			EndIf
+		EndIf
+	End Method
+
+
 	Method DoCensus()
 		reachInvalid = True
 		'refresh station reach
 		For Local station:TStationBase = EachIn stations
-			station.GetReach(True)
+			station.InvalidateReach()
+			station.GetReach()
 		Next
 	End Method
 
@@ -2111,6 +2729,84 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetSectionBroadcastPermission:Int(sectionName:String, bool:Int=True )
 		If Not sectionBroadcastPermissions Then Return False
 		Return Int(String(sectionBroadcastPermissions.ValueForKey(sectionName)))
+	End Method
+
+rem
+	Method GetTotalAntennaReach:Int()
+		if not _reachCacheEnabled or _totalAntennaReachCache = -1
+			_totalAntennaReachCache = GetAllAntennasLayer().GetReach()
+		EndIf
+		Return _totalAntennaReachCache
+	End Method
+endrem	
+
+	Method _GetAllAntennasLayer:TStationMapAntennaLayer()
+		If Not _antennasLayer
+			_antennasLayer = New TStationMapAntennaLayer(GetStationMapCollection().surfaceData, 0, 0)
+
+			'fill in all currently existing antennas
+			For Local antenna:TStationAntenna = EachIn stations
+				'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
+				'      basieren
+				if antenna.dataX = -1 and antenna.dataY = -1
+					antenna.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(antenna.x)
+					antenna.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(antenna.y)
+				EndIf
+				If antenna.IsActive()
+					_antennasLayer.AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+				EndIf
+			Next
+		EndIf
+		
+		Return _antennasLayer
+	End Method
+	
+	
+	'returns additional population covered when placing a station at the given coord
+	'(only a fraction of it uses antennas - multiply with AntennaShare to get
+	' the effective value)
+	Method GetAddedAntennaPopulation:Int(antennaX:Int, antennaY:Int, antennaRadius:Int = 0) {_exposeToLua}
+		'LUA scripts pass a default radius of "0" if they do not pass a variable at all
+		If antennaRadius <= 0 Then antennaRadius = GetStationMapCollection().antennaStationRadius
+'todo: die KI muss in Kilometern, nicht in Pixeln! 
+		Return _GetAllAntennasLayer().GetAddedAntennaPopulation(antennaX, antennaY, antennaRadius, GetStationMapCollection().mapInfo)
+	End Method
+
+
+	'returns loss of covered population when removing a station at the given coord
+	'(only a fraction of it uses antennas - multiply with AntennaShare to get
+	' the effective value)
+	Method GetRemovedAntennaPopulation:Int(antennaX:Int, antennaY:Int, antennaRadius:Int = 0)
+		'LUA scripts pass a default radius of "0" if they do not pass a variable at all
+		If antennaRadius <= 0 Then antennaRadius = GetStationMapCollection().antennaStationRadius
+'todo: die KI muss in Kilometern, nicht in Pixeln! 
+		Return _GetAllAntennasLayer().GetRemovedAntennaPopulation(antennaX, antennaY, antennaRadius, GetStationMapCollection().mapInfo)
+	End Method
+
+
+	'returns additional audience when placing a station at the given coord
+	Method GetAddedAntennaAudience:Int(x:Int, y:Int, radius:Int = 0 ) {_exposeToLua}
+		Local antennaShare:Float = GetPopulationAntennaShare(x, y)
+		Return GetAddedAntennaPopulation(x, y, radius) * antennaShare
+	End Method
+
+
+	'returns audience loss when selling a station at the given coord
+	'param is station (not coords) to avoid ambiguity of multiple
+	'stations at the same spot
+	Method GetRemovedAntennaAudience:Int(station:TStationAntenna) {_exposeToLua}
+		'TODO: Umbauen, wenn neue TStation.x/y auf "data" statt "screen
+		'      basieren -> GetPopulationAntennaShareByDataCoord() einführen
+		Local antennaShare:Float = GetPopulationAntennaShare(station.x, station.y)
+
+		'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
+		'      basieren
+		if (station.dataX = -1 and station.dataY = -1)
+			station.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(station.x)
+			station.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(station.y)
+		EndIf
+
+		Return GetRemovedAntennaPopulation(station.dataX, station.dataY, station.radius) * antennaShare
 	End Method
 
 
@@ -2431,11 +3127,6 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalculateTotalAntennaAudienceIncrease:Int(X:Int=-1000, Y:Int=-1000, radius:Int = -1)
-		Return GetStationMapCollection().CalculateTotalAntennaAudienceIncrease(stations, X, Y, radius)
-	End Method
-
-
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
 		'cannot simply call GetReach() because it can call RecalculateAudienceSum()
@@ -2476,19 +3167,9 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'returns additional audience when placing a station at the given coord
-	Method CalculateAntennaAudienceIncrease:Int(X:Int, Y:Int, radius:Int = -1 ) {_exposeToLua}
-		'LUA scripts pass a default radius of "0" if they do not pass a variable at all
-		If radius <= 0 Then radius = GetStationMapCollection().antennaStationRadius
-		Return GetStationMapCollection().CalculateTotalAntennaAudienceIncrease(stations, X, Y, radius)
-	End Method
-
-
-	'returns audience loss when selling a station at the given coord
-	'param is station (not coords) to avoid ambiguity of multiple
-	'stations at the same spot
-	Method CalculateAntennaAudienceDecrease:Int(station:TStationAntenna) {_exposeToLua}
-		Return GetStationMapCollection().CalculateTotalAntennaAudienceDecrease(stations, station)
+	'returns the antenna share for the given screen coordinate
+	Method GetPopulationAntennaShare:Float(x:Int, y:Int)
+		Return GetStationMapCollection().GetPopulationAntennaShare(x,y)
 	End Method
 
 
@@ -2643,7 +3324,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'ALSO DO NOT recalculate audience of channel
 		'RecalculateAudienceSum()
-		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] in section ~q" + station.GetSectionName() +"~q for " + station.price + " Euro (reach +" + station.GetReach(True) + ")", LOG_DEBUG)
+		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] in section ~q" + station.GetSectionName() +"~q for " + station.price + " Euro (reach +" + station.GetReach() + ")", LOG_DEBUG)
 
 		'sign potential contracts (= add connections)
 		station.SignContract()
@@ -2689,6 +3370,24 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform the station about the removal
 		station.OnRemoveFromMap()
+
+		if station.IsActive() and TStationAntenna(station)
+			Local antenna:TStationAntenna = TStationAntenna(station)
+			'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
+			'      basieren
+			if (antenna.dataX = -1 and antenna.dataY = -1)
+				antenna.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(antenna.x)
+				antenna.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(antenna.y)
+			EndIf
+
+'			Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.dataX, antenna.dataX, antenna.radius)
+			'mark antenna area as no longer used by an antenna
+			_GetAllAntennasLayer().RemoveAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+
+'			_totalAntennaReachCache :- popDecrease
+'			if _totalAntennaReachCache < 0 Then _totalAntennaReachCache = 0
+'print "RON: RemoveStation() - pop. -" + popDecrease + "   _totalAntennaReachCache="+_totalAntennaReachCache
+		EndIf
 
 
 		'invalidate (cached) share data of surrounding sections
@@ -2885,8 +3584,10 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'refresh the station data
 	Method refreshData() {_exposeToLua}
-		GetReach(True)
-		GetExclusiveReach(True)
+		self.reach = -1
+		self.reachMax = -1
+		GetReach()
+		GetExclusiveReach()
 	End Method
 
 
@@ -2921,24 +3622,30 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method InvalidateReach()
+		self.reach = -1
+		self.reachMax = -1
+	End Method
+	
+
 	'potentially reachable
-	Method GetReachMax:Int(refresh:Int=False) Abstract {_exposeToLua}
+	Method GetReachMax:Int() Abstract {_exposeToLua}
 
 
 	'get the reach of that station
-	Method GetReach:Int(refresh:Int=False) Abstract {_exposeToLua}
+	Method GetReach:Int() Abstract {_exposeToLua}
 
 
 	'reached audience not shared with another stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) Abstract {_exposeToLua}
+	Method GetExclusiveReach:Int() Abstract {_exposeToLua}
 
 
 	'get the relative reach increase of that station
-	Method GetRelativeExclusiveReach:Float(refresh:Int=False) {_exposeToLua}
-		Local r:Float = GetReach(refresh)
+	Method GetRelativeExclusiveReach:Float() {_exposeToLua}
+		Local r:Float = GetReach()
 		If r = 0 Then Return 0
 
-		Return GetExclusiveReach(refresh) / r
+		Return GetExclusiveReach() / r
 	End Method
 
 
@@ -3378,7 +4085,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local priceSplitH:Int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" ) - 2
 		Local tooltipW:Int = 190
-		Local tooltipH:Int = textH * 3 + 10 + 5
+		Local tooltipH:Int = textH * 4 + 10 + 5
 
 		If showPriceInformation Then tooltipH :+ priceSplitH
 
@@ -3408,11 +4115,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If tooltipY < 10 Then tooltipY = Y + GetOverlayOffsetY() + 5
 		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW)
 
-		SetAlpha 0.5
+		Local oldAlpha:Float = GetAlpha()
+		SetAlpha oldAlpha * 0.5
 		SetColor 0,0,0
 		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
 		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha oldAlpha
 		
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
 		Local font:TBitmapFont = GetBitmapFontManager().baseFont
@@ -3422,14 +4130,21 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local textW:Int = tooltipW-10
 		Local iso:String = GetSectionISO3166Code()
 		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")", textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
+		textY:+ textH
+
+		font.Draw(GetLocale("POPULATION")+": ", textX, textY, New SColor8(255,255,255, 180))
+		fontBold.DrawBox(TFunctions.convertValue(GetReachMax(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255, 180))
 		textY:+ textH + 5
 
-		font.Draw(GetLocale("REACH")+": ", textX, textY)
+		font.Draw(GetLocale("REACH")+":", textX, textY)
+		font.DrawBox(MathHelper.NumberToString(section.GetPopulationAntennaShare()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
 		fontBold.DrawBox(TFunctions.convertValue(GetReach(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		textY:+ textH
 
 		If stationType = TVTStationType.ANTENNA
-			font.Draw(GetLocale("INCREASE")+": ", textX, textY)
+			Local increasePercentage:Float = GetExclusiveReach()/Float(GetStationMap(owner).GetReach())
+			font.Draw(GetLocale("INCREASE")+":", textX, textY)
+			font.DrawBox("+"+MathHelper.NumberToString(increasePercentage*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
 			fontBold.DrawBox(TFunctions.convertValue(GetExclusiveReach(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			textY:+ textH
 		EndIf
@@ -3562,6 +4277,12 @@ End Type
 
 Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	Field radius:Int = 0 {_exposeToLua="readonly"}
+	'TODO: Wieder entfernen, wenn x,y auf "data" umgestellt wird
+	'      und savegames "version" hoehergehen (beim "Import" dann von der
+	'      Pixelangabe (Annahme 800x600) umrechnen auf "dataXY"
+	'position o nthe populationdata (self.x, self.y are screen positions)
+	Field dataX:Int = -1
+	Field dataY:Int = -1
 
 
 	Method New()
@@ -3608,10 +4329,35 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) Override {_exposeToLua}
+	Method SetRadius(radius:Int)
+		self.radius = radius
+		InvalidateReach()
+	End Method
+
+
+	Method SetPosition(x:Int, y:Int)
+		self.x = x
+		self.y = y
+		InvalidateReach()
+	End Method
+
+
+	Method GetReachMax:Int() Override {_exposeToLua}
+		if radius <= 0 Then Return 0
+		
 		'not cached?
-		If reachMax < 0 Or refresh
-			reachMax = GetStationMapCollection().CalculateTotalAntennaStationReach(X, Y, radius)
+		If reachMax < 0
+			'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
+			'      basieren
+			'bei temporaeren Antennen wird x,y nur "angepasst" -> dataX wuerde sich so nicht aendern
+			'aber "refresh" ist da dann True
+			if (self.dataX = -1 and self.dataY = -1)
+				self.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(self.x)
+				self.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(self.y)
+			EndIf
+			
+			reachMax = GetStationMapCollection().GetAntennaAudience(self.dataX, self.dataY, self.radius)
+
 			runningCosts = -1 'ensure running costs are calculated again
 		EndIf
 		Return reachMax
@@ -3619,29 +4365,37 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 
 	'reachable with current stationtype share
-	Method GetReach:Int(refresh:Int=False) Override {_exposeToLua}
+	Method GetReach:Int() Override {_exposeToLua}
+		if radius <= 0 Then Return 0
+
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			Return GetReachMax(refresh)
+			Return GetReachMax()
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			'more exact approach (if SHARES DIFFER between sections) would be to
-			'find split the area into all covered sections and calculate them
-			'individually - then sum them up for the total reach amount
+			'this is NOT correct - as the other sections (overlapping)
+			'might have other antenna share values
+			'-> better replace that once we settled to a specific
+			'   variant - exclusive or not - and multiply with a individual
+			'   receiverShare-Map for all the pixels covered by the antenna
+			'-> alternatively: more exact approach (if SHARES DIFFER between
+			'   sections) would be to find split the area into all covered
+			'   sections and calculate them individually 
+			'   -> And then sum them up for the total reach amount
 
 			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 			If Not section Or section.populationAntennaShare < 0
-				Return GetReachMax(refresh) * GetStationMapCollection().GetCurrentPopulationAntennaShare()
+				Return GetReachMax() * GetStationMapCollection().GetCurrentPopulationAntennaShare()
 			Else
-				Return GetReachMax(refresh) * section.populationAntennaShare
+				Return GetReachMax() * section.populationAntennaShare
 			EndIf
 		EndIf
 
-		Return GetReachMax(refresh)
+		Return GetReachMax()
 	End Method
 
 
 	'reached audience not shared with another stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) Override {_exposeToLua}
+	Method GetExclusiveReach:Int() Override {_exposeToLua}
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			'as stations might broadcast to other sections too (crossing
 			'borders) you cannot ignore stations in sections which are
@@ -3651,41 +4405,27 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'easiest approach: calculate reach "WITH - WITHOUT" station
 			'TODO
 			Throw "TStationAntenna.GetExclusiveReach() TODO"
-
-			'not cached yet?
-			If reachExclusiveMax < 0 Or refresh
-				reachExclusiveMax = GetStationMap(owner).CalculateAntennaAudienceIncrease(X, Y, radius)
-			EndIf
-
-			Return reachExclusiveMax
-
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
 			'not cached yet?
-			If reachExclusiveMax < 0 Or refresh
-				If GetStationMap(owner).HasStation(Self)
-					reachExclusiveMax = GetStationMap(owner).CalculateAntennaAudienceDecrease(Self)
-				Else
-					reachExclusiveMax = GetStationMap(owner).CalculateAntennaAudienceIncrease(X, Y, radius)
-				EndIf
+			If reachExclusiveMax < 0
+				reachExclusiveMax = GetStationMapCollection().GetAntennaExclusivePopulation(self.dataX, self.dataY, self.radius, owner, GetStationMap(owner).HasStation(Self))
 			EndIf
 
 			'this is NOT correct - as the other sections (overlapping)
 			'might have other antenna share values
-			'-> better replace that once we settled to a specific
-			'   variant - exclusive or not - and multiply with a individual
-			'   receiverShare-Map for all the pixels covered by the antenna
+			'-> details in GetReach()
+
 			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 			If Not section Or section.populationAntennaShare < 0
 				Return reachExclusiveMax * GetStationMapCollection().GetCurrentPopulationAntennaShare()
 			Else
 				Return reachExclusiveMax * section.populationAntennaShare
 			EndIf
-
-			Return reachExclusiveMax
 		EndIf
 
 		Return reachExclusiveMax
 	End Method
+
 
 	'base price for buy price and maintenance costs
 	'extracted in order to apply separate modifiers
@@ -3707,19 +4447,25 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 		'construction costs
 		If Not IsShutdown()
+			'invalidate reaches so they get recalculated
+			'(this saves calculation time instead of recalculating "reach"
+			' and "reachMax" - with "reach" simply using "reachMax")
+			self.reach = -1
+			self.reachMax = -1
+			
 			Local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
 			'government-dependent costs
 			'section specific costs for bought land + bureaucracy costs
 			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
 			'section government costs, changes over time (dynamic reach)
-			buyPrice :+ 0.20 * GetReach(True)
+			buyPrice :+ 0.20 * GetReach()
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
 			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed construction costs
 			'building costs for "hardware" (more expensive than sat/cable)
-			buyPrice :+ 0.20 * GetStationMapCollection().CalculateTotalAntennaStationReach(X, Y, 20)
+			buyPrice :+ 0.20 * GetReachMax()
 		EndIf
 		Return buyPrice
 	End Method
@@ -3772,11 +4518,11 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	Method Draw(selected:Int=False)
 		Local sprite:TSprite = Null
 		Local oldAlpha:Float = GetAlpha()
-
+		Local screenRadius:Int = GetStationMapCollection().mapInfo.DataToScreen(self.radius)
 		If selected
 			'white border around the colorized circle
 			SetAlpha 0.25 * oldAlpha
-			DrawOval(X - radius - 2, Y - radius -2, 2 * (radius + 2), 2 * (radius + 2))
+			DrawOval(X - screenRadius - 2, Y - screenRadius -2, 2 * (screenRadius + 2), 2 * (screenRadius + 2))
 
 			SetAlpha Float(Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha)
 		Else
@@ -3791,9 +4537,9 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 							sprite = GetSpriteFromRegistry("stationmap_antenna0")
 		End Select
 		color.SetRGB()
-		DrawOval(X - radius, Y - radius, 2 * radius, 2 * radius)
+		DrawOval(X - screenRadius, Y - screenRadius, 2 * screenRadius, 2 * screenRadius)
 		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
-		DrawOval(X - radius + 2, Y - radius + 2, 2 * (radius - 2), 2 * (radius - 2))
+		DrawOval(X - screenRadius + 2, Y - screenRadius + 2, 2 * (screenRadius - 2), 2 * (screenRadius - 2))
 
 
 		SetColor 255,255,255
@@ -3990,7 +4736,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			'section specific costs for bought land + bureaucracy costs
 			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.CABLE_NETWORK_UPLINK)
 			'section government costs, changes over time (dynamic reach)
-			buyPrice :+ 0.10 * GetReach(True)
+			buyPrice :+ 0.10 * GetReach()
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
 			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
@@ -4047,8 +4793,8 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) Override {_exposeToLua}
-		If reachMax <= 0 Or refresh
+	Method GetReachMax:Int() Override {_exposeToLua}
+		If reachMax <= 0
 			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 			If section Then reachMax = section.GetPopulation()
 		EndIf
@@ -4057,7 +4803,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) Override {_exposeToLua}
+	Method GetReach:Int() Override {_exposeToLua}
 		'always return the uplinks' reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs"
 		'If reach >= 0 And Not refresh Then Return reach
@@ -4065,15 +4811,15 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		If Not cableNetwork Then Return 0
 
-		Return cableNetwork.GetReach(refresh)
+		Return cableNetwork.GetReach()
 	End Method
 
 
 	'reached audience not shared with other stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetExclusiveReach:Int() {_exposeToLua}
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			'not cached yet?
-			If reachExclusiveMax < 0 Or refresh
+			If reachExclusiveMax < 0
 				Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 				If Not cableNetwork
 					reachExclusiveMax = 0
@@ -4112,7 +4858,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			If Not cableNetwork
 				reachExclusiveMax = 0
 			Else
-				reachExclusiveMax = cableNetwork.GetReach(refresh)
+				reachExclusiveMax = cableNetwork.GetReach()
 			EndIf
 		EndIf
 
@@ -4454,8 +5200,8 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 			'population 80 Mio, reach 5 Mio, reachFactor 0.25, dynamic price 1.75Mio
 			'population 80 Mio, reach 10 Mio,reachFactor 0.5,  dynamic price 6Mio
 			'the last seems to be about the maximum reach of the satellites in Germany (3 Satellites)
-			Local reach:Float = Float(GetReach(False))
-			Local reachFactor:Float = 4 * reach / GetReachMax(False)
+			Local reach:Float = Float(GetReach())
+			Local reachFactor:Float = 4 * reach / GetReachMax()
 			buyPrice :+ (0.1+reachFactor) * reach
 
 			'government sympathy adjustments (-10% to +10%)
@@ -4480,8 +5226,8 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) Override {_exposeToLua}
-		If reachMax < 0 Or refresh
+	Method GetReachMax:Int() Override {_exposeToLua}
+		If reachMax < 0
 			reachMax = GetStationMapCollection().GetPopulation()
 		EndIf
 
@@ -4489,7 +5235,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) Override {_exposeToLua}
+	Method GetReach:Int() Override {_exposeToLua}
 		'always return the satellite's reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs"
 		'If reach >= 0 And Not refresh Then Return reach
@@ -4502,9 +5248,9 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 
 
 	'reached audience not shared with other stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) Override {_exposeToLua}
+	Method GetExclusiveReach:Int() Override {_exposeToLua}
 		'not cached yet?
-		If reachExclusiveMax < 0 Or refresh
+		If reachExclusiveMax < 0
 			Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 			If Not satellite
 				reachExclusiveMax = 0
@@ -4533,6 +5279,8 @@ Type TStationMapSection
 	Field highlightBorderSprite:TSprite {nosave}
 	Field hoveredImage:TImage {nosave}
 	Field selectedImage:TImage {nosave}
+	Field densityDataOffsetX:Int {nosave}
+	Field densityDataOffsetY:Int {nosave}
 
 	'the government of this section is influenced a bit by
 	'pressure groups / lobbies / parties
@@ -4550,26 +5298,26 @@ Type TStationMapSection
 	
 	'(local) position inside the section
 	Field uplinkPos:TVec2I
-	
+
 	Field name:String
+	Field sectionID:Int
 	Field iso3116code:String
-	Field populationImage:TImage {nosave}
 	Field populationMap:Int[,] {nosave}
 	Field population:Int = -1
 	Field populationCableShare:Float = -1
 	Field populationSatelliteShare:Float = -1
 	Field populationAntennaShare:Float = -1
-	'grid/array/mapmap containing bitmask-coded information for "used" pixels
-	Field antennaShareGrid:Byte[] = Null {nosave}
-	Field antennaShareGridValid:Int = False {nosave}
-	Field antennaShareGridWidth:Int {nosave}
-	Field antennaShareGridHeight:Int {nosave}
 	'Field antennaShareMapImage:TImage {nosave}
 	Field shareCache:TStringMap = New TStringMap {nosave}
 	Field calculationMutex:TMutex = CreateMutex() {nosave}
 	Field shareCacheMutex:TMutex = CreateMutex() {nosave}
 	Field antennaShareMutex:TMutex = CreateMutex() {nosave}
+	Field updateDataMutex:TMutex = CreateMutex() {nosave}
 
+	'Caches
+	'data reference for surface data of this section
+	Field _surfaceData:TStationMapSurfaceData {nosave}
+	Field _antennasLayers:TStationMapAntennaLayer[] {nosave}
 
 	Method New()
 		channelSympathy = New Float[4]
@@ -4577,10 +5325,11 @@ Type TStationMapSection
 	End Method
 
 
-	Method Create:TStationMapSection(pos:SVec2I, name:String, iso3116code:String, shapeSpriteName:String, config:TData = Null)
+	Method Create:TStationMapSection(pos:SVec2I, name:String, iso3116code:String, sectionID:Int, shapeSpriteName:String, config:TData = Null)
 		Self.shapeSpriteName = shapeSpriteName
 		Self.rect = New TRectangle.Init(pos.X, pos.Y, 0, 0)
 		Self.name = name
+		Self.sectionID = sectionID
 		Self.iso3116code = iso3116code
 		LoadShapeSprite()
 
@@ -4602,25 +5351,49 @@ Type TStationMapSection
 
 		Return Self
 	End Method
+	
+	
+	Method SetSurfaceData(surfaceData:TStationMapSurfaceData)
+		self._surfaceData = surfaceData
+	End Method
+	
+	
+	Method GetAntennasLayer:TStationMapAntennaLayer(channelID:Int)
+		If not _antennasLayers or _antennasLayers.length < channelID
+			_antennasLayers = _antennasLayers[.. channelID]
+		EndIf
+		
+		If not _antennasLayers[channelID-1]
+			If not self._surfaceData Then Throw "GetAntennasLayer: no valid _surfaceData existing."
 
+			_antennasLayers[channelID-1] = New TStationMapAntennaLayer(self._surfaceData, 0, 0)
+			
+			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 
+			'fill in all currently existing antennas of the channel
+			For Local antenna:TStationAntenna = EachIn GetStationMap(channelID).stations
+				'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
+				'      basieren
+				if antenna.dataX = -1 and antenna.dataY = -1
+					antenna.dataX = mapInfo.ScreenXToDataX(antenna.x)
+					antenna.dataY = mapInfo.ScreenYToDataY(antenna.y)
+				EndIf
+				If antenna.IsActive()
+					_antennasLayers[channelID-1].AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+				EndIf
+			Next
+		EndIf
+		
+		Return _antennasLayers[channelID-1]
+	End Method
+	
+	
 	Method InvalidateData()
 		LockMutex(shareCacheMutex)
 			shareCache = New TStringMap
 		UnlockMutex(shareCacheMutex)
-		
-		LockMutex(antennaShareMutex)
-			'we could simply assign a new grid - or iterate over all
-			'fields and set them to 0
-			'For local i:int = 0 until (antennaShareGridWidth * antennaShareGridHeight)
-			'	antennaShareGrid[i] = 0
-			'Next
-			'antennaShareGrid = new Byte[antennaShareGrid.length]
-			antennaShareGridValid = False
-		UnlockMutex(antennaShareMutex)
 	End Method
 	
-
 
 	Method LoadShapeSprite()
 		shapeSprite = GetSpriteFromRegistry(shapeSpriteName)
@@ -4667,7 +5440,7 @@ Type TStationMapSection
 	Method GetDisabledOverlay:TImage()
 		If Not disabledOverlay
 			Local shapePix:TPixmap = LockImage(GetShapeSprite().GetImage())
-			Local sourcePix:TPixmap = LockImage(GetSpriteFromRegistry("map_Surface").GetImage())
+			Local sourcePix:TPixmap = GetStationMapCollection().mapInfo.surfaceImage.Lock(0, True, False)
 			Local pix:TPixmap = ExtractPixmapFromPixmap(sourcePix, shapePix, rect.GetIntX(), rect.GetIntY())
 			disabledOverlay = LoadImage( AdjustPixmapSaturation(pix, 0.20) )
 			'disabledOverlay = ConvertToSingleColor( disabledOverlay, $FF999999 )
@@ -4679,7 +5452,7 @@ Type TStationMapSection
 	Method GetEnabledOverlay:TImage()
 		If Not enabledOverlay
 			Local shapePix:TPixmap = LockImage(GetShapeSprite().GetImage())
-			Local sourcePix:TPixmap = LockImage(GetSpriteFromRegistry("map_Surface").GetImage())
+			Local sourcePix:TPixmap = GetStationMapCollection().mapInfo.surfaceImage.Lock(0, True, False)
 			Local pix:TPixmap = ExtractPixmapFromPixmap(sourcePix, shapePix, rect.GetIntX(), rect.GetIntY())
 			enabledOverlay = LoadImage( pix )
 		EndIf
@@ -4691,7 +5464,6 @@ Type TStationMapSection
 		Local mapX:Int = rect.x + localX 
 		Local mapY:Int = rect.y + localY
 		Local IsValid:Int = False
-
 		Local sprite:TSprite = GetShapeSprite()
 		If Not sprite Then Return False
 		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
@@ -4950,79 +5722,39 @@ Type TStationMapSection
 	End Method
 
 
-	Method GeneratePopulationImage:Int(sourcePopulationImage:TImage)
-		Local startX:Int = Int(Max(0, rect.x))
-		Local startY:Int = Int(Max(0, rect.y))
-		Local endX:Int = Int(Min(sourcePopulationImage.width, rect.GetX2()))
-		Local endY:Int = Int(Min(sourcePopulationImage.height, rect.GetY2()))
-		Local sourcePix:TPixmap = LockImage(sourcePopulationImage)
-
-		If Not populationImage Then populationImage = LoadImage( CreatePixmap(rect.GetIntW(), rect.GetIntH(), sourcePix.format) )
-		Local pix:TPixmap = LockImage(populationImage)
-		pix.ClearPixels(0)
-
-		Local sectionPix:TPixmap
-		Local sprite:TSprite = GetShapeSprite()
-		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
-
-		'copy whats left on the sections image
-		For Local X:Int = startX Until endX
-			For Local Y:Int = startY Until endY
-				If PixelIsOpaque(sprite._pix, Int(X-rect.GetX()), Int(Y-rect.GetY())) > 0
-					pix.WritePixel(Int(X-rect.GetX()), Int(Y-rect.GetY()), sourcePix.ReadPixel(X, Y) )
-				EndIf
-			Next
-		Next
-	End Method
-
-
-	Method CalculatePopulation:Int()
-'		If not TryLockMutex(calculationMutex)
-'			Notify "CalculatePopulation: concurrent access found!"
-			LockMutex(calculationMutex)
-'		EndIf
-
-		populationMap = New Int[populationImage.width, populationImage.height]
-
-		'generate map out of the populationImage
-		'and also sum up population
-		population = 0
-		Local pix:TPixmap = LockImage(populationImage)
-		Local c:Int
-		Local skipped:Int = 0
-		For Local X:Int = 0 Until populationImage.width
-			For Local Y:Int = 0 Until populationImage.height
-				c = pix.ReadPixel(X, Y)
-				If ARGB_ALPHA(pix.ReadPixel(X, Y)) = 0 Then Continue
-				Local brightness:Int = ARGB_RED(c)
-				populationMap[X, Y] = TStationMapSection.GetPopulationForBrightness( brightness )
-
-				population :+ populationMap[X, Y]
-			Next
-		Next
-		
-		UnlockMutex(calculationMutex)
-		
-		Return population
-	End Method
-
-
 	Method GetPopulation:Int()
-		If population < 0 Then CalculatePopulation()
+		If population < 0
+			LockMutex(updateDataMutex)
+				If not _surfaceData Then Throw "TStationMapSection: Cannot calculate population without surface data"
+				population = 0
+				
+				Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+				'ensure x fits into surfaceData AND densityData
+				Local limitedWidth:Int = Min(_surfaceData.width, mapInfo.densityData.width - densityDataOffsetX)
+				Local limitedHeight:Int = Min(_surfaceData.height, mapInfo.densityData.height - densityDataOffsetY)
+
+				For local x:int = 0 until limitedWidth
+					For local y:int = 0 until limitedHeight
+						'check if inside topography
+						If _surfaceData.data[y * _surfaceData.width + x] > 0
+							population :+ mapInfo.densityData.data[(y + densityDataOffsetY) * mapInfo.densityData.width + (x + densityDataOffsetX)]
+						EndIf
+					Next
+				Next
+			UnlockMutex(updateDataMutex)
+		EndIf
 		Return population
 	End Method
 
 
-	Private
-	Function GeneratePositionKey:Long(X:Int, Y:Int)
-		Return Long(X) Shl 32 | Long(Y)
-	End Function
-
-	Function SplitPositionKey(key:Long, X:Int Var, Y:Int Var)
-		X = Int(key Shr 32)
-		Y = key & $ffffffff
-	End Function
-	Public
+	'returns the antenna share for the section
+	Method GetPopulationAntennaShare:Float()
+		If populationAntennaShare < 0
+			Return GetStationMapCollection().GetCurrentPopulationAntennaShare()
+		Else
+			Return populationAntennaShare
+		EndIf
+	End Method
 
 
 	'returns the shared amount of audience between channels
@@ -5078,91 +5810,58 @@ Type TStationMapSection
 	End Method
 
 
-	Method GetAntennaShareGrid:Byte[]()
-		If Not antennaShareGridValid Or Not antennaShareGrid Or antennaShareGrid.Length = 0
-			LockMutex(antennaShareMutex)
+	Method GetAntennaExclusivePopulation:int(x:Int, y:int, radius:Int, owner:Int, alreadyBuilt:Int = True)
+		If not _surfaceData Then Throw "TStationMapSection: Cannot calculate population without surface data"
 
-			antennaShareGrid = New Byte[populationImage.width * populationImage.height]
-			antennaShareGridWidth = populationImage.width
-			antennaShareGridHeight = populationImage.height
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Local result:Int
 
-			Local antennaStationRadius:Int = GetStationMapCollection().antennaStationRadius
-			Local antennaStationRadiusSquared:Int = antennaStationRadius * antennaStationRadius
-			Local shapeSprite:TSprite = GetShapeSprite()
-			If Not shapeSprite._pix Then shapeSprite._pix = shapeSprite.GetPixmap()
-			Local circleRectX:Int, circleRectY:Int, circleRectX2:Int, circleRectY2:Int
-			Local shareMask:TStationMapShareMask
-			Local posX:Int = 0
-			Local posY:Int = 0
-			Local stationX:Int = 0
-			Local stationY:Int = 0
-			Local shareKey:Long
-			For Local map:TStationMap = EachIn GetStationMapCollection().stationMaps
-				'Local ownerMask:Byte = GetMaskIndex(map.owner)
-				Local ownerMask:Byte = (1 Shl (map.owner-1))
+		'data is "densitydata based"!
+		'ensure rect fits into surfaceData AND densityData
+		Local circleRectX:Int = Max(0, self.densityDataOffsetX - radius)
+		Local circleRectY:Int = Max(0, self.densityDataOffsetY - radius)
+		Local circleRectX2:Int = Min(self.densityDataOffsetX + radius, Min(_surfaceData.width-1, mapInfo.densityData.width-1))
+		Local circleRectY2:Int = Min(self.densityDataOffsetY + radius, Min(_surfaceData.height-1, mapInfo.densityData.height-1))
+		Local radiusSquared:Int = radius * radius
 
-				If map.cheatedMaxReach
-					'insert the players bitmask-number into the field
-					'and if there is already one ... add the number
-					For posX = 0 To populationImage.width-1
-						For posY = 0 To populationImage.height-1
-							'left the topographic borders ?
-							If Not PixelIsOpaque(shapeSprite._pix, posX, posY) > 0 Then Continue
+		Local ownerAntennaLayer:TStationMapAntennaLayer = GetAntennasLayer(owner)
+		Local otherAntennaLayers:TStationMapAntennaLayer[3]
+		Local otherAntennaLayersUsed:int
+		for local i:int = 1 to 4
+			if owner <> i
+				otherAntennaLayers[otherAntennaLayersUsed] = GetAntennasLayer(i)
+				otherAntennaLayersUsed :+ 1
+			EndIf
+		Next
+		Local checkValue:Int = 0 'nobody there
+		if alreadyBuilt Then checkValue = 1 'only this very antenna is there
+	
+		'TODO: aehnliches wird schon in GetSectionsConnectedToAntenna gemacht
+		'      -> code direkt hierher kopieren um doppelten Aufwand zu sparen?
 
-							Local index:Int = posY * antennaShareGridWidth + posX
-							'adjust mask
-							antennaShareGrid[index] :| ownerMask
-						Next
-					Next
-				Else
+		For Local posX:Int = circleRectX To circleRectX2
+			For Local posY:Int = circleRectY To circleRectY2
+				'left the circle?
+				If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
+				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
 
-					'only handle antennas, no cable network/satellite!
-					'For Local station:TStationBase = EachIn stationmap.stations
-					For Local station:TStationAntenna = EachIn map.stations
-						'skip inactive or shutdown stations
-						If Not station.CanBroadcast() Then Continue
-						
-						'skip if outside
-'						if station.pos.x + antennaStationRadius < rect.GetX() Then Continue
-'						if station.pos.y + antennaStationRadius < rect.GetY() Then Continue
-'						if station.pos.x - antennaStationRadius >= rect.GetX2() Then Continue
-'						if station.pos.y - antennaStationRadius >= rect.GetY2() Then Continue
-
-						'mark the area within the stations circle
-
-						'local coordinate (within section)
-						stationX = station.X - rect.x
-						stationY = station.Y - rect.y
-
-						'stay within the section
-						circleRectX = Max(0, stationX - antennaStationRadius)
-						circleRectY = Max(0, stationY - antennaStationRadius)
-						circleRectX2 = Min(stationX + antennaStationRadius, rect.GetW()-1)
-						circleRectY2 = Min(stationY + antennaStationRadius, rect.GetH()-1)
-
-						For posX = circleRectX To circleRectX2
-							For posY = circleRectY To circleRectY2
-								'left the circle?
-								If CalculateDistanceSquared( posX - stationX, posY - stationY ) > antennaStationRadiusSquared Then Continue
-								'If ((posX - stationX)*(posX - stationX) + (posY - stationY)*(posY - stationY)) > antennaStationRadiusSquared Then Continue
-								'left the topographic borders ?
-								
-								If Not PixelIsOpaque(shapeSprite._pix, posX, posY) > 0 Then Continue
-
-								Local index:Int = posY * antennaShareGridWidth + posX
-								antennaShareGrid[index] :| ownerMask
-							Next
-						Next
-					Next
-				EndIf
+				'left the topographic borders ?
+				If _surfaceData.data[posY * _surfaceData.width + posX] = 0 Then Continue
+				
+				Local layerDataIndex:Int = posY * ownerAntennaLayer.width + posX
+				
+				'owner already broadcasting with more than this
+				'looked up antenna (in case of already "owned")?
+				if ownerAntennaLayer.data[layerDataIndex] > checkValue Then Continue
+				'others broadcasting there?
+				if otherAntennaLayers[0].data[layerDataIndex] > 0 Then Continue
+				if otherAntennaLayers[1].data[layerDataIndex] > 0 Then Continue
+				if otherAntennaLayers[2].data[layerDataIndex] > 0 Then Continue
+				
+				result :+ mapInfo.densityData.data[(posY + densityDataOffsetY) * mapInfo.densityData.width + (posX + densityDataOffsetX)]
 			Next
-
-			antennaShareGridValid = True
-			UnlockMutex(antennaShareMutex)
-		EndIf
-		Return antennaShareGrid
+		Next
 	End Method
-
 
 	'returns a share between channels
 	'includeChannelMask contains "channels of interest" (unset are not excluded!)
@@ -5329,28 +6028,48 @@ Type TStationMapSection
 
 
 		'== GENERATE CACHE ==
-		If Not result
+		If Not result or 1=1
 			result = New TStationMapPopulationShare
+			
+			Local antennaLayer2:TStationMapAntennaLayer = self.GetAntennasLayer(2)
+			Local antennaLayer1:TStationMapAntennaLayer = self.GetAntennasLayer(1)
+			Local antennaLayer3:TStationMapAntennaLayer = self.GetAntennasLayer(3)
+			Local antennaLayer4:TStationMapAntennaLayer = self.GetAntennasLayer(4)
+			Local offsetX:Int = antennaLayer1.offsetX
+			Local offsetY:Int = antennaLayer1.offsetY
+			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 
-			Local shareGrid:Byte[] = GetAntennaShareGrid()
 			LockMutex(antennaShareMutex) 'to savely iterate over values()
-			For Local mapX:Int = 0 Until antennaShareGridWidth 
-				For Local mapY:Int = 0 Until antennaShareGridHeight
-					Local index:Int = mapY * antennaShareGridWidth + mapX
-					Local mask:Byte = shareGrid[index]
+
+			'only read as far as population data allows
+			Local limitedWidth:Int = min(antennaLayer1.width, mapInfo.densityData.width - offsetX)
+			Local limitedHeight:Int = min(antennaLayer1.height, mapInfo.densityData.height - offsetY)
+
+			For Local mapX:Int = 0 Until limitedWidth 
+				For Local mapY:Int = 0 Until limitedHeight
+					Local index:Int = mapY * antennaLayer1.width + mapX
+					Local mask:Byte
+					mask :+ (antennaLayer1.data[index] > 0) * 1
+					mask :+ (antennaLayer2.data[index] > 0) * 2
+					mask :+ (antennaLayer3.data[index] > 0) * 4
+					mask :+ (antennaLayer4.data[index] > 0) * 8
+					
 					'skip if none of our interested is here
 					If includeChannelMask.HasNone(mask) Then Continue
 					'skip if one of the to exclude is here
 					If Not excludeChannelMask.HasNone(mask) Then Continue
 
+					local popAtPoint:Int = mapInfo.densityData.data[(mapY + offsetY) * mapInfo.densityData.width + (mapX + offsetX)]
+
+
 					'someone has a station there
 					'-> check already done in the skip above
 					'If ((mapMask.mask & includeChannelMask) <> 0)
-						result.value.total :+ populationmap[mapX, mapY]
+						result.value.total :+ popAtPoint
 					'EndIf
 					'all searched have a station there
 					If (mask & includeChannelMask.value) = includeChannelMask.value
-						result.value.shared :+ populationmap[mapX, mapY]
+						result.value.shared :+ popAtPoint
 					EndIf
 				Next
 			Next
@@ -5372,199 +6091,6 @@ Type TStationMapSection
 
 		Return result.value
 	End Method
-
-
-
-	'params of advanced types (no ints, strings, bytes) are automatically
-	'passed "by reference" (change it here, and it is changed globally)
-	Method _FillAntennaPoints(map:TLongIntMap, stationX:Int, stationY:Int, radius:Int, color:Int)
-		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
-		'find minimal rectangle/intersection between section and station
-		Local sectionStationIntersectRect:SRectI = stationRect.IntersectRect(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h))
-		'no intersection, nothing to do then?
-		If sectionStationIntersectRect.w = 0 and sectionStationIntersectRect.h = 0 Then Return
-
-		'convert world coordinate to local coords
-		sectionStationIntersectRect = sectionStationIntersectRect.Move(Int(-rect.x), Int(-rect.y))
-		stationX :- rect.x
-		stationY :- rect.y
-
-		Local result:Int = 0
-		Local radiusSquared:Int = radius * radius
-		Local sprite:TSprite = GetShapeSprite()
-		If Not sprite Then Return
-		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
-
-		For Local posX:Int = sectionStationIntersectRect.x To sectionStationIntersectRect.getX2()
-			For Local posY:Int = sectionStationIntersectRect.y To sectionStationIntersectRect.getY2()
-				'left the circle?
-				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
-				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
-				'left the topographic borders ?
-				If Not PixelIsOpaque(sprite._pix, posX, posY) > 0 Then Continue
-
-				map.Insert(GeneratePositionKey(posX, posY), color)
-			Next
-		Next
-	End Method
-
-
-	'summary: returns a stations maximum audience reach
-	Method CalculateAntennaStationReach:Int(stationX:Int, stationY:Int, radius:Int = -1)
-		If radius < 0 Then radius = GetStationMapCollection().antennaStationRadius
-
-		'might be negative - if ending before the sections rect
-		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
-		'find minimal rectangle/intersection between section and station
-		Local sectionStationIntersectRect:SRectI = stationRect.IntersectRect(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h))
-		'skip if section and station do not share a pixel
-		If sectionStationIntersectRect.w = 0 and sectionStationIntersectRect.h = 0 Then Return 0
-
-		'move world to local coords
-		sectionStationIntersectRect = sectionStationIntersectRect.Move( Int(-rect.x), Int(-rect.y) )
-		stationX :- rect.x
-		stationY :- rect.y
-
-Rem
-print name
-print "  rect: " + rect.ToString()
-print "  stationRect: " + stationRect.ToString()
-print "  sprite: " + GetShapeSprite().GetWidth()+","+GetShapeSprite().GetHeight()
-print "  sectionStationIntersectRect: " + sectionStationIntersectRect.ToString()
-endrem
-
-		' calc sum for current coord
-		Local result:Int = 0
-		Local radiusSquared:Int = radius * radius
-		Local sprite:TSprite = GetShapeSprite()
-		If Not sprite Then Return 0
-		If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
-
-
-		For Local posX:Int = sectionStationIntersectRect.x To sectionStationIntersectRect.getX2()
-			For Local posY:Int = sectionStationIntersectRect.y To sectionStationIntersectRect.getY2()
-				'left the circle?
-				If CalculateDistanceSquared( posX - stationX, posY - stationY ) > radiusSquared Then Continue
-				'If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
-				'left the topographic borders ?
-				If Not PixelIsOpaque(sprite._pix, posX, posY) > 0 Then Continue
-				result :+ populationmap[posX, posY]
-			Next
-		Next
-
-		Return result
-	End Method
-
-
-	Method CalculateAntennaAudienceDecrease:Int(stations:TList, removeStation:TStationAntenna)
-		If Not removeStation Then Return 0
-		'if station is not hitting the section
-		If Not removeStation.GetMapRect().Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Return 0
-
-		Local Points:TLongIntMap = New TLongIntMap
-		Local result:Int = 0
-
-		'mark the station points of the to remove as "2"
-		'mark all others (except the given one) as "1"
-		'-> then count on all spots still "2"
-
-		Self._FillAntennaPoints(Points, Int(removeStation.X), Int(removeStation.Y), removeStation.radius, 2)
-
-		'overwrite with stations owner already has (with value "1")
-		'count points with value "2" at the end
-		For Local station:TStationAntenna = EachIn stations
-			'DO NOT SKIP INACTIVE/SHUTDOWN STATIONS !!
-			'decreases are for estimations - so they should include
-			'non-finished stations too
-			'If Not station.CanBroadcast() Then Continue
-
-			'exclude the station to remove...
-			If station = removeStation Then Continue
-
-			'skip antennas not overlapping the station to remove
-			If Not station.GetMapRect().Intersects(removeStation.GetMapRect()) Then Continue
-
-			Self._FillAntennaPoints(Points, Int(station.X), Int(station.Y), station.radius, 1)
-		Next
-
-		'count all "still 2" spots
-		For Local point:TLongIntKeyValue = EachIn points.Values()
-			If point.value = 2
-				'split key into coords again
-				Local pX:Int, pY:Int; SplitPositionKey(point.key, pX, pY)
-				result :+ populationmap[pX, pY]
-			EndIf
-		Next
-		Return result
-	End Method
-
-
-	Method CalculateAntennaAudienceIncrease:Int(stations:TList, stationX:Int=-1000, stationY:Int=-1000, radius:Int = -1)
-		If radius < 0 Then radius = GetStationMapCollection().antennaStationRadius
-		If stationX = -1000 And stationY = -1000
-			stationX = MouseManager.X
-			stationY = MouseManager.Y
-		EndIf
-
-
-		'might be negative - if ending before the sections rect
-		Local stationRect:SRectI = New SRectI(stationX - radius, stationY - radius, 2*radius, 2*radius)
-		'skip if section and station do not share a pixel
-		If Not stationRect.Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Return 0
-
-
-		Local Points:TLongIntMap = New TLongIntMap
-		Local result:Int = 0
-
-		'add "new" station which may be bought - mark points as ""
-		Self._FillAntennaPoints(Points, stationX, stationY, radius, 2)
-
-		'overwrite with stations owner already has (with value "1")
-		'count points with value "2" at the end
-		For Local station:TStationAntenna = EachIn stations
-			'DO NOT SKIP INACTIVE/SHUTDOWN STATIONS !!
-			'increases are for estimations - so they should include
-			'non-finished stations too
-			'If Not station.CanBroadcast() Then Continue
-
-			'skip antennas outside of the section
-			If Not station.GetMapRect().Intersects(Int(rect.x), Int(rect.y), Int(rect.w), Int(rect.h)) Then Continue
-
-			'skip antennas not overlapping the station to add
-			If Not station.GetMapRect().Intersects(stationRect) Then Continue
-
-			Self._FillAntennaPoints(Points, Int(station.X), Int(station.Y), station.radius, 1)
-		Next
-
-		'all points still "2" are what will be added in addition to existing ones
-		For Local point:TLongIntKeyValue = EachIn points.Values()
-			If point.value = 2
-				'split key into coords again
-				Local pX:Int, pY:Int; SplitPositionKey(point.key, pX, pY)
-				result :+ populationmap[pX, pY]
-			EndIf
-		Next
-		Return result
-	End Method
-
-
-	Function GetPopulationForBrightness:Int(value:Int)
-		'attention: we use Ints, so values < 16 (sqrt 255) will be 0!
-		value = Max(5, 255-value)
-		value = (value*value)/255 '2 times so low values are getting much lower
-		value:* 0.649
-
-		If value > 110 Then value :* 2.0
-		If value > 140 Then value :* 1.9
-		If value > 180 Then value :* 1.3
-		If value > 220 Then value :* 1.1	'population in big cities
-		Return 26.0 * value					'population in general
-	End Function
-
-
-	'Function GetMaskIndex:Int(number:Int)
-	'	Return 1 shl (number-1)
-	'End Function
 End Type
 
 
@@ -5855,7 +6381,7 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int() {_exposeToLua}
 		Return 0
 	End Method
 
@@ -6001,9 +6527,9 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachMax:Int() {_exposeToLua}
 		'not cached?
-		If reachMax < 0 Or refresh
+		If reachMax < 0
 			If Not sectionName Then Return 0
 
 			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
@@ -6015,7 +6541,7 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 	End Method
 
 
-	Method GetReach:Int(refresh:Int = False) {_exposeToLua}
+	Method GetReach:Int() {_exposeToLua}
 		Local result:Int
 		
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
@@ -6100,20 +6626,20 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 	End Method
 
 
-	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachMax:Int() {_exposeToLua}
 		'not cached?
-		If reachMax < 0 Or refresh
+		If reachMax < 0
 			reachMax = GetStationMapCollection().GetPopulation()
 		EndIf
 		Return reachMax
 	End Method
 
 
-	Method GetReach:Int(refresh:Int = False) {_exposeToLua}
+	Method GetReach:Int() {_exposeToLua}
 		Local result:Int
 
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			result = GetReachMax(refresh)
+			result = GetReachMax()
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
 			'sum up all sections
@@ -6133,11 +6659,11 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 
 
 	'reached audience not shared with another stations (antennas, cable, ...)
-	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetExclusiveReach:Int() {_exposeToLua}
 '		If exclusiveReach >= 0 And Not refresh Then Return exclusiveReach
 
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			exclusiveReach = GetReach(refresh)
+			exclusiveReach = GetReach()
 
 			'satellites
 			'as only ONE sat could get received the same time, we can
@@ -6151,7 +6677,7 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 			Return exclusiveReach
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			exclusiveReach = GetReach(refresh)
+			exclusiveReach = GetReach()
 		Else
 
 			exclusiveReach = 0
@@ -6226,6 +6752,228 @@ End Type
 
 
 
+'Container for a data array to allow sharing the array without
+'caring for references to it (array copies on resize)
+Type TStationMapSurfaceData
+	Field data:Byte[]
+	Field width:Int
+	Field height:Int
+	
+	Method New(width:Int, height:Int)
+		self.width = width
+		self.height = height
+		self.data = New Byte[width*height]
+	End Method
+
+
+	Method New(pix:TPixmap)
+		self.data = New Byte[pix.width * pix.height]
+		self.width = pix.width
+		self.height = pix.height
+		SetDataFromPixmap(pix)
+	End Method
+	
+
+	Method SetDataFromPixmap:TStationMapSurfaceData(pix:TPixmap, offsetX:Int = 0, offsetY:Int = 0)
+		'bigger images are allowed - but pixels are skipped!
+		'If width < pix.width + offsetX or height < pix.height + offsetY 
+		'	Throw "SetDataFrompixmap: Pix too big. pix=" + pix.width+","+pix.height+"  offset="+offsetX+","+offsetY+"  own="+width+","+height
+		'EndIf
+		 
+		If pix.format = PF_RGBA8888
+			For local x:int = 0 until pix.width
+				For local y:int = 0 until pix.height
+					Local pixelPtr:Byte Ptr = pix.pixels + (y * pix.pitch + x * 4)
+					'alpha
+					If pixelPtr[3] <= 0 Then Continue
+
+					'default value is 0, so we only need to set values
+					'for "opaque pixels" 
+					'avoid exceeding data container
+					if x + offsetX < width and y + offsetY < height Then data[(y + offsetY) * width + (x + offsetX)] = 1
+				Next
+			Next
+		Else
+			Throw "DataFromPixmap: only PF_RGBA8888 format supported"
+		EndIf
+		Return Self
+	End Method
+	
+
+	Method ToPixmap:TPixmap()
+		Local pix:TPixmap = CreatePixmap(self.width, self.height, PF_RGBA8888)
+		pix.ClearPixels(0)
+		For local x:Int = 0 until width
+			For local y:Int = 0 until height
+				Local value:Byte = data[y * width + x]
+'				Local layerColor:Int = (Int(255*(value<>0) * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				Local layerColor:Int = (Int((value<>0)*255 * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				pix.WritePixel(x, y, layerColor)
+			Next
+		Next
+		return pix
+	End Method
+End Type
+
+
+
+'Container to hold amount of a player's antennas broadcasting on specific
+'spots/coordinates
+Type TStationMapAntennaLayer
+	Field data:Int[]
+	Field width:Int
+	Field height:Int
+	'offset from density data origin
+	Field offsetX:Int
+	Field offsetY:Int
+	'surface of a section or the map itself (wrapped in a type so
+	'references can be reused)
+	Field surfaceData:TStationMapSurfaceData
+	
+	
+	'Method New()
+	'	Throw "TStationMapAntennaLayer: Only use New(surfaceData, offsetX, offsetY)"
+	'End Method
+
+
+	Method New(surfaceData:TStationMapSurfaceData, offsetX:Int = 0, offsetY:Int = 0)
+		self.surfaceData = surfaceData
+		self.offsetX = offsetX
+		self.offsetY = offsetY
+		self.data = New Int[surfaceData.data.length]
+		self.width = surfaceData.width
+		self.height = surfaceData.height
+	End Method
+
+
+	Method _SetValue:Int(value:Int, x:Int, y:Int, radius:Int)
+		'make coords local
+		x :- offsetX
+		y :- offsetY
+		
+		'stay within the section
+		Local circleRectX:Int = Max(0, x - radius)
+		Local circleRectY:Int = Max(0, y - radius)
+		Local circleRectX2:Int = Min(x + radius, surfaceData.width-1)
+		Local circleRectY2:Int = Min(y + radius, surfaceData.height-1)
+		Local radiusSquared:Int = radius * radius
+
+		For Local posX:Int = circleRectX To circleRectX2
+			For Local posY:Int = circleRectY To circleRectY2
+				'left the circle?
+				If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
+				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
+
+				'left the topographic borders ?
+				If surfaceData.data[posY * width + posX] = 0 Then Continue
+
+				data[posY * width + posX] :+ value
+			Next
+		Next
+	End Method
+
+	
+	Method AddAntenna:Int(x:Int, y:Int, radius:Int)
+		_SetValue(x, y, radius, +1)
+	End Method
+
+
+	Method RemoveAntenna:Int(x:Int, y:Int, radius:Int)
+		_SetValue(x, y, radius, -1)
+	End Method
+	
+
+	Method GetRemovedAntennaPopulation:Int(x:Int, y:Int, radius:Int, mapInfo:TStationMapInfo)
+		'check how many points would go from 1 down to 0
+		'as only values "inside" the topography/surfaceData will be > 1
+		'we do not need to check for this part
+
+		'make coords local
+		x :- offsetX
+		y :- offsetY
+		
+		'stay within the section
+		Local circleRectX:Int = Max(0, x - radius)
+		Local circleRectY:Int = Max(0, y - radius)
+		Local circleRectX2:Int = Min(x + radius, surfaceData.width-1)
+		Local circleRectY2:Int = Min(y + radius, surfaceData.height-1)
+		Local radiusSquared:Int = radius * radius
+		
+		Local lostPopulation:Int = 0
+
+		For Local posX:Int = circleRectX To circleRectX2
+			For Local posY:Int = circleRectY To circleRectY2
+				'left the circle?
+				If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
+				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
+
+				If data[posY * width + posX] = 1
+					'surface data is "somewhere" over the density data,
+					'so ensure to adjust coordinates by offset
+					lostPopulation :+ mapInfo.densityData.data[(posY + offsetY) * mapInfo.densityData.width + (posX + offsetX)]
+				EndIf
+			Next
+		Next
+		
+		Return lostPopulation
+	End Method
+	
+
+	Method GetAddedAntennaPopulation:Int(x:Int, y:Int, radius:Int, mapInfo:TStationMapInfo)
+		'check how many points would go from 0 to 1
+		'AND are inside the topography/surfaceData
+
+		'make coords local
+		x :- offsetX
+		y :- offsetY
+		
+		'stay within the section
+		Local circleRectX:Int = Max(0, x - radius)
+		Local circleRectY:Int = Max(0, y - radius)
+		Local circleRectX2:Int = Min(x + radius, surfaceData.width-1)
+		Local circleRectY2:Int = Min(y + radius, surfaceData.height-1)
+		Local radiusSquared:Int = radius * radius
+		
+		Local gainedPopulation:Int = 0
+
+		For Local posX:Int = circleRectX To circleRectX2
+			For Local posY:Int = circleRectY To circleRectY2
+				'left the circle?
+				If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
+				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
+
+				If data[posY * width + posX] = 0
+					'check if inside topography
+					If surfaceData.data[posY * surfaceData.width + posX] > 0
+						'surface data is "somewhere" over the density data,
+						'so ensure to adjust coordinates by offset
+						gainedPopulation :+ mapInfo.densityData.data[(posY + offsetY) * mapInfo.densityData.width + (posX + offsetX)]
+					EndIf
+				EndIf
+			Next
+		Next
+		
+		Return gainedPopulation
+	End Method
+
+
+	Method ToPixmap:TPixmap(blackAndWhiteOnly:Int = False)
+		Local pix:TPixmap = CreatePixmap(self.width, self.height, PF_RGBA8888)
+		pix.ClearPixels(0)
+		For local x:Int = 0 until width
+			For local y:Int = 0 until height
+				Local value:Byte = data[y * width + x]
+'				Local layerColor:Int = (Int(255*(value<>0) * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				Local layerColor:Int = (Int((value<>0)*255 * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				if blackAndWhiteOnly Then layerColor = $ff000000 + $00ffffff*(value<>0)
+				
+				pix.WritePixel(x, y, layerColor)
+			Next
+		Next
+		return pix
+	End Method
+End Type
+
 
 
 Struct SChannelMask
@@ -6237,21 +6985,16 @@ Struct SChannelMask
 	
 
 	Method Set:SChannelMask(channelID:Int, enable:Int = True)
-		'activate the bit for a given channelID
-		'each channel corresponds to an index/position
-		'id1 = mask 1, id2 = mask 2
-		'id3 = mask 4, id4 = mask 8 ...
-
-		Return New SChannelMask( value | (enable Shl (channelID-1)) )
+		If enable
+			Return New SChannelMask( value | (1 Shl (channelID-1)) )
+		Else
+			Return New SChannelMask( value & ~(1 Shl (channelID-1)) )
+		EndIf
 	End Method
 	
 
 	Method Has:Int(channelID:Int)
-		'each channel corresponds to an index/position
-		'id1 = mask 1, id2 = mask 2
-		'id3 = mask 4, id4 = mask 8 ...
-
-		Return value & (1:Int Shl (channelID-1)) <> 0
+		Return value & (1 Shl (channelID-1)) <> 0
 	End Method
 
 
@@ -6273,7 +7016,8 @@ Struct SChannelMask
 
 
 	Method Negated:SChannelMask()
-		Return New SChannelMask( ~value )
+		'ignore all channels > 8
+		Return New SChannelMask( ~value & 255)
 	End Method
 	
 	
@@ -6294,7 +7038,7 @@ Struct SChannelMask
 	Method ToString:String()
 		Local res:String
 		For local i:int = 1 to 4
-			if Has(i) 
+			if value & (1 Shl (i-1)) <> 0 'Has(i) 
 				if res 
 					res :+ ", " + i
 				else
