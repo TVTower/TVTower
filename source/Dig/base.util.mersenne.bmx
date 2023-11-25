@@ -113,10 +113,16 @@ End Function
 
 
 Function GaussRandRange:Double(minValue:Double, maxValue:Double, mean:Float, standardDerivation:Float)
-	local v1:Float = mt_RandRange(0,1000000) / 1000000.0
-	local v2:Float = mt_RandRange(0,1000000) / 1000000.0
-
-	return minValue + (maxValue - minValue) * mean * abs(1.0 + sqr(-2.0 * log(v1)) * cos(360 * v2) * standardDerivation)
+	Local gauss:Double = -1.0
+	local v1:Float
+	local v2:Float
+	While gauss < 0.0 or gauss > 1.0
+		v1 = (mt_RandMax(999998)+1) / 1000000.0
+		v2 = (mt_RandMax(999998)+1) / 1000000.0
+		'blitzmax uses degrees instead of radians ... so "Cos(2*pi*v2)" got "Cos(360*v2)"
+		gauss = mean + standardDerivation*(Sqr(-2 * Log(v1)) * Cos(360 * v2))
+	Wend
+	return minValue + (maxValue - minValue) * gauss
 End Function
 
 
