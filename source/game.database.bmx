@@ -1415,7 +1415,13 @@ Type TDatabaseLoader
 
 		'=== MODIFIERS ===
 		'take over modifiers from parent (if episode)
-		LoadV3ModifiersFromNode(programmeData, node, xml)
+		If TXmlHelper.FindValue(node,"programmedata_id", "")
+			'for referenced data, store modifiers in the licence,
+			'so they do not change the global data
+			LoadV3ModifiersFromNode(programmeLicence, node, xml)
+		Else
+			LoadV3ModifiersFromNode(programmeData, node, xml)
+		EndIf
 
 
 
