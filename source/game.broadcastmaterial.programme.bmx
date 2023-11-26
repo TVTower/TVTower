@@ -686,7 +686,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	'get the title
 	Method GetTitle:String() {_exposeToLua}
-		Return data.GetTitle()
+		Return licence.GetTitle()
 	End Method
 
 

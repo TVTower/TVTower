@@ -1094,7 +1094,9 @@ Type TDatabaseLoader
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
 		Local GUID:String = TXmlHelper.FindValue(node,"id", "")
 		'referencing an already existing programmedata? Or just use "data-GUID"
+		Local reuseExistingData:Int = (TXmlHelper.FindValue(node,"programmedata_id", "")<>"")
 		Local dataGUID:String = TXmlHelper.FindValue(node,"programmedata_id", "data-"+GUID)
+
 		'forgot to prepend "data-" ?
 		If dataGUID.Find("data-") <> 0 Then dataGUID = "data-"+dataGUID
 
@@ -1152,7 +1154,7 @@ Type TDatabaseLoader
 			EndIf
 		EndIf
 
-
+		If reuseExistingData And Not programmeData throw "referenced licence data not defined for " + GUID
 
 
 		If Not programmeLicence
@@ -1209,46 +1211,104 @@ Type TDatabaseLoader
 
 
 		'=== LOCALIZATION DATA ===
-		programmeData.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
-		'programmeData.originalTitle.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "originalTitle")) )
-		programmeData.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+		If reuseExistingData
+			If Not programmeLicence.title
+				programmeLicence.title = GetLocalizedStringFromNode(xml.FindElementNode(node, "title"))
+			Else
+				programmeLicence.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+			EndIf
+			If Not programmeLicence.description
+				programmeLicence.description = GetLocalizedStringFromNode(xml.FindElementNode(node, "description"))
+			Else
+				programmeLicence.description.Append(GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+			EndIf
+		Else
+			programmeData.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+			'programmeData.originalTitle.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "originalTitle")) )
+			programmeData.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+		EndIf
 
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
 		Local data:TData = New TData
-		xml.LoadValuesToData(nodeData, data, [..
-			"country", "distribution", "blocks", ..
-			"maingenre", "subgenre", "price_mod", ..
-			"available", "flags", "licence_flags", ..
-			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-			"broadcast_limit", "licence_broadcast_limit", ..
-			"broadcast_flags", "licence_broadcast_flags" ..
-		]) 'also allow a "<live>" block
-		'], ["live"]) 'also allow a "<live>" block
+		If reuseExistingData
+			'blocks cannot be overridden (only in data)
+			'country, distribution, genres, flags should not be overridden
+			'available is problematic as the data flag has precedence
+			'TODO should flags be supported (xrated etc.) - combination of flags from data and licence
+			xml.LoadValuesToData(nodeData, data, [..
+				"price_mod", "available", "licence_flags", ..
+				"broadcast_time_slot_start", "broadcast_time_slot_end", ..
+				"licence_broadcast_limit", ..
+				"licence_broadcast_flags" ..
+			])
+			programmeLicence.broadcastTimeSlotStart = MathHelper.clamp(data.GetInt("broadcast_time_slot_start", programmeData.broadcastTimeSlotStart), 0, 23)
+			programmeLicence.broadcastTimeSlotEnd = MathHelper.clamp(data.GetInt("broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd), 0, 23)
+			If programmeLicence.broadcastTimeSlotStart = programmeLicence.broadcastTimeSlotEnd
+				programmeLicence.broadcastTimeSlotStart = -1
+				programmeLicence.broadcastTimeSlotEnd = -1
+			EndIf
+			Local available:Int = data.GetBool("available", True)
+			programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
+			programmeLicence.SetModifier("price", data.GetFloat("price_mod", programmeLicence.GetModifier("price")))
+		Else
+			xml.LoadValuesToData(nodeData, data, [..
+				"country", "distribution", "blocks", ..
+				"maingenre", "subgenre", "price_mod", ..
+				"available", "flags", "licence_flags", ..
+				"broadcast_time_slot_start", "broadcast_time_slot_end", ..
+				"broadcast_limit", "licence_broadcast_limit", ..
+				"broadcast_flags", "licence_broadcast_flags" ..
+			]) 'also allow a "<live>" block
+			'], ["live"]) 'also allow a "<live>" block
 
-		programmeData.country = data.GetString("country", programmeData.country)
+			programmeData.country = data.GetString("country", programmeData.country)
 
-		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
-		programmeData.blocks = MathHelper.clamp(data.GetInt("blocks", programmeData.blocks), 1, 12)
+			programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
+			programmeData.blocks = MathHelper.clamp(data.GetInt("blocks", programmeData.blocks), 1, 12)
 
-		programmeData.broadcastTimeSlotStart = MathHelper.clamp(data.GetInt("broadcast_time_slot_start", programmeData.broadcastTimeSlotStart), 0, 23)
-		programmeData.broadcastTimeSlotEnd = MathHelper.clamp(data.GetInt("broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd), 0, 23)
-		If programmeData.broadcastTimeSlotStart = programmeData.broadcastTimeSlotEnd
-			programmeData.broadcastTimeSlotStart = -1
-			programmeData.broadcastTimeSlotEnd = -1
+			programmeData.broadcastTimeSlotStart = MathHelper.clamp(data.GetInt("broadcast_time_slot_start", programmeData.broadcastTimeSlotStart), 0, 23)
+			programmeData.broadcastTimeSlotEnd = MathHelper.clamp(data.GetInt("broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd), 0, 23)
+			If programmeData.broadcastTimeSlotStart = programmeData.broadcastTimeSlotEnd
+				programmeData.broadcastTimeSlotStart = -1
+				programmeData.broadcastTimeSlotEnd = -1
+			EndIf
+
+			'define same for licence (override later if needed)
+			programmeLicence.broadcastTimeSlotStart = programmeData.broadcastTimeSlotStart
+			programmeLicence.broadcastTimeSlotEnd = programmeData.broadcastTimeSlotEnd
+
+			programmeData.SetBroadcastLimit(data.GetInt("broadcast_limit", programmeData.broadcastLimit))
+
+			programmeData.SetBroadcastFlag(data.GetInt("broadcast_flags", 0))
+			'TODO discuss - is it a good idea to use this flag for both licence AND data?
+			'data flag has precedence; data not available - licence not available
+			'availability effect turns both flags on, but only licence flag off
+			Local available:Int = data.GetBool("available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+			programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
+			programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
+
+			'compatibility: load price mod from "price_mod" first... later
+			'override with "modifiers"-data
+			programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
+
+			programmeData.SetFlag(data.GetInt("flags", 0))
+
+			programmeData.genre = data.GetInt("maingenre", programmeData.genre)
+			For Local sg:String = EachIn data.GetString("subgenre", "").split(",")
+				If Trim(sg) = "" Then Continue
+				If Int(sg) < 0 Then Continue
+
+				If Not MathHelper.InIntArray(Int(sg), programmeData.subGenres)
+					programmeData.subGenres :+ [Int(sg)]
+				EndIf
+			Next
 		EndIf
-		'define same for licence (override later if needed)
-		programmeLicence.broadcastTimeSlotStart = programmeData.broadcastTimeSlotStart
-		programmeLicence.broadcastTimeSlotEnd = programmeData.broadcastTimeSlotEnd
 
-
-		programmeData.SetBroadcastLimit(data.GetInt("broadcast_limit", programmeData.broadcastLimit))
 		'if not given - disable and fallback to programmeData limit then
 		programmeLicence.SetBroadcastLimit(data.GetInt("licence_broadcast_limit", -1))
 
-
-		programmeData.SetBroadcastFlag(data.GetInt("broadcast_flags", 0))
 		'if defined, it overrides (replaces) the data defined broadcast flags 
 		'we need to set all flags then as "modified" (manually set)
 		Local licenceBroadcastFlags:int = data.GetInt("licence_broadcast_flags", -1)
@@ -1264,143 +1324,118 @@ Type TDatabaseLoader
 			programmeLicence.broadcastFlags.Set(data.GetInt("licence_broadcast_flags"), True)
 		endif
 
-
 		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
 
-		'TODO discuss - is it a good idea to use this flag for both licence AND data?
-		'data flag has precedence; data not available - licence not available
-		'availability effect turns both flags on, but only licence flag off
-		Local available:Int = data.GetBool("available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
-		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
-		programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
-
-		'compatibility: load price mod from "price_mod" first... later
-		'override with "modifiers"-data
-		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
-
-		programmeData.SetFlag(data.GetInt("flags", 0))
-
-		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-		For Local sg:String = EachIn data.GetString("subgenre", "").split(",")
-			If Trim(sg) = "" Then Continue
-			If Int(sg) < 0 Then Continue
-
-			If Not MathHelper.InIntArray(Int(sg), programmeData.subGenres)
-				programmeData.subGenres :+ [Int(sg)]
+		'release time data, staff, groups not supported for reused programme (field only in data)
+		If not reuseExistingData
+			'=== RELEASE INFORMATION ===
+			Local releaseData:TData = New TData
+			Local timeFields:String[] = [..
+				"year", "year_relative", "year_relative_min", "year_relative_max", ..
+				"day", "day_random_min", "day_random_max", "day_random_slope", ..
+				"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
+			]
+			'try to load it from the "<data>" block
+			'(this is done to allow the old v3-"year" definition)
+			xml.LoadValuesToData(nodeData, releaseData, timeFields)
+			'override data by a <releaseTime> block
+			Local releaseTimeNode:TxmlNode = xml.FindChild(node, "releaseTime")
+			If releaseTimeNode
+				xml.LoadValuesToData(releaseTimeNode, releaseData, timeFields)
 			EndIf
-		Next
 
-
-		'=== RELEASE INFORMATION ===
-		Local releaseData:TData = New TData
-		Local timeFields:String[] = [..
-			"year", "year_relative", "year_relative_min", "year_relative_max", ..
-			"day", "day_random_min", "day_random_max", "day_random_slope", ..
-			"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
-		]
-		'try to load it from the "<data>" block
-		'(this is done to allow the old v3-"year" definition)
-		xml.LoadValuesToData(nodeData, releaseData, timeFields)
-		'override data by a <releaseTime> block
-		Local releaseTimeNode:TxmlNode = xml.FindChild(node, "releaseTime")
-		If releaseTimeNode
-			xml.LoadValuesToData(releaseTimeNode, releaseData, timeFields)
-		EndIf
-
-		'convert various time definitions to an absolute time
-		'(this relies on "GetWorldTime()" being initialized already with
-		' the game time)
-		programmeData.releaseTime = CreateReleaseTime(releaseData, programmeData.releaseTime)
-		If programmeData.releaseTime = 0
-			Print "Failed to create releaseTime for ~q"+programmeData.GetTitle()+"~q (GUID: ~q"+GUID+"~q."
-		EndIf
-
-		'=== STAFF ===
-		Local nodeStaff:TxmlNode = xml.FindChild(node, "staff")
-		For Local nodeMember:TxmlNode = EachIn xml.GetNodeChildElements(nodeStaff)
-			If nodeMember.getName() <> "member" Then Continue
-
-			Local memberIndex:Int = xml.FindValueInt(nodeMember, "index", 0)
-			Local memberFunction:Int = xml.FindValueInt(nodeMember, "function", 0)
-			Local memberGenerator:String = xml.FindValue(nodeMember, "generator", "")
-			Local jobRoleGUID:String = xml.FindValue(nodeMember, "role_guid", "")
-			Local jobRoleID:Int = 0
-			If jobRoleGUID
-				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
-				If role
-					jobRoleID = role.GetID()
-				EndIf
+			'convert various time definitions to an absolute time
+			'(this relies on "GetWorldTime()" being initialized already with
+			' the game time)
+			programmeData.releaseTime = CreateReleaseTime(releaseData, programmeData.releaseTime)
+			If programmeData.releaseTime = 0
+				Print "Failed to create releaseTime for ~q"+programmeData.GetTitle()+"~q (GUID: ~q"+GUID+"~q."
 			EndIf
-			Local memberGUID:String = nodeMember.GetContent().Trim()
 
-			Local member:TPersonBase
-			If memberGUID Then member = GetPersonBaseCollection().GetByGUID(memberGUID)
-			'create a person so jobs could get added to persons
-			'which are created after that programme
-			If Not member
-				member = New TPersonBase
-				Local memberFictional:Int = True
-				If mdata Then memberFictional = mdata.GetInt("fictional", 0)
-				member.SetFlag(TVTPersonFlag.FICTIONAL, memberFictional)
-
-				If memberGenerator
-					'generator is "countrycode1 countrycode2, gender, levelup"
-					Local parts:String[] = memberGenerator.Split(",")
-					Local levelUp:Int = False
-					If parts.length >= 3 And Int(parts[2]) = 1 Then levelUp = True
-					Local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDatasetFromString(memberGenerator)
-					If p
-						'avoid that other persons with that name are generated
-						GetPersonGenerator().ProtectDataset(p)
-						member.firstName = p.firstName
-						member.lastName = p.lastName
-						member.countryCode = p.countryCode.ToUpper()
+			'=== STAFF ===
+			Local nodeStaff:TxmlNode = xml.FindChild(node, "staff")
+			For Local nodeMember:TxmlNode = EachIn xml.GetNodeChildElements(nodeStaff)
+				If nodeMember.getName() <> "member" Then Continue
+	
+				Local memberIndex:Int = xml.FindValueInt(nodeMember, "index", 0)
+				Local memberFunction:Int = xml.FindValueInt(nodeMember, "function", 0)
+				Local memberGenerator:String = xml.FindValue(nodeMember, "generator", "")
+				Local jobRoleGUID:String = xml.FindValue(nodeMember, "role_guid", "")
+				Local jobRoleID:Int = 0
+				If jobRoleGUID
+					local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
+					If role
+						jobRoleID = role.GetID()
 					EndIf
 				EndIf
+				Local memberGUID:String = nodeMember.GetContent().Trim()
+
+				Local member:TPersonBase
+				If memberGUID Then member = GetPersonBaseCollection().GetByGUID(memberGUID)
+				'create a person so jobs could get added to persons
+				'which are created after that programme
+				If Not member
+					member = New TPersonBase
+					Local memberFictional:Int = True
+					If mdata Then memberFictional = mdata.GetInt("fictional", 0)
+					member.SetFlag(TVTPersonFlag.FICTIONAL, memberFictional)
+
+					If memberGenerator
+						'generator is "countrycode1 countrycode2, gender, levelup"
+						Local parts:String[] = memberGenerator.Split(",")
+						Local levelUp:Int = False
+						If parts.length >= 3 And Int(parts[2]) = 1 Then levelUp = True
+						Local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDatasetFromString(memberGenerator)
+						If p
+							'avoid that other persons with that name are generated
+							GetPersonGenerator().ProtectDataset(p)
+							member.firstName = p.firstName
+							member.lastName = p.lastName
+							member.countryCode = p.countryCode.ToUpper()
+						EndIf
+					EndIf
 
 
-				If Not memberGUID
-					memberGUID = "person-created"
-					memberGUID :+ "-" + LSet(Hashes.MD5(member.firstName + member.lastName), 12)
-					memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.firstName).Replace(".", "").Replace(" ","-")
-					memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.lastName).Replace(".", "").Replace(" ","-")
+					If Not memberGUID
+						memberGUID = "person-created"
+						memberGUID :+ "-" + LSet(Hashes.MD5(member.firstName + member.lastName), 12)
+						memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.firstName).Replace(".", "").Replace(" ","-")
+						memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.lastName).Replace(".", "").Replace(" ","-")
+					EndIf
+
+					If Not memberGenerator And member.firstName = ""
+						member.firstName = memberGUID
+					EndIf
+
+					'if memberGenerator
+					'	print "generated person : " + member.firstName+" " + member.lastName +" ("+member.countryCode+")" + " GUID="+memberGUID
+					'endif
+
+					member.SetGUID(memberGUID)
+					GetPersonBaseCollection().Add(member)
 				EndIf
 
-				If Not memberGenerator And member.firstName = ""
-					member.firstName = memberGUID
-				EndIf
+				'member now is capable of doing this job
+				member.SetJob(memberFunction)
 
-				'if memberGenerator
-				'	print "generated person : " + member.firstName+" " + member.lastName +" ("+member.countryCode+")" + " GUID="+memberGUID
-				'endif
-
-				member.SetGUID(memberGUID)
-				GetPersonBaseCollection().Add(member)
-			EndIf
-
-			'member now is capable of doing this job
-			member.SetJob(memberFunction)
-
-			'add cast
-			programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction, member.gender, member.countryCode, jobRoleID))
-		Next
+				'add cast
+				programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction, member.gender, member.countryCode, jobRoleID))
+			Next
 
 
+			'=== GROUPS ===
+			Local nodeGroups:TxmlNode = xml.FindChild(node, "groups")
+			data = New TData
+			xml.LoadValuesToData(nodeGroups, data, [..
+				"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
+			])
+			programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
+			programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
+			programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
 
-		'=== GROUPS ===
-		Local nodeGroups:TxmlNode = xml.FindChild(node, "groups")
-		data = New TData
-		xml.LoadValuesToData(nodeGroups, data, [..
-			"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
-		])
-		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
-		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
-		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
-
-
-
-		'=== TARGETGROUP ATTRACTIVITY MOD ===
-		programmeData.targetGroupAttractivityMod = GetV3TargetgroupAttractivityModFromNode(programmeData.targetGroupAttractivityMod, node, xml)
+			'=== TARGETGROUP ATTRACTIVITY MOD ===
+			programmeData.targetGroupAttractivityMod = GetV3TargetgroupAttractivityModFromNode(programmeData.targetGroupAttractivityMod, node, xml)
+		EndIf
 
 
 		'=== EFFECTS ===
@@ -1415,7 +1450,7 @@ Type TDatabaseLoader
 
 		'=== MODIFIERS ===
 		'take over modifiers from parent (if episode)
-		If TXmlHelper.FindValue(node,"programmedata_id", "")
+		If reuseExistingData
 			'for referenced data, store modifiers in the licence,
 			'so they do not change the global data
 			LoadV3ModifiersFromNode(programmeLicence, node, xml)
@@ -1424,25 +1459,25 @@ Type TDatabaseLoader
 		EndIf
 
 
+		If Not reuseExistingData
+			'=== RATINGS ===
+			Local nodeRatings:TxmlNode = xml.FindChild(node, "ratings")
+			data = New TData
+			xml.LoadValuesToData(nodeRatings, data, [..
+				"critics", "speed", "outcome" ..
+			])
+			programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
+			programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
+			programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
 
-		'=== RATINGS ===
-		Local nodeRatings:TxmlNode = xml.FindChild(node, "ratings")
-		data = New TData
-		xml.LoadValuesToData(nodeRatings, data, [..
-			"critics", "speed", "outcome" ..
-		])
-		programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
-		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
-		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
-
-		'auto repair outcome for non-custom productions
-		'(eg. predefined ones from the DB)
-		If Not programmeData.IsAPlayersCustomProduction() Then programmeData.FixOutcome()
+			'auto repair outcome for non-custom productions
+			'(eg. predefined ones from the DB)
+			If Not programmeData.IsAPlayersCustomProduction() Then programmeData.FixOutcome()
 
 
-
-		'=== PRODUCT TYPE ===
-		programmeData.productType = productType
+			'=== PRODUCT TYPE ===
+			programmeData.productType = productType
+		EndIf
 
 
 
@@ -1453,7 +1488,7 @@ Type TDatabaseLoader
 			licenceType = TVTProgrammeLicenceType.EPISODE
 		EndIf
 		programmeLicence.licenceType = licenceType
-		programmeData.dataType = licenceType
+		If Not reuseExistingData Then programmeData.dataType = licenceType
 
 		'=== EPISODES ===
 		Local nodeEpisodes:TxmlNode = xml.FindChild(node, "children")
@@ -1524,7 +1559,7 @@ Type TDatabaseLoader
 		'when reaching this point, nothing stopped the creation of this
 		'licence ... so add this specific programmeData to the global
 		'data collection
-		GetProgrammeDataCollection().Add(programmeData)
+		If Not reuseExistingData Then GetProgrammeDataCollection().Add(programmeData)
 
 		If Not existed
 			programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
