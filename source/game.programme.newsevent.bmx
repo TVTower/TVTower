@@ -500,6 +500,12 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Self.broadcastFlags = template.broadcastFlags
 		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not template.IsAvailable())
 
+		If Not HasFlag(TVTNewsFlag.UNIQUE_EVENT)
+			Local priceChange:Float = 1.0 + 0.01 * BiasedRandRange(-25, 25, 0.5)
+			SetModifier(modKeyPriceLS, GetModifier(modKeyPriceLS) * priceChange)
+			Local wearoffChange:Float = 1.0 + 0.01 * BiasedRandRange(-25, 25, 0.5)
+			SetModifier(modKeyTopicality_WearoffLS, GetModifier(modKeyTopicality_WearoffLS) * priceChange)
+		EndIf
 		Return Self
 	End Method
 	

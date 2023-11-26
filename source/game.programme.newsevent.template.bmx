@@ -553,9 +553,9 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		If qualityMin >= 0 And qualityMax >= 0
 			return 0.001 * BiasedRandRange(int(1000*qualityMin), int(1000*qualityMax), qualitySlope)
 		ElseIf Not HasFlag(TVTNewsFlag.UNIQUE_EVENT)
-			'for reusable news randomize a bit (+/- 15%) 
+			'for reusable news randomize a bit (+/- 20%) 
 			'do not go below 10% / above 90% (or the defined quality in case it is beyond these thresholds)
-			Local diff:Float = 0.01 * BiasedRandRange(-15, 15, 0.5)
+			Local diff:Float = 0.01 * BiasedRandRange(-20, 20, 0.5)
 			Local result:Float = MathHelper.Clamp(quality + diff, Min(0.1, quality), Max(0.9, quality))
 			return result
 		EndIf
