@@ -330,7 +330,8 @@ endrem
 	End Method
 
 
-	Method GetAntennaExclusivePopulation:int(densityX:Int, densityY:int, radius:Int, owner:Int, antennaOwned:Int = True)
+	Method GetAntennaExclusivePopulation:int(densityX:Int, densityY:int, radius:Int, owner:Int, alreadyBuilt:Int = True)
+		rem
 		Local surfaceX:Int = mapInfo.DataXToScreenX(densityX)
 		Local surfaceY:Int = mapInfo.DataYToScreenY(densityY)
 		Local connectedSections:TStationMapSection[] = GetSectionsConnectedToAntenna(surfaceX, surfaceY, radius)
@@ -338,6 +339,57 @@ endrem
 		For Local section:TStationMapSection = Eachin connectedSections
 			result:+ section.GetAntennaExclusivePopulation(densityX, densityY, radius, owner, antennaOwned)
 		Next
+		Return result
+		endrem
+
+		If not surfaceData Then Throw "TStationMapCollection.GetAntennaExclusivePopulation: Cannot calculate population without surface data"
+
+		Local result:Int
+
+		'data is "densitydata based"!
+		'ensure rect fits into surfaceData AND densityData
+		'circle coordinates are "local" to mapInfo.densityData
+		Local circleRectX:Int = Max(0, densityX - radius)
+		Local circleRectY:Int = Max(0, densityY - radius)
+		Local circleRectX2:Int = densityX + Min(radius, Min(surfaceData.width-1, mapInfo.densityData.width-1))
+		Local circleRectY2:Int = densityY + Min(radius, Min(surfaceData.height-1, mapInfo.densityData.height-1))
+		Local radiusSquared:Int = radius * radius
+
+		Local ownerAntennaLayer:TStationMapAntennaLayer = GetStationMap(owner)._GetAllAntennasLayer()
+		Local otherAntennaLayers:TStationMapAntennaLayer[3]
+		Local otherAntennaLayersUsed:int
+		for local i:int = 1 to 4
+			if owner <> i
+				otherAntennaLayers[otherAntennaLayersUsed] = GetStationMap(i, True)._GetAllAntennasLayer()
+				otherAntennaLayersUsed :+ 1
+			EndIf
+		Next
+		Local checkValue:Int = 0 'nobody there
+		if alreadyBuilt Then checkValue = 1 'only this very antenna is there
+	
+
+		For Local posX:Int = circleRectX To circleRectX2
+			For Local posY:Int = circleRectY To circleRectY2
+				'left the circle?
+				If CalculateDistanceSquared(posX - densityX, posY - densityY) > radiusSquared Then Continue
+
+				'left the topographic borders ?
+				'coords are local to (complete map) surfaceData
+				If surfaceData.data[posY * surfaceData.width + posX] = 0 Then Continue
+
+				Local layerDataIndex:Int = posY * ownerAntennaLayer.width + posX
+				
+				'owner already broadcasting with more than this
+				'looked up antenna (in case of already "owned")?
+				if ownerAntennaLayer.data[layerDataIndex] > checkValue Then Continue
+				'others broadcasting there?
+				if otherAntennaLayers[0].data[layerDataIndex] > 0 Then Continue
+				if otherAntennaLayers[1].data[layerDataIndex] > 0 Then Continue
+				if otherAntennaLayers[2].data[layerDataIndex] > 0 Then Continue
+				
+				result :+ mapInfo.densityData.data[posY * mapInfo.densityData.width + posX]
+			Next
+		Next		
 		Return result
 	End Method
 
@@ -378,10 +430,19 @@ endrem
 	End Method
 
 
-	Method GetAntennaAudienceSum:Int(playerID:Int)
+	Method GetTotalAntennaAudience:Int(playerID:Int)
 		Local result:Int
 		For Local section:TStationMapSection = EachIn sections
-			result :+ section.GetAntennaAudienceSum(playerID)
+			result :+ section.GetTotalAntennaAudience(playerID)
+		Next
+		Return result
+	End Method
+
+
+	Method GetTotalChannelExclusiveAntennaAudience:Int(playerID:Int)
+		Local result:Int
+		For Local section:TStationMapSection = EachIn sections
+			result :+ section.GetTotalChannelExclusiveAntennaAudience(playerID)
 		Next
 		Return result
 	End Method
@@ -432,8 +493,8 @@ endrem
 	End Method
 
 
-	'summary: returns maximum audience reached with the given uplinks
-	Method GetCableNetworkUplinkAudienceSum:Int(stations:TList)
+	'summary: returns maximum audience reached with the given cable network uplinks
+	Method GetTotalCableNetworkUplinkAudience:Int(stations:TList)
 		Local result:Int
 		For Local station:TStationCableNetworkUplink = EachIn stations
 			result :+ station.GetReach()
@@ -442,27 +503,29 @@ endrem
 	End Method
 
 
-	Method GetCableNetworkUplinkAudienceSum:Int(playerID:Int)
+	'summary: returns maximum cable network audience reached by the given player
+	Method GetTotalCableNetworkUplinkAudience:Int(playerID:Int)
 		Local map:TStationMap = GetMap(playerID, False)
 		If Not map Then Return 0
-		Return GetCableNetworkUplinkAudienceSum(map.stations)
+		Return GetTotalCableNetworkUplinkAudience(map.stations)
 	End Method
 
 
-	Method GetSatelliteUplinkAudienceSum:Int(stations:TList)
+	'summary: returns maximum audience reached with the given satellite uplinks
+	Method GetTotalSatelliteUplinkAudience:Int(stations:TList)
 		Local result:Int
 		For Local satLink:TStationSatelliteUplink = EachIn stations
 			result :+ satLink.GetReach()
-		'	result :+ satLink.GetExclusiveReach()
 		Next
 		Return result
 	End Method
 
 
-	Method GetSatelliteUplinkAudienceSum:Int(playerID:Int)
+	'summary: returns maximum satellite audience reached by the given player
+	Method GetTotalSatelliteUplinkAudience:Int(playerID:Int)
 		Local map:TStationMap = GetMap(playerID, False)
 		If Not map Then Return 0
-		Return GetSatelliteUplinkAudienceSum(map.stations)
+		Return GetTotalSatelliteUplinkAudience(map.stations)
 	End Method
 
 
@@ -521,15 +584,16 @@ endrem
 		Return result
 	End Function
 
-
+rem
 	Method GetTotalChannelExclusiveAudience:Int(channelNumber:Int)
 		Local result:Int
 		For Local section:TStationMapSection = EachIn sections
-			result :+ section.GetExclusiveAntennaAudienceSum(channelNumber)
+			result :+ section.GetTotalChannelExclusiveAntennaAudience(channelNumber)
+			'TODO: cable + sat
 		Next
 		Return result
 	End Method
-
+endrem
 
 	Method GetTotalShareAudience:Int(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		'return ".total" if you want to know what the "total amount" is
@@ -2519,6 +2583,16 @@ Type TStationMapInfo
 		Return y * densityDataScreenScale + surfaceScreenOffset.y + densityDataOnSurfaceOffset.y
 	End Method
 
+	'convert a given data x coordinate to a surface x coordinate
+	Method DataXToSurfaceX:Int(x:Int)
+		Return x * densityDataScreenScale + densityDataOnSurfaceOffset.x
+	End Method
+
+	'convert a given data y coordinate to a surface y coordinate
+	Method DataYToSurfaceY:Int(y:Int)
+		Return y * densityDataScreenScale + densityDataOnSurfaceOffset.y
+	End Method
+
 
 	'convert a given screen x coordinate to a data x coordinate
 	'(eg. mouse clicks) 
@@ -2676,13 +2750,19 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 				'TODO: anpassen, wenn antenna.x keine Screencoordinate mehr ist
 				'Local popIncrease:Int = GetAddedAntennaPopulation(antenna.dataX, antenna.dataX, antenna.radius)
 				'mark antenna area as used by an (additional) antenna
-				_GetAllAntennasLayer().AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+				'(only if layer is already created - else it automatically
+				' adds this antenna already) 
+				If _antennasLayer
+					_GetAllAntennasLayer().AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+				EndIf
+rem
 				'inform all sections too
 				Local surfaceX:Int = GetStationMapCollection().mapInfo.DataXToScreenX(antenna.dataX)
 				Local surfaceY:Int = GetStationMapCollection().mapInfo.DataYToScreenY(antenna.dataY)
 print "activate antenna"
--> connected funktioniert noch nicht
--> eventuell den antennaLayers von den sections entfernen, von der "Map" reicht ja
+'-> connected funktioniert noch nicht
+'-> eventuell den antennaLayers von den sections entfernen, von der "Map" reicht ja
+
 				For local section:TStationMapSection = EachIn GetStationMapCollection().GetSectionsConnectedToAntenna(surfaceX, surfaceY, antenna.radius)
 print "- affected section: " + section.GetName()
 					'only update if cache exists:
@@ -2691,7 +2771,7 @@ print "- adding to section " + section.GetName()
 						section._antennasLayers[antenna.owner-1].AddAntenna(antenna.dataX - section.densityDataOffsetX, antenna.dataY - section.densityDataOffsetY, antenna.radius)
 					EndIf
 				Next
-				
+endrem				
 
 				'if _totalAntennaReachCache < 0 then _totalAntennaReachCache = 0
 				'_totalAntennaReachCache :+ popIncrease
@@ -2742,6 +2822,9 @@ endrem
 
 	Method _GetAllAntennasLayer:TStationMapAntennaLayer()
 		If Not _antennasLayer
+			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+
+			'place antenna directly over densityData (offset = 0)
 			_antennasLayer = New TStationMapAntennaLayer(GetStationMapCollection().surfaceData, 0, 0)
 
 			'fill in all currently existing antennas
@@ -2749,8 +2832,8 @@ endrem
 				'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
 				'      basieren
 				if antenna.dataX = -1 and antenna.dataY = -1
-					antenna.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(antenna.x)
-					antenna.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(antenna.y)
+					antenna.dataX = mapInfo.ScreenXToDataX(antenna.x)
+					antenna.dataY = mapInfo.ScreenYToDataY(antenna.y)
 				EndIf
 				If antenna.IsActive()
 					_antennasLayer.AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
@@ -3139,9 +3222,9 @@ endrem
 			If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 				Throw "RecalculateAudienceSum: Todo"
 			ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-				reach =  GetStationMapCollection().GetAntennaAudienceSum(owner)
-				reach :+ GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations)
-				reach :+ GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations)
+				reach =  GetStationMapCollection().GetTotalAntennaAudience(owner)
+				reach :+ GetStationMapCollection().GetTotalCableNetworkUplinkAudience(stations)
+				reach :+ GetStationMapCollection().GetTotalSatelliteUplinkAudience(stations)
 				'print "RON: antenna["+owner+"]: " + GetStationMapCollection().GetAntennaAudienceSum(owner) + "   cable["+owner+"]: " + GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations) +"   satellite["+owner+"]: " + GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations) + "   recalculated: " + reach
 			EndIf
 		EndIf
@@ -3620,11 +3703,19 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetActivationTime:Long()
 		Return activationTime
 	End Method
+	
+	
+	Method SetPosition(screenX:Int, screenY:Int)
+		InvalidateReach()
+		self.x = screenX
+		self.y = screenY
+	End Method
 
 
 	Method InvalidateReach()
 		self.reach = -1
 		self.reachMax = -1
+		self.reachExclusiveMax = -1
 	End Method
 	
 
@@ -4335,10 +4426,10 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetPosition(x:Int, y:Int)
-		self.x = x
-		self.y = y
-		InvalidateReach()
+	Method SetPosition(screenX:Int, screenY:Int) override
+		self.dataX = -1
+		self.dataY = -1
+		Super.SetPosition(screenX, screenY)
 	End Method
 
 
@@ -4356,7 +4447,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 				self.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(self.y)
 			EndIf
 			
-			reachMax = GetStationMapCollection().GetAntennaAudience(self.dataX, self.dataY, self.radius)
+			reachMax = GetStationMapCollection().GetAntennaPopulation(self.dataX, self.dataY, self.radius)
 
 			runningCosts = -1 'ensure running costs are calculated again
 		EndIf
@@ -4850,7 +4941,7 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 				'subtract section population for all antennas in that area
 				Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
-				reachExclusiveMax :- section.GetAntennaAudienceSum( owner )
+				reachExclusiveMax :- section.GetTotalAntennaAudience(owner)
 			EndIf
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
@@ -5317,7 +5408,6 @@ Type TStationMapSection
 	'Caches
 	'data reference for surface data of this section
 	Field _surfaceData:TStationMapSurfaceData {nosave}
-	Field _antennasLayers:TStationMapAntennaLayer[] {nosave}
 
 	Method New()
 		channelSympathy = New Float[4]
@@ -5355,36 +5445,6 @@ Type TStationMapSection
 	
 	Method SetSurfaceData(surfaceData:TStationMapSurfaceData)
 		self._surfaceData = surfaceData
-	End Method
-	
-	
-	Method GetAntennasLayer:TStationMapAntennaLayer(channelID:Int)
-		If not _antennasLayers or _antennasLayers.length < channelID
-			_antennasLayers = _antennasLayers[.. channelID]
-		EndIf
-		
-		If not _antennasLayers[channelID-1]
-			If not self._surfaceData Then Throw "GetAntennasLayer: no valid _surfaceData existing."
-
-			_antennasLayers[channelID-1] = New TStationMapAntennaLayer(self._surfaceData, 0, 0)
-			
-			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
-
-			'fill in all currently existing antennas of the channel
-			For Local antenna:TStationAntenna = EachIn GetStationMap(channelID).stations
-				'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
-				'      basieren
-				if antenna.dataX = -1 and antenna.dataY = -1
-					antenna.dataX = mapInfo.ScreenXToDataX(antenna.x)
-					antenna.dataY = mapInfo.ScreenYToDataY(antenna.y)
-				EndIf
-				If antenna.IsActive()
-					_antennasLayers[channelID-1].AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
-				EndIf
-			Next
-		EndIf
-		
-		Return _antennasLayers[channelID-1]
 	End Method
 	
 	
@@ -5781,20 +5841,20 @@ Type TStationMapSection
 
 	'summary: returns maximum audience a player reaches with satellites
 	'         in this section
-	Method GetSatelliteAudienceSum:Int()
+	Method GetTotalSatelliteAudience:Int()
 		Return population * GetPopulationSatelliteShareRatio()
 	End Method
 
 
 	'summary: returns maximum audience a player reaches with cable 
 	'         networks in this section
-	Method GetCableNetworkAudienceSum:Int()
+	Method GetTotalCableNetworkAudience:Int()
 		Return population * GetPopulationCableShareRatio()
 	End Method
 
 
 	'summary: returns maximum audience a player reaches with antennas
-	Method GetAntennaAudienceSum:Int(playerID:Int)
+	Method GetTotalAntennaAudience:Int(playerID:Int)
 		'passing only the playerID and no other playerIDs is returning
 		'the playerID's audience (with share/total being useless)
 		Local includeChannelMask:SChannelMask = New SChannelMask().Set(playerID)
@@ -5803,14 +5863,14 @@ Type TStationMapSection
 	End Method
 
 
-	Method GetExclusiveAntennaAudienceSum:Int(playerID:Int)
+	Method GetTotalChannelExclusiveAntennaAudience:Int(playerID:Int)
 		Local includeChannelMask:SChannelMask = New SChannelMask().Set(playerID)
 		Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
 		Return GetAntennaReceiverShare(includeChannelMask, excludeChannelMask).total
 	End Method
 
 
-	Method GetAntennaExclusivePopulation:int(x:Int, y:int, radius:Int, owner:Int, alreadyBuilt:Int = True)
+	Method GetAntennaExclusivePopulation:int(densityX:Int, densityY:int, radius:Int, owner:Int, alreadyBuilt:Int = True)
 		If not _surfaceData Then Throw "TStationMapSection: Cannot calculate population without surface data"
 
 		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
@@ -5818,36 +5878,35 @@ Type TStationMapSection
 
 		'data is "densitydata based"!
 		'ensure rect fits into surfaceData AND densityData
-		Local circleRectX:Int = Max(0, self.densityDataOffsetX - radius)
-		Local circleRectY:Int = Max(0, self.densityDataOffsetY - radius)
-		Local circleRectX2:Int = Min(self.densityDataOffsetX + radius, Min(_surfaceData.width-1, mapInfo.densityData.width-1))
-		Local circleRectY2:Int = Min(self.densityDataOffsetY + radius, Min(_surfaceData.height-1, mapInfo.densityData.height-1))
+		'circle coordinates are "local" to mapInfo.densityData
+		Local circleRectX:Int = Max(0, densityX + self.densityDataOffsetX - radius)
+		Local circleRectY:Int = Max(0, densityY + self.densityDataOffsetY - radius)
+		Local circleRectX2:Int = densityX + Min(self.densityDataOffsetX + radius, Min(_surfaceData.width-1, mapInfo.densityData.width-1))
+		Local circleRectY2:Int = densityY + Min(self.densityDataOffsetY + radius, Min(_surfaceData.height-1, mapInfo.densityData.height-1))
 		Local radiusSquared:Int = radius * radius
 
-		Local ownerAntennaLayer:TStationMapAntennaLayer = GetAntennasLayer(owner)
+		Local ownerAntennaLayer:TStationMapAntennaLayer = GetStationMap(owner)._GetAllAntennasLayer()
 		Local otherAntennaLayers:TStationMapAntennaLayer[3]
 		Local otherAntennaLayersUsed:int
 		for local i:int = 1 to 4
 			if owner <> i
-				otherAntennaLayers[otherAntennaLayersUsed] = GetAntennasLayer(i)
+				otherAntennaLayers[otherAntennaLayersUsed] = GetStationMap(i)._GetAllAntennasLayer()
 				otherAntennaLayersUsed :+ 1
 			EndIf
 		Next
 		Local checkValue:Int = 0 'nobody there
 		if alreadyBuilt Then checkValue = 1 'only this very antenna is there
 	
-		'TODO: aehnliches wird schon in GetSectionsConnectedToAntenna gemacht
-		'      -> code direkt hierher kopieren um doppelten Aufwand zu sparen?
 
 		For Local posX:Int = circleRectX To circleRectX2
 			For Local posY:Int = circleRectY To circleRectY2
 				'left the circle?
-				If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
-				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
+				If CalculateDistanceSquared(posX - densityX, posY - densityY) > radiusSquared Then Continue
 
 				'left the topographic borders ?
-				If _surfaceData.data[posY * _surfaceData.width + posX] = 0 Then Continue
-				
+				'coords are local to _surfaceData
+				If _surfaceData.data[(posY - self.densityDataOffsetY) * _surfaceData.width + (posX - self.densityDataOffsetX)] = 0 Then Continue
+
 				Local layerDataIndex:Int = posY * ownerAntennaLayer.width + posX
 				
 				'owner already broadcasting with more than this
@@ -5858,7 +5917,7 @@ Type TStationMapSection
 				if otherAntennaLayers[1].data[layerDataIndex] > 0 Then Continue
 				if otherAntennaLayers[2].data[layerDataIndex] > 0 Then Continue
 				
-				result :+ mapInfo.densityData.data[(posY + densityDataOffsetY) * mapInfo.densityData.width + (posX + densityDataOffsetX)]
+				result :+ mapInfo.densityData.data[posY * mapInfo.densityData.width + posX]
 			Next
 		Next
 	End Method
@@ -6026,27 +6085,40 @@ Type TStationMapSection
 			UnlockMutex(shareCacheMutex)
 		EndIf
 
-
 		'== GENERATE CACHE ==
-		If Not result or 1=1
+		If Not result
 			result = New TStationMapPopulationShare
-			
-			Local antennaLayer2:TStationMapAntennaLayer = self.GetAntennasLayer(2)
-			Local antennaLayer1:TStationMapAntennaLayer = self.GetAntennasLayer(1)
-			Local antennaLayer3:TStationMapAntennaLayer = self.GetAntennasLayer(3)
-			Local antennaLayer4:TStationMapAntennaLayer = self.GetAntennasLayer(4)
-			Local offsetX:Int = antennaLayer1.offsetX
-			Local offsetY:Int = antennaLayer1.offsetY
+
+			'antenna layers are placed directly (no offset) over densityData
+			'(but might have a different width/height)
+			Local antennaLayer1:TStationMapAntennaLayer = GetStationMap(1)._GetAllAntennasLayer()
+			Local antennaLayer2:TStationMapAntennaLayer = GetStationMap(2)._GetAllAntennasLayer()
+			Local antennaLayer3:TStationMapAntennaLayer = GetStationMap(3)._GetAllAntennasLayer()
+			Local antennaLayer4:TStationMapAntennaLayer = GetStationMap(4)._GetAllAntennasLayer()
 			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 
 			LockMutex(antennaShareMutex) 'to savely iterate over values()
 
 			'only read as far as population data allows
-			Local limitedWidth:Int = min(antennaLayer1.width, mapInfo.densityData.width - offsetX)
-			Local limitedHeight:Int = min(antennaLayer1.height, mapInfo.densityData.height - offsetY)
+			Local limitedWidth:Int = min(antennaLayer1.width, mapInfo.densityData.width)
+			Local limitedHeight:Int = min(antennaLayer1.height, mapInfo.densityData.height)
+			
+			'define a window for this section within the complete 
+			'antenna layer.
+			'convert section.rect values as they are local to "surface"
+			'(not screen or densitydata)
+			Local sectionX1:Int = Max(0, Min(limitedWidth, mapInfo.SurfaceXToDataX(Int(rect.x))))
+			Local sectionX2:Int = Max(0, Min(limitedWidth, mapInfo.SurfaceXToDataX(Int(rect.x + rect.w))))
+			Local sectionY1:Int = Max(0, Min(limitedHeight, mapInfo.SurfaceYToDataY(Int(rect.y))))
+			Local sectionY2:Int = Max(0, Min(limitedHeight, mapInfo.SurfaceYToDataY(Int(rect.y + rect.h))))
 
-			For Local mapX:Int = 0 Until limitedWidth 
-				For Local mapY:Int = 0 Until limitedHeight
+			For Local mapX:Int = sectionX1 Until sectionX2 
+				For Local mapY:Int = sectionY1 Until sectionY2
+					'ensure point is within topography of the section
+					'surfacedata is "local" to the section, so subtract
+					'x1, y1 to start at the datas "0,0"
+					If _surfaceData.data[(mapY-sectionY1) * _surfaceData.width + mapX-sectionX1] = 0 Then Continue
+
 					Local index:Int = mapY * antennaLayer1.width + mapX
 					Local mask:Byte
 					mask :+ (antennaLayer1.data[index] > 0) * 1
@@ -6059,8 +6131,7 @@ Type TStationMapSection
 					'skip if one of the to exclude is here
 					If Not excludeChannelMask.HasNone(mask) Then Continue
 
-					local popAtPoint:Int = mapInfo.densityData.data[(mapY + offsetY) * mapInfo.densityData.width + (mapX + offsetX)]
-
+					local popAtPoint:Int = mapInfo.densityData.data[mapY * mapInfo.densityData.width + mapX]
 
 					'someone has a station there
 					'-> check already done in the skip above
@@ -6553,7 +6624,7 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 
 			'this allows individual cablenetworkReceiveRatios for the
 			'sections (eg bad infrastructure for cables or expensive)
-			result = section.GetCableNetworkAudienceSum()
+			result = section.GetTotalCableNetworkAudience()
 		EndIf
 		
 		'multiply with the percentage of users selecting THIS network
@@ -6645,7 +6716,7 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 			'sum up all sections
 			'this allows individual satelliteReceiveRatios for the sections
 			For Local s:TStationMapSection = EachIn GetStationMapCollection().sections
-				result :+ s.GetSatelliteAudienceSum()
+				result :+ s.GetTotalSatelliteAudience()
 			Next
 		EndIf
 
@@ -6813,6 +6884,18 @@ Type TStationMapSurfaceData
 		Next
 		return pix
 	End Method
+
+	Method ToPixmap:TPixmap(valueColor:SColor8)
+		Local pix:TPixmap = CreatePixmap(self.width, self.height, PF_RGBA8888)
+		pix.ClearPixels(0)
+		For local x:Int = 0 until width
+			For local y:Int = 0 until height
+				Local value:Byte = data[y * width + x]
+				pix.WritePixel(x, y, (Int((value<>0)*valueColor.a * $1000000) + Int(valueColor.r * $10000) + Int(valueColor.g * $100) + Int(valueColor.b)))
+			Next
+		Next
+		return pix
+	End Method
 End Type
 
 
@@ -6846,7 +6929,7 @@ Type TStationMapAntennaLayer
 	End Method
 
 
-	Method _SetValue:Int(value:Int, x:Int, y:Int, radius:Int)
+	Method _SetValue:Int(x:Int, y:Int, radius:Int, value:Int)
 		'make coords local
 		x :- offsetX
 		y :- offsetY

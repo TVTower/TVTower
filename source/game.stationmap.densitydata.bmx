@@ -1,6 +1,7 @@
 SuperStrict
 Import Text.Csv
 Import Brl.Retro
+Import Brl.Pixmap 'for debug/render
 
 
 Type TStationMapDensityData
@@ -358,4 +359,21 @@ Type TStationMapDensityData
 	Method Operator[]=(index:Int, value:Int)
 		self.data[index] = value
 	End Method
+	
+	
+	Method ToPixmap:TPixmap(blackAndWhiteOnly:Int = False)
+		Local pix:TPixmap = CreatePixmap(self.width, self.height, PF_RGBA8888)
+		pix.ClearPixels(0)
+		For local x:Int = 0 until width
+			For local y:Int = 0 until height
+				Local value:Byte = data[y * width + x]
+'				Local layerColor:Int = (Int(255*(value<>0) * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				Local layerColor:Int = (Int((value<>0)*255 * $1000000) + Int(value * $10000) + Int(value * $100) + Int(value))
+				if blackAndWhiteOnly Then layerColor = $ff000000 + $00ffffff*(value<>0)
+				
+				pix.WritePixel(x, y, layerColor)
+			Next
+		Next
+		return pix
+	End Method	
 End Type

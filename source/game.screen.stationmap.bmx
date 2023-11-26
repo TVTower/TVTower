@@ -2892,8 +2892,9 @@ endrem
 
 			'if the mouse has moved - refresh the station data and move station
 			If Not mousePos.EqualsXY(mouseoverStation.x, mouseoverStation.y, True)
-				mouseoverStation.x = int(mousePos.x)
-				mouseoverStation.y = int(mousePos.y)
+				mouseoverStation.SetPosition(int(mousePos.x), int(mousePos.y))
+				'mouseoverStation.InvalidateReach()
+
 				mouseoverStation.refreshData()
 				'refresh state information
 				mouseoverStation.GetSectionName(True)
