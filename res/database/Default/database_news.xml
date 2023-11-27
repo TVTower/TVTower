@@ -817,7 +817,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" time="2,2,3,8,18" />
 			</effects>
-			<data genre="0" price="1.0" quality="29" />
+			<data genre="3" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -832,7 +832,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" time="2,1,1,9,17" />
 			</effects>
-			<data genre="0" price="1.0" quality="35" />
+			<data genre="3" price="1.0" quality="35" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -847,7 +847,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" time="1,9,15" />
 			</effects>
-			<data genre="0" price="1.0" quality="30" />
+			<data genre="3" price="1.0" quality="30" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -862,7 +862,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-4" time="2,1,1,8,12" />
 			</effects>
-			<data genre="0" price="1.0" quality="38" />
+			<data genre="3" price="1.0" quality="38" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-4" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -877,7 +877,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" time="1,6,11" />
 			</effects>
-			<data genre="0" price="1.0" quality="28" />
+			<data genre="3" price="1.0" quality="28" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -890,7 +890,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The Board of Management and employee representatives of the American car giant have just reached agreement to lay off 2,500 people. Both sides are satisfied.</en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="51" />
+			<data genre="3" price="1.0" quality="51" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -1740,7 +1740,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>To end the infinite calculation loop of Pi, one only has to set the integral of pi in relation to the relative mass of the decimal places.</en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="49" />
+			<data genre="3" price="1.0" quality="49" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="e534c0e3-0f37-4e37-92f1-7c2796168572" thread_id="67c8a17b-d314-4016-bf94-2c2b079912af" type="0" creator="">

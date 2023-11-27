@@ -1057,8 +1057,8 @@
 			</children>
 			<variables>
 				<was>
-					<de>Wolken|Sterne|Sonne|Fluzeuge|Vögel</de>
-					<en>clouds|stars|sun|airplane|birds</en>
+					<de>Wolken|Sterne|Sonne|Flugzeuge|Vögel</de>
+					<en>clouds|stars|sun|airplanes|birds</en>
 				</was>
 				<wo>
 					<de>Paris|Berlin|London|New York|Madrid|%randomcity%</de>

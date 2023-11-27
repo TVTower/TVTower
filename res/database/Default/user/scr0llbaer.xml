@@ -961,6 +961,9 @@ So that's 4120 per episode.</en>
 			<review min="75" max="90" />
 			<speed min="70" max="85" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Day_of_the_Tentacle">
 			<title>
@@ -1003,7 +1006,7 @@ So that's 4120 per episode.</en>
 				<job index="14" function="32" required="1" gender="2" />
 				<job index="15" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags_optional="40" />
+			<data flags_optional="40" available="0" /> <!-- availability triggered by 352a2fbc-7e7b-462b-a217-34c300043d19 -->
 			<genres maingenre="5" subgenres="16,3" />
 			<blocks value="3" />
 			<price min="65000" max="90000" />
@@ -1012,7 +1015,6 @@ So that's 4120 per episode.</en>
 			<review min="80" max="95" />
 			<speed min="70" max="90" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<!-- TODO: Add a series with episodes from https://maniac-mansion-mania.com/ to make more use of all the defined roles. -->
 		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Zak_McKracken_and_the_Alien_Mindbenders">
@@ -1137,6 +1139,9 @@ So that's 4120 per episode.</en>
 						<de>%ROLENAME1% wird in das dröge Mundania (unsere Welt) verbannt, weil er versehentlich das Gesetz gebrochen hat, indem er kein magisches Talent hat. Er findet einige talentierte Gefährten, die ihm helfen, besonders das wandlungsfähige Mädchen %ROLENAME2%.</de>
 						<en>%ROLENAME1% is exiled to the dreary (our) Mundane World because he has inadvertently broken the law by not having a magical talent. He finds some talented companions to help him, especially the chameleonic girl %ROLENAME2%.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f75c6a8b-d30b-48a2-b6bc-1458c19ca7ce" />
+					</effects>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="c4ba18ba-082d-4488-8c4d-4de361c1efb8">
 					<title>
@@ -1265,6 +1270,9 @@ So that's 4120 per episode.</en>
 						<de>%ROLENAME1% ist erstmal auf %hurlyeisland_object_reference% gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen %ROLE3% vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
 						<en>%ROLENAME1% is stranded on %hurlyeisland_object_reference% for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of %ROLE3%, actually seasoned men, and other bizarre characters.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" />
+					</effects>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="db9757c0-a155-4c1d-9b06-1035d8c63444">
 					<title>
@@ -2196,7 +2204,7 @@ So that's 4120 per episode.</en>
 				<job index="4" function="2" required="1" role_guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" />
 				<job index="5" function="2" required="1" role_guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" />
 			</jobs>
-			<data flags="2" flags_optional="" />
+			<data flags="2" flags_optional="" available="0" /> <!-- availability triggered by therob-programme-speiuebelunddubrovnik -->
 			<genres maingenre="9" subgenres="5" />
 			<episodes min="10" max="10" />
 			<blocks value="1" />
@@ -2206,7 +2214,6 @@ So that's 4120 per episode.</en>
 			<review min="40" max="80" />
 			<speed min="40" max="80" />
 			<studio_size value="1" />
-			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
 	</scripttemplates>
 </tvtdb>

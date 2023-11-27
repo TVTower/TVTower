@@ -110,13 +110,13 @@ You will really have to chew.</en>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="23" repetitions="1" duration="2" profit="384" penalty="450" infomercial_profit="40" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030">
+		<ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there">
 			<title>
-				<de>Pipsi Cola</de>
+				<de>Affro-Cola</de>
 			</title>
 			<description>
-				<de>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</de>
-				<en>Koka Cola's most popular competitor - but as pure in taste?</en>
+				<de>Der populärste Konkurrent von Cacca Cola und Pipsi - doch geschmacklich auch so rein?</de>
+				<en>The most popular competitor of Cacca Cola and Pipsi - but as pure in taste?</en>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="25" repetitions="1" duration="3" profit="230" penalty="380" fix_infomercial_profit="1"/>
@@ -2414,8 +2414,10 @@ Available in any well-stocked drugstore.</en>
 				<en>Diggtionary</en>
 			</title>
 			<description>
-				<de>Sie glauben, Sie haben sich neulich in der Straßenbahn verhört? Fäkalsprache &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
-				<en>You think you misheard something in the tram the other day? Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that shit.</en>
+				<de>Sie glauben, Sie haben sich neulich in der Straßenbahn verhört?
+Fäkalsprache &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
+				<en>You think you misheard something in the tram the other day?
+Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that shit.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="471" penalty="646" fix_infomercial_profit="1"/>
@@ -2426,8 +2428,10 @@ Available in any well-stocked drugstore.</en>
 				<en>Diggtionary</en>
 			</title>
 			<description>
-				<de>Sie wissen nicht mehr, was die Worte von heute bedeuten? Z.B. gestern der „Freund“ ist heute der „Feind“. Neusprech &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Jetzt als mechanische App, also: im Buchhandel.</de>
-				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy". Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
+				<de>Sie wissen nicht mehr, was die Worte von heute bedeuten? Z.B. gestern der „Freund“ ist heute der „Feind“.
+Neusprech &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Jetzt als mechanische App, also: im Buchhandel.</de>
+				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy".
+Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
 			</description>
 			<conditions min_audience="2.30" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="600" penalty="820" fix_infomercial_profit="1"/>

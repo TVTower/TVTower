@@ -71,12 +71,12 @@
 			<children>
 				<programme id="f2ba424b-d842-4902-9a8b-1b4e299b856f" product="7" licence_type="2" creator="9551">
 					<title>
-						<de>Fürstin [3|First] und die Geheimnisse der Samtstrumpfhosen</de>
-						<en>Princess [3|First] and the Secrets of the Velvet Tights</en>
+						<de>[3|First] und die Geheimnisse der Samtstrumpfhosen</de>
+						<en>[3|First] and the Secrets of the Velvet Tights</en>
 					</title>
 					<description>
-						<de>[3|First] führt die Zuschauer durch ihr Schloss und enthüllt, dass sie überall geheime Fächer mit Samtstrumpfhosen versteckt hat. Sind sie der Schlüssel zum Glanz der 80er?</de>
-						<en>[3|First] leads the audience through her castle and reveals that she has hidden secret fans of velvet tights everywhere. Are they the key to the glamour of the 80s?</en>
+						<de>Fürstin [3|First] führt die Zuschauer durch ihr Schloss und enthüllt, dass sie überall geheime Fächer mit Samtstrumpfhosen versteckt hat. Sind sie der Schlüssel zum Glanz der 80er?</de>
+						<en>Princess [3|First] leads the audience through her castle and reveals that she has hidden secret fans of velvet tights everywhere. Are they the key to the glamour of the 80s?</en>
 					</description>
 				</programme>
 				<programme id="0a6d3442-eb31-4025-95ef-ee187922f703" product="7" licence_type="2" creator="9551">
@@ -271,12 +271,15 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="GB" distribution="2" maingenre="3" subgenre="5,1" flags="10" blocks="1" price_mod="0.5" />
+			<data country="GB" distribution="2" maingenre="3" subgenre="9,5" flags="10" blocks="1" price_mod="0.5" />
 			<releaseTime year="1989" day="11" />
 			<ratings critics="87" speed="80" outcome="82" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="a126c509-3d86-4a5d-9aa5-c61b32fdf005" />
+			</effects>
 		</programme>
 		<programme id="a126c509-3d86-4a5d-9aa5-c61b32fdf005" product="1" licence_type="1" creator="9551" imdb_id="tt0108598">
 			<title>
@@ -297,12 +300,15 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="GB" distribution="2" maingenre="3" subgenre="5,1" flags="10" blocks="1" price_mod="0.5" />
+			<data country="GB" distribution="2" maingenre="3" subgenre="9,5" flags="10" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by a9b75ae1-bdd7-4ef4-b8ed-f95564e369ee -->
 			<releaseTime year="1993" day="12" />
 			<ratings critics="88" speed="84" outcome="83" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d87c78b8-b55b-40c6-916c-5f2e45630736" />
+			</effects>
 		</programme>
 		<programme id="d87c78b8-b55b-40c6-916c-5f2e45630736" product="1" licence_type="1" creator="9551" imdb_id="tt0112691">
 			<title>
@@ -323,7 +329,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="GB" distribution="2" maingenre="3" subgenre="5,1" flags="10" blocks="1" price_mod="0.5" />
+			<data country="GB" distribution="2" maingenre="3" subgenre="9,5" flags="10" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by a126c509-3d86-4a5d-9aa5-c61b32fdf005 -->
 			<releaseTime year="1995" day="12" />
 			<ratings critics="86" speed="84" outcome="81" />
 			<modifiers>
@@ -351,9 +357,12 @@
 				<member index="4" function="2">ee7f28a9-4ae6-4d63-b3c2-88bff09f85ba</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="CDN/USA" distribution="3" maingenre="2" subgenre="16,17" flags="96" blocks="2" price_mod="0.5" />
+			<data country="CDN/USA" distribution="3" maingenre="2" subgenre="16,17" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 7dbc03cb-3a83-420a-afbe-4af5381c77fe -->
 			<releaseTime year="1995" day="7" />
 			<ratings critics="35" speed="24" outcome="17" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="2c3e41e5-2af3-4dae-9c6e-4a1006e7f09b" />
+			</effects>
 		</programme>
 		<programme id="2c3e41e5-2af3-4dae-9c6e-4a1006e7f09b" product="1" licence_type="1" creator="9551" imdb_id="tt0116033">
 			<title>
@@ -375,7 +384,7 @@
 				<member index="3" function="2">0b434293-5068-480e-85b7-04c0d0905fe9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/CDN" distribution="3" maingenre="2" subgenre="16,17" flags="96" blocks="2" price_mod="0.5" />
+			<data country="USA/CDN" distribution="3" maingenre="2" subgenre="16,17" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 0fa02d35-1e99-4f77-8806-43f31eeb5a8e -->
 			<releaseTime year="1996" day="8" />
 			<ratings critics="35" speed="25" outcome="15" />
 		</programme>
@@ -401,7 +410,7 @@
 				<member index="5" function="2">128d9150-6f81-48ab-98a8-42f48e93b891</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="3" maingenre="1" subgenre="5,9" flags="0" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="3" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by b33e031a-0170-4215-8d95-69fa47a7274c -->
 			<releaseTime year="1997" day="3" />
 			<ratings critics="28" speed="29" outcome="40" />
 		</programme>
@@ -424,7 +433,7 @@
 				<member index="2" function="2">bd3da9fe-25a8-4c56-9a02-ffbbbe892b73</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="3" maingenre="12" subgenre="5,10" flags="0" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="3" maingenre="12" subgenre="5,10" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 1880bd38-9987-4192-b73d-b844df199e99 -->
 			<releaseTime year="2000" day="3" />
 			<ratings critics="35" speed="34" outcome="11" />
 		</programme>
@@ -598,6 +607,9 @@
 			<data country="USA" distribution="3" maingenre="8" subgenre="17,7" flags="96" blocks="2" price_mod="0.5" />
 			<releaseTime year="1993" day="4" />
 			<ratings critics="10" speed="41" outcome="31" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b27f60e9-2363-4e62-84ee-fd7a7b5adde0" />
+			</effects>
 		</programme>
 		<programme id="b27f60e9-2363-4e62-84ee-fd7a7b5adde0" product="1" licence_type="1" creator="9551" imdb_id="tt0115723">
 			<title>
@@ -618,7 +630,7 @@
 				<member index="2" function="2">6881d851-b14a-490b-a6dd-425d05b1c23d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="3" maingenre="8" subgenre="17,7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="3" maingenre="8" subgenre="17,7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 2c1d4a91-451b-4e5d-9e8f-fce04553db58 -->
 			<releaseTime year="1996" day="8" />
 			<ratings critics="8" speed="13" outcome="12" />
 		</programme>
@@ -643,9 +655,9 @@
 				<member index="4" function="2">ae33d502-4272-494b-9cf2-da2d0225605d</member>
 				<member index="5" function="2">1f662659-d477-42bc-83bf-6465965b2686</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" managers="0.75" pensioners="0.5" />
-			<data country="USA" distribution="3" maingenre="7" subgenre="5" flags="0" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="3" maingenre="7" subgenre="5" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by ed31363d-b69d-43cf-87e8-5f77a043672c -->
 			<releaseTime year="2000" day="11" />
 			<ratings critics="20" speed="23" outcome="40" />
 		</programme>
@@ -1018,6 +1030,9 @@
 						<de>Bobby Ewing und Pamela Barnes Ewing offenbaren ihren Familien, dass sie verheiratet sind. Damit wird die langjährige Rivalität zwischen den Ewings und den Barnes erneuert. J.R. versucht, Bobby und Pam auseinander zu bringen.</de>
 						<en>Bobby Ewing and Pamela Barnes Ewing reveal to their families that they are married. This renews the longtime rivalry between the Ewings and the Barneses. J.R. attempts to break up Bobby and Pam.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="ab3b6773-59ee-4126-9c58-7e8f04f8951e" />
+					</effects>
 				</programme>
 				<programme id="85fbfabe-45af-451b-9ec4-52e36dc384d1" product="2" licence_type="2" imdb_id="tt0553456" creator="9551">
 					<title>
@@ -1099,7 +1114,7 @@
 				<member index="5" function="2">9e4ab7a6-a028-4f57-97f0-ec7207e696a8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="7" subgenre="15" flags="0" blocks="1" price_mod="0.75" />
+			<data country="USA" distribution="2" maingenre="7" subgenre="15" flags="0" blocks="1" price_mod="0.75" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1978" day="9" />
 			<ratings critics="60" speed="60" outcome="85" />
 			<children>
@@ -1116,6 +1131,9 @@
 						<de>Bobby überredet Gary, nach langer Abwesenheit nach Southfork zurückzukehren. Jimmy nimmt Lucy mit zu dem Diner in Fort Worth, wo ihre Mutter Valene arbeitet.</de>
 						<en>Bobby talks Gary into returning to Southfork after a long absence. Jimmy takes Lucy to the diner in Fort Worth where her mother Valene is working.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="5ce73336-6fe5-4b6b-bb23-72a7ea59c7e2" />
+					</effects>
 				</programme>
 				<programme id="ad0f5c50-60f8-4dfa-8893-43669da710ff" product="2" licence_type="2" imdb_id="tt0553278" creator="9551">
 					<title>
@@ -1239,7 +1257,7 @@
 				<member index="5" function="2">9e4ab7a6-a028-4f57-97f0-ec7207e696a8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="7" subgenre="15" flags="0" blocks="1" price_mod="0.75" />
+			<data country="USA" distribution="2" maingenre="7" subgenre="15" flags="0" blocks="1" price_mod="0.75" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1979" day="9" />
 			<ratings critics="70" speed="80" outcome="90" />
 			<children>
@@ -1256,6 +1274,9 @@
 						<de>Die Freude der Familie Ewing über Sue Ellens Rückkehr aus dem Hospital schlägt in Besorgnis um, als klar wird, dass sie sich für nichts begeistern kann, auch nicht für ihr neues Baby.</de>
 						<en>The happiness felt by the Ewing family on Sue Ellen's return from the hospital changes to concern when it becomes obvious she has little enthusiasm for anything, including her new baby.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="ab23ad17-1e55-4ed5-b15f-52a0f5f6882c" />
+					</effects>
 				</programme>
 				<programme id="343b214e-0232-4d68-86d7-d4993c07f43a" product="2" licence_type="2" imdb_id="tt0553364" creator="9551">
 					<title>
@@ -1379,7 +1400,7 @@
 				<member index="5" function="2">9e4ab7a6-a028-4f57-97f0-ec7207e696a8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="7" subgenre="15" flags="0" blocks="1" price_mod="0.75" />
+			<data country="USA" distribution="2" maingenre="7" subgenre="15" flags="0" blocks="1" price_mod="0.75" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1980" day="11" />
 			<ratings critics="70" speed="80" outcome="90" />
 			<children>
@@ -1533,6 +1554,9 @@
 						<de>Mama Jo und die Crew retten Kimba, eine junge Frau, die eine Explosion auf einem Boot überlebt hat, bei der alle anderen ums Leben kamen. Cody, Nick und Murray arbeiten daran, zu beweisen, dass Kimba unschuldig ist.</de>
 						<en>Mama Jo and the crew rescue Kimba, a young woman that survived an explosion killing everyone else on a boat. Cody, Nick and Murray work to prove that Kimba is innocent.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d41e28d9-7279-46be-8cde-02908ad06a49" />
+					</effects>
 				</programme>
 				<programme id="65e0f42f-0cd3-43ea-89b8-5a774bead0bd" product="2" licence_type="2" imdb_id="tt0686905" creator="9551">
 					<title>
@@ -1612,7 +1636,7 @@
 				<!-- index 3 guest stars -->
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1984" day="10" />
 			<ratings critics="45" speed="70" outcome="75" />
 			<children>
@@ -1632,6 +1656,9 @@
 					<staff>
 						<member index="3" function="2">655b5238-4855-4f37-8b9a-2b4b07f28288</member>
 					</staff>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="e3c2f68c-899d-40f1-9ae1-5dc0b29fd9f0" />
+					</effects>
 				</programme>
 				<programme id="74929219-db89-433a-92d6-1def15f18d71" product="2" licence_type="2" imdb_id="tt0686944" creator="9551">
 					<title>
@@ -1738,7 +1765,7 @@
 				<member index="2" function="2">d23d1a2f-7dc3-45d4-981d-2e86305dafb8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="2" subgenre="4,7" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1985" day="10" />
 			<ratings critics="40" speed="65" outcome="70" />
 			<children>
@@ -1880,6 +1907,9 @@
 						<de>Fräulein Kassandra kommt gerade rechtzeitig nach Hause, um die Geburt der neuen Bienen mitzuerleben. Eine Biene nach der anderen schlüpft aus den Waben, nur eine nicht: Maja, die Außergewöhnliche.</de>
 						<en>Miss Cassandra returns home just in time to witness the birth of the new bees. One bee after the other hatches out of the combs, only one doesn't: Maya, the exception.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="e49a537b-0bf0-4aca-a707-b9ad1ddd90c9" />
+					</effects>
 				</programme>
 				<programme id="d9a99cd0-36a0-483c-bf3c-ba65f3ba5ab2" product="2" licence_type="2" imdb_id="" creator="9551">
 					<title>
@@ -2056,7 +2086,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="J/A/D" year="1979" distribution="2" maingenre="3" subgenre="1,5" flags="10" blocks="1" price_mod="0.25" />
+			<data country="J/A/D" year="1979" distribution="2" maingenre="3" subgenre="9,1" flags="10" blocks="1" price_mod="0.25" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="75" speed="70" outcome="80" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -2266,6 +2296,9 @@
 						<de>...bei einer Mathematikprüfung, wobei er versucht, vom Nachbarn abzuschreiben. / Versucht, am Strand heimlich und unbemerkt seine Badehose anzuziehen. / Hat Mühe, während eines Gottesdienstes wach zu bleiben.</de>
 						<en>...at mathematics exam, where he tries to copy from a student. / Trying to surreptitiously change into his swimming trunks at a beach without being noticed. / Struggling to stay awake during a church service.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="66106c63-9668-42a1-a630-be045f91f3b9" />
+					</effects>
 				</programme>
 				<programme id="c489334a-0223-42ed-aee2-f6d124d93113" product="2" licence_type="2" imdb_id="tt0651853" creator="9551">
 					<title>
@@ -2343,7 +2376,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity employees="1.5" managers="2" />
-			<data country="GB" year="1993" distribution="2" maingenre="5" subgenre="9" flags="0" blocks="1" price_mod="0.5" />
+			<data country="GB" year="1993" distribution="2" maingenre="5" subgenre="9" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="85" speed="85" outcome="90" />
 			<children>
 				<programme id="7acf0ba0-7d53-401f-b409-f5bc0ef9f540" product="2" licence_type="2" imdb_id="tt0651848" creator="9551">
@@ -2359,6 +2392,9 @@
 						<de>Versucht, einen Mann mit einem Herzinfarkt zu retten, legt aber den Krankenwagen lahm. / Lässt sich versehentlich in einem Briefkasten einschließen. / Wird während einer Zugfahrt von einem lauten, lachenden Mann belästigt.</de>
 						<en>Attempts to save a man suffering from a heart attack, but disables the ambulance. / Accidentally gets himself locked inside a pillar box. / Suffers from a noisy laughing man during a train ride.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="14c86d13-b72d-480b-a69c-b6bd69f6fb63" />
+					</effects>
 				</programme>
 				<programme id="6d0d8000-7897-49d1-aec2-d9050bcf6c46" product="2" licence_type="2" imdb_id="tt0365495" creator="9551">
 					<title>
@@ -2436,7 +2472,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity employees="1.5" managers="2" />
-			<data country="GB" year="1995" distribution="2" maingenre="5" subgenre="9" flags="0" blocks="1" price_mod="0.5" />
+			<data country="GB" year="1995" distribution="2" maingenre="5" subgenre="9" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="85" speed="85" outcome="90" />
 			<children>
 				<programme id="3bf1a06b-4504-40c5-89b8-136c8f67ffae" product="2" licence_type="2" imdb_id="tt0651839" creator="9551">
@@ -2549,6 +2585,9 @@
 						<de>Unaufhörlicher Krieg zwischen den Autobots und den Decepticons hat zu großen Entbehrungen geführt. Ein gekapertes Autobot-Schiff stürzt auf die Erde. 4 Millionen Jahre später im Jahr 1984 erwachen die Roboter wieder, und ihr Konflikt verwickelt nun die Menschen.</de>
 						<en>Constant war between the Autobots and the Decepticons has caused great hardship. An captured Autobot ship crashes onto Earth. 4 million years later, in 1984, the robots reawaken, and their conflict now involves humans.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="996b4eea-b11e-48a4-84ab-3facc7f2b5cf" />
+					</effects>
 				</programme>
 				<programme id="b1df8f6c-e4b4-4af3-8128-7831611b686a" product="2" licence_type="2" imdb_id="tt0803442" creator="9551">
 					<title>
@@ -2697,7 +2736,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA/J" year="1985" distribution="2" maingenre="3" subgenre="2,16" flags="2" blocks="1" price_mod="0.5" />
+			<data country="USA/J" year="1985" distribution="2" maingenre="3" subgenre="2,16" flags="2" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="65" speed="85" outcome="75" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -2716,6 +2755,9 @@
 						<de>Bei einem Angriff der Decepticons wird Spike verwundet. Um das Leben seines Sohnes zu retten, hilft Sparkplug den Autobots, Spikes Geist in den Körper eines experimentellen Roboters namens Autobot X zu übertragen.</de>
 						<en>A Decepticon attack leaves Spike wounded. To save his son's life, Sparkplug helps the Autobots transfer Spike's mind to the body of an experimental robot called Autobot X.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Stukov_Transformers_Der_Kampf_um_Cybertron" />
+					</effects>
 				</programme>
 				<programme id="7375b9de-df62-4213-8b0d-23bab3ec3bac" product="2" licence_type="2" imdb_id="tt0803428" creator="9551">
 					<title>
@@ -2990,7 +3032,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA" year="1986" distribution="2" maingenre="3" subgenre="2,16" flags="2" blocks="1" price_mod="0.5" />
+			<data country="USA" year="1986" distribution="2" maingenre="3" subgenre="2,16" flags="2" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by Stukov_Transformers_Der_Kampf_um_Cybertron -->
 			<ratings critics="55" speed="75" outcome="75" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -3009,6 +3051,9 @@
 						<de>Unter der Führung von Rodimus Prime haben die Autobots ihren Heimatplaneten von der Kontrolle der Decepticons befreit, was zu einem neuen Zeitalter des Friedens und des Glücks führt. Doch dieses hält nicht ewig an.</de>
 						<en>Under Rodimus Prime's leadership, the Autobots have freed their home planet from Decepticon control, which results in a new age of peace and happiness. But this does not last forever.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="74c728ea-cfd8-4d7d-bb87-bbc0f92bf0de" />
+					</effects>
 				</programme>
 				<programme id="d716ac3a-51bf-4075-aa2e-3a5225a0eede" product="2" licence_type="2" imdb_id="tt0808822" creator="9551">
 					<title>
@@ -3101,7 +3146,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA" year="1987" distribution="2" maingenre="3" subgenre="2,16" flags="2" blocks="1" price_mod="0.5" />
+			<data country="USA" year="1987" distribution="2" maingenre="3" subgenre="2,16" flags="2" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="40" speed="70" outcome="70" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -3245,7 +3290,7 @@
 						<en>Newlyweds Wilbur and Carol move into their first house together, and find that the previous tenant left his horse behind in the barn. Wilbur wants to keep it. To his surprise, the horse agrees with him. Speaking out clearly.</en>
 					</description>
 					<effects>
-						<effect trigger="happen" type="modifyAvailability" enable="1" programme="421850be-e53f-40ec-b9aa-04e69f85aa81" /> <!-- TODO: doesn't seem to be working yet -->
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="421850be-e53f-40ec-b9aa-04e69f85aa81" />
 					</effects>
 				</programme>
 				<programme id="d9dd7486-9f8c-4584-81be-ba419a9c0c2e" product="2" licence_type="2" imdb_id="tt0649875" creator="9551">
@@ -3397,7 +3442,7 @@
 				<!-- index 4 used for guest stars -->
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1961" distribution="2" maingenre="5" subgenre="9,10" flags="0" blocks="1" price_mod="0.25" available="0" />
+			<data country="USA" year="1961" distribution="2" maingenre="5" subgenre="9,10" flags="0" blocks="1" price_mod="0.25" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="55" speed="65" outcome="60" />
 			<children>
 				<programme id="8881275a-af9a-497e-81f1-c4ed29b8530f" product="2" licence_type="2" imdb_id="tt0649847" creator="9551">
@@ -3587,6 +3632,9 @@
 						<de>Auch Lauras Klassenkameradin Ronette wird geschlagen und traumatisiert aufgefunden. Ein Stück Papier unter Lauras Fingernagel mit dem Buchstaben „R“ deutet darauf hin, dass ein Mörder aus dem letzten Jahr erneut zugeschlagen haben könnte.</de>
 						<en>Also Laura's classmate Ronette is found, beaten and traumatized. A piece of paper under Laura's fingernail with the letter "R" indicates that a killer from last year may have struck again.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="27679e52-a092-4473-a3eb-c27891ad5a49" />
+					</effects>
 				</programme>
 				<programme id="19e6feb0-9f20-42c6-a832-ca6c9ed3d5b8" product="2" licence_type="2" imdb_id="tt0734840" creator="9551">
 					<title>
@@ -3682,7 +3730,7 @@
 						<en>The Last Evening</en>
 					</title_original>
 					<description>
-						<de>Lauras Freundin Donna und James finden ein weiteres Tonband in Jacobys Büro. Jacoby erleidet einen Herzinfarkt, nachdem er auf der Suche nach „Laura“ von einem unsichtbaren Angreifer angegriffen wurde.</de>
+						<de>Lauras Freundin Donna und James finden ein weiteres Tonband in Jacobys Büro. Jacoby erleidet einen Herzinfarkt, nachdem er auf der Suche nach „Laura“ von einem unsichtbaren Täter angegriffen wurde.</de>
 						<en>Laura's friend Donna and James find another tape in Jacoby's office. Jacoby suffers a heart attack after being attacked by an unseen assailant while searching for "Laura".</en>
 					</description>
 				</programme>
@@ -3713,7 +3761,7 @@
 				<member index="8" function="2">87a6c744-7bfc-45f4-8424-e1e8e83bca03</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="14" subgenre="12,7" flags="8" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="14" subgenre="12,7" flags="8" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1990" day="9" />
 			<ratings critics="61" speed="78" outcome="75" />
 			<children>
@@ -3730,6 +3778,9 @@
 						<de>Als Cooper mit blutender Wunde daliegt, hat er eine Vision von einem senilen Kellner und einem geheimnisvollen Riesen, der ihm mehrere Hinweise gibt, vor allem, dass drei Personen Lauras Mörder gesehen haben, aber keiner seine Leiche gesehen hat.</de>
 						<en>As Cooper lies bleeding from his wound, he has a vision of a senile waiter and a mysterious giant who gives him several clues, notably that three people have seen Laura's killer, but none have seen his body.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f8c29de5-418e-4906-9e0b-24dacf2880eb" />
+					</effects>
 				</programme>
 				<programme id="d0252990-703e-4477-a79a-c09db9028610" product="2" licence_type="2" imdb_id="tt0734817" creator="9551">
 					<title>
@@ -3868,6 +3919,9 @@
 						<de>Popeye muss die Käsebewohner des Mondes retten.</de>
 						<en>Popeye must rescue the cheese denizens of the Moon.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1ce47452-dfec-439f-bc8e-51702029d91f" />
+					</effects>
 				</programme>
 				<programme id="a4b6308e-0564-4382-9204-9346265286e5" product="2" licence_type="2" imdb_id="tt0982461" creator="9551">
 					<title>
@@ -4309,7 +4363,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.25" employees="1.25" unemployed="1.25" />
-			<data country="USA" year="1961" distribution="2" maingenre="3" subgenre="1,5" flags="10" blocks="1" price_mod="0.2" />
+			<data country="USA" year="1961" distribution="2" maingenre="3" subgenre="1,5" flags="10" blocks="1" price_mod="0.2" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="60" speed="60" outcome="75" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -4505,6 +4559,9 @@
 						<de>SFPD-Detective Lieutenant Stone und der junge College-Absolvent Inspector Heller ermitteln gemeinsam im Fall eines in der Bucht tot aufgefundenen Mädchens, mit Verbindungen zu einem Anwalt, den sie kannte, als Hauptverdächtigen.</de>
 						<en>SFPD Detective Lieutenant Stone is partnered with young college-educated Inspector Keller, as they investigate a girl found dead in the bay, with ties to a lawyer she knew as the primary suspect.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="4b15947f-64a3-4e96-8b04-4908278f1b8b" />
+					</effects>
 				</programme>
 				<programme id="e2e67bf5-925c-49e3-b617-05cda0c2b617" product="2" licence_type="2" imdb_id="tt0711589" creator="9551">
 					<title>
@@ -4624,7 +4681,7 @@
 				<member index="1" function="2">9dcc7ea5-2479-4449-9df7-a4079361460c</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1973" distribution="2" maingenre="4" subgenre="2,7" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" year="1973" distribution="2" maingenre="4" subgenre="2,7" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="60" speed="70" outcome="65" />
 			<children>
 				<programme id="bff2a097-20a2-43ee-9957-946919155c85" product="2" licence_type="2" imdb_id="tt0756598" creator="9551">
@@ -4760,7 +4817,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA/B" year="1981" distribution="2" maingenre="3" subgenre="1,5" flags="10" blocks="1" price_mod="0.5" />
+			<data country="USA/B" year="1981" distribution="2" maingenre="3" subgenre="9,1" flags="10" blocks="1" price_mod="0.5" />
 			<ratings critics="60" speed="70" outcome="85" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -4779,6 +4836,9 @@
 						<de>Traumi wünscht sich zum Geburtstag, dass er zu einem anderen Planeten fliegen kann, bevor er die Kerzen auspustet, und findet sich dann tatsächlich auf einem anderen Planeten wieder.</de>
 						<en>Dreamy makes a birthday wish that he could fly to another planet before blowing out the candles and then indeed finds himself on another planet.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="3c981d17-ee9a-4d28-8cda-5cae9fd68a0e" />
+					</effects>
 				</programme>
 				<programme id="238c1ae3-b807-4bc8-acbe-837f9a4c56eb" product="2" licence_type="2" imdb_id="tt0873399" creator="9551">
 					<title>
@@ -4927,7 +4987,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA/B" year="1982" distribution="2" maingenre="3" subgenre="1,5" flags="10" blocks="1" price_mod="0.5" />
+			<data country="USA/B" year="1982" distribution="2" maingenre="3" subgenre="9,1" flags="10" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="60" speed="70" outcome="85" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -5365,6 +5425,9 @@
 					<staff>
 						<member index="3" function="2">5e4777f9-b18e-4d2a-89c1-035bddb9b105</member>
 					</staff>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="524594da-5de1-4396-b3c5-591d28b165e3" />
+					</effects>
 				</programme>
 				<programme id="f1d44ff7-aee0-405b-9cee-aedb981afbe9" product="2" licence_type="2" imdb_id="tt0110017" creator="9551">
 					<title>
@@ -5457,7 +5520,7 @@
 				<!-- index 3 guest stars -->
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1995" day="1" />
 			<ratings critics="30" speed="65" outcome="84" />
 			<children>
@@ -5474,6 +5537,9 @@
 						<de>Hercules kommt rechtzeitig nach Hause, nur um zu sehen, wie Deïaneira und seine Kinder von Hera ermordet werden. Er schwört Rache und zieht los, um die Göttin zu vernichten, doch ein junges Mädchen sorgt dafür, dass seine Seele besänftigt wird.</de>
 						<en>Hercules returns home just in time to see Deianira and his children murdered by Hera. Vowing vengeance, he sets out to destroy the goddess, but a young girl helps to soothe his soul.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="91f00b6c-b7f3-4b70-b679-6cf2bd8414e9" />
+					</effects>
 				</programme>
 				<programme id="267ba3d4-3dda-4053-9ebd-6545361c004d" product="2" licence_type="2" imdb_id="tt0599736" creator="9551">
 					<title>
@@ -5519,6 +5585,9 @@
 					<staff>
 						<member index="3" function="2">5e4777f9-b18e-4d2a-89c1-035bddb9b105</member>
 					</staff>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="ae3d337c-ef45-46a7-876d-434faedff28d" />
+					</effects>
 				</programme>
 				<programme id="44959cd0-0265-4a15-85e8-337e40b15385" product="2" licence_type="2" imdb_id="tt0599759" creator="9551">
 					<title>
@@ -5589,7 +5658,7 @@
 				<member index="2" function="2">10c06c38-46e2-4ff4-8e39-711f82f1b3f0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1995" day="9" />
 			<ratings critics="30" speed="65" outcome="88" />
 			<children>
@@ -5727,7 +5796,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives_female="1.25" employees_female="1.5" unemployed_female="1.25" />
-			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="8" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="8" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by Hercules Season 1 first Xena spinoff-pilot episode -->
 			<releaseTime year="1995" day="9" />
 			<ratings critics="33" speed="73" outcome="86" />
 			<children>
@@ -5744,6 +5813,9 @@
 						<de>Xena reist in ihre Heimatstadt, um Wiedergutmachung zu leisten. Auf dem Weg dorthin will ein Mädchen namens Gabrielle sie begleiten.</de>
 						<en>Xena travels to her home town to try to make amends. Along the way, a girl named Gabrielle wants go with her.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="293416b7-2e0b-4c5f-b3cc-96db3cd061b8" />
+					</effects>
 				</programme>
 				<programme id="f8171682-9cbf-4173-b1a3-ede6878113b5" product="2" licence_type="2" imdb_id="tt0751519" creator="9551">
 					<title>
@@ -5865,7 +5937,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives_female="1.25" employees_female="1.5" unemployed_female="1.25" />
-			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="8" blocks="1" price_mod="0.5" />
+			<data country="USA" distribution="2" maingenre="10" subgenre="2,1" flags="8" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<releaseTime year="1996" day="9" />
 			<ratings critics="37" speed="79" outcome="90" />
 			<children>
@@ -6006,7 +6078,8 @@
 				<member index="6" function="2">51127925-b37b-4cf7-918d-26acef8d0d68</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="CDN/USA" year="1996" distribution="2" maingenre="7" subgenre="2,11" flags="0" blocks="2" price_mod="0.5" />
+			<targetgroupattractivity children="2" teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" />
+			<data country="CDN/USA" year="1996" distribution="2" maingenre="7" subgenre="17,11" flags="0" blocks="2" price_mod="0.5" />
 			<ratings critics="43" speed="52" outcome="45" />
 			<children>
 				<programme id="44cc9e03-b6f8-4d96-bd42-19e3f2a2b8d3" product="2" licence_type="2" imdb_id="tt4262280" creator="9551">

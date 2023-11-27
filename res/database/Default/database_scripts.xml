@@ -314,7 +314,7 @@
 					<en>Vampires|Zombies|Undead|Witches|Werewolves|Hobgoblins|Spiders|Snakes|Mummies</en>
 				</monster>
 				<description>
-					<de>Ein %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</de>
+					<de>Ein %BUILDING%%ENVIRONMENT% %WHAT% Die %MONSTER% %MONSTERWHAT%</de>
 					<en>A %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</en>
 				</description>
 				<environment>
@@ -1026,7 +1026,7 @@
 							<en> and occupies the diving tower</en>
 						</whythere_e>
 						<whythere_f>
-							<de> und besetzen schwitzend die Kabinen, ohne ihre Montur abzulegen</de>
+							<de> und besetzt schwitzend die Kabinen, ohne die Montur abzulegen</de>
 							<en> and occupies the cabins, sweating, without wanting to take off their gear</en>
 						</whythere_f>
 						<whythere_g>
@@ -1042,12 +1042,12 @@
 							<en>A gang of|A group of|A gang of|A bunch of|A mob of|A pack of|A horde of|A posse</en>
 						</gang>
 						<rioting>
-							<de>randalierender|rüpelhafter|unruhestiftender|störender|ungehorsamer|aufrührerischer|rebellischer|chaotischer|aufwieglerischer|ungestümer|unkontrollierbarer|unberechenbarer|unvernünftiger|uneinsichtiger|unangepasster|unbeherrschter|stürmischer|Aufruhr verursachender|unordentlicher|widerspenstiger|rücksichtsloser|ungehobelter|zügelloser|ungebändigter|wilder|unbändiger|irrationaler|zwieträchtiger|aufmüpfiger|unflätiger|pöbelnder</de>
-							<en>rioting|rowdy|troublemaking|disruptive|unruly|riotous|rebellious|chaotic|agitating|boisterous|uncontrolled|unpredictable|unreasonable|inconsiderate|maladjusted|unrestrained|tumultuous|turmoil-causing|disorderly|disobedient|reckless|rude|unbridled|erratic|wild|ungovernable|irrational|discordant|seditious|foul-mouthed|rabble-rousing</en>
+							<de>randalierender|rüpelhafter|unruhestiftender|störender|ungehorsamer|aufrührerischer|rebellischer|chaotischer|aufwieglerischer|ungestümer|unkontrollierbarer|unberechenbarer|unvernünftiger|uneinsichtiger|unangepasster|unbeherrschter|stürmischer|Aufruhr verursachender|unordentlicher|widerspenstiger|rücksichtsloser|ungehobelter|zügelloser|ungebändigter|wilder|unbändiger|irrationaler|zwieträchtiger|aufmüpfiger|unflätiger|pöbelnder|übler|übelster</de>
+							<en>rioting|rowdy|troublemaking|disruptive|unruly|riotous|rebellious|chaotic|agitating|boisterous|uncontrolled|unpredictable|unreasonable|inconsiderate|maladjusted|unrestrained|tumultuous|turmoil-causing|disorderly|disobedient|reckless|rude|unbridled|erratic|wild|ungovernable|irrational|discordant|seditious|foul-mouthed|rabble-rousing|nasty|the nastiest</en>
 						</rioting> 
 						<bikers>
-							<de>Biker|Punker|Punks|Skinheads|Hooligans|Rocker|Satanisten|Scooter|Rapper|Gangster|Aktivisten|Vaterlandsverräter|Arbeitsloser|Obdachloser|Hurensöhne|Husos|Panzerknacker|Abtrünniger|abtrünniger Söldner|Rabauken|Lausbuben|Raufbolde|LARPer</de>
-							<en>bikers|punkers|punks|skinheads|hooligans|rockers|satanists|scooters|rappers|gangsters|activists|traitors to the fatherland|unemployed|homeless|sons of bitches|SOBs|safecrackers|renegades|renegade mercenaries|bullies|rascals|roughnecks|LARPers</en>
+							<de>Biker|Punker|Punks|Skinheads|Hooligans|Rocker|Satanisten|Scooter|Rapper|Gangster|Aktivisten|Vaterlandsverräter|Arbeitsloser|Obdachloser|Hurensöhne|Husos|Panzerknacker|Abtrünniger|abtrünniger Söldner|Rabauken|Lausbuben|Raufbolde|LARPer|Arschlöcher|Drecksäcke</de>
+							<en>bikers|punkers|punks|skinheads|hooligans|rockers|satanists|scooters|rappers|gangsters|activists|traitors to the fatherland|unemployed|homeless|sons of bitches|SOBs|safecrackers|renegades|renegade mercenaries|bullies|rascals|roughnecks|LARPers|assholes|scumbags</en>
 						</bikers>
 						<appears>
 							<de>taucht auf|kreuzt auf|kommt an|findet sich ein|trifft ein|rückt an|tanzt an|schlägt auf|lässt sich blicken|ist im Anflug|kommt um die Ecke|bahnt sich ihren Weg|kommt</de>

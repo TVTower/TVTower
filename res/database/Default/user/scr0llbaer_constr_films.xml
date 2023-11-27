@@ -28,6 +28,9 @@
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1950" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="81" speed="70" outcome="76" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="45e76b07-c672-4c4c-95d6-62de501d94f0" />
+			</effects>
 		</programme>
 		<programme id="45e76b07-c672-4c4c-95d6-62de501d94f0" product="1" licence_type="1" creator="9551" imdb_id="tt0043526">
 			<title>
@@ -52,7 +55,7 @@
 				<member index="6" function="2">87a6c744-7bfc-45f4-8424-e1e8e83bca03</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1951" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" year="1951" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 9c435977-263f-42d1-ba5c-2888eeef560d -->
 			<ratings critics="86" speed="59" outcome="60" />
 		</programme>
 		<programme id="5ed2bcd3-4736-4eef-9f74-c9a4cb7b8d64" product="1" licence_type="1" creator="9551" imdb_id="tt0045943">
@@ -124,7 +127,7 @@
 				<member index="3" function="2">8ab5771e-80d1-4dad-b782-a7f0935b85da</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1958" distribution="1" maingenre="7" subgenre="12,16" flags="8" blocks="2" price_mod="1" />
+			<data country="USA" year="1958" distribution="1" maingenre="12" subgenre="16,7" flags="8" blocks="2" price_mod="1" />
 			<ratings critics="85" speed="68" outcome="55" />
 		</programme>
 		<programme id="901fcc9d-8cab-4a8f-9c12-71eff734bb42" product="1" licence_type="1" creator="9551" imdb_id="tt0054033">
@@ -170,7 +173,7 @@
 				<member index="4" function="2">0fa37dc5-deee-46ae-93df-03ea0c3d60f2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1961" distribution="1" maingenre="7" subgenre="15" flags="8" blocks="2" price_mod="1" />
+			<data country="USA" year="1961" distribution="1" maingenre="17" subgenre="7,15" flags="8" blocks="2" price_mod="1" />
 			<ratings critics="85" speed="83" outcome="45" />
 		</programme>
 		<programme id="39693eca-3aee-49b7-8829-67556291c7cd" product="1" licence_type="1" creator="9551" imdb_id="tt0055254">
@@ -193,7 +196,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" year="1961" distribution="1" maingenre="3" subgenre="1,5" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" year="1961" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<ratings critics="90" speed="72" outcome="92" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
@@ -219,6 +222,9 @@
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<data country="USA" year="1961" distribution="1" maingenre="5" subgenre="16,9" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="76" speed="61" outcome="70" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0b3b4696-055e-44f8-a6e5-10e90d38cb59" />
+			</effects>
 		</programme>
 		<programme id="df0a385d-23ed-4e34-ba6a-9b9bd391c678" product="1" licence_type="1" creator="9551" imdb_id="tt0055824">
 			<title>
@@ -261,7 +267,7 @@
 				<member index="1" function="2">3288623a-bed4-4c85-8670-47c991164df4</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" year="1963" distribution="1" maingenre="5" subgenre="16,9" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" year="1963" distribution="1" maingenre="5" subgenre="16,9" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by efc32674-0852-46fe-8f86-712c7c827919 -->
 			<ratings critics="74" speed="46" outcome="68" />
 		</programme>
 		<programme id="000d8b76-0329-40b7-946e-e5371bc760f3" product="1" licence_type="1" creator="9551" imdb_id="tt0057372">
@@ -436,6 +442,9 @@
 			<data country="F/I" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1978" day="10" />
 			<ratings critics="87" speed="78" outcome="72" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="51274654-bf54-4647-9005-308803c1d858" />
+			</effects>
 		</programme>
 		<programme id="51274654-bf54-4647-9005-308803c1d858" product="1" licence_type="1" creator="9551" imdb_id="tt0080489">
 			<title>
@@ -458,9 +467,12 @@
 				<member index="3" function="2">036ac9ec-eb03-4f86-82f6-0a65d63c95d0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F/I" distribution="1" maingenre="5" subgenre="17" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F/I" distribution="1" maingenre="5" subgenre="17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by c690afa6-483e-4b7f-88da-44eb63201d5c -->
 			<releaseTime year="1980" day="12" />
 			<ratings critics="56" speed="54" outcome="65" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0b30fa23-5625-4a32-a276-e73191ad7d4c" />
+			</effects>
 		</programme>
 		<programme id="e785f761-92b8-4e1a-b3ef-27a7a6184a7f" product="1" licence_type="1" creator="9551" imdb_id="tt0086873">
 			<title>
@@ -506,7 +518,7 @@
 				<member index="2" function="2">036ac9ec-eb03-4f86-82f6-0a65d63c95d0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F/I" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F/I" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 51274654-bf54-4647-9005-308803c1d858 -->
 			<releaseTime year="1985" day="11" />
 			<ratings critics="50" speed="35" outcome="31" />
 		</programme>
@@ -532,7 +544,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,4" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1987" day="10" />
 			<ratings critics="50" speed="59" outcome="19" />
 		</programme>
@@ -581,9 +593,12 @@
 				<member index="3" function="2">52d0eeaa-0803-4d8a-92a4-30fcae775f3f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 89ac91af-d11d-427f-88b9-f3522272731b -->
 			<releaseTime year="1989" day="10" />
 			<ratings critics="15" speed="38" outcome="23" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="27f77617-c266-4ec2-83a4-fc2ff588b2c9" />
+			</effects>
 		</programme>
 		<programme id="ed58f2dd-176e-4113-9a01-2a49a7a30dfc" product="1" licence_type="1" creator="9551" imdb_id="tt0100263">
 			<title>
@@ -665,6 +680,9 @@
 			<data country="USA" distribution="1" maingenre="5" subgenre="1,18" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="6" />
 			<ratings critics="84" speed="59" outcome="80" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1636c848-57d6-4169-a13a-7ef44fb3cd4f" />
+			</effects>
 		</programme>
 		<programme id="98586041-ba98-4d96-a791-066297b9058a" product="1" licence_type="1" creator="9551" imdb_id="tt0102057">
 			<title>
@@ -719,6 +737,9 @@
 			<data country="USA" distribution="1" maingenre="5" subgenre="10,12" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="11" />
 			<ratings critics="65" speed="61" outcome="81" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="21875fd0-ca6e-44ed-b7fa-afafaeafe3d6" />
+			</effects>
 		</programme>
 		<programme id="92ab3cd0-ad19-4688-bae4-a24458decfda" product="1" licence_type="1" creator="9551" imdb_id="tt0102945">
 			<title>
@@ -738,8 +759,8 @@
 				<member index="1" function="2">6fc3335a-e5c2-4ed4-b0db-904f847be077</member>
 				<member index="2" function="2">9a10c705-f9f7-4ed5-ab83-79317f01e4cf</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="17" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="128" pro_pressure_groups="0" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="2" />
 			<ratings critics="25" speed="59" outcome="79" />
 		</programme>
@@ -768,6 +789,9 @@
 			<data country="USA" distribution="1" maingenre="5" subgenre="9,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="12" />
 			<ratings critics="68" speed="68" outcome="77" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="8afca7e2-2239-48ac-b9c7-31e2e0a1d414" />
+			</effects>
 		</programme>
 		<programme id="d6beffd5-689c-4179-af6b-3a620f6cd91b" product="1" licence_type="1" creator="9551" imdb_id="tt0102510">
 			<title>
@@ -790,9 +814,12 @@
 				<member index="4" function="2">1b8c5d2e-c976-45bf-8c68-d4132b0cd8a0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d869d423-94bb-435a-a97d-f6f098f99f2a -->
 			<releaseTime year="1991" day="6" />
 			<ratings critics="57" speed="63" outcome="85" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b32b4e6f-952e-44c8-991b-d0776a6f92bc" />
+			</effects>
 		</programme>
 		<programme id="f49cca99-6b6f-4fbd-a904-a5b0d4c79605" product="1" licence_type="1" creator="9551" imdb_id="tt0101921">
 			<title>
@@ -817,7 +844,7 @@
 				<member index="6" function="2">62484e6c-200e-4c94-a671-8128e68c8ed1</member>
 				<member index="7" function="2">6b6eeaa8-33ca-4e44-b816-ec095c6e3e33</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="128" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="7" subgenre="5" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1991" day="12" />
 			<ratings critics="72" speed="84" outcome="76" />
@@ -871,10 +898,14 @@
 				<member index="3" function="2">various-voice-artists</member>
 				<member index="4" function="2">various-puppeteers</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="10" subgenre="2,5" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="2,5" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by a9b726d6-e22b-4f26-9a6c-ebccb68fd992 -->
 			<releaseTime year="1991" day="3" />
 			<ratings critics="36" speed="65" outcome="60" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="a1e9c651-e09c-4305-b1a6-e35d524ab1a6" />
+			</effects>
 		</programme>
 		<programme id="928cc365-418b-4134-a3f9-ba387b4472f5" product="1" licence_type="1" creator="9551" imdb_id="tt0101393">
 			<title>
@@ -902,7 +933,7 @@
 				<member index="9" function="16">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="7,14" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="2,7" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1991" day="5" />
 			<ratings critics="72" speed="72" outcome="74" />
 		</programme>
@@ -926,7 +957,7 @@
 				<member index="3" function="2">1fc6ed69-bfca-45b5-bc3d-2e241ee34938</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="12" />
 			<ratings critics="66" speed="68" outcome="78" />
 		</programme>
@@ -1004,7 +1035,8 @@
 				<member index="6" function="2">7c7731fb-b8d9-44a3-9f9a-8864ccdc31c6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="7,10" flags="0" blocks="3" price_mod="1" />
+			<targetgroupattractivity children="0.75" managers="2" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="7,10" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1991" day="9" />
 			<ratings critics="81" speed="81" outcome="59" />
 		</programme>
@@ -1085,9 +1117,9 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="6" function="2">c6f6cd45-977d-4f05-9d8d-ff1eaae8c265</member>
 				<member index="7" function="16">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="128" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_female="1.5" housewives_female="2" employees_female="1.5" unemployed_female="1.5" managers="2" />
-			<data country="USA" distribution="1" maingenre="1" subgenre="7,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,5" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="5" />
 			<ratings critics="81" speed="77" outcome="47" />
 		</programme>
@@ -1111,9 +1143,12 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="3" function="2">5b1c8e5e-9d26-4b20-9173-04d5b3f2a75d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="10" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="10" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 5a96d2c6-7f15-4fa2-9708-24bd6c2ac88a -->
 			<releaseTime year="1991" day="9" />
 			<ratings critics="26" speed="34" outcome="39" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="ebd6322d-bf4d-460a-b948-c9eee4189479" />
+			</effects>
 		</programme>
 		<programme id="7c98cb14-63ca-4b34-9c96-f8d40fd22128" product="1" licence_type="1" creator="9551" imdb_id="tt0103956">
 			<title>
@@ -1135,9 +1170,12 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="3" function="2">869c702c-2c52-4b78-9266-8932b04d3474</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 4d299264-bd68-4a39-b1b7-c15de5fa1208 -->
 			<releaseTime year="1991" day="8" />
 			<ratings critics="25" speed="40" outcome="38" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0c66a519-50ae-4184-88c5-1f410a1cd69d" />
+			</effects>
 		</programme>
 		<programme id="f221f48f-07df-4b51-b6f5-dcadaeba6315" product="1" licence_type="1" creator="9551" imdb_id="tt0101329">
 			<title>
@@ -1165,7 +1203,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="5,18" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,18" flags="10" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 73693ac3-3e6f-4796-824d-bef225185264 -->
 			<releaseTime year="1991" day="11" />
 			<ratings critics="59" speed="60" outcome="42" />
 			<modifiers>
@@ -1212,7 +1250,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			<staff>
 				<member index="0" function="154">a8357c75-2dc8-490c-b850-4a245eb781ce</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" pensioners="0.25" />
 			<data country="USA" distribution="1" maingenre="202" subgenre="6" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="5" />
@@ -1237,7 +1275,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="2" function="2">6f6372f7-c6f8-4dfd-96a4-77f173af3dc6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="15" subgenre="1,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="1,7" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 862cb92e-681c-414e-be94-825b62fc2437 -->
 			<releaseTime year="1991" day="2" />
 			<ratings critics="10" speed="42" outcome="17" />
 		</programme>
@@ -1345,9 +1383,8 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="7" function="2">7255efb4-bfbd-4af7-8266-848042cece64</member>
 				<member index="8" function="2">a372c67f-fead-4585-a96f-e1a0b8d06577</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" managers="0.75" pensioners="0.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7" flags="8" blocks="2" price_mod="1" />
+			<groups target_groups="2" pro_pressure_groups="0" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="7" />
 			<ratings critics="87" speed="84" outcome="55" />
 		</programme>
@@ -1377,7 +1414,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="9" function="2">93a2c8a2-c524-4a34-a693-d274a2ad81bb</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="15,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="7,5" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1991" day="6" />
 			<ratings critics="75" speed="64" outcome="45" />
 		</programme>
@@ -1402,7 +1439,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="4" function="2">ea473293-0b9e-439e-a4cb-6a0dbee50313</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="1,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="1,10" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by ee105943-ddf5-4e10-b81f-d3cb3186a16d -->
 			<releaseTime year="1991" day="7" />
 			<ratings critics="55" speed="55" outcome="41" />
 		</programme>
@@ -1455,6 +1492,9 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			<data country="IRL/GB/USA" distribution="1" maingenre="5" subgenre="7,202" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1991" day="8" />
 			<ratings critics="82" speed="82" outcome="54" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="6afb613a-09ed-408a-abcf-0224a25bfbda" />
+			</effects>
 		</programme>
 		<programme id="cb859de5-b259-4a30-ace4-93f532c8660f" product="1" licence_type="1" creator="9551" imdb_id="tt0102396" comment="No official English title, applying translation">
 			<title>
@@ -1530,6 +1570,9 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			<data country="D" distribution="1" maingenre="5" subgenre="1,7" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1991" day="1" />
 			<ratings critics="50" speed="60" outcome="48" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="734f147c-a168-4655-afcd-d70bd61f1594" />
+			</effects>
 		</programme>
 		<programme id="f6681a5f-d118-46a4-b32a-071d71befd8b" product="1" licence_type="1" creator="9551" imdb_id="tt0102050">
 			<title>
@@ -1574,7 +1617,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="2" function="2">442a9c2e-4447-4f6a-ab47-ef3e3d97d5c3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="7" subgenre="15,11" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1991" day="1" />
 			<ratings critics="65" speed="55" outcome="35" />
 		</programme>
@@ -1649,7 +1692,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="2" function="2">6ab9741e-7204-4cf2-84e9-f303af1e2db9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="I" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.25" />
+			<data country="I" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.25" available="0" /> <!-- availability triggered by 4c6370ed-7883-4de2-98be-6d1c0d597ea2 -->
 			<releaseTime year="1991" day="6" />
 			<ratings critics="25" speed="35" outcome="35" />
 		</programme>
@@ -1698,7 +1741,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" unemployed_female="1.5" pensioners="2" />
-			<data country="HK" distribution="1" maingenre="10" subgenre="15,2" flags="0" blocks="2" price_mod="0.5" />
+			<data country="HK" distribution="1" maingenre="10" subgenre="15,2" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 0d0b6315-96c5-44b3-908a-142af44869ff -->
 			<releaseTime year="1991" day="7" />
 			<ratings critics="55" speed="57" outcome="45" />
 		</programme>
@@ -1725,6 +1768,9 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			<data country="HK" distribution="1" maingenre="8" subgenre="5,10" flags="64" blocks="2" price_mod="0.5" />
 			<releaseTime year="1991" day="11" />
 			<ratings critics="50" speed="50" outcome="60" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="714e809e-761a-4d22-9222-c8214f5b2775" />
+			</effects>
 		</programme>
 		<programme id="b075a9d9-cb9b-4ed1-91bd-fe78935b1a82" product="1" licence_type="1" creator="9551" imdb_id="tt0305187">
 			<title>
@@ -1744,9 +1790,12 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 4fe17600-6fc7-4e4d-8b15-d275872a25c3 -->
 			<releaseTime year="1991" day="6" />
 			<ratings critics="20" speed="20" outcome="35" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="3b5fc4f9-02bd-4bc7-89db-1705a7cbd9a6" />
+			</effects>
 		</programme>
 		<programme id="d90badfb-e400-49b9-8601-d4a60f79018c" product="1" licence_type="1" creator="9551" imdb_id="tt0102812">
 			<title>
@@ -1796,7 +1845,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="1,5" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="11" />
 			<ratings critics="87" speed="85" outcome="90" />
 			<modifiers>
@@ -1824,10 +1873,14 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="4" function="2">58cb1013-fa4c-42a8-9467-c931925109b6</member>
 				<member index="5" function="16">fc51de5a-23b9-4bc7-87da-76462e901bf2</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 1a02b18a-b596-4c8d-8c50-2a4fb3f1037d -->
 			<releaseTime year="1992" day="6" />
 			<ratings critics="78" speed="68" outcome="86" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="cf0d19ac-9515-4076-9913-ea6615392bbf" />
+			</effects>
 		</programme>
 		<programme id="51c91e48-1a05-4b69-b968-acde3f557f0b" product="1" licence_type="1" creator="9551" imdb_id="tt0104714">
 			<title>
@@ -1851,9 +1904,12 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 				<member index="5" function="2">a1a948b2-32e1-44a8-a3d5-99f28e52af22</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="5,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 34167b6e-abc6-474b-a77f-1d644827e7b2 -->
 			<releaseTime year="1992" day="5" />
 			<ratings critics="54" speed="58" outcome="88" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1178f3ef-03d8-48ca-a34d-81f27fe04b47" />
+			</effects>
 		</programme>
 		<programme id="d7e5cb5b-4001-4343-9436-9d62a91bca57" product="1" licence_type="1" creator="9551" imdb_id="tt0105417">
 			<title>
@@ -1882,6 +1938,9 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			<data country="USA" distribution="1" maingenre="5" subgenre="9,202" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="5" />
 			<ratings critics="71" speed="61" outcome="85" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f8acc226-fc75-4e0f-b788-6eb4cec2c36d" />
+			</effects>
 		</programme>
 		<programme id="f2bc3c61-d9b0-4886-aab2-5f4e93bd811b" product="1" licence_type="1" creator="9551" imdb_id="tt0103855">
 			<title>
@@ -1940,11 +1999,14 @@ Both film and song became hits.</en>
 			<data country="USA" distribution="1" maingenre="5" subgenre="202" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="2" />
 			<ratings critics="75" speed="78" outcome="82" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="6f18c6a9-1775-4c61-b6af-82fc73e16175" />
+			</effects>
 		</programme>
 		<programme id="6544d50c-114d-4d8f-ba40-1a6a3017a91e" product="1" licence_type="1" creator="9551" imdb_id="tt0104694">
 			<title>
 				<de>In ihrer eigenen Liga</de>
-				<en>A Class for Themselves</en>
+				<en>A Class For Themselves</en>
 			</title>
 			<title_original>
 				<de>Eine Klasse für sich</de>
@@ -2051,9 +2113,12 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="9" function="2">2969b669-0842-4578-bd4e-b7e7ad262347</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="17" subgenre="2" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by cedc8a53-202f-4b47-bcd3-b87b25add3d7 -->
 			<releaseTime year="1992" day="5" />
 			<ratings critics="73" speed="69" outcome="83" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="2cd1c913-329d-464e-bbff-bdb1b048df31" />
+			</effects>
 		</programme>
 		<programme id="2c8c46c7-b427-4dfb-ab2d-51be042965d7" product="1" licence_type="1" creator="9551" imdb_id="tt0103874">
 			<title>
@@ -2132,7 +2197,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="6" function="2">568e2500-ba35-4a2b-bbfc-d47e2f836ca0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="11,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="1" subgenre="7,11" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="9" />
 			<ratings critics="87" speed="84" outcome="76" />
 		</programme>
@@ -2146,7 +2211,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<en>Boomerang</en>
 			</title_original>
 			<description>
-				<de>Playboy Marcus kann sie alle haben, nur - na klar - nicht die eine sehr sexy Powerfrau. Mit [3|Full], bevor sie zu zum Sex-Symbol wurde. Hier spielt sie noch die zweite Geige als unscheinbares Mauerblümchen in der Dreiecksbeziehung.</de>
+				<de>Playboy Marcus kann sie alle haben, nur - na klar - nicht die eine sehr sexy Powerfrau. Mit [3|Full], bevor sie zum Sex-Symbol wurde. Hier spielt sie noch die zweite Geige als unscheinbares Mauerblümchen in der Dreiecksbeziehung.</de>
 				<en>Playboy Marcus can have them all, except - of course - not that one very sexy power lady. With [3|Full] before she became a sex symbol. Here she only plays second fiddle as an inconspicuous wallflower in the love triangle.</en>
 			</description>
 			<staff>
@@ -2209,9 +2274,12 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="3" function="2">9b8d6c83-3561-49b3-9ed7-996075206299</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="1" subgenre="5,9" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d61e1a65-f925-420c-bc3b-eab0430f5248 -->
 			<releaseTime year="1992" day="7" />
 			<ratings critics="40" speed="27" outcome="69" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1a1c120f-121e-4a3a-af50-7f5c55876df2" />
+			</effects>
 		</programme>
 		<programme id="2cf8a4ca-33e3-4b81-a6b2-fc10e5dbd552" product="1" licence_type="1" creator="9551" imdb_id="tt0104070">
 			<title>
@@ -2263,6 +2331,9 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 			<data country="USA" distribution="1" maingenre="9" subgenre="5,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="4" />
 			<ratings critics="31" speed="38" outcome="76" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="7be2cfd6-be14-4b07-a682-d1385df3f031" />
+			</effects>
 		</programme>
 		<programme id="4eff4d8c-be0d-4408-b8ff-ebeb789eb70c" product="1" licence_type="1" creator="9551" imdb_id="tt0104291">
 			<title>
@@ -2287,7 +2358,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="6" function="2">b51cf273-6d57-491f-b1eb-852e007061df</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="15,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="7,16" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="12" />
 			<ratings critics="54" speed="53" outcome="78" />
 		</programme>
@@ -2417,6 +2488,9 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 			<data country="USA/GB/J" distribution="1" maingenre="12" subgenre="16" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1992" day="3" />
 			<ratings critics="37" speed="32" outcome="38" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="42531844-bfec-47a0-8335-47f3909a6af7" />
+			</effects>
 		</programme>
 		<programme id="3b02c0e8-057c-4213-8470-1ff0c379d23e" product="1" licence_type="1" creator="9551" imdb_id="tt0105477">
 			<title>
@@ -2525,7 +2599,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="10" function="2">424d8116-afc9-44e4-b076-79b51c2b1f0d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/F" distribution="1" maingenre="14" subgenre="12,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA/F" distribution="1" maingenre="14" subgenre="12,7" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by Twin Peaks series S02E01 -->
 			<releaseTime year="1992" day="7" />
 			<ratings critics="62" speed="74" outcome="57" />
 		</programme>
@@ -2556,6 +2630,9 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 			<data country="USA" distribution="1" maingenre="9" subgenre="5,202" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1992" day="12" />
 			<ratings critics="73" speed="80" outcome="29" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0d3f87a7-a475-4dda-9ace-892b7ec655da" />
+			</effects>
 		</programme>
 		<programme id="1037c30e-c7f4-4389-a643-fec3486085ec" product="1" licence_type="1" creator="9551" imdb_id="tt0104850">
 			<title>
@@ -2658,7 +2735,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="3" function="2">0b434293-5068-480e-85b7-04c0d0905fe9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 820cf425-7453-4bdf-bb5d-7632e9cfb6f8 -->
 			<releaseTime year="1992" day="8" />
 			<ratings critics="24" speed="33" outcome="18" />
 		</programme>
@@ -2683,7 +2760,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="4" function="2">3a39edd2-ae10-46c0-b66a-bb8aa39ce758</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17,16" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b6ce93da-2013-4ca0-8d9b-d02b9b7fcb81 -->
 			<releaseTime year="1992" day="9" />
 			<ratings critics="41" speed="36" outcome="22" />
 		</programme>
@@ -2758,7 +2835,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_female="1.5" housewives_female="1.25" employees_male="0.5" employees_female="1.25" unemployed_female="1.25" managers="0.75" pensioners="0.25" />
-			<data country="AUS" distribution="1" maingenre="5" subgenre="15,202" flags="0" blocks="2" price_mod="0.5" />
+			<data country="AUS" distribution="1" maingenre="15" subgenre="202,5" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1992" day="8" />
 			<ratings critics="81" speed="80" outcome="75" />
 		</programme>
@@ -2809,6 +2886,9 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 			<data country="MEX/USA" distribution="1" maingenre="2" subgenre="17,18" flags="104" blocks="2" price_mod="0.5" />
 			<releaseTime year="1992" day="9" />
 			<ratings critics="83" speed="72" outcome="31" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="211e5ebd-9be7-4df6-8a32-de0a5b0779d3" />
+			</effects>
 		</programme>
 		<programme id="de075ab4-9a2b-41ed-99b6-f64c88a807d7" product="1" licence_type="1" creator="9551" imdb_id="tt0105073" comment="No official English title, applying translation">
 			<title>
@@ -2830,7 +2910,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="3" function="2">831c7a9c-b2f1-4a25-b61c-cc8f1ace9bee</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="5" subgenre="15,7" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="5" subgenre="15,7" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 40c5bf98-db73-4a97-806b-1e174420ae76 -->
 			<releaseTime year="1992" day="7" />
 			<ratings critics="40" speed="50" outcome="60" />
 		</programme>
@@ -2908,7 +2988,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="4" function="2">a00fe95b-cbc4-477d-9d37-3a6dbd43bc3a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="5" subgenre="1,7" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="5" subgenre="1,7" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by c6d69848-3a90-4f6b-916d-c6fe5e3c29a0 -->
 			<releaseTime year="1992" day="8" />
 			<ratings critics="20" speed="40" outcome="36" />
 		</programme>
@@ -3002,9 +3082,12 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="2" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by b075a9d9-cb9b-4ed1-91bd-fe78935b1a82 -->
 			<releaseTime year="1992" day="2" />
 			<ratings critics="18" speed="18" outcome="30" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b12ead3d-c7d1-4795-bf89-7342f70f095f" />
+			</effects>
 		</programme>
 		<programme id="b12ead3d-c7d1-4795-bf89-7342f70f095f" product="1" licence_type="1" creator="9551" imdb_id="tt0305189">
 			<title>
@@ -3024,9 +3107,12 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 3b5fc4f9-02bd-4bc7-89db-1705a7cbd9a6 -->
 			<releaseTime year="1992" day="8" />
 			<ratings critics="16" speed="16" outcome="28" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="182be716-5b08-46b4-8f1c-20c5acbb2d9b" />
+			</effects>
 		</programme>
 		<programme id="02ea867a-415d-4f99-a0dd-c6ab154df4e6" product="1" licence_type="1" creator="9551" imdb_id="tt0107290">
 			<title>
@@ -3056,6 +3142,9 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 			<data country="USA" distribution="1" maingenre="1" subgenre="2,16" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="6" />
 			<ratings critics="86" speed="86" outcome="96" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f8accbf2-9cbe-49f2-8c2b-db98df094d56" />
+			</effects>
 		</programme>
 		<programme id="44fb72c3-e739-452c-af0b-12ae28ad15f0" product="1" licence_type="1" creator="9551" imdb_id="tt0108160">
 			<title>
@@ -3159,7 +3248,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="2" function="2">c56577b6-79ce-48f7-a494-8fdcddc81b85</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="7,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="10,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="2" />
 			<ratings critics="91" speed="81" outcome="72" />
 		</programme>
@@ -3185,7 +3274,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="5" function="16">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="1,9" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="203,9" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="10" />
 			<ratings critics="71" speed="74" outcome="76" />
 		</programme>
@@ -3218,7 +3307,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="12" function="2">4a2f46f9-e96f-4440-8bd5-c9c652584c10</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="9,202" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="9,202" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d7e5cb5b-4001-4343-9436-9d62a91bca57 -->
 			<releaseTime year="1993" day="12" />
 			<ratings critics="21" speed="59" outcome="73" />
 		</programme>
@@ -3242,7 +3331,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="3" function="2">e24a53cb-7249-45b2-9899-f6a47888f045</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="9,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="9,15" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b8e1e8da-ec52-4590-86b0-156b9982f202 -->
 			<releaseTime year="1993" day="12" />
 			<ratings critics="24" speed="32" outcome="72" />
 		</programme>
@@ -3297,7 +3386,7 @@ A prostitute is murdered in a quiet town. The girls put out a bounty. William is
 				<member index="7" function="2">1fea9d82-1ff5-4090-bd4b-b07e7d430d0e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="10,12" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="10,12" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d6703b80-c2e9-49c0-8ea0-7427400ff002 -->
 			<releaseTime year="1993" day="11" />
 			<ratings critics="72" speed="62" outcome="72" />
 		</programme>
@@ -3382,7 +3471,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="202" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="202" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by ede910a3-bfb2-4111-999b-155bcc98c63f -->
 			<releaseTime year="1993" day="12" />
 			<ratings critics="58" speed="61" outcome="58" />
 		</programme>
@@ -3493,7 +3582,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity employees="1.25" unemployed="0.75" managers="2" />
-			<data country="GB/USA" distribution="1" maingenre="5" subgenre="15,7" flags="0" blocks="2" price_mod="1" />
+			<data country="GB/USA" distribution="1" maingenre="15" subgenre="5,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="5" />
 			<ratings critics="82" speed="79" outcome="63" />
 		</programme>
@@ -3525,6 +3614,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="USA" distribution="1" maingenre="9" subgenre="1,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="7" />
 			<ratings critics="67" speed="50" outcome="73" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="6d5b67d6-2171-4396-aa16-79f3301e40a0" />
+			</effects>
 		</programme>
 		<programme id="a3c84b9c-995f-437e-b3ec-d9e3f1e9c3a1" product="1" licence_type="1" creator="9551" imdb_id="tt0107818">
 			<title>
@@ -3552,7 +3644,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="9" function="2">715d91d9-2818-46fa-83d6-7d17495bc55b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="7" subgenre="4" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="12" />
 			<ratings critics="76" speed="82" outcome="77" />
 		</programme>
@@ -3583,6 +3675,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="12" />
 			<ratings critics="62" speed="71" outcome="62" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="8f4d28f7-12d0-4fbf-b47b-69b40053f037" />
+			</effects>
 		</programme>
 		<programme id="84a51b38-0f1e-40d6-a484-88d51a40b02b" product="1" licence_type="1" creator="9551" imdb_id="tt0106673">
 			<title>
@@ -3607,7 +3702,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">d36729bd-e469-47f8-a21f-bf920cf3eccc</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="17,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="5" />
 			<ratings critics="87" speed="69" outcome="65" />
 		</programme>
@@ -3721,7 +3816,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="4" function="2">1a614cef-59ed-4653-be35-cb0939c13561</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="9,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="203,10" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="7" />
 			<ratings critics="39" speed="52" outcome="50" />
 		</programme>
@@ -3775,9 +3870,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="202,9" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,202" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="10" />
 			<ratings critics="86" speed="82" outcome="65" />
+			<modifiers>
+				<modifier name="topicality::age" value="0.5" />
+			</modifiers>
 		</programme>
 		<programme id="cfb8b870-a2bd-449d-9f5e-f724065b3285" product="1" licence_type="1" creator="9551" imdb_id="tt0107497">
 			<title>
@@ -3803,7 +3901,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="7" function="2">df2023e6-65d6-4a6f-b844-dbc3f17ccf92</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="17" subgenre="14,4" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,14" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="10" />
 			<ratings critics="56" speed="46" outcome="53" />
 		</programme>
@@ -3828,7 +3926,8 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="4" function="2">56f11ec7-a17b-4945-812b-d6218d3856ad</member>
 				<member index="5" function="2">4a2f46f9-e96f-4440-8bd5-c9c652584c10</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
+			<targetgroupattractivity teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" managers="0.75" pensioners="0.5" />
 			<data country="USA" distribution="1" maingenre="7" subgenre="202" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="6" />
 			<ratings critics="88" speed="80" outcome="53" />
@@ -3908,8 +4007,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="4" function="2">various-voice-artists</member>
 				<member index="5" function="2">various-puppeteers</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/HK" distribution="1" maingenre="10" subgenre="2,5" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
+			<data country="USA/HK" distribution="1" maingenre="16" subgenre="2,5" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 1aad1b4a-5275-4bb0-beca-9cb1e7f806d6 -->
 			<releaseTime year="1993" day="3" />
 			<ratings critics="23" speed="36" outcome="50" />
 		</programme>
@@ -4055,8 +4155,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="13" function="16">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" managers="0.75" pensioners="0.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="15,7" flags="72" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="15,7" flags="72" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="9" />
 			<ratings critics="85" speed="85" outcome="21" />
 		</programme>
@@ -4082,8 +4181,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">0f6fe96b-c7fe-4f4e-a382-1c0b12531b0d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" pensioners="0.75" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="9" />
 			<ratings critics="89" speed="84" outcome="23" />
 		</programme>
@@ -4148,7 +4246,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 		</programme>
 		<programme id="6011ddf4-dffd-45fe-b49e-00f18a7e1e1b" product="1" licence_type="1" creator="9551" imdb_id="tt0107438">
 			<title>
-				<de>Schau mal, wer hier jetzt redet</de>
+				<de>Schau mal, wer hier jetzt brabbelt</de>
 				<en>See Who's Speaking Now</en>
 			</title>
 			<title_original>
@@ -4168,7 +4266,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">c977ab26-224a-47cd-a610-164a05eec977</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/CDN" distribution="1" maingenre="9" subgenre="5,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA/CDN" distribution="1" maingenre="9" subgenre="5,15" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by e6169101-d17f-49e3-a416-7193d2f61123 -->
 			<releaseTime year="1993" day="11" />
 			<ratings critics="10" speed="32" outcome="23" />
 		</programme>
@@ -4222,7 +4320,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="7" function="2">86ca6073-b009-4a0c-91b1-aae03fe19728</member>
 				<member index="8" function="2">3d413e71-6330-42cb-9244-812144616590</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="3" pro_pressure_groups="0" />
 			<data country="USA/GB" distribution="1" maingenre="10" subgenre="9,5" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1993" day="5" />
 			<ratings critics="32" speed="32" outcome="37" />
@@ -4273,7 +4371,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">9c3f81f8-b2ea-40fa-a247-faae36b74f8d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17,10" flags="96" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17,10" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 5909898b-9410-4d3a-ac80-7a2e3c5c482c -->
 			<releaseTime year="1993" day="8" />
 			<ratings critics="20" speed="27" outcome="29" />
 		</programme>
@@ -4299,7 +4397,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">e1f7d492-e474-4ccd-aae2-6f4df8b187e6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/J" distribution="1" maingenre="12" subgenre="5,16" flags="96" blocks="2" price_mod="0.5" />
+			<data country="USA/J" distribution="1" maingenre="12" subgenre="5,16" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 2f73ff6e-9b5c-4493-a54e-faa2489193c9 -->
 			<releaseTime year="1993" day="10" />
 			<ratings critics="55" speed="41" outcome="19" />
 		</programme>
@@ -4323,7 +4421,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">f4049a8a-c7c9-42eb-a51c-aaa06e2310f1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="72" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="72" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 453e8588-d57b-4e2f-a052-e43efb873096 -->
 			<releaseTime year="1993" day="2" />
 			<ratings critics="65" speed="81" outcome="30" />
 		</programme>
@@ -4351,6 +4449,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="104" blocks="2" price_mod="0.5" />
 			<releaseTime year="1993" day="1" />
 			<ratings critics="30" speed="34" outcome="28" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="4436e3fb-8e22-423a-ad61-c16c7cf29a97" />
+			</effects>
 		</programme>
 		<programme id="6afb613a-09ed-408a-abcf-0224a25bfbda" product="1" licence_type="1" creator="9551" imdb_id="tt0108170">
 			<title>
@@ -4371,9 +4472,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="2" function="2">eca53835-b8dc-41e7-a8b0-8d13406eebb0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="IRL" distribution="1" maingenre="5" subgenre="7" flags="8" blocks="2" price_mod="0.5" />
+			<data country="IRL" distribution="1" maingenre="5" subgenre="7" flags="8" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 3927d677-d1ef-4789-87a8-1a17783f1493 -->
 			<releaseTime year="1993" day="4" />
 			<ratings critics="88" speed="78" outcome="50" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="eab98415-1ac1-44ea-aba9-935031d6187d" />
+			</effects>
 		</programme>
 		<programme id="752c0fb3-0145-496c-9c6d-c88d88ddb1d0" product="1" licence_type="1" creator="9551" imdb_id="tt0107151">
 			<title>
@@ -4510,7 +4614,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="10" function="2">6dd0a9b9-96a0-4712-83f0-f6388bdc5bec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="7" subgenre="10,15" flags="4" blocks="3" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="7" subgenre="10,15" flags="4" blocks="3" price_mod="0.5" available="0" /> <!-- availability triggered by 1b14c2bd-26fe-4735-ad00-689f75b50e6d -->
 			<releaseTime year="1993" day="9" />
 			<ratings critics="71" speed="81" outcome="24" />
 		</programme>
@@ -4539,6 +4643,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="F" distribution="1" maingenre="5" subgenre="1,10" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1993" day="1" />
 			<ratings critics="33" speed="75" outcome="75" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="e102758b-272c-4da8-9ee4-fd56247a8bca" />
+			</effects>
 		</programme>
 		<programme id="af751dc4-077e-4fcb-8d81-91fd82f70564" product="1" licence_type="1" creator="9551" imdb_id="tt0108394">
 			<title>
@@ -4563,6 +4670,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="F/PL/CH" distribution="1" maingenre="7" subgenre="14,202" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1993" day="9" />
 			<ratings critics="90" speed="85" outcome="40" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d4c366cc-8957-4c8a-ab39-bb0644ded83e" />
+			</effects>
 		</programme>
 		<programme id="2b1ce4d8-fb95-43e5-962e-b1dffda0aa34" product="1" licence_type="1" creator="9551" imdb_id="tt0160245">
 			<title>
@@ -4583,7 +4693,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="2" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F" distribution="1" maingenre="8" subgenre="10,7" flags="64" blocks="2" price_mod="0.5" />
+			<data country="F" distribution="1" maingenre="8" subgenre="10,7" flags="64" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 457883db-f6fc-4e0a-ae62-242bb86fa456 -->
 			<releaseTime year="1993" day="10" />
 			<ratings critics="10" speed="25" outcome="12" />
 		</programme>
@@ -4629,9 +4739,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by b12ead3d-c7d1-4795-bf89-7342f70f095f -->
 			<releaseTime year="1993" day="4" />
 			<ratings critics="23" speed="23" outcome="38" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="5baf227c-9873-40b1-a88b-33b1a8af01e6" />
+			</effects>
 		</programme>
 		<programme id="5baf227c-9873-40b1-a88b-33b1a8af01e6" product="1" licence_type="1" creator="9551" imdb_id="tt0305190">
 			<title>
@@ -4651,9 +4764,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 182be716-5b08-46b4-8f1c-20c5acbb2d9b -->
 			<releaseTime year="1993" day="11" />
 			<ratings critics="24" speed="23" outcome="40" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="afd6db87-fda5-484d-883a-9037c873763e" />
+			</effects>
 		</programme>
 		<programme id="f69616cf-425a-4c78-9b48-4515d2d2d773" product="1" licence_type="1" creator="9551" imdb_id="tt0107692">
 			<title>
@@ -4701,7 +4817,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="J" distribution="1" maingenre="3" subgenre="16,2" flags="10" blocks="2" price_mod="0.5" />
+			<data country="J" distribution="1" maingenre="3" subgenre="16,2" flags="10" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 2d88e783-ecd3-4b11-b8ec-ab24fff1b369 -->
 			<releaseTime year="1993" day="8" />
 			<ratings critics="70" speed="78" outcome="55" />
 			<modifiers>
@@ -4786,6 +4902,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="USA" distribution="1" maingenre="2" subgenre="17,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1994" day="6" />
 			<ratings critics="86" speed="71" outcome="88" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="7562616d-d2fb-4b2c-aedf-866b647d3cff" />
+			</effects>
 		</programme>
 		<programme id="a2a47278-98f5-48a3-9661-e0cf7a2e1c37" product="1" licence_type="1" creator="9551" imdb_id="tt0109831">
 			<title>
@@ -4865,7 +4984,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="8" function="2">912e06aa-281b-4c1d-9e48-785a128e7697</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="4,15" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="17,15" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1994" day="8" />
 			<ratings critics="48" speed="78" outcome="71" />
 		</programme>
@@ -4889,10 +5008,13 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">c5a596ad-653d-446b-a851-7f9f0aac358a</member>
 				<member index="4" function="2">2455ba20-1518-4cf3-b460-61952c609cd5</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
 			<data country="USA" distribution="1" maingenre="2" subgenre="10,4" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1994" day="5" />
 			<ratings critics="78" speed="85" outcome="69" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="ef2939a7-c823-47b4-8d33-62039c165474" />
+			</effects>
 		</programme>
 		<programme id="1636c848-57d6-4169-a13a-7ef44fb3cd4f" product="1" licence_type="1" creator="9551" imdb_id="tt0109439">
 			<title>
@@ -4915,7 +5037,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="4" function="2">2c89574e-9a4d-47c7-9969-789e3598abbe</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="1,18" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="1,18" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 92f9a372-a1a9-4cfd-8c83-f8e39ece8066 -->
 			<releaseTime year="1994" day="6" />
 			<ratings critics="19" speed="33" outcome="66" />
 		</programme>
@@ -4970,7 +5092,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">531f9a57-85a7-48ac-b9c8-38eecf21d4e1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="4" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d6beffd5-689c-4179-af6b-3a620f6cd91b -->
 			<releaseTime year="1994" day="3" />
 			<ratings critics="55" speed="53" outcome="77" />
 		</programme>
@@ -4998,9 +5120,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="7" function="2">af6a5525-6858-42b2-b313-6ca3e26d3b90</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="10,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="5,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1994" day="5" />
 			<ratings critics="26" speed="28" outcome="86" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="c208d373-a492-4d7d-98cf-e6a719d29eba" />
+			</effects>
 		</programme>
 		<programme id="2cd1c913-329d-464e-bbff-bdb1b048df31" product="1" licence_type="1" creator="9551" imdb_id="tt0109444">
 			<title>
@@ -5027,7 +5152,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="8" function="2">b356adfc-eb70-489d-9e15-25bac46e237f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="17" subgenre="2,7" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="2,7" flags="0" blocks="3" price_mod="1" available="0" /> <!-- availability triggered by 7b054a07-1cc6-4504-898f-d9bc56c0b736 -->
 			<releaseTime year="1994" day="8" />
 			<ratings critics="75" speed="70" outcome="82" />
 		</programme>
@@ -5079,7 +5204,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">d2ad4b17-9503-4601-a62d-23dd3aafc2ea</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="5,4" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="5,4" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 197d080f-0699-4569-ab88-94ef5b9d14ab -->
 			<releaseTime year="1994" day="5" />
 			<ratings critics="16" speed="37" outcome="74" />
 		</programme>
@@ -5325,7 +5450,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">569e252a-9838-4848-92cb-8e07ea4b1a44</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="14,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="14,10" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 5d88519c-2405-4ca6-9608-ad040e3c3163 -->
 			<releaseTime year="1994" day="10" />
 			<ratings critics="75" speed="64" outcome="31" />
 		</programme>
@@ -5431,7 +5556,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">a1a948b2-32e1-44a8-a3d5-99f28e52af22</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/GB/F" distribution="1" maingenre="7" subgenre="14,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA/GB/F" distribution="1" maingenre="17" subgenre="7,14" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1994" day="12" />
 			<ratings critics="76" speed="76" outcome="18" />
 		</programme>
@@ -5504,9 +5629,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">679ebf39-79be-4723-9d0a-f7f87c410f22</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="96" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by ca80ccf7-3234-41e8-9626-94ce5a3535a0 -->
 			<releaseTime year="1994" day="4" />
 			<ratings critics="12" speed="32" outcome="13" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="20a563f0-e3f6-4a46-8961-2b5ad8a39b79" />
+			</effects>
 		</programme>
 		<programme id="62775527-fb9d-4c8a-a40d-dee1be62a6f8" product="1" licence_type="1" creator="9551" imdb_id="tt0110005">
 			<title>
@@ -5526,7 +5654,8 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">34e3af3f-b20b-4c6e-8f29-207a42595c22</member>
 				<member index="2" function="2">c92aa9ce-64d4-43fb-b090-07a9a73f5e4e</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
+			<targetgroupattractivity teenagers="1.5" housewives="1.25" pensioners="0.75" />
 			<data country="NZ" distribution="1" maingenre="7" subgenre="4" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1994" day="10" />
 			<ratings critics="87" speed="77" outcome="28" />
@@ -5553,7 +5682,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">f1884522-3fa2-45f5-9c4d-615e6ad84467</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1994" day="10" />
 			<ratings critics="75" speed="60" outcome="70" />
 		</programme>
@@ -5580,7 +5709,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" unemployed_male="1.25" unemployed_female="1.5" />
-			<data country="D/USA" distribution="1" maingenre="10" subgenre="9,7" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D/USA" distribution="1" maingenre="10" subgenre="9,7" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by b53561bb-87b8-4847-94da-a40d8904b0ec -->
 			<releaseTime year="1994" day="10" />
 			<ratings critics="25" speed="29" outcome="40" />
 		</programme>
@@ -5628,7 +5757,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="4" function="2">5cabb57e-2070-40fa-867b-92f2b72abd88</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="7" subgenre="17" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="17" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1994" day="2" />
 			<ratings critics="60" speed="55" outcome="15" />
 		</programme>
@@ -5680,9 +5809,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">d9c47126-81e6-4543-b81e-58cdb1ad4c7c</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F/PL/CH" distribution="1" maingenre="7" subgenre="5,15" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F/PL/CH" distribution="1" maingenre="7" subgenre="5,15" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by af751dc4-077e-4fcb-8d81-91fd82f70564 -->
 			<releaseTime year="1994" day="1" />
 			<ratings critics="81" speed="80" outcome="25" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="5a19175f-2167-4ab1-b497-a20b9420dfa5" />
+			</effects>
 		</programme>
 		<programme id="5a19175f-2167-4ab1-b497-a20b9420dfa5" product="1" licence_type="1" creator="9551" imdb_id="tt0111495">
 			<title>
@@ -5704,7 +5836,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="2" function="2">2f9f512b-ce9e-4e7e-894b-9946651612e3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F/PL/CH" distribution="1" maingenre="7" subgenre="14,15" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F/PL/CH" distribution="1" maingenre="7" subgenre="14,15" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by d4c366cc-8957-4c8a-ab39-bb0644ded83e -->
 			<releaseTime year="1994" day="5" />
 			<ratings critics="92" speed="84" outcome="30" />
 		</programme>
@@ -5751,9 +5883,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="2" function="2">600f4917-7015-4488-b0c8-9963f00e6d6a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="HK" distribution="1" maingenre="7" subgenre="4,5" flags="0" blocks="2" price_mod="0.5" />
+			<data country="HK" distribution="1" maingenre="17" subgenre="7,5" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1994" day="7" />
 			<ratings critics="80" speed="84" outcome="45" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="4233ca38-6ed0-4271-b4a9-937d7f1189cd" />
+			</effects>
 		</programme>
 		<programme id="afd6db87-fda5-484d-883a-9037c873763e" product="1" licence_type="1" creator="9551" imdb_id="tt0305182">
 			<title>
@@ -5773,9 +5908,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 5baf227c-9873-40b1-a88b-33b1a8af01e6 -->
 			<releaseTime year="1994" day="6" />
 			<ratings critics="16" speed="15" outcome="27" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="952aca55-f2c3-4ddc-8c9a-0ba635f34c0c" />
+			</effects>
 		</programme>
 		<programme id="eb5427fe-2df5-4b8f-bd0f-439b07566356" product="1" licence_type="1" creator="9551" imdb_id="tt0114709">
 			<title>
@@ -5802,12 +5940,15 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="5,1" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="11" />
 			<ratings critics="92" speed="86" outcome="89" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="399c598c-aa31-417c-8b6e-b4ff92b7e565" />
+			</effects>
 		</programme>
 		<programme id="1ed4c284-5ab4-422a-8a58-50883f95b980" product="1" licence_type="1" creator="9551" imdb_id="tt0112384">
 			<title>
@@ -5834,7 +5975,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="8" function="2">3538a52c-6a0d-4425-bb51-705fa9bde796</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="11,1" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,11" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1995" day="6" />
 			<ratings critics="91" speed="84" outcome="87" />
 		</programme>
@@ -5860,10 +6001,14 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">62484e6c-200e-4c94-a671-8128e68c8ed1</member>
 				<member index="6" function="2">c28d2a5d-2d88-44fa-ba08-7c62b4493c25</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 346cba21-0821-4cb9-986a-67a72321fc5e -->
 			<releaseTime year="1995" day="6" />
 			<ratings critics="40" speed="35" outcome="86" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="069f44dd-7b47-4f55-9598-beab41b2560b" />
+			</effects>
 		</programme>
 		<programme id="38e7f7fc-6c4e-4ba7-81a2-3c3d0c72686e" product="1" licence_type="1" creator="9551" imdb_id="tt0114148">
 			<title>
@@ -5889,7 +6034,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="1,7" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="6" />
 			<ratings critics="52" speed="61" outcome="87" />
 			<modifiers>
@@ -5926,6 +6071,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="11" />
 			<ratings critics="76" speed="77" outcome="92" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="4e124f72-745c-43d9-9466-5b0f3c7a0330" /> <!-- start Brosnan series -->
+			</effects>
 		</programme>
 		<programme id="93c1e1b2-4ae0-4a75-9e59-a1f280ddb77c" product="1" licence_type="1" creator="9551" imdb_id="tt0113497">
 			<title>
@@ -5976,7 +6124,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">various-voice-artists</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="10" subgenre="5,9" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="10,5" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="5" />
 			<ratings critics="51" speed="49" outcome="86" />
 		</programme>
@@ -6003,7 +6151,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">c5884da4-53a1-46db-aa3a-8d5a75d0e273</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="9,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="9,15" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 4c8906d3-a1c2-48c7-97c9-772103f90f1d -->
 			<releaseTime year="1995" day="12" />
 			<ratings critics="52" speed="59" outcome="55" />
 		</programme>
@@ -6057,7 +6205,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">TheRob-TowerTV-ChristianLampnerd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="10" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="8" />
 			<ratings critics="46" speed="56" outcome="72" />
 		</programme>
@@ -6084,7 +6232,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">af2bd138-a573-4813-b541-44673541a7e2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="17,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="17,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 10905777-b8b5-49d7-a10e-5d364c8b254a -->
 			<releaseTime year="1995" day="7" />
 			<ratings critics="35" speed="39" outcome="69" />
 		</programme>
@@ -6139,7 +6287,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="9" function="2">568e2500-ba35-4a2b-bbfc-d47e2f836ca0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/D" distribution="1" maingenre="14" subgenre="4,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA/D" distribution="1" maingenre="17" subgenre="7,14" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="8" />
 			<ratings critics="83" speed="87" outcome="50" />
 		</programme>
@@ -6244,7 +6392,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="4" function="2">3ea8b7ce-371f-4379-a2d6-c5fef4f9760f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="4,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="4,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by Stukov_Ace_Ventura_Ein_tierischer_Detektiv -->
 			<releaseTime year="1995" day="10" />
 			<ratings critics="24" speed="69" outcome="81" />
 		</programme>
@@ -6295,7 +6443,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="2" function="2">ed633fe8-475d-4f0c-b65a-96d90fe98c32</member>
 				<member index="3" function="2">cd2903a5-c561-4a72-ac2e-4f0e77676245</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
 			<targetgroupattractivity children="2" teenagers="1.5" unemployed="1.5" pensioners="0.75" />
 			<data country="USA" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="8" />
@@ -6435,7 +6583,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="7" function="2">49f6669b-4b08-4464-9bee-b2f829c3312d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by c250945c-df72-4f02-9a23-c7d6b1dd4207 -->
 			<releaseTime year="1995" day="12" />
 			<ratings critics="24" speed="61" outcome="52" />
 		</programme>
@@ -6459,7 +6607,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">ef019d4f-d31c-42c8-b79f-0127a8693207</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="6" />
 			<ratings critics="82" speed="80" outcome="79" />
 		</programme>
@@ -6486,7 +6634,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="16">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="7" />
 			<ratings critics="28" speed="39" outcome="77" />
 		</programme>
@@ -6518,8 +6666,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="11" function="2">e30d2c69-edaf-4c20-a5c2-8657dff03790</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="2,7" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="2,7" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1995" day="12" />
 			<ratings critics="80" speed="85" outcome="79" />
 		</programme>
@@ -6546,9 +6693,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">53401b27-3b3d-4245-abd2-14fbeef70245</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="1,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="1,7" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 7690c31c-66e2-4a48-a6bc-fa8b794edb5c -->
 			<releaseTime year="1995" day="7" />
 			<ratings critics="50" speed="43" outcome="50" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="c7aa65a9-89d7-460c-a3dc-e56e7e657291" />
+			</effects>
 		</programme>
 		<programme id="27f77617-c266-4ec2-83a4-fc2ff588b2c9" product="1" licence_type="1" creator="9551" imdb_id="tt0113253">
 			<title>
@@ -6572,9 +6722,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">739e4aff-a16d-4475-a70a-c2437e29d61e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 69db55d1-37ea-400c-9865-8499dea02653 -->
 			<releaseTime year="1995" day="9" />
 			<ratings critics="13" speed="39" outcome="21" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="fd2baa2f-a7a1-4a84-bf70-722f175d8427" />
+			</effects>
 		</programme>
 		<programme id="35449b7e-3069-4e99-9d07-e7d229ba4721" product="1" licence_type="1" creator="9551" imdb_id="tt0112401">
 			<title>
@@ -6624,8 +6777,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="5" function="2">a61f1eba-e305-404c-833d-3932c445bdc1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" pensioners="0.75" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="13,7" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="13,7" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1995" day="11" />
 			<ratings critics="74" speed="85" outcome="71" />
 		</programme>
@@ -6808,7 +6960,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="3" function="2">e09cd118-49ad-450d-b749-db00d7da077d</member>
 				<member index="4" function="2">e2f59fc8-35fa-496b-a182-2aeb116768c2</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="3" pro_pressure_groups="0" />
 			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="1.5" employees_female="1.5" unemployed_female="1.5" />
 			<data country="USA" distribution="1" maingenre="2" subgenre="5,16" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="3" />
@@ -6837,7 +6989,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="6" function="2">66d0558c-74bc-4513-a6ae-78656e60c8ec</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="7,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,2" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="3" />
 			<ratings critics="58" speed="55" outcome="80" />
 		</programme>
@@ -6884,9 +7036,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">679ebf39-79be-4723-9d0a-f7f87c410f22</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="96" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="5,10" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 4436e3fb-8e22-423a-ad61-c16c7cf29a97 -->
 			<releaseTime year="1995" day="6" />
 			<ratings critics="11" speed="37" outcome="12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1880bd38-9987-4192-b73d-b844df199e99" />
+			</effects>
 		</programme>
 		<programme id="e86c760c-e550-47ae-84ed-96978d7c3a28" product="1" licence_type="1" creator="9551" imdb_id="tt0112431">
 			<title>
@@ -6911,6 +7066,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="AUS/USA/GB" distribution="1" maingenre="9" subgenre="5,7" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1995" day="8" />
 			<ratings critics="88" speed="65" outcome="89" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="81ccab0d-9f1a-405d-bfbd-92a31aa82ddd" />
+			</effects>
 		</programme>
 		<programme id="211e5ebd-9be7-4df6-8a32-de0a5b0779d3" product="1" licence_type="1" creator="9551" imdb_id="tt0112851">
 			<title>
@@ -6937,9 +7095,12 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="8" function="2">e90aa627-e96b-4c59-b99d-3dd904af4521</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="MEX/USA" distribution="1" maingenre="2" subgenre="17,18" flags="64" blocks="2" price_mod="0.5" />
+			<data country="MEX/USA" distribution="1" maingenre="2" subgenre="17,18" flags="64" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 6c221f17-ade4-4913-bc9b-89a152d911be -->
 			<releaseTime year="1995" day="8" />
 			<ratings critics="65" speed="75" outcome="43" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="82eb2072-d82d-494d-9e60-d04ba4e67077" />
+			</effects>
 		</programme>
 		<programme id="1aef7f64-62a9-446a-80d9-7390e65b1f41" product="1" licence_type="1" creator="9551" imdb_id="tt0114354">
 			<title>
@@ -7040,7 +7201,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="2" function="2">28f9ce36-2123-43c7-9b59-2457ae12dcbb</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="HK" distribution="1" maingenre="7" subgenre="4,5" flags="8" blocks="2" price_mod="0.5" />
+			<data country="HK" distribution="1" maingenre="17" subgenre="7,5" flags="8" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 10781a4a-5b98-4b37-9c90-7d8216f0d0a0 -->
 			<releaseTime year="1995" day="9" />
 			<ratings critics="80" speed="79" outcome="45" />
 		</programme>
@@ -7062,7 +7223,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" />
+			<data country="ROK" distribution="1" maingenre="8" subgenre="7" flags="96" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by afd6db87-fda5-484d-883a-9037c873763e -->
 			<releaseTime year="1995" day="1" />
 			<ratings critics="18" speed="17" outcome="28" />
 		</programme>
@@ -7151,6 +7312,9 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="USA" distribution="1" maingenre="12" subgenre="14" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="12" />
 			<ratings critics="76" speed="75" outcome="75" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="e0352da0-c565-4faf-a343-63abfc8f086c" />
+			</effects>
 		</programme>
 		<programme id="a9ccf1a1-dd69-4bd9-92f9-c7a891dafe85" product="1" licence_type="1" creator="9551" imdb_id="tt0116209">
 			<title>
@@ -7292,8 +7456,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="5" function="2">e2704c1c-bebd-4e04-9b72-77214e8f9ea1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" managers="0.75" pensioners="0.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="5,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="5,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="6" />
 			<ratings critics="17" speed="26" outcome="67" />
 		</programme>
@@ -7317,7 +7480,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="3" function="2">05264a94-191a-4494-8bfb-990c62700355</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b498c468-283d-40fe-8b92-cf8a46159d88 -->
 			<releaseTime year="1996" day="1" />
 			<ratings critics="14" speed="15" outcome="16" />
 		</programme>
@@ -7347,7 +7510,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="9" function="2">0cb4994e-b6b6-46ba-8321-202d0175b0b6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="7,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,2" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="5" />
 			<ratings critics="61" speed="57" outcome="91" />
 		</programme>
@@ -7431,6 +7594,9 @@ Won several Golden Raspberry Awards.</en>
 			<data country="USA" distribution="1" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="11" />
 			<ratings critics="41" speed="41" outcome="86" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="3ac47109-4ece-4db0-a4ed-12c8682a2150" />
+			</effects>
 		</programme>
 		<programme id="f795461d-b60b-43be-b38c-8889b5f60d26" product="1" licence_type="1" creator="9551" imdb_id="tt0117500">
 			<title>
@@ -7484,6 +7650,9 @@ Won several Golden Raspberry Awards.</en>
 			<data country="USA" distribution="1" maingenre="5" subgenre="15,16" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="6" />
 			<ratings critics="62" speed="45" outcome="83" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="59c43eab-5d4e-43d2-8996-fcb6f8bf33ce" />
+			</effects>
 		</programme>
 		<programme id="16934394-5e03-4f13-9081-3b88ecc1fb14" product="1" licence_type="1" creator="9551" imdb_id="tt0115685">
 			<title>
@@ -7539,7 +7708,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="11" function="2">af2bd138-a573-4813-b541-44673541a7e2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="4,17" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,4" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1996" day="7" />
 			<ratings critics="65" speed="79" outcome="79" />
 		</programme>
@@ -7594,7 +7763,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="5" function="2">b3e45b26-3781-44de-b56f-4809d01072f9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="10,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="10,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="7" />
 			<ratings critics="49" speed="58" outcome="79" />
 		</programme>
@@ -7623,7 +7792,7 @@ Won several Golden Raspberry Awards.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="7,202" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,7" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="6" />
 			<ratings critics="68" speed="68" outcome="87" />
 			<modifiers>
@@ -7681,7 +7850,7 @@ Won several Golden Raspberry Awards.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="5,203" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,203" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="11" />
 			<ratings critics="44" speed="62" outcome="83" />
 			<modifiers>
@@ -7740,7 +7909,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="8" function="2">568e2500-ba35-4a2b-bbfc-d47e2f836ca0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/MEX/AUS/CDN" distribution="1" maingenre="7" subgenre="15,4" flags="0" blocks="2" price_mod="1" />
+			<data country="USA/MEX/AUS/CDN" distribution="1" maingenre="15" subgenre="7,4" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1996" day="10" />
 			<ratings critics="70" speed="73" outcome="77" />
 		</programme>
@@ -7769,9 +7938,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="8" function="16">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by be809bb4-6259-43da-ba7e-7910d92a3710 -->
 			<releaseTime year="1996" day="2" />
 			<ratings critics="68" speed="73" outcome="34" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="8284721d-eebc-4238-9f1b-d62600c73965" />
+			</effects>
 		</programme>
 		<programme id="e0d786ee-c6ed-4c8a-beea-6b880cc989f2" product="1" licence_type="1" creator="9551" imdb_id="tt0115736">
 			<title>
@@ -7930,8 +8102,8 @@ Won several Golden Raspberry Awards.</en>
 				<member index="4" function="2">5dd4be3e-1bed-4c3a-8c69-ebf31ba0e5f9</member>
 				<member index="5" function="2">34820a81-1983-4f3d-801a-e105e5495642</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="10,4" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="2" pro_pressure_groups="0" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="10,4" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d08c8de1-47cb-4f18-a3a1-69c5b62411ab -->
 			<releaseTime year="1996" day="8" />
 			<ratings critics="19" speed="41" outcome="21" />
 		</programme>
@@ -8013,7 +8185,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="3" function="2">38c0e9c9-e6ba-46a1-aecc-9caa7a52a050</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="IRL" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
+			<data country="IRL" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 6afb613a-09ed-408a-abcf-0224a25bfbda -->
 			<releaseTime year="1996" day="5" />
 			<ratings critics="40" speed="68" outcome="25" />
 		</programme>
@@ -8035,11 +8207,17 @@ Won several Golden Raspberry Awards.</en>
 				<member index="1" function="1028">8d167282-9e50-4eb9-998b-2199ec059ec5</member>
 				<member index="2" function="2">various-voice-artists</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="258" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="D" distribution="1" maingenre="3" subgenre="5,2" flags="10" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="3" subgenre="5,2" flags="10" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by efffff28-afaa-4fe1-922f-5849d39f149f -->
 			<releaseTime year="1996" day="6" />
 			<ratings critics="25" speed="60" outcome="71" />
+			<modifiers>
+				<modifier name="topicality::age" value="0.5" />
+			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="3a6030fe-e288-47db-af23-fb29ad43c720" />
+			</effects>
 		</programme>
 		<programme id="e92a225f-a695-4a86-b5b0-1d6c1b25161c" product="1" licence_type="1" creator="9551" imdb_id="tt0117135">
 			<title>
@@ -8089,7 +8267,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="7" function="2">b62e16ce-9a60-4c94-8cfe-8879fc0c0fb5</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1996" day="3" />
 			<ratings critics="30" speed="40" outcome="55" />
 		</programme>
@@ -8112,8 +8290,8 @@ Won several Golden Raspberry Awards.</en>
 				<member index="2" function="2">32768eb0-16ed-498c-9e3f-600ebbc8d127</member>
 				<member index="3" function="2">f31d52a4-0ced-450f-a880-254bc9a178c3</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="0.5" />
+			<groups target_groups="2" pro_pressure_groups="0" />
+			<data country="D" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1996" day="4" />
 			<ratings critics="82" speed="77" outcome="32" />
 		</programme>
@@ -8135,9 +8313,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="1" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="HK" distribution="1" maingenre="8" subgenre="5,10" flags="64" blocks="2" price_mod="0.5" />
+			<data country="HK" distribution="1" maingenre="8" subgenre="5,10" flags="64" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by c257a276-7b02-4a04-9424-d2d7e1ab8bb5 -->
 			<releaseTime year="1996" day="5" />
 			<ratings critics="45" speed="34" outcome="50" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="2895cf91-18e2-4eae-a7cb-a661c60d73f3" />
+			</effects>
 		</programme>
 		<programme id="74c96e6f-1532-4014-828d-3e2327c8c882" product="1" licence_type="1" creator="9551" imdb_id="tt0120338">
 			<title>
@@ -8164,7 +8345,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="8" function="2">75a61c32-c490-40f3-b39f-30e93cfce7a2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" />
+			<targetgroupattractivity children="2" teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" />
 			<data country="USA" distribution="1" maingenre="7" subgenre="15,13" flags="0" blocks="4" price_mod="1" />
 			<releaseTime year="1997" day="12" />
 			<ratings critics="85" speed="62" outcome="98" />
@@ -8221,9 +8402,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="8" function="16">65c05369-bdaa-452c-8d2c-4a2b42cabd32</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="1" subgenre="2,16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="1" subgenre="2,16" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 02ea867a-415d-4f99-a0dd-c6ab154df4e6 -->
 			<releaseTime year="1997" day="5" />
 			<ratings critics="52" speed="51" outcome="90" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="aec4a44f-33db-4fb5-954f-d51e4824f92e" />
+			</effects>
 		</programme>
 		<programme id="fddd3514-78c5-43c5-af66-703a8eb20192" product="1" licence_type="1" creator="9551" imdb_id="tt0119528">
 			<title>
@@ -8300,7 +8484,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="4" function="2">f2c96b56-be85-4083-9b41-d6f3a007f350</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="4,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="17,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 03c085b2-09fe-4921-a7cc-f91596d83b46 -->
 			<releaseTime year="1997" day="6" />
 			<ratings critics="8" speed="21" outcome="76" />
 		</programme>
@@ -8383,9 +8567,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="9" function="2">2dcd6d96-d19b-40a2-9324-87121200f492</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
+			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 7d05cb24-c037-4a6d-a83c-aaed356d7e98 -->
 			<releaseTime year="1997" day="12" />
 			<ratings critics="56" speed="53" outcome="88" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="87dc1925-1c77-443f-bf5f-456e6ddaa96d" />
+			</effects>
 		</programme>
 		<programme id="069f44dd-7b47-4f55-9598-beab41b2560b" product="1" licence_type="1" creator="9551" imdb_id="tt0118688">
 			<title>
@@ -8408,8 +8595,9 @@ Won several Golden Raspberry Awards.</en>
 				<member index="4" function="2">cd3a2e20-efe1-4a4c-9249-164b67d185f7</member>
 				<member index="5" function="2">9edd233a-7e6f-429c-af42-6b228cd407d3</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by cf0d19ac-9515-4076-9913-ea6615392bbf -->
 			<releaseTime year="1997" day="6" />
 			<ratings critics="16" speed="20" outcome="81" />
 		</programme>
@@ -8441,9 +8629,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="11" function="2">970b33ee-165f-4cbe-826c-a8abd210cab6</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="14" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="14" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by fdbb7afd-3426-47ce-9e66-a33a43891bb7 -->
 			<releaseTime year="1997" day="12" />
 			<ratings critics="78" speed="56" outcome="77" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="32754b98-0ff7-434c-936e-4714a9a58af7" />
+			</effects>
 		</programme>
 		<programme id="e1d01e50-d673-4ba1-91e7-e91e9e5e2013" product="1" licence_type="1" creator="9551" imdb_id="tt0118884">
 			<title>
@@ -8502,6 +8693,9 @@ Won several Golden Raspberry Awards.</en>
 			<data country="USA" distribution="1" maingenre="12" subgenre="14" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="10" />
 			<ratings critics="45" speed="42" outcome="72" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="42c981ba-f7a3-4197-8ae6-8c0c39223050" />
+			</effects>
 		</programme>
 		<programme id="41343db9-9650-4328-ac97-d20f3f3212d9" product="1" licence_type="1" creator="9551" imdb_id="tt0118655">
 			<title>
@@ -8526,9 +8720,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="6" function="2">1f662659-d477-42bc-83bf-6465965b2686</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="4,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="17,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="5" />
 			<ratings critics="68" speed="73" outcome="69" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="90d738a3-ec29-418a-9f86-d07cc27d572e" />
+			</effects>
 		</programme>
 		<programme id="87e332bf-9985-483e-9b17-f822908c4f3e" product="1" licence_type="1" creator="9551" imdb_id="tt0119190">
 			<title>
@@ -8614,7 +8811,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="10" function="2">32440671-921b-4786-9f10-91a742a56316</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="5,15" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="7,15" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1997" day="12" />
 			<ratings critics="78" speed="78" outcome="89" />
 		</programme>
@@ -8676,7 +8873,7 @@ Won several Golden Raspberry Awards.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="10,5" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,10" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="6" />
 			<ratings critics="76" speed="72" outcome="87" />
 			<modifiers>
@@ -8731,7 +8928,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="5" function="2">9fdb36dc-d4de-4787-b5ec-44ea5ebaf438</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="1,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,2" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="2" />
 			<ratings critics="31" speed="39" outcome="80" />
 		</programme>
@@ -8808,7 +9005,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="2" function="2">6523a91c-761c-4f83-9a83-703e1adffc3c</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="9,2" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="9,2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 8fb1588d-27c3-4daf-9bf9-9fd338e08010 -->
 			<releaseTime year="1997" day="12" />
 			<ratings critics="34" speed="30" outcome="55" />
 		</programme>
@@ -8836,8 +9033,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="7" function="2">ef3c0435-84b5-4252-947c-c2183a989550</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,4" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="2" />
 			<ratings critics="81" speed="81" outcome="70" />
 		</programme>
@@ -8889,7 +9085,7 @@ Won several Golden Raspberry Awards.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="7,202" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,7" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="11" />
 			<ratings critics="77" speed="73" outcome="74" />
 			<modifiers>
@@ -8975,7 +9171,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="5" function="2">cd39a805-3d97-4994-a729-c0cfb0dbb11d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 85769063-5b14-4a43-90df-02e184034da3 -->
 			<releaseTime year="1997" day="2" />
 			<ratings critics="19" speed="51" outcome="39" />
 		</programme>
@@ -9007,7 +9203,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="11" function="16">65c05369-bdaa-452c-8d2c-4a2b42cabd32</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="11" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="7" subgenre="11,1" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1997" day="12" />
 			<ratings critics="74" speed="74" outcome="40" />
 		</programme>
@@ -9031,7 +9227,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="3" function="2">61fb2819-ce29-41f6-9aa1-60bb6f66e4e9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="1,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="1,7" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 6d5b67d6-2171-4396-aa16-79f3301e40a0 -->
 			<releaseTime year="1997" day="8" />
 			<ratings critics="45" speed="45" outcome="21" />
 		</programme>
@@ -9079,9 +9275,12 @@ Won several Golden Raspberry Awards.</en>
 				<member index="1" function="2">679ebf39-79be-4723-9d0a-f7f87c410f22</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="5,16" flags="40" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="5,16" flags="40" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 20a563f0-e3f6-4a46-8961-2b5ad8a39b79 -->
 			<releaseTime year="1997" day="2" />
 			<ratings critics="21" speed="24" outcome="12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="24fb6de6-a808-485b-b5c6-f5e293d64832" />
+			</effects>
 		</programme>
 		<programme id="0fedf4f6-0236-4228-a970-982f4b3afe07" product="1" licence_type="1" creator="9551" imdb_id="tt0119472">
 			<title>
@@ -9140,7 +9339,7 @@ Won several Golden Raspberry Awards.</en>
 				<member index="10" function="2">32768eb0-16ed-498c-9e3f-600ebbc8d127</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="5" subgenre="7" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1997" day="1" />
 			<ratings critics="60" speed="55" outcome="60" />
 		</programme>
@@ -9357,6 +9556,9 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="706a9e1c-b75c-40c1-8a4d-f9803b6958a1" />
+			</effects>
 		</programme>
 		<programme id="706a9e1c-b75c-40c1-8a4d-f9803b6958a1" product="1" licence_type="1" creator="9551" imdb_id="tt0169858">
 			<title>
@@ -9378,7 +9580,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" />
-			<data country="J" distribution="1" maingenre="3" subgenre="16,7" flags="10" blocks="2" price_mod="0.5" />
+			<data country="J" distribution="1" maingenre="3" subgenre="16,7" flags="10" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by ada212c2-cdad-46ca-b84a-1e1debdf6aaf -->
 			<releaseTime year="1997" day="7" />
 			<ratings critics="81" speed="78" outcome="68" />
 			<modifiers>
@@ -9703,7 +9905,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</title>
 			<title_original>
 				<de>Akte X - Der Film</de>
-				<en>The X Files</en>
+				<en>The X-Files: Fight the Future</en>
 			</title_original>
 			<description>
 				<de>Angesiedelt zwischen der 5. und 6. Staffel der Serie werden die zwei FBI-Agenten in eine weitere Regierungsverschwörung verwickelt. Schließlich gelangen sie in die Antarktis, wo das größte aller Geheimnisse lauert.</de>
@@ -9721,7 +9923,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="8" function="2">cd2903a5-c561-4a72-ac2e-4f0e77676245</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="14" subgenre="4,16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="14" subgenre="16,4" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by The X-Files series S02E01 (currently) -->
 			<releaseTime year="1998" day="6" />
 			<ratings critics="63" speed="69" outcome="60" />
 		</programme>
@@ -9774,7 +9976,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="7" function="2">7e2559c0-ae89-4b28-838e-1f22d4ed2e58</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="7,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="10,7" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1998" day="10" />
 			<ratings critics="81" speed="75" outcome="37" />
 		</programme>
@@ -9837,7 +10039,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="7" function="2">b348b2a9-6bfa-4f83-9d8d-b4cad557f62e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/MEX/D" distribution="1" maingenre="12" subgenre="14,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA/MEX/D" distribution="1" maingenre="12" subgenre="14,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 5e4ec13d-68db-4bb6-81b5-4756eedce80e -->
 			<releaseTime year="1998" day="11" />
 			<ratings critics="11" speed="31" outcome="33" />
 		</programme>
@@ -9862,7 +10064,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">e8752e52-dbd7-4715-bacc-23d19aff3126</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/AUS" distribution="1" maingenre="10" subgenre="16,14" flags="8" blocks="2" price_mod="1" />
+			<data country="USA/AUS" distribution="1" maingenre="17" subgenre="14,16" flags="8" blocks="2" price_mod="1" />
 			<releaseTime year="1998" day="2" />
 			<ratings critics="71" speed="77" outcome="27" />
 		</programme>
@@ -9923,7 +10125,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="1,5" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1998" day="11" />
 			<ratings critics="83" speed="68" outcome="82" />
 			<modifiers>
@@ -9954,7 +10156,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="1,202" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1998" day="5" />
 			<ratings critics="80" speed="79" outcome="79" />
 			<modifiers>
@@ -10009,7 +10211,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">a1a948b2-32e1-44a8-a3d5-99f28e52af22</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="1" subgenre="2,5" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="18" subgenre="1,5" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1998" day="7" />
 			<ratings critics="77" speed="70" outcome="72" />
 		</programme>
@@ -10043,7 +10245,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="7,202" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1998" day="12" />
 			<ratings critics="74" speed="81" outcome="66" />
 			<modifiers>
@@ -10160,7 +10362,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="1,5" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1998" day="9" />
 			<ratings critics="83" speed="52" outcome="53" />
 			<modifiers>
@@ -10189,7 +10391,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="5" function="2">95c458be-728f-4501-8769-b77d59291a96</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 27f77617-c266-4ec2-83a4-fc2ff588b2c9 -->
 			<releaseTime year="1998" day="7" />
 			<ratings critics="54" speed="49" outcome="44" />
 		</programme>
@@ -10214,7 +10416,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">df669640-4e04-4ae1-b91e-7cae394f7d66</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17,5" flags="72" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17,5" flags="72" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 7c98cb14-63ca-4b34-9c96-f8d40fd22128 -->
 			<releaseTime year="1998" day="10" />
 			<ratings critics="47" speed="49" outcome="39" />
 		</programme>
@@ -10300,8 +10502,8 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 		</programme>
 		<programme id="c8c214e6-efbe-4891-928e-ec9338b19c6b" product="1" licence_type="1" creator="9551" imdb_id="tt0120844">
 			<title>
-				<de>Far Track: Der Aufruhr</de>
-				<en>Far Track: Insurgence</en>
+				<de>Far Track IX - Der Aufruhr</de>
+				<en>Far Track IX - Insurgence</en>
 			</title>
 			<title_original>
 				<de>Star Trek: Der Aufstand</de>
@@ -10322,10 +10524,13 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="7" function="2">ce8f81d3-6c70-442d-ace0-0ba09b8f5224</member>
 				<member index="8" function="2">038c4823-7ddb-47b4-ba30-5d9fe79efc23</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="8" blocks="2" price_mod="1" />
+			<groups target_groups="279" pro_pressure_groups="0" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,2" flags="8" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 79eb1bd2-5c5b-4a77-bf14-e9d3a6496bf0 -->
 			<releaseTime year="1998" day="12" />
 			<ratings critics="54" speed="45" outcome="61" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="649352b6-2b36-47d0-8f85-d0992bba662f" />
+			</effects>
 		</programme>
 		<programme id="f4c30a16-8bd1-423f-92f3-85dbedf7f3ff" product="1" licence_type="1" creator="9551" imdb_id="tt0138704">
 			<title>
@@ -10375,7 +10580,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">various-voice-artists</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="AUS/USA" distribution="1" maingenre="9" subgenre="5,1" flags="8" blocks="2" price_mod="1" />
+			<data country="AUS/USA" distribution="1" maingenre="9" subgenre="5,1" flags="8" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by e86c760c-e550-47ae-84ed-96978d7c3a28 -->
 			<releaseTime year="1998" day="11" />
 			<ratings critics="63" speed="42" outcome="45" />
 		</programme>
@@ -10454,7 +10659,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="6" function="2">69b6047d-abac-49a6-a37b-152e01850e06</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="17" subgenre="2,4" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="17" subgenre="2,14" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1998" day="8" />
 			<ratings critics="87" speed="84" outcome="56" />
 		</programme>
@@ -10508,7 +10713,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">e5d42508-6a3c-4905-ae8a-57f229101ac7</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F" distribution="1" maingenre="5" subgenre="1,10" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F" distribution="1" maingenre="5" subgenre="1,10" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 305cd57f-2a78-4464-86a3-22deed8964f9 -->
 			<releaseTime year="1998" day="12" />
 			<ratings critics="30" speed="48" outcome="70" />
 		</programme>
@@ -10537,6 +10742,9 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			<data country="F" distribution="1" maingenre="2" subgenre="5,4" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1998" day="4" />
 			<ratings critics="70" speed="73" outcome="65" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="94c302f2-249d-45c2-81a1-168cc1c3326b" />
+			</effects>
 		</programme>
 		<programme id="bd2af40c-b903-45f9-955d-c9c44f25fe09" product="1" licence_type="1" creator="9551" imdb_id="tt0174931">
 			<title>
@@ -10582,7 +10790,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="3" function="2">28f9ce36-2123-43c7-9b59-2457ae12dcbb</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="RC" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="0.5" />
+			<data country="RC" distribution="1" maingenre="7" subgenre="15,1" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1998" day="5" />
 			<ratings critics="80" speed="74" outcome="65" />
 		</programme>
@@ -10605,7 +10813,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="2" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="HK" distribution="1" maingenre="8" subgenre="5,10" flags="64" blocks="2" price_mod="0.5" />
+			<data country="HK" distribution="1" maingenre="8" subgenre="5,10" flags="64" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 714e809e-761a-4d22-9222-c8214f5b2775 -->
 			<releaseTime year="1998" day="11" />
 			<ratings critics="43" speed="30" outcome="40" />
 		</programme>
@@ -10629,12 +10837,15 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" />
-			<data country="J" distribution="1" maingenre="3" subgenre="2,1" flags="10" blocks="2" price_mod="0.5" />
+			<data country="J" distribution="1" maingenre="3" subgenre="1,16" flags="10" blocks="2" price_mod="0.5" />
 			<releaseTime year="1998" day="7" />
 			<ratings critics="21" speed="67" outcome="80" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="626dbb9d-64d6-40b7-8649-004d00e4e116" />
+			</effects>
 		</programme>
 		<programme id="86d7f3c5-cd11-4949-9542-31db345042d6" product="1" licence_type="1" creator="9551" imdb_id="tt0120915">
 			<title>
@@ -10670,6 +10881,9 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			<data country="USA" distribution="1" maingenre="16" subgenre="1,10" flags="8" blocks="3" price_mod="1" />
 			<releaseTime year="1999" day="5" />
 			<ratings critics="51" speed="58" outcome="95" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1b9b6b1a-7411-46c0-9657-6feedd966016" />
+			</effects>
 		</programme>
 		<programme id="399c598c-aa31-417c-8b6e-b4ff92b7e565" product="1" licence_type="1" creator="9551" imdb_id="tt0120363">
 			<title>
@@ -10697,7 +10911,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="9" function="2">various-voice-artists</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="5,1" flags="2" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="2" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by eb5427fe-2df5-4b8f-bd0f-439b07566356 -->
 			<releaseTime year="1999" day="11" />
 			<ratings critics="93" speed="82" outcome="87" />
 		</programme>
@@ -10725,9 +10939,12 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="7" function="2">adfc9bed-70c6-4f30-bed6-945f31e5a66b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA/AUS" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="3" price_mod="1" />
+			<data country="USA/AUS" distribution="1" maingenre="16" subgenre="2" flags="8" blocks="3" price_mod="1" />
 			<releaseTime year="1999" day="3" />
 			<ratings critics="84" speed="80" outcome="85" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b7a8cba2-d107-42a4-80cb-df9c6e9fb745" />
+			</effects>
 		</programme>
 		<programme id="d1543799-39c6-44f0-a0b7-6ec7354addf5" product="1" licence_type="1" creator="9551" imdb_id="tt0163187">
 			<title>
@@ -10782,8 +10999,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="10" function="2">ea78c59f-8268-4006-b1a6-1eec8b0ea73b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7,10" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,10" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="1999" day="12" />
 			<ratings critics="74" speed="87" outcome="75" />
 		</programme>
@@ -10838,7 +11054,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="8" function="2">e653e75e-951e-4389-8d7a-8470ffcadee0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="4,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="17,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 41343db9-9650-4328-ac97-d20f3f3212d9 -->
 			<releaseTime year="1999" day="6" />
 			<ratings critics="53" speed="68" outcome="81" />
 		</programme>
@@ -10894,6 +11110,9 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			<data country="USA" distribution="1" maingenre="1" subgenre="10,2" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1999" day="5" />
 			<ratings critics="58" speed="72" outcome="85" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b000959f-e6ec-4c3f-a898-c22cff1d0b62" />
+			</effects>
 		</programme>
 		<programme id="2c79f000-910a-42c0-b650-453875fcbf4a" product="1" licence_type="1" creator="9551" imdb_id="tt0134119">
 			<title>
@@ -10948,9 +11167,12 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="9" function="2">4014b3f9-c855-4ee2-b4e4-0949c4aea149</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
+			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 4e124f72-745c-43d9-9466-5b0f3c7a0330 -->
 			<releaseTime year="1999" day="11" />
 			<ratings critics="51" speed="49" outcome="84" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="1a9f22ea-1351-44fd-bc63-e39c30803683" />
+			</effects>
 		</programme>
 		<programme id="daf16a56-142d-488c-850b-ac477bb2a0e5" product="1" licence_type="1" creator="9551" imdb_id="tt0125439">
 			<title>
@@ -11115,7 +11337,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="1,5" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="1999" day="6" />
 			<ratings critics="82" speed="71" outcome="84" />
 			<modifiers>
@@ -11212,7 +11434,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<en>Double Jeopardy</en>
 			</title_original>
 			<description>
-				<de>Libby ist des Mordes an ihren Ehemann beschuldigt. Aber halt, er ist gar nicht tot, und er ist auch der, der ihr die Tat angehängt hat. Nun sinnt sie auf Rache, denn sie hat erfahren, dass es nicht gegen das Gesetz ist, jemanden zweimal umzubringen.</de>
+				<de>Libby ist des Mordes an ihrem Ehemann beschuldigt. Aber halt, er ist gar nicht tot, und er ist auch der, der ihr die Tat angehängt hat. Nun sinnt sie auf Rache, denn sie hat erfahren, dass es nicht gegen das Gesetz ist, jemanden zweimal umzubringen.</de>
 				<en>Libby is accused of murdering her husband. But wait, he's not dead after all, and he's also the one who framed her. Now she seeks revenge, having learned that it's not against the law to kill someone twice.</en>
 			</description>
 			<staff>
@@ -11315,7 +11537,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<en>Payback</en>
 			</title_original>
 			<description>
-				<de>Ein harter Kerl wird bei einem Raubüberfall verraten und erschossen. Wie durch ein Wunder überlebt er und begibt sich auf einen Rachefeldzug, bei dem er es mit exzentrischen Gangstern, sadistischen Huren und einem hundeliebenden Mafiaboss zu tun bekommt.</de>
+				<de>Ein harter Kerl wird bei einem Raubüberfall verraten und erschossen. Wie durch ein Wunder überlebt er und begibt sich auf einen Rachefeldzug, bei dem er es mit exzentrischen Gangstern, sadistischen Huren und einem Hunde liebenden Mafiaboss zu tun bekommt.</de>
 				<en>A tough guy is betrayed at a robbery and shot. Miraculously, he survives and embarks on a vengeful quest, facing eccentric gangsters, sadistic hookers and a dog-loving mob boss.</en>
 			</description>
 			<staff>
@@ -11378,7 +11600,7 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">various-puppeteers</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="16,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="16,5" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 0d3f87a7-a475-4dda-9ace-892b7ec655da -->
 			<releaseTime year="1999" day="7" />
 			<ratings critics="61" speed="57" outcome="31" />
 		</programme>
@@ -11509,11 +11731,14 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="4" function="2">9d2d8a41-f22b-4079-abd9-36d2464a13b5</member>
 				<member index="5" function="2">1fea9d82-1ff5-4090-bd4b-b07e7d430d0e</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="2" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" managers="0.75" pensioners="0.5" />
 			<data country="USA" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1999" day="3" />
 			<ratings critics="54" speed="74" outcome="50" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="85449d89-45f4-467e-a970-e60255cac262" />
+			</effects>
 		</programme>
 		<programme id="905f40ac-cb71-48b0-8e74-08ed32dd5d4b" product="1" licence_type="1" creator="9551" imdb_id="tt0172493">
 			<title>
@@ -11670,11 +11895,14 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="1" function="1028">8d167282-9e50-4eb9-998b-2199ec059ec5</member>
 				<member index="2" function="2">various-voice-artists</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="258" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="D" distribution="1" maingenre="3" subgenre="5,2" flags="10" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="3" subgenre="5,2" flags="10" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 7a4e3c1d-75e1-4c34-a413-515e4b99c99b -->
 			<releaseTime year="1999" day="9" />
 			<ratings critics="20" speed="45" outcome="60" />
+			<modifiers>
+				<modifier name="topicality::age" value="0.5" />
+			</modifiers>
 		</programme>
 		<programme id="4e4b90cf-4c8c-488e-9e4a-b906bd0601b4" product="1" licence_type="1" creator="9551" imdb_id="tt0186508">
 			<title>
@@ -11758,7 +11986,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="8" function="2">6cdab8f0-87c3-421c-9840-83a93cda738a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F/I/D" distribution="1" maingenre="5" subgenre="1,9" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F/I/D" distribution="1" maingenre="5" subgenre="1,9" flags="0" blocks="2" price_mod="0.5" available="0" />
 			<releaseTime year="1999" day="2" />
 			<ratings critics="44" speed="44" outcome="75" />
 		</programme>
@@ -11858,12 +12086,15 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" />
-			<data country="J" distribution="1" maingenre="3" subgenre="2,1" flags="10" blocks="2" price_mod="0.5" />
+			<data country="J" distribution="1" maingenre="3" subgenre="1,16" flags="10" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by bd8d24af-5827-4d70-b00d-5b1641d17e24 -->
 			<releaseTime year="1999" day="7" />
 			<ratings critics="24" speed="56" outcome="75" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="7837511d-ad62-48af-8e68-e40a69859168" />
+			</effects>
 		</programme>
 		<programme id="5a9b84be-02a3-4ab1-877b-426b5d443252" product="1" licence_type="1" creator="9551" imdb_id="tt0172495">
 			<title>
@@ -11947,10 +12178,14 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="10" function="2">5a06fba7-2a30-4f35-a930-ff33175f1e0e</member>
 				<member index="11" function="2">8aff64ad-63dd-4659-a36c-10643580fdf0</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
 			<data country="USA" distribution="1" maingenre="16" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="7" />
 			<ratings critics="78" speed="78" outcome="75" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b1ae0290-e77f-453d-97b4-bd51ad9a0a23" />
+			</effects>
 		</programme>
 		<programme id="cd11f4dd-e9a6-4451-9967-ce9453202562" product="1" licence_type="1" creator="9551" imdb_id="tt0175142">
 			<title>
@@ -12056,7 +12291,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="5" function="2">fed5834b-a178-49e9-a643-b58330e6391d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="14" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="14" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by e0352da0-c565-4faf-a343-63abfc8f086c -->
 			<releaseTime year="2000" day="2" />
 			<ratings critics="42" speed="39" outcome="53" />
 		</programme>
@@ -12269,7 +12504,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="8" function="2">6065e4fb-04fb-4c4f-b840-26c7a251c69f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="7,1" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="6" />
 			<ratings critics="46" speed="61" outcome="73" />
 		</programme>
@@ -12349,7 +12584,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="5" function="2">2c665480-4a70-4463-b075-48b77d019c79</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="7" subgenre="4" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="3" />
 			<ratings critics="78" speed="75" outcome="64" />
 		</programme>
@@ -12399,7 +12634,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="GB/USA/F" distribution="1" maingenre="3" subgenre="5,1" flags="10" blocks="2" price_mod="1" />
+			<data country="GB/USA/F" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="6" />
 			<ratings critics="89" speed="63" outcome="74" />
 			<modifiers>
@@ -12510,7 +12745,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="7" function="2">eebbb3cd-aeb3-483c-ab69-0fd76ba05a87</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="2,4" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="5,4" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="12" />
 			<ratings critics="42" speed="66" outcome="58" />
 		</programme>
@@ -12542,8 +12777,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="11" function="2">b356adfc-eb70-489d-9e15-25bac46e237f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" pensioners="0.75" />
-			<data country="USA" distribution="1" maingenre="4" subgenre="7,17" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,4" flags="0" blocks="3" price_mod="1" />
 			<releaseTime year="2000" day="12" />
 			<ratings critics="84" speed="78" outcome="56" />
 		</programme>
@@ -12593,7 +12827,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="5" function="2">a4d37bcf-6e23-4bba-aff6-6ed6ec7b9a59</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="1,5" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by f9b340ca-018e-4afa-b19d-4aac94e9def6 -->
 			<releaseTime year="2000" day="11" />
 			<ratings critics="34" speed="34" outcome="51" />
 		</programme>
@@ -12641,7 +12875,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" distribution="1" maingenre="3" subgenre="5,1" flags="10" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="3" subgenre="9,1" flags="10" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="12" />
 			<ratings critics="78" speed="77" outcome="49" />
 			<modifiers>
@@ -12668,7 +12902,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="3" function="2">76ecdd34-684e-431f-a434-ed8b171ed73d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="15,16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="15,16" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by f1c97a36-1587-459f-84d4-0a31c15edb14 -->
 			<releaseTime year="2000" day="7" />
 			<ratings critics="30" speed="35" outcome="48" />
 		</programme>
@@ -12696,7 +12930,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="7" function="2">ee0a54d4-f936-438e-a646-18fc9f2c2e60</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="17,2" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,2" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="4" />
 			<ratings critics="39" speed="55" outcome="36" />
 		</programme>
@@ -12724,7 +12958,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="7" function="2">580623bf-74cc-4c11-8fcf-4c8bfb8b96e2</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="9" subgenre="10,5" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="9" subgenre="5,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 8c552233-dd91-47c7-8aed-0be800de62f6 -->
 			<releaseTime year="2000" day="4" />
 			<ratings critics="28" speed="23" outcome="32" />
 		</programme>
@@ -12804,7 +13038,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="4" function="2">DF-Celebreties-Charlize_Theron</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="2" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="7,2" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="10" />
 			<ratings critics="43" speed="76" outcome="38" />
 		</programme>
@@ -12931,7 +13165,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="4" function="2">1f5ac605-00ce-4571-83d2-ef9ea5b78f6d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="F" distribution="1" maingenre="2" subgenre="5,4" flags="0" blocks="2" price_mod="0.5" />
+			<data country="F" distribution="1" maingenre="2" subgenre="5,4" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 418739bd-b603-4fad-81ed-e0ceb929463e -->
 			<releaseTime year="2000" day="3" />
 			<ratings critics="50" speed="67" outcome="80" />
 		</programme>
@@ -12955,7 +13189,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" />
-			<data country="J" distribution="1" maingenre="3" subgenre="2,1" flags="10" blocks="2" price_mod="0.5" />
+			<data country="J" distribution="1" maingenre="3" subgenre="1,16" flags="10" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 626dbb9d-64d6-40b7-8649-004d00e4e116 -->
 			<releaseTime year="2000" day="7" />
 			<ratings critics="24" speed="54" outcome="70" />
 			<modifiers>
@@ -12983,7 +13217,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="4" function="2">c54e4094-62c6-4e03-96c1-7e4fc31f89bc</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="1" subgenre="10,2" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="1" subgenre="10,2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by d39f294a-2f0a-4ab4-9807-048883ee665f -->
 			<releaseTime year="2001" day="5" />
 			<ratings critics="47" speed="62" outcome="78" />
 		</programme>
@@ -13012,7 +13246,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="8" function="2">b201ebd0-7185-4926-a301-4c608f8d3d78</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="1" subgenre="2,16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="1" subgenre="2,16" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by f8accbf2-9cbe-49f2-8c2b-db98df094d56 -->
 			<releaseTime year="2001" day="7" />
 			<ratings critics="49" speed="38" outcome="73" />
 		</programme>
@@ -13097,9 +13331,12 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children_male="1.5" children_female="1.25" teenagers_male="1" teenagers_female="1.25" housewives="1.5" unemployed_female="1.5" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,10" flags="8" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,10" flags="8" blocks="3" price_mod="1" available="0" /> <!-- availability triggered by 86d7f3c5-cd11-4949-9542-31db345042d6 -->
 			<releaseTime year="2002" day="5" />
 			<ratings critics="63" speed="55" outcome="83" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="8d3184d2-4f60-4511-9316-646e57af95a1" />
+			</effects>
 		</programme>
 		<programme id="1a9f22ea-1351-44fd-bc63-e39c30803683" product="1" licence_type="1" creator="9551" imdb_id="tt0246460">
 			<title>
@@ -13127,7 +13364,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="9" function="2">2dcd6d96-d19b-40a2-9324-87121200f492</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" />
+			<data country="GB/USA" distribution="1" maingenre="17" subgenre="2,1" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 87dc1925-1c77-443f-bf5f-456e6ddaa96d | end of Brosnan series -->
 			<releaseTime year="2002" day="11" />
 			<ratings critics="54" speed="42" outcome="83" />
 		</programme>
@@ -13158,9 +13395,12 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="10" function="2">ecc76b29-6439-45c0-a543-b73ca7d1fbd0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="3" price_mod="1" available="0" /> <!-- availability triggered by 17ca99c1-d34a-4e5b-9cfa-3f0537f7fc7c -->
 			<releaseTime year="2003" day="5" />
 			<ratings critics="70" speed="70" outcome="85" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="9f1bc2b4-d7be-4913-9f9d-61cfd7e7f3d1" />
+			</effects>
 		</programme>
 		<programme id="bde1b22e-849e-43f9-abf7-7d8c230ef8e9" product="1" licence_type="1" creator="9551" imdb_id="tt0315327">
 			<title>
@@ -13183,7 +13423,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="4" function="2">11f3534e-9fc5-4333-8430-0fe2267c79f8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="10,9" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2003" day="5" />
 			<ratings critics="48" speed="56" outcome="79" />
 		</programme>
@@ -13213,7 +13453,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="9" function="2">ecc76b29-6439-45c0-a543-b73ca7d1fbd0</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="2" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b7a8cba2-d107-42a4-80cb-df9c6e9fb745 -->
 			<releaseTime year="2003" day="11" />
 			<ratings critics="36" speed="59" outcome="76" />
 		</programme>
@@ -13242,8 +13482,9 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="8" function="2">ef0b97b2-c315-4df3-b0b5-71dfd7a236dd</member>
 				<member index="9" function="2">8aff64ad-63dd-4659-a36c-10643580fdf0</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="2,17" flags="0" blocks="2" price_mod="1" />
+			<groups target_groups="3" pro_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="2,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 0a22d1e9-e6f8-4c81-bbc9-34edffed4439 -->
 			<releaseTime year="2003" day="4" />
 			<ratings critics="80" speed="80" outcome="74" />
 		</programme>
@@ -13269,7 +13510,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="5" function="2">295e2667-4f16-4f90-9883-6ec736fcb21d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="12,16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="12,16" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by a48d3913-b963-465c-b41d-cfa55046f6da -->
 			<releaseTime year="2004" day="12" />
 			<ratings critics="27" speed="57" outcome="41" />
 		</programme>
@@ -13356,7 +13597,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children_male="1.5" children_female="1.25" teenagers_male="1" teenagers_female="1.25" housewives="1.5" unemployed_female="1.5" />
-			<data country="USA" distribution="1" maingenre="16" subgenre="1,10" flags="8" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="16" subgenre="1,10" flags="8" blocks="3" price_mod="1" available="0" /> <!-- availability triggered by 1b9b6b1a-7411-46c0-9657-6feedd966016 -->
 			<releaseTime year="2005" day="5" />
 			<ratings critics="75" speed="62" outcome="88" />
 		</programme>

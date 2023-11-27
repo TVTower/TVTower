@@ -474,6 +474,9 @@
 			<review min="30" max="70" />
 			<speed min="30" max="70" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston">
 			<title>
@@ -497,7 +500,7 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 87a89565-4ac3-48ea-99d4-1964b5ac4f36 -->
 			<genres maingenre="17" subgenres="1,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -506,7 +509,9 @@
 			<review min="30" max="70" />
 			<speed min="30" max="70" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="fb26308d-90bf-426e-b766-3534900c8612" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="fb26308d-90bf-426e-b766-3534900c8612" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston">
 			<title>
@@ -530,7 +535,7 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by f4d44af8-747c-4651-a720-bdd84ffbedc0 -->
 			<genres maingenre="17" subgenres="1,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -539,7 +544,6 @@
 			<review min="30" max="70" />
 			<speed min="30" max="70" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="ac018c75-aa8f-4cb1-b1aa-6d1e90da8625" creator="9551" comment="https://en.wikipedia.org/wiki/Survivor_(Palahniuk_novel)">
 			<title>
@@ -678,6 +682,9 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
 			<title>
@@ -703,7 +710,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 -->
 			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
 			<genres maingenre="7" subgenres="" />
 			<blocks value="3" />
@@ -713,7 +720,9 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
 			<title>
@@ -739,7 +748,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 90fbe294-e7ab-4072-a1f0-71a8f8767d1e -->
 			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
 			<genres maingenre="7" subgenres="" />
 			<blocks value="3" />
@@ -749,7 +758,9 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 18" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0bb634fb-3712-489f-a27b-537bfb605c19" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="0bb634fb-3712-489f-a27b-537bfb605c19" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | part of the 'Ruhrgebietsreihe' and also sequel to 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 (but written earlier)">
 			<title>
@@ -775,7 +786,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by d5ee2df6-e3cf-47f4-9870-f634fce4aa4a -->
 			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
 			<genres maingenre="7" subgenres="" />
 			<blocks value="3" />
@@ -785,7 +796,9 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 24" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
 			<title>
@@ -811,7 +824,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 0bb634fb-3712-489f-a27b-537bfb605c19 -->
 			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
 			<genres maingenre="7" subgenres="" />
 			<blocks value="3" />
@@ -821,7 +834,6 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 30" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="503f9778-62b2-4717-98ff-b31cf8c0a5e6" creator="9551" comment="https://en.wikipedia.org/wiki/The_Corrections">
 			<title>
@@ -891,6 +903,9 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" creator="9551" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game">
 			<title>
@@ -916,7 +931,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 6933d3b7-64b0-46e4-9671-3ddecebc89ce -->
 			<genres maingenre="14" subgenres="17" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -925,7 +940,9 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" creator="9551" comment="https://en.wikipedia.org/wiki/The_Prisoner_of_Heaven">
 			<title>
@@ -951,7 +968,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 5740cd0d-3f8f-4b26-823a-23a91ea16b19 -->
 			<genres maingenre="14" subgenres="17" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -960,7 +977,9 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 18" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" creator="9551" comment="https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits">
 			<title>
@@ -987,7 +1006,7 @@
 				<job index="8" function="32" required="1" gender="2" />
 				<job index="9" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 2c30a2fd-f940-481d-886e-30f1e21dc43d -->
 			<genres maingenre="14" subgenres="17" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -996,7 +1015,6 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 24" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="19e286f7-0b76-4377-b3c7-34e1887b1fda" creator="9551" comment="https://en.wikipedia.org/wiki/Martin_Dressler">
 			<title>
@@ -1076,7 +1094,7 @@
 				<en>Hooligan</en>
 			</title_original>
 			<description>
-				<de>%ROLENAME1%s Spiel beginnt, wenn der Schiedsrichter abgepfiffen hat. Bei „seinem“ norddeutschen Profifußballverein steht er in der „dritten Hälfte“ im Startaufgebot. Seine Jungs, die besten Jahre, ihr Vermächtnis sind ihm heilig.</de>
+				<de>%ROLENAME1%s Match beginnt, wenn der Schiedsrichter abgepfiffen hat. Bei „seinem“ norddeutschen Profifußballverein steht er in der „dritten Hälfte“ im Startaufgebot. Seine Jungs, die besten Jahre, ihr Vermächtnis sind ihm heilig.</de>
 				<en>%ROLENAME1%s match starts when the referee blows the final whistle. For "his" northern German professional soccer club he is in the starting lineup of the "third half". His buddies, their best years, their legacy are sacred to him.</en>
 			</description>
 			<jobs>
@@ -1383,7 +1401,7 @@
 						<en>The Fall of Hyperion</en>
 					</title_original>
 					<description>
-						<de>Während die Pilger im Tal der Zeitgräber auf das Erscheinen des %ROLENAME4% warten, kämpft Präsidentin %ROLE1% am Regierungssitz Tau Ceti Center ihren eigenen Kampf voller List, Tücke und geheimer Pläne.</de>
+						<de>Während die Pilger im Tal der Zeitgräber auf das Erscheinen des %ROLENAME4% warten, führt Präsidentin %ROLE1% am Regierungssitz Tau Ceti Center ihren eigenen Feldzug voller List, Tücke und geheimer Pläne.</de>
 						<en>While the pilgrims in the Valley of the Time Tombs wait for the %ROLENAME4% to appear, President %ROLE1% is fighting her own battle of cunning, guile and secret plans at the Tau Ceti Center seat of government.</en>
 					</description>
 				</scripttemplate>
@@ -1481,6 +1499,9 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="4fb85612-e170-4443-be34-31e9ecd65f50" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="4fb85612-e170-4443-be34-31e9ecd65f50" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
 			<title>
@@ -1508,7 +1529,7 @@
 				<job index="9" function="32" required="1" gender="2" />
 				<job index="10" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by d5f301bf-a014-4a7c-8963-319cb7dc827b -->
 			<genres maingenre="14" subgenres="7,4" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1517,7 +1538,9 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
 			<title>
@@ -1545,7 +1568,7 @@
 				<job index="9" function="32" required="1" gender="1" />
 				<job index="10" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 4fb85612-e170-4443-be34-31e9ecd65f50 -->
 			<genres maingenre="14" subgenres="7,4" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1554,7 +1577,9 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 18" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
 			<title>
@@ -1582,7 +1607,7 @@
 				<job index="9" function="32" required="1" gender="1" />
 				<job index="10" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by c3b4897d-af32-4aa4-be78-ae736c03cd0b -->
 			<genres maingenre="18" subgenres="4,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1591,7 +1616,6 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 24" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="e266e7c3-e191-451a-87b6-61962e7c3b27" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
 			<title>
@@ -1603,7 +1627,7 @@
 				<en>Fables (Season 1)</en>
 			</title_original>
 			<description>
-				<de>Märchenstunde für Erwachsene. In Fabletown mitten in N.Y. leben Figuren aus Folklore und Märchen incognito und im Exil auf der Flucht vor einem mysteriösen, gefährlichen Feind. Der Große nicht-mehr-so-Böse Wolf sorgt als Sheriff für Recht und Ordnung.</de>
+				<de>Märchenstunde für Erwachsene. In Fabletown mitten in N.Y. leben Figuren aus Folklore und Märchen inkognito und im Exil auf der Flucht vor einem mysteriösen, gefährlichen Feind. Der Große nicht-mehr-so-Böse Wolf sorgt als Sheriff für Recht und Ordnung.</de>
 				<en>Story time for grown-ups. In Fabletown in the middle of N.Y., characters from folklore and fairy tales live incognito and in exile on the run from a mysterious, dangerous adversary. The Big no-longer-so-Bad Wolf keeps law and order as sheriff.</en>
 			</description>
 			<children>
@@ -1625,6 +1649,9 @@
 						<job index="6" function="2" required="1" gender="2" />
 						<job index="7" function="2" required="1" gender="1" />
 					</jobs>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="085400ce-9d05-4012-8e16-5276f335c38c" />
+					</effects>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="4467a7c9-4bc0-4eb6-94ec-3ce24deba5b3">
 					<title>
@@ -1955,7 +1982,7 @@
 				<job index="4" function="2" required="1" role_guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" />
 				<!-- index 5ff used for episode specific characters or generic ones -->
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
 			<episodes min="8" max="8" />
@@ -1966,7 +1993,6 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="f75c6a8b-d30b-48a2-b6bc-1458c19ca7ce" creator="9551" comment="https://en.wikipedia.org/wiki/Xanth">
 			<title>
@@ -1995,6 +2021,9 @@
 						<de>%ROLENAME2% ist vorübergehend König, weil %ROLENAME1% auf einer Mission in Mundania ist. Als er nicht zurückzukehren scheint, begibt er sich auf eine Reise, um Hilfe zu holen, und trifft dabei auf %ROLENAME3% den Zentauren.</de>
 						<en>%ROLENAME2% is temporarily king because %ROLENAME1% is on a mission in the Mundane World. When he won't seem to return, he embarks on a journey to get some help and meets %ROLENAME3% the Centaur.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f06a42e2-b666-4353-bc53-a0b262071814" />
+					</effects>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="9eca5a80-db76-4e81-93bc-ed29649c9134">
 					<title>
@@ -2036,6 +2065,7 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
+			<data available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<genres maingenre="10" subgenres="5,1" />
 			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
 			<episodes min="3" max="3" />
@@ -2046,7 +2076,6 @@
 			<review min="30" max="60" />
 			<speed min="30" max="70" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="f06a42e2-b666-4353-bc53-a0b262071814" creator="9551" comment="https://en.wikipedia.org/wiki/Xanth">
 			<title>
@@ -2115,6 +2144,7 @@
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
+			<data available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<genres maingenre="10" subgenres="5,1" />
 			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
 			<episodes min="3" max="3" />
@@ -2125,7 +2155,6 @@
 			<review min="30" max="60" />
 			<speed min="30" max="70" />
 			<studio_size value="3" />
-			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 
 		<!-- Music (i.e. mostly the stories from concept albums; track list titles usually map well to episode titles) -->
@@ -2157,6 +2186,9 @@
 						<de>%ROLENAME1% liegt in einem Krankenhaus in einem fast katatonischen Zustand, unfähig, sich an irgendetwas anderes als an Bruchstücke seiner Vergangenheit zu erinnern. Plötzlich kommen seine Erinnerungen in Strömen zurück.</de>
 						<en>%ROLENAME1% lies in a hospital in a near catatonic state, unable to remember anything but snippets from his past. Suddenly, his memories come flooding back in a torrent.</en>
 					</description>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="3e6b74d2-b386-47f8-b876-858db1449467" />
+					</effects>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="45f58872-b244-43f1-84dd-cdf9b1f1d906">
 					<title>
@@ -2830,7 +2862,7 @@
 				<job index="5" function="32" required="1" gender="2" />
 				<job index="6" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="64" />
+			<data flags="0" flags_optional="64" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<genres maingenre="17" subgenres="7,16" />
 			<episodes min="17" max="17" />
 			<blocks value="1" />
@@ -2840,7 +2872,6 @@
 			<review min="40" max="80" />
 			<speed min="40" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="4bdf0849-eb29-4e1c-a649-522939a5fa59" creator="9551" comment="https://en.wikipedia.org/wiki/Streets:_A_Rock_Opera">
 			<title>
@@ -3592,7 +3623,7 @@
 				<job index="9" function="2" required="1" gender="2" />
 				<job index="10" function="2" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<genres maingenre="1" subgenres="5,10" />
 			<episodes min="12" max="12" />
 			<blocks value="1" />
@@ -3787,7 +3818,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Mirage</en>
 					</title_original>
 					<description>
-						<de>In Marokko hat die „Leet Krew“ inzwischen die Kontrolle über ein verstecktes Lager mit nuklearen Sprengköpfen erlangt, die vermutlich aus einer Militärbasis eines Nachbarland gestohlen wurden. Der britische SAS wird hinzugezogen, um die Krise zu bewältigen.</de>
+						<de>In Marokko hat die „Leet Krew“ inzwischen die Kontrolle über ein verstecktes Lager mit nuklearen Sprengköpfen erlangt, die vermutlich aus einer Militärbasis eines Nachbarlands gestohlen wurden. Der britische SAS wird hinzugezogen, um die Krise zu bewältigen.</de>
 						<en>Meanwhile, in Morocco, the "Leet Krew" has gained control of a hidden cache of nuclear warheads believed to have been stolen from a neighboring country's military base. The British SAS is called in to deal with the crisis.</en>
 					</description>
 				</scripttemplate>
@@ -3988,6 +4019,9 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="30" max="90" />
 			<speed min="70" max="90" />
 			<studio_size value="1" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="eda00285-798d-4ba6-b299-621415d879d1" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican_II:_The_Final_Fight - TODO: ref person Buellhaecks / Huelsbeck">
 			<title>
@@ -4010,7 +4044,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="10" flags_optional="" />
+			<data flags="10" flags_optional="" available="0" /> <!-- availability triggered by 8264e56c-f9f9-4ffa-975d-93d9cc26f339 -->
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
 			<genres maingenre="3" subgenres="16,2" />
 			<blocks value="2" />
@@ -4020,7 +4054,9 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="30" max="90" />
 			<speed min="70" max="90" />
 			<studio_size value="1" />
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="83962c77-537a-4baa-abe8-d9b75093d1a8" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="83962c77-537a-4baa-abe8-d9b75093d1a8" creator="9551" comment="https://en.wikipedia.org/wiki/Mega_Turrican">
 			<title>
@@ -4043,7 +4079,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="10" flags_optional="" />
+			<data flags="10" flags_optional="" available="0" /> <!-- availability triggered by eda00285-798d-4ba6-b299-621415d879d1 -->
 			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
 			<genres maingenre="3" subgenres="16,2" />
 			<blocks value="2" />
@@ -4053,7 +4089,6 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="30" max="90" />
 			<speed min="70" max="90" />
 			<studio_size value="1" />
-			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="f424b506-9efe-4f1f-ab7c-5ff679dc66c5" creator="9551" comment="https://en.wikipedia.org/wiki/Zero_Wing | https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us">
 			<title>
@@ -4121,6 +4156,9 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f6fee4c6-4858-43d9-a17a-8bb90c769936" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="f6fee4c6-4858-43d9-a17a-8bb90c769936" creator="9551" comment="https://www.mobygames.com/game/19274/automania/ - actually the first part of the game series, but applying artistic license here.">
 			<title>
@@ -4145,7 +4183,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 8f13def6-dfd6-4efe-9436-6384faee92d8 -->
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -4154,7 +4192,9 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="cc74462f-0e7f-4acc-b95f-fd61e1756037" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="cc74462f-0e7f-4acc-b95f-fd61e1756037" creator="9551" comment="https://en.wikipedia.org/wiki/Everyone%27s_a_Wally">
 			<title>
@@ -4179,7 +4219,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by f6fee4c6-4858-43d9-a17a-8bb90c769936 -->
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -4188,7 +4228,9 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 18" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d621350a-5e57-4519-814a-5ea9f78d6553" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="d621350a-5e57-4519-814a-5ea9f78d6553" creator="9551" comment="https://www.mobygames.com/game/63125/herberts-dummy-run/">
 			<title>
@@ -4213,7 +4255,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by cc74462f-0e7f-4acc-b95f-fd61e1756037 -->
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -4222,7 +4264,9 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 24" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="aeda3248-41d9-4fd8-8497-bd2f1a9a0eb8" />
+			</effects>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="aeda3248-41d9-4fd8-8497-bd2f1a9a0eb8" creator="9551" comment="https://en.wikipedia.org/wiki/Three_Weeks_in_Paradise">
 			<title>
@@ -4247,7 +4291,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by d621350a-5e57-4519-814a-5ea9f78d6553 -->
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -4256,7 +4300,6 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="2" />
-			<availability script="TIME_DAYSPLAYED > 30" />
 		</scripttemplate>
 	</scripttemplates>
 </tvtdb>
