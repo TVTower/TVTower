@@ -4538,10 +4538,10 @@ Thanks to rough methods and his .44 Magnum, the Harry became a crowd favorite.</
 				<member index="4" function="2">bbe363b1-8b69-4e3e-a467-86a7db8be57f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1976" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" year="1976" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b3281aba-d3ec-40c0-86b7-3b7147367c2d -->
 			<ratings critics="32" speed="56" outcome="47" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="21bd1171-e56f-4492-87ae-bd873a9e8911" available="0" /> <!-- availability triggered by b3281aba-d3ec-40c0-86b7-3b7147367c2d -->
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="21bd1171-e56f-4492-87ae-bd873a9e8911" />
 			</effects>
 		</programme>
 		<programme id="21bd1171-e56f-4492-87ae-bd873a9e8911" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0086383" creator="">
@@ -4562,10 +4562,10 @@ Thanks to rough methods and his .44 Magnum, the Harry became a crowd favorite.</
 				<member index="1" function="2">ec20fc5a-a552-4119-8d1e-d310650c2830</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1983" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="0.67" />
+			<data country="USA" year="1983" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="0.67" available="0" /> <!-- availability triggered by d246c1c9-335e-43b4-9ce2-ef843960525f -->
 			<ratings critics="37" speed="51" outcome="51" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d585abdf-ba12-4e04-a224-f3797a9c62fe" available="0" /> <!-- availability triggered by d246c1c9-335e-43b4-9ce2-ef843960525f -->
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d585abdf-ba12-4e04-a224-f3797a9c62fe" />
 			</effects>
 		</programme>
 		<programme id="d585abdf-ba12-4e04-a224-f3797a9c62fe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0094963" creator="">
@@ -16487,10 +16487,10 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 				<member index="4" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D/F/I/YU" year="1964" distribution="1" maingenre="18" subgenre="1" flags="" blocks="2" price_mod="0.5" />
+			<data country="D/F/I/YU" year="1964" distribution="1" maingenre="18" subgenre="1" flags="" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Stukov_Winnetou1 -->
 			<ratings critics="73" speed="57" outcome="75" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Stukov_Winnetou3" available="0" /> <!-- availability triggered by Stukov_Winnetou1 -->
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Stukov_Winnetou3" />
 			</effects>
 		</programme>
 		<programme id="Stukov_Winnetou3" product="1" licence_type="1" imdb_id="tt0059915" creator="9584" created_by="Stukov">
@@ -20646,11 +20646,11 @@ The expressionist silent film is considered a milestone in film history.</en>
 				<member index="2" function="2">various-models</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="8" subgenre="5" flags="64" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="8" subgenre="5" flags="64" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 581d1050-d860-4f0b-8e6d-c2ef05f472e2 -->
 			<releaseTime year="1972" day="12" />
 			<ratings critics="10" speed="35" outcome="35" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f7a46a32-cc5a-4bd7-b314-2f7065e57df7" available="0" /> <!-- availability triggered by 581d1050-d860-4f0b-8e6d-c2ef05f472e2 -->
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f7a46a32-cc5a-4bd7-b314-2f7065e57df7" />
 			</effects>
 		</programme>
 		<programme id="05311672-64c5-4e3c-8186-1fd0b8ecdfdc" product="1" licence_type="1" creator="9551" imdb_id="tt0070909">
@@ -23961,11 +23961,11 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 				<member index="2" function="2">d493e78d-4df0-435e-8f9f-84dbef5f112f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="32" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="32" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 2080ae4b-e351-4e88-a8c8-12eb68662026 -->
 			<releaseTime year="1982" day="8" />
 			<ratings critics="11" speed="43" outcome="48" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b041b254-93fe-467d-8f00-5b53142a6d0f" available="0" /> <!-- availability triggered by 2080ae4b-e351-4e88-a8c8-12eb68662026 -->
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="b041b254-93fe-467d-8f00-5b53142a6d0f" />
 			</effects>
 		</programme>
 		<programme id="d50e71da-4be9-4e5f-87b3-0a728dd11232" product="1" licence_type="1" creator="9551" imdb_id="tt0084827">
@@ -32977,7 +32977,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 		</programme>
 		<programme id="d6cfd130-7074-400a-9d38-898b5fa31320" product="2" licence_type="3" creator="9551" imdb_id="tt0096542" comment="Only a few episodes have been picked to map 22 real episodes to 6 in the game. targetgroupattractivity: The kind of 'action' that is liked by women more than usual.">
 			<title>
-				<de>Babewatch - Die Wächter am Strand von L.A.(Staffel 1)</de>
+				<de>Babewatch - Die Wächter am Strand von L.A. (Staffel 1)</de>
 				<en>Babewatch (Season 1)</en>
 			</title>
 			<title_original>
@@ -32997,7 +32997,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
-			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" />
+			<data country="USA" year="1989" distribution="2" maingenre="2" subgenre="7,1" flags="8" blocks="1" price_mod="0.8" />
 			<ratings critics="45" speed="61" outcome="67" />
 			<children>
 				<programme id="d10aeb23-49c3-4d96-986d-8b1519b1bfa5" product="2" licence_type="2" imdb_id="tt0096898" creator="9551">
@@ -33111,7 +33111,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
-			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="1,4" flags="8" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="1991" distribution="2" maingenre="2" subgenre="7,1" flags="8" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="37" speed="59" outcome="74" />
 			<children>
 				<programme id="acd4c9e7-6e25-4b44-9277-b60ca3cc2b00" product="2" licence_type="2" imdb_id="tt0394279" creator="9551">
@@ -33225,7 +33225,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
-			<data country="USA" year="1992" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="1992" distribution="2" maingenre="2" subgenre="7,1" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="43" speed="64" outcome="81" />
 			<children>
 				<programme id="5446d41b-deac-4484-a3ec-74e737ad7d1b" product="2" licence_type="2" imdb_id="tt0123433" creator="9551">
@@ -33339,7 +33339,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
-			<data country="USA" year="1993" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="1993" distribution="2" maingenre="2" subgenre="7,1" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="42" speed="62" outcome="82" />
 			<children>
 				<programme id="054ffc65-33d8-4013-bda0-abbf0c182b3a" product="2" licence_type="2" imdb_id="tt0394293" creator="9551">
@@ -33453,7 +33453,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
-			<data country="USA" year="1994" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="1994" distribution="2" maingenre="2" subgenre="7,1" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="41" speed="61" outcome="87" />
 			<children>
 				<programme id="ad197a0a-7858-4753-af55-0c0dc51bc853" product="2" licence_type="2" imdb_id="tt0394259" creator="9551">
@@ -33568,7 +33568,7 @@ The film series went on to become the longest-running in Korean cinema.</en>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers_male="1" teenagers_female="1.5" housewives_male="1" housewives_female="1.2" employees_male="1" employees_female="1.2" unemployed_male="1" unemployed_female="1.2" managers_male="1" managers_female="1.2" pensioners_male="1" pensioners_female="1.2" />
-			<data country="USA" year="1995" distribution="2" maingenre="2" subgenre="1,4" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="1995" distribution="2" maingenre="2" subgenre="7,1" flags="0" blocks="1" price_mod="0.8" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="48" speed="71" outcome="90" />
 			<children>
 				<programme id="9ada754b-d09a-4608-b1d3-3e62e4e70c87" product="2" licence_type="2" imdb_id="tt0394355" creator="9551">
@@ -37174,7 +37174,6 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<member index="3" function="2">8efa414e-eb64-43f3-95cd-b2b1fbbd8423</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" />
 			<data country="USA" year="1968" distribution="2" maingenre="17" subgenre="7,4" flags="0" blocks="1" price_mod="0.5" />
 			<ratings critics="63" speed="63" outcome="45" />
 			<children>
@@ -37287,8 +37286,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<member index="3" function="2">8efa414e-eb64-43f3-95cd-b2b1fbbd8423</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="2" teenagers="1.5" housewives_male="1.25" employees_male="1.5" unemployed_male="1.5" managers="0.75" pensioners="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
-			<data country="USA" year="1969" distribution="2" maingenre="17" subgenre="7,4" flags="0" blocks="1" price_mod="0.5" />
+			<data country="USA" year="1969" distribution="2" maingenre="17" subgenre="7,4" flags="0" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="65" speed="65" outcome="53" />
 			<children>
 				<programme id="7cbb75ca-677a-4cd3-be56-773385843052" product="2" licence_type="2" imdb_id="tt0597997" creator="9551">
