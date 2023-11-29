@@ -820,7 +820,9 @@ endrem
 			'_populationDensityOverlay = LoadImage(ResizePixmap(pix, Int(pix.width * mapInfo.densityDataScreenScale), Int(pix.height * mapInfo.densityDataScreenScale)))
 			'_populationDensityOverlay = LoadImage(GetPopulationDensityOverlayRaxPixmap(True))
 			Local pix:TPixmap = GetPopulationDensityOverlayRawPixmap(True)
-			_populationDensityOverlay = LoadImage(ResizePixmap(pix, Int(pix.width * mapInfo.densityDataScreenScale), Int(pix.height * mapInfo.densityDataScreenScale)))
+			'Local newX:Int = mapInfo.screenMapSize.x 'OR: Int(pix.width * mapInfo.densityDataScreenScale + 0.5)
+			'Local newY:Int = mapInfo.screenMapSize.y 'OR: Int(pix.height * mapInfo.densityDataScreenScale + 0.5)
+			_populationDensityOverlay = LoadImage(ResizePixmap(pix, mapInfo.screenMapSize.x, mapInfo.screenMapSize.y))
 		EndIf
 		Return _populationDensityOverlay
 	End Method
