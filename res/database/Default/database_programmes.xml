@@ -2645,11 +2645,8 @@ A bit more could have been made of such a confrontation, arguably.</en>
 				<member index="3" function="2">a5191c4e-7619-4aec-98ca-dde532991fca</member>
 			</staff>
 			<groups target_groups="279" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1991" distribution="1" maingenre="16" subgenre="1,2" flags="8" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by ad487fa2-2103-4540-b138-7cbd19b429d5 -->
+			<data country="USA" year="1991" distribution="1" maingenre="16" subgenre="1,2" flags="8" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by ad487fa2-2103-4540-b138-7cbd19b429d5 | end of Cpt. Kirk generation series -->
 			<ratings critics="42" speed="37" outcome="51" />
-			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="8566103d-6318-4ec7-9e19-d81f305fd8f7" />
-			</effects>
 		</programme>
 		<programme id="8566103d-6318-4ec7-9e19-d81f305fd8f7" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0111280" creator="">
 			<title>
@@ -2674,10 +2671,10 @@ A bit more could have been made of such a confrontation, arguably.</en>
 				<member index="6" function="2">33255ee1-9e3e-4bf0-b21e-c0985eaae3e0</member>
 			</staff>
 			<groups target_groups="279" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="1" maingenre="16" subgenre="1,2" flags="8" blocks="2" price_mod="0.67" available="0" /> <!-- availability triggered by 199e7a34-6dc7-4551-af24-50c9f455428a -->
+			<data country="USA" year="1994" distribution="1" maingenre="16" subgenre="1,2" flags="8" blocks="2" price_mod="0.67" />
 			<ratings critics="37" speed="37" outcome="61" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="79eb1bd2-5c5b-4a77-bf14-e9d3a6496bf0" />
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="79eb1bd2-5c5b-4a77-bf14-e9d3a6496bf0" /> <!-- start of Cpt. Picard generation series -->
 			</effects>
 		</programme>
 		<programme id="649352b6-2b36-47d0-8f85-d0992bba662f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0253754" creator="">
@@ -4538,11 +4535,8 @@ Thanks to rough methods and his .44 Magnum, the Harry became a crowd favorite.</
 				<member index="4" function="2">bbe363b1-8b69-4e3e-a467-86a7db8be57f</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1976" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b3281aba-d3ec-40c0-86b7-3b7147367c2d -->
+			<data country="USA" year="1976" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by b3281aba-d3ec-40c0-86b7-3b7147367c2d | end of Dirty Harry 70s films -->
 			<ratings critics="32" speed="56" outcome="47" />
-			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="21bd1171-e56f-4492-87ae-bd873a9e8911" />
-			</effects>
 		</programme>
 		<programme id="21bd1171-e56f-4492-87ae-bd873a9e8911" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0086383" creator="">
 			<title>
@@ -4562,10 +4556,10 @@ Thanks to rough methods and his .44 Magnum, the Harry became a crowd favorite.</
 				<member index="1" function="2">ec20fc5a-a552-4119-8d1e-d310650c2830</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1983" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="0.67" available="0" /> <!-- availability triggered by d246c1c9-335e-43b4-9ce2-ef843960525f -->
+			<data country="USA" year="1983" distribution="1" maingenre="2" subgenre="4,17" flags="0" blocks="2" price_mod="0.67" />
 			<ratings critics="37" speed="51" outcome="51" />
 			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d585abdf-ba12-4e04-a224-f3797a9c62fe" />
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="d585abdf-ba12-4e04-a224-f3797a9c62fe" /> <!-- start of Dirty Harry 80s films -->
 			</effects>
 		</programme>
 		<programme id="d585abdf-ba12-4e04-a224-f3797a9c62fe" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0094963" creator="">
