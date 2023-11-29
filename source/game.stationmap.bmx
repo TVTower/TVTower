@@ -584,16 +584,16 @@ endrem
 		Return result
 	End Function
 
-rem
+
 	Method GetTotalChannelExclusiveAudience:Int(channelNumber:Int)
+		Throw "TODO: GetTotalChannelExclusiveAudience - cable + sat"
 		Local result:Int
 		For Local section:TStationMapSection = EachIn sections
 			result :+ section.GetTotalChannelExclusiveAntennaAudience(channelNumber)
-			'TODO: cable + sat
 		Next
 		Return result
 	End Method
-endrem
+
 
 	Method GetTotalShareAudience:Int(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		'return ".total" if you want to know what the "total amount" is
@@ -2437,8 +2437,8 @@ EndRem
 		Next
 		
 		'SavePixmapPNG(self.surfaceData.ToPixmap(), "surfaceData.png")
-		SavePixmapPNG(GetPopulationDensityOverlayRawPixmap(False), "populationdensity_raw.png")
-		SavePixmapPNG(GetPopulationDensityOverlayRawPixmap(True), "populationdensity_raw_enhanced.png")
+		'SavePixmapPNG(GetPopulationDensityOverlayRawPixmap(False), "populationdensity_raw.png")
+		'SavePixmapPNG(GetPopulationDensityOverlayRawPixmap(True), "populationdensity_raw_enhanced.png")
 		
 		'TODO:
 		'Nicht von Bundeslaendern belegete "Bevoelkerungsdichte" null setzen?
@@ -2454,7 +2454,7 @@ EndRem
 			self.population :+ section.GetPopulation()
 		Next
 
-'rem
+rem
 		'https://datacommons.org/place/nuts/DEG?hl=de -> dort Bundeslaender eintippen
 		local expectedPop:Int[]
 		expectedPop :+ [569396] 'Bremen
@@ -2479,7 +2479,7 @@ EndRem
 			TLogger.Log("TStationMapCollection.CalculateSectionsPopulation", "Section " + section.name + " population = " + section.GetPopulation() +"    eurostat = " + expectedPop[i]+"  " + Left((100 * expectedPop[i]/float(section.GetPopulation()) - 100 ),5)+"%)", LOG_DEBUG | LOG_LOADING)
 			i :+ 1
 		Next
-'endrem
+endrem
 		Return True
 	End Method
 End Type
