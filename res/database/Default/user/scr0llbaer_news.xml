@@ -1,8 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="News entries under construction. Incomplete, not validated, and not tested. For build-stage review, feedback and coordination with other contributors only. Contents will be moved to appropriate places, and this file will be deleted in the last step of the PR." />
+	<version value="3" comment="News entries by scr0llbaer" />
 
 	<allnews>
+		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames} gesichtet</de>
+				<en>Whale sighted in ${thames}</en>
+			</title>
+			<description>
+				<de>Da staunten die Anwohner an den Ufern des Flusses nicht schlecht, als sie am frühen Morgen lautes Platschen und hoch aufspritzendes Wasser bewundern durften.</de>
+				<en>The residents on the shores of the river were amazed when they witnessed loud splashing and high spraying water in the early morning.</en>
+			</description>
+			<data genre="4" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="92598126-f227-4fd2-894e-a5902eaeb392" />
+			</effects>
+			<variables>
+				<thames>
+					<de>Themse|Rhein|Mississippi|Nil|Amazonas|Wolga|Seine</de>
+					<en>Thames|Rhine|Mississippi|Nile|Amazon River|Volga|Seine</en>
+				</thames>
+			</variables>
+		</news>
+
+		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Grienpies schlägt Alarm</de>
+				<en>Creampeas sounds the alarm</en>
+			</title>
+			<description>
+				<de>Wegen Wal in ${thames} müsse eine Rettungsaktion sofort eingeleitet werden.</de>
+				<en>Rescue operation for whale in ${thames} must be initiated immediately, Creampeas said.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="5367ea49-6b5c-4703-87d1-b2427212f4d3" probability1="50" news2="5d9a2849-c5f2-4504-912f-84cf5065a9b5" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames}: Rettung in Sicht</de>
+				<en>Whale in ${thames}: Rescue in sight</en>
+			</title>
+			<description>
+				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
+				<en>Creampeas launches rescue action. The animal must not come to harm, the spokesman said.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="43799353-d91e-4f70-accb-703f6d6b861a" />
+			</effects>
+		</news>
+
+		<news id="43799353-d91e-4f70-accb-703f6d6b861a" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Schlechtes Wetter behindert Wal-Rettung</de>
+				<en>Bad weather hinders rescue action for whale</en>
+			</title>
+			<description>
+				<de>Die Leitstelle vermeldet, dass die Schiffe auf Grund des anhaltenden Sturms nicht einsatzbereit gemacht werden können.</de>
+				<en>The control center reports that the ships cannot be made operational due to the ongoing storm.</en>
+			</description>
+			<data genre="4" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="5ab7ad14-2513-427f-893c-913d936e0575" />
+			</effects>
+		</news>
+
+		<news id="5ab7ad14-2513-427f-893c-913d936e0575" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Weiterhin Schwierigkeiten bei Wal-Rettung</de>
+				<en>Difficulties with whale rescue continue</en>
+			</title>
+			<description>
+				<de>Man versuche es mit Locksignalen, doch der Wal reagiere nicht.</de>
+				<en>It is being attempted with mating calls, but the whale does not react.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="321a8590-eec0-4f1d-8031-6d1f9b443b33" probability1="50" news2="9891cfa6-1cd9-41e4-b179-496da048f7d4" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="321a8590-eec0-4f1d-8031-6d1f9b443b33" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Zustand des Wals verschlechtert sich</de>
+				<en>Condition of the whale deteriorates</en>
+			</title>
+			<description>
+				<de>Grienpies: Man müsse umgehend eine Lösung für die Situation finden, sonst überlebe der Wal nicht.</de>
+				<en>Creampeas: A solution to the situation must be found immediately, otherwise the whale will not survive, Creampeas said.</en>
+			</description>
+			<data genre="4" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="a33be652-8202-4685-a6ae-1b530f04b3a5" />
+			</effects>
+		</news>
+
+		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames} ist tot</de>
+				<en>Whale in ${thames} dead</en>
+			</title>
+			<description>
+				<de>Die genaue Todesursache ist noch unklar, vermutlich war der Wal bereits schwach und konnte nicht genug Nahrung finden.</de>
+				<en>The exact cause of death is still unclear, probably the whale was already weak and could not find enough food.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+		</news>
+
+		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames} schwimmt zur Flußmündung</de>
+				<en>Whale in ${thames} swims to river mouth</en>
+			</title>
+			<description>
+				<de>Es sind Fortschritte bei der Rettungsaktion zu verzeichnen. Hoffentlich findet der Wal seinen Weg.</de>
+				<en>Progress is being made in the rescue operation. Hopefully the whale will find its way.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="5d9a2849-c5f2-4504-912f-84cf5065a9b5" />
+			</effects>
+		</news>
+
+		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal von ${thames} ins Meer zurückgeschwommen</de>
+				<en>Whale from ${thames} swam back to sea</en>
+			</title>
+			<description>
+				<de>Na also! Der Wal ist wieder in seinem natürlichen Habitat.</de>
+				<en>There you go! The whale is back in its natural habitat.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+		</news>
+
+		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing the it still can be used in general and in addition when slightly modified to a fictional copycat event.">
+			<availability year_range_from="1988" year_range_to="-1" script="TIME_SEASON=1" />
+			<title>
+				<de>Schessnah in der Nähe von Moskau gesichtet</de>
+				<en>Schessnah spotted near Moscow</en>
+			</title>
+			<description>
+				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke Schessnah gesichtet. Handelt es sich dabei um einen Nachahmer? Einen Selbstmordattentäter?</de>
+				<en>Russian air defense has spotted a German small plane of the brand Schessnah near Moscow. Is it a copycat? A suicide bomber?</en>
+			</description>
+			<data genre="4" price="0.55" quality="8" fictional="1" />
+		</news>
+
 		<news id="4e9e0ab5-5e33-4d9f-8679-72cb0e3d0bae" type="0" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551" comment="Source: First two items ChatGPT news generator which effectively has some kind of templated generator too as some returned items are in the format 'Town holds funeral for dead squirrel|dead car|dead tree|etc'. Everything else made up by me. TODO: Internationalize more (generated names etc) once playing other regions becomes available. TODO: variations 'dead car', 'dead tree' may be a more subtle pun, at least in English, perhaps separate them out">
 			<title>
 				<de>${squirrel_${i}} %joe% gestorben</de>
@@ -1445,24 +1593,6 @@
 				<!-- and da capo. TODO: Once something like that is supported, add variation to first item 'beantragt *erneut* dritten Weltkrieg' for the 2nd, 3rd,... iterations -->
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
-		</news>
-
-		<!-- from Stukov - https://www.gamezworld.de/phpforum/viewtopic.php?id=14039 -->
-
-		<news id="news-stukov0001" type="0" creator="Stukov" created_by="Stukov">
-			<title>
-				<de>Aliens setzen auf erneuerbare Energien</de>
-				<en>Aliens Go Green</en>
-			</title>
-			<description>
-				<de>Alien-Raumschiffe entpuppen sich als riesige Solarpaneele - „Wir dachten immer, es wären Angriffe, aber sie sammeln nur Energie für ihre Heimatplaneten!“ #Area51 #Solarenergie</de>
-				<en>Alien spacecrafts reveal themselves as giant solar panels - "We always thought they were attacks, but they were just collecting energy for their home planets!" #Area51 #SolarEnergy</en>
-			</description>
-			<data genre="4" price="1.2" quality="63" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="16" valueMin="0.1" valueMax="2.5" />
-			</effects>
-			<targetgroupattractivity teenagers="1.3" />
 		</news>
 	</allnews>
 </tvtdb>
