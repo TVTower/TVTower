@@ -977,9 +977,9 @@ endrem
 
 	'less calculation-expensive variant for determining if obtaining a temporary antenna makes sense
 	'-8 = no section, -1 = no permission possible yet, 0 = permission already present, permission price otherwise
-	Method of_GetBroadCastPermisionCosts:Int(x:Int,y:Int)
+	Method of_GetBroadCastPermisionCosts:Int(dataX:Int,dataY:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
-		Local section:TStationMapSection = GetStationMapCollection().GetSection(x,y)
+		Local section:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(dataX, dataY)
 		If Not section Then Return Self.RESULT_NOTFOUND
 		If section.HasBroadCastPermission(Self.ME, TVTStationType.ANTENNA) Then Return 0
 		If Not section.NeedsBroadcastPermission(Self.ME, TVTStationType.ANTENNA) Then Return 0
@@ -988,9 +988,9 @@ endrem
 		Return price
 	End Method
 
-	Method of_GetTemporaryAntennaStation:TStationBase(x:Int,y:Int,fullyInit:Int)
+	Method of_GetTemporaryAntennaStation:TStationBase(dataX:Int, dataY:Int,fullyInit:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetTemporaryAntennaStation(x, y, fullyInit)
+		Return GetStationMap(Self.ME, True).GetTemporaryAntennaStation(dataX, dataY, fullyInit)
 	End Method
 
 	Method of_GetTemporarySatelliteUplinkStation:TStationBase(satelliteIndex:Int)

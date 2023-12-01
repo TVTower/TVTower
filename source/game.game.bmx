@@ -849,7 +849,11 @@ endrem
 		Local map:TStationMap = GetStationMap(playerID, True)
 
 		'add new station
-		Local s:TStationBase = New TStationAntenna.Init( GetStationMapCollection().mapInfo.startAntennaPos.x, GetStationMapCollection().mapInfo.startAntennaPos.y , -1, playerID )
+		Local dataX:Int = GetStationMapCollection().mapInfo.SurfaceXToDataX(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x)
+		Local dataY:Int = GetStationMapCollection().mapInfo.SurfaceYToDataY(GetStationMapCollection().mapInfo.startAntennaSurfacePos.y)
+		Local s:TStationBase = New TStationAntenna.Init(dataX, dataY , -1, playerID )
+		'Local s:TStationBase = New TStationAntenna.Init(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x, GetStationMapCollection().mapInfo.startAntennaSurfacePos.y , -1, playerID )
+
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		If s.getReach() < GameRules.stationInitialIntendedReach
 			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
@@ -884,8 +888,8 @@ endrem
 		'fight with high initial fix costs
 
 		'refresh stats
-		GetStationMap(playerID).DoCensus()
-		GetStationMap(playerID).Update()
+		map.DoCensus()
+		map.Update()
 		GetStationMapCollection().Update()
 		If GetStationMap(playerID).GetReach() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReach() returned 0."
 

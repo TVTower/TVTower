@@ -2874,6 +2874,9 @@ rem
 		endif
 endrem
 
+		Local mouseDataX:Int = GetStationMapCollection().mapInfo.ScreenXToDataX(MouseManager.x)
+		Local mouseDataY:Int = GetStationMapCollection().mapInfo.ScreenYToDataY(MouseManager.y)
+
 		'buying stations using the mouse
 		'1. searching
 		GetCurrentPlayer().setHotKeysEnabled(True)
@@ -2885,15 +2888,19 @@ endrem
 			Navigate(KEY_RIGHT, 1, 0)
 
 			'create a temporary station if not done yet
-			If Not mouseoverStation Then mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
-			Local mousePos:TVec2D = New TVec2D( MouseManager.x, MouseManager.y)
+			If Not mouseoverStation
+				Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+				Local dataX:Int = mapInfo.ScreenXToDataX(MouseManager.x)
+				Local dataY:Int = mapInfo.ScreenYToDataY(MouseManager.y)
+				mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation(dataX, dataY)
+			EndIf
+
 			if not mouseoverStationPosition Then mouseoverStationPosition = New TVec2D
 			mouseoverStationPosition.SetXY(MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
-			If Not mousePos.EqualsXY(mouseoverStation.x, mouseoverStation.y, True)
-				mouseoverStation.SetPosition(int(mousePos.x), int(mousePos.y))
-				'mouseoverStation.InvalidateReach()
+			If mouseDataX <> mouseoverStation.x or mouseDataY <> mouseoverStation.y
+				mouseoverStation.SetPosition(mouseDataX, mouseDataY)
 
 				mouseoverStation.refreshData()
 				'refresh state information
@@ -2901,13 +2908,13 @@ endrem
 			EndIf
 
 			Local hoveredMapSection:TStationMapSection
-			If mouseoverStation Then hoveredMapSection = GetStationMapCollection().GetSection(mouseoverStation.x, mouseoverStation.y)
+			If mouseoverStation Then hoveredMapSection = GetStationMapCollection().GetSectionByDataXY(mouseoverStation.x, mouseoverStation.y)
 
 			'if mouse gets clicked, we store that position in a separate station
 			If MOUSEMANAGER.isClicked(1) OR KEYMANAGER.IsHit(KEY_SPACE)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReach() > 0
-					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.X, mouseoverStation.y )
+					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.x, mouseoverStation.y )
 
 					'handled left click
 					MouseManager.SetClickHandled(1)
@@ -2922,7 +2929,7 @@ endrem
 			EndIf
 
 			If selectedStation
-				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(selectedStation.x, selectedStation.y)
+				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(selectedStation.x, selectedStation.y)
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf
@@ -2930,8 +2937,8 @@ endrem
 		ElseIf actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
 			'if the mouse has moved or nothing was created yet
 			'refresh the station data and move station
-			If Not mouseoverStation Or Not mouseoverStationPosition Or Not (MouseManager.GetPosition().EqualsXY(mouseoverStationPosition.x, mouseoverStationPosition.y) )
-				mouseoverSection = GetStationMapCollection().GetSection( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
+			If Not mouseoverStation Or Not mouseoverStationPosition Or mouseDataX <> mouseoverStation.x or mouseDataY <> mouseoverStation.y
+				mouseoverSection = GetStationMapCollection().GetSectionByDataXY(mouseDataX, mouseDataY)
 				If mouseoverSection
 					Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySectionName(mouseoverSection.name)
 					If cableNetwork And cableNetwork.IsLaunched()
@@ -2963,7 +2970,7 @@ endrem
 
 			Local hoveredMapSection:TStationMapSection
 			If mouseoverStation And mouseoverStationPosition
-				hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStationPosition.x), Int(mouseoverStationPosition.y))
+				hoveredMapSection = GetStationMapCollection().GetSectionByDataXY(mouseDataX, mouseDataY)
 			EndIf
 
 			'if mouse gets clicked, we store that position in a separate station
@@ -2989,7 +2996,7 @@ endrem
 			EndIf
 
 			If selectedStation
-				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(selectedStation.x, selectedStation.y)
+				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(selectedStation.x, selectedStation.y)
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf

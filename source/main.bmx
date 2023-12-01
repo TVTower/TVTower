@@ -178,7 +178,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
-Global collectDebugStats:Int = False
+Global collectDebugStats:Int = True
 OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
@@ -2404,7 +2404,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 19
+	Const SAVEGAME_VERSION:int = 20
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2700,24 +2700,44 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
-		'check difficulty object version
-		GetPlayerDifficultyCollection().InitializeDefaults()
-		For local pID:Int = 1 to 4
-			Local playerDifficulty:TPlayerDifficulty = GetPlayerDifficulty(pID)
-			If playerDifficulty
-				If playerDifficulty.difficultyVersion < 1
-					'before introduction of version - replace difficulty object completely
-					Local newDifficulty:TPlayerDifficulty = GetPlayerDifficultyCollection().getByGUID(playerDifficulty.GetGUID())
-					If not newDifficulty or newDifficulty.difficultyVersion < 1
-						throw "replacing difficulty data for player "+pID+" failed"
-					Else
-						GetPlayerDifficultyCollection().RemoveByID(playerDifficulty.GetID())
-						GetPlayerDifficultyCollection().AddToPlayer(pID, newDifficulty)
-						TLogger.Log("RepairData", "difficulty data for player " + pID+" - replace with current data for level "+playerDifficulty.GetGUID())
+		If savegameVersion < 20
+			'repair antenna coordinates from "pixel based" to "data based"
+			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+			For local pID:Int = 1 to 4
+				For local station:TStationAntenna = EachIn GetStationMap(pID).stations
+					Local oldX:Int = station.x
+					Local oldY:Int = station.y
+					Local oldReach:Int = station.reach
+					Local oldReachMax:Int = station.reachMax
+					Local oldRadius:Int = station.radius
+					station.radius = 31 'the one which was calculated in earlier versions
+					station.SetPosition(mapInfo.ScreenXToDataX(station.x), mapInfo.ScreenYToDataY(station.y))
+					TLogger.Log("RepairData()", "Updated station position: " + oldX + "," + oldY + " -> " + station.x + "," + station.y + "  radius: " + oldRadius+" -> " + station.radius +"  reachMax: " + oldReach + " -> " + station.GetReach(), LOG_LOADING)
+				Next
+			Next
+			GetStationMapCollection().antennaStationRadius = 31
+		EndIf
+
+		If savegameVersion < 18
+			'check difficulty object version
+			GetPlayerDifficultyCollection().InitializeDefaults()
+			For local pID:Int = 1 to 4
+				Local playerDifficulty:TPlayerDifficulty = GetPlayerDifficulty(pID)
+				If playerDifficulty
+					If playerDifficulty.difficultyVersion < 1
+						'before introduction of version - replace difficulty object completely
+						Local newDifficulty:TPlayerDifficulty = GetPlayerDifficultyCollection().getByGUID(playerDifficulty.GetGUID())
+						If not newDifficulty or newDifficulty.difficultyVersion < 1
+							throw "replacing difficulty data for player "+pID+" failed"
+						Else
+							GetPlayerDifficultyCollection().RemoveByID(playerDifficulty.GetID())
+							GetPlayerDifficultyCollection().AddToPlayer(pID, newDifficulty)
+							TLogger.Log("RepairData", "difficulty data for player " + pID+" - replace with current data for level "+playerDifficulty.GetGUID())
+						EndIf
 					EndIf
 				EndIf
-			EndIf
-		Next
+			Next
+		EndIf
 		If savegameVersion < 18
 			TLogger.Log("RepairData", "Removing AI-Events", LOG_SAVELOAD | LOG_DEBUG)
 			For Local i:Int = 1 To 4
@@ -7119,12 +7139,12 @@ Function ShowApp:Int()
 End Function
 
 
-Global bbGCAllocCount:ULong = 0
+'Global bbGCAllocCount:ULong = 0
 ?bmxng
 'ron|gc
-'Extern
-'    Global bbGCAllocCount:ULong="bbGCAllocCount"
-'End Extern
+Extern
+    Global bbGCAllocCount:ULong="bbGCAllocCount"
+End Extern
 ?
 
 

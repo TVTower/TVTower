@@ -188,8 +188,8 @@ endrem
 
 
 	'returns the antenna share for the given screen coordinate
-	Method GetPopulationAntennaShare:Float(x:Int, y:Int)
-		Local section:TStationMapSection = GetSection(x, y)
+	Method GetPopulationAntennaShare:Float(dataX:Int, dataY:Int)
+		Local section:TStationMapSection = GetSectionByDataXY(dataX, dataY)
 		If section then Return section.GetPopulationAntennaShare()
 
 		Return GetCurrentPopulationAntennaShare()
@@ -351,8 +351,8 @@ endrem
 		'circle coordinates are "local" to mapInfo.densityData
 		Local circleRectX:Int = Max(0, densityX - radius)
 		Local circleRectY:Int = Max(0, densityY - radius)
-		Local circleRectX2:Int = densityX + Min(radius, Min(surfaceData.width-1, mapInfo.densityData.width-1))
-		Local circleRectY2:Int = densityY + Min(radius, Min(surfaceData.height-1, mapInfo.densityData.height-1))
+		Local circleRectX2:Int = Min(densityX + radius, Min(surfaceData.width-1, mapInfo.densityData.width-1))
+		Local circleRectY2:Int = Min(densityY + radius, Min(surfaceData.height-1, mapInfo.densityData.height-1))
 		Local radiusSquared:Int = radius * radius
 
 		Local ownerAntennaLayer:TStationMapAntennaLayer = GetStationMap(owner)._GetAllAntennasLayer()
@@ -422,11 +422,9 @@ endrem
 	End Method
 
 
-	Method GetAntennaAudience:Int(densityX:Int, densityY:Int, radius:Int)
-		Local screenX:Int = mapInfo.DataXToScreenX(densityX)
-		Local screenY:Int = mapInfo.DataYToScreenY(densityY)
-		Local share:Float = GetPopulationAntennaShare(screenX, screenY)
-		Return GetAntennaPopulation(densityX, densityY, radius) * share
+	Method GetAntennaAudience:Int(dataX:Int, dataY:Int, radius:Int)
+		Local share:Float = GetPopulationAntennaShare(dataX, dataY)
+		Return GetAntennaPopulation(dataX, dataY, radius) * share
 	End Method
 
 
@@ -1085,7 +1083,7 @@ endrem
 		EndIf
 		_instance.LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapSurfaceOffsetX, mapSurfaceOffsetY, mapSurfaceImageURL)
 		
-		_instance.mapInfo.startAntennaPos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "x", 0), TXmlHelper.FindValueInt(startAntennaNode, "y", 0))
+		_instance.mapInfo.startAntennaSurfacePos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "surface_x", 0), TXmlHelper.FindValueInt(startAntennaNode, "surface_y", 0))
 
 		'older savegames might contain a config which has the data converted
 		'to key->value[] arrays instead of values being overridden on each load.
@@ -1188,10 +1186,10 @@ endrem
 		If StripDir(fullSurfaceImageURI) = fullSurfaceImageURI
 			fullSurfaceImageURI = baseURI + "/" + fullSurfaceImageURI
 		EndIf
-'print "LoadMapInformation("+baseURI+")"
-'print "  fullDensityDataURI = " + fullDensityDataURI
-'print "  fullSurfaceImageURI = " + fullSurfaceImageURI
-'print "  currentDir = " + currentDir()
+		'print "LoadMapInformation("+baseURI+")"
+		'print "  fullDensityDataURI = " + fullDensityDataURI
+		'print "  fullSurfaceImageURI = " + fullSurfaceImageURI
+		'print "  currentDir = " + currentDir()
 
 		Local stopWatch:TStopWatch = New TStopWatch.Init()
 		self.mapInfo = New TStationMapInfo(fullDensityDataURI, New SVec2I(mapCountryOffsetX, mapCountryOffsetY), fullSurfaceImageURI)
@@ -1272,7 +1270,7 @@ endrem
 		LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapDensityDataOffsetX, mapDensityDataOffsetY, mapSurfaceImageURL)
 		
 
-		mapInfo.startAntennaPos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "x", 0), TXmlHelper.FindValueInt(startAntennaNode, "y", 0))
+		mapInfo.startAntennaSurfacePos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "surface_x", 0), TXmlHelper.FindValueInt(startAntennaNode, "surface_y", 0))
 
 
 		'older savegames might contain a config which has the data converted
@@ -1370,8 +1368,9 @@ endrem
 
 		'dynamic antenna radius depending on start year (start antenna reach)
 		Local map:TStationMap = GetStationMap(1, True)
-		'coordinates from game.game.bmx PreparePlayerStep1
-		Local station:TStationBase = map.GetTemporaryAntennaStation(GetStationMapCollection().mapInfo.startAntennaPos.x, GetStationMapCollection().mapInfo.startAntennaPos.y, False)
+		Local dataX:Int = mapInfo.SurfaceXToDataX(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x)
+		Local dataY:Int = mapInfo.SurfaceYToDataY(GetStationMapCollection().mapInfo.startAntennaSurfacePos.y)
+		Local station:TStationBase = map.GetTemporaryAntennaStation(dataX, dataY, False)
 		If station And antennaStationRadius = ANTENNA_RADIUS_NOT_INITIALIZED
 			antennaStationRadius = 50
 			For Local r:Int = 20 To 50
@@ -2133,20 +2132,27 @@ endrem
 
 	'=== SECTIONS ===
 
-	Method GetSection:TStationMapSection(X:Int,Y:Int)
+	Method GetSectionBySurfaceXY:TStationMapSection(surfaceX:Int,surfaceY:Int)
 		For Local section:TStationMapSection = EachIn sections
 			Local sprite:TSprite = section.GetShapeSprite()
 			If Not sprite Then Continue
 
-			If section.rect.containsXY(X,Y)
+			If section.rect.containsXY(surfaceX, surfaceY)
 				If Not sprite._pix Then sprite._pix = sprite.GetPixmap()
-				If PixelIsOpaque(sprite._pix, Int(X-section.rect.GetX()), Int(Y-section.rect.GetY())) > 0
+				If PixelIsOpaque(sprite._pix, Int(surfaceX - section.rect.x), Int(surfaceY - section.rect.y)) > 0
 					Return section
 				EndIf
 			EndIf
 		Next
 
 		Return Null
+	End Method
+
+
+	Method GetSectionByDataXY:TStationMapSection(dataX:Int, dataY:Int)
+		Local surfaceX:Int = GetStationMapCollection().mapInfo.DataXToSurfaceX(dataX)
+		Local surfaceY:Int = GetStationMapCollection().mapInfo.DataYToSurfaceY(dataY)
+		Return GetSectionBySurfaceXY(surfaceX, surfaceY)
 	End Method
 
 
@@ -2385,7 +2391,7 @@ EndRem
 				sectionsMaxY = Max(sectionsMaxY, Int(section.rect.y + section.rect.h))
 			endif
 		Next
-		print sectionsMaxX+", " + sectionsMaxY + "  ->  " + mapInfo.SurfaceXToDataX(sectionsMaxX) + ", " + mapInfo.SurfaceYToDataY(sectionsMaxY)
+		'print sectionsMaxX+", " + sectionsMaxY + "  ->  " + mapInfo.SurfaceXToDataX(sectionsMaxX) + ", " + mapInfo.SurfaceYToDataY(sectionsMaxY)
 		self.surfaceData = New TStationMapSurfaceData(mapInfo.SurfaceXToDataX(sectionsMaxX), mapInfo.SurfaceYToDataY(sectionsMaxY))
 
 		'For Local section:TStationMapSection = EachIn sections
@@ -2513,7 +2519,7 @@ Type TStationMapInfo
 	'maximum dimension of the density data set
 	Field densityDataMaxDim:Int = 1500
 	'where to place first player antenna
-	Field startAntennaPos:SVec2I
+	Field startAntennaSurfacePos:SVec2I
 
 	Field surfaceImage:TImage
 
@@ -2618,7 +2624,17 @@ Type TStationMapInfo
 	Method SurfaceYToDataY:Int(y:Int)
 		Return (y - densityDataOnSurfaceOffset.y) / densityDataScreenScale
 	End Method
-	
+
+
+	'convert a given screen x coordinate to a surface/topo x coordinate
+	Method ScreenXToSurfaceX:Int(x:Int)
+		Return x - surfaceScreenOffset.x
+	End Method
+
+	'convert a given screen y coordinate to a surface/topo y coordinate
+	Method ScreenYToSurfaceY:Int(y:Int)
+		Return y - surfaceScreenOffset.y
+	End Method	
 	
 	
 	Method SetScreenMapSize:Int(x:Int, y:Int)
@@ -2741,26 +2757,19 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If TStationAntenna(station)
 			Local antenna:TStationAntenna = TStationAntenna(station)
-			'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
-			'      basieren
-			if antenna.dataX = -1 and antenna.dataY = -1
-				antenna.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(antenna.x)
-				antenna.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(antenna.y)
-			EndIf
 
 			If station.IsActive()
-				'TODO: anpassen, wenn antenna.x keine Screencoordinate mehr ist
-				'Local popIncrease:Int = GetAddedAntennaPopulation(antenna.dataX, antenna.dataX, antenna.radius)
+				'Local popIncrease:Int = GetAddedAntennaPopulation(antenna.x, antenna.y, antenna.radius)
 				'mark antenna area as used by an (additional) antenna
 				'(only if layer is already created - else it automatically
 				' adds this antenna already) 
 				If _antennasLayer
-					_GetAllAntennasLayer().AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+					_GetAllAntennasLayer().AddAntenna(antenna.x, antenna.y, antenna.radius)
 				EndIf
 rem
 				'inform all sections too
-				Local surfaceX:Int = GetStationMapCollection().mapInfo.DataXToScreenX(antenna.dataX)
-				Local surfaceY:Int = GetStationMapCollection().mapInfo.DataYToScreenY(antenna.dataY)
+				Local surfaceX:Int = GetStationMapCollection().mapInfo.DataXToScreenX(antenna.x)
+				Local surfaceY:Int = GetStationMapCollection().mapInfo.DataYToScreenY(antenna.x)
 print "activate antenna"
 '-> connected funktioniert noch nicht
 '-> eventuell den antennaLayers von den sections entfernen, von der "Map" reicht ja
@@ -2770,7 +2779,7 @@ print "- affected section: " + section.GetName()
 					'only update if cache exists:
 					If section._antennasLayers[antenna.owner-1]
 print "- adding to section " + section.GetName()
-						section._antennasLayers[antenna.owner-1].AddAntenna(antenna.dataX - section.densityDataOffsetX, antenna.dataY - section.densityDataOffsetY, antenna.radius)
+						section._antennasLayers[antenna.owner-1].AddAntenna(antenna.x - section.densityDataOffsetX, antenna.y - section.densityDataOffsetY, antenna.radius)
 					EndIf
 				Next
 endrem				
@@ -2778,10 +2787,9 @@ endrem
 				'if _totalAntennaReachCache < 0 then _totalAntennaReachCache = 0
 				'_totalAntennaReachCache :+ popIncrease
 			Else
-				'TODO: anpassen, wenn antenna.x keine Screencoordinate mehr ist
-				Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.dataX, antenna.dataY, antenna.radius)
+				'Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.x, antenna.y, antenna.radius)
 				'mark antenna area as no longer used by an antenna
-				_GetallAntennasLayer().RemoveAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+				_GetallAntennasLayer().RemoveAntenna(antenna.x, antenna.y, antenna.radius)
 
 				'_totalAntennaReachCache :- popDecrease
 				'if _totalAntennaReachCache < 0 Then _totalAntennaReachCache = 0
@@ -2831,14 +2839,8 @@ endrem
 
 			'fill in all currently existing antennas
 			For Local antenna:TStationAntenna = EachIn stations
-				'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
-				'      basieren
-				if antenna.dataX = -1 and antenna.dataY = -1
-					antenna.dataX = mapInfo.ScreenXToDataX(antenna.x)
-					antenna.dataY = mapInfo.ScreenYToDataY(antenna.y)
-				EndIf
 				If antenna.IsActive()
-					_antennasLayer.AddAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+					_antennasLayer.AddAntenna(antenna.x, antenna.y, antenna.radius)
 				EndIf
 			Next
 		EndIf
@@ -2850,29 +2852,28 @@ endrem
 	'returns additional population covered when placing a station at the given coord
 	'(only a fraction of it uses antennas - multiply with AntennaShare to get
 	' the effective value)
-	Method GetAddedAntennaPopulation:Int(antennaX:Int, antennaY:Int, antennaRadius:Int = 0) {_exposeToLua}
+	Method GetAddedAntennaPopulation:Int(dataX:Int, dataY:Int, radius:Int = 0) {_exposeToLua}
 		'LUA scripts pass a default radius of "0" if they do not pass a variable at all
-		If antennaRadius <= 0 Then antennaRadius = GetStationMapCollection().antennaStationRadius
-'todo: die KI muss in Kilometern, nicht in Pixeln! 
-		Return _GetAllAntennasLayer().GetAddedAntennaPopulation(antennaX, antennaY, antennaRadius, GetStationMapCollection().mapInfo)
+		If radius <= 0 Then radius = GetStationMapCollection().antennaStationRadius
+
+		Return _GetAllAntennasLayer().GetAddedAntennaPopulation(dataX, dataY, radius, GetStationMapCollection().mapInfo)
 	End Method
 
 
 	'returns loss of covered population when removing a station at the given coord
 	'(only a fraction of it uses antennas - multiply with AntennaShare to get
 	' the effective value)
-	Method GetRemovedAntennaPopulation:Int(antennaX:Int, antennaY:Int, antennaRadius:Int = 0)
+	Method GetRemovedAntennaPopulation:Int(dataX:Int, dataY:Int, radius:Int = 0)
 		'LUA scripts pass a default radius of "0" if they do not pass a variable at all
-		If antennaRadius <= 0 Then antennaRadius = GetStationMapCollection().antennaStationRadius
-'todo: die KI muss in Kilometern, nicht in Pixeln! 
-		Return _GetAllAntennasLayer().GetRemovedAntennaPopulation(antennaX, antennaY, antennaRadius, GetStationMapCollection().mapInfo)
+		If radius <= 0 Then radius = GetStationMapCollection().antennaStationRadius
+		Return _GetAllAntennasLayer().GetRemovedAntennaPopulation(dataX, dataY, radius, GetStationMapCollection().mapInfo)
 	End Method
 
 
 	'returns additional audience when placing a station at the given coord
-	Method GetAddedAntennaAudience:Int(x:Int, y:Int, radius:Int = 0 ) {_exposeToLua}
-		Local antennaShare:Float = GetPopulationAntennaShare(x, y)
-		Return GetAddedAntennaPopulation(x, y, radius) * antennaShare
+	Method GetAddedAntennaAudience:Int(dataX:Int, dataY:Int, radius:Int = 0 ) {_exposeToLua}
+		Local antennaShare:Float = GetPopulationAntennaShare(dataX, dataY)
+		Return GetAddedAntennaPopulation(dataX, dataY, radius) * antennaShare
 	End Method
 
 
@@ -2880,18 +2881,8 @@ endrem
 	'param is station (not coords) to avoid ambiguity of multiple
 	'stations at the same spot
 	Method GetRemovedAntennaAudience:Int(station:TStationAntenna) {_exposeToLua}
-		'TODO: Umbauen, wenn neue TStation.x/y auf "data" statt "screen
-		'      basieren -> GetPopulationAntennaShareByDataCoord() einführen
 		Local antennaShare:Float = GetPopulationAntennaShare(station.x, station.y)
-
-		'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
-		'      basieren
-		if (station.dataX = -1 and station.dataY = -1)
-			station.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(station.x)
-			station.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(station.y)
-		EndIf
-
-		Return GetRemovedAntennaPopulation(station.dataX, station.dataY, station.radius) * antennaShare
+		Return GetRemovedAntennaPopulation(station.x, station.y, station.radius) * antennaShare
 	End Method
 
 
@@ -2938,11 +2929,11 @@ endrem
 
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
-	Method GetTemporaryAntennaStation:TStationBase(X:Int, Y:Int, fullyInit:Int = True)  {_exposeToLua}
+	Method GetTemporaryAntennaStation:TStationBase(dataX:Int, dataY:Int, fullyInit:Int = True)  {_exposeToLua}
 		Local station:TStation = New TStation
 		station.radius = GetStationMapCollection().antennaStationRadius
 
-		Return station.Init(X, Y, -1, owner, fullyInit)
+		Return station.Init(dataX, dataY, -1, owner, fullyInit)
 	End Method
 
 
@@ -3148,14 +3139,14 @@ endrem
 
 
 	Method GetRandomAntennaCoordinateOnMap:SVec2I(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
-		Local X:Int = Rand(35, 560)
-		Local Y:Int = Rand(1, 375)
-		Local station:TStationBase = GetTemporaryAntennaStation(X, Y)
+		Local dataX:Int = Rand(35, GetStationMapCollection().mapInfo.densityData.width)
+		Local dataY:Int = Rand(1, GetStationMapCollection().mapInfo.densityData.height)
+		Local station:TStationBase = GetTemporaryAntennaStation(dataX, dataY)
 		If station.GetPrice() < 0 Then Return Null
 		
-		If checkBroadcastPermission And GetStationMapCollection().GetSection(X,Y).HasBroadcastPermission(owner, TVTStationType.ANTENNA) <> requiredBroadcastPermissionState Then Return Null
+		If checkBroadcastPermission And GetStationMapCollection().GetSectionByDataXY(dataX, dataY).HasBroadcastPermission(owner, TVTStationType.ANTENNA) <> requiredBroadcastPermissionState Then Return Null
 		 
-		Return New SVec2I(X,Y)
+		Return New SVec2I(dataX, dataY)
 	End Method
 	
 
@@ -3227,7 +3218,7 @@ endrem
 				reach =  GetStationMapCollection().GetTotalAntennaAudience(owner)
 				reach :+ GetStationMapCollection().GetTotalCableNetworkUplinkAudience(stations)
 				reach :+ GetStationMapCollection().GetTotalSatelliteUplinkAudience(stations)
-				'print "RON: antenna["+owner+"]: " + GetStationMapCollection().GetAntennaAudienceSum(owner) + "   cable["+owner+"]: " + GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations) +"   satellite["+owner+"]: " + GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations) + "   recalculated: " + reach
+				'print "RON: antenna["+owner+"]: " + GetStationMapCollection().GetAntennaAudience(owner) + "   cable["+owner+"]: " + GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations) +"   satellite["+owner+"]: " + GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations) + "   recalculated: " + reach
 			EndIf
 		EndIf
 
@@ -3252,15 +3243,15 @@ endrem
 	End Method
 
 
-	'returns the antenna share for the given screen coordinate
-	Method GetPopulationAntennaShare:Float(x:Int, y:Int)
-		Return GetStationMapCollection().GetPopulationAntennaShare(x,y)
+	'returns the antenna share for the given data coordinate
+	Method GetPopulationAntennaShare:Float(dataX:Int, dataY:Int)
+		Return GetStationMapCollection().GetPopulationAntennaShare(dataX, dataY)
 	End Method
 
 
-	'buy a new antenna station at the given coordinates
-	Method BuyAntennaStation:Int(X:Int, Y:Int)
-		Return AddStation( GetTemporaryAntennaStation( X, Y ), True )
+	'buy a new antenna station at the given data coordinates
+	Method BuyAntennaStation:Int(dataX:Int, dataY:Int)
+		Return AddStation( GetTemporaryAntennaStation( dataX, dataY ), True )
 	End Method
 
 
@@ -3458,16 +3449,10 @@ endrem
 
 		if station.IsActive() and TStationAntenna(station)
 			Local antenna:TStationAntenna = TStationAntenna(station)
-			'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
-			'      basieren
-			if (antenna.dataX = -1 and antenna.dataY = -1)
-				antenna.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(antenna.x)
-				antenna.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(antenna.y)
-			EndIf
 
-'			Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.dataX, antenna.dataX, antenna.radius)
+'			Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.x, antenna.y, antenna.radius)
 			'mark antenna area as no longer used by an antenna
-			_GetAllAntennasLayer().RemoveAntenna(antenna.dataX, antenna.dataY, antenna.radius)
+			_GetAllAntennasLayer().RemoveAntenna(antenna.x, antenna.y, antenna.radius)
 
 '			_totalAntennaReachCache :- popDecrease
 '			if _totalAntennaReachCache < 0 Then _totalAntennaReachCache = 0
@@ -3608,7 +3593,7 @@ End Type
 
 
 Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
-	'location at the station map
+	'location in relation to the density data 0,0
 	'for satellites it is the "starting point", for cable networks and
 	'antenna stations a point in the section / state
 	Field X:Int {_exposeToLua="readonly"}
@@ -3643,10 +3628,10 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field listSpriteNameOff:String = "gfx_datasheet_icon_antenna.off"
 
 
-	Method Init:TStationBase( X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True)
+	Method Init:TStationBase(x:Int, y:Int, price:Int=-1, owner:Int, fullyInit:Int = True)
 		Self.owner = owner
-		Self.X = X
-		Self.Y = Y
+		Self.x = x
+		Self.y = y
 
 		Self.price = price
 		Self.built = GetWorldTime().GetTimeGone()
@@ -3669,8 +3654,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'refresh the station data
 	Method refreshData() {_exposeToLua}
-		self.reach = -1
-		self.reachMax = -1
+		InvalidateReach()
 		GetReach()
 		GetExclusiveReach()
 	End Method
@@ -3707,10 +3691,10 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 	
 	
-	Method SetPosition(screenX:Int, screenY:Int)
+	Method SetPosition(dataX:Int, dataY:Int)
 		InvalidateReach()
-		self.x = screenX
-		self.y = screenY
+		self.x = dataX
+		self.y = dataY
 	End Method
 
 
@@ -3745,7 +3729,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetSectionName:String(refresh:Int=False) {_exposeToLua}
 		If _sectionName <> "" And Not refresh Then Return _sectionName
 
-		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSection(X, Y)
+		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(self.x, self.y)
 		If hoveredSection 
 			_sectionName = hoveredSection.name
 			_sectionISO3116Code = hoveredSection.iso3116Code
@@ -3758,7 +3742,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetSectionISO3166Code:String(refresh:Int=False) {_exposeToLua}
 		If _sectionISO3116Code <> "" And Not refresh Then Return _sectionISO3116Code
 
-		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSection(X, Y)
+		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(self.x, self.y)
 		If hoveredSection 
 			_sectionName = hoveredSection.name
 			_sectionISO3116Code = hoveredSection.iso3116Code
@@ -4201,11 +4185,14 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			tooltipW :+ 40
 		EndIf
 
-		Local tooltipX:Int = X - tooltipW/2
-		Local tooltipY:Int = Y - GetOverlayOffsetY() - tooltipH - 5
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Local screenX:Int = mapInfo.DataXToScreenX(self.x)
+		Local screenY:Int = mapInfo.DataYToScreenY(self.y)
+		Local tooltipX:Int = screenX - tooltipW/2
+		Local tooltipY:Int = screenY - GetOverlayOffsetY() - tooltipH - 5
 
 		'move below station if at screen top
-		If tooltipY < 10 Then tooltipY = Y + GetOverlayOffsetY() + 5
+		If tooltipY < 10 Then tooltipY = screenY + GetOverlayOffsetY() + 5
 		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW)
 
 		Local oldAlpha:Float = GetAlpha()
@@ -4359,8 +4346,8 @@ End Type
 'compatibility for now
 'Todo: DEPRECATED, remove in v0.8 or later (last in use at 0.6)
 Type TStation Extends TStationAntenna {_exposeToLua="selected"}
-	Method Init:TStation(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
-		Super.Init(X, Y, price, owner, fullyInit)
+	Method Init:TStation(x:Int, y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(x, y, price, owner, fullyInit)
 		Return Self
 	End Method
 End Type
@@ -4370,13 +4357,6 @@ End Type
 
 Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	Field radius:Int = 0 {_exposeToLua="readonly"}
-	'TODO: Wieder entfernen, wenn x,y auf "data" umgestellt wird
-	'      und savegames "version" hoehergehen (beim "Import" dann von der
-	'      Pixelangabe (Annahme 800x600) umrechnen auf "dataXY"
-	'position o nthe populationdata (self.x, self.y are screen positions)
-	Field dataX:Int = -1
-	Field dataY:Int = -1
-
 
 	Method New()
 		radius = GetStationMapCollection().antennaStationRadius
@@ -4388,8 +4368,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationAntenna(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
-		Super.Init(X, Y, price, owner, fullyInit)
+	Method Init:TStationAntenna(x:Int, y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(x, y, price, owner, fullyInit)
 		Return Self
 	End Method
 
@@ -4428,28 +4408,12 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetPosition(screenX:Int, screenY:Int) override
-		self.dataX = -1
-		self.dataY = -1
-		Super.SetPosition(screenX, screenY)
-	End Method
-
-
 	Method GetReachMax:Int() Override {_exposeToLua}
 		if radius <= 0 Then Return 0
 		
 		'not cached?
 		If reachMax < 0
-			'TODO: Entfernen, wenn neue TStation.x/y auf "data" statt "screen
-			'      basieren
-			'bei temporaeren Antennen wird x,y nur "angepasst" -> dataX wuerde sich so nicht aendern
-			'aber "refresh" ist da dann True
-			if (self.dataX = -1 and self.dataY = -1)
-				self.dataX = GetStationMapCollection().mapInfo.ScreenXToDataX(self.x)
-				self.dataY = GetStationMapCollection().mapInfo.ScreenYToDataY(self.y)
-			EndIf
-			
-			reachMax = GetStationMapCollection().GetAntennaPopulation(self.dataX, self.dataY, self.radius)
+			reachMax = GetStationMapCollection().GetAntennaPopulation(self.x, self.y, self.radius)
 
 			runningCosts = -1 'ensure running costs are calculated again
 		EndIf
@@ -4501,7 +4465,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
 			'not cached yet?
 			If reachExclusiveMax < 0
-				reachExclusiveMax = GetStationMapCollection().GetAntennaExclusivePopulation(self.dataX, self.dataY, self.radius, owner, GetStationMap(owner).HasStation(Self))
+				reachExclusiveMax = GetStationMapCollection().GetAntennaExclusivePopulation(self.x, self.y, self.radius, owner, GetStationMap(owner).HasStation(Self))
 			EndIf
 
 			'this is NOT correct - as the other sections (overlapping)
@@ -4611,11 +4575,14 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	Method Draw(selected:Int=False)
 		Local sprite:TSprite = Null
 		Local oldAlpha:Float = GetAlpha()
-		Local screenRadius:Int = GetStationMapCollection().mapInfo.DataToScreen(self.radius)
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Local screenRadius:Int = mapInfo.DataToScreen(self.radius)
+		Local screenX:Int = mapInfo.DataXToScreenX(self.x)
+		Local screenY:Int = mapInfo.DataYToScreenY(self.y)
 		If selected
 			'white border around the colorized circle
 			SetAlpha 0.25 * oldAlpha
-			DrawOval(X - screenRadius - 2, Y - screenRadius -2, 2 * (screenRadius + 2), 2 * (screenRadius + 2))
+			DrawOval(screenX - screenRadius - 2, screenY - screenRadius -2, 2 * (screenRadius + 2), 2 * (screenRadius + 2))
 
 			SetAlpha Float(Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha)
 		Else
@@ -4630,14 +4597,14 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 							sprite = GetSpriteFromRegistry("stationmap_antenna0")
 		End Select
 		color.SetRGB()
-		DrawOval(X - screenRadius, Y - screenRadius, 2 * screenRadius, 2 * screenRadius)
+		DrawOval(screenX - screenRadius, screenY - screenRadius, 2 * screenRadius, 2 * screenRadius)
 		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
-		DrawOval(X - screenRadius + 2, Y - screenRadius + 2, 2 * (screenRadius - 2), 2 * (screenRadius - 2))
+		DrawOval(screenX - screenRadius + 2, screenY - screenRadius + 2, 2 * (screenRadius - 2), 2 * (screenRadius - 2))
 
 
 		SetColor 255,255,255
 		SetAlpha OldAlpha
-		sprite.Draw(X, Y + 1, -1, ALIGN_CENTER_CENTER)
+		sprite.Draw(screenX, screenY + 1, -1, ALIGN_CENTER_CENTER)
 	End Method
 End Type
 
@@ -4657,8 +4624,8 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationCableNetworkUplink(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
-		Super.Init(X, Y, price, owner, fullyInit)
+	Method Init:TStationCableNetworkUplink(x:Int, y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(x, y, price, owner, fullyInit)
 
 		Return Self
 	End Method
@@ -5040,7 +5007,11 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 
 		SetColor 255,255,255
 		SetAlpha OldAlpha
-		sprite.Draw(X, Y + 1, -1, ALIGN_CENTER_CENTER)
+
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Local screenX:Int = mapInfo.DataXToScreenX(self.x)
+		Local screenY:Int = mapInfo.DataYToScreenY(self.y)
+		sprite.Draw(screenX, screenY + 1, -1, ALIGN_CENTER_CENTER)
 	End Method
 End Type
 
@@ -5060,8 +5031,8 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationSatelliteUplink(X:Int, Y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
-		Super.Init(X, Y, price, owner, fullyInit)
+	Method Init:TStationSatelliteUplink(x:Int, y:Int, price:Int=-1, owner:Int, fullyInit:Int = True) Override
+		Super.Init(x, y, price, owner, fullyInit)
 
 		Return Self
 	End Method
@@ -5356,7 +5327,7 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 
 
 	Method Draw(selected:Int=False)
-		'For now sat links are invisble
+		'For now sat links are invisible
 	End Method
 End Type
 
@@ -5883,8 +5854,8 @@ Type TStationMapSection
 		'circle coordinates are "local" to mapInfo.densityData
 		Local circleRectX:Int = Max(0, densityX + self.densityDataOffsetX - radius)
 		Local circleRectY:Int = Max(0, densityY + self.densityDataOffsetY - radius)
-		Local circleRectX2:Int = densityX + Min(self.densityDataOffsetX + radius, Min(_surfaceData.width-1, mapInfo.densityData.width-1))
-		Local circleRectY2:Int = densityY + Min(self.densityDataOffsetY + radius, Min(_surfaceData.height-1, mapInfo.densityData.height-1))
+		Local circleRectX2:Int = Min(densityX + self.densityDataOffsetX + radius, Min(_surfaceData.width-1, mapInfo.densityData.width-1))
+		Local circleRectY2:Int = Min(densityY + self.densityDataOffsetY + radius, Min(_surfaceData.height-1, mapInfo.densityData.height-1))
 		Local radiusSquared:Int = radius * radius
 
 		Local ownerAntennaLayer:TStationMapAntennaLayer = GetStationMap(owner)._GetAllAntennasLayer()
@@ -6101,25 +6072,31 @@ Type TStationMapSection
 
 			LockMutex(antennaShareMutex) 'to savely iterate over values()
 
-			'only read as far as population data allows
-			Local limitedWidth:Int = min(antennaLayer1.width, mapInfo.densityData.width)
-			Local limitedHeight:Int = min(antennaLayer1.height, mapInfo.densityData.height)
-			
-			'define a window for this section within the complete 
-			'antenna layer.
-			'convert section.rect values as they are local to "surface"
-			'(not screen or densitydata)
-			Local sectionX1:Int = Max(0, Min(limitedWidth, mapInfo.SurfaceXToDataX(Int(rect.x))))
-			Local sectionX2:Int = Max(0, Min(limitedWidth, mapInfo.SurfaceXToDataX(Int(rect.x + rect.w))))
-			Local sectionY1:Int = Max(0, Min(limitedHeight, mapInfo.SurfaceYToDataY(Int(rect.y))))
-			Local sectionY2:Int = Max(0, Min(limitedHeight, mapInfo.SurfaceYToDataY(Int(rect.y + rect.h))))
-
-			For Local mapX:Int = sectionX1 Until sectionX2 
-				For Local mapY:Int = sectionY1 Until sectionY2
+			'only read as far as the intersection of all data layer "rects"
+			'allow
+			'antennaLayer: no offset, coord local to densityData (same 0,0)
+			Local antennaLayerRect:SRectI = New SRectI(0, 0, antennaLayer1.width, antennaLayer1.height)
+			'densityLayer: no offset
+			Local densityDataRect:SRectI = New SRectI(0, 0, mapInfo.densityData.width, mapInfo.densityData.height)
+			'section surface/topography: local to surface but contains densityDataOffsetX/Y
+			'surfaceData is already scaled to density data size, 
+			'densityDataOffsets are scaled too 
+			Local surfaceDataRect:SRectI = New SRectI(densityDataOffsetX, densityDataOffsetY, _surfaceData.width, _surfaceData.height)
+			Local effectiveRect:SRectI = antennaLayerRect.IntersectRect(densityDataRect).IntersectRect(surfaceDataRect)
+			rem
+			'debug values:
+			print self.GetName()
+			print "  antennaLayerRect:" + antennaLayerRect.x+", " + antennaLayerRect.y + ", " + antennaLayerRect.w + ", " + antennaLayerRect.h
+			print "  densityDataRect:" + densityDataRect.x+", " + densityDataRect.y + ", " + densityDataRect.w + ", " + densityDataRect.h
+			print "  surfaceDataRect:" + surfaceDataRect.x+", " + surfaceDataRect.y + ", " + surfaceDataRect.w + ", " + surfaceDataRect.h
+			print "  effectiveRect:" + effectiveRect.x+", " + effectiveRect.y + ", " + effectiveRect.w + ", " + effectiveRect.h
+			endrem
+			For Local mapX:Int = effectiveRect.x Until effectiveRect.x + effectiveRect.w
+				For Local mapY:Int = effectiveRect.y Until effectiveRect.y + effectiveRect.h
 					'ensure point is within topography of the section
 					'surfacedata is "local" to the section, so subtract
 					'x1, y1 to start at the datas "0,0"
-					If _surfaceData.data[(mapY-sectionY1) * _surfaceData.width + mapX-sectionX1] = 0 Then Continue
+					If _surfaceData.data[(mapY-densityDataOffsetY) * _surfaceData.width + (mapX-densityDataOffsetX)] = 0 Then Continue
 
 					Local index:Int = mapY * antennaLayer1.width + mapX
 					Local mask:Byte
@@ -7004,19 +6981,19 @@ Type TStationMapAntennaLayer
 	End Method
 	
 
-	Method GetAddedAntennaPopulation:Int(x:Int, y:Int, radius:Int, mapInfo:TStationMapInfo)
+	Method GetAddedAntennaPopulation:Int(dataX:Int, dataY:Int, radius:Int, mapInfo:TStationMapInfo)
 		'check how many points would go from 0 to 1
 		'AND are inside the topography/surfaceData
 
 		'make coords local
-		x :- offsetX
-		y :- offsetY
+		dataX :- offsetX
+		dataY :- offsetY
 		
 		'stay within the section
-		Local circleRectX:Int = Max(0, x - radius)
-		Local circleRectY:Int = Max(0, y - radius)
-		Local circleRectX2:Int = Min(x + radius, surfaceData.width-1)
-		Local circleRectY2:Int = Min(y + radius, surfaceData.height-1)
+		Local circleRectX:Int = Max(0, dataX - radius)
+		Local circleRectY:Int = Max(0, dataY - radius)
+		Local circleRectX2:Int = Min(dataX + radius, surfaceData.width-1)
+		Local circleRectY2:Int = Min(dataY + radius, surfaceData.height-1)
 		Local radiusSquared:Int = radius * radius
 		
 		Local gainedPopulation:Int = 0
@@ -7024,7 +7001,7 @@ Type TStationMapAntennaLayer
 		For Local posX:Int = circleRectX To circleRectX2
 			For Local posY:Int = circleRectY To circleRectY2
 				'left the circle?
-				If CalculateDistanceSquared(posX - x, posY - y) > radiusSquared Then Continue
+				If CalculateDistanceSquared(posX - dataX, posY - dataY) > radiusSquared Then Continue
 				'If ((posX - x)*(posX - x) + (posY - y)*(posY - y)) > radiusSquared Then Continue
 
 				If data[posY * width + posX] = 0
