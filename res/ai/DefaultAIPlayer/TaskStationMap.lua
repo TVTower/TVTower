@@ -237,6 +237,9 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 		deltaX = math.floor((da - dx) / 2)
 	end
 	local deltaY = math.floor((db + dy) / 2 )
+	
+	local mapWidth = TVT.of_getMapWidth()
+	local mapHeight = TVT.of_getMapHeight()
 
 	local positionTable = {}
 	local sectionCount = {}
@@ -245,7 +248,7 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 	local startY = startStation.y
 	--create rows upwards
 	while foundCount > 0 do
-		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable, sectionCount)
+		foundCount = self:insertIntendedPositionsRow(startX, startY, mapWidth, mapHeight, dx, dy, positionTable, sectionCount)
 		startX = startX + deltaX
 		startY = startY + deltaY
 	end
@@ -255,7 +258,7 @@ function JobAnalyseStationMarket:determineIntendedPositions()
 	startY = startStation.y - deltaY
 	--create rows downwards
 	while foundCount > 0 do
-		foundCount = self:insertIntendedPositionsRow(startX, startY, dx, dy, positionTable, sectionCount)
+		foundCount = self:insertIntendedPositionsRow(startX, startY, mapWidth, mapHeight, dx, dy, positionTable, sectionCount)
 		startX = startX - deltaX
 		startY = startY - deltaY
 	end
@@ -303,7 +306,7 @@ function JobAnalyseStationMarket:getBaseAntennaParameters()
 	return {x=startStation.x; y=startStation.y; radius = radius}
 end
 
-function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDelta, yDelta, positions, sectionCount)
+function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, limitX, limitY, xDelta, yDelta, positions, sectionCount)
 	local foundCount = 0
 	local x = startX
 	local y = startY
@@ -316,7 +319,7 @@ function JobAnalyseStationMarket:insertIntendedPositionsRow(startX, startY, xDel
 
 	x = startX + xDelta
 	y = startY + yDelta
-	while x < 800 and y < 800 do --TODO map size
+	while x < limitX and y < limitY do --limitX/Y is map width/height
 		if self:insertIntendedPosition(x, y, positions, sectionCount) == 1 then foundCount=foundCount + 1 end
 		x = x + xDelta
 		y = y + yDelta

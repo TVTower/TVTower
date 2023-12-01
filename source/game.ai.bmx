@@ -1146,10 +1146,24 @@ endrem
 		Return GetStationMapCollection().GetSatelliteAtIndex(arrayIndex)
 	End Method
 
+
 	Method of_getPopulation:Int()
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 		Return GetStationMapCollection().GetPopulation()
 	End Method
+
+
+	'returns (usable) width of the map
+	Method of_getMapWidth:Int()
+		Return GetStationMapCollection().surfaceData.width
+	End Method
+
+
+	'returns (usable) height of the map
+	Method of_getMapHeight:Int()
+		Return GetStationMapCollection().surfaceData.height
+	End Method
+
 
 	'== PROGRAMME PLAN ==
 
