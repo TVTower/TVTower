@@ -4357,6 +4357,7 @@ End Type
 
 Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	Field radius:Int = 0 {_exposeToLua="readonly"}
+	Global highlightColor:TColor = New TColor
 
 	Method New()
 		radius = GetStationMapCollection().antennaStationRadius
@@ -4598,7 +4599,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		End Select
 		color.SetRGB()
 		DrawOval(screenX - screenRadius, screenY - screenRadius, 2 * screenRadius, 2 * screenRadius)
-		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
+		highlightColor.CopyFrom(color).Mix(TColor.clWhite, 0.75).SetRGB()
 		DrawOval(screenX - screenRadius + 2, screenY - screenRadius + 2, 2 * (screenRadius - 2), 2 * (screenRadius - 2))
 
 
@@ -4999,9 +5000,8 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 			Default			color = TColor.clWhite
 							sprite = GetSpriteFromRegistry("stationmap_antenna0")
 		End Select
-		color.SetRGB()
 		'TODO: section hervorheben
-		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
+		'SetColor(Int(0.25 * color.r + 0.75 * 255), Int(0.25 * color.g + 0.75 * 255), Int(0.25 * color.b + 0.75 * 255))
 		'TODO: section hervorheben
 
 

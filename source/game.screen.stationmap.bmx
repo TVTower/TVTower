@@ -1714,28 +1714,30 @@ Type TSatelliteSelectionFrame
 		Local textOffsetY:Int = 2
 		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR
 
-		Local currentColor:TColor = New TColor.Get()
+		Local currentColor:SColor8; GetColor(currentColor)
+		Local currentAlpha:Float = GetAlpha()
 		Local entryColor:SColor8
 		Local leftValue:string = item.GetValue()
 		local highlight:int = False
 
 		'draw with different color according status
 		If satellite.IsSubscribedChannel(GetPlayerBase().playerID)
-			entryColor = New SColor8(80,130,50, int(255 * currentColor.a))
+			entryColor = New SColor8(80,130,50, int(255 * currentAlpha))
 			highlight = True
 		ElseIf satellite.CanSubscribeChannel(GetPlayerBase().playerID) <= 0
-			entryColor = New SColor8(130,80,50, int(255 * currentColor.a * 0.85))
+			entryColor = New SColor8(130,80,50, int(255 * currentAlpha * 0.85))
 			highlight = True
 		Else
 			entryColor = item.valueColor '.copy().AdjustFactor(50)
-'			entryColor.a = currentColor.a * 0.5
+'			entryColor.a = currentAlpha * 0.5
 		EndIf
 
 		if highlight
 			SetColor(entryColor)
 			SetAlpha entryColor.a / 255.0 * 0.5
 			DrawRect(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY(), sprite.GetWidth(), item.rect.getH())
-			currentColor.SetRGBA()
+			SetColor(currentColor)
+			SetAlpha(currentAlpha)
 		endif
 
 		'draw antenna
@@ -2711,9 +2713,13 @@ Type TScreenHandler_StationMap
 		GUIManager.Draw( LS_stationmap )
 
 		For Local i:Int = 0 To 3
-			guiShowStations[i].SetUncheckedTintColor( GetPlayerBase(i+1).color.Copy().AdjustBrightness(+0.25).AdjustSaturation(-0.35), False)
-			guiShowStations[i].SetCheckedTintColor( GetPlayerBase(i+1).color ) '.Copy().AdjustBrightness(0.25)
-			'guiShowStations[i].tintColor = GetPlayerBase(i+1).color '.Copy().AdjustBrightness(0.25)
+			Local playerColor:TColor = GetPlayerBase(i+1).color
+			'replace and recalc colors if playerColor differs
+			if not playerColor.isSame(guiShowStations[i].checkedTintColor)
+				guiShowStations[i].SetCheckedTintColor( playerColor, False ) '.Copy().AdjustBrightness(0.25)
+				guiShowStations[i].SetUncheckedTintColor( playerColor.Copy().AdjustBrightness(+0.25).AdjustSaturation(-0.35), False)
+				'guiShowStations[i].tintColor = GetPlayerBase(i+1).color '.Copy().AdjustBrightness(0.25)
+			EndIf
 		Next
 
 		'draw a kind of tooltip over a mouseoverStation
