@@ -5372,7 +5372,7 @@ Type TStationMapSection
 	Field populationSatelliteShare:Float = -1
 	Field populationAntennaShare:Float = -1
 	'Field antennaShareMapImage:TImage {nosave}
-	Field shareCache:TStringMap = New TStringMap {nosave}
+	Field shareCache:TIntMap = New TIntMap {nosave}
 	Field calculationMutex:TMutex = CreateMutex() {nosave}
 	Field shareCacheMutex:TMutex = CreateMutex() {nosave}
 	Field antennaShareMutex:TMutex = CreateMutex() {nosave}
@@ -5423,7 +5423,7 @@ Type TStationMapSection
 	
 	Method InvalidateData()
 		LockMutex(shareCacheMutex)
-			shareCache = New TStringMap
+			shareCache = New TIntMap
 		UnlockMutex(shareCacheMutex)
 	End Method
 	
@@ -5954,9 +5954,10 @@ Type TStationMapSection
 		'if already cached, save time...
 
 		'== GENERATE KEY ==
-		Local cacheKey:String = "cablenetwork"
-		cacheKey :+ "_"+includeChannelMask.value
-		cacheKey :+ "_"+excludeChannelMask.value
+'		Local cacheKey:String = New TStringBuilder().Append("cablenetwork").Append("_").Append(includeChannelMask.value).Append("_").Append(excludeChannelMask.value).ToString()
+'		Local cacheKey:String = "cablenetwork"+"_"+includeChannelMask.value+"_"+excludeChannelMask.value
+							 'cablenetwork                                      care only first for first 8 channels          care only first for 8 channels
+		Local cacheKey:Int = Byte(TVTStationType.CABLE_NETWORK_UPLINK) Shl 24 | Byte(includeChannelMask.value & 255) Shl 16 | Byte(excludeChannelMask.value & 255) Shl 8
 		
 		Local result:TStationMapPopulationShare
 
@@ -6047,9 +6048,11 @@ Type TStationMapSection
 		'if already cached, save time...
 
 		'== GENERATE KEY ==
-		Local cacheKey:String = "antennas_"
-		cacheKey :+ "_"+includeChannelMask.value
-		cacheKey :+ "_"+excludeChannelMask.value
+'		Local cacheKey:String = New TStringBuilder().Append("antennas_").Append("_").Append(includeChannelMask.value).Append("_").Append(excludeChannelMask.value).ToString()
+'		Local cacheKey:String = "antennas_"+"_"+includeChannelMask.value+"_"+excludeChannelMask.value
+							 'antenna                              care only first for first 8 channels          care only first for 8 channels
+		Local cacheKey:Int = Byte(TVTStationType.ANTENNA) Shl 24 | Byte(includeChannelMask.value & 255) Shl 16 | Byte(excludeChannelMask.value & 255) Shl 8
+
 
 		'== LOAD CACHE ==
 		If shareCache
@@ -6069,8 +6072,6 @@ Type TStationMapSection
 			Local antennaLayer3:TStationMapAntennaLayer = GetStationMap(3)._GetAllAntennasLayer()
 			Local antennaLayer4:TStationMapAntennaLayer = GetStationMap(4)._GetAllAntennasLayer()
 			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
-
-			LockMutex(antennaShareMutex) 'to savely iterate over values()
 
 			'only read as far as the intersection of all data layer "rects"
 			'allow
@@ -6123,7 +6124,6 @@ Type TStationMapSection
 					EndIf
 				Next
 			Next
-			UnlockMutex(antennaShareMutex)
 
 			'store new cached data
 			If shareCache
@@ -6132,12 +6132,14 @@ Type TStationMapSection
 				UnlockMutex(shareCacheMutex)
 			EndIf
 
+
 			'print "ANTENNA uncached: "+cacheKey
 			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)
 		Else
 			'print "ANTENNA cached: "+cacheKey
 			'print "ANTENNA share:  total="+int(result.value.total)+"  share="+int(result.value.shared)
 		EndIf
+		UnlockMutex(antennaShareMutex)
 
 		Return result.value
 	End Method
