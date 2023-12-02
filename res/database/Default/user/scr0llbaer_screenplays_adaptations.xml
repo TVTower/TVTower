@@ -3405,18 +3405,18 @@
 				<en>%dead% %winter% in %sarajevo%</en>
 			</title>
 			<title_original>
-				<de>%optionaloriginaltitle%</de>
-				<en>%optionaloriginaltitle%</en>
+				<de>%title_original_optional%</de>
+				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
 				<de>Kriegsdrama über den jungen, enthusiastischen und leicht beeindruckbaren %ROLENAME1% auf der einen, und die warmherzige, aber resolute %ROLENAME2% auf der anderen Seite der Front in Jugoslawien, und einen Teufels-%ROLENAME3%en dazwischen.</de>
 				<en>War drama about the young, enthusiastic and impressionable %ROLENAME1% on one side, and the warm-hearted but resolute %ROLENAME2% on the other side of the front in Yugoslavia, and a devil's %ROLENAME3% in between.</en>
 			</description>
 			<variables>
-				<optionaloriginaltitle>
+				<title_original_optional>
 					<de>Dead Winter Dead|Tot Winter Tot|Tot Winter Tod|Toter Wintertod|Tote Winterstarre|Toter Winter in Sarjevo|%dead% %winter% in %sarajevo%</de>
 					<en>Dead Winter Dead|Dead Winter Dead|Dead Winter Death|Dead Winter Death|Dead Winter Dead|Dead Winter in Sarajevo|%dead% %winter% in %sarajevo%</en>
-				</optionaloriginaltitle>
+				</title_original_optional>
 				<dead>
 					<de>Toter|Karger|Kalter|Trostloser|Trister|Rauer</de>
 					<en>Dead|Desolate|Cold|Dismal|Dreary|Bleak</en>
@@ -3535,8 +3535,8 @@
 						<en>%dead% %winter%</en>
 					</title>
 					<title_original>
-						<de>%optionaloriginaltitle%</de>
-						<en>%optionaloriginaltitle%</en>
+						<de>%title_original_optional%</de>
+						<en>%title_original_optional%</en>
 					</title_original>
 					<description>
 						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. %ROLENAME1% ist auf Patrouille und macht eine grausame Entdeckung...</de>
@@ -3626,26 +3626,26 @@
 
 		<scripttemplate product="1" licence_type="1" guid="352a2fbc-7e7b-462b-a217-34c300043d19" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Maniac_Mansion">
 			<title>
-				<de>%spooftitle%</de>
-				<en>%spooftitle%</en>
+				<de>%title_spoofed%</de>
+				<en>%title_spoofed%</en>
 			</title>
 			<title_original>
-				<de>%optionaloriginaltitle%</de>
-				<en>%optionaloriginaltitle%</en>
+				<de>%title_original_optional%</de>
+				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
 				<de>%ROLENAME1%s Freundin %ROLENAME2% wurde entführt vom verrückten Professor Dr. %ROLENAME5%! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de> <!-- TODO: Reference ROLETITLEx supported? -->
 				<en>%ROLENAME1%'s girlfriend %ROLENAME2% has been kidnapped by the mad professor Dr. %ROLENAME5%! He and his friends want to free her from his mansion. There are a lot more strange things going on there! And where is gasoline for the chainsaw when you need it.</en>
 			</description>
 			<variables>
-				<spooftitle>
+				<title_spoofed>
 					<de>Der %adj% %house_m%|Die %adj% %house_f%|Das %adj% %house_n%</de>
 					<en>The %adj% %house_m%|The %adj% %house_f%|The %adj% %house_n%</en>
-				</spooftitle>
-				<optionaloriginaltitle>
+				</title_spoofed>
+				<title_original_optional>
 					<de>Maniac Mansion|Der %adj_o% %house_m_o%|Die %adj_o% %house_f_o%|Das %adj% %house_n_o%</de>
 					<en>Maniac Mansion|The %adj_o% %house_m_o%|The %adj_o% %house_f_o%|The %adj% %house_n_o%</en>
-				</optionaloriginaltitle>
+				</title_original_optional>
 				<adj>
 					<de>Wahnwitzige|Verrückte|Irrwitzige|Durchgeknallte|Geisteskranke|Irrsinnige|Aberwitzige|Manische|Wahnsinnige|Absurde|Groteske|Bizarre|Abgedrehte</de>
 					<en>Lunatic|Crazy|Mad|Frenzied|Frantic|Insane|Ludicrous|Manic|Maniacal|Absurd|Grotesque|Bizarre|Wacky</en>
@@ -3713,8 +3713,8 @@
 				<en>The %Revenge% of the Tentacle</en>
 			</title>
 			<title_original>
-				<de>%optionaloriginaltitle%</de>
-				<en>%optionaloriginaltitle%</en>
+				<de>%title_original_optional%</de>
+				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
 				<de>Zurück zur abgedrehten Villa! Dr. %ROLENAME4% ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass %ROLE5% die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
@@ -3725,10 +3725,10 @@
 					<de>Die Rache|Die Rückkehr|Der Große Auftritt|Der Große Akt|Tobsucht</de>
 					<en>Revenge|Return|Grand Entrance|Big Act|Tantrum</en>
 				</revenge>
-				<optionaloriginaltitle>
+				<title_original_optional>
 					<de>%Revenge% des Tentakels|Der Tag des Tentakels|Der Große Tag des Tentakels|Day of the Tentacle</de>
 					<en>The %Revenge% of the Tentacle|The Day of the Tentacle|The Grand Day of the Tentacle|Day of the Tentacle</en>
-				</optionaloriginaltitle>
+				</title_original_optional>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -3765,18 +3765,18 @@
 				<en>Hi, %ROLE1%%myname%, %roving% Reporter</en>
 			</title>
 			<title_original>
-				<de>%optionaloriginaltitle%</de>
-				<en>%optionaloriginaltitle%</en>
+				<de>%title_original_optional%</de>
+				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
 				<de>Ich muss für dieses Schmierblatt schreiben, dabei will ich den Pulitzer-Preis gewinnen! Aber ich bin Aliens auf der Spur, wirklich! Die wollen die Menschheit verdummen! Ich treff die Frau aus meinem Traum, und selbst zum Mars verschlägt's mich.</de>
 				<en>I have to write for this tabloid, yet I want to win the Pulitzer Prize! But I'm on the trail of aliens, really! They're trying to dumb down humanity, I'm telling you! I'll meet the woman from my dream, and I'll even be going to Mars.</en>
 			</description>
 			<variables>
-				<optionaloriginaltitle>
+				<title_original_optional>
 					<de>%ROLE1% and the Alien Mindbenders|%ROLE1% und die außerirdischen Gedankenverdreher|%myname%%ROLE1%, %roving% Reporter</de>
 					<en>%ROLE1% and the Alien Mindbenders|%ROLE1% and the Alien Mindbenders|Hi, %ROLE1%%myname%, %roving% Reporter</en>
-				</optionaloriginaltitle>
+				</title_original_optional>
 				<myname>
 					<de>Hi, |Gestatten, |</de>
 					<en> my Name| here|</en>
@@ -3931,8 +3931,8 @@
 				<en>The %mystery_object_reference% of %donkeybay_object_reference%</en>
 			</title>
 			<title_original>
-				<de>Das %donkeybay_object_reference_original%-%mystery_object_reference_original%</de>
-				<en>The %mystery_object_reference_original% of %donkeybay_object_reference_original%</en>
+				<de>Das %donkeybay_object_reference%-%mystery_object_reference%</de>
+				<en>The %mystery_object_reference% of %donkeybay_object_reference%</en>
 			</title_original>
 			<description>
 				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund %ROLE1% strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat %ROLE3%. Und dann ist da noch die Liebe.</de> <!-- TODO: ROLELASTx? -->
@@ -3995,8 +3995,8 @@
 						<en>%hurlyeisland_object_reference%</en>
 					</title>
 					<title_original>
-						<de>%hurlyeisland_object_reference_original%</de>
-						<en>%hurlyeisland_object_reference_original%</en>
+						<de>%hurlyeisland_object_reference%</de>
+						<en>%hurlyeisland_object_reference%</en>
 					</title_original>
 					<description>
 						<de>%ROLENAME1% ist erstmal auf %hurlyeisland_object_reference% gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen %ROLE3% vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
@@ -4096,8 +4096,8 @@
 						<en>%donkeybay_object_reference%</en>
 					</title>
 					<title_original>
-						<de>%donkeybay_object_reference_original%</de>
-						<en>%donkeybay_object_reference_original%</en>
+						<de>%donkeybay_object_reference%</de>
+						<en>%donkeybay_object_reference%</en>
 					</title_original>
 					<description>
 						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber %ROLENAME1% trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
@@ -4138,8 +4138,8 @@
 						<en>Back to %hurlyeisland_object_reference%</en>
 					</title>
 					<title_original>
-						<de>Zurück nach %hurlyeisland_object_reference_original%</de>
-						<en>Back to %hurlyeisland_object_reference_original%</en>
+						<de>Zurück nach %hurlyeisland_object_reference%</de>
+						<en>Back to %hurlyeisland_object_reference%</en>
 					</title_original>
 					<description>
 						<de>Doch %ROLE3% ist inzwischen wieder zurückgesegelt, um %ROLENAME2% zu heiraten. %ROLENAME1% muss die Kirche auf %hurlyeisland_object_reference% stürmen, um das zu verhindern!</de>
@@ -4487,26 +4487,26 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="https://en.wikipedia.org/wiki/Commander_Keen | TODO: apply proper nickname references of Ween/Keen once feature is available">
 			<title>
-				<de>%spooftitle%</de>
-				<en>%spooftitle%</en>
+				<de>%title_spoofed%</de>
+				<en>%title_spoofed%</en>
 			</title>
 			<title_original>
-				<de>%optionaloriginaltitle%</de>
-				<en>%optionaloriginaltitle%</en>
+				<de>%title_original_optional%</de>
+				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
 				<de>Cartoon-Reihe über den 8-jährigen Wunderknaben %ROLE1%. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu %captain% %ween_object_reference% und macht sich auf...</de>
 				<en>Cartoon series about the 8-year-old boy genius %ROLE1%. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes %captain% %ween_object_reference% and sets out...</en>
 			</description>
 			<variables>
-				<spooftitle>
+				<title_spoofed>
 					<de>Die %space%%adventures% des %captain% %ween_object_reference%|Die %galactic% %adventures_c% des %captain% %ween_object_reference%</de>
 					<en>The %space% %adventures% of %captain% %ween_object_reference%|The %galactic% %adventures_c% of %captain% %ween_object_reference%</en>
-				</spooftitle>
-				<optionaloriginaltitle>
-					<de>%captain% %ween_object_reference_original%|Die %space%%adventures% des %captain% %ween_object_reference_original%|Die %galactic% %adventures_c% des %captain% %ween_object_reference_original%</de>
-					<en>%captain% %ween_object_reference_original%|The %space% %adventures% of %captain% %ween_object_reference_original%|The %galactic% %adventures_c% of %captain% %ween_object_reference_original%</en>
-				</optionaloriginaltitle>
+				</title_spoofed>
+				<title_original_optional>
+					<de>%captain% %ween_object_reference%|Die %space%%adventures% des %captain% %ween_object_reference%|Die %galactic% %adventures_c% des %captain% %ween_object_reference%</de>
+					<en>%captain% %ween_object_reference%|The %space% %adventures% of %captain% %ween_object_reference%|The %galactic% %adventures_c% of %captain% %ween_object_reference%</en>
+				</title_original_optional>
 				<space>
 					<de>Weltraum|Weltall|Sternen|Galaxis</de>
 					<en>Space|Out-in-Space|Stellar|Galaxy</en>
@@ -4601,8 +4601,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>%ween_object_reference% Must Die!</en>
 					</title>
 					<title_original>
-						<de>%ween_object_reference_original% muss sterben!</de>
-						<en>%ween_object_reference_original% Must Die!</en>
+						<de>%ween_object_reference% muss sterben!</de>
+						<en>%ween_object_reference% Must Die!</en>
 					</title_original>
 					<description>
 						<de>Es stellt sich heraus, die %ROLENAME3%s werden von einem Großen Gehirn ferngesteuert und kontrolliert. %ween_object_reference% macht sich auf auf dessen Heimatplaneten...</de>
@@ -4693,18 +4693,18 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>Leather Jacket %ROLENAME1%, %ladykiller%</en>
 			</title>
 			<title_original>
-				<de>%optionaloriginaltitle%</de>
-				<en>%optionaloriginaltitle%</en>
+				<de>%title_original_optional%</de>
+				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
 				<de>%ROLENAME1% ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
 				<en>%ROLENAME1% is untouched and innocent until his mid-30s. But now he wants to get it done and seeks out a flophouse. After some difficulties... Finally! Slowly he gets the hang of it, and then starts looking for the woman of his life.</en>
 			</description>
 			<variables>
-				<optionaloriginaltitle>
+				<title_original_optional>
 					<de>Leisure Suit %ROLENAME1%|Leisure Suit %ROLENAME1%, %ladykiller%</de>
 					<en>Leisure Suit %ROLENAME1%|Leisure Suit %ROLENAME1%, %ladykiller%</en>
-				</optionaloriginaltitle>
+				</title_original_optional>
 				<ladykiller>
 					<de>Ladykiller|Schwerenöter vom Dienst|Reizender Charmeur|Bezaubernder Schmeichler</de>
 					<en>Ladykiller|Philanderer at your Service|Endearing Charmer|Adorable Sweet-Talker</en>

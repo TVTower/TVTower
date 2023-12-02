@@ -897,7 +897,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="3" profit="530" penalty="750" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="Escal-Sjaele-01">
+		<ad id="Escal-Sjaele-01" comment="TODO: Switch places of these with the newly added ESCAL PC/XT/AT">
 			<title>
 				<de>ESCAL</de>
 			</title>
@@ -1645,9 +1645,9 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="11.46" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="304" penalty="558" infomercial_profit="28" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="speedminister-ad-Enzyklopedie1" creator="8605" created_by="SpeedMinister">
+		<ad id="speedminister-ad-Encyclopedia1" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Die halbe Enzyklopedie von Allem</de>
+				<de>Die halbe Enzyklopädie von Allem</de>
 				<en>Half the Encyclopedia of Everything</en>
 			</title>
 			<description>
@@ -1657,9 +1657,9 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="20.84" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="198" penalty="303" infomercial_profit="25" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="speedminister-ad-Enzyklopedie2" creator="8605" created_by="SpeedMinister">
+		<ad id="speedminister-ad-Encyclopedia2" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Die ganze Enzyklopedie von Allem</de>
+				<de>Die ganze Enzyklopädie von Allem</de>
 				<en>The complete Encyclopedia of Everything</en>
 			</title>
 			<description>

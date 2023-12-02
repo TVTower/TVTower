@@ -297,7 +297,7 @@
 				<job function="2" index="2" gender="2" required="1" />
 				<job function="32" index="3" gender="1" required="1" />
 				<job function="32" index="4" gender="0" required="0" />
-				<job function="32" index="5" gender="0" required="0" />				
+				<job function="32" index="5" gender="0" required="0" />
 			</jobs>
 			<data flags_optional="48" />
 			<genres maingenre="17" subgenres="" />

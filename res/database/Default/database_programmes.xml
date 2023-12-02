@@ -11282,7 +11282,7 @@ Dream scenes and sentiments warp the storyline.</en>
 				<member index="7" function="2">9b8d6c83-3561-49b3-9ed7-996075206299</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1981" distribution="2" maingenre="7" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="USA" year="1981" distribution="2" maingenre="7" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="92" speed="57" outcome="65" />
 			<children>
 				<programme id="TheRob-serie-HinterEden-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1780080" creator="8751" created_by="TheRob">
@@ -17345,7 +17345,7 @@ Was a catatstrophic box office failure.</en>
 				<member index="4" function="2">TheRob-TowerTV-LawrenceStempel</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="4,15" flags="16" blocks="2" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="4,15" flags="0" blocks="2" />
 			<releaseTime year="1986" day="6" />
 			<ratings critics="45" speed="34" outcome="78" />
 		</programme>
@@ -34569,7 +34569,7 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
 			<targetgroupattractivity children="0.75" teenagers="1.5" employees="1.25" managers="2" pensioners="0.5" />
-			<data country="F" distribution="1" maingenre="5" subgenre="4,16" flags="32" blocks="2" price_mod="0.25" />
+			<data country="F" distribution="1" maingenre="5" subgenre="17,16" flags="32" blocks="2" price_mod="0.25" />
 			<releaseTime year="1991" day="4" />
 			<ratings critics="81" speed="83" outcome="54" />
 		</programme>
@@ -45139,7 +45139,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 				<member index="3" function="2">76415d04-45f6-4196-a351-71f0832ded60</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="16,14" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="16,14" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="11" />
 			<ratings critics="67" speed="72" outcome="70" />
 		</programme>
