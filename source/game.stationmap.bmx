@@ -5956,8 +5956,8 @@ Type TStationMapSection
 		'== GENERATE KEY ==
 '		Local cacheKey:String = New TStringBuilder().Append("cablenetwork").Append("_").Append(includeChannelMask.value).Append("_").Append(excludeChannelMask.value).ToString()
 '		Local cacheKey:String = "cablenetwork"+"_"+includeChannelMask.value+"_"+excludeChannelMask.value
-							 'cablenetwork                                      care only first for first 8 channels          care only first for 8 channels
-		Local cacheKey:Int = Byte(TVTStationType.CABLE_NETWORK_UPLINK) Shl 24 | Byte(includeChannelMask.value & 255) Shl 16 | Byte(excludeChannelMask.value & 255) Shl 8
+							 'cablenetwork                                           care only first for first 8 channels         care only first for 8 channels
+		Local cacheKey:Int = Int(TVTStationType.CABLE_NETWORK_UPLINK & 255) Shl 24 | Int(includeChannelMask.value & 255) Shl 16 | Int(excludeChannelMask.value & 255) Shl 8
 		
 		Local result:TStationMapPopulationShare
 
@@ -6050,8 +6050,8 @@ Type TStationMapSection
 		'== GENERATE KEY ==
 '		Local cacheKey:String = New TStringBuilder().Append("antennas_").Append("_").Append(includeChannelMask.value).Append("_").Append(excludeChannelMask.value).ToString()
 '		Local cacheKey:String = "antennas_"+"_"+includeChannelMask.value+"_"+excludeChannelMask.value
-							 'antenna                              care only first for first 8 channels          care only first for 8 channels
-		Local cacheKey:Int = Byte(TVTStationType.ANTENNA) Shl 24 | Byte(includeChannelMask.value & 255) Shl 16 | Byte(excludeChannelMask.value & 255) Shl 8
+							 'antenna                                   care only first for first 8 channels         care only first for 8 channels
+		Local cacheKey:Int = Int(TVTStationType.ANTENNA & 255) Shl 24 | Int(includeChannelMask.value & 255) Shl 16 | Int(excludeChannelMask.value & 255) Shl 8
 
 
 		'== LOAD CACHE ==
