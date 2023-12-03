@@ -1,0 +1,1598 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="News entries by scr0llbaer" />
+
+	<allnews>
+		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames} gesichtet</de>
+				<en>Whale sighted in ${thames}</en>
+			</title>
+			<description>
+				<de>Da staunten die Anwohner an den Ufern des Flusses nicht schlecht, als sie am frühen Morgen lautes Platschen und hoch aufspritzendes Wasser bewundern durften.</de>
+				<en>The residents on the shores of the river were amazed when they witnessed loud splashing and high spraying water in the early morning.</en>
+			</description>
+			<data genre="4" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="92598126-f227-4fd2-894e-a5902eaeb392" />
+			</effects>
+			<variables>
+				<thames>
+					<de>Themse|Rhein|Mississippi|Nil|Amazonas|Wolga|Seine</de>
+					<en>Thames|Rhine|Mississippi|Nile|Amazon River|Volga|Seine</en>
+				</thames>
+			</variables>
+		</news>
+
+		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Grienpies schlägt Alarm</de>
+				<en>Creampeas sounds the alarm</en>
+			</title>
+			<description>
+				<de>Wegen Wal in ${thames} müsse eine Rettungsaktion sofort eingeleitet werden.</de>
+				<en>Rescue operation for whale in ${thames} must be initiated immediately, Creampeas said.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="5367ea49-6b5c-4703-87d1-b2427212f4d3" probability1="50" news2="5d9a2849-c5f2-4504-912f-84cf5065a9b5" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames}: Rettung in Sicht</de>
+				<en>Whale in ${thames}: Rescue in sight</en>
+			</title>
+			<description>
+				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
+				<en>Creampeas launches rescue action. The animal must not come to harm, the spokesman said.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="43799353-d91e-4f70-accb-703f6d6b861a" />
+			</effects>
+		</news>
+
+		<news id="43799353-d91e-4f70-accb-703f6d6b861a" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Schlechtes Wetter behindert Wal-Rettung</de>
+				<en>Bad weather hinders rescue action for whale</en>
+			</title>
+			<description>
+				<de>Die Leitstelle vermeldet, dass die Schiffe auf Grund des anhaltenden Sturms nicht einsatzbereit gemacht werden können.</de>
+				<en>The control center reports that the ships cannot be made operational due to the ongoing storm.</en>
+			</description>
+			<data genre="4" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="5ab7ad14-2513-427f-893c-913d936e0575" />
+			</effects>
+		</news>
+
+		<news id="5ab7ad14-2513-427f-893c-913d936e0575" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Weiterhin Schwierigkeiten bei Wal-Rettung</de>
+				<en>Difficulties with whale rescue continue</en>
+			</title>
+			<description>
+				<de>Man versuche es mit Locksignalen, doch der Wal reagiere nicht.</de>
+				<en>It is being attempted with mating calls, but the whale does not react.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="321a8590-eec0-4f1d-8031-6d1f9b443b33" probability1="50" news2="9891cfa6-1cd9-41e4-b179-496da048f7d4" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="321a8590-eec0-4f1d-8031-6d1f9b443b33" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Zustand des Wals verschlechtert sich</de>
+				<en>Condition of the whale deteriorates</en>
+			</title>
+			<description>
+				<de>Grienpies: Man müsse umgehend eine Lösung für die Situation finden, sonst überlebe der Wal nicht.</de>
+				<en>Creampeas: A solution to the situation must be found immediately, otherwise the whale will not survive, Creampeas said.</en>
+			</description>
+			<data genre="4" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="a33be652-8202-4685-a6ae-1b530f04b3a5" />
+			</effects>
+		</news>
+
+		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames} ist tot</de>
+				<en>Whale in ${thames} dead</en>
+			</title>
+			<description>
+				<de>Die genaue Todesursache ist noch unklar, vermutlich war der Wal bereits schwach und konnte nicht genug Nahrung finden.</de>
+				<en>The exact cause of death is still unclear, probably the whale was already weak and could not find enough food.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+		</news>
+
+		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal in ${thames} schwimmt zur Flußmündung</de>
+				<en>Whale in ${thames} swims to river mouth</en>
+			</title>
+			<description>
+				<de>Es sind Fortschritte bei der Rettungsaktion zu verzeichnen. Hoffentlich findet der Wal seinen Weg.</de>
+				<en>Progress is being made in the rescue operation. Hopefully the whale will find its way.</en>
+			</description>
+			<data genre="4" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,10,15" news="5d9a2849-c5f2-4504-912f-84cf5065a9b5" />
+			</effects>
+		</news>
+
+		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+			<title>
+				<de>Wal von ${thames} ins Meer zurückgeschwommen</de>
+				<en>Whale from ${thames} swam back to sea</en>
+			</title>
+			<description>
+				<de>Na also! Der Wal ist wieder in seinem natürlichen Habitat.</de>
+				<en>There you go! The whale is back in its natural habitat.</en>
+			</description>
+			<data genre="4" price="1" quality="70" fictional="1" />
+		</news>
+
+		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing the it still can be used in general and in addition when slightly modified to a fictional copycat event.">
+			<availability year_range_from="1988" year_range_to="-1" script="TIME_SEASON=1" />
+			<title>
+				<de>Schessnah in der Nähe von Moskau gesichtet</de>
+				<en>Schessnah spotted near Moscow</en>
+			</title>
+			<description>
+				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke Schessnah gesichtet. Handelt es sich dabei um einen Nachahmer? Einen Selbstmordattentäter?</de>
+				<en>Russian air defense has spotted a German small plane of the brand Schessnah near Moscow. Is it a copycat? A suicide bomber?</en>
+			</description>
+			<data genre="4" price="0.55" quality="8" fictional="1" />
+		</news>
+
+		<news id="4e9e0ab5-5e33-4d9f-8679-72cb0e3d0bae" type="0" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551" comment="Source: First two items ChatGPT news generator which effectively has some kind of templated generator too as some returned items are in the format 'Town holds funeral for dead squirrel|dead car|dead tree|etc'. Everything else made up by me. TODO: Internationalize more (generated names etc) once playing other regions becomes available. TODO: variations 'dead car', 'dead tree' may be a more subtle pun, at least in English, perhaps separate them out">
+			<title>
+				<de>${squirrel_${i}} %joe% gestorben</de>
+				<en>%joe% the ${squirrel_${i}} has died</en>
+			</title>
+			<description>
+				<de>In %funeraltown% ist ${squirrel_${i}} %joe% gestorben, ein lokales Wahrzeichen, das ${hadbeenlivingon_${i}}.</de>
+				<en>In %funeraltown% the ${squirrel_${i}} %joe% has died, a local landmark that ${hadbeenlivingon_${i}}.</en>
+			</description>
+			<variables>
+				<funeraltown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</funeraltown>
+				<joe> <!-- soll absichtlich manchmal ein internationaler Name sein -->
+					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(en,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(en,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%</de>
+				</joe>
+				<i>
+					<de>0|1|2|3|4|5|6|7|8|9|a|b|c</de>
+				</i>
+				<squirrel_0>
+					<de>Eichhörnchen</de> <!-- alle nur Maskulinum und Neutrum! -->
+					<en>squirrel</en>
+				</squirrel_0>
+				<squirrel_1>
+					<de>Streifenhörnchen</de>
+					<en>chipmunk</en>
+				</squirrel_1>
+				<squirrel_2>
+					<de>Erdhörnchen</de>
+					<en>gopher</en>
+				</squirrel_2>
+				<squirrel_3>
+					<de>Murmeltier</de>
+					<en>marmot</en>
+				</squirrel_3>
+				<squirrel_4>
+					<de>Waldmurmeltier</de>
+					<en>groundhog</en>
+				</squirrel_4>
+				<squirrel_5>
+					<de>Opossum</de>
+					<en>opossum</en>
+				</squirrel_5>
+				<squirrel_6>
+					<de>Lindenbaum</de>
+					<en>linden tree</en>
+				</squirrel_6>
+				<squirrel_7>
+					<de>Eichenbaum</de>
+					<en>oak tree</en>
+				</squirrel_7>
+				<squirrel_8>
+					<de>Trabbi</de> <!-- Autos nur Maskulinum! -->
+					<en>Trabbi</en>
+				</squirrel_8>
+				<squirrel_9>
+					<de>Panta</de>
+					<en>Panta</en>
+				</squirrel_9>
+				<squirrel_a>
+					<de>WV-Käfer</de>
+					<en>WV-Beetle</en>
+				</squirrel_a>
+				<squirrel_b>
+					<de>Flamebird</de>
+					<en>Flamebird</en>
+				</squirrel_b>
+				<squirrel_c>
+					<de>Laternenmast</de>
+					<en>lamp post</en>
+				</squirrel_c>
+				<rodent_0>
+					<de>Nagetier</de>
+					<en>Rodent</en> <!-- all capitalized! -->
+				</rodent_0>
+				<rodent_1>
+					<de>Nagetier</de>
+					<en>Rodent</en>
+				</rodent_1>
+				<rodent_2>
+					<de>Nagetier</de>
+					<en>Rodent</en>
+				</rodent_2>
+				<rodent_3>
+					<de>Nagetier</de>
+					<en>Rodent</en>
+				</rodent_3>
+				<rodent_4>
+					<de>Nagetier</de>
+					<en>Rodent</en>
+				</rodent_4>
+				<rodent_5>
+					<de>Beuteltier</de>
+					<en>Marsupial</en>
+				</rodent_5>
+				<rodent_6>
+					<de>Holz</de>
+					<en>Wood</en>
+				</rodent_6>
+				<rodent_7>
+					<de>Holz</de>
+					<en>Wood</en>
+				</rodent_7>
+				<rodent_8>
+					<de>Automobil</de>
+					<en>Vehicle</en>
+				</rodent_8>
+				<rodent_9>
+					<de>Automobil</de>
+					<en>Vehicle</en>
+				</rodent_9>
+				<rodent_a>
+					<de>Automobil</de>
+					<en>Vehicle</en>
+				</rodent_a>
+				<rodent_b>
+					<de>Automobil</de>
+					<en>Vehicle</en>
+				</rodent_b>
+				<rodent_c>
+					<de>Verkehrswesen</de>
+					<en>Traffic</en>
+				</rodent_c>
+				<neonyellow>
+					<de>neongelbe|knallrote|knallpinke|bordeauxviolette|purpurne|feuerrote|limonengrüne|tiefschwarze|himmelblaue|leuchtweiße</de>
+					<en>neon-yellow|candy-red|glaring-pink|claret-violet|purple|blazing-red|lemon-green|jet-black|sky-blue|shiny-white</en>
+				</neonyellow>
+				<hadbeenlivingon_0>
+					<de>seit mehr als %twelve% Jahren in einem Baum am Rathausplatz lebte</de>
+					<en>had been living on a tree at the town hall square for more than %twelve% years</en>
+				</hadbeenlivingon_0>
+				<hadbeenlivingon_1>
+					<de>seit mehr als %twelve% Jahren in einem Baum am Rathausplatz lebte</de>
+					<en>had been living on a tree at the town hall square for more than %twelve% years</en>
+				</hadbeenlivingon_1>
+				<hadbeenlivingon_2>
+					<de>seit mehr als %twelve% Jahren in einem Baum am Rathausplatz lebte</de>
+					<en>had been living on a tree at the town hall square for more than %twelve% years</en>
+				</hadbeenlivingon_2>
+				<hadbeenlivingon_3>
+					<de>seit mehr als %twelve% Jahren auf der Rathausplatz-Grünfläche lebte</de>
+					<en>had been living on the town hall square greenspace for more than %twelve% years</en>
+				</hadbeenlivingon_3>
+				<hadbeenlivingon_4>
+					<de>seit mehr als %twelve% Jahren auf der Rathausplatz-Grünfläche lebte</de>
+					<en>had been living on the town hall square greenspace for more than %twelve% years</en>
+				</hadbeenlivingon_4>
+				<hadbeenlivingon_5>
+					<de>seit mehr als %twelve% Jahren auf der Rathausplatz-Grünfläche lebte</de>
+					<en>had been living on the town hall square greenspace for more than %twelve% years</en>
+				</hadbeenlivingon_5>
+				<hadbeenlivingon_6>
+					<de>seit %twelve%hundert Jahren auf dem Rathausplatz stand und von vielen Einwohnern oft und gern umarmt wurde</de>
+					<en>had stood on the town hall square for %twelve% hundred years and was often fondly hugged by many residents</en>
+				</hadbeenlivingon_6>
+				<hadbeenlivingon_7>
+					<de>seit %twelve%hundert Jahren auf dem Rathausplatz stand und von vielen Einwohnern oft und gern umarmt wurde</de>
+					<en>had stood on the town hall square for %twelve% hundred years and was often fondly hugged by many residents</en>
+				</hadbeenlivingon_7>
+				<hadbeenlivingon_8>
+					<de>seit mehr als %twelve% Jahren Besorgungen für Bürger machte. Das intelligente, %neonyellow% Fahrzeug war dabei unermüdlich</de>
+					<en>had been running errands for citizens for more than %twelve% years. The sentient, %neonyellow% vehicle was tireless in doing so</en>
+				</hadbeenlivingon_8>
+				<hadbeenlivingon_9>
+					<de>seit mehr als %twelve% Jahren Besorgungen für Bürger machte. Das intelligente, %neonyellow% Fahrzeug war dabei unermüdlich</de>
+					<en>had been running errands for citizens for more than %twelve% years. The sentient, %neonyellow% vehicle was tireless in doing so</en>
+				</hadbeenlivingon_9>
+				<hadbeenlivingon_a>
+					<de>seit mehr als %twelve% Jahren Besorgungen für Bürger machte. Das intelligente, %neonyellow% Fahrzeug war dabei unermüdlich</de>
+					<en>had been running errands for citizens for more than %twelve% years. The sentient, %neonyellow% vehicle was tireless in doing so</en>
+				</hadbeenlivingon_a>
+				<hadbeenlivingon_b>
+					<de>seit mehr als %twelve% Jahren Besorgungen für Bürger machte. Das intelligente, %neonyellow% Fahrzeug war dabei unermüdlich</de>
+					<en>had been running errands for citizens for more than %twelve% years. The sentient, %neonyellow% vehicle was tireless in doing so</en>
+				</hadbeenlivingon_b>
+				<hadbeenlivingon_c>
+					<de>seit über hundert Jahren am Rathausplatz stand und den Bürgern stets ein Licht der Hoffnung spendete. Nun ist es für immer erloschen</de>
+					<en>had stood on the town hall square for more than a hundred years and had always given citizens a light of hope. Now it is extinguished forever</en>
+				</hadbeenlivingon_c>
+				<twelve>
+					<de>sieben|acht|neun|zehn|elf|zwölf|dreizehn|vierzehn|fünfzehn</de>
+					<en>seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen</en>
+				</twelve>
+				<exhibitiontown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</exhibitiontown>
+				<singerfirstname>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%</de>
+				</singerfirstname>
+				<singersecondname>
+					<de>%PERSONGENERATOR_FIRSTNAME(en,2)%</de> <!-- absichtlicher deutsch-englischer 'Künstler'-Vorname. TODO: maybe English-French for the English version -->
+				</singersecondname>
+				<singerlastname>
+					<de>%PERSONGENERATOR_LASTNAME(de,2)%</de>
+				</singerlastname>
+				<dontleaveme>
+					<de>verlass mich nicht|lass mich nicht allein|lass mich nicht im Stich|komm zurück</de>
+					<en>don't leave me|don't abandon me|do not forsake me|come back</en>
+				</dontleaveme>
+				<scientistfirstname>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%</de>
+				</scientistfirstname>
+				<scientistsecondname>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%</de> <!-- absichtlich weiblicher zweiter Vorname -->
+				</scientistsecondname>
+				<scientistpenultimatename>
+					<de>%PERSONGENERATOR_LASTNAME(de,1)%</de>
+				</scientistpenultimatename>
+				<scientistlastname>
+					<de>%PERSONGENERATOR_LASTNAME(de,1)%</de> <!-- Doppel-Nachname erzwingen, was anscheinend in verschiedenen Variablen erfolgen muss. Innerhalb einer wird bei zwei GENERATOR-Aufrufen derselbe nochmal zurückgegeben. -->
+				</scientistlastname>
+			</variables>
+			<data genre="4" price="1" quality="20" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,4,6" news="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" />
+			</effects>
+		</news>
+
+		<news id="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>Beerdigung für %joe%</de>
+				<en>Funeral for %joe%</en>
+			</title>
+			<description>
+				<de>%funeraltown% führt eine Beerdigung für ${squirrel_${i}} %joe% durch. %joe% sei eines natürlichen Todes gestorben, und die Einwohner organisieren einen Umzug und eine Zeremonie, um sich zu verabschieden.</de>
+				<en>%funeraltown% holds a funeral for ${squirrel_${i}} %joe%. %joe% has died of natural causes, and the townspeople organize a procession and a ceremony to say goodbye.</en>
+			</description>
+			<data genre="4" price="1" quality="15" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="2f570f1d-13b8-4c4c-83a4-7227194e7542" />
+			</effects>
+		</news>
+
+		<news id="2f570f1d-13b8-4c4c-83a4-7227194e7542" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>Auch %exhibitiontown% gedenkt %joe%</de>
+				<en>Also %exhibitiontown% commemorates %joe%</en>
+			</title>
+			<description>
+				<de>Anlässlich des Todes von ${squirrel_${i}} %joe% nimmt die gerade in %exhibitiontown% gastierende Wanderausstellung „Mensch und ${rodent_${i}} im Wandel der Zeit“ ab übermorgen den Rundgang „Vom ${squirrel_${i}} und Menschen“ ins Programm auf.</de>
+				<en>To commemorate the death of ${squirrel_${i}} %joe%, the traveling exhibit "Man and ${rodent_${i}} in the course of time", currently touring %exhibitiontown%, will add the trail "Of ${squirrel_${i}} and Man" to its program starting the day after tomorrow.</en>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" />
+			</effects>
+		</news>
+
+		<news id="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>%joe% an der Spitze der Hitparade</de>
+				<en>%joe% at the top of the charts</en>
+			</title>
+			<description>
+				<de>Schlagersängerin %singerfirstname%-%singersecondname% %singerlastname% hat mit dem Titel „%joe%, %dontleaveme%!“, der dem kürzlich in %funeraltown% verstorbenen ${squirrel_${i}} gewidmet ist, die Spitze der Charts erreicht.</de>
+				<en>Folk singer %singerfirstname%-%singersecondname% %singerlastname% has reached the top of the charts with the track "%joe%, %dontleaveme%!" dedicated to the recently deceased ${squirrel_${i}} in %funeraltown%.</en>
+			</description>
+			<data genre="1" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="9318dddb-bafe-4116-9a8b-65b69e9c070a" />
+			</effects>
+		</news>
+
+		<news id="9318dddb-bafe-4116-9a8b-65b69e9c070a" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>%joe%-Merchandise verkauft sich prächtig</de>
+				<en>%joe% merchandise is selling beautifully</en>
+			</title>
+			<description>
+				<de>Der Tod von ${squirrel_${i}} %joe% hat die Menschen tief berührt und für riesige Verkaufszahlen an Plüschzeug, Tassen und anderem Krimskrams gesorgt. Die Fünf Wirtschaftsweisen blicken wieder optimistisch in die Zukunft.</de>
+				<en>The death of ${squirrel_${i}} %joe% has touched people deeply and caused huge sales of plush toys, mugs and other clutter. The Five Sages of Economy are once again optimistic for the future.</en>
+			</description>
+			<data genre="0" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,9,10,8,20" news="8d3887bc-a10a-4458-a8b9-8627764ccc5d" />
+			</effects>
+		</news>
+
+		<news id="8d3887bc-a10a-4458-a8b9-8627764ccc5d" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>${rodent_${i}}forscher schreibt über %joe%</de>
+				<en>${rodent_${i}} researcher writes about %joe%</en>
+			</title>
+			<description>
+				<de>Anlässlich des Todestages des ${squirrel_${i}}s hat der renommierte Prof. Dr. Dr. %scientistfirstname% %scientistsecondname% %scientistpenultimatename%-%scientistlastname% aus %exhibitiontown% sein populärwissenschaftliches Buch „Vom ${squirrel_${i}} und Menschen und von mir“ herausgebracht.</de>
+				<en>To mark the anniversary of the death of the ${squirrel_${i}}, renowned Prof. Dr. Dr. %scientistfirstname% %scientistsecondname% %scientistpenultimatename%-%scientistlastname% from %exhibitiontown% has published his popular science book "Of ${squirrel_${i}} and man and of me".</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="4cbb9f4c-fd68-4538-8b28-983a1930221d" />
+			</effects>
+		</news>
+
+		<news id="4cbb9f4c-fd68-4538-8b28-983a1930221d" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>Keine News über %singerfirstname%-%singersecondname% %singerlastname%</de>
+				<en>No news about %singerfirstname%-%singersecondname% %singerlastname%</en>
+			</title>
+			<description>
+				<de>Die Schlagersängerin mit ihrem Lied über ${squirrel_${i}} „%joe%, %dontleaveme%!“ aus dem letzten Jahr war wohl ein One-Hit-Wonder. Niemand weiß, was sie heute so treibt.</de>
+				<en>The folk singer with her tune about ${squirrel_${i}} "%joe%, %dontleaveme%!" from last year was probably a one-hit wonder. No one knows what she's up to today.</en>
+			</description>
+			<data genre="1" price="1" quality="20" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="66aee363-ee72-4051-956e-b2f304adb8b6" />
+			</effects>
+		</news>
+
+		<news id="66aee363-ee72-4051-956e-b2f304adb8b6" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>Wanderausstellung endlich in %funeraltown%</de>
+				<en>Traveling exhibit finally in %funeraltown%</en>
+			</title>
+			<description>
+				<de>Der Kreis schließt sich: Die Wanderausstellung „Mensch und ${rodent_${i}} im Wandel der Zeit“ kommt endlich in %funeraltown% an, wo ${squirrel_${i}} %joe% gestorben war.</de>
+				<en>Coming full circle, the traveling exhibit "Man and ${rodent_${i}} in the course of time" finally arrives in %funeraltown%, where ${squirrel_${i}} %joe% had died.</en>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="150c3746-7389-49c1-9f6b-6ad27b321efa" />
+			</effects>
+		</news>
+
+		<news id="150c3746-7389-49c1-9f6b-6ad27b321efa" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+			<title>
+				<de>%singerfirstname%-%singersecondname% %singerlastname% gesichtet</de>
+				<en>%singerfirstname%-%singersecondname% %singerlastname% sighted</en>
+			</title>
+			<description>
+				<de>Augenzeugenberichten zufolge hat Sängerin %singerfirstname%-%singersecondname% %singerlastname% eine neue Berufung gefunden und ist Teil einer Wanderausstellung namens „Mensch und ${rodent_${i}} im Wandel der Zeit“.</de>
+				<en>According to eyewitnesses, singer %singerfirstname%-%singersecondname% %singerlastname% has found a new vocation and is part of a traveling exhibit named "Man and ${rodent_${i}} in the course of time".</en>
+			</description>
+			<data genre="1" price="1" quality="30" fictional="1" />
+		</news>
+
+		<news id="733f6d6a-4021-45c0-8ace-7768f9a922f0" type="0" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551" comment="Source: ChatGPT came up with the inflatable duck escaping from the parade. Asked for a few variations and made up my own. Continuations by myself.">
+			<title>
+				<de>${giantinflatable_${i}} ${duck_${i}} %escapes% Parade</de>
+				<en>${giantinflatable_${i}} ${duck_${i}} %escapes% parade</en>
+			</title>
+			<description>
+				<de>${the_${i}} ${duck_${i}} gehörte zu einem Festumzug in %paradetown%, löste sich aus der Verankerung und schwebte davon. ${it_${i}} ist über 15 Meter groß, wurde über der Stadt schwebend gesichtet und verschwand hinter dem Horizont. Die Suchaktion ist im Gange.</de>
+				<en>${the_${i}} ${duck_${i}}, part of a parade in %paradetown%, broke loose from its moorings and floated away. ${it_${i}} is over 50 feet tall, was spotted floating over the city and disappeared behind the horizon. The search operation is underway.</en>
+			</description>
+			<variables>
+				<i>
+					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
+				</i>
+				<giantinflatable_0>
+					<de>Riesige aufblasbare</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_0>
+				<giantinflatable_1>
+					<de>Riesiges aufblasbares</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_1>
+				<giantinflatable_2>
+					<de>Riesiges aufblasbares</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_2>
+				<giantinflatable_3>
+					<de>Riesige aufblasbare</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_3>
+				<giantinflatable_4>
+					<de>Riesiger aufblasbarer</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_4>
+				<giantinflatable_5>
+					<de>Riesiger aufblasbarer</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_5>
+				<giantinflatable_6>
+					<de>Riesige aufblasbare</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_6>
+				<giantinflatable_7>
+					<de>Riesiger aufblasbarer</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_7>
+				<giantinflatable_8>
+					<de>Riesiges aufblasbares</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_8>
+				<giantinflatable_9>
+					<de>Riesiger aufblasbarer</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_9>
+				<giantinflatable_a>
+					<de>Riesige aufblasbare</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_a>
+				<giantinflatable_b>
+					<de>Riesiger aufblasbarer</de>
+					<en>Giant inflatable</en>
+				</giantinflatable_b>
+				<giantinflatable_c>
+					<de>69</de>
+					<en>69</en>
+				</giantinflatable_c>
+				<giantinflatable_d>
+					<de>101</de>
+					<en>101</en>
+				</giantinflatable_d>
+				<duck_0>
+					<de>Ente</de>
+					<en>duck</en>
+				</duck_0>
+				<duck_1>
+					<de>Einhorn</de>
+					<en>unicorn</en>
+				</duck_1>
+				<duck_2>
+					<de>Pony</de>
+					<en>pony</en>
+				</duck_2>
+				<duck_3>
+					<de>Pizza</de>
+					<en>pizza</en>
+				</duck_3>
+				<duck_4>
+					<de>T-Rex</de>
+					<en>T-Rex</en>
+				</duck_4>
+				<duck_5>
+					<de>Oktopus</de>
+					<en>octopus</en>
+				</duck_5>
+				<duck_6>
+					<de>Eistüte</de>
+					<en>ice-cream cone</en>
+				</duck_6>
+				<duck_7>
+					<de>Teddybär</de>
+					<en>teddy bear</en>
+				</duck_7>
+				<duck_8>
+					<de>UFO</de>
+					<en>UFO</en>
+				</duck_8>
+				<duck_9>
+					<de>Diamant</de>
+					<en>diamond</en>
+				</duck_9>
+				<duck_a>
+					<de>Kuh</de>
+					<en>cow</en>
+				</duck_a>
+				<duck_b>
+					<de>Dildo</de>
+					<en>dildo</en>
+				</duck_b>
+				<duck_c>
+					<de>Herzballons-Geschwader</de>
+					<en>heart balloons squadron</en>
+				</duck_c>
+				<duck_d>
+					<de>Luftballons-Bündel</de>
+					<en>red balloons bunch</en>
+				</duck_d>
+				<escapes>
+					<de>entkommt|entwischt|entflieht|entfleucht</de>
+					<en>escapes|eludes|flees|absconds</en>
+				</escapes>
+				<the_0>
+					<de>Die</de>
+					<en>The</en>
+				</the_0>
+				<the_1>
+					<de>Das</de>
+					<en>The</en>
+				</the_1>
+				<the_2>
+					<de>Das</de>
+					<en>The</en>
+				</the_2>
+				<the_3>
+					<de>Die</de>
+					<en>The</en>
+				</the_3>
+				<the_4>
+					<de>Der</de>
+					<en>The</en>
+				</the_4>
+				<the_5>
+					<de>Der</de>
+					<en>The</en>
+				</the_5>
+				<the_6>
+					<de>Die</de>
+					<en>The</en>
+				</the_6>
+				<the_7>
+					<de>Der</de>
+					<en>The</en>
+				</the_7>
+				<the_8>
+					<de>Das</de>
+					<en>The</en>
+				</the_8>
+				<the_9>
+					<de>Der</de>
+					<en>The</en>
+				</the_9>
+				<the_a>
+					<de>Die</de>
+					<en>The</en>
+				</the_a>
+				<the_b>
+					<de>Der</de>
+					<en>The</en>
+				</the_b>
+				<the_c>
+					<de>Das</de>
+					<en>The</en>
+				</the_c>
+				<the_d>
+					<de>Das</de>
+					<en>The</en>
+				</the_d>
+				<it_0>
+					<de>Sie</de>
+					<en>It</en>
+				</it_0>
+				<it_1>
+					<de>Es</de>
+					<en>It</en>
+				</it_1>
+				<it_2>
+					<de>Es</de>
+					<en>It</en>
+				</it_2>
+				<it_3>
+					<de>Sie</de>
+					<en>It</en>
+				</it_3>
+				<it_4>
+					<de>Er</de>
+					<en>It</en>
+				</it_4>
+				<it_5>
+					<de>Er</de>
+					<en>It</en>
+				</it_5>
+				<it_6>
+					<de>Sie</de>
+					<en>It</en>
+				</it_6>
+				<it_7>
+					<de>Er</de>
+					<en>It</en>
+				</it_7>
+				<it_8>
+					<de>Es</de>
+					<en>It</en>
+				</it_8>
+				<it_9>
+					<de>Er</de>
+					<en>It</en>
+				</it_9>
+				<it_a>
+					<de>Sie</de>
+					<en>It</en>
+				</it_a>
+				<it_b>
+					<de>Er</de>
+					<en>It</en>
+				</it_b>
+				<it_c>
+					<de>Es</de>
+					<en>It</en>
+				</it_c>
+				<it_d>
+					<de>Es</de>
+					<en>It</en>
+				</it_d>
+				<paradetown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</paradetown>
+				<sightedtown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</sightedtown>
+				<foundtown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</foundtown>
+				<andbroughtdownby>
+					<de> und von der Feuerwehr zu Boden gebracht|. ${it_${i}} wurde gemütlich schwimmend in einem Parkteich entdeckt und wohlbehalten an die Organisatoren der Parade zurückgegeben|. ${it_${i}} wurde von ein paar Witzbolden entführt, doch die Polizei konnte die Entführer ausfinding machen</de>
+					<en> and brought down by the fire department|. ${it_${i}} was discovered leisurely floating in a park pond and was safely returned to the parade organizers|. ${it_${i}} was hijacked by some pranksters, but the police were able to track down them down</en>
+				</andbroughtdownby>
+				<nina>
+					<de>Nina|Nia|Nana|Nona</de>
+				</nina>
+				<artistlastname>
+					<de>%PERSONGENERATOR_LASTNAME(de,2)%|%PERSONGENERATOR_LASTNAME(en,2)%|%PERSONGENERATOR_LASTNAME(fr,2)%</de>
+				</artistlastname>
+				<ofsportsclub>
+					<de>des Sportclubs|des Sportvereins|der Sportfreunde|des Fußballclubs|der Spielvereinigung</de>
+					<en>of Sports Club|of the Sports Association|of Sports Friends|of Football Club|of United</en>
+				</ofsportsclub>
+			</variables>
+			<data genre="4" price="1" quality="15" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,18,30" news="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" />
+			</effects>
+		</news>
+
+		<news id="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+			<title>
+				<de>${giantinflatable_${i}} ${duck_${i}} in %sightedtown% gesichtet</de>
+				<en>${giantinflatable_${i}} ${duck_${i}} sighted in %sightedtown%</en>
+			</title>
+			<description>
+				<de>${the_${i}} ${duck_${i}} von der Parade in %paradetown% flog heute Morgen über %sightedtown% hinweg, wie Augenzeugen berichteten. Die Fliegerstaffel ist hinterher.</de>
+				<en>${the_${i}} ${duck_${i}} off the %paradetown% parade flew over %sightedtown% this morning, according to eyewitnesses. The super high-tech jet fighters are in pursuit.</en>
+			</description>
+			<data genre="4" price="1" quality="10" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,18,30" news="e707f054-6a75-478b-bba7-b368da4ea7c5" />
+			</effects>
+		</news>
+
+		<news id="e707f054-6a75-478b-bba7-b368da4ea7c5" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+			<title>
+				<de>${giantinflatable_${i}} ${duck_${i}} in %foundtown% gefunden</de>
+				<en>${giantinflatable_${i}} ${duck_${i}} found in %foundtown%</en>
+			</title>
+			<description>
+				<de>${the_${i}} ${duck_${i}} von der Parade in %paradetown% wurde heute nachmittag schließlich in %foundtown% gefunden%andbroughtdownby%.</de>
+				<en>${the_${i}} ${duck_${i}} off the %paradetown% parade was eventually found in %foundtown% this afternoon%andbroughtdownby%.</en>
+			</description>
+			<data genre="4" price="1" quality="20" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="0dd044d0-7752-435e-8f12-7a3047e3e69b" probability1="25" news2="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" probability2="25" news3="262a7de8-89b0-4fa5-884e-19c2861392fb" probability3="25" news4="d5c19330-0592-4585-b63d-7e6a18e2e75b" probability4="25" />
+			</effects>
+		</news>
+
+		<news id="0dd044d0-7752-435e-8f12-7a3047e3e69b" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+			<title>
+				<de>Rocksängerin %nina% %artistlastname% landet Riesenhit</de>
+				<en>Rock singer %nina% %artistlastname% lands huge hit</en>
+			</title>
+			<description>
+				<de>„${it_${i}} %escapes% den Kriegsministern!“ Inspiriert vom Flug über %sightedtown% landet Rocksängerin %nina% %artistlastname% mit „${giantinflatable_${i}} ${duck_${i}}“ einen internationalen Riesenhit.</de>
+				<en>„${it_${i}} %escapes% the war ministers!“ Inspired by the flight over %sightettown%, rock singer %nina% %artistlastname% lands a huge international hit with "${giantinflatable_${i}} ${duck_${i}}".</en>
+			</description>
+			<data genre="1" price="1" quality="25" fictional="1" />
+		</news>
+
+		<news id="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+			<title>
+				<de>${duck_${i}}-Computerspiel wird großer Erfolg</de>
+				<en>${the_${i}} ${duck_${i}} computer game becomes big success</en>
+			</title>
+			<description>
+				<de>Der vom Flug über %sightedtown% inspirierte Action-Kracher „${the_${i}} ${duck_${i}} %escapes%“ des aufstrebenden Garagen-Studios „%artistlastname%soft“ aus %paradetown% führt zur Zeit die internationalen Verkaufscharts an.</de>
+				<en>Inspired by the flight over %sightettown%, the action smash hit "${the_${i}} ${duck_${i}} %escapes%" by the up-and-coming bedroom studio "%artistlastname%soft" from %paradetown% is currently topping the international sales charts.</en>
+			</description>
+			<data genre="3" price="1" quality="25" fictional="1" />
+		</news>
+
+		<news id="262a7de8-89b0-4fa5-884e-19c2861392fb" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+			<title>
+				<de>Wanderausstellung in %sightedtown% wird erweitert</de>
+				<en>Traveling exhibit in %sightedtown% to be expanded</en>
+			</title>
+			<description>
+				<de>Inspiriert vom Flug aus %paradetown% nimmt die gerade zufällig in %sightedtown% gastierende Wanderausstellung „Der Mensch %escapes%“ ab übermorgen den Rundgang „Über ${duck_${i}} und Mensch“ ins Programm auf.</de>
+				<en>Inspired by the flight from %paradetown%, the traveling exhibit "Man %escapes%" that just happens to be currently touring %sightedtown% will add the trail "Of ${duck_${i}} and man" to its program starting the day after tomorrow.</en>
+			</description>
+			<data genre="5" price="1" quality="25" fictional="1" />
+		</news>
+
+		<news id="d5c19330-0592-4585-b63d-7e6a18e2e75b" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+			<title>
+				<de>${duck_${i}} wird Sportmaskottchen in %sightedtown%</de>
+				<en>${the_${i}} ${duck_${i}} becomes sports mascot in %sightedtown%</en>
+			</title>
+			<description>
+				<de>Inspiriert vom Flug aus %paradetown% wird „${duck_${i}} %artistlastname%“ das neue Maskottchen %ofsportsclub% %sightedtown%. Der freche Freigeist von %artistlastname% repräsentiere den Club sehr treffend.</de>
+				<en>Inspired by the flight from %paradetown%, "%artistlastname% ${the_${i}} ${duck_${i}}" becomes the new mascot %ofsportsclub% %sightedtown%. The bold free spirit of %artistlastname% is said to represent the club very aptly.</en>
+			</description>
+			<data genre="2" price="1" quality="25" fictional="1" />
+		</news>
+
+		<news id="8ac54969-a412-4c23-98c1-a3b2f449605d" type="0" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551" comment="Source: Items 1 and 2, variations and the 'duel' version from ChatGPT, other continuations made up by me. TODO: Perhaps internationalization of artist name and 'beer tents', but we still have only German region available to play.">
+			<title>
+				<de>${mw_${g}} aus %subjecttown% %sues% ${theirparrot_${i}}</de>
+				<en>A ${mw_${g}} from %subjecttown% %sues% ${theirparrot_${i}}</en>
+			</title>
+			<description>
+				<de>${the_${g}} ${mw_${g}} namens ${name_${g}} %claims%${ithadinsulted_${i}}.</de>
+				<en>${the_${g}} ${mw_${g}} named ${name_${g}} %claims%${ithadinsulted_${i}}.</en>
+			</description>
+			<variables>
+				<g>
+					<de>m|f</de>
+				</g>
+				<mw_m>
+					<de>Mann</de>
+					<en>man</en>
+				</mw_m>
+				<mw_f>
+					<de>Frau</de>
+					<en>woman</en>
+				</mw_f>
+				<the_m>
+					<de>Der</de>
+					<en>The</en>
+				</the_m>
+				<the_f>
+					<de>Die</de>
+					<en>The</en>
+				</the_f>
+				<heshe_m>
+					<de>er</de>
+					<en>he</en>
+				</heshe_m>
+				<heshe_f>
+					<de>sie</de>
+					<en>she</en>
+				</heshe_f>
+				<their_m>
+					<de>sein</de>
+					<en>his</en>
+				</their_m>
+				<their_f>
+					<de>ihr</de>
+					<en>her</en>
+				</their_f>
+				<them_dat_m>
+					<de>ihm</de>
+					<en>him</en>
+				</them_dat_m>
+				<them_dat_f>
+					<de>ihr</de>
+					<en>her</en>
+				</them_dat_f>
+				<them_acc_m>
+					<de>ihn</de>
+					<en>him</en>
+				</them_acc_m>
+				<them_acc_f>
+					<de>sie</de>
+					<en>her</en>
+				</them_acc_f>
+				<themself_m>
+					<de>sich selbst</de>
+					<en>himself</en>
+				</themself_m>
+				<themself_f>
+					<de>sich selbst</de>
+					<en>herself</en>
+				</themself_f>
+				<subjecttown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</subjecttown>
+				<name_m>
+					<de>%PERSONGENERATOR_NAME(de,1)%</de>
+					<en>%PERSONGENERATOR_NAME(en,1)%</en>
+				</name_m>
+				<name_f>
+					<de>%PERSONGENERATOR_NAME(de,2)%</de>
+					<en>%PERSONGENERATOR_NAME(en,2)%</en>
+				</name_f>
+				<sues>
+					<de>verklagt|klagt gegen</de> <!-- too long: erhebt Klage gegen|prozessiert gegen -->
+					<en>sues|files suit against</en> <!--too long: files lawsuit against|takes action against -->
+				</sues>
+				<i>
+					<de>0|1|2|3|4|5|6|7|8|9|a|b</de>
+				</i>
+				<theirparrot_0>
+					<de>${their_${g}}en Hauspapagei</de>
+					<en>${their_${g}} pet parrot</en>
+				</theirparrot_0>
+				<theirparrot_1>
+					<de>${their_${g}} Motorrad</de>
+					<en>${their_${g}} motorcycle</en>
+				</theirparrot_1>
+				<theirparrot_2>
+					<de>${their_${g}} Spiegelbild</de>
+					<en>${their_${g}} mirror reflection</en>
+				</theirparrot_2>
+				<theirparrot_3>
+					<de>einen Kaufhausspiegel</de>
+					<en>a shop mirror</en>
+				</theirparrot_3>
+				<theirparrot_4>
+					<de>${themself_${g}}</de>
+					<en>${themself_${g}}</en>
+				</theirparrot_4>
+				<theirparrot_5>
+					<de>${their_${g}}en Schatten</de>
+					<en>${their_${g}} own shadow</en>
+				</theirparrot_5>
+				<theirparrot_6>
+					<de>einen Wahrsager</de>
+					<en>a fortune teller</en>
+				</theirparrot_6>
+				<theirparrot_7>
+					<de>${their_${g}} Navi</de>
+					<en>${their_${g}} sat nav</en>
+				</theirparrot_7>
+				<theirparrot_8>
+					<de>${their_${g}}e Katze</de>
+					<en>${their_${g}} cat</en>
+				</theirparrot_8>
+				<theirparrot_9>
+					<de>${their_${g}}en Wecker</de>
+					<en>${their_${g}} alarm clock</en>
+				</theirparrot_9>
+				<theirparrot_a>
+					<de>${their_${g}}en Fernseher</de>
+					<en>${their_${g}} television</en>
+				</theirparrot_a>
+				<theirparrot_b>
+					<de>${their_${g}}en Friseur</de>
+					<en>${their_${g}} hairdresser</en>
+				</theirparrot_b>
+				<claims>
+					<de>behauptet|gibt an|macht geltend</de>
+					<en>claims|alleges|argues</en>
+				</claims>
+				<ithadinsulted_0>
+					<de>, der Vogel habe ${them_acc_${g}} beleidigt und ${their_${g}}en Ruf vor ${their_${g}}en Freunden geschädigt; ${heshe_${g}} fordert eine öffentliche Entschuldigung von dem Papagei und eine einstweilige Verfügung, um weitere Verleumdungen zu verhindern</de>
+					<en> the bird had insulted ${them_acc_${g}} and tarnished ${their_${g}} reputation in front of ${their_${g}} friends; ${heshe_${g}} seeks a public apology from the parrot and a restraining order to prevent further defamation</en>
+				</ithadinsulted_0>
+				<ithadinsulted_1>
+					<de>, das Gefährt habe ${them_acc_${g}} während einer Tour absichtlich zu Fall gebracht; ${heshe_${g}} fordert Schadensersatz für Verletzungen und Schäden</de>
+					<en> the vehicle had intentionally caused ${them_acc_${g}} to crash during a ride; ${heshe_${g}} demands compensation for injuries and damages</en>
+				</ithadinsulted_1>
+				<ithadinsulted_2>
+					<de>, die Reflektion habe ${them_dat_${g}} emotionales Leid zugefügt und jede ${their_${g}}er Bewegungen nachgeahmt; ${heshe_${g}} beantragt eine einstweilige Verfügung und Schadensersatz wegen Verletzung der Privatsphäre</de>
+					<en> the reflection had caused ${them_dat_${g}} emotional distress and mimicked ${their_${g}} every move; ${heshe_${g}} seeks a restraining order and damages for invasion of privacy</en>
+				</ithadinsulted_2>
+				<ithadinsulted_3>
+					<de>, der Kaufhausspiegel habe ${their_${g}} Aussehen verzerrt, so dass ${heshe_${g}} an ${their_${g}}er eigenen Schönheit zweifeln musste; ${heshe_${g}} fordert, dass der Spiegel ersetzt oder verändert wird</de>
+					<en> the shop mirror had distorted ${their_${g}} appearance and caused ${them_dat_${g}} to doubt ${their_${g}} own beauty; ${heshe_${g}} demands that the mirror be replaced or altered</en>
+				</ithadinsulted_3>
+				<ithadinsulted_4>
+					<de>, ${heshe_${g}} habe ${their_${g}}e eigenen Bürgerrechte verletzt, indem ${heshe_${g}} sich betrunken und eine Straftat begangen habe, und verlangt, dass der Staat ${them_dat_${g}} 5 Millionen zahle</de>
+					<en> ${heshe_${g}} had violated ${their_${g}} own civil rights by getting drunk and committing a crime, and demands that the state pay ${them_dat_${g}} 5 million</en>
+				</ithadinsulted_4>
+				<ithadinsulted_5>
+					<de>, dass ${their_${g}} eigener Schatten ${them_acc_${g}} verfolgte und ${their_${g}}e Aktivitäten ausspionierte, und führt weiter aus, dass dies eine Verletzung ${their_${g}}er Privatsphäre darstelle; ${heshe_${g}} fordert eine Untersuchung der Angelegenheit</de>
+					<en> that ${their_${g}} own shadow has been following ${them_acc_${g}} and spying on ${their_${g}} activities, and further claims it was an invasion of ${their_${g}} privacy, demanding an investigation into the matter</en>
+				</ithadinsulted_5>
+				<ithadinsulted_6>
+					<de>, dass falsche Vorhersagen zu den Lottozahlen gemacht wurden; ${heshe_${g}} verlangt eine Entschädigung für das Geld, das ${heshe_${g}} aufgrund der Ratschläge des Wahrsagers für Lotterielose ausgegeben hat</de>
+					<en> that they have provided inaccurate predictions regarding lottery numbers; ${heshe_${g}} seeks compensation for the money ${heshe_${g}} has spent on lottery tickets based on the fortune teller's advice</en>
+				</ithadinsulted_6>
+				<ithadinsulted_7>
+					<de>, das Gerät habe ${them_dat_${g}} irreführende Anweisungen gegeben, was zu zahlreichen falschen Abzweigungen und Verzögerungen geführt habe; ${heshe_${g}} fordert Entschädigung für verschwendete Zeit und Kraftstoff</de>
+					<en> the device had given ${them_acc_${g}} misleading directions, leading to numerous wrong turns and delays; ${heshe_${g}} seeks reimbursement for the wasted time and fuel</en>
+				</ithadinsulted_7>
+				<ithadinsulted_8>
+					<de>, das Tier habe ${them_dat_${g}} durch ihr unaufhörliches Miauen und ihr unberechenbares Verhalten erheblichen seelischen Schaden zugefügt; ${heshe_${g}} fordert Schadenersatz für die verursachte Notlage</de>
+					<en> that the pet had caused ${them_dat_${g}} significant emotional distress with its incessant meowing and unpredictable behavior; ${heshe_${g}} seeks damages for the distress caused</en>
+				</ithadinsulted_8>
+				<ithadinsulted_9>
+					<de>, dass das unaufhörliche, laute Klingeln chronischen Schlafentzug verursacht und ${their_${g}} allgemeines Wohlbefinden beeinträchtige; ${heshe_${g}} fordert Entschädigung für die daraus entstandenen gesundheitlichen Probleme</de>
+					<en> that the loud incessant ringing had caused ${them_dat_${g}} chronic sleep deprivation and affected ${their_${g}} overall well-being; ${heshe_${g}} seeks compensation for the resulting health issues</en>
+				</ithadinsulted_9>
+				<ithadinsulted_a>
+					<de>, dass der Fernseher ${them_dat_${g}} geheime Botschaften schickt und dazu drängt, spezifische Aufgaben auszuführen; ${heshe_${g}} fordert eine Untersuchung der Angelegenheit, um die Quelle der Botschaften zu ermitteln</de>
+					<en> the television was sending ${them_dat_${g}} secret messages, urging to carry out specific tasks; ${heshe_${g}} demands an investigation into the matter to uncover the source of the messages</en>
+				</ithadinsulted_a>
+				<ithadinsulted_b>
+					<de>, man hätte ${them_dat_${g}} einen schrecklichen Haarschnitt verpasst, der ${their_${g}} Selbstwertgefühl beschädigt habe; ${heshe_${g}} fordert eine Entschädigung für die Kosten der Dienstleistung und den entstandenen seelischen Schaden</de>
+					<en> they have given ${them_dat_${g}} a terrible haircut that had damaged ${their_${g}} self-esteem; ${heshe_${g}} seeks reimbursement for the cost of the service and emotional distress caused</en>
+				</ithadinsulted_b>
+				<deemedfrivolous>
+					<de> als %frivolous% %deemed% und|</de>
+					<en> %deemed% %frivolous% and was|</en>
+				</deemedfrivolous>
+				<deemed>
+					<de>eingestuft|erachtet|klassifiziert|abgetan</de>
+					<en>deemed|ruled|classified|brushed aside as</en>
+				</deemed>
+				<frivolous>
+					<de>frivol|unseriös|albern|nichtig|absurd</de>
+					<en>frivolous|dubious|silly|inane|absurd</en>
+				</frivolous>
+				<quickly>
+					<de> rasch| schnell|</de>
+					<en> quickly| swiftly|</en>
+				</quickly>
+				<forlackofevidence>
+					<de> aus Mangel an Beweisen| aufgrund fehlender Indizien|</de>
+					<en> for lack of evidence| due to insufficient evidentiary support|</en>
+				</forlackofevidence>
+				<dismissed>
+					<de>abgewiesen|eingestellt|abgewiesen|abgelehnt|abgewiesen|fallen gelassen|abgewiesen|zurückgewiesen|abgewiesen</de>
+					<en>dismissed|overturned|dismissed|denied|dismissed|rejected|dismissed|thrown out|dismissed</en>
+				</dismissed>
+				<byajudge>
+					<de> von einem Richter | vom Gericht|</de>
+					<en> by a judge | by the court|</en>
+				</byajudge>
+				<appeals>
+					<de>legt Berufung ein|geht in Berufung</de>
+					<en>appeals|files an appeal</en>
+				</appeals>
+				<artistfirstname>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%</de>
+				</artistfirstname>
+				<artistlastname>
+					<de>%PERSONGENERATOR_LASTNAME(de,2)%</de>
+				</artistlastname>
+				<band>
+					<de>Band|Gang|Kapelle|Combo|Band</de>
+					<en>Band|Gang|Band|Combo|Band</en>
+				</band>
+				<against>
+					<de>Gegen|Über|Durch|Auf|Für|Aber|Doch,|Doch nicht|Nicht doch|Warum|Wozu|Nicht|Nein,</de>
+					<en>Against|About|Through|To|For|But|Yet,|But not|Oh no, not|Why|What for|Not|No,</en>
+				</against>
+				<artisttown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</artisttown>
+			</variables>
+			<data genre="4" price="1" quality="20" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="017aef0b-57a0-4677-82d2-507d7fa822f9" />
+			</effects>
+		</news>
+
+		<news id="017aef0b-57a0-4677-82d2-507d7fa822f9" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Klage von ${name_${g}} %dismissed%</de>
+				<en>${name_${g}}'s lawsuit %dismissed%</en>
+			</title>
+			<description>
+				<de>Die Klage von ${name_${g}} gegen ${theirparrot_${i}} wurde%deemedfrivolous%%forlackofevidence%%quickly%%byajudge% %dismissed%.</de>
+				<en>The lawsuit of ${name_${g}} against ${theirparrot_${i}} was%deemedfrivolous%%quickly% %dismissed%%byajudge%%forlackofevidence%.</en>
+			</description>
+			<data genre="4" price="1" quality="30" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" probability1="50" news2="ddc63d39-7c94-4710-85f1-e8462c14f34b" probability2="50" />
+			</effects>
+		</news>
+
+		<news id="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>${mw_${g}} fordert ${theirparrot_${i}} zum Duell</de>
+				<en>${mw_${g}} challenges ${theirparrot_${i}} to a duel</en>
+			</title>
+			<description>
+				<de>Nach der abgewiesenen Klage greift ${name_${g}} zu den Mitteln der Selbstjustiz. Showdown morgen 12 Uhr mittags auf dem Marktplatz %subjecttown%.</de>
+				<en>After the dismissed lawsuit, ${name_${g}} resorts to vigilante justice. Showdown tomorrow at 12 high noon marketplace %subjecttown%.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,18,30" choose="or" news1="a3716822-419b-4a1a-ac1d-4529eea1ec6a" probability1="50" news2="5af0c98a-e1f9-4842-827f-dfb90ae93d5b" probability2="50" />
+			</effects>
+			<data genre="4" price="1" quality="30" fictional="1" />
+		</news>
+
+		<news id="a3716822-419b-4a1a-ac1d-4529eea1ec6a" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Duell auf Marktplatz %subjecttown% abgesagt</de>
+				<en>Duel on marketplace %subjecttown% cancelled</en>
+			</title>
+			<description>
+				<de>Die Behörden sind rechtzeitig eingeschritten und haben das Duell von ${name_${g}} gegen ${theirparrot_${i}} verhindert. ${name_${g}} wurde in eine Anstalt eingewiesen.</de>
+				<en>The authorities intervened in time and prevented the duel between ${name_${g}} and ${theirparrot_${i}}. ${name_${g}} was institutionalized.</en>
+			</description>
+			<data genre="4" price="1" quality="30" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
+			</effects>
+		</news>
+
+		<news id="5af0c98a-e1f9-4842-827f-dfb90ae93d5b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Duell gegen ${theirparrot_${i}} verloren</de>
+				<en>Duel against ${theirparrot_${i}} lost</en>
+			</title>
+			<description>
+				<de>${name_${g}} wurde geschickt und zielgenau die Waffe aus ${their_${g}}er Hand geschossen; ${heshe_${g}} wurde mit drei verstauchten Fingern ins Krankenhaus eingeliefert.</de>
+				<en>${name_${g}} got the gun shot out of ${their_${g}} hand skillfully and accurately; ${heshe_${g}} was hospitalized with three sprained fingers.</en>
+			</description>
+			<data genre="4" price="1" quality="30" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
+			</effects>
+		</news>
+
+		<news id="ddc63d39-7c94-4710-85f1-e8462c14f34b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>${name_${g}} %appeals%</de>
+				<en>${name_${g}} %appeals%</en>
+			</title>
+			<description>
+				<de>Nun erneut vor dem Landgericht: ${name_${g}} %claims%${ithadinsulted_${i}}.</de>
+				<en>Now again before the regional court: ${name_${g}} %claims%${ithadinsulted_${i}}.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="1b671c51-6731-4b9e-9d60-728ada55995b" />
+			</effects>
+			<data genre="4" price="1" quality="30" fictional="1" />
+		</news>
+
+		<news id="1b671c51-6731-4b9e-9d60-728ada55995b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Klage von ${name_${g}} erneut %dismissed%</de>
+				<en>${name_${g}}'s lawsuit again %dismissed%</en>
+			</title>
+			<description>
+				<de>Auch das Landgericht hat die Klage von ${name_${g}} gegen ${theirparrot_${i}}%deemedfrivolous%%forlackofevidence%%quickly% %dismissed%.</de>
+				<en>${name_${g}}'s lawsuit against ${theirparrot_${i}} was%deemedfrivolous%%quickly% %dismissed%%forlackofevidence% also by the regional court.</en>
+			</description>
+			<data genre="4" price="1" quality="30" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
+			</effects>
+		</news>
+
+		<news id="a91c818c-df10-4dbb-a103-9b12e7cef6fe" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Aufarbeitung Causa ${name_${g}} begonnen</de>
+				<en>${name_${g}} case processing started</en>
+			</title>
+			<description>
+				<de>Die Causa ${name_${g}} gegen ${theirparrot_${i}} findet Eingang in die rechtswissenschaftliche Literatur, und viele Jurastudierende werden sich mit der Fallstudie herumschlagen dürfen.</de>
+				<en>The case of ${name_${g}} against ${theirparrot_${i}} has found its way into jurisprudential literature, and many law students will be given the opportunity to grapple with the case study.</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" probability1="25" news2="3e57cb8c-2212-406c-bed4-cf6a5326d539" probability2="25" news3="f3c94d9d-8204-494d-843d-90e1ae50b520" probability3="25" news4="17f2268c-f87a-42b1-86f6-32170ff2aae1" probability4="25" />
+			</effects>
+		</news>
+
+		<news id="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>%artistfirstname%-%artistlastname%-%band% landet Riesenhit</de>
+				<en>%artistfirstname% %artistlastname% %band% lands huge hit</en>
+			</title>
+			<description>
+				<de>Der von der Causa ${name_${g}} inspirierte Gassenhauer „%against% ${theirparrot_${i}}!“ der aus %artisttown% stammenden Musikkapelle hat sich schnell zum Dauerbrenner in den Bierzelten der Nation entwickelt.</de>
+				<en>The hit song "%against% ${theirparrot_${i}}!" by the music band hailing from %artisttown%, inspired by the case of ${name_${g}}, has quickly become a permanent favorite in the nation's beer tents.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,36,48" news="579c00f4-9604-40cb-b0c5-21ee829df594" />
+			</effects>
+			<data genre="1" price="1" quality="40" fictional="1" />
+		</news>
+
+		<news id="3e57cb8c-2212-406c-bed4-cf6a5326d539" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Kabarettist %artistfirstname% %artistlastname% geht auf Tour</de>
+				<en>Satirist %artistfirstname% %artistlastname% goes on tour</en>
+			</title>
+			<description>
+				<de>Der aufstrebene Kabarettist %artistfirstname% %artistlastname% beginnt seine Tour in %artisttown% und stellt sein neues von der Causa ${name_${g}} inspiriertes Programm „%against% ${theirparrot_${i}}!“ vor.</de>
+				<en>Up-and-coming satirist %artistfirstname% %artistlastname% begins his tour in %artisttown% and presents his new program "%against% ${theirparrot_${i}}!" inspired by the case of ${name_${g}}.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,36,48" news="579c00f4-9604-40cb-b0c5-21ee829df594" />
+			</effects>
+			<data genre="5" price="1" quality="40" fictional="1" />
+		</news>
+
+		<news id="f3c94d9d-8204-494d-843d-90e1ae50b520" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Komiker %artistfirstname% %artistlastname% geht auf Tour</de>
+				<en>Comedian %artistfirstname% %artistlastname% goes on tour</en>
+			</title>
+			<description>
+				<de>Der aufstrebene Komiker %artistfirstname% %artistlastname% beginnt seine Stadiontour in %artisttown% und stellt sein neues von der Causa ${name_${g}} inspiriertes Programm „Über ${mw_${g}} und ${theirparrot_${i}}“ vor.</de>
+				<en>Up-and-coming comedian %artistfirstname% %artistlastname% begins his stadium tour in %artisttown% and presents his new program "Of ${mw_${g}} and ${theirparrot_${i}}" inspired by the case of ${name_${g}}.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,36,48" news="579c00f4-9604-40cb-b0c5-21ee829df594" />
+			</effects>
+			<data genre="1" price="1" quality="40" fictional="1" />
+		</news>
+
+		<news id="17f2268c-f87a-42b1-86f6-32170ff2aae1" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>Wanderausstellung in %artisttown% wird erweitert</de>
+				<en>Traveling exhibit in %artisttown% to be expanded</en>
+			</title>
+			<description>
+				<de>Beeindruckt von der Causa ${name_${g}} nimmt die gerade in %artisttown% gastierende Wanderausstellung „Gesetz und Mensch im Wandel der Zeit“ ab übermorgen den Rundgang „Über ${mw_${g}} und ${theirparrot_${i}}“ ins Programm auf.</de>
+				<en>Impressed by the case of ${name_${g}}, the traveling exhibit "Law and Man in the course of time" currently touring %artisttown% will add the trail "Of ${mw_${g}} and ${theirparrot_${i}}" to its program starting the day after tomorrow.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,36,48" news="579c00f4-9604-40cb-b0c5-21ee829df594" />
+			</effects>
+			<data genre="5" price="1" quality="40" fictional="1" />
+		</news>
+
+		<news id="579c00f4-9604-40cb-b0c5-21ee829df594" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+			<title>
+				<de>${mw_${g}} lädt ${theirparrot_${i}} auf ein Bier ein</de>
+				<en>A ${mw_${g}} invites ${theirparrot_${i}} for a beer</en>
+			</title>
+			<description>
+				<de>${name_${g}}, inzwischen rehabilitiert, beendet ${their_${g}}e Fehde gegen ${theirparrot_${i}} und schließt ${their_${g}}en Frieden. Man müsse auch mal wieder loslassen können.</de>
+				<en>${name_${g}}, now rehabilitated, ends ${their_${g}} feud against ${theirparrot_${i}} and makes ${their_${g}} peace. One also has to be able to let go sometimes.</en>
+			</description>
+			<data genre="4" price="1" quality="30" fictional="1" />
+		</news>
+
+		<news id="1cbec0df-5486-4348-b05a-b2b74bc609f8" type="0" creator="9551" comment="Source: Typical ChatGPT 'funny news' items. TODO: Add many more variations, ChatGPT has plenty of this format.">
+			<title>
+				<de>${man_${i}}${fortheft_${i}} verhaftet</de>
+				<en>${man_${i}} arrested${fortheft_${i}}</en>
+			</title>
+			<description>
+				<de>${themanwho_${i}}</de>
+				<en>${themanwho_${i}}</en>
+			</description>
+			<variables>
+				<i>
+					<de>0|1|2|3|4|5|6|7</de>
+				</i>
+				<man_0>
+					<de>Mann</de>
+					<en>Man</en>
+				</man_0>
+				<man_1>
+					<de>Marskult-Anführer</de>
+					<en>Mars cult leader</en>
+				</man_1>
+				<man_2>
+					<de>Venuskult-Anführerin</de>
+					<en>Venus cult leader</en>
+				</man_2>
+				<man_3>
+					<de>„Mann aus der Zukunft“</de>
+					<en>"Man from the Future"</en>
+				</man_3>
+				<man_4>
+					<de>Mann</de>
+					<en>Man</en>
+				</man_4>
+				<man_5>
+					<de>Mann</de>
+					<en>Man</en>
+				</man_5>
+				<man_6>
+					<de>Mann</de>
+					<en>Man</en>
+				</man_6>
+				<man_7>
+					<de>Frau</de>
+					<en>Woman</en>
+				</man_7>
+				<fortheft_0>
+					<de> wegen Picknicktisch-Diebstahl</de>
+					<en> for stealing a picnic table</en>
+				</fortheft_0>
+				<fortheft_1>
+					<de></de> <!-- intentionally blank -->
+					<en></en>
+				</fortheft_1>
+				<fortheft_2>
+					<de></de> <!-- intentionally blank -->
+					<en></en>
+				</fortheft_2>
+				<fortheft_3>
+					<de></de> <!-- intentionally blank -->
+					<en></en>
+				</fortheft_3>
+				<fortheft_4>
+					<de> wegen Ampel-Diebstahl</de>
+					<en> for stealing a traffic light</en>
+				</fortheft_4>
+				<fortheft_5>
+					<de> wegen Straßenlaternen-Klau</de>
+					<en> for stealing a street light</en>
+				</fortheft_5>
+				<fortheft_6>
+					<de> wegen Verkehrsschild-Diebstahl</de>
+					<en> for stealing a street sign</en>
+				</fortheft_6>
+				<fortheft_7>
+					<de> wegen Mülleimer-Diebstahl</de>
+					<en> for stealing a trash can</en>
+				</fortheft_7>
+				<themanwho_0>
+					<de>Der Mann, der den Tisch aus einem Park in %town% stahl und angab, ihn zu einem Grillfest eines Freundes zu bringen, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
+					<en>The man, who stole the table from a park in %town% and claimed to be taking it to a friend's backyard barbecue, was charged with grand larceny%andcriminalmischief%.</en>
+				</themanwho_0>
+				<themanwho_1>
+					<de>Ein Mann, der seit mehreren Jahren in %town% lebte, begann, von einer bevorstehenden Marsianer-Invasion zu predigen und zog eine kleine Anhängerschaft an. Er wurde wegen Betrugs%andcriminalmischief% verhaftet.</de>
+					<en>A man who had been living in %town% for several years began preaching about a coming Martian invasion and attracted a small following of people. He was arrested for fraud%andcriminalmischief%.</en>
+				</themanwho_1>
+				<themanwho_2>
+					<de>Eine Frau, die seit mehreren Jahren in %town% lebte, begann, von einer bevorstehenden Venusianer-Invasion zu schwärmen und zog eine kleine Anhängerschaft an. Sie wurde wegen Betrugs%andcriminalmischief% verhaftet.</de>
+					<en>A woman who had been living in %town% for several years began raving about an impending Venusian invasion and attracted a small following of people. She was arrested for fraud%andcriminalmischief%.</en>
+				</themanwho_2>
+				<themanwho_3>
+					<de>Ein Mann, der behauptet, aus dem Jahr 2050 zu stammen, wurde in %town% wegen Unruhestiftung%andcriminalmischief% verhaftet. Er wurde später als psychisch krank eingestuft und gegen Kaution freigelassen.</de> <!-- TODO: Replace year 2050 with script to guarantee future? :) -->
+					<en>A man claiming to be from the year 2050 was arrested in %town% for causing a disturbance%andcriminalmischief%. He was later found to be mentally ill and and released on bail.</en>
+				</themanwho_3>
+				<themanwho_4>
+					<de>Der Mann, der die Ampel von einer Straßenkreuzung in %town% stahl und angab, das Grillfest eines Freundes mit Partylichtern aufwerten zu wollen, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
+					<en>The man who stole the traffic light from a %town% intersection and stated he was about to spruce up a friend's barbecue with party lights has been charged with grand larceny%andcriminalmischief%.</en>
+				</themanwho_4>
+				<themanwho_5>
+					<de>Der Mann, der die Laterne von einer Straße in %town% stahl und angab, dunkleren Gegenden ein „Licht der Hoffnung“ bringen zu wollen, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
+					<en>The man who stole the light from a street in %town% and stated he wanted to bring a "light of hope" to darker neighborhoods was charged with grand larceny%andcriminalmischief%.</en>
+				</themanwho_5>
+				<themanwho_6>
+					<de>Der Mann, der das Verkehrsschild von einer Straßenkreuzung in %town% stahl und angab, zur „Lichtung“ des „Schilderwaldproblems“ beitragen zu wollen, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
+					<en>The man who stole the traffic sign from an intersection in %town% and stated he wanted to contribute to the "clearing" of the "traffic sign jungle problem" was charged with grand larceny%andcriminalmischief%.</en>
+				</themanwho_6>
+				<themanwho_7>
+					<de>Die Frau, die den Mülleimer eines Parks in %town% nahm und ihn 30 Meter weiter feiernden Leuten brachte, damit sie auch ihren Müll entsorgten, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
+					<en>The woman who took the trash can from a park in %town% and moved it 30 yards over to partying people so they could dispose of their trash was charged with grand larceny%andcriminalmischief%.</en>
+				</themanwho_7>
+				<andcriminalmischief>
+					<de> und kriminellen Fehlverhaltens| und ordnungswidrigen Verhaltens|</de>
+					<en> and criminal mischief| and disorderly conduct|</en>
+				</andcriminalmischief>
+				<town>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</town>
+			</variables>
+			<data genre="4" price="1" quality="15" fictional="1" />
+		</news>
+
+		<news id="b3b730a5-937e-47c1-a56f-ccf0d494fdc1" type="0" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="Source: made up. Spoof of https://en.wikipedia.org/wiki/Alternative_for_Germany | TODO: Translated versions should perhaps use something different and internationally more recognizable">
+			<title>
+				<de>AvW stellt Antrag auf Dritten Weltkrieg</de>
+				<en>AotW submits request for Third World War</en>
+			</title>
+			<description>
+				<de>Früher war alles besser: Das ultrakonservative Bündnis Alternative von Welt (AvW) beantragt bei den Vereinten Ländern einen neuen Weltkrieg. Man müsse wieder in einen guten 25-Jahre-Rhythmus kommen.</de>
+				<en>Everything was better in the past: The ultra-conservative alliance Alternative of the World (AotW) applies to the United Countries for a new world war. It is necessary to get back to a good 25-year rhythm.</en>
+			</description>
+			<variables>
+				<exhibitiontown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</exhibitiontown>
+				<maessigmann>
+					<de>%PERSONGENERATOR_NAME(de,1)%</de>
+				</maessigmann>
+				<aggromann>
+					<de>%PERSONGENERATOR_NAME(de,1)%</de>
+				</aggromann>
+			</variables>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="2e32bf54-c56e-4991-9907-bbad7c36fcd1" />
+			</effects>
+		</news>
+
+		<news id="2e32bf54-c56e-4991-9907-bbad7c36fcd1" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>AvW begründet Weltkriegs-Vorschlag</de>
+				<en>AotW substantiates World War proposal</en>
+			</title>
+			<description>
+				<de>So ein Krieg würde die Wirtschaft ankurbeln. Raketentechnologie würde entwickelt. Anreize würden gesetzt für Ausbau eines Ersatzplaneten wie den Mars. Und nach dem Krieg könnten wir wieder ein Wirtschaftswunder haben.</de>
+				<en>Such a war would boost the economy. Rocket technology would be developed. Incentives would be set for development of a replacement planet like Mars. And after the war we could have an economic miracle again.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" />
+			</effects>
+		</news>
+
+		<news id="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>AvW legt Weltkriegs-Eröffnungstrategien dar</de>
+				<en>AotW lays out World War opening strategies</en>
+			</title>
+			<description>
+				<de>Man könne wieder ein hinterhältiges Attentat auf einen Thronfolger anzetteln. Oder einen Überfall auf einen Sender an der Grenze organisieren. Die Mittel für solche Operationen stünden bereit.</de>
+				<en>One could again instigate a devious assassination attempt on an heir to the throne. Or organize a raid on a transmitter at the border. The means for such operations would be ready.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="aedabde8-3a3e-4861-b487-b47c950284d7" />
+			</effects>
+		</news>
+
+		<news id="aedabde8-3a3e-4861-b487-b47c950284d7" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: different version required for the 1980s when the cold war was still 'hot' and the fallout trail hadn't been suspended yet">
+			<title>
+				<de>Kriegsausstellung in %exhibitiontown% erweitert</de>
+				<en>War exhibition in %exhibitiontown% expanded</en>
+			</title>
+			<description>
+				<de>Anlässlich des AvW-Vorstoßes nimmt die gerade in %exhibitiontown% gastierende Wanderausstellung „Krieg und Mensch“ den schon seit Jahren eingestellten Rundgang „Was bleibt nach dem Fallout“ wieder ins Programm auf.</de>
+				<en>In response to the AotW push, the traveling exhibit "War and Man" currently touring %exhibitiontown% is reinstating the trail "What Remains After the Fallout," which had been suspended for several years.</en>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="d595c46b-687e-4a5a-a328-e376c063ceb9" />
+			</effects>
+		</news>
+
+		<news id="d595c46b-687e-4a5a-a328-e376c063ceb9" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>Proteste gegen AvW-Weltkriegspläne</de>
+				<en>Protests against AotW World War plans</en>
+			</title>
+			<description>
+				<de>Tausende von Menschen sämtlicher politischer Richtungen protestieren auf den Straßen vieler Länder auf „Friedensparaden“ gegen die AvW-Pläne. Es kommt zu zeitweise gewaltsamen und fragwürdigen Maßnahmen durch die Polizei.</de>
+				<en>Thousands of people of all political persuasions protest in the streets of many countries at "Peace Parades" against the AotW plans. At times, violent and questionable measures are taken by the police.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="58688de1-6d7a-4809-91e1-f0f51b1d267b" />
+			</effects>
+		</news>
+
+		<news id="58688de1-6d7a-4809-91e1-f0f51b1d267b" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="reference: https://de.wikipedia.org/wiki/Alternativlos | deliberatlely using a different spoof than the already existing 'Murkel' as this one here's still a kid">
+			<title>
+				<de>AvW-Protestsong in den Charts</de>
+				<en>AotW protest song enters charts</en>
+			</title>
+			<description>
+				<de>Der bei der Protestbewegung entstandene, nur mit Gitarre gespielte Folk-Song „Wir wollen keine Alternative“ der kleinen Angelina Mertel ist auf Platz 7 der Single-Charts eingestiegen.</de>
+				<en>The folk song "We Don't Want an Alternative" by little Angelina Mertel, created during the protest movement and played only with guitar, has entered the single charts at number 7.</en>
+			</description>
+			<data genre="1" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="85698374-1266-4e85-b3eb-c0080e9a23c4" />
+			</effects>
+		</news>
+
+		<news id="85698374-1266-4e85-b3eb-c0080e9a23c4" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>Smarte Stöcke und Steine entwickelt</de>
+				<en>Smart sticks and stones developed</en>
+			</title>
+			<description>
+				<de>Da nach Expertenmeinung ein 4. Weltkrieg wieder mit Stöcken und Steinen ausgetragen werden würde, entwickelt der Militärdienstleister Bolton Dynamos schon mal „Smart Sticks and Stones powered by Solar and AI“.</de>
+				<en>With experts saying a World War 4 would once again be fought with sticks and stones, military services provider Bolton Dynamos is already developing "Smart Sticks and Stones powered by Solar and AI".</en>
+			</description>
+			<data genre="3" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="55c67451-fcc5-4c37-9c0d-727a6ff44d06" />
+			</effects>
+		</news>
+
+		<news id="55c67451-fcc5-4c37-9c0d-727a6ff44d06" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>Weltkriegsantrag fällt durch</de>
+				<en>World War proposal falls flat</en>
+			</title>
+			<description>
+				<de>Trotz interessanter technologischer Neuentwicklungen und anderer diverser Lobby-Zuarbeit stieß der AvW-Antrag auf wenig Resonanz bei den Vereinten Ländern. Nur 5 Stimmen waren dafür.</de>
+				<en>Despite interesting new technological developments and other assorted lobby pandering, the AotW motion met with little response from the United Countries. Only 5 votes were in favor.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,24,36" news="a8a96cf5-b22e-4537-9f48-69182e55c1de" />
+			</effects>
+		</news>
+
+		<news id="a8a96cf5-b22e-4537-9f48-69182e55c1de" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>Niedergeschlagenheit bei der AvW</de>
+				<en>Despondency at the AotW</en>
+			</title>
+			<description>
+				<de>Nach der Ablehnung des Weltkriegs-Antrags bei den Vereinten Ländern leckt man bei der AvW die Wunden. Dann müsse man sich eben wieder auf wichtigerere Dinge konzentrieren, wie den Getrennte-Toiletten-Nichtaufhebungs-Gesetzesvorschlag.</de>
+				<en>After the rejection of the World War proposal at the United Countries, the AotW is licking its wounds. Then one would have to concentrate again on more important things again, like the separate-toilets-non-repeal bill.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,9,10,8,20" news="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" />
+			</effects>
+		</news>
+
+		<news id="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>AvW wählt neuen Vorsitzenden</de>
+				<en>AotW elects new chairman</en>
+			</title>
+			<description>
+				<de>Der neue Vorsitzende %maessigmann% gilt als recht gemäßigt, friedliebend und auch sozial ziemlich progressiv. Er wolle etwa den laufenden Frauen-Rückwärts-Einpark-Verbot-Gesetzesvorschlag nicht weiter mittragen.</de>
+				<en>The new chairman %maessigmann% is considered to be quite moderate, peace-loving and also socially pretty progressive. For example, he won't continue to support the current women's reverse parking ban bill.</en>
+			</description>
+			<data genre="0" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,6,7,8,20" news="f3d79b38-4865-42fb-8f11-2f72ea82ca86" />
+			</effects>
+		</news>
+
+		<news id="f3d79b38-4865-42fb-8f11-2f72ea82ca86" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: Once time-dependent variations are supported, from 2013 on this Thatcher's announcement has to happen through a ghost apparition or a vision some people have">
+			<title>
+				<de>Marigold Flatcher erinnert an ihr Credo</de>
+				<en>Marigold Flatcher reiterates her credo</en>
+			</title>
+			<description>
+				<de>Angesichts der wirtschaftlichen Lage bekräftigt die „Iron Lady“ nochmal ihr Credo, mahnt und erinnert daran, eisern zu sparen und appelliert an die Weltbevölkerung: „There is no alternative.“</de>
+				<en>In light of the economic situation, the "Iron Lady" reiterates her credo, urges and reminds us to adopt ironclad austerity measures, and appeals to the world's population: "There is no alternative."</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,3,5" news="458128fd-81a9-4c94-94b9-511fe8f2806f" />
+			</effects>
+		</news>
+
+		<news id="458128fd-81a9-4c94-94b9-511fe8f2806f" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>AvW von Flatcher gekränkt</de>
+				<en>AotW offended by Flatcher</en>
+			</title>
+			<description>
+				<de>Der Vorsitzende der „Alternative von Welt“, %maessigmann%, zeigt sich gekränkt von Marigold Flatchers Ansage, es gebe keine Alternative. „Es gibt uns noch! Und wir sind gesund und munter!“</de>
+				<en>The chairman of the "Alternative of the World", %maessigmann%, is offended by Marigold Flatcher's statement that there is no alternative. "We're still here! And we're alive and kicking!"</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,6,7,8,20" news="c33f421e-01e9-4700-b746-eba446c54310" />
+			</effects>
+		</news>
+
+		<news id="c33f421e-01e9-4700-b746-eba446c54310" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>Bolton Dynamos zeigt Fortschritte</de>
+				<en>Bolton Dynamos shows progress</en>
+			</title>
+			<description>
+				<de>Trotz eines Klimas des Friedens werde weiter eifrig geforscht. Die neuen „Smart Sticks and Stones“ können nun schon selbständig bis zu Kniehöhe hüpfen und dabei einen Rückwärtssalto hinlegen. Sehr niedlich sehen sie dabei aus.</de>
+				<en>Despite a climate of peace, research continues apace. The new "Smart Sticks and Stones" can now hop on their own up to knee height and perform backflips while doing so. They look very cute at this.</en>
+				<!-- TODO: Once something like that is supported, next iterations to show great progress could be thigh height, pelvic height, breast height, two backflips,... -->
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,12,13,8,20" news="56ee3865-cd2f-4490-977a-083bdc991c7e" />
+			</effects>
+		</news>
+
+		<news id="56ee3865-cd2f-4490-977a-083bdc991c7e" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+			<title>
+				<de>AvW wählt neuen Vorsitzenden</de>
+				<en>AotW elects new chairman</en>
+			</title>
+			<description>
+				<de>Der neue Vorsitzende %aggromann% gilt wieder als recht aggressiv, kriegstreiberisch und ultrakonservativ. Man sei auf der Hut, mit welchen Vorschlägen er um die Ecke kommen wird.</de>
+				<en>The new chairman %aggromann% is again considered to be quite aggressive, warmongering and ultraconservative. Be on the lookout for what proposals he will come around the corner with.</en>
+				<!-- and da capo. TODO: Once something like that is supported, add variation to first item 'beantragt *erneut* dritten Weltkrieg' for the 2nd, 3rd,... iterations -->
+			</description>
+			<data genre="0" price="1" quality="35" fictional="1" />
+		</news>
+	</allnews>
+</tvtdb>

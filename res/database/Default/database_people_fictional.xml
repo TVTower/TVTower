@@ -6,7 +6,8 @@
 			<first_name>Babsi</first_name>
 			<last_name>Angora</last_name>
 			<nick_name></nick_name>
-			<details job="2" gender="2" birthday="-20" deathday="" country="D" fictional="1" />
+			<!-- TODO: relative birthdate not advisable here, she is used in some programmes with fixed dates (and described as an 'ex-model'); the programmes with flexible dates should fit well too now -->
+			<details job="136" gender="2" birthday="1951" deathday="" country="D" fictional="1" />
 			<data popularity="20" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="75" topgenre="0" />
 		</person>
 		<person id="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -166,7 +167,11 @@
 	<insignificantpeople>
 		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" bookable="0" />
 		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" bookable="0" />
-		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0"  bookable="0" />
+		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" bookable="0" />
+		<person id="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" fictional="1" levelup="0" bookable="0" />
+		<person id="various-puppeteers" first_name="" last_name="versch. Puppenspieler" fictional="1" levelup="0" bookable="0" />
+		<person id="various-models" first_name="" last_name="versch. Models" fictional="1" levelup="0" bookable="0" />
+		<person id="various-musicians" first_name="" last_name="versch. Musiker" fictional="1" levelup="0" bookable="0" />
 
 		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" fictional="1" bookable="0" />
 		<person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="„Groggy“" fictional="1" bookable="0" />
@@ -185,7 +190,7 @@
 		<person id="5b52221c-10f6-4ad8-b818-c89c304e9ea0" first_name="Stieven" last_name="Harking" nick_name="" fictional="0" imdb_id="nm0370071" comment="non-fictional but parody version" />
 		<person id="c9784ca1-3c3a-4d15-a6c9-493e45d03559" first_name="Brett" last_name="Hart" nick_name="" fictional="0" gender="1" comment="non-fictional but parody version" />
 		<person id="d39a1a8b-1f04-485c-b454-1727c2dfc443" first_name="Hugh" last_name="Hoden" nick_name="" fictional="0" gender="1" comment="non-fictional but parody version of 834d00df-d96f-4cfd-85ba-29217d98a3ff" />
-		<person id="ab17d747-426e-4a3c-ae6b-ac27587f7563" first_name="Klaus Grobe" last_name="Jr." nick_name="" fictional="1" gender="1" />
+		<person id="ab17d747-426e-4a3c-ae6b-ac27587f7563" first_name="Klaus" last_name="Grobe Jr." nick_name="" fictional="1" gender="1" />
 		<person id="61439b07-6e8f-484e-9447-6c9588270e21" first_name="Astrid" last_name="Jupidar" nick_name="" fictional="1" gender="2" />
 		<person id="bc0c3538-0186-48de-a074-9851c00d4cdd" first_name="Klaus-Jürgen" last_name="Klüppisch" nick_name="" fictional="1" gender="1" />
 		<person id="24967622-b169-4413-90df-6dc574464b65" first_name="Kalle" last_name="Knall" nick_name="" fictional="1" gender="1" />

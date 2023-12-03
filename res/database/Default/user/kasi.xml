@@ -155,7 +155,7 @@
 		</scripttemplate>
 
 		<!--Besetzung Musiker, Livedatum, nur eine Ausstrahlung, Produktionszeit (Vorproduktion), kein optionaler Kult-->
-		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-LiveKonzert">
+		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-LiveKonzert" comment="TODO: Though it doesn't matter much in effect, it's confusing and not clear for (new) players why you have to cast a musician when there's already a musician in the title. Support act? Co-musician? If so, that should be added to the description. Or should there be a feature request to have some sort of pre-selected cast (which can't be changed in this example)?">
 			<title>
 				<de>Das Livekonzert von %Name1% %Name2%</de>
 				<en>%Name1% %Name2% Live</en>
@@ -1057,8 +1057,8 @@
 			</children>
 			<variables>
 				<was>
-					<de>Wolken|Sterne|Sonne|Fluzeuge|Vögel</de>
-					<en>clouds|stars|sun|airplane|birds</en>
+					<de>Wolken|Sterne|Sonne|Flugzeuge|Vögel</de>
+					<en>clouds|stars|sun|airplanes|birds</en>
 				</was>
 				<wo>
 					<de>Paris|Berlin|London|New York|Madrid|%randomcity%</de>

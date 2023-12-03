@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<!--Beschreibung (englisch) siehe en.xml-->
+	<persons>
+		<person guid="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" />
+		<person guid="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" />
+		<person guid="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" />
+		<person guid="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" />
+		<person guid="various-puppeteers" first_name="" last_name="versch. Puppenspieler" />
+		<person guid="various-models" first_name="" last_name="versch. Models" />
+		<person guid="various-musicians" first_name="" last_name="versch. Musiker" />
+		<person guid="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" />
+		<person guid="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="„Groggy“" />
+		<person guid="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" />
+		<person guid="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Erwin" last_name="Rotnase" />
+
+		<person guid="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikita Sergejewitsch" last_name="Chruschtschow" />
+		<person guid="6dd0a9b9-96a0-4712-83f0-f6388bdc5bec" first_name="Michail" last_name="Gorbatschow" />
+	</persons>
+	<roles>
+		<!--
+			<role guid="script-roles-ron-001" first_name="Vincent" last_name="Graf" title="" />
+		-->
+
+		<role guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" first_name="Schneewittchen" last_name="" />
+		<role guid="9faa394a-3c7e-4943-9236-7ccf70db6c6e" first_name="Schneeweißchen" last_name="" />
+		<role guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" first_name="Rosenrot" last_name="" />
+		<role guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" first_name="Märchenprinz" last_name="" />
+		<role guid="5cda9a5e-f823-42b9-993b-28d3011d76e5" first_name="Blaubart" last_name="" />
+		<role guid="847e75c4-c92a-4539-a606-4adbf3c84e44" first_name="Goldlöckchen" last_name="" />
+		<role guid="b3ec26ce-9105-4545-b66f-c08dc5ce91bb" first_name="Rotkäppchen" last_name="" />
+		<role guid="53261965-0118-4585-86a0-285d5f8bfc18" first_name="Aschenputtel" last_name="" />
+		<role guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" first_name="Sindbad" last_name="der Seefahrer" />
+		
+		<role guid="9e026c4a-04e2-41e9-8865-a8753d53ef01" first_name="Nordwind" last_name="" />
+
+		<role guid="roles-popeye-olive" first_name="Olivia" last_name="" />
+		<role guid="roles-popeye-deezil" first_name="Diesel" last_name="" />
+
+		<role guid="roles-smurfs" first_name="Schlümpfe" last_name="" />
+		<role guid="roles-smurfs-papa" first_name="Papa" last_name="Schlumpf" />
+		<role guid="roles-smurfs-smurfette" first_name="Schlumpfine" last_name="Schlumpf" />
+		<role guid="roles-smurfs-clumsy" first_name="Clumsy" last_name="Schlumpf" />
+		<role guid="roles-smurfs-brainy" first_name="Schlaubi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-grouchy" first_name="Muffi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-hefty" first_name="Hefti" last_name="Schlumpf" />
+		<role guid="roles-smurfs-greedy" first_name="Torti" last_name="Schlumpf"  />
+		<role guid="roles-smurfs-jokey" first_name="Jokey" last_name="Schlumpf" />
+		<role guid="roles-smurfs-chef" first_name="Koch" last_name="Schlumpf" />
+		<role guid="roles-smurfs-vanity" first_name="Beauty" last_name="Schlumpf" />
+		<role guid="roles-smurfs-handy" first_name="Handy" last_name="Schlumpf" />
+		<role guid="roles-smurfs-scaredy" first_name="Fürchti" last_name="Schlumpf" />
+		<role guid="roles-smurfs-tracker" first_name="Schnuffi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-sloppy" first_name="Gammeli" last_name="Schlumpf" />
+		<role guid="roles-smurfs-harmony" first_name="Harmonie" last_name="Schlumpf" />
+		<role guid="roles-smurfs-painter" first_name="Toulousi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-poet" first_name="Poeti" last_name="Schlumpf" />
+		<role guid="roles-smurfs-farmer" first_name="Farmi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-natural" first_name="Naturi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-nat" first_name="Nat" last_name="Schlumpfling" />
+		<role guid="roles-smurfs-snappy" first_name="Forschi" last_name="Schlumpfling" />
+		<role guid="roles-smurfs-slouchy" first_name="Schlaffi" last_name="Schlumpfling" />
+		<role guid="roles-smurfs-sassette" first_name="Sasette" last_name="Schlumpfling" /> <!-- Sasette / Sassette seems to be used inconsistently in original German version of the 80s cartoon series --> 
+		<role guid="roles-smurfs-baby" first_name="Baby" last_name="Schlumpf" />
+		<role guid="roles-smurfs-grandpa" first_name="Opa" last_name="Schlumpf" />
+		<role guid="roles-smurfs-alchemist" first_name="Alchemist" last_name="Schlumpf" />
+		<role guid="roles-smurfs-timid" first_name="Schüchti" last_name="Schlumpf" />
+		<role guid="roles-smurfs-actor" first_name="Schauspiel" last_name="Schlumpf" />
+		<role guid="roles-smurfs-architect" first_name="Architekti" last_name="Schlumpf" />
+		<role guid="roles-smurfs-barber" first_name="Barbi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-sickly" first_name="Frosti" last_name="Schlumpf" />
+		<role guid="roles-smurfs-pushover" first_name="Gimpli" last_name="Schlumpf" />
+		<role guid="roles-smurfs-sweepy" first_name="Kamini" last_name="Schlumpf" />
+		<role guid="roles-smurfs-lazy" first_name="Fauli" last_name="Schlumpf" />
+		<role guid="roles-smurfs-miner" first_name="Schürfi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-reporter" first_name="Neugieri" last_name="Schlumpf" /> <!-- auch Reporti, Springerli (nach dem Verlag) -->
+		<role guid="roles-smurfs-timber" first_name="Timberli" last_name="Schlumpf" />
+		<role guid="roles-smurfs-dreamy" first_name="Traumi" last_name="Schlumpf" />
+		<role guid="roles-smurfs-flighty" first_name="Zweifli" last_name="Schlumpf" />
+		<role guid="roles-smurfs-nanny" first_name="Nanny" last_name="Schlumpf" />
+		<role guid="roles-smurfs-bigmouth" first_name="Großmaul" last_name="" />
+	</roles>
+</tvtdb>

@@ -354,8 +354,8 @@
 				<en>New computer era begun</en>
 			</title>
 			<description>
-				<de>Der amerikanische Computerproduzent Kormoran stellt seinen Heimrechner „Eterna“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
-				<en>The American computer manufacturer Kormoran presents its home computer "Eterna". Its graphics performance is simply breathtaking.</en>
+				<de>Der amerikanische Computerproduzent Cormoran stellt seinen Heimrechner „Eterna“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
+				<en>The American computer manufacturer Cormoran presents its home computer "Eterna". Its graphics performance is simply breathtaking.</en>
 			</description>
 			<data genre="3" price="1.0" quality="45" />
 			<availability script="TIME_MONTH=7" year_range_from="1985" year_range_to="1985" />

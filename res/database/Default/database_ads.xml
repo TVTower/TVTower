@@ -110,13 +110,13 @@ You will really have to chew.</en>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="23" repetitions="1" duration="2" profit="415" penalty="460" infomercial_profit="40" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030">
+		<ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there">
 			<title>
-				<de>Pipsi Cola</de>
+				<de>Affro-Cola</de>
 			</title>
 			<description>
-				<de>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</de>
-				<en>Koka Cola's most popular competitor - but as pure in taste?</en>
+				<de>Der populärste Konkurrent von Cacca Cola und Pipsi - doch geschmacklich auch so rein?</de>
+				<en>The most popular competitor of Cacca Cola and Pipsi - but as pure in taste?</en>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="25" repetitions="1" duration="3" profit="240" penalty="380" fix_infomercial_profit="1"/>
@@ -740,8 +740,8 @@ It's a sunny.</en>
 				<de>Bikeshop</de>
 			</title>
 			<description>
-				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</de>
-				<en>Promotion week at Bikeshop. Buy one bike, get one for free.</en>
+				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst. Bikeshop ist top.</de>
+				<en>Promotion week at Bikeshop. Buy one bike, get one for free. Bikeshop is top-notch.</en>
 			</description>
 			<conditions min_audience="0.7905" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="3" duration="2" profit="1333" penalty="2000" infomercial_profit="118" fix_infomercial_profit="1"/>
@@ -897,7 +897,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="3" profit="500" penalty="750" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="Escal-Sjaele-01">
+		<ad id="Escal-Sjaele-01" comment="TODO: Switch places of these with the newly added ESCAL PC/XT/AT">
 			<title>
 				<de>ESCAL</de>
 			</title>
@@ -1645,9 +1645,9 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="11.46" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="330" penalty="565" infomercial_profit="28" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="speedminister-ad-Enzyklopedie1" creator="8605" created_by="SpeedMinister">
+		<ad id="speedminister-ad-Encyclopedia1" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Die halbe Enzyklopedie von Allem</de>
+				<de>Die halbe Enzyklopädie von Allem</de>
 				<en>Half the Encyclopedia of Everything</en>
 			</title>
 			<description>
@@ -1657,9 +1657,9 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="20.84" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="210" penalty="303" infomercial_profit="25" fix_infomercial_profit="1"/>
 		</ad>
-		<ad id="speedminister-ad-Enzyklopedie2" creator="8605" created_by="SpeedMinister">
+		<ad id="speedminister-ad-Encyclopedia2" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Die ganze Enzyklopedie von Allem</de>
+				<de>Die ganze Enzyklopädie von Allem</de>
 				<en>The complete Encyclopedia of Everything</en>
 			</title>
 			<description>
@@ -1688,7 +1688,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
-				<en>A touch of genious: our double bock beer is now also free of alcohol! Oans, zwoa, droa, g'suffa!</en>
+				<en>A touch of genious: our double bock beer is now available free of alcohol too! Oans, zwoa, droa, g'suffa!</en>
 			</description>
 			<conditions min_audience="4.1617" min_image="40" target_group="0"/>
 			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" />
@@ -2414,8 +2414,10 @@ Available in any well-stocked drugstore.</en>
 				<en>Diggtionary</en>
 			</title>
 			<description>
-				<de>Sie glauben, Sie haben sich neulich in der Straßenbahn verhört? Fäkalsprache &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
-				<en>You think you misheard something in the tram the other day? Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that shit.</en>
+				<de>Sie glauben, Sie haben sich neulich in der Straßenbahn verhört?
+Fäkalsprache &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
+				<en>You think you misheard something in the tram the other day?
+Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that shit.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="500" penalty="720" fix_infomercial_profit="1"/>
@@ -2426,8 +2428,10 @@ Available in any well-stocked drugstore.</en>
 				<en>Diggtionary</en>
 			</title>
 			<description>
-				<de>Sie wissen nicht mehr, was die Worte von heute bedeuten? Z.B. gestern der „Freund“ ist heute der „Feind“. Neusprech &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Jetzt als mechanische App, also: im Buchhandel.</de>
-				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy". Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
+				<de>Sie wissen nicht mehr, was die Worte von heute bedeuten? Z.B. gestern der „Freund“ ist heute der „Feind“.
+Neusprech &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Jetzt als mechanische App, also: im Buchhandel.</de>
+				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy".
+Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="950" fix_infomercial_profit="1"/>

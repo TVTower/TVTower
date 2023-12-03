@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" />
+
+	<programmeroles>
+
+		<!-- Roles based on common folklore, fairytales, mythology etc characters, most also in the language files! -->
+
+		<programmerole guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" first_name="Snow White" last_name="" first_name_original="Snow White" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Snow_White" />
+		<programmerole guid="9faa394a-3c7e-4943-9236-7ccf70db6c6e" first_name="Snow White" last_name="" first_name_original="Snow White" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Snow-White_and_Rose-Red | may sometimes be the same character as a00ea58a-4a9f-466e-9fe5-cf8b53730b60 - but originally they're not" />
+		<programmerole guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" first_name="Rose Red" last_name="" first_name_original="Rose Red" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Snow-White_and_Rose-Red" />
+		<programmerole guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" first_name="Prince Charming" last_name="" first_name_original="Prince Charming" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Prince_Charming " />
+		<programmerole guid="520fcf21-87d3-4a4d-a791-8c3b55bec8a0" first_name="Jack" last_name="Horner" nick_name="Little Jack Horner" nick_name_original="Little Jack Horner" first_name_original="Jack" last_name_original="Horner" gender="1" comment="https://en.wikipedia.org/wiki/Little_Jack_Horner" />
+		<programmerole guid="5cda9a5e-f823-42b9-993b-28d3011d76e5" first_name="Bluebeard" last_name="" first_name_original="Bluebeard" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bluebeard" />
+		<programmerole guid="847e75c4-c92a-4539-a606-4adbf3c84e44" first_name="Goldilocks" last_name="" first_name_original="Goldilocks" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Goldilocks_and_the_Three_Bears" />
+		<programmerole guid="b3ec26ce-9105-4545-b66f-c08dc5ce91bb" first_name="Red Riding Hood" last_name="" first_name_original="Red Riding Hood" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Little_Red_Riding_Hood" />
+		<programmerole guid="53261965-0118-4585-86a0-285d5f8bfc18" first_name="Cinderella" last_name="" first_name_original="Cinderella" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Cinderella" />
+		<programmerole guid="71bb14c4-800e-4be0-a3c5-9ab868ac4b4a" first_name="Boy Blue" last_name="" nick_name="Little Boy Blue" nick_name_original="Little Boy Blue" first_name_original="Boy Blue" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Little_Boy_Blue" />
+		<programmerole guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" first_name="Sinbad" last_name="the Sailor" first_name_original="Sinbad" last_name_original="the Sailor" gender="1" comment="https://en.wikipedia.org/wiki/Sinbad_the_Sailor" />
+		<programmerole guid="12543516-3a0f-40fe-8eab-10ff7d799dab" first_name="Mowgli" last_name="" first_name_original="Mowgli" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Mowgli" />
+
+		<!-- Roles based on historical characters -->
+
+		<programmerole guid="de366dce-f9c9-4870-a3c7-c149ef2eb21d" first_name="Benjamin" last_name="Franklin" first_name_original="Benjamin" last_name_original="Franklin" gender="1" />
+		<programmerole guid="c2edde3f-c2ff-4800-a020-79f59662176f" first_name="George" last_name="Washington" first_name_original="George" last_name_original="Washington" gender="1" />
+		<programmerole guid="29aa9b04-b155-4975-b1b0-45355c293668" first_name="John" last_name="Hancock" first_name_original="John" last_name_original="Hancock" gender="1" />
+		<programmerole guid="c4f29c58-9028-48d4-84de-cad66012d2e4" first_name="Thomas" last_name="Jefferson" first_name_original="Thomas" last_name_original="Jefferson" gender="1" />
+		<programmerole guid="ef836d42-649b-423b-97dd-0f1e9a539690" first_name="Anton Conan" last_name="Dole" title="Sir" first_name_original="Arthur Conan" last_name_original="Doyle" gender="1" comment="https://en.wikipedia.org/wiki/Arthur_Conan_Doyle" />
+		<programmerole guid="d9a1a4fe-e7ad-4181-a0de-9def0468cc2a" first_name="" last_name="Huldinou" nick_name="The Great Huldinou" nick_name_original="The Great Houdini" first_name_original="" last_name_original="Houdini" gender="1" comment="https://en.wikipedia.org/wiki/Harry_Houdini | TODO: first name Harry | TODO: put nickname in language files" />
+		<programmerole guid="935e5bc7-bbf7-453a-a14f-44d63202c881" first_name="Gertraud E." last_name="Stern" first_name_original="Gertrude" last_name_original="Stein" gender="2" comment="https://en.wikipedia.org/wiki/Gertrude_Stein" />
+		<programmerole guid="62705657-da02-4b01-9d42-c439d692d819" first_name="Earnest" last_name="Henningweg" first_name_original="Ernest" last_name_original="Hemingway" gender="1" comment="https://en.wikipedia.org/wiki/Ernest_Hemingway" />
+		<programmerole guid="44fe5edc-0212-46f7-8011-c59c6e6bd18c" first_name="Joy" last_name="Jayce" first_name_original="James" last_name_original="Joyce" gender="1" comment="https://en.wikipedia.org/wiki/James_Joyce" />
+		<programmerole guid="68005476-8da3-4004-9736-cbe357e2fc51" first_name="Pedro" last_name="Pecassi" first_name_original="Pablo" last_name_original="Picasso" gender="1" comment="https://en.wikipedia.org/wiki/Pablo_Picasso" />
+		<programmerole guid="8c6234f8-cd38-419c-8ee2-44be3b0b0634" first_name="Ernst" last_name="Hanfstangerl" nick_name="Putzl" nick_name_original="Putzi" first_name_original="Ernst" last_name_original="Hanfstaengl" gender="1" comment="https://en.wikipedia.org/wiki/Ernst_Hanfstaengl" />
+		<programmerole guid="c539783d-246c-48ac-97b3-7e0a2f542587" first_name="Adolph" last_name="Kutler" first_name_original="Adolf" last_name_original="Hitler" gender="1" comment="https://en.wikipedia.org/wiki/Adolf_Hitler" />
+		<programmerole guid="eea0844b-8f7e-41e2-a7e4-5847e28d42e0" first_name="Rudolph" last_name="Hass" first_name_original="Rudolf" last_name_original="Hess" gender="1" comment="https://en.wikipedia.org/wiki/Rudolf_Hess" />
+		<programmerole guid="afaa41b3-2fbb-4b3b-9e9e-94e237a882fe" first_name="Oskar" last_name="Wilder" first_name_original="Oscar" last_name_original="Wilde" gender="1" comment="https://en.wikipedia.org/wiki/Oscar_Wilde" />
+		<programmerole guid="3113fd09-6945-41eb-8a9f-b8bcd3a55254" first_name="Doc" last_name="Hollerday" first_name_original="Doc" last_name_original="Holliday" gender="1" comment="https://en.wikipedia.org/wiki/Doc_Holliday" />
+		<programmerole guid="cf8c6448-47ec-4a8b-941a-5a390ff76f04" first_name="Elvis" last_name="Prizzley" first_name_original="Elvis" last_name_original="Presley" gender="1" comment="also real person ef66c1fc-8baf-4c7b-8b25-4971fba4858a" />
+
+		<!-- Film and TV (including literature and other adaptations) -->
+
+		<programmerole guid="b2545408-827e-4c9d-ad7d-0f49fa7b02f7" first_name="June" last_name="Marble" title="Miss" first_name_original="Jane" last_name_original="Marple" gender="2" comment="https://en.wikipedia.org/wiki/Miss_Marple" />
+		<programmerole guid="3723aedb-530d-4a93-957b-2f6479cad78d" first_name="Hector" last_name="Poirnoir" first_name_original="Hercule" last_name_original="Poirot" gender="1" comment="https://en.wikipedia.org/wiki/Hercule_Poirot" />
+		
+		<programmerole guid="f963860a-026d-4fb0-be4d-670968525409" first_name="Eileen" last_name="Replay" first_name_original="Ellen" last_name_original="Ripley" gender="2" comment="https://en.wikipedia.org/wiki/Ellen_Ripley" />
+		
+		<programmerole guid="2e1e1a95-f85f-4c57-a1ee-dca164b8d4ef" first_name="Evan" last_name="Hurt" first_name_original="Ethan" last_name_original="Hunt" gender="1" comment="https://en.wikipedia.org/wiki/Ethan_Hunt" />
+		
+		<programmerole guid="463e4c3a-9299-496f-a86d-88890716b6d5" first_name="" last_name="Scook" title="Mr." first_name_original="" last_name_original="Spock" gender="1" comment="https://en.wikipedia.org/wiki/Spock" />
+		
+		<programmerole guid="716548bc-4bff-446a-b166-f58747e5fd15" first_name="Rinnetooth" last_name="" first_name_original="Winnetou" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Winnetou" />
+		<programmerole guid="90ef4345-6ad0-41f4-a664-4a245d22b979" first_name="Old Smasherfist" last_name="" first_name_original="Old Shatterhand" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Old_Shatterhand" />
+		
+		<programmerole guid="b7ce4bce-9b0c-45e0-9f27-d810d91556fa" first_name="Kelvin" last_name="McCauleyster" first_name_original="Kevin" last_name_original="McCallister" gender="1" comment="https://en.wikipedia.org/wiki/Home_Alone_(franchise)" />
+
+		<programmerole guid="e81a30f2-ce97-43a6-b55e-072fe40c712a" first_name="Jake" last_name="Pond" nick_name="0013" nick_name_original="007" first_name_original="James" last_name_original="Bond" gender="1" comment="https://en.wikipedia.org/wiki/James_Bond" />
+
+		<programmerole guid="cc9b4759-4e2c-4e6a-9241-0702d49c6df6" first_name="Bryce" last_name="Bayne" nick_name="Batguy" nick_name_original="Batman" first_name_original="Bruce" last_name_original="Wayne" gender="1" comment="https://en.wikipedia.org/wiki/Batman" />
+		<programmerole guid="ddb03dc8-2911-435e-b059-f0a4139eae0c" first_name="Doug" last_name="Greyman" nick_name="Ronny" nick_name_original="Robin" first_name_original="Dick" last_name_original="Grayson" gender="" comment="https://en.wikipedia.org/wiki/Dick_Grayson" />
+		<programmerole guid="da1380a8-c044-446b-b4b0-e1d8ceb1e9fc" first_name="Beatrice" last_name="Gardon" nick_name="Batgal" nick_name_original="Batgirl" first_name_original="Barbara" last_name_original="Gorden" gender="2" comment="https://en.wikipedia.org/wiki/Barbara_Gordon" />
+		<programmerole guid="e9e8f347-4383-471f-8426-ec1db79c60e6" first_name="Kay" last_name="Kent" nick_name="Batlady" nick_name_original="Batwoman" first_name_original="Kate" last_name_original="Kane" gender="2" comment="https://en.wikipedia.org/wiki/Batwoman" />
+		<programmerole guid="1a3faeb1-691c-4957-b472-854a36fd81dc" first_name="Serena" last_name="Keith" nick_name="Catlady" nick_name_original="Catwoman" first_name_original="Selina" last_name_original="Kyle" gender="2" comment="https://en.wikipedia.org/wiki/Catwoman" />
+
+		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Speiübel" last_name="" first_name_original="Spejbl" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Spejbl_and_Hurv%C3%ADnek - TODO: move the 'Spejbl and Hurvínek' franchise roles to a main roles file and use references from there in the programmes file once that feature is available. International variable role names Speiübel vs Spyble? Introduce role prices? These could serve as an example for a 'cheap' franchise." />
+		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Dubrovnik" last_name="" first_name_original="Hurvínek" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Spejbl_and_Hurv%C3%ADnek" />
+		<programmerole guid="06769c4e-15c8-40e4-968b-54ca8f32b96b" first_name="Karolina" last_name="" first_name_original="Kateřina" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Spejbl_and_Hurv%C3%ADnek" />
+		<programmerole guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" first_name="Markéta" last_name="" first_name_original="Mánička" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Spejbl_and_Hurv%C3%ADnek - In database_programmes.xml hitherto used spoof name 'Ilonka' is apparently meant for this character, but something like 'Markéta' ought to resemble the original name better." />
+		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Zdeněk" last_name="" first_name_original="Žeryk" last_name_original="" gender="0" comment="https://en.wikipedia.org/wiki/Spejbl_and_Hurv%C3%ADnek - A dog. In German apparently 'Jerry'." />
+
+			<!-- Cartoon characters, using readable IDs because they likely won't be referenced via actor -->
+
+		<programmerole guid="roles-popeye-popeye" first_name="Popillo" last_name="" first_name_original="Popeye" last_name_original="" gender="1" comment="https://popeye.fandom.com/wiki/Popeye" />
+		<programmerole guid="roles-popeye-olive" first_name="Liv" last_name="Oilia" first_name_original="Olive" last_name_original="Oyl" gender="2" comment="https://popeye.fandom.com/wiki/Olive_Oyl | also in language files!" />
+		<programmerole guid="roles-popeye-brutus" first_name="Brachius" last_name="" first_name_original="Brutus" last_name_original="" gender="1" comment="https://popeye.fandom.com/wiki/Brutus" />
+		<programmerole guid="roles-popeye-sweepea" first_name="Swea'Pee" last_name="" first_name_original="Swee'Pea" last_name_original="" gender="1" comment="https://popeye.fandom.com/wiki/Swee%27Pea" />
+		<programmerole guid="roles-popeye-wimpy" first_name="J. Washington" last_name="Whinpey" first_name_original="J. Wellington" last_name_original="Wimpy" gender="1" comment="https://popeye.fandom.com/wiki/J._Wellington_Wimpy" />
+		<programmerole guid="roles-popeye-deezil" first_name="Diz" last_name="Oilia" first_name_original="Deezil" last_name_original="Oyl" gender="2" comment="https://popeye.fandom.com/wiki/Deezil_Oyl | also in language files!" />
+		<programmerole guid="roles-popeye-poopdeck" first_name="Poodock" last_name="Papi" first_name_original="Poopdeck" last_name_original="Pappy" gender="1" comment="https://popeye.fandom.com/wiki/Poopdeck_Pappy" />
+
+		<programmerole guid="roles-transformers-transformer" first_name="Tresforger" last_name="" first_name_original="Transformer" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Transformers" />
+		<programmerole guid="roles-transformers-autobot" first_name="Mobibot" last_name="" first_name_original="Autobot" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Autobot" />
+		<programmerole guid="roles-transformers-decepticon" first_name="Deflekticon" last_name="" first_name_original="Decepticon" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Decepticon" />
+		<programmerole guid="roles-transformers-optimus-prime" first_name="Ultimus" last_name="Premio" first_name_original="Optimus" last_name_original="Prime" gender="1" comment="https://en.wikipedia.org/wiki/Optimus_Prime" />
+		<programmerole guid="roles-transformers-megatron" first_name="Metacon" last_name="" first_name_original="Megatron" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Megatron" />
+		<programmerole guid="roles-transformers-starscream" first_name="Starscreech" last_name="" first_name_original="Starscream" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Starscream" />
+
+				<!-- most Smurfs characters also in language files! -->
+		
+		<programmerole guid="roles-smurfs" first_name="Sluempfs" last_name="" first_name_original="Smurfs" last_name_original="" gender="" comment="TODO: need to abuse programmerole datastructure for now. Perhaps there need to be 'terminology' items for such cases eventually" />
+		<programmerole guid="roles-smurfs-papa" first_name="Daddy" last_name="Sluempf" first_name_original="Papa" last_name_original="Smurf" gender="1" comment="https://en.wikipedia.org/wiki/Papa_Smurf" />
+		<programmerole guid="roles-smurfs-smurfette" first_name="Sluempfette" last_name="Sluempf" first_name_original="Smurfette" last_name_original="Smurf" gender="2" comment="https://en.wikipedia.org/wiki/Smurfette" />
+		<programmerole guid="roles-smurfs-clumsy" first_name="Bumbly" last_name="Sluempf" first_name_original="Clumsy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Clumsy_Smurf" />
+		<programmerole guid="roles-smurfs-brainy" first_name="Smarty" last_name="Sluempf" first_name_original="Brainy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Brainy_Smurf" />
+		<programmerole guid="roles-smurfs-grouchy" first_name="Grumpy" last_name="Sluempf" first_name_original="Grouchy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Grouchy_Smurf" />
+		<programmerole guid="roles-smurfs-hefty" first_name="Strongy" last_name="Sluempf" first_name_original="Hefty" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Hefty_Smurf" />
+		<programmerole guid="roles-smurfs-greedy" first_name="Tarty" last_name="Sluempf" first_name_original="Greedy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Greedy_Smurf" />
+		<programmerole guid="roles-smurfs-jokey" first_name="Witty" last_name="Sluempf" first_name_original="Jokey" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Jokey_Smurf" />
+		<programmerole guid="roles-smurfs-chef" first_name="Cooky" last_name="Sluempf" first_name_original="Chef" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Chef_Smurf | merged with the roles-smurfs-greedy character in the 80s cartoon version" />
+		<programmerole guid="roles-smurfs-vanity" first_name="Beauty" last_name="Sluempf" first_name_original="Vanity" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Vanity_Smurf" />
+		<programmerole guid="roles-smurfs-handy" first_name="Crafty" last_name="Sluempf" first_name_original="Handy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Handy_Smurf" />
+		<programmerole guid="roles-smurfs-scaredy" first_name="Dready" last_name="Sluempf" first_name_original="Scaredy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Scaredy_Smurf" />
+		<programmerole guid="roles-smurfs-tracker" first_name="Sniffy" last_name="Sluempf" first_name_original="Tracker" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Tracker_Smurf" />
+		<programmerole guid="roles-smurfs-sloppy" first_name="Trashy" last_name="Sluempf" first_name_original="Sloppy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Sloppy_Smurf" />
+		<programmerole guid="roles-smurfs-harmony" first_name="Melody" last_name="Sluempf" first_name_original="Harmony" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Harmony_Smurf" />
+		<programmerole guid="roles-smurfs-painter" first_name="Toulousy" last_name="Sluempf" first_name_original="Painter" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Painter_Smurf" />
+		<programmerole guid="roles-smurfs-poet" first_name="Versy" last_name="Sluempf" first_name_original="Poet" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Poet_Smurf" />
+		<programmerole guid="roles-smurfs-farmer" first_name="Fieldy" last_name="Sluempf" first_name_original="Farmer" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Farmer_Smurf" />
+		<programmerole guid="roles-smurfs-natural" first_name="Wilderness" last_name="Sluempf" first_name_original="Natural" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Natural_Smurfling | Same as roles-smurfs-nat before shrinking accident" />
+		<programmerole guid="roles-smurfs-nat" first_name="Ness" last_name="Sluempfling" first_name_original="Nat" last_name_original="Smurfling" gender="1" comment="https://smurfs.fandom.com/wiki/Natural_Smurfling | Same as roles-smurfs-natural, but shrinked variation after an accident" />
+		<programmerole guid="roles-smurfs-snappy" first_name="Feisty" last_name="Sluempfling" first_name_original="Snappy" last_name_original="Smurfling" gender="1" comment="https://smurfs.fandom.com/wiki/Snappy_Smurfling" />
+		<programmerole guid="roles-smurfs-slouchy" first_name="Floppy" last_name="Sluempfling" first_name_original="Slouchy" last_name_original="Smurfling" gender="1" comment="https://smurfs.fandom.com/wiki/Slouchy_Smurfling" />
+		<programmerole guid="roles-smurfs-sassette" first_name="Sissetta" last_name="Sluempfling" first_name_original="Sassette" last_name_original="Smurfling" gender="2" comment="https://smurfs.fandom.com/wiki/Sassette_Smurfling" />
+		<programmerole guid="roles-smurfs-baby" first_name="Baby" last_name="Sluempf" first_name_original="Baby" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Baby_Smurf" />
+		<programmerole guid="roles-smurfs-grandpa" first_name="Granddad" last_name="Sluempf" first_name_original="Grandpa" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Grandpa_Smurf" />
+		<programmerole guid="roles-smurfs-alchemist" first_name="Sorcery" last_name="Sluempf" first_name_original="Alchemist" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Alchemist_Smurf" />
+		<programmerole guid="roles-smurfs-timid" first_name="Demury" last_name="Sluempf" first_name_original="Timid" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Timid_Smurf | same as roles-smurfs-actor" />
+		<programmerole guid="roles-smurfs-actor" first_name="Drama" last_name="Sluempf" first_name_original="Actor" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Actor_Smurf | same as roles-smurfs-timid" />
+		<programmerole guid="roles-smurfs-architect" first_name="Techny" last_name="Sluempf" first_name_original="Architect" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Architect_Smurf" />
+		<programmerole guid="roles-smurfs-barber" first_name="Coiffeur" last_name="Sluempf" first_name_original="Barber" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Barber_Smurf" />
+		<programmerole guid="roles-smurfs-sickly" first_name="Sneezy" last_name="Sluempf" first_name_original="Sickly" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Sickly_Smurf" />
+		<programmerole guid="roles-smurfs-pushover" first_name="Gimply" last_name="Sluempf" first_name_original="Pushover" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Pushover_Smurf" />
+		<programmerole guid="roles-smurfs-sweepy" first_name="Chimny" last_name="Sluempf" first_name_original="Sweepy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Sweepy_Smurf" />
+		<programmerole guid="roles-smurfs-lazy" first_name="Snory" last_name="Sluempf" first_name_original="Lazy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Lazy_Smurf" />
+		<programmerole guid="roles-smurfs-miner" first_name="Axy" last_name="Sluempf" first_name_original="Miner" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Miner_Smurf" />
+		<programmerole guid="roles-smurfs-reporter" first_name="Curiousy" last_name="Sluempf" first_name_original="Reporter" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Reporter_Smurf" />
+		<programmerole guid="roles-smurfs-timber" first_name="Lumby" last_name="Sluempf" first_name_original="Timber" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Timber_Smurf" />
+		<programmerole guid="roles-smurfs-dreamy" first_name="Moony" last_name="Sluempf" first_name_original="Dreamy" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Dreamy_Smurf" />
+		<programmerole guid="roles-smurfs-flighty" first_name="Doubty" last_name="Sluempf" first_name_original="Flighty" last_name_original="Smurf" gender="1" comment="https://smurfs.fandom.com/wiki/Flighty_Smurf" />
+		<programmerole guid="roles-smurfs-nanny" first_name="Grandma" last_name="Sluempf" first_name_original="Nanny" last_name_original="Smurf" gender="2" comment="https://smurfs.fandom.com/wiki/Nanny_Smurf" />
+		<programmerole guid="roles-smurfs-bigmouth" first_name="Hugemouth" last_name="" first_name_original="Bigmouth" last_name_original="" gender="1" comment="https://smurfs.fandom.com/wiki/Bigmouth" />
+		<programmerole guid="roles-smurfs-gargamel" first_name="Gurgamol" last_name="" first_name_original="Gargamel" last_name_original="" gender="1" comment="https://smurfs.fandom.com/wiki/Gargamel" />
+		<programmerole guid="roles-smurfs-azrael" first_name="Azrail" last_name="" first_name_original="Azrael" last_name_original="" gender="1" comment="https://smurfs.fandom.com/wiki/Azrael" />
+
+		<!-- Literature (only) -->
+		
+		<programmerole guid="8a9c1868-fe1f-49c1-9745-1db892d08210" first_name="Horace" last_name="Cauley" first_name_original="Holden" last_name_original="Caulfield" gender="1" comment="https://catcher-in-the-rye.fandom.com/wiki/Holden_Caulfield" />
+		<programmerole guid="25cfffae-8a93-4183-96c5-d4f84252575d" first_name="Posy" last_name="Cauley" first_name_original="Phoebe" last_name_original="Caulfield" gender="2" comment="https://catcher-in-the-rye.fandom.com/wiki/Phoebe_Caulfield" />
+		<programmerole guid="eccdb068-d1da-4e06-a213-19e43e2f4fea" first_name="Mr." last_name="Adolino" first_name_original="Mr." last_name_original="Antolini" gender="1" comment="https://catcher-in-the-rye.fandom.com/wiki/Mr._Antolini" />
+		<programmerole guid="d622b4fe-cf13-464f-9c67-66fda3724367" first_name="Jean" last_name="Gilligan" first_name_original="Jane" last_name_original="Gallagher" gender="2" comment="https://catcher-in-the-rye.fandom.com/wiki/Jane_Gallagher" />
+		<programmerole guid="8baec2b8-5eea-449c-b059-6421880a2f0e" first_name="Selma" last_name="Hayles" first_name_original="Sally" last_name_original="Hayes" gender="2" comment="https://catcher-in-the-rye.fandom.com/" />
+
+		<programmerole guid="0a9573e0-93c0-4378-94de-63713c25f086" first_name="" last_name="Casabene" first_name_original="" last_name_original="Casaubon" gender="1" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="02ad4eac-8760-4162-9275-c40ecf6b1ec2" first_name="" last_name="Belfo" first_name_original="" last_name_original="Belbo" gender="1" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="100fcadf-527f-4730-bc9d-54d2f5591135" first_name="" last_name="Diotavani" first_name_original="" last_name_original="Diotavelli" gender="1" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="59d5c512-5fbc-4b4e-9d47-10d91bb30f67" first_name="" last_name="Garadon" first_name_original="" last_name_original="Garamond" gender="1" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="3e5ff20e-2dfb-4e94-a0ad-3a84eb8a7778" first_name="" last_name="Arditi" title="Colonel" first_name_original="" last_name_original="Ardenti" gender="1" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="59adff2a-f60f-4b06-9d8f-104f19d8a7d8" first_name="Amara" last_name="" first_name_original="Amparo" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="b0e303f6-0ce9-4cd0-83e7-53e856414755" first_name="" last_name="Aglièt" first_name_original="" last_name_original="Agliè" gender="1" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+		<programmerole guid="f0267882-d063-4d91-9889-f7d2399c7815" first_name="Lea" last_name="" first_name_original="Lia" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum" />
+
+		<programmerole guid="2a0210ad-863c-4420-a355-fdcb7edf37d5" first_name="Megavac" last_name="" first_name_original="Multivac" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="441e0c82-37b5-4ce7-aebe-2610eeaddd83" first_name="Anthony" last_name="Adley" first_name_original="Alexander" last_name_original="Adell" gender="1" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="2ab47405-ceb8-43e1-be32-9dd1952d3c87" first_name="Bernard" last_name="Ludov" first_name_original="Bertram" last_name_original="Lupov" gender="1" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="bffc2879-1ce2-4c70-af7b-9a6b5435212d" first_name="Juridd" last_name="" first_name_original="Jerrodd" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="3e30a0f1-295e-4fa0-87fc-10e8e1941d78" first_name="Juriddine" last_name="" first_name_original="Jerrodine" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="4c74c526-d27f-4de1-9511-eb6a694863ce" first_name="Juriddette I" last_name="" first_name_original="Jerrodette I" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="cbb01fd9-e455-4b5e-ae42-b7c0b05909a8" first_name="Juriddette II" last_name="" first_name_original="Jerrodette II" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="04f9e94c-8ac2-4351-9a93-16ec6ae14aeb" first_name="JV-21X" last_name="of Lemath" first_name_original="VJ-23X" last_name_original="of Lameth" gender="" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="c8c71bf8-a243-48be-937b-6a4928b7c1ed" first_name="QM-19J" last_name="of Neycron" first_name_original="MQ-17J" last_name_original="of Nicron" gender="" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="c3079b5a-d385-40f9-80f4-5159cace1c89" first_name="Zul Prime" last_name="" first_name_original="Zee Prime" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="61ca741e-e786-4422-b278-f67dee5b0aba" first_name="Di Wub Sun" last_name="" first_name_original="Dee Sub Wun" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+		<programmerole guid="7df023ce-13b6-4947-8432-200076f10c64" first_name="Man" last_name="" first_name_original="Man" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/The_Last_Question" />
+
+		<programmerole guid="ed164106-d62d-4cb7-ad2f-f760f8bf376d" first_name="Harry" last_name="Thumpsen" nick_name="Herb" nick_name_original="Hank" first_name_original="Henry" last_name_original="Thompson" gender="1" comment="https://en.wikipedia.org/wiki/Charlie_Huston" />
+
+		<programmerole guid="8374c69b-dd93-4c88-8519-7acfeb0cfb2f" first_name="Terence" last_name="Bandson" first_name_original="Tender" last_name_original="Branson" gender="1" comment="https://en.wikipedia.org/wiki/Survivor_(Palahniuk_novel)" />
+		<programmerole guid="1c51f7f8-5da0-4058-bf2b-56b4e71c3681" first_name="Fertilia" last_name="Hallows" first_name_original="Fertility" last_name_original="Hollis" gender="2" comment="https://en.wikipedia.org/wiki/Survivor_(Palahniuk_novel)" />
+
+		<programmerole guid="8c254aa9-72cd-4060-b2cb-eeac0eea3b9d" first_name="Brandon" last_name="Doley" first_name_original="Brendan" last_name_original="Doyle" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="244b328e-af0a-4952-9f23-69cddf4017c0" first_name="J. Canroch" last_name="Dorrow" first_name_original="J. Cochran" last_name_original="Darrow" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="a1431eb5-ce26-403c-b6c7-9bdec73d5d98" first_name="Dog-Head Jake" last_name="" first_name_original="Dog-Face Joe" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="bd06ba9c-aba1-4977-a783-8f9bb2dfe997" first_name="Wilbur" last_name="Ashmess" first_name_original="William" last_name_original="Ashbless" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="391e64c3-a30e-4f1a-9175-9eaf442bd5b8" first_name="The Sovereign" last_name="" first_name_original="The Master" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="3b689c93-4dbb-4bb7-a48a-1710e6ba7e4f" first_name="Amenhotep" last_name="Fykye" first_name_original="Amenophis" last_name_original="Fikee" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="16d0f361-3944-44fa-8cc2-a31ce7bf1612" first_name="" last_name="Romanetti" title="Doctor" first_name_original="" last_name_original="Romanelli" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="2e970836-d4d2-42b1-b51a-0cef2339f6d2" first_name="" last_name="Romanow" title="Doctor" first_name_original="" last_name_original="Romany" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="a62fb78a-45e2-4c36-9880-b8f17b009f4f" first_name="Jamie" last_name="" first_name_original="Jacky" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+		<programmerole guid="d5419480-c010-40da-806f-5070bae4e8e2" first_name="Harabin" last_name="" first_name_original="Horabin" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates" />
+
+		<programmerole guid="e4f6f4a1-10f7-4d05-a223-1f337b336ba6" first_name="Werner" last_name="Orban" first_name_original="Walter" last_name_original="Urban" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="a7f5fc87-303b-441a-bdf9-876c3d6dc5d8" first_name="Ferdinand" last_name="Coroli" nick_name="Ferdi" nick_name_original="Fiete" first_name_original="Friedrich" last_name_original="Caroli" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="4bd742bd-0541-47d5-bea1-d32c93e663fa" first_name="Lisbeth" last_name="Orban" first_name_original="Liesel" last_name_original="Urban" gender="2" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="d8a533f3-4dcc-4545-9e69-f6780a9bc83c" first_name="Knut" last_name="Carlsdorf" first_name_original="Kai" last_name_original="Carlsen" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="b1488043-453c-4320-ae1f-a1dfd665f81d" first_name="Erhard" last_name="Edelwein" first_name_original="Eckhart" last_name_original="Eberwein" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="ebdb0bb3-5f26-43c3-9dcc-2582588943fb" first_name="Marianne" last_name="" first_name_original="Marleen" last_name_original="" gender="2" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="687dcc1c-abb5-4707-b6b5-cdb2214a065a" first_name="Jörg" last_name="Morrée" first_name_original="Jan" last_name_original="Marrée" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="fece6160-4144-4ff6-b78e-7c8f21c2b56e" first_name="Rocko" last_name="" first_name_original="Racko" last_name_original="" gender="" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="a0f8b449-c814-4c80-a3ba-b4e333c54f05" first_name="Sigmund" last_name="Orban" first_name_original="Simon" last_name_original="Urban" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="200620bb-9d1a-4a37-bf3f-1562454992f5" first_name="Thorsten" last_name="Orban" first_name_original="Thomas" last_name_original="Urban" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="88ae1f22-dc7b-4277-920d-2f2a10e51659" first_name="Paulo" last_name="" first_name_original="Pavel" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="e4b288fe-8150-4b68-ae16-435e5344a4a8" first_name="Gini" last_name="" first_name_original="Gino" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="0d68ffe9-7e5f-4bac-a163-4c6c63bde0de" first_name="Jürgen" last_name="" first_name_original="Julian" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+		<programmerole guid="cdf2d42f-d02a-422e-a2e4-98a5cf07baf5" first_name="" last_name="Pemrohn" first_name_original="" last_name_original="Pomrehn" gender="1" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann" />
+
+		<programmerole guid="a95e5ea9-3829-40d8-8eef-35307bad0548" first_name="Edith" last_name="Lombard" first_name_original="Enid" last_name_original="Lambert" gender="2" comment="https://en.wikipedia.org/wiki/The_Corrections" />
+		<programmerole guid="9b863ae5-060c-47cd-8a27-0b2939f0ca55" first_name="Arthur" last_name="Lombard" first_name_original="Alfred" last_name_original="Lambert" gender="1" comment="https://en.wikipedia.org/wiki/The_Corrections" />
+		<programmerole guid="155a0bdb-64b4-4e70-a222-2a9d23e047ab" first_name="Gavin" last_name="Lombard" first_name_original="Gary" last_name_original="Lambert" gender="1" comment="https://en.wikipedia.org/wiki/The_Corrections" />
+		<programmerole guid="b1a96823-be41-40fc-b696-391976e80177" first_name="Chet" last_name="Lombard" first_name_original="Chip" last_name_original="Lambert" gender="1" comment="https://en.wikipedia.org/wiki/The_Corrections" />
+		<programmerole guid="6c0ab9a0-fcb0-4c56-9b1c-87f92f840a5a" first_name="Darlene" last_name="Lombard" first_name_original="Denise" last_name_original="Lambert" gender="2" comment="https://en.wikipedia.org/wiki/The_Corrections" />
+
+		<programmerole guid="af5585e7-73a2-4e0b-8d3b-5f52edd69a02" first_name="Danilo" last_name="Sampare" first_name_original="Daniel" last_name_original="Sempere" gender="1" comment="https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind" />
+		<programmerole guid="04d9e3f7-cb19-4f4b-97d6-15cf014bd655" first_name="Felix" last_name="Romaña de Turres" first_name_original="Fermín" last_name_original="Romero de Torres" gender="1" comment="https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind" />
+		<programmerole guid="62c841b0-c048-4b5a-9347-1161673d3c73" first_name="Tono" last_name="Agüera" first_name_original="Tomás" last_name_original="Aguilar" gender="1" comment="https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind" />
+		<programmerole guid="66be1afe-9d38-4591-8cd2-042f3d6ecb12" first_name="Bianca" last_name="Agüera" first_name_original="Beatriz" last_name_original="Aguilar" gender="2" comment="https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind" />
+		<programmerole guid="9bd67495-8a7f-4113-bdc1-e3a32a41a9f8" first_name="Diego" last_name="Márquez" first_name_original="David" last_name_original="Martín" gender="1" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game" />
+		<programmerole guid="71d9301e-e35f-4410-bac6-82c475590887" first_name="Pablo" last_name="Vale" first_name_original="Pedro" last_name_original="Vidal" gender="1" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game" />
+		<programmerole guid="e2603714-7b6c-40b9-98ca-4e1ebcf1e6cb" first_name="Antero" last_name="Copello" first_name_original="Andreas" last_name_original="Corelli" gender="1" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game" />
+		<programmerole guid="b94c748e-a149-4aa0-bdda-a04fb13a1d44" first_name="Carina" last_name="" first_name_original="Cristina" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game" />
+		<programmerole guid="c4d6dfc9-bb1d-478f-9a3e-65fb19e1bbdb" first_name="Isidora" last_name="" first_name_original="Isabella" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game" />
+		<programmerole guid="4ac987ef-cb10-404b-b10d-b47bc84f6288" first_name="Santiago" last_name="Salcido" first_name_original="Sebastián" last_name_original="Salgado" gender="1" comment="https://en.wikipedia.org/wiki/The_Prisoner_of_Heaven" />
+		<programmerole guid="302a0b43-b64c-48ad-bbbd-e7964c301430" first_name="Marcelino" last_name="Velaz" first_name_original="Mauricio" last_name_original="Valls" gender="1" comment="https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits" />
+		<programmerole guid="f687acb5-402c-4a71-8ae9-be0804f22dad" first_name="Alcira" last_name="Grus" first_name_original="Alicia" last_name_original="Gris" gender="2" comment="https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits" />
+		<programmerole guid="04712759-0f01-4af5-af55-d84205489595" first_name="Isidoro" last_name="Sandís" first_name_original="Ignacio" last_name_original="Sanchís" gender="1" comment="https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits" />
+
+		<programmerole guid="1863f0ad-05d6-4ca1-9ed1-a072b5704c89" first_name="Marcus" last_name="Dossler" first_name_original="Martin" last_name_original="Dressler" gender="1" comment="https://en.wikipedia.org/wiki/Martin_Dressler" />
+		<programmerole guid="434ba9e3-09d7-4dfd-b9d9-aded3c123765" first_name="Eleanor" last_name="Vernier" first_name_original="Emmeline" last_name_original="Vernon" gender="2" comment="https://en.wikipedia.org/wiki/Martin_Dressler" />
+		<programmerole guid="f4ae28a8-4fce-49a5-9a56-303d8d3b6644" first_name="Claudine" last_name="" first_name_original="Caroline" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Martin_Dressler" />
+		<programmerole guid="c2308376-594d-439a-85e7-b585c90dd4e3" first_name="Slavomir" last_name="" first_name_original="Slobodan" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Martin_Dressler" />
+		<programmerole guid="a9f6841c-c384-4156-8af6-37c25e387a71" first_name="Claire" last_name="Tillerhaze" first_name_original="Clara" last_name_original="Tillinghast" gender="2" comment="https://en.wikipedia.org/wiki/Martin_Dressler" />
+		<programmerole guid="b5a3456c-9228-477a-8e65-607038c81868" first_name="Gunther" last_name="" first_name_original="Gustav" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Martin_Dressler" />
+
+		<programmerole guid="40d961fe-d6af-41c1-9dde-e993c4a2290d" first_name="Curlene" last_name="Jones" first_name_original="Cullen" last_name_original="James" gender="2" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" />
+		<programmerole guid="e50af5dc-2cf7-4c8d-929f-bffd47b76ff9" first_name="Donny" last_name="Jones" first_name_original="Danny" last_name_original="James" gender="1" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" />
+		<programmerole guid="f0fa03a5-3fe2-4a28-9dfd-58c86fed8fea" first_name="Elmer" last_name="" first_name_original="Eliot" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" />
+		<programmerole guid="c768d3c6-5370-435b-a1fb-8338ec429026" first_name="Popsi" last_name="" first_name_original="Pepsi" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" />
+		<programmerole guid="614ae67d-1d56-423f-b309-fff3d09d26ee" first_name="Trudy" last_name="the giant dog" title="Mr." first_name_original="Tracy" last_name_original="the giant dog" gender="" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" /> <!-- a giant dog -->
+		<programmerole guid="0813e3ca-c2ed-4b9c-ab27-eedab3f9b75e" first_name="Chuck" last_name="Jilli" first_name_original="Jack" last_name_original="Chili" gender="1" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon" />
+
+		<programmerole guid="7d1c5ae3-4c95-4776-8adb-5a42f7e5161e" first_name="Hartmut" last_name="Kolber" first_name_original="Heiko" last_name_original="Kolbe" gender="1" comment="https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller)" />
+
+		<programmerole guid="97f5016b-5885-46cd-ae20-e77e96e596d7" first_name="Bernard" last_name="Brésil" first_name_original="Bruno" last_name_original="Brazil" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="d837dba2-739b-4dc7-b602-b4512379bcc6" first_name="Groucho" last_name="Morali" first_name_original="Gaucho" last_name_original="Morales" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="abc44542-8cec-450b-bd7f-1dd8fd2fa8d6" first_name="Whip Raphael" last_name="" first_name_original="Whip Rafale" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="36ed6f43-7c9d-436c-8a55-86293bd76f89" first_name="Sharon" last_name="Summerville" first_name_original="Sarah" last_name_original="Summertown" gender="2" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="c1e86899-227d-434a-b1cc-74b649eafb5e" first_name="Colorado Broncho" last_name="" first_name_original="Texas Bronco" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="03b0d23c-14ac-42f1-858d-e322416eba4c" first_name="Bobby" last_name="Brésil" first_name_original="Billy" last_name_original="Brazil" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="a8d61f3f-1bd6-427e-ba95-df9a3635cc4e" first_name="Laferrière" last_name="" nick_name="Big Guy" nick_name_original="Big Boy" first_name_original="Lafayette" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="989993e2-40f2-4b3a-8f5a-497bcbffc7fc" first_name="Timmy" last_name="Pomade" nick_name="La Pommade" nick_name_original="Le Nomade" first_name_original="Tony" last_name_original="Nomade" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+		<programmerole guid="028ad31b-24cf-46a2-85ac-d4400d4a7dee" first_name="Le Major L" last_name="" first_name_original="Le Colonel L" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Bruno_Brazil" />
+
+		<programmerole guid="2a5364f5-d8fd-4221-946f-247095e5edc2" first_name="Meril" last_name="" first_name_original="Merle" last_name_original="" gender="2" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="66e60c1a-80d2-4a4b-98cb-3dca7d3bd9f8" first_name="Jonepa" last_name="" first_name_original="Junipa" last_name_original="" gender="2" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="b00d366f-8597-4d55-be28-e38bc1125d2b" first_name="Sachmet" last_name="" first_name_original="Sekmeth" last_name_original="" gender="2" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="f4b6e921-9d8b-4535-b78b-6dd61dfa45da" first_name="Arcanboldo" last_name="" first_name_original="Arcimboldo" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="c05ad94b-4564-4f06-8a60-bc9d8ef9bb20" first_name="Virnithrex" last_name="" first_name_original="Vermithrax" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="d6de9741-9516-421c-8922-75cdbbc760d7" first_name="Unka" last_name="" first_name_original="Unke" last_name_original="" gender="2" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="b47d331a-cb6d-4b3e-a21f-ab1afe16323b" first_name="Sefirod" last_name="" first_name_original="Serafin" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+		<programmerole guid="9622ca16-3861-4a1b-8ba4-b44354ac02ed" first_name="Seth" last_name="" first_name_original="Seth" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Merle-Zyklus" />
+
+		<programmerole guid="464b0d49-a99f-48bb-901d-62bff0f2e370" first_name="Shem Yap" last_name="ap Saarop" first_name_original="Sham Yes" last_name_original="ap Soorap" gender="1" comment="https://en.wikipedia.org/wiki/Railsea" />
+		<programmerole guid="fee5668b-a3da-45d3-b469-6c2ed1cfeebb" first_name="Acabat" last_name="Nephi" first_name_original="Abacat" last_name_original="Naphi" gender="1" comment="https://en.wikipedia.org/wiki/Railsea" />
+		<programmerole guid="09efb937-5a02-41ea-b532-0d769ae40d42" first_name="Colderi" last_name="Shaorke" first_name_original="Caldera" last_name_original="Shroake" gender="1" comment="https://en.wikipedia.org/wiki/Railsea" />
+		<programmerole guid="cc4012b2-ad1a-46e8-8075-433e557ce354" first_name="Dore" last_name="Shaorke" first_name_original="Dero" last_name_original="Shroake" gender="2" comment="https://en.wikipedia.org/wiki/Railsea" />
+
+		<programmerole guid="f1a2fba5-5621-479a-abde-ee7c4b1b4fc2" first_name="Speedy" last_name="Burgen" first_name_original="Swifty" last_name_original="Burgess" gender="1" comment="https://dc.fandom.com/wiki/Swifty | TODO: first name actually Leonard, Swifty is nickname" />
+		<programmerole guid="630b8059-63ce-49b0-9127-d57f123e3540" first_name="Fred" last_name="Falcani" first_name_original="Frank" last_name_original="Falcone" gender="1" comment="https://dc.fandom.com/wiki/Frank_Falcone" />
+		<programmerole guid="ae66c053-ab3b-4955-9124-e842a75ce48c" first_name="Chantalle" last_name="" first_name_original="Chantel" last_name_original="" gender="2" comment="https://dc.fandom.com/wiki/Catwoman:_Selina%27s_Big_Score" />
+		<programmerole guid="6fced4ac-372b-431a-bd94-3584d8498f2e" first_name="Stern" last_name="" first_name_original="Stark" last_name_original="" gender="1" comment="https://dc.fandom.com/wiki/Catwoman:_Selina%27s_Big_Score" />
+		<programmerole guid="058b7224-6c71-49b7-afa9-3279f79a77cf" first_name="Slash" last_name="Brentley" first_name_original="Slam" last_name_original="Bradley" gender="1" comment="https://dc.fandom.com/wiki/Slam_Bradley" />
+		<programmerole guid="6bfdced3-9c47-45ea-b617-3f9711a85192" first_name="Josh" last_name="" first_name_original="Jeff" last_name_original="" gender="" comment="https://dc.fandom.com/wiki/Catwoman:_Selina%27s_Big_Score" />
+
+		<programmerole guid="370cb9e4-3fa0-4069-8d68-ec9930e7c887" first_name="Milna" last_name="Glimstone" first_name_original="Meina" last_name_original="Gladstone" gender="2" comment="https://hyperioncantos.fandom.com/wiki/Meina_Gladstone" />
+		<programmerole guid="0a178a93-5c9a-4105-9705-b9f35dede868" first_name="Raoul" last_name="Endymia" first_name_original="Raul" last_name_original="Endymion" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Raul_Endymion" />
+		<programmerole guid="7d2701f1-37c1-4b75-b8cb-2e689a137981" first_name="Almea" last_name="" first_name_original="Aenea" last_name_original="" gender="2" comment="https://hyperioncantos.fandom.com/wiki/Aenea" />
+		<programmerole guid="7a616019-fd53-4af0-ae7e-3bf3dd387c9c" first_name="Shrouk" last_name="" first_name_original="Shrike" last_name_original="" gender="" comment="https://hyperioncantos.fandom.com/wiki/Shrike" />
+		<programmerole guid="7ea7f1e1-3479-445a-9a49-e88d91824efd" first_name="Jimmy" last_name="Kitts" first_name_original="Johnny" last_name_original="Keats" gender="1" comment="https://hyperioncantos.fandom.com/wiki/John_Keats | Johnny is nickname, actual first name John and represents the actual poet https://en.wikipedia.org/wiki/John_Keats" />
+		<programmerole guid="71381d7b-404d-4115-b378-b745a13c2b62" first_name="Brywne" last_name="Lumie" first_name_original="Brawne" last_name_original="Lamia" gender="2" comment="https://hyperioncantos.fandom.com/wiki/Brawne_Lamia | after https://en.wikipedia.org/wiki/Fanny_Brawne" />
+		<programmerole guid="4007bff7-0779-4068-8226-62df452758f1" first_name="Hawt" last_name="Mestaene" first_name_original="Het" last_name_original="Masteen" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Het_Masteen" />
+		<programmerole guid="f2ddaa45-d509-4456-912d-007c3e6bac86" first_name="Marcul" last_name="Selinus" first_name_original="Martin" last_name_original="Silenus" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Martin_Silenus" />
+		<programmerole guid="b0809a1e-27dd-4168-86fa-54e3ae7cf57f" first_name="Lonar" last_name="Hayt" first_name_original="Lenar" last_name_original="Hoyt" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Lenar_Hoyt" />
+		<programmerole guid="41ae66bb-eac5-48b6-abfc-272b5d36d585" first_name="Pete" last_name="Dorré" first_name_original="Paul" last_name_original="Duré" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Paul_Dur%C3%A9" />
+		<programmerole guid="c8c87049-59a6-4b12-b959-43f87b932997" first_name="Sal" last_name="Weingart" first_name_original="Sol" last_name_original="Weintraub" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Sol_Weintraub" />
+		<programmerole guid="5a650733-33af-4269-902b-7422f2317532" first_name="Raquel" last_name="Weingart" first_name_original="Rachel" last_name_original="Weintraub" gender="2" comment="https://hyperioncantos.fandom.com/wiki/Rachel_Weintraub" />
+		<programmerole guid="0262f2f9-672f-4728-8415-44d4c0c89b87" first_name="Consul" last_name="" first_name_original="Consul" last_name_original="" gender="1" comment="https://hyperioncantos.fandom.com/wiki/The_Consul" />
+		<programmerole guid="18f52cec-b1ed-49fc-b967-6636d8e4dd5a" first_name="Feldman" last_name="Kossed" first_name_original="Fedmahn" last_name_original="Kassad" gender="1" comment="https://hyperioncantos.fandom.com/wiki/Fedmahn_Kassad" />
+
+		<programmerole guid="40ac7fba-329d-4402-941d-336550527948" first_name="Jayne" last_name="Toerner" title="Miss" first_name_original="Jane" last_name_original="Turner" gender="2" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait" />
+		<programmerole guid="b2b95422-7616-4f9b-8e6e-fb31574befcb" first_name="Pat" last_name="Beaumonde" first_name_original="Phil" last_name_original="Beaumont" gender="1" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait" />
+		<programmerole guid="026ad673-a804-44cd-88a6-c2ba7620c0bc" first_name="Earle" last_name="Gragsben" first_name_original="Earl" last_name_original="Grigsby" gender="1" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait" />
+
+		<programmerole guid="f1fa679f-cb36-4d36-bdd7-c105b9605be4" first_name="Dink" last_name="" first_name_original="Bink" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Bink" />
+		<programmerole guid="ac69a50f-22e0-4384-a2e4-24485b66a1ad" first_name="Mimikry" last_name="" first_name_original="Chameleon" last_name_original="" gender="2" comment="https://xanth.fandom.com/wiki/Chameleon" />
+		<programmerole guid="d2168e7c-3c95-4778-b406-cb305633946a" first_name="Trint" last_name="" first_name_original="Trent" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Magician_Trent" />
+		<programmerole guid="fbff6c7a-6795-4e2f-9a55-dd9b833945d1" first_name="Dar" last_name="" first_name_original="Dor" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Dor" />
+		<programmerole guid="53104872-6c35-43df-a8b6-a3863db9cf9b" first_name="Isolde" last_name="" first_name_original="Irene" last_name_original="" gender="2" comment="https://xanth.fandom.com/wiki/Sorceress_Irene" />
+		<programmerole guid="8a54557b-ded8-4427-bb60-7796c1f84317" first_name="Arturo" last_name="" first_name_original="Arnolde" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Arnolde_Centaur" />
+		<programmerole guid="5eb211b9-ff7c-4929-a19d-c0c03dbf17a0" first_name="Shatter" last_name="" first_name_original="Smash" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Smash" />
+		<programmerole guid="c03a311f-c664-430f-a67f-274a59868614" first_name="Harvey" last_name="" first_name_original="Humfrey" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Good_Magician_Humfrey" />
+		<programmerole guid="8365a0df-099c-48f5-a571-549e2293b033" first_name="Indrium" last_name="" first_name_original="Imbrium" last_name_original="" gender="2" comment="https://xanth.fandom.com/wiki/Imbrium" />
+		<programmerole guid="d012276d-fc40-4f5f-8e20-9153b58e1b98" first_name="Hubert" last_name="" first_name_original="Hugo" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Hugo" />
+		<programmerole guid="a23271bf-cc2e-48c5-813f-b1141370f5c9" first_name="Evie" last_name="" first_name_original="Ivy" last_name_original="" gender="2" comment="https://xanth.fandom.com/wiki/Sorceress_Ivy" />
+		<programmerole guid="f69c0de5-a77d-4d56-a04d-1a164464e1da" first_name="Jarrod" last_name="" first_name_original="Jordan" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Jordan_the_Barbarian" />
+		<programmerole guid="a2d52a5f-c094-4bd1-bdec-db159b3f23b1" first_name="Greenly" last_name="" first_name_original="Grundy" last_name_original="" gender="1" comment="https://xanth.fandom.com/wiki/Grundy" />
+
+		<programmerole guid="a416fedb-9750-4052-bd60-6443e53b1d8d" first_name="Bigby" last_name="Wolf" title="Sheriff" first_name_original="Bigby" last_name_original="Wolf" gender="1" comment="https://en.wikipedia.org/wiki/Bigby_Wolf | public domain" />
+		<programmerole guid="e56d1313-8e45-42ee-b503-523dc27cde20" first_name="Tommy" last_name="Sharp" first_name_original="Tommy" last_name_original="Sharp" gender="1" comment="https://fables.fandom.com/wiki/Tommy_Sharp | public domain" />
+		<programmerole guid="70240728-175b-4d35-b4b0-ca0c694dd696" first_name="Flycatcher" last_name="" first_name_original="Flycatcher" last_name_original="" gender="1" comment="https://fables.fandom.com/wiki/Ambrose_(Comic_Series) | public domain | actually the Frog Prince, also Prince Ambrose, later King Ambrose" />
+		<programmerole guid="9e026c4a-04e2-41e9-8865-a8753d53ef01" first_name="North Wind" last_name="" first_name_original="North Wind" last_name_original="" gender="1" comment="https://fables.fandom.com/wiki/Boreas_Frostheart_(Comic_Series) | public domain | also Mr. North | also in language files" />
+		<programmerole guid="5c05a19e-fbac-4f5a-8edc-40c429c1a337" first_name="Rodney" last_name="Greenwood" first_name_original="Rodney" last_name_original="Greenwood" gender="1" comment="https://fables.fandom.com/wiki/Rodney_Greenwood | public domain" />
+		<programmerole guid="cee85b5e-2c7d-4c2b-a507-bd6e1c6e898d" first_name="June" last_name="" first_name_original="June" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/List_of_Fables_characters | public domain" />
+
+		<programmerole guid="c180473c-4d92-4283-8c37-d973524e8f84" first_name="Sigmund" last_name="" first_name_original="Simon" last_name_original="" gender="1" comment="https://memorysorrowthorn.fandom.com/wiki/Simon" />
+		<programmerole guid="8d67b149-2338-4c7f-b7f7-351dd0d762ee" first_name="Inuloki" last_name="" first_name_original="Ineluki" last_name_original="" gender="1" comment="https://memorysorrowthorn.fandom.com/wiki/Ineluki" />
+		<programmerole guid="c9e8f6dc-8d3b-46cf-a696-63326ae99d40" first_name="Mariamelle" last_name="" first_name_original="Miriamele" last_name_original="" gender="2" comment="https://memorysorrowthorn.fandom.com/wiki/Miriamele" />
+		<programmerole guid="bc3007eb-90c6-47f8-85d5-468d4338761e" first_name="Joshep" last_name="" first_name_original="Josua" last_name_original="" gender="1" comment="https://memorysorrowthorn.fandom.com/wiki/Josua" />
+		<programmerole guid="3ace6b6b-8971-4058-b591-61138ac60698" first_name="Elijah" last_name="" first_name_original="Elias" last_name_original="" gender="1" comment="https://memorysorrowthorn.fandom.com/wiki/Elias" />
+		<programmerole guid="6fbf1bbe-10c3-4f3a-a307-92244b0c140a" first_name="Praerytis" last_name="" first_name_original="Pryrates" last_name_original="" gender="1" comment="https://memorysorrowthorn.fandom.com/wiki/Pryrates" />
+		<programmerole guid="0d1d49fc-9c70-4be9-8868-d06af9a7c736" first_name="Maegwen" last_name="" first_name_original="Maegwin" last_name_original="" gender="2" comment="https://memorysorrowthorn.fandom.com/wiki/Maegwin" />
+
+		<!-- Music -->
+
+		<programmerole guid="923f464b-b97c-4144-a22a-ef5724e0079f" first_name="Mikkey" last_name="" first_name_original="Nikki" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime" />
+		<programmerole guid="fc7d66ea-78d7-4f75-894b-a18926a90ecc" first_name="Mira" last_name="" title="Sister" first_name_original="Mary" last_name_original="2" gender="2" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime" />
+		<programmerole guid="d5876b1a-d621-40ec-81cc-c410b9398244" first_name="" last_name="Y" title="Dr." first_name_original="" last_name_original="X" gender="1" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime" />
+		<programmerole guid="91707be6-91ed-4158-acfc-b6f5e9e48b10" first_name="Wilbur" last_name="" title="Father" first_name_original="William" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime" />
+
+		<programmerole guid="681a7367-7687-48ec-9b05-225bcbb159a8" first_name="Demi" last_name="Tawn" first_name_original="Della" last_name_original="Brown" gender="2" comment="https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album)" />
+		<programmerole guid="dd89ebd5-b0de-472b-93c4-ca3b1371a100" first_name="Jimmy" last_name="Turner" first_name_original="Johnny" last_name_original="Turner" gender="1" comment="https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album) | source material has only a first name; last name made up" />
+		<programmerole guid="e9cce6cd-8f45-4db1-92b3-23f95689d2e1" first_name="Claire" last_name="Mitchell" first_name_original="Lucy" last_name_original="Mitchell" gender="2" comment="https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album) | source material has only a first name, kinda, as an allusion to 'Lucidity'; last name made up" />
+		<programmerole guid="4599d061-4b4d-4616-bfb9-f56a4af30800" first_name="Alex" last_name="Parker" first_name_original="Alex" last_name_original="Parker" gender="1" comment="made-up character for https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album)" />
+		<programmerole guid="f3848a35-9663-46dd-8098-88690a8d5a09" first_name="Mia" last_name="Thompson" first_name_original="Mia" last_name_original="Thompson" gender="2" comment="made-up character for https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album)" />
+		<programmerole guid="a16ff5a4-3e74-4864-86e8-fa64f9c66c5e" first_name="Jake" last_name="Reynolds" first_name_original="Jake" last_name_original="Reynolds" gender="1" comment="made-up character for https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album)" />
+
+		<programmerole guid="d809f476-765d-4aff-bf29-6f43e296e16b" first_name="DT" last_name="Messiah" first_name_original="DT" last_name_original="Jesus" gender="1" comment="https://en.wikipedia.org/wiki/Streets:_A_Rock_Opera" />
+		<programmerole guid="adbac1d4-ce04-4602-8265-f2ac7f6e2475" first_name="Ted" last_name="" first_name_original="Tex" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Streets:_A_Rock_Opera" />
+		<programmerole guid="30eacf14-54b3-45a5-8422-36d1f201fd1b" first_name="Stanley" last_name="" first_name_original="Sammy" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Streets:_A_Rock_Opera" />
+
+		<programmerole guid="96484774-b31f-4961-9a8c-0aa37c9688b1" first_name="Raj" last_name="" first_name_original="Raj" last_name_original="" gender="1" comment="made-up character for https://en.wikipedia.org/wiki/Handful_of_Rain" />
+		<programmerole guid="cd3bede8-2fec-44e8-993e-79c6c6a3991e" first_name="Lily" last_name="" first_name_original="Lily" last_name_original="" gender="2" comment="made-up character for https://en.wikipedia.org/wiki/Handful_of_Rain" />
+		<programmerole guid="b0fffa2d-e326-4a02-a1e1-d610f6c3a5ed" first_name="Charlie" last_name="" first_name_original="Charlie" last_name_original="" gender="1" comment="made-up character for https://en.wikipedia.org/wiki/Handful_of_Rain" />
+		<programmerole guid="6be0dcaa-6de5-4428-8f39-9be9d2f0d05c" first_name="Mara" last_name="" first_name_original="Mara" last_name_original="" gender="2" comment="made-up character for https://en.wikipedia.org/wiki/Handful_of_Rain" />
+
+		<programmerole guid="be9ab541-b49d-4563-a869-a9cdc90c63f8" first_name="Stevan" last_name="" first_name_original="Serdjan" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead" />
+		<programmerole guid="a42f6980-1685-422c-8796-8b502b9b41d9" first_name="Kara" last_name="" first_name_original="Katrina" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead" />
+		<programmerole guid="d783dea1-1f41-496f-a239-12ac44c6fe60" first_name="Cellist" last_name="" first_name_original="Cellist" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead" />
+
+		<!-- Games -->
+
+		<programmerole guid="2ebfca2c-0ac3-450d-a4cb-e3f7e90904f2" first_name="Dylan" last_name="Muller" first_name_original="Dave" last_name_original="Miller" gender="1" comment="https://maniacmansion.fandom.com/wiki/Dave_Miller" />
+		<programmerole guid="95ab466a-c223-4a50-8fa2-9799013c5d6e" first_name="Sara" last_name="Pander" first_name_original="Sandy" last_name_original="Pantz" gender="2" comment="https://maniacmansion.fandom.com/wiki/Sandy_Pantz" />
+		<programmerole guid="6e670ba2-02b3-4a1b-86c7-e3ef41e52592" first_name="Benedict" last_name="Bernoulli" first_name_original="Bernard" last_name_original="Bernoulli" gender="1" comment="https://maniacmansion.fandom.com/wiki/Bernard_Bernoulli" />
+		<programmerole guid="936d2ace-e564-4a3c-bec7-06ba10c75bb9" first_name="Ryleigh" last_name="Shaw" first_name_original="Razor" last_name_original="Sharp" gender="2" comment="https://maniacmansion.fandom.com/wiki/Razor" />
+		<programmerole guid="726103c3-40df-495d-97a0-13c7cc9c3386" first_name="Ed" last_name="Eddersen" title="Dr" first_name_original="Fred" last_name_original="Edison" gender="1" comment="https://maniacmansion.fandom.com/wiki/Fred_Edison" />
+		<programmerole guid="2d64c9b9-e668-4504-9a3b-f5a13a367d5f" first_name="Frieda" last_name="Eddersen" title="Nurse" first_name_original="Edna" last_name_original="Edison" gender="2" comment="https://maniacmansion.fandom.com/wiki/Edna_Edison" />
+		<programmerole guid="67ffb376-8df4-46ed-ba50-65e31806326a" first_name="El" last_name="Eddersen" title="Weird" first_name_original="Ed" last_name_original="Edison" gender="1" comment="https://maniacmansion.fandom.com/wiki/Ed_Edison" />
+		<programmerole guid="a4061798-165c-4dc0-9025-84e1c954155b" first_name="Meteorite" last_name="" first_name_original="Meteor" last_name_original="" gender="0" comment="https://maniacmansion.fandom.com/wiki/Meteor" />
+		<programmerole guid="e1dec1fa-300a-414b-acc9-fe587f1ba520" first_name="Yellow" last_name="Tentacle" first_name_original="Green" last_name_original="Tentacle" gender="0" comment="https://maniacmansion.fandom.com/wiki/Green_Tentacle" />
+		<programmerole guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" first_name="Pink" last_name="Tentacle" first_name_original="Purple" last_name_original="Tentacle" gender="0" comment="https://maniacmansion.fandom.com/wiki/Purple_Tentacle" />
+		<programmerole guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" first_name="Jack" last_name="the Plant" first_name_original="Chuck" last_name_original="the Plant" gender="0" comment="https://maniacmansion.fandom.com/wiki/Chuck_the_Plant" />
+		<programmerole guid="14cff5bd-6aee-444b-9f2c-a844220b3ed7" first_name="Med" last_name="Eddersen" title="Dead Cousin" first_name_original="Ted" last_name_original="Edison" gender="1" comment="https://maniacmansion.fandom.com/wiki/Ted_Edison" />
+		<programmerole guid="ba570fff-e5fc-4289-aeb3-b66871f218fe" first_name="Lakelyn" last_name="" first_name_original="Laverne" last_name_original="" gender="2" comment="https://maniacmansion.fandom.com/wiki/Laverne" />
+		<programmerole guid="1bae2190-de25-4400-a3a8-3606d1b6944b" first_name="Roagie" last_name="" first_name_original="Hoagie" last_name_original="" gender="1" comment="https://maniacmansion.fandom.com/wiki/Hoagie" />
+
+		<programmerole guid="358e9bb3-32b9-4df7-aaa4-b47271c58180" first_name="Zed Mack" last_name="Zedrick" first_name_original="Zak" last_name_original="McKracken" gender="1" comment="https://www.giantbomb.com/zak-mckracken/3005-14763/" />
+		<programmerole guid="e9e3fc6b-f3c9-48be-852c-8b079f1b8e88" first_name="Amy" last_name="Harris" first_name_original="Annie" last_name_original="Larris" gender="2" comment="https://www.giantbomb.com/annie-larris/3005-24094/" />
+		<programmerole guid="833302a7-87ee-4afc-95db-f0fde5e7866a" first_name="Lilly" last_name="Berner" first_name_original="Leslie" last_name_original="Bennett" gender="2" comment="https://www.giantbomb.com/leslie-bennett/3005-24099/" />
+		<programmerole guid="7ab5fea3-0c9a-4973-bf04-c7c2cf30382e" first_name="Madison" last_name="Japens" first_name_original="Melissa" last_name_original="China" gender="2" comment="https://www.giantbomb.com/melissa-china/3005-24095/" />
+
+		<programmerole guid="1d507039-dc74-41d8-b3fd-a3046debf6e5" first_name="Bulbin" last_name="Twinebear" first_name_original="Bobbin" last_name_original="Threadbare" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="bb5ab62b-d418-4ebd-bda3-e30edfa5ed80" first_name="Cygnis" last_name="Twinebear" title="Lady" first_name_original="Cygna" last_name_original="Threadbare" gender="2" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="737d181d-1ab4-4743-8de8-1e2cb67016fb" first_name="Hatchell" last_name="" title="Dame" first_name_original="Hetchel" last_name_original="" gender="2" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="63e2dd03-fb66-4868-9678-0868a34a4308" first_name="Wellmold" last_name="" title="Master" first_name_original="Goodmold" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="006b4f0d-5d49-4efa-80a2-128eddefd04b" first_name="Mendible" last_name="" title="Bishop" first_name_original="Mandible" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="466353f7-c019-4441-83d2-d9a5d36c00ff" first_name="Rustley" last_name="Nailbower" first_name_original="Rusty" last_name_original="Nailbender" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="d3bb7894-ead4-4555-b03d-21e672865a36" first_name="Chaos" last_name="" title="Lord" first_name_original="Chaos" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="37a2667b-4bb5-4e84-97b1-08804faacc2f" first_name="Cobe" last_name="" title="Monk" first_name_original="Cob" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+		<programmerole guid="1672a3e8-fde9-4477-b958-9c62d5e69aa5" first_name="Foremal" last_name="Nailbower" first_name_original="Forman" last_name_original="Nailbender" gender="1" comment="https://en.wikipedia.org/wiki/Loom_(video_game)" />
+
+		<programmerole guid="6e1f331a-7c9d-433b-bc9f-7606ad322a5e" first_name="Raymond" last_name="Plankwood" first_name_original="Guybrush" last_name_original="Threepwood" gender="1" comment="https://monkeyisland.fandom.com/wiki/Guybrush_Threepwood" />
+		<programmerole guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" first_name="Evelyn" last_name="Harley" first_name_original="Elaine" last_name_original="Marley" gender="2" comment="https://monkeyisland.fandom.com/wiki/Elaine_Marley" />
+		<programmerole guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" first_name="" last_name="LeCruck" first_name_original="" last_name_original="LeChuck" gender="1" comment="https://monkeyisland.fandom.com/wiki/LeChuck - TODO: first_name actually G.P. but not enough space." />
+		<programmerole guid="7b0884be-6bab-488c-80f0-8fc140bb639f" first_name="Sam" last_name="S. Samman" first_name_original="Stan" last_name_original="S. Stanman" gender="1" comment="https://monkeyisland.fandom.com/wiki/Stan_S._Stanman" />
+		<programmerole guid="d0aeb0fe-16b1-45b8-b1ab-267f45b68c22" first_name="Wilbur" last_name="B. Felt" first_name_original="Wally" last_name_original="B. Feed" gender="1" comment="https://monkeyisland.fandom.com/wiki/Wally_B._Feed" />
+		<programmerole guid="37631839-70cf-43de-a1f8-75cb20d17529" first_name="Largo" last_name="LeGrand" title="" first_name_original="Largo" last_name_original="LaGrande" gender="1" comment="https://monkeyisland.fandom.com/wiki/Largo_LaGrande" />
+
+		<programmerole guid="597fb380-c56f-4c55-9ecf-92a491645da9" first_name="Brad" last_name="Thruster" first_name_original="Ben" last_name_original="Throttle" gender="1" comment="https://fullthrottle.fandom.com/wiki/Ben_Throttle" />
+		<programmerole guid="f913b8c1-4634-4dcb-a10d-7ff6b18d19f8" first_name="Marvin" last_name="Corbin" first_name_original="Malcolm" last_name_original="Corley" gender="1" comment="https://fullthrottle.fandom.com/wiki/Malcolm_Corley" />
+		<programmerole guid="46c1c351-71c9-4b5f-82eb-456dd045d3c7" first_name="Adolf" last_name="Rickburger" first_name_original="Adrian" last_name_original="Ripburger" gender="1" comment="https://fullthrottle.fandom.com/wiki/Adrian_Ripburger" />
+		<programmerole guid="ad7b472f-bc5e-43c9-9a09-0aa0e91823b3" first_name="Madelyn" last_name="Corbin" first_name_original="Maureen" last_name_original="Corley" gender="2" comment="https://fullthrottle.fandom.com/wiki/Maureen_Corley" />
+		<programmerole guid="3f627789-7c66-46a6-84e4-54b0dfb1b087" first_name="Marina Rose" last_name="Woolf" first_name_original="Miranda Rose" last_name_original="Wood" gender="2" comment="https://fullthrottle.fandom.com/wiki/Miranda_Rose_Wood" />
+
+		<programmerole guid="58298cbd-2a32-4195-bddf-75d2c026d825" first_name="Burton" last_name="Lone" title="Commander" first_name_original="Boston" last_name_original="Low" gender="1" comment="https://thedig.fandom.com/wiki/Boston_Low" />
+		<programmerole guid="983049a4-d883-4e98-80bd-1dde149cc2cc" first_name="Ludwig" last_name="Briehl" title="Dr." first_name_original="Ludger" last_name_original="Brink" gender="1" comment="https://thedig.fandom.com/wiki/Ludger_Brink" />
+		<programmerole guid="6e390fd4-fb1a-4431-86e1-20f88b298a46" first_name="Margie" last_name="Robbens" first_name_original="Maggie" last_name_original="Robbins" gender="2" comment="https://thedig.fandom.com/wiki/Maggie_Robbins" />
+
+		<programmerole guid="48d44fca-7d78-4f47-b22b-7aae5364f12b" first_name="Leo" last_name="Leffer" nick_name="Leather Jacket Leo" nick_name_original="Leisure Suit Larry" first_name_original="Larry" last_name_original="Laffer" gender="1" comment="https://leisuresuitlarry.fandom.com/wiki/Larry_Laffer" />
+		<programmerole guid="02e4e684-131f-4e7a-b8ef-de492a2e9b50" first_name="Faviola" last_name="" nick_name="Fervent Faviola" nick_name_original="Passionate Patti" first_name_original="Patti" last_name_original="" gender="2" comment="https://leisuresuitlarry.fandom.com/wiki/Passionate_Patti" />
+
+		<programmerole guid="437539e5-4c6b-4207-981a-051a82021745" first_name="Bobby" last_name="Blast" nick_name="Ween" title="" nick_name_original="Keen" first_name_original="Billy" last_name_original="Blaze" gender="1" comment="https://commander-keen.fandom.com/wiki/Billy_Blaze" />
+		<programmerole guid="ba05561a-0266-4cfe-b020-353781fd881c" first_name="Xorp" last_name="" first_name_original="Yorp" last_name_original="" gender="0" comment="https://commander-keen.fandom.com/wiki/Yorps" />
+		<programmerole guid="9b4c1962-6823-4bee-81ac-9d69a83cea00" first_name="Vornicon" last_name="" first_name_original="Vorticon" last_name_original="" gender="" comment="https://commander-keen.fandom.com/wiki/Vorticons" />
+		<programmerole guid="52c3f776-bc32-4924-9518-41e62077e6e2" first_name="Shiraki" last_name="" first_name_original="Shikadi" last_name_original="" gender="" comment="https://commander-keen.fandom.com/wiki/Shikadi_Overlord" />
+
+		<programmerole guid="895e0e5a-277e-41b5-bb3f-bcc5ca8cc812" first_name="Brad" last_name="McQuire" nick_name="Turrnado" nick_name_original="Turrican" first_name_original="Bren" last_name_original="McGuire" gender="1" comment="https://turrican.fandom.com/wiki/Bren_McGuire" />
+		<programmerole guid="66c4e228-650a-496e-bcb8-3f800163028c" first_name="Joku" last_name="" first_name_original="Juko" last_name_original="" gender="2" comment="https://turrican.fandom.com/wiki/Juko" />
+		<programmerole guid="452bf62a-f689-445d-81ad-ce6f445c4b96" first_name="The" last_name="Apparatus" first_name_original="The" last_name_original="Machine" gender="" comment="https://turrican.fandom.com/wiki/Machine" />
+
+		<programmerole guid="14969fe6-87c5-43d7-b523-b57acca0c024" first_name="Captain" last_name="" first_name_original="Captain" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Zero_Wing" />
+		<programmerole guid="3128f82e-8497-4643-8f62-8b05e7486d7a" first_name="Mechanic" last_name="" first_name_original="Mechanic" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Zero_Wing" />
+		<programmerole guid="268251b7-19c1-4e0e-a9b5-d7775320ed09" first_name="Operator" last_name="" first_name_original="Operator" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Zero_Wing" />
+		<programmerole guid="740d13f3-d134-4d6f-bee2-149add7c8ee3" first_name="CATZ" last_name="" first_name_original="CATS" last_name_original="" gender="" comment="https://toaplan.fandom.com/wiki/CATS" />
+
+		<programmerole guid="0fb5bd2a-7183-4238-9836-4a9486d8b9be" first_name="Willy" last_name="Wake" first_name_original="Wally" last_name_original="Week" gender="1" comment="https://en.wikipedia.org/wiki/Everyone%27s_a_Wally" />
+		<programmerole guid="051f0616-7d98-4876-a8b7-49ea56d595c1" first_name="Wendy" last_name="Wake" first_name_original="Wilma" last_name_original="Week" gender="2" comment="https://en.wikipedia.org/wiki/Everyone%27s_a_Wally" />
+		<programmerole guid="a440dc9c-58bd-41a5-9b24-f5ecc36f3336" first_name="Herman" last_name="" title="Baby" first_name_original="Herbert" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Everyone%27s_a_Wally" />
+	</programmeroles>
+</tvtdb>
