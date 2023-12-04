@@ -5,6 +5,18 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
 
 
+Enum EDatasheetColorStyle
+	Undefined
+	Good
+	GoodHint
+	Neutral
+	Bad
+	BadHint
+	Warning
+	Label
+End Enum
+
+
 Type TDatasheetSkin
 	Field textColorGood:SColor8
 	Field textColorNeutral:SColor8
@@ -12,6 +24,10 @@ Type TDatasheetSkin
 	Field textColorWarning:SColor8
 	Field textColorLabel:SColor8
 	Field spriteBaseKey:string = "gfx_datasheet"
+	Field spriteBorder:TSprite
+	Field spriteContentKey:String
+	Field spriteContent:TSprite
+	Field spriteContentType:String
 	Field fontSmall:TBitmapFont
 	Field fontNormal:TBitmapFont
 	Field fontBold:TBitmapFont
@@ -25,6 +41,11 @@ Type TDatasheetSkin
 	Global drawTextEffect:TDrawTextEffect = new TDrawTextEffect
 	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
 	
+
+	Method New()
+		SetSpriteBaseKey("gfx_datasheet")
+	End Method
+
 
 	Function CreateDefault:TDatasheetSkin()
 		local skin:TDatasheetSkin = New TDatasheetSkin
@@ -43,7 +64,7 @@ Type TDatasheetSkin
 		skin.fontSmallCaption = GetBitmapFontManager().Get("default", 12, BOLDFONT)
 
 		'use content-params from sprite
-		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchInformation().contentBorder )
+		skin.contentPadding.CopyFrom( skin.spriteBorder.GetNinePatchInformation().contentBorder )
 		'slight overlay
 		skin.contentPadding.SetBottom( skin.contentPadding.GetBottom() - 1 )
 		
@@ -66,26 +87,39 @@ Type TDatasheetSkin
 		endif
 		return TDatasheetSkin.defaultSkin
 	End Function
+	
+	
+	Method SetSpriteBaseKey(spriteBaseKey:String)
+		If self.spriteBaseKey <> spriteBaseKey or not spriteBorder
+			spriteBorder = GetSpriteFromRegistry(spriteBaseKey+"_border")
+		Endif
+		self.spriteBaseKey = spriteBaseKey
+		self.spriteContentKey = spriteBaseKey+"_content_"
+	End Method
 
 
 	Method RenderContent(x:int, y:int, w:int, h:int, contentType:string="1")
-		GetSpriteFromRegistry(spriteBaseKey+"_content_"+contentType).DrawArea(x, y, w, h)
+		if spriteContentType <> contentType
+			spriteContent = GetSpriteFromRegistry(spriteContentKey + contentType)
+			spriteContentType = contentType
+		EndIf
+		spriteContent.DrawArea(x, y, w, h)
 	End Method
 
 
 	Method RenderBorder(x:int, y:int, w:int, h:int)
-		GetSpriteFromRegistry(spriteBaseKey+"_border").DrawArea(x, y, w, h)
+		spriteBorder.DrawArea(x, y, w, h)
 	End Method
 
 
-	Method RenderBox(x:int, y:int, w:int, h:int=-1, value:string, iconName:string="", boxType:string="neutral", font:TBitmapFont=null, valueAlign:TVec2D=null, fontColorType:string="")
-		local boxSprite:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType)
+	Method RenderBox(x:int, y:int, w:int, h:int=-1, value:string, iconName:string="", boxStyle:EDatasheetColorStyle=EDatasheetColorStyle.Neutral, font:TBitmapFont=null, valueAlign:TVec2D=null, fontColorStyle:EDatasheetColorStyle=EDatasheetColorStyle.Undefined)
+		local boxSprite:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxStyle.ToString())
 		boxSprite.DrawArea(x, y, w, h)
 		if iconName then GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).Draw(x, y)
 
 		if value
 			if h < 0 then h = GetBoxSize(w,h, value, iconName).y
-			if fontColorType = "" then fontColorType = boxType
+			if fontColorStyle = EDatasheetColorStyle.Undefined = "" then fontColorStyle = boxStyle
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_CENTER_CENTER
 			local border:SRect = boxSprite.GetNinePatchInformation().contentBorder
@@ -96,7 +130,7 @@ Type TDatasheetSkin
 				y + border.GetTop() - 1, ..
 				w - (border.GetRight() + border.GetLeft()),  ..
 				h - (border.GetTop() + border.GetBottom() - 4), ..
-				new SVec2F(valueAlign.x, valueAlign.y), GetTextColor(fontColorType), drawTextEffect.data)
+				new SVec2F(valueAlign.x, valueAlign.y), GetTextColor(fontColorStyle), drawTextEffect.data)
 		endif
 	End Method
 
@@ -112,15 +146,16 @@ Type TDatasheetSkin
 	End Method
 
 
-	Method RenderMessage(x:int, y:int, w:int, h:int=-1, value:string, iconName:string="", msgType:string="neutral", font:TBitmapFont=null, valueAlign:TVec2D=null)
-		GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).DrawArea(x, y, w, h)
+	Method RenderMessage(x:int, y:int, w:int, h:int=-1, value:string, iconName:string="", msgType:EDatasheetColorStyle=EDatasheetColorStyle.Neutral, font:TBitmapFont=null, valueAlign:TVec2D=null)
+		Local msgSprite:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType.ToString())
+		msgSprite.DrawArea(x, y, w, h)
 		if iconName then GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).Draw(x, y)
 
 		if value
 			if h < 0 then h = GetBoxSize(w,h, value, iconName).y
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_LEFT_CENTER
-			local border:SRect = GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetNinePatchInformation().contentBorder
+			local border:SRect = msgSprite.GetNinePatchInformation().contentBorder
 
 			font.DrawBox( ..
 				value, ..
@@ -151,8 +186,9 @@ Type TDatasheetSkin
 		'-> instead of truncating the width/height of the area, we
 		'   restrict the viewport
 
-		local spriteBarUnfilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_unfilled")
-		local spriteBarFilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled")
+		Local baseKey:String = spriteBaseKey+"_"+barSkin
+		local spriteBarUnfilled:TSprite = GetSpriteFromRegistry(baseKey+"_unfilled")
+		local spriteBarFilled:TSprite = GetSpriteFromRegistry(baseKey+"_filled")
 
 		'viewports need to know the height...
 		if h = -1 then h = spriteBarUnfilled.GetHeight()
@@ -172,7 +208,10 @@ Type TDatasheetSkin
 
 
 	Method GetBarSize:SVec2I(w:int, h:int=-1, barSkin:string="bar")
-		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").GetHeight()
+		If h = -1
+			Local sb:TStringBuilder = New TStringBuilder(spriteBaseKey).Append("_").Append(barSkin).Append("_filled")
+			h = GetSpriteFromRegistry(sb.ToString()).GetHeight()
+		EndIf
 		return new SVec2I(w, h)
 	End Method
 
@@ -224,15 +263,18 @@ Type TDatasheetSkin
 	End Method
 
 
-	Method GetTextColor:SColor8(key:string)
-		Select key.ToLower()
-			case "good"     return textColorGood
-			case "goodhint" return textColorNeutral 'green overemphasizes?
-			case "neutral"  return textColorNeutral
-			case "bad"      return textColorBad
-			case "badhint"  return textColorBad
-			case "warning"  return textColorWarning
-			case "label"    return textColorLabel
+	Method GetTextColor:SColor8(color:EDatasheetColorStyle)
+		Select color
+			case EDatasheetColorStyle.Undefined  return textColorNeutral
+			case EDatasheetColorStyle.Good       return textColorGood
+			case EDatasheetColorStyle.GoodHint   return textColorNeutral 'green overemphasizes?
+			case EDatasheetColorStyle.Neutral    return textColorNeutral
+			case EDatasheetColorStyle.Bad        return textColorBad
+			case EDatasheetColorStyle.BadHint    return textColorBad
+			case EDatasheetColorStyle.Warning    return textColorWarning
+			case EDatasheetColorStyle.Label      return textColorLabel
+			default
+				Throw "unhandled GetTextColor-EDatasheetColorStyle enum"
 		End Select
 	End Method
 
