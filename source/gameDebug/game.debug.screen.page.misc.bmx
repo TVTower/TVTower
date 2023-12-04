@@ -248,10 +248,14 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 		Local a2Audience:Float=a2.minAudienceBase
 
 		If a1Audience = a2Audience
-			If a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
+			Local aTitle1:String = a1.GetTitle().ToLower()
+			Local aTitle2:String = a2.GetTitle().ToLower()
+			If aTitle1 > aTitle2
+				Return 1
+			ElseIf aTitle < aTitle2
+				Return -1
+			Else
 				Return a1.profitBase > a2.profitBase
-			Else 
-				Return a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
 			EndIf
 		ElseIf a1Audience > a2Audience
 			Return 1

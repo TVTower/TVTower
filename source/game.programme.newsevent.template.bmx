@@ -578,10 +578,11 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 
 
 	Method AddKeyword:int(keyword:string)
-		if HasKeyword(keyword, True) then return False
+		Local keywordLC:String = keyword.ToLower()
+		if HasKeywordLC(keywordLC, True) then return False
 
 		if keywords then keywords :+ ","
-		keywords :+ keyword.ToLower()
+		keywords :+ keywordLC
 		Return True
 	End Method
 
@@ -593,6 +594,18 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 			return (keywords+",").Find(( keyword+",").ToLower() ) >= 0
 		else
 			return keywords.Find(keyword.ToLower()) >= 0
+		endif
+	End Method
+
+
+	'same method as HasKeyword() but assuming the keyword is LowerCase already
+	Method HasKeywordLC:int(keyword:string, exactMode:int = False)
+		if not keyword or keyword="," then return False
+
+		if exactMode
+			return (keywords+",").Find(keyword+",") >= 0
+		else
+			return keywords.Find(keyword) >= 0
 		endif
 	End Method
 

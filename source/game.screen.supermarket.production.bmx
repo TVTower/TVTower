@@ -2016,13 +2016,17 @@ Type TGUICastSelectList Extends TGUISelectList
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
 		If Not a1 Then Return -1
 		If Not a2 Then Return 1
+		
+		Local aName1:String = a1.person.GetLastName().ToLower()
+		Local aName2:String = a2.person.GetLastName().ToLower()
 
-		If a1.person.GetLastName().ToLower() = a2.person.GetLastName().ToLower()
-			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
-		ElseIf a1.person.GetLastName().ToLower() > a2.person.GetLastName().ToLower()
+		If aName1 > aName2
 			Return 1
+		ElseIf aName1 < aName2
+			Return -1
+		Else
+			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
 		EndIf
-		Return -1
 	End Function
 
 
