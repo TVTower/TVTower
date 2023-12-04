@@ -252,7 +252,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 			Local aTitle2:String = a2.GetTitle().ToLower()
 			If aTitle1 > aTitle2
 				Return 1
-			ElseIf aTitle < aTitle2
+			ElseIf aTitle1 < aTitle2
 				Return -1
 			Else
 				Return a1.profitBase > a2.profitBase

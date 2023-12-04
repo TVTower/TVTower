@@ -456,16 +456,28 @@ End Type
 Type TDataCSK
 	Field data:TStringMap
 
-	Method Init:TDataCSK(data:TStringMap=Null)
-		If data
+	Method Init:TDataCSK(data:Object)
+		If TMap(data)
+			Local map:TMap = TMap(data)
 			If Not self.data
 				self.data = new TStringMap
 			Else
 				Self.data.Clear()
 			EndIf
 
-			For Local k:String = EachIn data.Keys()
-				Self.data.Insert(k, data.ValueForKey(k))
+			For Local k:Object = EachIn map.Keys()
+				Self.data.Insert(String(k).ToLower(), map.ValueForKey(k))
+			Next
+		ElseIf TStringMap(data)
+			Local map:TStringMap = TStringMap(data)
+			If Not self.data
+				self.data = new TStringMap
+			Else
+				Self.data.Clear()
+			EndIf
+
+			For Local k:String = EachIn map.Keys()
+				Self.data.Insert(k.ToLower(), map.ValueForKey(k))
 			Next
 		EndIf
 
