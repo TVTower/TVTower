@@ -49,6 +49,108 @@ Type TDatabaseLoader
 	Global metaData:TData = New TData
 	Field _eventListeners:TEventListenerBase[]
 	Global XMLErrorCount:Int
+	
+	Global ls_creator:TLowerString = New TLowerString("creator")
+	Global ls_createdBy:TLowerString = New TLowerString("createdBy")
+	Global ls_generator:TLowerString = New TLowerString("generator")
+	Global ls_first_name:TLowerString = New TLowerString("first_name")
+	Global ls_last_name:TLowerString = New TLowerString("last_name")
+	Global ls_nick_name:TLowerString = New TLowerString("nick_name")
+	Global ls_fictional:TLowerString = New TLowerString("fictional")
+	Global ls_bookable:TLowerString = New TLowerString("bookable")
+	Global ls_levelup:TLowerString = New TLowerString("levelup")
+	Global ls_job:TLowerString = New TLowerString("job")
+	Global ls_country:TLowerString = New TLowerString("country")
+	Global ls_gender:TLowerString = New TLowerString("gender")
+	Global ls_face_code:TLowerString = New TLowerString("face_code")
+	Global ls_birthday:TLowerString = New TLowerString("birthday")
+	Global ls_deathday:TLowerString = New TLowerString("deathday")
+	Global ls_affinity:TLowerString = New TLowerString("affinity")
+	Global ls_popularity:TLowerString = New TLowerString("popularity")
+	Global ls_popularity_target:TLowerString = New TLowerString("popularity_target")
+	Global ls_infomercial:TLowerString = New TLowerString("infomercial")
+	Global ls_quality:TLowerString = New TLowerString("quality")
+	Global ls_available:TLowerString = New TLowerString("available")
+	Global ls_year_range_from:TLowerString = New TLowerString("year_range_from")
+	Global ls_year_range_to:TLowerString = New TLowerString("year_range_to")
+	Global ls_type:TLowerString = New TLowerString("type")
+	Global ls_blocks:TLowerString = New TLowerString("blocks")
+	Global ls_repetitions:TLowerString = New TLowerString("repetitions")
+	Global ls_fix_price:TLowerString = New TLowerString("fix_price")
+	Global ls_duration:TLowerString = New TLowerString("duration")
+	Global ls_pro_pressure_groups:TLowerString = New TLowerString("pro_pressure_groups")
+	Global ls_contra_pressure_groups:TLowerString = New TLowerString("contra_pressure_groups")
+	Global ls_profit:TLowerString = New TLowerString("profit")
+	Global ls_penalty:TLowerString = New TLowerString("penalty")
+	Global ls_infomercial_profit:TLowerString = New TLowerString("infomercial_profit")
+	Global ls_fix_infomercial_profit:TLowerString = New TLowerString("fix_infomercial_profit")
+	Global ls_script:TLowerString = New TLowerString("script")
+	Global ls_min_audience:TLowerString = New TLowerString("min_audience")
+	Global ls_min_image:TLowerString = New TLowerString("min_image")
+	Global ls_max_image:TLowerString = New TLowerString("max_image")
+	Global ls_target_group:TLowerString = New TLowerString("target_group")
+	Global ls_allowed_genre:TLowerString = New TLowerString("allowed_genre")
+	Global ls_allowed_programme_type:TLowerString = New TLowerString("allowed_programme_type")
+	Global ls_allowed_programme_flag:TLowerString = New TLowerString("allowed_programme_flag")
+	Global ls_prohibited_genre:TLowerString = New TLowerString("prohibited_genre")
+	Global ls_prohibited_programme_type:TLowerString = New TLowerString("prohibited_programme_type")
+	Global ls_prohibited_programme_flag:TLowerString = New TLowerString("prohibited_programme_flag")
+	Global ls_flags:TLowerString = New TLowerString("flags")
+	Global ls_genre:TLowerString = New TLowerString("genre")
+	Global ls_keywords:TLowerString = New TLowerString("keywords")
+	Global ls_min_subscription_level:TLowerString = New TLowerString("min_subscription_level")
+	Global ls_quality_min:TLowerString = New TLowerString("quality_min")
+	Global ls_quality_max:TLowerString = New TLowerString("quality_max")
+	Global ls_quality_slope:TLowerString = New TLowerString("quality_slope")
+	Global ls_price:TLowerString = New TLowerString("price")
+	Global ls_happen_time:TLowerString = New TLowerString("happen_time")
+	Global ls_distribution:TLowerString = New TLowerString("distribution")
+	Global ls_broadcast_time_slot_start:TLowerString = New TLowerString("broadcast_time_slot_start")
+	Global ls_broadcast_time_slot_end:TLowerString = New TLowerString("broadcast_time_slot_end")
+	Global ls_broadcast_limit:TLowerString = New TLowerString("broadcast_limit")
+	Global ls_licence_broadcast_limit:TLowerString = New TLowerString("licence_broadcast_limit")
+	Global ls_broadcast_flags:TLowerString = New TLowerString("broadcast_flags")
+	Global ls_licence_broadcast_flags:TLowerString = New TLowerString("licence_broadcast_flags")
+	Global ls_licence_flags:TLowerString = New TLowerString("licence_flags")
+	Global ls_price_mod:TLowerString = New TLowerString("price_mod")
+	Global ls_maingenre:TLowerString = New TLowerString("maingenre")
+	Global ls_subgenre:TLowerString = New TLowerString("subgenre")
+	Global ls_year:TLowerString = New TLowerString("year")
+	Global ls_year_relative:TLowerString = New TLowerString("year_relative")
+	Global ls_year_relative_min:TLowerString = New TLowerString("year_relative_min")
+	Global ls_year_relative_max:TLowerString = New TLowerString("year_relative_max")
+	Global ls_day:TLowerString = New TLowerString("day")
+	Global ls_hour:TLowerString = New TLowerString("hour")
+	Global ls_day_random_min:TLowerString = New TLowerString("day_random_min")
+	Global ls_day_random_max:TLowerString = New TLowerString("day_random_max")
+	Global ls_day_random_slope:TLowerString = New TLowerString("day_random_slope")
+	Global ls_hour_random_min:TLowerString = New TLowerString("hour_random_min")
+	Global ls_hour_random_max:TLowerString = New TLowerString("hour_random_max")
+	Global ls_hour_random_slope:TLowerString = New TLowerString("hour_random_slope")
+	Global ls_target_groups:TLowerString = New TLowerString("target_groups")
+	Global ls_target_group_optional:TLowerString = New TLowerString("target_group_optional")
+	Global ls_critics:TLowerString = New TLowerString("critics")
+	Global ls_speed:TLowerString = New TLowerString("speed")
+	Global ls_outcome:TLowerString = New TLowerString("outcome")
+	Global ls_value:TLowerString = New TLowerString("value")
+	Global ls_min:TLowerString = New TLowerString("min")
+	Global ls_max:TLowerString = New TLowerString("max")
+	Global ls_slope:TLowerString = New TLowerString("slope")
+	Global ls_scriptflags:TLowerString = New TLowerString("scriptflags")
+	Global ls_flags_optional:TLowerString = New TLowerString("flags_optional")
+	Global ls_live_date:TLowerString = New TLowerString("live_date")
+	Global ls_studio_size:TLowerString = New TLowerString("studio_size")
+	Global ls_production_limit:TLowerString = New TLowerString("production_limit")
+	Global ls_production_broadcast_flags:TLowerString = New TLowerString("production_broadcast_flags")
+	Global ls_production_broadcast_limit:TLowerString = New TLowerString("production_broadcast_limit")
+	Global ls_production_licence_flags:TLowerString = New TLowerString("production_licence_flags")
+	Global ls_production_time_mod:TLowerString = New TLowerString("production_time_mod")
+	Global ls_name:TLowerString = New TLowerString("name")
+	Global ls_group:TLowerString = New TLowerString("group")
+	Global ls_index:TLowerString = New TLowerString("index")
+	Global ls_category:TLowerString = New TLowerString("category")
+	Global ls_sprite_finished:TLowerString = New TLowerString("sprite_finished")
+	Global ls_sprite_unfinished:TLowerString = New TLowerString("sprite_unfinished")
 
 
 	Method New()
@@ -421,7 +523,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "person") Then Return Null
+		If Not IsAllowedUser(mData.GetString(ls_createdBy), "person") Then Return Null
 
 		'try to fetch an existing one
 		Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(GUID)
@@ -454,7 +556,7 @@ Type TDatabaseLoader
 		'https://en.wikipedia.org/wiki/List_of_ITU_letter_codes
 
 
-		Local generator:String = data.GetString("generator", "")
+		Local generator:String = data.GetString(ls_generator, "")
 		Local p:TPersonGeneratorEntry
 		If generator
 			p = GetPersonGenerator().GetUniqueDatasetFromString(generator)
@@ -470,16 +572,16 @@ Type TDatabaseLoader
 		EndIf
 
 		'override with given ones
-		person.firstName = data.GetString("first_name", person.firstName)
-		person.lastName = data.GetString("last_name", person.lastName)
-		person.nickName = data.GetString("nick_name", person.nickName)
-		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool("fictional", person.IsFictional()) )
-		person.SetFlag(TVTPersonFlag.BOOKABLE, data.GetBool("bookable", person.IsBookable()) )
-		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool("levelup", person.CanLevelUp()) )
-		person.SetJob(data.GetInt("job"))
-		person.countryCode = data.GetString("country", person.countryCode).ToUpper()
-		person.gender = data.GetInt("gender", person.gender)
-		person.faceCode = data.GetString("face_code", person.faceCode)
+		person.firstName = data.GetString(ls_first_name, person.firstName)
+		person.lastName = data.GetString(ls_last_name, person.lastName)
+		person.nickName = data.GetString(ls_nick_name, person.nickName)
+		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool(ls_fictional, person.IsFictional()) )
+		person.SetFlag(TVTPersonFlag.BOOKABLE, data.GetBool(ls_bookable, person.IsBookable()) )
+		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool(ls_levelup, person.CanLevelUp()) )
+		person.SetJob(data.GetInt(ls_job))
+		person.countryCode = data.GetString(ls_country, person.countryCode).ToUpper()
+		person.gender = data.GetInt(ls_gender, person.gender)
+		person.faceCode = data.GetString(ls_face_code, person.faceCode)
 
 		'avoid that other persons with that name are generated
 		If p
@@ -510,14 +612,14 @@ Type TDatabaseLoader
 				"gender", "birthday", "deathday", "country", "fictional", ..
 				"job", "face_code" ..
 			])
-			person.gender = data.GetInt("gender", person.gender)
-			person.countryCode = data.GetString("country", person.countryCode).ToUpper()
-			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
-			pd.SetDayOfDeath( data.GetString("deathday", pd.dayOfDeath) )
-			person.SetJob( data.GetInt("job", person.GetJobs()) )
+			person.gender = data.GetInt(ls_gender, person.gender)
+			person.countryCode = data.GetString(ls_country, person.countryCode).ToUpper()
+			pd.SetDayOfBirth( data.GetString(ls_birthday, pd.dayOfBirth) )
+			pd.SetDayOfDeath( data.GetString(ls_deathday, pd.dayOfDeath) )
+			person.SetJob( data.GetInt(ls_job, person.GetJobs()) )
 			'can be defined in "details" or as "<name>" tag
-			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt("fictional", person.IsFictional()) )
-			person.faceCode = data.GetString("face_code", person.faceCode)
+			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt(ls_fictional, person.IsFictional()) )
+			person.faceCode = data.GetString(ls_face_code, person.faceCode)
 
 			'=== DATA ===
 			Local nodeData:TxmlNode = xml.FindChild(node, "data")
@@ -609,9 +711,9 @@ Type TDatabaseLoader
 				pd.GetAttributes().RandomizeAffinity()
 			EndIf
 			
-			If data.Has("affinity")
+			If data.Has(ls_affinity)
 				If not pd.HasAttributes() then pd.InitAttributes(False)
-				pd.GetAttributes().SetAffinity(0.01 * data.GetFloat("affinity"), -1, -1)
+				pd.GetAttributes().SetAffinity(0.01 * data.GetFloat(ls_affinity), -1, -1)
 			EndIf
 
 
@@ -619,9 +721,9 @@ Type TDatabaseLoader
 			'create after attributes are defined - popularity might
 			'depend on them (eg "fame")
 			'create/override popularity
-			if data.GetInt("popularity", -1000) <> -1000 or data.GetInt("popularity_target", -1000) <> -1000
-				local popularityValue:Int = data.GetInt("popularity", -1000) 
-				local popularityTarget:Int = data.GetInt("popularity_target", -1000) 
+			if data.GetInt(ls_popularity, -1000) <> -1000 or data.GetInt(ls_popularity_target, -1000) <> -1000
+				local popularityValue:Int = data.GetInt(ls_popularity, -1000) 
+				local popularityTarget:Int = data.GetInt(ls_popularity_target, -1000) 
 				pd.CreatePopularity(popularityValue, popularityTarget, person)
 			endif
 		EndIf
@@ -646,7 +748,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "newsevent") Then Return Null
+		If Not IsAllowedUser(mData.GetString(ls_createdBy), "newsevent") Then Return Null
 
 		'try to fetch an existing one
 		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(GUID)
@@ -679,26 +781,26 @@ Type TDatabaseLoader
 			"keywords", "happen_time", "min_subscription_level" ..
 		])
 
-		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
-		newsEventTemplate.genre = data.GetInt("genre", newsEventTemplate.genre)
-		newsEventTemplate.keywords = data.GetString("keywords", newsEventTemplate.keywords).ToLower()
-		newsEventTemplate.minSubscriptionLevel = data.GetInt("min_subscription_level", newsEventTemplate.minSubscriptionLevel)
+		newsEventTemplate.flags = data.GetInt(ls_flags, newsEventTemplate.flags)
+		newsEventTemplate.genre = data.GetInt(ls_genre, newsEventTemplate.genre)
+		newsEventTemplate.keywords = data.GetString(ls_keywords, newsEventTemplate.keywords).ToLower()
+		newsEventTemplate.minSubscriptionLevel = data.GetInt(ls_min_subscription_level, newsEventTemplate.minSubscriptionLevel)
 
-		Local available:Int = data.GetBool("available", Not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		Local available:Int = data.GetBool(ls_available, Not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 
 		'topicality is "quality" here
-		newsEventTemplate.quality = 0.01 * data.GetFloat("quality", 100 * newsEventTemplate.quality)
-		newsEventTemplate.qualityMin = 0.01 * data.GetFloat("quality_min", 100 * newsEventTemplate.qualityMin)
-		newsEventTemplate.qualityMax = 0.01 * data.GetFloat("quality_max", 100 * newsEventTemplate.qualityMax)
-		newsEventTemplate.qualitySlope = 0.01 * data.GetFloat("quality_slope", 100 * newsEventTemplate.qualitySlope)
+		newsEventTemplate.quality = 0.01 * data.GetFloat(ls_quality, 100 * newsEventTemplate.quality)
+		newsEventTemplate.qualityMin = 0.01 * data.GetFloat(ls_quality_min, 100 * newsEventTemplate.qualityMin)
+		newsEventTemplate.qualityMax = 0.01 * data.GetFloat(ls_quality_max, 100 * newsEventTemplate.qualityMax)
+		newsEventTemplate.qualitySlope = 0.01 * data.GetFloat(ls_quality_slope, 100 * newsEventTemplate.qualitySlope)
 
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
-		Local priceMod:Float = data.GetFloat("price", 0)
+		Local priceMod:Float = data.GetFloat(ls_price, 0)
 		If priceMod = 0 Then priceMod = 1.0 'invalid data given
-		newsEventTemplate.SetModifier("price", data.GetFloat("price", newsEventTemplate.GetModifier("price")))
+		newsEventTemplate.SetModifier("price", data.GetFloat(ls_price, newsEventTemplate.GetModifier("price")))
 
-		Local happenTimeString:String = data.GetString("happen_time", "")
+		Local happenTimeString:String = data.GetString(ls_happen_time, "")
 		If happenTimeString
 			Local happenTimeParams:Int[] = StringHelper.StringToIntArray(happenTimeString, ",")
 			If happenTimeParams.length > 0
@@ -721,9 +823,9 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
 			"script", "year_range_from", "year_range_to" ..
 		])
-		newsEventTemplate.availableScript = data.GetString("script", newsEventTemplate.availableScript)
-		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
-		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
+		newsEventTemplate.availableScript = data.GetString(ls_script, newsEventTemplate.availableScript)
+		newsEventTemplate.availableYearRangeFrom = data.GetInt(ls_year_range_from, newsEventTemplate.availableYearRangeFrom)
+		newsEventTemplate.availableYearRangeTo = data.GetInt(ls_year_range_to, newsEventTemplate.availableYearRangeTo)
 
 		If newsEventTemplate.availableScript
 			If Not GetScriptExpression().IsValid(newsEventTemplate.availableScript)
@@ -822,12 +924,12 @@ Type TDatabaseLoader
 			"sprite_finished", "sprite_unfinished" ..
 		])
 
-		achievement.flags = data.GetInt("flags", achievement.flags)
-		achievement.group = data.GetInt("group", achievement.group)
-		achievement.index = data.GetInt("index", achievement.index)
-		achievement.category = data.GetInt("category", achievement.category)
-		achievement.spriteFinished = data.GetString("sprite_finished", achievement.spriteFinished)
-		achievement.spriteUnfinished = data.GetString("sprite_unfinished", achievement.spriteUnfinished)
+		achievement.flags = data.GetInt(ls_flags, achievement.flags)
+		achievement.group = data.GetInt(ls_group, achievement.group)
+		achievement.index = data.GetInt(ls_index, achievement.index)
+		achievement.category = data.GetInt(ls_category, achievement.category)
+		achievement.spriteFinished = data.GetString(ls_sprite_finished, achievement.spriteFinished)
+		achievement.spriteUnfinished = data.GetString(ls_sprite_unfinished, achievement.spriteUnfinished)
 
 
 		'=== TASKS ===
@@ -879,7 +981,7 @@ Type TDatabaseLoader
 		Local reuseExisting:Int = False
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "achievement") Then Return Null
+		If Not IsAllowedUser(mData.GetString(ls_createdBy), "achievement") Then Return Null
 
 
 		'try to fetch an existing one
@@ -910,7 +1012,7 @@ Type TDatabaseLoader
 			Next
 		EndIf
 
-		Local elementType:String = data.GetString("type")
+		Local elementType:String = data.GetString(ls_type)
 		If Not element And Not elementType Then Return False
 
 
@@ -956,7 +1058,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "adcontract") Then Return Null
+		If Not IsAllowedUser(mData.GetString(ls_createdBy), "adcontract") Then Return Null
 
 		'try to fetch an existing one
 		Local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
@@ -993,28 +1095,28 @@ Type TDatabaseLoader
 			"available", "blocks", "type" ..
 		])
 
-		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
-		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
+		adContract.infomercialAllowed = data.GetBool(ls_infomercial, adContract.infomercialAllowed)
+		adContract.quality = 0.01 * data.GetFloat(ls_quality, adContract.quality * 100.0)
 
-		Local available:Int = data.GetBool("available", Not adContract.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		Local available:Int = data.GetBool(ls_available, Not adContract.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		adContract.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 
 		'old -> now stored in "availability
-		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
-		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
+		adContract.availableYearRangeFrom = data.GetInt(ls_year_range_from, adContract.availableYearRangeFrom)
+		adContract.availableYearRangeTo = data.GetInt(ls_year_range_to, adContract.availableYearRangeTo)
 
-		adContract.adType = data.GetInt("type", adContract.adType)
+		adContract.adType = data.GetInt(ls_type, adContract.adType)
 
-		adContract.blocks = data.GetInt("blocks", adContract.blocks)
-		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
-		adContract.fixedPrice = data.GetBool("fix_price", adContract.fixedPrice)
-		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
-		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
-		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
-		adContract.profitBase = data.GetFloat("profit", adContract.profitBase)
-		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
-		adContract.infomercialProfitBase = data.GetFloat("infomercial_profit", adContract.infomercialProfitBase)
-		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
+		adContract.blocks = data.GetInt(ls_blocks, adContract.blocks)
+		adContract.spotCount = data.GetInt(ls_repetitions, adContract.spotcount)
+		adContract.fixedPrice = data.GetBool(ls_fix_price, adContract.fixedPrice)
+		adContract.daysToFinish = data.GetInt(ls_duration, adContract.daysToFinish)
+		adContract.proPressureGroups = data.GetInt(ls_pro_pressure_groups, adContract.proPressureGroups)
+		adContract.contraPressureGroups = data.GetInt(ls_contra_pressure_groups, adContract.contraPressureGroups)
+		adContract.profitBase = data.GetFloat(ls_profit, adContract.profitBase)
+		adContract.penaltyBase = data.GetFloat(ls_penalty, adContract.penaltyBase)
+		adContract.infomercialProfitBase = data.GetFloat(ls_infomercial_profit, adContract.infomercialProfitBase)
+		adContract.fixedInfomercialProfit = data.GetFloat(ls_fix_infomercial_profit, adContract.fixedInfomercialProfit)
 		'without data, fall back to 10% of profitBase
 		If adContract.infomercialProfitBase = 0 Then adContract.infomercialProfitBase = adContract.profitBase * 0.1
 
@@ -1025,9 +1127,9 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
 			"script", "year_range_from", "year_range_to" ..
 		])
-		adContract.availableScript = data.GetString("script", adContract.availableScript)
-		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
-		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
+		adContract.availableScript = data.GetString(ls_script, adContract.availableScript)
+		adContract.availableYearRangeFrom = data.GetInt(ls_year_range_from, adContract.availableYearRangeFrom)
+		adContract.availableYearRangeTo = data.GetInt(ls_year_range_to, adContract.availableYearRangeTo)
 
 		If adContract.availableScript
 			If Not GetScriptExpression().IsValid(adContract.availableScript)
@@ -1046,16 +1148,16 @@ Type TDatabaseLoader
 			"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
 		])
 		'0-100% -> 0.0 - 1.0
-		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
-		adContract.minImage = 0.01 * data.GetFloat("min_image", adContract.minImage*100.0)
-		adContract.maxImage = 0.01 * data.GetFloat("max_image", adContract.maxImage*100.0)
-		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
-		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
-		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)
-		adContract.limitedToProgrammeFlag = data.GetInt("allowed_programme_flag", adContract.limitedToProgrammeFlag)
-		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
-		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
-		adContract.forbiddenProgrammeFlag = data.GetInt("prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
+		adContract.minAudienceBase = 0.01 * data.GetFloat(ls_min_audience, adContract.minAudienceBase*100.0)
+		adContract.minImage = 0.01 * data.GetFloat(ls_min_image, adContract.minImage*100.0)
+		adContract.maxImage = 0.01 * data.GetFloat(ls_max_image, adContract.maxImage*100.0)
+		adContract.limitedToTargetGroup = data.GetInt(ls_target_group, adContract.limitedToTargetGroup)
+		adContract.limitedToProgrammeGenre = data.GetInt(ls_allowed_genre, adContract.limitedToProgrammeGenre)
+		adContract.limitedToProgrammeType = data.GetInt(ls_allowed_programme_type, adContract.limitedToProgrammeType)
+		adContract.limitedToProgrammeFlag = data.GetInt(ls_allowed_programme_flag, adContract.limitedToProgrammeFlag)
+		adContract.forbiddenProgrammeGenre = data.GetInt(ls_prohibited_genre, adContract.forbiddenProgrammeGenre)
+		adContract.forbiddenProgrammeType = data.GetInt(ls_prohibited_programme_type, adContract.forbiddenProgrammeType)
+		adContract.forbiddenProgrammeFlag = data.GetInt(ls_prohibited_programme_flag, adContract.forbiddenProgrammeFlag)
 		'if only one group
 		'adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
 		'adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
@@ -1104,7 +1206,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip if not "all" are allowed (no creator data available)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "programmelicence") Then Return Null
+		If Not IsAllowedUser(mData.GetString(ls_createdBy), "programmelicence") Then Return Null
 
 
 
@@ -1228,13 +1330,13 @@ Type TDatabaseLoader
 		]) 'also allow a "<live>" block
 		'], ["live"]) 'also allow a "<live>" block
 
-		programmeData.country = data.GetString("country", programmeData.country)
+		programmeData.country = data.GetString(ls_country, programmeData.country)
 
-		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
-		programmeData.blocks = MathHelper.clamp(data.GetInt("blocks", programmeData.blocks), 1, 12)
+		programmeData.distributionChannel = data.GetInt(ls_distribution, programmeData.distributionChannel)
+		programmeData.blocks = MathHelper.clamp(data.GetInt(ls_blocks, programmeData.blocks), 1, 12)
 
-		programmeData.broadcastTimeSlotStart = MathHelper.clamp(data.GetInt("broadcast_time_slot_start", programmeData.broadcastTimeSlotStart), 0, 23)
-		programmeData.broadcastTimeSlotEnd = MathHelper.clamp(data.GetInt("broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd), 0, 23)
+		programmeData.broadcastTimeSlotStart = MathHelper.clamp(data.GetInt(ls_broadcast_time_slot_start, programmeData.broadcastTimeSlotStart), 0, 23)
+		programmeData.broadcastTimeSlotEnd = MathHelper.clamp(data.GetInt(ls_broadcast_time_slot_end, programmeData.broadcastTimeSlotEnd), 0, 23)
 		If programmeData.broadcastTimeSlotStart = programmeData.broadcastTimeSlotEnd
 			programmeData.broadcastTimeSlotStart = -1
 			programmeData.broadcastTimeSlotEnd = -1
@@ -1244,15 +1346,15 @@ Type TDatabaseLoader
 		programmeLicence.broadcastTimeSlotEnd = programmeData.broadcastTimeSlotEnd
 
 
-		programmeData.SetBroadcastLimit(data.GetInt("broadcast_limit", programmeData.broadcastLimit))
+		programmeData.SetBroadcastLimit(data.GetInt(ls_broadcast_limit, programmeData.broadcastLimit))
 		'if not given - disable and fallback to programmeData limit then
-		programmeLicence.SetBroadcastLimit(data.GetInt("licence_broadcast_limit", -1))
+		programmeLicence.SetBroadcastLimit(data.GetInt(ls_licence_broadcast_limit, -1))
 
 
-		programmeData.SetBroadcastFlag(data.GetInt("broadcast_flags", 0))
+		programmeData.SetBroadcastFlag(data.GetInt(ls_broadcast_flags, 0))
 		'if defined, it overrides (replaces) the data defined broadcast flags 
 		'we need to set all flags then as "modified" (manually set)
-		Local licenceBroadcastFlags:int = data.GetInt("licence_broadcast_flags", -1)
+		Local licenceBroadcastFlags:int = data.GetInt(ls_licence_broadcast_flags, -1)
 		if licenceBroadcastFlags >= 0 
 			If not programmeLicence.broadcastFlags 
 				programmeLicence.broadcastFlags = new TTriStateIntBitmask
@@ -1262,32 +1364,33 @@ Type TDatabaseLoader
 			'mark all settings as manually set
 			programmeLicence.broadcastFlags.SetAllModified()
 			'activate the flag
-			programmeLicence.broadcastFlags.Set(data.GetInt("licence_broadcast_flags"), True)
+			programmeLicence.broadcastFlags.Set(data.GetInt(ls_licence_broadcast_flags), True)
 		endif
 
 
-		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
+		programmeLicence.SetLicenceFlag(data.GetInt(ls_licence_flags, 0))
 
 		'TODO discuss - is it a good idea to use this flag for both licence AND data?
 		'data flag has precedence; data not available - licence not available
 		'availability effect turns both flags on, but only licence flag off
-		Local available:Int = data.GetBool("available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		Local available:Int = data.GetBool(ls_available, Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 		programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 
 		'compatibility: load price mod from "price_mod" first... later
 		'override with "modifiers"-data
-		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
+		programmeData.SetModifier("price", data.GetFloat(ls_price_mod, programmeData.GetModifier("price")))
 
-		programmeData.SetFlag(data.GetInt("flags", 0))
+		programmeData.SetFlag(data.GetInt(ls_flags, 0))
 
-		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-		For Local sg:String = EachIn data.GetString("subgenre", "").split(",")
+		programmeData.genre = data.GetInt(ls_maingenre, programmeData.genre)
+		For Local sg:String = EachIn data.GetString(ls_subgenre, "").split(",")
 			If Trim(sg) = "" Then Continue
-			If Int(sg) < 0 Then Continue
+			Local iSG:Int = Int(sg)
+			If iSG < 0 Then Continue
 
-			If Not MathHelper.InIntArray(Int(sg), programmeData.subGenres)
-				programmeData.subGenres :+ [Int(sg)]
+			If Not MathHelper.InIntArray(iSG, programmeData.subGenres)
+				programmeData.subGenres :+ [iSG]
 			EndIf
 		Next
 
@@ -1341,7 +1444,7 @@ Type TDatabaseLoader
 			If Not member
 				member = New TPersonBase
 				Local memberFictional:Int = True
-				If mdata Then memberFictional = mdata.GetInt("fictional", 0)
+				If mdata Then memberFictional = mdata.GetInt(ls_fictional, 0)
 				member.SetFlag(TVTPersonFlag.FICTIONAL, memberFictional)
 
 				If memberGenerator
@@ -1394,9 +1497,9 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeGroups, data, [..
 			"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
 		])
-		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
-		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
-		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
+		programmeData.targetGroups = data.GetInt(ls_target_groups, programmeData.targetGroups)
+		programmeData.proPressureGroups = data.GetInt(ls_pro_pressure_groups, programmeData.proPressureGroups)
+		programmeData.contraPressureGroups = data.GetInt(ls_contra_pressure_groups, programmeData.contraPressureGroups)
 
 
 
@@ -1426,9 +1529,9 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeRatings, data, [..
 			"critics", "speed", "outcome" ..
 		])
-		programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
-		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
-		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
+		programmeData.review = 0.01 * data.GetFloat(ls_critics, programmeData.review*100)
+		programmeData.speed = 0.01 * data.GetFloat(ls_speed, programmeData.speed*100)
+		programmeData.outcome = 0.01 * data.GetFloat(ls_outcome, programmeData.outcome*100)
 
 		'auto repair outcome for non-custom productions
 		'(eg. predefined ones from the DB)
@@ -1588,7 +1691,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "adcontract") Then Return Null
+		If Not IsAllowedUser(mData.GetString(ls_createdBy), "adcontract") Then Return Null
 
 		'=== SCRIPTTEMPLATE DATA ===
 		'try to fetch an existing template with the entries GUID
@@ -1649,55 +1752,55 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "outcome")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.outcomeMin))
+			Local value:Float = 0.01 * data.GetInt(ls_value, Int(100 * scriptTemplate.outcomeMin))
 			scriptTemplate.SetOutcomeRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetOutcomeRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.outcomeMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.outcomeMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.outcomeSlope)) ..
+				0.01 * data.GetInt(ls_min, Int(100 * scriptTemplate.outcomeMin)), ..
+				0.01 * data.GetInt(ls_max, Int(100 * scriptTemplate.outcomeMax)), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.outcomeSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: RATINGS - REVIEW ===
 		nodeData = xml.FindChild(node, "review")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.reviewMin))
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Float = 0.01 * data.GetInt(ls_value, Int(100 * scriptTemplate.reviewMin))
 			scriptTemplate.SetReviewRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetReviewRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.reviewMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.reviewMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.reviewSlope)) ..
+				0.01 * data.GetInt(ls_min, Int(100 * scriptTemplate.reviewMin)), ..
+				0.01 * data.GetInt(ls_max, Int(100 * scriptTemplate.reviewMax)), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.reviewSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: RATINGS - SPEED ===
 		nodeData = xml.FindChild(node, "speed")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.speedMin))
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Float = 0.01 * data.GetInt(ls_value, Int(100 * scriptTemplate.speedMin))
 			scriptTemplate.SetSpeedRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetSpeedRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.speedMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.speedMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.speedSlope)) ..
+				0.01 * data.GetInt(ls_min, Int(100 * scriptTemplate.speedMin)), ..
+				0.01 * data.GetInt(ls_max, Int(100 * scriptTemplate.speedMax)), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.speedSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: RATINGS - POTENTIAL ===
 		nodeData = xml.FindChild(node, "potential")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.potentialMin))
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Float = 0.01 * data.GetInt(ls_value, Int(100 * scriptTemplate.potentialMin))
 			scriptTemplate.SetPotentialRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetPotentialRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.potentialMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.potentialMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.potentialSlope)) ..
+				0.01 * data.GetInt(ls_min, Int(100 * scriptTemplate.potentialMin)), ..
+				0.01 * data.GetInt(ls_max, Int(100 * scriptTemplate.potentialMax)), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.potentialSlope)) ..
 			)
 		EndIf
 
@@ -1705,57 +1808,57 @@ Type TDatabaseLoader
 		'=== DATA: BLOCKS ===
 		nodeData = xml.FindChild(node, "blocks")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.blocksMin)
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Int = data.GetInt(ls_value, scriptTemplate.blocksMin)
 			scriptTemplate.SetBlocksRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetBlocksRange( ..
-				data.GetInt("min", scriptTemplate.blocksMin), ..
-				data.GetInt("max", scriptTemplate.blocksMax), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.blocksSlope)) ..
+				data.GetInt(ls_min, scriptTemplate.blocksMin), ..
+				data.GetInt(ls_max, scriptTemplate.blocksMax), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.blocksSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: PRICE ===
 		nodeData = xml.FindChild(node, "price")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.priceMin)
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Int = data.GetInt(ls_value, scriptTemplate.priceMin)
 			scriptTemplate.SetPriceRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetPriceRange( ..
-				data.GetInt("min", scriptTemplate.priceMin), ..
-				data.GetInt("max", scriptTemplate.priceMax), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.priceSlope)) ..
+				data.GetInt(ls_min, scriptTemplate.priceMin), ..
+				data.GetInt(ls_max, scriptTemplate.priceMax), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.priceSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: STUDIO SIZE ===
 		nodeData = xml.FindChild(node, "studio_size")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.studioSizeMin)
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Int = data.GetInt(ls_value, scriptTemplate.studioSizeMin)
 			scriptTemplate.SetStudioSizeRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetStudioSizeRange( ..
-				data.GetInt("min", scriptTemplate.studioSizeMin), ..
-				data.GetInt("max", scriptTemplate.studioSizeMin), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.studioSizeSlope)) ..
+				data.GetInt(ls_min, scriptTemplate.studioSizeMin), ..
+				data.GetInt(ls_max, scriptTemplate.studioSizeMin), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.studioSizeSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: PRODUCTION TIME ===
 		nodeData = xml.FindChild(node, "production_time")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("value", int(scriptTemplate.productionTime / TWorldTime.MINUTELENGTH))
+		If data.GetInt(ls_value, -1) >= 0
+			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt(ls_value, int(scriptTemplate.productionTime / TWorldTime.MINUTELENGTH))
 		Else
 			'we cannot simply place the min/max as default as "-1 / TWorldTime.MINUTELENGTH" results in 0 ...
-			local pTMin:Int = data.GetInt("min", -1)
-			local pTMax:Int = data.GetInt("max", -1)
+			local pTMin:Int = data.GetInt(ls_min, -1)
+			local pTMax:Int = data.GetInt(ls_max, -1)
 			if pTMin >= 0 Then scriptTemplate.productionTimeMin = TWorldTime.MINUTELENGTH * pTMin
 			if pTMax >= 0 Then scriptTemplate.productionTimeMax = TWorldTime.MINUTELENGTH * pTMax
-			scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat("slope", 100 * scriptTemplate.productionTimeSlope)
+			scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat(ls_slope, 100 * scriptTemplate.productionTimeSlope)
 		EndIf
 
 		'=== DATA: JOBS ===
@@ -1844,44 +1947,44 @@ Type TDatabaseLoader
 			"production_limit", "production_time_mod", ..
 			"available"..
 		])
-		scriptTemplate.scriptFlags = data.GetInt("scriptflags", scriptTemplate.scriptFlags)
-		If Not data.GetInt("available", True)
+		scriptTemplate.scriptFlags = data.GetInt(ls_scriptflags, scriptTemplate.scriptFlags)
+		If Not data.GetInt(ls_available, True)
 			scriptTemplate.setScriptFlag(TVTScriptFlag.NOT_AVAILABLE, True)
 		EndIf
 
-		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
-		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
-		scriptTemplate.liveDateCode = data.GetString("live_date", scriptTemplate.liveDateCode)
-		scriptTemplate.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", scriptTemplate.broadcastTimeSlotStart)
-		scriptTemplate.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", scriptTemplate.broadcastTimeSlotEnd)
+		scriptTemplate.flags = data.GetInt(ls_flags, scriptTemplate.flags)
+		scriptTemplate.flagsOptional = data.GetInt(ls_flags_optional, scriptTemplate.flagsOptional)
+		scriptTemplate.liveDateCode = data.GetString(ls_live_date, scriptTemplate.liveDateCode)
+		scriptTemplate.broadcastTimeSlotStart = data.GetInt(ls_broadcast_time_slot_start, scriptTemplate.broadcastTimeSlotStart)
+		scriptTemplate.broadcastTimeSlotEnd = data.GetInt(ls_broadcast_time_slot_end, scriptTemplate.broadcastTimeSlotEnd)
 		
-		scriptTemplate.targetGroup = data.GetInt("target_group", scriptTemplate.targetGroup)
-		scriptTemplate.targetGroupOptional = data.GetInt("target_group_optional", scriptTemplate.targetGroupOptional)
+		scriptTemplate.targetGroup = data.GetInt(ls_target_group, scriptTemplate.targetGroup)
+		scriptTemplate.targetGroupOptional = data.GetInt(ls_target_group_optional, scriptTemplate.targetGroupOptional)
 
-		If data.Has("studio_size")
-			scriptTemplate.studioSizeMin = data.GetInt("studio_size")
-			scriptTemplate.studioSizeMax = data.GetInt("studio_size")
+		If data.Has(ls_studio_size)
+			scriptTemplate.studioSizeMin = data.GetInt(ls_studio_size)
+			scriptTemplate.studioSizeMax = data.GetInt(ls_studio_size)
 			scriptTemplate.studioSizeSlope = 0.5
 		Endif
 
-		scriptTemplate.keywords = data.GetString("keywords", scriptTemplate.keywords).Trim()
+		scriptTemplate.keywords = data.GetString(ls_keywords, scriptTemplate.keywords).Trim()
 
-		scriptTemplate.productionLimit = data.GetInt("production_limit", scriptTemplate.productionLimit)
+		scriptTemplate.productionLimit = data.GetInt(ls_production_limit, scriptTemplate.productionLimit)
 		scriptTemplate.productionLimitMax = scriptTemplate.productionLimit
 
-		scriptTemplate.productionBroadcastFlags = data.GetInt("production_broadcast_flags", scriptTemplate.productionBroadcastFlags)
-		scriptTemplate.productionLicenceFlags = data.GetInt("production_licence_flags", scriptTemplate.productionLicenceFlags)
-		scriptTemplate.SetProductionBroadcastLimit( data.GetInt("production_broadcast_limit", scriptTemplate.GetProductionBroadcastLimit()) )
+		scriptTemplate.productionBroadcastFlags = data.GetInt(ls_production_broadcast_flags, scriptTemplate.productionBroadcastFlags)
+		scriptTemplate.productionLicenceFlags = data.GetInt(ls_production_licence_flags, scriptTemplate.productionLicenceFlags)
+		scriptTemplate.SetProductionBroadcastLimit( data.GetInt(ls_production_broadcast_limit, scriptTemplate.GetProductionBroadcastLimit()) )
 
-		scriptTemplate.productionTimeModBase = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeModBase)
+		scriptTemplate.productionTimeModBase = 0.01 * data.GetFloat(ls_production_time_mod, 100*scriptTemplate.productionTimeModBase)
 
 		'=== AVAILABILITY ===
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
 			"script", "year_range_from", "year_range_to" ..
 		])
-		scriptTemplate.availableScript = data.GetString("script", scriptTemplate.availableScript)
-		scriptTemplate.availableYearRangeFrom = data.GetInt("year_range_from", scriptTemplate.availableYearRangeFrom)
-		scriptTemplate.availableYearRangeTo = data.GetInt("year_range_to", scriptTemplate.availableYearRangeTo)
+		scriptTemplate.availableScript = data.GetString(ls_script, scriptTemplate.availableScript)
+		scriptTemplate.availableYearRangeFrom = data.GetInt(ls_year_range_from, scriptTemplate.availableYearRangeFrom)
+		scriptTemplate.availableYearRangeTo = data.GetInt(ls_year_range_to, scriptTemplate.availableYearRangeTo)
 
 
 		Rem
@@ -1912,7 +2015,7 @@ Type TDatabaseLoader
 				If Not modifierData.Has(f) Then ThrowNodeError("DB: <modifier> is missing ~q" + f+"~q.", nodeModifier)
 			Next
 			if not scriptTemplate.programmeDataModifiers then scriptTemplate.programmeDataModifiers = new TData
-			scriptTemplate.programmeDataModifiers.AddFloat(modifierData.GetString("name"), modifierData.GetFloat("value"))
+			scriptTemplate.programmeDataModifiers.AddFloat(modifierData.GetString(ls_name), modifierData.GetFloat(ls_value))
 			'source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
 		Next
 
@@ -1942,14 +2045,14 @@ Type TDatabaseLoader
 		'not be propagated to the children
 		nodeData = xml.FindChild(node, "episodes")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.episodesMin)
+		If data.GetInt(ls_value, -1) >= 0
+			Local value:Int = data.GetInt(ls_value, scriptTemplate.episodesMin)
 			scriptTemplate.SetEpisodesRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetEpisodesRange( ..
-				data.GetInt("min", scriptTemplate.episodesMin), ..
-				data.GetInt("max", scriptTemplate.episodesMax), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.episodesSlope)) ..
+				data.GetInt(ls_min, scriptTemplate.episodesMin), ..
+				data.GetInt(ls_max, scriptTemplate.episodesMax), ..
+				0.01 * data.GetInt(ls_slope, Int(100 * scriptTemplate.episodesSlope)) ..
 			)
 		EndIf
 
@@ -2104,8 +2207,8 @@ Type TDatabaseLoader
 
 	'=== META DATA FUNCTIONS ===
 	Method LoadV3CreatorMetaDataFromNode:TData(GUID:String, data:TData, node:TxmlNode, xml:TXmlHelper)
-		data.AddNumber("creator", TXmlHelper.FindValueInt(node,"creator", 0))
-		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", ""))
+		data.AddNumber(ls_creator, TXmlHelper.FindValueInt(node,"creator", 0))
+		data.AddString(ls_createdBy, TXmlHelper.FindValue(node,"created_by", ""))
 		Return data
 	End Method
 
@@ -2206,20 +2309,20 @@ Type TDatabaseLoader
 
 
 	Function CreateReleaseTime:Long(releaseData:TData, oldReleaseTime:Long)
-		Local releaseYear:Int = releaseData.GetInt("year", 0)
-		Local releaseYearRelative:Int = releaseData.GetInt("year_relative", 0)
-		Local releaseYearRelativeMin:Int = releaseData.GetInt("year_relative_min", 0)
-		Local releaseYearRelativeMax:Int = releaseData.GetInt("year_relative_max", 0)
+		Local releaseYear:Int = releaseData.GetInt(ls_year, 0)
+		Local releaseYearRelative:Int = releaseData.GetInt(ls_year_relative, 0)
+		Local releaseYearRelativeMin:Int = releaseData.GetInt(ls_year_relative_min, 0)
+		Local releaseYearRelativeMax:Int = releaseData.GetInt(ls_year_relative_max, 0)
 
-		Local releaseDay:Int = releaseData.GetInt("day", -1)
-		Local releaseHour:Int = MathHelper.Clamp(releaseData.GetInt("hour", -1), 0, 23)
+		Local releaseDay:Int = releaseData.GetInt(ls_day, -1)
+		Local releaseHour:Int = MathHelper.Clamp(releaseData.GetInt(ls_hour, -1), 0, 23)
 
-		Local releaseDayRandomMin:Int = Max(0,releaseData.GetInt("day_random_min", 0))
-		Local releaseDayRandomMax:Int = Max(0,releaseData.GetInt("day_random_max", 0))
-		Local releaseDayRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat("day_random_slope", 0.5), 0.0, 1.0)
-		Local releaseHourRandomMin:Int = MathHelper.Clamp(releaseData.GetInt("hour_random_min", 0), 0, 23)
-		Local releaseHourRandomMax:Int = MathHelper.Clamp(releaseData.GetInt("hour_random_max", 0), 0, 23)
-		Local releaseHourRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat("hour_random_slope", 0.5), 0.0, 1.0)
+		Local releaseDayRandomMin:Int = Max(0,releaseData.GetInt(ls_day_random_min, 0))
+		Local releaseDayRandomMax:Int = Max(0,releaseData.GetInt(ls_day_random_max, 0))
+		Local releaseDayRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat(ls_day_random_slope, 0.5), 0.0, 1.0)
+		Local releaseHourRandomMin:Int = MathHelper.Clamp(releaseData.GetInt(ls_hour_random_min, 0), 0, 23)
+		Local releaseHourRandomMax:Int = MathHelper.Clamp(releaseData.GetInt(ls_hour_random_max, 0), 0, 23)
+		Local releaseHourRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat(ls_hour_random_slope, 0.5), 0.0, 1.0)
 
 		MathHelper.SortIntValues(releaseYearRelativeMin, releaseYearRelativeMax)
 		MathHelper.SortIntValues(releaseDayRandomMin, releaseDayRandomMax)
@@ -2351,58 +2454,6 @@ Type TDatabaseLoader
 	End Method
 
 
-	Function convertV2genreToV3:Int(data:TProgrammeData)
-		Select data.genre
-			Case 0 'old ACTION
-				data.genre = TVTProgrammeGenre.Action
-			Case 1 'old THRILLER
-				data.genre = TVTProgrammeGenre.Thriller
-			Case 2 'old SCIFI
-				data.genre = TVTProgrammeGenre.SciFi
-			Case 3 'old COMEDY
-				data.genre = TVTProgrammeGenre.Comedy
-			Case 4 'old HORROR
-				data.genre = TVTProgrammeGenre.Horror
-			Case 5 'old LOVE
-				data.genre = TVTProgrammeGenre.Romance
-			Case 6 'old EROTIC
-				data.genre = TVTProgrammeGenre.Erotic
-			Case 7 'old WESTERN
-				data.genre = TVTProgrammeGenre.Western
-			Case 8 'old LIVE
-				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeDataFlag.LIVE)
-			Case 9 'old KIDS
-				data.genre = TVTProgrammeGenre.Family
-			Case 10 'old CARTOON
-				data.genre = TVTProgrammeGenre.Animation
-			Case 11 'old MUSIC
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 12 'old SPORT
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 13 'old CULTURE
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 14 'old FANTASY
-				data.genre = TVTProgrammeGenre.Fantasy
-			Case 15 'old YELLOWPRESS
-				'hier sind nur "Trash"-Programme drin
-				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeDataFlag.TRASH)
-			Case 17 'old SHOW
-				data.genre = TVTProgrammeGenre.Show
-			Case 18 'old MONUMENTAL
-				data.genre = TVTProgrammeGenre.Monumental
-			Case 19 'TProgrammeData.GENRE_FILLER 'TV films etc.
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 20 'old CALLINSHOW
-				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeDataFlag.PAID)
-			Default
-				data.genre = TVTProgrammeGenre.Undefined
-		End Select
-	End Function
-
-
 	'load a localized string from the given node
 	'only adds "non empty" strings
 	'ex.:
@@ -2434,6 +2485,7 @@ Type TDatabaseLoader
 		Return localized
 	End Function
 
+
 	Function onSetLanguage:Int(triggerEvent:TEventBase)
 		Local lang:String = triggerEvent.GetData().GetString("languageCode", "en")
 
@@ -2444,6 +2496,7 @@ Type TDatabaseLoader
 		If lang <> "en" Then SetLanguage("en")
 		SetLanguage(lang)
 	End Function
+
 
 	Function SetLanguage(lang:String)
 		Local baseDir:String = "res/database/Default/"
@@ -2460,9 +2513,9 @@ Type TDatabaseLoader
 			If guid
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(guid)
 				If person
-					person.firstName=data.GetString("first_name","")
-					person.lastName=data.GetString("last_name","")
-					person.nickName=data.GetString("nick_name","")
+					person.firstName=data.GetString(ls_first_name,"")
+					person.lastName=data.GetString(ls_last_name,"")
+					person.nickName=data.GetString(ls_nick_name,"")
 					'print "updated person to "+person.GetFullName()
 				EndIf
 			EndIf
@@ -2478,15 +2531,15 @@ Type TDatabaseLoader
 			If guid
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
 				If role
-					role.firstName=data.GetString("first_name","")
-					role.lastName=data.GetString("last_name","")
+					role.firstName=data.GetString(ls_first_name,"")
+					role.lastName=data.GetString(ls_last_name,"")
 					role.title=data.GetString("title","")
 					'print "updated role to "+role.GetFullName()
 				EndIf
 			EndIf
 		Next
 
-	EndFunction
+	End Function
 End Type
 
 
