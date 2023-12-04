@@ -10,7 +10,6 @@ Import "Dig/base.gfx.gui.button.bmx"
 
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist Extends TPlannerList
-	Field displaceEpisodeTapes:TVec2D = New TVec2D(6,5)
 	'area of all genres/filters including top/bottom-area
 	Field genresRect:TRectangle
 	Field genresCount:Int = -1
