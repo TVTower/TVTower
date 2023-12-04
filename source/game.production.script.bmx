@@ -214,14 +214,18 @@ Type TScriptCollection Extends TGameObjectCollection
 		If TLocalizedString(title)
 			Local lsTitle:TLocalizedString = TLocalizedString(title)
 			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				Local parts:String[] = String(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())).split("::")
-				If parts.length = 2 Then Return Int(parts[1])
-				Return Int(parts[0])
+				Local key:String = TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower()
+				Local title:String = String(protectedTitles.ValueForKey(key))
+				Local splitterPos:Int = title.Find("::")
+				if splitterPos >= 0 Then Return Int(title[splitterPos + 1 ..])
+				Return Int(title)
 			Next
 		ElseIf String(title) <> ""
-			Local parts:String[] = String((protectedTitles.ValueForKey("custom::" + String(title).ToLower()))).split("::")
-			If parts.length = 2 Then Return Int(parts[1])
-			Return Int(parts[0])
+			Local key:String = "custom::" + String(title).ToLower()
+			Local title:String = String(protectedTitles.ValueForKey(key))
+			Local splitterPos:Int = title.Find("::")
+			if splitterPos >= 0 Then Return Int(title[splitterPos + 1 ..])
+			Return Int(title)
 		EndIf
 	End Method
 
