@@ -392,7 +392,10 @@ Type TXmlHelper
 
 				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
 					Local subNodeName:String = subNode.GetName()
-					If name.length = subNodeName.length and name = subNodeName.ToLower() Then Return subNode.GetContent()
+					If name.length = subNodeName.length and name = subNodeName.ToLower() 
+						value_exists = True
+						Return subNode.GetContent()
+					EndIf
 					If dataLS.EqualsLower(subNodeName) 
 						Local attributeExists:Int
 						Local result:String = GetAttributeLC(subNode, name, attributeExists)
