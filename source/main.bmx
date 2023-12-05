@@ -5089,6 +5089,11 @@ endrem
 		If Not player.IsLocalHuman()
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 		EndIf
+
+		'ensure new color for room signs
+		For Local door:TRoomDoor = EachIn GetRoomDoorCollection().list
+			door._lastOwner = 1000
+		Next
 	End Function
 
 
