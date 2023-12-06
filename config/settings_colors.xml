@@ -4,19 +4,19 @@
 		<!-- name not needed in general - but "playerColorX" for default playercolors -->
 		<colors name="playerColors">
 			<color r="247"	g="50"	b="50"	name="playerColor1" />
-			<color r="245"	g="220"	b="0"	name="playerColor2" />
+			<color r="250"	g="230"	b="0"	name="playerColor2" />
 			<color r="40"	g="210"	b="0"	name="playerColor3" />
-			<color r="0"	g="110"	b="245"	name="playerColor4" />
-			<color r="50"	g="0"	b="250" />
+			<color r="0"	g="145"	b="240"	name="playerColor4" />
+			<color r="10"	g="0"	b="230" />
 			<color r="190"	g="0"	b="245" />
-			<color r="0"	g="240"	b="245" />
+			<color r="20"	g="250"	b="250" />
 			<color r="160"	g="225"	b="35" />
-			<color r="225"	g="145"	b="35" />
+			<color r="175"	g="70"	b="10" />
 			<color r="110"	g="15"	b="70" />
 			<color r="255"	g="150"	b="0" />
 			<color r="175"	g="190"	b="220" />
-			<color r="100"	g="160"	b="40" />
-			<color r="0"	g="130"	b="0" />
+			<color r="255"	g="170"	b="170" />
+			<color r="0"	g="100"	b="0" />
 		</colors>
 
 		<colors name="targetGroupColors">
