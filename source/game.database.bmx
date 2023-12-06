@@ -549,10 +549,10 @@ Type TDatabaseLoader
 					"price_mod", "topgenre", "affinity", "popularity", "popularity_target" ..
 				]
 			EndIf
-			'copy base attribute keys into a newer and bigger array
-			'which stores extended attributes
-			local attributeKeys:String[] = _personAttributeBaseKeys[.. _personAttributeBaseKeys.length + TVTPersonPersonalityAttribute.count * 3]
-			local attributeIndex:int = _personAttributeBaseKeys.length
+			'copy base attribute keys at the end of a newer and bigger array
+			'which stores extended attributes then
+			local attributeKeys:String[] = _personAttributeBaseKeys[-(TVTPersonPersonalityAttribute.count * 3)..]
+			local attributeIndex:int = 0
 			For local i:int = 1 to TVTPersonPersonalityAttribute.count
 				local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 				attributeKeys[attributeIndex + 0] = TVTPersonPersonalityAttribute.GetAsString(attributeID)
@@ -588,7 +588,7 @@ Type TDatabaseLoader
 				'Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
 				'Local dbMinValue:Float = data.GetFloat(sb.Append(attributeText).Append("_min").ToString(), -1)
 				'Local dbMaxValue:Float = data.GetFloat(sb.Append(attributeText).Append("_max").ToString(), -1)
-				local attributeKeyIndex:int = _personAttributeBaseKeys.length + (i-1)*3
+				local attributeKeyIndex:int = (i-1) * 3
 				Local attributeText:String = attributeKeys[attributeKeyIndex]
 				Local dbMinValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 1], -1)
 				Local dbMaxValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 2], -1)
