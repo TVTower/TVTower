@@ -584,9 +584,15 @@ Type TDatabaseLoader
 			For local i:int = 1 to TVTPersonPersonalityAttribute.count
 				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 
-				Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
-				Local dbMinValue:Float = data.GetFloat(attributeText+"_min", -1)
-				Local dbMaxValue:Float = data.GetFloat(attributeText+"_max", -1)
+				'reuse attributeKeys array
+				'Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
+				'Local dbMinValue:Float = data.GetFloat(sb.Append(attributeText).Append("_min").ToString(), -1)
+				'Local dbMaxValue:Float = data.GetFloat(sb.Append(attributeText).Append("_max").ToString(), -1)
+				local attributeKeyIndex:int = _personAttributeBaseKeys.length + (i-1)*3
+				Local attributeText:String = attributeKeys[attributeKeyIndex]
+				Local dbMinValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 1], -1)
+				Local dbMaxValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 2], -1)
+
 				Local dbValue:Float = data.GetFloat(attributeText, -1)
 				
 				'only fill attribute if at least a part is defined here
