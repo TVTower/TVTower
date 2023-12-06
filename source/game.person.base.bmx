@@ -557,7 +557,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
         ElseIf pName1 < pName2
 			Return -1
 		Else
-			Return 0
+			Return p1.GetGUID() > p2.GetGUID()
 		EndIf
 	End Function
 End Type
