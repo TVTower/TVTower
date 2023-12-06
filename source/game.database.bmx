@@ -2021,7 +2021,7 @@ Type TDatabaseLoader
 			Local tmpSource:TBroadcastMaterialSourceBase = new TBroadcastMaterialSourceBase()
 			LoadV3EffectsFromNode(tmpSource, node, xml)
 			If tmpSource.effects Then scriptTemplate.effects = tmpSource.effects.Copy()
-			If scriptTemplate.effects Then print scriptTemplate.GetTitle() +" has effects"
+			'If scriptTemplate.effects Then print scriptTemplate.GetTitle() +" has effects"
 		EndIf
 
 		'=== ADD TO COLLECTION ===
