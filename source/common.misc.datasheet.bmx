@@ -119,7 +119,7 @@ Type TDatasheetSkin
 
 		if value
 			if h < 0 then h = GetBoxSize(w,h, value, iconName).y
-			if fontColorStyle = EDatasheetColorStyle.Undefined = "" then fontColorStyle = boxStyle
+			if fontColorStyle = EDatasheetColorStyle.Undefined then fontColorStyle = boxStyle
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_CENTER_CENTER
 			local border:SRect = boxSprite.GetNinePatchInformation().contentBorder
