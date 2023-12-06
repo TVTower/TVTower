@@ -294,6 +294,23 @@ Type TProduction Extends TOwnedGameObject
 						room.SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING, False)
 					EndIf
 					room.blockedText = productionConcept.GetTitle()
+					If productionConcept.script And productionConcept.script.GetParentScript() And productionConcept.script<>productionConcept.script.GetParentScript()
+						Local parent:TScript = productionConcept.script.GetParentScript()
+						room.blockedText:+ "~n(" + parent.GetTitle()
+						If parent.subScripts
+							Local index:Int = -1
+							For Local i:Int = 0 To parent.subScripts.length
+								If productionConcept.script = parent.subScripts[i]
+									index=i
+									Exit
+								EndIf
+							Next
+							If index>=0
+								room.blockedText:+ " " + (index+1) + "/" + parent.subScripts.length
+							EndIf
+						EndIf
+						room.blockedText:+ ")"
+					EndIf
 				EndIf
 			Else
 				'remove block
