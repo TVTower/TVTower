@@ -141,14 +141,14 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	End Function
 
 	Function onClickMessage:int( triggerEvent:TEventBase )
-		local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(triggerEvent.GetSender())
-		if not item or not item.message then Return False
+		Local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(triggerEvent.GetSender())
+		If Not item or Not item.message Then Return False
 
 		If GetInstance().showMode <> SHOW_ALL
 			If MouseManager.IsClicked(2)
 				Local roomOwner:Int = item.message.owner
-				if roomOwner <= 0 then roomOwner = GetInstance().roomOwner
-				if roomOwner <> GetPlayerBase().playerID Then Return False
+				If roomOwner <= 0 Then roomOwner = GetInstance().roomOwner
+				If roomOwner <> GetPlayerBase().playerID Then Return False
 
 				If GetInstance().showMode = SHOW_UNREAD
 					item.message.SetRead(roomOwner, True)
@@ -158,10 +158,10 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 				GetInstance().messageList.removeItem(item)
 				'make sure the heading is updated
 				GetInstance().Render()
-				MouseManager.SetClickHandled(2)
 			EndIf
 		EndIf
-		return TRUE
+		If MouseManager.IsClicked(2) Then MouseManager.SetClickHandled(2)
+		Return TRUE
 	End Function
 
 	Method onChangeShowModeDropdown:Int(triggerEvent:TEventBase)
