@@ -53,6 +53,7 @@ Type TDatabaseLoader
 
 	'contains custom "fictional" overriding the base one
 	Global _personDetailKeys:String[]
+	Global _personAttributeBaseKeys:String[]
 	Global _personCommonDetailKeys:String[]
 	Global _newsEventDataKeys:String[]
 	Global _newsEventAvailabilityKeys:String[]
@@ -543,8 +544,15 @@ Type TDatabaseLoader
 			'=== DATA ===
 			Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
 			data.Clear()
-			local attributeKeys:String[] = new String[TVTPersonPersonalityAttribute.count * 3]
-			local attributeIndex:int = 0
+			If not _personAttributeBaseKeys
+				_personAttributeBaseKeys = [ ..
+					"price_mod", "topgenre", "affinity", "popularity", "popularity_target" ..
+				]
+			EndIf
+			'copy base attribute keys into a newer and bigger array
+			'which stores extended attributes
+			local attributeKeys:String[] = _personAttributeBaseKeys[.. _personAttributeBaseKeys.length + TVTPersonPersonalityAttribute.count * 3]
+			local attributeIndex:int = _personAttributeBaseKeys.length
 			For local i:int = 1 to TVTPersonPersonalityAttribute.count
 				local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 				attributeKeys[attributeIndex + 0] = TVTPersonPersonalityAttribute.GetAsString(attributeID)
@@ -552,8 +560,7 @@ Type TDatabaseLoader
 				attributeKeys[attributeIndex + 2] = attributeKeys[attributeIndex + 0] + "_max"
 				attributeIndex :+ 3
 			Next
-
-			xml.LoadValuesToDataCSK(nodeData, data, attributeKeys + [ "price_mod", "topgenre", "affinity", "popularity", "popularity_target"])
+			xml.LoadValuesToDataCSK(nodeData, data, attributeKeys)
 
 			if TPersonProductionData(person.GetProductionData())
 				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
