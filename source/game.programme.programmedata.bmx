@@ -373,21 +373,20 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	Function _SortByName:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeData = TProgrammeData(o1)
 		Local p2:TProgrammeData = TProgrammeData(o2)
-		If Not p2 Then Return 1
 		If Not p1 Then Return -1
+		If Not p2 Then Return 1
 
 		'remove "ToLower" for case sensitive comparison
 		Local t1:String = p1.GetTitle().ToLower()
 		Local t2:String = p2.GetTitle().ToLower()
 		
-		If t1 = t2
-			Return p1.GetGUID() > p2.GetGUID()
-        ElseIf t1 > t2
+        If t1 > t2
 			Return 1
         ElseIf t1 < t2
 			Return -1
-		endif
-		return 0
+		Else
+			Return p1.GetGUID() > p2.GetGUID()
+		EndIf
 	End Function
 
 	'=== EVENT HANDLERS ===

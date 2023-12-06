@@ -726,11 +726,11 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 			Local halfW:Int = (contentW - 10)/2 - 2
 			'=== BOX LINE 1 ===
-			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			Else
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			EndIf
 			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW-5, boxH)
 			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
@@ -741,27 +741,27 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 				If selectedStation and constructionTime > 0
 					currentY :+ boxH
-					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, selectedStation.GetConstructionTime() + " h", "runningTime", "neutral", skin.fontNormal)
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, selectedStation.GetConstructionTime() + " h", "runningTime", EDatasheetColorStyle.Neutral, skin.fontNormal)
 					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				EndIf
 			EndIf
 
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
-			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
 				If price < 0
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 				Else
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 				EndIf
 			Else
 				'fetch financial state of room owner (not player - so take care
 				'if the player is allowed to do this)
 				If canAfford
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 				Else
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 				EndIf
 			EndIf
 			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW-5, boxH)
@@ -1029,7 +1029,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 			Local halfW:Int = (contentW - 10)/2 - 2
 			'=== BOX LINE 1 ===
-			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 
 
 			If selectedStation
@@ -1053,7 +1053,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					renewContractTooltips[0].SetContent( "?" )
 				endif
 
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
 			renewContractTooltips[0].parentArea.SetXY(contentX + 5 + halfW-5 + 4, currentY).SetWH(halfW+5, boxH)
 
@@ -1065,29 +1065,29 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 				If selectedStation and difficulty.cableNetworkConstructionTime > 0
 					currentY :+ boxH
-					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, difficulty.cableNetworkConstructionTime + " h", "runningTime", "neutral", skin.fontNormal)
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, difficulty.cableNetworkConstructionTime + " h", "runningTime", EDatasheetColorStyle.Neutral, skin.fontNormal)
 					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				EndIf
 			EndIf
 
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
-			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
 				if price < 0
 					tooltips[4].SetContent(GetLocale("TERMINATION_FEE"))
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
 				else
 					tooltips[4].SetContent(GetLocale("PROCEEDS_OF_SALE"))
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Good, skin.fontBold, ALIGN_RIGHT_CENTER)
 				endif
 			Else
 				'fetch financial state of room owner (not player - so take care
 				'if the player is allowed to do this)
 				If canAfford
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 				Else
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 				EndIf
 			EndIf
 			renewContractTooltips[1].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
@@ -1441,12 +1441,12 @@ endrem
 
 			Local halfW:Int = (contentW - 10)/2 - 2
 			'=== BOX LINE 1 ===
-			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 'not needed
 '			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
-'				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+'				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 '			else
-'				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+'				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 '			endif
 			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
@@ -1473,7 +1473,7 @@ endrem
 					renewContractTooltips[0].SetContent( "?" )
 				endif
 
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
 			renewContractTooltips[0].parentArea.SetXY(contentX + 5 + halfW-5 + 4, currentY).SetWH(halfW+5, boxH)
 
@@ -1483,29 +1483,29 @@ endrem
 			If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 				If selectedStation and difficulty.satelliteConstructionTime > 0
 					currentY :+ boxH
-					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, difficulty.satelliteConstructionTime + " h", "runningTime", "neutral", skin.fontNormal)
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, difficulty.satelliteConstructionTime + " h", "runningTime", EDatasheetColorStyle.Neutral, skin.fontNormal)
 					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				EndIf
 			EndIf
 
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
-			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
 				if price < 0
 					tooltips[4].SetContent(GetLocale("TERMINATION_FEE"))
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
 				else
 					tooltips[4].SetContent(GetLocale("PROCEEDS_OF_SALE"))
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Good, skin.fontBold, ALIGN_RIGHT_CENTER)
 				endif
 			Else
 				'fetch financial state of room owner (not player - so take care
 				'if the player is allowed to do this)
 				If canAfford
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 				Else
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 				EndIf
 			EndIf
 			renewContractTooltips[1].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
@@ -1832,11 +1832,11 @@ Type TSatelliteSelectionFrame
 			Local marketShareText:String = MathHelper.NumberToString(100*selectedSatellite.populationShare, 1, True)+"%"
 
 			If selectedSatellite.quality < 100
-				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			Else
-				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
-			skin.RenderBox(contentArea.GetIntX() + 5 + halfW-5 + 4, currentY, halfW+5, -1, marketShareText, "marketShare", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentArea.GetIntX() + 5 + halfW-5 + 4, currentY, halfW+5, -1, marketShareText, "marketShare", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			tooltips[0].parentArea.SetXY(contentArea.GetX() + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[1].parentArea.SetXY(contentArea.GetX() + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
@@ -1846,15 +1846,15 @@ Type TSatelliteSelectionFrame
 			Local minImageText:String = MathHelper.NumberToString(selectedSatellite.minimumChannelImage, 1, True)+"%"
 
 			If Not GetPublicImage(owner) Or GetPublicImage(owner).GetAverageImage() < selectedSatellite.minimumChannelImage
-				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			Else
-				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
 
 
 			'draw "used by channel xy" box
 			Local channelX:Int = contentArea.GetX() + 5 + halfW-5 + 4
-			skin.RenderBox(channelX, currentY, halfW+5, -1, "", "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(channelX, currentY, halfW+5, -1, "", "audience", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
 			tooltips[2].parentArea.SetXY(contentArea.GetX() + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[3].parentArea.SetXY(contentArea.GetX() + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 

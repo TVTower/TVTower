@@ -10,7 +10,6 @@ Import "Dig/base.gfx.gui.button.bmx"
 
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist Extends TPlannerList
-	Field displaceEpisodeTapes:TVec2D = New TVec2D(6,5)
 	'area of all genres/filters including top/bottom-area
 	Field genresRect:TRectangle
 	Field genresCount:Int = -1
@@ -37,7 +36,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 	'cache
 	Global _licences:TList {nosave}
-	Global _licencesCacheKey:string = "" {nosave}
+	Global _licencesCacheKey:Long = 0 {nosave}
 	Global _licencesOwner:int = 0 {nosave}
 
 	Global _registeredListeners:TEventListenerBase[] {nosave}
@@ -79,7 +78,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'invalidate contracts list
 		_licences = null
-		_licencesCacheKey = ""
+		_licencesCacheKey = 0
 		_licencesOwner = 0
 	End Method
 
@@ -188,7 +187,8 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 	Method GetLicences:TList(owner:int, filterIndex:int)
-		local cacheKey:string = ListSortDirection+"_"+ListSortMode+"_"+filterIndex+"_"+owner
+		'                     ListSortDirection 0-255              | ListSortMode 0-255              | filterIndex 0 - IntMax   | owner 0-255
+		local cacheKey:Long = Long(ListSortDirection & 255) Shl 56 | Long(ListSortMode & 255) Shl 48 | Long(filterIndex) Shl 16 | Long(owner & 255) Shl 8
 		'create cached var?
 		if not _licences or cacheKey <> _licencesCacheKey
 			Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)

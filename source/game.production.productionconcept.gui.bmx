@@ -339,15 +339,15 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.GetLiveTimeText(), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.GetLiveTimeText(), "runningTime", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		If showMsgTimeSlotLimit
 			if productionConcept.script.productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST > 0
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			endif
 			contentY :+ msgH
 		EndIf
@@ -355,27 +355,27 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 		If showMsgBroadcastLimit
 			if productionConcept.script.GetProductionBroadcastLimit() = 1
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", productionConcept.script.GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", productionConcept.script.GetProductionBroadcastLimit()), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndIf
 			contentY :+ msgH
 		EndIf
 
 		If showMsgOrderWarning
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 		If showMsgIncomplete
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 		If showMsgNotPlanned
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 		If showMsgDepositPaid
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", GetFormattedCurrency(productionConcept.GetDepositCost())), "money", "neutral", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", GetFormattedCurrency(productionConcept.GetDepositCost())), "money", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
@@ -392,16 +392,16 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 			'=== BOX LINE 1 ===
 			'duration (blocks)
-			skin.RenderBox(contentX + 5, contentY, 50, -1, productionconcept.script.GetBlocks(), "duration", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 50, -1, productionconcept.script.GetBlocks(), "duration", EDatasheetColorStyle.Neutral, skin.fontBold)
 			'production time
-			'skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, (productionconcept.GetBaseProductionTime()/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
-			skin.RenderBox(contentX + 5 + 60, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(productionconcept.GetBaseProductionTime(), 4), "runningTime", "neutral", skin.fontBold)
+			'skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, (productionconcept.GetBaseProductionTime()/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
+			skin.RenderBox(contentX + 5 + 60, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(productionconcept.GetBaseProductionTime(), 4), "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
 
 			'price
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			endif
 			'=== BOX LINE 2 ===
 			contentY :+ boxH
@@ -622,15 +622,15 @@ endrem
 			contentY :+ msgAreaPaddingY
 
 			If showMsgOrderWarning
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			endif
 			If showMsgIncomplete
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			endif
 			If showMsgNotPlanned
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			endif
 

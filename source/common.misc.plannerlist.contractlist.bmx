@@ -11,7 +11,7 @@ Type TgfxContractlist Extends TPlannerList
 	Field hoveredAdContract:TAdContract = Null
 	'cache
 	Global _contracts:TList {nosave}
-	Global _contractsCacheKey:string = "" {nosave}
+	Global _contractsCacheKey:Int {nosave}
 	Global _contractsOwner:int = 0 {nosave}
 
 	Global _registeredListeners:TEventListenerBase[] {nosave}
@@ -48,7 +48,7 @@ Type TgfxContractlist Extends TPlannerList
 
 		'invalidate contracts list
 		_contracts = null
-		_contractsCacheKey = ""
+		_contractsCacheKey = 0
 		_contractsOwner = 0
 	End Method
 
@@ -107,7 +107,9 @@ Type TgfxContractlist Extends TPlannerList
 
 
 	Method GetContracts:TList(owner:int)
-		local cacheKey:string = ListSortDirection+"_"+ListSortMode+"_"+owner
+		'                    ListSortDirection 0-255             | ListSortMode 0-255             | owner 0-255
+		local cacheKey:Int = Int(ListSortDirection & 255) Shl 24 | Int(ListSortMode & 255) Shl 16 | Int(owner & 255) Shl 8
+
 		'create cached var?
 		if not _contracts or cacheKey <> _contractsCacheKey
 			_contracts = GetPlayerProgrammeCollection(owner).GetAdContracts().Copy()

@@ -548,15 +548,17 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		Local p2:TPersonBase = TPersonBase(o2)
 		If Not p1 Then Return -1
 		If Not p2 Then Return 1
-		If p1.GetFullName() = p2.GetFullName()
+
+		Local pName1:String = p1.GetFullName().ToLower()
+		Local pName2:String = p2.GetFullName().ToLower()
+
+        If pName1 > pName2
+			Return 1
+        ElseIf pName1 < pName2
+			Return -1
+		Else
 			Return p1.GetGUID() > p2.GetGUID()
 		EndIf
-        If p1.GetFullName().ToLower() > p2.GetFullName().ToLower()
-			Return 1
-        ElseIf p1.GetFullName().ToLower() < p2.GetFullName().ToLower()
-			Return -1
-		EndIf
-		Return 0
 	End Function
 End Type
 '===== CONVENIENCE ACCESSOR =====

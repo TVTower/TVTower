@@ -51,6 +51,21 @@ Type TDatabaseLoader
 	Global XMLErrorCount:Int
 
 
+	'contains custom "fictional" overriding the base one
+	Global _personDetailKeys:String[]
+	Global _personAttributeBaseKeys:String[]
+	Global _personCommonDetailKeys:String[]
+	Global _newsEventDataKeys:String[]
+	Global _newsEventAvailabilityKeys:String[]
+	Global _achievementDataKeys:String[]
+	Global _adContractDataKeys:String[]
+	Global _adContractAvailabilityKeys:String[]
+	Global _adContractConditionKeys:String[]
+	Global _programmeLicenceDataKeys:String[]
+	Global _programmeLicenceDataTimeFieldsKeys:String[]
+	Global _programmeLicenceDataGroupsKeys:String[]	
+	Global _programmeLicenceRatingsKeys:String[]
+
 	Method New()
 		allowedAdCreators = ""
 		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ADS_CREATED_BY", "*").Split(",")
@@ -258,8 +273,8 @@ Type TDatabaseLoader
 			Next
 		EndIf
 		'recognize version (if versionNode is Null, defaultValue -1 is returned
-		Local versionNode:TxmlNode = xml.FindRootChild("version")
-		Local version:Int = xml.FindValueInt(versionNode, "value", -1)
+		Local versionNode:TxmlNode = xml.FindRootChildLC("version")
+		Local version:Int = xml.FindValueIntLC(versionNode, "value", -1)
 		If oldXMLErrorCount < XMLErrorCount
 			TLogger.Log("TDatabase.Load()", "CANNOT LOAD DB ~q" + fileURI + "~q (version "+version+") - INVALID XML FILE." , LOG_LOADING)
 		Else
@@ -276,6 +291,7 @@ Type TDatabaseLoader
 	End Method
 
 
+
 	Method LoadV3:Int(xml:TXmlHelper)
 		stopWatch.Init()
 
@@ -283,7 +299,7 @@ Type TDatabaseLoader
 		'so they can get referenced properly
 		Local nodeAllPersons:TxmlNode
 		'insignificant (non prominent) people
-		nodeAllPersons = xml.FindRootChild("insignificantpeople")
+		nodeAllPersons = xml.FindRootChildLC("insignificantpeople")
 		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 			If nodePerson.getName() <> "person" Then Continue
 
@@ -295,7 +311,7 @@ Type TDatabaseLoader
 		Next
 
 		'celebrities (they have more details)
-		nodeAllPersons = xml.FindRootChild("celebritypeople")
+		nodeAllPersons = xml.FindRootChildLC("celebritypeople")
 		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 			If nodePerson.getName() <> "person" Then Continue
 
@@ -308,7 +324,7 @@ Type TDatabaseLoader
 
 
 		'===== IMPORT ALL ADVERTISEMENTS / CONTRACTS =====
-		Local nodeAllAds:TxmlNode = xml.FindRootChild("allads")
+		Local nodeAllAds:TxmlNode = xml.FindRootChildLC("allads")
 		If nodeAllAds
 			For Local nodeAd:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllAds)
 				If nodeAd.getName() <> "ad" Then Continue
@@ -319,7 +335,7 @@ Type TDatabaseLoader
 
 
 		'===== IMPORT ALL NEWS EVENTS =====
-		Local nodeAllNews:TxmlNode = xml.FindRootChild("allnews")
+		Local nodeAllNews:TxmlNode = xml.FindRootChildLC("allnews")
 		If nodeAllNews
 			For Local nodeNews:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllNews)
 				If nodeNews.getName() <> "news" Then Continue
@@ -329,7 +345,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'===== IMPORT ALL PROGRAMME ROLES =====
-		Local nodeAllRoles:TxmlNode = xml.FindRootChild("programmeroles")
+		Local nodeAllRoles:TxmlNode = xml.FindRootChildLC("programmeroles")
 		If nodeAllRoles
 			For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
 				If nodeRole.getName() <> "programmerole" Then Continue
@@ -341,7 +357,7 @@ Type TDatabaseLoader
 
 		'===== IMPORT ALL PROGRAMMES (MOVIES/SERIES) =====
 		'ATTENTION: LOAD PERSONS FIRST !!
-		Local nodeAllProgrammes:TxmlNode = xml.FindRootChild("allprogrammes")
+		Local nodeAllProgrammes:TxmlNode = xml.FindRootChildLC("allprogrammes")
 		If nodeAllProgrammes
 			For Local nodeProgramme:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllProgrammes)
 				If nodeProgramme.getName() <> "programme" Then Continue
@@ -384,7 +400,7 @@ Type TDatabaseLoader
 
 
 		'===== IMPORT ALL SCRIPT (TEMPLATES) =====
-		Local nodeAllScriptTemplates:TxmlNode = xml.FindRootChild("scripttemplates")
+		Local nodeAllScriptTemplates:TxmlNode = xml.FindRootChildLC("scripttemplates")
 		If nodeAllScriptTemplates
 			For Local nodeScriptTemplate:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllScriptTemplates)
 				If nodeScriptTemplate.getName() <> "scripttemplate" Then Continue
@@ -396,7 +412,7 @@ Type TDatabaseLoader
 
 
 		'===== IMPORT ALL ACHIEVEMENTS =====
-		Local nodeAllAchievements:TxmlNode = xml.FindRootChild("allachievements")
+		Local nodeAllAchievements:TxmlNode = xml.FindRootChildLC("allachievements")
 		If nodeAllAchievements
 			For Local nodeAchievement:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllAchievements)
 				If nodeAchievement.getName() <> "achievement" Then Continue
@@ -411,10 +427,11 @@ Type TDatabaseLoader
 
 
 
+
 	'=== HELPER ===
 
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
-		Local GUID:String = xml.FindValue(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"id", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3PersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
@@ -444,11 +461,14 @@ Type TDatabaseLoader
 
 
 		'=== COMMON DETAILS ===
-		Local data:TData = New TData
-		xml.LoadValuesToData(node, data, [..
-			"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
-			"job", "gender", "generator", "face_code", "bookable" ..
-		])
+		Local data:TDataCSK = New TDataCSK
+		If Not _personCommonDetailKeys
+			_personCommonDetailKeys = [..
+				"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
+				"job", "gender", "generator", "face_code", "bookable" ..
+			]
+		EndIf		
+		xml.LoadValuesToDataCSK(node, data, _personCommonDetailKeys)
 		
 		'country codes:
 		'https://en.wikipedia.org/wiki/List_of_ITU_letter_codes
@@ -503,13 +523,15 @@ Type TDatabaseLoader
 
 
 			'=== DETAILS ===
-			Local nodeDetails:TxmlNode = xml.FindChild(node, "details")
-			data = New TData
-			'contains custom "fictional" overriding the base one
-			xml.LoadValuesToData(nodeDetails, data, [..
-				"gender", "birthday", "deathday", "country", "fictional", ..
-				"job", "face_code" ..
-			])
+			Local nodeDetails:TxmlNode = xml.FindChildLC(node, "details")
+			data.Clear()
+			If not _personDetailKeys
+				_personDetailKeys = [..
+					"gender", "birthday", "deathday", "country", "fictional", "job", "face_code"..
+				]
+			EndIf
+			xml.LoadValuesToDataCSK(nodeDetails, data, _personDetailKeys)
+
 			person.gender = data.GetInt("gender", person.gender)
 			person.countryCode = data.GetString("country", person.countryCode).ToUpper()
 			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
@@ -520,9 +542,16 @@ Type TDatabaseLoader
 			person.faceCode = data.GetString("face_code", person.faceCode)
 
 			'=== DATA ===
-			Local nodeData:TxmlNode = xml.FindChild(node, "data")
-			data = New TData
-			local attributeKeys:String[] = new String[TVTPersonPersonalityAttribute.count * 3]
+			Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
+			data.Clear()
+			If not _personAttributeBaseKeys
+				_personAttributeBaseKeys = [ ..
+					"price_mod", "topgenre", "affinity", "popularity", "popularity_target" ..
+				]
+			EndIf
+			'copy base attribute keys at the end of a newer and bigger array
+			'which stores extended attributes then
+			local attributeKeys:String[] = _personAttributeBaseKeys[-(TVTPersonPersonalityAttribute.count * 3)..]
 			local attributeIndex:int = 0
 			For local i:int = 1 to TVTPersonPersonalityAttribute.count
 				local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
@@ -531,8 +560,7 @@ Type TDatabaseLoader
 				attributeKeys[attributeIndex + 2] = attributeKeys[attributeIndex + 0] + "_max"
 				attributeIndex :+ 3
 			Next
-
-			xml.LoadValuesToData(nodeData, data, attributeKeys + [ "price_mod", "topgenre", "affinity", "popularity", "popularity_target"])
+			xml.LoadValuesToDataCSK(nodeData, data, attributeKeys)
 
 			if TPersonProductionData(person.GetProductionData())
 				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
@@ -556,9 +584,15 @@ Type TDatabaseLoader
 			For local i:int = 1 to TVTPersonPersonalityAttribute.count
 				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 
-				Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
-				Local dbMinValue:Float = data.GetFloat(attributeText+"_min", -1)
-				Local dbMaxValue:Float = data.GetFloat(attributeText+"_max", -1)
+				'reuse attributeKeys array
+				'Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
+				'Local dbMinValue:Float = data.GetFloat(sb.Append(attributeText).Append("_min").ToString(), -1)
+				'Local dbMaxValue:Float = data.GetFloat(sb.Append(attributeText).Append("_max").ToString(), -1)
+				local attributeKeyIndex:int = (i-1) * 3
+				Local attributeText:String = attributeKeys[attributeKeyIndex]
+				Local dbMinValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 1], -1)
+				Local dbMaxValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 2], -1)
+
 				Local dbValue:Float = data.GetFloat(attributeText, -1)
 				
 				'only fill attribute if at least a part is defined here
@@ -637,8 +671,8 @@ Type TDatabaseLoader
 
 
 	Method LoadV3NewsEventTemplateFromNode:TNewsEventTemplate(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValue(node,"id", "")
-		Local threadId:String = xml.FindValue(node,"thread_id", "")
+		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local threadId:String = xml.FindValueLC(node,"thread_id", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -667,17 +701,20 @@ Type TDatabaseLoader
 		newsEventTemplate.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
 
 		'news type according to TVTNewsType - InitialNews, FollowingNews...
-		newsEventTemplate.newsType = xml.FindValueInt(node,"type", 0)
+		newsEventTemplate.newsType = xml.FindValueIntLC(node,"type", 0)
 
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TData = New TData
+		Local data:TDataCSK = New TDataCSK
 		'price and topicality are outdated
-		xml.LoadValuesToData(nodeData, data, [..
-			"genre", "price", "quality", "quality_min", "quality_max", "quality_slope", "available", "flags", ..
-			"keywords", "happen_time", "min_subscription_level" ..
-		])
+		If Not _newsEventDataKeys
+			_newsEventDataKeys = [..
+				"genre", "price", "quality", "quality_min", "quality_max", "quality_slope", ..
+				"available", "flags", "keywords", "happen_time", "min_subscription_level" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(nodeData, data, _newsEventDataKeys)
 
 		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
 		newsEventTemplate.genre = data.GetInt("genre", newsEventTemplate.genre)
@@ -718,9 +755,12 @@ Type TDatabaseLoader
 
 
 		'=== AVAILABILITY ===
-		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
-			"script", "year_range_from", "year_range_to" ..
-		])
+		If not _newsEventAvailabilityKeys
+			_newsEventAvailabilityKeys = [..
+				"script", "year_range_from", "year_range_to" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(xml.FindChildLC(node, "availability"), data, _newsEventAvailabilityKeys)
 		newsEventTemplate.availableScript = data.GetString("script", newsEventTemplate.availableScript)
 		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
 		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
@@ -750,7 +790,7 @@ Type TDatabaseLoader
 
 
 		'=== VARIABLES ===
-		Local nodeVariables:TxmlNode = xml.FindChild(node, "variables")
+		Local nodeVariables:TxmlNode = xml.FindChildLC(node, "variables")
 		For Local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
 			'each variable is stored as a localizedstring
 			Local varName:String = nodeVariable.getName()
@@ -788,7 +828,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementFromNode:TAchievement(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValue(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"id", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -815,12 +855,14 @@ Type TDatabaseLoader
 		achievement.text.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "text")) )
 
 		'=== DATA ===
-		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TData = New TData
-		xml.LoadValuesToData(nodeData, data, [ ..
-			"flags", "category", "group", "index", ..
-			"sprite_finished", "sprite_unfinished" ..
-		])
+		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
+		Local data:TDataCSK = New TDataCSK
+		If Not _achievementDataKeys
+			_achievementDataKeys = [..
+				"flags", "category", "group", "index", "sprite_finished", "sprite_unfinished" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(nodeData, data, _achievementDataKeys)
 
 		achievement.flags = data.GetInt("flags", achievement.flags)
 		achievement.group = data.GetInt("group", achievement.group)
@@ -831,18 +873,18 @@ Type TDatabaseLoader
 
 
 		'=== TASKS ===
-		Local nodeTasks:TxmlNode = xml.FindChild(node, "tasks")
+		Local nodeTasks:TxmlNode = xml.FindChildLC(node, "tasks")
 		For Local nodeElement:TxmlNode = EachIn xml.GetNodeChildElements(nodeTasks)
-			If nodeElement.getName() <> "task" Then Continue
+			If nodeElement.getName().ToLower() <> "task" Then Continue
 
 			LoadV3AchievementElementFromNode("task", achievement, nodeElement, xml)
 		Next
 
 
 		'=== REWARDS ===
-		Local nodeRewards:TxmlNode = xml.FindChild(node, "rewards")
+		Local nodeRewards:TxmlNode = xml.FindChildLC(node, "rewards")
 		For Local nodeElement:TxmlNode = EachIn xml.GetNodeChildElements(nodeRewards)
-			If nodeElement.getName() <> "reward" Then Continue
+			If nodeElement.getName().ToLower() <> "reward" Then Continue
 
 			LoadV3AchievementElementFromNode("reward", achievement, nodeElement, xml)
 		Next
@@ -870,7 +912,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementElementFromNode:Int(elementName:String="task", source:TAchievement, node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValue(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"id", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
@@ -899,15 +941,13 @@ Type TDatabaseLoader
 
 
 		'=== DATA ===
-		Local nodeData:TxmlNode = xml.FindChild(node, "data")
+		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
 		Local data:TData = New TData
 		xml.LoadAllValuesToData(nodeData, data)
 		'check if the element has all needed configurations
 		'for now this is only "type"
 		If Not reuseExisting
-			For Local f:String = EachIn ["type"]
-				If Not data.Has(f) Then ThrowNodeError("DB: <"+elementName+"> is missing ~q" + f+"~q.", nodeData)
-			Next
+			If Not data.Has("type") Then ThrowNodeError("DB: <"+elementName+"> is missing ~qtype~q.", nodeData)
 		EndIf
 
 		Local elementType:String = data.GetString("type")
@@ -948,7 +988,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValue(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"id", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -978,20 +1018,21 @@ Type TDatabaseLoader
 
 
 		'ad type according to TVTAdContractType - Normal, Ingame, ...
-		adContract.adType = xml.FindValueInt(node,"type", 0)
+		adContract.adType = xml.FindValueIntLC(node,"type", 0)
 
 
 		'=== DATA ===
-		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TData = New TData
-		xml.LoadValuesToData(nodeData, data, [..
-			"infomercial", "quality", "repetitions", ..
-			"fix_price", "duration", "profit", "penalty", ..
-			"pro_pressure_groups", "contra_pressure_groups", ..
-			"infomercial_profit", "fix_infomercial_profit", ..
-			"year_range_from", "year_range_to", ..
-			"available", "blocks", "type" ..
-		])
+		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
+		Local data:TDataCSK = New TDataCSK
+		If Not _adContractDataKeys
+			_adContractDataKeys = [..
+				"infomercial", "quality", "repetitions", "fix_price", "duration", ..
+			   "profit", "penalty", "pro_pressure_groups", "contra_pressure_groups", ..
+			   "infomercial_profit", "fix_infomercial_profit", ..
+			   "year_range_from", "year_range_to", "available", "blocks", "type" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(nodeData, data, _adContractDataKeys)
 
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
@@ -1021,10 +1062,13 @@ Type TDatabaseLoader
 
 
 		'=== AVAILABILITY ===
+		If Not _adContractAvailabilityKeys
+			_adContractAvailabilityKeys = [..
+				"script", "year_range_from", "year_range_to" ..
+			]
+		EndIf		
 		'do not reset "data" before - it contains the pressure groups
-		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
-			"script", "year_range_from", "year_range_to" ..
-		])
+		xml.LoadValuesToDataCSK(xml.FindChildLC(node, "availability"), data, _adContractAvailabilityKeys)
 		adContract.availableScript = data.GetString("script", adContract.availableScript)
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
@@ -1038,13 +1082,16 @@ Type TDatabaseLoader
 
 
 		'=== CONDITIONS ===
-		Local nodeConditions:TxmlNode = xml.FindChild(node, "conditions")
+		Local nodeConditions:TxmlNode = xml.FindChildLC(node, "conditions")
+		If Not _adContractConditionKeys
+			_adContractConditionKeys = [..
+				"min_audience", "min_image", "max_image", "target_group", ..
+				"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
+				"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
+			]
+		EndIf
 		'do not reset "data" before - it contains the pressure groups
-		xml.LoadValuesToData(nodeConditions, data, [..
-			"min_audience", "min_image", "max_image", "target_group", ..
-			"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
-			"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
-		])
+		xml.LoadValuesToDataCSK(nodeConditions, data, _adContractConditionKeys)
 		'0-100% -> 0.0 - 1.0
 		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
 		adContract.minImage = 0.01 * data.GetFloat("min_image", adContract.minImage*100.0)
@@ -1093,9 +1140,9 @@ Type TDatabaseLoader
 
 
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
-		Local GUID:String = TXmlHelper.FindValue(node,"id", "")
+		Local GUID:String = TXmlHelper.FindValueLC(node,"id", "")
 		'referencing an already existing programmedata? Or just use "data-GUID"
-		Local dataGUID:String = TXmlHelper.FindValue(node,"programmedata_id", "data-"+GUID)
+		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_id", "data-"+GUID)
 		'forgot to prepend "data-" ?
 		If dataGUID.Find("data-") <> 0 Then dataGUID = "data-"+dataGUID
 
@@ -1132,11 +1179,11 @@ Type TDatabaseLoader
 		'licence/data existed
 		Local productType:Int = TVTProgrammeProductType.MOVIE
 		If programmeData Then productType = programmeData.productType
-		productType = TXmlHelper.FindValueInt(node,"product", productType)
+		productType = TXmlHelper.FindValueIntLC(node,"product", productType)
 
 		Local licenceType:Int = -1
 		If programmeLicence Then licenceType = programmeLicence.licenceType
-		licenceType = TXmlHelper.FindValueInt(node,"licence_type", licenceType)
+		licenceType = TXmlHelper.FindValueIntLC(node,"licence_type", licenceType)
 
 
 		'episode or single element of a collection?
@@ -1216,17 +1263,18 @@ Type TDatabaseLoader
 
 
 		'=== DATA ===
-		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TData = New TData
-		xml.LoadValuesToData(nodeData, data, [..
-			"country", "distribution", "blocks", ..
-			"maingenre", "subgenre", "price_mod", ..
-			"available", "flags", "licence_flags", ..
-			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-			"broadcast_limit", "licence_broadcast_limit", ..
-			"broadcast_flags", "licence_broadcast_flags" ..
-		]) 'also allow a "<live>" block
-		'], ["live"]) 'also allow a "<live>" block
+		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
+		Local data:TDataCSK = New TDataCSK
+		If Not _programmeLicenceDataKeys
+			_programmeLicenceDataKeys = [..
+				"country", "distribution", "blocks", "maingenre", "subgenre", ..
+				"price_mod", "available", "flags", "licence_flags", ..
+				"broadcast_time_slot_start", "broadcast_time_slot_end", ..
+				"broadcast_limit", "licence_broadcast_limit", ..
+				"broadcast_flags", "licence_broadcast_flags" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(nodeData, data, _programmeLicenceDataKeys)
 
 		programmeData.country = data.GetString("country", programmeData.country)
 
@@ -1293,19 +1341,21 @@ Type TDatabaseLoader
 
 
 		'=== RELEASE INFORMATION ===
-		Local releaseData:TData = New TData
-		Local timeFields:String[] = [..
-			"year", "year_relative", "year_relative_min", "year_relative_max", ..
-			"day", "day_random_min", "day_random_max", "day_random_slope", ..
-			"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
-		]
+		Local releaseData:TDataCSK = New TDataCSK
 		'try to load it from the "<data>" block
 		'(this is done to allow the old v3-"year" definition)
-		xml.LoadValuesToData(nodeData, releaseData, timeFields)
+		If Not _programmeLicenceDataTimeFieldsKeys
+			_programmeLicenceDataTimeFieldsKeys = [..
+				"year", "year_relative", "year_relative_min", "year_relative_max", ..
+				"day", "day_random_min", "day_random_max", "day_random_slope", ..
+				"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
+			]
+		EndIf	
+		xml.LoadValuesToDataCSK(nodeData, releaseData, _programmeLicenceDataTimeFieldsKeys)
 		'override data by a <releaseTime> block
-		Local releaseTimeNode:TxmlNode = xml.FindChild(node, "releaseTime")
+		Local releaseTimeNode:TxmlNode = xml.FindChildLC(node, "releasetime")
 		If releaseTimeNode
-			xml.LoadValuesToData(releaseTimeNode, releaseData, timeFields)
+			xml.LoadValuesToDataCSK(releaseTimeNode, releaseData, _programmeLicenceDataTimeFieldsKeys)
 		EndIf
 
 		'convert various time definitions to an absolute time
@@ -1317,14 +1367,14 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== STAFF ===
-		Local nodeStaff:TxmlNode = xml.FindChild(node, "staff")
+		Local nodeStaff:TxmlNode = xml.FindChildLC(node, "staff")
 		For Local nodeMember:TxmlNode = EachIn xml.GetNodeChildElements(nodeStaff)
-			If nodeMember.getName() <> "member" Then Continue
+			If nodeMember.getName().ToLower() <> "member" Then Continue
 
-			Local memberIndex:Int = xml.FindValueInt(nodeMember, "index", 0)
-			Local memberFunction:Int = xml.FindValueInt(nodeMember, "function", 0)
-			Local memberGenerator:String = xml.FindValue(nodeMember, "generator", "")
-			Local jobRoleGUID:String = xml.FindValue(nodeMember, "role_guid", "")
+			Local memberIndex:Int = xml.FindValueIntLC(nodeMember, "index", 0)
+			Local memberFunction:Int = xml.FindValueIntLC(nodeMember, "function", 0)
+			Local memberGenerator:String = xml.FindValueLC(nodeMember, "generator", "")
+			Local jobRoleGUID:String = xml.FindValueLC(nodeMember, "role_guid", "")
 			Local jobRoleID:Int = 0
 			If jobRoleGUID
 				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
@@ -1389,11 +1439,14 @@ Type TDatabaseLoader
 
 
 		'=== GROUPS ===
-		Local nodeGroups:TxmlNode = xml.FindChild(node, "groups")
-		data = New TData
-		xml.LoadValuesToData(nodeGroups, data, [..
-			"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
-		])
+		Local nodeGroups:TxmlNode = xml.FindChildLC(node, "groups")
+		data.Clear()
+		If Not _programmeLicenceDataGroupsKeys
+			_programmeLicenceDataGroupsKeys = [..
+				"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(nodeGroups, data, _programmeLicenceDataGroupsKeys)
 		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
 		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
 		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
@@ -1421,11 +1474,14 @@ Type TDatabaseLoader
 
 
 		'=== RATINGS ===
-		Local nodeRatings:TxmlNode = xml.FindChild(node, "ratings")
-		data = New TData
-		xml.LoadValuesToData(nodeRatings, data, [..
-			"critics", "speed", "outcome" ..
-		])
+		Local nodeRatings:TxmlNode = xml.FindChildLC(node, "ratings")
+		data.Clear()
+		If Not _programmeLicenceRatingsKeys
+			_programmeLicenceRatingsKeys = [..
+				"critics", "speed", "outcome" ..
+			]
+		EndIf
+		xml.LoadValuesToDataCSK(nodeRatings, data, _programmeLicenceRatingsKeys)
 		programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
 		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
 		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
@@ -1451,10 +1507,10 @@ Type TDatabaseLoader
 		programmeData.dataType = licenceType
 
 		'=== EPISODES ===
-		Local nodeEpisodes:TxmlNode = xml.FindChild(node, "children")
+		Local nodeEpisodes:TxmlNode = xml.FindChildLC(node, "children")
 		For Local nodeEpisode:TxmlNode = EachIn xml.GetNodeChildElements(nodeEpisodes)
 			'skip other elements than programme data
-			If nodeEpisode.getName() <> "programme" Then Continue
+			If nodeEpisode.getName().ToLower() <> "programme" Then Continue
 
 			'if until now the licence type was not defined, define it now
 			'-> collections cannot get autorecognized, they NEED to get
@@ -1470,7 +1526,7 @@ Type TDatabaseLoader
 
 			'the episodeNumber is currently not needed, as we
 			'autocalculate it by the position in the xml-episodes-list
-			'local episodeNumber:int = xml.FindValueInt(nodeEpisode, "index", -1)
+			'local episodeNumber:int = xml.FindValueIntLC(nodeEpisode, "index", -1)
 			Local episodeNumber:Int = -1
 
 			'only add episode if not already done
@@ -1577,10 +1633,10 @@ Type TDatabaseLoader
 
 	Method LoadV3ScriptTemplateFromNode:TScriptTemplate(node:TxmlNode, xml:TXmlHelper, parentScriptTemplate:TScriptTemplate = Null)
 		Local GUID:String = TXmlHelper.FindValue(node,"guid", "")
-		Local scriptProductType:Int = TXmlHelper.FindValueInt(node,"product", 1)
-		Local oldType:Int = TXmlHelper.FindValueInt(node,"type", TVTProgrammeLicenceType.SINGLE)
-		Local scriptLicenceType:Int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
-		Local index:Int = TXmlHelper.FindValueInt(node,"index", 0)
+		Local scriptProductType:Int = TXmlHelper.FindValueIntLC(node,"product", 1)
+		Local oldType:Int = TXmlHelper.FindValueIntLC(node,"type", TVTProgrammeLicenceType.SINGLE)
+		Local scriptLicenceType:Int = TXmlHelper.FindValueIntLC(node,"licence_type", oldType)
+		Local index:Int = TXmlHelper.FindValueIntLC(node,"index", 0)
 		Local scriptTemplate:TScriptTemplate
 
 		'fetch potential meta data
@@ -1631,7 +1687,7 @@ Type TDatabaseLoader
 
 
 		'=== DATA: GENRES ===
-		nodeData = xml.FindChild(node, "genres")
+		nodeData = xml.FindChildLC(node, "genres")
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
 		scriptTemplate.mainGenre = data.GetInt("mainGenre", scriptTemplate.mainGenre)
@@ -1646,7 +1702,7 @@ Type TDatabaseLoader
 
 
 		'=== DATA: RATINGS - OUTCOME ===
-		nodeData = xml.FindChild(node, "outcome")
+		nodeData = xml.FindChildLC(node, "outcome")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.outcomeMin))
@@ -1660,7 +1716,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: RATINGS - REVIEW ===
-		nodeData = xml.FindChild(node, "review")
+		nodeData = xml.FindChildLC(node, "review")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.reviewMin))
@@ -1674,7 +1730,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: RATINGS - SPEED ===
-		nodeData = xml.FindChild(node, "speed")
+		nodeData = xml.FindChildLC(node, "speed")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.speedMin))
@@ -1688,7 +1744,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: RATINGS - POTENTIAL ===
-		nodeData = xml.FindChild(node, "potential")
+		nodeData = xml.FindChildLC(node, "potential")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.potentialMin))
@@ -1703,7 +1759,7 @@ Type TDatabaseLoader
 
 
 		'=== DATA: BLOCKS ===
-		nodeData = xml.FindChild(node, "blocks")
+		nodeData = xml.FindChildLC(node, "blocks")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Int = data.GetInt("value", scriptTemplate.blocksMin)
@@ -1717,7 +1773,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: PRICE ===
-		nodeData = xml.FindChild(node, "price")
+		nodeData = xml.FindChildLC(node, "price")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Int = data.GetInt("value", scriptTemplate.priceMin)
@@ -1731,7 +1787,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: STUDIO SIZE ===
-		nodeData = xml.FindChild(node, "studio_size")
+		nodeData = xml.FindChildLC(node, "studio_size")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Int = data.GetInt("value", scriptTemplate.studioSizeMin)
@@ -1745,7 +1801,7 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: PRODUCTION TIME ===
-		nodeData = xml.FindChild(node, "production_time")
+		nodeData = xml.FindChildLC(node, "production_time")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("value", int(scriptTemplate.productionTime / TWorldTime.MINUTELENGTH))
@@ -1759,20 +1815,20 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== DATA: JOBS ===
-		nodeData = xml.FindChild(node, "jobs")
+		nodeData = xml.FindChildLC(node, "jobs")
 		For Local nodeJob:TxmlNode = EachIn xml.GetNodeChildElements(nodeData)
 			If nodeJob.getName() <> "job" Then Continue
 
 			'the job index is only relevant to children/episodes in the
 			'case of a partially overridden cast
 
-			Local jobIndex:Int = xml.FindValueInt(nodeJob, "index", -1)
-			Local jobFunction:Int = xml.FindValueInt(nodeJob, "function", 0)
-			Local jobRequired:Int = xml.FindValueInt(nodeJob, "required", 0)
-			Local jobGender:Int = xml.FindValueInt(nodeJob, "gender", 0)
-			Local jobCountry:String = xml.FindValue(nodeJob, "country", "")
+			Local jobIndex:Int = xml.FindValueIntLC(nodeJob, "index", -1)
+			Local jobFunction:Int = xml.FindValueIntLC(nodeJob, "function", 0)
+			Local jobRequired:Int = xml.FindValueIntLC(nodeJob, "required", 0)
+			Local jobGender:Int = xml.FindValueIntLC(nodeJob, "gender", 0)
+			Local jobCountry:String = xml.FindValueLC(nodeJob, "country", "")
 			'for actor jobs this defines if a specific role is defined
-			Local jobRoleGUID:String = xml.FindValue(nodeJob, "role_guid", "")
+			Local jobRoleGUID:String = xml.FindValueLC(nodeJob, "role_guid", "")
 			Local jobRoleID:Int = 0
 			If jobRoleGUID
 				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
@@ -1809,7 +1865,7 @@ Type TDatabaseLoader
 		'might reference parental variables
 		scriptTemplate.CreateTemplateVariables()
 
-		Local nodeVariables:TxmlNode = xml.FindChild(node, "variables")
+		Local nodeVariables:TxmlNode = xml.FindChildLC(node, "variables")
 		For Local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
 			'each variable is stored as a localizedstring
 			Local varName:String = nodeVariable.getName()
@@ -1833,7 +1889,7 @@ Type TDatabaseLoader
 
 
 		'=== SCRIPT - MISC ===
-		nodeData = xml.FindChild(node, "data")
+		nodeData = xml.FindChildLC(node, "data")
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, [..
 			"scriptflags", "flags", "flags_optional", "keywords", "studio_size", ..
@@ -1876,7 +1932,7 @@ Type TDatabaseLoader
 		scriptTemplate.productionTimeModBase = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeModBase)
 
 		'=== AVAILABILITY ===
-		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
+		xml.LoadValuesToData(xml.FindChildLC(node, "availability"), data, [..
 			"script", "year_range_from", "year_range_to" ..
 		])
 		scriptTemplate.availableScript = data.GetString("script", scriptTemplate.availableScript)
@@ -1901,16 +1957,16 @@ Type TDatabaseLoader
 		endrem
 
 		'read modifiers
-		Local nodeModifiers:TxmlNode = xml.FindChild(node, "programme_data_modifiers")
+		Local nodeModifiers:TxmlNode = xml.FindChildLC(node, "programme_data_modifiers")
 		For Local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
 			If nodeModifier.getName() <> "modifier" Then Continue
 
 			Local modifierData:TData = New TData
 			xml.LoadAllValuesToData(nodeModifier, modifierData)
 			'check if the modifier has all needed definitions
-			For Local f:String = EachIn ["name", "value"]
-				If Not modifierData.Has(f) Then ThrowNodeError("DB: <modifier> is missing ~q" + f+"~q.", nodeModifier)
-			Next
+			If Not modifierData.Has("name") Then ThrowNodeError("DB: <modifier> is missing ~qname~q.", nodeModifier)
+			If Not modifierData.Has("value") Then ThrowNodeError("DB: <modifier> is missing ~qvalue~q.", nodeModifier)
+
 			if not scriptTemplate.programmeDataModifiers then scriptTemplate.programmeDataModifiers = new TData
 			scriptTemplate.programmeDataModifiers.AddFloat(modifierData.GetString("name"), modifierData.GetFloat("value"))
 			'source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
@@ -1921,7 +1977,7 @@ Type TDatabaseLoader
 
 		'=== EPISODES ===
 		'load children _after_ element is configured
-		Local nodeChildren:TxmlNode = xml.FindChild(node, "children")
+		Local nodeChildren:TxmlNode = xml.FindChildLC(node, "children")
 		For Local nodeChild:TxmlNode = EachIn xml.GetNodeChildElements(nodeChildren)
 			'skip other elements than scripttemplate
 			If nodeChild.getName() <> "scripttemplate" Then Continue
@@ -1930,7 +1986,7 @@ Type TDatabaseLoader
 			Local childScriptTemplate:TScriptTemplate = LoadV3ScriptTemplateFromNode(nodeChild, xml, scriptTemplate)
 			'the childIndex is currently not needed, as we autocalculate
 			'it by the position in the xml-episodes-list
-			'local childIndex:int = xml.FindValueInt(nodechild, "index", 1)
+			'local childIndex:int = xml.FindValueIntLC(nodechild, "index", 1)
 
 			'add the child
 			scriptTemplate.AddSubScript(childScriptTemplate)
@@ -1940,7 +1996,7 @@ Type TDatabaseLoader
 		'=== DATA: EPISODES ===
 		'load episode data only after creating the children as these values must
 		'not be propagated to the children
-		nodeData = xml.FindChild(node, "episodes")
+		nodeData = xml.FindChildLC(node, "episodes")
 		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
 		If data.GetInt("value", -1) >= 0
 			Local value:Int = data.GetInt("value", scriptTemplate.episodesMin)
@@ -1960,7 +2016,7 @@ Type TDatabaseLoader
 		'propagating parent effects is to big an effort here
 		'it will be done when creating the script from the template
 		'at this point each template gets exactly the effects defined in the database
-		Local nodeEffects:TxmlNode = xml.FindChild(node, "effects")
+		Local nodeEffects:TxmlNode = xml.FindChildLC(node, "effects")
 		If nodeEffects
 			Local tmpSource:TBroadcastMaterialSourceBase = new TBroadcastMaterialSourceBase()
 			LoadV3EffectsFromNode(tmpSource, node, xml)
@@ -2001,8 +2057,8 @@ Type TDatabaseLoader
 			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
 			TXmlHelper.FindValue(node, "country", role.countryCode).ToUpper(), ..
-			TXmlHelper.FindValueInt(node, "gender", role.gender), ..
-			TXmlHelper.FindValueInt(node, "fictional", role.fictional) ..
+			TXmlHelper.FindValueIntLC(node, "gender", role.gender), ..
+			TXmlHelper.FindValueIntLC(node, "fictional", role.fictional) ..
 		)
 
 		'=== ADD TO COLLECTION ===
@@ -2016,7 +2072,7 @@ Type TDatabaseLoader
 
 
 	Method GetV3TargetgroupAttractivityModFromNode:TAudience(audience:TAudience, node:TxmlNode,xml:TXmlHelper)
-		Local tgAttractivityNode:TxmlNode = xml.FindChild(node, "targetgroupattractivity")
+		Local tgAttractivityNode:TxmlNode = xml.FindChildLC(node, "targetgroupattractivity")
 		If Not tgAttractivityNode Then Return audience
 
 		Local data:TData = New TData
@@ -2056,7 +2112,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3EffectsFromNode(source:TBroadcastMaterialSourceBase, node:TxmlNode,xml:TXmlHelper)
-		Local nodeEffects:TxmlNode = xml.FindChild(node, "effects")
+		Local nodeEffects:TxmlNode = xml.FindChildLC(node, "effects")
 		For Local nodeEffect:TxmlNode = EachIn xml.GetNodeChildElements(nodeEffects)
 			If nodeEffect.getName() <> "effect" Then Continue
 
@@ -2086,7 +2142,7 @@ Type TDatabaseLoader
 	Method LoadV3ModifiersFromNode(source:TBroadcastMaterialSourceBase, node:TxmlNode,xml:TXmlHelper)
 		'reuses existing (parent) modifiers and overrides it with custom
 		'ones
-		Local nodeModifiers:TxmlNode = xml.FindChild(node, "modifiers")
+		Local nodeModifiers:TxmlNode = xml.FindChildLC(node, "modifiers")
 		For Local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
 			If nodeModifier.getName() <> "modifier" Then Continue
 
@@ -2104,7 +2160,7 @@ Type TDatabaseLoader
 
 	'=== META DATA FUNCTIONS ===
 	Method LoadV3CreatorMetaDataFromNode:TData(GUID:String, data:TData, node:TxmlNode, xml:TXmlHelper)
-		data.AddNumber("creator", TXmlHelper.FindValueInt(node,"creator", 0))
+		data.AddNumber("creator", TXmlHelper.FindValueIntLC(node,"creator", 0))
 		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", ""))
 		Return data
 	End Method
@@ -2205,7 +2261,7 @@ Type TDatabaseLoader
 	End Method
 
 
-	Function CreateReleaseTime:Long(releaseData:TData, oldReleaseTime:Long)
+	Function CreateReleaseTime:Long(releaseData:TDataCSK, oldReleaseTime:Long)
 		Local releaseYear:Int = releaseData.GetInt("year", 0)
 		Local releaseYearRelative:Int = releaseData.GetInt("year_relative", 0)
 		Local releaseYearRelativeMin:Int = releaseData.GetInt("year_relative_min", 0)
@@ -2451,7 +2507,7 @@ Type TDatabaseLoader
 
 		Local xml:TXmlHelper = TXmlHelper.Create(file)
 		Local nodeAllPersons:TxmlNode
-		nodeAllPersons = xml.FindRootChild("persons")
+		nodeAllPersons = xml.FindRootChildLC("persons")
 		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 			If nodePerson.getName() <> "person" Then Continue
 			Local data:TData = New TData
@@ -2469,7 +2525,7 @@ Type TDatabaseLoader
 		Next
 
 		Local nodeAllRoles:TxmlNode
-		nodeAllRoles = xml.FindRootChild("roles")
+		nodeAllRoles = xml.FindRootChildLC("roles")
 		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
 			If nodeRole.getName() <> "role" Then Continue
 			Local data:TData = New TData

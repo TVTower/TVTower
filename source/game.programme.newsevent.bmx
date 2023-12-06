@@ -97,13 +97,15 @@ Type TNewsEventCollection
 
 	Method Add:Int(obj:TNewsEvent)
 		If Not obj Then Return False
+		
+		Local guidLC:String = obj.GetGUID().ToLower()
 
 		'add to common maps
 		'special lists get filled when using their Getters
-		newsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
+		newsEventsGUID.Insert(guidLC, obj)
 		newsEvents.Insert(obj.GetID(), obj)
 
-		allNewsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
+		allNewsEventsGUID.Insert(guidLC, obj)
 		allNewsEvents.Insert(obj.GetID(), obj)
 
 		_InvalidateCaches()

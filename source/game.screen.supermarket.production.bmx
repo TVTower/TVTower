@@ -1171,18 +1171,18 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			If msgAreaH > 0
 				skin.RenderContent(content.x, contentY, content.w, msgAreaH, "1_bottom")
 				If Not currentProductionConcept.IsCastComplete()
-					skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("CAST_INCOMPLETE"), "audience", "warning")
+					skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("CAST_INCOMPLETE"), "audience", EDatasheetColorStyle.Warning)
 					contentY :+ msgH + msgPaddingY
 				EndIf
 				If Not currentProductionConcept.IsFocusPointsComplete()
 					If currentProductionConcept.productionCompany
 						If Not currentProductionConcept.IsFocusPointsMinimumUsed()
-							skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS"), "spotsplanned", "warning")
+							skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS"), "spotsplanned", EDatasheetColorStyle.Warning)
 						Else
-							skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", "neutral")
+							skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", EDatasheetColorStyle.Neutral)
 						EndIf
 					Else
-						skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", "warning")
+						skin.RenderMessage(content.x + 5 , contentY + 3, content.w - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", EDatasheetColorStyle.Warning)
 					EndIf
 					contentY :+ msgH + msgPaddingY
 				EndIf
@@ -2016,13 +2016,17 @@ Type TGUICastSelectList Extends TGUISelectList
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
 		If Not a1 Then Return -1
 		If Not a2 Then Return 1
+		
+		Local aName1:String = a1.person.GetLastName().ToLower()
+		Local aName2:String = a2.person.GetLastName().ToLower()
 
-		If a1.person.GetLastName().ToLower() = a2.person.GetLastName().ToLower()
-			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
-		ElseIf a1.person.GetLastName().ToLower() > a2.person.GetLastName().ToLower()
+		If aName1 > aName2
 			Return 1
+		ElseIf aName1 < aName2
+			Return -1
+		Else
+			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
 		EndIf
-		Return -1
 	End Function
 
 
@@ -3116,7 +3120,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		EndIf
 		If jobID >= 0
 			skin.fontSmallCaption.DrawBox(GetLocale("JOB_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY - 1, 94, 25, sALIGN_LEFT_CENTER, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
-			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.owner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.owner)), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 		EndIf
 		contentY :+ boxH
 

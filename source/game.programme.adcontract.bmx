@@ -398,12 +398,17 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
-		If a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
-			Return a1.minAudienceBase > a2.minAudienceBase
-		ElseIf a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+		'remove "ToLower" for case sensitive comparison
+		Local t1:String = a1.GetTitle().ToLower()
+		Local t2:String = a2.GetTitle().ToLower()
+		
+        If t1 > t2
 			Return 1
+        ElseIf t1 < t2
+			Return -1
+		Else
+			Return a1.minAudienceBase > a2.minAudienceBase
 		EndIf
-		Return -1
 	End Function
 
 
@@ -772,12 +777,17 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
-		If a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
-			Return a1.base.minAudienceBase > a2.base.minAudienceBase
-		ElseIf a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+		'remove "ToLower" for case sensitive comparison
+		Local t1:String = a1.GetTitle().ToLower()
+		Local t2:String = a2.GetTitle().ToLower()
+		
+        If t1 > t2
 			Return 1
+        ElseIf t1 < t2
+			Return -1
+		Else
+			Return a1.base.minAudienceBase > a2.base.minAudienceBase
 		EndIf
-		Return -1
 	End Function
 
 
@@ -1631,7 +1641,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
 			Local revenue:String = GetFormattedCurrency(Int(1000 * GetPerViewerRevenueForPlayer(forPlayerID)))
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", revenue), "money", EDatasheetColorStyle.Good, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -1760,31 +1770,31 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'warn if special target group
 		If GetLimitedToTargetGroup() > 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), "targetGroupLimited", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), "targetGroupLimited", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeGenre() >= 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToProgrammeGenreString()), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToProgrammeGenreString()), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeFlag() > 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		'only show image hint when NOT signed (after signing the image is not required anymore)
 		If imageText
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, imageText, "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, imageText, "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		If IsCompleted()
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FINISHED"), "ok", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FINISHED"), "ok", EDatasheetColorStyle.Good, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		ElseIf daysLeft <= 1
 			Select daysLeft
-				Case 1	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_TOMORROW"), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-				Case 0	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_MIDNIGHT"), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
-				Default skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FAILED"), "warning", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+				Case 1	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_TOMORROW"), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
+				Case 0	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_MIDNIGHT"), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
+				Default skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FAILED"), "warning", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndSelect
 			contentY :+ msgH
 		EndIf
@@ -1800,28 +1810,28 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'=== BOX LINE 1 ===
 		'days left for this contract
 		If IsCompleted()
-			skin.RenderBox(contentX + 5, contentY, 100, -1, "---", "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, "---", "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
 		ElseIf daysLeft > 1 
-			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
 		ElseIf daysLeft = 0
-			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "badHint", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", EDatasheetColorStyle.BadHint, skin.fontBold)
 		ElseIf daysLeft = 1
-			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5, contentY, 100, -1, "---", "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, "---", "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 
 		'spots successfully sent
 		If owner < 0
 			'show how many we have to send
-			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, GetSpotCount() + "x", "spotsAired", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, GetSpotCount() + "x", "spotsAired", EDatasheetColorStyle.Neutral, skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, GetSpotsSent() + "/" + GetSpotCount(), "spotsAired", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, GetSpotsSent() + "/" + GetSpotCount(), "spotsAired", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 
 		'planned
 		If owner > 0
-			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, GetSpotsPlanned() + "/" + GetSpotCount(), "spotsPlanned", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, GetSpotsPlanned() + "/" + GetSpotCount(), "spotsPlanned", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 
 
@@ -1830,22 +1840,22 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'minAudience
 		If minAudienceHightlightType = 1
-			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "goodHint", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", EDatasheetColorStyle.GoodHint, skin.fontBold)
 		ElseIf minAudienceHightlightType = -1
-			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "badHint", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", EDatasheetColorStyle.BadHint, skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 			If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
 			'penalty per spot
-			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID)/GetSpotCount(), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID)/GetSpotCount(), 2), "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
 			'profit per spot
-			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID)/GetSpotCount(), 2), "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID)/GetSpotCount(), 2), "money", EDatasheetColorStyle.Good, skin.fontBold, ALIGN_RIGHT_CENTER)
 		Else
 			'penalty
-			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID), 2), "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
 			'profit
-			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID), 2), "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID), 2), "money", EDatasheetColorStyle.Good, skin.fontBold, ALIGN_RIGHT_CENTER)
 		EndIf
 
 

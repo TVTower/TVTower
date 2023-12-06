@@ -214,14 +214,18 @@ Type TScriptCollection Extends TGameObjectCollection
 		If TLocalizedString(title)
 			Local lsTitle:TLocalizedString = TLocalizedString(title)
 			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				Local parts:String[] = String(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())).split("::")
-				If parts.length = 2 Then Return Int(parts[1])
-				Return Int(parts[0])
+				Local key:String = TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower()
+				Local title:String = String(protectedTitles.ValueForKey(key))
+				Local splitterPos:Int = title.Find("::")
+				if splitterPos >= 0 Then Return Int(title[splitterPos + 1 ..])
+				Return Int(title)
 			Next
 		ElseIf String(title) <> ""
-			Local parts:String[] = String((protectedTitles.ValueForKey("custom::" + String(title).ToLower()))).split("::")
-			If parts.length = 2 Then Return Int(parts[1])
-			Return Int(parts[0])
+			Local key:String = "custom::" + String(title).ToLower()
+			Local title:String = String(protectedTitles.ValueForKey(key))
+			Local splitterPos:Int = title.Find("::")
+			if splitterPos >= 0 Then Return Int(title[splitterPos + 1 ..])
+			Return Int(title)
 		EndIf
 	End Method
 
@@ -1412,28 +1416,28 @@ endrem
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(-1), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(-1), "runningTime", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		If showMsgTimeSlotLimit
 			if getEpisodes() > 0
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_TIME_RESTRICTED"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_TIME_RESTRICTED"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else if productionBroadcastFlags & TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST > 0
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndIf
 			contentY :+ msgH
 		EndIf
 
 		If msgBroadcastLimit
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, msgBroadcastLimit, "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, msgBroadcastLimit, "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		If showMsgEarnInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", "***"), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", "***"), "money", EDatasheetColorStyle.Good, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -1452,27 +1456,27 @@ endrem
 		'if msgAreaH = 0 then contentY :+ boxAreaPaddingY
 		contentY :+ boxAreaPaddingY
 		'blocks
-		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", EDatasheetColorStyle.Neutral, skin.fontBold)
 		'room size
 		If studioSize > 0 and studioSize < requiredStudioSize
-			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "bad", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", EDatasheetColorStyle.Bad, skin.fontBold)
 		Elseif studioSize > 0 and studioSize >= requiredStudioSize
-			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "good", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", EDatasheetColorStyle.Good, skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", EDatasheetColorStyle.Neutral, skin.fontBold)
 		Endif
 		If IsLive()
 			'estimated (no clue about efficiency mods through better
 			'production team etc)
 			local effectiveProductionDuration:Long = GetBaseProductionDuration()
 
-			skin.RenderBox(contentX + 5 + 2*59 - 5, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(effectiveProductionDuration, 4), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 2*59 - 5, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(effectiveProductionDuration, 4), "runningTime", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 		'price
 		If canAfford
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 		Else
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 		EndIf
 		contentY :+ boxH
 

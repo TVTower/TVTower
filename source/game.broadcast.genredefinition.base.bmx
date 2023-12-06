@@ -30,7 +30,7 @@ Type TGenreDefinitionBase extends TGameObject
 
 
 	Method LoadFromMap(data:TMap)
-		local mapData:TData = new TData.Init(data.Copy())
+		local mapData:TData = new TData.Init(data)
 		InitBasic(mapData.GetInt("id"), mapData)
 	End Method
 

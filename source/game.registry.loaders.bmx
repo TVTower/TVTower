@@ -425,7 +425,8 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		If node.GetName().toLower() = "programmedatamods"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				If childNode.GetName().ToLower() <> "genres" And childNode.GetName().ToLower() <> "flags" Then Continue
+				Local childNodeNameLC:String = childNode.GetName().ToLower()
+				If childNodeNameLC <> "genres" And childNodeNameLC <> "flags" Then Continue
 
 				GetConfigFromXML(loader, childNode)
 			Next
@@ -436,13 +437,14 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		If node.GetName().toLower() = "genres" Or node.GetName().toLower() = "flags"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				If childNode.GetName().ToLower() <> "genre" And childNode.GetName().ToLower() <> "flag" Then Continue
+				Local childNodeNameLC:String = childNode.GetName().ToLower()
+				If childNodeNameLC <> "genre" And childNodeNameLC <> "flag" Then Continue
 
 				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
 				If Not childData Then Continue
 
-				If childNode.GetName().ToLower() = "genre"
+				If childNodeNameLC = "genre"
 					Local genreId:Int=childData.GetInt("id",-1)
 					If genreId < 0 Then HandleError("missing genre id")
 					If genreId > 0
@@ -462,9 +464,11 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 
 		'=== HANDLE "<GENRE>" ===
-		Local fieldNames:String[] = ["id", "name"]
-		fieldNames :+ ["outcomeMod|outcome-mod", "reviewMod|review-mod", "speedMod|speed-mod", "refreshMod|refresh-mod", "wearoffMod|wearoff-mod"]
-		fieldNames :+ ["goodFollower", "badFollower"]
+		Local fieldNames:String[] = [..
+			"id", "name", ..
+			"outcomeMod|outcome-mod", "reviewMod|review-mod", "speedMod|speed-mod", "refreshMod|refresh-mod", "wearoffMod|wearoff-mod", ..
+			"goodFollower", "badFollower" ..
+			]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 		data.Add("nodeName", node.GetName().ToLower())
 
@@ -485,18 +489,18 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 
 		'load audienceAttractions
-		subNode = TXmlHelper.FindChild(node, "audienceAttractions")
+		subNode = TXmlHelper.FindChildLC(node, "audienceattractions")
 		If Not subNode Then Return Null
 
 		Local audienceAttractions:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
-			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
+			Local attrId:String = TXmlHelper.FindValueLC(subNodeChild, "id", "-1")
 			If TVTTargetGroup.GetByString(attrId) = TVTTargetGroup.ALL
 				HandleError("unknown audienceAttraction group "+ attrId)
 			EndIf
-			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
-			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
-			Local all:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
+			Local men:String = TXmlHelper.FindValueLC(subNodeChild, "men", "")
+			Local women:String = TXmlHelper.FindValueLC(subNodeChild, "women", "")
+			Local all:String = TXmlHelper.FindValueLC(subNodeChild, "value", "0.7")
 			If men = "" Then men = all
 			If women = "" Then women = all
 			audienceAttractions.Insert(attrId+"_men", men)
@@ -507,7 +511,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 
 		'load castAttributes
-		subNode = TXmlHelper.FindChild(node, "castAttributes")
+		subNode = TXmlHelper.FindChildLC(node, "castattributes")
 		If subNode
 			Local castAttributes:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
@@ -515,9 +519,9 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 				Local jobName:String = subNodeChild.GetName()
 				Local jobID:Int = TVTPersonJob.GetByString(jobName.ToLower())
 				'appearance, charisma,...
-				Local attributeName:String = TXmlHelper.FindValue(subNodeChild, "attribute", "")
+				Local attributeName:String = TXmlHelper.FindValueLC(subNodeChild, "attribute", "")
 				Local attributeID:Int = TVTPersonPersonalityAttribute.GetByString(attributeName)
-				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.0")
+				Local value:String = TXmlHelper.FindValueLC(subNodeChild, "value", "0.0")
 
 				If jobID = TVTPersonJob.UNKNOWN
 					HandleError("unknown job for castAttributes: "+ jobName)
@@ -538,7 +542,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 
 		'load focusPointPriorities
-		subNode = TXmlHelper.FindChild(node, "focusPointPriorities")
+		subNode = TXmlHelper.FindChildLC(node, "focuspointpriorities")
 		If subNode
 			Local focusPointPriorities:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
@@ -546,7 +550,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 				Local focusPointName:String = subNodeChild.GetName().ToLower()
 				Local focusPointID:Int = TVTProductionFocus.GetByString(focusPointName)
 				'TODO no clamping of value!?
-				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
+				Local value:String = TXmlHelper.FindValueLC(subNodeChild, "value", "1.0")
 				
 				If focusPointID = TVTProductionFocus.NONE
 					HandleError("unknown focuspoint: "+ focusPointName)

@@ -1030,7 +1030,7 @@ Type TInGameInterface
 			For Local i:Int = 1 To TVTTargetGroup.count
 				SetColor 255,255,255
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)
-				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX+1, lineY + lineIconOffsetY)
+				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID)).draw(lineX+1, lineY + lineIconOffsetY)
 				_interfaceAudienceFont.DrawBox(lines[i-1], lineTextX, lineY,  w, lineHeight + 2, sALIGN_LEFT_CENTER, ColorTextLight)
 				_interfaceAudienceFont.DrawBox(numbers[i-1], lineTextX, lineY, lineTextWidth - 5 - 50, lineHeight + 2, sALIGN_RIGHT_CENTER, ColorTextLight)
 				_interfaceAudienceFont.DrawBox(percents[i-1]+"%", lineTextX, lineY, lineTextWidth - 5, lineHeight + 2, sALIGN_RIGHT_CENTER, ColorTextLight)
@@ -1539,7 +1539,7 @@ Type TTooltipAudience Extends TTooltip
 
 				SetColor 255,255,255
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)
-				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX+1, lineY + lineIconOffsetY)
+				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID)).draw(lineX+1, lineY + lineIconOffsetY)
 				'draw text
 				If i Mod 2 = 0
 					Usefont.DrawBox(lines[i-1], lineTextX, lineY,  w, lineHeight, sALIGN_LEFT_CENTER, ColorTextLight)

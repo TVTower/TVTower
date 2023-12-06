@@ -538,8 +538,15 @@ Type TFigure extends TFigureBase
 
 	'override to add support for rooms
 	Method IsInRoom:Int(roomName:String="")
-		If roomName <> ""
-			Return (inRoom And inRoom.GetName().toLower() = roomname.toLower())
+		If roomName
+			If inRoom
+				Local name:String = inRoom.GetName()
+				If name.length = roomname.length
+					If name.toLower() = roomname.toLower()
+						Return True
+					EndIf
+				EndIf
+			EndIf
 		Else
 			Return inRoom <> null
 		EndIf

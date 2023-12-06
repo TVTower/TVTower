@@ -554,14 +554,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Local t1:String = p1.GetTitle().ToLower()
 		Local t2:String = p2.GetTitle().ToLower()
 		
-		If t1 = t2
-			Return p1.GetGUID() > p2.GetGUID()
-        ElseIf t1 > t2
+        If t1 > t2
 			Return 1
         ElseIf t1 < t2
 			Return -1
-		endif
-		Return 0
+		Else
+			Return p1.GetGUID() > p2.GetGUID()
+		EndIf
 	End Function
 
 
@@ -2525,22 +2524,22 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				time = ": "+time
 			endif
 
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW") + time, "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW") + time, "runningTime", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		if showMsgBroadcastLimit
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getBroadCastLimitDatasheetText(self), "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getBroadCastLimitDatasheetText(self), "spotsPlanned", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
 		if showMsgBroadcastTimeSlot
 			If GetSublicenceCountTotal() > 0
-				 skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_TIME_RESTRICTED") , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+				 skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_TIME_RESTRICTED") , "spotsPlanned", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else If HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.KEEP_BROADCAST_TIME_SLOT_ENABLED_ON_BROADCAST)
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", EDatasheetColorStyle.Bad, skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndIf
 			contentY :+ msgH
 		endif
@@ -2550,7 +2549,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'value is "per 1000" - so multiply with that too
 			local revenue:string = GetFormattedCurrency(int(1000 * data.GetPerViewerRevenue(useOwner)))
 
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", EDatasheetColorStyle.Good, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -2558,23 +2557,23 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			Local productionCostsLeftValue:int
 			if extraData then productionCostsLeftValue = extraData.GetInt("productionCostsLeft")
 			local productionCostsLeft:string = GetFormattedCurrency(productionCostsLeftValue)
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("LIVE_PRODUCTION_FINISH_WILL_COST_X").Replace("%X%", productionCostsLeft) , "money", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("LIVE_PRODUCTION_FINISH_WILL_COST_X").Replace("%X%", productionCostsLeft) , "money", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
 		if showMsgPlannedWarning
 			if not isProgrammePlanned()
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			elseif not isTrailerPlanned()
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			endif
 			contentY :+ msgH
 		endif
 		
 		if showMsgInProduction
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("IN_PRODUCTION"), "warning", "neutral", skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("IN_PRODUCTION"), "warning", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
@@ -2591,13 +2590,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== BOX LINE 1 ===
 		'blocks
-		skin.RenderBox(contentX + 5, contentY, 47, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5, contentY, 47, -1, GetBlocks(), "duration", EDatasheetColorStyle.Neutral, skin.fontBold)
 		'repetitions
 		'TODO total number of broadcasts only when not owned?
 		if useOwner <= 0 Or shiftDown
-			skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(-1), "repetitions", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(-1), "repetitions", EDatasheetColorStyle.Neutral, skin.fontBold)
 		else
-			skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(useOwner), "repetitions", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(useOwner), "repetitions", EDatasheetColorStyle.Neutral, skin.fontBold)
 		endif
 		'record
 		If shiftDown
@@ -2606,9 +2605,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				Local perc:Float = GetBroadcastStatistic(useOwner).bestAudiencePercantage[useOwner-1]
 				If perc > 0 then show = MathHelper.NumberToString(perc*100.0)+"%"
 			EndIf
-			skin.RenderBox(contentX + 5 + 107, contentY, 88, -1, show, "maxAudience", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 107, contentY, 88, -1, show, "maxAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5 + 107, contentY, 88, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 107, contentY, 88, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 
 		'price
@@ -2627,15 +2626,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		if showPrice
 			if canAfford
-				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			endif
 		else
-			skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, "- ?? -", "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 		endif
 		'=== BOX LINE 2 ===
 		contentY :+ boxH
+
 
 
 
