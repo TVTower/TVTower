@@ -52,57 +52,18 @@ Type TDatabaseLoader
 
 
 	'contains custom "fictional" overriding the base one
-	Global _personDetailKeys:String[] = [..
-		"gender", "birthday", "deathday", "country", "fictional", "job", "face_code"..
-		]
-	Global _personCommonDetailKeys:String[] = [..
-		"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
-		"job", "gender", "generator", "face_code", "bookable" ..
-		]
-	Global _newsEventDataKeys:String[] = [..
-		"genre", "price", "quality", "quality_min", "quality_max", "quality_slope", ..
-		"available", "flags", "keywords", "happen_time", "min_subscription_level" ..
-		]
-	Global _newsEventAvailabilityKeys:String[] = [..
-		"script", "year_range_from", "year_range_to" ..
-		]
-	Global _achievementDataKeys:String[] = [..
-		"flags", "category", "group", "index", "sprite_finished", "sprite_unfinished" ..
-		]
-	Global _adContractDataKeys:String[] = [..
-		"infomercial", "quality", "repetitions", "fix_price", "duration", ..
-	   "profit", "penalty", "pro_pressure_groups", "contra_pressure_groups", ..
-	   "infomercial_profit", "fix_infomercial_profit", ..
-	   "year_range_from", "year_range_to", "available", "blocks", "type" ..
-	   ]
-	Global _adContractAvailabilityKeys:String[] = [..
-		"script", "year_range_from", "year_range_to" ..
-		]
-	Global _adContractConditionKeys:String[] = [..
-		"min_audience", "min_image", "max_image", "target_group", ..
-		"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
-		"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
-		]
-	Global _programmeLicenceDataKeys:String[] = [..
-		"country", "distribution", "blocks", "maingenre", "subgenre", ..
-		"price_mod", "available", "flags", "licence_flags", ..
-		"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-		"broadcast_limit", "licence_broadcast_limit", ..
-		"broadcast_flags", "licence_broadcast_flags" ..
-		]
-	Global _programmeLicenceDataTimeFieldsKeys:String[] = [..
-		"year", "year_relative", "year_relative_min", "year_relative_max", ..
-		"day", "day_random_min", "day_random_max", "day_random_slope", ..
-		"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
-		]	
-
-	Global _programmeLicenceDataGroupsKeys:String[] = [..
-		"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
-		]	
-		
-	Global _programmeLicenceRatingsKeys:String[] = [..
-		"critics", "speed", "outcome" ..
-		]
+	Global _personDetailKeys:String[]
+	Global _personCommonDetailKeys:String[]
+	Global _newsEventDataKeys:String[]
+	Global _newsEventAvailabilityKeys:String[]
+	Global _achievementDataKeys:String[]
+	Global _adContractDataKeys:String[]
+	Global _adContractAvailabilityKeys:String[]
+	Global _adContractConditionKeys:String[]
+	Global _programmeLicenceDataKeys:String[]
+	Global _programmeLicenceDataTimeFieldsKeys:String[]
+	Global _programmeLicenceDataGroupsKeys:String[]	
+	Global _programmeLicenceRatingsKeys:String[]
 
 	Method New()
 		allowedAdCreators = ""
@@ -500,6 +461,12 @@ Type TDatabaseLoader
 
 		'=== COMMON DETAILS ===
 		Local data:TDataCSK = New TDataCSK
+		If Not _personCommonDetailKeys
+			_personCommonDetailKeys = [..
+				"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
+				"job", "gender", "generator", "face_code", "bookable" ..
+			]
+		EndIf		
 		xml.LoadValuesToDataCSK(node, data, _personCommonDetailKeys)
 		
 		'country codes:
@@ -557,6 +524,11 @@ Type TDatabaseLoader
 			'=== DETAILS ===
 			Local nodeDetails:TxmlNode = xml.FindChildLC(node, "details")
 			data.Clear()
+			If not _personDetailKeys
+				_personDetailKeys = [..
+					"gender", "birthday", "deathday", "country", "fictional", "job", "face_code"..
+				]
+			EndIf
 			xml.LoadValuesToDataCSK(nodeDetails, data, _personDetailKeys)
 
 			person.gender = data.GetInt("gender", person.gender)
@@ -723,6 +695,12 @@ Type TDatabaseLoader
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
 		Local data:TDataCSK = New TDataCSK
 		'price and topicality are outdated
+		If Not _newsEventDataKeys
+			_newsEventDataKeys = [..
+				"genre", "price", "quality", "quality_min", "quality_max", "quality_slope", ..
+				"available", "flags", "keywords", "happen_time", "min_subscription_level" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(nodeData, data, _newsEventDataKeys)
 
 		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
@@ -764,6 +742,11 @@ Type TDatabaseLoader
 
 
 		'=== AVAILABILITY ===
+		If not _newsEventAvailabilityKeys
+			_newsEventAvailabilityKeys = [..
+				"script", "year_range_from", "year_range_to" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(xml.FindChildLC(node, "availability"), data, _newsEventAvailabilityKeys)
 		newsEventTemplate.availableScript = data.GetString("script", newsEventTemplate.availableScript)
 		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
@@ -861,6 +844,11 @@ Type TDatabaseLoader
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
 		Local data:TDataCSK = New TDataCSK
+		If Not _achievementDataKeys
+			_achievementDataKeys = [..
+				"flags", "category", "group", "index", "sprite_finished", "sprite_unfinished" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(nodeData, data, _achievementDataKeys)
 
 		achievement.flags = data.GetInt("flags", achievement.flags)
@@ -1023,6 +1011,14 @@ Type TDatabaseLoader
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
 		Local data:TDataCSK = New TDataCSK
+		If Not _adContractDataKeys
+			_adContractDataKeys = [..
+				"infomercial", "quality", "repetitions", "fix_price", "duration", ..
+			   "profit", "penalty", "pro_pressure_groups", "contra_pressure_groups", ..
+			   "infomercial_profit", "fix_infomercial_profit", ..
+			   "year_range_from", "year_range_to", "available", "blocks", "type" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(nodeData, data, _adContractDataKeys)
 
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
@@ -1053,6 +1049,11 @@ Type TDatabaseLoader
 
 
 		'=== AVAILABILITY ===
+		If Not _adContractAvailabilityKeys
+			_adContractAvailabilityKeys = [..
+				"script", "year_range_from", "year_range_to" ..
+			]
+		EndIf		
 		'do not reset "data" before - it contains the pressure groups
 		xml.LoadValuesToDataCSK(xml.FindChildLC(node, "availability"), data, _adContractAvailabilityKeys)
 		adContract.availableScript = data.GetString("script", adContract.availableScript)
@@ -1069,6 +1070,13 @@ Type TDatabaseLoader
 
 		'=== CONDITIONS ===
 		Local nodeConditions:TxmlNode = xml.FindChildLC(node, "conditions")
+		If Not _adContractConditionKeys
+			_adContractConditionKeys = [..
+				"min_audience", "min_image", "max_image", "target_group", ..
+				"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
+				"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
+			]
+		EndIf
 		'do not reset "data" before - it contains the pressure groups
 		xml.LoadValuesToDataCSK(nodeConditions, data, _adContractConditionKeys)
 		'0-100% -> 0.0 - 1.0
@@ -1244,6 +1252,15 @@ Type TDatabaseLoader
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChildLC(node, "data")
 		Local data:TDataCSK = New TDataCSK
+		If Not _programmeLicenceDataKeys
+			_programmeLicenceDataKeys = [..
+				"country", "distribution", "blocks", "maingenre", "subgenre", ..
+				"price_mod", "available", "flags", "licence_flags", ..
+				"broadcast_time_slot_start", "broadcast_time_slot_end", ..
+				"broadcast_limit", "licence_broadcast_limit", ..
+				"broadcast_flags", "licence_broadcast_flags" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(nodeData, data, _programmeLicenceDataKeys)
 
 		programmeData.country = data.GetString("country", programmeData.country)
@@ -1314,6 +1331,13 @@ Type TDatabaseLoader
 		Local releaseData:TDataCSK = New TDataCSK
 		'try to load it from the "<data>" block
 		'(this is done to allow the old v3-"year" definition)
+		If Not _programmeLicenceDataTimeFieldsKeys
+			_programmeLicenceDataTimeFieldsKeys = [..
+				"year", "year_relative", "year_relative_min", "year_relative_max", ..
+				"day", "day_random_min", "day_random_max", "day_random_slope", ..
+				"hour", "hour_random_min", "hour_random_max", "hour_random_slope" ..
+			]
+		EndIf	
 		xml.LoadValuesToDataCSK(nodeData, releaseData, _programmeLicenceDataTimeFieldsKeys)
 		'override data by a <releaseTime> block
 		Local releaseTimeNode:TxmlNode = xml.FindChildLC(node, "releasetime")
@@ -1404,6 +1428,11 @@ Type TDatabaseLoader
 		'=== GROUPS ===
 		Local nodeGroups:TxmlNode = xml.FindChildLC(node, "groups")
 		data.Clear()
+		If Not _programmeLicenceDataGroupsKeys
+			_programmeLicenceDataGroupsKeys = [..
+				"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(nodeGroups, data, _programmeLicenceDataGroupsKeys)
 		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
 		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
@@ -1434,6 +1463,11 @@ Type TDatabaseLoader
 		'=== RATINGS ===
 		Local nodeRatings:TxmlNode = xml.FindChildLC(node, "ratings")
 		data.Clear()
+		If Not _programmeLicenceRatingsKeys
+			_programmeLicenceRatingsKeys = [..
+				"critics", "speed", "outcome" ..
+			]
+		EndIf
 		xml.LoadValuesToDataCSK(nodeRatings, data, _programmeLicenceRatingsKeys)
 		programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
 		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
