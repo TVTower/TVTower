@@ -515,9 +515,15 @@ Type TBitmapFont
 			extraChars :+ Chr(160)  'No Breaking Space
 			extraChars :+ Chr(8364) 'Euro
 			extraChars :+ Chr(8230) 'Horizontal Ellipsis
+			extraChars :+ Chr(8216) 'Left Single Quotation Mark
+			extraChars :+ Chr(8217) 'Right Single Quotation Mark
+			extraChars :+ Chr(8218) 'Single Low-9 Quotation Mark
+			extraChars :+ Chr(8219) 'Single High-Reversed-9 Quotation Mark
 			extraChars :+ Chr(8220) 'Left Double Quotation Mark
 			extraChars :+ Chr(8221) 'Right Double Quotation Mark
 			extraChars :+ Chr(8222) 'Double Low-9 Quotation Mark
+			extraChars :+ Chr(8223) 'Double High-Reversed-9 Quotation Mark
+			extraChars :+ Chr(8482) 'Trade Mark Sign
 			extraChars :+ Chr(171)  'Left-Pointing Double Angle Quotation Mark
 			extraChars :+ Chr(187)  'Right-Pointing Double Angle Quotation Mark
 			'extraChars :+ chr(8227) '
