@@ -234,8 +234,9 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 	Method GetTemplate:TScriptTemplate()
 		Local scriptTemplate:TScriptTemplate
+		Local filter:SScriptTemplateFilter = new SScriptTemplateFilter
 		For Local i:Int = 0 Until 30
-			scriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+			scriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(filter)
 			Local rnd:Int = RandRange(0, 100)
 			'print "contemplating "+ scriptTemplate.getTitle() +" with random "+ rnd
 			If scriptTemplate.productionLimit <> 1

@@ -11,6 +11,40 @@ Import "game.world.worldtime.bmx" 'to access world time
 Import "game.person.base.bmx"
 Import "game.programme.programmerole.bmx"
 
+Struct SScriptTemplateFilter
+	Field skipNotAvailable:Int = True
+	Field skipEpisodes:Int = True
+	Field containsKeywords:string=""
+	Field avoidIDs:Int[] = null
+	Field biggerStudioAllowedChance:Int = 100
+
+	Method matches:Int(obj:TScriptTemplate)
+		'skip episode scripts
+		If skipEpisodes And obj.scriptLicenceType = TVTProgrammeLicenceType.EPISODE Then Return False
+		'skip not available ones (eg. limit of productions reached)
+		If skipNotAvailable And Not obj.IsAvailable() Then Return False
+
+		'skip if not containing given keywords
+		If containsKeywords
+			Local allKeywordsFound:int = True
+			For Local k:string = EachIn containsKeywords.split(",")
+				If obj.keywords.Find(k.Trim()) < 0
+					allKeywordsFound = False
+					Exit
+				EndIf
+			Next
+			If Not allKeywordsFound Then Return False
+		endif
+
+		If avoidIDs And MathHelper.InIntArray(obj.GetID(), avoidIDs) Then Return False
+
+		If biggerStudioAllowedChance < 100 And obj.studioSizeMax > 1
+			If RandRange(0,100) > biggerStudioAllowedChance Then Return False
+		EndIf
+
+		Return True
+	End Method
+End Struct
 
 Type TScriptTemplateCollection Extends TGameObjectCollection
 	Global _instance:TScriptTemplateCollection
@@ -49,32 +83,13 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomByFilter:TScriptTemplate(skipNotAvailable:int = True, skipEpisodes:int = True, containsKeywords:string="", avoidIDs:int[] = null)
+	Method GetRandomByFilter:TScriptTemplate(filter:SScriptTemplateFilter var)
 		'instead of using "super.GetRandom" we use a custom variant
 		'to NOT return episodes...
 		local array:TScriptTemplate[]
 		'create a full array containing all elements
 		For local obj:TScriptTemplate = EachIn entries.Values()
-			'skip episode scripts
-			if skipEpisodes and obj.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
-			'skip not available ones (eg. limit of productions reached)
-			if skipNotAvailable and not obj.IsAvailable() then continue
-
-			'skip if not containing given keywords
-			if containsKeywords
-				local allKeywordsFound:int = True
-				For local k:string = EachIn containsKeywords.split(",")
-					if obj.keywords.Find(k.Trim()) < 0
-						allKeywordsFound = False
-						exit
-					endif
-				Next
-				if not allKeywordsFound then continue
-			endif
-
-			if avoidIDs and MathHelper.InIntArray(obj.GetID(), avoidIDs) then continue
-
-			array :+ [obj]
+			If filter.matches(obj) array :+ [obj]
 		Next
 		if array.length = 0 then return Null
 		if array.length = 1 then return array[0]

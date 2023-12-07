@@ -135,23 +135,25 @@ Type TScriptCollection Extends TGameObjectCollection
 
 	Method GenerateRandom:TScript(avoidTemplateIDs:Int[])
 		Local template:TScriptTemplate
+		Local filter:SScriptTemplateFilter = new SScriptTemplateFilter
+		filter.biggerStudioAllowedChance = 10 + 5 * (GetWorldTime().GetDaysRun())
 		'iterate several times in case template with production limit and protected title is involved
 		For Local i:Int = 0 Until 20
+			filter.avoidIDs = avoidTemplateIDs
+			filter.skipNotAvailable = True
 			'determine candidate
-			If Not avoidTemplateIDs Or avoidTemplateIDs.length = 0
-				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-			Else
-				template = GetScriptTemplateCollection().GetRandomByFilter(True, True, "", avoidTemplateIDs)
-				'get a random one, ignore avoid IDs
-				If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
-					TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Trying an avoided entry.", LOG_WARNING)
-					template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-				EndIf
-				'get a random one, ignore availability
-				If Not template
-					TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Using an unfiltered entry.", LOG_WARNING)
-					template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
-				EndIf
+			template = GetScriptTemplateCollection().GetRandomByFilter(filter)
+			'get a random one, ignore avoid IDs
+			If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
+				TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Trying an avoided entry.", LOG_WARNING)
+				filter.avoidIDs = null
+				template = GetScriptTemplateCollection().GetRandomByFilter(filter)
+			EndIf
+			'get a random one, ignore availability
+			If Not template
+				TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Using an unfiltered entry.", LOG_WARNING)
+				filter.skipNotAvailable = True
+				template = GetScriptTemplateCollection().GetRandomByFilter(filter)
 			EndIf
 
 			'If the template has a production limit, ensure no protected title is used
