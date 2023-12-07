@@ -465,7 +465,7 @@ Type TDatabaseLoader
 		If Not _personCommonDetailKeys
 			_personCommonDetailKeys = [..
 				"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
-				"job", "gender", "generator", "face_code", "bookable" ..
+				"job", "gender", "generator", "face_code", "bookable", "castable" ..
 			]
 		EndIf		
 		xml.LoadValuesToDataCSK(node, data, _personCommonDetailKeys)
@@ -494,7 +494,9 @@ Type TDatabaseLoader
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
 		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool("fictional", person.IsFictional()) )
-		person.SetFlag(TVTPersonFlag.BOOKABLE, data.GetBool("bookable", person.IsBookable()) )
+		'fallback for old database syntax
+		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("bookable", person.IsCastable()) )
+		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("castable", person.IsCastable()) )
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool("levelup", person.CanLevelUp()) )
 		person.SetJob(data.GetInt("job"))
 		person.countryCode = data.GetString("country", person.countryCode).ToUpper()
