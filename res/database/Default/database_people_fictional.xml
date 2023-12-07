@@ -165,26 +165,26 @@
 	</celebritypeople>
 
 	<insignificantpeople>
-		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" bookable="0" />
-		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" bookable="0" />
-		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" bookable="0" />
-		<person id="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" fictional="1" levelup="0" bookable="0" />
-		<person id="various-puppeteers" first_name="" last_name="versch. Puppenspieler" fictional="1" levelup="0" bookable="0" />
-		<person id="various-models" first_name="" last_name="versch. Models" fictional="1" levelup="0" bookable="0" />
-		<person id="various-musicians" first_name="" last_name="versch. Musiker" fictional="1" levelup="0" bookable="0" />
+		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" castable="0" />
+		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" castable="0" />
+		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" castable="0" />
+		<person id="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" fictional="1" levelup="0" castable="0" />
+		<person id="various-puppeteers" first_name="" last_name="versch. Puppenspieler" fictional="1" levelup="0" castable="0" />
+		<person id="various-models" first_name="" last_name="versch. Models" fictional="1" levelup="0" castable="0" />
+		<person id="various-musicians" first_name="" last_name="versch. Musiker" fictional="1" levelup="0" castable="0" />
 
-		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" fictional="1" bookable="0" />
-		<person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="„Groggy“" fictional="1" bookable="0" />
+		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" fictional="1" castable="0" />
+		<person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="„Groggy“" fictional="1" castable="0" />
 		<person id="62dcc893-538b-4fe7-8ac6-daf063185d73" first_name="Ötzi" last_name="Altmann" nick_name="" fictional="1" gender="1" />
-		<person id="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" fictional="1" gender="1" bookable="0" />
+		<person id="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" fictional="1" gender="1" castable="0" />
 		<person id="59f79e7c-9a72-4585-9d83-82ced5b6c191" first_name="Fritz" last_name="Ballermann" nick_name="" fictional="1" gender="1" />
 		<person id="396f8bfa-a414-4a25-85c7-4e05c687f6a0" first_name="Klaus" last_name="Berntsch" nick_name="" fictional="1" gender="1" />
-		<person id="660ccb76-bdbb-4c88-a608-f7a79ea73e6f" first_name="Erika" last_name="Böhme" nick_name="" fictional="1" gender="2" bookable="0" />
+		<person id="660ccb76-bdbb-4c88-a608-f7a79ea73e6f" first_name="Erika" last_name="Böhme" nick_name="" fictional="1" gender="2" castable="0" />
 		<person id="878b0a3f-dd01-4d01-994a-30fd38eece00" first_name="Mikael" last_name="Borack" nick_name="" fictional="1" gender="1" />
-		<person id="80448f46-150d-445a-b688-63b21523ff13" first_name="Schorsch" last_name="Busch" nick_name="" fictional="0" gender="1" bookable="0" comment="non-fictional but used in fictional programme, so should be used as a parody version of George W. Bush (the younger one)." />
+		<person id="80448f46-150d-445a-b688-63b21523ff13" first_name="Schorsch" last_name="Busch" nick_name="" fictional="0" gender="1" castable="0" comment="non-fictional but used in fictional programme, so should be used as a parody version of George W. Bush (the younger one)." />
 		<person id="a3cca42a-90b7-4533-a240-206066759ea4" first_name="Papriccio" last_name="Delafel" nick_name="" fictional="1" gender="1" />
 		<person id="474ae0d7-8233-47bb-bba9-2d3d3df61919" first_name="Detlef" last_name="Droschke" nick_name="" fictional="1" gender="1" />
-		<person id="be4f2bdc-b09e-44fa-beac-5e2b74cea402" first_name="Siegmund" last_name="Freund" nick_name="" fictional="1" gender="1" bookable="0" />
+		<person id="be4f2bdc-b09e-44fa-beac-5e2b74cea402" first_name="Siegmund" last_name="Freund" nick_name="" fictional="1" gender="1" castable="0" />
 		<person id="8f93af7f-ac58-4573-bfae-ddf4698059bb" first_name="Klaus" last_name="Grobe" nick_name="" fictional="1" gender="1" />
 		<person id="8cc73e2d-02a4-4403-8270-b4a66a3e872c" first_name="Mario" last_name="Groteski" nick_name="" fictional="1" gender="1" />
 		<person id="5b52221c-10f6-4ad8-b818-c89c304e9ea0" first_name="Stieven" last_name="Harking" nick_name="" fictional="0" imdb_id="nm0370071" comment="non-fictional but parody version" />
@@ -197,20 +197,20 @@
 		<person id="13ce58ce-216d-4f5c-a9ca-bed86eef67e3" first_name="Kalle" last_name="Knausrig" nick_name="" fictional="1" gender="1" />
 		<person id="4bd36da9-4f07-4067-af4a-01ff5175ad73" first_name="Ulfs" last_name="Maul" nick_name="" fictional="1" gender="1" />
 		<person id="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" gender="1" face_code="1:2:2:#ECA472:-1:-1:2:-1:11#9090b0:3:7:-1:2:1:7:8#303010:-1:2#807020" />
-		<person id="c1543aab-18a4-44ad-be31-34bc1c972553" first_name="Santiago" last_name="Perez" nick_name="de Chile" fictional="1" gender="1" bookable="0" />
+		<person id="c1543aab-18a4-44ad-be31-34bc1c972553" first_name="Santiago" last_name="Perez" nick_name="de Chile" fictional="1" gender="1" castable="0" />
 		<person id="22274e45-da7e-4fb2-8698-3a2364973e1a" first_name="Matthias" last_name="Pfeife" nick_name="" fictional="1" gender="1" />
 		<person id="afa8d190-c907-4fcf-9c34-d55136ab3c99" first_name="Mariusz" last_name="Plauz" nick_name="" fictional="1" gender="1" />
 		<person id="ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4" first_name="Beatrix" last_name="Plauz" nick_name="" fictional="1" gender="2" />
-		<person id="9eb98994-41a1-45f3-b70f-bcf4c7393224" first_name="Pelé" last_name="Queruan" nick_name="Gravedigger" fictional="1" gender="1" bookable="0" />
+		<person id="9eb98994-41a1-45f3-b70f-bcf4c7393224" first_name="Pelé" last_name="Queruan" nick_name="Gravedigger" fictional="1" gender="1" castable="0" />
 		<person id="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Erwin" last_name="Rotnase" fictional="1" gender="1" />
 		<person id="0c774ab3-9301-4759-a3e1-40520dc9e7b9" first_name="Paul" last_name="Sarte" nick_name="" fictional="1" gender="1" job="128" />
 		<person id="edb89eb9-1592-41cb-83b6-81eeecfacfd3" first_name="Antonali" last_name="Schwipsiwupsi" nick_name="" fictional="1" gender="1" />
-		<person id="3d9fa753-1621-46b2-b0fe-8096cbba644b" first_name="Bernd" last_name="Snake" nick_name="Die Schlange" fictional="1" gender="1" bookable="0" />
+		<person id="3d9fa753-1621-46b2-b0fe-8096cbba644b" first_name="Bernd" last_name="Snake" nick_name="Die Schlange" fictional="1" gender="1" castable="0" />
 		<person id="fa5cf4fe-7704-4eab-808b-5ea8f3935c6d" first_name="Brecht" last_name="Span" nick_name="" fictional="1" gender="1" />
-		<person id="b306d6f7-83c6-474d-b291-71245e2700c4" first_name="Andreas" last_name="Stahlhammer" nick_name="" fictional="1" gender="1" bookable="0" />
+		<person id="b306d6f7-83c6-474d-b291-71245e2700c4" first_name="Andreas" last_name="Stahlhammer" nick_name="" fictional="1" gender="1" castable="0" />
 		<person id="11c74211-662a-4817-b5b5-ec2c635d0158" first_name="Heiner" last_name="Trubbl" nick_name="" fictional="1" gender="1" />
-		<person id="c3494dd5-506b-46d1-97bd-12182ffa88da" first_name="Wladimir" last_name="Putschkin" nick_name="" fictional="1" bookable="0" comment="a Putschkin that should be treated as a parody version" />
-		<person id="e94ba1d8-bb1f-4650-afea-3647a248b94d" first_name="Jupp" last_name="XII." nick_name="" fictional="1" bookable="0" />
+		<person id="c3494dd5-506b-46d1-97bd-12182ffa88da" first_name="Wladimir" last_name="Putschkin" nick_name="" fictional="1" castable="0" comment="a Putschkin that should be treated as a parody version" />
+		<person id="e94ba1d8-bb1f-4650-afea-3647a248b94d" first_name="Jupp" last_name="XII." nick_name="" fictional="1" castable="0" />
 		<person id="be56dbc0-3bf4-4326-a2a5-f30edf94fd2a" first_name="Ludwig" last_name="Zerbst" nick_name="" fictional="1" gender="1" />
 		<person id="6781fa1c-b8cb-4ad6-9fb5-5222d61a00b7" first_name="Stanislav" last_name="Breczker" nick_name="" fictional="1" gender="1" />
 		<person id="5c93b075-3f35-4ef7-8ef7-e0e99af0ad48" first_name="Ulli" last_name="Katshek" nick_name="" fictional="1" gender="1" />
@@ -225,12 +225,12 @@
 		<!-- start programme -->
 		<person id="Ronny-person-various-sjaele" first_name="Själe" last_name="Fjieldsgröhn" fictional="1" gender="1" country="D" job="1" face_code="1:2:3:FEDCCF:-1:-1:2:-1:11#0590B0:14:6:-1:4:7:3:7#45240C:-1:-1"/>
 		<!-- start programme - not available for custom productions -->
-		<person id="Ronny-person-various-ukuleleorchesterstarscrazy" first_name="Ukuleleorchester STARSCrazy" last_name="" nick_name="" fictional="1" gender="1" bookable="0" job="16" />
-		<person id="Ronny-person-various-helmut" first_name="Helmut" last_name="" nick_name="Helmut" fictional="1" gender="1" bookable="0" country="D" job="64" />
-		<person id="Ronny-person-various-ratz" first_name="Ratz" last_name="" nick_name="Ratz" fictional="1" gender="1" bookable="0" country="D" job="64" />
-		<person id="Ronny-person-various-teppic" first_name="Teppic" last_name="" nick_name="Teppic" fictional="1" gender="1" bookable="0" country="D" job="64" />
-		<person id="Ronny-person-various-therob" first_name="TheRob" last_name="" nick_name="TheRob" fictional="1" gender="1" bookable="0" country="D" job="64" />
-		<person id="Ronny-person-various-sushitv" first_name="SushiTV" last_name="" nick_name="SushiTV" fictional="1" gender="1" bookable="0" country="D" job="64" />
+		<person id="Ronny-person-various-ukuleleorchesterstarscrazy" first_name="Ukuleleorchester STARSCrazy" last_name="" nick_name="" fictional="1" gender="1" castable="0" job="16" />
+		<person id="Ronny-person-various-helmut" first_name="Helmut" last_name="" nick_name="Helmut" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person id="Ronny-person-various-ratz" first_name="Ratz" last_name="" nick_name="Ratz" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person id="Ronny-person-various-teppic" first_name="Teppic" last_name="" nick_name="Teppic" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person id="Ronny-person-various-therob" first_name="TheRob" last_name="" nick_name="TheRob" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person id="Ronny-person-various-sushitv" first_name="SushiTV" last_name="" nick_name="SushiTV" fictional="1" gender="1" castable="0" country="D" job="64" />
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
