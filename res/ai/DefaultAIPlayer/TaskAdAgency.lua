@@ -13,9 +13,10 @@ _G["TaskAdAgency"] = class(AITask, function(c)
 
 	--budget handling for fixedCosts
 	c.RequiresBudgetHandling = true
+	--Strafen
+	c.Penalties = {}
 
 	-- zu Senden
-	-- Strafe
 	-- Zuschauer
 	-- Zeit
 end)
@@ -76,6 +77,32 @@ function TaskAdAgency:getStrategicPriority()
 end
 
 
+function TaskAdAgency:OnMoneyChanged(value, reason, reference)
+	--naive statistics on contracts with penalty
+	--increase count with each penalty paid and consequently reduce attractiveness for this spot
+	--start counting on day 4, in the first days failures are not "systematic"
+	reason = tonumber(reason)
+	if reason == TVT.Constants.PlayerFinanceEntryType.PAY_PENALTY and getPlayer().gameDay > 4 then
+		if self.Penalties == nil then self.Penalties = {} end
+		--reference.id --id is different for each contract instance
+		local id = reference:GetTitle() 
+		local entry = self.Penalties[id]
+		if entry == nil then
+			entry = {
+				title = reference:GetTitle();
+				penaltyCount = 0;
+				penaltySum = 0;
+			}
+			self:LogInfo(entry.title)
+			self.Penalties[id] = entry
+		end
+		entry.penaltyCount = entry.penaltyCount + 1
+		entry.penaltySum = entry.penaltySum + value
+		self:LogDebug("pay ad penalty: " .. entry.title .. " - count "..entry.penaltyCount .." penalty sum "..entry.penaltySum)
+	end
+end
+
+
 function TaskAdAgency.GetAllAdContracts()
 	local response = TVT.sa_getSignedAdContracts()
 	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
@@ -99,10 +126,11 @@ end
 
 
 
-function TaskAdAgency.SortAdContractsByAttraction(list)
+function TaskAdAgency.SortAdContractsByAttraction(list, penalties)
 	if (table.count(list) > 1) then
 		-- precache complex weight calculation
 		local weights = {}
+		if penalties == nil then penalties = {} end
 		for k,v in pairs(list) do
 			--is a single number for attraction possible?
 			--profit/penalty per audience is not a good indicator!!
@@ -110,7 +138,19 @@ function TaskAdAgency.SortAdContractsByAttraction(list)
 			--weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfitCPM(TVT.ME) * (0.8 + 0.2 * 1.0/v.GetPenaltyCPM(TVT.ME))
 			--weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfit(TVT.ME) * (0.8 + 0.2 * 1.0/v.GetPenalty(TVT.ME))
 			--ignore penalty but make spot count more important (increases risk as well)
-			weights[ v.GetID() ] = (0.5 + 0.5*(0.85^(v.GetSpotCount()-1)) * v.GetProfit(TVT.ME) / v.GetSpotCount())
+			local count = v.GetSpotCount()
+			local profit = v.GetProfit(TVT.ME)
+			local id = v.GetID()
+			if count > 3 and 2 * profit < v.GetPenalty(TVT.ME) then
+				--ignore high risk ad
+				weights[ id ] = 0
+			else
+				weights[ id ] = (0.5 + 0.5*(0.85^(count-1)) * profit / count)
+			end
+			local penalty = penalties[v.GetTitle()]
+			if penalty ~= nil then
+				weights[ id ] = weights[ id ] / (1.5 ^ penalty.penaltyCount)
+			end
 		end
 
 		-- sort
@@ -261,6 +301,12 @@ function AppraiseSpots:AppraiseSpot(spot)
 	local pressureFactorRaw = spot.GetDaysToFinish() / spot.GetSpotCount()
 	local pressureFactor = CutFactor(pressureFactorRaw, 0.2, 2)
 
+	local penaltyFactor = 1
+	if self.Task.Penalties ~= nil then
+		local entry = self.Task.Penalties[spot.GetTitle()]
+		if entry ~=nil then penaltyFactor =  1 / (1.5 ^ entry.penaltyCount) end
+	end
+	
 --[[
 	-- RISK / PENALTY
 	-- 2 = Risiko und Strafe sind im Verhältnis gering  / 0.3 = Risiko und Strafe sind Verhältnis hoch
@@ -271,7 +317,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 --]]
 
 	-- RESULTING ATTRACTION
-	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor))
+	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor * penaltyFactor))
 --[[
 	self:LogTrace("  Contract:  Spots=" .. spot.GetSpotsToSend() .."  days=" .. spot.GetDaysToFinish() .."  Audience=" .. spot.GetMinAudience(TVT.ME) .. "  Profit=" .. spot.GetProfit(TVT.ME) .." (per spot=" .. profitPerSpot .. ")  Penalty=" .. spot.GetPenalty(TVT.ME) .." (per spot=" .. penaltyPerSpot ..")")
 	self:LogTrace("  Stats:     Avg.PerSpot Profit=" .. stats.SpotProfitPerSpot.AverageValue .. "  Penalty=" .. stats.SpotPenaltyPerSpot.AverageValue .."  Audience(Avg)=" .. stats.Audience.AverageValue)
@@ -377,7 +423,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	if table.count(availableList) > 0 then
 		filteredList = FilterAdContractsByMinAudience(availableList, minGuessedAudience, guessedAudience)
 		-- sort by spot count (less is better) and profit
-		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
+		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList, self.Task.Penalties)
 	end
 	--TODO log with guard
 --[[
@@ -416,7 +462,9 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			self:LogDebug("ignore requisition - only one spot with low priority")
 		else
 			local daysToFinish = adContract.GetDaysToFinish() - 1
-			if hard == true then
+			if spotCount > 3 and adContract.GetProfit(-1) * 2 < adContract.GetPenalty(-1) then
+				--do not sign if penalty ratio is too high
+			elseif hard == true then
 				if maxTopBlocks < 18 then
 					daysToFinish = daysToFinish -1
 				end
@@ -440,7 +488,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		elseif doSign == true then
 			local minGuessedAudienceValue = minGuessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
 			local guessedAudienceValue = guessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
-			self:LogInfo("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  spotCount: " .. adContract.GetSpotCount() .."  guessedAudience=" .. math.floor(minGuessedAudienceValue) .. " - " .. math.floor(guessedAudienceValue) .." (total="..math.floor(guessedAudience.GetTotalSum()).. ")" )
+			self:LogInfo("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  spotCount: " .. spotCount .."  guessedAudience=" .. math.floor(minGuessedAudienceValue) .. " - " .. math.floor(guessedAudienceValue) .." (total="..math.floor(guessedAudience.GetTotalSum()).. ")" )
 			TVT.sa_doBuySpot(adContract.GetID())
 			requisition:UseThisContract(adContract)
 			table.insert(boughtContracts, adContract)
@@ -448,7 +496,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 			-- remove available spots from the total amount of
 			-- spots needed for this requirements
-			neededSpotCount = neededSpotCount - adContract.GetSpotCount()
+			neededSpotCount = neededSpotCount - spotCount
 		end
 
 		if (neededSpotCount <= 0) then
@@ -559,7 +607,7 @@ function SignContracts:Tick()
 	-- money to buy some)	-- try to find a contract with not too much spots / requirements
 	if (not haveLow or openSpots < 4) and contractsAllowed > 0 then
 		local availableList = table.copy(self.Task.SpotsInAgency)
-		availableList = TaskAdAgency.SortAdContractsByAttraction(availableList)
+		availableList = TaskAdAgency.SortAdContractsByAttraction(availableList, self.Task.Penalties)
 
 		local filteredList = FilterAdContractsByMinAudience(availableList, self.lowAudienceFactor * self.maxAudience / 2.5, self.lowAudienceFactor * self.maxAudience, forbiddenIDs)
 		if table.count(filteredList) > 0 then
@@ -592,7 +640,7 @@ function SignContracts:Tick()
 		-- do not be too risky and avoid a non achieveable audience requirement
 		local filteredList = FilterAdContractsByMinAudience(self.Task.SpotsInAgency, nil, 0.15 * self.maxAudience, forbiddenIDs)
 		-- sort it
-		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
+		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList, self.Task.Penalties)
 
 		--iterate over the available contracts
 		for key, contract in pairs(filteredList) do
