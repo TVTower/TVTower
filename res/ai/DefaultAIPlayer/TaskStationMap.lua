@@ -20,6 +20,7 @@ function TaskStationMap:ResetDefaults()
 	self.BasePriority = 1
 	self.NeededInvestmentBudget = 250000
 	self.InvestmentPriority = 8
+	self.LastDaySell = -1
 
 	if(self.FixedCosts == nil) then self.FixedCosts = 0 end
 
@@ -42,6 +43,10 @@ function TaskStationMap:Activate()
 
 	self.BuyStationJob = JobBuyStation()
 	self.BuyStationJob.Task = self
+
+	self.SellStationJob = JobSellStation()
+	self.SellStationJob.Task = self
+
 	if self.antennaCalculationCount == nil then
 		self.antennaCalculationCount = 0
 	end
@@ -61,6 +66,8 @@ function TaskStationMap:GetNextJobInTargetRoom()
 		return self.BuyStationJob
 	elseif (self.AdjustStationInvestmentJob.Status ~= JOB_STATUS_DONE) then
 		return self.AdjustStationInvestmentJob
+	elseif (self.SellStationJob.Status ~= JOB_STATUS_DONE) then
+		return self.SellStationJob
 	end
 
 	--is successful only when in the room!
@@ -186,6 +193,7 @@ function JobAnalyseStationMarket:Tick()
 	local population = TVT:of_getPopulation()
 
 	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
+	self.Task.coverage =  player.totalReach / population
 	if player.totalReach > population * 0.9 then
 		self.Task.maxReachIncrease = -1
 	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
@@ -592,6 +600,7 @@ function JobBuyStation:GetBestAntennaOffer()
 
 	local removeFromIntendedPositions = {}
 	local budget = self.Task.CurrentBudget
+	local coverage = self.Task.coverage
 
 	for k,pos in pairs(self.Task.intendedAntennaPositions) do
 		local x = pos.x
@@ -633,12 +642,13 @@ function JobBuyStation:GetBestAntennaOffer()
 			elseif exclusiveReach / reach < 0.7 then
 				self:LogTrace(stationString .. " -> not enough exclusive reach!")
 				tempStation = nil
---TODO remove due to running costs - but not too early, because this will cause
---removal from intended positions and re-calculation (with overlaps)
---maybe use antennaCalculationCount as guard...
---			elseif tempStation:GetRunningCosts() / exclusiveReach > 0.4 then
---				self:LogTrace(stationString .. " -> running costs too high!")
---				tempStation = nil
+			--TODO make dynamic
+			elseif coverage > 0.7 and tempStation:GetRunningCosts() / exclusiveReach > 0.395 then
+				self:LogInfo(stationString .. " -> running costs too high!")
+				tempStation = nil
+			elseif tempStation:GetRunningCosts() / exclusiveReach > 0.595 then
+				self:LogInfo(stationString .. " -> running costs too high!")
+				tempStation = nil
 			else
 				self:LogTrace(stationString .. " -> OK!")
 			end
@@ -714,5 +724,55 @@ function JobBuyStation:Tick()
 	if bestOffer == nil or self.Task.maxReachIncrease < 1000000 or self.Task.CurrentBudget < 300000 or self.purchaseCount >= 3 or getPlayer().minutesGone - self.Task.StartTask > 20 then
 		self.Status = JOB_STATUS_DONE
 	end
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobSellStation"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Task = nil
+end)
+
+function JobSellStation:typename()
+	return "JobSellStation"
+end
+
+function JobSellStation:Prepare(pParams)
+end
+
+function JobSellStation:Tick()
+	local player = getPlayer()
+	local threshold = 0.6
+	if self.Task.coverage > 0.7 then threshold = 0.4 end
+	if self.Task.coverage > 0.20 and player.gameDay ~= self.Task.LastDaySell then
+		local worstAntenna = nil
+		local worstCost = 0
+		local currentCost = 0
+		local stationCount = TVT.of_getStationCount(TVT.ME)
+
+		if stationCount > 0 then
+			for stationIndex = 0, stationCount-1 do
+				local station = TVT.of_getStationAtIndex(TVT.ME, stationIndex)
+				if station ~= nil then
+					currentCost = station.GetRunningCosts() / station.GetExclusiveReach(false)
+					if currentCost > worstCost then
+						worstCost = currentCost
+						worstAntenna = stationIndex
+					end
+				end
+			end
+		end
+		--TODO make dynamic
+		if worstCost > threshold then
+			if TVT.of_sellStation(worstAntenna) == TVT.RESULT_OK then
+				self:LogInfo("successfully sold expensive station")
+			else
+				self:LogInfo("failed to sell expensive station ")
+			end
+		end
+		self.Task.LastDaySell = player.gameDay
+	end
+	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
