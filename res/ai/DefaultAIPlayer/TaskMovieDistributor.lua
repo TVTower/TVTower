@@ -123,12 +123,12 @@ function TaskMovieDistributor:BeforeBudgetSetup()
 	local blocks = player.blocksCount
 
 	self.BudgetWeight = 8
-	if blocks >= 36 and (totalReach==nil or totalReach <= 950000) then
+	if blocks >= 36 and (totalReach==nil or totalReach <= 2500000) then
 		--reduce budget for buying antenna
 		self.BudgetWeight = 2
 	elseif maxTopBlocks < 8 then
 		--do not reduce budget
-	elseif maxTopBlocks >= 40 then
+	elseif maxTopBlocks >= 12 then
 		self.BudgetWeight = 0
 	elseif blocks >= 120 then
 		self.BudgetWeight = 2

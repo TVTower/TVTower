@@ -273,6 +273,7 @@ end
 function DefaultAIPlayer:OnDayBegins()
 	--ensure money value is correct for all onDayBegins-calls
 	self.money = TVT:GetMoney()
+	self.difficulty = MY.difficultyGUID
 	--just in case we missed a "OnGameBegins"
 	self.Strategy:Start(self)
 

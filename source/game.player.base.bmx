@@ -131,7 +131,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field Figure:TFigureBase {_exposeToLua}
 
 	Field difficulty:TPlayerDifficulty {nosave}
-	Field difficultyGUID:string = "normal"
+	Field difficultyGUID:string = "normal" {_exposeToLua}
 
 	Field playerAI:TAiBase
 

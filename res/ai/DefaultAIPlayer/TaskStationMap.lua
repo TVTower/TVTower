@@ -83,7 +83,7 @@ function TaskStationMap:BeforeBudgetSetup()
 
 	if blocks < 36 and (totalReach == nil or totalReach > 1200000) then
 		self.BudgetWeight = 0
-	elseif blocks < 50 and (totalReach == nil or totalReach > 2000000) then
+	elseif blocks < 50 and (totalReach == nil or totalReach > 5000000) then
 		self.BudgetWeight = 4
 	else
 		self.BudgetWeight = 8

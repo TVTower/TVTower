@@ -469,7 +469,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 					daysToFinish = daysToFinish -1
 				end
 				--always sign still causes too many penalties - randomize
-				if spotsLeft < 2 and spotsLeft < daysToFinish and math.random(0,100) > 60 then doSign = true end
+				if self.Player.difficulty ~= "hard" and spotsLeft < 2 and spotsLeft < daysToFinish and math.random(0,100) > 60 then doSign = true end
 			elseif avg == true then
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
 			else
