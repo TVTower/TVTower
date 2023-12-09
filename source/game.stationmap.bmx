@@ -4206,7 +4206,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local priceSplitH:Int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" ) - 2
 		Local tooltipW:Int = 225
-		Local tooltipH:Int = textH * 4 + 10 + 2
+		Local tooltipH:Int = textH * 5 + 10 + 2
 
 		If showPriceInformation Then tooltipH :+ priceSplitH
 
@@ -4330,6 +4330,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			Else
 				fontBold.DrawBox(GetFormattedCurrency(totalPrice), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			EndIf
+			textY:+ textH
+			font.Draw(GetLocale("RUNNING_COSTS")+": ", textX, textY)
+			fontBold.DrawBox(GetFormattedCurrency(GetCurrentRunningCosts()), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		EndIf
 
 		If isNextReachLevelProbable

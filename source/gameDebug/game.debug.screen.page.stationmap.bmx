@@ -4,11 +4,11 @@ Import "../game.game.bmx"
 Import "../game.stationmap.bmx"
 
 'TODO: * reset on "map" change
-'      * change summary value depending on attribute to show (reach, cost, cost per viewer)?
+'      * change summary value depending on attribute to show (reach, cost, cost per receiver)?
 Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Global _instance:TDebugScreenPage_Stationmap
-	Field attributeToShow:Int = 0 '0=exclusive reach, 1=running costs, 2=costs/1K viewer
-	Field sortMode:Int = 0 '0=default, 1=exclusive reach 2=cost, 3=cost/viewer
+	Field attributeToShow:Int = 0 '0=exclusive reach, 1=running costs, 2=costs/1K excl.receiver
+	Field sortMode:Int = 0 '0=default, 1=exclusive reach 2=cost, 3=cost/excl.receiver
 	Field currentPlayer:Int = -1
 	Field satellites:TList = CreateList()
 	Field cables:TList = CreateList()
@@ -27,7 +27,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 
 
 	Method Init:TDebugScreenPage_Stationmap()
-		Local texts:String[] = ["show exclusive reach", "show running costs", "show costs/1K Viewer", "default sort", "sort by excl. reach", "sort by running costs", "sort by cost/1K Viewer"]
+		Local texts:String[] = ["show excl. receivers", "show running costs", "show costs/1K excl.r.", "default sort", "sort by excl. receivers", "sort by running costs", "sort by cost/1K excl.r."]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
@@ -113,7 +113,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Function SortByReach:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return s1.GetReceivers() - s2.GetReceivers()
+			Return s1.GetStationExclusiveReceivers() - s2.GetStationExclusiveReceivers()
 		End Function
 
 		Function SortByCost:Int(o1:Object, o2:Object)
@@ -125,7 +125,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Function SortByCostPerViewer:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return 1000.0 * s1.GetRunningCosts() / s1.GetReceivers() -  1000.0 * s2.GetRunningCosts() / s2.GetReceivers()
+			Return 1000.0 * s1.GetRunningCosts() / s1.GetStationExclusiveReceivers() -  1000.0 * s2.GetRunningCosts() / s2.GetStationExclusiveReceivers()
 		End Function
 	End Method
 
@@ -263,17 +263,20 @@ endrem
 			textFont.DrawBox(detailsStationName, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 
 			textY :+ 10
-			textFont.DrawBox("Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox("Receivers", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
-			textFont.DrawBox("excl. Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox("excl. Receivers", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetStationExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("Costs", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetRunningCosts()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
-			textFont.DrawBox("Costs/1K Viewer", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox("Costs/1K Receivers", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
+			textFont.DrawBox("Costs/1K excl.R.", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetStationExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 		EndIf
 
 
@@ -284,7 +287,7 @@ endrem
 				Case 1
 					Return MathHelper.DottedValue(station.GetRunningCosts())
 				Case 2
-					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetReceivers())
+					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetStationExclusiveReceivers())
 			End Select
 		EndFunction
 	End Method
