@@ -550,6 +550,21 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		actionButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 )
 		cancelButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 )
 	End Method
+
+	Method getRunningCostsString:String(station:TStationBase)
+		If station.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
+			return "-/-"
+		ElseIf KeyManager.IsDown(KEY_LSHIFT) OR KeyManager.IsDown(KEY_RSHIFT)
+			Local excl:Int = station.GetStationExclusiveReceivers()
+			If excl
+				Return TFunctions.convertValue(station.GetCurrentRunningCosts()*1000 / excl, 2, 0)+"/1000"
+			Else
+				Return "-"
+			EndIf
+		Else
+			return TFunctions.convertValue(station.GetCurrentRunningCosts(), 2, 0)
+		EndIf
+	End Method
 End Type
 
 
@@ -681,11 +696,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetStationExclusiveReceivers() )
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-							runningCost = "-/-"
-						Else
-							runningCost = TFunctions.convertValue(selectedStation.GetCurrentRunningCosts(), 2, 0)
-						EndIf
+						runningCost = getRunningCostsString(selectedStation)
 					EndIf
 
 				Case TScreenHandler_StationMap.MODE_BUY_ANTENNA
@@ -702,11 +713,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 						reachChange = MathHelper.DottedValue(selectedStation.GetStationExclusiveReceivers())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
-						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-							runningCost = "-/-"
-						Else
-							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-						EndIf
+						runningCost = getRunningCostsString(selectedStation)
 
 						Local finance:TPlayerFinance = GetPlayerFinance(TScreenHandler_StationMap.currentSubRoom.owner)
 						canAfford = (Not finance Or finance.canAfford(totalPrice))
@@ -962,11 +969,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-							runningCost = "-/-"
-						Else
-							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-						EndIf
+						runningCost = getRunningCostsString(selectedStation)
 
 
 						local runningCostChange:int = selectedStation.GetCurrentRunningCosts() - selectedStation.GetRunningCosts()
@@ -1000,12 +1003,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 '						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
-
-						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-							runningCost = "-/-"
-						Else
-							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-						EndIf
+						runningCost = getRunningCostsString(selectedStation)
 
 						Local finance:TPlayerFinance = GetPlayerFinance(TScreenHandler_StationMap.currentSubRoom.owner)
 						canAfford = (Not finance Or finance.canAfford(totalPrice))
@@ -1374,12 +1372,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 							endif
 
 							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-
-							If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-								runningCost = "-/-"
-							Else
-								runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-							EndIf
+							runningCost = getRunningCostsString(selectedStation)
 						endif
 					EndIf
 					autoRenewCheckbox.Show()
@@ -1401,12 +1394,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
-
-						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-							runningCost = "-/-"
-						Else
-							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-						EndIf
+						runningCost = getRunningCostsString(selectedStation)
 
 						Local finance:TPlayerFinance = GetPlayerFinance(TScreenHandler_StationMap.currentSubRoom.owner)
 						canAfford = (Not finance Or finance.canAfford(selectedStation.GetPrice()))
