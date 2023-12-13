@@ -1185,6 +1185,7 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 	requisition.TaskId = _G["TASK_ADAGENCY"]
 	requisition.TaskOwnerId = _G["TASK_SCHEDULE"]
 	requisition.Priority = 3
+	requisition.Hour = hour
 	requisition.Level = level
 	requisition.GuessedAudience = guessedAudience
 	requisition.Count = 1
@@ -1246,7 +1247,16 @@ function JobAnalyzeEnvironment:Tick()
 		self:LogInfo("Startprogramme missing: Raising priority for movie distributor! " .. mdTask.SituationPriority)
 	end
 
---TODO remove creating requisitiosn; all licences are iterated once more 
+	--remove prime requisitions - create new ones when planning now
+	for k,v in pairs(self.Task.SpotRequisition) do
+		if (v.Level > 4) then
+			self:LogInfo("removing old requisitions - new planning")
+			Player:RemoveRequisition(v)
+		end
+	end
+
+
+--TODO remove creating requisitions; all licences are iterated once more 
 --and the condition will almost never hit; enough licences are strategic issue
 --[[
 	-- only order new programmes if the start programmes are fulfilled already

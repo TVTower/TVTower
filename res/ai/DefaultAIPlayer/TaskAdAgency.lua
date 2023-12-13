@@ -376,6 +376,13 @@ function SignRequisitedContracts:Tick()
 	end
 
 	for k,requisition in pairs(self.SpotRequisitions) do
+		if (requisition.Hour ~= nil and requisition.Level > 4 and self.Player.hour > requisition.Hour - 1) then
+			self:LogDebug("discarding requisition - to late to complete")
+			--self.Player:RemoveRequisition(requisition)
+			--TODO check req removal
+			--requisition:RemoveSlotRequisitionByTime(self.Player.day, self.Player.hour - 1)
+			requisition:RemoveSlotRequisitionByTime(self.Player.day, self.Player.hour - 2)
+		end
 		local neededSpotCount = requisition.Count
 		local guessedAudience = requisition.GuessedAudience
 
@@ -387,6 +394,10 @@ function SignRequisitedContracts:Tick()
 		if (signedContracts == 0) then
 			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6), true)
 		end
+		if (signedContracts == 0 and requisition.Level > 4 ) then
+			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.4), true)
+		end
+		
 	end
 	self.Status = JOB_STATUS_DONE
 end
