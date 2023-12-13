@@ -320,7 +320,7 @@ Type TNewsEventTemplateCollection
 
 			_unusedInitialTemplatesCount[genreIndex] = 0
 			For local t:TNewsEventTemplate = EachIn unusedTemplates.Values()
-				if t.newsType <> TVTNewsType.InitialNews then continue
+				if Not t Or t.newsType <> TVTNewsType.InitialNews then continue
 				'only interested in a specific genre?
 				if genre <> -1 and t.genre <> genre then continue
 
