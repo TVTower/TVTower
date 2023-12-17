@@ -445,6 +445,11 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		local ignoreLicences = player.licencesToSell
 		local maxTopicalityBlocks = 0
 		local totalBlocks = 0
+		local maxTopThreshold = 0.4
+		if player.blocksCount ~=nil then
+			if player.blocksCount > 60 then maxTopThreshold = 0.5 end
+			if player.blocksCount > 100 then maxTopThreshold = 0.6 end
+		end
 		self.availableProgrammes = {}
 		for i=0,TVT.of_getProgrammeLicenceCount()-1 do
 			local licence = TVT.of_getProgrammeLicenceAtIndex(i)
@@ -462,7 +467,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 					if not table.contains(ignoreLicences, licence:GetReferenceID()) then
 						local blocks = licence.data.GetBlocks(0)
 						totalBlocks = totalBlocks + blocks
-						if licence:GetTopicality() >= 0.4 and licence:GetRelativeTopicality() > 0.99 then 
+						if licence:GetTopicality() >= maxTopThreshold and licence:GetRelativeTopicality() > 0.99 then 
 							maxTopicalityBlocks = maxTopicalityBlocks + blocks
 						end
 					end
@@ -1249,8 +1254,8 @@ function JobAnalyzeEnvironment:Tick()
 
 	--remove prime requisitions - create new ones when planning now
 	for k,v in pairs(self.Task.SpotRequisition) do
-		if (v.Level > 4) then
-			self:LogInfo("removing old requisitions - new planning")
+		if (v.Level > 4 or math.floor(v.GuessedAudience.GetTotalSum()) < 1000) then
+			self:LogDebug("removing old/invalid requisitions - new planning")
 			Player:RemoveRequisition(v)
 		end
 	end

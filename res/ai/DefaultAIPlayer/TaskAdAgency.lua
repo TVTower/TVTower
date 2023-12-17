@@ -353,6 +353,7 @@ function SignRequisitedContracts:Prepare(pParams)
 	self.maxAudience = MY.GetMaxAudience()
 	self.highAudienceFactor = 0.08
 	self.avgAudienceFactor = 0.045
+	self.lowAudienceFactor = 0.003
 
 	self.Player = getPlayer()
 	self.SpotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_ADAGENCY"])
@@ -388,14 +389,14 @@ function SignRequisitedContracts:Tick()
 
 		self:LogDebug("  process ad requisition:  neededSpots="..neededSpotCount .."  guessedAudience="..math.floor(guessedAudience.GetTotalSum()))
 		-- 0.9 and 0.7 may be too strict for finding contracts
-		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8), false)
+		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8), 0)
 --TODO prevent signing rubbish contract
 --		if (signedContracts == 0 and tonumber(guessedAudience.GetTotalSum()) > 5000) then
 		if (signedContracts == 0) then
-			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6), true)
+			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6), 1)
 		end
 		if (signedContracts == 0 and requisition.Level > 4 ) then
-			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.4), true)
+			signedContracts = self:SignMatchingContracts(requisition, self:GetMinGuessedAudience(guessedAudience, 0.7), self:GetMinGuessedAudience(guessedAudience, 0.4), 2)
 		end
 		
 	end
@@ -417,13 +418,13 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 end
 
 
-function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minGuessedAudience, isFallback)
+function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minGuessedAudience, fallBackMode)
 	local signed = 0
 	local boughtContracts = {}
 	local neededSpotCount = requisition.Count
 
 	if (neededSpotCount <= 0) then
-		self:LogError("SignMatchingContracts() with requisition.Count=0.", true)
+		self:LogError("SignMatchingContracts() with requisition.Count=0.")
 		return 0
 	end
 
@@ -447,6 +448,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	--raise min audience to certain level or prevent requisition
 	local highAudience = self.maxAudience * self.highAudienceFactor
 	local avgAudience = self.maxAudience * self.avgAudienceFactor
+	local lowAudience = self.maxAudience * self.lowAudienceFactor
+	local toLow = false
 	local easy = false
 	local avg = false
 	local hard = false
@@ -456,6 +459,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		hard = true
 	elseif audienceTotal > avgAudience then
 		avg = true
+	elseif audienceTotal < lowAudience and fallBackMode > 0 then
+		toLow = true
 	else
 		easy = true
 	end
@@ -467,20 +472,29 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		local doSign = false
 		local spotCount = adContract.GetSpotCount()
 		local spotsLeft = spotCount - neededSpotCount
-		if spotsLeft <= 0 then
+		--self:LogInfo("considering " .. adContract.getTitle() .. " " .. adContract.GetMinAudience(TVT.ME))
+		if toLow == true then
+			self:LogDebug("ignoring fallback requisition for audience".. audienceTotal)
+		elseif spotsLeft <= 0 then
 			doSign = true
-		elseif neededSpotCount == 1 and requisition.Priority < 4 then
+		elseif neededSpotCount == 1 and requisition.Priority < 3 then
 			self:LogDebug("ignore requisition - only one spot with low priority")
 		else
-			local daysToFinish = adContract.GetDaysToFinish() - 1
+			local daysToFinish = adContract.GetDaysToFinish()
 			if spotCount > 3 and adContract.GetProfit(-1) * 2 < adContract.GetPenalty(-1) then
 				--do not sign if penalty ratio is too high
 			elseif hard == true then
-				if maxTopBlocks < 18 then
+				if maxTopBlocks < 8 then
 					daysToFinish = daysToFinish -1
 				end
-				--always sign still causes too many penalties - randomize
-				if self.Player.difficulty ~= "hard" and spotsLeft < 2 and spotsLeft < daysToFinish and math.random(0,100) > 60 then doSign = true end
+				if fallBackMode == 0 then
+					--always sign still causes too many penalties - randomize
+					if self.Player.difficulty ~= "hard" and spotsLeft < 2 and spotsLeft < daysToFinish and math.random(0,100) > 60 then doSign = true end
+				elseif fallBackMode == 1 then
+					if spotsLeft < 2 and spotsLeft < daysToFinish and math.random(0,100) > 30 then doSign = true end
+				else
+					if spotsLeft < 3 and spotsLeft < daysToFinish then doSign = true end
+				end
 			elseif avg == true then
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
 			else

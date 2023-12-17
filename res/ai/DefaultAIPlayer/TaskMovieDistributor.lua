@@ -129,7 +129,7 @@ function TaskMovieDistributor:BeforeBudgetSetup()
 	elseif maxTopBlocks < 8 then
 		--do not reduce budget
 	elseif maxTopBlocks >= 12 then
-		self.BudgetWeight = 0
+		self.BudgetWeight = 1
 	elseif blocks >= 120 then
 		self.BudgetWeight = 2
 	elseif blocks >= 75 then
