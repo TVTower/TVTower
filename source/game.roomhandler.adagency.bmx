@@ -731,6 +731,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		Next
 
 		'create missing gui elements for the players contracts
+		SortContracts(programmeCollection.adContracts, ListSortMode)
 		For Local contract:TAdContract = EachIn programmeCollection.adContracts
 			If guiListSuitcase.ContainsContract(contract) Then Continue
 			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
