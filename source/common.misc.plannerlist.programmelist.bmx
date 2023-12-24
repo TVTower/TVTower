@@ -23,6 +23,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	Field subEntriesPages:int = 1
 
 	Field maxLicencesPerPage:Int = 8
+	Field maxSubLicencesPerPage:Int = 8
 
 	Field entriesButtonPrev:TGUIButton
 	Field entriesButtonNext:TGUIButton
@@ -176,7 +177,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 174, GetEntriesRect().GetY() + 27, GetEntrySize().GetX(), 0)
 			subEntriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_top.default").area.h)
 			'max 10 licences per page
-			subEntriesRect.MoveH( maxLicencesPerPage * GetEntrySize().y)
+			subEntriesRect.MoveH( maxSubLicencesPerPage * GetEntrySize().y)
 			subEntriesRect.MoveH( GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.h)
 			'height added when button visible
 			'subEntriesRectButtonH = GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH() - GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
@@ -342,18 +343,19 @@ Type TgfxProgrammelist Extends TPlannerList
 
 	End Method
 
-	Method RecalculateMaxLicenceCount:Int(licenceCount:Int)
+	Method RecalculateMaxLicenceCount:Int(licenceCount:Int, currentMax:Int, isRegularTapes:Int = True)
 		Local newSize:Int = 8
-		'debug different pagings - are the buttons rendered correctly
-		'If licenceCount > 2 Then newSize = 2
 		If licenceCount > 8 Then newSize = 15
-		If maxLicencesPerPage <> newSize
-			entriesButtonPrev = null
-			entriesButtonNext = null
-			subEntriesButtonPrev = null
-			subEntriesButtonNext = null
-			maxLicencesPerPage = newSize
+		If currentMax <> newSize
+			If isRegularTapes
+				entriesButtonPrev = null
+				entriesButtonNext = null
+			Else
+				subEntriesButtonPrev = null
+				subEntriesButtonNext = null
+			EndIf
 		EndIf
+		Return newSize
 	End Method
 
 	Method DrawTapes:Int(filterIndex:Int=-1, mode:Int=0)
@@ -365,7 +367,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 		Local licences:TList = GetLicences(owner, filterIndex)
 
-		RecalculateMaxLicenceCount(licences.Count())
+		maxLicencesPerPage = RecalculateMaxLicenceCount(licences.Count(), maxLicencesPerPage)
 
 		SetEntriesPages( int(ceil(licences.Count() / Float(maxLicencesPerPage))) )
 
@@ -583,8 +585,8 @@ Type TgfxProgrammelist Extends TPlannerList
 			return False
 		endif
 
-		RecalculateMaxLicenceCount(licences.Count())
-		
+		maxLicencesPerPage= RecalculateMaxLicenceCount(licences.Count(), maxLicencesPerPage)
+
 		SetEntriesPages( int(ceil(licences.Count() / Float(maxLicencesPerPage))) )
 
 		'handle page buttons (before other click handling here)
@@ -601,6 +603,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				if entriesButtonPrev.IsClicked()
 					entriesPage = Min(entriesPage, entriesPage-1)
 					entriesButtonPrev.mouseIsClicked = null
+					hoveredParentalLicence = Null
 
 					'handled left click
 					MouseManager.SetClickHandled(1)
@@ -620,6 +623,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				if entriesButtonNext.IsClicked()
 					entriesPage = Max(entriesPage, entriesPage+1)
 					entriesButtonNext.mouseIsClicked = null
+					hoveredParentalLicence = Null
 
 					'handled left click
 					MouseManager.SetClickHandled(1)
@@ -723,9 +727,9 @@ Type TgfxProgrammelist Extends TPlannerList
 		'retrieve only existing sub licences (ignore empty/reserved slots)
 		Local subLicences:TProgrammeLicence[] = parentLicence.GetSubLicences()
 
-		RecalculateMaxLicenceCount(subLicences.length)
+		maxSubLicencesPerPage = RecalculateMaxLicenceCount(subLicences.length, maxSubLicencesPerPage, False)
 
-		SetSubEntriesPages( int(ceil(subLicences.length / Float(maxLicencesPerPage))) )
+		SetSubEntriesPages( int(ceil(subLicences.length / Float(maxSubLicencesPerPage))) )
 
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 
@@ -737,8 +741,8 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
-		local startIndex:int = (subEntriesPage-1)*maxLicencesPerPage
-		local endIndex:int = subEntriesPage*maxLicencesPerPage -1
+		local startIndex:int = (subEntriesPage-1)*maxSubLicencesPerPage
+		local endIndex:int = subEntriesPage*maxSubLicencesPerPage -1
 		'if no paging was used, hide empty slots
 		'(to have consistent button coordinates we show empty slots on
 		' subsequent pages)
@@ -922,9 +926,9 @@ Type TgfxProgrammelist Extends TPlannerList
 		'retrieve only existing sub licences (ignore empty/reserved slots)
 		Local subLicences:TProgrammeLicence[] = parentLicence.GetSubLicences()
 
-		RecalculateMaxLicenceCount(subLicences.length)
+		maxSubLicencesPerPage = RecalculateMaxLicenceCount(subLicences.length, maxSubLicencesPerPage, False)
 
-		SetSubEntriesPages( int(ceil(subLicences.length / Float(maxLicencesPerPage))) )
+		SetSubEntriesPages( int(ceil(subLicences.length / Float(maxSubLicencesPerPage))) )
 
 
 		'handle page buttons (before other click handling here)
@@ -970,8 +974,8 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		Local currY:Int = GetSubEntriesRect().GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-		local startIndex:int = (subEntriesPage-1)*maxLicencesPerPage
-		local endIndex:int = Min(subLicences.length-1, subEntriesPage*maxLicencesPerPage -1)
+		local startIndex:int = (subEntriesPage-1)*maxSubLicencesPerPage
+		local endIndex:int = Min(subLicences.length-1, subEntriesPage*maxSubLicencesPerPage -1)
 		For Local i:Int = startIndex to endIndex
 			Local licence:TProgrammeLicence = subLicences[i]
 
