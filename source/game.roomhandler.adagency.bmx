@@ -1513,8 +1513,15 @@ Type TGuiAdContract Extends TGUIGameListItem
 		If Not isDragable()
 			'in our collection
 			If contract.owner = GetObservedPlayerID()
+				Local daysLeft:Int = contract.GetDaysLeft()
 				SetAlpha( 0.80*oldColA )
-				SetColor( 200,200,200 )
+				If daysLeft <= 0
+					 SetColor( 240,150,150 )
+				ElseIf daysLeft <= 1
+					SetColor( 255,190,190)
+				Else
+					SetColor( 200,200,200 )
+				EndIf
 			Else
 				SetAlpha( 0.70*oldColA )
 '				SetColor 250,200,150
