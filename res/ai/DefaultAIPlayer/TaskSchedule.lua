@@ -474,8 +474,12 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 				end
 			end
 		end
-		player.blocksCount = totalBlocks
-		player.maxTopicalityBlocksCount = maxTopicalityBlocks
+		--for some reason the total count is occasionally 0 although there are licences (NPEs?)
+		--self:LogInfo("new count: "..player.blocksCount.." "..totalBlocks)
+		if totalBlocks > 0 then
+			player.blocksCount = totalBlocks
+			player.maxTopicalityBlocksCount = maxTopicalityBlocks
+		end
 		--TODO check if max topicality blocks should be used for scheduling
 		--if maxTopicalityBlocks > 24 then self.useMaxTopicalityOnly = true end
 	end

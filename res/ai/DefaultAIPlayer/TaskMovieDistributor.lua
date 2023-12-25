@@ -529,16 +529,26 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 		self.SeriesMaxPrice = movieBudget
 	end
 
+	self.MaxPricePerBlock = -1
+	if self.Task.blocksCount < 40 and player.money > 5000000 then
+		--restarted player, do not limit price per block
+	else
+		if (player.maxIncomePerSpot ~=nil and player.maxIncomePerSpot > 0) then self.MaxPricePerBlock = player.maxIncomePerSpot end
+	end
+	--TODO factor risk sensitive/depend on difficulty
+	--TODO make dynamic, increase if enough money/reach/available blocks
+	self.MaxPricePerBlock = self.MaxPricePerBlock * 2
+
 	--TODO check quality gates
 	local ScopeMovies = maxQualityMovies - minQualityMovies
-	self.PrimetimeMovieMinQuality = math.max(0, math.round(minQualityMovies + (ScopeMovies * 0.75)))
-	self.DayMovieMinQuality = math.max(0, math.round(minQualityMovies + (ScopeMovies * 0.4)))
+	self.PrimetimeMovieMinQuality = math.max(0, math.round(minQualityMovies + (ScopeMovies * 0.70)))
+	self.DayMovieMinQuality = math.max(0, math.round(minQualityMovies + (ScopeMovies * 0.25)))
 
 	local ScopeSeries = maxQualitySeries - minQualitySeries
-	self.PrimetimeSeriesMinQuality = math.max(0, math.round(minQualitySeries + (ScopeSeries * 0.75)))
-	self.DaySeriesMinQuality = math.max(0, math.round(minQualitySeries + (ScopeSeries * 0.4)))
+	self.PrimetimeSeriesMinQuality = math.max(0, math.round(minQualitySeries + (ScopeSeries * 0.70)))
+	self.DaySeriesMinQuality = math.max(0, math.round(minQualitySeries + (ScopeSeries * 0.25)))
 
-	self:LogDebug("Adjusted movies niveau:  MovieMaxPrice=" .. math.floor(self.MovieMaxPrice) .."  PrimetimeMovieMinQuality=" .. self.PrimetimeMovieMinQuality .. "  DayMovieMinQuality=" .. self.DayMovieMinQuality)
+	self:LogDebug("Adjusted movies niveau:  MovieMaxPrice=" .. math.floor(self.MovieMaxPrice) .."  PrimetimeMovieMinQuality=" .. self.PrimetimeMovieMinQuality .. "  DayMovieMinQuality=" .. self.DayMovieMinQuality .. " MaxPricePerBlock=".. self.MaxPricePerBlock)
 	self:LogDebug("         series niveau:  SeriesMaxPrice=" .. math.floor(self.SeriesMaxPrice) .."  PrimetimeSeriesMinQuality=" .. self.PrimetimeSeriesMinQuality .. "  DaySeriesMinQuality=" .. self.DaySeriesMinQuality)
 end
 
@@ -587,7 +597,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	-- satisfied basic requirements?
 	if (licence.IsSingle() == 1) then
-		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, qualityGate)) then
+		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, self.MaxPricePerBlock, qualityGate)) then
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable
 		else
@@ -596,7 +606,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 			return
 		end
 	else
-		if (CheckMovieBuyConditions(licence, self.SeriesMaxPrice, qualityGate)) then
+		if (CheckMovieBuyConditions(licence, self.SeriesMaxPrice, self.MaxPricePerBlock, qualityGate)) then
 			pricePerBlockStats = stats.SeriesPricePerBlockAcceptable
 			qualityStats = stats.SeriesQualityAcceptable
 		else

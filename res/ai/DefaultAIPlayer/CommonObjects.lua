@@ -2,8 +2,10 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Movie ist jetzt nur noch ein Wrapper
 
-function CheckMovieBuyConditions(licence, maxPrice, minQuality)
-	if maxPrice ~= nil and (licence.GetPrice(-1) > maxPrice) then return false; end
+function CheckMovieBuyConditions(licence, maxPrice, maxPricePerBlock, minQuality)
+	local price = licence.GetPrice(TVT.ME)
+	if maxPrice ~= nil and (price > maxPrice) then return false; end
+	if maxPricePerBlock~=nil and maxPricePerBlock > 0 and price / licence.GetBlocks(2) > maxPricePerBlock then return false; end
 	if (minQuality ~= nil) and (licence.GetQuality() < minQuality) then return false; end
 	return true
 end
