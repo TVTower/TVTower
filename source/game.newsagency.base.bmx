@@ -230,7 +230,7 @@ Type TNewsAgency
 		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + RandRange(5,20) * TWorldTime.MINUTELENGTH
 
 		Local NewsChainEvent1:TNewsEvent
-		If bombRedirectedByPlayers = 0 Or RandRange(0,90) < 90
+		If bombRedirectedByPlayers = 0 Or RandRange(0,100) < 90
 			'chain 1
 			Local qualityChain1:Float = 0.01 * randRange(50,60)
 			Local priceChain1:Float = 1.0 + 0.01 * randRange(-5,10)
@@ -256,7 +256,7 @@ Type TNewsAgency
 				'decrease image for all caught channels
 				data.AddString("trigger", "broadcastFirstTime")
 				data.AddString("type", "ModifyChannelPublicImage")
-				data.AddInt("value", -3)
+				data.AddDouble("value", -0.03)
 				data.AddBool("valueIsRelative", True)
 				data.AddInt("playerID", pID)
 				data.AddString("log", "decrease image for all caught channels")
@@ -267,7 +267,7 @@ Type TNewsAgency
 			data = New TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddInt("value", 5)
+			data.AddDouble("value", 0.05)
 			data.AddBool("valueIsRelative", True)
 			'use playerID of broadcasting player
 			data.AddInt("playerID", 0)
@@ -281,7 +281,7 @@ Type TNewsAgency
 			data = New TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddInt("value", 2)
+			data.AddDouble("value", 0.02)
 			data.AddBool("valueIsRelative", True)
 			'use playerID of broadcasting player
 			data.AddInt("playerID", 0)

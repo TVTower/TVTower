@@ -349,7 +349,6 @@ Type TRoomBoardBase
 								If Not sign.IsAtOriginalPosition()
 									sign.MarkMoved(GetPlayerBase().playerID)
 								Else
-									sign.movedByPlayers = 0
 									sign.lastMoveByPlayerID = 0
 								EndIf
 							EndIf
