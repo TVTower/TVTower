@@ -251,8 +251,8 @@ function AppraiseSpots:AppraiseCurrentSpot()
 end
 
 function AppraiseSpots:AppraiseSpot(spot)
-	self:LogTrace("AppraiseSpot: " .. spot.GetTitle() )
 	self:LogTrace("===================")
+	self:LogTrace("AppraiseSpot: " .. spot.GetTitle() )
 	local player = getPlayer()
 	local stats = player.Stats
 	local score = -1
@@ -267,15 +267,16 @@ function AppraiseSpots:AppraiseSpot(spot)
 	end
 
 	--TODO more sophisticated max audience says only so much if all programmes have low topicality
-	if (spotMinAudience > stats.Audience.MaxValue * 0.7) then
+	if (spotMinAudience > (stats.Audience.MaxValue + stats.Audience.TotalMaxValue) * 0.4) then
 		self:LogTrace("  too much audience! " .. spotMinAudience .. " / " .. stats.Audience.MaxValue)
 		spot.SetAttractivenessString("-1")
 		return
 	end
 
 
-	local profitPerSpot = spot.GetProfit(TVT.ME) / spot.GetSpotCount()
-	local penaltyPerSpot = spot.GetPenalty(TVT.ME) / spot.GetSpotCount()
+	local spotCount = spot.GetSpotCount()
+	local profitPerSpot = spot.GetProfit(TVT.ME) / spotCount
+	local penaltyPerSpot = spot.GetPenalty(TVT.ME) / spotCount
 
 	-- PROFIT
 	-- 2 = paid well, 0.2 = way below average
@@ -286,7 +287,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 	-- PENALTY
 	-- 2 = low penalty, 0.2 = way too high penalty
 	local penaltyFactorRaw = 1.0 / (penaltyPerSpot / stats.SpotPenaltyPerSpot.AverageValue)
-	penaltyFactorRaw = penaltyFactorRaw / (1.05 ^ (spot.GetSpotCount() - 1))
+	penaltyFactorRaw = penaltyFactorRaw / (1.1 ^ (spotCount - 1))
 	local penaltyFactor = CutFactor(penaltyFactorRaw, 0.2, 2)
 
 
@@ -298,13 +299,13 @@ function AppraiseSpots:AppraiseSpot(spot)
 	--TODO nicht die Anzahl der Tage sind interessant sondern die Anzahl der potentiellen Slots
 	-- DURATION / TIME CONSTRAINTS
 	-- 2 leicht zu packen / 0.3 hoher Druck
-	local pressureFactorRaw = spot.GetDaysToFinish() / spot.GetSpotCount()
+	local pressureFactorRaw = spot.GetDaysToFinish() / spotCount
 	local pressureFactor = CutFactor(pressureFactorRaw, 0.2, 2)
 
-	local penaltyFactor = 1
+	local paidPenaltyFactor = 1
 	if self.Task.Penalties ~= nil then
 		local entry = self.Task.Penalties[spot.GetTitle()]
-		if entry ~=nil then penaltyFactor =  1 / (1.5 ^ entry.penaltyCount) end
+		if entry ~=nil then paidPenaltyFactor =  1 / (1.25 ^ entry.penaltyCount) end
 	end
 	
 --[[
@@ -317,7 +318,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 --]]
 
 	-- RESULTING ATTRACTION
-	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor * penaltyFactor))
+	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor * paidPenaltyFactor))
 --[[
 	self:LogTrace("  Contract:  Spots=" .. spot.GetSpotsToSend() .."  days=" .. spot.GetDaysToFinish() .."  Audience=" .. spot.GetMinAudience(TVT.ME) .. "  Profit=" .. spot.GetProfit(TVT.ME) .." (per spot=" .. profitPerSpot .. ")  Penalty=" .. spot.GetPenalty(TVT.ME) .." (per spot=" .. penaltyPerSpot ..")")
 	self:LogTrace("  Stats:     Avg.PerSpot Profit=" .. stats.SpotProfitPerSpot.AverageValue .. "  Penalty=" .. stats.SpotPenaltyPerSpot.AverageValue .."  Audience(Avg)=" .. stats.Audience.AverageValue)
@@ -477,6 +478,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			self:LogDebug("ignoring fallback requisition for audience".. audienceTotal)
 		elseif spotsLeft <= 0 then
 			doSign = true
+		elseif adContract.GetLimitedToProgrammeGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 then
+			self:LogDebug("ignoring contract with genre limit")
 		elseif neededSpotCount == 1 and requisition.Priority < 3 then
 			self:LogDebug("ignore requisition - only one spot with low priority")
 		else
@@ -499,7 +502,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
 			else
 				--TODO even for easy contracs too many spots left may be harmful
-				doSign = true
+				if spotsLeft < daysToFinish * 2 then doSign = true end
 			end
 		end
 

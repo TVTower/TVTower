@@ -136,8 +136,8 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		end
 		--set number of hours to Plan based on index
 		self.AdScheduleJob.hoursToPlan = 3
-		if (self.adScheduleJobIndex == 1) then
-			self.AdScheduleJob.hoursToPlan = 10
+		if (self.adScheduleJobIndex == 1 and self.Player.hour < 16) then
+			self.AdScheduleJob.hoursToPlan = 15
 		end
 		return self.AdScheduleJob
 	elseif (self.ProgrammeScheduleJob.Status ~= JOB_STATUS_DONE) then
@@ -1252,10 +1252,19 @@ function JobAnalyzeEnvironment:Tick()
 		self:LogInfo("Startprogramme missing: Raising priority for movie distributor! " .. mdTask.SituationPriority)
 	end
 
-	--remove prime requisitions - create new ones when planning now
+	--remove requisitions - create new ones when planning now
+	local reach = 0
+	if Player.totalReach ~= nil then reach = Player.totalReach end
 	for k,v in pairs(self.Task.SpotRequisition) do
-		if (v.Level > 4 or math.floor(v.GuessedAudience.GetTotalSum()) < 1000) then
-			self:LogDebug("removing old/invalid requisitions - new planning")
+		local ratio = 0.03
+		if reach > 0 then ratio = math.floor(v.GuessedAudience.GetTotalSum()) / reach end
+		--self:LogInfo(v.GuessedAudience.GetTotalSum() .." "..ratio)
+		if (v.Level > 4) and (Player.hour > 19 or ratio > 0.07) then
+			self:LogDebug("removing prime requisitions - new planning")
+			Player:RemoveRequisition(v)
+		end
+		if ratio < 0.003 then
+			self:LogDebug("removing low requisitions - new planning")
 			Player:RemoveRequisition(v)
 		end
 	end

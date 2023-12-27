@@ -507,12 +507,20 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			end
 		end
 		local timesShown = broadcastMaterialSource:GetTimesBroadcasted(forPlayer)
-		if timesShown >= 15 then
+		if timesShown >= 7 then
 			result=result * 0.3
-		elseif timesShown >= 10 then
-			result=result * 0.6
 		elseif timesShown >= 5 then
+			result=result * 0.6
+		elseif timesShown >= 3 then
 			result=result * 0.8
+		elseif timesShown == 0 then
+			result=result * 1.3
+			if hour < 19 or hour > 22 then
+				--TODO make genre dependent; many blocks - new cheap stuff also earlier 
+				if broadcastMaterialSource:GetTopicality() > 0.6 then
+					result= result * 0.3
+				end
+			end 
 		end
 		if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 			result = result * 0.5
