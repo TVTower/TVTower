@@ -237,7 +237,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			local item:TGUIArchivedMessageListItem = new TGUIArchivedMessageListItem.Create(null, null, message.GetTitle())
 			item.message = message
 			item.displayName = message.GetTitle()
-			item.SetSize(400, 70)
+			item.SetSize(400, Max(70, item.GetContentHeight(400)+5))
 			messageList.AddItem( item )
 		Next
 
