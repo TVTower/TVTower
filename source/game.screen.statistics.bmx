@@ -407,8 +407,10 @@ endrem
 
 		If parent.showDay = GetWorldTime().GetDay()
 			parent.nextDayButton.Disable()
+			dataChart.autoHoverSegment = GetWorldTime().GetDayHour()
 		Else
 			parent.nextDayButton.Enable()
+			dataChart.autoHoverSegment = -1
 		EndIf
 
 		'CHART
@@ -1291,6 +1293,8 @@ Type TDataChart
 	Field valueDisplayMaximumY:Float
 	Field valueDisplayMinimumY:Float
 
+	'segment implicitly hovered if no other is hovered explicitly
+	Field autoHoverSegment:Int = -1
 	'depending of to viewport
 	'Field _dataStartIndex:Int
 	'Field _dataEndIndex:Int
@@ -1556,7 +1560,11 @@ Type TDataChart
 					SetHoveredSegment(i)
 
 					If MouseManager.IsClicked(1)
-						SetSelectedSegment(i)
+						If selectedSegment = i
+							SetSelectedSegment(-1)
+						Else
+							SetSelectedSegment(i)
+						EndIf
 						'handled single click
 						MouseManager.SetClickHandled(1)
 					EndIf
@@ -1565,6 +1573,9 @@ Type TDataChart
 				EndIf
 				startX :+ xSegmentWidth
 			Next
+		EndIf
+		If hoveredSegment < 0 And selectedSegment < 0 And autoHoverSegment >= 0
+			hoveredSegment = autoHoverSegment
 		EndIf
 	End Method
 
@@ -1615,7 +1626,8 @@ Type TDataChart
 				SetColor 255,255,255
 				DrawRect(x + 1 + GetSegmentStart(currentSegment), y+1, GetSegmentWidth(currentSegment), h-2)
 			endif
-			if selectedSegment >= 0
+			'selected segment itself is hovered or no other segment is hovered
+			if selectedSegment >= 0 And (hoveredSegment < 0 Or selectedSegment = hoveredSegment)
 				SetAlpha 0.15
 				SetBlend ShadeBlend
 				SetColor(selectedColor)
