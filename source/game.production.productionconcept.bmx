@@ -930,7 +930,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
  				attributeMod :+ attributeGenre * attributePerson
 				attributeCount :+ 1
-				'print person.GetFullName() + ":  " + TVTPersonPersonality.GetAsString(attributeID) + " : personValue="+attributePerson + " genreValue="+attributeGenre
+				'print person.GetFullName() + ":  " + TVTPersonPersonalityAttribute.GetAsString(attributeID) + " : personValue="+attributePerson + " genreValue="+attributeGenre
 			Next
 			'calc average
 			if attributeCount > 1 Then attributeMod :/ attributeCount
