@@ -567,10 +567,12 @@ Struct SAudienceBase
 		'loop through all targetGroup-entries and add them if contained
 		Local result:Float
 		Local oneFound:Int = False
+		Local group:Int
 		'do NOT start with 0 ("all")
 		For Local i:Int = 1 To TVTTargetGroup.count
-			If targetIDs & TVTTargetGroup.GetAtIndex(i)
-				result :+ Get(i)
+			group = TVTTargetGroup.GetAtIndex(i)
+			If targetIDs & group
+				result :+ Get(group)
 				oneFound = True
 			EndIf
 		Next
@@ -650,10 +652,10 @@ Struct SAudienceBase
 End Struct
 
 
-'Diese Klasse repräsentiert das Publikum, dass die Summe seiner Zielgruppen ist.
+'Diese Klasse reprï¿½sentiert das Publikum, dass die Summe seiner Zielgruppen ist.
 'Die Klasse kann sowohl Zuschauerzahlen als auch Faktoren/Quoten beinhalten
 'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
-'TAudience-Klassen ermöglichen.
+'TAudience-Klassen ermï¿½glichen.
 Type TAudienceBase {_exposeToLua="selected"}
 	Field data:SAudienceBase
 
@@ -1453,7 +1455,7 @@ End Struct
 
 
 Type TAudience {_exposeToLua="selected"}
-	'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf füllen!
+	'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf fï¿½llen!
 	Field Id:Int
 	Field data:SAudience
 
