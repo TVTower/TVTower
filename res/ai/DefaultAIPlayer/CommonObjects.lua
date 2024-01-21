@@ -384,13 +384,13 @@ end
 function AIToolsClass:GetAudienceQualityLevel(day, hour)
 	if hour > 22 or hour <=1 then
 		return 4
-	elseif hour >=20 then
+	elseif hour >=19 then
 		return 5
-	elseif hour >=16 then
+	elseif hour >=15 then
 		return 4
-	elseif hour >= 11 then
+	elseif hour >= 10 then
 		return 3
-	elseif hour >=7 then
+	elseif hour >= 6 then
 		return 2
 	else
 		return 1
@@ -422,6 +422,7 @@ function AIToolsClass:GetMaxAudiencePercentage(day, hour)
 end
 --]]
 
+--TODO this cannot be done without context (all existing licences)
 function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
 	if broadcastMaterial == nil then return 0 end
 	--TODO raw-QualityLevel!! also consider number of licences und average quality!!

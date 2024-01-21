@@ -191,10 +191,10 @@ function JobAnalyseStationMarket:Tick()
 	end
 	--]]
 	local population = TVT:of_getPopulation()
+	player.coverage = player.totalReach / population
 
 	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
-	self.Task.coverage =  player.totalReach / population
-	if player.totalReach > population * 0.9 then
+	if player.coverage > 0.9 then
 		self.Task.maxReachIncrease = -1
 	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
 		self:determineIntendedPositions()
@@ -600,7 +600,7 @@ function JobBuyStation:GetBestAntennaOffer()
 
 	local removeFromIntendedPositions = {}
 	local budget = self.Task.CurrentBudget
-	local coverage = self.Task.coverage
+	local coverage = player.coverage
 
 	for k,pos in pairs(self.Task.intendedAntennaPositions) do
 		local x = pos.x
@@ -744,8 +744,8 @@ end
 function JobSellStation:Tick()
 	local player = getPlayer()
 	local threshold = 0.6
-	if self.Task.coverage > 0.7 then threshold = 0.4 end
-	if self.Task.coverage > 0.20 and player.gameDay ~= self.Task.LastDaySell then
+	if player.coverage > 0.7 then threshold = 0.4 end
+	if player.coverage > 0.20 and player.gameDay ~= self.Task.LastDaySell then
 		local worstAntenna = nil
 		local worstCost = 0
 		local currentCost = 0

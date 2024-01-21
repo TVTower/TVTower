@@ -124,7 +124,12 @@ function BudgetManager:AllocateBudgetToTasks(money)
 	if hour > 7 then
 		hourPart = math.min(24, 4 + hour)/24
 	end
-	allFixedCostsSavings = math.round(allFixedCostsSavings * hourPart)
+	local safetyNet = 0
+	if player.coverage ~= nil then
+		if player.coverage > 0.8 then safetyNet = allFixedCostsSavings * 0.6 end
+		if player.coverage > 0.6 then safetyNet = allFixedCostsSavings * 0.3 end
+	end
+	allFixedCostsSavings = safetyNet + math.round(allFixedCostsSavings * hourPart)
 
 	self:Log(string.left("F.C.+reserve (for hour):", 25, true) .. string.right(allFixedCostsSavings, 10, true))
 

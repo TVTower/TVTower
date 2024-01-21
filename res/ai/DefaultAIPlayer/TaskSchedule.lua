@@ -444,11 +444,12 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		local player = getPlayer()
 		local ignoreLicences = player.licencesToSell
 		local maxTopicalityBlocks = 0
+		local lowMaxTopBlocks = 0
 		local totalBlocks = 0
-		local maxTopThreshold = 0.4
+		local maxTopThreshold = 0.5
 		if player.blocksCount ~=nil then
-			if player.blocksCount > 60 then maxTopThreshold = 0.5 end
-			if player.blocksCount > 100 then maxTopThreshold = 0.6 end
+			if player.blocksCount > 60 then maxTopThreshold = 0.6 end
+			if player.blocksCount > 100 then maxTopThreshold = 0.7 end
 		end
 		self.availableProgrammes = {}
 		for i=0,TVT.of_getProgrammeLicenceCount()-1 do
@@ -467,8 +468,12 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 					if not table.contains(ignoreLicences, licence:GetReferenceID()) then
 						local blocks = licence.data.GetBlocks(0)
 						totalBlocks = totalBlocks + blocks
-						if licence:GetTopicality() >= maxTopThreshold and licence:GetRelativeTopicality() > 0.99 then 
-							maxTopicalityBlocks = maxTopicalityBlocks + blocks
+						if licence:GetRelativeTopicality() > 0.99 then
+							if licence:GetTopicality() >= maxTopThreshold then 
+								maxTopicalityBlocks = maxTopicalityBlocks + blocks
+							else
+								lowMaxTopBlocks = lowMaxTopBlocks + blocks
+							end
 						end
 					end
 				end
@@ -481,7 +486,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			player.maxTopicalityBlocksCount = maxTopicalityBlocks
 		end
 		--TODO check if max topicality blocks should be used for scheduling
-		--if maxTopicalityBlocks > 24 then self.useMaxTopicalityOnly = true end
+		if lowMaxTopBlocks > 20 then self.useMaxTopicalityOnly = true end
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
@@ -521,7 +526,7 @@ function TaskSchedule:FilterProgrammeLicencesByBroadcastableState(licenceList, d
 end
 
 
-
+--TODO check usage and fallbacks!!
 function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRerunsToday, fixedDay, fixedHour, useLicences)
 	if useLicences == nil then
 		useLicences = {}
@@ -530,6 +535,7 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 	-- select suiting ones from the list of broadcastable licences
 	local resultingLicences = {}
 	for k,licence in pairs(useLicences) do
+		--TODO determine broadcastlevel depending on all existing licences!!
 		local qLevel = AITools:GetBroadcastQualityLevel(licence)
 		if fixedHour > 21 or fixedHour < 4 and licence.GetData().IsXRated() == 1 then
 			if qLevel + 1 == maxLevel or qLevel - 2 >= minLevel then
@@ -561,7 +567,7 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 	return resultingLicences
 end
 
-
+--TODO check usage
 function TaskSchedule:GetMaxTopicalityLicences(licencesToUse, level)
 	local weights = {}
 	for k,l in pairs(licencesToUse) do

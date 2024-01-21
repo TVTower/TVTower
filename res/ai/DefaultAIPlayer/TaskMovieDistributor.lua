@@ -537,7 +537,13 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	end
 	--TODO factor risk sensitive/depend on difficulty
 	--TODO make dynamic, increase if enough money/reach/available blocks
-	self.MaxPricePerBlock = self.MaxPricePerBlock * 2
+	local maxTopBlocks = player.maxTopicalityBlocksCount
+	if maxTopBlocks > 6 then
+		self.MaxPricePerBlock = self.MaxPricePerBlock * 1.3
+		movieBudget = movieBudget * 0.7
+	else
+		self.MaxPricePerBlock = self.MaxPricePerBlock * 2
+	end
 
 	--TODO check quality gates
 	local ScopeMovies = maxQualityMovies - minQualityMovies
