@@ -78,13 +78,10 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		person.firstName = pg.firstName
 		person.lastName = pg.lastName
 		person.countryCode = pg.countryCode.ToUpper()
+		person.gender = pg.gender
 		person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		person.SetFlag(TVTPersonFlag.BOOKABLE, True)
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, True)
-		If gender <= 0
-			gender = GetPersonGenerator().GetRandomGender()
-		EndIf
-		person.gender = gender
 
 		'avoid others of same name
 		GetPersonGenerator().ProtectDataset(pg)
