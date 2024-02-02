@@ -923,6 +923,99 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				Local playerID:Int = 1
+				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
+				Local data:TDebugAudienceInfoForPlayer = New TDebugAudienceInfoForPlayer
+				Local minute:Int = GetWorldTime().GetDayMinute()
+				data.playerID = playerID
+				data.Update(minute)
+
+				Local sb:TStringBuilder = New TStringBuilder
+				print("P" + playerID + ": " + data.progTitle)
+				sb.Append("DebugScr: ")
+				sb.Append("data.potAudience=" + data.potAudience + " ")
+				sb.Append("(" + MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100) + "%) ")
+				sb.Append("Bevölkerung=" + audienceResult.WholeMarket.data.GetTotalSum() + " ")
+				sb.Append("ar.audience.GetTotalSum=" + TFunctions.convertValue(audienceResult.Audience.GetTotalSum(),2) + " ")
+				sb.Append("(" + MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%) ")
+				print(sb.ToString())
+
+				sb.SetLength(0)
+				sb.Append("Tooltip: ")
+				Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetPopulation()
+				Local totalReach:Int = GetStationMapCollection().GetPopulation()
+				sb.Append("Pot. Reichweite=" + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " ")
+				sb.Append("("+MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%) ")
+				sb.Append("Sendegebiet=" + TFunctions.convertValue(reach, 2, 0) + " ")
+				sb.Append("(" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "%) ")
+				print(sb.ToString())
+				print("Senderkarte: Gesamtbevoelkerung="+totalReach)
+
+				print "AudienceResult:"
+				print audienceResult.ToString()
+rem				
+				print "Check markets:"
+				local includeChannelMask:SChannelMask = new SChannelMask(1)
+				local excludeChannelMask:SChannelMask = includeChannelMask.negated()
+				print "include: " + includeChannelMask.ToString() + "  exclude: " + excludeChannelMask.ToString()
+
+		AddMarket(new SChannelMask(2))				'2
+		AddMarket(new SChannelMask(4))				'3
+		AddMarket(new SChannelMask(8))				'4
+		AddMarket(new SChannelMask(1 + 2))			'1 & 2
+		AddMarket(new SChannelMask(1 + 4))			'1 & 3
+		AddMarket(new SChannelMask(1 + 8))			'1 & 4
+		AddMarket(new SChannelMask(2 + 4))			'2 & 3
+		AddMarket(new SChannelMask(2 + 8))			'2 & 4
+		AddMarket(new SChannelMask(4 + 8))			'3 & 4
+
+		AddMarket(new SChannelMask(1 + 2 + 4))		'1 & 2 & 3
+		AddMarket(new SChannelMask(1 + 2 + 8))		'1 & 2 & 4
+		AddMarket(new SChannelMask(1 + 4 + 8))		'1 & 3 & 4
+		AddMarket(new SChannelMask(2 + 4 + 8))		'2 & 3 & 4
+
+		AddMarket(new SChannelMask(1 + 2 + 4 + 8))	'1 & 2 & 3 & 4
+endrem
+rem
+'senderkartewerte:
+GetStationMap(1, True).GetReachedReceivers() = 59746431
+GetStationMap(2, True).GetReachedReceivers() = 63861682
+'Werte genutzt bei Quotenberechnung
+GetBroadcastManager().GetAudienceResult(1).WholeMarket = Sum = 65779892  ( C:3037057.75/2883132.5 / T:3374508.25/3203480.5 / H:789358.812/7104227.5 / E:15984514/10656342 / U:1628052.375/1332042.75 / M:1578717.375/394679.344 / P:5801786/8011990 )
+GetBroadcastManager().GetAudienceResult(2).WholeMarket = Sum = 69334248  ( C:3201162.25/3038920 / T:3556846.5/3376577.5 / H:832011.125/7488097.5 / E:16848222/11232148 / U:1716022.625/1404018.5 / M:1664021.75/416005.438 / P:6115280/8444910 )
+-> bei allen ist "GetReachedReceivers()" > "WholeMarket"
+
+-> Summe aller Maerkte variiert möglicherweise nicht korrekt
+Vor Sendemastkauf:
+current markets for p1:
+  001: Sum = 2781588  ( C:128425.93/121917.008 / T:142695.469/135463.344 / H:33379.063/300411.5 / E:675925.875/450617.25 / U:68844.312/56327.16 / M:66758.117/16689.529 / P:245336.047/338797.375 )
+  002: Sum = 129275  ( C:5968.627/5666.123 / T:6631.808/6295.692 / H:1551.3/13961.699 / E:31413.826/20942.551 / U:3199.556/2617.819 / M:3102.6/775.65 / P:11402.056/15745.694 )
+  003: Sum = 135875  ( C:6273.349/5955.401 / T:6970.388/6617.112 / H:1630.5/14674.5 / E:33017.625/22011.75 / U:3362.906/2751.469 / M:3261/815.25 / P:11984.176/16549.574 )
+  004: Sum = 23609  ( C:1090.028/1034.782 / T:1211.142/1149.758 / H:283.308/2549.772 / E:5736.987/3824.658 / U:584.323/478.082 / M:566.616/141.654 / P:2082.314/2875.576 )
+  005: Sum = 14825280  ( C:684483.187/649792.062 / T:760536.875/721991.125 / H:177903.391/1601130.125 / E:3602543.25/2401695.5 / U:366925.688/300211.938 / M:355806.719/88951.68 / P:1307589.75/1805719 )
+  006: Sum = 292874  ( C:13521.993/12836.667 / T:15024.437/14262.964 / H:3514.489/31630.391 / E:71168.383/47445.59 / U:7248.632/5930.698 / M:7028.976/1757.244 / P:25831.488/35672.051 )
+  007: Sum = 575851  ( C:26587.043/25239.551 / T:29541.158/28043.943 / H:6910.213/62191.902 / E:139931.797/93287.867 / U:14252.313/11660.983 / M:13820.424/3455.106 / P:50790.059/70138.648 )
+  008: Sum = 47015536  ( C:2170707.5/2060691 / T:2411897/2289656.5 / H:564186.562/5077677.5 / E:11424776/7616517 / U:1163634.625/952064.625 / M:1128372.875/282093.219 / P:4146770.25/5726492 )
+  SUM: 65779888
+Nach Sendemastkauf: (da sollte Markt 001 doch bspweise NICHT geringer sein)
+(auch andere Werte schwanken gehoerig)
+
+current markets for p1:
+  001: Sum = 523739  ( C:24181.031/22955.48 / T:26867.812/25506.09 / H:6284.87/56563.809 / E:127268.586/84845.719 / U:12962.541/10605.715 / M:12569.736/3142.434 / P:46193.781/63791.406 )
+  002: Sum = 861902  ( C:39794.016/37777.164 / T:44215.574/41974.629 / H:10342.826/93085.406 / E:209442.203/139628.125 / U:21332.074/17453.516 / M:20685.646/5171.412 / P:76019.758/104979.664 )
+  003: Sum = 931279  ( C:42997.156/40817.961 / T:47774.613/45353.285 / H:11175.351/100578.125 / E:226300.812/150867.203 / U:23049.158/18858.4 / M:22350.695/5587.674 / P:82138.805/113429.773 )
+  004: Sum = 247831  ( C:11442.358/10862.433 / T:12713.73/12069.369 / H:2973.973/26765.746 / E:60222.934/40148.621 / U:6133.818/5018.578 / M:5947.944/1486.986 / P:21858.693/30185.814 )
+  005: Sum = 5834251.5  ( C:269367.438/255715.266 / T:299297.125/284128.063 / H:70011.039/630099.187 / E:1417723.25/945148.812 / U:144397.75/118143.602 / M:140022.047/35005.512 / P:514581.031/710611.875 )
+  006: Sum = 522826  ( C:24138.879/22915.465 / T:26820.975/25461.627 / H:6273.913/56465.203 / E:127046.727/84697.812 / U:12939.944/10587.228 / M:12547.823/3136.956 / P:46113.254/63680.199 )
+  007: Sum = 646751  ( C:29860.496/28347.098 / T:33178.328/31496.773 / H:7761.014/69849.102 / E:157160.5/104773.664 / U:16007.089/13096.708 / M:15522.023/3880.506 / P:57043.438/78774.266 )
+  008: Sum = 40912592  ( C:1888934.5/1793199 / T:2098816/1992443.25 / H:490951.219/4418560 / E:9941760/6627840 / U:1012586.75/828480 / M:981902.187/245475.547 / P:3608490.5/4983153.5 )
+  SUM: 50481172
+  
+  
+Stationmap: antenna=513545  satellite=25145977  cable=19556281    sum=45215803
+-> Werte vor und Nach Antennenkauf gleich? 
+-> sollte nicht so sein - oder?
+endrem
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				'rem
