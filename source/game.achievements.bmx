@@ -228,10 +228,10 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 
 		if IsCompleted(map.owner, time) or IsFailed(map.owner, time) then return False
 
-		if minReachAbsolute >= 0 and map.GetReach() >= minReachAbsolute
+		if minReachAbsolute >= 0 and map.GetReceivers() >= minReachAbsolute
 			SetCompleted(map.owner, time)
 		endif
-		if minReachPercentage >= 0 and map.getCoverage() >= minReachPercentage
+		if minReachPercentage >= 0 and map.GetReceiverCoverage() >= minReachPercentage
 			SetCompleted(map.owner, time)
 		endif
 

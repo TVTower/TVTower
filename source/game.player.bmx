@@ -339,14 +339,19 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetMaxAudience:Int() {_exposeToLua}
-		Return GetStationMap(playerID, True).GetReach()
+	Method GetChannelReceivers:Int() {_exposeToLua}
+		Return GetStationMap(playerID, True).GetReceivers()
+	End Method
+
+
+	Method GetChannelPopulation:Int() {_exposeToLua}
+		Return GetStationMap(playerID, True).GetPopulation()
 	End Method
 
 
 	'override
-	Method GetAudienceReachLevel:Int() {_exposeToLua}
-		Return GetStationMap(playerID, True).GetReachLevel( GetMaxAudience() )
+	Method GetChannelReachLevel:Int() {_exposeToLua}
+		Return TStationMap.GetPopulationLevel( GetChannelPopulation() )
 	End Method
 
 

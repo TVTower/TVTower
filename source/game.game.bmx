@@ -855,12 +855,12 @@ endrem
 		'Local s:TStationBase = New TStationAntenna.Init(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x, GetStationMapCollection().mapInfo.startAntennaSurfacePos.y , -1, playerID )
 
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
-		If s.getReach() < GameRules.stationInitialIntendedReach
+		If s.GetReceivers() < GameRules.stationInitialIntendedReach
 			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
 				Local cable:TStationBase = map.GetTemporaryCableNetworkUplinkStation(cableIndex)
 				If cable
-					If cable.getReach() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
-						If TStationAntenna(s) or cable.getReach() < s.getReach()
+					If cable.GetReceivers() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
+						If TStationAntenna(s) or cable.GetReceivers() < s.GetReceivers()
 							s = cable
 						EndIf
 					EndIf
@@ -891,7 +891,7 @@ endrem
 		map.DoCensus()
 		map.Update()
 		GetStationMapCollection().Update()
-		If GetStationMap(playerID).GetReach() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReach() returned 0."
+		If GetStationMap(playerID).GetReceivers() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReceivers() returned 0."
 
 
 		'=== FINANCE ===

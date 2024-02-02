@@ -126,7 +126,7 @@ Type TMissions
 		Local image:TPublicImage = playerForScore.GetPublicImage()
 		result.image = image.GetAverageImage()
 		Local map:TStationMap =  GetStationMapCollection().GetMap(player, True)
-		result.reach = map.getCoverage()
+		result.reach = map.GetPopulationCoverage()
 		result.betty = GetBetty().GetInLove(player)
 		Return result
 	EndFunction
@@ -266,7 +266,7 @@ Type TSimpleMission extends TMission
 				currentPlayer = currentPlayerFinance.playerID
 			case "REACH"
 				If not currentPlayerMap Then currentPlayerMap = GetStationMapCollection().GetMap(playerID, True)
-				Local coverage:Float = currentPlayerMap.GetCoverage()
+				Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
 				currentValue = Int(coverage*100)
 				currentPlayer = currentPlayerMap.GetOwner()
 			case "IMAGE"
@@ -463,7 +463,7 @@ Type TCombinedMission extends TMission
 			currentPlayer = currentPlayerFinance.playerID
 			If money < 0 And currentMoney >= abs(money) And currentPlayer <> playerID Then failFast = True
 		ElseIf currentPlayerMap
-			Local coverage:Float = currentPlayerMap.GetCoverage()
+			Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
 			currentReach = Int(coverage*100)
 			currentReachRaw = coverage
 			currentPlayer = currentPlayerMap.GetOwner()
@@ -497,7 +497,7 @@ Type TCombinedMission extends TMission
 			EndIf
 			If reach And not currentReach
 				If not currentPlayerMap Then currentPlayerMap = GetStationMapCollection().GetMap(currentPlayer, True)
-				Local coverage:Float = currentPlayerMap.GetCoverage()
+				Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
 				currentReach = Int(coverage*100)
 				currentReachRaw = coverage
 			EndIf

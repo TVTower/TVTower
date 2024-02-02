@@ -113,7 +113,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Function SortByReach:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return s1.GetExclusiveReach()-s2.GetExclusiveReach()
+			Return s1.GetExclusiveReceivers()-s2.GetExclusiveReceivers()
 		End Function
 
 		Function SortByCost:Int(o1:Object, o2:Object)
@@ -125,7 +125,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Function SortByCostPerViewer:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return 1000.0 * s1.GetRunningCosts() / s1.GetExclusiveReach() -  1000.0 * s2.GetRunningCosts() / s2.GetExclusiveReach()
+			Return 1000.0 * s1.GetRunningCosts() / s1.GetExclusiveReceivers() -  1000.0 * s2.GetRunningCosts() / s2.GetExclusiveReceivers()
 		End Function
 	End Method
 
@@ -176,7 +176,7 @@ endrem
 		Local textY:Int = y + 3 - 1
 		Local map:TStationMap = GetStationMap(playerID)
 		textFont.Draw("Player: " + playerID, textX, textY)
-		textFont.DrawBox("Reach: " + MathHelper.DottedValue(map.GetReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		textFont.DrawBox("Receivers: " + MathHelper.DottedValue(map.GetReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 	End Method
 
 
@@ -193,7 +193,7 @@ endrem
 		Local xForDetails:Int = x + 540
 
 		textFont.Draw("Sat Uplinks: " + map.GetStationCount(TVTStationType.SATELLITE_UPLINK), textX, textY)
-		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetTotalSatelliteUplinkAudience(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
 		For Local station:TStationBase = EachIn satellites
 			c = SColor8.WHITE
@@ -211,7 +211,7 @@ endrem
 		textY :+ 3
 
 		textFont.Draw("Cable Uplinks: " + map.GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK), textX, textY)
-		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetTotalCableNetworkUplinkAudience(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
 		For Local station:TStationBase = EachIn cables
 			c:SColor8 = SColor8.WHITE
@@ -231,7 +231,7 @@ endrem
 		textY :+ 3
 
 		textFont.Draw("Antennas: " + map.GetStationCount(TVTStationType.ANTENNA), textX, textY)
-		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetTotalAntennaAudience(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 
 		textY :+ 12
 		For Local station:TStationBase = EachIn antennas
@@ -264,27 +264,27 @@ endrem
 
 			textY :+ 10
 			textFont.DrawBox("Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("excl. Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("Costs", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetRunningCosts()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("Costs/1K Viewer", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetExclusiveReach()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 		EndIf
 
 
 		Function getValueToShow:String(station:TStationBase, typeToShow:Int)
 			Select typeToShow
 				Case 0
-					Return MathHelper.DottedValue(station.GetExclusiveReach())
+					Return MathHelper.DottedValue(station.GetExclusiveReceivers())
 				Case 1
 					Return MathHelper.DottedValue(station.GetRunningCosts())
 				Case 2
-					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetExclusiveReach())
+					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetExclusiveReceivers())
 			End Select
 		EndFunction
 	End Method

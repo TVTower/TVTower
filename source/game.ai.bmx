@@ -756,7 +756,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method getExclusiveMaxAudience:Int()
-		Return GetStationMapCollection().GetTotalChannelExclusiveAudience(Self.ME)
+		Return GetStationMapCollection().GetChannelExclusiveReceivers(Self.ME)
 	End Method
 
 

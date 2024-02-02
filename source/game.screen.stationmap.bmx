@@ -176,7 +176,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		If TScreenHandler_StationMap.IsInBuyActionMode()
 			Local stationToBuy:TStationBase  = TScreenHandler_StationMap.selectedStation
-			If stationToBuy And stationToBuy.GetReach() > 0
+			If stationToBuy And stationToBuy.GetReceivers() > 0
 				'add the station (and buy it)
 				If GetStationMap( GetPlayerBase().playerID ).AddStation(stationToBuy, True)
 					If Not stationToBuy.isAntenna() Then stationToBuy.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, True)
@@ -186,7 +186,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		ElseIf TScreenHandler_StationMap.IsInSellActionMode()
 			'do not check reach - to allow selling "unused transmitters" / unconnected uplinks
-			If TScreenHandler_StationMap.selectedStation 'And TScreenHandler_StationMap.selectedStation.GetReach() > 0
+			If TScreenHandler_StationMap.selectedStation 'And TScreenHandler_StationMap.selectedStation.GetReceivers() > 0
 				'remove the station (and sell it)
 				If GetStationMap( GetPlayerBase().playerID ).RemoveStation(TScreenHandler_StationMap.selectedStation, True)
 					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
@@ -269,8 +269,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		TScreenHandler_StationMap.selectedStation = station
 		If TScreenHandler_StationMap.selectedStation
 			'force stat refresh (so we can display decrease properly)!
-			TScreenHandler_StationMap.selectedStation.reachExclusiveMax = -1
-			TScreenHandler_StationMap.selectedStation.GetExclusiveReach()
+			TScreenHandler_StationMap.selectedStation.InvalidateReach()
+			TScreenHandler_StationMap.selectedStation.GetExclusiveReceivers()
 			autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
 			If TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.SELLABLE)
 				autoRenewCheckbox.enable()
@@ -681,8 +681,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						'fix incorrect built (eg. code-tests with station ads before worldtime is set)
 						if selectedStation.built = 0 then selectedStation.built = GetWorldTime().GetTimeStart()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
-						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetExclusiveReach() )
+						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
+						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetExclusiveReceivers() )
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -702,8 +702,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						subHeaderText = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 						'stationName = Koordinaten?
-						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-						reachChange = MathHelper.DottedValue(selectedStation.GetExclusiveReach())
+						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
+						reachChange = MathHelper.DottedValue(selectedStation.GetExclusiveReceivers())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -961,7 +961,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					If selectedStation
 						headerText = selectedStation.GetLongName()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
-						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
+						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
@@ -999,7 +999,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						subHeaderText = GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")"
 
 						'stationName = Koordinaten?
-						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
+						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 '						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
@@ -1186,8 +1186,8 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
 
 rem
-					'if tmpSatLink.GetReach() > 0
-					if satLink.GetReach() > 0
+					'if tmpSatLink.GetReceivers() > 0
+					if satLink.GetReceivers() > 0
 						'add the station (and buy it)
 						If GetStationMap( satLink.owner ).RemoveStation(satLink, True)
 						If GetStationMap( satLink.owner ).AddStation(satLink, True)
@@ -1367,7 +1367,7 @@ endrem
 					If selectedStation
 						headerText = selectedStation.GetLongName()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
-						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
+						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
 
@@ -1412,7 +1412,7 @@ endrem
 						subHeaderText = selectedStation.GetName()
 
 						'stationName = Koordinaten?
-						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
+						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
@@ -2919,7 +2919,7 @@ endrem
 			'if mouse gets clicked, we store that position in a separate station
 			If MOUSEMANAGER.isClicked(1) OR KEYMANAGER.IsHit(KEY_SPACE)
 				'check reach and valid federal state
-				If hoveredMapSection And mouseoverStation.GetReach() > 0
+				If hoveredMapSection And mouseoverStation.GetReceivers() > 0
 					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.x, mouseoverStation.y )
 
 					'handled left click
@@ -2929,7 +2929,7 @@ endrem
 
 			'no antennagraphic in foreign countries
 			'-> remove the station so it wont get displayed
-			If Not hoveredMapSection Or mouseoverStation.GetReach() <= 0
+			If Not hoveredMapSection Or mouseoverStation.GetReceivers() <= 0
 				'mouseoverStation = Null
 				mouseoverStationPosition = Null
 			EndIf
@@ -2937,7 +2937,7 @@ endrem
 			If selectedStation
 				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(selectedStation.x, selectedStation.y)
 
-				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
+				If Not selectedMapSection Or selectedStation.GetReceivers() <= 0 Then selectedStation = Null
 			EndIf
 
 		ElseIf actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
@@ -2982,7 +2982,7 @@ endrem
 			'if mouse gets clicked, we store that position in a separate station
 			If MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
-				If hoveredMapSection And mouseoverStation.GetReach() > 0
+				If hoveredMapSection And mouseoverStation.GetReceivers() > 0
 					Local cableNetwork:TStationMap_CableNetwork = TStationMap_CableNetwork(mouseOverStation.GetProvider())
 					If cableNetwork And cableNetwork.IsLaunched()
 						selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
@@ -2996,7 +2996,7 @@ endrem
 
 			'no antennagraphic in foreign countries
 			'-> remove the station so it wont get displayed
-			If Not hoveredMapSection Or mouseoverStation.GetReach() <= 0
+			If Not hoveredMapSection Or mouseoverStation.GetReceivers() <= 0
 				mouseoverStation = Null
 				mouseoverStationPosition = Null
 			EndIf
@@ -3004,7 +3004,7 @@ endrem
 			If selectedStation
 				Local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSectionByDataXY(selectedStation.x, selectedStation.y)
 
-				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
+				If Not selectedMapSection Or selectedStation.GetReceivers() <= 0 Then selectedStation = Null
 			EndIf
 
 		ElseIf actionMode = MODE_BUY_SATELLITE_UPLINK
@@ -3046,7 +3046,7 @@ Rem
 			'if mouse gets clicked, we store that position in a separate station
 			if MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
-				if hoveredMapSection and mouseoverStation.GetReach() > 0
+				if hoveredMapSection and mouseoverStation.GetReceivers() > 0
 					selectedStation = GetStationMap(room.owner).GetTemporarySatelliteStation( mouseoverStation.sectionName )
 					selectedStation.refreshData()
 					'refresh state information
@@ -3056,7 +3056,7 @@ Rem
 
 			'no antennagraphic in foreign countries
 			'-> remove the station so it wont get displayed
-			if not hoveredMapSection or mouseoverStation.GetReach() <= 0
+			if not hoveredMapSection or mouseoverStation.GetReceivers() <= 0
 				mouseoverStation = null
 				mouseoverStationPosition = null
 			endif
@@ -3064,7 +3064,7 @@ Rem
 			if selectedStation
 				local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
 
-				if not selectedMapSection or selectedStation.GetReach() <= 0 then selectedStation = null
+				if not selectedMapSection or selectedStation.GetReceivers() <= 0 then selectedStation = null
 			endif
 endrem
 		EndIf
@@ -3217,7 +3217,7 @@ endrem
 			sprite = GetSpriteFromRegistry(station.listSpriteNameOff)
 		EndIf
 
-		Local rightValue:String = TFunctions.convertValue(station.GetReach(), 2, 0)
+		Local rightValue:String = TFunctions.convertValue(station.GetReceivers(), 2, 0)
 		Local paddingLR:Int = 2
 		Local textOffsetX:Int = paddingLR + sprite.GetWidth() + 5
 		Local textOffsetY:Int = 1

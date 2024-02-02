@@ -925,9 +925,9 @@ Type TApp
 			If KeyManager.IsHit(KEY_Y)
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
-				rem
+				'rem
 				For local pID:Int = 1 to 4
-					Print "GetStationMap("+pID+", True).GetReach() = " + GetStationMap(pID, True).GetReach()		
+					Print "GetStationMap("+pID+", True).GetReceivers() = " + GetStationMap(pID, True).GetReceivers()		
 				Next
 				For local pID:Int = 1 to 4
 					Print "GetBroadcastManager().GetAudienceResult("+pID+").WholeMarket = " + GetBroadcastManager().GetAudienceResult( pID ).WholeMarket.ToString()
@@ -937,9 +937,9 @@ Type TApp
 				local sum:Int = 0
 				local marketNum:int = 1
 				For Local market:TAudienceMarketCalculation = EachIn GetBroadcastManager().GetCurrentBroadcast().AudienceMarkets
-					For Local playerID:Int = EachIn market.playerIDs
-						if playerID = 1 'our player there?
-							print "  " + Rset(marketNum, 3).Replace(" ", "0")+": "+ market.maxAudience.ToString() 
+					For Local playerID:Int = 1 to 4
+						if market.HasChannel(playerID) and playerID = 1 'our player there?
+							print "  " + Rset(marketNum, 3).Replace(" ", "0")+": "+ market.ToString() + " " + market.maxAudience.ToString() 
 							sum :+ market.maxAudience.GetTotalSum()
 							marketNum :+ 1
 						endif
@@ -947,11 +947,21 @@ Type TApp
 				Next
 				Print "  SUM: " + sum 
 				
-				Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare([1], [2,3,4]).x
-				Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare([1], [2,3,4]).x
-				Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare([1], [2,3,4]).x
-				print "Stationmap: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork
-				endrem
+				Local onlyMeMask:SChannelMask =new SChannelMask(1)
+				Local allOthersMask:SChannelMask = onlyMeMask.negated()
+				Local audienceAntenna:Int = GetStationMapCollection().GetAntennaReceiverShare(onlyMeMask, allOthersMask).total
+				Local audienceSatellite:Int = GetStationMapCollection().GetSatelliteUplinkReceiverShare(onlyMeMask, allOthersMask).total
+				Local audienceCableNetwork:Int = GetStationMapCollection().GetCableNetworkUplinkReceiverShare(onlyMeMask, allOthersMask).total
+				print "Stationmap p1-exclusive total: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork +"    sum="+ (audienceAntenna + audienceSatellite + audienceCableNetwork)
+				audienceAntenna = GetStationMapCollection().GetAntennaReceiverShare(onlyMeMask, allOthersMask).shared
+				audienceSatellite = GetStationMapCollection().GetSatelliteUplinkReceiverShare(onlyMeMask, allOthersMask).shared
+				audienceCableNetwork = GetStationMapCollection().GetCableNetworkUplinkReceiverShare(onlyMeMask, allOthersMask).shared
+				print "Stationmap p1-exclusive shared: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork +"    sum="+ (audienceAntenna + audienceSatellite + audienceCableNetwork)
+				'endrem
+				
+				'GetReachedReceivers() ist "Audience"
+				GetStationMap( GetPlayerBase().playerID ).RecalculateReaches()
+				print GetStationMap( GetPlayerBase().playerID ).GetReceivers() +"  vs  " + audienceResult.WholeMarket.data.GetTotalSum()
 				
 				rem
 				local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
@@ -996,9 +1006,9 @@ Type TApp
 			End Rem
 			
 			Rem
-				Local reach:Int = GetStationMap( 1 ).GetReach()
+				Local reach:Int = GetStationMap( 1 ).GetReachedReceivers()
 				print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
-				reach = GetStationMap( 1 ).GetReach()
+				reach = GetStationMap( 1 ).GetReachedReceivers()
 			endrem
 
 				Rem
@@ -2707,12 +2717,12 @@ Type TSaveGame Extends TGameState
 				For local station:TStationAntenna = EachIn GetStationMap(pID).stations
 					Local oldX:Int = station.x
 					Local oldY:Int = station.y
-					Local oldReach:Int = station.reach
-					Local oldReachMax:Int = station.reachMax
+					Local oldReach:Int = station.GetReceivers()
+					Local oldReachMax:Int = station.GetPopulation()
 					Local oldRadius:Int = station.radius
 					station.radius = 31 'the one which was calculated in earlier versions
 					station.SetPosition(mapInfo.ScreenXToDataX(station.x), mapInfo.ScreenYToDataY(station.y))
-					TLogger.Log("RepairData()", "Updated station position: " + oldX + "," + oldY + " -> " + station.x + "," + station.y + "  radius: " + oldRadius+" -> " + station.radius +"  reachMax: " + oldReach + " -> " + station.GetReach(), LOG_LOADING)
+					TLogger.Log("RepairData()", "Updated station position: " + oldX + "," + oldY + " -> " + station.x + "," + station.y + "  radius: " + oldRadius+" -> " + station.radius +"  reachMax: " + oldReach + " -> " + station.GetReceivers(), LOG_LOADING)
 				Next
 			Next
 			GetStationMapCollection().antennaStationRadius = 31
@@ -5970,7 +5980,7 @@ endrem
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
 
-		Local station:TStation = TStation(triggerEvent.GetData().Get("station"))
+		Local station:TStationBase = TStationBase(triggerEvent.GetData().Get("station"))
 		If Not station Then Return False
 
 		'only interested in the players stations

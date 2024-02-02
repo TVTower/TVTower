@@ -233,7 +233,7 @@ Type TDebugScreen
 
 	Function Dev_MaxAudience(playerID:Int)
 		GetStationMap(playerID).CheatMaxAudience()
-		GetGame().SendSystemMessage("[DEV] Set Player #" + playerID + "'s maximum audience to " + GetStationMap(playerID).GetReach())
+		GetGame().SendSystemMessage("[DEV] Set Player #" + playerID + "'s maximum receivers to " + GetStationMap(playerID).GetReceivers())
 	End Function
 
 
