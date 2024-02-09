@@ -2804,21 +2804,20 @@ Type TSaveGame Extends TGameState
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
 		If savegameVersion < 20
-			'repair antenna coordinates from "pixel based" to "data based"
+			'repair station coordinates from "pixel based" to "data based"
 			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 			For local pID:Int = 1 to 4
-				For local station:TStationAntenna = EachIn GetStationMap(pID).stations
-					Local oldX:Int = station.x
-					Local oldY:Int = station.y
-					Local oldReach:Int = station.GetReceivers()
-					Local oldReachMax:Int = station.GetPopulation()
-					Local oldRadius:Int = station.radius
-					station.radius = 31 'the one which was calculated in earlier versions
+				For local station:TStationBase = EachIn GetStationMap(pID).stations
 					station.SetPosition(mapInfo.ScreenXToDataX(station.x), mapInfo.ScreenYToDataY(station.y))
-					TLogger.Log("RepairData()", "Updated station position: " + oldX + "," + oldY + " -> " + station.x + "," + station.y + "  radius: " + oldRadius+" -> " + station.radius +"  reachMax: " + oldReach + " -> " + station.GetReceivers(), LOG_LOADING)
+
+					if TStationAntenna(station)
+						'the one which was calculated in earlier versions
+						TStationAntenna(station).radius = 31
+					EndIf
 				Next
 			Next
 			GetStationMapCollection().antennaStationRadius = 31
+			TLogger.Log("RepairData()", "Updated station positions and antennas radius to new stationmap data.", LOG_LOADING)
 		EndIf
 
 		If savegameVersion < 18
@@ -3417,6 +3416,10 @@ Type TSavegameConverter
 			Case "TMyClassOld".ToLower()
 				Return "TMyClassNew"
 			EndRem
+
+			'v0.8.3: StationMap cleanup
+			Case "TStation".ToLower()
+				Return "TStationAntenna"
 			
 			Case "TPersonPersonalityAttribute".ToLower()
 				Return "TRangedFloat"
@@ -3431,6 +3434,74 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+rem
+			'v0.8.3: StationMap cleanup
+			case "TStationMap.reach:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "reach: " + reach
+				Return parent
+			case "TStationMap.reachBefore:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "reachBefore: " + reach
+				Return parent
+			case "TStationMap.reachMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "reachMax: " + reach
+				Return parent
+			case "TStationMap.cheatedMaxReach:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "cheatedMaxReach: " + reach
+				Return parent
+			case "TStationAntenna.reach:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "antenna.reach: " + reach
+				Return parent
+			case "TStationAntenna.reachMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "antenna.reachMax: " + reach
+				Return parent
+			case "TStationAntenna.reachExclusiveMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "antenna.reachExclusiveMax: " + reach
+				Return parent
+			case "TStationBase.reach:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "base.reach: " + reach
+				Return parent
+			case "TStationBase.reachMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "base.reachMax: " + reach
+				Return parent
+			case "TStationBase.reachExclusiveMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "base.reachExclusiveMax: " + reach
+				Return parent
+			case "TStationSatelliteUplink.reach:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "satellite.reach: " + reach
+				Return parent
+			case "TStationSatelliteUplink.reachMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "satellite.reachMax: " + reach
+				Return parent
+			case "TStationSatelliteUplink.reachExclusiveMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "satellite.reachExclusiveMax: " + reach
+				Return parent
+			case "TStationCableNetworkUplink.reach:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "cable.reach: " + reach
+				Return parent
+			case "TStationCableNetworkUplink.reachMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "cable.reachMax: " + reach
+				Return parent
+			case "TStationCableNetworkUplink.reachExclusiveMax:Int".ToLower()
+				Local reach:Int = int(string(fieldObject))
+				print "cable.reachExclusiveMax: " + reach
+				Return parent
+endrem
+				
 			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
 			case "TFigureCollection.entries:TMap".ToLower()
 				Local fc:TFigureCollection = TFigureCollection(parent)
