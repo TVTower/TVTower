@@ -310,7 +310,7 @@ Type TBroadcastManager
 				For Local i:Int = 1 To 4
 					Local r:TAudienceResult = bc.GetAudienceResult(i)
 					channelImageChanges[i-1] = New TAudience.Set(0, 0)
-					channelAudiences[i-1] = r.audience.Copy().Divide(r.GetPotentialMaxAudience())
+					channelAudiences[i-1] = r.GetAudienceQuote()
 					'store playerID if not done yet
 					If channelAudiences[i-1] And channelAudiences[i-1].id <= 0
 						channelAudiences[i-1].id = i
@@ -551,26 +551,6 @@ Type TBroadcast
 		AddMarket(new SChannelMask(2 + 4 + 8))		'2 & 3 & 4
 
 		AddMarket(new SChannelMask(1 + 2 + 4 + 8))	'1 & 2 & 3 & 4
-rem
-
-		AddMarket(new SChannelMask().Set(1) ) '1
-		AddMarket(new SChannelMask().Set(2) ) '2
-		AddMarket(new SChannelMask().Set(3) ) '3
-		AddMarket(new SChannelMask().Set(4) ) '4
-		AddMarket(new SChannelMask().Set(1).Set(2) ) '1 & 2
-		AddMarket(new SChannelMask().Set(1).Set(3) ) '1 & 3
-		AddMarket(new SChannelMask().Set(1).Set(4) ) '1 & 4
-		AddMarket(new SChannelMask().Set(2).Set(3) ) '2 & 3
-		AddMarket(new SChannelMask().Set(2).Set(4) ) '2 & 4
-		AddMarket(new SChannelMask().Set(3).Set(4) ) '3 & 4
-
-		AddMarket(new SChannelMask().Set(1).Set(2).Set(3) ) '1 & 2 & 3
-		AddMarket(new SChannelMask().Set(1).Set(2).Set(4) ) '1 & 2 & 4
-		AddMarket(new SChannelMask().Set(1).Set(3).Set(4) ) '1 & 3 & 4
-		AddMarket(new SChannelMask().Set(2).Set(3).Set(4) ) '2 & 3 & 4
-
-		AddMarket(new SChannelMask().Set(1).Set(2).Set(3).Set(4) ) '2 & 3 & 4
-endrem
 	End Method
 
 
@@ -696,7 +676,6 @@ endrem
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
 			'outage
-			GetAudienceResult(playerId).Title =  GetLocale("BROADCASTING_OUTAGE")
 			GetAudienceResult(playerId).broadcastOutage = True
 			attraction = CalculateMalfunction(lastProgrammeAttraction)
 		End If
@@ -1290,7 +1269,7 @@ Type TAudienceMarketCalculation
 
 			audienceResult.WholeMarket = MaxAudience
 			'100% of the audience
-			audienceResult.PotentialMaxAudience = ChannelSurferToShare
+			audienceResult.PotentialAudience = ChannelSurferToShare
 			'actual audience
 			audienceResult.Audience = channelSurfer
 

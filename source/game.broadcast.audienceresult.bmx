@@ -11,21 +11,19 @@ Import "game.broadcastmaterial.base.bmx"
 Type TAudienceResultBase {_exposeToLua="selected"}
 	'Optional: Die Id des Spielers zu dem das Result gehört.
 	Field PlayerId:Int
-	'Der Titel des Programmes
-	Field Title:String
 	'time of the broadcast this result belongs to
 	Field Time:Long
+	'the broadcast material used to calculate this audience result
 	Field broadcastMaterial:TBroadcastMaterial
-	'was it an outage (programme was not sent)?
+	'outage marker (programme was not sent?)
 	Field broadcastOutage:Int = False
-	'Die Zahl der Zuschauer die erreicht wurden.
-	'Sozusagen das Ergenis das zählt und angezeigt wird.
+	'actually reached audience (so the result which counts and is displayed)
 	Field Audience:TAudience {_exposeToLua}
-	'Der Gesamtmarkt: Also wenn alle die einen TV haben schauen wuerden
+	'market of all people who have a TV and are thus capable of watching something
 	Field WholeMarket:TAudience
 	'Die Gesamtzuschauerzahl die in dieser Stunde den TV an hat!
 	'Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
-	Field PotentialMaxAudience:TAudience
+	Field PotentialAudience:TAudience
 
 
 	Method New()
@@ -36,12 +34,11 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 	Method CopyFrom:TAudienceResultBase(other:TAudienceResultBase)
 		if other
 			PlayerId = other.PlayerId
-			Title = other.Title
 			Time = other.Time
 			broadcastMaterial = other.broadcastMaterial
 			Audience = other.Audience
 			WholeMarket = other.WholeMarket
-			PotentialMaxAudience = other.PotentialMaxAudience
+			PotentialAudience = other.PotentialAudience
 		endif
 
 		return self
@@ -51,7 +48,7 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 	Method Reset()
 		Audience = New TAudience
 		WholeMarket = New TAudience
-		PotentialMaxAudience = New TAudience
+		PotentialAudience = New TAudience
 	End Method
 
 
@@ -64,13 +61,13 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 		For local audienceResultBase:TAudienceResultBase = EachIn audienceResultBases
 			result.Audience.Add(audienceResultBase.Audience)
 			result.WholeMarket.Add(audienceResultBase.WholeMarket)
-			result.GetPotentialMaxAudience().Add(audienceResultBase.GetPotentialMaxAudience())
+			result.GetPotentialAudience().Add(audienceResultBase.GetPotentialAudience())
 		Next
 
 		If audienceResultBases.length > 1
 			result.Audience.Divide(audienceResultBases.length)
 			result.WholeMarket.Divide(audienceResultBases.length)
-			result.GetPotentialMaxAudience().Divide(audienceResultBases.length)
+			result.GetPotentialAudience().Divide(audienceResultBases.length)
 		Endif
 		
 		return result
@@ -78,15 +75,15 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 
 
 	Method GetTitle:string()
-		if title <> "" then return title
-		if broadcastMaterial then return broadcastMaterial.GetTitle()
+		If broadcastOutage Then Return GetLocale("BROADCASTING_OUTAGE")
+		If broadcastMaterial Then Return broadcastMaterial.GetTitle()
 		return ""
 	End Method
 
 
-	Method GetPotentialMaxAudience:TAudience() {_exposeToLua}
-		if not PotentialMaxAudience then PotentialMaxAudience = new TAudience
-		return PotentialMaxAudience
+	Method GetPotentialAudience:TAudience() {_exposeToLua}
+		if not PotentialAudience then PotentialAudience = new TAudience
+		return PotentialAudience
 	End Method
 
 
@@ -100,7 +97,7 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 		if not Audience then return new TAudience
 		
 		'quote = audience / maxAudience
-		return Audience.Copy().Divide( GetPotentialMaxAudience() )
+		return Audience.Copy().Divide( GetPotentialAudience() )
 	End Method
 
 
@@ -109,47 +106,47 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 	Method GetAudienceQuotePercentage:Float(gender:int=-1) {_exposeToLua}
 		if gender = -1
 			Local sum1:Float = Audience.GetTotalSum()
-			Local sum2:Float = GetPotentialMaxAudience().GetTotalSum()
+			Local sum2:Float = GetPotentialAudience().GetTotalSum()
 			if sum1 = 0 or sum2 = 0 then Return 0
 			'more exact until we use some "math library" for floats
 			return sum1 / sum2
 			'return GetAudienceQuote().GetWeightedAverage()
 		else
 			Local sum1:Float = Audience.GetGenderSum(gender)
-			Local sum2:Float = GetPotentialMaxAudience().GetGenderSum(gender)
+			Local sum2:Float = GetPotentialAudience().GetGenderSum(gender)
 			if sum1 = 0 or sum2 = 0 then Return 0
 			return sum1 / sum2
 		endif
 	End Method
 
 
-	'instead of storing "potentialMaxAudienceQuote" as field we can
+	'instead of storing "potentialAudienceQuote" as field we can
 	'create it on the fly
-	'returns the quote of PotentialMaxAudience. What percentage switched
+	'returns the quote of PotentialAudience. What percentage switched
 	'on the TV and checked the programme. Base is WholeMarket
 	'ATTENTION: to fetch the effective total audiencequote use
 	'           "GetWeightedAverage()" instead of "GetAverage()" as the
 	'           target groups are not equally weighted.
-	Method GetPotentialMaxAudienceQuote:TAudience() {_exposeToLua}
+	Method GetPotentialAudienceQuote:TAudience() {_exposeToLua}
 		'no need to calculate a quote if the audience itself is 0 already
 		'-> avoids "nan"-values when dividing with "0.0f" values
-		If GetPotentialMaxAudience().GetTotalSum() = 0 then return new TAudience
+		If GetPotentialAudience().GetTotalSum() = 0 then return new TAudience
 
 		'potential quote = potential audience / whole market
-		return GetPotentialMaxAudience().Copy().Divide(WholeMarket)
+		return GetPotentialAudience().Copy().Divide(WholeMarket)
 	End Method
 
 
 	'returns the percentage (0-1.0) of practically reachable audience
 	'(switched on the TV) compared to technically reachable audience
 	'(within range of the broadcast area)
-	Method GetPotentialMaxAudienceQuotePercentage:Float(gender:int=-1) {_exposeToLua}
+	Method GetPotentialAudienceQuotePercentage:Float(gender:int=-1) {_exposeToLua}
 		if gender = -1
 			'more exact until we use some "math library" for floats
-			return GetPotentialMaxAudience().GetTotalSum() / WholeMarket.GetTotalSum()
+			return GetPotentialAudience().GetTotalSum() / WholeMarket.GetTotalSum()
 			'return GetAudienceQuote().GetWeightedAverage()
 		else
-			return GetPotentialMaxAudience().GetGenderSum(gender) / WholeMarket.GetGenderSum(gender)
+			return GetPotentialAudience().GetGenderSum(gender) / WholeMarket.GetGenderSum(gender)
 		endif
 	End Method
 
@@ -195,10 +192,10 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 		endif
 
 		result :+ "  /  "
-		if PotentialMaxAudience
-			result :+ int(PotentialMaxAudience.GetGenderSum(TVTPersonGender.MALE))
+		if PotentialAudience
+			result :+ int(PotentialAudience.GetGenderSum(TVTPersonGender.MALE))
 			result :+ "/"
-			result :+ int(PotentialMaxAudience.GetGenderSum(TVTPersonGender.FEMALE))
+			result :+ int(PotentialAudience.GetGenderSum(TVTPersonGender.FEMALE))
 		else
 			result :+ "--"
 		endif
@@ -220,9 +217,9 @@ Type TAudienceResultBase {_exposeToLua="selected"}
 			result :+ "~n" + Rset("", l)
 			result :+ " A:" + Audience.ToString()
 		endif
-		if PotentialMaxAudience
+		if PotentialAudience
 			result :+ "~n" + Rset("", l)
-			result :+ "PM:" + PotentialMaxAudience.ToString()
+			result :+ "PM:" + PotentialAudience.ToString()
 		endif
 		if WholeMarket
 			result :+ "~n" + Rset("", l)
@@ -263,10 +260,9 @@ Type TAudienceResult extends TAudienceResultBase {_exposeToLua="selected"}
 		local base:TAudienceResultBase = new TAudienceResultBase
 		base.PlayerId = self.PlayerId
 		base.Time = self.Time
-		base.Title = self.Title
 		base.broadcastMaterial = self.broadcastMaterial
 		base.Audience = self.Audience
-		base.PotentialMaxAudience = self.PotentialMaxAudience
+		base.PotentialAudience = self.PotentialAudience
 		base.WholeMarket = self.WholeMarket
 		return base
 	End Method
@@ -274,7 +270,7 @@ Type TAudienceResult extends TAudienceResultBase {_exposeToLua="selected"}
 
 	Method AddResult(res:TAudienceResult)
 		WholeMarket.Add(res.WholeMarket)
-		PotentialMaxAudience.Add(res.PotentialMaxAudience)
+		PotentialAudience.Add(res.PotentialAudience)
 		Audience.Add(res.Audience)
 
 		AudienceAttraction = res.AudienceAttraction 'Ist immer gleich, deswegen einfach zuweisen

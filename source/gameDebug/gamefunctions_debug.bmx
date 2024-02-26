@@ -295,7 +295,7 @@ Type TDebugAudienceInfoForPlayer
 			If diff < 0 Then colorDiffProgramme = SColor8.Red
 			diffProgramme = MathHelper.NumberToString(diff,2)
 		EndIf
-		potAudience = TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),2)
+		potAudience = TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(),2)
 		progTitle = audienceResult.GetTitle()
 	EndMethod
 End Type
@@ -388,7 +388,7 @@ Type TDebugAudienceInfo
 			font.DrawBox(data.reach, x, 4*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
 
 			font.DrawBox(data.potAudience, x, 5*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
-			Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
+			Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialAudienceQuotePercentage()*100,2) + "%"
 			font.DrawSimple(percent, x, 6*h, SColor8.White)
 
 			font.DrawBox(data.progTitle, x, 7*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
@@ -436,10 +436,10 @@ Type TDebugAudienceInfo
 		font.DrawSimple("Bevölkerung", 25, 50, SColor8.White)
 		DrawAudience(audienceResult.WholeMarket.data, 200, 50)
 
-		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
+		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialAudienceQuotePercentage()*100,2) + "%"
 		font.DrawSimple("Potentielle Zuschauer", 25, 70, SColor8.White)
 		font.DrawSimple(percent, 160, 70, SColor8.White)
-		DrawAudience(audienceResult.PotentialMaxAudience.data, 200, 70)
+		DrawAudience(audienceResult.PotentialAudience.data, 200, 70)
 
 		Local colorLight:SColor8 = new SColor8(150, 150, 150)
 

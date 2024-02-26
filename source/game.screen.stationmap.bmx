@@ -2206,7 +2206,7 @@ Type TStationMapInformationFrame
 		skin.fontNormal.DrawBox(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 7, currentY, 0.45*sectionListContentW,  headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
 		skin.fontNormal.DrawBox(GetLocale("BROADCAST_PERMISSION_SHORT"), contentArea.GetX() + 7 + 5 + 0.4*sectionListContentW, currentY, 0.2*sectionListContentW,  headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
 		skin.fontNormal.DrawBox(GetLocale("IMAGE"), contentArea.GetX() + 6 + 0.6*sectionListContentW, currentY, 0.1*sectionListContentW,  headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(GetLocale("REACH"), contentArea.GetX() + 11 + 0.65*sectionListContentW, currentY, 0.26*sectionListContentW,  headerHeight, sALIGN_RIGHT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(GetLocale("POPULATION"), contentArea.GetX() + 11 + 0.65*sectionListContentW, currentY, 0.26*sectionListContentW,  headerHeight, sALIGN_RIGHT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
 		currentY :+ sectionListHeaderHeight
 
 '		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), sectionListHeight, "2")
