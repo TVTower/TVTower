@@ -6570,16 +6570,6 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 	Field setupFeeBase:Int = 500000
 	Field dailyFeeBase:Int = 75000
 
-	'reachable people with current share
-	Field _receivers:Int	= -1
-	'population covered (reachable people if all in area would use that provider)
-	Field _population:Int = -1
-	'covered receivers of just this provider without others in range
-	Field _exclusiveReceivers:Int = -1
-	'covered population of just this station without others in range
-	Field _exclusivePopulation:Int = -1
-
-
 	Field listSpriteNameOn:String = "gfx_datasheet_icon_antenna.on"
 	Field listSpriteNameOff:String = "gfx_datasheet_icon_antenna.off"
 
@@ -6733,32 +6723,20 @@ Type TStationMap_BroadcastProvider Extends TEntityBase {_exposeToLua="selected"}
 	End Method
 
 
-	'potentially reachable population
+	'population covered (reachable people if all in area would use that provider)
 	Method GetPopulation:Int() Abstract {_exposeToLua}
 
 
-	'get the amount of actual receivers of that station
+	'get amount of exclusively reachable population with this provider
+	Method GetExclusivePopulation:Int() Abstract {_exposeToLua}
+
+
+	'get amount of receivers reached with this provider
 	Method GetReceivers:Int() Abstract {_exposeToLua}
 
 
-	'potentiall reachable population not shared with other stations (antennas, cable, ...)
-	Method GetExclusivePopulation:Int() {_exposeToLua}
-		Throw "GetExclusivePopulation: still in use?"
-	End Method
-
-
-	'get the amount of actual receivers of that station
-	Method GetExclusiveReceivers:Int() {_exposeToLua}
-		'the default assumption is a average ratio over all
-		'the broadcast area of this provider
-		'so a ratio of exclusivePopulation/Population can be used for the receiver count too
-		
-		If _exclusiveReceivers < 0
-			_exclusiveReceivers = GetReceivers() * GetExclusivePopulation() / Float( GetPopulation() )
-		EndIf
-
-		Return _exclusiveReceivers
-	End Method
+	'get amount of exclusive receivers with this provider
+	Method GetExclusiveReceivers:Int() Abstract {_exposeToLua}
 
 
 	Method GetSetupFee:Int(channelID:Int) {_exposeToLua}
@@ -6903,35 +6881,44 @@ Type TStationMap_CableNetwork Extends TStationMap_BroadcastProvider {_exposeToLu
 
 
 	Method GetPopulation:Int() override {_exposeToLua}
-		'not cached?
-		If _population < 0
-			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-			If Not section Then Return 0
+		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+		If Not section Then Return 0
 
-			_population = section.GetCableNetworkUplinkPopulation()
-		EndIf
+		Return section.GetCableNetworkUplinkPopulation()
+	End Method
 
-		Return _population
+
+	Method GetExclusivePopulation:Int() override {_exposeToLua}
+		'for now there only exists one cable network provider
+		'per section/federal state
+		'so there is no need to check for coexisting ones.
+		Return GetPopulation()
 	End Method
 
 
 	Method GetReceivers:Int() override {_exposeToLua}
-		'not cached?
-		If _receivers < 0
-			Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-			If Not section Then Return 0
+		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+		If Not section Then Return 0
 
-			'this allows individual cablenetworkReceiveRatios for the
-			'sections (eg bad infrastructure for cables or expensive)
-			_receivers = section.GetCableNetworkUplinkReceivers()
+		Local result:Int
+		'this allows individual cablenetworkReceiveRatios for the
+		'sections (eg bad infrastructure for cables or expensive)
+		result = section.GetCableNetworkUplinkReceivers()
 		
-			'multiply with the percentage of users selecting THIS network
-			'over other cable providers (eg only provider 1 offers it in the
-			'city or street)
-			_receivers :* populationShare
-		EndIf
-		
-		Return _receivers
+		'multiply with the percentage of users selecting THIS network
+		'over other cable providers (eg only provider 1 offers it in the
+		'city or street)
+		result :* populationShare
+
+		Return result
+	End Method
+
+
+	Method GetExclusiveReceivers:Int() override {_exposeToLua}
+		'for now there only exists one cable network provider
+		'per section/federal state
+		'so there is no need to check for coexisting ones.
+		Return GetReceivers()
 	End Method
 
 
@@ -6964,10 +6951,6 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 	Field populationShare:Float = 0.0
 	'to see whether it increased or not
 	Field oldPopulationShare:Float = 0.0
-	'disabled: just assume they reach the whole country
-	'the population reachable because of orbit position
-	'Field populationImage:TImage {nosave}
-	'Field populationMap:int[,] {nosave}
 
 	'name without revision
 	Field brandName:String
@@ -6998,29 +6981,42 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 
 
 	Method GetPopulation:Int() override {_exposeToLua}
-		'not cached?
-		If _population < 0
-			_population = GetStationMapCollection().GetPopulation()
-		EndIf
-		Return _population
+		Return GetStationMapCollection().GetPopulation()
+	End Method
+
+
+	Method GetExclusivePopulation:Int() override {_exposeToLua}
+		'multiply with the percentage of people selecting THIS satellite
+		'over other satellites (assume all satellites cover the complete
+		'map)
+		'(Others would, if all had to watch over satellite, choose a different satellite)
+
+		Return GetPopulation() * populationShare
 	End Method
 
 
 	Method GetReceivers:Int() override {_exposeToLua}
 		Local result:Int
 
-		'sum up all sections
+		'sum up receivers (choosing to watch via satellite) of all sections
 		'this allows individual satelliteReceiveRatios for the sections
 		For Local s:TStationMapSection = EachIn GetStationMapCollection().sections
 			result :+ s.GetSatelliteUplinkReceivers()
 		Next
 
-		'multiply with the percentage of users selecting THIS satellite
+		'multiply with the percentage of people selecting THIS satellite
 		'over other satellites (assume all satellites cover the complete
 		'map)
 		result :* populationShare
 
 		Return result
+	End Method
+
+
+	Method GetExclusiveReceivers:Int() override {_exposeToLua}
+		'people can only receive one satellite at a time - so receiver
+		'count is already exclusive
+		Return GetReceivers()
 	End Method
 
 
