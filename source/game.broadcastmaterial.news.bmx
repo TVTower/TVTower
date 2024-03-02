@@ -411,7 +411,7 @@ endrem
 		'adjust by broadcast area
 		'multiply by amount of "5 million" people blocks
 		local map:TStationMap = GetStationMap(owner)
-		if map then price :* int(ceil(map.GetReach() / 5000000.0))
+		if map then price :* int(ceil(map.GetReceivers() / 5000000.0))
 
 		price = TFunctions.RoundToBeautifulValue(price)
 

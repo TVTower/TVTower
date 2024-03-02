@@ -258,7 +258,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local stationmap:TStationMap = TStationMap(triggerEvent._sender)
 		if not stationmap then return FALSE
 
-		local station:TStation = TStation( triggerEvent.getData().get("station") )
+		local station:TStationBase = TStationBase( triggerEvent.getData().get("station") )
 		if not station then return FALSE
 
 		'ignore ai player's events if no gameleader
