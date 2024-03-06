@@ -5354,7 +5354,7 @@ endrem
 					EndIf
 					Local cost:Int = triggerEvent.GetData().GetInt("renovationBaseCost")
 					If cost > 0
-						cost = TFunctions.RoundToBeautifulValue(cost * 1.2^ (player.GetAudienceReachLevel()-1))
+						cost = TFunctions.RoundToBeautifulValue(cost * 1.2^ (player.GetChannelReachLevel()-1))
 						If i = currentPlayer Then text:+ " "+ GetRandomLocale("TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT").Replace("%COST%", GetFormattedCurrency(cost))
 						player.GetFinance().PayMisc(cost)
 					EndIf
