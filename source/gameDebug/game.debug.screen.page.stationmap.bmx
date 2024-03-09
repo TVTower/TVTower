@@ -113,19 +113,19 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Function SortByReach:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return s1.GetExclusiveReceivers()-s2.GetExclusiveReceivers()
+			Return s1.GetReceivers() - s2.GetReceivers()
 		End Function
 
 		Function SortByCost:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return s1.GetRunningCosts()-s2.GetRunningCosts()
+			Return s1.GetRunningCosts() - s2.GetRunningCosts()
 		End Function
 
 		Function SortByCostPerViewer:Int(o1:Object, o2:Object)
 			Local s1:TStationBase = TStationBase(o1)
 			Local s2:TStationBase = TStationBase(o2)
-			Return 1000.0 * s1.GetRunningCosts() / s1.GetExclusiveReceivers() -  1000.0 * s2.GetRunningCosts() / s2.GetExclusiveReceivers()
+			Return 1000.0 * s1.GetRunningCosts() / s1.GetReceivers() -  1000.0 * s2.GetRunningCosts() / s2.GetReceivers()
 		End Function
 	End Method
 
@@ -267,24 +267,24 @@ endrem
 			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("excl. Reach", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetStationExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("Costs", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
 			textFont.DrawBox( MathHelper.DottedValue(detailsStation.GetRunningCosts()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 			textY :+ 10
 			textFont.DrawBox("Costs/1K Viewer", textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetExclusiveReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textFont.DrawBox( MathHelper.DottedValue(1000.0 * detailsStation.GetRunningCosts() / detailsStation.GetReceivers()), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
 		EndIf
 
 
 		Function getValueToShow:String(station:TStationBase, typeToShow:Int)
 			Select typeToShow
 				Case 0
-					Return MathHelper.DottedValue(station.GetExclusiveReceivers())
+					Return MathHelper.DottedValue(station.GetStationExclusiveReceivers())
 				Case 1
 					Return MathHelper.DottedValue(station.GetRunningCosts())
 				Case 2
-					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetExclusiveReceivers())
+					Return MathHelper.DottedValue(1000.0 * station.GetRunningCosts() / station.GetReceivers())
 			End Select
 		EndFunction
 	End Method

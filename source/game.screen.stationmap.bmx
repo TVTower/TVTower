@@ -268,9 +268,6 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Method SetSelectedStation(station:TStationBase)
 		TScreenHandler_StationMap.selectedStation = station
 		If TScreenHandler_StationMap.selectedStation
-			'force stat refresh (so we can display decrease properly)!
-			TScreenHandler_StationMap.selectedStation.InvalidateReach()
-			TScreenHandler_StationMap.selectedStation.GetExclusiveReceivers()
 			autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
 			If TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.SELLABLE)
 				autoRenewCheckbox.enable()
@@ -682,7 +679,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						if selectedStation.built = 0 then selectedStation.built = GetWorldTime().GetTimeStart()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
-						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetExclusiveReceivers() )
+						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetStationExclusiveReceivers() )
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -703,7 +700,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
-						reachChange = MathHelper.DottedValue(selectedStation.GetExclusiveReceivers())
+						reachChange = MathHelper.DottedValue(selectedStation.GetStationExclusiveReceivers())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -1176,25 +1173,13 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 				TScreenHandler_StationMap.satelliteSelectionFrame.Open()
 			else
 				if TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
-					satLink.providerGUID = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite.getGUID()
-					'local tmpSatLink:TStationBase = GetStationMap(satLink.owner).GetTemporarySatelliteUplinkStationBySatelliteGUID( TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite.GetGUID() )
-					'tmpSatLink.refreshData()
-					satLink.refreshData()
+					'set new provider/satellite
+					satLink.SetProvider( TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite.GetID() )
+
 					'sign potential contracts (= add connections)
 					satLink.SignContract()
 
 					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
-
-rem
-					'if tmpSatLink.GetReceivers() > 0
-					if satLink.GetReceivers() > 0
-						'add the station (and buy it)
-						If GetStationMap( satLink.owner ).RemoveStation(satLink, True)
-						If GetStationMap( satLink.owner ).AddStation(satLink, True)
-							ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
-						EndIf
-					endif
-endrem
 				EndIf
 			endif
 		else
@@ -2908,9 +2893,8 @@ endrem
 			If mouseDataX <> mouseoverStation.x or mouseDataY <> mouseoverStation.y
 				mouseoverStation.SetPosition(mouseDataX, mouseDataY)
 
-				mouseoverStation.refreshData()
 				'refresh state information
-				mouseoverStation.GetSectionName(True)
+				mouseoverStation.GetSectionName()
 			EndIf
 
 			Local hoveredMapSection:TStationMapSection
@@ -2954,13 +2938,13 @@ endrem
 						
 						'do we already have one?
 						For local station:TStationCableNetworkUplink = EachIn GetStationMap(room.owner).stations
-							if station.providerGUID = cableNetwork.getGUID()
+							if station.providerID = cableNetwork.getID()
 								mouseoverStation = station
 								exit
 							endif
 						Next
 						if not mouseoverStation
-							mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
+							mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStation( cableNetwork )
 						endif
 					'remove cache
 					Else
@@ -2983,13 +2967,10 @@ endrem
 			If MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReceivers() > 0
-					Local cableNetwork:TStationMap_CableNetwork = TStationMap_CableNetwork(mouseOverStation.GetProvider())
-					If cableNetwork And cableNetwork.IsLaunched()
-						selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
-						If selectedStation
-							'handled left click
-							MouseManager.SetClickHandled(1)
-						EndIf
+					selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStation( mouseOverStation.providerID )
+					If selectedStation
+						'handled left click
+						MouseManager.SetClickHandled(1)
 					EndIf
 				EndIf
 			EndIf
@@ -3013,60 +2994,11 @@ endrem
 				'only create a temporary sat link station if a satellite was
 				'selected
 				If satelliteSelectionFrame.selectedSatellite
-					If Not satLink Or satLink.providerGUID <> satelliteSelectionFrame.selectedSatellite.GetGUID()
-						selectedStation = GetStationMap(room.owner).GetTemporarySatelliteUplinkStationBySatelliteGUID( satelliteSelectionFrame.selectedSatellite.GetGUID() )
-						selectedStation.refreshData()
+					If Not satLink Or satLink.providerID <> satelliteSelectionFrame.selectedSatellite.GetID()
+						selectedStation = GetStationMap(room.owner).GetTemporarySatelliteUplinkStation( satelliteSelectionFrame.selectedSatellite )
 					EndIf
 				EndIf
 			EndIf
-
-Rem
-			'if the mouse has moved or nothing was created yet
-			'refresh the station data and move station
-			if not mouseoverStation or not mouseoverStationPosition or not mouseoverStationPosition.isSame( MouseManager.GetPosition() )
-				local mouseOverSection:TStationMapSection = GetStationMapCollection().GetSection( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
-				if mouseOverSection
-					mouseoverStationPosition = MouseManager.GetPosition().Copy()
-					mouseoverStation = GetStationMap(room.owner).GetTemporarySatelliteStation( mouseOverSection.name )
-					mouseoverStation.refreshData()
-					'refresh state information
-					mouseOverStation.sectionName = mouseOverSection.name
-				'remove cache
-				elseif mouseoverStation
-					mouseoverStation = null
-					mouseoverStationPosition = null
-				endif
-			endif
-
-			local hoveredMapSection:TStationMapSection
-			if mouseoverStation and mouseoverStationPosition
-				hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStationPosition.x), Int(mouseoverStationPosition.y))
-			endif
-
-			'if mouse gets clicked, we store that position in a separate station
-			if MOUSEMANAGER.isClicked(1)
-				'check reach and valid federal state
-				if hoveredMapSection and mouseoverStation.GetReceivers() > 0
-					selectedStation = GetStationMap(room.owner).GetTemporarySatelliteStation( mouseoverStation.sectionName )
-					selectedStation.refreshData()
-					'refresh state information
-					selectedStation.sectionName = hoveredMapSection.name
-				endif
-			endif
-
-			'no antennagraphic in foreign countries
-			'-> remove the station so it wont get displayed
-			if not hoveredMapSection or mouseoverStation.GetReceivers() <= 0
-				mouseoverStation = null
-				mouseoverStationPosition = null
-			endif
-
-			if selectedStation
-				local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
-
-				if not selectedMapSection or selectedStation.GetReceivers() <= 0 then selectedStation = null
-			endif
-endrem
 		EndIf
 
 
@@ -3092,9 +3024,9 @@ endrem
 		'select satellite of the currently selected satlink
 		If TStationSatelliteUplink(selectedStation)
 			Local satLink:TStationSatelliteUplink = TStationSatelliteUplink(selectedStation)
-			Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID( satLink.providerGUID )
+			Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatellite( satLink.providerID )
 			If satellite <> satelliteSelectionFrame.selectedSatellite
-				if not satLink.IsShutDown() and satLink.providerGUID
+				if not satLink.IsShutDown() and satLink.providerID
 					satelliteSelectionFrame.SelectSatellite( satellite )
 				endif
 			EndIf
@@ -3246,7 +3178,7 @@ endrem
 		Else If station.IsShutdown()
 			entryColor = new SColor8(90,90,60, int(currentAlpha * 255))
 			leftValue = GetLocale("UNUSED_TRANSMITTER")
-			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).providerGUID
+			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).providerID
 				rightValue = ""
 			endif
 			'leftValue = "|color="+(150 + 50*Sin(Millisecs()*0.5))+",90,90|!!|/color| " + leftValue

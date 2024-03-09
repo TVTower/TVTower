@@ -755,8 +755,9 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method getExclusiveMaxAudience:Int()
-		Return GetStationMapCollection().GetChannelExclusiveReceivers(Self.ME)
+	'reachable whole time -> player could use audience tooltip
+	Method getReceivers:Int()
+		Return GetStationMapCollection().GetReceivers(Self.ME)
 	End Method
 
 
@@ -1066,10 +1067,10 @@ endrem
 	End Method
 
 
-	Method of_buyCableNetworkStationByCableNetworkIndex:Int(index:Int)
+	Method of_buyCableNetworkStationByCableNetworkIndex:Int(cableNetworkIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(ME).BuyCableNetworkUplinkStation(index)
+		If GetStationMap(ME).BuyCableNetworkUplinkStation(cableNetworkIndex)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1077,10 +1078,14 @@ endrem
 	End Method
 
 
-	Method of_buySatelliteStation:Int(satelliteNumber:Int)
+	Method of_buySatelliteStation:Int(satelliteIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		
 
-		If GetStationMap(ME).BuySatelliteUplinkStation(satelliteNumber, True)
+		Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteAtIndex(satelliteIndex)
+		If Not satellite Then Return Self.RESULT_FAILED
+
+		If GetStationMap(ME).BuySatelliteUplinkStation(satellite.GetID(), True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1140,6 +1145,13 @@ endrem
 	End Method
 
 
+	Method of_getSatellite:TStationMap_BroadcastProvider(satelliteID:Int)
+		If Not _PlayerInRoom("office") Then Return Null
+		
+		Return GetStationMapCollection().GetSatellite(satelliteID)
+	End Method
+
+
 	Method of_getSatelliteAtIndex:TStationMap_BroadcastProvider(arrayIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Null
 
@@ -1147,9 +1159,24 @@ endrem
 	End Method
 
 
-	Method of_getPopulation:Int()
+	Method of_getPlayerReceivers:Int(playerID:Int)
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+
+		If playerID <= 0 Then playerID = Self.ME
+		
+		Return GetStationMapCollection().GetReceivers(playerID)
+	End Method
+
+
+	Method of_getMapPopulation:Int()
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 		Return GetStationMapCollection().GetPopulation()
+	End Method
+
+
+	Method of_getMapReceivers:Int()
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		Return GetStationMapCollection().GetReceivers()
 	End Method
 
 

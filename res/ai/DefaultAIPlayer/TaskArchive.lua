@@ -127,15 +127,15 @@ function JobSellMovies:Tick()
 		end
 	end
 
-	local reach = self.Task.Player.totalReach
+	local receivers = self.Task.Player.totalReceivers
 	local performanceThreshold = 0.15
 	local minLicenceCount = 50
-	if reach == nil then
+	if receivers == nil then
 		-- should not happen
-	elseif reach < 2300000 then
+	elseif receivers < 2300000 then
 		minLicenceCount = 25
 		performanceThreshold = 0.07
-	elseif reach < 4700000 then
+	elseif receivers < 4700000 then
 		minLicenceCount = 35
 		performanceThreshold = 0.1
 	end
