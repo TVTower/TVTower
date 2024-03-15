@@ -1428,12 +1428,6 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 			Local halfW:Int = (contentW - 10)/2 - 2
 			'=== BOX LINE 1 ===
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
-'not needed
-'			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
-'				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER)
-'			else
-'				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
-'			endif
 			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
@@ -2564,8 +2558,9 @@ Type TScreenHandler_StationMap
 		If Not room Then Return 0
 
 		SetBlend AlphaBlend
-
 		'draw map
+		'SetColor 255,255,255
+		'SetAlpha 1.0
 		GetSpriteFromRegistry("map_Surface").Draw(0,0)
 
 		'disable sections when there is no active cable network there

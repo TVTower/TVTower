@@ -369,17 +369,19 @@ endrem
 				'coords are local to (complete map) surfaceData
 				If surfaceData.data[posY * surfaceData.width + posX] = 0 Then Continue
 
-				'exclusion-checks done via "if objExists...", so no need
-				'to do "if exclusiveToOtherChannels"
 
-				'owner already broadcasting with more than this 
-				'looked up antenna (in case of already "owned")?
-				if owner and antennaLayers[owner-1].data[posY * antennaLayers[owner-1].width + posX] > checkValue Then Continue
+				'owner already broadcasting with more than this looked
+				'up antenna (in case of already "owned")?
+				If exclusiveToOwnChannel 
+					If antennaLayers[owner-1].data[posY * antennaLayers[owner-1].width + posX] > checkValue Then Continue
+				EndIf
 				'others broadcasting there?
-				if 1<>owner and antennaLayers[0] and antennaLayers[0].data[posY * antennaLayers[0].width + posX] > 0 Then Continue
-				if 2<>owner and antennaLayers[1] and antennaLayers[1].data[posY * antennaLayers[1].width + posX] > 0 Then Continue
-				if 3<>owner and antennaLayers[2] and antennaLayers[2].data[posY * antennaLayers[2].width + posX] > 0 Then Continue
-				if 4<>owner and antennaLayers[3] and antennaLayers[3].data[posY * antennaLayers[3].width + posX] > 0 Then Continue
+				If exclusiveToOtherChannels
+					if 1<>owner and antennaLayers[0] and antennaLayers[0].data[posY * antennaLayers[0].width + posX] > 0 Then Continue
+					if 2<>owner and antennaLayers[1] and antennaLayers[1].data[posY * antennaLayers[1].width + posX] > 0 Then Continue
+					if 3<>owner and antennaLayers[2] and antennaLayers[2].data[posY * antennaLayers[2].width + posX] > 0 Then Continue
+					if 4<>owner and antennaLayers[3] and antennaLayers[3].data[posY * antennaLayers[3].width + posX] > 0 Then Continue
+				EndIf
 				
 				result :+ mapInfo.densityData.data[posY * mapInfo.densityData.width + posX]
 			Next
@@ -885,6 +887,15 @@ endrem
 	End Method
 
 
+	Method GetOverlappingAntennas:TStationAntenna[](antenna:TStationAntenna)
+		Local result:TStationAntenna[]
+		For Local map:TStationMap = EachIn stationMaps
+			result :+ map.GetOverlappingAntennas(antenna)
+		Next
+		Return result
+	End Method
+
+
 	Method GetPopulationDensityOverlayRawPixmap:TPixmap(emphasizePopulation:int = False)
 		Local pix:TPixmap = CreatePixmap(mapInfo.densityData.width, mapInfo.densityData.height, PF_RGBA8888)
 		pix.ClearPixels(0)
@@ -1219,7 +1230,7 @@ endrem
 					EndIf
 				EndIf
 					
-				s.GetLocalUplinkPos()
+				s.GetUplinkPos()
 			Next
 		Else
 			'at least renew / fix properties written in the potentially
@@ -1408,7 +1419,7 @@ endrem
 					EndIf
 				EndIf
 					
-				s.GetLocalUplinkPos()
+				s.GetUplinkPos()
 			Next
 		Else
 			'at least renew / fix properties written in the potentially
@@ -2650,8 +2661,12 @@ Type TStationMapInfo
 
 
 	'scale values from data to screen
-	Method DataToScreen:Int(dataValue:Int)
-		Return densityDataScreenScale * dataValue
+	Method DataToScreen:Int(dataValue:Int, alwaysRoundUp:Int = False)
+		If alwaysRoundUp
+			Return Ceil(dataValue * densityDataScreenScale)
+		Else
+			Return Int(dataValue * densityDataScreenScale + 0.5)
+		EndIf
 	End Method
 
 	'scale values from screen to data
@@ -2860,6 +2875,20 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 				If _antennasLayer
 					_GetAllAntennasLayer().AddAntenna(antenna.x, antenna.y, antenna.radius)
 				EndIf
+
+				
+				'update overlapping antennas information for all affected
+				'stations
+				Local overlappingAntennas:TStationAntenna[] = GetOverlappingAntennas(antenna)
+				If overlappingAntennas
+					For Local otherAntenna:TStationAntenna = EachIn overlappingAntennas
+						otherAntenna._AddOverlappedAntenna(antenna.GetID())
+						'antenna._AddOverlappedAntenna(otherAntenna.GetID())
+					Next
+				EndIf
+				'set them all in one
+				antenna._SetOverlappedAntennas(overlappingAntennas)
+
 rem
 				'inform all sections too
 				Local surfaceX:Int = GetStationMapCollection().mapInfo.DataXToScreenX(antenna.x)
@@ -3102,10 +3131,12 @@ endrem
 		Local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
 		If Not mapSection Then Return Null
 
-		Local uplinkPos:TVec2I = mapSection.GetLocalUplinkPos()
-		Local stationPosX:Int = Int(mapSection.rect.x) + uplinkPos.x
-		Local stationPosY:Int = Int(mapSection.rect.y) + uplinkPos.y
-		station.Init(stationPosX, stationPosY, -1, owner)
+		'uplinkPos is "screen based", init() wants "data based"
+		Local uplinkPos:TVec2I = mapSection.GetUplinkPos()
+		Local dataX:Int = GetStationMapCollection().mapInfo.ScreenXToDataX( Int(mapSection.rect.x) + uplinkPos.x )
+		Local dataY:Int = GetStationMapCollection().mapInfo.ScreenYToDataY( Int(mapSection.rect.y) + uplinkPos.y )
+		
+		station.Init(dataX, dataY, -1, owner)
 
 		Return station
 	End Method
@@ -3174,6 +3205,30 @@ endrem
 		Next
 		Return best
 	End Method
+
+
+	Method GetOverlappingAntennas:TStationAntenna[](antenna:TStationAntenna)
+		Local result:TStationAntenna[]
+		If Not antenna then Return result
+		
+		For Local otherAntenna:TStationAntenna = EachIn stations
+			if otherAntenna = antenna Then Continue
+
+			'Local distX:Int = Abs(antenna.x - otherAntenna.x)
+			'Local distY:Int = Abs(antenna.y - otherAntenna.y)
+			'if distX > antenna.radius and distX > otherAntenna.radius Then Continue 
+
+			'(r1−r2)^2 >= (x1−x2)^2+(y1−y2)^2
+'			if (antenna.radius - otherAntenna.radius) * (antenna.radius - otherAntenna.radius) >= (antenna.x - otherAntenna.x) * (antenna.x - otherAntenna.x) + (antenna.y - otherAntenna.y) * (antenna.y - otherAntenna.y)
+			Local circleDist:Int = sqr((antenna.x - otherAntenna.x) * (antenna.x - otherAntenna.x) + (antenna.y - otherAntenna.y) * (antenna.y - otherAntenna.y))
+			if circleDist < antenna.radius + otherAntenna.radius
+				result :+ [otherAntenna]
+			EndIf
+		Next
+		
+		Return result
+	End Method
+
 
 
 	Method GetStation:TStationBase(stationID:Int)
@@ -3643,6 +3698,15 @@ endrem
 '			_totalAntennaReachCache :- popDecrease
 '			if _totalAntennaReachCache < 0 Then _totalAntennaReachCache = 0
 'print "RON: RemoveStation() - pop. -" + popDecrease + "   _totalAntennaReachCache="+_totalAntennaReachCache
+
+			'remove from "overlapped" stations:
+			if antenna._overlappedAntennaIDs
+				For local overlappedAntennaID:Int = EachIn antenna._overlappedAntennaIDs
+					Local overlappedAntenna:TStationAntenna = TStationAntenna(GetStation(overlappedAntennaID))
+					if overlappedAntenna Then overlappedAntenna._RemoveOverlappedAntenna(antenna.GetID())
+				Next
+				antenna._SetOverlappedAntennas(Null)
+			EndIf
 		EndIf
 
 
@@ -4423,8 +4487,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		Local priceSplitH:Int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" ) - 2
-		Local tooltipW:Int = 190
-		Local tooltipH:Int = textH * 4 + 10 + 5
+		Local tooltipW:Int = 225
+		Local tooltipH:Int = textH * 4 + 10 + 2
 
 		If showPriceInformation Then tooltipH :+ priceSplitH
 
@@ -4443,33 +4507,34 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		'warn about potential reach level increase?
 		If isNextReachLevelProbable Then tooltipH :+ textH
 
-		If showPermissionPriceText > 0 Or cantGetSectionPermissionReason <= 0 Or isNextReachLevelProbable
-			tooltipW :+ 40
-		EndIf
-
 		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 		Local screenX:Int = mapInfo.DataXToScreenX(self.x)
 		Local screenY:Int = mapInfo.DataYToScreenY(self.y)
 		Local tooltipX:Int = screenX - tooltipW/2
-		Local tooltipY:Int = screenY - GetOverlayOffsetY() - tooltipH - 5
+		Local tooltipY:Int = screenY - GetOverlayOffsetY() - tooltipH - 10
 
 		'move below station if at screen top
-		If tooltipY < 10 Then tooltipY = screenY + GetOverlayOffsetY() + 5
+		If tooltipY < 10 Then tooltipY = screenY + GetOverlayOffsetY() + 10
 		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW)
 
 		Local oldAlpha:Float = GetAlpha()
-		SetAlpha oldAlpha * 0.5
+
 		SetColor 0,0,0
+		SetAlpha oldAlpha * 0.5
 		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
 		SetColor 255,255,255
+		SetAlpha 1.0
+		GetSpriteFromRegistry("gfx_datasheet_border").DrawArea(tooltipX-8, tooltipY-8, tooltipW+20, tooltipH+20)		
+
+		SetColor 255,255,255
 		SetAlpha oldAlpha
-		
+
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
 		Local font:TBitmapFont = GetBitmapFontManager().baseFont
 
-		Local textY:Int = tooltipY+5
-		Local textX:Int = tooltipX+5
-		Local textW:Int = tooltipW-10
+		Local textY:Int = tooltipY+2
+		Local textX:Int = tooltipX+3
+		Local textW:Int = tooltipW-8
 		Local iso:String = GetSectionISO3166Code()
 		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+iso+"_LONG") + " (" + GetLocale("MAP_COUNTRY_"+iso+"_SHORT")+")", textX, textY, New SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH
@@ -4567,10 +4632,14 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local textH:Int = GetBitmapFontManager().baseFontBold.GetMaxCharHeight(True)
 		Local textW:Int = GetBitmapFontManager().baseFontBold.GetWidth(textCaption)
 		textW = Max(textW, GetBitmapFontManager().baseFont.GetWidth(textContent))
-		Local tooltipW:Int = textW + 10
-		Local tooltipH:Int = textH * 2 + 10 + 5
-		Local tooltipX:Int = X - tooltipW/2
-		Local tooltipY:Int = Y - GetOverlayOffsetY() - tooltipH
+		Local tooltipW:Int = textW + 8
+		Local tooltipH:Int = textH * 2
+
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Local screenX:Int = mapInfo.DataXToScreenX(self.x)
+		Local screenY:Int = mapInfo.DataYToScreenY(self.y)
+		Local tooltipX:Int = screenX - tooltipW/2
+		Local tooltipY:Int = screenY - GetOverlayOffsetY() - tooltipH
 
 		'move below station if at screen top
 		If tooltipY < 20 Then tooltipY = Y + GetOverlayOffsetY() + 10 +10
@@ -4580,13 +4649,19 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetAlpha 0.5
 		SetColor 0,0,0
 		DrawRect(tooltipX, tooltipY, tooltipW, tooltipH)
+		SetAlpha 1.0
+		SetColor 200,200,200
+		DrawLine(tooltipX, tooltipY, tooltipX + tooltipW, tooltipY)
+		DrawLine(tooltipX, tooltipY + tooltipH, tooltipX + tooltipW, tooltipY + tooltipH)
+		DrawLine(tooltipX, tooltipY + 1, tooltipX, tooltipY + tooltipH - 1)
+		DrawLine(tooltipX + tooltipW, tooltipY + 1, tooltipX + tooltipW, tooltipY + tooltipH - 1)
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Local textY:Int = tooltipY + 5
-		Local textX:Int = tooltipX + 5
+		Local textY:Int = tooltipY + 2
+		Local textX:Int = tooltipX + 3
 		GetBitmapFontManager().baseFontBold.DrawSimple(textCaption, textX, textY, New SColor8(255,190,80), EDrawTextEffect.Shadow, 0.2)
-		textY:+ textH + 5
+		textY:+ textH
 
 		GetBitmapFontManager().baseFont.Draw(textContent, textX, textY)
 		textY:+ textH
@@ -4608,6 +4683,8 @@ End Type
 
 Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	Field radius:Int = 0 {_exposeToLua="readonly"}
+	'ids of antennas (of all players) overlapping with this one
+	Field _overlappedAntennaIDs:Int[]
 	Global highlightColor:TColor = New TColor
 
 	Method New()
@@ -4654,6 +4731,53 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method _GetOverlappedAntennaIndex:Int(antennaID:Int)
+		If not _overlappedAntennaIDs Then Return -1
+		
+		For Local i:Int = 0 until _overlappedAntennaIDs.length
+			if _overlappedAntennaIDs[i] = antennaID Then Return i
+		Next
+		Return -1
+	End Method
+
+
+	Method _RemoveOverlappedAntenna:Int(antennaID:Int)
+		local removeIndex:int = _GetOverlappedAntennaIndex(antennaID)
+		If removeIndex < 0 Then Return False
+		
+		_overlappedAntennaIDs = _overlappedAntennaIDs[.. removeIndex] + _overlappedAntennaIDs[removeIndex + 1 ..]
+		
+		'exclusive-cache is invalid now
+		_InvalidatePopulationShareCache()
+	End Method
+	
+	
+	Method _AddOverlappedAntenna:Int(antennaID:Int)
+		If _GetOverlappedAntennaIndex(antennaID) >= 0 then Return False
+
+		If not _overlappedAntennaIDs 
+			_overlappedAntennaIDs = [antennaID]
+		Else
+			_overlappedAntennaIDs :+ [antennaID]
+		EndIf
+
+		'exclusive-cache is invalid now
+		_InvalidatePopulationShareCache()
+	End Method
+
+
+	Method _SetOverlappedAntennas:Int(antennas:TStationAntenna[])
+		If not antennas
+			_overlappedAntennaIDs = Null
+		Else
+			_overlappedAntennaIDs = New Int[antennas.length]
+			For Local i:Int = 0 until _overlappedAntennaIDs.length
+				_overlappedAntennaIDs[i] = antennas[i].GetID()
+			Next
+		EndIf
+	End Method
+
+
 	'returns percentage of receivers amongst the population
 	Method GetPopulationReceiverShare:Float() override {_exposeToLua}
 		'Normally the share could be different for the parts of the
@@ -4674,7 +4798,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	'this is a station type specific implementation
 	Method GetPopulationShare:Float(exclusiveToOwnChannel:Int = False, exclusiveToOtherChannels:Int = False) override {_exposeToLua}
 		Local share:Float
-		share = GetStationMapCollection().GetAntennaPopulation(self.x, self.y, self.radius, 0, False, exclusiveToOwnChannel, exclusiveToOtherChannels)
+		share = GetStationMapCollection().GetAntennaPopulation(self.x, self.y, self.radius, self.owner, self.IsActive(), exclusiveToOwnChannel, exclusiveToOtherChannels)
 		share :/ GetStationMapCollection().GetPopulation()
 		Return share
 	End Method
@@ -4766,7 +4890,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 
 	Method GetOverlayOffsetY:Int() override
-		Return radius
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Return mapInfo.DataToScreen(self.radius, True)
 	End Method
 
 
@@ -4774,7 +4899,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		Local sprite:TSprite = Null
 		Local oldAlpha:Float = GetAlpha()
 		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
-		Local screenRadius:Int = mapInfo.DataToScreen(self.radius)
+		'ensure 25,1 becomes 26 -> always round up to eas showing "overlaps"
+		Local screenRadius:Int = mapInfo.DataToScreen(self.radius, True)
 		Local screenX:Int = mapInfo.DataXToScreenX(self.x)
 		Local screenY:Int = mapInfo.DataYToScreenY(self.y)
 		If selected
@@ -5103,6 +5229,12 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 		EndIf
 
 		Return Float(section.GetPopulation()) / GetStationMapCollection().GetPopulation()
+	End Method
+
+
+	Method GetOverlayOffsetY:Int() override
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Return mapInfo.DataToScreen(15, True)
 	End Method
 
 
@@ -5714,7 +5846,7 @@ Type TStationMapSection
 	End Method
 	
 	
-	Method GetLocalUplinkPos:TVec2I()
+	Method GetUplinkPos:TVec2I()
 		If Not uplinkPos
 			'try center of section first
 			Local localX:Int = rect.GetXCenter() - rect.x
@@ -5877,38 +6009,49 @@ Type TStationMapSection
 	Method DrawChannelStatusTooltip(channelID:Int, stationType:Int = -1)
 		Local priceSplitH:Int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
-		Local tooltipW:Int = 190
-		Local tooltipH:Int = textH * 4 + 10 + 5
-		Local tooltipX:Int = MouseManager.X - tooltipW/2
-		Local tooltipY:Int = MouseManager.Y - tooltipH - 5
-'		Local tooltipX:Int = rect.GetXCenter() - tooltipW/2
-'		Local tooltipY:Int = rect.GetYCenter() - tooltipH - 5
+
+		Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+		Local screenX:Int = mapInfo.DataXToScreenX(Int(rect.x) + self.GetUplinkPos().x)
+		Local screenY:Int = mapInfo.DataYToScreenY(Int(rect.y) + self.GetUplinkPos().y)
+
+		Local stationTypeTooltipOffset:Int = 15
+		if stationType = TVTStationType.CABLE_NETWORK_UPLINK Then stationTypeTooltipOffset = 5
+
+		Local tooltipW:Int = 225
+		Local tooltipH:Int = textH * 4 + 10 + 2
+		Local tooltipX:Int = screenX - tooltipW/2
+		Local tooltipY:Int = screenY - tooltipH - stationTypeTooltipOffset
+
+		'move below station if at screen top
+		If tooltipY < 10 Then tooltipY = screenY + 25 + stationTypeTooltipOffset
+		'avoid going outside of the map
+		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW - 20)
+
 
 
 		Local permissionOK:Int = Not NeedsBroadcastPermission(channelID, stationType) Or HasBroadcastPermission(channelID, stationType)
 		Local imageOK:Int = ReachesMinimumChannelImage(channelID)
 		Local providerOK:Int = GetStationMapCollection().GetCableNetworksInSectionCount(Self.name, True) > 0
 
-		'move below station if at screen top
-		If tooltipY < 10 Then tooltipY = MouseManager.Y + 25
-'		If tooltipY < 10 Then tooltipY = 10
-		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW - 20)
-
 		Local oldCol:SColor8; GetColor(oldCol)
-		Local oldA:Float = GetAlpha()
+		Local oldAlpha:Float = GetAlpha()
 
-		SetAlpha oldA * 0.5
+		SetAlpha oldAlpha * 0.5
 		If Not providerOK Or Not permissionOK Or Not imageOK
 			SetColor 75,0,0
 		Else
 			SetColor 0,0,0
 		EndIf
 		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
-		SetColor(oldCol)
-		SetAlpha(oldA)
+		SetColor 255,255,255
+		SetAlpha 1.0
+		GetSpriteFromRegistry("gfx_datasheet_border").DrawArea(tooltipX-8, tooltipY-8, tooltipW+20, tooltipH+20)		
 
-		Local textY:Int = tooltipY+5
-		Local textX:Int = tooltipX+5
+		SetAlpha oldAlpha
+
+
+		Local textY:Int = tooltipY+2
+		Local textX:Int = tooltipX+3
 		Local textW:Int = tooltipW-10
 		Local iso:String = GetISO3166Code()
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
