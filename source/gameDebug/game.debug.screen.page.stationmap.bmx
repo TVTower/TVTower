@@ -74,14 +74,14 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 			Reset() 'in particular clear the lists
 			Local map:TStationMap = GetStationMap(playerID)
 			For Local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
-				Local station:TStationBase = map.GetSatelliteUplinkBySatellite(satellite)
+				Local station:TStationBase = map.GetSatelliteUplink(satellite.GetID())
 				If station
 					satellites.AddLast(station)
 				EndIf
 			Next
 			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
 				Local sectionName:String = section.name
-				Local station:TStationBase = map.GetCableNetworkUplinkStationBySectionName(sectionName)
+				Local station:TStationBase = map.GetCableNetworkUplink(sectionName)
 				If station
 					cables.AddLast(station)
 				EndIf

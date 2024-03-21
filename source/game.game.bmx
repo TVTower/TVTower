@@ -887,11 +887,14 @@ endrem
 		'this was changed, so the AI has a chance to choose position itself and does not have to
 		'fight with high initial fix costs
 
-		'refresh stats
-		map.DoCensus()
-		map.Update()
-		GetStationMapCollection().Update()
-		If GetStationMap(playerID).GetReceivers() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReceivers() returned 0."
+
+		'refresh stats (only for restarting players as then all players have a stationmap)
+		If isRestartingPlayer
+			map.DoCensus()
+			map.Update()
+			GetStationMapCollection().Update()
+			If GetStationMap(playerID).GetReceivers() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReceivers() returned 0."
+		EndIf
 
 
 		'=== FINANCE ===

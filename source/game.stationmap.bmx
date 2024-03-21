@@ -2181,7 +2181,7 @@ endrem
 		Local map:TStationMap = GetMap(linkOwner)
 		If Not map Then Return False
 
-		Local cableLink:TStationCableNetworkUplink = TStationCableNetworkUplink( map.GetCableNetworkUplinkStation(cableNetwork) )
+		Local cableLink:TStationCableNetworkUplink = TStationCableNetworkUplink( map.GetCableNetworkUplink(cableNetwork) )
 		If Not cableLink Then Return False
 
 		Rem
@@ -3280,7 +3280,7 @@ endrem
 	End Method
 
 
-	Method GetCableNetworkUplinkStation:TStationBase(sectionName:String)
+	Method GetCableNetworkUplink:TStationBase(sectionName:String)
 		For Local station:TStationBase = EachIn stations
 			If station.stationType <> TVTStationType.CABLE_NETWORK_UPLINK Then Continue
 			If station.GetSectionName() = sectionName Then Return station
@@ -3289,7 +3289,7 @@ endrem
 	End Method
 
 
-	Method GetCableNetworkUplinkStation:TStationBase(cableNetworkID:Int)
+	Method GetCableNetworkUplink:TStationBase(cableNetworkID:Int)
 		For Local station:TStationCableNetworkUplink = EachIn stations
 			If station.providerID = cableNetworkID Then Return station
 		Next
@@ -3297,9 +3297,9 @@ endrem
 	End Method
 
 
-	Method GetCableNetworkUplinkStation:TStationBase(cableNetwork:TStationMap_CableNetwork)
+	Method GetCableNetworkUplink:TStationBase(cableNetwork:TStationMap_CableNetwork)
 		If Not cableNetwork Then Return Null
-		Return GetCableNetworkUplinkStation(cableNetwork.GetID())
+		Return GetCableNetworkUplink(cableNetwork.GetID())
 	End Method
 
 
@@ -3536,7 +3536,7 @@ endrem
 
 	Method CanAddStation:Int(station:TStationBase)
 		'only one network per section and player allowed
-		If TStationCableNetworkUplink(station) And GetCableNetworkUplinkStation(station.GetSectionName()) Then Return False
+		If TStationCableNetworkUplink(station) And GetCableNetworkUplink(station.GetSectionName()) Then Return False
 
 		'TODO: ask if the station is ok with it (eg. satlink asks satellite first)
 		'for now:
@@ -6542,7 +6542,7 @@ endrem
 		'== GENERATE CACHE ==
 		If Not result
 			result = New TStationMapPopulationShare
-
+			
 			'antenna layers are placed directly (no offset) over densityData
 			'(but might have a different width/height)
 			Local antennaLayer1:TStationMapAntennaLayer = GetStationMap(1)._GetAllAntennasLayer()
