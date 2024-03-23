@@ -137,7 +137,7 @@ function TaskStationMap:GetAverageStationRunningCostPerPerson()
 			local station = TVT.of_getStationAtIndex(i, stationIndex)
 			if station ~= nil then
 				totalCost = totalCost + station.GetRunningCosts()
-				totalReceivers = totalReceivers + station.GetExclusiveReceivers()
+				totalReceivers = totalReceivers + station.GetStationExclusiveReceivers()
 			end
 		end
 	end
@@ -170,7 +170,7 @@ function JobAnalyseStationMarket:Tick()
 	TVT.audiencePredictor.RefreshMarkets()
 	player.LastStationMapMarketAnalysis = player.WorldTicks
 	local blocks = player.blocksCount
-	player.totalReceivers = TVT:of_getReceivers(TVT.ME) --alternative is the player specific TVT:getReceivers()
+	player.totalReceivers = TVT:of_getPlayerReceivers(TVT.ME) --alternative is the player specific TVT:getReceivers()
 	self.Task.maxReceiverIncrease = 99000000
 
 	--movie prices do not increas so much anymore...
@@ -189,7 +189,7 @@ function JobAnalyseStationMarket:Tick()
 		end
 	end
 	--]]
-	local mapTotalReceivers = TVT:of_getReceivers()
+	local mapTotalReceivers = TVT:of_getMapReceivers()
 
 	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
 	self.Task.coverage =  player.totalReceivers / mapTotalReceivers
@@ -332,7 +332,7 @@ function JobAnalyseStationMarket:insertIntendedPosition(x, y, positions, section
 		--no full initialization - we are only interested in the section name
 		local tempStation = TVT.of_GetTemporaryAntennaStation(x, y, false)
 		table.insert(positions, { x = tempStation.x, y = tempStation.y })
-		local sectionName = tempStation:GetSectionName(0)
+		local sectionName = tempStation:GetSectionName()
 		local count = sectionCount[sectionName]
 		if count == nil then
 			sectionCount[sectionName] = 1
@@ -343,7 +343,7 @@ function JobAnalyseStationMarket:insertIntendedPosition(x, y, positions, section
 --[[
 		tempStation.refreshData()
 		local receivers = tempStation.GetReceivers()
-		local exclusiveReceivers = tempStation.GetExclusiveReceivers()
+		local exclusiveReceivers = tempStation.GetStationExclusiveReceivers()
 		local relativeExclusiveReceivers = exclusiveReceivers / receivers
 		stationString = "Station at " .. x .. "," .. y .. "  receivers: " .. receivers .. "  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (exclusiveReceivers / price) .. "  buyPrice: " .. tempStation.GetBuyPrice()
 		self:LogInfo(stationString)
@@ -484,12 +484,12 @@ function JobBuyStation:GetAttraction(tempStation)
 	local totalprice = tempStation.GetTotalBuyPrice()
 	local price = tempStation.GetBuyPrice()
 	if totalprice > price and self.Task.antennasPerSection then
-		local antennaCount = self.Task.antennasPerSection[tempStation.GetSectionName(0)]
+		local antennaCount = self.Task.antennasPerSection[tempStation.GetSectionName()]
 		if antennaCount ~= nil then
 			price = price + (1.0 / antennaCount) * (totalprice - price)
 		end
 	end
-	local exclusiveReceivers = tempStation.GetExclusiveReceivers()
+	local exclusiveReceivers = tempStation.GetStationExclusiveReceivers()
 	local runningCosts = tempStation.GetRunningCosts()
 	local pricePerViewer = (price / exclusiveReceivers) / 5 + runningCosts / exclusiveReceivers
 	local priceDiff = self.Task.CurrentBudget - price
@@ -585,7 +585,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 		end
 	end
 	if bestOffer ~= nil then
-		self:LogDebug(" - best satellite " .. bestOffer.GetName() .."  receivers: " .. bestOffer.GetReceivers() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReceivers() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReceivers() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+		self:LogDebug(" - best satellite " .. bestOffer.GetName() .."  receivers: " .. bestOffer.GetReceivers() .. "  exclusive/increase: " .. bestOffer.GetReceivers() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetReceivers() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
 	else
 		self:LogTrace(" - no best satellite found")
 	end
@@ -624,7 +624,7 @@ function JobBuyStation:GetBestAntennaOffer()
 				price = tempStation.GetTotalBuyPrice()
 				if price <= budget then
 					receivers = tempStation.GetReceivers()
-					exclusiveReceivers = tempStation.GetExclusiveReceivers()
+					exclusiveReceivers = tempStation.GetStationExclusiveReceivers()
 					relativeExclusiveReceivers = exclusiveReceivers / receivers
 					stationString = "Station at " .. x .. "," .. y .. "  receivers: " .. receivers .. "  exclusive/increase: " .. exclusiveReceivers .. " (incl.fees: " .. price ..")  F: " .. (exclusiveReceivers / price)
 				else
@@ -705,21 +705,25 @@ function JobBuyStation:Tick()
 
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
+		local exclusiveReceivers = 0
 		if bestOffer == bestAntennaOffer then
-			self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName(false) .. " at " .. bestOffer.x .. "," .. bestOffer.y .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReceivers() .. "  price: " .. price)
+			exclusiveReceivers = bestOffer.GetStationExclusiveReceivers()
+			self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName() .. " at " .. bestOffer.x .. "," .. bestOffer.y .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
 		elseif bestOffer == bestSatelliteOffer then
-			self:LogInfo("Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReceivers() .. "  price: " .. price)
+			exclusiveReceivers = bestOffer.GetReceivers()
+			self:LogInfo("Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buySatelliteStation(bestSatIndex)
 		elseif bestOffer == bestCableNetworkOffer then
-			self:LogInfo("Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReceivers() .. "  price: " .. price)
+			exclusiveReceivers = bestOffer.GetExclusiveReceivers()
+			self:LogInfo("Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buyCableNetworkStation(bestCableSectionName)
 		end
 
 		-- Wir brauchen noch ein "Fixkostenbudget" fuer Kabelnetze/Satelliten
 
 		self.Task:PayFromBudget(price)
-		self.Task.maxReceiverIncrease = self.Task.maxReceiverIncrease - bestOffer.GetExclusiveReceivers()
+		self.Task.maxReceiverIncrease = self.Task.maxReceiverIncrease - exclusiveReceivers
 		self.purchaseCount = self.purchaseCount + 1
 	end
 
@@ -757,7 +761,7 @@ function JobSellStation:Tick()
 			for stationIndex = 0, stationCount-1 do
 				local station = TVT.of_getStationAtIndex(TVT.ME, stationIndex)
 				if station ~= nil then
-					currentCost = station.GetRunningCosts() / station.GetExclusiveReceivers()
+					currentCost = station.GetRunningCosts() / station.GetStationExclusiveReceivers()
 					if currentCost > worstCost then
 						worstCost = currentCost
 						worstAntenna = stationIndex

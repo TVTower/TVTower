@@ -350,7 +350,7 @@ end
 
 function SignRequisitedContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
-	self.maxAudience = MY.GetMaxAudience()
+	self.maxAudience = MY.GetChannelReceivers()
 	self.highAudienceFactor = 0.08
 	self.avgAudienceFactor = 0.045
 	self.lowAudienceFactor = 0.003
@@ -564,7 +564,7 @@ end
 function SignContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
 	self.lowAudienceFactor = 0.005
-	self.maxAudience =  MY.GetMaxAudience()
+	self.maxAudience = MY.GetChannelReceivers()
 	self.ownedContracts = {};
 	for i=0, (MY.GetProgrammeCollection().GetAdContractCount() - 1)
 	do
