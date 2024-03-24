@@ -528,7 +528,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 			-- ignore if we already are clients of this provider
 			-- ignore non-launched and not available for player
 			if cableNetwork~=nil and cableNetwork.IsSubscribedChannel(TVT.ME) == 0 and cableNetwork.IsLaunched() == 1 and cableNetwork.IsActive() == 1 then
-				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(i)
+				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(cableNetwork:GetId())
 				if tempStation then
 					local attraction, price, exclusiveReceivers = self:GetAttraction(tempStation)
 					if (bestOffer == nil and attraction > 0 or attraction > bestAttraction) and price < self.Task.CurrentBudget and exclusiveReceivers < self.Task.maxReceiverIncrease then
@@ -541,7 +541,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 		end
 	end
 	if bestOffer then
-		self:LogDebug(" - best cable network " .. bestOffer.GetName() .."  receivers: " .. bestOffer.GetReceivers() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReceivers() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReceivers() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+		self:LogDebug(" - best cable network " .. bestOffer.GetName() .."  receivers: " .. bestOffer.GetReceivers() .. "  exclusive/increase: " .. bestOffer.GetStationExclusiveReceivers() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetStationExclusiveReceivers() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
 	else
 		self:LogTrace(" - no best cable network found")
 	end
@@ -705,17 +705,14 @@ function JobBuyStation:Tick()
 
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
-		local exclusiveReceivers = 0
+		local exclusiveReceivers = bestOffer.GetStationExclusiveReceivers()
 		if bestOffer == bestAntennaOffer then
-			exclusiveReceivers = bestOffer.GetStationExclusiveReceivers()
 			self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName() .. " at " .. bestOffer.x .. "," .. bestOffer.y .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
 		elseif bestOffer == bestSatelliteOffer then
-			exclusiveReceivers = bestOffer.GetReceivers()
 			self:LogInfo("Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buySatelliteStation(bestSatIndex)
 		elseif bestOffer == bestCableNetworkOffer then
-			exclusiveReceivers = bestOffer.GetExclusiveReceivers()
 			self:LogInfo("Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buyCableNetworkStation(bestCableSectionName)
 		end
