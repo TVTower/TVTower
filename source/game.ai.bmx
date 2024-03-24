@@ -971,9 +971,9 @@ endrem
 		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState))
 	End Method
 
-	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkIndex:Int)
+	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkId:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetTemporaryCableNetworkUplinkStation(cableNetworkIndex)
+		Return GetStationMap(Self.ME, True).GetTemporaryCableNetworkUplinkStation(cableNetworkId)
 	End Method
 
 	'less calculation-expensive variant for determining if obtaining a temporary antenna makes sense

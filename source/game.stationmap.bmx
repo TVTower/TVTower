@@ -1458,8 +1458,8 @@ endrem
 		Local dataY:Int = mapInfo.SurfaceYToDataY(GetStationMapCollection().mapInfo.startAntennaSurfacePos.y)
 		Local station:TStationBase = map.GetTemporaryAntennaStation(dataX, dataY, False)
 		If station And antennaStationRadius = ANTENNA_RADIUS_NOT_INITIALIZED
-			antennaStationRadius = 50
-			For Local r:Int = 20 To 50
+			antennaStationRadius = 60
+			For Local r:Int = 20 To 60
 				TStationAntenna(station).SetRadius(r)
 				If station.GetReceivers() > GameRules.stationInitialIntendedReach
 					antennaStationRadius = r
@@ -1468,7 +1468,7 @@ endrem
 			Next
 			If station.GetReceivers() < GameRules.stationInitialIntendedReach
 				'player will get cable, reduce station radius
-				antennaStationRadius = 40
+				antennaStationRadius = 50
 			EndIf
 		EndIf
 
@@ -3510,7 +3510,7 @@ endrem
 		Local index:Int = 0
 		For Local cableNetwork:TStationMap_CableNetwork = EachIn GetStationMapCollection().cableNetworks
 			If cableNetwork.sectionName = sectionName
-				Local tmp:TStationBase = GetTemporaryCableNetworkUplinkStation( index )
+				Local tmp:TStationBase = GetTemporaryCableNetworkUplinkStation( cableNetwork.GetId() )
 				tmp.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT,autoUpdateContract)
 				Return AddStation(tmp, True )
 			EndIf
@@ -4839,14 +4839,15 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'section specific costs for bought land + bureaucracy costs
 			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
 			'section government costs, changes over time (dynamic reach)
-			buyPrice :+ 0.20 * GetReceivers()
+			buyPrice :+ 0.30 * GetReceivers()
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
 			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed construction costs
 			'building costs for "hardware" (more expensive than sat/cable)
-			buyPrice :+ 0.20 * GetPopulation()
+			'TODO check - reduced!! 0.2*receivers+0.2*popultation causes implausible prices for later years population big, but receivers very small
+			buyPrice :+ 0.10 * GetPopulation()
 		EndIf
 		Return buyPrice
 	End Method
@@ -5924,7 +5925,7 @@ Type TStationMapSection
 	'returns whether a channel needs a permission for the given station type
 	'or not - regardless of whether the channel HAS one or not
 	Method NeedsBroadcastPermission:Int(channelID:Int, stationType:Int = -1)
-		If stationType = TVTStationType.ANTENNA And GetStationMapCollection().antennaStationRadius >= 32
+		If stationType = TVTStationType.ANTENNA And GetStationMapCollection().antennaStationRadius >= 40
 			return False
 		EndIf
 		Return True

@@ -1794,7 +1794,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Print "modifier auctionPrice=" + Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel)
 			Print "endAuction: price for p0="+licence.GetPriceForPlayer(0)
 			For Local i:Int = 1 To 4
-				Print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetChannelReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetAudienceReachLevel()
+				Print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetChannelReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetChannelReachLevel()
 			Next
 			?
 

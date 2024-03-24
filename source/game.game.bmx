@@ -856,8 +856,8 @@ endrem
 
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		If s.GetReceivers() < GameRules.stationInitialIntendedReach
-			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
-				Local cable:TStationBase = map.GetTemporaryCableNetworkUplinkStation(cableIndex)
+			For Local cableNetwork:TStationMap_CableNetwork = EachIn GetStationMapCollection().cableNetworks
+				Local cable:TStationBase = map.GetTemporaryCableNetworkUplinkStation(cableNetwork.GetId())
 				If cable
 					If cable.GetReceivers() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
 						If TStationAntenna(s) or cable.GetReceivers() < s.GetReceivers()
