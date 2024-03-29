@@ -123,7 +123,7 @@ Function EnsureEnoughCastableCelebritiesPerJob:Int(amount:int, baseCountryCode:S
 
 	'fetch all fictional and bookable celebs
 	'onlyFictional, onlyBookable, job, gender, alive, countryCode, forbiddenGUIDs, forbiddenIDs
-	local celebrities:TPersonBase[] = GetPersonBaseCollection().GetFilteredCelebritiesArray(True, True, 0, -1, True, "", Null, Null)
+	local celebrities:TPersonBase[] = GetPersonBaseCollection().GetFilteredCastableCelebritiesArray(True, True, 0, -1, True, "", Null, Null)
 	Local castJobIDs:Int[] = TVTPersonJob.GetCastJobs()
 	local addedCelebs:TPersonBase[]
 

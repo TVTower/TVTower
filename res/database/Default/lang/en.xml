@@ -23,7 +23,7 @@
 	<persons>
 		<person guid="common-amateur-actors" first_name="" last_name="Amateur Actors" nick_name="Amateur Actors" />
 		<person guid="common-amateur-director" first_name="" last_name="Amateur Director" nick_name="Amateur Director" />
-		<person guid="unnamed-person" first_name="" last_name="Unknown" nick_name="Unknown" />
+		<person guid="common-unnamed-person" first_name="" last_name="Unknown" nick_name="Unknown" />
 		<person guid="various-voice-artists" first_name="" last_name="various voice artists" />
 		<person guid="various-puppeteers" first_name="" last_name="various puppeteers" />
 		<person guid="various-models" first_name="" last_name="various models" />

@@ -517,8 +517,19 @@ Type TNewsAgency
 		Local localizeTitle:TLocalizedString
 		Local localizeDescription:TLocalizedString
 
+		'prevent anonymous various/common persons to appear in movie news
+		Local actor:TPersonBase = licence.GetData().getActor(1)
+		Local actor2:TPersonBase = licence.GetData().getActor(2)
+		If actor
+			If actor.GetGUID().startsWith("various") Or actor.GetGUID().startsWith("common")
+				actor = Null
+			ElseIf actor2 And actor2.GetGUID().startsWith("various") Or actor2.GetGUID().startsWith("common") 
+				actor = Null
+			EndIf
+		EndIf
+
 		'no director and no actors
-		If licence.GetData().getActor(1) = Null And licence.GetData().getDirector(1) = Null
+		If actor = Null And licence.GetData().getDirector(1) = Null
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION")
 		'no director
@@ -526,11 +537,11 @@ Type TNewsAgency
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION")
 		'no actor named (eg. cartoon)
-		ElseIf licence.GetData().getActor(1) = Null
+		ElseIf actor = Null
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
 		'if same director and main actor...
-		ElseIf licence.GetData().getActor(1) = licence.GetData().getDirector(1)
+		ElseIf actor = licence.GetData().getDirector(1)
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
 		'default

@@ -399,10 +399,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 			Local result:TPersonBase = currentChoice
 			'TODO check if these calls give the same set of persons available in the supermarket
-			Local alternatives:TPersonBase[] = GetPersonBaseCollection().GetRandomCelebrities(Null, 20, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
+			Local alternatives:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableCelebrities(Null, 20, True, True, job.job, job.gender, True, jobCountry, Null, usedPersonIDs)
 			If alternatives.length < 10
 				'no job restriction if there are too few alternatives
-				alternatives:+ GetPersonBaseCollection().GetRandomCelebrities(Null, 20, True, True, 0, job.gender, True, jobCountry, Null, usedPersonIDs)
+				alternatives:+ GetPersonBaseCollection().GetRandomCastableCelebrities(Null, 20, True, True, 0, job.gender, True, jobCountry, Null, usedPersonIDs)
 			End If
 			Local script:TScript = productionConcept.script
 			Local genreID:Int = script.mainGenre

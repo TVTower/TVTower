@@ -497,6 +497,8 @@ Type TDatabaseLoader
 		'fallback for old database syntax
 		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("bookable", person.IsCastable()) )
 		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("castable", person.IsCastable()) )
+		'cast filtering is mainly done using the bookable flag - not castable implies not bookable
+		If Not person.IsCastable() Then person.SetFlag(TVTPersonFlag.BOOKABLE, false )
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool("levelup", person.CanLevelUp()) )
 		person.SetJob(data.GetInt("job"))
 		person.countryCode = data.GetString("country", person.countryCode).ToUpper()
