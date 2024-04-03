@@ -707,12 +707,14 @@ endrem
 
 
 		'=== SELL ALL STATIONS ===
-		Local map:TStationMap = GetStationMap(playerID, True)
-		For Local station:TStationBase = EachIn map.stations
-			map.RemoveStation(station, True, True)
-		Next
-		GetStationMapCollection().Update()
-		TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
+		Local map:TStationMap = GetStationMap(playerID)
+		If map
+			For Local station:TStationBase = EachIn map.stations
+				map.RemoveStation(station, True, True)
+			Next
+			GetStationMapCollection().Update()
+			TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
+		EndIf
 
 		For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
 			section.SetBroadcastPermission(playerID, False)
@@ -846,7 +848,12 @@ endrem
 
 		'=== STATIONMAP ===
 		'create station map if not done yet
-		Local map:TStationMap = GetStationMap(playerID, True)
+		Local map:TStationMap = GetStationMap(playerID)
+		If Not map
+			map = New TStationMap(playerID)
+			GetStationMapCollection().AddMap(map)
+		EndIf
+
 
 		'add new station
 		Local dataX:Int = GetStationMapCollection().mapInfo.SurfaceXToDataX(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x)
@@ -873,6 +880,8 @@ endrem
 		s.SetFlag(TVTStationFlag.GRANTED, True)
 		'do not pay for it each day
 		s.SetFlag(TVTStationFlag.NO_RUNNING_COSTS, True)
+		'activate it instantly (no build time)
+		s.SetActive(True)
 
 		'add a broadcast permission for this station (price: 0 euro)
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(s.GetSectionName())
@@ -888,13 +897,10 @@ endrem
 		'fight with high initial fix costs
 
 
-		'refresh stats (only for restarting players as then all players have a stationmap)
-		If isRestartingPlayer
-			map.DoCensus()
-			map.Update()
-			GetStationMapCollection().Update()
-			If GetStationMap(playerID).GetReceivers() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReceivers() returned 0."
-		EndIf
+		map.DoCensus()
+		map.Update()
+		GetStationMapCollection().Update()
+		If GetStationMap(playerID).GetReceivers() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReceivers() returned 0."
 
 
 		'=== FINANCE ===
@@ -1741,8 +1747,11 @@ endrem
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
 			Local finance:TPlayerFinance = Player.GetFinance(day)
 			If Not finance Then Throw "ComputeDailyCosts failed: finance = null."
+			
+			Local map:TStationMap = GetStationMap(Player.playerID)
+			If Not map Then Throw "ComputeDailyCosts failed: map = null."
 			'stationfees
-			finance.PayStationFees( GetStationMap(Player.playerID, True).CalculateStationCosts() )
+			finance.PayStationFees( map.CalculateStationCosts() )
 			'interest rate for your current credit
 			finance.PayCreditInterest( finance.GetCreditInterest() )
 			'newsagencyfees

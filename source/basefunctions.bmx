@@ -8,7 +8,7 @@ Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.helper.bmx"
 Import "Dig/base.util.string.bmx"
 
-Import "external/zipengine.mod/zipengine.bmx"
+'Import "external/zipengine.mod/zipengine.bmx"
 Import brl.reflection
 ?Threaded
 Import Brl.threads

@@ -125,8 +125,7 @@ Type TMissions
 		result.accountBalance = finance.GetMoney() - finance.GetCredit()
 		Local image:TPublicImage = playerForScore.GetPublicImage()
 		result.image = image.GetAverageImage()
-		Local map:TStationMap =  GetStationMapCollection().GetMap(player, True)
-		result.reach = map.GetPopulationCoverage()
+		result.reach = GetStationMap(player).GetPopulationCoverage()
 		result.betty = GetBetty().GetInLove(player)
 		Return result
 	EndFunction
@@ -265,10 +264,12 @@ Type TSimpleMission extends TMission
 				currentValue = currentPlayerFinance.GetMoney() - currentPlayerFinance.GetCredit()
 				currentPlayer = currentPlayerFinance.playerID
 			case "REACH"
-				If not currentPlayerMap Then currentPlayerMap = GetStationMapCollection().GetMap(playerID, True)
-				Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
-				currentValue = Int(coverage*100)
-				currentPlayer = currentPlayerMap.GetOwner()
+				If not currentPlayerMap Then currentPlayerMap = GetStationMap(playerID)
+				If currentPlayerMap
+					Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
+					currentValue = Int(coverage*100)
+					currentPlayer = currentPlayerMap.GetOwner()
+				EndIf
 			case "IMAGE"
 				If not currentImage Then currentImage = GetPlayer(playerID).GetPublicImage()
 				Local image:Float = currentImage.GetAverageImage()
@@ -496,10 +497,12 @@ Type TCombinedMission extends TMission
 				currentImageRaw = image
 			EndIf
 			If reach And not currentReach
-				If not currentPlayerMap Then currentPlayerMap = GetStationMapCollection().GetMap(currentPlayer, True)
-				Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
-				currentReach = Int(coverage*100)
-				currentReachRaw = coverage
+				If not currentPlayerMap Then currentPlayerMap = GetStationMap(playerID)
+				If currentPlayerMap
+					Local coverage:Float = currentPlayerMap.GetPopulationCoverage()
+					currentReach = Int(coverage*100)
+					currentReachRaw = coverage
+				EndIf
 			EndIf
 			If betty And not currentBetty
 				Local betty:TBetty = GetBetty()

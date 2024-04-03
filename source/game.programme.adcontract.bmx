@@ -1222,7 +1222,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local reach:Int = population
 		If playerID > 0 
 			population = GetStationMapCollection().GetPopulation()
-			reach = GetStationMap(playerID, True).GetReceivers()
+			reach = GetStationMap(playerID).GetReceivers()
 		EndIf
 
 		'=== DYNAMIC PRICE ===

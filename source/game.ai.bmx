@@ -303,6 +303,13 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method _GetPlayerStationMap:TStationMap() {_private}
+		local map:TStationMap = GetStationMap(Self.ME)
+		If not map Then Throw "No StationMap assigned for player " + Self.ME
+		Return map
+	End Method
+
+
 	Function Create:TLuaFunctions(pPlayerId:Int) {_private}
 		Local ret:TLuaFunctions = New TLuaFunctions
 
@@ -953,27 +960,27 @@ endrem
 
 	Method of_GetRandomAntennaCoordinateInPlayerSections:TVec2I()
 		If Not _PlayerInRoom("office") Then Return Null
-		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInPlayerSections())
+		Return new TVec2I.CopyFrom(_GetPlayerStationMap().GetRandomAntennaCoordinateInPlayerSections())
 	End Method
 
 	Method of_GetRandomAntennaCoordinateInSections:TVec2I(sectionNames:string[], allowSectionCrossing:Int = True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSections(sectionNames, allowSectionCrossing))
+		Return new TVec2I.CopyFrom(_GetPlayerStationMap().GetRandomAntennaCoordinateInSections(sectionNames, allowSectionCrossing))
 	End Method
 
 	Method of_GetRandomAntennaCoordinateInSection:TVec2I(sectionName:string, allowSectionCrossing:Int = True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing))
+		Return new TVec2I.CopyFrom(_GetPlayerStationMap().GetRandomAntennaCoordinateInSection(sectionName, allowSectionCrossing))
 	End Method
 
 	Method of_GetRandomAntennaCoordinateOnMap:TVec2I(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return new TVec2I.CopyFrom(GetStationMap(Self.ME, True).GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState))
+		Return new TVec2I.CopyFrom(_GetPlayerStationMap().GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState))
 	End Method
 
 	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetTemporaryCableNetworkUplinkStation(cableNetworkIndex)
+		Return _GetPlayerStationMap().GetTemporaryCableNetworkUplinkStation(cableNetworkIndex)
 	End Method
 
 	'less calculation-expensive variant for determining if obtaining a temporary antenna makes sense
@@ -991,17 +998,17 @@ endrem
 
 	Method of_GetTemporaryAntennaStation:TStationBase(dataX:Int, dataY:Int,fullyInit:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetTemporaryAntennaStation(dataX, dataY, fullyInit)
+		Return _GetPlayerStationMap().GetTemporaryAntennaStation(dataX, dataY, fullyInit)
 	End Method
 
 	Method of_GetTemporarySatelliteUplinkStation:TStationBase(satelliteIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return GetStationMap(Self.ME, True).GetTemporarySatelliteUplinkStation(satelliteIndex)
+		Return _GetPlayerStationMap().GetTemporarySatelliteUplinkStation(satelliteIndex)
 	End Method
 
 	Method of_GetStationCosts:Int()
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
-		Return GetStationMap(Self.ME, True).CalculateStationCosts()
+		Return _GetPlayerStationMap().CalculateStationCosts()
 	End Method
 
 
@@ -1048,7 +1055,7 @@ endrem
 	Method of_buyAntennaStation:Int(x:Int, y:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(ME).BuyAntennaStation(x, y)
+		If _GetPlayerStationMap().BuyAntennaStation(x, y)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1059,7 +1066,7 @@ endrem
 	Method of_buyCableNetworkStation:Int(federalStateName:String)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(ME).BuyCableNetworkUplinkStationBySectionName(federalStateName, True)
+		If _GetPlayerStationMap().BuyCableNetworkUplinkStationBySectionName(federalStateName, True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1070,7 +1077,7 @@ endrem
 	Method of_buyCableNetworkStationByCableNetworkIndex:Int(cableNetworkIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(ME).BuyCableNetworkUplinkStation(cableNetworkIndex)
+		If _GetPlayerStationMap().BuyCableNetworkUplinkStation(cableNetworkIndex)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1085,7 +1092,7 @@ endrem
 		Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteAtIndex(satelliteIndex)
 		If Not satellite Then Return Self.RESULT_FAILED
 
-		If GetStationMap(ME).BuySatelliteUplinkStation(satellite.GetID(), True)
+		If _GetPlayerStationMap().BuySatelliteUplinkStation(satellite.GetID(), True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1096,7 +1103,7 @@ endrem
 	Method of_sellStation:Int(listPosition:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
 
-		If GetStationMap(Self.ME).SellStationAtPosition(listPosition)
+		If _GetPlayerStationMap().SellStationAtPosition(listPosition)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1109,7 +1116,7 @@ endrem
 
 		If playerID = -1 Then playerID = Self.ME
 
-		Return GetStationMap(playerID).GetStationCount()
+		Return _GetPlayerStationMap().GetStationCount()
 	End Method
 
 
@@ -1118,7 +1125,7 @@ endrem
 
 		If playerID = -1 Then playerID = Self.ME
 
-		Return GetStationMap(playerID).GetStationAtIndex(arrayIndex)
+		Return _GetPlayerStationMap().GetStationAtIndex(arrayIndex)
 	End Method
 
 
