@@ -1476,6 +1476,15 @@ endrem
 				antennaStationRadius = 40
 			EndIf
 		EndIf
+		
+		'if antennas become too big (eg late start year) then disable need to
+		'buy broadcast permissions for antennas
+		If GameRules.antennaStationsRequireBroadcastPermissionUntilRadius > 0
+			If antennaStationRadius > GameRules.antennaStationsRequireBroadcastPermissionUntilRadius
+				TLogger.Log("TStationMapCollection.LoadFromXML", "Adjust GameRules - antennas do not require broadcast permissions in sections.", LOG_DEBUG)
+				GameRules.antennaStationsRequireBroadcastPermission = False
+			EndIf
+		EndIf
 
 		Return True
 		
@@ -4360,7 +4369,6 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 				cantGetSectionPermissionReason = section.CanGetBroadcastPermission(owner)
 			EndIf
 		EndIf
-			
 
 		Local priceSplitH:Int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" ) - 2
@@ -5859,7 +5867,7 @@ Type TStationMapSection
 	'returns whether a channel needs a permission for the given station type
 	'or not - regardless of whether the channel HAS one or not
 	Method NeedsBroadcastPermission:Int(channelID:Int, stationType:Int = -1)
-		If stationType = TVTStationType.ANTENNA And GetStationMapCollection().antennaStationRadius >= 32
+		If stationType = TVTStationType.ANTENNA And Not GameRules.antennaStationsRequireBroadcastPermission
 			return False
 		EndIf
 		Return True
