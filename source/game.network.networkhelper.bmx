@@ -790,7 +790,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 '							case TVTStationType.ANTENNA
 '								station = new TStation.Init(pos,-1, radius, playerID)
 '							default 'case TVTStationType.ANTENNA
-								station = new TStationAntenna.Init(posX, posY, -1, playerID)
+								station = new TStationAntenna.Init(New SVec2I(posX, posY), playerID)
 								TStationAntenna(station).radius = radius
 '						End Select
 					endif

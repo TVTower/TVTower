@@ -858,18 +858,16 @@ endrem
 		'add new station
 		Local dataX:Int = GetStationMapCollection().mapInfo.SurfaceXToDataX(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x)
 		Local dataY:Int = GetStationMapCollection().mapInfo.SurfaceYToDataY(GetStationMapCollection().mapInfo.startAntennaSurfacePos.y)
-		Local s:TStationBase = New TStationAntenna.Init(dataX, dataY , -1, playerID )
+		Local s:TStationBase = New TStationAntenna.Init(new SVec2I(dataX, dataY), playerID )
 		'Local s:TStationBase = New TStationAntenna.Init(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x, GetStationMapCollection().mapInfo.startAntennaSurfacePos.y , -1, playerID )
 
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		If s.GetReceivers() < GameRules.stationInitialIntendedReach
 			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
-				Local cable:TStationBase = map.GetTemporaryCableNetworkUplinkStation(cableIndex)
-				If cable
-					If cable.GetReceivers() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
-						If TStationAntenna(s) or cable.GetReceivers() < s.GetReceivers()
-							s = cable
-						EndIf
+				Local cable:TStationBase = New TStationCableNetworkUplink.Init(cableIndex, playerID)
+				If cable.GetReceivers() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
+					If TStationAntenna(s) or cable.GetReceivers() < s.GetReceivers()
+						s = cable
 					EndIf
 				EndIf
 			Next

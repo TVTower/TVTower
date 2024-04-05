@@ -2878,7 +2878,7 @@ endrem
 				Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 				Local dataX:Int = mapInfo.ScreenXToDataX(MouseManager.x)
 				Local dataY:Int = mapInfo.ScreenYToDataY(MouseManager.y)
-				mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation(dataX, dataY)
+				mouseoverStation = New TStationAntenna.Init(New SVec2I(dataX, dataY), room.owner)
 			EndIf
 
 			if not mouseoverStationPosition Then mouseoverStationPosition = New TVec2D
@@ -2899,7 +2899,7 @@ endrem
 			If MOUSEMANAGER.isClicked(1) OR KEYMANAGER.IsHit(KEY_SPACE)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReceivers() > 0
-					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.x, mouseoverStation.y )
+					selectedStation = New TStationAntenna.Init(New SVec2I(mouseoverStation.x, mouseoverStation.y), room.owner)
 
 					'handled left click
 					MouseManager.SetClickHandled(1)
@@ -2939,7 +2939,7 @@ endrem
 							endif
 						Next
 						if not mouseoverStation
-							mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStation( cableNetwork )
+							mouseoverStation = New TStationCableNetworkUplink.Init(cableNetwork, room.owner, True)
 						endif
 					'remove cache
 					Else
@@ -2962,7 +2962,8 @@ endrem
 			If MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReceivers() > 0
-					selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStation( mouseOverStation.providerID )
+					Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetwork(mouseOverStation.providerID)
+					selectedStation = New TStationCableNetworkUplink.Init(cableNetwork, room.owner, True)
 					If selectedStation
 						'handled left click
 						MouseManager.SetClickHandled(1)
@@ -2990,7 +2991,7 @@ endrem
 				'selected
 				If satelliteSelectionFrame.selectedSatellite
 					If Not satLink Or satLink.providerID <> satelliteSelectionFrame.selectedSatellite.GetID()
-						selectedStation = GetStationMap(room.owner).GetTemporarySatelliteUplinkStation( satelliteSelectionFrame.selectedSatellite )
+						selectedStation = new TStationSatelliteUplink.Init(satelliteSelectionFrame.selectedSatellite, room.owner, True)
 					EndIf
 				EndIf
 			EndIf

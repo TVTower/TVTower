@@ -428,6 +428,12 @@ endrem
 	End Method
 
 
+	Method GetFirstCableNetworkBySection:TStationMap_CableNetwork(section:TStationMapSection)
+		If Not section Then Return Null
+		Return GetFirstCableNetworkBySectionName(section.name)
+	End Method
+
+
 	Method GetFirstCableNetworkBySectionName:TStationMap_CableNetwork(sectionName:String)
 		If cableNetworks.count() = 0 Then Return Null
 
@@ -3080,68 +3086,6 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'returns a station-object wich can be used for further
-	'information getting (share etc)
-	Method GetTemporaryAntennaStation:TStationBase(dataX:Int, dataY:Int, fullyInit:Int = True)  {_exposeToLua}
-		Local station:TStationAntenna = New TStationAntenna
-		station.SetRadius( GetStationMapCollection().antennaStationRadius )
-
-		Return station.Init(dataX, dataY, -1, owner)
-	End Method
-
-
-	'returns a station-object wich can be used for further
-	'information getting (share etc)
-	Method GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkID:Int)
-		Return GetTemporaryCableNetworkUplinkStation( GetStationMapCollection().GetCableNetwork(cableNetworkID) )
-	End Method
-
-
-	'returns a station-object wich can be used for further
-	'information getting (share etc)
-	Method GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetwork:TStationMap_CableNetwork)
-		If Not cableNetwork Or Not cableNetwork.launched Then Return Null
-
-		Local station:TStationCableNetworkUplink = New TStationCableNetworkUplink
-		station.providerID = cableNetwork.getID()
-
-		Local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
-		If Not mapSection Then Return Null
-
-		'uplinkPos is "screen based", init() wants "data based"
-		Local uplinkPos:TVec2I = mapSection.GetUplinkPos()
-		Local dataX:Int = GetStationMapCollection().mapInfo.ScreenXToDataX( Int(mapSection.rect.x) + uplinkPos.x )
-		Local dataY:Int = GetStationMapCollection().mapInfo.ScreenYToDataY( Int(mapSection.rect.y) + uplinkPos.y )
-		
-		station.Init(dataX, dataY, -1, owner)
-
-		Return station
-	End Method
-
-
-	'returns a station-object wich can be used for further
-	'information getting (share etc)
-	Method GetTemporarySatelliteUplinkStation:TStationBase(satelliteID:Int)
-		Return GetTemporarySatelliteUplinkStation( GetStationMapCollection().GetSatellite(satelliteID) )
-	End Method
-
-
-	'returns a station-object wich can be used for further
-	'information getting (share etc)
-	Method GetTemporarySatelliteUplinkStation:TStationBase(satellite:TStationMap_Satellite)
-		If Not satellite Or Not satellite.launched Then Return Null
-
-		Local station:TStationSatelliteUplink = New TStationSatelliteUplink
-		station.providerID = satellite.getID()
-
-		'TODO: satellite positions
-		'-> some satellites are foreign ones
-		Local satelliteIndex:Int = GetStationMapCollection().GetSatelliteIndex(station.providerID)
-
-		Return station.Init(10, 430 - satelliteIndex*50, -1, owner)
-	End Method
-
-
 	'return all antenna stations covering the given coordinates
 	Method GetAntennasByXY:TStationAntenna[](X:Int, Y:Int, exactPosition:Int = True) {_exposeToLua}
 		Local res:TStationAntenna[]
@@ -3331,8 +3275,8 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetRandomAntennaCoordinateOnMap:SVec2I(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
 		Local dataX:Int = Rand(35, GetStationMapCollection().mapInfo.densityData.width)
 		Local dataY:Int = Rand(1, GetStationMapCollection().mapInfo.densityData.height)
-		Local station:TStationBase = GetTemporaryAntennaStation(dataX, dataY)
-		If station.GetPrice() < 0 Then Return Null
+		Local station:TStationAntenna = New TStationAntenna.Init(new SVec2I(dataX, dataY), owner)
+		If station.GetPrice() < 0 Then Return New SVec2I(-1,-1)
 		
 		If checkBroadcastPermission And GetStationMapCollection().GetSectionByDataXY(dataX, dataY).HasBroadcastPermission(owner, TVTStationType.ANTENNA) <> requiredBroadcastPermissionState Then Return Null
 		 
@@ -3464,50 +3408,6 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns the antenna share for the given data coordinate
 	Method GetPopulationAntennaShare:Float(dataX:Int, dataY:Int)
 		Return GetStationMapCollection().GetPopulationAntennaShare(dataX, dataY)
-	End Method
-
-
-	'buy a new antenna station at the given data coordinates
-	Method BuyAntennaStation:Int(dataX:Int, dataY:Int)
-		Return AddStation( GetTemporaryAntennaStation( dataX, dataY ), True )
-	End Method
-
-
-	'buy a new cable network station at the given coordinates
-	Method BuyCableNetworkUplinkStationBySection:Int(section:TStationMapSection)
-		If Not section Then Return False
-
-		BuyCableNetworkUplinkStationBySectionName(section.name)
-	End Method
-
-
-	'buy a new cable network station at the given coordinates
-	Method BuyCableNetworkUplinkStationBySectionName:Int(sectionName:String, autoUpdateContract:Int = False)
-		'find first cable network operating in that section
-		Local index:Int = 0
-		For Local cableNetwork:TStationMap_CableNetwork = EachIn GetStationMapCollection().cableNetworks
-			If cableNetwork.sectionName = sectionName
-				Local tmp:TStationBase = GetTemporaryCableNetworkUplinkStation( index )
-				tmp.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT,autoUpdateContract)
-				Return AddStation(tmp, True )
-			EndIf
-			index :+ 1
-		Next
-		Return False
-	End Method
-
-
-	'buy a new cable network link for the give cableNetwork
-	Method BuyCableNetworkUplinkStation:Int(cableNetworkID:Int)
-		Return AddStation( GetTemporaryCableNetworkUplinkStation( cableNetworkID ), True )
-	End Method
-
-
-	'buy a new satellite station at the given coordinates
-	Method BuySatelliteUplinkStation:Int(satelliteID:Int, autoUpdateContract:Int = False)
-		Local tmp:TStationBase = GetTemporarySatelliteUplinkStation( satelliteID )
-		tmp.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, autoUpdateContract)
-		Return AddStation(tmp, True )
 	End Method
 
 
@@ -3871,12 +3771,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field _cache_revision:Int = 0 {nosave}
 
 
-	Method Init:TStationBase(x:Int, y:Int, price:Int=-1, owner:Int)
+	Method Init:TStationBase(dataPos:SVec2I, owner:Int)
 		Self.owner = owner
-		Self.x = x
-		Self.y = y
+		Self.x = dataPos.x
+		Self.y = dataPos.y
 
-		Self.price = price
+		Self.price = -1
 		Self.built = GetWorldTime().GetTimeGone()
 		Self.activationTime = -1
 
@@ -4674,8 +4574,8 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationAntenna(x:Int, y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(x, y, price, owner)
+	Method Init:TStationAntenna(dataPos:SVec2I, owner:Int) Override
+		Super.Init(dataPos, owner)
 		Return Self
 	End Method
 
@@ -4925,10 +4825,55 @@ Type TStationCableNetworkUplink Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TStationCableNetworkUplink(x:Int, y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(x, y, price, owner)
+	'override but return different station type
+	Method Init:TStationCableNetworkUplink(dataPos:SVec2I, owner:Int) Override
+		Super.Init(dataPos, owner)
 
 		Return Self
+	End Method
+
+
+	'init cable network uplink with given cableNetwork
+	Method Init:TStationCableNetworkUplink(cableNetwork:TStationMap_CableNetwork, owner:Int, autoUpdateContract:Int) 
+		If not cableNetwork then Throw "TStationCableNetworkUplink.Init() failed. No valid cable network given."
+		If not cableNetwork.launched then Throw "TStationCableNetworkUplink.Init() failed. Cable network not launched."
+
+		Local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
+		If not mapSection then Throw "TStationCableNetworkUplink.Init() failed. no valid section assigned to cable network."
+
+		'uplinkPos is "screen based", init() wants "data based"
+		Local uplinkPos:TVec2I = mapSection.GetUplinkPos()
+		Local dataX:Int = GetStationMapCollection().mapInfo.ScreenXToDataX( Int(mapSection.rect.x) + uplinkPos.x )
+		Local dataY:Int = GetStationMapCollection().mapInfo.ScreenYToDataY( Int(mapSection.rect.y) + uplinkPos.y )
+
+		Super.Init(new SVec2I(dataX, dataY), owner)
+	
+		SetProvider(cableNetwork.getID())
+		SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, autoUpdateContract)
+
+		Return self
+	End Method
+
+
+	'init cable network uplink with given cableNetwork defined by id
+	Method Init:TStationCableNetworkUplink(cableNetworkID:Int, owner:Int, autoUpdateContract:Int) 
+		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetwork(cableNetworkID)
+
+		Return Init(cableNetwork, owner, autoUpdateContract)
+	End Method
+
+	'init cable network uplink with the first cable network found in the in the section
+	Method Init:TStationCableNetworkUplink(section:TStationMapSection, owner:Int, autoUpdateContract:Int = True)
+		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySection(section)
+
+		Return Init(cableNetwork, owner, autoUpdateContract)
+	End Method
+
+	'init cable network uplink with the first cable network found in the in the section defined by section name
+	Method Init:TStationCableNetworkUplink(sectionName:String, owner:Int, autoUpdateContract:Int = True)
+		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySectionName(sectionName)
+
+		Return Init(cableNetwork, owner, autoUpdateContract)
 	End Method
 
 
@@ -5318,11 +5263,24 @@ Type TStationSatelliteUplink Extends TStationBase {_exposeToLua="selected"}
 		stationType = TVTStationType.SATELLITE_UPLINK
 	End Method
 
-
-	Method Init:TStationSatelliteUplink(x:Int, y:Int, price:Int=-1, owner:Int) Override
-		Super.Init(x, y, price, owner)
+	'override but return different station type
+	Method Init:TStationSatelliteUplink(dataPos:SVec2I, owner:Int) Override
+		Super.Init(dataPos, owner)
 
 		Return Self
+	End Method
+
+		
+	Method Init:TStationSatelliteUplink(satellite:TStationMap_Satellite, owner:Int, autoUpdateContract:Int) 
+		If not satellite then Throw "TStationSatelliteUplink.Init() failed. No valid satellite given."
+		If not satellite.launched then Throw "TStationSatelliteUplink.Init() failed. Satellite not launched."
+
+		Super.Init(new SVec2I(10, 10), owner)
+		
+		SetProvider(satellite.getID())
+		SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, autoUpdateContract)
+
+		Return self
 	End Method
 
 

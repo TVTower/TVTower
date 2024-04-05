@@ -975,12 +975,20 @@ endrem
 
 	Method of_GetRandomAntennaCoordinateOnMap:TVec2I(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return new TVec2I.CopyFrom(_GetPlayerStationMap().GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState))
+		
+		Local coords:SVec2I = _GetPlayerStationMap().GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState)
+		If coords.x = -1 and coords.y = -1 Then Return Null
+		
+		Return new TVec2I.CopyFrom(coords)
 	End Method
 
 	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return _GetPlayerStationMap().GetTemporaryCableNetworkUplinkStation(cableNetworkIndex)
+		
+		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkAtIndex(cableNetworkIndex)
+		If Not cableNetwork Or Not cableNetwork.launched Then Return Null
+
+		Return New TStationCableNetworkUplink.Init(cableNetwork, self.ME, True)
 	End Method
 
 	'less calculation-expensive variant for determining if obtaining a temporary antenna makes sense
@@ -996,15 +1004,22 @@ endrem
 		Return price
 	End Method
 
-	Method of_GetTemporaryAntennaStation:TStationBase(dataX:Int, dataY:Int,fullyInit:Int)
+	Method of_GetTemporaryAntennaStation:TStationBase(dataX:Int, dataY:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return _GetPlayerStationMap().GetTemporaryAntennaStation(dataX, dataY, fullyInit)
+
+		Return New TStationAntenna.Init(New SVec2I(dataX, dataY), self.ME)
 	End Method
+
 
 	Method of_GetTemporarySatelliteUplinkStation:TStationBase(satelliteIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Null
-		Return _GetPlayerStationMap().GetTemporarySatelliteUplinkStation(satelliteIndex)
+
+		Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteAtIndex(satelliteIndex)
+		If Not satellite Or Not satellite.launched Then Return Null
+
+		Return New TStationSatelliteUplink.Init(satellite, self.ME, True)
 	End Method
+
 
 	Method of_GetStationCosts:Int()
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
@@ -1054,8 +1069,11 @@ endrem
 
 	Method of_buyAntennaStation:Int(x:Int, y:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		
+		Local map:TStationMap = _GetPlayerStationMap()
+		Local station:TStationAntenna = New TStationAntenna.Init(New SVec2I(x, y), self.ME)
 
-		If _GetPlayerStationMap().BuyAntennaStation(x, y)
+		If map.AddStation( station, True )
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1065,8 +1083,9 @@ endrem
 
 	Method of_buyCableNetworkStation:Int(federalStateName:String)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
-
-		If _GetPlayerStationMap().BuyCableNetworkUplinkStationBySectionName(federalStateName, True)
+		
+		Local station:TStationCableNetworkUplink = New TStationCableNetworkUplink.Init(federalStateName, self.ME, True)
+		If _GetPlayerStationMap().AddStation(station, True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1076,8 +1095,12 @@ endrem
 
 	Method of_buyCableNetworkStationByCableNetworkIndex:Int(cableNetworkIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+		
+		Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkAtIndex(cableNetworkIndex)
+		If Not cableNetwork Or Not cableNetwork.launched Then Return Self.RESULT_FAILED
 
-		If _GetPlayerStationMap().BuyCableNetworkUplinkStation(cableNetworkIndex)
+		Local station:TStationCableNetworkUplink = New TStationCableNetworkUplink.Init(cableNetwork, self.ME, True)
+		If _GetPlayerStationMap().AddStation(station, True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
@@ -1092,7 +1115,8 @@ endrem
 		Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteAtIndex(satelliteIndex)
 		If Not satellite Then Return Self.RESULT_FAILED
 
-		If _GetPlayerStationMap().BuySatelliteUplinkStation(satellite.GetID(), True)
+		Local station:TStationSatelliteUplink = New TStationSatelliteUplink.Init(satellite, self.ME, True)
+		If _GetPlayerStationMap().AddStation(station, True)
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED
