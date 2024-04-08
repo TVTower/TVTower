@@ -12,7 +12,7 @@ LOW_AUDIENCE  = Low audience
 HIGH_AUDIENCE = High audience
 
 
-MOVIE_SPEED       = Speed
+MOVIE_SPEED       = Pacing
 MOVIE_CRITIC      = Critics
 MOVIE_BOXOFFICE   = Box-office
 MOVIE_TVAUDIENCE  = TV audience
