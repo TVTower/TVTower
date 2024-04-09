@@ -1257,6 +1257,14 @@ endrem
 			Next
 		EndIf
 
+		'fill in sectionIDs so caches can use them (do it for new and loaded games)
+		Local sectionID:Int = 1
+		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
+			section.sectionID = sectionID
+			sectionID :+ 1
+		Next
+		TLogger.Log("TStationMapCollection.onLoadStationMapData()", "Generated section IDs.", LOG_LOADING)
+
 
 		_instance.LoadPopulationShareData()
 
@@ -1443,6 +1451,14 @@ endrem
 				EndIf
 			Next
 		EndIf
+
+		'fill in sectionIDs so caches can use them (do it for new and loaded games)
+		Local sectionID:Int = 1
+		For local section:TStationMapSection = EachIn _instance.sections
+			section.sectionID = sectionID
+			sectionID :+ 1
+		Next
+		TLogger.Log("TStationMapCollection.onLoadStationMapData()", "Generated section IDs.", LOG_LOADING)
 
 
 		self.LoadPopulationShareData()
@@ -2298,30 +2314,7 @@ endrem
 
 		Return Null
 	End Method
-Rem
-	Method GetSectionNames:String[]()
-		If _sectionNames = Null
-			_sectionNames = New String[ sections.Length ]
-			For Local i:Int = 0 Until sections.Length
-				_sectionNames[i] = sections[i].name.ToLower()
-			Next
-		EndIf
 
-		Return _sectionNames
-	End Method
-
-
-	Method GetSectionISO3166Codes:String[]()
-		If _sectionISO3116Codes = Null
-			_sectionISO3116Codes = New String[ sections.Length ]
-			For Local i:Int = 0 Until sections.Length
-				_sectionISO3116Codes[i] = sections[i].iso3116Code.ToLower()
-			Next
-		EndIf
-
-		Return _sectionISO3116Codes
-	End Method
-EndRem
 
 	Method GetSectionsFiltered:TStationMapSection[](channelID:Int=-1, checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True, stationType:Int=-1)
 		Local filteredSections:TStationMapSection[] = New TStationMapSection[sections.Length]
@@ -3724,8 +3717,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	'location in relation to the density data 0,0
 	'for satellites it is the "starting point", for cable networks and
 	'antenna stations a point in the section / state
-	Field X:Int {_exposeToLua="readonly"}
-	Field Y:Int {_exposeToLua="readonly"}
+	Field x:Int {_exposeToLua="readonly"}
+	Field y:Int {_exposeToLua="readonly"}
 
 	Field price:Int	= -1
 
@@ -3943,6 +3936,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If section 
 			_cache_SectionName = section.name
 			_cache_SectionISO3116Code = section.iso3116Code
+		'Else
+		'	print "Station " + GetName() + " outside of section: " + self.x + "," + self.y
+		'	end
 		EndIf
 	End Method
 	
