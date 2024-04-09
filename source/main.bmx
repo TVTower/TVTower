@@ -132,6 +132,30 @@ Import "game.misc.savegameserializers.bmx"
 Import "Dig/base.util.bmxng.objectcountmanager.bmx"
 ?
 
+'Initialize virtual file system handling
+'=====
+' The virtual file system allows to transparently overlay folders
+' and to restrict write-access to a specific directory (WriteDir).
+' baseDir = Directory of the binary (application)
+' prefDir = "~/.local/share/TVTower" (Linux)
+'           "C:\Users\Ronny\AppData\Roaming\TVTower_org\TVTower" (Windows)
+'           "C:\Users\Ronny\AppData\Roaming\TVTower_org\TVTower" (Mac OS X)
+'           "/Users/Ronny/Library/Application Support/TVTower"
+
+MaxIO.Init()
+Local baseDir:String = MaxIO.GetBaseDir()
+Local prefDir:String = MaxIO.GetPrefDir("TVTower_org", "TVTower")
+'Mount "preference directory" first so it can override any file inside
+'of "base directory.
+'Mount as "/" (root) so files next to "TVTower.bin" are reachable via
+'LoadFile("myfile.txt")
+MaxIO.Mount(prefDir, "/", True)
+MaxIO.Mount(baseDir, "/", True)
+'Redirect any file-write attempts to "prefDir"
+MaxIO.SetWriteDir(prefDir)
+'=====
+
+
 
 ?Not bmxng
 'notify users when there are XML-errors
@@ -504,6 +528,9 @@ Type TApp
 		'that "-" sets libxml to output the content instead of writing to
 		'a file. Normally you should write to "test.user.xml" to overwrite
 		'the users customized settings
+
+		'if directory does not exist, create it
+		TFileHelper.EnsureWriteableDirectoryExists(ExtractDir(settingsUserPath))
 
 		'remove "DEV_" ignore key so they get stored too
 		Local storage:TDataXmlStorage = New TDataXmlStorage
@@ -923,6 +950,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				GetGame().SetGameOver()
 				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
 				'print some debug for stationmap
 				rem
@@ -3114,18 +3142,8 @@ endrem
 
 		'check directories and create them if needed
 		Local dirs:String[] = ExtractDir(saveURI.Replace("\", "/")).Split("/")
-		Local currDir:String
-		For Local dir:String = EachIn dirs
-			If currDir Then currDir :+ "/"
-			currDir :+ dir
-			'if directory does not exist, create it
-			If FileType(currDir) <> 2
-				TLogger.Log("Savegame.Save()", "Savegame path contains missing directories. Creating ~q"+currDir[.. currDir.length-1]+"~q.", LOG_SAVELOAD)
-				CreateDir(currDir)
-			EndIf
-		Next
-		If FileType(currDir) <> 2
-			TLogger.Log("Savegame.Save()", "Failed to create directory ~q" + currDir + "~q for ~q"+saveURI+"~q.", LOG_SAVELOAD)
+		If TFileHelper.EnsureWriteableDirectoryExists(ExtractDir(saveURI))
+			TLogger.Log("Savegame.Save()", "Savegame path contained missing directories. Created ~q"+ExtractDir(saveURI)+"~q.", LOG_SAVELOAD)
 		EndIf
 
 		Local t:Int = MilliSecs()
