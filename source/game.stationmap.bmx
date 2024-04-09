@@ -3558,7 +3558,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		If sell And Not station.sell() Then Return False
+		If sell And Not station.sell() And Not forcedRemoval Then Return False
 
 		stations.Remove(station)
 
@@ -3577,13 +3577,8 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		if station.IsActive() and TStationAntenna(station)
 			Local antenna:TStationAntenna = TStationAntenna(station)
 
-'			Local popDecrease:Int = GetRemovedAntennaPopulation(antenna.x, antenna.y, antenna.radius)
 			'mark antenna area as no longer used by an antenna
 			_GetAllAntennasLayer().RemoveAntenna(antenna.x, antenna.y, antenna.radius)
-
-'			_totalAntennaReachCache :- popDecrease
-'			if _totalAntennaReachCache < 0 Then _totalAntennaReachCache = 0
-'print "RON: RemoveStation() - pop. -" + popDecrease + "   _totalAntennaReachCache="+_totalAntennaReachCache
 
 			'remove from "overlapped" stations:
 			if antenna._overlappedAntennaIDs
@@ -3603,9 +3598,6 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		'set the owning stationmap to "changed" so only this single
 		'population reach gets recalculated (saves cpu time)
 		InvalidateReaches()
-
-		'require recalculation
-		RecalculateReaches()
 
 		'when station is sold, audience will decrease,
 		'while a buy will not increase the current audience but the

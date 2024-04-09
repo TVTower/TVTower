@@ -709,9 +709,12 @@ endrem
 		'=== SELL ALL STATIONS ===
 		Local map:TStationMap = GetStationMap(playerID)
 		If map
-			For Local station:TStationBase = EachIn map.stations
+			'iterate over copy, as we manipulate the content
+			For Local station:TStationBase = EachIn map.stations.Copy()
 				map.RemoveStation(station, True, True)
 			Next
+			'reset map itself (eg station counter to start station names with #1 again)
+			map.Initialize()
 			GetStationMapCollection().Update()
 			TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
 		EndIf
