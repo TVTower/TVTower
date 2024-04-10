@@ -130,9 +130,9 @@ SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = %MATCHKIND% are defeated, thanks to a bl
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = %MATCHKIND% lose, with keeper %TEAM1KEEPER% giving a disappointing performance, against
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = %MATCHKIND% lose, with keeper %TEAM1KEEPER% giving a disappointing performance, against
 
-SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = after %PLAYTIMEMINUTES% minutes of dodgy play
-SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = after %PLAYTIMEMINUTES% minutes of sharp tactics
-SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = after %PLAYTIMEMINUTES% minutes of excitement
+SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = - after %PLAYTIMEMINUTES% minutes of dodgy play -
+SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = - after %PLAYTIMEMINUTES% minutes of sharp tactics -
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = - after %PLAYTIMEMINUTES% minutes of excitement -
 
 SPORT_TEAMREPORT_MATCHWIN_S1 = win, thanks to %TEAM1STAR%, against
 SPORT_TEAMREPORT_MATCHWIN_P1 = win, thanks to %TEAM1STAR%, against
