@@ -80,8 +80,6 @@ Type TStationMapCollection
 		If Not _initDone
 			'handle savegame loading (reload the map configuration)
 			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
-			'handle <stationmapdata>-area in loaded xml files
-			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadResourceFromXML, onLoadStationMapData, Null, "STATIONMAPDATA")
 			'handle activation of stations
 			EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onSetStationActiveState)
 			EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInactive, onSetStationActiveState)
@@ -1126,156 +1124,6 @@ endrem
 	End Function
 
 
-	'run when an xml contains an <stationmapdata>-area
-	Function onLoadStationMapData:Int(triggerEvent:TEventBase)
-		Local mapDataRootNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
-		Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
-
-		'check if all required config entries are set
-		If Not mapDataRootNode Or Not registryLoader Then Return False
-
-		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
-		If Not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
-
-		Local configNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "config")
-		If Not configNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><config>-entry.")
-
-		Local cityNamesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "citynames")
-		If Not cityNamesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><citynames>-entry.")
-
-		Local sportsDataNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "sports")
-		'not mandatory
-		'If Not sportsDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><sports>-entry.")
-
-		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "startantenna")
-		If Not startAntennaNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
-
-		Local densityDataNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitydata")
-		If Not densityDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitydata>-entry.")
-		Local densityData:TData = New TData
-		TXmlHelper.LoadAllValuesToData(densityDataNode, densityData)
-		if not densityData.Has("url") then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitydata url>-entry.")
-
-		Local mapDensityDataURL:String = densityData.GetString("url")
-		Local mapDensityDataOffsetX:Int = densityData.GetInt("offset_x", 0)
-		Local mapDensityDataOffsetY:Int = densityData.GetInt("offset_y", 0)
-		if mapDensityDataURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmapdata><densitydata url>-entry.")
-
-		Local mapSurfaceImageURL:String = TXmlHelper.FindValue(surfaceNode, "url", "")
-		Local mapSurfaceOffsetX:Int = TXmlHelper.FindValueInt(surfaceNode, "map_offset_x", 0)
-		Local mapSurfaceOffsetY:Int = TXmlHelper.FindValueInt(surfaceNode, "map_offset_y", 0)
-		if mapSurfaceImageURL = "" then Throw("File ~q"+_instance.mapConfigFile+"~q misses a valid <stationmapdata><surface url>-entry.")
-
-		'load the map information / density data
-		Local mapConfigBaseURI:String = registryLoader.baseURI
-		If ExtractDir(_instance.mapConfigFile) and ExtractDir(registryLoader.baseURI)
-			mapConfigBaseURI = ExtractDir(registryLoader.baseURI) + "/" + ExtractDir(_instance.mapConfigFile)
-		ElseIf ExtractDir(_instance.mapConfigFile)
-			mapConfigBaseURI = ExtractDir(_instance.mapConfigFile)
-		EndIf
-		_instance.LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapSurfaceOffsetX, mapSurfaceOffsetY, mapSurfaceImageURL)
-		
-		_instance.mapInfo.startAntennaSurfacePos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "surface_x", 0), TXmlHelper.FindValueInt(startAntennaNode, "surface_y", 0))
-
-		'older savegames might contain a config which has the data converted
-		'to key->value[] arrays instead of values being overridden on each load.
-		'so better just clear the config
-		_instance.config = New TData
-		_instance.cityNames = New TData
-		If sportsDataNode Then _instance.sportsData = New TData
-
-		TXmlHelper.LoadAllValuesToData(configNode, _instance.config)
-		TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
-		If sportsDataNode
-			TXmlHelper.LoadAllValuesToData(sportsDataNode, _instance.sportsData)
-		EndIf
-
-		'=== LOAD STATES ===
-		'only if not done before
-		'ATTENTION: overriding current sections will remove broadcast
-		'           permissions as this is called _after_ a savegame
-		'           got loaded!
-		If _instance.sections.Length = 0
-			'remove old states
-			'_instance.ResetSections()
-
-			'find and load states configuration
-			Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
-			If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
-			
-			Local sectionID:Int = 1
-			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
-				Local name:String	= TXmlHelper.FindValue(child, "name", "")
-				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
-				Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
-				Local pos:SVec2I	= New SVec2I( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
-
-				Local pressureGroups:Int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
-				Local sectionConfig:TData
-				Local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
-				If sectionConfigNode
-					sectionConfig = New TData
- 					TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
-				EndIf
-				'override config if pressureGroups are defined already
-				If pressureGroups >= 0 Then sectionConfig.AddInt("pressureGroups", pressureGroups)
-
-				'add state section if data is ok
-				If name<>"" And sprite<>""
-					_instance.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sectionID, sprite, sectionConfig) )
-				EndIf
-			Next
-			
-			'calculate positions (now all sprites are loaded)
-			For Local s:TStationMapSection = EachIn _instance.sections
-				'validate if defined via XML
-				If s.uplinkPos 
-					If Not s.IsValidUplinkPos(s.uplinkPos.GetX(), s.uplinkPos.GetY())
-						TLogger.Log("TStationMapCollection.onLoadStationMapData()", "Invalid / Ambiguous uplink position for state ~q" + s.name+"~q.", LOG_DEBUG)
-						s.uplinkPos = Null
-					EndIf
-				EndIf
-					
-				s.GetUplinkPos()
-			Next
-		Else
-			'at least renew / fix properties written in the potentially
-			'more current config file
-
-			'find and load states configuration
-			Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
-			If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
-
-			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
-				Local name:String	= TXmlHelper.FindValue(child, "name", "")
-				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
-
-				local existingSection:TStationMapSection = _instance.GetSectionByName(name)
-				If existingSection
-					existingsection.iso3116Code = iso3116Code
-				EndIf
-			Next
-		EndIf
-
-		'fill in sectionIDs so caches can use them (do it for new and loaded games)
-		Local sectionID:Int = 1
-		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
-			section.sectionID = sectionID
-			sectionID :+ 1
-		Next
-		TLogger.Log("TStationMapCollection.onLoadStationMapData()", "Generated section IDs.", LOG_LOADING)
-
-
-		_instance.LoadPopulationShareData()
-
-		'=== CREATE SATELLITES / CABLE NETWORKS ===
-		If Not _instance.satellites Or _instance.satellites.Count() = 0 Then _instance.ResetSatellites()
-		If Not _instance.cableNetworks Or _instance.cableNetworks.Count() = 0 Then _instance.ResetCableNetworks()
-
-		Return True
-	End Function
-
-
 	Method LoadMapInformation(baseURI:String, mapDensityDataURI:String, mapCountryOffsetX:Int, mapCountryOffsetY:Int, mapSurfaceImageURI:String)
 		local fullDensityDataURI:String = mapDensityDataURI
 		local fullSurfaceImageURI:String = mapSurfaceImageURI
@@ -1299,7 +1147,7 @@ endrem
 		'TODO: Werte aus XML entnehmen (topo_design_width, topo_design_height)
 		mapInfo.SetScreenMapSize(509, 371)
 	End Method
-
+	
 
 	'load a map configuration from a specific xml file
 	'eg. "germany.xml"
@@ -1312,12 +1160,6 @@ endrem
 			Throw("TStationMapCollection.LoadFromXML: No file defined for loading.")
 		EndIf
 
-		'=== LOAD XML CONFIG ===
-		'Local registryLoader:TRegistryLoader = New TRegistryLoader
-		'registryLoader.baseURI = baseURI
-		'registryLoader.LoadFromXML(mapConfigFile, True)
-		'TLogger.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
-
 		Local fullXMLFileURI:String = mapConfigFile
 		If ExtractDir(baseURI) Then fullXMLFileURI = ExtractDir(baseURI) + "/" + mapConfigFile
 
@@ -1327,34 +1169,27 @@ endrem
 		EndIf
 
 		Local xmlHelper:TXmlHelper = TXmlHelper.Create(fullXMLFileURI, "", False)
-		Local xmlRootNode:TxmlNode = xmlHelper.GetRootNode()
-		Local xmlStationMapNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "stationmap", xmlFile, "Misses the <stationmap>-entry.")
+		Local rootNode:TxmlNode = xmlHelper.GetRootNode()
+		
 
+		'check nodes existence
+		Local resourcesNode:TxmlNode = GetNodeOrThrow(rootNode, "resources", xmlFile, "Misses the <resources>-entry.")
+		Local xmlStationMapNode:TxmlNode = GetNodeOrThrow(rootNode, "stationmap", xmlFile, "Misses the <stationmap>-entry.")
 		Local surfaceNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "surface", xmlFile, "Misses the <stationmap><surface>-entry.")
 		Local configNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "config", xmlFile, "Misses the <stationmap><config>-entry.")
 		Local cityNamesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "citynames", xmlFile, "Misses the <stationmap><citynames>-entry.")
-		Local sportsDataNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "sports")
-		'not mandatory
-		'Local sportsDataNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "sports", xmlFile, "Misses the <stationmap><sports>-entry.")
+		Local sportsDataNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "sports") 'sports data is not mandatory, so simple findChild will do
+		Local startAntennaNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "startantenna", xmlFile, "Misses the <stationmap><startantenna>-entry.")
 		Local densityDataNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "densitydata", xmlFile, "Misses the <stationmap><densitydata>-entry.")
 
+		'check data
 		Local densityData:TData = TXmlHelper.LoadAllValuesToData(densityDataNode, New TData)
-		if not densityData.Has("url") then Throw("File ~q"+mapConfigFile+"~q misses the <stationmap><densitydata url>-entry.")
-
-		Local mapDensityDataURL:String = densityData.GetString("url")
-		Local mapDensityDataOffsetX:Int = densityData.GetInt("offset_x", 0)
-		Local mapDensityDataOffsetY:Int = densityData.GetInt("offset_y", 0)
-		if mapDensityDataURL = "" then Throw("File ~q"+mapConfigFile+"~q misses a valid <stationmap><densitydata url>-entry.")
-
-		Local mapSurfaceImageURL:String = TXmlHelper.FindValue(surfaceNode, "url", "")
-		if mapSurfaceImageURL = "" then Throw("File ~q"+mapConfigFile+"~q misses a valid <stationmap><surface url>-entry.")
-
-		Local startAntennaNode:TxmlNode = TXmlHelper.FindChild(xmlStationMapNode, "startantenna")
-		If Not startAntennaNode Then Throw("File ~q"+mapConfigFile+"~q misses the <stationmapdata><startantenna>-entry.")
+		if densityData.GetString("url", "") = "" then Throw("File ~q"+xmlFile+"~q misses the or a valid <stationmap><densitydata url>-entry.")
+		Local surfaceData:TData = TXmlHelper.LoadAllValuesToData(surfaceNode, New TData)
+		if surfaceData.GetString("url", "") = "" then Throw("File ~q"+xmlFile+"~q misses the or a valid <stationmap><surface url>-entry.")
 
 
 		'load sprites/section images
-		Local resourcesNode:TxmlNode = GetNodeOrThrow(xmlRootNode, "resources", xmlFile, "Misses the <resources>-entry.")
 		Local registryLoader:TRegistryLoader = New TRegistryLoader
 		registryLoader.baseURI = baseURI
 		registryLoader.LoadSingleResourceFromXML(resourcesNode, Null, True)
@@ -1367,12 +1202,11 @@ endrem
 		ElseIf ExtractDir(mapConfigFile)
 			mapConfigBaseURI = ExtractDir(mapConfigFile)
 		EndIf
-		LoadMapInformation(mapConfigBaseURI, mapDensityDataURL, mapDensityDataOffsetX, mapDensityDataOffsetY, mapSurfaceImageURL)
-		
+		LoadMapInformation(mapConfigBaseURI, densityData.GetString("url"), densityData.GetInt("offset_x", 0), densityData.GetInt("offset_y", 0), surfaceData.GetString("url"))
 
 		mapInfo.startAntennaSurfacePos = New SVec2I(TXmlHelper.FindValueInt(startAntennaNode, "surface_x", 0), TXmlHelper.FindValueInt(startAntennaNode, "surface_y", 0))
 
-
+	
 		'older savegames might contain a config which has the data converted
 		'to key->value[] arrays instead of values being overridden on each load.
 		'so better just clear the config
@@ -1463,11 +1297,10 @@ endrem
 
 		self.LoadPopulationShareData()
 
+
 		'=== CREATE SATELLITES / CABLE NETWORKS ===
 		If Not _instance.satellites Or _instance.satellites.Count() = 0 Then _instance.ResetSatellites()
 		If Not _instance.cableNetworks Or _instance.cableNetworks.Count() = 0 Then _instance.ResetCableNetworks()
-
-
 
 
 		'=== INIT MAP DATA ===
@@ -1502,9 +1335,6 @@ endrem
 			EndIf
 		EndIf
 
-		Return True
-		
-		
 		Function GetNodeOrThrow:TXmlNode(parentNode:TxmlNode, nodeName:String, configFile:String, errorMessage:String)
 			Local node:TxmlNode = TXmlHelper.FindChild(parentNode, nodeName)
 			If Not node 
@@ -1514,6 +1344,8 @@ endrem
 			
 			Return node
 		End Function
+
+		Return True
 	End Method
 
 
