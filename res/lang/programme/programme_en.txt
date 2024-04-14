@@ -24,8 +24,8 @@ MOVIE_CAST        = Cast
 MOVIE_REPITITIONS = Repetitions
 
 MOVIE_LIVESHOW   = Live programme
-MOVIE_CALLINSHOW = You earn %PROFIT% per 1.000 viewers.
-MOVIE_TRAILER    = Airing a trailer may increase interest in upcoming broadcastings of the promoted programme.
+MOVIE_CALLINSHOW = You earn %PROFIT% per 1,000 viewers.
+MOVIE_TRAILER    = Airing a trailer may increase interest in upcoming broadcasts of the promoted programme.
 
 MOVIES          = Movies
 SERIES          = Series
@@ -38,13 +38,13 @@ X_RATED         = X-rated
 MOVIES_AND_SERIES_AUCTION                = Movie and series auction
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Click on movie or series to place a bid.
 AUCTION_MAKE_BID                         = Bid
-AUCTION_WITHOUT_BID                      = Without bid
+AUCTION_WITHOUT_BID                      = No bids
 YOU_HAVE_BEEN_OUTBID                     = You've been outbid
 SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Someone bid more than you for |b|%TITLE%|/b|.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Your previous bid of %MONEY% was refunded.
 YOU_HAVE_WON_AN_AUCTION                  = You've won an auction
 
-PROGRAMME_GENRE_UNDEFINED                  = Various
+PROGRAMME_GENRE_UNDEFINED                  = Sundry
 PROGRAMME_GENRE_ADVENTURE                  = Adventure
 PROGRAMME_GENRE_ACTION                     = Action
 PROGRAMME_GENRE_ANIMATION                  = Animation
@@ -60,13 +60,13 @@ PROGRAMME_GENRE_HORROR                     = Horror
 PROGRAMME_GENRE_MONUMENTAL                 = Epic
 PROGRAMME_GENRE_MYSTERY                    = Mystery
 PROGRAMME_GENRE_ROMANCE                    = Romance
-PROGRAMME_GENRE_SCIFI                      = SciFi
+PROGRAMME_GENRE_SCIFI                      = Sci-Fi
 PROGRAMME_GENRE_THRILLER                   = Thriller
 PROGRAMME_GENRE_WESTERN                    = Western
 PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Documentaries & Features
 PROGRAMME_GENRE_SHOW_AND_EVENTS            = Shows & Events
 PROGRAMME_GENRE_SHOW                       = Show
-PROGRAMME_GENRE_SHOW_MUSIC                 = Musics Show
+PROGRAMME_GENRE_SHOW_MUSIC                 = Music Show
 PROGRAMME_GENRE_SHOW_POLITICS              = Political Talk
 PROGRAMME_GENRE_SHOW_GAME                  = Game Show
 PROGRAMME_GENRE_SHOW_TALK                  = Talk Show
@@ -76,7 +76,7 @@ PROGRAMME_GENRE_EVENT_SPORT                = Sport
 PROGRAMME_GENRE_EVENT_SHOWBIZ              = Showbiz
 PROGRAMME_GENRE_EVENT_MUSIC                = Music and Singing
 PROGRAMME_GENRE_FEATURE                    = Feature
-PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Yellow Press
+PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Tabloid journalism
 
 PROGRAMME_FLAG_LIVE      = Live
 PROGRAMME_FLAG_ANIMATION = Animation
@@ -84,9 +84,9 @@ PROGRAMME_FLAG_CULTURE   = Culture
 PROGRAMME_FLAG_CULT      = Cult
 PROGRAMME_FLAG_TRASH     = Trash
 PROGRAMME_FLAG_BMOVIE    = B-Movie
-PROGRAMME_FLAG_XRATED    = XRated
+PROGRAMME_FLAG_XRATED    = X-Rated
 PROGRAMME_FLAG_PAID      = Infomercial/Call-in
-PROGRAMME_FLAG_SERIES    = Series-like
+PROGRAMME_FLAG_SERIES    = Series
 PROGRAMME_FLAG_SCRIPTED  = Scripted
 
 PROGRAMMELICENCES          = Programme rights
@@ -94,10 +94,10 @@ SELECT_LICENCES_FOR_SALE   = Select rights for sale
 LICENCETYPE_COLLECTION     = Collection
 LICENCETYPE_SINGLE         = Single
 LICENCETYPE_EPISODE        = Episode
-LICENCETYPE_SERIES         = Serie
+LICENCETYPE_SERIES         = Series
 LICENCETYPE_FRANCHISE      = Franchise
 SERIES_WITH_X_EPISODES     = Series with %EPISODESCOUNT% episodes
-COLLECTION_WITH_X_ELEMENTS = Collection with %X% elements
+COLLECTION_WITH_X_ELEMENTS = Collection with %X% entries
 
 PROGRAMME_PRODUCT_UNDEFINED   = Undefined
 PROGRAMME_PRODUCT_MOVIE       = Movie
@@ -106,7 +106,7 @@ PROGRAMME_PRODUCT_SHOW        = Show
 PROGRAMME_PRODUCT_FEATURE     = Feature
 PROGRAMME_PRODUCT_INFOMERCIAL = Infomercial
 PROGRAMME_PRODUCT_EVENT       = Event
-PROGRAMME_PRODUCT_MISC        = Misc
+PROGRAMME_PRODUCT_MISC        = Misc.
 
 PROGRAMME_IN_PROGRAMME_PLAN              = Programme in programme plan!
 TRAILER_IN_PROGRAMME_PLAN                = Trailer in programme plan!
@@ -114,38 +114,38 @@ PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programme and trailer in programme pl
 ONLY_1_BROADCAST_POSSIBLE                = Only 1 broadcast possible!
 ONLY_X_BROADCASTS_POSSIBLE               = Only %X% broadcasts possible!
 NO_MORE_BROADCASTS_ALLOWED               = No more broadcasts allowed!
-BROADCAST_TIME_RESTRICTED                = Time of broadcast restricted
+BROADCAST_TIME_RESTRICTED                = Time of broadcast restricted!
 BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Broadcast only allowed from %X%:00 to %Y%:00!
 FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = First broadcast only allowed from %X%:00 to %Y%:00!
 LIVE_PRODUCTION_FINISH_WILL_COST_X       = Live production finish will cost %X%
 
 OPENINGSHOW_TITLE       = Big launch of "%CHANNELNAME%"
-OPENINGSHOW_DESCRIPTION = Let's pop the corks. %CHANNELNAME% is launching today.
+OPENINGSHOW_DESCRIPTION = Let's pop the corks! %CHANNELNAME% is launching today.
 
 SPORT_PROGRAMME_TITLE                                = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
 SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = All %MATCHCOUNT% matches of %LEAGUENAME% in season %SEASONYEARSTART%.
 SPORT_PROGRAMME_MATCH_TIMES                          = Match times
-SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match between place %TEAM1RANK% and %TEAM2RANK% of the league. %TEAM1NAMEINITIALS% coach %TEAM1TRAINERSHORT% is optimistic.
-SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS% star %TEAM1STARSHORT% against the team around top scorer %TEAM2STAR%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match between teams placed %TEAM1RANK% and %TEAM2RANK% in the league. %TEAM1NAMEINITIALS% coach %TEAM1TRAINERSHORT% is optimistic.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS% star, %TEAM1STARSHORT%, against top scorer %TEAM2STAR%'s team.
 SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = An interesting game is coming up when %TEAM1ARTICLE1% %TEAM1NAME% meet the players of %TEAM2NAMEINITIALS%.
 SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% visiting %TEAM1NAMEINITIALS% in %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% and his team travel to %TEAM2CITY%, rank %TEAM2RANK% in the league.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% and his team travel to %TEAM2CITY%, placed %TEAM2RANK% in the league.
 
-SPORT_PROGRAMME_PLAYOFF_MATCH    = Playoff match.
-SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match of %LEAGUENAME%.
-SPORT_PLAYOFFS_LONG              = "Playoffs"
-SPORT_PLAYOFFS_SHORT             = "PO"
+SPORT_PROGRAMME_PLAYOFF_MATCH    = Relegation match.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match taking place in %LEAGUENAME%.
+SPORT_PLAYOFFS_LONG              = "Relegation"
+SPORT_PLAYOFFS_SHORT             = "Rel"
 
-SPORT_AFTER_PENALTY_SHORT  = "PSO"
+SPORT_AFTER_PENALTY_SHORT  = "Penalties"
 SPORT_AFTER_OVERTIME_SHORT = "AET"
 
-LIVE_ON_TAPE                        = Live on tape
+LIVE_ON_TAPE                        = Live recording
 ALL_MATCHES_FINISHED                = All matches finished
-X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% Live matches already started.
+X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% live matches already started.
 
 
 PENALTY_OF_X_WAS_PAID                                      = Penalty of %MONEY% was paid.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme |b|%TITLE%|/b| not allowed during daytime.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of X-rated programme |b|%TITLE%|/b| not allowed during daytime.
 AUTHORITIES_STOPPED_BROADCAST                              = Authorities stopped broadcast
 AUTHORITIES_CONFISCATED_LICENCE                            = Authorities confiscated programme rights
 PROGRAMMELICENCE_X_GOT_CONFISCATED                         = The programme rights for |b|%TITLE%|/b| got confiscated.
