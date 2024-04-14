@@ -13,32 +13,32 @@ LOAD_GAME                                  = Load Game
 INCOMPATIBLE_SAVEGAME                      = Incompatible savegame
 INVALID_SAVEGAME                           = Invalid savegame
 FILE_NOT_FOUND                             = File not found
-SAVEGAME_GETS_LOADED                       = Savegame gets loaded
+SAVEGAME_GETS_LOADED                       = Loading savegame...
 SAVE_GAME                                  = Save Game
 NAME_OF_SAVEGAME                           = Name of savegame
 OVERWRITE_SAVEGAME                         = Overwrite savegame?
 DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
-SAVEGAME_GETS_CREATED                      = Savegame gets created
-PLEASE_BE_PATIENT                          = Please be patient
+SAVEGAME_GETS_CREATED                      = Creating savegame...
+PLEASE_BE_PATIENT                          = Please wait
 EXIT_GAME                                  = Exit Game
-EXIT_TO_MAINMENU                           = Exit to main menu
+EXIT_TO_MAINMENU                           = Exit to Main Menu
 
-24_HOURS_GAMEDAY                                              = 24 hours gameday
+24_HOURS_GAMEDAY                                              = 24 hour gameday
 ALLOW_TRAILERS_AND_INFOMERCIALS                               = Allow trailers/infomercials
-ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Allow movies with year of production > game year
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Allow movies produced |b|later than|/b| current game year
 START_GAME_WITH_CREDIT                                        = Start with credit
 START_GAME_RANDOMIZE_PROGRAMME                                = Modify movie attributes a bit when starting
 OPTION_ON                                                     = Option on
 OPTION_OFF                                                    = Option off
 AVAILABLE_GAMES                                               = Available games
-ALREADY_OVER                                                  = Already over...?
+ALREADY_OVER                                                  = Finished already?
 DO_YOU_REALLY_WANT_TO_QUIT                                    = Do you really want to quit?
-DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Do you really want to quit the game and return to startscreen?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Do you really want to quit the game and return to the main menu?
 
 PREPARING_START_DATA           = Preparing start data
 SYNCHRONIZING_START_CONDITIONS = Synchronizing start conditions
 STARTING_MULTIPLAYERGAME       = Starting multiplayer game
-STARTING_SINGLEPLAYERGAME      = Starting singleplayer game
+STARTING_SINGLEPLAYERGAME      = Starting single-player game
 
 PLAYERNAME                  = Player name
 CHANNELNAME                 = Channel name
@@ -50,17 +50,17 @@ MUSIC                       = Music
 SFX                         = Sound effects
 FULLSCREEN                  = Fullscreen
 VSYNC                       = VSync
-RIGHTCLICK_EMULATION              = Emulate "right click"
-RIGHTCLICK_EMULATION_EXPLANATION  = Emulate right-click with long-down-click of left mouse button or touch
-RIGHTCLICK_EMULATION_TIME         = Time before "right click"
-WINDOW_MODE_RESOLUTION      = Window mode resolution
+RIGHTCLICK_EMULATION              = Emulate right-click
+RIGHTCLICK_EMULATION_EXPLANATION  = Emulate right-click with long-press of left mouse button or touch
+RIGHTCLICK_EMULATION_TIME         = Time before right-click
+WINDOW_MODE_RESOLUTION      = Windowed mode resolution
 INPUT                       = Input
 USE_TOUCH_INPUT             = Use touch input
-USE_TOUCH_INPUT_EXPLANATION = The first tap sets the mouse cursor, the following ones count as mouse clicks. Repositioning of the cursor if the distance between the tap positions is too large.
+USE_TOUCH_INPUT_EXPLANATION = The first tap sets the mouse cursor, the following ones count as mouse clicks. The cursor is repositioned if the distance between the tap positions is too large.
 MOVE_INSTEAD_CLICK_RADIUS   = Radius for moving instead of clicking
 MULTIPLAYER                 = Multiplayer
-SINGLEPLAYER                = Singleplayer
-DEFAULTS_FOR_NEW_GAME       = Defaults for "New Game"
+SINGLEPLAYER                = Single-player
+DEFAULTS_FOR_NEW_GAME       = Defaults for new game
 RENDERER                    = Renderer
 SOUND_ENGINE                = Sound engine
 SOUND_MUSIC_VOLUME          = Music Volume
@@ -83,7 +83,7 @@ REACH      = Reach
 PRICE      = Price
 VALUE      = Value
 POPULATION = Population
-NAME       = name
+NAME       = Name
 
 GENDER_MEN         = Men
 GENDER_WOMEN       = Women
@@ -91,7 +91,7 @@ GENDER_ALL         = All
 GENDER_MEN_SHORT   = M
 GENDER_WOMEN_SHORT = W
 
-CURRENCY     = €
+CURRENCY     = $
 OCLOCK       =
 DAY_SHORT    = D
 HOUR_SHORT   = H
@@ -131,7 +131,7 @@ SEASON_AUTUMN        = autumn
 SEASON_WINTER        = winter
 
 
-MENU_SOLO_GAME       = Solo game
+MENU_SOLO_GAME       = Single-player game
 MENU_START_GAME      = Start game
 MENU_NETWORKGAME     = LAN game
 MENU_ONLINEGAME      = Online game
@@ -144,7 +144,7 @@ MENU_AVAILABLE_GAMES = Available games
 
 ABBREVIATION_THOUSAND = K
 ABBREVIATION_MILLION  = M
-ABBREVIATION_BILLION  = bn
+ABBREVIATION_BILLION  = B
 
 DIFFICULTY_EASY   = Easy
 DIFFICULTY_NORMAL = Normal
@@ -159,7 +159,7 @@ GAMEDAY   = Gameday
 
 
 GAMESPEED      = Game speed
-SET_SPEED_TO_X = Set speed to %SPEED%
+SET_SPEED_TO_X = Set game speed to %SPEED%
 
 MANUAL    = Manual
 HELP      = Help / Pause
@@ -167,35 +167,35 @@ SHOW_HELP = Show help
 
 DO_NOT_SHOW_AGAIN        = Do not show again
 DO_NOT_SHOW_ANY_TIPS     = Do not show any tips
-SHOW_INTRODUCTORY_GUIDES = Show introductory guides
+SHOW_INTRODUCTORY_GUIDES = Show introductory tips
 
 ERROR_NOT_POSSIBLE                  = Not possible!
 ERROR_NOT_ABLE_TO_SELL_LAST_STATION = It is not possible to sell the last station.
 ERROR_NOT_ENOUGH_MONEY              = Not enough money!
-ERROR_NOT_ENOUGH_MONEY_TEXT         = You do not have enough money to finish this action.
+ERROR_NOT_ENOUGH_MONEY_TEXT         = You do not have enough money for this.
 
 NEWGAMESETTINGS_RANDOMIZE          = Randomize
 NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Choose look (color, figure) and names randomly
 NEWGAMESETTINGS_CHANNELNAME_DETAIL = Name of this player's TV channel
 NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Name of this player
 NEWGAMESETTINGS_DIFFICULTY         = Difficulty
-NEWGAMESETTINGS_DIFFICULTY_DETAIL  = The difficulty |b|for|/b| this player
+NEWGAMESETTINGS_DIFFICULTY_DETAIL  = The difficulty for this player
 NEWGAMESETTINGS_START_YEAR_DETAIL  = The year in which the game will start. Affects available programmes!
 NEWGAMESETTINGS_GAME_SEED          = Game number / seed
 NEWGAMESETTINGS_GAME_SEED_DETAIL   = Same game numbers lead to similar starting conditions (offers at vendors).
 
 MESSAGE_CLOSES_AT_TIME = Message closes at %TIME%
-MESSAGE_CLOSES_AT_DAY  = Message closes at %TIME%
+MESSAGE_CLOSES_AT_DAY  = Message closes on %TIME%
 
 
-HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = Pressing "ALT"-key will show details.
-HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = Pressing "ALT"-key will lock tooltip.
-HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = Pressing "ALT"-key will release tooltip.
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = Pressing ALT will show details.
+HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = Pressing ALT will lock tooltip.
+HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = Pressing ALT will release tooltip.
 HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT: switch datasheet | CTRL+Click: copy programme | SHIFT+Click: next episode
 HINT                                   = Hint
 
 STARTHINT_TITLE1 = Programme plan
-STARTHINT_TEXT1  = The CTRL-key allows you to place a programme multiple times on your plan, whereas the SHIFT-key tries to place the next episode of a series.
+STARTHINT_TEXT1  = CTRL allows you to place a programme multiple times on your plan, whereas SHIFT places the next episode of a series.
 STARTHINT_TITLE2 = Programme plan
 STARTHINT_TEXT2  = The success of a broadcast heavily depends largely on the quality/rating of the programme. Equally crucial are the time of the broadcast, popularity of the genre, the audience flow to (hopefully similar) following programmes, the number of trailers aired, the quality of the newscast, and other factors.\n\nProgrammes of some genres, such as comedies, may also be broadcast more frequently than others.
 STARTHINT_TITLE3 = Ad contracts
