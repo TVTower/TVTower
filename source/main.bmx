@@ -5751,8 +5751,8 @@ endrem
 		Local player:TPlayer = GetPlayer(stationMap.owner)
 		If Not player Then Return False
 
-		'in the past?
-		If station.GetActivationTime() < GetWorldTime().GetTimeGone() Then Return False
+		'already activated?
+		If station.IsActive() Then Return False
 
 
 
