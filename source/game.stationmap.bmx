@@ -111,9 +111,6 @@ Type TStationMapCollection
 		ResetSatellites()
 		ResetCableNetworks()
 
-		'optional:
-		'stationMaps = new TStationMap[0]
-
 
 		population:Int = 0
 		config = New TData
@@ -126,10 +123,6 @@ Type TStationMapCollection
 		_currentPopulationAntennaShare = -1
 		_currentPopulationCableShare = -1
 		_currentPopulationSatelliteShare = -1
-rem
-		_sectionNames = Null
-		_sectionISO3116Codes = Null
-endrem
 	End Method
 
 
@@ -2689,6 +2682,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method Initialize:Int()
 		stations.Clear()
 		_stationsById = Null
+		_antennasLayer = Null
 		_reachesInvalid = True
 		showStations = [1,1,1,1]
 		showStationTypes = [1,1,1]
@@ -3184,6 +3178,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		self._reachedAntennaPopulation = GetStationMapCollection().GetAntennaPopulation(owner)
 		self._reachedCableNetworkUplinkPopulation = GetStationMapCollection().GetCableNetworkUplinkPopulation(stations)
 		self._reachedSatelliteUplinkPopulation = GetStationMapCollection().GetSatelliteUplinkPopulation(stations)
+
 		'so coverage of all potential station types needs to be calculated individually
 		'
 		'as soon as:
