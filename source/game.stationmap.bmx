@@ -169,7 +169,7 @@ Type TStationMapCollection
 	'returns the antenna share for the given screen coordinate
 	Method GetPopulationAntennaShare:Float(dataX:Int, dataY:Int)
 		Local section:TStationMapSection = GetSectionByDataXY(dataX, dataY)
-		If section then Return section.GetPopulationAntennaShare()
+		If section then Return section.GetPopulationAntennaShareRatio()
 
 		Return GetCurrentPopulationAntennaShare()
 	End Method
@@ -1062,7 +1062,7 @@ endrem
 
 	'as soon as a station gets active (again), the sharemap has to get
 	'regenerated (for a correct audience calculation)
-	'alo stationmaps can recalculate their reaches
+	'also stationmaps can recalculate their reaches
 	Function onSetStationActiveState:Int(triggerEvent:TEventBase)
 		Local station:TStationBase = TStationBase(triggerEvent.GetSender())
 		If Not station Then Return False
@@ -4239,7 +4239,14 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		textY:+ textH + 5
 
 		font.Draw(GetLocale("REACH")+":", textX, textY)
-		font.DrawBox(MathHelper.NumberToString(section.GetPopulationAntennaShare()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+		Select stationType
+			case TVTStationType.ANTENNA
+				font.DrawBox(MathHelper.NumberToString(section.GetPopulationAntennaShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+			case TVTStationType.CABLE_NETWORK_UPLINK
+				font.DrawBox(MathHelper.NumberToString(section.GetPopulationCableShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+			case TVTStationType.SATELLITE_UPLINK
+				font.DrawBox(MathHelper.NumberToString(section.GetPopulationSatelliteShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+		End Select
 		fontBold.DrawBox(TFunctions.convertValue(GetReceivers(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		textY:+ textH
 
@@ -5864,32 +5871,25 @@ Type TStationMapSection
 	End Method
 
 
-	'returns the antenna share for the section
-	Method GetPopulationAntennaShare:Float()
-		If populationAntennaShare < 0
-			Return GetStationMapCollection().GetCurrentPopulationAntennaShare()
-		Else
-			Return populationAntennaShare
-		EndIf
-	End Method
-
-
 	'returns the shared amount of audience between channels
 	Method GetShareAudience:Int(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		Return GetReceiverShare(includeChannelMask, excludeChannelMask).shared
 	End Method
 
 
+	'returns the cable network share for the section
 	Method GetPopulationCableShareRatio:Float()
 		If populationCableShare < 0 Then Return GetStationMapCollection().GetCurrentPopulationCableShare()
 		Return populationCableShare
 	End Method
 
+	'returns the antenna share for the section
 	Method GetPopulationAntennaShareRatio:Float()
 		If populationAntennaShare < 0 Then Return GetStationMapCollection().GetCurrentPopulationAntennaShare()
 		Return populationAntennaShare
 	End Method
 
+	'returns the satellite share for the section
 	Method GetPopulationSatelliteShareRatio:Float()
 		If populationSatelliteShare < 0 Then Return GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		Return populationSatelliteShare
