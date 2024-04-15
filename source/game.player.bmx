@@ -355,7 +355,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 	'override
 	Method GetChannelReachLevel:Int() {_exposeToLua}
-		Return TStationMap.GetPopulationLevel( GetChannelPopulation() )
+		Return TStationMap.GetReceiverLevel( GetChannelReceivers() )
 	End Method
 
 
