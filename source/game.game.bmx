@@ -866,11 +866,13 @@ endrem
 
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		If s.GetReceivers() < GameRules.stationInitialIntendedReach
-			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
-				Local cable:TStationBase = New TStationCableNetworkUplink.Init(cableIndex, playerID)
-				If cable.GetReceivers() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
-					If TStationAntenna(s) or cable.GetReceivers() < s.GetReceivers()
-						s = cable
+			For Local cableNetwork:TStationMap_CableNetwork = EachIn GetStationMapCollection().cableNetworks
+				If Not cableNetwork.isLaunched() Then Continue
+				 
+				Local cableUplink:TStationBase = New TStationCableNetworkUplink.Init(cableNetwork, playerID, True)
+				If cableUplink.GetReceivers() >= GameRules.stationInitialIntendedReach
+					If TStationAntenna(s) or cableUplink.GetReceivers() < s.GetReceivers()
+						s = cableUplink
 					EndIf
 				EndIf
 			Next
