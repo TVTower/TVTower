@@ -76,7 +76,7 @@ PROGRAMME_GENRE_EVENT_SPORT                = Sport
 PROGRAMME_GENRE_EVENT_SHOWBIZ              = Showbiz
 PROGRAMME_GENRE_EVENT_MUSIC                = Music and Singing
 PROGRAMME_GENRE_FEATURE                    = Feature
-PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Tabloid journalism
+PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Gossip
 
 PROGRAMME_FLAG_LIVE      = Live
 PROGRAMME_FLAG_ANIMATION = Animation
@@ -131,10 +131,10 @@ SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = An interesting game is co
 SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% visiting %TEAM1NAMEINITIALS% in %TEAM1CITY%.
 SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% and his team travel to %TEAM2CITY%, placed %TEAM2RANK% in the league.
 
-SPORT_PROGRAMME_PLAYOFF_MATCH    = Relegation match.
+SPORT_PROGRAMME_PLAYOFF_MATCH    = Playoff match.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match taking place in %LEAGUENAME%.
-SPORT_PLAYOFFS_LONG              = "Relegation"
-SPORT_PLAYOFFS_SHORT             = "Rel"
+SPORT_PLAYOFFS_LONG              = "Playoffs"
+SPORT_PLAYOFFS_SHORT             = "PO"
 
 SPORT_AFTER_PENALTY_SHORT  = "Penalties"
 SPORT_AFTER_OVERTIME_SHORT = "AET"
@@ -145,7 +145,7 @@ X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% live matches already started.
 
 
 PENALTY_OF_X_WAS_PAID                                      = Penalty of %MONEY% was paid.
-BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of X-rated programme |b|%TITLE%|/b| not allowed during daytime.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of X-Rated programme |b|%TITLE%|/b| not allowed during daytime.
 AUTHORITIES_STOPPED_BROADCAST                              = Authorities stopped broadcast
 AUTHORITIES_CONFISCATED_LICENCE                            = Authorities confiscated programme rights
 PROGRAMMELICENCE_X_GOT_CONFISCATED                         = The programme rights for |b|%TITLE%|/b| got confiscated.
