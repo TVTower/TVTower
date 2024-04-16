@@ -747,7 +747,7 @@ Type TBroadcast
 
 			AudienceMarkets.AddLast(market)
 			
-'			rem
+			rem
 			local withPID:String
 			local withoutPID:String
 			for local i:int = 1 to 4
@@ -761,7 +761,7 @@ Type TBroadcast
 				EndIf
 			Next
 			print "AddMarket:  with players="+withPID +"  without="+withoutPID+"  audience="+audience+"  (maxAudience="+int(market.maxAudience.GetTotalSum())+"  antenna="+audienceAntenna+"  satellite="+audienceSatellite+"  cablenetwork="+audienceCableNetwork+")"
-'			endrem
+			endrem
 		End If
 	End Method
 

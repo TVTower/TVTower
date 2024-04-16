@@ -178,7 +178,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
-Global collectDebugStats:Int = True
+Global collectDebugStats:Int = False
 OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
@@ -3034,74 +3034,6 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
-rem
-			'v0.8.3: StationMap cleanup
-			case "TStationMap.reach:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "reach: " + reach
-				Return parent
-			case "TStationMap.reachBefore:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "reachBefore: " + reach
-				Return parent
-			case "TStationMap.reachMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "reachMax: " + reach
-				Return parent
-			case "TStationMap.cheatedMaxReach:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "cheatedMaxReach: " + reach
-				Return parent
-			case "TStationAntenna.reach:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "antenna.reach: " + reach
-				Return parent
-			case "TStationAntenna.reachMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "antenna.reachMax: " + reach
-				Return parent
-			case "TStationAntenna.reachExclusiveMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "antenna.reachExclusiveMax: " + reach
-				Return parent
-			case "TStationBase.reach:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "base.reach: " + reach
-				Return parent
-			case "TStationBase.reachMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "base.reachMax: " + reach
-				Return parent
-			case "TStationBase.reachExclusiveMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "base.reachExclusiveMax: " + reach
-				Return parent
-			case "TStationSatelliteUplink.reach:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "satellite.reach: " + reach
-				Return parent
-			case "TStationSatelliteUplink.reachMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "satellite.reachMax: " + reach
-				Return parent
-			case "TStationSatelliteUplink.reachExclusiveMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "satellite.reachExclusiveMax: " + reach
-				Return parent
-			case "TStationCableNetworkUplink.reach:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "cable.reach: " + reach
-				Return parent
-			case "TStationCableNetworkUplink.reachMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "cable.reachMax: " + reach
-				Return parent
-			case "TStationCableNetworkUplink.reachExclusiveMax:Int".ToLower()
-				Local reach:Int = int(string(fieldObject))
-				print "cable.reachExclusiveMax: " + reach
-				Return parent
-endrem
-				
 			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
 			case "TFigureCollection.entries:TMap".ToLower()
 				Local fc:TFigureCollection = TFigureCollection(parent)
@@ -6913,14 +6845,15 @@ Function ShowApp:Int()
 End Function
 
 
-'Global bbGCAllocCount:ULong = 0
+Global bbGCAllocCount:ULong = 0
+rem
 ?bmxng
 'ron|gc
 Extern
     Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
 ?
-
+endrem
 
 ?linux
 Function CreateDesktopFile()
