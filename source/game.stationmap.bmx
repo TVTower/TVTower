@@ -2638,31 +2638,30 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field showStationTypes:Int[3]
 
 	'record store: maximum audience reached in this game for now
-	Field reachedPopulationMax:Int = 0 {nosave}
+	Field reachedPopulationMax:Int = 0
 	'record store: maximum receivers reached in this game for now
-	Field reachedReceiversMax:Int = 0 {nosave}
+	Field reachedReceiversMax:Int = 0
 	'all stations of the map owner
 	Field stations:TObjectList = new TObjectList
 	'amount of stations added per type
 	Field stationsAdded:Int[4]
 	
-	'Caches and lookup tables
-	Field _reachedAntennaPopulation:Int = 0 {nosave}
-	Field _reachedCableNetworkUplinkPopulation:Int = 0 {nosave}
-	Field _reachedSatelliteUplinkPopulation:Int = 0 {nosave}
 	'The simple sum of "antenna/cable/satellite" can be > than the map's
 	'population (because a satellite already covers 100% of the map for
 	'now - or a cable network covers a section which contains antennas).
-	'This is why a separate _reachedPopulation cache is required
-	Field _reachedPopulation:Int = 0 {nosave}
-	'receivers reached before last change
-	Field _reachedAntennaReceivers:Int = 0 {nosave}
-	Field _reachedCableNetworkUplinkReceivers:Int = 0 {nosave}
-	Field _reachedSatelliteUplinkReceivers:Int = 0 {nosave}
-	Field _reachedReceiversBefore:Int = 0 {nosave}
+	'This is why a separate reachedPopulation storage is required
+	Field _reachedPopulation:Int = 0
+	Field _reachedAntennaPopulation:Int = 0
+	Field _reachedCableNetworkUplinkPopulation:Int = 0
+	Field _reachedSatelliteUplinkPopulation:Int = 0
+	Field _reachedReceivers:Int = 0
+	Field _reachedAntennaReceivers:Int = 0
+	Field _reachedCableNetworkUplinkReceivers:Int = 0
+	Field _reachedSatelliteUplinkReceivers:Int = 0
 	'need to recalculate?
 	Field _reachesInvalid:Int = True {nosave}
 
+	'Caches and lookup tables
 	Field _stationsById:TIntMap {nosave}
 	Field _antennasLayer:TStationMapAntennaLayer {nosave}
 
@@ -2687,6 +2686,18 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		showStationTypes = [1,1,1]
 		stationsAdded = New Int[4]
 		
+		_reachedPopulation = 0
+		_reachedAntennaPopulation = 0
+		_reachedCableNetworkUplinkPopulation = 0
+		_reachedSatelliteUplinkPopulation = 0
+		_reachedReceivers = 0
+		_reachedAntennaReceivers = 0
+		_reachedCableNetworkUplinkReceivers = 0
+		_reachedSatelliteUplinkReceivers = 0
+
+		reachedPopulationMax = 0
+		reachedReceiversMax = 0
+
 		Return True
 	End Method
 	
@@ -3150,7 +3161,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method CheatMaxAudience:Int()
 		throw "Todo: reimplement CheatMaxAudience"
 		rem
-		Local oldReachLevel:Int = GetReachLevel(GetPopulation())
+		Local reachLevelBefore:Int = GetReachLevel(GetPopulation())
 		cheatedMaxReach = True
 		reach = GetStationMapCollection().population
 
@@ -3158,21 +3169,18 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 			s.InvalidateData()
 		Next
 
-		If GetReachLevel(reach) <> oldReachLevel
-			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", oldReachLevel), Self )
+		If GetReachLevel(reach) <> reachLevelBefore
+			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addInt("reachLevel", GetReachLevel(reach)).AddInt("reachLevelBefore", reachLevelBefore), Self )
 		EndIf
 
 		Return True
 		endrem
 	End Method
-
-
+	
+	
 	'recalculates a player's stations covered population (and additionally caches receivers counts)
-	Method RecalculateReaches()
-		'cannot simply call GetReceivers() because it can call RecalculateReaches()
-		'-> so call the internal one instead
-		Local reachedReceiversBefore:Int = self._GetReachedReceivers()
-
+	'internal method without side effects like sending events
+	Method _RecalculateReaches()
 		'sum of this can be > a maps population (eg antenna in bavaria + cable network in bavaria > bavaria's population)
 		self._reachedAntennaPopulation = GetStationMapCollection().GetAntennaPopulation(owner)
 		self._reachedCableNetworkUplinkPopulation = GetStationMapCollection().GetCableNetworkUplinkPopulation(stations)
@@ -3205,27 +3213,40 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		self._reachedAntennaReceivers = GetStationMapCollection().GetAntennaReceivers(owner)
 		self._reachedCableNetworkUplinkReceivers = GetStationMapCollection().GetCableNetworkUplinkReceivers(stations)
 		self._reachedSatelliteUplinkReceivers = GetStationMapCollection().GetSatelliteUplinkReceivers(stations)
-		
+		'ATTENTION: You cannot simply call GetReceivers() because it can
+		'           call RecalculateReaches() -> so call the internal one instead
+		self._reachedReceivers = self._GetReachedReceivers()
 
 		'update record
 		self.reachedPopulationMax = Max(self.reachedPopulationMax, self._GetReachedPopulation())
 		self.reachedReceiversMax = Max(self.reachedReceiversMax, self._GetReachedReceivers())
+
 		'current calculation is done now
 		self._reachesInvalid = False
+	End Method
+	
+
+	'recalculates a player's stations covered population (and additionally caches receivers counts)
+	'this method also emits events if reaches change 
+	Method RecalculateReaches()
+		'store value before calculations
+		Local reachedReceiversBefore:Int = self._reachedReceivers 
+		
+		'call actual calculations
+		_RecalculateReaches()
 
 		'attention: this check only works as long as reaches cannot
 		'stay the same but their "target group shares" change (so selling
 		'a station where only men reside and buying one with only female
 		'kids and seniors)
-		Local reachedReceivers:Int = self._GetReachedReceivers()
-		If reachedReceiversBefore <> reachedReceivers
+		If reachedReceiversBefore <> self._reachedReceivers
 			'inform others about new audience reach
-			TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", reachedReceivers).AddInt("reachBefore", reachedReceiversBefore).AddInt("playerID", owner), Self )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", self._reachedReceivers).AddInt("reachBefore", reachedReceiversBefore).AddInt("playerID", owner), Self )
 			'inform others about a change of the reach level
-			Local reachLevel:Int = TStationMap.GetReceiverLevel(reachedReceivers)
+			Local reachLevel:Int = TStationMap.GetReceiverLevel(self._reachedReceivers)
 			Local reachLevelBefore:Int = TStationMap.GetReceiverLevel(reachedReceiversBefore)
 			If reachLevel <> reachLevelBefore
-				TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", reachLevel).AddInt("oldReachLevel", reachLevelBefore), Self )
+				TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", reachLevel).AddInt("reachLevelBefore", reachLevelBefore), Self )
 			EndIf
 		EndIf
 	End Method

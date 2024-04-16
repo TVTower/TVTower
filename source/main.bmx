@@ -2412,6 +2412,16 @@ Type TSaveGame Extends TGameState
 			Next
 			GetStationMapCollection().antennaStationRadius = 31
 			TLogger.Log("RepairData()", "Updated station positions and antennas radius to new stationmap data.", LOG_LOADING)
+
+			'repair missing "reachedReceivers" value to avoid "broadcast area achievement"
+			For Local pID:Int = 1 to 4
+				Local stationMap:TStationMap = GetStationMap(pID)
+				If stationMap
+					stationMap._RecalculateReaches()
+					TLogger.Log("RepairData()", "Recreated stationmap #" + pID+" population caches. _reachedReceivers="+stationMap._reachedReceivers+".", LOG_LOADING)
+				EndIf
+			Next
+
 		EndIf
 
 		If savegameVersion < 18
@@ -5747,7 +5757,7 @@ endrem
 		If Not stationMap Then Return False
 
 		Local reachLevel:Int = triggerEvent.GetData().GetInt("reachLevel")
-		Local oldReachLevel:Int = triggerEvent.GetData().GetInt("oldReachLevel")
+		Local reachLevelBefore:Int = triggerEvent.GetData().GetInt("reachLevelBefore")
 
 		'only interested in the players stations
 		Local player:TPlayer = GetPlayer(stationMap.owner)
@@ -5757,7 +5767,7 @@ endrem
 		Local text:String
 		Local text2:String
 
-		If reachLevel > oldReachLevel
+		If reachLevel > reachLevelBefore
 			caption = "AUDIENCE_REACH_LEVEL_INCREASED"
 			text = "LEVEL_INCREASED_FROM_X_TO_Y"
 			text2 = "PRICES_WILL_RISE"
@@ -5782,7 +5792,7 @@ endrem
 		Else
 			textJoined = GetLocale(text)
 		EndIf
-		toast.SetText( textJoined.Replace("%X%", "|b|"+oldReachLevel+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
+		toast.SetText( textJoined.Replace("%X%", "|b|"+reachLevelBefore+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
 
 		toast.GetData().AddNumber("playerID", player.playerID)
 
