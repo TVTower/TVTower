@@ -1035,6 +1035,13 @@ endrem
 		EndIf
 		Return Self.RESULT_NOTALLOWED
 	End Method
+	
+	
+	Method of_getReceivers:Int(playerID:Int)
+		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
+
+		Return GetStationMapCollection().GetReceivers(playerID)
+	End Method
 
 
 	Method of_getAudience:Int(day:Int, hour:Int)

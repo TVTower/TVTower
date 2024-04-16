@@ -1009,9 +1009,9 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 
 --	local globalPercentageByHour = AITools:GetMaxAudiencePercentage(fixedDay, fixedHour)
 --	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
---	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
+--	local sharedMaxAudience = MY.getReceivers() - exclusiveMaxAudience
 	local riskyness = self:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
---	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  atTV=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. "  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4 .. "   riskyness="..riskyness
+--	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  atTV=".. math.round(MY.getReceivers()*globalPercentageByHour) .. "  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4 .. "   riskyness="..riskyness
 --	self:LogDebug( self.log["GuessedAudienceForHour"] )
 
 	--modify by some player specific riskyness about guessing wrong
@@ -1045,8 +1045,8 @@ function TaskSchedule:GuessedNewsAudienceForHour(day, hour, newsBroadcast, guess
 
 --	local globalPercentageByHour = AITools:GetMaxAudiencePercentage(fixedDay, fixedHour)
 --	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
---	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
---	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
+--	local sharedMaxAudience = MY.getReceivers() - exclusiveMaxAudience
+--	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.getReceivers()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.getReceivers()..")"
 	--self:LogDebug( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
