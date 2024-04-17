@@ -3220,6 +3220,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'update record
 		self.reachedPopulationMax = Max(self.reachedPopulationMax, self._GetReachedPopulation())
+		'TODO geht das nicht schief, wenn die Antennenreichweite sinkt?
 		self.reachedReceiversMax = Max(self.reachedReceiversMax, self._GetReachedReceivers())
 
 		'current calculation is done now
