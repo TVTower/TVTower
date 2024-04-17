@@ -1035,13 +1035,6 @@ endrem
 		EndIf
 		Return Self.RESULT_NOTALLOWED
 	End Method
-	
-	
-	Method of_getReceivers:Int(playerID:Int)
-		If Not _PlayerInRoom("office") Then Return Self.RESULT_WRONGROOM
-
-		Return GetStationMapCollection().GetReceivers(playerID)
-	End Method
 
 
 	Method of_getAudience:Int(day:Int, hour:Int)
@@ -1080,7 +1073,10 @@ endrem
 		Local map:TStationMap = _GetPlayerStationMap()
 		Local station:TStationAntenna = New TStationAntenna.Init(New SVec2I(x, y), self.ME)
 
-		If map.AddStation( station, True )
+		If map.GetAntennaByXY(x,y,True)
+			'prevent buying antenna in same position
+			Return Self.RESULT_FAILED
+		ElseIf map.AddStation( station, True )
 			Return Self.RESULT_OK
 		Else
 			Return Self.RESULT_FAILED

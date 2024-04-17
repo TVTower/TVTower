@@ -2951,7 +2951,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		
 		For Local antenna:TStationAntenna = EachIn stations
 			If exactPosition
-				If antenna.X <> X Or antenna.Y <> Y Then Continue
+				If antenna.X = X And antenna.Y = Y Then Return antenna
 			Else
 				'or x,y outside of station-circle?
 				Local distanceSquared:Int = (X - antenna.X)^2 + (Y - antenna.Y)^2
