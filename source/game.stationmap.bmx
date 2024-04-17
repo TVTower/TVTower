@@ -1315,7 +1315,7 @@ endrem
 			Next
 			If receivers < GameRules.stationInitialIntendedReach
 				'player will get cable, reduce station radius
-				antennaStationRadius = 40
+				antennaStationRadius = 45
 			EndIf
 		EndIf
 		
@@ -4541,7 +4541,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 	'base price for buy price and maintenance costs
 	'extracted in order to apply separate modifiers
-	Method _BuyPriceBase:Int()
+	Method _BasePrice:Int(forBuying:Int)
 		'If HasFlag(TVTStationFlag.FIXED_PRICE) and price >= 0 Then Return price
 
 		'price corresponds to "possibly reachable" not actually reached
@@ -4555,30 +4555,39 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		'return an odd price (if someone sees it...)
 		If Not section Then Return -1337
 
-		Local buyPrice:Int = 0
+		Local basePrice:Int = 0
 
 		'construction costs
 		If Not IsShutdown()
 			Local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
 			'government-dependent costs
 			'section specific costs for bought land + bureaucracy costs
-			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
+			basePrice :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
 			'section government costs, changes over time (dynamic reach)
-			buyPrice :+ 0.20 * GetReceivers()
+			basePrice :+ 0.35 * GetReceivers()
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
-			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
+			basePrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed construction costs
 			'building costs for "hardware" (more expensive than sat/cable)
-			buyPrice :+ 0.20 * GetPopulation()
+			'TODO find concept for a price calculation that works well for buy price an running costs for
+			' * many small antennas with high population share in early start years
+			' * few large antennas with small population share in later sart years
+			' this proposal uses a much smaller "fix" portion for the running costs
+			' otherwise running costs for later start years would be much too high for antennas to be profitable
+			If forBuying
+				basePrice :+ 75000*1.02^radius
+			Else
+				basePrice :+ 25000*1.02^radius
+			EndIf
 		EndIf
-		Return buyPrice
+		Return basePrice
 	End Method
 
 
 	Method GetBuyPrice:Int() override {_exposeToLua}
-		Local buyPrice:Int = _BuyPriceBase()
+		Local buyPrice:Int = _BasePrice(True)
 		If buyPrice < 0 return buyPrice
 
 		buyPrice :* GetPlayerDifficulty(owner).antennaBuyPriceMod
@@ -4598,7 +4607,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		Local difficulty:TPlayerDifficulty=GetPlayerDifficulty(owner)
 
 		'== ADD STATIC RUNNING COSTS ==
-		result :+ Ceil(_BuyPriceBase() / 5.0)
+		result :+ Ceil(_BasePrice(False) / 5.0)
 		result :* difficulty.antennaDailyCostsMod
 		'== ADD RELATIVE MAINTENANCE COSTS ==
 		Local maintenanceCostPercentage:Float=difficulty.antennaDailyCostsIncrease
