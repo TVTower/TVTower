@@ -808,10 +808,12 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a1 Then Return -1
 		If Not a2 Then Return 1
-		If a1.GetProfit() = a2.GetProfit()
+		Local p1:Int = a1.GetProfit() / a1.GetSpotsToSend()
+		Local p2:Int = a2.GetProfit() / a2.GetSpotsToSend()
+		If p1 = p2
 			Return a1.GetTitle() > a2.GetTitle()
 		EndIf
-        Return a1.GetProfit() - a2.GetProfit()
+		Return p1 - p2
 	End Function
 
 
@@ -866,7 +868,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If Not a1 Then Return -1
 		If Not a2 Then Return 1
 
-		If a1.GetSpotsSent() = a2.GetSpotsSent()
+		If a1.GetSpotsToSend() = a2.GetSpotsToSend()
 			Return a1.GetTitle() > a2.GetTitle()
 		EndIf
         Return a1.GetSpotsToSend() - a2.GetSpotsToSend()

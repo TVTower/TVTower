@@ -93,12 +93,11 @@ function TaskAdAgency:OnMoneyChanged(value, reason, reference)
 				penaltyCount = 0;
 				penaltySum = 0;
 			}
-			self:LogInfo(entry.title)
 			self.Penalties[id] = entry
 		end
 		entry.penaltyCount = entry.penaltyCount + 1
 		entry.penaltySum = entry.penaltySum + value
-		self:LogDebug("pay ad penalty: " .. entry.title .. " - count "..entry.penaltyCount .." penalty sum "..entry.penaltySum)
+		self:LogInfo("pay ad penalty: " .. entry.title .. " - count "..entry.penaltyCount .." penalty sum "..entry.penaltySum)
 	end
 end
 
@@ -251,8 +250,8 @@ function AppraiseSpots:AppraiseCurrentSpot()
 end
 
 function AppraiseSpots:AppraiseSpot(spot)
-	self:LogTrace("AppraiseSpot: " .. spot.GetTitle() )
 	self:LogTrace("===================")
+	self:LogTrace("AppraiseSpot: " .. spot.GetTitle() )
 	local player = getPlayer()
 	local stats = player.Stats
 	local score = -1
@@ -267,15 +266,16 @@ function AppraiseSpots:AppraiseSpot(spot)
 	end
 
 	--TODO more sophisticated max audience says only so much if all programmes have low topicality
-	if (spotMinAudience > stats.Audience.MaxValue * 0.7) then
+	if (spotMinAudience > (stats.Audience.MaxValue + stats.Audience.TotalMaxValue) * 0.4) then
 		self:LogTrace("  too much audience! " .. spotMinAudience .. " / " .. stats.Audience.MaxValue)
 		spot.SetAttractivenessString("-1")
 		return
 	end
 
 
-	local profitPerSpot = spot.GetProfit(TVT.ME) / spot.GetSpotCount()
-	local penaltyPerSpot = spot.GetPenalty(TVT.ME) / spot.GetSpotCount()
+	local spotCount = spot.GetSpotCount()
+	local profitPerSpot = spot.GetProfit(TVT.ME) / spotCount
+	local penaltyPerSpot = spot.GetPenalty(TVT.ME) / spotCount
 
 	-- PROFIT
 	-- 2 = paid well, 0.2 = way below average
@@ -286,7 +286,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 	-- PENALTY
 	-- 2 = low penalty, 0.2 = way too high penalty
 	local penaltyFactorRaw = 1.0 / (penaltyPerSpot / stats.SpotPenaltyPerSpot.AverageValue)
-	penaltyFactorRaw = penaltyFactorRaw / (1.05 ^ (spot.GetSpotCount() - 1))
+	penaltyFactorRaw = penaltyFactorRaw / (1.1 ^ (spotCount - 1))
 	local penaltyFactor = CutFactor(penaltyFactorRaw, 0.2, 2)
 
 
@@ -298,13 +298,13 @@ function AppraiseSpots:AppraiseSpot(spot)
 	--TODO nicht die Anzahl der Tage sind interessant sondern die Anzahl der potentiellen Slots
 	-- DURATION / TIME CONSTRAINTS
 	-- 2 leicht zu packen / 0.3 hoher Druck
-	local pressureFactorRaw = spot.GetDaysToFinish() / spot.GetSpotCount()
+	local pressureFactorRaw = spot.GetDaysToFinish() / spotCount
 	local pressureFactor = CutFactor(pressureFactorRaw, 0.2, 2)
 
-	local penaltyFactor = 1
+	local paidPenaltyFactor = 1
 	if self.Task.Penalties ~= nil then
 		local entry = self.Task.Penalties[spot.GetTitle()]
-		if entry ~=nil then penaltyFactor =  1 / (1.5 ^ entry.penaltyCount) end
+		if entry ~=nil then paidPenaltyFactor =  1 / (1.25 ^ entry.penaltyCount) end
 	end
 	
 --[[
@@ -317,7 +317,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 --]]
 
 	-- RESULTING ATTRACTION
-	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor * penaltyFactor))
+	spot.SetAttractivenessString(tostring(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor * paidPenaltyFactor))
 --[[
 	self:LogTrace("  Contract:  Spots=" .. spot.GetSpotsToSend() .."  days=" .. spot.GetDaysToFinish() .."  Audience=" .. spot.GetMinAudience(TVT.ME) .. "  Profit=" .. spot.GetProfit(TVT.ME) .." (per spot=" .. profitPerSpot .. ")  Penalty=" .. spot.GetPenalty(TVT.ME) .." (per spot=" .. penaltyPerSpot ..")")
 	self:LogTrace("  Stats:     Avg.PerSpot Profit=" .. stats.SpotProfitPerSpot.AverageValue .. "  Penalty=" .. stats.SpotPenaltyPerSpot.AverageValue .."  Audience(Avg)=" .. stats.Audience.AverageValue)
@@ -475,8 +475,12 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		--self:LogInfo("considering " .. adContract.getTitle() .. " " .. adContract.GetMinAudience(TVT.ME))
 		if toLow == true then
 			self:LogDebug("ignoring fallback requisition for audience".. audienceTotal)
+		elseif adContract.GetLimitedToTargetGroup() == 1 then
+			self:LogDebug("ignoring children contract")
 		elseif spotsLeft <= 0 then
 			doSign = true
+		elseif adContract.GetLimitedToProgrammeGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 then
+			self:LogDebug("ignoring contract with genre limit")
 		elseif neededSpotCount == 1 and requisition.Priority < 3 then
 			self:LogDebug("ignore requisition - only one spot with low priority")
 		else
@@ -499,7 +503,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 				if spotsLeft < daysToFinish * 1.5 then doSign = true end
 			else
 				--TODO even for easy contracs too many spots left may be harmful
-				doSign = true
+				if spotsLeft < daysToFinish * 2 then doSign = true end
 			end
 		end
 
@@ -507,8 +511,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		--if (requisition.Level ~=nil and requisition.Level > 4 and adContract.GetLimitedToTargetGroup() > 0) then maxSurplusSpots = 0 end
 
 		--TODO optimize
-		--skip manager and children target group at all - too dangerous
-		if (hard == true or avg == true and spotCount > 2) and (adContract.GetLimitedToTargetGroup() == 1 or adContract.GetLimitedToTargetGroup() == 32) then
+		--skip all children and some manager ads - too dangerous
+		if adContract.GetLimitedToTargetGroup() == 1 or (hard == true or avg == true and spotCount > 2 and adContract.GetLimitedToTargetGroup() == 32) then
 		-- skip if contract requires too many spots for the given level
 		elseif doSign == true then
 			local minGuessedAudienceValue = minGuessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
@@ -566,14 +570,19 @@ function SignContracts:Prepare(pParams)
 	self.lowAudienceFactor = 0.005
 	self.maxAudience =  TVT:getReceivers()
 	self.ownedContracts = {};
+	--heuristic for licence max price - possible income per spot
+	local maxIncomePerSpot = 0
 	for i=0, (MY.GetProgrammeCollection().GetAdContractCount() - 1)
 	do
 		oc =  MY.GetProgrammeCollection().GetAdContractAtIndex(i)
 		if oc ~= nil  then
 			vc = self:newOwnedContract(oc)
+			if vc.incomePerSpot > maxIncomePerSpot then maxIncomePerSpot = vc.incomePerSpot end
 			table.insert(self.ownedContracts, vc)
 		end
 	end
+	local player = getPlayer()
+	if (player.maxIncomePerSpot==nil or player.maxIncomePerSpot < maxIncomePerSpot) then player.maxIncomePerSpot = maxIncomePerSpot end
 end
 
 
@@ -583,10 +592,12 @@ function SignContracts:newOwnedContract (c)
 		title = "CONTRACT";
 		minAudience = 0;
 		spots = 0;
+		incomePerSpot = 0
 	}
 	t.title = c.GetTitle()
 	t.minAudience = c.GetMinAudience(TVT.ME)
 	t.spots = c.getSpotsToSend()
+	t.incomePerSpot = c.GetProfit(TVT.ME) / c.getSpotCount()
 	return t;
 end
 
@@ -702,9 +713,14 @@ end
 --TODO CHECK should sign
 function SignContracts:ShouldSignContract(contract)
 	local contractMin = contract.GetMinAudience(TVT.ME)
-
+	local targetGroup = contract.GetLimitedToTargetGroup()
 	--not enough viewers
-	if contract.GetLimitedToTargetGroup() <= 0 and contractMin < self.lowAudienceFactor * self.maxAudience then
+	if targetGroup <= 0 and contractMin < self.lowAudienceFactor * self.maxAudience then
+		return 0
+	end
+
+	--no children contracts at all
+	if targetGroup == 32 then
 		return 0
 	end
 

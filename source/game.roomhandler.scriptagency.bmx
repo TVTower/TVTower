@@ -677,8 +677,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				for local i:int = 0 to lists[j].length-1
 					Local script:TScript = lists[j][i]
 					if not script then continue
-					if script.fixedLiveTime > 0 And GetWorldTime().GetTimeGone() > script.fixedLiveTime + 15 * TWorldTime.HOURLENGTH
-						'print "REMOVE live script " + script.GetTitle() + " " + (script.fixedLiveTime + 15* TWorldTime.HOURLENGTH) + " "+ GetWorldTime().GetTimeGone()
+					if script.fixedLiveTime > 0 And GetWorldTime().GetTimeGone() > script.fixedLiveTime - 15 * TWorldTime.HOURLENGTH
+						'print "REMOVE live script " + script.GetTitle() + " " + (script.fixedLiveTime - 15* TWorldTime.HOURLENGTH) + " "+ GetWorldTime().GetTimeGone()
 						GetScriptCollection().Remove(script)
 						lists[j][i] = null
 					elseif RandRange(0,100) < replaceChance

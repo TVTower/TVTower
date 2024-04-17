@@ -321,47 +321,58 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'only take over if not already "finished planning"
 		If currentProductionConcept and not currentProductionConcept.IsProduceable()
 			'=== CAST ===
-			'loop over all jobs and try to take over as much of them as
-			'possible.
-			'So if there are 3 actors in the old concept but only 2 in the
-			'new one, 2 of 3 actors are taken over
-			'Cast not available in the new one, is ignored
-			Local currentCastIndex:Int = 0
-			For Local jobID:Int = EachIn TVTPersonJob.GetCastJobs()
-				Local castGroup:TPersonBase[] = currentProductionConcept.GetCastGroup(jobID, False)
-				Local oldCastGroup:TPersonBase[] = takeOverConcept.GetCastGroup(jobID)
-
-				'skip group if current concept does not contain that group
-				If castGroup.length = 0 Then Continue
-
-				'leave group empty if previous concept does not contain that
-				'job
-				If oldCastGroup.length = 0
-					currentCastIndex :+ castGroup.length
-					Continue
-				EndIf
-
-				'has to collapse unused cast slots?
-				Local hasToCollapseUnused:Int = (castGroup.length - oldCastGroup.length) < 0
-
-				'try to fill slots
-				For Local castGroupIndex:Int = 0 Until castGroup.length
-					'skip other cast slots not available in old concept
-					If castGroupIndex >= oldCastGroup.length
-						currentCastIndex :+ (castGroup.length - castGroupIndex)
-						Continue
+			Local perfectMatch:Int = True
+			If currentProductionConcept = takeOverConcept
+				'no checking necessary
+			ElseIf currentProductionConcept.script.jobs.length <> takeOverConcept.script.jobs.length
+				perfectMatch = False
+			Else
+				For Local jobindex:Int = 0 Until currentProductionConcept.script.jobs.length
+					Local oldJob:TPersonProductionJob = takeOverConcept.script.jobs[jobindex]
+					Local newJob:TPersonProductionJob = currentProductionConcept.script.jobs[jobindex]
+					If oldJob.job <> newJob.job Or oldJob.gender <> newJob.gender
+						perfectMatch = False
+						Exit
 					EndIf
-					'collapse: skip unused
-					If hasToCollapseUnused And Not oldCastGroup[castGroupIndex] Then Continue
-
-					currentProductionConcept.SetCast(currentCastIndex, oldCastGroup[castGroupIndex])
-
-					'SetCast() fails if the index is > than allowed, so
-					'we should not need to do additional checks...
-					currentCastIndex :+ 1
 				Next
-			Next
+			EndIf
 
+			'TODO we do not yet consider casting the same role using the same person
+			'(role once as actore once as supporting actor)
+			If perfectMatch
+				'for the same concept or concepts with the same specification
+				'(e.g. multi-production, episodes), simply copy the cast
+				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
+					currentProductionConcept.SetCast(castIndex, takeOverConcept.cast[castIndex])
+				Next
+			Else
+				'store old cast by their job
+				Local oldCastByJob:TPersonBase[][] = new TPersonBase[TVTPersonJob.GetCastJobs().length][]
+				For Local jobID:Int = EachIn TVTPersonJob.GetCastJobs()
+					Local oldCastGroup:TPersonBase[] = takeOverConcept.GetCastGroup(jobID)
+					Local jobIndex:Int = TVTPersonJob.GetIndex(jobID)
+					For Local oldCast:TPersonBase = EachIn oldCastGroup
+						oldCastByJob[jobIndex]:+ [oldCast]
+					Next
+				Next
+
+				'find the best matching old cast (same job, correct gender)
+				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
+					Local job:TPersonProductionJob = currentProductionConcept.script.jobs[castIndex]
+					Local jobIndex:Int = TVTPersonJob.GetIndex(job.job)
+					Local gender:Int = job.gender
+					Local oldCastList:TPersonBase[] = oldCastByJob[jobIndex]
+					For Local oldCastIndex:Int = 0 Until oldCastList.length
+						Local oldCastPerson:TPersonBase = oldCastList[oldCastIndex]
+						If Not oldCastPerson Then Continue
+						If gender > 0 And gender <> oldCastPerson.gender Then Continue
+						currentProductionConcept.SetCast(castIndex, oldCastPerson)
+						'make a cast member once used unavailable
+						oldCastList[oldCastIndex] = null
+						Exit
+					Next
+				Next
+			EndIf
 
 			'=== PRODUCTION COMPANY ===
 			If takeOverConcept.productionCompany

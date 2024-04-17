@@ -166,10 +166,11 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 	Method onChangeShowModeDropdown:Int(triggerEvent:TEventBase)
 		Local list:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
+		If list <> _instance.showModeSelect Then return FALSE
 		local item:TGUIDropDownItem = TGUIDropDownItem(list.getSelectedEntry())
 		If not item Then return FALSE
-		local mode:Int=item.data.getInt("showMode")
-		If mode <> showMode
+		local mode:Int=item.data.getInt("showMode", -1)
+		If mode >= 0 And mode <> showMode
 			showMode = mode
 			GetInstance().ReloadMessages()
 		EndIf
@@ -236,7 +237,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			local item:TGUIArchivedMessageListItem = new TGUIArchivedMessageListItem.Create(null, null, message.GetTitle())
 			item.message = message
 			item.displayName = message.GetTitle()
-			item.SetSize(400, 70)
+			item.SetSize(400, Max(70, item.GetContentHeight(400)+5))
 			messageList.AddItem( item )
 		Next
 

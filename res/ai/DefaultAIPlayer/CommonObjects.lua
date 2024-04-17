@@ -2,8 +2,10 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Movie ist jetzt nur noch ein Wrapper
 
-function CheckMovieBuyConditions(licence, maxPrice, minQuality)
-	if maxPrice ~= nil and (licence.GetPrice(-1) > maxPrice) then return false; end
+function CheckMovieBuyConditions(licence, maxPrice, maxPricePerBlock, minQuality)
+	local price = licence.GetPrice(TVT.ME)
+	if maxPrice ~= nil and (price > maxPrice) then return false; end
+	if maxPricePerBlock~=nil and maxPricePerBlock > 0 and price / licence.GetBlocks(2) > maxPricePerBlock then return false; end
 	if (minQuality ~= nil) and (licence.GetQuality() < minQuality) then return false; end
 	return true
 end
@@ -382,13 +384,13 @@ end
 function AIToolsClass:GetAudienceQualityLevel(day, hour)
 	if hour > 22 or hour <=1 then
 		return 4
-	elseif hour >=20 then
+	elseif hour >=19 then
 		return 5
-	elseif hour >=16 then
+	elseif hour >=15 then
 		return 4
-	elseif hour >= 11 then
+	elseif hour >= 10 then
 		return 3
-	elseif hour >=7 then
+	elseif hour >= 6 then
 		return 2
 	else
 		return 1
@@ -420,6 +422,7 @@ function AIToolsClass:GetMaxAudiencePercentage(day, hour)
 end
 --]]
 
+--TODO this cannot be done without context (all existing licences)
 function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
 	if broadcastMaterial == nil then return 0 end
 	--TODO raw-QualityLevel!! also consider number of licences und average quality!!
@@ -507,12 +510,20 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			end
 		end
 		local timesShown = broadcastMaterialSource:GetTimesBroadcasted(forPlayer)
-		if timesShown >= 15 then
+		if timesShown >= 7 then
 			result=result * 0.3
-		elseif timesShown >= 10 then
-			result=result * 0.6
 		elseif timesShown >= 5 then
+			result=result * 0.6
+		elseif timesShown >= 3 then
 			result=result * 0.8
+		elseif timesShown == 0 then
+			result=result * 1.3
+			if hour < 19 or hour > 22 then
+				--TODO make genre dependent; many blocks - new cheap stuff also earlier 
+				if broadcastMaterialSource:GetTopicality() > 0.6 then
+					result= result * 0.3
+				end
+			end 
 		end
 		if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 			result = result * 0.5

@@ -483,13 +483,13 @@ Type TProductionManager
 		Local amountWithoutJob:Int = (amateursToInclude * 3) / 10
 		if amateursToInclude > 1 then amountWithoutJob :+ 1
 
-		local amateursWithJob:TPersonBase[] = GetPersonBaseCollection().GetRandomInsignificants(currentAvailableAmateurs, amateursToInclude - amountWithoutJob, True, True, filtertoJobID, filterToGenderID, True, "", null)
+		local amateursWithJob:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableInsignificants(currentAvailableAmateurs, amateursToInclude - amountWithoutJob, True, True, filtertoJobID, filterToGenderID, True, "", null)
 		local amateursWithJobIDs:Int[] = new Int[amateursWithJob.length]
 		For local i:int = 0 until amateursWithJob.length
 			amateursWithJobIDs[i] = amateursWithJob[i].id
 		Next
 		'no job restrictions but other persons than the ones with job
-		local amateursWithoutJob:TPersonBase[] = GetPersonBaseCollection().GetRandomInsignificants(currentAvailableAmateurs, amountWithoutJob, True, True, 0, filterToGenderID, True, "", null, amateursWithJobIDs)
+		local amateursWithoutJob:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableInsignificants(currentAvailableAmateurs, amountWithoutJob, True, True, 0, filterToGenderID, True, "", null, amateursWithJobIDs)
 
 
 		For local i:int = 0 until amateursWithJob.length + amateursWithoutJob.length
@@ -609,8 +609,8 @@ Type TProductionManager
 		
 
 		'1.) fetch all amateurs
-		'    all fictional, bookable, no job restriction, no gender restriction, alive, no country restriction
-		currentAvailableAmateurs = GetPersonBaseCollection().GetFilteredInsignificantsArray(True, True, 0, -1, True, "", null, null)
+		'    all fictional, castable, bookable, no job restriction, no gender restriction, alive, no country restriction
+		currentAvailableAmateurs = GetPersonBaseCollection().GetFilteredCastableInsignificantsArray(True, True, 0, -1, True, "", null, null)
 		'remove celebs? -> should not be needed
 
 

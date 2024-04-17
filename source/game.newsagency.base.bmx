@@ -230,7 +230,7 @@ Type TNewsAgency
 		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + RandRange(5,20) * TWorldTime.MINUTELENGTH
 
 		Local NewsChainEvent1:TNewsEvent
-		If bombRedirectedByPlayers = 0 Or RandRange(0,90) < 90
+		If bombRedirectedByPlayers = 0 Or RandRange(0,100) < 90
 			'chain 1
 			Local qualityChain1:Float = 0.01 * randRange(50,60)
 			Local priceChain1:Float = 1.0 + 0.01 * randRange(-5,10)
@@ -256,7 +256,7 @@ Type TNewsAgency
 				'decrease image for all caught channels
 				data.AddString("trigger", "broadcastFirstTime")
 				data.AddString("type", "ModifyChannelPublicImage")
-				data.AddInt("value", -3)
+				data.AddDouble("value", -0.03)
 				data.AddBool("valueIsRelative", True)
 				data.AddInt("playerID", pID)
 				data.AddString("log", "decrease image for all caught channels")
@@ -267,7 +267,7 @@ Type TNewsAgency
 			data = New TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddInt("value", 5)
+			data.AddDouble("value", 0.05)
 			data.AddBool("valueIsRelative", True)
 			'use playerID of broadcasting player
 			data.AddInt("playerID", 0)
@@ -281,7 +281,7 @@ Type TNewsAgency
 			data = New TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddInt("value", 2)
+			data.AddDouble("value", 0.02)
 			data.AddBool("valueIsRelative", True)
 			'use playerID of broadcasting player
 			data.AddInt("playerID", 0)
@@ -517,8 +517,19 @@ Type TNewsAgency
 		Local localizeTitle:TLocalizedString
 		Local localizeDescription:TLocalizedString
 
+		'prevent anonymous various/common persons to appear in movie news
+		Local actor:TPersonBase = licence.GetData().getActor(1)
+		Local actor2:TPersonBase = licence.GetData().getActor(2)
+		If actor
+			If actor.GetGUID().startsWith("various") Or actor.GetGUID().startsWith("common")
+				actor = Null
+			ElseIf actor2 And actor2.GetGUID().startsWith("various") Or actor2.GetGUID().startsWith("common") 
+				actor = Null
+			EndIf
+		EndIf
+
 		'no director and no actors
-		If licence.GetData().getActor(1) = Null And licence.GetData().getDirector(1) = Null
+		If actor = Null And licence.GetData().getDirector(1) = Null
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION")
 		'no director
@@ -526,11 +537,11 @@ Type TNewsAgency
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION")
 		'no actor named (eg. cartoon)
-		ElseIf licence.GetData().getActor(1) = Null
+		ElseIf actor = Null
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
 		'if same director and main actor...
-		ElseIf licence.GetData().getActor(1) = licence.GetData().getDirector(1)
+		ElseIf actor = licence.GetData().getDirector(1)
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
 		'default

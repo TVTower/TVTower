@@ -167,7 +167,7 @@
 	<insignificantpeople>
 		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" castable="0" />
 		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" castable="0" />
-		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" castable="0" />
+		<person id="common-unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" castable="0" />
 		<person id="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" fictional="1" levelup="0" castable="0" />
 		<person id="various-puppeteers" first_name="" last_name="versch. Puppenspieler" fictional="1" levelup="0" castable="0" />
 		<person id="various-models" first_name="" last_name="versch. Models" fictional="1" levelup="0" castable="0" />

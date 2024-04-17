@@ -95,7 +95,7 @@ To get to the Programme Schedule, you must first enter the player's office. Left
 
 You will see the first day. At the beginning of the game, the Opening Show and three advertisements are already in place. In addition, an advertisement has been scheduled as an infomercial. This is only the case at the beginning of the game and should give you enough time to explore the game in peace.
 
-As long as the programme or advertisement blocks are coloured grey, then you can move them to other broadcast slots. Other colours mean that they are already being or have been  broadcast. A red advertising block means that it did not fulfill the requirements.
+As long as the programme or advertisement blocks are coloured grey, then you can move them to other broadcast slots. Other colours mean that they are already being or have been  broadcast. A red advertising block means that it did not fulfil the requirements.
 
 Moving the mouse pointer over a programme or an advertisement displays a tooltip containing information about the selected programme. Pressing the "Shift"-key while displaying the programme tooltip toggles to showing the maximum audience rate instead of the maximal absolute audience.
 
@@ -109,7 +109,7 @@ If you place an advertisement in a schedule slot, then it becomes an infomercial
 
 By contrast, if you place a programme in an advertising slot, then a trailer for that programme is created. This trailer ensures that more viewers will watch the programme. However, the number of additional viewers depends on how many viewers saw the programme before the trailer. Multiple broadcasts strengthen this effect, though only up to an upper limit. Every further trailer then draws no additional viewership.
 
-If you want to see or change the schedule for the following day or days, then use the the little arrow in the top right. Obviously you can also go back again.
+If you want to see or change the schedule for the following day or days, then use the little arrow in the top right. Obviously you can also go back again.
 
 Available advertisements and programmes can be seen in the respective menu options on the right. There are also more tooltips here when you move the mouse pointer over the programme/advertisement. Left-click to drag the programmes. Left-click to put them down again. "Shift" and left-click retains the programme as long as you have the "Shift"-key pressed. If necessary, a right-click will give you a free hand again.
 
@@ -118,7 +118,7 @@ You also find the "Finance", "Statistics" and "Achievements" items on the right 
 Archive
 -------
 
-In the Archive you meet the archivist. You need him, if you want to sell the programme rights that you own. Click on the archivist and you will be shown a list of the genres. If you own rights from a certain genre, then it is coloured black, with green lines next to it, which indicate the number of rights under ths genre. So click on a genre and select the rights that you want to move to the Movie Agency, click on them and place it in the suitcase.
+In the Archive you meet the archivist. You need him, if you want to sell the programme rights that you own. Click on the archivist and you will be shown a list of the genres. If you own rights from a certain genre, then it is coloured black, with green lines next to it, which indicate the number of rights under this genre. So click on a genre and select the rights that you want to move to the Movie Agency, click on them and place it in the suitcase.
 
 But beware! If you put rights which are currently used in the Programme Schedule into the suitcase and leave the room, then the programme will be deleted from the schedule. So you will have to fill that gap again later.
 
@@ -127,11 +127,11 @@ Movie Agency
 
 This is used for the acquisition and sale of films, series, and so forth ('programme rights'). On the left you can see the agent behind his desk. On the right there's a bookcase. In the centre is your suitcase. If you have come straight from the archive, it may contain the rights that you've selected to sell. If you want to sell them, left-click on them and click on the movie agent with the programme rights. Then the rights are gone. But whether they will turn up in the bookcase again is uncertain.
 
-Turning to acquisition, there are two methods. Firstly, the programme rights in the bookcase. Move the mouse pointer over the slipcases and it will bring up information about the respective rights. The price, course. It states whether or not you can afford it. More important for the audience ratings, however, are the bars for Speed, Box Office and Critics for the programmes included in the rights. And also the Topicality. This decreases with every broadcast. And with it the monetary value of the rights. If the programme isn't broadcast for a while, the Topicality will return to a certain level.
+Turning to acquisition, there are two methods. Firstly, the programme rights in the bookcase. Move the mouse pointer over the slipcases and it will bring up information about the respective rights. The price, course. It states whether or not you can afford it. More important for the audience ratings, however, are the bars for Pacing, Box Office and Critics for the programmes included in the rights. And also the Topicality. This decreases with every broadcast. And with it the monetary value of the rights. If the programme isn't broadcast for a while, the Topicality will return to a certain level.
 
 How the attributes of programmes are to be assessed, described by STARSCRazy:
 
-"Speed: How interesting the programme is to Joe Bloggs (affects viewer evaluations).
+"Pacing: How interesting the programme is to Joe Bloggs (affects viewer evaluations).
 
 Critics: How interesting the programme is to critics (affects critics' assessment).
 
@@ -142,7 +142,7 @@ For all three values: the higher the better.
 But each has some values that are more important than others, according to their genre:
 
 * Critics is especially important when it comes to Culture, Live, Music, and Shows.
-* Speed is important in Erotic, Sport, Gossip, pay-TV
+* Pacing is important in Erotic, Sport, Gossip, pay-TV
 * Box Office matters for Action, Sci-Fi, Fantasy, Comedy, Romance"
 
 Left-click on a package of programme rights, move them over the suitcase and click once more, then they will be placed in the suitcase. That's only a pre-selection though. Although the money is immediately deducted, if you click on the rights again and move them to the bookcase, and click there again, they are placed in the bookcase and the money is back in your account. But if you leave the room with the rights in the suitcase, then the rights package unavoidably ends up in the archive and is automatically available for your programme planning. Should the suitcase be full of programmes, then leave the room, wait a while, re-enter it and you will have enough space to go shopping again. By the way: the gaps opened by your purchases will have been filled by the agent in the meantime.
@@ -155,7 +155,7 @@ Ad Agency
 
 This is the good fellow who keeps the wolf from the door. Well, he actually wants to flog us the stuff which ruins a film for the viewers or gives them a chance to get crisps. In a nutshell: here are the commercials which are broadcast each hour and keep the cash rolling in. You can see folders on the table and by the wall and your suitcase in the top right corner. There are usually folders in this case. Those are the advertising contracts you previously signed. You automatically get three at the start of the game. If the suitcase is full, then you can't sign new advertising contracts. You can only free up space once your adverts have finished broadcasting. Or if they pass the time limit, which, however, results in a penalty.
 
-Move the mouse over the folders and you'll see information about the relevant advert. I don't need to explain the profit any further. The penalty is due if you don't broadcast the required commercials in the specified time with the required viewers. The tooltip also shows you how many times the advert has already been scheduled and broadcast. Pressing the "Shift"-key while displaing the tooltip toggles to protit/penalty per block.
+Move the mouse over the folders and you'll see information about the relevant advert. I don't need to explain the profit any further. The penalty is due if you don't broadcast the required commercials in the specified time with the required viewers. The tooltip also shows you how many times the advert has already been scheduled and broadcast. Pressing the "Shift"-key while displaying the tooltip toggles to profit/penalty per block.
 
 Here, too, the gaps that have been torn will be filled again after leaving the room. So head straight back in to see if something attractive has come in.
 
@@ -238,13 +238,13 @@ In addition, the boss informs you about upcoming Sammy awards. If you win the co
 Terrorist
 ---------
 
-He is a nasty piece of work. Not without controversy, he ensures that there are always enough free roooms in the building. Because free rooms are scarce and in the later course of the game needed as larger studios. The first one that you have is only size one.
+He is a nasty piece of work. Not without controversy, he ensures that there are always enough free rooms in the building. Because free rooms are scarce and in the later course of the game needed as larger studios. The first one that you have is only size one.
 
 The terrorist is actually a henchman of both Dubanian embassies, who are in perpetual conflict with one another. The other side is the real target. The terrorist threat is announced with a notification later in the course of events.
 
 Shortly afterwards, the terrorist enters the building and goes to the information board. That is where you have the chance to participate. Because you can mix up the nameplates on the information board. Put the nameplate of the embassy of the country which is mentioned in the news as the target for a possible attack to place that suits you and the terrorist will direct his steps there. If you would like to see what happens, simply follow along.
 
-By the way, the AI can also place the appropriate embasssy nameplate on your offices or studios.
+By the way, the AI can also place the appropriate embassy nameplate on your offices or studios.
 
 Room Agency
 -----------
@@ -274,7 +274,7 @@ The right screen shows each of the target groups that will be particularly reach
 Chat and Cheating
 =================
 
-Pressing the "Enter" key opens the chat where you can execute commands. "/dev help" lists the available comands - there are more in development mode ("/dev devkeys 1"). For example, "/dev money 1 1000" will credit 1000 Euros to the account of the first player.
+Pressing the "Enter" key opens the chat where you can execute commands. "/dev help" lists the available commands - there are more in development mode ("/dev devkeys 1"). For example, "/dev money 1 1000" will credit 1000 Euros to the account of the first player.
 In a game with a task the development mode is disabled automatically. Reactivating the development mode aborts the task.
 
 Processes in the Background

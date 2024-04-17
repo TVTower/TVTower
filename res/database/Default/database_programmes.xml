@@ -8471,7 +8471,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Rolle and Ralle reveal the limits of their working father's parenting skills.
 Weary of the twins' constant pranks, his helping-out sister also strongly recommends remarriage.</en>
 					</description>
-					<data country="DDR" year="1974" price_mod="1.00" />
+					<data year="1974" />
 					<ratings critics="79" speed="36" />
 				</programme>
 				<programme id="therob-programme-famser-AlsoPapa-ep102" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
@@ -8487,7 +8487,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<de>Mit vereinten Kräften versuchen die Zwillinge unterstützt von Onkel und Tante Vati von der Zweckmäßigkeit eine Brautschau zu überzeugen. Ob die Karusselbesitzerin das Rennen macht?</de>
 						<en>With combined forces, the twins, supported by uncle and aunt, try to convince daddy of the usefulness of the pursuit of looking for a wife. Will the carousel owner make the race?</en>
 					</description>
-					<data country="DDR" year="1974" />
+					<data year="1974" />
 					<ratings critics="77" speed="36" />
 				</programme>
 				<programme id="therob-programme-famser-AlsoPapa-ep103" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
@@ -8503,7 +8503,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<de>Die Rummelplatzfee war nur zur Aushilfe bei ihrem Vater, ist für eine LPG unabdingbar. Raus aus Berlin auf's Dorf?</de>
 						<en>The fairground maiden was only there to help out her father, but she is indispensable for an Agricultural Production Cooperative. Out of Berlin and into the village?</en>
 					</description>
-					<data country="DDR" year="1974" />
+					<data year="1974" />
 					<ratings critics="77" speed="38" />
 				</programme>
 				<programme id="therob-programme-famser-AlsoPapa-ep104" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="8751/7430" created_by="Sjaele/TheRob">
@@ -9020,7 +9020,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 						<de>Petra nimmt Wolfgang nur zurück, wenn er sich beweist und erwachsen wird. Erst dann ist sie für eine gemeinsame Zukunft bereit.</de>
 						<en>Petra will only accept Wolfgang back if he can prove himself and grow up. Not until then will she be open to a future together.</en>
 					</description>
-					<data country="DDR" year="1964" distribution="1" maingenre="13" subgenre="" flags="8" blocks="3" price_mod="1.00" />
+					<data subgenre="13" blocks="3" />
 					<ratings critics="67" speed="53" />
 				</programme>
 			</children>
@@ -11634,7 +11634,7 @@ Dream scenes and sentiments warp the storyline.</en>
 						<de>Auf nach Hause. Wie gelingt die Flucht?</de>
 						<en>On the way home. How to make the escape?</en>
 					</description>
-					<data country="D/F" year="1964" distribution="0" maingenre="13" subgenre="1" flags="8" blocks="4" price_mod="1.00" />
+					<data subgenre="13" blocks="4" />
 					<ratings critics="67" speed="53" />
 				</programme>
 			</children>

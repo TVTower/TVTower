@@ -78,13 +78,10 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		person.firstName = pg.firstName
 		person.lastName = pg.lastName
 		person.countryCode = pg.countryCode.ToUpper()
+		person.gender = pg.gender
 		person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		person.SetFlag(TVTPersonFlag.BOOKABLE, True)
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, True)
-		If gender <= 0
-			gender = GetPersonGenerator().GetRandomGender()
-		EndIf
-		person.gender = gender
 
 		'avoid others of same name
 		GetPersonGenerator().ProtectDataset(pg)
@@ -465,9 +462,9 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method
 	
 
-	'useful to fetch a random "amateur" (aka "layman")
-	Method GetRandomInsignificants:TPersonBase[](array:TPersonBase[] = Null, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomsFromArrayOrFilter(array, FILTER_INSIGNIFICANT, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	'useful to fetch a random castable "amateur" (aka "layman")
+	Method GetRandomCastableInsignificants:TPersonBase[](array:TPersonBase[] = Null, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomsFromArrayOrFilter(array, FILTER_CASTABLE_INSIGNIFICANT, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
@@ -476,8 +473,8 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomCelebrities:TPersonBase[](array:TPersonBase[] = Null, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomsFromArrayOrFilter(array, FILTER_CELEBRITY, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	Method GetRandomCastableCelebrities:TPersonBase[](array:TPersonBase[] = Null, amount:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomsFromArrayOrFilter(array, FILTER_CASTABLE_CELEBRITY, amount, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
@@ -491,13 +488,13 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetFilteredInsignificantsArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return _FilterList( GetFilteredList(FILTER_INSIGNIFICANT), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	Method GetFilteredCastableInsignificantsArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return _FilterList( GetFilteredList(FILTER_CASTABLE_INSIGNIFICANT), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
-	Method GetFilteredCelebritiesArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return _FilterList( GetFilteredList(FILTER_CELEBRITY), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
+	Method GetFilteredCastableCelebritiesArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return _FilterList( GetFilteredList(FILTER_CASTABLE_CELEBRITY), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
