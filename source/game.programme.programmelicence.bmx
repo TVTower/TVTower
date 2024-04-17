@@ -1282,7 +1282,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if not finance then return False
 
 		local currentAudienceReachLevel:int = 1
-		if GetPlayerBase(playerID) then currentAudienceReachLevel = GetPlayerBase(playerID).GetAudienceReachLevel()
+		if GetPlayerBase(playerID) then currentAudienceReachLevel = GetPlayerBase(playerID).GetChannelReachLevel()
 
 		local priceToPay:int = GetPriceForPlayer(playerID, currentAudienceReachLevel)
 		If finance.PayProgrammeLicence(priceToPay, self)
@@ -2039,7 +2039,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if GetSubLicenceCount() = 0 and GetData()
 			if audienceReachLevel <= 0
 				if GetPlayerBase(playerID)
-					audienceReachLevel = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+					audienceReachLevel = Max(1, GetPlayerBase(playerID).GetChannelReachLevel())
 				else
 					'default to 0 to skip modification
 					audienceReachLevel = 0
@@ -2069,7 +2069,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'for not-yet-owned licences
 	Method GetPrice:Int(playerID:int) {_exposeToLua}
 		if GetPlayerBase(playerID)
-			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetAudienceReachLevel()))
+			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetChannelReachLevel()))
 		else
 			Return GetPriceForPlayer(playerID, -1)
 		endif
@@ -2082,7 +2082,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if owner = playerID
 			Return GetPriceForPlayer(owner, licencedAudienceReachLevel)
 		elseif GetPlayerBase(playerID)
-			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetAudienceReachLevel()))
+			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetChannelReachLevel()))
 		else
 			Return GetPriceForPlayer(playerID, -1)
 		endif

@@ -355,7 +355,12 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceReachLevel:Int() {_exposeToLua}
+	Method GetChannelReceivers:Int() {_exposeToLua}
+		Return 0
+	End Method
+
+
+	Method GetChannelReachLevel:Int() {_exposeToLua}
 		return 0
 	End Method
 
