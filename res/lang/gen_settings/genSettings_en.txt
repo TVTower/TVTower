@@ -91,7 +91,7 @@ GENDER_ALL         = All
 GENDER_MEN_SHORT   = M
 GENDER_WOMEN_SHORT = W
 
-CURRENCY     = $
+CURRENCY     = €
 OCLOCK       =
 DAY_SHORT    = D
 HOUR_SHORT   = H
