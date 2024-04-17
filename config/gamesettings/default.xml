@@ -10,7 +10,7 @@
 		<antennaBuyPriceMod value="1.0"/>
 		<antennaDailyCostsMod value="1.0"/>
 		<antennaDailyCostsIncrease value="0.02"/>
-		<antennaDailyCostsIncreaseMax value="0.2"/>
+		<antennaDailyCostsIncreaseMax value="0.4"/>
 		<cableNetworkBuyPriceMod value="1.0"/>
 		<cableNetworkDailyCostsMod value="1.0"/>
 		<satelliteBuyPriceMod value="1.0"/>
@@ -33,8 +33,8 @@
 		<adcontractLimitedTargetgroupMod value="1.15"/>
 		<antennaBuyPriceMod value="1.4"/>
 		<antennaDailyCostsMod value="1.25"/>
-		<antennaDailyCostsIncrease value="0.02"/>
-		<antennaDailyCostsIncreaseMax value="0.3"/>
+		<antennaDailyCostsIncrease value="0.03"/>
+		<antennaDailyCostsIncreaseMax value="0.5"/>
 		<cableNetworkBuyPriceMod value="1.4"/>
 		<cableNetworkDailyCostsMod value="1.3"/>
 		<satelliteBuyPriceMod value="1.4"/>
@@ -80,8 +80,8 @@
 		<antennaBuyPriceMod value="1.2"/><!--factor for antenna purchase prices-->
 		<antennaConstructionTime value="0"/><!--base time for setting up an antenna-->
 		<antennaDailyCostsMod value="1.15"/><!--factor for anntenna daily costs-->
-		<antennaDailyCostsIncrease value="0.015"/><!--increase of daily antenna costs; 0.02 = 2%-->
-		<antennaDailyCostsIncreaseMax value="0.2"/><!--maximum increase of daily antenna costs; 0.2 = 20%-->
+		<antennaDailyCostsIncrease value="0.03"/><!--increase of daily antenna costs; 0.02 = 2%-->
+		<antennaDailyCostsIncreaseMax value="0.4"/><!--maximum increase of daily antenna costs; 0.2 = 20%-->
 		<cableNetworkBuyPriceMod value="1.2"/><!--factor for cable network initial payment price-->
 		<cableNetworkConstructionTime value ="0"/><!--time before cable network broadcasts channel programme-->
 		<cableNetworkDailyCostsMod value="1.15"/><!--factor for cable network daily costs-->
