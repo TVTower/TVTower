@@ -31,9 +31,6 @@ Type TScreenHandler_ProgrammePlanner
 	Global slotOverlaysBlock:TSprite
 	Global slotOverlaysClock1:TSprite
 	Global slotOverlaysClock2:TSprite
-	'indicator whether an item just got dropped and therefor the next
-	'check should ignore "shift/ctrl"-shortcuts
-	Global ignoreCopyOrEpisodeShortcut:Int = False
 
 	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = Null
 	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = Null
@@ -144,6 +141,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'=== register event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
@@ -195,13 +193,13 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" ) ]
 		'these lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProgrammePlanElement, "TGUIProgrammePlanElement") ]
-		'handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
-		'in this case - send them to GuiManager (like freshly created to avoid a history)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'we want to handle drops on the same guilist slot (might be other planning day)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onDropProgrammePlanElementBack, "TGUIProgrammePlanElement") ]
 
 		'intercept dragging items if we want a SHIFT/CTRL-copy/nextepisode
+		'also handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
+		'in this case - send them to GuiManager (like freshly created to avoid a history)
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'handle dropping at the end of the list (for dragging overlapped items)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onProgrammePlanAddObject) ]
@@ -217,6 +215,11 @@ Type TScreenHandler_ProgrammePlanner
 
 		'(re-)localize content
 		SetLanguage()
+	End Function
+	
+
+	Function DebugPrint(s:String)
+		'print s
 	End Function
 
 
@@ -430,6 +433,7 @@ Type TScreenHandler_ProgrammePlanner
 				'successful or not - get rid of the gui element
 				obj.Remove()
 			Next
+			InvalidateGuiElements()
 		EndIf
 		'=== IMAGE SCREEN ===
 		'...
@@ -654,7 +658,7 @@ Type TScreenHandler_ProgrammePlanner
 	'handle dragging dayChange elements (give them to GuiManager)
 	'this way the newly dragged item is kind of a "newly" created
 	'item without history of a former slot etc.
-	Function onDragProgrammePlanElement:Int(triggerEvent:TEventBase)
+	Function onFinishDragProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
@@ -663,22 +667,25 @@ Type TScreenHandler_ProgrammePlanner
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
 
+
+		'-> remove dayChangeObjects from plan if dragging (and allowed)
+		If item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
+			If GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
+				GuiManager.AddDragged(GuiListAdvertisements.dayChangeGuiProgrammePlanElement)
+				GuiListAdvertisements.dayChangeGuiProgrammePlanElement = Null
+			EndIf
+		ElseIf item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
+			If GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+				DebugPrint("onFinishDragProgrammePlanElement -> is daychange, removed")
+				GuiManager.AddDragged(GuiListProgrammes.dayChangeGuiProgrammePlanElement)
+				GuiListProgrammes.dayChangeGuiProgrammePlanElement = Null
+			Else
+				DebugPrint("onFinishDragProgrammePlanElement -> is daychange, remove FAILED")
+			EndIf
+		EndIf
+
 		Local draggedProgramme:TProgramme=TProgramme(item.broadcastMaterial)
 		If draggedProgramme Then GetPlayerProgrammeCollection(currentRoom.owner).RemoveJustAddedProgrammeLicence(draggedProgramme.licence)
-
-		'check if we somehow dragged a dayChange element
-		'if so : remove it from the list and let the GuiManager manage it
-		If item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-			GuiManager.AddDragged(GuiListProgrammes.dayChangeGuiProgrammePlanElement)
-			GuiListProgrammes.dayChangeGuiProgrammePlanElement = Null
-			Return True
-		EndIf
-		If item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-			GuiManager.AddDragged(GuiListAdvertisements.dayChangeGuiProgrammePlanElement)
-			GuiListAdvertisements.dayChangeGuiProgrammePlanElement = Null
-			Return True
-		EndIf
-		Return False
 	End Function
 
 
@@ -690,18 +697,22 @@ Type TScreenHandler_ProgrammePlanner
 
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
-
+		DebugPrint("onTryDragProgrammePlanElement -> item="+item.ToString())
+		
 		'stop dragging from locked slots
 		If GetPlayerProgrammePlan(currentRoom.owner).IsLockedBroadcastMaterial(item.broadcastMaterial)
+			DebugPrint("onTryDragProgrammePlanElement -> VETO, locked material.")
 			triggerEvent.SetVeto()
 			Return False
 		EndIf
 
-		If Not ignoreCopyOrEpisodeShortcut And CreateNextEpisodeOrCopyByShortcut(item)
+		If CreateNextEpisodeOrCopyByShortcut(item)
+			DebugPrint("onTryDragProgrammePlanElement -> VETO, created copy/episode.  item="+item.ToString())
 			triggerEvent.SetVeto()
 			Return False
 		EndIf
 
+		DebugPrint("onTryDragProgrammePlanElement -> OK.")
 		'dragging is ok
 		Return True
 	End Function
@@ -789,13 +800,23 @@ Type TScreenHandler_ProgrammePlanner
 			EndIf
 		EndIf
 
-
-		'mark that something was dropped this round and no shortcuts should
-		'get used
-		ignoreCopyOrEpisodeShortcut = True
-
 		'up to now: all are allowed
 		Return True
+	End Function
+
+	
+	'create a new copy if shortcut keys are still hold
+	Function onFinishDropProgrammePlanElement:int(triggerEvent:TEventBase)
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+		'do not react if in other players rooms
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Then Return False
+
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
+
+		'create a copy of the item if keys are down
+		CreateNextEpisodeOrCopyByShortcut(item)
 	End Function
 
 
@@ -1053,37 +1074,6 @@ Type TScreenHandler_ProgrammePlanner
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
 		Local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
-
-		'left mouse button
-		If triggerEvent.GetData().getInt("button",0) = 1
-			'special handling for special items
-			'-> remove dayChangeObjects from plan if dragging (and allowed)
-			If Not item.isDragged() And item.isDragable() And talkToProgrammePlanner
-				If item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-					If GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
-						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = Null
-					EndIf
-				ElseIf item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-					If GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = Null
-					EndIf
-				EndIf
-			EndIf
-
-
-			'if shortcut is used on a dragged item ... it gets executed
-			'on a successful drop, no need to do it here before
-			If item.isDragged() Then Return False
-
-			'assisting shortcuts create new guiobjects
-			If CreateNextEpisodeOrCopyByShortcut(item)
-				'do not try to drag the object - we did something special
-				triggerEvent.SetVeto()
-				Return False
-			EndIf
-
-			Return True
-		EndIf
 
 		'right mouse button - delete
 		If triggerEvent.GetData().getInt("button",0) = 2
@@ -1465,8 +1455,6 @@ endrem
 			EndIf
 		EndIf
 
-		ignoreCopyOrEpisodeShortcut  = False
-
 		'set all slots occupied or not
 		Local day:Int = GetWorldTime().GetDay()
 		Local hour:Int = GetWorldTime().GetDayHour()
@@ -1639,8 +1627,6 @@ endrem
 
 	Function CreateNextEpisodeOrCopyByShortcut:Int(item:TGUIProgrammePlanElement)
 		If Not item Then Return False
-		'only react to items which got freshly created
-		If Not item.inList Then Return False
 
 		'assisting shortcuts create new guiobjects
 		'shift: next episode
@@ -1649,11 +1635,13 @@ endrem
 			'reset key
 			KEYMANAGER.ResetKey(KEY_LSHIFT)
 			KEYMANAGER.ResetKey(KEY_RSHIFT)
+
 			CreateNextEpisodeOrCopy(item, False)
 			Return True
 		ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
 			KEYMANAGER.ResetKey(KEY_LCONTROL)
 			KEYMANAGER.ResetKey(KEY_RCONTROL)
+
 			CreateNextEpisodeOrCopy(item, True)
 			Return True
 		EndIf
@@ -1708,10 +1696,10 @@ endrem
 		'create and drag
 		If newMaterial
 			Local guiObject:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner")
-			guiObject.drag()
-			'remove position backup so a "dropback" does not work, and
-			'the item does not drop back to "0,0"
-'RON			guiObject.positionBackup = Null
+			'avoid drag() as this emits events (tryDrag, drag, finishDrag)
+			'instead simply add the object as dragged
+			'guiObject.drag()
+			GuiManager.AddDragged(guiObject)
 		EndIf
 	End Function
 
