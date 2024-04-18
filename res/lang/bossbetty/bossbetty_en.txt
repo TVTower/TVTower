@@ -110,7 +110,7 @@ DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1    = This incompetence is incredib
 DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1         = Instead of not broadcasting any news |b|%NEWSMALFUNCTION%x|/b|, you could at least transmit last year's weather report!
 DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1               = Back to work or someone else will get your job!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1            = My son's hamster could do your job better than you!
-DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2            = One more blunder and your job will go to the next person who knocks on the door!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2            = One more blunder and your job will go to the next person who knocks on my door!
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1             = Get out - and pass on my worst regards to your boss. Hahahahaha...
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2             = Out, now! I've had enough of you and your damn channel!
 
