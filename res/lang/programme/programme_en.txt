@@ -30,13 +30,13 @@ MOVIE_TRAILER    = Airing a trailer may increase interest in upcoming broadcasts
 MOVIES          = Movies
 SERIES          = Series
 SERIES_SINGULAR = Series
-SPECIAL_BIN     = Special bin
+SPECIAL_BIN     = Bargain bin
 AUCTION         = Auction
 TRAILER         = Trailer
 X_RATED         = X-rated
 
 MOVIES_AND_SERIES_AUCTION                = Movie and series auction
-CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Click on movie or series to place a bid.
+CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Click on the movie or series to place a bid.
 AUCTION_MAKE_BID                         = Bid
 AUCTION_WITHOUT_BID                      = No bids
 YOU_HAVE_BEEN_OUTBID                     = You've been outbid
