@@ -26,7 +26,7 @@ DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1      = The %AWARDNA
 DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = The %AWARDNAME%?\n\nTo win you'll have to try harder.
 DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = The %AWARDNAME%?\n\nTo win you'll have to try harder, %PLAYERNAME%!
 
-DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL0_TEXT1  = I would like to gift you a little something.
+DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL0_TEXT1  = I would like to give you a little something.
 DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL0_TEXT2  = Ummm... I've brought you a gift.
 DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL1_TEXT1  = I've got something for you.
 DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL1_TEXT2  = I've got a surprise for you.
@@ -72,16 +72,16 @@ BETTY_PRESENT_3            = Nasal plastic surgery
 BETTY_PRESENT_4            = Personalized novel
 BETTY_PRESENT_5            = Pearl necklace
 BETTY_PRESENT_6            = Dwarf hamster coat
-BETTY_PRESENT_7            = Large red diamond necklace
+BETTY_PRESENT_7            = Red blood diamond necklace
 BETTY_PRESENT_8            = Sports car
-BETTY_PRESENT_9            = Diamond ring
+BETTY_PRESENT_9            = Fancy ring
 BETTY_PRESENT_10           = Yacht
 
 
 AWARDNAME_CULTURE            = Sammy for Culture
 AWARDNAME_NEWS               = Sammy for News
 AWARDNAME_AUDIENCE           = Sammy for Audience
-AWARDNAME_CUSTOMPRODUCTION   = Sammy for custom productions
+AWARDNAME_CUSTOMPRODUCTION   = Sammy for Custom Productions
 AWARD_WON                    = Award won
 YOU_WON_THE_AWARDNAME        = You won the %AWARDNAME%.
 PLAYERNAME_WON_THE_AWARDNAME = %PLAYERNAME% has won the %AWARDNAME%.
@@ -111,7 +111,7 @@ DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1         = Instead of not broadcasting a
 DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1               = Back to work or someone else will get your job!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1            = My son's hamster could do your job better than you!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2            = One more blunder and your job will go to the next person who knocks on my door!
-DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1             = Get out - and pass on my worst regards to your boss. Hahahahaha...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1             = Get out - and pass on my worst regards to your boss. Hahahahaaaa!
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2             = Out, now! I've had enough of you and your damn channel!
 
 DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER = Alright, uhh... guess I won't bother you any further!
