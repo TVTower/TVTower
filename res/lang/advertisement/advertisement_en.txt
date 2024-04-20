@@ -27,16 +27,16 @@ AD_SEND_TILL_TOMORROW = Show by end of tomorrow!
 AD_STILL_X_DAYS       = still %1 days
 
 AD_CHANNEL_IMAGE_TOO_LOW = Channel image too low. %CHANNELIMAGE%% < %IMAGE%%.
-AD_PLEASE_GENRE_X        = Please genre %GENRE%
-AD_PLEASE_FLAG           = Please %FLAG%
+AD_PLEASE_GENRE_X        = %GENRE% genre, please
+AD_PLEASE_FLAG           = %FLAG%, please
 
 INFOMERCIAL                  = Infomercial
 AD_INFOMERCIAL               = You get paid for airing infomercials. Income depends on audience.
 AD_INFOMERCIAL_NOT_AVAILABLE = An infomercial is not possible for this advertisement.
 AD_INFOMERCIAL_PROFIT        = Income: %PROFIT% per 1000 people watching
 
-ADCONTRACT_FINISHED                = Advertising contract finished
+ADCONTRACT_FINISHED                = Advertising contract completed
 ADCONTRACT_FAILED                  = Advertising contract failed
-ADCONTRACT_X_SUCCESSFULLY_FINISHED = Advertising contract |b|%TITLE%|/b| successfully finished.
-PROFIT_OF_X_GOT_CREDITED           = Profit of %MONEY% got credited.
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Advertising contract |b|%TITLE%|/b| successfully completed.
+PROFIT_OF_X_GOT_CREDITED           = Profit of %MONEY% was paid.
 ADCONTRACT_X_FAILED                = Advertising contract |b|%TITLE%|/b| failed.
