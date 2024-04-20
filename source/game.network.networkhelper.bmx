@@ -258,7 +258,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local stationmap:TStationMap = TStationMap(triggerEvent._sender)
 		if not stationmap then return FALSE
 
-		local station:TStation = TStation( triggerEvent.getData().get("station") )
+		local station:TStationBase = TStationBase( triggerEvent.getData().get("station") )
 		if not station then return FALSE
 
 		'ignore ai player's events if no gameleader
@@ -740,7 +740,9 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 
 	Method SendStationmapChange(playerID:int, stationGUID:string, action:int=0)
-		local station:TStationBase	= GetStationMap(playerID, True).GetStation(stationGUID)
+		Local map:TStationMap = GetStationMap(playerID)
+		If Not map Then Return
+		local station:TStationBase = map.GetStation(stationGUID)
 		if not station then return
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_STATIONMAPCHANGE )
@@ -769,7 +771,10 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local stationGUID:string = obj.getString(7)
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
-		local station:TStationBase = GetStationMap(playerID, True).getStation(stationGUID)
+		Local map:TStationMap = GetStationMap(playerID)
+		If Not map Then Return False
+
+		local station:TStationBase = map.getStation(stationGUID)
 		if not station then return False
 
 		'disable events - ignore it to avoid recursion
@@ -785,21 +790,28 @@ Type TNetworkHelper extends TNetworkHelperBase
 '							case TVTStationType.ANTENNA
 '								station = new TStation.Init(pos,-1, radius, playerID)
 '							default 'case TVTStationType.ANTENNA
-								station = new TStationAntenna.Init(posX, posY, -1, playerID)
+								station = new TStationAntenna.Init(New SVec2I(posX, posY), playerID)
 								TStationAntenna(station).radius = radius
 '						End Select
 					endif
 
 					station.SetGUID(stationGUID)
 
-					GetStationMap(playerID).AddStation( station, FALSE )
+
+					Local map:TStationMap = GetStationMap(playerID)
+					If Not map Then Return False
+
+					map.AddStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - add station "+station.x+","+station.y
 
 					return TRUE
 			case NET_DELETE
 					if not station then return FALSE
 
-					GetStationMap(playerID).RemoveStation( station, FALSE )
+					Local map:TStationMap = GetStationMap(playerID)
+					If Not map Then Return False
+
+					map.RemoveStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - removed station "+station.x+","+station.y
 					return TRUE
 		EndSelect
@@ -956,7 +968,10 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 
 	Method SendStationChange(playerID:Int, stationGUID:string, newaudience:Int, add:int=1)
-		local station:TStationBase = GetStationMap(playerID).GetStation(stationGUID)
+		Local map:TStationMap = GetStationMap(playerID)
+		If Not map Then Return
+
+		local station:TStationBase = map.GetStation(stationGUID)
 		if not station
 			print "SendStationChange failed, no station given"
 			return

@@ -392,7 +392,7 @@ Type TInGameInterface
 						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 					EndIf
 
-					content	= GetLocale("AUDIENCE_NUMBER")+": "+ audienceStr + " (" + audiencePercentageStr + "%)"
+					content	= GetLocale("AUDIENCE")+": "+ audienceStr + " (" + audiencePercentageStr + "%)"
 
 
 					'Newsshow details
@@ -529,7 +529,7 @@ Type TInGameInterface
 						audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
 						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 					EndIf
-					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": " + audienceStr + " (" + audiencePercentageStr +"%)")
+					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE")+": " + audienceStr + " (" + audiencePercentageStr +"%)")
 					CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
 
 					CurrentAudienceToolTip.enabled = 1
@@ -998,15 +998,16 @@ Type TInGameInterface
 			Local targetGroupID:Int = 0
 			Local colorLight:SColor8 = new SColor8(235,235,235)
 
-			'show how many people your stations cover (compared to country)
-			Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
-			Local totalReach:Int = GetStationMapCollection().population
-			lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"
+	
+			'show how many receivers your stations cover (compared to country)
+			Local receivers:Int = GetStationMap( GetPlayerBase().playerID ).GetReceivers()
+			Local receiversOnMap:Int = GetStationMapCollection().GetReceivers()
+			lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(receivers, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(receivers)/receiversOnMap, 2) + "% "+GetLocale("OF_THE_MAP")+")"
 			_interfaceAudienceFont.DrawSimple(lineText, lineX, lineY, colorLight)
 			lineY :+ _interfaceAudienceFont.GetHeight(lineText)
 	
 			'draw overview text
-			lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
+			lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)"
 			_interfaceAudienceFont.DrawSimple(lineText, lineX, lineY, colorLight)
 			lineY :+ 1 * _interfaceAudienceFont.GetHeight(lineText) + 5
 
@@ -1016,11 +1017,7 @@ Type TInGameInterface
 				lines[i-1] = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
 				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 2, 0)
 
-				if i = 8 or i = 9
-					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
-				else
-					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
-				endif
+				percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialAudience().GetTotalValue(targetGroupID) * 100, 2)
 			Next
 
 			Local colorDark:SColor8 = new SColor8(230,230,230)
@@ -1127,7 +1124,7 @@ Type TWatchingFamily
 
 			If useSlots > 0
 				'sort target groups by audience quote
-				Local map:TNumberSortMap = audienceResult.Audience.copy().Divide(audienceResult.PotentialMaxAudience).ToNumberSortMap()
+				Local map:TNumberSortMap = audienceResult.GetAudienceQuote().ToNumberSortMap()
 				map.Sort(False)
 				For Local entry:TKeyValueNumber = EachIn map.Content
 					If result.length < useSlots
@@ -1372,14 +1369,14 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentInnerWidth:Int()
 		If audienceResult
-			Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
-			Local totalReach:Int = GetStationMapCollection().population
+			Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetPopulation()
+			Local totalReach:Int = GetStationMapCollection().GetPopulation()
 
 			Return Max(5 + Self.useFont.GetWidth(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"), ..
-                       Self.useFont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE_NUMBER")) + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" ) )
+                       Self.useFont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)" ) )
 		Else
 			Return Max(Self.Usefont.GetWidth(GetLocale("BROADCASTING_AREA") + ": 100 (100%)"), ..
-			           Self.Usefont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE_NUMBER")) + ": 100 (100%)"))
+			           Self.Usefont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": 100 (100%)"))
 		EndIf
 	End Method
 
@@ -1413,10 +1410,10 @@ Type TTooltipAudience Extends TTooltip
 	Method GetContentHeight:Int(width:Int)
 		Local result:Int = 0
 
-		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
-		Local totalReach:Int = GetStationMapCollection().population
+		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetPopulation()
+		Local totalReach:Int = GetStationMapCollection().GetPopulation()
 		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")")
-		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE") + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(),2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)")
 		result:+ 1*lineHeight
 
 		If showDetails
@@ -1458,17 +1455,20 @@ Type TTooltipAudience Extends TTooltip
 		Local col1:SColor8 = new SColor8(90,90,90)
 		Local col2:SColor8 = new SColor8(150,150,150)
 
-		'show how many people your stations cover (compared to country)
-		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
-		Local totalReach:Int = GetStationMapCollection().population
-		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"
-		Self.Usefont.DrawSimple(lineText, lineX, lineY, col1)
-		lineY :+ Self.Usefont.GetHeight(lineText)
+		'show how many receivers your stations cover (compared to country)
+		Local receivers:Int = GetStationMap( GetPlayerBase().playerID ).GetReceivers()
+		Local receiversOnMap:Int = GetStationMapCollection().GetReceivers()
+		Local currentLineHeight:Int
+		currentLineHeight = Self.Usefont.DrawSimple(StringHelper.ucfirst(GetLocale("BROADCASTING_AREA")) + ": ", lineX, lineY, col1).y
+		Self.UseFont.DrawBox(TFunctions.convertValue(receivers, 2, 0), lineX, lineY, iconWidth + lineTextWidth - 50, lineHeight+2, sALIGN_RIGHT_TOP, col1)
+		Self.UseFont.DrawBox(MathHelper.NumberToString(100.0 * Float(receivers)/receiversOnMap, 2) + "%", lineX, lineY, iconWidth + lineTextWidth, lineHeight+2, sALIGN_RIGHT_TOP, col1)
+		lineY :+ currentLineHeight
 
 		'draw overview text
-		lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
-		Self.Usefont.DrawSimple(lineText, lineX, lineY, col1)
-		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
+		lineHeight = Self.Usefont.DrawSimple(StringHelper.ucfirst(GetLocale("POT_AUDIENCE")) + ": ", lineX, lineY, col1).y
+		Self.UseFont.DrawBox(TFunctions.convertValue(audienceResult.GetPotentialAudience().GetTotalSum(), 2, 0), lineX, lineY, iconWidth + lineTextWidth - 50, lineHeight+2, sALIGN_RIGHT_TOP, col1)
+		Self.UseFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage()) + "%", lineX, lineY, iconWidth + lineTextWidth, lineHeight+2, sALIGN_RIGHT_TOP, col1)
+		lineY :+ currentLineHeight
 
 		rem
 		local receptionAntenna:string = "Antenna " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_AntennaMod, 1.0), 2, True)+"%"
@@ -1509,11 +1509,7 @@ Type TTooltipAudience Extends TTooltip
 				lines[i-1] = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
 				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 2, 0)
 
-				if i = 8 or i = 9
-					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
-				else
-					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
-				endif
+				percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialAudience().GetTotalValue(targetGroupID) * 100, 2)
 			Next
 
 			Local colorLight:SColor8 = new SColor8(240,240,240)
@@ -1521,6 +1517,8 @@ Type TTooltipAudience Extends TTooltip
 			Local colorTextLight:SColor8 = SColor8AdjustFactor(colorLight, -110)
 			Local colorTextDark:SColor8 = SColor8AdjustFactor(colorDark, -140)
 
+			SetColor 200,200,200
+			DrawRect(lineX-1, lineY-1, w+2, TVTTargetGroup.count * lineHeight + 1) 
 			For Local i:Int = 1 To TVTTargetGroup.count
 				'shade the rows
 				If i Mod 2 = 0 Then SetColor(colorLight) Else SetColor(colorDark)
@@ -1530,12 +1528,10 @@ Type TTooltipAudience Extends TTooltip
 				SetColor 200,200,200
 				DrawLine(lineX, lineY + lineHeight -1, lineX + w -1, lineY + lineHeight -1)
 
-				'draw icon
-				if i mod 2 = 0 then SetColor 170,170,170 else SetColor 150,150,150
-				'icon is offset "in the image" already 1*1px
-				DrawRect(lineX, lineY + lineIconOffsetY - 1, iconWidth+2, iconHeight+2)
-				if i mod 2 = 0 then SetColor 130,130,130 else SetColor 100,100,100
-				DrawRect(lineX+1, lineY + lineIconOffsetY - 1 +1, iconWidth+1, iconHeight+1)
+				SetColor 200,200,200
+				DrawLine(lineX+1 + iconWidth + 1, lineY + 1, lineX+1 + iconWidth + 1, lineY + lineHeight - 2)
+				SetColor 250,250,250
+				DrawLine(lineX+1 + iconWidth + 2, lineY + 1, lineX+1 + iconWidth + 2, lineY + lineHeight - 2)
 
 				SetColor 255,255,255
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)

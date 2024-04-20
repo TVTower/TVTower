@@ -310,7 +310,7 @@ Type TBroadcastManager
 				For Local i:Int = 1 To 4
 					Local r:TAudienceResult = bc.GetAudienceResult(i)
 					channelImageChanges[i-1] = New TAudience.Set(0, 0)
-					channelAudiences[i-1] = r.audience.Copy().Divide(r.GetPotentialMaxAudience())
+					channelAudiences[i-1] = r.GetAudienceQuote()
 					'store playerID if not done yet
 					If channelAudiences[i-1] And channelAudiences[i-1].id <= 0
 						channelAudiences[i-1].id = i
@@ -551,26 +551,6 @@ Type TBroadcast
 		AddMarket(new SChannelMask(2 + 4 + 8))		'2 & 3 & 4
 
 		AddMarket(new SChannelMask(1 + 2 + 4 + 8))	'1 & 2 & 3 & 4
-rem
-
-		AddMarket(new SChannelMask().Set(1) ) '1
-		AddMarket(new SChannelMask().Set(2) ) '2
-		AddMarket(new SChannelMask().Set(3) ) '3
-		AddMarket(new SChannelMask().Set(4) ) '4
-		AddMarket(new SChannelMask().Set(1).Set(2) ) '1 & 2
-		AddMarket(new SChannelMask().Set(1).Set(3) ) '1 & 3
-		AddMarket(new SChannelMask().Set(1).Set(4) ) '1 & 4
-		AddMarket(new SChannelMask().Set(2).Set(3) ) '2 & 3
-		AddMarket(new SChannelMask().Set(2).Set(4) ) '2 & 4
-		AddMarket(new SChannelMask().Set(3).Set(4) ) '3 & 4
-
-		AddMarket(new SChannelMask().Set(1).Set(2).Set(3) ) '1 & 2 & 3
-		AddMarket(new SChannelMask().Set(1).Set(2).Set(4) ) '1 & 2 & 4
-		AddMarket(new SChannelMask().Set(1).Set(3).Set(4) ) '1 & 3 & 4
-		AddMarket(new SChannelMask().Set(2).Set(3).Set(4) ) '2 & 3 & 4
-
-		AddMarket(new SChannelMask().Set(1).Set(2).Set(3).Set(4) ) '2 & 3 & 4
-endrem
 	End Method
 
 
@@ -696,7 +676,6 @@ endrem
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
 			'outage
-			GetAudienceResult(playerId).Title =  GetLocale("BROADCASTING_OUTAGE")
 			GetAudienceResult(playerId).broadcastOutage = True
 			attraction = CalculateMalfunction(lastProgrammeAttraction)
 		End If
@@ -742,10 +721,11 @@ endrem
 
 		Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
 		
-		'receipient share = portion of the population share eg. using an antenna
-		Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(includeChannelMask, excludeChannelMask).shared
-		Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask).shared
-		Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(includeChannelMask, excludeChannelMask).shared
+		'receipient share = portion of the receiver share eg. using an antenna
+		'receiver = people able to receive the channel, not "whole population"
+		Local audienceAntenna:Int = GetStationMapCollection().GetAntennaReceiverShare(includeChannelMask, excludeChannelMask).shared
+		Local audienceSatellite:Int = GetStationMapCollection().GetSatelliteUplinkReceiverShare(includeChannelMask, excludeChannelMask).shared
+		Local audienceCableNetwork:Int = GetStationMapCollection().GetCableNetworkUplinkReceiverShare(includeChannelMask, excludeChannelMask).shared
 
 '		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 '		If audience > 0
@@ -753,6 +733,13 @@ endrem
 			Local audience:Int = audienceAntenna + audienceSatellite + audienceCableNetwork
 
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation(includeChannelMask)
+			'TODO: Ronny:
+			'      rewrite to not store "maxAudience" but simply
+			'      - receiverAntenna, receiverSatellite, receiverCableNetwork
+			'      - targetGroupBreakdown:TAudienceBase (so it can share the same reference/refid)
+			'      - optional: not "receiverAntenna" but "populationAntenna" etc - AND storage of the share values
+			'      - "maxAudience" can be {nosave} then (and recalculated with above's values)
+			'      -> final "dataset" should be smaller than now
 			market.maxAudience = New TAudience.Set(audience, AudienceManager.GetTargetGroupBreakdown())
 			market.shareAntenna = audienceAntenna / Float(audience)
 			market.shareSatellite = audienceSatellite / Float(audience)
@@ -1217,9 +1204,14 @@ Type TAudienceMarketCalculation
 	Method ToString:String()
 		Local result:String
 		For Local playerID:Int = 1 to 4
-			result :+ playerID+" "
+			if result then result :+ " "
+			If HasChannel(playerID)
+				result :+ playerID
+			Else
+				result :+ " "
+			EndIf
 		Next
-		Return "TAudienceMarketCalculation: players=["+result.Trim()+"], population: m="+maxAudience.GetGenderSum(TVTPersonGender.MALE)+" w="+maxAudience.GetGenderSum(TVTPersonGender.FEMALE)
+		Return "TAudienceMarketCalculation: players=["+result+"], maxAudience: m="+maxAudience.GetGenderSum(TVTPersonGender.MALE)+" w="+maxAudience.GetGenderSum(TVTPersonGender.FEMALE)
 	End Method
 
 
@@ -1277,7 +1269,7 @@ Type TAudienceMarketCalculation
 
 			audienceResult.WholeMarket = MaxAudience
 			'100% of the audience
-			audienceResult.PotentialMaxAudience = ChannelSurferToShare
+			audienceResult.PotentialAudience = ChannelSurferToShare
 			'actual audience
 			audienceResult.Audience = channelSurfer
 

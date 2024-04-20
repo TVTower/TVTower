@@ -350,7 +350,7 @@ end
 
 function SignRequisitedContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
-	self.maxAudience = MY.GetMaxAudience()
+	self.maxAudience = TVT:getReceivers()
 	self.highAudienceFactor = 0.08
 	self.avgAudienceFactor = 0.045
 	self.lowAudienceFactor = 0.003
@@ -568,7 +568,7 @@ end
 function SignContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
 	self.lowAudienceFactor = 0.005
-	self.maxAudience =  MY.GetMaxAudience()
+	self.maxAudience =  TVT:getReceivers()
 	self.ownedContracts = {};
 	--heuristic for licence max price - possible income per spot
 	local maxIncomePerSpot = 0

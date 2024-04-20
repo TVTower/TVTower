@@ -923,310 +923,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
-				'DebugScreen.Dev_FastForwardToTime(GetWorldTime().GetTimeGone() + 1*TWorldTime.DAYLENGTH, DebugScreen.GetShownPlayerID())
-				'print some debug for stationmap
-				rem
-				For local pID:Int = 1 to 4
-					Print "GetStationMap("+pID+", True).GetReach() = " + GetStationMap(pID, True).GetReach()		
-				Next
-				For local pID:Int = 1 to 4
-					Print "GetBroadcastManager().GetAudienceResult("+pID+").WholeMarket = " + GetBroadcastManager().GetAudienceResult( pID ).WholeMarket.ToString()
-				Next
-				
-				Print "current markets for p1:" 
-				local sum:Int = 0
-				local marketNum:int = 1
-				For Local market:TAudienceMarketCalculation = EachIn GetBroadcastManager().GetCurrentBroadcast().AudienceMarkets
-					For Local playerID:Int = EachIn market.playerIDs
-						if playerID = 1 'our player there?
-							print "  " + Rset(marketNum, 3).Replace(" ", "0")+": "+ market.maxAudience.ToString() 
-							sum :+ market.maxAudience.GetTotalSum()
-							marketNum :+ 1
-						endif
-					Next
-				Next
-				Print "  SUM: " + sum 
-				
-				Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare([1], [2,3,4]).x
-				Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare([1], [2,3,4]).x
-				Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare([1], [2,3,4]).x
-				print "Stationmap: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork
-				endrem
-				
-				rem
-				local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
-				GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
-				GetRoomAgency().BeginRoomRental(room, GetPlayer().playerID)
-				room.SetUsedAsStudio(True)
-				GetGame().SendSystemMessage("[KEY_Y] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + GetPlayer().name +"' ["+GetPlayer().playerID + "]!")
-				endrem
-
-				rem
-				local playerID:int = 2
-				local chatCMD:String = "CMD_forcetask StationMap 10000"
-
-				GetPlayer(playerID).GetFinance().CheatMoney(100000000)
-				'move player to room
-				DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", "", playerID), GetPlayer(playerID).GetFigure() )
-				'assign task
-				'GetPlayer(playerID).PlayerAI.CallLuaFunction("OnForceNextTask", null)
-				'GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
-				GetPlayer(playerID).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(playerID).AddString(chatCMD).AddInt(CHAT_COMMAND_WHISPER))
-				print "AI - force station map task"
-				endrem
-
-
-				'print TFunctions.ConvertCompareValue(1009000, 1008800, 2) + ": " + TFunctions.ConvertValue(1009000, 2) + "  -  " + TFunctions.ConvertValue(1008800, 2)
-				'print TFunctions.ConvertCompareValue(1010100, 1009400, 2) + ": " + TFunctions.ConvertValue(1010100, 2) + "  -  " + TFunctions.ConvertValue(1009400, 2)
-			Rem
-				local pcIndex:Int = 0
-				For local pc:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
-					if pcIndex = 1 'for first only
-						local oldLevel:int = pc.GetLevel()
-						pc.SetExperience( pc.GetExperience() + 500 )
-						if oldLevel <> pc.GetLevel()
-							print "Increased XP of production company ~q" + pc.name +"~q by 500. Levelup: " + oldLevel + " -> " + pc.GetLevel()
-						else
-							print "Increased XP of production company ~q" + pc.name +"~q by 500."
-						endif
-						exit
-					endif
-					pcIndex :+ 1
-				Next
-			End Rem
-			
-			Rem
-				Local reach:Int = GetStationMap( 1 ).GetReach()
-				print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
-				reach = GetStationMap( 1 ).GetReach()
-			endrem
-
-				Rem
-				print "GetBroadcastManager: "
-				print GetBroadcastManager().GetAudienceResult(1).ToString()
-				print "Daily: "
-				debugstop
-				local dayHour:int = GetWorldTime().GetDayHour()
-				local day:int = GetWorldTime().GetDay()
-				Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day, True)
-				local r:TAudienceResult = TAudienceResult(dailyBroadcastStatistic.GetAudienceResult(1, dayHour))
-				if r then print r.ToString()
-
-				Local addLicences:String[]
-				Local addContracts:String[]
-				Local addNewsEventTemplates:String[]
-				endrem
-
-				'addNewsEventTemplates :+ ["ronny-news-drucktaste-02b"]
-				'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
-				'addContracts :+ ["ronny-ad-allhits-02"]
-
-				Rem
-				for local i:int = 0 to 9
-					print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
-					local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
-					if newsEvent
-						GetNewsEventCollection().add(newsEvent)
-						GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
-						print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
-					endif
-				next
-				endrem
-
-				Rem
-				For Local l:String = EachIn addNewsEventTemplates
-					Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
-					If template
-						Local newsEvent:TNewsEvent = New TNewsEvent.InitFromTemplate(template)
-						GetNewsEventCollection().Add(newsEvent)
-						GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
-						Print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
-					EndIf
-				Next
-
-				For Local l:String = EachIn addContracts
-					Local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(l)
-					If adContractBase
-						'forcefully add to the collection (skips requirements checks)
-						GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
-					EndIf
-				Next
-
-				For Local l:String = EachIn addLicences
-					Local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
-					If Not p
-						Print "DEV: programme licence ~q"+l+"~q not found."
-						Continue
-					EndIf
-
-					If p.owner <> GetPlayer().playerID
-						p.SetOwner(0)
-						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(p, 1)
-						Print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-					Else
-						Print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-					EndIf
-				Next
-				EndRem
-
-
-				Rem
-				if GetAwardCollection().currentAward
-					TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
-					GetAwardCollection().currentAward.AdjustScore(1, 1000)
-					GetAwardCollection().currentAward.SetEndTime( Long(GetWorldTime().GetTimeGone()-1) )
-					GetAwardCollection().UpdateAwards()
-				else
-					TLogger.Log("DEV", "Awards: force start of next award.", LOG_DEV)
-					GetAwardCollection().nextAwardTime = Long(GetWorldTime().GetTimeGone())
-					GetAwardCollection().UpdateAwards()
-				endif
-				endrem
-
-				Rem
-				local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("", "laundry")
-				if room
-					print "renting room: " + room.GetName()
-					GetRoomAgency().CancelRoomRental(room, GetPlayerBase().playerID)
-					GetRoomAgency().BeginRoomRental(room, GetPlayerBase().playerID)
-					room.SetUsedAsStudio(True)
-				else
-					print "room not found"
-				endif
-				endrem
-
-
-				Rem
-				local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
-				local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
-				local fAuction:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction
-				local total:int = 0
-				local foundCheap:int = 0
-				local foundGood:int = 0
-				local foundAuction:int = 0
-				local foundSkipped:int = 0
-				local skippedFilterCount:int = 0
-				For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
-					if p.IsEpisode() then continue
-					if not p.IsReleased() then continue
-					if p.IsSeries() then continue
-
-					skippedFilterCount = 0
-
-					total :+1
-					if fCheap.DoesFilter(p)
-						'print p.GetTitle()
-						foundCheap :+ 1
-					else
-						skippedFilterCount :+ 1
-					endif
-
-					if fGood.DoesFilter(p)
-						'print p.GetTitle()
-						foundGood :+ 1
-					else
-						skippedFilterCount :+ 1
-					endif
-
-					if fAuction.DoesFilter(p)
-						'print p.GetTitle()
-						foundAuction :+ 1
-					else
-						skippedFilterCount :+ 1
-					endif
-
-					if skippedFilterCount = 3
-						print "unavailable: "+ p.GetTitle()+"  [year="+p.data.GetYear()+"  price="+p.GetPrice(GetPlayerBase().playerID)+"  topicality="+p.GetTopicality()+"/"+p.GetMaxTopicality()+"  quality="+p.GetQuality()+"]"
-						foundSkipped :+ 1
-					endif
-				Next
-				print "found cheap:"+foundCheap+", good:"+foundGood+", auction:"+foundAuction+", skipped:"+foundSkipped+" movies/series for 1985. Total="+total
-				endrem
-
-'						print "DEV: Set Player 2 bankrupt"
-'						GetGame().SetPlayerBankrupt(2)
-
-				'GetWorld().Weather.SetPressure(-14)
-				'GetWorld().Weather.SetTemperature(-10)
-
-				'send marshal to confiscate the licence
-				Rem
-				local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomProgrammeLicence()
-				if licence
-					TFigureMarshal(GetGame().marshals[rand(0,1)]).AddConfiscationJob( licence.GetGUID() )
-				else
-					print "no random licence to confiscate"
-				endif
-				endrem
-
-				'buy script
-				Rem
-				Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
-				If Not s
-					RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
-					s = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
-				EndIf
-
-				If s
-					RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(s, GetPlayer().playerID)
-					RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
-					Print "added script: "+s.GetTitle()
-				EndIf
-				endrem
-
-				Rem
-				RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
-				endrem
-
-				Rem
-				'Programme bei mehreren Spielern
-				'duplicateCount = 0
-				for local playerA:int = 1 to 4
-					for local playerB:int = 1 to 4
-						if playerA = playerB then continue 'skip same
-
-
-						For local lA:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerA).programmeLicences
-							For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
-
-								if lA = lB
-									print "found playercollection ("+playerA+" vs " + playerB+") duplicate: "+lA.GetTitle()
-									duplicateCount :+ 1
-									continue
-								endif
-
-								if lA.GetGUID() = lB.GetGUID()
-									print "found playercollection ("+playerA+" vs " + playerB+")  GUID duplicate: "+lA.GetTitle()
-									duplicateCount :+ 1
-									continue
-								endif
-
-								if lA.GetTitle() = lB.GetTitle() and lA.data.year = lB.data.year
-									print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
-									duplicateCount :+ 1
-									continue
-								endif
-							Next
-						Next
-					Next
-				Next
-
-
-				'check possession
-				For local playerID:int = 1 to 4
-					For local l:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerID).programmeLicences
-						if l.owner <> playerID then print "found playerCollection OWNER bug: "+l.GetTitle()
-					Next
-				Next
-				endrem
-
-				Rem
-				local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
-				GetNewsAgency().announceNewsEvent(news, 0, False)
-				print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
-				endrem
-
-'						PrintCurrentTranslationState("en")
+				'your own dev-debug-code
 			EndIf
 
 
@@ -2404,7 +2101,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 19
+	Const SAVEGAME_VERSION:int = 20
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2700,24 +2397,53 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int)
-		'check difficulty object version
-		GetPlayerDifficultyCollection().InitializeDefaults()
-		For local pID:Int = 1 to 4
-			Local playerDifficulty:TPlayerDifficulty = GetPlayerDifficulty(pID)
-			If playerDifficulty
-				If playerDifficulty.difficultyVersion < 1
-					'before introduction of version - replace difficulty object completely
-					Local newDifficulty:TPlayerDifficulty = GetPlayerDifficultyCollection().getByGUID(playerDifficulty.GetGUID())
-					If not newDifficulty or newDifficulty.difficultyVersion < 1
-						throw "replacing difficulty data for player "+pID+" failed"
-					Else
-						GetPlayerDifficultyCollection().RemoveByID(playerDifficulty.GetID())
-						GetPlayerDifficultyCollection().AddToPlayer(pID, newDifficulty)
-						TLogger.Log("RepairData", "difficulty data for player " + pID+" - replace with current data for level "+playerDifficulty.GetGUID())
+		If savegameVersion < 20
+			'repair station coordinates from "pixel based" to "data based"
+			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+			For local pID:Int = 1 to 4
+				For local station:TStationBase = EachIn GetStationMap(pID).stations
+					station.SetPosition(mapInfo.ScreenXToDataX(station.x), mapInfo.ScreenYToDataY(station.y))
+
+					if TStationAntenna(station)
+						'the one which was calculated in earlier versions
+						TStationAntenna(station).radius = 31
+					EndIf
+				Next
+			Next
+			GetStationMapCollection().antennaStationRadius = 31
+			TLogger.Log("RepairData()", "Updated station positions and antennas radius to new stationmap data.", LOG_LOADING)
+
+			'repair missing "reachedReceivers" value to avoid "broadcast area achievement"
+			For Local pID:Int = 1 to 4
+				Local stationMap:TStationMap = GetStationMap(pID)
+				If stationMap
+					stationMap._RecalculateReaches()
+					TLogger.Log("RepairData()", "Recreated stationmap #" + pID+" population caches. _reachedReceivers="+stationMap._reachedReceivers+".", LOG_LOADING)
+				EndIf
+			Next
+
+		EndIf
+
+		If savegameVersion < 18
+			'check difficulty object version
+			GetPlayerDifficultyCollection().InitializeDefaults()
+			For local pID:Int = 1 to 4
+				Local playerDifficulty:TPlayerDifficulty = GetPlayerDifficulty(pID)
+				If playerDifficulty
+					If playerDifficulty.difficultyVersion < 1
+						'before introduction of version - replace difficulty object completely
+						Local newDifficulty:TPlayerDifficulty = GetPlayerDifficultyCollection().getByGUID(playerDifficulty.GetGUID())
+						If not newDifficulty or newDifficulty.difficultyVersion < 1
+							throw "replacing difficulty data for player "+pID+" failed"
+						Else
+							GetPlayerDifficultyCollection().RemoveByID(playerDifficulty.GetID())
+							GetPlayerDifficultyCollection().AddToPlayer(pID, newDifficulty)
+							TLogger.Log("RepairData", "difficulty data for player " + pID+" - replace with current data for level "+playerDifficulty.GetGUID())
+						EndIf
 					EndIf
 				EndIf
-			EndIf
-		Next
+			Next
+		EndIf
 		If savegameVersion < 18
 			TLogger.Log("RepairData", "Removing AI-Events", LOG_SAVELOAD | LOG_DEBUG)
 			For Local i:Int = 1 To 4
@@ -3260,6 +2986,12 @@ End Type
 Type TSavegameConverter
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
+			'v0.8.3 -> "TAudienceResultBase: "PotentialMaxAudience" renamed to "PotentialAudience"
+			case "TAudienceResultBase:PotentialMaxAudience".ToLower()
+				Return "PotentialAudience"
+			case "TAudienceResult:PotentialMaxAudience".ToLower()
+				Return "PotentialAudience"
+
 			'v0.7.4 -> "TAudienceManager: "currentAudienceBreakdown" renamed to "currentTargetGroupBreakdown"
 			case "TAudienceManager:currentAudienceBreakdown".ToLower()
 				Return "currentTargetGroupBreakdown"
@@ -3294,6 +3026,10 @@ Type TSavegameConverter
 			Case "TMyClassOld".ToLower()
 				Return "TMyClassNew"
 			EndRem
+
+			'v0.8.3: StationMap cleanup
+			Case "TStation".ToLower()
+				Return "TStationAntenna"
 			
 			Case "TPersonPersonalityAttribute".ToLower()
 				Return "TRangedFloat"
@@ -5950,15 +5686,15 @@ endrem
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
 
-		Local station:TStation = TStation(triggerEvent.GetData().Get("station"))
+		Local station:TStationBase = TStationBase(triggerEvent.GetData().Get("station"))
 		If Not station Then Return False
 
 		'only interested in the players stations
 		Local player:TPlayer = GetPlayer(stationMap.owner)
 		If Not player Then Return False
 
-		'in the past?
-		If station.GetActivationTime() < GetWorldTime().GetTimeGone() Then Return False
+		'already activated?
+		If station.IsActive() Then Return False
 
 
 
@@ -6021,7 +5757,7 @@ endrem
 		If Not stationMap Then Return False
 
 		Local reachLevel:Int = triggerEvent.GetData().GetInt("reachLevel")
-		Local oldReachLevel:Int = triggerEvent.GetData().GetInt("oldReachLevel")
+		Local reachLevelBefore:Int = triggerEvent.GetData().GetInt("reachLevelBefore")
 
 		'only interested in the players stations
 		Local player:TPlayer = GetPlayer(stationMap.owner)
@@ -6031,7 +5767,7 @@ endrem
 		Local text:String
 		Local text2:String
 
-		If reachLevel > oldReachLevel
+		If reachLevel > reachLevelBefore
 			caption = "AUDIENCE_REACH_LEVEL_INCREASED"
 			text = "LEVEL_INCREASED_FROM_X_TO_Y"
 			text2 = "PRICES_WILL_RISE"
@@ -6056,7 +5792,7 @@ endrem
 		Else
 			textJoined = GetLocale(text)
 		EndIf
-		toast.SetText( textJoined.Replace("%X%", "|b|"+oldReachLevel+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
+		toast.SetText( textJoined.Replace("%X%", "|b|"+reachLevelBefore+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
 
 		toast.GetData().AddNumber("playerID", player.playerID)
 
@@ -7120,13 +6856,14 @@ End Function
 
 
 Global bbGCAllocCount:ULong = 0
+rem
 ?bmxng
 'ron|gc
-'Extern
-'    Global bbGCAllocCount:ULong="bbGCAllocCount"
-'End Extern
+Extern
+    Global bbGCAllocCount:ULong="bbGCAllocCount"
+End Extern
 ?
-
+endrem
 
 ?linux
 Function CreateDesktopFile()

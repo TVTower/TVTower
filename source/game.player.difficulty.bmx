@@ -1,5 +1,6 @@
 SuperStrict
 Import "game.gameobject.bmx"
+Import "Dig/base.util.logger.bmx"
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.data.xmlstorage.bmx"
 
@@ -20,7 +21,16 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 	Method InitializeDefaults:int()
 		Local dataLoader:TDataXmlStorage = New TDataXmlStorage
 		dataLoader.setRootNodeKey("difficulties")
-		local difficultyConfig:TData = dataLoader.Load(_basePath+"config/gamesettings/default.xml")
+		Local configURI:String = _basePath+"config/gamesettings/default.xml"
+		If not FileType(configURI) = FILETYPE_FILE
+			TLogger.Log("TPlayerDifficultyCollection.InitializeDefaults()", "Difficulty configuration not found at ~q"+configURI+"~q. _basePath not properly adjusted?", LOG_ERROR)
+			End
+		EndIf
+		local difficultyConfig:TData = dataLoader.Load(configURI)
+		If Not difficultyConfig
+			TLogger.Log("TPlayerDifficultyCollection.InitializeDefaults()", "No valid difficulty configuration found in ~q"+configURI+"~q.", LOG_ERROR)
+			End
+		EndIf
 
 		local easy:TPlayerDifficulty = ReadDifficultyData("easy", difficultyConfig)
 		local normal:TPlayerDifficulty = ReadDifficultyData("normal", difficultyConfig)

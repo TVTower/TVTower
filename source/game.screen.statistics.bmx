@@ -668,16 +668,16 @@ endrem
 					EndIf
 					captionFont.DrawBox(title, captionArea.x, captionArea.y,  captionArea.w, captionArea.h, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
-					textFont.DrawBox(GetLocale("AUDIENCE_NUMBER")+":", labelArea.x, labelArea.y + 0*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.x, labelArea.y + 1*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("AUDIENCE")+":", labelArea.x, labelArea.y + 0*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE")+":", labelArea.x, labelArea.y + 1*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.x, labelArea.y + 2*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 
 					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 					TextFont.DrawBox("#"+audienceRanks[0], valueArea.x, valueArea.y + 0*valueArea.h -2, valueArea.w, valueArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
 					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)

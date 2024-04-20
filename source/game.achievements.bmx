@@ -190,7 +190,7 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 	Method RegisterEventListeners:int()
 		Super.RegisterEventListeners()
 
-		eventListeners :+ [EventManager.registerListenerMethod( "StationMap.onRecalculateAudienceSum", self, "onRecalculateAudienceSum" ) ]
+		eventListeners :+ [EventManager.registerListenerMethod(GameEventKeys.StationMap_OnRecalculateAudienceSum, self, "onRecalculateAudienceSum" ) ]
 
 		return True
 	End Method
@@ -228,10 +228,10 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 
 		if IsCompleted(map.owner, time) or IsFailed(map.owner, time) then return False
 
-		if minReachAbsolute >= 0 and map.GetReach() >= minReachAbsolute
+		if minReachAbsolute >= 0 and map.GetReceivers() >= minReachAbsolute
 			SetCompleted(map.owner, time)
 		endif
-		if minReachPercentage >= 0 and map.getCoverage() >= minReachPercentage
+		if minReachPercentage >= 0 and map.GetReceiverCoverage() >= minReachPercentage
 			SetCompleted(map.owner, time)
 		endif
 
@@ -267,7 +267,7 @@ Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
 	Method RegisterEventListeners:int()
 		Super.RegisterEventListeners()
 
-		eventListeners :+ [EventManager.registerListenerMethod( "broadcast.newsshow.BeginBroadcasting", self, "onNewsShowBeginBroadcasting" ) ]
+		eventListeners :+ [EventManager.registerListenerMethod( GameEventKeys.Broadcast_Newsshow_BeginBroadcasting, self, "onNewsShowBeginBroadcasting" ) ]
 
 		return True
 	End Method

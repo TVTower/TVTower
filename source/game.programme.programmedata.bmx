@@ -548,7 +548,10 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			Local reach:Int = population
 			If forPlayer > 0 
 				population = GetStationMapCollection().GetPopulation()
-				reach = GetStationMap(forPlayer, True).GetReach()
+				reach = 0
+				local map:TStationMap = GetStationMap(forPlayer)
+				If map Then reach = map.GetReceivers()
+
 				result = result * (1 - 0.85 * Float(reach) / population)
 				'TODO replace with own difficulty value
 				result:*  GetPlayerDifficulty(forPlayer).adcontractProfitMod
