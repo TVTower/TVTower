@@ -2427,7 +2427,8 @@ Type TSaveGame Extends TGameState
 					EndIf
 				Next
 			Next
-			GetStationMapCollection().antennaStationRadius = 31
+			Local newAntennaRadius:Int = GetStationMapCollection().antennaStationRadius
+			GetStationMapCollection().antennaStationRadius = max(newAntennaRadius + 10, 45)
 			TLogger.Log("RepairData()", "Updated station positions and antennas radius to new stationmap data.", LOG_LOADING)
 
 			'repair missing "reachedReceivers" value to avoid "broadcast area achievement"
