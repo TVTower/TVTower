@@ -2427,8 +2427,13 @@ Type TSaveGame Extends TGameState
 					EndIf
 				Next
 			Next
-			Local newAntennaRadius:Int = GetStationMapCollection().antennaStationRadius
-			GetStationMapCollection().antennaStationRadius = max(newAntennaRadius + 10, 45)
+			'scale new radius according to share decrease (an increase does not lower the size)
+			Local radiusReferenceValue:Int = 31 'data based, for 1985 starts
+			Local antennaReferenceShare:Float = GetStationMapCollection().GetPopulationAntennaShare(GetWorldTime().GetTimeGoneForGameTime(1985, 0, 0, 0, 0))
+			Local antennaCurrentShare:Float = GetStationMapCollection().GetPopulationAntennaShare()
+			Local newAntennaRadius:Int = radiusReferenceValue / Min(1.0, antennaCurrentShare/antennaReferenceShare)
+			'limit scale change to max 45
+			GetStationMapCollection().antennaStationRadius = min(newAntennaRadius, 45)
 			TLogger.Log("RepairData()", "Updated station positions and antennas radius to new stationmap data.", LOG_LOADING)
 
 			'repair missing "reachedReceivers" value to avoid "broadcast area achievement"
