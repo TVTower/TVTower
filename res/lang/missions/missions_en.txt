@@ -28,7 +28,7 @@ MISSION_TITLE_SAMMY = Sammy
 
 MISSION_GOAL_MAXIMIZE = %GOAL% as high as possible
 MISSION_GOAL_LESSTHAN = always less than %GOAL%
-MISSION_GOAL_IMAGE    = %VALUE%% image
+MISSION_GOAL_IMAGE    = %VALUE%% Image
 MISSION_GOAL_MONEY    = Account balance %VALUE%
 MISSION_GOAL_REACH    = %VALUE%% Broadcast area
 MISSION_GOAL_BETTY    = %VALUE%% Betty's love
