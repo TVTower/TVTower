@@ -339,14 +339,23 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetMaxAudience:Int() {_exposeToLua}
-		Return GetStationMap(playerID, True).GetReach()
+	Method GetChannelReceivers:Int() {_exposeToLua}
+		Local map:TStationMap = GetStationMap(playerID)
+		If not map Then return 0
+		Return map.GetReceivers()
+	End Method
+
+
+	Method GetChannelPopulation:Int() {_exposeToLua}
+		Local map:TStationMap = GetStationMap(playerID)
+		If not map Then return 0
+		Return map.GetPopulation()
 	End Method
 
 
 	'override
-	Method GetAudienceReachLevel:Int() {_exposeToLua}
-		Return GetStationMap(playerID, True).GetReachLevel( GetMaxAudience() )
+	Method GetChannelReachLevel:Int() {_exposeToLua}
+		Return TStationMap.GetReceiverLevel( GetChannelReceivers() )
 	End Method
 
 
@@ -556,10 +565,12 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 	'override
 	Method GetNettoWorthStations:Long()
+		local map:TStationMap = GetStationMap(playerID)
+		If not map Then Return 0
+
 		local sum:Long = 0
 
 		'stations
-		local map:TStationMap = GetStationMap(playerID, True)
 		For local station:TStationBase = EachIn map.stations
 			if station.IsAntenna()
 				sum :+ station.GetSellPrice()

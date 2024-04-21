@@ -426,9 +426,9 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 		Local useAudience:Int = audience
 		If audience < 0
 			If playerID <= 0
-				useAudience = GetStationMapCollection().GetAverageReach()
+				useAudience = GetStationMapCollection().GetAverageReceivers()
 			Else
-				useAudience = GetStationMap(playerID).GetReach()
+				useAudience = GetStationMap(playerID).GetReceivers()
 			EndIf
 		EndIf
 
@@ -1224,7 +1224,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local reach:Int = population
 		If playerID > 0 
 			population = GetStationMapCollection().GetPopulation()
-			reach = GetStationMap(playerID, True).GetReach()
+			reach = GetStationMap(playerID).GetReceivers()
 		EndIf
 
 		'=== DYNAMIC PRICE ===

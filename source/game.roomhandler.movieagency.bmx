@@ -1794,7 +1794,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Print "modifier auctionPrice=" + Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel)
 			Print "endAuction: price for p0="+licence.GetPriceForPlayer(0)
 			For Local i:Int = 1 To 4
-				Print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetAudienceReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetAudienceReachLevel()
+				Print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetChannelReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetChannelReachLevel()
 			Next
 			?
 
@@ -1900,7 +1900,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'prices differ between the players - depending on their audience
 		'reach level
-		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetChannelReachLevel())
 		Local thisBidRaw:Int = GetNextBidRaw()
 		Local thisBid:Int = TFunctions.RoundToBeautifulValue(thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel))
 
@@ -1962,7 +1962,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Method GetNextBid:Int(playerID:Int) {_exposeToLua}
 		If Not licence Then Return -1
 
-		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetChannelReachLevel())
 		Return TFunctions.RoundToBeautifulValue(GetNextBidRaw() * licence.GetAudienceReachLevelPriceMod(audienceReachLevel))
 	End Method
 
@@ -2060,7 +2060,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 			GetBitmapFont("default", 12).DrawSimple("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), a.getX() + 5, a.GetY() + 5)
 			GetBitmapFont("default", 12).DrawSimple("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, a.getX() + 5, a.GetY() + 5 + 12)
-			GetBitmapFont("default", 12).DrawSimple("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), a.getX() + 5, a.GetY() + 5 + 2*12)
+			GetBitmapFont("default", 12).DrawSimple("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetChannelReachLevel()), a.getX() + 5, a.GetY() + 5 + 2*12)
 		EndIf
 
     End Method

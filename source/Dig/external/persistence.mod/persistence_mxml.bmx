@@ -676,8 +676,15 @@ Type TPersist
 			If fieldNode.getAttribute("ref")
 				deserializedObject = DeSerializeObject("", fieldNode, True)
 			Else
-				deserializedObject = DeSerializeObject("", fieldNode)
+				'primitives can only be stored as "strings"
+				Select fieldTypeName
+					Case "byte", "short", "int", "long", "float", "double"
+						deserializedObject = fieldNode.GetContent() 'string
+					default
+						deserializedObject = DeSerializeObject("", fieldNode)
+				End Select
 			EndIf
+
 
 			Local parentTypeName:String
 			if parentType then parentTypeName = parentType.name()

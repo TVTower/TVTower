@@ -92,7 +92,7 @@ FOR_X_HOUR                   = for %X% hour
 ATTRACTIVITY                 = attractiveness
 
 
-DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1                = What's up %PLAYERNAME%?
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1                = What's up, %PLAYERNAME%?
 DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2                = %PLAYERNAME%, you again?
 DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1             = You dare show your face around here?!
 DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2             = Are you insane?!

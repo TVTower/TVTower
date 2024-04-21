@@ -707,12 +707,17 @@ endrem
 
 
 		'=== SELL ALL STATIONS ===
-		Local map:TStationMap = GetStationMap(playerID, True)
-		For Local station:TStationBase = EachIn map.stations
-			map.RemoveStation(station, True, True)
-		Next
-		GetStationMapCollection().Update()
-		TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
+		Local map:TStationMap = GetStationMap(playerID)
+		If map
+			'iterate over copy, as we manipulate the content
+			For Local station:TStationBase = EachIn map.stations.Copy()
+				map.RemoveStation(station, True, True)
+			Next
+			'reset map itself (eg station counter to start station names with #1 again)
+			map.Initialize()
+			GetStationMapCollection().Update()
+			TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
+		EndIf
 
 		For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
 			section.SetBroadcastPermission(playerID, False)
@@ -846,19 +851,28 @@ endrem
 
 		'=== STATIONMAP ===
 		'create station map if not done yet
-		Local map:TStationMap = GetStationMap(playerID, True)
+		Local map:TStationMap = GetStationMap(playerID)
+		If Not map
+			map = New TStationMap(playerID)
+			GetStationMapCollection().AddMap(map)
+		EndIf
+
 
 		'add new station
-		Local s:TStationBase = New TStationAntenna.Init( 310, 260, -1, playerID )
+		Local dataX:Int = GetStationMapCollection().mapInfo.SurfaceXToDataX(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x)
+		Local dataY:Int = GetStationMapCollection().mapInfo.SurfaceYToDataY(GetStationMapCollection().mapInfo.startAntennaSurfacePos.y)
+		Local s:TStationBase = New TStationAntenna.Init(new SVec2I(dataX, dataY), playerID )
+		'Local s:TStationBase = New TStationAntenna.Init(GetStationMapCollection().mapInfo.startAntennaSurfacePos.x, GetStationMapCollection().mapInfo.startAntennaSurfacePos.y , -1, playerID )
+
 		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
-		If s.getReach() < GameRules.stationInitialIntendedReach
-			For Local cableIndex:Int = 0 To GetStationMapCollection().GetSectionCount() - 1
-				Local cable:TStationBase = map.GetTemporaryCableNetworkUplinkStation(cableIndex)
-				If cable
-					If cable.getReach() >= GameRules.stationInitialIntendedReach and cable.GetProvider().isLaunched()
-						If TStationAntenna(s) or cable.getReach() < s.getReach()
-							s = cable
-						EndIf
+		If s.GetReceivers() < GameRules.stationInitialIntendedReach
+			For Local cableNetwork:TStationMap_CableNetwork = EachIn GetStationMapCollection().cableNetworks
+				If Not cableNetwork.isLaunched() Then Continue
+				 
+				Local cableUplink:TStationBase = New TStationCableNetworkUplink.Init(cableNetwork, playerID, True)
+				If cableUplink.GetReceivers() >= GameRules.stationInitialIntendedReach
+					If TStationAntenna(s) or cableUplink.GetReceivers() < s.GetReceivers()
+						s = cableUplink
 					EndIf
 				EndIf
 			Next
@@ -869,6 +883,8 @@ endrem
 		s.SetFlag(TVTStationFlag.GRANTED, True)
 		'do not pay for it each day
 		s.SetFlag(TVTStationFlag.NO_RUNNING_COSTS, True)
+		'activate it instantly (no build time)
+		s.SetActive(True)
 
 		'add a broadcast permission for this station (price: 0 euro)
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(s.GetSectionName())
@@ -883,11 +899,11 @@ endrem
 		'this was changed, so the AI has a chance to choose position itself and does not have to
 		'fight with high initial fix costs
 
-		'refresh stats
-		GetStationMap(playerID).DoCensus()
-		GetStationMap(playerID).Update()
+
+		map.DoCensus()
+		map.Update()
 		GetStationMapCollection().Update()
-		If GetStationMap(playerID).GetReach() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReach() returned 0."
+		If GetStationMap(playerID).GetReceivers() = 0 Then Throw "Player initialization: GetStationMap("+playerID+").GetReceivers() returned 0."
 
 
 		'=== FINANCE ===
@@ -1197,11 +1213,11 @@ endrem
 
 
 		'=== STATION MAP ===
+		GetStationMapCollection().Initialize()
 		'set marker for initializing antenna radius on new game
 		GetStationMapCollection().antennaStationRadius = TStationMapCollection.ANTENNA_RADIUS_NOT_INITIALIZED
 		'load the used map
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
-'		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
 
 
 		'=== CUSTOM PRODUCTION ===
@@ -1734,8 +1750,11 @@ endrem
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
 			Local finance:TPlayerFinance = Player.GetFinance(day)
 			If Not finance Then Throw "ComputeDailyCosts failed: finance = null."
+			
+			Local map:TStationMap = GetStationMap(Player.playerID)
+			If Not map Then Throw "ComputeDailyCosts failed: map = null."
 			'stationfees
-			finance.PayStationFees( GetStationMap(Player.playerID, True).CalculateStationCosts() )
+			finance.PayStationFees( map.CalculateStationCosts() )
 			'interest rate for your current credit
 			finance.PayCreditInterest( finance.GetCreditInterest() )
 			'newsagencyfees
