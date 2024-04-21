@@ -2675,6 +2675,8 @@ Type TSaveGame Extends TGameState
 
 			Return False
 		EndIf
+		
+		Local savegameConverter:TSavegameConverter
 
 		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TXMLPersistenceBuilder.Build()
@@ -2691,8 +2693,11 @@ Type TSaveGame Extends TGameState
 		'try to repair older savegames
 		If savegameSummary.GetString("game_version") <> VersionString Or savegameSummary.GetString("game_builddate") <> VersionDate
 			TLogger.Log("Savegame.Load()", "Savegame was created with an older TVTower-build. Enabling basic compatibility mode.", LOG_SAVELOAD | LOG_DEBUG)
+			savegameConverter = New TSavegameConverter
 			persist.strictMode = False
-			persist.converterTypeID = TTypeId.ForObject( New TSavegameConverter )
+			persist.converterTypeID = TTypeId.ForObject( savegameConverter )
+			'avoid that persist initializes its own converter (new/different instance)
+			persist.converterType = savegameConverter
 
 			'when loading other versions make a copy of the original
 			If loadedSaveGameVersion <> SAVEGAME_VERSION
@@ -2984,6 +2989,8 @@ End Type
 
 
 Type TSavegameConverter
+	Field temporaryData:TMap = New TMap
+
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
 			'v0.8.3 -> "TAudienceResultBase: "PotentialMaxAudience" renamed to "PotentialAudience"
