@@ -6,14 +6,14 @@ BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = Betty is falling in love with you
 BETTY_LOVES_YOU                    = Betty loves you
 BETTY_REALLY_LOVES_YOU             = Betty loves you beyond measure!
 
-DIALOGUE_BETTY_WELCOME_TEXT         = Hello,\n\nhow can I help you?
+DIALOGUE_BETTY_WELCOME_TEXT         = Hello,\n\nHow can I help you?
 DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Good Day!\n\nWhat drives you to the top floor?
 DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Yes?\n\nI guess you're here to fetch the latest information about the Sammy?
-DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hello %PLAYERNAME%,\n\nwhat brings you to me today?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hello %PLAYERNAME%,\n\nWhat brings you to me today?
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Hmm?\n\nYou surely want to hear some news about the Sammy...?
-DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT3 = Hi %PLAYERNAME%,\n\nnice to see you again. Sit down please - so why are you here?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT3 = Hi %PLAYERNAME%,\n\nNice to see you again. Sit down please - so why are you here?
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT4 = %PLAYERNAME%!?\n\nYou rascal... I think you're just here for the Sammy news, aren't you?
-DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT5 = Hi %PLAYERNAME%,\n\nour latest meeting was really nice. I hope we catch up again soon!
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT5 = Hi %PLAYERNAME%,\n\nOur latest meeting was really nice. I hope we catch up again soon!
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT6 = Hey there!\n\nI'll make us some tea - hope you have some time to chat.
 
 DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1                              = Currently, no Sammy is being awarded. I think the race for points will start again in a few days.
