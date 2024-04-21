@@ -1321,6 +1321,7 @@ endrem
 		
 		'if antennas become too big (eg late start year) then disable need to
 		'buy broadcast permissions for antennas
+		GameRules.antennaStationsRequireBroadcastPermission = True
 		If GameRules.antennaStationsRequireBroadcastPermissionUntilRadius > 0
 			If antennaStationRadius > GameRules.antennaStationsRequireBroadcastPermissionUntilRadius
 				TLogger.Log("TStationMapCollection.LoadFromXML", "Adjust GameRules - antennas do not require broadcast permissions in sections.", LOG_DEBUG)
