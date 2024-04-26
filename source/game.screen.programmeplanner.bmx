@@ -218,11 +218,6 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 	
 
-	Function DebugPrint(s:String)
-		'print s
-	End Function
-
-
 	Function SetLanguage()
 		'programmeplanner
 		If ProgrammePlannerButtons[0]
@@ -676,11 +671,11 @@ Type TScreenHandler_ProgrammePlanner
 			EndIf
 		ElseIf item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
 			If GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-				DebugPrint("onFinishDragProgrammePlanElement -> is daychange, removed")
+				'print("onFinishDragProgrammePlanElement -> is daychange, removed")
 				GuiManager.AddDragged(GuiListProgrammes.dayChangeGuiProgrammePlanElement)
 				GuiListProgrammes.dayChangeGuiProgrammePlanElement = Null
-			Else
-				DebugPrint("onFinishDragProgrammePlanElement -> is daychange, remove FAILED")
+			'Else
+				'print("onFinishDragProgrammePlanElement -> is daychange, remove FAILED")
 			EndIf
 		EndIf
 
@@ -697,22 +692,22 @@ Type TScreenHandler_ProgrammePlanner
 
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
-		DebugPrint("onTryDragProgrammePlanElement -> item="+item.ToString())
+		'print("onTryDragProgrammePlanElement -> item="+item.ToString())
 		
 		'stop dragging from locked slots
 		If GetPlayerProgrammePlan(currentRoom.owner).IsLockedBroadcastMaterial(item.broadcastMaterial)
-			DebugPrint("onTryDragProgrammePlanElement -> VETO, locked material.")
+			'print("onTryDragProgrammePlanElement -> VETO, locked material.")
 			triggerEvent.SetVeto()
 			Return False
 		EndIf
 
 		If CreateNextEpisodeOrCopyByShortcut(item)
-			DebugPrint("onTryDragProgrammePlanElement -> VETO, created copy/episode.  item="+item.ToString())
+			'print("onTryDragProgrammePlanElement -> VETO, created copy/episode.  item="+item.ToString())
 			triggerEvent.SetVeto()
 			Return False
 		EndIf
 
-		DebugPrint("onTryDragProgrammePlanElement -> OK.")
+		'print("onTryDragProgrammePlanElement -> OK.")
 		'dragging is ok
 		Return True
 	End Function
