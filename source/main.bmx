@@ -2396,21 +2396,44 @@ Type TSaveGame Extends TGameState
 
 
 	Global _nilNode:TNode = New TNode._parent
-	Function RepairData(savegameVersion:Int)
+	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
 		If savegameVersion < 20
 			'repair station coordinates from "pixel based" to "data based"
 			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
 			For local pID:Int = 1 to 4
 				For local station:TStationBase = EachIn GetStationMap(pID).stations
-					station.SetPosition(mapInfo.ScreenXToDataX(station.x), mapInfo.ScreenYToDataY(station.y))
+					Local dataX:Int = mapInfo.ScreenXToDataX(station.x)
+					Local dataY:Int = mapInfo.ScreenYToDataY(station.y)
+					station.SetPosition(dataX, dataY)
 
 					if TStationAntenna(station)
-						'the one which was calculated in earlier versions
-						TStationAntenna(station).radius = 31
+						Local newRadius:Int = 31 'calculated in earlier versions
+
+						'savegameConverter might contain the old reach information
+						'and thus allowing to find a better "newRadius"
+						If savegameConverter
+							Local oldReach:Int = Int(String( savegameConverter.temporaryData.ValueForKey(station) ))
+							if oldReach <> -1
+								For newRadius = TStationAntenna(station).radius - 5 to TStationAntenna(station).radius + 28
+									Local population:Int = GetStationMapCollection().GetAntennaPopulation(dataX, dataY, newRadius, 0)
+									if population >= oldReach
+										exit
+									EndIf
+								Next
+							EndIf
+						EndIf
+
+						TStationAntenna(station).radius = newRadius
 					EndIf
 				Next
 			Next
-			GetStationMapCollection().antennaStationRadius = 31
+			'scale new radius according to share decrease (an increase does not lower the size)
+			Local radiusReferenceValue:Int = 31 'data based, for 1985 starts
+			Local antennaReferenceShare:Float = GetStationMapCollection().GetPopulationAntennaShare(GetWorldTime().GetTimeGoneForGameTime(1985, 0, 0, 0, 0))
+			Local antennaCurrentShare:Float = GetStationMapCollection().GetPopulationAntennaShare()
+			Local newAntennaRadius:Int = radiusReferenceValue / Min(1.0, antennaCurrentShare/antennaReferenceShare)
+			'limit scale change to max 45
+			GetStationMapCollection().antennaStationRadius = min(newAntennaRadius, 45)
 			TLogger.Log("RepairData()", "Updated station positions and antennas radius to new stationmap data.", LOG_LOADING)
 
 			'repair missing "reachedReceivers" value to avoid "broadcast area achievement"
@@ -2819,7 +2842,7 @@ endrem
 		CleanUpData()
 
 
-		RepairData(loadedSaveGameVersion)
+		RepairData(loadedSaveGameVersion, savegameConverter)
 
 		'close message window
 		If messageWindow Then messageWindow.Close()
@@ -3051,6 +3074,11 @@ Type TSavegameConverter
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
 		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
 		Select handle
+			'v0.8.3: TStationBase cleanup: reach etc no longer available, but radius recalculation needs information
+			case "TStationAntenna.reachMax:Int".ToLower()
+				'save in a temporary-Data Map to allow lookups
+				temporaryData.Insert(parent, string(fieldObject))
+
 			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
 			case "TFigureCollection.entries:TMap".ToLower()
 				Local fc:TFigureCollection = TFigureCollection(parent)
