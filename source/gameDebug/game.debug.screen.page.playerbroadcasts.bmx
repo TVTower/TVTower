@@ -576,6 +576,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	Global addedProgrammeLicences:TIntMap = new TIntMap
 	Global removedProgrammeLicences:TIntMap = new TIntMap
 	Global availableProgrammeLicences:TIntMap = new TIntMap
+	Global sortedLicences:TList = Null
 	'Global suitcaseProgrammeLicences:TIntMap = new TIntMap
 	Global addedAdContracts:TIntMap = new TIntMap
 	Global removedAdContracts:TIntMap = new TIntMap
@@ -659,6 +660,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 				availableProgrammeLicences.Insert(broadcastSource.GetID(), broadcastSource)
 				'schedule a cleanup
 				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
+				sortedLicences = Null
 		End Select
 		If Not map Then Return False
 
@@ -752,7 +754,10 @@ endrem
 				If changeTime + 3000 < Time.GetTimeGone()
 					remove :+ [idKey.value]
 
-					If map = removedProgrammeLicences Then availableProgrammeLicences.Remove(idKey.value)
+					If map = removedProgrammeLicences
+						availableProgrammeLicences.Remove(idKey.value)
+						sortedLicences = Null
+					EndIf
 					If map = removedAdContracts Then availableAdContracts.Remove(idKey.value)
 					Continue
 				EndIf
@@ -812,6 +817,13 @@ endrem
 		initialized = True
 	End Function
 
+	Function SortByMaxTopicality:Int(o1:Object, o2:Object)
+		Local a1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local a2:TProgrammeLicence = TProgrammeLicence(o2)
+		If Not a1 Then Return -1
+		If Not a2 Then Return 1
+		Return 100*a1.GetMaxTopicality() - 100*a2.GetMaxTopicality()
+	End Function
 
 	Function Update(playerID:Int, x:Int, y:Int)
 	End Function
@@ -910,12 +922,23 @@ endrem
 		entryPos = 0
 		lineHeight = 12
 
-		For Local l:TProgrammeLicence = EachIn availableProgrammeLicences.Values() 'collection.GetProgrammeLicences()
+		If Not sortedLicences
+			sortedLicences = new TList() 
+			For Local l:TProgrammeLicence = EachIn availableProgrammeLicences.Values()
+				'skip starting programme
+				If Not l.isControllable() Then Continue
+				'skip individual episodes
+				If l.isEpisode() Then Continue
+				sortedLicences.addLast(l)
+			Next
+			sortedLicences.Sort(False, SortByMaxTopicality)
+		EndIf
+
+		Local top:Float
+		Local maxTop:Float
+
+		For Local l:TProgrammeLicence = EachIn sortedLicences 'collection.GetProgrammeLicences()
 			If l.owner <> playerID Then Continue
-			'skip starting programme
-			If Not l.isControllable() Then Continue
-			'skip individual episodes
-			If l.isEpisode() Then Continue
 
 			Local oldAlpha:Float = GetAlpha()
 			If entryPos Mod 2 = 0
@@ -937,12 +960,18 @@ endrem
 			EndIf
 
 			'draw in topicality
+			top = l.GetTopicality()
+			maxTop = l.GetMaxTopicality()
 			SetColor 200,50,50
 			SetAlpha 0.65 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetMaxTopicality(), 2)
-			SetColor 240,80,80
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * maxTop, 2)
+			If top = maxTop
+				SetColor 40,200,40
+			Else
+				SetColor 240,80,80
+			EndIf
 			SetAlpha 0.85 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * l.GetTopicality(), 2)
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, lineWidth * top, 2)
 
 			SetAlpha oldalpha
 			SetColor 255,255,255
