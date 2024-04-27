@@ -26,6 +26,7 @@ Import "game.player.base.bmx"
 Import "common.misc.datasheet.bmx"
 
 Import "game.broadcastmaterialsource.base.bmx"
+Import "game.broadcast.audienceresult.bmx"
 
 'to access programmeplanner information
 Import "game.gameinformation.bmx"
@@ -1529,7 +1530,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:Float=0.5, showMode:Int=0, forPlayerID:Int=-1, minAudienceHightlightType:Int=0)
+	Method ShowSheet:Int(x:Int,y:Int, align:Float=0.5, showMode:Int=0, forPlayerID:Int=-1, audienceResult:TAudienceResult)
 		'set default mode
 		If showMode = 0 Then showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 
@@ -1544,7 +1545,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If showMode = TVTBroadcastMaterialType.PROGRAMME
 			ShowInfomercialSheet(x, y, align, forPlayerID)
 		ElseIf showMode = TVTBroadcastMaterialType.ADVERTISEMENT
-			ShowAdvertisementSheet(x, y, align, forPlayerID, minAudienceHightlightType)
+			ShowAdvertisementSheet(x, y, align, forPlayerID, audienceResult)
 		EndIf
 	End Method
 
@@ -1679,7 +1680,23 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:Float=0.5, forPlayerID:Int, minAudienceHightlightType:int = 0)
+	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:Float=0.5, forPlayerID:Int, audienceResult:TAudienceResult)
+		local minAudienceHightlightType:Int = 0
+		'highlight number if owned contract (not in ad agency)
+		If audienceResult and owner > 0
+			minAudienceHightlightType = +1
+
+			If audienceResult.broadcastOutage
+				minAudienceHightlightType = -1
+			'condition not fulfilled
+			ElseIf audienceResult.Audience.GetTotalSum() < GetMinAudience()
+				minAudienceHightlightType = -1
+			'limited to a specific target group - and not fulfilled
+			ElseIf GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(GetLimitedToTargetGroup()) < GetMinAudience()
+				minAudienceHightlightType = -1
+			EndIf
+		EndIf
+
 		'=== PREPARE VARIABLES ===
 		If forPlayerID <= 0 Then forPlayerID = owner
 
@@ -1839,16 +1856,19 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'=== BOX LINE 2 ===
 		contentY :+ boxH
-
+		Local minAudienceToShow:String = TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2)
+		If audienceResult And (KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT))
+				minAudienceToShow = MathHelper.NumberToString(100.0 * GetMinAudienceForPlayer(forPlayerID) / audienceResult.PotentialAudience.GetTotalValue(GetLimitedToTargetGroup()),2)+"%"
+		EndIf
 		'minAudience
 		If minAudienceHightlightType = 1
-			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", EDatasheetColorStyle.GoodHint, skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, minAudienceToShow, "minAudience", EDatasheetColorStyle.GoodHint, skin.fontBold)
 		ElseIf minAudienceHightlightType = -1
-			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", EDatasheetColorStyle.BadHint, skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, minAudienceToShow, "minAudience", EDatasheetColorStyle.BadHint, skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, minAudienceToShow, "minAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
-			If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
+		If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
 			'penalty per spot
 			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID)/GetSpotCount(), 2), "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
 			'profit per spot

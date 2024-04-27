@@ -1208,25 +1208,7 @@ endrem
 		
 
 		If PPcontractList.hoveredAdContract
-			local minAudienceHightlightType:Int = 0
-			local audienceResult:TAudienceResultBase = GetBroadcastManager().GetAudienceResult( currentRoom.owner )
-			If audienceResult
-				minAudienceHightlightType = +1
-				
-				If audienceResult.broadcastOutage
-					minAudienceHightlightType = -1
-				'condition not fulfilled
-				ElseIf audienceResult.Audience.GetTotalSum() < PPcontractList.hoveredAdContract.GetMinAudience()
-					minAudienceHightlightType = -1
-				'limited to a specific target group - and not fulfilled
-				ElseIf PPcontractList.hoveredAdContract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(PPcontractList.hoveredAdContract.GetLimitedToTargetGroup()) < PPcontractList.hoveredAdContract.GetMinAudience()
-					minAudienceHightlightType = -1
-				EndIf
-			Else
-				minAudienceHightlightType = -1
-			EndIf
-		
-			PPcontractList.hoveredAdContract.ShowSheet(7, 7, 0, TVTBroadcastMaterialType.ADVERTISEMENT, 0, minAudienceHightlightType)
+			PPcontractList.hoveredAdContract.ShowSheet(7, 7, 0, TVTBroadcastMaterialType.ADVERTISEMENT, 0, GetBroadcastManager().GetAudienceResult( currentRoom.owner ))
 		EndIf
 
 
