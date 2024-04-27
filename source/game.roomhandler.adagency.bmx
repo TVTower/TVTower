@@ -1501,7 +1501,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 		Local forPlayerID:Int = GetObservedPlayerID()
 		If Self.contract.IsSigned() Then forPlayerID = Self.contract.owner
 
-		Self.contract.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID)
+		Self.contract.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID, GetBroadcastManager().GetAudienceResult( forPlayerID ))
 	End Method
 
 
