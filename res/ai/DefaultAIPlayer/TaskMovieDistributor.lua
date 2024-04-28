@@ -112,6 +112,8 @@ function TaskMovieDistributor:getStrategicPriority()
 	-- no money to buy things? skip even looking...
 	if getPlayer().money <= 50000 then
 		return 0.0
+	elseif getPlayer().hour > 18 then
+		return 0.5
 	end
 	return 1.0
 end

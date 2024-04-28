@@ -45,7 +45,7 @@ end
 
 
 function TaskAdAgency:GetNextJobInTargetRoom()
-	if (MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax-1) then
+	if (MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax) then
 		self:SetDone()
 		return nil
 	elseif (self.CheckSpots.Status ~= JOB_STATUS_DONE) then
@@ -376,7 +376,18 @@ function SignRequisitedContracts:Tick()
 		table.sort(self.Task.SpotsInAgency, sortMethod)
 	end
 
-	for k,requisition in pairs(self.SpotRequisitions) do
+	local sortTable = {}
+	for k,v in pairs(self.SpotRequisitions) do
+		table.insert(sortTable, v)
+	end
+	if self.Player.hour > 10 then
+		local sortMethod = function(a, b)
+			return a.Level > b.Level
+ 		end
+		table.sort(sortTable, sortMethod)
+	end
+
+	for k,requisition in pairs(sortTable) do
 		if (requisition.Hour ~= nil and requisition.Level > 4 and self.Player.hour > requisition.Hour - 1) then
 			self:LogDebug("discarding requisition - to late to complete")
 			--self.Player:RemoveRequisition(requisition)
@@ -477,10 +488,10 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			self:LogDebug("ignoring fallback requisition for audience".. audienceTotal)
 		elseif adContract.GetLimitedToTargetGroup() == 1 then
 			self:LogDebug("ignoring children contract")
-		elseif spotsLeft <= 0 then
-			doSign = true
 		elseif adContract.GetLimitedToProgrammeGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 then
 			self:LogDebug("ignoring contract with genre limit")
+		elseif spotsLeft <= 0 then
+			doSign = true
 		elseif neededSpotCount == 1 and requisition.Priority < 3 then
 			self:LogDebug("ignore requisition - only one spot with low priority")
 		else
@@ -608,7 +619,7 @@ function SignContracts:Tick()
 
 	-- only sign contracts if we haven't enough unsent ad-spots
 	local openSpots = self:GetUnsentSpotCount()
-	local contractsAllowed = TVT.Rules.adContractsPerPlayerMax - MY.GetProgrammeCollection().GetAdContractCount()
+	local contractsAllowed = TVT.Rules.adContractsPerPlayerMax - MY.GetProgrammeCollection().GetAdContractCount()-1
 	local haveLow = false
 
 	local signedContracts = TaskAdAgency.GetAllAdContracts()
@@ -622,7 +633,7 @@ function SignContracts:Tick()
 		end
 	end
 	self.Task.FixedCosts = fixedCosts
-
+--[[
 	-- check if we have a low end contract
 	if contractsAllowed > 0 then
 		local lowAudience = self.lowAudienceFactor * self.maxAudience
@@ -668,7 +679,7 @@ function SignContracts:Tick()
 			end
 		end
 	end
-
+--]]
 
 	--TODO open spots count must not be too low (e.g. due to low audience contracts)
 	--otherwise good average audience contracts cannot be signed without requisition

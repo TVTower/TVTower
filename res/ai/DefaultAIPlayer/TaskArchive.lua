@@ -19,6 +19,14 @@ function TaskArchive:typename()
 	return "TaskArchive"
 end
 
+function TaskArchive:getStrategicPriority()
+	self:LogTrace("TaskArchive:getStrategicPriority")
+	if getPlayer().hour > 17 then
+		return 0.0
+	end
+	return 1.0
+end
+
 function TaskArchive:Activate()
 	self.Player = getPlayer()
 

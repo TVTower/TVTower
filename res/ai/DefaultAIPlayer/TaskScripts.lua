@@ -73,7 +73,9 @@ function TaskScripts:GetNextJobInTargetRoom()
 end
 
 function TaskScripts:getStrategicPriority()
-	if getPlayer().currentAwardType == TVT.Constants.AwardType.CUSTOMPRODUCTION or getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE then
+	if getPlayer().hour > 18 then
+		return 0.0
+	elseif getPlayer().currentAwardType == TVT.Constants.AwardType.CUSTOMPRODUCTION or getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE then
 		if self.producedForSammy == false then
 			self.SituationPriority = SAMMY_SIT_PRIORITY
 			if self.awardType == "culture" and self.prodStatus == PROD_STATUS_BUY then

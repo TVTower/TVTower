@@ -14,6 +14,13 @@ function TaskStationMap:typename()
 	return "TaskStationMap"
 end
 
+function TaskStationMap:getStrategicPriority()
+	self:LogTrace("TaskStationMap:getStrategicPriority")
+	if getPlayer().hour > 17 then
+		return 0.0
+	end
+	return 1.0
+end
 
 function TaskStationMap:ResetDefaults()
 	self.BudgetWeight = 4

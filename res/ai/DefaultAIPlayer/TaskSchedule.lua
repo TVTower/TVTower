@@ -304,7 +304,7 @@ end
 
 
 -- return the individual audience riskyness
-function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
+function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block, playerHour)
 	-- 1.0 means assuming to get all
 	--local baseRiskyness = 0.90
 
@@ -315,10 +315,13 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
     c.guessedAudienceAccuracyHourlyCount = {}
 ]]
 	if hour > 0 and hour < 18 then
+		local factor = 1
+		--guess for the next day, topicality regain not considered in quess
+		if hour < playerHour then factor = 1.15 end
 		if self.useMaxTopicalityOnly == true then
-			return 1.1
+			return 1.1*factor
 		else
-			return 1.35
+			return 1.35*factor
 		end
 	elseif hour > 18 then
 		return 0.90
@@ -451,6 +454,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			if player.blocksCount > 60 then maxTopThreshold = 0.6 end
 			if player.blocksCount > 100 then maxTopThreshold = 0.7 end
 		end
+		local tl = {} --top licences
 		self.availableProgrammes = {}
 		for i=0,TVT.of_getProgrammeLicenceCount()-1 do
 			local licence = TVT.of_getProgrammeLicenceAtIndex(i)
@@ -470,6 +474,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 						totalBlocks = totalBlocks + blocks
 						if licence:GetRelativeTopicality() > 0.99 then
 							if licence:GetTopicality() >= maxTopThreshold then 
+								table.insert(tl,licence:GetReferenceID())
 								maxTopicalityBlocks = maxTopicalityBlocks + blocks
 							else
 								lowMaxTopBlocks = lowMaxTopBlocks + blocks
@@ -487,6 +492,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		--TODO check if max topicality blocks should be used for scheduling
 		if lowMaxTopBlocks > 20 then self.useMaxTopicalityOnly = true end
+		if maxTopicalityBlocks < 6 then self.primeLicenceId = tl end
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
@@ -996,9 +1002,10 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
 
 	if (guessCurrentHour == nil) then guessCurrentHour = true; end
+	local player = getPlayer()
 
 	--requesting audience for the current broadcast?
-	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and getPlayer().hour == fixedHour and getPlayer().minute >= 5) then
+	if (guessCurrentHour == false) and (TVT.GetDay() == fixedDay and player.hour == fixedHour and player.minute >= 5) then
 		return TVT.GetCurrentProgrammeAudienceResult().Audience
 	end
 
@@ -1020,7 +1027,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 --	local globalPercentageByHour = AITools:GetMaxAudiencePercentage(fixedDay, fixedHour)
 --	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 --	local sharedMaxAudience = MY.getReceivers() - exclusiveMaxAudience
-	local riskyness = self:GetGuessedAudienceRiskyness(day, hour, broadcast, block)
+	local riskyness = self:GetGuessedAudienceRiskyness(day, hour, broadcast, block, player.hour)
 --	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  atTV=".. math.round(MY.getReceivers()*globalPercentageByHour) .. "  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4 .. "   riskyness="..riskyness
 --	self:LogDebug( self.log["GuessedAudienceForHour"] )
 
@@ -1263,11 +1270,11 @@ function JobAnalyzeEnvironment:Tick()
 	end
 
 	--remove requisitions - create new ones when planning now
-	local reach = 0
-	if Player.totalReach ~= nil then reach = Player.totalReach end
+	local receivers = 0
+	if Player.totalReceivers ~= nil then receivers = Player.totalReceivers end
 	for k,v in pairs(self.Task.SpotRequisition) do
 		local ratio = 0.03
-		if reach > 0 then ratio = math.floor(v.GuessedAudience.GetTotalSum()) / reach end
+		if receivers > 0 then ratio = math.floor(v.GuessedAudience.GetTotalSum()) / receivers end
 		--self:LogInfo(v.GuessedAudience.GetTotalSum() .." "..ratio)
 		if (v.Level > 4) and (Player.hour > 19 or ratio > 0.07) then
 			self:LogDebug("removing prime requisitions - new planning")
@@ -1709,10 +1716,10 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 	-- TODO: limit to broadcastable licences...
 	if TVT.of_getProgrammeLicenceCount() <= 1 then replaceBadAdsWithTrailerRate = 0 end
 
-
+	local myProgrammePlan = MY.GetProgrammePlan()
 	local chosenBroadcastSource = nil
 	local chosenBroadcastLog = ""
-	local currentBroadcastMaterial = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
+	local currentBroadcastMaterial = myProgrammePlan.GetAdvertisement(fixedDay, fixedHour)
 	local currentAdFails = false
 	local sendTrailer = false
 	local sendTrailerReason = ""
@@ -1720,8 +1727,8 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 	-- the new ad contract to send (if chosen to do so)
 	local newAdContract = nil
 
-	local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-	local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
+	local previousProgramme = myProgrammePlan.GetProgramme(fixedDay, fixedHour)
+	local previousProgrammeBlock = math.max(1, myProgrammePlan.GetProgrammeBlock(fixedDay, fixedHour))
 	if guessedAudience == nil then
 		guessedAudience = self.Task:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, previousProgrammeBlock, false)
 	end
@@ -1729,8 +1736,8 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 
 --	self:LogDebug("Fill ad slot " .. (fixedDay - TVT.GetStartDay()) .. "/" .. string.format("%02d", fixedHour) .. ":55. guessedAudienceSum=" .. math.floor(guessedAudienceSum))
 
-	-- add to debug data of the
-	MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
+	-- add for debug screen - do not overwrite, if it is not a guessed but the real audience
+	if fixedHour ~= getPlayer().hour then MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience) end
 
 	-- send a trailer:
 	-- ===============
@@ -2124,17 +2131,29 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	local infomercialAllowed = false --getPlayer().gameDay <= 1
 	local programmeAllowed = true
 
-	local currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-	local currentBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
-	local previousBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - currentBroadcastBlock)
---	local previousBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour - currentBroadcastBlock))
-	local previousHourBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - 1)
-	local previousHourBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour - 1))
+	local myProgrammePlan = MY.GetProgrammePlan()
+	local currentBroadcastMaterial = myProgrammePlan.GetProgramme(fixedDay, fixedHour)
+	local currentBroadcastBlock = math.max(1, myProgrammePlan.GetProgrammeBlock(fixedDay, fixedHour))
+	local previousBroadcastMaterial = myProgrammePlan.GetProgramme(fixedDay, fixedHour - currentBroadcastBlock)
+--	local previousBroadcastBlock = math.max(1, myProgrammePlan.GetProgrammeBlock(fixedDay, fixedHour - currentBroadcastBlock))
+	local previousHourBroadcastMaterial = myProgrammePlan.GetProgramme(fixedDay, fixedHour - 1)
+	local previousHourBroadcastBlock = math.max(1, myProgrammePlan.GetProgrammeBlock(fixedDay, fixedHour - 1))
 
 	local guessedAudience = self.Task:GuessedAudienceForHour(fixedDay, fixedHour, previousHourBroadcastMaterial, previousHourBroadcastBlock).GetTotalSum()
 
 	-- table/list of forbidden programme/adcontract IDs
 	local forbiddenIDs = table.copy(getPlayer().licencesToSell)
+	if fixedHour < 19 then
+		for k,id in pairs(self.Task.primeLicenceId) do
+			table.insert(forbiddenIDs, id)
+			self:LogInfo("ignoring prime programme "..id)
+		end
+		--if self.Task.primeLicenceId ~= nil then
+		--end
+		--TODO if not prime - add best prime programmes
+	end
+	--TODO always add prime programmes that should recover
+	
 	local replaceCurrentBroadcast = false
 
 
@@ -2300,7 +2319,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 		if currentBroadcastMaterial ~= nil then
 			--self:LogDebug("PlanProgrammeSchedule: Skip placing broadcast \"" .. currentBroadcastMaterial.GetTitle() .. "\" source for "..fixedDay .."/" .. fixedHour .. ":05. Already placed")
 			-- skip other still occupied slots
-			adjustedBlocks = currentBroadcastMaterial.GetBlocks(0) - MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour)
+			adjustedBlocks = currentBroadcastMaterial.GetBlocks(0) - myProgrammePlan.GetProgrammeBlock(fixedDay, fixedHour)
 		else
 			--self:LogDebug("JobProgrammeSchedule:FillSlot "..fixedDay .."/" .. string.format("%02d", fixedHour) .. ":05. Found no suitable broadcast to avoid outage.")
 		end
