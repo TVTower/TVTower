@@ -2143,10 +2143,9 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 
 	-- table/list of forbidden programme/adcontract IDs
 	local forbiddenIDs = table.copy(getPlayer().licencesToSell)
-	if fixedHour < 19 then
+	if fixedHour < 19 and self.Task.primeLicenceId~=nil then
 		for k,id in pairs(self.Task.primeLicenceId) do
 			table.insert(forbiddenIDs, id)
-			self:LogInfo("ignoring prime programme "..id)
 		end
 		--if self.Task.primeLicenceId ~= nil then
 		--end
