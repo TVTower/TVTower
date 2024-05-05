@@ -2989,7 +2989,10 @@ endrem
 		'select an antenna by mouse?
 		If actionMode = 0 or actionMode = MODE_SELL_ANTENNA
 			If MouseManager.IsClicked(1)
-				local antenna:TStationAntenna = GetStationMap(room.owner).GetAntennaByXY(int(MouseManager.GetClickPosition(1).x), int(MouseManager.GetClickPosition(1).y), False)
+				Local mouseDataX:Int = GetStationMapCollection().mapInfo.ScreenXToDataX(int(MouseManager.GetClickPosition(1).x))
+				Local mouseDataY:Int = GetStationMapCollection().mapInfo.ScreenYToDataY(int(MouseManager.GetClickPosition(1).y))
+			
+				local antenna:TStationAntenna = GetStationMap(room.owner).GetAntennaByXY(mouseDataX, mouseDataY, False)
 				if antenna
 					'make sure antenna panel is open
 					antennaPanel.Open()
