@@ -2099,6 +2099,10 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 			If effects Then effects.Update("broadcastTrailerDone", effectParams)
 		EndIf
+		If customImagePresent > 0
+			customImagePresent = 0
+			customSprite = Null
+		EndIf
 	End Method
 
 
