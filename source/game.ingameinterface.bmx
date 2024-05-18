@@ -78,6 +78,7 @@ Type TInGameInterface
 	Field hoveredMenuButtonPos:TVec2D = new TVec2D(0,0)
 	'did text values change?
 	Field valuesChanged:int = True
+	Field customImageDirExists:Int = False
 
 	Field chat:TGUIGameChat
 
@@ -173,6 +174,10 @@ Type TInGameInterface
 		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
 		_interfaceTVfamily = new TWatchingFamily().Init()
 
+		If FileType("res/images") = FILETYPE_DIR
+			customImageDirExists = True
+		EndIf
+
 		moneyColor = new SColor8(200,230,200)
 		audienceColor = new SColor8(200,200,230)
 		bettyLovecolor = new SColor8(220,200,180)
@@ -249,6 +254,85 @@ Type TInGameInterface
 		If Not _interfaceTVfamily Then _interfaceTVfamily = New TWatchingFamily().Init()
 	End Method
 
+	Method getCustomSprite:TSprite(obj:TBroadcastMaterial)
+		If customImageDirExists
+			Local image:TImage
+			If TProgramme(obj)
+				Local programme:TProgramme = TProgramme(obj)
+				If programme.licence
+					If Not programme.licence.data.customImagePresent
+						image = getImage(programme.licence.data.GUID)
+						'episode head
+						If Not image And programme.licence.IsEpisode()
+							image = getImage(programme.licence.GetParentLicence().data.GUID)
+						EndIf
+						'for custom production use template 
+						If Not image And programme.licence.data.IsCustomProduction()
+							If programme.licence.data.extra
+								Local scriptId:Int = programme.licence.data.extra.GetInt("scriptID")
+								If scriptId
+									Local script:TScript= GetScriptCollection().GetById(scriptId)
+									If script
+										Local template:TScriptTemplate = GetScriptTemplateCollection().GetById(script.basedOnScriptTemplateID)
+										If template
+											image = getImage(template.GUID)
+											'parent in case of episode
+											If Not image And template.parentScriptID Then template = template.GetParentScript()
+											If template Then image = getImage(template.GUID)
+										EndIf
+									EndIF
+								EndIf
+							EndIf
+						EndIf
+						If image
+							programme.licence.data.customImagePresent = 1
+							'TODO scaling
+							programme.licence.data.customSprite = new TSprite.InitFromImage(image, programme.licence.data.GUID)
+						Else
+							programme.licence.data.customImagePresent = -1
+						EndIf
+					EndIf
+					
+					If programme.licence.data.customImagePresent > 0
+						Return programme.licence.data.customSprite
+					EndIf
+				EndIf
+			ElseIf TAdvertisement(obj)
+				Local contract:TAdContract =  TAdvertisement(obj).contract
+				If contract and contract.base
+					If Not contract.base.customImagePresent
+						image = getImage(contract.base.GUID)
+						If image
+							contract.base.customImagePresent = 1
+							'TODO scaling
+							contract.base.customSprite = new TSprite.InitFromImage(image, contract.base.GUID)
+						Else
+							contract.base.customImagePresent = -1
+						EndIf
+					EndIf
+					If contract.base.customImagePresent > 0
+						Return contract.base.customSprite
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+		Return Null
+
+		Function getImage:TImage(guid:String)
+			Local imagePath:String = "res/images/" + guid + ".png"
+			Local image:TImage
+			If FileType(imagePath) = FILETYPE_FILE
+				image= LoadImage(imagePath, 0)
+				If image Then return image
+			EndIf
+			imagePath:String = "res/images/" + guid + ".jpg"
+			If FileType(imagePath) = FILETYPE_FILE
+				image= LoadImage(imagePath, 0)
+				If image Then return image
+			EndIf
+			Return Null
+		EndFunction
+	EndMethod
 
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(ShowChannel)
@@ -303,15 +387,16 @@ Type TInGameInterface
 			if programmePlan	'similar to "ShowChannel<>0"
 				If GetWorldTime().GetDayMinute() >= 55
 					Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+					CurrentProgramme = getCustomSprite(obj)
 					_interfaceTVfamily.Update(ShowChannel, programmePlan.GetProgramme())
 					If obj
-						CurrentProgramme = spriteProgrammeAds
+						If Not CurrentProgramme Then CurrentProgramme = spriteProgrammeAds
 						'real ad
 						If TAdvertisement(obj)
 							CurrentProgrammeToolTip.TitleBGtype = 1
 							CurrentProgrammeText = GetLocale("ADVERTISMENT") + ": " + obj.GetTitle()
 						Else
-							If(TProgramme(obj))
+							If Not CurrentProgramme And TProgramme(obj)
 								CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(TProgramme(obj).data.GetGenre()), "gfx_interface_tv_programme_none")
 							EndIf
 							CurrentProgrammeOverlay = spriteProgrammeTrailerOverlay
@@ -325,33 +410,35 @@ Type TInGameInterface
 						CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 					EndIf
 				ElseIf GetWorldTime().GetDayMinute() < 5
+					'TODO custom sprite for news?
 					CurrentProgramme = spriteProgrammeNews
 					CurrentProgrammeToolTip.TitleBGtype	= 3
 					CurrentProgrammeText = getLocale("NEWS")
 					_interfaceTVfamily.Update(ShowChannel, programmePlan.GetNewsShow())
 				Else
 					Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
+					CurrentProgramme = getCustomSprite(obj)
 					_interfaceTVfamily.Update(ShowChannel, obj)
 					If obj
-						CurrentProgramme = spriteProgrammeNone
 						CurrentProgrammeToolTip.TitleBGtype	= 0
 						'real programme
 						If TProgramme(obj)
 							Local programme:TProgramme = TProgramme(obj)
 							contentPrefix = programme.licence.GetGenresLine() + "~n"
-							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
+							If Not CurrentProgramme Then CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
 							If (programme.IsSeriesEpisode() or programme.IsCollectionElement()) and programme.licence.parentLicenceGUID
 								CurrentProgrammeText = programme.licence.GetParentLicence().GetTitle() + " ("+ programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 							Else
 								CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							CurrentProgramme = spriteProgrammeAds
+							If Not CurrentProgramme Then CurrentProgramme = spriteProgrammeAds
 							CurrentProgrammeOverlay = spriteProgrammeInfomercialOverlay
 							CurrentProgrammeText = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						ElseIf TNews(obj)
 							CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						EndIf
+						If Not CurrentProgramme Then CurrentProgramme = spriteProgrammeNone
 					Else
 						CurrentProgramme = spriteProgrammeNone
 						CurrentProgrammeToolTip.TitleBGtype	= 2

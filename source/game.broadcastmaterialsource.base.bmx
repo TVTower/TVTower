@@ -4,6 +4,7 @@ Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.modifier.base.bmx"
 Import "game.gameinformation.base.bmx"
+Import "Dig/base.framework.entity.spriteentity.bmx" 'for sprite cache
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.bitmask.bmx"
 Import "common.misc.templatevariables.bmx" 'for replacement function
@@ -218,6 +219,11 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	'maximum reachLevel a material was licenced for
 	'< 0 disables any level limitation
 	Field licencedReachLevel:Int = -1
+
+	'unpersisted fields for custom images
+	Field customImagePresent:Int = 0 {nosave}
+	Field customSprite:TSprite {nosave}
+
 
 	Global modKeyTopicality_AgeLS:TLowerString = New TLowerString.Create("topicality::age")
 	Global modKeyTopicality_TimesBroadcastedLS:TLowerString = New TLowerString.Create("topicality::timesBroadcasted")
