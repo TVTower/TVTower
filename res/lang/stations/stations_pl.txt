@@ -1,0 +1,147 @@
+INCREASE          = Zwiększenie
+RUNNING_COSTS     = Koszty eksploatacji
+BROADCASTING_AREA = Obszar nadawania
+OF_THE_MAP        = mapy
+
+##https://www.iso.org/obp/ui/#iso:code:3166:DE
+##SHORT może różnić się od kodu do bardziej popularnych skrótów!
+MAP_COUNTRY_DE_LONG     = Germany
+MAP_COUNTRY_DE_SHORT    = GER
+MAP_COUNTRY_DE-HB_LONG  = Bremen
+MAP_COUNTRY_DE-BE_LONG  = Berlin
+MAP_COUNTRY_DE-HH_LONG  = Hamburg
+MAP_COUNTRY_DE-BW_LONG  = Baden-Wuerttemberg
+MAP_COUNTRY_DE-BY_LONG  = Bavaria
+MAP_COUNTRY_DE-SL_LONG  = Saarland
+MAP_COUNTRY_DE-RP_LONG  = Rhineland-Palatinate
+MAP_COUNTRY_DE-HE_LONG  = Hesse
+MAP_COUNTRY_DE-TH_LONG  = Thuringia
+MAP_COUNTRY_DE-SN_LONG  = Saxony
+MAP_COUNTRY_DE-ST_LONG  = Saxony-Anhalt
+MAP_COUNTRY_DE-NI_LONG  = Lower Saxony
+MAP_COUNTRY_DE-SH_LONG  = Schleswig-Holstein
+MAP_COUNTRY_DE-BB_LONG  = Brandenburg
+MAP_COUNTRY_DE-NW_LONG  = North Rhine-Westphalia
+MAP_COUNTRY_DE-MV_LONG  = Mecklenburg-Hither Pomerania
+MAP_COUNTRY_DE-HB_SHORT = HB
+MAP_COUNTRY_DE-BE_SHORT = BE
+MAP_COUNTRY_DE-HH_SHORT = HH
+MAP_COUNTRY_DE-BW_SHORT = BW
+MAP_COUNTRY_DE-BY_SHORT = BY
+MAP_COUNTRY_DE-SL_SHORT = SL
+MAP_COUNTRY_DE-RP_SHORT = RP
+MAP_COUNTRY_DE-HE_SHORT = HE
+MAP_COUNTRY_DE-TH_SHORT = TH
+MAP_COUNTRY_DE-SN_SHORT = SN
+MAP_COUNTRY_DE-ST_SHORT = ST
+MAP_COUNTRY_DE-NI_SHORT = NI
+MAP_COUNTRY_DE-SH_SHORT = SH
+MAP_COUNTRY_DE-BB_SHORT = BB
+MAP_COUNTRY_DE-NW_SHORT = NW
+MAP_COUNTRY_DE-MV_SHORT = MV
+
+AUDIENCE_REACH_LEVEL_WILL_INCREASE = Poziom dotarcia do odbiorców wzrośnie!
+AUDIENCE_REACH_LEVEL_INCREASED     = Zwiększony poziom zasięgu odbiorców
+LEVEL_INCREASED_FROM_X_TO_Y        = Poziom zwiększył się z %X% do %Y%.
+PRICES_WILL_RISE                   = Ceny programów i wiadomości wzrosną.
+AUDIENCE_REACH_LEVEL_DECREASED     = Zmniejszony poziom zasięgu odbiorców
+LEVEL_DECREASED_FROM_X_TO_Y        = Poziom zmniejszył się z %X% do %Y%.
+PRICES_WILL_FALL                   = Ceny programów i wiadomości spadną.
+
+SHOW_MAP_DETAILS                       = Pokaż szczegóły mapy
+CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Kliknij, aby wyświetlić zaawansowane informacje o mapie.
+
+TOGGLE_DISPLAY_OF_STATIONTYPE = Przełączanie wyświetlania |b|%STATIONTYPE%|/b|
+TOGGLE_DISPLAY_OF_PLAYER_X    = Przełączanie wyświetlania  |b|gracz %X%|/b|
+
+SATUPLINK_TO_X = SatUplink %X%
+
+BROADCAST_QUALITY      = Jakość transmisji
+MARKET_SHARE           = Udział w rynku
+REQUIRED_CHANNEL_IMAGE = Wymagany wizerunek kanału
+SUBSCRIBED_CHANNELS    = Subskrybowane kanały
+LAUNCHED               = Uruchomiono
+
+PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = Cena zawiera %X% za pozwolenie na emisję
+BROADCAST_PERMISSION_EXISTING             = Istniejące zezwolenie na nadawanie
+BROADCAST_PERMISSION_MISSING              = Brak uprawnień do nadawania
+BROADCAST_PERMISSION                      = Zezwolenie na nadawanie
+BROADCAST_PERMISSION_SHORT                = Zezw. na nadaw.
+PERMISSION                                = Zezwolenie
+IMAGE                                     = Wizerunek
+RENEW_AUTOMATICALLY                       = Odnów automatycznie
+
+STATIONMAP_SECTION_NAME  = Stan federalny
+STATIONMAP_SECTIONS_NAME = Stany federalne
+RECEIVER_SHARE           = Udział odbiorcy
+AS_OF_DATEX              = Od dnia %DATEX%
+NEXT_CENSUS_AT_DATEX     = Następny spis %DATEX%
+MIN_VALUEX               = min. %VALUEX%
+
+PRESSURE_GROUP              = Grupa nacisku
+PRESSURE_GROUPS             = Grupy nacisku
+PRESSURE_GROUPS_SMOKERLOBBY = Lobby dla palaczy
+PRESSURE_GROUPS_ANTISMOKER  = Lobby antypalaczy
+PRESSURE_GROUPS_ARMSLOBBY   = Lobby handlarzy broni
+PRESSURE_GROUPS_PACIFISTS   = Pacyfiści
+PRESSURE_GROUPS_CAPITALISTS = Kapitaliści
+PRESSURE_GROUPS_COMMUNISTS  = Komuniści
+
+CHANNEL_IMAGE_TOO_LOW = Wizerunek kanału zbyt niski
+CHANNEL_LIMIT_REACHED = Osiągnięto limit kanałów
+PROVIDER              = Dostawca
+
+CONTRACT_DURATION = Czas trwania umowy
+PROCEEDS_OF_SALE  = Wpływy ze sprzedaży
+TERMINATION_FEE   = Opłata za wypowiedzenie
+
+CONTRACT_ENDS_SOON                                                 = Kontrakt kończy się wkrótce
+CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = |b|Umowa z |b|%COMPANYX%|/b| na łącze sieci kablowej zakończy się w %TIMEX% (%DAYX%).
+SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX     = |b|Umowa z |b|%COMPANYX%|/b| zakończy się w %TIMEX% (%DAYX%).
+
+ACQUIRED_PROPERTY = Nabyte nieruchomości
+STATION           = Stacja
+STATIONS          = Stacje
+ANTENNA           = Antena
+ANTENNAS          = Anteny
+ANTENNA_RECEIVER  = Antena dachowa
+ANTENNA_RECEIVERS = Anteny dachowe
+
+CABLE_NETWORK           = Sieć kablowa
+CABLE_NETWORKS          = Sieci kablowe
+CABLE_NETWORK_UPLINK    = Łącze kablowe
+CABLE_NETWORK_UPLINKS   = Łącza kablowe
+CABLE_NETWORK_RECEIVER  = Połączenie kablowe
+CABLE_NETWORK_RECEIVERS = Połączenia kablowe
+
+SATELLITE           = Satelita
+SATELLITES          = Satelity
+SATELLITE_UPLINK    = Łącze satelitarne
+SATELLITE_UPLINKS   = Łącza satelitarne
+SATELLITE_RECEIVER  = Antena satelitarna
+SATELLITE_RECEIVERS = Anteny satelitarne
+UNUSED_TRANSMITTER  = Nieużywany nadajnik
+
+NEW_STATION              = Nowa stacja
+BUY_STATION              = Kup stację
+SELL_STATION             = Sprzedaj stację
+NEW_CABLE_NETWORK_UPLINK = Nowe łącze kablowe
+NEW_SATELLITE_UPLINK     = Nowe łącze satelitarne
+SIGN_UPLINK              = Podpisz łącze
+CANCEL_UPLINK            = Zerwij łącze
+SELL_TRANSMITTER         = Sprzedaj nadajnik
+RENEW_CONTRACT           = Odnów kontrakt
+
+SELECT_LOCATION  = Wybierz lokalizację
+SELECT_STATION   = Wybierz stację
+SELECT_SATELLITE = Wybierz satelitę
+TOO_EXPENSIVE    = Za drogo
+UNSELLABLE       = niesprzedawalne
+
+CONSTRUCTION_TIME                   = Czas budowy
+UNDER_CONSTRUCTION                  = W budowie
+READY_AT_TIME_X                     = Gotowe %TIME%
+READY_AT_DAY_X                      = Gotowe %TIME%
+X_UNDER_CONSTRUCTION                = %X% w budowie
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Nowa stacja będzie gotowa na %TIME%.
+NEW_STATION_WILL_BE_READY_AT_DAY_X  = Nowa stacja będzie gotowa na %TIME%.
