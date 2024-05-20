@@ -7,7 +7,7 @@ BETTY_LOVES_YOU                    = Betty cię kocha
 BETTY_REALLY_LOVES_YOU             = Betty naprawdę cię uwielbia
 
 DIALOGUE_BETTY_WELCOME_TEXT         = Witam,\n\nw czym mogę pomóc?
-DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Dzień dobry!\n\nWCo sprowadza Cię na najwyższe piętro?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Dzień dobry!\n\nCo sprowadza Cię na najwyższe piętro?
 DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Tak?\n\nPrawdopodobnie jesteś tutaj, aby uzyskać najnowsze informacje o nagrodzie Sammy.
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Witaj %PLAYERNAME%,\n\nco sprowadza Cię dzisiaj do mnie?
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Hmm?\n\nNa pewno chcesz usłyszeć jakieś wieści o nagrodzie Sammy.

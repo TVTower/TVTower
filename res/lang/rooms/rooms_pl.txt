@@ -56,7 +56,7 @@ SHOOTING_FINISHED                         = Sesja zakończona
 PREPRODUCTION_IN_PROGRESS                 = Trwa preprodukcja
 PREPRODUCTION_FINISHED                    = Preprodukcja zakończona
 BLOCKED_UNTIL_TIME                        = Zablokowane do %TIME%
-BLOCKED_NO_OFFICE_HOUR                    = poza godzinami pracy
+BLOCKED_NO_OFFICE_HOUR                    = Poza godzinami pracy
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Ktoś już jest w tym pokoju.
 
 
@@ -69,7 +69,7 @@ IN_XTIME_AFTER_CANCELLATION = O %X% po anulowaniu
 IN_XTIME                    = O %X%
 CLICK_AGAIN_TO_RENT         = Kliknij ponownie, aby wynająć
 CLICK_AGAIN_TO_CANCEL_RENT  = Kliknij ponownie, by anulować wynajem
-CONFIRM                     = potwierdź
+CONFIRM                     = Potwierdź
 RENTAL_NOT_POSSIBLE         = Wynajem niemożliwy
 CANCELLATION_NOT_POSSIBLE   = Anulowanie niemożliwe
 SOMETHING_BLOCKS_ACTION     = Coś blokuje akcję
