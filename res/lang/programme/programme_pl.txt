@@ -64,7 +64,7 @@ PROGRAMME_GENRE_SCIFI                      = SciFi
 PROGRAMME_GENRE_THRILLER                   = Thriller
 PROGRAMME_GENRE_WESTERN                    = Western
 PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Dokument & Reportaż
-PROGRAMME_GENRE_SHOW_AND_EVENTS            = Pokaz & Wydarzenie
+PROGRAMME_GENRE_SHOW_AND_EVENTS            = Pokazy & Wydarzenia
 PROGRAMME_GENRE_SHOW                       = Show
 PROGRAMME_GENRE_SHOW_MUSIC                 = Koncert
 PROGRAMME_GENRE_SHOW_POLITICS              = Polityka
@@ -75,7 +75,7 @@ PROGRAMME_GENRE_EVENT_POLITICS             = Wydarzenie polityczne
 PROGRAMME_GENRE_EVENT_SPORT                = Wydarzenie sportowe
 PROGRAMME_GENRE_EVENT_SHOWBIZ              = Showbiznes
 PROGRAMME_GENRE_EVENT_MUSIC                = Muzyka i Śpiew
-PROGRAMME_GENRE_FEATURE                    = Lansowanie/pokaz
+PROGRAMME_GENRE_FEATURE                    = Reportaż
 PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Plotki i sensacje
 
 PROGRAMME_FLAG_LIVE      = Na żywo
@@ -87,7 +87,7 @@ PROGRAMME_FLAG_BMOVIE    = 2-giej kategorii
 PROGRAMME_FLAG_XRATED    = Dla dorosłych
 PROGRAMME_FLAG_PAID      = Inforeklama/Telemedia
 PROGRAMME_FLAG_SERIES    = Serialopodobny
-PROGRAMME_FLAG_SCRIPTED  = Zapisane w scenariuszu
+PROGRAMME_FLAG_SCRIPTED  = Na podstawie scenariusza
 
 PROGRAMMELICENCES          = Prawa do programu
 SELECT_LICENCES_FOR_SALE   = Wybrane prawa do sprzedaży
