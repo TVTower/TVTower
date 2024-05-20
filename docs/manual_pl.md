@@ -1,9 +1,17 @@
+<<<<<<< Updated upstream
 Podręcznik
+=======
+Mpodręcznik
+>>>>>>> Stashed changes
 ======
 
 Autor: Själe
 
+<<<<<<< Updated upstream
 Tłumaczenie: Matthew Forrester [uwagi w nawiasach kwadratowych].
+=======
+Tłumaczenie: pauldim [uwagi w nawiasach kwadratowych].
+>>>>>>> Stashed changes
 
 Przedmowa
 
@@ -303,6 +311,7 @@ Pokoje
 
 Podczas korzystania ze skrótu do pokoju, szybkie przewijanie do przodu jest aktywowane do momentu osiągnięcia pokoju.
 
+<<<<<<< Updated upstream
 [Niemieckie nazwy są podane tam, gdzie wyjaśniają skrót]
 * A: Archiwum
 * B: Betty
@@ -311,13 +320,26 @@ Podczas korzystania ze skrótu do pokoju, szybkie przewijanie do przodu jest akt
 * E: Kredyty (pracownicy :-))
 * F: Agencja filmowa [Filmagentur]
 * L: Supermarket [Laden]
+=======
+* A: Archiwum
+* B: Betty
+* C: Szef
+* D: Agencja scenariuszowa 
+* E: Kredyty (pracownicy :-))
+* F: Agencja filmowa
+* L: Supermarket
+>>>>>>> Stashed changes
 * N: Studio wiadomości [News Studio]
 * O: Biuro
 * P: Plan pokoju
 * Q: Opuść pokój
 * R: Agencja pokojowa
 * S: Studio (pierwsze wolne znalezione)
+<<<<<<< Updated upstream
 * W: Agencja reklamowa [Werbemakler]
+=======
+* W: Agencja reklamowa
+>>>>>>> Stashed changes
 
 Różne
 ----

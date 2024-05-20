@@ -135,7 +135,11 @@ PRODUCTION_DEPOSIT_PAID                                     = Wpłacony depozyt 
 SELECT_PERSON      = Wybierz osobę
 FINISHED_PLANNING  = Zakończono planowanie
 FINISH_PLANNING    = Zakończ planowanie
+<<<<<<< Updated upstream
 AND_PAY_DOWN_MONEY = i zapłać %money%
+=======
+AND_PAY_DOWN_MONEY = i spłacić %money%
+>>>>>>> Stashed changes
 PLANNING           = Planowanie ...
 MONEY_TO_PAY_DOWN  = %money% do zapłaty
 TAKE_OVER_SETTINGS = Skopiuj ustawienia
