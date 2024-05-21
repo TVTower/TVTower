@@ -3,440 +3,501 @@
 	<version value="3" comment="TODO: Check all function='0' after reference refactoring." />
 	<allprogrammes>
 		<programme id="3bd76bd9-3cb7-4a9d-8e57-815b1ea7c2f0" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048545" creator="">
-			<title>
-				<de>...sie waren sich der Konsequenzen nicht bewusst</de>
-				<en>Rebel Without Purpose</en>
-			</title>
-			<title_original>
-				<de>...denn sie wissen nicht, was sie tun</de>
-				<en>Rebel Without a Cause</en>
-			</title_original>
-			<description>
-				<de>[1|Full] in seiner Paraderolle.</de>
-				<en>[1|Full] in his classic role.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">2b6fb1b7-57b7-44bf-b930-a032d9193475</member>
-				<member index="1" function="2">dc2348e7-382c-4fad-98b6-bd0df974d274</member>
-				<member index="2" function="2">6cb07810-f86a-4dd4-bf9a-3b2afb574826</member>
-				<member index="3" function="2">32c2f4c6-e8a6-40c3-8659-c0bf6cd37854</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1955" distribution="1" maingenre="15" subgenre="7" flags="0" blocks="2" price_mod="0.90" />
-			<ratings critics="56" speed="32" outcome="75" />
-		</programme>
-		<programme id="54084557-4497-48d5-8e3a-6a6c987ebb26" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114746" creator="">
-			<title>
-				<de>11 Donkeys</de>
-				<en>11 Donkeys</en>
-			</title>
-			<title_original>
-				<de>12 Monkeys</de>
-				<en>Twelve Monkeys</en>
-			</title_original>
-			<description>
-				<de>[1|Full] als potentieller Weltretter, der in die Vergangenheit geschickt wird, um die Apokalypse aufzuhalten.</de>
-				<en>[1|Full] as a potential world savior sent back in time to stop the apocalypse.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
-				<member index="1" function="2">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
-				<member index="2" function="2">1312b7b5-3215-40fd-92c8-fb0a16a2aebe</member>
-				<member index="3" function="2">6773978f-3667-4c03-813b-0fbc01b8135c</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1995" distribution="1" maingenre="16" subgenre="17,14" flags="0" blocks="3" price_mod="0.67" />
-			<ratings critics="42" speed="28" outcome="51" />
-		</programme>
+    <title>
+        <de>...sie waren sich der Konsequenzen nicht bewusst</de>
+        <en>Rebel Without Purpose</en>
+        <pl>Buntownik bez celu</pl>
+    </title>
+    <title_original>
+        <de>...denn sie wissen nicht, was sie tun</de>
+        <en>Rebel Without a Cause</en>
+        <pl>Buntownik bez powodu</pl>
+    </title_original>
+    <description>
+        <de>[1|Full] in seiner Paraderolle.</de>
+        <en>[1|Full] in his classic role.</en>
+        <pl>[1|Full] w swojej klasycznej roli.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">2b6fb1b7-57b7-44bf-b930-a032d9193475</member>
+        <member index="1" function="2">dc2348e7-382c-4fad-98b6-bd0df974d274</member>
+        <member index="2" function="2">6cb07810-f86a-4dd4-bf9a-3b2afb574826</member>
+        <member index="3" function="2">32c2f4c6-e8a6-40c3-8659-c0bf6cd37854</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="1955" distribution="1" maingenre="15" subgenre="7" flags="0" blocks="2" price_mod="0.90" />
+    <ratings critics="56" speed="32" outcome="75" />
+</programme>
+<programme id="54084557-4497-48d5-8e3a-6a6c987ebb26" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114746" creator="">
+    <title>
+        <de>11 Donkeys</de>
+        <en>11 Donkeys</en>
+        <pl>11 Osłów</pl>
+    </title>
+    <title_original>
+        <de>12 Monkeys</de>
+        <en>Twelve Monkeys</en>
+        <pl>Dwanaście małp</pl>
+    </title_original>
+    <description>
+        <de>[1|Full] als potentieller Weltretter, der in die Vergangenheit geschickt wird, um die Apokalypse aufzuhalten.</de>
+        <en>[1|Full] as a potential world savior sent back in time to stop the apocalypse.</en>
+        <pl>[1|Full] jako potencjalny zbawca świata wysłany w przeszłość, aby powstrzymać apokalipsę.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+        <member index="1" function="2">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
+        <member index="2" function="2">1312b7b5-3215-40fd-92c8-fb0a16a2aebe</member>
+        <member index="3" function="2">6773978f-3667-4c03-813b-0fbc01b8135c</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="1995" distribution="1" maingenre="16" subgenre="17,14" flags="0" blocks="3" price_mod="0.67" />
+    <ratings critics="42" speed="28" outcome="51" />
+</programme>
 		<programme id="7bb9393b-0102-41d3-8237-8a10d9442845" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0074084" creator="">
-			<title>
-				<de>1899 (Achtzehnhundertneunundneunzig)</de>
-				<en>1899 (Eighteen Ninety-Nine)</en>
-			</title>
-			<title_original>
-				<de>1900</de>
-				<en>1900</en>
-				<it>Novecento</it>
-			</title_original>
-			<description>
-				<de>Die Geschichte zweier Freunde, erzählt in gewaltigen Bildern, ausgeführt von großen Schauspielern, getragen von der Musik des Altmeisters [5|Last].</de>
-				<en>The story of two friends, told in powerful images, performed by great actors, carried by the music of the old master [5|Last].</en>
-			</description>
-			<staff>
-				<member index="0" function="1">5fd9f85c-9265-4529-a629-d8c4a5ce8472</member>
-				<member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
-				<member index="2" function="2">78b9449c-ce81-41b2-be05-17a950a89b37</member>
-				<member index="3" function="2">1cb9c80c-6cba-4003-9e72-7982447433ab</member>
-				<member index="4" function="2">5343c932-757a-4dd0-85ee-9e65b88986f1</member>
-				<member index="5" function="16">9d5bd693-58dc-490d-b050-9aae6c0c7f65</member>
-				<member index="6" function="2">6200fef6-63f7-454f-9b1c-ff1cc9c3859a</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I/F/D" year="1976" distribution="1" maingenre="13" subgenre="7,11" flags="8" blocks="5" price_mod="1" />
-			<ratings critics="80" speed="42" outcome="61" />
-		</programme>
-		<programme id="e011ef37-2adb-4ba1-95bb-81b088c1ccd8" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0062622" creator="">
-			<title>
-				<de>2002: Bredouille im All</de>
-				<en>2002: Bredouille in space</en>
-			</title>
-			<title_original>
-				<de>2001: Odyssee im Weltraum</de>
-				<en>2001: A Space Odyssey</en>
-			</title_original>
-			<description>
-				<de>Die Expedition ins All als metaphorische Reise in die Seele der Menschheit.
+    <title>
+        <de>1899 (Achtzehnhundertneunundneunzig)</de>
+        <en>1899 (Eighteen Ninety-Nine)</en>
+        <pl>1899 (Tysiąc osiemset dziewięćdziesiąt dziewięć)</pl>
+    </title>
+    <title_original>
+        <de>1900</de>
+        <en>1900</en>
+        <it>Novecento</it>
+        <pl>1900</pl>
+    </title_original>
+    <description>
+        <de>Die Geschichte zweier Freunde, erzählt in gewaltigen Bildern, ausgeführt von großen Schauspielern, getragen von der Musik des Altmeisters [5|Last].</de>
+        <en>The story of two friends, told in powerful images, performed by great actors, carried by the music of the old master [5|Last].</en>
+        <pl>Historia dwóch przyjaciół, opowiedziana potężnymi obrazami, wykonana przez wspaniałych aktorów, prowadzona muzyką starego mistrza [5|Last].</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">5fd9f85c-9265-4529-a629-d8c4a5ce8472</member>
+        <member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
+        <member index="2" function="2">78b9449c-ce81-41b2-be05-17a950a89b37</member>
+        <member index="3" function="2">1cb9c80c-6cba-4003-9e72-7982447433ab</member>
+        <member index="4" function="2">5343c932-757a-4dd0-85ee-9e65b88986f1</member>
+        <member index="5" function="16">9d5bd693-58dc-490d-b050-9aae6c0c7f65</member>
+        <member index="6" function="2">6200fef6-63f7-454f-9b1c-ff1cc9c3859a</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="I/F/D" year="1976" distribution="1" maingenre="13" subgenre="7,11" flags="8" blocks="5" price_mod="1" />
+    <ratings critics="80" speed="42" outcome="61" />
+</programme>
+<programme id="e011ef37-2adb-4ba1-95bb-81b088c1ccd8" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0062622" creator="">
+    <title>
+        <de>2002: Bredouille im All</de>
+        <en>2002: Bredouille in space</en>
+        <pl>2002: Bredouille w kosmosie</pl>
+    </title>
+    <title_original>
+        <de>2001: Odyssee im Weltraum</de>
+        <en>2001: A Space Odyssey</en>
+        <pl>2001: Odyseja kosmiczna</pl>
+    </title_original>
+    <description>
+        <de>Die Expedition ins All als metaphorische Reise in die Seele der Menschheit.
 Ein symphonischer Science-Fiction-Trip.</de>
-				<en>The expedition into space as a metaphorical journey into the soul of mankind.
+        <en>The expedition into space as a metaphorical journey into the soul of mankind.
 A symphonic science fiction trip.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">153dc080-86a1-4f3d-bb13-65b3aa90f7ea</member>
-				<member index="1" function="2">8fe31568-144f-4a61-9339-8fce124270a2</member>
-				<member index="2" function="2">fa72b672-4ae8-4d1b-8b03-6d6ff6cab91e</member>
-				<member index="3" function="2">612152be-2b61-4d65-8a30-626225edec2e</member>
-				<member index="4" function="2">96b6b80d-12b0-4b54-b0e3-57909816ba7e</member>
-				<member index="5" function="2">3ef03a3f-ae4c-43f2-9fd5-b0f317ca2e2e</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB/USA" year="1968" distribution="1" maingenre="16" subgenre="13,14" flags="0" blocks="3" price_mod="0.67" />
-			<ratings critics="89" speed="14" outcome="65" />
-			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="efa8ebec-f2c1-4466-b788-a9f9a6446c36" />
-			</effects>
-		</programme>
+        <pl>Ekspedycja w kosmos jako metaforyczna podróż do duszy ludzkości.
+Symfoniczna podróż science fiction.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">153dc080-86a1-4f3d-bb13-65b3aa90f7ea</member>
+        <member index="1" function="2">8fe31568-144f-4a61-9339-8fce124270a2</member>
+        <member index="2" function="2">fa72b672-4ae8-4d1b-8b03-6d6ff6cab91e</member>
+        <member index="3" function="2">612152be-2b61-4d65-8a30-626225edec2e</member>
+        <member index="4" function="2">96b6b80d-12b0-4b54-b0e3-57909816ba7e</member>
+        <member index="5" function="2">3ef03a3f-ae4c-43f2-9fd5-b0f317ca2e2e</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="GB/USA" year="1968" distribution="1" maingenre="16" subgenre="13,14" flags="0" blocks="3" price_mod="0.67" />
+    <ratings critics="89" speed="14" outcome="65" />
+    <effects>
+        <effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="efa8ebec-f2c1-4466-b788-a9f9a6446c36" />
+    </effects>
+</programme>
+
 		<programme id="1003a969-6d96-4f0f-94ce-954c0f5ad502" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0289043" creator="">
-			<title>
-				<de>27 Tage verpasst</de>
-				<en>27 days missed</en>
-			</title>
-			<title_original>
-				<de>28 Tage später</de>
-				<en>28 Days Later</en>
-			</title_original>
-			<description>
-				<de>Ein Virus hat scheinbar ganz London entvölkert. Jim, der aus dem Koma erwacht ist, sieht sich in der leeren Großstadt lediglich Infizierten gegenüber, die Jagd auf ihn machen.</de>
-				<en>A virus has apparently depopulated the whole of London. Jim, who has awakened from his coma, is faced with nothing but infected people hunting him down in the empty big city.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">c4fc70cd-d1ba-4cec-98d5-ef7867740334</member>
-				<member index="1" function="2">c39b522c-fda8-4985-9eff-db3138512cb3</member>
-				<member index="2" function="2">b29c8acd-8046-4e3b-a167-4c86b3841c58</member>
-				<member index="3" function="2">3e7a24fe-934a-400a-bc70-bddfb500d8ec</member>
-				<member index="4" function="2">cbea5423-ad6c-4cb6-959b-4c73639fd8fb</member>
-				<member index="5" function="2">790a8d81-f0a5-4333-9ae4-a49494f2abab</member>
-				<member index="6" function="2">09f303b3-c75b-4267-a679-d13aaaf69cbb</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="2002" distribution="1" maingenre="12" subgenre="16,2" flags="64" blocks="2" price_mod="1" />
-			<ratings critics="18" speed="37" outcome="47" />
-		</programme>
-		<programme id="5e00ef4a-d016-4548-b7f4-12ab87293b93" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091635" creator="">
-			<title>
-				<de>59 1/2 Tage</de>
-				<en>59 1/2 Days</en>
-			</title>
-			<title_original>
-				<de>9 1/2 Wochen</de>
-				<en>9 1/2 Weeks</en>
-			</title_original>
-			<description>
-				<de>[1|Full] treibt mit [2|Full] seine Spiele.</de>
-				<en>[1|Full] plays his games with [2|Full].</en>
-			</description>
-			<staff>
-				<member index="0" function="1">bd3f227f-6632-4537-8d8b-ee234f00f0c4</member>
-				<member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
-				<member index="2" function="2">3342a0e3-66f3-4f30-922c-ebe1b0611a00</member>
-				<member index="3" function="2">181241fb-22f9-4d20-b4c3-be6173e9461d</member>
-				<member index="4" function="2">1fea9d82-1ff5-4090-bd4b-b07e7d430d0e</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity teenagers_male="1.5" employees_male="1.5" unemployed_male="1.5" managers_male="1.25" pensioners_male="1.25" />
-			<data country="USA" year="1986" distribution="1" maingenre="15" subgenre="7,8" flags="64" blocks="2" price_mod="0.67" />
-			<ratings critics="18" speed="42" outcome="61" />
-		</programme>
-		<programme id="5c4c567b-dda6-4d7e-b90a-82d254f6d5a8" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0119576" creator="">
-			<title>
-				<de>59 1/2 Tage in Paris</de>
-				<en>59 1/2 Days in Paris</en>
-			</title>
-			<title_original>
-				<de>9 1/2 Wochen in Paris</de>
-				<en>Another 9 1/2 Weeks / Love in Paris</en>
-			</title_original>
-			<description>
-				<de>[1|Full] mimt erneut den geheimnisvollen Verführer.
+    <title>
+        <de>27 Tage verpasst</de>
+        <en>27 days missed</en>
+        <pl>27 dni przegapionych</pl>
+    </title>
+    <title_original>
+        <de>28 Tage später</de>
+        <en>28 Days Later</en>
+        <pl>28 dni później</pl>
+    </title_original>
+    <description>
+        <de>Ein Virus hat scheinbar ganz London entvölkert. Jim, der aus dem Koma erwacht ist, sieht sich in der leeren Großstadt lediglich Infizierten gegenüber, die Jagd auf ihn machen.</de>
+        <en>A virus has apparently depopulated the whole of London. Jim, who has awakened from his coma, is faced with nothing but infected people hunting him down in the empty big city.</en>
+        <pl>Wirus wydaje się wyludnił całe Londyn. Jim, który obudził się ze śpiączki, stoi w obliczu tylko zainfekowanych ludzi, którzy polują na niego w pustym wielkim mieście.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">c4fc70cd-d1ba-4cec-98d5-ef7867740334</member>
+        <member index="1" function="2">c39b522c-fda8-4985-9eff-db3138512cb3</member>
+        <member index="2" function="2">b29c8acd-8046-4e3b-a167-4c86b3841c58</member>
+        <member index="3" function="2">3e7a24fe-934a-400a-bc70-bddfb500d8ec</member>
+        <member index="4" function="2">cbea5423-ad6c-4cb6-959b-4c73639fd8fb</member>
+        <member index="5" function="2">790a8d81-f0a5-4333-9ae4-a49494f2abab</member>
+        <member index="6" function="2">09f303b3-c75b-4267-a679-d13aaaf69cbb</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="GB" year="2002" distribution="1" maingenre="12" subgenre="16,2" flags="64" blocks="2" price_mod="1" />
+    <ratings critics="18" speed="37" outcome="47" />
+</programme>
+<programme id="5e00ef4a-d016-4548-b7f4-12ab87293b93" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091635" creator="">
+    <title>
+        <de>59 1/2 Tage</de>
+        <en>59 1/2 Days</en>
+        <pl>59 1/2 dni</pl>
+    </title>
+    <title_original>
+        <de>9 1/2 Wochen</de>
+        <en>9 1/2 Weeks</en>
+        <pl>9 1/2 tygodnia</pl>
+    </title_original>
+    <description>
+        <de>[1|Full] treibt mit [2|Full] seine Spiele.</de>
+        <en>[1|Full] plays his games with [2|Full].</en>
+        <pl>[1|Full] gra swoje gry z [2|Full].</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">bd3f227f-6632-4537-8d8b-ee234f00f0c4</member>
+        <member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
+        <member index="2" function="2">3342a0e3-66f3-4f30-922c-ebe1b0611a00</member>
+        <member index="3" function="2">181241fb-22f9-4d20-b4c3-be6173e9461d</member>
+        <member index="4" function="2">1fea9d82-1ff5-4090-bd4b-b07e7d430d0e</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <targetgroupattractivity teenagers_male="1.5" employees_male="1.5" unemployed_male="1.5" managers_male="1.25" pensioners_male="1.25" />
+    <data country="USA" year="1986" distribution="1" maingenre="15" subgenre="7,8" flags="64" blocks="2" price_mod="0.67" />
+    <ratings critics="18" speed="42" outcome="61" />
+</programme>
+<programme id="5c4c567b-dda6-4d7e-b90a-82d254f6d5a8" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0119576" creator="">
+    <title>
+        <de>59 1/2 Tage in Paris</de>
+        <en>59 1/2 Days in Paris</en>
+        <pl>59 1/2 dni w Paryżu</pl>
+    </title>
+    <title_original>
+        <de>9 1/2 Wochen in Paris</de>
+        <en>Another 9 1/2 Weeks / Love in Paris</en>
+        <pl>Jeszcze 9 1/2 tygodnia / Miłość w Paryżu</pl>
+    </title_original>
+    <description>
+        <de>[1|Full] mimt erneut den geheimnisvollen Verführer.
 Aber diesmal schauen ihm erheblich weniger Voyeure dabei zu.</de>
-				<en>[1|Full] once again plays the mysterious seducer.
+        <en>[1|Full] once again plays the mysterious seducer.
 But this time there are considerably fewer voyeurs watching him.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
-				<member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
-				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity teenagers_male="1.5" employees_male="1.5" unemployed_male="1.5" managers_male="1.25" pensioners_male="1.25" />
-			<data country="USA/F/GB" year="1997" distribution="3" maingenre="15" subgenre="7,8" flags="0" blocks="2" price_mod="0.67" />
-			<ratings critics="9" speed="23" outcome="32" />
-		</programme>
-		<programme id="a6112791-74c2-4f8a-9906-d36aea7111d5" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0119471" creator="">
-			<title>
-				<de>Kleiner Drecksack</de>
-				<en>The Little Scumbag Kid</en>
-			</title>
-			<title_original>
-				<de>Kleines Arschloch</de>
-				<en>The Little Bastard</en>
-			</title_original>
-			<description>
-				<de>Ein kleiner Bengel belästigt seine Umwelt mit allerhand Geschmacklosigkeiten.
+        <pl>[1|Full] ponownie gra tajemniczego uwodziciela.
+Ale tym razem jest znacznie mniej podglądaczy, którzy go oglądają.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+        <member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
+        <member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <targetgroupattractivity teenagers_male="1.5" employees_male="1.5" unemployed_male="1.5" managers_male="1.25" pensioners_male="1.25" />
+    <data country="USA/F/GB" year="1997" distribution="3" maingenre="15" subgenre="7,8" flags="0" blocks="2" price_mod="0.67" />
+    <ratings critics="9" speed="23" outcome="32" />
+</programme>
+<programme id="a6112791-74c2-4f8a-9906-d36aea7111d5" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0119471" creator="">
+    <title>
+        <de>Kleiner Drecksack</de>
+        <en>The Little Scumbag Kid</en>
+        <pl>Mały sukinkot</pl>
+    </title>
+    <title_original>
+        <de>Kleines Arschloch</de>
+        <en>The Little Bastard</en>
+        <pl>Mały drań</pl>
+    </title_original>
+    <description>
+        <de>Ein kleiner Bengel belästigt seine Umwelt mit allerhand Geschmacklosigkeiten.
 Bescheidene Witzverkettungen nach den Comics von [1|Full].</de>
-				<en>A little rascal harasses his environment with all kinds of tastelessness.
+        <en>A little rascal harasses his environment with all kinds of tastelessness.
 Modest joke concatenations after the comics of [1|Full].</en>
-			</description>
-			<staff>
-				<member index="0" function="1">7ed02a31-2f54-4658-a2b4-0dcaa62f25db</member>
-				<member index="1" function="1028">b1af9892-2971-4116-8f93-8278989fbe1e</member>
-				<member index="2" function="2">various-voice-artists</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
-			<data country="D" year="1997" distribution="1" maingenre="3" subgenre="5" flags="2" blocks="2" price_mod="0.5" />
-			<ratings critics="4" speed="32" outcome="32" />
-		</programme>
+        <pl>Mały urwis nęka swoje otoczenie wszelkiego rodzaju niesmacznymi zachowaniami.
+Skromne łańcuchy żartów według komiksów [1|Full].</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">7ed02a31-2f54-4658-a2b4-0dcaa62f25db</member>
+        <member index="1" function="1028">b1af9892-2971-4116-8f93-8278989fbe1e</member>
+        <member index="2" function="2">various-voice-artists</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
+    <data country="D" year="1997" distribution="1" maingenre="3" subgenre="5" flags="2" blocks="2" price_mod="0.5" />
+    <ratings critics="4" speed="32" outcome="32" />
+</programme>
+
 		<programme id="a21b8f61-59a1-4924-8881-8fece978b63d" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0133152" creator="">
-			<title>
-				<de>Affenerde</de>
-				<en>Apes' Earth</en>
-			</title>
-			<title_original>
-				<de>Planet der Affen</de>
-				<en>Planet of the Apes</en>
-			</title_original>
-			<description>
-				<de>Im Jahre 2029 wird ein Astronaut mitsamt einiger Testaffen durch Raum und Zeit katapultiert und bruchlandet 5021 A.D. auf einem Planeten, wo diese Affen dann die Herrschaft übernehmen. Starke Kostüme, insgesamt aber leider schwaches Remake.</de>
-				<en>In 2029, an astronaut together with some test monkeys is catapulted through space and time and in 5021 AD crash lands on a planet where these monkeys then take over. Strong costumes, but overall a weak remake, unfortunately.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">3b3efc56-1b7a-4f07-bea0-be815c3b1a17</member>
-				<member index="1" function="2">91b7662d-a340-4442-9816-25ca48742e8a</member>
-				<member index="2" function="2">3939742c-f953-4d56-8cde-9b448e01a28a</member>
-				<member index="3" function="2">1e61c3ec-d582-46d3-902f-de2c598cf4c8</member>
-				<member index="4" function="2">286d788c-991b-4705-aed3-897b57caad62</member>
-				<member index="5" function="2">deaea427-9b21-4dce-aff8-da6e4fd230bb</member>
-				<member index="6" function="2">9db75f13-57b8-41ca-a9c6-9a2a69c0250b</member>
-				<member index="7" function="2">60e97f13-eec7-4206-9635-560ba7e7d4e3</member>
-				<member index="8" function="2">ef3c0435-84b5-4252-947c-c2183a989550</member>
-				<member index="9" function="16">fc51de5a-23b9-4bc7-87da-76462e901bf2</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2001" distribution="1" maingenre="16" subgenre="2,1" flags="0" blocks="3" price_mod="1.33" />
-			<ratings critics="32" speed="32" outcome="42" />
-		</programme>
+    <title>
+        <de>Affenerde</de>
+        <en>Apes' Earth</en>
+        <pl>Ziemia Małp</pl>
+    </title>
+    <title_original>
+        <de>Planet der Affen</de>
+        <en>Planet of the Apes</en>
+        <pl>Planeta Małp</pl>
+    </title_original>
+    <description>
+        <de>Im Jahre 2029 wird ein Astronaut mitsamt einiger Testaffen durch Raum und Zeit katapultiert und bruchlandet 5021 A.D. auf einem Planeten, wo diese Affen dann die Herrschaft übernehmen. Starke Kostüme, insgesamt aber leider schwaches Remake.</de>
+        <en>In 2029, an astronaut together with some test monkeys is catapulted through space and time and in 5021 AD crash lands on a planet where these monkeys then take over. Strong costumes, but overall a weak remake, unfortunately.</en>
+        <pl>W 2029 roku astronauta wraz z kilkoma małpami testowymi zostaje wyrzucony przez przestrzeń i czas i rozbija się w 5021 roku na planecie, gdzie te małpy przejmują władzę. Silne kostiumy, ale niestety ogólnie słaby remake.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">3b3efc56-1b7a-4f07-bea0-be815c3b1a17</member>
+        <member index="1" function="2">91b7662d-a340-4442-9816-25ca48742e8a</member>
+        <member index="2" function="2">3939742c-f953-4d56-8cde-9b448e01a28a</member>
+        <member index="3" function="2">1e61c3ec-d582-46d3-902f-de2c598cf4c8</member>
+        <member index="4" function="2">286d788c-991b-4705-aed3-897b57caad62</member>
+        <member index="5" function="2">deaea427-9b21-4dce-aff8-da6e4fd230bb</member>
+        <member index="6" function="2">9db75f13-57b8-41ca-a9c6-9a2a69c0250b</member>
+        <member index="7" function="2">60e97f13-eec7-4206-9635-560ba7e7d4e3</member>
+        <member index="8" function="2">ef3c0435-84b5-4252-947c-c2183a989550</member>
+        <member index="9" function="16">fc51de5a-23b9-4bc7-87da-76462e901bf2</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="2001" distribution="1" maingenre="16" subgenre="2,1" flags="0" blocks="3" price_mod="1.33" />
+    <ratings critics="32" speed="32" outcome="42" />
+</programme>
+
 		<programme id="10905777-b8b5-49d7-a10e-5d364c8b254a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0105690" creator="">
-			<title>
-				<de>Alarmstufe: Seeehr Dringend!</de>
-				<en>State of Siege</en>
-			</title>
-			<title_original>
-				<de>Alarmstufe: Rot</de>
-				<en>Under Siege</en>
-			</title_original>
-			<description>
-				<de>Terroristen kapern ein US-amerikanisches Kriegsschiff, um die an Bord befindlichen Tomahawk-Marschflugkörper zu entwenden.</de>
-				<en>Terrorists hijack a U.S. warship to steal the Tomahawk cruise missiles on board.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">0cc280ff-5a5d-4f43-9fdb-03603c7b54e6</member>
-				<member index="1" function="2">c642f45d-ccd5-42d6-9974-7e004ccd458a</member>
-				<member index="2" function="2">e039c83c-9815-45e2-9d80-424aedf5a1a1</member>
-				<member index="3" function="2">a3587709-bbbd-42f7-8819-1d29a89cacec</member>
-				<member index="4" function="2">eca53835-b8dc-41e7-a8b0-8d13406eebb0</member>
-				<member index="5" function="2">4d418f3a-b051-41c7-91a3-2caac70c46d2</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1992" distribution="1" maingenre="2" subgenre="17,1" flags="0" blocks="2" price_mod="0.97" />
-			<ratings critics="29" speed="65" outcome="60" />
-			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="83c0438a-8b93-4e86-a567-d51e7634c05e" />
-			</effects>
-		</programme>
-		<programme id="82833c29-2958-4715-8363-6a9af3455284" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0057380" creator="">
-			<title>
-				<de>Alte Schmetterfaust</de>
-				<en>Old Smasherfist</en>
-			</title>
-			<title_original>
-				<de>Old Shatterhand</de>
-				<en>Old Shatterhand</en>
-			</title_original>
-			<description>
-				<de>Alte Schmetterfaust hilft seinem Blutsbruder Rinnetooth und dessen Apatschen, Verbrechen aufzuklären, die von Weißen und Komantschen gemeinschaftlich begangen werden. Er setzt sich für den Frieden ein.</de>
-				<en>Old Smasherfist helps his blood brother Rinnetooth and his Apaches to solve crimes committed by whites and Comanches together. He is committed to peace.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">7abd2214-86d6-479a-9558-b29853414ec9</member>
-				<member index="1" function="2">5679447a-7706-40b9-bb7c-b191abebd5d8</member>
-				<member index="2" function="2">79c081cb-755e-41b8-bd50-11f00e6b1382</member>
-				<member index="3" function="2">f0538156-247f-45f6-a710-39c66bd7a9f9</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D/YU/I" year="1964" distribution="1" maingenre="18" subgenre="1,7" flags="0" blocks="2" price_mod="0.90" available="0" /> <!-- availability triggered by Stukov_Winnetou1 -->
-			<ratings critics="51" speed="51" outcome="42" />
-		</programme>
-		<programme id="e3c4000f-917c-402a-8423-355c2fc29c7b" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0216216" creator="">
-			<title>
-				<de>Am sechsten Tag erschuf...</de>
-				<en>On the sixth day of creation...</en>
-			</title>
-			<title_original>
-				<de>The 6th Day</de>
-				<en>The 6th Day</en>
-			</title_original>
-			<description>
-				<de>Adam Gibson ist geschockt: Als er abends nach Hause kommt, hat ein Klon seinen Platz in der Familie eingenommen. Aber Gibson wehrt sich...</de>
-				<en>Adam Gibson is shocked: when he comes home in the evening, a clone has taken his place in the family. But Gibson fights back...</en>
-			</description>
-			<staff>
-				<member index="0" function="1">d47e83dc-3c3f-4079-9397-82f5b922c35c</member>
-				<member index="1" function="2">cd3a2e20-efe1-4a4c-9249-164b67d185f7</member>
-				<member index="2" function="2">84aa80d1-6127-4211-9641-27ffcc140162</member>
-				<member index="3" function="2">ab68fbad-64d8-4328-a131-9c2d0f05e210</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2000" distribution="1" maingenre="16" subgenre="2,14" flags="0" blocks="2" price_mod="1" />
-			<ratings critics="28" speed="51" outcome="32" />
-		</programme>
+    <title>
+        <de>Alarmstufe: Seeehr Dringend!</de>
+        <en>State of Siege</en>
+        <pl>Stan Oblężenia</pl>
+    </title>
+    <title_original>
+        <de>Alarmstufe: Rot</de>
+        <en>Under Siege</en>
+        <pl>Stan Zagrożenia</pl>
+    </title_original>
+    <description>
+        <de>Terroristen kapern ein US-amerikanisches Kriegsschiff, um die an Bord befindlichen Tomahawk-Marschflugkörper zu entwenden.</de>
+        <en>Terrorists hijack a U.S. warship to steal the Tomahawk cruise missiles on board.</en>
+        <pl>Terroryści porywają amerykański okręt wojenny, aby ukraść znajdujące się na pokładzie pociski Tomahawk.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">0cc280ff-5a5d-4f43-9fdb-03603c7b54e6</member>
+        <member index="1" function="2">c642f45d-ccd5-42d6-9974-7e004ccd458a</member>
+        <member index="2" function="2">e039c83c-9815-45e2-9d80-424aedf5a1a1</member>
+        <member index="3" function="2">a3587709-bbbd-42f7-8819-1d29a89cacec</member>
+        <member index="4" function="2">eca53835-b8dc-41e7-a8b0-8d13406eebb0</member>
+        <member index="5" function="2">4d418f3a-b051-41c7-91a3-2caac70c46d2</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="1992" distribution="1" maingenre="2" subgenre="17,1" flags="0" blocks="2" price_mod="0.97" />
+    <ratings critics="29" speed="65" outcome="60" />
+    <effects>
+        <effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="83c0438a-8b93-4e86-a567-d51e7634c05e" />
+    </effects>
+</programme>
+<programme id="82833c29-2958-4715-8363-6a9af3455284" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0057380" creator="">
+    <title>
+        <de>Alte Schmetterfaust</de>
+        <en>Old Smasherfist</en>
+        <pl>Stary Rozgromca</pl>
+    </title>
+    <title_original>
+        <de>Old Shatterhand</de>
+        <en>Old Shatterhand</en>
+        <pl>Old Shatterhand</pl>
+    </title_original>
+    <description>
+        <de>Alte Schmetterfaust hilft seinem Blutsbruder Rinnetooth und dessen Apatschen, Verbrechen aufzuklären, die von Weißen und Komantschen gemeinschaftlich begangen werden. Er setzt sich für den Frieden ein.</de>
+        <en>Old Smasherfist helps his blood brother Rinnetooth and his Apaches to solve crimes committed by whites and Comanches together. He is committed to peace.</en>
+        <pl>Stary Rozgromca pomaga swojemu bratu krwi Rinnetoothowi i jego Apaczom w rozwiązaniu przestępstw popełnionych wspólnie przez białych i Komanczów. Jest oddany pokojowi.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">7abd2214-86d6-479a-9558-b29853414ec9</member>
+        <member index="1" function="2">5679447a-7706-40b9-bb7c-b191abebd5d8</member>
+        <member index="2" function="2">79c081cb-755e-41b8-bd50-11f00e6b1382</member>
+        <member index="3" function="2">f0538156-247f-45f6-a710-39c66bd7a9f9</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="D/YU/I" year="1964" distribution="1" maingenre="18" subgenre="1,7" flags="0" blocks="2" price_mod="0.90" available="0" /> <!-- availability triggered by Stukov_Winnetou1 -->
+    <ratings critics="51" speed="51" outcome="42" />
+</programme>
+<programme id="e3c4000f-917c-402a-8423-355c2fc29c7b" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0216216" creator="">
+    <title>
+        <de>Am sechsten Tag erschuf...</de>
+        <en>On the sixth day of creation...</en>
+        <pl>Szóstego dnia stworzenia...</pl>
+    </title>
+    <title_original>
+        <de>The 6th Day</de>
+        <en>The 6th Day</en>
+        <pl>Szósty Dzień</pl>
+    </title_original>
+    <description>
+        <de>Adam Gibson ist geschockt: Als er abends nach Hause kommt, hat ein Klon seinen Platz in der Familie eingenommen. Aber Gibson wehrt sich...</de>
+        <en>Adam Gibson is shocked: when he comes home in the evening, a clone has taken his place in the family. But Gibson fights back...</en>
+        <pl>Adam Gibson jest w szoku: kiedy wieczorem wraca do domu, klon zajął jego miejsce w rodzinie. Ale Gibson się broni...</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">d47e83dc-3c3f-4079-9397-82f5b922c35c</member>
+        <member index="1" function="2">cd3a2e20-efe1-4a4c-9249-164b67d185f7</member>
+        <member index="2" function="2">84aa80d1-6127-4211-9641-27ffcc140162</member>
+        <member index="3" function="2">ab68fbad-64d8-4328-a131-9c2d0f05e210</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="2000" distribution="1" maingenre="16" subgenre="2,14" flags="0" blocks="2" price_mod="1" />
+    <ratings critics="28" speed="51" outcome="32" />
+</programme>
+
 		<programme id="57cfeca1-a06b-402d-8d9d-80a4ab84976a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0120586" creator="">
-			<title>
-				<de>Amerikanische Nazis</de>
-				<en>American Nazis</en>
-			</title>
-			<title_original>
-				<de>American History X</de>
-				<en>American History X</en>
-			</title_original>
-			<description>
-				<de>Harter Film über Rassenunterschiede und -rivalitäten mit überzeugendem Ende.</de>
-				<en>Tough film about racial differences and rivalries with compelling ending.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">03704ead-958f-4739-950d-7a01bd027d03</member>
-				<member index="1" function="2">1c6d2298-9462-4549-b09a-05a584bf9949</member>
-				<member index="2" function="2">0a60d3e1-fbac-4bb9-b7fb-cb964618d545</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1998" distribution="1" maingenre="17" subgenre="7,4" flags="0" blocks="2" price_mod="0.67" />
-			<ratings critics="51" speed="56" outcome="56" />
-		</programme>
-		<programme id="631f722f-b5dc-4663-bd81-5e9b1231c84e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093978" creator="">
-			<title>
-				<de>An Asian Spooky Story - Verlockung aus dem Jenseits</de>
-				<en>An Asian Spooky Story</en>
-			</title>
-			<title_original>
-				<de>A Chinese Ghost Story - Verführung aus dem Reich der Toten</de>
-				<en>A Chinese Ghost Story</en>
-			</title_original>
-			<description>
-				<de>In einem Tempel verliebt sich ein junger Chinese in ein Mädchen. Da das Mädchen als Geist auf der Erde wandelt, nimmt er sich vor, ihr Leben einzuhauchen...
+    <title>
+        <de>Amerikanische Nazis</de>
+        <en>American Nazis</en>
+        <pl>Amerykańscy naziści</pl>
+    </title>
+    <title_original>
+        <de>American History X</de>
+        <en>American History X</en>
+        <pl>American History X</pl>
+    </title_original>
+    <description>
+        <de>Harter Film über Rassenunterschiede und -rivalitäten mit überzeugendem Ende.</de>
+        <en>Tough film about racial differences and rivalries with compelling ending.</en>
+        <pl>Twardy film o różnicach rasowych i rywalizacjach z przekonującym zakończeniem.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">03704ead-958f-4739-950d-7a01bd027d03</member>
+        <member index="1" function="2">1c6d2298-9462-4549-b09a-05a584bf9949</member>
+        <member index="2" function="2">0a60d3e1-fbac-4bb9-b7fb-cb964618d545</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="1998" distribution="1" maingenre="17" subgenre="7,4" flags="0" blocks="2" price_mod="0.67" />
+    <ratings critics="51" speed="56" outcome="56" />
+</programme>
+<programme id="631f722f-b5dc-4663-bd81-5e9b1231c84e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093978" creator="">
+    <title>
+        <de>An Asian Spooky Story - Verlockung aus dem Jenseits</de>
+        <en>An Asian Spooky Story</en>
+        <pl>Azjatycka upiorna opowieść</pl>
+    </title>
+    <title_original>
+        <de>A Chinese Ghost Story - Verführung aus dem Reich der Toten</de>
+        <en>A Chinese Ghost Story</en>
+        <pl>Chińska opowieść o duchach</pl>
+    </title_original>
+    <description>
+        <de>In einem Tempel verliebt sich ein junger Chinese in ein Mädchen. Da das Mädchen als Geist auf der Erde wandelt, nimmt er sich vor, ihr Leben einzuhauchen...
 Raffinierter phantastischer Film.</de>
-				<en>In a temple, a young Chinese man falls in love with a girl. Since the girl walks the earth as a ghost, he takes it upon himself to breathe life into her...
+        <en>In a temple, a young Chinese man falls in love with a girl. Since the girl walks the earth as a ghost, he takes it upon himself to breathe life into her...
 A sophisticated and fantastic film.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">577f032c-d851-4e5b-bab1-69d489031456</member>
-				<member index="1" function="2">d8c84544-ff75-4023-9a10-4bb2e5478593</member>
-				<member index="2" function="2">63d730f3-c0a5-4ab0-97f7-250177c5f3bd</member>
-				<member index="3" function="2">61334348-7cb7-4601-ad29-87f724ec3cb3</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" unemployed_female="1.5" pensioners="2" />
-			<data country="HK" year="1987" distribution="1" maingenre="10" subgenre="15,2" flags="0" blocks="2" price_mod="0.67" />
-			<ratings critics="64" speed="80" outcome="55" />
-			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0d0b6315-96c5-44b3-908a-142af44869ff" />
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f65b0189-a860-4b6a-8027-12e06d4dc09a" />
-			</effects>
-		</programme>
-		<programme id="ff731f85-f535-4f77-89e6-a15a79e4ec4e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0042332" creator="">
-			<title>
-				<de>Aschenputtel</de>
-				<en>Cinderella</en>
-			</title>
-			<title_original>
-				<de>Aschenputtel</de>
-				<en>Cinderella</en>
-			</title_original>
-			<description>
-				<de>[1|Last]s Version von Aschenputtel - durchaus gelungen.</de>
-				<en>[1|Last]'s version of Cinderella - quite well done.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">d618aeba-fd41-407b-8b82-ec24c2bc6788</member>
-				<member index="1" function="0">c19a3126-bdef-42d8-9c1a-ac8224563052</member>
-				<member index="2" function="2">various-voice-artists</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
-			<data country="USA" year="1950" distribution="1" maingenre="3" subgenre="9,10" flags="10" blocks="2" price_mod="1" />
-			<ratings critics="88" speed="75" outcome="90" />
-			<modifiers>
-				<modifier name="topicality::age" value="0.5" />
-			</modifiers>
-		</programme>
-		<programme id="de8e89b1-a05b-45b8-814f-4103464ec84f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043265" creator="">
-			<title>
-				<de>Asian Queen</de>
-				<en>The Asian Queen</en>
-			</title>
-			<title_original>
-				<de>African Queen</de>
-				<en>The African Queen</en>
-			</title_original>
-			<description>
-				<de>Ein Mann und eine Frau machen auf einem alten Dampfboot die Gewässer unsicher.
+        <pl>W świątyni młody Chińczyk zakochuje się w dziewczynie. Ponieważ dziewczyna chodzi po ziemi jako duch, postanawia tchnąć w nią życie...
+Wyrafinowany i fantastyczny film.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">577f032c-d851-4e5b-bab1-69d489031456</member>
+        <member index="1" function="2">d8c84544-ff75-4023-9a10-4bb2e5478593</member>
+        <member index="2" function="2">63d730f3-c0a5-4ab0-97f7-250177c5f3bd</member>
+        <member index="3" function="2">61334348-7cb7-4601-ad29-87f724ec3cb3</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" unemployed_female="1.5" pensioners="2" />
+    <data country="HK" year="1987" distribution="1" maingenre="10" subgenre="15,2" flags="0" blocks="2" price_mod="0.67" />
+    <ratings critics="64" speed="80" outcome="55" />
+    <effects>
+        <effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0d0b6315-96c5-44b3-908a-142af44869ff" />
+        <effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f65b0189-a860-4b6a-8027-12e06d4dc09a" />
+    </effects>
+</programme>
+<programme id="ff731f85-f535-4f77-89e6-a15a79e4ec4e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0042332" creator="">
+    <title>
+        <de>Aschenputtel</de>
+        <en>Cinderella</en>
+        <pl>Kopciuszek</pl>
+    </title>
+    <title_original>
+        <de>Aschenputtel</de>
+        <en>Cinderella</en>
+        <pl>Kopciuszek</pl>
+    </title_original>
+    <description>
+        <de>[1|Last]s Version von Aschenputtel - durchaus gelungen.</de>
+        <en>[1|Last]'s version of Cinderella - quite well done.</en>
+        <pl>Wersja Kopciuszka od [1|Last] - całkiem udana.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">d618aeba-fd41-407b-8b82-ec24c2bc6788</member>
+        <member index="1" function="0">c19a3126-bdef-42d8-9c1a-ac8224563052</member>
+        <member index="2" function="2">various-voice-artists</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
+    <data country="USA" year="1950" distribution="1" maingenre="3" subgenre="9,10" flags="10" blocks="2" price_mod="1" />
+    <ratings critics="88" speed="75" outcome="90" />
+    <modifiers>
+        <modifier name="topicality::age" value="0.5" />
+    </modifiers>
+</programme>
+<programme id="de8e89b1-a05b-45b8-814f-4103464ec84f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043265" creator="">
+    <title>
+        <de>Asian Queen</de>
+        <en>The Asian Queen</en>
+        <pl>Azjatycka królowa</pl>
+    </title>
+    <title_original>
+        <de>African Queen</de>
+        <en>The African Queen</en>
+        <pl>African Queen</pl>
+    </title_original>
+    <description>
+        <de>Ein Mann und eine Frau machen auf einem alten Dampfboot die Gewässer unsicher.
 Klassiker mit [1|Full].</de>
-				<en>A man and a woman haunt the waters on an old steamboat.
+        <en>A man and a woman haunt the waters on an old steamboat.
 A classic with [1|Full].</en>
-			</description>
-			<staff>
-				<member index="0" function="1">b99662fc-9503-436a-900c-6c63e9b91fce</member>
-				<member index="1" function="2">abcc51f0-1842-40f5-b2f7-dd1e228ea968</member>
-				<member index="2" function="2">27690deb-1ab1-4132-b43c-121047be7bfd</member>
-				<member index="3" function="2">f4d3004a-464f-45f9-8dae-1634a6a9bff5</member>
-				<member index="4" function="2">26d0e009-09b1-49d0-bd4c-1c5faf8f59cf</member>
-				<member index="5" function="2">4f1e8951-4546-4709-9d34-294205f8b7e9</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA/GB" year="1951" distribution="1" maingenre="15" subgenre="1,7" flags="0" blocks="2" price_mod="0.67" />
-			<ratings critics="65" speed="51" outcome="61" />
-		</programme>
-		<programme id="22530967-81d9-4117-9f3d-086ae3ce959d" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0033022" creator="">
-			<title>
-				<de>[1|Last] &amp; [2|Last] - Auf hohem Meere</de>
-				<en>[1|Last] &amp; [2|Last] - On the high seas</en>
-			</title>
-			<title_original>
-				<de>Laurel und Hardy: Auf hoher See</de>
-				<en>Saps at Sea</en>
-			</title_original>
-			<description>
-				<de>[1|Last] und [2|Last] geraten unfreiwillig an den gefährlichen Schwerverbrecher Nick Grainger, doch es gelingt ihnen, diesen unschädlich zu machen.</de>
-				<en>[1|Last] und [2|Last] involuntarily get involved with dangerous felon Nick Grainger, but they manage to render him harmless.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">a5b5a870-ed54-4a24-b073-bc24b452748c</member>
-				<member index="1" function="2">de494c09-c094-4217-a010-5241833ef53f</member>
-				<member index="2" function="2">91ddb72a-6f14-4378-ba9e-79e7274d5c3c</member>
-				<member index="3" function="2">9f9ea647-abfb-403c-8c4d-628d6373ca43</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1940" distribution="1" maingenre="5" subgenre="9,4" flags="0" blocks="1" price_mod="1" />
-			<ratings critics="32" speed="56" outcome="56" />
-		</programme>
+        <pl>Mężczyzna i kobieta przemierzają wody na starym parowcu.
+Klasyk z [1|Full].</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">b99662fc-9503-436a-900c-6c63e9b91fce</member>
+        <member index="1" function="2">abcc51f0-1842-40f5-b2f7-dd1e228ea968</member>
+        <member index="2" function="2">27690deb-1ab1-4132-b43c-121047be7bfd</member>
+        <member index="3" function="2">f4d3004a-464f-45f9-8dae-1634a6a9bff5</member>
+        <member index="4" function="2">26d0e009-09b1-49d0-bd4c-1c5faf8f59cf</member>
+        <member index="5" function="2">4f1e8951-4546-4709-9d34-294205f8b7e9</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA/GB" year="1951" distribution="1" maingenre="15" subgenre="1,7" flags="0" blocks="2" price_mod="0.67" />
+    <ratings critics="65" speed="51" outcome="61" />
+</programme>
+<programme id="22530967-81d9-4117-9f3d-086ae3ce959d" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0033022" creator="">
+    <title>
+        <de>[1|Last] &amp; [2|Last] - Auf hohem Meere</de>
+        <en>[1|Last] &amp; [2|Last] - On the high seas</en>
+        <pl>[1|Last] &amp; [2|Last] - Na pełnym morzu</pl>
+    </title>
+    <title_original>
+        <de>Laurel und Hardy: Auf hoher See</de>
+        <en>Saps at Sea</en>
+        <pl>Saps at Sea</pl>
+    </title_original>
+    <description>
+        <de>[1|Last] und [2|Last] geraten unfreiwillig an den gefährlichen Schwerverbrecher Nick Grainger, doch es gelingt ihnen, diesen unschädlich zu machen.</de>
+        <en>[1|Last] und [2|Last] involuntarily get involved with dangerous felon Nick Grainger, but they manage to render him harmless.</en>
+        <pl>[1|Last] und [2|Last] mimowolnie angażują się z niebezpiecznym przestępcą Nickiem Graingerem, ale udaje im się go unieszkodliwić.</pl>
+    </description>
+    <staff>
+        <member index="0" function="1">a5b5a870-ed54-4a24-b073-bc24b452748c</member>
+        <member index="1" function="2">de494c09-c094-4217-a010-5241833ef53f</member>
+        <member index="2" function="2">91ddb72a-6f14-4378-ba9e-79e7274d5c3c</member>
+        <member index="3" function="2">9f9ea647-abfb-403c-8c4d-628d6373ca43</member>
+    </staff>
+    <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+    <data country="USA" year="1940" distribution="1" maingenre="5" subgenre="9,4" flags="0" blocks="1" price_mod="1" />
+    <ratings critics="32" speed="56" outcome="56" />
+</programme>
+
 		<programme id="62b1d458-7d93-4c3f-ac85-656edd87f21b" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0024601" creator="">
 			<title>
 				<de>[1|Last] &amp; [2|Last] - Kinder der Wüste</de>
