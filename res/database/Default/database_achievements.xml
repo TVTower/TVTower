@@ -6,7 +6,6 @@
 			<title>
 				<de>Lokalsender</de>
 				<en>Regional broadcaster</en>
-				<pl>Nadawca regionalny</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -15,12 +14,10 @@
 					<title>
 						<de>Erreiche 250.000 Zuschauer</de>
 						<en>Reach an audience of 250,000</en>
-						<pl>Dotarcie do 250 000 odbiorców</pl>
 					</title>
 					<text>
 						<de>Strahle ein Programm aus und erreiche damit mindestens 250.000 Zuschauer.</de>
 						<en>Broadcast a programme and reach an audience of at least 250.000.</en>
-						<pl>Nadawanie programu i dotarcie do co najmniej 250 000 widzów.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="250000" checkMinute="5" />
 				</task>
@@ -30,7 +27,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="50000" />
+					<data type="money" money="75000" />
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
@@ -40,7 +37,6 @@
 			<title>
 				<de>Sender auf Überholspur</de>
 				<en>Broadcaster in the fast lane</en>
-				<pl>Nadawca na pasie szybkiego ruchu</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -49,12 +45,10 @@
 					<title>
 						<de>Erreiche 2,5 Millionen Zuschauer</de>
 						<en>Reach an audience of 2.5 million</en>
-						<pl>Dotarcie do 2,5 miliona odbiorców</pl>
 					</title>
 					<text>
 						<de>Strahle ein Programm aus und erreiche damit mindestens 2,5 Millionen Zuschauer.</de>
 						<en>Broadcast a programme and reach an audience of at least 2.5 million.</en>
-						<pl>Nadawanie programu i dotarcie do co najmniej 2,5 miliona widzów.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="2500000" checkMinute="5" />
 				</task>
@@ -64,7 +58,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="100000" />
+					<data type="money" money="200000" />
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
@@ -74,7 +68,6 @@
 			<title>
 				<de>Man kennt uns</de>
 				<en>They know us</en>
-				<pl>Oni nas znają</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -83,12 +76,10 @@
 					<title>
 						<de>Erreiche 10 Millionen Zuschauer</de>
 						<en>Reach an audience of 10 million</en>
-						<pl>Dotarcie do 10 milionów odbiorców</pl>
 					</title>
 					<text>
 						<de>Strahle ein Programm aus und erreiche damit mindestens 10 Millionen Zuschauer.</de>
 						<en>Broadcast a programme and reach an audience of at least 10 million.</en>
-						<pl>Nadawanie programu i dotarcie do co najmniej 10 milionów widzów.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="10000000" checkMinute="5" />
 				</task>
@@ -98,7 +89,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="200000" />
+					<data type="money" money="500000" />
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
@@ -108,7 +99,6 @@
 			<title>
 				<de>Wald- und Wiesenjournalismus</de>
 				<en>Everyday journalism</en>
-				<pl>Codzienne dziennikarstwo</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -117,12 +107,10 @@
 					<title>
 						<de>Erreiche 150.000 Zuschauer mit Nachrichten</de>
 						<en>Reach an audience of 150.000 with a news show</en>
-						<pl>Dotarcie z programem informacyjnym do 150 000 widzów</pl>
 					</title>
 					<text>
 						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 150.000 Zuschauer.</de>
 						<en>Broadcast a news show and reach an audience of at least 150.000.</en>
-						<pl>Nadawanie programu informacyjnego i dotarcie do co najmniej 150 000 widzów.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="150000" checkMinute="0" />
 				</task>
@@ -132,7 +120,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="25000" />
+					<data type="money" money="50000" />
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
@@ -142,7 +130,6 @@
 			<title>
 				<de>Lokaljournalismus</de>
 				<en>Regional journalism</en>
-				<pl>Dziennikarstwo regionalne</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -151,12 +138,10 @@
 					<title>
 						<de>Erreiche 1 Million Zuschauer mit Nachrichten</de>
 						<en>Reach an audience of 1 million with a news broadcast</en>
-						<pl>Dotarcie z wiadomościami do 1 miliona odbiorców</pl>
 					</title>
 					<text>
 						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 1 Million Zuschauer.</de>
 						<en>Broadcast news and reach an audience of at least 1 million.</en>
-						<pl>Nadawanie wiadomości i docieranie do co najmniej 1 miliona odbiorców.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="1000000" checkMinute="0" />
 				</task>
@@ -166,7 +151,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="50000" />
+					<data type="money" money="100000" />
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
@@ -176,7 +161,6 @@
 			<title>
 				<de>Nachrichten für alle</de>
 				<en>News for everyone</en>
-				<pl>Wiadomości dla każdego</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -185,12 +169,10 @@
 					<title>
 						<de>Erreiche 5 Million Zuschauer mit Nachrichten</de>
 						<en>Reach an audience of 5 million with a news broadcast</en>
-						<pl>Dotarcie z wiadomościami do 5 milionów odbiorców</pl>
 					</title>
 					<text>
 						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 5 Million Zuschauer.</de>
 						<en>Broadcast news and reach an audience of at least 5 million.</en>
-						<pl>Nadawanie wiadomości i docieranie do co najmniej 5 milionów odbiorców.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="5000000" checkMinute="0" />
 				</task>
@@ -200,7 +182,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="100000" />
+					<data type="money" money="250000" />
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
@@ -208,25 +190,22 @@
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea1" creator="5578" created_by="Ronny">
 			<title>
-				<de>Reichweite „Bronze“</de>
+				<de>Sendegebiet „Bronze“</de>
 				<en>Broadcast Area "Bronze"</en>
-				<pl>Obszar nadawania „Brązowy”</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
 				<task id="tvt-gameachievement-task-reachBroadcastArea1" creator="5578" created_by="Ronny">
 					<title>
-						<de>Sendegebiet mit 5 Millionen Einwohnern</de>
-						<en>Broadcast area with 5 million people</en>
-						<pl>Obszar nadawania z 5 milionami osób</pl>
+						<de>Sendegebiet mit 2,5 Millionen Empfängern</de>
+						<en>Broadcast area with 2.5 million receivers</en>
 					</title>
 					<text>
-						<de>Erhöhe das Sendegebiet auf über 5 Millionen Einwohner.</de>
-						<en>Increase the broadcast area to more than 5 million people.</en>
-						<pl>Zwiększenie obszaru nadawania do ponad 5 milionów osób.</pl>
+						<de>Erhöhe das Sendegebiet auf über 2,5 Millionen mögliche Empfänger.</de>
+						<en>Increase the broadcast area to more than 2.5 million receiver.</en>
 					</text>
-					<data type="reachBroadcastArea" minReachAbsolute="5000000" />
+					<data type="reachBroadcastArea" minReachAbsolute="2500000" />
 				</task>
 			</tasks>
 			<rewards>
@@ -242,23 +221,20 @@
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea2" creator="5578" created_by="Ronny">
 			<title>
-				<de>Reichweite „Silber“</de>
+				<de>Sendegebiet „Silber“</de>
 				<en>Broadcast Area "Silver"</en>
-				<pl>Obszar nadawania „Srebrny”</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
 				<task id="tvt-gameachievement-task-reachBroadcastArea2" creator="5578" created_by="Ronny">
 					<title>
-						<de>Sendegebiet mit 10 Millionen Einwohnern</de>
-						<en>Broadcast area with 10 million people</en>
-						<pl>Obszar nadawania z 10 milionami osób</pl>
+						<de>Sendegebiet mit 10 Millionen Empfängern</de>
+						<en>Broadcast area with 10 million receivers</en>
 					</title>
 					<text>
-						<de>Erhöhe das Sendegebiet auf über 10 Millionen Einwohner.</de>
-						<en>Increase the broadcast area to more than 10 million people.</en>
-						<pl>Zwiększenie obszaru nadawania do ponad 10 milionów osób.</pl>
+						<de>Erhöhe das Sendegebiet auf über 10 Millionen mögliche Empfänger.</de>
+						<en>Increase the broadcast area to more than 10 million receivers.</en>
 					</text>
 					<data type="reachBroadcastArea" minReachAbsolute="10000000" />
 				</task>
@@ -268,7 +244,7 @@
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="150000" />
+					<data type="money" money="250000" />
 				</reward>
 			</rewards>
 			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
@@ -276,23 +252,20 @@
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea3" creator="5578" created_by="Ronny">
 			<title>
-				<de>Reichweite „Gold“</de>
+				<de>Sendegebiet „Gold“</de>
 				<en>Broadcast Area "Gold"</en>
-				<pl>Obszar nadawania „Złoty”</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
 				<task id="tvt-gameachievement-task-reachBroadcastArea3" creator="5578" created_by="Ronny">
 					<title>
-						<de>Sendegebiet mit 25 Millionen Einwohnern</de>
-						<en>Broadcast area with 25 million people</en>
-						<pl>Obszar nadawania z 25 milionami ludzi</pl>
+						<de>Sendegebiet mit 25 Millionen Empfängern</de>
+						<en>Broadcast area with 25 million receivers</en>
 					</title>
 					<text>
-						<de>Erhöhe das Sendegebiet auf über 15 Millionen Einwohner.</de>
-						<en>Increase the broadcast area to more than 15 million people.</en>
-						<pl>Zwiększenie obszaru nadawania do ponad 15 milionów osób.</pl>
+						<de>Erhöhe das Sendegebiet auf über 25 Millionen mögliche Empfänger.</de>
+						<en>Increase the broadcast area to more than 25 million receivers.</en>
 					</text>
 					<data type="reachBroadcastArea" minReachAbsolute="25000000" />
 				</task>
@@ -313,7 +286,6 @@
 			<title>
 				<de>Wetterfrosch</de>
 				<en>Tree Frog</en>
-				<pl>Żaba na drzewie</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -322,22 +294,20 @@
 					<title>
 						<de>Sende 3 Wetterberichte</de>
 						<en>Broadcast 3 weather forecasts</en>
-						<pl>Transmisja 3 prognoz pogody</pl>
 					</title>
 					<text>
 						<de>Sende 3 Wetterberichte in einer Nachrichtensendung.</de>
 						<en>Broadcast 3 weather forecasts in one single news show.</en>
-						<pl>Transmisja 3 prognoz pogody w jednym programie informacyjnym.</pl>
 					</text>
 					<data type="BroadcastNewsShow" keyword1="weatherforecast" keyword2="weatherforecast" keyword3="weatherforecast" />
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-15000" creator="5578" created_by="Ronny">
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
-					<data type="money" money="15000" />
+					<data type="money" money="75000" />
 				</reward>
 			</rewards>
 			<data flags="0" group="4" category="2" index="1" />
@@ -346,7 +316,6 @@
 			<title>
 				<de>Klatschreporter</de>
 				<en>Gossip reporter</en>
-				<pl>Plotkarz</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -355,19 +324,73 @@
 					<title>
 						<de>Sende 3 Showbiz-Nachrichten</de>
 						<en>Broadcast 3 showbiz news</en>
-						<pl>Transmisja 3 wiadomości showbiznesowych</pl>
 					</title>
 					<text>
 						<de>Sende 3 Showbiz-Nachrichten in einer Nachrichtensendung.</de>
 						<en>Broadcast 3 showbiz news in one single news broadcast.</en>
-						<pl>Transmisja 3 wiadomości showbiznesowych w jednym programie informacyjnym.</pl>
 					</text>
 					<data type="BroadcastNewsShow" genre1="1" genre2="1" genre3="1" />
 				</task>
 			</tasks>
 			<rewards>
-				<!-- gleiche Belohnung wie "Wetterfrosch" -->
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-15000" />
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="25000" />
+				</reward>
+			</rewards>
+			<data flags="0" group="5" category="2" index="1" />
+		</achievement>
+		<achievement id="tvt-gameachievement-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kulturkult</de>
+				<en>Culture cult</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sende 3 Kultur-Nachrichten</de>
+						<en>Broadcast 3 culture news</en>
+					</title>
+					<text>
+						<de>Sende 3 Kultur-Nachrichten in einer Nachrichtensendung.</de>
+						<en>Broadcast 3 culture news in one single news broadcast.</en>
+					</text>
+					<data type="BroadcastNewsShow" genre1="5" genre2="5" genre3="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<!-- gleiche Belohnung wie "Klatschreporter" -->
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
+			</rewards>
+			<data flags="0" group="5" category="2" index="1" />
+		</achievement>
+		<achievement id="tvt-gameachievement-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Sport frei</de>
+				<en>All about sport</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sende 3 Sport-Nachrichten</de>
+						<en>Broadcast 3 sport news</en>
+					</title>
+					<text>
+						<de>Sende 3 Sport-Nachrichten in einer Nachrichtensendung.</de>
+						<en>Broadcast 3 sport news in one single news broadcast.</en>
+					</text>
+					<data type="BroadcastNewsShow" genre1="2" genre2="2" genre3="2" />
+				</task>
+			</tasks>
+			<rewards>
+				<!-- gleiche Belohnung wie "Klatschreporter" -->
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
