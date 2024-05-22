@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvt>
+	<resources>
+		<image name="screen_bg_emptyroom" url="res/gfx/room_empty.png" />
+
+		<image name="screen_bg_office" url="res/gfx/office/screen_office.png" />
+		<image name="screen_bg_programmeplanner" url="res/gfx/office/screen_programmeplanner.png" />
+		<image name="screen_bg_financials" url="res/gfx/office/screen_financials.png" />
+		<image name="screen_bg_statistics_audience" url="res/gfx/office/screen_statistics.png" />
+		<image name="screen_bg_statistics_channelimage" url="res/gfx/office/screen_statistics_channelimage.png" />
+		<image name="screen_bg_achievements" url="res/gfx/office/screen_achievements.png" />
+		<image name="screen_bg_stationmap" url="res/gfx/office/screen_stationmap.png" />
+		<image name="screen_bg_safe" url="res/gfx/office/screen_safe.png" />
+
+		<image name="screen_bg_archive" url="res/gfx/archive/screen_archive.png" />
+		<image name="screen_bg_boss" url="res/gfx/boss/screen_boss.png" />
+		<image name="screen_bg_scriptagency" url="res/gfx/scriptagency/screen_scriptagency.png" />
+		<image name="screen_bg_movieagency" url="res/gfx/movieagency/screen_movieagency.png" />
+		<image name="screen_bg_roomboard" url="res/gfx/roomboard/screen_roomboard.png" />
+		<image name="screen_bg_roomagency" url="res/gfx/roomagency/screen_roomagency.png" />
+		<image name="screen_bg_studio" url="res/gfx/studio/screen_studio.png" />
+		<image name="screen_bg_adagency" url="res/gfx/adagency/screen_adagency.png" />
+		<image name="screen_bg_supermarket" url="res/gfx/supermarket/screen_supermarket.png" />
+		<image name="screen_bg_newsstudio" url="res/gfx/newsstudio/screen_newsstudio.png" />
+		<image name="screen_bg_newsplanner" url="res/gfx/newsstudio/screen_newsplanner.png" />
+		<image name="screen_bg_betty" url="res/gfx/betty/screen_betty.png" />
+		<image name="screen_bg_credits" url="res/gfx/building/screen_credits.png" />
+	</resources>
+
+	<screens>
+		<screen name="screen_emptyroom" image="screen_bg_emptyroom" />
+
+		<screen name="screen_archive" image="screen_bg_archive" />
+		<screen name="screen_boss" image="screen_bg_boss" />
+		<screen name="screen_studio" image="screen_bg_studio" />
+		<screen name="screen_supermarket" image="screen_bg_supermarket" />
+		<screen name="screen_supermarket_production" image="screen_bg_supermarket" parent="screen_supermarket" />
+		<screen name="screen_supermarket_presents" image="screen_bg_supermarket" parent="screen_supermarket" />
+		<screen name="screen_betty" image="screen_bg_betty" />
+		<screen name="screen_adagency" image="screen_bg_adagency" />
+		<screen name="screen_elevatorplan" image="screen_bg_roomboard" />
+		<screen name="screen_credits" image="screen_bg_credits" />
+		<screen name="screen_roomboard" image="screen_bg_roomboard" />
+		<screen name="screen_roomagency" image="screen_bg_roomagency" />
+
+		<screen name="screen_scriptagency" image="screen_bg_scriptagency" />
+
+		<screen name="screen_movieagency" image="screen_bg_movieagency" />
+		<screen name="screen_movieauction" image="screen_bg_movieagency" parent="screen_movieagency" />
+
+		<screen name="screen_office" image="screen_bg_office" />
+		<screen name="screen_office_programmeplanner" image="screen_bg_programmeplanner" parent="screen_office" />
+		<screen name="screen_office_archivedmessages" image="screen_bg_office" parent="screen_office" />
+		<screen name="screen_office_financials" image="screen_bg_financials" parent="screen_office_programmeplanner" />
+		<screen name="screen_office_statistics" image="screen_bg_statistics_audience" parent="screen_office_programmeplanner" />
+		<screen name="screen_office_achievements" image="screen_bg_achievements" parent="screen_office_programmeplanner" />
+		<screen name="screen_office_stationmap" image="screen_bg_stationmap" parent="screen_office" />
+		<screen name="screen_office_safe" image="screen_bg_safe" parent="screen_office" />
+
+		<screen name="screen_newsstudio" image="screen_bg_newsstudio" />
+		<screen name="screen_newsstudio_newsplanner" image="screen_bg_newsplanner" parent="screen_newsstudio" />
+	</screens>
+	<rooms>
+		<!-- visible rooms in the building -->
+		<room name="archive" owner="1" screen="screen_archive" flags="8">
+			<tooltip text="ROOM_ARCHIVE_OF" />
+			<door doorslot="4" floor="2" doortype="3" flags="2" />
+		</room>
+		<room name="archive" owner="2" screen="screen_archive" flags="8">
+			<tooltip text="ROOM_ARCHIVE_OF" />
+			<door doorslot="4" floor="5" doortype="3" flags="2" />
+		</room>
+		<room name="archive" owner="3" screen="screen_archive" flags="8">
+			<tooltip text="ROOM_ARCHIVE_OF" />
+			<door doorslot="4" floor="8" doortype="3" flags="2" />
+		</room>
+		<room name="archive" owner="4" screen="screen_archive" flags="8">
+			<tooltip text="ROOM_ARCHIVE_OF" />
+			<door doorslot="4" floor="11" doortype="3" flags="2" />
+		</room>
+
+		<room name="news" owner="1" screen="screen_newsstudio" flags="8">
+			<tooltip text="ROOM_NEWSSTUDIO_OF" />
+			<door doorslot="2" floor="2" doortype="3" flags="2" />
+		</room>
+		<room name="news" owner="2" screen="screen_newsstudio" flags="8">
+			<tooltip text="ROOM_NEWSSTUDIO_OF" />
+			<door doorslot="2" floor="5" doortype="3" flags="2" />
+		</room>
+		<room name="news" owner="3" screen="screen_newsstudio" flags="8">
+			<tooltip text="ROOM_NEWSSTUDIO_OF" />
+			<door doorslot="2" floor="8" doortype="3" flags="2" />
+		</room>
+		<room name="news" owner="4" screen="screen_newsstudio" flags="8">
+			<tooltip text="ROOM_NEWSSTUDIO_OF" />
+			<door doorslot="2" floor="11" doortype="3" flags="2" />
+		</room>
+
+		<room name="boss" owner="1" screen="screen_boss" flags="8">
+			<tooltip text="ROOM_BOSS_OF" />
+			<door doorslot="3" floor="2" doortype="4" flags="2" />
+		</room>
+		<room name="boss" owner="2" screen="screen_boss" flags="8">
+			<tooltip text="ROOM_BOSS_OF" />
+			<door doorslot="3" floor="5" doortype="4" flags="2" />
+		</room>
+		<room name="boss" owner="3" screen="screen_boss" flags="8">
+			<tooltip text="ROOM_BOSS_OF" />
+			<door doorslot="3" floor="8" doortype="4" flags="2" />
+		</room>
+		<room name="boss" owner="4" screen="screen_boss" flags="8">
+			<tooltip text="ROOM_BOSS_OF" />
+			<door doorslot="3" floor="11" doortype="4" flags="2" />
+		</room>
+
+		<room name="office" owner="1" screen="screen_office" flags="8">
+			<tooltip text="ROOM_BUREAU_OF" />
+			<door doorslot="1" floor="2" doortype="1" flags="2" />
+		</room>
+		<room name="office" owner="2" screen="screen_office" flags="8">
+			<tooltip text="ROOM_BUREAU_OF" />
+			<door doorslot="1" floor="5" doortype="1" flags="2" />
+		</room>
+		<room name="office" owner="3" screen="screen_office" flags="8">
+			<tooltip text="ROOM_BUREAU_OF" />
+			<door doorslot="1" floor="8" doortype="1" flags="2" />
+		</room>
+		<room name="office" owner="4" screen="screen_office" flags="8">
+			<tooltip text="ROOM_BUREAU_OF" />
+			<door doorslot="1" floor="11" doortype="1" flags="2" />
+		</room>
+
+		<room name="studio" owner="1" screen="screen_studio" size="1" flags="11">
+			<tooltip text="ROOM_STUDIO_OF" />
+			<door doorslot="2" floor="1" doortype="1" flags="2" />
+		</room>
+		<room name="studio" owner="2" screen="screen_studio" size="1" flags="11">
+			<tooltip text="ROOM_STUDIO_OF" />
+			<door doorslot="2" floor="4" doortype="1" flags="2" />
+		</room>
+		<room name="studio" owner="3" screen="screen_studio" size="1" flags="11">
+			<tooltip text="ROOM_STUDIO_OF" />
+			<door doorslot="2" floor="7" doortype="1" flags="2" />
+		</room>
+		<room name="studio" owner="4" screen="screen_studio" size="1" flags="11">
+			<tooltip text="ROOM_STUDIO_OF" />
+			<door doorslot="2" floor="10" doortype="1" flags="2" />
+		</room>
+
+		<room name="frduban" owner="0" screen="screen_emptyroom" size="2" flags="8">
+			<tooltip text="ROOM_FRDUBAN" />
+			<door doorslot="3" floor="12" doortype="4" flags="2" />
+		</room>
+		<room name="vrduban" owner="0" screen="screen_emptyroom" size="2" flags="8">
+			<tooltip text="ROOM_VRDUBAN" />
+			<door doorslot="3" floor="7" doortype="3" flags="2" />
+		</room>
+		<room name="gunsagency" owner="0" screen="screen_emptyroom" size="3" flags="1">
+			<tooltip text="ROOM_GUNSAGENCY" />
+			<door doorslot="4" floor="9" doortype="3" flags="2" />
+		</room>
+		<room name="tobaccolobby" owner="0" screen="screen_emptyroom" size="3" flags="1">
+			<tooltip text="ROOM_TOBACCOLOBBY" description="ROOM_TOBACCOLOBBY_OWNER" />
+			<door doorslot="2" floor="6" doortype="4" flags="2" />
+		</room>
+		<room name="notobacco" owner="0" screen="screen_emptyroom" size="3" flags="1">
+			<tooltip text="ROOM_NOTOBACCO" description="ROOM_NOTOBACCO_OWNER" />
+			<door doorslot="3" floor="6" doortype="3" flags="2" />
+		</room>
+		<room name="peacebrothers" owner="0" screen="screen_emptyroom" size="3" flags="1">
+			<tooltip text="ROOM_PEACEBROTHERS" description="ROOM_PEACEBROTHERS_SUB" />
+			<door doorslot="3" floor="10" doortype="3" flags="2" />
+		</room>
+		<room name="scriptagency" owner="0" screen="screen_scriptagency" flags="8">
+			<tooltip text="ROOM_SCRIPT_OFFICE" description="ROOM_SCRIPT_OFFICE_OWNER" />
+			<door doorslot="3" floor="4" doortype="3" flags="2" />
+		</room>
+		<room name="roomagency" owner="0" screen="screen_roomagency" flags="8">
+			<tooltip text="ROOM_ROOMAGENCY" description="ROOM_ROOMAGENCY_OWNER" />
+			<door doorslot="2" floor="9" doortype="2" flags="2" />
+		</room>
+		<room name="betty" owner="0" screen="screen_betty" flags="8">
+			<tooltip text="ROOM_BETTY" />
+			<door doorslot="1" floor="13" doortype="1" flags="2" />
+		</room>
+		<room name="laundry" owner="0" screen="screen_emptyroom" size="2" flags="1">
+			<tooltip text="ROOM_LAUNDRY" />
+			<door doorslot="1" floor="1" doortype="2" flags="2" />
+		</room>
+		<room name="biocontrol" owner="0" screen="screen_emptyroom" size="1" flags="1">
+			<tooltip text="ROOM_BIOCONTROL" />
+			<door doorslot="2" floor="12" doortype="3" flags="2" />
+		</room>
+		<room name="computershop" owner="0" screen="screen_emptyroom" size="2" flags="1">
+			<tooltip text="ROOM_COMPUTERSHOP" />
+			<door doorslot="4" floor="7" doortype="4" flags="2" />
+		</room>
+		<room name="psychiatrist" owner="0" screen="screen_emptyroom" size="1" flags="1">
+			<tooltip text="ROOM_PSYCHIATRIST" />
+			<door doorslot="2" floor="3" doortype="4" flags="2" />
+		</room>
+		<room name="supermarket" owner="0" screen="screen_supermarket" flags="8">
+			<tooltip text="ROOM_SUPERMARKET" description="ROOM_SUPERMARKET_SUB" />
+			<door doorslot="3" floor="1" doortype="3" flags="2" />
+		</room>
+		<room name="movieagency" owner="0" screen="screen_movieagency" flags="8">
+			<tooltip text="ROOM_MOVIEAGENCY" description="ROOM_MOVIEAGENCY_OWNER" />
+			<door doorslot="1" floor="3" doortype="3" flags="2" />
+		</room>
+		<room name="adagency" owner="0" screen="screen_adagency" flags="8">
+			<tooltip text="ROOM_ADAGENCY" description="ROOM_ADAGENCY_OWNER" />
+			<door doorslot="1" floor="10" doortype="3" flags="2" />
+		</room>
+
+		<room name="roomboard" owner="0" screen="screen_roomboard" flags="32">
+			<tooltip text="ROOM_ROOMBOARD" />
+			<door doorslot="4" x="380" floor="0" doortype="1" doorwidth="60" flags="2" />
+		</room>
+		<room name="credits" owner="0" screen="screen_credits" flags="32">
+			<tooltip text="ROOM_CREDITS" />
+			<door doorslot="4" x="410" floor="13" doortype="1" doorwidth="55" flags="2" />
+		</room>
+		<room name="porter" owner="0" screen="screen_credits" flags="32">
+			<tooltip text="ROOM_PORTER" />
+			<door doorslot="1" x="0" floor="0" doortype="1" doorwidth="66" flags="2" />
+		</room>
+
+<!--
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="0" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="1" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="2" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="3" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="4" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="5" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="6" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="7" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="8" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="9" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="10" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="11" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="12" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="13" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+-->
+
+		<room name="elevatorplan" owner="0" screen="screen_elevatorplan" flags="32">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" x="210" floor="0" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="1" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="2" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="3" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="4" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="5" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="6" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="7" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="8" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="9" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="10" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="11" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="12" doorwidth="48" doortype="-1" flags="7" />
+			<door doorslot="-1" x="210" floor="13" doorwidth="48" doortype="-1" flags="7" />
+		</room>
+
+
+		<!-- "building" is a special room - and also handle if no room is given -->
+		<room name="building" owner="0" flags="32">
+			<hotspots>
+				<!--
+					elevator planner
+					================
+					instead of rooms in each floor, we create hotspots
+					so the building can handle clicks to "other floor's planner"
+					without the figure targeting other floors
+				-->
+			<!-- 
+				currently done via "room + door"
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="0" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="1" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="2" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="3" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="4" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="5" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="6" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="7" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="8" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="9" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="10" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="11" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="12" width="40" height="58" bottomy="0" />
+				<hotspot name="elevatorplan" tooltiptext="ROOM_ELEVATORPLAN" x="361" floor="13" width="40" height="58" bottomy="0" />
+			-->
+			</hotspots>
+		</room>
+
+	</rooms>
+</tvt>

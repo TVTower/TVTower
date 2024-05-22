@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" />
+	<scripttemplates>
+		<scripttemplate licence_type="3" product="2" guid="Stukov_Das-Geheimnis_der_großen_Schwerter" comment="https://en.wikipedia.org/wiki/Memory,_Sorrow,_and_Thorn | TODO: mention and ref author Tad Williams">
+			<title>
+				<de>Das Mysterium der großen Klingen</de>
+				<en>Remembrance, Suffer, and Spike</en>
+			</title>
+			<title_original>
+				<de>Das Geheimnis der großen Schwerter</de>
+				<en>Memory, Sorrow, and Thorn</en>
+			</title_original>
+			<description>
+				<de>Verfilmung der epischen Fantasy-Serie über die Welt von Osten Ard. Die Geschichte von %ROLENAME1% Mondkalb (wegen seiner Zerstreung so genannt) und %ROLENAME2% Sturmkönig - und ihrer tödlichen Feindschaft.</de>
+				<en>Film adaptation of the epic fantasy series about the world of Osten Ard. The story of %ROLENAME1% Mooncalf (named so because of his absent-mindedness) and %ROLENAME2% Storm King - and their deadly enmity.</en>
+			</description>
+			<children>
+				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_1">
+					<title>
+						<de>Der Drachenknochensitz I</de>
+						<en>The Dragon Skeleton Throne I</en>
+					</title>
+					<title_original>
+						<de>Der Drachenbeinthron I</de>
+						<en>The Dragonbone Chair I</en>
+					</title_original>
+					<description>
+						<de>Der betagte König Johan liegt im Sterben, und um die Thronfolge entbrennt ein hinterhältiger Kampf unter seinen Söhnen %ROLENAME5% und %ROLENAME4%. Der Küchenjunge %ROLENAME1% gerät mitten in die Auseinandersetzungen.</de>
+						<en>The aged King John is dying, and a treacherous battle breaks out among his sons %ROLENAME5% and %ROLENAME4% over the succession to the throne. The kitchen boy %ROLENAME1% gets caught in the middle of the confrontations.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_2">
+					<title>
+						<de>Der Drachenknochensitz II</de>
+						<en>The Dragon Skeleton Throne II</en>
+					</title>
+					<title_original>
+						<de>Der Drachenbeinthron II</de>
+						<en>The Dragonbone Chair II</en>
+					</title_original>
+					<description>
+						<de>Welche Ziele aber verfolgen die geheimnisvollen Elbenvölker der Nornen und Sithi, denen das Land einst gehörte? Aus Misstrauen gegenüber seinem Bruder %ROLENAME4% schliesst Koenig %ROLENAME5% einen Bund mit den Nornen und erhält das große Schwert Leid.</de>
+						<en>But what are the goals of the mysterious elven nations of the Norns and Sithi, to whom the land once belonged? Out of mistrust towards his brother %ROLENAME4%, King %ROLENAME5% enters into a covenant with the Norns and receives the great sword Sorrow.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_3">
+					<title>
+						<de>Der Lebwohlstein I</de>
+						<en>Stone of Goodbye I</en>
+					</title>
+					<title_original>
+						<de>Der Abschiedsstein I</de>
+						<en>Stone of Farewell I</en>
+					</title_original>
+					<description>
+						<de>Auf dem Hochhorst herrschen Sturmkönig %ROLENAME2%s Kreaturen. Aber noch regt sich Widerstand.</de>
+						<en>Storm King %ROLENAME2%'s creatures rule on the high eyrie. But resistance is still stirring.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="3" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_4">
+					<title>
+						<de>Der Lebwohlstein II</de>
+						<en>Stone of Goodbye II</en>
+					</title>
+					<title_original>
+						<de>Der Abschiedsstein II</de>
+						<en>Stone of Farewell II</en>
+					</title_original>
+					<description>
+						<de>Die Gruppe um Prinz %ROLENAME4% erreicht die alte Festung der Sitthi auf dem Abschiedsstein. Von dort aus beginnt der letzte Kampf um Osten Ard.</de>
+						<en>The group around Prince %ROLENAME4% reaches the old fortress of the Sitthi on the Farewell Stone. From there, the final battle for Osten Ard begins.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="4" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_5">
+					<title>
+						<de>Die Nornenherrscherin</de>
+						<en>Utok'ko</en>
+					</title>
+					<title_original>
+						<de>Die Nornenkönigin</de>
+						<en>Utuk'ku</en>
+					</title_original>
+					<description>
+						<de>Die Suche nach dem letzten der drei großen Schwerter beginnt. Alte Schriften vermuten es im Grab des alten Koenigs Johan.</de>
+						<en>The search for the last of the three great swords begins. Ancient writings suspect it to be in the grave of the old king Johan.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="5" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_6">
+					<title>
+						<de>Vor den Toren</de>
+						<en>Outside the Gates</en>
+					</title>
+					<title_original>
+						<de>Der Engelsturm</de>
+						<en>To Green Angel Tower</en>
+					</title_original>
+					<description>
+						<de>Während vor den Toren des Hochhorstes %ROLENAME4%s Armee warted, findet im Engelsturm die entscheidende Auseinandersetzung zwischen %ROLENAME5%, %ROLENAME6%, %ROLENAME1% und %ROLENAME3% statt.</de>
+						<en>While %ROLENAME4%'s army waits outside the gates of the High Eyrie, the decisive confrontation between %ROLENAME5%, %ROLENAME6%, %ROLENAME1% and %ROLENAME3% takes place in the Angel Tower.</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="c180473c-4d92-4283-8c37-d973524e8f84" />
+				<job index="2" function="2" required="1" role_guid="8d67b149-2338-4c7f-b7f7-351dd0d762ee" />
+				<job index="3" function="2" required="1" role_guid="c9e8f6dc-8d3b-46cf-a696-63326ae99d40" />
+				<job index="4" function="2" required="1" role_guid="bc3007eb-90c6-47f8-85d5-468d4338761e" />
+				<job index="5" function="2" required="1" role_guid="3ace6b6b-8971-4058-b591-61138ac60698" />
+				<job index="6" function="2" required="1" role_guid="6fbf1bbe-10c3-4f3a-a307-92244b0c140a" />
+				<job index="7" function="2" required="1" role_guid="0d1d49fc-9c70-4be9-8868-d06af9a7c736" />
+				<job index="8" function="2" required="1" gender="2" />
+				<job index="9" function="2" required="1" gender="1" />
+				<job index="10" function="2" required="1" gender="2" />
+				<job index="11" function="2" required="1" gender="1" />
+			</jobs>
+			<genres maingenre="10" subgenres="1" />
+			<blocks value="2" />
+			<studio_size slope="50" max="3" min="2" />
+			<price max="120000" min="50000" />
+			<potential slope="45" max="92" min="42" />
+			<outcome slope="40" max="71" min="43" />
+			<review slope="40" max="53" min="28" />
+			<speed slope="50" max="83" min="48" />
+			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<availability year_range_from="1994" year_range_to="-1" />
+		</scripttemplate>
+
+		<scripttemplate licence_type="3" product="2" guid="Stukov_Goblins" comment="TODO: doesn't really seem to be https://en.wikipedia.org/wiki/The_Goblins - seems to be made-up">
+			<title>
+				<de>Die Goblins</de>
+				<en>The Goblins</en>
+			</title>
+			<title_original>
+				<de>Die Goblins</de>
+				<en>The Goblins</en>
+			</title_original>
+			<description>
+				<de>Verfilmung der Buchreihe Die Goblins um %Goblin% den Goblin und den vergessenen Gott %Gott%.</de>
+				<en>Adaptation of the book series The Goblins about %Goblin% the goblin and the forgotten god %Gott%.</en>
+			</description>
+			<children>
+				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Goblins_1">
+					<title>
+						<de>Die Goblins</de>
+						<en>The Goblins</en>
+					</title>
+					<title_original>
+						<de>Die Goblins</de>
+						<en>The Goblins</en>
+					</title_original>
+					<description>
+						<de>%Goblin% ist ein Goblin - ein kleiner, schwächlicher Goblin. Wenn er eines nicht sein will, dann ist es ein Held zu sein. Eines Tages jedoch passiert etwas ... und %Goblin% muss zum Helden werden ... irgendwie. Ach ja und %Gott% gibt es auch.</de>
+						<en>%Goblin% is a goblin - a small, weak goblin. If there's one thing he doesn't want to be, then it is to be a hero. One day, however, something happens ... and %Goblin% has to become a hero ... somehow. Oh, and %Gott% exists, too.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Goblins_2">
+					<title>
+						<de>Die Rückkehr der Goblins</de>
+						<en>Return of the Goblins</en>
+					</title>
+					<title_original>
+						<de>Die Rückkehr der Goblins</de>
+						<en>Return of the Goblins</en>
+					</title_original>
+					<description>
+						<de>Als eines Tages ein Oger auftaucht und die Goblins um Hilfe bittet, wird der schwächliche %Goblin% auf eine brandgefährliche Mission geschickt. Ach ja und %Gott% gibt es auch.</de>
+						<en>When one day an ogre shows up and asks the goblins for help, the frail %Goblin% is sent on a blazingly dangerous mission. Oh yes and %Gott% also exists.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Goblins_3">
+					<title>
+						<de>Der Krieg der Goblins</de>
+						<en>The War of the Goblins</en>
+					</title>
+					<title_original>
+						<de>Der Krieg der Goblins</de>
+						<en>The War of the Goblins</en>
+					</title_original>
+					<description>
+						<de>Ein Angriff auf die Goblin Hoehlen und schon steckt %Goblin% Drachentoeter mitten im Krieg. Ach ja und %Gott% gibt es auch.</de>
+						<en>One attack on the goblin caves and %Goblin% Dragonslayer is already in the middle of the war. Oh yes and %Gott% is also there.</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<variables>
+				<Gott>
+					<de>Schattenstern|Isa|Lichtbeisser|Ipsep|Noc|Herbststern</de>
+					<en>Shadowstar|Isa|Lightbiter|Ipsep|Noc|Autumnstar</en>
+				</Gott>
+				<Goblin>
+					<de>Jig|Braf|Relka|Grell</de>
+					<en>Jig|Braf|Relka|Grell</en>
+				</Goblin>
+			</variables>
+			<jobs>
+				<job function="1" index="0" required="1" />
+				<job function="2" index="1" gender="1" required="1" />
+				<job function="2" index="2" gender="2" required="1" />
+				<job function="2" index="3" gender="1" required="0" />
+				<job function="2" index="4" gender="2" required="0" />
+				<job function="32" index="5" gender="0" required="0" />
+				<job function="32" index="6" gender="0" required="0" />
+				<job function="32" index="7" gender="0" required="0" />
+				<job function="32" index="8" gender="0" required="0" />
+				<job function="32" index="9" gender="0" required="0" />
+			</jobs>			
+			<genres maingenre="10" subgenres="1" />
+			<blocks slope="50" max="2" min="1" />
+			<studio_size slope="33" max="2" min="1" />
+			<price max="250000" min="0" />
+			<potential slope="50" max="60" min="0" />
+			<outcome slope="50" max="50" min="0" />
+			<review slope="30" max="25" min="0" />
+			<speed slope="60" max="83" min="0" />
+			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+		</scripttemplate>
+
+		<scripttemplate licence_type="1" product="1" guid="Stukov_DarkestDungeon" comment="https://en.wikipedia.org/wiki/Darkest_Dungeon">
+			<title>
+				<de>Dismal Dungeon - Der Film</de>
+				<en>Dismal Dungeon - The Film</en>
+			</title>
+			<title_original>
+				<de>Darkest Dungeon - Der Film</de>
+				<en>Darkest Dungeon - The Film</en>
+			</title_original>
+			<description>
+				<de>Versuch einer Verfilmung des Computerspiels, naja zumindest der Kampf gegen Monster. %Class1%, %Class2%, %Class3% und %Class4% versuchen zu überleben. Jayne Wune leiht seine Stimme, oder ist sie nur eingespielt?</de>
+				<en>Attempt at a film adaptation of the computer game, well at least the fight against monsters. %Class1%, %Class2%, %Class3% and %Class4% try to survive. Jayne Wune lends his voice, or is it just recorded?</en>
+			</description>
+			<variables>
+				<Class1>
+					<de>Grave Robber|Crusader|Arbalest</de>
+					<en>Grave Robber|Crusader|Arbalest</en>
+				</Class1>
+				<Class2>
+					<de>Bounty Hunter|Hellion|Highwayman</de>
+					<en>Bounty Hunter|Hellion|Highwayman</en>
+				</Class2>
+				<Class3>
+					<de>Houndmaster|Jester|Man-at-Arms</de>
+					<en>Houndmaster|Jester|Man-at-Arms</en>
+				</Class3>
+				<Class4>
+					<de>Occultist|Plague Doctor|Vestal|Flagellant</de>
+					<en>Occultist|Plague Doctor|Vestal|Flagellant</en>
+				</Class4>
+			</variables>
+			<jobs>
+				<job function="1" index="0" required="1" />
+				<job function="2" index="1" gender="0" required="1" />
+				<job function="2" index="2" gender="0" required="1" />
+				<job function="2" index="3" gender="0" required="1" />
+				<job function="2" index="4" gender="0" required="1" />
+				<job function="32" index="5" gender="0" required="0" />
+				<job function="32" index="6" gender="0" required="0" />
+			</jobs>
+			<data flags_optional="96" />
+			<genres maingenre="10" subgenres="12,1" />
+			<blocks slope="30" max="2" min="1" />
+			<price slope="25" max="500000" min="10000" />
+			<potential slope="30" max="100" min="0" />
+			<outcome slope="30" max="100" min="0" />
+			<review slope="10" max="100" min="0" />
+			<speed slope="50" max="100" min="20" />
+			<availability year_range_from="2016" year_range_to="-1" />
+		</scripttemplate>
+
+		<scripttemplate licence_type="1" product="1" guid="Stukov_DerWidersacher" comment="TODO: this doesn't seem to be https://de.wikipedia.org/wiki/Der_Widersacher - seems to be completely made up">
+			<title>
+				<de>Der Widersacher</de>
+				<en>The Adversary</en>
+			</title>
+			<title_original>
+				<de>Der Widersacher</de>
+				<en>The Adversary</en>
+			</title_original>
+			<description>
+				<de>Er kommt mit Feuer und Sturm, und mit seinem Erscheinen brechen die letzten Tage der Menschheit an. Eine Legende wird Wirklichkeit, wie der Metzger %RoleMale% und Anhalterin %RoleFemale% erleben.</de>
+				<en>He comes with fire and storm, and with his appearance the final days of mankind are dawning. A legend becomes reality, as the butcher %RoleMale% and hitchhiker %RoleFemale% experience.</en>
+			</description>
+			<variables>
+				<RoleMale>
+					<de>Brenner|Heidmann|Baumann|Schmidt</de>
+					<en>Brenner|Heidmann|Baumann|Schmidt</en>
+				</RoleMale>
+				<RoleFemale>
+					<de>Astrid|Charlotte|Nicole|Christiane</de>
+					<en>Astrid|Charlotte|Nicole|Christiane</en>
+				</RoleFemale>				
+			</variables>
+			<jobs>
+				<job function="1" index="0" required="1" />
+				<job function="2" index="1" gender="1" required="1" />
+				<job function="2" index="2" gender="2" required="1" />
+				<job function="32" index="3" gender="1" required="1" />
+				<job function="32" index="4" gender="0" required="0" />
+				<job function="32" index="5" gender="0" required="0" />
+			</jobs>
+			<data flags_optional="48" />
+			<genres maingenre="17" subgenres="" />
+			<studio_size slope="40" max="3" min="1" />
+			<blocks slope="50" max="3" min="2" />
+			<price slope="25" max="500000" min="10000" />
+			<potential slope="30" max="100" min="0" />
+			<outcome slope="30" max="100" min="0" />
+			<review slope="40" max="100" min="0" />
+			<speed slope="50" max="100" min="20" />
+		</scripttemplate>
+	</scripttemplates>
+</tvtdb>

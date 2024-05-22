@@ -1,0 +1,153 @@
+PLANNER_UNKNOWN      = Bientôt
+PLANNER_PROGRAMME    = Programme
+PLANNER_ADS          = Pub
+PLANNER_FINANCES     = Finances
+PLANNER_STATISTICS   = Statistiques
+PLANNER_MESSAGES     = Messages
+PLANNER_ACHIEVEMENTS = Succès
+
+PRIMETIME     = Prime time
+NIGHTTIME     = Programme de nuit
+LOW_AUDIENCE  = peu de spectateurs
+HIGH_AUDIENCE = beaucoup de spectateurs
+
+
+MOVIE_SPEED       = Vitesse
+MOVIE_CRITIC      = Critiques
+MOVIE_BOXOFFICE   = Salles de cinéma
+MOVIE_TVAUDIENCE  = Spectateurs
+MOVIE_TOPICALITY  = Tendance
+MOVIE_BLOCKS      = Blocs
+MOVIE_XRATED      = Classé X
+MOVIE_EPISODES    = Épisodes
+MOVIE_CAST        = Distribution
+MOVIE_REPITITIONS = Rediffusion
+
+MOVIE_LIVESHOW   = Émission en direct
+MOVIE_CALLINSHOW = Gain %PROFIT% par 1.000 téléspectacteurs.
+MOVIE_TRAILER    = La diffusion d'une bande-annonce peut accroître l'intérêt pour les diffusions à venir du programme promu.
+
+MOVIES          = Films
+SERIES          = Séries
+SERIES_SINGULAR = Série
+SPECIAL_BIN     = Camelote
+AUCTION         = Enchères
+TRAILER         = Bande-annonce
+X_RATED         = Classé X
+
+MOVIES_AND_SERIES_AUCTION                = Enchères de films et séries
+CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Clique sur un film ou une serie pour faire une offre.
+AUCTION_MAKE_BID                         = Offre
+AUCTION_WITHOUT_BID                      = Sans offre
+YOU_HAVE_BEEN_OUTBID                     = Tu as été surenchéri
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Quelqu'un a enchéri plus que toi pour |b|%TITLE%|/b|.
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Ton offre de %MONEY% a été remboursé.
+YOU_HAVE_WON_AN_AUCTION                  = Tu as remporté une enchère.
+
+PROGRAMME_GENRE_UNDEFINED                  = Divers
+PROGRAMME_GENRE_ADVENTURE                  = Aventure
+PROGRAMME_GENRE_ACTION                     = Action
+PROGRAMME_GENRE_ANIMATION                  = Animation
+PROGRAMME_GENRE_CRIME                      = Polar
+PROGRAMME_GENRE_COMEDY                     = Comédie
+PROGRAMME_GENRE_DOCUMENTARY                = Documentaire
+PROGRAMME_GENRE_DRAMA                      = Drame
+PROGRAMME_GENRE_EROTIC                     = Erotique
+PROGRAMME_GENRE_FAMILY                     = Famille
+PROGRAMME_GENRE_FANTASY                    = Fantaisie
+PROGRAMME_GENRE_HISTORY                    = Historique
+PROGRAMME_GENRE_HORROR                     = Horreur
+PROGRAMME_GENRE_MONUMENTAL                 = Monumental
+PROGRAMME_GENRE_MYSTERY                    = Mystère
+PROGRAMME_GENRE_ROMANCE                    = Amour
+PROGRAMME_GENRE_SCIFI                      = SciFi
+PROGRAMME_GENRE_THRILLER                   = Thriller
+PROGRAMME_GENRE_WESTERN                    = Western
+PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Documentaire & Reportage
+PROGRAMME_GENRE_SHOW_AND_EVENTS            = Jeux & Évènements
+PROGRAMME_GENRE_SHOW                       = Show
+PROGRAMME_GENRE_SHOW_MUSIC                 = Musique
+PROGRAMME_GENRE_SHOW_POLITICS              = Talk-show politique
+PROGRAMME_GENRE_SHOW_GAME                  = Jeu télévisé
+PROGRAMME_GENRE_SHOW_TALK                  = Talk-show
+PROGRAMME_GENRE_EVENT                      = Évènement
+PROGRAMME_GENRE_EVENT_POLITICS             = Politique
+PROGRAMME_GENRE_EVENT_SPORT                = Sports
+PROGRAMME_GENRE_EVENT_SHOWBIZ              = Showbiz
+PROGRAMME_GENRE_EVENT_MUSIC                = Musique et chanson
+PROGRAMME_GENRE_FEATURE                    = Reportage
+PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Presse à sensation
+
+PROGRAMME_FLAG_LIVE      = En direct
+PROGRAMME_FLAG_ANIMATION = Animation
+PROGRAMME_FLAG_CULTURE   = Culture
+PROGRAMME_FLAG_CULT      = Culte
+PROGRAMME_FLAG_TRASH     = Trash
+PROGRAMME_FLAG_BMOVIE    = Série B
+PROGRAMME_FLAG_XRATED    = Classé X
+PROGRAMME_FLAG_PAID      = Programme pub / tirelire
+PROGRAMME_FLAG_SERIES    = Séries
+PROGRAMME_FLAG_SCRIPTED  = Scénarisé
+
+PROGRAMMELICENCES          = Licences de programmes
+SELECT_LICENCES_FOR_SALE   = Sélectionner licence à vendre
+LICENCETYPE_COLLECTION     = Paquet
+LICENCETYPE_SINGLE         = Individuel
+LICENCETYPE_EPISODE        = Épisode
+LICENCETYPE_SERIES         = Série
+LICENCETYPE_FRANCHISE      = Franchise
+SERIES_WITH_X_EPISODES     = Série avec %EPISODESCOUNT% episodes
+COLLECTION_WITH_X_ELEMENTS = Paquet avec %X% éléments
+
+PROGRAMME_PRODUCT_UNDEFINED   = Non défini
+PROGRAMME_PRODUCT_MOVIE       = Film
+PROGRAMME_PRODUCT_SERIES      = Série
+PROGRAMME_PRODUCT_SHOW        = Show
+PROGRAMME_PRODUCT_FEATURE     = Reportage
+PROGRAMME_PRODUCT_INFOMERCIAL = Programme pub
+PROGRAMME_PRODUCT_EVENT       = Évènement
+PROGRAMME_PRODUCT_MISC        = Divers
+
+PROGRAMME_IN_PROGRAMME_PLAN              = Programme dans la grille !
+TRAILER_IN_PROGRAMME_PLAN                = Bande-annonce dans la grille !
+PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN  = Programme et bande-annonce dans la grille !
+ONLY_1_BROADCAST_POSSIBLE                = Pas plus d'une diffusion possible !
+ONLY_X_BROADCASTS_POSSIBLE               = Pas plus de %X% diffusions possibles !
+NO_MORE_BROADCASTS_ALLOWED               = Plus de diffusions possibles !
+BROADCAST_TIME_RESTRICTED                = Temps de diffusion défini
+BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y       = Diffusion permis de %X% à %Y% heures !
+FIRST_BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Première diffusion permis de %X% à %Y% heures !
+LIVE_PRODUCTION_FINISH_WILL_COST_X       = Finalisation de la production en direct coûte %X% !
+
+OPENINGSHOW_TITLE       = Inauguration «%CHANNELNAME%«
+OPENINGSHOW_DESCRIPTION = Faites sauter les bouchons ! %CHANNELNAME% se lance chez vous.
+
+SPORT_PROGRAMME_TITLE                                = %SPORTNAME% : %LEAGUENAME% %SEASONYEARSTART%
+SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Tous les %MATCHCOUNT% matchs de la ligue %LEAGUENAME% de la saison %SEASONYEARSTART%.
+SPORT_PROGRAMME_MATCH_TIMES                          = Heures des matchs
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match entre les numéros %TEAM1RANK% et %TEAM2RANK% de la ligue. L'entraîneur de %TEAM1NAMEINITIALS%, %TEAM1TRAINERSHORT% se montre optimiste.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = L'étoile de %TEAM1NAMEINITIALS%, %TEAM1STARSHORT%, contre l'équipe de %TEAM2STAR%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ce sera un match fascinant quand %TEAM1ARTICLE1% %TEAM1NAME% rencontre les joueurs %TEAM2NAMEINITIALS%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% chez %TEAM1NAMEINITIALS% à %TEAM1CITY%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% et son équipe voyagent à %TEAM2CITY% pour rencontrer le numéro %TEAM2RANK% de la ligue.
+
+SPORT_PROGRAMME_PLAYOFF_MATCH    = Match de relégation.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match de la ligue %LEAGUENAME%.
+SPORT_PLAYOFFS_LONG              = «Relégation»
+SPORT_PLAYOFFS_SHORT             = «REL»
+
+SPORT_AFTER_PENALTY_SHORT  = «pénalty»
+SPORT_AFTER_OVERTIME_SHORT = «prolongation»
+
+LIVE_ON_TAPE                        = Diffusion différée
+ALL_MATCHES_FINISHED                = Tous matchs terminés
+X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% matchs en direct commencés
+
+
+PENALTY_OF_X_WAS_PAID                                      = Pénalité de %MONEY% a été payé.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = La diffusion du programme classé X |b|%TITLE%|/b| n'est pas autorisée pendant la journée.
+AUTHORITIES_STOPPED_BROADCAST                              = Les autorités interdisent la diffusion.
+AUTHORITIES_CONFISCATED_LICENCE                            = Les autorités retirent la licence.
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licence de programme |b|%TITLE%|/b| retiré.
+SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Il parait que les autorités ont inspecté la mauvaise salle.
+BETTER_WATCH_OUT_NEXT_TIME                                 = Fais gaffe la prochaine fois !

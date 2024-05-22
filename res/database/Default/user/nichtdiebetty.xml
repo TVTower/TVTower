@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="Daten von Nicht_die_Betty" />
+	<!--
+		Personen die nur mal in einer Serie auftauchen und keine anderen
+	    Rollen spielen.
+	    Nutzen, wenn man verschiedene Leute im "Cast" (Bei Schauspieler
+	    usw.) haben will, ohne dass die eigene News bekommen - oder man
+	    viele Details angeben muss.
+	-->
+	<insignificantpeople>
+		<!--
+			Beispiel:
+			<person id="nichtdiebetty-person-test" first_name="Inge" last_name="Meier" nick_name="Frau Meier" />
+		-->
+	</insignificantpeople>
+
+	<!--
+		Schauspieler/Regisseure die hier erstmalig genutzt werden.
+		Diese Personen stehen Eigenproduktionen zur Verfuegung, oder
+		tauchen in News auf
+	-->
+	<celebritypeople>
+		<person id="nichtdiebetty-celebritypeople-hainerbecherflechter" tmdb_id="0" imdb_id="" fictional="1" creator="">
+			<first_name>Hainer</first_name>
+			<last_name>Becherflechter</last_name>
+			<details job="1" gender="1"  birthday="1948" deathday="" country="D" />
+			<data popularity="15" affinity="45" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
+	</celebritypeople>
+
+	<!-- Alle Programme / Serien -->
+	<!--
+		Genre:
+			Adventure  = 1      Action   = 2      Animation   = 3
+			Crime      = 4      Comedy   = 5      Documentary = 6
+			Drama      = 7      Erotic   = 8      Family      = 9
+			Fantasy    = 10     History  = 11     Horror      = 12
+			Monumental = 13     Mystery  = 14     Romance     = 15
+			SciFi      = 16     Thriller = 17     Western     = 18
+
+			Reportage  = 300
+
+		Flags: (addieren - also 1 und 2 = 3)
+			Live   = 1      Animation   = 2       Culture = 4
+			Cult   = 8      Trash       = 16      BMovie  = 32
+			XRated = 64     Paid/CallIn = 128
+		-->
+	<allprogrammes>
+		<programme id="nichtdiebetty-programme-helgoland-01" product="1" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
+			<title>
+				<de>Helgoland</de>
+				<en>Helgoland</en>
+			</title>
+			<description>
+				<de>Gezeigt werden alle Sehenswürdigkeiten. Die Lange Anna. Die Lummen. Jede. In Nahaufnahme.
+Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
+				<en>All the sights are shown. The Long Anna. The auks. Each one. In close-up.
+And at the end fisherman Matjes demonstrates how to properly shell prawns.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">nichtdiebetty-celebritypeople-hainerbecherflechter</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1988" distribution="0" maingenre="300" subgenre="" flags="20" blocks="2" price_mod="1.0" />
+			<ratings critics="14" speed="15" outcome="0" />
+		</programme>
+	</allprogrammes>
+
+
+</tvtdb>

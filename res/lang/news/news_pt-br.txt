@@ -1,0 +1,177 @@
+NEWS_TECHNICS_MEDIA   = Mídia / Tecnologia
+NEWS_POLITICS_ECONOMY = Política / Economia
+NEWS_SHOWBIZ          = Entretenimento
+NEWS_SPORT            = Esportes
+NEWS_CURRENTAFFAIRS   = Atualidades
+NEWS_CULTURE          = Cultura
+
+NEWS_SORT_TOPICALITY = Classificar por atualidade
+#NEWS_SORT_PAID       = 
+#NEWS_SORT_AGE        = 
+NEWS_SORT_PRICE      = Classificar por preço
+
+NEWSPLANSIGN_TO_THE_TEAM             = Para a equipe
+NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS = transmitir as seguintes notícias:
+MANAGE_BROADCASTED_NEWS              = Gerenciar transmissão de notícias
+
+NEWSSTUDIO_NOT_SUBSCRIBED                          = não inscrito
+NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL                   = inscrever-se no gênero nível
+NEWSSTUDIO_SUBSCRIPTION_LEVEL                      = nível da inscrição
+NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER         = não se inscrever mais no gênero
+NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL                 = próximo nível de inscrição
+NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL              = nível de assinatura atual
+NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Hoje você usou um nível máximo de inscrição %MAXLEVEL%. Então, hoje você pagará %TOPAY%.
+
+RIGHT_CLICK_TO_DELETE = Clique com o botão direito para apagar
+
+
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Embaixador da RP do Duban ofende colega diplomata.
+NEWS_TERROR_GROUP1_LEVEL1_TEXT1  = Escândalo: um embaixador da RP do Duban insultou o embaixador da RL do Duban.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Embaixador da RP do Duban insulta vizinhos.
+NEWS_TERROR_GROUP2_LEVEL1_TEXT1  = Não pode ser verdade: embaixador da RL do Duban insulta diplomata da RP do Duban.
+
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Embaixador é agredido
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1  = Indo para residência, o Embaixador da RP do Duban foi agredido na garagem no subsolo. Testemunhas relatam ter visto carro da RL do Duban saindo do local.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Apartamento de embaixador é vandalizado
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1  = O apartamento do Embaixador da RL do Duban é devastado. Pistas apontam para círculos da RP do Duban ...
+
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = RP do Duban ameaça retaliar
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1  = RP do Duban faz ameaças abertas de vingança. Os culpas aparentemente foram encontrados. A situação é delicada.
+NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = RL do Duban alerta sobre consequências
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1  = "Basta". O texto seco da mensagem. A RL do Duban realiza contramedidas.
+
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = Polícia alerta sobre terroristas
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1  = Polícia perde o rastro de terrorista recentemente avistado. Ele alega não ser de origem Dubaniana.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = Polícia alerta sobre terroristas
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1  = Polícia perde o rastro de terrorista recentemente avistado. Afirma-se que ele é de origem Dubaniana
+
+BOMB_DETONATION_IN_TVTOWER                   = Explosão de bomba na TVTower
+BOMB_DETONATION_IN_TVTOWER_TEXT              = A explosão de uma bomba abalou os funcionários da famosa TVTower. A bomba danificou a sala "%ROOM%". As investigações estão a todo vapor.
+TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation damaged the room %ROOM%.
+TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT       = A reforma custará %COST%.
+TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT     = A explosão destruiu |b|%TITLE%|/b|.
+TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT     = A explosão destruiu um plano de produção.
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Atentado na TVTower: Nenhuma pista encontrada
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = Autoridades investigam o atentado na famosa TVTower. Infelizmente,  eles não encontraram nenhuma pista relevante.
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES       = Atentado na TVTower: Pistas são encontradas
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = Autoridades investigaram o atentado na famosa TVTower - com sucesso! Aparentemente, resident TV channels (%CHANNELS%) ajudaram sem querer com a brincadeira de trocar as indicações das salas.
+
+
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE       = Novo filme dirigido e estrelado por %DIRECTORNAME1%
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Diretor e ator principal %DIRECTORNAME1% tem um novo filme «%MOVIETITLE%» na produção.
+
+NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE       = Em breve no cinema: «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION = Publicado o primeiro trailer de «%MOVIETITLE%».
+
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_TITLE       = Em breve no cinema: «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = O ator principal %ACTORNAME1% em breve será apresentado nos cinemas com «%MOVIETITLE%».
+
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE       = Em breve nos cinemas «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = O diretor %DIRECTORNAME1% lança «%MOVIETITLE%» em um cinema perto de você.
+
+NEWS_ANNOUNCE_MOVIE_TITLE1 = Novo filme com %ACTORNAME1%
+NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% dirige novo filme
+NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% com novo filme nos cinemas
+
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = O diretor %DIRECTORNAME1% e o ator %ACTORNAME1% entregam o filme «%MOVIETITLE%» às telas.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Em breve nos cinemas: %ACTORNAME1% em «%MOVIETITLE%». Ator %ACTORNAME2% está todo orgulhoso com o filme.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Últimos acabamentos para o filme «%MOVIETITLE%». %ACTORNAME1% está orgulhoso de estrelar o filme.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = Primeiros trailers de «%MOVIETITLE%» disponíveis. %DIRECTORNAME1%: "Melhor filme do ano".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Toques finais no filme «%MOVIETITLE%». %DIRECTORNAME1% expressa orgulho pela última criação.
+
+
+WEATHER_FORECAST_FOR_X_TILL_Y    = Previsão do tempo das %BEGINHOUR% às %ENDHOUR% horas
+SKY_IS_PARTIALLY_CLOUDY          = Céu parcialmente nublado
+SKY_IS_OVERCAST1                 = Nublado.
+SKY_IS_OVERCAST2                 = Nublado.
+SKY_IS_WITHOUT_CLOUDS            = Tempo aberto.
+SUN_SHINES_WHOLE_TIME            = Ensolarado o dia todo.
+SUN_WINS_AGAINST_CLOUDS1         = Sol com poucas nuvens.
+#SUN_WINS_AGAINST_CLOUDS2         = 
+SUN_IS_SHINING_SOMETIMES         = Nublado, com o tempo aberto algumas vezes.
+SUN_IS_NOT_SHINING               = Céu nublado, sem o sol aparecer.
+RAIN_AND_SNOW_ALTERNATE          = Chuva e neve alternadas.
+RAIN_IS_POSSIBLE                 = Probabilidade de chuva.
+SNOW_IS_FALLING                  = Atenção nas ruas. Neve caindo e probabilidade de formação de camada de gelo.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = A mínima será de %MINTEMPERATURE% °C e a máxima %MAXTEMPERATURE%°C
+TEMPERATURE_IS_CONSTANT_AT_X     = Temperature constante de %TEMPERATURE%°C
+
+IN_THE_LATER_HOURS1                       = Nas últimas horas
+IN_THE_LATER_HOURS2                       = Depois do amanhecer
+IN_THE_LATER_HOURS3                       = Mais tarde
+STORMY_WINDS_OF_UP_TO_X1                  = Rajadas de até %MAXWINDVELOCITY% km/h pela superfície.
+STORMY_WINDS_OF_UP_TO_X2                  = Brisas fortes com rajadas de até %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1                           = Quase sem ventos.
+NEARLY_NO_WIND2                           = Tempo seco, sem ventos.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Brisa leve de %MINWINDVELOCITY% km/h e rajadas isoladas de até %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1      = A velocidade do vento ficará entre %MINWINDVELOCITY% e %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1           = A velocidade do vento ficará constante em %WINDVELOCITY% km/h.
+
+
+SCORE_POINT  = Point
+SCORE_POINTS = Points
+
+SPORT_ICEHOCKEY = Hóquei no gelo
+SPORT_SOCCER    = Futebol
+
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = vence graças a um escanteio convertido por %TEAM1STARSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = vence graças a um escanteio convertido por %TEAM1STARSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = vence graças a um pênalti defendido pelo goleiro  %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = vence graças a um pênalti defendido pelo goleiro  %TEAM1KEEPERSHORT% %MATCHKIND%
+#SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = 
+#SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = 
+
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = 3 pontos valiosos %MATCHKIND% para
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = deu 3 pontos valiosos %MATCHKIND% para
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = é derrotado por erro do goleiro %TEAM1KEEPERSHORT% %MATCHKIND% contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = são derrotados por erro do goleiro %TEAM1KEEPERSHORT% %MATCHKIND% contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perde com o decepcionante goleiro %TEAM1KEEPER% %MATCHKIND% contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perder com o goleiro desapontado %TEAM1KEEPER% %MATCHKIND% contra
+
+SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = após %PLAYTIMEMINUTES% minutos de jogo questionável
+SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = após %PLAYTIMEMINUTES% minutos de duelos táticos
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = após emocionantes %PLAYTIMEMINUTES% minutos de esportes de campo
+
+SPORT_TEAMREPORT_MATCHWIN_S1 = ganha graças a %TEAM1STAR%
+SPORT_TEAMREPORT_MATCHWIN_P1 = ganharam graças a %TEAM1STAR%
+SPORT_TEAMREPORT_MATCHWIN_S2 = derrota %MATCHKIND%
+SPORT_TEAMREPORT_MATCHWIN_P2 = derrotaram %MATCHKIND%
+#SPORT_TEAMREPORT_MATCHWIN_S3 = 
+#SPORT_TEAMREPORT_MATCHWIN_P3 = 
+SPORT_TEAMREPORT_MATCHWIN_S4 = ganha %MATCHSCORE1TEXT% contra
+SPORT_TEAMREPORT_MATCHWIN_P4 = ganharam %MATCHSCORE1TEXT% contra
+
+SPORT_TEAMREPORT_MATCHDRAW_S1 = dá a chance de %MATCHSCOREMAXTEXT% contra
+SPORT_TEAMREPORT_MATCHDRAW_P1 = deu a chance de %MATCHSCOREMAXTEXT% contra
+SPORT_TEAMREPORT_MATCHDRAW_S2 = consegue apenas um empate contra
+SPORT_TEAMREPORT_MATCHDRAW_P2 = alcançaram apenas um empate contra
+SPORT_TEAMREPORT_MATCHDRAW_S3 = leva para casa %MATCHSCOREDRAWGAMETEXT% contra
+SPORT_TEAMREPORT_MATCHDRAW_P3 = levaram para casa %MATCHSCOREDRAWGAMETEXT% contra
+
+#SPORT_TEAMREPORT_MATCHLOOSE_S1 = 
+#SPORT_TEAMREPORT_MATCHLOOSE_P1 = 
+SPORT_TEAMREPORT_MATCHLOOSE_S2 = se desonra %MATCHKIND% contra
+SPORT_TEAMREPORT_MATCHLOOSE_P2 = desgraçar-se %MATCHKIND% contra
+SPORT_TEAMREPORT_MATCHLOOSE_S3 = doa %MATCHKIND% %MATCHSCORE2TEXT% para
+SPORT_TEAMREPORT_MATCHLOOSE_P3 = dar %MATCHKIND% %MATCHSCORE2TEXT% para
+
+SPORT_TEAMREPORT_MATCHKIND1 = merecidamente
+SPORT_TEAMREPORT_MATCHKIND2 = sem merecimento
+SPORT_TEAMREPORT_MATCHKIND3 = após longos %PLAYTIMEMINUTES% minutos de jogo
+SPORT_TEAMREPORT_MATCHKIND4 = em um espetáculo de jogo
+SPORT_TEAMREPORT_MATCHKIND5 = em um roedor de unhas
+SPORT_TEAMREPORT_MATCHKIND6 = em um estádio lotado
+SPORT_TEAMREPORT_MATCHKIND7 = para uma multidão
+SPORT_TEAMREPORT_MATCHKIND8 = para uma multidão cantando
+SPORT_TEAMREPORT_MATCHKIND9 = para uma multidão frenética
+SPORT_TEAMREPORT_MATCHKIND11 = com um bloco de fãs quase vazio
+SPORT_TEAMREPORT_MATCHKIND12 = para um estádio lotado
+SPORT_TEAMREPORT_MATCHRESULT = %TEAM1ARTICLE1% %TEAM1% %MATCHRESULT% %TEAM2ARTICLE2% %TEAM2% com %FINALSCORE%.
+##Variant A = "_der_ FC gewinnt"
+##Variant B = "besiegt _den_ FC"
+SPORT_TEAMNAME_S_VARIANT_A = o
+SPORT_TEAMNAME_S_VARIANT_B = o
+SPORT_TEAMNAME_P_VARIANT_A = o
+SPORT_TEAMNAME_P_VARIANT_B = o

@@ -1,0 +1,6 @@
+# disable CRLF normalization for code files
+* text=auto
+*.bmx text
+*.c text
+*.h text
+*.lua text

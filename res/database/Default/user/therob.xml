@@ -1,0 +1,3157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+<version value="3" comment="Programme von TheRob" />
+	<allprogrammes>
+		<programme id="TheRob-serie-KomissarWirsch" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Komissar Wirsch -->
+				<de>Kommissar Wirsch</de>
+				<en>Inspector Gruff</en>
+			</title>
+			<description>
+				<de>Kommissar Wirsch und seine hübsche Assistentin lösen charmante Alltagsfälle in einem Dorf.</de>
+				<en>Inspector Gruff and his pretty assistant solve charming everyday cases in a village.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
+				<member index="1" function="2">TheRob-celebritypeople-MustafWuendgens</member>
+				<member index="2" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1951" distribution="2" maingenre="4" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="30" speed="49" />
+			<children>
+				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wirschi und der Tante Emma Laden</de>
+						<en>Gruffy and the corner store</en>
+					</title>
+					<description>
+						<de>Kommissar Wirsch ermittelt bei einem Kaugummiklau. Wer kaut denn da auf einmal im Dorf?</de>
+						<en>Inspector Gruff investigates a chewing gum theft. Who is stealing and chewing gum in the village all of a sudden?</en>
+					</description>
+					<ratings critics="29" speed="48" />
+				</programme>
+				<programme id="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wirschi und der vermisste Bürgermeister</de>
+						<en>Gruffy and the missing major</en>
+					</title>
+					<description>
+						<de>Kommissar Wirsch sucht den verschwunden Bürgermeister. War der Stellvertreter beteiligt?</de>
+						<en>Inspector Gruff is looking for the major who has disappeared. Was the vice major involved?</en>
+					</description>
+					<ratings critics="30" speed="50" />
+				</programme>
+				<programme id="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wirschi und das versteckte Gemälde</de>
+						<en>Gruffy and the hidden painting</en>
+					</title>
+					<description>
+						<de>Kommissar Wirsch auf der Jagd nach einem verschwundenen Gemälde. War der Museumsdirektor beteiligt?</de>
+						<en>Inspector Gruff on the hunt for a missing painting. Was the museum director involved?</en>
+					</description>
+					<ratings critics="30" speed="50" />
+				</programme>
+				<programme id="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wirschi und der Fotograf</de>
+						<en>Gruffy and the photographer</en>
+					</title>
+					<description>
+						<de>Kommissar Wirsch wird mit Anzeigen überhäuft. Die Einwohner fühlen sich von einem Fotografen in ihrer Privatsphäre belästigt. Gibt es da eine Handhabe?</de>
+						<en>Inspector Gruff is flooded with reports. Residents feel that their privacy is being invaded by a photographer. Is there any way to handle this?</en>
+					</description>
+					<ratings critics="32" speed="50" />
+				</programme>
+				<programme id="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wirschi und der Grenzstein</de>
+						<en>Gruffy and the border stone</en>
+					</title>
+					<description>
+						<de>Kommissar Wirsch muß einen vermissten Grenzstein suchen. Die spannende Aufgabe wird durch die demotivierte Schauspielerleistung untermalt.</de>
+						<en>Inspector Gruff has to search for a missing border stone. The exciting task is underlined by the demotivated acting performance.</en>
+					</description>
+					<ratings critics="12" speed="8" />
+				</programme>
+				<programme id="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Assistentin wird Sängerin</de>
+						<en>The Assistant becomes a singing star</en>
+					</title>
+					<description>
+						<de>[2|Full] singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
+						<en>[2|Full] sings in a bar. A record producer discovers her. The sad farewell begins.</en>
+					</description>
+					<ratings critics="50" speed="25" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Meins Alles Meins -->
+				<de>Meins! Alles MEINS!</de>
+				<en>Mine! All MINE!</en>
+			</title>
+			<description>
+				<de>Ein Mann, der Alles in der Welt als sein Eigentum betracht, rastet aus, als ihm eine Krawatte entwendet wird. Eine der ersten Amoklaufverfilmungen.</de>
+				<en>A man who considers everything in the world his property goes berserk when one of his ties is stolen. One of the first film adaptations of a rampage.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
+				<member index="1" function="2">TheRob-celebritypeople-GaryGrunt</member>
+				<member index="2" function="2">5fc2f657-3930-4052-9651-2db7acf9bfbf</member>
+				<member index="3" function="2">1fe78400-0332-4bb4-b23c-fa9f7d36933b</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1961" distribution="1" maingenre="2" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="27" speed="63" outcome="36" />
+		</programme>
+
+		<programme id="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Zielgruppe Kinder -->
+				<de>Ich reiste mit dem Sandmännchen</de>
+				<en>Travelling with the Sandman</en>
+			</title>
+			<description>
+				<de>Ein kleiner Junge wird der Begleiter des Sandmännchens und begleitet ihn durch die unterschiedlichen Schlafgeschichten.</de>
+				<en>A little boy becomes the Sandman's companion and accompanies him through the different bedtime stories.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
+				<member index="1" function="2">35ecbb4e-ee36-415d-914a-a78ed8e32d4b</member>
+				<member index="2" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+				<member index="3" function="2">d8bffee8-33ab-4af0-9321-83c2cf7fc11f</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1954" distribution="1" maingenre="10" subgenre="9" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="33" speed="27" outcome="56" />
+		</programme>
+
+		<programme id="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Als Mysterie Test mit Subgenre Horror -->
+				<de>Ich verschwand mit dem Sandmännchen</de>
+				<en>I disappeared with the Sandman</en>
+			</title>
+			<description>
+				<de>Wieder ein Sandmännchenfilm. Gleiche Besetzung - komplett andere Zielgruppe, denn es wird gruselig. Der Protagonist wird vom Sandmännchen gezwungen, ihn bei seinem Einschläferungsjob in die Psychatrie zu begleiten.</de>
+				<en>Another Sandman movie. Same cast - completely different target audience, because it gets creepy. The protagonist is forced by the sandman to accompany him on his euthanasia job in the psychiatric ward.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
+				<member index="1" function="2">35ecbb4e-ee36-415d-914a-a78ed8e32d4b</member>
+				<member index="2" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+				<member index="3" function="2">d8bffee8-33ab-4af0-9321-83c2cf7fc11f</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1957" distribution="1" maingenre="14" subgenre="12" flags="8" blocks="2" price_mod="1.00" />
+			<ratings critics="73" speed="58" outcome="76" />
+		</programme>
+
+		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Der Bau von Neuschwanstein</de>
+				<en>The construction of Neuschwanstein</en>
+			</title>
+			<description>
+				<de>Der Bau von Neuschwanstein wird nachgestellt. Laienschauspieler spielen sogar die Unfälle nach.</de>
+				<en>The construction of Neuschwanstein is reenacted. Amateur actors even reenact the accidents.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_399</member>
+				<member index="1" function="2">Per_custom_Freddy_639</member>
+				<member index="2" function="2">Per_custom_Freddy_530</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1962" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="65" speed="36" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-dda6-ero-WuzzGeiersDamen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>[0|Full]s Damen</de>
+				<en>[0|Full]'s Ladies</en>
+			</title>
+			<description>
+				<de>Die bestgebauten Damen von [0|Full] hüpfen durch das Bild.</de>
+				<en>The finest proportioned ladies of [0|Full] are bouncing through the picture.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">1b9dbd90-5ec0-4e11-ae86-f3365c96897d</member>
+				<member index="1" function="2">Per_custom_Freddy_257</member>
+				<member index="2" function="2">Per_custom_Freddy_511</member>
+				<member index="3" function="2">Per_custom_Freddy_638</member>
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1967" distribution="2" maingenre="8" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="12" speed="49" outcome="69" />
+		</programme>
+
+		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Wesensreiter</de>
+				<en>Creature Rider</en>
+			</title>
+			<description>
+				<de>Bulbu erkennt, dass er Fantasiewesen dressieren und reiten kann. Ein fliegendes Epos beginnt.</de>
+				<en>Bulbu realizes that he can train and ride fantasy creatures. An epic of flying begins.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
+				<member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
+				<member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
+				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1964" distribution="1" maingenre="10" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="33" speed="27" outcome="56" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Bullshit Bingo</de>
+				<en>Bullshit bingo</en>
+			</title>
+			<description>
+				<de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show oder Doku hat es nicht gereicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
+				<en>If Bullshit Bingo is not 'Various', then what is. It couldn't make it to be a show or a documentary. We went around the world for you and asked what Bullshit Bingo is. The answers: 'Various'!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_13</member>
+				<member index="1" function="2">Per_custom_Freddy_632</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1979" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="29" speed="27" outcome="10" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Sonstiges - das Thema</de>
+				<en>Various - the topic</en>
+			</title>
+			<description>
+				<de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
+				<en>[0|Full] has invited [1|Full], [2|Full], [3|Full] and [4|Full]. The goal an intensive conversation about 'Various'. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+				<member index="1" function="2">TheRob-TowerTV-Gast2</member>
+				<member index="2" function="2">TheRob-TowerTV-Sushi</member>
+				<member index="3" function="2">TheRob-TowerTV-rumpel</member>
+				<member index="4" function="2">TheRob-TowerTV-speed</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2014" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="99" speed="47" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Editor und KI</de>
+				<en>Editor and AI</en>
+			</title>
+			<description>
+				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat [1|Full] richtig gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
+				<en>[0|Full] and [1|Full] in lively discussion. Where do we stand with the editor? What should the AI look like? And did [1|Full] act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+				<member index="1" function="2">TheRob-TowerTV-STARS</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2013" distribution="2" maingenre="0" subgenre="" flags="0" blocks="6" price_mod="1.00" />
+			<ratings critics="92" speed="27" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>TVTower - der Anfang</de>
+				<en>TVTower - the beginning</en>
+			</title>
+			<description>
+				<de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de>
+				<en>[0|Full] and [1|Full] as well as [2|Full] explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+				<member index="1" function="2">TheRob-TowerTV-Michael</member>
+				<member index="2" function="2">TheRob-TowerTV-Daniel</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2003" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="92" speed="27" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-RatTV" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Geschichte über MadTV und Rainbow Arts -->
+				<de>RatTV - Quo Vadis</de>
+				<en>RatTV - Quo Vadis</en>
+			</title>
+			<description>
+				<de>[1|Full] und [2|Full] von RegenbogenWünsche sprechen über ihr Werk. [3|Full] berichtet was ihn an dem Spiel begeistert. OneHitWonder oder doch lange in Erinnerung bleibend? Er wagt die Prognose: Es kommen Nachfolger! Ein Klasse Sonstiges!</de>
+				<en>[1|Full] and [2|Full] from RainbowWishes talk about their work. [3|Full] reports what inspires him about the game. One-hit wonder or lasting in memory for a long time? He dares to predict: There will be successors! A superb 'Various'!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_368</member>
+				<member index="1" function="2">TheRob-TowerTV-Mark</member>
+				<member index="2" function="2">TheRob-TowerTV-Thomas</member>
+				<member index="3" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1991" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="88" speed="51" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Goaaaaal</de>
+				<en>Goaaaaal</en>
+			</title>
+			<description>
+				<de>[1|Full] präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
+				<en>[1|Full] presents the finest goals of 1981. A feast for the eyes of every fan!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_639</member>
+				<member index="1" function="2">TheRob-TowerTV-KalliBeckenklauer</member>
+				<member index="2" function="2">Per_custom_Freddy_534</member>
+				<member index="3" function="2">Per_custom_Freddy_355</member>
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1981" distribution="2" maingenre="203" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="22" speed="95" outcome="0" />
+		</programme>
+
+		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Iris entdeckt die Alm</de>
+				<en>Iris explores the alp</en>
+			</title>
+			<description>
+				<de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
+				<en>Together with her friends, Iris visits the alpine pastures, the farmers and their beds or haylofts. This movie was not forgotten in the revival of the Seventies, unfortunately.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+				<member index="1" function="2">Per_custom_Freddy_682</member>
+				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1972" distribution="1" maingenre="8" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="9" speed="19" outcome="29" />
+		</programme>
+
+		<programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Weib, Wein und Gesang</de>
+				<en>Woman, wine and song</en>
+			</title>
+			<description>
+				<de>Wikinger plündern fröhlich singend ganz Europa. Vor lauter brüderlichem Gesang sieht man das Blut kaum.</de>
+				<en>Merrily singing vikings plunder all of Europe. You can hardly see the blood because of the brotherly singing.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97</member>
+				<member index="1" function="2">65538445-9da2-457c-b207-be0544514afa</member>
+				<member index="2" function="2">90820783-1753-463f-9094-7c71a10fec80</member>
+				<member index="3" function="2">Per_custom_Freddy_679</member>
+				<member index="4" function="2">a84c23cc-8e0a-4849-aca7-5193c2482af9</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1977" distribution="1" maingenre="202" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="32" speed="49" outcome="47" />
+		</programme>
+
+		<programme id="TheRob-916a-47bf-infinityjest" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<!-- Idee basiert auf Unendlicher Spaß, Das Buch musste umgesetzt werden -->
+				<de>Der perfekte, unendlich spaßige Film</de>
+				<en>The perfect, infinitely funny movie</en>
+			</title>
+			<description>
+				<de>Die Videokassette, die unendlich viel Spaß bietet, ist aufgetaucht. Und wir senden sie. Wer diesen Film gesehen hat, will ihn wiedersehen oder sterben.</de>
+				<en>The videotape that offers infinite fun has appeared. And we are broadcasting it. Those who have seen this film want to see it again or die.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
+				<member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+				<member index="2" function="2">TheRob-celebritypeople-GaryGrunt</member>
+				<member index="3" function="2">af6a5525-6858-42b2-b313-6ca3e26d3b90</member>
+				<member index="4" function="2">TheRob-celebritypeople-LarryMoldman</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1985" distribution="1" maingenre="14" subgenre="" flags="0" blocks="3" price_mod="1.5" />
+			<ratings critics="100" speed="100" outcome="100" />
+			<modifiers>
+				<!-- Programm ist billiger als Normal -->
+				<modifier name="price" value="0.07" />
+			</modifiers>
+		</programme>
+
+		<programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Jo Mei, ei schei Jodeler</de>
+				<en>Jo Mei, a fu'ing yodeler</en>
+			</title>
+			<description>
+				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
+				<en>Yodeling and alpine horn. Garnished with pictures of the alpine landscape. With beautiful music the alpine passes are traveled with a Beetle of 1957.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
+				<member index="1" function="2">65538445-9da2-457c-b207-be0544514afa</member>
+				<member index="2" function="2">Per_custom_Freddy_7</member>
+				<member index="3" function="2">Per_custom_Freddy_675</member>
+				<member index="4" function="2">Per_custom_Freddy_636</member>
+			</staff>
+			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" />
+			<data country="D" year="1977" distribution="2" maingenre="202" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="32" speed="9" outcome="0" />
+		</programme>
+
+		<programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Jag den Meringo</de>
+				<en>Hunting Meringo</en>
+			</title>
+			<description>
+				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. [1|Full], der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
+				<en>Meringo slaughters a village with his mob. [1|Full], having lost his child because of this, hunts him down mercilessly.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+				<member index="1" function="2">5fc2f657-3930-4052-9651-2db7acf9bfbf</member>
+				<member index="2" function="2">2f9f512b-ce9e-4e7e-894b-9946651612e3</member>
+				<member index="3" function="2">888ecdf4-4e26-4ce2-9c49-e86637aefb9d</member>
+				<member index="4" function="2">12208886-43f2-4b3c-b421-6c19e3f8a2cf</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" year="1961" distribution="1" maingenre="18" subgenre="" flags="64" blocks="2" price_mod="1.00" />
+			<ratings critics="67" speed="66" outcome="65" />
+		</programme>
+
+		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Elefantengedächtnis</de>
+				<en>An elephant's memory</en>
+			</title>
+			<description>
+				<de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt.</de>
+				<en>Program for school children. At the beginning, topics are explained in a child-friendly way. Then the children have to answer questions about them. The winners get a class trip as a prize.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="8">3df88de7-142f-47e6-80c0-d57829ee3464</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1975" distribution="2" maingenre="9" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="67" speed="25" outcome="0" />
+			<children>
+				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Zahnpasta</de>
+						<en>Toothpaste</en>
+					</title>
+					<description>
+						<de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
+						<en>How do the strips get into the tube and other questions. Beautifully explained and pedagogically usefully quizzed.</en>
+					</description>
+					<ratings critics="73" speed="24" />
+				</programme>
+				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Limonade</de>
+						<en>Lemonade</en>
+					</title>
+					<description>
+						<de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
+						<en>From bottling to carbonation to sugar. Everything served in a manner suitable for children. It is recommended to serve the child sugar-free tea while watching.</en>
+					</description>
+					<ratings critics="65" speed="26" />
+				</programme>
+				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Bleistifte</de>
+						<en>Pencils</en>
+					</title>
+					<description>
+						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaftem Bleistiftnuckeln kommen zur Sprache.</de>
+						<en>Lead and color are explored. Even the consequences of permanent pencil nibbling are brought up.</en>
+					</description>
+					<ratings critics="66" speed="25" />
+				</programme>
+				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Moderator ohne Kontrolle</de>
+						<en>Presenter without control</en>
+					</title>
+					<description>
+						<de>Thema sollte Seife werden. Doch die Kinder starteten einen Wettbewerb im Namentanzen. Der Moderator bekam die Sendung nicht in Griff und wurde auch noch Letzter beim Namentanzen.</de>
+						<en>The topic was supposed to be about soap. But the children started a contest in name dancing. The presenter couldn't get a grip on the show and also, above all, came in last at the contest.</en>
+					</description>
+					<ratings critics="74" speed="49" />
+				</programme>
+				<programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Namentanzen</de>
+						<en>Name dancing</en>
+					</title>
+					<description>
+						<de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
+						<en>Due to the terrific response to the last broadcast, the topic of name dancing was examined in detail. Including the competition. Because of the orderly organization this time however, the fun went down the drain.</en>
+					</description>
+					<ratings critics="59" speed="21" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Die Tempelritter</de>
+				<en>The Templars</en>
+			</title>
+			<description>
+				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
+				<en>From their origin to their downfall. The facts are portrayed by amateur actors. The narrator tries his hand at building up tension, too.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_20</member>
+				<member index="1" function="2">868b2dcd-e6f6-4606-8ba1-8651b5d1bea9</member>
+				<member index="2" function="2">Per_custom_Freddy_634</member>
+				<member index="3" function="2">Per_custom_Freddy_149</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1967" distribution="2" maingenre="11" subgenre="" flags="0" blocks="4" price_mod="1.00" />
+			<ratings critics="75" speed="31" outcome="0" />
+		</programme>
+
+		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
+				<de>Baba der Trabbi</de>
+				<en>Baba the Trabbi-car</en>
+			</title>
+			<description>
+				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
+				<en>Baba the living Trabbi-car performs wonderful services for its owner. It can swim, fly and beat up car burglars. Summoned by a whistle, it always dutifully comes along when help is needed.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
+				<member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
+				<member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
+				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DDR" year="1972" distribution="1" maingenre="1" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="27" speed="34" outcome="46" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
+				<de>Wilhelm Tell</de>
+				<en>William Tell</en>
+			</title>
+			<description>
+				<de>Wilhelm Tell schießt eifrig mit seiner Armbrust Äpfel von den Köpfen. Der schweizer Robin Hood.</de>
+				<en>William Tell avidly shoots apples off heads with his crossbow. The Swiss Robin Hood.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
+				<member index="1" function="2">TheRob-celebritypeople-MustafLustig</member>
+				<member index="2" function="2">Per_custom_Freddy_644</member>
+				<member index="3" function="2">Per_custom_Freddy_655</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="CH" year="1961" distribution="1" maingenre="1" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="36" speed="32" outcome="31" />
+		</programme>
+
+		<programme id="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
+				<de>Jánošík</de>
+				<en>Jánošík</en>
+			</title>
+			<description>
+				<de>Jánošík als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
+				<en>Jánošík as the leader of a group of forest robbers. The Slovak Robin Hood.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_62</member>
+				<member index="1" function="2">TheRob-celebritypeople-WeatLove</member>
+				<member index="2" function="2">TheRob-TowerTV-VeraZottova</member>
+				<member index="3" function="2">Per_custom_Freddy_567</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="CS" year="1984" distribution="1" maingenre="1" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="56" speed="42" outcome="41" />
+		</programme>
+
+		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: 'half-fictional' but real elements should be faithful. Fritz Lang died already in 1976. Kinski's jungle tantrum was probably in the 1980s.">
+			<title>
+				<de>Skandale</de>
+				<en>Scandals</en>
+			</title>
+			<description>
+				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
+				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
+				<member index="1" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1979" distribution="2" maingenre="11" subgenre="6" flags="92" blocks="2" price_mod="1.00" />
+			<ratings critics="65" speed="35" outcome="60" />
+			<children>
+				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[1|Full] qualmt die Bude zu</de>
+						<en>[1|Full] smokes up the place</en>
+					</title>
+					<description>
+						<de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
+						<en>[1|Full] as a chain smoker insults the host to the point of no return.</en>
+					</description>
+					<ratings critics="60" speed="30" />
+				</programme>
+				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>[1|Full] beleidigt die Interviewerin</de>
+						<en>[1|Full] insults the interviewer</en>
+					</title>
+					<description>
+						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
+						<en>Can't help feeling sorry for the lady. [1|Full] goes completely berserk and attacks her obscenely.</en>
+					</description>
+					<ratings critics="65" speed="35" />
+				</programme>
+				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>[1|Full] im Dschungel</de>
+						<en>[1|Full] in the jungle</en>
+					</title>
+					<description>
+						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
+						<en>[1|Full]'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
+					</description>
+					<ratings critics="70" speed="40" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<!-- Abteuerserie  -->
+			<title>
+				<de>Sinbads Reisen</de>
+				<en>Sinbad's Journeys</en>
+			</title>
+			<description>
+				<de>Sinbads Reisen werden hier erzählt.</de>
+				<en>This is where Sinbad's voyages are being told.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_318</member>
+				<member index="1" function="2">Per_custom_Freddy_316</member>
+				<member index="2" function="2">Per_custom_Freddy_330</member>
+			</staff>
+			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="J" year="1978" distribution="2" maingenre="1" subgenre="2" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="38" speed="43" outcome="0" />
+			<children>
+				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Sinbad und die Insel</de>
+						<en>Sinbad and the Island</en>
+					</title>
+					<description>
+						<de>Sinbad strandet auf einer Insel. Diese entpuppt sich als riesiger Fisch.</de>
+						<en>Sinbad is stranded on an island, which turns out to be a giant fish.</en>
+					</description>
+					<ratings critics="34" speed="41" />
+				</programme>
+				<programme id="therob-programme-adv-sinbadsreisen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Sinbad und das Diamantental</de>
+						<en>Sinbad and the Diamond Valley</en>
+					</title>
+					<description>
+						<de>Sinbad strandet in einem Tal voller Diamanten und riesiger Vögel. Wie kommt er da nun raus?</de>
+						<en>Sinbad is stranded in a valley full of diamonds and giant birds. How does he get out of there now?</en>
+					</description>
+					<ratings critics="34" speed="42" />
+				</programme>
+				<programme id="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Sinbad und der Riese</de>
+						<en>Sinbad and the giant</en>
+					</title>
+					<description>
+						<de>Sinbad landet auf der Affeninsel und trifft dort auf einen Riesen. Sinbad merkt schnell, dass er zur Lieblingsspeise des Riesen gehört.</de>
+						<en>Sinbad lands on the ape island and encounters a giant there. Sinbad quickly realizes that he belongs to the giant's favorite food.</en>
+					</description>
+					<ratings critics="37" speed="47" />
+				</programme>
+				<programme id="therob-programme-adv-sinbadsreisen-ep104" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Sinbad heiratet</de>
+						<en>Sinbad marries</en>
+					</title>
+					<description>
+						<de>Sinbad heiratet. Leider verstirbt sein Frau recht schnell, und Sinbad wußte nicht, dass er per Sitte mit ihr lebendig begraben wird.</de>
+						<en>Sinbad gets married. Unfortunately, his wife dies quite quickly, and Sinbad did not know that by custom he is to be buried alive with her.</en>
+					</description>
+					<ratings critics="35" speed="29" />
+				</programme>
+				<programme id="therob-programme-adv-sinbadreisen-ep105" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Sinbad und der Riesenvogel</de>
+						<en>Sinbad and the giant bird</en>
+					</title>
+					<description>
+						<de>Sinbad entdeckt den Riesenvogel. Sinbads Begleiter schlachten einen Babyvogel und erfahren die Rache seiner gigantischen Eltern. Wie wird sich Sinbad wohl diesmal retten?</de>
+						<en>Sinbad discovers the giant bird. Sinbad's companions slaughter a baby bird and experience the revenge of its gigantic parents. How will Sinbad save himself this time?</en>
+					</description>
+					<ratings critics="33" speed="51" />
+				</programme>
+				<programme id="therob-programme-adv-sinbadreisen-ep106" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Sinbad und das karge Land</de>
+						<en>Sinbad and the barren land</en>
+					</title>
+					<description>
+						<de>Sinbad strandet auf eine unwirtlichen Insel. Er baut sich ein Floß, um einen Fluß entlang dem Hungertod zu entkommen.</de>
+						<en>Sinbad is stranded on an inhospitable island. He builds a raft to flee starvation along a river.</en>
+					</description>
+					<ratings critics="42" speed="39" />
+				</programme>
+				<programme id="therob-programme-adv-sinbadsreisen-ep107" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Sinbad geht in Rente</de>
+						<en>Sinbad is retiring</en>
+					</title>
+					<description>
+						<de>Nach einigen abstrusen Abteuern mit geflügelten Menschen, entscheidet sich Sinbad mit seiner neu Angetrauten nach Bagdad zurück zu kehren.</de>
+						<en>After some abstruse adventures with winged people, Sinbad decides to return to Baghdad with his newly wedded wife.</en>
+					</description>
+					<data year="1979" blocks="2" />
+					<ratings critics="47" speed="47" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<!-- Zielgruppe Manager, geflagt als Kultur -->
+			<title>
+				<de>Firmengründungen</de>
+				<en>How companies are founded</en>
+			</title>
+			<description>
+				<de>Dem geneigten Zuschauer werden Karrieren von risikobereiten Firmengründern gezeigt. Schöne Lehrstunde für Schadenfrohe.</de>
+				<en>The careers of risk-taking company founders are shown to the interested viewer. Nice illustrative material for those who enjoy schadenfreude.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_628</member>
+				<member index="1" function="128">Per_custom_Freddy_400</member>
+			</staff>
+			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1984" distribution="2" maingenre="300" subgenre="4" flags="4" blocks="2" price_mod="1.00" />
+			<ratings critics="45" speed="23" outcome="0" />
+			<children>
+				<programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Filmstudio in Nollywood</de>
+						<en>Movie studio in Nollywood</en>
+					</title>
+					<description>
+						<de>[1|Full] begleitet Hans Imglück auf seinem Weg Qualitätsfilme in Nollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
+						<en>[1|Full] accompanies Hans Inluck on his way to shoot quality films in Nollywood. A magnificent loss-making business.</en>
+					</description>
+					<ratings critics="43" speed="22" />
+				</programme>
+				<programme id="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Erotikshop im Jemen</de>
+						<en>Erotic store in Yemen</en>
+					</title>
+					<description>
+						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
+						<en>Nick Thinknotlong sets up an erotic store in Yemen. [1|Full] conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
+					</description>
+					<ratings critics="48" speed="27" />
+				</programme>
+				<programme id="therob-programme-mng-firmengruendungen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Kühlschrankfachladen in Grönland</de>
+						<en>Fridge store in Greenland</en>
+					</title>
+					<description>
+						<de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
+						<en>[1|Full] travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
+					</description>
+					<ratings critics="44" speed="19" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Schach gegen den Meister</de>
+				<en>Chess against the master</en>
+			</title>
+			<description>
+				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket.</de>
+				<en>Speed chess against the grandmasters. Call in, manage to get through, and checkmate the grandmaster. Use your brains, study, lose money in the waiting loop. The complete all-inclusive service package.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
+				<member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1980" distribution="2" maingenre="0" subgenre="" flags="128" blocks="1" price_mod="1.00" />
+			<ratings critics="29" speed="5" outcome="0" />
+			<modifiers>
+				<modifier name="price" value="1.2" />
+			</modifiers>
+			<children>
+				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>2 Türme, 3 Bauern</de>
+						<en>2 rooks, 3 pawns</en>
+					</title>
+					<description>
+						<de>Eine knifflige Situation. Wer findet den richtigen Zug.</de>
+						<en>A tricky situation. Who will find the right move.</en>
+					</description>
+					<ratings critics="30" speed="4" />
+				</programme>
+				<programme id="a2ac67b0-6689-4c50-9489-TheRobCallInTestEp102" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Springer und Läufer</de>
+						<en>Knights and bishops</en>
+					</title>
+					<description>
+						<de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
+						<en>Improvement over the last episode. Plenty of time to think or fall asleep. Please fall asleep only while you wait in the queue that charges fees.</en>
+					</description>
+					<ratings critics="32" speed="4" />
+				</programme>
+				<programme id="82a377c0-4950-40cb-9813-TheRobCallInTestEp103" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Nur noch Bauern</de>
+						<en>Only pawns left</en>
+					</title>
+					<description>
+						<de>Gestellte Situation. Wer spielt schon eine Partie, bei der außer dem König nur noch Bauern auf dem Feld stehen.</de>
+						<en>Staged situation. Who plays a game in which, apart from the king, there are only pawns left on the field.</en>
+					</description>
+					<ratings critics="24" speed="4" />
+				</programme>
+				<programme id="81800e30-c387-4a29-9c21-TheRobCallInTestEp104" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Damen</de>
+						<en>Queens</en>
+					</title>
+					<description>
+						<de>Die Damen herrschen. Unterstützt werden sie von lebenden Modellen, die auf einem großen Schachfeld herumlaufen. Ein Abschluß für das Auge.</de>
+						<en>The queens are in charge. They are backed up by live models walking around on a large chessboard. The grande finale for the eye.</en>
+					</description>
+					<ratings critics="28" speed="32" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<!-- Zielgruppe Rentner -->
+			<title>
+				<de>Der Osten - der wahre Horror</de>
+				<en>The east - the true evil</en>
+			</title>
+			<description>
+				<de>Der kommunistische Osten wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
+				<en>The communist East is illuminated. It will be proved that they all are aliens over there who want to take over world domination and it is necessary to burn everything with napalm. Completely plausible and believable.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_119</member>
+				<member index="1" function="2">Per_custom_Freddy_111</member>
+			</staff>
+			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1964" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="25" speed="40" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<!-- Zielgruppe Rentner -->
+			<title>
+				<de>Der Westen - der wahre Horror</de>
+				<en>The west - the true evil</en>
+			</title>
+			<description>
+				<de>Der kapitalistische Westen wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
+				<en>The capitalist West is illuminated. It will be proved that they all are aliens over there who want to take over world domination and it is necessary to burn everything with napalm. Completely plausible and believable.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_406</member>
+				<member index="1" function="2">Per_custom_Freddy_429</member>
+			</staff>
+			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="SU" year="1964" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="25" speed="40" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Kurven der Welt - Erkenne sie alle</de>
+				<en>Curves of the world - Know them all</en>
+			</title>
+			<description>
+				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikshow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit.</de>
+				<en>The most beautiful breasts in the world. Discreetly packaged. Nothing and yet much to see. The sophisticated erotic show with interludes about the culture of the respective country. Even critics were able to make friends with it. Presented by a Swedish beauty.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_42</member>
+				<member index="1" function="2">Per_custom_Freddy_45</member>
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="S" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
+			<ratings critics="24" speed="42" outcome="0" />
+			<modifiers>
+				<!-- billiger als normal -->
+				<modifier name="price" value="0.4" />
+			</modifiers>
+			<children>
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Jamaika</de>
+						<en>Jamaica</en>
+					</title>
+					<description>
+						<de>In der Folge eins ist Jamaika zu erraten. 40 Damen präsentieren ihr Land. Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
+						<en>In episode one, Jamaica is to be guessed. 40 ladies present their country. The landscape and cities are shown. The culture is shown. And everything is garnished with a lot of naked lady skin. The last name of the lady has to be guessed.</en>
+					</description>
+					<ratings critics="20" speed="38" />
+				</programme>
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Kambodscha</de>
+						<en>Cambodia</en>
+					</title>
+					<description>
+						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der „sabbernden“ Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
+						<en>Old temples, fields, big cities and jungles. Everything with even more skin. The callers are queuing up. A masterpiece of "drooling" education. So near and yet so far. The last name of the lady must be guessed.</en>
+					</description>
+					<ratings critics="29" speed="33" />
+				</programme>
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Bulgarien</de>
+						<en>Bulgaria</en>
+					</title>
+					<description>
+						<de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transsilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
+						<en>The black balalaika. The diversity of the ladies is accompanied by historical buildings and beautiful beaches. Furthermore, Transylvania is inappropriately mentioned. The last name of the lady has to be guessed.</en>
+					</description>
+					<ratings critics="21" speed="43" />
+				</programme>
+				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<!-- Zielgruppe Damen -->
+						<de>Tunesien</de>
+						<en>Tunisia</en>
+					</title>
+					<description>
+						<de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen.</de>
+						<en>Celebrated final episode for the ladies. Male hip swings. This time the first names of the butt cheek owners have to be guessed. All presented in wonderful landscape shots. You can see the fun the anchorwoman is having.</en>
+					</description>
+					<ratings critics="26" speed="53" />
+					<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
+				<de>Kampf der Planeten - die wahre Geschichte</de>
+				<en>Battle of the planets - the true story</en>
+			</title>
+			<description>
+				<de>[1|Full] wurde von [2|Full] begleitet, als er seine legendäre Radioreportage entwickelte und durchführte. War die Massenpanik echt? Hier wird es gezeigt! Die einzige Reportage von [0|Full].</de>
+				<en>[1|Full] had been accompanied by [2|Full] as he developed and recorded his legendary radio show. Was the mass hysteria real? Here it is shown! The only feature [0|Full] did.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
+				<member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="2" function="128">TheRob-TowerTV-RednackRoot</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1939" distribution="2" maingenre="300" subgenre="" flags="12" blocks="2" price_mod="1" />
+			<ratings critics="79" speed="45" outcome="0" />
+		</programme>
+
+		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Zielgruppe Hausfrauen -->
+				<de>Marmeladen selber machen</de>
+				<en>Selfmade jelly</en>
+			</title>
+			<description>
+				<de>Wie mache ich Marmelade? Schöne Rezepte, deren Umsetzung ausführlich gezeigt wird</de>
+				<en>How do I make jelly? Great recipes which are explained step by step</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_627</member>
+				<member index="1" function="128">Per_custom_Freddy_624</member>
+			</staff>
+			<groups target_groups="4" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="A" year="1951" distribution="2" maingenre="9" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="35" speed="9" outcome="0" />
+			<children>
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Erdbeermarmelade</de>
+						<en>Strawberry jelly</en>
+					</title>
+					<description>
+						<de>Wir starten mit der Ernte der Erdbeeren.</de>
+						<en>We start with collecting the strawberries</en>
+					</description>
+					<ratings critics="34" speed="10" />
+				</programme>
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Pflaumenmarmelade</de>
+						<en>Plum jelly</en>
+					</title>
+					<description>
+						<de>Wie entkerne ich Pflaumen. Und den Zucker nicht vergessen.</de>
+						<en>How do I remove the stones from plums. And do not forget the sugar.</en>
+					</description>
+					<ratings critics="35" speed="9" />
+				</programme>
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Kirschmarmelade</de>
+						<en>Cherry jelly</en>
+					</title>
+					<description>
+						<de>Dann klettern wir mal auf den Baum. Wozu gibt es die Leiter? </de>
+						<en>Now let's climb the tree. What else is the ladder for?</en>
+					</description>
+					<ratings critics="36" speed="8" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- War das wahr? Fictional, Mystery -->
+				<de>War das wahr?</de>
+				<en>Was it real?</en>
+			</title>
+			<description>
+				<de>Ein kleiner Junge reist mit dem indischen Gott Lakshmi herum und verteilt das Glück. Als er in seinem Bett erwacht, weiß er nicht, war es wahr, oder ein Traum.</de>
+				<en>A little boy travels around with the Indian god Lakshmi, spreading the good fortune. As he wakes up in his bed, he doesn't know, was it real, or a dream.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_601</member>
+				<member index="1" function="2">Per_custom_Freddy_609</member>
+				<member index="2" function="2">Per_custom_Freddy_618</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="IND" year="1981" distribution="1" maingenre="14" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="49" speed="37" outcome="12" />
+		</programme>
+
+		<programme id="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Der Schwarzmarkt, Fictional, Krimi -->
+				<de>Der Schwarzmarkt</de>
+				<en>The black market</en>
+			</title>
+			<description>
+				<de>Hans ernährt seine Familie durch sein Handeln auf dem Schwarzmarkt. Doch auf einmal gerät er in den Fokus eines Kommissars. Wird er entkommen?</de>
+				<en>Hans sustains his family by trading on the black market. But suddenly he becomes the focus of a commissioner. Will he escape?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">e3144c39-4577-4a4a-bde9-8d1d41f789cd</member>
+				<member index="1" function="2">d8bffee8-33ab-4af0-9321-83c2cf7fc11f</member>
+				<member index="2" function="2">ea76aa3d-2541-481a-b08a-e6905da0cb30</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1949" distribution="1" maingenre="4" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="46" speed="43" outcome="21" />
+		</programme>
+
+		<programme id="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Wer war es?, Fictional, Krimi -->
+				<de>Wer war es?</de>
+				<en>Who was it?</en>
+			</title>
+			<description>
+				<de>Wer hat den Engel gestohlen? Detektiv Butlow ermittelt. Nun, es gab genügend besseres.</de>
+				<en>Who stole the Angel? Detective Butlov investigates. Well, there were plenty of better films.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
+				<member index="1" function="2">Per_custom_Freddy_254</member>
+				<member index="2" function="2">TheRob-celebritypeople-ElliSallyTastarino</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="IRL" year="1973" distribution="1" maingenre="4" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="6" speed="32" outcome="7" />
+		</programme>
+
+		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Überleben wir die LAF?, Fictional, Dokumentation -->
+				<de>Überleben wir die L.A.F.?</de>
+				<en>Will we survive the L.A.F.?</en>
+			</title>
+			<description>
+				<de>Die Lachende Armada Fraktion. Wie können wir diesem Monster entkommen? Aus heutiger Sicht: Purer Schrott!</de>
+				<en>Laughing Armada Fraction. How can we escape this monster? From today's perspective: Pure trash!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
+				<member index="1" function="8">Per_custom_Freddy_631</member>
+				<member index="2" function="128">Per_custom_Freddy_404</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="2" maingenre="6" subgenre="300" flags="16" blocks="1" price_mod="1.00" />
+			<ratings critics="7" speed="16" outcome="0" />
+		</programme>
+
+		<programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Kinderserie, geflagt als Animation -->
+				<de>Graf Ruccola und das Gemüse</de>
+				<en>Count Ruccola and the vegetables</en>
+			</title>
+			<description>
+				<de>Graf Ruccola ist ein Vitaminvampir und jagt Gemüse zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Gemüse.</de>
+				<en>Count Ruccola is a vitamin vampire and hunts vegetables to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of vegetables.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_356</member>
+				<member index="1" function="2">Per_custom_Freddy_373</member>
+				<member index="2" function="2">Per_custom_Freddy_388</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1971" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
+			<ratings critics="54" speed="34" outcome="0" />
+			<children>
+				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola trifft Spargel</de>
+						<en>Count Ruccola meets asparagus</en>
+					</title>
+					<description>
+						<de>Graf Ruccola endeckt den Spargel, und jetzt riecht es beim „um die Ecke gehen“ auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
+						<en>Count Ruccola discovers the asparagus, and now when "going around the corner" it suddenly smells funny. Why is that? And does Count Ruccola take another bite, or does he prefer to leave the asparagus aside?</en>
+					</description>
+					<ratings critics="57" speed="35" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola trifft Spinat</de>
+						<en>Count Ruccola meets spinach</en>
+					</title>
+					<description>
+						<de>Spinat. Viel Kalium und Magnesium für das Vampirblut. Und danach den kleinen Blubb!</de>
+						<en>Spinach. Lots of potassium and magnesium for the vampire blood. And then the little "blubb"!</en>
+					</description>
+					<ratings critics="54" speed="35" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola trifft Blumenkohl</de>
+						<en>Count Ruccola meets cauliflower</en>
+					</title>
+					<description>
+						<de>Weiß und blass, wie Graf Ruccola. Kann das schmecken. Ja, liebe Kinder es kann. Probiert es eifrig!</de>
+						<en>White and pale, like Count Ruccola. Can it taste good. Yes, dear children it can. Try it eagerly!</en>
+					</description>
+					<ratings critics="50" speed="30" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Rosenkohl</de>
+						<en>Count Ruccola meets Brussels sprouts</en>
+					</title>
+					<description>
+						<de>Rosenkohl, so grün und klein, das ist fein.</de>
+						<en>Brussels sprouts, so green and tight, that's alright.</en>
+					</description>
+					<ratings critics="49" speed="34" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Bohnen</de>
+						<en>Count Ruccola meets beans</en>
+					</title>
+					<description>
+						<de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola ißt viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
+						<en>What can you say, beans, the musical fruit, the more you eat, the more you toot. Count Ruccola eats many beans and toots the most beautiful nursery rhymes.</en>
+					</description>
+					<ratings critics="57" speed="33" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Kinderserie, geflagt als Animation -->
+				<de>Graf Ruccola und das Obst</de>
+				<en>Count Ruccola and the fruits</en>
+			</title>
+			<description>
+				<de>Graf Ruccola ist ein Vitaminvampir und jagt Obst zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Obst. Späte zweite Staffel mit neuer Technik!</de>
+				<en>Count Ruccola is a vitamin vampire and hunts fruit to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of fruit. Late second season with new technology!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_356</member>
+				<member index="1" function="2">Per_custom_Freddy_373</member>
+				<member index="2" function="2">Per_custom_Freddy_386</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1989" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
+			<ratings critics="47" speed="42" outcome="0" />
+			<children>
+				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola trifft Kirschen</de>
+						<en>Count Ruccola meets cherries</en>
+					</title>
+					<description>
+						<de>Graf Ruccola endeckt die Kirschen, schön rot und saftig. Hmmmm. Lecker. Da macht das Beißen Spaß!</de>
+						<en>Count Ruccola discovers cherries, lovely red and juicy. Mmmmh. Yummy. That makes biting fun!</en>
+					</description>
+					<ratings critics="49" speed="45" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola trifft Birnen</de>
+						<en>Count Ruccola meets pears</en>
+					</title>
+					<description>
+						<de>Was eine komische Form? Aber lecker. Nur als Graf Ruccola die Glühbirne beißt, wird es unschön.</de>
+						<en>What a weird shape? But delicious. Only when Count Ruccola bites the light bulb, it gets ugly.</en>
+					</description>
+					<ratings critics="45" speed="40" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola trifft Erdbeeren</de>
+						<en>Count Ruccola meets strawberries</en>
+					</title>
+					<description>
+						<de>Endlich wieder etwas rotes. Da kommt direkt Freude auf und der Vitaminpegel steigt.</de>
+						<en>Finally something red again. There comes joy without delay and the vitamin level rises.</en>
+					</description>
+					<ratings critics="46" speed="37" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Äpfel</de>
+						<en>Count Ruccola meets apples</en>
+					</title>
+					<description>
+						<de>Äpfel, rote Äpfel. Aber auch die mit grüner und gelber Farbe werden gerne mal probiert.</de>
+						<en>Apples, red apples. But also those with green and yellow colour are happily tried.</en>
+					</description>
+					<ratings critics="47" speed="39" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Orangen</de>
+						<en>Count Ruccola meets oranges</en>
+					</title>
+					<description>
+						<de>IIIIIH, schmeckt das doof. Achso Schale. Was ist Schale? Dann lernen wir mal schälen. Wird ja doch noch lecker.</de>
+						<en>Yuck, that tastes awful. Oh, peel. What is a peel? Then let's learn how to peel. It's still delicious after all.</en>
+					</description>
+					<ratings critics="45" speed="41" />
+				</programme>
+				 <programme id="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Himbeeren</de>
+						<en>Count Ruccola meets raspberries</en>
+					</title>
+					<description>
+						<de>Rot und saftig, wie es sein soll. Und manchmal auch sauer. Aber sauer mach lustig. Auf einen guten Biss.</de>
+						<en>Red and juicy, as it should be. And sometimes also sour. But something sour cheers you up. Here's to a good bite.</en>
+					</description>
+					<ratings critics="42" speed="44" />
+				</programme>
+				 <programme id="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Trauben</de>
+						<en>Count Ruccola meets grapes</en>
+					</title>
+					<description>
+						<de>Was sollen die Kerne da? Beißt man die auch? Oder spuckt man die aus? Und wie finde ich kernlose zum Beißen?</de>
+						<en>What's with the seeds? Do you bite these too? Or do you spit them out? And how do I find seedless ones to bite?</en>
+					</description>
+					<ratings critics="45" speed="41" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Brombeeren</de>
+						<en>Count Ruccola meets blackberries</en>
+					</title>
+					<description>
+						<de>Aua, wieso beißen die mich? Ach so, Dornen. Was sind denn Dornen. Wie komme ich denn unverletzt an die Brombeere?</de>
+						<en>Ouch, why are they biting me? Oh, thorns. What are thorns? How do I get to the blackberry unharmed?</en>
+					</description>
+					<ratings critics="50" speed="45" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola trifft Bananen</de>
+						<en>Count Ruccola meets bananas</en>
+					</title>
+					<description>
+						<de>Ein krummes Ding zum Abschluss. Ud welches Getier versteckt sich denn in den Bananenstauden. Kommt Graf Ruccola an die Bananen?</de>
+						<en>A crooked thing to close off. And what kind of creatures are hiding in the banana bushes? Can Count Ruccola get to the bananas?</en>
+					</description>
+					<ratings critics="37" speed="50" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Serie für Jugendliche, geflagt als Animation -->
+				<de>Graf Ruccola und die Nachtschattengewächse</de>
+				<en>Count Ruccola and the nightshades</en>
+			</title>
+			<description>
+				<de>Graf Ruccola ist inzwischen ein heranwachsender, jugendlicher Vitaminvampir und lernt im Internat Freunde aus den Nachtschattengewächsen kennen. Er lernt, warum sich seine Freunde vor den monsterlichen Menschen fürchten. Aktuelle Themen der Jugendlichen gepaart mit interessanten Fakten aus der Pflanzenwelt.</de>
+				<en>Count Ruccola is now an adolescent, young vitamin vampire and meets friends from the nightshade species at boarding school. He learns why his friends are afraid of the monstrous humans. Hot teen topics paired with interesting facts from the plant world.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_356</member>
+				<member index="1" function="2">Per_custom_Freddy_363</member>
+				<member index="2" function="2">Per_custom_Freddy_356</member>
+			</staff>
+			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="2001" distribution="2" maingenre="3" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
+			<ratings critics="56" speed="38" outcome="0" />
+			<children>
+				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola und die Tomate</de>
+						<en>Count Ruccola and the tomato</en>
+					</title>
+					<description>
+						<de>Graf Ruccola endeckt die Tomate, ein schönes rotes und saftiges Nachtschattengewächs. Zusammen erkunden sie das Menschendorf und sind fassungslos, als sie die Fenster mit dem Ketchup sehen!</de>
+						<en>Count Ruccola discovers the tomato, a beautiful red and juicy nightshade plant. Together they explore the human village and are stunned when they see the windows with ketchup!</en>
+					</description>
+					<ratings critics="59" speed="39" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola und die Kartoffel</de>
+						<en>Count Ruccola and the potato</en>
+					</title>
+					<description>
+						<de>Graf Ruccola lernt die Kartoffel kennen. Obwohl sehr runzelig und mit Wurzeln bedeckt, entdeckt er die inneren Werte. Zusammen geraten sie in eine Chipsfabrik.</de>
+						<en>Count Ruccola meets the potato. Although very wrinkly and covered with roots, he discovers their inner values. Together they end up in a chips factory.</en>
+					</description>
+					<ratings critics="56" speed="39" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Graf Ruccola und die Aubergine</de>
+						<en>Count Ruccola and the aubergine</en>
+					</title>
+					<description>
+						<de>Die Aubergine und Graf Ruccola entdecken ein geheimes Antipasti-Labor der Menschen. Dort entdeckt die Aubergine ihre vermissten Eltern in zubereiteter Form. Kann Graf Ruccola sie trösten?</de>
+						<en>The aubergine and Count Ruccola discover a secret human antipasti laboratory. There the eggplant discovers its missing parents in processed form. Can Count Ruccola console her?</en>
+					</description>
+					<ratings critics="52" speed="34" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola und die Paprika</de>
+						<en>Count Ruccola and the bell peppers</en>
+					</title>
+					<description>
+						<de>Graf Ruccola muss die Paprika retten. Sie wurde von einem menschlichen Gewürzhersteller entführt. Schafft er es rechtzeitig?</de>
+						<en>Count Ruccola must rescue the bell pepper. It has been kidnapped by a human spice maker. Will he make it in time?</en>
+					</description>
+					<ratings critics="51" speed="38" />
+				</programme>
+				<programme id="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Graf Ruccola und der Stechapfel</de>
+						<en>Count Ruccola and the jimsonweed</en>
+					</title>
+					<description>
+						<de>Der Stechapfel will ein Heilmittel für Husten werden. Da erzählt ihm Graf Ruccola, was er bisher alles mit den Menschen erlebt hat. Wird der Stechapfel jetzt giftig?</de>
+						<en>The jimsonweed wants to become a cure for cough. That's when Count Ruccola explains to it everything he has experienced with humans so far. Will the jimsonweed now become poisonous?</en>
+					</description>
+					<ratings critics="57" speed="35" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-serie-crime-DieZwillinge" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die Zwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
+				<de>Die Zwillinge</de>
+				<en>The twins</en>
+			</title>
+			<description>
+				<de>Zwillinge werden bei der Geburt getrennt und wissen nichts voneinander. Einer wird Polizist, der andere Verbrecher. Auf einmal kreuzen sich ihre beruflichen Werdegänge.</de>
+				<en>Twins are separated at birth and know nothing of each other. One becomes a policeman, the other a criminal. Suddenly their professional careers cross.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
+				<member index="1" function="2">TheRob-TowerTV-RalleWenke</member>
+				<member index="2" function="2">TheRob-TowerTV-RolleWenke</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DDR" year="1980" distribution="2" maingenre="4" subgenre="14" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="40" speed="40" />
+			<children>
+				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Rolle jagt den Ladendieb</de>
+						<en>Rolle chases the shoplifter</en>
+					</title>
+					<description>
+						<de>Polizist Rolle soll in einem Ladendiebstahl ermitteln. Als er eintrifft, wird er vom Besitzer sofort beschuldigt. Wie kann das sein? Er war doch auf dem Revier!</de>
+						<en>Police officer Rolle is to investigate in a shoplifting case. When he arrives, he is accused by the owner immediately. How could that be? He just was at the police station!</en>
+					</description>
+					<ratings critics="50" speed="30" />
+				</programme>
+				<programme id="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Ralle wird die Ware nicht los</de>
+						<en>Ralle can't sell the goods</en>
+					</title>
+					<description>
+						<de>Ralle versucht einem Hehler seine Beute zu verkaufen. Dieser will aber nichts damit zu tun haben. Ralle kann sich nicht erklären, warum er seine Sachen nicht mehr los wird.</de>
+						<en>Ralle tries to sell his loot to a fence. But the latter wants nothing to do with it. Ralle can't figure out why he can't get rid of his stuff.</en>
+					</description>
+					<ratings critics="30" speed="50" />
+				</programme>
+				<programme id="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Rolle schöpft Verdacht</de>
+						<en>Rolle's got a suspicion</en>
+					</title>
+					<description>
+						<de>Rolle vermutet einen Doppelgänger und begibt sich auf die Suche nach dem Übeltäter.</de>
+						<en>Rolle suspects a doppelganger and goes in search of the culprit.</en>
+					</description>
+					<ratings critics="42" speed="38" />
+				</programme>
+				<programme id="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Ralle schöpft Verdacht</de>
+						<en>Ralle's got a suspicion</en>
+					</title>
+					<description>
+						<de>Ralle vermutet, dass sich jemand an ihm rächen möchte und sich als Ralle verkleidet, um seinen Ruf zu ruinieren. Er begint mit der Suche nach dem Täter.</de>
+						<en>Ralle suspects that someone wants to take revenge on him by disguising himself as Ralle in order to ruin his reputation. He begins the search for the culprit.</en>
+					</description>
+					<ratings critics="38" speed="42" />
+				</programme>
+				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Das große Kennenlernen</de>
+						<en>The big getting to know each other</en>
+					</title>
+					<description>
+						<de>Ralle und Rolle entdecken die Wahrheit und lernen sich kennen. Freude über den unerwarteten Bruder und blankes Entsetzen über den Beruf sorgen für Unterhaltung.</de>
+						<en>Ralle and Rolle discover the truth and get to know each other. Joy about the unexpected brother and sheer horror about the job provide entertainment.</en>
+					</description>
+					<data blocks="2" />
+					<ratings critics="52" speed="28" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-serie-myst-DasUnbekannte" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
+				<de>Das Unbekannte</de>
+				<en>The unknown</en>
+			</title>
+			<description>
+				<de>Mysteriöse und gruselige Kurzgeschichten. Alles beginnt mit Phänomenen, die sich keiner erklären kann.</de>
+				<en>Mysterious and creepy short stories. It all starts with phenomena that no one can explain.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
+				<member index="1" function="2">868b2dcd-e6f6-4606-8ba1-8651b5d1bea9</member>
+				<member index="2" function="2">TheRob-celebritypeople-PipernetteSelm</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1940" distribution="2" maingenre="14" subgenre="12" flags="64" blocks="1" price_mod="1.00" />
+			<ratings critics="65" speed="40" />
+			<children>
+				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Ich klopfe, wenn Du schläfst!</de>
+						<en>I knock when you sleep!</en>
+					</title>
+					<description>
+						<de>Eine Dame kann nicht schlafen. Sobald sie im Bett die Augen schließt, klopft es von überall. Wer ist das?</de>
+						<en>A woman can't sleep. As soon as she closes her eyes in bed, there is a knocking from everywhere. Who is that?</en>
+					</description>
+					<ratings critics="67" speed="42" />
+				</programme>
+				<programme id="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Der See</de>
+						<en>The Lake</en>
+					</title>
+					<description>
+						<de>An einem See verschwinden immer wieder Leute. Monster? Aliens? Oder nur ertrunken? Ein junger Mann will die Wahrheit finden.</de>
+						<en>People keep disappearing at a lake. Monsters? Aliens? Or just drowned? A young man wants to find the truth.</en>
+					</description>
+					<ratings critics="65" speed="38" />
+				</programme>
+				<programme id="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Der fremde Planet</de>
+						<en>Unknown planet</en>
+					</title>
+					<description>
+						<de>Ein Ehepaar wacht in einem unbekannten Gebiet auf und entdeckt, dass hier drei Monde am Himmel sind. Wo sind sie? Was ist passiert?</de>
+						<en>A couple wakes up in an unknown area and discovers that there are three moons in the sky. Where are they? What happened?</en>
+					</description>
+					<ratings critics="61" speed="44" />
+				</programme>
+				<programme id="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die unsichtbare Bedrohung</de>
+						<en>The invisible threat</en>
+					</title>
+					<description>
+						<de>In einer Geisterstadt fühlt sich ein Paar bedroht. Die Bedrohung ist nirgends zu sehen, aber überall greifbar.</de>
+						<en>In a ghost town, a couple feels threatened. The threat is nowhere to be seen, but tangible everywhere.</en>
+					</description>
+					<ratings critics="67" speed="36" />
+				 </programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<!-- Musik der Berge, Musikshow 102, Zielgruppe Kinder -->
+			<title>
+				<de>Musik der Berge</de>
+				<en>Music of the mountains</en>
+			</title>
+			<description>
+				<de>Kinderchöre wandern singend durch die Berge.</de>
+				<en>Children's choirs hiking through the mountains singing.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
+				<member index="1" function="8">TheRob-celebritypeople-WeinWenk</member>
+				<member index="2" function="16">Per_custom_Freddy_7</member>
+				<member index="3" function="16">Per_custom_Freddy_675</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="2" maingenre="102" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="25" speed="12" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-1756-Polit-Show-WasistSache" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+				<!-- Was ist Sache, Politshow 102, Zielgruppe Arbeitnehmer -->
+			<title>
+				<de>Was ist Sache</de>
+				<en>What is the matter</en>
+			</title>
+			<description>
+				<de>Ein Politiker steht Rede und Antwort zur Lage der Nation.</de>
+				<en>A politician answers questions about the state of the nation.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_70</member>
+				<member index="1" function="8">Per_custom_Freddy_70</member>
+				<member index="2" function="64">Per_custom_Freddy_76</member>
+			</staff>
+			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DK" year="1975" distribution="2" maingenre="101" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="35" speed="21" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
+			<title>
+				<de>Das Leben der [2|Full]</de>
+				<en>The life of [2|Full]</en>
+			</title>
+			<description>
+				<de>Der Tod von [2|Full] wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
+				<en>The death of [2|Full] is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_377</member>
+				<member index="1" function="8">Per_custom_Freddy_352</member>
+				<member index="2" function="2">283bdb7a-ea1f-4d33-8e72-a618515f4e40</member>
+			</staff>
+			<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1983" distribution="2" maingenre="301" subgenre="" flags="0" blocks="4" price_mod="1.00" />
+			<ratings critics="35" speed="31" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-1756-polit-event-AnalysederReden" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
+			<title>
+				<de>Analyse der Reden</de>
+				<en>Analysis of the speeches</en>
+			</title>
+			<description>
+				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
+				<en>The Cuban crisis frightened everyone. Here the speeches of [2|Full] and [3|Full] are shown chronologically, and are compared with each other.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
+				<member index="1" function="8">TheRob-TowerTV-BastlRuetli</member>
+				<member index="2" function="2">TheRob-TowerTV-JohnFKennedy</member>
+				<member index="3" function="2">51397467-86e2-4c5f-9226-d93ecf9288a6</member>
+			</staff>
+			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="CH" year="1964" distribution="2" maingenre="201" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="65" speed="21" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Trend fuer Maenner, Sostiges -->
+				<de>Trend für Männer</de>
+				<en>Trends for men</en>
+			</title>
+			<description>
+				<de>Was muss man heutzutage haben? Die absoluten Neuheiten, die man sich unbedingt kaufen muss, wenn man sicher in die Zukunft möchte!</de>
+				<en>What are the must-haves these days? The absolute novelties that you must buy if you want to safely go into the future!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_687</member>
+				<member index="1" function="8">Per_custom_Freddy_677</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1952" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="28" speed="44" />
+			<children>
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Urangrill</de>
+						<en>Uranium grill</en>
+					</title>
+					<description>
+						<de>Wir kaufen das beste Uran vom US und UdSSR Militär für diesen Grill. Sanfte und konstante Strahlung sorgen für beste Ergebnisse beim Grillfleisch!</de>
+						<en>We buy the best uranium from US and USSR military for this grill. Gentle and constant radiation provide the best results for grilled meat!</en>
+					</description>
+					<ratings critics="29" speed="43" />
+				</programme>
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>0 auf 1000 km/h in 3 Sekunden</de>
+						<en>0 on 764 mph in 3 seconds</en>
+					</title>
+					<description>
+						<de>Der wahre Autobausatz mit einem wundervollen V2 Triebwerk. Straßenzulassung ist garantiert. Ein wundervolles Handling.</de>
+						<en>The real car kit with a wonderful V2 engine. Guaranteed street-legal. Wonderful handling.</en>
+					</description>
+					<ratings critics="26" speed="43" />
+				</programme>
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Kellerbunker</de>
+						<en>Basement bunker</en>
+					</title>
+					<description>
+						<de>Der Bunker im Keller ist einfach ein Muss. Nur so können sie den Fortbestand ihrer Familie sichern. Keinen haben, heißt kein Leben!</de>
+						<en>The bunker in the basement is simply a must. It is the only way to ensure the continuity of your family. Not having one means no life!</en>
+					</description>
+					<ratings critics="29" speed="46" />
+				</programme>
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="'Mottorad' wohl Absicht">
+					<title>
+						<de>Frittenbike</de>
+						<en>Chip-fat bike</en>
+					</title>
+					<description>
+						<de>Mit dem Frittenfett auf 180. SchniPo futtern und dann das Fett in den Tank und los gehts auf die Mottorad Tour. Endlich das Rundum Vergnügen!</de>
+						<en>With chip-fat to 130. Chow down schnitzel with fries, then put the fat in the tank and off we go on the motobike tour. Finally the all-round pleasure!</en>
+					</description>
+					<ratings critics="32" speed="43" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<!-- Serie Horror-->
+			<title>
+				<de>Die Rückkehr von Ronny und Byte</de>
+				<en>The Return of Ronny and Byte</en>
+			</title>
+			<description>
+				<de>Splatter und Splatter. [0|First] und Byte kehren als Zombies wieder. Klar, ne Geschichte gibt es auch. Irgendwo.</de>
+				<en>Splatter and splatter. [0|First] and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
+			</description>
+			<staff>
+				<member index="0" function="7">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+				<member index="2" function="2">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+				<member index="3" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="4" function="2">817052f9-cfbd-415c-a4b4-a225011afcb1</member>
+				<member index="5" function="7">Per_custom_Freddy_36</member>
+				<member index="6" function="2">Per_custom_Freddy_31</member>
+				<member index="7" function="2">Per_custom_Freddy_28</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="SCO/D" distribution="2" maingenre="12" subgenre="" flags="64" blocks="2" price_mod="1.00" />
+			<releaseTime year_relative="+2" year_relative_min="1982" year_relative_max="1997" />
+			<ratings critics="17" speed="55" outcome="0" />
+			<children>
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Byte beißt den Wärter</de>
+						<en>Byte bites the guardian</en>
+					</title>
+					<description>
+						<de>Aus der bewachten Gruft entkommen. Doch der Wärter stört.</de>
+						<en>Escape from the guarded crypt. But the warden is interfering.</en>
+					</description>
+					<ratings critics="13" speed="59" />
+				</programme>
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Reference: https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt">
+					<title>
+						<de>[0|First] sucht das Fliwatüt</de>
+						<en>[0|First] is looking for the Flywatoot</en>
+					</title>
+					<description>
+						<de>[0|First] jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
+						<en>[0|First] is chasing the Flywatoot. The army of grannies opposes him.</en>
+					</description>
+					<ratings critics="14" speed="54" />
+				</programme>
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Bank</de>
+						<en>The bank</en>
+					</title>
+					<description>
+						<de>Endlich wieder Geld! Was will das Militär hier? Beißen hilft.</de>
+						<en>Finally some money again! What does the military want here? Biting helps.</en>
+					</description>
+					<ratings critics="17" speed="47" />
+				</programme>
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Vernichte das Bit</de>
+						<en>Destroy the Bit</en>
+					</title>
+					<description>
+						<de>[0|First] und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
+						<en>[0|First] and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
+					</description>
+					<ratings critics="12" speed="59" />
+				</programme>
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep05" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Der Anfang</de>
+						<en>The Beginning</en>
+					</title>
+					<description>
+						<de>[0|First] und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
+						<en>[0|First] and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
+					</description>
+					<ratings critics="27" speed="61" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-serie-Moumental-BestofTVTower" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
+				<de>Best of TVTower</de>
+				<en>Best of TVTower</en>
+			</title>
+			<description>
+				<de>[1|Full] präsentiert die besten Sendungen aus dem TVTower Programm. Die Spieler haben gewählt, und [1|First] kommentiert. Inklusive Outtakes und Kurzinterviews.</de>
+				<en>[1|Full] presents the best shows from the TVTower program. The players voted, and [1|First] comments. Including outtakes and short interviews.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+				<member index="1" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
+			<releaseTime year_relative="-5" />
+			<ratings critics="89" speed="38" />
+			<children>
+				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Tiefsee Dinoschrecken, Banzai</de>
+						<en>Dino deep sea terror, Banzai</en>
+					</title>
+					<description>
+						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
+						<en>Totally misjudged. A film as it could not be better. Viewers have yet to see the true value.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">Per_custom_Freddy_309</member>
+						<member index="1" function="2">Per_custom_Freddy_310</member>
+						<member index="2" function="2">Per_custom_Freddy_308</member>
+					<member index="3" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+					</staff>
+					<groups target_groups="0" />
+				</programme>
+				<programme id="TheRob-serie-BestofTVTower-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Der Osten - der Westen</de>
+						<en>The East - the West</en>
+					</title>
+					<description>
+						<de>[4|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
+						<en>[4|First] compares the shows. But at some point, she just laughs at [2|Full]'s eyebrows. That will cause belly ache...</en>
+					</description>
+					<staff>
+						<member index="0" function="1">Per_custom_Freddy_119</member>
+						<member index="2" function="2">Per_custom_Freddy_111</member>
+						<member index="1" function="1">Per_custom_Freddy_406</member>
+						<member index="3" function="2">Per_custom_Freddy_429</member>
+						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+					</staff>
+				</programme>
+				<programme id="TheRob-serie-BestofTVTower-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Iris entdeckt die Alm</de>
+						<en>Iris explores the alp</en>
+					</title>
+					<description>
+						<de>[4|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
+						<en>[4|First] philosophizes about whether this is not rather a documentary about milking techniques and enriches many scenes with her experiences from the farm.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+						<member index="1" function="2">Per_custom_Freddy_682</member>
+						<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+						<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+					</staff>
+				</programme>
+				<programme id="TheRob-serie-BestofTVTower-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt0072443" creator="Sjaele/TheRob">
+					<title>
+						<de>Picknick am Wegesrand</de>
+						<en>Picnic by the Wayside</en>
+					</title>
+					<title_original>
+						<de>Stalker</de>
+						<en>Stalker</en>
+					</title_original>
+					<description>
+						<de>Betty überzeugt in ihrer russischen Kommentierung. Ansonsten vergleicht sie eifrig Walkers mit Daywalkers.</de>
+						<en>Betty is convincing in her Russian commentary. Otherwise, she zealously compares Walkers with Daywalkers.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+						<member index="1" function="2">TheRob-TowerTV-AlzaFrejndlitsch</member>
+						<member index="2" function="2">TheRob-TowerTV-AlexKaimanowski</member>
+						<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>
+						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+					</staff>
+					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+					<data country="SU" blocks="3" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-dda6-mov-ero-LolitasimHeu" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Lolitas im Heu</de>
+				<en>Lolitas in the hay</en>
+			</title>
+			<description>
+				<de>Die frühe Jugendsünde von [1|Full]. Aber sie ist hinreissend.</de>
+				<en>The early actor sins of [1|Full]. But what a beauty.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_682</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="2" function="2">TheRob-TowerTV-IrisLeger</member>
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1979" distribution="1" maingenre="8" subgenre="" flags="64" blocks="3" price_mod="1.00" />
+			<ratings critics="29" speed="49" outcome="89" />
+		</programme>
+
+		<programme id="TheRob-serie-DieStraendederWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
+				<de>Die Strände der Welt</de>
+				<en>Beaches of the world</en>
+			</title>
+			<description>
+				<de>[1|Full] zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
+				<en>[1|Full] presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-MorisWeverkov</member>
+				<member index="1" function="8">TheRob-TowerTV-VeraZottova</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="CS" year="1980" distribution="2" maingenre="6" subgenre="8" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="29" speed="59" />
+			<children>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Walvis Bucht</de>
+						<en>Walvis Bay</en>
+					</title>
+					<description>
+						<de>Namibia. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Namibia. [1|First] bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Oak Beach</de>
+						<en>Oak beach</en>
+					</title>
+					<description>
+						<de>Australien mit direktem Blick auf das Great Barrier Reef. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Australia with direct view on the Great Barrier Reef. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Vallvik</de>
+						<en>Vallvik</en>
+					</title>
+					<description>
+						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Playa Corcovado</de>
+						<en>Playa Corcovado</en>
+					</title>
+					<description>
+						<de>Costa Rica. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Costa Rica. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Koh Thas</de>
+						<en>Koh Thas</en>
+					</title>
+					<description>
+						<de>Kambodscha. Wer hält da denn Kokosnüsse? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Cambodia. Who's holding coconuts there? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>Vyshka</de>
+						<en>Vyshka</en>
+					</title>
+					<description>
+						<de>Russland. Wer kennt schon das kaspische Meer? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Russia. Who has ever heard of the Caspian Sea anyway? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-serie-Wirstellenvor" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Wir stellen vor, Music show -->
+				<de>Wir stellen vor</de>
+				<en>We introduce...</en>
+			</title>
+			<description>
+				<de>Musik aus den 50ern die man kennen sollte und ihre Macher.</de>
+				<en>Music from the 50s that you should know and the artists who made it.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_266</member>
+				<member index="1" function="8">Per_custom_Freddy_259</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" year="1959" distribution="2" maingenre="102" subgenre="" flags="0" blocks="1" price_mod="1.00" />
+			<ratings critics="30" speed="59" />
+			<children>
+				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">7305874f-d807-4bb7-98a9-14062f74c667</member>
+					</staff>
+					<ratings critics="41" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">e8016a46-dbe5-4772-a2f6-70234f0c10ea</member>
+					</staff>
+					<ratings critics="28" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">7711c596-5eb1-46f1-82b1-0826a1189f18</member>
+					</staff>
+					<ratings critics="28" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">3cf19225-1fa3-425a-a226-73c837815e87</member>
+					</staff>
+					<ratings critics="30" speed="58" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">9a05551e-1677-4fd8-8356-490faf5719e4</member>
+					</staff>
+					<ratings critics="27" speed="60" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">2b5afaec-4de7-4015-82ce-3fa4e35f4ec3</member>
+					</staff>
+					<ratings critics="32" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+					</description>
+					<staff>
+						<member index="2" function="16">ef66c1fc-8baf-4c7b-8b25-4971fba4858a</member>
+					</staff>
+					<ratings critics="32" speed="61" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+			<title>
+				<de>Die Wikinger</de>
+				<en>The Vikings</en>
+			</title>
+			<description>
+				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert und inklusive nachgebauten Boot. Der Erzähler versucht sich an den Spannungsbögen.</de>
+				<en>From their origin to their downfall. The facts are portrayed by amateur actors. Replica boat included. The narrator tries his hand at building up tension, too.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_20</member>
+				<member index="1" function="2">TheRob-TowerTV-BastlRuetli</member>
+				<member index="2" function="2">Per_custom_Freddy_634</member>
+				<member index="3" function="2">Per_custom_Freddy_149</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="1" maingenre="11" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="71" speed="37" outcome="0" />
+		</programme>
+
+		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Ursprünglich 24 Stunden und auskommentiert, geändert auf 12 Stunden, damit alles funktioniert in der GUI">
+			<title>
+				<de>Ein Monumentaler Versuch</de>
+				<en>An Attempt at an Epic</en>
+			</title>
+			<description>
+				<de>12 Stunden im Leben an einer dänischen Familie am Tag des Ausbruches des zweiten Weltkrieges. Die Kritiker feierten das Werk, doch wer ist wirklich bereit für einen 12-Stunden Film?</de>
+				<en>12 hours in the life in a family from Denmark during the day the second world war begins. The critics were euphoric, but who's ready for a 12 hours movie, really?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_70</member>
+				<member index="1" function="2">Per_custom_Freddy_72</member>
+				<member index="2" function="2">Per_custom_Freddy_75</member>
+				<member index="3" function="2">Per_custom_Freddy_74</member>
+				<member index="4" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DK" year="1951" distribution="2" maingenre="13" subgenre="9" flags="12" blocks="12" price_mod="1.00" />
+			<ratings critics="81" speed="17" outcome="2" />
+		</programme>
+
+		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
+			<title>
+				<de>Und Jetzt?</de>
+				<en>And Now?</en>
+			</title>
+			<description>
+				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview. Spoiler: [2|Full] will Präsident werden... HaHaHa</de>
+				<en>An actor starts his political career. An in-depth interview. Spoiler: [2|Full] wants to be elected as US president. We are still laughing.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_149</member>
+				<member index="1" function="8">TheRob-TowerTV-VeraZottova</member>
+				<member index="2" function="64">e52ca72c-83e2-431d-ae02-c66daefea035</member>
+			</staff>
+			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1978" distribution="2" maingenre="101" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="55" speed="41" outcome="0" />
+		</programme>
+	</allprogrammes>
+
+	<insignificantpeople>
+		<!-- TowerTV/MaddTV Personen -->
+		<person id="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" fictional="1" levelup="0"  />
+		<person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" fictional="1" levelup="0"  />
+
+		<!-- Bastl Rütli -->
+		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
+	</insignificantpeople>
+
+	<celebritypeople>
+		<!-- Vera Zottova -->
+		<person id="TheRob-TowerTV-VeraZottova" tmdb_id="0" imdb_id="0" creator="8751" created_by="TheRob">
+			<first_name>Vera</first_name>
+			<last_name>Zottorova</last_name>
+			<nick_name></nick_name>
+			<details gender="2" fictional="1" birthday="" deathday="" country="" />
+			<data popularity="5" affinity="60" fame="60" scandalizing="20" price_mod="1" power="60" humor="24" charisma="78" appearance="88" topgenre="0" />
+		</person>
+		<!-- Moris Wewerkov -->
+		<person id="TheRob-TowerTV-MorisWeverkov" tmdb_id="0" imdb_id="0" creator="8751" created_by="TheRob">
+			<first_name>Moris</first_name>
+			<last_name>Weverkov</last_name>
+			<nick_name></nick_name>
+			<details gender="1" fictional="1" birthday="" deathday="" country="" />
+			<data popularity="60" affinity="30" fame="40" scandalizing="80" price_mod="1" power="50" humor="40" charisma="90" appearance="40" topgenre="0" />
+		</person>
+	</celebritypeople>
+
+	<scripttemplates>
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
+			<title>
+				<de>%WHAT% für %WHO%</de>
+				<en>Writing %WHAT% for %WHO%</en>
+			</title>
+			<description>
+				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
+				<en>How do I write %WHAT% for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
+			</description>
+			<variables>
+				<what>
+					<de>Drehbücher|Nachrichten|Serien|Filme</de>
+					<en>movie scripts|news|series|movies</en>
+				</what>
+				<who>
+					<de>Anfänger|Neulinge|Fortgeschrittene|Profis|Neugierige</de>
+					<en>beginners|newcomers|the advanced|professionals|the curious</en>
+				</who>
+			</variables>
+			
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="128" required="1" gender="2" />
+				<job index="2" function="4" required="1" gender="1" />
+				<!-- bis zu zwei weitere Rollen (Nebendarsteller) -->
+				<job index="3" function="4" required="0" gender="0" />
+				<job index="4" function="4" required="0" gender="0" />
+			</jobs>
+			<genres maingenre="300" subgenres="6" />
+			<blocks min="1" max="3" slope="20" />
+			<price min="1000" max="5000" slope="20" />
+			<potential min="10" max="50" slope="20" />
+			<outcome min="10" max="39" slope="40" />
+			<review min="15" max="50" slope="20" />
+			<speed min="20" max="50" slope="20" />
+		</scripttemplate>
+		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<variables>
+				<title>
+					<de>Reportagen aus dem Sendegebiet|Neues aus %RANDOMCITY%|Reportagen aus %RANDOMCITY%|Was ist los in %RANDOMCITY%?</de>
+					<en>Reports from the broadcast area|News from %RANDOMCITY%|Reports from %RANDOMCITY%|What's up in %RANDOMCITY%?</en>
+				</title>
+				<randomcity>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+					<en>%STATIONMAP:RANDOMCITY%</en>
+				</randomcity>
+			</variables>
+			
+			<description>
+				<de>Reporter durchreisen das Sendegebiet um ausführlich über lokale Ereignisse zu berichten. Die neueste Ausstellung, ein Jubiläum? Alles wird entdeckt.</de>
+				<en>Reporters travel through the broadcast area to report in detail on local events. The latest exhibition, an anniversary? Everything will be discovered.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="2" />
+				<job index="2" function="128" required="1" gender="1" />
+				<job index="3" function="128" required="0" gender="0" />
+				<job index="4" function="128" required="0" gender="0" />
+			</jobs>
+			<genres maingenre="300" subgenres="0" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="2000" max="8000" slope="20" />
+			<potential min="18" max="48" slope="20" />
+			<outcome min="10" max="40" slope="40" />
+			<review min="25" max="52" slope="30" />
+			<speed min="20" max="40" slope="20" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<variables>
+				<title>
+					<de>%ADJECTIVE% %SUBJECT%%MODIFIER%</de>
+					<en>%ADJECTIVE% %SUBJECT%%MODIFIER%</en>
+				</title>
+				<subject>
+					<de>Filme|Serien|Shows|Produktionen</de>
+					<en>movies|series|shows|productions</en>
+				</subject>
+				<adjective>
+					<de>Die neusten|Herausragende|Die spannendsten</de>
+					<en>Upcoming|Outstanding|Exciting</en>
+				</adjective>
+				<modifier>
+					<de>|| %WORLDTIME:YEAR%</de>
+					<en>|| %WORLDTIME:YEAR%</en>
+				</modifier>
+			</variables>
+			
+			<description>
+				<de>Besprechung der Neuerscheinungen. Was muss man sehen, was kann man sich sparen?</de>
+				<en>Review of new releases. What is a must-see, what can be spared?</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="64" required="1" gender="2" />
+				<job index="3" function="64" required="0" gender="0" />
+				<job index="4" function="64" required="0" gender="0" />
+			</jobs>
+			<genres maingenre="204" subgenres="0" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="3000" max="7000" slope="20" />
+			<potential min="18" max="46" slope="20" />
+			<outcome min="10" max="40" slope="40" />
+			<review min="20" max="50" slope="30" />
+			<speed min="20" max="42" slope="25" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
+			<title>
+				<de>%GROANERS% %TYPE%</de>
+				<en>%GROANERS% %TYPE%</en>
+			</title>
+			<description>
+				<de>Ein Moderator lässt seine Gäste Sketche aufführen und gibt ihnen spontane Regieanweisungen.</de>
+				<en>A host has his guests perform skits and gives them spontaneous stage directions.</en>
+			</description>
+			<variables>
+				<type>
+					<de>am laufenden Band|ohne Ende|auf Kommando|im Dutzend|par excellence|ganz spontan</de>
+					<en>churned out|unlimited|on Cue|by the Dozen|par excellence|all spontaneous</en>
+				</type>
+				<groaners>
+					<de>Gags|Kalauer|Witze|Scherze|Ulk|Zoten|Späßchen</de>
+					<en>Gags|Laughs|Jests|Jokes|Fun|Pranks|Banter</en>
+				</groaners>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="64" required="1" gender="2" />
+				<job index="3" function="64" required="1" gender="1" />
+				<job index="4" function="64" required="0" gender="0" />
+			</jobs>
+			<genres maingenre="100" subgenres="0" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="3000" max="7500" slope="20" />
+			<potential min="18" max="46" slope="20" />
+			<outcome min="10" max="40" slope="40" />
+			<review min="20" max="50" slope="30" />
+			<speed min="28" max="49" slope="25" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
+			<title>
+				<de>%birth% %station%</de>
+				<en>%birth% of %station%</en>
+			</title>
+			<description>
+				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
+				<en>You missed the opening show? Here are the best scenes and outtakes, as well as some retrospections from participants.</en>
+			</description>
+			<variables>
+				<birth>
+					<de>Geburt|Die Geburtsstunde|Der Ursprung|Die Entstehung|Die Wurzeln|Die Eröffnung|Der Kick-off|Der Start|Der Anfang|Die Taufe|Die Genese|Die Einweihung|Die Einführung|Die Gründung|Die Morgendämmerung|Das Auftauchen|Das Erscheinen|Die Ankunft</de>
+					<en>Birth|The First Hours|The Origin|The Formation|The Roots|The Opening|The Launch|The Beginning|The Inception|The Onset|The Genesis|The Inauguration|The Initiation|The Founding|The Dawning|The Emergence|The Appearance|The Arrival</en>
+				</birth>
+				<station>
+					<de>des Senders|des Fernsehsenders|des TV-Senders|dieses Kanals|dieses Fernsehkanals|dieses TV-Kanals|dieses Programms</de>
+					<en>the Station|this Television Station|this TV Station|this Channel|this Television Channel|this TV Channel|this Programme</en>
+				</station>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="1" />
+			</jobs>
+			<genres maingenre="204" subgenres="0" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="5000" max="9500" slope="20" />
+			<potential min="28" max="66" slope="20" />
+			<outcome min="10" max="60" slope="40" />
+			<review min="30" max="70" slope="30" />
+			<speed min="40" max="62" slope="25" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
+			<title>
+				<de>Die %WAS%%ART%</de>
+				<en>The %WAS% %ART%</en>
+			</title>
+			<description>
+				<de>Studenten der Filmwissenschaften stellen ihre Horrordrehbücher für die Abschlussarbeit des Semester allen Studios zur Verfügung. Was da wohl rauskommt?</de>
+				<en>Film school students make their horror scripts available to all studios for the final project of the semester. Let's see what comes out of it.</en>
+			</description>
+			<variables>
+				<was>
+					<de>Grusel|Horror|Angst|Furcht|Spuk|Schauder|Zitter|Bangemach|Schreck</de>
+					<en>Creep|Horror|Angst|Fear|Spook|Shiver|Shudder|Tremble|Scare</en>
+				</was>
+				<art>
+					<de>universität|schule|akademie|fachhochschule</de>
+					<en>University|School|Academy|College</en>
+				</art>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+			</jobs>
+			<data flags="64" flags_optional="16" />
+			<genres maingenre="12" subgenres="14" />
+			<blocks min="1" max="4" slope="25" />
+			<price min="1000" max="19500" slope="20" />
+			<potential min="1" max="100" slope="20" />
+			<outcome min="1" max="100" slope="20" />
+			<review min="1" max="100" slope="35" />
+			<speed min="1" max="100" slope="25" />
+			<studio_size min="1" max="2" slope="30" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<description>
+				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
+				<en>Family comedy about life with a mischievous son. The script is written by star screenwriter Don Ron.</en>
+			</description>
+			<variables>
+				<title>
+					<de>Engel oder Bengel|%NAME% dreht durch|%NAME% außer Rand und Band</de>
+					<en>Angel or Rascal|%NAME% goes berserk|%NAME% goes haywire</en>
+				</title>
+				<name>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
+				</name>
+			</variables>
+			
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="1" />
+			</jobs>
+			<genres maingenre="5" subgenres="9" />
+			<blocks min="2" max="3" slope="25" />
+			<price min="50000" max="99500" slope="40" />
+			<potential min="55" max="100" slope="40" />
+			<outcome min="55" max="100" slope="40" />
+			<review min="55" max="100" slope="40" />
+			<speed min="55" max="100" slope="10" />
+			<studio_size min="2" max="3" slope="40" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
+			<title>
+				<de>%NAME1% %NAME2%</de>
+				<en>%NAME1% %NAME2%</en>
+			</title>
+			<description>
+				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
+				<en>Yodeling declarations of love and epic mountain shots.</en>
+			</description>
+			<variables>
+				<name1>
+					<de>Heimatliche|Romantische|Süße|Schmachtende</de>
+					<en>Homey|Romantic|Sweet|Yearning</en>
+				</name1>
+				<name2>
+					<de>Berggeschichten|Dorfgeschichten|Waldgeschichten|O'zapft is-Geschichten</de>
+					<en>Stories of the Mountains|Tales from the Village|Tales from the Forest|Oktoberfest Stories</en>
+				</name2>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+			</jobs>
+			<genres maingenre="9" subgenres="15" />
+			<blocks min="2" max="3" slope="25" />
+			<price min="5000" max="19500" slope="30" />
+			<potential min="20" max="50" slope="30" />
+			<outcome min="10" max="40" slope="50" />
+			<review min="5" max="40" slope="30" />
+			<speed min="10" max="40" slope="30" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Krim-ErbarmungsloseErmittler">
+			<title>
+				<de>Erbarmungslose Ermittler: %CITY%</de>
+				<en>Merciless Investigators: %City%</en>
+			</title>
+			<description>
+				<de>%NAME% ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
+				<en>%NAME% investigate in their city. The case deals with a current social issue that moves the nation.</en>
+			</description>
+			<variables>
+				<city>
+					<de>Frankfurt|Berlin|Bonn|Hamburg|München|Chemnitz|Bremen|Stuttgart|Leipzig|Dresden|Magdeburg|Wiesbaden|Kassel|Darmstadt|Köln|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wien|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zürich|Bern|Helgoland</de>
+					<en>Frankfurt|Berlin|Bonn|Hamburg|Munich|Chemnitz|Bremen|Stuttgart|Leipzig|Dresden|Magdeburg|Wiesbaden|Kassel|Darmstadt|Cologne|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wien|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zurich|Bern|Helgoland</en>
+				</city>
+				<name>
+					<de>Bibi und Hanni|Nani und Tina|Helga und Irmtraud|Nicole und Birgit|Alexandra und Christelle|Beate und Sieglinde|Katharina und Isabelle|Bettina und Christina|Frau Müller und Frau Meier|Frau Schmidt und Frau Biedermann|Frau Faust und Frau Goethe|Tante Erna und Tante Emma</de>
+					<en>Bibi and Hanni|Nani and Tina|Helga and Irmtraud|Nicole and Birgit|Alexandra and Christelle|Beate and Sieglinde|Katharina and Isabelle|Bettina and Christina|Mrs. Smith and Mrs. Brown|Mrs. Schmidt and Mrs. Biedermann|Mrs. Faust and Mrs. Goethe|Aunt Erna and Aunt Emma</en>
+				</name>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="32" required="1" gender="2" />
+				<job index="5" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="16" flags_optional="96" />
+			<genres maingenre="4" subgenres="0" />
+			<blocks min="2" max="2" slope="25" />
+			<price min="30000" max="60000" slope="50" />
+			<potential min="48" max="68" slope="50" />
+			<outcome min="50" max="70" slope="40" />
+			<review min="30" max="80" slope="50" />
+			<speed min="48" max="89" slope="28" />
+			<studio_size min="1" max="2" slope="30" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-SciFi-QueenundUfo">
+			<title>
+				<de>Die Queen und %what%</de>
+				<en>The Queen and %what%</en>
+			</title>
+			<description>
+				<de>Ein UFO mit Außerirdischen landet auf der Erde. Doch statt die Queen zu schrumpfen, sind es Weltraumgroupies der Queen.</de>
+				<en>An UFO with aliens lands on Earth. But instead of shrinking the Queen, they are her space groupies.</en>
+			</description>
+			<variables>
+				<what>
+					<de>das Ufo|die Außerirdischen</de>
+					<en>the UFO|the aliens</en>
+				</what>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags_optional="42" />
+			<genres maingenre="16" subgenres="5" />
+			<blocks min="2" max="4" slope="40" />
+			<price min="35000" max="69500" slope="60" />
+			<potential min="45" max="95" slope="50" />
+			<outcome min="40" max="80" slope="50" />
+			<review min="55" max="90" slope="55" />
+			<speed min="40" max="70" slope="40" />
+			<studio_size min="1" max="2" slope="25" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
+			<title>
+				<de>ISS - auf der Suche nach %NAME%</de>
+				<en>ISS - Searching for %NAME%</en>
+			</title>
+			<description>
+				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
+				<en>The history of the ISS. Presented in detail and adorned with a lot of interesting facts.</en>
+			</description>
+			<variables>
+				<name>
+					<de>Leben|Signalen|Wundern|fremden Wesen|neuen Galaxien|dem UFO aus TVT|dem Mann auf dem Mond</de>
+					<en>Life|Signals|Wonderworld|Aliens|new Galaxies|the UFO From TVT|the Man On The Moon</en>
+				</name>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="0" gender="1" />
+				<job index="2" function="8" required="1" gender="2" />
+			</jobs>
+			<data flags="4" flags_optional="2" />
+			<genres maingenre="6" subgenres="0" />
+			<blocks min="2" max="4" slope="70" />
+			<price min="7000" max="17500" slope="20" />
+			<potential min="18" max="46" slope="40" />
+			<outcome min="0" max="40" slope="40" />
+			<review min="40" max="90" slope="50" />
+			<speed min="18" max="49" slope="25" />
+			<availability year_range_from="1999" year_range_to="-1" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
+			<title>
+				<de>MIR - auf der Suche nach %NAME%</de>
+				<en>MIR - Searching for %NAME%</en>
+			</title>
+			<description>
+				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
+				<en>The history of the MIR. Presented in detail and adorned with a lot of interesting facts.</en>
+			</description>
+			<variables>
+				<name>
+					<de>Leben|Signalen|Wundern|fremden Wesen|neuen Galaxien|dem UFO aus TVT|dem Mann auf dem Mond</de>
+					<en>Life|Signals|Wonderworld|Aliens|new Galaxies|the UFO From TVT|the Man On The Moon</en>
+				</name>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="0" gender="1" />
+				<job index="2" function="8" required="1" gender="2" />
+			</jobs>
+			<data flags="4" flags_optional="2" />
+			<genres maingenre="6" subgenres="0" />
+			<blocks min="2" max="4" slope="70" />
+			<price min="7000" max="17500" slope="20" />
+			<potential min="18" max="46" slope="40" />
+			<outcome min="0" max="40" slope="40" />
+			<review min="40" max="90" slope="50" />
+			<speed min="18" max="49" slope="25" />
+			<availability year_range_from="1986" year_range_to="1998" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-dram-TVTintern">
+			<title>
+				<de>TVTs: %OBJECT% im Hochhaus</de>
+				<en>TVTs: %OBJECT% In A Skyscraper</en>
+			</title>
+			<description>
+				<de>Serie über %OBJECT% im TV Tower Hochhaus</de>
+				<en>Series about %OBJECT% in The TV Tower Skyscraper</en>
+			</description>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep1">
+					<title>
+						<de>TVTs Pilot</de>
+						<en>TVTs Pilot</en>
+					</title>
+					<blocks min="2" max="4" />
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep2">
+					<title>
+						<de>Besuch bei Betty</de>
+						<en>Visiting Betty</en>
+					</title>
+					<blocks min="2" max="3" />
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep3">
+					<title>
+						<de>%ATTRIBUTE% macht eine Party</de>
+						<en>%ATTRIBUTE% is Having a Party</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep4">
+					<title>
+						<de>Versteigerung bei der Film-Fgentur</de>
+						<en>Auction At The Movie Agency</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep5">
+					<title>
+						<de>Betty flirtet</de>
+						<en>Flirt With Betty</en>
+					</title>
+					<blocks min="2" max="3" />
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep6">
+					<title>
+						<de>%SUBJECT1A%</de>
+						<en>The %SUBJECT1A%</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep7">
+					<title>
+						<de>Besuch des Terroristen</de>
+						<en>Visit of The Terrorist</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep8">
+					<title>
+						<de>%ATTRIBUTE% wird wütend</de>
+						<en>%ATTRIBUTE% Gets Mad</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep9">
+					<title>
+						<de>Die Sünden von Betty</de>
+						<en>Sins of Betty</en>
+					</title>
+					<blocks min="2" max="3" />
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep10">
+					<title>
+						<de>Streit bei %SUBJECT1B%</de>
+						<en>Trouble At The %SUBJECT1B%</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="10" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep11">
+					<title>
+						<de>Planen</de>
+						<en>Planning</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="11" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep12">
+					<title>
+						<de>Bettys Hochzeit</de>
+						<en>Bettys Marriage</en>
+					</title>
+					<blocks min="3" max="6" />
+				</scripttemplate>
+			</children>
+			<variables>
+				<attribute>
+					<de>Die FR Duban|Die VR Duban</de>
+					<en>The FR Duban|The PR Duban</en>
+				</attribute>
+				<object>
+					<de>Intrigen|Hinterhalte|Wettkämpfe|Dramen|Machenschaften|Quoten|Fehler|Machtkämpfe|Beschlagnahmer</de>
+					<en>Intrigues|Ambuscades|Competition|Drama|Scheming|Quotas|Mistakes|Power Struggles|Confiscators</en>
+				</object>
+				<subject1a>
+					<de>Die Wäscherei|Der Pförtner|Bio-Control|Die Tabak-Lobby|Der Computershop „Spysoft“|Die Knarren-Agentur|Der Anti-Raucher e.V.|Das Psychiaterbüro „Harry Dippl“|Die Peace-Brothers</de>
+					<en>Laundry|Porter|Bio-Control|Tobacco lobby|Computershop "Spysoft"|Guns Agency|No to Tobacco Society|Pychiatrist "Harry Dippl"|Peace-Brothers</en>
+				</subject1a>
+				<subject1b>
+					<de>dem Makler|der Agentur für Werbung|der Drehbuchagentur|dem Supermarkt|der Hinweistafel</de>
+					<en>Ad Agency|Room Agency|Script office|Roomboard|Supermarket</en>
+				</subject1b>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1"  />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="1" />
+				<job index="5" function="32" required="0" />
+				<job index="6" function="32" required="0" />
+				<job index="7" function="32" required="0" />
+				<job index="8" function="32" required="0" />
+			</jobs>
+			<data flags="8" flags_optional="50" />
+			<genres maingenre="7" subgenres="9" />
+			<episodes min="9" max="12" />
+			<blocks value="1" />
+			<price min="95000" max="99000" />
+			<potential min="50" max="90" slope="45" />
+			<outcome min="75" max="95" slope="40" />
+			<review min="45" max="85" slope="55" />
+			<speed min="35" max="85" slope="50" />
+			<studio_size min="2" max="3" slope="35" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-trash-karprachd">
+			<title>
+				<de>Kār prachd</de>
+				<en>Kār prachd</en>
+			</title>
+			<description>
+				<de>Die legendäre thailändische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
+				<en>The legendary Thai series re-shot in the original language without subtitles.</en>
+			</description>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep1">
+					<title>
+						<de>TVTs Pilot</de>
+						<en>TVTs Pilot</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep2">
+					<title>
+						<de>Was?</de>
+						<en>WTF?</en>
+					</title>
+					<episodes min="1" max="3" />
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep5">
+					<title>
+						<de>Nicht im Ernst???</de>
+						<en>Really???</en>
+					</title>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1"  />
+			</jobs>
+			<data flags="114" flags_optional="8" />
+			<genres maingenre="3" subgenres="8" />
+			<blocks value="1" />
+			<price min="100" max="999" />
+			<potential min="2" max="14" slope="45" />
+			<outcome min="5" max="9" slope="40" />
+			<review min="15" max="35" slope="40" />
+			<speed min="35" max="85" slope="50" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-mix-tanz-amiz">
+			<title>
+				<de>tanz-āmiz</de>
+				<en>tanz-āmiz</en>
+			</title>
+			<description>
+				<de>Die legendäre iranische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
+				<en>The legendary Iranian series re-shot in the original language without subtitles.</en>
+			</description>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep1">
+					<title>
+						<de>TVTs Pilot</de>
+						<en>TVTs Pilot</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep2">
+					<title>
+						<de>Was?</de>
+						<en>WTF?</en>
+					</title>
+					<episodes min="1" max="3" />
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep5">
+					<title>
+						<de>Nicht im Ernst???</de>
+						<en>Really???</en>
+					</title>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1"  />
+			</jobs>
+			<data flags="48" flags_optional="12" />
+			<genres maingenre="102" subgenres="9" />
+			<blocks value="1" />
+			<price min="100" max="999" />
+			<potential min="8" max="19" slope="45" />
+			<outcome min="5" max="12" slope="40" />
+			<review min="15" max="25" slope="40" />
+			<speed min="35" max="65" slope="50" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-act-DerFahnder">
+			<title>
+				<de>Der %TITLE1%%TITLE2%</de>
+				<en>The %TITLE1% %TITLE2%</en>
+			</title>
+			<description>
+				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
+				<en>%NAME1% solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
+			</description>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep1">
+					<title>
+						<de>TVTs Pilot</de>
+						<en>TVTs Pilot</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep2">
+					<title>
+						<de>Die Jagd</de>
+						<en>The Hunt</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
+					<title>
+						<de>Entführt</de>
+						<en>Kidnapped</en>
+					</title>
+					<episodes min="0" max="1" />
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep4">
+					<title>
+						<de>Fall gelöst</de>
+						<en>Case Closed</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
+					<title>
+						<de>Die Wahrheit</de>
+						<en>The Truth</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
+					<title>
+						<de>Falschgeld</de>
+						<en>Counterfeit money</en>
+					</title>
+					<episodes min="0" max="1" />
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep7">
+					<title>
+						<de>Alternative Fakten</de>
+						<en>Alternative Facts</en>
+					</title>
+					<episodes min="0" max="1" />
+				</scripttemplate>
+			</children>
+			<variables>
+				<title1>
+					<de>Feldweg|Dorf|Berg|Wald</de>
+					<en>Country Lane|Village|Mountain|Forest</en>
+				</title1>
+				<title2>
+					<de>jäger|polizist|detektiv|fahnder|hüter|wächter</de>
+					<en>Ranger|Policeman|Detective|Investigator|Guardian|Watchman</en>
+				</title2>
+				<name1>
+					<de>Harry|Horst|Jim|Bob|Herr Müller|Herr Schmidt|Dagobert</de>
+					<en>Harry|Horst|Jim|Bob|Mr. Miller|Mr. Smith|Dagobert</en>
+				</name1>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags_optional="18" />
+			<genres maingenre="4" subgenres="2" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="10000" max="29999" />
+			<potential min="12" max="49" slope="45" />
+			<outcome min="25" max="52" slope="45" />
+			<review min="29" max="55" slope="45" />
+			<speed min="35" max="55" slope="63" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Mon-EpischeGeschichte">
+			<title>
+				<de>Don Rons: %WAS%</de>
+				<en>Don Ron's: %WAS%</en>
+			</title>
+			<description>
+				<de>Don Rons monumentale Geschichte über eine royale Familie. Erfolg wie immer garantiert.</de>
+				<en>Don Ron's monumental story about a royal family. Success as always guaranteed.</en>
+			</description>
+			<variables>
+				<was>
+					<de>Der König|Die Königin|Der Prinz|Die Prinzessin|Der Abenteurer Prinz|Die Abenteurer Prinzessin|Der Piraten König|Die Piraten Königin</de>
+					<en>The King|The Queen|The Prince|The Princess|The Adventurer Prince|The Adventurer Princess|The Pirate King|The Pirate Queen</en>
+				</was>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="2" />
+			</jobs>
+			<data flags="8" flags_optional="66" />
+			<groups target_groups="68" />
+			<genres maingenre="13" subgenres="15" />
+			<blocks min="3" max="5" slope="45" />
+			<price min="67000" max="99500" slope="90" />
+			<potential min="71" max="100" slope="50" />
+			<outcome min="71" max="100" slope="50" />
+			<review min="71" max="100" slope="55" />
+			<speed min="55" max="100" slope="65" />
+			<studio_size value="3" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Fant-Wesen">
+			<title>
+				<de>%WESEN%</de>
+				<en>The %WESEN%</en>
+			</title>
+			<description>
+				<de>%NAME% trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
+				<en>%NAME% meets a strange creature. They explore the world together and have wonderful adventures.</en>
+			</description>
+			<variables>
+				<wesen>
+					<de>Der Drache|Der Nacktmull|Die Fee|Die Zahnfee|Der Zauberer|Der Troll|Der Zwerg|Das Erdmännchen|Das Ding aus dem Sumpf|Der Engel|Der Succubus|Das Monster|Der Riese|Der Oger</de>
+					<en>Dragon|Naked Mole-Rat|Fairy|Tooth-Fairy|Wizard|Troll|Dwarf|Meerkat|Thing from the Swamp|Angel|Succubus|Monster|Giant|Ogre</en>
+				</wesen>
+				<name>
+					<de>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</de>
+					<en>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</en>
+				</name>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags_optional="34" />
+			<groups target_groups="3" />
+			<genres maingenre="10" subgenres="1" />
+			<blocks min="1" max="2" slope="75" />
+			<price min="10000" max="29500" slope="40" />
+			<potential min="20" max="60" slope="40" />
+			<outcome min="20" max="60" slope="40" />
+			<review min="20" max="60" slope="45" />
+			<speed min="20" max="60" slope="45" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-trick-SprechenderGegenstand">
+			<title>
+				<de>%GEGENSTAND%</de>
+				<en>The Talking %GEGENSTAND%</en>
+			</title>
+			<description>
+				<de>Ein sprechender Gegenstand freundet sich mit einem Kind an und das lustige Abenteuer beginnt.</de>
+				<en>A talking object befriends a child and the fun adventure begins.</en>
+			</description>
+			<variables>
+				<gegenstand>
+					<de>Die sprechende Lokomotive|Das sprechende Auto|Das sprechende Haus|Der sprechende Baum|Die sprechende Wolke|Die sprechende Spatzenschleuder|Das sprechende Gänseblümchen|Die sprechende Trompete|Die sprechende Kartoffelkanone</de>
+					<en>Locomotive|Car|House|Tree|Cloud|Sparrow Slingshot|Daisy|Trumpet|Potato Cannon</en>
+				</gegenstand>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="0" gender="1" />
+			</jobs>
+			<data flags="2" flags_optional="16" />
+			<groups target_groups="3" target_groups_optional="4" />
+			<genres maingenre="3" subgenres="5" />
+			<blocks min="1" max="2" slope="55" />
+			<price min="15000" max="39500" slope="50" />
+			<potential min="30" max="70" slope="35" />
+			<outcome min="30" max="70" slope="35" />
+			<review min="30" max="70" slope="35" />
+			<speed min="30" max="70" slope="35" />
+			<studio_size min="1" max="2" slope="20" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hist-Voelker">
+			<title>
+				<de>Die %Volk%</de>
+				<en>The %Volk%</en>
+			</title>
+			<description>
+				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
+				<en>The presenter tells the story of the rise and fall of this tribe. Amateur actors re-enact important scenes.</en>
+			</description>
+			<variables>
+				<volk>
+					<de>Kelten|Römer|Sachsen|Mongolen|Ägypter|Franken|Ostgoten|Westgoten|Etrusker|Perser|Angelsachsen|Osmanen|Japaner|Zulus|Burgundians|Mauren|Vandalen|Marsianer|Azteken|Comanchen|Apachen|Hohenzollern</de>
+					<en>Celts|Romans|Saxons|Mongolians|Egypts|Franconians|Ostrogoths|Visigoths|Etruscans|Persians|Anglo-Saxons|Ottomans|Japanese|Zulus|Burgundian|Moors|Vandals|Martians|Aztecs|Comanches|Apaches|Hohenzollerns</en>
+				</volk>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="32" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="1" />
+				<job index="4" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="4" flags_optional="10" />
+			<genres maingenre="11" subgenres="6" />
+			<blocks min="1" max="2" slope="65" />
+			<price min="20000" max="49500" slope="40" />
+			<potential min="40" max="80" slope="40" />
+			<outcome min="40" max="80" slope="40" />
+			<review min="60" max="80" slope="35" />
+			<speed min="20" max="60" slope="35" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Adv-DieGruselUniversität">
+			<title>
+				<de>%ORT%</de>
+				<en>The %ORT%</en>
+			</title>
+			<description>
+				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
+				<en>A treasure hunter experiences many adventures on his hunt for his riches.</en>
+			</description>
+			<variables>
+				<ort>
+					<de>Der Vulkan|Die Schatzinsel|Das Piratenschiff|Die Geisterhöhle|Der Zauberberg|Das Geisterschiff|Das Spukschloß</de>
+					<en>Volcano|Treasure Island|Pirate Ship|Ghost Cave|Wizard Mountain|Ghost Ship|Haunted Castle</en>
+				</ort>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+			</jobs>
+			<data flags_optional="64" />
+			<genres maingenre="1" subgenres="13" />
+			<blocks min="2" max="4" slope="30" />
+			<price min="15000" max="49500" slope="20" />
+			<potential min="10" max="100" slope="20" />
+			<outcome min="10" max="100" slope="20" />
+			<review min="10" max="100" slope="25" />
+			<speed min="01" max="100" slope="35" />
+			<studio_size min="1" max="2" slope="20" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-West-mitdemhelden">
+			<title>
+				<de>Don Rons: Der %WAS% aus %WOHER%</de>
+				<en>Don Ron's: The %WAS% from %WOHER%</en>
+			</title>
+			<description>
+				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
+				<en>Western written by star screenwriter Don Ron. As always, iconic and ingenious.</en>
+			</description>
+			<variables>
+				<was>
+					<de>Revolverheld|Sheriff|Offizier|Wachtmeister|Halunke|Farmer|Kopfgeldjäger</de>
+					<en>Gunslinger|Sheriff|Officer|Sergeant|Farmer|Scoundrel|Bounty Hunter</en>
+				</was>
+				<Woher>
+					<de>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</de>
+					<en>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</en>
+				</Woher>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="1" />
+				<job index="3" function="2" required="1" gender="2" />
+				<job index="4" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="8" flags_optional="66" />
+			<groups target_groups="256" />
+			<genres maingenre="18" subgenres="7" />
+			<blocks min="2" max="3" slope="25" />
+			<price min="61000" max="99500" slope="50" />
+			<potential min="61" max="100" slope="50" />
+			<outcome min="75" max="100" slope="50" />
+			<review min="55" max="100" slope="50" />
+			<speed min="65" max="100" slope="50" />
+			<studio_size value="3" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
+			<title>
+				<de>TVTs: %TITLE1%</de>
+				<en>TVTs: %TITLE1%</en>
+			</title>
+			<description>
+				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
+				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
+			</description>
+
+			<children>
+				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
+					<title>
+						<de>%EPISODE%</de>
+						<en>%EPISODE%</en>
+					</title>
+					<variables>
+						<episode>
+							<de>Orte|Länder|Unterwäsche|Parfum|Filme|Keine Wörter diesmal|Künstler|Hauptstädte|Flüsse|Gebirge|Politiker</de>
+							<en>Places|Countries|Underwear|Perfume|Movies|No Words This Time|Artists|Capitals|Rivers|Mountains|Politicians</en>
+						</episode>
+					</variables>
+					<episodes min="2" max="7" />
+				</scripttemplate>
+			</children>
+			<variables>
+				<title1>
+					<de>Dancing Queen|Wortsuche|Garantierte Gewinne|Abgezockt|Traumhafte Ansichten</de>
+					<en>Dancing Queen|Word Guessing|Prizes Guaranteed|Ripped Off|Fabulous Peeks</en>
+				</title1>
+				<name1>
+					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
+					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
+				</name1>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="32" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="144" flags_optional="67" production_broadcast_flags="512" />
+			<groups target_groups="16" />
+			<genres maingenre="0" />
+			<blocks min="1" max="2" slope="5" />
+			<price min="80000" max="99999" slope="85" />
+			<potential min="2" max="9" slope="30" />
+			<outcome min="2" max="9" slope="30" />
+			<review min="2" max="5" slope="30" />
+			<speed min="5" max="20" slope="12" />
+		</scripttemplate>
+	</scripttemplates>
+</tvtdb>

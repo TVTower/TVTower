@@ -1,0 +1,25 @@
+Filename		Titel					Komponist		Lizenz				Quelle
+
+title.ogg		Chilledoutwithabeat 			cameronmusic		(als "free" deklariert)		http://www.cameronmusic.co.uk/
+music1.ogg		60's theme 				cameronmusic		(als "free" deklariert)		http://www.cameronmusic.co.uk/
+music2.ogg		Light banjo				cameronmusic		(als "free" deklariert)		http://www.cameronmusic.co.uk/
+music3.ogg		Feelin Good				© 2012 Kevin MacLeod	CC BY 3.0			http://incompetech.com
+music4.ogg		Chee Zee Beach				© 2010 Kevin MacLeod	CC BY 3.0			http://incompetech.com
+music5.ogg		Fastest Man on Earth			Jahzzar			CC BY-SA 3.0			http://freemusicarchive.org/music/Jahzzar/Blinded_by_dust/Fastest_Man_on_Earth
+
+music6.ogg		Tense and percussive			cameronmusic		(als "free" deklariert)		http://www.cameronmusic.co.uk/
+music7.ogg		Batty McFaddin				© 2012 Kevin MacLeod	CC BY 3.0			http://incompetech.com
+music8.ogg		Maple Leaf Rag				Scott Joplin		Public Domain Mark 1.0		http://freemusicarchive.org/music/Scott_Joplin/Frog_Legs_Ragtime_Era_Favorites/03_-_scott_joplin_-_maple_leaf_rag
+music9.ogg		The Entertainer				Scott Joplin		Public Domain Mark 1.0		http://freemusicarchive.org/music/Scott_Joplin/Frog_Legs_Ragtime_Era_Favorites/04_-_scott_joplin_-_the_entertainer
+
+
+specialroom1.ogg	Circus Bunnies				cameronmusic		(als "free" deklariert)		http://www.cameronmusic.co.uk/
+specialroom2.ogg	Frog Legs Rag (1906, piano roll)	James Scott		Public Domain Mark 1.0		http://freemusicarchive.org/music/James_Scott/Frog_Legs_Ragtime_Era_Favorites/01_-_james_scott_-_frog_legs_rag
+specialroom3.ogg	I Do Like To Be Beside The Sea		John H. Glover-Kind	Public Domain Mark 1.0		http://freemusicarchive.org/music/John_H_Glover-Kind/Frog_Legs_Ragtime_Era_Favorites/10_-_john_h_glover-kind_-_i_do_like_to_be_beside_the_seaside
+specialroom4.ogg	The Smiler				Percy Wenrich		Public Domain Mark 1.0		http://freemusicarchive.org/music/Percy_Wenrich/Frog_Legs_Ragtime_Era_Favorites/02_-_percy_wenrich_-_the_smiler
+
+
+genre-show.ogg		Gameshowtheme				cameronmusic		(als "free" deklariert)		http://www.cameronmusic.co.uk/
+
+
+

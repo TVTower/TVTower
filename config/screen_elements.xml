@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<!-- BETTY -->
+		<spritepack name="gfx_betty_elements_pack">
+ 			<url>res/gfx/betty/screen_betty_elements.png</url>
+			<children>
+				<child name="gfx_room_betty_picture1"	x="157"	y="0"	w="31"	h="41"	/>
+				<child name="gfx_room_betty_betty"	    x="0"	y="1"	w="112"	h="148"	/>
+			</children>
+		</spritepack>
+
+		<!-- NEWSAGENCY -->
+		<spritepack name="gfx_news_btn_pack">
+ 			<url>res/gfx/newsstudio/screen_newsstudio_elements.png</url>
+			<children>
+				<child name="gfx_news_btn0" 			x="0"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn1" 			x="40"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn2" 			x="80"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn3" 			x="120"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn4" 			x="160"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn5" 			x="200"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn0.active"		x="0"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn1.active"		x="40"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn2.active"		x="80"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn3.active"		x="120"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn4.active"		x="160"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn5.active"		x="200"	y="40"	w="40"	h="40"	/>
+			</children>
+		</spritepack>
+
+		<spritepack name="gfx_newsplanner_elements" url="res/gfx/newsstudio/screen_newsplanner_elements.png">
+			<children>
+				<child name="gfx_newssheet_base"  x="0" y="0" w="368" h="90" />
+				<child name="gfx_newssheet_genreoverlay"  x="368" y="0" w="12" h="90" />
+			</children>
+			<scripts>
+				<script	do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet0"	r="205"	g="170"	b="50" />
+				<script	do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet1"	r="50"	g="140"	b="205" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet2"	r="220"	g="30"	b="30" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet3"	r="170"	g="30"	b="220" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet4"	r="60"	g="160"	b="60" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet5"	r="255"	g="100"	b="0" />
+			</scripts>
+		</spritepack>
+
+		<!-- ROOMBOARD -->
+		<spritepack name="screen_roomboard_elements" url="res/gfx/roomboard/screen_roomboard_elements.png">
+			<children>
+				<child name="gfx_roomboard_sign_bg"				x="0"	y="51"	w="140" h="10" />
+				<child name="gfx_roomboard_sign_base"			x="0"	y="0"	w="180"	h="24" />
+				<child name="gfx_roomboard_sign_base_dragged"	x="0"	y="25"	w="180"	h="24" />
+			</children>
+		</spritepack>
+
+
+		<!-- ADAGENCY -->
+		<spritepack name="gfx_screen_adagency_pack">
+ 			<url>res/gfx/adagency/screen_adagency_elements.png</url>
+			<children>
+				<child name="gfx_adagency_vendor"      x="212" y="1" w="125" h="125" />
+				<child name="gfx_adagency_vendor_eyes" x="339" y="1" w="52" h="3" f="2" />
+
+				<child name="gfx_contracts_base"			x="1"	y="62"	w="21"	h="68" />
+				<child name="gfx_contracts_base_dragged"	x="1"	y="1"	w="21"	h="60" />
+				<child name="gfx_contracts_0"				x="1"	y="62"	w="21"	h="68" />
+				<child name="gfx_contracts_0_dragged"		x="1"	y="1"	w="21"	h="60" />
+			</children>
+			<!-- generate colored copies of the contracts -->
+			<scripts>
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_1"		x="22"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_2"		x="43"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_3"		x="64"		r="255"		g="255"		b="0" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_4"		x="85"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_5"		x="106"		r="185"		g="125"		b="90" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_6"		x="127"		r="155"		g="55"		b="255" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_7"		x="148"		r="170"		g="170"		b="170" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_8"		x="169"		r="255"		g="95"		b="255" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_9"		x="190"		r="90"		g="90"		b="150" />
+
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_1_dragged"	x="22"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_2_dragged"	x="43"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_3_dragged"	x="64"		r="255"		g="255"		b="0" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_4_dragged"	x="85"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_5_dragged"	x="106"		r="185"		g="125"		b="90" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_6_dragged"	x="127"		r="155"		g="55"		b="255" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_7_dragged"	x="148"		r="170"		g="170"		b="170" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_8_dragged"	x="169"		r="255"		g="95"		b="255" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_9_dragged"	x="190"		r="90"		g="90"		b="150" />
+			</scripts>
+		</spritepack>
+
+		<!-- ADAGENCY: Vendor entity - including blinking/moving eyes -->
+		<spriteentity name="entity_adagency_vendor" sprite="gfx_adagency_vendor" x="241" y="110">
+			<children>
+				<!-- add some blinking eyes to the vendor -->
+				<spriteentity name="entity_adagency_vendor_eyes" sprite="gfx_adagency_vendor_eyes" offsetLeft="73" offsetTop="23">
+					<spriteframeanimations currentAnimationName="blink">
+						<spriteframeanimation name="blink" frames="-1::0::-1::1::-1::0::-1::0::-1::0::-1::1::-1::0" framesTime="8.0::0.45::1.0::4.0::2.0::0.35::7.0::0.40::6.0::0.35::4.0::3.0::2.0::0.35" randomness="0.1" flags="1" />
+					</spriteframeanimations>
+				</spriteentity>
+			</children>
+		</spriteentity>
+
+
+		<!-- SCRIPT AGENCY -->
+		<spritepack name="gfx_screen_scriptagency_pack">
+ 			<url>res/gfx/scriptagency/screen_scriptagency_elements.png</url>
+			<children>
+				<child name="gfx_scripts_0_dragged"	x="0"	y="0"	w="15"	h="52" />
+				<child name="gfx_scripts_1_dragged"	x="15"	y="0"	w="15"	h="52" />
+				<child name="gfx_scripts_2_dragged"	x="30"	y="0"	w="15"	h="52" />
+
+				<child name="gfx_scripts_0"	x="0"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_1"	x="34"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_2"	x="68"	y="52"	w="34"	h="59" />
+
+				<child name="gfx_scriptagency_vendor"		x="106"	y="0"	w="190"	h="245" />
+				<child name="gfx_scriptagency_vendor_hand"	x="301"	y="0"	w="112"	h="41"	f="2" />
+			</children>
+		</spritepack>
+
+
+		<!-- SCRIPT AGENCY: Vendor entity - including writing hand -->
+		<spriteentity name="entity_scriptagency_vendor" sprite="gfx_scriptagency_vendor" x="458" y="127">
+			<children>
+				<!-- add some writing hands eyes to the vendor -->
+				<spriteentity name="entity_scriptagency_vendor_hand" sprite="gfx_scriptagency_vendor_hand" offsetLeft="147" offsetTop="44">
+					<spriteframeanimations currentAnimationName="writing">
+						<spriteframeanimation name="writing" frames="0::1::0::1::0::1" framesTime="0.5::0.2::0.3::0.9::0.2::0.6" randomness="0.1" flags="1" />
+					</spriteframeanimations>
+				</spriteentity>
+			</children>
+		</spriteentity>
+
+
+		<!-- STUDIO -->
+		<spritepack name="gfx_screen_studio_pack">
+ 			<url>res/gfx/studio/screen_studio_elements.png</url>
+			<children>
+				<child name="gfx_scripts_0_studiodesk"  x="141" y="0"   w="27"  h="59" />
+				<child name="gfx_studio_productionconcept_0" x="141" y="60"  w="35"  h="47" />
+				<child name="gfx_studio_deskhint"       x="170" y="0"   w="80"  h="45" />
+				<child name="gfx_studio_manager"        x="0"   y="0"   w="139" h="270" />
+				<child name="gfx_studio_trashbin"       x="141" y="110" w="76" h="59" />
+			</children>
+		</spritepack>
+
+
+		<!-- SUPERMARKET -->
+		<spritepack name="gfx_screen_supermarket_pack">
+ 			<url>res/gfx/supermarket/screen_supermarket_elements.png</url>
+			<children>
+				<child name="gfx_supermarket_present1"  x="0"   y="0"   w="122"  h="91" />
+				<child name="gfx_supermarket_present2"  x="0"   y="91"  w="122"  h="91" />
+				<child name="gfx_supermarket_present3"  x="0"   y="182" w="122"  h="91" />
+				<child name="gfx_supermarket_present4"  x="0"   y="273" w="122"  h="91" />
+				<child name="gfx_supermarket_present5"  x="0"   y="364" w="122"  h="91" />
+				<child name="gfx_supermarket_present6"  x="123" y="0"   w="122"  h="91" />
+				<child name="gfx_supermarket_present7"  x="123" y="91"  w="122"  h="91" />
+				<child name="gfx_supermarket_present8"  x="123" y="182" w="122"  h="91" />
+				<child name="gfx_supermarket_present9"  x="123" y="273" w="122"  h="91" />
+				<child name="gfx_supermarket_present10" x="123" y="364" w="122"  h="91" />
+				<child name="gfx_supermarket_vendor"	x="250"	y="0"   w="120"  h="312" />
+			</children>
+		</spritepack>
+
+		<!-- STUDIO: manager entity -->
+		<spriteentity name="entity_studio_manager" sprite="gfx_studio_manager" x="0" y="115" />
+
+
+		<!-- MOVIEAGENCY -->
+		<spritepack name="screen_movieagency_elements">
+ 			<url>res/gfx/movieagency/screen_movieagency_elements.png</url>
+			<children>
+<!--
+	without special icons:
+	adventure
+	action
+	animation
+	drama
+	family
+	history
+	monumental
+	mystery
+	thriller
+	showevent_undefined
+	showevent_politics
+	showevent_sport
+	showevent_showbiz
+	reportage_undefined
+	reportage_yellowpress
+-->
+				<child name="gfx_auctionmovie" 						x="192"	y="83"	w="256"	h="55" />
+				<child name="gfx_movieagency_vendor"	 			x="0"	y="0"	w="190"	h="220" />
+				<child name="gfx_movieagency_vendor_eyes"	 		x="191"	y="0"	w="56"	h="19" />
+				<child name="gfx_movieagency_hammer"		 		x="191"	y="20"	w="134"	h="60" />
+				<child name="gfx_movie_adventure"	 		x="0"	y="240"	w="15"	h="70"	r="120"	g="70"	b="130" />
+				<child name="gfx_series_adventure"	 		x="135"	y="240"	w="15"	h="70"	r="120"	g="70"	b="130" />
+				<child name="gfx_movie_action"		 		x="15"	y="240"	w="15"	h="70"	r="40"	g="100"	b="150" />
+				<child name="gfx_series_action"		 		x="150"	y="240"	w="15"	h="70"	r="40"	g="100"	b="150" />
+				<child name="gfx_movie_animation"	 		x="30"	y="240"	w="15"	h="70"	r="150"	g="170"	b="80" />
+				<child name="gfx_series_animation"	 		x="165"	y="240"	w="15"	h="70"	r="150"	g="170"	b="80" />
+				<!-- unused cover -->
+				<child name="gfx_movie_UNUSED"		 		x="45"	y="240"	w="15"	h="70"	r="120"	g="120"	b="40" />
+				<child name="gfx_series_UNUSED"		 		x="180"	y="240"	w="15"	h="70"	r="120"	g="120"	b="40" />
+				<child name="gfx_movie_drama"		 		x="60"	y="240"	w="15"	h="70"	r="100"	g="70"	b="70" />
+				<child name="gfx_series_drama"		 		x="195"	y="240"	w="15"	h="70"	r="100"	g="70"	b="70" />
+				<child name="gfx_movie_romance"		 		x="75"	y="240"	w="15"	h="70"	r="200"	g="130"	b="130" />
+				<child name="gfx_series_romance"	 		x="210"	y="240"	w="15"	h="70"	r="200"	g="130"	b="130" />
+				<child name="gfx_movie_erotic"		 		x="90"	y="240"	w="15"	h="70"	r="220"	g="90"	b="180" />
+				<child name="gfx_series_erotic"		 		x="225"	y="240"	w="15"	h="70"	r="220"	g="90"	b="180" />
+				<child name="gfx_movie_western"		 		x="105"	y="240"	w="15"	h="70"	r="180"	g="150"	b="60" />
+				<child name="gfx_series_western"	 		x="240"	y="240"	w="15"	h="70"	r="180"	g="150"	b="60" />
+				<child name="gfx_movie_family"			 	x="0"	y="310"	w="15"	h="70"  r="120"	g="120"	b="40" />
+				<child name="gfx_series_family"			 	x="135"	y="310"	w="15"	h="70"  r="120"	g="120"	b="40" />
+				<child name="gfx_movie_history"			 	x="15"	y="310"	w="15"	h="70"  r="140"	g="90"	b="60" />
+				<child name="gfx_series_history"			x="150"	y="310"	w="15"	h="70"  r="140"	g="90"	b="60" />
+				<child name="gfx_movie_monumental"			x="30"	y="310"	w="15"	h="70"  r="90"	g="140"	b="60" />
+				<child name="gfx_series_monumental"			x="165"	y="310"	w="15"	h="70"  r="90"	g="140"	b="60" />
+
+				<!-- share the same cover -->
+				<child name="gfx_movie_show_music"			x="45"	y="310"	w="15"	h="70"  r="160"	g="90"	b="110" />
+				<child name="gfx_series_show_music"			x="180"	y="310"	w="15"	h="70"  r="160"	g="90"	b="110" />
+				<child name="gfx_movie_event_music"			x="45"	y="310"	w="15"	h="70"  r="100"	g="190"	b="60" />
+				<child name="gfx_series_event_music"		x="180"	y="310"	w="15"	h="70"  r="100"	g="190"	b="60" />
+
+				<child name="gfx_movie_mystery"		 		x="60"	y="310"	w="15"	h="70"  r="40"	g="40"	b="110" />
+				<child name="gfx_series_mystery"	 		x="195"	y="310"	w="15"	h="70"  r="40"	g="40"	b="110" />
+				<child name="gfx_movie_thriller"	 		x="75"	y="310"	w="15"	h="70"  r="80"	g="110"	b="140"  />
+				<child name="gfx_series_thriller"	 		x="210"	y="310"	w="15"	h="70"  r="80"	g="110"	b="140"  />
+				<child name="gfx_movie_show"				x="90"	y="310"	w="15"	h="70"	r="150"	g="30"	b="130" />
+				<child name="gfx_series_show"				x="225"	y="310"	w="15"	h="70"	r="150"	g="30"	b="130" />
+
+				<!-- share the same cover -->
+				<child name="gfx_movie_show_politics"		x="90"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+				<child name="gfx_movie_event_politics"		x="90"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+				<child name="gfx_series_show_politics"		x="225"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+				<child name="gfx_series_event_politics"		x="225"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+
+				<child name="gfx_movie_event_sport"			x="90"	y="310"	w="15"	h="70"	r="100"	g="130"	b="130" />
+				<child name="gfx_series_event_sport"		x="225"	y="310"	w="15"	h="70"	r="100"	g="130"	b="130" />
+				<child name="gfx_movie_event_showbiz"		x="90"	y="310"	w="15"	h="70"	r="100"	g="130"	b="30" />
+				<child name="gfx_series_event_showbiz"		x="225"	y="310"	w="15"	h="70"	r="100"	g="130"	b="30" />
+				<child name="gfx_movie_scifi"		 		x="105"	y="310"	w="15"	h="70"  r="140"	g="160"	b="220" />
+				<child name="gfx_series_scifi"		 		x="240"	y="310"	w="15"	h="70"  r="140"	g="160"	b="220" />
+				<child name="gfx_movie_comedy"		 		x="0"	y="380"	w="15"	h="70"  r="200"	g="200"	b="40" />
+				<child name="gfx_series_comedy"		 		x="135"	y="380"	w="15"	h="70"  r="200"	g="200"	b="40" />
+				<child name="gfx_movie_documentary"	 		x="15"	y="380"	w="15"	h="70"  r="120"	g="160"	b="150" />
+				<child name="gfx_series_documentary" 		x="150"	y="380"	w="15"	h="70"  r="120"	g="160"	b="150" />
+				<child name="gfx_movie_horror"		 		x="30"	y="380"	w="15"	h="70"  r="190"	g="40"	b="60" />
+				<child name="gfx_series_horror"	 			x="165"	y="380"	w="15"	h="70"  r="190"	g="40"	b="60" />
+				<child name="gfx_movie_crime"		 		x="45"	y="380"	w="15"	h="70"  r="170"	g="90"	b="20" />
+				<child name="gfx_series_crime"		 		x="180"	y="380"	w="15"	h="70"  r="170"	g="90"	b="20" />
+				<child name="gfx_movie_fantasy"		 		x="60"	y="380"	w="15"	h="70"  r="90"	g="180"	b="40" />
+				<child name="gfx_series_fantasy"	 		x="195"	y="380"	w="15"	h="70"  r="90"	g="180"	b="40" />
+				<child name="gfx_movie_feature"				x="75"	y="380"	w="15"	h="70"  r="130"	g="90"	b="60" />
+				<child name="gfx_series_feature"			x="210"	y="380"	w="15"	h="70"  r="130"	g="90"	b="60" />
+				<child name="gfx_movie_feature_yellowpress"		x="75"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
+				<child name="gfx_series_feature_yellowpress"	x="210"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
+				<!-- used? -->
+				<child name="gfx_movie_undefined"	 		x="90"	y="380"	w="15"	h="70" />
+				<child name="gfx_series_undefined"	 		x="225"	y="380"	w="15"	h="70" />
+
+
+				<child name="gfx_movie_flag_paid"	 		x="0"	y="221"	w="15"	h="5" />
+				<child name="gfx_movie_flag_xrated"	 		x="0"	y="226"	w="15"	h="5" />
+				<child name="gfx_movie_flag_live"	 		x="0"	y="231"	w="15"	h="5" />
+
+
+				<child name="gfx_movieagency_shelfhighlight"    x="192" y="141" w="203" h="73" offsetLeft="4" offsetTop="3" />
+			</children>
+		</spritepack>
+
+
+		<!-- MOVIE AGENCY: Vendor entity - including blinking eyes -->
+		<spriteentity name="entity_movieagency_vendor" sprite="gfx_movieagency_vendor" x="0" y="75">
+			<children>
+				<!-- add some blinking eyes to the vendor -->
+				<spriteentity name="entity_movieagency_vendor_eyes" sprite="gfx_movieagency_vendor_eyes" offsetLeft="36" offsetTop="47">
+					<spriteframeanimations currentAnimationName="blink">
+						<!-- -1 = "no display", 0 = "frame 0" -->
+						<spriteframeanimation name="blink" frames="-1::0" framesTime="6.0::0.25" flags="1" />
+					</spriteframeanimations>
+				</spriteentity>
+			</children>
+		</spriteentity>
+
+		<!-- MOVIE AGENCY: Auction entity - to go to auction screen -->
+		<spriteentity name="entity_movieagency_auction" sprite="gfx_movieagency_hammer" x="214" y="223" />
+
+
+		<!-- OFFICE: STATIONMAP -->
+		<sprite name="stationmap_antenna0" url="res/gfx/office/screen_stationmap_antenna.png" />
+
+
+		<!-- OFFICE: FINANCIAL SCREEN -->
+		<spritepack name="screen_financial_elements">
+ 			<url>res/gfx/office/screen_financials_elements.png</url>
+			<children>
+				<child name="screen_financial_positiveBalance" 	x="0" 	y="0" 	w="20"  h="20" ninepatch="true" />
+				<child name="screen_financial_negativeBalance" 	x="20" 	y="0" 	w="20"  h="20" ninepatch="true" />
+				<child name="screen_financial_newsLog1" x="0" 	y="20" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog2" x="0" 	y="41" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog3" x="0" 	y="62" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog4" x="0" 	y="83" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog5" x="0" 	y="104"	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel1" x="0" 	y="125"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel2" x="0" 	y="146"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel3" x="0" 	y="167"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel4" x="0" 	y="188"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel5" x="0" 	y="209"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceValue"  x="0" 	y="230"  w="219"  h="8" ninepatch="true" />
+				<child name="screen_financial_balanceValue2" x="0" 	y="238"  w="219"  h="8" ninepatch="true" />
+				<child name="screen_financial_balanceValue2filled" x="0" 	y="246"  w="219"  h="8" ninepatch="true" />
+				<child name="screen_financial_balanceInfo"   x="41"  y="1"  w="14"  h="17" />
+			</children>
+		</spritepack>
+
+
+		<!-- OFFICE: ROOM -->
+		<spritepack name="screen_office_elements">
+			<url>res/gfx/office/screen_office_elements.png</url>
+			<children>
+				<child name="screen_office_messages1"       x="0"   y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages2"       x="120" y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages3"       x="240" y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages4"       x="360" y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages_unread" x="0"   y="40" w="20"  h="20" offsetTop="-235" offsetLeft="-485" />
+			</children>
+		</spritepack>
+
+
+		<!-- OFFICE: PROGRAMMEPLANNER -->
+		<spritepack name="screen_programmeplanner_blocks">
+			<url>res/gfx/office/screen_programmeplanner_blocks.png</url>
+			<children>
+				<child name="pp_adblock1"							x="220"	y="184"	w="85"	h="30" />
+				<child name="pp_adblock1_dragged"					x="0"	y="180"	w="94"	h="40" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_adblock2"							x="220"	y="114"	w="85"	h="60" />
+				<child name="pp_adblock2_dragged"					x="0"	y="110"	w="94"	h="70" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock1"					x="220"	y="74"	w="205"	h="30" />
+				<child name="pp_programmeblock1_dragged"			x="0"	y="70"	w="214"	h="40" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock2"					x="220"	y="4"	w="205"	h="60" />
+				<child name="pp_programmeblock2_dragged"			x="0"	y="0"	w="214"	h="70" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_xrated"								x="321"	y="110"	w="13"	h="12" offsetTop="0" />
+				<child name="pp_paid"								x="334"	y="110"	w="13"	h="12" offsetTop="-2" />
+				<child name="pp_live"								x="347"	y="110"	w="13"	h="12" offsetTop="0" />
+			</children>
+		</spritepack>
+
+		<sprite name="screen_programmeplanner_overlay" url="res/gfx/office/screen_programmeplanner_overlay.png" />
+
+		<spritepack name="screen_programmeplanner_elementsPack">
+			<url>res/gfx/office/screen_programmeplanner_elements.png</url>
+			<children>
+				<!-- genres: the default view -->
+				<child name="gfx_programmegenres_top.default"			x="0" 	y="213" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.default"			x="0" 	y="220" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.default"			x="0" 	y="237" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.default"			x="0" 	y="254" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.default"		x="0"	y="271" 	w="194" h="8" />
+				<!-- genres: the hovered view -->
+				<child name="gfx_programmegenres_top.hovered"			x="0" 	y="280" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.hovered"			x="0" 	y="287" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.hovered"			x="0" 	y="304" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.hovered"			x="0" 	y="321" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.hovered"		x="0"	y="338" 	w="194" h="8" />
+				<!-- genres: the active/selected view -->
+				<child name="gfx_programmegenres_top.active"			x="0" 	y="347" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.active"			x="0" 	y="354" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.active"			x="0" 	y="371" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.active"			x="0" 	y="388" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.active"			x="0"	y="405" 	w="194" h="8" />
+				<!-- genres: the highlighted/"new" view -->
+				<child name="gfx_programmegenres_top.highlighted"		x="0" 	y="414" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.highlighted"		x="0" 	y="421" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.highlighted"		x="0" 	y="438" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.highlighted"		x="0" 	y="455" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.highlighted"	x="0"	y="472" 	w="194" h="8" />
+
+				<!-- tapes/entries: top when sort buttons are visible -->
+				<!-- tapes/entries: the default view -->
+				<child name="gfx_programmeentries_top.default"			x="0"	y="0"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_topButton.default"    x="185"	y="170" 	w="194" h="32" />
+				<child name="gfx_programmeentries_first.default"		x="0"	y="5"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_entry.default"		x="0"	y="24"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_last.default"			x="0"	y="43"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_bottom.default"		x="0"	y="62"	 	w="184" h="8" />
+				<child name="gfx_programmeentries_bottomButton.default"	x="185"	y="145" 	w="194" h="24" />
+				<!-- tapes/entries: the planned view -->
+				<child name="gfx_programmeentries_top.planned"			x="0"	y="71"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_topButton.planned"    x="185"	y="170" 	w="194" h="32" />
+				<child name="gfx_programmeentries_first.planned"		x="0"	y="76"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_entry.planned"		x="0"	y="95"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_last.planned"			x="0"	y="114"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_bottom.planned"		x="0"	y="133"	 	w="184" h="8" />
+				<child name="gfx_programmeentries_bottomButton.planned" x="185"	y="145" 	w="194" h="24" />
+				<!-- tapes/entries: the "is new" view -->
+				<child name="gfx_programmeentries_top.new"				x="0"	y="142"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_topButton.new"	    x="185"	y="170" 	w="194" h="32" />
+				<child name="gfx_programmeentries_first.new"			x="0"	y="147"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_entry.new"			x="0"	y="166"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_last.new"				x="0"	y="185"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_bottom.new"			x="0"	y="204"	 	w="184" h="8" />
+				<child name="gfx_programmeentries_bottomButton.new"     x="185"	y="145" 	w="194" h="24" />
+
+				<child name="gfx_programmetape_movie.default"			x="185"	y="0"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.default"			x="185"	y="18"	 	w="166" h="18" />
+				<child name="gfx_programmetape_movie.planned"			x="185"	y="36"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.planned"			x="185"	y="54"	 	w="166" h="18" />
+				<child name="gfx_programmetape_movie.new"				x="185"	y="72"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.new"				x="185"	y="90"	 	w="166" h="18" />
+				<child name="gfx_programmetape_movie.hovered"			x="185"	y="108"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.hovered"			x="185"	y="126"	 	w="166" h="18" />
+
+				<child name="gfx_programmetape_stamp_attention"			x="352"	y="1"	 	w="13" h="16" offsetLeft="-145" offsetTop="-1" offsetBottom="-1" />
+
+
+				<child name="gfx_programmeplanner_btn"              x="196"	y="309"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn.hover"        x="196"	y="364"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn.active"       x="196"	y="419"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_achievements" x="307"	y="204"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_statistics"   x="307"	y="241"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_unknown"      x="307"	y="278"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_financials"   x="307"	y="315"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_ads"          x="307"	y="352"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_programme"    x="307"	y="389"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+
+				<child name="gfx_programmeplanner_clock1.default"				x="196"	y="213"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_clock2.default"				x="237"	y="213"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_clockoverlay1.highlighted"	x="196"	y="244"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_clockoverlay2.highlighted"	x="237"	y="244"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_blockoverlay.highlighted"		x="196"	y="275"	w="31"	h="31" ninepatch="true" />
+			</children>
+		</spritepack>
+	</resources>
+</tvt>

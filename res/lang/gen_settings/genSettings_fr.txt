@@ -1,0 +1,202 @@
+LANGUAGE_NAME_INTERNATIONAL = Francais
+LANGUAGE_NAME_LOCALE        = Francais
+
+MENU      = Menu / Pause
+OPEN_MENU = Ouvrir le menu
+
+CHAT           = Conversation
+SAVE_AND_APPLY = Sauvegarder et appliquer
+CANCEL         = Annuler
+
+CONTINUE_GAME                              = Continuer le jeu
+LOAD_GAME                                  = Charger un jeu
+INCOMPATIBLE_SAVEGAME                      = Sauvegarde non compatible
+INVALID_SAVEGAME                           = Sauvegarde invalide/corrompue
+FILE_NOT_FOUND                             = Fichier non trouvée
+SAVEGAME_GETS_LOADED                       = Chargement de la sauvegarde
+SAVE_GAME                                  = Sauver le jeu
+NAME_OF_SAVEGAME                           = Nom de la sauvegarde
+OVERWRITE_SAVEGAME                         = Écraser la sauvegarde ?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Veux-tu vraiment écraser la sauvegarde %SAVEGAME% ?
+SAVEGAME_GETS_CREATED                      = Sauvegarde en cours
+PLEASE_BE_PATIENT                          = Patienter svp
+EXIT_GAME                                  = Quitter le jeu
+EXIT_TO_MAINMENU                           = Retourner au menu principal
+
+24_HOURS_GAMEDAY                                              = Journée de 24 heures
+ALLOW_TRAILERS_AND_INFOMERCIALS                               = Permettre bandes-annonces / émissions publicitaires
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Permettre films produits |b|après|/b| l'année en cours
+START_GAME_WITH_CREDIT                                        = Commencer avec un |b|crédit|/b|
+START_GAME_RANDOMIZE_PROGRAMME                                = Modifier films quand un jeu est lancé
+OPTION_ON                                                     = Option activée
+OPTION_OFF                                                    = Option désactivée
+AVAILABLE_GAMES                                               = Jeux disponibles
+ALREADY_OVER                                                  = Déja fini... ?
+DO_YOU_REALLY_WANT_TO_QUIT                                    = Veux-tu vraiment quitter ?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Veux-tu vraiment quitter le jeu et revenir au menu ?
+
+PREPARING_START_DATA           = Préparation des données de début de jeu
+SYNCHRONIZING_START_CONDITIONS = Synchronisation des conditions de début de jeu
+STARTING_MULTIPLAYERGAME       = Démarrage multijoueurs
+STARTING_SINGLEPLAYERGAME      = Démarrage solo
+
+PLAYERNAME                  = Nom du joueur
+CHANNELNAME                 = Nom de la chaîne
+STATIONMAP                  = Carte des stations
+DATABASE                    = Base de données
+SOUND_OUTPUT                = Audio
+GRAPHICS                    = Graphismes
+MUSIC                       = Musique
+SFX                         = Effets audio
+FULLSCREEN                  = Plein écran
+VSYNC                       = Synchronisation verticale
+RIGHTCLICK_EMULATION              = Emuler clic-droit
+RIGHTCLICK_EMULATION_EXPLANATION  = Simuler un clic-droit avec un clic prolongé gauche ou tactile
+RIGHTCLICK_EMULATION_TIME         = Durée du clic-droit
+WINDOW_MODE_RESOLUTION      = Résolution en mode fenêtre
+INPUT                       = Contrôles
+USE_TOUCH_INPUT             = Utiliser tactile
+USE_TOUCH_INPUT_EXPLANATION = Le premier appui positionne le curseur, les suivants comptent comme des clics. Attendre quelques moment pour positionner le curseur de nouveau.
+MOVE_INSTEAD_CLICK_RADIUS   = Distance clic/déplacement
+MULTIPLAYER                 = Multijoueurs
+SINGLEPLAYER                = Solo
+DEFAULTS_FOR_NEW_GAME       = Valeurs implicites nouveau jeu
+RENDERER                    = Moteur graphique
+SOUND_ENGINE                = Moteur audio
+SOUND_MUSIC_VOLUME          = Volume de la musique
+SOUND_SFX_VOLUME            = Volume des effets sonores
+SOUND_MUTED                 = Son désactivé
+PORT_ONLINEGAME             = Port réseau
+GAME_SPEED_IN_ROOMS         = Vitesse du jeu dans les salles
+AUTOSAVE_INTERVAL           = Interval sauvegarde automatique
+
+GAME_TITLE  = Nom du jeu
+START_YEAR  = Année début
+DAY_OF_YEAR = Jour de l'année
+
+YES        = Oui
+NO         = Non
+OK         = OK
+MONEY      = Argent
+DEBT       = Dette
+REACH      = Portée
+PRICE      = Prix
+VALUE      = Valeur
+POPULATION = Population
+NAME       = Nom
+
+GENDER_MEN         = Hommes
+GENDER_WOMEN       = Femmes
+GENDER_ALL         = Tous
+GENDER_MEN_SHORT   = H
+GENDER_WOMEN_SHORT = F
+
+CURRENCY     = €
+OCLOCK       = heures
+DAY_SHORT    = J
+HOUR_SHORT   = H
+MINUTE_SHORT = M
+DAY          = jour
+DAYS         = jours
+DATE         = date
+HOUR         = heure
+HOURS        = heures
+MINUTE       = minute
+MINUTES      = minutes
+OLD          = Vieux
+TOMORROW     = Demain
+TODAY        = Aujourd'hui
+YESTERDAY    = Hier
+TWO_DAYS_AGO = Il y a deux jours
+IN_X_DAYS    = Dans %DAYS% jours
+X_DAYS_AGO   = Il y a %DAYS% jours
+
+WEEK_SHORT_MONDAY    = Lu
+WEEK_SHORT_TUESDAY   = Ma
+WEEK_SHORT_WEDNESDAY = Me
+WEEK_SHORT_THURSDAY  = Je
+WEEK_SHORT_FRIDAY    = Ve
+WEEK_SHORT_SATURDAY  = Sa
+WEEK_SHORT_SUNDAY    = Di
+WEEK_LONG_MONDAY     = Lundi
+WEEK_LONG_TUESDAY    = Mardi
+WEEK_LONG_WEDNESDAY  = Mercredi
+WEEK_LONG_THURSDAY   = Jeudi
+WEEK_LONG_FRIDAY     = Vendredi
+WEEK_LONG_SATURDAY   = Samedi
+WEEK_LONG_SUNDAY     = Dimanche
+SEASON_SPRING        = Printemps
+SEASON_SUMMER        = Été
+SEASON_AUTUMN        = Automne
+SEASON_WINTER        = Hiver
+
+
+MENU_SOLO_GAME       = Jeu solo
+MENU_START_GAME      = Démarrer
+MENU_NETWORKGAME     = Jeu LAN
+MENU_ONLINEGAME      = Jeu en ligne
+MENU_JOIN            = Rejoindre
+MENU_CREATE_GAME     = Créer jeu
+MENU_BACK            = Retour
+MENU_SETTINGS        = Options
+MENU_QUIT            = Quitter jeu
+MENU_AVAILABLE_GAMES = Jeux disponibles
+
+ABBREVIATION_THOUSAND = K
+ABBREVIATION_MILLION  = M
+ABBREVIATION_BILLION  = G
+
+DIFFICULTY_EASY   = Facile
+DIFFICULTY_NORMAL = Normal
+DIFFICULTY_HARD   = Difficile
+DIFFICULTY_CUSTOM = Personnalisé
+
+GAMETIME  = Temps de jeu
+PLAYER    = Joueur
+GAME      = Jeu
+GAME_TIME = Temps de jeu
+GAMEDAY   = Jour de jeu
+
+
+GAMESPEED      = Vitesse du jeu
+SET_SPEED_TO_X = Régler vitesse sur %SPEED%
+
+MANUAL    = Manuel
+HELP      = Aide / Pause
+SHOW_HELP = Afficher l'aide
+
+DO_NOT_SHOW_AGAIN        = Ne plus afficher
+DO_NOT_SHOW_ANY_TIPS     = Ne plus afficher de conseils
+SHOW_INTRODUCTORY_GUIDES = Afficher les guides explicatifs
+
+ERROR_NOT_POSSIBLE                  = Impossible!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Il n'est pas possible de vendre votre dernière station.
+ERROR_NOT_ENOUGH_MONEY              = Pas assez d'argent !
+ERROR_NOT_ENOUGH_MONEY_TEXT         = Tu ne possédes pas assez d'argent pour terminer cette action.
+
+NEWGAMESETTINGS_RANDOMIZE          = Lancer les dés
+NEWGAMESETTINGS_RANDOMIZE_DETAIL   = Apparence et nom aléatoires
+NEWGAMESETTINGS_CHANNELNAME_DETAIL = Nom de la chaîne de ce joueur
+NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Nom de ce joueur
+NEWGAMESETTINGS_DIFFICULTY         = Difficulté
+NEWGAMESETTINGS_DIFFICULTY_DETAIL  = Niveau de difficulté |b|pour ce joueur|/b|
+NEWGAMESETTINGS_START_YEAR_DETAIL  = Année à laquelle le jeu démarre. Influence les programmes disponibles !
+NEWGAMESETTINGS_GAME_SEED          = Numéro du jeu
+NEWGAMESETTINGS_GAME_SEED_DETAIL   = Les jeu avec le même numéro ont des conditions de départ similaires (disponibilités chez les vendeurs)
+
+MESSAGE_CLOSES_AT_TIME = Message sera fermé à %TIME% heures
+MESSAGE_CLOSES_AT_DAY  = Message sera fermé le %TIME%
+
+
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = Appuyer sur la touche Alt pour des détails supplémentaires
+HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = Appuyer sur la touche Alt pour attacher l'infobulle
+HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = Appuyer sur la touche Alt pour débloquer l'infobulle
+HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT : changer fiche de données | CTRL+Clic : copier programme | Maj+Clic : épisode suivant
+HINT                                   = Astuce
+
+STARTHINT_TITLE1 = Grille de programmes
+STARTHINT_TEXT1  = CTRL pour placer un programme dans la grille à plusieurs fois. Maj pour sélectionner l'épisode suivant après le placement.
+STARTHINT_TITLE2 = Planification du programme
+STARTHINT_TEXT2  = Le succès d'une émission dépend en grande partie de la qualité/valorisation du programme. L'heure de diffusion et la popularité du genre, le flux de téléspectateurs pour des programmes successifs (les plus similaires possibles), ainsi que le nombre de bandes-annonces diffusées, la qualité du journal télévisé et d'autres facteurs sont tout aussi déterminants.\n\nLes programmes de certains genres, comme les comédies, peuvent être diffusés plus souvent que d'autres.
+STARTHINT_TITLE3 = Contrats publicitaires
+STARTHINT_TEXT3  = Les contrats publicitaires ont des exigences définies quant au nombre minimum de téléspectateurs à atteindre. Celles-ci, et bien sûr aussi les bonus ou pénalités, sont liées à la portée qui peut actuellement être atteinte par la propre chaîne.\n\nPar conséquent, il est parfois préférable de conclure de nouveaux contrats publicitaires avant d'acheter un émetteur.

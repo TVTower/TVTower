@@ -1,0 +1,7 @@
+If not otherwise stated all contained flages were created using the
+tool "iso-country-flags-svg-collection"
+
+url: https://github.com/koppi/iso-country-flags-svg-collection
+
+style: png-country-squared-fancy
+size: 32x32

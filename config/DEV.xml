@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvt>
+	<resources>
+		<data name="DEV_CONFIG">
+			<DEV_KEYS value="TRUE" />
+			<DEV_OSD value="FALSE" />
+			<DEV_LOG value="TRUE" />
+			<DEV_AI_GAME_SPEED value="1000" />
+			
+			<!-- wait for AI players so they all finished a certain game minute / tick -->
+			<DEV_SYNC_AI_ON_TIME value="FALSE" />
+			<!--how many days of the AI's programme plan history should be kept (-1 for all);
+				the more days, the bigger the save game size-->
+			<DEV_KEEP_AI_PLAN_DAYS value="4" />
+
+			<!-- 
+			<DEV_WORLD_DAYS_PER_SEASON value="3" comment="value*4 = days per year" />
+			-->
+
+			<!-- milliseconds waiting on a floor (incl. animation).
+			     Default: 1500
+				<DEV_ELEVATOR_WAITTIME value="1500" />
+			-->
+			<!-- millseconds/frame (open/close animation, 8 frames each).
+			     Default: 60
+				<DEV_ELEVATOR_ANIMSPEED value="60" />
+			-->
+			<!-- speed in pixels per second.
+			     Default: 130
+				<DEV_ELEVATOR_SPEED value="140" />
+			-->
+
+			<DEV_DAILY_BOSS_VISIT value="1" />
+
+			<!-- AD CONTRACTS -->
+			<!-- ============ -->
+			<!-- Randomize profit/penalty values-->
+			<DEV_ADCONTRACT_RANDOMIZE value="TRUE" />
+
+			<!-- Print debug screen ad contract statistic as csv, not as table
+				<DEV_ADCONTRACT_STAT_CSV value="1" />
+			-->
+			<!-- How many contracts could use the same contract base
+			     (the same "original contract") at the same time
+			     Options:
+			       0 - disable any limit
+			       x - allow up to x contract instances
+			     Default: 1
+				<DEV_ADCONTRACT_INSTANCES_MAX value="1" />
+			-->
+
+			<!-- ROOM: ADAGENCY -->
+			<!-- ============== -->
+			<!-- define basic sort for adcontracts: minaudience/classification/profit -->
+			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
+
+			<!-- define refill mode when choosing new contracts -->
+			<!-- <DEV_ADAGENCY_REFILL_MODE value="10" /> -->
+
+
+
+
+			<!-- NEWS EVENTS -->
+			<!-- =========== -->
+
+			<!-- Balancing Qualitaet auf Alterseinfluss -->
+			<DEV_NEWS_QUALITYAGE_INFLUENCE value="1.0" />
+			<!-- Balancing Altereinfluss auf Maximale Aktualitaet-->
+			<DEV_NEWS_AGE_INFLUENCE value="1.0" />
+			<!-- Balancing AnzahlAusstrahlungen auf Maximale Aktualitaet -->
+			<DEV_NEWS_BROADCAST_INFLUENCE value="1.0" />
+
+
+			<!-- TRUE/1   FALSE/0 -->
+			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
+
+			<!-- number of in game producers shooting movies etc. based on script templates from database-->
+			<DEV_PRODUCERS_COUNT value="2" />
+			<!-- minimal waiting time in hours between finishing one production and starting the next one-->
+			<DEV_PRODUCERS_MIN_WAIT_HOURS value="36" />
+			<!-- maximal waiting time in hours between finishing one production and starting the next one-->
+			<DEV_PRODUCERS_MAX_WAIT_HOURS value="96" />
+
+			<!-- intended reach of the first antenna;
+				due to min/max values for the radius the actual reach may differ -->
+			<!-- DEV_STATION_INITIAL_INTENDED_REACH value="1200000" /> -->
+
+			<!-- parameters for randomizing licence attributes from the database
+			     when starting a new game: 
+			     +/- x% (max deviation - getting smaller when approaching extreme values; except for price)
+			     0 = no randomization -->
+			<DEV_DATABASE_LICENCE_RANDOM_REVIEW value="20" />
+			<DEV_DATABASE_LICENCE_RANDOM_SPEED value="20" />
+			<DEV_DATABASE_LICENCE_RANDOM_OUTCOME value="20" />
+			<DEV_DATABASE_LICENCE_RANDOM_PRICE value="20" />
+
+			<!-- example:
+				"LOAD"-values:
+				"*" -> load all
+				"internalTest, myTest" -> load only "internalTest" and "myTest" creations
+
+				"SKIP"-values:
+				"*" -> skip all
+				"internalTest" -> skip data by "internalTest"
+			 -->
+
+			<DEV_DATABASE_SKIP_ADS_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_ADS_CREATED_BY value="*" />
+			<DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY value="*" />
+			<DEV_DATABASE_SKIP_NEWS_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_NEWS_CREATED_BY value="*" />
+			<DEV_DATABASE_SKIP_SCRIPTS_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_SCRIPTS_CREATED_BY value="*" />
+			<DEV_DATABASE_SKIP_PERSONS_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_PERSONS_CREATED_BY value="*" />
+			<DEV_DATABASE_SKIP_ACHIEVEMENTS_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_ACHIEVEMENTS_CREATED_BY value="*" />
+
+			<!--
+			<DEV_STARTPROGRAMME_AD1_GUID value="speedminister-ad-spackeroog-01" />
+			<DEV_STARTPROGRAMME_AD2_GUID value="speedminister-ad-spargelsund-01" />
+			<DEV_STARTPROGRAMME_AD3_GUID value="speedminister-ad-rechtschreibdudan-01" />
+			-->
+
+			<!-- shortcuts DEV_NEWS_GUID1 - DEV_NEWS_GUID100 possible -->
+			<DEV_NEWS_GUID1 value="ronny-news-sandsturm-01" />
+			<DEV_NEWS_GUID2 value="ronny-news-usbratte-01" />
+
+
+			<!-- use another AI script for player #2 -->
+			<!-- <PLAYERAISCRIPT2 value="res/ai/Sample/Sample.lua" /> -->
+		</data>
+	</resources>
+</tvt>

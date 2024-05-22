@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<spritepack name="gfx_datasheet_general_pack">
+			<url>res/gfx/misc/datasheet_general.png</url>
+			<children>
+				<!-- common datasheet (movies, ad contract, scripts,  ...) -->
+				<child name="gfx_datasheet_border"             x="0"    y="0"    w="43"  h="43"  ninepatch="true" />
+				<child name="gfx_datasheet_content_2"          x="43"   y="0"    w="52"  h="32"  ninepatch="true" />
+				<child name="gfx_datasheet_content_1"          x="95"   y="0"    w="52"  h="32"  ninepatch="true" />
+				<child name="gfx_datasheet_content_1_bottom"   x="147"  y="0"    w="52"  h="32"  ninepatch="true" />
+				<child name="gfx_datasheet_content_1_top"      x="199"  y="0"    w="52"  h="32"  ninepatch="true" />
+				<child name="gfx_datasheet_bar_unfilled"       x="251"  y="0"    w="32"  h="15"  ninepatch="true" />
+				<child name="gfx_datasheet_bar_filled"         x="251"  y="15"   w="32"  h="15"  ninepatch="true" />
+				<child name="gfx_datasheet_msg_good"           x="0"    y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_msg_neutral"        x="40"   y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_msg_warning"        x="80"   y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_msg_bad"            x="80"   y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_good"           x="120"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_neutral"        x="160"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_bad"            x="200"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_badHint"        x="240"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_goodHint"       x="280"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_content_splitterV"  x="43"   y="33"   w="4"   h="7"   ninepatch="true" />
+
+				<child name="gfx_datasheet_icon_money"              x="1"    y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_warning"            x="27"   y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_targetGroupLimited" x="53"   y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_minAudience"        x="79"   y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_runningTime"        x="105"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_duration"           x="131"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_spotsPlanned"       x="157"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_spotsAired"         x="183"  y="72"   w="24"  h="23" />
+				<!-- genreXP currently the same as  spotsAired-->
+				<child name="gfx_datasheet_icon_genreXP"            x="183"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_repetitions"        x="209"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_maxAudience"        x="235"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_audience"           x="261"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_ok"                 x="287"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_ok2"                x="313"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_pencil"             x="339"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_az"                 x="365"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_topicality"         x="443"  y="72"   w="24"  h="23" />
+
+				<child name="gfx_datasheet_icon_moneyRepetitions"   x="79"   y="97"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_roomSize"           x="105"  y="97"   w="24"  h="23" />
+
+				<child name="gfx_datasheet_icon_marketShare"        x="131"  y="97"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_quality"            x="157"  y="97"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_image"              x="183"  y="97"   w="24"  h="23" />
+				<!-- sort indicators -->
+				<child name="gfx_datasheet_icon_arrow_up"           x="391"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_arrow_down"         x="417"  y="72"   w="24"  h="23" />
+				<!-- same than minAudience -->
+				<child name="gfx_datasheet_icon_audienceIncrease"   x="79"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_audience"           x="261"  y="72"   w="24"  h="23" />
+
+				<!-- stationmap datasheet extras -->
+				<child name="gfx_datasheet_icon_antenna.on"                 x="31"  y="98"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_antenna.off"                x="31"  y="114"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_satellite_uplink.on"        x="46"  y="98"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_satellite_uplink.off"       x="46"  y="114"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_cable_network_uplink.on"    x="61"  y="98"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_cable_network_uplink.off"   x="61"  y="114"	w="13"	h="14" />
+
+				<child name="gfx_datasheet_overlay_xrated"			x="0"	y="100" w="26"  h="26" offsetLeft="15" offsetTop="-2" />
+
+				<!-- cast/actor-item elements -->
+				<child name="gfx_datasheet_cast_icon"                   x="90"  y="130" w="41"  h="39" ninepatch="true" />
+				<child name="gfx_datasheet_cast_icon_overlay"           x="90"  y="169" w="41"  h="39" ninepatch="true" />
+				<child name="gfx_datasheet_cast_name"                   x="131" y="130" w="28"  h="20" ninepatch="true" />
+				<child name="gfx_datasheet_cast_bar_xp_filled"          x="131" y="150" w="28"  h="8"  ninepatch="true" />
+				<child name="gfx_datasheet_cast_bar_xp_unfilled"        x="131" y="166" w="28"  h="8"  ninepatch="true" />
+				<!-- same unfilled graphic than for xp -->
+				<child name="gfx_datasheet_cast_bar_sympathy_filled"    x="131" y="158" w="28"  h="8"  ninepatch="true" offsetLeft="2" />
+				<child name="gfx_datasheet_cast_bar_sympathy_unfilled"  x="131" y="166" w="28"  h="8"  ninepatch="true" />
+
+				<!-- achievement stuff -->
+				<child name="gfx_datasheet_achievement_bg"              x="242" y="97" w="106"  h="67"  ninepatch="true" />
+				<child name="gfx_datasheet_achievement_img"             x="242" y="165" w="85"  h="56" />
+				<child name="gfx_datasheet_achievement_img_ok"          x="349" y="202" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level0"      x="349" y="149" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level1"      x="431" y="149" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level2"      x="431" y="96" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level3"      x="349" y="96" w="81"  h="52" />
+
+				<!-- button sprites -->
+				<child name="gfx_gui_button.datasheet"						x="0"	y="130"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.hover"				x="30"	y="130"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.active"				x="60"	y="130"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.positive"				x="0"	y="160"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.positive.hover"		x="30"	y="160"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.positive.activ"		x="60"	y="160"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.negative"				x="0"	y="190"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.negative.hover"		x="30"	y="190"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.negative.active"		x="60"	y="190"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.informative"			x="0"	y="220"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.informative.hover"	x="30"	y="220"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.informative.active"	x="60"	y="220"	w="30"	h="30" ninepatch="true" />
+			</children>
+		</spritepack>
+
+		<spritepack name="gfx_dialogue">
+			<type>SpritePack</type>
+ 			<url>res/gfx/misc/dialogue.png</url>
+			<children>
+				<child name="dialogue.default" 	x="0" 	y="0" 	w="48"  h="49" ninepatch="true" />
+
+				<child name="StartRightUp"      x="50"  y="0"   w="32"  h="32" offsetLeft="1" />
+				<child name="StartRightDown"    x="50"  y="32"  w="32"  h="32" offsetLeft="1" />
+				<child name="StartLeftUp"       x="50"  y="64"  w="32"  h="32" offsetLeft="-26" />
+				<child name="StartLeftDown"     x="50"  y="96"  w="32"  h="32" offsetLeft="-26" />
+				<child name="StartDownRight"    x="82"  y="0"   w="32"  h="32" offsetTop="2" />
+				<child name="StartDownLeft"     x="82"  y="32"  w="32"  h="32" offsetTop="2" />
+				<child name="StartUpLeft"       x="82"  y="64"  w="32"  h="32" offsetTop="26" />
+				<child name="StartUpRight"      x="82"  y="96"  w="32"  h="32" offsetTop="26" />
+
+			</children>
+		</spritepack>
+
+		<spritepack name="gfx_suitcase_pack">
+ 			<url>res/gfx/misc/suitcase.png</url>
+			<children>
+				<child name="gfx_suitcase" 			x="3"   y="0"   w="215" h="105"	/>
+				<child name="gfx_suitcase_big" 		x="218" y="0"   w="275" h="105"	/>
+				<child name="gfx_suitcase_presents"	x="3"   y="110" w="147" h="120"	/>
+				<child name="gfx_suitcase_scripts"	x="153" y="110" w="180" h="92"	/>
+			</children>
+		</spritepack>
+
+		<image name="gfx_errorbox"				url="res/gfx/misc/errorbox.png" />
+		<image name="gfx_tooltip_header"		url="res/gfx/misc/tooltipheader.png" />
+		<image name="gfx_misc_smoketexture"		url="res/gfx/misc/smoketexture.png" />
+
+	</resources>
+</tvt>
