@@ -1,6 +1,0 @@
-Include "test_base.bmx"
-Include "test_audience.bmx"
-Include "test_broadcast_sequence.bmx"
-Include "test_broadcast_sequence_calculation.bmx"
-Include "test_programmes.bmx"
-Include "test_broadcast.bmx"
