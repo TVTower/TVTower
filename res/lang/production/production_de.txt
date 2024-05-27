@@ -1,0 +1,154 @@
+MALE      = männlich
+FEMALE    = weiblich
+UNDEFINED = unbestimmt
+
+JOB_ALL              = Alle Berufe
+JOB_DIRECTOR         = Regisseur
+JOB_DIRECTORS        = Regisseure
+JOB_ACTOR            = Darsteller
+JOB_ACTORS           = Darsteller
+JOB_SUPPORTINGACTOR  = Nebendarsteller
+JOB_SUPPORTINGACTORS = Nebendarsteller
+JOB_REPORTER         = Reporter
+JOB_REPORTERS        = Reporter
+JOB_GUEST            = Gast
+JOB_GUESTS           = Gäste
+JOB_HOST             = Moderator
+JOB_HOSTS            = Moderatoren
+JOB_SCRIPT           = Drehbuch
+JOB_SCRIPTWRITER     = Drehbuchautor
+JOB_SCRIPTWRITERS    = Drehbuchautoren
+JOB_MUSIC            = Musik
+JOB_MUSICIAN         = Musiker
+JOB_MUSICIANS        = Musiker
+
+JOB_AMATEUR                  = Amateur
+JOB_AMATEURS                 = Amateure
+JOB_AMATEUR_DIRECTOR         = Regiepraktikant
+JOB_AMATEUR_DIRECTORS        = Regiepraktikanten
+JOB_AMATEUR_ACTOR            = Laiendarsteller
+JOB_AMATEUR_ACTORS           = Laiendarsteller
+JOB_AMATEUR_SUPPORTINGACTOR  = Laiennebendarsteller
+JOB_AMATEUR_SUPPORTINGACTORS = Laiennebendarsteller
+JOB_AMATEUR_REPORTER         = Amateurreporter
+JOB_AMATEUR_REPORTERS        = Amateurreporter
+JOB_AMATEUR_GUEST            = unerfahrener Gast
+JOB_AMATEUR_GUESTS           = unerfahrene Gäste
+JOB_AMATEUR_HOST             = Moderatorenneuling
+JOB_AMATEUR_HOSTS            = Moderatorenneulinge
+JOB_AMATEUR_SCRIPTWRITER     = unerfahrener Drehbuchautor
+JOB_AMATEUR_SCRIPTWRITERS    = unerfahrene Drehbuchautoren
+JOB_AMATEUR_MUSICIAN         = Freizeitmusiker
+JOB_AMATEUR_MUSICIANS        = Freizeitmusiker
+
+JOB_POSITION_UNASSIGNED = Unbesetzt
+
+CAST_TRAINING         = Ausbildung
+CAST_EXPERIENCE       = Erfahrung
+CAST_FAME             = Bekanntheit
+CAST_AFFINITY         = Affinität
+CAST_POWER            = Kraft
+CAST_HUMOR            = Humor
+CAST_CHARISMA         = Charisma
+CAST_APPEARANCE       = Aussehen
+CAST_FEE              = Gage
+CAST_JOB_EXPERIENCE   = Berufserfahrung
+CAST_GENRE_EXPERIENCE = Genreerfahrung
+
+DIALOGUE_STUDIO_BRING_SOME_SCRIPT                         = Hi %PLAYERNAME%,\n\nBring doch einfach mal ein Drehbuch vorbei. Dann können wir sicher was feines produzieren.
+DIALOGUE_STUDIO_SCRIPT_HINT                               = Hmmm, Ich kann Dir zu dem Drehbuch keine weiteren Details nennen. Vielleicht darf ich ja später einmal Details zum Drehbuch einbringen: wie zum Beispiel das Geschlecht oder Alter einer Rolle. Das kommt aber alles auf die Entwickler an.
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = Der Platz für Einkaufslisten ist erschöpft. Starte eine Produktion oder entferne eine Einkaufsliste (aufheben und per Rechtsklick löschen), bevor ich eine neue ausgeben kann.
+DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING    = Um die Produktion starten zu können, musst Du im Supermarkt die Produktionsplanung abschließen.
+
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION                                                    = Du willst also |b|%SCRIPTTITLE%|/b| produzieren?
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = Bisher ist |b|1 Produktion|/b| mit diesem Drehbuch geplant.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED                              = Bisher sind |b|%X% Produktionen|/b| mit diesem Drehbuch geplant.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Bisher wurde bereits |b|1 Produktion|/b| mit diesem Drehbuch durchgeführt.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Bisher wurden bereits |b|%X% Produktionen|/b| mit diesem Drehbuch durchgeführt.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Bisher sind |b|%X% Produktionen|/b| mit diesem Drehbuch geplant und |b|%Y%|/b| bereits durchgeführt.
+
+DIALOGUE_STUDIO_START_PRODUCTION                    = Produktion starten
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Alle möglichen Produktionen (%X%) durchführen.
+DIALOGUE_STUDIO_START_NEXT_EPISODE                  = Nächste mögliche Folge produzieren.
+DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST        = Ich brauche noch eine weitere Einkaufsliste für dieses Drehbuch.
+DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST              = Ich brauche eine Einkaufsliste für dieses Drehbuch.
+DIALOGUE_STUDIO_GOODBYE1                            = Tschüss.
+DIALOGUE_STUDIO_GOODBYE2                            = Bis später.
+
+DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX                   = Ich kann Dir folgendes zu Deiner geplanten Produktion |b|%TITLE%|/b| sagen:
+DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX               = Die Produktionsplanung von |b|%TITLE%|/b| ist noch unvollständig. Wenn Du die Produktionsschwerpunkte festgelegt und eine Besetzung ausgesucht hast, kann ich Dir vielleicht ein paar Tipps geben.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1                  = Das Genre des Drehbuchs passt nicht!
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2                  = Ein anderes Genre wäre besser gewesen.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE1              = 
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD1                 = Genau das richtige Genre!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_BAD1         = Du hast eine miserable Besetzung zusammengestellt und sie kann Dich auch nicht leiden!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_AVERAGE1     = Du hast eine miserable Besetzung zusammengestellt.
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1        = Du hast eine miserable Besetzung zusammengestellt. Immerhin kann sie Dich wirklich gut leiden.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1     = Du hast eine durchschnittliche Besetzung zusammengestellt und sie kann Dich nicht einmal gut leiden!
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_AVERAGE1 = Du hast eine durchschnittliche Besetzung zusammengestellt.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1    = Du hast eine durchschnittliche Besetzung zusammengestellt und sie kann Dich wirklich gut leiden.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1        = Du hast eine passende Besetzung zusammengestellt, aber sie kann Dich nicht einmal gut leiden!
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1    = Du hast eine passende Besetzung zusammengestellt.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = Du hast eine passende Besetzung zusammengestellt und sie kann Dich wirklich gut leiden.
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = Die Produktionsfirma ist eher unterirdisch
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = Die Produktionsfirma ist Durchschnitt
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = Die Produktionsfirma zählt zu den Besseren der Branche
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = und Du solltest Deine Produktionsschwerpunkte besser verteilen!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = und Du hast Deine Produktionsschwerpunkte mittelmäßig verteilt!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = und Du hast Deine Produktionsschwerpunkte sehr gut verteilt!
+
+PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Live-Ausstrahlung heute: %X% Uhr.
+PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Live-Ausstrahlung morgen: %X% Uhr.
+PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Live-Ausstrahlung in %Y% Tagen: %X% Uhr.
+
+CLICK_TO_SELECT_PERSON = Klicken um Person auszuwählen
+TOUCH_TO_SELECT_PERSON = Antippen um Person auszuwählen
+
+COULISSE             = Kulissen
+OUTFIT_AND_MASK      = Ausstattung / Maske
+STUNTS               = Stunts
+VFX_AND_SFX          = VFX / SFX
+TEAM                 = Team (Techniker, etc.)
+PRODUCTION_SPEED     = Produktionstempo
+PRODUCTION_POTENTIAL = Potenzial
+SCRIPT_POTENTIAL     = Potenzial
+
+PRODUCTION         = Produktion
+TOTAL_COSTS        = Gesamtkosten
+DURATION           = Dauer
+SUBHEADING         = Untertitel
+PRODUCTION_DETAILS = Produktionsdetails
+PRODUCTION_FOCUS   = Produktionsschwerpunkte
+IN_PRODUCTION      = In Produktion
+
+POINTSSET_OF_POINTSMAX_POINTS_SET                           = %POINTSSET%/%POINTSMAX% Punkte vergeben
+PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY                  = Produktionsschwerpunkte nicht komplett gesetzt
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = Mindestens einen Punkt bei den Schwerpunkten setzen
+NO_PRODUCTION_COMPANY_SELECTED                              = Keine Produktionsfirma ausgewählt
+PRODUCTION_SETUP_NOT_DONE                                   = Produktion noch nicht konzipiert
+PRODUCTION_SETUP_INCOMPLETE                                 = Produktionskonzept unvollständig
+CAST_INCOMPLETE                                             = Besetzung unvollständig
+EPISODES_NOT_IN_ORDER                                       = Episoden nicht in richtiger Reihenfolge
+PRODUCTION_CONCEPTS                                         = Einkaufslisten
+PRODUCTION_DEPOSIT_PAID                                     = Anzahlung (%MONEY%) geleistet.
+
+SELECT_PERSON      = Person auswählen
+FINISHED_PLANNING  = Planung abgeschlossen
+FINISH_PLANNING    = Planung abschließen
+AND_PAY_DOWN_MONEY = und %money% anzahlen
+PLANNING           = Planung ...
+MONEY_TO_PAY_DOWN  = %money% anzuzahlen
+TAKE_OVER_SETTINGS = Einstellungen übernehmen
+PRODUCTION_COMPANY = Produktionsfirma
+EDIT_TEXTS         = Texte ändern
+TITLE              = Titel
+DESCRIPTION        = Beschreibung
+EPISODE            = Folge
+ABBREVIATION_YEARS = J.
+
+STUDIO_MANAGER         = Studioleiter
+STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus
+
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Die Lizenz |b|%TITLE%|/b| steht Dir nun zur Verfügung.
+THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED   = Die Liveproduktion |b|%TITLE%|/b| wurde eben abgeschlossen.
+TOTAL_PRODUCTION_COSTS_WERE_X            = Die Gesamtkosten betrugen %TOTALCOST%.

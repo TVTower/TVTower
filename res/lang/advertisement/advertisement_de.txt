@@ -1,0 +1,42 @@
+TARGETGROUP_ALL        = Alle
+TARGETGROUP_CHILDREN   = Kinder
+TARGETGROUP_TEENAGERS  = Jugendliche
+TARGETGROUP_HOUSEWIVES = Hausfrauen
+TARGETGROUP_EMPLOYEES  = Arbeitnehmer
+TARGETGROUP_UNEMPLOYED = Arbeitslose
+TARGETGROUP_MANAGERS   = Manager
+TARGETGROUP_PENSIONERS = Rentner
+TARGETGROUP_WOMEN      = Frauen
+TARGETGROUP_MEN        = Männer
+
+CLASSIFICATION = Klassifikation
+REMAINING_TERM = restl. Laufzeit
+SPOTS_TO_SEND  = offene Werbespots
+
+MIN_AUDIENCE          = Mind. Zuschauer
+AD_QUALITY            = Qualität
+AD_PROFIT             = Prämie
+AD_PLANNED            = eingeplant
+AD_TOSEND             = zu senden
+AD_PENALTY            = Strafe
+AD_MIN_AUDIENCE       = Mindestz.
+AD_TARGETGROUP        = Zielgruppe
+AD_SEND_TILL_TOLATE   = zu spät!!!
+AD_SEND_TILL_MIDNIGHT = bis Mitternacht senden!!
+AD_SEND_TILL_TOMORROW = bis Morgen senden!
+AD_STILL_X_DAYS       = noch %1 Tage
+
+AD_CHANNEL_IMAGE_TOO_LOW = Senderimage zu gering. %CHANNELIMAGE%% < %IMAGE%%.
+AD_PLEASE_GENRE_X        = Bitte Genre %GENRE%
+AD_PLEASE_FLAG           = Bitte %FLAG%
+
+INFOMERCIAL                  = Dauerwerbesendung
+AD_INFOMERCIAL               = Du wirst für die Ausstrahlung von Dauerwerbesendungen bezahlt. Einkommen ist abhängig von der Zuschauerzahl.
+AD_INFOMERCIAL_NOT_AVAILABLE = Für diese Werbung steht keine Dauerwerbesendung zur Verfügung.
+AD_INFOMERCIAL_PROFIT        = Einnahmen: %PROFIT% pro 1000 Zuschauer
+
+ADCONTRACT_FINISHED                = Werbevertrag beendet
+ADCONTRACT_FAILED                  = Werbevertrag fehlgeschlagen
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag |b|%TITLE%|/b| erfolgreich abgeschlossen.
+PROFIT_OF_X_GOT_CREDITED           = Die Prämie von %MONEY% wurde gutgeschrieben.
+ADCONTRACT_X_FAILED                = Werbevertrag |b|%TITLE%|/b| fehlgeschlagen.

@@ -1,0 +1,202 @@
+LANGUAGE_NAME_INTERNATIONAL = Español
+LANGUAGE_NAME_LOCALE        = Español
+
+#MENU      = 
+#OPEN_MENU = 
+
+CHAT           = Chat
+SAVE_AND_APPLY = Aplicar y salvar
+CANCEL         = Cancelar
+
+CONTINUE_GAME                              = Continuar juego
+LOAD_GAME                                  = Cargar juego
+#INCOMPATIBLE_SAVEGAME                      = 
+#INVALID_SAVEGAME                           = 
+#FILE_NOT_FOUND                             = 
+SAVEGAME_GETS_LOADED                       = Savegame cargado
+SAVE_GAME                                  = Guardar la partida
+NAME_OF_SAVEGAME                           = Nombre de la partida guardada
+OVERWRITE_SAVEGAME                         = Sobrescribir partida guardada?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = ¿Realmente desea sobrescribir partida guardada %SAVEGAME%?
+SAVEGAME_GETS_CREATED                      = Savegame ha sido creado
+PLEASE_BE_PATIENT                          = Por favor sea paciente
+EXIT_GAME                                  = Salir del juego
+EXIT_TO_MAINMENU                           = Salir al menú principal
+
+24_HOURS_GAMEDAY                                              = 24 horas gameday
+ALLOW_TRAILERS_AND_INFOMERCIALS                               = Permitir trailers/infomerciaales
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Permitir las películas con año de fabricación > game year
+#START_GAME_WITH_CREDIT                                        = 
+#START_GAME_RANDOMIZE_PROGRAMME                                = 
+OPTION_ON                                                     = Option selecionada
+OPTION_OFF                                                    = Option deseleccionada
+AVAILABLE_GAMES                                               = Juegos disponibles
+ALREADY_OVER                                                  = Already over...?
+DO_YOU_REALLY_WANT_TO_QUIT                                    = ¿De verdad quiere dejar de fumar?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = ¿De verdad quieres salir del juego y volver a PantInicial?
+
+PREPARING_START_DATA           = Preparación de datos de inicio
+SYNCHRONIZING_START_CONDITIONS = Sincronización de las condiciones de arranque
+STARTING_MULTIPLAYERGAME       = Starting multiplayer game
+STARTING_SINGLEPLAYERGAME      = Starting singleplayer game
+
+PLAYERNAME                  = Nombre de jugador
+CHANNELNAME                 = Nombre del canal
+STATIONMAP                  = mapa de estacion
+DATABASE                    = Base de datos
+SOUND_OUTPUT                = Salida de Audio
+GRAPHICS                    = Graficos
+MUSIC                       = Musica
+SFX                         = Efectos de sonido
+FULLSCREEN                  = Pantalla completa
+#VSYNC                       = 
+RIGHTCLICK_EMULATION              = Emular "clic derecho"
+RIGHTCLICK_EMULATION_EXPLANATION  = Simular un clic con el botón derecho del ratón mediante un clic largo con el botón izquierdo o un toque
+RIGHTCLICK_EMULATION_TIME         = Tiempo hasta "clic derecho"
+#WINDOW_MODE_RESOLUTION      = 
+#INPUT                       = 
+#USE_TOUCH_INPUT             = 
+#USE_TOUCH_INPUT_EXPLANATION = 
+#MOVE_INSTEAD_CLICK_RADIUS   = 
+#MULTIPLAYER                 = 
+#SINGLEPLAYER                = 
+DEFAULTS_FOR_NEW_GAME       = Defaults for "Nueva Partida"
+RENDERER                    = Procesador
+SOUND_ENGINE                = Base de audio
+#SOUND_MUSIC_VOLUME          = 
+#SOUND_SFX_VOLUME            = 
+#SOUND_MUTED                 = 
+PORT_ONLINEGAME             = Puerto para jugar en linea
+#GAME_SPEED_IN_ROOMS         = 
+#AUTOSAVE_INTERVAL           = 
+
+GAME_TITLE  = Titulo del Juego
+START_YEAR  = Año de inicio
+#DAY_OF_YEAR = 
+
+YES        = Si
+NO         = No
+#OK         = 
+MONEY      = Dinero
+DEBT       = Deuda
+REACH      = Legar
+PRICE      = Precio
+VALUE      = Valor
+#POPULATION =
+#NAME       = 
+
+#GENDER_MEN         = 
+#GENDER_WOMEN       = 
+#GENDER_ALL         = 
+#GENDER_MEN_SHORT   = 
+#GENDER_WOMEN_SHORT = 
+
+CURRENCY     = €
+OCLOCK       =
+#DAY_SHORT    = 
+#HOUR_SHORT   = 
+#MINUTE_SHORT = 
+DAY          = dia
+DAYS         = dias
+#DATE         = 
+#HOUR         = 
+#HOURS        = 
+#MINUTE       = 
+#MINUTES      = 
+OLD          = Viejo
+#TOMORROW     = 
+TODAY        = Hoy
+YESTERDAY    = Ayer
+TWO_DAYS_AGO = Hace dos días
+#IN_X_DAYS    = 
+#X_DAYS_AGO   = 
+
+WEEK_SHORT_MONDAY    = Lun
+WEEK_SHORT_TUESDAY   = Mar
+WEEK_SHORT_WEDNESDAY = Mie
+WEEK_SHORT_THURSDAY  = Jue
+WEEK_SHORT_FRIDAY    = Vie
+WEEK_SHORT_SATURDAY  = sab
+WEEK_SHORT_SUNDAY    = dom
+WEEK_LONG_MONDAY     = Lunes
+WEEK_LONG_TUESDAY    = Martes
+WEEK_LONG_WEDNESDAY  = Miercoles
+WEEK_LONG_THURSDAY   = Jueves
+WEEK_LONG_FRIDAY     = Viernes
+WEEK_LONG_SATURDAY   = Sabado
+WEEK_LONG_SUNDAY     = Domingo
+#SEASON_SPRING        = 
+#SEASON_SUMMER        = 
+#SEASON_AUTUMN        = 
+#SEASON_WINTER        = 
+
+
+MENU_SOLO_GAME       = Jugar Solo
+MENU_START_GAME      = Empezar partida
+MENU_NETWORKGAME     = Partida en LAN
+MENU_ONLINEGAME      = Partida online
+MENU_JOIN            = Entrar
+MENU_CREATE_GAME     = Crear Juego
+MENU_BACK            = Volver
+MENU_SETTINGS        = Opciones
+MENU_QUIT            = Salir
+MENU_AVAILABLE_GAMES = juegos disponibles
+
+#ABBREVIATION_THOUSAND = K
+#ABBREVIATION_MILLION  = M
+#ABBREVIATION_BILLION  = bn
+
+#DIFFICULTY_EASY   = 
+#DIFFICULTY_NORMAL = 
+#DIFFICULTY_HARD   = 
+#DIFFICULTY_CUSTOM = 
+
+#GAMETIME  = 
+#PLAYER    = 
+#GAME      = 
+GAME_TIME = Hora
+GAMEDAY   = Dia
+
+
+#GAMESPEED      = 
+#SET_SPEED_TO_X = 
+
+#MANUAL    = 
+#HELP      = 
+#SHOW_HELP = 
+
+#DO_NOT_SHOW_AGAIN        = 
+#DO_NOT_SHOW_ANY_TIPS     = 
+#SHOW_INTRODUCTORY_GUIDES = 
+
+ERROR_NOT_POSSIBLE                  = No es posible!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = No es posible vender la última estación.
+ERROR_NOT_ENOUGH_MONEY              = Dinero insuficiente!
+ERROR_NOT_ENOUGH_MONEY_TEXT         = Usted no posee suficiente dinero para terminar esta acción.
+
+#NEWGAMESETTINGS_RANDOMIZE          =
+#NEWGAMESETTINGS_RANDOMIZE_DETAIL   =
+#NEWGAMESETTINGS_CHANNELNAME_DETAIL = 
+#NEWGAMESETTINGS_PLAYERNAME_DETAIL  = 
+#NEWGAMESETTINGS_DIFFICULTY         = 
+#NEWGAMESETTINGS_DIFFICULTY_DETAIL  = 
+#NEWGAMESETTINGS_START_YEAR_DETAIL  = 
+#NEWGAMESETTINGS_GAME_SEED          = 
+#NEWGAMESETTINGS_GAME_SEED_DETAIL   = 
+
+#MESSAGE_CLOSES_AT_TIME = 
+#MESSAGE_CLOSES_AT_DAY  = 
+
+
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = Pulsa la tecla "ALT" para mostrar detalles.
+#HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = 
+#HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = 
+HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT: interruptor ficha técnica | CTRL+Click: Copiar Programa | SHIFT+Click: Siguiente espisodio.
+HINT                                   = Hint
+
+STARTHINT_TITLE1 = Plan de programa
+STARTHINT_TEXT1  = La tecla CTRL Permite insertar un programa varias veces en su planificación. Mientras que la tecla SHIFT trata de colocar el próximo episodio de una serie.
+STARTHINT_TITLE2 = Plan de programación
+STARTHINT_TEXT2  = El éxito de una emisión se basa en gran medida de la calidad/calificación de los programas. Tan importante es el tiempo de emisión del programa, la popularidad del género, el público del programa y la cantidad de trailers emitidos. La calidad de los programas de noticias y otros factores juegan un papel importante.\n\nLos Programas de determinados géneros como la comedia puede ser transmitido con más de frecuencia que otros géneros, manteniendo la mayor parte de su actualidad.
+STARTHINT_TITLE3 = Contratos publicitarios
+STARTHINT_TEXT3  = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<difficulties>
+	<easy>
+		<startMoney value="750000"/>
+		<startCredit value="250000"/>
+		<programmePriceMod value="0.75"/>
+		<programmeTopicalityCutMod value="0.9"/>
+		<roomRentMod value="0.80"/>
+		<adcontractProfitMod value="1.25"/>
+		<antennaBuyPriceMod value="1.0"/>
+		<antennaDailyCostsMod value="1.0"/>
+		<antennaDailyCostsIncrease value="0.02"/>
+		<antennaDailyCostsIncreaseMax value="0.4"/>
+		<cableNetworkBuyPriceMod value="1.0"/>
+		<cableNetworkDailyCostsMod value="1.0"/>
+		<satelliteBuyPriceMod value="1.0"/>
+		<satelliteDailyCostsMod value="1.0"/>
+		<broadcastPermissionPriceMod value="1.25"/>
+		<renovationBaseCost value="30000"/>
+		<renovationTimeMod value="0.75"/>
+
+		<restartingPlayerMoneyRatio value="1.0"/> 
+	</easy>
+	<normal>
+	</normal>
+	<hard>
+		<startMoney value="0"/>
+		<creditMinimumOnGameStart value="500000"/>
+		<programmePriceMod value="1.1"/>
+		<programmeTopicalityCutMod value="1.1"/>
+		<roomRentMod value="1.5"/>
+		<adcontractProfitMod value="0.9"/>
+		<adcontractLimitedTargetgroupMod value="1.15"/>
+		<antennaBuyPriceMod value="1.4"/>
+		<antennaDailyCostsMod value="1.25"/>
+		<antennaDailyCostsIncrease value="0.03"/>
+		<antennaDailyCostsIncreaseMax value="0.5"/>
+		<cableNetworkBuyPriceMod value="1.4"/>
+		<cableNetworkDailyCostsMod value="1.3"/>
+		<satelliteBuyPriceMod value="1.4"/>
+		<satelliteDailyCostsMod value="1.3"/>
+		<broadcastPermissionPriceMod value="1.15"/>
+		<renovationBaseCost value="75000"/>
+		<renovationTimeMod value="1.5"/>
+
+		<restartingPlayerMoneyRatio value="0.6"/> 
+	</hard>
+
+	<!--
+		defaults, in case the actual levels do not want to define their own values.
+		If not statet otherwise, modifiers (...Mod) are factors, so 2 = double value and 0.5 = half the value
+	-->
+	<defaults>
+		<startMoney value="250000"/><!--money owned on game start-->
+		<startCredit value="500000"/><!--credit from boss on game start;to be paid back-->
+		<creditAvailableOnGameStart value="600000"/><!--base credit available (depending on boss mood)-->
+		<creditBaseValue value="25000"/><!--credit bonus factor for each 500000 of company value-->
+		<interestRateCredit value="0.05"/><!--interest rate to be paid for credit; 0.05 = 5%-->
+		<interestRatePositiveBalance value="0.01"/><!--interest rate obtained for positive balance; 0.01 = 1%-->
+		<interestRateNegativeBalance value="0.1"/><!--interest rate to be paid for negative balance; 0.1 = 10%-->
+
+		<programmePriceMod value="1.0"/><!--factor for licence prices-->
+		<programmeTopicalityCutMod value="1.0"/><!--factor for topicaltiy loss after broadcast (smaller value=less topicality loss)-->
+		<newsItemPriceMod value="1.0"/><!--factor for news item prices-->
+		<roomRentMod value="1.0"/><!--factor for room rents-->
+		<productionTimeMod value="1.0"/><!--factor for production time-->
+		<sentXRatedPenalty value="25000"/> <!--penalty for showing X-rated programme-->
+		<sentXRatedConfiscateRisk value="25"/><!-- risk of a confiscation; 0-100 %-->
+
+		<adcontractPriceMod value="1.0"/><!--general factor for profit/penalty values-->
+		<adcontractProfitMod value="1.0"/><!--factor for ad contract profits-->
+		<adcontractPenaltyMod value="1.0"/><!--factor for ad contract penalty payments-->
+		<adcontractInfomercialProfitMod value="1.0"/><!--factor for infomercial profits-->
+		<adcontractLimitedTargetgroupMod value="1.25"/><!--maximum profit/penalty factor if target group is limited (>=1.0)-->
+		<adcontractLimitedGenreMod value="1.3"/><!--profit/penalty factor if genre is limited (>=1.0)-->
+		<adcontractLimitedProgrammeFlagMod value="1.2"/><!--profit/penalty factor if programme flags are limited (>=1.0)-->
+		<adcontractRawMinAudienceMod value="1.0"/><!--factor for number of viewers required-->
+
+		<!--construction times in hours-->
+		<antennaBuyPriceMod value="1.2"/><!--factor for antenna purchase prices-->
+		<antennaConstructionTime value="0"/><!--base time for setting up an antenna-->
+		<antennaDailyCostsMod value="1.15"/><!--factor for anntenna daily costs-->
+		<antennaDailyCostsIncrease value="0.03"/><!--increase of daily antenna costs; 0.02 = 2%-->
+		<antennaDailyCostsIncreaseMax value="0.4"/><!--maximum increase of daily antenna costs; 0.2 = 20%-->
+		<cableNetworkBuyPriceMod value="1.2"/><!--factor for cable network initial payment price-->
+		<cableNetworkConstructionTime value ="0"/><!--time before cable network broadcasts channel programme-->
+		<cableNetworkDailyCostsMod value="1.15"/><!--factor for cable network daily costs-->
+		<satelliteBuyPriceMod value="1.2"/><!--factor for satellite initial payment price-->
+		<satelliteConstructionTime value ="0"/><!--time before satellite broadcasts channel programme-->
+		<satelliteDailyCostsMod value="1.15"/><!--factor for satellite daily costs-->
+		<broadcastPermissionPriceMod value="0.8"/><!--factor for broadcast permission prices-->
+
+		<!--terrorist effects-->
+		<renovationBaseCost value="50000"/><!--base cost for renovating an owned room after a detonation-->
+		<renovationTimeMod value="1.0"/><!--factor for the renovation time-->
+
+		<!--relevant only for AI-player -->
+		<restartingPlayerMoneyRatio value="0.8"/><!--start money ratio for restarting AI based on other players' money and licences-->
+	</defaults>
+
+	<!-- properties not yet(?) part of the difficulty object-->
+	<notMigrated>
+		<!-- from game.gamerules -->
+		<stationInitialIntendedReach value=""/>
+		<bettyLoveToGetMasterKey value=""/><!-- do not migrate -  master key practically irrelevant -->
+		<baseProductionTimeHours value=""/>
+		<payLiveProductionInAdvance value=""/>
+
+		<!-- proposed additional modifiers see also #126 -->
+		<!-- modifiers for licences? rather make it harder by reducing profit margin...
+			* faster max topicality loss when often repeated
+			* slower topicality regeneration when often repeated
+			* maximal broadcast number (if unlimited)? - auto-return to agency and refill
+		 -->
+	</notMigrated>
+</difficulties>

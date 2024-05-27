@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources directload="true">
+		<file name="resource_fonts" url="config/fonts.xml" directload="true" />
+
+		<image name="gfx_startscreen" url="res/gfx/misc/screen_menu.png" />
+		<image name="gfx_startscreen_logo" url="res/gfx/misc/logo.png" />
+		<image name="gfx_startscreen_logoSmall"	url="res/gfx/misc/logo_small.png" />
+
+		<spritepack name="gfx_mousecursor">
+			<url>res/gfx/interface/cursor.png</url>
+			<children>
+				<child name="gfx_mousecursor_point"            x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
+				<child name="gfx_mousecursor_stop"             x="48"   y="0"    w="48"  h="50" offsetLeft="24" offsetTop="17" />
+				<!-- simple looped animation: stay at 0 a while, then move on to 1, 2, 3 -->
+				<child name="gfx_mousecursor_interact0"        x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
+				<child name="gfx_mousecursor_interact1"        x="0"    y="50"   w="48"  h="50" offsetLeft="22" offsetTop="4" />
+				<child name="gfx_mousecursor_interact2"        x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
+				<child name="gfx_mousecursor_interact3"        x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
+				<child name="gfx_mousecursor_pick"             x="96"   y="100"  w="48"  h="50" offsetLeft="24" offsetTop="17" />
+				<child name="gfx_mousecursor_pick_vertical"    x="0"    y="100"  w="48"  h="50" offsetLeft="26" offsetTop="11" />
+				<child name="gfx_mousecursor_pick_horizontal"  x="48"   y="100"  w="48"  h="50" offsetLeft="25" offsetTop="27" />
+<!--			<child name="gfx_mousecursor_hold"         x="192"  y="100"  w="48"  h="50" offsetLeft="27" offsetTop="18" /> --> 
+				<child name="gfx_mousecursor_hold_fine"        x="144"  y="100"  w="48"  h="50" offsetLeft="15" offsetTop="17" />
+				<child name="gfx_mousecursor_halfpoint"        x="48"   y="50"   w="48"  h="50" offsetLeft="22" offsetTop="8" />
+				<child name="gfx_mousecursor_hold"             x="96"   y="50"   w="48"  h="50" offsetLeft="24" offsetTop="8" />
+				<child name="gfx_mousecursor"                  x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
+
+				<child name="gfx_mousecursor_extra_forbidden"  x="144"  y="0"    w="48"  h="50" offsetLeft="0" offsetTop="0" />
+			</children>
+		</spritepack>
+		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
+		<file name="resource_gui" url="config/gui.xml" />
+		<file name="settings_colors" url="config/settings_colors.xml" />
+	</resources>
+</tvt>

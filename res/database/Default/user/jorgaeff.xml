@@ -1,0 +1,3026 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="jorgaeffs Nachrichten; TODO: This file has a lot of persons that should be referenced once possible" />
+	<allnews>
+
+	<!-- "POLITIK + WIRTSCHAFT" -->
+		<news id="news-jorgaeff-dumb-01" type="0" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff" comment="TODO: ref person Donald Dumb">
+			<title>
+				<de>Donald Dumb wird Präsident der VR Duban</de>
+				<en>Donald Dumb becomes President of PR Duban</en>
+			</title>
+			<description>
+				<de>Die Volksrepublik Duban hat Donald Dumb zu ihrem neuen Präsidenten ernannt. Für die nächsten vier Jahre wird der Multi-Millionär die Geschicke der Volksrepublik leiten.</de>
+				<en>The People's Republic of Duban has appointed Donald Dumb as its new president. For the next four years, the multi-millionaire will lead the fortunes of the People's Republic.</en>
+			</description>
+			<data genre="0" price="0.9" quality="75" fictional="1" />
+			<effects>
+				<!-- "morgen 9-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,9,12" news="news-jorgaeff-dumb-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dumb-02" type="2" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Donald Dumb provoziert Freie Republik Duban</de>
+				<en>Donald Dumb provokes Free Republic of Duban</en>
+			</title>
+			<description>
+				<de>In seiner Eröffnungsrede bezeichnete Dumb die Freie Republik Duban als „... Abschaum, der beseitigt werden muss!“. Die Freie Republik Duban drohte daraufhin Konsequenzen an.</de>
+				<en>In his opening speech, Dumb referred to the Duban Free Republic as ".... Scum that must be eliminated!". The Free Republic of Duban followed up with threats of consequences.</en>
+			</description>
+			<data genre="0" price="0.9" quality="75" fictional="1" />
+			<effects>
+				<!-- "uebermorgen 8-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,8,16" news="news-jorgaeff-dumb-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dumb-03" type="2" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Donald Dumb möchte Mauer bauen</de>
+				<en>Donald Dumb wants to build wall</en>
+			</title>
+			<description>
+				<de>Weil sein hölzerner Gartenzaun schon wieder kaputt ist, möchte der Präsident der Volksrepublik Duban nun eine Mauer um sein Grundstück bauen. Sein Kommentar: „Steine halten einfach länger.“</de>
+				<en>Because his wooden garden fence is once again damaged, the president of the People's Republic of Duban now wants to build a wall around his property. His comment: "Stones just last longer."</en>
+			</description>
+			<data genre="0" price="0.7" quality="55" fictional="1" />
+			<effects>
+				<!-- "morgen 2-7 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,2,7" news="news-jorgaeff-dumb-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dumb-04" thread_id="news-jorgaeff-dumb" type="2" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Donald Dumb vermisst Quietsche-Entchen</de>
+				<en>Donald Dumb is missing rubber ducky</en>
+			</title>
+			<description>
+				<de>Donald Dumb ist traurig, da er schon seit Tagen seine Quietsche-Ente nicht mehr finden kann. „Ohne die Quietsche-Ente macht dem Präsidenten das Baden keinen Spaß mehr, und er duscht lieber“, wird Dumb von seinem Pressesprecher zitiert.</de>
+				<en>Donald Dumb is sad because he has not been able to find his squeaky rubber ducky for days. "Without the rubber duck, bathing is no longer fun for the president, and he prefers to take a shower," Dumb is quoted as saying by his press spokesman.</en>
+			</description>
+			<data genre="0" price="0.7" quality="55" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-1987-0-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_WEEKDAY=0 &amp;&amp; TIME_HOUR>=12" />
+			<title>
+				<de>Schwerer Börsen-Crash</de>
+				<en>Severe stock market crash</en>
+			</title>
+			<description>
+				<de>Zu einem schwarzen Montag kam es heute an den internationalen Börsen. Weltweit sanken die Kurse um über 20%. Es ist der erste Börsenkrach seit dem 2. Weltkrieg.</de>
+				<en>A black Monday occurred today on the international stock exchanges. Worldwide, prices fell by over 20%. It is the first stock market crash since the 2nd World War.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-0-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Deutsches Aktien-System eingeführt</de>
+				<en>German stock system introduced</en>
+			</title>
+			<description>
+				<de>An der Deutschen Börse in Frankfurt wurde das Deutsche Aktien-System (Daks) eingeführt. Es misst die Wertentwicklung der 30 größten und liquidesten Unternehmen des deutschen Aktienmarktes.</de>
+				<en>The Deutsche Aktien-System (Daks) was introduced at the German Stock Exchange in Frankfurt. The stock system measures the performance of the 30 largest and most liquid companies on the German stock market.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-0-BRD-01" type="0" thread_id="news-jorgaeff-1985-0-BRD" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>APD mit historischem Wahlergebnis</de>
+				<en>APD with historical election result</en>
+			</title>
+			<description>
+				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die Arbeiterpartei Deutschland (APD) unter Ministerpräsident Hannes Reif mit 52,1% der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
+				<en>In the state elections in North Rhine-Westphalia, the Workers' Party of Germany (APD) headed by Prime Minister Hannes Reif achieves the best election result in its history in this state, with 52.1% of the vote.</en>
+			</description>
+			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 2 Tagen 14-20 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,14,20" news="news-jorgaeff-1985-0-BRD-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1985-0-BRD-02" type="2" thread_id="news-jorgaeff-1985-0-BRD" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>APD nominiert Hannes Reif</de>
+				<en>APD nominates Hannes Reif</en>
+			</title>
+			<description>
+				<de>Die Arbeiterpartei Deutschland (APD) nominiert den nordrhein-westfälischen Ministerpräsidenten Hannes Reif zum Kanzlerkandidaten für die Bundestagswahl 1987.</de>
+				<en>The Workers' Party of Germany (APD) nominates Hannes Reif, Minister-President of North Rhine-Westphalia, as its candidate for chancellor in the 1987 federal election.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-0-BRD-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Robert Keagan, Michailow">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_SEASON=1"/>
+			<title>
+				<de>Keagan möchte Mauer abreißen</de>
+				<en>Keagan wants to tear down wall</en>
+			</title>
+			<description>
+				<de>Historische Rede von US-Präsident Robert Keagan anlässlich der 750-Jahr-Feier West-Berlins: „Mr. Michailow - Tear down this wall!“</de>
+				<en>Historic speech by U.S. President Robert Keagan on the occasion of the 750th anniversary of West Berlin: "Mr. Michailow - Tear down this wall!"</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-0-BRD-02" type="0" creator="8936" created_by="jorgaeff" comment="TODO: ref person Herbert Kappes">
+			<availability script="TIME_YEAR=1987"/>
+			<title>
+				<de>ShPD gewinnt Bundestagswahl</de>
+				<en>ShPD wins federal election</en>
+			</title>
+			<description>
+				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei Deutschland (ShPD) auch weiterhin die Mehrheit. Eine weitere Amtszeit von Herbert Kappes steht bevor.</de>
+				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party Germany (ShPD) continues to hold the majority. Another term of Herbert Kappes is in prospect.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-0-BRD-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Herbert Kappes, Michailow">
+			<availability script="TIME_YEAR=1988"/>
+			<title>
+				<de>Kappes trifft Michailow</de>
+				<en>Kappes meets Michailow</en>
+			</title>
+			<description>
+				<de>Bundeskanzler Herbert Kappes besucht den sowjetischen Staats- und Parteichef Sergei Michailow in Moskau. Beide erklären ihre Bereitschaft die „Zeit des Eises“ durch ein freundlicheres Klima abzulösen.</de>
+				<en>German Chancellor Herbert Kappes visits Soviet leader Sergei Michailow in Moscow. Both declare their readiness to replace the "time of ice" with a friendlier climate.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-0-DDR-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Agenten-Tausch im Morgengrauen</de>
+				<en>Agent swap at daybreak</en>
+			</title>
+			<description>
+				<de>Im geteilten Berlin kommt es zum größten Agentenaustausch in der Nachkriegsära. 25 Westspione wechseln auf der Glienicker Brücke gegen vier Ostagenten die Demarkationslinie. 25:4? Ja, das liegt am Wechselkurs!</de>
+				<en>In divided Berlin, the largest agent exchange in the postwar era takes place. On Glienicke Bridge, 25 West German spies are exchanged for four East German agents and cross the demarcation line. 25:4? Yes, that's due to the exchange rate!</en>
+			</description>
+			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-0-DDR-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Michailow besucht Ost-Deutschland</de>
+				<en>Mikhailov visits East Germany</en>
+			</title>
+			<description>
+				<de>Hoher Besuch beim Parteitag der Sozialistischen Partei Ost-Deutschland (SPOD) im Palast der Republik: KPdvSS-Generalsekretär, Sergei Michailow, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
+				<en>High-ranking visitor at the party congress of the Sozialistische Partei Ost-Deutschland (SPOD) in the Palace of the Republic: CPUSS General Secretary, Sergei Michailow, addresses the comrades and also brings a few gifts.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-0-DDR-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Emil Hoecker, Herbert Kappes">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Hoecker besucht West-Deutschland</de>
+				<en>Hoecker visits West Germany</en>
+			</title>
+			<description>
+				<de>Emil Hoecker besucht als erster DDR-Staatschef die Bundesrepublik Deutschland und überrascht Bundeskanzler Herbert Kappes mit Senf aus Bautzen und einer Dose Spreewald-Gurken.</de>
+				<en>Emil Hoecker is the first GDR head of state to visit the Federal Republic of Germany and surprises Chancellor Herbert Kappes with mustard from Bautzen and a can of Spreewald pickles.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-0-DDR-01a" type="0" thread_id="news-jorgaeff-1988-0-DDR" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Nicolae Grotesko, Emil Hoecker">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Grotesko trifft Hoecker</de>
+				<en>Grotesko meets Hoecker</en>
+			</title>
+			<description>
+				<de>Der rumänische Präsident Nicolae Grotesko trifft sich in Ost-Berlin zu Gesprächen mit Emil Hoecker und wird anlässlich seines 70. Geburtstages mit dem Karl-Marx-Orden ausgezeichnet.</de>
+				<en>Romanian President Nicolae Grotesko meets Emil Hoecker in East Berlin for talks and is awarded the Order of Karl Marx on the occasion of his 70th birthday.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 4-8 Stunden" -->
+				<effect trigger="happen" type="triggernews" time="1,4,8" news="news-jorgaeff-1988-0-DDR-01b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1988-0-DDR-01b" type="2" thread_id="news-jorgaeff-1988-0-DDR" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Hoeckers Abrüstungspläne</de>
+				<en>Hoecker's disarmament plans</en>
+			</title>
+			<description>
+				<de>Am Rande des Treffens mit dem rumänischen Präsidenten Nicolaoe Grotesko kündigt Emil Hoecker einen früheren Abbau von Atomraketen mittlerer Reichweite an.</de>
+				<en>On the sidelines of the meeting with Romanian President Nicolaoe Grotesko, Emil Hoecker announces an accelerated dismantling of medium-range nuclear missiles.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-0-UdSSR-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Michailow wird KPdvSS-Generalsekretär</de>
+				<en>Michailow becomes CPUSS Secretary General</en>
+			</title>
+			<description>
+				<de>Im Alter von 54 Jahren wird Sergei Michailow zum jüngsten Generalsekretär in der Geschichte der Kommunistischen Partei der vereinigten Sowjet-Staaten (KPdvSS) gewählt.</de>
+				<en>At the age of 54, Sergei Mikhailov is elected the youngest General Secretary in the history of the Communist Party of the United Soviet States (CPUSS).</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-0-UdSSR-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Michailow fordert „Glasnost“</de>
+				<en>Michailow calls for "glasnost"</en>
+			</title>
+			<description>
+				<de>Forderungen von KPdvSS-Generalsekretär, Sergei Michailow, nach mehr Rede- und Pressefreiheit waren das zentrale Thema auf dem 27. Parteitag der Kommunistischen Partei der vereinigten Sowjet-Staaten.</de>
+				<en>Demands by CPUSS General Secretary, Sergei Michailow, for more freedom of speech and press were the central theme at the 27th Party Congress of the Communist Party of the United Soviet States.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+		</news>
+
+		<!-- triggers other thread...-->
+		<news id="news-jorgaeff-1986-0-UdSSR-02a" type="0" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Michailow bittet um Abrüstung</de>
+				<en>Michailow asks for disarmament</en>
+			</title>
+			<description>
+				<de>KPdvSS-Generalsekretär, Sergei Michailow, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
+				<en>CPUSS Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 3 Tagen 18-23 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,18,23" news="news-jorgaeff-1986-4-UdSSR-02b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1987-0-UdSSR-01b" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff" comment="TODO: ref persons Michailow, Markus Trust">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Michailow entlässt Minister</de>
+				<en>Michailow dismisses minister</en>
+			</title>
+			<description>
+				<de>KPdvSS-Generalsekretär Sergei Michailow hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, Markus Trust, auf dem Roten Platz in Moskau entlassen.</de>
+				<en>CPUSS Secretary General Sergei Mikhailov has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, Markus Trust, on Red Square in Moscow.</en>
+			</description>
+			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 2 Tagen 14-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01c" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1987-0-UdSSR-01c" type="2" thread_id="news-jorgaeff-1987-0-UdSSR-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Weitere Entlassungen in Moskau</de>
+				<en>Further dismissals in Moscow</en>
+			</title>
+			<description>
+				<de>KPdvSS-Generalsekretär Sergei Michailow hat über 300 weitere perestroika- und glasnostfeindlich eingestellte Generäle entlassen. Er möchte die Wende im Ostblock weiter voran treiben.</de>
+				<en>CPUSS Secretary General Sergei Mikhailov has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
+			</description>
+			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-0-USA-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>US-Präsident besucht Deutschland</de>
+				<en>US President visits Germany</en>
+			</title>
+			<description>
+				<de>Bundeskanzler Herbert Kappes erwartet einen ganz besonderen Gast: Robert Keagan besucht die Bundesrepublik Deutschland. Der US-Präsident möchte aber auch ein Fußballspiel besuchen.</de>
+				<en>Chancellor Herbert Kappes is expecting a very special guest: Robert Keagan is visiting the Federal Republic of Germany. But the U.S. president also wants to attend a soccer match.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-0-USA-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Atomare Abrüstung beginnt</de>
+				<en>Nuclear disarmament begins</en>
+			</title>
+			<description>
+				<de>Der sowjetische Staatschef Sergei Michailow und US-Präsident Robert Keagan unterzeichnen in Washington den INF-Vertrag über den vollständigen Abbau aller nuklearen Mittelstreckenwaffen kürzerer und längerer Reichweite.</de>
+				<en>Soviet leader Sergei Michailow and U.S. President Robert Keagan sign the INF Treaty in Washington on the complete dismantlement of all shorter- and longer-range nuclear intermediate-range weapons.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-0-USA-01a" type="0" thread_id="news-jorgaeff-1988-0-USA-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>US-Präsidentschaftswahlen</de>
+				<en>US presidential elections</en>
+			</title>
+			<description>
+				<de>Da die 2. Amtszeit von Robert Keagan zu Ende geht und er kein drittes Mal kandidieren darf, streiten sich Vize-Präsident Gregory H. W. Cush und Senator Michael „Mc“ Monco um das Amt des US-Präsidenten.</de>
+				<en>As Robert Keagan's 2nd term comes to an end and he is not allowed to run for a third time, Vice President Gregory H. W. Cush and Senator Michael "Mc" Monco are fighting over the office of U.S. President.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 2 Tagen 3-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,3,12" news="news-jorgaeff-1988-0-USA-01b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1988-0-USA-01b" type="2" thread_id="news-jorgaeff-1988-0-USA-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Cush wird US-Präsident</de>
+				<en>Cush becomes US president</en>
+			</title>
+			<description>
+				<de>Gregory H. W. Cush setzt sich mit 426 zu 111 Wahlmännerstimmen klar gegen seinen Kontrahanten Michael „Mc“ Monco durch und wird 41. Präsident der Vereinigten Staaten.</de>
+				<en>Gregory H. W. Cush clearly prevails over his counterpart Michael "Mc" Monco by 426 to 111 electoral votes and becomes 41st President of the United States.</en>
+			</description>
+			<data genre="0" price="0.5" quality="50" fictional="0" flags="2" />
+		</news>
+
+
+
+
+	<!-- "SHOWBIZ" -->
+		<news id="news-jorgaeff-bricks-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Rolling Bricks auf Abschiedstournee</de>
+				<en>Rolling Bricks on farewell tour</en>
+			</title>
+			<description>
+				<de>Mit einem Alterdurchschnitt von 89 Jahren touren die Rolling Bricks durch die Altersheime der Nation. Für ihren Pressesprecher ist es „... die perfekte Möglichkeit sich einen Ruhesitz auszusuchen.“</de>
+				<en>With an average age of 89 years, the Rolling Bricks tour the retirement homes of the nation. For their spokesman, it is "... the perfect opportunity to choose a retirement home."</en>
+			</description>
+			<data genre="1" price="0.45" quality="45" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-chorris-01" type="0" thread_id="news-jorgaeff-chorris" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Nuck Chorris schlägt Zeit tot</de>
+				<en>Nuck Chorris kills time</en>
+			</title>
+			<description>
+				<de>Das hat vor ihm noch keiner geschafft, doch nun ist es Kampfkünstler und Action-Schauspieler Nuck Chorris gelungen die Zeit tot zu schlagen. Und das Beste: Es ist völlig legal!</de>
+				<en>No one has ever done that before him, but now martial artist and action star Nuck Chorris has managed to kill time. And what's best: It's completely legal!</en>
+			</description>
+			<data genre="1" price="0.3" quality="30" fictional="1" />
+			<effects>
+				<!-- "in 3 Tagen 20-23 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,20,23" news="news-jorgaeff-chorris-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-chorris-02" type="2" thread_id="news-jorgaeff-chorris" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Nuck Chorris zählt bis zur Unendlichkeit</de>
+				<en>Nuck Chorris counts to infinity</en>
+			</title>
+			<description>
+				<de>Laut eigenen Angaben hat Nuck Chorris bereits 2x bis zur Unendlichkeit gezählt. Die Mathe-Experten dieser Erde rätseln immer noch darüber, ob das stimmt.</de>
+				<en>According to his own statements, Nuck Chorris has already counted to infinity twice. The math experts of this world are still puzzling over whether this is true.</en>
+			</description>
+			<data genre="1" price="0.3" quality="30" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-drops-01" type="0" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Jonnie Drops bei Dreharbeiten schwer verletzt</de>
+				<en>Jonnie Drops seriously injured during filming</en>
+			</title>
+			<description>
+				<de>Beim Dreh von „Mein Grog - dein Grog“ hat sich Jonnie Drops an einer zerbrochenen Grogflasche verletzt. Die Dreharbeiten verzögern sich.</de>
+				<en>During the filming of "My Grog - Your Grog" Jonnie Drops injured himself due to a broken grog bottle. The shooting is delayed.</en>
+			</description>
+			<data genre="1" price="0.4" quality="40" fictional="1" />
+			<effects>
+				<!-- "morgen 10-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-drops-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-02" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>„Mein Grog - dein Grog“: Dreh geht weiter</de>
+				<en>"My Grog - Your Grog": filming continues</en>
+			</title>
+			<description>
+				<de>Der Dreh des neuen Drops-Films geht weiter! Der Schauspieler möchte trotz schwerer Verletzung auf die Zähne beißen und den Film fertig drehen.</de>
+				<en>The shooting of the new Drops film continues! The actor wants to grit his teeth and finish shooting the film despite a serious injury.</en>
+			</description>
+			<data genre="1" price="0.35" quality="35" />
+			<effects>
+				<!-- "in 2 Tagen 8-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,8,16" news="news-jorgaeff-drops-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-03" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Neuer Drops-Film kommt in die Kinos</de>
+				<en>New Drops movie coming to theaters</en>
+			</title>
+			<description>
+				<de>Trotz der schweren Verletzung des Hauptdarstellers wurde der Dreh des Filmes zu Ende gebracht und wird nun einem Millionen-Publikum vorgestellt.</de>
+				<en>Despite the serious injury of the main actor, the shooting of the film was completed and is now presented to an audience of millions.</en>
+			</description>
+			<data genre="1" price="0.45" quality="45" />
+			<effects>
+				<!-- "in 3 Tagen 8-14 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,8,14" news="news-jorgaeff-drops-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-04" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Goldene Brombeere für Jonnie Drops</de>
+				<en>Golden Bramble for Jonnie Drops</en>
+			</title>
+			<description>
+				<de>Schauspieler Jonnie Drops wurde für seine schlechte Performance in „Mein Grog - dein Grog“ mit der Goldenen Brombeere geehrt.</de>
+				<en>Actor Jonnie Drops was awarded the Golden Bramble for his poor performance in "My Grog - Your Grog".</en>
+			</description>
+			<data genre="1" price="0.45" quality="45" />
+			<effects>
+				<!-- "in 2-4 Stunden" -->
+				<effect trigger="happen" type="triggernews" time="1,2,4" news="news-jorgaeff-drops-05" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-05" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Patty Glansen gesteht Affäre</de>
+				<en>Patty Glansen confesses affair</en>
+			</title>
+			<description>
+				<de>Am Rande der Filmpreisverleihungen gesteht Patty Glansen, die zusammen mit Jonnie Drops in „Mein Grog - dein Grog“ vor der Kamera stand, eine Affäre mit dem Schauspieler.</de>
+				<en>On the sidelines of the film awards, Patty Glansen, who co-starred with Jonnie Drops in "My Grog - Your Grog," confesses to an affair with the actor.</en>
+			</description>
+			<data genre="1" price="0.35" quality="35" fictional="1" />
+			<effects>
+				<!-- "in 0-3 Stunden" -->
+				<effect trigger="happen" type="triggernews" time="1,0,3" news="news-jorgaeff-drops-06" />
+				<effect trigger="happen" type="modifyPersonPopularity" guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="0.05" valueMax="0.075" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-06" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Benny Jameson klaut Filmpreis</de>
+				<en>Benny Jameson steals film award</en>
+			</title>
+			<description>
+				<de>Weil er bei den Filmpreisverleihungen keinen Preis erhalten hat, klaut sich Benny Jameson einfach einen und verschwindet durch die Hintertür.</de>
+				<en>Because he didn't receive a prize at the film awards, Benny Jameson simply nicked one for himself and disappeared through the back door.</en>
+			</description>
+			<data genre="1" price="0.45" quality="40" fictional="1" />
+			<effects>
+				<!-- "übermorgen 17-23 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,17,23" news="news-jorgaeff-drops-07" />
+				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-07" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Benny Jameson zu Gefängnisstrafe verurteilt</de>
+				<en>Benny Jameson sentenced to prison</en>
+			</title>
+			<description>
+				<de>Den geklauten Filmpreis hat er zurück gegeben. Trotzdem wurde Benny Jameson zu einer dreitägigen Gefängnisstrafe verurteilt, die er bereits angetreten hat.</de>
+				<en>He gave back the stolen film award. Nevertheless, Benny Jameson was convicted to a three-day prison sentence, which he has already entered.</en>
+			</description>
+			<data genre="1" price="0.5" quality="45" fictional="1" />
+			<effects>
+				<!-- "übermorgen 10-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,10,16" news="news-jorgaeff-drops-08" />
+				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="-0.07" valueMax="-0.03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-08" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Benny Jameson aus dem Gefängnis entlassen</de>
+				<en>Benny Jameson released from prison</en>
+			</title>
+			<description>
+				<de>Aufgrund guter Führung wurde Benny Jameson einen Tag früher aus dem Gefängnis entlassen. Der Schauspieler möchte seine Erfahrungen nun in einem Film verarbeiten.</de>
+				<en>Because of good behavior Benny Jameson was released from prison a day early. The actor now wants to reflect on his experience in a film.</en>
+			</description>
+			<data genre="1" price="0.55" quality="50" fictional="1" />
+			<effects>
+				<!-- "in 7 Tagen 0-23 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,7,7,0,23" news="news-jorgaeff-drops-09" />
+				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.01" valueMax="0.03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-drops-09" type="2" thread_id="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Benny Jameson erhält Filmpreis</de>
+				<en>Benny Jameson receives film award</en>
+			</title>
+			<description>
+				<de>Für die Rolle eines Häftlings wurde Benny Jameson mit einem Filmpreis geehrt. Die Kritiker loben die besonders realistische Darstellung des Schauspielers.</de>
+				<en>For the role of a prisoner Benny Jameson was honored with a film award. The critics praise the actor's particularly realistic portrayal.</en>
+			</description>
+			<data genre="1" price="0.6" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1985-1-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>hoi-hoi 14 Wochen an der Chartspitze</de>
+				<en>hoi-hoi 14 weeks at the top of the chart</en>
+			</title>
+			<description>
+				<de>„Brake on me“, der #1-Hit der finnischen Popgruppe hoi-hoi, hält sich seit 14 Wochen an der Spitze der Charts. Weltweit konnte die nordeuropäische Band in 26 Ländern die höchste Chartplatzierung errreichen.</de>
+				<en>"Brake on me", the #1 hit of the Finnish pop group hoi-hoi, has held the top of the charts for 14 weeks. Worldwide, the northern European band could achieve the highest chart position in 26 countries.</en>
+			</description>
+			<data genre="1" price="0.5" quality="50" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-1-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Musikalbum des Jahres gewählt</de>
+				<en>Music album of the year chosen</en>
+			</title>
+			<description>
+				<de>„Born in the States“, das Musikalbum des amerikanischen Sängers Chris Springfield, wurde zum einflussreichsten Album des Jahres gewählt. Springfield verwendet darin erstmals Synthesizer.</de>
+				<en>"Born in the States", the music album by American singer Chris Springfield, was voted the most influential album of the year. In it, Springfield uses synthesizers for the first time.</en>
+			</description>
+			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'von den Hallern' vs Wall Vom Norden (I like the spoof name here better); 'Anna' is apparently a spoof on 'Otto' but 'Anna der Film' is a very different, actually existing real movie, by now added.">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>„Anna - der Film“ ausgezeichnet</de>
+				<en>"Anna - the film" awarded</en>
+			</title>
+			<description>
+				<de>Bei den diesjährigen deutschen Filmpreisverleihungen wurde das Werk der norddeutschen Komikerin, Anna Friese, ausgezeichnet. Dietbert von den Hallern ging mit „Die Rache der Entthronten“ leer aus.</de>
+				<en>At this year's German Film Awards, the work of the North German comedian, Anna Friese, was awarded. Dietbert von den Hallern went empty-handed with "Revenge of the Dethroned".</en>
+			</description>
+			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-1-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Palladium veröffentlicht Album</de>
+				<en>Palladium releases album</en>
+			</title>
+			<description>
+				<de>Die Thrash-Metal-Band Palladium bringt heute ihr Album „Der Puppenspieler“ heraus. Es wird einmal als Meilenstein des Thrash Metal und eines der besten Metal-Alben überhaupt angesehen werden.</de>
+				<en>The thrash metal band Palladium today released their album "The Puppet Master". It will one day be considered a milestone of thrash metal and one of the best metal albums ever.</en>
+			</description>
+			<data genre="1" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-1-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Mater Dolorosa erfolgreichste Sängerin</de>
+				<en>Mater Dolorosa most successful singer</en>
+			</title>
+			<description>
+				<de>Mater Dolorosa schafft mit ihrem dritten Album „Real Green“ den Sprung auf Platz 1 der Hitparaden in 28 Ländern. Für eine weibliche Interpretin ein noch nie da gewesener Erfolg.</de>
+				<en>Mater Dolorosa makes it to No. 1 on the charts in 28 countries with her third album "Real Green". For a female performer, an unprecedented success.</en>
+			</description>
+			<data genre="1" price="0.35" quality="35" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'East of Eden' title not spoofed, but a film adaptation from 1986 doesn't exist either, and the person references are not clear. Apparently neither a spoof of 1986 German award film https://de.wikipedia.org/wiki/Caspar_David_Friedrich_%E2%80%93_Grenzen_der_Zeit">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>„Jenseits von Eden“ ausgezeichnet</de>
+				<en>"East of Eden" awarded</en>
+			</title>
+			<description>
+				<de>Bei den diesjährigen Filmpreisverleihungen wurde George Weismans Film „Jenseits von Eden“ als bester Film ausgezeichnet. Der Film basiert auf Briefen der kanadischen Schriftstellerin Elke Beauford.</de>
+				<en>At this year's film awards, George Weisman's film "East of Eden" was named best film. The film is based on letters by Canadian writer Elke Beauford.</en>
+			</description>
+			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-1-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Michel Jacobson veröffentlicht „Bed“</de>
+				<en>Michel Jacobson releases "Bed"</en>
+			</title>
+			<description>
+				<de>Michel Jacobson veröffentlicht mit dem Album „Bed“ sein neues und lange erwartetes Nachfolge-Album von „Table“. „Bed“ wird Nummer 1 in 25 Ländern und verkauft sich über 30 Millionen mal.</de>
+				<en>Michel Jacobson releases "Bed", his new and long-awaited follow-up album to "Table". "Bed" becomes number 1 in 25 countries and sells over 30 million copies.</en>
+			</description>
+			<data genre="1" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-1-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Grunge-Band gegründet</de>
+				<en>Grunge band founded</en>
+			</title>
+			<description>
+				<de>Mit Elysium hat sich an der nordamerikanischen Ostküste eine neue Band gegründet. Die Musiker um Band-Leader Kurt Kokain möchten „dieses Grunge-Rock-Ding“ weiterentwickeln und die Band weltweit berühmt machen.</de>
+				<en>With Elysium a new band has formed on the North American East Coast. The musicians around band leader Kurt Kokain want to develop "this grunge rock thing" and make the band famous worldwide.</en>
+			</description>
+			<data genre="1" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'Rolliger Stein' vs 'Bulli Stein'">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Kriegsfilm erhält Filmpreis</de>
+				<en>War film receives film award</en>
+			</title>
+			<description>
+				<de>Bei den diesjährigen Filmpreisverleihungen wurde Bulli Steins Film „Batallion“ als bester Film ausgezeichnet. Der Kriegsfilm zeigt die Auswüchse des Vietnamkrieges und seine Wirkung auf Infanteriesoldaten.</de>
+				<en>At this year's film awards, Bulli Stein's film "Batallion" was named best film. The war film shows the excesses of the Vietnam War and its effect on infantry soldiers.</en>
+			</description>
+			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-1-04" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Mater Dolorosa nur Nummer 2</de>
+				<en>Mater Dolorosa only number 2</en>
+			</title>
+			<description>
+				<de>Zum erfolgreichsten Song des Jahres hat es leider nicht gereicht. Mater Dolorosas Hit „The Isle of Bel Air“ wurde von Eagernesses Chart-Breaker „Travel travel“ noch knapp übertroffen.</de>
+				<en>Unfortunately, it was not enough for the most successful song of the year. Mater Dolorosa's hit "The Isle of Bel Air" was narrowly surpassed by Eagerness's chart-breaker "Travel travel".</en>
+			</description>
+			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-1-DDR-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Chris Springfield rockt die DDR</de>
+				<en>Chris Springfield rocks the GDR</en>
+			</title>
+			<description>
+				<de>160.000 Ost-Berliner waren gekommen, um US-Rocklegende Chris Springfield zu sehen. Das Konzert auf der Radrennbahn Hiddensee ist das größte DDR-Konzert aller Zeiten und ein weiterer Beweis, dass der Osten sich dem Westen öffnet.</de>
+				<en>160,000 East Berliners came to see US rock legend Chris Springfield. The concert at the Hiddensee cycling track was the largest GDR concert of all time and further proof that the East is opening up to the West.</en>
+			</description>
+			<data genre="1" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-1-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Obermeyer veröffentlicht Album</de>
+				<en>Obermeyer releases album</en>
+			</title>
+			<description>
+				<de>Hubert Obermeyer veröffentlicht mit „Ä“ sein siebtes Studioalbum. Der Rock-Poet aus Bochum ist der kommerziell erfolgreichste zeitgenössische Musiker Deutschlands; seine auffällige Gesangsart und eine marcatoartige Gestik beim Singen gehören zu seinen Markenzeichen.</de>
+				<en>Hubert Obermeyer releases with "Ä" his seventh studio album. The rock poet from Bochum is the commercially most successful contemporary musician in Germany; his striking vocal style and marcato-like gestures during singing are among his trademarks.</en>
+			</description>
+			<data genre="1" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+
+
+
+
+	<!-- "SPORT" -->
+		<news id="news-jorgaeff-socks-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Blue Socks gewinnen Football-Meisterschaft</de>
+				<en>Blue Socks Win Football Championship</en>
+			</title>
+			<description>
+				<de>Zum ersten Mal seit 26 Jahren haben die Blue Socks wieder die Meisterschaft gewonnen. In einer packenden Finalserie konnten sie sich letztendlich gegen die Rednecks mit 4:3 durchsetzen.</de>
+				<en>For the first time in 26 years, the Blue Socks have won the championship again. In a thrilling final series, they were ultimately able to prevail against the Rednecks with 4-3.</en>
+			</description>
+			<data genre="2" price="0.2" quality="30" fictional="0" />
+		</news>
+
+		<news id="news-jorgaeff-fufa-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Weltmeisterschaft ohne Nationalteams?</de>
+				<en>World Cup without national teams?</en>
+			</title>
+			<description>
+				<de>Ginge es nach den Vorstellungen der FUFA, würden ab dem kommenden Jahr die Fußball-Weltmeisterschaften erstmals ohne die Nationalteams stattfinden. Die Teilnehmer sollen dann durch Casting-Shows ermittelt werden.</de>
+				<en>If it went according to the ideas of the FUFA, then, starting next year, the World Cup would take place for the first time without national teams. The participants would then be determined via casting shows.</en>
+			</description>
+			<data genre="2" price="0.35" quality="40" fictional="0" />
+		</news>
+
+		<news id="news-jorgaeff-abstieg-01" type="0" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Bundesliga-Relegation: Wer steigt auf, wer ab?</de>
+				<en>Bundesliga play-offs: Who will rise, who will fall?</en>
+			</title>
+			<description>
+				<de>Der Glubb kämpft gegen den SV Hamburg um den Aufstieg in die Fußball-Bundesliga. Wird der Bundesliga-Dino aus dem Norden dem Abstieg erneut entgehen oder werden die Herausforderer aus Franken siegreich sein?</de>
+				<en>The Glubb fights against SV Hamburg for promotion to the Bundesliga. Will the Bundesliga dino from the north escape relegation again or will the challengers from Franconia be victorious?</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="1" />
+			<effects>
+				<!-- "morgen 6-10 Uhr / News a oder b" -->
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,10" news1="news-jorgaeff-abstieg-02a" probability1="50" news2="news-jorgaeff-abstieg-02b" probability2="50"/>
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-abstieg-02a" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>SV Hamburg steigt erstmalig ab</de>
+				<en>SV Hamburg relegated for the first time</en>
+			</title>
+			<description>
+				<de>Erstmalig in seiner Vereinsgeschichte ist der SV Hamburg aus der Bundesliga abgestiegen. Er unterlag dem Glubb in einem spannenden Spiel mit 0:1 nach Verlängerung. Wackelt jetzt der Stuhl von Trainer Knut Knolle?</de>
+				<en>For the first time in its club history, SV Hamburg has been relegated from the Bundesliga. They lost to the Glubb in an exciting game with 0-1 after extra time. Is the seat of coach Knut Knolle in question now?</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="1" />
+			<effects>
+				<!-- "in 4-8 Stunden / News a oder b" -->
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03a" probability1="50" news2="news-jorgaeff-abstieg-03b" probability2="50"/>
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-abstieg-02b" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Glubb verpasst Aufstieg</de>
+				<en>Glubb misses promotion</en>
+			</title>
+			<description>
+				<de>Nicht ganz gereicht hat es für den Glubb. Die Franken zogen gegen die Hamburger den Kürzeren und verpassten mit einem knappen 0:1 den Aufstieg in die Bundesliga.</de>
+				<en>It was not quite enough for the Glubb. The Franconians drew the short straw against Hamburg and missed with a narrow 0-1 the promotion to the Bundesliga.</en>
+			</description>
+			<data genre="2" price="0.3" quality="0" fictional="1" />
+			<effects>
+				<!-- "in 4-8 Stunden / News c oder d" -->
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03c" probability1="50" news2="news-jorgaeff-abstieg-03d" probability2="50"/>
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-abstieg-03a" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>SV Hamburg trennt sich von Trainer</de>
+				<en>SV Hamburg parts ways with coach</en>
+			</title>
+			<description>
+				<de>Aufgrund des erstmaligen Abstiegs des SV Hamburg zieht Präsident Uwe Gehler die Reißleine und entlässt Trainer Knut Knolle. Geeler möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
+				<en>Due to the first-time relegation of SV Hamburg, president Uwe Gehler pulls the plug and sacks coach Knut Knolle. Geeler now wants to explore the market and look for suitable successors.</en>
+			</description>
+			<data genre="2" price="0.25" quality="25" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-abstieg-03b" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>SV Hamburg hält am Trainer fest</de>
+				<en>SV Hamburg holds on to coach</en>
+			</title>
+			<description>
+				<de>Trotz des Abstiegs aus der Bundesliga möchte Präsident Uwe Geeler am Trainer festhalten: „Knut Knolle ist unser Mann auch für die 2. Liga. Mit ihm werden wir wieder aufsteigen.“</de>
+				<en>Despite the relegation from the Bundesliga, President Uwe Geeler wants to hold on to the coach: "Knut Knolle is our man also for the 2nd league. With him, we will rise again."</en>
+			</description>
+			<data genre="2" price="0.25" quality="25" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-abstieg-03c" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Muss der Glubb Insolvenz anmelden?</de>
+				<en>Does the Glubb have to file for bankruptcy?</en>
+			</title>
+			<description>
+				<de>Viel wurde investiert um nach Jahren der Zweitklassigkeit endlich wieder im Oberhaus mitspielen zu können, doch gebracht hat es leider nichts. Gewachsen ist nur der Schuldenberg und der könnte den Glubberern jetzt zum Verhängnis werden.</de>
+				<en>After years of second-class status, much was invested to finally be able to play in the top division again, but unfortunately it has yielded nothing. Only the mountain of debt has grown, and that could be the doom now for the Glubbers.</en>
+			</description>
+			<data genre="2" price="0.25" quality="25" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-abstieg-03d" type="2" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Der Glubb ist wieder schuldenfrei</de>
+				<en>The Glubb is debt-free again</en>
+			</title>
+			<description>
+				<de>Bedingt durch die hohe Aufstiegsprämie konnte der Glubb alle seine Schulden abbauen und steht somit wieder auf gesunden Füßen. Die Glubberer hoffen, dass dies auch so bleibt.</de>
+				<en>Due to the high promotion bonus, the Glubb was able to reduce all its debts and is thus back on a sound footing. The Glubbers hope that this will continue.</en>
+			</description>
+			<data genre="2" price="0.25" quality="25" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-racing-01" type="0" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Formel X: Wer holt sich die Fahrer-WM?</de>
+				<en>Formula X: Who will win the drivers' championship?</en>
+			</title>
+			<description>
+				<de>Zu einem Dreikampf kommt es heute Abend beim letzten Rennen der Formel X zwischen den punktgleichen Piloten Luis Pamelton, Bastian Kettel und Ferdinando Alfonso. Wer wird Fahrer-Weltmeister?</de>
+				<en>There will be a triple-header tonight in the last race of Formula X between the drivers Luis Pamelton, Bastian Kettel and Ferdinando Alfonso, who are tied on points. Who will be the world drivers' champion?</en>
+			</description>
+			<data genre="2" price="0.45" quality="45" fictional="1" />
+			<effects>
+				<!-- "möglicher Effekt: Live-Übertragung" -->
+				<!-- "morgen 6-12 Uhr / News a, b, c oder d" -->
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,12" news1="news-jorgaeff-racing-02a" probability1="30" news2="news-jorgaeff-racing-02b" probability2="30" 	news3="news-jorgaeff-racing-02c" probability3="30" news4="news-jorgaeff-racing-02d" probability4="10"/>
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-racing-02a" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Luis Pamelton ist Weltmeister</de>
+				<en>Luis Pamelton is world champion</en>
+			</title>
+			<description>
+				<de>Der neue Formel-X-Weltmeister heißt Luis Pamelton. In einem spannenden Rennen konnte er sich gegen seine Rivalen Bastian Kettel und Ferdinando Alfonso trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
+				<en>The new Formula X world champion is Luis Pamelton. In an exciting race, he was able to prevail against his rivals Bastian Kettel and Ferdinando Alfonso despite a 10-second penalty for speeding.</en>
+			</description>
+			<data genre="2" price="0.5" quality="50" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-racing-02b" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Bastian Kettel ist Weltmeister</de>
+				<en>Bastian Kettel is world champion</en>
+			</title>
+			<description>
+				<de>Der neue Formel-X-Weltmeister heißt Bastian Kettel. In einem spannenden Rennen konnte er sich gegen seine Rivalen Luis Pamelton und Ferdinando Alfonso trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
+				<en>The new Formula X world champion is Bastian Kettel. In an exciting race, he was able to prevail over his rivals Luis Pamelton and Ferdinando Alfonso despite a 10-second penalty for speeding.</en>
+			</description>
+			<data genre="2" price="0.5" quality="50" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-racing-02c" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Ferdinando Alfonso ist Weltmeister</de>
+				<en>Ferdinando Alfonso is world champion</en>
+			</title>
+			<description>
+				<de>Der neue Formel-X-Weltmeister heißt Ferdinando Alfonso. In einem spannenden Rennen konnte er sich gegen seine Rivalen Luis Pamelton und Bastian Kettel trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
+				<en>The new Formula X world champion is Ferdinando Alfonso. In an exciting race, he was able to prevail over his rivals Luis Pamelton and Bastian Kettel despite a 10-second penalty for speeding.</en>
+			</description>
+			<data genre="2" price="0.5" quality="50" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-racing-02d" type="2" thread_id="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Sensation: Erstmalig drei Weltmeister</de>
+				<en>Sensation: Three world champions for the first time</en>
+			</title>
+			<description>
+				<de>Zu einem Novum kam es beim letzten Rennen der Formel X: Alle drei WM-Führenden schieden nach Reifenplatzern aus. Somit gibt es erstmalig in der Geschichte der Formel X drei Weltmeister.</de>
+				<en>There was a novelty in the last race of Formula X: All three world championship leaders dropped out after tire blowouts. Thus, for the first time in the history of Formula X, there are three world champions.</en>
+			</description>
+			<data genre="2" price="0.6" quality="60" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-nachtrennen-01" type="0" thread_id="news-jorgaeff-nachtrennen" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Erstes Nachtrennen der Formel Öko</de>
+				<en>First Formula Eco night race</en>
+			</title>
+			<description>
+				<de>Heute Abend startet das erste Nachtrennen der Formel Öko. Die solarbetriebenen Boliden sollen eine Alternative zu den aus fossilen Rohstoffen betriebenen Flitzern der Formel X sein.</de>
+				<en>Tonight starts the first night race in Formula Eco. The solar-powered racers are intended to be an alternative to the fossil fuel-powered speedsters of Formula X.</en>
+			</description>
+			<data genre="2" price="0.30" quality="30" fictional="1" />
+			<effects>
+				<!-- "möglicher Effekt: Live-Übertragung" -->
+				<!-- "in 1 Tagen 0-23 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,0,23" news="news-jorgaeff-nachtrennen-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-nachtrennen-02" type="2" thread_id="news-jorgaeff-nachtrennen" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Nachtrennen der Formel Öko abgebrochen</de>
+				<en>Formula Eco night race canceled</en>
+			</title>
+			<description>
+				<de>Ein Novum in der Geschichte des Rennsports! Erstmalig muss ein Rennen aufgrund von Energiemangel abgebrochen werden. Die Initiatoren haben wohl vergessen, dass die solarbetriebenen Boliden das Sonnenlicht benötigen um fahren zu können.</de>
+				<en>A novelty in the history of racing! For the first time, a race must be canceled due to a lack of power. The initiators have probably forgotten that the solar-powered carts need the sunlight to be able to drive.</en>
+			</description>
+			<data genre="2" price="0.35" quality="40" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-kurzer-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Denkward Kurzer gelingt Hole-in-one</de>
+				<en>Denkward Kurzer achieves hole-in-one</en>
+			</title>
+			<description>
+				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone Denkward Kurzer den Turniersieg beim Major-Turnier der Senioren in Key Briscane.</de>
+				<en>With the first hole-in-one of his professional career, golf legend Denkward Kurzer claims victory in the senior major tournament in Key Briscane.</en>
+			</description>
+			<data genre="2" price="0.25" quality="25" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-dyson-01" type="0" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+				<!-- "Beginnt an einem Sonntag" -->
+			<availability script="TIME_WEEKDAY=6" />
+			<title>
+				<de>Klatschkowski weiterhin Boxweltmeister</de>
+				<en>Klatschkowski still world boxing champion</en>
+			</title>
+			<description>
+				<de>Auch der 49. Herausforderer hat es nicht geschafft Eugen Klatschkowski als Weltmeister im Schwergewicht zu entthronen. Die Suche nach weiteren Herausforderern gestaltet sich schwer.</de>
+				<en>Even the 49th challenger has not managed to dethrone Eugen Klatschkowski as world heavyweight champion. The search for more challengers is proving difficult.</en>
+			</description>
+			<data genre="2" price="0.35" quality="35" fictional="1" />
+			<effects>
+				<!-- "Montag 12-16.00 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-02" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Klatschkowski möchte Titel verteidigen</de>
+				<en>Klatschkowski wants to defend title</en>
+			</title>
+			<description>
+				<de>Aufgrund des Mangels an Herausforderern spricht der aktuelle Meister im Schwergewicht, Eugen Klatschkowski, eine offene Herausforderung „...an alle die Manns genug sind um mit mir in den Ring zu steigen“ aus.</de>
+				<en>Due to the lack of challengers, the current heavyweight champion, Eugen Klatschkowski, issues an open challenge "...to all those who are man enough to get into the ring with me."</en>
+			</description>
+			<data genre="2" price="0.4" quality="40" fictional="1" />
+			<effects>
+				<!-- "in 4-8 Stunden" -->
+				<effect trigger="happen" type="triggernews" time="1,4,8" news="news-jorgaeff-dyson-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-03" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Spike Dyson nimmt Herausforderung an</de>
+				<en>Spike Dyson accepts challenge</en>
+			</title>
+			<description>
+				<de>Spike Dyson, der ehemalige mehrfache Weltmeister im Schwergewicht, nimmt die offene Herausforderung des aktuellen Champions, Eugen Klatschkowski, an und möchte mit diesem in einer Woche in Vas Legas in den Ring steigen.</de>
+				<en>Spike Dyson, the former multiple heavyweight world champion, accepts the open challenge of the current champion, Eugen Klatschkowski, and wants to get in the ring with him in a week in Vas Legas.</en>
+			</description>
+			<data genre="2" price="0.45" quality="45" fictional="1" />
+			<effects>
+				<!-- "Dienstag 12-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-04" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Spike Dyson trainiert für Comeback</de>
+				<en>Spike Dyson trains for comeback</en>
+			</title>
+			<description>
+				<de>Trotz seines fortgeschrittenen Alters trainiert der Ex-Weltmeister im Schwergewicht, Spike Dyson, für ein Comeback im Boxring. Ziel ist den amtierenden Champion, Eugen Klatschkowski, beim „Kampf der Titanen“ am Samstag zu besiegen.</de>
+				<en>Despite his advanced age, the former world heavyweight champion, Spike Dyson, is training for a comeback in the boxing ring. The goal is to defeat the current champion, Eugen Klatschkowski, at the "Clash of the Titans" on Saturday.</en>
+			</description>
+			<data genre="2" price="0.5" quality="50" fictional="1" />
+			<effects>
+				<!-- "Freitag 12-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-05" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-05" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Dyson vs. Klatschkowski: Tumulte vor Boxkampf</de>
+				<en>Dyson vs. Klatschkowski: Riots before match</en>
+			</title>
+			<description>
+				<de>Das Wiegen vor dem Fight zwischen Spike Dyson und Eugen Klatschkowski hat sich zum Spektakel entwickelt. Während die Kontrahenten auf die Waage traten, eskalierte Dysons Sohn Shawn und trat Klatschkowski mit Anlauf in die Klöten.</de>
+				<en>The weigh-in before the boxing match between Spike Dyson and Eugen Klatschkowski turned into a spectacle. While the competitors stepped on the scales, Dyson's son Shawn escalated and ran up and kicked Klatschkowski in the nuts.</en>
+			</description>
+			<data genre="2" price="0.55" quality="55" fictional="1" />
+			<effects>
+				<!-- "Samstag 18-20 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,18,20" news="news-jorgaeff-dyson-06" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-06" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Heute Abend: Dyson vs. Klatschkowski</de>
+				<en>Tonight: Dyson vs. Klatschkowski</en>
+			</title>
+			<description>
+				<de>Wird es heute Abend einen neuen Box-Champion geben, oder kann Eugen Klatschkowski auch den 50. Herausforderer besiegen? Die Wetten stehen 7:1 für eine erfolgreiche Titelverteidigung.</de>
+				<en>Will there be a new boxing champion tonight, or can Eugen Klatschkowski also defeat the 50th challenger? The bets are 7-1 for a successful title defense.</en>
+			</description>
+			<data genre="2" price="0.6" quality="60" fictional="1" />
+			<effects>
+				<!-- "möglicher Effekt: Live-Übertragung" -->
+				<!-- "in 4 Stunden / News a oder b" -->
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4" news1="news-jorgaeff-dyson-06a" probability1="30" news2="news-jorgaeff-dyson-06b" probability2="70" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-06a" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Spike Dyson neuer Box-Weltmeister</de>
+				<en>Spike Dyson new boxing world champion</en>
+			</title>
+			<description>
+				<de>Der 50. Herausforderer war einer zu viel: Spike Dyson ist trotz seiner 52 Jahre der neue Box-Weltmeister. In einem spannenden Kampf konnte er den Dauer-Champion Eugen Klatschkowski nach klarem K.o. in der 12. Runde den Gürtel abnehmen.</de>
+				<en>The 50th challenger was one too many: Spike Dyson, despite his 52 years, is the new boxing world champion. In an exciting fight he was able to take the belt from the long-standing champion Eugen Klatschkowski after a clear knockout in the 12th round.</en>
+			</description>
+			<data genre="2" price="0.7" quality="70" fictional="1" />
+			<effects>
+				<!-- "morgen 10-18 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-dyson-07a" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-06b" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Klatschkowski bleibt Box-Weltmeister</de>
+				<en>Klatschkowski remains boxing world champion</en>
+			</title>
+			<description>
+				<de>Auch der 50. Herausforderer hat es nicht geschafft Eugen Klatschkowski zu entthronen. Dyson blieb in dem rund 30-minütigen Kampf letztendlich chancenlos. Somit bleibt Klatschkowski weiterhin Champion.</de>
+				<en>Even the 50th challenger failed to dethrone Eugen Klatschkowski. In the end, Dyson was left without a chance in the fight, which lasted about 30 minutes. Thus, Klatschkowski remains champion.</en>
+			</description>
+			<data genre="2" price="0.7" quality="70" fictional="1" />
+			<effects>
+				<!-- "morgen 10-18 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-dyson-07b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-dyson-07a" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Spike Dyson: Mit Yoga habe ich es geschafft</de>
+				<en>Spike Dyson: With yoga I made it</en>
+			</title>
+			<description>
+				<de>Spike Dyson lüftet sein Geheimnis: Eine spezielle Yoga-Therapie hat ihm beim Sieg über Klatschkowski geholfen. Dyson möchte nun ein Buch darüber schreiben und eine DVD herausbringen.</de>
+				<en>Spike Dyson reveals his secret: A special yoga therapy has helped him in the victory over Klatschkowski. Dyson now wants to write a book about it and release a DVD.</en>
+			</description>
+			<data genre="2" price="0.55" quality="55" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-dyson-07b" type="2" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Klatschkowski tritt zurück</de>
+				<en>Klatschkowski resigns</en>
+			</title>
+			<description>
+				<de>Wenn es am schönsten ist soll man aufhören. Nach 50 erfolgreichen Titelverteidigungen beendet Rekord-Champion Klatschkowski seine Karriere und hängt seine Boxhandschuhe an den Nagel.</de>
+				<en>Quit while you're ahead. After 50 successful title defenses, record champion Klatschkowski ends his career and chucks out his boxing gloves.</en>
+			</description>
+			<data genre="2" price="0.55" quality="55" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-holland-01" type="0" creator="8936" created_by="jorgaeff">
+				<!-- "im Herbst 1993" -->
+			<availability script="TIME_YEAR=1993 &amp;&amp; TIME_SEASON=3" />
+			<title>
+				<de>Holland verpasst Fußball-Weltmeisterschaft</de>
+				<en>The Dutch miss World Cup</en>
+			</title>
+			<description>
+				<de>Die niederländische Fußball-Nationalmannschaft hat die Weltmeisterschaft im Sommer des nächsten Jahres verpasst. Am letzten Spieltag der Qualifikation unterlag „Oranje“ dem Erzrivalen aus Belgien.</de>
+				<en>The Dutch national soccer team has missed the World Cup in the summer of next year. On the last matchday of the qualifiers, "Oranje" lost to their arch-rivals from Belgium.</en>
+			</description>
+			<data genre="2" price="0.4" quality="40" fictional="0" />
+		</news>
+
+		<news id="news-jorgaeff-badminton-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Badminton: Alle Ergebnisse und Tabellen</de>
+				<en>Badminton: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Badminton-Ergebnisse mit aktuellen Tabellen.</de>
+				<en>All badminton results with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-schach-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Schach: Alle Ergebnisse und Tabellen</de>
+				<en>Chess: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Schach-Ergebnisse mit aktuellen Tabellen.</de>
+				<en>All chess results with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-hockey-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Hockey: Alle Ergebnisse und Tabellen</de>
+				<en>Hockey: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Hockey-Ergebnisse mit aktuellen Tabellen.</de>
+				<en>All field hockey results with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-billard-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Billard: Alle Ergebnisse und Tabellen</de>
+				<en>Billiards: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Ergebnisse vom Billard mit aktuellen Tabellen.</de>
+				<en>All results in billiards with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-ringen-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Ringen: Alle Ergebnisse und Tabellen</de>
+				<en>Wrestling: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Ergebnisse vom Ringen mit aktuellen Tabellen.</de>
+				<en>All results in wrestling with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-tennis-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Tennis: Alle Ergebnisse und Tabellen</de>
+				<en>Tennis: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Tennis-Ergebnisse mit aktuellen Tabellen.</de>
+				<en>All tennis results with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-tischtennis-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Tischtennis: Alle Ergebnisse und Tabellen</de>
+				<en>Table tennis: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Tischtennis-Ergebnisse mit aktuellen Tabellen.</de>
+				<en>All table tennis results with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-volleyball-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Volleyball: Alle Ergebnisse und Tabellen</de>
+				<en>Volleyball: All results and tables</en>
+			</title>
+			<description>
+				<de>Alle Volleyball-Ergebnisse mit aktuellen Tabellen.</de>
+				<en>All volleyball results with current tables.</en>
+			</description>
+			<data genre="2" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-1985-2-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Schachwettkampf abgebrochen</de>
+				<en>Chess match canceled</en>
+			</title>
+			<description>
+				<de>Ein ungewohnt langer Wettkampf zur Ermittlung des Schachweltmeisters zwischen Ayatollah Andropow und Kasper Garripow wird nach 48 Partien ohne Ergebnis abgebrochen.</de>
+				<en>An unusually long competition between Ayatollah Andropov and Kasper Garripov to determine the world chess champion was aborted after 48 games without a result.</en>
+			</description>
+			<data genre="2" price="0.25" quality="25" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-2-02a" type="0" thread_id="news-jorgaeff-1985-2-02" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Weltmeisterschaft im Show-Catchen</de>
+				<en>World Championship in Show-Wrestling</en>
+			</title>
+			<description>
+				<de>Die Westamerikanischen Wrestling Freunde (WWFr) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Badguy „Rowdy“ Pfeifer auf den Titelträger Hugh Hoden.</de>
+				<en>The West American Wrestling Friends (WWFr) are hosting their first Wrestle Frenzy at the Texas Skydome. In the Main-Event Badguy "Rowdy" Pfeifer meets the title holder Hugh Hoden.</en>
+			</description>
+			<effects>
+				<!-- "morgen 3-7 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,3,7" news="news-jorgaeff-1985-2-02b" />
+			</effects>
+			<data genre="2" price="0.3" quality="3" fictional="0" />
+		</news>
+
+		<news id="news-jorgaeff-1985-2-02b" type= "2" thread_id="news-jorgaeff-1985-2-02" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Mr. Y entscheidet Catchkampf</de>
+				<en>Mr. Y decides wrestling match</en>
+			</title>
+			<description>
+				<de>Hollywood-Schauspieler Mr. Y greift im Weltmeisterschaftskampf zwischen „Rowdy“ Pfeifer und Hugh Hoden zugunsten des Titelträgers ein. Hoden somit weiterhin Weltmeister im Schwergewicht!</de>
+				<en>Hollywood actor Mr. Y intervenes in the world championship fight between "Rowdy" Pfeifer and Hugh Hoden in favor of the title holder. Hoden thus continues to be world heavyweight champion!</en>
+			</description>
+			<data genre="2" price="0.35" quality="35" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-2-03" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Denkward Kurzer gewinnt Golf-Masters</de>
+				<en>Denkward Kurzer wins Golf Masters</en>
+			</title>
+			<description>
+				<de>Denkward Kurzer gewinnt als erster deutscher Golfer die mit 500.000 US-$ dotierten US-Masters in Augusta (Georgia).</de>
+				<en>Denkward Kurzer becomes the first German golfer to win the USD 500,000 endowed US Masters in Augusta (Georgia).</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-2-04" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Bas Bode gewinnt Wimbledon</de>
+				<en>Bas Bode wins Wimbledon</en>
+			</title>
+			<description>
+				<de>Bas Bode siegt als erster Deutscher und (mit 17 Jahren) jüngster Tennisspieler aller Zeiten beim Grand-Slam-Turnier von Wimbledon.</de>
+				<en>Bas Bode becomes the first German and (at 17) the youngest tennis player ever to win the Grand Slam tournament at Wimbledon.</en>
+			</description>
+			<data genre="2" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-2-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Erneut Schachwettkampf abgebrochen</de>
+				<en>Once again chess match canceled</en>
+			</title>
+			<description>
+				<de>Wie auch im Vorjahr wurde das Schach-Finale zwischen Ayatollah Andropow und Kasper Garripow ohne Sieger abgebrochen. Der internationale Schachverband kürt somit zwei Spieler zum Schach-Weltmeister.</de>
+				<en>As in the previous year, the chess final between Ayatollah Andropov and Kasper Garripov was canceled without a winner. The International Chess Federation thus crowns two players as World Chess Champion.</en>
+			</description>
+			<data genre="2" price="0.35" quality="35" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-2-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Bas Bode gewinnt wieder Wimbledon</de>
+				<en>Bas Bode wins Wimbledon again</en>
+			</title>
+			<description>
+				<de>Bas Bode siegt als erster Deutscher und (mit 18 Jahren) jüngster Tennisspieler aller Zeiten zum zweiten Mal beim Grand-Slam-Turnier von Wimbledon.</de>
+				<en>Bas Bode becomes the first German and (at 18) youngest tennis player ever to win the Grand Slam tournament at Wimbledon for the second time.</en>
+			</description>
+			<data genre="2" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-2-03" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986 &amp;&amp; TIME_SEASON=1" />
+			<title>
+				<de>Deutschland verliert Finale</de>
+				<en>Germany loses final</en>
+			</title>
+			<description>
+				<de>Bei der 13. Fußball-WM in Mexiko gewinnt Argentinien gegen die Bundesrepublik Deutschland im Finale mit 3:2.</de>
+				<en>At the 13th World Cup in Mexico, Argentina wins against the Federal Republic of Germany in the final with 3-2.</en>
+			</description>
+			<data genre="2" price="0.6" quality="60" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-2-04" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Siegwart Messier</de>
+				<en>Siegwart Messier</en>
+			</title>
+			<description>
+				<de>Siegwart Messier hat als erster Mensch alle 14 Achttausender erstiegen. Während sich andere für Gipfelfotos vom Helikopter absetzen lassen kletterte der Bergsteiger aus Südtirol jeden Berg selbst hinauf.</de>
+				<en>Siegwart Messier was the first person to climb all 14 mountains of eight thousand meters. While others drop off from helicopters for mountaintop photos, the climber from South Tyrol climbed every mountain himself.</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-2-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_MONTH=1" />
+			<title>
+				<de>Bas Bode: raus in Down-under</de>
+				<en>Bas Bode: out in Down-under</en>
+			</title>
+			<description>
+				<de>Deutschlands Tennis-Ikone, Bas Bode, ist gescheitert. Im Halbfinale der australischen Tennis-Meisterschaften verlor der Weltranglisten-18. gegen den Lokal-Matadoren Wolly Maser.</de>
+				<en>Germany's tennis icon, Bas Bode, has failed. In the semifinals of the Australian Tennis Championships, the world No. 18 lost to local matador Wolly Maser.</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-2-02a" type="0" thread_id="news-jorgaeff-1987-2-02" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_SEASON=2" />
+			<title>
+				<de>Betty Lord gewinnt in Paris</de>
+				<en>Betty Lord wins in Paris</en>
+			</title>
+			<description>
+				<de>Betty Lord gewinnt mit den in Paris ausgetragenen French Open ihren ersten von insgesamt 22 Grand Slam-Titeln.</de>
+				<en>Betty Lord wins her first of 22 Grand Slam titles at the French Open held in Paris.</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 1 Tag, 10-18 Uhr " -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-1987-2-02b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1987-2-02b" type="2" thread_id="news-jorgaeff-1987-2-02" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Betty Lord Weltranglistenerste</de>
+				<en>Betty Lord world number one</en>
+			</title>
+			<description>
+				<de>Betty Lord hat nach dem Gewinn der französischen Tennis-Meisterschaften erstmals die Führung in der Tennis-Weltrangliste der Damen übernommen.</de>
+				<en>Betty Lord has taken the top spot in the women's tennis world rankings for the first time after winning the French Tennis Championships.</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-2-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Betty Lord gewinnt US-Open</de>
+				<en>Betty Lord wins US Open</en>
+			</title>
+			<description>
+				<de>Die deutsche Ausnahme-Tennisspielerin Betty Lord gewinnt mit ihrem Sieg bei den US Open gegen die Argentinierin Santina Morella als erste Deutsche und dritte Spielerin überhaupt alle Grand-Slam-Turniere.</de>
+				<en>As the first German and third player ever, exceptional tennis player Betty Lord, with her victory at the US Open against the Argentinian Santina Morella, wins all Grand Slam tournaments.</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-2-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Deutsches Team gewinnt Navy-Cup</de>
+				<en>German team wins Navy Cup</en>
+			</title>
+			<description>
+				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit Bas Bode, Charly Raab, Erich Gielen und Peter Kühne) gewinnt das Navy-Cup-Finale gegen Schweden.</de>
+				<en>The German national tennis team Germany (with Bas Bode, Charly Raab, Erich Gielen and Peter Kühne) wins the Navy Cup final against Sweden.</en>
+			</description>
+			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
+		</news>
+
+
+
+	<!-- "TECHNIK + WISSENSCHAFT" (Medien & Technik)-->
+		<news id="news-jorgaeff-faulkswagen-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Faulkswagen entwickelt Null-Liter-Auto</de>
+				<en>Faulkswagen develops zero-liter car</en>
+			</title>
+			<description>
+				<de>Ein Auto, das keinen einzigen Liter Benzin verbraucht, wurde von Faulkswagen entwickelt. Der Clou: Faulkswagen gibt den Verbrauch ab sofort nur noch in Gallonen an.</de>
+				<en>A car that does not consume a single liter of fuel has been developed by Faulkswagen. The secret: Faulkswagen specifies the fuel consumption from now on only in gallons.</en>
+			</description>
+			<data genre="3" price="0.55" quality="55" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-blitzenergie-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Blitzenergie kann genutzt werden</de>
+				<en>Thunderbolt power can be utilized</en>
+			</title>
+			<description>
+				<de>Forscher haben endlich eine Möglichkeit gefunden, die Energie der Blitze zu nutzen. Sollte das Projekt seine Serienreife erlangen, so könte dies die Energieprobleme des Planeten lösen.</de>
+				<en>Researchers have finally found a way to harness the energy of thunderbolts. If the project reaches its maturity phase, this could solve the energy problems of the planet.</en>
+			</description>
+			<data genre="3" price="0.45" quality="45" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-orange-01" type="0" thread_id="news-jorgaeff-orange" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint 2007" -->
+			<availability script="TIME_YEAR=2007" />
+			<title>
+				<de>Orange präsentiert neues Smartphone</de>
+				<en>Orange presents new smartphone</en>
+			</title>
+			<description>
+				<de>Heute beginnt Orange mit dem Verkauf des neuen my-phones. Das neue Smartphone ist natürlich viel besser als sein Vorgänger. Deshalb werden auch wieder alle eines kaufen und das alte wegschmeißen. Scheiß auf die seltenen Erden.</de>
+				<en>Today Orange starts selling the new my-phone. Of course, the new smartphone is much better than its predecessor. Therefore, everyone will again buy one and throw away the old one. Fuck the rare earths.</en>
+			</description>
+			<data genre="3" price="0.45" quality="45" fictional="1" />
+			<effects>
+				<!-- "in 6-10 Stunden" -->
+				<effect trigger="happen" type="triggernews" time="1,6,10" news="news-jorgaeff-orange-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-orange-02" type="2" thread_id="news-jorgaeff-orange" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Neues my-phone bereits ausverkauft</de>
+				<en>New my-phone already sold out</en>
+			</title>
+			<description>
+				<de>Bereits wenige Stunden nach Ladenöffnung waren alle my-phones ausverkauft. In den Läden wurden vielerorts traurige Gesichter gesehen. Der Hersteller möchte jetzt kurzfristig nachproduzieren.</de>
+				<en>Just a few hours after the stores opened, all my-phones were sold out. Sad faces were seen in the stores all over. The manufacturer now wants to replenish production without delay.</en>
+			</description>
+			<data genre="3" price="0.55" quality="50" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-milch-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Milch macht müde Männer munter</de>
+				<en>Milk makes meek men mighty</en>
+			</title>
+			<description>
+				<de>Alle haben es gewusst - niemand hat es geglaubt. Aber es stimmt! Milch macht müde Männer munter. Diese Nachricht wurde Ihnen präsentiert von der Milchindustrie.</de>
+				<en>Everybody knew it - nobody believed it. But it's true! Milk makes meek men mighty. It makes tired men feel lively. This message was brought to you by the dairy industry.</en>
+			</description>
+			<data genre="3" price="0.15" quality="15" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-space-1985-3-01" type="0" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>NASE startet Space-Shuttle-Programm</de>
+				<en>NASE launches space shuttle program</en>
+			</title>
+			<description>
+				<de>Gestern der Mond und morgen der Mars? Die nordamerikanische Raumfahrtbehörde NASE möchte auch im All die Nase vorn haben und startet ein neues Raumfahrtprogramm. Es soll der Erkundung neuer Planeten dienen.</de>
+				<en>The moon yesterday and Mars tomorrow? The North American space agency NASE wants to be in the lead also in space and launches a new space program. It is to help the exploration of new planets.</en>
+			</description>
+			<data genre="3" price="0.6" quality="60" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 7 Tagen, 6-20 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,4,4,6,20" news="news-jorgaeff-space-1985-3-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-space-1985-3-02" type="2" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Kolumbus soll Erdumlaufbahn erkunden</de>
+				<en>Columbus to explore Earth orbit</en>
+			</title>
+			<description>
+				<de>Es ist der erste orbitale Flug eines unbemannten Space-Shuttles. Die Raumfähre Kolumbus soll den Start und die Landung eines Space-Shuttles erproben. Der Start erfolgt heute Nacht in Cap Carneval.</de>
+				<en>It is the first orbital flight of an unmanned space shuttle. The space shuttle Columbus is to test the launch and landing of a space shuttle. The launch will take place tonight in Cap Carneval.</en>
+			</description>
+			<data genre="3" price="0.65" quality="65" fictional="0" flags="2" />
+			<effects>
+				<!-- "möglicher Effekt: Live-Übertragung" -->
+				<!-- "morgen 1-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,1,8" news="news-jorgaeff-space-1985-3-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-space-1985-3-03" type="2" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Kolumbus erfolgreich gestartet</de>
+				<en>Columbus successfully launched</en>
+			</title>
+			<description>
+				<de>Strahlende Gesichter beim NASE-Bodenpersonal in Cap Carneval. Der erste Start eines unbemannten Space-Shuttles war erfolgreich. Wird auch die Landung gelingen?</de>
+				<en>Bright smiles on the faces of the NASE ground crew at Cap Carneval. The first launch of an unmanned space shuttle was successful. Will the landing also succeed?</en>
+			</description>
+			<data genre="3" price="0.7" quality="70" fictional="0" flags="2" />
+			<effects>
+				<!-- "morgen 1-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,1,8" news="news-jorgaeff-space-1985-3-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-space-1985-3-04" type="2" thread_id="news-jorgaeff-space-1985-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Kolumbus erfolgreich gelandet</de>
+				<en>Columbus successfully landed</en>
+			</title>
+			<description>
+				<de>Nach 2 Tagen in der Erdumlaufbahn ist die Raumfähre Kolumbus erfolgreich in Cap Carneval gelandet. Durch den vollen Erfolg dieser Mission sollten weitere Gelder für zukünftige Missionen bewilligt werden.</de>
+				<en>After 2 days in Earth orbit, the space shuttle Columbus has successfully landed at Cap Carneval. Due to the resounding success of this mission, more funding is expected to be approved for future missions.</en>
+			</description>
+			<data genre="3" price="0.65" quality="65" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-space-1986-3-01" type="0" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Wieder Shuttle-Start geplant</de>
+				<en>Shuttle launch planned again</en>
+			</title>
+			<description>
+				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte wieder ein unbemanntes Shuttle ins All schicken. Die Raumfähre Passenger soll einen Kommunikations-Satelliten aussetzen, sowie bekannte Kometen analysieren.</de>
+				<en>The North American Space Agency NASE wants to send an unmanned shuttle into space again. The space shuttle Passenger is to launch a communications satellite, as well as to analyze known comets.</en>
+			</description>
+			<data genre="3" price="0.5" quality="50" fictional="0" flags="2" />
+			<effects>
+				<!-- alternative Nachricht deaktivieren-->
+				<effect trigger="happen" type="modifyNewsAvailability" enable="0" news="cujo-news-passenger-01"/>
+				<!-- "morgen 1-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,1,8" news="news-jorgaeff-space-1986-3-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-space-1986-3-02" type="2" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Raumfähre bei Start explodiert</de>
+				<en>Space shuttle exploded during launch</en>
+			</title>
+			<description>
+				<de>Schwerer Rückschlag für das nordamerikanische Raumfahrtprogramm! Nur wenige Sekunden nach dem Start ist die Raumfähre Passenger explodiert. Die Raumfahrtbehörde NASE rätselt über die Ursachen des Unglücks.</de>
+				<en>Serious setback for the North American space program! Only a few seconds after launch, the space shuttle Passenger exploded. The space agency NASE is puzzled over the causes of the accident.</en>
+			</description>
+			<data genre="3" price="1" quality="100" fictional="0" flags="2" />
+			<effects>
+				<!-- "übermorgen 1-10 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,1,10" news="news-jorgaeff-space-1986-3-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-space-1986-3-03" type="2" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Shuttle-Explosion: Unglücksursache geklärt</de>
+				<en>Shuttle explosion: cause of accident clarified</en>
+			</title>
+			<description>
+				<de>Die nordamerikanische Raumfahrtbehörde NASE hat die Ursache für die Explosion der Raumfähre Passenger gefunden und macht einen fehlenden Dichtungsring für das Unglück verantwortlich.</de>
+				<en>The North American space agency NASE has found the cause of the explosion of the space shuttle Passenger and blames a missing seal ring for the disaster.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="0" flags="2" />
+			<effects>
+				<!-- "morgen 4-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,4,12" news="news-jorgaeff-space-1986-3-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-space-1986-3-04" type="2" thread_id="news-jorgaeff-space-1986-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>NASE legt Raumfahrtprogramm auf Eis</de>
+				<en>NASE puts space program on hold</en>
+			</title>
+			<description>
+				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte vorerst von weiteren Shuttle-Starts absehen. Es sollen zunächst Technologien erforscht werden, die für einen sichereren Start sorgen.</de>
+				<en>The North American space agency NASE wants to refrain from further shuttle launches for the time being. Technologies are to be researched first, which provide for a safer launch.</en>
+			</description>
+			<data genre="3" price="0.75" quality="75" fictional="0" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-c256-01" type="0" thread_id="news-jorgaeff-space-c256a" creator="8936" created_by="jorgaeff">
+				<!-- "erscheint 1989-90" -->
+			<availability year_range_from="1989" year_range_to="1990" />
+			<title>
+				<de>Cormoran veröffentlicht C256</de>
+				<en>Cormoran releases C256</en>
+			</title>
+			<description>
+				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 256 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<en>The North American technology company Cormoran equips its new micro-computer with 256 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
+			</description>
+			<data genre="3" price="0.5" quality="50" fictional="1" flags="2" />
+			<effects>
+				<!-- "in 3 Tagen 4-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-c256-02" type="2" thread_id="news-jorgaeff-space-c256a" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>C256 entwickelt sich zum Verkaufsschlager</de>
+				<en>C256 turns out to be a bestseller</en>
+			</title>
+			<description>
+				<de>Der neue C256 von Cormoran geht weg wie warme Semmeln. Viele Nutzer kaufen sich ein Zweitgerät, da der Mikro-Computer, der mittlerweile sogar in eine Butterdose passt, auch mal verlegt werden kann.</de>
+				<en>The new C256 from Cormoran goes like hot cakes. Many users buy a second device, because the micro-computer, which now even fits in a butter dish, can easily be misplaced from time to time.</en>
+			</description>
+			<data genre="3" price="0.55" quality="55" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-c256-03" type="0" thread_id="news-jorgaeff-space-c256b" creator="8936" created_by="jorgaeff">
+				<!-- "erscheint 1994-95" -->
+			<availability year_range_from="1994" year_range_to="1995" />
+			<title>
+				<de>Cormoran veröffentlicht C512</de>
+				<en>Cormoran releases C512</en>
+			</title>
+			<description>
+				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 512 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<en>The North American technology company Cormoran equips its new micro-computer with 512 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
+			</description>
+			<data genre="3" price="0.5" quality="50" fictional="1" flags="2" />
+			<effects>
+				<!-- "in 3 Tagen 4-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-c256-04" type="2" thread_id="news-jorgaeff-space-c256b" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>C512 übertrifft alle Erwartungen</de>
+				<en>C512 exceeds all expectations</en>
+			</title>
+			<description>
+				<de>Der neue C512 von Cormoran übertrifft sogar seinen Vorgänger. Viele Nutzer kaufen sich ein Dritt- und Viertgerät, da der Mikro-Computer, der nun in einen Eierbecher passt, auch mal verlegt werden kann.</de>
+				<en>The new C512 from Cormoran even surpasses its predecessor. Many users buy a third and fourth device, because the micro-computer, which now fits in an egg cup, can easily be misplaced from time to time.</en>
+			</description>
+			<data genre="3" price="0.55" quality="55" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-c256-05" type="0" thread_id="news-jorgaeff-space-c256c" creator="8936" created_by="jorgaeff">
+				<!-- "erscheint 1999-00" -->
+			<availability year_range_from="1999" year_range_to="2000" />
+			<title>
+				<de>Cormoran veröffentlicht C1k024</de>
+				<en>Cormoran releases C1k024</en>
+			</title>
+			<description>
+				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 1024 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<en>The North American technology company Cormoran equips its new micro-computer with 1024 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
+			</description>
+			<data genre="3" price="0.5" quality="50" fictional="1" flags="2" />
+			<effects>
+				<!-- "in 3 Tagen 4-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-06" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-c256-06" type="2" thread_id="news-jorgaeff-space-c256c" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>C1k024 - der meistverkaufte aller Zeiten</de>
+				<en>C1k024 - the all-time best-seller</en>
+			</title>
+			<description>
+				<de>Mal eben locker den Verkaufserfolg des Vorgängers pulverisiert. Viele Nutzer kaufen sich den C1k024 von Cormoran im 10er-Pack, da der in einen Fingerhut passende Mikro-Computer, auch mal verlegt werden kann.</de>
+				<en>Just so easily crushed the sales success of the predecessor. Many users buy the C1k024 from Cormoran in packs of 10, as the micro-computer, which fits into a thimble, can easily be misplaced from time to time.</en>
+			</description>
+			<data genre="3" price="0.55" quality="55" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-c256-07" type="0" thread_id="news-jorgaeff-space-c256d" creator="8936" created_by="jorgaeff">
+				<!-- "erscheint 2004-05" -->
+			<availability year_range_from="2004" year_range_to="2005" />
+			<title>
+				<de>Cormoran veröffentlicht C2k048</de>
+				<en>Cormoran publishes C2k048</en>
+			</title>
+			<description>
+				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 2048 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<en>The North American technology company Cormoran equips its new micro-computer with 2048 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
+			</description>
+			<data genre="3" price="0.5" quality="50" fictional="1" flags="2" />
+			<effects>
+				<!-- "in 3 Tagen 4-8 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-08" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-c256-08" type="2" thread_id="news-jorgaeff-space-c256d" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>C2k048 - ein Verkaufsflop</de>
+				<en>C2k048 - a sales flop</en>
+			</title>
+			<description>
+				<de>Diese Rechnung geht nicht auf: Der auf einen Stecknadelkopf passende Mikro-Computer kann teilweise in den Läden nicht mehr aufgefunden werden. Cormoran hat die Produktion eingestellt.</de>
+				<en>This plan did not work out: The micro-computer, which fits on the head of a pin, can no longer be found in stores in some cases. Cormoran has stopped the production.</en>
+			</description>
+			<data genre="3" price="0.55" quality="55" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-btx-01" type="0" creator="8936" created_by="jorgaeff">
+				<!-- "erscheint 2000-01" -->
+			<availability year_range_from="2000" year_range_to="2001" />
+			<title>
+				<de>Bildschirmtext wird abgeschaltet</de>
+				<en>Videotext to be switched off</en>
+			</title>
+			<description>
+				<de>Kurz vor seinem 19. Geburtstag wird der interaktive Online-Dienst im deutschsprachigen Raum zum Ende des Jahres abgeschaltet. Kommt jetzt das World Wide Web?</de>
+				<en>Shortly before its 19th birthday, the interactive online service in German-speaking countries will be shut down at the end of the year. Is the World Wide Web coming now?</en>
+			</description>
+			<data genre="3" price="0.4" quality="40" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-dvd-01" type="0" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint 1997" -->
+			<availability year_range_from="1997" year_range_to="1997" />
+			<title>
+				<de>DVD löst VHS-Kassette &amp; Co. ab</de>
+				<en>DVD replaces VHS cassette &amp; Co.</en>
+			</title>
+			<description>
+				<de>Die DVD ist der neue Star unter den Speichermedien. Endlich entfällt das lästige Spulen der Bänder oder Umdrehen bei Laser-Disc und Video-CD. Mit brillanter Bild- und Tonqualität!</de>
+				<en>The DVD is the new star among storage media. Finally, the annoying tape spooling or flipping of laser discs and video CDs is no longer necessary. With brilliant picture and sound quality!</en>
+			</description>
+			<data genre="3" price="0.4" quality="40" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-dvd-02" type="0" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint 2009" -->
+			<availability year_range_from="2009" year_range_to="2009" />
+			<title>
+				<de>Blu-Ray löst DVD ab</de>
+				<en>Blu-Ray replaces DVD</en>
+			</title>
+			<description>
+				<de>Die Blu-Ray ist der neue Star unter den Speichermedien. Die Disc schillert in schönen blauen Farben, ermöglicht brillante Bild- und Tonqualität, sowie genug Platz für Filme in Überlänge.</de>
+				<en>The Blu-Ray is the new star among the storage media. The disc shimmers in beautiful blue colors, allows brilliant picture and sound quality, as well as for enough space for movies in extended length.</en>
+			</description>
+			<data genre="3" price="0.4" quality="40" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-tv-01" type="0" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint 2008" -->
+			<availability script="TIME_YEAR=2008" />
+			<title>
+				<de>Neue TV-Geräte versprechen Quantensprung</de>
+				<en>New TV sets promising quantum leap</en>
+			</title>
+			<description>
+				<de>Eine enorme Verbesserung in Sachen Bildschärfe und Stromverbrauch bieten die endlich erhältlichen LCD-Fernseher und Computer-Monitore. Auch das Gewicht und der damit verbundene Materialverbrauch haben sich stark verbessert.</de>
+				<en>An enormous improvement in terms of image sharpness and power consumption is offered by the LCD televisions and computer monitors that are finally available. The weight and the corresponding material usage have also improved greatly.</en>
+			</description>
+			<data genre="3" price="0.4" quality="40" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-3-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Makrohart stellt „Proof 1.01“ vor</de>
+				<en>Macrohard introduces "Proof 1.01"</en>
+			</title>
+			<description>
+				<de>Die von Makrohart endgültig freigegebene Version Proof 1.01 wurde auf einer Pressekonferenz im südschwedischen Helsingborg vorgestellt. Das Betriebssystem benötigt einen Arbeitsspeicher von 256 KByte und ein 5.25"-Diskettenlaufwerk.</de>
+				<en>The version Proof 1.01 finally released by Macrohard was presented at a press conference in Helsingborg, southern Sweden. The operating system requires a memory of 256 KByte and a 5.25" floppy drive.</en>
+			</description>
+			<data genre="3" price="0.4" quality="40" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-3-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>150 Jahre Eisenbahn in Deutschland</de>
+				<en>150 years of railroads in Germany</en>
+			</title>
+			<description>
+				<de>Die Deutsche Bundesbahn feiert 150 Jahre Eisenbahn. Zum Jubiläum gibt es das ganze Jahr über Veranstaltungen und Sonderfahrten mit historischen Lokomotiven zu Schleuderpreisen.</de>
+				<en>The Deutsche Bundesbahn celebrates 150 years of railroads. For the anniversary, there are events and special trips with historic locomotives at knockdown prices throughout the year.</en>
+			</description>
+			<data genre="3" price="0.3" quality="30" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-3-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Supernova entdeckt</de>
+				<en>Supernova discovered</en>
+			</title>
+			<description>
+				<de>Die Supernova 1987A wird entdeckt. Sie ist die erste Supernova seit 1604, die mit bloßem Auge beobachtet werden kann. Eine Supernova ist das kurze, helle Aufleuchten eines Sterns am Ende seiner Lebenszeit, durch eine Explosion, bei der er vernichtet wird.</de>
+				<en>The supernova 1987A has been discovered. It is the first supernova since 1604 that can be observed with the naked eye. A supernova is the brief, bright flashing of a star at the end of its lifetime, due to an explosion in which it is annihilated</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-3-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>326 Tage im All</de>
+				<en>326 days in space</en>
+			</title>
+			<description>
+				<de>Der russische Kosmonaut Juri Victorvox kehrt nach 326 Tagen Aufenthalt an Bord der Raumstation Mir zur Erde zurück. Er war es leid, ständig nur auf die Erde hinabzuschauen und sich zu langweilen.</de>
+				<en>Russian cosmonaut Yuri Victorvox returns to Earth after 326 days aboard the Mir space station. He was tired of constantly just looking down at the Earth and feeling bored.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-3-03" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Schicker roter Flitzer</de>
+				<en>Fancy red speedster</en>
+			</title>
+			<description>
+				<de>Die italienische Rennwagen-Schmiede Fellaini stellt zum 40. Firmenjubiläum den Fellaini F40 vor. Das Basismodell gibt es ab 444.000 DM und ist in den Farben hellrot, dunkelrot und neonrot erhältlich.</de>
+				<en>The Italian racing car foundry Fellaini presents the Fellaini F40 for its 40th anniversary. The base model is available starting at 444,000 DEM and is available in the colors light red, dark red and neon red.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-3-01a" type="0" thread_id="news-jorgaeff-1988-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Bleihaltiges Benzin verboten</de>
+				<en>Lead-containing fuel prohibited</en>
+			</title>
+			<description>
+				<de>In der Bundesrepublik Deutschland wird verbleites Normalbenzin verboten. So sollen Luftverunreinigungen durch Bleiverbindungen in Ottokraftstoffen verringert werden.</de>
+				<en>In the Federal Republic of Germany, lead-containing regular gasoline is banned. This is to reduce air pollution from lead compounds in the gasoline.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+			<effects>
+				<!-- "in 2 Tagen 16-22 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-1988-3-01b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1988-3-01b" type="2" thread_id="news-jorgaeff-1988-3" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Bleifreier Ladenhüter</de>
+				<en>Unleaded no-seller</en>
+			</title>
+			<description>
+				<de>Die Einführung des bleifreien Benzin sorgt für Verunsicherung an den Zapfsäulen. Die Verbraucher befürchten, der neue Sprit könnte ihrem Auto schaden und tanken weiterhin bleihaltig.</de>
+				<en>The introduction of unleaded gasoline causes uncertainty at the filling stations. Consumers fear that the new fuel could harm their car and continue to fill up leaded.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-3-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Weltrekord auf der Schiene</de>
+				<en>World record on rail</en>
+			</title>
+			<description>
+				<de>Im Rahmen der ICE-Weltrekordfahrt stellt der ICE-Vorläuferzug InterCityExperimental mit 406,9 km/h einen neuen Geschwindigkeitsrekord für Schienenfahrzeuge auf.</de>
+				<en>As part of the IntercityExpress world record run, the ICE predecessor model InterCityExperimental sets a new speed record for rail vehicles at 406.9 km/h.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-3-03" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Wurm legt Internet lahm</de>
+				<en>Worm knocks out Internet</en>
+			</title>
+			<description>
+				<de>Der sogenannte Philipp-Wurm verbreitet sich unter Ausnutzung von Unix-Diensten. Zwar hat der Wurm keine direkte Schadensroutine, trotzdem legt er wegen seiner aggressiven Weiterverbreitung ca. 6000 Rechner lahm.</de>
+				<en>The so-called Philipp worm spreads by exploiting Unix services. Although the worm has no specific code to create damage, it still knocked out about 6000 computers due to its aggressive propagation.</en>
+			</description>
+			<data genre="3" price="0.85" quality="85" fictional="1" flags="2" />
+		</news>
+
+
+
+
+	<!-- "TAGESGESCHEHEN" -->
+		<news id="news-jorgaeff-hyperraum-01" type="0" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Hyperraum-Umgehungsstraße geplant</de>
+				<en>Hyperspace bypass planned</en>
+			</title>
+			<description>
+				<de>Das Zentralkomitee der Volonen plant den Neubau einer Hyperraum-Umgehungsstraße in Erdnähe. Gefahr für die Erde?</de>
+				<en>The Central Committee of the Volons is planning to build a new hyperspace bypass near Earth. Is the Earth in danger?</en>
+			</description>
+			<data genre="4" price="1" quality="75" fictional="1" />
+			<effects>
+				<!-- "morgen 10-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-hyperraum-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-hyperraum-02" type="2" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Wird die Menschheit umgesiedelt?</de>
+				<en>Will humanity be relocated?</en>
+			</title>
+			<description>
+				<de>Die Erde steht dem Neubau einer Hyperraum-Umgehungsstraße im Weg. Ein Ersatzplanet für die Menschheit wird fieberhaft gesucht.</de>
+				<en>The Earth is in the way of a hyperspace bypass reconstruction. A replacement planet for mankind is feverishly sought.</en>
+			</description>
+			<data genre="4" price="1.1" quality="85" />
+			<effects>
+				<!-- "übermorgen 8-19 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,8,19" news="news-jorgaeff-hyperraum-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-hyperraum-03" type="2" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Suche nach Ersatzplaneten gescheitert</de>
+				<en>Search for replacement planet failed</en>
+			</title>
+			<description>
+				<de>Kein geeigneter Planet wurde gefunden! Der Bau der Hyperraum-Umgehungsstraße soll trotzdem wie geplant durchgeführt werden. Wird die Erde jetzt zerstört?</de>
+				<en>No suitable planet was found! The construction of the hyperspace bypass shall nevertheless be carried out as planned. Is the Earth now going to be destroyed?</en>
+			</description>
+			<data genre="4" price="1.2" quality="100" />
+		</news>
+
+		<news id="news-jorgaeff-hyperraum-04" type="2" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Bau der Umgehungsstraße auf Eis gelegt</de>
+				<en>Construction of bypass put on hold</en>
+			</title>
+			<description>
+				<de>Aufgrund unüberschaubarer Kosten wird der Bau der Hyperraum-Umgehungsstraße für unbestimmte Zeit auf Eis gelegt. Die Erde atmet auf!</de>
+				<en>Due to incalculable costs, the construction of the hyperspace bypass is put on hold indefinitely. Gasp of relief on Earth!</en>
+			</description>
+			<data genre="4" price="1.3" quality="100" />
+		</news>
+
+		<news id="news-jorgaeff-news-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Manfred Mustermann verklagt VISUM</de>
+				<en>John Doe sues VISUM</en>
+			</title>
+			<description>
+				<de>Manfred Mustermann hat Klage gegen VISUM eingereicht. Der Kreditkarten-Anbieter hatte wiederholt Werbung mit dem Namen Mustermanns betrieben ohne um Erlaubnis zu fragen.</de>
+				<en>John Doe has filed a lawsuit against VISUM. The credit card provider had repeatedly advertised with the name of Doe without asking permission.</en>
+			</description>
+			<data genre="4" price="0.3" quality="30" />
+		</news>
+
+		<news id="news-jorgaeff-fisch-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Singender Fisch vertreibt Einbrecher</de>
+				<en>Singing fish scares away burglars</en>
+			</title>
+			<description>
+				<de>Von einem an der Wand hängenden singenden Fisch mit Bewegungsmelder wurde ein Einbrecher im TV-Tower vertrieben. Der Dieb hatte es wohl auf Betty Butterblooms Geschenke-Sammlung abgesehen.</de>
+				<en>A burglar in the TV Tower was scared away by a singing fish with motion detector hanging on the wall. The thief was probably after Betty Butterbloom's gift collection.</en>
+			</description>
+			<data genre="4" price="0.1" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-oma-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Oma fährt im Hühnerstall Motorrad</de>
+				<en>Grandma Drives Motorcycle In Chicken Coop</en>
+			</title>
+			<description>
+				<de>Da staunten die Polizisten nicht schlecht als sie eine alte Frau auf einem Motorrad sitzend durch einen Hühnerstall fahren sahen. Die betagte Seniorin hatte sich wohl verfahren.</de>
+				<en>The policemen were quite amazed when they saw an old woman sitting on a motorcycle driving through a chicken coop. The aged senior citizen had probably lost her way.</en>
+			</description>
+			<data genre="4" price="0.3" quality="30" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-junge-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Junge sorgt für Polizeieinsatz</de>
+				<en>Boy causes police operation</en>
+			</title>
+			<description>
+				<de>Weil ihm der Musikgeschmack seiner Eltern missfiel, hielt ein 12-jähriger Junge während einer Autofahrt einen Zettel mit der Aufschrift „Hilfe“ an die Fensterscheibe. Besorgte Autofahrer alarmierten die Polizei.</de>
+				<en>Because he disliked his parents' taste in music, a 12-year-old boy held a note saying "Help" to the window pane during a car ride. Concerned motorists alerted the police.</en>
+			</description>
+			<data genre="4" price="0.15" quality="25" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-fluchttunnel-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Kinder graben Fluchttunnel</de>
+				<en>Children dig escape tunnel</en>
+			</title>
+			<description>
+				<de>Zwei Fünfjährige haben mehrere Tage lang mit ihren Sandschaufeln einen Fluchttunnel aus ihrem Kindergarten gegraben und sind geflohen. Die Polizei konnte die beiden finden und wohlbehalten ihren Eltern übergeben.</de>
+				<en>Two five-year-olds have dug an escape tunnel from their kindergarten for several days with their sand shovels and escaped. The police were able to find the two and hand them, safe and sound, over to their parents.</en>
+			</description>
+			<data genre="4" price="0.25" quality="35" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-newsschreiber-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Newsschreiber streiken</de>
+				<en>News writers on strike</en>
+			</title>
+			<description>
+				<de>Zahlreiche Newsschreiber sind dem Aufruf ihrer Gewerkschaft gefolgt und streiken. Sie erhoffen sich bessere Arbeitsbedingungen sowie kostenloses Wasser und Brot während der Arbeitszeit.</de>
+				<en>Numerous newswriters have followed the call of their union and are on strike. They hope for better working conditions and free water and bread during working hours.</en>
+			</description>
+			<data genre="4" price="0.3" quality="25" fictional="1" />
+			<!-- "Effekt: es stehen weniger Nachrichten zur Verfügung" -->
+		</news>
+
+		<news id="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint mittwochs ab 18.00 Uhr" -->
+			<availability script="TIME_WEEKDAY=2 &amp;&amp; TIME_HOUR >= 18" />
+			<title>
+				<de>Gewinnzahlen vom Mittwochs-Lotto</de>
+				<en>Winning numbers from Wednesday Lottery</en>
+			</title>
+			<description>
+				<de>Hier die aktuellen Lottozahlen vom Mittwochs-Lotto präsentiert von Lotto-Fee Gudrun Heinemann. Wurde der Jackpot diesmal geknackt?</de>
+				<en>Here are the current lottery numbers from the Wednesday Lottery presented by Lottery Fairy Gudrun Heinemann. Has the jackpot been cracked this time?</en>
+			</description>
+			<data genre="4" price="0.4" quality="40" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint samstags ab 20.00 Uhr" -->
+			<availability script="TIME_WEEKDAY=5 &amp;&amp; TIME_HOUR >= 20" />
+			<title>
+				<de>Gewinnzahlen vom Samstags-Lotto</de>
+				<en>Winning numbers from Saturday Lottery</en>
+			</title>
+			<description>
+				<de>Hier die aktuellen Lottozahlen vom Samstags-Lotto präsentiert von Lotto-Fee Else Polsbäck. Wurde der Jackpot diesmal geknackt?</de>
+				<en>Here are the current lottery numbers from the Saturday Lottery presented by Lottery Fairy Else Polsbäck. Has the jackpot been cracked this time?</en>
+			</description>
+			<data genre="4" price="0.6" quality="60" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-sonntag-01" type="0" creator="8936" created_by="jorgaeff">
+			<!-- "erscheint jeden Sonntag ab 18.00 Uhr" -->
+			<availability script="TIME_WEEKDAY=6 &amp;&amp; TIME_HOUR >= 18" />
+			<title>
+				<de>Das Wort zum Sonntag</de>
+				<en>Sunday's Words of Wisdom</en>
+			</title>
+			<description>
+				<de>Fernseh-Pfarrer Benno Breitkopf wendet sich in seiner allwöchentlichen Kolumne an das deutsche Volk und prangert den zunehmenden Sittenverfall an. Wen's interessiert...</de>
+				<en>Television pastor Benno Breitkopf addresses the German people in his weekly column and denounces the increasing moral decay. If anyone cares...</en>
+			</description>
+			<data genre="4" price="0.20" quality="20" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-1985-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Neuntöter ist Vogel des Jahres</de>
+				<en>Red-backed Shrike is bird of the Year</en>
+			</title>
+			<description>
+				<de>Der Neuntöter ist eine Vogelart aus der Familie der Würger und in Mitteleuropa die häufigste Würgerart. Er ist vor allem durch sein Verhalten bekannt, Beutetiere auf Dornen aufzuspießen.</de>
+				<en>The red-backed shrike is a bird species of the shrike family and the most common shrike species in Central Europe. It is best known for its behavior of impaling prey on thorns.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Saatkrähe ist Vogel des Jahres</de>
+				<en>Rook is bird of the year</en>
+			</title>
+			<description>
+				<de>Die große Krähe mit markantem Schnabel und metallisch glänzendem schwarzem Gefieder ist in einem breiten Gürtel von Westeuropa bis in die Steppen des Altaigebietes verbreitet.</de>
+				<en>The large crow with distinctive beak and metallic shiny black plumage is widespread in a broad belt from Western Europe to the steppes of the Altai region.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Braunkehlchen ist Vogel des Jahres</de>
+				<en>Whinchat is bird of the year</en>
+			</title>
+			<description>
+				<de>Das Braunkehlchen ist ein Singvogel aus der Gattung der Wiesenschmätzer und der Familie der Fliegenschnäpper. In Deutschland zählt das Braunkehlchen zu den gefährdeten Arten.</de>
+				<en>The whinchat is a songbird of the genus stonechats and the family of flycatchers. In Germany, the whinchat is one of the endangered species.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Wendehals ist Vogel des Jahres</de>
+				<en>Wryneck is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Wendehals ist von Nordwestafrika ostwärts in einem breiten Gürtel bis an die asiatische Pazifikküste verbreitet; Europa ist fast flächendeckend besiedelt.</de>
+				<en>The wryneck is spread from Northwest Africa eastward to the Asian Pacific coast in a broad belt; Europe is populated almost entirely.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1989-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1989" />
+			<title>
+				<de>Teichrohrsänger ist Vogel des Jahres</de>
+				<en>Reed warbler is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Teichrohrsänger, im Volksmund auch Rohrspatz genannt, ist eine Singvogelart aus der Gattung der Rohrsänger und der Familie der Rohrsängerartigen. Er ist ist etwa 13 cm lang und hat eine Flügelspannweite von 17 bis 21 cm.</de>
+				<en>The reed warbler, popularly known as the reed sparrow, is a species of songbird of the genus reed warblers and the family of the reed warbler-like. It is about 13 cm long and has a wingspan of 17 to 21 cm.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1990-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1990" />
+			<title>
+				<de>Pirol ist Vogel des Jahres</de>
+				<en>Oriole is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Pirol ist ein Singvogel aus der Familie der Pirole. Er ist im Norden und Westen Eurasiens verbreitet; ebenso in Mitteleuropa, im südlichen Zentralasien und im Norden von Indien.</de>
+				<en>The oriole is a songbird of the oriole family. It is widespread in the north and west of Eurasia; also in Central Europe, southern Central Asia and northern India.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1991-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1991" />
+			<title>
+				<de>Rebhuhn ist Vogel des Jahres</de>
+				<en>Partridge is bird of the year</en>
+			</title>
+			<description>
+				<de>Das Rebhuhn ist eine Vogelart aus der Ordnung der Hühnervögel. Rebhühner bewohnen Steppen- und Heidelandschaften in weiten Teilen Europas und Asiens. Sie ernähren sich überwiegend von Sämereien, Wildkräutern und Getreidekörnern.</de>
+				<en>The partridge is a bird species of the order chicken birds. Partridges inhabit steppe and heathland landscapes in large parts of Europe and Asia. They mainly feed on seeds, wild herbs and cereal grains.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1992-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1992" />
+			<title>
+				<de>Rotkehlchen ist Vogel des Jahres</de>
+				<en>Robin is bird of the year</en>
+			</title>
+			<description>
+				<de>Das Rotkehlchen ist eine Vogelart aus der Familie der Fliegenschnäpper. Es besiedelt Nordafrika, Europa und Kleinasien sowie die Mittelmeerinseln. Seine Nahrung besteht vor allem aus Insekten, kleinen Spinnen, Würmern und Schnecken.</de>
+				<en>The robin is a bird species of the flycatcher family. It inhabits North Africa, Europe and Asia Minor and the Mediterranean islands. Its diet consists mainly of insects, small spiders, worms and snails.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1993-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1993" />
+			<title>
+				<de>Flussregenpfeifer ist Vogel des Jahres</de>
+				<en>Little Ringed Plover is bird of the Year</en>
+			</title>
+			<description>
+				<de>Der Flussregenpfeifer ist eine Vogelart aus der Familie der Regenpfeifer. In Mitteleuropa ist er ein verbreiteter, aber wenig häufiger Brut- und Sommervogel. Während der Zugzeiten ist er verhältnismäßig häufig als Durchzügler und Rastvogel zu beobachten.</de>
+				<en>The Little Ringed Plover is a bird species of the plover family. In Central Europe, it is a common, but not very frequently occurring breeding bird and summer bird. During the migratory seasons, it is relatively often observed as a passage and resting bird.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1994-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1994" />
+			<title>
+				<de>Weißstorch ist Vogel des Jahres</de>
+				<en>White stork is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Weißstorch, auch Klapperstorch genannt, ist eine Vogelart aus der Familie der Störche. Weißstörche sind etwa 80 bis 100 cm lang und haben eine Flügelspannweite von etwa 200 bis 220 cm. Weißstörche haben ein Gewicht von etwa 2,5 bis 4,5 kg.</de>
+				<en>The white stork, in German also known as the Klapperstorch, clattering stork, is a bird species from the stork family. White storks are about 80 to 100 cm long and have a wingspan of about 200 to 220 cm. White storks have a weight of about 2.5 to 4.5 kg.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1995-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1995" />
+			<title>
+				<de>Nachtigall ist Vogel des Jahres</de>
+				<en>Nightingale is bird of the year</en>
+			</title>
+			<description>
+				<de>Die Nachtigall ist eine Vogelart aus der Ordnung der Sperlingsvögel, Unterordnung Singvögel. Nach neueren molekularbiologischen Erkenntnissen zur Phylogenese der Singvögel wird sie heute meist zur Familie der Fliegenschnäpper gestellt.</de>
+				<en>The nightingale is a species of bird of the order passerine birds, suborder songbirds. According to recent molecular biology findings on the phylogeny of songbirds, it is now usually placed in the family of flycatchers.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1996-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1996" />
+			<title>
+				<de>Kiebitz ist Vogel des Jahres</de>
+				<en>Lapwing is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Kiebitz ist eine Vogelart aus der Familie der Regenpfeifer. Er brütet typischerweise in den Marschwiesen, auf Vordeichwiesenflächen und anderen Weidelandschaften der Niederungen.</de>
+				<en>The lapwing is a bird species of the plover family. It typically breeds in the marsh meadows, on foreshore meadows and other grasslands of the lowlands.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1997-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1997" />
+			<title>
+				<de>Buntspecht ist Vogel des Jahres</de>
+				<en>Spotted woodpecker is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Buntspecht ist eine Vogelart aus der Familie der Spechte. Der kleine Specht besiedelt große Teile des nördlichen Eurasiens sowie Nordafrika und bewohnt Wälder fast jeder Art sowie Parks und baumreiche Gärten.</de>
+				<en>The spotted woodpecker is a species of bird in the woodpecker family. The small woodpecker inhabits large parts of northern Eurasia and North Africa and inhabits forests of almost every kind, as well as parks and tree-rich gardens.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1998-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1998" />
+			<title>
+				<de>Feldlerche ist Vogel des Jahres</de>
+				<en>Skylark is bird of the year</en>
+			</title>
+			<description>
+				<de>Die Feldlerche ist eine Vogelart aus der Familie der Lerchen. Diese mittelgroße Lerchenart besiedelt fast die gesamte Paläarktis von Irland und Portugal bis Kamtschatka und Japan.</de>
+				<en>The skylark is a bird species of the lark family. This medium-sized lark species inhabits almost the entire Palearctic from Ireland and Portugal to Kamchatka and Japan.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1999-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1999" />
+			<title>
+				<de>Goldammer ist Vogel des Jahres</de>
+				<en>Yellowhammer is bird of the year</en>
+			</title>
+			<description>
+				<de>Die Goldammer ist eine Vogelart aus der Familie der Ammern. Sie ist die häufigste Ammer in Europa und einer der charakteristischen Brutvögel der Feldmark.</de>
+				<en>The yellowhammer is a bird species of the bunting family. It is the most common bunting in Europe and one of the characteristic breeding birds of the countryside.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2000-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2000" />
+			<title>
+				<de>Rotmilan ist Vogel des Jahres</de>
+				<en>Red Kite is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Rotmilan, auch Roter Milan, Gabelweihe oder Königsweihe genannt, ist eine etwa mäusebussardgroße Greifvogelart aus der Familie der Habichtartigen. Über 50 Prozent des Gesamtbestandes dieser Art brütet in Deutschland.</de>
+				<en>The red kite, in German also named a pronghorn harrier or royal harrier, is an approximately buzzard-sized bird of prey from the hawk family. Over 50 percent of the total population of this species breeds in Germany.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2001-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2001" />
+			<title>
+				<de>Haubentaucher ist Vogel des Jahres</de>
+				<en>Great Crested Grebe is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Haubentaucher ist eine Vogelart aus der Familie der Lappentaucher. Der etwa stockentengroße Vogel ist der größte, häufigste und bekannteste Vertreter dieser Familie von Wasservögeln.</de>
+				<en>The Great Crested Grebe is a species of bird in the grebe family. About the size of a mallard, the bird is the largest, most common and best known representative of this family of water birds.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2002-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2002" />
+			<title>
+				<de>Haussperling ist Vogel des Jahres</de>
+				<en>House Sparrow is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Haussperling - auch Spatz oder Hausspatz genannt - ist eine Vogelart aus der Familie der Sperlinge und einer der bekanntesten und am weitesten verbreiteten Singvögel.</de>
+				<en>The house sparrow - in German the Haussperling is also known as the Spatz or Hausspatz - is a bird species of the sparrow family and one of the best known and most widespread songbirds.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2003-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2003" />
+			<title>
+				<de>Mauersegler ist Vogel des Jahres</de>
+				<en>Common Swift is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Mauersegler ist eine Vogelart aus der Familie der Segler. Er ähnelt den Schwalben, ist aber mit diesen nicht näher verwandt; die Ähnlichkeiten beruhen auf konvergenter Evolution. Der Mauersegler ist ein Langstreckenzieher.</de>
+				<en>The common swift is a species of bird in the swift family. It resembles the swallows, but is not closely related to them; the similarities are based on convergent evolution. The swift is a long-distance migrant.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2004-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2004" />
+			<title>
+				<de>Zaunkönig ist Vogel des Jahres</de>
+				<en>Wren is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Zaunkönig ist nach dem Winter- und Sommergoldhähnchen der drittkleinste Vogel Europas. Lange Zeit wurde er „Schneekönig“ genannt, da er auch im Winter lebhaft singt. Der Zaunkönig besiedelt Europa, Nordafrika, Vorder-, Zentral- und Ostasien und Nordamerika.</de>
+				<en>The wren is the third smallest bird in Europe after the winter and summer goldcrest. For a long time it was called the "Snow King" in German because it sings vibrantly even in winter. The wren inhabits Europe, North Africa, the Near East, Central Asia, East Asia and North America.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2005-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2005" />
+			<title>
+				<de>Uhu ist Vogel des Jahres</de>
+				<en>Eagle Owl is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Uhu ist eine Vogelart aus der Gattung der Uhus, die zur Ordnung der Eulen gehört. Er ist die größte Eulenart, hat einen massigen Körper und einen auffällig dicken Kopf mit Federohren. Die Augen sind orangegelb. Das Gefieder weist dunkle Längs- und Querzeichnungen auf.</de>
+				<en>The eagle owl is a species of bird from the genus of eagle owls, which belongs to the order of owls. It is the largest owl species, has a massive body and a strikingly thick head with feather ears. The eyes are orange-yellow. The plumage has dark longitudinal and transverse markings.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2006-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2006" />
+			<title>
+				<de>Kleiber ist Vogel des Jahres</de>
+				<en>Nuthatch is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Name bezieht sich darauf, dass der Kleiber den Eingang von Bruthöhlen anderer Vögel, zum Beispiel die von Spechten, mit Lehm verklebt, um sie selbst zu nutzen. Um die Höhle zu schützen, „mauern“ die Kleiber den Eingang zu ihren Bruthöhlen mit einer Mischung aus Lehm und Speichel so weit zu, dass sie gerade durchpassen.</de>
+				<en>The name refers to the fact that the nuthatch glues the entrance of breeding cavities of other birds, for example those of woodpeckers, with clay to use them themselves. To protect the cavity, nuthatches "wall up" the entrance to their nesting cavities with a mixture of clay and saliva so much that they can only just fit through.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2007-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2007" />
+			<title>
+				<de>Turmfalke ist Vogel des Jahres</de>
+				<en>Kestrel is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Turmfalke ist der häufigste Falke in Mitteleuropa. Vielen ist der Turmfalke vertraut, da er sich auch Städte als Lebensraum erobert hat und oft beim Rüttelflug zu beobachten ist.</de>
+				<en>The kestrel is the most common falcon in Central Europe. Many are familiar with the kestrel, as it has also conquered urban areas as a habitat and can often be observed during stationary flight.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2008-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2008" />
+			<title>
+				<de>Kuckuck ist Vogel des Jahres</de>
+				<en>Cuckoo is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Kuckuck gehört zur Ordnung der Kuckucksvögel und zur Familie der Kuckucke. Er kommt in Nordafrika und in Eurasien von Portugal und Irland nach Osten bis Japan und Kamtschatka vor. Er ist etwa taubengroß, sein Gefieder ist größtenteils grau.</de>
+				<en>The cuckoo belongs to the order of cuckoo birds and the family of cuckoos. It occurs in North Africa and in Eurasia from Portugal and Ireland towards the east to Japan and Kamchatka. He is about the size of a pigeon, his plumage is mostly gray.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2009-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2009" />
+			<title>
+				<de>Eisvogel ist Vogel des Jahres</de>
+				<en>Kingfisher is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Eisvogel besiedelt weite Teile Europas, Asiens sowie das westliche Nordafrika und lebt an mäßig schnell fließenden oder stehenden, klaren Gewässern mit Kleinfischbestand und Sitzwarten. Seine Nahrung setzt sich aus Fischen, Wasserinsekten, Kleinkrebsen und Kaulquappen zusammen.</de>
+				<en>The kingfisher inhabits large parts of Europe, Asia and western North Africa and lives near slow flowing or stagnant clear waters with small fish and perching. Its diet is composed of fish, aquatic insects, small crustaceans and tadpoles.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2010-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2010" />
+			<title>
+				<de>Kormoran ist Vogel des Jahres</de>
+				<en>Cormorant is bird of the year</en>
+			</title>
+			<description>
+				<de>Das Verbreitungsgebiet des Kormorans umfasst große Teile Europas, Asiens und Afrikas, außerdem Australien und Neuseeland sowie Grönland und die Ostküste Nordamerikas. Die Nahrung besteht wie bei allen Vertretern der Gattung Phalacrocorax fast ausschließlich aus Fisch.</de>
+				<en>The range of the cormorant includes large parts of Europe, Asia and Africa, also Australia and New Zealand, as well as Greenland and the east coast of North America. The food consists almost exclusively of fish, as with all representatives of the genus Phalacrocorax.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2011-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2011" />
+			<title>
+				<de>Gartenrotschwanz ist Vogel des Jahres</de>
+				<en>Redstart is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Gartenrotschwanz besiedelt Eurasien ostwärts bis zum Baikalsee sowie Teile Nordafrikas und des Nahen Ostens. Als Höhlen- und Halbhöhlenbrüter bewohnt er vorwiegend lichte Laubwälder, Parkanlagen und Gärten mit altem Baumbestand.</de>
+				<en>The redstart inhabits Eurasia eastward to Lake Baikal, as well as parts of North Africa and the Middle East. As a cave and half-cave nesting bird, it inhabits mainly light deciduous forests, parks and gardens with old trees.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2012-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2012" />
+			<title>
+				<de>Dohle ist Vogel des Jahres</de>
+				<en>Jackdaw is bird of the year</en>
+			</title>
+			<description>
+				<de>Die Dohle ist eine Singvogelart aus der Familie der Rabenvögel. Unter den Raben und Krähen ist sie einer der kleinsten Vertreter. Sie zeichnet sich durch schwarz-graues Gefieder, einen stämmigen Schnabel und hellblaue Augen aus. Ihr Verbreitungsgebiet reicht vom nordafrikanischen Atlasgebirge über Europa bis zum Baikalsee.</de>
+				<en>The jackdaw is a songbird species of the corvid family. Among the ravens and crows, it is one of the smallest representatives. It is characterized by black-gray plumage, a stout bill and light blue eyes. Its range extends from the Atlas Mountains of North Africa to Europe and Lake Baikal.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2013-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2013" />
+			<title>
+				<de>Bekassine ist Vogel des Jahres</de>
+				<en>Common Snipe is bird of the year</en>
+			</title>
+			<description>
+				<de>Die Bekassine ist eine sehr langschnäbelige, mittelgroße Art aus der Familie der Schnepfenvögel. Sie ist über große Teile der Paläarktis verbreitet und überwintert überwiegend in den Subtropen und Tropen der Alten Welt.</de>
+				<en>The common snipe is a very long-billed, medium-sized species of the family of sandpipers. It is spread over large parts of the Palearctic, and winters mainly in the subtropics and tropics of the Old World.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2014-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2014" />
+			<title>
+				<de>Grünspecht ist Vogel des Jahres</de>
+				<en>Green Woodpecker is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Grünspecht, manchmal auch Grasspecht oder Erdspecht genannt, ist eine Vogelart aus der Familie der Spechte. Der Grünspecht und seine Schwesterart, der Grauspecht, sind die einzigen Vertreter der Gattung Picus in Mitteleuropa.</de>
+				<en>The Green Woodpecker, sometimes also described as the grass woodpecker or ground woodpecker, is a species of bird in the woodpecker family. The green woodpecker and its sister species, the gray woodpecker, are the only representatives of the genus Picus in Central Europe.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2015-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2015" />
+			<title>
+				<de>Habicht ist Vogel des Jahres</de>
+				<en>Goshawk is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Habicht ist ein Greifvogel, dessen Verbreitungsgebiet die arktischen bis subtropischen Zonen der Holarktis umfasst. Habichte ernähren sich überwiegend von kleinen bis mittelgroßen Vögeln und Säugetieren bis zu einem Gewicht von etwa 1,0 kg. Die Art ist nicht gefährdet.</de>
+				<en>The goshawk is a bird of prey whose range includes the arctic to subtropical zones of the Holarctic. Goshawks feed mainly on small to medium-sized birds and mammals up to a weight of about 1.0 kg. The species is not endangered.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2016-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2016" />
+			<title>
+				<de>Stieglitz ist Vogel des Jahres</de>
+				<en>Goldfinch is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Stieglitz, auch Distelfink genannt, ist eine Vogelart aus der Familie der Finken. Er besiedelt Eurasien von Westeuropa bis Zentralasien und Mittelsibirien sowie Nordafrika. In Südamerika und Australien sowie auf Neuseeland und einigen Inseln Ozeaniens wurde er eingeführt.</de>
+				<en>The goldfinch, also known as thistle finch, is a bird species of the finch family. It inhabits Eurasia from Western Europe to Central Asia and Central Siberia, and North Africa. In South America and Australia, as well as New Zealand and some islands of Oceania, it has been imported.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2017-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2017" />
+			<title>
+				<de>Waldkauz ist Vogel des Jahres</de>
+				<en>Tawny owl is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Waldkauz ist eine mittelgroße Eulenart mit einer Verbreitung von Europa bis nach Westsibirien und Iran. Er kommt außerdem in Südostasien vor. In Mitteleuropa ist der Waldkauz gemeinsam mit der Waldohreule die häufigste Eule.</de>
+				<en>The tawny owl is a medium-sized owl species with a distribution from Europe to Western Siberia and Iran. It is also found in Southeast Asia. In Central Europe, the tawny owl is, together with the long-eared owl, the most common owl.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2018-4-99" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2018" />
+			<title>
+				<de>Star ist Vogel des Jahres</de>
+				<en>Starling is bird of the year</en>
+			</title>
+			<description>
+				<de>Der Star, auch als Gemeiner Star bezeichnet, ist der in Eurasien am weitesten verbreitete und häufigste Vertreter der Familie der Stare. Durch zahlreiche Einbürgerungen auf anderen Kontinenten ist der Star heute einer der häufigsten Vögel der Welt. Im Niederdeutschen werden Stare Spreen genannt.</de>
+				<en>The starling, also known as the common starling, is the most widespread and common representative of the starling family in Eurasia. Due to numerous adoptions on other continents, the starling is now one of the most common birds in the world. In Low German, starlings are called Spreen.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-4-UdSSR-02b" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Atomkraftwerk in Russland explodiert</de>
+				<en>Nuclear power plant in Russia explodes</en>
+			</title>
+			<description>
+				<de>Vor 3 Tagen ist ein Reaktor im russischen Atomkraftwerk Nobyliwostok explodiert. Schwerwiegende Folgen für Mensch und Natur befürchtet.</de>
+				<en>3 days ago, a reactor exploded at the Russian nuclear power plant Nobylivostok. Serious consequences for humans and nature feared.</en>
+			</description>
+			<data genre="4" price="1" quality="100" fictional="0" flags="2" />
+			<effects>
+				<!-- "morgen 4-11 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,4,11" news="news-jorgaeff-1986-4-UdSSR-02c" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1986-4-UdSSR-02c" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Atomare Wolke breitet sich aus</de>
+				<en>Nuclear cloud is spreading</en>
+			</title>
+			<description>
+				<de>Die bei der Explosion des russischen Atomkraftwerks Nobyliwostok entstandene atomare Wolke breitet sich über weite Teile Europas aus. Weitere Ausbreitung über die gesamte nördliche Halbkugel befürchtet.</de>
+				<en>The nuclear cloud caused by the explosion of the Russian nuclear power plant Nobylivostok spreads over large parts of Europe. There is fear about further spread over the entire northern hemisphere.</en>
+			</description>
+			<data genre="4" price="1.05" quality="95" fictional="0" flags="2" />
+			<effects>
+				<!-- "morgen 13-19 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,13,19" news="news-jorgaeff-1986-4-UdSSR-02d" />
+			</effects>
+				<!-- Menschen bleiben zu Hause und sehen mehr fern / Interesse an Nachrichten(-sendungen) steigt -->
+		</news>
+
+		<news id="news-jorgaeff-1986-4-UdSSR-02d" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02"  creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Atomreaktor bekommt Sarkophag</de>
+				<en>Nuclear reactor will get sarcophagus</en>
+			</title>
+			<description>
+				<de>Der explodierte Atomreaktor wird mit einem provisorischen Schutzmantel aus Stahlbeton versehen. Der „Sarkophag“ soll die Strahlenausbreitung eindämmen.</de>
+				<en>The exploded nuclear reactor is provided with a temporary protective shell of reinforced concrete. The "sarcophagus" is intended to contain the spread of radiation.</en>
+			</description>
+			<data genre="4" price="0.85" quality="85" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 2 Tagen 16-20 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,16,20" news="news-jorgaeff-1986-4-UdSSR-02e" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1986-4-UdSSR-02e" type="2" thread_id="news-jorgaeff-1986-4-UdSSR-02" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Atomenergie wird weiter ausgebaut</de>
+				<en>Nuclear energy to be further expanded</en>
+			</title>
+			<description>
+				<de>Zu einem Wandel in der deutschen Atom-Politik ist es trotz der Explosion des russischen Atomkraftwerks Nobyliwostok nicht gekommen. Deutschland hält weiterhin an einem Ausbau der Kernenergie fest.</de>
+				<en>There has been no change in German nuclear policy despite the explosion of the Russian nuclear power plant Nobylivostok. Germany continues to adhere to an expansion of nuclear energy.</en>
+			</description>
+			<data genre="4" price="0.7" quality="70" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-4-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_MONTH=1" />
+			<title>
+				<de>Falsche Neujahrsansprache ausgestrahlt</de>
+				<en>Wrong New Year's speech aired</en>
+			</title>
+			<description>
+				<de>Das 2. Deutsche Fernsehen (2DF) hat versehentlich die vorjährige Neujahrsansprache von Bundeskanzler Herbert Kappes gesendet. Der Programmdirektor wurde entlassen.</de>
+				<en>The 2nd German Television (2DF) has accidentally aired the previous year's New Year's speech by Chancellor Herbert Kappes. The program director was fired.</en>
+			</description>
+			<data genre="4" price="0.4" quality="40" fictional="0" flags="2" />
+		</news>
+
+		<!-- triggers other thread...-->
+		<news id="news-jorgaeff-1987-4-UdSSR-01a" type="0" creator="8936" created_by="jorgaeff" comment="TODO: available set to 0 for now because of duplicate cujo-news-roter-platz">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Pilot landet auf Rotem Platz in Moskau</de>
+				<en>Pilot lands on Red Square in Moscow</en>
+			</title>
+			<description>
+				<de>Der deutsche Pilot Markus Trust ist mit seiner Schessnah auf dem Roten Platz in Moskau gelandet.</de>
+				<en>The German pilot Markus Trust has landed with his Schessnah on the Red Square in Moscow.</en>
+			</description>
+			<data genre="4" price="0.8" quality="80" fictional="0" flags="2" available="0" />
+			<effects>
+				<!-- "in 1 Tagen 10-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1988-4-01a" type="0" thread_id="news-jorgaeff-1988-4-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Sonnenfinsternis im West-Pazifik</de>
+				<en>Solar Eclipse in the Western Pacific</en>
+			</title>
+			<description>
+				<de>Im West-Pazifik wird morgen Mittag eine totale Sonnenfinsternis erwartet. Die Sonnenfinsternis kann auf den Inseln Indonesiens und der Philippinen beobachtet werden. Verkehrschaos erwartet.</de>
+				<en>A total solar eclipse is expected in the western Pacific tomorrow at noon. The eclipse can be observed on the islands of Indonesia and the Philippines. Traffic chaos expected.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+			<effects>
+				<!-- "morgen, 12-16.00 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-1988-4-01b" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1988-4-01b" type="2" thread_id="news-jorgaeff-1988-4-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Verkehrschaos blieb aus</de>
+				<en>Traffic chaos did not occur</en>
+			</title>
+			<description>
+				<de>Ohne besondere Vorkommnisse ist die Sonnenfinsternis im West-Pazifik zu Ende gegangen. Die gut informierte Bevölkerung hatte genug Zeit sich vorzubereiten; das befürchtete Verkehrschaos blieb aus.</de>
+				<en>Without any special incidents, the solar eclipse in the Western Pacific has come to an end. The well-informed population had enough time to prepare; the feared traffic chaos did not occur.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+			<effects>
+				<!-- "in 1-2 Stunden" -->
+				<effect trigger="happen" type="triggernews" time="1,1,2" news="news-jorgaeff-1988-4-01c" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-1988-4-01c" type="2" thread_id="news-jorgaeff-1988-4-01" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Nächste Sonnenfinsternis in Kürze</de>
+				<en>Next solar eclipse coming soon</en>
+			</title>
+			<description>
+				<de>Gute Nachricht für alle, welche die heutige Sonnenfinsternis verpasst haben: Die majestätische Himmelserscheinung wiederholt sich heute Abend gegen 18.30 Uhr. Die Sonne verschwindet, es wird dunkel, kalt und still.</de>
+				<en>Good news for all who missed today's solar eclipse: The majestic celestial phenomenon will repeat tonight around 8:30 pm. The sun will disappear, it will be dark, cold and quiet.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-2018-4-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=2018" />
+			<title>
+				<de>Newsschreiber gesteht Fake-News</de>
+				<en>News writer admits to fake news</en>
+			</title>
+			<description>
+				<de>Jorgaeff, der legendäre News-Schreiber von TVTower, gesteht, seit Jahren selbst ausgedachte Nachrichten geschrieben zu haben: Vieles sei gar nicht so passiert und Ähnlichkeiten mit lebenden Personen rein zufällig.</de>
+				<en>Jorgaeff, the legendary news writer of TVTower, confesses to have written news made up by himself for years: Many things had not happened that way at all, and similarities with living persons would be purely coincidental.</en>
+			</description>
+			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
+		</news>
+
+
+
+
+
+
+	<!-- "KULTUR" -->
+		<news id="news-jorgaeff-klinski-01" type="0" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Kaugummi-Klumpen-Sammlung versteigert</de>
+				<en>Collection of chewing gum clumps auctioned off</en>
+			</title>
+			<description>
+				<de>Klaas Klimskis kaukasische Kaugummi-Klumpen-Sammlung wurde beim Auktionshaus ii-bääh für 1,2 Millionen € versteigert.</de>
+				<en>Klaas Klimski's Caucasian chewing gum clump collection was sold at auction house eww-bleah for € 1.2 million.</en>
+			</description>
+			<data genre="5" price="0.4" quality="30" fictional="1" />
+			<effects>
+				<!-- "übermorgen 8-11 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,8,11" news="news-jorgaeff-klinski-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-klinski-02" type="2" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Dieb klaut Kaugummi-Klumpen-Sammlung</de>
+				<en>Thief steals chewing gum clump collection</en>
+			</title>
+			<description>
+				<de>Eben ersteigert - schon geklaut. Ein Dieb erbeutet die wohl teuerste Kaugummi-Klumpen-Sammlung der Welt und verschwindet spurlos.</de>
+				<en>Just bought at auction - already stolen. A thief captures the probably most expensive chewing gum clump collection in the world and disappears without a trace.</en>
+			</description>
+			<data genre="5" price="0.5" quality="40" />
+			<effects>
+				<!-- "übermorgen 15-19 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,15,19" news="news-jorgaeff-klinski-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-klinski-03" type="2" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Polizei fängt Kaugummi-Klumpen-Klauer</de>
+				<en>Police catch chewing gum clump thief</en>
+			</title>
+			<description>
+				<de>Die Sammlung ist zurück! Ein kluger Kommissar stellt dem Dieb eine Falle; dieser tappt hinein und gesteht: „Ich bin Kleptomane!“</de>
+				<en>The collection is back! A clever inspector sets a trap for the thief, who blunders into it and confesses: "I'm a kleptomaniac!"</en>
+			</description>
+			<data genre="5" price="0.6" quality="50" />
+		</news>
+
+		<news id="news-jorgaeff-festspiele-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Festspielzeit hat begonnen</de>
+				<en>Festival season has begun</en>
+			</title>
+			<description>
+				<de>Drei Tage lang finden die Kulturfestspiele statt. Zahlreiche Städte bieten eine unzählbare Menge an kulturellen Veranstaltungen an.</de>
+				<en>Three days of cultural festivities are held. Numerous cities offer a countless amount of cultural events.</en>
+			</description>
+			<data genre="5" price="0.3" quality="30" fictional="1" />
+			<!-- "möglicher Effekt: höhere Zuschauerzahlen bei Kultursendungen" -->
+		</news>
+
+		<news id="news-jorgaeff-putzfrau-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Putzfrau zerstört Kunstwerk</de>
+				<en>Cleaning lady destroys work of art</en>
+			</title>
+			<description>
+				<de>Das Werk „Bei Hempels unterm Sofa“ von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000€ teures Kunstwerk vor sich zu haben.</de>
+				<en>The work "At Family Hempel under the Sofa" by Georg Hempel was destroyed in the National Museum by a cleaning lady. The cleaner was not aware to have an 800.000€ priced work of art in front of her.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-fanta-01" type="0" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Heribert Fanta erhält Literaturpreis</de>
+				<en>Heribert Fanta receives literature prize</en>
+			</title>
+			<description>
+				<de>Der Bestseller des deutsch-syrisch-libanesischen Autors Heribert Fanta über einen Fischer im Jemen bricht sämtliche Rekorde und ist mit dem diesjährigen Literaturpreis ausgezeichnet worden.</de>
+				<en>The bestseller of the German-Syrian-Lebanese author Heribert Fanta about a fisherman in Yemen breaks all records and has been awarded with this year's literature prize.</en>
+			</description>
+			<data genre="5" price="0.3" quality="30" fictional="1" />
+			<effects>
+				<!-- "in 2 Tagen 13-17 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,13,17" news="news-jorgaeff-fanta-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-fanta-02" type="2" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Heribert Fanta ist Easiophobiker</de>
+				<en>Heribert Fanta is Easiophobic</en>
+			</title>
+			<description>
+				<de>Nur wenige Menschen leiden an Easiophobie - der Angst zu schreiben. Der deutsche Erfolgsautor Heribert Fanta ist einer von Ihnen. Er möchte sich künftig nur noch auf die Produktion von Film-Dokumentationen konzentrieren.</de>
+				<en>Few people suffer from easiophobia - the fear of writing. The successful German author Heribert Fanta is one of them. In the future he would like to concentrate on the production of film documentaries only.</en>
+			</description>
+			<data genre="5" price="0.4" quality="40" fictional="1" />
+			<effects>
+				<!-- "in 3 Tagen 10-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,3,10,16" news="news-jorgaeff-fanta-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-fanta-03" type="2" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Neue Dokumentation von Heribert Fanta</de>
+				<en>New documentary by Heribert Fanta</en>
+			</title>
+			<description>
+				<de>Die neue Dokumentation des deutsch-syrisch-libanesischen Ex-Autors über einen Bäcker im Sudan hat die Herzen der Juroren erweicht. Sie statten das Werk Fantas mit dem Prädikat „Besonders wertvoll“ aus.</de>
+				<en>The new documentary by the German-Syrian-Lebanese ex-author about a baker in Sudan has softened the hearts of the jurors. They endow the work Fantas with the predicate "Especially valuable".</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" />
+			<effects>
+				<!-- "in 5 Tagen 18-22 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,5,5,18,22" news="news-jorgaeff-fanta-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-fanta-04" type="2" thread_id="news-jorgaeff-fanta" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Heribert Fanta überwindet Schreibangst</de>
+				<en>Heribert Fanta overcomes fear of writing</en>
+			</title>
+			<description>
+				<de>Easiophobiker und Ex-Autor Heribert Fanta hat seine Schreibangst überwunden und erstmalig seit zwei Jahren einen Einkaufszettel geschrieben. „Ohne war das immer doof, weil ich die Hälfte vergessen habe“, so der Autor.</de>
+				<en>Easiophobic and ex-author Heribert Fanta has overcome his fear of writing and for the first time in two years wrote a shopping list. "Without it was always stupid, because I forgot half," says the author.</en>
+			</description>
+			<data genre="5" price="0.45" quality="45" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-gamseier-01" type="0" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Karl Gamseier ist tot</de>
+				<en>Karl Gamseier is dead</en>
+			</title>
+			<description>
+				<de>Der wohl erfolgloseste Nachrichtensprecher aller Zeiten war der Erste im deutschen Fernsehen, der weder „Bonn“ noch „Berlin“ aussprechen konnte. Er starb gestern im Alter von 63 Jahren beim Versuch die Wetterkarten neu zu mischen.</de>
+				<en>The probably most unsuccessful newscaster of all time was the first on German television who could not pronounce "Bonn" or "Berlin". He died yesterday at the age of 63 while trying to reshuffle the weather charts.</en>
+			</description>
+			<data genre="5" price="0.3" quality="30" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-grafitti-01" type="0" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Bahn beklagt Millionenschaden durch Grafittis</de>
+				<en>Deutsche Bahn laments damage in the millions</en>
+			</title>
+			<description>
+				<de>Für die einen ist es Vandalismus, für die anderen eine Ausdrucksweise urbaner Kultur. Im vergangenen Jahr musste die Bahn Millionen für die Reinigung beschmierter Waggons aufbringen, was sich natürlich auch auf die Fahrpreise auswirkt.</de>
+				<en>For some it is vandalism, for others an expression of urban culture. Last year, Deutsche Bahn had to spend millions to clean graffitied train cars, which of course will also affect tricket prices.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" />
+			<effects>
+				<!-- "in 7 Tagen 14-20 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,7,7,14,20" news="news-jorgaeff-grafitti-02" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-grafitti-02" type="2" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Grafitti entwickelt sich zur Kunstform</de>
+				<en>Grafitti develops into an art form</en>
+			</title>
+			<description>
+				<de>Lange Zeit waren Grafittis nur als Schmierereien angesehen. Doch langsam steigt in der Gesellschaft die Akzeptanz für die bunten Bilder. Sogar Prominente greifen öffentlich zur Sprühdose und besprühen ungeniert Wände und Bahnwaggons.</de>
+				<en>For a long time, grafitti were regarded only as smearings. But slowly the acceptance for the colorful images is rising in society. Even celebrities take up the spray can in public and unabashedly spray walls and train cars.</en>
+			</description>
+			<data genre="5" price="0.4" quality="40" fictional="1" />
+			<effects>
+				<!-- "in 4 Tagen 10-20 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,4,4,10,20" news="news-jorgaeff-grafitti-03" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-grafitti-03" type="2" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Bahn verkauft Grafitti-Waggons</de>
+				<en>Deutsche Bahn selling graffiti wagons</en>
+			</title>
+			<description>
+				<de>Die Bahn hat einige ihrer besprühten Waggons verkauft. Bei dem derzeitigen Grafitti-Hype sei es lukrativer die alten Waggons zu verscherbeln und neue zu kaufen. Gartenzwerge waren gestern - heute stellt man sich einen Waggon in den Vorgarten.</de>
+				<en>Deutsche Bahn has sold some of their spray-painted wagons. With the current graffiti hype, it is more lucrative to sell off the old wagons and buy new ones. Garden gnomes were yesterday - today you put a wagon in your front yard.</en>
+			</description>
+			<data genre="5" price="0.45" quality="45" fictional="1" />
+			<effects>
+				<!-- "in 2 Tagen 7-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,2,2,7,12" news="news-jorgaeff-grafitti-04" />
+			</effects>
+		</news>
+
+		<news id="news-jorgaeff-grafitti-04" type="2" thread_id="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>DASF entwickelt unübersprühbare Farbe</de>
+				<en>DASF develops non-over-sprayable paint</en>
+			</title>
+			<description>
+				<de>Die von DASF entwickelte unübersprühbare Farbe könnte das Ende für Grafittis bedeuten. Dennoch ist sich die Bahn unschlüssig, ob sie die Farbe einsetzen soll, da der Verkauf besprühter Waggons sehr lukrativ zu sein scheint.</de>
+				<en>The non-over-sprayable paint developed by DASF could spell the end for graffiti. Nevertheless, Deutsche Bahn is undecided whether to use the paint, as the sale of sprayed wagons seems to be very lucrative.</en>
+			</description>
+			<data genre="5" price="0.5" quality="50" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-1985-5-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Dresdner Staatsoper wieder eröffnet</de>
+				<en>Dresden State Opera reopened</en>
+			</title>
+			<description>
+				<de>Nach jahrelanger Sanierung wurde die Dresdner Staatsoper mit der Uraufführung der Oper „Der Schäfer und seine Zicklein“ von Hannes Lotz wieder eröffnet.</de>
+				<en>After years of renovation, the Dresden State Opera reopened with the premiere of the opera "The Shepherd and his Kids" by Hannes Lotz.</en>
+			</description>
+			<data genre="5" price="0.4" quality="40" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-5-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Edward-Swanstein-Museum eröffnet</de>
+				<en>Edward Swanstein Museum opened</en>
+			</title>
+			<description>
+				<de>In Rüsselsheim wurde das Museum des ersten avantgardistischen Dichters und Dramaturgen der Neuzeit, Edward Swanstein, eröffnet. Das Museum zeigt Werke des Künstlers und bildet sein Leben anhand von Pantomimen nach.</de>
+				<en>In Russelsheim the museum of the first avant-garde poet and dramatist of modern times, Edward Swanstein, was opened. The museum displays works of the artist and recreates his life through pantomimes.</en>
+			</description>
+			<data genre="5" price="0.3" quality="30" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-5-03" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Säureanschlag im Kunsthaus Wanne-Eickel</de>
+				<en>Acid attack in the Wanne-Eickel art gallery</en>
+			</title>
+			<description>
+				<de>Durch einen Säureanschlag wird im Kunsthaus Wanne-Eickel das Gemälde „Die Rubensdame“ von Hans-Dieter Blasewitz völlig zerstört.</de>
+				<en>Through an acid attack in the Wanne-Eickel art gallery, the painting "The Rubens Lady" by Hans-Dieter Blasewitz has been completely destroyed.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" />
+		</news>
+
+		<news id="news-jorgaeff-1985-5-04a" type="0" thread_id="news-jorgaeff-1985-5-04" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Ulm-Oper ungekürzt aufgeführt</de>
+				<en>Ulm opera performed unabridged</en>
+			</title>
+			<description>
+				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „Der Kolibri“ von Horst-Werner Ulm in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
+				<en>In the Württemberg State Theater in Stuttgart, the opera "The Hummingbird" by Horst-Werner Ulm goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
+			</description>
+			<effects>
+				<!-- "morgen, 12 bis 18.00 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="news-jorgaeff-1985-5-04b" />
+			</effects>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-5-04b" type="2" thread_id="news-jorgaeff-1985-5-04" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>Ulm-Oper erhält wenig Beifall</de>
+				<en>Ulm opera receives poor applause</en>
+			</title>
+			<description>
+				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten Ulm-Oper „Der Kolibri“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
+				<en>There was only little applause at the end of the Ulm opera "The Hummingbird", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1985-5-05" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1985" />
+			<title>
+				<de>2000-Jahrfeier in Augsburg</de>
+				<en>2000th anniversary celebration in Augsburg</en>
+			</title>
+			<description>
+				<de>Die Stadt Augsburg in Bayern feiert ihren 2000. Geburtstag. Sie ist eine der ältesten Städte Deutschlands und war im 16. Jahrhundert Heimat der wohlhabenden Kaufmannsfamilie Fugger.</de>
+				<en>The city of Augsburg in Bavaria celebrates its 2000th birthday. It is one of the oldest cities in Germany and was home to the wealthy merchant family Fugger in the 16th century.</en>
+			</description>
+			<data genre="5" price="0.25" quality="25" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-5-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>Mega-Konzert von Jean-Pierre Moreau</de>
+				<en>Mega concert of Jean-Pierre Moreau</en>
+			</title>
+			<description>
+				<de>Jean-Pierre Moreau spielt anlässlich des 150. Geburtstags des US-Bundesstaats Texas und dem 25. Jubiläum des NASE-Space-Centers Houston ein Konzert vor mindestens 1.300.000 Zuhörern und erhält einen Eintrag im Guinness-Buch der Rekorde.</de>
+				<en>Jean-Pierre Moreau plays a concert in front of at least 1,300,000 listeners on the occasion of the 150th birthday of the US state of Texas and the 25th anniversary of the NASE Space Center Houston and receives an entry in the Guinness Book of World Records.</en>
+			</description>
+			<data genre="5" price="0.45" quality="45" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1986-5-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1986" />
+			<title>
+				<de>„Das Gespenst des Theaters“ uraufgeführt</de>
+				<en>"The Ghost of the Theater" premiered</en>
+			</title>
+			<description>
+				<de>Mit der Welturaufführung des Musicals „Das Gespenst des Theaters“ startet der Dichtungskunstzyklus im Herman-Sherman-Theater in London.</de>
+				<en>With the world premiere of the musical "The Ghost of the Theater", the Art of Poetry Cycle begins at the Herman Sherman Theatre in London.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-5-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_MONTH=1" />
+			<title>
+				<de>Berlin feiert 750 Jahre</de>
+				<en>Berlin celebrates 750 years</en>
+			</title>
+			<description>
+				<de>Die 750-Jahr-Feier der Stadt Berlin wird mit zahlreichen Veranstaltungen beiderseits der Mauer begangen. Als Highlight wird die Rede von US-Präsident Keagan an der Siegessäule erwartet.</de>
+				<en>The 750th anniversary of the city of Berlin will be celebrated with numerous events on both sides of the wall. As a highlight, the speech of U.S. President Keagan is expected at the Victory Column.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1987-5-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1987" />
+			<title>
+				<de>Göttinger moderiert Kult-Show</de>
+				<en>Göttinger will host cult show</en>
+			</title>
+			<description>
+				<de>Die erfolgreichste Live-Sendung im 2. Deutschen Fernsehen (2DF) „Wer wird Wettkönig?“ hat einen neuen Moderator: Tommy Göttinger wettet ab sofort mit den Kandidaten um die Wette, bis sich die Balken biegen.</de>
+				<en>The most successful live program in the 2nd German television (2DF) "Who'll be the bet champion?" has a new presenter: From now on, Tommy Göttinger will compete and bet with the candidates for bets until the cows come home.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-5-01" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>West-Berlin wird Europa-Kulturstadt</de>
+				<en>West Berlin becomes European City of Culture</en>
+			</title>
+			<description>
+				<de>Der Titel wird jährlich von der EU vergeben und soll dazu beitragen, den Reichtum, die Vielfalt und die Gemeinsamkeiten des kulturellen Erbes in Europa herauszustellen und ein besseres Verständnis der Bürger füreinander zu ermöglichen.</de>
+				<en>The title is awarded annually by the EU and is intended to help highlight the richness, diversity and commonalities of the cultural heritage in Europe and enable a better understanding of citizens for each other.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
+		<news id="news-jorgaeff-1988-5-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Candela feiert 70. Geburtstag</de>
+				<en>Candela celebrates 70th birthday</en>
+			</title>
+			<description>
+				<de>Im Londoner Embley-Park-Stadion findet anlässlich des 70. Geburtstags des westafrikanischen Politikers, Nestor Candela, ein Solidaritätskonzert statt. Namhafte Künstler wie die Ghee Bees, UB60 oder Simple Thoughts spielen für lau.</de>
+				<en>A solidarity concert is being held at London's Embley Park Stadium to mark the 70th birthday of West African politician Nestor Candela. Well-known artists such as the Ghee Bees, UB60 or Simple Thoughts play for free.</en>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+	</allnews>
+</tvtdb>

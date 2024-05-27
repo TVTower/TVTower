@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<spritepack name="gfx_building_pack" >
+ 			<url>res/gfx/building/building.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+			<children>
+				<child name="gfx_building" 		x="0" 	y="0" w="547" h="1024" />
+				<child name="gfx_building_roof" x="548" y="1" w="50" h="547" rotated="90" />
+			</children>
+		</spritepack>
+
+
+		<spritepack name="gfx_building_elements_pack">
+ 			<url>res/gfx/building/building_elements.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+ 			<children>
+				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="130"	h="77"	offsetTop="-944" id="1" />
+				<child name="gfx_building_EingangWand"		x="131" y="397" w="35"	h="77"  offsetLeft="-130" offsetTop="-944" />
+				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	offsetLeft="-674" offsetTop="-970" id="2" />
+				<child name="gfx_building_Fahrstuhl_Rahmen" 			x="292"	y="397" w="52"	h="58"	id="3" />
+				<child name="gfx_building_Fahrstuhl_Geschlossen" 	x="344" y="397" w="52"	h="58"	id="4" />
+				<child name="gfx_building_Fahrstuhl_Innen" 			x="396" y="397" w="40"	h="55"	id="5" />
+				<child name="gfx_building_Fahrstuhl_oeffnend"		x="0" 	y="347"	w="320"	h="50"	frames="8"	id="111" />
+
+				<child name="gfx_building_BG_Ebene1L"	x="253" y="0" 	w="127"	h="157"	id="6" />
+				<child name="gfx_building_BG_Ebene1R"	x="380" y="188" w="49"	h="95"	id="7" />
+				<child name="gfx_building_BG_Ebene2L"	x="380" y="0" 	w="127"	h="228"	id="8" />
+				<child name="gfx_building_BG_Ebene2R"	x="253" y="157" w="123"	h="139"	id="9" />
+				<child name="gfx_building_BG_Ebene3L"	x="0" 	y="0" 	w="127"	h="228"	id="10" />
+				<child name="gfx_building_BG_Ebene3R"	x="127" y="0" 	w="126"	h="221"	id="11" />
+
+				<child name="gfx_building_Pflanze1"		x="320" y="347"	w="24"	h="50"	id="12" />
+				<child name="gfx_building_Pflanze1a"	x="344" y="347"	w="24"	h="50"	id="13" />
+				<child name="gfx_building_Pflanze1b"	x="368" y="347"	w="24"	h="50"	id="14" />
+				<child name="gfx_building_Pflanze2"		x="129" y="480"	w="43"	h="32"	id="15" />
+				<child name="gfx_building_Pflanze2a"	x="172" y="448"	w="43"	h="32"	id="16" />
+				<child name="gfx_building_Pflanze2b"	x="172" y="480"	w="43"	h="32"	id="17" />
+				<child name="gfx_building_Pflanze3"		x="0"	y="480"	w="43"	h="32"	id="18" />
+				<child name="gfx_building_Pflanze3a"	x="43"	y="480"	w="43"	h="32"	id="19" />
+				<child name="gfx_building_Pflanze3b"	x="86"	y="480"	w="43"	h="32"	id="20" />
+				<child name="gfx_building_Pflanze4"		x="392" y="347"	w="38"	h="41"	id="21" />
+				<child name="gfx_building_Pflanze4a"	x="430" y="347"	w="38"	h="32"	id="22" />
+				<child name="gfx_building_Pflanze4b"	x="468" y="347"	w="38"	h="32"	id="23" />
+				<child name="gfx_building_Pflanze5"		x="443" y="424"	w="32"	h="37"	id="24" />
+				<child name="gfx_building_Pflanze5a"	x="475" y="424"	w="32"	h="37"	id="25" />
+				<child name="gfx_building_Pflanze5b"	x="475" y="461"	w="32"	h="37"	id="26" />
+				<child name="gfx_building_Pflanze6"		x="436" y="390"	w="25"	h="34"	id="27" />
+				<child name="gfx_building_Pflanze6a"	x="461" y="390"	w="25"	h="34"	id="28" />
+				<child name="gfx_building_Pflanze6b"	x="486" y="390"	w="25"	h="34"	id="29" />
+
+				<sprite name="gfx_building_picture1"	x="430" y="245" w="65" h="41" offsetTop="-15" id="35" />
+				<sprite name="gfx_building_picture2"	x="208" y="222" w="36" h="30" offsetTop="-25" id="36" />
+
+				<child name="gfx_building_Wandlampe"	x="430" y="189"	w="60"	h="54"	id="30" />
+				<child name="gfx_building_Tueren"		x="215" y="458"	w="228"	h="54"	frames="6"	id="31" />
+
+				<child name="gfx_building_ElevatorPlan" x="448" y="463"	w="20"	h="48"	id="31" />
+
+				<child name="gfx_building_BG_ufo"		x="0" y="229" w="207"	h="13"	f="9"	id="33" />
+				<child name="gfx_building_BG_ufo2"		x="0" y="243" w="207"	h="40"	f="9"	id="34" />
+
+			</children>
+			<scripts>
+				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1a"	r="200"	g="200"	b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2a"	r="200"	g="200"	b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3a"	r="200"	g="200"	b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4a"	r="100"	g="200"	b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5a"	r="100"	g="200"	b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6a"	r="100"	g="200"	b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6b"	r="250"	g="250"	b="250" />
+			</scripts>
+		</spritepack>
+
+		<spritepack name="gfx_building_elements2_pack">
+			<url>res/gfx/building/building_elements2.png</url>
+			<children>
+				<child name="gfx_building_softdrinkmachine"	x="0"	y="0"	w="480"	h="48" cw="32" ch="48" f="15" />
+				<child name="gfx_building_textballons"		x="1"	y="49"	w="138" h="12" cw="23" ch="12" f="6" />
+				<child name="gfx_building_blockeddoorsign"	x="1"	y="62"	w="32"	h="49" offsetLeft="-3" />
+				<child name="gfx_building_credits"			x="57"	y="62"	w="52"	h="26" offsetTop="-30" />
+				<child name="gfx_building_roomboard"		x="110"	y="62"	w="58"	h="26" offsetTop="-30" />
+				<child name="gfx_building_standlightSmall"	x="169"	y="62"	w="44"	h="45" />
+				<child name="gfx_building_standlight"		x="214"	y="49"	w="54"	h="66" />
+				<child name="gfx_building_explosion"		x="269"	y="49"	w="70"	h="65" offsetLeft="-5" />
+				<child name="gfx_building_tooltips"			x="340"	y="49"	w="140"	h="20" cw="20" ch="20" f="7" />
+
+				<child name="gfx_building_sign_base"	x="140"	y="49" w="12" h="12" />
+				<child name="gfx_building_sign0"		x="153"	y="49" w="12" h="12" />
+				<child name="gfx_building_sign1"		x="165"	y="49" w="12" h="12" />
+				<child name="gfx_building_sign2"		x="177"	y="49" w="12" h="12" />
+				<child name="gfx_building_sign3"		x="189"	y="49" w="12" h="12" />
+				<child name="gfx_building_sign4"		x="201"	y="49" w="12" h="12" />
+			</children>
+		</spritepack>
+
+
+		<spritepack name="gfx_building_specials_pack">
+			<url>res/gfx/building/building_specials.png</url>
+			<children>
+				<child name="gfx_building_christmastree1"	x="0"	y="0"	w="120"	h="58" cw="40" ch="58" f="3" />
+				<child name="gfx_building_christmastree2"	x="0"	y="59"	w="120"	h="58" cw="40" ch="58" f="3" />
+			</children>
+		</spritepack>
+
+
+		<!-- It's christmas time.... -->
+		<spriteentity name="entity_building_christmastree1" sprite="gfx_building_christmastree1" x="0" y="0">
+			<spriteframeanimations currentAnimationName="lights">
+				<spriteframeanimation name="lights" frames="0::1::2::0::1::0::2::1" framesTime="0.4::0.3::0.5::0.4::0.3::0.4::0.4::0.3" randomness="0.1" />
+			</spriteframeanimations>
+		</spriteentity>
+		<spriteentity name="entity_building_christmastree2" sprite="gfx_building_christmastree2" x="0" y="0">
+			<spriteframeanimations currentAnimationName="lights">
+				<spriteframeanimation name="lights" frames="0::1::2::0::1::0::2::1" framesTime="0.4::0.3::0.5::0.4::0.3::0.4::0.4::0.3" randomness="0.1" />
+			</spriteframeanimations>
+		</spriteentity>
+
+		
+		<!-- WORLD -->
+
+		<!-- rain sprites ... 1-x -->
+		<image name="gfx_world_sky_rain1"	url="res/gfx/building/sky_rain1.png" />
+		<image name="gfx_world_sky_rain2"	url="res/gfx/building/sky_rain2.png" />
+		<!-- snowflake sprites ... 1-x -->
+		<sprite name="gfx_world_sky_snow1"	url="res/gfx/building/sky_snow1.png" />
+		<sprite name="gfx_world_sky_snow2"	url="res/gfx/building/sky_snow2.png" />
+		<sprite name="gfx_world_sky_snow3"	url="res/gfx/building/sky_snow3.png" />
+		<!-- lightning sprites ... 1-x + sprites from side 1-x -->
+		<sprite name="gfx_world_sky_lightning1"			url="res/gfx/building/sky_lightning1.png" />
+		<sprite name="gfx_world_sky_lightning_side1"	url="res/gfx/building/sky_lightning_side1.png" />
+		<!-- other sky textures -->
+		<sprite name="gfx_world_sky_gradient"	url="res/gfx/building/sky_gradient.png" />
+		<sprite name="gfx_world_sky_sun"		url="res/gfx/building/sky_sun.png" />
+		<sprite name="gfx_world_sky_sunrays"		url="res/gfx/building/sky_sunrays.png" />
+		<sprite name="gfx_world_sky_moon"		url="res/gfx/building/sky_moon.png" cw="40" ch="40" f="12" flags="FILTEREDIMAGE" />
+
+		<resource name="gfx_world_sky_clouds_pack">
+			<type>SpritePack</type>
+ 			<url>res/gfx/building/sky_clouds.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+ 			<children>
+				<child name="gfx_world_sky_clouds1"	 x="0" y="0" w="182" h="57" />
+				<child name="gfx_world_sky_clouds2"	 x="27" y="84" w="60" h="30" />
+				<child name="gfx_world_sky_clouds3"	 x="130" y="65" w="120" h="60" />
+				<child name="gfx_world_sky_clouds4"	 x="185" y="0" w="145" h="60" />
+				<child name="gfx_world_sky_clouds5"	 x="335" y="0" w="170" h="60" />
+				<child name="gfx_world_sky_clouds6"	 x="420" y="70" w="85" h="35" />
+				<child name="gfx_world_sky_clouds7"	 x="422" y="10" w="85" h="100" />
+				<child name="gfx_world_sky_clouds8"	 x="184" y="0" w="65" h="32" />
+				<child name="gfx_world_sky_clouds9"	 x="149" y="32" w="35" h="25" />
+			</children>
+		</resource>
+	</resources>
+</tvt>

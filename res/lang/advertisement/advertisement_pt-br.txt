@@ -1,0 +1,42 @@
+TARGETGROUP_ALL        = Todos
+TARGETGROUP_CHILDREN   = Crianças
+TARGETGROUP_TEENAGERS  = Jovens
+TARGETGROUP_HOUSEWIVES = Donas de casa
+TARGETGROUP_EMPLOYEES  = Trabalhadores
+TARGETGROUP_UNEMPLOYED = Desempregados
+TARGETGROUP_MANAGERS   = Empresários
+TARGETGROUP_PENSIONERS = Aposentados
+TARGETGROUP_WOMEN      = Mulheres
+TARGETGROUP_MEN        = Homens
+
+#CLASSIFICATION = classification
+#REMAINING_TERM = remaining term
+#SPOTS_TO_SEND  = spots to send
+
+MIN_AUDIENCE          = Audiência mínima
+AD_QUALITY            = Qualidade
+AD_PROFIT             = Lucro
+AD_PLANNED            = programado
+AD_TOSEND             = a transmitir
+AD_PENALTY            = Penalidade
+AD_MIN_AUDIENCE       = Audiência mínima
+AD_TARGETGROUP        = Grupo alvo
+AD_SEND_TILL_TOLATE   = muito tarde!!!
+AD_SEND_TILL_MIDNIGHT = Transmitir até a meia-noite!!
+AD_SEND_TILL_TOMORROW = Transmitir até amanhã!
+AD_STILL_X_DAYS       = até %1 dias
+
+AD_CHANNEL_IMAGE_TOO_LOW = Imagem do canal muito baixa. %CHANNELIMAGE%% < %IMAGE%%.
+AD_PLEASE_GENRE_X        = Por favor, gênero %GENRE%
+AD_PLEASE_FLAG           = Por favor, %FLAG%
+
+INFOMERCIAL                  = Infomercial
+AD_INFOMERCIAL               = Você é pago por transmitir infomerciais. A renda depende da audiência.
+AD_INFOMERCIAL_NOT_AVAILABLE = Não há infomercial possível para esse comercial.
+AD_INFOMERCIAL_PROFIT        = Renda: %PROFIT% por 1000 pessoas assistindo
+
+ADCONTRACT_FINISHED                = Contrato de comercial concluído
+ADCONTRACT_FAILED                  = Contrato de comercial fracassado
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Contrato do comercial |b|%TITLE%|/b| concluído com sucesso.
+PROFIT_OF_X_GOT_CREDITED           = Lucro de %MONEY% foi depositado.
+ADCONTRACT_X_FAILED                = Contrato do comercial |b|%TITLE%|/b| fracassado.

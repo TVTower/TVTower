@@ -1,0 +1,47 @@
+MISSION               = Auftrag
+MISSION_START_PEP1    = Viel Erfolg!
+MISSION_START_PEP2    = Viel Glück!
+MISSION_START_PEP3    = Gib' Dein Bestes!
+MISSION_START_PEP4    = Du kannst es schaffen!
+MISSION_SUCCESS       = %HURRAY%Auftrag %GOAL% erfolgreich abgeschlossen
+MISSION_SUCCESS_TEXT1 = Gratulation!
+MISSION_SUCCESS_TEXT2 = Gut gemacht!
+MISSION_SUCCESS_TEXT3 = Prima!
+MISSION_END_NEUTRAL1  = Mal sehen, wo Du in der Bestenliste landest.
+MISSION_FAILED        = Auftrag %GOAL% verfehlt
+MISSION_OTHER_PLAYER  = %NAME% war schneller
+MISSION_DISABLE_DEV   = (Entwicklermodus wurde deaktiviert)
+MISSION_ABORTED       = Auftrag abgebrochen
+
+MISSION_CATEGORY_NOGOAL = Endlosspiel
+MISSION_CATEGORY_IMAGE  = Image
+MISSION_CATEGORY_MONEY  = Kontostand
+MISSION_CATEGORY_REACH  = Reichweite
+MISSION_CATEGORY_BETTY  = Betty
+MISSION_CATEGORY_SAMMY  = Sammy
+
+MISSION_TITLE_IMAGE = Image
+MISSION_TITLE_MONEY = Kontostand
+MISSION_TITLE_REACH = Reichweite
+MISSION_TITLE_BETTY = Bettys Liebe
+MISSION_TITLE_SAMMY = Sammy
+
+MISSION_GOAL_MAXIMIZE = %GOAL% so groß wie möglich
+MISSION_GOAL_LESSTHAN = immer weniger als %GOAL%
+MISSION_GOAL_IMAGE    = %VALUE%% Image
+MISSION_GOAL_MONEY    = Kontostand %VALUE%
+MISSION_GOAL_REACH    = %VALUE%% Reichweite
+MISSION_GOAL_BETTY    = %VALUE%% Betty-Liebe
+MISSION_GOAL_SAMMY_M  = Möglichst viele Sammys
+MISSION_GOAL_SAMMY_A  = Jede Sammy-Kategorie
+MISSION_GOAL_SAMMY_R  = %COUNT% Sammys hintereinander
+
+MISSION_TIME_WITHIN = %GOAL% innerhalb von %DAYS% Tagen
+MISSION_TIME_AFTER  = %GOAL% nach %DAYS% Tagen
+
+MISSION_DIFFICULTY_0 = Angepasst
+MISSION_DIFFICULTY_1 = Einfach
+MISSION_DIFFICULTY_2 = Normal
+MISSION_DIFFICULTY_3 = Schwer
+MISSION_DIFFICULTY_4 = Schwerer
+MISSION_DIFFICULTY_5 = Am Schwersten

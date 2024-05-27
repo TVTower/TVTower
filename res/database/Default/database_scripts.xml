@@ -1,0 +1,1437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="script data" />
+	<!--
+		title, description, variables, roles and quality are FIXED parts
+
+		Scripts for series are defined similar to movies except they
+		also contain a "episodes" part which then defines data of the
+		individual episodes.
+
+		product:
+			which format of programme is scripted here?
+			(fictional = programme with a "story")
+			  0 = undefined           1 = movie (fictional)
+			  2 = series (fictional)  3 = show
+			  4 = reportage           5 = commercial
+			  6 = event               7 = misc
+
+		licence_type:
+			which kind of programme is scripted here?
+			  0 = unknown           1 = single (movie, single show)
+			  2 = episode           3 = series
+
+		title:
+			contains the title to use
+
+		description:
+			description of the script / story
+
+		variables:
+			keys which can get used within "title" and "description"
+			Each key contains a group of values to select from.
+			These values are grouped by "|".
+
+			There are some fixed variables:
+			%GENRE%       the localized genre of the script
+			%ROLEx%       the complete name ("Dr. Samantha Jones") of role X
+			%ROLENAMEx%   the name ("Samantha") of role X
+
+		jobs:
+			defines what cast (director, actors ...) and other
+			jobs are needed and if they need to fulfill certain
+			criteria
+
+			function     which function (job) has the role
+			               0 = unknown            1 = director
+			               2 = actor              4 = writer
+			               8 = moderator         16 = musician
+			              32 = supporting actor  64 = guest
+			             128 = reporter
+			required     is the role required (1) or random (0)?
+			gender       is the role of a specific gender (1 or 2)
+			             or free to choose (0) ?
+
+		speed
+			how "fast paced" a programme is
+		outcome
+			how "blockbuster-like" a programme is
+		review
+			how reviewers think about the programme
+		potential
+			unused
+		->
+			min          the minimum value in percents
+			max          the maximum value in percents
+			slope        percents defining the weighting of "max"
+			               0 = 100% chance of "min"
+		                  50 = 50% chance for each
+		                 100 = 100% chance of "max"
+	-->
+	<scripttemplates>
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-foodformealtime01">
+			<title>
+				<de>%FOOD% zum %MEALTIME%</de>
+				<en>%FOOD% for %MEALTIME%</en>
+			</title>
+			<description>
+				<de>%NAMEWOMAN% ist %JOB1% und %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% Komödie.</de>
+				<en>%NAMEWOMAN% is %JOB1% and %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% comedy.</en>
+			</description>
+
+		<variables>
+				<food>
+					<de>Kinder|Liebe|Joghurt|Herzhaftes|Erdbeermarmelade|Cornflakes|Honig</de>
+					<en>Children|Love|Yogurt|Savory|Strawberry marmalade|Cornflakes|Honey</en>
+				</food>
+				<mealtime>
+					<de>Frühstück|Mittagessen|Abendessen|Brunch</de>
+					<en>breakfast|lunch|dinner|brunch</en>
+				</mealtime>
+				<action>
+					<de>trifft|hat einen Unfall mit|wird geschwängert von|betrinkt sich mit</de>
+					<en>meets|has an accident with|gets pregnant with|gets drunk with</en>
+				</action>
+				<job1>
+					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane</de>
+					<en>a budding law student|a novelist|the author of many dime novels</en>
+				</job1>
+				<job2>
+					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
+					<en>a landscapist|an Alcoholic Anonymous|a ladies hairdresser with passion</en>
+				</job2>
+				<funny>
+					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
+					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
+				</funny>
+				<namewoman>
+					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
+					<en>%PERSONGENERATOR_NAME(unk,2)%</en>
+				</namewoman>
+				<nameman>
+					<de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
+					<en>%PERSONGENERATOR_LASTNAME(unk,1)%</en>
+				</nameman>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="1" />
+				<!-- there might be up to 2 additional roles without
+				     further specifications -->
+				<job index="3" function="32" required="0" role_guid="script-roles-ron-001" />
+				<job index="4" function="32" required="0" />
+			</jobs>
+			<genres maingenre="15" subgenres="5" />
+			<blocks min="2" max="3" slope="30" />
+			<price min="12000" max="17000" slope="60" />
+			<potential min="50" max="70" slope="45" />
+			<outcome min="25" max="35" slope="40" />
+			<review min="45" max="65" slope="40" />
+			<speed min="35" max="65" slope="50" />
+			<studio_size min="1" max="2" slope="30" />
+		</scripttemplate>
+
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-fightagainst01">
+			<title>
+				<de>%ADJECTIVE% %OBJECT%</de>
+				<en>%ADJECTIVE% %OBJECT%</en>
+			</title>
+			<description>
+				<de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
+				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY% who want to %ACTION2%.</en>
+			</description>
+
+			<variables>
+				<!-- international title for all incarnations - so "de" is enough -->
+				<!-- scr0llbaer: that may be true, but probably still not a good idea, because someone might add nested variables later, which then would resolve into German. EDIT: addressed in https://github.com/TVTower/TVTower/pull/906 -->
+				<object>
+					<de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
+					<en>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</en>
+				</object>
+				<adjective>
+					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
+					<en>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</en>
+				</adjective>
+				<job>
+					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
+					<en>Former cop|Firefighter|Head physician|Undertaker|Primary school teacher|Climate researcher|Paleontologist</en>
+				</job>
+				<action>
+					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
+					<en>fights|battles|assists|reluctantly supports|trustfully supports</en>
+				</action>
+				<action2>
+					<de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
+					<en>kidnap %VICTIM%|eat %VICTIM%|shoot %VICTIM% to the moon|hold %VICTIM% hostage|replace %VICTIM% with a clone</en>
+				</action2>
+				<enemy>
+					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
+					<en>a Mexican drug cartel|a secret CIA group|Aliens|a confused sect|the own family|pirates</en>
+				</enemy>
+				<victim>
+					<de>den Präsidenten der USA|den Familienhund|den Sohn von %ROLENAME1%|den Nachbar von %ROLENAME1%</de>
+					<en>the president of the USA|the family dog|the son of %ROLENAME1%|the neighbor of %ROLENAME1%</en>
+				</victim>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<!-- there might be up to 2 additional roles without
+				     further specifications -->
+				<job index="2" function="2" required="0" />
+				<job index="3" function="32" required="0" />
+			</jobs>
+			<!-- mandatory: /  |  optional: xrated, bmovie, trash -->
+			<data flags="0" flags_optional="112" />
+			<genres maingenre="1" />
+			<blocks min="2" max="3" slope="25" />
+			<price min="8000" max="12000" slope="40" />
+			<potential min="30" max="70" slope="45" />
+			<outcome min="40" max="45" slope="40" />
+			<review min="25" max="55" slope="45" />
+			<speed min="45" max="65" slope="25" />
+		</scripttemplate>
+
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
+			<title>
+				<de>%NUMBER% %OBJECT% %ACTION%</de>
+				<en>%NUMBER% %OBJECT% %ACTION%</en>
+			</title>
+			<description>
+				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
+				<en>Subtle drama meets sledgehammer humor. The sole star is number 1 of the %NUMBER% %OBJECT%.</en>
+			</description>
+
+			<variables>
+				<number>
+					<de>2|3|4|5</de>
+				</number>
+				<object>
+					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
+					<en>Idiots|Fools|Dorks|Gangsters|Charmers|Policemen|Firefighters|Politicians</en>
+				</object>
+				<action>
+					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
+					<en>on tour|breaking free|fueling up|and love...|looking for trouble|serve up and dish out</en>
+				</action>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<!-- there might be up to 3 additional roles without
+				     further specifications -->
+				<job index="2" function="32" required="0" />
+				<job index="3" function="32" required="0" />
+				<job index="4" function="32" required="0" />
+			</jobs>
+
+			<genres maingenre="7" />
+			<blocks min="2" max="3" slope="40" />
+			<price min="8000" max="12000" slope="40" />
+			<potential min="50" max="70" slope="45" />
+			<outcome min="25" max="35" slope="40" />
+			<review min="45" max="65" slope="40" />
+			<speed min="35" max="65" slope="50" />
+		</scripttemplate>
+
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-eroticmovie1">
+			<title>
+				<de>%WOMAN% %ACTION% %MAN%</de>
+				<en>%WOMAN% %ACTION% %MAN%</en>
+			</title>
+			<description>
+				<de>%WOMAN% ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
+				<en>%WOMAN% is a daydreamer and loses herself in her erotic fantasies.</en>
+			</description>
+
+			<variables>
+				<woman>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(unk,2)%|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
+				</woman>
+				<action>
+					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
+					<en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
+				</action>
+				<man>
+					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
+					<en>man of her dreams|abbot|teacher|professor|boss|subtenant|baker</en>
+				</man>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="0" gender="1" />
+				<job index="3" function="32" required="0" gender="2" />
+			</jobs>
+
+			<!-- mandatory: xrated  |  optional: bmovie, trash -->
+			<data flags="64" flags_optional="48"/>
+			<studio_size min="1" max="2" slope="20" /> 
+			<genres maingenre="8" subgenres="15"/>
+			<blocks min="2" max="3" slope="20" />
+			<price min="15000" max="25000" slope="40" />
+			<potential min="30" max="65" slope="45" />
+			<outcome min="20" max="45" slope="40" />
+			<review min="15" max="60" slope="40" />
+			<speed min="25" max="65" slope="50" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-horrormovie1">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<description>
+				<de>%DESCRIPTION%</de>
+				<en>%DESCRIPTION%</en>
+			</description>
+			<variables>
+				<title>
+					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Verfluchte %MONSTER%|Blutrünstige %MONSTER%|%MONSTER% im Blutrausch|%MONSTER% der Nacht|%MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
+					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|%MONSTER% in a Bloodlust|%MONSTER% of the Night|%MONSTER%: They'll Get You|Night of the %MONSTER%</en>
+				</title>
+				<building>
+					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
+					<en>Castle|Country House|Hotel|Inn|Tavern|Forest Lodge|Village|Lighthouse</en>
+				</building>
+				<count>
+					<de>|||3 |4 |5 |8 |10 |1000 </de>
+				</count>
+				<terror>
+					<de>des Horrors|des Terrors|der Angst|der Panik|des Übels</de>
+					<en>of Horror|of Terror|of Fear|of Panic|of Disgust</en>
+				</terror>
+				<monster>
+					<de>Vampire|Zombies|Untoten|Hexen|Werwölfe|Kobolde|Spinnen|Schlangen|Mumien</de>
+					<en>Vampires|Zombies|Undead|Witches|Werewolves|Hobgoblins|Spiders|Snakes|Mummies</en>
+				</monster>
+				<description>
+					<de>Ein %BUILDING%%ENVIRONMENT% %WHAT% Die %MONSTER% %MONSTERWHAT%</de>
+					<en>A %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</en>
+				</description>
+				<environment>
+					<de>, mit einem Fluch belegt,|, erbaut auf einem alten Friedhof,|, verlassen und verfallen,</de>
+					<en> under a curse|, built on an old cemetery|, abandoned and decayed</en>
+				</environment>
+				<what>
+					<de>ist Schauplatz blutiger Vermisstenfälle.|wird von Kreaturen heimgesucht.</de>
+					<en>is the scene of bloody missing persons cases.|is haunted by creatures.</en>
+				</what>
+				<monsterwhat>
+					<de>sind der Grund des Übels.|greifen jeden an.|beherrschen die Gegend.</de>
+					<en>are the source of the evil.|attack everyone.|reign over the area.</en>
+				</monsterwhat>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<job index="2" function="2" required="0" />
+				<job index="3" function="32" required="0" />
+				<job index="4" function="32" required="0" />
+			</jobs>
+
+			<!-- optional: xrated | cult -->
+			<data flags_optional="72" />
+			<genres maingenre="12" subgenres="14"/>
+			<blocks min="2" max="3" slope="20" />
+			<price min="9500" max="30000" slope="50" />
+			<potential min="20" max="80" slope="45" />
+			<outcome min="30" max="75" slope="40" />
+			<review min="35" max="60" slope="40" />
+			<speed min="45" max="95" slope="50" />
+			<studio_size min="1" max="2" slope="40" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-dramamovie1">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<description>
+				<de>%NAME% %DESCRIPTIONACTION%. Seine %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</de>
+				<en>%NAME% %DESCRIPTIONACTION%. His %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</en>
+			</description>
+
+			<variables>
+				<title>
+					<!-- twice ... to select it more often -->
+					<de>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% und ich|Ich bin %NAME%</de>
+					<en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%</en>
+				</title>
+				<name>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(aut,1)%</de>
+					<en>%PERSONGENERATOR_FIRSTNAME(us,1)%|%PERSONGENERATOR_FIRSTNAME(uk,1)%</en>
+				</name>
+				<titleaction>
+					<de>und die %DISEASE%|vs. %DISEASE%|kontra %DISEASE%|besingt %DISEASE%</de>
+					<en>and the %DISEASE%|vs. %DISEASE%|contra %DISEASE%|sings about %DISEASE%</en>
+				</titleaction>
+				<descriptionaction>
+					<de>leidet seit dem Kindesalter an %DISEASE%|bestreitet sein Leben mit %DISEASE%|leidet unter %DISEASE%|kann nur singend seine %DISEASE% bekämpfen</de>
+					<en>has been suffering from %DISEASE% since childhood|lives with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% while singing</en>
+				</descriptionaction>
+				<disease>
+					<de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
+					<en>Hallucinations|Claustrophobia|Agoraphobia|Coulrophobia|Acrophobia|Aviophobia|Arachnophobia|Dentophobia|Emetophobia</en>
+				</disease>
+				<question>
+					<de>Ist ja nur %DISEASE%|Na klar, %DISEASE%|%DISEASE% - na und?</de>
+					<en>It's just %DISEASE%|Yeah right, %DISEASE%|%DISEASE% - so what?</en>
+				</question>
+				<environment>
+					<de>Familie|Freunde|Nachbarn</de>
+					<en>relatives|friends|neighbours</en>
+				</environment>
+				<environmentaction>
+					<de>unterstützen ihn|helfen ihm|lassen nichts unversucht|stehen ihm bei</de>
+					<en>support him|help him|leave no stone unturned|assist him</en>
+				</environmentaction>
+				<feeling>
+					<de>|||~nGefühle hautnah!|~nGefühlskino!|~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
+					<en>|||~nEmotions up close!|~nEmotional cinema!|~nEveryone feels with it!|~nFinally told without clichés!</en>
+				</feeling>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="32" required="0" gender="2" />
+				<job index="3" function="32" required="0" />
+			</jobs>
+
+			<!-- mandatory: xrated  |  optional: cult -->
+			<data flags_optional="8" />
+			<genres maingenre="7" subgenres="9"/>
+			<blocks min="2" max="3" slope="20" />
+			<price min="7500" max="25000" slope="40" />
+			<potential min="30" max="85" slope="45" />
+			<outcome min="20" max="65" slope="40" />
+			<review min="15" max="80" slope="40" />
+			<speed min="25" max="65" slope="50" />
+		</scripttemplate>
+		
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
+			<title>
+				<de>%KIND%%DATE%</de>
+				<en>%KIND%%DATE%</en>
+			</title>
+			<description>
+				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
+				<en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the carefree.</en>
+			</description>
+
+			<variables>
+				<kind>
+					<de>Das %INNER%-Quiz|Das %INNER%-Duell|Die %INNER%-Show</de>
+					<en>The %INNER% Quiz|The %INNER%-Duel|The %INNER% Show</en>
+				</kind>
+				<inner>
+					<de>%ATTRIBUTE% %GROUP%</de>
+					<en>%ATTRIBUTE% %GROUP%</en>
+				</inner>
+				<attribute>
+					<de>tierische|große|abgefahrene|lustige|skurrile</de>
+					<en>brute|big|whacky|funny|quirky</en>
+				</attribute>
+				<group>
+					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
+					<en>Celebrity|Kids|Politicians|Music|Movie|Guessing|Travel</en>
+				</group>
+				<date>
+					<!-- either add the game year (with space!), or nothing -->
+					<de>| %WORLDTIME:YEAR%</de>
+				</date>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="0" gender="1" />
+				<job index="3" function="32" required="0" gender="2" />
+			</jobs>
+
+			<genres maingenre="100" />
+			<blocks min="2" max="3" slope="40" />
+			<price min="10000" max="18000" slope="40" />
+			<potential min="30" max="55" slope="45" />
+			<outcome min="20" max="35" slope="40" />
+			<review min="25" max="45" slope="40" />
+			<speed min="45" max="60" slope="50" />
+		</scripttemplate>
+
+		<!-- === SERIES === -->
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01" comment="">
+			<title>
+				<de>%adj%${who_${i}}%titleaddendum%</de>
+				<en>%adj%${who_${i}}%titleaddendum%</en>
+			</title>
+			<description>
+				<de>%seriesabout% ${how_${i}}. %adj%${who_${i}}%legacy%. %jokes%</de>
+				<en>%seriesabout% ${how_${i}}. %adj%${who_${i}}%legacy%. %jokes%</en>
+			</description>
+			<variables>
+				<seriesabout>
+					<de>Serie über|Über|Eine Fernsehserie über|Reportagen über|Berichte über|Berichterstattung über|Portrait über|Dokumentation über|Enthüllungen über|Chroniken über|Geschichten über|Aus erster Hand über|Journal über|Tagebuch über</de>
+					<en>Series about|About|A TV series about|Features about|Reports on|Coverage of|Portraits of|Documentary about|Disclosure of|Chronicles of|Stories about|First hand about|Journal about|Diary about</en>
+				</seriesabout>
+				<adj>
+					<de>Ein Haufen |Die Hinterwäldler-|Verrückte |Wahnsinns-|Bayrische |Tugendhafte |Durchgedrehte |Fromme |Zankende |Schelmische |Verschmitzte |Witzige |Abenteuerlustige |Extravagante |Geheimnisvolle |Exzentrische |Temperamentvolle |Joviale |Hartnäckige |Lebensfrohe |Verwegene |Brillante </de>
+					<en>A bunch of |The hillbilly |Crazy |The frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The mysterious |Eccentric |Spirited |The jovial |The tenacious |The vivacious |Swashbuckling |The brilliant </en>
+				</adj>
+				<i>
+					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same as j in episodes -->
+				</i>
+				<who_0>
+					<de>Waschweiber</de>
+					<en>washer women</en>
+				</who_0>
+				<who_1>
+					<de>Drag-Queens</de>
+					<en>drag-queens</en>
+				</who_1>
+				<who_2>
+					<de>Schwerenöter</de>
+					<en>philanderers</en>
+				</who_2>
+				<who_3>
+					<de>Polizisten</de>
+					<en>policemen</en>
+				</who_3>
+				<who_4>
+					<de>Rettungsschwimmer</de>
+					<en>lifeguards</en>
+				</who_4>
+				<who_5>
+					<de>Clowns</de>
+					<en>clowns</en>
+				</who_5>
+				<who_6>
+					<de>Krankenpfleger</de>
+					<en>carers</en>
+				</who_6>
+				<who_7>
+					<de>Stripper</de>
+					<en>strippers</en>
+				</who_7>
+				<who_8>
+					<de>Feuerwehrmänner</de>
+					<en>firefighters</en>
+				</who_8>
+				<who_9>
+					<de>Nonnen</de>
+					<en>nuns</en>
+				</who_9>
+				<who_a>
+					<de>Verschwörungstheoretiker</de>
+					<en>conspiracy theorists</en>
+				</who_a>
+				<who_b>
+					<de>Gastrokritiker</de>
+					<en>food critics</en>
+				</who_b>
+				<who_c>
+					<de>Extrem-Sparfüchse</de>
+					<en>extreme couponers</en>
+				</who_c>
+				<who_d>
+					<de>Zeitreisepiloten</de> <!-- wegen unterschiedlicher Pluralformen (unbestimmt / bestimmt) funktioniert 'Reisende' (vs Die Reisenden) nicht -->
+					<en>time travellers</en>
+				</who_d>
+				<who_e>
+					<de>Einradfahrer</de>
+					<en>unicyclists</en>
+				</who_e>
+				<who_f>
+					<de>Kunstpfeifer</de>
+					<en>concert whistlers</en>
+				</who_f>
+				<who_g>
+					<de>Drehbuchschreiber</de>
+					<en>screenwriters</en>
+				</who_g>
+				<who_h>
+					<de>Pferdeflüsterer</de>
+					<en>horse whisperers</en>
+				</who_h>
+				<titleaddendum>
+					<de> aus %town%| über %theirlives%|</de>
+					<en> from %town%| and %theirlives%|</en>
+				</titleaddendum>
+				<theirlives>
+					<de>ihren Alltag|was sie alles durchmachen|ihre Erlebnisse|ihren Lebensweg|ihre Abenteuer|ihren ganz normalen Wahnsinn|ihre Lebensgeschichten|ihre Eskapaden|ihren bewegten Tagesablauf|ihre Wechselbäder der Gefühle|ihre aufregenden Heldentaten</de>
+					<en>their everyday lives|what they go through|their daily experiences|their journey through life|their adventures|their daily madness|their life stories|their escapades|their eventful routine|their emotional rollercoaster rides|their exciting exploits</en>
+				</theirlives>
+				<how_0>
+					<de>wahnwitzige ${who_${i}}, deren rauher, aus der Zeit gefallener Umgangston doch irgendwie Charme hat</de>
+					<en>freakish ${who_${i}}, whose rough, out-of-time tone somehow has charm after all</en>
+				</how_0>
+				<how_1>
+					<de>wagemutige ${who_${i}}, die sämtliche gesellschaftliche Konventionen zu hinterfragen und brechen wissen</de>
+					<en>daring ${who_${i}} who know how to question and break all social conventions</en>
+				</how_1>
+				<how_2>
+					<de>hartnäckige ${who_${i}}, die mit ihren Anmachversuchen für allgemeine Erheiterung sorgen</de>
+					<en>persistent ${who_${i}} who cause general amusement with their attempts at pick-up</en>
+				</how_2>
+				<how_3>
+					<de>inquisitive ${who_${i}}, die ganz genau wissen, wie sie die Leute verhören müssen</de>
+					<en>inquisitive ${who_${i}} who know exactly how to interrogate people</en>
+				</how_3>
+				<how_4>
+					<de>mutige ${who_${i}}, die faszinierende Geschichten auf Lager haben und obendrein mit ihrem Körperbau reizen</de>
+					<en>bold ${who_${i}}, who have fascinating stories in store, and on top of that, tantalize with their physique</en>
+				</how_4>
+				<how_5>
+					<de>lustige ${who_${i}}, die nicht nur die Kinder zum lachen bringen</de>
+					<en>funny ${who_${i}} who not only make the children laugh</en>
+				</how_5>
+				<how_6>
+					<de>beherzte ${who_${i}}, die immer ganz genau nachfragen, wo's weh tut</de>
+					<en>brave ${who_${i}} who always ask exactly where it hurts</en>
+				</how_6>
+				<how_7>
+					<de>verführerische ${who_${i}}, die die Menschen um sie herum stets zu betören wissen</de>
+					<en>seductive ${who_${i}}, who always know how to beguile the people around them</en>
+				</how_7>
+				<how_8>
+					<de>kühle ${who_${i}}, die so manchen Streit einfach mit einer kalten Dusche schlichten</de>
+					<en>cool ${who_${i}}, who settle many a dispute simply with a cold shower</en>
+				</how_8>
+				<how_9>
+					<de>besonnene ${who_${i}}, die Kontrahenten aber schon mal die Leviten lesen und tief ins Gewissen reden</de>
+					<en>sober-minded sisters who deeply reach into conscience, preach to opponents and beseech like wise Levites</en>
+				</how_9>
+				<how_a>
+					<de>besessene ${who_${i}}, die die Leute endlos zulabern, welche dann vergessen, worum's ursprünglich ging</de>
+					<en>obsessed ${who_${i}} who endlessly rant at people, who then forget what it was all about in the first place</en>
+				</how_a>
+				<how_b>
+					<de>geschmackvolle ${who_${i}}, die mit ihren Berichten den Menschen das Wasser im Mund zusammenlaufen lassen</de>
+					<en>tasteful ${who_${i}}, who make people's mouths water with their reports</en>
+				</how_b>
+				<how_c>
+					<de>knausrige ${who_${i}}, die jeglichen Hass auf sich ziehen und so für Frieden sorgen</de>
+					<en>cheap ${who_${i}}, who attract all hatred to themselves and thus ensure peace</en>
+				</how_c>
+				<how_d>
+					<de>geheimniskrämerische ${who_${i}}, die für 'ne Sekunde mal weg sind, und schon ist seltsamerweise alles wieder geregelt</de>
+					<en>secretive ${who_${i}}, who are gone for a second, and strangely enough everything is settled again</en>
+				</how_d>
+				<how_e>
+					<de>akrobatische ${who_${i}}, die im Kreis fahrend für Eintracht sorgen</de>
+					<en>acrobatic ${who_${i}}, who drive in circles for unity</en>
+				</how_e>
+				<how_f>
+					<de>Musik liebende ${who_${i}}, die harmonisch pfiffig oft den Frieden wiederherstellen</de>
+					<en>music-loving ${who_${i}} who know how to use the pipe of peace and harmony</en>
+				</how_f>
+				<how_g>
+					<de>einfallsreiche ${who_${i}}, die mit klugen Dialogen jegliches Gespräch beleben</de>
+					<en>imaginative ${who_${i}}, who enliven any conversation with clever dialogues</en>
+				</how_g>
+				<how_h>
+					<de>einfühlsame ${who_${i}}, die leise säuselnd oft erfolgreich wieder für Harmonie sorgen</de>
+					<en>sensitive ${who_${i}} who, quietly purring, often successfully restore harmony</en>
+				</how_h>
+				<legacy>
+					<de>, deren Vermächtnis hier in %town% bereits sehr bedeutend ist|, deren Erbe hier in %town% bereits legendär ist|, die hier in %town% für viel Furore sorgen|, die hier in %town% für viel Aufsehen sorgen|, die in hier %town% viel Unruhe stiften|, in deren Fußstapfen viele Einwohner von %town% gerne treten würden|, in deren Schuhe viele Einwohner von %town% gerne schlüpfen würden|, die hier in %town% bereits große Spuren hinterlassen haben|, die hier in %town% für viel Begeisterung sorgen|, die hier in %town% für viel Wirbel sorgen|, die hier in %town% für viel Rummel sorgen|, deren Einfluss auf das öffentliche Leben hier in %town% unverkennbar ist|, die hier in %town% für viel Gesprächsstoff sorgen|, die hier in %town% viel Anerkennung erhalten|, deren Präsenz hier in %town% allgegenwärtig ist|, die hier in %town% eine beeindruckende Wirkung hinterlassen haben</de>
+					<en> whose legacy is already very significant here in %town%| whose legacy is already legendary here in %town%| who are creating a lot of buzz here in %town%| who are quite the sensation here in %town%| who cause a lot of turmoil here in %town%| whose footsteps many %town% residents wish they could follow| in whose shoes many %town% residents would love to walk| who have already left a big mark here in %town%| who create a lot of excitement here in %town%| who are causing a lot of commotion here in %town%| who are creating a lot of stir here in %town%| whose influence on public life here in %town% is undeniable| who cause a lot of talk here in %town%| who get a lot of recognition here in %town%| whose presence is ubiquitous here in %town%| who have left an impressive impact here in %town%</en>
+				</legacy>
+				<jokes>
+					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.|Lacher ohne Ende.|Punktgenaue Pointen.|Lacher im Sekundentakt.|Humor der Extraklasse.|Bauchweh vor Lachen.|Humor in Hülle und Fülle.|Höchste Heiterkeit.|Dauerlachen garantiert.|Komik in Perfektion.|Amüsement ohne Ende.|Lachen ohne Unterlass.|Achterbahnfahrt des Lachens.|Meisterwerk des Humors.|Eine urkomische Erfahrung.|Unterhaltsame Heiterkeit.|||||</de>
+					<en>Gags non-stop.|Spot-on punchlines.|Pure entertainment.|Endless laughter.|Comic brilliance.|Laugh-a-minute extravaganza.|Top-notch humor.|Side-splitting comedy.|Jokes galore.|Hilarity at its best.|Unstoppable laughs.|Comic perfection.|Non-stop amusement.|Laughs that keep on coming.|Rollercoaster of humor.|A comedic tour de force.|An uproarious experience.|Entertaining hilarity.|||||</en>
+				</jokes>
+				<town>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</town>
+				<firstname1> <!-- all these are more or less gender-neutral/-flexible first names, source: internet. TODO: maybe the Bavarians and the nuns need special treatment -->
+					<de>Addison|Alex|Anouk|Anuk|Avery|Benja|Beverly|Billie|Bozan|Cameron|Charlie|Cherry|Celeste|Conny|Daniele|Darian|Devin|Eden|Elliot|Elya|Esra|Felice|Finley|Flo|Gale|Gerritt|Glenn|Günes|Hadir|Harley|Henny|Ihsan|Immi|Indra|Isa|Islay|Jamal|Jayce|Jean|Jody|Jona|Junis|Kaj|Kennedy|Kim|Kourtney|Kyler|Lee|Lindsay|Lou|Luka|Mans|Marley|Meredith|Michele|Mika|Nicola|Nikita|Noah|Oakley|Oyama|Parker|Paulin|Pim|Quincy|Regis|René|Robby|Rory|Rowan|Sasha|Scout|Siro|Shiloh|Taylor|Tiam|Tony|Tyler|Ude|Vada|Valo|Wally|Whitney|Wynne|Zero|Zohar</de>
+				</firstname1>
+				<firstname2>
+					<de>Alexis|Angel|Aria|Ashley|Aydin|Bent|Billy|Blair|Bobby|Camilie|Casey|Chaska|Chris|Dakota|Dany|Deniz|Dylan|Elis|Elia|Enid|Erin|Evin|Feng|Finn|Fiore|Florin|Gates|Gerit|Güven|Hadley|Helge|Hilal|Ilter|Indiana|Ino|Ira|Jade|Jamie|James|Jayden|Jesse|Jorah|June|Kai|Kaya|Kelsey|Kerry|Konni|Kris|Leslie|Loki|Luca|Maria|Marlin|Marlo|Marlon|Maxime|Merle|Milou|Nicki|Nikky|Özbek|Ola|Pahul|Pat|Payden|Pleun|Raleigh|Raven|Reese|Reign|Riley|Robin|Ryan|Sandy|Sean|Shannon|Skyler|Simone|Terry|Tjade|Toni|Umut|Uli|Val|Vanja|Wanja|Yael|Yuki|Zia</de>
+				</firstname2>
+				<firstname3>
+					<de>Amar|Andrea|Ari|Ashton|Bailey|Bene|Bente|Blake|Bo|Bob|Carol|Carter|Charly|Corey|Dani|Darcy|Derya|Dominique|Eike|Elvin|Emerson|Esin|Farina|Fidan|Friedel|Francis|Gin|Gwenaël|Hadar|Haik|Harper|Hemke|Ilya|Indigo|Isa|Jaime|Jamie|Janne|Jean|Jessi|Jordan|Joyce|Kay|Kendall|Kersten|Kiran|Kristan|Lesley|Lorin|Luan|Malu|Marian|Maxi|Mel|Mian|Nika|Niki|Nino|Nova|Paris|Patrice|Phoenix|Orly|Qian|Quinn|Rayan|Renée|Rey|Robbie|Sam|Sanja|Sascha|Shanti|Sidney|Theodore|Tomke|Tracy|Ulli|Uzay|Valentine|Vesa|Yuri|Wisal|Zisan</de>
+				</firstname3>
+				<location_0>
+					<de>Paradies</de> <!-- alle Orte nur Maskulinum, Neutrum und wo 'im xyz' passt -->
+					<en>paradise</en>
+				</location_0>
+				<location_1>
+					<de>Gasthaus</de>
+					<en>the roadhouse</en>
+				</location_1>
+				<location_2>
+					<de>Hinterhof</de>
+					<en>the backyard</en>
+				</location_2>
+				<location_3>
+					<de>Polizeirevier</de>
+					<en>the police station</en>
+				</location_3>
+				<location_4>
+					<de>Supermarkt</de>
+					<en>the supermarket</en>
+				</location_4>
+				<location_5>
+					<de>Zirkus</de>
+					<en>the circus tent</en>
+				</location_5>
+				<location_6>
+					<de>Spukhaus</de>
+					<en>the haunted mansion</en>
+				</location_6>
+				<location_7>
+					<de>Freizeitpark</de>
+					<en>the theme park</en>
+				</location_7>
+				<location_8>
+					<de>Raumschiff</de>
+					<en>the spaceship</en>
+				</location_8>
+				<location_9>
+					<de>Weltraum</de>
+					<en>space</en>
+				</location_9>
+				<location_a>
+					<de>Kunsthaus</de>
+					<en>the art gallery</en>
+				</location_a>
+				<location_b>
+					<de>U-Boot</de>
+					<en>the submarine</en>
+				</location_b>
+				<location_c>
+					<de>Mittelalterschloss</de>
+					<en>the medieval castle</en>
+				</location_c>
+				<location_d>
+					<de>Modenschau-Club</de>
+					<en>the fashion runway show</en>
+				</location_d>
+				<location_e>
+					<de>Schwimmbad</de>
+					<en>the swimming pool</en>
+				</location_e>
+				<location_f>
+					<de>Saunaclub</de>
+					<en>the sauna club</en>
+				</location_f>
+				<location_g>
+					<de>Regenwald</de>
+					<en>the rainforest</en>
+				</location_g>
+				<location_h>
+					<de>Oase-Reservat</de>
+					<en>the desert oasis</en>
+				</location_h>
+			</variables>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
+					<title>
+						<de>Pilotfolge</de>
+						<en>Pilot</en>
+					</title>
+					<description>
+						<de>Die ${who_${i}} stellen sich vor. %firstname1% ist %character1%. %firstname2% hingegen ist %character2%. Und %firstname3% ist %character3%.</de>
+						<en>The ${who_${i}} introduce themselves. %firstname1% is %character1%. %firstname2%, on the other hand, is %character2%. And %firstname3% is %character3%.</en>
+					</description>
+					<!-- pilot could be one or two blocks -->
+					<blocks min="1" max="2" />
+					<variables>
+						<character1>
+							<de>mutig und abenteuerlustig, stürzt sich in jede Herausforderung|charismatisch, mit einer magisch anziehenden Ausstrahlung|genial, eine hochintelligente Anführerpersönlichkeit|kreativ, mit Magie verleihender Vorstellungskraft|perfektionistisch und strebt nach Exzellenz in allem|sehr humorvoll mit immer einem Witz parat|spontan, liebt Überraschungen und den Moment zu leben|sehr zielstrebig, arbeitet unermüdlich an der Selbstverwirklichung|abenteuerlustig, sucht immer nach neuem Nervenkitzel|abenteuerlustig, sucht immer nach neuen Horizonten</de>
+							<en>courageous and adventurous, jumps into any challenge|charismatic, with a magically attractive presence|a genius, a highly intelligent leader|creative, with magic-giving imagination|perfectionist and strives for excellence in everything|very humorous, always has a joke ready|spontaneous, loves surprises and to live in the moment|very determined, works tirelessly on self-actualization|adventurous, always looking for new thrills|adventurous, always searching for new horizons</en>
+						</character1>
+						<character2>
+							<de>ruhig und gelassen, immer einen kühlen Kopf bewahrend|bescheiden, trotz großen Talents bodenständig|analytisch, findet stets die besten Lösungen|charmant, mit einem Lächeln, das alle Türen öffnet|introvertiert und großartig im Zuhören|sanftmütig mit großer Geduld und Freundlichkeit|nachdenklich, betrachtet die Welt mit tiefem Verständnis|tolerant, mit großer Offenheit gegenüber anderen|empathisch, versteht intuitiv die Gefühle anderer|sehr sensibel, spürt die Emotionen anderer wie ein Seismograph</de>
+							<en>calm and composed, always keeps a cool head|modest, down-to-earth despite great talent|analytical, always finds the best solutions|charming, with a smile that opens all doors|introverted and great at listening|gentle with great patience and kindness|thoughtful, looks at the world with deep understanding|tolerant, with great openness to others|empathic, intuitively understands others' feelings|very sensitive, senses the emotions of others like a seismograph</en>
+						</character2>
+						<character3>
+							<de>ehrgeizig und entschlossen, setzt und erreicht hohe Ziele|sehr enthusiastisch, mit ansteckender Begeisterung|sehr organisiert mit beeindruckend präzisen Planungsfähigkeiten|begeisterungsfähig, findet Freude in den kleinen Dingen|intuitiv, liegt mit den Instinkten immer richtig|ambitioniert, strebt danach, die Welt zum Guten zu verändern|kreativ, die Ideen sprudeln nur so heraus, unerschöpflich|diplomatisch, schlichtet Konflikte und bringt Menschen zusammen|neugierig, saugt alles auf und entdeckt ständig neues|authentisch, bleibt immer sich selbst und verstellt sich nicht</de>
+							<en>ambitious and determined, sets high goals and achieves them|very enthusiastic, with contagious passion|very organized with impressively precise planning skills|enthusiastic, finds joy in the little things|intuitive, always has the right instincts|ambitious, strives to change the world for the better|creative, ideas bubble up inexhaustibly|diplomatic, mediates conflicts and brings people together|curious, absorbs everything and constantly discovers new things|authentic, always remains true and does not pretend</en>
+						</character3>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
+					<title>
+						<de>%overtime% ${atworkplace_${i}}</de>
+						<en>%overtime% ${atworkplace_${i}}</en>
+					</title>
+					<description>
+						<de>Die ${who_${i}} %havetheirhandsfull%. ${who_${j}} aus %othertown% ${description_${i}}</de>
+						<en>The ${who_${i}} %havetheirhandsfull%. ${who_${j}} from %othertown% ${description_${i}}</en>
+					</description>
+					<variables>
+						<overtime>
+							<de>Überstunden|Stress|Anspannung|Fleißarbeit|Knochenarbeit|Zusatzschicht|Sorgfalt|Sorgfaltspflicht|Gewissenhaftigkeit|Pflichtbewusstsein|Schweiß|Verpflichtung|Hingabe|Engagement</de>
+							<en>Overtime|Stress|Struggle|Scut work|Grunt work|Extra shift|Diligence|Due diligence|Conscientiousness|Sense of duty|Sweat|Commitment|Dedication|Engagement</en>
+						</overtime>
+						<atworkplace_0>
+							<de>am Fluss</de>
+							<en>at the river</en>
+						</atworkplace_0>
+						<atworkplace_1>
+							<de>im Varieté</de>
+							<en>at the varieté</en>
+						</atworkplace_1>
+						<atworkplace_2>
+							<de>in der Absteige</de>
+							<en>at the flophouse</en>
+						</atworkplace_2>
+						<atworkplace_3>
+							<de>im Polizeirevier</de>
+							<en>at the police station</en>
+						</atworkplace_3>
+						<atworkplace_4>
+							<de>am Strand</de>
+							<en>at the beach</en>
+						</atworkplace_4>
+						<atworkplace_5>
+							<de>im Zirkus</de>
+							<en>in the circus</en>
+						</atworkplace_5>
+						<atworkplace_6>
+							<de>im Pflegeheim</de>
+							<en>in the nursing home</en>
+						</atworkplace_6>
+						<atworkplace_7>
+							<de>im Stripclub</de>
+							<en>at the strip club</en>
+						</atworkplace_7>
+						<atworkplace_8>
+							<de>auf der Feuerwache</de>
+							<en>in the fire station</en>
+						</atworkplace_8>
+						<atworkplace_9>
+							<de>im Kloster</de>
+							<en>in the convent</en>
+						</atworkplace_9>
+						<atworkplace_a>
+							<de>auf dem Diskussionsforum</de>
+							<en>at the discussion forum</en>
+						</atworkplace_a>
+						<atworkplace_b>
+							<de>im Restaurant</de>
+							<en>in the restaurant</en>
+						</atworkplace_b>
+						<atworkplace_c>
+							<de>im Discounter</de>
+							<en>at the discount store</en>
+						</atworkplace_c>
+						<atworkplace_d>
+							<de>im Geheimlabor</de>
+							<en>at the secret laboratory</en>
+						</atworkplace_d>
+						<atworkplace_e>
+							<de>in der Manege</de>
+							<en>in the circus ring</en>
+						</atworkplace_e>
+						<atworkplace_f>
+							<de>im Konzertsaal</de>
+							<en>in the concert hall</en>
+						</atworkplace_f>
+						<atworkplace_g>
+							<de>in der Drehbuchagentur</de>
+							<en>at the screenwriting agency</en>
+						</atworkplace_g>
+						<atworkplace_h>
+							<de>auf der Ranch</de>
+							<en>at the ranch</en>
+						</atworkplace_h>
+						<havetheirhandsfull>
+							<de>haben alle Hände voll zu tun|sind schwer beschäftigt|sind voll im Einsatz|sind schwer bei der Arbeit|sind gestresst|sind gestresst, es wird ihnen nichts geschenkt</de>
+							<en>have their hands full|are heavily busy|are in full action|are hard at work|are stressed|are stressed, they get nothing for free</en>
+						</havetheirhandsfull>
+						<j>
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
+						</j>
+						<othertown>
+							<de>%STATIONMAP:RANDOMCITY%</de>
+						</othertown>
+						<description_0>
+							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Die ${who_${j}} müssen Extrazuschlag aushandeln.</de>
+							<en>are passing through and want their gear cleaned, pronto! The ${who_${j}} have to negotiate an extra surcharge.</en>
+						</description_0>
+						<description_1>
+							<de>sind da zur großen Mode-Make-up-Challenge! Die ${who_${i}} und ${who_${j}} müssen Pärchen bilden und abends einen glamourösen Catwalk-Showdown hinlegen!</de>
+							<en>are here for the big fashion-make-up challenge! The ${who_${i}} and ${who_${j}} have to pair up and put on a glamorous catwalk showdown in the evening!</en>
+						</description_1>
+						<description_2>
+							<de>haben auf die Kontaktanzeigen geantwortet und sind eingetroffen. Die ${who_${i}} sind nicht sicher, ob da ein Fehler vorliegt.</de>
+							<en>have responded to the contact ads and arrived. The ${who_${i}} aren't sure if there's been a mistake.</en>
+						</description_2>
+						<description_3>
+							<de>sind eingetroffen als Sparringspartner zum diesjährigen Sportfest-Fitnesstest. %firstname2% hatte wohl zuviele Donuts in letzter Zeit.</de>
+							<en>have arrived as sparring partners for this year's sports festival fitness test. %firstname2% must have had too many donuts recently.</en>
+						</description_3>
+						<description_4>
+							<de>planschen zu unbekümmert im Wasser und werden von den Wellen fortgetragen. Die ${who_${i}} retten wieder einmal den Tag.</de>
+							<en>splash around too light-heartedly in the water and are carried away by the waves. The ${who_${i}} save the day once again.</en>
+						</description_4>
+						<description_5>
+							<de>wollen in der Nachmittagsvorstellung unterhalten werden, obwohl sonst kaum Publikum da ist. Die ${who_${i}} machen die tote Hose bunt.</de>
+							<en>want to be entertained in the afternoon performance, even though there is hardly any other audience. The ${who_${i}} color the dullness.</en>
+						</description_5>
+						<description_6>
+							<de>sind da zur Beschwerde, weil sie mit der Behandlung ihrer Opas nicht einverstanden sind. Die ${who_${i}} mediieren gewaltfrei.</de>
+							<en>are there to complain because they don't agree with the treatment of their grandfathers. The ${who_${i}} mediate non-violently.</en>
+						</description_6>
+						<description_7>
+							<de>sind da samt Junggesellenabschieds-Entourage. Die ${who_${i}} müssen demonstrieren, wie man mal so richtig die Sau rauslässt.</de>
+							<en>are here along with a stag party entourage. The ${who_${i}} have to demonstrate how to really get down and dirty.</en>
+						</description_7>
+						<description_8>
+							<de>haben wegen eines Großbrandes angerufen. Die ${who_${i}} rücken aus, obwohl man nicht wissen kann, ob das wieder nur ein Lausbubenstreich ist.</de>
+							<en>have called about a major fire. The ${who_${i}} move out, although there's no way of knowing whether it is just another mischievous prank.</en>
+						</description_8>
+						<description_9>
+							<de>sind eingetroffen und wollen bekehrt werden. Die ${who_${i}} stimmen erstmal zu einem Liedchen für sie an.</de>
+							<en>have arrived and want to be converted. The ${who_${i}} first of all tune in to a little song for them.</en>
+						</description_9>
+						<description_a>
+							<de>wollen das mit der gefälschten Mondlandung einfach nicht glauben, trotz all der Beweise. %firstname3% packt seinen größten Trumpf aus.</de>
+							<en>just don't want to believe the fake moon landing, despite all the evidence. %firstname3% pulls out his biggest trump card.</en>
+						</description_a>
+						<description_b>
+							<de>am Nebentisch haben keine Manieren und schmatzen laut. %firstname2% fühlt sich gestört und kann so nicht arbeiten.</de>
+							<en>at the next table have no manners and are smacking noisily. %firstname2% feels disrupted and can't work like this.</en>
+						</description_b>
+						<description_c>
+							<de>haben Rabattmarken dabei, die's nur dort gibt. Die ${who_${i}} sind ganz begeistert und werden morgen gleich die 150 Kilometer nach %othertown% fahren.</de>
+							<en>have discount stamps with them that are only available there. The ${who_${i}} are really excited and will drive the 100 miles to %othertown% tomorrow.</en>
+						</description_c>
+						<description_d>
+							<de>und aus dem letzten Jahrhundert wurden versehentlich herbeigebeamt. %firstname1% muss für sie erstmal die Bildschirmanzeige entmystifizieren.</de>
+							<en>and from the last century were beamed here by mistake. %firstname1% has to demystify the screen display for them first.</en>
+						</description_d>
+						<description_e>
+							<de>haben sich in der Mitte niedergelassen, und die ${who_${i}} müssen ein paar Extrarunden drehen.</de>
+							<en>have sat down in the center, and the ${who_${i}} have to do a few extra laps.</en>
+						</description_e>
+						<description_f>
+							<de>schreien erneut nach Zugabe und wollen nochmal den Bogey-Marsch hören - zum fünften Mal. %firstname3% lässt sich immerhin noch eine Variation einfallen.</de>
+							<en>shout for another encore and want to hear the Bogey March again - for the fifth time. %firstname3%, nevertheless, comes up with one more variation.</en>
+						</description_f>
+						<description_g>
+							<de>sind da und wollen ihre Abenteuer verfilmt haben. Unsere ${who_${j}} sind sehr skeptisch, ob man da was gutes draus machen kann.</de>
+							<en>are here and want to have their adventures turned into a film. Our ${who_${j}} are very skeptical as to whether they can make something good out of it.</en>
+						</description_g>
+						<description_h>
+							<de>sind da mit ihren Nichten, die reiten lernen wollen, doch die Pferde haben heute keine Lust. Die ${who_${i}} finden den richtigen Ton.</de>
+							<en>are here with their nieces who want to learn to ride, but the horses don't feel like it today. The ${who_${i}} find the right tone.</en>
+						</description_h>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
+					<title>
+						<de>%trouble% im ${location_${k}}</de>
+						<en>%trouble% in ${location_${k}}</en> <!-- TODO: apply capitalization function when available -->
+					</title>
+					<description>
+						<de>%descriptions%</de>
+					</description>
+					<episodes min="1" max="2" />
+					<variables>
+						<descriptions>
+							<de>%description_0%|%description_1%</de>
+						</descriptions>
+						<description_0>
+							<de>%gang% %rioting% %bikers% %appears%${whythere_${k}}%causingtrouble%. Die ${who_${i}} %solvetheconflict% %intheirownway%.</de>
+							<en>%gang% %rioting% %bikers% %appears%${whythere_${k}}%causingtrouble%. The ${who_${i}} %solvetheconflict% %intheirownway%.</en>
+						</description_0>
+						<description_1>
+							<de>%park% in %town% ist %asocialhotspot%. Die ${who_${i}} treffen auf ${who_${j}} aus %othertown% und %discuss% %fiercely% über %politics%.</de>
+							<en>In %town%, %park% is %asocialhotspot%. The ${who_${i}} encounter ${who_${j}} from %othertown% and %fiercely% %discuss% %politics%.</en>
+						</description_1>
+						<trouble>
+							<de>Ärger|Panik|Pechsträhne|Chaos|Durcheinander|Desaster|Aufruhr|Krise|Aufregung|Verwüstung|Unruhe|Tumult|Eklat|Zoff|Krawall</de>
+							<en>Trouble|Panic|Streak of bad luck|Chaos|Mayhem|Disaster|Turmoil|Crisis|Commotion|Havoc|Unrest|Tumult|Uproar|Down and out|Riot</en>
+						</trouble>
+						<j>
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
+						</j>
+						<k>
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de>
+						</k>
+						<whythere_0>
+							<de>, überrumpelt Petrus an der Himmelspforte und will dem ewigen Frieden ein für alle mal den Garaus zu machen</de>
+							<en>, overpowers St. Peter at the Gates of Heaven, and wants to put an end to eternal peace once and for all</en>
+						</whythere_0>
+						<whythere_1>
+							<de> und ist drauf und dran, die Zeche zu prellen</de>
+							<en> and is about to bounce the bill</en>
+						</whythere_1>
+						<whythere_2>
+							<de>, um die schöne Stadtrandidylle ein wenig aufzumischen</de>
+							<en> to shake up the nice suburban peace a bit</en>
+						</whythere_2>
+						<whythere_3>
+							<de>, die Recht und Gesetz des Viertels an sich reißen wollen</de>
+							<en> who wants to take over the law and order of the neighborhood</en>
+						</whythere_3>
+						<whythere_4>
+							<de>, um den Laden auszurauben</de>
+							<en> to rob the store</en>
+						</whythere_4>
+						<whythere_5>
+							<de> und will die Zirkustiere stehlen</de>
+							<en> and wants to steal the circus animals</en>
+						</whythere_5>
+						<whythere_6>
+							<de> und will die Geister rekrutieren</de>
+							<en> and wants to recruit the ghosts</en>
+						</whythere_6>
+						<whythere_7>
+							<de> und will den längst stillgelegten Park ohne Genehmigung wieder in Betrieb nehmen</de>
+							<en> and wants to reopen the long-defunct park without a permit</en>
+						</whythere_7>
+						<whythere_8>
+							<de>, die als blinde Passagiere mitreisten, und wollen das Raumschiff entführen</de>
+							<en> who was traveling as stowaways, and wants to hijack the spaceship</en>
+						</whythere_8>
+						<whythere_9>
+							<de>, die auf Space-Piraten machen, und verlangen Gebühr für die Durchquerung ihres Orbits</de>
+							<en>, posing as space pirates and demanding a toll for crossing their orbit</en>
+						</whythere_9>
+						<whythere_a>
+							<de> und will die Kunstschätze an sich reißen</de>
+							<en> and wants to snatch the art treasures</en>
+						</whythere_a>
+						<whythere_b>
+							<de> in einem goldenen Unterseeboot und bietet Betäubungsmittel an</de>
+							<en> in a golden submarine offering narcotics</en>
+						</whythere_b>
+						<whythere_c>
+							<de> und will die Monarchie wieder einführen</de>
+							<en> and wants to reintroduce the monarchy</en>
+						</whythere_c>
+						<whythere_d>
+							<de> und will allen ihr eigenes Modediktat aufzwängen</de>
+							<en> and wants to impose their own fashion dictates on everyone</en>
+						</whythere_d>
+						<whythere_e>
+							<de> und besetzt den Sprungturm</de>
+							<en> and occupies the diving tower</en>
+						</whythere_e>
+						<whythere_f>
+							<de> und besetzt schwitzend die Kabinen, ohne die Montur abzulegen</de>
+							<en> and occupies the cabins, sweating, without wanting to take off their gear</en>
+						</whythere_f>
+						<whythere_g>
+							<de> und will den Wald für Profit abholzen</de>
+							<en> and wants to cut down the forest for profit</en>
+						</whythere_g>
+						<whythere_h>
+							<de> und will das Wasser privatisieren und für Profit verkaufen</de>
+							<en> and wants to privatize the water and sell it for profit</en>
+						</whythere_h>
+						<gang>
+							<de>Eine Gang|Eine Gruppe|Eine Bande|Ein Haufen|Ein Mob|Ein Pack|Eine Horde|Eine Posse</de>
+							<en>A gang of|A group of|A gang of|A bunch of|A mob of|A pack of|A horde of|A posse</en>
+						</gang>
+						<rioting>
+							<de>randalierender|rüpelhafter|unruhestiftender|störender|ungehorsamer|aufrührerischer|rebellischer|chaotischer|aufwieglerischer|ungestümer|unkontrollierbarer|unberechenbarer|unvernünftiger|uneinsichtiger|unangepasster|unbeherrschter|stürmischer|Aufruhr verursachender|unordentlicher|widerspenstiger|rücksichtsloser|ungehobelter|zügelloser|ungebändigter|wilder|unbändiger|irrationaler|zwieträchtiger|aufmüpfiger|unflätiger|pöbelnder|übler|übelster</de>
+							<en>rioting|rowdy|troublemaking|disruptive|unruly|riotous|rebellious|chaotic|agitating|boisterous|uncontrolled|unpredictable|unreasonable|inconsiderate|maladjusted|unrestrained|tumultuous|turmoil-causing|disorderly|disobedient|reckless|rude|unbridled|erratic|wild|ungovernable|irrational|discordant|seditious|foul-mouthed|rabble-rousing|nasty|the nastiest</en>
+						</rioting> 
+						<bikers>
+							<de>Biker|Punker|Punks|Skinheads|Hooligans|Rocker|Satanisten|Scooter|Rapper|Gangster|Aktivisten|Vaterlandsverräter|Arbeitsloser|Obdachloser|Hurensöhne|Husos|Panzerknacker|Abtrünniger|abtrünniger Söldner|Rabauken|Lausbuben|Raufbolde|LARPer|Arschlöcher|Drecksäcke</de>
+							<en>bikers|punkers|punks|skinheads|hooligans|rockers|satanists|scooters|rappers|gangsters|activists|traitors to the fatherland|unemployed|homeless|sons of bitches|SOBs|safecrackers|renegades|renegade mercenaries|bullies|rascals|roughnecks|LARPers|assholes|scumbags</en>
+						</bikers>
+						<appears>
+							<de>taucht auf|kreuzt auf|kommt an|findet sich ein|trifft ein|rückt an|tanzt an|schlägt auf|lässt sich blicken|ist im Anflug|kommt um die Ecke|bahnt sich ihren Weg|kommt</de>
+							<en>emerges|shows up|arrives|finds its way|appears|approaches|waltzes in|sets up camp|makes an entrance|is incoming|is coming around the corner|makes their way|comes</en>
+						</appears>
+						<causingtrouble>
+							<de>, was zu Spannungen führt|, was für Unruhe sorgt|, was Aufruhr verursacht|, was für Missstimmung sorgt|, was Spannungen verursacht|, was für Unfrieden sorgt|, was zu Unfrieden führt|</de>
+							<en>, which causes trouble|, which leads to turmoil|, which brings discord|, which causes disharmony|, which leads to tension|, which leads to unrest|, which causes unrest|</en>
+						</causingtrouble>
+						<solvetheconflict>
+							<de>lösen den Konflikt|schlichten|lösen das Problem|vermitteln|beschwichtigen|mediieren|sorgen für Frieden|schaffen Frieden|wissen was zu tun ist und handeln</de>
+							<en>solve the conflict|conciliate|solve the problem|arbitrate|appease|mediate|make peace|create peace|know what to do and take action</en>
+						</solvetheconflict>
+						<intheirownway>
+							<de>auf ihre Weise|auf ihre ureigene Art|ganz auf ihre Weise|so, wie es nur sie können|ziemlich originell|auf überraschende Weise</de>
+							<en>in their own way|in their innate manner|in their very own way|as only they can|quite originally|in a surprising way</en>
+						</intheirownway>
+						<othertown>
+							<de>%STATIONMAP:RANDOMCITY%</de>
+						</othertown>
+						<park>
+							<de>Der „${location_${k}}-Park“|Der „${location_${k}}-Vorgarten“|Der „${location_${k}}-Garten“|Der „${location_${k}}-Rosengarten“|Der „${location_${k}}-Blumengarten“|Die „${location_${k}}-Kantine“|Der „${location_${k}}-Platz”|Der „${location_${k}}-Spielplatz”|Der „${location_${k}}-Plaza”|Die „${location_${k}}-Piazza”|Die „${location_${k}}-Arkaden”|Die „${location_${k}}-Allee”|Der „${location_${k}}-Boulevard”</de>
+							<en>"${location_${k}} park"|"${location_${k}} frontyard"|"${location_${k}} garden"|"${location_${k}} rose garden"|"${location_${k}} flower garden"|"${location_${k}} cantina"|"${location_${k}} square"|"${location_${k}} playground"|"${location_${k}} plaza"|"${location_${k}} piazza"|"${location_${k}} arcade"|"${location_${k}} avenue"|"${location_${k}} boulevard"</en> <!-- TODO: apply capitalization function when available -->
+						</park>
+						<asocialhotspot>
+							<de>ein sozialer Brennpunkt|ein interessanter Treffpunkt|ein Ort der Begegnung unterschiedlichster Menschen|ein Ort, wo Welten aufeinanderprallen|ein Ort, wo sich alle sozialen Schichten begegnen|ein Ort, wo man den unterschiedlichsten Leuten begegnet|ein Ort, wo man den unterschiedlichsten Ansichten begegnet|ein Ort, wo man Menschen von überall her begegnet</de>
+							<en>a social hotspot|an interesting meeting place|a meeting place for a wide variety of people|a place where worlds collide|a place where all social classes clash|a place where you meet all kinds of different people|a place where you meet the most different opinions|a place where you meet people from everywhere</en>
+						</asocialhotspot>
+						<discuss>
+							<de>diskutieren|debattieren|streiten|streiten sich|fetzen sich|zanken sich</de>
+							<en>discuss|debate|argue about|fight about|quarrel about|bicker about</en>
+						</discuss>
+						<fiercely>
+							<de>heftig|scharf|grimmig|wild|leidenschaftlich|böse|erbittert|hitzig|angespannt|angeregt|aufgeregt</de>
+							<en>fiercely|harshly|ferociously|wildly|passionately|madly|grimly|fierily|tensely|agitatedly|excitedly</en>
+						</fiercely>
+						<politics>
+							<de>Innenpolitik|Außenpolitik|Religion|den kategorischen Imperativ|den Klimawandel|Migranten|Flüchtlingspolitik|die wahre Form der Erde</de>
+							<en>domestic politics|foreign affairs|religion|the categorical imperative|climate change|migrants|refugee policy|the true shape of the Earth</en>
+						</politics>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_04">
+					<title>
+						<de>%meeting% im ${location_${k}}</de>
+						<en>%meeting% in ${location_${k}}</en> <!-- TODO: apply capitalization function when available -->
+					</title>
+					<description>
+						<de>%descriptions%</de>
+					</description>
+					<episodes min="1" max="2" />
+					<variables>
+						<descriptions>
+							<de>%description_0%|%description_1%</de>
+						</descriptions>
+						<description_0>
+							<de>Im ${location_${k}}%allstillright% ${whythere_${k}}</de>
+							<en>In ${location_${k}}%allstillright% ${whythere_${k}}</en>
+						</description_0>
+						<description_1>
+							<de>%bar% ist in %town% gerade %thepartylocation%. %musicsession%</de>
+							<en>In %town%, %bar% currently is %thepartylocation%. %musicsession%</en>
+						</description_1>
+						<meeting>
+							<de>Treffen|Aufruhr|Fette Beute|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
+							<en>Meeting|Riot|Fuss|Big booty|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
+						</meeting>
+						<j>
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
+						</j>
+						<k>
+							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de>
+						</k>
+						<allstillright>
+							<de> ist die Welt noch in Ordnung.| ist alles in Ordnung.|, da lässt sich's aushalten.| ist alles gut.| gibt es nur gute Vibes.| ist's wie im Himmel.| ist die Stimmung stets ausgelassen.| ist die Luft voller Liebe und Freude.| ist jeder Tag ein Fest.| gibt es immer was zu feiern.| ist die Laune stets bestens.| gibt es nur strahlende Gesichter.| herrscht eine wunderbare Atmosphäre.| ist das Glück zu Hause.| scheint die Zeit stillzustehen.| gibt es keine Sorgen oder Probleme.| ist die Welt voller Magie.| fühlt man sich wie im siebten Himmel.</de>
+							<en>, all's right with the world.| everything's alright.|, life is comfortable and enjoyable.|, life is good.|, there are only good vibes.|, it's like heaven.|, the atmosphere is always lively.|, the air is full of love and joy.|, every day is a celebration.|, there is always something to celebrate.|, everyone is in high spirits.|, there are only smiles and joy.|, there is a wonderful atmosphere.|, happines resides.|, time seems to stand still.|, there are no worries or troubles.|, the world is full of magic.|, it feels like being on cloud nine.</en>
+						</allstillright>
+						<whythere_0>
+							<de>Petrus persönlich hat die ${who_${i}} eingeladen, die Himmelspforte stünde schließlich allen frommen Menschen offen, die reinen Herzens sind. Die ${who_${i}} unterhalten sich angeregt mit den Engeln vom Dienst.</de>
+							<en>St. Peter personally has invited the ${who_${i}}, the gate of heaven is, after all, open to all pious people who are pure of heart. The ${who_${i}} animatedly converse with the angels on duty.</en>
+						</whythere_0>
+						<whythere_1>
+							<de>Zu Feierabend darf man ja auch mal einen trinken gehen. %musicsession%</de>
+							<en>After all, you can have a drink after work. %musicsession%</en>
+						</whythere_1>
+						<whythere_2>
+							<de>Er gehört zur Wohnung von der Oma von %firstname1%. %musicsession%</de>
+							<en>It belongs to the apartment of the grandma of %firstname1%. %musicsession%</en>
+						</whythere_2>
+						<whythere_3>
+							<de>Ein Streit in der Nachbarschaft war etwas eskaliert, aber %firstname2%, %firstname3% und die Polizei konnten erfolgreich schlichten. Anschließend findet eine Hundetrainingsvorführung statt, und alle sind beeindruckt.</de>
+							<en>A dispute in the neighborhood had escalated somewhat, but %firstname2%, %firstname3%, and the police were able to successfully mediate. Afterwards, a dog training demonstration takes place, and everyone's impressed.</en>
+						</whythere_3>
+						<whythere_4>
+							<de>Die Feierabendeinkäufe erledigen sich ja nicht von alleine, sind aber schnell hinter sich gebracht.</de>
+							<en>After all, after-work shopping doesn't take care of itself, but it can be done quickly.</en>
+						</whythere_4>
+						<whythere_5>
+							<de>Ein Wanderzirkus gastiert nämlich gerade in %town%, und man fühlt sich mit den Schaustellern im Geiste verbunden.</de>
+							<en>In fact, a traveling circus is currently touring %town%, and there's a feeling of spiritual connection with the carnies.</en>
+						</whythere_5>
+						<whythere_6>
+							<de>Es gehört nämlich der abergläubischen Tante von %firstname3%. Lachend lösen unsere ${who_${i}} das Problem mit der elektrischen Leitung und genießen den Landurlaub.</de>
+							<en>It belongs to the superstitious aunt of %firstname3%. With laughter, our ${who_${i}} solve the problem with the electric line and enjoy the rural vacation.</en>
+						</whythere_6>
+						<whythere_7>
+							<de>Die ${who_${i}} helfen gerne beim Abbau. Der ganze Rummel weckt schönste Kindheitserinnerungen, doch irgendwann muss wieder Schluss und Frieden sein in %town%, finden sie.</de>
+							<en>The ${who_${i}} are happy to help with the dismantling. All the hustle and bustle brings back fond childhood memories, but at some point, there has to be peace and quiet again in %town%, they think.</en>
+						</whythere_7>
+						<whythere_8>
+							<de>Das Astronautentraining war für unsere ${who_${i}} ein Klacks. Und so machen sie sich auf in neue Welten, die nie zuvor ein Mensch gesehen hat.</de>
+							<en>Astronaut training was a snap for our ${who_${i}}. And so they set off for new worlds, to boldly go where no one has gone before.</en>
+						</whythere_8>
+						<whythere_9>
+							<de>%firstname3% hat eine Reise für alle um den Mond gewonnen, eine Marketingaktion eines neuen privaten Raumfahrtunternehmens. Da gibt man sich doch gerne als Versuchskaninchen her.</de>
+							<en>%firstname3% has won a trip for everyone around the moon, a marketing campaign of a new private space company. It's a pleasure to be a guinea pigs for such a special occasion.</en>
+						</whythere_9>
+						<whythere_a>
+							<de>Eine Freundin von %firstname3% kennt da nämlich jemanden, der jemand kennt, von dem eine Skulptur dort ausgestellt ist.</de>
+							<en>In fact, a friend of %firstname3% knows someone who knows someone who has a sculpture on display there.</en>
+						</whythere_a>
+						<whythere_b>
+							<de>%firstname2% ist nämlich großer Fan der „Pilzköpfe“ und hilft beim Organisieren eines Events rund um das gelbe Boot mit.</de>
+							<en>%firstname2% is a big fan of the "mop-tops" and is helping to organize an event around the yellow boat.</en>
+						</whythere_b>
+						<whythere_c>
+							<de>%town% hat nämlich eine weit zurückreichende und interessante Geschichte, und heute ist der letzte Tag der Ausstellung „Zeitlose Geschichten“ hier im Schloss.</de>
+							<en>In fact, %town% has a long and interesting history, and today is the last day of the "Timeless Tales" exhibition here at the castle.</en>
+						</whythere_c>
+						<whythere_d>
+							<de>%firstname1% hatte eine Einladung bekommen, denn ${who_${i}}-Ausrüstung ist gerade der letzte Schrei und dient als Vorlage für die brandneuesten Modekreationen.</de>
+							<en>%firstname1% got an invitation, because ${who_${i}} gear is all the rage right now and serves as a template for the latest fashion creations.</en>
+						</whythere_d>
+						<whythere_e>
+							<de>Der kleine Bruder von %firstname3% will die neueste Wasserrutsche dort ausprobieren.</de>
+							<en>The little brother of %firstname3% wants to try out the latest water slide there.</en>
+						</whythere_e>
+						<whythere_f>
+							<de>%firstname2% hat nämlich einen Wellness-Day „inkl. dampfenden Abenteuern für zwei“ gewonnen. TVTower übernimmt für %firstname3% und den Rest der Crew, und ab geht's!</de>
+							<en>In fact, %firstname2% has won a Wellness Day "incl. steamy adventures for two". TVTower covers for %firstname3% and the rest of the crew, and off we go!</en>
+						</whythere_f>
+						<whythere_g>
+							<de>Zum Glück hatte %firstname3% noch Plätze im Billigflieger für alle ergattert. Was tut man nicht alles, um Bewusstsein für Natur und Umwelt zu schaffen!</de>
+							<en>Luckily, %firstname3% had managed to get seats on the budget plane for everyone. The things you do to raise awareness for nature and the environment!</en>
+						</whythere_g>
+						<whythere_h>
+							<de>Zum Glück hatte %firstname3% noch Plätze im Billigflieger für alle ergattert, und das wilde Wüstenabenteuer kann beginnen!</de>
+							<en>Luckily, %firstname3% had managed to get seats on the budget plane for everyone, and the savage desert adventure can begin!</en>
+						</whythere_h>
+						<musicsession>
+							<de>Eine improvisierte Volksmusik-Jam-Session findet statt. %firstname2% hat eine sehr schöne Stimme.|Ein Chili-Kochwettbewerb findet statt gegen ${who_${j}} aus %othertown%. %firstname3% wird ganz heiß, es ist dann doch recht scharfes Chili.|Eine Handwerks-Challenge findet statt gegen ${who_${j}} aus %othertown%. Der Ort gehört mal so richtig aufgemöbelt. %firstname1% kann gut mit Hammer und Nägeln umgehen.|Eine alte Zeitkapsel wird entdeckt, die nostalgische Erinnerungen und eine Suche nach ihrem Besitzer auslöst. %firstname1% denkt zurück an Elvis.|Eine Escape-Room-Challenge findet statt gegen ${who_${j}} aus %othertown%. %firstname2% und %firstname3% stecken mal wieder fest. %firstname1% befreit sie.|Eine Spendenaktion findet statt. %firstname1% hat wie immer kein Kleingeld dabei.|Eine Hundetrainingsvorführung findet statt. %firstname1% und %firstname3% haben selber Hunde und zeigen allen, wie's geht.|Unsere ${who_${i}} sowie ${who_${j}} aus %othertown% organisieren eine Schnitzeljagd. %firstname1% und %firstname3% verlaufen sich mal wieder. %firstname2% sammelt sie wieder ein.|Ein Kochwettbewerb findet statt gegen gegen ${who_${j}} aus %othertown%. %firstname1% überzeugt mit einer italienisch-vietnamesischen Crossover-Cuisine-Kreation.|Plötzlich taucht ein Flashmob mit verrückten Künstlern auf. %firstname1% packt den Hula-Hoop-Reifen aus und macht mit.|Eine versteckte Schatzkarte wird entdeckt. %firstname1% und %firstname2% sind ganz baff: Wo könnte denn nur diese Affeninsel sein?|Ein Talentwettbewerb findet statt. Kein Problem für unsere ${who_${i}}, sind ja offensichtlich die talentiertesten, wenn sie schon ein TVTower-Kamerateam dabei haben.</de>
+							<en>An impromptu country music jam session takes place. %firstname2% has a very nice voice.|A chili cooking contest takes place against ${who_${j}} from %othertown%. %firstname3% gets all hot, it ends up being quite spicy chili.|A craft challenge takes place against ${who_${j}} from %othertown%. The place really really needs to be spruced up. %firstname1% is good with hammer and nails.|An old time capsule is discovered, triggering nostalgic memories and a search for its owner. %firstname1% remembers and reflects on Elvis.|An escape room challenge takes place against ${who_${j}} from %othertown%. %firstname2% and %firstname3% get stuck as always. %firstname1% sets them free.|A fundraiser takes place. %firstname1% has no change as usual.|A dog training demonstration takes place. %firstname1% and %firstname3% have dogs themselves and show everyone how it's done.|Our ${who_${i}} and ${who_${j}} from %othertown% organize a scavenger hunt. %firstname1% and %firstname3% get lost as usual. %firstname2% picks them up again.|A cooking competition takes place against ${who_${j}} from %othertown%. %firstname1% convinces with an Italian-Vietnamese crossover cuisine creation.|Suddenly a flash mob with crazy artists shows up. %firstname1% unpacks the hula hoop and joins in.|A hidden treasure map is discovered. %firstname1% and %firstname2% are flabbergasted: Where could this ape island be?|A talent contest takes place. No problem for our ${who_${i}}, obviously they are the most talented, since they already have a TVTower camera team with them.</en>
+						</musicsession>
+						<othertown>
+							<de>%STATIONMAP:RANDOMCITY%</de>
+						</othertown>
+						<bar>
+							<de>Die ${location_${k}}-Bar|Der ${location_${k}}-Stadl|Der ${location_${k}}-Garten|Der ${location_${k}}-Biergarten|Das ${location_${k}}-Bierzelt|Die ${location_${k}}-Nachtgalerie|Die ${location_${k}}-Nachtkantine|Das ${location_${k}}-Festival</de>
+							<en>${location_${k}} bar|${location_${k}} barn|${location_${k}} garden|${location_${k}} beer garden|${location_${k}} beer tent|${location_${k}} night arcade|${location_${k}} night-cantina|${location_${k}} festival</en> <!-- TODO: apply capitalization function when available -->
+						</bar>
+						<thepartylocation>
+							<de>*die* Party-Location|die Top-Ausgeh-Location|einer der beliebtesten Treffpunkte|einer der beliebtesten Versammlungsorte|*die* Event-Location|der Ort, wo immer was los ist|der Ort, wo die Action ist|*der* „Place to be“</de>
+							<en>*the* party location|a top location to have a night out|one of the most popular meeting places|one of the most popular get-togethers|*the* event location|the place where there is always something going on|the place where all the action is|*the* place to be</en>
+						</thepartylocation>
+					</variables>
+				</scripttemplate>
+			</children>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<!-- there might be up to 2 additional roles without
+				     further specifications -->
+				<job index="2" function="32" required="0" />
+				<job index="3" function="32" required="0" />
+			</jobs>
+
+			<genres maingenre="0" />
+			<blocks value="1" />
+			<price min="15000" max="26000" />
+			<potential min="50" max="70" slope="45" />
+			<outcome min="25" max="35" slope="40" />
+			<review min="45" max="65" slope="40" />
+			<speed min="35" max="65" slope="50" />
+		</scripttemplate>
+
+		<!-- === SERIES === -->
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<description>
+				<de>Dokumentation über %ANIMALS%.
+%EXTRA%</de>
+				<en>Documentary about %ANIMALS%.
+%EXTRA%</en>
+			</description>
+
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
+					<title>
+						<de>%TITLEEPISODE1%</de>
+						<en>%TITLEEPISODE1%</en>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
+					<title>
+						<de>%TITLEEPISODE2%</de>
+						<en>%TITLEEPISODE2%</en>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
+					<title>
+						<de>%TITLEEPISODE3%</de>
+						<en>%TITLEEPISODE3%</en>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
+					<title>
+						<de>%TITLEEPISODE4%</de>
+						<en>%TITLEEPISODE4%</en>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
+					<title>
+						<de>%TITLEEPISODE5%</de>
+						<en>%TITLEEPISODE5%</en>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
+					<title>
+						<de>%TITLEEPISODE6%</de>
+						<en>%TITLEEPISODE6%</en>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+			</children>
+
+			<variables>
+				<title>
+					<de>%ANIMAL1%%CONNECTOR1%|Party mit %ANIMAL1%%CONNECTOR1%|Zu Besuch bei %ANIMAL1%%CONNECTOR2%|Auf der Spur von %ANIMAL1%%CONNECTOR2%|Im Zoo bei %ANIMAL1% und %ANIMAL2%</de>
+					<en>%ANIMAL1%%CONNECTOR1%|Party with %ANIMAL1%%CONNECTOR1%|Visiting %ANIMAL1%%CONNECTOR2%|On the trail of %ANIMAL1%%CONNECTOR2%|In the Zoo among %ANIMAL1% and %ANIMAL2%</en>
+				</title>
+				<animals>
+					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo|Pfleger, Gäste und natürlich Tiere im Gehege</de>
+					<en>%ANIMAL1%, %ANIMAL2% and many more animals|animals in the zoo|keepers, guests and of course animals in the enclosure</en>
+				</animals>
+				<extra>
+					<de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
+					<en>%EXTRA1%%EXTRA2%.||Animal keepers give tips for rearing at home.|Including tips for dealing with pets.</en>
+				</extra>
+				<extra1>
+					<de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung </de>
+					<en>Cute baby animals |Cuddlesome feral cats |Bio manure </en>
+				</extra1>
+				<extra2>
+					<de>zu hauf.|sowie ab und zu eine finale Spritze|und ab und zu eine Tierfütterung aus Eigenanbau</de>
+					<en>in abundance.|and every now and then a final injection|and from time to time animal feeding from cultivation grown on-site</en>
+				</extra2>
+				<animal1>
+					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
+					<en>Ape|Frog|Camel|Lizard|Goat|Elephant|Mouse|Rhino</en>
+				</animal1>
+				<animal2>
+					<de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
+					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Polecat</en>
+				</animal2>
+				<animalep1>
+					<de>Affe|Frosch|Kamel|Waran</de>
+					<en>Ape|Frog|Camel|Lizard</en>
+				</animalep1>
+				<animalep2>
+					<de>Biber|Chamäleon|Dachs</de>
+					<en>Beaver|Chameleon|Badger</en>
+				</animalep2>
+				<animalep3>
+					<de>Ziege|Elefant|Maus|Nashorn</de>
+					<en>Goat|Elephant|Mouse|Rhino</en>
+				</animalep3>
+				<animalep4>
+					<de>Esel|Giraffe|Hirsch|Iltis</de>
+					<en>Donkey|Giraffe|Deer|Polecat</en>
+				</animalep4>
+				<connector1>
+					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und %ANIMAL2% ganz wild| und %ANIMAL2% im Zoo|</de>
+					<en>, %ANIMAL2% and co.| and %ANIMAL2%| and %ANIMAL2% all wild| and %ANIMAL2% in the Zoo|</en>
+				</connector1>
+				<connector2>
+					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und Pfleger</de>
+					<en>, %ANIMAL2% and co.| and %ANIMAL2%| and keepers</en>
+				</connector2>
+				<titleepisode1>
+					<de>%ANIMALEP1%|%ANIMALEP1% auf Abwegen|%ANIMALEP1% in Gefahr</de>
+					<en>%ANIMALEP1%|%ANIMALEP1% on the loose|%ANIMALEP1% in danger</en>
+				</titleepisode1>
+				<titleepisode2>
+					<de>%ANIMALEP2%|%ANIMALEP2% adoptiert|%ANIMALEP2% vermisst</de>
+					<en>%ANIMALEP2%|%ANIMALEP2% adopted|%ANIMALEP2% missing</en>
+				</titleepisode2>
+				<titleepisode3>
+					<de>%ANIMALEP3%|%ANIMALEP3% hautnah|%ANIMALEP3% im OP</de>
+					<en>%ANIMALEP3%|%ANIMALEP3% up close|%ANIMALEP3% in surgery</en>
+				</titleepisode3>
+				<titleepisode4>
+					<de>%ANIMALEP4%|%ANIMALEP4% geboren!|%ANIMALEP4% gefunden</de>
+					<en>%ANIMALEP4%|%ANIMALEP4% born!|%ANIMALEP4% found</en>
+				</titleepisode4>
+				<titleepisode5>
+					<de>%ANIMALEP2% trifft auf %ANIMALEP3%|%ANIMALEP2% bemuttert %ANIMALEP3%</de>
+					<en>%ANIMALEP2% meets %ANIMALEP3%|%ANIMALEP2% brings up %ANIMALEP3%</en>
+				</titleepisode5>
+				<titleepisode6>
+					<de>%ANIMALEP4% und Pfleger|%ANIMALEP4% frisst %ANIMALEP1%</de>
+					<en>%ANIMALEP4% and keeper|%ANIMALEP4% eats %ANIMALEP1%</en>
+				</titleepisode6>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="128" required="1" />
+			</jobs>
+
+			<genres maingenre="6" />
+			<episodes min="4" max="6" />
+			<blocks value="1" />
+			<price min="15000" max="26000" />
+			<potential min="35" max="65" slope="45" />
+			<outcome min="20" max="30" slope="40" />
+			<review min="30" max="45" slope="40" />
+			<speed min="20" max="40" slope="50" />
+		</scripttemplate>
+	</scripttemplates>
+
+	<programmeroles>
+		<programmerole guid="script-roles-ron-001" first_name="Miranda" last_name="Jones" title="Dr." gender="2" />
+		<programmerole guid="script-roles-ron-002" first_name="Jonathan" last_name="Spykes" gender="1" />
+		<programmerole guid="script-roles-ron-003" first_name="James" last_name="Smith" gender="1" />
+		<programmerole guid="script-roles-ron-004" first_name="Gerry" last_name="Smith" gender="1" />
+		<programmerole guid="script-roles-ron-005" first_name="Violetta" last_name="Smith" gender="2" />
+		<programmerole guid="script-roles-ron-006" first_name="Johann" last_name="Mayer" gender="1" />
+		<programmerole guid="script-roles-ron-007" first_name="Maria" last_name="Mayer" gender="2" />
+		<programmerole guid="script-roles-ron-008" first_name="Gordon" last_name="Stude" title="Prof." gender="1" />
+		<programmerole guid="script-roles-ron-009" first_name="Gordon" last_name="Pike" title="Dr." gender="1" />
+
+		<programmerole guid="script-roles-sco-001" first_name="Lucas" last_name="Scott" title="" gender="1" country="SCO" />
+		<programmerole guid="script-roles-sco-002" first_name="Harry" last_name="Wallace" title="Dr." gender="1" country="SCO" />
+		<programmerole guid="script-roles-sco-003" first_name="Charlie" last_name="McCallum" title="" gender="1" country="SCO" />
+
+		<programmerole guid="script-roles-swe-001" first_name="Liam" last_name="Bengtsson" title="" gender="1" country="S" />
+		<programmerole guid="script-roles-swe-002" first_name="Alva" last_name="Lindberg" title="Prof." gender="1" country="S" />
+		<programmerole guid="script-roles-swe-003" first_name="Filip" last_name="Jönsson" title="" gender="1" country="S" />
+
+		<programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="GB" />
+		<programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="GB" />
+		<programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="GB" />
+
+		<programmerole guid="script-roles-ger-001" first_name="Vincent" last_name="Graf" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-002" first_name="Emelie" last_name="Schulte" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-003" first_name="Adrian" last_name="Dietrich" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-004" first_name="Jana" last_name="Ziegler" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-005" first_name="Jonathan" last_name="Kuhn" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-006" first_name="Viktoria" last_name="Kühn" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-007" first_name="Theo" last_name="Engel" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-008" first_name="Josefine" last_name="Horn" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-009" first_name="Niko" last_name="Bergmann" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-010" first_name="Finja" last_name="Thomas" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-011" first_name="Till" last_name="Voigt" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-012" first_name="Isabel" last_name="Sauer" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-013" first_name="Benjamin" last_name="Arnold" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-014" first_name="Helena" last_name="Wolff" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-015" first_name="Florian" last_name="Pfeiffer" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-016" first_name="Isabella" last_name="Hansen" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-017" first_name="Marlon" last_name="Huber" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-018" first_name="Elisa" last_name="Petersen" gender="2" country="D" />
+		<programmerole guid="script-roles-ger-019" first_name="Bernd" last_name="Orlowski" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-020" first_name="Manfred" last_name="Schimanski" gender="1" country="D" />
+		<programmerole guid="script-roles-ger-021" first_name="Klaus" last_name="Rudzinski" gender="1" country="D" />
+
+
+	</programmeroles>
+</tvtdb>

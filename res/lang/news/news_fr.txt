@@ -1,0 +1,177 @@
+NEWS_TECHNICS_MEDIA   = Médias / Technologie
+NEWS_POLITICS_ECONOMY = Politique / Économie
+NEWS_SHOWBIZ          = Showbiz
+NEWS_SPORT            = Sport
+NEWS_CURRENTAFFAIRS   = Actu
+NEWS_CULTURE          = Culture
+
+NEWS_SORT_TOPICALITY = Trier par actualité
+NEWS_SORT_PAID       = Trier par statut de paiement
+NEWS_SORT_AGE        = Triere par âge
+NEWS_SORT_PRICE      = Trier par prix
+
+NEWSPLANSIGN_TO_THE_TEAM             = Note à l'équipe
+NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS = Diffuser les actualités suivantes :
+MANAGE_BROADCASTED_NEWS              = Gérer les actualités à diffuser
+
+NEWSSTUDIO_NOT_SUBSCRIBED                          = Pas abonné
+NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL                   = S'abonner au genre, nivau
+NEWSSTUDIO_SUBSCRIPTION_LEVEL                      = Niveau d'abonnement
+NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER         = Finir abonnement au genre
+NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL                 = prochain niveau d'abonnement
+NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL              = niveau momentané d'abonnement
+NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Aujourd'hui, tu as utilisé le niveau d'abonnement %MAXLEVEL%. Tu dois donc payer %TOPAY% au fin du jour.
+
+RIGHT_CLICK_TO_DELETE = Faire un clic droit pour effacer
+
+
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = L'ambassadeur de VR Duban insulte son collègue
+NEWS_TERROR_GROUP1_LEVEL1_TEXT1  = C'est un scandale : l'ambassadeur de VR Duban a injurier à son homologue de FR Duban.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = L'ambassadeur de VR Duban insulte son voisin
+NEWS_TERROR_GROUP2_LEVEL1_TEXT1  = C'est inoui : l'ambassadeur de FR Duban donne des noms d'oiseaux au représentant de VR Duban.
+
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Ambassadeur battu
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1  = L'ambassadeur de VR Duban a été assommé dans le parking souterrain sur son chemin du retour chez soi. Des temoins disent avoir vu partir une voiture de FR Duban.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Appartement d'ambassadeur ravagé
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1  = L'appartement de l'ambassadeur de FR Duban a été dévasté. Il y aurait des pistes pour une participation de VR Duban.
+
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = VR Duban menace
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1  = VR Duban menace ouvertement de se venger. Les coupables auraient été trouvés. La situation est explosive.
+NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = FR Duban menace des conséquences
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1  = Assez. Telle est le message succincte de l'ambassade. FR Duban prend des contre-mesures.
+
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = La police met en garde contre les terroristes
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1  = La police a perdu la trace d'un terroriste récemment repéré, qui serait d'origine dubanaise.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = La police met en garde contre les terroristes
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1  = La police a perdu la trace d'un terroriste récemment repéré, qui serait d'origine dubanaise.
+
+BOMB_DETONATION_IN_TVTOWER                   = Attentat dans le TVTower
+BOMB_DETONATION_IN_TVTOWER_TEXT              = Une détonation a secoué les habitants de la célèbre TVTower. La bombe a endommagé la salle «%ROOM%». L'enquête est en cours.
+TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = Un attentat à la bombe à endommagé la salle %ROOM%.
+TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT       = La remise à neuf coutera %COST%.
+TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT     = L'explosion a détruit |b|%TITLE%|/b|.
+TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT     = L'explosion a détruit un projet de production.
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Attentat de TVTower : Pas de pistes
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = Après l'attentat dans la célèbre TVTower, les autorités ont enquêté. Malheureusement, aucune trace exploitable n'a pu être préservée.
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES       = Attentat de TVTower : Nouvelles pistes
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = Après l'attentat dans la célèbre TVTower, les autorités ont enquêté - avec succès ! Il semblerait que des chaînes locales (%CHANNELS%) aient contribué à la catastrophe avec leurs jeux d'échange de panneaux.
+
+
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE       = Nouveau film de et avec %DIRECTORNAME1%
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Directeur et acteur %DIRECTORNAME1% nous régale de son nouveau film «%MOVIETITLE%».
+
+NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE       = Bientôt dans les salles : «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION = Première bande-annonce pour «%MOVIETITLE%».
+
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_TITLE       = Bientôt dans les salles : «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = %ACTORNAME1% paraitra prochainement dans «%MOVIETITLE%».
+
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE       = Bientôt dans les salles : «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Directeur %DIRECTORNAME1% présente «%MOVIETITLE%» dans un cinema proche de chez vous.
+
+NEWS_ANNOUNCE_MOVIE_TITLE1 = Nouveau film avec %ACTORNAME1%
+NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% dirige un nouveau film
+NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% présente sa nouvlelle œuvre
+
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Directeur %DIRECTORNAME1% et acteur %ACTORNAME1% présentent «%MOVIETITLE%».
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Bientôt dans les salles : %ACTORNAME1% dans «%MOVIETITLE%». Acteur %ACTORNAME2% chante les louanges de ce film.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Derniers travaux en cours pour «%MOVIETITLE%». %ACTORNAME1% est fier d'être part de ce projet.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = Première bande-annoce pour «%MOVIETITLE%». %DIRECTORNAME1% : «Meilleur film de l'année.»
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Derniers travaux en cours pour «%MOVIETITLE%». %DIRECTORNAME1% est convaincu des mérites de son ouvrage.
+
+
+WEATHER_FORECAST_FOR_X_TILL_Y    = Météo de %BEGINHOUR% à %ENDHOUR% heures
+SKY_IS_PARTIALLY_CLOUDY          = Le ciel est partiellement couvert.
+SKY_IS_OVERCAST1                 = Le ciel est couvert de nuages.
+SKY_IS_OVERCAST2                 = Les nuages couvrent tout le ciel.
+SKY_IS_WITHOUT_CLOUDS            = Le ciel reste sans nuages.
+SUN_SHINES_WHOLE_TIME            = Le soleil brille tout le temps.
+SUN_WINS_AGAINST_CLOUDS1         = Le soleil s'impose sur les nuages.
+SUN_WINS_AGAINST_CLOUDS2         = Le soleil chasse les nuages.
+SUN_IS_SHINING_SOMETIMES         = Le soleil se montre parfois.
+SUN_IS_NOT_SHINING               = Le temps devient triste. Le soleil se cache.
+RAIN_AND_SNOW_ALTERNATE          = La pluie et la neige se succèdent.
+RAIN_IS_POSSIBLE                 = Il faut s'attendre à de la pluie.
+SNOW_IS_FALLING                  = Prudence sur les routes. Probabilité de verglas.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = Les températures varient entre %MINTEMPERATURE% et %MAXTEMPERATURE% °C.
+TEMPERATURE_IS_CONSTANT_AT_X     = La température se stabilise à %TEMPERATURE% °C.
+
+IN_THE_LATER_HOURS1                       = Plus tard dans la journée
+IN_THE_LATER_HOURS2                       = Après le lever du jour
+IN_THE_LATER_HOURS3                       = Plus tard
+STORMY_WINDS_OF_UP_TO_X1                  = Probabilité de bourrasques jusqu'à %MAXWINDVELOCITY% km/h.
+STORMY_WINDS_OF_UP_TO_X2                  = Brises fraichissantes et jusqu'à bourrasques de %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1                           = Il n'y a presque pas de vent.
+NEARLY_NO_WIND2                           = Le vent souffle à peine.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Brises de %MINWINDVELOCITY% km/h et rares rafales de %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1      = Les vitesses de vent varient entre %MINWINDVELOCITY% et %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1           = La vitesse du vent se stabilise à %WINDVELOCITY% km/h.
+
+
+SCORE_POINT  = Point
+SCORE_POINTS = Points
+
+SPORT_ICEHOCKEY = Hockey sur glace
+SPORT_SOCCER    = Foot
+
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = et avant %TEAM1STAR% gagnent %MATCHKIND% sur
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = et avant %TEAM1STAR% gangnent %MATCHKIND% sur
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = est victorieux %MATCHKIND% grâce à un corner transformé en but par %TEAM1STARSHORT%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = sont victorieux %MATCHKIND% grâce à un corner transformé en but par %TEAM1STARSHORT%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = l'emporte %MATCHKIND% grâce à un penalty arrêté par %TEAM1KEEPERSHORT%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = l'emportent %MATCHKIND% grâce à un penalty arrêté par %TEAM1KEEPERSHORT%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = gagne le match %MATCHKIND% grâce à la performance incroyable du gardien %TEAM1KEEPERSHORT%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = gagnent le match %MATCHKIND% grâce à la performance incroyable du gardien %TEAM1KEEPERSHORT%
+
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = cède %MATCHKIND% 3 points précieux à
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = cèdent %MATCHKIND% 3 points précieux à
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = succombe %MATCHKIND% à cause d'une inattention du gardien %TEAM1KEEPERSHORT% à
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = succombent %MATCHKIND% à cause d'une inattention du gardien %TEAM1KEEPERSHORT% à
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perd %MATCHKIND% avec une performance décevante du gardien %TEAM1KEEPER% contre
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perdent %MATCHKIND% avec une performance décevante du gardien %TEAM1KEEPER% contre
+
+SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = après %PLAYTIMEMINUTES% minutes de foot de qualité douteuse
+SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = après %PLAYTIMEMINUTES% minutes de manœuvres tactiques
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = après %PLAYTIMEMINUTES% minutes pleins de suspense
+
+SPORT_TEAMREPORT_MATCHWIN_S1 = bat grâce à %TEAM1STAR%
+SPORT_TEAMREPORT_MATCHWIN_P1 = battent grâce à %TEAM1STAR%
+SPORT_TEAMREPORT_MATCHWIN_S2 = l'emporte %MATCHKIND% sur
+SPORT_TEAMREPORT_MATCHWIN_P2 = l'emportent %MATCHKIND% sur
+SPORT_TEAMREPORT_MATCHWIN_S3 = gagne contre
+SPORT_TEAMREPORT_MATCHWIN_P3 = gagnent contre
+SPORT_TEAMREPORT_MATCHWIN_S4 = gagne %MATCHSCORE1TEXT% contre
+SPORT_TEAMREPORT_MATCHWIN_P4 = gagnent %MATCHSCORE1TEXT% contre
+
+SPORT_TEAMREPORT_MATCHDRAW_S1 = perd la chance de %MATCHSCOREMAXTEXT% contre
+SPORT_TEAMREPORT_MATCHDRAW_P1 = perdent la chance de %MATCHSCOREMAXTEXT% contre
+SPORT_TEAMREPORT_MATCHDRAW_S2 = n'obtient qu'un match nul contre
+SPORT_TEAMREPORT_MATCHDRAW_P2 = n'obtiennent qu'un match nul contre
+SPORT_TEAMREPORT_MATCHDRAW_S3 = atteint %MATCHSCOREDRAWGAMETEXT% contre
+SPORT_TEAMREPORT_MATCHDRAW_P3 = atteignent %MATCHSCOREDRAWGAMETEXT% contre
+
+SPORT_TEAMREPORT_MATCHLOOSE_S1 = perd %MATCHKIND% %MATCHSCORE2TEXT% contre
+SPORT_TEAMREPORT_MATCHLOOSE_P1 = perdent %MATCHKIND% %MATCHSCORE2TEXT% contre
+SPORT_TEAMREPORT_MATCHLOOSE_S2 = chute %MATCHKIND% contre
+SPORT_TEAMREPORT_MATCHLOOSE_P2 = chutent %MATCHKIND% contre
+SPORT_TEAMREPORT_MATCHLOOSE_S3 = brade %MATCHKIND% %MATCHSCORE2TEXT% contre
+SPORT_TEAMREPORT_MATCHLOOSE_P3 = bradent %MATCHKIND% %MATCHSCORE2TEXT% contre
+
+SPORT_TEAMREPORT_MATCHKIND1 = de façon méritée
+SPORT_TEAMREPORT_MATCHKIND2 = de façon imméritée
+SPORT_TEAMREPORT_MATCHKIND3 = après %PLAYTIMEMINUTES% longues minutes
+SPORT_TEAMREPORT_MATCHKIND4 = dans un grand spectacle
+SPORT_TEAMREPORT_MATCHKIND5 = dans un duel serré
+SPORT_TEAMREPORT_MATCHKIND6 = dans un stade complet
+SPORT_TEAMREPORT_MATCHKIND7 = à guichet fermé
+SPORT_TEAMREPORT_MATCHKIND8 = devant les fans en délire
+SPORT_TEAMREPORT_MATCHKIND9 = devant un public frénétique
+SPORT_TEAMREPORT_MATCHKIND11 = devant une tribune presque vide
+SPORT_TEAMREPORT_MATCHKIND12 = dans un stade bien rempli
+SPORT_TEAMREPORT_MATCHRESULT = %TEAM1ARTICLE1% %TEAM1% %MATCHRESULT% %TEAM2ARTICLE2% %TEAM2% avec %FINALSCORE%.
+##Variant A = "_der_ FC gewinnt"
+##Variant B = "besiegt _den_ FC"
+SPORT_TEAMNAME_S_VARIANT_A = le
+SPORT_TEAMNAME_S_VARIANT_B = le
+SPORT_TEAMNAME_P_VARIANT_A = la
+SPORT_TEAMNAME_P_VARIANT_B = la

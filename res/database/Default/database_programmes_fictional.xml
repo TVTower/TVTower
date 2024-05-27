@@ -1,0 +1,1891 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" />
+	<allprogrammes>
+		<programme id="9bec0952-e3a8-48fc-82e9-d96e2809e746" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Beer, Bier, Pivo</de>
+				<en>Beer, Bier, Pivo</en>
+			</title>
+			<description>
+				<de>Alle 987 Biersorten werden vorgestellt und von einem Obdachlosen, einem Alkoholiker und einem Steuerberater getestet. </de>
+				<en>All 987 types of beer are presented and tested by a homeless man, an alcoholic and a tax consultant. </en>
+			</description>
+			<staff>
+				<member index="0" function="1">59f79e7c-9a72-4585-9d83-82ced5b6c191</member>
+				<member index="1" function="2">59f79e7c-9a72-4585-9d83-82ced5b6c191</member>
+				<member index="2" function="2">f43f2b92-43cd-4fc8-93aa-25adc647fb63</member>
+				<member index="3" function="2">0c774ab3-9301-4759-a3e1-40520dc9e7b9</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="B" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<ratings critics="9" speed="4" outcome="0" />
+		</programme>
+		<programme id="f51954ef-5d8a-4ca0-9936-fca27da79267" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Biedermeier - (K)eine Zeit zum Feiern</de>
+				<en>Biedermeier - (Not) A time for celebration</en>
+			</title>
+			<description>
+				<de>Gibt es noch heute Biedermeier? Wie war das damals? Diesen und anderen Fragen geht diese Sendung auf den Grund und versucht nicht ganz ernsthafte Antworten zu geben.</de>
+				<en>Does Biedermeier still exist today? What was it like back then? This program gets to the bottom of these and other questions and tries to give not entirely serious answers.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">be56dbc0-3bf4-4326-a2a5-f30edf94fd2a</member>
+				<member index="1" function="2">a3cca42a-90b7-4533-a240-206066759ea4</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.90" />
+			<ratings critics="14" speed="23" outcome="0" />
+		</programme>
+		<programme id="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Der Hammer fällt LIVE</de>
+				<en>The Hammer Falls LIVE</en>
+			</title>
+			<description>
+				<de>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</de>
+				<en>Only on television and nowhere else are these junk items auctioned off to the unsuspecting.</en>
+			</description>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="B" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
+			<ratings critics="7" speed="10" outcome="0" />
+		</programme>
+		<programme id="35190c1d-aa55-4e84-967f-72a374e84dcf" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Die Demoskopie des Menschen</de>
+				<en>The Demoscopy of Man</en>
+			</title>
+			<description>
+				<de>[1|Full] führt den Zuschauer durch subjektiv ausgewählte Kurzberichte über das Leben fanatischer Kirchgänger.</de>
+				<en>[1|Full] takes the viewer through subjectively selected short reports on the lives of fanatical churchgoers.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1996" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.67" />
+			<ratings critics="42" speed="23" outcome="4" />
+		</programme>
+		<programme id="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Die große Verarsche-Show</de>
+				<en>The Big Bullshitting-You Show</en>
+			</title>
+			<description>
+				<de>Hier treten Männer gegen Frauen an. Das Geschlecht mit den meisten Anrufen gewinnt.</de>
+				<en>Here, men compete against women. The gender with the most calls wins.</en>
+			</description>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2000" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.9" />
+			<ratings critics="7" speed="11" outcome="8" />
+		</programme>
+		<programme id="4ce1c133-6062-4ad4-b925-729007157db9" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Ein Ei zum Frühstück?</de>
+				<en>An egg for breakfast?</en>
+			</title>
+			<description>
+				<de>Locker flockig bringt uns diese Dokumentation dem Thema nahe: Wie gesund ist das Ei zum Frühstück? Schadet ein zweites zum Abendessen?</de>
+				<en>In a light and fluffy way, this documentary brings us closer to the topic: How healthy is the egg for breakfast? Does a second one for dinner do any harm?</en>
+			</description>
+			<staff>
+				<member index="0" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="GB" year="1995" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<ratings critics="28" speed="51" outcome="18" />
+		</programme>
+		<programme id="6273b893-99bf-4234-a312-a7a2d00845ec" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Faszination Plusquamperfekt</de>
+				<en>Fascination Plusquamperfect</en>
+			</title>
+			<description>
+				<de>Wissenschaftliche, künstlerische und sprachkulturelle Aufarbeitung der spannendsten Tempora in den schönsten Sprachen dieser Welt.</de>
+				<en>Scientific, artistic and linguistic-cultural reappraisal of the most exciting tempora in the most beautiful languages of this world.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="2">058c2105-4440-4d4f-8c62-131fb2fae01c</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1989" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<ratings critics="35" speed="0" outcome="10" />
+		</programme>
+		<programme id="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Kakiemon-Porzellanmanufakturen in Japan</de>
+				<en>Cacomon porcelain manufactories in Japan</en>
+			</title>
+			<description>
+				<de>Dokumentation über traditionelle Handwerker bei ihrer beschaulichen Arbeit.</de>
+				<en>Documentary about traditional craftsmen at their contemplative work.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">336ebe49-3b96-46f4-8cd5-da6f64ff8c38</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.10" />
+			<ratings critics="47" speed="5" outcome="15" />
+		</programme>
+		<programme id="c2f960af-16fa-45f8-8b3a-1a17d4d9f3cf" product="7" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Kaminfeuer</de>
+				<en>Chimney fire</en>
+			</title>
+			<description>
+				<de>Entspannen Sie vor Ihrem Fernseher. Das Feuer wirkt als wenn es vor Ihnen knisterte. Alte TV-Geräte erzeugen sogar die Wärme!</de>
+				<en>Relax in front of your TV. The fire acts as if it crackled in front of you. Old TV sets even generate the heat!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">fa5cf4fe-7704-4eab-808b-5ea8f3935c6d</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="PL" year="2001" distribution="1" maingenre="0" subgenre="" flags="16" blocks="3" price_mod="0.50" />
+			<ratings critics="5" speed="2" outcome="8" />
+		</programme>
+		<programme id="e14c3026-b946-4f5b-9986-a41aa03a9bd4" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Klimax Kulturgeschichte: Eine weibliche Erörterung</de>
+				<en>Climax Cultural History: A Female Discourse</en>
+			</title>
+			<description>
+				<de>[1|Full] präsentiert und erörtert die spannendsten kulturellen Entwicklungen der letzten 150 Jahre aus einem weiblichen Blickwinkel.</de>
+				<en>[1|Full] presents and discusses the most exciting cultural developments of the last 150 years from a female point of view.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="6" subgenre="" flags="4" blocks="5" price_mod="1.33" />
+			<releaseTime year_relative="5"  />
+			<ratings critics="75" speed="15" outcome="10" />
+		</programme>
+		<programme id="42761763-4125-4a66-8227-40027caab44a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Kultur Heute</de>
+				<en>Culture Today</en>
+			</title>
+			<description>
+				<de>[1|Full] erzählt exklusiv von den neuesten kulturellen Errungenschaften des freien Westens.</de>
+				<en>[1|Full] tells exclusively about the latest cultural achievements of the free West.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="0" />
+			<ratings critics="100" speed="39" outcome="0" />
+		</programme>
+		<programme id="4fe2dff2-039d-4747-b37a-7f79010b9997" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Kunst am Arsch der Welt</de>
+				<en>Arts at the Arse End of Nowhere</en>
+			</title>
+			<description>
+				<de>[1|Full] bestaunt und berichtet von skurrilen Kunstwerken und Künstlern aus einer Gebirgsregion mit ungewöhnlichem Namen.</de>
+				<en>[1|Full] marvels at and reports on whimsical artwork and artists from a remote mountainous region with an unusual name.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1983" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.13" />
+			<ratings critics="54" speed="15" outcome="10" />
+		</programme>
+		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="5" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Landung auf dem Mars</de>
+				<en>Landing on Mars</en>
+			</title>
+			<description>
+				<de>Die Solaris-Crew hat es geschafft: ein Amerikaner, ein Russe und der Papst landen auf dem Mars!</de>
+				<en>The Solaris crew has done it: an American, a Russian and the Pope land on Mars!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">5b52221c-10f6-4ad8-b818-c89c304e9ea0</member>
+				<member index="1" function="2">80448f46-150d-445a-b688-63b21523ff13</member>
+				<member index="2" function="2">c3494dd5-506b-46d1-97bd-12182ffa88da</member>
+				<member index="3" function="2">e94ba1d8-bb1f-4650-afea-3647a248b94d</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="2006" distribution="1" maingenre="17" subgenre="" flags="16" blocks="3" price_mod="1.7" />
+			<ratings critics="94" speed="80" outcome="89" />
+		</programme>
+		<programme id="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Lolcat: Da lacht die Katz'!</de>
+				<en>Lolcat: Here's where the cat laughs!</en>
+			</title>
+			<description>
+				<de>Kulturelle Erörterung eines jungen Internet-Phänomes: humoristische Katzen-Bilder.</de>
+				<en>Cultural exploration of a young Internet phenomenon: humorous cat pictures.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">682d65b5-9ff7-475a-8d50-a4ded9eefa9e</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="2007" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.07" />
+			<ratings critics="13" speed="23" outcome="9" />
+		</programme>
+		<programme id="6a9105ff-c5ba-496c-b099-7ec5fb4aa465" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Mal rückwärts!</de>
+				<en>Try in reverse!</en>
+			</title>
+			<description>
+				<de>Wissenschaftler erklären satanische Hetzsprüche, die beim Rückwärts-Abspielen populärer Schallplatten zu hören sind.</de>
+				<en>Scientists explain satanic diatribes heard when playing popular records in reverse.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="2">be4f2bdc-b09e-44fa-beac-5e2b74cea402</member>
+				<member index="2" function="2">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="3" function="2">62dcc893-538b-4fe7-8ac6-daf063185d73</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="NL" year="2001" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<ratings critics="32" speed="18" outcome="12" />
+		</programme>
+		<programme id="5eb4277b-41be-4b51-b639-5c8ec17cdb0a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Fictional programme but existing parody - https://en.wikipedia.org/wiki/Molvan%C3%AEa">
+			<title>
+				<de>Reiseziel Molwanîen</de>
+				<en>Destination Molvanîa</en>
+			</title>
+			<description>
+				<de>Molwanîen, das Land wo die Zahnärzte offen für Individualität plädieren. Reporter [0|Last] zeigt ein verschlafenes Land.</de>
+				<en>Molvanîa, the country where dentists openly advocate for individuality. Reporter [0|Last] shows a sleepy country.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">878b0a3f-dd01-4d01-994a-30fd38eece00</member>
+				<member index="1" function="2">878b0a3f-dd01-4d01-994a-30fd38eece00</member>
+				<member index="2" function="2">edb89eb9-1592-41cb-83b6-81eeecfacfd3</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="RM" year="2000" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<ratings critics="47" speed="9" outcome="4" />
+		</programme>
+		<programme id="13cc99a6-4e82-4126-9b75-72f190901a2a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Talk um 10</de>
+				<en>Talk at 10</en>
+			</title>
+			<description>
+				<de>[1|Full] erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch.</de>
+				<en>As every evening, [1|Full] expects a guest, often a star in the realm of literature, and discusses his or her new book.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
+				<member index="1" function="2">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1990" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.90" />
+			<ratings critics="80" speed="4" outcome="4" />
+		</programme>
+		<programme id="69955785-3357-4292-b20b-aba24f0cd98f" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Talk um 10 Spezial</de>
+				<en>Talk at 10 Special</en>
+			</title>
+			<description>
+				<de>Diesmal erwartet der Star-Buchkritiker [1|Last] nicht wie sonst nur einen Gast. Ganze Fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</de>
+				<en>This time, star book critic [1|Last] is not expecting just one guest as usual. A total of five criticize each other this time and spice up the discussion round.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
+				<member index="1" function="2">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1991" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.67" />
+			<ratings critics="70" speed="4" outcome="18" />
+		</programme>
+		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>TED am Morgen</de>
+				<en>TED in the morning</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="6" broadcast_time_slot_end="11" broadcast_flags="32768" price_mod="1.0" />
+			<ratings critics="25" speed="10" outcome="15" />
+		</programme>
+		<programme id="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>TED am Abend</de>
+				<en>TED in the evening</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="17" broadcast_time_slot_end="22" broadcast_flags="32768" price_mod="1.0" />
+			<ratings critics="25" speed="10" outcome="15" />
+		</programme>
+		<programme id="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Tschüssikowski A4</de>
+				<en>Tschüssi-kowski A4</en>
+			</title>
+			<description>
+				<de>Diskussion um den Wert der deutschen Autobahn heute und dessen Nutzen nach Erschöpfung der Ölquellen.</de>
+				<en>Discussion of the value of the German autobahn today and its usefulness after oil wells are depleted.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">8af76be0-b50c-4236-9275-e0cecd6594b0</member>
+				<member index="1" function="2">8af76be0-b50c-4236-9275-e0cecd6594b0</member>
+				<member index="2" function="2">9e19b198-4367-4637-ae6b-bb43264f8b4a</member>
+				<member index="3" function="2">9571b426-f7a9-47c5-94e5-98fede5b25d0</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2006" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.90" />
+			<ratings critics="84" speed="37" outcome="14" />
+		</programme>
+		<programme id="a61e7775-7565-48cd-ab4a-e5faea09d70d" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>VHS im Test</de>
+				<en>Folk High Schools under Test</en>
+			</title>
+			<description>
+				<de>Eine Generation die „Lehre“ mit „Leere“ um- und be- und schreibt. Keine Arbeit und Moos für alle!</de>
+				<en>A generation that (re)writes and describes "the long hall" with "the long haul". No jobs and moolah for all!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">f14d6ba0-0db5-4a76-a4d3-daba1603e4f6</member>
+				<member index="1" function="2">1994aa3a-23c3-48ce-b20a-d1f021df8c63</member>
+				<member index="2" function="2">2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2004" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<ratings critics="42" speed="47" outcome="0" />
+		</programme>
+		<programme id="862497a5-844d-42cb-a691-c4e3876cd1bc" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Wasser-Theremin, Klickphone &amp; Achselgeige: Musikgeschmack im Grenzbereich</de>
+				<en>Water Theremin, Clickphone &amp; Armpit Fiddle: Music Taste on the Fringe</en>
+			</title>
+			<description>
+				<de>Spannende Dokumentation über den Experimentalmusiker [1|Full], seine faszinierenden Instrumente und seine kakophonischen Klangwelten.</de>
+				<en>Exciting documentary about the experimental musician [1|Full], his fascinating instruments and his cacophonous soundscapes.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">003bbc46-ee54-43ea-bd2b-230f0feb051f</member>
+				<member index="1" function="2">bedfa8be-aaff-457d-b549-893c3a784c9b</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="A" year="2001" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.90" />
+			<ratings critics="52" speed="1" outcome="0" />
+		</programme>
+		<programme id="e0da07de-d9fc-4426-bcf2-119d344598c8" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Wer wird Pleitegeier?</de>
+				<en>Who'll be the Buster?</en>
+			</title>
+			<description>
+				<de>Moderator [1|Full] spielt mit 5 Kandidaten, allesamt am Rande des Ruins. Der Verlierer der Quizshow, übernimmt die Schulden der anderen.
+
+Spannende Unterhaltung und knifflige Fragen.</de>
+				<en>Host [1|Full] plays with 5 candidates, all on the brink of ruin. The loser of the quiz show takes over the debts of the others.
+
+Exciting entertainment and brain-teasing trivia questions.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">5c93b075-3f35-4ef7-8ef7-e0e99af0ad48</member>
+				<member index="1" function="2">c92483f6-53bb-4ff9-b164-5283c5d2d86c</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1999" distribution="2" maingenre="100" subgenre="" flags="0" blocks="1" price_mod="1.33" />
+			<ratings critics="28" speed="75" outcome="61" />
+		</programme>
+		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>BBWr - Best-Of Bolivian Wrestling</de>
+				<en>BBWr - Best-Of Bolivian Wrestling</en>
+			</title>
+			<description>
+				<de>[0|Last] - Härter - bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</de>
+				<en>[0|Last] - Harder - Bolivian Wrestling. Lousy actors and genuine blood delight fans around the world.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="1">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="BOL" year="2005" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.80" />
+			<ratings critics="7" speed="19" outcome="20" />
+			<children>
+				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>[0|Last] - [1|Last]</de>
+						<en>[0|Last] - [1|Last]</en>
+					</title>
+					<description>
+						<de>Ein spannendes Match von 1987, in dem [1|Last] seinem Widersacher [0|Last] zeigt, wo der Hammer hängt.</de>
+						<en>An exciting match from 1987 in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
+					</description>
+					<ratings critics="27" speed="27" />
+				</programme>
+				<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Der neue wird eingewiesen</de>
+						<en>The New One is Briefed</en>
+					</title>
+					<description>
+						<de>Die neuen Moderatoren [0|Full] und [1|Full] weisen den Neuling, [5|First] '[5|Nick]' [5|Last] ein... mit Stühlen auf dem Rücken.</de>
+						<en>The new hosts [0|Full] and [1|Full] are briefing the newbie, [5|First] '[5|Nick]' [5|Last]... with chairs against his back.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+					</staff>
+					<ratings critics="15" speed="16" />
+				</programme>
+				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>[2|Last] - [4|Nick]</de>
+						<en>[2|Last] - [4|Nick]</en>
+					</title>
+					<description>
+						<de>Wer macht das Rennen? Der Amateur '[2|Nick]' aus Ostsachsen gegen den BWr-Champion [4|First] '[4|Nick]' [4|Last]. Ein bissiger Kampf ist garantiert!</de>
+						<en>Who will bring home the bacon? The amateur '[2|Nick]' from East Saxony against the BWr champion [4|First] '[4|Nick]' [4|Last]. A gritty fight is guaranteed!</en>
+					</description>
+					<ratings critics="15" speed="39" />
+				</programme>
+				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>[3|Last] - [5|Last]</de>
+						<en>[3|Last] - [5|Last]</en>
+					</title>
+					<description>
+						<de>Schlägt der [3|Last] auf Granit oder schafft er es dem Altmeister [5|First] '[5|Nick]' [5|Last] zu schlagen? Nur für hartgesottene Zuschauer, hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</de>
+						<en>Does [3|Last] hit granite or does he manage to beat the old master [5|First] '[5|Nick]' [5|Last]? Only for the tough spectators, here the world record in long-range blood-splatter was set to 5.3 meters.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+					</staff>
+					<ratings critics="7" speed="35" />
+				</programme>
+				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Tag-Team-Match</de>
+						<en>Tag Team Match</en>
+					</title>
+					<description>
+						<de>Die Moderatoren nach Jahren wieder im Ring. [0|Last] und [1|Last] im Team mit [3|Last] gegen die bolivianische Muskelpracht verstärkt durch den deutschen [2|Last].</de>
+						<en>The hosts back in the ring after years. [0|Last] and [1|Last] teaming up with [3|Last] against the splendid Bolivian display of muscles supported by the German [2|Last].</en>
+					</description>
+					<ratings critics="16" speed="51" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="04439fd1-e89f-4922-a48e-6f8ddf96f7ab" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Ronny hilft...</de>
+				<en>Ronny assists...</en>
+			</title>
+			<description>
+				<de>Der ehemalige Programmierer [0|Full] versucht Anrufern bei deren Problemen zu helfen - live am Telefon.</de>
+				<en>The former programmer [0|Full] tries to help people calling in with their problems - live on the phone.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2011" distribution="2" maingenre="0" subgenre="" flags="16" blocks="4" price_mod="0.21" />
+			<ratings critics="6" speed="3" outcome="0" />
+			<children>
+				<programme id="39803483-0800-46e3-a153-5534c3d212da" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Marios Wohnzimmer</de>
+						<en>Mario's living room</en>
+					</title>
+					<description>
+						<de>Mario benötigt Einrichtungstipps für die neue Wohnung. Ronny und sein Team stehen beratend zur Seite.</de>
+						<en>Mario needs furnishing tips for the new apartment. Ronny and his team are there to advise.</en>
+					</description>
+					<ratings critics="6" speed="3" />
+				</programme>
+				<programme id="4c062f49-f1e8-400a-9c11-852e95327873" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sandros Handyvertrag</de>
+						<en>Sandro's cell phone contract</en>
+					</title>
+					<description>
+						<de>Sandro aus Wernigerode hat sich einen Handyvertrag für 1000 Euro im Monat aufschwatzen lassen. Ronny hilft...</de>
+						<en>Sandro from Wernigerode has been talked into a cell phone contract for 1000 euros a month. Ronny helps...</en>
+					</description>
+					<ratings critics="5" speed="4" />
+				</programme>
+				<programme id="dc0b1ca6-c1c1-496f-9882-06f51fe0ab97" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Ok, OP...</de>
+						<en>Ok, Op...</en>
+					</title>
+					<description>
+						<de>Die Brustimplantate von Isolde aus Regensburg müssen erneuert werden. Ronny gibt ihr telefonisch Tipps zur Größe.</de>
+						<en>Isolde from Regensburg needs her breast implants to be renewed. Ronny advises her on sizing over the phone.</en>
+					</description>
+					<ratings critics="6" speed="3" />
+				</programme>
+				<programme id="fc7b481e-33b5-4113-89b3-9998ef8c66a6" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>...sich selbst</de>
+						<en>...himself</en>
+					</title>
+					<description>
+						<de>Das schier unglaubliche geschieht in dieser Ausgabe: Ronny telefoniert mit sich selbst und gibt Tipps als Showmaster.</de>
+						<en>The almost unbelievable happens in this episode: Ronny makes a phone call to himself and gives advice how to be a show host.</en>
+					</description>
+					<ratings critics="6" speed="8" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="e3065f58-7e56-49f4-8978-89f6dfe18b57" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Aus dem Leben gegriffen</de>
+				<en>Taken From Real Life</en>
+			</title>
+			<description>
+				<de>Brisantes von der Mittelschicht. Reality-Doku-Soap-Format der Billigklasse.</de>
+				<en>Edgy stuff from the middle class. Reality-docu-soap format of the budget range.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2009" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.2" />
+			<ratings critics="3" speed="7" outcome="0" />
+			<children>
+				<programme id="3daec432-9b89-493d-806a-74b39ef9d7c4" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Malocher</de>
+						<en>The Slogger</en>
+					</title>
+					<description>
+						<de>Er ist fleißiger Klempner und dauernd auf Achse doch dann erfährt Jörgs Frau, bei wem er alles Rohre verlegt.</de>
+						<en>He is a hard-working plumber and constantly on the road, but then Jörg's wife finds out where else he is laying pipes.</en>
+					</description>
+					<ratings critics="3" speed="7" />
+				</programme>
+				<programme id="62fdaea6-a012-4430-a442-cedb78a10e82" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Frivole Liebschaften</de>
+						<en>Frivolous Liaisons</en>
+					</title>
+					<description>
+						<de>Bärbel ist nicht nur Hausfrau aus Leidenschaft. Der Nebendienst ermöglicht ihrer jungen Familie täglich warme Mahlzeiten. Als Ihr Mann davon erfährt muss sie sich entscheiden.</de>
+						<en>Bärbel is not only a housewife of passion. Her part-time job provides her young family with daily warm meals. When her husband finds out, she has to make a decision.</en>
+					</description>
+					<ratings critics="5" speed="10" />
+				</programme>
+				<programme id="2d98454f-f768-447b-bbd1-070ac621927f" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Nachbars Nebenberuf</de>
+						<en>Neighbor's Side Job</en>
+					</title>
+					<description>
+						<de>Seine Pizzen sind die beliebtesten in Marions Schule. Bis ihre Mutter hinter das Geheimnis der Wunder-Funghis kommt.</de>
+						<en>His pizzas are the most popular in Marion's school. Until her mother finds out about the secret of the Miracle-Funghi.</en>
+					</description>
+					<ratings critics="3" speed="9" />
+				</programme>
+				<programme id="5f96e1bc-5c96-4289-b020-972d657e0d39" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Ohne Schulabschluss</de>
+						<en>Without Graduation</en>
+					</title>
+					<description>
+						<de>Mariusz und Katja sind ein Paar und das schon seit der 7. Klasse. Als Katja erfährt, dass sie schwanger ist, will sie noch vor der Prüfung die Schule abbrechen...</de>
+						<en>Mariusz and Katja are a couple and have been since 7th grade. When Katja finds out that she is pregnant, she wants to drop out of school before the exam...</en>
+					</description>
+					<ratings critics="5" speed="10" />
+				</programme>
+				<programme id="7448b9f0-f470-409a-afb6-e2763a4b536c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der fiese Chef</de>
+						<en>The Nasty Boss</en>
+					</title>
+					<description>
+						<de>Jedes falsche Wort legt Berts Chef auf die Goldwaage, und nie kommt ein Lob über die Lippen. Als er seinen Boss dann noch in flagranti mit seiner Frau erwischt, dreht Bert durch.</de>
+						<en>Bert's boss weighs every wrong word and never praises him. When he then catches his boss in flagrante with his wife, Bert freaks out.</en>
+					</description>
+					<ratings critics="11" speed="16" />
+				</programme>
+				<programme id="0d33b686-a7d7-4649-859c-5033e1c64686" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Drogenkurier</de>
+						<en>The Drug Courier</en>
+					</title>
+					<description>
+						<de>Hans G. ist gelernter Maurer, doch des Nachts fährt er Touren für den fiesen Achim J. Als seine Frau davon Wind bekommt, will sie die Scheidung - bis sie erfährt warum ihr Mann dies tut...</de>
+						<en>Hans G. is a trained bricklayer, but at night he drives tours for the nasty Achim J. When his wife gets wind of it she wants a divorce - until she finds out why her husband is doing this...</en>
+					</description>
+					<staff>
+						<member index="0" function="1">ab17d747-426e-4a3c-ae6b-ac27587f7563</member>
+					</staff>
+					<ratings critics="5" speed="9" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Ein Päuschen zum Gewinn</de>
+				<en>A Little Break For the Win</en>
+			</title>
+			<description>
+				<de>Schnelle Raterunden für debile Anrufer. Gestellt werden Fragen zu aktuell erschienen Schundromanen.</de>
+				<en>Short quiz sessions for dimwitted callers. The questions asked are about currently published pulp novels.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
+				<member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2009" distribution="2" maingenre="0" subgenre="" flags="128" blocks="1" price_mod="0.85" />
+			<ratings critics="5" speed="25" outcome="15" />
+			<children>
+				<programme id="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Leichte Gewinne</de>
+						<en>Easy Profit</en>
+					</title>
+					<description>
+						<de>Um ein Stammpublikum einzurichten, werden in der ersten Folge die Lösungen gleich mit eingeblendet.</de>
+						<en>In order to establish a regular audience in the first episode, the solutions are displayed with the questions straight away.</en>
+					</description>
+					<ratings critics="3" speed="28" />
+				</programme>
+				<programme id="a2ac67b0-6689-4c50-9489-d516bb15b771" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Harte Brocken</de>
+						<en>Tough Nut</en>
+					</title>
+					<description>
+						<de>Der Moderator suggeriert schwere Fragen, dabei sind es die gleichen wie in der Premierensendung.</de>
+						<en>The presenter insinuates difficult questions, but they are the same as in the premiere show.</en>
+					</description>
+					<ratings critics="3" speed="20" />
+				</programme>
+				<programme id="82a377c0-4950-40cb-9813-9bb5c8ad9ad8" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Genie gesucht</de>
+						<en>Genius wanted</en>
+					</title>
+					<description>
+						<de>In der diesigen Ausgabe sollen die Anrufer die Frage nach dem Sinn des Lebens beantworten. Gewinnern spendiert die Sendung eine Reise zum Mond.</de>
+						<en>In this episode, callers are asked to answer the question of the meaning of life. The show gives winners a trip to the moon.</en>
+					</description>
+					<ratings critics="3" speed="25" />
+				</programme>
+				<programme id="81800e30-c387-4a29-9c21-c306a542cd7a" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Dürft ich Fragen?</de>
+						<en>May I ask?</en>
+					</title>
+					<description>
+						<de>Der Moderator stellt unangenehme Fragen, die alle Anrufer über sich ergehen lassen müssen, um zu gewinnen.</de>
+						<en>The moderator asks unpleasant questions that all callers have to endure in order to win.</en>
+					</description>
+					<ratings critics="5" speed="22" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="64" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TODO: Final missing? Also should age pretty fast. Add the other World Cups instead of having this in the movie agency all the time.">
+			<title>
+				<de>Fußball-Weltmeisterschaft Italien 1990</de>
+				<en>Soccer World Cup Italy 1990</en>
+			</title>
+			<description>
+				<de>Die XIV. WM war geprägt von legendären Spielern, Toren und Szenen. Gezeigt werden Achtel-, Viertel-, Halbfinale und Finale.</de>
+				<en>World Cup XIV was marked by legendary players, goals and scenes. Shown are eighth, quarter, semifinals and final.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">common-amateur-director</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.90" />
+			<releaseTime year="1990" day="8" /> <!-- This shouldn't be availabe at the beginning of the year -->
+			<ratings critics="32" speed="75" outcome="80" />
+			<children>
+				<programme id="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="64" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Kamerun - Kolumbien 2:1</de>
+						<en>Cameroon 2-1 Colombia</en>
+					</title>
+					<description>
+						<de></de>
+						<en></en>
+					</description>
+					<staff>
+						<member index="1" function="2">8dbf9ebe-a0a1-4400-8ed5-82cd8ac0185e</member>
+						<member index="2" function="2">b360f7b8-3d87-4f6a-96c5-cc7a8ab8c488</member>
+					</staff>
+				</programme>
+				<programme id="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="64" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>CSFR - Costa Rica 4:1</de>
+						<en>CSFR 4-1 Costa Rica</en>
+					</title>
+					<description>
+						<de></de>
+						<en></en>
+					</description>
+					<staff>
+						<member index="1" function="2">c0b2d723-bf35-4e05-868c-205815edd356</member>
+						<member index="2" function="2">b11fed5e-9636-4a9d-b13a-f5d490fef1b9</member>
+					</staff>
+				</programme>
+				<programme id="67f527f4-5d82-442f-9eaa-418710c35bbb" product="64" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Brasilien - Argentinien 0:1</de>
+						<en>Brazil 0-1 Argentina</en>
+					</title>
+					<description>
+						<de></de>
+						<en></en>
+					</description>
+					<staff>
+						<member index="1" function="2">88595c7f-30bf-4600-add4-43098011d419</member>
+						<member index="2" function="2">1d71a663-3fc0-44b5-9887-583eb5ca9959</member>
+					</staff>
+				</programme>
+			</children>
+		</programme>
+		<programme id="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Nur wer anruft kann gewinnen</de>
+				<en>You can win only if you call</en>
+			</title>
+			<description>
+				<de>Schäbige Call-In-Show in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
+				<en>Shabby call-in show in which candidates have to recognize celebrities' breasts. At most, it's the broadcaster who's winning here.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2009" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="0.85" />
+			<ratings critics="2" speed="35" outcome="15" />
+			<children>
+				<programme id="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Anrufer Tommy wird abgezockt</de>
+						<en>Caller Tommy gets ripped off</en>
+					</title>
+					<description>
+						<de>Anrufer Tommy kennt Sängerin Susi persönlich und hat sie auch schon im Freibad gesehen. Dennoch scheint er sich bei den Brüsten zu verschätzen.</de>
+						<en>Caller Tommy knows singer Susi personally and has also seen her at the outdoor swimming pool. Nevertheless, he seems to misjudge the breasts.</en>
+					</description>
+					<ratings critics="5" speed="30" />
+				</programme>
+				<programme id="f9278cc4-8468-4158-995f-59cc4ffa2230" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Haarige Erkenntnis</de>
+						<en>Hairy insight</en>
+					</title>
+					<description>
+						<de>Diesmal werden die Zuschauer vom Foto eines Bauarbeiter-Dekolleté in die Irre geführt. Zum Haare raufen.</de>
+						<en>This time the viewers are misled by the photo of a plumber's smile. It's enough to make your hair stand on end.</en>
+					</description>
+					<ratings critics="8" speed="25" />
+				</programme>
+				<programme id="28b4c473-e977-44c0-a593-4ac951f7d277" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Mella Melone</de>
+						<en>Mella Melon</en>
+					</title>
+					<description>
+						<de>Gast-Quizmaster heute die prominente Erotikdarstellerin Mella Melone. Die Gewinnchancen für Anrufer verfolgen den IQ der Moderatorin.</de>
+						<en>Guest quizmaster today the celebrity erotic actress Mella Melon. The winning odds for callers track the IQ of the presenter.</en>
+					</description>
+					<ratings critics="15" speed="30" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="13cf3270-5458-460e-8360-75e0adc73a49" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Die Hellseher</de>
+				<en>The Clairvoyants</en>
+			</title>
+			<description>
+				<de>[0|First] und [1|First] verwirren mit verschwommenen Ausdeutungen von Zukunft und Vergangenheit ihrer Anrufer.</de>
+				<en>[0|First] and [1|First] confuse with blurred interpretations of their callers' future and past.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">afa8d190-c907-4fcf-9c34-d55136ab3c99</member>
+				<member index="1" function="2">ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1999" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="1.05" />
+			<ratings critics="3" speed="15" outcome="8" />
+			<children>
+				<programme id="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Vaters Geist</de>
+						<en>Father's Spirit</en>
+					</title>
+					<description>
+						<de>Zwar kommt der Anruf aus der Regie, dennoch erreicht Mariusz angeblich den verstorbenen Vater.</de>
+						<en>Although the call comes from the control room, nevertheless Mariusz allegedly reaches the deceased father.</en>
+					</description>
+					<ratings critics="2" speed="18" />
+				</programme>
+				<programme id="358da90b-2c5c-4796-acb3-6ae69490d7cf" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rudi der Pudel</de>
+						<en>Rudi the Poodle</en>
+					</title>
+					<description>
+						<de>Marlene aus Berlin möchte wissen, ob der entlaufene Pudel Rudi je wieder nach Hause kommen wird.</de>
+						<en>Marlene from Berlin wants to know if Rudi, the runaway poodle, will ever come home again.</en>
+					</description>
+					<ratings critics="5" speed="13" />
+				</programme>
+				<programme id="eeaf10fd-4105-4e53-b70d-c1a32316176e" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Transmediale Olympiade</de>
+						<en>Transmedia Olympics</en>
+					</title>
+					<description>
+						<de>Mariusz und Beatrix versuchen in dieser Ausgabe so vielen Anrufern wie möglich zu helfen - deren Themen müssen variieren.</de>
+						<en>Mariusz and Beatrix try to help as many callers as possible in this issue - their topics must vary.</en>
+					</description>
+					<ratings critics="2" speed="20" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="4" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Maler vergangener Zeiten</de>
+				<en>Painters of Bygone Times</en>
+			</title>
+			<description>
+				<de>[1|Full] sucht und besucht Nachfahren berühmter Maler. Begleitet wird das Treffen von Einspielern die damalige Zeiten nachstellen.</de>
+				<en>[1|Full] seeks and visits descendants of famous painters. The encounter is accompanied by recordings that recreate the era of that time.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+				<member index="1" function="128">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.0" />
+			<ratings critics="49" speed="17" outcome="0" />
+			<children>
+				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Michelangelo</de>
+						<en>Michelangelo</en>
+					</title>
+					<description>
+						<de>[1|Last] trifft Mike aus London, er behauptet ein Nachfahre der Cousine 12. Grades von Michelangelos Großtante zu sein.</de>
+						<en>[1|Last] meets Mike from London, he claims to be a 12th cousin descendant of Michelangelo's great aunt.</en>
+					</description>
+					<ratings critics="49" speed="17" />
+				</programme>
+				<programme id="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Monet</de>
+						<en>Monet</en>
+					</title>
+					<description>
+						<de>Diesmal reist [1|Last] nach Paris um Nachfahren des bedeutenden Impressionisten Monet zu suchen.</de>
+						<en>This time [1|Last] travels to Paris to look for descendants of the renowned impressionist Monet.</en>
+					</description>
+					<ratings critics="47" speed="12" />
+				</programme>
+				<programme id="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Picasso</de>
+						<en>Picasso</en>
+					</title>
+					<description>
+						<de>In Madrid spürt [1|Full] einen Neffen Picassos auf. Interessante Anekdoten würzen diese Episode.</de>
+						<en>In Madrid, [1|Full] tracks down a nephew of Picasso. Interesting anecdotes spice up this episode.</en>
+					</description>
+					<ratings critics="49" speed="18" />
+				</programme>
+				<programme id="494fa370-4744-4616-aa14-910aa692af25" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rembrandt</de>
+						<en>Rembrandt</en>
+					</title>
+					<description>
+						<de>[1|Last] sendet diesmal direkt vom Hausboot eines Rembrandt-Nachfahren. Neben Kochrezepten erfährt der Zuschauer vieles aus Rembrandts Leben.</de>
+						<en>This time, [1|Last] broadcasts directly from the houseboat of a Rembrandt descendant. In addition to cooking recipes, the viewer learns a lot about Rembrandt's life.</en>
+					</description>
+					<ratings critics="22" speed="15" />
+				</programme>
+				<programme id="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Kandinsky</de>
+						<en>Kandinsky</en>
+					</title>
+					<description>
+						<de>Bortsch und Kandinsky. Neben einem geselligem Essen begleiten die Zuschauer [1|Last] durch die Geschichte mit Zaren und Kandinsky.</de>
+						<en>Borch and Kandinsky. In addition to a convivial meal, viewers accompany [1|Last] through history with tsars and Kandinsky.</en>
+					</description>
+					<ratings critics="49" speed="14" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="7ad20bf5-c4c6-4237-b52a-b7b189ede0bf" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Rolf Krall besucht...</de>
+				<en>Rolf Krall visits...</en>
+			</title>
+			<description>
+				<de>Der bekannte Moderator [1|Full] besucht Menschen die keiner kennt, deren Wirkung aber unvergessen bleibt.</de>
+				<en>The well-known presenter [1|Full] visits people no one knows, but whose impact remains unforgotten.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
+				<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
+			</staff>
+			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.85" />
+			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1990" />
+			<ratings critics="20" speed="42" outcome="35" />
+			<children>
+				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rolf Krall besucht... Madame Krussaud</de>
+						<en>Rolf Krall visits... Madame Krussaud</en>
+					</title>
+					<description>
+						<de>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
+						<en>In the shadow of her sister, Madame Krussaud crafts figures from earwax provided by fans.</en>
+					</description>
+					<ratings critics="28" speed="32" />
+				</programme>
+				<programme id="b7f87935-b1ec-44a8-b544-398b010af809" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rolf Krall besucht... Jens Flumme</de>
+						<en>Rolf Krall visits... Jens Flumme</en>
+					</title>
+					<description>
+						<de>[1|Full] zu Besuch bei Jens Flumme. Ausführlich wird im Gespräch erklärt, wie es zur fabulösen Erfindung des Multifunktions-Radiergummis kam.</de>
+						<en>[1|Full] visits Jens Flumme. The interview explains in detail how the fabulous invention of the multifunction eraser came about.</en>
+					</description>
+					<ratings critics="37" speed="42" />
+				</programme>
+				<programme id="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rolf Krall besucht... Martin Zeck</de>
+						<en>Rolf Krall visits... Martin Zeck</en>
+					</title>
+					<description>
+						<de>[1|Full] zu Besuch bei Martin Zeck. In geselliger Runde spricht [1|Last] über die umgreifende Problematik der Flaschenpfandproblematik.</de>
+						<en>[1|Full] visits Martin Zeck. In convivial atmosphere, [1|Last] talks about the all-embracing problem of bottle deposit.</en>
+					</description>
+					<ratings critics="37" speed="45" />
+				</programme>
+				<programme id="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rolf Krall besucht... Peter Kruste</de>
+						<en>Rolf Krall visits... Peter Crust</en>
+					</title>
+					<description>
+						<de>Bei leckerem Brot plaudert [1|Full] mit Peter Kruste darüber, wie Kruste darauf kam, dem Brot die schmackhafte Kante zu geben.</de>
+						<en>Over delicious bread, [1|Full] chats with Peter Crust about how Crust came up with giving bread that tasty edge.</en>
+					</description>
+					<ratings critics="28" speed="56" />
+				</programme>
+				<programme id="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Rolf Krall besucht... seine Mutter</de>
+						<en>Rolf Krall visits... his mother</en>
+					</title>
+					<description>
+						<de>Zum Abschluss der Serie besucht [1|Full] seine eigene Mutter, kitzelt ein paar urige Rezepte aus ihr heraus und plaudert über intime Details des immer populärer werdenden Moderators.</de>
+						<en>To close out the series, [1|Full] visits his own mother, tickles a few pristine recipes out of her, and chats about intimate details of the increasingly popular presenter.</en>
+					</description>
+					<ratings critics="47" speed="65" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="c4ce4cc9-1c7e-4d25-ad83-8077e7a710b8" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Seniorensause</de>
+				<en>Seniors Big Bash</en>
+			</title>
+			<description>
+				<de>[1|Full] trifft rüstige Rentner aus den Geriatriehochburgen Deutschlands.</de>
+				<en>[1|Full] meets spry retirees from Germany's geriatric strongholds.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="1" function="2">660ccb76-bdbb-4c88-a608-f7a79ea73e6f</member>
+			</staff>
+			<groups target_groups="80" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2001" distribution="2" maingenre="301" subgenre="" flags="0" blocks="2" price_mod="0.80" />
+			<ratings critics="7" speed="1" outcome="0" />
+			<children>
+				<programme id="062287d0-1de3-47e9-b365-5ab5d163aef5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Svetlana aus Hamburg</de>
+						<en>Svetlana from Hamburg</en>
+					</title>
+					<description>
+						<de>Svetlana ist 102 Jahre alt und trägt weit über 100 Tätowierungen verflossener Marineliebhaber auf ihrem Körper. 2 Stunden plaudert Erika mit dem Hamburger Unikum.</de>
+						<en>Svetlana is 102 years old and wears more than 100 tattoos of former navy lovers on her body. Erika chats with the Hamburg unique for 2 hours.</en>
+					</description>
+					<ratings critics="11" speed="4" />
+				</programme>
+				<programme id="afcac328-c1ec-4018-8fbb-f01e724463a3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Renate aus Chemnitz</de>
+						<en>Renate from Chemnitz</en>
+					</title>
+					<description>
+						<de>[1|First] trifft auf die 105jährige Renate aus Chemnitz. Kriegsjahre, Besatzungszeit, Wendejahre aber auch das neue Millenium werden thematisiert. Authentisch!</de>
+						<en>[1|First] meets 105-year-old Renate from Chemnitz. Wartime years, occupation time, reunification years, but also the new millennium are taken as a theme. Authentic!</en>
+					</description>
+					<ratings critics="7" speed="1" />
+				</programme>
+				<programme id="37c8b5a1-f289-4061-96d9-51207ee850bc" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Erich aus Köln</de>
+						<en>Erich from Cologne</en>
+					</title>
+					<description>
+						<de>Zu Gast bei dem 92jährigen Erich aus Köln geht es diesmal in der Seniorensause nur um eines: Jahrzehnte des Karnevals. Alaaf!</de>
+						<en>Visiting 92-year-old Erich from Cologne, this time Seniors Big Bash is all about one thing: decades of carnival. Alaaf!</en>
+					</description>
+					<ratings critics="5" speed="7" />
+				</programme>
+				<programme id="fe6f1e06-6c20-42a2-8164-bf357ac3c0d6" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Bolle aus Berlin</de>
+						<en>Bolle from Berlin</en>
+					</title>
+					<description>
+						<de>[1|Full] trifft auf einen Mann, der sich selbst nur Bolle nennt und seit über 80 Jahren Berlins Straßen unsicher macht indem er Kindern Lollis klaut und Hundekot in Briefkästen steckt.</de>
+						<en>[1|Full] meets a man who only calls himself Bolle and has been unsettling Berlin's streets for over 80 years by stealing lollipops from children and sticking dog excrement into mailboxes.</en>
+					</description>
+					<ratings critics="11" speed="7" />
+				</programme>
+				<programme id="f2cc0b2e-43a0-4e39-8861-43e5c95d172f" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sepp aus München</de>
+						<en>Sepp from Munich</en>
+					</title>
+					<description>
+						<de>Hinter einem Stand auf dem Oktoberfest vergnügt sich [1|First] mit dem 88jährigen Sepp. Bis die Herztabletten ihre Wirksamkeit entfalten, erzählt Sepp von seiner Kindheit.</de>
+						<en>Behind a booth at the Oktoberfest, [1|First] is having fun with 88-year-old Sepp. Until the heart medicine takes effect, Sepp talks about his childhood.</en>
+					</description>
+					<ratings critics="2" speed="23" outcome="30" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="50b89ce5-a59b-4108-b4e0-0f82b2c6b15f" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Die Patty Glansen Show</de>
+				<en>The Patty Glansen Show</en>
+			</title>
+			<description>
+				<de>Nach ihrem Erfolg (bei den Kritikern) versucht sich [1|Full] nun auf dem großen Parkett der TV-Unterhaltung. Spannende Gespräche, interessante Berichte. Eine Show von Senioren, für Senioren.</de>
+				<en>After her success (with the critics), [1|Full] is now trying her luck on the big stage of TV entertainment. Exciting conversations, interesting reports. A show by seniors, for seniors.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1997" distribution="2" maingenre="100" subgenre="" flags="0" blocks="2" price_mod="0.67" />
+			<ratings critics="51" speed="28" outcome="18" />
+			<children>
+				<programme id="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Lothar Molch</de>
+						<en>Landon Newt</en>
+					</title>
+					<description>
+						<de>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
+Bieten die beiden genügend Stoff für eine spannende Runde?</de>
+						<en>Guests at the start of the new show: Landon Newt, Chairman of the Graytinged Panthers, and Sabrina Sleaze from the Office of Social Affairs.
+Do the two offer enough material for an exciting panel?</en>
+					</description>
+					<staff>
+						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+					</staff>
+					<ratings critics="61" speed="42" />
+				</programme>
+				<programme id="9570f151-042a-4913-8873-759f791ffbdd" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>James Glatzkowski und Lara Luftig</de>
+						<en>James Baldowski and Lara Leezy</en>
+					</title>
+					<description>
+						<de>Nach dem furiosen Start bittet [1|Full] nun zum Starduell. Promi-Friseur James Glatzkowski und Boxen-Luder Lara Luftig diskutieren zum Thema Kanzlerneuwahl und allgemeine Regierungspolitik.</de>
+						<en>After the furious start, [1|Full] now asks for a star duel. Celebrity hairdresser James Baldowski and pit babe Lara Leezy discuss the election of the new chancellor and general government policy.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+					</staff>
+					<ratings critics="23" speed="56" />
+				</programme>
+				<programme id="7e610bb4-9327-4bc6-bccd-c7b996946e84" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>[1|Full] selbst</de>
+						<en>[1|Full] herself</en>
+					</title>
+					<description>
+						<de>Nach dem Debakel der letzten Sendung, ist [1|Full] nun selbst der Mittelpunkt und steht Anrufern Frage und Antwort.</de>
+						<en>After the debacle of the last show, [1|Full] is now the center of attention herself, facing callers Q&amp;A.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+					</staff>
+					<ratings critics="47" speed="42" />
+				</programme>
+				<programme id="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>[2|Full]</de>
+						<en>[2|Full]</en>
+					</title>
+					<description>
+						<de>Das letzte Mal zu Gast bei [1|Full]: ihr Nachfolger [2|Full]. Er redet über seine neue Sendung und macht sich lustig über den Abgang des ehemaligen Stars [1|Full].</de>
+						<en>The last time as a guest on [1|Full]: her successor [2|Full]. He talks about his new show and makes fun of the departure of the former star [1|Full].</en>
+					</description>
+					<staff>
+						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+						<member index="2" function="2">8cc73e2d-02a4-4403-8270-b4a66a3e872c</member>
+					</staff>
+					<ratings critics="32" speed="61" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="modified by scr0llbaer. Created live script version d6242a49-71e0-4997-97d6-3684e5c67d54">
+			<title>
+				<de>Dynamit - Das Magazin Spezial: [2|Nick] und [3|Nick]</de>
+				<en>Dynamite - The Magazine Special: [2|Nick] and [3|Nick]</en>
+			</title>
+			<description>
+				<de>Das Ex-Model [1|Full] präsentiert die Spezialausgabe unseres Dynamitmagazins anlässlich des 30. Geburtstages von [3|Nick].</de>
+				<en>The ex-model [1|Full] presents the special edition of our dynamite magazine on the occasion of [3|Nick]'s 30th birthday.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="8">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+				<member index="2" function="64">28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3</member>
+				<member index="3" function="64">4623935a-750a-4e5a-9d1b-6875062ff2a8</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="1" />
+			<releaseTime year="1991" day="7" />
+			<ratings critics="28" speed="61" outcome="0" />
+			<children>
+				<programme id="178fcb7d-b54d-4064-b3c3-4e577f56d2bf" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Geüchteküche brodelt</de>
+						<en>The Rumor Mill is Buzzing</en>
+					</title>
+					<description>
+						<de>[3|First]s 30. Geburtstag löst zahlreiche Spekulationen über ihre Ehe aus. [3|First] hatte verbreiten lassen, dass sie ihren Geburtstag allein verbringen würde. Am Morgen erfährt sie, dass sie in Meinungsumfragen zum beliebtesten Mitglied der Königsfamilie gekürt worden ist.</de>
+						<en>[3|First]'s 30th birthday triggers numerous speculations about her marriage. [3|First] had let it be known that she would spend her birthday alone. In the morning, she learns that she has been voted the most popular member of the royal family in opinion polls.</en>
+					</description>
+					<ratings critics="42" speed="56" />
+				</programme>
+				<programme id="39bdbcf8-7865-4d95-b874-18031947c36e" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Geschickte Selbstvermarktung</de>
+						<en>Clever Self-Promotion</en>
+					</title>
+					<description>
+						<de>Es bleibt Prinz [2|First] nicht verborgen, dass sich seine Frau im Umgang mit den Medien wesentlich geschickter erweist als er selbst. Ihre kurzfristigen Triumphe genügen [3|First] jedoch nicht.</de>
+						<en>It does not go unnoticed by Prince [2|First] that his wife is proving to be much more adept at dealing with the media than he is. However, her short-term triumphs are not enough for [3|First].</en>
+					</description>
+					<ratings critics="42" speed="56" />
+				</programme>
+				<programme id="558991e0-7971-4489-912b-c7ab299c5062" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Schuldfrage</de>
+						<en>The Question of Blame</en>
+					</title>
+					<description>
+						<de>Gerüchten zufolge kriselt es in der Ehe, und [3|First] möchte nicht, dass die Öffentlichkeit sie für ein Scheitern ihrer Ehe verantwortlich machen würde.</de>
+						<en>Rumor has it that there is a crisis in the marriage, and [3|First] does not want the public to hold her responsible for a breakup of their marriage.</en>
+					</description>
+					<ratings critics="28" speed="51" />
+				</programme>
+				<programme id="a45a7dd5-af5b-4365-80c5-4cf6d7c441c3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Ein neues Buch?</de>
+						<en>A New Book?</en>
+					</title>
+					<description>
+						<de>Weiter heißt es, [3|First] denke, es sei aber ein Fehler, weiterhin Stillschweigen über den Zustand ihrer Ehe zu bewahren. Sie trifft sich angeblich mit einem guten Bekannten und Journalisten, um an einem Buch zu schreiben.</de>
+						<en>It is further said that [3|First] thinks it would be a mistake to continue to keep quiet about the state of her marriage, however. She is reportedly meeting with a close acquaintance and journalist to write a book.</en>
+					</description>
+					<ratings critics="70" speed="42" />
+				</programme>
+				<programme id="d8f1c57b-feac-483e-9689-80252d487126" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Paukenschlag!</de>
+						<en>The Bombshell!</en>
+					</title>
+					<description>
+						<de>Zum Finale unseres Specials präsentieren wir exklusiv brandneue Insider-Informationen! [2|First] hat ja angeblich eine Affäre, und [3|First] hat nun Beweise dafür aus seiner Aktentasche gestohlen, die sie in ihrem Buch veröffentlichen wird!</de>
+						<en>For the finale of our special, we exclusively present hot new insider information! [2|First] is, after all, allegedly having an affair, and [3|First] has now stolen evidence of it from his briefcase, which she will publish in her book!</en>
+					</description>
+					<ratings critics="28" speed="51" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="0cefc3bc-f628-4b50-a466-682e7d117a2e" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Entstehung des Kosmos</de>
+				<en>The Origin of our Cosmos</en>
+			</title>
+			<description>
+				<de>[1|Full] stellt Vorschulkindern in lustigen Einspielern die Entstehung des Kosmos vor.</de>
+				<en>[1|Full] introduces preschool kids to the origin of the cosmos in humorous clips.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">61439b07-6e8f-484e-9447-6c9588270e21</member>
+				<member index="1" function="2">396f8bfa-a414-4a25-85c7-4e05c687f6a0</member>
+			</staff>
+			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="A" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.85" />
+			<releaseTime year_relative="-1" year_relative_min="2006" year_relative_max="2008" />
+			<ratings critics="35" speed="7" outcome="0" />
+			<children>
+				<programme id="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Urknall</de>
+						<en>The Big Bang</en>
+					</title>
+					<description>
+						<de>Peng hat's gemacht und [1|First] spielt mit einer platzenden Melone den Urknall nach.</de>
+						<en>BAM! it went, and [1|First] reenacts the big bang with a bursting melon.</en>
+					</description>
+					<ratings critics="24" speed="7" />
+				</programme>
+				<programme id="5aed6755-d022-46fd-9ca8-04e8b150bd74" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Ferne Galaxien</de>
+						<en>Distant Galaxies</en>
+					</title>
+					<description>
+						<de>In dieser Folge wird die Entstehung der Galaxien mittels Buntstift und einem Blatt Papier gekritzelt.</de>
+						<en>In this episode, the formation of galaxies is scribbled using crayons and a piece of paper.</en>
+					</description>
+					<ratings critics="29" speed="9" />
+				</programme>
+				<programme id="79687626-d749-4b16-923c-0644fd9c3298" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Lecker Milch...straße</de>
+						<en>Delicious Milk...y Way</en>
+					</title>
+					<description>
+						<de>Eine Packung H-Milch reicht [1|Full] um den kleinen Zuschauern die Form der Milchstrasse zu zeigen.</de>
+						<en>One carton of UHT milk is enough for [1|Full] to show the little viewers the shape of the Milky Way.</en>
+					</description>
+					<ratings critics="35" speed="17" />
+				</programme>
+				<programme id="03f36865-c8d4-46ea-a6bb-edc11ee39fa3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Unser Sonnensystem</de>
+						<en>Our Solar System</en>
+					</title>
+					<description>
+						<de>Alle 8 Planeten und den einen Explaneten stellt [1|Last] vor, indem er verschiedene Früchte auf ein Gestell patscht.</de>
+						<en>All 8 planets and that one ex-planet are introduced by [1|Last] through splatting different fruits against a rack.</en>
+					</description>
+					<ratings critics="28" speed="9" />
+				</programme>
+				<programme id="974003d6-44f3-47a5-b945-450a68d81d64" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der noch blaue Planet</de>
+						<en>The Still Blue Planet</en>
+					</title>
+					<description>
+						<de>Noch ist er blau - doch [1|Last] hält den Kindern die Gefahren für unseren Planeten vor Augen.</de>
+						<en>It is still blue - but [1|Last] keeps the children aware of the dangers to our planet.</en>
+					</description>
+					<ratings critics="38" speed="12" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<title>
+				<de>Hot Quiz</de>
+				<en>Hot Quiz</en>
+			</title>
+			<description>
+				<de>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</de>
+				<en>The presenter gets naked and the callers poor. Breasts for money, like in real life.</en>
+			</description>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2005" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="0.8" />
+			<ratings critics="5" speed="30" outcome="0" />
+			<children>
+				<programme id="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Daniela</de>
+						<en>Daniela</en>
+					</title>
+					<description>
+						<de>Heute moderiert Daniela die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von Daniela.</de>
+						<en>Today, Daniela hosts the show. Tricky, almost unsolvable tasks are set. Correct solutions result in a striptease from Daniela.</en>
+					</description>
+					<ratings critics="4" speed="32" />
+				</programme>
+				<programme id="f9579b28-072d-4027-8807-1c45326928d5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sabine</de>
+						<en>Sabine</en>
+					</title>
+					<description>
+						<de>Heute moderiert Sabine, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</de>
+						<en>Today Sabine, formerly Björn, hosts the show. But she keeps her panties on.</en>
+					</description>
+					<ratings critics="8" speed="28" />
+				</programme>
+				<programme id="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+					<title>
+						<de>Mandy</de>
+						<en>Mandy</en>
+					</title>
+					<description>
+						<de>Mandy ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</de>
+						<en>Mandy is a real cowgirl, but the trivia questions are more of a bull's butt.</en>
+					</description>
+					<ratings critics="5" speed="23" />
+				</programme>
+				<programme id="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+					<title>
+						<de>Peggy</de>
+						<en>Peggy</en>
+					</title>
+					<description>
+						<de>Peggy kommt vom Lande, und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
+						<en>Peggy comes from a rural farm, and all the questions revolve around the countrywoman's biggest two potatoes.</en>
+					</description>
+					<ratings critics="1" speed="13" />
+				</programme>
+			</children>
+		</programme>
+		<!-- some programmes from ronny.xml -->
+		<programme id="ronny-programme-family-papierflieger" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Papierflieger</de>
+				<en>Paper Planes</en>
+			</title>
+			<description>
+				<de>Bastelstunde mit [1|First]. In jeder Folge baut er einen neuen Flieger - aus chlorfrei gebleichtem Papier und Knochenleim.
+Pädagogisch wertvoll und absolut ökologisch.</de>
+				<en>Tinker time with [1|First]. In each episode, he builds a new plane - made out of chlorine-free bleached paper and bone glue.
+Pedagogically valuable and absolutely ecological.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-freddyjbush</member>
+				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
+			</staff>
+			<groups target_groups="256" />
+			<data country="USA" distribution="2" maingenre="0" subgenre="9" flags="0" blocks="1" price_mod="0.95" />
+			<releaseTime year_relative="-5" year_relative_min="1978" year_relative_max="1984" />
+			<ratings critics="20" speed="30" outcome="0" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-family-papierflieger-ep1" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Tahiti Fly</de>
+						<en>Tahity Fly</en>
+					</title>
+					<description>
+						<de>Ganz schön tricky. Erst einmal in der Mitte falten, dann umknicken und dann nochmal falten, jetzt...</de>
+						<en>Really tricky. First fold in the middle, then bend it and there is another fold, now just...</en>
+					</description>
+					<ratings critics="25" speed="35" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep2" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Bosporus Bomber</de>
+						<en>Bosporus Bomber</en>
+					</title>
+					<description>
+						<de>Diesmal im Bau: Der Bosporus Bomber, ein weitfliegender Papierflieger, auch Scheich des Schwarzen Meeres genannt.</de>
+						<en>This time to construct: The Bosporus Bomber - the Bosporus Bomber, a long-range paper plane, also called the Sheikh of the Black Sea.</en>
+					</description>
+					<ratings critics="28" speed="19" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep3" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Schneegans</de>
+						<en>Snow goose</en>
+					</title>
+					<description>
+						<de>Ein weißer Flieger, perfekt um ihn im Winter zu verstecken. Aufpassen, Verletzungsgefahr.</de>
+						<en>A white plane, perfect to hide it in winter. Watch out, risk of injury.</en>
+					</description>
+					<ratings critics="23" speed="32" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep4" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die eiserne Lady</de>
+						<en>The Iron Lady</en>
+					</title>
+					<description>
+						<de>Zügig zusammengebaut aber extrem kurze Reichweite - der 30-Sekunden Papierflieger „Die Eiserne Lady“. Lässt sich nicht pink anmalen.</de>
+						<en>Quickly assembled but extremely short range - the 30-second paper plane "The Iron Lady". Can not be painted with pink.</en>
+					</description>
+					<ratings critics="20" speed="27" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="ronny-programme-kochenmitpatty-01" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kochen mit [1|Full]</de>
+				<en>Cooking with [1|Full]</en>
+			</title>
+			<description>
+				<de>[1|Full] zeigt in heimeliger Atmosphäre wie die Hausfrau von Heute ihrem Mann und den Liebsten leckere Speisen auf den Tisch zaubern kann. Eine Weinverkostung gehört zu jeder Folge.</de>
+				<en>[1|Full] shows in a homey atmosphere how the housewife of today can whip up delicious meals for her husband and loved ones. A wine tasting is part of every episode.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Patty Glansen -->
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<!-- random:
+				     generator = "countrycodes, gender, levelup"
+				     countrycodes = "countrycode1 countrycode2 ..."
+				     gender = 0 [random]  1 [male]  2 [female]
+				     levelup = 0 [no levelup]  1 [levelup]
+				-->
+				<member index="2" function="64" generator="es,0"></member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" distribution="2" maingenre="0" blocks="1" />
+			<releaseTime year_relative="-2" year_relative_min="1984" year_relative_max="1989" />
+			<modifiers>
+				<!-- the programme ages faster than average -->
+				<modifier name="topicality::age" value="1.5" />
+				<!-- the programme is cheaper than average -->
+				<modifier name="price" value="0.7" />
+			</modifiers>
+			<ratings critics="70" speed="25" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-01" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Toast Hawaii</de>
+						<en>Toast Hawaii</en>
+					</title>
+					<description>
+						<de>Ganz neu und schon im Trend. Das Geheimnis der süßen Ananas wird bei einem Glas Silvaner aufgedeckt.</de>
+						<en>Brand new and already in vogue. The secret of the sweet pineapple is revealed with a glass of Silvaner.</en>
+					</description>
+					<ratings critics="75" speed="35" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-02" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Gefüllte Eier</de>
+						<en>Filled eggs</en>
+					</title>
+					<description>
+						<de>Einfach, aber schlicht der Hingucker auf den Dinnerparties des Jahres 1984. Das Ei ist schnell gekocht, und so hat Frau [1|Last] mehr Zeit für den Traminer der Saison.</de>
+						<en>Easy, but simply the eye-catcher at the dinner parties of 1984. The egg is boiled quickly, and so Mrs. [1|Last] has more time for the Traminer of the season.</en>
+					</description>
+					<ratings critics="50" speed="40" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Pumpernickel mal anders</de>
+						<en>Pumpernickel with a difference</en>
+					</title>
+					<description>
+						<de>Roggenmischbrot war gestern. Angesagt und lecker ist Pumpernickel. Schnell geschmiert und angerichtet - dazu passt ein würziger rubinroter Pinot Noir.</de>
+						<en>Rye bread was yesterday. The trendy and delicious thing is pumpernickel. Quickly greased and served - it goes well with a spicy ruby red Pinot Noir.</en>
+					</description>
+					<ratings critics="73" speed="19" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-04" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Shrimps-Cocktail</de>
+						<en>Shrimp cocktail</en>
+					</title>
+					<description>
+						<de>[1|First] pult heute Shrimps. Dazu gibt es hausgemachte Mayonnaise. Ein trockener Riesling passt nicht perfekt, aber erhält trotzdem seine halbe Stunde Sendezeit.</de>
+						<en>[1|First] shells shrimps today. They are served with homemade mayonnaise. A dry Riesling does not fit perfectly, but still gets its half hour of airtime.</en>
+					</description>
+					<ratings critics="67" speed="22" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-brisanteufer-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Brisante Ufer</de>
+				<en>Brisk Shores</en>
+			</title>
+			<description>
+				<de>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</de>
+				<en>A camera crew follows lifeguards and other heroes of our local waters.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Laiendarsteller -->
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" distribution="2" maingenre="0" blocks="1" />
+			<releaseTime year_relative="-3" year_relative_min="1977" year_relative_max="1988" />
+			<ratings critics="44" speed="20" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-brisanteufer-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Wasserwacht</de>
+						<en>The Water Rescue</en>
+					</title>
+					<description>
+						<de>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</de>
+						<en>Men with weathered skin, lots of splash water and the fickle sea are the heroes of this episode.</en>
+					</description>
+					<data price_mod="0.95" />
+					<ratings critics="48"  />
+				</programme>
+				<programme id="ronny-programme-brisanteufer-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Das Elb-Wehr</de>
+						<en>The Elbe-Weir</en>
+					</title>
+					<description>
+						<de>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</de>
+						<en>Apparently boring but enormously important: the maintenance of a weir of the Elbe. Shows unique but boring underwater footage.</en>
+					</description>
+					<data price_mod="1.0" />
+					<ratings critics="34" speed="12"  />
+				</programme>
+				<programme id="ronny-programme-brisanteufer-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>SOS im Freibad Gammelau</de>
+						<en>SOS at the outdoor pool Gammelau</en>
+					</title>
+					<description>
+						<de>Dramatische Szenen, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</de>
+						<en>Dramatic scenes captured at the outdoor pool Gammelau: Is it a chocolate bar?</en>
+					</description>
+					<ratings critics="26" speed="56"  />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-familiefuchs-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Familie Fuchs</de>
+				<en>The Fox Family</en>
+			</title>
+			<description>
+				<de>Kindgerechte Abenteuer mit Felix Fuchs und seiner Familie.
+Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- und Jugendpsychologen.</de>
+				<en>Adventures with Felix Fox and his family (suitable for children).
+Instructive stories convey current findings of recognized child and youth psychologists.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Laiendarsteller -->
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1979" distribution="2" maingenre="3" blocks="1" flags="8" />
+			<ratings critics="51" speed="25" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-familiefuchs-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Neue Nachbarn</de>
+						<en>New neighbors</en>
+					</title>
+					<description>
+						<de>Familie Igel zieht in den benachbarten Laubhaufen. Beim Spielen mit Ingo Igel verletzt sich Felix Fuchs an den Stacheln. Das Ende einer aufkeimenden Freundschaft?</de>
+						<en>Family Hedgehog moves into the neighboring piles of leaves. While playing with Henry Hedgehog, Felix Fox injures himself on the thorns. The end of a burgeoning friendship?</en>
+					</description>
+					<data price_mod="0.68" />
+					<ratings critics="55"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Maus in der Falle</de>
+						<en>Mouse in the trap</en>
+					</title>
+					<description>
+						<de>Markus Mäuserich fällt in den Weiher des Waldes. Felix Fuchs muss sich entscheiden zwischen Mittagessen und Rettung.</de>
+						<en>Marcus Mousewicz falls into the pond of the forest. Felix Fox must decide between lunch and rescue.</en>
+					</description>
+					<data price_mod="0.75" />
+					<ratings critics="50" speed="30" />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Frieda Fuchs</de>
+						<en>Frieda Fox</en>
+					</title>
+					<description>
+						<de>Ranzzeit. Ein süßer Duft zieht durch den Wald. Als Felix ihm folgt, trifft er Frieda. Wie umgehen mit den neuen und aufregenden Gefühlen?</de>
+						<en>Breeding season. A sweet scent wafts through the forest. When Felix trails it, he meets Frieda. How to deal with the new and exciting feelings?</en>
+					</description>
+					<data price_mod="0.58" />
+					<ratings critics="62" speed="22"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Guten Morgen meine Kinder</de>
+						<en>Good morning beloved children</en>
+					</title>
+					<description>
+						<de>Weniger als zwei Monate sind vergangen, und die Fähe Frieda wirft drei Kinder - Felix' Kinder. Aufregende Zeiten für die neue Familie.</de>
+						<en>Less than two months have passed, and Frieda the vixen gives birth to three children - Felix's children. Exciting times for the new family.</en>
+					</description>
+					<data price_mod="0.65" />
+					<ratings critics="69" speed="20"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Besuch bei Ingo</de>
+						<en>Visiting Henry</en>
+					</title>
+					<description>
+						<de>Felix nimmt seine Kinder mit auf einen Besuch zu Ingo Igel. Schmetterlingsschmaus für alle.</de>
+						<en>Felix takes his children on a visit to Henry Hedgehog. Butterfly feast for all.</en>
+					</description>
+					<data price_mod="0.61" />
+					<ratings critics="59" speed="23"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-06" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Randale im Fuchsbau</de>
+						<en>Riot in the foxhole</en>
+					</title>
+					<description>
+						<de>Als die Kinder von Familie Fuchs es eines Nachts zu bunt treiben, kommt es zum Streit im Fuchsbau. Die jungen Füchse ziehen aus.</de>
+						<en>When the children of the fox family get too rowdy one night, a quarrel breaks out in the foxhole. The young foxes move out.</en>
+					</description>
+					<data price_mod="0.53" />
+					<ratings critics="58" speed="27"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-07" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Grünrock</de>
+						<en>The Huntsman</en>
+					</title>
+					<description>
+						<de>Felix streift alleine durch den Wald als er den Jäger Joachim kennenlernt...
+						Trauriges Finale der beliebten Kinderserie, ließ Millionen Kinderherzen erbeben.</de>
+						<en>Felix strays alone through the forest when he meets the hunter Joachim...
+						Sad finale of the popular childrens' series, made millions of children's hearts tremble.</en>
+					</description>
+					<data price_mod="0.70" />
+					<ratings critics="77" speed="20"  />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-komtess-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Die Komtess</de>
+				<en>The Countess</en>
+			</title>
+			<description>
+				<de>Amouröse Verwicklungen, Intrigen unter „Freundinnen“ ... Taschenbuchromantik in der Bretagne. Mini-TV-Serie.</de>
+				<en>Amorous entanglements, intrigues between "girlfriends" ... Pulp romance in Brittany. Mini-TV series.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Patty -->
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D/F" distribution="2" maingenre="15" blocks="2" />
+			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="1990" />
+			<ratings critics="31" speed="30" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-komtess-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Jaqueline Montegrieux</de>
+						<en>Jaqueline Montegrieux</en>
+					</title>
+					<description>
+						<de>Jaqueline, Tochter des Grafen Montegrieux erblüht und entdeckt bisher unerkannte Gefühle für den Stallburschen Henri.</de>
+						<en>Jacqueline, daughter of Count Montegrieux blossoms and discovers previously unknown feelings for the stable-lad Henri.</en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="32" speed="28"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Francine du Pomeranc</de>
+						<en>Francine du Pomeranc</en>
+					</title>
+					<description>
+						<de>Der umtriebige Graf Pomeranc besucht den Landsitz Montegrieux. Er versucht Jaqueline nachzustellen, während seine Tochter Francine Henri schöne Augen macht...</de>
+						<en>The busy Earl Pomeranc visits Manor Montegrieux. He tries to pursue Jaqueline, while his daughter Francine makes eyes at Henri ...</en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="30" speed="29"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Eine Leiche im Keller?</de>
+						<en>Skeletons in the closet?</en>
+					</title>
+					<description>
+						<de>Große Aufregung, Graf Pomeranc ist verschwunden. Was hat Jaqueline und ihr zerissenes Nachthemd damit zu tun?</de>
+						<en>Flurries of excitement: Earl Pomeranc has disappeared. What does Jacqueline with her tattered nightgown have to do with it?</en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="34" speed="25"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Waldhütte</de>
+						<en>The forest cabin</en>
+					</title>
+					<description>
+						<de>Alle suchen Graf Pomeranc. Jaqueline und Henri suchen im nahen Wald und landen in einer einsamen Hütte. Als ein Unwetter aufzieht, verbringen beide eine sinnliche Nacht bei knackendem Kaminfeuer.</de>
+						<en>Everybody is searching Earl Pomeranc. Jacqueline and Henri are searching in the nearby forest and end up in a secluded cabin. When a storm comes up, both spend a sensual night by a crackling fireplace.</en>
+					</description>
+					<data price_mod="0.93" />
+					<ratings critics="30" speed="30"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sie war es...</de>
+						<en>It was ... her</en>
+					</title>
+					<description>
+						<de>Jaqueline erfährt, dass Francine Ihren Vater umbrachte und Jaquelines Nachthemd zeriss. Das Warum erschüttert: sie wollte Jaqueline aus dem Weg haben.
+Grandioses Finale.</de>
+						<en>Jaqueline finds out that Francine killed her father and also tore Jaqueline's nightgown. The reason is shocking: she wanted to get Jaqueline out of the way.
+Terrific final.</en>
+					</description>
+					<data price_mod="0.95" />
+					<ratings critics="25" speed="35"  />
+				</programme>
+			</children>
+		</programme>
+
+		<!-- imported from DerFronck Forum 30.04.2017 -->
+
+		<!-- ERFUNDENE SENDUNGEN  -->
+
+		<!-- DOKU  -->
+		
+		<programme id="DF-Serien-Dokumentation-001" product="2" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+			<title>
+				<de>Pfusch am Bau</de>
+				<en>Botched up Construction Sites</en>
+			</title>
+			<description>
+				<de>Der alltägliche Wahnsinn auf Deutschlands Baustellen wird hier mit versteckter Kamera gnadenlos aufgedeckt.</de>
+				<en>The everyday madness on our country's construction sites is mercilessly revealed here with a hidden camera.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+				<member index="1" function="128">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="" flags="" blocks="1" price_mod="1.0" />
+			<ratings critics="35" speed="10" outcome="4" />
+			<children>
+				<programme id="DF-Serien-Dokumentation-001-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+					<title>
+						<de>Aller Anfang...</de>
+						<en>All beginnings are...</en>
+					</title>
+					<description>
+						<de>Tiefbaufirma Grube stößt mit dem Bagger bei Erdarbeiten auf eine vermeintliche Schatztruhe. Wie sich später herausstellt, handelt es sich um die zuvor selbst zugeschüttete Bau-Bude. Der befreite Polier haut erstmal vor Wut in den Sand.</de>
+						<en>Underground construction company Pithole comes across a supposed treasure chest with an excavator during earthworks. As it turns out later, it is the previously buried construction shack. The freed foreman is so angry that he starts pounding into the sand.</en>
+					</description>
+					<ratings critics="39" speed="9" />
+				</programme>
+				<programme id="DF-Serien-Dokumentation-001-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+					<title>
+						<de>Ein krummes Ding</de>
+						<en>A crooked thing</en>
+					</title>
+					<description>
+						<de>Bauzeichner Henning Schreiber unterlief bei der Planung ein folgenschwerer Fehler. Die Eingangstür ist nun spiegelverkehrt an der Decke montiert und kann nur noch kopfüber durchquert werden. Aus Kulanz wird ein Kurs im Handstand-Laufen spendiert.</de>
+						<en>Draftsman Howard Penman made a serious mistake during the planning phase. The entrance door is now mounted mirror-inverted on the ceiling and can only be crossed upside down. As a gesture of goodwill, a course in handstand walking is offered.</en>
+					</description>
+					<ratings critics="27" speed="12" />
+				</programme>
+				<programme id="DF-Serien-Dokumentation-001-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+					<title>
+						<de>Der Maurer war's</de>
+						<en>The bricklayer did it</en>
+					</title>
+					<description>
+						<de>Maurermeister Dietmar Mörtel flutscht beim Verputzen der Wände die Kelle rückwärts aus der Hand. Diese fliegt samt Inhalt der hereinplatzenden Bauherrin mitten in ihr üppiges Dekollete - Der nächste Ärger steht ins Haus.</de>
+						<en>Master bricklayer Duncan Mortar's trowel slips backwards out of his hand while plastering the walls. The trowel and its contents fly right into the building owner's luscious décolleté as she bursts in. The next trouble is imminent.</en>
+					</description>
+					<ratings critics="33" speed="11" />
+				</programme>
+				<programme id="DF-Serien-Dokumentation-001-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+					<title>
+						<de>Das gibt Anpfiff</de>
+						<en>The whistle blows</en>
+					</title>
+					<description>
+						<de>Beim Testen der Gas-Leitungen fällt dem Monteur vor Schreck die Kippe aus dem Mund, als der unangekündigte Chef ihn von weitem heranpfeift. Zum Glück landet der Glimmstengel in einem herumstehenden Eimer Terpentin.</de>
+						<en>While testing the gas lines, the fitter's cigarette butt falls out of his mouth when the unannounced boss whistles at him from afar. Fortunately, the cigarette butt lands in a bucket of turpentine standing around.</en>
+					</description>
+					<ratings critics="32" speed="9" />
+				</programme>
+				<programme id="DF-Serien-Dokumentation-001-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+					<title>
+						<de>Der „fast“ perfekte Antrich</de>
+						<en>The "almost" perfect coat of paint</en>
+					</title>
+					<description>
+						<de>Malerlehrling Nico Schwarzer ist einfach noch zu grün. Beim Anmischen der Wandfarbe greift er statt zum Farb-Pulver in die Kaffee-Dose seines abwesenden Kollegen. Achselzuckend meint er nur: „nix grau - kackbraun“</de>
+						<en>Apprentice painter Nico Blacken is still a bit too wet behind his ears. While mixing the wall paint, he reaches for his absent colleague's coffee can instead of the paint powder. Shrugging, he just says: "gray no - shit brown."</en>
+					</description>
+					<ratings critics="29" speed="10" />
+				</programme>
+				<programme id="DF-Serien-Dokumentation-001-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+					<title>
+						<de>Das böse Ende</de>
+						<en>The bad end</en>
+					</title>
+					<description>
+						<de>Beim Einzug schließlich ist es die Umzugs-Spedition, die für Empören bei den Bauherren sorgt. Amateurhaft gestapelt, geht nach dem Öffnen der Ladeklappen die Hälfte des antiken, chinesischen Porzellans zu Bruch. Fahrer Acki Grümpel: „Das war eh alles Schrott.“</de>
+						<en>Finally, when it comes to moving in, it is the moving company that causes outrage among the building owners. Stacked amateurishly, half of the antique Chinese porcelain is broken after the loading flaps are opened. Driver Archie Scrappers: "It was all junk anyway."</en>
+					</description>
+					<ratings critics="34" speed="14" />
+				</programme>
+			</children>
+		</programme>
+	</allprogrammes>
+
+	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
+</tvtdb>

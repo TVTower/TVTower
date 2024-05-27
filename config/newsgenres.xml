@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvt>
+	<newsgenres>
+		<newsgenre id="0" name="POLITICS_ECONOMY">
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="-1.2" />
+				<audienceAttraction id="Teenagers" value="-0.5" />
+				<audienceAttraction id="HouseWifes" men="-0.2" women="-0.5" />
+				<audienceAttraction id="Employees" men="0" women="-0.15" />
+				<audienceAttraction id="Unemployed" men="-0.1" women="-0.25" />
+				<audienceAttraction id="Managers" men="0.4" women="0.2" />
+				<audienceAttraction id="Pensioners" men="0.15" women="0" />
+			</audienceAttractions>			
+		</newsgenre>
+		<newsgenre id="1" name="SHOWBIZ">
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="-0.1" />
+				<audienceAttraction id="Teenagers" men="0.2" women="0.4" />
+				<audienceAttraction id="HouseWifes" men="0.1" women="0.4" />
+				<audienceAttraction id="Employees" men="0" women="0.15" />
+				<audienceAttraction id="Unemployed" men="0.15" women="0.4" />
+				<audienceAttraction id="Managers" men="-0.4" women="-0.2" />
+				<audienceAttraction id="Pensioners" men="-0.1" women="0" />
+			</audienceAttractions>			
+		</newsgenre>
+		<newsgenre id="2" name="SPORT">
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" men="0.3" women="0.1" />
+				<audienceAttraction id="HouseWifes" men="0.1" women="0" />
+				<audienceAttraction id="Employees" men="0.2" women="0" />
+				<audienceAttraction id="Unemployed" men="0.2" women="-0.1" />
+				<audienceAttraction id="Managers" men="0.1" women="-0.4" />
+				<audienceAttraction id="Pensioners" men="0.1" women="0" />
+			</audienceAttractions>			
+		</newsgenre>
+		<newsgenre id="3" name="TECHNICS_MEDIA">
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" value="0.2" />
+				<audienceAttraction id="HouseWifes" men="0" women="-0.4" />
+				<audienceAttraction id="Employees" men="0.1" women="-0.1" />
+				<audienceAttraction id="Unemployed" men="0.1" women="-0.1" />
+				<audienceAttraction id="Managers" men="0.15" women="0" />
+				<audienceAttraction id="Pensioners" men="-0.2" women="-0.3" />
+			</audienceAttractions>			
+		</newsgenre>		
+		<newsgenre id="4" name="CURRENTAFFAIRS">	
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="-0.4" />
+				<audienceAttraction id="Teenagers" value="-0.25" />
+				<audienceAttraction id="HouseWifes" men="0.1" women="0.20" />
+				<audienceAttraction id="Employees" men="-0.05" women="0.1" />
+				<audienceAttraction id="Unemployed" men="-0.15" women="-0.1" />
+				<audienceAttraction id="Managers" men="-0.25" women="-0.1" />
+				<audienceAttraction id="Pensioners" men="0.25" women="0.4" />
+			</audienceAttractions>			
+		</newsgenre>
+		<newsgenre id="5" name="CULTURE">	
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="-0.5" />
+				<audienceAttraction id="Teenagers" value="-0.5" />
+				<audienceAttraction id="HouseWifes" men="-0.6" women="-0.3" />
+				<audienceAttraction id="Employees" men="0" women="0.1" />
+				<audienceAttraction id="Unemployed" men="-0.6" women="-0.3" />
+				<audienceAttraction id="Managers" men="0.2" women="0.3" />
+				<audienceAttraction id="Pensioners" men="0.3" women="0.5" />
+			</audienceAttractions>			
+		</newsgenre>
+	</newsgenres>
+</tvt>

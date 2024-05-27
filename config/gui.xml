@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<file name="resource_gui_languageflags" url="config/gui_languageflags.xml" />
+
+		<resource name="gfx_guiTest">
+			<type>SpritePack</type>
+ 			<url>res/gfx/gui/gui.png</url>
+ 			<filter>FILTEREDIMAGE,MIPMAPPED</filter>
+			<children>
+				<!-- button sprites -->
+				<child name="gfx_gui_button.default"					x="0"	y="0"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.default.hover"				x="36"	y="0"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.default.selected"			x="36"	y="0"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.default.active"				x="72"	y="0"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.rounded"					x="400"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.hover"				x="425"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.selected"			x="425"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.active"				x="450"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore"				x="400"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore.hover"			x="425"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore.selected"		x="425"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore.active"			x="450"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round"						x="400"	y="50"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round.hover"				x="425"	y="50"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round.selected"				x="425"	y="50"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round.active"				x="450"	y="50"	w="25"	h="25" ninepatch="true" />
+
+
+				<!-- tab group buttons -->
+				<child name="gfx_gui_tabgroup.left.default"				x="452"	y="100"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.default.hover"		x="440"	y="125"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.default.active"		x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.default"			x="469"	y="100"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.default.hover"		x="463"	y="125"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.default.active"	x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.default"			x="486"	y="100"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.default.hover"		x="480"	y="125"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.default.active"	    x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+
+				<child name="gfx_gui_tabgroup.left.toggled.default"				x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.toggled.default.hover"		x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.toggled.default.active"		x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.toggled.default"		   x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.toggled.default.hover"	   x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.toggled.default.active"   x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.toggled.default"		   x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.toggled.default.hover"	   x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.toggled.default.active"    x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+
+				<!-- slider sprites -->
+				<child name="gfx_gui_slider.handle.active"				x="480"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_slider.handle"						x="480"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_slider.gauge"						x="480"	y="50"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_slider.gauge.filled"				x="480"	y="75"	w="25"	h="25" ninepatch="true" />
+
+				<!-- input sprites -->
+				<child name="gfx_gui_input.default"						x="0"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.hover"				x="36"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.active"				x="36"	y="40"	w="36"	h="36" ninepatch="true" />
+				<!-- background for input objects with attached icons -->
+				<child name="gfx_gui_input.default.iconLeft"			x="72"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconLeft.hover"		x="108"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconLeft.active"		x="108"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconRight"			x="144"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconRight.hover"		x="180"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconRight.active"	x="180"	y="40"	w="36"	h="36" ninepatch="true" />
+				<!-- background for icons/symbols next to input objects -->
+				<child name="gfx_gui_input.default.iconLeft.background"				x="216"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconLeft.background.hover"		x="216"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconLeft.background.active"		x="216"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconRight.background"			x="252"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconRight.background.hover"		x="252"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_input.default.iconRight.background.active"		x="252"	y="40"	w="36"	h="36" ninepatch="true" />
+
+				<child name="gfx_gui_panel"						x="0"	y="80"	w="144"	h="144" ninepatch="true" />
+				<child name="gfx_gui_panel.inlay"				x="144"	y="80"	w="144"	h="144" ninepatch="true" />
+				<child name="gfx_gui_panel.content"				x="288"	y="80"	w="144"	h="144" ninepatch="true" />
+				<child name="gfx_gui_panel.subContent.dark"		x="0"	y="224"	w="144"	h="144" ninepatch="true" />
+				<child name="gfx_gui_panel.subContent.bright"	x="144"	y="224"	w="144"	h="144" ninepatch="true" />
+
+				<child name="gfx_gui_window"					x="0"	y="368"	w="144"	h="144" ninepatch="true" />
+				<child name="gfx_gui_modalWindow"				x="144"	y="368"	w="144"	h="144" ninepatch="true" />
+
+				<!-- symbols for buttons -->
+				<child name="gfx_gui_icon_arrowLeft"			x="252"	y="0"	w="18"	h="18" />
+				<child name="gfx_gui_icon_arrowRight"			x="270"	y="0"	w="18"	h="18" />
+				<child name="gfx_gui_icon_arrowUp"				x="288"	y="0"	w="18"	h="18" />
+				<child name="gfx_gui_icon_arrowDown"			x="306"	y="0"	w="18"	h="18" />
+				<child name="gfx_gui_icon_check"				x="252"	y="18"	w="18"	h="18" />
+
+				<child name="gfx_gui_overlay_tvchannel"	x="325"	y="1" 	w="24" 	h="23" />
+				<child name="gfx_gui_overlay_player"	x="350"	y="1" 	w="24" 	h="23" />
+				<child name="gfx_gui_overlay_computerplayer" x="374"	y="1" 	w="24" 	h="23" />
+
+				<!-- tooltips -->
+				<child name="gfx_gui_tooltip.bg"          x="360" y="25"  w="27"  h="28" ninepatch="true" />
+				<child name="gfx_gui_tooltip.arrow.up"    x="335" y="25"  w="13"  h="7"  offsetTop="-2" />
+				<child name="gfx_gui_tooltip.arrow.down"  x="335" y="51"  w="13"  h="10" offsetTop="5" />
+				<child name="gfx_gui_tooltip.arrow.left"  x="325" y="35"  w="7"   h="14" offsetLeft="-3" />
+				<child name="gfx_gui_tooltip.arrow.right" x="351" y="35"  w="8"   h="14" offsetLeft="3" />
+			</children>
+		</resource>
+	</resources>
+</tvt>
