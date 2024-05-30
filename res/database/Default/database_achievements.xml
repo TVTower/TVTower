@@ -366,9 +366,70 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
-				<!-- gleiche Belohnung wie "Wetterfrosch" -->
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-15000" />
+									<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="25000" />
+				</reward>
+			</rewards>
+			<data flags="0" group="5" category="2" index="1" />
+		</achievement>
+		<achievement id="tvt-gameachievement-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kulturkult</de>
+				<en>Culture cult</en>
+				<pl>Kult kultury</pl>
+			</title>
+			<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sende 3 Kultur-Nachrichten</de>
+						<en>Broadcast 3 culture news</en>
+						<pl>Transmisja 3 wiadomości kulturalnych</pl>
+					</title>
+					<text>
+						<de>Sende 3 Kultur-Nachrichten in einer Nachrichtensendung.</de>
+						<en>Broadcast 3 culture news in one single news broadcast.</en>
+						<pl>Transmisja 3 wiadomości kulturalnych w jednym programie informacyjnym.</pl>
+					</text>
+					<data type="BroadcastNewsShow" genre1="5" genre2="5" genre3="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<!-- gleiche Belohnung wie "Klatschreporter" -->
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
+			</rewards>
+			<data flags="0" group="5" category="2" index="1" />
+		</achievement>
+		<achievement id="tvt-gameachievement-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Sport frei</de>
+				<en>All about sport</en>
+				<pl>Wszystko na temat sportu</pl>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sende 3 Sport-Nachrichten</de>
+						<en>Broadcast 3 sport news</en>
+						<pl>Transmisja 3 wiadomości sportowych</pl>
+					</title>
+					<text>
+						<de>Sende 3 Sport-Nachrichten in einer Nachrichtensendung.</de>
+						<en>Broadcast 3 sport news in one single news broadcast.</en>
+						<pl>Transmisja 3 wiadomości sportowych w jednym programie informacyjnym.</pl>
+					</text>
+					<data type="BroadcastNewsShow" genre1="2" genre2="2" genre3="2" />
+				</task>
+			</tasks>
+			<rewards>
+				<!-- gleiche Belohnung wie "Klatschreporter" -->
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />												
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
