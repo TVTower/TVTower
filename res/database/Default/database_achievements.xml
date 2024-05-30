@@ -366,7 +366,8 @@
 				</task>
 			</tasks>
 			<rewards>
-									<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
+			<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
 					<data type="money" money="25000" />
@@ -429,7 +430,7 @@
 			</tasks>
 			<rewards>
 				<!-- gleiche Belohnung wie "Klatschreporter" -->
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />												
+				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
