@@ -368,7 +368,9 @@
 			<rewards>
 				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
 			<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					
 					<title />
+					
 					<text />
 					<data type="money" money="25000" />
 				</reward>
