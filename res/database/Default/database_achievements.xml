@@ -381,7 +381,6 @@
 				<en>Culture cult</en>
 				<pl>Kult kultury</pl>
 			</title>
-			<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
