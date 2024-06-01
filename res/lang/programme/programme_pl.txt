@@ -44,13 +44,8 @@ SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Ktoś zalicytował więcej niż ty na
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Twoja poprzednia oferta w wysokości %MONEY% została zwrócona.
 YOU_HAVE_WON_AN_AUCTION                  = Wygrałeś aukcję
 
-<<<<<<< Updated upstream
-PROGRAMME_GENRE_UNDEFINED                  = Różnorodny
-PROGRAMME_GENRE_ADVENTURE                  = Przygodowy
-=======
 PROGRAMME_GENRE_UNDEFINED                  = Różnorodne
 PROGRAMME_GENRE_ADVENTURE                  = Przygodowe
->>>>>>> Stashed changes
 PROGRAMME_GENRE_ACTION                     = Akcja
 PROGRAMME_GENRE_ANIMATION                  = Animacja
 PROGRAMME_GENRE_CRIME                      = Kryminał
@@ -73,12 +68,6 @@ PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Dokument & Reportaż
 PROGRAMME_GENRE_SHOW_AND_EVENTS            = Pokazy & Wydarzenia
 PROGRAMME_GENRE_SHOW                       = Show
 PROGRAMME_GENRE_SHOW_MUSIC                 = Koncert
-=======
-PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Dokumenty & Reportaże
-PROGRAMME_GENRE_SHOW_AND_EVENTS            = Pokazy & Wydarzenia
-PROGRAMME_GENRE_SHOW                       = Show
-PROGRAMME_GENRE_SHOW_MUSIC                 = Koncerty
->>>>>>> Stashed changes
 PROGRAMME_GENRE_SHOW_POLITICS              = Polityka
 PROGRAMME_GENRE_SHOW_GAME                  = Teleturniej
 PROGRAMME_GENRE_SHOW_TALK                  = Talk Show
@@ -111,16 +100,6 @@ LICENCETYPE_FRANCHISE      = Franczyza
 SERIES_WITH_X_EPISODES     = Serial z %EPISODESCOUNT% odcinkami
 COLLECTION_WITH_X_ELEMENTS = Kolekcja zawierająca %X% elementów
 
-<<<<<<< Updated upstream
-PROGRAMME_PRODUCT_UNDEFINED   = Nieokreślone
-PROGRAMME_PRODUCT_MOVIE       = Film
-PROGRAMME_PRODUCT_SERIES      = Seriale
-PROGRAMME_PRODUCT_SHOW        = Show
-PROGRAMME_PRODUCT_FEATURE     = Feature
-PROGRAMME_PRODUCT_INFOMERCIAL = Inforeklama
-PROGRAMME_PRODUCT_EVENT       = Wydarzenie
-PROGRAMME_PRODUCT_MISC        = Różne
-=======
 PROGRAMME_PRODUCT_UNDEFINED   = Nieokreślony
 PROGRAMME_PRODUCT_MOVIE       = Film
 PROGRAMME_PRODUCT_SERIES      = Serial
@@ -129,7 +108,6 @@ PROGRAMME_PRODUCT_FEATURE     = Reportaż
 PROGRAMME_PRODUCT_INFOMERCIAL = Inforeklama
 PROGRAMME_PRODUCT_EVENT       = Wydarzenie
 PROGRAMME_PRODUCT_MISC        = Różności
->>>>>>> Stashed changes
 
 PROGRAMME_IN_PROGRAMME_PLAN              = Program w planie programu tv!
 TRAILER_IN_PROGRAMME_PLAN                = Zwiastun w planie programu tv!
