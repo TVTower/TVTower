@@ -51,11 +51,7 @@ SFX                         = Efekty dźwiękowe
 FULLSCREEN                  = Pełny ekran
 VSYNC                       = VSync
 RIGHTCLICK_EMULATION              = Emuluj „kliknięcie prawym przyciskiem myszy”
-<<<<<<< Updated upstream
-RIGHTCLICK_EMULATION_EXPLANATION  = Emulacja kliknięcia p.p.m za pomocą długiego kliknięcia l.p.m. lub dotyku
-=======
 RIGHTCLICK_EMULATION_EXPLANATION  = Emulacja kliknięcia p.p.m za pom. dług. kliknięcia l.p.m. lub dotyku
->>>>>>> Stashed changes
 RIGHTCLICK_EMULATION_TIME         = Czas przed „kliknięciem p.p.m.”
 WINDOW_MODE_RESOLUTION      = Rozdzielczość trybu okienkowego
 INPUT                       = Wejście
