@@ -598,13 +598,13 @@ Type TDatabaseLoader
 				Local dbMaxValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 2], -1)
 
 				Local dbValue:Float = data.GetFloat(attributeText, -1)
-				
+
 				'only fill attribute if at least a part is defined here
-				If not (dbMinValue >= 0 or dbMaxValue >= 0 or dbValue >= 0) Then Continue	
+				If not (dbMinValue >= 0 or dbMaxValue >= 0 or dbValue >= 0) Then Continue
 
 				if not a
 					'generate if needed, but no randomization
-					if not pd.HasAttributes() then pd.InitAttributes(False) 
+					if not pd.HasAttributes() then pd.InitAttributes(False)
 					a = pd.GetAttributes()
 				endif
 
@@ -617,9 +617,20 @@ Type TDatabaseLoader
 				local value:Float = 100 * a.Get(attributeID, -1, -1)
 
 				'override with DB definitions (except they are "0")
-				if dbMinValue >= 0 Then minValue = Max(0, dbMaxValue)
-				if dbMaxValue > 0  Then maxValue = Min(1.0, Max(minValue, dbMaxValue))
-				if dbValue >= 0 Then value = Min(Max(value, minValue), maxValue)
+				'randomized ranges must be adapted accordingly
+				If dbMinValue >= 0
+					minValue = Min(100, dbMinValue)
+					maxValue = Max(maxValue, minValue)
+				EndIf
+				If dbMaxValue > 0
+					maxValue = Min(100, dbMaxValue)
+					minValue = Min(maxValue, minValue)
+				EndIf
+				If dbValue > 0
+					value = Min(100, dbValue)
+					minValue = Min(value, minValue)
+					maxValue = Max(value, maxValue)
+				EndIf
 
 				'assign values again
 				a.SetMin(0.01 * minValue, attributeID, -1, -1)
@@ -641,6 +652,7 @@ Type TDatabaseLoader
 				For local i:int = 1 to TVTPersonPersonalityAttribute.count
 					Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 					If Not pd.GetAttributes().Has(attributeID, -1, -1)
+'						If 
 						pd.GetAttributes().Randomize(attributeID, -1, -1)
 					EndIf
 				Next
