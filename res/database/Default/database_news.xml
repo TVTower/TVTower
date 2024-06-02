@@ -160,8 +160,8 @@
 			</title>
 			<description>
 				<de>Noch immer besteht kein Funkkontakt zur int. Raumstation. Die US Regierung rechnet mittlerweile mit dem Schlimmsten. War es ein Anschlag? Die Welt ist schockiert.</de>
-				<en>There is still no radio contact with the int. space station. The US government meanwhile expects the worst. </en>
-				<pl>Nadal nie ma kontaktu radiowego z wewnętrzną stacją kosmiczną. Tymczasem rząd USA spodziewa się najgorszego.</pl>
+				<en>There is still no radio contact with the int. space station. The US government meanwhile expects the worst. Was there an attack? The world is shocked.</en>
+				<pl>Nadal nie ma kontaktu radiowego z wewnętrzną stacją kosmiczną. Tymczasem rząd USA spodziewa się najgorszego. Czy doszło do ataku? Świat jest zszokowany.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0b597995-f993-4124-aa24-950e2e8aa68a" />
@@ -1050,12 +1050,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<title>
 					<de>%minister%: ${animals_${index}} her!</de>
 					<en>%minister%: Gimme ${animals_${index}}!</en>
-					<pl>%minister%: Daj mi ${animals_${index}}!</pl>
+					<pl>%minister%: Dajcie mi ${animals_${index}}!</pl>
 				</title>
 				<desc>
 					<de>Der %minister% beantragt im Bundestag die Verpflichtung eines jeden Bundesbürgers zur Haltung ein${animal_gen_${index}}.</de>
 					<en>The %minister% requests in Parliament the obligation of every citizen to keep a${animal_gen_${index}}.</en>
-					<pl>%minister% domaga się w parlamencie zobowiązania każdego obywatela do zachowania a${animal_gen_${index}}.</pl>
+					<pl>%minister% domaga się w parlamencie zobowiązania każdego obywatela, aby trzymali w domu ${animal_gen_${index}}.</pl>
 				</desc>
 				<index>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
@@ -1178,12 +1178,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animal_akk_8>
 					<de>en Sexmagazin-Leser</de>
 					<en> sex magazine reader</en>
-					<pl>czytelnik magazynu erotycznego</pl>
+					<pl> magazyn erotyczny</pl>
 				</animal_akk_8>
 				<animal_akk_9>
 					<de>en Gamezworld-Entwickler</de>
 					<en> Gamezworld developer</en>
-					<pl> Developer Gamezworld</pl>
+					<pl> developer Gamezworld</pl>
 				</animal_akk_9>
 				<animal_akk_a>
 					<de>en Eisbär</de>
@@ -1248,12 +1248,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animals_8>
 					<de>Sexmagazin-Leser</de>
 					<en>sex magazine readers</en>
-					<pl>czytelnicy seks magazynów</pl>
+					<pl>seks magazyny</pl>
 				</animals_8>
 				<animals_9>
 					<de>Gamezworld-Entwickler</de>
 					<en>Gamezworld developers</en>
-					<pl>Deweloperzy Gamezworld</pl>
+					<pl>deweloperów Gamezworld</pl>
 				</animals_9>
 				<animals_a>
 					<de>Eisbären</de>
@@ -1278,72 +1278,72 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animal_gen_0>
 					<de>es Koalas</de>
 					<en>koala</en>
-					<pl>koala</pl>
+					<pl>koale</pl>
 				</animal_gen_0>
 				<animal_gen_1>
 					<de>es Nilpferds</de>
 					<en>hippo</en>
-					<pl>hipopotam</pl>
+					<pl>hipopotamy</pl>
 				</animal_gen_1>
 				<animal_gen_2>
 					<de>es Bergschafs</de>
 					<en>mountain goat</en>
-					<pl>koza górska</pl>
+					<pl>kozy górskie</pl>
 				</animal_gen_2>
 				<animal_gen_3>
 					<de>es Faultiers</de>
 					<en>sloth</en>
-					<pl>leniwiec</pl>
+					<pl>leniwce</pl>
 				</animal_gen_3>
 				<animal_gen_4>
 					<de>es Kängurus</de>
 					<en>kangaroo</en>
-					<pl>kangur</pl>
+					<pl>kangury</pl>
 				</animal_gen_4>
 				<animal_gen_5>
 					<de>es Shibas</de>
 					<en>Shiba Inu</en>
-					<pl>Shiba Inu</pl>
+					<pl>zwierzę Shiba Inu</pl>
 				</animal_gen_5>
 				<animal_gen_6>
 					<de>er Steinlaus</de>
 					<en>stone louse</en>
-					<pl>pchła kamienna</pl>
+					<pl>pchły kamienne</pl>
 				</animal_gen_6>
 				<animal_gen_7>
 					<de>es Schaukelpferds</de>
 					<en>rocking horse</en>
-					<pl>konik na biegunach</pl>
+					<pl>koniki na biegunach</pl>
 				</animal_gen_7>
 				<animal_gen_8>
 					<de>es Sexmagazin-Lesers</de>
 					<en>sex magazine reader</en>
-					<pl>czytelnik seks magazynów</pl>
+					<pl>seks magazyny</pl>
 				</animal_gen_8>
 				<animal_gen_9>
 					<de>es Gamezworld-Entwicklers</de>
 					<en>Gamezworld developer</en>
-					<pl>Deweloper Gamezworld</pl>
+					<pl>deweloperów Gamezworld</pl>
 				</animal_gen_9>
 				<animal_gen_a>
 					<de>es Eisbärs</de>
 					<en>polar bear</en>
-					<pl>niedzwiedz polarny</pl>
+					<pl>niedzwiedzie polarne</pl>
 				</animal_gen_a>
 				<animal_gen_b>
 					<de>es Grashüpfers</de>
 					<en>grasshopper</en>
-					<pl>konik polny</pl>
+					<pl>koniki polne</pl>
 				</animal_gen_b>
 				<animal_gen_c>
 					<de>es Kaiserpinguins</de>
 					<en>emperor penguin</en>
-					<pl>pingwin cesarski</pl>
+					<pl>pingwiny cesarskie</pl>
 				</animal_gen_c>
 				<animal_gen_d>
 					<de>es Stinktiers</de>
 					<en>skunk</en>
-					<pl>skunks</pl>
+					<pl>skunksy</pl>
 				</animal_gen_d>
 				<animals_dat_0>
 					<de>Koalas</de>
@@ -1353,67 +1353,67 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animals_dat_1>
 					<de>Nilpferden</de>
 					<en>hippos</en>
-					<pl>hipopotam</pl>
+					<pl>hipopotamów</pl>
 				</animals_dat_1>
 				<animals_dat_2>
 					<de>Bergschafen</de>
 					<en>mountain goats</en>
-					<pl>koza górska </pl>
+					<pl>kóz górskich </pl>
 				</animals_dat_2>
 				<animals_dat_3>
 					<de>Faultieren</de>
 					<en>sloths</en>
-					<pl>leniwce</pl>
+					<pl>leniwców</pl>
 				</animals_dat_3>
 				<animals_dat_4>
 					<de>Kängurus</de>
 					<en>kangaroos</en>
-					<pl>kangury</pl>
+					<pl>kangurów</pl>
 				</animals_dat_4>
 				<animals_dat_5>
 					<de>Shibas</de>
 					<en>Shiba Inus</en>
-					<pl>Shiba Inu</pl>
+					<pl>Shiba Inów</pl>
 				</animals_dat_5>
 				<animals_dat_6>
 					<de>Steinläusen</de>
 					<en>stone lice</en>
-					<pl>pchły kamienne</pl>
+					<pl>pcheł kamiennych</pl>
 				</animals_dat_6>
 				<animals_dat_7>
 					<de>Schaukelpferden</de>
 					<en>rocking horses</en>
-					<pl>konie na biegunach</pl>
+					<pl>koni na biegunach</pl>
 				</animals_dat_7>
 				<animals_dat_8>
 					<de>Sexmagazin-Lesern</de>
 					<en>sex magazine readers</en>
-					<pl>czytelnik seks magazynów</pl>
+					<pl>seks magazynów</pl>
 				</animals_dat_8>
 				<animals_dat_9>
 					<de>Gamezworld-Entwicklern</de>
 					<en>Gamezworld developers</en>
-					<pl>Deweloper Gamezworld</pl>
+					<pl>deweloperów Gamezworld</pl>
 				</animals_dat_9>
 				<animals_dat_a>
 					<de>Eisbären</de>
 					<en>polar bears</en>
-					<pl>niedzwiedzie polarne</pl>
+					<pl>niedzwiedzi polarnych</pl>
 				</animals_dat_a>
 				<animals_dat_b>
 					<de>Grashüpfern</de>
 					<en>grasshoppers</en>
-					<pl>koniki polne</pl>
+					<pl>koników polnych</pl>
 				</animals_dat_b>
 				<animals_dat_c>
 					<de>Kaiserpinguinen</de>
 					<en>emperor penguins</en>
-					<pl>pingwiny cesarskie</pl>
+					<pl>pingwinów cesarskich</pl>
 				</animals_dat_c>
 				<animals_dat_d>
 					<de>Stinktieren</de>
 					<en>skunks</en>
-					<pl>skunksy</pl>
+					<pl>skunksów</pl>
 				</animals_dat_d>
 				<haveclaws_0>
 					<de>schmerzhaft hart krallen</de>
@@ -1538,7 +1538,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<mentholcandies_a>
 					<de> Eis und auch keinen Eischnee</de>
 					<en>ice cream and snow cones</en>
-					<pl>Lody i rożki lodowe</pl>
+					<pl>lody i rożki lodowe</pl>
 				</mentholcandies_a>
 				<mentholcandies_b>
 					<de>Ostergras</de>
@@ -1568,7 +1568,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der %minister% wegen seinen ${animals_dat_${index}} offenbar verrückt geworden sei.</de>
 				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that because of his ${animals_dat_${index}}, the %minister% appears to have gone mad.</en>
-				<pl>Większość Demokratów, a także przedstawiciele innych partii, ogłosili, że podzielają pogląd, że z powodu jego ${animals_dat_${index}}, %minister% wydaje się być szalony.</pl>
+				<pl>Większość Demokratów, a także przedstawiciele innych partii, ogłosili, że podzielają pogląd, że z powodu jego zdania na temat trzymania ${animals_dat_${index}}, %minister% wydaje się być szalony.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="21f5d3a5-ba85-40a2-861d-6914ff6123dd" />
@@ -1580,12 +1580,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>%minister%: ${animals_${index}} bald Pflicht!</de>
 				<en>%minister%: ${animals_${index}} soon mandatory!</en>
-				<pl>%minister%: ${animals_${index}} wkrótce obowiązkowe!</pl>
+				<pl>%minister%: ${animals_${index}} - wkrótce obowiązkowo wymagane!</pl>
 			</title>
 			<description>
 				<de>Der %minister% meint es ernst und bekräftigt nochmal seine Forderung. Er habe auch die nötige Befugnis, sie durchzusetzen: Ab 1. Mai nächsten Jahres muss jeder Bürger ein${animal_akk_${index}} besitzen!</de>
 				<en>The %minister% is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a${animal_akk_${index}}!</en>
-				<pl>Minister jest poważny i powtarza swoje żądanie. Mówi, że ma niezbędną władzę, aby je wyegzekwować: Od 1 maja przyszłego roku każdy obywatel musi posiadać ${zwierzę_akk_${index}}!</pl>
+				<pl>Minister jest poważny i powtarza swoje żądanie. Mówi, że ma niezbędną władzę, aby je wyegzekwować: Od 1 maja przyszłego roku każdy obywatel musi posiadać w domu ${animal_akk_${index}}!</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d4b58f67-56ed-4c7b-a524-3c641187c348" />
@@ -1597,7 +1597,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>Des %minister%s Liebe</de>
 				<en>The %minister%'s Love</en>
-				<pl>Miłość %ministra%</pl>
+				<pl>Zakochany %minister%</pl>
 			</title>
 			<description>
 				<de>Der %minister% hat seine heimliche Liebe zu ${animals_dat_${index}} zugegeben, obwohl sich herausgestellt hat, dass ${animals_${index}} ${haveclaws_${index}}.</de>
@@ -1619,7 +1619,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Der %minister% hat seine Memoiren geschrieben und in seinem 8-Kapitel-Buch sieben Kapitel seinen ${animals_dat_${index}} gewidmet.</de>
 				<en>The %minister% wrote his memoirs and devoted seven chapters of his 8-chapter book to his ${animals_dat_${index}}.</en>
-				<pl>Minister napisał swoje wspomnienia i poświęcił siedem rozdziałów swojej 8-rozdziałowej książki swoim ${animals_dat_${index}}.</pl>
+				<pl>%minister% napisał swoje wspomnienia i poświęcił siedem rozdziałów swojej 8-rozdziałowej książki swoim ${animals_dat_${index}}.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -1633,7 +1633,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Nach seinem Bekenntnis in der ${animal_${index}}-Affäre hat sich der %minister% entschlossen, sein Amt aufzugeben und zurückzutreten.</de>
 				<en>After his confession in the ${animal_${index}} affair, the %minister% has decided to give up his office and resign.</en>
-				<pl>Po przyznaniu się do winy w aferze ${animal_${index}}, %minister% zdecydował się zrezygnować ze swojego urzędu.</pl>
+				<pl>Po przyznaniu się do winy w aferze o ${animal_${index}}, %minister% zdecydował się zrezygnować ze swojego urzędu.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
@@ -1650,7 +1650,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Grienpies ist über die Forderung des %minister%s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
 				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of a${animal_gen_${index}} indoors at home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
-				<pl>Greampeace jest zbulwersowana żądaniem %ministra%: Trzeba by zapewnić odpowiednie dla gatunku trzymanie ${animal_gen_${index}} w domu, a przede wszystkim ${animals_${index}} nie może zjeść ${mentholcandies_${index}}!</pl>
+				<pl>Greampeace jest zbulwersowana żądaniem urzędnika: Trzeba zapewnić odpowiednie dla gatunku warunki w domu, a przede wszystkim ${animals_${index}} nie może zjeść ${mentholcandies_${index}}!</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -1662,12 +1662,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>Nation lacht über ${animal_${index}}-%minister%</de>
 				<en>Nation laughs at ${animal_${index}} %minister%</en>
-				<pl>Naród śmieje się z ${animal_${index}} %minister%</pl>
+				<pl>Naród śmieje się z rozporządzenia o ${animal_${index}}.</pl>
 			</title>
 			<description>
 				<de>Die ganze Nation lacht über den Antrag des %minister%s, die Haltung ein${animal_gen_${index}} zur Pflicht zu machen.</de>
 				<en>The whole nation is laughing at the %minister%'s proposal to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>Cały naród śmieje się z propozycji %ministra%, by wprowadzić obowiązek posiadania ${animal_gen_${index}}.</pl>
+				<pl>Cały naród śmieje się z propozycji urzędnika, by wprowadzić obowiązek posiadania ${animal_gen_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="53fdba7b-a310-4a31-85e6-5247e908ca10" />
@@ -1679,12 +1679,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>Welt lacht über ${animal_${index}}-%minister%</de>
 				<en>World laughs at ${animal_${index}} %minister%</en>
-				<pl>Świat śmieje się z ${animal_${index}} %minister%</pl>
+				<pl>Świat śmieje się z urzędnika i jego rozporządzenia.</pl>
 			</title>
 			<description>
 				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht machen will.</de>
 				<en>The whole world is laughing at our %minister% who wants to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>Cały świat śmieje się z naszego %ministra%, który chce wprowadzić obowiązek posiadania ${animal_gen_${index}}.</pl>
+				<pl>Cały świat śmieje się z naszego urzędnika, który chce wprowadzić obowiązek posiadania ${animal_gen_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
