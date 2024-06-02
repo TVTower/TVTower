@@ -63,7 +63,7 @@ PROGRAMME_GENRE_ROMANCE                    = Romans
 PROGRAMME_GENRE_SCIFI                      = SciFi
 PROGRAMME_GENRE_THRILLER                   = Thriller
 PROGRAMME_GENRE_WESTERN                    = Western
-<<<<<<< Updated upstream
+
 PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Dokument & Reportaż
 PROGRAMME_GENRE_SHOW_AND_EVENTS            = Pokazy & Wydarzenia
 PROGRAMME_GENRE_SHOW                       = Show
@@ -138,11 +138,7 @@ SPORT_PLAYOFFS_LONG              = "Playoff-y"
 SPORT_PLAYOFFS_SHORT             = "PO"
 
 SPORT_AFTER_PENALTY_SHORT  = "RK"
-<<<<<<< Updated upstream
-SPORT_AFTER_OVERTIME_SHORT = "ET"
-=======
 SPORT_AFTER_OVERTIME_SHORT = "DG"
->>>>>>> Stashed changes
 
 LIVE_ON_TAPE                        = Na żywo z taśmy
 ALL_MATCHES_FINISHED                = Wszystkie mecze zakończone
@@ -154,9 +150,5 @@ BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Nadawanie programó
 AUTHORITIES_STOPPED_BROADCAST                              = Władze wstrzymały nadawanie
 AUTHORITIES_CONFISCATED_LICENCE                            = Władze skonfiskowały prawa do programu
 PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Prawa do programu |b|%TITLE%|/b| zostały skonfiskowane.
-<<<<<<< Updated upstream
-SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Wygląda na to, że władze odwiedziły niewłaściwy pokój.
-=======
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Wygląda na to, że komisja odwiedziła niewłaściwy pokój.
->>>>>>> Stashed changes
 BETTER_WATCH_OUT_NEXT_TIME                                 = Lepiej uważaj następnym razem.
