@@ -63,7 +63,6 @@ PROGRAMME_GENRE_ROMANCE                    = Romans
 PROGRAMME_GENRE_SCIFI                      = SciFi
 PROGRAMME_GENRE_THRILLER                   = Thriller
 PROGRAMME_GENRE_WESTERN                    = Western
-
 PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Dokument & Reportaż
 PROGRAMME_GENRE_SHOW_AND_EVENTS            = Pokazy & Wydarzenia
 PROGRAMME_GENRE_SHOW                       = Show
