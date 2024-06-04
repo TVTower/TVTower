@@ -1050,12 +1050,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<title>
 					<de>%minister%: ${animals_${index}} her!</de>
 					<en>%minister%: Gimme ${animals_${index}}!</en>
-					<pl>%minister%: Dajcie mi ${animals_${index}}!</pl>
+					<pl>%minister%: Trzymajcie w domach ${animals_${index}}!</pl>
 				</title>
 				<desc>
 					<de>Der %minister% beantragt im Bundestag die Verpflichtung eines jeden Bundesbürgers zur Haltung ein${animal_gen_${index}}.</de>
 					<en>The %minister% requests in Parliament the obligation of every citizen to keep a${animal_gen_${index}}.</en>
-					<pl>%minister% domaga się w parlamencie zobowiązania każdego obywatela, aby trzymali w domu ${animal_gen_${index}}.</pl>
+					<pl>%minister% domaga się w parlamencie zobowiązania każdego obywatela, aby trzymać w domu ${animal_gen_${index}}.</pl>
 				</desc>
 				<index>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
@@ -1063,7 +1063,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<minister>
 					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|DG-Metall-Chef|BV-Energie-Chef|ADCA-Chef|Bahnchef|Verkehrsminister</de>
 					<en>Finance Minister|Interior Minister|Foreign Minister|Defense Minister|Prime Minister|WA-Steel Chief|EI-Energy Chief|AB-Automobile Chief|Railways Secretary|Transport Secretary</en>
-					<pl>Minister finansów|Minister spraw wewnętrznych|Minister spraw zagranicznych|Minister obrony|Premier|Szef ds. stali|Szef ds. energii|Szef ds. samochodów|Sekretarz ds. kolei|Sekretarz ds. transportu</pl>
+					<pl>Minister finansów|Minister spraw wewnętrznych|Minister spraw zagranicznych|Minister obrony|Premier|Kanclerz|Wicepremier|Prezydent|Prezes banku narodowego|Sekretarz ds. transportu</pl>
 				</minister>
 				<animal_0>
 					<de>Koala</de>
@@ -1093,7 +1093,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animal_5>
 					<de>Shiba</de>
 					<en> Shiba Inu</en>
-					<pl> Shiba Inu</pl>
+					<pl> pies dingo</pl>
 				</animal_5>
 				<animal_6>
 					<de>Steinlaus</de>
@@ -1163,7 +1163,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animal_akk_5>
 					<de>en Shiba</de>
 					<en> Shiba Inu</en>
-					<pl> Shiba Inu</pl>
+					<pl> pies dingo</pl>
 				</animal_akk_5>
 				<animal_akk_6>
 					<de>e Steinlaus</de>
@@ -1233,7 +1233,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animals_5>
 					<de>Shibas</de>
 					<en>Shiba Inus</en>
-					<pl>Shiba Inusy</pl>
+					<pl>psy dingo</pl>
 				</animals_5>
 				<animals_6>
 					<de>Steinläuse</de>
@@ -1303,7 +1303,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animal_gen_5>
 					<de>es Shibas</de>
 					<en>Shiba Inu</en>
-					<pl>zwierzę Shiba Inu</pl>
+					<pl>psy dingo</pl>
 				</animal_gen_5>
 				<animal_gen_6>
 					<de>er Steinlaus</de>
@@ -1373,7 +1373,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<animals_dat_5>
 					<de>Shibas</de>
 					<en>Shiba Inus</en>
-					<pl>Shiba Inów</pl>
+					<pl>psów dingo</pl>
 				</animals_dat_5>
 				<animals_dat_6>
 					<de>Steinläusen</de>
@@ -1438,17 +1438,17 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<haveclaws_4>
 					<de>gut im Boxen sind</de>
 					<en>are good at boxing</en>
-					<pl>są dobrzy w boksowaniu</pl>
+					<pl>świetnie boksują właścicieli</pl>
 				</haveclaws_4>
 				<haveclaws_5>
 					<de>die meiste Zeit nur ziemlich doof aus der Wäsche gucken</de>
 					<en>don't do much other than just look dumbfounded most of the time</en>
-					<pl>nie robią wiele poza patrzeniem w osłupieniu przez większość czasu.</pl>
+					<pl>często wyją w nocy</pl>
 				</haveclaws_5>
 				<haveclaws_6>
 					<de>schon mal das ganze Haus verputzen, wenn man grad nicht aufpasst</de>
 					<en>can sometimes dispatch the whole house if you're not paying attention for a moment</en>
-					<pl>może czasami wysłać cały dom, jeśli przez chwilę nie zwracasz uwagi</pl>
+					<pl>są bardzo ciężkie gdy skaczą</pl>
 				</haveclaws_6>
 				<haveclaws_7>
 					<de>ziemlich laut quietschen</de>
@@ -1458,12 +1458,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<haveclaws_8>
 					<de>schwierig zur Stubenreinheit zu erziehen sind</de>
 					<en>are hard to house-train</en>
-					<pl>są trudne do wytresowania w domu</pl>
+					<pl>są trudne do ukrycia</pl>
 				</haveclaws_8>
 				<haveclaws_9>
 					<de>schwierig zur Körperhygiene zu erziehen sind</de>
 					<en>are hard to train for personal hygiene</en>
-					<pl>są trudni do wyszkolenia w zakresie higieny osobistej</pl>
+					<pl>mogą, bez powodu, usunąć dyski twarde i zainstalować GNU/Linuxa</pl>
 				</haveclaws_9>
 				<haveclaws_a>
 					<de>schon mal gern NDW-Musik laut aufdrehen und wild stampfend dazu tanzen</de>
@@ -1478,7 +1478,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<haveclaws_c>
 					<de>schon mal ungefragt die Platte löschen und GNU/Linux installieren</de>
 					<en>may, uncalled for, delete hard disks and install GNU/Linux</en>
-					<pl>może, bez wezwania, usunąć dyski twarde i zainstalować GNU/Linux</pl>
+					<pl>mogą stać godzinami na balkonie</pl><!--Revised applies to emperor penguins-->
 				</haveclaws_c>
 				<haveclaws_d>
 					<de>halt, naja, ziemlich stinken</de>
@@ -1488,72 +1488,72 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<mentholcandies_0>
 					<de>e Mentholbonbons</de>
 					<en>menthol candies</en>
-					<pl>cukierki mentolowe</pl>
+					<pl>zjeść cukierków mentolowych</pl>
 				</mentholcandies_0>
 				<mentholcandies_1>
 					<de>e Honigmelonen</de>
 					<en>cantaloupes</en>
-					<pl>kantalupy</pl>
+					<pl>zjeść melona kantalupy</pl>
 				</mentholcandies_1>
 				<mentholcandies_2>
 					<de> Meersalz</de>
 					<en>sea salt</en>
-					<pl>sól morska</pl>
+					<pl>zjeść soli morskiej</pl>
 				</mentholcandies_2>
 				<mentholcandies_3>
 					<de> Fast Food</de>
 					<en>fast food</en>
-					<pl>fast food</pl>
+					<pl>zjeść fast foodów</pl>
 				</mentholcandies_3>
 				<mentholcandies_4>
 					<de>e Windbeutel</de>
 					<en>bean bags</en>
-					<pl>worki z fasolą</pl>
+					<pl>zjeść worków z fasolą</pl>
 				</mentholcandies_4>
 				<mentholcandies_5>
 					<de>e Schokotaler, auch wenn ein Hundelogo drauf ist</de>
 					<en>chocolate coins, even if there's a dog logo on them</en>
-					<pl>czekoladowe monety, nawet jeśli jest na nich logo psa</pl>
+					<pl>zjeść czekoladowych monet, nawet jeśli jest na nich logo psa</pl>
 				</mentholcandies_5>
 				<mentholcandies_6>
 					<de>e Sandwiches</de>
 					<en>sandwiches</en>
-					<pl>kanapki</pl>
+					<pl>zjeść kanapek</pl>
 				</mentholcandies_6>
 				<mentholcandies_7>
 					<de>e Hafermilch</de>
 					<en>oat milk</en>
-					<pl>owsianka</pl>
+					<pl>stać na parkiecie</pl>
 				</mentholcandies_7>
 				<mentholcandies_8>
 					<de> Zitronensorbet</de>
 					<en>lemon sorbet</en>
-					<pl>sorbet cytrynowy</pl>
+					<pl>leżeć na wierzchu</pl>
 				</mentholcandies_8>
 				<mentholcandies_9>
 					<de>e vegetarische Pizza</de>
 					<en>vegetarian pizza</en>
-					<pl>pizza wegetariańska</pl>
+					<pl>zjeść pizzy wegetariańskiej</pl>
 				</mentholcandies_9>
 				<mentholcandies_a>
 					<de> Eis und auch keinen Eischnee</de>
 					<en>ice cream and snow cones</en>
-					<pl>lody i rożki lodowe</pl>
+					<pl>zjeść lodów i rożków lodowych</pl>
 				</mentholcandies_a>
 				<mentholcandies_b>
 					<de>Ostergras</de>
 					<en>wheatgrass</en>
-					<pl>trawa pszeniczna</pl>
+					<pl>zjeść trawę pszeniczną</pl>
 				</mentholcandies_b>
 				<mentholcandies_c>
 					<de> Eis und auch keinen Eischnee</de>
 					<en>ice cream and snow cones</en>
-					<pl>Lody i rożki śnieżne</pl>
+					<pl>zjeść lody i rożki śnieżne</pl>
 				</mentholcandies_c>
 				<mentholcandies_d>
 					<de>en Stinkekäse</de>
 					<en>stinky cheese</en>
-					<pl>śmierdzący ser</pl>
+					<pl>zjeść śmierdzącego sera</pl>
 				</mentholcandies_d>
 			</variables>
 			<data genre="0" price="1.0" quality="28" />
@@ -1568,7 +1568,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der %minister% wegen seinen ${animals_dat_${index}} offenbar verrückt geworden sei.</de>
 				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that because of his ${animals_dat_${index}}, the %minister% appears to have gone mad.</en>
-				<pl>Większość Demokratów, a także przedstawiciele innych partii, ogłosili, że podzielają pogląd, że z powodu jego zdania na temat trzymania ${animals_dat_${index}}, %minister% wydaje się być szalony.</pl>
+				<pl>%minister% oszalał. Tak myśli większość demokratów, a także przedstawiciele innych partii, w sprawie trzymania ${animals_dat_${index}} w domach.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="21f5d3a5-ba85-40a2-861d-6914ff6123dd" />
@@ -1580,12 +1580,13 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>%minister%: ${animals_${index}} bald Pflicht!</de>
 				<en>%minister%: ${animals_${index}} soon mandatory!</en>
-				<pl>%minister%: ${animals_${index}} - wkrótce obowiązkowo wymagane!</pl>
+				<pl>%minister%: ${animals_${index}} - wkrótce obowiązkowo wymagane w domach!</pl>
 			</title>
 			<description>
 				<de>Der %minister% meint es ernst und bekräftigt nochmal seine Forderung. Er habe auch die nötige Befugnis, sie durchzusetzen: Ab 1. Mai nächsten Jahres muss jeder Bürger ein${animal_akk_${index}} besitzen!</de>
 				<en>The %minister% is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a${animal_akk_${index}}!</en>
-				<pl>Minister jest poważny i powtarza swoje żądanie. Mówi, że ma niezbędną władzę, aby je wyegzekwować: Od 1 maja przyszłego roku każdy obywatel musi posiadać w domu ${animal_akk_${index}}!</pl>
+				<!-- I have adapted this to Polish  Instead of ${animal_akk_${index}} there is ${animals_${index}}-->
+				<pl>%minister% powtarza swoje żądanie odnośnie nowego prawa. Mówi, że ma niezbędną władzę, aby wyegzekwować je. Prawo to ma stanowić, że od 1 maja przyszłego roku każdy obywatel musi posiadać w domu ${animals_${index}}!</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d4b58f67-56ed-4c7b-a524-3c641187c348" />
@@ -1597,7 +1598,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>Des %minister%s Liebe</de>
 				<en>The %minister%'s Love</en>
-				<pl>Zakochany %minister%</pl>
+				<pl>%minister% jest zakochany</pl>
 			</title>
 			<description>
 				<de>Der %minister% hat seine heimliche Liebe zu ${animals_dat_${index}} zugegeben, obwohl sich herausgestellt hat, dass ${animals_${index}} ${haveclaws_${index}}.</de>
@@ -1619,7 +1620,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Der %minister% hat seine Memoiren geschrieben und in seinem 8-Kapitel-Buch sieben Kapitel seinen ${animals_dat_${index}} gewidmet.</de>
 				<en>The %minister% wrote his memoirs and devoted seven chapters of his 8-chapter book to his ${animals_dat_${index}}.</en>
-				<pl>%minister% napisał swoje wspomnienia i poświęcił siedem rozdziałów swojej 8-rozdziałowej książki swoim ${animals_dat_${index}}.</pl>
+				<pl>%minister% napisał swoje wspomnienia i poświęcił siedem rozdziałów swojej 8-rozdziałowej książki pod tytułem: Ja i ${animals_${index}}.</pl><!-- I have adapted this to Polish-->
 			</description>
 			<data genre="0" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -1633,7 +1634,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Nach seinem Bekenntnis in der ${animal_${index}}-Affäre hat sich der %minister% entschlossen, sein Amt aufzugeben und zurückzutreten.</de>
 				<en>After his confession in the ${animal_${index}} affair, the %minister% has decided to give up his office and resign.</en>
-				<pl>Po przyznaniu się do winy w aferze o ${animal_${index}}, %minister% zdecydował się zrezygnować ze swojego urzędu.</pl>
+				<pl>%minister% zdecydował się zrezygnować ze swojego urzędu po przyznaniu się do winy w aferze: ${animals_${index}} w domach.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
@@ -1645,12 +1646,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>${animal_${index}}-Skandal</de>
 				<en>The ${animal_${index}} scandal</en>
-				<pl>Skandal z ${animal_${index}}</pl>
+				<pl>Skandal! Nie, dla posiadania w domu ${animals_dat_${index}}!</pl>
 			</title>
 			<description>
 				<de>Grienpies ist über die Forderung des %minister%s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
 				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of a${animal_gen_${index}} indoors at home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
-				<pl>Greampeace jest zbulwersowana żądaniem urzędnika: Trzeba zapewnić odpowiednie dla gatunku warunki w domu, a przede wszystkim ${animals_${index}} nie może zjeść ${mentholcandies_${index}}!</pl>
+				<pl>Greampeace jest zbulwersowana żądaniem urzędnika. Trzeba zapewnić odpowiednie warunki w domu. Przede wszystkim ${animals_${index}} nie mogą ${mentholcandies_${index}}!</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -1662,12 +1663,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>Nation lacht über ${animal_${index}}-%minister%</de>
 				<en>Nation laughs at ${animal_${index}} %minister%</en>
-				<pl>Naród śmieje się z rozporządzenia o ${animal_${index}}.</pl>
+				<pl>%minister% wyśmiany przez naród.</pl>
 			</title>
 			<description>
 				<de>Die ganze Nation lacht über den Antrag des %minister%s, die Haltung ein${animal_gen_${index}} zur Pflicht zu machen.</de>
 				<en>The whole nation is laughing at the %minister%'s proposal to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>Cały naród śmieje się z propozycji urzędnika, by wprowadzić obowiązek posiadania ${animal_gen_${index}}.</pl>
+				<pl>%minister% wyśmiany przez naród za wprowadzenie prawa dla posiadania w domu ${animals_dat_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="53fdba7b-a310-4a31-85e6-5247e908ca10" />
@@ -1684,7 +1685,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht machen will.</de>
 				<en>The whole world is laughing at our %minister% who wants to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>Cały świat śmieje się z naszego urzędnika, który chce wprowadzić obowiązek posiadania ${animal_gen_${index}}.</pl>
+				<pl>%minister% wyśmiany przez cały świat, za to że chce wprowadzić obowiązek posiadania ${animal_dat_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
