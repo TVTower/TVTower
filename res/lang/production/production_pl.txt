@@ -1,0 +1,154 @@
+MALE      = mężczyzna
+FEMALE    = kobieta
+UNDEFINED = nieokreślona
+
+JOB_ALL              = Wszystkie funkcje
+JOB_DIRECTOR         = Reżyser
+JOB_DIRECTORS        = Reżyserzy
+JOB_ACTOR            = Aktor
+JOB_ACTORS           = Aktorzy
+JOB_SUPPORTINGACTOR  = Aktor drugoplanowy
+JOB_SUPPORTINGACTORS = Aktorzy drugoplanowi
+JOB_REPORTER         = Reporter
+JOB_REPORTERS        = Reporterzy
+JOB_GUEST            = Gość
+JOB_GUESTS           = Goście
+JOB_HOST             = Gospodarz
+JOB_HOSTS            = Gospodarze
+JOB_SCRIPT           = Scenariusz
+JOB_SCRIPTWRITER     = Scenarzysta
+JOB_SCRIPTWRITERS    = Scenarzyści
+JOB_MUSIC            = Muzyka
+JOB_MUSICIAN         = Muzyk
+JOB_MUSICIANS        = Muzycy
+
+JOB_AMATEUR                  = Amator
+JOB_AMATEURS                 = Amatorzy
+JOB_AMATEUR_DIRECTOR         = Reżyser amator
+JOB_AMATEUR_DIRECTORS        = Reżyserzy amatorscy
+JOB_AMATEUR_ACTOR            = Aktor amator
+JOB_AMATEUR_ACTORS           = Aktorzy amatorzy
+JOB_AMATEUR_SUPPORTINGACTOR  = Aktor 2 pl. amator
+JOB_AMATEUR_SUPPORTINGACTORS = Aktorzy 2 pl. amatorzy
+JOB_AMATEUR_REPORTER         = Reporter amator
+JOB_AMATEUR_REPORTERS        = Reporterzy amatorzy
+JOB_AMATEUR_GUEST            = Gość amator
+JOB_AMATEUR_GUESTS           = Goście amatorzy
+JOB_AMATEUR_HOST             = Gospodarz amator
+JOB_AMATEUR_HOSTS            = Gospodarze amatorzy
+JOB_AMATEUR_SCRIPTWRITER     = Scenarzysta amator
+JOB_AMATEUR_SCRIPTWRITERS    = Scenarzyści amatorzy
+JOB_AMATEUR_MUSICIAN         = Muzyk amator
+JOB_AMATEUR_MUSICIANS        = Muzycy amatorzy
+
+JOB_POSITION_UNASSIGNED = Nieprzydzielona
+
+CAST_TRAINING         = Wyszkolenie
+CAST_EXPERIENCE       = Doświadczenie
+CAST_FAME             = Sława
+CAST_AFFINITY         = Przynależność
+CAST_POWER            = Siła
+CAST_HUMOR            = Humor
+CAST_CHARISMA         = Charyzma
+CAST_APPEARANCE       = Wygląd
+CAST_FEE              = Zapłata
+CAST_JOB_EXPERIENCE   = Doświadczenie zawodowe
+CAST_GENRE_EXPERIENCE = Doświadczenie w gatunku
+
+DIALOGUE_STUDIO_BRING_SOME_SCRIPT                         = Cześć %PLAYERNAME%,\n\nPrzynieś skrypt i może uda nam się stworzyć coś fajnego.
+DIALOGUE_STUDIO_SCRIPT_HINT                               = Hmmm, nie mogę zdradzić szczegółów na temat tego skryptu. Może będę mógł powiedzieć więcej w późniejszej wersji gry. To zależy od deweloperów *shrug*.
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = Nie ma już miejsca na kolejne listy zakupów. Nie mogę dać ci kolejnej, dopóki nie rozpoczniesz produkcji lub nie usuniesz listy zakupów (podnieś ją i usuń prawym przyciskiem myszy).
+DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING    = Aby móc rozpocząć produkcję, należy najpierw zakończyć planowanie produkcji i zakupy w supermarkecie.
+
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION                                                    = Więc chcesz produkować |b|%SCRIPTTITLE%|/b|?
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = Jak dotąd, |b|1 produkcja|/b| tego scenariusza jest planowana.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED                              = Jak dotąd, |b|%X% produkcji|/b| tego scenariusza są planowane.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Jak dotąd, |b|1 produkcja|/b| tego scenariusza jest zrobiona.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Jak dotąd, |b|%X% produkcje|/b| tego scenariusza są zrobione.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Jak dotąd, |b|%X% produkcji|/b| tego scenariusza są planowane i |b|%Y%|/b| zrobione.
+
+DIALOGUE_STUDIO_START_PRODUCTION                    = Start produkcji
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Start wszystkich możliwych produkcji (%X%).
+DIALOGUE_STUDIO_START_NEXT_EPISODE                  = Start następnego możliwego epizodu.
+DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST        = Potrzebuję kolejnej listy zakupów dla tego scenariusza.
+DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST              = Potrzebuję listy zakupów dla tego scenariusza.
+DIALOGUE_STUDIO_GOODBYE1                            = Cześć.
+DIALOGUE_STUDIO_GOODBYE2                            = Do widzenia.
+
+DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX                   = W przypadku planowanej produkcji |b|%TITLE%|/b| mogę powiedzieć, co następuje:
+DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX               = Planowanie produkcji |b|%TITLE%|/b| jest wciąż niekompletne. Kiedy już ustalisz priorytety produkcji i wybierzesz obsadę, być może będę mógł udzielić ci kilku wskazówek.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1                  = Gatunek scenariusza nie pasuje!
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2                  = Być może inny gatunek byłby lepszy.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE1              = 
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD1                 = Dobry wybór gatunku!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_BAD1         = Wybrałeś dość kiepską obsadę, a oni też nie wydają się cię lubić!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_AVERAGE1     = Wybrałeś dość kiepską obsadę.
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1        = Wybrałeś dość kiepską obsadę. Ale przynajmniej wydają się cię lubić.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1     = Wybrałeś przeciętną obsadę, a oni cię nie lubią!
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_AVERAGE1 = Wybrałeś przeciętną obsadę.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1    = Wybrałeś przeciętną obsadę ale wydaje się, że cię lubią.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1        = Wybrałeś odpowiednią obsadę, ale oni cię nie lubią!
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1    = Wybrałeś odpowiednią obsadę.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = Wybrałeś odpowiednią obsadę i wydaje się, że nawet cię lubią.
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = Firma producencka jest dość słaba
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = Firma producencka jest przeciętna
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = Firma produkcyjna jest jedną z lepszych w branży
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = I powinieneś lepiej rozdzielać punkty produkcji!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = A punkty produkcji zostały rozmieszczone całkiem dobrze!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = I doskonale rozdzieliłeś punkty produkcji!
+
+PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Transmisja na żywo dzisiaj o godzinie %X%.
+PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Transmisja na żywo jutro o godzinie %X%.
+PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Transmisja na żywo za %Y% dni o godzinie %X%.
+
+CLICK_TO_SELECT_PERSON = Kliknij, aby wybrać osobę
+TOUCH_TO_SELECT_PERSON = Dotknij, aby wybrać osobę
+
+COULISSE             = Kulisy
+OUTFIT_AND_MASK      = Stróje / Maski
+STUNTS               = Kaskaderzy
+VFX_AND_SFX          = Efekty specjalne
+TEAM                 = Zespół (Technicy, itp.)
+PRODUCTION_SPEED     = Szybkość produkcji
+PRODUCTION_POTENTIAL = Potencjał
+SCRIPT_POTENTIAL     = Potencjał
+
+PRODUCTION         = Produkcja
+TOTAL_COSTS        = Całkowite koszty
+DURATION           = Czas trwania
+SUBHEADING         = Podtytuł
+PRODUCTION_DETAILS = Szczegóły produkcji
+PRODUCTION_FOCUS   = Skupienie na produkcji
+IN_PRODUCTION      = W produkcji
+
+POINTSSET_OF_POINTSMAX_POINTS_SET                           = %POINTSSET%/%POINTSMAX% punkty
+PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY                  = Punkty produkcji nie są ustawione całkowicie
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = Przynajmniej jeden punkt musi być ustawiony
+NO_PRODUCTION_COMPANY_SELECTED                              = Nie wybrano firmy producenckiej
+PRODUCTION_SETUP_NOT_DONE                                   = Konfiguracja produkcji nie została zakończona
+PRODUCTION_SETUP_INCOMPLETE                                 = Niepełna konfiguracja produkcji
+CAST_INCOMPLETE                                             = Niepełna obsada
+EPISODES_NOT_IN_ORDER                                       = Odcinki nie są w kolejności
+PRODUCTION_CONCEPTS                                         = Listy zakupowe
+PRODUCTION_DEPOSIT_PAID                                     = Wpłacony depozyt (%MONEY%).
+
+SELECT_PERSON      = Wybierz osobę
+FINISHED_PLANNING  = Zakończono planowanie
+FINISH_PLANNING    = Zakończ planowanie
+AND_PAY_DOWN_MONEY = i spłacić %money%
+PLANNING           = Planowanie ...
+MONEY_TO_PAY_DOWN  = %money% do zapłaty
+TAKE_OVER_SETTINGS = Skopiuj ustawienia
+PRODUCTION_COMPANY = Firma producencka
+EDIT_TEXTS         = Edytuj tekst
+TITLE              = Tytuł
+DESCRIPTION        = Opis
+EPISODE            = Odcinek
+ABBREVIATION_YEARS = R.
+
+STUDIO_MANAGER         = Kierownik studia
+STUDIO_MANAGER_TOOLTIP = Udziela informacji na temat produkcji i rozdaje nowe listy zakupów.
+
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Licencja |b|%TITLE%|/b| jest teraz do twojej dyspozycji.
+THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED   = Produkcja na żywo |b|%TITLE%|/b| właśnie się zakończyła.
+TOTAL_PRODUCTION_COSTS_WERE_X            = Całkowite koszty produkcji wyniosły %TOTALCOST%.

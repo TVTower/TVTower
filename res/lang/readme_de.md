@@ -7,6 +7,8 @@ Die Struktur der Dateien pro Verzeichnis soll identisch sein, um sie leicht verg
 Eine fehlende Übersetzung beginnt mit einem Kommentarzeichen (`#`).
 Echte Kommentare sind mit zwei Kommentarzeichen markiert (`##Kommentar`).
 
+Das Datei-Encoding ist UTF-8
+
 # Übersetzen
 
 Wenn möglich sollten nicht nur durch Kommentarzeichen (`#`) markierten fehlenden Einträge bearbeitet sondern auch die Bestandseinträge korrekturgelesen werden.
@@ -25,3 +27,14 @@ Die Verwendung von Leerzeichen statt Tabulatoren und die Ausrichtung der Gleichh
 # Schlüssel entfernen/verschieben
 
 Auch hier soll die Änderung für sämtliche Sprachdateien gemacht werden, damit die Struktur der Dateien identisch bleibt.
+
+# Neue Sprache hinzufügen
+
+* Grafik für die benötigte Flagge integrieren
+    * verschiebe die passende png-Datei von `res/gfx/gui/flags/currently_unused` nach `res/gfx/gui/flags`
+    * ergänze einen passenden Eintrag in `config/gui_languageflags.xml`
+* Übersetzungsdateien hinzufügen
+    * in den Unterverzeichnissen von `res/lang` jeweils die `xxx_en.txt` mit dem passenden Länderkürzel kopieren (z.B. `gen_settings_en.txt` nach `gen_settings_cz.txt`)
+    * in den neuen Dateien die Übersetzungen anpassen
+
+Es ist sinnvoll, mit `gen_settings` zu beginnen, da man bei Spielstart und dem Wechsel der Sprache sofort die Anpassungen sieht.
