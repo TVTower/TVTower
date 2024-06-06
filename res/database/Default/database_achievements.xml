@@ -377,7 +377,7 @@
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
-		<achievement id="tvt-gameachievement-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+		<achievement id="tvt-gameachievement-broadcastNewsShow-culture1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kulturkult</de>
 				<en>Culture cult</en>
@@ -386,7 +386,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+				<task id="tvt-gameachievement-task-broadcastNewsShow-culture1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sende 3 Kultur-Nachrichten</de>
 						<en>Broadcast 3 culture news</en>
