@@ -133,25 +133,25 @@ Organizator wycieczki ich oszukuje.</pl>
 			<title>
 				<de>Goldrausch%MODIFIER%</de>
 				<en>Gold Rush%MODIFIER%</en>
-				<pl>Gorączka złota%MODIFIER%</pl>
+				<pl>%MODIFIER%. Wybuchła gorączka złota</pl>
 			</title>
 			<description>
 				<de>Rivalisierende Goldschürfer wetteifern in %RANDOMCITY% um die größten Goldfunde.
 Dabei sind ihnen alle Mittel recht.</de>
 				<en>Rival gold diggers compete for the biggest gold finds in %RANDOMCITY%.
 Any means will do.</en>
-				<pl>Rywalizujący poszukiwacze złota rywalizują o największe znaleziska złota w %RANDOMCITY%.
+				<pl>%RANDOMCITY%, w tym mięście rywalizujący poszukiwacze złota rywalizują o największe znaleziska złota.
 Każdy środek się nada.</pl>
 			</description>
 			<variables>
 				<modifier>
 					<de>| in %RANDOMCITY%</de>
 					<en>| in %RANDOMCITY%</en>
-					<pl>| w %RANDOMCITY%</pl>
+					<pl>|%RANDOMCITY%</pl>
 				</modifier>
 				<randomcity>
 					<de>%STATIONMAP:RANDOMCITY%|Prosperous Creek</de>
-					<pl>Prosperous Creek|Sakramento|Ontario|Zimnym potoku|Bloody Village</pl>
+					<pl>%STATIONMAP:RANDOMCITY%|Prosperujący Potok</pl>
 				</randomcity>
 			</variables>
 			<jobs>
@@ -253,7 +253,7 @@ Każdy środek się nada.</pl>
 				<resources1>
 					<de>Rohstoffe heute erfreulich. %RESOURCES1A%|Rohstoffwerte wissen zu gefallen. %RESOURCES1A%</de>
 					<en>Commodities are pleasing today. %RESOURCES1A%|Commodity stocks look appealing. %RESOURCES1A%</en>
-					<pl>Rynek surowców jest dziś atrakcyjny. %RESOURCES1A%</pl>
+					<pl>Rynek surowców jest dziś atrakcyjny. %RESOURCES1A%|Akcje spółek surowcowych wyglądają atrakcyjnie. %RESOURCES1A%</pl>
 				</resources1>
 				<resources1A>
 					<de>Gold legte gestern nachbörslich stark zu.|Öl-Preise erholen sich wegen stärker Nachfrage.|Öl-Preise profitieren von gesenkter Fördermenge.|Der Wolfram-Bedarf der Industrie ist stark gestiegen.</de>

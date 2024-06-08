@@ -230,12 +230,12 @@
 				<pl>Dziecko zakochuje się w zwierzątku podczas wizyty w zoo. Wygląda ono jednak na bardzo smutne. Dziecko robi więc wszystko, co w jego mocy, by uwolnić %Name%.</pl>
 			</description>
 			<variables>
-				<Tier><!--tier changed to Tier.  -->
+				<Tier>
 					<de>Affen|Nacktmull|Goldfisch|Löwen|Tiger|Hasen|Panda</de>
 					<en>monkey|naked mole rat|goldfish|lion|tiger|rabbit|panda</en>
 					<pl>małpę|surykatkę|delfina|lwa|tygrysa|zająca|pandę</pl>
 				</Tier>
-				<Name><!--name changed to Name.  -->
+				<Name>
 					<de>Jingels|Wollo|Hubert|Billy|Fluffy|Bobo|Flocke</de>
 					<en>Jingels|Wollo|Hubert|Billy|Fluffy|Bobo|Flake</en>
 					<pl>Jingela|Wollo|Huberta|Billiego|Fluffiego|Bobo|Neo</pl>
@@ -371,7 +371,7 @@
 				</scripttemplate>
 			</children>
 			<variables>
-				<Name1><!--name1 changed to Name1.  -->
+				<Name1>
 					<de>Finstergram|Twoter|Focebeek|Putube|Snoopchat|Whosapp</de>
 					<en>Finstergram|Twoter|Focebeek|Putube|Snoopchat|Whosapp</en>
 					<pl>Finstergramie|Twoterze|Focebeeku|Putube-ie|Snoopchat-cie|Whosappie</pl>
@@ -380,7 +380,7 @@
 					<de>Girl|Woman|Maid|Child|Daughter|Son|Boy|Man</de>
 					<en>Girl|Woman|Maid|Child|Daughter|Son|Boy|Man</en>
 					<pl>Dziewczyna|Kobieta|Panna|Dziecko|Córka|Syn|Chłopiec|Facet</pl>
-				</Name2><!--name2 changed to Name2.  -->
+				</Name2>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -1967,7 +1967,7 @@
 					<description>
 						<de>Die Einschaltquoten des letzten Tages waren grandios. „Die Nacht%name%“ würdigt dies mit besondere Szenen.</de>
 						<en>The viewing rates of the last day were terrific. "The night %name%" honors this with special scenes.</en>
-						<pl>%name%". Pogadamy jak nie przespać nocy.</pl>
+						<pl>"%name%". Pogadamy jak nie przespać nocy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="3" index="2" guid="Kasi-script-UnterhaltungNachts-Ep3">

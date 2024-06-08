@@ -1043,7 +1043,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<description>
 				<de>Erleben Sie atemberaubende Luftaufnahmen von ${cntry}.|${cntry} wie Sie es noch nie gesehen haben.|${cntry} aus einer neuen Perspektive.</de>
 				<en>Experience breathtaking aerial views of ${cntry}.|${cntry} as you have never seen it before.|${cntry} from a new perspective.</en>
-				<pl>Doświadcz zapierających dech w piersiach widoków z lotu ptaka na ${cntry}, których jeszcze nigdy wcześniej nie widziałeś. Z nowej perspektywy.</pl>
+				<pl>Doświadcz zapierających dech w piersiach widoków z lotu ptaka na ${cntry}.|Doświadcz widoków z lotu ptaka na ${cntry}, których jeszcze nigdy wcześniej nie widziałeś.|Doświadcz widoków z lotu ptaka na ${cntry}, z nowej perspektywy.</pl>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-from-above-eps">
@@ -1056,7 +1056,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<subject>
 							<de>Berge|Flüsse|Städte|Nationalparks|Wälder|Seen|Bahnhöfe|Schlösser|Parks|Inseln|Kirchen|Stadien|Ruinen|Gletscher|Wochenmärkte|Bahnstrecken</de>
 							<en>Mountains|Rivers|Cities|National Parks|Forests|Lakes|Railroad Stations|Castles|Parks|Islands|Churches|Stadiums|Ruins|Glaciers|Farmers' Markets|Railways</en>
-							<pl>Góry|Rzeki|Miasta|Parki narodowe|Lasy|Jeziora|Stacje kolejowe|Zamki|Parki|Kościoły|Stadiony|Ruiny zamków</pl>
+							<pl>Góry|Rzeki|Miasta|Parki narodowe|Lasy|Jeziora|Stacje kolejowe|Zamki|Parki|Kościoły|Stadiony|Ruiny zamków|Wyspy|Plaże|Zabytki|Parki krajobrazowe</pl>
 						</subject>
 					</variables>
 					<episodes min="3" max="5" />
@@ -1295,7 +1295,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 					<title>
 						<de>${epttl}</de>
 						<en>${epttl}</en>
-						<pl>Podróże</pl>
+						<pl>${epttl}</pl>
 					</title>
 					<description>
 						<de>${dsc}</de>
@@ -1306,13 +1306,13 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<epttl>
 							<de>${subject} ${cntry}s|${adjective}${subject} ${cntry}s</de>
 							<en>${subject} of ${cntry}|${adjective}${subject} of ${cntry}</en>
-							<pl>${cntry}</pl>
+							<pl>Podróże przez świat. ${cntry}.|Z walizką przez świat. ${cntry}</pl>
 						</epttl>
 						<!--without an empty description, the series description is used again-->
 						<dsc>
 							<de> |${cntry}s ${subject} bergen so manches Geheimnis.|Fakten und Meinungen zu ${cntry}s ${subject}.|Was macht ${cntry}s ${subject} so besonders?</de>
 							<en> |${subject} in ${cntry} carry quite a few secrets.|${subject} of ${cntry} - facts and opinions.|${subject} in ${cntry}, what makes them so special?</en>
-							<pl>${cntry} to kraj który ma bardzo dużo niezwykłych tajemnic i ciekawostek.</pl>
+							<pl> |${cntry} to kraj który ma bardzo dużo niezwykłych tajemnic i ciekawostek.|${cntry} - informacje, fakty i opinie.|${cntry}, co możemy zobaczyć i dowiedzieć się o tym kraju?</pl>
 						</dsc>
 						<cntry>
 							<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
