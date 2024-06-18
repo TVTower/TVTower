@@ -11,10 +11,12 @@
 			<title>
 				<de>Erster Start der Ariane-2</de>
 				<en>First launch of Ariane-2</en>
+				<pl>Pierwszy start Ariane-2</pl>
 			</title>
 			<description>
 				<de>Der erste Start der Trägerrakete Ariane-2, LIVE. Fiebern Sie mit - der Countdown läuft: 9, 8 ...</de>
 				<en>First launch of the booster Ariane-2, LIVE. Share our excitement - the countdown is on: 9, 8 ...</en>
+				<pl>Pierwszy start rakiety nośnej Ariane-2, NA ŻYWO. Podziel się naszymi emocjami - odliczanie trwa: 9, 8 ...</pl>
 			</description>
 			<groups target_groups="96" />
 			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="1" blocks="1" price_mod="0.90" />
@@ -29,10 +31,12 @@
 			<title>
 				<de>Sommerolympiade 1988 in Seoul</de>
 				<en>Summer Olympics 1988 in Seoul</en>
+				<pl>Letnie Igrzyska Olimpijskie 1988 w Seulu</pl>
 			</title>
 			<description>
 				<de>Die große Eröffnungsfeier zur Sommerolympiade 1988 in Seoul. Grandiose Bilder und großer Tanz nach dem Motto „Heaven, Earth and Men“</de>
 				<en>The grand opening ceremony for the Summer Olympics 1988 in Seoul. Magnificent imagery and a fantastic dance with the theme "Heaven, Earth and Men"</en>
+				<pl>Uroczyste otwarcie Letnich Igrzysk Olimpijskich 1988 w Seulu. Wspaniałe obrazy i fantastyczny taniec z tematem "Niebo, ziemia i ludzie".</pl>
 			</description>
 			<groups target_groups="70" />
 			<data country="D" distribution="2" maingenre="203" subgenre="204" flags="1" blocks="3" price_mod="1.00" />
@@ -47,10 +51,12 @@
 			<title>
 				<de>Kutlers Wunderwaffen</de>
 				<en>Kutler's Wunderwaffen</en>
+				<pl>Wspaniała broń Hitlera</pl>
 			</title>
 			<description>
 				<de>Während der Führer weiterhin vom Sieg träumte, propagierte Minister Bubbels dem Volke die Wende im Kampf durch den Einsatz von Wunderwaffen. Die Reichsflugscheibe sollte die Wende vollbringen.</de>
 				<en>While the Fuhrer continued to dream of victory, Minister Bubbels propagated to the people the turning point in the war through the use of "Wunderwaffen", "wonder-weapons". The Nazi UFO was to bring about the turnaround.</en>
+				<pl>Podczas gdy Fuhrer nadal marzył o zwycięstwie, minister Gebbels propagował wśród ludzi punkt zwrotny w wojnie poprzez użycie "Wunderwaffen", "cudownej broni". Nazistowskie UFO miało doprowadzić do przełomu.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
@@ -65,10 +71,12 @@
 			<title>
 				<de>Keil Kutler und Koelle Alaaf</de>
 				<en>Keil Kutler and &quot;Koelle Alaaf&quot;</en>
+				<pl>Historia w kolorze. Parady karnawałowe w czasach Hitlera.</pl>
 			</title>
 			<description>
 				<de>Karnevalsumzüge zur Zeit von Kutler. Kutler und Bubbels verkleidet als Hänsel und Gretel. Erstmals Filmmaterial in Farbe!</de>
 				<en>Carnival parades at the time of Kutler. Kutler and Bubbels dressed as Hansel and Gretel. For the first time footage in full colors!</en>
+				<pl>Parady karnawałowe w czasach Hitlera. Hitler i Gebbels przebrani za Jasia i Małgosię. Po raz pierwszy materiał w pełnej kolorystyce!</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
@@ -83,10 +91,12 @@
 			<title>
 				<de>Kutlers Untergang</de>
 				<en>Kutler's downfall</en>
+				<pl>Upadek Hitlera</pl>
 			</title>
 			<description>
 				<de>Emporkommen und Untergang des Diktators Kutler werden umfassend beleuchtet. Restaurierte Originalaufnahmen sind exklusiv in dieser Dokumentation zu sehen.</de>
 				<en>The rise and downfall of dictator Kutler are comprehensively examined. Restored original footage can be seen exclusively in this documentary.</en>
+				<pl>Powstanie i upadek dyktatora Hitlera są wszechstronnie zbadane. Odrestaurowany oryginalny materiał filmowy można zobaczyć wyłącznie w tym dokumencie.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
@@ -101,10 +111,12 @@
 			<title>
 				<de>BTX - Neue digitale Welt</de>
 				<en>BTX - new digital world</en>
+				<pl>BTX - nowy cyfrowy świat</pl>
 			</title>
 			<description>
 				<de>Nie mehr das Haus verlassen. Brot vom Sofa bestellen und Geldgeschäfte innerhalb der eigenen vier Wände erledigen. Der Bildschirmtext bringt die Welt auf den TV.</de>
 				<en>Germany exclusive: Never leave the house again. Ordering bread from the sofa and doing financial transactions within your own four walls. The interactive videotex system BTX brings the world to the TV.</en>
+				<pl>Niemcy na wyłączność: Nigdy więcej nie wychodź z domu. Zamawianie chleba z kanapy i dokonywanie transakcji finansowych we własnych czterech ścianach. Interaktywny system wideotekstu BTX przenosi świat do telewizora.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-samuelloew</member>
@@ -119,12 +131,15 @@
 			<title>
 				<de>Mikroelektronik - Willkommen in der Zukunft</de>
 				<en>Microelectronics - Welcome to the future</en>
+				<pl>Mikroelektronika - Witamy w przyszłości</pl>
 			</title>
 			<description>
 				<de>[1|Full] führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
 Willkommen in der Zukunft.</de>
 				<en>[1|Full] introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
 Welcome to the future.</en>
+				<pl>[1|Full] wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
+Witamy w przyszłości.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-samuelloew</member>
@@ -138,12 +153,15 @@ Welcome to the future.</en>
 			<title>
 				<de>Fruit Inc. - Heimcomputer aus Cupertino</de>
 				<en>Fruit Inc. - Home computers made in Cupertino</en>
+				<pl>Fruit Inc. - Komputery domowe wyprodukowane w Cupertino</pl>
 			</title>
 			<description>
 				<de>Wilde Zeiten erfordern Wagemut. Die Dokumentation begleitete die Fruit Inc.-Gründer Hobbs und Whooznajak vier Jahre lang und kann so manche nennenswerte Anekdote liefern.
 Enthält exklusives Interview mit Investor Mark Mikikulla.</de>
 				<en>Wild times call for courage. The film team accompanied Fruit Inc. founders Hobbs and Whooznajak for four years and can provide many notable anecdotes.
 Contains an exclusive interview with investor Mark Mikikulla.</en>
+				<pl>Dzikie czasy wymagają odwagi. Zespół filmowy towarzyszył założycielom Fruit Inc. Hobbsowi i Whooznajakowi przez cztery lata i może dostarczyć wielu godnych uwag i anegdot.
+Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-thomasstone</member>
@@ -157,10 +175,12 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 			<title>
 				<de>Wahre Pantoffelhelden</de>
 				<en>Truly henpecked</en>
+				<pl>Prawdziwie upierdliwy</pl>
 			</title>
 			<description>
 				<de>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ... wahre Pantoffelhelden um die Fabrik zu retten.</de>
 				<en>Gudrun inherits the chicken run of her father. The major is scheming and the city needs ... true hen-peckers to save the chicken run.</en>
+				<pl>Gudrun dziedziczy po ojcu kurnik. Major knuje intrygi, a miasto potrzebuje... prawdziwych dziobaków, by ocalić kurnik.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -174,10 +194,12 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 			<title>
 				<de>Die Kartoffelkönigin</de>
 				<en>The Potato Queen</en>
+				<pl>Królowa ziemniaków</pl>
 			</title>
 			<description>
 				<de>[1|Last] verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
 				<en>[1|Last] enchants the countrymen. You will look in vain for big potatoes and birdbrained countrymen in this sincere warm and romantic TV-comedy.</en>
+				<pl>[1|Last] oczarowuje ziomków. W tej szczerej, ciepłej i romantycznej komedii telewizyjnej na próżno szukać wielkich ziemniaków i ptasich móżdżków.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -192,10 +214,12 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 			<title>
 				<de>Der große Kaugummitest</de>
 				<en>The Great Chewing Gum Check</en>
+				<pl>Wielka kontrola gum do żucia</pl>
 			</title>
 			<description>
 				<de>Es gibt sie in rot, weiss und vielen anderen Farben. Mal mit Zucker und mal ohne. Im großen Kaugummitest werden 200 Kaugummisorten auf Geschmack, Viskosität und Schuhsohlentauglichkeit getestet.</de>
 				<en>They come in red, white and many other colors. Sometimes with sugar and sometimes without. In the great chewing gum check 200 types of bubblegums are tested for taste, viscosity and shoe sole suitability.</en>
+				<pl>Występują w kolorze czerwonym, białym i wielu innych. Czasami z cukrem, a czasami bez. W wielkim teście gum do żucia 200 rodzajów gumy balonowej jest testowanych pod kątem smaku, lepkości i przydatności do podeszwy buta.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
@@ -209,10 +233,12 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 			<title>
 				<de>Feilschen will gelernt sein</de>
 				<en>Haggling is a skill</en>
+				<pl>Targowanie się jest umiejętnością</pl>
 			</title>
 			<description>
 				<de>Einführung in das Feilschen auf dem Orientbasar - oder dem heimischen Wochenmarkt.</de>
 				<en>Introduction to haggling at oriental bazaars - or the local farmer's market.</en>
+				<pl>Wprowadzenie do targowania się na orientalnych bazarach - lub na lokalnym targu.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -226,10 +252,12 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 			<title>
 				<de>Recycling für Anfänger</de>
 				<en>Recycling for beginners</en>
+				<pl>Recykling dla początkujących</pl>
 			</title>
 			<description>
 				<de>Es ist neu, es ist trendy und es ist ökologisch wichtig. [1|Full] zeigt was in die Tonne kann.</de>
 				<en>It's new, it's trendy - and it is of ecological importance. [1|Full] shows what can go in the garbage can.</en>
+				<pl>Jest nowy, modny - i ma znaczenie ekologiczne. [1|Full] pokazuje, co może trafić do kosza na śmieci.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -244,12 +272,15 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 			<title>
 				<de>Versandkataloge: Woher, wofür?</de>
 				<en>Mail-order catalogues: From where and for what?</en>
+				<pl>Katalogi sprzedaży wysyłkowej: Skąd i po co?</pl>
 			</title>
 			<description>
 				<de>Der Traum einer jeden Hausfrau: Versandkataloge aus dem Hause ATTA und Qualle. Wie werden sie hergestellt, was kann man damit anstellen?
 Mit praktischen Tipps Ramschware zu erkennen.</de>
 				<en>The dream of every Housewife: Mail-order catalogues from ATTA or Qualle. How they are made and what can you do with them?
 With practical tricks to recognize junk goods.</en>
+				<pl>Marzenie każdej gospodyni domowej: Katalogi wysyłkowe od ATTA lub Qualle. Jak powstają i co można z nimi zrobić?
+Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -266,10 +297,12 @@ With practical tricks to recognize junk goods.</en>
 			<title>
 				<de>Arbeitgeber - Sündenböcke oder Klassenfeind?</de>
 				<en>Employers - Scapegoats or Class Enemy?</en>
+				<pl>Pracodawcy - kozły ofiarne czy wrogowie klasowi?</pl>
 			</title>
 			<description>
 				<de>In einer Sache sind sich viele Arbeitnehmer einig: der Arbeitgeber ist der Feind. 100 Arbeitnehmer und 2 Arbeitgeber im Streitgespräch.</de>
 				<en>There is one thing that many workers agree on: the employer is the enemy. 100 employees and 2 employers in debate.</en>
+				<pl>Wielu pracowników zgadza się co do jednego: pracodawca jest wrogiem. 100 pracowników i 2 pracodawców w debacie.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -286,12 +319,15 @@ With practical tricks to recognize junk goods.</en>
 			<title>
 				<de>Die Hausfrau - liebenswert und putzig</de>
 				<en>The housewife - lovable and polished</en>
+				<pl>Gospodyni domowa - urocza i dopieszczona</pl>
 			</title>
 			<description>
 				<de>Wer hat sowas nicht gern zu Haus? Eine fleissige und artige Hausfrau. Sie kocht, sie wäscht und schweigt.
 Die Reportage begleitet zwei Familien für einen Sommer in West-Berlin.</de>
 				<en>Who does not like having something like that at home? A diligent and decent housewife. She cooks, she washes and keeps quiet.
 The report accompanies two families for a summer in West Berlin.</en>
+				<pl>Kto nie lubi mieć czegoś takiego w domu? Pracowita i porządna gospodyni domowa. Gotuje, pierze i pilnuje porządku.
+Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-achimvonklaven</member>
@@ -308,10 +344,12 @@ The report accompanies two families for a summer in West Berlin.</en>
 			<title>
 				<de>Büstenhalter in Flammen</de>
 				<en>Brassieres in Flames</en>
+				<pl>Biustonosze w płomieniach</pl>
 			</title>
 			<description>
 				<de>Sie kam, sah und scheint zu siegen: Die Emanzipation der Frau. Männer niedergerollt vom neuen Selbstvertrauen des starken schwachen Geschlechts.</de>
 				<en>She came, she saw, she seems to conquer: the emancipation of women. Men steamrollered by the new self-confidence of the strong "weak" sex.</en>
+				<pl>Przybyła, zobaczyła, wydaje się podbijać: emancypacja kobiet. Mężczyźni pod wpływem nowej pewności siebie silnej "słabej" płci.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-ellygnatzer</member>
@@ -328,10 +366,12 @@ The report accompanies two families for a summer in West Berlin.</en>
 			<title>
 				<de>Westberlin - Nein zum Wehrdienst</de>
 				<en>West Berlin - No to military service</en>
+				<pl>Berlin Zachodni - Nie dla służby wojskowej</pl>
 			</title>
 			<description>
 				<de>Ein Kamerateam begleitet Punk „Fizzy“ auf seinem Umzug nach Westberlin. Dank alliierter Vorbehaltsrechte kann er sich dort der Wehrpflicht entziehen.</de>
 				<en>A camera crew accompanies punk "Fizzy" on his move to West Berlin. Thanks to Allied reservation rights, he is able to avoid compulsory military service there.</en>
+				<pl>Ekipa filmowa towarzyszy punkowi "Fizzy'emu" podczas jego przeprowadzki do Berlina Zachodniego. Dzięki alianckim prawom rezerwacji może on tam uniknąć obowiązkowej służby wojskowej.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -348,12 +388,15 @@ The report accompanies two families for a summer in West Berlin.</en>
 			<title>
 				<de>Reeperbahn - Freudenhäuser im Test</de>
 				<en>Reeperbahn - Whorehouses under Test</en>
+				<pl>Reeperbahn - Burdele w trakcie testów</pl>
 			</title>
 			<description>
 				<de>Mit versteckter Kamera durchstreift Reporter [1|Full] verschiedene Etablissements in Deutschlands bekanntestem Rotlichtviertel.
 Testsieger: Das „Fummeldidumm“.</de>
 				<en>With a hidden camera, reporter [1|Full] roams through various establishments in Germany's best-known red-light district.
 Test winner: The "Little Twiddle".</en>
+				<pl>Z ukrytą kamerą reporter [1|Full] przemierza różne lokale w najbardziej znanej dzielnicy czerwonych latarni w Niemczech.
+Zwycięzca testu: "Little Twiddle".</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -370,12 +413,15 @@ Test winner: The "Little Twiddle".</en>
 			<title>
 				<de>Unter der Haube</de>
 				<en>Hitched Hairdressers</en>
+				<pl>Hitched Hairdressers</pl>
 			</title>
 			<description>
 				<de>Begleiten Sie 2 Friseusen auf ihrem Weg zum Traualtar. So unterschiedlich die Frisuren, so verschieden auch die Hochzeiten.
 Taschentücher bereithalten.</de>
 				<en>Accompany 2 hairdressers on their way to the altar. As different the hairstyles, as different the weddings.
 Have handkerchiefs ready.</en>
+				<pl>Towarzyszymy 2 fryzjerom w drodze do ołtarza. Tak różne fryzury, jak różne wesela.
+Przygotuj chusteczki do nosa.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-people-generated-02</member>
@@ -392,12 +438,15 @@ Have handkerchiefs ready.</en>
 			<title>
 				<de>Konfetti: Betrug am Kunde?</de>
 				<en>Confetti: Defrauding the customer?</en>
+				<pl>Confetti: Oszustwo wobec klienta?</pl>
 			</title>
 			<description>
 				<de>Die große Reportage deckt auf: statt versprochener 2500 Konfettiflocken sind in einer handelsüblichen Kleinpackung nur 2350-2400 Stück enthalten.
 Der erhoffte Skandal blieb aus.</de>
 				<en>The big report reveals: instead of the promised 2500 confetti flakes, a commercially available small package only contains about 2350-2400 pieces.
 The hoped-for scandal failed to materialize.</en>
+				<pl>Wielki raport ujawnia: zamiast obiecanych 2500 płatków konfetti, dostępne na rynku małe opakowanie zawiera tylko około 2350-2400 sztuk.
+Oczekiwany skandal nie zmaterializował się.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -414,12 +463,15 @@ The hoped-for scandal failed to materialize.</en>
 			<title>
 				<de>Zum Bleistift?</de>
 				<en>(No) Fun Intended</en>
+				<pl>(Nie) zamierzona zabawa</pl>
 			</title>
 			<description>
 				<de>[1|Full] zeigt woher Wortzoten kommen und in welchen Jahren sie ihren Höhepunkt hatten.
 Illustre Gäste und Musik von [3|Nick].</de>
 				<en>[1|Full] reveals where bad puns come from and in which years they peaked.
 Illustrious guests and music by [3|Nick].</en>
+				<pl>[1|Full] zdradza, skąd wzięły się złe kalambury i w których latach osiągnęły swój szczyt.
+Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<staff>
 				<member index="0" function="8">ronny-programmeperson-holgerpelz</member>
@@ -440,12 +492,15 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Beton für den Clan</de>
 				<en>Concrete for the Clans</en>
+				<pl>Beton dla klanów</pl>
 			</title>
 			<description>
 				<de>Gibt es wichtige Unterschiede zwischen Bau-Beton und Mafia-Beton?
 5 Betonsorten im großen Hafenbecken-Test.</de>
 				<en>Are there any significant differences between construction concrete and mafia concrete?
 5 concrete types in the big port basin test.</en>
+				<pl>Czy istnieją znaczące różnice między betonem budowlanym a betonem mafijnym?
+5 rodzajów betonu w teście dużego basenu portowego.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
@@ -502,10 +557,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Spitzelaffäre</de>
 				<en>Snitch scandal</en>
+				<pl>Afera donosicielska</pl>
 			</title>
 			<description>
 				<de>Auf der Toilette des Bundestags wurde ein Gespräch zwischen zwei nicht genannten Politikern aufgezeichnet. Audiomaterial scheinbar zensiert, Pfeif- und Zischgeräusche überdecken Gespräch.</de>
 				<en>A conversation between two unnamed politicians was recorded in a toilet in the German Bundestag. The audio footage apparently is censored, whistling and hissing noises cover the conversation.</en>
+				<pl>Rozmowa między dwoma bezimiennymi politykami została nagrana w toalecie w niemieckim Bundestagu. Nagranie audio najwyraźniej zostało ocenzurowane, a gwizdy i syczące odgłosy przykrywają rozmowę.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="1,4,8"
@@ -519,10 +576,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Spitzelaffäre - Zensur herausgefiltert</de>
 				<en>Snitch scandal - censorship filtered out</en>
+				<pl>Skandal z donosicielami - cenzura przefiltrowana</pl>
 			</title>
 			<description>
 				<de>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage „Hast Du mal noch Papier?“ rätseln Experten.</de>
 				<en>The audio footage of the toilet recording could be cleaned up. Experts are puzzling over the encoded question "Do you have any more paper?"</en>
+				<pl>Nagranie audio z toalety może zostać wyczyszczone. Eksperci zastanawiają się nad zakodowanym pytaniem "Czy masz jeszcze papier?".</pl>
 			</description>
 			<data genre="0" price="1.0" quality="44" />
 		</news>
@@ -530,10 +589,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Spitzelaffäre - Experten uneinig</de>
 				<en>Snitch scandal - experts are divided</en>
+				<pl>Skandal z donosicielami - eksperci są podzieleni</pl>
 			</title>
 			<description>
 				<de>Verschiedene Experten haben das Audiomaterial analysiert. Die Ergebnisse sind strittig: ging es um Atompolitik oder doch nur schnöden Smalltalk?</de>
 				<en>Various experts have analyzed the audio footage. The results are in dispute: was it about nuclear policy or just plain small talk?</en>
+				<pl>Różni eksperci przeanalizowali nagranie audio. Wyniki są sporne: czy chodziło o politykę nuklearną, czy tylko o zwykłą pogawędkę?</pl>
 			</description>
 			<data genre="0" price="1.05" quality="20" />
 		</news>
@@ -552,10 +613,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„DRUCK“-Taste: Abgaben geplant</de>
 				<en>"PRINT"-Key: levies planned</en>
+				<pl>Klawisz "PRINT": planowane opłaty</pl>
 			</title>
 			<description>
 				<de>Die VG Text-und-Computer strengt eine Vergütung für die Nutzung auf Computertastaturen befindlicher „Druck“-Tasten an. Schon die Absicht zu Drucken ist abzugelten.</de>
 				<en>The Text-and-Computer Regulation Agency is seeking remuneration for the use of the "Print" key located on computer keyboards. Even the intention to print is to be compensated.</en>
+				<pl>Agencja Regulacji Tekstu i Komputerów domaga się wynagrodzenia za korzystanie z klawisza "Drukuj" znajdującego się na klawiaturach komputerów. Nawet zamiar drukowania ma być rekompensowany.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="1,4,8"
@@ -569,10 +632,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„DRUCK“-Taste: Plombe spart Abgaben</de>
 				<en>"PRINT"-Key: Seals to spare levies</en>
+				<pl>Klawisz "PRINT": Firmy oszczędzają na opłatach</pl>
 			</title>
 			<description>
 				<de>Tastaturhersteller wie Charry oder LogischTec haben reagiert: sie verplomben die „DRUCK“-Taste um die sonst fälligen Abgaben zu umgehen.</de>
 				<en>Keyboard manufacturers such as Charry or LogischTec have reacted: they seal the "PRINT" key to bypass the otherwise due duties.</en>
+				<pl>Producenci klawiatur, tacy jak Charry czy LogischTec, zareagowali: zablokowali klawisz "PRINT", aby ominąć należne opłaty.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 9-12 Uhr" -->
@@ -584,10 +649,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„DRUCK“-Taste: Vereine demonstrieren</de>
 				<en>"PRINT"-Key: Associations protest</en>
+				<pl>Klawisz "PRINT" Organizacje się sprzeciwiają</pl>
 			</title>
 			<description>
 				<de>Der Verein der Internetausdrucker und -archivierer (RAR eV) ruft zur Großdemo auf: Freiheit für die „DRUCK“-Taste.</de>
 				<en>The association of "People printing out and archiving the Internet" (RAR society) calls for major demonstrations: freedom for the "PRINT"-key.</en>
+				<pl>Stowarzyszenie "Ludzi drukujących i archiwizujących Internet" (stowarzyszenie RAR) wzywa do dużych demonstracji: wolność dla klawisza "PRINT".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,4,8" news="ronny-news-drucktaste-02b1" />
@@ -598,10 +665,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„DRUCK“-Taste: Für private Haushalte kostenlos</de>
 				<en>"PRINT"-Key: Free for private households</en>
+				<pl>Klawisz PRINT: Bezpłatny dla gospodarstw domowych</pl>
 			</title>
 			<description>
 				<de>Nach den Demos des RAR eV rudert die Politik zurück: das Drücken der „DRUCK“-Taste im privaten Rahmen bleibt abgabenfrei. Entsprechende „Privat“-Tastaturen sind nun erhältlich.</de>
 				<en>After the demonstrations of the RAR society the politicians are backpedaling: pressing the "PRINT"-key in private context remains tax-free. Corresponding "private household" keyboards are now available.</en>
+				<pl>Po demonstracjach społeczeństwa RAR politycy wycofują się: naciśnięcie klawisza "PRINT" w kontekście prywatnym pozostaje zwolnione z podatku. Odpowiednie klawiatury "prywatnego gospodarstwa domowego" są już dostępne.</pl>
 			</description>
 			<effects>
 				<!-- "morgen 9 Uhr" -->
@@ -613,10 +682,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„DRUCK“-Taste: Keine Abgaben mehr</de>
 				<en>"PRINT"-Key: No more levies</en>
+				<pl>Klawisz "PRINT": Koniec z opłatami</pl>
 			</title>
 			<description>
 				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
 				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 euros would be offset by administrative costs of 2.8 million euros.</en>
+				<pl>Rząd zatwierdza propozycję Agencji Regulacji Tekstu i Komputerów: klawisz"PRINT" będzie ponownie zwolniony z cła. Dodatkowy przychód w wysokości 1200 euro zostanie zrekompensowany kosztami administracyjnymi w wysokości 2,8 mln euro.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="30" />
 		</news>
@@ -624,10 +695,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Bauchflusensieb löst Reizdarm aus</de>
 				<en>Belly lint filter triggers IBS</en>
+				<pl>Filtr kłaczków w jamie brzusznej wywołuje zespół jelita drażliwego</pl>
 			</title>
 			<description>
 				<de>Der Vertreiber des mechanischen Bauchflusensieb „Saubermann Öko“, die Nepp AG, ruft ihr Produkt zurück. Der rückseitig gelagerte Gurtverschluss kann einen Reizdarm auslösen.</de>
 				<en>The distributor of the mechanical belly lint filter "CleanMan Eco", the Hoax Corp. is recalling their product. The rear mounted buckle can trigger the irritable bowel syndrome (IBS).</en>
+				<pl>Dystrybutor mechanicznego filtra kłaczków na brzuch "CleanMan Eco", Hoax Corp. wycofuje swój produkt. Zamontowana z tyłu klamra może wywoływać zespół jelita drażliwego (IBS).</pl>
 			</description>
 			<data genre="4" price="1.20" quality="18" />
 		</news>
@@ -635,10 +708,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>USB-Ratte: Mausersatz für große Hände</de>
 				<en>USB-Rat: Mouse replacement for huge hands</en>
+				<pl>USB-Rat: Zamiennik myszy dla dużych dłoni</pl>
 			</title>
 			<description>
 				<de>Auf der Internationalen Messe für Computerzubehör (IMC) wurde nun die USB-Ratte vorgestellt. Im Gegensatz zu Mäusen, sind USB-Ratten für richtige Männerhände geeignet.</de>
 				<en>At the International Exhibition for Computer Accessories (ECA), the USB-Rat was presented. Unlike mice, USB-Rats are suitable for real men's hands.</en>
+				<pl>Na Międzynarodowej Wystawie Akcesoriów Komputerowych (ECA) zaprezentowano USB-Rat. W przeciwieństwie do myszy, USB-Raty są odpowiednie dla prawdziwych męskich dłoni.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="32" />
 			<availability year_range_from="1996" year_range_to="-1" />
@@ -648,10 +723,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Sandsturm am nördlichen Polarkreis</de>
 				<en>Sandstorm near the Arctic Circle</en>
+				<pl>Burza piaskowa w pobliżu koła podbiegunowego</pl>
 			</title>
 			<description>
 				<de>Forscher der Polarstation „Frostpfote“ beobachteten am gestrigen Vormittag einen Sandsturm. Forscher Jörnssen: „Er wirkte so real, genauso wie die Kamele“.</de>
 				<en>Yesterday morning researchers at the polar station "Frost paw" observed a sandstorm. Researcher Jörnssen: "It looked so real, just like the camels."</en>
+				<pl>Wczoraj rano naukowcy ze stacji polarnej "Mroźna łapa" zaobserwowali burzę piaskową. Badacz Jörnssen: "Wyglądało to tak realistycznie, zupełnie jak u wielbłądów".</pl>
 			</description>
 			<effects>
 				<!-- "morgen 9-15 Uhr" -->
@@ -663,10 +740,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Sandsturm war nicht echt</de>
 				<en>Sandstorm was not real</en>
+				<pl>Burza piaskowa nie była prawdziwa</pl>
 			</title>
 			<description>
 				<de>Die Forscher der Polarstation gaben kleinlaut zu, dass aus Versehen der neue TV vor dem Fenster stand. Es lief Patty Glansens Liebesfilm „|b|Dornen der Wüste|/b|“.</de>
 				<en>The researchers of the polar station meekly admitted that inadvertently their new TV was placed in front of the window. It played Patty Glansen's romantic movie "|b|Thorns of the desert|/b|".</en>
+				<pl>Badacze stacji polarnej potulnie przyznali, że przez nieuwagę ich nowy telewizor został umieszczony przed oknem. Odtwarzał on romantyczny film Patty Glansen "|b|Thorns of the desert|/b|".</pl>
 			</description>
 			<!--
 				- Popularitaet von "Patty Glansen" erhoehen
@@ -685,10 +764,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Leser lesen wieder, dank Katschminski</de>
 				<en>Readers read again. Thanks to Katschinski</en>
+				<pl>Czytelnicy czytają ponownie. Dzięki Katschinski</pl>
 			</title>
 			<description>
 				<de>Das Buch des unbekannten Autoren Franco Katschminski begeistert die Leserschaft. In „Das Herzklopfen“ verwebt er eine banale Liebesgeschichte mit expliziter Philosophie.</de>
 				<en>The book of the little-known author Franco Katschinski enthuses readers worldwide. In "The Throbbing" he interweaves a banal love story with explicit philosophy.</en>
+				<pl>Książka mało znanego autora Franco Katschinskiego zachwyca czytelników na całym świecie. W "The Throbbing" przeplata banalną historię miłosną z dosadną filozofią.</pl>
 			</description>
 			<effects>
 				<!-- "morgen/uebermorgen 9-18 Uhr" -->
@@ -700,10 +781,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Ansturm auf neues Buch</de>
 				<en>Rush for new book</en>
+				<pl>Pośpiech w poszukiwaniu nowej książki</pl>
 			</title>
 			<description>
 				<de>Nach seinem letzten Bestseller legt Katschminski nach. Mit „Immer wieder Herzrasen“ trifft er erneut den Nerv der Zeit - und seiner geriatrisch angehauchten Leserschaft.</de>
 				<en>After his last bestseller, Katschinski is following up. With "Always and again palpitations", he once again strikes a chord with the zeitgeist - and with his geriatrically inclined readership.</en>
+				<pl>Po swoim ostatnim bestsellerze Katschinski kontynuuje. Dzięki "Zawsze i znowu palpitacje" po raz kolejny trafia w sedno zeitgeist - i ze swoimi czytelnikami o skłonnościach geriatrycznych.</pl>
 			</description>
 			<effects>
 				<!-- "morgen/uebermorgen 9-18 Uhr" -->
@@ -715,10 +798,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Katschminski veröffentlicht neues Buch</de>
 				<en>Katschinski releases new book</en>
+				<pl>Katschinski wydaje nową książkę</pl>
 			</title>
 			<description>
 				<de>Der Bestsellerautor Katschminski veröffentlicht sein neues Buch „Das Herzzerreissen“. Irgendwie nur noch banal und kaum aushaltbare Salbaderei.</de>
 				<en>The bestselling author Katschinski publishes his new book "The heart rending". Somewhat only banal and hardly bearable twaddle.</en>
+				<pl>Autor bestsellerów Katschinski publikuje swoją nową książkę "Rozdzierające serce". Trochę tylko banalne i ledwo znośne bzdury.</pl>
 			</description>
 			<data genre="5" price="1.0" quality="32" />
 		</news>
@@ -726,10 +811,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Pipé-Laho Nummer 1</de>
 				<en>Pipé-Laho number 1</en>
+				<pl>Pipé-Laho z numerem 1</pl>
 			</title>
 			<description>
 				<de>Das frankoindonesische Popsternchen Pipé-Laho erreicht mit „Moi? J'arrive“ Platz 1 der hiesigen Charts. Moderne Arrangements und traditionelle indonesische Instrumente werden zum Trend.</de>
 				<en>The French-Indonesian pop starlet Pipé-Laho reaches No. 1 on the local charts with "Moi? J'arrive.". Modern arrangements and traditional Indonesian instruments create a new trend.</en>
+				<pl>Francusko-indonezyjska gwiazda pop Pipé-Laho osiąga nr 1 na lokalnych listach przebojów z utworem "Moi? J'arrive.". Nowoczesne aranżacje i tradycyjne indonezyjskie instrumenty tworzą nowy trend.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="32" />
 		</news>
@@ -737,10 +824,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Plastik „Karl Dingensbummens“ gestohlen</de>
 				<en>Sculpture "Joe Thingamabob" stolen</en>
+				<pl>Rzeźba „Joe Thingamabob” skradziona</pl>
 			</title>
 			<description>
 				<de>Die weltbekannte Plastikskulptur des Künstlers Jean-Peter Fleusch wurde aus dem Museum für strittige Kunst in Flunde/Südafrika gestohlen.</de>
 				<en>The world-renowned plastic sculpture by artist Jean-Peter Fleusch was stolen from the Museum of Controversial Art in Flunde/South Africa.</en>
+				<pl>Znana na całym świecie plastikowa rzeźba artysty Jeana-Petera Fleuscha została skradziona z Muzeum Sztuki Kontrowersyjnej we Flunde w RPA.</pl>
 			</description>
 			<effects>
 				<!-- "morgen/uebermorgen 6-12 Uhr" -->
@@ -752,10 +841,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„Karl Dingensbummens“ wieder da</de>
 				<en>"Joe Thingamabob" back again</en>
+				<pl>„Joe Thingamabob” powraca ponownie</pl>
 			</title>
 			<description>
 				<de>Jean-Peter Fleusch („Kunst der unscharfen Ränder“) meldet Rückkehr der Skulptur „Karl Dingensbummens“. Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
 				<en>Jean-Peter Fleusch ("Art of blurred edges") reports return of the sculpture "Joe Thingamabob". Cleaners had mistaken it for packaging material and deposited it in a warehouse.</en>
+				<pl>Jean-Peter Fleusch („Muzeum Sztuki Kontrowersyjnej”) donosi o odnalezieniu rzeźby „Joe Thingamabob”. Sprzątacze pomylili ją z materiałem opakowaniowym i zdeponowali w magazynie.</pl>
 			</description>
 			<data genre="5" price="1.0" quality="20" />
 		</news>
@@ -765,10 +856,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Ausstellung zum Thema Frauenbärte</de>
 				<en>Exhibition on Women's Beards</en>
+				<pl>Wystawa poświęcona kobiecym brodom</pl>
 			</title>
 			<description>
 				<de>Sie sind der Trend des kommenden Sommers: Frauenbärte. Emily Santé widmet dem Trend schon jetzt eine Ausstellung. Frauen mit Bart erhalten kostenlosen Zutritt.</de>
 				<en>They are the trend of the coming summer: women's beards. Emily Santé is already dedicating an exhibition to the trend. Women with beards are admitted free of charge.</en>
+				<pl>Oto trend nadchodzącego lata: kobiece brody. Emily Santé już teraz poświęca wystawę temu trendowi. Kobiety z brodą mają wstęp bezpłatny.</pl>
 			</description>
 			<effects>
 				<!-- "morgen/uebermorgen 11-17 Uhr" -->
@@ -784,10 +877,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Ausstellung „Frauenbärte %WORLDTIME:YEAR%“ lockt Betrüger</de>
 				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures scammers</en>
+				<pl>Wystawa „Kobiece brody %WORLDTIME:YEAR%” wabi oszustów</pl>
 			</title>
 			<description>
 				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung „Frauenbärte“ zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
 				<en>Today, two men disguised with beards tried to trick their way into the "Women's Beards" exhibition for free. During the scuffle, a security guard had her mustache plucked.</en>
+				<pl>Dziś dwóch mężczyzn przebranych za brodaczy próbowało podstępem dostać się za darmo na wystawę „Kobiece brody”. Podczas przepychanki ochroniarz wyrwał im wąsy.</pl>
 			</description>
 			<data genre="5" price="1.0" quality="17" />
 		</news>
@@ -795,10 +890,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Frauenbärte: Frauen schwören auf Koteletten</de>
 				<en>Women's beards: women swear by sideburns</en>
+				<pl>Kobiece brody: kobiety przerzucają się na bokobrody</pl>
 			</title>
 			<description>
 				<de>Wohl auch aus Diätgründen trägt die Frau von heute Koteletten. Gezupft und in Form gebracht - natürlich!</de>
 				<en>Maybe it helps shaping off some fat - so the modern woman wears sideburns now. Plucked and brought into shape - naturally!</en>
+				<pl>Być może pomaga to zrzucić trochę tłuszczu - dlatego współczesna kobieta nosi teraz bokobrody. Skubane i nadające kształt - naturalne!</pl>
 			</description>
 			<data genre="5" price="1.0" quality="18" />
 		</news>
@@ -806,10 +903,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>Frauenbärte: Aus und Vorbei</de>
 				<en>Women's Beards: Over and done with</en>
+				<pl>Kobiece brody: Koniec i kropka</pl>
 			</title>
 			<description>
 				<de>Die millionenschweren Gegenkampagne der Rouge-Produzenten zeigt Wirkung: Absatz für Damenrasierer steigt wieder!</de>
 				<en>The multi-million Euro counter-campaign by rouge producers is having an effect: sales of women's razors are on the rise again!</en>
+				<pl>Wielomilionowa kontr-kampania producentów rouge przynosi efekty: sprzedaż maszynek do golenia dla kobiet znów rośnie!</pl>
 			</description>
 			<data genre="5" price="1.1" quality="21" />
 		</news>
@@ -817,10 +916,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„Tarot im Wandel der Zeit“ auf Tour</de>
 				<en>"Tarot in the course of time" on tour</en>
+				<pl>„Tarot z biegiem czasu” na trasie</pl>
 			</title>
 			<description>
 				<de>Die Ausstellung der „Zunft“ reist quer durchs Land. Ausgestellt wird alles, vom alten Taschenschlitzwerkzeug bis zur ersten verdienten Mark mit 0190er Nummern.</de>
 				<en>The exhibition of the "guild" travels across the country. On display is everything, from the vintage pocket slitting tool up to the first Deutschmark earned with call-in phone numbers.</en>
+				<pl>Wystawa „gildii” podróżuje po całym kraju. Na wystawie znajduje się wszystko, od zabytkowego kieszonkowego narzędzia do cięcia, po pierwszą markę niemiecką zarobioną za pomocą numerów telefonicznych.</pl>
 			</description>
 			<data genre="5" price="1.2" quality="23" />
 		</news>
@@ -828,10 +929,12 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>„Das war die Steinzeit“ gastiert in %CITYNAME%</de>
 				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
+				<pl>Wystawa „To była epoka kamienia łupanego” w %CITYNAME%</pl>
 			</title>
 			<description>
 				<de>Die erfolgreiche Wanderausstellung schlägt ihre Zelte in %CITYNAME% auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen, um Tickets zu erjagen.</de>
 				<en>The successful traveling exhibition sets up its tents in %CITYNAME%. Dozens of residents dropped all their cudgels in order to catch some tickets.</en>
+				<pl>Odnosząca sukcesy wystawa objazdowa rozstawia swoje namioty w %CITYNAME%. Dziesiątki mieszkańców porzuciło wszystkie swoje pałki, aby zdobyć bilety.</pl>
 			</description>
 			<!-- usage of %STATIONMAP:RANDOMCITY% in the text directly, will lead to a different random city
 				 in title than in the description - so we use variables as this caches the output of the first city -->
@@ -850,19 +953,23 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>%WHAT% %WHEN%</de>
 				<en>%WHAT% %WHEN%</en>
+				<pl>%WHAT% %WHEN%</pl>
 			</title>
 			<description>
 				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
 				<en>Snazzy music for young and old. From packed football stadiums to the show stage. Pure entertainment</en>
+				<pl>Odlotowa muzyka dla młodszych i starszych. Od wypełnionych po brzegi stadionów piłkarskich po sceny estradowe. Czysta rozrywka</pl>
 			</description>
 			<variables>
 				<what>
 					<de>Musiksterne|Talente|Pop|Unterhaltung|Musikgenuss|Klassik|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</de>
 					<en>Music starlets|Talents|Pop|Entertainment|Music delight|Classical Music|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</en>
+					<pl>Gwiazdy muzyki|Talenty|Pop|Rozrywka|Rozkosz muzyczna|Muzyka klasyczna|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</pl>
 				</what>
 				<when>
 					<de>am Abend|zur besten Sendezeit|in der Dämmerung|im Mondschein|unterm Sternenzelt|zur guten Nacht|zum Sonnenuntergang</de>
 					<en>in the Evening|at Prime Time|at Nightfall|in the Moonlight|under the Canopy of Stars|for the Good Night|at Sunset</en>
+					<pl>wieczorem|o najlepszej porze|o zmroku|w świetle księżyca|pod baldachimem gwiazd|na dobranoc|o zachodzie słońca</pl>
 				</when>
 			</variables>
 			<jobs>
@@ -890,16 +997,19 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>%SHOWNAME%</de>
 				<en>%SHOWNAME%</en>
+				<pl>%SHOWNAME%</pl>
 			</title>
 			<description>
 				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>
 				<en>Wakey-wake your bed just cracked. Easy-going morning entertainment for everyone - from the early riser to the unemployed late riser.</en>
+				<pl>Pobudka - łóżko po prostu pękło. Łatwa poranna rozrywka dla każdego - od wczesnego wstawania po bezrobotne późne wstawanie.</pl>
 			</description>
 
 			<variables>
 				<showname>
 					<de>Goldene Morgenstunden|Guten Morgen %STATIONMAP:RANDOMCITY%|Die Frühaufsteher|Start in den Tag</de>
 					<en>The early birds|Good Morning %STATIONMAP:RANDOMCITY%|The early risers|Start of the day</en>
+					<pl>Pobudka z TV|Dzień dobry %STATIONMAP:RANDOMCITY%|Poranne TV|Telewizja śniadaniowa</pl>
 				</showname>
 			</variables>
 
@@ -928,21 +1038,25 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>${cntry} von oben</de>
 				<en>Bird's eye view of ${cntry}</en>
+				<pl>Widok z lotu ptaka na ${cntry}</pl>
 			</title>
 			<description>
 				<de>Erleben Sie atemberaubende Luftaufnahmen von ${cntry}.|${cntry} wie Sie es noch nie gesehen haben.|${cntry} aus einer neuen Perspektive.</de>
 				<en>Experience breathtaking aerial views of ${cntry}.|${cntry} as you have never seen it before.|${cntry} from a new perspective.</en>
+				<pl>Doświadcz zapierających dech w piersiach widoków z lotu ptaka na ${cntry}.|Doświadcz widoków z lotu ptaka na ${cntry}, których jeszcze nigdy wcześniej nie widziałeś.|Doświadcz widoków z lotu ptaka na ${cntry}, z nowej perspektywy.</pl>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-from-above-eps">
 					<title>
 						<de>${cntry}s ${subject}</de>
 						<en>${subject} of ${cntry}</en>
+						<pl>${subject} z lotu ptaka</pl>
 					</title>
 					<variables>
 						<subject>
 							<de>Berge|Flüsse|Städte|Nationalparks|Wälder|Seen|Bahnhöfe|Schlösser|Parks|Inseln|Kirchen|Stadien|Ruinen|Gletscher|Wochenmärkte|Bahnstrecken</de>
 							<en>Mountains|Rivers|Cities|National Parks|Forests|Lakes|Railroad Stations|Castles|Parks|Islands|Churches|Stadiums|Ruins|Glaciers|Farmers' Markets|Railways</en>
+							<pl>Góry|Rzeki|Miasta|Parki narodowe|Lasy|Jeziora|Stacje kolejowe|Zamki|Parki|Kościoły|Stadiony|Ruiny zamków|Wyspy|Plaże|Zabytki|Parki krajobrazowe</pl>
 						</subject>
 					</variables>
 					<episodes min="3" max="5" />
@@ -952,6 +1066,7 @@ Illustrious guests and music by [3|Nick].</en>
 				<cntry>
 					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
 					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
+					<pl>Niemcy|Hiszpanię|Francję|Danię|Szwecję|Finlandie|Norwegie|Polskę|Grecję|Włochy|Portugalię|Brazylię|Kostarykę|Kanadę|Wietnam|Tajlandię|Japonię|Belgię|Nepal|Indie|Chile</pl>
 				</cntry>
 			</variables>
 			<jobs>
@@ -980,6 +1095,7 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>${ttl}</de>
 				<en>${ttl}</en>
+				<pl>${ttl}</pl>
 			</title>
 			<description>
 				<!--no description at all: first episode's description is shown for series-->
@@ -990,10 +1106,12 @@ Illustrious guests and music by [3|Nick].</en>
 				<ttl>
 					<de>Zu Gast in ${cntry}|Reise durch ${cntry}|Auf Achse in ${cntry}|Leben in ${cntry}|Sehenswertes ${cntry}|Faszination ${cntry}|Blickpunkt ${cntry}</de>
 					<en>Visiting ${cntry}|Travelling in ${cntry}|On the road in ${cntry}|Life in ${cntry}|Beautiful ${cntry}|Fascinating ${cntry}|Spotlight ${cntry}</en>
+					<pl>Zwiedzanie krajów - ${cntry}|Podróżowanie przez kraje. ${cntry}|Na wycieczce - ${cntry}|Życie w różnych krajach - ${cntry}|Piękne kraje - ${cntry}|Fascynujące kraje -${cntry}|W cyklu, poznaj świat - ${cntry}</pl>
 				</ttl>
 				<cntry>
 					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
 					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
+					<pl>Niemcy|Hiszpania|Francja|Dania|Szwecja|Finlandia|Norwegia|Polska|Grecja|Włochy|Portugalia|Brazylia|Kostaryka|Kanada|Wietnam|Tajlandia|Japonia|Belgia|Nepal|Indie|Chile</pl>
 				</cntry>
 			</variables>
 			<!--TODO descriptions!-->
@@ -1003,10 +1121,12 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>${cntry} im Überblick</de>
 						<en>${cntry} in a nutshell</en>
+						<pl>${cntry} w pigułce</pl>
 					</title>
 					<description>
 						<de>Geografische, historische und politische Zusammenfassung zu ${cntry}, bevor sich die Folgen einzelnen Aspekten des Landes widmen.</de>
 						<en>Geographical, historical and political summary of ${cntry}, before a specific aspect of the country is highlighted in each episode.</en>
+						<pl>Geograficzne, historyczne i polityczne podsumowanie danego kraju. W każdym odcinku inny temat.</pl>
 					</description>
 					<outcome min="30" max="60" slope="50" />
 				</scripttemplate>
@@ -1014,6 +1134,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Schlösser</de>
 						<en>Castles</en>
+						<pl>Zamki</pl>
 					</title>
 					<groups target_groups="65" />
 				</scripttemplate>
@@ -1021,6 +1142,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Stadien</de>
 						<en>Stadiums</en>
+						<pl>Stadiony</pl>
 					</title>
 					<groups target_groups="258" />
 				</scripttemplate>
@@ -1028,18 +1150,21 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Seen</de>
 						<en>Lakes</en>
+						<pl>Jeziora</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="4" guid="scripttemplate-ron-visiting-ep5">
 					<title>
 						<de>Berge</de>
 						<en>Mountains</en>
+						<pl>Góry</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="5" guid="scripttemplate-ron-visiting-ep6">
 					<title>
 						<de>Arbeitgeber</de>
 						<en>Employers</en>
+						<pl>Zatrudnie i przemysł</pl>
 					</title>
 					<groups target_groups="40" target_groups_optional="16"/>
 				</scripttemplate>
@@ -1047,6 +1172,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Wochenmärkte</de>
 						<en>Farmers' Markets</en>
+						<pl>Rolnictwo i obszary wiejskie</pl>
 					</title>
 					<groups target_groups="4" target_groups_optional="64"/>
 				</scripttemplate>
@@ -1054,6 +1180,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Nationalparks</de>
 						<en>National Parks</en>
+						<pl>Parki narodowe</pl>
 					</title>
 					<groups target_groups="0" target_groups_optional="129"/>
 				</scripttemplate>
@@ -1061,6 +1188,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Architektur</de>
 						<en>Architecture</en>
+						<pl>Architektura</pl>
 					</title>
 					<groups target_groups="32" target_groups_optional="64"/>
 				</scripttemplate>
@@ -1068,6 +1196,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Literatur</de>
 						<en>Literature</en>
+						<pl>Literatura</pl>
 					</title>
 					<groups target_groups="128" target_groups_optional="32"/>
 				</scripttemplate>
@@ -1075,6 +1204,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Musik</de>
 						<en>Music</en>
+						<pl>Muzyka</pl>
 					</title>
 					<groups target_groups="128" target_groups_optional="2"/>
 				</scripttemplate>
@@ -1082,6 +1212,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Biere</de>
 						<en>Beer</en>
+						<pl>Piwo</pl>
 					</title>
 					<groups target_groups="18" target_groups_optional="8"/>
 				</scripttemplate>
@@ -1089,6 +1220,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Weine</de>
 						<en>Wine</en>
+						<pl>Wino</pl>
 					</title>
 					<groups target_groups="32" target_groups_optional="128"/>
 				</scripttemplate>
@@ -1096,6 +1228,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Autos</de>
 						<en>Cars</en>
+						<pl>Samochody i infrastruktura</pl>
 					</title>
 					<groups target_groups="258" target_groups_optional="32"/>
 				</scripttemplate>
@@ -1103,12 +1236,14 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Fotografie</de>
 						<en>Photography</en>
+						<pl>Fotografie</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="15" guid="scripttemplate-ron-visiting-ep16">
 					<title>
 						<de>Möbel</de>
 						<en>Furniture</en>
+						<pl>Meble</pl>
 					</title>
 					<groups target_groups="4" />
 				</scripttemplate>
@@ -1116,6 +1251,7 @@ Illustrious guests and music by [3|Nick].</en>
 					<title>
 						<de>Theater</de>
 						<en>Theatre</en>
+						<pl>Teatr i sztuka</pl>
 					</title>
 					<groups target_groups="128" />
 				</scripttemplate>
@@ -1147,34 +1283,41 @@ Illustrious guests and music by [3|Nick].</en>
 			<title>
 				<de>${ttl}</de>
 				<en>${ttl}</en>
+				<pl>${ttl}</pl>
 			</title>
 			<description>
 				<de>Folgen Sie uns auf einer Reise um die Welt. ${subject} findet man auch in Ländern, in denen man sie nicht vermutet hätte.</de>
 				<en>Join us on a journey around the world. ${subject} may sometimes be found in countries you might not have expected.</en>
+				<pl>Dołącz do nas w podróży dookoła świata. Coś niesamowitego można czasem znaleźć w krajach, w których byśmy się tego nie spodziewali.</pl>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-world-eps">
 					<title>
 						<de>${epttl}</de>
 						<en>${epttl}</en>
+						<pl>${epttl}</pl>
 					</title>
 					<description>
 						<de>${dsc}</de>
 						<en>${dsc}</en>
+						<pl>Podróże przez świat. Poznajemy różne kraje. ${dsc}</pl>
 					</description>
 					<variables>
 						<epttl>
 							<de>${subject} ${cntry}s|${adjective}${subject} ${cntry}s</de>
 							<en>${subject} of ${cntry}|${adjective}${subject} of ${cntry}</en>
+							<pl>Podróże przez świat. ${cntry}.|Z walizką przez świat. ${cntry}</pl>
 						</epttl>
 						<!--without an empty description, the series description is used again-->
 						<dsc>
 							<de> |${cntry}s ${subject} bergen so manches Geheimnis.|Fakten und Meinungen zu ${cntry}s ${subject}.|Was macht ${cntry}s ${subject} so besonders?</de>
 							<en> |${subject} in ${cntry} carry quite a few secrets.|${subject} of ${cntry} - facts and opinions.|${subject} in ${cntry}, what makes them so special?</en>
+							<pl> |${cntry} to kraj który ma bardzo dużo niezwykłych tajemnic i ciekawostek.|${cntry} - informacje, fakty i opinie.|${cntry}, co możemy zobaczyć i dowiedzieć się o tym kraju?</pl>
 						</dsc>
 						<cntry>
 							<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
 							<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
+							<pl>Niemcy|Hiszpania|Francja|Dania|Szwecja|Finlandia|Norwegia|Polska|Grecja|Włochy|Portugalia|Brazylia|Kostaryka|Kanada|Wietnam|Tajlandia|Japonia|Belgia|Nepal|Indie|Chile</pl>
 						</cntry>
 					</variables>
 					<episodes min="4" max="6" />
@@ -1184,74 +1327,92 @@ Illustrious guests and music by [3|Nick].</en>
 				<ttl>
 					<de>${adjective}${subject} der Welt</de>
 					<en>${adjective}${subject} of the world</en>
+					<pl>Kraje świata</pl>
 				</ttl>
 				<subject>
 					<de>${sbj_${variant}}</de>
 					<en>${sbj_${variant}}</en>
+					
 				</subject>
 				<adjective>
 					<de>|${adj_${variant}} </de>
 					<en>|${adj_${variant}} </en>
+					
 				</adjective>
 				<variant>
 					<de>bf|best|bi|big|bigb</de>
 					<en>bf|best|bi|big|bigb</en>
+					
 				</variant>
 				<adj_bf>
 					<de>${beautiful}</de>
 					<en>${beautiful}</en>
+					
 				</adj_bf>
 				<sbj_bf>
 					<de>Weihnachtsbräuche|Trachten|Frisuren|Autos|Eisenbahnstrecken|Märchen</de>
 					<en>Christmas traditions|Traditional costumes|Hair styles|Cars|Railways|Fairy tales</en>
+					
 				</sbj_bf>
 				<adj_best>
 					<de>${best}</de>
 					<en>${best}</en>
+					
 				</adj_best>
 				<sbj_best>
 					<de>Bildungssysteme|Fußballmannschaften|Schokoladen|Bands|Weine|Biere</de>
 					<en>Educational systems|Soccer teams|Chocolates|Bands|Vines|Beers</en>
+					
 				</sbj_best>
 				<adj_bi>
 					<de>${best}|${important}</de>
 					<en>${best}|${important}</en>
+					
 				</adj_bi>
 				<sbj_bi>
 					<de>Politiker|Komponisten|Modemarken|Universitäten</de>
 					<en>Politicians|Composers|Fashion labels|Universities</en>
+					
 				</sbj_bi>
 				<adj_big>
 					<de>${big}</de>
 					<en>${big}</en>
+					
 				</adj_big>
 				<sbj_big>
 					<de>Bauwerke|Flughäfen|Stadien|Tunnel|Berge</de>
 					<en>Buildings|Airports|Stadiums|Tunnels|Mountains</en>
+					
 				</sbj_big>
 				<adj_bigb>
 					<de>${big}|${beautiful}</de>
 					<en>${big}|${beautiful}</en>
+					
 				</adj_bigb>
 				<sbj_bigb>
 					<de>Schlösser|Kirchen|Nationalparks|Zoos|Flüsse|Tiere|Bibliotheken|Inseln|Brücken|Vulkane|Denkmale|Städte</de>
 					<en>Castles|Churches|National parks|Zoos|Rivers|Animals|Libraries|Islands|Bridges|Volcanoes|Monuments|Cities</en>
+					
 				</sbj_bigb>
 				<beautiful>
 					<de>Die schönsten</de>
 					<en>The most beautiful</en>
+					
 				</beautiful>
 				<best>
 					<de>Die besten</de>
 					<en>The best</en>
+					
 				</best>
 				<important>
 					<de>Die bedeutendsten</de>
 					<en>The most important</en>
+					
 				</important>
 				<big>
 					<de>Die größten|Die beeindruckendsten</de>
 					<en>The biggest|The most impressive</en>
+					
 				</big>
 			</variables>
 			<jobs>
