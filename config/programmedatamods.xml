@@ -127,7 +127,7 @@
 				</castAttributes>
 				<focusPointPriorities>
 					<coulisse value="1.2" />
-					<outfit_and_mask value="1.2" />
+					<outfit_and_mask value="1.1" />
 					<stunts value="1.2" />
 				</focusPointPriorities>
 			</genre>
@@ -218,7 +218,10 @@
 					<audienceAttraction id="Pensioners" value="-2" />
 				</audienceAttractions>
 				<focusPointPriorities>
-					<vfx_and_sfx value="1.2" />
+					<coulisse value="0.5" />
+					<outfit_and_mask value="0.5" />
+					<vfx_and_sfx value="1.4" />
+					<stunts value="0.5" />
 				</focusPointPriorities>
 			</genre>
 			<genre id="4" name="crime" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3" refresh-mod="1.0" wearoff-mod ="1.05">
@@ -462,7 +465,7 @@
 				</castAttributes>
 				<focusPointPriorities>
 					<coulisse value="1.2" />
-					<outfit_and_mask value="0.8" />
+					<outfit_and_mask value="0.9" />
 					<stunts value="0.5" />
 					<vfx_and_sfx value="0.5" />
 				</focusPointPriorities>
@@ -511,6 +514,9 @@
 					<supportingactor attribute="humor" value="0.2" />
 					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
+				<focusPointPriorities>
+					<coulisse value="1.2" />
+				</focusPointPriorities>
 			</genre>
 			<genre id="10" name="fantasy" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2" refresh-mod="1.1" wearoff-mod ="1.05">
 				<goodFollower>2,14,16</goodFollower>
@@ -559,7 +565,6 @@
 				<focusPointPriorities>
 					<coulisse value="1.3" />
 					<outfit_and_mask value="1.3" />
-					<stunts value="0.8" />
 					<vfx_and_sfx value="1.1" />
 				</focusPointPriorities>
 			</genre>
@@ -703,8 +708,6 @@
 				<focusPointPriorities>
 					<coulisse value="1.3" />
 					<outfit_and_mask value="1.3" />
-					<stunts value="0.5" />
-					<vfx_and_sfx value="0.9" />
 				</focusPointPriorities>
 			</genre>
 			<genre id="14" name="mystery" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2" refresh-mod="0.95" wearoff-mod ="1.05">
@@ -850,7 +853,6 @@
 				<focusPointPriorities>
 					<coulisse value="1.4" />
 					<vfx_and_sfx value="1.3" />
-					<stunts value="1.2" />
 				</focusPointPriorities>
 			</genre>
 			<genre id="17" name="thriller" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3" refresh-mod="1.0" wearoff-mod ="1.05">
@@ -1480,7 +1482,7 @@
 				</audienceAttractions>
 				<focusPointPriorities>
 					<stunts value="0.5" />
-					<vfx_and_sfx value="0.5" />
+					<vfx_and_sfx value="0.9" />
 				</focusPointPriorities>
 			</genre>
 
