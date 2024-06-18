@@ -492,7 +492,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		--TODO check if max topicality blocks should be used for scheduling
 		if lowMaxTopBlocks > 20 then self.useMaxTopicalityOnly = true end
-		if maxTopicalityBlocks < 6 then self.primeLicenceId = tl end
+		if maxTopicalityBlocks < 6 then self.primeLicenceIds = tl end
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
@@ -2143,11 +2143,11 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 
 	-- table/list of forbidden programme/adcontract IDs
 	local forbiddenIDs = table.copy(getPlayer().licencesToSell)
-	if fixedHour < 19 and self.Task.primeLicenceId~=nil then
-		for k,id in pairs(self.Task.primeLicenceId) do
+	if fixedHour < 19 and self.Task.primeLicenceIds~=nil then
+		for k,id in pairs(self.Task.primeLicenceIds) do
 			table.insert(forbiddenIDs, id)
 		end
-		--if self.Task.primeLicenceId ~= nil then
+		--if self.Task.primeLicenceIds ~= nil then
 		--end
 		--TODO if not prime - add best prime programmes
 	end
