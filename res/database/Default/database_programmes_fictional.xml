@@ -810,12 +810,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Fußball-Weltmeisterschaft Italien 1990</de>
 				<en>Soccer World Cup Italy 1990</en>
-				<pl></pl>
+				<pl>Mistrzostwa Świata w Piłce Nożnej Włochy 1990</pl>
 			</title>
 			<description>
 				<de>Die XIV. WM war geprägt von legendären Spielern, Toren und Szenen. Gezeigt werden Achtel-, Viertel-, Halbfinale und Finale.</de>
 				<en>World Cup XIV was marked by legendary players, goals and scenes. Shown are eighth, quarter, semifinals and final.</en>
-				<pl></pl>
+				<pl>Mistrzostwa Świata w piłce nożnej pod znakiem legendarnych zawodników, bramek i scen. Mecze grupowe, 1/8, ćwierćfinały, półfinały i finał.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">common-amateur-director</member>
@@ -829,11 +829,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Kamerun - Kolumbien 2:1</de>
 						<en>Cameroon 2-1 Colombia</en>
-						<pl></pl>
+						<pl>Kamerun - Kolumbia</pl>
 					</title>
 					<description>
 						<de></de>
 						<en></en>
+						<pl>Grupa A</pl> 
 					</description>
 					<staff>
 						<member index="1" function="2">8dbf9ebe-a0a1-4400-8ed5-82cd8ac0185e</member>
@@ -844,11 +845,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>CSFR - Costa Rica 4:1</de>
 						<en>CSFR 4-1 Costa Rica</en>
-						<pl></pl>
+						<pl>Czechosłowacja - Costa Rica</pl>
 					</title>
 					<description>
 						<de></de>
 						<en></en>
+						<pl>Grupa A</pl>
 					</description>
 					<staff>
 						<member index="1" function="2">c0b2d723-bf35-4e05-868c-205815edd356</member>
@@ -859,11 +861,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Brasilien - Argentinien 0:1</de>
 						<en>Brazil 0-1 Argentina</en>
-						<pl></pl>
+						<pl>Brazylia - Argentyna</pl>
 					</title>
 					<description>
 						<de></de>
 						<en></en>
+						<pl>Finał</pl>
 					</description>
 					<staff>
 						<member index="1" function="2">88595c7f-30bf-4600-add4-43098011d419</member>
@@ -876,12 +879,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Nur wer anruft kann gewinnen</de>
 				<en>You can win only if you call</en>
-				<pl></pl>
+				<pl>Możesz wygrać tylko, jeśli zadzwonisz</pl>
 			</title>
 			<description>
 				<de>Schäbige Call-In-Show in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
 				<en>Shabby call-in show in which candidates have to recognize celebrities' breasts. At most, it's the broadcaster who's winning here.</en>
-				<pl></pl>
+				<pl>Nędzny call-in show, w którym kandydaci muszą rozpoznać piersi celebrytów. Wygrywa tu tylko nadawca.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
@@ -894,12 +897,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Anrufer Tommy wird abgezockt</de>
 						<en>Caller Tommy gets ripped off</en>
-						<pl></pl>
+						<pl>Dzwoniący Tommy zostaje oszukany</pl>
 					</title>
 					<description>
 						<de>Anrufer Tommy kennt Sängerin Susi persönlich und hat sie auch schon im Freibad gesehen. Dennoch scheint er sich bei den Brüsten zu verschätzen.</de>
 						<en>Caller Tommy knows singer Susi personally and has also seen her at the outdoor swimming pool. Nevertheless, he seems to misjudge the breasts.</en>
-						<pl></pl>
+						<pl>Dzwoniący Tommy zna piosenkarkę Susi osobiście i widział ją również na odkrytym basenie. Mimo to wydaje się, że źle ocenia jej biust.</pl>
 					</description>
 					<ratings critics="5" speed="30" />
 				</programme>
@@ -907,12 +910,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Haarige Erkenntnis</de>
 						<en>Hairy insight</en>
-						<pl></pl>
+						<pl>Owłosiony wgląd</pl>
 					</title>
 					<description>
 						<de>Diesmal werden die Zuschauer vom Foto eines Bauarbeiter-Dekolleté in die Irre geführt. Zum Haare raufen.</de>
 						<en>This time the viewers are misled by the photo of a plumber's smile. It's enough to make your hair stand on end.</en>
-						<pl></pl>
+						<pl>Tym razem widzowie są wprowadzani w błąd przez zdjęcie uśmiechu hydraulika. To wystarczy, by włosy stanęły dęba.</pl>
 					</description>
 					<ratings critics="8" speed="25" />
 				</programme>
@@ -920,12 +923,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Mella Melone</de>
 						<en>Mella Melon</en>
-						<pl></pl>
+						<pl>Mella Melon</pl>
 					</title>
 					<description>
 						<de>Gast-Quizmaster heute die prominente Erotikdarstellerin Mella Melone. Die Gewinnchancen für Anrufer verfolgen den IQ der Moderatorin.</de>
 						<en>Guest quizmaster today the celebrity erotic actress Mella Melon. The winning odds for callers track the IQ of the presenter.</en>
-						<pl></pl>
+						<pl>Gościnnym prowadzącym dzisiejszy quiz jest znana aktorka erotyczna Mella Melon. Szanse na wygraną dla dzwoniących zależą od IQ prezentera.</pl>
 					</description>
 					<ratings critics="15" speed="30" />
 				</programme>
@@ -935,12 +938,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Die Hellseher</de>
 				<en>The Clairvoyants</en>
-				<pl></pl>
+				<pl>Jasnowidze</pl>
 			</title>
 			<description>
 				<de>[0|First] und [1|First] verwirren mit verschwommenen Ausdeutungen von Zukunft und Vergangenheit ihrer Anrufer.</de>
 				<en>[0|First] and [1|First] confuse with blurred interpretations of their callers' future and past.</en>
-				<pl></pl>
+				<pl>[0|First] i [1|First] dezorientują rozmytymi interpretacjami przyszłości i przeszłości swoich rozmówców.</pl>
 			</description>
 			<staff>
 				<member index="0" function="2">afa8d190-c907-4fcf-9c34-d55136ab3c99</member>
@@ -954,12 +957,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Vaters Geist</de>
 						<en>Father's Spirit</en>
-						<pl></pl>
+						<pl>Duch Ojca</pl>
 					</title>
 					<description>
 						<de>Zwar kommt der Anruf aus der Regie, dennoch erreicht Mariusz angeblich den verstorbenen Vater.</de>
 						<en>Although the call comes from the control room, nevertheless Mariusz allegedly reaches the deceased father.</en>
-						<pl></pl>
+						<pl>Chociaż połączenie pochodzi z pokoju kontrolnego, Mariusz rzekomo dociera do zmarłego ojca.</pl>
 					</description>
 					<ratings critics="2" speed="18" />
 				</programme>
@@ -967,12 +970,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rudi der Pudel</de>
 						<en>Rudi the Poodle</en>
-						<pl></pl>
+						<pl>Pudel Rudi</pl>
 					</title>
 					<description>
 						<de>Marlene aus Berlin möchte wissen, ob der entlaufene Pudel Rudi je wieder nach Hause kommen wird.</de>
 						<en>Marlene from Berlin wants to know if Rudi, the runaway poodle, will ever come home again.</en>
-						<pl></pl>
+						<pl>Marlene z Berlina chce wiedzieć, czy Rudi, uciekający pudel, kiedykolwiek wróci do domu.</pl>
 					</description>
 					<ratings critics="5" speed="13" />
 				</programme>
@@ -980,12 +983,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Transmediale Olympiade</de>
 						<en>Transmedia Olympics</en>
-						<pl></pl>
+						<pl>Transmedialne Igrzyska Olimpijskie</pl>
 					</title>
 					<description>
 						<de>Mariusz und Beatrix versuchen in dieser Ausgabe so vielen Anrufern wie möglich zu helfen - deren Themen müssen variieren.</de>
 						<en>Mariusz and Beatrix try to help as many callers as possible in this issue - their topics must vary.</en>
-						<pl></pl>
+						<pl>Mariusz i Beatrix starają się pomóc jak największej liczbie rozmówców z problemami - ich tematy muszą się różnić.</pl>
 					</description>
 					<ratings critics="2" speed="20" />
 				</programme>
@@ -995,12 +998,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Maler vergangener Zeiten</de>
 				<en>Painters of Bygone Times</en>
-				<pl></pl>
+				<pl>Malarze minionych czasów</pl>
 			</title>
 			<description>
 				<de>[1|Full] sucht und besucht Nachfahren berühmter Maler. Begleitet wird das Treffen von Einspielern die damalige Zeiten nachstellen.</de>
 				<en>[1|Full] seeks and visits descendants of famous painters. The encounter is accompanied by recordings that recreate the era of that time.</en>
-				<pl></pl>
+				<pl>[1|Full] poszukuje i odwiedza potomków słynnych malarzy. Spotkaniu towarzyszą nagrania odtwarzające ówczesną epokę.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
@@ -1014,12 +1017,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Michelangelo</de>
 						<en>Michelangelo</en>
-						<pl></pl>
+						<pl>Michał Anioł</pl>
 					</title>
 					<description>
 						<de>[1|Last] trifft Mike aus London, er behauptet ein Nachfahre der Cousine 12. Grades von Michelangelos Großtante zu sein.</de>
 						<en>[1|Last] meets Mike from London, he claims to be a 12th cousin descendant of Michelangelo's great aunt.</en>
-						<pl></pl>
+						<pl>[1|Last] spotyka Mike'a z Londynu, który twierdzi, że jest 12. kuzynem potomka ciotki Michała Anioła.</pl>
 					</description>
 					<ratings critics="49" speed="17" />
 				</programme>
@@ -1027,12 +1030,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Monet</de>
 						<en>Monet</en>
-						<pl></pl>
+						<pl>Monet</pl>
 					</title>
 					<description>
 						<de>Diesmal reist [1|Last] nach Paris um Nachfahren des bedeutenden Impressionisten Monet zu suchen.</de>
 						<en>This time [1|Last] travels to Paris to look for descendants of the renowned impressionist Monet.</en>
-						<pl></pl>
+						<pl>Tym razem [1|Last] podróżuje do Paryża w poszukiwaniu potomków słynnego impresjonisty Moneta.</pl>
 					</description>
 					<ratings critics="47" speed="12" />
 				</programme>
@@ -1040,12 +1043,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Picasso</de>
 						<en>Picasso</en>
-						<pl></pl>
+						<pl>Picasso</pl>
 					</title>
 					<description>
 						<de>In Madrid spürt [1|Full] einen Neffen Picassos auf. Interessante Anekdoten würzen diese Episode.</de>
 						<en>In Madrid, [1|Full] tracks down a nephew of Picasso. Interesting anecdotes spice up this episode.</en>
-						<pl></pl>
+						<pl>[1|Full] tropi bratanka Picassa w Madrycie. Ten odcinek urozmaicają ciekawe anegdoty.</pl>
 					</description>
 					<ratings critics="49" speed="18" />
 				</programme>
@@ -1053,12 +1056,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rembrandt</de>
 						<en>Rembrandt</en>
-						<pl></pl>
+						<pl>Rembrandt</pl>
 					</title>
 					<description>
 						<de>[1|Last] sendet diesmal direkt vom Hausboot eines Rembrandt-Nachfahren. Neben Kochrezepten erfährt der Zuschauer vieles aus Rembrandts Leben.</de>
 						<en>This time, [1|Last] broadcasts directly from the houseboat of a Rembrandt descendant. In addition to cooking recipes, the viewer learns a lot about Rembrandt's life.</en>
-						<pl></pl>
+						<pl>Tym razem [1|Last] nadaje bezpośrednio z łodzi mieszkalnej potomka Rembrandta. Oprócz przepisów kulinarnych widzowie dowiadują się wiele o życiu Rembrandta.</pl>
 					</description>
 					<ratings critics="22" speed="15" />
 				</programme>
@@ -1066,12 +1069,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Kandinsky</de>
 						<en>Kandinsky</en>
-						<pl></pl>
+						<pl>Kandinsky</pl>
 					</title>
 					<description>
 						<de>Bortsch und Kandinsky. Neben einem geselligem Essen begleiten die Zuschauer [1|Last] durch die Geschichte mit Zaren und Kandinsky.</de>
 						<en>Borch and Kandinsky. In addition to a convivial meal, viewers accompany [1|Last] through history with tsars and Kandinsky.</en>
-						<pl></pl>
+						<pl>Borch i Kandinsky. Oprócz uroczystego posiłku, widzowie towarzyszą w podróży przez historię z carami i Kandinskym.</pl>
 					</description>
 					<ratings critics="49" speed="14" />
 				</programme>
@@ -1081,12 +1084,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Rolf Krall besucht...</de>
 				<en>Rolf Krall visits...</en>
-				<pl></pl>
+				<pl>Rolf Krall odwiedza...</pl>
 			</title>
 			<description>
 				<de>Der bekannte Moderator [1|Full] besucht Menschen die keiner kennt, deren Wirkung aber unvergessen bleibt.</de>
 				<en>The well-known presenter [1|Full] visits people no one knows, but whose impact remains unforgotten.</en>
-				<pl></pl>
+				<pl>Znany prezenter [1|Full] odwiedza ludzi, których nikt nie zna, ale których wpływ pozostaje niezapomniany.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
@@ -1101,12 +1104,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rolf Krall besucht... Madame Krussaud</de>
 						<en>Rolf Krall visits... Madame Krussaud</en>
-						<pl></pl>
+						<pl>Rolf Krall odwiedza... Madame Krussaud</pl>
 					</title>
 					<description>
 						<de>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
 						<en>In the shadow of her sister, Madame Krussaud crafts figures from earwax provided by fans.</en>
-						<pl></pl>
+						<pl>W cieniu swojej siostry, Madame Krussaud tworzy figurki z woskowiny dostarczanej przez fanów.</pl>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
@@ -1114,12 +1117,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rolf Krall besucht... Jens Flumme</de>
 						<en>Rolf Krall visits... Jens Flumme</en>
-						<pl></pl>
+						<pl>Rolf Krall odwiedza... Jensa Flumme</pl>
 					</title>
 					<description>
 						<de>[1|Full] zu Besuch bei Jens Flumme. Ausführlich wird im Gespräch erklärt, wie es zur fabulösen Erfindung des Multifunktions-Radiergummis kam.</de>
 						<en>[1|Full] visits Jens Flumme. The interview explains in detail how the fabulous invention of the multifunction eraser came about.</en>
-						<pl></pl>
+						<pl>[1|Full] odwiedza Jensa Flumme. W wywiadzie szczegółowo wyjaśnia, jak doszło do wynalezienia wielofunkcyjnej gumki do ścierania.</pl>
 					</description>
 					<ratings critics="37" speed="42" />
 				</programme>
@@ -1127,12 +1130,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rolf Krall besucht... Martin Zeck</de>
 						<en>Rolf Krall visits... Martin Zeck</en>
-						<pl></pl>
+						<pl>Rolf Krall odwiedza... Martina Zeck</pl>
 					</title>
 					<description>
 						<de>[1|Full] zu Besuch bei Martin Zeck. In geselliger Runde spricht [1|Last] über die umgreifende Problematik der Flaschenpfandproblematik.</de>
 						<en>[1|Full] visits Martin Zeck. In convivial atmosphere, [1|Last] talks about the all-embracing problem of bottle deposit.</en>
-						<pl></pl>
+						<pl>[1|Full] odwiedza Martina Zecka. W miłej atmosferze [1|Last] rozmawia o wszechogarniającym problemie kaucji za butelki.</pl>
 					</description>
 					<ratings critics="37" speed="45" />
 				</programme>
@@ -1140,12 +1143,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rolf Krall besucht... Peter Kruste</de>
 						<en>Rolf Krall visits... Peter Crust</en>
-						<pl></pl>
+						<pl>Rolf Krall odwiedza... Petera Crusta</pl>
 					</title>
 					<description>
 						<de>Bei leckerem Brot plaudert [1|Full] mit Peter Kruste darüber, wie Kruste darauf kam, dem Brot die schmackhafte Kante zu geben.</de>
 						<en>Over delicious bread, [1|Full] chats with Peter Crust about how Crust came up with giving bread that tasty edge.</en>
-						<pl></pl>
+						<pl>Przy pysznym chlebie, [1|Full] rozmawia z Peterem Crustem o tym, jak Crust wymyślił, jak nadać chlebowi tę smaczną krawędź.</pl>
 					</description>
 					<ratings critics="28" speed="56" />
 				</programme>
@@ -1153,12 +1156,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Rolf Krall besucht... seine Mutter</de>
 						<en>Rolf Krall visits... his mother</en>
-						<pl></pl>
+						<pl>Rolf Krall odwiedza... swoją matkę</pl>
 					</title>
 					<description>
 						<de>Zum Abschluss der Serie besucht [1|Full] seine eigene Mutter, kitzelt ein paar urige Rezepte aus ihr heraus und plaudert über intime Details des immer populärer werdenden Moderators.</de>
 						<en>To close out the series, [1|Full] visits his own mother, tickles a few pristine recipes out of her, and chats about intimate details of the increasingly popular presenter.</en>
-					<pl></pl>
+						<pl>Na zakończenie serii, [1|Full] odwiedza własną matkę, łaskocze ją kilkoma nieskazitelnymi przepisami i rozmawia o intymnych szczegółach coraz bardziej popularnego prezentera.</pl>
 					</description>
 					<ratings critics="47" speed="65" />
 				</programme>
@@ -1168,11 +1171,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Seniorensause</de>
 				<en>Seniors Big Bash</en>
+				<pl>Senioreza - O seniorach</pl>
 			</title>
 			<description>
 				<de>[1|Full] trifft rüstige Rentner aus den Geriatriehochburgen Deutschlands.</de>
 				<en>[1|Full] meets spry retirees from Germany's geriatric strongholds.</en>
-				<pl></pl>
+				<pl>[1|Full] spotyka energicznych emerytów z niemieckich twierdz geriatrycznych.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
@@ -1186,12 +1190,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Svetlana aus Hamburg</de>
 						<en>Svetlana from Hamburg</en>
-						<pl></pl>
+						<pl>Svetlana z Hamburga</pl>
 					</title>
 					<description>
 						<de>Svetlana ist 102 Jahre alt und trägt weit über 100 Tätowierungen verflossener Marineliebhaber auf ihrem Körper. 2 Stunden plaudert Erika mit dem Hamburger Unikum.</de>
 						<en>Svetlana is 102 years old and wears more than 100 tattoos of former navy lovers on her body. Erika chats with the Hamburg unique for 2 hours.</en>
-						<pl></pl>
+						<pl>Svetlana ma 102 lata i nosi na ciele ponad 100 tatuaży byłych kochanków marynarki wojennej. Erika rozmawiała z wyjątkową mieszkanką Hamburga przez 2 godziny.</pl>
 					</description>
 					<ratings critics="11" speed="4" />
 				</programme>
@@ -1199,12 +1203,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Renate aus Chemnitz</de>
 						<en>Renate from Chemnitz</en>
-						<pl></pl>
+						<pl>Renate z Chemnitz</pl>
 					</title>
 					<description>
 						<de>[1|First] trifft auf die 105jährige Renate aus Chemnitz. Kriegsjahre, Besatzungszeit, Wendejahre aber auch das neue Millenium werden thematisiert. Authentisch!</de>
 						<en>[1|First] meets 105-year-old Renate from Chemnitz. Wartime years, occupation time, reunification years, but also the new millennium are taken as a theme. Authentic!</en>
-					<pl></pl>
+						<pl>[1|First] spotyka 105-letnią Renate z Chemnitz. Tematem są lata wojny, okupacji, zjednoczenia, ale także nowe tysiąclecie. Autentyczne!</pl>
 					</description>
 					<ratings critics="7" speed="1" />
 				</programme>
@@ -1212,12 +1216,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Erich aus Köln</de>
 						<en>Erich from Cologne</en>
-						<pl></pl>
+						<pl>Erich z Kolonii</pl>
 					</title>
 					<description>
 						<de>Zu Gast bei dem 92jährigen Erich aus Köln geht es diesmal in der Seniorensause nur um eines: Jahrzehnte des Karnevals. Alaaf!</de>
 						<en>Visiting 92-year-old Erich from Cologne, this time Seniors Big Bash is all about one thing: decades of carnival. Alaaf!</en>
-						<pl></pl>
+						<pl>Odwiedzając 92-letniego Ericha z Kolonii, tym razem seniorzy skupiają się na jednej rzeczy: dekadach karnawału. Alaaf!</pl>
 					</description>
 					<ratings critics="5" speed="7" />
 				</programme>
@@ -1225,12 +1229,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Bolle aus Berlin</de>
 						<en>Bolle from Berlin</en>
-						<pl></pl>
+						<pl>Bolle z Berlina</pl>
 					</title>
 					<description>
 						<de>[1|Full] trifft auf einen Mann, der sich selbst nur Bolle nennt und seit über 80 Jahren Berlins Straßen unsicher macht indem er Kindern Lollis klaut und Hundekot in Briefkästen steckt.</de>
 						<en>[1|Full] meets a man who only calls himself Bolle and has been unsettling Berlin's streets for over 80 years by stealing lollipops from children and sticking dog excrement into mailboxes.</en>
-					<pl></pl>
+						<pl>[1|Full] spotyka mężczyznę, który nazywa siebie Bolle i od ponad 80 lat niepokoi berlińskie ulice, kradnąc dzieciom lizaki i wrzucając psie odchody do skrzynek pocztowych.</pl>
 					</description>
 					<ratings critics="11" speed="7" />
 				</programme>
@@ -1238,12 +1242,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Sepp aus München</de>
 						<en>Sepp from Munich</en>
-						<pl></pl>
+						<pl>Sepp z Monachium</pl>
 					</title>
 					<description>
 						<de>Hinter einem Stand auf dem Oktoberfest vergnügt sich [1|First] mit dem 88jährigen Sepp. Bis die Herztabletten ihre Wirksamkeit entfalten, erzählt Sepp von seiner Kindheit.</de>
 						<en>Behind a booth at the Oktoberfest, [1|First] is having fun with 88-year-old Sepp. Until the heart medicine takes effect, Sepp talks about his childhood.</en>
-					<pl></pl>
+						<pl>Za stoiskiem na Oktoberfest, [1|First] bawi się z 88-letnim Seppem. Dopóki lek na serce nie zacznie działać, Sepp opowiada o swoim dzieciństwie.</pl>
 					</description>
 					<ratings critics="2" speed="23" outcome="30" />
 				</programme>
@@ -1253,12 +1257,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Die Patty Glansen Show</de>
 				<en>The Patty Glansen Show</en>
-				<pl></pl>
+				<pl>Patty Glansen Show</pl>
 			</title>
 			<description>
 				<de>Nach ihrem Erfolg (bei den Kritikern) versucht sich [1|Full] nun auf dem großen Parkett der TV-Unterhaltung. Spannende Gespräche, interessante Berichte. Eine Show von Senioren, für Senioren.</de>
 				<en>After her success (with the critics), [1|Full] is now trying her luck on the big stage of TV entertainment. Exciting conversations, interesting reports. A show by seniors, for seniors.</en>
-			<pl></pl>
+				<pl>Po sukcesie, [1|Full] próbuje teraz szczęścia na wielkiej scenie telewizyjnej rozrywki. Ekscytujące rozmowy, ciekawe reportaże. Program seniorów dla seniorów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1272,14 +1276,15 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Lothar Molch</de>
 						<en>Landon Newt</en>
-						<pl></pl>
+						<pl>Landon Newt</pl>
 					</title>
 					<description>
 						<de>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
 Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 						<en>Guests at the start of the new show: Landon Newt, Chairman of the Graytinged Panthers, and Sabrina Sleaze from the Office of Social Affairs.
 Do the two offer enough material for an exciting panel?</en>
-<pl></pl>
+						<pl>Goście na starcie nowego programu: Landon Newt, przewodniczący Graytinged Panthers, oraz Sabrina Sleaze z Biura Spraw Społecznych.
+Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1291,12 +1296,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>James Glatzkowski und Lara Luftig</de>
 						<en>James Baldowski and Lara Leezy</en>
-						<pl></pl>
+						<pl>James Baldowski i Lara Leezy</pl>
 					</title>
 					<description>
 						<de>Nach dem furiosen Start bittet [1|Full] nun zum Starduell. Promi-Friseur James Glatzkowski und Boxen-Luder Lara Luftig diskutieren zum Thema Kanzlerneuwahl und allgemeine Regierungspolitik.</de>
 						<en>After the furious start, [1|Full] now asks for a star duel. Celebrity hairdresser James Baldowski and pit babe Lara Leezy discuss the election of the new chancellor and general government policy.</en>
-					<pl></pl>
+						<pl>Po wściekłym początku, [1|Full] prosi teraz o pojedynek gwiazd. Fryzjer gwiazd James Baldowski i pit babe Lara Leezy dyskutują o wyborze nowego kanclerza i ogólnej polityce rządu.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1308,12 +1313,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>[1|Full] selbst</de>
 						<en>[1|Full] herself</en>
-						<pl></pl>
+						<pl>[1|Full] sama</pl>
 					</title>
 					<description>
 						<de>Nach dem Debakel der letzten Sendung, ist [1|Full] nun selbst der Mittelpunkt und steht Anrufern Frage und Antwort.</de>
 						<en>After the debacle of the last show, [1|Full] is now the center of attention herself, facing callers Q&amp;A.</en>
-						<pl></pl>
+						<pl>Po porażce w ostatnim programie, [1|Full] sama jest teraz w centrum uwagi, stawiając czoła pytaniom i odpowiedziom dzwoniących.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1325,12 +1330,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
-						<pl></pl>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Das letzte Mal zu Gast bei [1|Full]: ihr Nachfolger [2|Full]. Er redet über seine neue Sendung und macht sich lustig über den Abgang des ehemaligen Stars [1|Full].</de>
 						<en>The last time as a guest on [1|Full]: her successor [2|Full]. He talks about his new show and makes fun of the departure of the former star [1|Full].</en>
-						<pl></pl>
+						<pl>Ostatni raz w roli gościa [1|Full]: jej następczyni [2|Full]. Opowiada o swoim nowym programie i żartuje z odejścia byłej gwiazdy.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1345,12 +1350,12 @@ Do the two offer enough material for an exciting panel?</en>
 			<title>
 				<de>Dynamit - Das Magazin Spezial: [2|Nick] und [3|Nick]</de>
 				<en>Dynamite - The Magazine Special: [2|Nick] and [3|Nick]</en>
-				<pl></pl>
+				<pl>Dynamit - Magazyn Specjalny: [2|Nick] i [3|Nick]</pl>
 			</title>
 			<description>
 				<de>Das Ex-Model [1|Full] präsentiert die Spezialausgabe unseres Dynamitmagazins anlässlich des 30. Geburtstages von [3|Nick].</de>
 				<en>The ex-model [1|Full] presents the special edition of our dynamite magazine on the occasion of [3|Nick]'s 30th birthday.</en>
-				<pl></pl>
+				<pl>Były model [1|Full] prezentuje specjalne wydanie naszego dynamicznego magazynu z okazji 30. urodzin [3|Nick].</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1367,12 +1372,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Die Geüchteküche brodelt</de>
 						<en>The Rumor Mill is Buzzing</en>
-						<pl></pl>
+						<pl>Młyn plotkarski huczy</pl>
 					</title>
 					<description>
 						<de>[3|First]s 30. Geburtstag löst zahlreiche Spekulationen über ihre Ehe aus. [3|First] hatte verbreiten lassen, dass sie ihren Geburtstag allein verbringen würde. Am Morgen erfährt sie, dass sie in Meinungsumfragen zum beliebtesten Mitglied der Königsfamilie gekürt worden ist.</de>
 						<en>[3|First]'s 30th birthday triggers numerous speculations about her marriage. [3|First] had let it be known that she would spend her birthday alone. In the morning, she learns that she has been voted the most popular member of the royal family in opinion polls.</en>
-					<pl></pl>
+						<pl>[3|First] ma 30. urodziny. Pojawiają się liczne spekulacje na temat jej małżeństwa. [3|First] dała do zrozumienia, że spędzi urodziny samotnie. Rano dowiaduje się, że w sondażach została uznana za najpopularniejszego członka rodziny królewskiej.</pl>
 					</description>
 					<ratings critics="42" speed="56" />
 				</programme>
@@ -1380,12 +1385,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Geschickte Selbstvermarktung</de>
 						<en>Clever Self-Promotion</en>
-						<pl></pl>
+						<pl>Sprytna autopromocja</pl>
 					</title>
 					<description>
 						<de>Es bleibt Prinz [2|First] nicht verborgen, dass sich seine Frau im Umgang mit den Medien wesentlich geschickter erweist als er selbst. Ihre kurzfristigen Triumphe genügen [3|First] jedoch nicht.</de>
 						<en>It does not go unnoticed by Prince [2|First] that his wife is proving to be much more adept at dealing with the media than he is. However, her short-term triumphs are not enough for [3|First].</en>
-					<pl></pl>
+						<pl>Książę [2|First] nie pozostaje niezauważony, że jego żona okazuje się być o wiele bardziej biegła w kontaktach z mediami niż on sam. Jednak jej krótkotrwałe triumfy nie są wystarczające dla niej.</pl>
 					</description>
 					<ratings critics="42" speed="56" />
 				</programme>
@@ -1393,12 +1398,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Die Schuldfrage</de>
 						<en>The Question of Blame</en>
-						<pl></pl>
+						<pl>Pytanie o winę</pl>
 					</title>
 					<description>
 						<de>Gerüchten zufolge kriselt es in der Ehe, und [3|First] möchte nicht, dass die Öffentlichkeit sie für ein Scheitern ihrer Ehe verantwortlich machen würde.</de>
 						<en>Rumor has it that there is a crisis in the marriage, and [3|First] does not want the public to hold her responsible for a breakup of their marriage.</en>
-						<pl></pl>
+						<pl>Plotka głosi, że w małżeństwie jest kryzys, a [3|First] nie chce, aby opinia publiczna obarczała ją odpowiedzialnością za rozpad ich małżeństwa.</pl>
 					</description>
 					<ratings critics="28" speed="51" />
 				</programme>
@@ -1406,12 +1411,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Ein neues Buch?</de>
 						<en>A New Book?</en>
-						<pl></pl>
+						<pl>Nowa książka?</pl>
 					</title>
 					<description>
 						<de>Weiter heißt es, [3|First] denke, es sei aber ein Fehler, weiterhin Stillschweigen über den Zustand ihrer Ehe zu bewahren. Sie trifft sich angeblich mit einem guten Bekannten und Journalisten, um an einem Buch zu schreiben.</de>
 						<en>It is further said that [3|First] thinks it would be a mistake to continue to keep quiet about the state of her marriage, however. She is reportedly meeting with a close acquaintance and journalist to write a book.</en>
-					<pl></pl>
+						<pl>Co więcej, [3|First] uważa, że błędem byłoby dalsze milczenie na temat stanu jej małżeństwa. Podobno spotyka się z bliskim znajomym i dziennikarzem, aby napisać książkę.</pl>
 					</description>
 					<ratings critics="70" speed="42" />
 				</programme>
@@ -1419,12 +1424,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Der Paukenschlag!</de>
 						<en>The Bombshell!</en>
-						<pl></pl>
+						<pl>Bombowa informacja!</pl>
 					</title>
 					<description>
 						<de>Zum Finale unseres Specials präsentieren wir exklusiv brandneue Insider-Informationen! [2|First] hat ja angeblich eine Affäre, und [3|First] hat nun Beweise dafür aus seiner Aktentasche gestohlen, die sie in ihrem Buch veröffentlichen wird!</de>
 						<en>For the finale of our special, we exclusively present hot new insider information! [2|First] is, after all, allegedly having an affair, and [3|First] has now stolen evidence of it from his briefcase, which she will publish in her book!</en>
-					<pl></pl>
+						<pl>W finale naszego odcinka specjalnego przedstawiamy nowe, gorące informacje poufne! W końcu [2|First] ma rzekomo romans, a [3|First] wykradła dowody z jego teczki, które opublikuje w swojej książce!</pl>
 					</description>
 					<ratings critics="28" speed="51" />
 				</programme>
@@ -1434,12 +1439,12 @@ Do the two offer enough material for an exciting panel?</en>
 			<title>
 				<de>Entstehung des Kosmos</de>
 				<en>The Origin of our Cosmos</en>
-				<pl></pl>
+				<pl>Pochodzenie naszego kosmosu</pl>
 			</title>
 			<description>
 				<de>[1|Full] stellt Vorschulkindern in lustigen Einspielern die Entstehung des Kosmos vor.</de>
 				<en>[1|Full] introduces preschool kids to the origin of the cosmos in humorous clips.</en>
-				<pl></pl>
+				<pl>[1|Full] przedstawia dzieciom w wieku przedszkolnym pochodzenie kosmosu w humorystycznych klipach.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">61439b07-6e8f-484e-9447-6c9588270e21</member>
@@ -1454,12 +1459,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Der Urknall</de>
 						<en>The Big Bang</en>
-						<pl></pl>
+						<pl>Wielki Wybuch</pl>
 					</title>
 					<description>
 						<de>Peng hat's gemacht und [1|First] spielt mit einer platzenden Melone den Urknall nach.</de>
 						<en>BAM! it went, and [1|First] reenacts the big bang with a bursting melon.</en>
-						<pl></pl>
+						<pl>BAM! poszło, a [1|First] odtwarza wielki wybuch z pękającym melonem.</pl>
 					</description>
 					<ratings critics="24" speed="7" />
 				</programme>
@@ -1467,12 +1472,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Ferne Galaxien</de>
 						<en>Distant Galaxies</en>
-						<pl></pl>
+						<pl>Odległe galaktyki</pl>
 					</title>
 					<description>
 						<de>In dieser Folge wird die Entstehung der Galaxien mittels Buntstift und einem Blatt Papier gekritzelt.</de>
 						<en>In this episode, the formation of galaxies is scribbled using crayons and a piece of paper.</en>
-						<pl></pl>
+						<pl>W tym odcinku formowanie się galaktyk zostało opisane za pomocą kredek i kartki papieru.</pl>
 					</description>
 					<ratings critics="29" speed="9" />
 				</programme>
@@ -1480,12 +1485,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Lecker Milch...straße</de>
 						<en>Delicious Milk...y Way</en>
-						<pl></pl>
+						<pl>Pyszna Droga... Mleczna</pl>
 					</title>
 					<description>
 						<de>Eine Packung H-Milch reicht [1|Full] um den kleinen Zuschauern die Form der Milchstrasse zu zeigen.</de>
 						<en>One carton of UHT milk is enough for [1|Full] to show the little viewers the shape of the Milky Way.</en>
-						<pl></pl>
+						<pl>[1|Full] i jeden karton mleka UHT wystarczy aby pokazać małym widzom kształt Drogi Mlecznej.</pl>
 					</description>
 					<ratings critics="35" speed="17" />
 				</programme>
@@ -1493,12 +1498,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Unser Sonnensystem</de>
 						<en>Our Solar System</en>
-						<pl></pl>
+						<pl>Nasz Układ Słoneczny</pl>
 					</title>
 					<description>
 						<de>Alle 8 Planeten und den einen Explaneten stellt [1|Last] vor, indem er verschiedene Früchte auf ein Gestell patscht.</de>
 						<en>All 8 planets and that one ex-planet are introduced by [1|Last] through splatting different fruits against a rack.</en>
-						<pl></pl>
+						<pl>Wszystkie 8 planet i ta jedna. [1|Last] pokazuje jak powstał nasz układ poprzez rozpryskiwanie różnych owoców o stojak.</pl>
 					</description>
 					<ratings critics="28" speed="9" />
 				</programme>
@@ -1506,12 +1511,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Der noch blaue Planet</de>
 						<en>The Still Blue Planet</en>
-						<pl></pl>
+						<pl>Wciąż błękitna planeta</pl>
 					</title>
 					<description>
 						<de>Noch ist er blau - doch [1|Last] hält den Kindern die Gefahren für unseren Planeten vor Augen.</de>
 						<en>It is still blue - but [1|Last] keeps the children aware of the dangers to our planet.</en>
-						<pl></pl>
+						<pl>Nadal jest niebieska - ale [1|Last] uświadamia dzieciom zagrożenia dla naszej planety.</pl>
 					</description>
 					<ratings critics="38" speed="12" />
 				</programme>
@@ -1521,12 +1526,12 @@ Do the two offer enough material for an exciting panel?</en>
 			<title>
 				<de>Hot Quiz</de>
 				<en>Hot Quiz</en>
-				<pl></pl>
+				<pl>Hot Quiz</pl>
 			</title>
 			<description>
 				<de>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</de>
 				<en>The presenter gets naked and the callers poor. Breasts for money, like in real life.</en>
-				<pl></pl>
+				<pl>Prezenter rozbiera się do naga, a rozmówcy biednieją. Piersi za pieniądze, jak w prawdziwym życiu.</pl>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2005" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="0.8" />
@@ -1536,12 +1541,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Daniela</de>
 						<en>Daniela</en>
-						<pl></pl>
+						<pl>Daniela</pl>
 					</title>
 					<description>
 						<de>Heute moderiert Daniela die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von Daniela.</de>
 						<en>Today, Daniela hosts the show. Tricky, almost unsolvable tasks are set. Correct solutions result in a striptease from Daniela.</en>
-						<pl></pl>
+						<pl>Dziś Daniela jest gospodarzem programu. Zadawane są trudne, prawie nierozwiązywalne zadania. Prawidłowe rozwiązania skutkują striptizem Danieli.</pl>
 					</description>
 					<ratings critics="4" speed="32" />
 				</programme>
@@ -1549,12 +1554,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Sabine</de>
 						<en>Sabine</en>
-						<pl></pl>
+						<pl>Sabina</pl>
 					</title>
 					<description>
 						<de>Heute moderiert Sabine, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</de>
 						<en>Today Sabine, formerly Björn, hosts the show. But she keeps her panties on.</en>
-						<pl></pl>
+						<pl>Dziś Sabine, dawniej Björn, jest gospodarzem programu. Ale nie zdejmuje majtek.</pl>
 					</description>
 					<ratings critics="8" speed="28" />
 				</programme>
@@ -1562,12 +1567,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Mandy</de>
 						<en>Mandy</en>
-						<pl></pl>
+						<pl>Mandy</pl>
 					</title>
 					<description>
 						<de>Mandy ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</de>
 						<en>Mandy is a real cowgirl, but the trivia questions are more of a bull's butt.</en>
-						<pl></pl>
+						<pl>Mandy jest prawdziwą kowbojką, ale pytania do niej są tak interesujące jak tyłek byka.</pl>
 					</description>
 					<ratings critics="5" speed="23" />
 				</programme>
@@ -1575,12 +1580,12 @@ Do the two offer enough material for an exciting panel?</en>
 					<title>
 						<de>Peggy</de>
 						<en>Peggy</en>
-						<pl></pl>
+						<pl>Peggy</pl>
 					</title>
 					<description>
 						<de>Peggy kommt vom Lande, und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
 						<en>Peggy comes from a rural farm, and all the questions revolve around the countrywoman's biggest two potatoes.</en>
-						<pl></pl>
+						<pl>Peggy pochodzi z wiejskiej farmy, a wszystkie pytania krążą wokół największych dwóch ziemniaków wiejskiej kobiety.</pl>
 					</description>
 					<ratings critics="1" speed="13" />
 				</programme>
@@ -1591,14 +1596,15 @@ Do the two offer enough material for an exciting panel?</en>
 			<title>
 				<de>Papierflieger</de>
 				<en>Paper Planes</en>
-				<pl></pl>
+				<pl>Papierowe samoloty</pl>
 			</title>
 			<description>
 				<de>Bastelstunde mit [1|First]. In jeder Folge baut er einen neuen Flieger - aus chlorfrei gebleichtem Papier und Knochenleim.
 Pädagogisch wertvoll und absolut ökologisch.</de>
 				<en>Tinker time with [1|First]. In each episode, he builds a new plane - made out of chlorine-free bleached paper and bone glue.
 Pedagogically valuable and absolutely ecological.</en>
-<pl></pl>
+				<pl>[1|First] majsterkuje. W każdym odcinku buduje nowy samolot - wykonany z bielonego bezchlorowo papieru i kleju kostnego.
+Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-freddyjbush</member>
@@ -1614,12 +1620,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Tahiti Fly</de>
 						<en>Tahity Fly</en>
-						<pl></pl>
+						<pl>Tahity Fly</pl>
 					</title>
 					<description>
 						<de>Ganz schön tricky. Erst einmal in der Mitte falten, dann umknicken und dann nochmal falten, jetzt...</de>
 						<en>Really tricky. First fold in the middle, then bend it and there is another fold, now just...</en>
-						<pl></pl>
+						<pl>Naprawdę trudne. Najpierw składamy na środku, potem zginamy i jest kolejne zagięcie, teraz tylko...</pl>
 					</description>
 					<ratings critics="25" speed="35" />
 				</programme>
@@ -1627,12 +1633,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Bosporus Bomber</de>
 						<en>Bosporus Bomber</en>
-						<pl></pl>
+						<pl>Bombowiec Bosfor</pl>
 					</title>
 					<description>
 						<de>Diesmal im Bau: Der Bosporus Bomber, ein weitfliegender Papierflieger, auch Scheich des Schwarzen Meeres genannt.</de>
 						<en>This time to construct: The Bosporus Bomber - the Bosporus Bomber, a long-range paper plane, also called the Sheikh of the Black Sea.</en>
-						<pl></pl>
+						<pl>Tym razem do skonstruowania jest: bombowiec Bosfor, papierowy samolot dalekiego zasięgu, zwany też Szejkiem znad Morza Czarnego.</pl>
 					</description>
 					<ratings critics="28" speed="19" />
 				</programme>
@@ -1640,12 +1646,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Schneegans</de>
 						<en>Snow goose</en>
-						<pl></pl>
+						<pl>Gęś śnieżna</pl>
 					</title>
 					<description>
 						<de>Ein weißer Flieger, perfekt um ihn im Winter zu verstecken. Aufpassen, Verletzungsgefahr.</de>
 						<en>A white plane, perfect to hide it in winter. Watch out, risk of injury.</en>
-						<pl></pl>
+						<pl>Biały samolot, idealny do ukrycia w zimie. Uważaj, ryzyko obrażeń.</pl>
 					</description>
 					<ratings critics="23" speed="32" />
 				</programme>
@@ -1653,12 +1659,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Die eiserne Lady</de>
 						<en>The Iron Lady</en>
-						<pl></pl>
+						<pl>Żelazna dama</pl>
 					</title>
 					<description>
 						<de>Zügig zusammengebaut aber extrem kurze Reichweite - der 30-Sekunden Papierflieger „Die Eiserne Lady“. Lässt sich nicht pink anmalen.</de>
 						<en>Quickly assembled but extremely short range - the 30-second paper plane "The Iron Lady". Can not be painted with pink.</en>
-						<pl></pl>
+						<pl>Szybki w montażu, ale o bardzo krótkim zasięgu - 30-sekundowy papierowy samolot "Żelazna Dama". Nie może być pomalowany na różowo.</pl>
 					</description>
 					<ratings critics="20" speed="27" />
 				</programme>
@@ -1669,12 +1675,12 @@ Pedagogically valuable and absolutely ecological.</en>
 			<title>
 				<de>Kochen mit [1|Full]</de>
 				<en>Cooking with [1|Full]</en>
-				<pl></pl>
+				<pl>[1|Full] gotuje na ekranie</pl>
 			</title>
 			<description>
 				<de>[1|Full] zeigt in heimeliger Atmosphäre wie die Hausfrau von Heute ihrem Mann und den Liebsten leckere Speisen auf den Tisch zaubern kann. Eine Weinverkostung gehört zu jeder Folge.</de>
 				<en>[1|Full] shows in a homey atmosphere how the housewife of today can whip up delicious meals for her husband and loved ones. A wine tasting is part of every episode.</en>
-				<pl></pl>
+				<pl>[1|Full] pokazuje w domowej atmosferze, jak współczesna gospodyni domowa może przygotować pyszne posiłki dla swojego męża i bliskich. Częścią każdego odcinka jest degustacja wina.</pl>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -1705,12 +1711,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Toast Hawaii</de>
 						<en>Toast Hawaii</en>
-						<pl></pl>
+						<pl>Tost Hawajski</pl>
 					</title>
 					<description>
 						<de>Ganz neu und schon im Trend. Das Geheimnis der süßen Ananas wird bei einem Glas Silvaner aufgedeckt.</de>
 						<en>Brand new and already in vogue. The secret of the sweet pineapple is revealed with a glass of Silvaner.</en>
-						<pl></pl>
+						<pl>Zupełnie nowy i już w modzie. Tajemnica słodkiego ananasa ujawnia się wraz z kieliszkiem Silvaner.</pl>
 					</description>
 					<ratings critics="75" speed="35" />
 				</programme>
@@ -1718,12 +1724,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Gefüllte Eier</de>
 						<en>Filled eggs</en>
-						<pl></pl>
+						<pl>Jajka faszerowane</pl>
 					</title>
 					<description>
 						<de>Einfach, aber schlicht der Hingucker auf den Dinnerparties des Jahres 1984. Das Ei ist schnell gekocht, und so hat Frau [1|Last] mehr Zeit für den Traminer der Saison.</de>
 						<en>Easy, but simply the eye-catcher at the dinner parties of 1984. The egg is boiled quickly, and so Mrs. [1|Last] has more time for the Traminer of the season.</en>
-						<pl></pl>
+						<pl>Proste, ale po prostu przyciąga wzrok na przyjęciach w 1984 roku. Jajko gotuje się szybko, więc pani [1|Last] ma więcej czasu na Traminer de sezou.</pl>
 					</description>
 					<ratings critics="50" speed="40" />
 				</programme>
@@ -1731,12 +1737,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Pumpernickel mal anders</de>
 						<en>Pumpernickel with a difference</en>
-						<pl></pl>
+						<pl>Pumpernikiel z pewną różnicą</pl>
 					</title>
 					<description>
 						<de>Roggenmischbrot war gestern. Angesagt und lecker ist Pumpernickel. Schnell geschmiert und angerichtet - dazu passt ein würziger rubinroter Pinot Noir.</de>
 						<en>Rye bread was yesterday. The trendy and delicious thing is pumpernickel. Quickly greased and served - it goes well with a spicy ruby red Pinot Noir.</en>
-						<pl></pl>
+						<pl>Chleb żytni był wczoraj. Modny i pyszny jest pumpernikiel. Szybko posmarowany i podany - dobrze komponuje się z pikantnym rubinowoczerwonym Pinot Noir.</pl>
 					</description>
 					<ratings critics="73" speed="19" />
 				</programme>
@@ -1744,12 +1750,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Shrimps-Cocktail</de>
 						<en>Shrimp cocktail</en>
-						<pl></pl>
+						<pl>Koktajl z krewetek</pl>
 					</title>
 					<description>
 						<de>[1|First] pult heute Shrimps. Dazu gibt es hausgemachte Mayonnaise. Ein trockener Riesling passt nicht perfekt, aber erhält trotzdem seine halbe Stunde Sendezeit.</de>
 						<en>[1|First] shells shrimps today. They are served with homemade mayonnaise. A dry Riesling does not fit perfectly, but still gets its half hour of airtime.</en>
-						<pl></pl>
+						<pl>[1|First] gotuje krewetki w skorupkach. Podawane są z domowym majonezem. Wytrawny Riesling nie pasuje idealnie, ale i tak dostaje swoje pół godziny czasu antenowego.</pl>
 					</description>
 					<ratings critics="67" speed="22" />
 				</programme>
@@ -1759,12 +1765,12 @@ Pedagogically valuable and absolutely ecological.</en>
 			<title>
 				<de>Brisante Ufer</de>
 				<en>Brisk Shores</en>
-				<pl></pl>
+				<pl>Straż przybrzeżna</pl>
 			</title>
 			<description>
 				<de>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</de>
 				<en>A camera crew follows lifeguards and other heroes of our local waters.</en>
-				<pl></pl>
+				<pl>Kamera podąża za ratownikami i innymi bohaterami naszych lokalnych wód.</pl>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -1782,12 +1788,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Die Wasserwacht</de>
 						<en>The Water Rescue</en>
-						<pl></pl>
+						<pl>Ratownictwo wodne</pl>
 					</title>
 					<description>
 						<de>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</de>
 						<en>Men with weathered skin, lots of splash water and the fickle sea are the heroes of this episode.</en>
-						<pl></pl>
+						<pl>Bohaterami tego odcinka są mężczyźni ze zniszczoną skórą, dużą ilością wody i kapryśnym morzem.</pl>
 					</description>
 					<data price_mod="0.95" />
 					<ratings critics="48"  />
@@ -1796,12 +1802,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>Das Elb-Wehr</de>
 						<en>The Elbe-Weir</en>
-						<pl></pl>
+						<pl>Łaba-Wir</pl>
 					</title>
 					<description>
 						<de>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</de>
 						<en>Apparently boring but enormously important: the maintenance of a weir of the Elbe. Shows unique but boring underwater footage.</en>
-						<pl></pl>
+						<pl>Pozornie nudne, ale niezwykle ważne: konserwacja jazu na Łabie. Pokazuje unikalne, ale nudne podwodne ujęcia.</pl>
 					</description>
 					<data price_mod="1.0" />
 					<ratings critics="34" speed="12"  />
@@ -1810,12 +1816,12 @@ Pedagogically valuable and absolutely ecological.</en>
 					<title>
 						<de>SOS im Freibad Gammelau</de>
 						<en>SOS at the outdoor pool Gammelau</en>
-						<pl></pl>
+						<pl>SOS na odkrytym basenie Gammelau</pl>
 					</title>
 					<description>
 						<de>Dramatische Szenen, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</de>
 						<en>Dramatic scenes captured at the outdoor pool Gammelau: Is it a chocolate bar?</en>
-						<pl></pl>
+						<pl>Dramatyczne sceny uchwycone na odkrytym basenie Gammelau: Czy to tabliczka czekolady?</pl>
 					</description>
 					<ratings critics="26" speed="56"  />
 				</programme>
@@ -1825,14 +1831,15 @@ Pedagogically valuable and absolutely ecological.</en>
 			<title>
 				<de>Familie Fuchs</de>
 				<en>The Fox Family</en>
-				<pl></pl>
+				<pl>Rodzina Foxów</pl>
 			</title>
 			<description>
 				<de>Kindgerechte Abenteuer mit Felix Fuchs und seiner Familie.
 Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- und Jugendpsychologen.</de>
 				<en>Adventures with Felix Fox and his family (suitable for children).
 Instructive stories convey current findings of recognized child and youth psychologists.</en>
-<pl></pl>
+				<pl>Przygody Feliksa Lisa i jego rodziny (odpowiednie dla dzieci).
+Pouczające historie przekazują aktualne odkrycia uznanych psychologów dziecięcych i młodzieżowych.</pl>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -1849,12 +1856,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Neue Nachbarn</de>
 						<en>New neighbors</en>
-						<pl></pl>
+						<pl>Nowi sąsiedzi</pl>
 					</title>
 					<description>
 						<de>Familie Igel zieht in den benachbarten Laubhaufen. Beim Spielen mit Ingo Igel verletzt sich Felix Fuchs an den Stacheln. Das Ende einer aufkeimenden Freundschaft?</de>
 						<en>Family Hedgehog moves into the neighboring piles of leaves. While playing with Henry Hedgehog, Felix Fox injures himself on the thorns. The end of a burgeoning friendship?</en>
-					<pl></pl>
+						<pl>Jeż Rodzinny przenosi się na sąsiednie sterty liści. Podczas zabawy z Jeżem Henrym, Feliks rani się o ciernie. Koniec rodzącej się przyjaźni?</pl>
 					</description>
 					<data price_mod="0.68" />
 					<ratings critics="55"  />
@@ -1863,12 +1870,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Maus in der Falle</de>
 						<en>Mouse in the trap</en>
-						<pl></pl>
+						<pl>Mysz w potrzasku</pl>
 					</title>
 					<description>
 						<de>Markus Mäuserich fällt in den Weiher des Waldes. Felix Fuchs muss sich entscheiden zwischen Mittagessen und Rettung.</de>
 						<en>Marcus Mousewicz falls into the pond of the forest. Felix Fox must decide between lunch and rescue.</en>
-						<pl></pl>
+						<pl>Markus Myszewicz wpada do stawu w lesie. Feliks musi wybrać między obiadem a ratunkiem.</pl>
 					</description>
 					<data price_mod="0.75" />
 					<ratings critics="50" speed="30" />
@@ -1877,12 +1884,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Frieda Fuchs</de>
 						<en>Frieda Fox</en>
-						<pl></pl>
+						<pl>Frieda Lis</pl>
 					</title>
 					<description>
 						<de>Ranzzeit. Ein süßer Duft zieht durch den Wald. Als Felix ihm folgt, trifft er Frieda. Wie umgehen mit den neuen und aufregenden Gefühlen?</de>
 						<en>Breeding season. A sweet scent wafts through the forest. When Felix trails it, he meets Frieda. How to deal with the new and exciting feelings?</en>
-						<pl></pl>
+						<pl>Sezon lęgowy. Słodki zapach unosi się przez las. Kiedy Felix podąża za nim, spotyka Friedę. Jak poradzić sobie z nowymi i ekscytującymi uczuciami?</pl>
 					</description>
 					<data price_mod="0.58" />
 					<ratings critics="62" speed="22"  />
@@ -1891,12 +1898,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Guten Morgen meine Kinder</de>
 						<en>Good morning beloved children</en>
-						<pl></pl>
+						<pl>Dzień dobry ukochane dzieci</pl>
 					</title>
 					<description>
 						<de>Weniger als zwei Monate sind vergangen, und die Fähe Frieda wirft drei Kinder - Felix' Kinder. Aufregende Zeiten für die neue Familie.</de>
 						<en>Less than two months have passed, and Frieda the vixen gives birth to three children - Felix's children. Exciting times for the new family.</en>
-						<pl></pl>
+						<pl>Minęły niecałe dwa miesiące, a lisica Frieda urodziła trójkę dzieci - dzieci Feliksa. Ekscytujące czasy dla nowej rodziny.</pl>
 					</description>
 					<data price_mod="0.65" />
 					<ratings critics="69" speed="20"  />
@@ -1905,12 +1912,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Besuch bei Ingo</de>
 						<en>Visiting Henry</en>
-						<pl></pl>
+						<pl>Wizyta u Henry'ego</pl>
 					</title>
 					<description>
 						<de>Felix nimmt seine Kinder mit auf einen Besuch zu Ingo Igel. Schmetterlingsschmaus für alle.</de>
 						<en>Felix takes his children on a visit to Henry Hedgehog. Butterfly feast for all.</en>
-						<pl></pl>
+						<pl>Feliks zabiera dzieci na wizytę do Jeża Henry'ego. Święto motyli dla wszystkich.</pl>
 					</description>
 					<data price_mod="0.61" />
 					<ratings critics="59" speed="23"  />
@@ -1919,12 +1926,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Randale im Fuchsbau</de>
 						<en>Riot in the foxhole</en>
-						<pl></pl>
+						<pl>Zamieszki w lisiej norze</pl>
 					</title>
 					<description>
 						<de>Als die Kinder von Familie Fuchs es eines Nachts zu bunt treiben, kommt es zum Streit im Fuchsbau. Die jungen Füchse ziehen aus.</de>
 						<en>When the children of the fox family get too rowdy one night, a quarrel breaks out in the foxhole. The young foxes move out.</en>
-						<pl></pl>
+						<pl>Pewnej nocy, gdy dzieci z lisiej rodziny zbytnio się awanturują, w lisiej norze wybucha kłótnia. Młode lisy wyprowadzają się.</pl>
 					</description>
 					<data price_mod="0.53" />
 					<ratings critics="58" speed="27"  />
@@ -1933,14 +1940,15 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Der Grünrock</de>
 						<en>The Huntsman</en>
-						<pl></pl>
+						<pl>Łowca</pl>
 					</title>
 					<description>
 						<de>Felix streift alleine durch den Wald als er den Jäger Joachim kennenlernt...
 						Trauriges Finale der beliebten Kinderserie, ließ Millionen Kinderherzen erbeben.</de>
 						<en>Felix strays alone through the forest when he meets the hunter Joachim...
 						Sad finale of the popular childrens' series, made millions of children's hearts tremble.</en>
-						<pl></pl>
+						<pl>Feliks błąka się samotnie po lesie, kiedy spotyka myśliwego Joachima...
+						Smutny finał popularnego serialu dla dzieci, który wprawił w drżenie miliony dziecięcych serc.</pl>
 					</description>
 					<data price_mod="0.70" />
 					<ratings critics="77" speed="20"  />
@@ -1951,12 +1959,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 			<title>
 				<de>Die Komtess</de>
 				<en>The Countess</en>
-				<pl></pl>
+				<pl>Hrabina</pl>
 			</title>
 			<description>
 				<de>Amouröse Verwicklungen, Intrigen unter „Freundinnen“ ... Taschenbuchromantik in der Bretagne. Mini-TV-Serie.</de>
 				<en>Amorous entanglements, intrigues between "girlfriends" ... Pulp romance in Brittany. Mini-TV series.</en>
-				<pl></pl>
+				<pl>Miłosne uwikłania, intrygi między "przyjaciółkami" ... Miazga romansu w Bretanii. Mini serial telewizyjny.</pl>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -1975,12 +1983,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Jaqueline Montegrieux</de>
 						<en>Jaqueline Montegrieux</en>
-						<pl></pl>
+						<pl>Jaqueline Montegrieux</pl>
 					</title>
 					<description>
 						<de>Jaqueline, Tochter des Grafen Montegrieux erblüht und entdeckt bisher unerkannte Gefühle für den Stallburschen Henri.</de>
 						<en>Jacqueline, daughter of Count Montegrieux blossoms and discovers previously unknown feelings for the stable-lad Henri.</en>
-						<pl></pl>
+						<pl>Jacqueline, córka hrabiego Montegrieux, rozkwita i odkrywa nieznane wcześniej uczucia do stajennego Henriego.</pl>
 					</description>
 					<data price_mod="0.98" />
 					<ratings critics="32" speed="28"  />
@@ -1989,12 +1997,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Francine du Pomeranc</de>
 						<en>Francine du Pomeranc</en>
-						<pl></pl>
+						<pl>Francine du Pomeranc</pl>
 					</title>
 					<description>
 						<de>Der umtriebige Graf Pomeranc besucht den Landsitz Montegrieux. Er versucht Jaqueline nachzustellen, während seine Tochter Francine Henri schöne Augen macht...</de>
 						<en>The busy Earl Pomeranc visits Manor Montegrieux. He tries to pursue Jaqueline, while his daughter Francine makes eyes at Henri ...</en>
-						<pl></pl>
+						<pl>Zapracowany hrabia Pomeranc odwiedza dwór Montegrieux. Próbuje zabiegać o względy Jaqueline, podczas gdy jego córka Francine spogląda na Henriego ...</pl>
 					</description>
 					<data price_mod="0.98" />
 					<ratings critics="30" speed="29"  />
@@ -2003,12 +2011,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Eine Leiche im Keller?</de>
 						<en>Skeletons in the closet?</en>
-						<pl></pl>
+						<pl>Szkielety w szafie?</pl>
 					</title>
 					<description>
 						<de>Große Aufregung, Graf Pomeranc ist verschwunden. Was hat Jaqueline und ihr zerissenes Nachthemd damit zu tun?</de>
 						<en>Flurries of excitement: Earl Pomeranc has disappeared. What does Jacqueline with her tattered nightgown have to do with it?</en>
-						<pl></pl>
+						<pl>Fale ekscytacji: Earl Pomeranc zniknął. Co ma z tym wspólnego Jacqueline ze swoją podartą koszulą nocną?</pl>
 					</description>
 					<data price_mod="0.98" />
 					<ratings critics="34" speed="25"  />
@@ -2017,12 +2025,12 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Die Waldhütte</de>
 						<en>The forest cabin</en>
-						<pl></pl>
+						<pl>Leśna chatka</pl>
 					</title>
 					<description>
 						<de>Alle suchen Graf Pomeranc. Jaqueline und Henri suchen im nahen Wald und landen in einer einsamen Hütte. Als ein Unwetter aufzieht, verbringen beide eine sinnliche Nacht bei knackendem Kaminfeuer.</de>
 						<en>Everybody is searching Earl Pomeranc. Jacqueline and Henri are searching in the nearby forest and end up in a secluded cabin. When a storm comes up, both spend a sensual night by a crackling fireplace.</en>
-					<pl></pl>
+						<pl>Wszyscy szukają Earla Pomeranca. Jacqueline i Henri szukają w pobliskim lesie i trafiają do odosobnionego domku. Kiedy nadchodzi burza, oboje spędzają zmysłową noc przy trzaskającym kominku.</pl>
 					</description>
 					<data price_mod="0.93" />
 					<ratings critics="30" speed="30"  />
@@ -2031,14 +2039,15 @@ Instructive stories convey current findings of recognized child and youth psycho
 					<title>
 						<de>Sie war es...</de>
 						<en>It was ... her</en>
-						<pl></pl>
+						<pl>To był ... jej</pl>
 					</title>
 					<description>
 						<de>Jaqueline erfährt, dass Francine Ihren Vater umbrachte und Jaquelines Nachthemd zeriss. Das Warum erschüttert: sie wollte Jaqueline aus dem Weg haben.
 Grandioses Finale.</de>
 						<en>Jaqueline finds out that Francine killed her father and also tore Jaqueline's nightgown. The reason is shocking: she wanted to get Jaqueline out of the way.
 Terrific final.</en>
-<pl></pl>
+						<pl>Jaqueline dowiaduje się, że Francine zabiła jej ojca, a także podarła koszulę nocną Jaqueline. Powód jest szokujący: chciała usunąć Jaqueline z drogi.
+Tragiczny finał.</pl>
 					</description>
 					<data price_mod="0.95" />
 					<ratings critics="25" speed="35"  />
