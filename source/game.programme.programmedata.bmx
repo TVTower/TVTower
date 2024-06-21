@@ -572,10 +572,14 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method AddCast:Int(job:TPersonProductionJob)
+	Method AddCast:Int(job:TPersonProductionJob, index:Int=-1)
 		If HasCast(job) Then Return False
 
-		cast :+ [job]
+		If index >=0 and index < cast.length
+			cast[index] = job
+		Else
+			cast :+ [job]
+		EndIf
 
 		'invalidate caches
 		cachedActors = cachedActors[..0]
