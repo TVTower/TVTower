@@ -577,12 +577,12 @@
 			<title>
 				<de>Die Tempelritter</de>
 				<en>The Templars</en>
-				<pl></pl>
+				<pl>Templariusze</pl>
 			</title>
 			<description>
 				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
 				<en>From their origin to their downfall. The facts are portrayed by amateur actors. The narrator tries his hand at building up tension, too.</en>
-			<pl></pl>
+				<pl>Od ich powstania do upadku. Fakty są przedstawiane przez aktorów-amatorów. Narrator próbuje też swoich sił w budowaniu napięcia.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_20</member>
@@ -600,12 +600,12 @@
 				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
 				<de>Baba der Trabbi</de>
 				<en>Baba the Trabbi-car</en>
-				<pl></pl>
+				<pl>Baba Trabbi</pl>
 			</title>
 			<description>
 				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
 				<en>Baba the living Trabbi-car performs wonderful services for its owner. It can swim, fly and beat up car burglars. Summoned by a whistle, it always dutifully comes along when help is needed.</en>
-			<pl></pl>
+				<pl>Baba, żywy Trabbi-samochód, wykonuje wspaniałe usługi dla swojego właściciela. Potrafi pływać, latać i bić samochodowych włamywaczy. Przywoływany gwizdkiem, zawsze zjawia się, gdy potrzebna jest pomoc.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -623,12 +623,12 @@
 				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 				<de>Wilhelm Tell</de>
 				<en>William Tell</en>
-				<pl></pl>
+				<pl>William Tell</pl>
 			</title>
 			<description>
 				<de>Wilhelm Tell schießt eifrig mit seiner Armbrust Äpfel von den Köpfen. Der schweizer Robin Hood.</de>
 				<en>William Tell avidly shoots apples off heads with his crossbow. The Swiss Robin Hood.</en>
-				<pl></pl>
+				<pl>Wilhelm Tell z zapałem zestrzeliwuje jabłka z głów za pomocą kuszy. Szwajcarski Robin Hood.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -646,12 +646,12 @@
 				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
 				<de>Jánošík</de>
 				<en>Jánošík</en>
-				<pl></pl>
+				<pl>Jánošík</pl>
 			</title>
 			<description>
 				<de>Jánošík als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
 				<en>Jánošík as the leader of a group of forest robbers. The Slovak Robin Hood.</en>
-				<pl></pl>
+				<pl>Jánošík jako przywódca grupy leśnych rabusiów. Słowacki Robin Hood.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_62</member>
@@ -668,12 +668,12 @@
 			<title>
 				<de>Skandale</de>
 				<en>Scandals</en>
-				<pl></pl>
+				<pl>Skandale</pl>
 			</title>
 			<description>
 				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
 				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
-			<pl></pl>
+				<pl>[0|Full] przedstawia skandale z [1|Full]. Pokazano wszystko, od szaleństw w miejscach kręcenia filmów po wywiady i występy w talk show. Przezabawne bez końca. Ale zupełnie nieodpowiednie dla młodszych widzów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -687,12 +687,12 @@
 					<title>
 						<de>[1|Full] qualmt die Bude zu</de>
 						<en>[1|Full] smokes up the place</en>
-						<pl></pl>
+						<pl>[1|Full] puszcza z dymem to miejsce</pl>
 					</title>
 					<description>
 						<de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
 						<en>[1|Full] as a chain smoker insults the host to the point of no return.</en>
-						<pl></pl>
+						<pl>[1|Full], jako palacz który obraża gospodarza i doprowadza go do punktu, z którego nie ma powrotu.</pl>
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
@@ -700,12 +700,12 @@
 					<title>
 						<de>[1|Full] beleidigt die Interviewerin</de>
 						<en>[1|Full] insults the interviewer</en>
-						<pl></pl>
+						<pl>[1|Full] obraża osobę z którą przeprowadza wywiad</pl>
 					</title>
 					<description>
 						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
 						<en>Can't help feeling sorry for the lady. [1|Full] goes completely berserk and attacks her obscenely.</en>
-					<pl></pl>
+						<pl>Nie mogę przestać współczuć tej kobiecie. [1|Full] wpada w szał i atakuje ją nieprzyzwoicie.</pl>
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
@@ -713,12 +713,12 @@
 					<title>
 						<de>[1|Full] im Dschungel</de>
 						<en>[1|Full] in the jungle</en>
-						<pl></pl>
+						<pl>[1|Full] w dżungli</pl>
 					</title>
 					<description>
 						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
 						<en>[1|Full]'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
-					<pl></pl>
+						<pl>Legendarny napad złości w dżungli. Kogo zaatakuje [1|Full] w następnej kolejności? Naoczni świadkowie do dziś przeżywają traumę.</pl>
 					</description>
 					<ratings critics="70" speed="40" />
 				</programme>
@@ -730,10 +730,12 @@
 			<title>
 				<de>Sinbads Reisen</de>
 				<en>Sinbad's Journeys</en>
+				<pl>Podróże Sindbada</pl>
 			</title>
 			<description>
 				<de>Sinbads Reisen werden hier erzählt.</de>
 				<en>This is where Sinbad's voyages are being told.</en>
+				<pl>Tutaj opowiadane są podróże Sindbada.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_318</member>
@@ -748,10 +750,12 @@
 					<title>
 						<de>Sinbad und die Insel</de>
 						<en>Sinbad and the Island</en>
+						<pl>Sindbad i wyspa</pl>
 					</title>
 					<description>
 						<de>Sinbad strandet auf einer Insel. Diese entpuppt sich als riesiger Fisch.</de>
 						<en>Sinbad is stranded on an island, which turns out to be a giant fish.</en>
+						<pl>Sindbad utknął na wyspie, która okazuje się być gigantyczną rybą.</pl>
 					</description>
 					<ratings critics="34" speed="41" />
 				</programme>
@@ -759,10 +763,12 @@
 					<title>
 						<de>Sinbad und das Diamantental</de>
 						<en>Sinbad and the Diamond Valley</en>
+						<pl>Sindbad i Diamentowa Dolina</pl>
 					</title>
 					<description>
 						<de>Sinbad strandet in einem Tal voller Diamanten und riesiger Vögel. Wie kommt er da nun raus?</de>
 						<en>Sinbad is stranded in a valley full of diamonds and giant birds. How does he get out of there now?</en>
+						<pl>Sindbad utknął w dolinie pełnej diamentów i gigantycznych ptaków. Jak się stamtąd wydostanie?</pl>
 					</description>
 					<ratings critics="34" speed="42" />
 				</programme>
@@ -770,10 +776,12 @@
 					<title>
 						<de>Sinbad und der Riese</de>
 						<en>Sinbad and the giant</en>
+						<pl>Sindbad i olbrzym</pl>
 					</title>
 					<description>
 						<de>Sinbad landet auf der Affeninsel und trifft dort auf einen Riesen. Sinbad merkt schnell, dass er zur Lieblingsspeise des Riesen gehört.</de>
 						<en>Sinbad lands on the ape island and encounters a giant there. Sinbad quickly realizes that he belongs to the giant's favorite food.</en>
+						<pl>Sindbad ląduje na wyspie małp i spotyka tam olbrzyma. Sindbad szybko zdaje sobie sprawę, że należy do ulubionego jedzenia olbrzyma.</pl>
 					</description>
 					<ratings critics="37" speed="47" />
 				</programme>
@@ -781,10 +789,12 @@
 					<title>
 						<de>Sinbad heiratet</de>
 						<en>Sinbad marries</en>
+						<pl>Sindbad żeni się</pl>
 					</title>
 					<description>
 						<de>Sinbad heiratet. Leider verstirbt sein Frau recht schnell, und Sinbad wußte nicht, dass er per Sitte mit ihr lebendig begraben wird.</de>
 						<en>Sinbad gets married. Unfortunately, his wife dies quite quickly, and Sinbad did not know that by custom he is to be buried alive with her.</en>
+						<pl>Sindbad żeni się. Niestety, jego żona umiera dość szybko, a Sindbad nie wiedział, że zgodnie ze zwyczajem ma zostać pochowany żywcem razem z nią.</pl>
 					</description>
 					<ratings critics="35" speed="29" />
 				</programme>
@@ -792,10 +802,12 @@
 					<title>
 						<de>Sinbad und der Riesenvogel</de>
 						<en>Sinbad and the giant bird</en>
+						<pl>Sindbad i gigantyczny ptak</pl>
 					</title>
 					<description>
 						<de>Sinbad entdeckt den Riesenvogel. Sinbads Begleiter schlachten einen Babyvogel und erfahren die Rache seiner gigantischen Eltern. Wie wird sich Sinbad wohl diesmal retten?</de>
 						<en>Sinbad discovers the giant bird. Sinbad's companions slaughter a baby bird and experience the revenge of its gigantic parents. How will Sinbad save himself this time?</en>
+						<pl>Sindbad odkrywa gigantycznego ptaka. Towarzysze Sindbada zabijają małego ptaszka i doświadczają zemsty jego gigantycznych rodziców. Jak Sindbad uratuje się tym razem?</pl>
 					</description>
 					<ratings critics="33" speed="51" />
 				</programme>
@@ -803,10 +815,12 @@
 					<title>
 						<de>Sinbad und das karge Land</de>
 						<en>Sinbad and the barren land</en>
+						<pl>Sindbad i jałowa ziemia</pl>
 					</title>
 					<description>
 						<de>Sinbad strandet auf eine unwirtlichen Insel. Er baut sich ein Floß, um einen Fluß entlang dem Hungertod zu entkommen.</de>
 						<en>Sinbad is stranded on an inhospitable island. He builds a raft to flee starvation along a river.</en>
+						<pl>Sindbad utknął na niegościnnej wyspie. Buduje tratwę, aby uciec przed głodem wzdłuż rzeki.</pl>
 					</description>
 					<ratings critics="42" speed="39" />
 				</programme>
@@ -814,10 +828,12 @@
 					<title>
 						<de>Sinbad geht in Rente</de>
 						<en>Sinbad is retiring</en>
+						<pl>Sindbad przechodzi na emeryturę</pl>
 					</title>
 					<description>
 						<de>Nach einigen abstrusen Abteuern mit geflügelten Menschen, entscheidet sich Sinbad mit seiner neu Angetrauten nach Bagdad zurück zu kehren.</de>
 						<en>After some abstruse adventures with winged people, Sinbad decides to return to Baghdad with his newly wedded wife.</en>
+						<pl>Po kilku zawiłych przygodach ze skrzydlatymi ludźmi Sindbad postanawia wrócić do Bagdadu ze swoją świeżo poślubioną żoną.</pl>
 					</description>
 					<data year="1979" blocks="2" />
 					<ratings critics="47" speed="47" />
@@ -830,10 +846,12 @@
 			<title>
 				<de>Firmengründungen</de>
 				<en>How companies are founded</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Dem geneigten Zuschauer werden Karrieren von risikobereiten Firmengründern gezeigt. Schöne Lehrstunde für Schadenfrohe.</de>
 				<en>The careers of risk-taking company founders are shown to the interested viewer. Nice illustrative material for those who enjoy schadenfreude.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_628</member>
@@ -847,10 +865,12 @@
 					<title>
 						<de>Filmstudio in Nollywood</de>
 						<en>Movie studio in Nollywood</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[1|Full] begleitet Hans Imglück auf seinem Weg Qualitätsfilme in Nollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
 						<en>[1|Full] accompanies Hans Inluck on his way to shoot quality films in Nollywood. A magnificent loss-making business.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="43" speed="22" />
 				</programme>
@@ -858,10 +878,12 @@
 					<title>
 						<de>Erotikshop im Jemen</de>
 						<en>Erotic store in Yemen</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
 						<en>Nick Thinknotlong sets up an erotic store in Yemen. [1|Full] conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="48" speed="27" />
 				</programme>
@@ -869,10 +891,12 @@
 					<title>
 						<de>Kühlschrankfachladen in Grönland</de>
 						<en>Fridge store in Greenland</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
 						<en>[1|Full] travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="44" speed="19" />
 				</programme>
@@ -883,10 +907,12 @@
 			<title>
 				<de>Schach gegen den Meister</de>
 				<en>Chess against the master</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket.</de>
 				<en>Speed chess against the grandmasters. Call in, manage to get through, and checkmate the grandmaster. Use your brains, study, lose money in the waiting loop. The complete all-inclusive service package.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
@@ -903,10 +929,12 @@
 					<title>
 						<de>2 Türme, 3 Bauern</de>
 						<en>2 rooks, 3 pawns</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Eine knifflige Situation. Wer findet den richtigen Zug.</de>
 						<en>A tricky situation. Who will find the right move.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="30" speed="4" />
 				</programme>
@@ -914,10 +942,12 @@
 					<title>
 						<de>Springer und Läufer</de>
 						<en>Knights and bishops</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
 						<en>Improvement over the last episode. Plenty of time to think or fall asleep. Please fall asleep only while you wait in the queue that charges fees.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="32" speed="4" />
 				</programme>
@@ -925,10 +955,12 @@
 					<title>
 						<de>Nur noch Bauern</de>
 						<en>Only pawns left</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Gestellte Situation. Wer spielt schon eine Partie, bei der außer dem König nur noch Bauern auf dem Feld stehen.</de>
 						<en>Staged situation. Who plays a game in which, apart from the king, there are only pawns left on the field.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="24" speed="4" />
 				</programme>
@@ -936,10 +968,12 @@
 					<title>
 						<de>Damen</de>
 						<en>Queens</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Die Damen herrschen. Unterstützt werden sie von lebenden Modellen, die auf einem großen Schachfeld herumlaufen. Ein Abschluß für das Auge.</de>
 						<en>The queens are in charge. They are backed up by live models walking around on a large chessboard. The grande finale for the eye.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
@@ -951,10 +985,12 @@
 			<title>
 				<de>Der Osten - der wahre Horror</de>
 				<en>The east - the true evil</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Der kommunistische Osten wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
 				<en>The communist East is illuminated. It will be proved that they all are aliens over there who want to take over world domination and it is necessary to burn everything with napalm. Completely plausible and believable.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_119</member>
@@ -970,10 +1006,12 @@
 			<title>
 				<de>Der Westen - der wahre Horror</de>
 				<en>The west - the true evil</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Der kapitalistische Westen wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
 				<en>The capitalist West is illuminated. It will be proved that they all are aliens over there who want to take over world domination and it is necessary to burn everything with napalm. Completely plausible and believable.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_406</member>
@@ -988,10 +1026,12 @@
 			<title>
 				<de>Kurven der Welt - Erkenne sie alle</de>
 				<en>Curves of the world - Know them all</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikshow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit.</de>
 				<en>The most beautiful breasts in the world. Discreetly packaged. Nothing and yet much to see. The sophisticated erotic show with interludes about the culture of the respective country. Even critics were able to make friends with it. Presented by a Swedish beauty.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_42</member>
@@ -1009,10 +1049,12 @@
 					<title>
 						<de>Jamaika</de>
 						<en>Jamaica</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>In der Folge eins ist Jamaika zu erraten. 40 Damen präsentieren ihr Land. Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
 						<en>In episode one, Jamaica is to be guessed. 40 ladies present their country. The landscape and cities are shown. The culture is shown. And everything is garnished with a lot of naked lady skin. The last name of the lady has to be guessed.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="20" speed="38" />
 				</programme>
@@ -1020,10 +1062,12 @@
 					<title>
 						<de>Kambodscha</de>
 						<en>Cambodia</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der „sabbernden“ Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
 						<en>Old temples, fields, big cities and jungles. Everything with even more skin. The callers are queuing up. A masterpiece of "drooling" education. So near and yet so far. The last name of the lady must be guessed.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="29" speed="33" />
 				</programme>
@@ -1031,10 +1075,12 @@
 					<title>
 						<de>Bulgarien</de>
 						<en>Bulgaria</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transsilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
 						<en>The black balalaika. The diversity of the ladies is accompanied by historical buildings and beautiful beaches. Furthermore, Transylvania is inappropriately mentioned. The last name of the lady has to be guessed.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="21" speed="43" />
 				</programme>
@@ -1043,10 +1089,12 @@
 						<!-- Zielgruppe Damen -->
 						<de>Tunesien</de>
 						<en>Tunisia</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen.</de>
 						<en>Celebrated final episode for the ladies. Male hip swings. This time the first names of the butt cheek owners have to be guessed. All presented in wonderful landscape shots. You can see the fun the anchorwoman is having.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="26" speed="53" />
 					<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
@@ -1059,10 +1107,12 @@
 				<!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
 				<de>Kampf der Planeten - die wahre Geschichte</de>
 				<en>Battle of the planets - the true story</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[1|Full] wurde von [2|Full] begleitet, als er seine legendäre Radioreportage entwickelte und durchführte. War die Massenpanik echt? Hier wird es gezeigt! Die einzige Reportage von [0|Full].</de>
 				<en>[1|Full] had been accompanied by [2|Full] as he developed and recorded his legendary radio show. Was the mass hysteria real? Here it is shown! The only feature [0|Full] did.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -1079,10 +1129,12 @@
 				<!-- Zielgruppe Hausfrauen -->
 				<de>Marmeladen selber machen</de>
 				<en>Selfmade jelly</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Wie mache ich Marmelade? Schöne Rezepte, deren Umsetzung ausführlich gezeigt wird</de>
 				<en>How do I make jelly? Great recipes which are explained step by step</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_627</member>
@@ -1096,10 +1148,12 @@
 					<title>
 						<de>Erdbeermarmelade</de>
 						<en>Strawberry jelly</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Wir starten mit der Ernte der Erdbeeren.</de>
 						<en>We start with collecting the strawberries</en>
+						<pl></pl>
 					</description>
 					<ratings critics="34" speed="10" />
 				</programme>
@@ -1107,10 +1161,12 @@
 					<title>
 						<de>Pflaumenmarmelade</de>
 						<en>Plum jelly</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Wie entkerne ich Pflaumen. Und den Zucker nicht vergessen.</de>
 						<en>How do I remove the stones from plums. And do not forget the sugar.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="35" speed="9" />
 				</programme>
@@ -1118,10 +1174,12 @@
 					<title>
 						<de>Kirschmarmelade</de>
 						<en>Cherry jelly</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Dann klettern wir mal auf den Baum. Wozu gibt es die Leiter? </de>
 						<en>Now let's climb the tree. What else is the ladder for?</en>
+						<pl></pl>
 					</description>
 					<ratings critics="36" speed="8" />
 				</programme>
@@ -1133,10 +1191,12 @@
 				<!-- War das wahr? Fictional, Mystery -->
 				<de>War das wahr?</de>
 				<en>Was it real?</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Ein kleiner Junge reist mit dem indischen Gott Lakshmi herum und verteilt das Glück. Als er in seinem Bett erwacht, weiß er nicht, war es wahr, oder ein Traum.</de>
 				<en>A little boy travels around with the Indian god Lakshmi, spreading the good fortune. As he wakes up in his bed, he doesn't know, was it real, or a dream.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_601</member>
@@ -1153,10 +1213,12 @@
 				<!-- Der Schwarzmarkt, Fictional, Krimi -->
 				<de>Der Schwarzmarkt</de>
 				<en>The black market</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Hans ernährt seine Familie durch sein Handeln auf dem Schwarzmarkt. Doch auf einmal gerät er in den Fokus eines Kommissars. Wird er entkommen?</de>
 				<en>Hans sustains his family by trading on the black market. But suddenly he becomes the focus of a commissioner. Will he escape?</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">e3144c39-4577-4a4a-bde9-8d1d41f789cd</member>
@@ -1173,10 +1235,12 @@
 				<!-- Wer war es?, Fictional, Krimi -->
 				<de>Wer war es?</de>
 				<en>Who was it?</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Wer hat den Engel gestohlen? Detektiv Butlow ermittelt. Nun, es gab genügend besseres.</de>
 				<en>Who stole the Angel? Detective Butlov investigates. Well, there were plenty of better films.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
@@ -1193,10 +1257,12 @@
 				<!-- Überleben wir die LAF?, Fictional, Dokumentation -->
 				<de>Überleben wir die L.A.F.?</de>
 				<en>Will we survive the L.A.F.?</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Die Lachende Armada Fraktion. Wie können wir diesem Monster entkommen? Aus heutiger Sicht: Purer Schrott!</de>
 				<en>Laughing Armada Fraction. How can we escape this monster? From today's perspective: Pure trash!</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
@@ -1213,10 +1279,12 @@
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Gemüse</de>
 				<en>Count Ruccola and the vegetables</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Gemüse zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Gemüse.</de>
 				<en>Count Ruccola is a vitamin vampire and hunts vegetables to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of vegetables.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1231,10 +1299,12 @@
 					<title>
 						<de>Graf Ruccola trifft Spargel</de>
 						<en>Count Ruccola meets asparagus</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Graf Ruccola endeckt den Spargel, und jetzt riecht es beim „um die Ecke gehen“ auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
 						<en>Count Ruccola discovers the asparagus, and now when "going around the corner" it suddenly smells funny. Why is that? And does Count Ruccola take another bite, or does he prefer to leave the asparagus aside?</en>
+					<pl></pl>
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
@@ -1242,10 +1312,12 @@
 					<title>
 						<de>Graf Ruccola trifft Spinat</de>
 						<en>Count Ruccola meets spinach</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Spinat. Viel Kalium und Magnesium für das Vampirblut. Und danach den kleinen Blubb!</de>
 						<en>Spinach. Lots of potassium and magnesium for the vampire blood. And then the little "blubb"!</en>
+						<pl></pl>
 					</description>
 					<ratings critics="54" speed="35" />
 				</programme>
@@ -1253,10 +1325,12 @@
 					<title>
 						<de>Graf Ruccola trifft Blumenkohl</de>
 						<en>Count Ruccola meets cauliflower</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Weiß und blass, wie Graf Ruccola. Kann das schmecken. Ja, liebe Kinder es kann. Probiert es eifrig!</de>
 						<en>White and pale, like Count Ruccola. Can it taste good. Yes, dear children it can. Try it eagerly!</en>
+						<pl></pl>
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
@@ -1264,10 +1338,12 @@
 					<title>
 						<de>Graf Ruccola trifft Rosenkohl</de>
 						<en>Count Ruccola meets Brussels sprouts</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Rosenkohl, so grün und klein, das ist fein.</de>
 						<en>Brussels sprouts, so green and tight, that's alright.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="49" speed="34" />
 				</programme>
@@ -1275,10 +1351,12 @@
 					<title>
 						<de>Graf Ruccola trifft Bohnen</de>
 						<en>Count Ruccola meets beans</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola ißt viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
 						<en>What can you say, beans, the musical fruit, the more you eat, the more you toot. Count Ruccola eats many beans and toots the most beautiful nursery rhymes.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="57" speed="33" />
 				</programme>
