@@ -7,10 +7,12 @@
 				<!-- Komissar Wirsch -->
 				<de>Kommissar Wirsch</de>
 				<en>Inspector Gruff</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Kommissar Wirsch und seine hübsche Assistentin lösen charmante Alltagsfälle in einem Dorf.</de>
 				<en>Inspector Gruff and his pretty assistant solve charming everyday cases in a village.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -25,10 +27,12 @@
 					<title>
 						<de>Wirschi und der Tante Emma Laden</de>
 						<en>Gruffy and the corner store</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Kommissar Wirsch ermittelt bei einem Kaugummiklau. Wer kaut denn da auf einmal im Dorf?</de>
 						<en>Inspector Gruff investigates a chewing gum theft. Who is stealing and chewing gum in the village all of a sudden?</en>
+					<pl></pl>
 					</description>
 					<ratings critics="29" speed="48" />
 				</programme>
@@ -36,10 +40,12 @@
 					<title>
 						<de>Wirschi und der vermisste Bürgermeister</de>
 						<en>Gruffy and the missing major</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Kommissar Wirsch sucht den verschwunden Bürgermeister. War der Stellvertreter beteiligt?</de>
 						<en>Inspector Gruff is looking for the major who has disappeared. Was the vice major involved?</en>
+					<pl></pl>
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
@@ -47,10 +53,12 @@
 					<title>
 						<de>Wirschi und das versteckte Gemälde</de>
 						<en>Gruffy and the hidden painting</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Kommissar Wirsch auf der Jagd nach einem verschwundenen Gemälde. War der Museumsdirektor beteiligt?</de>
 						<en>Inspector Gruff on the hunt for a missing painting. Was the museum director involved?</en>
+					<pl></pl>
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
@@ -58,10 +66,12 @@
 					<title>
 						<de>Wirschi und der Fotograf</de>
 						<en>Gruffy and the photographer</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Kommissar Wirsch wird mit Anzeigen überhäuft. Die Einwohner fühlen sich von einem Fotografen in ihrer Privatsphäre belästigt. Gibt es da eine Handhabe?</de>
 						<en>Inspector Gruff is flooded with reports. Residents feel that their privacy is being invaded by a photographer. Is there any way to handle this?</en>
+					<pl></pl>
 					</description>
 					<ratings critics="32" speed="50" />
 				</programme>
@@ -69,10 +79,12 @@
 					<title>
 						<de>Wirschi und der Grenzstein</de>
 						<en>Gruffy and the border stone</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Kommissar Wirsch muß einen vermissten Grenzstein suchen. Die spannende Aufgabe wird durch die demotivierte Schauspielerleistung untermalt.</de>
 						<en>Inspector Gruff has to search for a missing border stone. The exciting task is underlined by the demotivated acting performance.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="12" speed="8" />
 				</programme>
@@ -80,10 +92,12 @@
 					<title>
 						<de>Die Assistentin wird Sängerin</de>
 						<en>The Assistant becomes a singing star</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[2|Full] singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
 						<en>[2|Full] sings in a bar. A record producer discovers her. The sad farewell begins.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="50" speed="25" />
 				</programme>
@@ -95,10 +109,12 @@
 				<!-- Meins Alles Meins -->
 				<de>Meins! Alles MEINS!</de>
 				<en>Mine! All MINE!</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Ein Mann, der Alles in der Welt als sein Eigentum betracht, rastet aus, als ihm eine Krawatte entwendet wird. Eine der ersten Amoklaufverfilmungen.</de>
 				<en>A man who considers everything in the world his property goes berserk when one of his ties is stolen. One of the first film adaptations of a rampage.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
@@ -116,10 +132,12 @@
 				<!-- Zielgruppe Kinder -->
 				<de>Ich reiste mit dem Sandmännchen</de>
 				<en>Travelling with the Sandman</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Ein kleiner Junge wird der Begleiter des Sandmännchens und begleitet ihn durch die unterschiedlichen Schlafgeschichten.</de>
 				<en>A little boy becomes the Sandman's companion and accompanies him through the different bedtime stories.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -137,10 +155,12 @@
 				<!-- Als Mysterie Test mit Subgenre Horror -->
 				<de>Ich verschwand mit dem Sandmännchen</de>
 				<en>I disappeared with the Sandman</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Wieder ein Sandmännchenfilm. Gleiche Besetzung - komplett andere Zielgruppe, denn es wird gruselig. Der Protagonist wird vom Sandmännchen gezwungen, ihn bei seinem Einschläferungsjob in die Psychatrie zu begleiten.</de>
 				<en>Another Sandman movie. Same cast - completely different target audience, because it gets creepy. The protagonist is forced by the sandman to accompany him on his euthanasia job in the psychiatric ward.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -157,10 +177,12 @@
 			<title>
 				<de>Der Bau von Neuschwanstein</de>
 				<en>The construction of Neuschwanstein</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Der Bau von Neuschwanstein wird nachgestellt. Laienschauspieler spielen sogar die Unfälle nach.</de>
 				<en>The construction of Neuschwanstein is reenacted. Amateur actors even reenact the accidents.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_399</member>
@@ -176,10 +198,12 @@
 			<title>
 				<de>[0|Full]s Damen</de>
 				<en>[0|Full]'s Ladies</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Die bestgebauten Damen von [0|Full] hüpfen durch das Bild.</de>
 				<en>The finest proportioned ladies of [0|Full] are bouncing through the picture.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">1b9dbd90-5ec0-4e11-ae86-f3365c96897d</member>
@@ -196,10 +220,12 @@
 			<title>
 				<de>Wesensreiter</de>
 				<en>Creature Rider</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Bulbu erkennt, dass er Fantasiewesen dressieren und reiten kann. Ein fliegendes Epos beginnt.</de>
 				<en>Bulbu realizes that he can train and ride fantasy creatures. An epic of flying begins.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
@@ -216,10 +242,12 @@
 			<title>
 				<de>Bullshit Bingo</de>
 				<en>Bullshit bingo</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show oder Doku hat es nicht gereicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
 				<en>If Bullshit Bingo is not 'Various', then what is. It couldn't make it to be a show or a documentary. We went around the world for you and asked what Bullshit Bingo is. The answers: 'Various'!</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_13</member>
@@ -234,10 +262,12 @@
 			<title>
 				<de>Sonstiges - das Thema</de>
 				<en>Various - the topic</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
 				<en>[0|Full] has invited [1|Full], [2|Full], [3|Full] and [4|Full]. The goal an intensive conversation about 'Various'. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -255,10 +285,12 @@
 			<title>
 				<de>Editor und KI</de>
 				<en>Editor and AI</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat [1|Full] richtig gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
 				<en>[0|Full] and [1|Full] in lively discussion. Where do we stand with the editor? What should the AI look like? And did [1|Full] act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -273,10 +305,12 @@
 			<title>
 				<de>TVTower - der Anfang</de>
 				<en>TVTower - the beginning</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de>
 				<en>[0|Full] and [1|Full] as well as [2|Full] explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -293,10 +327,12 @@
 				<!-- Geschichte über MadTV und Rainbow Arts -->
 				<de>RatTV - Quo Vadis</de>
 				<en>RatTV - Quo Vadis</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[1|Full] und [2|Full] von RegenbogenWünsche sprechen über ihr Werk. [3|Full] berichtet was ihn an dem Spiel begeistert. OneHitWonder oder doch lange in Erinnerung bleibend? Er wagt die Prognose: Es kommen Nachfolger! Ein Klasse Sonstiges!</de>
 				<en>[1|Full] and [2|Full] from RainbowWishes talk about their work. [3|Full] reports what inspires him about the game. One-hit wonder or lasting in memory for a long time? He dares to predict: There will be successors! A superb 'Various'!</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_368</member>
@@ -313,10 +349,12 @@
 			<title>
 				<de>Goaaaaal</de>
 				<en>Goaaaaal</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[1|Full] präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
 				<en>[1|Full] presents the finest goals of 1981. A feast for the eyes of every fan!</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_639</member>
@@ -333,10 +371,12 @@
 			<title>
 				<de>Iris entdeckt die Alm</de>
 				<en>Iris explores the alp</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
 				<en>Together with her friends, Iris visits the alpine pastures, the farmers and their beds or haylofts. This movie was not forgotten in the revival of the Seventies, unfortunately.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
@@ -352,10 +392,12 @@
 			<title>
 				<de>Weib, Wein und Gesang</de>
 				<en>Woman, wine and song</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Wikinger plündern fröhlich singend ganz Europa. Vor lauter brüderlichem Gesang sieht man das Blut kaum.</de>
 				<en>Merrily singing vikings plunder all of Europe. You can hardly see the blood because of the brotherly singing.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97</member>
@@ -374,10 +416,12 @@
 				<!-- Idee basiert auf Unendlicher Spaß, Das Buch musste umgesetzt werden -->
 				<de>Der perfekte, unendlich spaßige Film</de>
 				<en>The perfect, infinitely funny movie</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Die Videokassette, die unendlich viel Spaß bietet, ist aufgetaucht. Und wir senden sie. Wer diesen Film gesehen hat, will ihn wiedersehen oder sterben.</de>
 				<en>The videotape that offers infinite fun has appeared. And we are broadcasting it. Those who have seen this film want to see it again or die.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -399,10 +443,12 @@
 			<title>
 				<de>Jo Mei, ei schei Jodeler</de>
 				<en>Jo Mei, a fu'ing yodeler</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
 				<en>Yodeling and alpine horn. Garnished with pictures of the alpine landscape. With beautiful music the alpine passes are traveled with a Beetle of 1957.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
@@ -421,10 +467,12 @@
 			<title>
 				<de>Jag den Meringo</de>
 				<en>Hunting Meringo</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. [1|Full], der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
 				<en>Meringo slaughters a village with his mob. [1|Full], having lost his child because of this, hunts him down mercilessly.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
@@ -442,10 +490,12 @@
 			<title>
 				<de>Elefantengedächtnis</de>
 				<en>An elephant's memory</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt.</de>
 				<en>Program for school children. At the beginning, topics are explained in a child-friendly way. Then the children have to answer questions about them. The winners get a class trip as a prize.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -459,10 +509,12 @@
 					<title>
 						<de>Zahnpasta</de>
 						<en>Toothpaste</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
 						<en>How do the strips get into the tube and other questions. Beautifully explained and pedagogically usefully quizzed.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="73" speed="24" />
 				</programme>
@@ -470,10 +522,12 @@
 					<title>
 						<de>Limonade</de>
 						<en>Lemonade</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
 						<en>From bottling to carbonation to sugar. Everything served in a manner suitable for children. It is recommended to serve the child sugar-free tea while watching.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="65" speed="26" />
 				</programme>
@@ -481,10 +535,12 @@
 					<title>
 						<de>Bleistifte</de>
 						<en>Pencils</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaftem Bleistiftnuckeln kommen zur Sprache.</de>
 						<en>Lead and color are explored. Even the consequences of permanent pencil nibbling are brought up.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="66" speed="25" />
 				</programme>
@@ -492,10 +548,12 @@
 					<title>
 						<de>Moderator ohne Kontrolle</de>
 						<en>Presenter without control</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Thema sollte Seife werden. Doch die Kinder starteten einen Wettbewerb im Namentanzen. Der Moderator bekam die Sendung nicht in Griff und wurde auch noch Letzter beim Namentanzen.</de>
 						<en>The topic was supposed to be about soap. But the children started a contest in name dancing. The presenter couldn't get a grip on the show and also, above all, came in last at the contest.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="74" speed="49" />
 				</programme>
@@ -503,10 +561,12 @@
 					<title>
 						<de>Namentanzen</de>
 						<en>Name dancing</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
 						<en>Due to the terrific response to the last broadcast, the topic of name dancing was examined in detail. Including the competition. Because of the orderly organization this time however, the fun went down the drain.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="59" speed="21" />
 				</programme>
@@ -517,10 +577,12 @@
 			<title>
 				<de>Die Tempelritter</de>
 				<en>The Templars</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
 				<en>From their origin to their downfall. The facts are portrayed by amateur actors. The narrator tries his hand at building up tension, too.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_20</member>
@@ -538,10 +600,12 @@
 				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
 				<de>Baba der Trabbi</de>
 				<en>Baba the Trabbi-car</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
 				<en>Baba the living Trabbi-car performs wonderful services for its owner. It can swim, fly and beat up car burglars. Summoned by a whistle, it always dutifully comes along when help is needed.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -559,10 +623,12 @@
 				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 				<de>Wilhelm Tell</de>
 				<en>William Tell</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Wilhelm Tell schießt eifrig mit seiner Armbrust Äpfel von den Köpfen. Der schweizer Robin Hood.</de>
 				<en>William Tell avidly shoots apples off heads with his crossbow. The Swiss Robin Hood.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -580,10 +646,12 @@
 				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
 				<de>Jánošík</de>
 				<en>Jánošík</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Jánošík als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
 				<en>Jánošík as the leader of a group of forest robbers. The Slovak Robin Hood.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_62</member>
@@ -600,10 +668,12 @@
 			<title>
 				<de>Skandale</de>
 				<en>Scandals</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
 				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
+			<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -617,10 +687,12 @@
 					<title>
 						<de>[1|Full] qualmt die Bude zu</de>
 						<en>[1|Full] smokes up the place</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
 						<en>[1|Full] as a chain smoker insults the host to the point of no return.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
@@ -628,10 +700,12 @@
 					<title>
 						<de>[1|Full] beleidigt die Interviewerin</de>
 						<en>[1|Full] insults the interviewer</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
 						<en>Can't help feeling sorry for the lady. [1|Full] goes completely berserk and attacks her obscenely.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
@@ -639,10 +713,12 @@
 					<title>
 						<de>[1|Full] im Dschungel</de>
 						<en>[1|Full] in the jungle</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
 						<en>[1|Full]'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
+					<pl></pl>
 					</description>
 					<ratings critics="70" speed="40" />
 				</programme>
