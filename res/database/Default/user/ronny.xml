@@ -1136,7 +1136,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Castles</en>
 						<pl>Zamki</pl>
 					</title>
-					<groups target_groups="65" />
+					<data target_groups="65" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="2" guid="scripttemplate-ron-visiting-ep3">
 					<title>
@@ -1144,7 +1144,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Stadiums</en>
 						<pl>Stadiony</pl>
 					</title>
-					<groups target_groups="258" />
+					<data target_groups="258" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="3" guid="scripttemplate-ron-visiting-ep4">
 					<title>
@@ -1166,7 +1166,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Employers</en>
 						<pl>Zatrudnie i przemysł</pl>
 					</title>
-					<groups target_groups="40" target_groups_optional="16"/>
+					<data target_groups="40" target_groups_optional="16"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="6" guid="scripttemplate-ron-visiting-ep7">
 					<title>
@@ -1174,7 +1174,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Farmers' Markets</en>
 						<pl>Rolnictwo i obszary wiejskie</pl>
 					</title>
-					<groups target_groups="4" target_groups_optional="64"/>
+					<data target_groups="4" target_groups_optional="64"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="7" guid="scripttemplate-ron-visiting-ep8">
 					<title>
@@ -1182,7 +1182,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>National Parks</en>
 						<pl>Parki narodowe</pl>
 					</title>
-					<groups target_groups="0" target_groups_optional="129"/>
+					<data target_groups="0" target_groups_optional="129"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="8" guid="scripttemplate-ron-visiting-ep9">
 					<title>
@@ -1190,7 +1190,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Architecture</en>
 						<pl>Architektura</pl>
 					</title>
-					<groups target_groups="32" target_groups_optional="64"/>
+					<data target_groups="32" target_groups_optional="64"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="9" guid="scripttemplate-ron-visiting-ep10">
 					<title>
@@ -1198,7 +1198,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Literature</en>
 						<pl>Literatura</pl>
 					</title>
-					<groups target_groups="128" target_groups_optional="32"/>
+					<data target_groups="128" target_groups_optional="32"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="10" guid="scripttemplate-ron-visiting-ep11">
 					<title>
@@ -1206,7 +1206,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Music</en>
 						<pl>Muzyka</pl>
 					</title>
-					<groups target_groups="128" target_groups_optional="2"/>
+					<data target_groups="128" target_groups_optional="2"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="11" guid="scripttemplate-ron-visiting-ep12">
 					<title>
@@ -1214,7 +1214,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Beer</en>
 						<pl>Piwo</pl>
 					</title>
-					<groups target_groups="18" target_groups_optional="8"/>
+					<data target_groups="18" target_groups_optional="8"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="12" guid="scripttemplate-ron-visiting-ep13">
 					<title>
@@ -1222,7 +1222,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Wine</en>
 						<pl>Wino</pl>
 					</title>
-					<groups target_groups="32" target_groups_optional="128"/>
+					<data target_groups="32" target_groups_optional="128"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="13" guid="scripttemplate-ron-visiting-ep14">
 					<title>
@@ -1230,7 +1230,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Cars</en>
 						<pl>Samochody i infrastruktura</pl>
 					</title>
-					<groups target_groups="258" target_groups_optional="32"/>
+					<data target_groups="258" target_groups_optional="32"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="14" guid="scripttemplate-ron-visiting-ep15">
 					<title>
@@ -1245,7 +1245,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Furniture</en>
 						<pl>Meble</pl>
 					</title>
-					<groups target_groups="4" />
+					<data target_groups="4" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="16" guid="scripttemplate-ron-visiting-ep17">
 					<title>
@@ -1253,7 +1253,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Theatre</en>
 						<pl>Teatr i sztuka</pl>
 					</title>
-					<groups target_groups="128" />
+					<data target_groups="128" />
 				</scripttemplate>
 			</children>
 			<jobs>

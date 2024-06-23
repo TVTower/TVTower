@@ -144,7 +144,7 @@
 			<outcome slope="40" max="71" min="43" />
 			<review slope="40" max="53" min="28" />
 			<speed slope="50" max="83" min="48" />
-			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data target_groups="3" />
 			<availability year_range_from="1994" year_range_to="-1" />
 		</scripttemplate>
 
@@ -249,7 +249,7 @@
 			<outcome slope="50" max="50" min="0" />
 			<review slope="30" max="25" min="0" />
 			<speed slope="60" max="83" min="0" />
-			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data target_groups="3" />
 		</scripttemplate>
 
 		<scripttemplate licence_type="1" product="1" guid="Stukov_DarkestDungeon" comment="https://en.wikipedia.org/wiki/Darkest_Dungeon">
