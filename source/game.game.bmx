@@ -1826,9 +1826,9 @@ endrem
 		'TPlayer.Create sets owner of the color
 		local c1:TPlayerColor = TPlayerColor.getByOwner(0)
 		GetPlayerCollection().Set(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TPlayerColor.getByOwner(0), "Player 1"))
-		GetPlayerCollection().Set(2, TPlayer.Create(2, playerNames[1], channelNames[1], GetSpriteFromRegistry("Player2"),	180,  5, 90, TPlayerColor.getByOwner(0), "Player 2"))
-		GetPlayerCollection().Set(3, TPlayer.Create(3, playerNames[2], channelNames[2], GetSpriteFromRegistry("Player3"),	140,  8, 90, TPlayerColor.getByOwner(0), "Player 3"))
-		GetPlayerCollection().Set(4, TPlayer.Create(4, playerNames[3], channelNames[3], GetSpriteFromRegistry("Player4"),	190, 13, 90, TPlayerColor.getByOwner(0), "Player 4"))
+		GetPlayerCollection().Set(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TPlayerColor.getByOwner(0), "Player 2"))
+		GetPlayerCollection().Set(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TPlayerColor.getByOwner(0), "Player 3"))
+		GetPlayerCollection().Set(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TPlayerColor.getByOwner(0), "Player 4"))
 
 		'set different figures for other players
 		GetPlayer(2).UpdateFigureBase(9)
