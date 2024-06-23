@@ -1026,7 +1026,7 @@
 			<title>
 				<de>Kurven der Welt - Erkenne sie alle</de>
 				<en>Curves of the world - Know them all</en>
-				<pl>Zakręty świata - poznaj je wszystkie</pl>
+				<pl>Zakręcone świata - poznaj je wszystkie</pl>
 			</title>
 			<description>
 				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikshow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit.</de>
@@ -1062,12 +1062,12 @@
 					<title>
 						<de>Kambodscha</de>
 						<en>Cambodia</en>
-						<pl></pl>
+						<pl>Kambodża</pl>
 					</title>
 					<description>
 						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der „sabbernden“ Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
 						<en>Old temples, fields, big cities and jungles. Everything with even more skin. The callers are queuing up. A masterpiece of "drooling" education. So near and yet so far. The last name of the lady must be guessed.</en>
-					<pl></pl>
+						<pl>Stare świątynie, pola, duże miasta i dżungle. Wszystko z jeszcze większą ilością skóry. Rozmówcy ustawiają się w kolejce. Arcydzieło "śliniącej się" edukacji. Tak blisko, a jednak tak daleko. Nazwisko damy trzeba odgadnąć.</pl>
 					</description>
 					<ratings critics="29" speed="33" />
 				</programme>
@@ -1075,12 +1075,12 @@
 					<title>
 						<de>Bulgarien</de>
 						<en>Bulgaria</en>
-						<pl></pl>
+						<pl>Bułgaria</pl>
 					</title>
 					<description>
 						<de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transsilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
 						<en>The black balalaika. The diversity of the ladies is accompanied by historical buildings and beautiful beaches. Furthermore, Transylvania is inappropriately mentioned. The last name of the lady has to be guessed.</en>
-					<pl></pl>
+						<pl>Czarna bałałajka. Różnorodnościom pań towarzyszą historyczne budynki i piękne plaże. Co więcej, Transylwania jest niewłaściwie wspomniana. Nazwisko damy trzeba odgadnąć.</pl>
 					</description>
 					<ratings critics="21" speed="43" />
 				</programme>
@@ -1089,12 +1089,12 @@
 						<!-- Zielgruppe Damen -->
 						<de>Tunesien</de>
 						<en>Tunisia</en>
-						<pl></pl>
+						<pl>Tunezja</pl>
 					</title>
 					<description>
 						<de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen.</de>
 						<en>Celebrated final episode for the ladies. Male hip swings. This time the first names of the butt cheek owners have to be guessed. All presented in wonderful landscape shots. You can see the fun the anchorwoman is having.</en>
-					<pl></pl>
+						<pl>Uroczysty odcinek finałowy dla pań. Męskie wymachy bioder. Tym razem trzeba odgadnąć imiona właścicieli pośladków. Wszystko przedstawione we wspaniałych ujęciach krajobrazowych. Widać, jak dobrze bawi się prowadząca.</pl>
 					</description>
 					<ratings critics="26" speed="53" />
 					<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
@@ -1107,12 +1107,12 @@
 				<!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
 				<de>Kampf der Planeten - die wahre Geschichte</de>
 				<en>Battle of the planets - the true story</en>
-				<pl></pl>
+				<pl>Bitwa planet - historia prawdziwa</pl>
 			</title>
 			<description>
 				<de>[1|Full] wurde von [2|Full] begleitet, als er seine legendäre Radioreportage entwickelte und durchführte. War die Massenpanik echt? Hier wird es gezeigt! Die einzige Reportage von [0|Full].</de>
 				<en>[1|Full] had been accompanied by [2|Full] as he developed and recorded his legendary radio show. Was the mass hysteria real? Here it is shown! The only feature [0|Full] did.</en>
-				<pl></pl>
+				<pl>[1|Full] towarzyszył [2|First]owi podczas opracowywania i nagrywania jego legendarnego programu radiowego. Czy masowa histeria była prawdziwa? Tutaj jest to pokazane! Jedyny film fabularny [0|Last]a.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
@@ -1129,12 +1129,12 @@
 				<!-- Zielgruppe Hausfrauen -->
 				<de>Marmeladen selber machen</de>
 				<en>Selfmade jelly</en>
-				<pl></pl>
+				<pl>Galaretka własnej roboty</pl>
 			</title>
 			<description>
 				<de>Wie mache ich Marmelade? Schöne Rezepte, deren Umsetzung ausführlich gezeigt wird</de>
 				<en>How do I make jelly? Great recipes which are explained step by step</en>
-				<pl></pl>
+				<pl>Jak zrobić galaretkę? Świetne przepisy wyjaśnione krok po kroku</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_627</member>
@@ -1148,12 +1148,12 @@
 					<title>
 						<de>Erdbeermarmelade</de>
 						<en>Strawberry jelly</en>
-						<pl></pl>
+						<pl>Galaretka truskawkowa</pl>
 					</title>
 					<description>
 						<de>Wir starten mit der Ernte der Erdbeeren.</de>
 						<en>We start with collecting the strawberries</en>
-						<pl></pl>
+						<pl>Zaczynamy od zebrania truskawek</pl>
 					</description>
 					<ratings critics="34" speed="10" />
 				</programme>
@@ -1161,12 +1161,12 @@
 					<title>
 						<de>Pflaumenmarmelade</de>
 						<en>Plum jelly</en>
-						<pl></pl>
+						<pl>Galaretka śliwkowa</pl>
 					</title>
 					<description>
 						<de>Wie entkerne ich Pflaumen. Und den Zucker nicht vergessen.</de>
 						<en>How do I remove the stones from plums. And do not forget the sugar.</en>
-						<pl></pl>
+						<pl>Jak usunąć pestki ze śliwek. I nie zapomnij o cukrze.</pl>
 					</description>
 					<ratings critics="35" speed="9" />
 				</programme>
@@ -1174,12 +1174,12 @@
 					<title>
 						<de>Kirschmarmelade</de>
 						<en>Cherry jelly</en>
-						<pl></pl>
+						<pl>Galaretka wiśniowa</pl>
 					</title>
 					<description>
 						<de>Dann klettern wir mal auf den Baum. Wozu gibt es die Leiter? </de>
 						<en>Now let's climb the tree. What else is the ladder for?</en>
-						<pl></pl>
+						<pl>Teraz wejdźmy na drzewo. Do czego jeszcze służy drabina?</pl>
 					</description>
 					<ratings critics="36" speed="8" />
 				</programme>
@@ -1191,12 +1191,12 @@
 				<!-- War das wahr? Fictional, Mystery -->
 				<de>War das wahr?</de>
 				<en>Was it real?</en>
-				<pl></pl>
+				<pl>Czy to było prawdziwe?</pl>
 			</title>
 			<description>
 				<de>Ein kleiner Junge reist mit dem indischen Gott Lakshmi herum und verteilt das Glück. Als er in seinem Bett erwacht, weiß er nicht, war es wahr, oder ein Traum.</de>
 				<en>A little boy travels around with the Indian god Lakshmi, spreading the good fortune. As he wakes up in his bed, he doesn't know, was it real, or a dream.</en>
-				<pl></pl>
+				<pl>Mały chłopiec podróżuje z hinduskim bogiem Lakshmi, szerząc szczęście. Kiedy budzi się w swoim łóżku, nie wie, czy to było prawdziwe, czy sen.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_601</member>
@@ -1213,12 +1213,12 @@
 				<!-- Der Schwarzmarkt, Fictional, Krimi -->
 				<de>Der Schwarzmarkt</de>
 				<en>The black market</en>
-				<pl></pl>
+				<pl>Czarny rynek</pl>
 			</title>
 			<description>
 				<de>Hans ernährt seine Familie durch sein Handeln auf dem Schwarzmarkt. Doch auf einmal gerät er in den Fokus eines Kommissars. Wird er entkommen?</de>
 				<en>Hans sustains his family by trading on the black market. But suddenly he becomes the focus of a commissioner. Will he escape?</en>
-				<pl></pl>
+				<pl>Hans utrzymuje rodzinę, handlując na czarnym rynku. Nagle jednak staje się obiektem zainteresowania komisarza. Czy uda mu się uciec?</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">e3144c39-4577-4a4a-bde9-8d1d41f789cd</member>
@@ -1235,12 +1235,12 @@
 				<!-- Wer war es?, Fictional, Krimi -->
 				<de>Wer war es?</de>
 				<en>Who was it?</en>
-				<pl></pl>
+				<pl>Kto to był?</pl>
 			</title>
 			<description>
 				<de>Wer hat den Engel gestohlen? Detektiv Butlow ermittelt. Nun, es gab genügend besseres.</de>
 				<en>Who stole the Angel? Detective Butlov investigates. Well, there were plenty of better films.</en>
-				<pl></pl>
+				<pl>Kto ukradł anioła? Detektyw Masłow prowadzi śledztwo. Cóż, było wiele lepszych filmów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
@@ -1257,12 +1257,12 @@
 				<!-- Überleben wir die LAF?, Fictional, Dokumentation -->
 				<de>Überleben wir die L.A.F.?</de>
 				<en>Will we survive the L.A.F.?</en>
-				<pl></pl>
+				<pl>Czy uda nam się przetrwać F.S.A.?</pl>
 			</title>
 			<description>
 				<de>Die Lachende Armada Fraktion. Wie können wir diesem Monster entkommen? Aus heutiger Sicht: Purer Schrott!</de>
 				<en>Laughing Armada Fraction. How can we escape this monster? From today's perspective: Pure trash!</en>
-				<pl></pl>
+				<pl>Frakcja Śmiejącej się Armady. Jak możemy uciec przed tym potworem? Z dzisiejszej perspektywy: Czysta tandeta!</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
@@ -1279,12 +1279,12 @@
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Gemüse</de>
 				<en>Count Ruccola and the vegetables</en>
-				<pl></pl>
+				<pl>Hrabia Ruccola i jego warzywa</pl>
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Gemüse zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Gemüse.</de>
 				<en>Count Ruccola is a vitamin vampire and hunts vegetables to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of vegetables.</en>
-			<pl></pl>
+				<pl>Hrabia Ruccola jest wampirem witaminowym i poluje na warzywa, aby przeżyć. Jedno ugryzienie i już otrzymuje witaminy i minerały. Dzieci poznają pyszne zalety warzyw.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1299,12 +1299,12 @@
 					<title>
 						<de>Graf Ruccola trifft Spargel</de>
 						<en>Count Ruccola meets asparagus</en>
-						<pl></pl>
+						<pl>Hrabia Ruccola spotyka szparagi</pl>
 					</title>
 					<description>
 						<de>Graf Ruccola endeckt den Spargel, und jetzt riecht es beim „um die Ecke gehen“ auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
 						<en>Count Ruccola discovers the asparagus, and now when "going around the corner" it suddenly smells funny. Why is that? And does Count Ruccola take another bite, or does he prefer to leave the asparagus aside?</en>
-					<pl></pl>
+						<pl>Hrabia Ruccola odkrywa szparagi, a teraz, gdy "wychodzi za róg", nagle dziwnie pachnie. Dlaczego tak się dzieje? I czy hrabia Ruccola bierze kolejny kęs, czy woli odłożyć szparagi na bok?</pl>
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
@@ -1312,12 +1312,12 @@
 					<title>
 						<de>Graf Ruccola trifft Spinat</de>
 						<en>Count Ruccola meets spinach</en>
-						<pl></pl>
+						<pl>Hrabia Ruccola spotyka szpinak</pl>
 					</title>
 					<description>
 						<de>Spinat. Viel Kalium und Magnesium für das Vampirblut. Und danach den kleinen Blubb!</de>
 						<en>Spinach. Lots of potassium and magnesium for the vampire blood. And then the little "blubb"!</en>
-						<pl></pl>
+						<pl>Szpinak. Dużo potasu i magnezu dla wampirzej krwi. A potem mały "blubb"!</pl>
 					</description>
 					<ratings critics="54" speed="35" />
 				</programme>
@@ -1325,12 +1325,12 @@
 					<title>
 						<de>Graf Ruccola trifft Blumenkohl</de>
 						<en>Count Ruccola meets cauliflower</en>
-						<pl></pl>
+						<pl>Hrabia Ruccola spotyka kalafiora</pl>
 					</title>
 					<description>
 						<de>Weiß und blass, wie Graf Ruccola. Kann das schmecken. Ja, liebe Kinder es kann. Probiert es eifrig!</de>
 						<en>White and pale, like Count Ruccola. Can it taste good. Yes, dear children it can. Try it eagerly!</en>
-						<pl></pl>
+						<pl>Białe i blade, jak hrabia Ruccola. Czy może dobrze smakować? Tak, drogie dzieci, może. Spróbujcie z zapałem!</pl>
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
@@ -1338,12 +1338,12 @@
 					<title>
 						<de>Graf Ruccola trifft Rosenkohl</de>
 						<en>Count Ruccola meets Brussels sprouts</en>
-						<pl></pl>
+						<pl>Hrabia Ruccola spotyka brukselkę</pl>
 					</title>
 					<description>
 						<de>Rosenkohl, so grün und klein, das ist fein.</de>
 						<en>Brussels sprouts, so green and tight, that's alright.</en>
-						<pl></pl>
+						<pl>Brukselka, taka zielona i ciasna, w porządku.</pl>
 					</description>
 					<ratings critics="49" speed="34" />
 				</programme>
@@ -1351,12 +1351,12 @@
 					<title>
 						<de>Graf Ruccola trifft Bohnen</de>
 						<en>Count Ruccola meets beans</en>
-						<pl></pl>
+						<pl>Hrabia Ruccola spotyka fasolę</pl>
 					</title>
 					<description>
 						<de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola ißt viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
 						<en>What can you say, beans, the musical fruit, the more you eat, the more you toot. Count Ruccola eats many beans and toots the most beautiful nursery rhymes.</en>
-						<pl></pl>
+						<pl>Co można powiedzieć, fasola, muzyczny owoc, im więcej jesz, tym więcej ćwierkasz. Hrabia Ruccola zjada wiele fasolek i wyśpiewuje najpiękniejsze rymowanki.</pl>
 					</description>
 					<ratings critics="57" speed="33" />
 				</programme>
@@ -1368,10 +1368,12 @@
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Obst</de>
 				<en>Count Ruccola and the fruits</en>
+				<pl>Hrabia Ruccola i owoce</pl>
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Obst zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Obst. Späte zweite Staffel mit neuer Technik!</de>
 				<en>Count Ruccola is a vitamin vampire and hunts fruit to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of fruit. Late second season with new technology!</en>
+				<pl>Hrabia Ruccola jest wampirem witaminowym i poluje na owoce, aby przeżyć. Jeden kęs i już otrzymuje witaminy i minerały. Dzieci poznają pyszne zalety owoców. Późny drugi sezon z nową technologią!</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1386,10 +1388,12 @@
 					<title>
 						<de>Graf Ruccola trifft Kirschen</de>
 						<en>Count Ruccola meets cherries</en>
+						<pl>Hrabia Ruccola spotyka wiśnie</pl>
 					</title>
 					<description>
 						<de>Graf Ruccola endeckt die Kirschen, schön rot und saftig. Hmmmm. Lecker. Da macht das Beißen Spaß!</de>
 						<en>Count Ruccola discovers cherries, lovely red and juicy. Mmmmh. Yummy. That makes biting fun!</en>
+						<pl>Hrabia Ruccola odkrywa wiśnie, piękne czerwone i soczyste. Mmmmh. Mniam. To sprawia, że gryzienie jest świetną zabawą!</pl>
 					</description>
 					<ratings critics="49" speed="45" />
 				</programme>
@@ -1397,10 +1401,12 @@
 					<title>
 						<de>Graf Ruccola trifft Birnen</de>
 						<en>Count Ruccola meets pears</en>
+						<pl>Hrabia Ruccola spotyka gruszki</pl>
 					</title>
 					<description>
 						<de>Was eine komische Form? Aber lecker. Nur als Graf Ruccola die Glühbirne beißt, wird es unschön.</de>
 						<en>What a weird shape? But delicious. Only when Count Ruccola bites the light bulb, it gets ugly.</en>
+						<pl>Co za dziwny kształt? Ale pyszny. Dopiero gdy hrabia Ruccola gryzie żarówkę, robi się nieciekawie.</pl>
 					</description>
 					<ratings critics="45" speed="40" />
 				</programme>
@@ -1408,10 +1414,12 @@
 					<title>
 						<de>Graf Ruccola trifft Erdbeeren</de>
 						<en>Count Ruccola meets strawberries</en>
+						<pl>Hrabia Ruccola spotyka truskawki</pl>
 					</title>
 					<description>
 						<de>Endlich wieder etwas rotes. Da kommt direkt Freude auf und der Vitaminpegel steigt.</de>
 						<en>Finally something red again. There comes joy without delay and the vitamin level rises.</en>
+						<pl>Wreszcie coś czerwonego. Radość przychodzi bezzwłocznie, a poziom witamin wzrasta.</pl>
 					</description>
 					<ratings critics="46" speed="37" />
 				</programme>
@@ -1419,10 +1427,12 @@
 					<title>
 						<de>Graf Ruccola trifft Äpfel</de>
 						<en>Count Ruccola meets apples</en>
+						<pl>Hrabia Ruccola spotyka jabłka</pl>
 					</title>
 					<description>
 						<de>Äpfel, rote Äpfel. Aber auch die mit grüner und gelber Farbe werden gerne mal probiert.</de>
 						<en>Apples, red apples. But also those with green and yellow colour are happily tried.</en>
+						<pl>Jabłka, czerwone jabłka. Ale również te o zielonym i żółtym kolorze są chętnie próbowane.</pl>
 					</description>
 					<ratings critics="47" speed="39" />
 				</programme>
@@ -1430,10 +1440,12 @@
 					<title>
 						<de>Graf Ruccola trifft Orangen</de>
 						<en>Count Ruccola meets oranges</en>
+						<pl>Hrabia Ruccola spotyka pomarańcze</pl>
 					</title>
 					<description>
 						<de>IIIIIH, schmeckt das doof. Achso Schale. Was ist Schale? Dann lernen wir mal schälen. Wird ja doch noch lecker.</de>
 						<en>Yuck, that tastes awful. Oh, peel. What is a peel? Then let's learn how to peel. It's still delicious after all.</en>
+						<pl>Fuj, to smakuje okropnie. Oh, skórka. Co to jest skórka? Więc nauczmy się obierać. Mimo wszystko jest pyszny.</pl>
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
@@ -1441,10 +1453,12 @@
 					<title>
 						<de>Graf Ruccola trifft Himbeeren</de>
 						<en>Count Ruccola meets raspberries</en>
+						<pl>Hrabia Ruccola spotyka maliny</pl>
 					</title>
 					<description>
 						<de>Rot und saftig, wie es sein soll. Und manchmal auch sauer. Aber sauer mach lustig. Auf einen guten Biss.</de>
 						<en>Red and juicy, as it should be. And sometimes also sour. But something sour cheers you up. Here's to a good bite.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="42" speed="44" />
 				</programme>
@@ -1452,10 +1466,12 @@
 					<title>
 						<de>Graf Ruccola trifft Trauben</de>
 						<en>Count Ruccola meets grapes</en>
+						<pl>Hrabia Ruccola spotyka winogrona</pl>
 					</title>
 					<description>
 						<de>Was sollen die Kerne da? Beißt man die auch? Oder spuckt man die aus? Und wie finde ich kernlose zum Beißen?</de>
 						<en>What's with the seeds? Do you bite these too? Or do you spit them out? And how do I find seedless ones to bite?</en>
+						<pl>O co chodzi z tymi nasionami? Czy je też gryziesz? A może je wypluwasz? I jak znaleźć te bez pestek do gryzienia?</pl>
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
@@ -1463,10 +1479,12 @@
 					<title>
 						<de>Graf Ruccola trifft Brombeeren</de>
 						<en>Count Ruccola meets blackberries</en>
+						<pl>Hrabia Ruccola spotyka jeżyny</pl>
 					</title>
 					<description>
 						<de>Aua, wieso beißen die mich? Ach so, Dornen. Was sind denn Dornen. Wie komme ich denn unverletzt an die Brombeere?</de>
 						<en>Ouch, why are they biting me? Oh, thorns. What are thorns? How do I get to the blackberry unharmed?</en>
+						<pl>Dlaczego one mnie gryzą? Och, ciernie. Co to są kolce? Jak dostanę się do jeżyny bez szwanku?</pl>
 					</description>
 					<ratings critics="50" speed="45" />
 				</programme>
@@ -1474,10 +1492,12 @@
 					<title>
 						<de>Graf Ruccola trifft Bananen</de>
 						<en>Count Ruccola meets bananas</en>
+						<pl>Hrabia Ruccola spotyka banany</pl>
 					</title>
 					<description>
 						<de>Ein krummes Ding zum Abschluss. Ud welches Getier versteckt sich denn in den Bananenstauden. Kommt Graf Ruccola an die Bananen?</de>
 						<en>A crooked thing to close off. And what kind of creatures are hiding in the banana bushes? Can Count Ruccola get to the bananas?</en>
+						<pl>Krzywe zamknięcie. Jakie stworzenia kryją się w krzakach bananowców? Czy hrabia Ruccola może dostać się do bananów?</pl>
 					</description>
 					<ratings critics="37" speed="50" />
 				</programme>
@@ -1489,10 +1509,12 @@
 				<!-- Serie für Jugendliche, geflagt als Animation -->
 				<de>Graf Ruccola und die Nachtschattengewächse</de>
 				<en>Count Ruccola and the nightshades</en>
+				<pl>Hrabia Ruccola i psiankowate</pl>
 			</title>
 			<description>
 				<de>Graf Ruccola ist inzwischen ein heranwachsender, jugendlicher Vitaminvampir und lernt im Internat Freunde aus den Nachtschattengewächsen kennen. Er lernt, warum sich seine Freunde vor den monsterlichen Menschen fürchten. Aktuelle Themen der Jugendlichen gepaart mit interessanten Fakten aus der Pflanzenwelt.</de>
 				<en>Count Ruccola is now an adolescent, young vitamin vampire and meets friends from the nightshade species at boarding school. He learns why his friends are afraid of the monstrous humans. Hot teen topics paired with interesting facts from the plant world.</en>
+				<pl>Hrabia Ruccola jest teraz dorastającym, młodym wampirem witaminowym i spotyka przyjaciół z gatunku nocnych cieni w szkole z internatem. Dowiaduje się, dlaczego jego przyjaciele boją się potwornych ludzi. Gorące tematy dla nastolatków w połączeniu z interesującymi faktami ze świata roślin.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1507,10 +1529,12 @@
 					<title>
 						<de>Graf Ruccola und die Tomate</de>
 						<en>Count Ruccola and the tomato</en>
+						<pl>Hrabia Ruccola i pomidor</pl>
 					</title>
 					<description>
 						<de>Graf Ruccola endeckt die Tomate, ein schönes rotes und saftiges Nachtschattengewächs. Zusammen erkunden sie das Menschendorf und sind fassungslos, als sie die Fenster mit dem Ketchup sehen!</de>
 						<en>Count Ruccola discovers the tomato, a beautiful red and juicy nightshade plant. Together they explore the human village and are stunned when they see the windows with ketchup!</en>
+						<pl>Hrabia Ruccola odkrywa pomidora, piękną czerwoną i soczystą roślinę z rodziny psiankowatych. Razem odkrywają ludzką wioskę i są oszołomieni, gdy widzą okna z keczupem!</pl>
 					</description>
 					<ratings critics="59" speed="39" />
 				</programme>
@@ -1518,10 +1542,12 @@
 					<title>
 						<de>Graf Ruccola und die Kartoffel</de>
 						<en>Count Ruccola and the potato</en>
+						<pl>Hrabia Ruccola i ziemniak</pl>
 					</title>
 					<description>
 						<de>Graf Ruccola lernt die Kartoffel kennen. Obwohl sehr runzelig und mit Wurzeln bedeckt, entdeckt er die inneren Werte. Zusammen geraten sie in eine Chipsfabrik.</de>
 						<en>Count Ruccola meets the potato. Although very wrinkly and covered with roots, he discovers their inner values. Together they end up in a chips factory.</en>
+						<pl>Hrabia Ruccola spotyka ziemniaka. Choć bardzo pomarszczony i pokryty korzeniami, odkrywa ich wewnętrzne wartości. Razem trafiają do fabryki chipsów.</pl>
 					</description>
 					<ratings critics="56" speed="39" />
 				</programme>
@@ -1529,10 +1555,12 @@
 					<title>
 						<de>Graf Ruccola und die Aubergine</de>
 						<en>Count Ruccola and the aubergine</en>
+						<pl>Hrabia Ruccola i bakłażan</pl>
 					</title>
 					<description>
 						<de>Die Aubergine und Graf Ruccola entdecken ein geheimes Antipasti-Labor der Menschen. Dort entdeckt die Aubergine ihre vermissten Eltern in zubereiteter Form. Kann Graf Ruccola sie trösten?</de>
 						<en>The aubergine and Count Ruccola discover a secret human antipasti laboratory. There the eggplant discovers its missing parents in processed form. Can Count Ruccola console her?</en>
+						<pl>Bakłażan i hrabia Ruccola odkrywają tajne ludzkie laboratorium antipasti. Tam bakłażan odkrywa swoich zaginionych rodziców w przetworzonej formie. Czy hrabia Ruccola zdoła ją pocieszyć?</pl>
 					</description>
 					<ratings critics="52" speed="34" />
 				</programme>
@@ -1540,10 +1568,12 @@
 					<title>
 						<de>Graf Ruccola und die Paprika</de>
 						<en>Count Ruccola and the bell peppers</en>
+						<pl>Hrabia Ruccola i papryka</pl>
 					</title>
 					<description>
 						<de>Graf Ruccola muss die Paprika retten. Sie wurde von einem menschlichen Gewürzhersteller entführt. Schafft er es rechtzeitig?</de>
 						<en>Count Ruccola must rescue the bell pepper. It has been kidnapped by a human spice maker. Will he make it in time?</en>
+						<pl>Hrabia Ruccola musi uratować paprykę. Została ona porwana przez ludzkiego wytwórcę przypraw. Czy zdąży na czas?</pl>
 					</description>
 					<ratings critics="51" speed="38" />
 				</programme>
@@ -1551,10 +1581,12 @@
 					<title>
 						<de>Graf Ruccola und der Stechapfel</de>
 						<en>Count Ruccola and the jimsonweed</en>
+						<pl>Hrabia Ruccola i jeżówka</pl>
 					</title>
 					<description>
 						<de>Der Stechapfel will ein Heilmittel für Husten werden. Da erzählt ihm Graf Ruccola, was er bisher alles mit den Menschen erlebt hat. Wird der Stechapfel jetzt giftig?</de>
 						<en>The jimsonweed wants to become a cure for cough. That's when Count Ruccola explains to it everything he has experienced with humans so far. Will the jimsonweed now become poisonous?</en>
+						<pl>Jeżówka chce stać się lekarstwem na kaszel. Wtedy hrabia Ruccola wyjaśnia mu wszystko, czego do tej pory doświadczył z ludźmi. Czy jeżówka stanie się teraz trująca?</pl>
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
@@ -1566,10 +1598,12 @@
 				<!-- Die Zwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
 				<de>Die Zwillinge</de>
 				<en>The twins</en>
+				<pl>Bliźnięta</pl>
 			</title>
 			<description>
 				<de>Zwillinge werden bei der Geburt getrennt und wissen nichts voneinander. Einer wird Polizist, der andere Verbrecher. Auf einmal kreuzen sich ihre beruflichen Werdegänge.</de>
 				<en>Twins are separated at birth and know nothing of each other. One becomes a policeman, the other a criminal. Suddenly their professional careers cross.</en>
+				<pl>Bliźnięta zostają rozdzielone po urodzeniu i nic o sobie nie wiedzą. Jedno z nich zostaje policjantem, a drugie przestępcą. Niespodziewanie ich kariery zawodowe krzyżują się.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -1584,10 +1618,12 @@
 					<title>
 						<de>Rolle jagt den Ladendieb</de>
 						<en>Rolle chases the shoplifter</en>
+						<pl>Rolle ściga złodzieja sklepowego</pl>
 					</title>
 					<description>
 						<de>Polizist Rolle soll in einem Ladendiebstahl ermitteln. Als er eintrifft, wird er vom Besitzer sofort beschuldigt. Wie kann das sein? Er war doch auf dem Revier!</de>
 						<en>Police officer Rolle is to investigate in a shoplifting case. When he arrives, he is accused by the owner immediately. How could that be? He just was at the police station!</en>
+						<pl>Policjant Rolle ma zbadać sprawę kradzieży sklepowej. Kiedy przybywa na miejsce, zostaje natychmiast oskarżony przez właściciela. Jak to możliwe? Przecież przed chwilą był na komisariacie!</pl>
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
@@ -1595,10 +1631,12 @@
 					<title>
 						<de>Ralle wird die Ware nicht los</de>
 						<en>Ralle can't sell the goods</en>
+						<pl>Ralle nie może sprzedać towaru</pl>
 					</title>
 					<description>
 						<de>Ralle versucht einem Hehler seine Beute zu verkaufen. Dieser will aber nichts damit zu tun haben. Ralle kann sich nicht erklären, warum er seine Sachen nicht mehr los wird.</de>
 						<en>Ralle tries to sell his loot to a fence. But the latter wants nothing to do with it. Ralle can't figure out why he can't get rid of his stuff.</en>
+						<pl>Ralle próbuje sprzedać swój łup paserowi. Ten jednak nie chce mieć z nim nic wspólnego. Ralle nie może zrozumieć, dlaczego nie może pozbyć się swoich rzeczy.</pl>
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
@@ -1606,10 +1644,12 @@
 					<title>
 						<de>Rolle schöpft Verdacht</de>
 						<en>Rolle's got a suspicion</en>
+						<pl>Rolle ma pewne podejrzenia</pl>
 					</title>
 					<description>
 						<de>Rolle vermutet einen Doppelgänger und begibt sich auf die Suche nach dem Übeltäter.</de>
 						<en>Rolle suspects a doppelganger and goes in search of the culprit.</en>
+						<pl>Rolle podejrzewa sobowtóra i wyrusza na poszukiwanie winowajcy.</pl>
 					</description>
 					<ratings critics="42" speed="38" />
 				</programme>
@@ -1617,10 +1657,12 @@
 					<title>
 						<de>Ralle schöpft Verdacht</de>
 						<en>Ralle's got a suspicion</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Ralle vermutet, dass sich jemand an ihm rächen möchte und sich als Ralle verkleidet, um seinen Ruf zu ruinieren. Er begint mit der Suche nach dem Täter.</de>
 						<en>Ralle suspects that someone wants to take revenge on him by disguising himself as Ralle in order to ruin his reputation. He begins the search for the culprit.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="38" speed="42" />
 				</programme>
@@ -1628,10 +1670,12 @@
 					<title>
 						<de>Das große Kennenlernen</de>
 						<en>The big getting to know each other</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Ralle und Rolle entdecken die Wahrheit und lernen sich kennen. Freude über den unerwarteten Bruder und blankes Entsetzen über den Beruf sorgen für Unterhaltung.</de>
 						<en>Ralle and Rolle discover the truth and get to know each other. Joy about the unexpected brother and sheer horror about the job provide entertainment.</en>
+						<pl></pl>
 					</description>
 					<data blocks="2" />
 					<ratings critics="52" speed="28" />
@@ -1644,10 +1688,12 @@
 				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
 				<de>Das Unbekannte</de>
 				<en>The unknown</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Mysteriöse und gruselige Kurzgeschichten. Alles beginnt mit Phänomenen, die sich keiner erklären kann.</de>
 				<en>Mysterious and creepy short stories. It all starts with phenomena that no one can explain.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
@@ -1666,6 +1712,7 @@
 					<description>
 						<de>Eine Dame kann nicht schlafen. Sobald sie im Bett die Augen schließt, klopft es von überall. Wer ist das?</de>
 						<en>A woman can't sleep. As soon as she closes her eyes in bed, there is a knocking from everywhere. Who is that?</en>
+						<pl></pl>
 					</description>
 					<ratings critics="67" speed="42" />
 				</programme>
@@ -1673,10 +1720,12 @@
 					<title>
 						<de>Der See</de>
 						<en>The Lake</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>An einem See verschwinden immer wieder Leute. Monster? Aliens? Oder nur ertrunken? Ein junger Mann will die Wahrheit finden.</de>
 						<en>People keep disappearing at a lake. Monsters? Aliens? Or just drowned? A young man wants to find the truth.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="65" speed="38" />
 				</programme>
@@ -1684,10 +1733,12 @@
 					<title>
 						<de>Der fremde Planet</de>
 						<en>Unknown planet</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Ein Ehepaar wacht in einem unbekannten Gebiet auf und entdeckt, dass hier drei Monde am Himmel sind. Wo sind sie? Was ist passiert?</de>
 						<en>A couple wakes up in an unknown area and discovers that there are three moons in the sky. Where are they? What happened?</en>
+						<pl></pl>
 					</description>
 					<ratings critics="61" speed="44" />
 				</programme>
@@ -1695,10 +1746,12 @@
 					<title>
 						<de>Die unsichtbare Bedrohung</de>
 						<en>The invisible threat</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>In einer Geisterstadt fühlt sich ein Paar bedroht. Die Bedrohung ist nirgends zu sehen, aber überall greifbar.</de>
 						<en>In a ghost town, a couple feels threatened. The threat is nowhere to be seen, but tangible everywhere.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="67" speed="36" />
 				 </programme>
@@ -1710,10 +1763,12 @@
 			<title>
 				<de>Musik der Berge</de>
 				<en>Music of the mountains</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Kinderchöre wandern singend durch die Berge.</de>
 				<en>Children's choirs hiking through the mountains singing.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
@@ -1731,10 +1786,12 @@
 			<title>
 				<de>Was ist Sache</de>
 				<en>What is the matter</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Ein Politiker steht Rede und Antwort zur Lage der Nation.</de>
 				<en>A politician answers questions about the state of the nation.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_70</member>
@@ -1751,10 +1808,12 @@
 			<title>
 				<de>Das Leben der [2|Full]</de>
 				<en>The life of [2|Full]</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Der Tod von [2|Full] wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
 				<en>The death of [2|Full] is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_377</member>
@@ -1771,10 +1830,12 @@
 			<title>
 				<de>Analyse der Reden</de>
 				<en>Analysis of the speeches</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
 				<en>The Cuban crisis frightened everyone. Here the speeches of [2|Full] and [3|Full] are shown chronologically, and are compared with each other.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
@@ -1792,10 +1853,12 @@
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
 				<en>Trends for men</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Was muss man heutzutage haben? Die absoluten Neuheiten, die man sich unbedingt kaufen muss, wenn man sicher in die Zukunft möchte!</de>
 				<en>What are the must-haves these days? The absolute novelties that you must buy if you want to safely go into the future!</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_687</member>
@@ -1809,10 +1872,12 @@
 					<title>
 						<de>Urangrill</de>
 						<en>Uranium grill</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Wir kaufen das beste Uran vom US und UdSSR Militär für diesen Grill. Sanfte und konstante Strahlung sorgen für beste Ergebnisse beim Grillfleisch!</de>
 						<en>We buy the best uranium from US and USSR military for this grill. Gentle and constant radiation provide the best results for grilled meat!</en>
+						<pl></pl>
 					</description>
 					<ratings critics="29" speed="43" />
 				</programme>
@@ -1820,10 +1885,12 @@
 					<title>
 						<de>0 auf 1000 km/h in 3 Sekunden</de>
 						<en>0 on 764 mph in 3 seconds</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Der wahre Autobausatz mit einem wundervollen V2 Triebwerk. Straßenzulassung ist garantiert. Ein wundervolles Handling.</de>
 						<en>The real car kit with a wonderful V2 engine. Guaranteed street-legal. Wonderful handling.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="26" speed="43" />
 				</programme>
@@ -1831,10 +1898,12 @@
 					<title>
 						<de>Kellerbunker</de>
 						<en>Basement bunker</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Der Bunker im Keller ist einfach ein Muss. Nur so können sie den Fortbestand ihrer Familie sichern. Keinen haben, heißt kein Leben!</de>
 						<en>The bunker in the basement is simply a must. It is the only way to ensure the continuity of your family. Not having one means no life!</en>
+						<pl></pl>
 					</description>
 					<ratings critics="29" speed="46" />
 				</programme>
@@ -1842,10 +1911,12 @@
 					<title>
 						<de>Frittenbike</de>
 						<en>Chip-fat bike</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Mit dem Frittenfett auf 180. SchniPo futtern und dann das Fett in den Tank und los gehts auf die Mottorad Tour. Endlich das Rundum Vergnügen!</de>
 						<en>With chip-fat to 130. Chow down schnitzel with fries, then put the fat in the tank and off we go on the motobike tour. Finally the all-round pleasure!</en>
+						<pl></pl>
 					</description>
 					<ratings critics="32" speed="43" />
 				</programme>
@@ -1857,10 +1928,12 @@
 			<title>
 				<de>Die Rückkehr von Ronny und Byte</de>
 				<en>The Return of Ronny and Byte</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Splatter und Splatter. [0|First] und Byte kehren als Zombies wieder. Klar, ne Geschichte gibt es auch. Irgendwo.</de>
 				<en>Splatter and splatter. [0|First] and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="7">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -1881,10 +1954,12 @@
 					<title>
 						<de>Byte beißt den Wärter</de>
 						<en>Byte bites the guardian</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Aus der bewachten Gruft entkommen. Doch der Wärter stört.</de>
 						<en>Escape from the guarded crypt. But the warden is interfering.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
@@ -1892,10 +1967,12 @@
 					<title>
 						<de>[0|First] sucht das Fliwatüt</de>
 						<en>[0|First] is looking for the Flywatoot</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[0|First] jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
 						<en>[0|First] is chasing the Flywatoot. The army of grannies opposes him.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
@@ -1903,10 +1980,12 @@
 					<title>
 						<de>Die Bank</de>
 						<en>The bank</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Endlich wieder Geld! Was will das Militär hier? Beißen hilft.</de>
 						<en>Finally some money again! What does the military want here? Biting helps.</en>
+						<pl></pl>
 					</description>
 					<ratings critics="17" speed="47" />
 				</programme>
@@ -1914,10 +1993,12 @@
 					<title>
 						<de>Vernichte das Bit</de>
 						<en>Destroy the Bit</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[0|First] und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
 						<en>[0|First] and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
+						<pl></pl>
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
@@ -1925,10 +2006,12 @@
 					<title>
 						<de>Der Anfang</de>
 						<en>The Beginning</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[0|First] und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
 						<en>[0|First] and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
+						<pl></pl>
 					</description>
 					<ratings critics="27" speed="61" />
 				</programme>
@@ -1940,10 +2023,12 @@
 				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
 				<de>Best of TVTower</de>
 				<en>Best of TVTower</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[1|Full] präsentiert die besten Sendungen aus dem TVTower Programm. Die Spieler haben gewählt, und [1|First] kommentiert. Inklusive Outtakes und Kurzinterviews.</de>
 				<en>[1|Full] presents the best shows from the TVTower program. The players voted, and [1|First] comments. Including outtakes and short interviews.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -1958,10 +2043,12 @@
 					<title>
 						<de>Tiefsee Dinoschrecken, Banzai</de>
 						<en>Dino deep sea terror, Banzai</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
 						<en>Totally misjudged. A film as it could not be better. Viewers have yet to see the true value.</en>
+						<pl></pl>
 					</description>
 					<staff>
 						<member index="0" function="1">Per_custom_Freddy_309</member>
@@ -1975,10 +2062,12 @@
 					<title>
 						<de>Der Osten - der Westen</de>
 						<en>The East - the West</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[4|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
 						<en>[4|First] compares the shows. But at some point, she just laughs at [2|Full]'s eyebrows. That will cause belly ache...</en>
+						<pl></pl>
 					</description>
 					<staff>
 						<member index="0" function="1">Per_custom_Freddy_119</member>
@@ -1992,10 +2081,12 @@
 					<title>
 						<de>Iris entdeckt die Alm</de>
 						<en>Iris explores the alp</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>[4|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
 						<en>[4|First] philosophizes about whether this is not rather a documentary about milking techniques and enriches many scenes with her experiences from the farm.</en>
+						<pl></pl>
 					</description>
 					<staff>
 						<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
@@ -2009,14 +2100,17 @@
 					<title>
 						<de>Picknick am Wegesrand</de>
 						<en>Picnic by the Wayside</en>
+						<pl></pl>
 					</title>
 					<title_original>
 						<de>Stalker</de>
 						<en>Stalker</en>
+						<pl></pl>
 					</title_original>
 					<description>
 						<de>Betty überzeugt in ihrer russischen Kommentierung. Ansonsten vergleicht sie eifrig Walkers mit Daywalkers.</de>
 						<en>Betty is convincing in her Russian commentary. Otherwise, she zealously compares Walkers with Daywalkers.</en>
+						<pl></pl>
 					</description>
 					<staff>
 						<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
@@ -2035,10 +2129,12 @@
 			<title>
 				<de>Lolitas im Heu</de>
 				<en>Lolitas in the hay</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Die frühe Jugendsünde von [1|Full]. Aber sie ist hinreissend.</de>
 				<en>The early actor sins of [1|Full]. But what a beauty.</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_682</member>
@@ -2055,10 +2151,12 @@
 				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
 				<de>Die Strände der Welt</de>
 				<en>Beaches of the world</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>[1|Full] zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
 				<en>[1|Full] presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
+				<pl></pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-MorisWeverkov</member>
@@ -2072,60 +2170,72 @@
 					<title>
 						<de>Walvis Bucht</de>
 						<en>Walvis Bay</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Namibia. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Namibia. [1|First] bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
+						<pl></pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Oak Beach</de>
 						<en>Oak beach</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Australien mit direktem Blick auf das Great Barrier Reef. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Australia with direct view on the Great Barrier Reef. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					<pl></pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vallvik</de>
 						<en>Vallvik</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					<pl></pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Playa Corcovado</de>
 						<en>Playa Corcovado</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Costa Rica. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Costa Rica. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl></pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Koh Thas</de>
 						<en>Koh Thas</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Kambodscha. Wer hält da denn Kokosnüsse? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Cambodia. Who's holding coconuts there? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl></pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vyshka</de>
 						<en>Vyshka</en>
+						<pl></pl>
 					</title>
 					<description>
 						<de>Russland. Wer kennt schon das kaspische Meer? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Russia. Who has ever heard of the Caspian Sea anyway? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+					<pl></pl>
 					</description>
 				</programme>
 			</children>
