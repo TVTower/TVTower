@@ -1015,14 +1015,14 @@ Illustrious guests and music by [3|Nick].</en>
 						<de>Schlösser</de>
 						<en>Castles</en>
 					</title>
-					<groups target_groups="65" />
+					<data target_groups="65" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="2" guid="scripttemplate-ron-visiting-ep3">
 					<title>
 						<de>Stadien</de>
 						<en>Stadiums</en>
 					</title>
-					<groups target_groups="258" />
+					<data target_groups="258" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="3" guid="scripttemplate-ron-visiting-ep4">
 					<title>
@@ -1041,63 +1041,63 @@ Illustrious guests and music by [3|Nick].</en>
 						<de>Arbeitgeber</de>
 						<en>Employers</en>
 					</title>
-					<groups target_groups="40" target_groups_optional="16"/>
+					<data target_groups="40" target_groups_optional="16"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="6" guid="scripttemplate-ron-visiting-ep7">
 					<title>
 						<de>Wochenmärkte</de>
 						<en>Farmers' Markets</en>
 					</title>
-					<groups target_groups="4" target_groups_optional="64"/>
+					<data target_groups="4" target_groups_optional="64"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="7" guid="scripttemplate-ron-visiting-ep8">
 					<title>
 						<de>Nationalparks</de>
 						<en>National Parks</en>
 					</title>
-					<groups target_groups="0" target_groups_optional="129"/>
+					<data target_groups="0" target_groups_optional="129"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="8" guid="scripttemplate-ron-visiting-ep9">
 					<title>
 						<de>Architektur</de>
 						<en>Architecture</en>
 					</title>
-					<groups target_groups="32" target_groups_optional="64"/>
+					<data target_groups="32" target_groups_optional="64"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="9" guid="scripttemplate-ron-visiting-ep10">
 					<title>
 						<de>Literatur</de>
 						<en>Literature</en>
 					</title>
-					<groups target_groups="128" target_groups_optional="32"/>
+					<data target_groups="128" target_groups_optional="32"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="10" guid="scripttemplate-ron-visiting-ep11">
 					<title>
 						<de>Musik</de>
 						<en>Music</en>
 					</title>
-					<groups target_groups="128" target_groups_optional="2"/>
+					<data target_groups="128" target_groups_optional="2"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="11" guid="scripttemplate-ron-visiting-ep12">
 					<title>
 						<de>Biere</de>
 						<en>Beer</en>
 					</title>
-					<groups target_groups="18" target_groups_optional="8"/>
+					<data target_groups="18" target_groups_optional="8"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="12" guid="scripttemplate-ron-visiting-ep13">
 					<title>
 						<de>Weine</de>
 						<en>Wine</en>
 					</title>
-					<groups target_groups="32" target_groups_optional="128"/>
+					<data target_groups="32" target_groups_optional="128"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="13" guid="scripttemplate-ron-visiting-ep14">
 					<title>
 						<de>Autos</de>
 						<en>Cars</en>
 					</title>
-					<groups target_groups="258" target_groups_optional="32"/>
+					<data target_groups="258" target_groups_optional="32"/>
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="14" guid="scripttemplate-ron-visiting-ep15">
 					<title>
@@ -1110,14 +1110,14 @@ Illustrious guests and music by [3|Nick].</en>
 						<de>Möbel</de>
 						<en>Furniture</en>
 					</title>
-					<groups target_groups="4" />
+					<data target_groups="4" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="16" guid="scripttemplate-ron-visiting-ep17">
 					<title>
 						<de>Theater</de>
 						<en>Theatre</en>
 					</title>
-					<groups target_groups="128" />
+					<data target_groups="128" />
 				</scripttemplate>
 			</children>
 			<jobs>
