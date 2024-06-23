@@ -846,12 +846,12 @@
 			<title>
 				<de>Firmengründungen</de>
 				<en>How companies are founded</en>
-				<pl></pl>
+				<pl>Jak zakładane są firmy</pl>
 			</title>
 			<description>
 				<de>Dem geneigten Zuschauer werden Karrieren von risikobereiten Firmengründern gezeigt. Schöne Lehrstunde für Schadenfrohe.</de>
 				<en>The careers of risk-taking company founders are shown to the interested viewer. Nice illustrative material for those who enjoy schadenfreude.</en>
-				<pl></pl>
+				<pl>Kariery podejmujących ryzyko założycieli firm są pokazywane zainteresowanym widzom. Niezły materiał ilustracyjny dla tych, którzy lubią schadenfreude.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_628</member>
@@ -865,12 +865,12 @@
 					<title>
 						<de>Filmstudio in Nollywood</de>
 						<en>Movie studio in Nollywood</en>
-						<pl></pl>
+						<pl>Studio filmowe w Nollywood</pl>
 					</title>
 					<description>
 						<de>[1|Full] begleitet Hans Imglück auf seinem Weg Qualitätsfilme in Nollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
 						<en>[1|Full] accompanies Hans Inluck on his way to shoot quality films in Nollywood. A magnificent loss-making business.</en>
-						<pl></pl>
+						<pl>[1|Full] towarzyszy Hansowi Inluckowi w jego drodze do kręcenia wysokiej jakości filmów w Nollywood. Wspaniały biznes przynoszący straty.</pl>
 					</description>
 					<ratings critics="43" speed="22" />
 				</programme>
@@ -878,12 +878,12 @@
 					<title>
 						<de>Erotikshop im Jemen</de>
 						<en>Erotic store in Yemen</en>
-						<pl></pl>
+						<pl>Sklep erotyczny w Jemenie</pl>
 					</title>
 					<description>
 						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
 						<en>Nick Thinknotlong sets up an erotic store in Yemen. [1|Full] conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
-					<pl></pl>
+						<pl>Nick Thinknotlong zakłada sklep erotyczny w Jemenie. [1|Full] przeprowadza ekscytujący wywiad na temat wiedzy Nicka o Jemenie. Z niecierpliwością czekamy na nakręcenie odcinka o pomysłach, na które wpada w więzieniu.</pl>
 					</description>
 					<ratings critics="48" speed="27" />
 				</programme>
@@ -891,12 +891,12 @@
 					<title>
 						<de>Kühlschrankfachladen in Grönland</de>
 						<en>Fridge store in Greenland</en>
-						<pl></pl>
+						<pl>Sklep z lodówkami w Grenlandii</pl>
 					</title>
 					<description>
 						<de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
 						<en>[1|Full] travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
-						<pl></pl>
+						<pl>[1|Full] podróżuje na Grenlandię z Mee Isfreezy, aby śledzić rozwój jej specjalistycznego sklepu z lodówkami. Nieco chłodna sprawa.</pl>
 					</description>
 					<ratings critics="44" speed="19" />
 				</programme>
@@ -907,12 +907,12 @@
 			<title>
 				<de>Schach gegen den Meister</de>
 				<en>Chess against the master</en>
-				<pl></pl>
+				<pl>Szachy przeciwko mistrzowi</pl>
 			</title>
 			<description>
 				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket.</de>
 				<en>Speed chess against the grandmasters. Call in, manage to get through, and checkmate the grandmaster. Use your brains, study, lose money in the waiting loop. The complete all-inclusive service package.</en>
-			<pl></pl>
+				<pl>Szachy błyskawiczne przeciwko arcymistrzom. Zgłoś się, zdołaj przejść i zaszachuj arcymistrza. Używaj mózgu, ucz się, trać pieniądze w pętli oczekiwania. Kompletny pakiet usług all-inclusive.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
@@ -929,12 +929,12 @@
 					<title>
 						<de>2 Türme, 3 Bauern</de>
 						<en>2 rooks, 3 pawns</en>
-						<pl></pl>
+						<pl>2 wieże, 3 pionki</pl>
 					</title>
 					<description>
 						<de>Eine knifflige Situation. Wer findet den richtigen Zug.</de>
 						<en>A tricky situation. Who will find the right move.</en>
-						<pl></pl>
+						<pl>Trudna sytuacja. Kto znajdzie właściwy ruch.</pl>
 					</description>
 					<ratings critics="30" speed="4" />
 				</programme>
@@ -942,12 +942,12 @@
 					<title>
 						<de>Springer und Läufer</de>
 						<en>Knights and bishops</en>
-						<pl></pl>
+						<pl>Skoczki i gońce</pl>
 					</title>
 					<description>
 						<de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
 						<en>Improvement over the last episode. Plenty of time to think or fall asleep. Please fall asleep only while you wait in the queue that charges fees.</en>
-						<pl></pl>
+						<pl>Poprawa w stosunku do ostatniego odcinka. Dużo czasu na myślenie lub zasypianie. Prosimy o zasypianie tylko podczas oczekiwania w kolejce, która pobiera opłaty.</pl>
 					</description>
 					<ratings critics="32" speed="4" />
 				</programme>
@@ -955,12 +955,12 @@
 					<title>
 						<de>Nur noch Bauern</de>
 						<en>Only pawns left</en>
-						<pl></pl>
+						<pl>Zostały tylko pionki</pl>
 					</title>
 					<description>
 						<de>Gestellte Situation. Wer spielt schon eine Partie, bei der außer dem König nur noch Bauern auf dem Feld stehen.</de>
 						<en>Staged situation. Who plays a game in which, apart from the king, there are only pawns left on the field.</en>
-						<pl></pl>
+						<pl>Zainscenizowana sytuacja. Kto gra w grę, w której oprócz króla na polu pozostały tylko pionki.</pl>
 					</description>
 					<ratings critics="24" speed="4" />
 				</programme>
@@ -968,12 +968,12 @@
 					<title>
 						<de>Damen</de>
 						<en>Queens</en>
-						<pl></pl>
+						<pl>Hetmany</pl>
 					</title>
 					<description>
 						<de>Die Damen herrschen. Unterstützt werden sie von lebenden Modellen, die auf einem großen Schachfeld herumlaufen. Ein Abschluß für das Auge.</de>
 						<en>The queens are in charge. They are backed up by live models walking around on a large chessboard. The grande finale for the eye.</en>
-						<pl></pl>
+						<pl>Królowe rządzą. Wspierają je żywe modelki spacerujące po wielkiej szachownicy. Wielki finał dla oka.</pl>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
@@ -985,12 +985,12 @@
 			<title>
 				<de>Der Osten - der wahre Horror</de>
 				<en>The east - the true evil</en>
-				<pl></pl>
+				<pl>Wschód - prawdziwe zło</pl>
 			</title>
 			<description>
 				<de>Der kommunistische Osten wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
 				<en>The communist East is illuminated. It will be proved that they all are aliens over there who want to take over world domination and it is necessary to burn everything with napalm. Completely plausible and believable.</en>
-			<pl></pl>
+				<pl>Komunistyczny Wschód jest oświecony. Zostanie udowodnione, że oni wszyscy są kosmitami, którzy chcą przejąć dominację nad światem i konieczne jest spalenie wszystkiego napalmem. Całkowicie prawdopodobne i wiarygodne.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_119</member>
@@ -1006,12 +1006,12 @@
 			<title>
 				<de>Der Westen - der wahre Horror</de>
 				<en>The west - the true evil</en>
-				<pl></pl>
+				<pl>Zachód - prawdziwe zło</pl>
 			</title>
 			<description>
 				<de>Der kapitalistische Westen wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
 				<en>The capitalist West is illuminated. It will be proved that they all are aliens over there who want to take over world domination and it is necessary to burn everything with napalm. Completely plausible and believable.</en>
-			<pl></pl>
+				<pl>Kapitalistyczny Zachód jest oświecony. Zostanie udowodnione, że wszyscy oni są kosmitami, którzy chcą przejąć dominację nad światem i konieczne jest spalenie wszystkiego napalmem. Całkowicie prawdopodobne i wiarygodne.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_406</member>
@@ -1026,12 +1026,12 @@
 			<title>
 				<de>Kurven der Welt - Erkenne sie alle</de>
 				<en>Curves of the world - Know them all</en>
-				<pl></pl>
+				<pl>Zakręty świata - poznaj je wszystkie</pl>
 			</title>
 			<description>
 				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikshow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit.</de>
 				<en>The most beautiful breasts in the world. Discreetly packaged. Nothing and yet much to see. The sophisticated erotic show with interludes about the culture of the respective country. Even critics were able to make friends with it. Presented by a Swedish beauty.</en>
-			<pl></pl>
+				<pl>Najpiękniejsze piersi na świecie. Dyskretnie zapakowane. Niby nic, a jednak wiele do zobaczenia. Wyrafinowane erotyczne show z przerywnikami o kulturze danego kraju. Nawet krytycy potrafili się z nim zaprzyjaźnić. Prezentowany przez szwedzką piękność.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_42</member>
@@ -1049,12 +1049,12 @@
 					<title>
 						<de>Jamaika</de>
 						<en>Jamaica</en>
-						<pl></pl>
+						<pl>Jamajka</pl>
 					</title>
 					<description>
 						<de>In der Folge eins ist Jamaika zu erraten. 40 Damen präsentieren ihr Land. Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
 						<en>In episode one, Jamaica is to be guessed. 40 ladies present their country. The landscape and cities are shown. The culture is shown. And everything is garnished with a lot of naked lady skin. The last name of the lady has to be guessed.</en>
-					<pl></pl>
+						<pl>W odcinku pierwszym do odgadnięcia jest Jamajka. 40 pań prezentuje swój kraj. Pokazane są krajobrazy i miasta. Pokazana jest kultura. A wszystko okraszone jest dużą ilością nagiej damskiej skóry. Należy odgadnąć nazwisko kobiety.</pl>
 					</description>
 					<ratings critics="20" speed="38" />
 				</programme>
