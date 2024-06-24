@@ -1657,12 +1657,12 @@
 					<title>
 						<de>Ralle schöpft Verdacht</de>
 						<en>Ralle's got a suspicion</en>
-						<pl></pl>
+						<pl>Ralle ma pewne podejrzenia</pl>
 					</title>
 					<description>
 						<de>Ralle vermutet, dass sich jemand an ihm rächen möchte und sich als Ralle verkleidet, um seinen Ruf zu ruinieren. Er begint mit der Suche nach dem Täter.</de>
 						<en>Ralle suspects that someone wants to take revenge on him by disguising himself as Ralle in order to ruin his reputation. He begins the search for the culprit.</en>
-						<pl></pl>
+						<pl>Ralle podejrzewa, że ktoś chce się na nim zemścić, przebierając się za niego, by zrujnować jego reputację. Rozpoczyna poszukiwania winowajcy.</pl>
 					</description>
 					<ratings critics="38" speed="42" />
 				</programme>
@@ -1670,12 +1670,12 @@
 					<title>
 						<de>Das große Kennenlernen</de>
 						<en>The big getting to know each other</en>
-						<pl></pl>
+						<pl>Wielkie poznawanie się</pl>
 					</title>
 					<description>
 						<de>Ralle und Rolle entdecken die Wahrheit und lernen sich kennen. Freude über den unerwarteten Bruder und blankes Entsetzen über den Beruf sorgen für Unterhaltung.</de>
 						<en>Ralle and Rolle discover the truth and get to know each other. Joy about the unexpected brother and sheer horror about the job provide entertainment.</en>
-						<pl></pl>
+						<pl>Ralle i Rolle odkrywają prawdę i poznają się nawzajem. Radość z nieoczekiwanego brata i przerażenie pracą zapewniają rozrywkę.</pl>
 					</description>
 					<data blocks="2" />
 					<ratings critics="52" speed="28" />
@@ -1688,12 +1688,12 @@
 				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
 				<de>Das Unbekannte</de>
 				<en>The unknown</en>
-				<pl></pl>
+				<pl>Nieznany</pl>
 			</title>
 			<description>
 				<de>Mysteriöse und gruselige Kurzgeschichten. Alles beginnt mit Phänomenen, die sich keiner erklären kann.</de>
 				<en>Mysterious and creepy short stories. It all starts with phenomena that no one can explain.</en>
-				<pl></pl>
+				<pl>Tajemnicze i przerażające opowiadania. Wszystko zaczyna się od zjawisk, których nikt nie potrafi wyjaśnić.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
@@ -1708,11 +1708,12 @@
 					<title>
 						<de>Ich klopfe, wenn Du schläfst!</de>
 						<en>I knock when you sleep!</en>
+						<pl>Pukam, kiedy śpisz!</pl>
 					</title>
 					<description>
 						<de>Eine Dame kann nicht schlafen. Sobald sie im Bett die Augen schließt, klopft es von überall. Wer ist das?</de>
 						<en>A woman can't sleep. As soon as she closes her eyes in bed, there is a knocking from everywhere. Who is that?</en>
-						<pl></pl>
+						<pl>Kobieta nie może spać. Gdy tylko zamyka oczy w łóżku, zewsząd rozlega się pukanie. Kto to?</pl>
 					</description>
 					<ratings critics="67" speed="42" />
 				</programme>
@@ -1720,12 +1721,12 @@
 					<title>
 						<de>Der See</de>
 						<en>The Lake</en>
-						<pl></pl>
+						<pl>Jezioro</pl>
 					</title>
 					<description>
 						<de>An einem See verschwinden immer wieder Leute. Monster? Aliens? Oder nur ertrunken? Ein junger Mann will die Wahrheit finden.</de>
 						<en>People keep disappearing at a lake. Monsters? Aliens? Or just drowned? A young man wants to find the truth.</en>
-						<pl></pl>
+						<pl>Ludzie znikają nad jeziorem. Potwory? Obcy? A może po prostu utonęli? Młody mężczyzna chce poznać prawdę.</pl>
 					</description>
 					<ratings critics="65" speed="38" />
 				</programme>
@@ -1733,12 +1734,12 @@
 					<title>
 						<de>Der fremde Planet</de>
 						<en>Unknown planet</en>
-						<pl></pl>
+						<pl>Nieznana planeta</pl>
 					</title>
 					<description>
 						<de>Ein Ehepaar wacht in einem unbekannten Gebiet auf und entdeckt, dass hier drei Monde am Himmel sind. Wo sind sie? Was ist passiert?</de>
 						<en>A couple wakes up in an unknown area and discovers that there are three moons in the sky. Where are they? What happened?</en>
-						<pl></pl>
+						<pl>Para budzi się w nieznanym miejscu i odkrywa, że na niebie znajdują się trzy księżyce. Gdzie oni są? Co się stało?</pl>
 					</description>
 					<ratings critics="61" speed="44" />
 				</programme>
@@ -1746,12 +1747,12 @@
 					<title>
 						<de>Die unsichtbare Bedrohung</de>
 						<en>The invisible threat</en>
-						<pl></pl>
+						<pl>Niewidzialne zagrożenie</pl>
 					</title>
 					<description>
 						<de>In einer Geisterstadt fühlt sich ein Paar bedroht. Die Bedrohung ist nirgends zu sehen, aber überall greifbar.</de>
 						<en>In a ghost town, a couple feels threatened. The threat is nowhere to be seen, but tangible everywhere.</en>
-						<pl></pl>
+						<pl>W mieście duchów para czuje się zagrożona. Zagrożenia nigdzie nie widać, ale wszędzie jest namacalne.</pl>
 					</description>
 					<ratings critics="67" speed="36" />
 				 </programme>
@@ -1763,12 +1764,12 @@
 			<title>
 				<de>Musik der Berge</de>
 				<en>Music of the mountains</en>
-				<pl></pl>
+				<pl>Muzyka gór</pl>
 			</title>
 			<description>
 				<de>Kinderchöre wandern singend durch die Berge.</de>
 				<en>Children's choirs hiking through the mountains singing.</en>
-				<pl></pl>
+				<pl>Chóry dziecięce wędrujące po górach i śpiewają.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
@@ -1786,12 +1787,12 @@
 			<title>
 				<de>Was ist Sache</de>
 				<en>What is the matter</en>
-				<pl></pl>
+				<pl>O co chodzi?</pl>
 			</title>
 			<description>
 				<de>Ein Politiker steht Rede und Antwort zur Lage der Nation.</de>
 				<en>A politician answers questions about the state of the nation.</en>
-				<pl></pl>
+				<pl>Polityk odpowiada na pytania dotyczące sytuacji w kraju.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_70</member>
@@ -1808,12 +1809,12 @@
 			<title>
 				<de>Das Leben der [2|Full]</de>
 				<en>The life of [2|Full]</en>
-				<pl></pl>
+				<pl>Życie [2|Full]</pl>
 			</title>
 			<description>
 				<de>Der Tod von [2|Full] wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
 				<en>The death of [2|Full] is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
-				<pl></pl>
+				<pl>Śmierć [2|Full] zostaje wykorzystana jako okazja do całkowitego przeanalizowania jej życia. W tym obszerne ujęcia ślubne z księciem.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_377</member>
@@ -1830,12 +1831,12 @@
 			<title>
 				<de>Analyse der Reden</de>
 				<en>Analysis of the speeches</en>
-				<pl></pl>
+				<pl>Analiza wystąpień</pl>
 			</title>
 			<description>
 				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
 				<en>The Cuban crisis frightened everyone. Here the speeches of [2|Full] and [3|Full] are shown chronologically, and are compared with each other.</en>
-				<pl></pl>
+				<pl>Kryzys kubański przeraził wszystkich. W programie pokazane są chronologicznie przemówienia [2|First]a [2|Last] i [3|Last]a.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
@@ -1853,12 +1854,12 @@
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
 				<en>Trends for men</en>
-				<pl></pl>
+				<pl>Trendy dla mężczyzn</pl>
 			</title>
 			<description>
 				<de>Was muss man heutzutage haben? Die absoluten Neuheiten, die man sich unbedingt kaufen muss, wenn man sicher in die Zukunft möchte!</de>
 				<en>What are the must-haves these days? The absolute novelties that you must buy if you want to safely go into the future!</en>
-				<pl></pl>
+				<pl>Co trzeba mieć w dzisiejszych czasach? Absolutne nowości, które musisz kupić, jeśli chcesz bezpiecznie przejść do przyszłości!</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_687</member>
@@ -1872,12 +1873,12 @@
 					<title>
 						<de>Urangrill</de>
 						<en>Uranium grill</en>
-						<pl></pl>
+						<pl>Grill uranowy</pl>
 					</title>
 					<description>
 						<de>Wir kaufen das beste Uran vom US und UdSSR Militär für diesen Grill. Sanfte und konstante Strahlung sorgen für beste Ergebnisse beim Grillfleisch!</de>
 						<en>We buy the best uranium from US and USSR military for this grill. Gentle and constant radiation provide the best results for grilled meat!</en>
-						<pl></pl>
+						<pl>Do tego grilla kupujemy najlepszy uran pochodzący od wojsk USA i ZSRR. Delikatne i stałe promieniowanie zapewnia najlepsze rezultaty grillowanego mięsa!</pl>
 					</description>
 					<ratings critics="29" speed="43" />
 				</programme>
@@ -1885,12 +1886,12 @@
 					<title>
 						<de>0 auf 1000 km/h in 3 Sekunden</de>
 						<en>0 on 764 mph in 3 seconds</en>
-						<pl></pl>
+						<pl>Od 0 do 764 mph w 3 sekundy</pl>
 					</title>
 					<description>
 						<de>Der wahre Autobausatz mit einem wundervollen V2 Triebwerk. Straßenzulassung ist garantiert. Ein wundervolles Handling.</de>
 						<en>The real car kit with a wonderful V2 engine. Guaranteed street-legal. Wonderful handling.</en>
-						<pl></pl>
+						<pl>Prawdziwy zestaw samochodowy ze wspaniałym silnikiem V2. Gwarantowana zgodność z przepisami. Wspaniałe właściwości jezdne.</pl>
 					</description>
 					<ratings critics="26" speed="43" />
 				</programme>
@@ -1898,12 +1899,12 @@
 					<title>
 						<de>Kellerbunker</de>
 						<en>Basement bunker</en>
-						<pl></pl>
+						<pl>Bunkier piwniczny</pl>
 					</title>
 					<description>
 						<de>Der Bunker im Keller ist einfach ein Muss. Nur so können sie den Fortbestand ihrer Familie sichern. Keinen haben, heißt kein Leben!</de>
 						<en>The bunker in the basement is simply a must. It is the only way to ensure the continuity of your family. Not having one means no life!</en>
-						<pl></pl>
+						<pl>Bunkier w piwnicy jest po prostu koniecznością. To jedyny sposób na zapewnienie ciągłości życia rodziny. Jego brak oznacza brak życia!</pl>
 					</description>
 					<ratings critics="29" speed="46" />
 				</programme>
@@ -1911,12 +1912,12 @@
 					<title>
 						<de>Frittenbike</de>
 						<en>Chip-fat bike</en>
-						<pl></pl>
+						<pl>Chip-tłuszczowy rower</pl>
 					</title>
 					<description>
 						<de>Mit dem Frittenfett auf 180. SchniPo futtern und dann das Fett in den Tank und los gehts auf die Mottorad Tour. Endlich das Rundum Vergnügen!</de>
 						<en>With chip-fat to 130. Chow down schnitzel with fries, then put the fat in the tank and off we go on the motobike tour. Finally the all-round pleasure!</en>
-						<pl></pl>
+						<pl>Z chip-tłuszczem do 130. Wcinamy sznycla z frytkami, następnie wlewamy tłuszcz do baku i ruszamy na motobike tour. W końcu wszechstronna przyjemność!</pl>
 					</description>
 					<ratings critics="32" speed="43" />
 				</programme>
@@ -1928,12 +1929,12 @@
 			<title>
 				<de>Die Rückkehr von Ronny und Byte</de>
 				<en>The Return of Ronny and Byte</en>
-				<pl></pl>
+				<pl>Powrót Ronny'ego i Byte'a</pl>
 			</title>
 			<description>
 				<de>Splatter und Splatter. [0|First] und Byte kehren als Zombies wieder. Klar, ne Geschichte gibt es auch. Irgendwo.</de>
 				<en>Splatter and splatter. [0|First] and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
-				<pl></pl>
+				<pl>Rozprysk i rozprysk. [0|First] i Byte powracają jako chodzące trupy. Jasne, jest też jakaś historia. Gdzieś.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -1954,12 +1955,12 @@
 					<title>
 						<de>Byte beißt den Wärter</de>
 						<en>Byte bites the guardian</en>
-						<pl></pl>
+						<pl>Byte gryzie strażnika</pl>
 					</title>
 					<description>
 						<de>Aus der bewachten Gruft entkommen. Doch der Wärter stört.</de>
 						<en>Escape from the guarded crypt. But the warden is interfering.</en>
-						<pl></pl>
+						<pl>Ucieczka ze strzeżonej krypty. Ale strażnik próbuje przeszkodzić w tym.</pl>
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
@@ -1967,12 +1968,12 @@
 					<title>
 						<de>[0|First] sucht das Fliwatüt</de>
 						<en>[0|First] is looking for the Flywatoot</en>
-						<pl></pl>
+						<pl>[0|First] szuka Muchołówki</pl>
 					</title>
 					<description>
 						<de>[0|First] jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
 						<en>[0|First] is chasing the Flywatoot. The army of grannies opposes him.</en>
-						<pl></pl>
+						<pl>[0|First] szuka Muchołówki. Przeciwstawia mu się armia babć.</pl>
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
@@ -1980,12 +1981,12 @@
 					<title>
 						<de>Die Bank</de>
 						<en>The bank</en>
-						<pl></pl>
+						<pl>Bank</pl>
 					</title>
 					<description>
 						<de>Endlich wieder Geld! Was will das Militär hier? Beißen hilft.</de>
 						<en>Finally some money again! What does the military want here? Biting helps.</en>
-						<pl></pl>
+						<pl>W końcu znowu jakieś pieniądze! Czego chce tu wojsko? Gryzienie pomaga.</pl>
 					</description>
 					<ratings critics="17" speed="47" />
 				</programme>
@@ -1993,12 +1994,12 @@
 					<title>
 						<de>Vernichte das Bit</de>
 						<en>Destroy the Bit</en>
-						<pl></pl>
+						<pl>Zniszcz bit</pl>
 					</title>
 					<description>
 						<de>[0|First] und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
 						<en>[0|First] and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
-						<pl></pl>
+						<pl>[0|First] i Byte chcą wyładować swój gniew na Bicie. Ale gdzie on się ukrywa? I kto tym razem stanie im na drodze?</pl>
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
@@ -2006,12 +2007,12 @@
 					<title>
 						<de>Der Anfang</de>
 						<en>The Beginning</en>
-						<pl></pl>
+						<pl>Początek</pl>
 					</title>
 					<description>
 						<de>[0|First] und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
 						<en>[0|First] and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
-						<pl></pl>
+						<pl>[0|First] i Byte napadają na miasto. Każdy, kto nie może uciec, zostaje ugryziony. Tylko jeden szeryf, który jest w śpiączce, zostaje pominięty. Czy będzie z tego nowy serial?</pl>
 					</description>
 					<ratings critics="27" speed="61" />
 				</programme>
@@ -2023,12 +2024,12 @@
 				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
 				<de>Best of TVTower</de>
 				<en>Best of TVTower</en>
-				<pl></pl>
+				<pl>Best of TVTower</pl>
 			</title>
 			<description>
 				<de>[1|Full] präsentiert die besten Sendungen aus dem TVTower Programm. Die Spieler haben gewählt, und [1|First] kommentiert. Inklusive Outtakes und Kurzinterviews.</de>
 				<en>[1|Full] presents the best shows from the TVTower program. The players voted, and [1|First] comments. Including outtakes and short interviews.</en>
-				<pl></pl>
+				<pl>[1|Full] prezentuje najlepsze ujęcia z programu TVTower. Gracze głosowali, a [1|First] komentuje. W tym urywki i krótkie wywiady.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -2043,12 +2044,12 @@
 					<title>
 						<de>Tiefsee Dinoschrecken, Banzai</de>
 						<en>Dino deep sea terror, Banzai</en>
-						<pl></pl>
+						<pl>Głębinowy terror dinozaurów, Banzai</pl>
 					</title>
 					<description>
 						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
 						<en>Totally misjudged. A film as it could not be better. Viewers have yet to see the true value.</en>
-						<pl></pl>
+						<pl>Całkowicie źle oceniony. Film w takiej formie nie mógłby być lepszy. Widzowie muszą jeszcze dostrzec jego prawdziwą wartość.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">Per_custom_Freddy_309</member>
@@ -2062,12 +2063,12 @@
 					<title>
 						<de>Der Osten - der Westen</de>
 						<en>The East - the West</en>
-						<pl></pl>
+						<pl>Wschód - Zachód</pl>
 					</title>
 					<description>
 						<de>[4|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
 						<en>[4|First] compares the shows. But at some point, she just laughs at [2|Full]'s eyebrows. That will cause belly ache...</en>
-						<pl></pl>
+						<pl>[4|First] porównuje programy. Ale w pewnym momencie po prostu śmieje się z brwi [2|First]a. To spowoduje ból brzucha...</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">Per_custom_Freddy_119</member>
@@ -2081,12 +2082,12 @@
 					<title>
 						<de>Iris entdeckt die Alm</de>
 						<en>Iris explores the alp</en>
-						<pl></pl>
+						<pl>Iris odkrywa alpy</pl>
 					</title>
 					<description>
 						<de>[4|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
 						<en>[4|First] philosophizes about whether this is not rather a documentary about milking techniques and enriches many scenes with her experiences from the farm.</en>
-						<pl></pl>
+						<pl>[4|First] filozofuje na temat tego, czy nie jest to raczej dokument o technikach dojenia i wzbogaca wiele scen swoimi doświadczeniami z farmy.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
@@ -2100,17 +2101,17 @@
 					<title>
 						<de>Picknick am Wegesrand</de>
 						<en>Picnic by the Wayside</en>
-						<pl></pl>
+						<pl>Piknik przy drodze</pl>
 					</title>
 					<title_original>
 						<de>Stalker</de>
 						<en>Stalker</en>
-						<pl></pl>
+						<pl>Stalker</pl>
 					</title_original>
 					<description>
 						<de>Betty überzeugt in ihrer russischen Kommentierung. Ansonsten vergleicht sie eifrig Walkers mit Daywalkers.</de>
 						<en>Betty is convincing in her Russian commentary. Otherwise, she zealously compares Walkers with Daywalkers.</en>
-						<pl></pl>
+						<pl>Betty jest przekonująca w swoim rosyjskim komentarzu. Poza tym gorliwie porównuje Walkerów z Daywalkerami.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
@@ -2129,12 +2130,12 @@
 			<title>
 				<de>Lolitas im Heu</de>
 				<en>Lolitas in the hay</en>
-				<pl></pl>
+				<pl>Lolitki w sianie</pl>
 			</title>
 			<description>
 				<de>Die frühe Jugendsünde von [1|Full]. Aber sie ist hinreissend.</de>
 				<en>The early actor sins of [1|Full]. But what a beauty.</en>
-				<pl></pl>
+				<pl>[1|Full] - grzechy wczesnych aktorów. Ale co za piękno.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_682</member>
@@ -2151,12 +2152,12 @@
 				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
 				<de>Die Strände der Welt</de>
 				<en>Beaches of the world</en>
-				<pl></pl>
+				<pl>Plaże świata</pl>
 			</title>
 			<description>
 				<de>[1|Full] zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
 				<en>[1|Full] presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
-				<pl></pl>
+				<pl>[1|Full] prezentuje najpiękniejsze plaże na świecie. Wspaniały dokument. A może po prostu ładne bikini na pięknych kobietach?</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-MorisWeverkov</member>
@@ -2170,72 +2171,72 @@
 					<title>
 						<de>Walvis Bucht</de>
 						<en>Walvis Bay</en>
-						<pl></pl>
+						<pl>Zatoka Walvis</pl>
 					</title>
 					<description>
 						<de>Namibia. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Namibia. [1|First] bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
-						<pl></pl>
+						<pl>Namibia. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o tym kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Oak Beach</de>
 						<en>Oak beach</en>
-						<pl></pl>
+						<pl>Oak beach</pl>
 					</title>
 					<description>
 						<de>Australien mit direktem Blick auf das Great Barrier Reef. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Australia with direct view on the Great Barrier Reef. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-					<pl></pl>
+						<pl>Australia z bezpośrednim widokiem na Wielką Rafę Koralową. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o tym kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vallvik</de>
 						<en>Vallvik</en>
-						<pl></pl>
+						<pl>Vallvik</pl>
 					</title>
 					<description>
 						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-					<pl></pl>
+						<pl>Szwecja. Surowa plaża. Czy ktoś powinien powiedzieć prezenterce, że wyraźnie widać na niej zimno? [1|First] podskakuje radośnie pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Playa Corcovado</de>
 						<en>Playa Corcovado</en>
-						<pl></pl>
+						<pl>Playa Corcovado</pl>
 					</title>
 					<description>
 						<de>Costa Rica. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Costa Rica. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl></pl>
+						<pl>Kostaryka. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Koh Thas</de>
 						<en>Koh Thas</en>
-						<pl></pl>
+						<pl>Koh Thas</pl>
 					</title>
 					<description>
 						<de>Kambodscha. Wer hält da denn Kokosnüsse? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Cambodia. Who's holding coconuts there? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl></pl>
+						<pl>Kambodża. Kto tam trzyma kokosy? [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vyshka</de>
 						<en>Vyshka</en>
-						<pl></pl>
+						<pl>Vyshka</pl>
 					</title>
 					<description>
 						<de>Russland. Wer kennt schon das kaspische Meer? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Russia. Who has ever heard of the Caspian Sea anyway? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-					<pl></pl>
+						<pl>Rosja. Kto w ogóle słyszał o Morzu Kaspijskim? [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 			</children>
@@ -2246,10 +2247,12 @@
 				<!-- Wir stellen vor, Music show -->
 				<de>Wir stellen vor</de>
 				<en>We introduce...</en>
+				<pl>Przedstawiamy...</pl>
 			</title>
 			<description>
 				<de>Musik aus den 50ern die man kennen sollte und ihre Macher.</de>
 				<en>Music from the 50s that you should know and the artists who made it.</en>
+				<pl>Muzyka z lat 50-tych, którą powinieneś znać i artyści, którzy ją stworzyli.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_266</member>
@@ -2263,10 +2266,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">7305874f-d807-4bb7-98a9-14062f74c667</member>
@@ -2277,10 +2282,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">e8016a46-dbe5-4772-a2f6-70234f0c10ea</member>
@@ -2291,10 +2298,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">7711c596-5eb1-46f1-82b1-0826a1189f18</member>
@@ -2305,10 +2314,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">3cf19225-1fa3-425a-a226-73c837815e87</member>
@@ -2319,10 +2330,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">9a05551e-1677-4fd8-8356-490faf5719e4</member>
@@ -2333,10 +2346,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">2b5afaec-4de7-4015-82ce-3fa4e35f4ec3</member>
@@ -2347,10 +2362,12 @@
 					<title>
 						<de>[2|Full]</de>
 						<en>[2|Full]</en>
+						<pl>[2|Full]</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
 						<en>How did the songs originate? And why does he still touch people today. Who was he and what was the sound like?</en>
+						<pl>Jak powstały te piosenki? I dlaczego wciąż porusza ludzi. Kim był i jak brzmiał?</pl>
 					</description>
 					<staff>
 						<member index="2" function="16">ef66c1fc-8baf-4c7b-8b25-4971fba4858a</member>
@@ -2364,10 +2381,12 @@
 			<title>
 				<de>Die Wikinger</de>
 				<en>The Vikings</en>
+				<pl>Wikingowie</pl>
 			</title>
 			<description>
 				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert und inklusive nachgebauten Boot. Der Erzähler versucht sich an den Spannungsbögen.</de>
 				<en>From their origin to their downfall. The facts are portrayed by amateur actors. Replica boat included. The narrator tries his hand at building up tension, too.</en>
+				<pl>Od ich powstania do upadku. Fakty są przedstawiane przez aktorów-amatorów. W zestawie replika łodzi. Narrator również próbuje swoich sił w budowaniu napięcia.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_20</member>
@@ -2384,10 +2403,12 @@
 			<title>
 				<de>Ein Monumentaler Versuch</de>
 				<en>An Attempt at an Epic</en>
+				<pl>Próba stworzenia epopei</pl>
 			</title>
 			<description>
 				<de>12 Stunden im Leben an einer dänischen Familie am Tag des Ausbruches des zweiten Weltkrieges. Die Kritiker feierten das Werk, doch wer ist wirklich bereit für einen 12-Stunden Film?</de>
 				<en>12 hours in the life in a family from Denmark during the day the second world war begins. The critics were euphoric, but who's ready for a 12 hours movie, really?</en>
+				<pl>12 godzin z życia duńskiej rodziny w dniu wybuchu drugiej wojny światowej. Krytycy byli w euforii, ale kto jest gotowy na 12-godzinny film?</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_70</member>
@@ -2406,10 +2427,12 @@
 			<title>
 				<de>Und Jetzt?</de>
 				<en>And Now?</en>
+				<pl>I co teraz</pl>
 			</title>
 			<description>
 				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview. Spoiler: [2|Full] will Präsident werden... HaHaHa</de>
 				<en>An actor starts his political career. An in-depth interview. Spoiler: [2|Full] wants to be elected as US president. We are still laughing.</en>
+				<pl>Aktor rozpoczyna karierę polityczną. Szczegółowy wywiad. Spoiler: [2|Full] chce zostać wybrany na prezydenta USA. Wciąż się śmiejemy.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_149</member>
@@ -2462,19 +2485,23 @@
 			<title>
 				<de>%WHAT% für %WHO%</de>
 				<en>Writing %WHAT% for %WHO%</en>
+				<pl>Jak napisać %WHAT% dla %WHO%</pl>
 			</title>
 			<description>
 				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
 				<en>How do I write %WHAT% for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
+				<pl>Jak napisać %WHAT% dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
 			</description>
 			<variables>
 				<what>
 					<de>Drehbücher|Nachrichten|Serien|Filme</de>
 					<en>movie scripts|news|series|movies</en>
+					<pl>scenariusze filmowe|newsy|seriale|filmy</pl>
 				</what>
 				<who>
 					<de>Anfänger|Neulinge|Fortgeschrittene|Profis|Neugierige</de>
 					<en>beginners|newcomers|the advanced|professionals|the curious</en>
+					<pl>początkujących|nowicjuszy|zaawansowanych|profesjonalistów|ciekawskich</pl>
 				</who>
 			</variables>
 			
@@ -2498,21 +2525,25 @@
 			<title>
 				<de>%TITLE%</de>
 				<en>%TITLE%</en>
+				<pl>%TITLE%</pl>
 			</title>
 			<variables>
 				<title>
 					<de>Reportagen aus dem Sendegebiet|Neues aus %RANDOMCITY%|Reportagen aus %RANDOMCITY%|Was ist los in %RANDOMCITY%?</de>
 					<en>Reports from the broadcast area|News from %RANDOMCITY%|Reports from %RANDOMCITY%|What's up in %RANDOMCITY%?</en>
+					<pl>Raporty z obszaru nadawania|%RANDOMCITY% - Wiadomości lokalne|%RANDOMCITY% - Raporty lokalne|%RANDOMCITY% - Co słychać w mieście?</pl>
 				</title>
 				<randomcity>
 					<de>%STATIONMAP:RANDOMCITY%</de>
 					<en>%STATIONMAP:RANDOMCITY%</en>
+					<pl>%STATIONMAP:RANDOMCITY%</pl>
 				</randomcity>
 			</variables>
 			
 			<description>
 				<de>Reporter durchreisen das Sendegebiet um ausführlich über lokale Ereignisse zu berichten. Die neueste Ausstellung, ein Jubiläum? Alles wird entdeckt.</de>
 				<en>Reporters travel through the broadcast area to report in detail on local events. The latest exhibition, an anniversary? Everything will be discovered.</en>
+				<pl>Reporterzy podróżują po nadawanym obszarze, aby szczegółowo relacjonować lokalne wydarzenia. Najnowsza wystawa, rocznica? Wszystko zostanie odkryte.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2533,29 +2564,35 @@
 			<title>
 				<de>%TITLE%</de>
 				<en>%TITLE%</en>
+				<pl>%TITLE%</pl>
 			</title>
 			<variables>
 				<title>
 					<de>%ADJECTIVE% %SUBJECT%%MODIFIER%</de>
 					<en>%ADJECTIVE% %SUBJECT%%MODIFIER%</en>
+					<pl>%ADJECTIVE% %SUBJECT%%MODIFIER%</pl>
 				</title>
 				<subject>
 					<de>Filme|Serien|Shows|Produktionen</de>
 					<en>movies|series|shows|productions</en>
+					<pl>filmy|seriale|koncerty i pokazy|produkcje</pl>
 				</subject>
 				<adjective>
 					<de>Die neusten|Herausragende|Die spannendsten</de>
 					<en>Upcoming|Outstanding|Exciting</en>
+					<pl>Nadchodzące|Wybitne|Ciekawe</pl>
 				</adjective>
 				<modifier>
 					<de>|| %WORLDTIME:YEAR%</de>
 					<en>|| %WORLDTIME:YEAR%</en>
+					<pl>|| %WORLDTIME:YEAR%</pl>
 				</modifier>
 			</variables>
 			
 			<description>
 				<de>Besprechung der Neuerscheinungen. Was muss man sehen, was kann man sich sparen?</de>
 				<en>Review of new releases. What is a must-see, what can be spared?</en>
+				<pl>Przegląd nowości wydawniczych. Co koniecznie trzeba zobaczyć, a na czym można zaoszczędzić?</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2576,19 +2613,23 @@
 			<title>
 				<de>%GROANERS% %TYPE%</de>
 				<en>%GROANERS% %TYPE%</en>
+				<pl>%GROANERS% na scenie - %TYPE%</pl>
 			</title>
 			<description>
 				<de>Ein Moderator lässt seine Gäste Sketche aufführen und gibt ihnen spontane Regieanweisungen.</de>
 				<en>A host has his guests perform skits and gives them spontaneous stage directions.</en>
+				<pl>Gospodarz zleca swoim gościom odgrywanie skeczy i udziela im spontanicznych wskazówek scenicznych.</pl>
 			</description>
 			<variables>
 				<type>
 					<de>am laufenden Band|ohne Ende|auf Kommando|im Dutzend|par excellence|ganz spontan</de>
 					<en>churned out|unlimited|on Cue|by the Dozen|par excellence|all spontaneous</en>
+					<pl>non-stop|bez ograniczeń|bez końca|dla mas|do doskonałości|wszystko spontanicznie</pl>
 				</type>
 				<groaners>
 					<de>Gags|Kalauer|Witze|Scherze|Ulk|Zoten|Späßchen</de>
 					<en>Gags|Laughs|Jests|Jokes|Fun|Pranks|Banter</en>
+					<pl>Gagi|Śmieszki|Żarty|Zabawy|Skecze|Pokazy</pl>
 				</groaners>
 			</variables>
 			<jobs>
@@ -2610,19 +2651,23 @@
 			<title>
 				<de>%birth% %station%</de>
 				<en>%birth% of %station%</en>
+				<pl>%birth% %station%</pl>
 			</title>
 			<description>
 				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
 				<en>You missed the opening show? Here are the best scenes and outtakes, as well as some retrospections from participants.</en>
+				<pl>Przegapiłeś show otwarcia stacji? Oto najlepsze sceny i urywki, a także kilka retrospekcji od uczestników.</pl>
 			</description>
 			<variables>
 				<birth>
 					<de>Geburt|Die Geburtsstunde|Der Ursprung|Die Entstehung|Die Wurzeln|Die Eröffnung|Der Kick-off|Der Start|Der Anfang|Die Taufe|Die Genese|Die Einweihung|Die Einführung|Die Gründung|Die Morgendämmerung|Das Auftauchen|Das Erscheinen|Die Ankunft</de>
 					<en>Birth|The First Hours|The Origin|The Formation|The Roots|The Opening|The Launch|The Beginning|The Inception|The Onset|The Genesis|The Inauguration|The Initiation|The Founding|The Dawning|The Emergence|The Appearance|The Arrival</en>
+					<pl>Narodziny|Pierwsze godziny|Początek|Formowanie|Stworzenie|Otwarcie|Uruchomienie|Początek|Początek|Geneza|Inauguracja|Inicjacja|Założenie|Powstanie|Start|Pojawienie się|Utworzenie</pl>
 				</birth>
 				<station>
 					<de>des Senders|des Fernsehsenders|des TV-Senders|dieses Kanals|dieses Fernsehkanals|dieses TV-Kanals|dieses Programms</de>
 					<en>the Station|this Television Station|this TV Station|this Channel|this Television Channel|this TV Channel|this Programme</en>
+					<pl>stacji|naszej stacji telewizyjnej|tej stacji telewizyjnej|tego kanału|tego kanału telewizyjnego|tego wspaniałego programu|tego programu</pl>
 				</station>
 			</variables>
 			<jobs>
@@ -2641,19 +2686,23 @@
 			<title>
 				<de>Die %WAS%%ART%</de>
 				<en>The %WAS% %ART%</en>
+				<pl>%ART% %WAS%</pl>
 			</title>
 			<description>
 				<de>Studenten der Filmwissenschaften stellen ihre Horrordrehbücher für die Abschlussarbeit des Semester allen Studios zur Verfügung. Was da wohl rauskommt?</de>
 				<en>Film school students make their horror scripts available to all studios for the final project of the semester. Let's see what comes out of it.</en>
+				<pl>Studenci szkoły filmowej udostępniają swoje scenariusze horrorów wszystkim studiom tv w ramach końcowego projektu semestru. Zobaczymy, co z tego wyjdzie.</pl>
 			</description>
 			<variables>
 				<was>
 					<de>Grusel|Horror|Angst|Furcht|Spuk|Schauder|Zitter|Bangemach|Schreck</de>
 					<en>Creep|Horror|Angst|Fear|Spook|Shiver|Shudder|Tremble|Scare</en>
+					<pl>przerażenia|horroru|strachu|wrażeń|strasznych rzeczy|drżenia serca|filmów grozy|grozy|grozy i stojących dęba włosów</pl>
 				</was>
 				<art>
 					<de>universität|schule|akademie|fachhochschule</de>
 					<en>University|School|Academy|College</en>
+					<pl>Uniwersytet|Szkoła|Akademia|Kolegium</pl>
 				</art>
 			</variables>
 			<jobs>
@@ -2676,18 +2725,22 @@
 			<title>
 				<de>%TITLE%</de>
 				<en>%TITLE%</en>
+				<pl>%TITLE%</pl>
 			</title>
 			<description>
 				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
 				<en>Family comedy about life with a mischievous son. The script is written by star screenwriter Don Ron.</en>
+				<pl>Rodzinna komedia o życiu z psotnym synem. Scenariusz został napisany przez scenarzystę Dona Rona.</pl>
 			</description>
 			<variables>
 				<title>
 					<de>Engel oder Bengel|%NAME% dreht durch|%NAME% außer Rand und Band</de>
 					<en>Angel or Rascal|%NAME% goes berserk|%NAME% goes haywire</en>
+					<pl>Anioł lub łobuz|%NAME% - diabełek w owczej skórze|%NAME% rozrabia</pl>
 				</title>
 				<name>
 					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
+					<de>Pawełek|%PERSONGENERATOR_FIRSTNAME(es,1)%|Marcelek</de>
 				</name>
 			</variables>
 			
@@ -2712,19 +2765,23 @@
 			<title>
 				<de>%NAME1% %NAME2%</de>
 				<en>%NAME1% %NAME2%</en>
+				<pl>%NAME1% %NAME2%</pl>
 			</title>
 			<description>
 				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
 				<en>Yodeling declarations of love and epic mountain shots.</en>
+				<pl>Jodłujące deklaracje miłości i epickie ujęcia gór.</pl>
 			</description>
 			<variables>
 				<name1>
 					<de>Heimatliche|Romantische|Süße|Schmachtende</de>
 					<en>Homey|Romantic|Sweet|Yearning</en>
+					<pl>Jodłujące|Romantyczne|Słodkie|Miłosne</pl>
 				</name1>
 				<name2>
 					<de>Berggeschichten|Dorfgeschichten|Waldgeschichten|O'zapft is-Geschichten</de>
 					<en>Stories of the Mountains|Tales from the Village|Tales from the Forest|Oktoberfest Stories</en>
+					<pl>opowieści z gór|opowieści z górskiej wioski|opowieści z górskiego lasu|opowieści z oktoberfestu</pl>
 				</name2>
 			</variables>
 			<jobs>
@@ -2745,19 +2802,23 @@
 			<title>
 				<de>Erbarmungslose Ermittler: %CITY%</de>
 				<en>Merciless Investigators: %City%</en>
+				<pl>Bezlitośni śledczy z miasta %City%</pl>
 			</title>
 			<description>
 				<de>%NAME% ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
 				<en>%NAME% investigate in their city. The case deals with a current social issue that moves the nation.</en>
+				<pl>%NAME% prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
 			</description>
 			<variables>
 				<city>
 					<de>Frankfurt|Berlin|Bonn|Hamburg|München|Chemnitz|Bremen|Stuttgart|Leipzig|Dresden|Magdeburg|Wiesbaden|Kassel|Darmstadt|Köln|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wien|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zürich|Bern|Helgoland</de>
 					<en>Frankfurt|Berlin|Bonn|Hamburg|Munich|Chemnitz|Bremen|Stuttgart|Leipzig|Dresden|Magdeburg|Wiesbaden|Kassel|Darmstadt|Cologne|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wien|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zurich|Bern|Helgoland</en>
+					<pl>Frankfurt|Berlin|Bonn|Hamburg|Monachium|Chemnitz|Bremen|Stuttgart|Lipsk|Drezno|Magdeburg|Wiesbaden|Kassel|Darmstadt|Kolonia|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wiedeń|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zurych|Berno|Helgoland</pl>
 				</city>
 				<name>
 					<de>Bibi und Hanni|Nani und Tina|Helga und Irmtraud|Nicole und Birgit|Alexandra und Christelle|Beate und Sieglinde|Katharina und Isabelle|Bettina und Christina|Frau Müller und Frau Meier|Frau Schmidt und Frau Biedermann|Frau Faust und Frau Goethe|Tante Erna und Tante Emma</de>
 					<en>Bibi and Hanni|Nani and Tina|Helga and Irmtraud|Nicole and Birgit|Alexandra and Christelle|Beate and Sieglinde|Katharina and Isabelle|Bettina and Christina|Mrs. Smith and Mrs. Brown|Mrs. Schmidt and Mrs. Biedermann|Mrs. Faust and Mrs. Goethe|Aunt Erna and Aunt Emma</en>
+					<pl>Bibi i Hanni|Nani i Tina|Helga i Irmtraud|Nicole i Birgit|Alexandra i Christelle|Beate i Sieglinde|Katharina i Isabelle|Bettina i Christina|Pan i pani Smith|Pani Schmidt i pani Biedermann|Pani Faust i Goethe|Ciotka Erna i ciotka Emma</pl>
 				</name>
 			</variables>
 			<jobs>
@@ -2782,15 +2843,18 @@
 			<title>
 				<de>Die Queen und %what%</de>
 				<en>The Queen and %what%</en>
+				<pl>Królowa i %what%</pl>
 			</title>
 			<description>
 				<de>Ein UFO mit Außerirdischen landet auf der Erde. Doch statt die Queen zu schrumpfen, sind es Weltraumgroupies der Queen.</de>
 				<en>An UFO with aliens lands on Earth. But instead of shrinking the Queen, they are her space groupies.</en>
+				<pl>UFO z kosmitami ląduje na Ziemi. Ale zamiast zmniejszać królową, są jej kosmicznymi kociakami.</pl>
 			</description>
 			<variables>
 				<what>
 					<de>das Ufo|die Außerirdischen</de>
 					<en>the UFO|the aliens</en>
+					<pl>UFO|Obcy</pl>
 				</what>
 			</variables>
 			<jobs>
@@ -2813,15 +2877,18 @@
 			<title>
 				<de>ISS - auf der Suche nach %NAME%</de>
 				<en>ISS - Searching for %NAME%</en>
+				<pl>ISS - Szukanie %NAME%</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
 				<en>The history of the ISS. Presented in detail and adorned with a lot of interesting facts.</en>
+				<pl>Historia ISS(Międzynarodowej Stacji Kosmicznej). Szczegółowo przedstawiona i ozdobiona wieloma ciekawostkami.</pl>
 			</description>
 			<variables>
 				<name>
 					<de>Leben|Signalen|Wundern|fremden Wesen|neuen Galaxien|dem UFO aus TVT|dem Mann auf dem Mond</de>
 					<en>Life|Signals|Wonderworld|Aliens|new Galaxies|the UFO From TVT|the Man On The Moon</en>
+					<pl>życia|sygnałów|cudownego świata|obcych|nowych galaktyk|UFO z TVT|człowieka na Księżycu</pl>
 				</name>
 			</variables>
 			<jobs>
@@ -2843,15 +2910,18 @@
 			<title>
 				<de>MIR - auf der Suche nach %NAME%</de>
 				<en>MIR - Searching for %NAME%</en>
+				<pl>MIR - Szukanie %NAME%</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
 				<en>The history of the MIR. Presented in detail and adorned with a lot of interesting facts.</en>
+				<pl>Historia MIRa (Sowieckiej stacji kosmicznej). Szczegółowo przedstawiona i ozdobiona wieloma ciekawostkami.</pl>
 			</description>
 			<variables>
 				<name>
 					<de>Leben|Signalen|Wundern|fremden Wesen|neuen Galaxien|dem UFO aus TVT|dem Mann auf dem Mond</de>
 					<en>Life|Signals|Wonderworld|Aliens|new Galaxies|the UFO From TVT|the Man On The Moon</en>
+					<pl>życia|sygnałów|cudownego świata|obcych|nowych galaktyk|UFO z TVT|człowieka na Księżycu</pl>
 				</name>
 			</variables>
 			<jobs>
@@ -2873,10 +2943,12 @@
 			<title>
 				<de>TVTs: %OBJECT% im Hochhaus</de>
 				<en>TVTs: %OBJECT% In A Skyscraper</en>
+				<pl>TVT: %OBJECT% w wieżowcu</pl>
 			</title>
 			<description>
 				<de>Serie über %OBJECT% im TV Tower Hochhaus</de>
 				<en>Series about %OBJECT% in The TV Tower Skyscraper</en>
+				<pl>Serial. %OBJECT% w wieżowcu telewizyjnym TV Tower</pl>
 			</description>
 
 			<children>
@@ -2884,6 +2956,7 @@
 					<title>
 						<de>TVTs Pilot</de>
 						<en>TVTs Pilot</en>
+						<pl>TVTs Pilot</pl>
 					</title>
 					<blocks min="2" max="4" />
 				</scripttemplate>
@@ -2891,6 +2964,7 @@
 					<title>
 						<de>Besuch bei Betty</de>
 						<en>Visiting Betty</en>
+						<pl>Wizyta u Betty</pl>
 					</title>
 					<blocks min="2" max="3" />
 				</scripttemplate>
@@ -2898,18 +2972,21 @@
 					<title>
 						<de>%ATTRIBUTE% macht eine Party</de>
 						<en>%ATTRIBUTE% is Having a Party</en>
+						<pl>%ATTRIBUTE% organizuje imprezę</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep4">
 					<title>
 						<de>Versteigerung bei der Film-Fgentur</de>
 						<en>Auction At The Movie Agency</en>
+						<pl>Aukcja w agencji filmowej</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep5">
 					<title>
 						<de>Betty flirtet</de>
 						<en>Flirt With Betty</en>
+						<pl>Flirt z Betty</pl>
 					</title>
 					<blocks min="2" max="3" />
 				</scripttemplate>
@@ -2917,24 +2994,28 @@
 					<title>
 						<de>%SUBJECT1A%</de>
 						<en>The %SUBJECT1A%</en>
+						<pl>%SUBJECT1A%</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep7">
 					<title>
 						<de>Besuch des Terroristen</de>
 						<en>Visit of The Terrorist</en>
+						<pl>Wizyta terrorystów</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep8">
 					<title>
 						<de>%ATTRIBUTE% wird wütend</de>
 						<en>%ATTRIBUTE% Gets Mad</en>
+						<pl>%ATTRIBUTE% Dostaje szału</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep9">
 					<title>
 						<de>Die Sünden von Betty</de>
 						<en>Sins of Betty</en>
+						<pl>Grzechy Betty</pl>
 					</title>
 					<blocks min="2" max="3" />
 				</scripttemplate>
@@ -2942,18 +3023,21 @@
 					<title>
 						<de>Streit bei %SUBJECT1B%</de>
 						<en>Trouble At The %SUBJECT1B%</en>
+						<pl>%SUBJECT1B% ma kłopoty</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep11">
 					<title>
 						<de>Planen</de>
 						<en>Planning</en>
+						<pl>Planowanie</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep12">
 					<title>
 						<de>Bettys Hochzeit</de>
 						<en>Bettys Marriage</en>
+						<pl>Małżeństwo Betty</pl>
 					</title>
 					<blocks min="3" max="6" />
 				</scripttemplate>
@@ -2962,18 +3046,22 @@
 				<attribute>
 					<de>Die FR Duban|Die VR Duban</de>
 					<en>The FR Duban|The PR Duban</en>
+					<pl>WolnaRepublika Duban|LudowaRepublika Duban</pl>
 				</attribute>
 				<object>
 					<de>Intrigen|Hinterhalte|Wettkämpfe|Dramen|Machenschaften|Quoten|Fehler|Machtkämpfe|Beschlagnahmer</de>
 					<en>Intrigues|Ambuscades|Competition|Drama|Scheming|Quotas|Mistakes|Power Struggles|Confiscators</en>
+					<pl>Intrygi|Ambasady|Konkurencja|Dramaty|Schematy|Kłótnie|Pomyłki|Walki o władzę|Konfiskatorzy</pl>
 				</object>
 				<subject1a>
 					<de>Die Wäscherei|Der Pförtner|Bio-Control|Die Tabak-Lobby|Der Computershop „Spysoft“|Die Knarren-Agentur|Der Anti-Raucher e.V.|Das Psychiaterbüro „Harry Dippl“|Die Peace-Brothers</de>
 					<en>Laundry|Porter|Bio-Control|Tobacco lobby|Computershop "Spysoft"|Guns Agency|No to Tobacco Society|Pychiatrist "Harry Dippl"|Peace-Brothers</en>
+					<pl>Pralnia|Porter|Bio-Control|Lobby tytoniowe|Sklep komputerowy "Spysoft"|Agencja broni|Nie dla tytoniu - Stowarzyszenie|Pychiatra "Harry Dippl"|Peace-Brothers</pl>
 				</subject1a>
 				<subject1b>
 					<de>dem Makler|der Agentur für Werbung|der Drehbuchagentur|dem Supermarkt|der Hinweistafel</de>
 					<en>Ad Agency|Room Agency|Script office|Roomboard|Supermarket</en>
+					<pl>Agencja reklamowa|Agencja pokojowa|Biuro scenariuszowe|Roomboard|Supermarket</pl>
 				</subject1b>
 			</variables>
 			<jobs>
@@ -3002,10 +3090,12 @@
 			<title>
 				<de>Kār prachd</de>
 				<en>Kār prachd</en>
+				<pl>Kār prachd</pl>
 			</title>
 			<description>
 				<de>Die legendäre thailändische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
 				<en>The legendary Thai series re-shot in the original language without subtitles.</en>
+				<pl>Legendarny tajski serial nakręcony w oryginalnej wersji językowej bez napisów.</pl>
 			</description>
 
 			<children>
@@ -3013,12 +3103,14 @@
 					<title>
 						<de>TVTs Pilot</de>
 						<en>TVTs Pilot</en>
+						<pl>TVTs Pilot</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep2">
 					<title>
 						<de>Was?</de>
 						<en>WTF?</en>
+						<pl>WTF?</pl>
 					</title>
 					<episodes min="1" max="3" />
 				</scripttemplate>
@@ -3026,6 +3118,7 @@
 					<title>
 						<de>Nicht im Ernst???</de>
 						<en>Really???</en>
+						<pl>Naprawdę???</pl>
 					</title>
 				</scripttemplate>
 			</children>
@@ -3045,10 +3138,12 @@
 			<title>
 				<de>tanz-āmiz</de>
 				<en>tanz-āmiz</en>
+				<pl>tanz-āmiz</pl>
 			</title>
 			<description>
 				<de>Die legendäre iranische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
 				<en>The legendary Iranian series re-shot in the original language without subtitles.</en>
+				<pl>Legendarny irański serial ponownie nakręcony w oryginalnej wersji językowej bez napisów.</pl>
 			</description>
 
 			<children>
@@ -3056,12 +3151,14 @@
 					<title>
 						<de>TVTs Pilot</de>
 						<en>TVTs Pilot</en>
+						<pl>TVTs Pilot</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep2">
 					<title>
 						<de>Was?</de>
 						<en>WTF?</en>
+						<pl>WTF?</pl>
 					</title>
 					<episodes min="1" max="3" />
 				</scripttemplate>
@@ -3069,6 +3166,7 @@
 					<title>
 						<de>Nicht im Ernst???</de>
 						<en>Really???</en>
+						<pl>Naprawdę???</pl>
 					</title>
 				</scripttemplate>
 			</children>
@@ -3088,10 +3186,12 @@
 			<title>
 				<de>Der %TITLE1%%TITLE2%</de>
 				<en>The %TITLE1% %TITLE2%</en>
+				<pl>%NAME1% - %TITLE2% %TITLE1%</pl>
 			</title>
 			<description>
 				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
 				<en>%NAME1% solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
+				<pl>%NAME1% rozwiązuje szybkie sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
 			</description>
 
 			<children>
@@ -3099,18 +3199,21 @@
 					<title>
 						<de>TVTs Pilot</de>
 						<en>TVTs Pilot</en>
+						<pl></pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep2">
 					<title>
 						<de>Die Jagd</de>
 						<en>The Hunt</en>
+						<pl></pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
 					<title>
 						<de>Entführt</de>
 						<en>Kidnapped</en>
+						<pl></pl>
 					</title>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3118,18 +3221,21 @@
 					<title>
 						<de>Fall gelöst</de>
 						<en>Case Closed</en>
+						<pl></pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
 					<title>
 						<de>Die Wahrheit</de>
 						<en>The Truth</en>
+						<pl></pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
 					<title>
 						<de>Falschgeld</de>
 						<en>Counterfeit money</en>
+						<pl></pl>
 					</title>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3137,6 +3243,7 @@
 					<title>
 						<de>Alternative Fakten</de>
 						<en>Alternative Facts</en>
+						<pl></pl>
 					</title>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3145,14 +3252,17 @@
 				<title1>
 					<de>Feldweg|Dorf|Berg|Wald</de>
 					<en>Country Lane|Village|Mountain|Forest</en>
+					<pl>wiejskich uliczek|na wsi|w górach|w lesie</pl>
 				</title1>
 				<title2>
 					<de>jäger|polizist|detektiv|fahnder|hüter|wächter</de>
 					<en>Ranger|Policeman|Detective|Investigator|Guardian|Watchman</en>
+					<pl>Ranger|Policjant|Detektyw|Komisarz|Ochroniarz|Obserwator</pl>
 				</title2>
 				<name1>
 					<de>Harry|Horst|Jim|Bob|Herr Müller|Herr Schmidt|Dagobert</de>
 					<en>Harry|Horst|Jim|Bob|Mr. Miller|Mr. Smith|Dagobert</en>
+					<pl>Harry|Horst|Jim|Bob|Pan Miller|Pan Smith|Dagobert</pl>
 				</name1>
 			</variables>
 			<jobs>
@@ -3174,15 +3284,18 @@
 			<title>
 				<de>Don Rons: %WAS%</de>
 				<en>Don Ron's: %WAS%</en>
+				<pl>Opowieści Don Rona: %WAS%</pl>
 			</title>
 			<description>
 				<de>Don Rons monumentale Geschichte über eine royale Familie. Erfolg wie immer garantiert.</de>
 				<en>Don Ron's monumental story about a royal family. Success as always guaranteed.</en>
+				<pl>Monumentalna opowieść Dona Rona o królewskiej rodzinie. Sukces jak zawsze gwarantowany.</pl>
 			</description>
 			<variables>
 				<was>
 					<de>Der König|Die Königin|Der Prinz|Die Prinzessin|Der Abenteurer Prinz|Die Abenteurer Prinzessin|Der Piraten König|Die Piraten Königin</de>
 					<en>The King|The Queen|The Prince|The Princess|The Adventurer Prince|The Adventurer Princess|The Pirate King|The Pirate Queen</en>
+					<pl>Król|Królowa|Książę|Księżniczka|Książę poszukiwacz przygód|Księżniczka poszukiwaczka przygód|Król piratów|Królowa piratów</pl>
 				</was>
 			</variables>
 			<jobs>
@@ -3206,19 +3319,23 @@
 			<title>
 				<de>%WESEN%</de>
 				<en>The %WESEN%</en>
+				<pl>%WESEN%</pl>
 			</title>
 			<description>
 				<de>%NAME% trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
 				<en>%NAME% meets a strange creature. They explore the world together and have wonderful adventures.</en>
+				<pl>%NAME% spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
 			</description>
 			<variables>
 				<wesen>
 					<de>Der Drache|Der Nacktmull|Die Fee|Die Zahnfee|Der Zauberer|Der Troll|Der Zwerg|Das Erdmännchen|Das Ding aus dem Sumpf|Der Engel|Der Succubus|Das Monster|Der Riese|Der Oger</de>
 					<en>Dragon|Naked Mole-Rat|Fairy|Tooth-Fairy|Wizard|Troll|Dwarf|Meerkat|Thing from the Swamp|Angel|Succubus|Monster|Giant|Ogre</en>
+					<pl>Smok|Nagi szczur|Bajka|Zębowa bajka|Czarodziej|Troll|Krasnolud|Merkat|Coś z bagien|Anioł|Sukkubus|Potwór|Gigant|Ogr</pl>
 				</wesen>
 				<name>
 					<de>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</de>
 					<en>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</en>
+					<pl>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</pl>
 				</name>
 			</variables>
 			<jobs>
@@ -3241,15 +3358,18 @@
 			<title>
 				<de>%GEGENSTAND%</de>
 				<en>The Talking %GEGENSTAND%</en>
+				<pl>%GEGENSTAND%</pl>
 			</title>
 			<description>
 				<de>Ein sprechender Gegenstand freundet sich mit einem Kind an und das lustige Abenteuer beginnt.</de>
 				<en>A talking object befriends a child and the fun adventure begins.</en>
+				<pl>Gadający przedmiot zaprzyjaźnia się z dzieckiem i rozpoczyna się zabawna przygoda.</pl>
 			</description>
 			<variables>
 				<gegenstand>
 					<de>Die sprechende Lokomotive|Das sprechende Auto|Das sprechende Haus|Der sprechende Baum|Die sprechende Wolke|Die sprechende Spatzenschleuder|Das sprechende Gänseblümchen|Die sprechende Trompete|Die sprechende Kartoffelkanone</de>
 					<en>Locomotive|Car|House|Tree|Cloud|Sparrow Slingshot|Daisy|Trumpet|Potato Cannon</en>
+					<pl>Gadająca lokomotywa|Gadający wagon|Gadający dom|Gadające drzewo|Gadająca chmura|Gadająca proca na wróble|Gadająca lalka|Gadająca trąbka|Gadająca armata ziemniaczana</pl>
 				</gegenstand>
 			</variables>
 			<jobs>
@@ -3273,15 +3393,18 @@
 			<title>
 				<de>Die %Volk%</de>
 				<en>The %Volk%</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
 				<en>The presenter tells the story of the rise and fall of this tribe. Amateur actors re-enact important scenes.</en>
+			<pl></pl>
 			</description>
 			<variables>
 				<volk>
 					<de>Kelten|Römer|Sachsen|Mongolen|Ägypter|Franken|Ostgoten|Westgoten|Etrusker|Perser|Angelsachsen|Osmanen|Japaner|Zulus|Burgundians|Mauren|Vandalen|Marsianer|Azteken|Comanchen|Apachen|Hohenzollern</de>
 					<en>Celts|Romans|Saxons|Mongolians|Egypts|Franconians|Ostrogoths|Visigoths|Etruscans|Persians|Anglo-Saxons|Ottomans|Japanese|Zulus|Burgundian|Moors|Vandals|Martians|Aztecs|Comanches|Apaches|Hohenzollerns</en>
+				<pl></pl>
 				</volk>
 			</variables>
 			<jobs>
@@ -3304,15 +3427,18 @@
 			<title>
 				<de>%ORT%</de>
 				<en>The %ORT%</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
 				<en>A treasure hunter experiences many adventures on his hunt for his riches.</en>
+				<pl></pl>
 			</description>
 			<variables>
 				<ort>
 					<de>Der Vulkan|Die Schatzinsel|Das Piratenschiff|Die Geisterhöhle|Der Zauberberg|Das Geisterschiff|Das Spukschloß</de>
 					<en>Volcano|Treasure Island|Pirate Ship|Ghost Cave|Wizard Mountain|Ghost Ship|Haunted Castle</en>
+					<pl></pl>
 				</ort>
 			</variables>
 			<jobs>
@@ -3333,19 +3459,23 @@
 			<title>
 				<de>Don Rons: Der %WAS% aus %WOHER%</de>
 				<en>Don Ron's: The %WAS% from %WOHER%</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
 				<en>Western written by star screenwriter Don Ron. As always, iconic and ingenious.</en>
+				<pl></pl>
 			</description>
 			<variables>
 				<was>
 					<de>Revolverheld|Sheriff|Offizier|Wachtmeister|Halunke|Farmer|Kopfgeldjäger</de>
 					<en>Gunslinger|Sheriff|Officer|Sergeant|Farmer|Scoundrel|Bounty Hunter</en>
+					<pl></pl>
 				</was>
 				<Woher>
 					<de>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</de>
 					<en>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</en>
+					<pl></pl>
 				</Woher>
 			</variables>
 			<jobs>
@@ -3370,10 +3500,12 @@
 			<title>
 				<de>TVTs: %TITLE1%</de>
 				<en>TVTs: %TITLE1%</en>
+				<pl></pl>
 			</title>
 			<description>
 				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
 				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
+			<pl></pl>
 			</description>
 
 			<children>
@@ -3381,11 +3513,13 @@
 					<title>
 						<de>%EPISODE%</de>
 						<en>%EPISODE%</en>
+						<pl></pl>
 					</title>
 					<variables>
 						<episode>
 							<de>Orte|Länder|Unterwäsche|Parfum|Filme|Keine Wörter diesmal|Künstler|Hauptstädte|Flüsse|Gebirge|Politiker</de>
 							<en>Places|Countries|Underwear|Perfume|Movies|No Words This Time|Artists|Capitals|Rivers|Mountains|Politicians</en>
+						<pl></pl>
 						</episode>
 					</variables>
 					<episodes min="2" max="7" />
@@ -3395,10 +3529,12 @@
 				<title1>
 					<de>Dancing Queen|Wortsuche|Garantierte Gewinne|Abgezockt|Traumhafte Ansichten</de>
 					<en>Dancing Queen|Word Guessing|Prizes Guaranteed|Ripped Off|Fabulous Peeks</en>
+					<pl></pl>
 				</title1>
 				<name1>
 					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
 					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
+					<pl></pl>
 				</name1>
 			</variables>
 			<jobs>
