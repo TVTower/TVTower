@@ -1458,7 +1458,7 @@
 					<description>
 						<de>Rot und saftig, wie es sein soll. Und manchmal auch sauer. Aber sauer mach lustig. Auf einen guten Biss.</de>
 						<en>Red and juicy, as it should be. And sometimes also sour. But something sour cheers you up. Here's to a good bite.</en>
-						<pl></pl>
+						<pl>Czerwone i soczyste, takie jak powinno być. A czasem także kwaśne. Ale coś kwaśnego poprawia humor. Za dobry kęs.</pl>
 					</description>
 					<ratings critics="42" speed="44" />
 				</programme>
@@ -3191,7 +3191,7 @@
 			<description>
 				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
 				<en>%NAME1% solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
-				<pl>%NAME1% rozwiązuje szybkie sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
+				<pl>%NAME1% rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
 			</description>
 
 			<children>
@@ -3199,21 +3199,21 @@
 					<title>
 						<de>TVTs Pilot</de>
 						<en>TVTs Pilot</en>
-						<pl></pl>
+						<pl>TVTs Pilot</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep2">
 					<title>
 						<de>Die Jagd</de>
 						<en>The Hunt</en>
-						<pl></pl>
+						<pl>Polowanie</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
 					<title>
 						<de>Entführt</de>
 						<en>Kidnapped</en>
-						<pl></pl>
+						<pl>Porwanie</pl>
 					</title>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3221,21 +3221,21 @@
 					<title>
 						<de>Fall gelöst</de>
 						<en>Case Closed</en>
-						<pl></pl>
+						<pl>Sprawa zamknięta</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
 					<title>
 						<de>Die Wahrheit</de>
 						<en>The Truth</en>
-						<pl></pl>
+						<pl>Prawda</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
 					<title>
 						<de>Falschgeld</de>
 						<en>Counterfeit money</en>
-						<pl></pl>
+						<pl>Fałszywe pieniądze</pl>
 					</title>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3243,7 +3243,7 @@
 					<title>
 						<de>Alternative Fakten</de>
 						<en>Alternative Facts</en>
-						<pl></pl>
+						<pl>Alternatywne fakty</pl>
 					</title>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3393,18 +3393,18 @@
 			<title>
 				<de>Die %Volk%</de>
 				<en>The %Volk%</en>
-				<pl></pl>
+				<pl>%Volk%</pl>
 			</title>
 			<description>
 				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
 				<en>The presenter tells the story of the rise and fall of this tribe. Amateur actors re-enact important scenes.</en>
-			<pl></pl>
+				<pl>Prezenter opowiada historię powstania i upadku danego plemienia. Historycy odtwarzają ważne sceny z przeszłości.</pl>
 			</description>
 			<variables>
 				<volk>
 					<de>Kelten|Römer|Sachsen|Mongolen|Ägypter|Franken|Ostgoten|Westgoten|Etrusker|Perser|Angelsachsen|Osmanen|Japaner|Zulus|Burgundians|Mauren|Vandalen|Marsianer|Azteken|Comanchen|Apachen|Hohenzollern</de>
 					<en>Celts|Romans|Saxons|Mongolians|Egypts|Franconians|Ostrogoths|Visigoths|Etruscans|Persians|Anglo-Saxons|Ottomans|Japanese|Zulus|Burgundian|Moors|Vandals|Martians|Aztecs|Comanches|Apaches|Hohenzollerns</en>
-				<pl></pl>
+					<pl>Celtowie|Rzymianie|Saksoni|Mongołowie|Egipcjanie|Frankoni|Ostrogoci|Visigothsi|Etruscansi|Persowie|Anglo-Saksończycy|Ottomani|Japończycy|Zulusi|Burgundianie|Moorsi|Wandalowie|Martiansi|Aztekowie|Komanchi|Apacze|Hohenzollerni</pl>
 				</volk>
 			</variables>
 			<jobs>
@@ -3427,18 +3427,18 @@
 			<title>
 				<de>%ORT%</de>
 				<en>The %ORT%</en>
-				<pl></pl>
+				<pl>%ORT%</pl>
 			</title>
 			<description>
 				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
 				<en>A treasure hunter experiences many adventures on his hunt for his riches.</en>
-				<pl></pl>
+				<pl>Przygody poszukiwacza skarbów podczas polowania na ukryte bogactwo.</pl>
 			</description>
 			<variables>
 				<ort>
 					<de>Der Vulkan|Die Schatzinsel|Das Piratenschiff|Die Geisterhöhle|Der Zauberberg|Das Geisterschiff|Das Spukschloß</de>
 					<en>Volcano|Treasure Island|Pirate Ship|Ghost Cave|Wizard Mountain|Ghost Ship|Haunted Castle</en>
-					<pl></pl>
+					<pl>Stara kopalnia|Wyspa skarbów|Statek piracki|Jaskinia duchów|Czarodziejska góra|Statek duchów|Nawiedzony zamek</pl>
 				</ort>
 			</variables>
 			<jobs>
@@ -3459,23 +3459,23 @@
 			<title>
 				<de>Don Rons: Der %WAS% aus %WOHER%</de>
 				<en>Don Ron's: The %WAS% from %WOHER%</en>
-				<pl></pl>
+				<pl>Western Don Rona - %WAS% z %WOHER%</pl>
 			</title>
 			<description>
 				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
 				<en>Western written by star screenwriter Don Ron. As always, iconic and ingenious.</en>
-				<pl></pl>
+				<pl>Western napisany przez scenarzystę Dona Rona. Jak zawsze kultowy i pomysłowy.</pl>
 			</description>
 			<variables>
 				<was>
 					<de>Revolverheld|Sheriff|Offizier|Wachtmeister|Halunke|Farmer|Kopfgeldjäger</de>
 					<en>Gunslinger|Sheriff|Officer|Sergeant|Farmer|Scoundrel|Bounty Hunter</en>
-					<pl></pl>
+					<pl>Rewolwerowiec|Szeryf|Urzędnik|Sierżant|Farmer|Łobuz|Łowca nagród</pl>
 				</was>
 				<Woher>
 					<de>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</de>
 					<en>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</en>
-					<pl></pl>
+					<pl>Maine|Michigan|Newady|Południowej Karoliny|Ohio|Texasu|Nowego Orleanu</pl>
 				</Woher>
 			</variables>
 			<jobs>
@@ -3500,12 +3500,12 @@
 			<title>
 				<de>TVTs: %TITLE1%</de>
 				<en>TVTs: %TITLE1%</en>
-				<pl></pl>
+				<pl>Produkcja TVT: %TITLE1% - Teleturniej</pl>
 			</title>
 			<description>
 				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
 				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
-			<pl></pl>
+				<pl>%NAME1% odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
 			</description>
 
 			<children>
@@ -3513,13 +3513,13 @@
 					<title>
 						<de>%EPISODE%</de>
 						<en>%EPISODE%</en>
-						<pl></pl>
+						<pl>%EPISODE%</pl>
 					</title>
 					<variables>
 						<episode>
 							<de>Orte|Länder|Unterwäsche|Parfum|Filme|Keine Wörter diesmal|Künstler|Hauptstädte|Flüsse|Gebirge|Politiker</de>
 							<en>Places|Countries|Underwear|Perfume|Movies|No Words This Time|Artists|Capitals|Rivers|Mountains|Politicians</en>
-						<pl></pl>
+							<pl>Miejsca|Kraje|Bielizna|Perfumy|Filmy|Bez słów tym razem|Artyści|Stolice|Rzeki|Góry|Politycy</pl>
 						</episode>
 					</variables>
 					<episodes min="2" max="7" />
@@ -3529,12 +3529,12 @@
 				<title1>
 					<de>Dancing Queen|Wortsuche|Garantierte Gewinne|Abgezockt|Traumhafte Ansichten</de>
 					<en>Dancing Queen|Word Guessing|Prizes Guaranteed|Ripped Off|Fabulous Peeks</en>
-					<pl></pl>
+					<pl>Dancing Queens|Zgadywanka|Nagrody gwarantowane|Rozbierz to|Fantastyczne wybory</pl>
 				</title1>
 				<name1>
 					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
 					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
-					<pl></pl>
+					<pl>Jimmy|Bobby|Danny|Manni|Donny|Johny</pl>
 				</name1>
 			</variables>
 			<jobs>
