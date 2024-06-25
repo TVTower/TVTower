@@ -262,12 +262,12 @@
 			<title>
 				<de>Sonstiges - das Thema</de>
 				<en>Various - the topic</en>
-				<pl>Różne - tematy</pl>
+				<pl>Różnorodne - temat gatunku</pl>
 			</title>
 			<description>
 				<de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
 				<en>[0|Full] has invited [1|Full], [2|Full], [3|Full] and [4|Full]. The goal an intensive conversation about 'Various'. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
-				<pl>[0|Full] zaprasza gości. To: [1|Full], [2|Full], [3|Full] i [4|Full]. Celem jest intensywna rozmowa na "Różne" tematy . Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
+				<pl>[0|Full] zaprasza gości. To: [1|Full], [2|Full], [3|Full] i [4|Full]. Celem jest intensywna rozmowa na temat "Różnorodne". Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -1968,12 +1968,12 @@
 					<title>
 						<de>[0|First] sucht das Fliwatüt</de>
 						<en>[0|First] is looking for the Flywatoot</en>
-						<pl>[0|First] szuka Muchołówki</pl>
+						<pl>[0|First] szuka Fliwatütki</pl>
 					</title>
 					<description>
 						<de>[0|First] jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
 						<en>[0|First] is chasing the Flywatoot. The army of grannies opposes him.</en>
-						<pl>[0|First] szuka Muchołówki. Przeciwstawia mu się armia babć.</pl>
+						<pl>[0|First] szuka Fliwatütki. Przeciwstawia mu się armia babć.</pl>
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
