@@ -1014,7 +1014,7 @@
 			<description>
 				<de>Lebensläufe? Duftkerzen? Aubert!</de>
 				<en>Resumes? Scented candles? Aubert!</en>
-				<pl>Świece zapachowe? Aubert!</pl>
+				<pl>Życiorysy? Świece zapachowe? Aubert!</pl>
 			</description>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="26" repetitions="3" duration="4" profit="2200" penalty="3000" infomercial_profit="151" fix_infomercial_profit="1" />
