@@ -286,7 +286,7 @@
 			<description>
 				<de>Soundprobleme? Der PC-Tonmann rauscht auch bei Ihnen mal vorbei. Schnell und ohne viel Tamtam.</de> <!-- orig: Soundkarte, Lautsprecher, Kopfhörer, Software von RAINBOW ARTS für nur DM 249,- -->
 				<en>Sound problems? The PC Sound Guy will buzz by for you too. Quickly and without much fanfare.</en>
-				<pl>Problemy z dźwiękiem? Facet od Dźwięku na PC też do ciebie wpadnie. Szybko i bez zbędnych ceregieli.</pl>
+				<pl>Problemy z dźwiękiem? Dźwiękowiec na PC dryndnie do ciebie. Szybko i bez zbędnych fanfar.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="1" duration="7" profit="1700" penalty="2000" infomercial_profit="142" fix_infomercial_profit="1" />
