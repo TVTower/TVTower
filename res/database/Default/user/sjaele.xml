@@ -846,12 +846,12 @@
 			<title>
 				<de>Weniger Fernsehgelder für Osten</de>
 				<en>Less TV money for East Germany</en>
-				<pl></pl>
+				<pl>Mniej pieniędzy na telewizję dla Niemiec Wschodnich</pl>
 			</title>
 			<description>
 				<de>Da dort rein zahlenmäßig weniger Menschen Fußball gucken, wäre das nur gerecht, so der Fußballbund-Sprecher Siehstenu-Dahaste.</de>
 				<en>Since fewer people watch football there in terms of sheer numbers, that would only be fair, according to Football Association spokesman Lookahere-Thereitis.</en>
-				<pl></pl>
+				<pl>Według rzecznika Football Association Lookahere-Thereitis, mniej osób ogląda tam piłkę nożną, a więc damy tam mniej pieniędzy. To będzie sprawiedliwe.</pl>
 			</description>
 			<data genre="2" price="1.0" quality="31" />
 			<availability script="" year_range_from="1990" year_range_to="" />
@@ -862,12 +862,12 @@
 			<title>
 				<de>Fußball: Westvereine protestieren</de>
 				<en>Soccer: Western Germany clubs protest</en>
-				<pl></pl>
+				<pl>Piłka nożna: Kluby z zachodnich Niemiec protestują</pl>
 			</title>
 			<description>
 				<de>Immer mehr Ostvereine machen es sich in der Dritten Liga gemütlich. Da müsse weniger geleistet werden und es gäbe trotzdem Lohn.</de>
 				<en>More and more Eastern clubs are making themselves comfortable in the Third League. Less work has to be done there and wages are still paid.</en>
-				<pl></pl>
+				<pl>Coraz więcej wschodnich klubów czuje się komfortowo w trzeciej lidze. Tam trzeba wykonywać mniej pracy, a pensje wciąż są wypłacane.</pl>
 			</description>
 			<data genre="2" price="1.0" quality="41" />
 			<availability script="" year_range_from="2010" year_range_to="" />
@@ -878,12 +878,12 @@
 			<title>
 				<de>Rote Brause Leipzig dementiert</de>
 				<en>Red Bubbles Leipzig denies</en>
-				<pl></pl>
+				<pl>Red Bubbles Leipzig zaprzecza</pl>
 			</title>
 			<description>
 				<de>Sie seien ein ganz normaler Fußballverein. Die Namensgleicheit zum Brausefabrikant zufällig.</de>
 				<en>They are just a regular soccer club. The similarity of the name to the soda manufacturer is coincidental.</en>
-				<pl></pl>
+				<pl>To zwykły klub piłkarski. Podobieństwo nazwy do producenta napojów gazowanych jest przypadkowe.</pl>
 			</description>
 			<data genre="2" price="0.7" quality="11" />
 			<availability script="TIME_MONTH=1 || TIME_MONTH=7" year_range_from="2010" year_range_to="" />
@@ -893,12 +893,12 @@
 			<title>
 				<de>Fußballbund vermutet Wettbetrug</de>
 				<en>Soccer association suspects betting fraud</en>
-				<pl></pl>
+				<pl>Związek piłki nożnej podejrzewa oszustwo bukmacherskie</pl>
 			</title>
 			<description>
 				<de>Das 75:1 im entscheidenden Aufstiegsspiel zur Verbandsliga West-Nord rief die Betrugsexperten des Fußballbundes auf den Plan.</de>
 				<en>The 75-1 in the decisive match for promotion to the West-North Club League called the fraud experts of the Football Association to the scene.</en>
-				<pl></pl>
+				<pl>Wynik 75-1 w decydującym meczu o awansie do Zachodnio-Północnej Ligi Klubowej wezwał na miejsce ekspertów ds. oszustw w piłce nożnej.</pl>
 			</description>
 			<data genre="2" flags="2" price="1.0" quality="29" />
 			<availability script="TIME_MONTH=6" />
@@ -909,12 +909,12 @@
 			<title>
 				<de>Aktena 8</de>
 				<en>Aktena 8</en>
-				<pl></pl>
+				<pl>Aktena 8</pl>
 			</title>
 			<description>
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
 				<en>On June 12, the world's largest art exhibition opens its doors. It is dedicated to the artistic examination of war and violence, utopias and the loss of utopia.</en>
-				<pl></pl>
+				<pl>12 czerwca otwiera się największa na świecie wystawa sztuki. Jest ona poświęcona artystycznemu badaniu wojny i przemocy, utopii i utraty utopii.</pl>
 			</description>
 			<data genre="5" flags="6" price="0.7" quality="41" happen_time="4,1987,5,1" />
 		</news>
@@ -924,12 +924,12 @@
 			<title>
 				<de>Aktena 8 eröffnet</de>
 				<en>Aktena 8 opened</en>
-				<pl></pl>
+				<pl>Aktena 8 otwarta</pl>
 			</title>
 			<description>
 				<de>Die Kunstschau mit über 400 austellenden Künstlern widmet sich erstmals verstärkt der Videokunst und breitet sich über das gesamte Stadtgebiet von Kassel aus.</de>
 				<en>The art show with more than 400 exhibiting artists is dedicated for the first time increasingly to video art and spreads over the entire city area of Kassel.</en>
-				<pl></pl>
+				<pl>Wystawa sztuki z ponad 400 wystawiającymi się artystami jest po raz pierwszy poświęcona sztuce wideo i obejmuje cały obszar miasta Kassel.</pl>
 			</description>
 			<data genre="5" flags="6" price="0.7" quality="41" happen_time="4,1987,6,12" />
 		</news>
@@ -939,12 +939,12 @@
 			<title>
 				<de>Aktena 8 beendet</de>
 				<en>Aktena 8 closed</en>
-				<pl></pl>
+				<pl>Aktena 8 zamknięta</pl>
 			</title>
 			<description>
 				<de>Nach 100 Tagen wurde die Weltkunstausstellung in Kassel mit fast einer halben Millionen Zuschauern beendet. Besucherrekord trotz beliebiger Kritiken aus Kritikerkreisen.</de>
 				<en>After 100 days, the world art exhibition in Kassel ended with almost half a million spectators. Record attendance despite criticism from critics.</en>
-				<pl></pl>
+				<pl>Po 100 dniach światowa wystawa sztuki w Kassel zakończyła się z prawie pół milionem widzów. Rekordowa frekwencja pomimo krytyki ze strony krytyków.</pl>
 			</description>
 			<data genre="5" flags="6" price="0.7" quality="41" happen_time="4,1987,10,20" />
 		</news>
@@ -953,12 +953,12 @@
 			<title>
 				<de>Festival verlegt</de>
 				<en>Festival postponed</en>
-				<pl></pl>
+				<pl>Festiwal przełożony</pl>
 			</title>
 			<description>
 				<de>Aufgrund technischer Gründe findet das diesjährige Festival der lebenden Bilder wie im Vorjahr in Sternheilig und nicht wie geplant an den Externsteinen statt.</de>
 				<en>For technical reasons, this year's Festival of Living Images will take place in Sternheilig, as last year, and not at the Externsteine as planned.</en>
-				<pl></pl>
+				<pl>Ze względów technicznych tegoroczny Festiwal Żywych Obrazów odbędzie się w Sternheilig, tak jak w zeszłym roku, a nie w Externsteine, jak planowano.</pl>
 			</description>
 			<data genre="5" price="0.7" quality="41" />
 			<availability script="TIME_MONTH=11" year_range_from="2003" year_range_to="2003" />
@@ -968,12 +968,12 @@
 			<title>
 				<de>Serienkanal startet</de>
 				<en>Channel for TV series starting</en>
-				<pl></pl>
+				<pl>Kanał dla rozpoczynających się seriali telewizyjnych</pl>
 			</title>
 			<description>
 				<de>Zu Beginn des nächsten Jahres soll ein Seriensender seinen Betrieb aufnehmen. Für die Aufnahme einer Serie ins Programm reichen 500 Seherzuschriften.</de>
 				<en>A channel for TV series is to begin operations at the beginning of next year. All that is needed for a series to be included in the program is 500 viewers' letters.</en>
-				<pl></pl>
+				<pl>Kanał dla seriali telewizyjnych ma ruszyć na początku przyszłego roku. Aby serial znalazł się w programie, wystarczy 500 listów od widzów.</pl>
 			</description>
 			<data genre="5" price="0.7" quality="31" />
 			<availability script="TIME_MONTH=5" year_range_from="1996" year_range_to="1996" />
@@ -983,12 +983,12 @@
 			<title>
 				<de>Wintereinbruch führt zu Engpässen</de>
 				<en>Onset of winter leads to bottlenecks</en>
-				<pl></pl>
+				<pl>Początek zimy prowadzi do zatorów na drogach</pl>
 			</title>
 			<description>
 				<de>Die durch den unzeitgemässen Wintereinbruch völlig verschneiten Strassen haben unter anderem zu einem eklatanten Kaffee-Engpass geführt.</de>
 				<en>Roads completely covered in snow due to the unseasonable onset of winter have led to a glaring shortage of coffee, among other things.</en>
-				<pl></pl>
+				<pl>Drogi całkowicie zasypane śniegiem z powodu niesezonowego nadejścia zimy doprowadziły między innymi do rażącego niedoboru kawy.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="27" />
 			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
@@ -998,12 +998,12 @@
 			<title>
 				<de>Kaffee-Ausstellung beendet</de>
 				<en>Coffee exhibition ended</en>
-				<pl></pl>
+				<pl>Wystawa kawy zakończona</pl>
 			</title>
 			<description>
 				<de>Die Karl-Marx-Städter Kaffee-Ausstellung mit über 400 Kaffeesorten aus 4 Kontinenten begann mit einer Novität: Erstmals wurden arktische Bohnen angeboten.</de>
 				<en>The Karl-Marx-Stadt coffee exhibition with over 400 coffees from 4 continents started with a novelty: Arctic beans were offered for the first time.</en>
-				<pl></pl>
+				<pl>Wystawa kawy w Karl-Marx-Stadt z ponad 400 kawami z 4 kontynentów rozpoczęła się od nowości: po raz pierwszy zaoferowano ziarna arktyczne.</pl>
 			</description>
 			<data genre="5" price="0.7" quality="31" />
 			<availability year_range_from="-1" year_range_to="1989" />
@@ -1013,12 +1013,12 @@
 			<title>
 				<de>Kaffee-Ausstellung beendet</de>
 				<en>Coffee exhibition ended</en>
-				<pl></pl>
+				<pl>Wystawa kawy zakończona</pl>
 			</title>
 			<description>
 				<de>Die Chemnitzer Kaffee-Ausstellung mit über 400 Kaffeesorten aus 4 Kontinenten begann mit einer Novität: Erstmals wurden arktische Bohnen angeboten.</de>
 				<en>The Chemnitz coffee exhibition with over 400 coffees from 4 continents started with a novelty: Arctic beans were offered for the first time.</en>
-				<pl></pl>
+				<pl>Wystawa kawy w Chemnitz z ponad 400 kawami z 4 kontynentów rozpoczęła się od nowości: po raz pierwszy zaoferowano ziarna arktyczne.</pl>
 			</description>
 			<data genre="5" price="0.7" quality="31" />
 			<availability year_range_from="1990" year_range_to="-1" />
@@ -1029,12 +1029,12 @@
 			<title>
 				<de>Deutsche Winzer für Klimawandel</de>
 				<en>German winemakers for climate change</en>
-				<pl></pl>
+				<pl>Niemieccy winiarze na rzecz zmian klimatu</pl>
 			</title>
 			<description>
 				<de>Eine Abordnung deutscher Weinbauern protestierte beim xten Klimagipfel für Maßnahmen zur Erderwärmung. Grund seien wirtschaftliche Erwägungen.</de>
 				<en>A delegation of German winegrowers protested at the umpteenth climate summit in favor of measures toward global warming. The reason, they said, was economic.</en>
-				<pl></pl>
+				<pl>Delegacja niemieckich plantatorów winorośli na kolejnym szczycie klimatycznym jest za podjęciem działań na rzecz walki z globalnym ociepleniem. Powód, jak powiedzieli, był ekonomiczny.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="31" />
 			<availability script="" year_range_from="" year_range_to="" />
@@ -1045,12 +1045,12 @@
 			<title>
 				<de>Völkerschlacht für ungültig erklärt</de>
 				<en>Battle of the Nations declared invalid</en>
-				<pl></pl>
+				<pl>Bitwa Narodów uznana za nieważną</pl>
 			</title>
 			<description>
 				<de>Wegen mehrfacher Verstöße gegen die damals gültigen Richtlinien der Kriegsführung wurde die Völkerschlacht bei Leipzig im Jahre 1813 für ungültig erklärt.</de>
 				<en>Due to multiple violations of the then valid guidelines of warfare, the Battle of the Nations at Leipzig in 1813 has been declared invalid.</en>
-				<pl></pl>
+				<pl>Z powodu wielokrotnego naruszenia obowiązujących wówczas wytycznych prowadzenia wojny, Bitwa Narodów pod Lipskiem w 1813 roku została uznana za nieważną.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="17" />
 			<availability script="" year_range_from="" year_range_to="" />
@@ -1061,12 +1061,12 @@
 			<title>
 				<de>Piraten klagen gegen Bundeswehr</de>
 				<en>Pirates file suit against Bundeswehr</en>
-				<pl></pl>
+				<pl>Piraci składają pozew przeciwko Bundeswehrze</pl>
 			</title>
 			<description>
 				<de>Mehrere von der Deutschen Seekriegsflotte bei der „Ausübung ihrer Erwerbstätigkeit“ behinderte somalische Piraten haben am Seerechtsgericht Kiel Klage erhoben.</de>
 				<en>Several Somali pirates hindered by the German naval fleet in the "exercise of their professional activity" have filed a lawsuit at the Kiel Maritime Court.</en>
-				<pl></pl>
+				<pl>Kilku somalijskich piratów, którym niemiecka flota wojenna przeszkodziła w "wykonywaniu ich działalności zawodowej", złożyło pozew do Sądu Morskiego w Kilonii.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="51" />
 			<availability script="" year_range_from="2009" year_range_to="" />
@@ -1076,12 +1076,12 @@
 			<title>
 				<de>Vorzeitiger Wintereinbruch abgelehnt</de>
 				<en>Premature onset of winter rejected</en>
-				<pl></pl>
+				<pl>Wczesny początek zimy odrzucony</pl>
 			</title>
 			<description>
 				<de>Das Parlament lehnte in einer Sondersitzung den vorzeitigen Wintereinbruch für dieses Jahr vor allem aus wirtschaftlichen Gründen mehrheitlich ab.</de>
 				<en>In a special session, the majority of the parliament rejected the early onset of winter for this year, mainly for economic reasons.</en>
-				<pl></pl>
+				<pl>Na specjalnej sesji większość parlamentu odrzuciła wczesny początek zimy w tym roku, głównie z powodów ekonomicznych.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="21" />
 			<availability script="TIME_SEASON=3" year_range_from="" year_range_to="" />
@@ -1092,12 +1092,12 @@
 			<title>
 				<de>Dreckschleuder Drei doch ans Netz</de>
 				<en>Polluter Three to be connected after all</en>
-				<pl></pl>
+				<pl>Zanieczyszczająca trójka ma jednak zostać włączona do sieci</pl>
 			</title>
 			<description>
 				<de>Der Verband der Luftkurorte begrüßt den Weiterbetrieb des veralteten Kraftwerks. Ein Sprecher dazu: „So werden doch auch bei uns Arbeitsplätze gesichert.“</de>
 				<en>The Association of Climatic Health Resorts welcomes the continued operation of the outdated power plant. A spokesman said: "This will also safeguard jobs in our region."</en>
-				<pl></pl>
+				<pl>Stowarzyszenie Uzdrowisk Klimatycznych z zadowoleniem przyjmuje dalsze funkcjonowanie przestarzałej elektrowni. Rzecznik prasowy powiedział: "Zabezpieczy to również miejsca pracy w naszym regionie".</pl>
 			</description>
 			<data genre="4" price="0.7" quality="41" />
 			<availability script="" year_range_from="" year_range_to="" />
@@ -1106,13 +1106,13 @@
 		<news id="Sjaele-news-Pfeifenbläser-Geheimdienste" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Pfeifenbläser für Geheimdienste</de>
-				<en>Whistleblowers in favor of secret services</en>
-				<pl></pl>
+				<en>Whistleblowers in favor of secret services</en><!--Unclear to me. It is about the "whistleblower" , that disturbs, whistles ?-->
+				<pl>Informatorzy na korzyść służb specjalnych</pl>
 			</title>
 			<description>
 				<de>In einer Protestresolution an mehrere Industrienationen plädiert die Pfeifenbläser-Vereinigung gegen die Zerstörung ihrer Existenzgrundlage.</de>
 				<en>In a protest resolution to several industrialized nations, the Whistleblowers Association pleads against the destruction of their livelihood.</en>
-				<pl></pl>
+				<pl>W rezolucji protestacyjnej skierowanej do kilku krajów uprzemysłowionych, Whistleblowers Association apeluje przeciwko niszczeniu ich źródła utrzymania.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="33" />
 			<availability script="" year_range_from="2006" year_range_to="" />
@@ -1121,13 +1121,13 @@
 		<news id="Sjaele-news-Pfeifenbläser-angeklagt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Pfeifenbläser angeklagt</de>
-				<en>Whistleblowers indicted</en>
-				<pl></pl>
+				<en>Whistleblowers indicted</en><!--Unclear to me. It is about the "whistleblower" , that disturbs, whistles ?-->
+				<pl>Informatorzy oskarżeni</pl>
 			</title>
 			<description>
 				<de>Wegen grober Störung der öffentlichen Ruhe wurde mehreren landesweit bekannten Pfeifenbläsern eine vierhundertseitige Klageschrift zugesandt.</de>
 				<en>A four-hundred-page complaint was sent to several nationally known whistleblowers for grossly disturbing public tranquility.</en>
-				<pl></pl>
+				<pl>Czterystustronicowa skarga została wysłana do kilku znanych w kraju sygnalistów za rażące zakłócanie spokoju publicznego.</pl>
 			</description>
 			<data genre="5" price="0.7" quality="22" />
 			<availability script="" year_range_from="2007" year_range_to="" />
@@ -1137,13 +1137,14 @@
 			<!-- deutschbezogen -->
 			<title>
 				<de>Funkloch in Leipzig</de>
-				<en>Leipzig losing signal</en>
-				<pl></pl>
+				<en>Leipzig losing signal</en><!--Unclear to me.-->
+				<pl>Lipsk traci sygnał</pl>
 			</title>
 			<description>
 				<de>Weil die Stadt gerade einen Tunnel durchquert, ist in den nächsten Jahren mit massiven Telefon- und Internetausfällen zu rechnen.</de>
 				<en>Because the city is currently passing through a tunnel, massive telephone and Internet outages can be expected over the next few years.</en>
-				<pl></pl>
+				<!--Unclear to me.-->
+				<pl>Ponieważ miasto przechodzi obecnie przez tunel, w ciągu najbliższych kilku lat należy spodziewać się masowych przerw w dostawie usług telefonicznych i internetowych.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="31" />
 			<availability script="" year_range_from="2003" year_range_to="2015" />
@@ -1154,12 +1155,12 @@
 			<title>
 				<de>City-Tunnel billiger</de>
 				<en>City tunnel cheaper</en>
-				<pl></pl>
+				<pl></pl><!--Unclear to me.-->
 			</title>
 			<description>
 				<de>Billiger als erwartet, wird der Leipziger City-Tunnel. Seine Kosten steigen lediglich auf das Doppelte, nicht auf das Dreifache.</de>
 				<en>The Leipzig City Tunnel will be cheaper than expected. Its costs will only double, not triple.</en>
-				<pl></pl>
+				<pl></pl><!--Unclear to me.-->
 			</description>
 			<data genre="0" price="1.0" quality="41" />
 			<availability script="" year_range_from="2014" year_range_to="2014" />
@@ -1169,12 +1170,12 @@
 			<title>
 				<de>Bahnchef bewertet Risiko</de>
 				<en>Head of German Bahn assesses risk</en>
-				<pl></pl>
+				<pl>Szef niemieckich kolei ocenia ryzyko</pl>
 			</title>
 			<description>
 				<de>Nach neuesten Einschätzungen seien die 4 Hauptrisiken für den Bahnbetrieb Frühling, Sommer, Herbst und Winter.</de>
 				<en>According to the latest assessments, the 4 main risks to rail operations are spring, summer, fall and winter.</en>
-				<pl></pl>
+				<pl>Zgodnie z najnowszymi szacunkami, cztery główne zagrożenia dla operacji kolejowych to wiosna, lato, jesień i zima.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="21" />
 			<availability script="" year_range_from="" year_range_to="" />
@@ -1184,12 +1185,12 @@
 			<title>
 				<de>Ex-Stellwerker verhindert Verspätung</de>
 				<en>Ex-railway control operator prevents delay</en>
-				<pl></pl>
+				<pl>Były dyżurny ruchu zapobiega opóźnieniom</pl>
 			</title>
 			<description>
 				<de>Weil er jeden Tag seine Ex-Arbeitsstelle besucht, reichte eine Taschenschaufel, um Weiche vom Schnee zu befreien: ICE pünktlich.</de>
 				<en>Because he visits his ex-workplace every day, a pocket shovel was enough to clear the switch from the snow: Intercity Express on time.</en>
-				<pl></pl>
+				<pl>Ponieważ codziennie odwiedza swoje byłe miejsce pracy, do odśnieżenia zwrotnicy wystarczyła kieszonkowa łopata: Intercity Express na czas.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="36" />
 			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
@@ -1199,12 +1200,12 @@
 			<title>
 				<de>iPhone zertrümmert</de>
 				<en>iPhone smashed</en>
-				<pl></pl>
+				<pl>Rozbity iPhone</pl>
 			</title>
 			<description>
 				<de>Weil ihn die Computerstimme nicht verstehen wollte, zertrümmerte Al Friedeno (73) auf der Toilette eines Restaurants sein iPhone.</de>
 				<en>Because the computer voice would not understand him, Al Friedeno (73) smashed his iPhone in the restroom of a restaurant.</en>
-				<pl></pl>
+				<pl>Ponieważ telefon nie chciał go zrozumieć, Al Friedeno (73 lata) rozbił swojego iPhone'a w toalecie restauracji.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2007" year_range_to="" />
@@ -1214,12 +1215,12 @@
 			<title>
 				<de>J. Täppisch voll uncool</de>
 				<en>J. Täppisch totally uncool</en>
-				<pl></pl>
+				<pl>J. Täppisch zupełnie nie-cool</pl>
 			</title>
 			<description>
 				<de>Meint seine Tochter (14). Er darf sie jetzt nicht mehr zu Konzerten begleiten.</de>
 				<en>His daughter (14) thinks so. He is now no longer allowed to accompany her to concerts.</en>
-				<pl></pl>
+				<pl>Mówi jego córka (14 lat). Nie wolno mu już towarzyszyć jej na koncertach.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2013" year_range_to="2015" />
@@ -1229,12 +1230,12 @@
 			<title>
 				<de>C. Koriatis Zusammenbruch</de>
 				<en>C. Koriati's collapse</en>
-				<pl></pl>
+				<pl>C. Koriatis zasłabł</pl>
 			</title>
 			<description>
 				<de>Costa brach beim Bierfest in Chemnitz zusammen. Inzwischen ist er wieder fit.</de>
 				<en>Costa collapsed at the beer festival in Chemnitz. He has since recovered.</en>
-				<pl></pl>
+				<pl>Costa zasłabł na festiwalu piwa w Chemnitz. Od tego czasu wrócił do zdrowia.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="15" />
 			<availability script="" year_range_from="2007" year_range_to="2011" />
@@ -1245,12 +1246,12 @@
 			<title>
 				<de>Jenaer Stadion gesperrt</de>
 				<en>Jena stadium closed</en>
-				<pl></pl>
+				<pl>Stadion w Jenie zamknięty</pl>
 			</title>
 			<description>
 				<de>Durch das Hochwasser verursachter Rost an den Flutlichtmasten gefährden die Zuschauer im Ernst-Abbe-Sportfeld. Ab sofort ist das Stadion für den Spielbetrieb gesperrt.</de>
 				<en>Rust on the floodlight poles caused by the flood water is endangering spectators at the Ernst-Abbe-Sportfeld. As of now, the stadium is closed for match operations.</en>
-				<pl></pl>
+				<pl>Rdza na słupach reflektorów spowodowana przez wodę powodziową zagraża widzom na Ernst-Abbe-Sportfeld. Obecnie stadion jest zamknięty dla widzów.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="27" />
 			<availability script="TIME_SEASON=1" year_range_from="2013" year_range_to="2013" />
