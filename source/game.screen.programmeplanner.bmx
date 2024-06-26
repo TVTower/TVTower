@@ -1365,7 +1365,7 @@ endrem
 				'else mark the exact live time (releasetime + blocks) slots
 				'(if planning day not in the past)
 	'				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay
-				ElseIf programme.licence.IsLive() and (planningDay = programmeStartDay or planningDay = programmeEndDay) 
+				ElseIf programme.licence.IsLive() and planningDay = programmeStartDay
 					'mark all others red
 					EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, -1)
 
@@ -1382,14 +1382,16 @@ endrem
 							Next
 						endif
 
-						'mark all future ad-slots allowed
-						Local start:Int = GetWorldTime().GetDayHour(programme.data.releaseTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)
-						if start <= 23
-							'keep the non-live "free"
-							For Local i:Int = start To 23
-								DisableSlotOverlay(i, -1)
-							Next
-						Endif
+						'mark all future slots allowed if the programme ends on the same day
+						If programmeStartDay = programmeEndDay
+							Local start:Int = GetWorldTime().GetDayHour(programme.data.releaseTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)
+							if start <= 23
+								'keep the non-live "free"
+								For Local i:Int = start To 23
+									DisableSlotOverlay(i, -1)
+								Next
+							Endif
+						EndIf
 						'EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
 					Else
 						'mark all forbidden slots
