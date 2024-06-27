@@ -469,7 +469,7 @@ Afryka, czasy I wojny światowej. Charlie Allnut, kawaler i łowca przygód, prz
 			<title>
 				<de>[1|Last] &amp; [2|Last] - Auf hohem Meere</de>
 				<en>[1|Last] &amp; [2|Last] - On the high seas</en>
-				<pl>[1|Last] &amp; [2|Last] - On the high seas</pl>
+				<pl>[1|Last] &amp; [2|Last] - Na wielkim morzu</pl>
 			</title>
 			<title_original>
 				<de>Laurel und Hardy: Auf hoher See</de>
@@ -495,7 +495,7 @@ Afryka, czasy I wojny światowej. Charlie Allnut, kawaler i łowca przygód, prz
 			<title>
 				<de>[1|Last] &amp; [2|Last] - Kinder der Wüste</de>
 				<en>[1|Last] &amp; [2|Last] - Progenies of the desert</en>
-				<pl>[1|Last] &amp; [2|Last] - Progenies of the desert</pl>
+				<pl>[1|Last] &amp; [2|Last] - Potomkowie pustyni</pl>
 			</title>
 			<title_original>
 				<de>Laurel und Hardy: Die Wüstensöhne</de>
@@ -550,7 +550,7 @@ Afryka, czasy I wojny światowej. Charlie Allnut, kawaler i łowca przygód, prz
 			<title>
 				<de>Being [3|Full]</de>
 				<en>Being [3|Full]</en>
-				<pl>Being [3|Full]</pl>
+				<pl>Być jak [3|Full]</pl>
 			</title>
 			<title_original>
 				<de>Being John Malkovich</de>
@@ -613,7 +613,7 @@ A love against all reason and rules of conduct, but all the more romantic for it
 			<title>
 				<de>Bleib ja am Hörer!</de>
 				<en>Stay on the phone!</en>
-				<pl>Stay on the phone!</pl>
+				<pl>Nie rozłączaj się!</pl>
 			</title>
 			<title_original>
 				<de>Nicht auflegen!</de>
@@ -677,7 +677,7 @@ Wysokie napięcie w oryginalnym wydaniu.</pl>
 			<title>
 				<de>Brenzliges Business</de>
 				<en>Precarious Business</en>
-				<pl>Precarious Business</pl>
+				<pl>Niepewny biznes</pl>
 			</title>
 			<title_original>
 				<de>Heiße Geschäfte</de>
@@ -705,7 +705,7 @@ Wysokie napięcie w oryginalnym wydaniu.</pl>
 			<title>
 				<de>Brunch bei Stephanie</de>
 				<en>Brunch at Stephanie's</en>
-				<pl>Brunch at Stephanie's</pl>
+				<pl>Brunch u Stephanie</pl>
 			</title>
 			<title_original>
 				<de>Frühstück bei Tiffany</de>
@@ -798,7 +798,7 @@ W większości niesmaczne, ale zabawne żarty.</pl>
 			<title>
 				<de>Canadian Fry - Wedding Party</de>
 				<en>Canadian Fry - Wedding Party</en>
-				<pl>Canadian Fry - Wedding Party</pl>
+				<pl>Canadian Fry - Przyjęcie weselne</pl>
 			</title>
 			<title_original>
 				<de>American Pie: Jetzt wird geheiratet</de>
@@ -861,7 +861,7 @@ Wciąż zabawne.</pl>
 			<title>
 				<de>Catch - Kühe und Rubine</de>
 				<en>Catch - Cows and rubies</en>
-				<pl>Catch - Cows and rubies</pl>
+				<pl>Catch - Krowy i rubiny</pl>
 			</title>
 			<title_original>
 				<de>Snatch: Schweine und Diamanten</de>
@@ -920,7 +920,7 @@ Film absolutnie szalony pod każdym względem.</pl>
 			<title>
 				<de>Coole Typen - Really Bad Boys</de>
 				<en>Cool Guys - Really Bad Boys</en>
-				<pl>Cool Guys - Really Bad Boys</pl>
+				<pl>Cool Guys - Naprawdę źli chłopcy</pl>
 			</title>
 			<title_original>
 				<de>Bad Boys - Harte Jungs</de>
@@ -1016,7 +1016,7 @@ Dawniej tylko dla dorosłych, ograniczenia zostały złagodzone.</pl>
 			<title>
 				<de>Das Geflügel</de>
 				<en>The Poultry</en>
-				<pl>The Poultry</pl>
+				<pl>Drób</pl>
 			</title>
 			<title_original>
 				<de>Die Vögel</de>
@@ -1048,7 +1048,7 @@ Jeden z późniejszych filmów reżysera: [0|Last]-a.</pl>
 			<title>
 				<de>Das Männerbaby</de>
 				<en>The Manbaby</en>
-
+				<pl>Juniorek</pl>
 			</title>
 			<title_original>
 				<de>Junior</de>
@@ -1105,6 +1105,7 @@ Przesadnie głupie.</pl>
 			<title>
 				<de>Das Tier in mir</de>
 				<en>The Animal in me</en>
+				<pl>Zwierzęcy instynkt</pl>
 			</title>
 			<title_original>
 				<de>Basic Instinct</de>
@@ -1164,6 +1165,7 @@ Oparta na prawdziwych faktach.</pl>
 			<title>
 				<de>Deodorant - Des Mörders Erzählung</de>
 				<en>Deodorant - The murderer's tale</en>
+				<pl>Dezodorant: Historia mordercy</pl>
 			</title>
 			<title_original>
 				<de>Das Parfum - Die Geschichte eines Mörders</de>
@@ -1224,6 +1226,7 @@ Oparta na prawdziwych faktach.</pl>
 			<title>
 				<de>Der befragte Vampir</de>
 				<en>The interrogated Vampire</en>
+				<pl>Przepytany wampir</pl>
 			</title>
 			<title_original>
 				<de>Interview mit einem Vampir</de>
@@ -1252,6 +1255,7 @@ Oparta na prawdziwych faktach.</pl>
 			<title>
 				<de>Der Dritte im Bunde</de>
 				<en>The Third in the Bunch</en>
+				<pl>Trzeci do kupy</pl>
 			</title>
 			<title_original>
 				<de>Der dritte Mann</de>
@@ -1282,6 +1286,7 @@ Wyjątkowy ze względu na muzykę i powojenny Wiedeń.</pl>
 			<title>
 				<de>Der Extraterrestrische</de>
 				<en>E.B. the Extraneous Being</en>
+				<pl>I.T.</pl>
 			</title>
 			<title_original>
 				<de>E.T. - Der Außerirdische</de>
@@ -1309,6 +1314,7 @@ Wyjątkowy ze względu na muzykę i powojenny Wiedeń.</pl>
 			<title>
 				<de>Der Gasthof im Spechtswald</de>
 				<en>The Tavern in the Spessart</en>
+				<pl>Tawerna w Spessart</pl>
 			</title>
 			<title_original>
 				<de>Das Wirtshaus im Spessart</de>
@@ -1337,6 +1343,7 @@ Wyjątkowy ze względu na muzykę i powojenny Wiedeń.</pl>
 			<title>
 				<de>Der Geister-Austreiber</de>
 				<en>The Ghost-Extractor</en>
+				<pl>Egorcysta</pl>
 			</title>
 			<title_original>
 				<de>Der Exorzist</de>
@@ -1371,6 +1378,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der Große Glubowski</de>
 				<en>The Great Glubowski</en>
+				<pl>The Great Glubowski</pl>
 			</title>
 			<title_original>
 				<de>The Big Lebowski</de>
@@ -1402,6 +1410,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der herbe Erdtrabant</de>
 				<en>The tart Earth Satellite</en>
+				<pl>Gorsze gody</pl>
 			</title>
 			<title_original>
 				<de>Bitter Moon</de>
@@ -1428,6 +1437,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der Kahn</de>
 				<en>The Barge</en>
+				<pl>Das okręt</pl>
 			</title>
 			<title_original>
 				<de>Das Boot</de>
@@ -1456,6 +1466,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der kleine Buddhist</de>
 				<en>The little Buddhist</en>
+				<pl>Mały buddysta</pl>
 			</title>
 			<title_original>
 				<de>Little Buddha</de>
@@ -1485,6 +1496,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der letzte Kinoheld</de>
 				<en>The Last Movie Star </en>
+				<pl>Ostatni bohater filmowy</pl>
 			</title>
 			<title_original>
 				<de>Last Action Hero</de>
@@ -1510,6 +1522,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der letzte Scout - Nicht Sterben</de>
 				<en>The Final Pathfinder</en>
+				<pl>Ostatni traper</pl>
 			</title>
 			<title_original>
 				<de>Last Boy Scout - Das Ziel ist Überleben</de>
@@ -1537,6 +1550,7 @@ Horror w najlepszym wydaniu.</pl>
 			<title>
 				<de>Der letzte Tai-Chi-Kämpfer</de>
 				<en>The last Tai-Chi-Fighter</en>
+				<pl>Ostatni Wojownik Tai Chi</pl>
 			</title>
 			<title_original>
 				<de>Last Samurai</de>
@@ -1569,6 +1583,7 @@ Wzruszająca, dość wiarygodna historia i wpadająca w ucho muzyka.</pl>
 			<title>
 				<de>Der mit den Wölfen schunkelt</de>
 				<en>Who Sways with the Wolves</en>
+				<pl>Kto kołysze się z wilkami</pl>
 			</title>
 			<title_original>
 				<de>Der mit dem Wolf tanzt</de>
@@ -1599,6 +1614,7 @@ Reżyserski debiut [0|Full], który warto zobaczyć.</pl>
 			<title>
 				<de>Der Spiegelmord</de>
 				<en>The Murder in the Mirror</en>
+				<pl>Morderstwo w lustrze</pl>
 			</title>
 			<title_original>
 				<de>Mord im Spiegel</de>
@@ -1629,6 +1645,7 @@ Well-known actors, but the concept is not convincing.</en>
 			<title>
 				<de>Der Taxifahrer</de>
 				<en>The Cab Driver</en>
+				<pl>Wściekły Taksówkarz</pl>
 			</title>
 			<title_original>
 				<de>Taxi Driver</de>
@@ -1660,6 +1677,7 @@ Zrozumiały i niepokojący, wspaniale zainscenizowany.</pl>
 			<title>
 				<de>Der Top-Staatsfeind</de>
 				<en>The Number One Enemy of the Nation</en>
+				<pl>Wróg numer jeden narodu</pl>
 			</title>
 			<title_original>
 				<de>Der Staatsfeind Nr. 1</de>
@@ -1690,6 +1708,7 @@ Zrozumiały i niepokojący, wspaniale zainscenizowany.</pl>
 			<title>
 				<de>Der übernatürliche Sinn</de>
 				<en>The Supernatural Sense</en>
+				<pl>Zmysł nadprzyrodzony</pl>
 			</title>
 			<title_original>
 				<de>The Sixth Sense</de>
@@ -1714,6 +1733,7 @@ Zrozumiały i niepokojący, wspaniale zainscenizowany.</pl>
 			<title>
 				<de>Der Vampirjäger</de>
 				<en>The Vampire Hunter</en>
+				<pl>Łowca wampirów</pl>
 			</title>
 			<title_original>
 				<de>Blade</de>
@@ -1746,6 +1766,7 @@ Krwawe widowisko dla fanów gatunku.</pl>
 			<title>
 				<de>Der Vampirjäger 2</de>
 				<en>The Vampire Hunter 2</en>
+				<pl>Łowca wampirów 2</pl>
 			</title>
 			<title_original>
 				<de>Blade II</de>
@@ -1778,6 +1799,7 @@ Udana kontynuacja strachu.</pl>
 			<title>
 				<de>Der Wachmann von Korpenigg</de>
 				<en>The Watchman from Korpenigg</en>
+				<pl>Strażnik z Korpenigg</pl>
 			</title>
 			<title_original>
 				<de>Der Hauptmann von Köpenick</de>
@@ -1805,6 +1827,7 @@ Udana kontynuacja strachu.</pl>
 			<title>
 				<de>Der Wut-Psychiater</de>
 				<en>The Anger Psychiatrist</en>
+				<pl>Psychiatra od gniewu</pl>
 			</title>
 			<title_original>
 				<de>Die Wutprobe</de>
@@ -1834,6 +1857,7 @@ Udana kontynuacja strachu.</pl>
 			<title>
 				<de>Determinator</de>
 				<en>The Determinator</en>
+				<pl>Determinator</pl>
 			</title>
 			<title_original>
 				<de>Terminator</de>
@@ -1865,6 +1889,7 @@ W ślad za nim rusza Kyle Reese, który ma chronić kobietę.
 			<title>
 				<de>Die Adretten vom Junker Bill</de>
 				<en>Cadets</en>
+				<pl>Kadeci</pl>
 			</title>
 			<title_original>
 				<de>Die Kadetten von Bunker Hill</de>
@@ -1893,6 +1918,7 @@ W ślad za nim rusza Kyle Reese, który ma chronić kobietę.
 			<title>
 				<de>Die Aktiengesellschaft</de>
 				<en>The Company</en>
+				<pl>Firemka</pl>
 			</title>
 			<title_original>
 				<de>Die Firma</de>
@@ -1923,6 +1949,7 @@ W ślad za nim rusza Kyle Reese, który ma chronić kobietę.
 			<title>
 				<de>Die Brücke beim Kai</de>
 				<en>The Bridge by the Quay</en>
+				<pl>Most na rzece Kai</pl>
 			</title>
 			<title_original>
 				<de>Die Brücke am Kwai</de>
@@ -1953,6 +1980,7 @@ Ich dowódca, chcąc udowodnić wyższość moralną i techniczną Brytyjczyków
 			<title>
 				<de>Die Dschungelgeschichte</de>
 				<en>Tale of the Jungle</en>
+				<pl>Opowieści z dżungli</pl>
 			</title>
 			<title_original>
 				<de>Das Dschungelbuch</de>
@@ -1984,6 +2012,7 @@ Arcydzieło.</pl>
 			<title>
 				<de>Die Elvis-Bande in Las Vegas</de>
 				<en>The Elvis Gang in Las Vegas</en>
+				<pl>Gang Elvisa w Las Vegas</pl>
 			</title>
 			<title_original>
 				<de>Crime is King</de>
@@ -2014,6 +2043,7 @@ Colorful action with [1|Full].</en>
 			<title>
 				<de>Die Fahreinheit 401</de>
 				<en>Fire Unit 401</en>
+				<pl>Fahrenheit 404</pl>
 			</title>
 			<title_original>
 				<de>Fahrenheit 451</de>
@@ -2042,6 +2072,7 @@ Colorful action with [1|Full].</en>
 			<title>
 				<de>Die Helfer: Feuersbrunst in Manhattan</de>
 				<en>Fireblaze in Manhattan</en>
+				<pl>Ogień na Manhattanie</pl>
 			</title>
 			<title_original>
 				<de>Die Retter - Feuerhölle in Manhattan</de>
@@ -2072,6 +2103,7 @@ Poruszający film, planowany jako serial telewizyjny - skończyło się na piloc
 			<title>
 				<de>Die Raubstewardess</de>
 				<en>The Robbery Stewardess</en>
+				<pl>Jellow Brown</pl>
 			</title>
 			<title_original>
 				<de>Jackie Brown</de>
@@ -2099,6 +2131,7 @@ Poruszający film, planowany jako serial telewizyjny - skończyło się na piloc
 			<title>
 				<de>Slumber Hallows</de>
 				<en>Slumber Hallows</en>
+				<pl>Jeździec z głową</pl>
 			</title>
 			<title_original>
 				<de>Sleepy Hollow</de>
@@ -2130,6 +2163,7 @@ Poruszający film, planowany jako serial telewizyjny - skończyło się na piloc
 			<title>
 				<de>Die Sicht zum Hinterhof</de>
 				<en>The View to the Backyard</en>
+				<pl>Widok na podwórko</pl>
 			</title>
 			<title_original>
 				<de>Das Fenster zum Hof</de>
@@ -2159,6 +2193,7 @@ Poruszający film, planowany jako serial telewizyjny - skończyło się na piloc
 			<title>
 				<de>Die Streichholzhammerbowle</de>
 				<en>The Mulled Wine on Fire</en>
+				<pl>Grzane wino w ogniu</pl>
 			</title>
 			<title_original>
 				<de>Die Feuerzangenbowle</de>
@@ -2188,6 +2223,7 @@ Nie jest to łatwe zadanie. Wersja z 1970 roku.</pl>
 			<title>
 				<de>Die Streichholzhammerbowle</de>
 				<en>The Mulled Wine on Fire</en>
+				<pl>Grzane wino w ogniu</pl>
 			</title>
 			<title_original>
 				<de>Die Feuerzangenbowle</de>
@@ -2218,6 +2254,7 @@ Porywający klasyk z [1|Full]. Ekranizacja powieści z 1933 roku z 1944 roku.</p
 			<title>
 				<de>Die Wohnung</de>
 				<en>The Condo</en>
+				<pl>Mieszkanko</pl>
 			</title>
 			<title_original>
 				<de>Das Appartement</de>
@@ -2248,6 +2285,7 @@ Wzlot, upadek kariery i życia osobistego pracownika biurowego. Doskonała obsad
 			<title>
 				<de>Die Zugspanner</de>
 				<en>The Rail Watchers</en>
+				<pl>Transputting</pl>
 			</title>
 			<title_original>
 				<de>Trainspotting - Neue Helden</de>
@@ -2276,6 +2314,7 @@ Wzlot, upadek kariery i życia osobistego pracownika biurowego. Doskonała obsad
 			<title>
 				<de>Diesseits von Namibia</de>
 				<en>This Side of Namibia</en>
+				<pl>Off Africa - Pożegnanie z czarnym lądem</pl>
 			</title>
 			<title_original>
 				<de>Jenseits von Afrika</de>
@@ -2302,6 +2341,7 @@ Wzlot, upadek kariery i życia osobistego pracownika biurowego. Doskonała obsad
 			<title>
 				<de>Doktor Schiefwagen</de>
 				<en>Doctor Sheerwagon</en>
+				<pl>Doktor Żygadło</pl>
 			</title>
 			<title_original>
 				<de>Doktor Schiwago</de>
@@ -2331,6 +2371,7 @@ Wzlot, upadek kariery i życia osobistego pracownika biurowego. Doskonała obsad
 			<title>
 				<de>Dr. Merkwürdig oder: Wie ich lernte, die Bombe zu mögen</de>
 				<en>Dr. Weirdlike or: Loving the BOOM!</en>
+				<pl>Dr Stringlove, czyli jak przestałem się martwić i zakopałem bombę</pl>
 			</title>
 			<title_original>
 				<de>Dr. Seltsam oder: Wie ich lernte, die Bombe zu lieben</de>
@@ -2358,6 +2399,7 @@ Wzlot, upadek kariery i życia osobistego pracownika biurowego. Doskonała obsad
 			<title>
 				<de>Drei Kerle im Eis</de>
 				<en>Three Guys on the Ice</en>
+				<pl>Trzech mężczyzn na lodzie</pl>
 			</title>
 			<title_original>
 				<de>Drei Männer im Schnee</de>
@@ -2386,6 +2428,7 @@ Wysokiej klasy komedia z 1955 roku.</pl>
 			<title>
 				<de>Drei Kerle in einem Ruderboot</de>
 				<en>Three Blokes on a Rowboat</en>
+				<pl>Trzech mężczyzn na barce</pl>
 			</title>
 			<title_original>
 				<de>Drei Mann in einem Boot</de>
@@ -2414,6 +2457,7 @@ Trio [1|Last], [2|Last], [3|Last] zapewnia ogromną frajdę z filmu.</pl>
 			<title>
 				<de>Durch die Augen des Killers</de>
 				<en>With the Eyes of a Murderer</en>
+				<pl>Oczyma Morderców</pl>
 			</title>
 			<title_original>
 				<de>Mit den Augen eines Mörders</de>
@@ -2450,6 +2494,7 @@ Szokujący thriller z [1|Full].
 			<title>
 				<de>Durchs wilde Tadschikistan</de>
 				<en>Through the wild Tajikistan</en>
+				<pl>Przez dziki Kurostan</pl>
 			</title>
 			<title_original>
 				<de>Durchs wilde Kurdistan</de>
@@ -2480,6 +2525,7 @@ Ekscytująca przygoda zaadaptowana z [5|Full].</pl>
 			<title>
 				<de>Ehre in Frage gestellt</de>
 				<en>A Modicum of Honor</en>
+				<pl>A Few Good Year - Ludzie zniewagi</pl>
 			</title>
 			<title_original>
 				<de>Eine Frage der Ehre</de>
@@ -2510,6 +2556,7 @@ Trzymający w napięciu thriller wojskowy. Świetna obsada.</pl>
 			<title>
 				<de>Ein Toter zum Nachtisch</de>
 				<en>A Corpse for Dessert</en>
+				<pl>Mixed by Death - Zatłuczony na śmierć</pl>
 			</title>
 			<title_original>
 				<de>Eine Leiche zum Dessert</de>
@@ -2544,6 +2591,7 @@ Przezabawna rozrywka i fajerwerki gagów.</pl>
 			<title>
 				<de>Eine nimmerendende Erzählung</de>
 				<en>An Unending Tale</en>
+				<pl>The Nevercounting Story - Nielicząca się opowieść</pl>
 			</title>
 			<title_original>
 				<de>Die unendliche Geschichte</de>
@@ -2577,6 +2625,7 @@ Przebuj Limalha o tym  samym tytule.</pl>
 			<title>
 				<de>Elitekampf</de>
 				<en>Elite Combat</en>
+				<pl>Battle Croyale</pl>
 			</title>
 			<title_original>
 				<de>Battle Royale</de>
@@ -2607,6 +2656,7 @@ Ultra brutalne, ale niezbyt naciągane.</pl>
 			<title>
 				<de>Unearthling - Das schreckliche Wesen aus dem All</de>
 				<en>Unearthling</en>
+				<pl>Owczy - 8. pasażer "Nostromo"</pl>
 			</title>
 			<title_original>
 				<de>Alien - Das unheimliche Wesen aus einer fremden Welt</de>
@@ -2637,6 +2687,7 @@ Ultra brutalne, ale niezbyt naciągane.</pl>
 			<title>
 				<de>Unearthling - Die Reinkarnation</de>
 				<en>Unearthling: The Rebirth</en>
+				<pl>Owczy: Przebujanie</pl>
 			</title>
 			<title_original>
 				<de>Alien - Die Wiedergeburt</de>
@@ -2661,6 +2712,7 @@ Ultra brutalne, ale niezbyt naciągane.</pl>
 			<title>
 				<de>Unearthlings - Sie sind zurück</de>
 				<en>Unearthlings - They're Back</en>
+				<pl>Owczy - decydujące zatarcie</pl>
 			</title>
 			<title_original>
 				<de>Aliens - Die Rückkehr</de>
@@ -2686,6 +2738,7 @@ Ultra brutalne, ale niezbyt naciągane.</pl>
 			<title>
 				<de>Unearthling 3</de>
 				<en>Unearthling 3</en>
+				<pl>Owczy 3</pl>
 			</title>
 			<title_original>
 				<de>Alien 3</de>
@@ -2711,6 +2764,7 @@ Ultra brutalne, ale niezbyt naciągane.</pl>
 			<title>
 				<de>Unearthling vs Poacher</de>
 				<en>Unearthling vs Poacher</en>
+				<pl>Owce kontra Prykator</pl>
 			</title>
 			<title_original>
 				<de>Alien vs. Predator</de>
@@ -2738,6 +2792,7 @@ A bit more could have been made of such a confrontation, arguably.</en>
 			<title>
 				<de>Far Track - Der Film</de>
 				<en>Far Track - The Motion Picture</en>
+				<pl>Star Treck</pl>
 			</title>
 			<title_original>
 				<de>Star Trek: Der Film</de>
@@ -2766,6 +2821,7 @@ A bit more could have been made of such a confrontation, arguably.</en>
 			<title>
 				<de>Far Track II - Das Korn des Hahns</de>
 				<en>Far Track II - The Bark of Khan</en>
+				<pl>Star Treck II</pl>
 			</title>
 			<title_original>
 				<de>Star Trek II: Der Zorn des Khan</de>
@@ -2794,6 +2850,7 @@ A bit more could have been made of such a confrontation, arguably.</en>
 			<title>
 				<de>Far Track III - Die Suche nach Mr. Scook</de>
 				<en>Far Track III - The Search for Scook</en>
+				<pl>Star Treck III</pl>
 			</title>
 			<title_original>
 				<de>Star Trek III: Auf der Suche nach Mr. Spock</de>
@@ -2822,6 +2879,7 @@ A bit more could have been made of such a confrontation, arguably.</en>
 			<title>
 				<de>Far Track IV - Zurück ins Präsens</de>
 				<en>Far Track IV - The Journey Home</en>
+				<pl>Star Treck IV</pl>
 			</title>
 			<title_original>
 				<de>Star Trek IV: Zurück in die Gegenwart</de>
@@ -2850,6 +2908,7 @@ A bit more could have been made of such a confrontation, arguably.</en>
 			<title>
 				<de>Far Track VIII - Das erste Treffen</de>
 				<en>Far Track VIII - The First Encounter</en>
+				<pl>Star Treck VIII: Pierwszy takt</pl>
 			</title>
 			<title_original>
 				<de>Star Trek: Der erste Kontakt</de>
