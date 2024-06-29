@@ -2927,8 +2927,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="8" flags_optional="66" />
-			<groups target_groups="68" />
+			<data flags="8" flags_optional="66" target_groups_optional="68" />
 			<genres maingenre="13" subgenres="15" />
 			<blocks min="3" max="5" slope="45" />
 			<price min="67000" max="99500" slope="90" />
@@ -2963,8 +2962,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags_optional="34" />
-			<groups target_groups="3" />
+			<data flags_optional="34" target_groups_optional="3" />
 			<genres maingenre="10" subgenres="1" />
 			<blocks min="1" max="2" slope="75" />
 			<price min="10000" max="29500" slope="40" />
@@ -2994,8 +2992,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="0" gender="1" />
 			</jobs>
-			<data flags="2" flags_optional="16" />
-			<groups target_groups="3" target_groups_optional="4" />
+			<data flags="2" flags_optional="16" target_groups="3" target_groups_optional="4"/>
 			<genres maingenre="3" subgenres="5" />
 			<blocks min="1" max="2" slope="55" />
 			<price min="15000" max="39500" slope="50" />
@@ -3091,8 +3088,7 @@
 				<job index="3" function="2" required="1" gender="2" />
 				<job index="4" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="8" flags_optional="66" />
-			<groups target_groups="256" />
+			<data flags="8" flags_optional="66" target_groups="256"/>
 			<genres maingenre="18" subgenres="7" />
 			<blocks min="2" max="3" slope="25" />
 			<price min="61000" max="99500" slope="50" />
@@ -3143,8 +3139,7 @@
 				<job index="2" function="32" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="144" flags_optional="67" production_broadcast_flags="512" />
-			<groups target_groups="16" />
+			<data flags="144" flags_optional="67" production_broadcast_flags="512" target_groups="16"/>
 			<genres maingenre="0" />
 			<blocks min="1" max="2" slope="5" />
 			<price min="80000" max="99999" slope="85" />
