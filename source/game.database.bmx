@@ -1387,7 +1387,7 @@ Type TDatabaseLoader
 		For Local nodeMember:TxmlNode = EachIn xml.GetNodeChildElements(nodeStaff)
 			If nodeMember.getName().ToLower() <> "member" Then Continue
 
-			Local memberIndex:Int = xml.FindValueIntLC(nodeMember, "index", 0)
+			Local memberIndex:Int = xml.FindValueIntLC(nodeMember, "index", -1)
 			Local memberFunction:Int = xml.FindValueIntLC(nodeMember, "function", 0)
 			Local memberGenerator:String = xml.FindValueLC(nodeMember, "generator", "")
 			Local jobRoleGUID:String = xml.FindValueLC(nodeMember, "role_guid", "")
@@ -1449,7 +1449,7 @@ Type TDatabaseLoader
 			member.SetJob(memberFunction)
 
 			'add cast
-			programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction, member.gender, member.countryCode, jobRoleID))
+			programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction, member.gender, member.countryCode, jobRoleID), memberIndex)
 		Next
 
 
