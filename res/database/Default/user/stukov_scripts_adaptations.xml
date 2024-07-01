@@ -162,7 +162,7 @@
 			<description>
 				<de>Verfilmung der Buchreihe Die Goblins um %Goblin% den Goblin und den vergessenen Gott %Gott%.</de>
 				<en>Adaptation of the book series The Goblins about %Goblin% the goblin and the forgotten god %Gott%.</en>
-				<pl>Adaptacja serii książek The Goblins o %Goblinie% goblinie i zapomnianym bogu %Gott%.</pl>
+				<pl>Adaptacja serii książek Gobliny, o goblinie %Goblin% i zapomnianym bogu %Gott%.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Goblins_1">
@@ -221,7 +221,7 @@
 				<Gott>
 					<de>Schattenstern|Isa|Lichtbeisser|Ipsep|Noc|Herbststern</de>
 					<en>Shadowstar|Isa|Lightbiter|Ipsep|Noc|Autumnstar</en>
-					<pl>Cienista Gwiazda|Isa|Lightbiter|Ipsep|Noc|Jesienna Gwiazda</pl>
+					<pl>Cienista Gwiazda|Isa|Lekkigryzak|Ipsep|Noc|Jesienna Gwiazda</pl>
 				</Gott>
 				<Goblin>
 					<de>Jig|Braf|Relka|Grell</de>

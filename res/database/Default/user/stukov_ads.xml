@@ -131,7 +131,7 @@
 			<description>
 				<de>Kapitalia Lebensversicherungen - Wir verwalten ihr Geld schnell und verlässlich.</de>
 				<en>Kapitalia Life Insurance - We manage your money quickly and reliably.</en>
-				<pl>Kapitalia Life Insurance - Zarządzamy Twoimi pieniędzmi szybko i niezawodnie.</pl>
+				<pl>Kapitalia Ubezpieczenia na życie - Zarządzamy Twoimi pieniędzmi szybko i niezawodnie.</pl>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="32" repetitions="1" duration="2" profit="550" penalty="2181" infomercial_profit="251" fix_infomercial_profit="1" />
@@ -224,7 +224,7 @@
 			<title>
 				<de>UranLight</de>
 				<en>UraniumLight</en>
-				<pl>UraniumLight</pl>
+				<pl>UraniumFit</pl>
 			</title>
 			<description>
 				<de>50 Kilo weniger in 2 Tagen mit der neuen Fusions-Diät.</de>
@@ -238,6 +238,7 @@
 		<ad id="9e09ce1b-294d-4ddc-9910-d33ddbdb1e19" comment="from Mad TV">
 			<title>
 				<de>Juicycat</de>
+				<pl>Koci-Sok</pl>
 			</title>
 			<description>
 				<de>Echter, klarer Katzensaft! Mjamjam!</de>
@@ -252,12 +253,12 @@
 			<title>
 				<de>Nobill</de>
 				<en>Cheapo-Cheapo</en>
-				<pl>Cheapo-Cheapo</pl>
+				<pl>BezOpłat</pl>
 			</title>
 			<description>
 				<de>Billig - billiger - Nobill.</de>
 				<en>Cheap - cheaper - Cheapo-cheapo.</en>
-				<pl>Tani - tańszy - Cheapo-cheapo.</pl>
+				<pl>Tani - tańszy - BezOpłat.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
 			<data quality="31" repetitions="2" duration="8" profit="410" penalty="1100" infomercial_profit="3" fix_infomercial_profit="1" />
@@ -309,6 +310,7 @@
 		<ad id="05c35bc8-df60-4478-af4e-66691a0f2402" comment="1980 - 1985 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL PCs</de>
+				<pl>Komputery ESCAL PC</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 4000 kHz.</de>
@@ -323,6 +325,7 @@
 		<ad id="54841279-32c4-46ba-bf27-79069a81e646" comment="1986 - 1989 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL XTs</de>
+				<pl>Komputery ESCAL XT</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 8000 kHz.</de>
@@ -337,6 +340,7 @@
 		<ad id="8efa85c7-e567-413f-8475-b594bb1ebc6c" comment="1990 - 1993 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL ATs</de>
+				<pl>Komputery ESCAL AT</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 12.000 kHz.</de>
@@ -351,6 +355,7 @@
 		<ad id="563600d9-8e5b-43bb-8acc-5358609273d4" comment="1994 - 2002 | https://en.wikipedia.org/wiki/Escom_AG | also https://en.wikipedia.org/wiki/Pentium | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL Penturium</de>
+				<pl>Komputery ESCAL Penturium</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 66.000 kHz.</de>
@@ -365,6 +370,7 @@
 		<ad id="171d5785-f6cd-4f16-b025-655539567bc0" comment="2003 - forever | https://en.wikipedia.org/wiki/Escom_AG | also spoofing https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL Forever</de>
+				<pl>Komputery ESCAL Forever</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Jetzt als einmaliges Komponenten-Bastel-Set.</de>
@@ -379,6 +385,7 @@
 		<ad id="21b1952e-22d9-4055-a913-092b6b458cfd" comment="1980 - 2002 | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
 				<de>HiScreen</de>
+				<pl>Telewizory HiScreen</pl>
 			</title>
 			<description>
 				<de>Gestochen scharfes Bild der Zukunft.</de>
@@ -393,6 +400,7 @@
 		<ad id="74fe2e5a-74b1-43fa-9892-d042203179b0" comment="2003 - forever | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
 				<de>HiScreen.deu</de>
+				<pl>Telewizory HiScreen XSL</pl>
 			</title>
 			<description>
 				<de>Gestochen scharfes Bild der Zukunft. Jetzt in extra-flach.</de>
@@ -423,12 +431,12 @@
 			<title>
 				<de>WuffGenuss</de>
 				<en>PamperPooch</en>
-				<pl>PamperPooch</pl>
+				<pl>HauHauJedz</pl>
 			</title>
 			<description>
 				<de>Verwöhnen Sie Ihren Vierbeiner mit pfotig-pfundigem Genuss. Jeder Bissen ein wedelndes Erlebnis. WuffGenuss - Die Kraft im Napf!</de>
 				<en>Indulge your furry friend with paw-some taste. Where every bite is a tail-wagging delight. PamperPooch - Where Taste Meets Tail!</en>
-				<pl>Rozkoszuj się smakiem swojego futrzanego przyjaciela. Gdzie każdy kęs jest rozkoszą dla merdającego ogona. PamperPooch - Gdzie smak spotyka się z ogonem!</pl>
+				<pl>Rozkoszuj się smakiem swojego futrzanego przyjaciela. Gdzie każdy kęs jest rozkoszą dla merdającego ogona. HauHauJedz - Gdzie smak spotyka się z ogonem!</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="1" duration="2" profit="1000" penalty="2609" infomercial_profit="145" fix_infomercial_profit="1" />
@@ -465,6 +473,7 @@
 		<ad id="484b2441-8a91-4e88-81bc-bb3ad4e0aebe" comment="seems inspired from Mad TV, but isn't verbatim">
 			<title>
 				<de>Kitty Food</de>
+				<pl>Karma Kitty</pl>
 			</title>
 			<description>
 				<de>Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
@@ -701,7 +710,7 @@
 			<description>
 				<de>Nous translate alles!</de>
 				<en>Nous translate alles!</en>
-				<pl>Maple-Translate tłumaczy alles!</pl>
+				<pl>Nous tłumaczy alles!</pl>
 			</description>
 			<conditions min_audience="9.3772" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="14" repetitions="1" duration="4" profit="345" penalty="1200" infomercial_profit="46" fix_infomercial_profit="1" />
@@ -811,6 +820,7 @@
 		<ad id="8b945529-7cc6-46a8-b572-47189c26b43a" comment="description from Mad TV 'Aunt Lizzy'; title already existing in TVTower, hence the variation">
 			<title>
 				<de>Aunt Lucy's</de>
+				<pl>Od Cioci Lucy</pl>
 			</title>
 			<description>
 				<de>Das einzig natürliche Apfelsirup.</de>
@@ -824,11 +834,12 @@
 		<ad id="8be83e54-ef37-44e4-9bc1-1df0eded9843" comment="another 'Aunt Lizzy' variation for fun and profit">
 			<title>
 				<de>Aunt Lilly's</de>
+				<pl>Od Cioci Lilly</pl>
 			</title>
 			<description>
 				<de>Das Ahornwunder von Aunt Lilly's: Süße neu definiert.</de>
 				<en>Maple Marvels by Aunt Lilly's: Sweetness Redefined.</en>
-				<pl>Maple Marvels cioci Lilly: Słodycz na nowo zdefiniowana.</pl>
+				<pl>Syrop klonowy cioci Lilly: Słodycz na nowo zdefiniowana.</pl>
 			</description>
 			<conditions min_audience="0.1" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="14" repetitions="7" duration="6" profit="3400" penalty="4400" infomercial_profit="121" fix_infomercial_profit="1" />
@@ -876,6 +887,7 @@
 		<ad id="5fc3f896-7c85-4ecc-aca6-8d689eaf2291" creator="9584" created_by="Stukov" comment="from Mad TV">
 			<title>
 				<de>Adventravel</de>
+				<pl>Biuro podróży "Przygoda"</pl>
 			</title>
 			<description>
 				<de>Schwimmen im Piranha-See und viele andere günstige Angebote!</de>

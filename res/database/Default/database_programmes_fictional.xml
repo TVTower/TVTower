@@ -503,7 +503,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Der neue wird eingewiesen</de>
 						<en>The New One is Briefed</en>
-						<pl>The New One is Briefed</pl>
+						<pl>Nowy został poinformowany</pl>
 					</title>
 					<description>
 						<de>Die neuen Moderatoren [0|Full] und [1|Full] weisen den Neuling, [5|First] '[5|Nick]' [5|Last] ein... mit Stühlen auf dem Rücken.</de>
@@ -834,7 +834,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<description>
 						<de></de>
 						<en></en>
-						<pl>Grupa A</pl> 
+						<pl></pl> 
 					</description>
 					<staff>
 						<member index="1" function="2">8dbf9ebe-a0a1-4400-8ed5-82cd8ac0185e</member>
@@ -850,7 +850,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<description>
 						<de></de>
 						<en></en>
-						<pl>Grupa A</pl>
+						<pl></pl>
 					</description>
 					<staff>
 						<member index="1" function="2">c0b2d723-bf35-4e05-868c-205815edd356</member>
@@ -866,7 +866,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<description>
 						<de></de>
 						<en></en>
-						<pl>Finał</pl>
+						<pl></pl>
 					</description>
 					<staff>
 						<member index="1" function="2">88595c7f-30bf-4600-add4-43098011d419</member>
@@ -1171,7 +1171,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Seniorensause</de>
 				<en>Seniors Big Bash</en>
-				<pl>Senioreza - O seniorach</pl>
+				<pl>Wielka impreza seniorów</pl>
 			</title>
 			<description>
 				<de>[1|Full] trifft rüstige Rentner aus den Geriatriehochburgen Deutschlands.</de>
@@ -1276,14 +1276,14 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>Lothar Molch</de>
 						<en>Landon Newt</en>
-						<pl>Landon Newt</pl>
+						<pl>Landon Traszka</pl>
 					</title>
 					<description>
 						<de>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
 Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 						<en>Guests at the start of the new show: Landon Newt, Chairman of the Graytinged Panthers, and Sabrina Sleaze from the Office of Social Affairs.
 Do the two offer enough material for an exciting panel?</en>
-						<pl>Goście na starcie nowego programu: Landon Newt, przewodniczący Graytinged Panthers, oraz Sabrina Sleaze z Biura Spraw Społecznych.
+						<pl>Goście na starcie nowego programu: Landon Traszka, przewodniczący Szarych Panter, oraz Sabrina Filc z Biura Spraw Społecznych.
 Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</pl>
 					</description>
 					<staff>
@@ -1296,12 +1296,12 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					<title>
 						<de>James Glatzkowski und Lara Luftig</de>
 						<en>James Baldowski and Lara Leezy</en>
-						<pl>James Baldowski i Lara Leezy</pl>
+						<pl>James Łysowski i Lara Zwiewna</pl>
 					</title>
 					<description>
 						<de>Nach dem furiosen Start bittet [1|Full] nun zum Starduell. Promi-Friseur James Glatzkowski und Boxen-Luder Lara Luftig diskutieren zum Thema Kanzlerneuwahl und allgemeine Regierungspolitik.</de>
 						<en>After the furious start, [1|Full] now asks for a star duel. Celebrity hairdresser James Baldowski and pit babe Lara Leezy discuss the election of the new chancellor and general government policy.</en>
-						<pl>Po wściekłym początku, [1|Full] prosi teraz o pojedynek gwiazd. Fryzjer gwiazd James Baldowski i pit babe Lara Leezy dyskutują o wyborze nowego kanclerza i ogólnej polityce rządu.</pl>
+						<pl>Po wściekłym początku, [1|Full] prosi teraz o pojedynek gwiazd. Fryzjer gwiazd James Łysowski i bokserska zdzira Lara Zwiewna dyskutują o wyborze nowego kanclerza i ogólnej polityce rządu.</pl>
 					</description>
 					<staff>
 						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -1559,7 +1559,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					<description>
 						<de>Heute moderiert Sabine, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</de>
 						<en>Today Sabine, formerly Björn, hosts the show. But she keeps her panties on.</en>
-						<pl>Dziś Sabine, dawniej Björn, jest gospodarzem programu. Ale nie zdejmuje majtek.</pl>
+						<pl>Dziś Sabina, dawniej Björn, jest gospodarzem programu. Ale nie zdejmuje majtek.</pl>
 					</description>
 					<ratings critics="8" speed="28" />
 				</programme>

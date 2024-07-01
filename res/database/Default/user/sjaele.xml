@@ -878,7 +878,7 @@
 			<title>
 				<de>Rote Brause Leipzig dementiert</de>
 				<en>Red Bubbles Leipzig denies</en>
-				<pl>Red Bubbles Leipzig zaprzecza</pl>
+				<pl>Czerwone bąbelki Lipsk zaprzecza</pl>
 			</title>
 			<description>
 				<de>Sie seien ein ganz normaler Fußballverein. Die Namensgleicheit zum Brausefabrikant zufällig.</de>
@@ -1106,13 +1106,13 @@
 		<news id="Sjaele-news-Pfeifenbläser-Geheimdienste" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Pfeifenbläser für Geheimdienste</de>
-				<en>Whistleblowers in favor of secret services</en><!--Unclear to me. It is about the "whistleblower" , that disturbs, whistles ?-->
-				<pl>Informatorzy na korzyść służb specjalnych</pl>
+				<en>Whistleblowers in favor of secret services</en>
+				<pl>Gwiżdżący gwiżdżą na korzyść służb specjalnych</pl>
 			</title>
 			<description>
 				<de>In einer Protestresolution an mehrere Industrienationen plädiert die Pfeifenbläser-Vereinigung gegen die Zerstörung ihrer Existenzgrundlage.</de>
 				<en>In a protest resolution to several industrialized nations, the Whistleblowers Association pleads against the destruction of their livelihood.</en>
-				<pl>W rezolucji protestacyjnej skierowanej do kilku krajów uprzemysłowionych, Whistleblowers Association apeluje przeciwko niszczeniu ich źródła utrzymania.</pl>
+				<pl>W rezolucji protestacyjnej skierowanej do kilku krajów uprzemysłowionych, Stowarzyszenie informatorów apeluje przeciwko niszczeniu ich źródła utrzymania.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="33" />
 			<availability script="" year_range_from="2006" year_range_to="" />
@@ -1137,14 +1137,13 @@
 			<!-- deutschbezogen -->
 			<title>
 				<de>Funkloch in Leipzig</de>
-				<en>Leipzig losing signal</en><!--Unclear to me.-->
+				<en>Leipzig losing signal</en>
 				<pl>Lipsk traci sygnał</pl>
 			</title>
 			<description>
 				<de>Weil die Stadt gerade einen Tunnel durchquert, ist in den nächsten Jahren mit massiven Telefon- und Internetausfällen zu rechnen.</de>
 				<en>Because the city is currently passing through a tunnel, massive telephone and Internet outages can be expected over the next few years.</en>
-				<!--Unclear to me.-->
-				<pl>Ponieważ miasto przechodzi obecnie przez tunel, w ciągu najbliższych kilku lat należy spodziewać się masowych przerw w dostawie usług telefonicznych i internetowych.</pl>
+				<pl>Ponieważ miasto prowadzi obecnie budowę tunelu, w ciągu najbliższych kilku lat należy spodziewać się masowych przerw w dostawie usług telefonicznych i internetowych.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="31" />
 			<availability script="" year_range_from="2003" year_range_to="2015" />

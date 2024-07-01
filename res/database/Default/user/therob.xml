@@ -443,7 +443,7 @@
 			<title>
 				<de>Jo Mei, ei schei Jodeler</de>
 				<en>Jo Mei, a fu'ing yodeler</en>
-				<pl>Jo Mei, a fu'ing yodeler</pl>
+				<pl>Jo Mei, je b any jodler</pl>
 			</title>
 			<description>
 				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
@@ -623,7 +623,7 @@
 				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 				<de>Wilhelm Tell</de>
 				<en>William Tell</en>
-				<pl>William Tell</pl>
+				<pl>Wilhelm Tell</pl>
 			</title>
 			<description>
 				<de>Wilhelm Tell schießt eifrig mit seiner Armbrust Äpfel von den Köpfen. Der schweizer Robin Hood.</de>
@@ -1886,7 +1886,7 @@
 					<title>
 						<de>0 auf 1000 km/h in 3 Sekunden</de>
 						<en>0 on 764 mph in 3 seconds</en>
-						<pl>Od 0 do 764 mph w 3 sekundy</pl>
+						<pl>Od 0 do 1000 km/h w 3 sekundy</pl>
 					</title>
 					<description>
 						<de>Der wahre Autobausatz mit einem wundervollen V2 Triebwerk. Straßenzulassung ist garantiert. Ein wundervolles Handling.</de>
@@ -1912,12 +1912,12 @@
 					<title>
 						<de>Frittenbike</de>
 						<en>Chip-fat bike</en>
-						<pl>Chip-tłuszczowy rower</pl>
+						<pl>Rower na olej z frytek</pl>
 					</title>
 					<description>
 						<de>Mit dem Frittenfett auf 180. SchniPo futtern und dann das Fett in den Tank und los gehts auf die Mottorad Tour. Endlich das Rundum Vergnügen!</de>
 						<en>With chip-fat to 130. Chow down schnitzel with fries, then put the fat in the tank and off we go on the motobike tour. Finally the all-round pleasure!</en>
-						<pl>Z chip-tłuszczem do 130. Wcinamy sznycla z frytkami, następnie wlewamy tłuszcz do baku i ruszamy na motobike tour. W końcu wszechstronna przyjemność!</pl>
+						<pl>Z olejem do 180. Wcinamy sznycla z frytkami, następnie wlewamy olej do baku i ruszamy na wycieczkę rowerową. W końcu wszechstronna przyjemność!</pl>
 					</description>
 					<ratings critics="32" speed="43" />
 				</programme>
@@ -2629,7 +2629,7 @@
 				<groaners>
 					<de>Gags|Kalauer|Witze|Scherze|Ulk|Zoten|Späßchen</de>
 					<en>Gags|Laughs|Jests|Jokes|Fun|Pranks|Banter</en>
-					<pl>Gagi|Śmieszki|Żarty|Zabawy|Skecze|Pokazy</pl>
+					<pl>Gagi|Śmieszki|Żarty|Zabawy|Skecze|Pokazy|Wygłupy</pl>
 				</groaners>
 			</variables>
 			<jobs>
@@ -2662,7 +2662,7 @@
 				<birth>
 					<de>Geburt|Die Geburtsstunde|Der Ursprung|Die Entstehung|Die Wurzeln|Die Eröffnung|Der Kick-off|Der Start|Der Anfang|Die Taufe|Die Genese|Die Einweihung|Die Einführung|Die Gründung|Die Morgendämmerung|Das Auftauchen|Das Erscheinen|Die Ankunft</de>
 					<en>Birth|The First Hours|The Origin|The Formation|The Roots|The Opening|The Launch|The Beginning|The Inception|The Onset|The Genesis|The Inauguration|The Initiation|The Founding|The Dawning|The Emergence|The Appearance|The Arrival</en>
-					<pl>Narodziny|Pierwsze godziny|Początek|Formowanie|Stworzenie|Otwarcie|Uruchomienie|Początek|Początek|Geneza|Inauguracja|Inicjacja|Założenie|Powstanie|Start|Pojawienie się|Utworzenie</pl>
+					<pl>Narodziny|Pierwsze godziny|Początek|Formowanie|Stworzenie|Otwarcie|Uruchomienie|Początek|Rozpoczęcie|Geneza|Inauguracja|Inicjacja|Założenie|Powstanie|Start|Pojawienie się|Utworzenie|Kreacja</pl>
 				</birth>
 				<station>
 					<de>des Senders|des Fernsehsenders|des TV-Senders|dieses Kanals|dieses Fernsehkanals|dieses TV-Kanals|dieses Programms</de>
@@ -2740,7 +2740,7 @@
 				</title>
 				<name>
 					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
-					<de>Pawełek|%PERSONGENERATOR_FIRSTNAME(es,1)%|Marcelek</de>
+					<pl>Pawełek|%PERSONGENERATOR_FIRSTNAME(es,1)%|Marcelek</pl>
 				</name>
 			</variables>
 			
@@ -2956,7 +2956,7 @@
 					<title>
 						<de>TVTs Pilot</de>
 						<en>TVTs Pilot</en>
-						<pl>TVTs Pilot</pl>
+						<pl>TVT Pilot</pl>
 					</title>
 					<blocks min="2" max="4" />
 				</scripttemplate>
