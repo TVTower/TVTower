@@ -12590,6 +12590,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Rettungsmission</de>
 				<en>Rescue Mission</en>
+				<pl>S.O.S</pl>
 			</title>
 			<title_original>
 				<de>Der Orkan</de>
@@ -12617,11 +12618,12 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Delano und seine Polizeichefs</de>
 				<en>Delano and its Chiefs of Police</en>
+				<pl>Komendanci policji</pl>
 			</title>
 			<title_original>
 				<de>Die Polizei-Chiefs von Delano</de>
 				<en>Chiefs</en>
-				<pl>Chiefs</pl>
+				<pl>Komendanci</pl>
 			</title_original>
 			<description>
 				<de>40 Jahre in einer Stadt. Drei Polizeichefs und ein Serientäter. Was braucht man mehr für einen genialen Dreiteiler?</de>
@@ -12642,6 +12644,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Die ZwanzigerJahre</de>
 						<en>The Twenties</en>
+						<pl>Część 1 - Lata dwudzieste</pl>
 					</title>
 					<title_original>
 						<de>Teil 1 - Die Zwanziger Jahre</de>
@@ -12659,6 +12662,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Die Vierziger Jahre</de>
 						<en>The Fourties</en>
+						<pl>Część 2 - Lata czterdzieste</pl>
 					</title>
 					<title_original>
 						<de>Teil 2 - Die Vierziger Jahre</de>
@@ -12676,6 +12680,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Die Sechziger Jahre</de>
 						<en>The Sixties</en>
+						<pl>Część 3 - Lata sześćdziesiąte</pl>
 					</title>
 					<title_original>
 						<de>Teil 3 - Die Sechziger Jahre</de>
@@ -12696,6 +12701,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Hinter dem Paradies</de>
 				<en>West to Paradise</en>
+				<pl>West to Paradise - Na zachód do raju</pl>
 			</title>
 			<title_original>
 				<de>Jenseits von Eden</de>
@@ -12725,6 +12731,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Brüder</de>
 						<en>Brothers</en>
+						<pl>Bracia</pl>
 					</title>
 					<title_original>
 						<de>Teil 1 - Brüder</de>
@@ -12742,6 +12749,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Cathy</de>
 						<en>Cathy</en>
+						<pl>Cathy</pl>
 					</title>
 					<title_original>
 						<de>Teil 2 - Cathy</de>
@@ -12759,6 +12767,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Rivalen</de>
 						<en>Rivals</en>
+						<pl>Rywale</pl>
 					</title>
 					<title_original>
 						<de>Teil 3 - Rivalen</de>
@@ -12778,6 +12787,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Hölle, wir sind da!</de>
 				<en>Hunters in Hell</en>
+				<pl>Łowcy w piekle</pl>
 			</title>
 			<title_original>
 				<de>Die durch die Hölle gehen</de>
@@ -12804,6 +12814,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Der aus Sizilien</de>
 				<en>The One from Sicily</en>
+				<pl>Ten z Sycylii</pl>
 			</title>
 			<title_original>
 				<de>Der Sizilianer</de>
@@ -12831,6 +12842,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 				<!-- Highlander, Adventure, Sub Fantasy -->
 				<de>Everlander - Nur einer behält den Kopf</de>
 				<en>Everlander - There Can Be Only One</en>
+				<pl>Everlander - Może być tylko jeden</pl>
 			</title>
 			<title_original>
 				<de>Highlander - Es kann nur einen geben</de>
@@ -12859,6 +12871,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Ohio Kid</de>
 				<en>Ohio Kid</en>
+				<pl>Ohio Kid</pl>
 			</title>
 			<title_original>
 				<de>Cincinnati Kid</de>
@@ -12886,6 +12899,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Reno Smith</de>
 				<en>Reno Smith</en>
+				<pl>Reno Smith</pl>
 			</title>
 			<title_original>
 				<de>Nevada Smith</de>
@@ -12913,6 +12927,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Bullthehit</de>
 				<en>Bullthehit</en>
+				<pl>Bullthehit</pl>
 			</title>
 			<title_original>
 				<de>Bullitt</de>
@@ -12939,7 +12954,8 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 		<programme id="TheRob-a4d6-act-24StundenRennen" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0067334" creator="8751" created_by="TheRob">
 			<title>
 				<de>24 Stunden Rennen</de>
-				<en>24 Hour Race </en>
+				<en>24 Hour Race</en>
+				<pl>24-godzinny wyścig</pl>
 			</title>
 			<title_original>
 				<de>Le Mans</de>
@@ -12966,6 +12982,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Run Away</de>
 				<en>Run Away</en>
+				<pl>Run Away - Ucieczka</pl>
 			</title>
 			<title_original>
 				<de>Getaway</de>
@@ -12992,6 +13009,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 			<title>
 				<de>Break the Chain</de>
 				<en>Break the Chain</en>
+				<pl>Break the Chain - Przerwać łańcuch</pl>
 			</title>
 			<title_original>
 				<de>Gesprengte Ketten</de>
@@ -13021,6 +13039,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 				<!-- Robinson Crusoe, Abenteuer -->
 				<de>Robin Wusoe</de>
 				<en>Robin Wusoe</en>
+				<pl>Przygody Robinsona na wyspie</pl>
 			</title>
 			<title_original>
 				<de>Robinson Crusoe</de>
@@ -13045,6 +13064,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Wie es begann</de>
 						<en>How it began</en>
+						<pl>Jak to się zaczeło</pl>
 					</title>
 					<title_original>
 						<de>Wie es begann</de>
@@ -13061,6 +13081,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Freitag?</de>
 						<en>Friday?</en>
+						<pl>Piętaszek</pl>
 					</title>
 					<title_original>
 						<de>Freitag?</de>
@@ -13077,6 +13098,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Kannibalen!</de>
 						<en>Cannibals!</en>
+						<pl>Kanibale!</pl>
 					</title>
 					<title_original>
 						<de>Kannibalen</de>
@@ -13093,6 +13115,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 					<title>
 						<de>Endlich Heimat</de>
 						<en>Home! Sweet Home</en>
+						<pl>Dom! Słodki dom</pl>
 					</title>
 					<title_original>
 						<de>Endlich Heimat</de>
@@ -13115,6 +13138,7 @@ Sceny senne i sentymenty wypaczają fabułę.</pl>
 				<!-- The Rose and the Ring, Fantasy -->
 				<de>Ringe und Rosen</de>
 				<en>Rings and Roses</en>
+				<pl>Rings and Roses - Pierścienie i róże</pl>
 			</title>
 			<title_original>
 				<de>The Rose and the Ring</de>
