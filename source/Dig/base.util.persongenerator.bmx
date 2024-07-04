@@ -7,17 +7,18 @@ Import "base.util.mersenne.bmx"
 'SeedRand(Millisecs())
 GetPersonGenerator().fallbackCountryCode = "de"
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Austria )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Germany )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_UK )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_China	 )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Russia )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Turkey )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_USA )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Denmark )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Greek )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Uganda )
-GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Spain )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_France )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Germany )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Greek )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Poland )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Russia )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Spain )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Turkey )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Uganda )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_UK )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_USA )
 
 
 
@@ -928,109 +929,202 @@ End Type
 
 
 '=== GREEK ===
-Type TPersonGeneratorCountry_Greek extends TPersonGeneratorCountry
+rem
+based on chatgpt question: 
+
+chatgpt 4
+----
+heya, can you please give me a list of the most popular and common 100 greek family names? Please format them as
+self.lastNames = [
+	"name", "name2", "name3", ...
+]
+Sort them alphabetically. As soon as the first letter changes, start a new line. New lines within the square brackets are connected with ",.." 
+Do the same again for surnames. Split surnames into 4 groups. 
+Group 1: given to male, born after 1980 (self.firstNamesMaleYoung)
+Group 2: given to male, born before 1980 (self.firstNamesMaleOld)
+Group 3: given to female, born after 1980 (self.firstNamesFemaleYoung)
+Group 4: given to female, born before 1980 (self.firstNamesFemaleOld)
+Surnames can only be in one group at a time.
+
+---
+or
+Do the same again for baby names. Split names into 2 groups - female (self.firstNamesFemale) and male (self.firstNamesMale). 
+
+
+chatgpt 3.5
+----
+heya, can you please give me a list of the most popular and common 100 greek names for girls? Please format them as
+self.lastNames = [ ..
+	"first name starting with A", "second name starting with A", "third name starting with A",
+	"first name starting with B", "second name starting with B",
+]
+Sort them alphabetically. Replace last comma per line with ",.."
+----
+do the same for males but two groups: one common for people born before 1980 and one born after 1980. Names can only be used in one of the groups
+
+----
+-> then glue things together
+endrem
+Type TPersonGeneratorCountry_Greek extends TPersonGeneratorCountry	
+	
 	Method New()
 		self.countryCode = "gr"
-		
-		self.firstNamesMale = [..
-			"Avraám", "Agathágyelos", "Agathoklís", "Agathónikos", "Agamémnon", "Agapitós", "Agápios", "Ágyelos", "Avisílaos", "Adám", "Adamántios", "Ádonis", "Athanásios", "Athinagóras", "Athinódoros", "Aimílios", "Akrivós", "Akrítas", "Aléxandros", "Aléxios", "Alkiviádis", "Amvrósios", "Anagnóstis", "Ananías", "Anaxagóras", "Anáryiros", "Anastásios", "Androklís", "Andrónikos", "Ánthimos", "Anthoúlis", "Antígonos", "Antípatros", "Antípas", "Antónios", "Apóllon", "Apóstolos", "Aryírios", "Áris", "Arístarkhos", "Aristóvoulos", "Aristoménis", "Áristos", "Aristotélis", "Aristophánis", "Artémios", "Arkhélaos", "Arkhimídis", "Asimís", "Asklipiós", "Astérios", "Afyéris", "Ávgoustos", "Afxéntios", "Aphéntis", "Akhilléas", .. 
-			"Váios", "Valántis", "Valentínos", "Valérios", "Vardís", "Vartholomaíos", "Varsámos", "Vasílios", "Vasílis", "Velissários", "Venétios", "Veniamín", "Venizélos", "Vissaríon", "Vikéntios", "Vladímiros", "Vlásios", "Vrasídas", "Víron", ..
-			"Gavriíl", "Galátios", "Galinós", "Garíphallos", "Yerásimos", "Yeóryios", "Gkíkas", "Grigórios", ..
-			"Damaskinós", "Damianós", "Daniíl", "Dimítrios", "Dimokrátis", "Dimókritos", "Dímos", "Dimosthénis", "Díkaios", "Dioyénis", "Diomídis", "Dionísios", "Domínikos", "Drákon", "Drósos", "Dorótheos", ..
-			"Irinaíos", "Éktoras", "Elefthérios", "Elissaíos", "Emmanoíl", "Éxarkhos", "Epaminóndas", "Ermís", "Ermólaos", "Erríkos", "Erotókritos", "Evágyelos", "Efyénios", "Efdóxios", "Efthímios", "Efklídis", "Evménios", "Evripídis", "Efsévios", "Efstáthios", "Efstrátios", "Eftíkhios", "Ephraím", ..
-			"Zaphírios", "Zakharías", "Zinóvios", "Zínon", ..
-			"Ilías", "Iraklís", "Iródotos", "Isaïas", ..
-			"Thalís", "Themistoklís", "Theodósios", "Theódoulos", "Theódoros", "Theóklitos", "Theológos", "Theópistos", "Theotókis", "Theophánis", "Theóphilos", "Theóphrastos", "Theophílaktos", "Theokháris", "Thiséfs", "Thoukidídis", "Thrasívoulos", "Thomás", ..
-			"Iákovos", "Iáson", "Ignátios", "Ieremías", "Ierótheos", "Ierónimos", "Íkaros", "Iordánis", "Ioulianós", "Ioúlios", "Ippokrátis", "Ippólitos", "Isaák", "Isídoros", "Ioakím", "Ioánnis", "Íon", "Ionás", "Iosíph", ..
-			"Kallínikos", "Károlos", "Kiríkos", "Kímon", "Kleánthis", "Kléarkhos", "Kleóvoulos", "Kleoménis", "Kleópas", "Klímis", "Komninós", "Kornílios", "Kosmás", "Kristállis", "Kiprianós", "Kiriazís", "Kiriákos", "Kíros", "Konstantínos", ..
-			"Laértis", "Lázaros", "Lámpros", "Laokrátis", "Láskaris", "Lavréntios", "Léandros", "Lemonís", "Leonárdos", "Léon", "Leonídas", "Logothétis", "Loudovíkos", "Loukás", "Loukianós", "Likoúrgos", "Lísandros", ..
-			"Magdalinós", "Makários", "Marínos", "Mários", "Márkos", "Martínos", "Matthaíos", "Mavríkios", "Mavroidís", "Mávros", "Megaklís", "Methódios", "Melétios", "Ménandros", "Menélaos", "Merkoúrios", "Minás", "Miltiádis", "Mínoas", "Mikhaíl", ..
-			"Nathanaíl", "Napoléon", "Néarkhos", "Nektários", "Neoklís", "Neóphitos", "Níkandros", "Nikítas", "Nikiphóros", "Nikódimos", "Nikólaos", "Níkon", ..
-			"Xanthós", "Xenophón", ..
-			"Odisséas", "Óthon", "Ómiros", "Oréstis", "Orphéas", ..
-			"Panayiótis", "Panormítis", "Pantazís", "Pantelímon", "Paraskevás", "Paráskhos", "Páris", "Paskhális", "Pátroklos", "Páflos", "Pafsanías", "Pelopídas", "Periklís", "Pétros", "Píndaros", "Pláton", "Ploútarkhos", "Polívios", "Polídoros", "Polizóis", "Políkarpos", "Polikrátis", "Polikhrónios", "Praxitélis", "Pródromos", "Prokópios", "Promithéas", "Pithagóras", "Pírros", ..
-			"Rállis", "Raphaíl", "Rígas", "Rízos", "Rodóphlos", "Romanós", ..
-			"Sávvas", "Samoíl", "Sarántis", "Sevastianós", "Seraphím", "Séryios", "Solomón", "Sólon", "Sophoklís", "Spirídon", "Stamátios", "Stávros", "Stéryios", "Stéphanos", "Stilianós", "Simeón", "Sózon", "Sokrátis", "Sotírios", ..
-			"Taxíarkhos", "Tilémakhos", "Timótheos", "Timoléon", "Tímon", "Títos", "Triantáphillos", "Tríphon", "Tsampíkos", ..
-			"Iákinthos", ..
-			"Phaídon", "Phanoúrios", "Philímon", "Phílippos", "Phívos", "Phrangískos", "Phrideríkos", "Phríxos", "Phokás", "Phokíon", "Photinós", "Phótios", ..
-			"Kharálampos", "Kharílaos", "Kharítos", "Khrístos", "Khristódoulos", "Khristóphoros", "Khrísanthos", "Khrisovalántios", "Khrisóstomos" ..
-			]
 
-		self.firstNamesFemale = [..
-			"Apostolía", "Afyí", "Agáthi", "Agápi", "Agyelikí", "Aglaïa", "Agní", "Agóro", "Adamantía", "Aidóna", "Athanasía", "Athiná", "Athinodóra", "Aikateríni", "Aimilía", "Akriví", "Alexándra", "Alexía", "Alíki", "Álkistis", "Alkinói", "Amalía", "Amvrosía", "Amphithéa", "Amphitríti", "Anáryiri", "Anastasía", "Anatolí", "Andrianí", "Andromákhi", "Androméda", "Androníki", "Anthí", "Ánna", "Antigóni", "Antonía", "Apollonía", "Apostolía", "Aryiró", "Aretí", "Ariádni", "Aristéa", "Ártemis", "Artemisía", "Arkhontía", "Asimína", "Aspasía", "Astéro", "Atalánti", "Avgoustína", "Aphéntra", "Aphrodíti", "Akhillía", ..
-			"Váyia", "Valánto", "Valentína", "Valéria", "Varvára", "Varsamía", "Vasilía", "Vasilikí", "Veatríki", "Velissaría", "Venetía", "Verónika", "Vissaría", "Vikéntia", "Viktória", "Violéta", "Viryinía", "Vlasía", "Vrisiís", ..
-			"Gavriélla", "Galátia", "Galíni", "Gariphalliá", "Yenovépha", "Yerakína", "Yerasimoúla", "Yesthimaní", "Yeoryía", "Yiasemí", "Gkólpho", "Gláfki", "Glikería", "Grammatikí", ..
-			"Davidoúla", "Damaskiní", "Damianí", "Danái", "Dáphni", "Déspina", "Dímitra", "Dimoúla", "Dialektí", "Didó", "Dikaía", "Dionisía", "Dómna", "Drosiá", "Dorothéa", ..
-			"Iríni", "Eléni", "Eleonóra", "Elefthería", "Elisávet", "Élli", "Elpís", "Emmanouéla", "Epistími", "Erasmía", "Erató", "Eriéta", "Eriphíli", "Ermióni", "Erophíli", "Éva", "Evagyelía", "Evanthía", "Efyenía", "Efdokía", "Efdoxía", "Efthalía", "Efthimía", "Éfklia", "Eflampía", "Evridíki", "Evríklia", "Efsevía", "Efstathía", "Efstratía", "Eftérpi", "Eftikhía", ..
-			"Zampéta", "Zaphiría", "Zakharoúla", "Zinaïs", "Zinovía", "Zisoúla", "Zí", ..
-			"Ívi", "Iléktra", "Ília", "Iliána", "Íra", "Iráklia", "Ió", ..
-			"Thalassiní", "Thália", "Theanó", "Thékla", "Thémis", "Themistóklia", "Theodosía", "Theodóti", "Theodoúli", "Theodóra", "Theóklia", "Theoloyía", "Theopísti", "Theophanía", "Theophíli", "Theophílakti", "Theokharoúla", "Thétis", "Theóni", "Thiresía", "Thomaís", ..
-			"Iakovína", "Ignatía", "Inó", "Iokásti", "Iordanía", "Ioulía", "Ioulianí", "Ippolíti", "Íris", "Isavélla", "Isidóra", "Ismíni", "Iphiyénia", "Ioánna", "Iosiphína", ..
-			"Kalí", "Kallíniki", "Kalliópi", "Kallirrói", "Kalomíra", "Kalipsó", "Kanélla", "Kariophilliá", "Kassándra", "Kassianí", "Kerasiá", "Klaíri", "Klió", "Kleopátra", "Klimentíni", "Klitaimnístra", "Kokkóna", "Komniní", "Kondilía", "Koralía", "Kornilía", "Kósmia", "Krinió", "Kristallénia", "Kivéli", "Kidonía", "Kiparissía", "Kiprianí", "Kiriakí", "Konstantína", ..
-			"Lazaría", "Lampriní", "Laskarína", "Lavrentía", "Lemoniá", "Lefkothéa", "Leóni", "Leonidiá", "Lída", "Litó", "Loíza", "Loukía", "Louloudénia", "Liyerí", "Lidía", ..
-			"Magdaliní", "Makrína", "Malamaténia", "Malvína", "Mántha", "Mantó", "Margaríta", "Mártha", "María", "Mariánthi", "Marína", "Markélla", "Matthíldi", "Mávra", "Melénia", "Melétia", "Melína", "Melpoméni", "Merópi", "Metaxía", "Miliá", "Miránta", "Mikhaéla", "Móskha", "Mirsíni", ..
-			"Nafsiká", "Nektaría", "Neóklia", "Neratziá", "Nephéli", "Níki", "Nikitía", "Nikoléta", ..
-			"Xanthí", "Xanthíppi", "Xéni", ..
-			"Odíssia", "Ólga", "Olímpia", "Ouranía", ..
-			"Pagóna", "Panayía", "Panayióta", "Pandóra", "Pantelía", "Panoraía", "Paraskeví", "Parthéna", "Paskhaliá", "Patapía", "Paflína", "Pelayía", "Peristéra", "Persephóni", "Pétra", "Piyí", "Pinelópi", "Pothití", "Polívia", "Polídora", "Polímnia", "Polixéni", "Politími", "Polikhronía", "Poúlia", "Prodromía", ..
-			"Rallía", "Réa", "Revékka", "Regyína", "Rigoúla", "Rodiá", "Róza", "Roumpíni", "Roúsa", "Roxáni", ..
-			"Savvoúla", "Salómi", "Sapphó", "Sárra", "Sevastí", "Sevastianí", "Selíni", "Semína", "Seraphía", "Smarágda", "Soultána", "Souméla", "Sophía", "Spárti", "Spiridoúla", "Stamatína", "Stavroúla", "Steryianí", "Stephanía", "Stilianí", "Simeonía", "Sozoúsa", "Sotiría", "Sophronía", ..
-			"Taxiarkhía", "Tatiána", "Terpsikhóri", "Timothéa", "Triantáphilli", "Triséfyeni", "Triphonía", "Tsampíka", ..
-			"Iakínthi", "Ivónni", "Ipapantí", ..
-			"Phaídra", "Phanouría", "Phevronía", "Phereníki", "Philaréti", "Philíppa", "Philippía", "Philió", "Philothéi", "Philomíla", "Phlóra", "Phlorentía", "Phívi", "Phrantzéska", "Phrideríki", "Phríni", "Photiní", ..
-			"Kháido", "Khará", "Kharalampía", "Khári", "Kharíklia", "Khioniá", "Khlói", "Khristodoúla", "Khristóphili", "Khristophóra", "Khrisánthi", "Khrisafyí", "Khrisaphénia", "Khrisovalánto", "Khrisóstomi", "Khrisoúla" .. 
-			]
+		self.firstNamesMale = [ ..
+			"Adamidis", "Adrianidis", "Alexandridis", "Anagnostidis", "Andreadis", "Andrianidis", "Antonidis", "Athanasiadis",..
+			"Bakis", "Batsakis", "Boulgaris", "Bouzalas",..
+			"Chatzis", "Christodoulidis", "Christidis", "Constantinidis",..
+			"Daskalidis", "Dimitrakis", "Dimitriou", "Doukas",..
+			"Efthimis", "Eliadis", "Economou",..
+			"Fotiadis",..
+			"Georgiadis", "Georgios", "Giannakidis", "Giannopoulos", "Gkionis",..
+			"Hatzidakis", "Hatzis", "Hatzopoulos",..
+			"Ioannidis", "Iordanidis", "Isidoros",..
+			"Kalogeridis", "Kaloudis", "Kalogeras", "Karagiannis", "Karamanlis", "Karapanagiotis", "Karapiperis", "Karas", "Karatheodoris", "Katsaros", "Kefalas", "Kefalogiannis", "Kokkinos", "Kondylis", "Konstantinidis", "Konstantinos", "Kostopoulos", "Kotsis", "Kouris", "Koutras", "Kritikos", "Kyriazis",..
+			"Lambros", "Laskaris", "Leventis", "Lianopoulos", "Loukakis", "Lykos",..
+			"Makris", "Maniatis", "Manolis", "Marinos", "Mavros", "Michailidis", "Milios", "Mitsopoulos", "Moraitis",..
+			"Nikolaidis", "Nikolaou", "Nikolos", "Nikolopoulos", "Nitsakis", "Noufrakis",..
+			"Oikonomou",..
+			"Papanikolaou", "Papadakis", "Papadopoulos", "Papagiannis", "Papageorgiou", "Papakonstantinou", "Papandreou", "Papantoniou", "Papapetrou", "Papathanasidou", "Papazoglou", "Paraskevas", "Pavlidis", "Pavlou", "Perakis", "Petropoulos", "Petridis", "Philippou", "Polychronis",..
+			"Raptis", "Rousis",..
+			"Samaras", "Samios", "Saridakis", "Saroglou", "Sarris", "Sfikakis", "Sideris", "Sifakis", "Sikinos", "Skalidis", "Skiadopoulos", "Skoufis", "Sotiris", "Spanos", "Spiropoulos", "Stamatidis", "Stefanidis", "Stelios", "Stylianou", "Symeonidis",..
+			"Theodoridis", "Theodoropoulos",..
+			"Tsakiris", "Tsaknakis", "Tselios", "Tsiolis", "Tsoukalas", "Tzimas",..
+			"Vasilakis", "Vasilopoulos", "Vergos", "Vlachos", "Vlahopoulos", "Voudouris", "Voulgaris",..
+			"Xenakis",..
+			"Yiannopoulos",..
+			"Zafeiris", "Zaharias", "Zervas" ..
+		]
+
+
+		self.firstNamesFemale = [ ..
+			"Alexandra", "Aliki", "Amalia", "Anastasia", "Andromachi", "Angeliki", "Anna", "Antigoni", "Antonia", "Areti", "Argyro", "Artemis", "Asimina", "Aspasia", "Athanasia", "Athina", ..
+			"Chloe", "Christina", ..
+			"Danai", "Despina", "Dimitra", "Dionysia", ..
+			"Eirini", "Eleftheria", "Eleni", "Elisavet", "Emmanouela", "Evdokia", "Evgenia", ..
+			"Fani", "Filia", "Fotini", ..
+			"Georgia", ..
+			"Harikleia", ..
+			"Ioanna", "Ioulia", "Ivonni", ..
+			"Kalliopi", "Katerina", "Kleopatra", "Konstantina", "Kyriaki", ..
+			"Lambrini", ..
+			"Maria", "Marina", ..
+			"Natalia", "Nektaria", "Nikoletta", "Nina", ..
+			"Olga", "Olimpia", "Ourania", ..
+			"Panagiota", ..
+			"Paraskevi", "Pavlina", "Penelope", "Polina", ..
+			"Rania", ..
+			"Sophia", "Sofia", "Stavroula", "Stella", ..
+			"Tatiana", "Timothea", "Theano", "Theodora", "Theodosia", ..
+			"Varvara", "Vasiliki", ..
+			"Xanthi", "Xanthippi", "Xeni", ..
+			"Zoe"..
+		]
+
 
 		self.lastNames = [ ..
-			"Avraám", "Agathágyelos", "Agathoklís", "Agathónikos", "Agamémnon", "Agapitós", "Agápios", "Ágyelos", "Avisílaos", "Adám", "Adamántios", "Ádonis", "Athanásios", "Athinagóras", "Athinódoros", "Aimílios", "Akrivós", "Akrítas", "Aléxandros", "Aléxios", "Alkiviádis", "Amvrósios", "Anagnóstis", "Ananías", "Anaxagóras", "Anáryiros", "Anastásios", "Androklís", "Andrónikos", "Ánthimos", "Anthoúlis", "Antígonos", "Antípatros", "Antípas", "Antónios", "Apóllon", "Apóstolos", "Aryírios", "Áris", "Arístarkhos", "Aristóvoulos", "Aristoménis", "Áristos", "Aristotélis", "Aristophánis", "Artémios", "Arkhélaos", "Arkhimídis", "Asimís", "Asklipiós", "Astérios", "Afyéris", "Ávgoustos", "Afxéntios", "Aphéntis", "Akhilléas", ..
-			"Váios", "Valántis", "Valentínos", "Valérios", "Vardís", "Vartholomaíos", "Varsámos", "Vasílios", "Vasílis", "Velissários", "Venétios", "Veniamín", "Venizélos", "Vissaríon", "Vikéntios", "Vladímiros", "Vlásios", "Vrasídas", "Víron", ..
-			"Gavriíl", "Galátios", "Galinós", "Garíphallos", "Yerásimos", "Yeóryios", "Gkíkas", "Grigórios", ..
-			"Damaskinós", "Damianós", "Daniíl", "Dimítrios", "Dimokrátis", "Dimókritos", "Dímos", "Dimosthénis", "Díkaios", "Dioyénis", "Diomídis", "Dionísios", "Domínikos", "Drákon", "Drósos", "Dorótheos", ..
-			"Irinaíos", "Éktoras", "Elefthérios", "Elissaíos", "Emmanoíl", "Éxarkhos", "Epaminóndas", "Ermís", "Ermólaos", "Erríkos", "Erotókritos", "Evágyelos", "Efyénios", "Efdóxios", "Efthímios", "Efklídis", "Evménios", "Evripídis", "Efsévios", "Efstáthios", "Efstrátios", "Eftíkhios", "Ephraím", ..
-			"Zaphírios", "Zakharías", "Zinóvios", "Zínon", ..
-			"Ilías", "Iraklís", "Iródotos", "Isaïas", ..
-			"Thalís", "Themistoklís", "Theodósios", "Theódoulos", "Theódoros", "Theóklitos", "Theológos", "Theópistos", "Theotókis", "Theophánis", "Theóphilos", "Theóphrastos", "Theophílaktos", "Theokháris", "Thiséfs", "Thoukidídis", "Thrasívoulos", "Thomás", ..
-			"Iákovos", "Iáson", "Ignátios", "Ieremías", "Ierótheos", "Ierónimos", "Íkaros", "Iordánis", "Ioulianós", "Ioúlios", "Ippokrátis", "Ippólitos", "Isaák", "Isídoros", "Ioakím", "Ioánnis", "Íon", "Ionás", "Iosíph", ..
-			"Kallínikos", "Károlos", "Kiríkos", "Kímon", "Kleánthis", "Kléarkhos", "Kleóvoulos", "Kleoménis", "Kleópas", "Klímis", "Komninós", "Kornílios", "Kosmás", "Kristállis", "Kiprianós", "Kiriazís", "Kiriákos", "Kíros", "Konstantínos", ..
-			"Laértis", "Lázaros", "Lámpros", "Laokrátis", "Láskaris", "Lavréntios", "Léandros", "Lemonís", "Leonárdos", "Léon", "Leonídas", "Logothétis", "Loudovíkos", "Loukás", "Loukianós", "Likoúrgos", "Lísandros", ..
-			"Magdalinós", "Makários", "Marínos", "Mários", "Márkos", "Martínos", "Matthaíos", "Mavríkios", "Mavroidís", "Mávros", "Megaklís", "Methódios", "Melétios", "Ménandros", "Menélaos", "Merkoúrios", "Minás", "Miltiádis", "Mínoas", "Mikhaíl", ..
-			"Nathanaíl", "Napoléon", "Néarkhos", "Nektários", "Neoklís", "Neóphitos", "Níkandros", "Nikítas", "Nikiphóros", "Nikódimos", "Nikólaos", "Níkon", ..
-			"Xanthós", "Xenophóntis", ..
-			"Odisséas", "Óthon", "Ómiros", "Oréstis", "Orphéas", ..
-			"Panayiótis", "Panormítis", "Pantazís", "Pantelímon", "Paraskevás", "Paráskhos", "Páris", "Paskhális", "Pátroklos", "Páflos", "Pafsanías", "Pelopídas", "Periklís", "Pétros", "Píndaros", "Pláton", "Ploútarkhos", "Polívios", "Polídoros", "Polizóis", "Políkarpos", "Polikrátis", "Polikhrónios", "Praxitélis", "Pródromos", "Prokópios", "Promithéas", "Pithagóras", "Pírros", ..
-			"Rállis", "Raphaíl", "Rígas", "Rízos", "Rodóphlos", "Romanós", ..
-			"Sávvas", "Samoíl", "Sarántis", "Sevastianós", "Seraphím", "Séryios", "Solomón", "Sólon", "Sophoklís", "Spirídon", "Stamátios", "Stávros", "Stéryios", "Stéphanos", "Stilianós", "Simeón", "Sózon", "Sokrátis", "Sotírios", ..
-			"Taxíarkhos", "Tilémakhos", "Timótheos", "Timoléon", "Tímon", "Títos", "Triantáphillos", "Tríphon", "Tsampíkos", ..
-			"Iákinthos", ..
-			"Phaídon", "Phanoúrios", "Philímon", "Phílippos", "Phívos", "Phrangískos", "Phrideríkos", "Phríxos", "Phokás", "Phokíon", "Photinós", "Phótios", ..
-			"Kharálampos", "Kharílaos", "Kharítos", "Khrístos", "Khristódoulos", "Khristóphoros", "Khrísanthos", "Khrisovalántios", "Khrisóstomos", ..
-			"Apostolía", "Afyí", "Agáthi", "Agápi", "Agyelikí", "Aglaïa", "Agní", "Agóro", "Adamantía", "Aidóna", "Athanasía", "Athiná", "Athinodóra", "Aikateríni", "Aimilía", "Akriví", "Alexándra", "Alexía", "Alíki", "Álkistis", "Alkinói", "Amalía", "Amvrosía", "Amphithéa", "Amphitríti", "Anáryiri", "Anastasía", "Anatolí", "Andrianí", "Andromákhi", "Androméda", "Androníki", "Anthí", "Ánna", "Antigóni", "Antonía", "Apollonía", "Apostolía", "Aryiró", "Aretí", "Ariádni", "Aristéa", "Ártemis", "Artemisía", "Arkhontía", "Asimína", "Aspasía", "Astéro", "Atalánti", "Avgoustína", "Aphéntra", "Aphrodíti", "Akhillía", ..
-			"Váyia", "Valánto", "Valentína", "Valéria", "Varvára", "Varsamía", "Vasilía", "Vasilikí", "Veatríki", "Velissaría", "Venetía", "Verónika", "Vissaría", "Vikéntia", "Viktória", "Violéta", "Viryinía", "Vlasía", "Vrisiís", ..
-			"Gavriélla", "Galátia", "Galíni", "Gariphalliá", "Yenovépha", "Yerakína", "Yerasimoúla", "Yesthimaní", "Yeoryía", "Yiasemí", "Gkólpho", "Gláfki", "Glikería", "Grammatikí", ..
-			"Davidoúla", "Damaskiní", "Damianí", "Danái", "Dáphni", "Déspina", "Dímitra", "Dimoúla", "Dialektí", "Didó", "Dikaía", "Dionisía", "Dómna", "Drosiá", "Dorothéa", ..
-			"Iríni", "Eléni", "Eleonóra", "Elefthería", "Elisávet", "Élli", "Elpís", "Emmanouéla", "Epistími", "Erasmía", "Erató", "Eriéta", "Eriphíli", "Ermióni", "Erophíli", "Éva", "Evagyelía", "Evanthía", "Efyenía", "Efdokía", "Efdoxía", "Efthalía", "Efthimía", "Éfklia", "Eflampía", "Evridíki", "Evríklia", "Efsevía", "Efstathía", "Efstratía", "Eftérpi", "Eftikhía", ..
-			"Zampéta", "Zaphiría", "Zakharoúla", "Zinaïs", "Zinovía", "Zisoúla", "Zí", ..
-			"Ívi", "Iléktra", "Ília", "Iliána", "Íra", "Iráklia", "Ió", ..
-			"Thalassiní", "Thália", "Theanó", "Thékla", "Thémis", "Themistóklia", "Theodosía", "Theodóti", "Theodoúli", "Theodóra", "Theóklia", "Theoloyía", "Theopísti", "Theophanía", "Theophíli", "Theophílakti", "Theokharoúla", "Thétis", "Theóni", "Thiresía", "Thomaís", ..
-			"Iakovína", "Ignatía", "Inó", "Iokásti", "Iordanía", "Ioulía", "Ioulianí", "Ippolíti", "Íris", "Isavélla", "Isidóra", "Ismíni", "Iphiyénia", "Ioánna", "Iosiphína", ..
-			"Kalí", "Kallíniki", "Kalliópi", "Kallirrói", "Kalomíra", "Kalipsó", "Kanélla", "Kariophilliá", "Kassándra", "Kassianí", "Kerasiá", "Klaíri", "Klió", "Kleopátra", "Klimentíni", "Klitaimnístra", "Kokkóna", "Komniní", "Kondilía", "Koralía", "Kornilía", "Kósmia", "Krinió", "Kristallénia", "Kivéli", "Kidonía", "Kiparissía", "Kiprianí", "Kiriakí", "Konstantína", ..
-			"Lazaría", "Lampriní", "Laskarína", "Lavrentía", "Lemoniá", "Lefkothéa", "Leóni", "Leonidiá", "Lída", "Litó", "Loíza", "Loukía", "Louloudénia", "Liyerí", "Lidía", ..
-			"Magdaliní", "Makrína", "Malamaténia", "Malvína", "Mántha", "Mantó", "Margaríta", "Mártha", "María", "Mariánthi", "Marína", "Markélla", "Matthíldi", "Mávra", "Melénia", "Melétia", "Melína", "Melpoméni", "Merópi", "Metaxía", "Miliá", "Miránta", "Mikhaéla", "Móskha", "Mirsíni", ..
-			"Nafsiká", "Nektaría", "Neóklia", "Neratziá", "Nephéli", "Níki", "Nikitía", "Nikoléta", ..
-			"Xanthí", "Xanthíppi", "Xéni", ..
-			"Odíssia", "Ólga", "Olímpia", "Ouranía", ..
-			"Pagóna", "Panayía", "Panayióta", "Pandóra", "Pantelía", "Panoraía", "Paraskeví", "Parthéna", "Paskhaliá", "Patapía", "Paflína", "Pelayía", "Peristéra", "Persephóni", "Pétra", "Piyí", "Pinelópi", "Pothití", "Polívia", "Polídora", "Polímnia", "Polixéni", "Politími", "Polikhronía", "Poúlia", "Prodromía", ..
-			"Rallía", "Réa", "Revékka", "Regyína", "Rigoúla", "Rodiá", "Róza", "Roumpíni", "Roúsa", "Roxáni", ..
-			"Savvoúla", "Salómi", "Sapphó", "Sárra", "Sevastí", "Sevastianí", "Selíni", "Semína", "Seraphía", "Smarágda", "Soultána", "Souméla", "Sophía", "Spárti", "Spiridoúla", "Stamatína", "Stavroúla", "Steryianí", "Stephanía", "Stilianí", "Simeonía", "Sozoúsa", "Sotiría", "Sophronía", ..
-			"Taxiarkhía", "Tatiána", "Terpsikhóri", "Timothéa", "Triantáphilli", "Triséfyeni", "Triphonía", "Tsampíka", ..
-			"Iakínthi", "Ivónni", "Ipapantí", ..
-			"Phaídra", "Phanouría", "Phevronía", "Phereníki", "Philaréti", "Philíppa", "Philippía", "Philió", "Philothéi", "Philomíla", "Phlóra", "Phlorentía", "Phívi", "Phrantzéska", "Phrideríki", "Phríni", "Photiní", ..
-			"Kháido", "Khará", "Kharalampía", "Khári", "Kharíklia", "Khioniá", "Khlói", "Khristodoúla", "Khristóphili", "Khristophóra", "Khrisánthi", "Khrisafyí", "Khrisaphénia", "Khrisovalánto", "Khrisóstomi", "Khrisoúla" ..
-			]
+			"Adamopoulos", "Adrianopoulos", "Alexandropoulos", "Anagnostopoulos", "Andreadis", "Andrianopoulos", "Antonopoulos", "Athanasiadis", ..
+			"Bakopoulos", "Batsakis", "Boulgaropoulos", "Bouzalas", ..
+			"Chatzis", "Christodoulou", "Christopoulos", "Constantinou", ..
+			"Daskalopoulos", "Dimitrakopoulos", "Dimitriou", "Doukas", ..
+			"Efthimiou", "Elias", "Economou", ..
+			"Fotiadis", ..
+			"Georgiadis", "Georgiou", "Giannakopoulos", "Giannopoulos", "Gkionis", ..
+			"Hatzidakis", "Hatzis", "Hatzopoulos", ..
+			"Ioannidis", "Iordanou", "Isidorou", ..
+			"Kalogeropoulos", "Kaloudis", "Kalogeras", "Karagiannis", "Karamanlis", "Karapanagiotis", "Karapiperis", "Karas", "Karatheodoris", "Katsaros", "Kefalas", "Kefalogiannis", "Kokkinos", "Kondylis", "Konstantinidis", "Konstantinou", "Kostopoulos", "Kotsis", "Kouris", "Koutras", "Kritikos", "Kyriazis", ..
+			"Lambros", "Laskaris", "Leventis", "Lianopoulos", "Loukakis", "Lykos", ..
+			"Makris", "Maniatis", "Manolis", "Marinos", "Mavros", "Michalopoulos", "Michailidis", "Milios", "Mitsopoulos", "Moraitis", ..
+			"Nikolaidis", "Nikolaou", "Nikolos", "Nikolopoulos", "Nitsakis", "Noufrakis", ..
+			"Oikonomou", ..
+			"Papanikolaou", "Papadakis", "Papadopoulos", "Papagiannis", "Papageorgiou", "Papakonstantinou", "Papandreou", "Papantoniou", "Papapetrou", "Papathanasiou", "Papazoglou", "Paraskevas", "Pavlidis", "Pavlou", "Perakis", "Petropoulos", "Petridis", "Philippou", "Polychronis", ..
+			"Raptis", "Rousis", ..
+			"Samaras", "Samios", "Saridakis", "Saroglou", "Sarris", "Sfikakis", "Sideris", "Sifakis", "Sikinos", "Skalidis", "Skiadopoulos", "Skoufis", "Sotiris", "Spanos", "Spiropoulos", "Stamatopoulos", "Stefanidis", "Stelios", "Stylianou", "Symeonidis", ..
+			"Theodoridis", "Theodoropoulos", ..
+			"Tsakiris", "Tsaknakis", "Tselios", "Tsiolis", "Tsoukalas", "Tzimas", ..
+			"Vasilakis", "Vasilopoulos", "Vergos", "Vlachos", "Vlahopoulos", "Voudouris", "Voulgaris", ..
+			"Xenakis", ..
+			"Yiannopoulos", ..
+			"Zafeiris", "Zaharias", "Zervas" ..
+		]
 	End Method
 End Type
 
+
+
+'same chatgpt-basis as for "Greek" + manual adjustments
+Type TPersonGeneratorCountry_Poland extends TPersonGeneratorCountry	
+	
+	Method New()
+		self.countryCode = "pl"
+
+		self.firstNamesMale = [ ..
+			"Adam", "Adrian", "Arkadiusz", "Aleksander", "Antoni", ..
+			"Bartłomiej", "Bartosz", ..
+			"Dawid", "Dariusz", "Damian", "Daniel", "Dominik", ..
+			"Edward", "Emil", ..
+			"Fabian", "Filip", "Franciszek", ..
+			"Grzegorz", ..
+			"Hubert", ..
+			"Igor", "Ignacy", ..
+			"Jacek", "Jakub", "Jan", "Józef", ..
+			"Kacper", "Kamil", "Karol", "Konrad", "Krzysztof", ..
+			"Łukasz", ..
+			"Maciej", "Marcel", "Marcin", "Mateusz", "Michał", "Mikołaj", ..
+			"Norbert", ..
+			"Oskar", ..
+			"Patryk", "Paweł", "Piotr", ..
+			"Rafał", "Robert", ..
+			"Szymon", ..
+			"Tomasz", ..
+			"Wiktor", "Wojciech" ..
+		]
+
+
+		self.firstNamesFemale = [ ..
+			"Agata", "Agnieszka", "Aleksandra", "Alicja", "Anna", "Aneta", ..
+			"Barbara", "Beata", "Blanka", ..
+			"Celina", ..
+			"Dagmara", "Danuta", "Dorota", "Dominika", ..
+			"Elżbieta", "Emilia", "Ewa", "Ewelina", ..
+			"Felicja", ..
+			"Gabriela", "Grażyna", ..
+			"Hanna", ..
+			"Irena", ..
+			"Jadwiga", "Joanna", "Julia", "Justyna", ..
+			"Kamila", "Karolina", "Katarzyna", "Kinga", "Kornelia", ..
+			"Magdalena", "Małgorzata", "Maria", "Martyna", "Monika", ..
+			"Natalia", "Nikola", ..
+			"Olga", ..
+			"Patrycja", "Paulina", ..
+			"Renata", ..
+			"Sabina", "Sylwia", ..
+			"Teresa", ..
+			"Urszula", ..
+			"Weronika", "Wiktoria", ..
+			"Zofia" ..
+		]
+
+
+		self.lastNames = [ ..
+			"Adamczyk", "Adamski", "Andrzejewski", "Antczak", ..
+			"Bąk", "Baran", "Baranowski", "Bartkowiak", "Bartosz", "Bednarek", "Białas", "Bielecki", "Błaszczyk", "Brzeziński", ..
+			"Chrzanowski", "Czarnecki", "Czerwiński", ..
+			"Dąbrowski", "Duda", "Dudek", "Dziedzic", ..
+			"Gajewski", "Głowacki", "Górecki", "Grabowski", "Grzelak", ..
+			"Jabłoński", "Jagielski", "Janiak", "Jankowski", "Jasiński", "Jaworski", "Jóźwiak", ..
+			"Kaczmarek", "Kalinowski", "Kamiński", "Kania", "Kaczmarczyk", "Kowalczyk", "Kowalik", "Krawczyk", "Kubiak", "Kucharski", "Kwiatkowski", ..
+			"Lis", ..
+			"Maciejewski", "Malinowski", "Marciniak", "Mazurek", "Michalak", "Michalski", "Mikołajczyk", "Mikulski", "Mazurek", ..
+			"Nowak", "Nowicki", "Nowakowski", ..
+			"Pawlak", "Pietrzak", "Piotrowski",  "Puchalski", ..
+			"Rutkowski", ..
+			"Sadowski", "Sawicki", "Sikora", "Sobczyk", "Sokołowski", "Stępień", "Szczepański", "Szewczyk", "Szymański", ..
+			"Walczak", "Wasilewski", "Wesołowski", "Wiśniewski", "Witkowski", "Wójcik", "Wojciechowski", "Woźniak", "Wrona", "Wróbel", ..
+			"Zając", "Zakrzewski", "Zawadzki", "Zieliński", "Zając", "Żak", "Żuk" ..
+		]
+	End Method
+End Type
 
 
 
