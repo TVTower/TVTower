@@ -298,6 +298,11 @@ Type TPersonGeneratorCountry
 		'on all computers (if seed is the same!)
 		return arr[ RandRange(0, arr.length-1) ]
 	End Function
+
+
+	Function GetRandomIndex:Int(maxIndex:Int)
+		return RandRange(0, maxIndex)
+	End Function
 End Type
 
 
@@ -1053,7 +1058,9 @@ End Type
 
 
 'same chatgpt-basis as for "Greek" + manual adjustments
-Type TPersonGeneratorCountry_Poland extends TPersonGeneratorCountry	
+Type TPersonGeneratorCountry_Poland extends TPersonGeneratorCountry
+	'Certain Polish family names require gender specific appendices (ski and ska)  
+	Field lastNamesGenderSpecificBase:string[]
 	
 	Method New()
 		self.countryCode = "pl"
@@ -1107,22 +1114,68 @@ Type TPersonGeneratorCountry_Poland extends TPersonGeneratorCountry
 
 
 		self.lastNames = [ ..
-			"Adamczyk", "Adamski", "Andrzejewski", "Antczak", ..
-			"Bąk", "Baran", "Baranowski", "Bartkowiak", "Bartosz", "Bednarek", "Białas", "Bielecki", "Błaszczyk", "Brzeziński", ..
-			"Chrzanowski", "Czarnecki", "Czerwiński", ..
-			"Dąbrowski", "Duda", "Dudek", "Dziedzic", ..
-			"Gajewski", "Głowacki", "Górecki", "Grabowski", "Grzelak", ..
-			"Jabłoński", "Jagielski", "Janiak", "Jankowski", "Jasiński", "Jaworski", "Jóźwiak", ..
-			"Kaczmarek", "Kalinowski", "Kamiński", "Kania", "Kaczmarczyk", "Kowalczyk", "Kowalik", "Krawczyk", "Kubiak", "Kucharski", "Kwiatkowski", ..
-			"Lis", ..
-			"Maciejewski", "Malinowski", "Marciniak", "Mazurek", "Michalak", "Michalski", "Mikołajczyk", "Mikulski", "Mazurek", ..
-			"Nowak", "Nowicki", "Nowakowski", ..
-			"Pawlak", "Pietrzak", "Piotrowski",  "Puchalski", ..
-			"Rutkowski", ..
-			"Sadowski", "Sawicki", "Sikora", "Sobczyk", "Sokołowski", "Stępień", "Szczepański", "Szewczyk", "Szymański", ..
-			"Walczak", "Wasilewski", "Wesołowski", "Wiśniewski", "Witkowski", "Wójcik", "Wojciechowski", "Woźniak", "Wrona", "Wróbel", ..
-			"Zając", "Zakrzewski", "Zawadzki", "Zieliński", "Zając", "Żak", "Żuk" ..
+			"Adamczyk", "Antczak", ..
+			"Bąk", "Baran", "Bartkowiak", "Bartosz", "Bednar", "Bednarek", "Białas", "Błaszczyk", "Bugaj", "Burkiewicz", "Buzek", ..
+			"Czyż", ..
+			"Dąbek", "Dolata", "Duda", "Dudek", "Dziedzic", ..
+			"Grzelak", ..
+			"Janiak", "Jóźwiak", ..
+			"Kaczmarek", "Kania", "Kaczmarczyk", "Kowalczyk", "Kowal", "Kowalik", "Krawczyk", "Kubiak", "Kula", ..
+			"Lasota", "Lis", "Lisek", ..
+			"Machaj", "Marciniak", "Mazurek", "Michalak", "Mikołajczyk", ..
+			"Nowak", ..
+			"Pawlak", "Pietrzak", "Ponita", ..
+			"Rybus", ..
+			"Sikora", "Sobczyk", "Stenka", "Stępień", "Stoch", "Stokłosa", "Szewczyk", ..
+			"Turek", ..
+			"Walczak", "Widera", "Wójcik", "Woźniak", "Wrona", "Wróbel", ..
+			"Zając", "Zając", "Żak", "Żuk", "Zych" ..
 		]
+
+		self.lastNamesGenderSpecificBase = [ ..
+			"Adamsk", "Andrzejewsk", ..
+			"Baranowsk", "Bieleck", "Brzezińsk", ..
+			"Chrzanowsk", "Czarneck", "Czerwińsk", ..
+			"Dąbrowsk", ..
+			"Gajewsk", "Głowack", "Góreck", "Grabowsk", ..
+			"Jabłońsk", "Jagielsk", "Jankowsk", "Jasińsk", "Jaworsk", ..
+			"Kalinowsk", "Kamińsk", "Kucharsk", "Kwiatkowsk", ..
+			"Maciejewsk", "Malinowsk", "Michalsk", "Mikulsk", ..
+			"Nowick", "Nowakowsk", ..
+			"Piotrowsk",  "Puchalsk", ..
+			"Rutkowsk", ..
+			"Sadowsk", "Sawick", "Sokołowsk", "Szczepańsk", "Szymańsk", ..
+			"Wasilewsk", "Wesołowsk", "Wiśniewsk", "Witkowsk", "Wojciechowsk", ..
+			"Zakrzewsk", "Zawadzk", "Zielińsk" ..
+		]
+	End Method
+
+
+	Method GetLastName:string(gender:int) override
+		'Polish names can have different endings depending on the person
+		'being female or male (in some cases male or female keep eg the name
+		'of the one married to)
+		Local randomIndex:Int = GetRandomIndex(lastNames.length + lastNamesGenderSpecificBase.length -1)
+		if randomIndex < 0 Then Return "NO_LAST_NAMES_DEFINED"
+		
+		If randomIndex < lastNames.length
+			Return lastNames[randomIndex]
+		Else
+			Local mixSuffix:Int = RandRange(0, 100) < 3
+			if not mixSuffix
+				If gender = 1
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "i"
+				Else
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "a"
+				Endif
+			Else
+				If gender = 1
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "a"
+				Else
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "i"
+				Endif
+			EndIf
+		EndIf
 	End Method
 End Type
 
