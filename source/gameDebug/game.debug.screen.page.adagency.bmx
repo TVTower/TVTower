@@ -105,7 +105,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 		Next
 
 		If offerHightlight
-			offerHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID)
+			offerHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID, null)
 		EndIf
 	End Method
 
