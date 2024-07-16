@@ -12,6 +12,7 @@ GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Denmark )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_France )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Germany )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Greece )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Poland )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Russia )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Spain )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Turkey )
@@ -294,6 +295,11 @@ Type TPersonGeneratorCountry
 		'RandRange is a "mersenne twister"-random number: so the same
 		'on all computers (if seed is the same!)
 		return arr[ RandRange(0, arr.length-1) ]
+	End Function
+
+
+	Function GetRandomIndex:Int(maxIndex:Int)
+		return RandRange(0, maxIndex)
 	End Function
 End Type
 
@@ -1301,3 +1307,134 @@ Type TPersonGeneratorCountry_France extends TPersonGeneratorCountry
 End Type
 
 
+
+'base google search extended with https://forebears.io/poland/forenames
+Type TPersonGeneratorCountry_Poland extends TPersonGeneratorCountry
+	'Certain Polish family names require gender specific appendices (ski and ska)  
+	Field lastNamesGenderSpecificBase:string[]
+	
+	Method New()
+		self.countryCode = "pl"
+
+		self.firstNamesMale = [ ..
+			"Adam", "Adrian", "Aleksander", "Andrzej", "Antoni", "Arkadiusz", "Arek", "Artur", ..
+			"Bartek", "Bartlomiej", "Bartłomiej", "Bartosz", "Bogdan", ..
+			"Cezary", ..
+			"Darek", "Dariusz", "Dawid", "Damian", "Daniel", "Dominik", ..
+			"Edward", "Emil", ..
+			"Fabian", "Filip", "Franciszek", ..
+			"Grzegorz", ..
+			"Henryk", "Hubert", ..
+			"Igor", "Ignacy", "Ireneusz", ..
+			"Jacek", "Jakub", "Jan", "Janusz", "Jarek", "Jaroslaw", "Jarosław", "Jerzy", "John", "Józef", "Jurek", ..
+			"Kacper", "Kamil", "Karol", "Kazimierz", "Konrad", "Krystian", "Krzysiek", "Krzysztof", ..
+			"Lech", "Leszek", "Lukasz", "Łukasz", ..
+			"Maciej", "Maciek", "Marcel", "Marcin", "Marek", "Mariusz", "Martin", "Mateusz", "Micha", "Michal", "Michał", "Michael", "Mikołaj", "Mirek", "Miroslaw", "Mirosław", ..
+			"Norbert", ..
+			"Oskar", ..
+			"Patryk", "Pawel", "Paweł", "Peter", "Piotr", "Piotrek", "Przemek", "Przemyslaw", "Przemysław", ..
+			"Radoslaw", "Radosław", "Rafał", "Remigiusz", "Robert", "Roman", "Ryszard", ..
+			"Sebastian", "Slawek", "Slawomir", "Stanislaw", "Stanisław", "Stefan", "Sylwester", "Szymon", ..
+			"Tadeusz", "Tom", "Tomasz", "Tomek", ..
+			"Waldemar", "Wieslaw", "Wiesław", "Wiktor", "Witek", "Witold", "Wojciech", "Wojtek", ..
+			"Zbigniew", "Zbyszek" ..
+		]
+
+
+		self.firstNamesFemale = [ ..
+			"Aga", "Agata", "Agnieszka", "Aleksandra", "Alicja", "Alina", "Aneta", "Angelika", "Ania", "Anita", "Anna", "Asia", ..
+			"Basia", "Barbara", "Beata", "Blanka", "Bozena", "Bożena", ..
+			"Celina", ..
+			"Dagmara", "Danuta", "Daria", "Diana", "Dorota", "Dominika", ..
+			"Edyta", "Ela", "Eliza", "Elzbieta", "Elżbieta", "Emilia", "Ewa", "Ewelina", ..
+			"Felicja", ..
+			"Gabriela", "Gosia", "Grazyna", "Grażyna", ..
+			"Halina", "Hanna", ..
+			"Ilona", "Irena", "Iwona", "Iza", "Izabela", ..
+			"Jadwiga", "Janina", "Joanna", "Jola", "Jolanta", "Julia", "Justyna", ..
+			"Kamila", "Kasia", "Karina", "Karolina", "Katarzyna", "Kinga", "Klaudia", "Kornelia", "Krystyna", ..
+			"Lidia", "Lucyna", "Luiza", ..
+			"Magda", "Magdalena", "Maja", "Malgorzata", "Małgorzata", "Malwina", "Maria", "Marian", "Mariola", "Marlena", "Marta", "Martyna", "Marzena", "Milena", "Monika", ..
+			"Natalia", "Nikola", "Nina", ..
+			"Ola", "Olga", "Oksana", ..
+			"Patrycja", "Paula", "Paulina", ..
+			"Renata", "Roksana", ..
+			"Sabina", "Sandra", "Sara", "Sylwia", ..
+			"Tamara", "Teresa", ..
+			"Urszula", ..
+			"Wanda", "Weronika", "Wiktoria", "Wioletta", ..
+			"Zofia", "Zosia", "Zuzanna" ..
+		]
+
+
+		self.lastNames = [ ..
+			"Adamczyk", "Antczak", ..
+			"Bąk", "Baran", "Bartkowiak", "Bartosz", "Bednar", "Bednarek", "Białas", "Błaszczyk", "Bugaj", "Burkiewicz", "Buzek", ..
+			"Cieślak", "Czyż", ..
+			"Dąbek", "Dolata", "Domagała", "Duda", "Dudek", "Dziedzic", ..
+			"Gajda", "Grzelak", ..
+			"Janiak", "Janik", "Jarosz", "Jóźwiak", ..
+			"Kaczmarek", "Kania", "Kaczmarczyk", "Kasprzak", "Klimek", "Kopeć", "Kot", "Kowalczyk", "Kowal", "Kowalik", "Kozioł", "Krawczyk", "Krük", "Krupa", "Kubiak", "Kula", "Kurek", ..
+			"Lasota", "Lis", "Lisek", ..
+			"Machaj", "Madej", "Maj", "Majchrzak", "Marciniak", "Markiewicz", "Mazur", "Mazurek", "Michalak", "Mikołajczyk", "Mucha", "Musiał", ..
+			"Nawrocki", "Nowak", ..
+			"Olejniczak", "Olejnik", "Owczarek", ..
+			"Pawlak", "Pawlik", "Pietrzak", "Polak", "Ponita", ..
+			"Ratajczak", "Rybus", ..
+			"Sikora", "Sobczak", "Sobczyk", "Sowa", "Stankiewicz", "Stasiak", "Stenka", "Stępień", "Stoch", "Stokłosa", "Szczepaniak", "Szewczyk", "Szulc", "Szymczak", ..
+			"Tkaczyk", "Tomczak", "Tomczyk", "Turek", ..
+			"Urban", "Urbaniak", ..
+			"Walczak", "Wawrzyniak", "Widera", "Wieczorek", "Wilk", "Wójcik", "Woźniak", "Wrona", "Wróbel", ..
+			"Zając", "Zając", "Żak", "Żuk", "Zych" ..
+		]
+
+		self.lastNamesGenderSpecificBase = [ ..
+			"Adamsk", "Andrzejewsk", ..
+			"Baranowsk", "Bieleck", "Borkowsk", "Brzezińsk", "Brzozowsk", ..
+			"Czajkowsk", "Chmielewsk", "Chojnack", "Chrzanowsk", "Czarneck", "Czerwińsk", ..
+			"Dąbrowsk", "Dobrowolsk", "Domańsk", ..
+			"Gajewsk", "Głowack", "Góreck", "Grabowsk", ..
+			"Jabłońsk", "Jagielsk", "Jakubowsk", "Janick", "Jankowsk", "Jasińsk", "Jastrzębsk", "Jaworsk", ..
+			"Kalinowsk", "Kamińsk", "Karpińsk", "Kowalewsk", "Kowalsk", "Kozłowsk", "Krajewsk", "Kucharsk", "Kwiatkowsk", ..
+			"Laskowsk", "Lewandowsk", "Leszczyńsk", "Lipińsk", ..
+			"Maciejewsk", "Majewsk", "Makowsk", "Malinowsk", "Markowsk", "Michalsk", "Mikulsk", "Milewsk", ..
+			"Nowick", "Nowakowsk", ..
+			"Olszewsk", "Orzechowsk", "Ostrowsk", ..
+			"Pawłowsk", "Piaseck", "Piotrowsk", "Przybylsk", "Puchalsk", ..
+			"Romanowsk", "Rutkowsk", ..
+			"Sadowsk", "Sawick", "Sikorsk", "Sokołowsk", "Sosnowsk", "Stefańsk", "Szczepańsk", "Szymańsk", ..
+			"Tomaszewsk", ..
+			"Urbańsk", ..
+			"Wasilewsk", "Wesołowsk", "Wierzbick", "Wiśniewsk", "Witkowsk", "Wojciechowsk", "Wolsk", "Wysock", ..
+			"Zakrzewsk", "Zalewsk", "Zawadzk", "Zielińsk" ..
+		]
+	End Method
+
+
+	Method GetLastName:string(gender:int) override
+		'Polish names can have different endings depending on the person
+		'being female or male (in some cases male or female keep eg the name
+		'of the one married to)
+		Local randomIndex:Int = GetRandomIndex(lastNames.length + lastNamesGenderSpecificBase.length -1)
+		if randomIndex < 0 Then Return "NO_LAST_NAMES_DEFINED"
+		
+		If randomIndex < lastNames.length
+			Return lastNames[randomIndex]
+		Else
+			Local mixSuffix:Int = RandRange(0, 100) < 3
+			if not mixSuffix
+				If gender = 1
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "i"
+				Else
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "a"
+				Endif
+			Else
+				If gender = 1
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "a"
+				Else
+					Return lastNamesGenderSpecificBase[randomIndex - lastNames.length] + "i"
+				Endif
+			EndIf
+		EndIf
+	End Method
+End Type
