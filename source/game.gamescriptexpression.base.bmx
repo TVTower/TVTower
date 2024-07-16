@@ -3,28 +3,28 @@ Import "Dig/base.util.scriptexpression.bmx"
 Import Brl.Map
 
 'initialize on import
-GetGameScriptExpression()
+GetGameScriptExpressionOLD()
 
-Type TGameScriptExpression extends TScriptExpression
+Type TGameScriptExpressionOLD extends TScriptExpressionOLD
 	Global variableHandlers:TMap = CreateMap()
 
 
-	Function GetInstance:TGameScriptExpression()
+	Function GetInstance:TGameScriptExpressionOLD()
 		if not _instance
-			_instance = new TGameScriptExpression
+			_instance = new TGameScriptExpressionOLD
 		'if the instance was created, but was a "base" one, create
 		'a new and take over the values
-		elseif not TGameScriptExpression(_instance)
-			local newInstance:TGameScriptExpression = new TGameScriptExpression
+		elseif not TGameScriptExpressionOLD(_instance)
+			local newInstance:TGameScriptExpressionOLD = new TGameScriptExpressionOLD
 			'newInstance.XX = _instance.XX
 			_instance = newInstance
 		endif
-		return TGameScriptExpression(_instance)
+		return TGameScriptExpressionOLD(_instance)
 	End Function
 
 
 	Function RegisterHandler(variable:string, handler:string(variable:string, params:string[], resultElementType:int var))
-		variableHandlers.insert(variable.toLower(), TGameScriptExpressionFunctionWrapper.Create(handler))
+		variableHandlers.insert(variable.toLower(), TGameScriptExpressionOLDFunctionWrapper.Create(handler))
 	End Function
 
 rem
@@ -36,7 +36,7 @@ endrem
 
 	'override
 	Method HandleVariable:string(variable:string, resultElementType:int var)
-		local wrapper:TGameScriptExpressionFunctionWrapper = TGameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
+		local wrapper:TGameScriptExpressionOLDFunctionWrapper = TGameScriptExpressionOLDFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
 		if wrapper
 			_lastCommandErrored = False
 			return wrapper.func(variable, null, resultElementType)
@@ -53,7 +53,7 @@ endrem
 
 	'override
 	Method HandleFunction:string(variable:string, params:string[], resultElementType:int var)
-		local wrapper:TGameScriptExpressionFunctionWrapper = TGameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
+		local wrapper:TGameScriptExpressionOLDFunctionWrapper = TGameScriptExpressionOLDFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
 		if wrapper
 			_lastCommandErrored = False
 			return wrapper.func(variable, params, resultElementType)
@@ -69,17 +69,17 @@ endrem
 End Type
 
 
-Type TGameScriptExpressionFunctionWrapper
+Type TGameScriptExpressionOLDFunctionWrapper
 	Field func:string(variable:string, params:string[], resultElementType:int var)
 
-	Function Create:TGameScriptExpressionFunctionWrapper(func:string(variable:string, params:string[], resultElementType:int var))
-		local obj:TGameScriptExpressionFunctionWrapper = new TGameScriptExpressionFunctionWrapper
+	Function Create:TGameScriptExpressionOLDFunctionWrapper(func:string(variable:string, params:string[], resultElementType:int var))
+		local obj:TGameScriptExpressionOLDFunctionWrapper = new TGameScriptExpressionOLDFunctionWrapper
 		obj.func = func
 		return obj
 	End Function
 End Type
 
 
-Function GetGameScriptExpression:TGameScriptExpression()
-	return TGameScriptExpression.GetInstance()
+Function GetGameScriptExpressionOLD:TGameScriptExpressionOLD()
+	return TGameScriptExpressionOLD.GetInstance()
 End Function

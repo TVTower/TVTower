@@ -5,36 +5,36 @@ Import "game.gameinformation.base.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 
 
-GetGameScriptExpression().RegisterHandler("TIME_YEAR", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_DAY", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_HOUR", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_MINUTE", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_WEEKDAY", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_SEASON", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_DAYSPLAYED", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_YEARSPLAYED", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_DAYOFMONTH", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_DAYOFYEAR", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_MONTH", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_ISNIGHT", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_ISDAWN", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_ISDAY", GameScriptExpression_Handle_Time)
-GetGameScriptExpression().RegisterHandler("TIME_ISDUSK", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_YEAR", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_DAY", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_HOUR", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_MINUTE", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_WEEKDAY", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_SEASON", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_DAYSPLAYED", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_YEARSPLAYED", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_DAYOFMONTH", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_DAYOFYEAR", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_MONTH", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_ISNIGHT", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_ISDAWN", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_ISDAY", GameScriptExpression_Handle_Time)
+GetGameScriptExpressionOLD().RegisterHandler("TIME_ISDUSK", GameScriptExpression_Handle_Time)
 
-GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAME", GameScriptExpression_Handle_StationMap)
-GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAMESHORT", GameScriptExpression_Handle_StationMap)
-GetGameScriptExpression().RegisterHandler("STATIONMAP_POPULATION", GameScriptExpression_Handle_StationMap)
+GetGameScriptExpressionOLD().RegisterHandler("STATIONMAP_MAPNAME", GameScriptExpression_Handle_StationMap)
+GetGameScriptExpressionOLD().RegisterHandler("STATIONMAP_MAPNAMESHORT", GameScriptExpression_Handle_StationMap)
+GetGameScriptExpressionOLD().RegisterHandler("STATIONMAP_POPULATION", GameScriptExpression_Handle_StationMap)
 
-GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_FIRSTNAME", GameScriptExpression_Handle_PersonGenerator)
-GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_LASTNAME", GameScriptExpression_Handle_PersonGenerator)
-GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_NAME", GameScriptExpression_Handle_PersonGenerator)
-GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_TITLE", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpressionOLD().RegisterHandler("PERSONGENERATOR_FIRSTNAME", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpressionOLD().RegisterHandler("PERSONGENERATOR_LASTNAME", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpressionOLD().RegisterHandler("PERSONGENERATOR_NAME", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpressionOLD().RegisterHandler("PERSONGENERATOR_TITLE", GameScriptExpression_Handle_PersonGenerator)
 
 
 
 
 Function GameScriptExpression_Handle_Time:string(variable:string, params:string[], resultElementType:int var)
-	resultElementType = TScriptExpression.ELEMENTTYPE_NUMERIC
+	resultElementType = TScriptExpressionOLD.ELEMENTTYPE_NUMERIC
 
 	Select variable.ToLower()
 		case "time_year"
@@ -73,8 +73,8 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 		case "time_isdusk"
 			return string( GetWorldTime().IsDusk() )
 		default
-			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n"
-			GetGameScriptExpression()._lastCommandErrored = True
+			GetGameScriptExpressionOLD()._error :+ "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpressionOLD()._lastCommandErrored = True
 	End Select
 
 	return ""
@@ -83,7 +83,7 @@ End Function
 
 
 Function GameScriptExpression_Handle_StationMap:string(variable:string, params:string[], resultElementType:int var)
-	resultElementType = TScriptExpression.ELEMENTTYPE_STRING
+	resultElementType = TScriptExpressionOLD.ELEMENTTYPE_STRING
 
 	Select variable.ToLower()
 
@@ -92,11 +92,11 @@ Function GameScriptExpression_Handle_StationMap:string(variable:string, params:s
 		Case "stationmap_mapnameshort"
 			return string(GetGameInformation("stationmap", "mapnameshort"))
 		Case "population"
-			resultElementType = TScriptExpression.ELEMENTTYPE_NUMERIC
+			resultElementType = TScriptExpressionOLD.ELEMENTTYPE_NUMERIC
 			return string(GetGameInformation("stationmap", "population"))
 		default
-			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_StationMap: unknown variable ~q"+variable+"~q.~n"
-			GetGameScriptExpression()._lastCommandErrored = True
+			GetGameScriptExpressionOLD()._error :+ "GameScriptExpression_Handle_StationMap: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpressionOLD()._lastCommandErrored = True
 	End Select
 
 	return ""
@@ -106,7 +106,7 @@ End Function
 
 
 Function GameScriptExpression_Handle_PersonGenerator:string(variable:string, params:string[], resultElementType:int var)
-	resultElementType = TScriptExpression.ELEMENTTYPE_STRING
+	resultElementType = TScriptExpressionOLD.ELEMENTTYPE_STRING
 
 	local country:string = ""
 	if params.length > 1 then country = params[0].Trim().ToLower()
@@ -128,8 +128,8 @@ Function GameScriptExpression_Handle_PersonGenerator:string(variable:string, par
 			return GetPersonGenerator().GetTitle(country, gender)
 		default
 			print "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
-			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
-			GetGameScriptExpression()._lastCommandErrored = True
+			GetGameScriptExpressionOLD()._error :+ "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpressionOLD()._lastCommandErrored = True
 	End Select
 
 	return ""

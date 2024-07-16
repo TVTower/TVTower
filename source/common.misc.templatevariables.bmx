@@ -121,8 +121,10 @@ Type TTemplateVariables
 	End Method
 
 
-	Method GetVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True, useTime:Long = 0)
-		key = key.toLower()
+	Method GetVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True, useTime:Long = 0, keyIsLowerCase:Int = False)
+		If Not keyIsLowerCase 
+			key = key.toLower()
+		EndIf
 
 		local result:TLocalizedString
 		if variables 
@@ -136,7 +138,7 @@ Type TTemplateVariables
 		'check parent
 		if not result
 			local parent:TTemplateVariables = GetParentTemplateVariables()
-			if parent then result = parent.GetVariableString(key, defaultValue, createDefault)
+			if parent then result = parent.GetVariableString(key, defaultValue, createDefault, useTime, True)
 		endif
 
 		rem

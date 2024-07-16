@@ -223,7 +223,7 @@ Type TScriptTemplate Extends TScriptBase
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		if availableScript and not GetScriptExpression().Eval(availableScript)
+		if availableScript and not GetScriptExpressionOLD().Eval(availableScript)
 			return False
 		endif
 

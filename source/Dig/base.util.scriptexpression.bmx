@@ -47,7 +47,7 @@ Import Brl.Retro
 'based on the approach described at
 'http://www.strchr.com/expression_evaluator (author: Peter Kankowski)
 '
-Type TScriptExpression
+Type TScriptExpressionOLD
 	global _expression:string
 	global _expressionIndex:int = 0
 	global _errorCount:int = 0
@@ -55,7 +55,7 @@ Type TScriptExpression
 	global _error:string = ""
 	global _variableHandler:string(variable:string, params:string[], resultType:int var)
 
-	global _instance:TScriptExpression
+	global _instance:TScriptExpressionOLD
 
 	Const ELEMENTTYPE_NONE:int = 0
 	Const ELEMENTTYPE_NUMERIC:int = 1
@@ -64,8 +64,8 @@ Type TScriptExpression
 	Const ELEMENTTYPE_OBJECT:int = 4
 
 
-	Function GetInstance:TScriptExpression()
-		if not _instance then _instance = new TScriptExpression
+	Function GetInstance:TScriptExpressionOLD()
+		if not _instance then _instance = new TScriptExpressionOLD
 		return _instance
 	End Function
 
@@ -90,9 +90,9 @@ Type TScriptExpression
 			local params:string[] = payload.Split(",")
 			local functionName:string = expression[.. paramsStart]
 			'print " - found function: "+functionname+"  params: ~q" + ",".join(params)+"~q  payload: ~q"+payload+"~q"
-			return string(GetScriptExpression().HandleFunction(functionName, params, expressionResultType))
+			return string(GetScriptExpressionOLD().HandleFunction(functionName, params, expressionResultType))
 		else
-			return string(GetScriptExpression().HandleVariable(expression, expressionResultType))
+			return string(GetScriptExpressionOLD().HandleVariable(expression, expressionResultType))
 		endif
 	End Method
 
@@ -453,19 +453,19 @@ Type TScriptExpression
 End Type
 
 
-Function GetScriptExpression:TScriptExpression()
-	return TScriptExpression.GetInstance()
+Function GetScriptExpressionOLD:TScriptExpressionOLD()
+	return TScriptExpressionOLD.GetInstance()
 End Function
 
 
 
 
 Function ReplaceTextWithScriptExpression:int(text:string, replacement:string var)
-	local expressionResult:string = GetScriptExpression().EvalString(text)
+	local expressionResult:string = GetScriptExpressionOLD().EvalString(text)
 
 	'found something valid?
-	if TScriptExpression._lastCommandErrored
-		replacement = TScriptExpression._error
+	if TScriptExpressionOLD._lastCommandErrored
+		replacement = TScriptExpressionOLD._error
 		return False
 	else
 		replacement = expressionResult
