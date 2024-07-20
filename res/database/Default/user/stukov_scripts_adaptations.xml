@@ -6,98 +6,119 @@
 			<title>
 				<de>Das Mysterium der großen Klingen</de>
 				<en>Remembrance, Suffer, and Spike</en>
+				<pl>Pamięć, cierpienie i kolec</pl>
 			</title>
 			<title_original>
 				<de>Das Geheimnis der großen Schwerter</de>
 				<en>Memory, Sorrow, and Thorn</en>
+				<pl>Pamięć, smutek i cierń</pl>
 			</title_original>
 			<description>
 				<de>Verfilmung der epischen Fantasy-Serie über die Welt von Osten Ard. Die Geschichte von %ROLENAME1% Mondkalb (wegen seiner Zerstreung so genannt) und %ROLENAME2% Sturmkönig - und ihrer tödlichen Feindschaft.</de>
 				<en>Film adaptation of the epic fantasy series about the world of Osten Ard. The story of %ROLENAME1% Mooncalf (named so because of his absent-mindedness) and %ROLENAME2% Storm King - and their deadly enmity.</en>
+				<pl>Filmowa adaptacja epickiej serii fantasy o świecie Osten Ard. Historia %ROLENAME1% Mooncalfa (nazwanego tak z powodu roztargnienia) i %ROLENAME2% Storm Kinga - oraz ich śmiertelnej wrogości.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_1">
 					<title>
 						<de>Der Drachenknochensitz I</de>
 						<en>The Dragon Skeleton Throne I</en>
+						<pl>Smoczy szkieletowy tron I</pl>
 					</title>
 					<title_original>
 						<de>Der Drachenbeinthron I</de>
 						<en>The Dragonbone Chair I</en>
+						<pl>Krzesło Smocza Kość I</pl>
 					</title_original>
 					<description>
 						<de>Der betagte König Johan liegt im Sterben, und um die Thronfolge entbrennt ein hinterhältiger Kampf unter seinen Söhnen %ROLENAME5% und %ROLENAME4%. Der Küchenjunge %ROLENAME1% gerät mitten in die Auseinandersetzungen.</de>
 						<en>The aged King John is dying, and a treacherous battle breaks out among his sons %ROLENAME5% and %ROLENAME4% over the succession to the throne. The kitchen boy %ROLENAME1% gets caught in the middle of the confrontations.</en>
+						<pl>Starzejący się król Jan umiera, a między jego synami %ROLENAME5% i %ROLENAME4% wybucha zdradziecka walka o sukcesję tronu. Chłopiec kuchenny %ROLENAME1% zostaje wciągnięty w sam środek konfrontacji.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_2">
 					<title>
 						<de>Der Drachenknochensitz II</de>
 						<en>The Dragon Skeleton Throne II</en>
+						<pl>Smoczy szkieletowy tron II</pl>
 					</title>
 					<title_original>
 						<de>Der Drachenbeinthron II</de>
 						<en>The Dragonbone Chair II</en>
+						<pl>Krzesło Smocza Kość II</pl>
 					</title_original>
 					<description>
 						<de>Welche Ziele aber verfolgen die geheimnisvollen Elbenvölker der Nornen und Sithi, denen das Land einst gehörte? Aus Misstrauen gegenüber seinem Bruder %ROLENAME4% schliesst Koenig %ROLENAME5% einen Bund mit den Nornen und erhält das große Schwert Leid.</de>
 						<en>But what are the goals of the mysterious elven nations of the Norns and Sithi, to whom the land once belonged? Out of mistrust towards his brother %ROLENAME4%, King %ROLENAME5% enters into a covenant with the Norns and receives the great sword Sorrow.</en>
+						<pl>Ale jakie są cele tajemniczych elfich narodów Nornów i Sithi, do których niegdyś należały te ziemie? Z braku zaufania do swojego brata %ROLENAME4%, król %ROLENAME5% zawiera przymierze z Nornami i otrzymuje wielki miecz Smutek.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_3">
 					<title>
 						<de>Der Lebwohlstein I</de>
 						<en>Stone of Goodbye I</en>
+						<pl>Kamień pożegnania I</pl>
 					</title>
 					<title_original>
 						<de>Der Abschiedsstein I</de>
 						<en>Stone of Farewell I</en>
+						<pl>Kamień pożegnalny I</pl>
 					</title_original>
 					<description>
 						<de>Auf dem Hochhorst herrschen Sturmkönig %ROLENAME2%s Kreaturen. Aber noch regt sich Widerstand.</de>
 						<en>Storm King %ROLENAME2%'s creatures rule on the high eyrie. But resistance is still stirring.</en>
+						<pl>Stworzenia Króla Burzy %ROLENAME2% rządzą na wysokim oku. Ale opór wciąż trwa.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="3" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_4">
 					<title>
 						<de>Der Lebwohlstein II</de>
 						<en>Stone of Goodbye II</en>
+						<pl>Kamień pożegnania II</pl>
 					</title>
 					<title_original>
 						<de>Der Abschiedsstein II</de>
 						<en>Stone of Farewell II</en>
+						<pl>Kamień pożegnalny II</pl>
 					</title_original>
 					<description>
 						<de>Die Gruppe um Prinz %ROLENAME4% erreicht die alte Festung der Sitthi auf dem Abschiedsstein. Von dort aus beginnt der letzte Kampf um Osten Ard.</de>
 						<en>The group around Prince %ROLENAME4% reaches the old fortress of the Sitthi on the Farewell Stone. From there, the final battle for Osten Ard begins.</en>
+						<pl>Grupa wokół księcia %ROLENAME4% dociera do starej fortecy Sitthi na Kamieniu Pożegnalnym. Stamtąd rozpoczyna się ostateczna bitwa o Osten Ard.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="4" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_5">
 					<title>
 						<de>Die Nornenherrscherin</de>
 						<en>Utok'ko</en>
+						<pl>Utok'ko</pl>
 					</title>
 					<title_original>
 						<de>Die Nornenkönigin</de>
 						<en>Utuk'ku</en>
+						<pl>Utuk'ku</pl>
 					</title_original>
 					<description>
 						<de>Die Suche nach dem letzten der drei großen Schwerter beginnt. Alte Schriften vermuten es im Grab des alten Koenigs Johan.</de>
 						<en>The search for the last of the three great swords begins. Ancient writings suspect it to be in the grave of the old king Johan.</en>
+						<pl>Rozpoczynają się poszukiwania ostatniego z trzech wielkich mieczy. Starożytne pisma podejrzewają, że znajduje się on w grobie starego króla Johana.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="5" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_6">
 					<title>
 						<de>Vor den Toren</de>
 						<en>Outside the Gates</en>
+						<pl>Poza bramami</pl>
 					</title>
 					<title_original>
 						<de>Der Engelsturm</de>
 						<en>To Green Angel Tower</en>
+						<pl>Do Wieży Zielonego Anioła</pl>
 					</title_original>
 					<description>
 						<de>Während vor den Toren des Hochhorstes %ROLENAME4%s Armee warted, findet im Engelsturm die entscheidende Auseinandersetzung zwischen %ROLENAME5%, %ROLENAME6%, %ROLENAME1% und %ROLENAME3% statt.</de>
 						<en>While %ROLENAME4%'s army waits outside the gates of the High Eyrie, the decisive confrontation between %ROLENAME5%, %ROLENAME6%, %ROLENAME1% and %ROLENAME3% takes place in the Angel Tower.</en>
+						<pl>Podczas gdy armia %ROLENAME4% czeka przed bramami High Eyrie, decydująca konfrontacja pomiędzy %ROLENAME5%, %ROLENAME6%, %ROLENAME1% i %ROLENAME3% ma miejsce w Angel Tower.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -131,56 +152,68 @@
 			<title>
 				<de>Die Goblins</de>
 				<en>The Goblins</en>
+				<pl>Gobliny</pl>
 			</title>
 			<title_original>
 				<de>Die Goblins</de>
 				<en>The Goblins</en>
+				<pl>Gobliny</pl>
 			</title_original>
 			<description>
 				<de>Verfilmung der Buchreihe Die Goblins um %Goblin% den Goblin und den vergessenen Gott %Gott%.</de>
 				<en>Adaptation of the book series The Goblins about %Goblin% the goblin and the forgotten god %Gott%.</en>
+				<pl>Adaptacja serii książek Gobliny, o goblinie %Goblin% i zapomnianym bogu %Gott%.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Goblins_1">
 					<title>
 						<de>Die Goblins</de>
 						<en>The Goblins</en>
+						<pl>Gobliny</pl>
 					</title>
 					<title_original>
 						<de>Die Goblins</de>
 						<en>The Goblins</en>
+						<pl>Gobliny</pl>
 					</title_original>
 					<description>
 						<de>%Goblin% ist ein Goblin - ein kleiner, schwächlicher Goblin. Wenn er eines nicht sein will, dann ist es ein Held zu sein. Eines Tages jedoch passiert etwas ... und %Goblin% muss zum Helden werden ... irgendwie. Ach ja und %Gott% gibt es auch.</de>
 						<en>%Goblin% is a goblin - a small, weak goblin. If there's one thing he doesn't want to be, then it is to be a hero. One day, however, something happens ... and %Goblin% has to become a hero ... somehow. Oh, and %Gott% exists, too.</en>
+						<pl>%Goblin% jest goblinem - małym, słabym goblinem. Jeśli jest jedna rzecz, którą nie chce być, to jest to bycie bohaterem. Pewnego dnia jednak coś się dzieje... i %Goblin% musi zostać bohaterem... w jakiś sposób. Aha, i %Gott% też istnieje.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Goblins_2">
 					<title>
 						<de>Die Rückkehr der Goblins</de>
 						<en>Return of the Goblins</en>
+						<pl>Powrót goblinów</pl>
 					</title>
 					<title_original>
 						<de>Die Rückkehr der Goblins</de>
 						<en>Return of the Goblins</en>
+						<pl>Powrót goblinów</pl>
 					</title_original>
 					<description>
 						<de>Als eines Tages ein Oger auftaucht und die Goblins um Hilfe bittet, wird der schwächliche %Goblin% auf eine brandgefährliche Mission geschickt. Ach ja und %Gott% gibt es auch.</de>
 						<en>When one day an ogre shows up and asks the goblins for help, the frail %Goblin% is sent on a blazingly dangerous mission. Oh yes and %Gott% also exists.</en>
+						<pl>Kiedy pewnego dnia pojawia się ogr i prosi gobliny o pomoc, wątły %Goblin% zostaje wysłany na niesamowicie niebezpieczną misję. O tak i %Gott% również istnieje.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Goblins_3">
 					<title>
 						<de>Der Krieg der Goblins</de>
 						<en>The War of the Goblins</en>
+						<pl>Wojna goblinów</pl>
 					</title>
 					<title_original>
 						<de>Der Krieg der Goblins</de>
 						<en>The War of the Goblins</en>
+						<pl>Wojna goblinów</pl>
 					</title_original>
 					<description>
 						<de>Ein Angriff auf die Goblin Hoehlen und schon steckt %Goblin% Drachentoeter mitten im Krieg. Ach ja und %Gott% gibt es auch.</de>
 						<en>One attack on the goblin caves and %Goblin% Dragonslayer is already in the middle of the war. Oh yes and %Gott% is also there.</en>
+						<pl>Jeden atak na jaskinie goblinów i %Goblin% Pogromca Smoków jest już w środku wojny. O tak i %Gott% też tam jest.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -188,10 +221,12 @@
 				<Gott>
 					<de>Schattenstern|Isa|Lichtbeisser|Ipsep|Noc|Herbststern</de>
 					<en>Shadowstar|Isa|Lightbiter|Ipsep|Noc|Autumnstar</en>
+					<pl>Cienista Gwiazda|Isa|Lekkigryzak|Ipsep|Noc|Jesienna Gwiazda</pl>
 				</Gott>
 				<Goblin>
 					<de>Jig|Braf|Relka|Grell</de>
 					<en>Jig|Braf|Relka|Grell</en>
+					<pl>Jig|Braf|Relka|Grell</pl>
 				</Goblin>
 			</variables>
 			<jobs>
@@ -221,31 +256,38 @@
 			<title>
 				<de>Dismal Dungeon - Der Film</de>
 				<en>Dismal Dungeon - The Film</en>
+				<pl>Dismal Dungeon - Film</pl>
 			</title>
 			<title_original>
 				<de>Darkest Dungeon - Der Film</de>
 				<en>Darkest Dungeon - The Film</en>
+				<pl>Darkest Dungeon - Film</pl>
 			</title_original>
 			<description>
 				<de>Versuch einer Verfilmung des Computerspiels, naja zumindest der Kampf gegen Monster. %Class1%, %Class2%, %Class3% und %Class4% versuchen zu überleben. Jayne Wune leiht seine Stimme, oder ist sie nur eingespielt?</de>
 				<en>Attempt at a film adaptation of the computer game, well at least the fight against monsters. %Class1%, %Class2%, %Class3% and %Class4% try to survive. Jayne Wune lends his voice, or is it just recorded?</en>
+				<pl>Próba filmowej adaptacji gry komputerowej, a przynajmniej walki z potworami. %Class1%, %Class2%, %Class3% i %Class4% próbują przetrwać. Jayne Wune użycza swojego głosu, a może to tylko nagranie?</pl>
 			</description>
 			<variables>
 				<Class1>
 					<de>Grave Robber|Crusader|Arbalest</de>
 					<en>Grave Robber|Crusader|Arbalest</en>
+					<pl>Grave Robber|Crusader|Arbalest</pl>
 				</Class1>
 				<Class2>
 					<de>Bounty Hunter|Hellion|Highwayman</de>
 					<en>Bounty Hunter|Hellion|Highwayman</en>
+					<pl>Bounty Hunter|Hellion|Highwayman</pl>
 				</Class2>
 				<Class3>
 					<de>Houndmaster|Jester|Man-at-Arms</de>
 					<en>Houndmaster|Jester|Man-at-Arms</en>
+					<pl>Houndmaster|Jester|Man-at-Arms</pl>
 				</Class3>
 				<Class4>
 					<de>Occultist|Plague Doctor|Vestal|Flagellant</de>
 					<en>Occultist|Plague Doctor|Vestal|Flagellant</en>
+					<pl>Occultist|Plague Doctor|Vestal|Flagellant</pl>
 				</Class4>
 			</variables>
 			<jobs>
@@ -272,23 +314,28 @@
 			<title>
 				<de>Der Widersacher</de>
 				<en>The Adversary</en>
+				<pl>Adwersarz</pl>
 			</title>
 			<title_original>
 				<de>Der Widersacher</de>
 				<en>The Adversary</en>
+				<pl>Adwersarz</pl>
 			</title_original>
 			<description>
 				<de>Er kommt mit Feuer und Sturm, und mit seinem Erscheinen brechen die letzten Tage der Menschheit an. Eine Legende wird Wirklichkeit, wie der Metzger %RoleMale% und Anhalterin %RoleFemale% erleben.</de>
 				<en>He comes with fire and storm, and with his appearance the final days of mankind are dawning. A legend becomes reality, as the butcher %RoleMale% and hitchhiker %RoleFemale% experience.</en>
+				<pl>Nadchodzi z ogniem i burzą, a wraz z jego pojawieniem się nadchodzą ostatnie dni ludzkości. Legenda staje się rzeczywistością, czego doświadczają rzeźnik %RoleMale% i autostopowiczka %RoleFemale%.</pl>
 			</description>
 			<variables>
 				<RoleMale>
 					<de>Brenner|Heidmann|Baumann|Schmidt</de>
 					<en>Brenner|Heidmann|Baumann|Schmidt</en>
+					<pl>Brenner|Heidmann|Baumann|Schmidt</pl>
 				</RoleMale>
 				<RoleFemale>
 					<de>Astrid|Charlotte|Nicole|Christiane</de>
 					<en>Astrid|Charlotte|Nicole|Christiane</en>
+					<pl>Astrid|Charlotte|Nicole|Christiane</pl>
 				</RoleFemale>				
 			</variables>
 			<jobs>

@@ -21,6 +21,7 @@
 			<description>
 				<de>Der Super-Spiel-Spaß von RegenbogenWünsche! Als Brettspiel und elektronisch.</de> <!-- orig: Rainbow Arts -->
 				<en>The super fun game by RainbowWishes! Available as a board game and digitally.</en>
+				<pl>Super zabawna gra RainbowWishes! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="8" profit="1500" penalty="3131" fix_infomercial_profit="1" />
@@ -33,6 +34,7 @@
 			<description>
 				<de>Der Super-Spiel-Spaß von RegenbogenWünsche! Als Brettspiel und elektronisch.</de> <!-- orig: Rainbow Arts -->
 				<en>The super fun game by RainbowWishes! Available as a board game and digitally.</en>
+				<pl>Super zabawna gra RainbowWishes! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="6" repetitions="2" duration="5" profit="2500" penalty="4000" fix_infomercial_profit="1" />
@@ -45,6 +47,7 @@
 			<description>
 				<de>Der Super-Spiel-Spaß von RegenbogenWünsche! Als Brettspiel und elektronisch.</de> <!-- orig: Rainbow Arts -->
 				<en>The super fun game by RainbowWishes! Available as a board game and digitally.</en>
+				<pl>Super zabawna gra RainbowWishes! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
@@ -57,6 +60,7 @@
 			<description>
 				<de>Ihre Tacos in 1, 2 oder 3 Meter Länge!</de>
 				<en>Your tacos in lengths of 1, 2 or 3 metres!</en>
+				<pl>Twoje tacos o długości 1, 2 lub 3 metry!</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="4" repetitions="8" duration="1" profit="1150" penalty="1784" fix_infomercial_profit="1" />
@@ -69,6 +73,7 @@
 			<description>
 				<de>Ihre Frühlingsrollen in 1, 2 oder 3 Meter Länge!</de>
 				<en>Your egg rolls in lengths of 1, 2 or 3 metres!</en>
+				<pl>Sajgonki o długości 1, 2 lub 3 metry!</pl>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="2" duration="3" profit="680" penalty="1100" fix_infomercial_profit="1" />
@@ -78,10 +83,12 @@
 			<title>
 				<de>Rehböck</de>
 				<en>Roebuck</en>
+				<pl>Ribock</pl>
 			</title>
 			<description>
 				<de>Der Schuh der flitzt.</de> <!-- Mad TV: Reebock sitzt -->
 				<en>The shoe that flits.</en> <!-- Mad TV: Reebock means sitting down -->
+				<pl>But który pasuje</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="7" duration="2" profit="345" penalty="790" infomercial_profit="16" fix_infomercial_profit="1" />
@@ -91,10 +98,12 @@
 			<title>
 				<de>Kariodent</de>
 				<en>Cariodent</en>
+				<pl>Kitdent</pl>
 			</title>
 			<description>
 				<de>Stopft Löcher auch in schlechten Zähnen.</de>
 				<en>Plugs holes even in bad teeth.</en>
+				<pl>Zatyka dziury nawet w uszkodzonych zębach.</pl>
 			</description>
 			<conditions min_audience="9.3772" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="8" duration="1" profit="360" penalty="600" infomercial_profit="196" fix_infomercial_profit="1" />
@@ -104,10 +113,12 @@
 			<title>
 				<de>Schnitzler</de>
 				<en>Schnitzler</en>
+				<pl>Schnitzler</pl>
 			</title>
 			<description>
 				<de>Schnitzler-Computer: Jetzt mit drei RegenbogenWünsche-Spielen!</de>
 				<en>Schnitzler Computers: Now with three RainbowWishes games!</en>
+				<pl>Schnitzler Computers: Teraz z trzema grami RainbowWishes!</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="26" repetitions="3" duration="8" profit="460" penalty="1200" infomercial_profit="106" fix_infomercial_profit="1" />
@@ -120,6 +131,7 @@
 			<description>
 				<de>Kapitalia Lebensversicherungen - Wir verwalten ihr Geld schnell und verlässlich.</de>
 				<en>Kapitalia Life Insurance - We manage your money quickly and reliably.</en>
+				<pl>Kapitalia Ubezpieczenia na życie - Zarządzamy Twoimi pieniędzmi szybko i niezawodnie.</pl>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="32" repetitions="1" duration="2" profit="550" penalty="2181" infomercial_profit="251" fix_infomercial_profit="1" />
@@ -132,6 +144,7 @@
 			<description>
 				<de>Partner-Moden von Pariser Spitzen-Designern.</de>
 				<en>Partner fashion by Parisian (l)ace designers.</en>
+				<pl>Moda partnerska paryskich projektantów.</pl>
 			</description>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="24" repetitions="2" duration="1" profit="500" penalty="1300" infomercial_profit="154" fix_infomercial_profit="1" />
@@ -144,6 +157,7 @@
 			<description>
 				<de>Das NEUE Telespiel mit drei eingebauten Spielen!</de>
 				<en>The NEW telly console with three built-in games!</en>
+				<pl>NOWA konsola telewizyjna z trzema wbudowanymi grami!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -157,6 +171,7 @@
 			<description>
 				<de>Holt Euch den neuen SUPER-NIP Spielspaß!</de>
 				<en>Get your hands on the new SUPER-NIP fun!</en>
+				<pl>Weź w swoje ręce nową zabawkę SUPER-NIP!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -170,6 +185,7 @@
 			<description>
 				<de>Das NEUE Telespiel mit den Super-Mega-Cartridges!</de>
 				<en>The NEW telly console with the super mega cartridges!</en>
+				<pl>NOWA konsola telewizyjna z super mega kartridżami!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -183,6 +199,7 @@
 			<description>
 				<de>Das NEUE Telespiel! Mit den Mini-DVDs!</de>
 				<en>The NEW telly console! With the mini DVDs!</en>
+				<pl>Nowa konsola telewizyjna! Z mini DVD!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -196,6 +213,7 @@
 			<description>
 				<de>Die NEUE Retrokonsole mit fünf eingebauten Spielen!</de>
 				<en>The NEW retro console with five built-in games!</en>
+				<pl>NOWA konsola retro z pięcioma wbudowanymi grami!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -206,10 +224,12 @@
 			<title>
 				<de>UranLight</de>
 				<en>UraniumLight</en>
+				<pl>UraniumFit</pl>
 			</title>
 			<description>
 				<de>50 Kilo weniger in 2 Tagen mit der neuen Fusions-Diät.</de>
 				<en>Loose 50 pounds in 2 days with the new fusion diet.</en>
+				<pl>Schudnij 50 kg w 2 dni dzięki nowej diecie fusion.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
 			<data quality="24" repetitions="5" duration="5" profit="420" penalty="1600" infomercial_profit="70" fix_infomercial_profit="1" />
@@ -218,10 +238,12 @@
 		<ad id="9e09ce1b-294d-4ddc-9910-d33ddbdb1e19" comment="from Mad TV">
 			<title>
 				<de>Juicycat</de>
+				<pl>Koci-Sok</pl>
 			</title>
 			<description>
 				<de>Echter, klarer Katzensaft! Mjamjam!</de>
 				<en>Genuine clear cat juice! Yum-yum!</en>
+				<pl>Prawdziwy klarowny sok dla kotów! Mniam mniam!</pl>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
 			<data quality="3" repetitions="7" duration="7" profit="400" penalty="750" infomercial_profit="167" fix_infomercial_profit="1" />
@@ -231,10 +253,12 @@
 			<title>
 				<de>Nobill</de>
 				<en>Cheapo-Cheapo</en>
+				<pl>BezOpłat</pl>
 			</title>
 			<description>
 				<de>Billig - billiger - Nobill.</de>
 				<en>Cheap - cheaper - Cheapo-cheapo.</en>
+				<pl>Tani - tańszy - BezOpłat.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
 			<data quality="31" repetitions="2" duration="8" profit="410" penalty="1100" infomercial_profit="3" fix_infomercial_profit="1" />
@@ -247,6 +271,7 @@
 			<description>
 				<de>Computerspiele schnell und bugfrei!</de>
 				<en>Computer games fast and bug free!</en>
+				<pl>Gry komputerowe szybkie i wolne od błędów!</pl>
 			</description>
 			<conditions min_audience="0.3133" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<!-- TODO: Not sure if target_group is appropriate, I've always read this ad as a small garage studio targeting publishers -->
@@ -257,10 +282,12 @@
 			<title>
 				<de>PC-Tonmann</de>
 				<en>PC Sound Guy</en>
+				<pl>Dzwiękowiec na PC</pl>
 			</title>
 			<description>
 				<de>Soundprobleme? Der PC-Tonmann rauscht auch bei Ihnen mal vorbei. Schnell und ohne viel Tamtam.</de> <!-- orig: Soundkarte, Lautsprecher, Kopfhörer, Software von RAINBOW ARTS für nur DM 249,- -->
 				<en>Sound problems? The PC Sound Guy will buzz by for you too. Quickly and without much fanfare.</en>
+				<pl>Problemy z dźwiękiem? Dźwiękowiec na PC dryndnie do ciebie. Szybko i bez zbędnych fanfar.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="1" duration="7" profit="1700" penalty="2000" infomercial_profit="142" fix_infomercial_profit="1" />
@@ -269,10 +296,12 @@
 		<ad id="60025ff2-4a8a-4530-afec-b2ec2f29fc99" comment="https://de.wikipedia.org/wiki/Rushware | from Mad TV as 'Rushware'">
 			<title>
 				<de>Brushwear</de>
+				<pl>Odzież Brushwear</pl>
 			</title>
 			<description>
 				<de>Auf Leinen mit dem Strang.</de> <!-- orig: Online with the trend -->
 				<en>On linen with the thread.</en>
+				<pl>Ciuchy zgodne z trendem</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="1" target_group="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="7" duration="1" profit="1900" penalty="2500" infomercial_profit="180" fix_infomercial_profit="1" />
@@ -281,10 +310,12 @@
 		<ad id="05c35bc8-df60-4478-af4e-66691a0f2402" comment="1980 - 1985 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL PCs</de>
+				<pl>Komputery ESCAL PC</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 4000 kHz.</de>
 				<en>The brand you trust. 4000 kHz and beyond.</en>
+				<pl>Marka, której ufasz. 4000 kHz i więcej.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
@@ -294,10 +325,12 @@
 		<ad id="54841279-32c4-46ba-bf27-79069a81e646" comment="1986 - 1989 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL XTs</de>
+				<pl>Komputery ESCAL XT</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 8000 kHz.</de>
 				<en>The brand you trust. 8000 kHz and beyond.</en>
+				<pl>Marka, której ufasz. 8000 kHz i więcej.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
@@ -307,10 +340,12 @@
 		<ad id="8efa85c7-e567-413f-8475-b594bb1ebc6c" comment="1990 - 1993 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL ATs</de>
+				<pl>Komputery ESCAL AT</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 12.000 kHz.</de>
 				<en>The brand you trust. 12,000 kHz and beyond.</en>
+				<pl>Marka, której ufasz. 12 000 kHz i więcej.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
@@ -320,10 +355,12 @@
 		<ad id="563600d9-8e5b-43bb-8acc-5358609273d4" comment="1994 - 2002 | https://en.wikipedia.org/wiki/Escom_AG | also https://en.wikipedia.org/wiki/Pentium | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL Penturium</de>
+				<pl>Komputery ESCAL Penturium</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 66.000 kHz.</de>
 				<en>The brand you trust. 66,000 kHz and beyond.</en>
+				<pl>Marka, której ufasz. 66 000 kHz i więcej.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
@@ -333,10 +370,12 @@
 		<ad id="171d5785-f6cd-4f16-b025-655539567bc0" comment="2003 - forever | https://en.wikipedia.org/wiki/Escom_AG | also spoofing https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL Forever</de>
+				<pl>Komputery ESCAL Forever</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Jetzt als einmaliges Komponenten-Bastel-Set.</de>
 				<en>The brand you trust. Now as a unique DIY component set.</en>
+				<pl>Marka, której ufasz. Teraz jako unikalny zestaw komponentów Zrób To Sam.</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="34" repetitions="4" duration="5" profit="900" penalty="1700" infomercial_profit="103" fix_infomercial_profit="1" />
@@ -346,10 +385,12 @@
 		<ad id="21b1952e-22d9-4055-a913-092b6b458cfd" comment="1980 - 2002 | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
 				<de>HiScreen</de>
+				<pl>Telewizory HiScreen</pl>
 			</title>
 			<description>
 				<de>Gestochen scharfes Bild der Zukunft.</de>
 				<en>Razor-sharp image of the future.</en>
+				<pl>Ostry jak brzytwa obraz przyszłości.</pl>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="2" duration="6" profit="1800" penalty="1947" infomercial_profit="87" fix_infomercial_profit="1" />
@@ -359,10 +400,12 @@
 		<ad id="74fe2e5a-74b1-43fa-9892-d042203179b0" comment="2003 - forever | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
 				<de>HiScreen.deu</de>
+				<pl>Telewizory HiScreen XSL</pl>
 			</title>
 			<description>
 				<de>Gestochen scharfes Bild der Zukunft. Jetzt in extra-flach.</de>
 				<en>Razor-sharp image of the future. Now extra-slim.</en>
+				<pl>Ostry jak brzytwa obraz przyszłości. Teraz wyjątkowo cienki.</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="6" duration="7" profit="1000" penalty="1400" infomercial_profit="170" fix_infomercial_profit="1" />
@@ -373,10 +416,12 @@
 			<title>
 				<de>Duban Resort</de>
 				<en>Duban Resort</en>
+				<pl>Duban Resort</pl>
 			</title>
 			<description>
 				<de>Mach Urlaub in Duban - Baden, Sonnen, Erdöl graben.</de>
 				<en>Take a vacation in Duban - swim, sunbathe, drill for oil.</en>
+				<pl>Zrób sobie wakacje w Dubanie - pływaj, opalaj się, wierć w poszukiwaniu ropy.</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="24" repetitions="4" duration="4" profit="1300" penalty="2000" infomercial_profit="237" fix_infomercial_profit="1" />
@@ -386,10 +431,12 @@
 			<title>
 				<de>WuffGenuss</de>
 				<en>PamperPooch</en>
+				<pl>HauHauJedz</pl>
 			</title>
 			<description>
 				<de>Verwöhnen Sie Ihren Vierbeiner mit pfotig-pfundigem Genuss. Jeder Bissen ein wedelndes Erlebnis. WuffGenuss - Die Kraft im Napf!</de>
 				<en>Indulge your furry friend with paw-some taste. Where every bite is a tail-wagging delight. PamperPooch - Where Taste Meets Tail!</en>
+				<pl>Rozkoszuj się smakiem swojego futrzanego przyjaciela. Gdzie każdy kęs jest rozkoszą dla merdającego ogona. HauHauJedz - Gdzie smak spotyka się z ogonem!</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="1" duration="2" profit="1000" penalty="2609" infomercial_profit="145" fix_infomercial_profit="1" />
@@ -402,6 +449,7 @@
 			<description>
 				<de>Feinstrumpfhosen für die Frau von heute.</de>
 				<en>Fine tights for the woman of today.</en>
+				<pl>Delikatne rajstopy dla współczesnej kobiety.</pl>
 			</description>
 			<conditions min_audience="0.31" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="27" repetitions="7" duration="6" profit="2000" penalty="3000" infomercial_profit="10" fix_infomercial_profit="1" />
@@ -411,10 +459,12 @@
 			<title>
 				<de>Doggy</de>
 				<en>Doggy</en>
+				<pl>Doggy</pl>
 			</title>
 			<description>
 				<de>Verwöhnen Sie ihr Hundchen mit Doggy!</de>
 				<en>Spoil your doggy-woggy with Doggy!</en>
+				<pl>Rozpieść swojego psiaka z Doggy!</pl>
 			</description>
 			<conditions min_audience="0.39" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="26" repetitions="3" duration="4" profit="1900" penalty="2325" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -423,10 +473,12 @@
 		<ad id="484b2441-8a91-4e88-81bc-bb3ad4e0aebe" comment="seems inspired from Mad TV, but isn't verbatim">
 			<title>
 				<de>Kitty Food</de>
+				<pl>Karma Kitty</pl>
 			</title>
 			<description>
 				<de>Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
 				<en>Nutritious canned food for your house cat.</en>
+				<pl>Pożywna karma w puszkach dla kota domowego.</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="2" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="5" profit="1100" penalty="1400" fix_infomercial_profit="1" />
@@ -436,10 +488,12 @@
 			<title>
 				<de>Delikat</de>
 				<en>DeliCat</en>
+				<pl>Delikot</pl>
 			</title>
 			<description>
 				<de>Das neue Katzenfutter: Von Katzen für Katzen.</de>
 				<en>The latest in cat food: by cats for cats.</en>
+				<pl>Najnowsza karma dla kotów: przez koty dla kotów.</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="5" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="6" duration="2" profit="1050" penalty="1203" fix_infomercial_profit="1" />
@@ -452,6 +506,7 @@
 			<description>
 				<de>Jetzt mit Datasette 1350 - Das neuartige Multimedia-Erlebnis direkt vom Tape-Loader!</de>
 				<en>Now with Datasette 1350 - The brand new multimedia experience straight from the tape loader!</en>
+				<pl>Teraz z Datasette 1350 - Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible?  -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
@@ -465,6 +520,7 @@
 			<description>
 				<de>Staunen Sie über das neuartige Multimedia-Erlebnis jetzt in 4096 Farben!</de>
 				<en>Marvel at the brand new multimedia experience now in 4096 colors!</en>
+				<pl>Podziwiaj zupełnie nowe wrażenia multimedialne teraz w 4096 kolorach!</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible?  -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
@@ -478,6 +534,7 @@
 			<description>
 				<de>CDVid - Die neue Multimedia-Dimension!</de>
 				<en>CDVid - The new multimedia dimension</en>
+				<pl>CDVid - Nowy wymiar multimediów</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible?  -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
@@ -491,6 +548,7 @@
 			<description>
 				<de>Das neuartige Multimedia-Erlebnis jetzt mit wirklich allen Sinnen erfahrbar - als Komponenten-Bastel-Set.</de>
 				<en>You can now discover the brand new multimedia experience as a matter of fact with all your senses - as a DIY component kit.</en>
+				<pl>Teraz możesz odkrywać zupełnie nowe doznania multimedialne wszystkimi zmysłami - jako zestaw komponentów Zrób To Sam.</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible?  -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
@@ -504,6 +562,7 @@
 			<description>
 				<de>Wir ermöglichen Mobilität.</de> <!-- orig: Wir sorgen für Bewegung -->
 				<en>We provide for mobility.</en> <!-- orig: We get you there -->
+				<pl>Zapewniamy mobilność.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? Currently not - field is a single value -->
 			<data quality="17" repetitions="8" duration="3" profit="325" penalty="1053" fix_infomercial_profit="1" />
@@ -516,6 +575,7 @@
 			<description>
 				<de>Die geölten Fachmänner. Wir sind Ihnen behilflich!</de> <!-- orig: Shell: die Motorenöl-Experten. / Wir helfen Ihnen weiter. -->
 				<en>The oiled experts. You can't be sore of Swell. </en> <!-- orig: You can be sure of Shell. -->
+				<pl>Nafaszerowani olejem eksperci. Nie można się ich bać - Swell.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible?  -->
 			<data quality="10" repetitions="6" duration="8" profit="305" penalty="600" fix_infomercial_profit="1" />
@@ -528,6 +588,7 @@
 			<description>
 				<de>Die Zahncreme! Jetzt mit radioaktiven Putzstoffen.</de>
 				<en>The toothpaste! Now with radioactive cleaning substances.</en>
+				<pl>Pasta do zębów! Teraz z radioaktywnymi substancjami czyszczącymi.</pl>
 			</description>
 			<conditions min_audience="26.05" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="4" duration="2" profit="190" penalty="450" fix_infomercial_profit="1" />
@@ -540,6 +601,7 @@
 			<description>
 				<de>Der bequeme Weg nach Europa.</de>
 				<en>The convenient route to Europe.</en>
+				<pl>Wygodna trasa do Europy.</pl>
 			</description>
 			<conditions min_audience="31.26" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="5" duration="8" profit="170" penalty="300" fix_infomercial_profit="1" />
@@ -552,6 +614,7 @@
 			<description>
 				<de>Willkommen an Bord.</de>
 				<en>Welcome aboard.</en>
+				<pl>Witamy na pokładzie.</pl>
 			</description>
 			<conditions min_audience="41.6799" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="8" duration="2" profit="125" penalty="200" fix_infomercial_profit="1" />
@@ -564,6 +627,7 @@
 			<description>
 				<de>Nur eine halbe Kalorie. So einsam und gespalten bloß wegen Ihnen! Also kaufen Sie gefälligst, Sie Fettsack!</de> <!-- orig: So kühl. So klar. Nur 1 Kalorie. -->
 				<en>Only half a calorie. So lonely and fragmented just because of you! So go and buy it, you fat bastard!</en> <!-- orig: So cool. So clear. And only 1 calorie. -->
+				<pl>Tylko pół kalorii. Tak samotny i rozdrobniony tylko z twojego powodu! Więc idź i kup to, gruby draniu!</pl>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
 			<data quality="15" repetitions="6" duration="4" profit="255" penalty="380" fix_infomercial_profit="1" />
@@ -576,6 +640,7 @@
 			<description>
 				<de>Can't eat the peeling.</de> <!-- orig: Can't beat the feeling -->
 				<en>Can't eat the peeling.</en>
+				<pl>Nie można jeść peelingu.</pl>
 			</description>
 			<conditions min_audience="18.76" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
 			<data quality="29" repetitions="2" duration="1" profit="215" penalty="370" fix_infomercial_profit="1" />
@@ -588,6 +653,7 @@
 			<description>
 				<de>Jetzt ganz ohne Kalorien! Und auch den Geschmack müssen Sie suchen!</de>
 				<en>Now completely without calories! And you'll have to look for the taste too!</en>
+				<pl>Teraz całkowicie bez kalorii! Ty też będziesz musiał poszukać smaku!</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
 			<data quality="17" repetitions="4" duration="4" profit="290" penalty="500" fix_infomercial_profit="1" />
@@ -597,10 +663,12 @@
 			<title>
 				<de>China-Wok</de>
 				<en>China Wok</en>
+				<pl>Chińskie Woki</pl>
 			</title>
 			<description>
 				<de>Der einzige echte Wok. Original aus China.</de>
 				<en>The only genuine wok. Authentic from China.</en>
+				<pl>Jedyny oryginalny wok. Autentyczny produkt z Chin.</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
@@ -614,6 +682,7 @@
 			<description>
 				<de>Vertrauen Sie nicht jeder Sekte! SUN mit Geld-Weg-Garantie.</de>
 				<en>Don't trust just any sect! SUN with money-gone guarantee.</en>
+				<pl>Nie ufaj byle jakiej sekcie! SUN z gwarancją zwrotu pieniędzy.</pl>
 			</description>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
@@ -627,6 +696,7 @@
 			<description>
 				<de>From the Cash Van: Cash as Cash can. Ihr Cash jetzt in Ihre Dose!</de>
 				<en>From the Cash Van: Cash as Cash can. Your cash into your can now!</en> <!-- orig: Cash as Cash can -->
+				<pl>Z furgonetki Cash Van: Gotówka do puszki. Gotówka do puszki już teraz!</pl>
 			</description>
 			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
@@ -640,6 +710,7 @@
 			<description>
 				<de>Nous translate alles!</de>
 				<en>Nous translate alles!</en>
+				<pl>Nous tłumaczy alles!</pl>
 			</description>
 			<conditions min_audience="9.3772" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="14" repetitions="1" duration="4" profit="345" penalty="1200" infomercial_profit="46" fix_infomercial_profit="1" />
@@ -649,10 +720,12 @@
 			<title>
 				<de>Pipsi Cola</de>
 				<en>Pipsi Cola</en>
+				<pl>Pipsi Cola</pl>
 			</title>
 			<description>
 				<de>Das schmeckt! Für die junge Brut.</de> <!-- Die schmeckt! -->
 				<en>That tastes! For the young brood.</en> <!-- orig: For the new generation. -->
+				<pl>To smakuje! Dla młodego potomstwa.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="24" repetitions="4" duration="7" profit="400" penalty="1300" infomercial_profit="188" fix_infomercial_profit="1" />
@@ -662,10 +735,12 @@
 			<title>
 				<de>Dromedar</de>
 				<en>Dromedary</en>
+				<pl>Dromedary</pl>
 			</title>
 			<description>
 				<de>Der Rauch durchs Nadelöhr! Geschmack total!</de> <!-- Orig: Voller Geschmack! -->
 				<en>The smoke through the eye of the needle! Total Taste!</en>
+				<pl>Dym przechodzący przez ucho igielne! Całkowity smak!</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2" />
 			<data infomercial="1" quality="20" repetitions="8" duration="1" profit="355" penalty="1000" infomercial_profit="72" fix_infomercial_profit="1" />
@@ -678,6 +753,7 @@
 			<description>
 				<de>Die Karte mit dem unbegrenzten Kredit.</de>
 				<en>The card with unlimited credit.</en>
+				<pl>Karta z nieograniczonym kredytem.</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="14" repetitions="8" duration="1" profit="365" penalty="2573" infomercial_profit="177" fix_infomercial_profit="1" />
@@ -690,6 +766,7 @@
 			<description>
 				<de>Der Softwareladen um die Ecke.</de>
 				<en>The software shop around the corner.</en>
+				<pl>Sklep z oprogramowaniem tuż za rogiem.</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="23" repetitions="5" duration="6" profit="1250" penalty="2300" infomercial_profit="222" fix_infomercial_profit="1" />
@@ -699,10 +776,12 @@
 			<title>
 				<de>KD Wirtschaftsprüfer</de>
 				<en>KD Accounting</en>
+				<pl>Księgowość KD</pl>
 			</title>
 			<description>
 				<de>Wir stellen Schecks aus, bevor Sie es merken!</de>
 				<en>We issue checks before you know it!</en>
+				<pl>Wystawiamy czeki, zanim się zorientujesz!</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="14" repetitions="1" duration="7" profit="500" penalty="2246" infomercial_profit="12" fix_infomercial_profit="1" />
@@ -712,10 +791,12 @@
 			<title>
 				<de>MU Verwaltungsgesellschaft</de>
 				<en>MU Management</en>
+				<pl>Zarządzanie MU</pl>
 			</title>
 			<description>
 				<de>Rufen Sie uns nicht an - wir sind im Urlaub!</de>
 				<en>Don't call us - we're on vacation!</en>
+				<pl>Nie dzwoń do nas - jesteśmy na wakacjach!</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="17" repetitions="6" duration="5" profit="1050" penalty="2930" infomercial_profit="235" fix_infomercial_profit="1" />
@@ -725,10 +806,12 @@
 			<title>
 				<de>Baraus</de>
 				<en>Corner Bank</en>
+				<pl>Corner Bank</pl>
 			</title>
 			<description>
 				<de>Bankhaus Baraus zahlt Bar aus.</de>
 				<en>Your bank around the corner - and your cash performer.</en>
+				<pl>Twój bank za rogiem - i twój dawca gotówkowy.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="13" repetitions="5" duration="6" profit="750" penalty="1100" infomercial_profit="176" fix_infomercial_profit="1" />
@@ -737,10 +820,12 @@
 		<ad id="8b945529-7cc6-46a8-b572-47189c26b43a" comment="description from Mad TV 'Aunt Lizzy'; title already existing in TVTower, hence the variation">
 			<title>
 				<de>Aunt Lucy's</de>
+				<pl>Od Cioci Lucy</pl>
 			</title>
 			<description>
 				<de>Das einzig natürliche Apfelsirup.</de>
 				<en>The only all-natural apple syrup.</en>
+				<pl>Jedyny w pełni naturalny syrop jabłkowy.</pl>
 			</description>
 			<conditions min_audience="0.1553" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="6" repetitions="5" duration="4" profit="2250" penalty="3100" infomercial_profit="31" fix_infomercial_profit="1" />
@@ -749,10 +834,12 @@
 		<ad id="8be83e54-ef37-44e4-9bc1-1df0eded9843" comment="another 'Aunt Lizzy' variation for fun and profit">
 			<title>
 				<de>Aunt Lilly's</de>
+				<pl>Od Cioci Lilly</pl>
 			</title>
 			<description>
 				<de>Das Ahornwunder von Aunt Lilly's: Süße neu definiert.</de>
 				<en>Maple Marvels by Aunt Lilly's: Sweetness Redefined.</en>
+				<pl>Syrop klonowy cioci Lilly: Słodycz na nowo zdefiniowana.</pl>
 			</description>
 			<conditions min_audience="0.1" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="14" repetitions="7" duration="6" profit="3400" penalty="4400" infomercial_profit="121" fix_infomercial_profit="1" />
@@ -765,6 +852,7 @@
 			<description>
 				<de>Für echte Cowboys.</de>
 				<en>For true cowboys.</en>
+				<pl>Dla prawdziwych kowbojów.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2" />
 			<data infomercial="1" quality="25" repetitions="7" duration="3" profit="450" penalty="1300" infomercial_profit="135" fix_infomercial_profit="1" />
@@ -777,6 +865,7 @@
 			<description>
 				<de>Wir machen Klitschentechnologie reich-werd.</de>  <!-- orig: Wir machen Spitzentechnologie preiswert. | alt spoof: Wir machen Ritzentechnologie reinwärts -->
 				<en>Your hour without the tie.</en> <!-- orig: Power without the price. | alt spoof: Plower without the rice; Shower without the Knife -->
+				<pl>Godzina bez krawata.</pl>
 			</description>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="11" repetitions="5" duration="2" profit="345" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
@@ -789,6 +878,7 @@
 			<description>
 				<de>Für echte Cowboys. Aber echt jetzt.</de>
 				<en>For true cowboys. But for real now.</en>
+				<pl>Dla prawdziwych kowbojów. Ale teraz naprawdę.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2" />
 			<data infomercial="1" quality="35" repetitions="2" duration="6" profit="400" penalty="1235" infomercial_profit="282" fix_infomercial_profit="1" />
@@ -797,10 +887,12 @@
 		<ad id="5fc3f896-7c85-4ecc-aca6-8d689eaf2291" creator="9584" created_by="Stukov" comment="from Mad TV">
 			<title>
 				<de>Adventravel</de>
+				<pl>Biuro podróży "Przygoda"</pl>
 			</title>
 			<description>
 				<de>Schwimmen im Piranha-See und viele andere günstige Angebote!</de>
 				<en>Swimming in the Piranha Lake and many other affordable deals!</en>
+				<pl>Pływanie w jeziorze Pirania i wiele innych ofert w przystępnych cenach!</pl>
 			</description>
 			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="14" repetitions="4" duration="5" profit="350" penalty="600" infomercial_profit="7" fix_infomercial_profit="1" />
@@ -810,10 +902,12 @@
 			<title>
 				<de>RegenbogenWünsche</de>
 				<en>RainbowWishes</en>
+				<pl>RainbowWishes</pl>
 			</title>
 			<description>
 				<de>RegenbogenWünsche, der einzigartige Platz für Brettspiele und Computerspiele.</de>
 				<en>RainbowWishes, the only place for board games and computer games.</en>
+				<pl>RainbowWishes, jedyne miejsce dla gier planszowych i komputerowych.</pl>
 			</description>
 			<conditions min_audience="0.26" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="11" repetitions="5" duration="6" profit="2100" penalty="2500" infomercial_profit="120" fix_infomercial_profit="1" />
@@ -826,6 +920,7 @@
 			<description>
 				<de>Voller Geschmack für die junge Brut - und nur 1 Kalorie.</de>
 				<en>All the taste for the young brood - and only 1 calorie.</en>
+				<pl>Cały smak dla młodego lęgu - i tylko 1 kaloria.</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="7" duration="2" profit="550" penalty="1500" infomercial_profit="147" fix_infomercial_profit="1" />
@@ -838,6 +933,7 @@
 			<description>
 				<de>Das neue „Salzente“-Modell jetzt mit Vorrichtung zur komfortablen Tequila-Zubereitung.</de>
 				<en>The new "Salt Duck" model now with a fixture for convenient tequila preparation.</en>
+				<pl>Nowy model "Salt Duck" jest teraz wyposażony w uchwyt do wygodnego przygotowywania tequili.</pl>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="2" repetitions="1" duration="3" profit="690" penalty="2613" infomercial_profit="171" fix_infomercial_profit="1" />
@@ -850,6 +946,7 @@
 			<description>
 				<de>Wir machen U-Turns chic.</de>
 				<en>We make U-turns look chic.</en>
+				<pl>Sprawiamy, że zawracanie wygląda szykownie.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="4" repetitions="1" duration="7" profit="525" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
@@ -862,6 +959,7 @@
 			<description>
 				<de>Wäscht jetzt noch weißer! Was die Frau hat, das hat sie.</de> <!-- orig: Da weiß man, was man hat -->
 				<en>Launders even brighter now! What the wife got, she's got.</en> <!-- orig: Persil washes whiter -->
+				<pl>Teraz pierze jeszcze jaśniej! Co żona ma, to ma.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="9" repetitions="5" duration="4" profit="320" penalty="750" infomercial_profit="193" fix_infomercial_profit="1" />
@@ -874,6 +972,7 @@
 			<description>
 				<de>BWM. Räudig am Rasen!</de> <!-- orig: Freude am Fahren -->
 				<en>BWM. It's merely a vehicle!</en> <!-- orig: It's only a car! -->
+				<pl>BWM. To tylko pojazd!</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="11" repetitions="3" duration="5" profit="280" penalty="600" infomercial_profit="3" fix_infomercial_profit="1" />
@@ -883,10 +982,12 @@
 			<title>
 				<de>BioBlast AG</de>
 				<en>BioBlast Inc.</en>
+				<pl>BioBlast S.A.</pl>
 			</title>
 			<description>
 				<de>Egal ob schillernde Haustiere oder im Dunkeln leuchtende Pflanzen, die Ihnen nachts den Weg weisen - unsere Biotechnologie macht das Außergewöhnliche zu Ihrem Alltag.</de>
 				<en>Whether dazzling pets or glow-in-the-dark plants that show you the way at night - our biotechnology makes the extraordinary part of your everyday life.</en>
+				<pl>Czy to olśniewające zwierzęta domowe, czy świecące w ciemności rośliny, które wskazują drogę w nocy - nasza biotechnologia sprawia, że niezwykłość staje się częścią codziennego życia.</pl>
 			</description>
 			<conditions min_audience="9.3772" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="5" repetitions="3" duration="5" profit="330" penalty="700" infomercial_profit="200" fix_infomercial_profit="1" />
@@ -899,6 +1000,7 @@
 			<description>
 				<de>Erschwingliche Fährten, einzigartige G'schichten! Denn Verlaufen sollte die einzige Kostenfalle sein.</de>
 				<en>Affordable Trails, Unrivaled Tales! Because getting lost should be the only cost trap.</en>
+				<pl>Niedrogie szlaki, bezkonkurencyjne opowieści! Ponieważ zgubienie się powinno być jedyną pułapką kosztową.</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="35" repetitions="2" duration="6" profit="400" penalty="1000" infomercial_profit="279" fix_infomercial_profit="1" />
@@ -911,6 +1013,7 @@
 			<description>
 				<de>Logos? Büroklammer-Skulpturen? Azzini!</de>
 				<en>Logos? Paperclip Sculptures? Azzini!</en>
+				<pl>Logo? Rzeźby ze spinacza? Azzini!</pl>
 			</description>
 			<conditions min_audience="0.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="18" repetitions="5" duration="6" profit="3600" penalty="4800" infomercial_profit="51" fix_infomercial_profit="1" />
@@ -923,6 +1026,7 @@
 			<description>
 				<de>Lebensläufe? Duftkerzen? Aubert!</de>
 				<en>Resumes? Scented candles? Aubert!</en>
+				<pl>Życiorysy? Świece zapachowe? Aubert!</pl>
 			</description>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="26" repetitions="3" duration="4" profit="2200" penalty="3000" infomercial_profit="151" fix_infomercial_profit="1" />
@@ -935,6 +1039,7 @@
 			<description>
 				<de>Visitenkarten? Grottifanten? Andrae!</de> <!-- orig: Ottifanten - https://de.wikipedia.org/wiki/Ottifant | alt spoof: Frottifanten? | TODO: add cartoon series https://de.wikipedia.org/wiki/Ottos_Ottifanten and use same reference -->
 				<en>Business cards? Grottifants? Andrae!</en>
+				<pl>Wizytówki? Grottifanty? Andrae!</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="9" repetitions="6" duration="7" profit="2500" penalty="4000" infomercial_profit="125" fix_infomercial_profit="1" />
