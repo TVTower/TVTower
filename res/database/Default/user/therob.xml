@@ -2740,7 +2740,7 @@
 				</title>
 				<name>
 					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
-					<pl>Pawełek|%PERSONGENERATOR_FIRSTNAME(es,1)%|Marcelek</pl>
+					<pl>Pawełek|%PERSONGENERATOR_FIRSTNAME(pl,1)%|Marcelek</pl>
 				</name>
 			</variables>
 			
