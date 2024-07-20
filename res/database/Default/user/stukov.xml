@@ -6,6 +6,7 @@
 			<title>
 				<de>Liebe ist in der Luft</de>
 				<en>Love Is In the Air</en>
+				<pl>Love Is In the Air</pl>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
@@ -14,10 +15,12 @@
 					<title>
 						<de>Erreiche 100.000 Zuschauer mit einem Liebesfilm</de>
 						<en>Reach an audience of 100,000 with a love story</en>
+						<pl>Osiągnięcie 100 000 widzów przy filmie z gatunku romans</pl>
 					</title>
 					<text>
 						<de>Strahle einen Liebesfilm aus und erreiche damit mindestens 100.000 Zuschauer.</de>
 						<en>Broadcast a love story and reach an audience of at least 100,000.</en>
+						<pl>Wyemituj romans i dotrzyj do co najmniej 100 000 odbiorców.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="100000" limitToGenres="15" checkMinute="6" />
 				</task>
@@ -38,6 +41,7 @@
 			<title>
 				<de>Noch mehr Liebe ist in der Luft</de>
 				<en>Even More Love Is In the Air</en>
+				<pl>Jeszcze więcej: Love Is In the Air</pl>
 			</title>
 			<text />
 			<tasks>
@@ -45,10 +49,12 @@
 					<title>
 						<de>Erreiche 300.000 Zuschauer mit einem Liebesfilm</de>
 						<en>Reach an audience of 300,000 with a love story</en>
+						<pl>Osiągnięcie 300 000 widzów przy filmie z gatunku romans</pl>
 					</title>
 					<text>
 						<de>Strahle einen Liebesfilm aus und erreiche damit mindestens 300.000 Zuschauer.</de>
 						<en>Broadcast a love story and reach an audience of at least 300,000.</en>
+						<pl>Wyemituj romans i dotrzyj do co najmniej 300 000 odbiorców.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="300000" limitToGenres="15" checkMinute="6" />
 				</task>
@@ -67,6 +73,7 @@
 			<title>
 				<de>Die Liebe blüht unendlich</de>
 				<en>Love Blossoms Endlessly</en>
+				<pl>Miłość kwitnie bez końca</pl>
 			</title>
 			<text />
 			<tasks>
@@ -74,10 +81,12 @@
 					<title>
 						<de>Erreiche 1.000.000 Zuschauer mit einem Liebesfilm</de>
 						<en>Reach an audience of 1,000,000 with a love story</en>
+						<pl>Osiągnięcie 1 000 000 widzów przy filmie z gatunku romans</pl>
 					</title>
 					<text>
 						<de>Strahle einen Liebesfilm aus und erreiche damit mindestens 1.000.000 Zuschauer.</de>
 						<en>Broadcast a love story and reach an audience of at least 1,000,000.</en>
+						<pl>Wyemituj romans i dotrzyj do co najmniej 1 000 000 odbiorców.</pl>
 					</text>
 					<data type="reachAudience" minAudienceAbsolute="1000000" limitToGenres="15" checkMinute="6" />
 				</task>
@@ -100,10 +109,12 @@
 			<title>
 				<de>Aliens setzen auf erneuerbare Energien</de>
 				<en>Aliens Go Green</en>
+				<pl>Kosmici stają się zieloni</pl>
 			</title>
 			<description>
 				<de>Alien-Raumschiffe entpuppen sich als riesige Solarpaneele - „Wir dachten immer, es wären Angriffe, aber sie sammeln nur Energie für ihre Heimatplaneten!“ #Area51 #Solarenergie</de>
 				<en>Alien spacecrafts reveal themselves as giant solar panels - "We always thought they were attacks, but they were just collecting energy for their home planets!" #Area51 #SolarEnergy</en>
+				<pl>Obce statki kosmiczne ujawniają się jako gigantyczne panele słoneczne - "Zawsze myśleliśmy, że to ataki, ale oni po prostu zbierali energię dla swoich planet macierzystych!" #Area51 #SolarEnergy</pl>
 			</description>
 			<data genre="4" price="1.2" quality="63" fictional="1" />
 			<effects>
