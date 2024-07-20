@@ -87,7 +87,7 @@ Type TDebugScreenPage_PlayerBroadcasts extends TDebugScreenPage
 		ElseIf debugWidget_ProgrammeCollectionInfo.programmeForHover
 			debugWidget_ProgrammeCollectionInfo.programmeForHover.ShowSheet(position.x + 5, position.y + 3, 0, 0, playerID)
 		ElseIf debugWidget_ProgrammeCollectionInfo.contractForHover
-			debugWidget_ProgrammeCollectionInfo.contractForHover.ShowSheet( position.x + 170, position.y + 3, 0, 0, playerID)
+			debugWidget_ProgrammeCollectionInfo.contractForHover.ShowSheet( position.x + 170, position.y + 3, 0, 0, playerID, null)
 		EndIf
 	End Method
 
