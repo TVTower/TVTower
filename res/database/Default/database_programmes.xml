@@ -6660,7 +6660,7 @@ Dopracowane widowisko akcji od reżysera [0|Full].</pl>
 				<member index="4" function="2">f872256a-eb19-4782-8e20-4457876107ba</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1989" distribution="1" maingenre="8" subgenre="7,15" flags="0" blocks="2" price_mod="0.67" /><!--Date changed to correct-->
+			<data country="USA" year="1989" distribution="1" maingenre="8" subgenre="7,15" flags="0" blocks="2" price_mod="0.67" />
 			<ratings critics="18" speed="32" outcome="61" />
 		</programme>
 		<programme id="3a0c9fba-3b1e-49e1-afdf-340e4aa1f913" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093409" creator="">
@@ -15834,7 +15834,7 @@ Dib decyduje się zastąpić sztuczną inteligencję statku Taka swoją własną
 					</title_original>
 					<description>
 						<de>Tyrion versucht, die Kontrolle über den kleinen Rat mit einer politischen Säuberung zu übernehmen. Theon kommt zu seinem Haus Pyke, um seinen Vater zu überreden, Robb Stark zu unterstützen. Jon Schnee versucht, Crasters Geheimnis aufzudecken.</de>
-						<en>Tyrion attempts to take control of the small council with a political purge. Theon comes to his House Pyke to persuade his father to support Robb Stark. John Snow tries to uncover Craster's secret.</en><!--Correction-->
+						<en>Tyrion attempts to take control of the small council with a political purge. Theon comes to his House Pyke to persuade his father to support Robb Stark. John Snow tries to uncover Craster's secret.</en>
 						<pl>Tyrion próbuje przejąć kontrolę nad małą radą, przeprowadzając czystkę polityczną. Theon przybywa do domu Pyke, by przekonać ojca do poparcia Robba Starka. John Snow próbuje odkryć tajemnicę Crastera.</pl>
 					</description>
 					<ratings critics="73" speed="45" />
@@ -17706,12 +17706,12 @@ Dib decyduje się zastąpić sztuczną inteligencję statku Taka swoją własną
 				<programme id="cujo-serien-kastanienstrasse-15" product="2" licence_type="2" tmdb_id="0" imdb_id="" fictional="1" creator="8827" created_by="Cujo">
 					<title>
 						<de>Helga erinnert sich</de>
-						<en>Helga remembers</en><!--Error in translation to english? Changed-->
+						<en>Helga remembers</en>
 						<pl>Helga pamięta</pl>
 					</title>
 					<title_original>
 						<de>Helga erinnert sich</de>
-						<en>Helga remembers</en><!--Error in translation to english? Changed-->
+						<en>Helga remembers</en>
 						<pl>Helga pamięta</pl>
 					</title_original>
 					<description>
@@ -29503,7 +29503,7 @@ The fourth part of the series, of course, was not the last after all.</en>
 			</title_original>
 			<description>
 				<de>Für die einen ist es eine wunder-wunderschöne Liebesgeschichte zwischen einem Mann von den Sternen und einer Frau von der Erde, für die anderen ein Sturm an mittelmäßigen Klischees. Und natürlich wird dieser Außerirdische vom US-Militär gesucht.</de>
-				<en>For some it's a beautiful, beautiful love story between a man from the stars and an Earth woman, for others it's a mediocre cliché storm. And of course this alien is sought by the U.S. military.</en><!--word beautiful twice?-->
+				<en>For some it's a beautiful, beautiful love story between a man from the stars and an Earth woman, for others it's a mediocre cliché storm. And of course this alien is sought by the U.S. military.</en>
 				<pl>Dla jednych to piękna historia miłosna między mężczyzną z gwiazd a Ziemianką, dla innych przeciętna sztampa. No i oczywiście ten kosmita jest poszukiwany przez amerykańskie wojsko.</pl>
 			</description>
 			<staff>
@@ -54570,11 +54570,12 @@ Młody samotnik na krucjacie w obronie niewinnych, bezradnych i bezsilnych w św
 					<title>
 						<de>Die Faust die verwundet</de>
 						<en>Satan</en>
+						<pl>Szatan</pl>
 					</title>
 					<title_original>
-						<de>Satan</de><!--translation swapped ?-->
-						<en>Die Hand Die Verletzt</en><!--translation swapped ?-->
-						<pl>Satan</pl>
+						<de>Satan</de>
+						<en>Die Hand Die Verletzt</en>
+						<pl>Ręka, która rani</pl>
 					</title_original>
 					<description>
 						<de>Teenager fingieren ein okkultes Ritual und verursachen versehentlich den Mord und die Verstümmelung eines Mitglieds ihrer Gruppe. Die eigentlichen Kultisten der Stadt versuchen, ihre Spuren zu verwischen, aber es gibt etwas, vor dem selbst sie Angst haben.</de>
