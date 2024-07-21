@@ -604,6 +604,7 @@ end
 function JobBuyStation:GetBestAntennaOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
+	local bestPosition = nil
 	local player = getPlayer()
 
 	self:LogInfo("trying to find best of ".. table.count(self.Task.intendedAntennaPositions) .." antenna positions")
@@ -673,6 +674,7 @@ function JobBuyStation:GetBestAntennaOffer()
 					bestOffer = tempStation
 					bestOffer = tempStation
 					bestAttraction = attraction
+					bestPosition = pos
 				end
 			end
 		end
@@ -687,14 +689,14 @@ function JobBuyStation:GetBestAntennaOffer()
 		self:LogDebug("new count ".. table.count(self.Task.intendedAntennaPositions))
 	end
 
-	return bestOffer, bestAttraction
+	return bestOffer, bestAttraction, bestPosition
 end
 
 
 function JobBuyStation:Tick()
 	local player = getPlayer()
 
-	local bestAntennaOffer, bestAntennaAttraction = self:GetBestAntennaOffer()
+	local bestAntennaOffer, bestAntennaAttraction, bestAntennaPosition = self:GetBestAntennaOffer()
 	local bestCableNetworkOffer, bestCableAttraction, bestCableSectionName = self:GetBestCableNetworkOffer()
 	local bestSatelliteOffer, bestSatAttraction, bestSatIndex = self:GetBestSatelliteOffer()
 
@@ -715,8 +717,11 @@ function JobBuyStation:Tick()
 		local price = bestOffer.GetTotalBuyPrice()
 		local exclusiveReceivers = bestOffer.GetStationExclusiveReceivers()
 		if bestOffer == bestAntennaOffer then
-			self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName() .. " at " .. bestOffer.x .. "," .. bestOffer.y .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
-			TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
+			local buyResult = TVT.of_buyAntennaStation(bestOffer.x, bestOffer.y)
+			if buyResult == TVT.RESULT_OK then
+				self:LogInfo("Buying antenna station in " .. bestOffer.GetSectionName() .. " at " .. bestOffer.x .. "," .. bestOffer.y .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
+				table.removeElement(self.Task.intendedAntennaPositions, bestAntennaPosition)
+			end
 		elseif bestOffer == bestSatelliteOffer then
 			self:LogInfo("Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. exclusiveReceivers .. "  price: " .. price)
 			TVT.of_buySatelliteStation(bestSatIndex)

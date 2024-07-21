@@ -889,6 +889,7 @@ endrem
 			SetColor 255,255,255
 
 			Local adString1a:String = a.GetTitle()
+			If a.GetAttractiveness() = -0.5 Then adString1a ="+"+adString1a
 			Local adString1b:String = "R: "+(a.GetDaysLeft())+"D"
 			If a.GetDaysLeft() = 1
 				adString1b = "|color=220,180,50|"+adString1b+"|/color|"

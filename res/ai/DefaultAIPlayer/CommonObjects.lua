@@ -537,6 +537,36 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	return result
 end
 
+function AIToolsClass:GetNumberOfSlots(player, contract, minAudience)
+	local achieved = -1
+	local goodFit = -1
+	if player.Stats ~= nil and player.Stats.BroadcastStatistics~=nil then
+		local st = player.Stats.BroadcastStatistics.hourlyProgrammeAudience
+		if st ~=nil then
+			achieved = 0
+			goodFit = 0
+			local threshold = tonumber(tostring(TVT.GetDay()-1).."00")
+			local tg=0
+			local sum =0
+			for k,v in pairs(st) do
+				if tonumber(k) < threshold then
+					local aud = v.Audience
+					tg=contract.GetLimitedToTargetGroup()
+					sum = aud.GetTotalValue(tg)
+
+					if sum > minAudience then
+						achieved = achieved + 1
+						if sum * 0.5 < minAudience then
+							goodFit = goodFit + 1
+						end
+					end
+				end
+			end
+		end
+	end
+	return achieved, goodFit
+end
+
 --[[
 function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
 	if level == 1 then
