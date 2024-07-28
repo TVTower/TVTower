@@ -54,10 +54,8 @@ function TaskAdAgency:GetNextJobInTargetRoom()
 		return self.AppraiseSpots
 	elseif (self.SignRequisitedContracts.Status ~= JOB_STATUS_DONE) then
 		return self.SignRequisitedContracts
-	--TODO signing good jobs is temporarily disabled - performance is quite good without it
-	--should be used for signing good prime ads occasionally
-	--elseif (getPlayer().hour < 17 and self.SignContracts.Status ~= JOB_STATUS_DONE) then
-	--	return self.SignContracts
+	elseif (self.SignContracts.Status ~= JOB_STATUS_DONE) then
+		return self.SignContracts
 	end
 
 	self:SetDone()
@@ -418,9 +416,9 @@ function SignRequisitedContracts:Tick()
 			if (signedContracts == 0) then
 				signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6), 1)
 			end
---			if (signedContracts == 0 and requisition.Level > 4 ) then
---				signedContracts = self:SignMatchingContracts(requisition, self:GetMinGuessedAudience(guessedAudience, 0.7), self:GetMinGuessedAudience(guessedAudience, 0.4), 2)
---			end
+		end
+		if (signedContracts == 0 and requisition.Level > 4 and self.Player.hour > 17) then
+			signedContracts = self:SignMatchingContracts(requisition, self:GetMinGuessedAudience(guessedAudience, 0.7), self:GetMinGuessedAudience(guessedAudience, 0.5), 2)
 		end
 	end
 	self.Status = JOB_STATUS_DONE
@@ -516,8 +514,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			self:LogDebug("ignoring contract with too many blocks")
 		elseif spotsLeft <= 0 then
 			doSign = true
-		elseif veryhard == true and maxTopBlocks < 8 then
-			self:LogDebug("ignoring very hard contracts with spots left over")
+--		elseif veryhard == true and maxTopBlocks < 8 then
+--			self:LogDebug("ignoring very hard contracts with spots left over")
 		elseif neededSpotCount == 1 and requisition.Priority < 3 then
 			self:LogDebug("ignore requisition - only one spot with low priority")
 		else
@@ -604,6 +602,8 @@ end
 
 --self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 function SignContracts:Prepare(pParams)
+	self.CurrentSpotIndex = 0
+	self.lowAudienceFactor = 0.005
 	self.maxAudience = MY.GetChannelReceivers()
 	self.ownedContracts = {};
 	--heuristic for licence max price - possible income per spot
@@ -617,8 +617,8 @@ function SignContracts:Prepare(pParams)
 			table.insert(self.ownedContracts, vc)
 		end
 	end
-	self.player = getPlayer()
-	if (self.player.maxIncomePerSpot==nil or self.player.maxIncomePerSpot < maxIncomePerSpot) then self.player.maxIncomePerSpot = maxIncomePerSpot end
+	local player = getPlayer()
+	if (player.maxIncomePerSpot==nil or player.maxIncomePerSpot < maxIncomePerSpot) then player.maxIncomePerSpot = maxIncomePerSpot end
 end
 
 
@@ -628,17 +628,12 @@ function SignContracts:newOwnedContract (c)
 		title = "CONTRACT";
 		minAudience = 0;
 		spots = 0;
-		planned = 0;
-		incomePerSpot = 0;
-		targetGroup = 0;
+		incomePerSpot = 0
 	}
 	t.title = c.GetTitle()
-	t.minAudience = c.GetTotalMinAudience(TVT.ME)
-	t.targetGroup = c.GetLimitedToTargetGroup()
+	t.minAudience = c.GetMinAudience(TVT.ME)
 	t.spots = c.getSpotsToSend()
-	t.planned = c.getSpotsPlanned()
 	t.incomePerSpot = c.GetProfit(TVT.ME) / c.getSpotCount()
-	--t.spotsPerDay = t.spots / (0.7 * c:GetDaysLeft())
 	return t;
 end
 
@@ -647,7 +642,10 @@ end
 function SignContracts:Tick()
 	if (self.Task.SpotsInAgency == nil) then return 0 end
 
+	-- only sign contracts if we haven't enough unsent ad-spots
+	local openSpots = self:GetUnsentSpotCount()
 	local contractsAllowed = TVT.Rules.adContractsPerPlayerMax - MY.GetProgrammeCollection().GetAdContractCount()-1
+	local haveLow = false
 
 	local signedContracts = TaskAdAgency.GetAllAdContracts()
 	--count penalty for failed contracts as fixed costs
@@ -660,27 +658,80 @@ function SignContracts:Tick()
 		end
 	end
 	self.Task.FixedCosts = fixedCosts
-
-
+--[[
+	-- check if we have a low end contract
 	if contractsAllowed > 0 then
+		local lowAudience = self.lowAudienceFactor * self.maxAudience
+		local lowUnsent = 0
+		for key, contract in pairs(signedContracts) do
+			if contract.GetMinAudience(TVT.ME) < lowAudience and contract.GetLimitedToTargetGroup() <= 0  then
+				lowUnsent = lowUnsent + contract.GetSpotsToSend()
+				if lowUnsent > 2 then
+					haveLow = true
+					break
+				end
+			end
+		end
+	end
+
+	-- sign an emergency contract to at least have something to broadcast
+	-- as infomercial if we do not have enough programme licences (or
+	-- money to buy some)	-- try to find a contract with not too much spots / requirements
+	if (not haveLow or openSpots < 4) and contractsAllowed > 0 then
+		local availableList = table.copy(self.Task.SpotsInAgency)
+		availableList = TaskAdAgency.SortAdContractsByAttraction(availableList, self.Task.Penalties)
+
+		local filteredList = FilterAdContractsByMinAudience(availableList, self.lowAudienceFactor * self.maxAudience / 2.5, self.lowAudienceFactor * self.maxAudience, forbiddenIDs)
+		if table.count(filteredList) > 0 then
+			local contract = table.first(filteredList)
+
+			local result = TVT.sa_doBuySpot(contract.GetID())
+			if result == TVT.RESULT_OK then
+				openSpots = openSpots + contract.GetSpotCount()
+				contractsAllowed = contractsAllowed - 1
+				table.insert(self.ownedContracts, self:newOwnedContract(contract))
+				self:LogInfo("Signed an \"low audience\" contract: " .. contract.GetTitle() .. ". MinAudience: " .. contract.GetMinAudience(TVT.ME))
+			else
+				self:LogError("FAILED signing an \"low audience\" contract: " .. contract.GetTitle() .. ". Failure code: " .. result)
+			end
+
+
+			-- loop over all contracts and remove the ones no longer available
+			for i=#self.Task.SpotsInAgency,1,-1 do
+				if self.Task.SpotsInAgency[i] == nil then
+					table.remove(self.Task.SpotsInAgency, i)
+				end
+			end
+		end
+	end
+--]]
+
+	--TODO open spots count must not be too low (e.g. due to low audience contracts)
+	--otherwise good average audience contracts cannot be signed without requisition
+	if openSpots < 14 and contractsAllowed > 0 then
+		-- do not be too risky and avoid a non achieveable audience requirement
+		local filteredList = FilterAdContractsByMinAudience(self.Task.SpotsInAgency, nil, 0.15 * self.maxAudience, forbiddenIDs)
+		-- sort it
+		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList, self.Task.Penalties)
 
 		--iterate over the available contracts
-		for key, contract in pairs(self.Task.SpotsInAgency) do
+		for key, contract in pairs(filteredList) do
 			-- skip contracts requiring too much
 			if self:ShouldSignContract(contract) == 1 then
 				local result = TVT.sa_doBuySpot(contract.GetID())
 				if result == TVT.RESULT_OK then
+					openSpots = openSpots + contract.GetSpotCount()
 					contractsAllowed = contractsAllowed - 1
 					table.insert(self.ownedContracts, self:newOwnedContract(contract))
-					contract.SetAttractivenessString("-0.5")--for marking contract in debug screen
 
 					self:LogInfo("Signed a \"good\" contract: " .. contract.GetTitle() .. ". MinAudience: " .. contract.GetMinAudience(TVT.ME))
-					--sign only one good contract per run
-					break
+
 				else
 					self:LogError("FAILED signing a \"good\" contract: " .. contract.GetTitle() .. ". MinAudience: " .. contract.GetMinAudience(TVT.ME) .. ". Failure code: " .. result)
 				end
-				if contractsAllowed <= 0 then break end
+				if openSpots <= 0 or contractsAllowed <= 0 then break end
+			else
+				self:LogDebug("contract rejected (e.g. found similar contract): " .. contract.getTitle())
 			end
 		end
 	end
@@ -696,70 +747,64 @@ function SignContracts:Tick()
 end
 
 --TODO CHECK should sign
---without "good ads" performance is already quite good
---proposal - sign low audience if there are almost none
---sign high audience contracts later in the game
 function SignContracts:ShouldSignContract(contract)
-	local spotMinAudience = contract.GetTotalMinAudience(TVT.ME)
-
-	local spotCount = contract.GetSpotCount()
-	local achieved = 0
-	local similar = 5
-	if spotCount < 4 and contract.GetLimitedToTargetGroup() <=0 then
-		if spotMinAudience>=0.06*self.maxAudience and spotMinAudience<=0.08*self.maxAudience then
-			achieved, similar = self:AnalyzeGoodContract(contract, spotMinAudience)
-			self:LogTrace("  found interesting regular spot " .. " "..contract.GetTitle().." ".. achieved.." ".. similar)
-		end
-
-		if spotCount < 3 and self.player.maxTopicalityBlocksCount > 8 and spotMinAudience>=0.08*self.maxAudience and spotMinAudience<=0.11*self.maxAudience then
-			achieved, similar = self:AnalyzeGoodContract(contract, spotMinAudience)
-			self:LogTrace("  found interesting prime spot " .. " "..contract.GetTitle().." ".. achieved.." ".. similar)
-		end
-	end
-
-	if similar < 2 and achieved > 1 then
-		return 1
-	else
+	local contractMin = contract.GetMinAudience(TVT.ME)
+	local targetGroup = contract.GetLimitedToTargetGroup()
+	--not enough viewers
+	if targetGroup <= 0 and contractMin < self.lowAudienceFactor * self.maxAudience then
 		return 0
 	end
+
+	--no children contracts at all
+	if targetGroup == 32 then
+		return 0
+	end
+
+	--not attractive
+	self.Task.AppraiseSpots:AppraiseSpot(contract)
+	if contract.getAttractiveness() < 0 then
+		return 0
+	end
+
+	if contractMin > self.maxAudience * 0.1 then
+		return 0
+	end
+
+	--prevent dangerous "good" contracts just before a new day (little chance of fulfilling much today)
+	if contractMin >= self.maxAudience * 0.07 and getPlayer().hour > 20 then
+		if contract.GetSpotCount() > 2 or contract.GetDaysToFinish() < 4 then
+			return 0
+		end
+	end
+
+	--TODO rather count spots of all similar
+	--similar contract already exists
+	for k, owned in pairs (self.ownedContracts) do
+		self:LogTrace("  checking owned contract " .. owned.title.." "..owned.spots.." "..owned.minAudience )
+		if owned.spots > 2 then
+			if owned.minAudience <= contractMin and owned.minAudience >= contractMin * 0.7 then
+				return 0
+			end
+			if contractMin <= owned.minAudience and contractMin >= owned.minAudience * 0.7 then
+				return 0
+			end
+		end
+	end
+	return 1
 end
 
+--returns amount of unsent adcontract-spots
+function SignContracts:GetUnsentSpotCount()
+	local unsentSpots = 0
 
-function SignContracts:AnalyzeGoodContract(contract, minAudience)
-	local achieved = 0
-	local unsentSimilar = 0
-	if self.player.Stats ~= nil and self.player.Stats.BroadcastStatistics~=nil then
-		local st = self.player.Stats.BroadcastStatistics.hourlyProgrammeAudience
-		local yesterday = TVT.GetDay()-1
-		if st ~=nil then
-			for k,v in pairs(st) do
-				local key = tonumber(k)
-				local hour = key % 100
-				local day = (key-hour)/100
-				if day == yesterday then
-
-					local aud = v.Audience
-					local sum = aud.GetTotalValue(tg)
-					if sum >= minAudience then
-						achieved = achieved +1
-					end
-				end
-			end
+	for i = 0, MY.GetProgrammeCollection().GetAdContractCount() - 1 do
+		local contract = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
+		if (contract~=nil and contract.IsCompleted() ~= 1) then
+			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end
 	end
-	if achieved > 0 then
-		for k, owned in pairs (self.ownedContracts) do
-			self:LogTrace("  checking owned contract " .. owned.title.." "..owned.spots.." "..owned.planned.." "..owned.minAudience )
-			if owned.minAudience <= minAudience and owned.minAudience >= minAudience * 0.8 then
-				unsentSimilar = unsentSimilar + owned.spots --(owned.spots-owned.planned)
-			end
-			if minAudience <= owned.minAudience and minAudience >= owned.minAudience * 0.8 then
-				unsentSimilar = unsentSimilar + owned.spots --(owned.spots-owned.planned)
-			end
-			--TODO check for contracts in danger
-		end
-	end
-	return achieved, unsentSimilar
+
+	return unsentSpots
 end
 
 

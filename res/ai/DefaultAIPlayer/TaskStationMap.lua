@@ -99,6 +99,8 @@ function TaskStationMap:BeforeBudgetSetup()
 		self.BudgetWeight = 0
 	elseif blocks < 50 and (totalReceivers == nil or totalReceivers > 5000000) then
 		self.BudgetWeight = 4
+	elseif maxTopBlocks > 6 then
+		self.BudgetWeight = 12
 	else
 		self.BudgetWeight = 8
 	end
@@ -198,7 +200,10 @@ function JobAnalyseStationMarket:Tick()
 	--]]
 
 	local mapTotalReceivers = TVT:of_getMapReceivers()
-	player.coverage = player.totalReceivers / mapTotalReceivers
+	player.coverage = 0.018
+	if mapTotalReceivers > 0 then --guard against error return value
+		player.coverage = player.totalReceivers / mapTotalReceivers
+	end
 
 	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
 	if player.coverage > 0.9 then

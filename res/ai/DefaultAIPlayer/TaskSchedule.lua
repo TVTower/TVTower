@@ -492,7 +492,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		--TODO check if max topicality blocks should be used for scheduling
 		if lowMaxTopBlocks > 20 then self.useMaxTopicalityOnly = true end
-		if maxTopicalityBlocks > 12 then tl={} end
+		if maxTopicalityBlocks > 10 then tl={} end
 		self.primeLicenceIds = tl
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
