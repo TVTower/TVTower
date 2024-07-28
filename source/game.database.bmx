@@ -1378,8 +1378,8 @@ Type TDatabaseLoader
 		'(this relies on "GetWorldTime()" being initialized already with
 		' the game time)
 		programmeData.releaseTime = CreateReleaseTime(releaseData, programmeData.releaseTime)
-		If programmeData.releaseTime = 0
-			Print "Failed to create releaseTime for ~q"+programmeData.GetTitle()+"~q (GUID: ~q"+GUID+"~q."
+		If programmeData.releaseTime <= 0
+			TLogger.Log("TDatabase.CreateReleaseTime()", "Failed to create releaseTime for ~q"+programmeData.GetTitle()+"~q. (GUID: ~q"+GUID+"~q.)", LOG_ERROR)
 		EndIf
 
 		'=== STAFF ===
@@ -2299,7 +2299,7 @@ Type TDatabaseLoader
 
 
 		'no year definition? use the given one
-		If releaseYear = 0 And releaseYearRelative = 0 And oldReleaseTime <> 0
+		If releaseYear = 0 And releaseYearRelative = 0 And oldReleaseTime > 0
 			Return oldReleaseTime
 		EndIf
 
