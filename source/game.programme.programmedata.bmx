@@ -1828,9 +1828,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method isReleased:Int()
-		'call-in shows are kind of "live"
-		If HasFlag(TVTProgrammeDataFlag.PAID) Then Return True
-		'TODO alwaysLive is also released?
+		'call-in shows are kind of "live" - but they still should not be available before their defined release date
+		'If HasFlag(TVTProgrammeDataFlag.PAID) Then Return True
+		'alwaysLive is also released? - NO
 		'If IsAlwaysLive() Then Return True
 
 		If Not ignoreUnreleasedProgrammes Then Return True
