@@ -835,7 +835,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="0" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_1" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
@@ -852,7 +852,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="0" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="1981" />
 		</news>
 		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
@@ -869,7 +869,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="0" price="1.0" quality="19" />
 			<availability year_range_from="1982" year_range_to="1991" />
 		</news>
 		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_3" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
@@ -886,7 +886,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="0" price="1.0" quality="19" />
 			<availability year_range_from="1992" year_range_to="2002" />
 		</news>
 		<news id="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -903,7 +903,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="5345cee0-138e-4531-a239-71015a8ca909" time="2,1,1,8,11" />
 			</effects>
-			<data genre="3" price="1.0" quality="49" />
+			<data genre="0" price="1.0" quality="49" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="5345cee0-138e-4531-a239-71015a8ca909" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -920,7 +920,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" time="2,2,3,8,18" />
 			</effects>
-			<data genre="3" price="1.0" quality="29" />
+			<data genre="0" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -937,7 +937,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" time="2,1,1,9,17" />
 			</effects>
-			<data genre="3" price="1.0" quality="35" />
+			<data genre="0" price="1.0" quality="35" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -954,7 +954,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" time="1,9,15" />
 			</effects>
-			<data genre="3" price="1.0" quality="30" />
+			<data genre="0" price="1.0" quality="30" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -988,7 +988,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" time="1,6,11" />
 			</effects>
-			<data genre="3" price="1.0" quality="28" />
+			<data genre="0" price="1.0" quality="28" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -1002,7 +1002,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<en>The Board of Management and employee representatives of the American car giant have just reached agreement to lay off 2,500 people. Both sides are satisfied.</en>
 				<pl>Zarząd i przedstawiciele pracowników amerykańskiego giganta motoryzacyjnego osiągnęli właśnie porozumienie w sprawie zwolnienia 2500 osób. Obie strony są zadowolone.</pl>
 			</description>
-			<data genre="3" price="1.0" quality="51" />
+			<data genre="0" price="1.0" quality="51" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -1067,72 +1067,72 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				</minister>
 				<animal_0>
 					<de>Koala</de>
-					<en> koala</en>
+					<en>koala</en>
 					<pl> koala</pl>
 				</animal_0>
 				<animal_1>
 					<de>Nilpferd</de>
-					<en> hippo</en>
+					<en>hippo</en>
 					<pl> hipopotam</pl>
 				</animal_1>
 				<animal_2>
 					<de>Bergschaf</de>
-					<en> mountain goat</en>
+					<en>mountain goat</en>
 					<pl> koza górska</pl>
 				</animal_2>
 				<animal_3>
 					<de>Faultier</de>
-					<en> sloth</en>
+					<en>sloth</en>
 					<pl> leniwiec</pl>
 				</animal_3>
 				<animal_4>
 					<de>Känguru</de>
-					<en> kangaroo</en>
+					<en>kangaroo</en>
 					<pl> kangur</pl>
 				</animal_4>
 				<animal_5>
 					<de>Shiba</de>
-					<en> Shiba Inu</en>
+					<en>Shiba Inu</en>
 					<pl> pies dingo</pl>
 				</animal_5>
 				<animal_6>
 					<de>Steinlaus</de>
-					<en> stone louse</en>
+					<en>stone louse</en>
 					<pl> wesz kamienna</pl>
 				</animal_6>
 				<animal_7>
 					<de>Schaukelpferd</de>
-					<en> rocking horse</en>
+					<en>rocking horse</en>
 					<pl> koń na biegunach</pl>
 				</animal_7>
 				<animal_8>
 					<de>Sexmagazin-Leser</de>
-					<en> sex magazine reader</en>
+					<en>sex magazine reader</en>
 					<pl> czytelnik magazynu erotycznego</pl>
 				</animal_8>
 				<animal_9>
 					<de>Gamezworld-Entwickler</de>
-					<en> Gamezworld developer</en>
+					<en>Gamezworld developer</en>
 					<pl>Developer Gamezworld</pl>
 				</animal_9>
 				<animal_a>
 					<de>Eisbär</de>
-					<en> polar bear</en>
+					<en>polar bear</en>
 					<pl> niedźwiedź polarny</pl>
 				</animal_a>
 				<animal_b>
 					<de>Grashüpfer</de>
-					<en> grasshopper</en>
+					<en>grasshopper</en>
 					<pl> konik polny</pl>
 				</animal_b>
 				<animal_c>
 					<de>Kaiserpinguin</de>
-					<en>n emperor penguin</en>
+					<en>emperor penguin</en>
 					<pl>pingwin cesarski</pl>
 				</animal_c>
 				<animal_d>
 					<de>Stinktier</de>
-					<en> skunk</en>
+					<en>skunk</en>
 					<pl> skunks</pl>
 				</animal_d>
 				<animal_akk_0>
@@ -1277,72 +1277,72 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				</animals_d>
 				<animal_gen_0>
 					<de>es Koalas</de>
-					<en>koala</en>
+					<en> koala</en>
 					<pl>koale</pl>
 				</animal_gen_0>
 				<animal_gen_1>
 					<de>es Nilpferds</de>
-					<en>hippo</en>
+					<en> hippo</en>
 					<pl>hipopotamy</pl>
 				</animal_gen_1>
 				<animal_gen_2>
 					<de>es Bergschafs</de>
-					<en>mountain goat</en>
+					<en> mountain goat</en>
 					<pl>kozy górskie</pl>
 				</animal_gen_2>
 				<animal_gen_3>
 					<de>es Faultiers</de>
-					<en>sloth</en>
+					<en> sloth</en>
 					<pl>leniwce</pl>
 				</animal_gen_3>
 				<animal_gen_4>
 					<de>es Kängurus</de>
-					<en>kangaroo</en>
+					<en> kangaroo</en>
 					<pl>kangury</pl>
 				</animal_gen_4>
 				<animal_gen_5>
 					<de>es Shibas</de>
-					<en>Shiba Inu</en>
+					<en> Shiba Inu</en>
 					<pl>psy dingo</pl>
 				</animal_gen_5>
 				<animal_gen_6>
 					<de>er Steinlaus</de>
-					<en>stone louse</en>
+					<en> stone louse</en>
 					<pl>pchły kamienne</pl>
 				</animal_gen_6>
 				<animal_gen_7>
 					<de>es Schaukelpferds</de>
-					<en>rocking horse</en>
+					<en> rocking horse</en>
 					<pl>koniki na biegunach</pl>
 				</animal_gen_7>
 				<animal_gen_8>
 					<de>es Sexmagazin-Lesers</de>
-					<en>sex magazine reader</en>
+					<en> sex magazine reader</en>
 					<pl>seks magazyny</pl>
 				</animal_gen_8>
 				<animal_gen_9>
 					<de>es Gamezworld-Entwicklers</de>
-					<en>Gamezworld developer</en>
+					<en> Gamezworld developer</en>
 					<pl>deweloperów Gamezworld</pl>
 				</animal_gen_9>
 				<animal_gen_a>
 					<de>es Eisbärs</de>
-					<en>polar bear</en>
+					<en> polar bear</en>
 					<pl>niedzwiedzie polarne</pl>
 				</animal_gen_a>
 				<animal_gen_b>
 					<de>es Grashüpfers</de>
-					<en>grasshopper</en>
+					<en> grasshopper</en>
 					<pl>koniki polne</pl>
 				</animal_gen_b>
 				<animal_gen_c>
 					<de>es Kaiserpinguins</de>
-					<en>emperor penguin</en>
+					<en>n emperor penguin</en>
 					<pl>pingwiny cesarskie</pl>
 				</animal_gen_c>
 				<animal_gen_d>
 					<de>es Stinktiers</de>
-					<en>skunk</en>
+					<en> skunk</en>
 					<pl>skunksy</pl>
 				</animal_gen_d>
 				<animals_dat_0>
@@ -2419,6 +2419,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</description>
 			<data genre="5" price="1.0" quality="49" />
 			<availability year_range_from="-1" year_range_to="-1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,16" news="88e366d7-7bca-4598-bab4-e19eeeb966a8" />
+			</effects>
 		</news>
 		<news id="3756602f-ddcc-4e7c-9ebc-4c1a3259d8c2" thread_id="a6ec2fd9-ff73-4f4b-829b-01f331dc6f92" type="0" creator="">
 			<title>
@@ -3354,8 +3357,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Ponieważ tak wielu terrorystów gubi się podczas ataków na Duban, od teraz mają być wyposażeni w GPS. Plotka ta została znaleziona w Internecie.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="21" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,18,36" news="a20e1c6a-f1d0-41a6-ac1f-98d9b8645d22" />
+			</effects>
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
+
 		<news id="05cb2eba-bad9-424c-920e-5d2772497069" thread_id="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="0" creator="">
 			<title>
 				<de>Polnischer Minister: Helme für alle!</de>
@@ -3368,7 +3375,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Polski minister transportu chce wprowadzić obowiązek noszenia kasków. Dotyczyłoby to wszystkich pieszych.</pl>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
+				<effect trigger="happen" type="triggernews" news="383db30d-70cb-4278-8889-1cff4f2ac440" />
 			</effects>
 			<data genre="0" price="0.7" quality="38" />
 			<availability year_range_from="-1" year_range_to="-1" />

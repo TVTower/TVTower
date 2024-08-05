@@ -123,6 +123,8 @@
 				<job index="3" function="32" required="0" role_guid="script-roles-ron-001" />
 				<job index="4" function="32" required="0" />
 			</jobs>
+			<data target_groups="6" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="15" subgenres="5" />
 			<blocks min="2" max="3" slope="30" />
 			<price min="12000" max="17000" slope="60" />
@@ -186,8 +188,9 @@
 				<job index="3" function="32" required="0" />
 			</jobs>
 			<!-- mandatory: /  |  optional: xrated, bmovie, trash -->
-			<data flags="0" flags_optional="112" />
-			<genres maingenre="1" />
+			<data flags="0" flags_optional="112" target_groups="18" />
+			<targetgroupattractivity employees="1.25" />
+			<genres maingenre="2" subgenres="1,17" />
 			<blocks min="2" max="3" slope="25" />
 			<price min="8000" max="12000" slope="40" />
 			<potential min="30" max="70" slope="45" />
@@ -231,7 +234,9 @@
 				<job index="4" function="32" required="0" />
 			</jobs>
 
-			<genres maingenre="7" />
+			<data target_groups="6" />
+			<targetgroupattractivity men="0.75" children="2" />
+			<genres maingenre="7" subgenres="5" />
 			<blocks min="2" max="3" slope="40" />
 			<price min="8000" max="12000" slope="40" />
 			<potential min="50" max="70" slope="45" />
@@ -273,9 +278,9 @@
 			</jobs>
 
 			<!-- mandatory: xrated  |  optional: bmovie, trash -->
-			<data flags="64" flags_optional="48"/>
+			<data flags="64" flags_optional="48" target_groups="274" />
 			<studio_size min="1" max="2" slope="20" /> 
-			<genres maingenre="8" subgenres="15"/>
+			<genres maingenre="8" subgenres="15" />
 			<blocks min="2" max="3" slope="20" />
 			<price min="15000" max="25000" slope="40" />
 			<potential min="30" max="65" slope="45" />
@@ -300,7 +305,7 @@
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
-					<en>Castle|Country House|Hotel|Inn|Tavern|Forest Lodge|Village|Lighthouse</en>
+					<en>Castle|Country House|Hotel|Guesthouse|Tavern|Forest Lodge|Village|Lighthouse</en> <!-- 'Inn' conflicting with article 'A' (must be 'An') for now -->
 				</building>
 				<count>
 					<de>|||3 |4 |5 |8 |10 |1000 </de>
@@ -340,7 +345,8 @@
 			</jobs>
 
 			<!-- optional: xrated | cult -->
-			<data flags_optional="72" />
+			<data flags_optional="72" target_groups="18" />
+			<targetgroupattractivity teenagers="2" employees="1.25" unemployed="2" />
 			<genres maingenre="12" subgenres="14"/>
 			<blocks min="2" max="3" slope="20" />
 			<price min="9500" max="30000" slope="50" />
@@ -408,8 +414,9 @@
 				<job index="3" function="32" required="0" />
 			</jobs>
 
-			<!-- mandatory: xrated  |  optional: cult -->
-			<data flags_optional="8" />
+			<!-- mandatory: xrated  |  optional: cult --> <!-- TODO: What was meant with xrated? It's not set and it's 'just' a drama. -->
+			<data flags_optional="8" target_groups="6" />
+			<targetgroupattractivity men="0.75" children="2" managers="1.25" />
 			<genres maingenre="7" subgenres="9"/>
 			<blocks min="2" max="3" slope="20" />
 			<price min="7500" max="25000" slope="40" />
@@ -460,13 +467,18 @@
 				<job index="3" function="32" required="0" gender="2" />
 			</jobs>
 
-			<genres maingenre="100" />
+			<data flags="1" production_broadcast_flags="512" target_groups="7" />
+			<genres maingenre="104" />
 			<blocks min="2" max="3" slope="40" />
 			<price min="10000" max="18000" slope="40" />
 			<potential min="30" max="55" slope="45" />
 			<outcome min="20" max="35" slope="40" />
 			<review min="25" max="45" slope="40" />
 			<speed min="45" max="60" slope="50" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="4" />
+			</programme_data_modifiers>
 		</scripttemplate>
 
 		<!-- === SERIES === -->
@@ -486,82 +498,82 @@
 				</seriesabout>
 				<adj>
 					<de>Ein Haufen |Die Hinterwäldler-|Verrückte |Wahnsinns-|Bayrische |Tugendhafte |Durchgedrehte |Fromme |Zankende |Schelmische |Verschmitzte |Witzige |Abenteuerlustige |Extravagante |Geheimnisvolle |Exzentrische |Temperamentvolle |Joviale |Hartnäckige |Lebensfrohe |Verwegene |Brillante </de>
-					<en>A bunch of |The hillbilly |Crazy |The frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The mysterious |Eccentric |Spirited |The jovial |The tenacious |The vivacious |Swashbuckling |The brilliant </en>
+					<en>A Bunch of |The Hillbilly |Crazy |The Frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The Mysterious |Eccentric |Spirited |The Jovial |The Tenacious |The Vivacious |Swashbuckling |The Brilliant </en>
 				</adj>
 				<i>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same as j in episodes -->
 				</i>
 				<who_0>
 					<de>Waschweiber</de>
-					<en>washer women</en>
+					<en>Washer Women</en> <!-- always capitalized for now, even in flow-text. TODO: possibly change as soon as capitalization per expression available. -->
 				</who_0>
 				<who_1>
 					<de>Drag-Queens</de>
-					<en>drag-queens</en>
+					<en>Drag-Queens</en>
 				</who_1>
 				<who_2>
 					<de>Schwerenöter</de>
-					<en>philanderers</en>
+					<en>Philanderers</en>
 				</who_2>
 				<who_3>
 					<de>Polizisten</de>
-					<en>policemen</en>
+					<en>Policemen</en>
 				</who_3>
 				<who_4>
 					<de>Rettungsschwimmer</de>
-					<en>lifeguards</en>
+					<en>Lifeguards</en>
 				</who_4>
 				<who_5>
 					<de>Clowns</de>
-					<en>clowns</en>
+					<en>Clowns</en>
 				</who_5>
 				<who_6>
 					<de>Krankenpfleger</de>
-					<en>carers</en>
+					<en>Carers</en>
 				</who_6>
 				<who_7>
 					<de>Stripper</de>
-					<en>strippers</en>
+					<en>Strippers</en>
 				</who_7>
 				<who_8>
 					<de>Feuerwehrmänner</de>
-					<en>firefighters</en>
+					<en>Firefighters</en>
 				</who_8>
 				<who_9>
 					<de>Nonnen</de>
-					<en>nuns</en>
+					<en>Nuns</en>
 				</who_9>
 				<who_a>
 					<de>Verschwörungstheoretiker</de>
-					<en>conspiracy theorists</en>
+					<en>Conspiracy Theorists</en>
 				</who_a>
 				<who_b>
 					<de>Gastrokritiker</de>
-					<en>food critics</en>
+					<en>Food Critics</en>
 				</who_b>
 				<who_c>
 					<de>Extrem-Sparfüchse</de>
-					<en>extreme couponers</en>
+					<en>Extreme Couponers</en>
 				</who_c>
 				<who_d>
 					<de>Zeitreisepiloten</de> <!-- wegen unterschiedlicher Pluralformen (unbestimmt / bestimmt) funktioniert 'Reisende' (vs Die Reisenden) nicht -->
-					<en>time travellers</en>
+					<en>Time Travellers</en>
 				</who_d>
 				<who_e>
 					<de>Einradfahrer</de>
-					<en>unicyclists</en>
+					<en>Unicyclists</en>
 				</who_e>
 				<who_f>
 					<de>Kunstpfeifer</de>
-					<en>concert whistlers</en>
+					<en>Concert Whistlers</en>
 				</who_f>
 				<who_g>
 					<de>Drehbuchschreiber</de>
-					<en>screenwriters</en>
+					<en>Screenwriters</en>
 				</who_g>
 				<who_h>
 					<de>Pferdeflüsterer</de>
-					<en>horse whisperers</en>
+					<en>Horse Whisperers</en>
 				</who_h>
 				<titleaddendum>
 					<de> aus %town%| über %theirlives%|</de>
@@ -609,7 +621,7 @@
 				</how_8>
 				<how_9>
 					<de>besonnene ${who_${i}}, die Kontrahenten aber schon mal die Leviten lesen und tief ins Gewissen reden</de>
-					<en>sober-minded sisters who deeply reach into conscience, preach to opponents and beseech like wise Levites</en>
+					<en>sober-minded ${who_${i}} who deeply reach into conscience, preach to opponents and beseech like wise Levites</en>
 				</how_9>
 				<how_a>
 					<de>besessene ${who_${i}}, die die Leute endlos zulabern, welche dann vergessen, worum's ursprünglich ging</de>
@@ -661,7 +673,7 @@
 					<de>Alexis|Angel|Aria|Ashley|Aydin|Bent|Billy|Blair|Bobby|Camilie|Casey|Chaska|Chris|Dakota|Dany|Deniz|Dylan|Elis|Elia|Enid|Erin|Evin|Feng|Finn|Fiore|Florin|Gates|Gerit|Güven|Hadley|Helge|Hilal|Ilter|Indiana|Ino|Ira|Jade|Jamie|James|Jayden|Jesse|Jorah|June|Kai|Kaya|Kelsey|Kerry|Konni|Kris|Leslie|Loki|Luca|Maria|Marlin|Marlo|Marlon|Maxime|Merle|Milou|Nicki|Nikky|Özbek|Ola|Pahul|Pat|Payden|Pleun|Raleigh|Raven|Reese|Reign|Riley|Robin|Ryan|Sandy|Sean|Shannon|Skyler|Simone|Terry|Tjade|Toni|Umut|Uli|Val|Vanja|Wanja|Yael|Yuki|Zia</de>
 				</firstname2>
 				<firstname3>
-					<de>Amar|Andrea|Ari|Ashton|Bailey|Bene|Bente|Blake|Bo|Bob|Carol|Carter|Charly|Corey|Dani|Darcy|Derya|Dominique|Eike|Elvin|Emerson|Esin|Farina|Fidan|Friedel|Francis|Gin|Gwenaël|Hadar|Haik|Harper|Hemke|Ilya|Indigo|Isa|Jaime|Jamie|Janne|Jean|Jessi|Jordan|Joyce|Kay|Kendall|Kersten|Kiran|Kristan|Lesley|Lorin|Luan|Malu|Marian|Maxi|Mel|Mian|Nika|Niki|Nino|Nova|Paris|Patrice|Phoenix|Orly|Qian|Quinn|Rayan|Renée|Rey|Robbie|Sam|Sanja|Sascha|Shanti|Sidney|Theodore|Tomke|Tracy|Ulli|Uzay|Valentine|Vesa|Yuri|Wisal|Zisan</de>
+					<de>Amar|Andrea|Ari|Ashton|Bailey|Bene|Bente|Blake|Bo|Bob|Carol|Carter|Charly|Corey|Dani|Darcy|Derya|Dominique|Eike|Elvin|Emerson|Esin|Farina|Fidan|Friedel|Francis|Gin|Gwenaël|Hadar|Haik|Harper|Hemke|Ilya|Indigo|Isa|Jaime|Janne|Jean|Jessi|Jordan|Joyce|Kay|Kendall|Kersten|Kiran|Kristan|Lesley|Lorin|Luan|Malu|Marian|Maxi|Mel|Mian|Nika|Niki|Nino|Nova|Paris|Patrice|Phoenix|Orly|Qian|Quinn|Rayan|Renée|Rey|Robbie|Sam|Sanja|Sascha|Shanti|Sidney|Theodore|Tomke|Tracy|Ulli|Uzay|Valentine|Vesa|Yuri|Wisal|Zisan</de>
 				</firstname3>
 				<location_0>
 					<de>Paradies</de> <!-- alle Orte nur Maskulinum, Neutrum und wo 'im xyz' passt -->
@@ -736,7 +748,6 @@
 					<en>the desert oasis</en>
 				</location_h>
 			</variables>
-
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
 					<title>
@@ -751,7 +762,7 @@
 					<blocks min="1" max="2" />
 					<variables>
 						<character1>
-							<de>mutig und abenteuerlustig, stürzt sich in jede Herausforderung|charismatisch, mit einer magisch anziehenden Ausstrahlung|genial, eine hochintelligente Anführerpersönlichkeit|kreativ, mit Magie verleihender Vorstellungskraft|perfektionistisch und strebt nach Exzellenz in allem|sehr humorvoll mit immer einem Witz parat|spontan, liebt Überraschungen und den Moment zu leben|sehr zielstrebig, arbeitet unermüdlich an der Selbstverwirklichung|abenteuerlustig, sucht immer nach neuem Nervenkitzel|abenteuerlustig, sucht immer nach neuen Horizonten</de>
+							<de>mutig und abenteuerlustig, stürzt sich in jede Herausforderung|charismatisch, mit einer magisch anziehenden Ausstrahlung|genial, eine hochintelligente Anführerpersönlichkeit|kreativ, mit Magie verleihender Vorstellungskraft|perfektionistisch und strebt nach Exzellenz in allem|sehr humorvoll, hat immer einen Witz parat|spontan, liebt Überraschungen und den Moment zu leben|sehr zielstrebig, arbeitet unermüdlich an der Selbstverwirklichung|abenteuerlustig, sucht immer nach neuem Nervenkitzel|abenteuerlustig, sucht immer nach neuen Horizonten</de>
 							<en>courageous and adventurous, jumps into any challenge|charismatic, with a magically attractive presence|a genius, a highly intelligent leader|creative, with magic-giving imagination|perfectionist and strives for excellence in everything|very humorous, always has a joke ready|spontaneous, loves surprises and to live in the moment|very determined, works tirelessly on self-actualization|adventurous, always looking for new thrills|adventurous, always searching for new horizons</en>
 						</character1>
 						<character2>
@@ -861,8 +872,8 @@
 							<de>%STATIONMAP:RANDOMCITY%</de>
 						</othertown>
 						<description_0>
-							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Die ${who_${j}} müssen Extrazuschlag aushandeln.</de>
-							<en>are passing through and want their gear cleaned, pronto! The ${who_${j}} have to negotiate an extra surcharge.</en>
+							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Unsere ${who_${i}} müssen Extrazuschlag aushandeln.</de>
+							<en>are passing through and want their gear cleaned, pronto! Our ${who_${i}} have to negotiate an extra surcharge.</en>
 						</description_0>
 						<description_1>
 							<de>sind da zur großen Mode-Make-up-Challenge! Die ${who_${i}} und ${who_${j}} müssen Pärchen bilden und abends einen glamourösen Catwalk-Showdown hinlegen!</de>
@@ -1051,7 +1062,7 @@
 						</bikers>
 						<appears>
 							<de>taucht auf|kreuzt auf|kommt an|findet sich ein|trifft ein|rückt an|tanzt an|schlägt auf|lässt sich blicken|ist im Anflug|kommt um die Ecke|bahnt sich ihren Weg|kommt</de>
-							<en>emerges|shows up|arrives|finds its way|appears|approaches|waltzes in|sets up camp|makes an entrance|is incoming|is coming around the corner|makes their way|comes</en>
+							<en>emerges|shows up|arrives|finds their way|appears|approaches|waltzes in|sets up camp|makes an entrance|is incoming|is coming around the corner|makes their way|comes</en>
 						</appears>
 						<causingtrouble>
 							<de>, was zu Spannungen führt|, was für Unruhe sorgt|, was Aufruhr verursacht|, was für Missstimmung sorgt|, was Spannungen verursacht|, was für Unfrieden sorgt|, was zu Unfrieden führt|</de>
@@ -1069,7 +1080,7 @@
 							<de>%STATIONMAP:RANDOMCITY%</de>
 						</othertown>
 						<park>
-							<de>Der „${location_${k}}-Park“|Der „${location_${k}}-Vorgarten“|Der „${location_${k}}-Garten“|Der „${location_${k}}-Rosengarten“|Der „${location_${k}}-Blumengarten“|Die „${location_${k}}-Kantine“|Der „${location_${k}}-Platz”|Der „${location_${k}}-Spielplatz”|Der „${location_${k}}-Plaza”|Die „${location_${k}}-Piazza”|Die „${location_${k}}-Arkaden”|Die „${location_${k}}-Allee”|Der „${location_${k}}-Boulevard”</de>
+							<de>Der „${location_${k}}-Park“|Der „${location_${k}}-Vorgarten“|Der „${location_${k}}-Garten“|Der „${location_${k}}-Rosengarten“|Der „${location_${k}}-Blumengarten“|Die „${location_${k}}-Kantine“|Der „${location_${k}}-Platz“|Der „${location_${k}}-Spielplatz“|Der „${location_${k}}-Plaza“|Die „${location_${k}}-Piazza“|Die „${location_${k}}-Passage“|Die „${location_${k}}-Allee“|Der „${location_${k}}-Boulevard“</de>
 							<en>"${location_${k}} park"|"${location_${k}} frontyard"|"${location_${k}} garden"|"${location_${k}} rose garden"|"${location_${k}} flower garden"|"${location_${k}} cantina"|"${location_${k}} square"|"${location_${k}} playground"|"${location_${k}} plaza"|"${location_${k}} piazza"|"${location_${k}} arcade"|"${location_${k}} avenue"|"${location_${k}} boulevard"</en> <!-- TODO: apply capitalization function when available -->
 						</park>
 						<asocialhotspot>
@@ -1123,7 +1134,7 @@
 						</k>
 						<allstillright>
 							<de> ist die Welt noch in Ordnung.| ist alles in Ordnung.|, da lässt sich's aushalten.| ist alles gut.| gibt es nur gute Vibes.| ist's wie im Himmel.| ist die Stimmung stets ausgelassen.| ist die Luft voller Liebe und Freude.| ist jeder Tag ein Fest.| gibt es immer was zu feiern.| ist die Laune stets bestens.| gibt es nur strahlende Gesichter.| herrscht eine wunderbare Atmosphäre.| ist das Glück zu Hause.| scheint die Zeit stillzustehen.| gibt es keine Sorgen oder Probleme.| ist die Welt voller Magie.| fühlt man sich wie im siebten Himmel.</de>
-							<en>, all's right with the world.| everything's alright.|, life is comfortable and enjoyable.|, life is good.|, there are only good vibes.|, it's like heaven.|, the atmosphere is always lively.|, the air is full of love and joy.|, every day is a celebration.|, there is always something to celebrate.|, everyone is in high spirits.|, there are only smiles and joy.|, there is a wonderful atmosphere.|, happines resides.|, time seems to stand still.|, there are no worries or troubles.|, the world is full of magic.|, it feels like being on cloud nine.</en>
+							<en>, all's right with the world.| everything's alright.|, life is comfortable and enjoyable.|, life is good.|, there are only good vibes.|, it's like heaven.|, the atmosphere is always lively.|, the air is full of love and joy.|, every day is a celebration.|, there is always something to celebrate.|, everyone is in high spirits.|, there are only smiles and joy.|, there is a wonderful atmosphere.|, happiness resides.|, time seems to stand still.|, there are no worries or troubles.|, the world is full of magic.|, it feels like being on cloud nine.</en>
 						</allstillright>
 						<whythere_0>
 							<de>Petrus persönlich hat die ${who_${i}} eingeladen, die Himmelspforte stünde schließlich allen frommen Menschen offen, die reinen Herzens sind. Die ${who_${i}} unterhalten sich angeregt mit den Engeln vom Dienst.</de>
@@ -1225,7 +1236,9 @@
 				<job index="3" function="32" required="0" />
 			</jobs>
 
-			<genres maingenre="0" />
+			<data target_groups="6" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="301" subgenres="5,6" />
 			<blocks value="1" />
 			<price min="15000" max="26000" />
 			<potential min="50" max="70" slope="45" />
@@ -1235,7 +1248,7 @@
 		</scripttemplate>
 
 		<!-- === SERIES === -->
-		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01">
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01" comment="English title vs text casings">
 			<title>
 				<de>%TITLE%</de>
 				<en>%TITLE%</en>
@@ -1295,11 +1308,11 @@
 			<variables>
 				<title>
 					<de>%ANIMAL1%%CONNECTOR1%|Party mit %ANIMAL1%%CONNECTOR1%|Zu Besuch bei %ANIMAL1%%CONNECTOR2%|Auf der Spur von %ANIMAL1%%CONNECTOR2%|Im Zoo bei %ANIMAL1% und %ANIMAL2%</de>
-					<en>%ANIMAL1%%CONNECTOR1%|Party with %ANIMAL1%%CONNECTOR1%|Visiting %ANIMAL1%%CONNECTOR2%|On the trail of %ANIMAL1%%CONNECTOR2%|In the Zoo among %ANIMAL1% and %ANIMAL2%</en>
+					<en>%ANIMAL1%s%CONNECTOR1%|Party with %ANIMAL1%s%CONNECTOR1%|Visiting %ANIMAL1%s%CONNECTOR2%|On the Trail of %ANIMAL1%s%CONNECTOR2%|In the Zoo among %ANIMAL1%s and %ANIMAL2%s</en>
 				</title>
 				<animals>
 					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo|Pfleger, Gäste und natürlich Tiere im Gehege</de>
-					<en>%ANIMAL1%, %ANIMAL2% and many more animals|animals in the zoo|keepers, guests and of course animals in the enclosure</en>
+					<en>%ANIMAL1%s, %ANIMAL2%s and many more animals|animals in the zoo|keepers, guests and of course animals in the enclosure</en>
 				</animals>
 				<extra>
 					<de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
@@ -1315,35 +1328,35 @@
 				</extra2>
 				<animal1>
 					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
-					<en>Ape|Frog|Camel|Lizard|Goat|Elephant|Mouse|Rhino</en>
+					<en>Ape|Frog|Camel|Lizard|Goat|Elephant|Rodent|Rhino</en> <!-- only variations for which plural can be written with -s for now -->
 				</animal1>
 				<animal2>
 					<de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
-					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Polecat</en>
+					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Stag|Polecat</en> <!-- only variations for which plural can be written with -s for now -->
 				</animal2>
 				<animalep1>
 					<de>Affe|Frosch|Kamel|Waran</de>
-					<en>Ape|Frog|Camel|Lizard</en>
+					<en>Ape|Frog|Camel|Lizard</en> <!-- only variations for which plural can be written with -s for now -->
 				</animalep1>
 				<animalep2>
 					<de>Biber|Chamäleon|Dachs</de>
-					<en>Beaver|Chameleon|Badger</en>
+					<en>Beaver|Chameleon|Badger</en> <!-- only variations for which plural can be written with -s for now -->
 				</animalep2>
 				<animalep3>
 					<de>Ziege|Elefant|Maus|Nashorn</de>
-					<en>Goat|Elephant|Mouse|Rhino</en>
+					<en>Goat|Elephant|Rodent|Rhino</en> <!-- only variations for which plural can be written with -s for now -->
 				</animalep3>
 				<animalep4>
 					<de>Esel|Giraffe|Hirsch|Iltis</de>
-					<en>Donkey|Giraffe|Deer|Polecat</en>
+					<en>Donkey|Giraffe|Stag|Polecat</en> <!-- only variations for which plural can be written with -s for now -->
 				</animalep4>
 				<connector1>
 					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und %ANIMAL2% ganz wild| und %ANIMAL2% im Zoo|</de>
-					<en>, %ANIMAL2% and co.| and %ANIMAL2%| and %ANIMAL2% all wild| and %ANIMAL2% in the Zoo|</en>
+					<en>, %ANIMAL2%s and co.| and %ANIMAL2%s| and %ANIMAL2%s all wild| and %ANIMAL2%s in the Zoo|</en>
 				</connector1>
 				<connector2>
 					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und Pfleger</de>
-					<en>, %ANIMAL2% and co.| and %ANIMAL2%| and keepers</en>
+					<en>, %ANIMAL2%s and co.| and %ANIMAL2%s| and Keepers</en>
 				</connector2>
 				<titleepisode1>
 					<de>%ANIMALEP1%|%ANIMALEP1% auf Abwegen|%ANIMALEP1% in Gefahr</de>
@@ -1376,7 +1389,9 @@
 				<job index="1" function="128" required="1" />
 			</jobs>
 
-			<genres maingenre="6" />
+			<data target_groups="69" />
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="6" subgenres="9,300" />
 			<episodes min="4" max="6" />
 			<blocks value="1" />
 			<price min="15000" max="26000" />
