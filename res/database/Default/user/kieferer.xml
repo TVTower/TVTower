@@ -28,6 +28,8 @@
 				<job index="3" function="32" required="1" gender="1" />
 			</jobs>
 
+			<data target_groups="18" />
+			<targetgroupattractivity teenagers="2" housewives="2" employees="1.25" />
 			<genres maingenre="2" subgenres="1" />
 			<blocks value="2" />
 			<price min="7000" max="12000" slope="60" />
@@ -79,7 +81,9 @@
 				<job index="5" function="32" required="0" />
 			</jobs>
 
-			<genres maingenre="12" />
+			<data target_groups="18" />
+			<targetgroupattractivity women="1.25" teenagers="2" unemployed="2" />
+			<genres maingenre="12" subgenres="2" />
 			<blocks value="2" />
 			<price min="9000" max="15000" slope="50" />
 			<potential min="20" max="80" slope="45" />
@@ -120,7 +124,9 @@ Organizator wycieczki ich oszukuje.</pl>
 				<job index="2" function="128" required="0" />
 			</jobs>
 
-			<genres maingenre="6" />
+			<data target_groups="68" />
+			<targetgroupattractivity employees="0.75" />
+			<genres maingenre="301" subgenres="6" />
 			<blocks value="2" />
 			<price min="4000" max="9000" slope="50" />
 			<potential min="10" max="50" slope="45" />
@@ -161,6 +167,7 @@ Każdy środek się nada.</pl>
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
 
+			<data target_groups="80" />
 			<genres maingenre="18" subgenres="13" />
 			<blocks value="3" />
 			<price min="8000" max="12000" slope="50" />

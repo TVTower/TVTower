@@ -9,7 +9,7 @@
 	-->
 	<scripttemplates>
 		<!--Kult optional, kein Trash-->
-		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Superheros" >
+		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Superheros" comment="TODO: Now that plenty of 'real' Marvel stuff is in the game, perhaps introduce 'Moval' not as a spoof but a cheap-rip-off">
 			<title>
 				<de>%HERO%</de>
 				<en>%HERO%</en>
@@ -36,8 +36,9 @@
 				<job function="32" index="5" gender="2" required="1" />
 				<job function="32" index="6" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="10" />
-			<genres maingenre="1" subgenres="10" />
+			<data flags_optional="10" target_groups="18" />
+			<targetgroupattractivity children="2" teenagers="2" employees="1.5" unemployed="2" />
+			<genres maingenre="16" subgenres="1,10" />
 			<blocks slope="40" max="4" min="2" />
 			<price slope="25" max="66500" min="15000" />
 			<potential slope="30" max="100" min="30" />
@@ -51,7 +52,7 @@
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Typentausch">
 			<title>
 				<de>Typentausch</de>
-				<en>Change your Boyfriend</en>
+				<en>Change Your Boyfriend</en>
 				<pl>Zmień swojego chłopaka</pl>
 			</title>
 			<description>
@@ -63,7 +64,7 @@
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-Typentausch-Ep1">
 					<title>
 						<de>Der erste Tausch</de>
-						<en>The first exchange</en>
+						<en>The First Exchange</en>
 						<pl>Pierwsza wymiana</pl>
 					</title>
 					<description>
@@ -75,7 +76,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Typentausch-Ep2">
 					<title>
 						<de>%Name3% und die Truckerbräute</de>
-						<en>%Name3% and the trucker brides</en>
+						<en>%Name3% andd the Trucker Brides</en>
 						<pl>Kierowca ciężarówki %Name3% i kierowca rajdowy %Name4%</pl>
 					</title>
 					<description>
@@ -87,7 +88,7 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Typentausch-Ep3">
 					<title>
 						<de>Hart ist das Leben</de>
-						<en>It's a hard life</en>
+						<en>It's a Hard Life</en>
 						<pl>To ciężkie życie</pl>
 					</title>
 					<description>
@@ -166,8 +167,9 @@
 			<jobs>
 				<job function="1" index="0" required="1" />
 			</jobs>
-			<data flags="16" />
-			<genres maingenre="6" subgenres="12" />
+			<data flags="16" target_groups="6" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="301" subgenres="6,12" />
 			<episodes max="5" min="3"/>
 			<blocks value="1" />
 			<price max="5000" min="100" />
@@ -186,7 +188,7 @@
 			</title>
 			<description>
 				<de>Live in Stereo, Farbe und Bunt: %Name1% %Name2%</de>
-				<en>Live and in stereo: %Name1% %Name2%</en>
+				<en>Live and In Stereo: %Name1% %Name2%</en>
 				<pl>Na Żywo i w stereo: %Name1% %Name2%</pl>
 			</description>
 			<variables>
@@ -205,8 +207,8 @@
 				<job function="1" index="0" required="1" />
 				<job function="16" index="1" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="36" production_broadcast_limit="1" />
-			<targetgroupattractivity teenagers="1.5" employees="1.25" unemployed="1.25" housewives="1.25" pensioners="0.25" />
+			<data flags_optional="16" flags="1" live_date="3,5,19,19" production_licence_flags="36" production_broadcast_limit="1" target_groups="6" />
+			<targetgroupattractivity teenagers="2" pensioners="0.25" />
 			<genres maingenre="202" />
 			<production_time slope="40" max="180" min="60" />
 			<blocks slope="40" max="4" min="2" />
@@ -216,6 +218,9 @@
 			<review slope="35" max="100" min="20" />
 			<speed slope="40" max="100" min="30" />
 			<studio_size min="1" max="2" slope="40" />
+			<programme_data_modifiers>
+				<modifier name="topicality::age" value="4" />
+			</programme_data_modifiers>
 		</scripttemplate>
 
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-freieTiere">
@@ -251,7 +256,8 @@
 				<job function="2" index="1" gender="1" required="1" />
 				<job function="32" index="2" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="2" flags="0" />
+			<data flags_optional="2" flags="0" target_groups="7" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="9" subgenres="1" />
 			<blocks slope="40" max="3" min="2" />
 			<price slope="25" max="22500" min="15000" />
@@ -285,7 +291,8 @@
 				<job function="2" index="1" gender="1" required="1" />
 				<job function="32" index="2" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="32" flags="64" />
+			<data flags_optional="32" flags="64" target_groups="18" />
+			<targetgroupattractivity employees="1.5" />
 			<genres maingenre="12" subgenres="17" />
 			<blocks slope="30" max="3" min="2" />
 			<price slope="35" max="26500" min="15000" />
@@ -300,7 +307,7 @@
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-SozialeNetzwerke">
 			<title>
 				<de>%Name1% %Name2% - Verloren im digitalem Sumpf</de>
-				<en>%Name1% %Name2% - Lost in the digital swamp</en>
+				<en>%Name1% %Name2% - Lost In the Digital Swamp</en>
 				<pl>%Name2% w %Name1% - Zagubienie w cyfrowym bagnie</pl>
 			</title>
 			<description>
@@ -324,7 +331,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-SozialeNetzwerke-Ep2">
 					<title>
 						<de>Der Verdacht</de>
-						<en>The suspicion</en>
+						<en>The Suspicion</en>
 						<pl>Podejrzenie</pl>
 					</title>
 					<description>
@@ -372,8 +379,8 @@
 			</children>
 			<variables>
 				<Name1>
-					<de>Finstergram|Twoter|Focebeek|Putube|Snoopchat|Whosapp</de>
-					<en>Finstergram|Twoter|Focebeek|Putube|Snoopchat|Whosapp</en>
+					<de>Finstergram|Twatter|Farce Book|BooToob|Snoopchat|Whoseapp</de>
+					<en>Finstergram|Twatter|Farce Book|BooToob|Snoopchat|Whoseapp</en>
 					<pl>Finstergramie|Twoterze|Focebeeku|Putube-ie|Snoopchat-cie|Whosappie</pl>
 				</Name1>
 				<Name2>
@@ -389,7 +396,8 @@
 				<job function="32" index="3" gender="0" required="1" />
 				<job function="32" index="4" gender="0" required="1" />
 			</jobs>
-			<data flags="" flags_optional="2" />
+			<data flags="" flags_optional="2" target_groups="6" /> <!-- TODO: flags_optional 2 probably erroneous -->
+			<targetgroupattractivity children="2" teenagers="2" />
 			<availability year_range_from="2005" />
 			<genres maingenre="17" subgenres="14" />
 			<blocks value="1" />
@@ -409,14 +417,14 @@
 				<pl>Siła %Name%</pl>
 			</title>
 			<description>
-				<de>Die Macht von %Name% ist eine Investigativ-Dokumentation, die tief in die Gefilde des Streamingdienstes eintaucht. Die Fragen sind: Werden Kunden von TV-Tower verschwinden? Wird die Werbung billiger? Verschwinden alle Filme aus dem Filmverleih?</de>
-				<en>The power of %Name% is an investigative documentary that dives deep into the realm of the streaming service. The questions are: Will customers of TV-Tower disappear? Will the advertising get cheaper? Will all movies disappear from the movie agency?</en>
+				<de>Die Macht von %Name% ist eine Investigativ-Dokumentation, die tief in die Gefilde des Streamingdienstes eintaucht. Die Fragen sind: Werden Kunden von TVTower verschwinden? Wird die Werbung billiger? Verschwinden alle Filme aus dem Filmverleih?</de>
+				<en>The power of %Name% is an investigative documentary that dives deep into the realm of the streaming service. The questions are: Will customers of TVTower disappear? Will the advertising get cheaper? Will all movies disappear from the movie agency?</en>
 				<pl>Siła %Name% to dokument śledczy, który zagłębia się w sferę usług streamingowych. Pytania są następujące: Czy klienci TV-Tower znikną? Czy reklamy będą tańsze? Czy wszystkie filmy znikną z agencji filmowych?</pl>
 			</description>
 			<variables>
 				<name>
-					<de>Omozon|Mousework|Nudeflix|Paxdome|Putube|whyTunes</de>
-					<en>Omozon|Mousework|Nudeflix|Paxdome|Putube|whyTunes</en>
+					<de>Omozon|Mousework|Nudeflix|Paxdome|BooToob|whyTunes</de>
+					<en>Omozon|Mousework|Nudeflix|Paxdome|BooToob|whyTunes</en>
 					<pl>Omozonu|Mouseworku|Nudeflixa|Paxdomu|Putube-a|whyTunes-a</pl>
 				</name>
 			</variables>
@@ -424,7 +432,8 @@
 				<job function="1" index="0" required="1" />
 				<job function="2" index="1" gender="2" required="1" />
 			</jobs>
-			<data flags="4" />
+			<data flags="4" target_groups="34" />
+			<targetgroupattractivity teenagers="2" pensioners="0.25" />
 			<availability year_range_from="2005" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks slope="70" max="2" min="1" />
@@ -440,7 +449,7 @@
 		<scripttemplate licence_type="3" product="3" guid="Kasi-script-Talkshow">
 			<title>
 				<de>Sprich mit %NAME%</de>
-				<en>Talk with %NAME%</en>
+				<en>Talk to %NAME%</en>
 				<pl>Rozmowy z %NAME%</pl>
 			</title>
 			<description>
@@ -452,7 +461,7 @@
 				<scripttemplate licence_type="2" product="3" index="0" guid="Kasi-script-Talkshow-Ep1">
 					<title>
 						<de>Der erste Plausch</de>
-						<en>The first Talk</en>
+						<en>The First Talk</en>
 						<pl>Pierwsza rozmowa</pl>
 					</title>
 					<description>
@@ -512,7 +521,7 @@
 				<scripttemplate licence_type="2" product="3" index="5" guid="Kasi-script-Talkshow-Ep6">
 					<title>
 						<de>Baumliebe</de>
-						<en>Tree-lovers</en>
+						<en>Tree Lovers</en>
 						<pl>Miłośnicy drzew</pl>
 					</title>
 					<description>
@@ -547,7 +556,8 @@
 				<job function="64" index="2" gender="1" required="1" />
 				<job function="64" index="3" gender="2" required="1" />
 			</jobs>
-			<data flags="16" />
+			<data flags="16" target_groups="6" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="103" subgenres="7,12" />
 			<episodes max="7" min="5"/>
 			<blocks value="1" />
@@ -584,7 +594,8 @@
 				<job function="16" index="3" gender="0" required="1" />
 				<job function="64" index="4" gender="0" required="1" />
 			</jobs>
-			<data flags_optional="16" flags="1" broadcast_time_slot_start="19" broadcast_time_slot_end="23" production_licence_flags="36" production_broadcast_limit="2" production_broadcast_flags="512"/>
+			<data flags_optional="16" flags="1" broadcast_time_slot_start="19" broadcast_time_slot_end="23" production_licence_flags="36" production_broadcast_limit="2" production_broadcast_flags="512" target_groups="20" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="204" subgenres="0" />
 			<production_time slope="40" max="240" min="120" />
 			<blocks slope="40" max="4" min="2" />
@@ -593,13 +604,17 @@
 			<outcome slope="30" max="50" min="20" />
 			<review slope="35" max="50" min="20" />
 			<speed slope="40" max="50" min="20" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="4" />
+			</programme_data_modifiers>
 		</scripttemplate>
 
 		<!--xrated ergänzt -->
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Deathaction">
 			<title>
 				<de>Die Todes%zu%</de>
-				<en>The death-%zu%</en>
+				<en>The Death-%zu%</en>
 				<pl>Śmierć %zu%</pl>
 			</title>
 			<description>
@@ -610,7 +625,7 @@
 			<variables>
 				<zu>
 					<de>maschine|pforte|helfer|unterstützer|assistenten</de>
-					<en>machine|portal|helper|supporter|assistants</en>
+					<en>Machine|Portal|Helpers|Supporters|Assistants</en>
 					<pl>machiny|na planecie|i walka o życie|czai się wszędzie|wroga</pl>
 				</zu>
 			</variables>
@@ -623,7 +638,8 @@
 				<job function="32" index="5" gender="2" required="1" />
 				<job function="32" index="6" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="106" flags="" />
+			<data flags_optional="106" flags="" target_groups="18" />
+			<targetgroupattractivity children="1.5" housewives="1.5" employees="1.25" />
 			<genres maingenre="2" subgenres="16" />
 			<blocks slope="40" max="3" min="2" />
 			<price slope="25" max="66500" min="15000" />
@@ -638,7 +654,7 @@
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Wege">
 			<title>
 				<de>Der Weg %Name%</de>
-				<en>The way %Name%</en>
+				<en>The Road %Name%</en>
 				<pl>Droga do %Name%</pl>
 			</title>
 			<description>
@@ -649,7 +665,7 @@
 			<variables>
 				<name>
 					<de>in die Hölle|in die Verdammung|zum Dämonenreich|zum Teufel|zu ewigen Qualen|in den Untergrund|der Gottlosen</de>
-					<en>to hell|to damnation|to the realm of demons|to the devil|to eternal suffering|to under ground|of the godless</en>
+					<en>to Hell|to Damnation|to the Realm of Demons|to the Devil|to Eternal Suffering|to Under Ground|of the Godless</en>
 					<pl>piekła|zatracenia|krainy demonów|diabła|wiecznego cierpienia|podziemi|przerażającej krainy</pl>
 				</name>
 			</variables>
@@ -662,7 +678,8 @@
 				<job function="32" index="5" gender="2" required="1" />
 				<job function="32" index="6" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="2" />
+			<data flags_optional="8" target_groups="18" />
+			<targetgroupattractivity employees="1.5" />
 			<genres maingenre="12" subgenres="2" />
 			<blocks slope="40" max="4" min="2" />
 			<price slope="25" max="66500" min="15000" />
@@ -701,7 +718,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Abenteuerfreunde-Ep2">
 					<title>
 						<de>Freundschaft über alles</de>
-						<en>Friendship above everything</en>
+						<en>Friendship Above Everything</en>
 						<pl>Przyjaźń ponad wszystko</pl>
 					</title>
 					<description>
@@ -713,7 +730,7 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Abenteuerfreunde-Ep3">
 					<title>
 						<de>Der verlorene Zwerg</de>
-						<en>The lost gnome</en>
+						<en>The Lost Gnome</en>
 						<pl>Zaginiony krasnal</pl>
 					</title>
 					<description>
@@ -726,7 +743,7 @@
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Abenteuerfreunde-Ep4">
 					<title>
 						<de>Das Nagergesicht</de>
-						<en>The rodent face</en>
+						<en>The Rodent Face</en>
 						<pl>Oblicze gryzonia</pl>
 					</title>
 					<description>
@@ -739,7 +756,7 @@
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Abenteuerfreunde-Ep5">
 					<title>
 						<de>Den Hilflosen helfen</de>
-						<en>Help the helpless</en>
+						<en>Helping the Helpless</en>
 						<pl>Pomóż bezbronnym</pl>
 					</title>
 					<description>
@@ -751,7 +768,7 @@
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Abenteuerfreunde-Ep6">
 					<title>
 						<de>Der Neue</de>
-						<en>The new one</en>
+						<en>The New One</en>
 						<pl>Ten nowy</pl>
 					</title>
 					<description>
@@ -763,7 +780,7 @@
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Abenteuerfreunde-Ep7">
 					<title>
 						<de>Die gelockte Nonne</de>
-						<en>The curly nun</en>
+						<en>The Curly Nun</en>
 						<pl>Zakręcona zakonnica</pl>
 					</title>
 					<description>
@@ -776,7 +793,7 @@
 				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Abenteuerfreunde-Ep8">
 					<title>
 						<de>Die Mitternachtsparty</de>
-						<en>The midnight party</en>
+						<en>The Midnight Party</en>
 						<pl>Impreza o północy</pl>
 					</title>
 					<description>
@@ -788,7 +805,7 @@
 				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Abenteuerfreunde-Ep9">
 					<title>
 						<de>Die Ermittlungen</de>
-						<en>The investigation</en>
+						<en>The Investigation</en>
 						<pl>Dochodzenie</pl>
 					</title>
 					<description>
@@ -800,7 +817,7 @@
 				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Abenteuerfreunde-Ep10">
 					<title>
 						<de>Die Mitternachtsparty 2</de>
-						<en>The midnight party 2</en>
+						<en>The Midnight Party 2</en>
 						<pl>Impreza o północy 2</pl>
 					</title>
 					<description>
@@ -813,7 +830,7 @@
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Abenteuerfreunde-Ep11">
 					<title>
 						<de>Die vergessenen Geheimnisse</de>
-						<en>Forgotten events</en>
+						<en>Forgotten Secrets</en>
 						<pl>Zapomniane wydarzenia</pl>
 					</title>
 					<description>
@@ -826,7 +843,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-Abenteuerfreunde-Ep12">
 					<title>
 						<de>Die neuen Abenteuerer</de>
-						<en>The new adventurers</en>
+						<en>The New Adventurers</en>
 						<pl>Nowi poszukiwacze przygód</pl>
 					</title>
 					<description>
@@ -839,7 +856,7 @@
 			<variables>
 				<name>
 					<de>freunde|clique|bande|sucher|finder|kumpels</de>
-					<en>friends|clique|gang|seekers|finders|buddies</en>
+					<en>Friends|Clique|Gang|Seekers|Finders|Buddies</en>
 					<pl>przyjaciół|kliki|gangu|poszukiwaczy|znajomych|zawsze nas znajdzie</pl>
 				</name>
 			</variables>
@@ -850,8 +867,9 @@
 				<job function="2" index="3" gender="1" required="1" />
 				<job function="2" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="" flags_optional="2" />
-			<genres maingenre="1" subgenres="14" />
+			<data flags="" flags_optional="2" target_groups="7" /> <!-- TODO: probably set to animation erroneously; maybe could be a live action film with some animations but then it should be in the description or be a subgenre -->
+			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" pensioners="2" />
+			<genres maingenre="1" subgenres="9,14" />
 			<blocks value="1" />
 			<price max="90000" min="50000" />
 			<potential slope="45" max="92" min="42" />
@@ -864,7 +882,7 @@
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Nerdszusammen">
 			<title>
 				<de>Das Nerd%Name%</de>
-				<en>The nerd %Name%</en>
+				<en>The Nerd %Name%</en>
 				<pl>Nerd %Name%</pl>
 			</title>
 			<description>
@@ -888,7 +906,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Nerdszusammen-Ep2">
 					<title>
 						<de>Wir lernen Karate</de>
-						<en>We learn karate</en>
+						<en>We Learn Karate</en>
 						<pl>Uczymy się karate</pl>
 					</title>
 					<description>
@@ -901,7 +919,7 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Nerdszusammen-Ep3">
 					<title>
 						<de>Wir lernen Kung Fu</de>
-						<en>We learn Kung fu</en>
+						<en>We Learn Kung Fu</en>
 						<pl>Uczymy się Kung fu</pl>
 					</title>
 					<description>
@@ -914,7 +932,7 @@
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Nerdszusammen-Ep4">
 					<title>
 						<de>Wir lernen Hacken</de>
-						<en>We learn hacking</en>
+						<en>We Learn Hacking</en>
 						<pl>Uczymy się hakowania</pl>
 					</title>
 					<description>
@@ -927,7 +945,7 @@
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Nerdszusammen-Ep5">
 					<title>
 						<de>Wir lernen tanzen</de>
-						<en>We learn to dance</en>
+						<en>We Learn to Dance</en>
 						<pl>Uczymy się tańczyć</pl>
 					</title>
 					<description>
@@ -940,7 +958,7 @@
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Nerdszusammen-Ep6">
 					<title>
 						<de>Wir lernen Auto fahren</de>
-						<en>We learn how to drive</en>
+						<en>We Learn how to Drive</en>
 						<pl>Uczymy się jeździć</pl>
 					</title>
 					<description>
@@ -952,7 +970,7 @@
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Nerdszusammen-Ep7">
 					<title>
 						<de>Wir lernen Chemie</de>
-						<en>We learn chemistry</en>
+						<en>We Learn Chemistry</en>
 						<pl>Uczymy się chemii</pl>
 					</title>
 					<description>
@@ -965,7 +983,7 @@
 				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Nerdszusammen-Ep8">
 					<title>
 						<de>Wir lernen Dinosaurier</de>
-						<en>We learn dinosaurs</en>
+						<en>We Learn Dinosaurs</en>
 						<pl>Uczymy się dinozaurów</pl>
 					</title>
 					<description>
@@ -978,7 +996,7 @@
 				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Nerdszusammen-Ep9">
 					<title>
 						<de>Wir lernen Astrophysik</de>
-						<en>We learn astrophysics</en>
+						<en>We Learn Astrophysics</en>
 						<pl>Uczymy się astrofizyki</pl>
 					</title>
 					<description>
@@ -990,7 +1008,7 @@
 				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Nerdszusammen-Ep10">
 					<title>
 						<de>Wir lernen die Stringtheorie</de>
-						<en>We learn string theory</en>
+						<en>We Learn String Theory</en>
 						<pl>Poznajemy teorię strun</pl>
 					</title>
 					<description>
@@ -1002,7 +1020,7 @@
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Nerdszusammen-Ep11">
 					<title>
 						<de>Wir lernen außerirdische Technologie</de>
-						<en>We learn extraterrestrial technology</en>
+						<en>We Learn Extraterrestrial Technology</en>
 						<pl>Poznajemy pozaziemską technologię</pl>
 					</title>
 					<description>
@@ -1015,7 +1033,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-Nerdszusammen-Ep12">
 					<title>
 						<de>Wir lernen Vergessen</de>
-						<en>We learn how to forget</en>
+						<en>We Learn How to Forget</en>
 						<pl>Uczymy się zapominać</pl>
 					</title>
 					<description>
@@ -1028,7 +1046,7 @@
 			<variables>
 				<name>
 					<de>team|kommando|kollektiv|bündel|geschwader</de>
-					<en>team|commando|collective|force|squadron</en>
+					<en>Team|Commando|Collective|Force|Squadron</en>
 					<pl>team|commando|collective|force|squadron</pl>
 				</name>
 			</variables>
@@ -1039,8 +1057,9 @@
 				<job function="2" index="3" gender="1" required="1" />
 				<job function="2" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="" flags_optional="8" />
-			<genres maingenre="2" subgenres="4" />
+			<data flags="" flags_optional="8" target_groups="19" />
+			<targetgroupattractivity children="2" teenagers="2" housewives="1.5" employees="1.25" managers="1.5" />
+			<genres maingenre="2" subgenres="17,4" />
 			<blocks value="1" />
 			<price max="90000" min="50000" />
 			<potential slope="45" max="81" min="56" />
@@ -1054,7 +1073,7 @@
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Kinderfliegen">
 			<title>
 				<de>Die %Was% über %Wo%</de>
-				<en>The %Was% above %Wo%</en>
+				<en>The %Was% Above %Wo%</en>
 				<pl>%Was% nad %Wo%</pl>
 			</title>
 			<description>
@@ -1078,7 +1097,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Kinderfliegen-Ep2">
 					<title>
 						<de>Der Himmel über %wo%</de>
-						<en>The sky above %wo%</en>
+						<en>The Sky Above %wo%</en>
 						<pl>Niebo nad %wo%</pl>
 					</title>
 					<description>
@@ -1090,7 +1109,7 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Kinderfliegen-Ep3">
 					<title>
 						<de>Auftrieb</de>
-						<en>Ascending force</en>
+						<en>Ascending Force</en>
 						<pl>Siła wznosząca</pl>
 					</title>
 					<description>
@@ -1103,7 +1122,7 @@
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Kinderfliegen-Ep4">
 					<title>
 						<de>Neue Flügel</de>
-						<en>New wings</en>
+						<en>New Wings</en>
 						<pl>Nowe skrzydła</pl>
 					</title>
 					<description>
@@ -1115,7 +1134,7 @@
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Kinderfliegen-Ep5">
 					<title>
 						<de>Kalter Wind</de>
-						<en>Cold wind</en>
+						<en>Cold Wind</en>
 						<pl>Chłodny wiatr</pl>
 					</title>
 					<description>
@@ -1128,7 +1147,7 @@
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Kinderfliegen-Ep6">
 					<title>
 						<de>Flugschule</de>
-						<en>Flight shool</en>
+						<en>Flight Shool</en>
 						<pl>Szkoła latania</pl>
 					</title>
 					<description>
@@ -1140,7 +1159,7 @@
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Kinderfliegen-Ep7">
 					<title>
 						<de>Flugstunden</de>
-						<en>Flying lessons</en>
+						<en>Flying Lessons</en>
 						<pl>Lekcje latania</pl>
 					</title>
 					<description>
@@ -1153,7 +1172,7 @@
 				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Kinderfliegen-Ep8">
 					<title>
 						<de>Traumgebilde</de>
-						<en>Dream images</en>
+						<en>Dream Images</en>
 						<pl>Wymarzone obrazy</pl>
 					</title>
 					<description>
@@ -1166,7 +1185,7 @@
 				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Kinderfliegen-Ep9">
 					<title>
 						<de>Der Propeller</de>
-						<en>The propeller</en>
+						<en>The Propeller</en>
 						<pl>Śmigło</pl>
 					</title>
 					<description>
@@ -1178,7 +1197,7 @@
 				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Kinderfliegen-Ep10">
 					<title>
 						<de>Der Elektromotor</de>
-						<en>The electric motor</en>
+						<en>The Electric Motor</en>
 						<pl>Silnik elektryczny</pl>
 					</title>
 					<description>
@@ -1191,7 +1210,7 @@
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Kinderfliegen-Ep11">
 					<title>
 						<de>Der Flug über %wo%</de>
-						<en>Flight over %wo%</en>
+						<en>Flight Over %wo%</en>
 						<pl>Lot nad %wo%</pl>
 					</title>
 					<description>
@@ -1203,7 +1222,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-Kinderfliegen-Ep12">
 					<title>
 						<de>20 Jahre später: Die Kinder der Kinder</de>
-						<en>20 years later: the childrens' children</en>
+						<en>20 Years Later: The Childrens' Children</en>
 						<pl>20 lat później: dzieci dzieci</pl>
 					</title>
 					<description>
@@ -1216,7 +1235,7 @@
 			<variables>
 				<was>
 					<de>Wolken|Sterne|Sonne|Flugzeuge|Vögel</de>
-					<en>clouds|stars|sun|airplanes|birds</en>
+					<en>Clouds|Stars|Sun|Airplanes|Birds</en>
 					<pl>Chmury|Gwiazdy|Słońce|Samoloty|Ptaki</pl>
 				</was>
 				<wo>
@@ -1235,8 +1254,9 @@
 				<job function="2" index="3" gender="1" required="1" />
 				<job function="2" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="" flags_optional="2" />
-			<genres maingenre="3" subgenres="1,9" />
+			<data flags="" flags_optional="2" target_groups="7" />
+			<targetgroupattractivity women="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
+			<genres maingenre="3" subgenres="9,1" />
 			<blocks value="1" />
 			<price max="90000" min="50000" />
 			<potential slope="45" max="90" min="56" />
@@ -1247,7 +1267,7 @@
 		</scripttemplate>
 
 		<!--kein optionaler Kult; Besetzung passt ggf. nicht zu Name (Comedyduo mit 5 Darstellern)?-->
-		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Comedygemeinschaft">
+		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Comedygemeinschaft" comment="TODO: Mostly references to German culture, English version needs entirely different episodes">
 			<title>
 				<de>Das Comedy%name%</de>
 				<en>The Comedy %name%</en>
@@ -1262,7 +1282,7 @@
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-Comedygemeinschaft-Ep1">
 					<title>
 						<de>Von drei Hühnern und einem Storch</de>
-						<en>Of three hens and a stork</en>
+						<en>Of Three Hens and a Stork</en>
 						<pl>Trzy kury i bocian</pl>
 					</title>
 					<description>
@@ -1274,7 +1294,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Comedygemeinschaft-Ep2">
 					<title>
 						<de>Blondinen sind klüger als Du</de>
-						<en>Blondes are smarter than you</en>
+						<en>Blondes Are Smarter Than You</en>
 						<pl>Blondynki są mądrzejsze od ciebie</pl>
 					</title>
 					<description>
@@ -1286,19 +1306,19 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Comedygemeinschaft-Ep3">
 					<title>
 						<de>Deine Mama ist gar nicht dick</de>
-						<en>Your mom is not fat at all</en>
+						<en>Ur Mom Is Not Fat at All</en>
 						<pl>Twoja mama wcale nie jest gruba</pl>
 					</title>
 					<description>
 						<de>„Deine Mutter“-Sprüche sind beliebt. Doch warum deine Mama cleverer als alle anderen und egal mit welchem Gewicht nicht dick ist, wird in der Show erläutert.</de>
-						<en>"Your mom" taglines are popular. But why your mom is smarter than everyone else and is not fat, no matter what weight, is explained in the show.</en>
+						<en>"Ur mom" taglines are popular. But why your mom is smarter than everyone else and is not fat, no matter what weight, is explained in the show.</en>
 						<pl>Hasła typu "Twoja mama" są popularne. Ale dlaczego twoja mama jest mądrzejsza niż wszyscy inni i nie jest gruba, bez względu na wagę, wyjaśniono w programie.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Comedygemeinschaft-Ep4">
+				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Comedygemeinschaft-Ep4" comment="TODO: Nuck Chorris also used as spoof">
 					<title>
 						<de>Buck Torris kann ich niederschlagen</de>
-						<en>Buck Torris, I can knock him down</en>
+						<en>Buck Torris, I Can Knock Him Down</en>
 						<pl>Buck Torris, mogę go powalić</pl>
 					</title>
 					<description>
@@ -1310,7 +1330,7 @@
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Comedygemeinschaft-Ep5">
 					<title>
 						<de>Über fleißige Studenten</de>
-						<en>About hard working students</en>
+						<en>About Hard Working Students</en>
 						<pl>O ciężko pracujących studentach</pl>
 					</title>
 					<description>
@@ -1322,7 +1342,7 @@
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Comedygemeinschaft-Ep6">
 					<title>
 						<de>Hänschen wurde erwachsen</de>
-						<en>Little Hans grew up</en>
+						<en>Little Hans Grew Up</en>
 						<pl>Mały Hans dorastał</pl>
 					</title>
 					<description>
@@ -1334,7 +1354,7 @@
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Comedygemeinschaft-Ep7">
 					<title>
 						<de>Frauen sind genauso gut wie Männer</de>
-						<en>Women are just as good as men</en>
+						<en>Women Are Just As Good As Men</en>
 						<pl>Kobiety są tak samo dobre jak mężczyźni</pl>
 					</title>
 					<description>
@@ -1346,7 +1366,7 @@
 				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Comedygemeinschaft-Ep8">
 					<title>
 						<de>Männer können nicht einparken</de>
-						<en>Men can not park</en>
+						<en>Men Can Not Park</en>
 						<pl>Mężczyźni nie mogą parkować</pl>
 					</title>
 					<description>
@@ -1358,7 +1378,7 @@
 				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Comedygemeinschaft-Ep9">
 					<title>
 						<de>Von der potenten Oma</de>
-						<en>Of the powerful granny</en>
+						<en>Of Powerful Grannies</en>
 						<pl>O potężnej babci</pl>
 					</title>
 					<description>
@@ -1370,7 +1390,7 @@
 				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Comedygemeinschaft-Ep10">
 					<title>
 						<de>Warum ich meine Fenster nicht putze</de>
-						<en>Why I do not clean my windows</en>
+						<en>Why I Do Not Clean My Windows</en>
 						<pl>Dlaczego nie myję okien</pl>
 					</title>
 					<description>
@@ -1382,7 +1402,7 @@
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Comedygemeinschaft-Ep11">
 					<title>
 						<de>Aufräumen für Anfänger</de>
-						<en>Tidying up for beginners</en>
+						<en>Tidying Up For Beginners</en>
 						<pl>Porządkowanie dla początkujących</pl>
 					</title>
 					<description>
@@ -1394,7 +1414,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-Comedygemeinschaft-Ep12">
 					<title>
 						<de>Singendes Finale</de>
-						<en>Singing finale</en>
+						<en>Singing Finale</en>
 						<pl>Śpiewający finał</pl>
 					</title>
 					<description>
@@ -1414,13 +1434,16 @@
 			<jobs>
 				<job function="1" index="0" required="1" />
 				<job function="2" index="1" gender="1" required="1" />
-				<job function="32" index="2" gender="1" required="1" />
-				<job function="32" index="3" gender="2" required="1" />
-				<job function="32" index="4" gender="1" required="1" />
-				<job function="32" index="5" gender="2" required="1" />
+				<job function="2" index="2" gender="1" required="1" />
+				<job function="2" index="3" gender="2" required="1" />
+				<job function="2" index="4" gender="1" required="1" />
+				<job function="2" index="5" gender="2" required="1" />
+				<job function="2" index="6" gender="1" required="1" />
+				<job function="32" index="7" gender="1" required="1" />
+				<job function="32" index="8" gender="2" required="1" />
 			</jobs>
-			<data flags="" />
-			<genres maingenre="5" subgenres="6" />
+			<data flags="" target_groups="19" />
+			<genres maingenre="100" subgenres="5" />
 			<episodes max="8" min="5"/>
 			<blocks value="2" />
 			<price max="220000" min="150000" />
@@ -1431,8 +1454,8 @@
 			<studio_size min="1" max="2" slope="60" />
 		</scripttemplate>
 
-		<!--Episoden gekürzt (TODO: evtl wieder aktivieren), kein optionaler Kult-->
-		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Metalsucher">
+		<!-- kein optionaler Kult -->
+		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Metalsucher" comment="TODO: Problems with title casings vs text casings in English version">
 			<title>
 				<de>%name1%%name2% in Alaska</de>
 				<en>%name1% %name2% in Alaska</en>
@@ -1459,7 +1482,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Metalsucher-Ep2">
 					<title>
 						<de>Der richtige Ort</de>
-						<en>The right place</en>
+						<en>The Right Place</en>
 						<pl>Właściwe miejsce</pl>
 					</title>
 					<description>
@@ -1471,7 +1494,7 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Metalsucher-Ep3">
 					<title>
 						<de>Machinen werden aufgestellt</de>
-						<en>Machines are set up</en>
+						<en>Machines Are Set Up</en>
 						<pl>Maszyny są skonfigurowane</pl>
 					</title>
 					<description>
@@ -1483,7 +1506,7 @@
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Metalsucher-Ep4">
 					<title>
 						<de>Das Graben beginnt</de>
-						<en>The digging begins</en>
+						<en>The Digging Begins</en>
 						<pl>Rozpoczyna się kopanie</pl>
 					</title>
 					<description>
@@ -1495,7 +1518,7 @@
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Metalsucher-Ep5">
 					<title>
 						<de>Wir sind reich</de>
-						<en>We are rich</en>
+						<en>We Are Rich</en>
 						<pl>Jesteśmy bogaci</pl>
 					</title>
 					<description>
@@ -1507,7 +1530,7 @@
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Metalsucher-Ep6">
 					<title>
 						<de>Noch mehr Maschinen</de>
-						<en>Even more machines</en>
+						<en>Even More Machines</en>
 						<pl>Jeszcze więcej maszyn</pl>
 					</title>
 					<description>
@@ -1519,7 +1542,7 @@
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Metalsucher-Ep7">
 					<title>
 						<de>Wir sind noch reicher</de>
-						<en>We have become even richer</en>
+						<en>We Have Become Even Richer</en>
 						<pl>Staliśmy się jeszcze bogatsi</pl>
 					</title>
 					<description>
@@ -1528,18 +1551,22 @@
 						<pl>Znajduje się coraz więcej %name1%. Kopacze %name1% bunkrują swoje znaleziska i stają się coraz bogatsi.</pl>
 					</description>
 				</scripttemplate>
-				<!--scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Metalsucher-Ep8">
+				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Metalsucher-Ep8">
 					<title>
-						<de>Der pefekte Fund</de>
+						<de>Der perfekte Fund</de>
+						<en>The Nicest Find</en>
+						<pl>Idealne znalezisko</pl>
 					</title>
 					<description>
-						<de>Ein großer Klumpen %name1% wird gefunden und alle freuen sich über den Fund.</de>
+						<de>Ein noch großer Klumpen %name1% wird gefunden und alle freuen sich über den Fund.</de>
+						<en>An even larger nugget of %name1% is found and everyone is happy about the find.</en>
+						<pl>Znaleziono jeszcze większy samorodek %name1% i wszyscy są zadowoleni ze znaleziska.</pl>
 					</description>
-				</scripttemplate-->
-				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Metalsucher-Ep9">
+				</scripttemplate>
+				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Metalsucher-Ep9">
 					<title>
 						<de>Noch mehr Reichtum</de>
-						<en>Even more wealth</en>
+						<en>Even More Wealth</en>
 						<pl>Jeszcze więcej bogactwa</pl>
 					</title>
 					<description>
@@ -1548,39 +1575,39 @@
 						<pl>Kopacze %name1% zebrali już tyle %name1%, że oni i ich rodziny nie muszą już nigdy pracować. Czekają tylko na idealny moment, aby sprzedać, ponieważ cena %name1% rośnie i rośnie.</pl>
 					</description>
 				</scripttemplate>
-				<!--scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Metalsucher-Ep10">
+				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Metalsucher-Ep10">
 					<title>
 						<de>Wissenschaftler kann %name1% hestellen</de>
+						<en>Scientist Can Manufacture %name1%</en>
+						<pl>Naukowcy mogą wytwarzać pierwiastek %name1%</pl>
 					</title>
 					<description>
-						<de>Ein Wissenschaftler schaffte es %name1% herzustellen und überschwemmt den Markt. Unsere %name1%gräber bekommen dies leider nicht mit.</de>
+						<de>Ein Wissenschaftler schaffte es, %name1% herzustellen und überschwemmt den Markt. Unsere %name1%gräber bekommen dies leider nicht mit.</de>
+						<en>A scientist has managed to produce %name1% and is flooding the market. Unfortunately, our %name1% diggers are unaware of this.</en>
+						<pl>Pewnemu naukowcowi udało się wyprodukować pierwiastek %name1%, który zalewa rynek. Niestety, nasi poszukiwacze %name1% nie są tego świadomi.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Metalsucher-Ep11">
 					<title>
 						<de>Rezession</de>
+						<en>Recession</en>
+						<pl>Recesja</pl>
 					</title>
 					<description>
-						<de>Der %name1%preis fällt ins bodenlose und als unsere %name1%gräber dies mitbekommen versuchen sie alles %name1% mit einem mal zu verkaufen, doch der Umsatz ist sehr gering.</de>
+						<de>Der %name1%preis fällt ins Bodenlose, und als unsere %name1%gräber dies mitbekommen, versuchen sie alles %name1% auf einmal zu verkaufen, doch der Umsatz ist sehr gering. %name1% ist nichts mehr wert, und unsere %name1%gräber sind vollkommen pleite.</de>
+						<en>The %name1% price plummets, and when our %name1% diggers realize this, they try to sell all %name1% at once, but sales are very low. %name1% is no longer worth anything, and our %name1% diggers are completely broke.</en>
+						<pl>Cena %name1% gwałtownie spada, a gdy nasi poszukiwacze %name1% zdają sobie z tego sprawę, próbują sprzedać wszystko na raz, ale sprzedaż jest bardzo niska. Rzeczy nie są już nic warte, a nasi poszukiwacze %name1% są kompletnie spłukani.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-Metalsucher-Ep12">
 					<title>
 						<de>Wir sind pleite</de>
-					</title>
-					<description>
-						<de>%name1% ist nichts mehr Wert und unsere %name1%gräber vollkommen pleite. Das Lager wird abgebrochen, doch die Träume leben weiter.</de>
-					</description>
-				</scripttemplate-->
-				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Metalsucher-Ep12">
-					<title>
-						<de>Wir sind pleite</de>
-						<en>We are broke</en>
+						<en>We Are Broke</en>
 						<pl>Jesteśmy spłukani</pl>
 					</title>
 					<description>
-						<de>Der Markt für %name1% bricht aufgrund einer Rezession zusammen. Der Versuch die riesigen %name1%vorräte auf einmal zu verkaufen, drückt den Preis noch zusätzlich. Das Lager wird abgebrochen, doch die Träume leben weiter.</de>
-						<en>The market for %name1% is collapsing due to a recession. The attempt to sell the huge stock of %name1% at once further depresses the price. The camp is torn down, but the dreams live on.</en>
+						<de>Der Markt für %name1% brach aufgrund der Rezession zusammen. Der Versuch, die riesigen %name1%vorräte auf einmal zu verkaufen, drückte den Preis noch zusätzlich. Das Lager wird abgebrochen, doch die Träume leben weiter.</de>
+						<en>The market for %name1% collapsed due to the recession. The attempt to sell the huge stock of %name1% at once further depressed the price. The camp is torn down, but the dreams live on.</en>
 						<pl>Rynek %name1% załamuje się z powodu recesji. Próba sprzedaży ogromnego zapasu %name1% na raz jeszcze bardziej obniża cenę. Obóz zostaje zburzony, ale marzenia pozostają żywe.</pl>
 					</description>
 				</scripttemplate>
@@ -1604,8 +1631,9 @@
 				<job function="32" index="3" gender="2" required="1" />
 				<job function="32" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags=""  />
-			<genres maingenre="6" subgenres="300" />
+			<data flags="" target_groups="96" />
+			<targetgroupattractivity women="0.5" />
+			<genres maingenre="6" subgenres="300,1" />
 			<blocks value="1" />
 			<price max="60000" min="20000" />
 			<potential slope="45" max="90" min="56" />
@@ -1616,10 +1644,10 @@
 		</scripttemplate>
 
 		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, Produktionszeit kein optionaler Kult, TODO Host passt nicht wirklich zum Namen-->
-		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Imschlafreich">
+		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Imschlafreich" comment="TODO: preselected cast">
 			<title>
 				<de>%Name1% %Name2%s Schlaf dich reich</de>
-				<en>%Name1% %Name2%'s Get rich sleeping</en>
+				<en>%Name1% %Name2%'s Get Rich Sleeping</en>
 				<pl>%Name1% %Name2%. Jak stać się bogatym śpiąc?</pl>
 			</title>
 			<description>
@@ -1647,7 +1675,7 @@
 				<job function="64" index="4" gender="1" required="1" />
 				<job function="64" index="5" gender="2" required="1" />
 			</jobs>
-			<data flags="17" production_limit="5" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36"/>
+			<data flags="17" production_limit="5" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" />
 			<genres maingenre="104" subgenres="0" />
 			<production_time slope="70" max="120" min="60" />
 			<blocks slope="40" max="2" min="1" />
@@ -1658,11 +1686,10 @@
 			<speed slope="40" max="50" min="30" />
 		</scripttemplate>
 
-		<!--TODO reaktivieren/weglassen? (Warum?)-->
-		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Ratespass">
+		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Ratespass" comment="TODO: preselected cast">
 			<title>
 				<de>Ratespass mit %Name1% %Name2%</de>
-				<en>Quiz fun with %Name1% %Name2%</en>
+				<en>Quiz Fun With %Name1% %Name2%</en>
 				<pl>%Name1% %Name2% - Zabawy quizowe</pl>
 			</title>
 			<description>
@@ -1684,21 +1711,25 @@
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
-				<job function="2" index="1" gender="2" required="1" />
+				<job function="8" index="1" gender="2" required="1" />
 				<job function="32" index="2" gender="1" required="1" />
 				<job function="32" index="3" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="24" flags="16" />
-			<genres maingenre="100" subgenres="0" />
+			<data flags_optional="8" flags="17" production_broadcast_flags="512" target_groups="20" />
+			<genres maingenre="104" subgenres="102" />
 			<blocks slope="40" max="2" min="1" />
 			<price slope="25" max="29500" min="25000" />
 			<potential slope="30" max="50" min="30" />
 			<outcome slope="30" max="50" min="20" />
 			<review slope="35" max="50" min="20" />
 			<speed slope="40" max="50" min="30" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="5" />
+			</programme_data_modifiers>
 		</scripttemplate>
 
-		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Webcamfreude">
+		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Webcamfreude" comment="TODO: preselected cast">
 			<title>
 				<de>%Name1% %Name2%s „Versteckte Webcam“</de>
 				<en>%Name1% %Name2%'s "Hidden Webcam"</en>
@@ -1727,8 +1758,9 @@
 				<job function="32" index="2" gender="1" required="1" />
 				<job function="32" index="3" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="24" flags="16" />
-			<genres maingenre="100" subgenres="0" />
+			<data flags_optional="8" flags="16" target_groups="6" />
+			<targetgroupattractivity children="1.5" />
+			<genres maingenre="100" subgenres="301" />
 			<blocks slope="40" max="2" min="1" />
 			<price slope="25" max="29500" min="25000" />
 			<potential slope="30" max="70" min="30" />
@@ -1739,7 +1771,7 @@
 		</scripttemplate> <!-- -->
 
 		<!--kein optionaler Kult-->
-		<scripttemplate licence_type="3" product="2" guid="Kasi-script-MagischeWesen">
+		<scripttemplate licence_type="3" product="2" guid="Kasi-script-MagischeWesen" comment="TODO: English title vs text casings">
 			<title>
 				<de>Die %name1% im %name2%</de>
 				<en>The %name1% of %name2%</en>
@@ -1754,7 +1786,7 @@
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-MagischeWesen-Ep1">
 					<title>
 						<de>%name1% überall</de>
-						<en>%name1% everywhere</en>
+						<en>%name1% Everywhere</en>
 						<pl>Wszędzie o %name1%</pl>
 					</title>
 					<description>
@@ -1893,7 +1925,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-MagischeWesen-Ep12">
 					<title>
 						<de>Weltübernahme der %name1%</de>
-						<en>The %name1% take over the world</en>
+						<en>The %name1% Take Over the World</en>
 						<pl>Stwory przejmują świat</pl>
 					</title>
 					<description>
@@ -1922,8 +1954,9 @@
 				<job function="32" index="3" gender="1" required="1" />
 				<job function="32" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="2" />
-			<genres maingenre="10" subgenres="7" />
+			<data flags="2" target_groups="7" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
+			<genres maingenre="10" subgenres="7,3" />
 			<blocks value="1" />
 			<price max="110000" min="70000" />
 			<potential slope="45" max="90" min="56" />
@@ -1937,7 +1970,7 @@
 		<scripttemplate licence_type="3" product="3" guid="Kasi-script-UnterhaltungNachts">
 			<title>
 				<de>Die Nacht%name%</de>
-				<en>The night %name%</en>
+				<en>The Night %name%</en>
 				<pl>%name%</pl>
 			</title>
 			<description>
@@ -1949,7 +1982,7 @@
 				<scripttemplate licence_type="2" product="3" index="0" guid="Kasi-script-UnterhaltungNachts-Ep1">
 					<title>
 						<de>Willkommen bei uns</de>
-						<en>Welcome here</en>
+						<en>Welcome Here</en>
 						<pl>Witamy tutaj</pl>
 					</title>
 					<description>
@@ -1961,19 +1994,19 @@
 				<scripttemplate licence_type="2" product="3" index="1" guid="Kasi-script-UnterhaltungNachts-Ep2">
 					<title>
 						<de>Heute ist eine besondere Nacht</de>
-						<en>Today is a special night</en>
+						<en>Today Is a Special Night</en>
 						<pl>Dziś jest wyjątkowa noc</pl>
 					</title>
 					<description>
 						<de>Die Einschaltquoten des letzten Tages waren grandios. „Die Nacht%name%“ würdigt dies mit besondere Szenen.</de>
-						<en>The viewing rates of the last day were terrific. "The night %name%" honors this with special scenes.</en>
+						<en>The viewing rates of the last day were terrific. "The Night %name%" honors this with special scenes.</en>
 						<pl>"%name%". Pogadamy jak nie przespać nocy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="3" index="2" guid="Kasi-script-UnterhaltungNachts-Ep3">
 					<title>
 						<de>Noch eine Nacht</de>
-						<en>Another night</en>
+						<en>Another Night</en>
 						<pl>Następna noc</pl>
 					</title>
 					<description>
@@ -1986,7 +2019,7 @@
 				<scripttemplate licence_type="2" product="3" index="3" guid="Kasi-script-UnterhaltungNachts-Ep4">
 					<title>
 						<de>Schlafen für Anfänger</de>
-						<en>Sleeping for beginners</en>
+						<en>Sleeping for Beginners</en>
 						<pl>Spanie dla początkujących</pl>
 					</title>
 					<description>
@@ -1998,7 +2031,7 @@
 				<scripttemplate licence_type="2" product="3" index="4" guid="Kasi-script-UnterhaltungNachts-Ep5">
 					<title>
 						<de>Schlaflos im Sender</de>
-						<en>Sleepless in the TV station</en>
+						<en>Sleepless in the TV Station</en>
 						<pl>Bezsenność w stacji telewizyjnej</pl>
 					</title>
 					<description>
@@ -2011,7 +2044,7 @@
 				<scripttemplate licence_type="2" product="3" index="5" guid="Kasi-script-UnterhaltungNachts-Ep6">
 					<title>
 						<de>144 Stunden wach</de>
-						<en>144 hours awake</en>
+						<en>144 Hours Awake</en>
 						<pl>144 godziny bez snu</pl>
 					</title>
 					<description>
@@ -2037,7 +2070,7 @@
 				<scripttemplate licence_type="2" product="3" index="7" guid="Kasi-script-UnterhaltungNachts-Ep8">
 					<title>
 						<de>Müde, Müde, Müde</de>
-						<en>Tired, tired, tired</en>
+						<en>Tired, Tired, Tired</en>
 						<pl>Zmęczony, zmęczony, zmęczony</pl>
 					</title>
 					<description>
@@ -2050,7 +2083,7 @@
 				<scripttemplate licence_type="2" product="3" index="8" guid="Kasi-script-UnterhaltungNachts-Ep9">
 					<title>
 						<de>Wenn wir schlafen träumen wir</de>
-						<en>When we sleep we dream</en>
+						<en>When We Sleep We Dream</en>
 						<pl>Kiedy śpimy, śnimy</pl>
 					</title>
 					<description>
@@ -2063,7 +2096,7 @@
 				<scripttemplate licence_type="2" product="3" index="9" guid="Kasi-script-UnterhaltungNachts-Ep10">
 					<title>
 						<de>Warum bin ich so müde</de>
-						<en>Why am I so tired</en>
+						<en>Why Am I So Tired</en>
 						<pl>Dlaczego jestem taki zmęczony?</pl>
 					</title>
 					<description>
@@ -2076,7 +2109,7 @@
 				<scripttemplate licence_type="2" product="3" index="10" guid="Kasi-script-UnterhaltungNachts-Ep11">
 					<title>
 						<de>Der Tempel der Träume</de>
-						<en>The temple of dreams</en>
+						<en>The Temple of Dreams</en>
 						<pl>Świątynia snów</pl>
 					</title>
 					<description>
@@ -2089,12 +2122,12 @@
 				<scripttemplate licence_type="2" product="3" index="11" guid="Kasi-script-UnterhaltungNachts-Ep12">
 					<title>
 						<de>Tod wegen Übermüdung</de>
-						<en>Death by fatigue</en>
+						<en>Death by Fatigue</en>
 						<pl>Śmierć ze zmęczenia</pl>
 					</title>
 					<description>
-						<de>Die Moderatoren sterben während der Sendung an Übermüdung. Nun haben sie den ewigen Schlaf gefunden. Die großartigen Szenen der letzten Tage gibt es exlusiv dazu.</de>
-						<en>During the show, the hosts die of fatigue. Now they have found eternal rest. In addition, highlights of last days' programme are shown.</en>
+						<de>Die Moderatoren sterben während der Sendung an Übermüdung. Nun haben sie den ewigen Schlaf gefunden. Die großartigen Szenen der letzten Tage gibt es exklusiv dazu.</de>
+						<en>During the show, the hosts die of fatigue. Now they have found eternal rest. In addition, exclusive highlights of last days' programme are shown.</en>
 						<pl>Podczas programu gospodarze umierają ze zmęczenia. Teraz znaleźli wieczny odpoczynek. Ponadto pokazywane są najważniejsze fragmenty programu z ostatnich dni.</pl>
 					</description>
 				</scripttemplate>
@@ -2102,7 +2135,7 @@
 			<variables>
 				<name>
 					<de>show|unterhaltung|gespräche| bei uns| ist jung| von heute|freunde</de>
-					<en>show|entertainment|talk|with us|is young|of today|friends</en>
+					<en>Show|Entertainment|Talk|With Us|Is Young|of Today|Friends</en>
 					<pl>Nocne show bez poduszki|Nocna rozrywka|Nocne rozmowy|Rozmowy o zmroku|Nocni przyjaciele|Bezsenność z TV|Nocne spotkania bez spania</pl>
 				</name>
 			</variables>
@@ -2113,7 +2146,7 @@
 				<job function="64" index="3" gender="1" required="1" />
 				<job function="64" index="4" gender="2" required="1" />
 			</jobs>
-			<data flags="16" production_licence_flags="36" production_broadcast_limit="1" broadcast_time_slot_start="0" broadcast_time_slot_end="8" production_broadcast_flags=""/>
+			<data flags="17" production_licence_flags="36" production_broadcast_limit="1" broadcast_time_slot_start="0" broadcast_time_slot_end="8" production_broadcast_flags="512" target_groups="20" />
 			<genres maingenre="100" subgenres="7" />
 			<blocks value="7" />
 			<price max="20000" min="10000" />
@@ -2121,13 +2154,17 @@
 			<outcome slope="40" max="32" min="25" />
 			<review slope="40" max="54" min="17" />
 			<speed slope="50" max="44" min="27" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="5" />
+			</programme_data_modifiers>
 		</scripttemplate>
 
 		<!--Kult nur optional-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-SitcomeRunde" comment="TODO: discuss translation with more native speakers: for now *not* applying 'thick friends', but that term does exist - https://www.urbandictionary.com/define.php?term=thick%20friends - it's just not very common and would have a stronger than intended association with 'fat', so the joke wouldn't come across I believe.">
 			<title>
 				<de>Die runden %zahl%</de>
-				<en>The chummy-yummy %zahl%</en>
+				<en>The Chummy-Yummy %zahl%</en>
 				<pl>%zahl%</pl>
 			</title>
 			<description>
@@ -2139,7 +2176,7 @@
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-SitcomeRunde-Ep1">
 					<title>
 						<de>Freunde fürs Leben</de>
-						<en>Friends for life</en>
+						<en>Friends For Life</en>
 						<pl>Przyjaciele na całe życie</pl>
 					</title>
 					<description>
@@ -2151,7 +2188,7 @@
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-SitcomeRunde-Ep2">
 					<title>
 						<de>Das Donutverbrechen</de>
-						<en>The donut crime</en>
+						<en>The Donut Crime</en>
 						<pl>Przestępstwo pączkowe</pl>
 					</title>
 					<description>
@@ -2163,7 +2200,7 @@
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-SitcomeRunde-Ep3">
 					<title>
 						<de>Der Mitternachtssnack</de>
-						<en>The midnight snack</en>
+						<en>The Midnight Snack</en>
 						<pl>Przekąska o północy</pl>
 					</title>
 					<description>
@@ -2187,7 +2224,7 @@
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-SitcomeRunde-Ep5">
 					<title>
 						<de>Füllige Begierden</de>
-						<en>Full desires</en>
+						<en>Full Desires</en>
 						<pl>Pełne pragnienia</pl>
 					</title>
 					<description>
@@ -2199,7 +2236,7 @@
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-SitcomeRunde-Ep6">
 					<title>
 						<de>Normalgewicht</de>
-						<en>Normal weight</en>
+						<en>Normal Weight</en>
 						<pl>Normalna waga</pl>
 					</title>
 					<description>
@@ -2211,7 +2248,7 @@
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-SitcomeRunde-Ep7">
 					<title>
 						<de>Der korpulente König</de>
-						<en>The corpulent king</en>
+						<en>The Corpulent King</en>
 						<pl>Korpulentny król</pl>
 					</title>
 					<description>
@@ -2223,7 +2260,7 @@
 				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-SitcomeRunde-Ep8">
 					<title>
 						<de>Gut gepolstert ist halb gewonnen</de>
-						<en>Well padded is half won</en>
+						<en>Well Padded Is Half Won</en>
 						<pl>Dobrze wyściełane to połowa wygranej</pl>
 					</title>
 					<description>
@@ -2235,7 +2272,7 @@
 				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-SitcomeRunde-Ep9">
 					<title>
 						<de>Vollschlank</de>
-						<en>Full figured</en>
+						<en>Full Figured</en>
 						<pl>Pełna figura</pl>
 					</title>
 					<description>
@@ -2247,7 +2284,7 @@
 				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-SitcomeRunde-Ep10">
 					<title>
 						<de>Mollige Freuden</de>
-						<en>Plump pleasures</en>
+						<en>Plump Pleasures</en>
 						<pl>Pulchne przyjemności</pl>
 					</title>
 					<description>
@@ -2259,7 +2296,7 @@
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-SitcomeRunde-Ep11">
 					<title>
 						<de>Aus der Form geraten</de>
-						<en>Got out of shape</en>
+						<en>Got Out of Shape</en>
 						<pl>Straciłem formę</pl>
 					</title>
 					<description>
@@ -2271,7 +2308,7 @@
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-SitcomeRunde-Ep12">
 					<title>
 						<de>Dicke Freunde</de>
-						<en>Chummy-yummy friends</en>
+						<en>Chummy-Yummy Friends</en>
 						<pl>Grubi przyjaciele</pl>
 					</title>
 					<description>
@@ -2297,7 +2334,8 @@
 				<job function="2" index="5" gender="1" required="1" />
 				<job function="2" index="6" gender="2" required="1" />
 			</jobs>
-			<data flags_optional="10" />
+			<data flags_optional="10" target_groups="7" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="5" subgenres="9" />
 			<episodes max="8" min="5"/>
 			<blocks value="1" />

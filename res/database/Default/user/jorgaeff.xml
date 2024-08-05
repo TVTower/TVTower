@@ -653,17 +653,17 @@
 			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1985-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'von den Hallern' vs Wall Vom Norden (I like the spoof name here better); 'Anna' is apparently a spoof on 'Otto' but 'Anna der Film' is a very different, actually existing real movie, by now added.">
+		<news id="news-jorgaeff-1985-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: apply film title references | previously: 'Anna - der Film' ausgezeichnet | 'Anna' apparently a spoof on 'Otto' but 'Anna - Der Film' is a very different, actually existing real movie, by now added | 'Anna Friese' could be used elsewhere">
 			<availability script="TIME_YEAR=1985" />
 			<title>
-				<de>„Anna - der Film“ ausgezeichnet</de>
-				<en>"Anna - the film" awarded</en>
-				<pl>„Anna - film” nagrodzony</pl>
+				<de>„Ottmar - der Kinofilm“ ausgezeichnet</de>
+				<en>"Ottmar - The Feature" awarded</en>
+				<pl>„Ottmar - film” nagrodzony</pl>
 			</title>
 			<description>
-				<de>Bei den diesjährigen deutschen Filmpreisverleihungen wurde das Werk der norddeutschen Komikerin, Anna Friese, ausgezeichnet. Dietbert von den Hallern ging mit „Die Rache der Entthronten“ leer aus.</de>
-				<en>At this year's German Film Awards, the work of the North German comedian, Anna Friese, was awarded. Dietbert von den Hallern went empty-handed with "Revenge of the Dethroned".</en>
-				<pl>Podczas tegorocznego rozdania Niemieckich Nagród Filmowych nagrodzono dzieło północnoniemieckiej komiczki, Anny Friese. Dietbert von den Hallern odszedł z pustymi rękami z „Zemstą zdetronizowanych”.</pl>
+				<de>Bei den diesjährigen deutschen Filmpreisverleihungen wurde das Werk des norddeutschen Komikers, Ottmar Waarkes, ausgezeichnet. Dietmar von der Hallern ging mit „Die Rache der Entthronten“ leer aus.</de>
+				<en>At this year's German Film Awards, the work of the North German comedian, Ottmar Waarkes, was awarded. Dietmar von der Hallern went empty-handed with "Revenge of the Dethroned".</en>
+				<pl>Podczas tegorocznego rozdania Niemieckich Nagród Filmowych nagrodzono dzieło północnoniemieckiego komika, Ottmara Waarkesa. Dietmar von der Hallern odszedł z pustymi rękami z „Zemstą zdetronizowanych”.</pl>
 			</description>
 			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
 		</news>
@@ -736,14 +736,14 @@
 				<pl>Założenie zespołu grunge'owego</pl>
 			</title>
 			<description>
-				<de>Mit Elysium hat sich an der nordamerikanischen Ostküste eine neue Band gegründet. Die Musiker um Band-Leader Kurt Kokain möchten „dieses Grunge-Rock-Ding“ weiterentwickeln und die Band weltweit berühmt machen.</de>
-				<en>With Elysium a new band has formed on the North American East Coast. The musicians around band leader Kurt Kokain want to develop "this grunge rock thing" and make the band famous worldwide.</en>
-				<pl>Elysium to nowy zespół, który powstał na wschodnim wybrzeżu Ameryki Północnej. Muzycy skupieni wokół lidera zespołu Kurta Kokaina chcą rozwinąć „tę grunge rockową rzecz” i uczynić zespół sławnym na całym świecie.</pl>
+				<de>Mit Elysium hat sich an der nordamerikanischen Westküste eine neue Band gegründet. Die Musiker um Band-Leader Karl Cocayne möchten „dieses Grunge-Rock-Ding“ weiterentwickeln und die Band weltweit berühmt machen.</de>
+				<en>With Elysium a new band has formed on the North American West Coast. The musicians around band leader Karl Cocayne want to develop "this grunge rock thing" and make the band famous worldwide.</en>
+				<pl>Elysium to nowy zespół, który powstał na zachodnim wybrzeżu Ameryki Północnej. Muzycy skupieni wokół lidera zespołu Karla Cocayne'a chcą rozwinąć „tę grunge rockową rzecz” i uczynić zespół sławnym na całym świecie.</pl>
 			</description>
 			<data genre="1" price="0.3" quality="30" fictional="0" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1987-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'Rolliger Stein' vs 'Bulli Stein'">
+		<news id="news-jorgaeff-1987-1-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: ref person Oliver Stone">
 			<availability script="TIME_YEAR=1987" />
 			<title>
 				<de>Kriegsfilm erhält Filmpreis</de>
@@ -751,9 +751,9 @@
 				<pl>Film wojenny otrzymuje nagrodę filmową</pl>
 			</title>
 			<description>
-				<de>Bei den diesjährigen Filmpreisverleihungen wurde Bulli Steins Film „Batallion“ als bester Film ausgezeichnet. Der Kriegsfilm zeigt die Auswüchse des Vietnamkrieges und seine Wirkung auf Infanteriesoldaten.</de>
-				<en>At this year's film awards, Bulli Stein's film "Batallion" was named best film. The war film shows the excesses of the Vietnam War and its effect on infantry soldiers.</en>
-				<pl>Podczas tegorocznego rozdania nagród filmowych film Bulli Stein „Batallion” został uznany za najlepszy film. Film wojenny pokazuje ekscesy wojny w Wietnamie i jej wpływ na żołnierzy piechoty.</pl>
+				<de>Bei den diesjährigen Filmpreisverleihungen wurde Olivier Steins Film „Batallion“ als bester Film ausgezeichnet. Der Kriegsfilm zeigt die Auswüchse des Vietnamkrieges und seine Wirkung auf Infanteriesoldaten.</de>
+				<en>At this year's film awards, Olivier Stein's film "Batallion" was named best film. The war film shows the excesses of the Vietnam War and its effect on infantry soldiers.</en>
+				<pl>Podczas tegorocznego rozdania nagród filmowych film Oliviera Steina „Batallion” został uznany za najlepszy film. Film wojenny pokazuje ekscesy wojny w Wietnamie i jej wpływ na żołnierzy piechoty.</pl>
 			</description>
 			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" />
 		</news>
@@ -1047,7 +1047,7 @@
 				<pl>Nocny wyścig Formuły Eco odwołany</pl>
 			</title>
 			<description>
-				<de>Ein Novum in der Geschichte des Rennsports! Erstmalig muss ein Rennen aufgrund von Energiemangel abgebrochen werden. Die Initiatoren haben wohl vergessen, dass die solarbetriebenen Boliden das Sonnenlicht benötigen um fahren zu können.</de>
+				<de>Ein Novum in der Geschichte des Rennsports! Erstmalig muss ein Rennen aufgrund von Energiemangel abgebrochen werden. Die Initiatoren haben wohl vergessen, dass die solarbetriebenen Boliden das Sonnenlicht benötigen, um fahren zu können.</de>
 				<en>A novelty in the history of racing! For the first time, a race must be canceled due to a lack of power. The initiators have probably forgotten that the solar-powered carts need the sunlight to be able to drive.</en>
 				<pl>Nowość w historii wyścigów! Po raz pierwszy wyścig musi zostać odwołany z powodu braku zasilania. Pomysłodawcy chyba zapomnieli, że pojazdy zasilane energią słoneczną potrzebują światła słonecznego, aby móc jeździć.</pl>
 			</description>
@@ -1394,9 +1394,9 @@
 				<pl>Mistrzostwa świata w zapasach WWFr</pl>
 			</title>
 			<description>
-				<de>Die Westamerikanischen Wrestling Freunde (WWFr) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Badguy „Rowdy“ Pfeifer auf den Titelträger Hugh Hoden.</de>
-				<en>The West American Wrestling Friends (WWFr) are hosting their first Wrestle Frenzy at the Texas Skydome. In the Main-Event Badguy "Rowdy" Pfeifer meets the title holder Hugh Hoden.</en>
-				<pl>West American Wrestling Friends (WWFr) organizuje swoje pierwsze pokazy w Texas Skydome. W głównym wydarzeniu Badguy "Rowdy" Pfeifer spotka się z posiadaczem tytułu Hugh Hodenem.</pl>
+				<de>Die Westamerikanischen Wrestling Freunde (WWFr) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Badguy „Rowdy“ Pfeiffer auf den Titelträger Hugh Hoden.</de>
+				<en>The West American Wrestling Friends (WWFr) are hosting their first WrestleMadness at the Texas Skydome. In the Main-Event Badguy "Rowdy" Pfeiffer meets the title holder Hugh Hoden.</en>
+				<pl>West American Wrestling Friends (WWFr) organizuje swoje pierwsze pokazy w Texas Skydome. W głównym wydarzeniu Badguy "Rowdy" Pfeiffer spotka się z posiadaczem tytułu Hugh Hodenem.</pl>
 			</description>
 			<effects>
 				<!-- "morgen 3-7 Uhr" -->
@@ -1413,9 +1413,9 @@
 				<pl>Pan Y decyduje o pojedynku zapaśniczym</pl>
 			</title>
 			<description>
-				<de>Hollywood-Schauspieler Mr. Y greift im Weltmeisterschaftskampf zwischen „Rowdy“ Pfeifer und Hugh Hoden zugunsten des Titelträgers ein. Hoden somit weiterhin Weltmeister im Schwergewicht!</de>
-				<en>Hollywood actor Mr. Y intervenes in the world championship fight between "Rowdy" Pfeifer and Hugh Hoden in favor of the title holder. Hoden thus continues to be world heavyweight champion!</en>
-				<pl>Hollywoodzki aktor Mr. Y interweniuje w walce o mistrzostwo świata pomiędzy "Rowdy" Pfeiferem i Hugh Hodenem na korzyść posiadacza tytułu. Tym samym Hoden pozostaje mistrzem świata wagi ciężkiej!</pl>
+				<de>Hollywood-Schauspieler Mr. Y greift im Weltmeisterschaftskampf zwischen „Rowdy“ Pfeiffer und Hugh Hoden zugunsten des Titelträgers ein. Hoden somit weiterhin Weltmeister im Schwergewicht!</de>
+				<en>Hollywood actor Mr. Y intervenes in the world championship fight between "Rowdy" Pfeiffer and Hugh Hoden in favor of the title holder. Hoden thus continues to be world heavyweight champion!</en>
+				<pl>Hollywoodzki aktor Mr. Y interweniuje w walce o mistrzostwo świata pomiędzy "Rowdy" Pfeifferem i Hugh Hodenem na korzyść posiadacza tytułu. Tym samym Hoden pozostaje mistrzem świata wagi ciężkiej!</pl>
 			</description>
 			<data genre="2" price="0.35" quality="35" fictional="0" flags="2" />
 		</news>
@@ -1619,7 +1619,7 @@
 			<data genre="3" price="0.45" quality="45" fictional="1" />
 		</news>
 
-		<news id="news-jorgaeff-orange-01" type="0" thread_id="news-jorgaeff-orange" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-orange-01" type="0" thread_id="news-jorgaeff-orange" creator="8936" created_by="jorgaeff" comment="TODO: Orange vs Fruit Inc.">
 			<!-- "erscheint 2007" -->
 			<availability script="TIME_YEAR=2007" />
 			<title>
@@ -1818,12 +1818,12 @@
 				<!-- "erscheint 1989-90" -->
 			<availability year_range_from="1989" year_range_to="1990" />
 			<title>
-				<de>Cormoran veröffentlicht C256</de>
+				<de>Cormorano veröffentlicht C256</de>
 				<en>Cormoran releases C256</en>
 				<pl>Cormoran wypuszcza C256</pl>
 			</title>
 			<description>
-				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 256 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<de>Der nordamerikanische Technologie-Konzern Cormorano stattet seinen neuen Mikro-Computer mit einem RAM von 256 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 				<en>The North American technology company Cormoran equips its new micro-computer with 256 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
 				<pl>Północnoamerykańska firma technologiczna Cormoran wyposaża swój nowy mikrokomputer w 256 KB pamięci RAM. Fani są podekscytowani świetną grafiką i dużą mocą obliczeniową.</pl>
 			</description>
@@ -1841,7 +1841,7 @@
 				<pl>C256 okazuje się być bestsellerem</pl>
 			</title>
 			<description>
-				<de>Der neue C256 von Cormoran geht weg wie warme Semmeln. Viele Nutzer kaufen sich ein Zweitgerät, da der Mikro-Computer, der mittlerweile sogar in eine Butterdose passt, auch mal verlegt werden kann.</de>
+				<de>Der neue C256 von Cormorano geht weg wie warme Semmeln. Viele Nutzer kaufen sich ein Zweitgerät, da der Mikro-Computer, der mittlerweile sogar in eine Butterdose passt, auch mal verlegt werden kann.</de>
 				<en>The new C256 from Cormoran goes like hot cakes. Many users buy a second device, because the micro-computer, which now even fits in a butter dish, can easily be misplaced from time to time.</en>
 				<pl>Nowy C256 od Cormorana rozchodzi się jak ciepłe bułeczki. Wielu użytkowników kupuje drugie urządzenie, ponieważ mikrokomputer, który teraz mieści się nawet w talerzu na masło, można od czasu do czasu łatwo zgubić.</pl>
 			</description>
@@ -1852,12 +1852,12 @@
 				<!-- "erscheint 1994-95" -->
 			<availability year_range_from="1994" year_range_to="1995" />
 			<title>
-				<de>Cormoran veröffentlicht C512</de>
+				<de>Cormorano veröffentlicht C512</de>
 				<en>Cormoran releases C512</en>
 				<pl>Cormoran wypuszcza C512</pl>
 			</title>
 			<description>
-				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 512 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<de>Der nordamerikanische Technologie-Konzern Cormorano stattet seinen neuen Mikro-Computer mit einem RAM von 512 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 				<en>The North American technology company Cormoran equips its new micro-computer with 512 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
 				<pl>Północnoamerykańska firma technologiczna Cormoran wyposaża swój nowy mikrokomputer w 512 KB pamięci RAM. Fani są podekscytowani świetną grafiką i dużą mocą obliczeniową.</pl>
 			</description>
@@ -1875,7 +1875,7 @@
 				<pl>C512 przekracza wszelkie oczekiwania</pl>
 			</title>
 			<description>
-				<de>Der neue C512 von Cormoran übertrifft sogar seinen Vorgänger. Viele Nutzer kaufen sich ein Dritt- und Viertgerät, da der Mikro-Computer, der nun in einen Eierbecher passt, auch mal verlegt werden kann.</de>
+				<de>Der neue C512 von Cormorano übertrifft sogar seinen Vorgänger. Viele Nutzer kaufen sich ein Dritt- und Viertgerät, da der Mikro-Computer, der nun in einen Eierbecher passt, auch mal verlegt werden kann.</de>
 				<en>The new C512 from Cormoran even surpasses its predecessor. Many users buy a third and fourth device, because the micro-computer, which now fits in an egg cup, can easily be misplaced from time to time.</en>
 				<pl>Nowy C512 od Cormorana nawet przewyższa swojego poprzednika. Wielu użytkowników kupuje trzecie i czwarte urządzenie, ponieważ mikrokomputer, który teraz mieści się w pojemniku na jajka, można od czasu do czasu łatwo zgubić.</pl>
 			</description>
@@ -1886,12 +1886,12 @@
 				<!-- "erscheint 1999-00" -->
 			<availability year_range_from="1999" year_range_to="2000" />
 			<title>
-				<de>Cormoran veröffentlicht C1k024</de>
+				<de>Cormorano veröffentlicht C1k024</de>
 				<en>Cormoran releases C1k024</en>
 				<pl>Cormoran wydaje C1k024</pl>
 			</title>
 			<description>
-				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 1024 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<de>Der nordamerikanische Technologie-Konzern Cormorano stattet seinen neuen Mikro-Computer mit einem RAM von 1024 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 				<en>The North American technology company Cormoran equips its new micro-computer with 1024 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
 				<pl>Północnoamerykańska firma technologiczna Cormoran wyposaża swój nowy mikrokomputer w 1024 KB pamięci RAM. Fani są podekscytowani świetną grafiką i dużą mocą obliczeniową.</pl>
 			</description>
@@ -1909,7 +1909,7 @@
 				<pl>C1k024 - bestseller wszech czasów</pl>
 			</title>
 			<description>
-				<de>Mal eben locker den Verkaufserfolg des Vorgängers pulverisiert. Viele Nutzer kaufen sich den C1k024 von Cormoran im 10er-Pack, da der in einen Fingerhut passende Mikro-Computer, auch mal verlegt werden kann.</de>
+				<de>Mal eben locker den Verkaufserfolg des Vorgängers pulverisiert. Viele Nutzer kaufen sich den C1k024 von Cormorano im 10er-Pack, da der in einen Fingerhut passende Mikro-Computer, auch mal verlegt werden kann.</de>
 				<en>Just so easily crushed the sales success of the predecessor. Many users buy the C1k024 from Cormoran in packs of 10, as the micro-computer, which fits into a thimble, can easily be misplaced from time to time.</en>
 				<pl>Tak łatwo zmiażdżył sukces sprzedażowy poprzednika. Wielu użytkowników kupuje C1k024 od Cormoran w opakowaniach po 10 sztuk, ponieważ mikrokomputer, który mieści się w naparstku, może być łatwo zgubiony od czasu do czasu.</pl>
 			</description>
@@ -1920,12 +1920,12 @@
 				<!-- "erscheint 2004-05" -->
 			<availability year_range_from="2004" year_range_to="2005" />
 			<title>
-				<de>Cormoran veröffentlicht C2k048</de>
+				<de>Cormorano veröffentlicht C2k048</de>
 				<en>Cormoran publishes C2k048</en>
 				<pl>Cormoran publikuje C2k048</pl>
 			</title>
 			<description>
-				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 2048 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
+				<de>Der nordamerikanische Technologie-Konzern Cormorano stattet seinen neuen Mikro-Computer mit einem RAM von 2048 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 				<en>The North American technology company Cormoran equips its new micro-computer with 2048 KB of RAM. Fans are excited about the great graphics and fast computing power.</en>
 				<pl>Północnoamerykańska firma technologiczna Cormoran wyposaża swój nowy mikrokomputer w 2048 KB pamięci RAM. Fani są podekscytowani świetną grafiką i szybką mocą obliczeniową.</pl>
 			</description>
@@ -1943,7 +1943,7 @@
 				<pl>C2k048 - sprzedażowa klapa</pl>
 			</title>
 			<description>
-				<de>Diese Rechnung geht nicht auf: Der auf einen Stecknadelkopf passende Mikro-Computer kann teilweise in den Läden nicht mehr aufgefunden werden. Cormoran hat die Produktion eingestellt.</de>
+				<de>Diese Rechnung geht nicht auf: Der auf einen Stecknadelkopf passende Mikro-Computer kann teilweise in den Läden nicht mehr aufgefunden werden. Cormorano hat die Produktion eingestellt.</de>
 				<en>This plan did not work out: The micro-computer, which fits on the head of a pin, can no longer be found in stores in some cases. Cormoran has stopped the production.</en>
 				<pl>Ten plan nie wypalił: Mikrokomputer, który mieści się w główce szpilki, w niektórych przypadkach nie można już znaleźć w sklepach. Cormoran wstrzymał produkcję.</pl>
 			</description>
@@ -2017,12 +2017,12 @@
 		<news id="news-jorgaeff-1985-3-01" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1985" />
 			<title>
-				<de>Makrohart stellt „Proof 1.01“ vor</de>
+				<de>Macrohard stellt „Proof 1.01“ vor</de>
 				<en>Macrohard introduces "Proof 1.01"</en>
 				<pl>Macrohard wprowadza "Proof 1.01"</pl>
 			</title>
 			<description>
-				<de>Die von Makrohart endgültig freigegebene Version Proof 1.01 wurde auf einer Pressekonferenz im südschwedischen Helsingborg vorgestellt. Das Betriebssystem benötigt einen Arbeitsspeicher von 256 KByte und ein 5.25"-Diskettenlaufwerk.</de>
+				<de>Die von Macrohard endgültig freigegebene Version Proof 1.01 wurde auf einer Pressekonferenz im südschwedischen Helsingborg vorgestellt. Das Betriebssystem benötigt einen Arbeitsspeicher von 256 KByte und ein 5.25"-Diskettenlaufwerk.</de>
 				<en>The version Proof 1.01 finally released by Macrohard was presented at a press conference in Helsingborg, southern Sweden. The operating system requires a memory of 256 KByte and a 5.25" floppy drive.</en>
 				<pl>Wersja Proof 1.01 ostatecznie wydana przez Macrohard została zaprezentowana na konferencji prasowej w Helsingborgu, w południowej Szwecji. System operacyjny wymaga pamięci 256 KByte i stacji dyskietek 5,25".</pl>
 			</description>
