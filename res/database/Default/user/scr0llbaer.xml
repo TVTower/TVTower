@@ -905,8 +905,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
-			<groups target_groups_optional="232" />
+			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups_optional="232" />
 			<genres maingenre="300" subgenres="6,11" />
 			<blocks value="1" />
 			<price min="30000" max="60000" />
@@ -955,10 +954,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups_optional="19"/>
 			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1" housewives_female="0.5" employees_male="1.25" employees_female="0.5" unemployed_male="1.5" unemployed_female="1" managers_male="1.25" managers_female="1" pensioners_male="0.5" pensioners_female="0.25" />
 			<genres maingenre="104" subgenres="2,16" />
-			<groups target_groups_optional="19" />
 			<blocks value="1" />
 			<price min="30000" max="60000" />
 			<potential min="40" max="80" />

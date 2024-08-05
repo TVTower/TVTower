@@ -2070,12 +2070,12 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'base value is audience which typically corrensponds to profit
 		Local result:Float = getMinAudiencePercentage() * 100
 		'min audience for target groups needs to be scaled 
-		If IsLimitedToTargetGroup(TVTTargetGroup.CHILDREN) Then result:* 6
-		If IsLimitedToTargetGroup(TVTTargetGroup.TEENAGERS) Then result:* 5
-		If IsLimitedToTargetGroup(TVTTargetGroup.HOUSEWIVES) Then result:* 4
-		If IsLimitedToTargetGroup(TVTTargetGroup.EMPLOYEES) Then result:* 4
-		If IsLimitedToTargetGroup(TVTTargetGroup.UNEMPLOYED) Then result:* 3
-		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGERS) Then result:* 7
+		If IsLimitedToTargetGroup(TVTTargetGroup.CHILDREN) Then result:* 8
+		If IsLimitedToTargetGroup(TVTTargetGroup.TEENAGERS) Then result:* 10
+		If IsLimitedToTargetGroup(TVTTargetGroup.HOUSEWIVES) Then result:* 6
+		If IsLimitedToTargetGroup(TVTTargetGroup.EMPLOYEES) Then result:* 6
+		If IsLimitedToTargetGroup(TVTTargetGroup.UNEMPLOYED) Then result:* 5
+		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGERS) Then result:* 14
 		If IsLimitedToTargetGroup(TVTTargetGroup.PENSIONERS) Then result:* 4
 		If IsLimitedToTargetGroup(TVTTargetGroup.WOMEN) Then result:* 2
 		If IsLimitedToTargetGroup(TVTTargetGroup.MEN) Then result:* 2
@@ -2083,7 +2083,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If Self.getDaysLeft() < Self.getSpotsToSend() Then result:* 2
 		If Self.getSpotsToSend() = 1 Then result:* 2
 		'big effort on last day
-		If Self.getDaysLeft() = 0 And GetWorldTime().getHour() > 5 Then result:* 4
+		If Self.getDaysLeft() = 0 Then result:* 4
 		'the more spots sent the worse failing will be (other spots wasted)
 		If GetSpotsToSendPercentage() < 1 Then result:/ (1-GetSpotsToSendPercentage())
 		'TODO consider profit/penalty more directly?

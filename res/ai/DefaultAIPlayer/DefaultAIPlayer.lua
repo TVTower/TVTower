@@ -582,7 +582,7 @@ function BusinessStats:ReadStats()
 			local currentAudienceResult = TVT.GetCurrentProgrammeAudienceResult()
 			local currentAudience = currentAudienceResult.Audience.GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
-			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
+			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudienceResult)
 
 			if self.PerformanceData == nil then
 				self.PerformanceData = LicencePerformance()

@@ -1210,13 +1210,15 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 		self.hourlyNewsAudience[currentI] = audience
 		return true
 	elseif broadcastTypeID == TVT.Constants.BroadcastMaterialType.PROGRAMME then
-		-- remove everything older than yesterday
-		local lastDaysI = tonumber(tostring(day-1).."00")
+		-- remove audience older than day before yesterday
+		local lastDaysI = tonumber(tostring(day-2).."00")
 		for k,v in pairs(self.hourlyProgrammeAudience) do
 			if tonumber(k) < lastDaysI then
 				self.hourlyProgrammeAudience[k] = nil
 			end
 		end
+		--remove attraction older than yesterday
+		lastDaysI = tonumber(tostring(day-1).."00")
 		for k,v in pairs(self.hourlyProgrammeAttraction) do
 			if tonumber(k) < lastDaysI then
 				self.hourlyProgrammeAttraction[k] = nil

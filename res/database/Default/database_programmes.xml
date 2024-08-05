@@ -17532,7 +17532,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<member index="6" function="2">7ed0fe3e-4d23-457b-a41b-25b6e840e94a</member>
 				<member index="7" function="16">fc51de5a-23b9-4bc7-87da-76462e901bf2</member>
 			</staff>
-			<groups target_groups_optional="27" />
+			<groups target_groups="27" />
 			<data country="USA" distribution="1" maingenre="16" subgenre="5,2" blocks="2" />
 			<releaseTime year="1997" day="7" />
 			<ratings critics="85" speed="76" outcome="88" />
@@ -17557,7 +17557,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<member index="3" function="2">6855e93a-2084-4472-8650-2d5973deed84</member>
 				<member index="4" function="2">a7379bb6-0866-416d-9a2b-ea571e9da2f1</member>
 			</staff>
-			<groups target_groups_optional="26" />
+			<groups target_groups="26" />
 			<data country="USA/D/CZ" distribution="1" maingenre="2" subgenre="14,17" blocks="2" />
 			<releaseTime year="2002" day="6" />
 			<ratings critics="79" speed="88" outcome="55" />
@@ -17584,7 +17584,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<member index="2" function="2">Stukov_FrankaPotente</member>
 				<member index="3" function="2">21dfd7e6-28a1-4ee7-b286-54d5d85fc456</member>
 			</staff>
-			<groups target_groups_optional="26" />
+			<groups target_groups="26" />
 			<data country="USA/D" distribution="1" maingenre="2" subgenre="14,17" blocks="2" available="0" /> <!-- availability triggered by Stukov_BourneIdentity -->
 			<releaseTime year="2004" day="7" />
 			<ratings critics="78" speed="84" outcome="62" />
@@ -52024,7 +52024,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<member index="0" function="21">dda26fcf-74fc-4ac4-94bb-a69d6b1c048d</member>
 				<member index="1" function="8">f41917ee-82d1-4c42-9bf9-dda00db1f72d</member>
 			</staff>
-			<groups target_groups="0" target_groups_optional="8" pro_pressure_groups="0" />
+			<groups target_groups="8" pro_pressure_groups="0" />
 			<data country="D" distribution="2" maingenre="6" subgenre="100,300" flags="520" blocks="1" price_mod="0.2" />
 			<releaseTime year_relative="-8" year_relative_min="1978" year_relative_max="2010" />
 			<ratings critics="77" speed="39" outcome="47" />

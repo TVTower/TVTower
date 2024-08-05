@@ -1272,7 +1272,7 @@
 				<against>
 					<de>Gegen|Über|Durch|Auf|Für|Aber|Doch,|Doch nicht|Nicht doch|Warum|Wozu|Nicht|Nein,</de>
 					<en>Against|About|Through|To|For|But|Yet,|But not|Oh no, not|Why|What for|Not|No,</en>
-					<pl>Przeciwko|Przez|Dla|Ale|Jeszcze|Ale nie|O nie, nie|Dlaczego|Nie|Nie,</pl>
+					<pl>Przeciwko|Przez|Dla|Ale|Jeszcze|Ale nie|O nie, nie|Dlaczego|O nie, nie|Dlaczego|Za co|Nie|Nie,</pl>
 				</against>
 				<artisttown>
 					<de>%STATIONMAP:RANDOMCITY%</de>

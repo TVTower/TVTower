@@ -232,6 +232,8 @@ function JobBuyStartProgramme:Tick()
 		elseif v:GetQuality() < 0.07 or v:GetQualityRaw() < 0.15 then
 			--avoid the absolute trash :-)
 			self:LogDebug("IGNORING PROGRAMME (quality) "..v:getTitle())
+		elseif v.GetData().IsTrash() > 0 then
+			self:LogDebug("IGNORING PROGRAMME (trash) "..v:getTitle())
 		elseif (v:isPaid() > 0 or v:getTopicality() < 0.15 or v:GetGenre() == TVT.Constants.ProgrammeGenre.Horror or self.Task:IsErotic(v)) then
 			--prevent other problematic start programmes: call-in, horror, too old
 			self:LogDebug("IGNORING PROGRAMME (old, genre) "..v:getTitle())
@@ -642,6 +644,9 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	if licence.GetData().IsCulture() > 0 then
 		qualityFactor = qualityFactor * 1.3
 	end
+	if licence.GetData().IsTrash() > 0 then
+		qualityFactor = qualityFactor * 0.4
+	end
 	if licence.isLive() > 0 then
 		--TODO do not buy live licences
 		qualityFactor = qualityFactor * 0.5
@@ -708,6 +713,7 @@ function JobBuyMovies:Tick()
 	--TODO not many licences - do not spend everything on new one
 	local maxPrice = self.Task.CurrentBargainBudget
 	local blocksCount = self.Task.blocksCount
+	local player = getPlayer()
 	if blocksCount > 0 and blocksCount < 72 then
 		if maxPrice > 250000 then
 			maxPrice = maxPrice * 0.5
@@ -716,7 +722,7 @@ function JobBuyMovies:Tick()
 		end
 		--TODO max price added to deal with restarting after bankruptcy
 		--problematic for series (price per block would be better), good threshold hard to determine
-		if getPlayer().money > 5000000 then
+		if player.money > 5000000 then
 			if blocksCount < 36 then 
 				maxPrice = math.min(maxPrice*2, 600000)
 			elseif blocksCount < 64 then 
@@ -744,6 +750,12 @@ function JobBuyMovies:Tick()
 
 						self.Task:PayFromBudget(priceToPay)
 						self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - priceToPay
+
+						--do not spend all available money, if there are enough max-top blocks
+						--saves money for antennas
+						if blocksCount > 72 and player.maxTopicalityBlocksCount > 10 then
+							self.Task.CurrentBudget = 0
+						end
 					end
 				end
 			end
