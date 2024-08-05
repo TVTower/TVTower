@@ -126,8 +126,8 @@ function BudgetManager:AllocateBudgetToTasks(money)
 	end
 	local safetyNet = 0
 	if player.coverage ~= nil then
-		if player.coverage > 0.8 then safetyNet = allFixedCostsSavings * 0.6 end
 		if player.coverage > 0.6 then safetyNet = allFixedCostsSavings * 0.3 end
+		if player.coverage > 0.8 then safetyNet = allFixedCostsSavings * 0.6 end
 	end
 	allFixedCostsSavings = safetyNet + math.round(allFixedCostsSavings * hourPart)
 

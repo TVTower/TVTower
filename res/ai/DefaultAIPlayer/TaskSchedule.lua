@@ -317,11 +317,11 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block, p
 	if hour > 0 and hour < 18 then
 		local factor = 1
 		--guess for the next day, topicality regain not considered in quess
-		if hour < playerHour then factor = 1.15 end
+		if hour < playerHour then factor = 1.1 end
 		if self.useMaxTopicalityOnly == true then
 			return 1.1*factor
 		else
-			return 1.35*factor
+			return 1.3*factor
 		end
 	elseif hour > 18 then
 		return 0.90
@@ -492,7 +492,8 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		--TODO check if max topicality blocks should be used for scheduling
 		if lowMaxTopBlocks > 20 then self.useMaxTopicalityOnly = true end
-		if maxTopicalityBlocks < 6 then self.primeLicenceIds = tl end
+		if maxTopicalityBlocks > 10 then tl={} end
+		self.primeLicenceIds = tl
 	end
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
@@ -1177,6 +1178,9 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 	--gebraucht werden; es besteht die Gefahr, dass 2x 80K-Ads mit überschüssigen Spots geholt werden
 	--stattdessen
 
+	local reqToReturn = nil
+	local currentTotalSum = guessedAudience.GetTotalSum()
+
 	-- increase priority if guessedAudience/level is requested again
 	for k,v in pairs(self.SpotRequisition) do
 		-- remove outdated slot requisitions (to avoid multiple reqs
@@ -1189,18 +1193,32 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 			-- 70k/lvl5 predicted programme)
 			-- TODO: what happens to target groups
 			--       (a.Total < b.Total but a.children > b.children) ??
-			if v.GuessedAudience.GetTotalSum() > guessedAudience.GetTotalSum() then
-				v.GuessedAudience = guessedAudience
-			end
-			v.Count = v.Count + 1
-			if (v.Priority < 5) then v.Priority = v.Priority + 1 end
 
-			self:LogInfo("Raise demand on spots of level " .. level .. " (Audience: " .. math.floor(guessedAudience.GetTotalSum()) .. "). Time: " .. day .. "/" .. string.format("%02d", hour) .. ":55  / Spot requisition: count="..v.Count.."  priority="..v.Priority)
-			table.insert(v.SlotReqs, slotReq)
-			return v
+			local reqTotalSum = v.GuessedAudience.GetTotalSum()
+			--if the difference is too great rather create a new requisition
+			local reuseReq = 1 
+			if level == 5 then
+				local ratio = reqTotalSum / currentTotalSum
+				self:LogInfo("check level 5: "..  currentTotalSum .." vs " ..reqTotalSum .." =" ..ratio)
+				if ratio < 0.75 or ratio > 1.25 then 
+					reuseReq = 0
+				end
+			end
+			if reuseReq == 1 then
+				if reqTotalSum > currentTotalSum then
+					v.GuessedAudience = guessedAudience
+				end
+				v.Count = v.Count + 1
+				if (v.Priority < 5) then v.Priority = v.Priority + 1 end
+
+				self:LogInfo("Raise demand on spots of level " .. level .. " (Audience: " .. math.floor(currentTotalSum) .. "). Time: " .. day .. "/" .. string.format("%02d", hour) .. ":55  / Spot requisition: count="..v.Count.."  priority="..v.Priority)
+				table.insert(v.SlotReqs, slotReq)
+				reqToReturn = v
+			end
 		end
 	end
 
+	if reqToReturn ~= nil then return reqToReturn end
 
 	--create a new requisition if above did not find an existing one
 	local requisition = SpotRequisition()
@@ -1653,8 +1671,20 @@ function JobAdSchedule:CheckSlot(day, hour, guessedAudience)
 			self:LogTrace("  with suiting genre/flags: " .. table.count(filteredContracts))
 
 			if table.count(filteredContracts) > 0 then
+				local threshold = "0.5"
+				local minSpots = 1
+				local player = getPlayer()
+				if hour > 18 and (player.blocksCount > 48 or player.maxTopicalityBlocksCount > 8) then
+					threshold = "0.65"
+				elseif hour > 21 then
+					--TODO more spots only if player coverage is low enough?
+					if player.blocksCount > 72 and player.maxTopicalityBlocksCount > 8 then
+						--threshold = "0.5"
+						minSpots = 2
+					end
+				end
 				-- keep only contracts with a minimum tolerable minaudience
-				filteredContracts = FilterAdContractsByMinAudience(filteredContracts, guessedAudience.Copy().MultiplyString("0.5"), guessedAudience)
+				filteredContracts = FilterAdContractsByMinAudience(filteredContracts, guessedAudience.Copy().MultiplyString(threshold), guessedAudience)
 				self:LogDebug("  all contracts between 0.5 - 1.0 *minAudience: " .. table.count(filteredContracts))
 
 				-- only add a requisition if we do not have some older
@@ -1663,9 +1693,9 @@ function JobAdSchedule:CheckSlot(day, hour, guessedAudience)
 					--TODO make null safer
 					local spotCount = 0
 					for key, contract in pairs(filteredContracts) do
-						spotCount = spotCount + contract.GetSpotsToSend()
+						spotCount = spotCount + contract.GetSpotsToSend() --TODO? -contract.GetSpotsPlanned()
 					end
-					if spotCount > 1 then
+					if spotCount > minSpots then
 						self:LogTrace("    more than one spot to send no requisition created")
 						addRequisition = false
 					end
