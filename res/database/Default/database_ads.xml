@@ -570,9 +570,9 @@ But only with Relocation Rudolph!</en>
 			<data quality="10" repetitions="2" duration="2" profit="440" penalty="640" infomercial_profit="41" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" />
 		</ad>
-		<ad id="a401f20f-8832-45df-a274-2599fd8d0afb" comment="TODO: Spoof it? Berliner Pilsener is an actual real-existing product | https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei">
+		<ad id="a401f20f-8832-45df-a274-2599fd8d0afb" comment="Berliner Pilsener (previously used but it's a real brand) https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Brandenburger Pilsener' also a real brand">
 			<title>
-				<de>Berliner Pilsener</de>
+				<de>Kreuzberger Pilsener</de>
 			</title>
 			<description>
 				<de>Berlin, du bist so wunderbar!</de>

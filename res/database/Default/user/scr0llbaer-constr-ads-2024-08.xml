@@ -201,8 +201,8 @@ Anything is possible at Zombocom.</en>
 				<de>Ihr freundlicher Militärdienstleister mit den niedlichen Killerrobotern von nebenan.</de>
 				<en>Your friendly military service provider next door with the cute killer robots.</en>
 			</description>
-			<conditions min_audience="0.4679" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="9" repetitions="3" duration="3" profit="1888" penalty="3280" infomercial_profit="119" fix_infomercial_profit="1" />
+			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="34" repetitions="4" duration="5" profit="900" penalty="1700" infomercial_profit="103" fix_infomercial_profit="1" />
 		</ad>
 		<ad id="34f344db-04c1-4858-b1fd-6cca76ff068e" creator="9551" comment="-2010 | https://de.wikipedia.org/wiki/Drachenlord | pre-YouTube version ironically fictional | 'Haider' means 'Hater', not the politician | TODO: english / international versions require something different">
 			<title>
@@ -528,7 +528,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			</title>
 			<description>
 				<de>Endlich normale Leute! Die galaktische Gemeinschaft von Lebewesen, benannt nach der Göttin der... Moment mal, wer hat denn den Namen ausgesucht, sagt mal habt ihr sie noch alle!? Da war wohl der Zensor pinkeln.</de>
-				<en>Finally normal people! The galactic community of living beings, named after the goddess of... Wait a minute, who chose that name, are you all off your rocker!? The censor must have gone for a pee.</en>
+				<en>Finally normal people! The galactic community of living beings, named after the goddess of... Wait a minute, who chose that name, have you all lost your marbles!? The censor must have gone for a pee.</en>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -755,8 +755,10 @@ That's right, now finally online too! And while we're at it: in addition to play
 				<de>Soxcoin</de>
 			</title>
 			<description>
-				<de>Der Insolvenzverwalter von Mt. Sox lässt verkünden: Schuldverschreibungen ab jetzt als NFTs verfügbar.</de>
-				<en>The insolvency administrator of Mt. Sox lets it be announced: Debt securities now available as NFTs.</en>
+				<de>Der Insolvenzverwalter von Mt. Sox lässt verkünden: Schuldverschreibungen ab jetzt als NFTs verfügbar.
+Kaufen Sie Geldsöckchen-JPEGs in den schönsten Formen und Farben!</de>
+				<en>The insolvency administrator of Mt. Sox lets it be announced: Debt securities now available as NFTs.
+Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />

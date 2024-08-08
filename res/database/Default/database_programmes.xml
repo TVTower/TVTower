@@ -11958,7 +11958,7 @@ Dream scenes and sentiments warp the storyline.</en>
 					</description>
 					<ratings critics="50" speed="88" />
 				</programme>
-				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1588951" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="tt1588951" creator="8751" created_by="TheRob" comment="TODO: make ref Kennedy">
 					<title>
 						<de>Die Sechziger Jahre</de>
 						<en>The Sixties</en>
@@ -20567,10 +20567,10 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 			<releaseTime year="1990" day="6" />
 			<ratings critics="56" speed="51" outcome="79" />
 		</programme>
-		<programme id="857b0d8d-781f-4c72-a41c-57dce0da4548" product="1" licence_type="1" creator="9551" imdb_id="tt0087332">
+		<programme id="857b0d8d-781f-4c72-a41c-57dce0da4548" product="1" licence_type="1" creator="9551" imdb_id="tt0087332" comment="Spoof titles 'Ghostblasters' or 'Ghostbuzzers' would be better but seem to be real existing franchises">
 			<title>
-				<de>Ghostchasers - Die Geistersucher</de>
-				<en>Ghostchasers</en>
+				<de>Ghostblazers - Die Geisterfänger</de>
+				<en>Ghostblazers</en>
 			</title>
 			<title_original>
 				<de>Ghostbusters - Die Geisterjäger</de>
@@ -20602,8 +20602,8 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 		</programme>
 		<programme id="bb10c157-221e-41b2-95b0-58fec91957ca" product="1" licence_type="1" creator="9551" imdb_id="tt0097428">
 			<title>
-				<de>Ghostchasers II</de>
-				<en>Ghostchasers II</en>
+				<de>Ghostblazers II</de>
+				<en>Ghostblazers II</en>
 			</title>
 			<title_original>
 				<de>Ghostbusters II</de>
@@ -38128,7 +38128,7 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<releaseTime year="1993" day="12" />
 			<ratings critics="58" speed="61" outcome="58" />
 		</programme>
-		<programme id="fa6a95af-75c3-4cef-8ae2-85af35d023df" product="1" licence_type="1" creator="9551" imdb_id="tt0107206">
+		<programme id="fa6a95af-75c3-4cef-8ae2-85af35d023df" product="1" licence_type="1" creator="9551" imdb_id="tt0107206" comment="TODO: make ref Kennedy">
 			<title>
 				<de>In the Lane of Shooting - Eine weitere Chance</de>
 				<en>In the Lane of Shooting</en>

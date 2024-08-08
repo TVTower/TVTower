@@ -575,7 +575,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
 			<releaseTime year_relative="1" day="7" hour="20" year_relative_min="2004" year_relative_max="2020" />
-			<ratings critics="45" speed="51" outcome="40" />
+			<ratings critics="35" speed="51" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
 				<modifier name="topicality::notLive" value="0.25" />
@@ -592,7 +592,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>An exciting match from 1987 re-enacted, in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
 						<pl>Powtórka ekscytującego meczu z 1987 roku, w którym [1|Last] pokazuje swojemu przeciwnikowi [0|Last], kto nosi majtki.</pl>
 					</description>
-					<ratings critics="61" speed="55" />
+					<ratings critics="41" speed="55" />
 				</programme>
 				<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -608,7 +608,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<staff>
 						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 					</staff>
-					<ratings critics="55" speed="56" />
+					<ratings critics="45" speed="56" />
 					<releaseTime year_relative="1" day="8" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
@@ -639,7 +639,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<staff>
 						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 					</staff>
-					<ratings critics="45" speed="65" />
+					<ratings critics="35" speed="65" />
 					<releaseTime year_relative="1" day="10" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
@@ -653,7 +653,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>The hosts back in the ring after years. [0|Last] and [1|Last] teaming up with [3|Last] against the splendid Bolivian display of muscles supported by the German [2|Last].</en>
 						<pl>Gospodarze wracają na ring po latach. [0|Last] i [1|Last] w parze z [3|Last] przeciwko wspaniałemu boliwijskiemu pokazowi mięśni wspieranemu przez Niemca [2|Last].</pl>
 					</description>
-					<ratings critics="51" speed="68" />
+					<ratings critics="41" speed="68" />
 					<releaseTime year_relative="1" day="11" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 			</children>
@@ -1206,7 +1206,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>[1|Full] besucht...</de>
 				<en>[1|Full] Visits...</en>
-				<pl>Rolf Krall odwiedza...</pl>
+				<pl>[1|Full] odwiedza...</pl>
 			</title>
 			<description>
 				<de>Der bekannte Moderator [1|Full] besucht Menschen die keiner kennt, deren Wirkung aber unvergessen bleibt.</de>
@@ -1227,7 +1227,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>[1|Full] besucht... Madame Krussaud</de>
 						<en>[1|Full] Visits... Madame Krussaud</en>
-						<pl>Rolf Krall odwiedza... Madame Krussaud</pl>
+						<pl>[1|Full] odwiedza... Madame Krussaud</pl>
 					</title>
 					<description>
 						<de>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
@@ -1240,7 +1240,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>[1|Full] besucht... Jens Flumme</de>
 						<en>[1|Full] Visits... Jens Flumme</en>
-						<pl>Rolf Krall odwiedza... Jensa Flumme</pl>
+						<pl>[1|Full] odwiedza... Jensa Flumme</pl>
 					</title>
 					<description>
 						<de>[1|Full] zu Besuch bei Jens Flumme. Ausführlich wird im Gespräch erklärt, wie es zur fabulösen Erfindung des Multifunktions-Radiergummis kam.</de>
@@ -1253,7 +1253,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>[1|Full] besucht... Martin Zeck</de>
 						<en>[1|Full] Visits... Martin Zeck</en>
-						<pl>Rolf Krall odwiedza... Martina Zeck</pl>
+						<pl>[1|Full] odwiedza... Martina Zeck</pl>
 					</title>
 					<description>
 						<de>[1|Full] zu Besuch bei Martin Zeck. In geselliger Runde spricht [1|Last] über die umgreifende Problematik der Flaschenpfandproblematik.</de>
@@ -1266,7 +1266,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>[1|Full] besucht... Peter Kruste</de>
 						<en>[1|Full] Visits... Peter Crust</en>
-						<pl>Rolf Krall odwiedza... Petera Crusta</pl>
+						<pl>[1|Full] odwiedza... Petera Crusta</pl>
 					</title>
 					<description>
 						<de>Bei leckerem Brot plaudert [1|Full] mit Peter Kruste darüber, wie Kruste darauf kam, dem Brot die schmackhafte Kante zu geben.</de>
@@ -1279,7 +1279,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					<title>
 						<de>[1|Full] besucht... seine Mutter</de>
 						<en>[1|Full] Visits... His Mother</en>
-						<pl>Rolf Krall odwiedza... swoją matkę</pl>
+						<pl>[1|Full] odwiedza... swoją matkę</pl>
 					</title>
 					<description>
 						<de>Zum Abschluss der Serie besucht [1|Full] seine eigene Mutter, kitzelt ein paar urige Rezepte aus ihr heraus und plaudert über intime Details des immer populärer werdenden Moderators.</de>

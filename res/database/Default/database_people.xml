@@ -2338,7 +2338,7 @@
 			<details gender="2" birthday="1967-11-16" deathday="" country="" />
 			<data popularity="10" affinity="10" fame="10" scandalizing="0" power="0" humor="30" charisma="20" appearance="40" topgenre="0" />
 		</person>
-		<person id="893caa00-2171-4005-997e-296b5cc87ce8" tmdb_id="0" imdb_id="nm0000484" creator="9584" comment="Previous ID: Stukov-Regie-Landis - merged from insignificant version">
+		<person id="893caa00-2171-4005-997e-296b5cc87ce8" tmdb_id="0" imdb_id="nm0000484" creator="9584" created_by="Stukov" comment="Previous ID: Stukov-Regie-Landis - merged from insignificant version">
 			<first_name>Jack</first_name>
 			<last_name>Lanis</last_name>
 			<first_name_original>John</first_name_original>
@@ -2608,7 +2608,7 @@
 		<person id="67c62fbd-8a2a-4566-a910-4fcba8065d1c" first_name="Paul" last_name="Diele" first_name_original="Paul" last_name_original="Dahlke" gender="1" birthday="1904-04-12" deathday="1984-11-24" imdb_id="nm0197108" />
 		<person id="3a76c9a9-455e-4c6c-8b74-63c27f847e93" first_name="Joy" last_name="St. James" first_name_original="Jill" last_name_original="St. John" gender="2" birthday="1940-08-19" deathday="" imdb_id="nm0001762" />
 		<person id="dd14aed7-d7e6-4f44-882c-ff96b4d67161" first_name="Tom" last_name="Dolce" first_name_original="Tom" last_name_original="Hulce" gender="1" birthday="1953-12-06" deathday="" imdb_id="nm0001371" />
-		<person id="7f093b3e-3294-4a2d-a21c-7b4ef031667c" first_name="Robert" last_name="DoQuison" first_name_original="Robert" last_name_original="DoQui" gender="1" birthday="1934-04-20" deathday="2008-02-09" imdb_id="nm0233306" />
+		<person id="7f093b3e-3294-4a2d-a21c-7b4ef031667c" first_name="Robin" last_name="DuQuoi" first_name_original="Robert" last_name_original="DoQui" gender="1" birthday="1934-04-20" deathday="2008-02-09" imdb_id="nm0233306" />
 		<person id="68c12fc4-2035-4373-b6e8-bc1c1cb65ef2" first_name="Bert" last_name="Dorn" first_name_original="Bruce" last_name_original="Dern" gender="1" birthday="1936-06-04" deathday="" imdb_id="nm0001136" />
 		<person id="b627d170-df8f-4393-b039-a984c65cf730" first_name="Mike L." last_name="Thorn" first_name_original="Michael" last_name_original="Dorn" gender="1" birthday="1952-12-09" deathday="" imdb_id="nm0000373" />
 		<person id="2b03b834-305e-482a-aa25-3868e50ef094" first_name="Ray" last_name="Dottereis" first_name_original="Roy" last_name_original="Dotrice" gender="1" birthday="1923-05-26" deathday="2017-10-16" imdb_id="nm0234541" />
@@ -3141,7 +3141,7 @@
 		<person id="efc413de-faca-4311-80a2-31b29d280d86" first_name="Rolle" last_name="Lammke" first_name_original="Rolf" last_name_original="Lemcke" gender="1" birthday="" deathday="" imdb_id="nm1824497" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-RolleWenke" />
 		<person id="46b07c18-1b04-4d52-8417-5479100c8deb" first_name="Ralle" last_name="Lammke" first_name_original="Ralf" last_name_original="Lemcke" gender="1" birthday="" deathday="" imdb_id="nm0501214" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-RalleWenke" />
 		<person id="b5eca7a6-bd5a-4b2a-9a03-35f5efecd7cf" first_name="Klaas" last_name="Gendrings" first_name_original="Klaus" last_name_original="Gendries" gender="1" birthday="1930-06-22" deathday="" imdb_id="nm0312688" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-PaulBentris" />
-		<person id="1a46be22-41c6-4c1f-8864-45ead5c389a2" first_name="John F." last_name="Kennedy" first_name_original="John F." last_name_original="Kennedy" gender="1" birthday="1917-05-29" deathday="1963-11-22" imdb_id="nm0448123" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-JohnFKennedy" />
+		<person id="1a46be22-41c6-4c1f-8864-45ead5c389a2" first_name="Jon F." last_name="Remedy" first_name_original="John F." last_name_original="Kennedy" gender="1" birthday="1917-05-29" deathday="1963-11-22" imdb_id="nm0448123" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-JohnFKennedy" />
 		<person id="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikola Sergejewitsch" last_name="Crasstschew" first_name_original="Nikita Sergejewitsch" last_name_original="Chruschtschow" gender="1" birthday="1894-04-17" deathday="1971-09-11" imdb_id="nm0451979" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-NikitaSergejewitschChruschtschow" />
 		<person id="26b64ed5-d9ab-435c-be1e-e25a215c0780" first_name="János" last_name="Nipp" first_name_original="József" last_name_original="Nepp" gender="1" birthday="1934-06-23" deathday="2017-10-06" imdb_id="nm0626134" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-JosefVolkk" />
 		<person id="923377ca-0c07-4316-ba50-aaf638c25ccd" first_name="Jean-Jacques" last_name="Couteaux" first_name_original="Jacques-Yves" last_name_original="Cousteau" gender="1" birthday="1910-06-11" deathday="1977-06-25" imdb_id="nm0184150" creator="8751" created_by="TheRob" comment="previous id: TheRob-TowerTV-JeanJacquesRustoo" />

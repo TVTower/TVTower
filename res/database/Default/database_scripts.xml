@@ -414,7 +414,7 @@
 				<job index="3" function="32" required="0" />
 			</jobs>
 
-			<!-- mandatory: xrated  |  optional: cult --> <!-- TODO: What was meant with xrated? It's not set and it's 'just' a drama. -->
+			<!-- optional: cult -->
 			<data flags_optional="8" target_groups="6" />
 			<targetgroupattractivity men="0.75" children="2" managers="1.25" />
 			<genres maingenre="7" subgenres="9"/>
