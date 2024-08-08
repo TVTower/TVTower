@@ -1045,7 +1045,7 @@
 				<job index="2" function="2" required="1" role_guid="683231be-dd4a-417d-9656-ad9171d9d18b" />
 				<job index="3" function="2" required="1" role_guid="a592f3de-1d0b-4729-badd-074adeacb21c" />
 				<job index="4" function="2" required="1" role_guid="62cbbc68-1f8d-44de-888e-ccea600ed66e" />
-				<job index="5" function="2" required="1" role_guid="9530dc77-47fd-489a-af97-f82db8864fee" />
+				<job index="5" function="2" required="1" role_guid="9530dc77-47fd-489a-af97-f82db8864fee" /> <!-- mentioned in description -->
 				<job index="6" function="2" required="1" role_guid="3e8567cc-69fe-4ab6-afcd-ddba9a150eb8" />
 				<job index="7" function="2" required="1" role_guid="f4e0195e-a26a-4a13-8ce1-73e9cca673db" />
 				<job index="8" function="2" required="1" role_guid="53c06085-8ff7-41a2-8734-d6e48b83bcf0" />
@@ -1153,7 +1153,7 @@
 			</title_original>
 			<description>
 				<de>Der Tod seiner Lebensgefährtin hat %ROLENAME1% aus der Bahn geworfen. Statt als Kameramann arbeitet er inzwischen in einer Großküche in Berlin-Kreuzberg. Er begegnet einer polnischen Stadtstreicherin, in der er seine tote Frau wiederzuerkennen glaubt.</de>
-				<en>The death of his partner has thrown %ROLENAME1% off course. Instead of working as a cameraman, he now works in a canteen kitchen in Berlin-Kreuzberg. He meets a Polish vagrant in whom he believes he recognizes his dead wife.</en>
+				<en>The death of his significant other has thrown %ROLENAME1% off course. Instead of working as a cameraman, he now works in a canteen kitchen in Berlin-Kreuzberg. He meets a Polish vagrant in whom he believes he recognizes his dead wife.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1251,7 +1251,7 @@
 					</title_original>
 					<description>
 						<de>Ein geplanter Zusamenschluss der Stadt mit dem Bezirk, Teil eines umfassenden Immobilienspekulationsplans ausgeheckt von %ROLENAME1% und ihren Kohorten, führt zu einer Auseinandersetzung zwischen ihr und %ROLE3%.</de>
-						<en>A proposed merger between the city and county, part of a larger property speculation scheme hatched by %ROLENAME1% and her cohorts, begins a clash between her and %ROLE3%.</en>
+						<en>A proposed merger between the city and county, part of a larger property speculation scheme hatched by %ROLENAME1% and her cohorts, leads to a clash between her and %ROLE3%.</en>
 					</description>
 				</scripttemplate>
 			</children>

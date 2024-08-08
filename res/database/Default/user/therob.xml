@@ -2124,7 +2124,7 @@
 				<member index="1" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="2" maingenre="204" subgenre="103" flags="9" blocks="4" broadcast_flags="512" price_mod="0.25" />
+			<data country="D" distribution="2" maingenre="204" subgenre="103" flags="9" blocks="4" broadcast_flags="512" price_mod="0.5" />
 			<releaseTime year_relative="6" day="5" />
 			<ratings critics="89" speed="38" outcome="55" />
 			<children>
@@ -2137,6 +2137,7 @@
 					<title_original>
 						<de>Tiefsee Dinoschrecken, Banzai</de>
 						<en>Dino Deep Sea Terror, Banzai</en>
+						<pl>Głębinowy terror dinozaurów, Banzai</pl>
 					</title_original>
 					<description>
 						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
@@ -2153,6 +2154,7 @@
 					<title_original>
 						<de>Der Osten - Der Westen</de>
 						<en>The East - The West</en>
+						<pl>Wschód - Zachód</pl>
 					</title_original>
 					<description>
 						<de>[1|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
@@ -2173,6 +2175,7 @@
 					<title_original>
 						<de>Iris entdeckt die Alm</de>
 						<en>Iris Explores the Alp</en>
+						<pl>Iris odkrywa alpy</pl>
 					</title_original>
 					<description>
 						<de>[1|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
@@ -2911,7 +2914,7 @@
 			<title>
 				<de>Erbarmungslose Ermittler: %CITY%</de>
 				<en>Merciless Investigators: %CITY%</en>
-				<pl>Bezlitośni śledczy z miasta %City%</pl>
+				<pl>Bezlitośni śledczy z miasta %CITY%</pl>
 			</title>
 			<description>
 				<de>%NAME% ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
