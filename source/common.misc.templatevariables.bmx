@@ -193,37 +193,15 @@ Type TTemplateVariables
 	End Method
 
 
-	Method GetRandomFromLocalizedString:TLocalizedString(localizedString:TLocalizedString, defaultValue:string = "MISSING")
-		local result:TLocalizedString = new TLocalizedString
-		if not localizedString
-			result.set(defaultValue)
-			return result
-		endif
-
-		'loop through languages and calculate maximum amount of
-		'random values -> this gets our "reference count" if something
-		'is missing
-		local maxRandom:int = 0
-		For local langID:Int = EachIn localizedString.GetLanguageIDs()
-			local values:string[] = localizedString.Get( langID ).split("|")
-			maxRandom = max(maxRandom, values.length - 1)
-		Next
-
-		'decide which random portion we want
-		local useRandom:int = RandRange(0, maxRandom)
-
-		For local langID:Int = EachIn localizedString.GetLanguageIDs()
-			local values:string[] = localizedString.Get( langID ).split("|")
-			'if random index is bigger than the array, set the default
-			'as resulting value for this language
-			if values.length-1 < useRandom
-				result.set(defaultValue, langID)
-			else
-				result.set(values[useRandom], langID)
-			endif
-		Next
-
-		return result
+	'retrieve a TLocalizedString containing a single value per language
+	'extracted from another TLocalizedString which contains a chain of
+	'values per language ("ape|beaver|camel|dog" -> "beaver")
+	'
+	'limitElementsToChoseFrom:
+	'	True : The language with the least random values limits from what to choose from
+	'	False: languages with less random values will be filled with "MISSING"
+	Method GetRandomFromLocalizedString:TLocalizedString(localizedString:TLocalizedString, limitElementsToChoseFrom:Int = True)
+		Return localizedString.CopyRandom(limitElementsToChoseFrom, "MISSING")
 	End Method
 	
 	
