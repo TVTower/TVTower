@@ -3310,6 +3310,9 @@ Music: [5|Full].</en>
 			<targetgroupattractivity managers="1.5" />
 			<data country="I/D/E" year="1965" distribution="1" maingenre="18" subgenre="2,7" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by bb2d25bd-4c59-44ff-a7c5-63fd43cfb192 -->
 			<ratings critics="82" speed="85" outcome="80" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="9b67a604-a3ab-480f-ba64-44485c2d2547" />
+			</effects>
 		</programme>
 		<programme id="a9e1994f-afa9-4820-884a-83e36fb3eb85" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0081505" creator="">
 			<title>
@@ -4410,6 +4413,9 @@ After the end of the series, [1|Full] shot two more TV movies as Angus MacGrifte
 			<data country="USA" distribution="2" maingenre="2" subgenre="1,17" flags="0" blocks="2" price_mod="0.90" available="0" /> <!-- availability triggered by MacGyver last season episode 1 -->
 			<releaseTime year="1994" day="5" />
 			<ratings critics="51" speed="67" outcome="61" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="a82f5075-b41b-43ff-9301-ece663dac159" />
+			</effects>
 		</programme>
 		<programme id="a82f5075-b41b-43ff-9301-ece663dac159" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0110420" creator="">
 			<title>
@@ -17743,6 +17749,9 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1964" distribution="1" maingenre="4" subgenre="14" flags="" blocks="2" price_mod="0.5" />
 			<ratings critics="75" speed="78" outcome="61" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="63f2c62e-b864-45ed-869b-1ca3936539ec" />
+			</effects>
 		</programme>
 		<programme id="Stukov_Grand Prix" product="1" licence_type="1" imdb_id="tt0060472" creator="9584" created_by="Stukov">
 			<title>
@@ -35686,6 +35695,9 @@ A naïve housewife and her best friend, a waitress, flee toward Mexico after hav
 			<data country="USA" distribution="1" maingenre="12" subgenre="10" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 5a96d2c6-7f15-4fa2-9708-24bd6c2ac88a -->
 			<releaseTime year="1991" day="9" />
 			<ratings critics="26" speed="34" outcome="39" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="ebd6322d-bf4d-460a-b948-c9eee4189479" />
+			</effects>
 		</programme>
 		<programme id="7c98cb14-63ca-4b34-9c96-f8d40fd22128" product="1" licence_type="1" creator="9551" imdb_id="tt0103956">
 			<title>
@@ -40226,9 +40238,6 @@ Nominated for 8 Academy Awards, won 3.</en>
 			<data country="USA" distribution="1" maingenre="12" subgenre="14,10" flags="0" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by 5d88519c-2405-4ca6-9608-ad040e3c3163 -->
 			<releaseTime year="1994" day="10" />
 			<ratings critics="75" speed="64" outcome="31" />
-			<effects>
-				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="f18bc0f7-6d3c-4182-9ca2-572833a77d2a" />
-			</effects>
 		</programme>
 		<programme id="50297252-bd0a-4cf6-84e8-03e92d0bce45" product="1" licence_type="1" creator="9551" imdb_id="tt0111400">
 			<title>

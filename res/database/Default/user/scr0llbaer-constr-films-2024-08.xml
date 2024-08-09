@@ -23765,6 +23765,9 @@ Great music!</en>
 			<data country="I/E/USA" distribution="1" maingenre="18" subgenre="2,7" flags="0" blocks="3" price_mod="0.5" available="0" /> <!-- availability triggered by de72f0f4-898a-45af-87a7-c4e57cbbdc9f -->
 			<releaseTime year="1971" day="10" />
 			<ratings critics="82" speed="77" outcome="63" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="989481a2-4862-4296-a9a7-9e583bf4fb3c" />
+			</effects>
 		</programme>
 		<programme id="5056022b-3fe4-455f-8627-5d1561fa56b6" product="1" licence_type="1" creator="" imdb_id="tt0065112">
 			<title>
